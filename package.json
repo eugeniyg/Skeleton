@@ -7,7 +7,6 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@platform/frontend-core": "^0.0.2-rc.3",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
     "eslint": "^8.14.0",
@@ -20,6 +19,7 @@
     "sass-loader": "^12.6.0"
   },
   "dependencies": {
+    "@platform/frontend-core": "^0.0.2-rc.3",
     "svg-sprite-generator": "^0.0.7",
     "vue3-carousel": "^0.1.40"
   }
