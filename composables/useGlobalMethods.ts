@@ -1,5 +1,3 @@
-import { useRouter } from 'nuxt/app';
-
 export const useGlobalMethods = () => {
   const router = useRouter();
 

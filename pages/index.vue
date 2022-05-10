@@ -2,10 +2,7 @@
   <div>
     <client-only>
       <carousel v-bind="topSliderProps">
-        <slide :key="1">
-          <card-promo />
-        </slide>
-        <slide :key="2">
+        <slide v-for="item in 2" :key="item">
           <card-promo />
         </slide>
 
