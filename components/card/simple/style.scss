@@ -1,0 +1,32 @@
+.card {
+  width: var(--width, 25%);
+  height: var(--height, auto);
+  align-items: flex-start;
+
+  .img {
+    @include ratio(66px, 66px);
+    border-radius: 8px;
+    background-repeat: var(--bg-repeat, no-repeat);
+    background-size: var(--bg-size, cover);
+    background-position: var(--bg-position, top center);
+  }
+
+  .title {
+    @include font($heading-1);
+    color: var(--white);
+    margin-top: rem(8px);
+  }
+
+  @include media(xs) {
+    max-width: rem(66px);
+  }
+
+  @include media(md) {
+    max-width: rem(96px);
+
+    .title {
+      display: block !important;
+      @include upd-font($body-1);
+    }
+  }
+}

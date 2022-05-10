@@ -1,0 +1,47 @@
+<template>
+  <div class="tabs">
+    <div class="header">
+      <button-base
+        v-for="({ icon, title, id }, itemIndex) in props.items"
+        :key="itemIndex"
+        tag-name="button"
+        :class="{'is-active': props.selected === id}"
+        @click="emit('select-tab', id)"
+      >
+        <atomic-icon :id="icon" v-if="icon"/>{{ title }}
+      </button-base>
+    </div>
+
+    <div class="content">
+      <slot/>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+  const props = defineProps({
+    items: {
+      type: Array,
+      default: () => ([
+        {
+          title: 'favorites',
+          icon: 'ui-heart',
+          id: 'favorites',
+          isActive: true,
+        },
+        {
+          title: 'Recently played',
+          icon: 'ui-history',
+          id: 'recently-played',
+        },
+      ]),
+    },
+    selected: {
+      type: String,
+      default: '',
+    },
+  });
+  const emit = defineEmits(['select-tab']);
+</script>
+
+<style lang="scss" src="./style.scss"/>

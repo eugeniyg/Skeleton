@@ -1,0 +1,44 @@
+.carousel__pagination {
+  padding: rem(8px) 0 0 0;
+  display: flex;
+  margin: 0;
+}
+
+.carousel__pagination-button {
+  @extend %flex-all-center;
+  border-radius: var(--vc-pgn-height);
+  padding: 0;
+
+  --vc-pgn-margin: 0;
+  --vc-pgn-width: #{rem(20px)};
+  --vc-pgn-height: #{rem(20px)};
+  --vc-pgn-background-color: transparent;
+
+  &:before {
+    content: '';
+    display: flex;
+    width: rem(8px);
+    height: rem(8px);
+    border-radius: 50%;
+    background-color: var(--bg, var(--gray-600));
+  }
+}
+
+.carousel__pagination-button--active {
+  --vc-pgn-active-color: transparent;
+
+  &:before {
+    --bg: var(--yellow-500);
+  }
+}
+
+.carousel__icon {
+  --vc-icon-width: #{rem(32px)};
+  --vc-icon-height: #{rem(32px)};
+}
+
+.carousel__prev, .carousel__next {
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+  top: calc(50% - #{rem(8px)}) !important;
+  --vc-nav-background-color: var(--gray-800);
+}

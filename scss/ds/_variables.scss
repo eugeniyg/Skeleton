@@ -1,0 +1,12 @@
+$base-font-size: 16px;
+$use-rem: 1;
+$app-header-height: 62px;
+
+$breakpoints: (
+  xxs: 360px, // default
+  xs: 528px,
+  sm: 768px,
+  md: 1024px,
+  l: 1280px,
+  xl: 1680px,
+);

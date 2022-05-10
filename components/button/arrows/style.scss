@@ -1,0 +1,41 @@
+.arrows {
+  @extend %flex-items-center;
+  grid-column-gap: 4px;
+  .btn-prev, .btn-next {
+    @include box(32px);
+    @extend %flex-all-center;
+    @extend %skip-btn;
+    border-radius: 50%;
+    box-shadow: var(--shadow, none);
+
+    --bg: var(--gray-800);
+    --color: var(--white);
+
+    &:hover {
+      cursor: pointer;
+      --bg: var(--gray-800);
+      --color: var(--yellow-500);
+      --shadow: 0 0 0 #{rem(3px)} var(--gray-900);
+    }
+
+    &:focus {
+      --bg: var(--gray-700);
+      --color: var(--yellow-500);
+      --shadow: 0 0 0 inset 0px 2px 0px var(--gray-800);
+    }
+
+    &[disabled] {
+      --color: var(--gray-600);
+      --bg: var(--gray-800);
+      pointer-events: none;
+    }
+  }
+
+  .btn-prev {
+    transform: rotate(90deg);
+  }
+
+  .btn-next {
+    transform: rotate(-90deg);
+  }
+}

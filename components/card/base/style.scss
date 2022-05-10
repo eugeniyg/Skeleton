@@ -1,0 +1,96 @@
+.card-base {
+  height: var(--height, auto);
+  padding: var(--padding, 1px);
+  @include ratio(104px, 156px);
+  flex-shrink: 0;
+  @include radius(8px);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  background-color: var(--bg, transparent);
+  background-repeat: var(--bg-repeat, no-repeat);
+  background-size: var(--bg-size, cover);
+  background-position: var(--bg-position, top center);
+  width: var(--width, calc(33% - #{rem(4px)}));
+
+  @include media(xs) {
+    --width: calc(25% - #{rem(12px)});
+  }
+
+  @include media(sm) {
+    --width: calc(16.66% - #{rem(14px)});
+    --padding: 1px;
+  }
+
+  .info {
+    padding: var(--padding-info, #{rem(16px) rem(12px)});
+    background-color: var(--bg-info, rgba(14, 9, 30, .8));
+    width: var(--width-info, 100%);
+    display: var(--display, grid);
+    grid-row-gap: 8px;
+    position: var(--position-info, absolute);
+    grid-template-areas:
+      "title"
+      "btn-play"
+      "btn-try"
+      "sub-title";
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto auto 1fr;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    visibility: var(--visibility-info, hidden);
+    opacity: var(--opacity-info, 0);
+    transition: var(--transition-info, (visibility .2s .2s, opacity .2s .2s ease-in-out));
+  }
+
+  &:hover {
+    --visibility-info: visible;
+    --opacity-info: 1;
+    --transition-info: (visibility .2s .2s, opacity .2s .2s ease-in-out);
+
+    .btn-play {
+      opacity: 1;
+      transition: opacity .4s;
+    }
+  }
+
+  img {
+    width: var(--width, auto);
+    height: var(--height, auto);
+    display: var(--display, block);
+  }
+
+  .title {
+    @include font($heading-2);
+    color: var(--color-info-title, var(--white));
+    grid-area: title;
+    text-align: center;
+  }
+
+  .sub-title {
+    @include font($body-1);
+    color: var(--color-info-sub-title, var(--gray-300));
+    grid-area: sub-title;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .btn-try {
+    --bg: var(--yellow-900);
+    grid-area: btn-try;
+    justify-self: center;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  .btn-play {
+    grid-area: btn-play;
+    justify-self: center;
+    transition: all .2s ease-in-out;
+    opacity: 0;
+  }
+}

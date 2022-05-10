@@ -1,0 +1,21 @@
+.turbo-games {
+  @extend %flex-items-center;
+  grid-column-gap: 4px;
+
+  .item {
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .img {
+    display: block;
+    max-width: 100%;
+    transition: max-width .2s ease-in-out;
+  }
+
+  &.is-compact {
+    .item:not(:first-child) {
+      display: none;
+    }
+  }
+}

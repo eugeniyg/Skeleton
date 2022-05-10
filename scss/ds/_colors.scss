@@ -1,0 +1,106 @@
+@import "helpers";
+
+$neutrals-colors: (
+  'white': #FFF,
+  gray-000: #F5F7F9,
+  gray-100: #F2F4F8,
+  gray-200: #DCDFE4,
+  gray-300: #C9CDD4,
+  gray-400: #8E909F,
+  gray-500: #656777,
+  gray-600: #4F5164,
+  gray-700: #3D3D51,
+  gray-800: #28263B,
+  gray-900: #19192F,
+  black-primary: #0E091E,
+);
+
+$blue-colors: (
+  blue-000: #F1F8FF,
+  blue-100: #DBEDFF,
+  blue-200: #C8E1FF,
+  blue-300: #79B8FF,
+  blue-400: #2188FF,
+  blue-500: #0371EC,
+  blue-600: #005FCC,
+  blue-700: #044289,
+  blue-800: #032F62,
+  blue-900: #05264C,
+);
+
+$green-colors: (
+  green-000: #F0FFF4,
+  green-100: #DCFFE4,
+  green-200: #B4FFC6,
+  green-300: #6EFF91,
+  green-400: #00E034,
+  green-500: #00CF2F,
+  green-600: #00A828,
+  green-700: #038322,
+  green-800: #046E1C,
+  green-900: #045618,
+);
+
+$yellow-colors: (
+  yellow-000: #FFF9E5,
+  yellow-100: #FFF2C7,
+  yellow-200: #FFF2C7,
+  yellow-300: #FFDC8A,
+  yellow-400: #FFD166,
+  yellow-500: #FFC12E,
+  yellow-600: #E6A409,
+  yellow-700: #B07B00,
+  yellow-800: #73550F,
+  yellow-900: #73550F,
+);
+
+$orange-colors: (
+  orange-000: #FFF8F2,
+  orange-100: #FFEBDA,
+  orange-200: #FFD1AC,
+  orange-300: #FFB070,
+  orange-400: #FB8C32,
+  orange-500: #F6740A,
+  orange-600: #E36B09,
+  orange-700: #D16004,
+  orange-800: #C25700,
+  orange-900: #A04800,
+);
+
+$red-colors: (
+  red-000: #FFEEEE,
+  red-100: #FFDDDC,
+  red-200: #FFADAC,
+  red-300: #FF716F,
+  red-400: #FA3D3A,
+  red-500: #FF120D,
+  red-600: #E90A06,
+  red-700: #CB0805,
+  red-800: #B50805,
+  red-900: #9A0604,
+);
+
+$violet-colors: (
+  violet-000: #F5F0FF,
+  violet-100: #E5DCFD,
+  violet-200: #CCBAFD,
+  violet-300: #A989F9,
+  violet-400: #8055F6,
+  violet-500: #662AF4,
+  violet-600: #550BDA,
+  violet-700: #4909B3,
+  violet-800: #37078D,
+  violet-900: #25055C,
+);
+
+
+$colors: map-collect(
+    $neutrals-colors,
+    $blue-colors,
+    $green-colors,
+    $yellow-colors,
+    $orange-colors,
+    $red-colors,
+    $violet-colors,
+);
+

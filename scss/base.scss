@@ -1,0 +1,128 @@
+.app-header {
+  grid-area: app-header;
+  height: rem(64px);
+  @extend %flex-items-center;
+  padding: var(--padding, 0 #{rem(16px)});
+  position: sticky;
+  top: 0;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+  background-color: var(--black-primary);
+  z-index: 1;
+  grid-column-gap: rem(12px);
+
+
+  .avatar {
+    --padding: 0;
+    --bg: unset;
+  }
+
+  .items {
+    @extend %flex-items-center;
+    justify-self: flex-end;
+    margin-left: auto;
+    grid-column-gap: rem(8px);
+  }
+
+  .btn-search {
+    margin-right: rem(2px);
+  }
+
+  .notification {
+    margin-right: rem(16px);
+  }
+
+  @include media(sm) {
+    --padding: 0 #{rem(32px)}
+  }
+
+}
+
+.app-main {
+  grid-area: app-main;
+  @extend %container;
+  overflow: hidden;
+  padding: var(--padding, #{24px} #{16px});
+  pointer-events: var(--main-pointer-events, initial);
+
+  @include media(sm) {
+    --padding: 0 #{rem(32px)}
+  }
+}
+
+.app-footer {
+  grid-area: app-footer;
+  color: var(--gray-500);
+  display: grid;
+  padding: var(--padding, #{rem(16px)} #{rem(16px)} #{rem(110px)} #{rem(16px)});
+  @extend %container;
+
+  .heading-primary {
+    @include font($heading-4);
+  }
+
+  .heading-secondary {
+    @include font($heading-2);
+  }
+
+  p {
+    @include font($body-1-paragraph);
+    margin: 0;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+
+    img {
+      width: 64px;
+      height: auto;
+      margin: 0 auto 24px;
+    }
+  }
+
+  .copy-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+      margin-bottom: 16px
+    }
+  }
+
+  .header {
+    @include media(xs) {
+      --padding: 0 0 #{rem(16px)} 0
+    }
+  }
+
+  .group {
+    display: grid;
+    grid-gap: rem(8px);
+    margin-top: rem(40px);
+    align-items: flex-start;
+
+    @include media(xs) {
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: rem(24px);
+
+      .btn-toggle {
+        visibility: hidden;
+      }
+
+      .items {
+        grid-template-columns: repeat(2, auto);
+        --display: grid;
+      }
+    }
+
+    @include media(sm) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @include media(sm) {
+   --padding: #{rem(16px)} #{rem(32px)} #{rem(110px)} #{rem(32px)}
+  }
+
+}

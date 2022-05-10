@@ -1,0 +1,86 @@
+@use "variables";
+@use "colors";
+@use "sass:math";
+//@use "font-icons";
+
+@function strip-unit($num) {
+  @if type-of($num) == 'number' and not unitless($num) {
+    @return math.div($num, $num * 0 + 1);
+  }
+  @return $num;
+}
+
+@function rem($size, $base: variables.$base-font-size) {
+  @return (#{math.div(strip-unit($size), strip-unit($base))}rem);
+}
+
+@mixin font($type) {
+  @each $prop, $val in $type {
+    @if $prop == 'font-size' and variables.$use-rem == 1 {
+      #{$prop}: var(--#{$prop}, #{rem($val)});
+    } @else {
+      #{$prop}: var(--#{$prop}, #{$val});
+    }
+  }
+}
+
+@mixin upd-font($type) {
+  @each $prop, $val in $type {
+    @if $prop == 'font-size' and variables.$use-rem == 1 {
+      --#{$prop}: #{rem($val)};
+    } @else {
+      --#{$prop}: #{$val};
+    }
+  }
+}
+
+@function get($type) {
+  @return map-get(colors.$colors, $type);
+}
+
+@mixin box($size) {
+  width: var(--width, #{rem($size)});
+  height: var(--height, #{rem($size)});
+  min-width: var(--min-width, #{rem($size)});
+  min-height: var(--min-height, #{rem($size)});
+}
+
+@mixin box-upd($size) {
+  --width: #{rem($size)};
+  --height: #{rem($size)};
+  --min-width: #{rem($size)};
+  --min-height: #{rem($size)};
+}
+
+@mixin radius($size) {
+  border-radius: $size;
+}
+
+@function i($props) {
+  @return #{$props};
+}
+
+@mixin for-desktop() {
+  @media (min-width: rem(768px)) {
+    @content;
+  }
+}
+
+@mixin media($size) {
+  $value: map-get(variables.$breakpoints, $size);
+  @if $value {
+    @media (min-width: rem($value)) {
+      @content;
+    }
+  }
+}
+
+@mixin ratio($w, $h) {
+  &:before {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-top: math.div($h, $w)  * 100%;
+  }
+}
+

@@ -1,0 +1,35 @@
+.bages {
+  display: flex;
+  flex-wrap: wrap;
+  grid-column-gap: rem(4px);
+  position: absolute;
+  top: rem(12px);
+  left: rem(12px);
+}
+
+.bage {
+  display: flex;
+  width: fit-content;
+  background-color: var(--bg, transparent);
+  padding: var(--padding, #{rem(4px) rem(8px)});
+  color: var(--bage-color, var(--black-primary));
+  text-transform: uppercase;
+  @include font($body-0);
+  border-radius: 8px;
+
+  &.type-new {
+    --bg: var(--yellow-500);
+  }
+
+  &.type-card-new {
+    --bg: var(--green-500);
+    --bage-color: var(--white);
+    --padding: #{rem(2px) rem(8px)};
+  }
+
+  &.type-card-hot {
+    --bg: var(--red-500);
+    --bage-color: var(--white);
+    --padding: #{rem(2px) rem(8px)};
+  }
+}

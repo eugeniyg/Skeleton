@@ -1,0 +1,26 @@
+.btn-deposit {
+  @include box(40px);
+  @extend %skip-btn;
+  @extend %flex-all-center;
+  border-radius: 50%;
+  transform: rotate(var(--deg, 0));
+  background-color: var(--bg, var(--yellow-500));
+  box-shadow: var(--shadow, unset);
+  transition: all .2s ease-in-out;
+
+  --icon-size: #{rem(20px)};
+  --padding: 0 0;
+  --color: var(--gray-900);
+
+  &:hover {
+    cursor: pointer;
+
+    --shadow: 0 0 0 3px var(--yellow-900);
+  }
+
+  &:active, &.is-active  {
+    --bg: var(--yellow-600);
+    --color: var(--gray-900);
+    --shadow: inset 0 2px 0px var(--yellow-700);
+  }
+}

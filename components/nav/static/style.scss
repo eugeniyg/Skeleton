@@ -1,0 +1,22 @@
+.nav-static {
+  display: var(--display, flex);
+  flex-direction: column;
+  grid-gap: rem(4px);
+
+  .drawer-minimize & {
+    --display: none;
+  }
+
+  > a {
+    @include font($heading-1);
+    color: var(--color, var(--gray-300));
+    padding: rem(4px) rem(20px);
+    text-decoration: none;
+    display: flex;
+    transition: color .2s .2s ease-in-out;
+
+    &:hover {
+      --color: var(--white);
+    }
+  }
+}

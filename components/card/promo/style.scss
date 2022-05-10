@@ -1,0 +1,42 @@
+.promo-card {
+  display: grid;
+
+  img {
+    grid-area: layer;
+    display: block;
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  .title {
+    @include upd-font($heading-4);
+    color: var(--white);
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
+  }
+
+  .sub-title {
+    @include font($heading-3);
+    color: var(--white);
+
+    display: none; // this is default size
+  }
+
+  .actions {
+    @extend %flex-column;
+    grid-area: layer;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+
+    grid-row-gap: var(--row-gap, 0);
+    width: var(--width, 70%);
+    padding: var(--padding, #{0 0 0 rem(24px)});
+  }
+
+  .btn-primary {
+    margin-top: rem(12px);
+
+    @include upd-font($heading-2);
+    --padding: #{rem(7px) rem(20px)};
+  }
+}

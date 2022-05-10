@@ -1,0 +1,13 @@
+.text-wrap {
+  &.text-hidden {
+    > *:not(.btn-show-more) {
+      display: none;
+    }
+  }
+
+  &.text-show {
+     .btn-show-more {
+       display: none;
+     }
+  }
+}

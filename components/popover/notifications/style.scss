@@ -1,0 +1,36 @@
+.popover-notifications {
+  padding: 16px;
+  background-color: var(--gray-800);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+  border-radius: 8px;
+  position: absolute;
+  top: 0;
+  width: rem(288px);
+  transform: translateY(rem(64px)) translateX(-50%);
+  transition: background-color .2s ease-in-out;
+  visibility: var(--visibility, hidden);
+
+  .header {
+    display: flex;
+
+    > .btn-ghost {
+      --width: auto;
+    }
+  }
+
+  .msg {
+    --bg-content: var(--gray-900);
+
+
+    &:not(.is-unread) {
+      --bg: transparent;
+      --bg-content: transparent;
+    }
+
+    &:hover {
+      --bg-content: var(--gray-900);
+      cursor: pointer;
+    }
+
+  }
+}

@@ -1,0 +1,117 @@
+@import "mixins";
+
+%icon {
+  font-family: 'icon';
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: var(--icon-size, #{rem(18px)});
+  line-height: 1;
+  color: var(--icon-color, var(--gray-400))
+}
+
+%flex-items-center {
+  display: flex;
+  align-items: center;
+}
+
+%flex-all-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+%flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+%link {
+  text-decoration: var(--text-decoration, none);
+  color: var(--color, var(--gray-300));
+}
+
+%text-elipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+%skip-btn {
+  background-color: var(--bg, transparent);
+  color: var(--color, var(--gray-400));
+  border: var(--border, 0);
+}
+
+%radius-50 {
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+//%container {
+//  max-width: rem(944px);
+//  margin: 0 auto;
+//}
+
+%none {
+  display: none;
+}
+
+%scrollbar {
+  overscroll-behavior: none;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--gray-700);
+    border-radius: 8px;
+  }
+}
+
+%container {
+  max-width: var(--container-max-width);
+  width: 100%;
+  margin: 0 auto;
+}
+
+%input-label {
+  > .label {
+    @include font($body-2);
+    color: var(--white);
+    margin-bottom: rem(8px);
+    grid-area: label;
+    display: flex;
+    grid-column-gap: rem(4px);
+  }
+}
+
+%icon-btn {
+  @extend %flex-all-center;
+  @include box(32px);
+  border-radius: 50%;
+  --color: var(--gray-900);
+  --icon-size: 18px;
+  background-color: var(--bg, var(--yellow-500));
+  box-shadow: var(--shadow, none);
+
+  &:hover {
+    --shadow: 0 0 0 3px var(--yellow-900);
+  }
+
+  &:focus {
+    --shadow: inset 0px 2px 0px #B07B00;
+    --bg: var(--yellow-600);
+  }
+
+  [disabled] {
+    pointer-events: none;
+    --bg: var(--yellow-900);
+  }
+
+}

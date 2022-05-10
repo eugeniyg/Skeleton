@@ -1,0 +1,61 @@
+.nav-mob {
+  display: flex;
+  position: fixed;
+  height: rem(56px);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: rem(8px);
+  background-color: var(--black-primary);
+  z-index: 1;
+  visibility: var(--mob-nav-visibility, visible);
+
+  @include media(md) {
+    visibility: hidden;
+  }
+
+  .item {
+    @extend %flex-column;
+    justify-content: flex-end;
+    align-items: center;
+    flex-grow: 1;
+    text-decoration: none;
+
+    .icon {
+      @include box(22px);
+      @extend %flex-all-center;
+      transition: color .2s ease-in-out;
+
+      --color: var(--white);
+    }
+
+    &.is-accent {
+      .icon {
+        @include box(36px);
+        background-color: var(--yellow-600);
+        padding: rem(6px);
+        @include radius(50%);
+      }
+    }
+
+    span {
+      color: var(--color, var(--white));
+      @include font($heading-1);
+      transition: color .1s ease-in-out;
+    }
+
+    &:not(.is-accent) {
+      &:active {
+        --color: var(--yellow-500);
+
+        .icon {
+          --color: var(--yellow-500);
+        }
+      }
+    }
+  }
+
+
+
+
+}

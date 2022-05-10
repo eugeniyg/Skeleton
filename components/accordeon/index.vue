@@ -1,0 +1,60 @@
+<template>
+  <div class="accordeon" :class="classes">
+    <div class="header">
+      <slot name="header" v-bind:heading="props.heading"/>
+      <button-toggle @toggle="toggle" :is-active="state"/>
+    </div>
+
+    <div class="content" ref="content" :style="heightStyle">
+      <slot
+        v-for="(item, index) in props.items"
+        :key="index"
+        name="content"
+        v-bind:item="item"
+      />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+  const props = defineProps({
+    isOpen: {
+      type: Boolean,
+      default: false,
+    },
+    mode: {
+      type: String,
+      validator: (val:string) => ['toggle', 'expand'].includes(val),
+      default: 'toggle',
+    },
+    heading: {
+      type: String,
+      required: true,
+    },
+    items: {
+      type: Array,
+      default: () => [],
+    },
+  });
+
+  const state = ref<boolean>(props.isOpen);
+  const closedHeight = ref<number>(0);
+  const openHeight = ref<number>(0);
+
+  const classes = computed(() => ({
+    'is-open': state.value,
+    [`mode-${props.mode}`]: true,
+  }));
+  const heightStyle = computed(() => `--height: ${state.value ? openHeight.value : closedHeight.value}px`);
+
+  function toggle():void {
+    state.value = !state.value;
+  }
+
+  const content = ref(null);
+  onMounted(() => {
+    openHeight.value = content.value.scrollHeight;
+  });
+</script>
+
+<style lang="scss" src="./style.scss"/>

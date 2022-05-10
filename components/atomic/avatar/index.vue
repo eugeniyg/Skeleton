@@ -1,0 +1,53 @@
+<template>
+  <div class="avatar" @click="emit('toggle')">
+    <span v-if="props.isButton" class="close-decor">
+      <atomic-icon id="ui-plus" />
+    </span>
+
+    <span class="thumb">
+      <atomic-icon id="ui-user"/>
+      <img class="img" src="~/assets/img/avatar.png" alt="" />
+      <atomic-bulb v-if="props.showBulb"/>
+    </span>
+
+    <div v-if="props.label" class="label">{{ props.label }}</div>
+
+    <div v-if="props.nickname" class="nickname">{{ props.nickname }}</div>
+
+    <slot name="progress-bar"/>
+
+    <div v-if="props.amount.length" class="amount">
+      <span v-for="(item, index) in props.amount" :key="index">
+        {{ item }}
+      </span>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+  const props = defineProps({
+    showBulb: {
+      type: Boolean,
+      default: false,
+    },
+    label: {
+      type: String,
+      default: '',
+    },
+    nickname: {
+      type: String,
+      default: '',
+    },
+    amount: {
+      type: Array,
+      default: () => [],
+    },
+    isButton: {
+      type: Boolean,
+      default: false,
+    },
+  });
+  const emit = defineEmits(['toggle']);
+</script>
+
+<style lang="scss" src="./style.scss"/>

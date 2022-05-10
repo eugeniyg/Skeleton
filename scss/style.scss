@@ -1,0 +1,172 @@
+@use "ds/colors";
+@use "ds/variables";
+
+:root {
+  --container-max-width: #{rem(1024px)};
+  @each $color, $val in colors.$colors {
+    --#{$color}: #{$val};
+  }
+}
+
+@mixin radius($size) {
+  border-radius: $size;
+}
+
+$font-path: '~/assets/fonts/';
+
+@font-face {
+  font-family: 'NeoSansPro';
+  src: url('#{$font-path}/NeoSansPro-Regular.woff2') format('woff2'),
+  url('#{$font-path}NeoSansPro-Regular.woff') format('woff'),
+  url('#{$font-path}NeoSansPro-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NeoSansPro';
+  src: url('#{$font-path}NeoSansPro-Medium.woff2') format('woff2'),
+  url('#{$font-path}NeoSansPro-Medium.woff') format('woff'),
+  url('#{$font-path}NeoSansPro-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NeoSansPro';
+  src: url('#{$font-path}/NeoSansPro-Bold.woff2') format('woff2'),
+  url('#{$font-path}NeoSansPro-Bold.woff') format('woff'),
+  url('#{$font-path}NeoSansPro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent
+}
+
+:focus-visible,
+input,
+textarea,
+button,
+select,
+a {
+  outline: none;
+}
+
+html {
+  font-size: variables.$base-font-size;
+}
+
+//@import "ds/mixins";
+//@import "ds/placeholders";
+
+body {
+  font-family: 'NeoSansPro', sans-serif;
+  margin: 0;
+  background-color: var(--black-primary);
+  @extend %scrollbar;
+
+  &.nav-user-open {
+    --nav-user-visibility: visible;
+    --nav-user-translate-x: 0;
+    overflow-y: hidden;
+    width: calc(100% - 6px);
+    --body-overflow: hidden;
+    --opacity-layer-visibility: visible;
+    --main-pointer-events: none;
+    --header-z-index: 3;
+    --close-decor-index: 2;
+  }
+
+  &.drawer-open {
+    overflow-y: hidden;
+    width: calc(100% - 6px);
+    --drawer-translate-x: translateX(0);
+    --body-overflow: hidden;
+    --opacity-layer-visibility: visible;
+    --main-pointer-events: none;
+
+    .nav-mob {
+      right: 4px;
+    }
+  }
+
+  &.nav-currency-open {
+    --opacity-layer-visibility: visible;
+    --body-overflow: hidden;
+    //width: calc(100% - 6px);
+    --nav-currency-visibility: visible;
+    --nav-currency-translate-y: 0;
+
+    @include media(sm) {
+      --opacity-layer-visibility: hidden;
+      --body-overflow: auto;
+    }
+  }
+}
+
+.main-layout {
+  display: grid;
+  grid-template-areas:
+    "drawer app-header"
+    "drawer app-main"
+    "drawer app-footer";
+  grid-template-columns: var(--body-template-columns, 0 1fr);
+  grid-template-rows: auto 1fr auto;
+  grid-auto-flow: row;
+
+  @include media(md) {
+    --body-template-columns: #{rem(240px)} 1fr;
+    --drawer-translate-x: translateX(0);
+
+    &.drawer-minimize {
+      --body-template-columns: #{rem(72px)} 1fr;
+    }
+  }
+}
+
+.app-main {
+  grid-area: app-main;
+  @extend %container;
+  padding: var(--padding, #{24px} #{16px});
+  pointer-events: var(--main-pointer-events, initial);
+  position: relative;
+  z-index: 0;
+
+  &.is-overflow {
+    overflow: hidden;
+  }
+
+  @include media(sm) {
+    --padding: #{rem(24px)} #{rem(32px)}
+  }
+
+  .app-page > .cards, .tabs, .nav-cat-wrap {
+    margin-top: #{24px};
+  }
+}
+
+.form {
+  display: grid;
+  grid-gap: rem(24px);
+
+  .group {
+    display: flex;
+  }
+}
+
+@import "carousel";
+
+
+
+
+
+
+
+
+

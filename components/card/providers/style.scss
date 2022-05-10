@@ -1,0 +1,33 @@
+.card-providers {
+  @include ratio(104px, 57px);
+  background-color: var(--gray-800);
+  width: var(--width, calc(33% - 4px));
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 8px;
+
+  &:nth-of-type(3n + 1) {
+    scroll-snap-align: start;
+  }
+
+  .img {
+    display: flex;
+    max-width: calc(100% - 16px);
+    width: 100%;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  @include media(xs) {
+    --width: calc(25% - #{rem(12px)});
+  }
+
+  @include media(sm) {
+    --width: calc(16.66% - #{rem(14px)});
+    --padding: 1px;
+  }
+}

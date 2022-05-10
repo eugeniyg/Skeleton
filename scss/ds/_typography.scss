@@ -1,0 +1,130 @@
+@use "font-sizes";
+@use "font-weights";
+@use "line-heights";
+@use "letter-spacings";
+
+$heading-0: (
+  font-size: map-get(font-sizes.$font-sizes, 25),
+  font-weight: map-get(font-weights.$font-weights, medium),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$heading-1: (
+  font-size: map-get(font-sizes.$font-sizes, 50),
+  font-weight: map-get(font-weights.$font-weights, medium),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$heading-2: (
+  font-size: map-get(font-sizes.$font-sizes, 75),
+  font-weight: map-get(font-weights.$font-weights, bold),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$heading-3: (
+  font-size: map-get(font-sizes.$font-sizes, 100),
+  font-weight: map-get(font-weights.$font-weights, bold),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$heading-4: (
+  font-size: map-get(font-sizes.$font-sizes, 300),
+  font-weight: map-get(font-weights.$font-weights, bold),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$heading-4: (
+  font-size: map-get(font-sizes.$font-sizes, 300),
+  font-weight: map-get(font-weights.$font-weights, bold),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$heading-5: (
+  font-size: map-get(font-sizes.$font-sizes, 400),
+  font-weight: map-get(font-weights.$font-weights, bold),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$heading-6: (
+  font-size: map-get(font-sizes.$font-sizes, 500),
+  font-weight: map-get(font-weights.$font-weights, bold),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$heading-7: (
+  font-size: map-get(font-sizes.$font-sizes, 600),
+  font-weight: map-get(font-weights.$font-weights, bold),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$heading-8: (
+  font-size: map-get(font-sizes.$font-sizes, 900),
+  font-weight: map-get(font-weights.$font-weights, bold),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$heading-9: (
+  font-size: map-get(font-sizes.$font-sizes, 1100),
+  font-weight: map-get(font-weights.$font-weights, bold),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$body-0: (
+  font-size: map-get(font-sizes.$font-sizes, 25),
+  font-weight: map-get(font-weights.$font-weights, regular),
+  line-height: map-get(line-heights.$line-heights, 3),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$body-1: (
+  font-size: map-get(font-sizes.$font-sizes, 50),
+  font-weight: map-get(font-weights.$font-weights, regular),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$body-1-paragraph: (
+  font-size: map-get(font-sizes.$font-sizes, 50),
+  font-weight: map-get(font-weights.$font-weights, regular),
+  line-height: map-get(line-heights.$line-heights, 3),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$body-2: (
+  font-size: map-get(font-sizes.$font-sizes, 75),
+  font-weight: map-get(font-weights.$font-weights, regular),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$body-2-paragraph: (
+  font-size: map-get(font-sizes.$font-sizes, 75),
+  font-weight: map-get(font-weights.$font-weights, regular),
+  line-height: map-get(line-heights.$line-heights, 3),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$body-3: (
+  font-size: map-get(font-sizes.$font-sizes, 100),
+  font-weight: map-get(font-weights.$font-weights, regular),
+  line-height: map-get(line-heights.$line-heights, 2),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
+$body-3-paragraph: (
+  font-size: map-get(font-sizes.$font-sizes, 100),
+  font-weight: map-get(font-weights.$font-weights, regular),
+  line-height: map-get(line-heights.$line-heights, 3),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
