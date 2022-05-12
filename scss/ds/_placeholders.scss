@@ -51,11 +51,6 @@
   overflow: hidden;
 }
 
-//%container {
-//  max-width: rem(944px);
-//  margin: 0 auto;
-//}
-
 %none {
   display: none;
 }
@@ -83,7 +78,7 @@
 %input-label {
   > .label {
     @include font($body-2);
-    color: var(--white);
+    color: var(--color, var(--white));
     margin-bottom: rem(8px);
     grid-area: label;
     display: flex;
@@ -114,4 +109,129 @@
     --bg: var(--yellow-900);
   }
 
+}
+
+%icon-btn-ghost {
+  @extend %flex-all-center;
+  @include box(32px);
+  border-radius: 50%;
+  --color: var(--gray-400);
+  --icon-size: 22px;
+  background-color: var(--bg, transparent);
+  box-shadow: var(--shadow, none);
+
+  &:hover {
+    --shadow: 0 0 0 3px var(--yellow-900);
+  }
+
+  &:focus {
+    --shadow: inset 0px 2px 0px #B07B00;
+    --bg: var(--yellow-600);
+  }
+
+  [disabled] {
+    pointer-events: none;
+    --bg: var(--yellow-900);
+  }
+}
+
+%modal {
+  padding: var(--padding, rem(16px) rem(16px) rem(24px));
+  background-color: var(--gray-900);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+  display: grid;
+  color: var(--white);
+  position: var(--position, fixed);
+  bottom: var(--bottom, 0);
+  max-height: 100%;
+  overflow-y: auto;
+  @extend %scrollbar;
+  border-radius: var(--radius, 0);
+  grid-row-gap: rem(24px);
+  width: 100%;
+  max-width: var(--max-width, none);
+
+
+  @include media(md) {
+    bottom: auto;
+    //grid-column-gap: rem(32px);
+    padding: rem(32px);
+    --radius: #{rem(16px)};
+    --max-width: #{rem(664px)};
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 16px;
+
+    > .btn-primary {
+      margin-top: rem(8px);
+    }
+  }
+
+  > .content {
+    grid-area: content;
+    position: relative;
+    align-self: flex-start;
+  }
+
+  > .header {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: var(--padding, 0);
+    grid-area: header;
+    align-self: flex-start;
+
+    > .title {
+      @include font($heading-6);
+      color: var(--white);
+      text-align: center;
+      flex-grow: 1;
+    }
+  }
+}
+
+%modal-info {
+  @extend %modal;
+ grid-row-gap: rem(24px);
+  --padding: #{rem(16px)};
+
+  grid-template-areas:
+    "header"
+    "content";
+
+  @include media(md) {
+    --padding: #{rem(32px)};
+    --position: relative;
+    --max-width: #{rem(400px)};
+  }
+
+  .header {
+    --padding: 0;
+  }
+
+  .content {
+    display: grid;
+    grid-gap: #{16px};
+  }
+
+  .img {
+    width: rem(104px);
+    height: rem(104px);
+    display: flex;
+    margin: 0 auto;
+  }
+
+  .text {
+    text-align: center;
+    @include font($body-3);
+    margin: 0;
+  }
+
+  .btn-primary {
+    margin: 0  auto;
+    --width: 100%;
+  }
 }
