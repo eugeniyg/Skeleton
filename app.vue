@@ -15,7 +15,7 @@
       :is-logged-in="isLoggedIn"
       @login="login"
       @logout="logout"
-      @register="register"
+      @register="showModal('register')"
     />
 
     <layout-drawer :is-logged-in="isLoggedIn" :is-compact="isDrawerCompact" @compact="compact"/>
@@ -29,11 +29,17 @@
     <atomic-opacity-layer />
 
     <nav-mob />
+
+    <client-only>
+      <modal-register />
+    </client-only>
   </div>
 </template>
 
 <script setup lang="ts">
-  const { isDrawerCompact, compactDrawer } = useLayoutStore();
+  const {
+    isDrawerCompact, compactDrawer, showModal,
+  } = useLayoutStore();
   const { isLoggedIn, logIn, logOut } = useUserStore();
   const globalMethods = useGlobalMethods();
 
@@ -43,10 +49,6 @@
 
   function logout():void {
     logOut();
-  }
-
-  function register():void {
-    console.log('register');
   }
 
   function compact():void {

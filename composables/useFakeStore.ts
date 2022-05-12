@@ -775,6 +775,70 @@ export const useFakeStore = () => {
       },
     ],
   };
+  const selects = {
+    country: [
+      {
+        title: 'USA',
+        value: 'USA',
+        mask: '/img/flags/us.png',
+      },
+      {
+        title: 'USA',
+        value: 'USA',
+        mask: '/img/flags/us.png',
+      },
+    ],
+      currency: [
+      {
+        title: 'USD',
+        value: 'USD',
+      },
+      {
+        title: 'CAD',
+        value: 'CAD',
+      },
+      {
+        title: 'NOK',
+        value: 'NOK',
+      },
+      {
+        title: 'PLN',
+        value: 'PLN',
+      },
+    ],
+      timeZones: [
+      {
+        title: '(GTM +00:000) UTC',
+        value: '(GTM +00:000) UTC',
+      },
+      {
+        title: '(GTM +00:000) UTC',
+        value: '(GTM +00:000) UTC',
+      },
+      {
+        title: '(GTM +00:000) UTC',
+        value: '(GTM +00:000) UTC',
+      },
+      {
+        title: '(GTM +00:000) UTC',
+        value: '(GTM +00:000) UTC',
+      },
+    ],
+      notification: [
+      {
+        title: 'item 1',
+        value: 'item 1',
+      },
+      {
+        title: 'item 1',
+        value: 'item 1',
+      },
+      {
+        title: 'item 1',
+        value: 'item 1',
+      },
+    ],
+  };
 
   const filter = (cardsArray:any[], key:string):any[] => cardsArray.filter((item:any) => (item.variant === key))[0];
 
@@ -804,5 +868,6 @@ export const useFakeStore = () => {
     catNavItems,
     togglerBtnItems,
     items,
+    selects,
   };
 };

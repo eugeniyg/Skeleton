@@ -1,0 +1,55 @@
+.btn-modal-close {
+  @extend %skip-btn;
+  @include box(32px);
+  position: var(--position, relative);
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--bg, var(--gray-800));
+
+  .icon {
+    visibility: var(--visibility, hidden);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    margin: auto;
+    --icon-size: 24px;
+
+    &:first-of-type {
+      --visibility: visible;
+      --color: var(--white);
+    }
+
+    &:last-of-type {
+      --visibility: hidden;
+      --color: var(--gray-400);
+    }
+  }
+
+  @include media(md) {
+    cursor: pointer;
+    top: rem(-16px);
+    right: rem(-16px);
+    --bg: transparent;
+    --position: absolute;
+
+    &:hover {
+      --bg: var(--gray-800);
+      transition: background-color .2s ease-in-out;
+      .icon {
+        --color: var(--white);
+      }
+    }
+
+    .icon:first-of-type {
+      --visibility: hidden
+    }
+
+    .icon:last-of-type {
+      --visibility: visible
+    }
+  }
+}

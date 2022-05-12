@@ -1,11 +1,20 @@
-export const useLayoutStore = () => {
-  const state = reactive({
-    isUserNavOpen: false,
-    isDrawerOpen: false,
-    isCurrencyNavOpen: false,
-    isDrawerCompact: false,
-  });
+const state = reactive({
+  isUserNavOpen: false,
+  isDrawerOpen: false,
+  isCurrencyNavOpen: false,
+  isDrawerCompact: false,
+  showRegisterModal: false,
+  modals: {
+    deposit: false,
+    withDraw: false,
+    successDeposit: false,
+    error: false,
+    register: false,
+    confirm: false,
+  },
+});
 
+export const useLayoutStore = () => {
   const getPageElement:any = () => document.querySelector('.main-layout');
 
   const openUserNav = ():void => {
@@ -39,6 +48,14 @@ export const useLayoutStore = () => {
     window.dispatchEvent(new Event('resize'));
   };
 
+  const showModal = (modalName: string):void => {
+    state.modals[modalName] = true;
+  };
+
+  const closeModal = (modalName: string):void => {
+    state.modals[modalName] = false;
+  };
+
   return {
     ...toRefs(state),
     closeUserNav,
@@ -47,5 +64,7 @@ export const useLayoutStore = () => {
     closeCurrencyNav,
     toggleDrawer,
     compactDrawer,
+    showModal,
+    closeModal,
   };
 };

@@ -162,11 +162,8 @@ body {
 
 @import "carousel";
 
-
-
-
-
-
-
-
-
+.modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

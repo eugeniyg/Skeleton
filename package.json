@@ -22,6 +22,7 @@
   "dependencies": {
     "@platform/frontend-core": "^0.0.2-rc.3",
     "svg-sprite-generator": "^0.0.7",
+    "vue-final-modal": "^3.4.4",
     "vue3-carousel": "^0.1.40"
   }
 }

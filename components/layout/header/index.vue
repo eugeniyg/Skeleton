@@ -16,6 +16,7 @@
         <button-base
           type="secondary"
           size="md"
+          tag-name="button"
           @click="emit('register')"
         >
           Registration
@@ -41,7 +42,9 @@
     },
   });
   const emit = defineEmits(['login', 'register', 'logout']);
-  const { isUserNavOpen, closeUserNav, openUserNav } = useLayoutStore();
+  const {
+    isUserNavOpen, closeUserNav, openUserNav,
+  } = useLayoutStore();
   const { avatarItems } = useUserStore();
   const fakeStore = useFakeStore();
 

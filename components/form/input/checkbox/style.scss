@@ -1,0 +1,97 @@
+.input-checkbox {
+  color: var(--white);
+  @include font($body-2);
+
+  .label {
+    display: grid;
+    grid-column-gap: rem(8px);
+    grid-template-columns: auto 1fr;
+    align-items: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .checkbox {
+    position: absolute;
+    visibility: hidden;
+  }
+
+  p {
+    margin: 0;
+    color: var(--white);
+
+    @include font($body-2);
+
+    > a {
+      color: var(--yellow-500);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  .icon {
+    background-color: var(--bg, var(--gray-700));
+    border-radius: 4px;
+    width: rem(20px);
+    height: rem(20px);
+    box-shadow: var(--shadow, none);
+    --color: transparent;
+  }
+
+  .checkbox ~ .label {
+    &:hover {
+      --shadow: 0 0 0 3px #2F363D;
+    }
+  }
+
+  .checkbox:checked ~ .label {
+    .icon {
+      --bg: var(--green-500);
+      --color: var(--white);
+    }
+
+    &:hover {
+      .icon {
+        --bg: var(--green-700);
+        --shadow: 0 0 0 3px #045518;
+      }
+    }
+  }
+
+  .checkbox[disabled] ~ .label {
+    .icon {
+      --bg: var(--gray-800);
+      --color: transparent;
+    }
+    pointer-events: none;
+  }
+
+  .checkbox[disabled]:checked ~ .label {
+    .icon {
+      --color: var(--gray-600);
+      --shadow: none;
+    }
+  }
+
+  &.has-error {
+    .checkbox ~ .label {
+      .icon {
+        --bg: transparent;
+        --color: transparent;
+        box-shadow: inset 0 0 0 2px var(--red-500);
+      }
+    }
+
+    .checkbox:checked ~ .label {
+      .icon {
+        --color: var(--white);
+        --bg: var(--red-500);
+      }
+    }
+  }
+}
