@@ -1,5 +1,9 @@
 <template>
-  <modal v-model="modals.register" :close="() => closeModal('register')">
+  <vue-final-modal
+    classes="modal-container"
+    v-model="modals.register"
+    @closed="closeModal('register')"
+  >
     <div class="modal-register">
       <atomic-promo/>
 
@@ -12,7 +16,7 @@
         <form-join/>
       </div>
     </div>
-  </modal>
+  </vue-final-modal>
 </template>
 
 <script setup lang="ts">

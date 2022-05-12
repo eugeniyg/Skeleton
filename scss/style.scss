@@ -108,12 +108,6 @@ body {
       --body-overflow: auto;
     }
   }
-
-  &.modal-open {
-    overflow-y: hidden;
-    --body-overflow: hidden;
-    --main-pointer-events: none;
-  }
 }
 
 .main-layout {
@@ -168,17 +162,8 @@ body {
 
 @import "carousel";
 
-#modals {
-  height: 0;
-  position: fixed;
-  z-index: 999;
+.modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
-
-
-
-
-
-
-
-

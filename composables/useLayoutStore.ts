@@ -50,12 +50,10 @@ export const useLayoutStore = () => {
 
   const showModal = (modalName: string):void => {
     state.modals[modalName] = true;
-    document.body.classList.add('modal-open');
   };
 
   const closeModal = (modalName: string):void => {
     state.modals[modalName] = false;
-    document.body.classList.remove('modal-open');
   };
 
   return {

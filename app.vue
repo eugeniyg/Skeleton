@@ -30,8 +30,6 @@
 
     <nav-mob />
 
-    <div id="modals"/>
-
     <client-only>
       <modal-register />
     </client-only>
