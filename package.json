@@ -20,8 +20,12 @@
     "sass-loader": "^12.6.0"
   },
   "dependencies": {
-    "@platform/frontend-core": "^0.0.2-rc.3",
+    "@pinia/nuxt": "^0.1.9",
+    "css-loader": "^6.7.1",
+    "pinia": "^2.0.14",
+    "style-loader": "^3.3.1",
     "svg-sprite-generator": "^0.0.7",
+    "typescript": "^4.6.4",
     "vue-final-modal": "^3.4.4",
     "vue3-carousel": "^0.1.40"
   }

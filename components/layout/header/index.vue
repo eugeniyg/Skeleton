@@ -35,6 +35,8 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     isLoggedIn: {
       type: Boolean,
@@ -42,10 +44,11 @@
     },
   });
   const emit = defineEmits(['login', 'register', 'logout']);
-  const {
-    isUserNavOpen, closeUserNav, openUserNav,
-  } = useLayoutStore();
-  const { avatarItems } = useUserStore();
+  const layoutStore = useLayoutStore();
+  const userStore = useUserStore();
+  const { isUserNavOpen } = storeToRefs(layoutStore);
+  const { closeUserNav, openUserNav } = layoutStore;
+  const { avatarItems } = storeToRefs(userStore);
   const fakeStore = useFakeStore();
 
   function toggleProfileNav():void {

@@ -1,24 +1,31 @@
-const state = reactive({
-  isLoggedIn: false,
+import { defineStore } from 'pinia';
+
+export type userStoreStateType = {
+  isLoggedIn: boolean,
   avatarItems: {
-    label: '25 lvl',
-    nickname: 'Twiy_nikname_96',
-    amount: [0, 0.00004682, 'BTC'],
+    label: string,
+    nickname: string,
+    amount: any,
+  },
+}
+
+export const useUserStore = defineStore('userStore', {
+  state: () => ({
+    isLoggedIn: false,
+    avatarItems: {
+      label: '25 lvl',
+      nickname: 'Twiy_nikname_96',
+      amount: [0, 0.00004682, 'BTC'],
+    },
+  } as userStoreStateType),
+
+  actions: {
+    logIn():void {
+      this.isLoggedIn = true;
+    },
+
+    logOut():void {
+      this.isLoggedIn = false;
+    },
   },
 });
-
-export const useUserStore = () => {
-  const logIn = ():void => {
-    state.isLoggedIn = true;
-  };
-
-  const logOut = ():void => {
-    state.isLoggedIn = false;
-  };
-
-  return {
-    ...toRefs(state),
-    logIn,
-    logOut,
-  };
-};

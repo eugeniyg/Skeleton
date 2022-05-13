@@ -37,10 +37,14 @@
 </template>
 
 <script setup lang="ts">
-  const {
-    isDrawerCompact, compactDrawer, showModal,
-  } = useLayoutStore();
-  const { isLoggedIn, logIn, logOut } = useUserStore();
+  import { storeToRefs } from 'pinia';
+
+  const layoutStore = useLayoutStore();
+  const userStore = useUserStore();
+  const { isDrawerCompact } = storeToRefs(layoutStore);
+  const { compactDrawer, showModal } = layoutStore;
+  const { logIn, logOut } = userStore;
+  const { isLoggedIn } = storeToRefs(userStore);
   const globalMethods = useGlobalMethods();
 
   function login():void {

@@ -53,7 +53,8 @@
   });
   const emit = defineEmits(['logout']);
   const globalMethods = useGlobalMethods();
-  const { closeUserNav } = useLayoutStore();
+  const layoutStore = useLayoutStore();
+  const { closeUserNav } = layoutStore;
 
   function clickItem(url: string):void {
     globalMethods.navigate(url);

@@ -3,14 +3,11 @@
 </template>
 
 <script setup lang="ts">
-  const {
-    isDrawerOpen,
-    isUserNavOpen,
-    isCurrencyNavOpen,
-    toggleDrawer,
-    closeUserNav,
-    closeCurrencyNav,
-  } = useLayoutStore();
+  import { storeToRefs } from 'pinia';
+
+  const layoutStore = useLayoutStore();
+  const { isDrawerOpen, isUserNavOpen, isCurrencyNavOpen } = storeToRefs(layoutStore);
+  const { toggleDrawer, closeUserNav, closeCurrencyNav } = layoutStore;
 
   function hide():void {
     if (isDrawerOpen.value) toggleDrawer();
