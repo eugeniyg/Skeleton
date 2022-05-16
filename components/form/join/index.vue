@@ -1,66 +1,79 @@
 <template>
   <form class="form-join">
-    <form-input-text
-      type="email"
-      :is-required="true"
-      label="Email Address"
-      name="email"
-      placeholder="Enter your email"
-    />
+    <template v-for="field in mainFields">
+      <template v-if="field.name === 'bonusCode'">
+        <button-ref-promo :key="field.name + 'Toggle'" @show-promo-input="showPromoInput = true"/>
 
-    <form-input-password
-      type="password"
-      :is-required="true"
-      label="Enter your password"
-      name="password"
-      placeholder="Enter your password"
-    />
+        <form-input-text
+          v-show="showPromoInput"
+          v-model:value="registrationFormData[field.name]"
+          :key="field.name"
+          type="text"
+          :label="field.description"
+          :name="field.name"
+          :placeholder="field.description"
+        />
+      </template>
 
-    <form-dropdown-base
-      label="Country"
-      name="country-select"
-      placeholder="Select country"
-      :options="selects.country"
-    />
-
-    <form-dropdown-base
-      label="Currency"
-      name="currency-select"
-      placeholder="Select currency"
-      :options="selects.currency"
-    />
-
-    <button-ref-promo @show-promo-input="showPromoInput = true"/>
-
-    <form-input-text
-      type="text"
-      label="Code (optional)"
-      name="input-promo-code"
-      placeholder="Enter code"
-      v-show="showPromoInput"
-    />
+      <component
+        v-else
+        :key="field.name"
+        :is="fieldsTypeMap[field.name].component || 'form-input-text'"
+        v-model:value="registrationFormData[field.name]"
+        :type="fieldsTypeMap[field.name].type || 'text'"
+        :label="field.description"
+        :name="field.name"
+        :placeholder="field.description"
+        :options="selectOptions[field.name]"
+      />
+    </template>
 
     <atomic-divider/>
 
-    <form-input-checkbox name="accept-terms">
-      <p>
-        <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>
-      </p>
+    <form-input-checkbox
+      v-for="field in footerFields"
+      v-model:value="registrationFormData[field.name]"
+      :key="field.name"
+      :name="field.name"
+    >
+      <p v-html="field.description"/>
     </form-input-checkbox>
 
-    <form-input-checkbox name="receive-bonus-emails">
-      <p> I agree to receive bonus & marketing emails</p>
-    </form-input-checkbox>
-
-    <button-base type="primary" size="md">Sign up</button-base>
+    <button-base type="primary" size="md" @click="signUp">Sign up</button-base>
 
     <button-text-sign/>
   </form>
 </template>
 
 <script setup lang="ts">
-  const { selects } = useFakeStore();
+  import { storeToRefs } from 'pinia';
+  import { useAuthApi, useGlobalMethods } from '@platform/frontend-core';
+  import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
+  import { fieldInterface } from '~/types/formTypes';
+
+  const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
+
+  const { getRegistrationFields, submitRegistrationData } = useAuthApi();
+  const { setFormData } = useGlobalMethods();
+  const registrationFields:{data: fieldInterface[]} = await getRegistrationFields();
+  const mainFields = registrationFields.data.filter((field) => !groupFooterFields.includes(field.name));
+  const footerFields = registrationFields.data.filter((field) => groupFooterFields.includes(field.name));
+  const registrationFormData = reactive(setFormData(registrationFields.data));
+
+  const fieldsStore = useFieldsStore();
+  const { selectOptions } = storeToRefs(fieldsStore);
   const showPromoInput = ref<boolean>(false);
+
+  const signUp = async ():Promise<void> => {
+    try {
+      const { data } = await submitRegistrationData(registrationFormData);
+      console.log(data);
+    } catch (error) {
+      if (error.response?.status === 422) {
+        alert('Validation error!');
+      } else throw error;
+    }
+  };
 </script>
 
 <style lang="scss" src="./style.scss"/>

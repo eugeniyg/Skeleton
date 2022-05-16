@@ -7,12 +7,7 @@ export type layoutStoreStateType = {
   isDrawerCompact: boolean,
   showRegisterModal: boolean,
   modals: {
-    deposit: boolean,
-    withDraw: boolean,
-    successDeposit: boolean,
-    error: boolean,
     register: boolean,
-    confirm: boolean,
   },
 }
 
@@ -68,10 +63,20 @@ export const useLayoutStore = defineStore('layoutStore', {
 
     showModal(modalName: string):void {
       this.modals[modalName] = true;
+
+      if (modalName === 'register') {
+        const router = useRouter();
+        router.push({ query: { 'sign-up': 'true' } });
+      }
     },
 
     closeModal(modalName: string):void {
       this.modals[modalName] = false;
+
+      if (modalName === 'register') {
+        const router = useRouter();
+        router.push({ query: { 'sign-up': undefined } });
+      }
     },
   },
 });

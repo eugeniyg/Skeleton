@@ -7,7 +7,7 @@ export const useGlobalMethods = () => {
 
   const getCurrentUrl = ():string => router.currentRoute.value.fullPath;
 
-  const isHomePage = ():boolean => router.currentRoute.value.name === 'home';
+  const isHomePage = ():boolean => router.currentRoute.value.name === 'index';
 
   return {
     navigate,

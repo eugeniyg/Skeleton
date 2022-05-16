@@ -19,7 +19,9 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'vue/no-v-model-argument': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'import/extensions': 'off',
     'max-len': 'off',
     'import/no-unresolved': 'off',
     'import/prefer-default-export': 'off',

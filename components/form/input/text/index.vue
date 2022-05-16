@@ -7,6 +7,7 @@
       :type="props.type"
       :id="props.name"
       :name="props.name"
+      :value="value"
       :required="props.isRequired ? 'required': false"
       :placeholder="props.placeholder"
       @blur="onBlur"
@@ -50,7 +51,7 @@
       required: false,
     },
   });
-  const emit = defineEmits(['blur', 'input', 'submit']);
+  const emit = defineEmits(['blur', 'input', 'update:value', 'submit']);
 
   const isError = computed(() => props.hint && props.hint.variant === 'error');
 
@@ -59,12 +60,13 @@
     { 'has-error': isError.value },
   ]);
 
-  const onBlur = (e:Event) => {
-    emit('blur', e);
+  const onBlur = (e:any) => {
+    emit('blur', e.target.value);
   };
 
-  const onInput = (e:Event) => {
-    emit('input', e);
+  const onInput = (e:any) => {
+    emit('input', e.target.value);
+    emit('update:value', e.target.value);
   };
 </script>
 

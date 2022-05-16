@@ -12,6 +12,7 @@
         :name="props.name"
         :required="props.isRequired ? 'required': false"
         :placeholder="props.placeholder"
+        :value="value"
         @blur="onBlur"
         @input="onInput"
         @keyup.enter="emit('submit', $event)"
@@ -19,7 +20,7 @@
       <button-toggle-type @change-type="changeType"/>
     </div>
 
-    <atomic-pass-progress :target="progressTarget"/>
+    <!--    <atomic-pass-progress :target="progressTarget"/>-->
     <atomic-hint v-bind="props.hint"/>
   </label>
 </template>
@@ -57,9 +58,9 @@
     { 'has-error': isError.value },
   ]);
 
-  const emit = defineEmits(['blur', 'input', 'submit']);
+  const emit = defineEmits(['blur', 'input', 'update:value', 'submit']);
   const onBlur = (e: any):void => {
-    emit('blur', e);
+    emit('blur', e.target.value);
   };
 
   const progressTarget = ref<string>('');
@@ -77,14 +78,14 @@
     }
   };
 
-  const onInput = (e:InputEvent):void => {
-    emit('input', e);
+  const onInput = (e:any):void => {
+    emit('input', e.target.value);
+    emit('update:value', e.target.value);
     checkPassProgress(e);
   };
 
   const type = ref<string>('password');
   const changeType = (data:string):void => {
-    console.log(data);
     type.value = data;
   };
 </script>
