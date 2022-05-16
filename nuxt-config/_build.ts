@@ -1,4 +1,8 @@
 module.exports = {
+  transpile: [
+    '@platform/frontend-core',
+  ],
+
   extend(config) {
     config.module.rules.push({
       test: /\.s[ac]ss$/i,
