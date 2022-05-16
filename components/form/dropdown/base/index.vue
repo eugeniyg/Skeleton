@@ -8,8 +8,8 @@
     <span v-if="label" class="label">{{ label }}<sup v-if="isRequired">*</sup></span>
 
     <div class="selected" @click="open">
-      <img v-if="selected.mask" class="mask" :src="selected.mask" />
-      <template v-if="selected.title">{{ selected.title }}</template>
+      <img v-if="props.value.mask" class="mask" :src="props.value.mask" />
+      <template v-if="props.value.value">{{ props.value.value }}</template>
       <span v-else-if="placeholder" class="placeholder">{{ placeholder }}</span>
       <atomic-icon id="ui-arrow_expand-close"/>
     </div>
@@ -19,17 +19,17 @@
         class="item"
         v-for="(option, i) in options"
         :key="i"
-        :class="{'is-selected': option.value === selected.value }"
+        :class="{'is-selected': option.code === props.value.code }"
         @click="select(option)"
       >
         <img v-if="option.mask" class="mask" :src="option.mask" />
-        {{ option.title }}
-        <atomic-icon v-if="option.value === selected.value" id="ui-check"/>
+        {{ option.value }}
+        <atomic-icon v-if="option.code === props.value.code" id="ui-check"/>
       </div>
     </div>
 
     <atomic-hint v-if="hint && hint.variant" :variant="hint.variant" :message="hint.message"/>
-    <input type="hidden" :name="name" :value="selected.value" />
+    <input type="hidden" :name="name" :value="props.value.value" />
   </div>
 </template>
 
@@ -39,6 +39,10 @@
       type: Array,
       required: true,
       default: () => ([]),
+    },
+    value: {
+      type: [String, Object],
+      required: true,
     },
     isRequired: {
       type: Boolean,
@@ -70,21 +74,16 @@
       type: Boolean,
       default: false,
     },
-    default: {
-      type: Object,
-      required: false,
-    },
     hint: {
       type: Object || null,
     },
   });
 
-  const emit = defineEmits(['input']);
+  const emit = defineEmits(['input', 'update:value']);
 
   const isError = computed(() => (props.hint && props.hint.variant === 'error'));
 
   const isOpen = ref<boolean>(false);
-  const selected = ref<any>({});
 
   const classes = computed(() => [
     props.size ? `size-${props.size}` : null,
@@ -95,8 +94,8 @@
 
   const select = (option: any) => {
     emit('input', option);
+    emit('update:value', option);
     isOpen.value = false;
-    selected.value = option;
   };
 
   const open = ():void => {

@@ -6,8 +6,8 @@
       :name="props.name"
       :disabled="props.isDisabled"
       :id="props.name"
-      :value="checked"
-      v-model="checked"
+      :checked="!!props.value"
+      @change="onChange"
     />
 
     <label class="label" :for="props.name">
@@ -19,10 +19,6 @@
 
 <script setup lang="ts">
   const props = defineProps({
-    isChecked: {
-      type: Boolean,
-      default: false,
-    },
     isDisabled: {
       type: Boolean,
       default: false,
@@ -35,9 +31,17 @@
       type: String,
       required: true,
     },
+    value: {
+      type: [String, Boolean],
+      default: '',
+    },
   });
 
-  const checked = ref<boolean>(props.isChecked);
+  const emit = defineEmits(['input', 'update:value']);
+  const onChange = (e:any):void => {
+    emit('input', e.target.checked);
+    emit('update:value', e.target.checked);
+  };
 </script>
 
 <style lang="scss" src="./style.scss"/>

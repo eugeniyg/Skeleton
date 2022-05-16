@@ -1,8 +1,8 @@
 import { defineNuxtConfig } from 'nuxt';
 
-const router = require('./nuxt-config/_router.ts');
+const build = require('./nuxt-config/_build.ts');
 
-const cssConfig: any = {
+const viteConfig: any = {
   css: {
     preprocessorOptions: {
       scss: {
@@ -10,10 +10,36 @@ const cssConfig: any = {
       },
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: process.env.API_BASE_URL,
+        changeOrigin: true,
+      },
+    },
+  },
 };
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  router,
-  vite: cssConfig,
+  buildModules: [
+    '@pinia/nuxt',
+  ],
+  components: {
+    dirs: [
+      {
+        global: true,
+        path: '~/components/form/input',
+        prefix: 'FormInput',
+      },
+      {
+        global: true,
+        path: '~/components/form/dropdown',
+        prefix: 'FormDropdown',
+      },
+      '~/components',
+    ],
+},
+  build,
+  vite: viteConfig,
 });

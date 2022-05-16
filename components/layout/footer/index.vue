@@ -1,6 +1,6 @@
 <template>
   <footer class="app-footer">
-    <template v-if="globalMethods.isHomePage">
+    <template v-if="globalMethods.isHomePage()">
       <atomic-text-wrap>
         <h2 class="heading-primary">Bitcoin Betting Flagship</h2>
         <p>Sportsbet.io is where you can find competitive odds, on a platform offering the best Bitcoin betting experience. Our team continues to work hard to give you the competitive odds, betting props and interactive experience offering you the fulfilling betting journey you've been looking for. At Sportsbet.io, we are working hard to give you the opportunity to enjoy a fun, fast and fair betting experience.</p>

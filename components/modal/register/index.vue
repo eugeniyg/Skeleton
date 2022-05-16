@@ -20,7 +20,11 @@
 </template>
 
 <script setup lang="ts">
-  const { closeModal, modals } = useLayoutStore();
+  import { storeToRefs } from 'pinia';
+
+  const layoutStore = useLayoutStore();
+  const { modals } = storeToRefs(layoutStore);
+  const { closeModal } = layoutStore;
 </script>
 
 <style lang="scss" src="./style.scss"/>

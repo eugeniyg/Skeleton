@@ -141,7 +141,7 @@
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
   display: grid;
   color: var(--white);
-  position: var(--position, relative);
+  position: var(--position, fixed);
   bottom: var(--bottom, 0);
   max-height: 100%;
   overflow-y: auto;
@@ -154,10 +154,12 @@
 
   @include media(md) {
     bottom: auto;
-    //grid-column-gap: rem(32px);
     padding: rem(32px);
     --radius: #{rem(16px)};
     --max-width: #{rem(664px)};
+    left: 50%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
   }
 
   form {

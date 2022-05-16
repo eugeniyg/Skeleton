@@ -162,8 +162,6 @@ body {
 
 @import "carousel";
 
-.modal-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.vfm__overlay {
+  background-color: rgba(0, 0, 0, 0.72) !important;
 }

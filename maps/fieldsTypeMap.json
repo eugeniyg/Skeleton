@@ -1,0 +1,74 @@
+{
+  "password": {
+    "component": "form-input-password",
+    "type": "password"
+  },
+  "lastName": {
+    "component": "form-input-text",
+    "type": "text"
+  },
+  "nickname": {
+    "component": "form-input-text",
+    "type": "text"
+  },
+  "gender": {
+    "component": "form-dropdown-base",
+    "type": "dropdown"
+  },
+  "address": {
+    "component": "form-input-text",
+    "type": "text"
+  },
+  "postalCode": {
+    "component": "form-input-text",
+    "type": "text"
+  },
+  "timeZone": {
+    "component": "form-dropdown-base",
+    "type": "dropdown"
+  },
+  "profession": {
+    "component": "form-input-text",
+    "type": "text"
+  },
+  "language": {
+    "component": "form-dropdown-base",
+    "type": "dropdown"
+  },
+  "captcha": {
+    "component": "form-input-text",
+    "type": "hidden"
+  },
+  "bonusCode": {
+    "component": "form-input-text",
+    "type": "text"
+  },
+  "securityAnswer": {
+    "component": "form-input-text",
+    "type": "text"
+  },
+  "email": {
+    "component": "form-input-text",
+    "type": "email"
+  },
+  "country": {
+    "component": "form-dropdown-base",
+    "type": "dropdown"
+  },
+  "currency": {
+    "component": "form-dropdown-base",
+    "type": "dropdown"
+  },
+  "agreements": {
+    "component": "form-input-checkbox",
+    "type": "checkbox"
+  },
+  "receiveEmailPromo": {
+    "component": "form-input-checkbox",
+    "type": "checkbox"
+  },
+  "receiveSmsPromo": {
+    "component": "form-input-checkbox",
+    "type": "checkbox"
+  }
+}
