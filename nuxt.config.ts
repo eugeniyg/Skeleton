@@ -39,7 +39,7 @@ export default defineNuxtConfig({
       },
       '~/components',
     ],
-},
+  },
   build,
   vite: viteConfig,
 });
