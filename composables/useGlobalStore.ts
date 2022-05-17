@@ -24,22 +24,22 @@ export const useGlobalStore = defineStore('globalStore', {
 
   actions: {
     async getCurrencies():Promise<void> {
-      const { data } = await getCurrencies();
-      this.currencies = data;
+      const currencies = await getCurrencies();
+      this.currencies = currencies;
       const { setOptions } = useFieldsStore();
-      setOptions('currency', data);
+      setOptions('currency', currencies);
     },
 
     async getLocales():Promise<void> {
-      const { data } = await getLocales();
-      this.locales = data;
+      const locales = await getLocales();
+      this.locales = locales;
     },
 
     async getCountries():Promise<void> {
-      const { data } = await getCountries();
-      this.countries = data;
+      const countries = await getCountries();
+      this.countries = countries;
       const { setOptions } = useFieldsStore();
-      setOptions('country', data);
+      setOptions('country', countries);
     },
   },
 });
