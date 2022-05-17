@@ -55,10 +55,10 @@
 
   const { getRegistrationFields, submitRegistrationData } = useAuthApi();
   const { setFormData } = useGlobalMethods();
-  const registrationFields:{data: fieldInterface[]} = await getRegistrationFields();
-  const mainFields = registrationFields.data.filter((field) => !groupFooterFields.includes(field.name));
-  const footerFields = registrationFields.data.filter((field) => groupFooterFields.includes(field.name));
-  const registrationFormData = reactive(setFormData(registrationFields.data));
+  const registrationFields: fieldInterface[] = await getRegistrationFields();
+  const mainFields = registrationFields.filter((field) => !groupFooterFields.includes(field.name));
+  const footerFields = registrationFields.filter((field) => groupFooterFields.includes(field.name));
+  const registrationFormData = reactive(setFormData(registrationFields));
 
   const fieldsStore = useFieldsStore();
   const { selectOptions } = storeToRefs(fieldsStore);
@@ -66,8 +66,8 @@
 
   const signUp = async ():Promise<void> => {
     try {
-      const { data } = await submitRegistrationData(registrationFormData);
-      console.log(data);
+      const submitResult = await submitRegistrationData(registrationFormData);
+      console.log(submitResult);
     } catch (error) {
       if (error.response?.status === 422) {
         alert('Validation error!');
