@@ -10,6 +10,7 @@
       :value="value"
       :required="props.isRequired ? 'required': false"
       :placeholder="props.placeholder"
+      @focus="onFocus"
       @blur="onBlur"
       @input="onInput"
       @keyup.enter="emit('submit', $event)"

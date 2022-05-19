@@ -1,0 +1,409 @@
+import * as validationRules from '@vuelidate/validators';
+
+export * from '@vuelidate/validators';
+
+export const countryCode = (value):boolean => !validationRules.helpers.req(value) || /^[A-Z]{2}$/.test(value);
+
+export const languageCode = (value):boolean => !validationRules.helpers.req(value) || /^[a-z]{2}$/.test(value);
+
+export const phone = (value):boolean => !validationRules.helpers.req(value) || /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/.test(value);
+
+export const lowercase = (value):boolean => !validationRules.helpers.req(value) || (value.toLowerCase() === value);
+
+export const uppercase = (value):boolean => !validationRules.helpers.req(value) || (value.toUpperCase() === value);
+
+export const accepted = (value):boolean => !validationRules.helpers.req(value) || ['yes', 'on', 1, true].includes(value);
+
+export const declined = (value):boolean => !validationRules.helpers.req(value) || ['no', 'off', 0, false].includes(value);
+
+function leapYear(year) {
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+}
+
+function checkFalsePositiveDates(dateString = '') {
+  if (dateString.length === 10) {
+    const normalizedDate = dateString.replace('.', '-').replace('/', '-');
+    const parts = normalizedDate.split('-');
+    if (parts.length === 3) {
+      if (parts[0].length === 4) {
+        const y = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10);
+        const d = parseInt(parts[2], 10);
+        if (m === 2) {
+          if (leapYear(y)) {
+            if (d > 29) {
+              return false;
+            }
+          } else if (d > 28) {
+              return false;
+            }
+        }
+        if (m === 4 || m === 6 || m === 9 || m === 11) {
+          if (d > 30) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return true;
+}
+
+function isValidDate(dateString) {
+  let testDate;
+  if (typeof dateString === 'number') {
+    testDate = new Date(dateString);
+    if (typeof testDate === 'object') {
+      return true;
+    }
+  }
+
+  testDate = new Date(dateString);
+  if (typeof testDate === 'object') {
+    if (testDate.toString() === 'Invalid Date') {
+      return false;
+    }
+
+    if (!checkFalsePositiveDates(dateString)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  const regexDate = /^\d{4}-\d{1,2}-\d{1,2}$/;
+
+  if (!regexDate.test(dateString)) {
+    return false;
+  }
+
+  const parts = dateString.split('-');
+  const day = parseInt(parts[2], 10);
+  const month = parseInt(parts[1], 10);
+  const year = parseInt(parts[0], 10);
+
+  if (year < 1000 || year > 3000 || month === 0 || month > 12) {
+    return false;
+  }
+
+  const monthLength = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+  if (year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)) {
+    monthLength[1] = 29;
+  }
+
+  return day > 0 && day <= monthLength[month - 1];
+}
+
+export const before = (param:string) => validationRules.helpers.withParams(
+    { param },
+    (value:string) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      if (!isValidDate(param)) {
+        return false;
+      }
+      if (!isValidDate(value)) {
+        return false;
+      }
+
+      if (new Date(param).getTime() > new Date(value).getTime()) {
+        return true;
+      }
+
+      return false;
+    },
+  );
+
+// eslint-disable-next-line
+export const before_or_equal = (param:string) => validationRules.helpers.withParams(
+    { param },
+    (value:string) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      if (!isValidDate(param)) {
+        return false;
+      }
+      if (!isValidDate(value)) {
+        return false;
+      }
+
+      if (new Date(param).getTime() >= new Date(value).getTime()) {
+        return true;
+      }
+
+      return false;
+    },
+  );
+
+export const after = (param:string) => validationRules.helpers.withParams(
+    { param },
+    (value:string) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      if (!isValidDate(param)) {
+        return false;
+      }
+      if (!isValidDate(value)) {
+        return false;
+      }
+
+      if (new Date(param).getTime() < new Date(value).getTime()) {
+        return true;
+      }
+
+      return false;
+    },
+  );
+
+// eslint-disable-next-line
+export const after_or_equal = (param:string) => validationRules.helpers.withParams(
+    { param },
+    (value:string) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      if (!isValidDate(param)) {
+        return false;
+      }
+      if (!isValidDate(value)) {
+        return false;
+      }
+
+      if (new Date(param).getTime() <= new Date(value).getTime()) {
+        return true;
+      }
+
+      return false;
+    },
+  );
+
+// eslint-disable-next-line
+export const alpha_dash = (value):boolean => !validationRules.helpers.req(value) || /^[a-zA-Z0-9_-]+$/.test(value);
+
+// eslint-disable-next-line
+export const alpha_num = validationRules.alphaNum;
+
+export const array = (value):boolean => !validationRules.helpers.req(value) || (value instanceof Array);
+
+export const boolean = (value):boolean => !validationRules.helpers.req(value) || [true, false, 1, 0, '1', '0'].includes(value);
+
+export const confirmed = (param: string) => validationRules.helpers.withParams(
+    { param },
+    (value) => {
+      if (!validationRules.helpers.req(value)) return true;
+      const getInput:any = document.querySelector(`input[name="${param}"]`);
+      if (getInput) {
+        return getInput.value === value;
+      } return false;
+    },
+  );
+
+export const date = (value:string):boolean => !validationRules.helpers.req(value) || isValidDate(value);
+
+// eslint-disable-next-line
+export const date_equals = (param:string) => validationRules.helpers.withParams(
+    { param },
+    (value:string) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      if (!isValidDate(param)) {
+        return false;
+      }
+      if (!isValidDate(value)) {
+        return false;
+      }
+
+      if (new Date(param).getTime() === new Date(value).getTime()) {
+        return true;
+      }
+
+      return false;
+    },
+  );
+
+export const different = (param: string) => validationRules.helpers.withParams(
+    { param },
+    (value) => {
+      if (!validationRules.helpers.req(value)) return true;
+      const getInput:any = document.querySelector(`input[name="${param}"]`);
+      if (getInput) {
+        return String(getInput.value) !== value;
+      } return false;
+    },
+  );
+
+function getParameters(ruleValue) {
+  let value = [];
+
+  if (typeof ruleValue === 'string') {
+    value = ruleValue.split(',');
+  }
+
+  if (typeof ruleValue === 'number') {
+    value.push(ruleValue);
+  }
+
+  if (ruleValue instanceof Array) {
+    value = ruleValue;
+  }
+
+  return value;
+}
+
+export const digits = (param: string) => validationRules.helpers.withParams(
+    { param },
+    (value:any) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      const num = Number(value);
+
+      // eslint-disable-next-line no-restricted-globals
+      if (typeof num === 'number' && !isNaN(num) && typeof value !== 'boolean') {
+        return String(value.trim()).length === parseInt(param, 10);
+      }
+      return false;
+    },
+  );
+
+// eslint-disable-next-line
+export const digits_between = (param: string) => {
+  const params = getParameters(param);
+  const min = parseFloat(params[0]);
+  const max = parseFloat(params[1]);
+
+  return validationRules.helpers.withParams(
+    { min, max },
+    (value) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      const num = Number(value);
+      const valueDigitsCount = String(value).length;
+
+      // eslint-disable-next-line no-restricted-globals
+      if (typeof num === 'number' && !isNaN(num) && typeof value !== 'boolean') {
+        return valueDigitsCount >= min && valueDigitsCount <= max;
+      }
+      return false;
+    },
+  );
+};
+
+export const ip = validationRules.ipAddress;
+
+// eslint-disable-next-line
+export const mac_address = validationRules.macAddress;
+
+function getSize(value) {
+  if (value instanceof Array) {
+    return value.length;
+  }
+
+  if (typeof value === 'number') {
+    return value;
+  }
+
+  return value.length;
+}
+
+export const max = (param: string) => validationRules.helpers.withParams(
+    { param },
+    (value) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      const size = getSize(value);
+
+      return size <= param;
+    },
+  );
+
+export const min = (param: string) => validationRules.helpers.withParams(
+    { param },
+    (value) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      const size = getSize(value);
+
+      return size >= param;
+    },
+  );
+
+export const regex = (param) => validationRules.helpers.withParams(
+    { param },
+    (value:any) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      const mod = /[g|i|m]{1,3}$/;
+      let flag = param.match(mod);
+      flag = flag ? flag[0] : '';
+
+      const regexMain = param.replace(mod, '').slice(1, -1);
+      const paramRegexp = new RegExp(regexMain, flag);
+      return paramRegexp.test(value);
+    },
+  );
+
+// eslint-disable-next-line
+export const not_regex = (param) => validationRules.helpers.withParams(
+    { param },
+    (value:any) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      const mod = /[g|i|m]{1,3}$/;
+      let flag = param.match(mod);
+      flag = flag ? flag[0] : '';
+
+      const regexMain = param.replace(mod, '').slice(1, -1);
+      const paramRegexp = new RegExp(regexMain, flag);
+      return !paramRegexp.test(value);
+    },
+  );
+
+// eslint-disable-next-line
+export const required_if = (param: string) => validationRules.helpers.withParams(
+    { param },
+    (value) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      const getInput:any = document.querySelector(`input[name="${param}"]`);
+      if (getInput) {
+        return !!String(getInput.value).length;
+      } return false;
+    },
+  );
+
+export const string = (value):boolean => !validationRules.helpers.req(value) || (typeof value === 'string');
+
+export const minAge = (param:string) => validationRules.helpers.withParams(
+    { param },
+    (value:string) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      if (!isValidDate(value)) {
+        return false;
+      }
+      const today:Date = new Date();
+      const birthDay:Date = new Date(value);
+      // @ts-ignore
+      const ageInMilliseconds:number = today - birthDay;
+      const ageInYear = Math.floor(ageInMilliseconds / 1000 / 60 / 60 / 24 / 365);
+      return ageInYear >= Number(param);
+    },
+  );
+
+export const maxAge = (param:string) => validationRules.helpers.withParams(
+    { param },
+    (value:string) => {
+      if (!validationRules.helpers.req(value)) return true;
+
+      if (!isValidDate(value)) {
+        return false;
+      }
+      const today:Date = new Date();
+      const birthDay:Date = new Date(value);
+      // @ts-ignore
+      const ageInMilliseconds:number = today - birthDay;
+      const ageInYear = Math.floor(ageInMilliseconds / 1000 / 60 / 60 / 24 / 365);
+      return ageInYear <= Number(param);
+    },
+  );

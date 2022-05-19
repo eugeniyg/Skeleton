@@ -13,7 +13,7 @@
       </div>
 
       <div class="content">
-        <form-join/>
+        <form-join :showModal="modals.register"/>
       </div>
     </div>
   </vue-final-modal>

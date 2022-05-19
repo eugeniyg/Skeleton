@@ -24,7 +24,7 @@
       default: false,
     },
     isError: {
-      type: Boolean,
+      type: [Boolean, Object],
       default: false,
     },
     name: {
@@ -32,15 +32,15 @@
       required: true,
     },
     value: {
-      type: [String, Boolean],
+      type: [String, Number],
       default: '',
     },
   });
 
-  const emit = defineEmits(['input', 'update:value']);
+  const emit = defineEmits(['change', 'update:value']);
   const onChange = (e:any):void => {
-    emit('input', e.target.checked);
-    emit('update:value', e.target.checked);
+    emit('change', e.target.checked);
+    emit('update:value', e.target.checked ? 1 : '');
   };
 </script>
 

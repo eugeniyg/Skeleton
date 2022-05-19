@@ -19,6 +19,8 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'no-prototype-builtins': 'off',
+    'no-template-curly-in-string': 'off',
     'vue/no-v-model-argument': 'off',
     'import/no-extraneous-dependencies': 'off',
     'import/extensions': 'off',

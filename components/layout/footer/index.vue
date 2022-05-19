@@ -1,6 +1,6 @@
 <template>
   <footer class="app-footer">
-    <template v-if="globalMethods.isHomePage()">
+    <template v-if="projectMethods.isHomePage()">
       <atomic-text-wrap>
         <h2 class="heading-primary">Bitcoin Betting Flagship</h2>
         <p>Sportsbet.io is where you can find competitive odds, on a platform offering the best Bitcoin betting experience. Our team continues to work hard to give you the competitive odds, betting props and interactive experience offering you the fulfilling betting journey you've been looking for. At Sportsbet.io, we are working hard to give you the opportunity to enjoy a fun, fast and fair betting experience.</p>
@@ -53,20 +53,20 @@
 
     <div class="info">
       <img src="~/assets/img/info-logo.svg" />
-      <p>is owned and operated by Dama N.V., a company registered and established under the laws of Curacao. Dama N.V. is licensed and regulated by Antillephone N.V. (license no. 8048/JAZ2020-013). Dama N.V.’s registration number is 152125 and its registered address is Scharlooweg 39, Willemstad, Curaçao. Friolion LTD is a subsidiary of Dama N.V., acting as an Agent on behalf of Dama N.V., registered in Cyprus with registered address Leandrou, 12A 3086, Limassol, Сyprus, and registration number ΗΕ 419102. It is the player’s sole responsibility to inquire about the existing laws and regulations of the given jurisdiction for online gambling. Dama N.V. is officially registered by the Government of Curaçao as an Information Provider, legally authorized to conduct online gaming operations from Curaçao. Remote gaming licensing and supervision is provided by Antillephone N.V. All payments with Paysafe are made via Dama N.V.</p>
+      <p>is owned and operated by Company registered and established under the laws of Curacao. Company is licensed and regulated by Antillephone N.V. It is the player’s sole responsibility to inquire about the existing laws and regulations of the given jurisdiction for online gambling. Company is officially registered by the Government of Curaçao as an Information Provider, legally authorized to conduct online gaming operations from Curaçao. Remote gaming licensing and supervision is provided by Antillephone N.V. All payments with Paysafe are made via Company.</p>
     </div>
 
     <atomic-divider/>
 
     <div class="copy-info">
       <p>© 2022 Slotsbet.io | All Rights Reserved.</p>
-      <img src="~/assets/img/copy-logo.svg" width="150" height="22" />
+      <!--      <img src="~/assets/img/copy-logo.svg" width="150" height="22" />-->
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
-  const globalMethods = useGlobalMethods();
+  const projectMethods = useProjectMethods();
 
   // FAKE DATA
   const accordeonItems = {
