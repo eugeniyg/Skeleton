@@ -13,6 +13,7 @@ export type globalStoreStateType = {
   currencies: currencyInterface[],
   locales: localeInterface[],
   countries: countryInterface[],
+  validationMessages: any,
 }
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -20,6 +21,7 @@ export const useGlobalStore = defineStore('globalStore', {
     currencies: [],
     locales: [],
     countries: [],
+    validationMessages: {},
   } as globalStoreStateType),
 
   actions: {
@@ -31,8 +33,7 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getLocales():Promise<void> {
-      const locales = await getLocales();
-      this.locales = locales;
+      this.locales = await getLocales();
     },
 
     async getCountries():Promise<void> {
@@ -40,6 +41,10 @@ export const useGlobalStore = defineStore('globalStore', {
       this.countries = countries;
       const { setOptions } = useFieldsStore();
       setOptions('country', countries);
+    },
+
+    async getValidationMessages():Promise<void> {
+      this.validationMessages = await $fetch('/api/content/validation-message');
     },
   },
 });

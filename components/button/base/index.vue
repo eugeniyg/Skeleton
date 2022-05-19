@@ -2,7 +2,6 @@
   <component
     :is="props.tagName"
     :class="componentClasses"
-    :href="'#'"
     :disabled="props.isDisabled || null"
   >
     <slot/>

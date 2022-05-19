@@ -4,7 +4,7 @@
   display: grid;
 
   grid-area: promo;
-  background-image: url(~@/assets/img/promo-sm.png);
+  background-image: url(~/assets/img/promo-sm.png);
   background-repeat: no-repeat;
   background-size: cover;
   margin: var(--margin, #{rem(-16px)} #{rem(-16px)} 0 #{rem(-16px)});

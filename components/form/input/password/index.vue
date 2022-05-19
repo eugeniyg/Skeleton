@@ -21,7 +21,7 @@
     </div>
 
     <!--    <atomic-pass-progress :target="progressTarget"/>-->
-    <atomic-hint v-bind="props.hint"/>
+    <atomic-hint v-if="props.hint" v-bind="props.hint"/>
   </label>
 </template>
 
@@ -48,7 +48,8 @@
       default: false,
     },
     hint: {
-      type: Object || null,
+      type: Object,
+      required: false,
     },
   });
 

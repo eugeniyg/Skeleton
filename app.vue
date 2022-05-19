@@ -20,7 +20,7 @@
 
     <layout-drawer :is-logged-in="isLoggedIn" :is-compact="isDrawerCompact" @compact="compact"/>
 
-    <main class="app-main" :class="{'is-overflow': globalMethods.isHomePage()}">
+    <main class="app-main" :class="{'is-overflow': projectMethods.isHomePage()}">
       <NuxtPage class="app-page" :class="`page--${$route.name}`"/>
     </main>
 
@@ -39,14 +39,17 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const { getCurrencies, getLocales, getCountries } = useGlobalStore();
+  const {
+    getCurrencies, getLocales, getCountries, getValidationMessages,
+  } = useGlobalStore();
   useAsyncData('currencies', getCurrencies);
   useAsyncData('locales', getLocales);
   useAsyncData('countries', getCountries);
+  useAsyncData('validationMessages', getValidationMessages);
 
   const layoutStore = useLayoutStore();
   const userStore = useUserStore();
-  const globalMethods = useGlobalMethods();
+  const projectMethods = useProjectMethods();
 
   const { isDrawerCompact } = storeToRefs(layoutStore);
   const { compactDrawer, showModal } = layoutStore;
