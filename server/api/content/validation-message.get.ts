@@ -41,4 +41,5 @@ export default defineEventHandler(() => ({
   required_if: 'This field is required when {param} has value',
   string: 'The field value must be a string',
   url: 'The field value must be a valid URL',
+  login: 'The data is incorrect. Please check the data and try again',
 }));

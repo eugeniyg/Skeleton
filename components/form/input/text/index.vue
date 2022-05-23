@@ -1,11 +1,10 @@
 <template>
-  <label :class="classes" :for="props.name">
+  <label :class="classes">
     <span v-if="props.label" class="label">{{ props.label }}<sup v-if="props.isRequired">*</sup></span>
 
     <input
       class="field"
       :type="props.type"
-      :id="props.name"
       :name="props.name"
       :value="value"
       :required="props.isRequired ? 'required': false"
@@ -52,7 +51,7 @@
       required: false,
     },
   });
-  const emit = defineEmits(['blur', 'input', 'update:value', 'submit']);
+  const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);
 
   const isError = computed(() => props.hint && props.hint.variant === 'error');
 
@@ -63,6 +62,9 @@
 
   const onBlur = (e:any) => {
     emit('blur', e.target.value);
+  };
+  const onFocus = (e:any) => {
+    emit('focus', e.target.value);
   };
 
   const onInput = (e:any) => {

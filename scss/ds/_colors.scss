@@ -68,29 +68,38 @@ $orange-colors: (
 );
 
 $red-colors: (
-  red-000: #FFEEEE,
-  red-100: #FFDDDC,
-  red-200: #FFADAC,
-  red-300: #FF716F,
-  red-400: #FA3D3A,
-  red-500: #FF120D,
-  red-600: #E90A06,
-  red-700: #CB0805,
-  red-800: #B50805,
-  red-900: #9A0604,
+  red-000: #FFEEF2,
+  red-100: #FFDCE4,
+  red-200: #FFACC1,
+  red-300: #FF6F93,
+  red-400: #FA3A6A,
+  red-500: #FF0D4A,
+  red-600: #E5063E,
+  red-700: #AE042F,
+  red-800: #AE042F,
+  red-900: #950428,
 );
 
 $violet-colors: (
   violet-000: #F5F0FF,
-  violet-100: #E5DCFD,
-  violet-200: #CCBAFD,
-  violet-300: #A989F9,
-  violet-400: #8055F6,
-  violet-500: #662AF4,
-  violet-600: #550BDA,
-  violet-700: #4909B3,
+  violet-100: #EFD5FC,
+  violet-200: #E2B3F9,
+  violet-300: #CB76F4,
+  violet-400: #B133EF,
+  violet-500: #9210D0,
+  violet-600: #780DAA,
+  violet-700: #640B8E,
   violet-800: #37078D,
-  violet-900: #25055C,
+  violet-900: #320647,
+);
+
+$gradients: (
+  gradient-new: linear-gradient(224.62deg, #FFC12E 26.06%, #FF4547 116.69%),
+  gradient-new-hover: linear-gradient(224.62deg, #E6A409 26.06%, #FF124C 116.69%),
+  gradient-new-focus: linear-gradient(224.62deg, #F6740A 26.06%, #AE042F 116.69%),
+  gradient-radial: radial-gradient(85.04% 85% at 58.75% 28.13%, #FFC12E 36.46%, #FF4547 100%),
+  gradient-radial-hover: radial-gradient(85.04% 85% at 58.75% 28.13%, #E6A409 36.46%, #FF124C 100%),
+  gradient-radisl-focus: radial-gradient(85.04% 85% at 58.75% 28.13%, #F6740A 36.46%, #AE042F 100%),
 );
 
 
@@ -102,5 +111,6 @@ $colors: map-collect(
     $orange-colors,
     $red-colors,
     $violet-colors,
+    $gradients,
 );
 

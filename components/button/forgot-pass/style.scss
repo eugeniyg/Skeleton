@@ -1,0 +1,8 @@
+.btn-forgot-pass {
+  margin: 0 auto;
+  color: var(--yellow-500);
+  text-decoration: none;
+  cursor: pointer;
+  @include font($heading-1);
+  margin-top: rem(-8px);
+}

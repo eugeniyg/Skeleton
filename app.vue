@@ -13,7 +13,7 @@
 
     <layout-header
       :is-logged-in="isLoggedIn"
-      @login="login"
+      @login="showModal('signIn')"
       @logout="logout"
       @register="showModal('register')"
     />
@@ -32,6 +32,7 @@
 
     <client-only>
       <modal-register />
+      <modal-sign-in />
     </client-only>
   </div>
 </template>
@@ -52,22 +53,20 @@
   const projectMethods = useProjectMethods();
 
   const { isDrawerCompact } = storeToRefs(layoutStore);
-  const { compactDrawer, showModal } = layoutStore;
+  const { compactDrawer, showModal, closeModal } = layoutStore;
 
-  const { logIn, logOut } = userStore;
+  const { logOutUser } = userStore;
   const { isLoggedIn } = storeToRefs(userStore);
 
   const route = useRoute();
   if (route.query['sign-up']) {
-    showModal('register');
-  }
-
-  function login():void {
-    logIn();
+    isLoggedIn.value ? closeModal('register') : showModal('register');
+  } else if (route.query['sign-in']) {
+    isLoggedIn.value ? closeModal('signIn') : showModal('signIn');
   }
 
   function logout():void {
-    logOut();
+    logOutUser();
   }
 
   function compact():void {

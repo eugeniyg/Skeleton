@@ -55,7 +55,7 @@
       @click="signUp"
     >Sign up</button-base>
 
-    <button-text-sign/>
+    <button-text-sign @click="showModal('signIn')" />
   </form>
 </template>
 
@@ -67,7 +67,7 @@
   import { fieldInterface } from '~/types/formTypes';
 
   const props = defineProps({
-    showModal: {
+    show: {
       type: Boolean,
       required: true,
     },
@@ -77,6 +77,7 @@
 
   const { getRegistrationFields, submitRegistrationData } = useAuthApi();
   const { setFormData } = useGlobalMethods();
+  const { showModal, closeModal } = useLayoutStore();
 
   const registrationFields: fieldInterface[] = await getRegistrationFields();
   const mainFields = registrationFields.filter((field) => !groupFooterFields.includes(field.name));
@@ -89,7 +90,7 @@
   const serverFormErrors = ref<any>({});
   const v$ = useVuelidate(registrationFormRules, registrationFormData, { $lazy: true });
 
-  watch(() => props.showModal, (newValue:boolean) => {
+  watch(() => props.show, (newValue:boolean) => {
     if (!newValue) {
       Object.keys(registrationFormData).forEach((key) => {
         registrationFormData[key] = '';
@@ -112,6 +113,7 @@
     return undefined;
   };
 
+  const { setToken } = useUserStore();
   const signUp = async ():Promise<void> => {
     v$.value.$reset();
     const validFormData = await v$.value.$validate();
@@ -119,7 +121,8 @@
 
     try {
       const submitResult = await submitRegistrationData(registrationFormData);
-      console.log(submitResult);
+      setToken(submitResult);
+      closeModal('register');
     } catch (error) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;

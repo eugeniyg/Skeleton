@@ -1,16 +1,15 @@
 <template>
-  <div class="input-checkbox" :class="{'has-error': props.isError}">
-    <input
-      class="checkbox"
-      type="checkbox"
-      :name="props.name"
-      :disabled="props.isDisabled"
-      :id="props.name"
-      :checked="!!props.value"
-      @change="onChange"
-    />
+  <div class="input-checkbox" :class="{'has-error': props.isError, 'input-checkbox--checked': !!props.value }">
+    <label class="label">
+      <input
+        class="checkbox"
+        type="checkbox"
+        :name="props.name"
+        :disabled="props.isDisabled"
+        :checked="!!props.value"
+        @change="onChange"
+      />
 
-    <label class="label" :for="props.name">
       <atomic-icon id="ui-check"/>
       <slot/>
     </label>

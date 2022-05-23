@@ -43,13 +43,13 @@
     --color: transparent;
   }
 
-  .checkbox ~ .label {
+  .label {
     &:hover {
       --shadow: 0 0 0 3px #2F363D;
     }
   }
 
-  .checkbox:checked ~ .label {
+  &.input-checkbox--checked .label {
     .icon {
       --bg: var(--green-500);
       --color: var(--white);
@@ -79,7 +79,7 @@
   }
 
   &.has-error {
-    .checkbox ~ .label {
+    .label {
       .icon {
         --bg: transparent;
         --color: transparent;
@@ -87,7 +87,7 @@
       }
     }
 
-    .checkbox:checked ~ .label {
+    &.input-checkbox--checked .label {
       .icon {
         --color: var(--white);
         --bg: var(--red-500);

@@ -82,7 +82,7 @@
 
   const valueObject = ref<any>('');
 
-  const emit = defineEmits(['input', 'update:value']);
+  const emit = defineEmits(['input', 'focus', 'update:value']);
 
   const isError = computed(() => (props.hint && props.hint.variant === 'error'));
 
@@ -111,6 +111,7 @@
 
   const onBlur = ():void => {
     isOpen.value = false;
+    emit('focus');
   };
 </script>
 
