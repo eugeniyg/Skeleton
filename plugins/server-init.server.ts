@@ -4,7 +4,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   if (process.server) {
     const { getProfileData } = useUserStore();
     const bearer = useCookie('bearer');
-    console.log('Token:', bearer);
+    console.log('Token:', bearer.value);
     if (bearer.value) {
       console.log('Start Request');
       try {
