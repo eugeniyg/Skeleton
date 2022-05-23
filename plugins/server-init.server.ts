@@ -8,7 +8,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       try {
         await getProfileData();
       } catch (error) {
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           const { refreshToken } = useAuthApi();
           const { setToken } = useUserStore();
           try {
