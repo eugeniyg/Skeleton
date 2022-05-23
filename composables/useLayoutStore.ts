@@ -19,12 +19,8 @@ export const useLayoutStore = defineStore('layoutStore', {
       isDrawerCompact: false,
       showRegisterModal: false,
       modals: {
-        deposit: false,
-        withDraw: false,
-        successDeposit: false,
-        error: false,
         register: false,
-        confirm: false,
+        signIn: false,
       },
   } as layoutStoreStateType),
 
@@ -63,19 +59,32 @@ export const useLayoutStore = defineStore('layoutStore', {
 
     showModal(modalName: string):void {
       this.modals[modalName] = true;
+      const router = useRouter();
+      const { query } = useRoute();
 
       if (modalName === 'register') {
-        const router = useRouter();
-        router.push({ query: { 'sign-up': 'true' } });
+        this.modals.signIn = false;
+        router.push({ query: { ...query, 'sign-up': 'true', 'sign-in': undefined } });
+      }
+
+      if (modalName === 'signIn') {
+        this.modals.register = false;
+        router.push({ query: { ...query, 'sign-in': 'true', 'sign-up': undefined } });
       }
     },
 
     closeModal(modalName: string):void {
       this.modals[modalName] = false;
+      const { query } = useRoute();
 
       if (modalName === 'register') {
         const router = useRouter();
-        router.push({ query: { 'sign-up': undefined } });
+        router.push({ query: { ...query, 'sign-up': undefined } });
+      }
+
+      if (modalName === 'signIn') {
+        const router = useRouter();
+        router.push({ query: { ...query, 'sign-in': undefined } });
       }
     },
   },

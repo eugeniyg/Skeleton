@@ -1,18 +1,13 @@
 <template>
-  <vue-final-modal
-    v-model="modals.register"
-    @closed="closeModal('register')"
-  >
-    <div class="modal-register">
-      <atomic-promo/>
-
+  <vue-final-modal v-model="modals.signIn" @closed="closeModal('signIn')">
+    <div class="modal-sign-in">
       <div class="header">
-        <button-modal-close @close="closeModal('register')"/>
-        <div class="title">Join Slotsbet</div>
+        <button-modal-close @close="closeModal('signIn')"/>
+        <div class="title">Sign in</div>
       </div>
 
       <div class="content">
-        <form-join :show="modals.register"/>
+        <form-sign-in :show="modals.signIn" />
       </div>
     </div>
   </vue-final-modal>

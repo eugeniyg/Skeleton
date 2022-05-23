@@ -41,7 +41,7 @@
 }
 
 %skip-btn {
-  background-color: var(--bg, transparent);
+  background: var(--bg, transparent);
   color: var(--color, var(--gray-400));
   border: var(--border, 0);
 }
@@ -55,11 +55,20 @@
   display: none;
 }
 
+%scrollbar-hide {
+  &::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
 %scrollbar {
   overscroll-behavior: none;
 
   &::-webkit-scrollbar {
-    width: 6px;
+    width: rem(6px);
+    height: rem(6px);
     background-color: transparent;
   }
 
@@ -197,7 +206,7 @@
 
 %modal-info {
   @extend %modal;
- grid-row-gap: rem(24px);
+  grid-row-gap: rem(24px);
   --padding: #{rem(16px)};
 
   grid-template-areas:
@@ -206,7 +215,6 @@
 
   @include media(md) {
     --padding: #{rem(32px)};
-    --position: relative;
     --max-width: #{rem(400px)};
   }
 
@@ -233,7 +241,72 @@
   }
 
   .btn-primary {
-    margin: 0  auto;
+    margin: 0 auto;
     --width: 100%;
+  }
+}
+
+%tb {
+  display: grid;
+  position: relative;
+
+  .td:first-of-type, .th:first-of-type {
+
+    position: sticky;
+    left: 0;
+    z-index: 1;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: rem(-10px);
+      bottom: 0;
+      right: 0;
+      border-right: 1px solid var(--gray-400);
+    }
+
+    @include media(xs) {
+      position: relative;
+
+      &:after {
+        visibility: hidden;
+      }
+    }
+  }
+
+  .row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    align-items: center;
+    background-color: var(--bg, var(--black-primary));
+
+    &:first-of-type {
+      border-bottom: 1px solid var(--gray-700);
+    }
+
+    &:nth-child(2n + 3) {
+      --bg: var(--gray-900);
+    }
+  }
+
+  .th {
+    padding: rem(16px);
+    color: var(--gray-500);
+    @include font($heading-2);
+    position: relative;
+    background-color: inherit;
+  }
+
+  .td {
+    padding: rem(16px);
+    @include font($body-2);
+    color: var(--white);
+    position: relative;
+    background-color: inherit;
+
+    &:first-of-type {
+      @include upd-font($body-1);
+    }
   }
 }

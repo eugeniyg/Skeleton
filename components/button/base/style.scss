@@ -41,19 +41,19 @@
   box-shadow: var(--shadow, none);
   @extend .btn;
 
-  --bg: var(--yellow-500);
+  --bg: var(--gradient-new);
   --color: var(--gray-900);
 
   &:hover {
-    --bg: var(--yellow-500);
+    --bg: var(--gradient-new-hover);
     --color: var(--black-primary);
-    --shadow: 0 0 3px var(--yellow-900);
+    //--shadow: 0 0 3px var(--yellow-900);
   }
 
   &:focus, &.is-active {
-    --bg: var(--yellow-500);
+    --bg: var(--gradient-new-focus);
     --color: var(--black-primary);
-    --shadow: inset 0 2px 0 var(--yellow-700);
+    //--shadow: inset 0 2px 0 var(--yellow-700);
   }
 
   &[disabled] {

@@ -1,5 +1,5 @@
 <template>
-  <label :class="classes" :for="props.name">
+  <label :class="classes">
     <span v-if="props.label" class="label">
       {{ props.label }}<sup v-if="props.isRequired">*</sup>
     </span>
@@ -8,11 +8,11 @@
       <input
         class="field"
         :type="type"
-        :id="props.name"
         :name="props.name"
         :required="props.isRequired ? 'required': false"
         :placeholder="props.placeholder"
         :value="value"
+        @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
         @keyup.enter="emit('submit', $event)"
@@ -20,7 +20,7 @@
       <button-toggle-type @change-type="changeType"/>
     </div>
 
-    <!--    <atomic-pass-progress :target="progressTarget"/>-->
+    <atomic-pass-progress v-if="props.showPassProgress" :target="progressTarget"/>
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
   </label>
 </template>
@@ -51,6 +51,10 @@
       type: Object,
       required: false,
     },
+    showPassProgress: {
+      type: Boolean,
+      default: false,
+    },
   });
 
   const isError = computed(() => props.hint && props.hint.variant === 'error');
@@ -59,9 +63,12 @@
     { 'has-error': isError.value },
   ]);
 
-  const emit = defineEmits(['blur', 'input', 'update:value', 'submit']);
+  const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);
   const onBlur = (e: any):void => {
     emit('blur', e.target.value);
+  };
+  const onFocus = (e: any):void => {
+    emit('focus', e.target.value);
   };
 
   const progressTarget = ref<string>('');

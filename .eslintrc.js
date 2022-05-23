@@ -19,6 +19,8 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'no-unused-expressions': 'off',
+    'no-param-reassign': 'off',
     'no-prototype-builtins': 'off',
     'no-template-curly-in-string': 'off',
     'vue/no-v-model-argument': 'off',
