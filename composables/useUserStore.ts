@@ -68,8 +68,7 @@ export const useUserStore = defineStore('userStore', {
         this.profileFields = data;
         return data;
       } catch (error) {
-        console.log(error);
-        return 'dima error';
+        return JSON.stringify(error);
       }
     },
   },
