@@ -7,11 +7,6 @@
 </template>
 
 <script setup lang="ts">
-  const {
-    getProfileFields,
-  } = useUserStore();
-  useAsyncData('profileFields', getProfileFields);
-
   definePageMeta({
     middleware: ['auth'],
   });
