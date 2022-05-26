@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
   const { getProfileFields } = useUserStore();
-  await useAsyncData('profileFields', async () => { await getProfileFields(); });
+  await useAsyncData('profileFields', getProfileFields, { server: true });
 
   definePageMeta({
     middleware: ['auth'],
