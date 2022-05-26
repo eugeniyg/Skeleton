@@ -15,13 +15,13 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-vue": "^8.7.1",
     "node-sass": "^7.0.1",
+    "nuxt": "latest",
     "sass": "^1.51.0",
-    "sass-loader": "^12.6.0",
-    "nuxt": "latest"
+    "sass-loader": "^12.6.0"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.1.9",
-    "@platform/frontend-core": "latest",
+    "@platform/frontend-core": "^0.0.2-rc.24",
     "@vuelidate/core": "^2.0.0-alpha.41",
     "@vuelidate/validators": "^2.0.0-alpha.29",
     "css-loader": "^6.7.1",
