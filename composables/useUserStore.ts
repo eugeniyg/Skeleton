@@ -62,8 +62,11 @@ export const useUserStore = defineStore('userStore', {
     },
 
     async getProfileFields():Promise<void> {
+      console.log('START REQUEST');
       const { getProfileFields } = useProfileApi();
       this.profileFields = await getProfileFields();
+      console.log('PROFILE_FIELDS', this.profileFields);
+      console.log('END REQUEST');
     },
   },
 });
