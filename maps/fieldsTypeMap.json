@@ -3,7 +3,15 @@
     "component": "form-input-password",
     "type": "password"
   },
+  "firstName": {
+    "component": "form-input-text",
+    "type": "text"
+  },
   "lastName": {
+    "component": "form-input-text",
+    "type": "text"
+  },
+  "nationality": {
     "component": "form-input-text",
     "type": "text"
   },
@@ -12,10 +20,18 @@
     "type": "text"
   },
   "gender": {
-    "component": "form-dropdown-base",
-    "type": "dropdown"
+    "component": "form-input-gender",
+    "type": "gender"
+  },
+  "city": {
+    "component": "form-input-text",
+    "type": "text"
   },
   "address": {
+    "component": "form-input-text",
+    "type": "text"
+  },
+  "additionalAddress": {
     "component": "form-input-text",
     "type": "text"
   },
@@ -40,6 +56,10 @@
     "type": "hidden"
   },
   "bonusCode": {
+    "component": "form-input-text",
+    "type": "text"
+  },
+  "securityQuestion": {
     "component": "form-input-text",
     "type": "text"
   },
@@ -70,5 +90,21 @@
   "receiveSmsPromo": {
     "component": "form-input-checkbox",
     "type": "checkbox"
+  },
+  "phone": {
+    "component": "form-input-text",
+    "type": "text"
+  },
+  "birthdate": {
+    "component": "form-input-birth",
+    "type": "birthdate"
+  },
+  "placeOfBirth": {
+    "component": "form-input-text",
+    "type": "text"
+  },
+  "personalIdNumber": {
+    "component": "form-input-text",
+    "type": "text"
   }
 }

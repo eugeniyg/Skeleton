@@ -17,3 +17,8 @@ export interface countryInterface {
   nativeName: string,
   code: string
 }
+
+export interface timeZoneInterface {
+  id: string,
+  name: string,
+}

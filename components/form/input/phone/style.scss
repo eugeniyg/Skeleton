@@ -1,0 +1,19 @@
+.input-phone {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: minmax(0, auto) auto;
+  grid-template-areas: "label label";
+  grid-column-gap: 8px;
+  width: 100%;
+
+  .hint {
+    margin-top: rem(6px);
+    grid-column: 1/3;
+  }
+
+  @extend %input-label;
+
+  .dropdown {
+    min-width: rem(120px);
+  }
+}

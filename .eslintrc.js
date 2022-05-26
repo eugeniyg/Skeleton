@@ -19,6 +19,7 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'no-plusplus': 'off',
     'no-unused-expressions': 'off',
     'no-param-reassign': 'off',
     'no-prototype-builtins': 'off',

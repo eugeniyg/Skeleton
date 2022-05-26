@@ -14,9 +14,9 @@ export const useProjectMethods = () => {
 
   const isHomePage = ():boolean => router.currentRoute.value.name === 'index';
 
-  const getFormRules = (fields:any[]):any => {
+  const getFormRules = (fields:any[], includeContext:boolean = false):any => {
     const { createFormRules } = useGlobalMethods();
-    return createFormRules(fields, validationRules, validationMessages);
+    return createFormRules(fields, validationRules, validationMessages, includeContext);
   };
 
   return {

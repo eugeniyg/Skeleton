@@ -9,7 +9,7 @@
           v-model:value="registrationFormData[field.name]"
           :key="field.name"
           type="text"
-          :isRequired="registrationFormRules[field.name].hasOwnProperty('required')"
+          :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
           :label="field.description"
           :name="field.name"
           :placeholder="field.description"
@@ -22,13 +22,13 @@
         :key="field.name"
         @blur="v$[field.name]?.$touch()"
         :is="fieldsTypeMap[field.name].component || 'form-input-text'"
-        v-model:value.lazy="registrationFormData[field.name]"
+        v-model:value="registrationFormData[field.name]"
         :type="fieldsTypeMap[field.name].type || 'text'"
         :label="field.description"
         :name="field.name"
         :placeholder="field.description"
         :options="selectOptions[field.name]"
-        :isRequired="registrationFormRules[field.name].hasOwnProperty('required')"
+        :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
         :hint="setError(field.name)"
       />
     </template>
@@ -86,7 +86,7 @@
   const registrationFormData = reactive(setFormData(registrationFields));
 
   const { getFormRules } = useProjectMethods();
-  const registrationFormRules = getFormRules(registrationFields);
+  const registrationFormRules = getFormRules(registrationFields, true);
   const serverFormErrors = ref<any>({});
   const v$ = useVuelidate(registrationFormRules, registrationFormData, { $lazy: true });
 

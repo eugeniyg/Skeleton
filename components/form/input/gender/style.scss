@@ -1,0 +1,18 @@
+.input-gender {
+  width: 100%;
+  display: grid;
+  grid-template-areas:
+    "label label"
+    ". ."
+    "hint hint";
+  @extend %input-label;
+
+  .label {
+    grid-area: label;
+  }
+
+  .hint {
+    grid-area: hint;
+    margin-top: rem(6px);
+  }
+}

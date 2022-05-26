@@ -41,7 +41,7 @@
         {
           icon: 'ui-user',
           title: 'Profile info',
-          url: '/profile',
+          url: '/profile/info',
         },
         {
           icon: 'ui-history',

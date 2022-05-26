@@ -1,0 +1,45 @@
+.row-user {
+  display: flex;
+  flex-direction: column;
+  grid-row-gap: rem(24px);
+
+  @include media(md) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "avatar";
+    grid-column-gap: rem(24px);
+  }
+
+  .items {
+    display: flex;
+    flex-direction: column;
+    grid-row-gap: rem(4px);
+    @include font($body-3);
+  }
+
+  .item {
+    display: flex;
+    grid-column-gap: rem(4px);
+    color: var(--white);
+  }
+
+  .nickname {
+    @include font($heading-4);
+    color: var(--white);
+    margin-bottom: rem(4px);
+  }
+
+  .icon {
+    --color: var(--gray-400);
+    --icon-size: #{rem(20px)};
+
+    &.is-warning {
+      --color: var(--red-500);
+    }
+
+    &.is-success {
+      --color: var(--green-500);
+    }
+  }
+
+}

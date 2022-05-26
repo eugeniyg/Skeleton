@@ -8,10 +8,11 @@
       <input
         class="field"
         :type="type"
+        :readonly="props.isDisabled"
         :name="props.name"
         :required="props.isRequired ? 'required': false"
         :placeholder="props.placeholder"
-        :value="value"
+        :value="props.value"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
@@ -47,6 +48,10 @@
       type: Boolean,
       default: false,
     },
+    isDisabled: {
+      type: Boolean,
+      default: false,
+    },
     hint: {
       type: Object,
       required: false,
@@ -61,6 +66,7 @@
   const classes = computed(() => [
     'input-password',
     { 'has-error': isError.value },
+    { 'is-disabled': props.isDisabled },
   ]);
 
   const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);

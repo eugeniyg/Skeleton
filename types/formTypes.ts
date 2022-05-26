@@ -10,5 +10,6 @@ export interface fieldInterface {
   description: string,
   editable: boolean,
   isRequired: boolean,
+  value?: any,
   validationRules: validationRuleInterface[],
 }

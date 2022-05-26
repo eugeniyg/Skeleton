@@ -41,12 +41,13 @@
   import { storeToRefs } from 'pinia';
 
   const {
-    getCurrencies, getLocales, getCountries, getValidationMessages,
+    getCurrencies, getLocales, getCountries, getValidationMessages, getCommonData
   } = useGlobalStore();
   useAsyncData('currencies', getCurrencies);
   useAsyncData('locales', getLocales);
   useAsyncData('countries', getCountries);
-  useAsyncData('validationMessages', getValidationMessages);
+  useLazyAsyncData('validationMessages', getValidationMessages);
+  useLazyAsyncData('commonData', getCommonData);
 
   const layoutStore = useLayoutStore();
   const userStore = useUserStore();
