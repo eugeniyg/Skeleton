@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
-import { countryInterface, currencyInterface } from '~/types/globalDataTypes';
+import { countryInterface, currencyInterface, timeZoneInterface } from '~/types/globalDataTypes';
 
 export type fieldsStoreStateType = {
   selectOptions: {
     currency: currencyInterface[],
     country: countryInterface[],
-  }
+    timeZone: timeZoneInterface[],
+  },
 }
 
 export const useFieldsStore = defineStore('fieldsStore', {
@@ -13,6 +14,7 @@ export const useFieldsStore = defineStore('fieldsStore', {
     selectOptions: {
       currency: [],
       country: [],
+      timeZone: [],
     },
   } as fieldsStoreStateType),
 
@@ -26,6 +28,8 @@ export const useFieldsStore = defineStore('fieldsStore', {
           value: option.nativeName,
           mask: `/img/flags/${option.code.toLowerCase()}.svg`,
         }));
+      } else if (optionName === 'timeZone') {
+        this.selectOptions[optionName] = options.map((option) => ({ code: option.id, value: option.name }));
       } else this.selectOptions[optionName] = options;
     },
   },

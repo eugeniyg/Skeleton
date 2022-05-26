@@ -1,0 +1,19 @@
+.form-profile {
+  display: grid;
+  grid-gap: rem(16px);
+
+  .row {
+    display: flex;
+    grid-gap: rem(24px);
+    flex-direction: var(--flex-direction, column);
+
+    @include media(l) {
+      --flex-direction: row;
+    }
+  }
+
+  .actions {
+    display: flex;
+    grid-gap: rem(8px);
+  }
+}

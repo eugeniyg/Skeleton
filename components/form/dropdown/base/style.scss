@@ -119,6 +119,8 @@
   }
 
   &.is-disabled {
+    pointer-events: none;
+
     .selected {
       --border-color: var(--gray-800);
       --color: var(--gray-500);

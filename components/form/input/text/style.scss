@@ -37,6 +37,21 @@
     --border-color: var(--red-800);
   }
 
+  &.is-disabled {
+    pointer-events: none;
+
+    .field {
+      --border-color: var(--gray-800);
+      --color: var(--gray-500);
+      --bg: var(--gray-800);
+      --icon-transform: rotate(0deg);
+    }
+
+    .placeholder {
+      --color: var(--gray-500);
+    }
+  }
+
   &.size-xs {
     --input-padding-y: #{rem(4px)};
     @include upd-font($body-1);

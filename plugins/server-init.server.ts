@@ -17,7 +17,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           } catch {
             bearer.value = undefined;
           }
-        } else bearer.value = undefined;
+        }
       }
     }
   }

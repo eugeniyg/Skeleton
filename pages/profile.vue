@@ -1,6 +1,8 @@
 <template>
-  <div>  <h1 style="color: white;">
-    Hello from Profile page!</h1>
+  <div class="user-profile">
+    <nav-profile :items="menu.profile"/>
+
+    <NuxtPage />
   </div>
 </template>
 
@@ -8,4 +10,11 @@
   definePageMeta({
     middleware: ['auth'],
   });
+  const {
+    getProfileFields,
+  } = useUserStore();
+  await useAsyncData('profileFields', getProfileFields);
+  const { menu } = useFakeStore();
 </script>
+
+<style lang="scss" src="./profile/style.scss"/>

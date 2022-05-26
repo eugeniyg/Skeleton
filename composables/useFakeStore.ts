@@ -780,12 +780,12 @@ export const useFakeStore = () => {
       {
         title: 'USA',
         value: 'USA',
-        mask: '/img/flags/us.png',
+        mask: '/img/flags/us.svg',
       },
       {
         title: 'USA',
         value: 'USA',
-        mask: '/img/flags/us.png',
+        mask: '/img/flags/us.svg',
       },
     ],
       currency: [
@@ -839,6 +839,40 @@ export const useFakeStore = () => {
       },
     ],
   };
+  const menu = {
+    profile: [
+      {
+        title: 'Profile info',
+        href: '/profile/info',
+      },
+      {
+        title: 'Wallet',
+        href: '/profile/wallet',
+      },
+      {
+        title: 'Bonuses',
+        href: '/profile/bonuses',
+        count: 12,
+      },
+      {
+        title: 'Notifications',
+        href: '/profile/notifications',
+        count: 999,
+      },
+      {
+        title: 'Security & Verification',
+        href: '/profile/security',
+      },
+      {
+        title: 'History',
+        href: '/profile/history',
+      },
+      {
+        title: 'Limits',
+        href: '/profile/limits',
+      },
+    ],
+  };
 
   const filter = (cardsArray:any[], key:string):any[] => cardsArray.filter((item:any) => (item.variant === key))[0];
 
@@ -869,5 +903,6 @@ export const useFakeStore = () => {
     togglerBtnItems,
     items,
     selects,
+    menu,
   };
 };

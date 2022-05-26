@@ -41,7 +41,7 @@
       default: () => ([]),
     },
     value: {
-      type: [String, Object],
+      type: [String, Object, Number],
       required: true,
     },
     isRequired: {
@@ -82,6 +82,10 @@
 
   const valueObject = ref<any>('');
 
+  if (props.value) {
+    valueObject.value = props.options.find((option:any) => option.code === props.value);
+  }
+
   const emit = defineEmits(['input', 'focus', 'update:value']);
 
   const isError = computed(() => (props.hint && props.hint.variant === 'error'));
@@ -106,6 +110,7 @@
   });
 
   const open = ():void => {
+    if (props.isDisabled) return;
     isOpen.value = !isOpen.value;
   };
 

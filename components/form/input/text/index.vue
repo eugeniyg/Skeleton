@@ -6,7 +6,8 @@
       class="field"
       :type="props.type"
       :name="props.name"
-      :value="value"
+      :value="props.value"
+      :readonly="props.isDisabled"
       :required="props.isRequired ? 'required': false"
       :placeholder="props.placeholder"
       @focus="onFocus"
@@ -46,6 +47,10 @@
       type: Boolean,
       default: false,
     },
+    isDisabled: {
+      type: Boolean,
+      default: false,
+    },
     hint: {
       type: Object,
       required: false,
@@ -58,6 +63,7 @@
   const classes = computed(() => [
     'input-text',
     { 'has-error': isError.value },
+    { 'is-disabled': props.isDisabled },
   ]);
 
   const onBlur = (e:any) => {

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
-import { useAuthApi } from '@platform/frontend-core';
+import { useAuthApi, useProfileApi } from '@platform/frontend-core';
 import { profileInterface } from '~/types/userTypes';
+import { fieldInterface } from '~/types/formTypes';
 
 export type userStoreStateType = {
   isLoggedIn: boolean,
@@ -11,6 +12,7 @@ export type userStoreStateType = {
   },
   sessionId: string,
   profile: profileInterface|undefined,
+  profileFields: fieldInterface[],
 }
 
 export const useUserStore = defineStore('userStore', {
@@ -23,6 +25,7 @@ export const useUserStore = defineStore('userStore', {
     },
     sessionId: '',
     profile: undefined,
+    profileFields: [],
   } as userStoreStateType),
 
   actions: {
@@ -35,10 +38,14 @@ export const useUserStore = defineStore('userStore', {
     },
 
     async getProfileData():Promise<void> {
-      const { getProfile } = useAuthApi();
+      const { getProfile } = useProfileApi();
       const profileInfo = await getProfile();
-      this.profile = profileInfo.profile;
+      this.profile = profileInfo;
       this.isLoggedIn = true;
+    },
+
+    setProfileData(data:profileInterface):void {
+      this.profile = data;
     },
 
     async logOutUser():Promise<void> {
@@ -49,7 +56,14 @@ export const useUserStore = defineStore('userStore', {
       } finally {
         bearer.value = undefined;
         this.isLoggedIn = false;
+        const router = useRouter();
+        router.push({ name: 'index' });
       }
+    },
+
+    async getProfileFields():Promise<void> {
+      const { getProfileFields } = useProfileApi();
+      this.profileFields = await getProfileFields();
     },
   },
 });
