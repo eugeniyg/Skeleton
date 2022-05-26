@@ -68,7 +68,12 @@ export const useUserStore = defineStore('userStore', {
         this.profileFields = data;
         return data;
       } catch (error) {
-        return JSON.stringify(error);
+        return {
+          error: error.error,
+          response: error.response,
+          data: error.data,
+          base: error,
+        };
       }
     },
   },
