@@ -41,7 +41,7 @@
   import { storeToRefs } from 'pinia';
 
   const {
-    getCurrencies, getLocales, getCountries, getValidationMessages, getCommonData
+    getCurrencies, getLocales, getCountries, getValidationMessages, getCommonData,
   } = useGlobalStore();
   useAsyncData('currencies', getCurrencies);
   useAsyncData('locales', getLocales);

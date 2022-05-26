@@ -30,8 +30,13 @@
   const userStore = useUserStore();
   const { profileFields, profile } = storeToRefs(userStore);
   console.log('PROFILE_FIELDS', profileFields.value);
-  const profileViewFields = profileFields.value.filter((field) => !hideFields.includes(field.name));
+  const profileViewFields = ref<any>(profileFields.value.filter((field) => !hideFields.includes(field.name)));
   console.log('PROFILE_VIEW_FIELDS', profileViewFields);
+
+  watch(() => profileFields.value, (newValue:any) => {
+    console.log('watch');
+    profileViewFields.value = newValue.filter((field) => !hideFields.includes(field.name));
+  });
 </script>
 
 <style lang="scss" src="./style.scss"/>
