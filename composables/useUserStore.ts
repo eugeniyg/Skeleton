@@ -63,9 +63,14 @@ export const useUserStore = defineStore('userStore', {
 
     async getProfileFields():Promise<any> {
       const { getProfileFields } = useProfileApi();
-      const data = await getProfileFields();
-      this.profileFields = data;
-      return data;
+      try {
+        const data = await getProfileFields();
+        this.profileFields = data;
+        return data;
+      } catch (error) {
+        console.log(error);
+        return 'dima error';
+      }
     },
   },
 });
