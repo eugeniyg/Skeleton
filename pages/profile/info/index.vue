@@ -77,6 +77,8 @@
   import { countryInterface } from '~/types/globalDataTypes';
 
   const userStore = useUserStore();
+  await useAsyncData('profileFields', userStore.getProfileFields);
+
   const { changePromo } = useProfileApi();
   const { profile, profileFields } = storeToRefs(userStore);
   const { countries } = useGlobalStore();
