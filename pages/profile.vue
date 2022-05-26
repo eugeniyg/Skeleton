@@ -2,11 +2,14 @@
   <div class="user-profile">
     <nav-profile :items="menu.profile"/>
 
-    <NuxtPage :page-key="$route.path" />
+    <NuxtPage :page-key="`profile-child${$route.fullPath}`" />
   </div>
 </template>
 
 <script setup lang="ts">
+  const { getProfileFields } = useUserStore();
+  await useAsyncData('profileFields', getProfileFields);
+
   definePageMeta({
     middleware: ['auth'],
   });
