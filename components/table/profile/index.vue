@@ -29,7 +29,7 @@
   ];
   const userStore = useUserStore();
   const { profileFields, profile } = storeToRefs(userStore);
-  const profileViewFields = profileFields.value.filter((field) => !hideFields.includes(field.name));
+  const profileViewFields = computed(() => profileFields.value.filter((field) => !hideFields.includes(field.name)));
 </script>
 
 <style lang="scss" src="./style.scss"/>
