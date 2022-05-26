@@ -45,7 +45,7 @@
   } = useGlobalStore();
   useAsyncData('currencies', getCurrencies);
   useAsyncData('locales', getLocales);
-  useAsyncData('countries', getCountries);
+  await useAsyncData('countries', getCountries);
   useLazyAsyncData('validationMessages', getValidationMessages);
   useLazyAsyncData('commonData', getCommonData);
 
