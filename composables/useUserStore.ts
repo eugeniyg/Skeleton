@@ -61,13 +61,11 @@ export const useUserStore = defineStore('userStore', {
       }
     },
 
-    async getProfileFields():Promise<void> {
-      console.log('START REQUEST');
+    async getProfileFields():Promise<any> {
       const { getProfileFields } = useProfileApi();
-      console.log('BEFORE_REQUEST');
-      this.profileFields = await getProfileFields();
-      console.log('Profile_Fields', this.profileFields);
-      console.log('END REQUEST');
+      const data = await getProfileFields();
+      this.profileFields = data;
+      return data;
     },
   },
 });
