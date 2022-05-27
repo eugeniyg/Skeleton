@@ -35,8 +35,8 @@
 </template>
 
 <script setup lang="ts">
-  import { useGlobalMethods, useAuthApi } from '@platform/frontend-core';
   import useVuelidate from '@vuelidate/core';
+  import { useGlobalMethods, useAuthApi } from '~/CORE';
 
   const props = defineProps({
     show: {

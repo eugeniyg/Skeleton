@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { useGlobalApi } from '@platform/frontend-core';
+import { useGlobalApi } from '~/CORE/index';
 import {
  countryInterface, currencyInterface, localeInterface, timeZoneInterface,
 } from '@/types/globalDataTypes';
@@ -25,23 +25,24 @@ export const useGlobalStore = defineStore('globalStore', {
   actions: {
     async getCurrencies():Promise<void> {
       const { getCurrencies } = useGlobalApi();
-      const currencies = await getCurrencies();
-      this.currencies = currencies;
+      const data = await getCurrencies();
+      this.currencies = data;
       const { setOptions } = useFieldsStore();
-      setOptions('currency', currencies);
+      setOptions('currency', data);
     },
 
     async getLocales():Promise<void> {
       const { getLocales } = useGlobalApi();
-      this.locales = await getLocales();
+      const data = await getLocales();
+      this.locales = data;
     },
 
     async getCountries():Promise<void> {
       const { getCountries } = useGlobalApi();
-      const countries = await getCountries();
-      this.countries = countries;
+      const data = await getCountries();
+      this.countries = data;
       const { setOptions } = useFieldsStore();
-      setOptions('country', countries);
+      setOptions('country', data);
     },
 
     async getCommonData():Promise<void> {

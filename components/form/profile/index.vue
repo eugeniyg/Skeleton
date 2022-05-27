@@ -42,8 +42,8 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useGlobalMethods, useProfileApi } from '@platform/frontend-core';
   import useVuelidate from '@vuelidate/core';
+  import { useGlobalMethods, useProfileApi } from '~/CORE';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
   const hideFields = [

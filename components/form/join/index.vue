@@ -61,10 +61,9 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useAuthApi, useGlobalMethods } from '@platform/frontend-core';
   import useVuelidate from '@vuelidate/core';
+  import { useAuthApi, useGlobalMethods } from '~/CORE/index';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
-  import { fieldInterface } from '~/types/formTypes';
 
   const props = defineProps({
     show: {
@@ -75,18 +74,19 @@
 
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
-  const { getRegistrationFields, submitRegistrationData } = useAuthApi();
+  const { submitRegistrationData } = useAuthApi();
   const { setFormData } = useGlobalMethods();
   const { showModal, closeModal } = useLayoutStore();
+  const userStore = useUserStore();
+  const { registrationFields } = storeToRefs(userStore);
 
-  const registrationFields: fieldInterface[] = await getRegistrationFields();
-  const mainFields = registrationFields.filter((field) => !groupFooterFields.includes(field.name));
-  const footerFields = registrationFields.filter((field) => groupFooterFields.includes(field.name));
+  const mainFields = registrationFields.value.filter((field) => !groupFooterFields.includes(field.name));
+  const footerFields = registrationFields.value.filter((field) => groupFooterFields.includes(field.name));
 
-  const registrationFormData = reactive(setFormData(registrationFields));
+  const registrationFormData = reactive(setFormData(registrationFields.value));
 
   const { getFormRules } = useProjectMethods();
-  const registrationFormRules = getFormRules(registrationFields, true);
+  const registrationFormRules = getFormRules(registrationFields.value, true);
   const serverFormErrors = ref<any>({});
   const v$ = useVuelidate(registrationFormRules, registrationFormData, { $lazy: true });
 
@@ -113,7 +113,7 @@
     return undefined;
   };
 
-  const { setToken } = useUserStore();
+  const { setToken } = userStore;
   const signUp = async ():Promise<void> => {
     v$.value.$reset();
     const validFormData = await v$.value.$validate();
