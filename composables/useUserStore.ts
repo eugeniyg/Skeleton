@@ -61,19 +61,14 @@ export const useUserStore = defineStore('userStore', {
       }
     },
 
-    async getProfileFields():Promise<any> {
+    async getProfileFields():Promise<void> {
       const { getProfileFields } = useProfileApi();
+      console.log('USER_STORE_START_REQUEST');
       try {
         const data = await getProfileFields();
         this.profileFields = data;
-        return data;
       } catch (error) {
-        return {
-          error: error.error,
-          response: error.response,
-          data: error.data,
-          base: error,
-        };
+        console.log('USER_STORE_ERROR:', error);
       }
     },
   },

@@ -1,7 +1,6 @@
 <template>
   <div class="user-profile">
     <nav-profile :items="menu.profile"/>
-    <h1 style="color: white">{{ dima }}</h1>
 
     <NuxtPage :page-key="`profile-child${$route.fullPath}`" />
   </div>
@@ -9,8 +8,7 @@
 
 <script setup lang="ts">
   const { getProfileFields } = useUserStore();
-  const dima = await useAsyncData('profileFields', () => getProfileFields());
-  console.log(dima.data);
+  await useAsyncData('profileFields', getProfileFields);
 
   definePageMeta({
     middleware: ['auth'],
