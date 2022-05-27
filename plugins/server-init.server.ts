@@ -1,4 +1,4 @@
-import { useAuthApi } from '@platform/frontend-core';
+import { useAuthApi } from '~/CORE/index';
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   if (process.server) {

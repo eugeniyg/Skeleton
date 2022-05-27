@@ -43,9 +43,11 @@
   const {
     getCurrencies, getLocales, getCountries, getValidationMessages, getCommonData,
   } = useGlobalStore();
+  const { getRegistrationFields } = useUserStore();
   useAsyncData('currencies', getCurrencies);
   useAsyncData('locales', getLocales);
-  await useAsyncData('countries', getCountries);
+  useAsyncData('countries', getCountries);
+  useAsyncData('registrationFields', getRegistrationFields);
   useLazyAsyncData('validationMessages', getValidationMessages);
   useLazyAsyncData('commonData', getCommonData);
 

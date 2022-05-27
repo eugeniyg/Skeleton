@@ -1,4 +1,4 @@
-import { useGlobalMethods } from '@platform/frontend-core';
+import { useGlobalMethods } from '~/CORE/index';
 import * as validationRules from './validationRules';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 

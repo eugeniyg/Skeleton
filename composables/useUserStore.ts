@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { useAuthApi, useProfileApi } from '@platform/frontend-core';
+import { useAuthApi, useProfileApi } from '~/CORE/index';
 import { profileInterface } from '~/types/userTypes';
 import { fieldInterface } from '~/types/formTypes';
 
@@ -11,6 +11,7 @@ export type userStoreStateType = {
     amount: any,
   },
   sessionId: string,
+  registrationFields: fieldInterface[],
   profile: profileInterface|undefined,
   profileFields: fieldInterface[],
 }
@@ -25,6 +26,7 @@ export const useUserStore = defineStore('userStore', {
     },
     sessionId: '',
     profile: undefined,
+    registrationFields: [],
     profileFields: [],
   } as userStoreStateType),
 
@@ -63,13 +65,14 @@ export const useUserStore = defineStore('userStore', {
 
     async getProfileFields():Promise<void> {
       const { getProfileFields } = useProfileApi();
-      console.log('USER_STORE_START_REQUEST');
-      try {
-        const data = await getProfileFields();
-        this.profileFields = data;
-      } catch (error) {
-        console.log('USER_STORE_ERROR:', error);
-      }
+      const data = await getProfileFields();
+      this.profileFields = data;
+    },
+
+    async getRegistrationFields():Promise<void> {
+      const { getRegistrationFields } = useAuthApi();
+      const data = await getRegistrationFields();
+      this.registrationFields = data;
     },
   },
 });
