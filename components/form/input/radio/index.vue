@@ -7,6 +7,7 @@
       :disabled="props.isDisabled"
       :id="props.id"
       :checked="props.isChecked"
+      @change="emit('change')"
     />
 
     <label class="label" :for="props.id">
@@ -39,6 +40,7 @@
       required: true,
     },
   });
+  const emit = defineEmits(['change']);
 </script>
 
 <style lang="scss" src="./style.scss"/>

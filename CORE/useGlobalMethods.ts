@@ -1,23 +1,4 @@
 const useGlobalMethods = () => {
-  const createFormData = (formData:any):any => {
-    const bodyData = new FormData();
-
-    Object.keys(formData).forEach((param) => {
-      if (Array.isArray(formData[param])) {
-        const key = /\[\]/.test(param) ? param.replace('[]', '') : param;
-        formData[param].forEach((_el:any, index:number) => {
-          bodyData.append(`${key}[${index}]`, formData[param][index]);
-        });
-      } else if (formData[param] instanceof Object) {
-        bodyData.append(param, formData[param].code);
-      } else {
-        bodyData.append(param, formData[param]);
-      }
-    });
-
-    return bodyData;
-  };
-
   const setFormData = (fields: any[]):any => {
     const formData:any = {};
     fields.forEach((field) => {
@@ -69,7 +50,6 @@ const useGlobalMethods = () => {
   };
 
   return {
-    createFormData,
     setFormData,
     createFormRules,
   };

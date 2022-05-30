@@ -8,8 +8,10 @@
       type="radio"
       name="gender-select"
       :is-disabled="props.isDisabled"
-      id="male"
-      value="male"
+      value="Male"
+      id="Male"
+      :isChecked="props.value === 'Male'"
+      @change="changeValue('Male')"
     >
       Male<atomic-icon id="ui-male"/>
     </form-input-radio>
@@ -18,8 +20,10 @@
       type="radio"
       name="gender-select"
       :is-disabled="props.isDisabled"
-      id="female"
-      value="female"
+      value="Female"
+      id="Female"
+      :isChecked="props.value === 'Female'"
+      @change="changeValue('Female')"
     >
       Female<atomic-icon id="ui-female"/>
     </form-input-radio>
@@ -31,6 +35,10 @@
 <script setup lang="ts">
   const props = defineProps({
     label: {
+      type: String,
+      default: '',
+    },
+    value: {
       type: String,
       default: '',
     },
@@ -51,6 +59,10 @@
       required: false,
     },
   });
+  const emit = defineEmits(['update:value']);
+  const changeValue = (value:string):void => {
+    emit('update:value', value);
+  };
 </script>
 
 <style lang="scss" src="./style.scss"/>
