@@ -1,11 +1,14 @@
 .btn-modal-close {
   @extend %skip-btn;
-  @include box(32px);
+  width: rem(32px);
+  height: rem(32px);
   position: var(--position, relative);
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   background-color: var(--bg, var(--gray-800));
+  top: var(--top, 0);
+  right: var(--right, 0);
 
   .icon {
     visibility: var(--visibility, hidden);
@@ -31,16 +34,17 @@
 
   @include media(md) {
     cursor: pointer;
-    top: rem(-16px);
-    right: rem(-16px);
+    --top: 0;
+    --right: 0;
     --bg: transparent;
     --position: absolute;
 
     &:hover {
       --bg: var(--gray-800);
       transition: background-color .2s ease-in-out;
+
       .icon {
-        --color: var(--white);
+        --color: var(--yellow-500);
       }
     }
 

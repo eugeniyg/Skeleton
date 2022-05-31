@@ -22,11 +22,20 @@
     display: flex;
     flex-direction: column;
 
+
     img {
       width: 64px;
       height: auto;
-      margin: 0 auto 24px;
+      margin: var(--img-margin, 0 auto 24px);
     }
+
+    @include media(l) {
+      flex-direction: row;
+      grid-column-gap: rem(16px);
+      align-items: center;
+      --img-margin: 0;
+    }
+
   }
 
   .copy-info {
@@ -35,8 +44,18 @@
     align-items: center;
 
     p {
-      margin-bottom: 16px
+      margin-bottom: var(--margin-bottom, 16px)
     }
+
+    @include media(l) {
+      flex-direction: row;
+      grid-column-gap: rem(16px);
+      align-items: center;
+      justify-content: center;
+      --margin-bottom: 0;
+    }
+
+
   }
 
   .header {
