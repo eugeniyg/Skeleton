@@ -2,8 +2,9 @@
   <vue-final-modal
     v-model="modals.register"
     @closed="closeModal('register')"
+    @click="closeModal('register')"
   >
-    <div class="modal-register" data-id="register">
+    <div class="modal-register" data-id="register" @click.stop>
       <div class="container">
         <div class="slot">
           <atomic-promo/>
