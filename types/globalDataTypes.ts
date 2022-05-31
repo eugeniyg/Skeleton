@@ -2,6 +2,7 @@ export interface currencyInterface {
   code: string,
   symbol: string,
   type: string
+  value?: string,
 }
 
 export interface localeInterface {
@@ -15,10 +16,13 @@ export interface localeInterface {
 export interface countryInterface {
   name: string,
   nativeName: string,
-  code: string
+  code: string,
+  value?:string,
 }
 
 export interface timeZoneInterface {
   id: string,
   name: string,
+  code?: string,
+  value?: string,
 }

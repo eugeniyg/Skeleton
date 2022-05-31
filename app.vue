@@ -44,10 +44,13 @@
     getCurrencies, getLocales, getCountries, getValidationMessages, getCommonData,
   } = useGlobalStore();
   const { getRegistrationFields } = useUserStore();
+  const { getGameProviders, getGameCollections } = useGamesStore();
   useAsyncData('currencies', getCurrencies);
   useAsyncData('locales', getLocales);
   useAsyncData('countries', getCountries);
   useAsyncData('registrationFields', getRegistrationFields);
+  useAsyncData('collections', getGameCollections);
+  useAsyncData('providers', getGameProviders);
   useLazyAsyncData('validationMessages', getValidationMessages);
   useLazyAsyncData('commonData', getCommonData);
 
@@ -75,6 +78,20 @@
   function compact():void {
     compactDrawer();
   }
+
+  const closeModalOutside = (e:any):void => {
+    const modalOverlay = e.target.closest('.vfm__content');
+    if (!modalOverlay) return;
+    const id = modalOverlay.querySelector('[data-id]')?.getAttribute('data-id');
+    closeModal(id);
+  };
+
+  onMounted(() => {
+    document.addEventListener('click', closeModalOutside);
+  });
+  onBeforeUnmount(() => {
+    document.removeEventListener('click', closeModalOutside);
+  });
 </script>
 
 <style lang="scss">

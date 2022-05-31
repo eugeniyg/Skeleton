@@ -11,7 +11,7 @@
     </div>
 
     <div class="info">
-      <div v-if="props.title" class="title">{{ props.title }}</div>
+      <div v-if="props.name" class="title">{{ props.name }}</div>
 
       <div v-if="props.subTitle" class="sub-title">{{ props.subTitle }}</div>
 
@@ -35,9 +35,9 @@
   const props = defineProps({
     src: {
       type: String,
-      required: true,
+      required: false,
     },
-    title: {
+    name: {
       type: String,
       default: '',
     },
@@ -63,7 +63,13 @@
     },
   });
 
-  const backgroundImage = computed(() => `background-image:url(/img${props.src})`);
+  const getRandomInt = (min:number, max:number):number => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
+
+  const backgroundImage = computed(() => `background-image:url(/img/cards/card-${getRandomInt(1, 7)}.jpeg)`);
 </script>
 
 <style lang="scss" src="./style.scss"/>

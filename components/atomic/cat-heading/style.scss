@@ -1,0 +1,11 @@
+.cat-heading {
+  display: flex;
+  align-items: center;
+  @include font($heading-4);
+  color: var(--white);
+  grid-column-gap: rem(8px);
+
+  .icon {
+    --color: var(--gray-400);
+  }
+}

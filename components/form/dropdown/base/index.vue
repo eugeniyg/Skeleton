@@ -100,8 +100,10 @@
   ]);
 
   const select = (option: any) => {
-    emit('input', option);
-    emit('update:value', option.code);
+    if (option.code !== props.value) {
+      emit('update:value', option.code);
+      emit('input', option.code);
+    }
     isOpen.value = false;
   };
 
