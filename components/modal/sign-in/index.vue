@@ -1,6 +1,6 @@
 <template>
   <vue-final-modal v-model="modals.signIn" @closed="closeModal('signIn')">
-    <div class="modal-sign-in" data-id="modal-id">
+    <div class="modal-sign-in" data-id="signIn">
       <div class="scroll">
         <div class="header">
           <button-modal-close @close="closeModal('signIn')"/>

@@ -1,0 +1,26 @@
+.form-filters {
+  display: flex;
+  align-items: center;
+  grid-column-gap: rem(4px);
+
+  .label {
+    @include font($body-1);
+    color: var(--gray-500);
+    margin-right: rem(4px);
+  }
+
+  button {
+    @extend %skip-btn;
+    padding: rem(4px) rem(8px);
+    border-radius: 999px;
+    background-color: var(--bg, transparent);
+    color: var(--color, var(--gray-300));
+    transition: all .2s ease-in-out;
+
+    &.is-selected {
+      --bg: var(--gray-700);
+      --color: var(--white);
+    }
+  }
+}
+

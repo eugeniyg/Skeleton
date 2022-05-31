@@ -3,7 +3,7 @@
     v-model="modals.register"
     @closed="closeModal('register')"
   >
-    <div class="modal-register" data-id="modal-id">
+    <div class="modal-register" data-id="register">
       <div class="container">
         <div class="slot">
           <atomic-promo/>

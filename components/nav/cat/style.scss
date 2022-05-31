@@ -28,6 +28,7 @@
     grid-column-gap: rem(4px);
     padding: #{rem(8px)} #{rem(14px)};
     height: var(--height, #{rem(32px)});
+    cursor: pointer;
     background-color: var(--gray-800);
     color: var(--color, var(--gray-300));
     text-decoration: none;

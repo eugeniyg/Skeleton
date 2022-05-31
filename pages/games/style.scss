@@ -1,0 +1,20 @@
+.category {
+  display: grid;
+  grid-gap: rem(16px);
+
+  .nav-cat-wrap {
+    margin-top: 0;
+  }
+
+  .filters {
+    display: grid;
+    grid-gap: rem(16px);
+
+
+    @include media(xs) {
+      display: flex;
+      justify-content: space-between;
+      --select-width: auto;
+    }
+  }
+}
