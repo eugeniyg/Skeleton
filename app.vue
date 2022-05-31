@@ -78,20 +78,6 @@
   function compact():void {
     compactDrawer();
   }
-
-  const closeModalOutside = (e:any):void => {
-    const modalOverlay = e.target.closest('.vfm__content');
-    if (!modalOverlay) return;
-    const id = modalOverlay.querySelector('[data-id]')?.getAttribute('data-id');
-    closeModal(id);
-  };
-
-  onMounted(() => {
-    document.addEventListener('click', closeModalOutside);
-  });
-  onBeforeUnmount(() => {
-    document.removeEventListener('click', closeModalOutside);
-  });
 </script>
 
 <style lang="scss">
