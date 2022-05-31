@@ -53,7 +53,7 @@
     'receiveEmailPromo',
   ];
 
-  const { profile, profileFields } = useUserStore();
+  const { profile, profileFields, setProfileData } = useUserStore();
   const fieldsStore = useFieldsStore();
   const { setFormData } = useGlobalMethods();
   const { changeProfileData } = useProfileApi();
@@ -93,7 +93,8 @@
 
     try {
       const submitResult = await changeProfileData(profileFormData);
-      console.log(submitResult);
+      setProfileData(submitResult);
+      emit('toggle-profile-edit');
     } catch (error) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;

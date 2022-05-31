@@ -45,6 +45,10 @@
       type: String,
       default: 'label',
     },
+    value: {
+      type: String,
+      default: '',
+    },
     isRequired: {
       type: Boolean,
       default: false,
@@ -139,6 +143,15 @@
     }
   };
 
+  if (props.value) {
+    const dateArr = props.value.split(' ')[0].split('-');
+    selected.year = Number(dateArr[0]);
+    selected.month = Number(dateArr[1]);
+    createDays();
+    selected.day = Number(dateArr[2]);
+    handleErrors();
+  }
+
   const handleDayClick = ():void => {
     const { year, month, day } = selected;
 
@@ -148,21 +161,34 @@
     }
   };
 
+  const emit = defineEmits(['update:value']);
+  const changeInputValue = ():void => {
+    const { year, month, day } = selected;
+    if (year && month && day) {
+      console.log(`${year}-${month}-${day}`);
+      emit('update:value', `${year}-${month}-${day}`);
+    }
+  };
+
   const onInputYear = (e):void => {
     selected.year = e.value;
     createDays();
     handleErrors();
+    changeInputValue();
   };
 
   const onInputMonth = (e):void => {
     selected.month = e.value;
     createDays();
     handleErrors();
+    changeInputValue();
   };
 
-  const onInputDays = ():void => {
+  const onInputDays = (e):void => {
+    selected.day = e.value;
     errorDay.value = undefined;
     hintProps.value = undefined;
+    changeInputValue();
   };
 </script>
 

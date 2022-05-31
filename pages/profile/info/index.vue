@@ -94,7 +94,6 @@
 
   const changeSubscription = async (fieldName:string):Promise<void> => {
     const data = await changePromo({ [fieldName]: !profile.value[fieldName] });
-    console.log(data);
     userStore.setProfileData(data);
   };
 </script>

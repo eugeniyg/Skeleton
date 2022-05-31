@@ -1,5 +1,4 @@
 import { useFetchInstance } from './apiInstance';
-import { useGlobalMethods } from './useGlobalMethods';
 
 const useAuthApi = () => {
   const getRegistrationFields = async ():Promise<any> => {
@@ -8,16 +7,18 @@ const useAuthApi = () => {
   };
 
   const submitRegistrationData = async (registrationFormData:any):Promise<any> => {
-    const { createFormData } = useGlobalMethods();
-    const bodyData = createFormData(registrationFormData);
-    const { data } = await useFetchInstance('/api/player/register', { method: 'POST', body: bodyData });
+    const { data } = await useFetchInstance('/api/player/register', {
+      method: 'POST',
+      body: registrationFormData,
+    });
     return data;
   };
 
   const submitLoginData = async (authorizationFormData: any):Promise<any> => {
-    const { createFormData } = useGlobalMethods();
-    const bodyData = createFormData(authorizationFormData);
-    const { data } = await useFetchInstance('/api/player/sessions', { method: 'POST', body: bodyData });
+    const { data } = await useFetchInstance('/api/player/sessions', {
+      method: 'POST',
+      body: authorizationFormData,
+    });
     return data;
   };
 
