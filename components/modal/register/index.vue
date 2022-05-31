@@ -3,16 +3,19 @@
     v-model="modals.register"
     @closed="closeModal('register')"
   >
-    <div class="modal-register">
-      <atomic-promo/>
+    <div class="modal-register" data-id="modal-id">
+      <div class="container">
+        <div class="slot">
+          <atomic-promo/>
+        </div>
 
-      <div class="header">
-        <button-modal-close @close="closeModal('register')"/>
-        <div class="title">Join Slotsbet</div>
-      </div>
-
-      <div class="content">
-        <form-join :show="modals.register"/>
+        <div class="scroll">
+          <div class="header">
+            <button-modal-close @close="closeModal('register')"/>
+            <div class="title">Join Slotsbet</div>
+          </div>
+          <form-join :show="modals.register"/>
+        </div>
       </div>
     </div>
   </vue-final-modal>

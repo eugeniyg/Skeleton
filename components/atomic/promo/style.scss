@@ -1,28 +1,20 @@
 .promo {
-  padding: var(--padding, #{rem(8px)} #{rem(24px)});
+  padding: var(--padding, #{rem(8px)});
   text-align: center;
   display: grid;
-
+  align-items: center;
+  height: 100%;
+  width: 100%;
   grid-area: promo;
   background-image: url(~/assets/img/promo-sm.png);
   background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
-  margin: var(--margin, #{rem(-16px)} #{rem(-16px)} 0 #{rem(-16px)});
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: linear-gradient(0deg, #28263B 0%, rgba(40, 38, 59, 0) 100%)
-  }
+  user-select: none;
 
   @include media(md) {
     background-image: url(~/assets/img/promo-lg.png);
-    --margin: #{rem(-32px)} 0 #{rem(-32px)} #{rem(-32px)};
-    --padding: #{rem(88px)} #{rem(32px)} #{rem(32px)};
+    --padding: #{rem(88px)} #{rem(32px)} #{rem(38px)} #{rem(32px)};
   }
 
   .header {
@@ -41,6 +33,7 @@
   .title {
     @include font($heading-4);
     width: 100%;
+    color: var(--white);
   }
 
   .sub-title {
@@ -71,7 +64,7 @@
   }
 
   .icon {
-    --color: var(--white);
+    --color: var(--yellow-500);
   }
 
   .items {
@@ -93,7 +86,6 @@
     grid-gap: rem(8px);
     border-radius: 8px;
     justify-self: center;
+    color: var(--white);
   }
-
-
 }

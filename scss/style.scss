@@ -162,6 +162,22 @@ body {
 
 @import "carousel";
 
+.vfm {
+  display: flex;
+  justify-content: center;
+}
+
 .vfm__overlay {
   background-color: rgba(0, 0, 0, 0.72) !important;
+  display: flex;
+  justify-content: center;
+}
+
+.vfm__content {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: rem(8px) 0;
+  margin: auto;
 }

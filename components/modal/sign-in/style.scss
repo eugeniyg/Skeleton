@@ -1,21 +1,3 @@
 .modal-sign-in {
   @extend %modal-info;
-  //grid-template-areas:
-  //  "promo"
-  //  "header"
-  //  "content";
-  //
-  //@include media(md) {
-  //  display: grid;
-  //  grid-template-areas:
-  //    "promo header"
-  //    "promo content";
-  //  grid-template-columns: 50% 50%;
-  //
-  //  .content {
-  //    padding-left: rem(32px);
-  //  }
-  //
-  //  --max-width: #{rem(800px)};
-  //}
 }
