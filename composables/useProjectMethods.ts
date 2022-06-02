@@ -1,4 +1,3 @@
-import { useGlobalMethods } from '~/CORE/index';
 import * as validationRules from './validationRules';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 
@@ -15,7 +14,7 @@ export const useProjectMethods = () => {
   const isHomePage = ():boolean => router.currentRoute.value.name === 'index';
 
   const getFormRules = (fields:any[], includeContext:boolean = false):any => {
-    const { createFormRules } = useGlobalMethods();
+    const { createFormRules } = useCoreMethods();
     return createFormRules(fields, validationRules, validationMessages, includeContext);
   };
 

@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { useAuthApi, useProfileApi } from '~/CORE/index';
 import { profileInterface } from '~/types/userTypes';
 import { fieldInterface } from '~/types/formTypes';
 

@@ -43,7 +43,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
-  import { useGlobalMethods, useProfileApi } from '~/CORE';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
   const hideFields = [
@@ -55,7 +54,7 @@
 
   const { profile, profileFields, setProfileData } = useUserStore();
   const fieldsStore = useFieldsStore();
-  const { setFormData } = useGlobalMethods();
+  const { setFormData } = useCoreMethods();
   const { changeProfileData } = useProfileApi();
 
   const fieldsWithValue = profileFields.map((field) => ({ ...field, value: profile[field.name] }));

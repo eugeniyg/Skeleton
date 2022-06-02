@@ -36,7 +36,6 @@
 
 <script setup lang="ts">
   import useVuelidate from '@vuelidate/core';
-  import { useGlobalMethods, useAuthApi } from '~/CORE';
 
   const props = defineProps({
     show: {
@@ -46,7 +45,7 @@
   });
 
   const { submitLoginData } = useAuthApi();
-  const { setFormData } = useGlobalMethods();
+  const { setFormData } = useCoreMethods();
   const { validationMessages } = useGlobalStore();
   const { showModal, closeModal } = useLayoutStore();
   const authorizationFields = [

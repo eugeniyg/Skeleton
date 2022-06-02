@@ -1,5 +1,3 @@
-import { useAuthApi } from '~/CORE/index';
-
 export default defineNuxtPlugin(async (nuxtApp) => {
   if (process.server) {
     const { getProfileData } = useUserStore();

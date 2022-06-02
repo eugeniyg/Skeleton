@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { useGlobalApi } from '~/CORE/index';
 import {
  countryInterface, currencyInterface, localeInterface, timeZoneInterface,
 } from '@/types/globalDataTypes';

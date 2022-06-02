@@ -62,7 +62,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
-  import { useAuthApi, useGlobalMethods } from '~/CORE/index';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
   const props = defineProps({
@@ -75,7 +74,7 @@
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
   const { submitRegistrationData } = useAuthApi();
-  const { setFormData } = useGlobalMethods();
+  const { setFormData } = useCoreMethods();
   const { showModal, closeModal } = useLayoutStore();
   const userStore = useUserStore();
   const { registrationFields } = storeToRefs(userStore);
