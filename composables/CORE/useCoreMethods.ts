@@ -1,4 +1,4 @@
-const useGlobalMethods = () => {
+const useCoreMethods = () => {
   const setFormData = (fields: any[]):any => {
     const formData:any = {};
     fields.forEach((field) => {
@@ -55,4 +55,4 @@ const useGlobalMethods = () => {
   };
 };
 
-export { useGlobalMethods };
+export { useCoreMethods };

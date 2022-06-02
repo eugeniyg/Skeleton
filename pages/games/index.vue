@@ -24,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-  import { useGamesApi } from '~/CORE/index';
   import { gameInterface, gamesResponseInterface, paginationMetaInterface } from '~/types/gameTypes';
 
   const { gameCollections } = useGamesStore();
