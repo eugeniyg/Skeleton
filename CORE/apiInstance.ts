@@ -1,8 +1,14 @@
 export const useFetchInstance = (url:string, options?:any):Promise<any> => {
   const baseURL = process.server && process.env.API_BASE_URL ? process.env.API_BASE_URL : '';
   const newOptions = { ...options, baseURL, 'Content-Type': '' };
+  const nuxtApp = useNuxtApp();
+
+  if (process.server) {
+    console.log('---useNuxtAppToken---: ', nuxtApp.ssrContext?.req?.headers?.cookie);
+  }
 
   const token = useCookie('bearer');
+  console.log('---useCookieToken---: ', token.value);
   if (token.value) {
     newOptions.headers = {
       ...options?.headers,
