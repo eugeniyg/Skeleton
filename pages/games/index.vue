@@ -25,14 +25,16 @@
 
 <script setup lang="ts">
   import { useGamesApi } from '~/CORE/index';
-  import { gameInterface, gamesResponseInterface, paginationMetaInterface } from '~/types/gameTypes';
+  import {
+    collectionInterface, gameInterface, gamesResponseInterface, paginationMetaInterface,
+  } from '~/types/gameTypes';
 
   const { gameCollections } = useGamesStore();
   const { selectOptions } = useFieldsStore();
   const route = useRoute();
   const router = useRouter();
 
-  const activeCollection = computed(() => gameCollections.find((collection) => collection.id === route.query.category));
+  const activeCollection = ref<collectionInterface>(gameCollections.find((collection) => collection.id === route.query.category));
   const icons = ['hot', 'slots', 'table-games', 'new', 'turbo-games', 'live-casino'];
   const iconIndex = computed(() => gameCollections.findIndex((collection) => collection.id === route.query.category));
 
@@ -61,18 +63,19 @@
   const { data } = await useAsyncData('items', getItems);
   setItems(data.value);
 
-  watch(() => route.query, async () => {
+  const changeProvider = async ():Promise<void> => {
     loadPage.value = 1;
+    router.push({ query: { ...route.query, provider: currentProvider.value !== 'all' ? currentProvider.value : undefined } });
     const response = await getItems();
     setItems(response);
-  });
-
-  const changeProvider = async ():Promise<void> => {
-    router.push({ query: { ...route.query, provider: currentProvider.value !== 'all' ? currentProvider.value : undefined } });
   };
 
-  const changeCategory = (categoryId: string):void => {
+  const changeCategory = async (categoryId: string):Promise<void> => {
+    loadPage.value = 1;
+    activeCollection.value = gameCollections.find((collection) => collection.id === categoryId);
     router.push({ query: { ...route.query, category: categoryId !== 'all' ? categoryId : undefined } });
+    const response = await getItems();
+    setItems(response);
   };
 
   const { $_ } = useNuxtApp();
@@ -91,4 +94,4 @@
   };
 </script>
 
-<style lang="scss" src="./style.scss"/>
+<style lang="scss" src="./games.scss"/>

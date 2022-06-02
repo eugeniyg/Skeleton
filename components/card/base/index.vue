@@ -17,13 +17,15 @@
 
       <button-favorite v-if="props.showFavorite"/>
 
-      <button-play v-if="props.showPlayBtn"/>
+      <button-play @click="openGame(true)"/>
 
       <button-base
-        v-if="props.showTryBtn"
+        v-if="props.hasDemo"
         class="btn-try"
         type="secondary"
+        tag-name="span"
         size="xs"
+        @click="openGame(false)"
       >
         Try for fun
       </button-base>
@@ -32,6 +34,8 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     src: {
       type: String,
@@ -40,6 +44,14 @@
     name: {
       type: String,
       default: '',
+    },
+    id: {
+      type: String,
+      required: true,
+    },
+    hasDemo: {
+      type: Boolean,
+      default: false,
     },
     subTitle: {
       type: String,
@@ -53,14 +65,6 @@
       type: Boolean,
       default: false,
     },
-    showPlayBtn: {
-      type: Boolean,
-      default: true,
-    },
-    showTryBtn: {
-      type: Boolean,
-      default: true,
-    },
   });
 
   const getRandomInt = (min:number, max:number):number => {
@@ -69,7 +73,19 @@
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-  const backgroundImage = computed(() => `background-image:url(/img/cards/card-${getRandomInt(1, 7)}.jpeg)`);
+  const router = useRouter();
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+  const { showModal } = useLayoutStore();
+  const openGame = (isReal: boolean):void => {
+    if (isReal && !isLoggedIn.value) {
+      showModal('register');
+    } else {
+      router.push(`/games/${props.id}`);
+    }
+  };
+
+  const backgroundImage = computed(() => `background-image:url(/img/cards/card-${getRandomInt(1, 12)}.png)`);
 </script>
 
 <style lang="scss" src="./style.scss"/>

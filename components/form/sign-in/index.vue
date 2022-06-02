@@ -92,7 +92,7 @@
     return undefined;
   };
 
-  const { setToken } = useUserStore();
+  const { setToken } = useProfileStore();
   const login = async ():Promise<void> => {
     v$.value.$reset();
     const validFormData = await v$.value.$validate();

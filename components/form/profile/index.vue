@@ -53,7 +53,7 @@
     'receiveEmailPromo',
   ];
 
-  const { profile, profileFields, setProfileData } = useUserStore();
+  const { profile, profileFields, setProfileData } = useProfileStore();
   const fieldsStore = useFieldsStore();
   const { setFormData } = useGlobalMethods();
   const { changeProfileData } = useProfileApi();

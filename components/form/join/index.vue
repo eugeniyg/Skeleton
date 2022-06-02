@@ -77,8 +77,8 @@
   const { submitRegistrationData } = useAuthApi();
   const { setFormData } = useGlobalMethods();
   const { showModal, closeModal } = useLayoutStore();
-  const userStore = useUserStore();
-  const { registrationFields } = storeToRefs(userStore);
+  const profileStore = useProfileStore();
+  const { registrationFields } = storeToRefs(profileStore);
 
   const mainFields = registrationFields.value.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = registrationFields.value.filter((field) => groupFooterFields.includes(field.name));
@@ -113,7 +113,7 @@
     return undefined;
   };
 
-  const { setToken } = userStore;
+  const { setToken } = profileStore;
   const signUp = async ():Promise<void> => {
     v$.value.$reset();
     const validFormData = await v$.value.$validate();

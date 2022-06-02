@@ -1,0 +1,34 @@
+.box-game {
+  display: grid;
+  grid-template-areas:
+    "container nav"
+    "panel nav";
+  align-items: var(--align-items, flex-end);
+  grid-template-columns: 1fr auto;
+  width: 100%;
+  height: 100%;
+
+  .container {
+    grid-area: container;
+    position: relative;
+    width: 100%;
+
+    @include ratio(936px, 585px);
+
+    iframe {
+      display: block;
+      position: absolute;
+      max-width: 100%;
+      top: 0;
+    }
+  }
+
+  .nav-game {
+    grid-area: nav;
+  }
+
+  .panel-mode {
+    grid-area: panel;
+  }
+
+}

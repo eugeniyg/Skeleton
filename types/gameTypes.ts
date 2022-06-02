@@ -33,3 +33,13 @@ export interface gamesResponseInterface {
   data: gameInterface[],
   meta:paginationMetaInterface,
 }
+
+export interface gameInfoInterface extends gameInterface, gameProviderInterface {}
+
+export interface gameStartInterface {
+  accountId: string,
+  lobbyUrl: string,
+  locale: string,
+  countryCode: string,
+  platform: number,
+}

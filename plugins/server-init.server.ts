@@ -2,7 +2,7 @@ import { useAuthApi } from '~/CORE/index';
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   if (process.server) {
-    const { getProfileData } = useUserStore();
+    const { getProfileData } = useProfileStore();
     const bearer = useCookie('bearer');
     if (bearer.value) {
       try {
@@ -10,7 +10,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       } catch (error) {
         if (error.response?.status === 401) {
           const { refreshToken } = useAuthApi();
-          const { setToken } = useUserStore();
+          const { setToken } = useProfileStore();
           try {
             const refresh = await refreshToken();
             setToken(refresh);
