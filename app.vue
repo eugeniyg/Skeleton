@@ -40,6 +40,9 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
+  const bearer = useCookie('bearer');
+  console.log('---App token:---', bearer.value);
+
   const {
     getCurrencies, getLocales, getCountries, getValidationMessages, getCommonData,
   } = useGlobalStore();

@@ -1,9 +1,11 @@
 import { useAuthApi } from '~/CORE/index';
 
+const useAppCookie = () => useCookie('bearer');
+
 export default defineNuxtPlugin(async (nuxtApp) => {
   if (process.server) {
     const { getProfileData } = useProfileStore();
-    const bearer = useCookie('bearer');
+    const bearer = useAppCookie();
     if (bearer.value) {
       try {
         await getProfileData();

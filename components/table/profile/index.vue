@@ -6,7 +6,7 @@
       <div class="td">
         <!--        <atomic-row-phone v-if="field.name === 'phone'" v-bind="td.props"/>-->
         <atomic-row-sex v-if="field.name === 'gender' && profile.gender" :value="profile.gender"/>
-        <template v-else-if="field.name === 'birthdate'">{{ profile[field.name].split(' ')[0] }}</template>
+        <template v-else-if="field.name === 'birthdate'">{{ profile[field.name]?.split(' ')[0] || '-' }}</template>
         <template v-else>{{ profile[field.name] || '-' }}</template>
       </div>
     </div>
