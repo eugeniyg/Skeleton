@@ -39,27 +39,9 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useAuthApi } from '~/CORE/index';
 
-  const { getProfileData } = useUserStore();
   const bearer = useCookie('bearer');
   console.log('---App token:---', bearer.value);
-  if (bearer.value) {
-    try {
-      await useAsyncData('profile', getProfileData);
-    } catch (error) {
-      if (error.response?.status === 401) {
-        const { refreshToken } = useAuthApi();
-        const { setToken } = useUserStore();
-        try {
-          const refresh = await refreshToken();
-          setToken(refresh);
-        } catch {
-          bearer.value = undefined;
-        }
-      }
-    }
-  }
 
   const {
     getCurrencies, getLocales, getCountries, getValidationMessages, getCommonData,
