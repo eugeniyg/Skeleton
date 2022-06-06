@@ -72,6 +72,14 @@
       --items-column-gap: #{rem(16px)}
     }
 
+    @include media(md) {
+      --items-column-gap: #{rem(8px)}
+    }
+
+    @include media(l) {
+      --items-column-gap: #{rem(16px)}
+    }
+
     &::-webkit-scrollbar {
       display: none;
     }
@@ -79,13 +87,13 @@
 
   .titles {
     .title {
-      @include upd-font($heading-4);
-      --color: var(--white);
+      @include font($heading-4);
+      color: var(--white);
     }
 
     .sub-title {
-      @include upd-font($body-2);
-      --color: var(--gray-400);
+      @include font($body-2);
+      color: var(--gray-400);
     }
   }
 }

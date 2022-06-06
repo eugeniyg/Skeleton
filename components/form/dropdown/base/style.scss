@@ -48,7 +48,7 @@
   .items {
     position: absolute;
     left: 0;
-    right: 0;
+    min-width: 100%;
     padding: rem(8px);
     visibility: var(--items-visibility, hidden);
     max-height: calc((#{rem(38px)} * 4) + #{4px});
@@ -73,6 +73,8 @@
     display: flex;
     align-items: center;
     grid-column-gap: rem(8px);
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     .icon {
       margin-left: auto;
