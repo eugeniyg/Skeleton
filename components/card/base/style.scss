@@ -12,15 +12,31 @@
   background-repeat: var(--bg-repeat, no-repeat);
   background-size: var(--bg-size, cover);
   background-position: var(--bg-position, top center);
-  width: var(--width, calc(33% - #{rem(4px)}));
+  min-width: var(--min-width, #{column(3, 8px)});
 
   @include media(xs) {
-    --width: calc(25% - #{rem(12px)});
+    --min-width: #{column(4, 16px)}
   }
 
   @include media(sm) {
-    --width: calc(16.66% - #{rem(14px)});
     --padding: 1px;
+    --min-width: #{column(6, 16px)}
+  }
+
+  @include media(md) {
+    --min-width: #{column(6, 8px)}
+  }
+
+  @include media(l) {
+    --min-width: #{column(6, 16px)}
+  }
+
+  @include media(xl) {
+    --min-width: #{column(7, 16px)}
+  }
+
+  @include media(xxl) {
+    --min-width: #{column(9, 16px)}
   }
 
   .info {

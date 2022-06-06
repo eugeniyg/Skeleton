@@ -84,3 +84,11 @@
   }
 }
 
+@function column($columns_count, $gap) {
+  $percents: math.div(100%, $columns_count);
+  $offset: ($columns_count * strip-unit($gap)) / ($columns_count + 1);
+
+  @return calc(#{$percents} - #{$offset}px);
+}
+
+

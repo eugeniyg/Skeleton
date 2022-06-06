@@ -9,6 +9,8 @@
   height: 100%;
 
   .container {
+    background-color: var(--black-primary);
+    border: 2px solid var(--gray-900);
     grid-area: container;
     position: relative;
     width: 100%;
