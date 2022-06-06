@@ -2,8 +2,10 @@ import { defineStore } from 'pinia';
 import { useAuthApi, useProfileApi } from '~/CORE/index';
 import { profileInterface } from '~/types/userTypes';
 import { fieldInterface } from '~/types/formTypes';
+import { useWalletStore } from '~/composables/useWalletStore';
+// import {nextTick} from "@vue/runtime-core";
 
-export type userStoreStateType = {
+export type profileStoreStateType = {
   isLoggedIn: boolean,
   avatarItems: {
     label: string,
@@ -16,7 +18,7 @@ export type userStoreStateType = {
   profileFields: fieldInterface[],
 }
 
-export const useUserStore = defineStore('userStore', {
+export const useProfileStore = defineStore('profileStore', {
   state: () => ({
     isLoggedIn: false,
     avatarItems: {
@@ -28,7 +30,7 @@ export const useUserStore = defineStore('userStore', {
     profile: undefined,
     registrationFields: [],
     profileFields: [],
-  } as userStoreStateType),
+  } as profileStoreStateType),
 
   actions: {
     setToken(authData:any):void {
@@ -36,6 +38,25 @@ export const useUserStore = defineStore('userStore', {
       bearer.value = authData.accessToken;
       this.sessionId = authData.sessionId;
       this.profile = authData.profile;
+    },
+
+    async logIn(loginData:any):Promise<any> {
+      const { submitLoginData } = useAuthApi();
+      const { getUserAccounts } = useWalletStore();
+      const submitResult = await submitLoginData(loginData);
+      this.setToken(submitResult);
+      await nextTick();
+      await getUserAccounts();
+      this.isLoggedIn = true;
+    },
+
+    async registration(registrationData:any):Promise<any> {
+      const { submitRegistrationData } = useAuthApi();
+      const { getUserAccounts } = useWalletStore();
+      const submitResult = await submitRegistrationData(registrationData);
+      this.setToken(submitResult);
+      await nextTick();
+      await getUserAccounts();
       this.isLoggedIn = true;
     },
 

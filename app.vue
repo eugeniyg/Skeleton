@@ -33,6 +33,7 @@
     <client-only>
       <modal-register />
       <modal-sign-in />
+      <modal-deposit />
     </client-only>
   </div>
 </template>
@@ -40,13 +41,10 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const bearer = useCookie('bearer');
-  console.log('---App token:---', bearer.value);
-
   const {
     getCurrencies, getLocales, getCountries, getValidationMessages, getCommonData,
   } = useGlobalStore();
-  const { getRegistrationFields } = useUserStore();
+  const { getRegistrationFields } = useProfileStore();
   const { getGameProviders, getGameCollections } = useGamesStore();
   useAsyncData('currencies', getCurrencies);
   useAsyncData('locales', getLocales);
@@ -58,14 +56,14 @@
   useLazyAsyncData('commonData', getCommonData);
 
   const layoutStore = useLayoutStore();
-  const userStore = useUserStore();
+  const profileStore = useProfileStore();
   const projectMethods = useProjectMethods();
 
   const { isDrawerCompact } = storeToRefs(layoutStore);
   const { compactDrawer, showModal, closeModal } = layoutStore;
 
-  const { logOutUser } = userStore;
-  const { isLoggedIn } = storeToRefs(userStore);
+  const { logOutUser } = profileStore;
+  const { isLoggedIn } = storeToRefs(profileStore);
 
   const route = useRoute();
   if (route.query['sign-up']) {

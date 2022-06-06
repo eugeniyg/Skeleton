@@ -28,8 +28,8 @@
     'receiveSmsPromo',
     'receiveEmailPromo',
   ];
-  const userStore = useUserStore();
-  const { profileFields, profile } = storeToRefs(userStore);
+  const profileStore = useProfileStore();
+  const { profileFields, profile } = storeToRefs(profileStore);
   const profileViewFields = profileFields.value.filter((field) => !hideFields.includes(field.name));
 </script>
 

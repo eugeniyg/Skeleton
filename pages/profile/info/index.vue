@@ -65,7 +65,7 @@
 
     <h4 class="heading">Manage account</h4>
 
-    <button-base type="ghost" size="md" @click="userStore.logOutUser">
+    <button-base type="ghost" size="md" @click="profileStore.logOutUser">
       <atomic-icon id="ui-log-out"/>Log out
     </button-base>
   </div>
@@ -77,8 +77,8 @@
   import { countryInterface } from '~/types/globalDataTypes';
 
   const { changePromo } = useProfileApi();
-  const userStore = useUserStore();
-  const { profile, profileFields } = storeToRefs(userStore);
+  const profileStore = useProfileStore();
+  const { profile, profileFields } = storeToRefs(profileStore);
   const { countries } = useGlobalStore();
 
   const isProfileEdit = ref<boolean>(false);
@@ -94,7 +94,7 @@
 
   const changeSubscription = async (fieldName:string):Promise<void> => {
     const data = await changePromo({ [fieldName]: !profile.value[fieldName] });
-    userStore.setProfileData(data);
+    profileStore.setProfileData(data);
   };
 </script>
 

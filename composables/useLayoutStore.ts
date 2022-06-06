@@ -8,6 +8,13 @@ export type layoutStoreStateType = {
   showRegisterModal: boolean,
   modals: {
     register: boolean,
+    signIn: boolean,
+    deposit: boolean,
+  },
+  modalsUrl: {
+    register: string,
+    signIn: string,
+    deposit: string,
   },
 }
 
@@ -21,6 +28,12 @@ export const useLayoutStore = defineStore('layoutStore', {
       modals: {
         register: false,
         signIn: false,
+        deposit: false,
+      },
+      modalsUrl: {
+        register: 'sign-up',
+        signIn: 'sign-in',
+        deposit: 'deposit',
       },
   } as layoutStoreStateType),
 
@@ -57,35 +70,36 @@ export const useLayoutStore = defineStore('layoutStore', {
       window.dispatchEvent(new Event('resize'));
     },
 
-    showModal(modalName: string):void {
-      this.modals[modalName] = true;
+    addModalQuery(modalName:string):void {
+      const router = useRouter();
+      const { query } = useRoute();
+      const modalsArr = Object.keys(this.modals);
+      const newQuery = { ...query };
+
+      modalsArr.forEach((modalKey) => {
+        if (modalKey !== modalName) {
+          this.modals[modalKey] = false;
+          newQuery[this.modalsUrl[modalKey]] = undefined;
+        } else newQuery[this.modalsUrl[modalKey]] = 'true';
+      });
+      router.replace({ query: newQuery });
+    },
+
+    removeModalQuery(modalName:string):void {
       const router = useRouter();
       const { query } = useRoute();
 
-      if (modalName === 'register') {
-        this.modals.signIn = false;
-        router.push({ query: { ...query, 'sign-up': 'true', 'sign-in': undefined } });
-      }
+      router.replace({ query: { ...query, [this.modalsUrl[modalName]]: undefined } });
+    },
 
-      if (modalName === 'signIn') {
-        this.modals.register = false;
-        router.push({ query: { ...query, 'sign-in': 'true', 'sign-up': undefined } });
-      }
+    showModal(modalName: string):void {
+      this.modals[modalName] = true;
+      this.addModalQuery(modalName);
     },
 
     closeModal(modalName: string):void {
       this.modals[modalName] = false;
-      const { query } = useRoute();
-
-      if (modalName === 'register') {
-        const router = useRouter();
-        router.push({ query: { ...query, 'sign-up': undefined } });
-      }
-
-      if (modalName === 'signIn') {
-        const router = useRouter();
-        router.push({ query: { ...query, 'sign-in': undefined } });
-      }
+      this.removeModalQuery(modalName);
     },
   },
 });

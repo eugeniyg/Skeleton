@@ -16,10 +16,22 @@ const useGamesApi = () => {
     return data;
   };
 
+  const getGamesInfo = async (gameId: any):Promise<any> => {
+    const { data } = await useFetchInstance(`/api/game/games/${gameId}`);
+    return data;
+  };
+
+  const getStartGame = async (gameId: any, requestData: any):Promise<any> => {
+    const { data } = await useFetchInstance(`/api/game/games/${gameId}/play`, { method: 'POST', body: requestData });
+    return data;
+  };
+
   return {
     getGameCollections,
     getGameProviders,
     getFilteredGames,
+    getGamesInfo,
+    getStartGame,
   };
 };
 

@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-  const { getProfileFields } = useUserStore();
+  const { getProfileFields } = useProfileStore();
   await useAsyncData('profileFields', getProfileFields);
 
   definePageMeta({

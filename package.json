@@ -24,6 +24,7 @@
     "@types/lodash": "^4.14.182",
     "@vuelidate/core": "^2.0.0-alpha.41",
     "@vuelidate/validators": "^2.0.0-alpha.29",
+    "accept-language-parser": "^1.5.0",
     "css-loader": "^6.7.1",
     "js-cookie": "^3.0.1",
     "lodash": "^4.17.21",

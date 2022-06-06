@@ -22,8 +22,8 @@
       default: true,
     },
   });
-  const userStore = useUserStore();
-  const { profile } = storeToRefs(userStore);
+  const profileStore = useProfileStore();
+  const { profile } = storeToRefs(profileStore);
 </script>
 
 <style lang="scss" src="./style.scss"/>

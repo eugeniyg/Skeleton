@@ -26,3 +26,10 @@ export interface timeZoneInterface {
   code?: string,
   value?: string,
 }
+
+export interface browserLanguageInterface {
+  code: string,
+  script: null|string,
+  region: undefined|string,
+  quality: number,
+}

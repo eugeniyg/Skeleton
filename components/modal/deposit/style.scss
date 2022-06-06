@@ -1,0 +1,114 @@
+.modal-deposit {
+  @extend %modal;
+  //display: flex;
+  //height: 100%;
+  //align-items: center;
+  //
+  //.container {
+  //  overflow-y: auto;
+  //  max-height: 100%;
+  //  background: var(--gray-900);
+  //  border-top: rem(12px) solid var(--gray-900);
+  //  border-right: rem(8px) solid var(--gray-900);
+  //  border-bottom: rem(12px) solid var(--gray-900);
+  //  border-left: rem(8px) solid var(--gray-900);
+  //  box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+  //  position: relative;
+  //
+  //  @extend %scrollbar;
+  //
+  //  @include media(xs) {
+  //    border-radius: 16px;
+  //  }
+  //
+  //  @include media(md) {
+  //    border: none;
+  //    display: flex;
+  //    overflow: hidden;
+  //    //padding: rem(4px);
+  //  }
+  //}
+  //
+  //.header {
+  //  display: flex;
+  //  align-items: center;
+  //  margin-bottom: rem(24px);
+  //  position: absolute;
+  //  padding: #{rem(16px)} 0;
+  //  width: calc(100% - #{rem(48px)});
+  //  top: 0;
+  //
+  //  @include media(md) {
+  //    position: relative;
+  //    padding: 0;
+  //    width: 100%;
+  //  }
+  //
+  //  .title {
+  //    @include font($heading-6);
+  //    color: var(--white);
+  //    text-align: var(--text-align, center);
+  //    flex-grow: 1;
+  //  }
+  //}
+  //
+  //.slot {
+  //  padding: var(--padding, #{rem(68px)} #{rem(16px)} #{rem(16px)} #{rem(16px)});
+  //  justify-content: flex-start;
+  //  position: relative;
+  //  --height: auto;
+  //
+  //  @include media(md) {
+  //    width: #{rem(264px)};
+  //    padding: #{rem(32px)} #{rem(24px)} #{rem(32px)} #{rem(32px)};
+  //    margin: rem(-8px) 0 rem(-8px) rem(-8px);
+  //    background-color: var(--black-primary);
+  //  }
+  //}
+  //
+  //.scroll {
+  //  overflow: hidden;
+  //  @extend %scrollbar;
+  //  padding: rem(16px);
+  //  border: rem(12px) solid var(--gray-900);
+  //
+  //  hr {
+  //    margin: 0;
+  //  }
+  //
+  //  @include media(md) {
+  //    border-top: rem(12px) solid var(--gray-900);
+  //    border-right: rem(8px) solid var(--gray-900);
+  //    border-bottom: rem(12px) solid var(--gray-900);
+  //    width: rem(400px);
+  //    padding: rem(24px);
+  //    overflow-y: auto;
+  //    --text-align: left;
+  //  }
+  //}
+  //
+  //form {
+  //  display: flex;
+  //  flex-direction: column;
+  //  grid-gap: rem(16px);
+  //
+  //  > .btn-primary {
+  //    margin-top: rem(8px);
+  //  }
+  //}
+  //
+  //.btn-modal-close {
+  //  --top: 0;
+  //  --right: 0;
+  //
+  //  @include media(md) {
+  //    --top: #{rem(-24px)};
+  //    --right: #{-16px};
+  //  }
+  //}
+  //
+  //.btn-primary {
+  //  --width: 100%;
+  //}
+
+}

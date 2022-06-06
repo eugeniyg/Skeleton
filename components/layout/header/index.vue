@@ -45,10 +45,10 @@
   });
   const emit = defineEmits(['login', 'register', 'logout']);
   const layoutStore = useLayoutStore();
-  const userStore = useUserStore();
+  const profileStore = useProfileStore();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav } = layoutStore;
-  const { avatarItems } = storeToRefs(userStore);
+  const { avatarItems } = storeToRefs(profileStore);
   const fakeStore = useFakeStore();
 
   function toggleProfileNav():void {

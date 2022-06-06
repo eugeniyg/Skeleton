@@ -62,7 +62,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
-  import { useAuthApi, useGlobalMethods } from '~/CORE/index';
+  import { useGlobalMethods } from '~/CORE/index';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
   const props = defineProps({
@@ -74,11 +74,10 @@
 
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
-  const { submitRegistrationData } = useAuthApi();
   const { setFormData } = useGlobalMethods();
   const { showModal, closeModal } = useLayoutStore();
-  const userStore = useUserStore();
-  const { registrationFields } = storeToRefs(userStore);
+  const profileStore = useProfileStore();
+  const { registrationFields } = storeToRefs(profileStore);
 
   const mainFields = registrationFields.value.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = registrationFields.value.filter((field) => groupFooterFields.includes(field.name));
@@ -113,15 +112,14 @@
     return undefined;
   };
 
-  const { setToken } = userStore;
+  const { registration } = profileStore;
   const signUp = async ():Promise<void> => {
     v$.value.$reset();
     const validFormData = await v$.value.$validate();
     if (!validFormData) return;
 
     try {
-      const submitResult = await submitRegistrationData(registrationFormData);
-      setToken(submitResult);
+      await registration(registrationFormData);
       closeModal('register');
     } catch (error) {
       if (error.response?.status === 422) {
