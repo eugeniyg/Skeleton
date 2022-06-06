@@ -15,7 +15,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-vue": "^8.7.1",
     "node-sass": "^7.0.1",
-    "nuxt": "latest",
+    "nuxt": "v3.0.0-rc.3",
     "sass": "^1.51.0",
     "sass-loader": "^12.6.0"
   },
