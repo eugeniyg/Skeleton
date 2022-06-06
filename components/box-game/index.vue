@@ -34,7 +34,6 @@
   const emit = defineEmits(['changeMode']);
 
   const { gameCollections } = useGamesStore();
-  console.log(gameCollections);
 </script>
 
 <style lang="scss" src="./style.scss"/>

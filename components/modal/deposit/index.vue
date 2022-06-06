@@ -3,6 +3,7 @@
     v-model="modals.deposit"
     :close="closeModal('deposit')"
     @click="closeModal('deposit')"
+    esc-to-close
   >
     <div class="modal-deposit" @click.stop>
       <div class="container">
