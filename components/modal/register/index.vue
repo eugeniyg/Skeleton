@@ -3,6 +3,7 @@
     v-model="modals.register"
     @closed="closeModal('register')"
     @click="closeModal('register')"
+    esc-to-close
   >
     <div class="modal-register" @click.stop>
       <div class="container">

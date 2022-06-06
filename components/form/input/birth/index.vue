@@ -165,7 +165,6 @@
   const changeInputValue = ():void => {
     const { year, month, day } = selected;
     if (year && month && day) {
-      console.log(`${year}-${month}-${day}`);
       emit('update:value', `${year}-${month}-${day}`);
     }
   };

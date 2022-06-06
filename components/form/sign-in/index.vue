@@ -2,7 +2,7 @@
   <form class="form-sign-in">
     <form-input-text
       v-model:value="authorizationFormData.email"
-      @blur="v$.email.$touch()"
+      @blur="onBlur('email')"
       @focus="loginError = false"
       type="text"
       :is-required="true"
@@ -10,11 +10,12 @@
       name="email"
       placeholder="Enter your email"
       :hint="setError('email')"
+      @submit="login"
     />
 
     <form-input-password
       v-model:value="authorizationFormData.password"
-      @blur="v$.password.$touch()"
+      @blur="onBlur('password')"
       @focus="loginError = false"
       type="password"
       :is-required="true"
@@ -22,11 +23,12 @@
       name="password"
       placeholder="Enter your password"
       :hint="setError('password')"
+      @submit="login"
     />
 
     <atomic-hint v-if="loginError" variant="error" :message="validationMessages.login" />
 
-    <button-base type="primary" size="md" @click="login">Sign up</button-base>
+    <button-base type="primary" size="md" @click="login">Sign in</button-base>
 
     <button-forgot-pass/>
 
@@ -66,7 +68,7 @@
   const authorizationFormData = reactive(setFormData(authorizationFields));
 
   const { getFormRules } = useProjectMethods();
-  const authorizationFormRules = getFormRules(authorizationFields);
+  const authorizationFormRules = getFormRules(authorizationFields, true);
   const serverFormErrors = ref<any>({});
   const loginError = ref<boolean>(false);
   const v$ = useVuelidate(authorizationFormRules, authorizationFormData, { $lazy: true });
@@ -81,6 +83,13 @@
       loginError.value = false;
     }
   });
+
+  const onBlur = (fieldName:string):void => {
+    v$.value[fieldName].$touch();
+    if (serverFormErrors.value[fieldName]) {
+      serverFormErrors.value[fieldName] = undefined;
+    }
+  };
 
   const setError = (fieldName:string):undefined|{ variant: string, message: any } => {
     if (v$.value[fieldName]?.$error) {

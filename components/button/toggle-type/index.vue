@@ -1,7 +1,7 @@
 <template>
-  <button class="btn-toggle-type" @click.prevent="toggle">
+  <span class="btn-toggle-type" @click.prevent="toggle">
     <atomic-icon :id="icon"/>
-  </button>
+  </span>
 </template>
 
 <script setup lang="ts">
