@@ -51,7 +51,7 @@
     },
     hasDemo: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     subTitle: {
       type: String,
@@ -78,11 +78,10 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal } = useLayoutStore();
   const openGame = (isReal: boolean):void => {
-    if (isReal && !isLoggedIn.value) {
+    if (!isLoggedIn.value) {
       showModal('register');
-    } else {
-      router.push(`/games/${props.id}`);
-    }
+    } else if (isReal) router.push(`/games/${props.id}`);
+    else router.push(`/games/${props.id}?demo=true`);
   };
 
   const backgroundImage = computed(() => `background-image:url(/img/cards/card-${getRandomInt(1, 12)}.png)`);

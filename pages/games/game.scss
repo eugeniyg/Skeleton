@@ -11,8 +11,16 @@
       --height-main: 100vh;
     }
 
+    .cards {
+      display: none;
+      margin-top: rem(40px);
+    }
+
     @include media(md) {
       --height-main: auto;
+      .cards {
+        display: grid;
+      }
     }
   }
 

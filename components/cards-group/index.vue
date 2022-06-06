@@ -1,19 +1,24 @@
 <template>
-  <div :class="classes">
+  <div class="cards">
     <atomic-icon v-if="props.titleIcon" :id="props.titleIcon"/>
 
-    <h2 v-if="props.title" class="title">{{ props.title }}</h2>
+    <div v-if="props.identity && props.subTitle" class="titles">
+      <h2 class="title">{{ props.identity }}</h2>
+      <h4 class="sub-title">{{ props.subTitle }}</h4>
+    </div>
+
+    <h2 v-else class="title">{{ props.identity }}</h2>
 
     <button-base v-if="props.showAllBtn" class="btn-show-all" type="ghost">Show all</button-base>
 
     <button-arrows v-if="props.showArrows"/>
 
-    <div v-if="props.items.length" class="items">
+    <div v-if="props.games.length" class="items">
       <slot
-        v-for="(item, itemIndex) in props.items"
-        :key="itemIndex"
+        v-for="game in props.games"
+        :key="game.id"
         name="card"
-        v-bind="item"
+        v-bind="game"
       />
     </div>
   </div>
@@ -21,23 +26,7 @@
 
 <script setup lang="ts">
   const props = defineProps({
-    variant: {
-      type: String,
-      validator: (val:string) => [
-        'favorites',
-        'recently',
-        'hot',
-        'turbo',
-        'providers',
-        'new-relises',
-        'latest-winners',
-        'promotions',
-        'latest',
-        '',
-      ].includes(val),
-      default: '',
-    },
-    items: {
+    games: {
       type: Array,
       default: () => [],
     },
@@ -46,11 +35,19 @@
       validator: (val:string) => [
         'ui-heart', 'hot', 'turbo-games', 'new', 'bonuses', 'ui-history', '',
       ].includes(val),
-      default: 'hot',
+      default: '',
     },
-    title: {
+    id: {
+      type: String,
+      required: true,
+    },
+    identity: {
       type: String,
       default: 'Title',
+    },
+    subTitle: {
+      type: String,
+      required: false,
     },
     showAllBtn: {
       type: Boolean,
@@ -61,7 +58,6 @@
       default: false,
     },
   });
-  const classes = computed(() => (props.variant ? `cards cards-${props.variant}` : 'cards'));
 </script>
 
 <style lang="scss" src="./style.scss"/>

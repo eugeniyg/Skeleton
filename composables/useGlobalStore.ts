@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import { useGlobalApi } from '~/CORE/index';
 import {
- countryInterface, currencyInterface, localeInterface, timeZoneInterface,
+  browserLanguageInterface,
+  countryInterface, currencyInterface, localeInterface, timeZoneInterface,
 } from '@/types/globalDataTypes';
 import { useFieldsStore } from '~/composables/useFieldsStore';
 
@@ -11,6 +12,9 @@ export type globalStoreStateType = {
   countries: countryInterface[],
   validationMessages: any,
   timeZones: timeZoneInterface[],
+  currentLocale: string,
+  isMobile: boolean,
+  browserLanguage: string,
 }
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -20,6 +24,9 @@ export const useGlobalStore = defineStore('globalStore', {
     countries: [],
     validationMessages: {},
     timeZones: [],
+    currentLocale: '',
+    isMobile: false,
+    browserLanguage: 'en',
   } as globalStoreStateType),
 
   actions: {
@@ -29,6 +36,14 @@ export const useGlobalStore = defineStore('globalStore', {
       this.currencies = data;
       const { setOptions } = useFieldsStore();
       setOptions('currency', data);
+    },
+
+    parseUserAgent(agent: string):void {
+      this.isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(agent.toLowerCase());
+    },
+
+    setBrowserLanguage(languages: browserLanguageInterface[]):void {
+      this.browserLanguage = languages[0].code;
     },
 
     async getLocales():Promise<void> {

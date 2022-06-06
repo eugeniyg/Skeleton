@@ -1,13 +1,13 @@
 import { useFetchInstance } from './apiInstance';
 
 const useWalletApi = () => {
-  const getGameCollections = async ():Promise<any> => {
-    const { data } = await useFetchInstance('/api/game/collections');
+  const getAccounts = async ():Promise<any> => {
+    const { data } = await useFetchInstance('/api/wallet/accounts');
     return data;
   };
 
   return {
-    getGameCollections,
+    getAccounts,
   };
 };
 

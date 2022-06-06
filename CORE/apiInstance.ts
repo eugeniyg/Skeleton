@@ -5,7 +5,6 @@ export const useFetchInstance = (url:string, options?:any):any => {
   const newOptions = { ...options, baseURL, 'Content-Type': '' };
 
   const token = appCookie();
-  console.log('---useCookieToken---: ', token.value);
   if (token.value) {
     newOptions.headers = {
       ...options?.headers,

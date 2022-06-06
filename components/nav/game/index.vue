@@ -23,7 +23,7 @@
     },
     {
       icon: 'ui-video-expand',
-      id: 'video-expand',
+      id: 'full-screen',
     },
     {
       icon: 'ui-heart-outline',

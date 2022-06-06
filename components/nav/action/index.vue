@@ -33,14 +33,20 @@
     }
   };
 
+  const toggleFullScreen = ():void => {
+    console.log('Open Full Screen');
+  };
+
+  const toggleFavorite = ():void => {
+    if (pressed.value.includes('favorites')) {
+      pressed.value = [...pressed.value.filter((item) => item !== 'favorites')];
+    } else pressed.value.push('favorites');
+  };
+
   const clickButton = (id:string):void => {
     if (id === 'close') closeGame();
-    // const index = pressed.value.includes(id);
-    // if (!index) {
-    //   pressed.value.push(id);
-    // } else {
-    //   pressed.value = [...pressed.value.filter((item) => item !== id)];
-    // }
+    else if (id === 'full-screen') toggleFullScreen();
+    else if (id === 'favorites') toggleFavorite();
   };
 </script>
 

@@ -1,9 +1,15 @@
 import { defineStore } from 'pinia';
 import { accountInterface } from '~/types/walletTypes';
-import {useProfileApi} from "~/CORE";
+import { useWalletApi } from '~/CORE';
 
 export type walletStateType = {
   accounts: accountInterface[],
+  accountsStatuses: {
+    Active: 1,
+    Inactive: 2,
+    Hidden: 3,
+    Disabled: 4,
+  }
 }
 
 export const useWalletStore = defineStore('walletStore', {
@@ -11,11 +17,17 @@ export const useWalletStore = defineStore('walletStore', {
     accounts: [],
   } as walletStateType),
 
+  getters: {
+    activeAccount():accountInterface {
+      return this.accounts.find((acc) => acc.status === 1);
+    },
+  },
+
   actions: {
-    async getProfileFields():Promise<void> {
-      const { getProfileFields } = useProfileApi();
-      const data = await getProfileFields();
-      this.profileFields = data;
+    async getUserAccounts():Promise<void> {
+      const { getAccounts } = useWalletApi();
+      const data = await getAccounts();
+      this.accounts = data;
     },
   },
 });

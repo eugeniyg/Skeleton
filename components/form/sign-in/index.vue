@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
   import useVuelidate from '@vuelidate/core';
-  import { useGlobalMethods, useAuthApi } from '~/CORE';
+  import { useGlobalMethods } from '~/CORE';
 
   const props = defineProps({
     show: {
@@ -45,7 +45,6 @@
     },
   });
 
-  const { submitLoginData } = useAuthApi();
   const { setFormData } = useGlobalMethods();
   const { validationMessages } = useGlobalStore();
   const { showModal, closeModal } = useLayoutStore();
@@ -92,15 +91,14 @@
     return undefined;
   };
 
-  const { setToken } = useProfileStore();
+  const { logIn } = useProfileStore();
   const login = async ():Promise<void> => {
     v$.value.$reset();
     const validFormData = await v$.value.$validate();
     if (!validFormData) return;
 
     try {
-      const submitResult = await submitLoginData(authorizationFormData);
-      setToken(submitResult);
+      await logIn(authorizationFormData);
       closeModal('signIn');
     } catch (error) {
       if (error.response?.status === 401) {

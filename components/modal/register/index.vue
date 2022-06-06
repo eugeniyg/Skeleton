@@ -4,7 +4,7 @@
     @closed="closeModal('register')"
     @click="closeModal('register')"
   >
-    <div class="modal-register" data-id="register" @click.stop>
+    <div class="modal-register" @click.stop>
       <div class="container">
         <div class="slot">
           <atomic-promo/>
