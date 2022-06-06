@@ -28,7 +28,7 @@ export const useFieldsStore = defineStore('fieldsStore', {
       } else if (optionName === 'country') {
         this.selectOptions[optionName] = options.map((option) => ({
           ...option,
-          value: option.nativeName,
+          value: option.name,
           mask: `/img/flags/${option.code.toLowerCase()}.svg`,
         }));
       } else if (optionName === 'timeZone') {
