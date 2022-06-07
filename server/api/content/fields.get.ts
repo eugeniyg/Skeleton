@@ -80,11 +80,11 @@ export default defineEventHandler(() => ({
     placeholder: '',
   },
   receiveEmailPromo: {
-    label: 'I agree to receive bonus & marketing emails',
+    label: 'Send promos by Email',
     placeholder: '',
   },
   receiveSmsPromo: {
-    label: 'I agree to receive bonus & marketing sms',
+    label: 'Send promos by SMS',
     placeholder: '',
   },
   phone: {
