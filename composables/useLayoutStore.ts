@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-export type layoutStoreStateType = {
+export type LayoutStoreStateType = {
   isUserNavOpen: boolean,
   isDrawerOpen: boolean,
   isCurrencyNavOpen: boolean,
@@ -35,7 +35,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         signIn: 'sign-in',
         deposit: 'deposit',
       },
-  } as layoutStoreStateType),
+  } as LayoutStoreStateType),
 
   actions: {
     openUserNav():void {

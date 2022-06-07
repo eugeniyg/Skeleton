@@ -2,14 +2,21 @@
   <div class="content">
     <div class="header">
       <h1 class="heading">Profile info</h1>
-      <button-base type="secondary" size="md" @click="toggleProfileEdit">
-        <template v-if="isProfileEdit">
-          <atomic-icon id="ui-done"/>Done editing
-        </template>
+      <button-base
+        v-if="!isProfileEdit"
+        type="secondary"
+        size="md"
+        @click="toggleProfileEdit"
+      >
+        <atomic-icon id="ui-edit"/>Edit your profile
 
-        <template v-else>
-          <atomic-icon id="ui-edit"/>Edit your profile
-        </template>
+        <!--        <template v-if="isProfileEdit">-->
+        <!--          <atomic-icon id="ui-done"/>Done editing-->
+        <!--        </template>-->
+
+        <!--        <template v-else>-->
+        <!--          <atomic-icon id="ui-edit"/>Edit your profile-->
+        <!--        </template>-->
       </button-base>
     </div>
 
@@ -74,23 +81,25 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { useProfileApi } from '~/CORE';
-  import { countryInterface } from '~/types/globalDataTypes';
+  import { CountryInterface } from '~/types/globalDataTypes';
 
   const { changePromo } = useProfileApi();
   const profileStore = useProfileStore();
   const { profile, profileFields } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
   const { countries, fieldsContent } = storeToRefs(globalStore);
+  const route = useRoute();
+  const router = useRouter();
 
-  const isProfileEdit = ref<boolean>(false);
+  const isProfileEdit = computed(() => route.query.edit === 'true');
   const userCountryName = computed(() => {
-    const countryObject:countryInterface|undefined = countries.value.find((country) => country.code === profile.value.country);
+    const countryObject:CountryInterface|undefined = countries.value.find((country) => country.code === profile.value.country);
     return countryObject?.nativeName || '';
   });
   const subscriptionFields = computed(() => profileFields.value.filter((field) => field.name === 'receiveSmsPromo' || field.name === 'receiveEmailPromo'));
 
   const toggleProfileEdit = ():void => {
-    isProfileEdit.value = !isProfileEdit.value;
+    router.push({ query: { ...route.query, edit: isProfileEdit.value ? undefined : 'true' } });
   };
 
   const changeSubscription = async (fieldName:string):Promise<void> => {

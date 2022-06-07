@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
 import { useAuthApi, useProfileApi } from '~/CORE/index';
-import { profileInterface } from '~/types/userTypes';
-import { fieldInterface } from '~/types/formTypes';
+import { ProfileInterface } from '~/types/userTypes';
+import { FieldInterface } from '~/types/formTypes';
 import { useWalletStore } from '~/composables/useWalletStore';
 // import {nextTick} from "@vue/runtime-core";
 
-export type profileStoreStateType = {
+export type ProfileStoreStateType = {
   isLoggedIn: boolean,
   avatarItems: {
     label: string,
@@ -13,9 +13,9 @@ export type profileStoreStateType = {
     amount: any,
   },
   sessionId: string,
-  registrationFields: fieldInterface[],
-  profile: profileInterface|undefined,
-  profileFields: fieldInterface[],
+  registrationFields: FieldInterface[],
+  profile: ProfileInterface|undefined,
+  profileFields: FieldInterface[],
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -30,7 +30,7 @@ export const useProfileStore = defineStore('profileStore', {
     profile: undefined,
     registrationFields: [],
     profileFields: [],
-  } as profileStoreStateType),
+  } as ProfileStoreStateType),
 
   actions: {
     setToken(authData:any):void {
@@ -67,7 +67,7 @@ export const useProfileStore = defineStore('profileStore', {
       this.isLoggedIn = true;
     },
 
-    setProfileData(data:profileInterface):void {
+    setProfileData(data:ProfileInterface):void {
       this.profile = data;
     },
 

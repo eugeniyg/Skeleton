@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
-import { accountInterface } from '~/types/walletTypes';
+import { AccountInterface } from '~/types/walletTypes';
 import { useWalletApi } from '~/CORE';
 
-export type walletStateType = {
-  accounts: accountInterface[],
+export type WalletStateType = {
+  accounts: AccountInterface[],
   accountsStatuses: {
     Active: 1,
     Inactive: 2,
@@ -15,10 +15,10 @@ export type walletStateType = {
 export const useWalletStore = defineStore('walletStore', {
   state: () => ({
     accounts: [],
-  } as walletStateType),
+  } as WalletStateType),
 
   getters: {
-    activeAccount():accountInterface {
+    activeAccount():AccountInterface {
       return this.accounts.find((acc) => acc.status === 1);
     },
   },

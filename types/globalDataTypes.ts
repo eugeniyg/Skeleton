@@ -1,11 +1,11 @@
-export interface currencyInterface {
+export interface CurrencyInterface {
   code: string,
   symbol: string,
   type: string
   value?: string,
 }
 
-export interface localeInterface {
+export interface LocaleInterface {
   name: string,
   nativeName: string,
   code: string,
@@ -13,21 +13,21 @@ export interface localeInterface {
   isDefault: boolean
 }
 
-export interface countryInterface {
+export interface CountryInterface {
   name: string,
   nativeName: string,
   code: string,
   value?:string,
 }
 
-export interface timeZoneInterface {
+export interface TimeZoneInterface {
   id: string,
   name: string,
   code?: string,
   value?: string,
 }
 
-export interface browserLanguageInterface {
+export interface BrowserLanguageInterface {
   code: string,
   script: null|string,
   region: undefined|string,

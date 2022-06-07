@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia';
-import { countryInterface, currencyInterface, timeZoneInterface } from '~/types/globalDataTypes';
-import { gameProviderInterface } from '~/types/gameTypes';
+import { CountryInterface, CurrencyInterface, TimeZoneInterface } from '~/types/globalDataTypes';
+import { GameProviderInterface } from '~/types/gameTypes';
 
-export type fieldsStoreStateType = {
+export type FieldsStoreStateType = {
   selectOptions: {
-    currency: currencyInterface[],
-    country: countryInterface[],
-    timeZone: timeZoneInterface[],
-    providers: gameProviderInterface[],
+    currency: CurrencyInterface[],
+    country: CountryInterface[],
+    timeZone: TimeZoneInterface[],
+    providers: GameProviderInterface[],
   },
 }
 
@@ -19,7 +19,7 @@ export const useFieldsStore = defineStore('fieldsStore', {
       timeZone: [],
       providers: [],
     },
-  } as fieldsStoreStateType),
+  } as FieldsStoreStateType),
 
   actions: {
     setOptions(optionName: string, options: any[]):void {

@@ -1,15 +1,15 @@
-export interface validationRuleInterface {
+export interface ValidationRuleInterface {
   id: number,
   rule: string,
   arguments: null|string,
 }
 
-export interface fieldInterface {
+export interface FieldInterface {
   id: number,
   name: string,
   description: string,
   editable: boolean,
   isRequired: boolean,
   value?: any,
-  validationRules: validationRuleInterface[],
+  validationRules: ValidationRuleInterface[],
 }
