@@ -52,6 +52,7 @@
       tagName="div"
       type="primary"
       size="md"
+      :isDisabled="v$.$invalid"
       @click="signUp"
     >Sign up</button-base>
 
@@ -87,7 +88,7 @@
   const { getFormRules } = useProjectMethods();
   const registrationFormRules = getFormRules(registrationFields.value, true);
   const serverFormErrors = ref<any>({});
-  const v$ = useVuelidate(registrationFormRules, registrationFormData, { $lazy: true });
+  const v$ = useVuelidate(registrationFormRules, registrationFormData);
 
   watch(() => props.show, (newValue:boolean) => {
     if (!newValue) {
@@ -114,6 +115,7 @@
 
   const { registration } = profileStore;
   const signUp = async ():Promise<void> => {
+    if (v$.value.$invalid) return;
     v$.value.$reset();
     const validFormData = await v$.value.$validate();
     if (!validFormData) return;

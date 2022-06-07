@@ -28,7 +28,15 @@
 
     <atomic-hint v-if="loginError" variant="error" :message="validationMessages.login" />
 
-    <button-base type="primary" size="md" @click="login">Sign in</button-base>
+    <button-base
+      type="primary"
+      size="md"
+      tagName="div"
+      @click="login"
+      :isDisabled="v$.$invalid"
+    >
+      Sign in
+    </button-base>
 
     <button-forgot-pass/>
 
@@ -71,7 +79,7 @@
   const authorizationFormRules = getFormRules(authorizationFields, true);
   const serverFormErrors = ref<any>({});
   const loginError = ref<boolean>(false);
-  const v$ = useVuelidate(authorizationFormRules, authorizationFormData, { $lazy: true });
+  const v$ = useVuelidate(authorizationFormRules, authorizationFormData);
 
   watch(() => props.show, (newValue:boolean) => {
     if (!newValue) {
@@ -102,6 +110,8 @@
 
   const { logIn } = useProfileStore();
   const login = async ():Promise<void> => {
+    if (v$.value.$invalid) return;
+
     v$.value.$reset();
     const validFormData = await v$.value.$validate();
     if (!validFormData) return;
