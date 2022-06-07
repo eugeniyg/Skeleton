@@ -8,7 +8,8 @@
         v-model:value="profileFormData.email"
         isDisabled
         :hint="emailHint"
-        label="Email Address"
+        :label="fieldsContent.email?.label || ''"
+        :placeholder="fieldsContent.email?.placeholder || ''"
         name="email"
       />
     </div>
@@ -22,9 +23,9 @@
         v-for="field in rowsFields.slice(2 * (n - 1), 2 * (n - 1) + 2)"
         :key="field.name"
         :type="fieldsTypeMap[field.name].type || 'text'"
-        :label="field.description"
+        :label="fieldsContent[field.name]?.label || ''"
         :name="field.name"
-        :placeholder="field.description"
+        :placeholder="fieldsContent[field.name]?.placeholder || ''"
         :isRequired="profileFormRules[field.name]?.hasOwnProperty('required')"
         :options="selectOptions[field.name]"
         :hint="setError(field.name)"
@@ -57,6 +58,9 @@
   const fieldsStore = useFieldsStore();
   const { setFormData } = useGlobalMethods();
   const { changeProfileData } = useProfileApi();
+
+  const globalStore = useGlobalStore();
+  const { fieldsContent } = storeToRefs(globalStore);
 
   const fieldsWithValue = profileFields.map((field) => ({ ...field, value: profile[field.name] }));
   const cleanFields = fieldsWithValue.filter((field) => !hideFields.includes(field.name));

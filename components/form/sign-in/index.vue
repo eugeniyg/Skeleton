@@ -6,9 +6,9 @@
       @focus="loginError = false"
       type="text"
       :is-required="true"
-      label="Email Address"
+      :label="fieldsContent.email?.label || ''"
       name="email"
-      placeholder="Enter your email"
+      :placeholder="fieldsContent.email?.placeholder || ''"
       :hint="setError('email')"
       @submit="login"
     />
@@ -19,9 +19,9 @@
       @focus="loginError = false"
       type="password"
       :is-required="true"
-      label="Enter your password"
+      :label="fieldsContent.password?.label || ''"
       name="password"
-      placeholder="Enter your password"
+      :placeholder="fieldsContent.password?.placeholder || ''"
       :hint="setError('password')"
       @submit="login"
     />
@@ -46,6 +46,7 @@
 
 <script setup lang="ts">
   import useVuelidate from '@vuelidate/core';
+  import { storeToRefs } from 'pinia';
   import { useGlobalMethods } from '~/CORE';
 
   const props = defineProps({
@@ -56,7 +57,8 @@
   });
 
   const { setFormData } = useGlobalMethods();
-  const { validationMessages } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { validationMessages, fieldsContent } = storeToRefs(globalStore);
   const { showModal, closeModal } = useLayoutStore();
   const authorizationFields = [
     {

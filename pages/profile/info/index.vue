@@ -56,7 +56,7 @@
           :value="profile[field.name]"
           @change="changeSubscription(field.name)"
         >
-          {{ field.description }}
+          {{ fieldsContent[field.name]?.label }}
         </form-input-toggle>
 
         <atomic-divider/>
@@ -79,11 +79,12 @@
   const { changePromo } = useProfileApi();
   const profileStore = useProfileStore();
   const { profile, profileFields } = storeToRefs(profileStore);
-  const { countries } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { countries, fieldsContent } = storeToRefs(globalStore);
 
   const isProfileEdit = ref<boolean>(false);
   const userCountryName = computed(() => {
-    const countryObject:countryInterface|undefined = countries.find((country) => country.code === profile.value.country);
+    const countryObject:countryInterface|undefined = countries.value.find((country) => country.code === profile.value.country);
     return countryObject?.nativeName || '';
   });
   const subscriptionFields = computed(() => profileFields.value.filter((field) => field.name === 'receiveSmsPromo' || field.name === 'receiveEmailPromo'));

@@ -1,7 +1,7 @@
 <template>
   <div class="tb-profile">
     <div v-for="field in profileViewFields" :key="field.name" class="row">
-      <div class="th">{{ field.description }}</div>
+      <div class="th">{{ fieldsContent[field.name]?.label || '' }}</div>
 
       <div class="td">
         <!--        <atomic-row-phone v-if="field.name === 'phone'" v-bind="td.props"/>-->
@@ -31,6 +31,9 @@
   const profileStore = useProfileStore();
   const { profileFields, profile } = storeToRefs(profileStore);
   const profileViewFields = profileFields.value.filter((field) => !hideFields.includes(field.name));
+
+  const globalStore = useGlobalStore();
+  const { fieldsContent } = storeToRefs(globalStore);
 </script>
 
 <style lang="scss" src="./style.scss"/>

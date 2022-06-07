@@ -10,9 +10,9 @@
           :key="field.name"
           type="text"
           :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
-          :label="field.description"
+          :label="fieldsContent[field.name]?.label || ''"
           :name="field.name"
-          :placeholder="field.description"
+          :placeholder="fieldsContent[field.name]?.placeholder || ''"
           @blur="v$[field.name]?.$touch()"
           :hint="setError(field.name)"
         />
@@ -24,9 +24,9 @@
         :is="fieldsTypeMap[field.name].component || 'form-input-text'"
         v-model:value="registrationFormData[field.name]"
         :type="fieldsTypeMap[field.name].type || 'text'"
-        :label="field.description"
+        :label="fieldsContent[field.name]?.label || ''"
         :name="field.name"
-        :placeholder="field.description"
+        :placeholder="fieldsContent[field.name]?.placeholder || ''"
         :options="selectOptions[field.name]"
         :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
         :hint="setError(field.name)"
@@ -43,9 +43,7 @@
       @change="v$[field.name]?.$touch()"
       :isError="setError(field.name)"
     >
-      <p v-if="field.name === 'agreements'"><a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a></p>
-      <p v-else-if="field.name === 'receiveEmailPromo'">I agree to receive bonus & marketing emails</p>
-      <p v-else v-html="field.description"/>
+      <p v-html="fieldsContent[field.name]?.label || ''" />
     </form-input-checkbox>
 
     <button-base
@@ -79,6 +77,8 @@
   const { showModal, closeModal } = useLayoutStore();
   const profileStore = useProfileStore();
   const { registrationFields } = storeToRefs(profileStore);
+  const globalStore = useGlobalStore();
+  const { fieldsContent } = storeToRefs(globalStore);
 
   const mainFields = registrationFields.value.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = registrationFields.value.filter((field) => groupFooterFields.includes(field.name));

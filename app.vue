@@ -42,7 +42,7 @@
   import { storeToRefs } from 'pinia';
 
   const {
-    getCurrencies, getLocales, getCountries, getValidationMessages, getCommonData,
+    getCurrencies, getLocales, getCountries, getValidationMessages, getCommonData, getFieldsContent,
   } = useGlobalStore();
   const { getRegistrationFields } = useProfileStore();
   const { getGameProviders, getGameCollections } = useGamesStore();
@@ -53,6 +53,7 @@
   useAsyncData('collections', getGameCollections);
   useAsyncData('providers', getGameProviders);
   useLazyAsyncData('validationMessages', getValidationMessages);
+  useLazyAsyncData('fieldsContent', getFieldsContent);
   useLazyAsyncData('commonData', getCommonData);
 
   const layoutStore = useLayoutStore();
