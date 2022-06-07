@@ -1,4 +1,4 @@
-export interface profileInterface {
+export interface ProfileInterface {
   address: string|null,
   agreedTc: string|null,
   birthPlace: string|null,

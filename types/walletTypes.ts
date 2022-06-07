@@ -1,4 +1,4 @@
-export interface accountInterface {
+export interface AccountInterface {
   id: string,
   playerId: string,
   formatBalance: {

@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia';
 import { useGlobalApi } from '~/CORE/index';
 import {
-  browserLanguageInterface,
-  countryInterface, currencyInterface, localeInterface, timeZoneInterface,
+  BrowserLanguageInterface,
+  CountryInterface, CurrencyInterface, LocaleInterface, TimeZoneInterface,
 } from '@/types/globalDataTypes';
 import { useFieldsStore } from '~/composables/useFieldsStore';
 
-export type globalStoreStateType = {
-  currencies: currencyInterface[],
-  locales: localeInterface[],
-  countries: countryInterface[],
+export type GlobalStoreStateType = {
+  currencies: CurrencyInterface[],
+  locales: LocaleInterface[],
+  countries: CountryInterface[],
   validationMessages: any,
-  timeZones: timeZoneInterface[],
+  timeZones: TimeZoneInterface[],
   currentLocale: string,
   isMobile: boolean,
   browserLanguage: string,
@@ -29,7 +29,7 @@ export const useGlobalStore = defineStore('globalStore', {
     isMobile: false,
     browserLanguage: 'en',
     fieldsContent: {},
-  } as globalStoreStateType),
+  } as GlobalStoreStateType),
 
   actions: {
     async getCurrencies():Promise<void> {
@@ -44,7 +44,7 @@ export const useGlobalStore = defineStore('globalStore', {
       this.isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(agent.toLowerCase());
     },
 
-    setBrowserLanguage(languages: browserLanguageInterface[]):void {
+    setBrowserLanguage(languages: BrowserLanguageInterface[]):void {
       this.browserLanguage = languages[0].code;
     },
 

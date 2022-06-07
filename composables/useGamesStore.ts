@@ -1,18 +1,18 @@
 import { defineStore } from 'pinia';
 import { useGamesApi } from '~/CORE/index';
-import { collectionInterface, gameProviderInterface } from '~/types/gameTypes';
+import { CollectionInterface, GameProviderInterface } from '~/types/gameTypes';
 import { useFieldsStore } from '~/composables/useFieldsStore';
 
-export type gamesStoreStateType = {
-  gameProviders: gameProviderInterface[],
-  gameCollections: collectionInterface[],
+export type GamesStoreStateType = {
+  gameProviders: GameProviderInterface[],
+  gameCollections: CollectionInterface[],
 }
 
 export const useGamesStore = defineStore('gamesStore', {
   state: () => ({
     gameProviders: [],
     gameCollections: [],
-  } as gamesStoreStateType),
+  } as GamesStoreStateType),
 
   actions: {
     async getGameProviders():Promise<void> {

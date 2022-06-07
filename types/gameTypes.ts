@@ -1,4 +1,4 @@
-export interface gameInterface {
+export interface GameInterface {
   id: string,
   identity: string,
   name: string,
@@ -9,34 +9,34 @@ export interface gameInterface {
   screenWidthRatio: number|null
 }
 
-export interface collectionInterface {
+export interface CollectionInterface {
   id: string,
   identity: string,
-  games: gameInterface[]
+  games: GameInterface[]
 }
 
-export interface gameProviderInterface {
+export interface GameProviderInterface {
   id: string,
   identity: string,
   code?: string,
   value?: string,
 }
 
-export interface paginationMetaInterface {
+export interface PaginationMetaInterface {
   page: number,
   perPage: number,
   totalPages: number,
   totalRows: number,
 }
 
-export interface gamesResponseInterface {
-  data: gameInterface[],
-  meta:paginationMetaInterface,
+export interface GamesResponseInterface {
+  data: GameInterface[],
+  meta: PaginationMetaInterface,
 }
 
-export interface gameInfoInterface extends gameInterface, gameProviderInterface {}
+export interface GameInfoInterface extends GameInterface, GameProviderInterface {}
 
-export interface gameStartInterface {
+export interface GameStartInterface {
   accountId: string,
   lobbyUrl: string,
   locale: string,

@@ -26,7 +26,7 @@
 <script setup lang="ts">
   import { useGamesApi } from '~/CORE/index';
   import {
-    collectionInterface, gameInterface, gamesResponseInterface, paginationMetaInterface,
+    CollectionInterface, GameInterface, GamesResponseInterface, PaginationMetaInterface,
   } from '~/types/gameTypes';
 
   const { gameCollections } = useGamesStore();
@@ -34,18 +34,18 @@
   const route = useRoute();
   const router = useRouter();
 
-  const activeCollection = ref<collectionInterface>(gameCollections.find((collection) => collection.id === route.query.category));
+  const activeCollection = ref<CollectionInterface>(gameCollections.find((collection) => collection.id === route.query.category));
   const icons = ['hot', 'slots', 'table-games', 'new', 'turbo-games', 'live-casino'];
   const iconIndex = computed(() => gameCollections.findIndex((collection) => collection.id === route.query.category));
 
   const currentProvider = ref<any>(route.query.provider || 'all');
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
-  const gameItems = ref<gameInterface[]>([]);
-  const pageMeta = ref<paginationMetaInterface>();
+  const gameItems = ref<GameInterface[]>([]);
+  const pageMeta = ref<PaginationMetaInterface>();
 
   const { getFilteredGames } = useGamesApi();
-  const getItems = async ():Promise<gamesResponseInterface> => {
+  const getItems = async ():Promise<GamesResponseInterface> => {
     const params:any = { page: loadPage.value };
     if (activeCollection.value?.id) params.collectionId = activeCollection.value.id;
     if (currentProvider.value !== 'all') params.providerId = currentProvider.value;
@@ -55,7 +55,7 @@
     return response;
   };
 
-  const setItems = (response: gamesResponseInterface, more?: boolean):void => {
+  const setItems = (response: GamesResponseInterface, more?: boolean):void => {
     gameItems.value = more ? gameItems.value.concat(response.data) : response.data;
     pageMeta.value = response.meta;
   };

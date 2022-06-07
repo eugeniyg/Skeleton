@@ -33,7 +33,14 @@
     </div>
 
     <div class="actions">
-      <button-base type="primary" size="md" @click="changePersonalData">Save changes</button-base>
+      <button-base
+        type="primary"
+        size="md"
+        :isDisabled="v$.$invalid"
+        @click="changePersonalData"
+      >
+        Save changes
+      </button-base>
       <button-base type="ghost" size="md" @click.prevent="emit('toggle-profile-edit')">Cancel</button-base>
     </div>
 
@@ -79,7 +86,7 @@
   const { getFormRules } = useProjectMethods();
   const profileFormRules = getFormRules(cleanFields);
   const serverFormErrors = ref<any>({});
-  const v$ = useVuelidate(profileFormRules, profileFormData, { $lazy: true });
+  const v$ = useVuelidate(profileFormRules, profileFormData);
 
   const setError = (fieldName:string):undefined|{ variant: string, message: any } => {
     if (v$.value[fieldName]?.$error) {
@@ -91,6 +98,7 @@
   };
 
   const changePersonalData = async ():Promise<void> => {
+    if (v$.value.$invalid) return;
     v$.value.$reset();
     const validFormData = await v$.value.$validate();
     if (!validFormData) return;
