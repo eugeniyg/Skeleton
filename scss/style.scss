@@ -2,7 +2,7 @@
 @use "ds/variables";
 
 :root {
-  --container-max-width: #{rem(1024px)};
+  --container-max-width: #{rem(2264px)};
   @each $color, $val in colors.$colors {
     --#{$color}: #{$val};
   }
