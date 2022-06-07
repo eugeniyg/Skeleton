@@ -1,4 +1,4 @@
-.form-join {
+.form-sign-in {
   display: grid;
   grid-row-gap: rem(16px);
 
@@ -7,8 +7,10 @@
   }
 
   .btn-primary {
-    --width: 100%;
-    //--bg: var(--yellow-600);
-    //--shadow: inset 0 3px 0 #B07B00;
+    --width: 100% !important;
+
+    &.size-md {
+      --padding: #{rem(11px) rem(24px)};
+    }
   }
 }
