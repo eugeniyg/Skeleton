@@ -169,22 +169,22 @@
     }
   };
 
-  const onInputYear = (e):void => {
-    selected.year = e.value;
+  const onInputYear = (year):void => {
+    selected.year = year;
     createDays();
     handleErrors();
     changeInputValue();
   };
 
-  const onInputMonth = (e):void => {
-    selected.month = e.value;
+  const onInputMonth = (month):void => {
+    selected.month = month;
     createDays();
     handleErrors();
     changeInputValue();
   };
 
-  const onInputDays = (e):void => {
-    selected.day = e.value;
+  const onInputDays = (day):void => {
+    selected.day = day;
     errorDay.value = undefined;
     hintProps.value = undefined;
     changeInputValue();
