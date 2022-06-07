@@ -83,7 +83,7 @@
   const valueObject = ref<any>('');
 
   if (props.value) {
-    valueObject.value = props.options.find((option:any) => option.code === props.value);
+    valueObject.value = props.options.find((option:any) => option.code === props.value) || {};
   }
 
   const emit = defineEmits(['input', 'focus', 'update:value']);
