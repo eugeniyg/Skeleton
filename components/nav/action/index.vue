@@ -34,7 +34,14 @@
   };
 
   const toggleFullScreen = ():void => {
-    console.log('Open Full Screen');
+    const elem:any = document.querySelector('.box-game .container');
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen();
+    }
   };
 
   const toggleFavorite = ():void => {
