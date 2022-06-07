@@ -15,6 +15,7 @@ export type globalStoreStateType = {
   currentLocale: string,
   isMobile: boolean,
   browserLanguage: string,
+  fieldsContent: any,
 }
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -27,6 +28,7 @@ export const useGlobalStore = defineStore('globalStore', {
     currentLocale: '',
     isMobile: false,
     browserLanguage: 'en',
+    fieldsContent: {},
   } as globalStoreStateType),
 
   actions: {
@@ -70,6 +72,10 @@ export const useGlobalStore = defineStore('globalStore', {
 
     async getValidationMessages():Promise<void> {
       this.validationMessages = await $fetch('/api/content/validation-message');
+    },
+
+    async getFieldsContent():Promise<void> {
+      this.fieldsContent = await $fetch('/api/content/fields');
     },
   },
 });

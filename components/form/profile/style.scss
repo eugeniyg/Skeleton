@@ -7,7 +7,13 @@
     grid-gap: rem(24px);
     flex-direction: var(--flex-direction, column);
 
+    &:first-child {
+      display: flex;
+    }
+
     @include media(l) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       --flex-direction: row;
     }
   }
