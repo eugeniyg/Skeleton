@@ -57,6 +57,10 @@
       type: Boolean,
       default: false,
     },
+    hint: {
+      type: Object,
+      required: false,
+    },
   });
 
   const days = ref<string[]>([]);
@@ -98,6 +102,15 @@
       message,
     };
   };
+
+  watch(() => props.hint, (newValue:any) => {
+    if (newValue) {
+      showError(newValue.message);
+      errorDay.value = { variant: 'error' };
+      errorMonth.value = { variant: 'error' };
+      errorYear.value = { variant: 'error' };
+    }
+  });
 
   const createDays = ():void => {
     const { year, month } = selected;
@@ -161,11 +174,12 @@
     }
   };
 
-  const emit = defineEmits(['update:value']);
+  const emit = defineEmits(['update:value', 'blur']);
   const changeInputValue = ():void => {
     const { year, month, day } = selected;
     if (year && month && day) {
       emit('update:value', `${year}-${month}-${day}`);
+      emit('blur', `${year}-${month}-${day}`);
     }
   };
 
