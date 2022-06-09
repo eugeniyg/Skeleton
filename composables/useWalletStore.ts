@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { AccountInterface } from '~/types/walletTypes';
+import { AccountInterface, AccountRequestInterface } from '~/types/walletTypes';
 import { useWalletApi } from '~/CORE';
 
 export type WalletStateType = {
@@ -27,6 +27,24 @@ export const useWalletStore = defineStore('walletStore', {
     async getUserAccounts():Promise<void> {
       const { getAccounts } = useWalletApi();
       const data = await getAccounts();
+      this.accounts = data;
+    },
+
+    async createAccount(currency: string):Promise<void> {
+      const { addAccount } = useWalletApi();
+      const data = await addAccount({ currency });
+      this.accounts = data;
+    },
+
+    async switchAccount(switchData: AccountRequestInterface):Promise<void> {
+      const { switchActiveAccount } = useWalletApi();
+      const data = await switchActiveAccount(switchData);
+      this.accounts = data;
+    },
+
+    async hideAccount(hideData: AccountRequestInterface):Promise<void> {
+      const { hideWalletAccount } = useWalletApi();
+      const data = await hideWalletAccount(hideData);
       this.accounts = data;
     },
   },

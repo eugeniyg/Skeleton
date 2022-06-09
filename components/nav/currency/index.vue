@@ -2,18 +2,20 @@
   <teleport to="body">
     <div class="nav-currency" @mouseleave="close">
       <div class="header">
-        <button-base
-          v-for="{id, title} in navItems"
-          :key="id"
-          :id="id"
-          tag-name="button"
-          type="ghost"
-          size="sm"
-          :is-active="selected === id"
-          @click="select(id)"
-        >
-          {{ title }}
-        </button-base>
+        <template v-if="cryptoCurrencies.length">
+          <button-base
+            v-for="{id, title} in navItems"
+            :key="id"
+            :id="id"
+            tag-name="button"
+            type="ghost"
+            size="sm"
+            :is-active="selected === id"
+            @click="select(id)"
+          >
+            {{ title }}
+          </button-base>
+        </template>
       </div>
 
       <div class="content">
@@ -22,6 +24,7 @@
             v-for="currency in selectedItems"
             :key="currency.code"
             class="item"
+            @click="addCurrency(currency)"
           >
             <img class="img" :src="`/img/currency/${currency.type === 'crypto' ? '1.png' : '2.png'}`" />
             <span class="title">{{ currency.name }}</span>
@@ -29,13 +32,14 @@
           </div>
         </div>
       </div>
-      <button-base type="primary" size="md">Add currency</button-base>
     </div>
   </teleport>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { CurrencyInterface } from '~/types/globalDataTypes';
+  import { useWalletStore } from '~/composables/useWalletStore';
 
   const navItems = [
     {
@@ -47,27 +51,37 @@
       title: 'Crypto',
     },
   ];
+
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
   const { accounts } = storeToRefs(walletStore);
   const { currencies } = storeToRefs(globalStore);
-  const accountsCurrency = accounts.value.map((account) => {
+
+  const accountsCurrency = computed(() => accounts.value.map((account) => {
     const accountCurrency = currencies.value.find((currency) => {
       if (!currency.subCurrencies.length) {
         return currency.code === account.formatBalance.currency;
       }
-      return currency.subCurrencies.some((sub) => sub.code === account.formatBalance.currency);
+      return currency.code === account.formatBalance.currency || currency.subCurrencies.some((sub) => sub.code === account.formatBalance.currency);
     });
     return accountCurrency.code;
-  });
-  const filteredCurrencies = currencies.value.filter((currency) => !accountsCurrency.includes(currency.code));
-  const cryptoCurrencies = filteredCurrencies.filter((currency) => currency.type === 'crypto');
+  }));
+
+  const filteredCurrencies = computed(() => currencies.value.filter((currency) => !accountsCurrency.value.includes(currency.code)));
+  const cryptoCurrencies = computed(() => filteredCurrencies.value.filter((currency) => currency.type === 'crypto'));
 
   const selected = ref<string>('all');
+
+  const emit = defineEmits(['toggleNavEmpty']);
   const selectedItems = computed(() => {
-    if (selected.value === 'all') return filteredCurrencies;
-    return cryptoCurrencies;
+    if (!filteredCurrencies.value.length) {
+      emit('toggleNavEmpty', true);
+    } else emit('toggleNavEmpty', false);
+
+    if (selected.value === 'all' || !cryptoCurrencies.value.length) return filteredCurrencies.value;
+    return cryptoCurrencies.value;
   });
+
   const select = (id:string):void => {
     selected.value = id;
   };
@@ -75,6 +89,12 @@
   const { closeCurrencyNav } = useLayoutStore();
   const close = ():void => {
     closeCurrencyNav();
+  };
+
+  const { createAccount } = useWalletStore();
+  const addCurrency = async (currency:CurrencyInterface):Promise<void> => {
+    await createAccount(currency.code);
+    close();
   };
 </script>
 
