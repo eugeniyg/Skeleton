@@ -47,7 +47,7 @@
   };
 
   watch(() => isLoggedIn.value, (newValue:boolean) => {
-    if (newValue && !isDemo.value) {
+    if (newValue) {
       startGame();
     }
   });
