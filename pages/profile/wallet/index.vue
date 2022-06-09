@@ -12,18 +12,30 @@
       </button-base>
     </div>
 
-    <nav-currency/>
-    <card-wallet :is-active="true"/>
-    <card-wallet/>
+    <client-only>
+      <nav-currency/>
+    </client-only>
+
+    <card-wallet
+      v-for="account in accounts"
+      :key="account.id"
+      v-bind="account"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
+  const walletStore = useWalletStore();
+  const { accounts } = storeToRefs(walletStore);
   const layoutStore = useLayoutStore();
   const { isCurrencyNavOpen } = storeToRefs(layoutStore);
   const { openCurrencyNav, closeCurrencyNav } = layoutStore;
+
+  const { currencies } = useGlobalStore();
+  console.log(accounts.value);
+  console.log(currencies);
 
   const openCurrNav = (e:any):void => {
     openCurrencyNav();

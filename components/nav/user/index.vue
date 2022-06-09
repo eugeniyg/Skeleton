@@ -31,7 +31,7 @@
         {
           icon: 'ui-wallet',
           title: 'Wallet',
-          url: '/user-profile/wallet',
+          url: '/profile/wallet',
         },
         {
           icon: 'ui-bonus',

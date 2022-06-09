@@ -12,7 +12,7 @@
     <nav-game/>
     <panel-mode @changeMode="emit('changeMode')"/>
 
-    <cards-group v-bind="gameCollections[0]" showArrows subTitle="The best games for you">
+    <cards-group v-bind="gameCollections[7]" showArrows subTitle="The best games for you">
       <template v-slot:card="item">
         <card-base v-bind="item"/>
       </template>

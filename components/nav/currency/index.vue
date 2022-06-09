@@ -36,6 +36,8 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const navItems = [
     {
       id: 'all-currency',
@@ -46,92 +48,11 @@
       title: 'Crypto',
     },
   ];
-  const items = {
-    'all-currency': [
-      {
-        id: 'NZD',
-        src: '/currency/1.png',
-        title: 'New Zealand dollar',
-      },
-      {
-        id: 'NZD',
-        src: '/currency/2.png',
-        title: 'Brazilian Real',
-      },
-      {
-        id: 'BTC',
-        src: '/currency/1.png',
-        title: 'Bitcoin cash',
-      },
-      {
-        id: 'XRP',
-        src: '/currency/2.png',
-        title: 'Ripple',
-      },
-      {
-        id: 'NZD',
-        src: '/currency/1.png',
-        title: 'Canadian Dollar',
-      },
-      {
-        id: 'ETH',
-        src: '/currency/2.png',
-        title: 'Ethereum ',
-      },
-      {
-        id: 'BTC',
-        src: '/currency/1.png',
-        title: 'Bitcoin cash',
-      },
-      {
-        id: 'XRP',
-        src: '/currency/2.png',
-        title: 'Ripple',
-      },
-      {
-        id: 'NZD',
-        src: '/currency/1.png',
-        title: 'Canadian Dollar',
-      },
-      {
-        id: 'ETH',
-        src: '/currency/2.png',
-        title: 'Ethereum ',
-      },
-    ],
-    crypto: [
-      {
-        id: 'BTC',
-        src: '/currency/1.png',
-        title: 'Bitcoin cash',
-      },
-      {
-        id: 'XRP',
-        src: '/currency/2.png',
-        title: 'Ripple',
-      },
-      {
-        id: 'NZD',
-        src: '/currency/1.png',
-        title: 'Canadian Dollar',
-      },
-      {
-        id: 'XRP',
-        src: '/currency/2.png',
-        title: 'Ripple',
-      },
-      {
-        id: 'NZD',
-        src: '/currency/1.png',
-        title: 'Canadian Dollar',
-      },
-      {
-        id: 'ETH',
-        src: '/currency/2.png',
-        title: 'Ethereum ',
-      },
-    ],
-  };
+  const walletStore = useWalletStore();
+  const globalStore = useGlobalStore();
+  const { accounts } = storeToRefs(walletStore);
+  const { currencies } = storeToRefs(globalStore);
+  
   const selected = ref<string>('all-currency');
 
   const selectedItems = computed(() => items[selected.value]);

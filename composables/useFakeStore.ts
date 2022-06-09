@@ -1,4 +1,171 @@
 export const useFakeStore = () => {
+  const sliders = {
+    main: [
+      {
+        image: {
+          source: [
+            {
+              media: '(max-width: 360px)',
+              src: '/sliders/main/1/328.png',
+            },
+            {
+              media: '(max-width: 528px)',
+              src: '/sliders/main/1/464.png',
+            },
+            {
+              media: '(max-width: 768px)',
+              src: '/sliders/main/1/704.png',
+            },
+            {
+              media: '(max-width: 1024px)',
+              src: '/sliders/main/1/944.png',
+            },
+            {
+              media: '(max-width: 2264px)',
+              src: '/sliders/main/1/3776.png',
+            },
+          ],
+          src: '/sliders/main/1/944.png',
+        },
+        title: '<h4>Welcome package <br> Get 5 BTC + 300 FS</h4>',
+        actions: {
+          primary: {
+            title: 'Get bonus',
+            href: '#',
+          },
+          // secondary: {
+          //   title: 'Secondary',
+          //   href: '#'
+          // },
+        },
+      },
+      {
+        image: {
+          source: [
+            {
+              media: '(max-width: 360px)',
+              src: '/sliders/main/2/328.png',
+            },
+            {
+              media: '(max-width: 528px)',
+              src: '/sliders/main/2/464.png',
+            },
+            {
+              media: '(max-width: 768px)',
+              src: '/sliders/main/2/704.png',
+            },
+            {
+              media: '(max-width: 1024px)',
+              src: '/sliders/main/2/944.png',
+            },
+            {
+              media: '(max-width: 2264px)',
+              src: '/sliders/main/2/3776.png',
+            },
+          ],
+          src: '/sliders/main/2/944.png',
+        },
+        title: '<h5>Choose the safest crypto casino</h5>',
+        list: [
+          'Provably fair slots & games;',
+          '24/7 Live Chat Support;',
+          'Privacy and security.',
+        ],
+        actions: {
+          primary: {
+            title: 'Get bonus',
+            href: '#',
+          },
+          // secondary: {
+          //   title: 'Secondary',
+          //   href: '#'
+          // },
+        },
+      },
+      {
+        image: {
+          source: [
+            {
+              media: '(max-width: 360px)',
+              src: '/sliders/main/3/328.png',
+            },
+            {
+              media: '(max-width: 528px)',
+              src: '/sliders/main/3/464.png',
+            },
+            {
+              media: '(max-width: 768px)',
+              src: '/sliders/main/3/704.png',
+            },
+            {
+              media: '(max-width: 1024px)',
+              src: '/sliders/main/3/944.png',
+            },
+            {
+              media: '(max-width: 2264px)',
+              src: '/sliders/main/3/3776.png',
+            },
+          ],
+          src: '/sliders/main/3/944.png',
+        },
+        title: '<h5>Enjoy fast games on <br>Slotsbet.</h5>',
+        actions: {
+          primary: {
+            title: 'Play now',
+            href: '#',
+          },
+          // secondary: {
+          //   title: 'Secondary',
+          //   href: '#'
+          // },
+        },
+      },
+      {
+        image: {
+          source: [
+            {
+              media: '(max-width: 360px)',
+              src: '/sliders/main/4/328.png',
+            },
+            {
+              media: '(max-width: 528px)',
+              src: '/sliders/main/4/464.png',
+            },
+            {
+              media: '(max-width: 768px)',
+              src: '/sliders/main/4/704.png',
+            },
+            {
+              media: '(max-width: 1024px)',
+              src: '/sliders/main/4/944.png',
+            },
+            {
+              media: '(max-width: 2264px)',
+              src: '/sliders/main/4/3776.png',
+            },
+          ],
+          src: '/sliders/main/4/944.png',
+        },
+        title: '<h5>Get bonuses every week</h5>',
+        list: [
+          'Provably fair slots & games;',
+          '24/7 Live Chat Support;',
+          'Privacy and security.',
+        ],
+        actions: {
+          primary: {
+            title: 'Get bonus',
+            href: '#',
+          },
+          // secondary: {
+          //   title: 'Secondary',
+          //   href: '#'
+          // },
+        },
+      },
+
+    ],
+  };
   const cards = [
     {
       variant: 'hot',
@@ -904,5 +1071,6 @@ export const useFakeStore = () => {
     items,
     selects,
     menu,
+    sliders,
   };
 };

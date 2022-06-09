@@ -1,16 +1,36 @@
 <template>
   <div class="promo-card">
-    <img src="~/assets/img/slides/promo.png"/>
-    <div class="actions">
-      <div class="title">{{ props.title }}</div>
-      <div class="sub-title">{{ props.subTitle }}</div>
-      <button-base v-if="props.actionBtn.show" type="primary" size="md">{{ props.actionBtn.text }}</button-base>
+    <picture>
+      <source
+        v-for="({media, src}, index) in props.image.source"
+        :key="index"
+        :media="media"
+        :srcset="`/img${src}`"
+      />
+      <img :src="`/img${props.image.src}`" />
+    </picture>
+
+    <div class="info">
+      <div class="title" v-if="props.title" v-html="props.title"/>
+
+      <ul class="list" v-if="props.list.length">
+        <li class="item" v-for="(item, itemIndex) in props.list" :key="itemIndex">{{ item }}</li>
+      </ul>
+
+      <div class="actions" v-if="props.actions">
+        <button-base v-if="props.actions.primary" type="primary" size="md">{{ props.actions.primary.title }}</button-base>
+        <button-base v-if="props.actions.secondary" type="secondary" size="md">{{ props.actions.secondary.title }}</button-base>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   const props = defineProps({
+    image:{
+      type: Object,
+      required: true,
+    },
     title: {
       type: String,
       default: 'Play over 3000 provably fair games',
@@ -19,12 +39,13 @@
       type: String,
       default: 'Win big by choosing the correct side. Pick a side and let luck decide!',
     },
-    actionBtn: {
+    list: {
+      type: Array,
+      default: () => [],
+    },
+    actions: {
       type: Object,
-      default: () => ({
-        show: true,
-        text: 'More information',
-      }),
+      required: false,
     },
   });
 </script>

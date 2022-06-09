@@ -1,5 +1,7 @@
 .promo-card {
-  display: grid;
+  display: block;
+  width: 100%;
+  position: relative;
 
   img {
     grid-area: layer;
@@ -9,34 +11,86 @@
   }
 
   .title {
-    @include upd-font($heading-4);
     color: var(--white);
     text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      padding: 0;
+      @include font($heading-4);
+      @include upd-font($heading-4);
+
+      @include media(xs) {
+        @include upd-font($heading-5);
+      }
+
+      @include media(sm) {
+        @include upd-font($heading-7);
+      }
+
+      @include media(md) {
+        @include upd-font($heading-8);
+      }
+    }
   }
 
-  .sub-title {
-    @include font($heading-3);
-    color: var(--white);
-
-    display: none; // this is default size
-  }
-
-  .actions {
+  .info {
+    position: absolute;
     @extend %flex-column;
-    grid-area: layer;
     align-items: flex-start;
     justify-content: center;
     text-align: left;
-
-    grid-row-gap: var(--row-gap, 0);
+    top: 0;
+    bottom: 0;
+    grid-row-gap: var(--row-gap, #{rem(8px)});
     width: var(--width, 70%);
     padding: var(--padding, #{0 0 0 rem(24px)});
+
+    @include media(xs) {
+      --padding: #{0 0 0 rem(32px)}
+    }
+
+    @include media(sm) {
+      --padding: #{0 0 0 rem(40px)}
+    }
+
+    @include media(md) {
+      --padding: #{0 0 0 rem(56px)}
+    }
+
   }
 
-  .btn-primary {
-    margin-top: rem(12px);
+  .list {
+    color: var(--white);
+    display: var(--display, none);
+    flex-direction: column;
+    list-style-type: disc;
+    padding: 0 0 0 rem(16px);
+    grid-gap: rem(2px);
 
+    .item {
+      @include font($heading-3);
+      text-decoration: none;
+    }
+
+    @include media(sm) {
+      --display: flex;
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    grid-column-gap: rem(8px);
+    margin-top: rem(8px);
+  }
+
+  .btn-primary, .btn-secondary {
     @include upd-font($heading-2);
-    --padding: #{rem(7px) rem(20px)};
+    --padding: #{rem(11px) rem(24px)};
+
+    @include media(md) {
+      --padding: #{rem(17px) rem(40px)};
+    }
   }
 }

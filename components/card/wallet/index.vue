@@ -1,52 +1,67 @@
 <template>
-  <div class="card-wallet" :class="{'is-active': active}">
+  <div class="card-wallet" :class="{'is-active': isActive}">
     <div class="content">
-      <div class="title">{{ title }}</div>
+      <div class="title">{{ currencyName }}</div>
 
-      <form-input-toggle name="toggle" :is-checked="active" @change="select">
+      <form-input-toggle v-if="!isActive" name="toggle" :value="false">
         Use currency
       </form-input-toggle>
 
       <div class="amount">
-        <span class="amount">{{ balance.amount }}</span>
-        <span class="currency">{{ balance.currency }}</span>
+        <span class="amount">{{ props.formatBalance.amount }}</span>
+        <span class="currency">{{ props.formatBalance.currency }}</span>
       </div>
 
-      <button-base class="hide-currency" type="ghost" size="xs">Hide currency</button-base>
+      <button-base
+        v-if="showHideCurrencyButton"
+        class="hide-currency"
+        type="ghost"
+        size="xs"
+      >
+        Hide currency
+      </button-base>
 
-      <template v-if="active">
-        <div class="actions">
-          <button-base type="primary" size="md">Deposit</button-base>
-          <button-base type="secondary" size="md">Withdraw</button-base>
-        </div>
-      </template>
+      <div v-if="isActive" class="actions">
+        <button-base type="primary" size="md">Deposit</button-base>
+        <button-base type="secondary" size="md">Withdraw</button-base>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   const props = defineProps({
-    title: {
-      type: String,
-      default: 'Bitcoin (BTC)',
-    },
-    balance: {
+    formatBalance: {
       type: Object,
-      default: () => ({
-        currency: 'uBTC',
-        amount: '0.00000000',
-      }),
+      required: true,
     },
-    isActive: {
-      type: Boolean,
-      default: false,
+    id: {
+      type: String,
+      required: true,
+    },
+    playerId: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: Number,
+      required: true,
     },
   });
 
-  const active = ref<boolean>(props.isActive);
-  const select = ():void => {
-    active.value = !active.value;
-  };
+  const { currencies } = useGlobalStore();
+
+  const isActive = computed(() => props.status === 1);
+  const showHideCurrencyButton = computed(() => Number(props.formatBalance.amount) === 0 && !isActive);
+  const currencyName = computed(() => {
+    const currentCurrency = currencies.find((curr) => {
+      if (!curr.subCurrencies.length) {
+        return curr.code === props.formatBalance.currency;
+      }
+      return curr.subCurrencies.some((sub) => sub.code === props.formatBalance.currency);
+    });
+    return `${currentCurrency.name} (${currentCurrency.code})`;
+  });
 </script>
 
 <style lang="scss" src="./style.scss"/>

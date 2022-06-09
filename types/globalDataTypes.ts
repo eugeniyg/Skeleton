@@ -2,6 +2,9 @@ export interface CurrencyInterface {
   code: string,
   symbol: string,
   type: string
+  name: string,
+  subunitToUnit: number,
+  subCurrencies?: CurrencyInterface[],
   value?: string,
 }
 
