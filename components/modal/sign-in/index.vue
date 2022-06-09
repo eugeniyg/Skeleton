@@ -2,7 +2,6 @@
   <vue-final-modal
     v-model="modals.signIn"
     @click="closeModal('signIn')"
-    @closed="closeModal('signIn')"
     esc-to-close
   >
     <div class="modal-sign-in" @click.stop>

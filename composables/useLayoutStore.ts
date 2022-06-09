@@ -5,7 +5,6 @@ export type LayoutStoreStateType = {
   isDrawerOpen: boolean,
   isCurrencyNavOpen: boolean,
   isDrawerCompact: boolean,
-  showRegisterModal: boolean,
   modals: {
     register: boolean,
     signIn: boolean,
@@ -24,7 +23,6 @@ export const useLayoutStore = defineStore('layoutStore', {
       isDrawerOpen: false,
       isCurrencyNavOpen: false,
       isDrawerCompact: false,
-      showRegisterModal: false,
       modals: {
         register: false,
         signIn: false,
