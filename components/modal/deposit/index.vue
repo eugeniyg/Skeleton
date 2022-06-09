@@ -1,7 +1,6 @@
 <template>
   <vue-final-modal
     v-model="modals.deposit"
-    :close="closeModal('deposit')"
     @click="closeModal('deposit')"
     esc-to-close
   >
@@ -17,6 +16,7 @@
             <button-modal-close @close="closeModal('deposit')"/>
             <div class="title">Deposit</div>
           </div>
+          <h1 style="color: white;">Deposit Modal</h1>
           <!--          <form-deposit></form-deposit>&lt;!&ndash; Additional info&ndash;&gt;-->
           <!--          <form-deposit-additional></form-deposit-additional>-->
           <!--          <form-deposit-crypto></form-deposit-crypto>-->

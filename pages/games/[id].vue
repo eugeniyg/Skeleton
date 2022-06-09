@@ -24,10 +24,10 @@
   const startGame = async ():Promise<void> => {
     const redirectUrl = window.location.origin + (window.history.state.back || '');
     const startParams = {
-      accountId: activeAccount.value.id,
+      accountId: isDemo.value ? undefined : activeAccount.value.id,
       lobbyUrl: redirectUrl,
       locale: currentLocale || browserLanguage,
-      countryCode: profile.value.country,
+      countryCode: 'UA',
       demoMode: isDemo.value,
       platform: isMobile ? 1 : 2,
     };
@@ -36,6 +36,10 @@
   };
 
   const changeGameMode = async ():Promise<void> => {
+    if (isDemo.value && !isLoggedIn.value) {
+      showModal('register');
+      return;
+    }
     const router = useRouter();
     isDemo.value = !isDemo.value;
     await startGame();
@@ -43,7 +47,7 @@
   };
 
   watch(() => isLoggedIn.value, (newValue:boolean) => {
-    if (newValue) {
+    if (newValue && !isDemo.value) {
       startGame();
     }
   });
@@ -52,7 +56,7 @@
     document.body.classList.add('is-mob-nav-vertical');
     document.body.classList.add('is-game-page');
 
-    if (!isLoggedIn.value) {
+    if (!isDemo.value && !isLoggedIn.value) {
       showModal('register');
     } else {
       startGame();

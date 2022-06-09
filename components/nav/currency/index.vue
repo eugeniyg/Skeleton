@@ -19,14 +19,13 @@
       <div class="content">
         <div class="items">
           <div
-            v-for="{ src, title, id } in selectedItems"
-            :key="id"
+            v-for="currency in selectedItems"
+            :key="currency.code"
             class="item"
-            :id="id"
           >
-            <img class="img" :src="`/img${src}`" />
-            <span class="title">{{ title }}</span>
-            <span class="label">{{ id }}</span>
+            <img class="img" :src="`/img/currency/${currency.type === 'crypto' ? '1.png' : '2.png'}`" />
+            <span class="title">{{ currency.name }}</span>
+            <span class="label">{{ currency.code }}</span>
           </div>
         </div>
       </div>
@@ -40,7 +39,7 @@
 
   const navItems = [
     {
-      id: 'all-currency',
+      id: 'all',
       title: 'All currency',
     },
     {
@@ -52,11 +51,23 @@
   const globalStore = useGlobalStore();
   const { accounts } = storeToRefs(walletStore);
   const { currencies } = storeToRefs(globalStore);
-  
-  const selected = ref<string>('all-currency');
+  const accountsCurrency = accounts.value.map((account) => {
+    const accountCurrency = currencies.value.find((currency) => {
+      if (!currency.subCurrencies.length) {
+        return currency.code === account.formatBalance.currency;
+      }
+      return currency.subCurrencies.some((sub) => sub.code === account.formatBalance.currency);
+    });
+    return accountCurrency.code;
+  });
+  const filteredCurrencies = currencies.value.filter((currency) => !accountsCurrency.includes(currency.code));
+  const cryptoCurrencies = filteredCurrencies.filter((currency) => currency.type === 'crypto');
 
-  const selectedItems = computed(() => items[selected.value]);
-
+  const selected = ref<string>('all');
+  const selectedItems = computed(() => {
+    if (selected.value === 'all') return filteredCurrencies;
+    return cryptoCurrencies;
+  });
   const select = (id:string):void => {
     selected.value = id;
   };

@@ -77,11 +77,15 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal } = useLayoutStore();
+
   const openGame = (isReal: boolean):void => {
-    if (!isLoggedIn.value) {
+    if (!isReal) {
+      router.push(`/games/${props.id}?demo=true`);
+    } else if (!isLoggedIn.value) {
       showModal('register');
-    } else if (isReal) router.push(`/games/${props.id}`);
-    else router.push(`/games/${props.id}?demo=true`);
+    } else {
+      router.push(`/games/${props.id}`);
+    }
   };
 
   const backgroundImage = computed(() => `background-image:url(/img/cards/card-${getRandomInt(1, 12)}.png)`);

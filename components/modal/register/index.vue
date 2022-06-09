@@ -1,7 +1,6 @@
 <template>
   <vue-final-modal
     v-model="modals.register"
-    @closed="closeModal('register')"
     @click="closeModal('register')"
     esc-to-close
   >
