@@ -2,8 +2,8 @@
   <div>
     <client-only>
       <carousel v-bind="topSliderProps">
-        <slide v-for="item in 2" :key="item">
-          <card-promo />
+        <slide v-for="(props, index) in fakeStore.sliders.main" :key="index">
+          <card-promo v-bind="props" />
         </slide>
 
         <template v-slot:addons>

@@ -13,13 +13,13 @@
   transition: all .2s ease-in-out;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
 
-  @include media(sm) {
-    position: absolute;
-    width: rem(288px);
-    left: auto;
-    bottom: auto;
-    transition: none;
-  }
+  //@include media(sm) {
+  //  position: absolute;
+  //  width: rem(288px);
+  //  left: auto;
+  //  bottom: auto;
+  //  transition: none;
+  //}
 
   .header {
     display: flex;

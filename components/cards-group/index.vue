@@ -11,9 +11,19 @@
 
     <button-base v-if="props.showAllBtn" class="btn-show-all" type="ghost">Show all</button-base>
 
-    <button-arrows v-if="props.showArrows"/>
+    <button-arrows
+      v-if="showArrowButtons"
+      :prevDisabled="prevDisabled"
+      :nextDisabled="nextDisabled"
+      @clickAction="clickAction"
+    />
 
-    <div v-if="props.games.length" class="items">
+    <div
+      v-if="props.games.length"
+      ref="scrollContainer"
+      class="items"
+      @scroll="scrollHandler"
+    >
       <slot
         v-for="game in props.games"
         :key="game.id"
@@ -57,6 +67,33 @@
       type: Boolean,
       default: false,
     },
+  });
+
+  const scrollContainer = ref();
+  const prevDisabled = ref<boolean>(true);
+  const nextDisabled = ref<boolean>(false);
+  const showArrowButtons = ref<boolean>(props.showArrows);
+
+  const scrollHandler = ():void => {
+    const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
+
+    prevDisabled.value = scrollLeft === 0;
+    nextDisabled.value = scrollWidth === scrollLeft + offsetWidth;
+  };
+
+  const clickAction = (goNext: boolean):void => {
+    const { offsetWidth } = scrollContainer.value;
+    scrollContainer.value.scrollBy({
+      left: goNext ? offsetWidth : -offsetWidth,
+      behavior: 'smooth',
+    });
+  };
+
+  onMounted(() => {
+    if (props.showArrows) {
+      scrollHandler();
+      showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
+    }
   });
 </script>
 
