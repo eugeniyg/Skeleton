@@ -7,3 +7,8 @@ export interface AccountInterface {
   },
   status: number
 }
+
+export interface AccountRequestInterface {
+  accountId: string,
+  currency: string,
+}

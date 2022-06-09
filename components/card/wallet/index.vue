@@ -3,7 +3,12 @@
     <div class="content">
       <div class="title">{{ currencyName }}</div>
 
-      <form-input-toggle v-if="!isActive" name="toggle" :value="false">
+      <form-input-toggle
+        v-if="!isActive"
+        name="toggle"
+        :value="false"
+        @change="changeActive"
+      >
         Use currency
       </form-input-toggle>
 
@@ -17,6 +22,7 @@
         class="hide-currency"
         type="ghost"
         size="xs"
+        @click="hide"
       >
         Hide currency
       </button-base>
@@ -52,16 +58,31 @@
   const { currencies } = useGlobalStore();
 
   const isActive = computed(() => props.status === 1);
-  const showHideCurrencyButton = computed(() => Number(props.formatBalance.amount) === 0 && !isActive);
+  const showHideCurrencyButton = computed(() => Number(props.formatBalance.amount) === 0 && !isActive.value);
   const currencyName = computed(() => {
     const currentCurrency = currencies.find((curr) => {
       if (!curr.subCurrencies.length) {
         return curr.code === props.formatBalance.currency;
       }
-      return curr.subCurrencies.some((sub) => sub.code === props.formatBalance.currency);
+      return curr.code === props.formatBalance.currency || curr.subCurrencies.some((sub) => sub.code === props.formatBalance.currency);
     });
     return `${currentCurrency.name} (${currentCurrency.code})`;
   });
+
+  const { switchAccount, hideAccount } = useWalletStore();
+  const changeActive = async ():Promise<void> => {
+    await switchAccount({
+      accountId: props.id,
+      currency: props.formatBalance.currency,
+    });
+  };
+
+  const hide = async ():Promise<void> => {
+    await hideAccount({
+      accountId: props.id,
+      currency: props.formatBalance.currency,
+    });
+  };
 </script>
 
 <style lang="scss" src="./style.scss"/>

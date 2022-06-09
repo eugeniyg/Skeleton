@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
   const props = defineProps({
-    image:{
+    image: {
       type: Object,
       required: true,
     },

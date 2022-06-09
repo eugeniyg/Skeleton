@@ -2,10 +2,12 @@
   <div class="content">
     <div class="header">
       <h1 class="heading">Wallet</h1>
+
       <button-base
         id="open-currency-nav"
         type="secondary"
         size="md"
+        :isDisabled="currencyNavEmpty"
         @click="openCurrNav"
       >
         <atomic-icon id="ui-plus"/>Add currency
@@ -13,7 +15,7 @@
     </div>
 
     <client-only>
-      <nav-currency/>
+      <nav-currency @toggleNavEmpty="currencyNavEmpty = $event"/>
     </client-only>
 
     <card-wallet
@@ -32,18 +34,10 @@
   const layoutStore = useLayoutStore();
   const { isCurrencyNavOpen } = storeToRefs(layoutStore);
   const { openCurrencyNav, closeCurrencyNav } = layoutStore;
+  const currencyNavEmpty = ref<boolean>(false);
 
-  const { currencies } = useGlobalStore();
-  console.log(accounts.value);
-  console.log(currencies);
-
-  const openCurrNav = (e:any):void => {
+  const openCurrNav = ():void => {
     openCurrencyNav();
-    const {
-      bottom, left, right, width,
-    } = e.target.getBoundingClientRect();
-    const nav = document.querySelector('.nav-currency');
-    // nav.style.cssText = `top:${ bottom + 4 }px; left:${right - 288}px `;
   };
 
   onMounted(() => {
