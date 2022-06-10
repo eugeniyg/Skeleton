@@ -10,7 +10,7 @@
     </div>
 
     <div class="row">
-      <div v-if="props.nickname" class="nickname">{{ props.nickname }}</div>
+      <div class="nickname">{{ publicNickname }}</div>
 
       <div v-if="props.amount.length" class="amount">
         <span v-for="(item, index) in props.amount" :key="index">
@@ -22,6 +22,8 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     label: {
       type: String,
@@ -36,6 +38,9 @@
       default: () => [],
     },
   });
+
+  const profileStore = useProfileStore();
+  const { publicNickname } = storeToRefs(profileStore);
 </script>
 
 <style lang="scss" src="./style.scss"/>

@@ -14,7 +14,7 @@
   const { getGamesInfo, getStartGame } = useGamesApi();
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
-  const { profile, isLoggedIn } = storeToRefs(profileStore);
+  const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const { isMobile, currentLocale, browserLanguage } = useGlobalStore();

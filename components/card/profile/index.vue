@@ -1,6 +1,6 @@
 <template>
   <div class="card-profile" :class="{'is-compact' : props.isCompact}">
-    <atomic-avatar :nickname="props.avatarItems.nickname" :label="props.avatarItems.label">
+    <atomic-avatar :nickname="publicNickname" :label="props.avatarItems.label">
       <template v-slot:progress-bar>
         <profile-progress-bar/>
       </template>
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
   import { PropType } from '@vue/runtime-core';
+  import { storeToRefs } from 'pinia';
 
   const props = defineProps({
     isCompact: {
@@ -32,6 +33,10 @@
       }),
     },
   });
+
+  const profileStore = useProfileStore();
+  const { publicNickname } = storeToRefs(profileStore);
+
 </script>
 
 <style lang="scss" src="./style.scss"/>
