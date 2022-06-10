@@ -17,12 +17,13 @@
     <client-only>
       <nav-currency @toggleNavEmpty="currencyNavEmpty = $event"/>
     </client-only>
-
-    <card-wallet
-      v-for="account in accounts"
-      :key="account.id"
-      v-bind="account"
-    />
+    <div class="cards-wallet">
+      <card-wallet
+        v-for="account in accounts"
+        :key="account.id"
+        v-bind="account"
+      />
+    </div>
   </div>
 </template>
 

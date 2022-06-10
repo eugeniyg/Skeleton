@@ -1,5 +1,5 @@
 .nav-currency {
-  max-height: rem(425px);
+  max-height: rem(360px);
   height: 100%;
   padding: rem(16px);
   position: fixed;
@@ -7,19 +7,27 @@
   right: 0;
   bottom: 0;
   background-color: var(--gray-800);
-  z-index: 3;
+  z-index: var(--z-index, 3);
   visibility: var(--nav-currency-visibility, hidden);
   transform: translateY(var(--nav-currency-translate-y, 100%));
   transition: all .2s ease-in-out;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
 
-  //@include media(sm) {
-  //  position: absolute;
-  //  width: rem(288px);
-  //  left: auto;
-  //  bottom: auto;
-  //  transition: none;
-  //}
+
+  @include media(md) {
+    position: absolute;
+    width: rem(288px);
+    left: auto;
+    bottom: auto;
+    transition: none;
+    right: rem(32px);
+    top: var(--top, #{rem(220px)});
+    --z-index: 1;
+  }
+
+  @include media(l) {
+    --top: #{rem(140px)};
+  }
 
   .header {
     display: flex;
