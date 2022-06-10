@@ -3,8 +3,6 @@ import { useAuthApi, useProfileApi } from '~/CORE/index';
 import { ProfileInterface } from '~/types/userTypes';
 import { FieldInterface } from '~/types/formTypes';
 import { useWalletStore } from '~/composables/useWalletStore';
-import profile from '~/.output/server/chunks/app/server.mjs';
-// import {nextTick} from "@vue/runtime-core";
 
 export type ProfileStoreStateType = {
   isLoggedIn: boolean,

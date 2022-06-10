@@ -8,7 +8,6 @@
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
-    "@types/geoip-lite": "^1.4.1",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
     "eslint": "^8.14.0",
