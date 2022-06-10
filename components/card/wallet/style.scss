@@ -2,12 +2,17 @@
   border-radius: 16px;
   overflow: hidden;
   position: relative;
+  flex-basis: rem(334px);
+  height: rem(199px);
 
   .title {
     @include font($body-2);
     color: var(--white);
     grid-area: title;
     position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
   }
 
   .label {
@@ -26,6 +31,11 @@
     display: flex;
     align-items: baseline;
     position: relative;
+    margin: var(--margin, #{rem(48px)} 0 #{rem(8px)});
+
+    .amount {
+      --margin: 0;
+    }
   }
 
   .currency {
@@ -92,6 +102,24 @@
 
   .hide-currency {
     color: var(--gray-300);
-    transform: translateX(-12px);
+    transform: translateX(#{rem(-12px)});
+  }
+}
+
+.cards-wallet {
+  display: grid;
+  grid-template-columns: var(--columns, 1fr);
+  grid-gap: rem(16px);
+
+  @include media(sm) {
+    --columns: repeat(2, 1fr);
+  }
+
+  @include media(xl) {
+    --columns: repeat(3, 1fr);
+  }
+
+  @include media(xxl) {
+    --columns: repeat(4, 1fr);
   }
 }
