@@ -86,10 +86,9 @@ body {
   @extend %scrollbar;
 
   &.nav-user-open {
+    overflow-y: hidden;
     --nav-user-visibility: visible;
     --nav-user-translate-x: 0;
-    overflow-y: hidden;
-    width: calc(100% - 6px);
     --body-overflow: hidden;
     --opacity-layer-visibility: visible;
     --main-pointer-events: none;
@@ -99,7 +98,6 @@ body {
 
   &.drawer-open {
     overflow-y: hidden;
-    width: calc(100% - 6px);
     --drawer-translate-x: translateX(0);
     --body-overflow: hidden;
     --opacity-layer-visibility: visible;
