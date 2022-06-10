@@ -84,6 +84,7 @@
   const footerFields = registrationFields.value.filter((field) => groupFooterFields.includes(field.name));
 
   const registrationFormData = reactive(setFormData(registrationFields.value));
+  if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
 
   const { getFormRules } = useProjectMethods();
   const registrationFormRules = getFormRules(registrationFields.value, true);
@@ -93,7 +94,9 @@
   watch(() => props.show, (newValue:boolean) => {
     if (!newValue) {
       Object.keys(registrationFormData).forEach((key) => {
-        registrationFormData[key] = '';
+        if (key !== 'currency') {
+          registrationFormData[key] = '';
+        }
       });
       v$.value.$reset();
       serverFormErrors.value = {};
