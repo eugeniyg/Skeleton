@@ -1,0 +1,60 @@
+.balance {
+  background-color: var(--black-primary);
+  padding: var(--items-padding, #{rem(16px)});
+  margin: var(--margin, 0);
+  align-items: flex-start;
+  width: 100%;
+
+  hr {
+    margin: 0 0 rem(16px);
+  }
+
+  @include media(md) {
+    --items-bg: transparent;
+    --items-padding: 0;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: rem(8px);
+
+    &:nth-of-type(even) {
+      margin-bottom: rem(16px);
+
+      .value {
+        @include upd-font($body-1);
+        --color: var(--gray-400);
+      }
+    }
+  }
+
+  .label {
+    @include font($body-2);
+    color: var(--gray-400);
+    flex-grow: 1;
+    margin: 0;
+  }
+
+  .value {
+    @include font($body-2);
+    color: var(--color, var(--white));
+    text-transform: uppercase;
+    flex-grow: 1;
+    margin: 0;
+    text-align: right;
+  }
+
+  .items {
+    @include media(md) {
+      position: relative;
+      --items-visibility: visible
+    }
+  }
+
+  .selected {
+    @include media(md) {
+      display: none;
+    }
+  }
+}
