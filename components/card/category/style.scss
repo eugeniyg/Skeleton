@@ -1,0 +1,80 @@
+.categories {
+  display: flex;
+  grid-gap: var(--gap, #{rem(16px)});
+  padding: var(--padding, #{rem(40px)} #{rem(16px)});
+  background-color: var(--gray-900);
+  margin-top: rem(40px);
+  margin-left: var(--margin-left, #{rem(-16px)});
+  margin-right: var(--margin-right, #{rem(-16px)});
+
+  @include media(sm) {
+    --margin-left: #{rem(-32px)};
+    --margin-right: #{rem(-32px)};
+  }
+
+  @include media(l) {
+    --padding: #{rem(40px)} #{rem(40px)};
+    --gap: #{32px};
+    --margin-left: #{rem(-40px)};
+    --margin-right: #{rem(-40px)};
+  }
+}
+
+.card-category {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .cover {
+    background: var(--gradient-orange);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+    border-radius: 8px;
+    width: 100%;
+    @include ratio(156px, 81px);
+    margin-bottom: var(--margin-bottom, #{rem(8px)});
+
+    @include media(l) {
+      --margin-bottom: #{rem(16px)}
+    }
+  }
+
+  .title {
+    @include font($heading-4);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    grid-gap: rem(8px);
+    margin-bottom: var(--margin-bottom, #{rem(4px)});
+
+    @include media(l) {
+      @include upd-font($heading-5);
+      --margin-bottom: #{rem(8px)}
+    }
+  }
+
+  .icon {
+    --icon-size: #{rem(22px)};
+    --color: var(--white);
+  }
+
+  .sub-title {
+    @include font($body-1);
+    color: var(--gray-300);
+    margin-bottom: rem(8px);
+
+    @include media(l) {
+      @include upd-font($body-3);
+    }
+  }
+
+  .btn-primary {
+    --width: 100%;
+    --padding: #{rem(7px)};
+    @include upd-font($heading-2);
+    margin-top: auto;
+
+    @include media(l) {
+      --padding: #{rem(12px)};
+    }
+  }
+}
