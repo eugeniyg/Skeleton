@@ -1040,8 +1040,97 @@ export const useFakeStore = () => {
       },
     ],
   };
+  const payments = [
+    {
+      title: 'Interac E-transfer',
+      value: 'interac',
+      mask: '/svg/payment-systems/interac.svg',
+      balance: { value: 79.40, title: 'EUR' },
+      withdraw: { value: 54.73, title: 'EUR' },
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'visa',
+      value: 'visa',
+      mask: '/svg/payment-systems/visa.svg',
+      balance: { value: 79.40, title: 'EUR' },
+      useForDeposit: true,
+      useForWithDraw: false,
+    },
+    {
+      title: 'MiFinity',
+      value: 'mifinity',
+      mask: '/svg/payment-systems/mifinity.svg',
+      balance: { value: 79.40, title: 'EUR' },
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'paypal',
+      value: 'paypal',
+      mask: '/svg/payment-systems/paypal.svg',
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'CashToCode',
+      value: 'cashtocode',
+      mask: '/svg/payment-systems/3.svg',
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'USDT ERC20',
+      value: 'erc20',
+      mask: '/svg/payment-systems/erc20.svg',
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'skrill',
+      value: 'skrill',
+      mask: '/svg/payment-systems/skrill.svg',
+      useForDeposit: true,
+      useForWithDraw: false,
+    },
+    {
+      title: 'sofort',
+      value: 'sofort',
+      mask: '/svg/payment-systems/sofort.svg',
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'volt',
+      value: 'volt',
+      mask: '/svg/payment-systems/volt.svg',
+      balance: { value: 79.40, title: 'EUR' },
+      withdraw: { value: 54.73, title: 'EUR' },
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'Bank Transfer',
+      value: 'etransfer',
+      mask: '/svg/payment-systems/e-transfer.svg',
+      balance: { value: 100.40, title: 'EUR' },
+      withdraw: { value: 77.73, title: 'EUR' },
+      useForDeposit: false,
+      useForWithDraw: true,
+    },
+    {
+      title: 'CoinsPaid',
+      value: 'coinspaid',
+      mask: '/svg/payment-systems/coinspaid.svg',
+      useForDeposit: false,
+      useForWithDraw: true,
+    },
+  ];
 
   const filter = (cardsArray:any[], key:string):any[] => cardsArray.filter((item:any) => (item.variant === key))[0];
+  const depositItems = () => payments.filter((item) => item.useForDeposit === true);
+  const withdrawItems = () => payments.filter((item) => item.useForWithDraw === true);
 
   const hotCards = filter(cards, 'hot');
   const turboCards = filter(cards, 'turbo');
@@ -1072,5 +1161,7 @@ export const useFakeStore = () => {
     selects,
     menu,
     sliders,
+    depositItems,
+    withdrawItems,
   };
 };

@@ -1,0 +1,43 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    @include font($heading-4);
+    color: var(--gray-500);
+    margin-bottom: rem(8px);
+  }
+
+  .sub-title {
+    @include font($body-2);
+    color: var(--gray-500);
+  }
+
+  .icon-colored {
+    width: var(--icon-width);
+    height: var(--icon-height);
+    display: block;
+    margin-bottom: rem(16px);
+  }
+
+  &.variant-bonuses {
+    --icon-width: #{rem(240px)};
+    --icon-height: #{rem(240px)};
+  }
+
+  &.variant-notification {
+    --icon-width: #{rem(212px)};
+    --icon-height: #{rem(284px)};
+  }
+
+  &.variant-bets-history {
+    --icon-width: #{rem(240px)};
+    --icon-height: #{rem(260px)};
+  }
+
+  &.variant-transactions {
+    --icon-width: #{rem(240px)};
+    --icon-height: #{rem(260px)};
+  }
+}

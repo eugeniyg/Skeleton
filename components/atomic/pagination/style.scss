@@ -1,0 +1,72 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .page, .prev, .next, .total {
+    @extend %skip-btn;
+    min-width: var(--min-width, rem(32px));
+    height: var(--height, rem(32px));
+    border-radius: 8px;
+    background-color: var(--bg, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color, var(--white));
+
+    &:hover {
+      cursor: pointer;
+      --bg: var(--gray-800);
+      --color: var(--yellow-500);
+    }
+  }
+
+  .dots {
+    @include font($heading-1);
+    @extend %skip-btn;
+    padding: rem(8px) rem(11px);
+    height: var(--height, rem(32px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .total {
+    @extend %skip-btn;
+    @include font($heading-1);
+    padding: rem(8px);
+    --min-width: auto;
+  }
+
+  .page {
+    @include font($heading-1);
+
+    &.is-selected {
+      --bg: var(--gray-800);
+      --color: var(--yellow-500);
+    }
+  }
+
+  .icon {
+    --color: var(--white);
+  }
+
+  .prev, .next {
+    &[disabled] {
+      pointer-events: none;
+
+      .icon {
+        --color: var(--gray-600);
+      }
+    }
+
+    &:focus {
+      --bg: var(--gray-800);
+
+      .icon {
+        --color: var(--yellow-500);
+      }
+
+    }
+  }
+}
