@@ -33,6 +33,7 @@
     "svg-sprite-generator": "^0.0.7",
     "typescript": "^4.6.4",
     "vue-final-modal": "^3.4.4",
+    "vue-flatpickr-component": "^9.0.6",
     "vue3-carousel": "^0.1.40"
   }
 }
