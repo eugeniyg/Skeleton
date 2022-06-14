@@ -1127,10 +1127,252 @@ export const useFakeStore = () => {
       useForWithDraw: true,
     },
   ];
+  const betsHistoryTb = {
+    columns: [
+      'Game',
+      'Bet',
+      'Result',
+      'Date',
+    ],
+    rows: [
+      {
+        key: 'casino',
+        game: 'Game name',
+        bet: '0.00000009 mBTC',
+        result: '- 0.00000009 mBTC',
+        date: '15.04.2022, 15:21',
+      },
+      {
+        key: 'betting',
+        game: 'Game name',
+        bet: '20.00 $',
+        result: '- 20.00 $',
+        date: '15.04.2022, 15:21',
+      },
+      {
+        key: 'betting',
+        game: 'Game name',
+        bet: '50.00 $',
+        result: '-50.00 $',
+        date: '15.04.2022, 15:21',
+      },
+      {
+        key: 'casino',
+        game: 'Game name',
+        bet: '0.00000009 mBTC',
+        result: '- 0.00000009 mBTC',
+        date: '15.04.2022, 15:21',
+      },
+      {
+        key: 'casino',
+        game: 'Game name',
+        bet: '0.00000009 mBTC',
+        result: '- 0.00000009 mBTC',
+        date: '15.04.2022, 15:21',
+      },
+    ],
+  };
+  const bonusesHistoryTb = {
+    columns: [
+      'Title',
+      'Status',
+      'Amount',
+      'Wager',
+      'Date',
+      'Valid until',
+    ],
+    rows: [
+      {
+        title: 'Special 1st deposit bonus 100% + 100 FS',
+        status: 'Active',
+        amount: '0.00000009 mBTC',
+        wager: '84%',
+        date: '15.04.2022, 15:21',
+        validUntil: '15.04.2022, 15:21',
+      },
+      {
+        title: 'Special 1st deposit bonus 100% + 100 FS',
+        status: 'Active',
+        amount: '0.00000009 mBTC',
+        wager: '84%',
+        date: '15.04.2022, 15:21',
+        validUntil: '15.04.2022, 15:21',
+      },
+      {
+        title: 'Special 1st deposit bonus 100% + 100 FS',
+        status: 'Active',
+        amount: '0.00000009 mBTC',
+        wager: '84%',
+        date: '15.04.2022, 15:21',
+        validUntil: '15.04.2022, 15:21',
+      },
+      {
+        title: 'Special 1st deposit bonus 100% + 100 FS',
+        status: 'Active',
+        amount: '0.00000009 mBTC',
+        wager: '84%',
+        date: '15.04.2022, 15:21',
+        validUntil: '15.04.2022, 15:21',
+      },
+      {
+        title: 'Special 1st deposit bonus 100% + 100 FS',
+        status: 'Active',
+        amount: '0.00000009 mBTC',
+        wager: '84%',
+        date: '15.04.2022, 15:21',
+        validUntil: '15.04.2022, 15:21',
+      },
+
+    ],
+  };
+  const sessionHistoryTb = {
+    columns: [
+      '&nbsp;',
+      'Country',
+      'User Agent',
+      'Created At',
+      'Status',
+      '&nbsp;',
+    ],
+    rows: [
+      {
+        device: 'desktop',
+        country: 'US',
+        userAgent: 'Chrome on Mac OS 10',
+        createdAt: '15.04.2022, 15:21',
+        status: { variant: 'current', text: 'Current' },
+      },
+      {
+        device: 'mobile',
+        country: 'US',
+        userAgent: 'Chrome on Mac OS 10',
+        createdAt: '15.04.2022, 15:21',
+        status: { variant: 'current', text: 'Current' },
+      },
+      {
+        device: 'mobile',
+        country: 'US',
+        userAgent: 'Chrome on Mac OS 10',
+        createdAt: '15.04.2022, 15:21',
+        status: { variant: 'closed', text: 'Closed' },
+      },
+    ],
+  };
+  const transactionsHistoryTb = {
+    columns: [
+      'Date',
+      'Type',
+      'Payment Method',
+      'Status',
+      'Sum',
+    ],
+    rows: [
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Withdrawal',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'pending',
+          title: 'Pending',
+        },
+        sum: '0.00000009 mBTC',
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Deposit',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'success',
+          title: 'Success',
+        },
+        sum: '0.00000009 mBTC',
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Withdrawal',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'failed',
+          title: 'Failed',
+        },
+        sum: '0.00000009 mBTC',
+        tooltip: {
+          title: 'Payment Rejected',
+          text: 'A detailed description of the reason for the rejection has been sent to your email',
+        },
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Deposit',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'unfinished',
+          title: 'Unfinished',
+        },
+        sum: '0.00000009 mBTC',
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Deposit',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'canceled',
+          title: 'Cancelled',
+        },
+        sum: '0.00000009 mBTC',
+        tooltip: {
+          title: 'Payment Rejected',
+          text: 'A detailed description of the reason for the rejection has been sent to your email',
+        },
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Deposit',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'success',
+          title: 'Success',
+        },
+        sum: '0.00000009 mBTC',
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Withdrawal',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'failed',
+          title: 'Failed',
+        },
+        sum: '0.00000009 mBTC',
+        tooltip: {
+          title: 'Payment Rejected',
+          text: 'A detailed description of the reason for the rejection has been sent to your email',
+        },
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Deposit',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'unfinished',
+          title: 'Unfinished',
+        },
+        sum: '0.00000009 mBTC',
+      },
+    ],
+  };
 
   const filter = (cardsArray:any[], key:string):any[] => cardsArray.filter((item:any) => (item.variant === key))[0];
   const depositItems = () => payments.filter((item) => item.useForDeposit === true);
   const withdrawItems = () => payments.filter((item) => item.useForWithDraw === true);
+  const betsHistoryTbBettingItems = () => ({
+      columns: betsHistoryTb.columns,
+      rows: betsHistoryTb.rows.filter((item) => item.key === 'betting'),
+    });
+  const betsHistoryTbCasinoItems = () => ({
+      columns: betsHistoryTb.columns,
+      rows: betsHistoryTb.rows.filter((item) => item.key === 'casino'),
+    });
 
   const hotCards = filter(cards, 'hot');
   const turboCards = filter(cards, 'turbo');
@@ -1163,5 +1405,10 @@ export const useFakeStore = () => {
     sliders,
     depositItems,
     withdrawItems,
+    betsHistoryTbBettingItems,
+    betsHistoryTbCasinoItems,
+    bonusesHistoryTb,
+    sessionHistoryTb,
+    transactionsHistoryTb,
   };
 };

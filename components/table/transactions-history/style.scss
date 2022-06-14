@@ -1,0 +1,16 @@
+.tb-transactions-history {
+  @extend %tb;
+  @extend %scrollbar;
+  overflow-x: auto;
+  overscroll-behavior: auto;
+
+  .row {
+    grid-template-columns:
+      minmax(rem(100px), 1fr)
+      minmax(rem(102px), 1fr)
+      minmax(rem(154px), 1fr)
+      minmax(rem(128px), 1fr)
+      minmax(rem(158px), 1fr)
+      minmax(rem(52px), 1fr);
+  }
+}

@@ -1,0 +1,37 @@
+.search {
+  background-color: var(--bg, var(--gray-800));
+  box-shadow: var(--box--shadow, 0 0 12px rgba(0, 0, 0, 0.16));
+  padding: var(--padding-search, #{rem(4px)} #{rem(16px)});
+  position: var(--position, absolute);
+  width: var(--width, 100%);
+  top: var(--top, #{rem(64px)});
+  left: 0;
+  right: 0;
+  transform: var(--transform, rotateX(90deg));
+  transform-origin: top center;
+  margin-left: auto;
+
+  .app-header & {
+    transition: all .2s ease-in-out;
+
+
+    &.is-show {
+      --transform: 0;
+
+      ~ .btn-search {
+        display: none;
+      }
+    }
+
+    @include media(l) {
+      transform-origin: center;
+      --position: relative;
+      --top: 0;
+      --width: #{rem(320px)};
+      --padding-search: 0;
+      --bg: transparent;
+    }
+  }
+
+
+}
