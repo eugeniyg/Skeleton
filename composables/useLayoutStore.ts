@@ -9,11 +9,17 @@ export type LayoutStoreStateType = {
     register: boolean,
     signIn: boolean,
     deposit: boolean,
+    confirm: boolean,
+    confirmBonus: boolean,
+    error: boolean,
+    forgotPass: boolean,
+    resetPass: boolean,
+    successDeposit: boolean,
+    withdraw: boolean,
   },
   modalsUrl: {
     register: string,
     signIn: string,
-    deposit: string,
   },
 }
 
@@ -27,11 +33,17 @@ export const useLayoutStore = defineStore('layoutStore', {
         register: false,
         signIn: false,
         deposit: false,
+        confirm: false,
+        confirmBonus: false,
+        error: false,
+        forgotPass: false,
+        resetPass: false,
+        successDeposit: false,
+        withdraw: false,
       },
       modalsUrl: {
         register: 'sign-up',
         signIn: 'sign-in',
-        deposit: 'deposit',
       },
   } as LayoutStoreStateType),
 
@@ -92,12 +104,12 @@ export const useLayoutStore = defineStore('layoutStore', {
 
     showModal(modalName: string):void {
       this.modals[modalName] = true;
-      this.addModalQuery(modalName);
+      if (this.modalsUrl[modalName]) this.addModalQuery(modalName);
     },
 
     closeModal(modalName: string):void {
       this.modals[modalName] = false;
-      this.removeModalQuery(modalName);
+      if (this.modalsUrl[modalName]) this.removeModalQuery(modalName);
     },
   },
 });

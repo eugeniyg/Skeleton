@@ -1,0 +1,8 @@
+.modal-forgot-pass {
+  @extend %modal-info;
+
+  .text {
+    @include font($body-2);
+    color: var(--gray-300);
+  }
+}
