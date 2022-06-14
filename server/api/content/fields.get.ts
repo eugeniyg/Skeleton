@@ -103,4 +103,8 @@ export default defineEventHandler(() => ({
     label: 'Personal ID number',
     placeholder: 'Identity reference number (if available)',
   },
+  message: {
+    label: 'Text',
+    placeholder: 'Enter your message',
+  },
 }));
