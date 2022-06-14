@@ -2,7 +2,7 @@
   <div class="input-date">
     <span class="label">{{ props.label }}</span>
     <div class="row">
-      <flat-pickr v-model="date" :config="props.settings.config" placeholder="-- / -- / ----"/>
+      <!--      <flat-pickr v-model="date" :config="props.settings.config" placeholder="&#45;&#45; / &#45;&#45; / &#45;&#45;&#45;&#45;"/>-->
       <atomic-icon class="mask-placeholder" id="ui-calendar"/>
       <atomic-icon class="mask-toggle" id="ui-arrow_expand-close"/>
     </div>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-  import flatPickr from 'vue-flatpickr-component';
+  // import flatPickr from 'vue-flatpickr-component';
 
   const props = defineProps({
     label: {
@@ -32,8 +32,6 @@
       }),
     },
   });
-
-  const date = ref<string|null>(null);
 </script>
 
 <style lang="scss" src="./style.scss"/>
