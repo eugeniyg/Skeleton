@@ -6,9 +6,11 @@
 
     <textarea
       class="field"
+      :value="props.value"
       :name="props.name"
       :placeholder="props.placeholder"
       :required="props.isRequired ? 'required': false"
+      @input="onInput"
       rows="6"
       cols="50"
     />
@@ -22,6 +24,10 @@
     isRequired: {
       type: Boolean,
       default: false,
+    },
+    value: {
+      type: String,
+      default: ' ',
     },
     name: {
       type: String,
@@ -41,11 +47,18 @@
     },
   });
 
+  const emit = defineEmits(['input', 'update:value']);
+
   const isError = computed(() => props.hint && props.hint.variant === 'error');
   const classes = computed(() => [
     'input-textarea',
     { 'has-error': isError.value },
   ]);
+
+  const onInput = (e:any) => {
+    emit('input', e.target.value);
+    emit('update:value', e.target.value);
+  };
 </script>
 
 <style lang="scss" src="./style.scss"/>
