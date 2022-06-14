@@ -34,6 +34,7 @@
       <modal-register />
       <modal-sign-in />
       <modal-deposit />
+      <modal-withdraw />
     </client-only>
   </div>
 </template>
