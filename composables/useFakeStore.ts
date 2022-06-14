@@ -168,12 +168,197 @@ export const useFakeStore = () => {
   };
   const cards = [
     {
+      variant: 'recomended',
+      title: 'Recommended Games',
+      subTitle: 'The best games for you',
+      titleIcon: null,
+      showAllBtn: false,
+      showArrows: true,
+      items: [
+        {
+          src: '/cards/card-1.jpeg',
+          bages: [{
+            variant: 'card-hot',
+            title: 'hot',
+          }, {
+            variant: 'card-new',
+            title: 'new',
+          }],
+          showFavorite: false,
+          title: 'Champions of Rome',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-2.jpeg',
+          bages: [{
+            variant: 'card-hot',
+            title: 'hot',
+          }],
+          showFavorite: false,
+          title: 'Titan thunder',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-3.jpeg',
+          showFavorite: false,
+          title: 'Gems & Stones',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-1.jpeg',
+          bages: [{
+            variant: 'card-hot',
+            title: 'hot',
+          }, {
+            variant: 'card-new',
+            title: 'new',
+          }],
+          showFavorite: false,
+          title: 'Champions of Rome',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-2.jpeg',
+          bages: [{
+            variant: 'card-hot',
+            title: 'hot',
+          }],
+          showFavorite: false,
+          title: 'Titan thunder',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-3.jpeg',
+          showFavorite: false,
+          title: 'Gems & Stones',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-1.jpeg',
+          bages: [{
+            variant: 'card-hot',
+            title: 'hot',
+          }, {
+            variant: 'card-new',
+            title: 'new',
+          }],
+          showFavorite: false,
+          title: 'Champions of Rome',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-2.jpeg',
+          bages: [{
+            variant: 'card-hot',
+            title: 'hot',
+          }],
+          showFavorite: false,
+          title: 'Titan thunder',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-3.jpeg',
+          showFavorite: false,
+          title: 'Gems & Stones',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-1.jpeg',
+          bages: [{
+            variant: 'card-hot',
+            title: 'hot',
+          }, {
+            variant: 'card-new',
+            title: 'new',
+          }],
+          showFavorite: false,
+          title: 'Champions of Rome',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-2.jpeg',
+          bages: [{
+            variant: 'card-hot',
+            title: 'hot',
+          }],
+          showFavorite: false,
+          title: 'Titan thunder',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-3.jpeg',
+          showFavorite: false,
+          title: 'Gems & Stones',
+          subTitle: 'Hacksaw Gaming',
+        },
+      ],
+    },
+    {
       variant: 'hot',
-      title: 'Hot games',
+      identity: 'Hot games',
+      id: 'hot',
       titleIcon: 'hot',
       showAllBtn: true,
       showArrows: true,
-      items: [
+      games: [
+        {
+          src: '/cards/card-1.jpeg',
+          bages: [{
+            variant: 'card-hot',
+            title: 'hot',
+          }, {
+            variant: 'card-new',
+            title: 'new',
+          }],
+          showFavorite: false,
+          title: 'Champions of Rome',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-2.jpeg',
+          bages: [{
+            variant: 'card-hot',
+            title: 'hot',
+          }],
+          showFavorite: false,
+          title: 'Titan thunder',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-3.jpeg',
+          showFavorite: false,
+          title: 'Gems & Stones',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-1.jpeg',
+          bages: [{
+            variant: 'card-hot',
+            title: 'hot',
+          }, {
+            variant: 'card-new',
+            title: 'new',
+          }],
+          showFavorite: false,
+          title: 'Champions of Rome',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-2.jpeg',
+          bages: [{
+            variant: 'card-hot',
+            title: 'hot',
+          }],
+          showFavorite: false,
+          title: 'Titan thunder',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-3.jpeg',
+          showFavorite: false,
+          title: 'Gems & Stones',
+          subTitle: 'Hacksaw Gaming',
+        },
         {
           src: '/cards/card-1.jpeg',
           bages: [{
@@ -294,11 +479,12 @@ export const useFakeStore = () => {
     },
     {
       variant: 'turbo',
-      title: 'Turbogames',
+      identity: 'Turbogames',
       titleIcon: 'turbo-games',
+      id: 'turbo',
       showAllBtn: true,
       showArrows: true,
-      items: [
+      games: [
         {
           src: '/cards/card-1.jpeg',
           bages: [{
@@ -419,11 +605,12 @@ export const useFakeStore = () => {
     },
     {
       variant: 'recently',
-      title: 'Recently played',
+      identity: 'Recently played',
       titleIcon: 'ui-history',
+      id: 'recently',
       showAllBtn: false,
       showArrows: false,
-      items: [
+      games: [
         {
           src: '/cards/card-1.jpeg',
           title: 'Spartan King',
@@ -444,11 +631,12 @@ export const useFakeStore = () => {
     },
     {
       variant: 'favorites',
-      title: 'Favorites',
+      identity: 'Favorites',
+      id: 'favorites',
       titleIcon: 'ui-heart',
       showAllBtn: true,
       showArrows: false,
-      items: [
+      games: [
         {
           src: '/cards/card-3.jpeg',
           title: 'Raptor Doublemax',
@@ -469,11 +657,12 @@ export const useFakeStore = () => {
     },
     {
       variant: 'new-relises',
-      title: 'New Relises',
+      identity: 'New Relises',
+      id: 'new-relises',
       titleIcon: 'bonuses',
       showAllBtn: true,
       showArrows: true,
-      items: [
+      games: [
         {
           src: '/cards/card-1.jpeg',
           bages: [{
@@ -594,58 +783,104 @@ export const useFakeStore = () => {
     },
     {
       variant: 'providers',
-      title: 'Providers',
+      identity: 'Providers',
       titleIcon: 'turbo-games',
+      id: 'providers',
       showAllBtn: true,
       showArrows: true,
-      items: [
+      games: [
         {
-          src: '/providers/1.png',
+          src: '/providers/1.svg',
           showPlayBtn: false,
           showTryBtn: false,
         },
         {
-          src: '/providers/2.png',
+          src: '/providers/2.svg',
           showPlayBtn: false,
           showTryBtn: false,
         },
         {
-          src: '/providers/3.png',
+          src: '/providers/3.svg',
           showPlayBtn: false,
           showTryBtn: false,
         },
         {
-          src: '/providers/4.png',
+          src: '/providers/4.svg',
           showPlayBtn: false,
           showTryBtn: false,
         },
         {
-          src: '/providers/5.png',
+          src: '/providers/5.svg',
           showPlayBtn: false,
           showTryBtn: false,
         },
         {
-          src: '/providers/1.png',
+          src: '/providers/6.svg',
           showPlayBtn: false,
           showTryBtn: false,
         },
         {
-          src: '/providers/2.png',
+          src: '/providers/7.svg',
           showPlayBtn: false,
           showTryBtn: false,
         },
         {
-          src: '/providers/3.png',
+          src: '/providers/8.svg',
           showPlayBtn: false,
           showTryBtn: false,
         },
         {
-          src: '/providers/4.png',
+          src: '/providers/9.svg',
           showPlayBtn: false,
           showTryBtn: false,
         },
         {
-          src: '/providers/5.png',
+          src: '/providers/10.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+        },
+        {
+          src: '/providers/11.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+        },
+        {
+          src: '/providers/12.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+        },
+        {
+          src: '/providers/13.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+        },
+        {
+          src: '/providers/14.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+        },
+        {
+          src: '/providers/15.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+        },
+        {
+          src: '/providers/16.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+        },
+        {
+          src: '/providers/17.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+        },
+        {
+          src: '/providers/18.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+        },
+        {
+          src: '/providers/19.svg',
           showPlayBtn: false,
           showTryBtn: false,
         },
@@ -653,11 +888,12 @@ export const useFakeStore = () => {
     },
     {
       variant: 'latest-winners',
-      title: 'Latest winners',
+      identity: 'Latest winners',
+      id: 'latest-winners',
       titleIcon: 'bonuses',
       showAllBtn: false,
       showArrows: false,
-      items: [
+      games: [
         {
           src: '/cards/card-1.jpeg',
           title: 'Juanita',
@@ -716,11 +952,12 @@ export const useFakeStore = () => {
     },
     {
       variant: 'promotions',
-      title: 'Slotsbet promotions',
+      identity: 'Slotsbet promotions',
       titleIcon: 'bonuses',
+      id: 'promotions',
       showAllBtn: false,
       showArrows: false,
-      items: [
+      games: [
         {
           src: '/promotions/1.png',
           title: 'Welcome package',
@@ -742,6 +979,36 @@ export const useFakeStore = () => {
           subTitle: 'every week',
         },
 
+      ],
+    },
+    {
+      variant: 'benefits',
+      identity: 'Slotsbet benefits',
+      titleIcon: 'bonuses',
+      showAllBtn: false,
+      showArrows: false,
+      id: 'benefits',
+      games: [
+        {
+          src: '/icons-colored/fast-withdrawals.svg',
+          showFavorite: false,
+          title: 'Fast <br> withdrawals',
+        },
+        {
+          src: '/icons-colored/live-chat-support.svg',
+          showFavorite: false,
+          title: '24/7 Live Chat <br> Support',
+        },
+        {
+          src: '/icons-colored/privacy-security.svg',
+          showFavorite: false,
+          title: 'Provably fair slots <br> & games',
+        },
+        {
+          src: '/icons-colored/provably-fair-slots.svg',
+          showFavorite: false,
+          title: 'Privacy <br> and security',
+        },
       ],
     },
   ];
@@ -1037,6 +1304,28 @@ export const useFakeStore = () => {
       {
         title: 'Limits',
         href: '/profile/limits',
+      },
+    ],
+    faq: [
+      {
+        title: 'Most popular',
+        href: '/questions/most-popular',
+        icon: 'hot',
+      },
+      {
+        title: 'Account',
+        href: '/questions/account',
+        icon: 'ui-user',
+      },
+      {
+        title: 'Deposits & Withdrawals',
+        href: '/questions/deposits-and-withdrawals',
+        icon: 'ui-wallet',
+      },
+      {
+        title: 'Bonuses',
+        href: '/questions/bonuses',
+        icon: 'ui-bonus',
       },
     ],
   };
@@ -1361,6 +1650,99 @@ export const useFakeStore = () => {
       },
     ],
   };
+  const accordeons = {
+    account: [
+      {
+        title: 'title How can I create an account in the Slotsbet?',
+        content: [
+          '<p>Different casino games contribute differently to the wagering requirement. On the <a href="#">Bonus Terms Page</a> you can read more information about bonus wager.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'Can I have more than one account?',
+        content: [
+          '<p>lorem</p>',
+          '<p>ipsum</p>',
+          '<p>dollor</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'Can I change my registered email address?',
+        content: [
+          '<p>lorem</p>',
+          '<p>ipsum</p>',
+          '<p>dollor</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'How do I add another currency to my account?',
+        content: [
+          '<p>lorem</p>',
+          '<p>ipsum</p>',
+          '<p>dollor</p>',
+        ],
+        isOpen: false,
+      },
+    ],
+  };
+  const categories = [
+    {
+      title: {
+        icon: 'cherry',
+        text: 'Casino',
+      },
+      subTitle: 'Enjoy more than 3000+ provably fair slots & games',
+      action: {
+        title: 'Go to Casino',
+        href: '#',
+      },
+    },
+    {
+      title: {
+        icon: 'sport',
+        text: 'Betting',
+      },
+      subTitle: 'The most competitive odds and markets. Bet and win right now',
+      action: {
+        title: 'Go to Betting',
+        href: '#',
+      },
+    },
+  ];
+  const userProfileBonusesTabs = [
+    {
+      title: 'My bonuses',
+      id: 'my-bonuses',
+      isActive: true,
+    },
+    {
+      title: 'Bonus Code',
+      id: 'bonus-code',
+    },
+  ];
+  const userProfileHistoryTabs = [
+    {
+      title: 'Sessions history',
+      id: 'sessions-history',
+    },
+    {
+      title: 'Bonuses history',
+      id: 'bonuses-history',
+      // isActive: true,
+    },
+    {
+      title: 'Bets history',
+      id: 'bets-history',
+    },
+    {
+      title: 'Transactions history',
+      id: 'transactions-history',
+      isActive: true,
+    },
+  ];
 
   const filter = (cardsArray:any[], key:string):any[] => cardsArray.filter((item:any) => (item.variant === key))[0];
   const depositItems = () => payments.filter((item) => item.useForDeposit === true);
@@ -1373,6 +1755,7 @@ export const useFakeStore = () => {
       columns: betsHistoryTb.columns,
       rows: betsHistoryTb.rows.filter((item) => item.key === 'casino'),
     });
+  const benefitsCards = () => filter(cards, 'benefits');
 
   const hotCards = filter(cards, 'hot');
   const turboCards = filter(cards, 'turbo');
@@ -1410,5 +1793,10 @@ export const useFakeStore = () => {
     bonusesHistoryTb,
     sessionHistoryTb,
     transactionsHistoryTb,
+    accordeons,
+    categories,
+    benefitsCards,
+    userProfileBonusesTabs,
+    userProfileHistoryTabs,
   };
 };

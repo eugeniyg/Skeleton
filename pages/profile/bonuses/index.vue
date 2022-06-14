@@ -1,3 +1,12 @@
 <template>
-  <h1 style="color: white;">Bonuses</h1>
+  <div class="content">
+    <div class="header">
+      <h1 class="heading">Bonuses</h1>
+    </div>
+    <tab-bonuses :items="userProfileBonusesTabs"/>
+  </div>
 </template>
+
+<script setup lang="ts">
+  const { userProfileBonusesTabs } = useFakeStore();
+</script>

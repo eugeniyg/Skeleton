@@ -1,5 +1,5 @@
 <template>
-  <div class="cards">
+  <div :class="classes">
     <atomic-icon v-if="props.titleIcon" :id="props.titleIcon"/>
 
     <div v-if="props.identity && props.subTitle" class="titles">
@@ -39,6 +39,22 @@
     games: {
       type: Array,
       default: () => [],
+    },
+    variant: {
+      type: String,
+      validator: (val:string) => [
+        'favorites',
+        'recently',
+        'hot',
+        'turbo',
+        'providers',
+        'new-relises',
+        'latest-winners',
+        'promotions',
+        'latest',
+        'benefits',
+      ].includes(val),
+      default: '',
     },
     titleIcon: {
       type: String,
@@ -88,6 +104,8 @@
       behavior: 'smooth',
     });
   };
+
+  const classes = computed(() => (props.variant ? `cards cards-${props.variant}` : 'cards'));
 
   onMounted(() => {
     if (props.showArrows) {

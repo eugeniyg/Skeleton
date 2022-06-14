@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <pagination @select-page="selectedPage = $event" :selected="selectedPage" :total="100"/>
+    <atomic-pagination @select-page="selectedPage = $event" :selected="selectedPage" :total="100"/>
   </div>
 </template>
 
