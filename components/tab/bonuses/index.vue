@@ -26,7 +26,7 @@
     },
   });
 
-  const selected = ref<string>('bonus-code');
+  const selected = ref<string>('my-bonuses');
 
   const loadTab = (name:string):string => `tab-bonuses-${name}`;
 </script>

@@ -9,7 +9,7 @@
       />
     </div>
 
-    <div v-for="(row, rowIndex) in props,items.rows" :key="rowIndex" class="row">
+    <div v-for="(row, rowIndex) in props.items.rows" :key="rowIndex" class="row">
       <div class="td">
         <atomic-row-device :variant="row.device"/>
       </div>

@@ -1,29 +1,32 @@
 <template>
   <div>
-    <filters class="filters-transactions-history">
+    <atomic-filters class="filters-transactions-history">
       <form-input-date label="Date from / to:" :settings="settings"/>
 
-      <form-dropdown
+      <form-dropdown-base
         label="Type:"
+        value=""
         name="type-select"
         placeholder="All"
         :options="selects.types"
       />
 
-      <form-dropdown
+      <form-dropdown-base
         label="Currency:"
+        value=""
         name="currency-select"
         placeholder="All"
         :options="selects.currency"
       />
 
-      <form-dropdown
+      <form-dropdown-base
         label="Status:"
+        value=""
         name="status-select"
         placeholder="All"
         :options="selects.statuses"
       />
-    </filters>
+    </atomic-filters>
 
     <table-transactions-history :items="transactionsHistoryTb"/>
   </div>
