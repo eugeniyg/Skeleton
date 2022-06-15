@@ -7,17 +7,16 @@
 
     <div class="items" @mouseleave="close">
       <div
-        v-for="({ href, title, count }, itemIndex) in props.items"
+        v-for="({ icon, href, title, count }, itemIndex) in props.items"
         :key="itemIndex"
         class="item"
         :class="{'is-active': getCurrentUrl() === href}"
         @click.prevent="() => navigate(href)"
       >
+        <atomic-icon :id="icon" />
         {{ title }}
-
         <span v-if="count" class="count">{{ count }}</span>
-
-        <atomic-icon v-if="getCurrentUrl() === href" id="ui-check"/>
+        <atomic-icon v-show="getCurrentUrl() === href" id="ui-check"/>
       </div>
     </div>
   </nav>

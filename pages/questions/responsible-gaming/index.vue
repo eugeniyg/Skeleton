@@ -1,7 +1,7 @@
 <template>
   <div class="content">
-    <h1 class="heading">Most popular</h1>
-    <expander :items="accordeons.mostPopular"/>
+    <h1 class="heading">Responsible Gaming</h1>
+    <expander :items="accordeons.responsibleGaming"/>
   </div>
 </template>
 

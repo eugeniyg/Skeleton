@@ -1,9 +1,13 @@
 .expander-item {
   padding: rem(40px) 0 rem(24px) 0;
-  border-top: 1px solid var(--gray-500);
+  border-top: 1px solid var(--gray-700);
+
+  .icon {
+    --color: var(--gray-400);
+  }
 
   &:last-of-type {
-    border-bottom: 1px solid var(--gray-500);
+    border-bottom: 1px solid var(--gray-700);
   }
 
   .content {
