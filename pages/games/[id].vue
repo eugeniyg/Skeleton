@@ -46,20 +46,20 @@
     router.push({ query: { demo: `${isDemo.value}` } });
   };
 
-  watch(() => isLoggedIn.value, (newValue:boolean) => {
+  watch(() => isLoggedIn.value, async (newValue:boolean) => {
     if (newValue) {
-      startGame();
+      await startGame();
     }
   });
 
-  onMounted(() => {
+  onMounted(async () => {
     document.body.classList.add('is-mob-nav-vertical');
     document.body.classList.add('is-game-page');
 
     if (!isDemo.value && !isLoggedIn.value) {
       showModal('register');
     } else {
-      startGame();
+      await startGame();
     }
   });
 
