@@ -1,6 +1,6 @@
 <template>
   <div class="nav-list" :class="{'is-compact' : props.isCompact}">
-    <div v-for="({ title, icon, bage, items, list }, index) in props.items" :key="index" class="item">
+    <div v-for="({ href, title, icon, bage, items, list }, index) in props.items" :key="index" class="item">
       <template v-if="items">
         <div class="link">
           <atomic-icon :id="icon"/>
@@ -13,14 +13,14 @@
             v-for="({ title }, itemIndex) in items"
             :key="itemIndex"
             class="link"
-            href="#"
+            :href="href"
           >
             <span class="text">{{ title }}</span>
           </a>
         </div>
       </template>
 
-      <a v-else class="link" href="#">
+      <a v-else class="link" :href="href">
         <atomic-icon :id="icon"/>
         <div class="text">{{ title }}</div>
         <atomic-bage v-if="bage" :variant="bage.variant">{{ bage.text }}</atomic-bage>
