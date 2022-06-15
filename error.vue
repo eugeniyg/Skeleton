@@ -5,7 +5,6 @@
       <div class="title">Something went wrong</div>
       <p class="text">The page you are trying to access does not exist or has been moved. Try going back to our homepage.</p>
       <button-base
-        tagName="button"
         type="primary"
         size="md"
         @click="goHome"

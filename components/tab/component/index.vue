@@ -4,7 +4,6 @@
       <button-base
         v-for="({ icon, title, id }, itemIndex) in props.items"
         :key="itemIndex"
-        tag-name="button"
         :class="{'is-active': props.selected === id}"
         @click="emit('select-tab', id)"
       >

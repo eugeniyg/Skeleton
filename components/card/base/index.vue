@@ -22,8 +22,8 @@
       <button-base
         v-if="props.hasDemo"
         class="btn-try"
-        type="secondary"
         tag-name="span"
+        type="secondary"
         size="xs"
         @click="openGame(false)"
       >

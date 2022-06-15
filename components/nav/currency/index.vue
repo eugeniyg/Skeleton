@@ -7,7 +7,6 @@
             v-for="{id, title} in navItems"
             :key="id"
             :id="id"
-            tag-name="button"
             type="ghost"
             size="sm"
             :is-active="selected === id"
