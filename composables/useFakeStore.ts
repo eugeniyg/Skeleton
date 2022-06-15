@@ -1222,7 +1222,7 @@ export const useFakeStore = () => {
         mask: '/img/flags/us.svg',
       },
     ],
-      currency: [
+    currency: [
       {
         title: 'USD',
         value: 'USD',
@@ -1240,7 +1240,7 @@ export const useFakeStore = () => {
         value: 'PLN',
       },
     ],
-      timeZones: [
+    timeZones: [
       {
         title: '(GTM +00:000) UTC',
         value: '(GTM +00:000) UTC',
@@ -1258,7 +1258,7 @@ export const useFakeStore = () => {
         value: '(GTM +00:000) UTC',
       },
     ],
-      notification: [
+    notification: [
       {
         title: 'item 1',
         value: 'item 1',
@@ -1325,7 +1325,22 @@ export const useFakeStore = () => {
       {
         title: 'Bonuses',
         href: '/questions/bonuses',
-        icon: 'ui-bonus',
+        icon: 'bonuses',
+      },
+      {
+        title: 'Games',
+        href: '/questions/games',
+        icon: 'ui-gamepad',
+      },
+      {
+        title: 'Security',
+        href: '/questions/security',
+        icon: 'security',
+      },
+      {
+        title: 'Responsible Gaming',
+        href: '/questions/responsible-gaming',
+        icon: 'ui-18',
       },
     ],
   };
@@ -1334,8 +1349,8 @@ export const useFakeStore = () => {
       title: 'Interac E-transfer',
       value: 'interac',
       mask: '/svg/payment-systems/interac.svg',
-      balance: { value: 79.40, title: 'EUR' },
-      withdraw: { value: 54.73, title: 'EUR' },
+      balance: {value: 79.40, title: 'EUR'},
+      withdraw: {value: 54.73, title: 'EUR'},
       useForDeposit: true,
       useForWithDraw: true,
     },
@@ -1343,7 +1358,7 @@ export const useFakeStore = () => {
       title: 'visa',
       value: 'visa',
       mask: '/svg/payment-systems/visa.svg',
-      balance: { value: 79.40, title: 'EUR' },
+      balance: {value: 79.40, title: 'EUR'},
       useForDeposit: true,
       useForWithDraw: false,
     },
@@ -1351,7 +1366,7 @@ export const useFakeStore = () => {
       title: 'MiFinity',
       value: 'mifinity',
       mask: '/svg/payment-systems/mifinity.svg',
-      balance: { value: 79.40, title: 'EUR' },
+      balance: {value: 79.40, title: 'EUR'},
       useForDeposit: true,
       useForWithDraw: true,
     },
@@ -1394,8 +1409,8 @@ export const useFakeStore = () => {
       title: 'volt',
       value: 'volt',
       mask: '/svg/payment-systems/volt.svg',
-      balance: { value: 79.40, title: 'EUR' },
-      withdraw: { value: 54.73, title: 'EUR' },
+      balance: {value: 79.40, title: 'EUR'},
+      withdraw: {value: 54.73, title: 'EUR'},
       useForDeposit: true,
       useForWithDraw: true,
     },
@@ -1403,8 +1418,8 @@ export const useFakeStore = () => {
       title: 'Bank Transfer',
       value: 'etransfer',
       mask: '/svg/payment-systems/e-transfer.svg',
-      balance: { value: 100.40, title: 'EUR' },
-      withdraw: { value: 77.73, title: 'EUR' },
+      balance: {value: 100.40, title: 'EUR'},
+      withdraw: {value: 77.73, title: 'EUR'},
       useForDeposit: false,
       useForWithDraw: true,
     },
@@ -1529,21 +1544,21 @@ export const useFakeStore = () => {
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
         createdAt: '15.04.2022, 15:21',
-        status: { variant: 'current', text: 'Current' },
+        status: {variant: 'current', text: 'Current'},
       },
       {
         device: 'mobile',
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
         createdAt: '15.04.2022, 15:21',
-        status: { variant: 'current', text: 'Current' },
+        status: {variant: 'current', text: 'Current'},
       },
       {
         device: 'mobile',
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
         createdAt: '15.04.2022, 15:21',
-        status: { variant: 'closed', text: 'Closed' },
+        status: {variant: 'closed', text: 'Closed'},
       },
     ],
   };
@@ -1653,41 +1668,199 @@ export const useFakeStore = () => {
   const accordeons = {
     account: [
       {
-        title: 'title How can I create an account in the Slotsbet?',
+        title: 'How can I create an account in the Slotsbet?',
         content: [
-          '<p>Different casino games contribute differently to the wagering requirement. On the <a href="#">Bonus Terms Page</a> you can read more information about bonus wager.</p>',
+          '<p>All you have to do to get started is click the “Registration” button and fill in all the fields. Then you get a verification email with a link.</p>',
         ],
         isOpen: false,
       },
       {
         title: 'Can I have more than one account?',
         content: [
-          '<p>lorem</p>',
-          '<p>ipsum</p>',
-          '<p>dollor</p>',
+          '<p>No. All details on Terms & Conditions.</p>',
         ],
         isOpen: false,
       },
       {
         title: 'Can I change my registered email address?',
         content: [
-          '<p>lorem</p>',
-          '<p>ipsum</p>',
-          '<p>dollor</p>',
+          '<p>Sorry, but that\'s impossible.</p>',
         ],
         isOpen: false,
       },
       {
         title: 'How do I add another currency to my account?',
         content: [
-          '<p>lorem</p>',
-          '<p>ipsum</p>',
-          '<p>dollor</p>',
+          '<p>Go to your account and choose "Wallet". Click on "+" and choose the currency that you prefer.</p>',
         ],
         isOpen: false,
       },
     ],
-  };
+    mostPopular: [
+      {
+        title: 'Are the games fair?',
+        content: [
+          '<p>All games on Slotsbet are 100% fair.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'What should I do if I have forgotten my password?',
+        content: [
+          '<p>You can easily create a new password. Just click the Forgot Password link in the Sign in form. Then we will send an email that will direct you to a new link. There you will create a new password and log in to your account.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'Can I close my account?',
+        content: [
+          '<p>Of course. Please contact Customer Support in online chat and give a brief explanation to why you want to close your account.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'I didn\'t receive a confirmation email. What should I do?',
+        content: [
+          '<p>Check your promotions, spam or junk folder and any tabs in your inbox. If there you did not find the letter either, please contact support via online chat or email.</p>',
+        ],
+        isOpen: false,
+      }],
+    depositsAndWithdrawals: [
+      {
+        title: 'What currencies does Slotsbet accept?',
+        content: [
+          '<p>Slotsbet accepts BTC, ETH, LTC, USDT.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'How can I choose a different currency?',
+        content: [
+          '<p>Choose required currency and tap on deposit.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'Do I need to pay any service fees for deposits and withdrawals?',
+        content: [
+          '<p> It depends on the currency and the method of payment you plan to use. Some of them are free, others might charge a small fee.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'What\'s the minimum and maximum amount of money I can deposit and withdraw?',
+        content: [
+          '<p>The minimum deposit and withdrawal amount are 0.00027 BTC and it\'s equivalent. The maximum deposit and withdrawal depend on your payment method.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'How soon can I receive my withdrawal?',
+        content: [
+          '<p>Usually you receive your money immediately, but it depends on the payment method.</p>',
+        ],
+        isOpen: false,
+      },
+    ],
+    bonuses: [
+      {
+        title: 'What is a bonus?',
+        content: [
+          '<p>Bonuses are additional money added to your balance. It gives you an advantage and increases your chances of winning bigger amounts. But you should remember that the bonus size depends on the promotional offer\'s terms. So don\'t forget to check out our promotions and mindfully read the offer\'s terms.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'How can I find out what the bonus wager is?',
+        content: [
+          '<p>Just go to your personal profile. There you can find all the information about active bonuses. And if you need any help you can always text to our support.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'How can I get my welcome bonus?',
+        content: [
+          '<p>The bonus will be automatically credited as soon as you make the deposit.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'How many times do I need to wager my bonus?',
+        content: [
+          '<p> All deposit-related bonuses have a x45 wagering requirement. For more information, please visit our <a href="#">Bonus Terms Page.</a></p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'I got my bonus, but the required bonus wager isn\'t decreasing. Why?',
+        content: [
+          '<p>Different casino games contribute differently to the wagering requirement. <a href="#">On the Bonus Terms Page</a> you can read more information about bonus wager.</p>',
+        ],
+        isOpen: false,
+      },
+    ],
+    games: [
+      {
+        title: 'The game stalls in the middle of a round. What should I do?',
+        content: [
+          '<p>We store every single spin you make in our database in order to help with these problems. If you feel that an error has occurred during your game play, then please contact our support team.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'I can’t open a game. What should I do?',
+        content: [
+          '<p>We recommend relaunching the webpage, browser and/or device. If none of these helps, please contact our support team.</p>',
+        ],
+        isOpen: false,
+      },
+    ],
+    security: [
+      {
+        title: 'Am I required to upload documents and why?',
+        content: [
+          '<p>You can use the website, play, and win without documents. But if you want to withdrawal your winnings, you will need to upload documents to verify your identity. We have to follow the standards set out by the Curacao licensing authority. This means that, in certain situations, we may ask our players to provide additional supporting documentation.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'Сan I edit the data in my profile?',
+        content: [
+          '<p>Yes, you can edit your profile information. But some fields are not editable. Please, contact our support team to change the data.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'Is my personal information secure in the Slotsbet?',
+        content: [
+          '<p>Please be confident that your documents and other personal data will be protected.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: ' Am I required to verify my account in order to make a deposit or a withdrawal?',
+        content: [
+          '<p> Yes, you need to verify your account by adding personal documents for withdrawals.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'How should I send my documentation?',
+        content: [
+          '<p>Go to the “Security & Verification” tab in your Profile. There you will find all the necessary documents. Upload documents in JPG or PNG (max size 2MB).</p>',
+        ],
+        isOpen: false,
+      },
+    ],
+    responsibleGaming: [
+      {
+        title: 'Can I close my account for a while?',
+        content: [
+          '<p>Yes. If you want to close your account for a while (6-12 months), choose self-exclusion. Also, you can set a cooling-off period. You won’t be able to make deposits and play during the specified period (from 1 day to 6 months), also you will be excluded from all advertising offers. Go to the “Responsible Gambling” tab on your Profile.</p>'
+        ]
+      }
+    ],
+  }
   const categories = [
     {
       title: {
@@ -1744,17 +1917,17 @@ export const useFakeStore = () => {
     },
   ];
 
-  const filter = (cardsArray:any[], key:string):any[] => cardsArray.filter((item:any) => (item.variant === key))[0];
+  const filter = (cardsArray: any[], key: string): any[] => cardsArray.filter((item: any) => (item.variant === key))[0];
   const depositItems = () => payments.filter((item) => item.useForDeposit === true);
   const withdrawItems = () => payments.filter((item) => item.useForWithDraw === true);
   const betsHistoryTbBettingItems = () => ({
-      columns: betsHistoryTb.columns,
-      rows: betsHistoryTb.rows.filter((item) => item.key === 'betting'),
-    });
+    columns: betsHistoryTb.columns,
+    rows: betsHistoryTb.rows.filter((item) => item.key === 'betting'),
+  });
   const betsHistoryTbCasinoItems = () => ({
-      columns: betsHistoryTb.columns,
-      rows: betsHistoryTb.rows.filter((item) => item.key === 'casino'),
-    });
+    columns: betsHistoryTb.columns,
+    rows: betsHistoryTb.rows.filter((item) => item.key === 'casino'),
+  });
   const benefitsCards = () => filter(cards, 'benefits');
 
   const hotCards = filter(cards, 'hot');
