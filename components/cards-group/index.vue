@@ -54,7 +54,7 @@
         'latest',
         'benefits',
       ].includes(val),
-      default: '',
+      required: false,
     },
     titleIcon: {
       type: String,

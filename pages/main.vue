@@ -13,7 +13,7 @@
       </carousel>
     </client-only>
 
-    <nav-cat :items="fakeStore.catNavItems" @clickCategory="changeCategory" />
+    <nav-cat @clickCategory="changeCategory" />
 
     <tab-component @select-tab="selectTab" :selected="selectedTabId">
       <tab-item :is-active="selectedTabId === 'favorites'">
@@ -97,7 +97,7 @@
   }
 
   const changeCategory = (categoryId: string) => {
-    router.push({ path: '/games', query: { category: categoryId !== 'all' ? categoryId : undefined } });
+    router.push({ path: '/games', query: { category: categoryId } });
   };
 
 </script>
