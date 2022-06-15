@@ -1,7 +1,7 @@
 <template>
   <div class="text-editor">
-    <slot></slot>
+    <slot/>
   </div>
 </template>
 
-<style lang="scss" src="./style.scss"></style>
+<style lang="scss" src="./style.scss"/>
