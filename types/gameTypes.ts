@@ -11,7 +11,8 @@ export interface GameInterface {
 
 export interface CollectionInterface {
   id: string,
-  identity: string
+  identity: string,
+  name: string
 }
 
 export interface GameProviderInterface {

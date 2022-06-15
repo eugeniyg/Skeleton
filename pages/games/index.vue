@@ -2,8 +2,8 @@
   <div class="category">
     <nav-cat @clickCategory="changeCategory"/>
 
-    <atomic-cat-heading :icon="iconIndex < 0 ? 'cherry' : icons[iconIndex]">
-      {{ activeCollection?.identity || 'All Games' }}
+    <atomic-cat-heading :icon="sortedCategories[iconIndex].icon">
+      {{ activeCollection.name }}
     </atomic-cat-heading>
 
     <form-input-search v-model:value="searchValue" placeholder="Search your game" @input="searchInput"/>
@@ -29,14 +29,13 @@
     CollectionInterface, GameInterface, GamesResponseInterface, PaginationMetaInterface,
   } from '~/types/gameTypes';
 
-  const { gameCollections } = useGamesStore();
+  const { gameCollections, sortedCategories } = useGamesStore();
   const { selectOptions } = useFieldsStore();
   const route = useRoute();
   const router = useRouter();
 
-  const activeCollection = ref<CollectionInterface>(gameCollections.find((collection) => collection.id === route.query.category));
-  const icons = ['hot', 'slots', 'table-games', 'new', 'turbo-games', 'live-casino'];
-  const iconIndex = computed(() => gameCollections.findIndex((collection) => collection.id === route.query.category));
+  const activeCollection = ref<CollectionInterface>(gameCollections.find((collection) => collection.identity === route.query.category));
+  const iconIndex = computed(() => gameCollections.findIndex((collection) => collection.identity === route.query.category));
 
   const currentProvider = ref<any>(route.query.provider || 'all');
   const searchValue = ref<string>('');
@@ -72,8 +71,8 @@
 
   const changeCategory = async (categoryId: string):Promise<void> => {
     loadPage.value = 1;
-    activeCollection.value = gameCollections.find((collection) => collection.id === categoryId);
-    router.push({ query: { ...route.query, category: categoryId !== 'all' ? categoryId : undefined } });
+    activeCollection.value = gameCollections.find((collection) => collection.identity === categoryId);
+    router.push({ query: { ...route.query, category: categoryId } });
     const response = await getItems();
     setItems(response);
   };
