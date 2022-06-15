@@ -6,14 +6,15 @@
   background-color: var(--gray-800);
   transform: translateY(rem(4px));
   position: absolute;
-  left: rem(16px);
-  right: rem(16px);
+  left: 0;
+  right: 0;
   display: none;
 
   .box {
     max-height: calc(#{rem(256px)} - #{rem(16px)});
     background-color: var(--gray-800);
     overflow-y: auto;
+    overflow-x: hidden;
 
     @extend %scrollbar;
   }
@@ -57,5 +58,38 @@
 
   &.is-show {
     display: block;
+  }
+
+  .header {
+    display: grid;
+    grid-gap: rem(8px);
+    padding: rem(8px) rem(16px);
+    border-bottom: 1px solid var(--gray-700);
+  }
+
+  .heading {
+    @include font($heading-2);
+    color: var(--white);
+    padding: 0;
+    margin: 0;
+  }
+
+  .label {
+    @include font($body-2);
+    color: var(--white);
+    padding: rem(8px) rem(16px) rem(8px) rem(16px);
+  }
+
+  .text {
+    @include font($body-1);
+    color: var(--gray-400);
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer {
+    margin-top: rem(8px);
+    border-top: 1px solid var(--gray-700);
+    padding: rem(8px) 0 0 0;
   }
 }

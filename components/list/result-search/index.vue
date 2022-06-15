@@ -1,6 +1,11 @@
 <template>
   <div class="result-search" :class="{'is-show': props.isShow}">
     <div class="box">
+      <div class="label" v-if="isPopular">Popular searches:</div>
+      <div class="header" v-if="isNotFound">
+        <div class="heading">Nothing found</div>
+        <div class="text">Try searching for something else</div>
+      </div>
       <div class="items">
         <div
           v-for="({ src, title, isActive }, itemIndex) in filteredItems"
@@ -10,6 +15,9 @@
         >
           <img v-if="src" :src="`/img${src}`" />
           <span>{{ title }}</span>
+        </div>
+        <div class="footer" v-if="isShowLoadMore">
+          <button-base type="ghost" size="xs">Load more</button-base>
         </div>
       </div>
     </div>
@@ -25,6 +33,18 @@
     isShow: {
       type: Boolean,
       default: false,
+    },
+    isPopular: {
+      type: Boolean,
+      default: true,
+    },
+    isNotFound: {
+      type: Boolean,
+      default: false,
+    },
+    isShowLoadMore: {
+      type: Boolean,
+      default: true,
     },
   });
 
