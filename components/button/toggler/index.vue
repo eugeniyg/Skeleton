@@ -1,6 +1,10 @@
 <template>
   <div class="toggler-btn" :class="{'is-compact' : props.isCompact}">
-    <button-base v-for="(button, index) in props.items" :key="index" :isActive="button.isActive">
+    <button-base
+      v-for="(button, index) in props.items"
+      :key="index"
+      :isActive="button.isActive"
+    >
       <atomic-icon :id="button.icon"/>
       <span class="text">{{ button.title }}</span>
     </button-base>

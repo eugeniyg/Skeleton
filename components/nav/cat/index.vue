@@ -5,17 +5,15 @@
         <atomic-icon :id="'cherry'"/><span>All Games</span>
       </span>
 
-      <template v-for="({ id, identity, games }, itemIndex) in gameCollections">
-        <span
-          v-if="games.length"
-          :key="id"
-          class="item"
-          :class="{ 'is-active': $route.query.category === id }"
-          @click="emit('clickCategory', id)"
-        >
-          <atomic-icon :id="icons[itemIndex] || 'cherry'"/><span>{{ identity }}</span>
-        </span>
-      </template>
+      <span
+        v-for="({ id, identity }, itemIndex) in gameCollections"
+        :key="id"
+        class="item"
+        :class="{ 'is-active': $route.query.category === id }"
+        @click="emit('clickCategory', id)"
+      >
+        <atomic-icon :id="icons[itemIndex] || 'cherry'"/><span>{{ identity }}</span>
+      </span>
     </div>
   </div>
 </template>
