@@ -13,7 +13,7 @@
       </carousel>
     </client-only>
 
-    <nav-cat :items="fakeStore.catNavItems" />
+    <nav-cat :items="fakeStore.catNavItems" @clickCategory="changeCategory" />
 
     <tab-component @select-tab="selectTab" :selected="selectedTabId">
       <tab-item :is-active="selectedTabId === 'favorites'">
@@ -78,6 +78,7 @@
   } from 'vue3-carousel';
 
   const fakeStore = useFakeStore();
+  const router = useRouter();
 
   const selectedTabId = ref<string>('favorites');
   const topSliderProps = {
@@ -94,4 +95,9 @@
   function selectTab(id:string):void {
     selectedTabId.value = id;
   }
+
+  const changeCategory = (categoryId: string) => {
+    router.push({ path: '/games', query: { category: categoryId !== 'all' ? categoryId : undefined } });
+  };
+
 </script>

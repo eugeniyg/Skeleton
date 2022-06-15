@@ -3,7 +3,7 @@
     <nav-cat @clickCategory="changeCategory"/>
 
     <atomic-cat-heading :icon="iconIndex < 0 ? 'cherry' : icons[iconIndex]">
-      {{ activeCollection?.identity || 'All Games' }}
+      {{ computedTitle(activeCollection?.identity) }}
     </atomic-cat-heading>
 
     <form-input-search v-model:value="searchValue" placeholder="Search your game" @input="searchInput"/>
@@ -34,9 +34,9 @@
   const route = useRoute();
   const router = useRouter();
 
-  const activeCollection = ref<CollectionInterface>(gameCollections.find((collection) => collection.id === route.query.category));
-  const icons = ['hot', 'slots', 'table-games', 'new', 'turbo-games', 'live-casino'];
-  const iconIndex = computed(() => gameCollections.findIndex((collection) => collection.id === route.query.category));
+  const activeCollection = ref<CollectionInterface>(gameCollections.find((collection) => collection.identity === route.query.category));
+  const icons = ['hot', 'new', 'slots', 'ui-heart', 'live-casino', 'table-games', 'turbo-games'];
+  const iconIndex = computed(() => gameCollections.findIndex((collection) => collection.identity === route.query.category));
 
   const currentProvider = ref<any>(route.query.provider || 'all');
   const searchValue = ref<string>('');
@@ -72,7 +72,7 @@
 
   const changeCategory = async (categoryId: string):Promise<void> => {
     loadPage.value = 1;
-    activeCollection.value = gameCollections.find((collection) => collection.id === categoryId);
+    activeCollection.value = gameCollections.find((collection) => collection.identity === categoryId);
     router.push({ query: { ...route.query, category: categoryId !== 'all' ? categoryId : undefined } });
     const response = await getItems();
     setItems(response);
@@ -92,6 +92,14 @@
     const response = await getItems();
     setItems(response, true);
   };
+
+  const computedTitle = ((item: string | undefined) => {
+    if (!item || item === 'all') {
+      return 'All Games';
+    }
+
+    return item;
+  });
 </script>
 
 <style lang="scss" src="./games.scss"/>
