@@ -1174,11 +1174,12 @@ export const useFakeStore = () => {
     {
       icon: 'cherry',
       title: 'Casino',
-      isActive: true,
+      url: '/main',
     },
     {
       icon: 'sport',
       title: 'Betting',
+      url: '/betting',
     },
   ];
   const items = {
