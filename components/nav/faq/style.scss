@@ -38,31 +38,19 @@
   .items {
     position: var(--items-position, absolute);
     visibility: var(--items-visibility, hidden);
-    //left: var(--items-left, #{rem(16px)});
-    //right: var(--items-right, #{rem(16px)});
     left: 0;
     right: 0;
     padding: var(--items-padding, #{rem(8px)});
-    //overflow-x: hidden;
-    //overflow-y: auto;
     background-color: var(--bg, var(--gray-800));
     transform: translateY(#{rem(8px)});
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
 
-
-    //@extend %scrollbar;
-
-    //@include media(sm) {
-    //  --items-left: #{rem(32px)};
-    //  --items-right: #{rem(32px)};
-    //}
-
     @include media(l) {
       transform: unset;
       width: rem(200px);
-      //--items-left: 0;
-      //--items-right: 0;
+      display: grid;
+      grid-gap: rem(4px);
       --items-visibility: visible;
       --items-position: relative;
       --bg: transparent;
@@ -88,30 +76,46 @@
     align-items: center;
     grid-column-gap: rem(8px);
 
-    @include media(l) {
-      --item-padding: #{7px} #{16px};
-      --color: var(--gray-300);
-      justify-content: space-between;
-      border-radius: 24px;
-
-      &.is-active {
-        --bg: var(--gray-800);
-        --color: var(--yellow-500);
-      }
-
-      .icon {
-        display: none;
-      }
-
-    }
-
     .icon {
       margin-left: auto;
       right: rem(8px);
       transform: var(--icon-transform, rotate(0));
       transition: transform .2s ease-in-out;
 
+      &:first-of-type {
+        display: none;
+      }
+
       --icon-color: var(--white);
+    }
+
+    @include media(l) {
+      border-radius: 24px;
+      --item-padding: #{7px} #{16px};
+      --color: var(--gray-300);
+
+      &.is-active {
+        --bg: var(--gray-800);
+        --color: var(--yellow-500);
+
+        .icon {
+          --color: var(--yellow-500);
+        }
+      }
+
+      .icon {
+        &:first-of-type {
+          position: relative;
+          margin-left: 0;
+          margin-right: 0;
+          right: auto;
+          display: block;
+        }
+
+        &:last-of-type {
+          display: none;
+        }
+      }
     }
 
     &:hover {

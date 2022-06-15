@@ -11,8 +11,7 @@
     <button-base
       type="primary"
       size="md"
-      tag-name="a"
-      :href="props.action.href"
+      :url="props.action.href"
     >
       {{ props.action.title }}
     </button-base>

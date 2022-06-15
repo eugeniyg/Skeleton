@@ -3,7 +3,8 @@
     <button-base
       v-for="(button, index) in props.items"
       :key="index"
-      :isActive="button.isActive"
+      :isActive="$route.path === button.url"
+      :url="button.url"
     >
       <atomic-icon :id="button.icon"/>
       <span class="text">{{ button.title }}</span>

@@ -1,7 +1,6 @@
 <template>
   <button-base
     class="btn-ref-promo"
-    tag-name="a"
     @click.prevent="onClick"
     v-show="show"
   >

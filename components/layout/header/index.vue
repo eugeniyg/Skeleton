@@ -16,7 +16,6 @@
         <button-base
           type="secondary"
           size="md"
-          tag-name="button"
           @click="emit('register')"
         >
           Registration
