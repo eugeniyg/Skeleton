@@ -1,6 +1,7 @@
 <template>
   <div class="empty" :class="currentClass">
-    <atomic-icon-colored :id="currentIcon"/>
+    <img v-if="variant ==='search-result'" src="~/assets/img/search-bg.png" alt="">
+    <atomic-icon-colored v-else :id="currentIcon"/>
     <div class="title">{{ props.title }}</div>
     <div class="sub-title">{{ props.subTitle }}</div>
   </div>
@@ -15,6 +16,7 @@
         'notification',
         'bonuses',
         'bets-history',
+        'search-result',
       ].includes(val),
       default: 'transactions',
     },
