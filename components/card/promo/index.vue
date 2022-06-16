@@ -18,14 +18,26 @@
       </ul>
 
       <div class="actions" v-if="props.actions">
-        <button-base v-if="props.actions.primary" type="primary" size="md">{{ props.actions.primary.title }}</button-base>
-        <button-base v-if="props.actions.secondary" type="secondary" size="md">{{ props.actions.secondary.title }}</button-base>
+        <button-base
+          v-if="props.actions.primary"
+          type="primary"
+          size="md"
+          @click="showModal(isLoggedIn ? 'deposit': 'register')"
+        >{{ props.actions.primary.title }}</button-base>
+        <button-base
+          v-if="props.actions.secondary"
+          type="secondary"
+          size="md"
+          @click="showModal(isLoggedIn ? 'deposit': 'register')"
+        >{{ props.actions.secondary.title }}</button-base>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     image: {
       type: Object,
@@ -48,6 +60,10 @@
       required: false,
     },
   });
+
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+  const { showModal } = useLayoutStore();
 </script>
 
 <style lang="scss" src="./style.scss"/>
