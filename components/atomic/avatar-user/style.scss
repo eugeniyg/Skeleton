@@ -12,6 +12,9 @@
     margin: 0 auto;
     z-index: 0;
     background-color: var(--gray-800);
+    background-image: url(~/assets/img/avatar-bg.png);
+    background-position: center;
+    background-size: contain;
 
     .icon {
       position: absolute;
