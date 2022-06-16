@@ -1,6 +1,6 @@
 <template>
   <div class="nav-list" :class="{'is-compact' : props.isCompact}">
-    <div v-for="({ title, icon, bage, items, list }, index) in props.items" :key="index" class="item">
+    <div v-for="({ href, title, icon, bage, items, list }, index) in props.items" :key="index" class="item">
       <template v-if="items">
         <div class="link">
           <atomic-icon :id="icon"/>
@@ -9,22 +9,22 @@
         </div>
 
         <div class="items">
-          <a
+          <nuxt-link
             v-for="({ title }, itemIndex) in items"
             :key="itemIndex"
             class="link"
-            href="#"
+            :to="href"
           >
             <span class="text">{{ title }}</span>
-          </a>
+          </nuxt-link>
         </div>
       </template>
 
-      <a v-else class="link" href="#">
+      <nuxt-link v-else class="link" :to="href">
         <atomic-icon :id="icon"/>
         <div class="text">{{ title }}</div>
         <atomic-bage v-if="bage" :variant="bage.variant">{{ bage.text }}</atomic-bage>
-      </a>
+      </nuxt-link>
 
       <list-turbo-games v-if="list" :items="list" :is-compact="props.isCompact"/>
     </div>
