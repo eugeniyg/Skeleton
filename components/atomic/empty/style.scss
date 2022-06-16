@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: rem(40px);
 
   .title {
     @include font($heading-4);
@@ -39,5 +40,14 @@
   &.variant-transactions {
     --icon-width: #{rem(240px)};
     --icon-height: #{rem(260px)};
+  }
+
+  &.variant-search-result {
+    img {
+      display: block;
+      width: rem(267px);
+      height: auto;
+      margin: 0 auto;
+    }
   }
 }
