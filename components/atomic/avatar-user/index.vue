@@ -2,7 +2,6 @@
   <div class="avatar-user">
     <div class="row">
       <span class="thumb">
-        <atomic-icon id="ui-user" />
         <img class="img" src="~/assets/img/avatar.png" alt="" />
       </span>
 
