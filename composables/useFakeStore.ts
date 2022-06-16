@@ -961,7 +961,7 @@ export const useFakeStore = () => {
         {
           src: '/promotions/1.png',
           title: 'Welcome package',
-          subTitle: '500 EUR + 300 FS',
+          subTitle: '5 BTC + 300 FS',
         },
         {
           src: '/promotions/2.png',
