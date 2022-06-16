@@ -31,7 +31,7 @@ export const useFakeStore = () => {
         actions: {
           primary: {
             title: 'Get bonus',
-            href: '#',
+            // href: '#',
           },
           // secondary: {
           //   title: 'Secondary',
@@ -74,7 +74,7 @@ export const useFakeStore = () => {
         actions: {
           primary: {
             title: 'Get bonus',
-            href: '#',
+            // href: '#',
           },
           // secondary: {
           //   title: 'Secondary',
@@ -112,7 +112,7 @@ export const useFakeStore = () => {
         actions: {
           primary: {
             title: 'Play now',
-            href: '#',
+            // href: '#',
           },
           // secondary: {
           //   title: 'Secondary',
@@ -155,7 +155,7 @@ export const useFakeStore = () => {
         actions: {
           primary: {
             title: 'Get bonus',
-            href: '#',
+            // href: '#',
           },
           // secondary: {
           //   title: 'Secondary',
