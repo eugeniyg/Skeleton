@@ -1016,28 +1016,32 @@ export const useFakeStore = () => {
     {
       title: 'Slots',
       icon: 'slots',
+      href: '/games?category=slots',
     },
     {
-      title: 'Recently played',
+      title: 'Live Casino',
       icon: 'live-casino',
+      href: '/games?category=live',
     },
     {
       title: 'Table Games',
       icon: 'table-games',
+      href: '/games?category=table',
     },
     {
       title: 'Turbogames',
       icon: 'turbo-games',
-      list: [
-        'turbogames/1.png',
-        'turbogames/2.png',
-        'turbogames/2.png',
-      ],
+      href: '/games?category=turbogames',
+      // list: [
+      //   'turbogames/1.png',
+      //   'turbogames/2.png',
+      //   'turbogames/2.png',
+      // ],
     },
-    {
-      title: 'Sport betting',
-      icon: 'sport-book',
-    },
+    // {
+    //   title: 'Sport betting',
+    //   icon: 'sport-book',
+    // },
   ];
   const centerMenuItems = [
     {
