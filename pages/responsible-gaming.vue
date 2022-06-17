@@ -40,7 +40,7 @@
     <p>You may contact any of the following organizations for consultation and support:</p>
     <ul>
       <li><a href="http://www.gamblersanonymous.org/ga/" target="_blank">Gamblers Anonymous</a></li>
-      <li><a href="http://www.gamcare.org.uk/" target="_blank">GamCare</a></li>
+      <li><a href="https://www.gamcare.org.uk/" target="_blank">GamCare</a></li>
       <li><a href="https://www.gamblingtherapy.org/" target="_blank">Gambling Therapy</a></li>
     </ul>
     <h2> Protection of minors</h2>
@@ -52,10 +52,10 @@
       protecting their children from free access to gaming websites. There is special software that can help in this
       matter. Please visit the following websites for more information:</p>
     <ul>
-      <li><a href="http://www.cyberpatrol.com/" target="_blank">CyberPatrol</a></li>
+      <li><a href="https://www.cyberpatrol.com/" target="_blank">CyberPatrol</a></li>
       <li><a href="http://www.gamblock.com/" target="_blank">GamBlock®</a></li>
-      <li><a href="http://www.solidoak.com/" target="_blank">Solid Oak Software</a></li>
-      <li><a href="http://www.netnanny.com/" target="_blank">Net Nanny</a></li>
+      <li><a href="https://www.27labs.com/" target="_blank">Solid Oak Software</a></li>
+      <li><a href="https://www.netnanny.com/" target="_blank">Net Nanny</a></li>
     </ul>
   </atomic-text-editor>
 </template>
