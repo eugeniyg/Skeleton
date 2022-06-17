@@ -2,7 +2,7 @@
   <div class="category">
     <nav-cat @clickCategory="changeCategory"/>
 
-    <atomic-cat-heading :icon="sortedCategories[iconIndex].icon">
+    <atomic-cat-heading :icon="sortedCategories[activeCollection.identity]">
       {{ activeCollection.name }}
     </atomic-cat-heading>
 
@@ -35,7 +35,6 @@
   const router = useRouter();
 
   const activeCollection = ref<CollectionInterface>(gameCollections.find((collection) => collection.identity === route.query.category));
-  const iconIndex = computed(() => gameCollections.findIndex((collection) => collection.identity === route.query.category));
 
   const currentProvider = ref<any>(route.query.provider || 'all');
   const searchValue = ref<string>('');

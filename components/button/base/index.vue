@@ -14,7 +14,7 @@
     tagName: {
       type: String,
       validator: (val:string) => ['div', 'span', 'button'].includes(val),
-      default: 'button',
+      default: 'div',
     },
     type: {
       type: String,

@@ -163,9 +163,9 @@ export const useFakeStore = () => {
           // },
         },
       },
-
     ],
   };
+
   const cards = [
     {
       variant: 'recomended',
@@ -177,23 +177,28 @@ export const useFakeStore = () => {
       items: [
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -206,23 +211,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -235,23 +245,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -264,23 +279,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -295,7 +315,7 @@ export const useFakeStore = () => {
     },
     {
       variant: 'hot',
-      identity: 'Hot games',
+      identity: 'Hot',
       id: 'hot',
       titleIcon: 'hot',
       showAllBtn: true,
@@ -303,23 +323,28 @@ export const useFakeStore = () => {
       games: [
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -332,23 +357,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -361,23 +391,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -390,23 +425,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -419,23 +459,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -448,23 +493,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -487,23 +537,28 @@ export const useFakeStore = () => {
       games: [
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -516,23 +571,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -545,23 +605,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -574,23 +639,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -665,23 +735,28 @@ export const useFakeStore = () => {
       games: [
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -694,23 +769,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -723,23 +803,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -752,23 +837,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -978,7 +1068,6 @@ export const useFakeStore = () => {
           title: '30% Reload bonus',
           subTitle: 'every week',
         },
-
       ],
     },
     {
@@ -1012,6 +1101,7 @@ export const useFakeStore = () => {
       ],
     },
   ];
+
   const topMenuItems = [
     {
       title: 'Slots',
@@ -1368,7 +1458,7 @@ export const useFakeStore = () => {
       title: 'Interac E-transfer',
       value: 'interac',
       mask: '/svg/payment-systems/interac.svg',
-      balance: { value: 79.40, title: 'EUR' },
+      balance: { value: 79.4, title: 'EUR' },
       withdraw: { value: 54.73, title: 'EUR' },
       useForDeposit: true,
       useForWithDraw: true,
@@ -1377,7 +1467,7 @@ export const useFakeStore = () => {
       title: 'visa',
       value: 'visa',
       mask: '/svg/payment-systems/visa.svg',
-      balance: { value: 79.40, title: 'EUR' },
+      balance: { value: 79.4, title: 'EUR' },
       useForDeposit: true,
       useForWithDraw: false,
     },
@@ -1385,7 +1475,7 @@ export const useFakeStore = () => {
       title: 'MiFinity',
       value: 'mifinity',
       mask: '/svg/payment-systems/mifinity.svg',
-      balance: { value: 79.40, title: 'EUR' },
+      balance: { value: 79.4, title: 'EUR' },
       useForDeposit: true,
       useForWithDraw: true,
     },
@@ -1428,7 +1518,11 @@ export const useFakeStore = () => {
       title: 'volt',
       value: 'volt',
       mask: '/svg/payment-systems/volt.svg',
+<<<<<<< HEAD
       balance: { value: 79.40, title: 'EUR' },
+=======
+      balance: { value: 79.4, title: 'EUR' },
+>>>>>>> origin/dev
       withdraw: { value: 54.73, title: 'EUR' },
       useForDeposit: true,
       useForWithDraw: true,
@@ -1437,7 +1531,11 @@ export const useFakeStore = () => {
       title: 'Bank Transfer',
       value: 'etransfer',
       mask: '/svg/payment-systems/e-transfer.svg',
+<<<<<<< HEAD
       balance: { value: 100.40, title: 'EUR' },
+=======
+      balance: { value: 100.4, title: 'EUR' },
+>>>>>>> origin/dev
       withdraw: { value: 77.73, title: 'EUR' },
       useForDeposit: false,
       useForWithDraw: true,
@@ -1451,12 +1549,7 @@ export const useFakeStore = () => {
     },
   ];
   const betsHistoryTb = {
-    columns: [
-      'Game',
-      'Bet',
-      'Result',
-      'Date',
-    ],
+    columns: ['Game', 'Bet', 'Result', 'Date'],
     rows: [
       {
         key: 'casino',
@@ -1496,14 +1589,7 @@ export const useFakeStore = () => {
     ],
   };
   const bonusesHistoryTb = {
-    columns: [
-      'Title',
-      'Status',
-      'Amount',
-      'Wager',
-      'Date',
-      'Valid until',
-    ],
+    columns: ['Title', 'Status', 'Amount', 'Wager', 'Date', 'Valid until'],
     rows: [
       {
         title: 'Special 1st deposit bonus 100% + 100 FS',
@@ -1545,7 +1631,6 @@ export const useFakeStore = () => {
         date: '15.04.2022, 15:21',
         validUntil: '15.04.2022, 15:21',
       },
-
     ],
   };
   const sessionHistoryTb = {
@@ -1582,13 +1667,7 @@ export const useFakeStore = () => {
     ],
   };
   const transactionsHistoryTb = {
-    columns: [
-      'Date',
-      'Type',
-      'Payment Method',
-      'Status',
-      'Sum',
-    ],
+    columns: ['Date', 'Type', 'Payment Method', 'Status', 'Sum'],
     rows: [
       {
         date: '15.04.2022, 15:21',
@@ -1695,16 +1774,12 @@ export const useFakeStore = () => {
       },
       {
         title: 'Can I have more than one account?',
-        content: [
-          '<p>No. All details on Terms & Conditions.</p>',
-        ],
+        content: ['<p>No. All details on Terms & Conditions.</p>'],
         isOpen: false,
       },
       {
         title: 'Can I change my registered email address?',
-        content: [
-          '<p>Sorry, but that\'s impossible.</p>',
-        ],
+        content: ["<p>Sorry, but that's impossible.</p>"],
         isOpen: false,
       },
       {
@@ -1718,9 +1793,7 @@ export const useFakeStore = () => {
     mostPopular: [
       {
         title: 'Are the games fair?',
-        content: [
-          '<p>All games on Slotsbet are 100% fair.</p>',
-        ],
+        content: ['<p>All games on Slotsbet are 100% fair.</p>'],
         isOpen: false,
       },
       {
@@ -1738,38 +1811,37 @@ export const useFakeStore = () => {
         isOpen: false,
       },
       {
-        title: 'I didn\'t receive a confirmation email. What should I do?',
+        title: "I didn't receive a confirmation email. What should I do?",
         content: [
           '<p>Check your promotions, spam or junk folder and any tabs in your inbox. If there you did not find the letter either, please contact support via online chat or email.</p>',
         ],
         isOpen: false,
-      }],
+      },
+    ],
     depositsAndWithdrawals: [
       {
         title: 'What currencies does Slotsbet accept?',
-        content: [
-          '<p>Slotsbet accepts BTC, ETH, LTC, USDT.</p>',
-        ],
+        content: ['<p>Slotsbet accepts BTC, ETH, LTC, USDT.</p>'],
         isOpen: false,
       },
       {
         title: 'How can I choose a different currency?',
-        content: [
-          '<p>Choose required currency and tap on deposit.</p>',
-        ],
+        content: ['<p>Choose required currency and tap on deposit.</p>'],
         isOpen: false,
       },
       {
-        title: 'Do I need to pay any service fees for deposits and withdrawals?',
+        title:
+          'Do I need to pay any service fees for deposits and withdrawals?',
         content: [
           '<p> It depends on the currency and the method of payment you plan to use. Some of them are free, others might charge a small fee.</p>',
         ],
         isOpen: false,
       },
       {
-        title: 'What\'s the minimum and maximum amount of money I can deposit and withdraw?',
+        title:
+          "What's the minimum and maximum amount of money I can deposit and withdraw?",
         content: [
-          '<p>The minimum deposit and withdrawal amount are 0.00027 BTC and it\'s equivalent. The maximum deposit and withdrawal depend on your payment method.</p>',
+          "<p>The minimum deposit and withdrawal amount are 0.00027 BTC and it's equivalent. The maximum deposit and withdrawal depend on your payment method.</p>",
         ],
         isOpen: false,
       },
@@ -1785,7 +1857,7 @@ export const useFakeStore = () => {
       {
         title: 'What is a bonus?',
         content: [
-          '<p>Bonuses are additional money added to your balance. It gives you an advantage and increases your chances of winning bigger amounts. But you should remember that the bonus size depends on the promotional offer\'s terms. So don\'t forget to check out our promotions and mindfully read the offer\'s terms.</p>',
+          "<p>Bonuses are additional money added to your balance. It gives you an advantage and increases your chances of winning bigger amounts. But you should remember that the bonus size depends on the promotional offer's terms. So don't forget to check out our promotions and mindfully read the offer's terms.</p>",
         ],
         isOpen: false,
       },
@@ -1811,7 +1883,8 @@ export const useFakeStore = () => {
         isOpen: false,
       },
       {
-        title: 'I got my bonus, but the required bonus wager isn\'t decreasing. Why?',
+        title:
+          "I got my bonus, but the required bonus wager isn't decreasing. Why?",
         content: [
           '<p>Different casino games contribute differently to the wagering requirement. <a href="#">On the Bonus Terms Page</a> you can read more information about bonus wager.</p>',
         ],
@@ -1857,7 +1930,8 @@ export const useFakeStore = () => {
         isOpen: false,
       },
       {
-        title: ' Am I required to verify my account in order to make a deposit or a withdrawal?',
+        title:
+          ' Am I required to verify my account in order to make a deposit or a withdrawal?',
         content: [
           '<p> Yes, you need to verify your account by adding personal documents for withdrawals.</p>',
         ],
@@ -1936,7 +2010,7 @@ export const useFakeStore = () => {
     },
   ];
 
-  const filter = (cardsArray: any[], key: string): any[] => cardsArray.filter((item: any) => (item.variant === key))[0];
+  const filter = (cardsArray: any[], key: string): any[] => cardsArray.filter((item: any) => item.variant === key)[0];
   const depositItems = () => payments.filter((item) => item.useForDeposit === true);
   const withdrawItems = () => payments.filter((item) => item.useForWithDraw === true);
   const betsHistoryTbBettingItems = () => ({
@@ -1949,24 +2023,7 @@ export const useFakeStore = () => {
   });
   const benefitsCards = () => filter(cards, 'benefits');
 
-  const hotCards = filter(cards, 'hot');
-  const turboCards = filter(cards, 'turbo');
-  const favoritesCards = filter(cards, 'favorites');
-  const recentlyCards = filter(cards, 'recently');
-  const providersCards = filter(cards, 'providers');
-  const latestWinnersCards = filter(cards, 'latest-winners');
-  const promotionsCards = filter(cards, 'promotions');
-  const newRelisesCards = filter(cards, 'new-relises');
-
   return {
-    hotCards,
-    turboCards,
-    favoritesCards,
-    recentlyCards,
-    providersCards,
-    latestWinnersCards,
-    promotionsCards,
-    newRelisesCards,
     topMenuItems,
     centerMenuItems,
     bottomMenuItems,

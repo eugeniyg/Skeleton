@@ -5,10 +5,13 @@
     esc-to-close
   >
     <div class="modal-deposit" @click.stop>
-      <div class="container">
+      <div v-if="isLoggedIn" class="container">
         <div class="slot">
           <balance>
-            <form-input-payments name="name8" :options="depositItems()" />
+            <form-input-payments
+              :items="depositMethods"
+              v-model:activeMethod="currentMethod"
+            />
           </balance>
         </div>
 
@@ -17,9 +20,9 @@
             <button-modal-close @close="closeModal('deposit')"/>
             <div class="title">Deposit</div>
           </div>
-          <form-deposit/>
-          <form-deposit-additional/>
-          <form-deposit-crypto/>
+          <form-deposit v-bind="currentMethod"/>
+          <!--          <form-deposit-additional/>-->
+          <!--          <form-deposit-crypto/>-->
         </div>
       </div>
     </div>
@@ -30,10 +33,18 @@
   import { storeToRefs } from 'pinia';
 
   const layoutStore = useLayoutStore();
+  const profileStore = useProfileStore();
+  const walletStore = useWalletStore();
   const { modals } = storeToRefs(layoutStore);
+  const { isLoggedIn } = storeToRefs(profileStore);
   const { closeModal } = layoutStore;
+  const { depositMethods } = storeToRefs(walletStore);
+  const currentMethod = ref<any>({});
 
-  const { depositItems } = useFakeStore();
+  watch(() => depositMethods.value, () => {
+    currentMethod.value = depositMethods.value[0] || {};
+  });
+
 </script>
 
 <style lang="scss" src="./style.scss"/>

@@ -4,7 +4,7 @@
       class="item"
       v-for="(item, itemIndex) in props.items"
       :key="itemIndex"
-      @click="emit('select', item)"
+      @click.prevent="emit('select', item)"
       :class="{'is-selected': selected === item}"
     >
       {{ item }}
