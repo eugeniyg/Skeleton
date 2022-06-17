@@ -104,9 +104,8 @@
 
   const scrollHandler = ():void => {
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
-
     prevDisabled.value = scrollLeft === 0;
-    nextDisabled.value = scrollWidth === scrollLeft + offsetWidth;
+    nextDisabled.value = scrollWidth === Math.floor(scrollLeft) + offsetWidth;
   };
 
   const clickAction = (goNext: boolean):void => {
