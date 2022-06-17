@@ -1124,12 +1124,26 @@ export const useFakeStore = () => {
     },
   ];
   const staticMenuItems = [
-    'T&C',
-    'Bonus terms',
-    'Payment methods',
-    'F.A.Q',
-    'Privacy Policy',
-    'Responsible Gaming',
+    {
+      title: 'T&C',
+      href: 'terms-and-conditions',
+    },
+    {
+      title: 'Bonus terms',
+      href: 'bonus-terms',
+    },
+    {
+      title: 'F.A.Q',
+      href: 'questions',
+    },
+    {
+      title: 'Privacy Policy',
+      href: 'privacy-policy',
+    },
+    {
+      title: 'Responsible Gaming',
+      href: 'responsible-gaming',
+    },
   ];
   const catNavItems = [
     {
@@ -1354,8 +1368,8 @@ export const useFakeStore = () => {
       title: 'Interac E-transfer',
       value: 'interac',
       mask: '/svg/payment-systems/interac.svg',
-      balance: {value: 79.40, title: 'EUR'},
-      withdraw: {value: 54.73, title: 'EUR'},
+      balance: { value: 79.40, title: 'EUR' },
+      withdraw: { value: 54.73, title: 'EUR' },
       useForDeposit: true,
       useForWithDraw: true,
     },
@@ -1363,7 +1377,7 @@ export const useFakeStore = () => {
       title: 'visa',
       value: 'visa',
       mask: '/svg/payment-systems/visa.svg',
-      balance: {value: 79.40, title: 'EUR'},
+      balance: { value: 79.40, title: 'EUR' },
       useForDeposit: true,
       useForWithDraw: false,
     },
@@ -1371,7 +1385,7 @@ export const useFakeStore = () => {
       title: 'MiFinity',
       value: 'mifinity',
       mask: '/svg/payment-systems/mifinity.svg',
-      balance: {value: 79.40, title: 'EUR'},
+      balance: { value: 79.40, title: 'EUR' },
       useForDeposit: true,
       useForWithDraw: true,
     },
@@ -1414,8 +1428,8 @@ export const useFakeStore = () => {
       title: 'volt',
       value: 'volt',
       mask: '/svg/payment-systems/volt.svg',
-      balance: {value: 79.40, title: 'EUR'},
-      withdraw: {value: 54.73, title: 'EUR'},
+      balance: { value: 79.40, title: 'EUR' },
+      withdraw: { value: 54.73, title: 'EUR' },
       useForDeposit: true,
       useForWithDraw: true,
     },
@@ -1423,8 +1437,8 @@ export const useFakeStore = () => {
       title: 'Bank Transfer',
       value: 'etransfer',
       mask: '/svg/payment-systems/e-transfer.svg',
-      balance: {value: 100.40, title: 'EUR'},
-      withdraw: {value: 77.73, title: 'EUR'},
+      balance: { value: 100.40, title: 'EUR' },
+      withdraw: { value: 77.73, title: 'EUR' },
       useForDeposit: false,
       useForWithDraw: true,
     },
@@ -1549,21 +1563,21 @@ export const useFakeStore = () => {
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
         createdAt: '15.04.2022, 15:21',
-        status: {variant: 'current', text: 'Current'},
+        status: { variant: 'current', text: 'Current' },
       },
       {
         device: 'mobile',
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
         createdAt: '15.04.2022, 15:21',
-        status: {variant: 'current', text: 'Current'},
+        status: { variant: 'current', text: 'Current' },
       },
       {
         device: 'mobile',
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
         createdAt: '15.04.2022, 15:21',
-        status: {variant: 'closed', text: 'Closed'},
+        status: { variant: 'closed', text: 'Closed' },
       },
     ],
   };
@@ -1861,11 +1875,11 @@ export const useFakeStore = () => {
       {
         title: 'Can I close my account for a while?',
         content: [
-          '<p>Yes. If you want to close your account for a while (6-12 months), choose self-exclusion. Also, you can set a cooling-off period. You won’t be able to make deposits and play during the specified period (from 1 day to 6 months), also you will be excluded from all advertising offers. Go to the “Responsible Gambling” tab on your Profile.</p>'
-        ]
-      }
+          '<p>Yes. If you want to close your account for a while (6-12 months), choose self-exclusion. Also, you can set a cooling-off period. You won’t be able to make deposits and play during the specified period (from 1 day to 6 months), also you will be excluded from all advertising offers. Go to the “Responsible Gambling” tab on your Profile.</p>',
+        ],
+      },
     ],
-  }
+  };
   const categories = [
     {
       title: {

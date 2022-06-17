@@ -30,7 +30,7 @@
         </template>
 
         <template v-slot:content="{ item }">
-          <a href="#">{{ item }}</a>
+          <nuxt-link :to="item.href">{{ item.title }}</nuxt-link>
         </template>
       </accordeon>
 
@@ -83,11 +83,22 @@
     info: {
       heading: 'Info',
       items: [
-        'T&C',
-        'Bonus terms',
-        'Payment methods',
-        'Privacy Policy',
-        'Responsible Gaming',
+        {
+          title: 'T&C',
+          href: 'terms-and-conditions',
+        },
+        {
+          title: 'Bonus terms',
+          href: 'bonus-terms',
+        },
+        {
+          title: 'Privacy Policy',
+          href: 'privacy-policy',
+        },
+        {
+          title: 'Responsible Gaming',
+          href: 'responsible-gaming',
+        },
       ],
       order: 1,
       isOpen: true,
@@ -95,9 +106,14 @@
     help: {
       heading: 'Help',
       items: [
-        'F.A.Q',
-        'Contact us',
-        'Support',
+        {
+          title: 'F.A.Q',
+          href: 'questions',
+        },
+        {
+          title: 'Contact us',
+          href: 'contact',
+        },
       ],
       order: 1,
       isOpen: true,
