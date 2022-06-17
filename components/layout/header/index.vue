@@ -16,7 +16,7 @@
         <button-base
           type="secondary"
           size="md"
-          @click="emit('register')"
+          @click="showModal('register')"
         >
           Registration
         </button-base>
@@ -24,7 +24,7 @@
         <button-base
           type="primary"
           size="md"
-          @click="emit('login')"
+          @click="showModal('signIn')"
         >
           Login
         </button-base>
@@ -46,7 +46,7 @@
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isUserNavOpen } = storeToRefs(layoutStore);
-  const { closeUserNav, openUserNav } = layoutStore;
+  const { closeUserNav, openUserNav, showModal } = layoutStore;
   const { avatarItems } = storeToRefs(profileStore);
   const fakeStore = useFakeStore();
 

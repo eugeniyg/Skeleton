@@ -1,11 +1,11 @@
 <template>
-  <button class="btn-deposit" @click="showModal('deposit')">
+  <button class="btn-deposit" @click="openDepositModal">
     <atomic-icon id="ui-plus"/>
   </button>
 </template>
 
 <script setup lang="ts">
-  const { showModal } = useLayoutStore();
+  const { openDepositModal } = useLayoutStore();
 </script>
 
 <style lang="scss" src="./style.scss"/>

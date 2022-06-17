@@ -30,11 +30,26 @@ const useWalletApi = () => {
     return data;
   };
 
+  const getDepositMethods = async (accountId: string, currency: string):Promise<any> => {
+    const { data } = await useFetchInstance(`/api/payment/methods/deposit?accountId=${accountId}&currency=${currency}`);
+    return data;
+  };
+
+  const depositAccount = async (depositData):Promise<any> => {
+    const { data } = await useFetchInstance('/api/payment/invoices/deposit', {
+      method: 'POST',
+      body: depositData,
+    });
+    return data;
+  };
+
   return {
     getAccounts,
     addAccount,
     switchActiveAccount,
     hideWalletAccount,
+    getDepositMethods,
+    depositAccount,
   };
 };
 

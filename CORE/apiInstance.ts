@@ -13,6 +13,5 @@ export const useFetchInstance = (url:string, options?:any):any => {
     };
   }
 
-  console.log(url);
-  return $fetch(url, newOptions);
+ return $fetch(url, newOptions);
 };

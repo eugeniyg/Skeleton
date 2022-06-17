@@ -4,6 +4,7 @@ import { useWalletApi } from '~/CORE';
 
 export type WalletStateType = {
   accounts: AccountInterface[],
+  depositMethods: any[],
   accountsStatuses: {
     Active: 1,
     Inactive: 2,
@@ -15,6 +16,7 @@ export type WalletStateType = {
 export const useWalletStore = defineStore('walletStore', {
   state: () => ({
     accounts: [],
+    depositMethods: [],
   } as WalletStateType),
 
   getters: {
@@ -46,6 +48,12 @@ export const useWalletStore = defineStore('walletStore', {
       const { hideWalletAccount } = useWalletApi();
       const data = await hideWalletAccount(hideData);
       this.accounts = data;
+    },
+
+    async getDepositMethods():Promise<void> {
+      const { getDepositMethods } = useWalletApi();
+      const data = await getDepositMethods(this.activeAccount.id, this.activeAccount.formatBalance.currency);
+      this.depositMethods = data;
     },
   },
 });

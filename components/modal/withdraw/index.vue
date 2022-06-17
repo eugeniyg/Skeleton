@@ -5,10 +5,13 @@
     esc-to-close
   >
     <div class="modal-withdraw" @click.stop>
-      <div class="container">
+      <div v-if="isLoggedIn" class="container">
         <div class="slot">
           <balance :withdraw="true">
-            <form-input-payments name="name9" :options="withdrawItems()"/>
+            <form-input-payments
+              :items="depositMethods"
+              v-model:activeMethod="currentMethod"
+            />
           </balance>
         </div>
 
@@ -112,9 +115,13 @@
   import { storeToRefs } from 'pinia';
 
   const layoutStore = useLayoutStore();
+  const profileStore = useProfileStore();
+  const walletStore = useWalletStore();
   const { modals } = storeToRefs(layoutStore);
+  const { isLoggedIn } = storeToRefs(profileStore);
   const { closeModal } = layoutStore;
-  const { withdrawItems } = useFakeStore();
+  const { depositMethods } = storeToRefs(walletStore);
+  const currentMethod = ref<any>({});
 
   const selected = {
     title: 'etransfer',
