@@ -15,7 +15,7 @@
 
     <nav-cat @clickCategory="changeCategory" />
 
-    <tab-component @select-tab="selectTab" :selected="selectedTabId">
+    <!--<tab-component @select-tab="selectTab" :selected="selectedTabId">
       <tab-item :is-active="selectedTabId === 'favorites'">
         <cards-group v-bind="fakeStore.favoritesCards">
           <template v-slot:card="item">
@@ -31,7 +31,7 @@
           </template>
         </cards-group>
       </tab-item>
-    </tab-component>
+    </tab-component>-->
 
     <cards-group v-bind="fakeStore.hotCards">
       <template v-slot:card="item">

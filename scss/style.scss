@@ -159,7 +159,7 @@ body {
     --padding: #{rem(24px)} #{rem(32px)}
   }
 
-  .app-page > .cards, .tabs, .nav-cat-wrap {
+  .cards, .tabs, .nav-cat-wrap {
     margin-top: #{24px};
   }
 }

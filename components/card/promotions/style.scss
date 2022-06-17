@@ -1,12 +1,13 @@
 .card-promotions {
   width: 100%;
   height: auto;
-  padding: rem(16px) rem(16px) rem(24px) rem(16px);
+  padding: rem(24px) rem(16px) rem(16px) rem(16px);
   border-radius: 8px;
   overflow: hidden;
   position: relative;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
   text-align: center;
+
 
   &:before {
     border-radius: 8px;
@@ -17,17 +18,31 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-size: 120% 120%;
-    background-position: center;
-    background-image: url(../../../assets/img/promo-bg.jpg);
+    background: var(--gradient-dark);
+    z-index: 0;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-dark-img-hover);
+    z-index: 3;
+    opacity: 0;
+    transition: opacity .2s ease-in-out;
   }
 
   .img {
     @include ratio(164px, 164px);
-    background-repeat: inherit;
     position: relative;
     background-size: contain;
     background-position: center;
+    background-repeat: no-repeat;
+    transition: all .2s ease-in-out;
+    z-index: 1;
   }
 
   .content, .actions {
@@ -38,19 +53,42 @@
   }
 
   .content {
-    grid-gap: rem(4px);
+    position: relative;
+    transform: translateY(0%);
+    transition: all .2s ease-in-out;
+    z-index: 4;
   }
 
   .actions {
-    margin-top: rem(16px);
+    position: absolute;
+    width: 100%;
     grid-gap: rem(6px);
-    height: 0;
-    opacity: 0;
+    height: rem(86px);
+    padding-top: rem(16px);
+    top: 100%;
+    transition: all .2s ease-in-out;
+    transform: translateY(100%);
+  }
+
+  &:hover {
+    .actions {
+      transform: translateY(0);
+    }
+
+    .content {
+      transform: translateY(calc(-86px));
+    }
+
+    &:after {
+      opacity: 1;
+    }
   }
 
   .title {
     @include font($heading-3);
     color: var(--white);
+    margin-bottom: rem(4px);
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
   }
 
   .sub-title {
@@ -66,5 +104,11 @@
     @include font($heading-1);
     color: var(--gray-300);
     text-decoration: none;
+    padding: rem(4px) rem(16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
+
 }
