@@ -13,17 +13,15 @@
 
     <layout-header
       :is-logged-in="isLoggedIn"
-      @login="showModal('signIn')"
       @logout="logout"
-      @register="showModal('register')"
     />
 
     <layout-drawer :is-logged-in="isLoggedIn" :is-compact="isDrawerCompact" @compact="compact"/>
 
     <main class="app-main" :class="{'is-overflow': projectMethods.isHomePage()}">
       <slot/>
-      <!--      <NuxtPage class="app-page" :class="`page&#45;&#45;${$route.name}`"/>-->
     </main>
+
     <layout-footer />
 
     <atomic-opacity-layer />
@@ -35,6 +33,8 @@
       <modal-sign-in />
       <modal-deposit />
       <modal-withdraw />
+      <modal-success />
+      <modal-error />
     </client-only>
   </div>
 </template>
@@ -62,17 +62,11 @@
   const projectMethods = useProjectMethods();
 
   const { isDrawerCompact } = storeToRefs(layoutStore);
-  const { compactDrawer, showModal, closeModal } = layoutStore;
+  const { compactDrawer, checkModals } = layoutStore;
+  checkModals();
 
   const { logOutUser } = profileStore;
   const { isLoggedIn } = storeToRefs(profileStore);
-
-  const route = useRoute();
-  if (route.query['sign-up']) {
-    isLoggedIn.value ? closeModal('register') : showModal('register');
-  } else if (route.query['sign-in']) {
-    isLoggedIn.value ? closeModal('signIn') : showModal('signIn');
-  }
 
   function logout():void {
     logOutUser();

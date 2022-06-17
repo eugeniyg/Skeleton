@@ -8,7 +8,7 @@
         :class="{ 'is-active': $route.query.category === identity }"
         @click="emit('clickCategory', identity)"
       >
-        <atomic-icon :id="sortedCategories[itemIndex].icon"/>
+        <atomic-icon :id="sortedCategories[itemIndex]?.icon"/>
         <span>{{ name }}</span>
       </span>
     </div>

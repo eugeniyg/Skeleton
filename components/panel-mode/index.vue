@@ -24,10 +24,10 @@
     isRealMode.value = newValue !== 'true';
   });
 
-  const { showModal } = useLayoutStore();
+  const { openDepositModal } = useLayoutStore();
   const clickButton = ():void => {
     if (isRealMode.value) {
-      showModal('deposit');
+      openDepositModal();
     } else {
       emit('changeMode');
     }
