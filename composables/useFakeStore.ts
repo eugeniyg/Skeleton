@@ -1518,11 +1518,7 @@ export const useFakeStore = () => {
       title: 'volt',
       value: 'volt',
       mask: '/svg/payment-systems/volt.svg',
-<<<<<<< HEAD
-      balance: { value: 79.40, title: 'EUR' },
-=======
       balance: { value: 79.4, title: 'EUR' },
->>>>>>> origin/dev
       withdraw: { value: 54.73, title: 'EUR' },
       useForDeposit: true,
       useForWithDraw: true,
@@ -1531,11 +1527,7 @@ export const useFakeStore = () => {
       title: 'Bank Transfer',
       value: 'etransfer',
       mask: '/svg/payment-systems/e-transfer.svg',
-<<<<<<< HEAD
-      balance: { value: 100.40, title: 'EUR' },
-=======
       balance: { value: 100.4, title: 'EUR' },
->>>>>>> origin/dev
       withdraw: { value: 77.73, title: 'EUR' },
       useForDeposit: false,
       useForWithDraw: true,
