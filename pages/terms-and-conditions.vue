@@ -4,7 +4,7 @@
     <h2>1. General</h2>
     <p>1.1 Before using our website, please read these Terms and Conditions carefully. By registering a Player Account
       with the website you agree and confirm your consent with the Terms and Conditions.</p>
-    <p>1.2 The website <a href="www.slotsbet.io" target="_blank">www.slotsbet.io</a> ("Website", “Company”, "We", "Us",
+    <p>1.2 The website <nuxt-link :to="'/'">www.slotsbet.io</nuxt-link> ("Website", “Company”, "We", "Us",
       "Our") is owned and operated by the company registered and established under the laws of Curaçao.</p>
     <p><b> It is the player’s sole responsibility to inquire about the existing laws and regulations of the given
       jurisdiction for online gambling.</b></p>

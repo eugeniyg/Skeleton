@@ -1864,7 +1864,7 @@ export const useFakeStore = () => {
       {
         title: 'How many times do I need to wager my bonus?',
         content: [
-          '<p> All deposit-related bonuses have a x45 wagering requirement. For more information, please visit our <a href="#">Bonus Terms Page.</a></p>',
+          '<p> All deposit-related bonuses have a x45 wagering requirement. For more information, please visit our <a href="/bonus-terms">Bonus Terms Page.</a></p>',
         ],
         isOpen: false,
       },
@@ -1872,7 +1872,7 @@ export const useFakeStore = () => {
         title:
           "I got my bonus, but the required bonus wager isn't decreasing. Why?",
         content: [
-          '<p>Different casino games contribute differently to the wagering requirement. <a href="#">On the Bonus Terms Page</a> you can read more information about bonus wager.</p>',
+          '<p>Different casino games contribute differently to the wagering requirement. <a href="/bonus-terms">On the Bonus Terms Page</a> you can read more information about bonus wager.</p>',
         ],
         isOpen: false,
       },
