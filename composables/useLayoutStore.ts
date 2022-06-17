@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia';
+import { useWalletStore } from '~/composables/useWalletStore';
+import { useProfileStore } from '~/composables/useProfileStore';
 
 export type LayoutStoreStateType = {
   isUserNavOpen: boolean,
@@ -14,12 +16,14 @@ export type LayoutStoreStateType = {
     error: boolean,
     forgotPass: boolean,
     resetPass: boolean,
-    successDeposit: boolean,
+    success: boolean,
     withdraw: boolean,
   },
   modalsUrl: {
     register: string,
     signIn: string,
+    success: string,
+    error: string,
   },
 }
 
@@ -38,12 +42,14 @@ export const useLayoutStore = defineStore('layoutStore', {
         error: false,
         forgotPass: false,
         resetPass: false,
-        successDeposit: false,
+        success: false,
         withdraw: false,
       },
       modalsUrl: {
         register: 'sign-up',
         signIn: 'sign-in',
+        success: 'success',
+        error: 'error',
       },
   } as LayoutStoreStateType),
 
@@ -110,6 +116,28 @@ export const useLayoutStore = defineStore('layoutStore', {
     closeModal(modalName: string):void {
       this.modals[modalName] = false;
       if (this.modalsUrl[modalName]) this.removeModalQuery(modalName);
+    },
+
+    checkModals():void {
+      const route = useRoute();
+      const { isLoggedIn } = useProfileStore();
+      const queryArr = Object.keys(route.query);
+
+      queryArr.forEach((query) => {
+        if (query === 'sign-up') {
+          isLoggedIn ? this.closeModal('register') : this.showModal('register');
+        } else if (query === 'register') {
+          isLoggedIn ? this.closeModal('signIn') : this.showModal('signIn');
+        } else if (this.modalsUrl[query]) {
+          this.showModal(query);
+        }
+      });
+    },
+
+    async openDepositModal():Promise<void> {
+      const { getDepositMethods } = useWalletStore();
+      await getDepositMethods();
+      this.showModal('deposit');
     },
   },
 });

@@ -12,7 +12,7 @@
         </div>
         <img class="img" src="@/assets/svg/colored/error.svg" />
         <p class="text"> Sorry, something went wrong. <br> Please, try again.</p>
-        <button-base type="primary" size="md">Try again</button-base>
+        <button-base type="primary" size="md" @click="tryAgain">Try again</button-base>
       </div>
     </div>
   </vue-final-modal>
@@ -23,7 +23,12 @@
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
+  const { closeModal, openDepositModal } = layoutStore;
+
+  const tryAgain = async ():Promise<void> => {
+    await openDepositModal();
+    closeModal('error');
+  };
 </script>
 
 <style lang="scss" src="./style.scss"/>

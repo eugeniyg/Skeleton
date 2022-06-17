@@ -1,5 +1,5 @@
 <template>
-  <label :class="classes" :for="name">
+  <label :class="classes">
     <span v-if="label" class="label">
       {{ label }}<sup v-if="isRequired">*</sup>
     </span>
@@ -10,22 +10,16 @@
       <input
         class="field"
         type="number"
-        :id="props.name"
         :name="name"
         :min="props.min"
         :max="props.max"
         :value="props.value"
-        :required="props.isRequired ? 'required': false"
+        :required="props.isRequired"
         :placeholder="props.placeholder"
-        @blur="emit('blur')"
-        @input="emit('input')"
+        @blur="onBlur"
+        @input="onInput"
       />
-      <span class="mask" v-if="props.mask.type ==='text'">{{ props.mask.value }}</span>
-      <span class="mask" v-if="props.mask.type ==='icon'">
-        <atomic-icon :id="props.mask.value"/>
-      </span>
-
-      <img class="mask" v-if="props.mask.type === 'img'" :src="props.mask.value" />
+      <span class="mask" v-if="props.currency">{{ props.currency }}</span>
     </div>
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
@@ -38,8 +32,12 @@
       type: String,
       required: true,
     },
+    currency: {
+      type: String,
+      required: false,
+    },
     value: {
-      type: Number,
+      type: [Number, String],
       default: 20,
     },
     min: {
@@ -66,22 +64,21 @@
       type: Object,
       required: false,
     },
-    mask: {
-      type: Object,
-      default: () => (
-        {
-          type: 'text', // text, icon, img
-          value: 'EUR',
-        }
-      ),
-    },
     isBigger: {
       type: Boolean,
       default: false,
     },
   });
 
-  const emit = defineEmits(['blur', 'input']);
+  const emit = defineEmits(['blur', 'update:value', 'input']);
+  const onInput = (e:any):void => {
+    emit('input', e.target.value);
+    emit('update:value', e.target.value);
+  };
+
+  const onBlur = (e:any):void => {
+    emit('blur', e.target.value);
+  };
 
   const isError = computed(() => props.hint && props.hint.variant === 'error');
   const classes = computed(() => [

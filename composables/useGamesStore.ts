@@ -6,23 +6,24 @@ import { useFieldsStore } from '~/composables/useFieldsStore';
 export type GamesStoreStateType = {
   gameProviders: GameProviderInterface[];
   gameCollections: CollectionInterface[];
-  sortedCategories: { id: string; icon: string }[];
+  sortedCategories: { [key: string]: string };
 };
 
 export const useGamesStore = defineStore('gamesStore', {
   state: () => ({
       gameProviders: [],
       gameCollections: [],
-      sortedCategories: [
-        { id: 'all', icon: 'cherry' },
-        { id: 'hot', icon: 'hot' },
-        { id: 'slots', icon: 'slots' },
-        { id: 'new', icon: 'new' },
-        { id: 'table', icon: 'table-games' },
-        { id: 'turbogames', icon: 'turbo-games' },
-        { id: 'live', icon: 'live-casino' },
-        { id: 'popular', icon: 'ui-heart' },
-      ],
+      // sorted categories for tabs (for MVP will be 8)
+      sortedCategories: {
+        all: 'cherry',
+        hot: 'hot',
+        slots: 'slots',
+        new: 'new',
+        table: 'table-games',
+        turbogames: 'turbo-games',
+        live: 'live-casino',
+        popular: 'ui-heart',
+      },
     } as GamesStoreStateType),
 
   actions: {
@@ -38,9 +39,9 @@ export const useGamesStore = defineStore('gamesStore', {
       const { getGameCollections } = useGamesApi();
       const data = await getGameCollections();
 
-      this.gameCollections = data.sort(
-        (a, b) => this.sortedCategories.map((e) => e.id).indexOf(a.identity)
-          - this.sortedCategories.map((e) => e.id).indexOf(b.identity),
+      this.gameCollections = data.filter((item) => Object.keys(this.sortedCategories).find((el) => el === item.identity)).sort(
+        (a, b) => Object.keys(this.sortedCategories).map((e) => e).indexOf(a.identity)
+          - Object.keys(this.sortedCategories).map((e) => e).indexOf(b.identity),
       );
     },
   },
