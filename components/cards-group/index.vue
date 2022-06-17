@@ -7,9 +7,14 @@
       <h4 class="sub-title">{{ props.subTitle }}</h4>
     </div>
 
-    <h2 v-else class="title">{{ props.identity }}</h2>
+    <h2 v-else class="title">{{ props.name ? props.name : props.identity }}</h2>
 
-    <button-base v-if="props.showAllBtn" class="btn-show-all" type="ghost">Show all</button-base>
+    <button-base
+      v-if="props.showAllBtn"
+      class="btn-show-all"
+      type="ghost"
+      @click="openGames(props.identity)"
+    >Show all</button-base>
 
     <button-arrows
       v-if="showArrowButtons"
@@ -39,6 +44,11 @@
     games: {
       type: Array,
       default: () => [],
+    },
+    name: {
+      type: String,
+      default: () => '',
+      required: false,
     },
     variant: {
       type: String,
@@ -85,6 +95,8 @@
     },
   });
 
+  const router = useRouter();
+
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
   const nextDisabled = ref<boolean>(false);
@@ -113,6 +125,10 @@
       showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
     }
   });
+
+  const openGames = (identity: string):void => {
+    router.push(`/games?category=${identity}`);
+  };
 </script>
 
 <style lang="scss" src="./style.scss"/>
