@@ -1,6 +1,6 @@
 <template>
   <div class="nav-static">
-    <a v-for="(item, itemIndex) in props.items" :key="itemIndex" href="#">{{ item }}</a>
+    <nuxt-link v-for="(item, itemIndex) in props.items" :key="itemIndex" :to="item.href">{{ item.title }}</nuxt-link>
   </div>
 </template>
 
