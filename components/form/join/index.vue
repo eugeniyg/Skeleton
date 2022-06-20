@@ -43,7 +43,7 @@
       @change="v$[field.name]?.$touch()"
       :isError="setError(field.name)"
     >
-      <p v-html="fieldsContent[field.name]?.label || ''" />
+      <p v-html="fieldsContent[field.name]?.label ? fieldsContent[field.name]?.label === 'Send promos by Email' ? 'I agree to receive bonus & marketing emails' : fieldsContent[field.name]?.label : ''" />
     </form-input-checkbox>
 
     <button-base
