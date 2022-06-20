@@ -7,6 +7,13 @@ export type LayoutStoreStateType = {
   isDrawerOpen: boolean,
   isCurrencyNavOpen: boolean,
   isDrawerCompact: boolean,
+  isShowAlert: boolean,
+  alertProps: {
+    isShowAlert: boolean,
+    title: string | undefined,
+    text: string | undefined,
+    variant: 'info' | 'error' | 'warning' | 'done' | undefined,
+  },
   modals: {
     register: boolean,
     signIn: boolean,
@@ -33,6 +40,12 @@ export const useLayoutStore = defineStore('layoutStore', {
       isDrawerOpen: false,
       isCurrencyNavOpen: false,
       isDrawerCompact: false,
+      alertProps: {
+        isShowAlert: false,
+        title: undefined,
+        text: undefined,
+        variant: undefined,
+      },
       modals: {
         register: false,
         signIn: false,
@@ -54,6 +67,10 @@ export const useLayoutStore = defineStore('layoutStore', {
   } as LayoutStoreStateType),
 
   actions: {
+    showAlert(props: LayoutStoreStateType['alertProps']): void {
+      this.alertProps = props;
+    },
+
     openUserNav():void {
       this.isUserNavOpen = true;
       document.body.classList.add('nav-user-open');
