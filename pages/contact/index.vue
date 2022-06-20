@@ -29,35 +29,30 @@
         type="primary"
         size="lg"
         :is-disabled="isDisabledButton"
-        @click="showAtomicAlert"
+        @click="layoutStore.showAlert({
+          isShowAlert: true,
+          title: 'Thank you!',
+          text: undefined,
+          variant: 'done',
+        })"
       >Let’s talk! <atomic-icon id="ui-arrow_next"/></button-base>
     </div>
-    <atomic-alert
-      v-if="state.showAlert"
-      :isShow="state.showAlert"
-      title="Thank you!"
-      variant="done"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
+  const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();
   const { fieldsContent } = storeToRefs(globalStore);
 
   const state = reactive({
     emailText: '',
     messageText: '',
-    showAlert: false,
   });
 
   const isDisabledButton = computed(() => (!(state.emailText.length > 0 && state.messageText.length > 0)));
-
-  const showAtomicAlert = ():void => {
-    state.showAlert = true;
-  };
 </script>
 
 <style lang="scss" src="./style.scss" />
