@@ -14,6 +14,7 @@
           :name="field.name"
           :placeholder="fieldsContent[field.name]?.placeholder || ''"
           @blur="v$[field.name]?.$touch()"
+          @focus="onFocus(field.name)"
           :hint="setError(field.name)"
         />
       </template>
@@ -21,6 +22,7 @@
         v-else
         :key="field.name"
         @blur="v$[field.name]?.$touch()"
+        @focus="onFocus(field.name)"
         :is="fieldsTypeMap[field.name].component || 'form-input-text'"
         v-model:value="registrationFormData[field.name]"
         :type="fieldsTypeMap[field.name].type || 'text'"
@@ -102,6 +104,12 @@
       serverFormErrors.value = {};
     }
   });
+
+  const onFocus = (fieldName:string):void => {
+    if (serverFormErrors.value[fieldName]) {
+      serverFormErrors.value[fieldName] = undefined;
+    }
+  };
 
   const fieldsStore = useFieldsStore();
   const { selectOptions } = storeToRefs(fieldsStore);

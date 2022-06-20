@@ -2,8 +2,8 @@
   <div :class="classes">
     <atomic-icon v-if="props.titleIcon" :id="props.titleIcon"/>
 
-    <div v-if="props.identity && props.subTitle" class="titles">
-      <h2 class="title">{{ props.identity }}</h2>
+    <div v-if="props.name && props.subTitle" class="titles">
+      <h2 class="title">{{ props.name }}</h2>
       <h4 class="sub-title">{{ props.subTitle }}</h4>
     </div>
 
