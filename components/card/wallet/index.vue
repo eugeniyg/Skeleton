@@ -29,7 +29,7 @@
 
       <div v-if="isActive" class="actions">
         <button-base type="primary" size="md" @click="openDepositModal">Deposit</button-base>
-        <button-base type="secondary" size="md" @click="showModal('withdraw')">Withdraw</button-base>
+        <button-base type="secondary" size="md" @click="openWithdrawModal">Withdraw</button-base>
       </div>
     </div>
   </div>
@@ -56,7 +56,7 @@
   });
 
   const { currencies } = useGlobalStore();
-  const { showModal, openDepositModal } = useLayoutStore();
+  const { openWithdrawModal, openDepositModal } = useLayoutStore();
 
   const isActive = computed(() => props.status === 1);
   const showHideCurrencyButton = computed(() => Number(props.formatBalance.amount) === 0 && !isActive.value);

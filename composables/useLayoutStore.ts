@@ -139,5 +139,11 @@ export const useLayoutStore = defineStore('layoutStore', {
       await getDepositMethods();
       this.showModal('deposit');
     },
+
+    async openWithdrawModal():Promise<void> {
+      const { getWithdrawMethods } = useWalletStore();
+      await getWithdrawMethods();
+      this.showModal('withdraw');
+    },
   },
 });

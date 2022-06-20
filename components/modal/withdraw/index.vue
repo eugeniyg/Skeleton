@@ -9,7 +9,7 @@
         <div class="slot">
           <balance :withdraw="true">
             <form-input-payments
-              :items="depositMethods"
+              :items="withdrawMethods"
               v-model:activeMethod="currentMethod"
             />
           </balance>
@@ -21,90 +21,93 @@
             <div class="title">Withdraw</div>
           </div>
 
-          <atomic-titles :title="selected.title"/>
-          <form v-if="selected.value === 'interac'">
+          <atomic-titles :title="currentMethod.names?.en"/>
+
+          <form>
             <form-input-number
-              :is-required="false"
               label="Withdraw sum"
-              name="name10"
-              :hint="{message: 'Min deposit = 20 EUR, max deposit = 5000 EUR'}"
+              name="withdrawSum"
+              :min="currentMethod.amountMin"
+              :max="currentMethod.amountMax"
+              v-model:value.number="amountValue"
+              :currency="currentCurrency"
             />
 
-            <form-input-text
-              type="email"
-              :is-required="true"
-              label="Email Address"
-              name="email"
-              placeholder="Enter your email"
-            />
+            <!--            <form-input-text-->
+            <!--              type="email"-->
+            <!--              :is-required="true"-->
+            <!--              label="Email Address"-->
+            <!--              name="email"-->
+            <!--              placeholder="Enter your email"-->
+            <!--            />-->
 
-            <form-input-phone
-              label="Mobile phone"
-              placeholder="Phone number"
-              :isRequired="true"
-            />
+            <!--            <form-input-phone-->
+            <!--              label="Mobile phone"-->
+            <!--              placeholder="Phone number"-->
+            <!--              :isRequired="true"-->
+            <!--            />-->
             <button-base type="primary" size="md">Withdraw 20 EUR</button-base>
           </form>
 
-          <form v-if="selected.value === 'mifinity' || selected.value === 'coinspaid'">
-            <form-input-number
-              label="Withdraw sum"
-              name="name11"
-              :hint="{message: 'Min deposit = 20 EUR, max deposit = 5000 EUR'}"
-            />
-            <form-input-text label="Destination Account" placeholder="Enter bank name"/>
-            <button-base type="primary" size="md">Withdraw 20 EUR</button-base>
-          </form>
+          <!--          <form v-if="selected.value === 'mifinity' || selected.value === 'coinspaid'">-->
+          <!--            <form-input-number-->
+          <!--              label="Withdraw sum"-->
+          <!--              name="name11"-->
+          <!--              :hint="{message: 'Min deposit = 20 EUR, max deposit = 5000 EUR'}"-->
+          <!--            />-->
+          <!--            <form-input-text label="Destination Account" placeholder="Enter bank name"/>-->
+          <!--            <button-base type="primary" size="md">Withdraw 20 EUR</button-base>-->
+          <!--          </form>-->
 
-          <form v-if="selected.value === 'etransfer'">
-            <form-input-number
-              :is-required="false"
-              label="Withdraw sum"
-              name="name12"
-              :hint="{message: 'Min deposit = 20 EUR, max deposit = 5000 EUR'}"
-            />
+          <!--          <form v-if="selected.value === 'etransfer'">-->
+          <!--            <form-input-number-->
+          <!--              :is-required="false"-->
+          <!--              label="Withdraw sum"-->
+          <!--              name="name12"-->
+          <!--              :hint="{message: 'Min deposit = 20 EUR, max deposit = 5000 EUR'}"-->
+          <!--            />-->
 
-            <form-input-text
-              type="text"
-              :is-required="false"
-              label="Bank Name"
-              name="bank-name"
-              placeholder="Enter bank name"
-            />
+          <!--            <form-input-text-->
+          <!--              type="text"-->
+          <!--              :is-required="false"-->
+          <!--              label="Bank Name"-->
+          <!--              name="bank-name"-->
+          <!--              placeholder="Enter bank name"-->
+          <!--            />-->
 
-            <form-input-text
-              type="text"
-              :is-required="false"
-              label="Branch Address"
-              name="branch-addresss"
-              placeholder="Enter branch address"
-            />
+          <!--            <form-input-text-->
+          <!--              type="text"-->
+          <!--              :is-required="false"-->
+          <!--              label="Branch Address"-->
+          <!--              name="branch-addresss"-->
+          <!--              placeholder="Enter branch address"-->
+          <!--            />-->
 
-            <form-input-text
-              type="text"
-              :is-required="false"
-              label="BIC/SWIFT"
-              name="bic-swift"
-              placeholder="Enter BIC/SWIFT"
-            />
+          <!--            <form-input-text-->
+          <!--              type="text"-->
+          <!--              :is-required="false"-->
+          <!--              label="BIC/SWIFT"-->
+          <!--              name="bic-swift"-->
+          <!--              placeholder="Enter BIC/SWIFT"-->
+          <!--            />-->
 
-            <form-input-text
-              type="text"
-              :is-required="false"
-              label="Account number"
-              name="account-number"
-              placeholder="Enter BIC/SWIFT"
-            />
+          <!--            <form-input-text-->
+          <!--              type="text"-->
+          <!--              :is-required="false"-->
+          <!--              label="Account number"-->
+          <!--              name="account-number"-->
+          <!--              placeholder="Enter BIC/SWIFT"-->
+          <!--            />-->
 
-            <form-input-text
-              type="text"
-              :is-required="false"
-              label="Beneficiary name"
-              name="beneficiary-name"
-              placeholder="Enter beneficiary name"
-            />
-            <button-base type="primary" size="md">Withdraw 20 EUR</button-base>
-          </form>
+          <!--            <form-input-text-->
+          <!--              type="text"-->
+          <!--              :is-required="false"-->
+          <!--              label="Beneficiary name"-->
+          <!--              name="beneficiary-name"-->
+          <!--              placeholder="Enter beneficiary name"-->
+          <!--            />-->
+          <!--            <button-base type="primary" size="md">Withdraw 20 EUR</button-base>-->
+          <!--          </form>-->
         </div>
       </div>
     </div>
@@ -120,16 +123,15 @@
   const { modals } = storeToRefs(layoutStore);
   const { isLoggedIn } = storeToRefs(profileStore);
   const { closeModal } = layoutStore;
-  const { depositMethods } = storeToRefs(walletStore);
+  const { withdrawMethods, activeAccount } = storeToRefs(walletStore);
   const currentMethod = ref<any>({});
+  const currentCurrency = computed(() => activeAccount.value.formatBalance.currency);
+  const amountValue = ref<number>(20);
 
-  const selected = {
-    title: 'etransfer',
-    value: 'etransfer',
-    mask: '/svg/payment-systems/e-transfer.svg',
-    balance: { value: 100.40, title: 'EUR' },
-    withdraw: { value: 77.73, title: 'EUR' },
-  };
+  watch(() => withdrawMethods.value, () => {
+    currentMethod.value = withdrawMethods.value[0] || {};
+    console.log(withdrawMethods.value);
+  });
 </script>
 
 <style lang="scss" src="./style.scss"/>

@@ -3,7 +3,7 @@
     <form-input-number
       :hint="fieldHint"
       label="Deposit sum"
-      name="depositAmount"
+      name="depositSum"
       :min="props.amountMin"
       :max="props.amountMax"
       v-model:value.number="amountValue"
