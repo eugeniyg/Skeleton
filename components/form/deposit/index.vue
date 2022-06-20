@@ -6,7 +6,7 @@
       name="depositSum"
       :min="props.amountMin"
       :max="props.amountMax"
-      v-model:value.number="amountValue"
+      v-model:value="amountValue"
       :currency="currentCurrency"
       :is-bigger="true"
     >
