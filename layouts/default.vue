@@ -36,6 +36,12 @@
       <modal-success />
       <modal-error />
     </client-only>
+
+    <atomic-alert
+      v-if="isShowAlert"
+      :isShow="isShowAlert"
+      v-bind="alertProps"
+    />
   </div>
 </template>
 
@@ -61,7 +67,7 @@
   const profileStore = useProfileStore();
   const projectMethods = useProjectMethods();
 
-  const { isDrawerCompact } = storeToRefs(layoutStore);
+  const { isDrawerCompact, isShowAlert, alertProps } = storeToRefs(layoutStore);
   const { compactDrawer, checkModals } = layoutStore;
   checkModals();
 
