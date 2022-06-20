@@ -15,6 +15,7 @@
     <cards-group
       v-if="popularGames.length"
       v-bind="popularCategory"
+      titleIcon="ui-heart"
       :games="popularGames"
       showArrows
       subTitle="The best games for you"

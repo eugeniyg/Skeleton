@@ -11,8 +11,6 @@
         class="field"
         type="number"
         :name="name"
-        :min="props.min"
-        :max="props.max"
         :value="props.value"
         :required="props.isRequired"
         :placeholder="props.placeholder"
@@ -72,12 +70,12 @@
 
   const emit = defineEmits(['blur', 'update:value', 'input']);
   const onInput = (e:any):void => {
-    emit('input', e.target.value);
-    emit('update:value', e.target.value);
+    emit('input', Number(e.target.value));
+    emit('update:value', Number(e.target.value));
   };
 
   const onBlur = (e:any):void => {
-    emit('blur', e.target.value);
+    emit('blur', Number(e.target.value));
   };
 
   const isError = computed(() => props.hint && props.hint.variant === 'error');
