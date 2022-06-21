@@ -5,7 +5,7 @@
     </span>
 
     <span class="thumb">
-      <img class="img" src="~/assets/img/avatar.png" alt="" />
+      <img class="img" src="~/assets/img/avatar-bg.png" alt="" />
       <atomic-bulb v-if="props.showBulb"/>
     </span>
 

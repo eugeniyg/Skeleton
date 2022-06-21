@@ -10,10 +10,11 @@
         <card-profile :is-compact="props.isCompact"/>
         <atomic-divider/>
       </template>
-
       <nav-list :items="fakeStore.topMenuItems" :is-compact="props.isCompact"/>
       <atomic-divider/>
       <nav-list :items="fakeStore.centerMenuItems" :is-compact="props.isCompact"/>
+      <atomic-divider/>
+      <atomic-select-lang/>
       <atomic-divider/>
       <nav-list :items="fakeStore.bottomMenuItems" :is-compact="props.isCompact"/>
       <atomic-divider/>

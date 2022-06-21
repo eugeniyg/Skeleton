@@ -50,7 +50,7 @@
     height: var(--drawer-content-height, 100vh);
     position: relative;
     z-index: 0;
-    padding: var(--drawer-content-padding, #{rem(16px)});
+    padding: var(--drawer-content-padding, #{rem(16px)} #{rem(16px)} #{rem(40px)} #{rem(16px)});
     overflow-y: auto;
     overscroll-behavior: contain;
     margin: #{rem(8px)} #{rem(8px)} #{rem(8px)} 0;
@@ -61,7 +61,7 @@
 
     .drawer-open & {
       --drawer-content-padding: #{rem(16px)};
-      --drawer-content-height: calc(100vh - #{rem(62px)});
+      --drawer-content-height: calc(100vh - #{rem(62px)} - #{rem(24px)});
     }
 
     .drawer-open.drawer-minimize & {

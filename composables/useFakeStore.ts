@@ -1116,16 +1116,16 @@ export const useFakeStore = () => {
       title: 'Turbogames',
       icon: 'turbo-games',
       href: '/games?category=turbogames',
-      // list: [
-      //   'turbogames/1.png',
-      //   'turbogames/2.png',
-      //   'turbogames/2.png',
-      // ],
+      list: [
+        'turbogames/crash_x.jpg',
+        'turbogames/dice.jpeg',
+        'turbogames/mines.jpeg',
+      ],
     },
-    // {
-    //   title: 'Sport betting',
-    //   icon: 'sport-book',
-    // },
+    {
+      title: 'Sport betting',
+      icon: 'sport-book',
+    },
   ];
   const centerMenuItems = [
     {
@@ -1143,44 +1143,44 @@ export const useFakeStore = () => {
         },
       ],
     },
-    {
-      title: 'VIP  Program',
-      icon: 'vip',
-      bage: {
-        type: 'new',
-        text: 'new',
-      },
-    },
-    {
-      title: 'Tournament',
-      icon: 'tournament',
-    },
-    {
-      title: 'Lotteries',
-      icon: 'lottery',
-    },
-    {
-      title: 'Ouests',
-      icon: 'quest',
-    },
-    {
-      title: 'Shop',
-      icon: 'shop',
-    },
+    // {
+    //   title: 'VIP  Program',
+    //   icon: 'vip',
+    //   bage: {
+    //     type: 'new',
+    //     text: 'new',
+    //   },
+    // },
+    // {
+    //   title: 'Tournament',
+    //   icon: 'tournament',
+    // },
+    // {
+    //   title: 'Lotteries',
+    //   icon: 'lottery',
+    // },
+    // {
+    //   title: 'Ouests',
+    //   icon: 'quest',
+    // },
+    // {
+    //   title: 'Shop',
+    //   icon: 'shop',
+    // },
   ];
   const bottomMenuItems = [
+    // {
+    //   title: 'Favorites',
+    //   icon: 'ui-heart',
+    //   count: 2,
+    // },
+    // {
+    //   title: 'Recently played',
+    //   icon: 'ui-history',
+    //   count: 10,
+    // },
     {
-      title: 'Favorites',
-      icon: 'ui-heart',
-      count: 2,
-    },
-    {
-      title: 'Recently played',
-      icon: 'ui-history',
-      count: 10,
-    },
-    {
-      title: 'Live Support',
+      title: 'Support',
       icon: 'live-support',
     },
   ];
