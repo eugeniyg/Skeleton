@@ -9,7 +9,6 @@ export type LayoutStoreStateType = {
   isDrawerCompact: boolean,
   isShowAlert: boolean,
   alertProps: {
-    isShowAlert: boolean,
     title: string | undefined,
     text: string | undefined,
     variant: 'info' | 'error' | 'warning' | 'done' | undefined,
@@ -40,8 +39,8 @@ export const useLayoutStore = defineStore('layoutStore', {
       isDrawerOpen: false,
       isCurrencyNavOpen: false,
       isDrawerCompact: false,
+      isShowAlert: false,
       alertProps: {
-        isShowAlert: false,
         title: undefined,
         text: undefined,
         variant: undefined,
@@ -68,7 +67,12 @@ export const useLayoutStore = defineStore('layoutStore', {
 
   actions: {
     showAlert(props: LayoutStoreStateType['alertProps']): void {
+      this.isShowAlert = true;
       this.alertProps = props;
+    },
+
+    hideAlert() {
+      this.isShowAlert = false;
     },
 
     openUserNav():void {

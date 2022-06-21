@@ -73,7 +73,6 @@ export const useProfileStore = defineStore('profileStore', {
       this.isLoggedIn = true;
       const { showAlert } = useLayoutStore();
       showAlert({
-        isShowAlert: true,
         title: 'Welcome',
         text: 'You have been successfully registered!',
         variant: 'done',

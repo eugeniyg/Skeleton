@@ -38,11 +38,9 @@
     </client-only>
 
     <atomic-alert
-      v-if="alertProps.isShowAlert"
-      :isShow="alertProps.isShowAlert"
-      :title="alertProps.title"
-      :text='alertProps.text'
-      :variant="alertProps.variant"
+      v-if="isShowAlert"
+      :isShow="isShowAlert"
+      v-bind="alertProps"
     />
   </div>
 </template>
@@ -69,7 +67,7 @@
   const profileStore = useProfileStore();
   const projectMethods = useProjectMethods();
 
-  const { isDrawerCompact, alertProps } = storeToRefs(layoutStore);
+  const { isDrawerCompact, isShowAlert, alertProps } = storeToRefs(layoutStore);
   const { compactDrawer, checkModals } = layoutStore;
   checkModals();
 

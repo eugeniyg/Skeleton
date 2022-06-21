@@ -30,7 +30,6 @@
         size="lg"
         :is-disabled="isDisabledButton"
         @click="layoutStore.showAlert({
-          isShowAlert: true,
           title: 'Thank you!',
           text: undefined,
           variant: 'done',
