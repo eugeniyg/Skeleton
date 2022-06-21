@@ -35,8 +35,21 @@ const useWalletApi = () => {
     return data;
   };
 
+  const getWithdrawMethods = async (accountId: string, currency: string):Promise<any> => {
+    const { data } = await useFetchInstance(`/api/payment/methods/withdrawal?accountId=${accountId}&currency=${currency}`);
+    return data;
+  };
+
   const depositAccount = async (depositData):Promise<any> => {
     const { data } = await useFetchInstance('/api/payment/invoices/deposit', {
+      method: 'POST',
+      body: depositData,
+    });
+    return data;
+  };
+
+  const withdrawAccount = async (depositData):Promise<any> => {
+    const { data } = await useFetchInstance('/api/payment/invoices/withdrawal', {
       method: 'POST',
       body: depositData,
     });
@@ -50,6 +63,8 @@ const useWalletApi = () => {
     hideWalletAccount,
     getDepositMethods,
     depositAccount,
+    getWithdrawMethods,
+    withdrawAccount,
   };
 };
 

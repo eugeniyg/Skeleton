@@ -3,17 +3,13 @@
     <form-input-number
       :hint="fieldHint"
       label="Deposit sum"
-      name="depositAmount"
+      name="depositSum"
       :min="props.amountMin"
       :max="props.amountMax"
       v-model:value="amountValue"
       :currency="currentCurrency"
       :is-bigger="true"
-    >
-      <template v-slot:pills>
-        <list-pills @select="amountValue = $event" :items="[50, 100, 500, 1000]" :selected="Number(amountValue)"/>
-      </template>
-    </form-input-number>
+    />
 
     <atomic-divider/>
     <atomic-bonus/>
@@ -67,14 +63,14 @@
 
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
-  const { activeAccount } = storeToRefs(walletStore);
+  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
   const currentCurrency = computed(() => activeAccount.value.formatBalance.currency);
   const fieldHint = computed(() => ({
     message: `Min deposit = ${props.amountMin} ${currentCurrency.value}, max deposit = ${props.amountMax} ${currentCurrency.value}`,
   }));
 
   const isSending = ref<boolean>(false);
-  const amountValue = ref<number>(50);
+  const amountValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : 0.01);
   const hasBonusCode = ref<boolean>(false);
   const bonusValue = ref<string>('');
   const buttonAmount = computed(() => {

@@ -11,10 +11,8 @@
     <div class="row">
       <div class="nickname">{{ publicNickname }}</div>
 
-      <div v-if="props.amount.length" class="amount">
-        <span v-for="(item, index) in props.amount" :key="index">
-          {{ item }}
-        </span>
+      <div v-if="activeAccount" class="amount">
+        {{ activeAccount.formatBalance.amount }} {{ activeAccount.formatBalance.currency }}
       </div>
     </div>
   </div>
@@ -40,6 +38,8 @@
 
   const profileStore = useProfileStore();
   const { publicNickname } = storeToRefs(profileStore);
+  const walletStore = useWalletStore();
+  const { activeAccount } = storeToRefs(walletStore);
 </script>
 
 <style lang="scss" src="./style.scss"/>
