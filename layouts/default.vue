@@ -74,6 +74,19 @@
   const { logOutUser } = profileStore;
   const { isLoggedIn } = storeToRefs(profileStore);
 
+  const route = useRoute();
+
+  watch(() => route.path, (currPath, prevPath) => {
+    if (currPath !== prevPath) {
+      layoutStore.showAlert({
+        isShowAlert: false,
+        title: undefined,
+        text: undefined,
+        variant: undefined,
+      });
+    }
+  });
+
   function logout():void {
     logOutUser();
   }
