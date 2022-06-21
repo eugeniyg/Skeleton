@@ -36,7 +36,7 @@
         {
           icon: 'ui-bonus',
           title: 'Bonuses',
-          url: '/user-profile/bonuses',
+          url: '/profile/bonuses',
         },
         {
           icon: 'ui-user',
@@ -46,7 +46,7 @@
         {
           icon: 'ui-history',
           title: 'History',
-          url: '/user-profile/history',
+          url: '/profile/history',
         },
       ],
     },
