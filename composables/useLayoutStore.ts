@@ -67,8 +67,10 @@ export const useLayoutStore = defineStore('layoutStore', {
 
   actions: {
     showAlert(props: LayoutStoreStateType['alertProps']): void {
-      this.isShowAlert = true;
-      this.alertProps = props;
+      setTimeout(() => {
+        this.isShowAlert = true;
+        this.alertProps = props;
+      }, 200);
     },
 
     hideAlert() {

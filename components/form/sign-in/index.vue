@@ -83,17 +83,6 @@
   const loginError = ref<boolean>(false);
   const v$ = useVuelidate(authorizationFormRules, authorizationFormData);
 
-  watch(() => props.show, (newValue:boolean) => {
-    if (!newValue) {
-      Object.keys(authorizationFormData).forEach((key) => {
-        authorizationFormData[key] = '';
-      });
-      v$.value.$reset();
-      serverFormErrors.value = {};
-      loginError.value = false;
-    }
-  });
-
   const onBlur = (fieldName:string):void => {
     v$.value[fieldName].$touch();
     if (serverFormErrors.value[fieldName]) {

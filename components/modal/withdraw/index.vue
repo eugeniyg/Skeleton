@@ -2,6 +2,7 @@
   <vue-final-modal
     v-model="modals.withdraw"
     @click="closeModal('withdraw')"
+    @beforeOpen="formKey++"
     esc-to-close
   >
     <div class="modal-withdraw" @click.stop>
@@ -22,41 +23,40 @@
           </div>
 
           <atomic-titles :title="currentMethod.names?.en"/>
+          <form-withdraw :key="formKey" v-bind="currentMethod" />
 
-          <form>
-            <form-input-number
-              label="Withdraw sum"
-              name="withdrawSum"
-              :min="currentMethod.amountMin"
-              :max="currentMethod.amountMax"
-              v-model:value.number="amountValue"
-              :currency="currentCurrency"
-            />
-
-            <!--            <form-input-text-->
-            <!--              type="email"-->
-            <!--              :is-required="true"-->
-            <!--              label="Email Address"-->
-            <!--              name="email"-->
-            <!--              placeholder="Enter your email"-->
-            <!--            />-->
-
-            <!--            <form-input-phone-->
-            <!--              label="Mobile phone"-->
-            <!--              placeholder="Phone number"-->
-            <!--              :isRequired="true"-->
-            <!--            />-->
-            <button-base type="primary" size="md">Withdraw 20 EUR</button-base>
-          </form>
-
-          <!--          <form v-if="selected.value === 'mifinity' || selected.value === 'coinspaid'">-->
+          <!--          <form>-->
           <!--            <form-input-number-->
           <!--              label="Withdraw sum"-->
-          <!--              name="name11"-->
-          <!--              :hint="{message: 'Min deposit = 20 EUR, max deposit = 5000 EUR'}"-->
+          <!--              name="withdrawSum"-->
+          <!--              :min="currentMethod.amountMin"-->
+          <!--              :max="currentMethod.amountMax"-->
+          <!--              v-model:value.number="amountValue"-->
+          <!--              :currency="currentCurrency"-->
+          <!--              :hint="fieldHint"-->
           <!--            />-->
-          <!--            <form-input-text label="Destination Account" placeholder="Enter bank name"/>-->
-          <!--            <button-base type="primary" size="md">Withdraw 20 EUR</button-base>-->
+
+          <!--            <form-input-text-->
+          <!--              type="email"-->
+          <!--              :is-required="true"-->
+          <!--              label="Email Address"-->
+          <!--              name="email"-->
+          <!--              placeholder="Enter your email"-->
+          <!--            />-->
+
+          <!--            <form-input-phone-->
+          <!--              label="Mobile phone"-->
+          <!--              placeholder="Phone number"-->
+          <!--              :isRequired="true"-->
+          <!--            />-->
+          <!--            <button-base-->
+          <!--              type="primary"-->
+          <!--              size="md"-->
+          <!--              :isDisabled="buttonDisabled"-->
+          <!--              @click="getWithdraw"-->
+          <!--            >-->
+          <!--              Withdraw {{ buttonAmount }} {{ currentCurrency }}-->
+          <!--            </button-base>-->
           <!--          </form>-->
 
           <!--          <form v-if="selected.value === 'etransfer'">-->
@@ -123,14 +123,12 @@
   const { modals } = storeToRefs(layoutStore);
   const { isLoggedIn } = storeToRefs(profileStore);
   const { closeModal } = layoutStore;
-  const { withdrawMethods, activeAccount } = storeToRefs(walletStore);
+  const { withdrawMethods } = storeToRefs(walletStore);
+  const formKey = ref<number>(0);
   const currentMethod = ref<any>({});
-  const currentCurrency = computed(() => activeAccount.value.formatBalance.currency);
-  const amountValue = ref<number>(20);
 
   watch(() => withdrawMethods.value, () => {
     currentMethod.value = withdrawMethods.value[0] || {};
-    console.log(withdrawMethods.value);
   });
 </script>
 

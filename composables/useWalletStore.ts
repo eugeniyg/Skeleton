@@ -1,6 +1,7 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { AccountInterface, AccountRequestInterface } from '~/types/walletTypes';
 import { useWalletApi } from '~/CORE';
+import { useGlobalStore } from '~/composables/useGlobalStore';
 
 export type WalletStateType = {
   accounts: AccountInterface[],
@@ -24,6 +25,19 @@ export const useWalletStore = defineStore('walletStore', {
   getters: {
     activeAccount():AccountInterface {
       return this.accounts.find((acc) => acc.status === 1);
+    },
+
+    activeAccountType():string {
+      const globalStore = useGlobalStore();
+      const { currencies } = storeToRefs(globalStore);
+
+      const accountCurrency = currencies.value.find((currency) => {
+        if (!currency.subCurrencies.length) {
+          return currency.code === this.activeAccount.formatBalance.currency;
+        }
+        return currency.code === this.activeAccount.formatBalance.currency || currency.subCurrencies.some((sub) => sub.code === this.activeAccount.formatBalance.currency);
+      });
+      return accountCurrency.type;
     },
   },
 

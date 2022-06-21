@@ -108,11 +108,11 @@
       items: [
         {
           title: 'F.A.Q',
-          href: 'questions',
+          href: '/questions',
         },
         {
           title: 'Contact us',
-          href: 'contact',
+          href: '/contact',
         },
       ],
       order: 1,
