@@ -9,7 +9,9 @@
 
     <div class="row" v-if="props.withdraw">
       <div class="label">Withdraw</div>
-      <div class="value">{{ '54.73' }} {{ 'EUR' }}</div>
+      <div class="value">
+        {{ activeAccount.formatBalance.amount }} {{ activeAccount.formatBalance.currency }}
+      </div>
     </div>
     <atomic-divider />
     <slot/>

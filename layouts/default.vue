@@ -38,7 +38,6 @@
     </client-only>
 
     <atomic-alert
-      v-if="isShowAlert"
       :isShow="isShowAlert"
       v-bind="alertProps"
     />

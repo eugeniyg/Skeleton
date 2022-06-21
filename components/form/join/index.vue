@@ -93,18 +93,6 @@
   const serverFormErrors = ref<any>({});
   const v$ = useVuelidate(registrationFormRules, registrationFormData);
 
-  watch(() => props.show, (newValue:boolean) => {
-    if (!newValue) {
-      Object.keys(registrationFormData).forEach((key) => {
-        if (key !== 'currency') {
-          registrationFormData[key] = '';
-        }
-      });
-      v$.value.$reset();
-      serverFormErrors.value = {};
-    }
-  });
-
   const onFocus = (fieldName:string):void => {
     if (serverFormErrors.value[fieldName]) {
       serverFormErrors.value[fieldName] = undefined;

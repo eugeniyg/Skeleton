@@ -67,8 +67,10 @@ export const useLayoutStore = defineStore('layoutStore', {
 
   actions: {
     showAlert(props: LayoutStoreStateType['alertProps']): void {
-      this.isShowAlert = true;
-      this.alertProps = props;
+      setTimeout(() => {
+        this.isShowAlert = true;
+        this.alertProps = props;
+      }, 200);
     },
 
     hideAlert() {
@@ -159,6 +161,12 @@ export const useLayoutStore = defineStore('layoutStore', {
       const { getDepositMethods } = useWalletStore();
       await getDepositMethods();
       this.showModal('deposit');
+    },
+
+    async openWithdrawModal():Promise<void> {
+      const { getWithdrawMethods } = useWalletStore();
+      await getWithdrawMethods();
+      this.showModal('withdraw');
     },
   },
 });

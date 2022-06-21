@@ -1,10 +1,12 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { AccountInterface, AccountRequestInterface } from '~/types/walletTypes';
 import { useWalletApi } from '~/CORE';
+import { useGlobalStore } from '~/composables/useGlobalStore';
 
 export type WalletStateType = {
   accounts: AccountInterface[],
   depositMethods: any[],
+  withdrawMethods: any[],
   accountsStatuses: {
     Active: 1,
     Inactive: 2,
@@ -17,11 +19,25 @@ export const useWalletStore = defineStore('walletStore', {
   state: () => ({
     accounts: [],
     depositMethods: [],
+    withdrawMethods: [],
   } as WalletStateType),
 
   getters: {
     activeAccount():AccountInterface {
       return this.accounts.find((acc) => acc.status === 1);
+    },
+
+    activeAccountType():string {
+      const globalStore = useGlobalStore();
+      const { currencies } = storeToRefs(globalStore);
+
+      const accountCurrency = currencies.value.find((currency) => {
+        if (!currency.subCurrencies.length) {
+          return currency.code === this.activeAccount.formatBalance.currency;
+        }
+        return currency.code === this.activeAccount.formatBalance.currency || currency.subCurrencies.some((sub) => sub.code === this.activeAccount.formatBalance.currency);
+      });
+      return accountCurrency.type;
     },
   },
 
@@ -54,6 +70,12 @@ export const useWalletStore = defineStore('walletStore', {
       const { getDepositMethods } = useWalletApi();
       const data = await getDepositMethods(this.activeAccount.id, this.activeAccount.formatBalance.currency);
       this.depositMethods = data;
+    },
+
+    async getWithdrawMethods():Promise<void> {
+      const { getWithdrawMethods } = useWalletApi();
+      const data = await getWithdrawMethods(this.activeAccount.id, this.activeAccount.formatBalance.currency);
+      this.withdrawMethods = data;
     },
   },
 });

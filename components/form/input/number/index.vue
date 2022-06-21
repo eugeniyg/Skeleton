@@ -9,7 +9,7 @@
     <div class="row">
       <input
         class="field"
-        type="number"
+        type="tel"
         :name="name"
         :value="props.value"
         :required="props.isRequired"
