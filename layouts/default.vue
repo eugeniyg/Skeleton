@@ -36,6 +36,12 @@
       <modal-success />
       <modal-error />
     </client-only>
+
+    <atomic-alert
+      v-if="isShowAlert"
+      :isShow="isShowAlert"
+      v-bind="alertProps"
+    />
   </div>
 </template>
 
@@ -61,12 +67,25 @@
   const profileStore = useProfileStore();
   const projectMethods = useProjectMethods();
 
-  const { isDrawerCompact } = storeToRefs(layoutStore);
+  const { isDrawerCompact, isShowAlert, alertProps } = storeToRefs(layoutStore);
   const { compactDrawer, checkModals } = layoutStore;
   checkModals();
 
   const { logOutUser } = profileStore;
   const { isLoggedIn } = storeToRefs(profileStore);
+
+  const route = useRoute();
+
+  watch(() => route.path, (currPath, prevPath) => {
+    if (currPath !== prevPath) {
+      layoutStore.showAlert({
+        isShowAlert: false,
+        title: undefined,
+        text: undefined,
+        variant: undefined,
+      });
+    }
+  });
 
   function logout():void {
     logOutUser();

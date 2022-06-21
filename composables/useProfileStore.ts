@@ -3,6 +3,7 @@ import { useAuthApi, useProfileApi } from '~/CORE/index';
 import { ProfileInterface } from '~/types/userTypes';
 import { FieldInterface } from '~/types/formTypes';
 import { useWalletStore } from '~/composables/useWalletStore';
+import { useLayoutStore } from '~/composables/useLayoutStore';
 
 export type ProfileStoreStateType = {
   isLoggedIn: boolean,
@@ -70,6 +71,12 @@ export const useProfileStore = defineStore('profileStore', {
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
+      const { showAlert } = useLayoutStore();
+      showAlert({
+        title: 'Welcome',
+        text: 'You have been successfully registered!',
+        variant: 'done',
+      });
     },
 
     async getProfileData():Promise<void> {

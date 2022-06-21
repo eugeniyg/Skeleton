@@ -85,19 +85,19 @@
       items: [
         {
           title: 'T&C',
-          href: 'terms-and-conditions',
+          href: '/terms-and-conditions',
         },
         {
           title: 'Bonus terms',
-          href: 'bonus-terms',
+          href: '/bonus-terms',
         },
         {
           title: 'Privacy Policy',
-          href: 'privacy-policy',
+          href: '/privacy-policy',
         },
         {
           title: 'Responsible Gaming',
-          href: 'responsible-gaming',
+          href: '/responsible-gaming',
         },
       ],
       order: 1,

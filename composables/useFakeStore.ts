@@ -1210,23 +1210,23 @@ export const useFakeStore = () => {
   const staticMenuItems = [
     {
       title: 'T&C',
-      href: 'terms-and-conditions',
+      href: '/terms-and-conditions',
     },
     {
       title: 'Bonus terms',
-      href: 'bonus-terms',
+      href: '/bonus-terms',
     },
     {
       title: 'F.A.Q',
-      href: 'questions',
+      href: '/questions',
     },
     {
       title: 'Privacy Policy',
-      href: 'privacy-policy',
+      href: '/privacy-policy',
     },
     {
       title: 'Responsible Gaming',
-      href: 'responsible-gaming',
+      href: '/responsible-gaming',
     },
   ];
   const catNavItems = [
