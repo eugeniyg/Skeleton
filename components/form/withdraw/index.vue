@@ -104,8 +104,8 @@
       await withdrawAccount(params);
       closeModal('withdraw');
       showAlert({
-        title: 'Success!',
-        text: 'You withdraw will be verified!',
+        title: 'Pending!',
+        text: 'Your withdrawal is being processed. We will check your request in a short while.',
         variant: 'done',
       });
     } catch (err) {
