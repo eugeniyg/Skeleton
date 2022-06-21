@@ -1949,7 +1949,7 @@ export const useFakeStore = () => {
       subTitle: 'Enjoy more than 3000+ provably fair slots & games',
       action: {
         title: 'Go to Casino',
-        href: '#',
+        href: '/main',
       },
     },
     {
@@ -1960,7 +1960,7 @@ export const useFakeStore = () => {
       subTitle: 'The most competitive odds and markets. Bet and win right now',
       action: {
         title: 'Go to Betting',
-        href: '#',
+        href: '/betting',
       },
     },
   ];
