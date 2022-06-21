@@ -24,6 +24,13 @@
     </div>
 
     <list-grid :items="gameItems" :meta="pageMeta" @loadMore="loadMoreItems" />
+
+    <atomic-empty
+      v-if="gameItems.length === 0"
+      title="Nothing found"
+      subTitle="Try searching for something else"
+      variant="search-result"
+    />
   </div>
 </template>
 
