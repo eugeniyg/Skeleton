@@ -11,7 +11,7 @@
     <button-base
       type="primary"
       size="md"
-      :url="props.action.href"
+      @click="changePage"
     >
       {{ props.action.title }}
     </button-base>
@@ -19,6 +19,8 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     title: {
       type: Object,
@@ -39,6 +41,16 @@
       }),
     },
   });
+
+  const router = useRouter();
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+  const { showModal } = useLayoutStore();
+
+  const changePage = ():void => {
+    if (props.action.href === '/betting' && !isLoggedIn.value) showModal('register');
+    else router.push(props.action.href);
+  };
 </script>
 
 <style lang="scss" src="./style.scss"/>
