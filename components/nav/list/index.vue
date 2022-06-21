@@ -2,10 +2,10 @@
   <div class="nav-list" :class="{'is-compact' : props.isCompact}">
     <div v-for="({ href, title, icon, bage, items, list }, index) in props.items" :key="index" class="item">
       <template v-if="items">
-        <div class="link">
+        <div class="link" @click.prevent="toggleOpen" :class="{'is-open': open}">
           <atomic-icon :id="icon"/>
           <div class="text">{{ title }}</div>
-          <button-toggle @toggle="clicked"/>
+          <button-toggle/>
         </div>
 
         <div class="items">
@@ -41,11 +41,17 @@
       type: Boolean,
       default: false,
     },
+    isOpen: {
+      type: Boolean,
+      default: false,
+    },
   });
 
-  function clicked():void {
-    console.log('clicked');
-  }
+  const open = ref<boolean>(props.isOpen);
+
+  const toggleOpen = ():void => {
+    open.value = !open.value;
+  };
 </script>
 
 <style lang="scss" src="./style.scss"/>

@@ -1,18 +1,24 @@
 .nav-list {
   margin: 0;
   padding: 0;
+  grid-gap: rem(4px);
+  display: grid;
 
   > .item {
     @extend %flex-column;
-
-    &:not(:last-of-type) {
-      margin-bottom: rem(4px);
-    }
   }
 
   .items {
     @extend %flex-column;
     padding-left: rem(32px);
+    grid-gap: rem(4px);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height .2s ease-in-out;
+
+    .link:first-of-type {
+      margin-top: rem(4px);
+    }
   }
 
   .link {
@@ -20,28 +26,55 @@
     @extend %flex-items-center;
     grid-column-gap: #{rem(8px)};
     padding: var(--padding, #{rem(8px) rem(16px)});
+    transition: color .2s ease-in-out;
+    min-height: rem(40px);
     --color: var(--gray-300);
 
+    .icon {
+      --color: var(--gray-400);
+    }
+
+
     &:hover {
+      cursor: pointer;
       --color: var(--white);
+
+      .icon {
+        --color: var(--white);
+      }
     }
 
     &:focus, &:active, &.is-active {
       --color: var(--yellow-500);
+
+      .icon {
+        --color: var(--yellow-500);
+      }
+    }
+
+    &.is-open {
+
+      --color: var(--yellow-500);
+
+      .icon {
+        --color: var(--yellow-500);
+      }
+
+
+      ~ .items {
+        max-height: 100%;
+      }
     }
   }
 
   .text {
     @include font($heading-2);
     @extend %text-elipsis;
+    --color: var(--gray-300);
   }
 
   .btn-toggle {
     --margin-left: auto
-  }
-
-  .turbo-games {
-    margin-top: rem(4px);
   }
 
   &.is-compact {
@@ -49,16 +82,9 @@
       display: none;
     }
 
-    //[data-icon] {
-    //  @include box-upd(40px);
-    //  --icon-size: #{rem(24px)};
-    //  transform: translateX(#{rem(2px)});
-    //}
-
     .icon {
-      //@include box-upd(40px);
-      --icon-size: #{rem(24px)};
       transform: translateX(#{rem(2px)});
+      --icon-size: #{rem(24px)};
     }
 
     .link {
