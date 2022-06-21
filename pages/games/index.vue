@@ -41,10 +41,12 @@
   const route = useRoute();
   const router = useRouter();
 
+  if (!route.query.category) router.replace({ query: { ...route.query, category: gameCollections[0].identity } });
+
   const activeCollection = ref<CollectionInterface>(
     gameCollections.find(
       (collection) => collection.identity === route.query.category,
-    ),
+    ) || gameCollections[0],
   );
 
   const currentProvider = ref<any>(route.query.provider || 'all');

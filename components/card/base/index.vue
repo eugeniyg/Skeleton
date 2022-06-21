@@ -20,7 +20,7 @@
       <button-play @click="openGame(true)"/>
 
       <button-base
-        v-if="props.hasDemo"
+        v-if="props.isDemoMode"
         class="btn-try"
         tag-name="span"
         type="secondary"
@@ -49,7 +49,7 @@
       type: String,
       required: true,
     },
-    hasDemo: {
+    isDemoMode: {
       type: Boolean,
       default: true,
     },
