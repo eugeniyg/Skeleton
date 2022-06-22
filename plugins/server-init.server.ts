@@ -14,6 +14,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     const { getProfileData } = useProfileStore();
     const { getUserAccounts } = useWalletStore();
     const bearer = useAppCookie();
+    console.log(bearer.value);
     if (bearer.value) {
       try {
         await Promise.all([
