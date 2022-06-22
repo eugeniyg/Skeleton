@@ -10,7 +10,7 @@
 
         <div class="items">
           <nuxt-link
-            v-for="({ title }, itemIndex) in items"
+            v-for="({ title, href }, itemIndex) in items"
             :key="itemIndex"
             class="link"
             :to="href"
