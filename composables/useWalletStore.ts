@@ -7,6 +7,7 @@ export type WalletStateType = {
   accounts: AccountInterface[],
   depositMethods: any[],
   withdrawMethods: any[],
+  requestTimer: any,
   accountsStatuses: {
     Active: 1,
     Inactive: 2,
@@ -20,6 +21,7 @@ export const useWalletStore = defineStore('walletStore', {
     accounts: [],
     depositMethods: [],
     withdrawMethods: [],
+    requestTimer: '',
   } as WalletStateType),
 
   getters: {
@@ -76,6 +78,18 @@ export const useWalletStore = defineStore('walletStore', {
       const { getWithdrawMethods } = useWalletApi();
       const data = await getWithdrawMethods(this.activeAccount.id, this.activeAccount.formatBalance.currency);
       this.withdrawMethods = data;
+    },
+
+    async updateAccounts():Promise<void> {
+      await this.getUserAccounts();
+      this.requestTimer = setTimeout(() => {
+        this.updateAccounts();
+      }, 30000);
+    },
+
+    stopUpdateAccounts():void {
+      clearTimeout(this.requestTimer);
+      this.getUserAccounts();
     },
   },
 });

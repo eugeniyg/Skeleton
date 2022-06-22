@@ -28,6 +28,8 @@
   const { getStartGame } = useGamesApi();
 
   onMounted(async () => {
+    walletStore.updateAccounts();
+
     const redirectUrl = window.location.origin;
     const startParams = {
       accountId: activeAccount.value.id,
@@ -39,6 +41,10 @@
     };
     const startResponse = await getStartGame('10239b19-ddcb-4ba5-b95d-417f3cbbb1bc', startParams);
     frameLink.value = startResponse.gameUrl;
+  });
+
+  onBeforeUnmount(() => {
+    walletStore.stopUpdateAccounts();
   });
 </script>
 
