@@ -6,7 +6,7 @@
       :min="props.amountMin"
       :max="props.amountMax"
       v-model:value="amountValue"
-      :currency="currentCurrency"
+      :currency="activeCurrency.code"
       :hint="fieldHint"
     />
 
@@ -26,7 +26,7 @@
       :isDisabled="buttonDisabled"
       @click="getWithdraw"
     >
-      Withdraw {{ buttonAmount }} {{ currentCurrency }}
+      Withdraw {{ buttonAmount }} {{ activeCurrency.code }}
     </button-base>
   </form>
 </template>
@@ -52,10 +52,9 @@
 
   const walletStore = useWalletStore();
   const { closeModal, showAlert } = useLayoutStore();
-  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
-  const currentCurrency = computed(() => activeAccount.value.formatBalance.currency);
+  const { activeAccount, activeAccountType, activeCurrency } = storeToRefs(walletStore);
   const fieldHint = computed(() => ({
-    message: `Min deposit = ${props.amountMin} ${currentCurrency.value}, max deposit = ${props.amountMax} ${currentCurrency.value}`,
+    message: `Min deposit = ${props.amountMin} ${activeCurrency.value.code}, max deposit = ${props.amountMax} ${activeCurrency.value.code}`,
   }));
 
   const isSending = ref<boolean>(false);
@@ -93,8 +92,8 @@
         key: 'wallet_id',
         value: accountNumber.value,
       }],
-      currency: currentCurrency.value,
-      amount: amountValue.value,
+      currency: activeCurrency.value.code,
+      amount: Number(amountValue.value),
       accountId: activeAccount.value.id,
     };
 
