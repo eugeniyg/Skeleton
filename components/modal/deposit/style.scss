@@ -1,5 +1,13 @@
 .modal-deposit {
   @extend %modal;
+
+  @media (max-width: 33rem) {
+    .scroll {
+      padding: rem(8px);
+    }
+  }
+
+
   //display: flex;
   //height: 100%;
   //align-items: center;

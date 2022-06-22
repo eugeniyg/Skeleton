@@ -14,6 +14,7 @@
     @include font($body-2);
     color: var(--white);
     cursor: pointer;
+    white-space: nowrap;
 
     &::selection {
       background-color: transparent;
