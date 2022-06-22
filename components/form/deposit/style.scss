@@ -1,11 +1,8 @@
 .form-deposit {
   .input-toggle {
     width: 100%;
-    height: rem(42px);
 
-    .slider {
-      --slider-bg: var(--black-primary);
-    }
+    --slider-bg: var(--black-primary);
   }
 
   .input-text {
@@ -20,5 +17,6 @@
   .row {
     display: flex;
     grid-column-gap: rem(8px);
+    min-height: rem(44px);
   }
 }
