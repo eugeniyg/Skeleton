@@ -73,13 +73,16 @@ a {
 }
 
 html {
+  height: 100%;
   font-size: variables.$base-font-size;
 }
+
 
 //@import "ds/mixins";
 //@import "ds/placeholders";
 
 body {
+  height: 100%;
   font-family: 'NeoSansPro', sans-serif;
   margin: 0;
   background-color: var(--black-primary);
@@ -120,6 +123,10 @@ body {
       --opacity-layer-visibility: hidden;
       --body-overflow: auto;
     }
+  }
+
+  &.hidden-overflow {
+    overflow: hidden !important;
   }
 }
 
