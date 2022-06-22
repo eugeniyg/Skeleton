@@ -75,19 +75,19 @@
       items: [
         {
           title: 'Welcome package',
-          href: 'welcome-package',
+          href: '/welcome-package',
         },
         {
           title: 'Monday Reload Bonus',
-          href: 'monday-reload-bonus',
+          href: '/monday-reload-bonus',
         },
         {
           title: 'Wednesday Free Spins',
-          href: 'wednesday-free-spins',
+          href: '/wednesday-free-spins',
         },
         {
           title: 'Weekly Cashback',
-          href: 'weekly-cashback',
+          href: '/weekly-cashback',
         },
       ],
       order: 1,

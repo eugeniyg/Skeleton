@@ -20,7 +20,8 @@
     middleware: ['auth'],
   });
 
-  const { isMobile, currentLocale, browserLanguage } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { isMobile } = storeToRefs(globalStore);
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const frameLink = ref<string>('');
@@ -34,7 +35,7 @@
     const startParams = {
       accountId: activeAccount.value.id,
       lobbyUrl: redirectUrl,
-      locale: currentLocale || browserLanguage,
+      locale: 'en',
       countryCode: 'UA',
       demoMode: false,
       platform: isMobile ? 1 : 2,
