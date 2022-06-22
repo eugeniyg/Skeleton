@@ -39,7 +39,6 @@
   .value {
     @include font($body-2);
     color: var(--color, var(--white));
-    text-transform: uppercase;
     flex-grow: 1;
     margin: 0;
     text-align: right;
@@ -52,9 +51,11 @@
     }
   }
 
-  .selected {
-    @include media(md) {
-      display: none;
+  .input-payments {
+    .selected {
+      @include media(md) {
+        display: none;
+      }
     }
   }
 }

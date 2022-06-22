@@ -36,6 +36,8 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     formatBalance: {
       type: Object,
@@ -60,28 +62,26 @@
 
   const isActive = computed(() => props.status === 1);
   const showHideCurrencyButton = computed(() => Number(props.formatBalance.amount) === 0 && !isActive.value);
-  const currencyName = computed(() => {
-    const currentCurrency = currencies.find((curr) => {
-      if (!curr.subCurrencies.length) {
-        return curr.code === props.formatBalance.currency;
-      }
-      return curr.code === props.formatBalance.currency || curr.subCurrencies.some((sub) => sub.code === props.formatBalance.currency);
-    });
-    return `${currentCurrency.name} (${currentCurrency.code})`;
+  const currentCurrency = currencies.find((curr) => {
+    if (!curr.subCurrencies.length) {
+      return curr.code === props.formatBalance.currency;
+    }
+    return curr.code === props.formatBalance.currency || curr.subCurrencies.some((sub) => sub.code === props.formatBalance.currency);
   });
+  const currencyName = computed(() => `${currentCurrency.name} (${currentCurrency.code})`);
 
   const { switchAccount, hideAccount } = useWalletStore();
   const changeActive = async ():Promise<void> => {
     await switchAccount({
       accountId: props.id,
-      currency: props.formatBalance.currency,
+      currency: currentCurrency.code,
     });
   };
 
   const hide = async ():Promise<void> => {
     await hideAccount({
       accountId: props.id,
-      currency: props.formatBalance.currency,
+      currency: currentCurrency.code,
     });
   };
 </script>

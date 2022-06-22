@@ -9,7 +9,7 @@
     <div class="row">
       <input
         class="field"
-        type="tel"
+        type="number"
         :name="name"
         :value="props.value"
         :required="props.isRequired"
@@ -70,12 +70,12 @@
 
   const emit = defineEmits(['blur', 'update:value', 'input']);
   const onInput = (e:any):void => {
-    emit('input', Number(e.target.value));
-    emit('update:value', Number(e.target.value));
+    emit('input', e.target.value);
+    emit('update:value', e.target.value);
   };
 
   const onBlur = (e:any):void => {
-    emit('blur', Number(e.target.value));
+    emit('blur', e.target.value);
   };
 
   const isError = computed(() => props.hint && props.hint.variant === 'error');
