@@ -7,11 +7,13 @@
     </atomic-avatar>
 
     <div class="actions">
-      <button-base type="primary" size="md">
+      <button-base type="primary" size="md" @click="openDepositModal">
         <atomic-icon id="ui-plus"/>Deposit
       </button-base>
 
-      <button-base type="secondary" size="md">Profile</button-base>
+      <button-base type="secondary" size="md" url="/profile/info">
+        Profile
+      </button-base>
     </div>
   </div>
 </template>
@@ -35,6 +37,7 @@
   });
 
   const profileStore = useProfileStore();
+  const { openDepositModal } = useLayoutStore();
   const { publicNickname } = storeToRefs(profileStore);
 
 </script>

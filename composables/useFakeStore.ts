@@ -1117,14 +1117,24 @@ export const useFakeStore = () => {
       icon: 'turbo-games',
       href: '/games?category=turbogames',
       list: [
-        'turbogames/crash_x.jpg',
-        'turbogames/dice.jpeg',
-        'turbogames/mines.jpeg',
+        {
+          src: 'turbogames/crash_x.jpg',
+          href: '/games/80a60e5b-5860-426b-8ad7-5f32c3c512b1',
+        },
+        {
+          src: 'turbogames/dice.jpeg',
+          href: '/games/f611bf81-481f-4c0d-8c4e-37c553e23936',
+        },
+        {
+          src: 'turbogames/mines.jpeg',
+          href: '/games/f9d6c988-fb51-421e-ac34-0a8876cb3066',
+        },
       ],
     },
     {
       title: 'Sport betting',
       icon: 'sport-book',
+      href: '/betting',
     },
   ];
   const centerMenuItems = [
@@ -1182,6 +1192,7 @@ export const useFakeStore = () => {
     {
       title: 'Support',
       icon: 'live-support',
+      href: '/contact',
     },
   ];
   const subMenuItems = [

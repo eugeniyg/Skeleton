@@ -1,5 +1,5 @@
 <template>
-  <div class="select-lang" :class="{'is-open': isOpen}">
+  <div class="select-lang" :class="{ 'is-open': isOpen }">
     <div class="selected" @click="toggleOpen">
       <img class="img" :src="`/img${selected.src}`" alt="" />
       <span class="title">{{ selected.title }}</span>
@@ -8,12 +8,12 @@
     <div class="items">
       <div
         class="item"
-        v-for="{src, title, value} in props.items"
+        v-for="{ src, title, value } in props.items"
         :key="title"
-        :class="{'is-selected': selected.value === value}"
+        :class="{ 'is-selected': selected.value === value }"
         @click="select(value)"
       >
-        <img class="img" :src="`/img${src}`" alt=""/>
+        <img class="img" :src="`/img${src}`" alt="" />
         <span class="title">{{ title }}</span>
         <atomic-icon id="ui-check" />
       </div>
@@ -22,12 +22,11 @@
 </template>
 
 <script setup lang="ts">
+  const state = reactive({
+    selected: 'en',
+  });
 
   const props = defineProps({
-    selected: {
-      type: String,
-      default: 'en',
-    },
     items: {
       type: Array,
       default: () => [
@@ -50,17 +49,27 @@
     },
   });
 
-  const selectedValue = ref<string>(props.selected);
+  onMounted(() => {
+    const storageLang = localStorage.getItem('lang');
+
+    if (storageLang) {
+      state.selected = storageLang;
+    }
+  });
+
   const isOpen = ref<boolean>(false);
 
-  const selected = computed(() => props.items.filter((item) => (item.value === selectedValue.value))[0]);
+  const selected = computed(
+    () => props.items.find((item) => item.value === state.selected),
+  );
 
-  const toggleOpen = ():void => {
+  const toggleOpen = (): void => {
     isOpen.value = !isOpen.value;
   };
 
-  const select = (value):void => {
-    selectedValue.value = value;
+  const select = (value: string): void => {
+    state.selected = value;
+    localStorage.setItem('lang', value);
     toggleOpen();
   };
 </script>
