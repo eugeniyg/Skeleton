@@ -27,7 +27,7 @@
         v-if="hasBonusCode"
         v-model:value="bonusValue"
         label=""
-        placeholder="Enter bonus code"
+        placeholder="Enter code"
         name="bonus-code"
       />
     </div>

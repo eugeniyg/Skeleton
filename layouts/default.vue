@@ -3,6 +3,7 @@
     <Head>
       <Title>Slotsbet</Title>
       <Meta name="description" content="Platform Project" />
+      <Meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, user-scalable=0" />
       <Link
         rel="icon"
         type="image/svg"
@@ -80,11 +81,6 @@
   function compact():void {
     compactDrawer();
   }
-
-  onMounted(() => {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-  });
 </script>
 
 <style lang="scss">
