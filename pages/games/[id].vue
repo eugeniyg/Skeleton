@@ -56,6 +56,8 @@
     document.body.classList.add('is-mob-nav-vertical');
     document.body.classList.add('is-game-page');
 
+    walletStore.updateAccounts();
+
     if (!isDemo.value && !isLoggedIn.value) {
       showModal('register');
     } else {
@@ -66,6 +68,7 @@
   onBeforeUnmount(() => {
     document.body.classList.remove('is-mob-nav-vertical');
     document.body.classList.remove('is-game-page');
+    walletStore.stopUpdateAccounts();
   });
 </script>
 
