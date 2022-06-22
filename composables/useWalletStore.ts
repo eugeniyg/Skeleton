@@ -2,6 +2,7 @@ import { defineStore, storeToRefs } from 'pinia';
 import { AccountInterface, AccountRequestInterface } from '~/types/walletTypes';
 import { useWalletApi } from '~/CORE';
 import { useGlobalStore } from '~/composables/useGlobalStore';
+import { CurrencyInterface } from '~/types/globalDataTypes';
 
 export type WalletStateType = {
   accounts: AccountInterface[],
@@ -29,17 +30,20 @@ export const useWalletStore = defineStore('walletStore', {
       return this.accounts.find((acc) => acc.status === 1);
     },
 
-    activeAccountType():string {
+    activeCurrency():CurrencyInterface {
       const globalStore = useGlobalStore();
       const { currencies } = storeToRefs(globalStore);
 
-      const accountCurrency = currencies.value.find((currency) => {
+      return currencies.value.find((currency) => {
         if (!currency.subCurrencies.length) {
           return currency.code === this.activeAccount.formatBalance.currency;
         }
         return currency.code === this.activeAccount.formatBalance.currency || currency.subCurrencies.some((sub) => sub.code === this.activeAccount.formatBalance.currency);
       });
-      return accountCurrency.type;
+    },
+
+    activeAccountType():string {
+      return this.activeCurrency.type;
     },
   },
 
@@ -70,13 +74,13 @@ export const useWalletStore = defineStore('walletStore', {
 
     async getDepositMethods():Promise<void> {
       const { getDepositMethods } = useWalletApi();
-      const data = await getDepositMethods(this.activeAccount.id, this.activeAccount.formatBalance.currency);
+      const data = await getDepositMethods(this.activeAccount.id, this.activeCurrency.code);
       this.depositMethods = data;
     },
 
     async getWithdrawMethods():Promise<void> {
       const { getWithdrawMethods } = useWalletApi();
-      const data = await getWithdrawMethods(this.activeAccount.id, this.activeAccount.formatBalance.currency);
+      const data = await getWithdrawMethods(this.activeAccount.id, this.activeCurrency.code);
       this.withdrawMethods = data;
     },
 
