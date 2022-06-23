@@ -1077,22 +1077,22 @@ export const useFakeStore = () => {
       id: 'benefits',
       games: [
         {
-          src: '/icons-colored/fast-withdrawals.svg',
+          src: '/benefits/1.png',
           showFavorite: false,
           title: 'Fast <br> withdrawals',
         },
         {
-          src: '/icons-colored/live-chat-support.svg',
+          src: '/benefits/2.png',
           showFavorite: false,
           title: '24/7 Live Chat <br> Support',
         },
         {
-          src: '/icons-colored/privacy-security.svg',
+          src: '/benefits/3.png',
           showFavorite: false,
           title: 'Provably fair slots <br> & games',
         },
         {
-          src: '/icons-colored/provably-fair-slots.svg',
+          src: '/benefits/4.png',
           showFavorite: false,
           title: 'Privacy <br> and security',
         },
@@ -1419,18 +1419,18 @@ export const useFakeStore = () => {
         href: '/profile/notifications',
         // count: 999,
       },
-      {
-        title: 'Security & Verification',
-        href: '/profile/security',
-      },
+      // {
+      //   title: 'Security & Verification',
+      //   href: '/profile/security',
+      // },
       {
         title: 'History',
         href: '/profile/history',
       },
-      {
-        title: 'Limits',
-        href: '/profile/limits',
-      },
+      // {
+      //   title: 'Limits',
+      //   href: '/profile/limits',
+      // },
     ],
     faq: [
       {
@@ -1969,6 +1969,7 @@ export const useFakeStore = () => {
         icon: 'cherry',
         text: 'Casino',
       },
+      src: '/categories/1.png',
       subTitle: 'Enjoy more than 3000+ provably fair slots & games',
       action: {
         title: 'Go to Casino',
@@ -1980,6 +1981,7 @@ export const useFakeStore = () => {
         icon: 'sport',
         text: 'Betting',
       },
+      src: '/categories/2.png',
       subTitle: 'The most competitive odds and markets. Bet and win right now',
       action: {
         title: 'Go to Betting',
@@ -1999,14 +2001,14 @@ export const useFakeStore = () => {
     // },
   ];
   const userProfileHistoryTabs = [
-    {
-      title: 'Sessions history',
-      id: 'sessions-history',
-    },
+    // {
+    //   title: 'Sessions history',
+    //   id: 'sessions-history',
+    // },
     {
       title: 'Bonuses history',
       id: 'bonuses-history',
-      // isActive: true,
+      isActive: true,
     },
     {
       title: 'Bets history',
@@ -2015,7 +2017,7 @@ export const useFakeStore = () => {
     {
       title: 'Transactions history',
       id: 'transactions-history',
-      isActive: true,
+      // isActive: true,
     },
   ];
 
@@ -2059,10 +2061,10 @@ export const useFakeStore = () => {
             ],
             src: '/sliders/main/1/944.png',
           },
-          title: '<h4>Play and win every day on Slotsbet</h4>',
+          title: '<h4>Play and win every day at Slotsbet</h4>',
           actions: {
             primary: {
-              title: ' Sign up',
+              title: 'Play now',
               href: '#',
             },
             // secondary: {

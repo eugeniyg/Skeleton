@@ -24,7 +24,7 @@
       type: Array,
     },
   });
-  const selected = ref<string>('sessions-history');
+  const selected = ref<string>('bonuses-history');
   const loadTab = (name:string):string => `tab-history-${name}`;
 </script>
 
