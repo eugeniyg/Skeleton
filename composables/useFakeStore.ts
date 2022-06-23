@@ -1046,21 +1046,25 @@ export const useFakeStore = () => {
           src: '/promotions/1.png',
           title: 'Welcome package',
           subTitle: '5 BTC + 300 FS',
+          href: '/welcome-package',
         },
         {
           src: '/promotions/2.png',
           title: 'Wednesday bonus',
           subTitle: '100 free spins',
+          href: '/wednesday-free-spins',
         },
         {
           src: '/promotions/3.png',
           title: 'Just play and get',
           subTitle: '10% Weekly Cashback',
+          href: '/weekly-cashback',
         },
         {
           src: '/promotions/4.png',
           title: '30% Reload bonus',
           subTitle: 'every week',
+          href: '/monday-reload-bonus',
         },
       ],
     },
@@ -2026,6 +2030,7 @@ export const useFakeStore = () => {
     rows: betsHistoryTb.rows.filter((item) => item.key === 'casino'),
   });
   const benefitsCards = () => filter(cards, 'benefits');
+  const promotionCards = () => filter(cards, 'promotions');
 
   return {
     topMenuItems,
@@ -2049,6 +2054,7 @@ export const useFakeStore = () => {
     accordeons,
     categories,
     benefitsCards,
+    promotionCards,
     userProfileBonusesTabs,
     userProfileHistoryTabs,
   };
