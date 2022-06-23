@@ -1144,12 +1144,19 @@ export const useFakeStore = () => {
       items: [
         {
           title: 'Welcome package',
+          href: '/welcome-package',
         },
         {
-          title: 'Wednesday bonus',
+          title: 'Monday Reload Bonus',
+          href: '/monday-reload-bonus',
         },
         {
-          title: 'Reload bonus',
+          title: 'Wednesday Free Spins',
+          href: '/wednesday-free-spins',
+        },
+        {
+          title: 'Weekly Cashback',
+          href: '/weekly-cashback',
         },
       ],
     },

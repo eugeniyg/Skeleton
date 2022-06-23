@@ -76,6 +76,7 @@ html {
   font-size: variables.$base-font-size;
 }
 
+
 //@import "ds/mixins";
 //@import "ds/placeholders";
 
@@ -119,6 +120,10 @@ body {
       --opacity-layer-visibility: hidden;
       --body-overflow: auto;
     }
+  }
+
+  &.hidden-overflow {
+    overflow: hidden !important;
   }
 }
 
