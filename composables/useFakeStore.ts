@@ -1303,6 +1303,7 @@ export const useFakeStore = () => {
     },
   ];
   const items = {
+    //notifications: [],
     notifications: [
       {
         src: '/svg/colored/icn-notification.svg',
@@ -1407,12 +1408,12 @@ export const useFakeStore = () => {
       {
         title: 'Bonuses',
         href: '/profile/bonuses',
-        count: 12,
+        // count: 12,
       },
       {
         title: 'Notifications',
         href: '/profile/notifications',
-        count: 999,
+        // count: 999,
       },
       {
         title: 'Security & Verification',
@@ -1988,10 +1989,10 @@ export const useFakeStore = () => {
       id: 'my-bonuses',
       isActive: true,
     },
-    {
-      title: 'Bonus Code',
-      id: 'bonus-code',
-    },
+    // {
+    //   title: 'Bonus Code',
+    //   id: 'bonus-code',
+    // },
   ];
   const userProfileHistoryTabs = [
     {

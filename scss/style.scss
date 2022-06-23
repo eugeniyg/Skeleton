@@ -113,7 +113,6 @@ body {
   &.nav-currency-open {
     --opacity-layer-visibility: visible;
     --body-overflow: hidden;
-    width: calc(100% - 6px);
     --nav-currency-visibility: visible;
     --nav-currency-translate-y: 0;
 
