@@ -20,11 +20,11 @@
         </div>
       </template>
 
-      <nuxt-link v-else class="link" :to="href">
+      <div v-else class="link" @click="defineCurrentAction(href)">
         <atomic-icon :id="icon"/>
         <div class="text">{{ title }}</div>
         <atomic-bage v-if="bage" :variant="bage.variant">{{ bage.text }}</atomic-bage>
-      </nuxt-link>
+      </div>
 
       <list-turbo-games v-if="list" :items="list" :is-compact="props.isCompact"/>
     </div>
@@ -32,6 +32,8 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     items: {
       type: Array,
@@ -51,6 +53,21 @@
 
   const toggleOpen = ():void => {
     open.value = !open.value;
+  };
+
+  const router = useRouter();
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+  const { showModal } = useLayoutStore();
+
+  const defineCurrentAction = (href: string):void => {
+    // specific actions like open modal etc
+    if (!isLoggedIn.value && href === '/betting') {
+      showModal('register');
+    } else {
+      // instead of <nuxt-link :to="href"
+      router.push(href);
+    }
   };
 </script>
 
