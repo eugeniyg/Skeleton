@@ -10,8 +10,8 @@
   align-items: flex-start;
   background-color: var(--bg, transparent);
   background-repeat: var(--bg-repeat, no-repeat);
-  background-size: var(--bg-size, cover);
-  background-position: var(--bg-position, top center);
+  background-size: var(--bg-size, auto 113%);
+  background-position: var(--bg-position, center);
   min-width: var(--min-width, #{column(3, 8px)});
   scroll-snap-align: var(--scroll-snap-align, unset);
 
