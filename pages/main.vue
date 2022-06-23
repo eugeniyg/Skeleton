@@ -71,6 +71,12 @@
       </template>
     </cards-group>
 
+    <cards-group v-if="promotionsCards" v-bind="promotionsCards">
+      <template v-slot:card="item">
+        <card-promotions v-bind="item" />
+      </template>
+    </cards-group>
+
     <!-- <cards-group v-bind="fakeStore.newRelisesCards">
       <template v-slot:card="item">
         <card-base v-bind="item" />
@@ -102,6 +108,8 @@
   const router = useRouter();
   const { gameCollections } = useGamesStore();
   const { getFilteredGames } = useGamesApi();
+
+  const promotionsCards = fakeStore.promotionCards();
 
   const mainCategories = {
     hot: 'hot',

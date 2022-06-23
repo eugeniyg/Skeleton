@@ -6,14 +6,16 @@
       <div class="title">{{ props.title }}</div>
       <div class="sub-title">{{ props.subTitle }}</div>
       <div class="actions">
-        <button-base type="primary" size="md">{{ props.bonusBtnTitle }}</button-base>
-        <a class="link-more" href="#">{{ props.linkMoreText }}</a>
+        <button-base type="primary" size="md" @click="isLoggedIn ? openDepositModal() : showModal('register') ">{{ props.bonusBtnTitle }}</button-base>
+        <nuxt-link class="link-more" :to="props.href">{{ props.linkMoreText }}</nuxt-link>
       </div>
     </div>
   </div>
 </template>
 
 <script  setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     src: {
       type: String,
@@ -27,6 +29,10 @@
       type: String,
       default: '',
     },
+    href: {
+      type: String,
+      default: '',
+    },
     bonusBtnTitle: {
       type: String,
       default: 'Get bonus',
@@ -36,6 +42,10 @@
       default: 'learn more',
     },
   });
+
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+  const { showModal, openDepositModal } = useLayoutStore();
 
   const backgroundImage = computed(() => `background-image:url(/img${props.src})`);
 </script>
