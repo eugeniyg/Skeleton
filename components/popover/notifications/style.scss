@@ -33,4 +33,30 @@
     }
 
   }
+
+  .empty {
+    margin-top: rem(8px);
+    --margin-bottom: 0;
+    --icon-width: #{rem(146px)};
+    --icon-height: #{rem(202px)};
+
+    .title {
+      order: 1;
+      align-self: flex-start;
+      @include upd-font($heading-2);
+      --color: var(--white);
+      --margin-bottom: #{rem(4px)};
+    }
+
+    .sub-title {
+      order: 2;
+      align-self: flex-start;
+      @include upd-font($body-1);
+      --margin-bottom: #{rem(8px)};
+    }
+
+    .icon-colored {
+      order: 3;
+    }
+  }
 }
