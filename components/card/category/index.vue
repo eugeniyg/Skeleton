@@ -1,6 +1,8 @@
 <template>
   <div class="card-category">
-    <div class="cover"/>
+    <div class="cover">
+      <img class="img" :src="`/img${src}`" alt="">
+    </div>
 
     <div class="title">
       <atomic-icon :id="props.title.icon"/>{{ props.title.text }}
@@ -28,6 +30,9 @@
         icon: 'cherry',
         text: 'text',
       }),
+    },
+    src: {
+      type: String,
     },
     subTitle: {
       type: String,

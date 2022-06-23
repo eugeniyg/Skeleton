@@ -5,7 +5,7 @@
 
     <div class="items">
       <template v-if="props.isLoggedIn">
-        <atomic-notification :is-active="true"/>
+        <atomic-notification :is-active="fakeStore.items.notifications.length"/>
         <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
         <form-input-deposit/>
         <atomic-avatar @toggle="toggleProfileNav" :is-button="true"/>

@@ -38,31 +38,19 @@
   .items {
     position: var(--items-position, absolute);
     visibility: var(--items-visibility, hidden);
-    //left: var(--items-left, #{rem(16px)});
-    //right: var(--items-right, #{rem(16px)});
     left: 0;
     right: 0;
     padding: var(--items-padding, #{rem(8px)});
-    //overflow-x: hidden;
-    //overflow-y: auto;
     background-color: var(--bg, var(--gray-800));
     transform: translateY(#{rem(8px)});
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
 
-
-    //@extend %scrollbar;
-
-    //@include media(sm) {
-    //  --items-left: #{rem(32px)};
-    //  --items-right: #{rem(32px)};
-    //}
-
     @include media(l) {
       transform: unset;
       width: rem(200px);
-      //--items-left: 0;
-      //--items-right: 0;
+      grid-gap: rem(4px);
+      display: grid;
       --items-visibility: visible;
       --items-position: relative;
       --bg: transparent;

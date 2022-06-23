@@ -10,10 +10,15 @@
   align-items: flex-start;
 
   .icon {
-    width: rem(48px);
-    height: rem(48px);
+    width: var(--width, #{rem(48px)});
+    height: var(--height, #{rem(48px)});
     display: block;
     justify-self: center;
+
+    @include media(l) {
+      --width: #{rem(88px)};
+      --height: #{rem(88px)};
+    }
   }
 
   .title {

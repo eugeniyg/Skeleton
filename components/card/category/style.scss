@@ -26,12 +26,17 @@
   flex-direction: column;
 
   .cover {
-    background: var(--gradient-orange);
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
     border-radius: 8px;
     width: 100%;
-    @include ratio(156px, 81px);
     margin-bottom: var(--margin-bottom, #{rem(8px)});
+    position: relative;
+    overflow: hidden;
+
+    .img {
+      max-width: 100%;
+      display: block;
+    }
 
     @include media(l) {
       --margin-bottom: #{rem(16px)}

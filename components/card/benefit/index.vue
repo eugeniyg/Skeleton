@@ -1,6 +1,6 @@
 <template>
   <a class="card-benefit" href="#">
-    <img class="icon" :src="`/svg${props.src}`" />
+    <img class="icon" :src="`/img${props.src}`" alt="" />
     <div class="title" v-html="props.title"></div>
   </a>
 </template>
