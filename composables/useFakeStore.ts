@@ -1303,33 +1303,33 @@ export const useFakeStore = () => {
     },
   ];
   const items = {
-    //notifications: [],
-    notifications: [
-      {
-        src: '/svg/colored/icn-notification.svg',
-        title: 'Please, verify your email due to security reasons',
-        date: 'May 14, 2019 • 19:00',
-        isUnread: true,
-      },
-      {
-        src: '/svg/colored/money.svg',
-        title: 'Please, verify your email due to security reasons',
-        date: 'May 14, 2019 • 19:00',
-        isUnread: true,
-      },
-      {
-        src: '/svg/colored/transaction-fail.svg',
-        title: 'Please, verify your email due to security reasons',
-        date: 'May 14, 2019 • 19:00',
-        isUnread: true,
-      },
-      {
-        src: '/svg/colored/transaction-fail.svg',
-        title: 'Please, verify your email due to security reasons',
-        date: 'May 14, 2019 • 19:00',
-        isUnread: false,
-      },
-    ],
+    notifications: [],
+    // notifications: [
+    //   {
+    //     src: '/svg/colored/icn-notification.svg',
+    //     title: 'Please, verify your email due to security reasons',
+    //     date: 'May 14, 2019 • 19:00',
+    //     isUnread: true,
+    //   },
+    //   {
+    //     src: '/svg/colored/money.svg',
+    //     title: 'Please, verify your email due to security reasons',
+    //     date: 'May 14, 2019 • 19:00',
+    //     isUnread: true,
+    //   },
+    //   {
+    //     src: '/svg/colored/transaction-fail.svg',
+    //     title: 'Please, verify your email due to security reasons',
+    //     date: 'May 14, 2019 • 19:00',
+    //     isUnread: true,
+    //   },
+    //   {
+    //     src: '/svg/colored/transaction-fail.svg',
+    //     title: 'Please, verify your email due to security reasons',
+    //     date: 'May 14, 2019 • 19:00',
+    //     isUnread: false,
+    //   },
+    // ],
   };
   const selects = {
     country: [
