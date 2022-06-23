@@ -2033,6 +2033,45 @@ export const useFakeStore = () => {
   const benefitsCards = () => filter(cards, 'benefits');
   const promotionCards = () => filter(cards, 'promotions');
 
+  const mainBanner = {
+      image: {
+            source: [
+              {
+                media: '(max-width: 360px)',
+                src: '/sliders/main/1/328.png',
+              },
+              {
+                media: '(max-width: 528px)',
+                src: '/sliders/main/1/464.png',
+              },
+              {
+                media: '(max-width: 768px)',
+                src: '/sliders/main/1/704.png',
+              },
+              {
+                media: '(max-width: 1024px)',
+                src: '/sliders/main/1/944.png',
+              },
+              {
+                media: '(max-width: 2264px)',
+                src: '/sliders/main/1/3776.png',
+              },
+            ],
+            src: '/sliders/main/1/944.png',
+          },
+          title: '<h4>Play and win every day on Slotsbet</h4>',
+          actions: {
+            primary: {
+              title: ' Sign up',
+              href: '#',
+            },
+            // secondary: {
+            //   title: 'Secondary',
+            //   href: '#'
+            // },
+          },
+    };
+
   return {
     topMenuItems,
     centerMenuItems,
@@ -2058,5 +2097,6 @@ export const useFakeStore = () => {
     promotionCards,
     userProfileBonusesTabs,
     userProfileHistoryTabs,
+    mainBanner,
   };
 };
