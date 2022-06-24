@@ -109,7 +109,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       window.dispatchEvent(new Event('resize'));
     },
 
-    addModalQuery(modalName:string):void {
+    addModalQuery(modalName:string, quryValue:string):void {
       const router = useRouter();
       const { query } = useRoute();
       const modalsArr = Object.keys(this.modals);
@@ -119,7 +119,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         if (modalKey !== modalName) {
           this.modals[modalKey] = false;
           newQuery[this.modalsUrl[modalKey]] = undefined;
-        } else newQuery[this.modalsUrl[modalKey]] = 'true';
+        } else newQuery[this.modalsUrl[modalKey]] = quryValue || 'true';
       });
       router.replace({ query: newQuery });
     },
@@ -131,9 +131,9 @@ export const useLayoutStore = defineStore('layoutStore', {
       router.replace({ query: { ...query, [this.modalsUrl[modalName]]: undefined } });
     },
 
-    showModal(modalName: string):void {
+    showModal(modalName: string, queryValue?:string):void {
       this.modals[modalName] = true;
-      if (this.modalsUrl[modalName]) this.addModalQuery(modalName);
+      if (this.modalsUrl[modalName]) this.addModalQuery(modalName, queryValue);
     },
 
     closeModal(modalName: string):void {
@@ -152,7 +152,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         } else if (query === 'register') {
           isLoggedIn ? this.closeModal('signIn') : this.showModal('signIn');
         } else if (this.modalsUrl[query]) {
-          this.showModal(query);
+          this.showModal(query, route.query[query]);
         }
       });
     },
