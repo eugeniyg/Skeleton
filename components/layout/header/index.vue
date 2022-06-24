@@ -12,7 +12,7 @@
       <button-search @click="showSearch = true" data-show="desktop"/>
 
       <template v-if="props.isLoggedIn">
-        <atomic-notification :is-active="fakeStore.items.notifications.length"/>
+        <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
         <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
         <form-input-deposit/>
         <atomic-avatar @toggle="toggleProfileNav" :is-button="true"/>

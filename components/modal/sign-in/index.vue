@@ -1,11 +1,10 @@
 <template>
   <vue-final-modal
     v-model="modals.signIn"
-    @click="closeModal('signIn')"
     @beforeOpen="formKey++"
     esc-to-close
   >
-    <div class="modal-sign-in" @click.stop>
+    <div class="modal-sign-in">
       <div class="scroll">
         <div class="header">
           <button-modal-close @close="closeModal('signIn')"/>

@@ -989,48 +989,56 @@ export const useFakeStore = () => {
           title: 'Benny',
           subTitle: 'Book Of Dead',
           items: ['0.0052', 'BTC'],
+          href: '/games/9ccf90c5-a39c-45e4-b7f5-f43a604728b5',
         },
         {
           src: '/latest-winners/big_bass_bonanza.png',
           title: 'Lukas',
-          subTitle: 'Big Bass Bonanza',
+          subTitle: 'Book Of Dead',
           items: ['0.0005', 'BTC'],
+          href: '/games/9ccf90c5-a39c-45e4-b7f5-f43a604728b5',
         },
         {
           src: '/latest-winners/fruit_zen.png',
           title: 'Xman',
-          subTitle: 'Fruit Zen',
+          subTitle: 'Bigger Bass Bonanza',
           items: ['0.0077', 'BTC'],
+          href: '/games/d7e2f16a-bb66-4090-a681-e68ef70b46a0',
         },
         {
           src: '/latest-winners/book_of_dead.png',
           title: 'Melly',
-          subTitle: 'Book Of Clovers',
+          subTitle: 'Gold Vein',
           items: ['0.0087', 'BTC'],
+          href: '/games/0bbd1ad7-a6f3-47d0-87f2-af2188550700',
         },
         {
           src: '/latest-winners/sizzling_eggs.png',
           title: 'Neil',
-          subTitle: 'Sizzling Eggs',
+          subTitle: 'The Pantheon',
           items: ['0.0001', 'BTC'],
+          href: '/games/a70c0b18-8d9d-44d6-85d6-afbbab3555f5',
         },
         {
           src: '/latest-winners/vegas_vip_gold.png',
           title: 'giselle',
-          subTitle: 'Vegas VIP Gold',
+          subTitle: 'Fruit Zen',
           items: ['0.0001', 'BTC'],
+          href: '/games/c1d0159a-18f8-44a7-b9be-183c0ac528a5',
         },
         {
           src: '/latest-winners/gold_diggers.png',
           title: 'Saichon',
-          subTitle: 'Gold Diggers',
+          subTitle: 'Aztec Pyramids',
           items: ['0.0001', 'BTC'],
+          href: '/games/3bf8e36f-1c85-4a28-98e8-c83a5799c575',
         },
         {
           src: '/latest-winners/gold_diggers.png',
           title: 'Saichon',
-          subTitle: 'Gold Diggers',
+          subTitle: 'Champions of Rome',
           items: ['0.0001', 'BTC'],
+          href: '/games/83579a55-f8d7-4ada-b42f-9c17b0e09501',
         },
       ],
     },
@@ -1141,6 +1149,7 @@ export const useFakeStore = () => {
       href: '/betting',
     },
   ];
+
   const centerMenuItems = [
     {
       title: 'Bonuses',
@@ -1189,6 +1198,7 @@ export const useFakeStore = () => {
     //   icon: 'shop',
     // },
   ];
+
   const bottomMenuItems = [
     // {
     //   title: 'Favorites',
@@ -1206,6 +1216,7 @@ export const useFakeStore = () => {
       href: '/contact',
     },
   ];
+
   const subMenuItems = [
     {
       title: 'T&C',
@@ -1229,6 +1240,7 @@ export const useFakeStore = () => {
       title: 'Responsible Gaming',
     },
   ];
+
   const staticMenuItems = [
     {
       title: 'T&C',
@@ -1251,6 +1263,7 @@ export const useFakeStore = () => {
       href: '/responsible-gaming',
     },
   ];
+
   const catNavItems = [
     {
       title: 'Casino',
@@ -1294,6 +1307,7 @@ export const useFakeStore = () => {
       href: '#',
     },
   ];
+
   const togglerBtnItems = [
     {
       icon: 'cherry',
@@ -1306,6 +1320,7 @@ export const useFakeStore = () => {
       url: '/betting',
     },
   ];
+
   const items = {
     notifications: [],
     // notifications: [
@@ -1335,6 +1350,7 @@ export const useFakeStore = () => {
     //   },
     // ],
   };
+
   const selects = {
     country: [
       {
@@ -1399,6 +1415,7 @@ export const useFakeStore = () => {
       },
     ],
   };
+
   const menu = {
     profile: [
       {
@@ -1470,6 +1487,7 @@ export const useFakeStore = () => {
       },
     ],
   };
+
   const payments = [
     {
       title: 'Interac E-transfer',
@@ -1557,6 +1575,7 @@ export const useFakeStore = () => {
       useForWithDraw: true,
     },
   ];
+
   const betsHistoryTb = {
     columns: ['Game', 'Bet', 'Result', 'Date'],
     rows: [
@@ -1597,6 +1616,7 @@ export const useFakeStore = () => {
       },
     ],
   };
+
   const bonusesHistoryTb = {
     columns: ['Title', 'Status', 'Amount', 'Wager', 'Date', 'Valid until'],
     rows: [
@@ -1642,6 +1662,7 @@ export const useFakeStore = () => {
       },
     ],
   };
+
   const sessionHistoryTb = {
     columns: [
       '&nbsp;',
@@ -1675,6 +1696,7 @@ export const useFakeStore = () => {
       },
     ],
   };
+
   const transactionsHistoryTb = {
     columns: ['Date', 'Type', 'Payment Method', 'Status', 'Sum'],
     rows: [
@@ -1772,6 +1794,7 @@ export const useFakeStore = () => {
       },
     ],
   };
+
   const accordeons = {
     account: [
       {
@@ -1963,6 +1986,7 @@ export const useFakeStore = () => {
       },
     ],
   };
+
   const categories = [
     {
       title: {
@@ -1989,6 +2013,7 @@ export const useFakeStore = () => {
       },
     },
   ];
+
   const userProfileBonusesTabs = [
     {
       title: 'My bonuses',
@@ -2000,6 +2025,7 @@ export const useFakeStore = () => {
     //   id: 'bonus-code',
     // },
   ];
+
   const userProfileHistoryTabs = [
     // {
     //   title: 'Sessions history',
@@ -2021,6 +2047,114 @@ export const useFakeStore = () => {
     },
   ];
 
+  const promotion = {
+    title: 'Welcome package. Up to 5 BTC + 300 Free Spins',
+    subTitle: 'Welcome package is one of the most generous Slotsbet offers! It\'s a bonus bundle for your 4 initial deposits after the registration!',
+    welcomePackage: {
+      title: 'Welcome package',
+      items: [
+        {
+          title: 'Get your 100% bonus up to 1.5 BTC and 100 FS.',
+          subTitle: '1st deposit bonus',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/first-deposit-bonus',
+            },
+          },
+        },
+        {
+          title: 'Grab your 75% bonus up to 1 BTC and 50 FS.',
+          subTitle: '2nd deposit bonus',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/second-deposit-bonus',
+            },
+          },
+        },
+        {
+          title: 'Take your 50% bonus up to 1 BTC and 50 FS.',
+          subTitle: '3rd deposit bonus',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/third-deposit-bonus',
+            },
+          },
+        },
+        {
+          title: 'Play more with 100% bonus up to 1.5 BTC and 100 FS.',
+          subTitle: '4th deposit bonus',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/fourth-deposit-bonus',
+            },
+          },
+        },
+      ],
+    },
+    weeklyBonuses: {
+      title: 'Weekly bonuses',
+      items: [
+        {
+          title: '30% bonus of up to 0.0035 BTC on Monday',
+          subTitle: 'Monday Reload Bonus',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/monday-reload-bonus',
+            },
+          },
+        },
+        {
+          title: 'Get 100 Free Spins every Wednesday',
+          subTitle: 'Wednesday Free Spins',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/wednesday-free-spins',
+            },
+          },
+        },
+        {
+          title: 'Take your 10% cashback every Friday.',
+          subTitle: 'Weekly Cashback',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/weekly-cashback',
+            },
+          },
+        },
+      ],
+    },
+    howToGet: {
+      title: 'Hot to get your bonuses:',
+      src: '/promo/nft_gift.png',
+      items: [
+        'Make a successful deposit',
+        'Go to Bonuses tab and activate your Free spin',
+        'Enjoy the great gaming experience!',
+      ],
+    },
+  };
+
   const filter = (cardsArray: any[], key: string): any[] => cardsArray.filter((item: any) => item.variant === key)[0];
   const depositItems = () => payments.filter((item) => item.useForDeposit === true);
   const withdrawItems = () => payments.filter((item) => item.useForWithDraw === true);
@@ -2034,6 +2168,7 @@ export const useFakeStore = () => {
   });
   const benefitsCards = () => filter(cards, 'benefits');
   const promotionCards = () => filter(cards, 'promotions');
+  const latestWinnersCards = () => filter(cards, 'latest-winners');
 
   const mainBanner = {
       image: {
@@ -2086,6 +2221,7 @@ export const useFakeStore = () => {
     selects,
     menu,
     sliders,
+    promotion,
     depositItems,
     withdrawItems,
     betsHistoryTbBettingItems,
@@ -2097,6 +2233,7 @@ export const useFakeStore = () => {
     categories,
     benefitsCards,
     promotionCards,
+    latestWinnersCards,
     userProfileBonusesTabs,
     userProfileHistoryTabs,
     mainBanner,

@@ -1,11 +1,10 @@
 <template>
   <vue-final-modal
     v-model="modals.withdraw"
-    @click="closeModal('withdraw')"
     @beforeOpen="formKey++"
     esc-to-close
   >
-    <div class="modal-withdraw" @click.stop>
+    <div class="modal-withdraw">
       <div v-if="isLoggedIn" class="container">
         <div class="slot">
           <balance :withdraw="true">
