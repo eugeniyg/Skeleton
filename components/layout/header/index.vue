@@ -42,7 +42,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { onBeforeUnmount } from '@vue/runtime-core';
 
   const props = defineProps({
     isLoggedIn: {
