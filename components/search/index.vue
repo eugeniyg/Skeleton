@@ -81,7 +81,9 @@
   const inputElement = ref();
   watch(() => props.isShow, (newValue:boolean) => {
     if (newValue) searchValue.value = '';
-    inputElement.value.$el.querySelector('input').focus();
+    setTimeout(() => {
+      inputElement.value.$el.querySelector('input').focus();
+    }, 50);
   });
 
   const defaultGames = ref<GameInterface[]>([]);
