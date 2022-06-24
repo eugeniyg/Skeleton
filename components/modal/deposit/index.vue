@@ -1,11 +1,10 @@
 <template>
   <vue-final-modal
     v-model="modals.deposit"
-    @click="closeModal('deposit')"
     @beforeOpen="formKey++"
     esc-to-close
   >
-    <div class="modal-deposit" @click.stop>
+    <div class="modal-deposit">
       <div v-if="isLoggedIn" class="container">
         <div class="slot">
           <balance>
