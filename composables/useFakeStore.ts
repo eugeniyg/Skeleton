@@ -989,48 +989,56 @@ export const useFakeStore = () => {
           title: 'Benny',
           subTitle: 'Book Of Dead',
           items: ['0.0052', 'BTC'],
+          href: '/games/9ccf90c5-a39c-45e4-b7f5-f43a604728b5',
         },
         {
           src: '/latest-winners/big_bass_bonanza.png',
           title: 'Lukas',
-          subTitle: 'Big Bass Bonanza',
+          subTitle: 'Book Of Dead',
           items: ['0.0005', 'BTC'],
+          href: '/games/9ccf90c5-a39c-45e4-b7f5-f43a604728b5',
         },
         {
           src: '/latest-winners/fruit_zen.png',
           title: 'Xman',
-          subTitle: 'Fruit Zen',
+          subTitle: 'Bigger Bass Bonanza',
           items: ['0.0077', 'BTC'],
+          href: '/games/d7e2f16a-bb66-4090-a681-e68ef70b46a0',
         },
         {
           src: '/latest-winners/book_of_dead.png',
           title: 'Melly',
-          subTitle: 'Book Of Clovers',
+          subTitle: 'Gold Vein',
           items: ['0.0087', 'BTC'],
+          href: '/games/0bbd1ad7-a6f3-47d0-87f2-af2188550700',
         },
         {
           src: '/latest-winners/sizzling_eggs.png',
           title: 'Neil',
-          subTitle: 'Sizzling Eggs',
+          subTitle: 'The Pantheon',
           items: ['0.0001', 'BTC'],
+          href: '/games/a70c0b18-8d9d-44d6-85d6-afbbab3555f5',
         },
         {
           src: '/latest-winners/vegas_vip_gold.png',
           title: 'giselle',
-          subTitle: 'Vegas VIP Gold',
+          subTitle: 'Fruit Zen',
           items: ['0.0001', 'BTC'],
+          href: '/games/c1d0159a-18f8-44a7-b9be-183c0ac528a5',
         },
         {
           src: '/latest-winners/gold_diggers.png',
           title: 'Saichon',
-          subTitle: 'Gold Diggers',
+          subTitle: 'Aztec Pyramids',
           items: ['0.0001', 'BTC'],
+          href: '/games/3bf8e36f-1c85-4a28-98e8-c83a5799c575',
         },
         {
           src: '/latest-winners/gold_diggers.png',
           title: 'Saichon',
-          subTitle: 'Gold Diggers',
+          subTitle: 'Champions of Rome',
           items: ['0.0001', 'BTC'],
+          href: '/games/83579a55-f8d7-4ada-b42f-9c17b0e09501',
         },
       ],
     },
@@ -2160,6 +2168,7 @@ export const useFakeStore = () => {
   });
   const benefitsCards = () => filter(cards, 'benefits');
   const promotionCards = () => filter(cards, 'promotions');
+  const latestWinnersCards = () => filter(cards, 'latest-winners');
 
   const mainBanner = {
       image: {
@@ -2224,6 +2233,7 @@ export const useFakeStore = () => {
     categories,
     benefitsCards,
     promotionCards,
+    latestWinnersCards,
     userProfileBonusesTabs,
     userProfileHistoryTabs,
     mainBanner,
