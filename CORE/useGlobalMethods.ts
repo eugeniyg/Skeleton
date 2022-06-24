@@ -2,7 +2,7 @@ const useGlobalMethods = () => {
   const setFormData = (fields: any[]):any => {
     const formData:any = {};
     fields.forEach((field) => {
-      formData[field.name] = field.value || '';
+      formData[field.name || field.key] = field.value || '';
     });
     return formData;
   };

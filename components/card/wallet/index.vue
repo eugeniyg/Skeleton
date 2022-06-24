@@ -36,8 +36,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const props = defineProps({
     formatBalance: {
       type: Object,
@@ -47,7 +45,11 @@
       type: String,
       required: true,
     },
-    playerId: {
+    balance: {
+      type: Number,
+      required: true,
+    },
+    currency: {
       type: String,
       required: true,
     },
@@ -62,12 +64,7 @@
 
   const isActive = computed(() => props.status === 1);
   const showHideCurrencyButton = computed(() => Number(props.formatBalance.amount) === 0 && !isActive.value);
-  const currentCurrency = currencies.find((curr) => {
-    if (!curr.subCurrencies.length) {
-      return curr.code === props.formatBalance.currency;
-    }
-    return curr.code === props.formatBalance.currency || curr.subCurrencies.some((sub) => sub.code === props.formatBalance.currency);
-  });
+  const currentCurrency = currencies.find((curr) => curr.code === props.currency);
   const currencyName = computed(() => `${currentCurrency.name} (${currentCurrency.code})`);
 
   const { switchAccount, hideAccount } = useWalletStore();

@@ -1,6 +1,7 @@
 export interface AccountInterface {
   id: string,
-  playerId: string,
+  balance: number,
+  currency: string,
   formatBalance: {
     currency: string,
     amount: string
