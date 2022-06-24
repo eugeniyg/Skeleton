@@ -17,7 +17,7 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
-  const { isMobile, currentLocale, browserLanguage } = useGlobalStore();
+  const { isMobile } = useGlobalStore();
   const infoResponse = await useAsyncData('gameInfo', () => getGamesInfo(route.params.id));
   gameInfo.value = infoResponse.data.value;
 
@@ -26,7 +26,7 @@
     const startParams = {
       accountId: isDemo.value ? undefined : activeAccount.value.id,
       lobbyUrl: redirectUrl,
-      locale: currentLocale || browserLanguage,
+      locale: 'en', // currentLocale || browserLanguage,
       countryCode: 'UA',
       demoMode: isDemo.value,
       platform: isMobile ? 1 : 2,

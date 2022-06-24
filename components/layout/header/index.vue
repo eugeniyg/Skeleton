@@ -1,9 +1,16 @@
 <template>
   <header class="app-header">
     <atomic-logo/>
-    <button-search/>
+
+    <button-search @click="showSearch = true" data-show="mobile"/>
 
     <div class="items">
+      <search
+        :isShow="showSearch"
+        @hideSearch="showSearch = false"
+      />
+      <button-search @click="showSearch = true" data-show="desktop"/>
+
       <template v-if="props.isLoggedIn">
         <atomic-notification :is-active="true"/>
         <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
@@ -35,6 +42,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { onBeforeUnmount } from '@vue/runtime-core';
 
   const props = defineProps({
     isLoggedIn: {
@@ -63,6 +71,22 @@
     close();
     emit('logout');
   }
+
+  const showSearch = ref<boolean>(false);
+
+  const checkSearch = (e:any):void => {
+    if (showSearch.value && !e.target.closest('.search') && !e.target.closest('.btn-search')) {
+      showSearch.value = false;
+    }
+  };
+
+  onMounted(() => {
+    document.addEventListener('click', checkSearch);
+  });
+
+  onBeforeUnmount(() => {
+    document.removeEventListener('click', checkSearch);
+  });
 </script>
 
 <style lang="scss" src="./style.scss"/>
