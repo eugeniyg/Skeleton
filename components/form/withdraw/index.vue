@@ -6,18 +6,20 @@
       :min="props.amountMin"
       :max="props.amountMax"
       v-model:value="amountValue"
-      :currency="activeCurrency.code"
+      :currency="activeAccount.currency"
       :hint="fieldHint"
     />
 
     <form-input-text
-      name="destAccount"
-      label="Destination Account"
+      v-for="field in props.fields"
+      :key="field.key"
+      :name="field.key"
+      :label="field.labels.en"
       type="text"
-      placeholder="Enter bank name"
-      v-model:value="accountNumber"
-      :onFocus="onFocus('wallet_id')"
-      :hint="setError('wallet_id')"
+      :placeholder="field.hints.en"
+      v-model:value="withdrawFormData[field.key]"
+      :onFocus="onFocus(field.key)"
+      :hint="setError(field.key)"
     />
 
     <button-base
@@ -26,14 +28,14 @@
       :isDisabled="buttonDisabled"
       @click="getWithdraw"
     >
-      Withdraw {{ buttonAmount }} {{ activeCurrency.code }}
+      Withdraw {{ buttonAmount }} {{ activeAccount.currency }}
     </button-base>
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useWalletApi } from '~/CORE/index';
+  import { useGlobalMethods, useWalletApi } from '~/CORE/index';
 
   const props = defineProps({
     amountMax: {
@@ -44,6 +46,10 @@
       type: Number,
       required: false,
     },
+    fields: {
+      type: Array,
+      default: () => [],
+    },
     method: {
       type: String,
       required: false,
@@ -52,20 +58,31 @@
 
   const walletStore = useWalletStore();
   const { closeModal, showAlert } = useLayoutStore();
-  const { activeAccount, activeAccountType, activeCurrency } = storeToRefs(walletStore);
+  const {
+    activeAccount, activeAccountType,
+  } = storeToRefs(walletStore);
   const fieldHint = computed(() => ({
-    message: `Min deposit = ${props.amountMin} ${activeCurrency.value.code}, max deposit = ${props.amountMax} ${activeCurrency.value.code}`,
+    message: `Min deposit = ${props.amountMin} ${activeAccount.value.currency}, max deposit = ${props.amountMax} ${activeAccount.value.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
   const amountValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : 0.01);
-  const accountNumber = ref<string>('');
+  const { setFormData } = useGlobalMethods();
+  const withdrawFormData = reactive(setFormData(props.fields));
   const buttonAmount = computed(() => {
     if (amountValue.value > props.amountMax) return props.amountMax;
     if (amountValue.value < props.amountMin) return props.amountMin;
     return amountValue.value;
   });
-  const buttonDisabled = computed(() => !accountNumber.value || amountValue.value < props.amountMin || amountValue.value > props.amountMax || isSending.value);
+  const fieldsValid = computed(() => {
+    let valid = true;
+    props.fields.forEach((field:any) => {
+      if (field.isRequired && !withdrawFormData[field.key]) valid = false;
+    });
+    return valid;
+  });
+  const buttonDisabled = computed(() => !fieldsValid.value || amountValue.value > activeAccount.value.balance
+    || amountValue.value < props.amountMin || amountValue.value > props.amountMax || isSending.value);
 
   const serverFormErrors = ref<any>({});
 
@@ -86,13 +103,11 @@
     if (buttonDisabled.value) return;
 
     isSending.value = true;
+    const formatFields = Object.entries(withdrawFormData).map(([key, value]) => ({ key, value }));
     const params = {
       method: props.method,
-      fields: [{
-        key: 'wallet_id',
-        value: accountNumber.value,
-      }],
-      currency: activeCurrency.value.code,
+      fields: formatFields,
+      currency: activeAccount.value.currency,
       amount: Number(amountValue.value),
       accountId: activeAccount.value.id,
     };

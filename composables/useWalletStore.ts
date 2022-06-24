@@ -31,20 +31,12 @@ export const useWalletStore = defineStore('walletStore', {
       return this.accounts.find((acc) => acc.status === 1);
     },
 
-    activeCurrency():CurrencyInterface {
+    activeAccountType():string {
       const globalStore = useGlobalStore();
       const { currencies } = storeToRefs(globalStore);
 
-      return currencies.value.find((currency) => {
-        if (!currency.subCurrencies.length) {
-          return currency.code === this.activeAccount.formatBalance.currency;
-        }
-        return currency.code === this.activeAccount.formatBalance.currency || currency.subCurrencies.some((sub) => sub.code === this.activeAccount.formatBalance.currency);
-      });
-    },
-
-    activeAccountType():string {
-      return this.activeCurrency.type;
+      const activeCurrency = currencies.value.find((currency) => currency.code === this.activeAccount.currency);
+      return activeCurrency.type;
     },
   },
 
@@ -75,13 +67,13 @@ export const useWalletStore = defineStore('walletStore', {
 
     async getDepositMethods():Promise<void> {
       const { getDepositMethods } = useWalletApi();
-      const data = await getDepositMethods(this.activeAccount.id, this.activeCurrency.code);
+      const data = await getDepositMethods(this.activeAccount.id, this.activeAccount.currency);
       this.depositMethods = data;
     },
 
     async getWithdrawMethods():Promise<void> {
       const { getWithdrawMethods } = useWalletApi();
-      const data = await getWithdrawMethods(this.activeAccount.id, this.activeCurrency.code);
+      const data = await getWithdrawMethods(this.activeAccount.id, this.activeAccount.currency);
       this.withdrawMethods = data;
     },
 

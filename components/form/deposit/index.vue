@@ -7,7 +7,7 @@
       :min="props.amountMin"
       :max="props.amountMax"
       v-model:value="amountValue"
-      :currency="activeCurrency.code"
+      :currency="activeAccount.currency"
       :is-bigger="true"
     />
 
@@ -37,7 +37,7 @@
       :isDisabled="buttonDisabled"
       @click="getDeposit"
     >
-      Deposit {{ buttonAmount }} {{ activeCurrency.code }}
+      Deposit {{ buttonAmount }} {{ activeAccount.currency }}
     </button-base>
   </form>
 </template>
@@ -63,9 +63,9 @@
 
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
-  const { activeAccount, activeAccountType, activeCurrency } = storeToRefs(walletStore);
+  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
   const fieldHint = computed(() => ({
-    message: `Min deposit = ${props.amountMin} ${activeCurrency.value.code}, max deposit = ${props.amountMax} ${activeCurrency.value.code}`,
+    message: `Min deposit = ${props.amountMin} ${activeAccount.value.currency}, max deposit = ${props.amountMax} ${activeAccount.value.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
@@ -88,7 +88,7 @@
     const errorRedirect = `${window.location.href}${locationQuery ? '&' : '?'}error=deposit`;
     const params = {
       method: props.method,
-      currency: activeCurrency.value.code,
+      currency: activeAccount.value.currency,
       amount: Number(amountValue.value),
       accountId: activeAccount.value.id,
       redirectSuccessUrl: successRedirect,
