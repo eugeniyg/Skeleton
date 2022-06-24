@@ -1,11 +1,10 @@
 <template>
   <vue-final-modal
     v-model="modals.register"
-    @click="closeModal('register')"
     @beforeOpen="formKey++"
     esc-to-close
   >
-    <div class="modal-register" @click.stop>
+    <div class="modal-register">
       <div class="container">
         <div class="slot">
           <atomic-promo/>
