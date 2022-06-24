@@ -17,6 +17,10 @@
     padding: rem(8px) rem(8px) rem(8px) rem(16px);
     margin-right: rem(-8px);
 
+    .is-compact & {
+      padding-left: rem(8px);
+    }
+
     .icon {
       transform: var(--rotate, rotate(0deg));
       transition: all .2s ease-in-out;
@@ -75,13 +79,19 @@
     background-color: var(--gray-700);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    top: rem(44px);
     visibility: var(--items-visibility, hidden);
     opacity: var(--items-opacity, 0);
     transition: all .2s ease-in-out;
-    padding: rem(8px);
-    left: 0;
+    min-width: rem(40px);
+    padding: var(--padding, #{rem(8px)});
+    top: var(--top, #{rem(44px)});
     right: rem(-8px);
+    left: 0;
+
+    .is-compact & {
+      z-index: 1;
+      --padding: 0;
+    }
 
     .title {
       --color: var(--white);
@@ -93,6 +103,11 @@
     @include font($body-1);
     flex-grow: 1;
     transition: color .2s ease-in-out;
+    visibility: var(--title-visibility, visible);
+
+    .is-compact & {
+      --title-visibility: hidden;
+    }
   }
 
   .img {
