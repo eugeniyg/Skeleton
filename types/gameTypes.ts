@@ -2,6 +2,7 @@ export interface GameInterface {
   id: string,
   identity: string,
   name: string,
+  isDemoMode: boolean,
   paylines: number,
   volatility: number,
   platforms: number[],
