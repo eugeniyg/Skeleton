@@ -29,6 +29,10 @@
   const { getStartGame } = useGamesApi();
 
   onMounted(async () => {
+    if (isMobile.value) {
+      document.querySelector('footer').style.display = 'none';
+    }
+
     walletStore.updateAccounts();
 
     const redirectUrl = window.location.origin;
@@ -38,7 +42,7 @@
       locale: 'en',
       countryCode: 'UA',
       demoMode: false,
-      platform: isMobile ? 1 : 2,
+      platform: isMobile.value ? 1 : 2,
     };
     const startResponse = await getStartGame('10239b19-ddcb-4ba5-b95d-417f3cbbb1bc', startParams);
     frameLink.value = startResponse.gameUrl;
@@ -46,6 +50,7 @@
 
   onBeforeUnmount(() => {
     walletStore.stopUpdateAccounts();
+    document.querySelector('footer').style.display = null;
   });
 </script>
 
