@@ -2,6 +2,7 @@ import { defineStore, storeToRefs } from 'pinia';
 import { AccountInterface, AccountRequestInterface } from '~/types/walletTypes';
 import { useWalletApi } from '~/CORE';
 import { useGlobalStore } from '~/composables/useGlobalStore';
+import { useProfileStore } from '~/composables/useProfileStore';
 import { CurrencyInterface } from '~/types/globalDataTypes';
 
 export type WalletStateType = {
@@ -85,15 +86,17 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     async updateAccounts():Promise<void> {
-      await this.getUserAccounts();
+      const { isLoggedIn } = useProfileStore();
+      if (isLoggedIn) await this.getUserAccounts();
       this.requestTimer = setTimeout(() => {
         this.updateAccounts();
       }, 30000);
     },
 
     stopUpdateAccounts():void {
+      const { isLoggedIn } = useProfileStore();
       clearTimeout(this.requestTimer);
-      this.getUserAccounts();
+      if (isLoggedIn) this.getUserAccounts();
     },
   },
 });

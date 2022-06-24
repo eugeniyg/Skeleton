@@ -35,6 +35,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { useGlobalMethods } from '~/CORE';
 
   const props = defineProps({
     src: {
@@ -67,12 +68,6 @@
     },
   });
 
-  const getRandomInt = (min:number, max:number):number => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-  };
-
   const router = useRouter();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
@@ -88,6 +83,7 @@
     }
   };
 
+  const { getRandomInt } = useGlobalMethods();
   const backgroundImage = computed(() => `background-image:url(/img/cards/card-${getRandomInt(1, 12)}.png)`);
 </script>
 

@@ -132,7 +132,7 @@
   watch(
     () => route.query.category,
     async (newValue: string) => {
-      if (route.query.category !== activeCollection.value.identity) {
+      if (route.name === 'games' && route.query.category !== activeCollection.value.identity) {
         await changeCategory(newValue);
       }
     },
