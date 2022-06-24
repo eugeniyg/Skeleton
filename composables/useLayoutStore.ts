@@ -109,7 +109,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       window.dispatchEvent(new Event('resize'));
     },
 
-    addModalQuery(modalName:string, quryValue:string):void {
+    addModalQuery(modalName:string, queryValue:string):void {
       const router = useRouter();
       const { query } = useRoute();
       const modalsArr = Object.keys(this.modals);
@@ -119,7 +119,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         if (modalKey !== modalName) {
           this.modals[modalKey] = false;
           newQuery[this.modalsUrl[modalKey]] = undefined;
-        } else newQuery[this.modalsUrl[modalKey]] = quryValue || 'true';
+        } else newQuery[this.modalsUrl[modalKey]] = queryValue || 'true';
       });
       router.replace({ query: newQuery });
     },
