@@ -5,27 +5,26 @@
   position: var(--position, absolute);
   width: var(--width, 100%);
   top: var(--top, #{rem(64px)});
-  left: 0;
+  left: var(--left, 0);
   right: 0;
-  transform: var(--transform, rotateX(90deg));
-  transform-origin: top center;
   margin-left: auto;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility .2s, opacity .2s ease-in-out;
 
   .app-header & {
-    transition: all .2s ease-in-out;
-
-
     &.is-show {
-      --transform: 0;
+      visibility: visible;
+      opacity: 1;
 
       ~ .btn-search {
-        display: none;
+        visibility: hidden;
       }
     }
 
     @include media(l) {
-      transform-origin: center;
       --position: relative;
+      --left: #{rem(48px)};
       --top: 0;
       --width: #{rem(320px)};
       --padding-search: 0;

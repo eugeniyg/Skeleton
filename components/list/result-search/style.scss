@@ -1,6 +1,6 @@
 .result-search {
   border-radius: 8px;
-  max-height: rem(256px);
+  max-height: rem(360px);
   overflow: hidden;
   padding: rem(8px);
   background-color: var(--gray-800);
@@ -11,7 +11,7 @@
   display: none;
 
   .box {
-    max-height: calc(#{rem(256px)} - #{rem(16px)});
+    max-height: calc(#{rem(360px)} - #{rem(16px)});
     background-color: var(--gray-800);
     overflow-y: auto;
     overflow-x: hidden;
@@ -91,5 +91,9 @@
     margin-top: rem(8px);
     border-top: 1px solid var(--gray-700);
     padding: rem(8px) 0 0 0;
+  }
+
+  .btn-ghost {
+    --width: 100%;
   }
 }

@@ -13,15 +13,23 @@
     grid-area: container;
     position: relative;
     width: 100%;
+    height: calc(100vh - 56px);
 
-    @include ratio(936px, 474px);
+    @media (orientation: landscape) {
+      height: 100vh;
+    }
+
+    @include media(md) {
+      height: calc(100vh - 160px);
+    }
 
     iframe {
       display: block;
-      position: absolute;
-      max-width: 100%;
-      top: 0;
       border: none !important;
+
+      @include media(l) {
+        position: relative;
+      }
     }
   }
 
