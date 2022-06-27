@@ -16,6 +16,7 @@
         :placeholder="props.placeholder"
         @blur="onBlur"
         @input="onInput"
+        @keydown="onKeyDown"
       />
       <span class="mask" v-if="props.currency">{{ props.currency }}</span>
     </div>
@@ -76,6 +77,10 @@
 
   const onBlur = (e:any):void => {
     emit('blur', e.target.value);
+  };
+
+  const onKeyDown = (e:any):void => {
+    if (String(props.value).length > 9 && /\d/.test(e.key)) e.preventDefault();
   };
 
   const isError = computed(() => props.hint && props.hint.variant === 'error');
