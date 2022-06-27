@@ -84,7 +84,7 @@
   const v$ = useVuelidate(authorizationFormRules, authorizationFormData);
 
   const onBlur = (fieldName:string):void => {
-    v$.value[fieldName].$touch();
+    v$.value[fieldName]?.$touch();
     if (serverFormErrors.value[fieldName]) {
       serverFormErrors.value[fieldName] = undefined;
     }
