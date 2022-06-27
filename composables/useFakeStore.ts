@@ -883,96 +883,111 @@ export const useFakeStore = () => {
           src: '/providers/1.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '8a3f419d-c86b-4a94-978f-dfff38bfcd79',
         },
         {
           src: '/providers/2.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '99803920-5477-4e28-a71a-883b4820a1db',
         },
         {
           src: '/providers/3.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: 'b0f47222-bafd-4257-9539-b91b67b240d4',
         },
         {
           src: '/providers/4.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '26cb753b-1a8a-4e60-bb15-ce3ed4803a82',
         },
         {
           src: '/providers/5.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: 'efa34214-713d-4cdd-94a4-37ec197b9880',
         },
         {
           src: '/providers/6.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '9f9736ca-32f1-47cd-8c22-0ab8d8d4b23b',
         },
         {
           src: '/providers/7.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: 'ba1e954b-4891-4fef-81ac-dc099fa4d55b',
         },
         {
           src: '/providers/8.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: 'aec19337-564b-443b-b088-50bdb030478f',
         },
         {
           src: '/providers/9.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '80050128-dd71-4c53-a758-d3e929ff0806',
         },
         {
           src: '/providers/10.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '5a21348d-e46b-459d-a353-13cc26abf9a8',
         },
         {
           src: '/providers/11.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: 'd0b6cb09-7836-4426-bb72-1bd346ad81da',
         },
-        {
-          src: '/providers/12.svg',
-          showPlayBtn: false,
-          showTryBtn: false,
-        },
+        // {
+        //   src: '/providers/12.svg',
+        //   showPlayBtn: false,
+        //   showTryBtn: false,
+        // },
         {
           src: '/providers/13.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '0a4528f0-6ed4-4437-90fa-540685ad0d62',
         },
         {
           src: '/providers/14.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '87d8542f-7ef1-4b01-ad5d-76319c63edf5',
         },
-        {
-          src: '/providers/15.svg',
-          showPlayBtn: false,
-          showTryBtn: false,
-        },
+        // {
+        //   src: '/providers/15.svg',
+        //   showPlayBtn: false,
+        //   showTryBtn: false,
+        // },
         {
           src: '/providers/16.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '89e46cc1-56bc-47cd-abf1-e234660c9146',
         },
-        {
-          src: '/providers/17.svg',
-          showPlayBtn: false,
-          showTryBtn: false,
-        },
-        {
-          src: '/providers/18.svg',
-          showPlayBtn: false,
-          showTryBtn: false,
-        },
+        // {
+        //   src: '/providers/17.svg',
+        //   showPlayBtn: false,
+        //   showTryBtn: false,
+        // },
+        // {
+        //   src: '/providers/18.svg',
+        //   showPlayBtn: false,
+        //   showTryBtn: false,
+        // },
         {
           src: '/providers/19.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '8ca50b29-184f-4f06-a0a9-edd1d2c93863',
         },
       ],
     },
@@ -2207,6 +2222,7 @@ export const useFakeStore = () => {
   const benefitsCards = () => filter(cards, 'benefits');
   const promotionCards = () => filter(cards, 'promotions');
   const latestWinnersCards = () => filter(cards, 'latest-winners');
+  const providerCards = () => filter(cards, 'providers');
 
   const mainBanner = {
       image: {
@@ -2273,6 +2289,7 @@ export const useFakeStore = () => {
     benefitsCards,
     promotionCards,
     latestWinnersCards,
+    providerCards,
     userProfileBonusesTabs,
     userProfileHistoryTabs,
     mainBanner,
