@@ -47,6 +47,12 @@
       </template>
     </cards-group>
 
+    <cards-group v-if="providerCards" v-bind="providerCards">
+      <template v-slot:card="item">
+        <card-providers v-bind="item" />
+      </template>
+    </cards-group>
+
     <cards-group v-if="state.mapped[2]?.games?.length" v-bind="state.mapped[2]">
       <template v-slot:card="item">
         <card-base v-bind="item" />
@@ -87,19 +93,7 @@
       <template v-slot:card="item">
         <card-base v-bind="item" />
       </template>
-    </cards-group>
-
-    <cards-group v-bind="fakeStore.latestWinnersCards">
-      <template v-slot:card="item">
-        <card-latest-winners v-bind="item" />
-      </template>
-    </cards-group>
-
-    <cards-group v-bind="fakeStore.promotionsCards">
-      <template v-slot:card="item">
-        <card-promotions v-bind="item" />
-      </template>
-    </cards-group>  -->
+    </cards-group> -->
   </div>
 </template>
 
@@ -115,6 +109,7 @@
   const { gameCollections } = useGamesStore();
   const { getFilteredGames } = useGamesApi();
 
+  const providerCards = fakeStore.providerCards();
   const latestWinnersCards = fakeStore.latestWinnersCards();
   const promotionsCards = fakeStore.promotionCards();
 
