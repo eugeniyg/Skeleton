@@ -84,12 +84,12 @@
     pageMeta.value = response.meta;
   };
 
-  const { data } = await useAsyncData('items', getItems);
+  const { data } = await useAsyncData('items', getItems, { initialCache: false });
   setItems(data.value);
 
   const changeProvider = async (): Promise<void> => {
     loadPage.value = 1;
-    router.push({
+    router.replace({
       query: {
         ...route.query,
         provider:
@@ -105,7 +105,7 @@
     activeCollection.value = gameCollections.find(
       (collection) => collection.identity === categoryId,
     );
-    router.push({ query: { ...route.query, category: categoryId } });
+    router.replace({ query: { ...route.query, category: categoryId } });
     const response = await getItems();
     setItems(response);
   };

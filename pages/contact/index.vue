@@ -14,7 +14,7 @@
     <div class="form">
       <form-input-text
         v-model:value="state.emailText"
-        type="text"
+        type="email"
         name="email"
         :label="fieldsContent.email.label"
         :placeholder="fieldsContent.email.placeholder"
