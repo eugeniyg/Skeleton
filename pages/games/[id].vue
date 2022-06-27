@@ -43,7 +43,7 @@
     const router = useRouter();
     isDemo.value = !isDemo.value;
     await startGame();
-    router.push({ query: { demo: `${isDemo.value}` } });
+    router.replace({ query: { demo: `${isDemo.value}` } });
   };
 
   watch(() => isLoggedIn.value, async (newValue:boolean) => {
