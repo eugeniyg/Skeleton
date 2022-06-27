@@ -30,6 +30,10 @@
     &:focus {
       --border-color: var(--gray-300);
     }
+
+    &::-ms-reveal {
+      display: none;
+    }
   }
 
   .hint, .pass-progress {
