@@ -1,8 +1,9 @@
 <template>
   <component
-    :is="props.tagName"
+    :is="props.url ? NuxtLink : props.tagName"
     :class="componentClasses"
     :disabled="props.isDisabled || null"
+    :to="url"
   >
     <slot/>
   </component>
@@ -12,8 +13,8 @@
   const props = defineProps({
     tagName: {
       type: String,
-      validator: (val:string) => ['a', 'div', 'span', 'button'].includes(val),
-      default: 'a',
+      validator: (val:string) => ['div', 'span', 'button'].includes(val),
+      default: 'div',
     },
     type: {
       type: String,
@@ -33,7 +34,13 @@
       type: Boolean,
       default: false,
     },
+    url: {
+      type: String,
+      required: false,
+    },
   });
+
+  const NuxtLink = resolveComponent('nuxt-link');
 
   const componentClasses = computed(() => [
     props.type ? `btn-${props.type}` : 'btn',

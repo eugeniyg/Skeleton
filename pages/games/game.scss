@@ -4,11 +4,10 @@
   }
 
   .app-main {
-    height: var(--height-main, calc(100vh - #{rem(64px)}));
+    --padding: 0;
 
     @media (orientation: landscape) and (max-width: #{rem(1024px)}) {
       --padding: 0 0 0 #{rem(64px)};
-      --height-main: 100vh;
     }
 
     .cards {
@@ -17,7 +16,8 @@
     }
 
     @include media(md) {
-      --height-main: auto;
+      --padding: #{rem(24px)} #{rem(32px)};
+
       .cards {
         display: grid;
       }

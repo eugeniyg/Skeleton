@@ -20,28 +20,30 @@
   }
 
   &.is-compact {
-    .btn-secondary, .nickname, .progress-bar {
-      display: none;
-    }
-
-    .btn-primary {
-      font-size: 0;
-
-      --width: #{rem(40px)};
-      --height: #{rem(40px)};
-      --padding: 0;
-      --bg: var(--gray-900);
-
-      .icon {
-        transform: translateX(#{rem(2px)});
-        color: var(--yellow-500);
+    @include media(l) {
+      .btn-secondary, .nickname, .progress-bar {
+        display: none;
       }
-    }
 
-    .avatar {
-      --padding: 0;
-      --bg: transparent;
-      --width: fit-content;
+      .btn-primary {
+        font-size: 0;
+
+        --width: #{rem(40px)};
+        --height: #{rem(40px)};
+        --padding: 0;
+        --bg: var(--gray-900);
+
+        .icon {
+          transform: translateX(#{rem(2px)});
+          color: var(--yellow-500);
+        }
+      }
+
+      .avatar {
+        --padding: 0;
+        --bg: transparent;
+        --width: fit-content;
+      }
     }
   }
 }

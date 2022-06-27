@@ -1,8 +1,10 @@
 .toggle-drawer {
   .btn {
     @include box(32px);
-    //@include icon-before(ui-arrow_expand-close);
     @extend %flex-all-center;
+    display: var(--btn-display, none);
+    justify-content: center;
+    align-items: center;
     @extend %skip-btn;
     border-radius: 50%;
     padding: 0;
@@ -24,11 +26,29 @@
     }
 
     &:active, &.is-active {
-      --bg: var(--gray-800);
+      @include media(l) {
+        --bg: var(--gray-800);
+      }
+    }
+
+    &[data-action="minimize"] {
+      @include media(l) {
+        --btn-display: flex;
+      }
+
+    }
+
+    &[data-action="open"] {
+      --btn-display: flex;
+
+      @include media(l) {
+        --btn-display: none;
+      }
     }
   }
 
   &.is-active {
+    @include media(l) {
     padding: rem(16px) rem(20px);
     background-color: var(--gray-900);
 
@@ -36,5 +56,6 @@
     --position: relative;
     --translate: 0 0;
     --right: auto
+    }
   }
 }

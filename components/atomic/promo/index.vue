@@ -2,7 +2,7 @@
   <div class="promo">
     <div class="header">
       <div class="title">Welcome package</div>
-      <span class="sub-title">500 EUR</span>
+      <span class="sub-title">5 BTC</span>
       <span class="sub-title">+ 300 FS</span>
     </div>
 

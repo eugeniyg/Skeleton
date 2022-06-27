@@ -1,19 +1,35 @@
 import { defineStore } from 'pinia';
+import { useWalletStore } from '~/composables/useWalletStore';
+import { useProfileStore } from '~/composables/useProfileStore';
 
 export type LayoutStoreStateType = {
   isUserNavOpen: boolean,
   isDrawerOpen: boolean,
   isCurrencyNavOpen: boolean,
   isDrawerCompact: boolean,
+  isShowAlert: boolean,
+  alertProps: {
+    title: string | undefined,
+    text: string | undefined,
+    variant: 'info' | 'error' | 'warning' | 'done' | undefined,
+  },
   modals: {
     register: boolean,
     signIn: boolean,
     deposit: boolean,
+    confirm: boolean,
+    confirmBonus: boolean,
+    error: boolean,
+    forgotPass: boolean,
+    resetPass: boolean,
+    success: boolean,
+    withdraw: boolean,
   },
   modalsUrl: {
     register: string,
     signIn: string,
-    deposit: string,
+    success: string,
+    error: string,
   },
 }
 
@@ -23,19 +39,44 @@ export const useLayoutStore = defineStore('layoutStore', {
       isDrawerOpen: false,
       isCurrencyNavOpen: false,
       isDrawerCompact: false,
+      isShowAlert: false,
+      alertProps: {
+        title: undefined,
+        text: undefined,
+        variant: undefined,
+      },
       modals: {
         register: false,
         signIn: false,
         deposit: false,
+        confirm: false,
+        confirmBonus: false,
+        error: false,
+        forgotPass: false,
+        resetPass: false,
+        success: false,
+        withdraw: false,
       },
       modalsUrl: {
         register: 'sign-up',
         signIn: 'sign-in',
-        deposit: 'deposit',
+        success: 'success',
+        error: 'error',
       },
   } as LayoutStoreStateType),
 
   actions: {
+    showAlert(props: LayoutStoreStateType['alertProps']): void {
+      setTimeout(() => {
+        this.isShowAlert = true;
+        this.alertProps = props;
+      }, 200);
+    },
+
+    hideAlert() {
+      this.isShowAlert = false;
+    },
+
     openUserNav():void {
       this.isUserNavOpen = true;
       document.body.classList.add('nav-user-open');
@@ -62,13 +103,10 @@ export const useLayoutStore = defineStore('layoutStore', {
     },
 
     compactDrawer():void {
-      this.isDrawerCompact = !this.isDrawerCompact;
-      const getMainLayout = document.querySelector('.main-layout');
-      getMainLayout.classList.toggle('drawer-minimize');
       window.dispatchEvent(new Event('resize'));
     },
 
-    addModalQuery(modalName:string):void {
+    addModalQuery(modalName:string, queryValue:string):void {
       const router = useRouter();
       const { query } = useRoute();
       const modalsArr = Object.keys(this.modals);
@@ -78,7 +116,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         if (modalKey !== modalName) {
           this.modals[modalKey] = false;
           newQuery[this.modalsUrl[modalKey]] = undefined;
-        } else newQuery[this.modalsUrl[modalKey]] = 'true';
+        } else newQuery[this.modalsUrl[modalKey]] = queryValue || 'true';
       });
       router.replace({ query: newQuery });
     },
@@ -90,14 +128,42 @@ export const useLayoutStore = defineStore('layoutStore', {
       router.replace({ query: { ...query, [this.modalsUrl[modalName]]: undefined } });
     },
 
-    showModal(modalName: string):void {
+    showModal(modalName: string, queryValue?:string):void {
       this.modals[modalName] = true;
-      this.addModalQuery(modalName);
+      if (this.modalsUrl[modalName]) this.addModalQuery(modalName, queryValue);
     },
 
     closeModal(modalName: string):void {
       this.modals[modalName] = false;
-      this.removeModalQuery(modalName);
+      if (this.modalsUrl[modalName]) this.removeModalQuery(modalName);
+    },
+
+    checkModals():void {
+      const route = useRoute();
+      const { isLoggedIn } = useProfileStore();
+      const queryArr = Object.keys(route.query);
+
+      queryArr.forEach((query) => {
+        if (query === 'sign-up') {
+          isLoggedIn ? this.closeModal('register') : this.showModal('register');
+        } else if (query === 'register') {
+          isLoggedIn ? this.closeModal('signIn') : this.showModal('signIn');
+        } else if (this.modalsUrl[query]) {
+          this.showModal(query, route.query[query]);
+        }
+      });
+    },
+
+    async openDepositModal():Promise<void> {
+      const { getDepositMethods } = useWalletStore();
+      await getDepositMethods();
+      this.showModal('deposit');
+    },
+
+    async openWithdrawModal():Promise<void> {
+      const { getWithdrawMethods } = useWalletStore();
+      await getWithdrawMethods();
+      this.showModal('withdraw');
     },
   },
 });

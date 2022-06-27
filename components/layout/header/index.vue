@@ -1,11 +1,18 @@
 <template>
   <header class="app-header">
     <atomic-logo/>
-    <button-search/>
+
+    <button-search @click="showSearch = true" data-show="mobile"/>
 
     <div class="items">
+      <search
+        :isShow="showSearch"
+        @hideSearch="showSearch = false"
+      />
+      <button-search @click="showSearch = true" data-show="desktop"/>
+
       <template v-if="props.isLoggedIn">
-        <atomic-notification :is-active="true"/>
+        <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
         <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
         <form-input-deposit/>
         <atomic-avatar @toggle="toggleProfileNav" :is-button="true"/>
@@ -14,18 +21,17 @@
 
       <template v-else>
         <button-base
-          type="secondary"
+          type="primary"
           size="md"
-          tag-name="button"
-          @click="emit('register')"
+          @click="showModal('register')"
         >
           Registration
         </button-base>
 
         <button-base
-          type="primary"
+          type="secondary"
           size="md"
-          @click="emit('login')"
+          @click="showModal('signIn')"
         >
           Login
         </button-base>
@@ -47,7 +53,7 @@
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isUserNavOpen } = storeToRefs(layoutStore);
-  const { closeUserNav, openUserNav } = layoutStore;
+  const { closeUserNav, openUserNav, showModal } = layoutStore;
   const { avatarItems } = storeToRefs(profileStore);
   const fakeStore = useFakeStore();
 
@@ -64,6 +70,22 @@
     close();
     emit('logout');
   }
+
+  const showSearch = ref<boolean>(false);
+
+  const checkSearch = (e:any):void => {
+    if (showSearch.value && !e.target.closest('.search') && !e.target.closest('.btn-search')) {
+      showSearch.value = false;
+    }
+  };
+
+  onMounted(() => {
+    document.addEventListener('click', checkSearch);
+  });
+
+  onBeforeUnmount(() => {
+    document.removeEventListener('click', checkSearch);
+  });
 </script>
 
 <style lang="scss" src="./style.scss"/>

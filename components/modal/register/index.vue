@@ -1,10 +1,10 @@
 <template>
   <vue-final-modal
     v-model="modals.register"
-    @click="closeModal('register')"
+    @beforeOpen="formKey++"
     esc-to-close
   >
-    <div class="modal-register" @click.stop>
+    <div class="modal-register">
       <div class="container">
         <div class="slot">
           <atomic-promo/>
@@ -15,7 +15,7 @@
             <button-modal-close @close="closeModal('register')"/>
             <div class="title">Join Slotsbet</div>
           </div>
-          <form-join :show="modals.register"/>
+          <form-join :key="formKey" :show="modals.register"/>
         </div>
       </div>
     </div>
@@ -28,6 +28,7 @@
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
+  const formKey = ref<number>(0);
 </script>
 
 <style lang="scss" src="./style.scss"/>

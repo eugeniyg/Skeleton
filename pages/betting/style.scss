@@ -1,0 +1,28 @@
+.betting {
+  display: grid;
+  grid-template-areas:
+    "container nav"
+    "panel nav";
+  align-items: var(--align-items, flex-end);
+  grid-template-columns: 1fr auto;
+  width: 100%;
+
+  .container {
+    background-color: var(--black-primary);
+    grid-area: container;
+    position: relative;
+    width: 100%;
+    --safe-area-inset-bottom: env(safe-area-inset-bottom);
+    height: calc(var(--vh, 1vh) * 100 - 144px - var(--safe-area-inset-bottom));
+
+    @include media(md) {
+      height: calc(100vh - 88px);
+    }
+
+    iframe {
+      display: block;
+      max-width: 100%;
+      border: none !important;
+    }
+  }
+}

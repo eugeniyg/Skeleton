@@ -39,22 +39,25 @@
 
 
   &.is-compact {
-    @include radius(999px);
-    width: fit-content;
-    align-items: center;
+    @include media(l) {
 
-    --direction: column;
-    --padding: #{rem(4px)};
-    --margin: 0;
-    --text-display: none;
+      @include radius(999px);
+      width: fit-content;
+      align-items: center;
 
-    .btn {
-      @include box(32px);
-      --padding: 0;
-    }
+      --direction: column;
+      --padding: #{rem(4px)};
+      --margin: 0;
+      --text-display: none;
 
-    .icon {
-      --icon-size: #{rem(22px)};
+      .btn {
+        @include box(32px);
+        --padding: 0;
+      }
+
+      .icon {
+        --icon-size: #{rem(22px)};
+      }
     }
   }
 }

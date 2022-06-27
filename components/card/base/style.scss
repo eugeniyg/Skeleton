@@ -10,8 +10,8 @@
   align-items: flex-start;
   background-color: var(--bg, transparent);
   background-repeat: var(--bg-repeat, no-repeat);
-  background-size: var(--bg-size, cover);
-  background-position: var(--bg-position, top center);
+  background-size: var(--bg-size, auto 113%);
+  background-position: var(--bg-position, center);
   min-width: var(--min-width, #{column(3, 8px)});
   scroll-snap-align: var(--scroll-snap-align, unset);
 
@@ -79,7 +79,6 @@
   .info {
     padding: var(--padding-info, #{rem(16px) rem(12px)});
     background-color: var(--bg-info, rgba(14, 9, 30, .8));
-    width: var(--width-info, 100%);
     display: var(--display, grid);
     grid-row-gap: 8px;
     position: var(--position-info, absolute);
@@ -91,22 +90,26 @@
     grid-template-columns: 1fr;
     grid-template-rows: 1fr auto auto 1fr;
     top: 0;
-    left: 0;
-    right: 0;
+    left: -2px;
+    right: -2px;
     bottom: 0;
-    visibility: var(--visibility-info, hidden);
+    //visibility: var(--visibility-info, hidden);
     opacity: var(--opacity-info, 0);
-    transition: var(--transition-info, (visibility .2s .2s, opacity .2s .2s ease-in-out));
+    transition: var(--transition-info, (opacity .6s ease));
+    transition-delay: .2s;
+
+    will-change: opacity;
   }
 
   &:hover {
+    transition-delay: 0s;
     --visibility-info: visible;
     --opacity-info: 1;
-    --transition-info: (visibility .2s .2s, opacity .2s .2s ease-in-out);
+    --transition-info: (opacity .6s ease);
 
     .btn-play {
-      opacity: 1;
-      transition: opacity .4s;
+      transform: scale(1);
+      transition-delay: .2s;
     }
   }
 
@@ -143,7 +146,8 @@
   .btn-play {
     grid-area: btn-play;
     justify-self: center;
-    transition: all .2s ease-in-out;
-    opacity: 0;
+    transition: transform .2s ease-out;
+    transform: scale(0);
+    will-change: transform;
   }
 }

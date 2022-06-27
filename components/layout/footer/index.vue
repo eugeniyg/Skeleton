@@ -30,7 +30,7 @@
         </template>
 
         <template v-slot:content="{ item }">
-          <a href="#">{{ item }}</a>
+          <nuxt-link :to="item.href">{{ item.title }}</nuxt-link>
         </template>
       </accordeon>
 
@@ -53,7 +53,7 @@
 
     <div class="info">
       <img src="~/assets/img/info-logo.svg" />
-      <p>is owned and operated by Company registered and established under the laws of Curacao. Company is licensed and regulated by Antillephone N.V. It is the player’s sole responsibility to inquire about the existing laws and regulations of the given jurisdiction for online gambling. Company is officially registered by the Government of Curaçao as an Information Provider, legally authorized to conduct online gaming operations from Curaçao. Remote gaming licensing and supervision is provided by Antillephone N.V. All payments with Paysafe are made via Company.</p>
+      <p>Slotsbet.io is owned and operated by Company registered and established under the laws of Curacao. Company is licensed and regulated by Antillephone N.V. It is the player’s sole responsibility to inquire about the existing laws and regulations of the given jurisdiction for online gambling. Company is officially registered by the Government of Curaçao as an Information Provider, legally authorized to conduct online gaming operations from Curaçao. Remote gaming licensing and supervision is provided by Antillephone N.V. All payments with Paysafe are made via Company.</p>
     </div>
 
     <atomic-divider/>
@@ -73,9 +73,22 @@
     promo: {
       heading: 'Promo',
       items: [
-        'Welcome package',
-        'Wednesday bonus',
-        'Reload bonus',
+        {
+          title: 'Welcome package',
+          href: '/welcome-package',
+        },
+        {
+          title: 'Monday Reload Bonus',
+          href: '/monday-reload-bonus',
+        },
+        {
+          title: 'Wednesday Free Spins',
+          href: '/wednesday-free-spins',
+        },
+        {
+          title: 'Weekly Cashback',
+          href: '/weekly-cashback',
+        },
       ],
       order: 1,
       isOpen: true,
@@ -83,11 +96,22 @@
     info: {
       heading: 'Info',
       items: [
-        'T&C',
-        'Bonus terms',
-        'Payment methods',
-        'Privacy Policy',
-        'Responsible Gaming',
+        {
+          title: 'T&C',
+          href: '/terms-and-conditions',
+        },
+        {
+          title: 'Bonus terms',
+          href: '/bonus-terms',
+        },
+        {
+          title: 'Privacy Policy',
+          href: '/privacy-policy',
+        },
+        {
+          title: 'Responsible Gaming',
+          href: '/responsible-gaming',
+        },
       ],
       order: 1,
       isOpen: true,
@@ -95,9 +119,14 @@
     help: {
       heading: 'Help',
       items: [
-        'F.A.Q',
-        'Contact us',
-        'Support',
+        {
+          title: 'F.A.Q',
+          href: '/questions',
+        },
+        {
+          title: 'Contact us',
+          href: '/contact',
+        },
       ],
       order: 1,
       isOpen: true,
@@ -116,8 +145,6 @@
     '/payments-icons/2.svg',
     '/payments-icons/3.svg',
     '/payments-icons/4.svg',
-    '/payments-icons/5.svg',
-    '/payments-icons/6.svg',
   ];
 </script>
 

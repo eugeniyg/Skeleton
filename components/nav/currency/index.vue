@@ -7,7 +7,6 @@
             v-for="{id, title} in navItems"
             :key="id"
             :id="id"
-            tag-name="button"
             type="ghost"
             size="sm"
             :is-active="selected === id"
@@ -57,17 +56,9 @@
   const { accounts } = storeToRefs(walletStore);
   const { currencies } = storeToRefs(globalStore);
 
-  const accountsCurrency = computed(() => accounts.value.map((account) => {
-    const accountCurrency = currencies.value.find((currency) => {
-      if (!currency.subCurrencies.length) {
-        return currency.code === account.formatBalance.currency;
-      }
-      return currency.code === account.formatBalance.currency || currency.subCurrencies.some((sub) => sub.code === account.formatBalance.currency);
-    });
-    return accountCurrency.code;
-  }));
+  const accountCurrencies = computed(() => accounts.value.map((account) => account.currency));
 
-  const filteredCurrencies = computed(() => currencies.value.filter((currency) => !accountsCurrency.value.includes(currency.code)));
+  const filteredCurrencies = computed(() => currencies.value.filter((currency) => !accountCurrencies.value.includes(currency.code)));
   const cryptoCurrencies = computed(() => filteredCurrencies.value.filter((currency) => currency.type === 'crypto'));
 
   const selected = ref<string>('all');

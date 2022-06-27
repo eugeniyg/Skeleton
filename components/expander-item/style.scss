@@ -1,0 +1,32 @@
+.expander-item {
+  padding: rem(40px) 0 rem(24px) 0;
+  border-top: 1px solid var(--gray-700);
+
+  .icon {
+    --color: var(--gray-400);
+  }
+
+  &:last-of-type {
+    border-bottom: 1px solid var(--gray-700);
+  }
+
+  .content {
+    padding-top: rem(16px);
+    overflow: hidden;
+    max-height: var(--max-height, 0);
+    transition: max-height .2s ease-in-out;
+    @include font($body-3-paragraph);
+    color: var(--gray-400);
+
+    p {
+      @include font($body-3-paragraph);
+      color: var(--gray-400);
+      margin: rem(8px) 0;
+    }
+
+    a {
+      @include font($body-3-paragraph);
+      color: var(--yellow-500);
+    }
+  }
+}

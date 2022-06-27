@@ -2,7 +2,7 @@ const useGlobalMethods = () => {
   const setFormData = (fields: any[]):any => {
     const formData:any = {};
     fields.forEach((field) => {
-      formData[field.name] = field.value || '';
+      formData[field.name || field.key] = field.value || '';
     });
     return formData;
   };
@@ -49,9 +49,16 @@ const useGlobalMethods = () => {
     return formRules;
   };
 
+  const getRandomInt = (min:number, max:number):number => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
+
   return {
     setFormData,
     createFormRules,
+    getRandomInt,
   };
 };
 

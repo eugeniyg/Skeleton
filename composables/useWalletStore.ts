@@ -1,9 +1,14 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { AccountInterface, AccountRequestInterface } from '~/types/walletTypes';
 import { useWalletApi } from '~/CORE';
+import { useGlobalStore } from '~/composables/useGlobalStore';
+import { useProfileStore } from '~/composables/useProfileStore';
 
 export type WalletStateType = {
   accounts: AccountInterface[],
+  depositMethods: any[],
+  withdrawMethods: any[],
+  requestTimer: any,
   accountsStatuses: {
     Active: 1,
     Inactive: 2,
@@ -15,11 +20,22 @@ export type WalletStateType = {
 export const useWalletStore = defineStore('walletStore', {
   state: () => ({
     accounts: [],
+    depositMethods: [],
+    withdrawMethods: [],
+    requestTimer: '',
   } as WalletStateType),
 
   getters: {
     activeAccount():AccountInterface {
       return this.accounts.find((acc) => acc.status === 1);
+    },
+
+    activeAccountType():string {
+      const globalStore = useGlobalStore();
+      const { currencies } = storeToRefs(globalStore);
+
+      const activeCurrency = currencies.value.find((currency) => currency.code === this.activeAccount.currency);
+      return activeCurrency.type;
     },
   },
 
@@ -46,6 +62,32 @@ export const useWalletStore = defineStore('walletStore', {
       const { hideWalletAccount } = useWalletApi();
       const data = await hideWalletAccount(hideData);
       this.accounts = data;
+    },
+
+    async getDepositMethods():Promise<void> {
+      const { getDepositMethods } = useWalletApi();
+      const data = await getDepositMethods(this.activeAccount.id, this.activeAccount.currency);
+      this.depositMethods = data;
+    },
+
+    async getWithdrawMethods():Promise<void> {
+      const { getWithdrawMethods } = useWalletApi();
+      const data = await getWithdrawMethods(this.activeAccount.id, this.activeAccount.currency);
+      this.withdrawMethods = data;
+    },
+
+    async updateAccounts():Promise<void> {
+      const { isLoggedIn } = useProfileStore();
+      if (isLoggedIn) await this.getUserAccounts();
+      this.requestTimer = setTimeout(() => {
+        this.updateAccounts();
+      }, 30000);
+    },
+
+    stopUpdateAccounts():void {
+      const { isLoggedIn } = useProfileStore();
+      clearTimeout(this.requestTimer);
+      if (isLoggedIn) this.getUserAccounts();
     },
   },
 });

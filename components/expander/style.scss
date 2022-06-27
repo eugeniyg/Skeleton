@@ -1,0 +1,37 @@
+.expander {
+  .header {
+    display: flex;
+    grid-gap: rem(8px);
+    padding: 0 rem(16px) 0 0;
+    width: 100%;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+
+    &.is-open {
+      --title-color: var(--yellow-500);
+      --btn-rotate: rotate(180deg);
+
+      .icon {
+        --color: var(--yellow-500);
+      }
+    }
+
+    > .title {
+      @include font($heading-4);
+      color: var(--title-color, var(--white));
+      flex-grow: 1;
+      transition: color .2s ease-in-out;
+    }
+
+    .btn {
+      transform: var(--btn-rotate, rotate(0));
+      transition: transform .2s ease-in-out;
+      --color: var(--white);
+      --bg: transparent;
+      --padding: 0;
+      --width: #{rem(32px)};
+      --height: #{rem(32px)};
+    }
+  }
+}

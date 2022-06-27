@@ -76,7 +76,7 @@ export default defineEventHandler(() => ({
     placeholder: 'Select your currency',
   },
   agreements: {
-    label: 'I accept the <a href="#"> Terms and Conditions</a> and <a href="#">Privacy Policy</a>',
+    label: 'I accept the <a href="/terms-and-conditions"> Terms and Conditions</a> and <a href="/privacy-policy">Privacy Policy</a>',
     placeholder: '',
   },
   receiveEmailPromo: {
@@ -102,5 +102,9 @@ export default defineEventHandler(() => ({
   personalIdNumber: {
     label: 'Personal ID number',
     placeholder: 'Identity reference number (if available)',
+  },
+  message: {
+    label: 'Text',
+    placeholder: 'Enter your message',
   },
 }));

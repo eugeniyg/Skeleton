@@ -17,7 +17,7 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
-  const { isMobile, currentLocale, browserLanguage } = useGlobalStore();
+  const { isMobile } = useGlobalStore();
   const infoResponse = await useAsyncData('gameInfo', () => getGamesInfo(route.params.id));
   gameInfo.value = infoResponse.data.value;
 
@@ -26,7 +26,7 @@
     const startParams = {
       accountId: isDemo.value ? undefined : activeAccount.value.id,
       lobbyUrl: redirectUrl,
-      locale: currentLocale || browserLanguage,
+      locale: 'en', // currentLocale || browserLanguage,
       countryCode: 'UA',
       demoMode: isDemo.value,
       platform: isMobile ? 1 : 2,
@@ -46,26 +46,29 @@
     router.push({ query: { demo: `${isDemo.value}` } });
   };
 
-  watch(() => isLoggedIn.value, (newValue:boolean) => {
+  watch(() => isLoggedIn.value, async (newValue:boolean) => {
     if (newValue) {
-      startGame();
+      await startGame();
     }
   });
 
-  onMounted(() => {
+  onMounted(async () => {
     document.body.classList.add('is-mob-nav-vertical');
     document.body.classList.add('is-game-page');
+
+    walletStore.updateAccounts();
 
     if (!isDemo.value && !isLoggedIn.value) {
       showModal('register');
     } else {
-      startGame();
+      await startGame();
     }
   });
 
   onBeforeUnmount(() => {
     document.body.classList.remove('is-mob-nav-vertical');
     document.body.classList.remove('is-game-page');
+    walletStore.stopUpdateAccounts();
   });
 </script>
 

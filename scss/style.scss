@@ -76,6 +76,7 @@ html {
   font-size: variables.$base-font-size;
 }
 
+
 //@import "ds/mixins";
 //@import "ds/placeholders";
 
@@ -94,6 +95,8 @@ body {
     --main-pointer-events: none;
     --header-z-index: 3;
     --close-decor-index: 2;
+    --close-btn-visibility: visible;
+    --drawer-transition: (transform .2s ease-in)
   }
 
   &.drawer-open {
@@ -102,6 +105,8 @@ body {
     --body-overflow: hidden;
     --opacity-layer-visibility: visible;
     --main-pointer-events: none;
+    --drawer-visibility: visible;
+
 
     .nav-mob {
       right: 4px;
@@ -111,7 +116,6 @@ body {
   &.nav-currency-open {
     --opacity-layer-visibility: visible;
     --body-overflow: hidden;
-    width: calc(100% - 6px);
     --nav-currency-visibility: visible;
     --nav-currency-translate-y: 0;
 
@@ -119,6 +123,10 @@ body {
       --opacity-layer-visibility: hidden;
       --body-overflow: auto;
     }
+  }
+
+  &.hidden-overflow {
+    overflow: hidden !important;
   }
 }
 
@@ -131,8 +139,9 @@ body {
   grid-template-columns: var(--body-template-columns, 0 1fr);
   grid-template-rows: auto 1fr auto;
   grid-auto-flow: row;
+  align-items: flex-start;
 
-  @include media(md) {
+  @include media(l) {
     --body-template-columns: #{rem(240px)} 1fr;
     --drawer-translate-x: translateX(0);
 
@@ -149,6 +158,7 @@ body {
   pointer-events: var(--main-pointer-events, initial);
   position: relative;
   z-index: 0;
+  overflow: hidden;
 
   &.is-overflow {
     overflow: hidden;
@@ -158,7 +168,7 @@ body {
     --padding: #{rem(24px)} #{rem(32px)}
   }
 
-  .app-page > .cards, .tabs, .nav-cat-wrap {
+  .cards, .tabs {
     margin-top: #{24px};
   }
 }
@@ -192,4 +202,8 @@ body {
   justify-content: center;
   padding: rem(8px) 0;
   margin: auto;
+}
+
+.stop-transition * {
+  transition: none !important;
 }

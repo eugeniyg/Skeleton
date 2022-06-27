@@ -2,6 +2,7 @@ export interface GameInterface {
   id: string,
   identity: string,
   name: string,
+  isDemoMode: boolean,
   paylines: number,
   volatility: number,
   platforms: number[],
@@ -12,7 +13,7 @@ export interface GameInterface {
 export interface CollectionInterface {
   id: string,
   identity: string,
-  games: GameInterface[]
+  name: string
 }
 
 export interface GameProviderInterface {

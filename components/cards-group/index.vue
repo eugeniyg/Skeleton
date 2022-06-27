@@ -1,15 +1,20 @@
 <template>
-  <div class="cards">
+  <div :class="classes">
     <atomic-icon v-if="props.titleIcon" :id="props.titleIcon"/>
 
-    <div v-if="props.identity && props.subTitle" class="titles">
-      <h2 class="title">{{ props.identity }}</h2>
+    <div v-if="props.name && props.subTitle" class="titles">
+      <h2 class="title">{{ props.name }}</h2>
       <h4 class="sub-title">{{ props.subTitle }}</h4>
     </div>
 
-    <h2 v-else class="title">{{ props.identity }}</h2>
+    <h2 v-else class="title">{{ props.name ? props.name : props.identity }}</h2>
 
-    <button-base v-if="props.showAllBtn" class="btn-show-all" type="ghost">Show all</button-base>
+    <button-base
+      v-if="props.showAllBtn"
+      class="btn-show-all"
+      type="ghost"
+      @click="openGames(props.identity)"
+    >Show all</button-base>
 
     <button-arrows
       v-if="showArrowButtons"
@@ -40,6 +45,27 @@
       type: Array,
       default: () => [],
     },
+    name: {
+      type: String,
+      default: () => '',
+      required: false,
+    },
+    variant: {
+      type: String,
+      validator: (val:string) => [
+        'favorites',
+        'recently',
+        'hot',
+        'turbo',
+        'providers',
+        'new-relises',
+        'latest-winners',
+        'promotions',
+        'latest',
+        'benefits',
+      ].includes(val),
+      required: false,
+    },
     titleIcon: {
       type: String,
       validator: (val:string) => [
@@ -69,6 +95,8 @@
     },
   });
 
+  const router = useRouter();
+
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
   const nextDisabled = ref<boolean>(false);
@@ -76,9 +104,8 @@
 
   const scrollHandler = ():void => {
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
-
     prevDisabled.value = scrollLeft === 0;
-    nextDisabled.value = scrollWidth === scrollLeft + offsetWidth;
+    nextDisabled.value = scrollWidth === Math.floor(scrollLeft) + offsetWidth;
   };
 
   const clickAction = (goNext: boolean):void => {
@@ -89,12 +116,18 @@
     });
   };
 
+  const classes = computed(() => (props.variant ? `cards cards-${props.variant}` : 'cards'));
+
   onMounted(() => {
     if (props.showArrows) {
       scrollHandler();
       showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
     }
   });
+
+  const openGames = (identity: string):void => {
+    router.push(`/games?category=${identity}`);
+  };
 </script>
 
 <style lang="scss" src="./style.scss"/>

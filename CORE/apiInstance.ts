@@ -12,5 +12,6 @@ export const useFetchInstance = (url:string, options?:any):any => {
       Authorization: `Bearer ${token.value}`,
     };
   }
-  return $fetch(url, newOptions);
+
+ return $fetch(url, newOptions);
 };

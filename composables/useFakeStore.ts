@@ -31,7 +31,7 @@ export const useFakeStore = () => {
         actions: {
           primary: {
             title: 'Get bonus',
-            href: '#',
+            // href: '#',
           },
           // secondary: {
           //   title: 'Secondary',
@@ -74,7 +74,7 @@ export const useFakeStore = () => {
         actions: {
           primary: {
             title: 'Get bonus',
-            href: '#',
+            // href: '#',
           },
           // secondary: {
           //   title: 'Secondary',
@@ -112,7 +112,7 @@ export const useFakeStore = () => {
         actions: {
           primary: {
             title: 'Play now',
-            href: '#',
+            // href: '#',
           },
           // secondary: {
           //   title: 'Secondary',
@@ -155,7 +155,7 @@ export const useFakeStore = () => {
         actions: {
           primary: {
             title: 'Get bonus',
-            href: '#',
+            // href: '#',
           },
           // secondary: {
           //   title: 'Secondary',
@@ -163,36 +163,42 @@ export const useFakeStore = () => {
           // },
         },
       },
-
     ],
   };
+
   const cards = [
     {
-      variant: 'hot',
-      title: 'Hot games',
-      titleIcon: 'hot',
-      showAllBtn: true,
+      variant: 'recomended',
+      title: 'Recommended Games',
+      subTitle: 'The best games for you',
+      titleIcon: null,
+      showAllBtn: false,
       showArrows: true,
       items: [
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -205,23 +211,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -234,23 +245,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -263,23 +279,242 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
+          showFavorite: false,
+          title: 'Titan thunder',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-3.jpeg',
+          showFavorite: false,
+          title: 'Gems & Stones',
+          subTitle: 'Hacksaw Gaming',
+        },
+      ],
+    },
+    {
+      variant: 'hot',
+      identity: 'Hot',
+      id: 'hot',
+      titleIcon: 'hot',
+      showAllBtn: true,
+      showArrows: true,
+      games: [
+        {
+          src: '/cards/card-1.jpeg',
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
+          showFavorite: false,
+          title: 'Champions of Rome',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-2.jpeg',
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
+          showFavorite: false,
+          title: 'Titan thunder',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-3.jpeg',
+          showFavorite: false,
+          title: 'Gems & Stones',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-1.jpeg',
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
+          showFavorite: false,
+          title: 'Champions of Rome',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-2.jpeg',
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
+          showFavorite: false,
+          title: 'Titan thunder',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-3.jpeg',
+          showFavorite: false,
+          title: 'Gems & Stones',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-1.jpeg',
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
+          showFavorite: false,
+          title: 'Champions of Rome',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-2.jpeg',
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
+          showFavorite: false,
+          title: 'Titan thunder',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-3.jpeg',
+          showFavorite: false,
+          title: 'Gems & Stones',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-1.jpeg',
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
+          showFavorite: false,
+          title: 'Champions of Rome',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-2.jpeg',
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
+          showFavorite: false,
+          title: 'Titan thunder',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-3.jpeg',
+          showFavorite: false,
+          title: 'Gems & Stones',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-1.jpeg',
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
+          showFavorite: false,
+          title: 'Champions of Rome',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-2.jpeg',
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
+          showFavorite: false,
+          title: 'Titan thunder',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-3.jpeg',
+          showFavorite: false,
+          title: 'Gems & Stones',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-1.jpeg',
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
+          showFavorite: false,
+          title: 'Champions of Rome',
+          subTitle: 'Hacksaw Gaming',
+        },
+        {
+          src: '/cards/card-2.jpeg',
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -294,30 +529,36 @@ export const useFakeStore = () => {
     },
     {
       variant: 'turbo',
-      title: 'Turbogames',
+      identity: 'Turbogames',
       titleIcon: 'turbo-games',
+      id: 'turbo',
       showAllBtn: true,
       showArrows: true,
-      items: [
+      games: [
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -330,23 +571,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -359,23 +605,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -388,23 +639,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -419,11 +675,12 @@ export const useFakeStore = () => {
     },
     {
       variant: 'recently',
-      title: 'Recently played',
+      identity: 'Recently played',
       titleIcon: 'ui-history',
+      id: 'recently',
       showAllBtn: false,
       showArrows: false,
-      items: [
+      games: [
         {
           src: '/cards/card-1.jpeg',
           title: 'Spartan King',
@@ -444,11 +701,12 @@ export const useFakeStore = () => {
     },
     {
       variant: 'favorites',
-      title: 'Favorites',
+      identity: 'Favorites',
+      id: 'favorites',
       titleIcon: 'ui-heart',
       showAllBtn: true,
       showArrows: false,
-      items: [
+      games: [
         {
           src: '/cards/card-3.jpeg',
           title: 'Raptor Doublemax',
@@ -469,30 +727,36 @@ export const useFakeStore = () => {
     },
     {
       variant: 'new-relises',
-      title: 'New Relises',
+      identity: 'New Relises',
+      id: 'new-relises',
       titleIcon: 'bonuses',
       showAllBtn: true,
       showArrows: true,
-      items: [
+      games: [
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -505,23 +769,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -534,23 +803,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -563,23 +837,28 @@ export const useFakeStore = () => {
         },
         {
           src: '/cards/card-1.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }, {
-            variant: 'card-new',
-            title: 'new',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+            {
+              variant: 'card-new',
+              title: 'new',
+            },
+          ],
           showFavorite: false,
           title: 'Champions of Rome',
           subTitle: 'Hacksaw Gaming',
         },
         {
           src: '/cards/card-2.jpeg',
-          bages: [{
-            variant: 'card-hot',
-            title: 'hot',
-          }],
+          bages: [
+            {
+              variant: 'card-hot',
+              title: 'hot',
+            },
+          ],
           showFavorite: false,
           title: 'Titan thunder',
           subTitle: 'Hacksaw Gaming',
@@ -594,184 +873,298 @@ export const useFakeStore = () => {
     },
     {
       variant: 'providers',
-      title: 'Providers',
+      identity: 'Providers',
       titleIcon: 'turbo-games',
+      id: 'providers',
       showAllBtn: true,
       showArrows: true,
-      items: [
+      games: [
         {
-          src: '/providers/1.png',
+          src: '/providers/1.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '8a3f419d-c86b-4a94-978f-dfff38bfcd79',
         },
         {
-          src: '/providers/2.png',
+          src: '/providers/2.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '99803920-5477-4e28-a71a-883b4820a1db',
         },
         {
-          src: '/providers/3.png',
+          src: '/providers/3.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: 'b0f47222-bafd-4257-9539-b91b67b240d4',
         },
         {
-          src: '/providers/4.png',
+          src: '/providers/4.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '26cb753b-1a8a-4e60-bb15-ce3ed4803a82',
         },
         {
-          src: '/providers/5.png',
+          src: '/providers/5.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: 'efa34214-713d-4cdd-94a4-37ec197b9880',
         },
         {
-          src: '/providers/1.png',
+          src: '/providers/6.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '9f9736ca-32f1-47cd-8c22-0ab8d8d4b23b',
         },
         {
-          src: '/providers/2.png',
+          src: '/providers/7.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: 'ba1e954b-4891-4fef-81ac-dc099fa4d55b',
         },
         {
-          src: '/providers/3.png',
+          src: '/providers/8.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: 'aec19337-564b-443b-b088-50bdb030478f',
         },
         {
-          src: '/providers/4.png',
+          src: '/providers/9.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '80050128-dd71-4c53-a758-d3e929ff0806',
         },
         {
-          src: '/providers/5.png',
+          src: '/providers/10.svg',
           showPlayBtn: false,
           showTryBtn: false,
+          providerId: '5a21348d-e46b-459d-a353-13cc26abf9a8',
+        },
+        {
+          src: '/providers/11.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+          providerId: 'd0b6cb09-7836-4426-bb72-1bd346ad81da',
+        },
+        // {
+        //   src: '/providers/12.svg',
+        //   showPlayBtn: false,
+        //   showTryBtn: false,
+        // },
+        {
+          src: '/providers/13.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+          providerId: '0a4528f0-6ed4-4437-90fa-540685ad0d62',
+        },
+        {
+          src: '/providers/14.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+          providerId: '87d8542f-7ef1-4b01-ad5d-76319c63edf5',
+        },
+        // {
+        //   src: '/providers/15.svg',
+        //   showPlayBtn: false,
+        //   showTryBtn: false,
+        // },
+        {
+          src: '/providers/16.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+          providerId: '89e46cc1-56bc-47cd-abf1-e234660c9146',
+        },
+        // {
+        //   src: '/providers/17.svg',
+        //   showPlayBtn: false,
+        //   showTryBtn: false,
+        // },
+        // {
+        //   src: '/providers/18.svg',
+        //   showPlayBtn: false,
+        //   showTryBtn: false,
+        // },
+        {
+          src: '/providers/19.svg',
+          showPlayBtn: false,
+          showTryBtn: false,
+          providerId: '8ca50b29-184f-4f06-a0a9-edd1d2c93863',
         },
       ],
     },
     {
       variant: 'latest-winners',
-      title: 'Latest winners',
+      identity: 'Latest winners',
+      id: 'latest-winners',
       titleIcon: 'bonuses',
       showAllBtn: false,
       showArrows: false,
-      items: [
+      games: [
         {
-          src: '/cards/card-1.jpeg',
-          title: 'Juanita',
-          subTitle: 'Sweet Bonanza Xmas',
-          items: ['A$', '79 125'],
+          src: '/latest-winners/book_of_dead.png',
+          title: 'Benny',
+          subTitle: 'Book Of Dead',
+          items: ['0.0052', 'BTC'],
+          href: '/games/9ccf90c5-a39c-45e4-b7f5-f43a604728b5',
         },
         {
-          src: '/cards/card-2.jpeg',
-          title: 'Mateusz',
-          subTitle: 'Aloha King Elvis',
-          items: ['A$', '79 125'],
+          src: '/latest-winners/big_bass_bonanza.png',
+          title: 'Lukas',
+          subTitle: 'Book Of Dead',
+          items: ['0.0005', 'BTC'],
+          href: '/games/9ccf90c5-a39c-45e4-b7f5-f43a604728b5',
         },
         {
-          src: '/cards/card-3.jpeg',
-          title: 'Lucky-mt',
-          subTitle: 'Book Of Clovers Reloaded',
-          items: ['A$', '79 125'],
+          src: '/latest-winners/fruit_zen.png',
+          title: 'Xman',
+          subTitle: 'Bigger Bass Bonanza',
+          items: ['0.0077', 'BTC'],
+          href: '/games/d7e2f16a-bb66-4090-a681-e68ef70b46a0',
         },
         {
-          src: '/cards/card-1.jpeg',
-          title: 'Juanita',
-          subTitle: 'Sweet Bonanza Xmas',
-          items: ['A$', '79 125'],
+          src: '/latest-winners/book_of_dead.png',
+          title: 'Melly',
+          subTitle: 'Gold Vein',
+          items: ['0.0087', 'BTC'],
+          href: '/games/0bbd1ad7-a6f3-47d0-87f2-af2188550700',
         },
         {
-          src: '/cards/card-2.jpeg',
-          title: 'Mateusz',
-          subTitle: 'Aloha King Elvis',
-          items: ['A$', '79 125'],
+          src: '/latest-winners/sizzling_eggs.png',
+          title: 'Neil',
+          subTitle: 'The Pantheon',
+          items: ['0.0001', 'BTC'],
+          href: '/games/a70c0b18-8d9d-44d6-85d6-afbbab3555f5',
         },
         {
-          src: '/cards/card-3.jpeg',
-          title: 'Lucky-mt',
-          subTitle: 'Book Of Clovers Reloaded',
-          items: ['A$', '79 125'],
+          src: '/latest-winners/vegas_vip_gold.png',
+          title: 'giselle',
+          subTitle: 'Fruit Zen',
+          items: ['0.0001', 'BTC'],
+          href: '/games/c1d0159a-18f8-44a7-b9be-183c0ac528a5',
         },
         {
-          src: '/cards/card-1.jpeg',
-          title: 'Juanita',
-          subTitle: 'Sweet Bonanza Xmas',
-          items: ['A$', '79 125'],
+          src: '/latest-winners/gold_diggers.png',
+          title: 'Saichon',
+          subTitle: 'Aztec Pyramids',
+          items: ['0.0001', 'BTC'],
+          href: '/games/3bf8e36f-1c85-4a28-98e8-c83a5799c575',
         },
         {
-          src: '/cards/card-2.jpeg',
-          title: 'Mateusz',
-          subTitle: 'Aloha King Elvis',
-          items: ['A$', '79 125'],
-        },
-        {
-          src: '/cards/card-3.jpeg',
-          title: 'Lucky-mt',
-          subTitle: 'Book Of Clovers Reloaded',
-          items: ['A$', '79 125'],
+          src: '/latest-winners/gold_diggers.png',
+          title: 'Saichon',
+          subTitle: 'Champions of Rome',
+          items: ['0.0001', 'BTC'],
+          href: '/games/83579a55-f8d7-4ada-b42f-9c17b0e09501',
         },
       ],
     },
     {
       variant: 'promotions',
-      title: 'Slotsbet promotions',
+      identity: 'Slotsbet promotions',
       titleIcon: 'bonuses',
+      id: 'promotions',
       showAllBtn: false,
       showArrows: false,
-      items: [
+      games: [
         {
           src: '/promotions/1.png',
           title: 'Welcome package',
-          subTitle: '500 EUR + 300 FS',
+          subTitle: '5 BTC + 300 FS',
+          href: '/welcome-package',
         },
         {
           src: '/promotions/2.png',
           title: 'Wednesday bonus',
           subTitle: '100 free spins',
+          href: '/wednesday-free-spins',
         },
         {
           src: '/promotions/3.png',
           title: 'Just play and get',
           subTitle: '10% Weekly Cashback',
+          href: '/weekly-cashback',
         },
         {
           src: '/promotions/4.png',
           title: '30% Reload bonus',
           subTitle: 'every week',
+          href: '/monday-reload-bonus',
         },
-
+      ],
+    },
+    {
+      variant: 'benefits',
+      identity: 'Slotsbet benefits',
+      titleIcon: 'bonuses',
+      showAllBtn: false,
+      showArrows: false,
+      id: 'benefits',
+      games: [
+        {
+          src: '/benefits/1.png',
+          showFavorite: false,
+          title: 'Fast <br> withdrawals',
+        },
+        {
+          src: '/benefits/2.png',
+          showFavorite: false,
+          title: '24/7 Live Chat <br> Support',
+        },
+        {
+          src: '/benefits/3.png',
+          showFavorite: false,
+          title: 'Provably fair slots <br> & games',
+        },
+        {
+          src: '/benefits/4.png',
+          showFavorite: false,
+          title: 'Privacy <br> and security',
+        },
       ],
     },
   ];
+
   const topMenuItems = [
     {
       title: 'Slots',
       icon: 'slots',
+      href: '/games?category=slots',
     },
     {
-      title: 'Recently played',
+      title: 'Live Casino',
       icon: 'live-casino',
+      href: '/games?category=live',
     },
     {
       title: 'Table Games',
       icon: 'table-games',
+      href: '/games?category=table',
     },
     {
       title: 'Turbogames',
       icon: 'turbo-games',
+      href: '/games?category=turbogames',
       list: [
-        'turbogames/1.png',
-        'turbogames/2.png',
-        'turbogames/2.png',
+        {
+          src: 'turbogames/crash_x.jpg',
+          href: '/games/80a60e5b-5860-426b-8ad7-5f32c3c512b1',
+        },
+        {
+          src: 'turbogames/dice.jpeg',
+          href: '/games/f611bf81-481f-4c0d-8c4e-37c553e23936',
+        },
+        {
+          src: 'turbogames/mines.jpeg',
+          href: '/games/f9d6c988-fb51-421e-ac34-0a8876cb3066',
+        },
       ],
     },
     {
       title: 'Sport betting',
       icon: 'sport-book',
+      href: '/betting',
     },
   ];
+
   const centerMenuItems = [
     {
       title: 'Bonuses',
@@ -779,56 +1172,66 @@ export const useFakeStore = () => {
       items: [
         {
           title: 'Welcome package',
+          href: '/welcome-package',
         },
         {
-          title: 'Wednesday bonus',
+          title: 'Monday Reload Bonus',
+          href: '/monday-reload-bonus',
         },
         {
-          title: 'Reload bonus',
+          title: 'Wednesday Free Spins',
+          href: '/wednesday-free-spins',
+        },
+        {
+          title: 'Weekly Cashback',
+          href: '/weekly-cashback',
         },
       ],
     },
-    {
-      title: 'VIP  Program',
-      icon: 'vip',
-      bage: {
-        type: 'new',
-        text: 'new',
-      },
-    },
-    {
-      title: 'Tournament',
-      icon: 'tournament',
-    },
-    {
-      title: 'Lotteries',
-      icon: 'lottery',
-    },
-    {
-      title: 'Ouests',
-      icon: 'quest',
-    },
-    {
-      title: 'Shop',
-      icon: 'shop',
-    },
+    // {
+    //   title: 'VIP  Program',
+    //   icon: 'vip',
+    //   bage: {
+    //     type: 'new',
+    //     text: 'new',
+    //   },
+    // },
+    // {
+    //   title: 'Tournament',
+    //   icon: 'tournament',
+    // },
+    // {
+    //   title: 'Lotteries',
+    //   icon: 'lottery',
+    // },
+    // {
+    //   title: 'Ouests',
+    //   icon: 'quest',
+    // },
+    // {
+    //   title: 'Shop',
+    //   icon: 'shop',
+    // },
   ];
+
   const bottomMenuItems = [
+    // {
+    //   title: 'Favorites',
+    //   icon: 'ui-heart',
+    //   count: 2,
+    // },
+    // {
+    //   title: 'Recently played',
+    //   icon: 'ui-history',
+    //   count: 10,
+    // },
     {
-      title: 'Favorites',
-      icon: 'ui-heart',
-      count: 2,
-    },
-    {
-      title: 'Recently played',
-      icon: 'ui-history',
-      count: 10,
-    },
-    {
-      title: 'Live Support',
+      title: 'Support',
       icon: 'live-support',
+      href: '/contact',
     },
   ];
+
   const subMenuItems = [
     {
       title: 'T&C',
@@ -852,14 +1255,30 @@ export const useFakeStore = () => {
       title: 'Responsible Gaming',
     },
   ];
+
   const staticMenuItems = [
-    'T&C',
-    'Bonus terms',
-    'Payment methods',
-    'F.A.Q',
-    'Privacy Policy',
-    'Responsible Gaming',
+    {
+      title: 'T&C',
+      href: '/terms-and-conditions',
+    },
+    {
+      title: 'Bonus terms',
+      href: '/bonus-terms',
+    },
+    {
+      title: 'F.A.Q',
+      href: '/questions',
+    },
+    {
+      title: 'Privacy Policy',
+      href: '/privacy-policy',
+    },
+    {
+      title: 'Responsible Gaming',
+      href: '/responsible-gaming',
+    },
   ];
+
   const catNavItems = [
     {
       title: 'Casino',
@@ -903,45 +1322,50 @@ export const useFakeStore = () => {
       href: '#',
     },
   ];
+
   const togglerBtnItems = [
     {
       icon: 'cherry',
       title: 'Casino',
-      isActive: true,
+      url: '/main',
     },
     {
       icon: 'sport',
       title: 'Betting',
+      url: '/betting',
     },
   ];
+
   const items = {
-    notifications: [
-      {
-        src: '/svg/colored/icn-notification.svg',
-        title: 'Please, verify your email due to security reasons',
-        date: 'May 14, 2019 • 19:00',
-        isUnread: true,
-      },
-      {
-        src: '/svg/colored/money.svg',
-        title: 'Please, verify your email due to security reasons',
-        date: 'May 14, 2019 • 19:00',
-        isUnread: true,
-      },
-      {
-        src: '/svg/colored/transaction-fail.svg',
-        title: 'Please, verify your email due to security reasons',
-        date: 'May 14, 2019 • 19:00',
-        isUnread: true,
-      },
-      {
-        src: '/svg/colored/transaction-fail.svg',
-        title: 'Please, verify your email due to security reasons',
-        date: 'May 14, 2019 • 19:00',
-        isUnread: false,
-      },
-    ],
+    notifications: [],
+    // notifications: [
+    //   {
+    //     src: '/svg/colored/icn-notification.svg',
+    //     title: 'Please, verify your email due to security reasons',
+    //     date: 'May 14, 2019 • 19:00',
+    //     isUnread: true,
+    //   },
+    //   {
+    //     src: '/svg/colored/money.svg',
+    //     title: 'Please, verify your email due to security reasons',
+    //     date: 'May 14, 2019 • 19:00',
+    //     isUnread: true,
+    //   },
+    //   {
+    //     src: '/svg/colored/transaction-fail.svg',
+    //     title: 'Please, verify your email due to security reasons',
+    //     date: 'May 14, 2019 • 19:00',
+    //     isUnread: true,
+    //   },
+    //   {
+    //     src: '/svg/colored/transaction-fail.svg',
+    //     title: 'Please, verify your email due to security reasons',
+    //     date: 'May 14, 2019 • 19:00',
+    //     isUnread: false,
+    //   },
+    // ],
   };
+
   const selects = {
     country: [
       {
@@ -955,7 +1379,7 @@ export const useFakeStore = () => {
         mask: '/img/flags/us.svg',
       },
     ],
-      currency: [
+    currency: [
       {
         title: 'USD',
         value: 'USD',
@@ -973,7 +1397,7 @@ export const useFakeStore = () => {
         value: 'PLN',
       },
     ],
-      timeZones: [
+    timeZones: [
       {
         title: '(GTM +00:000) UTC',
         value: '(GTM +00:000) UTC',
@@ -991,7 +1415,7 @@ export const useFakeStore = () => {
         value: '(GTM +00:000) UTC',
       },
     ],
-      notification: [
+    notification: [
       {
         title: 'item 1',
         value: 'item 1',
@@ -1006,6 +1430,7 @@ export const useFakeStore = () => {
       },
     ],
   };
+
   const menu = {
     profile: [
       {
@@ -1019,48 +1444,826 @@ export const useFakeStore = () => {
       {
         title: 'Bonuses',
         href: '/profile/bonuses',
-        count: 12,
+        // count: 12,
       },
       {
         title: 'Notifications',
         href: '/profile/notifications',
-        count: 999,
+        // count: 999,
       },
-      {
-        title: 'Security & Verification',
-        href: '/profile/security',
-      },
+      // {
+      //   title: 'Security & Verification',
+      //   href: '/profile/security',
+      // },
       {
         title: 'History',
         href: '/profile/history',
       },
+      // {
+      //   title: 'Limits',
+      //   href: '/profile/limits',
+      // },
+    ],
+    faq: [
       {
-        title: 'Limits',
-        href: '/profile/limits',
+        title: 'Most popular',
+        href: '/questions/most-popular',
+        icon: 'hot',
+      },
+      {
+        title: 'Account',
+        href: '/questions/account',
+        icon: 'ui-user',
+      },
+      {
+        title: 'Deposits & Withdrawals',
+        href: '/questions/deposits-and-withdrawals',
+        icon: 'ui-wallet',
+      },
+      {
+        title: 'Bonuses',
+        href: '/questions/bonuses',
+        icon: 'bonuses',
+      },
+      {
+        title: 'Games',
+        href: '/questions/games',
+        icon: 'ui-gamepad',
+      },
+      {
+        title: 'Security',
+        href: '/questions/security',
+        icon: 'security',
+      },
+      {
+        title: 'Responsible Gaming',
+        href: '/questions/responsible-gaming',
+        icon: 'ui-18',
       },
     ],
   };
 
-  const filter = (cardsArray:any[], key:string):any[] => cardsArray.filter((item:any) => (item.variant === key))[0];
+  const payments = [
+    {
+      title: 'Interac E-transfer',
+      value: 'interac',
+      mask: '/svg/payment-systems/interac.svg',
+      balance: { value: 79.4, title: 'EUR' },
+      withdraw: { value: 54.73, title: 'EUR' },
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'visa',
+      value: 'visa',
+      mask: '/svg/payment-systems/visa.svg',
+      balance: { value: 79.4, title: 'EUR' },
+      useForDeposit: true,
+      useForWithDraw: false,
+    },
+    {
+      title: 'MiFinity',
+      value: 'mifinity',
+      mask: '/svg/payment-systems/mifinity.svg',
+      balance: { value: 79.4, title: 'EUR' },
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'paypal',
+      value: 'paypal',
+      mask: '/svg/payment-systems/paypal.svg',
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'CashToCode',
+      value: 'cashtocode',
+      mask: '/svg/payment-systems/3.svg',
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'USDT ERC20',
+      value: 'erc20',
+      mask: '/svg/payment-systems/erc20.svg',
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'skrill',
+      value: 'skrill',
+      mask: '/svg/payment-systems/skrill.svg',
+      useForDeposit: true,
+      useForWithDraw: false,
+    },
+    {
+      title: 'sofort',
+      value: 'sofort',
+      mask: '/svg/payment-systems/sofort.svg',
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'volt',
+      value: 'volt',
+      mask: '/svg/payment-systems/volt.svg',
+      balance: { value: 79.4, title: 'EUR' },
+      withdraw: { value: 54.73, title: 'EUR' },
+      useForDeposit: true,
+      useForWithDraw: true,
+    },
+    {
+      title: 'Bank Transfer',
+      value: 'etransfer',
+      mask: '/svg/payment-systems/e-transfer.svg',
+      balance: { value: 100.4, title: 'EUR' },
+      withdraw: { value: 77.73, title: 'EUR' },
+      useForDeposit: false,
+      useForWithDraw: true,
+    },
+    {
+      title: 'CoinsPaid',
+      value: 'coinspaid',
+      mask: '/svg/payment-systems/coinspaid.svg',
+      useForDeposit: false,
+      useForWithDraw: true,
+    },
+  ];
 
-  const hotCards = filter(cards, 'hot');
-  const turboCards = filter(cards, 'turbo');
-  const favoritesCards = filter(cards, 'favorites');
-  const recentlyCards = filter(cards, 'recently');
-  const providersCards = filter(cards, 'providers');
-  const latestWinnersCards = filter(cards, 'latest-winners');
-  const promotionsCards = filter(cards, 'promotions');
-  const newRelisesCards = filter(cards, 'new-relises');
+  const betsHistoryTb = {
+    columns: ['Game', 'Bet', 'Result', 'Date'],
+    rows: [
+      {
+        key: 'casino',
+        game: 'Game name',
+        bet: '0.00000009 mBTC',
+        result: '- 0.00000009 mBTC',
+        date: '15.04.2022, 15:21',
+      },
+      {
+        key: 'betting',
+        game: 'Game name',
+        bet: '20.00 $',
+        result: '- 20.00 $',
+        date: '15.04.2022, 15:21',
+      },
+      {
+        key: 'betting',
+        game: 'Game name',
+        bet: '50.00 $',
+        result: '-50.00 $',
+        date: '15.04.2022, 15:21',
+      },
+      {
+        key: 'casino',
+        game: 'Game name',
+        bet: '0.00000009 mBTC',
+        result: '- 0.00000009 mBTC',
+        date: '15.04.2022, 15:21',
+      },
+      {
+        key: 'casino',
+        game: 'Game name',
+        bet: '0.00000009 mBTC',
+        result: '- 0.00000009 mBTC',
+        date: '15.04.2022, 15:21',
+      },
+    ],
+  };
+
+  const bonusesHistoryTb = {
+    columns: ['Title', 'Status', 'Amount', 'Wager', 'Date', 'Valid until'],
+    rows: [
+      {
+        title: 'Special 1st deposit bonus 100% + 100 FS',
+        status: 'Active',
+        amount: '0.00000009 mBTC',
+        wager: '84%',
+        date: '15.04.2022, 15:21',
+        validUntil: '15.04.2022, 15:21',
+      },
+      {
+        title: 'Special 1st deposit bonus 100% + 100 FS',
+        status: 'Active',
+        amount: '0.00000009 mBTC',
+        wager: '84%',
+        date: '15.04.2022, 15:21',
+        validUntil: '15.04.2022, 15:21',
+      },
+      {
+        title: 'Special 1st deposit bonus 100% + 100 FS',
+        status: 'Active',
+        amount: '0.00000009 mBTC',
+        wager: '84%',
+        date: '15.04.2022, 15:21',
+        validUntil: '15.04.2022, 15:21',
+      },
+      {
+        title: 'Special 1st deposit bonus 100% + 100 FS',
+        status: 'Active',
+        amount: '0.00000009 mBTC',
+        wager: '84%',
+        date: '15.04.2022, 15:21',
+        validUntil: '15.04.2022, 15:21',
+      },
+      {
+        title: 'Special 1st deposit bonus 100% + 100 FS',
+        status: 'Active',
+        amount: '0.00000009 mBTC',
+        wager: '84%',
+        date: '15.04.2022, 15:21',
+        validUntil: '15.04.2022, 15:21',
+      },
+    ],
+  };
+
+  const sessionHistoryTb = {
+    columns: [
+      '&nbsp;',
+      'Country',
+      'User Agent',
+      'Created At',
+      'Status',
+      '&nbsp;',
+    ],
+    rows: [
+      {
+        device: 'desktop',
+        country: 'US',
+        userAgent: 'Chrome on Mac OS 10',
+        createdAt: '15.04.2022, 15:21',
+        status: { variant: 'current', text: 'Current' },
+      },
+      {
+        device: 'mobile',
+        country: 'US',
+        userAgent: 'Chrome on Mac OS 10',
+        createdAt: '15.04.2022, 15:21',
+        status: { variant: 'current', text: 'Current' },
+      },
+      {
+        device: 'mobile',
+        country: 'US',
+        userAgent: 'Chrome on Mac OS 10',
+        createdAt: '15.04.2022, 15:21',
+        status: { variant: 'closed', text: 'Closed' },
+      },
+    ],
+  };
+
+  const transactionsHistoryTb = {
+    columns: ['Date', 'Type', 'Payment Method', 'Status', 'Sum'],
+    rows: [
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Withdrawal',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'pending',
+          title: 'Pending',
+        },
+        sum: '0.00000009 mBTC',
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Deposit',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'success',
+          title: 'Success',
+        },
+        sum: '0.00000009 mBTC',
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Withdrawal',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'failed',
+          title: 'Failed',
+        },
+        sum: '0.00000009 mBTC',
+        tooltip: {
+          title: 'Payment Rejected',
+          text: 'A detailed description of the reason for the rejection has been sent to your email',
+        },
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Deposit',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'unfinished',
+          title: 'Unfinished',
+        },
+        sum: '0.00000009 mBTC',
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Deposit',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'canceled',
+          title: 'Cancelled',
+        },
+        sum: '0.00000009 mBTC',
+        tooltip: {
+          title: 'Payment Rejected',
+          text: 'A detailed description of the reason for the rejection has been sent to your email',
+        },
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Deposit',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'success',
+          title: 'Success',
+        },
+        sum: '0.00000009 mBTC',
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Withdrawal',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'failed',
+          title: 'Failed',
+        },
+        sum: '0.00000009 mBTC',
+        tooltip: {
+          title: 'Payment Rejected',
+          text: 'A detailed description of the reason for the rejection has been sent to your email',
+        },
+      },
+      {
+        date: '15.04.2022, 15:21',
+        type: 'Deposit',
+        paymentMethod: 'Skrill',
+        status: {
+          type: 'unfinished',
+          title: 'Unfinished',
+        },
+        sum: '0.00000009 mBTC',
+      },
+    ],
+  };
+
+  const accordeons = {
+    account: [
+      {
+        title: 'How can I create an account in the Slotsbet?',
+        content: [
+          '<p>All you have to do to get started is click the “Registration” button and fill in all the fields. Then you get a verification email with a link.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'Can I have more than one account?',
+        content: ['<p>No. All details on Terms & Conditions.</p>'],
+        isOpen: false,
+      },
+      {
+        title: 'Can I change my registered email address?',
+        content: ["<p>Sorry, but that's impossible.</p>"],
+        isOpen: false,
+      },
+      {
+        title: 'How do I add another currency to my account?',
+        content: [
+          '<p>Go to your account and choose "Wallet". Click on "+" and choose the currency that you prefer.</p>',
+        ],
+        isOpen: false,
+      },
+    ],
+    mostPopular: [
+      {
+        title: 'Are the games fair?',
+        content: ['<p>All games on Slotsbet are 100% fair.</p>'],
+        isOpen: false,
+      },
+      {
+        title: 'What should I do if I have forgotten my password?',
+        content: [
+          '<p>You can easily create a new password. Just click the Forgot Password link in the Sign in form. Then we will send an email that will direct you to a new link. There you will create a new password and log in to your account.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'Can I close my account?',
+        content: [
+          '<p>Of course. Please contact Customer Support in online chat and give a brief explanation to why you want to close your account.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: "I didn't receive a confirmation email. What should I do?",
+        content: [
+          '<p>Check your promotions, spam or junk folder and any tabs in your inbox. If there you did not find the letter either, please contact support via online chat or email.</p>',
+        ],
+        isOpen: false,
+      },
+    ],
+    depositsAndWithdrawals: [
+      {
+        title: 'What currencies does Slotsbet accept?',
+        content: ['<p>Slotsbet accepts BTC, ETH, LTC, USDT.</p>'],
+        isOpen: false,
+      },
+      {
+        title: 'How can I choose a different currency?',
+        content: ['<p>Choose required currency and tap on deposit.</p>'],
+        isOpen: false,
+      },
+      {
+        title:
+          'Do I need to pay any service fees for deposits and withdrawals?',
+        content: [
+          '<p> It depends on the currency and the method of payment you plan to use. Some of them are free, others might charge a small fee.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title:
+          "What's the minimum and maximum amount of money I can deposit and withdraw?",
+        content: [
+          "<p>The minimum deposit and withdrawal amount are 0.00027 BTC and it's equivalent. The maximum deposit and withdrawal depend on your payment method.</p>",
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'How soon can I receive my withdrawal?',
+        content: [
+          '<p>Usually you receive your money immediately, but it depends on the payment method.</p>',
+        ],
+        isOpen: false,
+      },
+    ],
+    bonuses: [
+      {
+        title: 'What is a bonus?',
+        content: [
+          "<p>Bonuses are additional money added to your balance. It gives you an advantage and increases your chances of winning bigger amounts. But you should remember that the bonus size depends on the promotional offer's terms. So don't forget to check out our promotions and mindfully read the offer's terms.</p>",
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'How can I find out what the bonus wager is?',
+        content: [
+          '<p>Just go to your personal profile. There you can find all the information about active bonuses. And if you need any help you can always text to our support.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'How can I get my welcome bonus?',
+        content: [
+          '<p>The bonus will be automatically credited as soon as you make the deposit.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'How many times do I need to wager my bonus?',
+        content: [
+          '<p> All deposit-related bonuses have a x45 wagering requirement. For more information, please visit our <a href="/bonus-terms">Bonus Terms Page.</a></p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title:
+          "I got my bonus, but the required bonus wager isn't decreasing. Why?",
+        content: [
+          '<p>Different casino games contribute differently to the wagering requirement. <a href="/bonus-terms">On the Bonus Terms Page</a> you can read more information about bonus wager.</p>',
+        ],
+        isOpen: false,
+      },
+    ],
+    games: [
+      {
+        title: 'The game stalls in the middle of a round. What should I do?',
+        content: [
+          '<p>We store every single spin you make in our database in order to help with these problems. If you feel that an error has occurred during your game play, then please contact our support team.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'I can’t open a game. What should I do?',
+        content: [
+          '<p>We recommend relaunching the webpage, browser and/or device. If none of these helps, please contact our support team.</p>',
+        ],
+        isOpen: false,
+      },
+    ],
+    security: [
+      {
+        title: 'Am I required to upload documents and why?',
+        content: [
+          '<p>You can use the website, play, and win without documents. But if you want to withdrawal your winnings, you will need to upload documents to verify your identity. We have to follow the standards set out by the Curacao licensing authority. This means that, in certain situations, we may ask our players to provide additional supporting documentation.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'Сan I edit the data in my profile?',
+        content: [
+          '<p>Yes, you can edit your profile information. But some fields are not editable. Please, contact our support team to change the data.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'Is my personal information secure in the Slotsbet?',
+        content: [
+          '<p>Please be confident that your documents and other personal data will be protected.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title:
+          ' Am I required to verify my account in order to make a deposit or a withdrawal?',
+        content: [
+          '<p> Yes, you need to verify your account by adding personal documents for withdrawals.</p>',
+        ],
+        isOpen: false,
+      },
+      {
+        title: 'How should I send my documentation?',
+        content: [
+          '<p>Go to the “Security & Verification” tab in your Profile. There you will find all the necessary documents. Upload documents in JPG or PNG (max size 2MB).</p>',
+        ],
+        isOpen: false,
+      },
+    ],
+    responsibleGaming: [
+      {
+        title: 'Can I close my account for a while?',
+        content: [
+          '<p>Yes. If you want to close your account for a while (6-12 months), choose self-exclusion. Also, you can set a cooling-off period. You won’t be able to make deposits and play during the specified period (from 1 day to 6 months), also you will be excluded from all advertising offers. Go to the “Responsible Gambling” tab on your Profile.</p>',
+        ],
+      },
+    ],
+  };
+
+  const categories = [
+    {
+      title: {
+        icon: 'cherry',
+        text: 'Casino',
+      },
+      src: '/categories/1.png',
+      subTitle: 'Enjoy more than 3000+ provably fair slots & games',
+      action: {
+        title: 'Go to Casino',
+        href: '/main',
+      },
+    },
+    {
+      title: {
+        icon: 'sport',
+        text: 'Betting',
+      },
+      src: '/categories/2.png',
+      subTitle: 'The most competitive odds and markets. Bet and win right now',
+      action: {
+        title: 'Go to Betting',
+        href: '/betting',
+      },
+    },
+  ];
+
+  const userProfileBonusesTabs = [
+    {
+      title: 'My bonuses',
+      id: 'my-bonuses',
+      isActive: true,
+    },
+    // {
+    //   title: 'Bonus Code',
+    //   id: 'bonus-code',
+    // },
+  ];
+
+  const userProfileHistoryTabs = [
+    // {
+    //   title: 'Sessions history',
+    //   id: 'sessions-history',
+    // },
+    {
+      title: 'Bonuses history',
+      id: 'bonuses-history',
+      isActive: true,
+    },
+    {
+      title: 'Bets history',
+      id: 'bets-history',
+    },
+    {
+      title: 'Transactions history',
+      id: 'transactions-history',
+      // isActive: true,
+    },
+  ];
+
+  const promotion = {
+    title: 'Welcome package. Up to 5 BTC + 300 Free Spins',
+    subTitle: 'Welcome package is one of the most generous Slotsbet offers! It\'s a bonus bundle for your 4 initial deposits after the registration!',
+    welcomePackage: {
+      title: 'Welcome package',
+      items: [
+        {
+          title: 'Get your 100% bonus up to 1.5 BTC and 100 FS.',
+          subTitle: '1st deposit bonus',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/first-deposit-bonus',
+            },
+          },
+        },
+        {
+          title: 'Grab your 75% bonus up to 1 BTC and 50 FS.',
+          subTitle: '2nd deposit bonus',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/second-deposit-bonus',
+            },
+          },
+        },
+        {
+          title: 'Take your 50% bonus up to 1 BTC and 50 FS.',
+          subTitle: '3rd deposit bonus',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/third-deposit-bonus',
+            },
+          },
+        },
+        {
+          title: 'Play more with 100% bonus up to 1.5 BTC and 100 FS.',
+          subTitle: '4th deposit bonus',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/fourth-deposit-bonus',
+            },
+          },
+        },
+      ],
+    },
+    weeklyBonuses: {
+      title: 'Weekly bonuses',
+      items: [
+        {
+          title: '30% bonus of up to 0.0035 BTC on Monday',
+          subTitle: 'Monday Reload Bonus',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/monday-reload-bonus',
+            },
+          },
+        },
+        {
+          title: 'Get 100 Free Spins every Wednesday',
+          subTitle: 'Wednesday Free Spins',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/wednesday-free-spins',
+            },
+          },
+        },
+        {
+          title: 'Take your 10% cashback every Friday.',
+          subTitle: 'Weekly Cashback',
+          src: '/promo/drone-v2.png',
+          actions: {
+            primary: 'Get bonus',
+            secondary: {
+              title: 'More info',
+              href: '/weekly-cashback',
+            },
+          },
+        },
+      ],
+    },
+    howToGet: {
+      title: 'Hot to get your bonuses:',
+      src: '/promo/nft_gift.png',
+      items: [
+        'Make a successful deposit',
+        'Go to Bonuses tab and activate your Free spin',
+        'Enjoy the great gaming experience!',
+      ],
+    },
+  };
+
+  const bonusPage = {
+    src: '/promo/drone-v2.png',
+    title: 'Weekly Cashback',
+    subTitle: 'Take your 10% cashback every Friday.',
+    description: 'Every Friday you can get a portion of your staked money back thanks to our Cashback Bonus. Receive yours!',
+    list: {
+      title: 'How to receive this bonus?',
+      items: [
+        '1. Create an account;',
+        '2. Make the minimum or larger deposit as stated in the promotion;',
+        '3. Find your bonus in the profile;',
+        [
+          '20 free spins - 0.00057 BTC;',
+          '50 free spins - 0.00085 BTC;',
+          '100 free spins - 0.0011 BTC;',
+        ],
+        '4. Contact live chat if you have questions.',
+      ],
+    },
+
+    detail: {
+      title: 'Bonus Terms:',
+      items: [
+        '1. To get the bonus, enter the bonus code WEDNESDAY before the deposit.',
+        '2. Minimum deposit to get a bonus:',
+        [
+          '20 free spins - 0.00057 BTC;',
+          '50 free spins - 0.00085 BTC;',
+          '100 free spins - 0.0011 BTC;',
+        ],
+        '3. Full wagering requires making bets for the amount 40 times the amount of the bonus received: (winnings from free spins) ×40.',
+        '4. Free spins will be automatically credited to your account!',
+        '5. Limitation of the maximum bet while wagering is 0.00003 BTC.',
+        '6. The bonus is available only on Wednesday from 00-00 to 23-59.',
+      ],
+    },
+  };
+
+  const filter = (cardsArray: any[], key: string): any[] => cardsArray.filter((item: any) => item.variant === key)[0];
+  const depositItems = () => payments.filter((item) => item.useForDeposit === true);
+  const withdrawItems = () => payments.filter((item) => item.useForWithDraw === true);
+  const betsHistoryTbBettingItems = () => ({
+    columns: betsHistoryTb.columns,
+    rows: betsHistoryTb.rows.filter((item) => item.key === 'betting'),
+  });
+  const betsHistoryTbCasinoItems = () => ({
+    columns: betsHistoryTb.columns,
+    rows: betsHistoryTb.rows.filter((item) => item.key === 'casino'),
+  });
+  const benefitsCards = () => filter(cards, 'benefits');
+  const promotionCards = () => filter(cards, 'promotions');
+  const latestWinnersCards = () => filter(cards, 'latest-winners');
+  const providerCards = () => filter(cards, 'providers');
+
+  const mainBanner = {
+      image: {
+            source: [
+              {
+                media: '(max-width: 360px)',
+                src: '/sliders/main/1/328.png',
+              },
+              {
+                media: '(max-width: 528px)',
+                src: '/sliders/main/1/464.png',
+              },
+              {
+                media: '(max-width: 768px)',
+                src: '/sliders/main/1/704.png',
+              },
+              {
+                media: '(max-width: 1024px)',
+                src: '/sliders/main/1/944.png',
+              },
+              {
+                media: '(max-width: 2264px)',
+                src: '/sliders/main/1/3776.png',
+              },
+            ],
+            src: '/sliders/main/1/944.png',
+          },
+          title: '<h4>Play and win every day at Slotsbet</h4>',
+          actions: {
+            primary: {
+              title: 'Play now',
+              href: '#',
+            },
+            // secondary: {
+            //   title: 'Secondary',
+            //   href: '#'
+            // },
+          },
+    };
 
   return {
-    hotCards,
-    turboCards,
-    favoritesCards,
-    recentlyCards,
-    providersCards,
-    latestWinnersCards,
-    promotionsCards,
-    newRelisesCards,
     topMenuItems,
     centerMenuItems,
     bottomMenuItems,
@@ -1072,5 +2275,23 @@ export const useFakeStore = () => {
     selects,
     menu,
     sliders,
+    promotion,
+    bonusPage,
+    depositItems,
+    withdrawItems,
+    betsHistoryTbBettingItems,
+    betsHistoryTbCasinoItems,
+    bonusesHistoryTb,
+    sessionHistoryTb,
+    transactionsHistoryTb,
+    accordeons,
+    categories,
+    benefitsCards,
+    promotionCards,
+    latestWinnersCards,
+    providerCards,
+    userProfileBonusesTabs,
+    userProfileHistoryTabs,
+    mainBanner,
   };
 };

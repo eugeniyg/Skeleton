@@ -1,7 +1,6 @@
 <template>
   <div class="avatar-profile">
     <span class="thumb">
-      <atomic-icon id="ui-user"/>
       <img
         v-if="profile.avatar"
         class="img"

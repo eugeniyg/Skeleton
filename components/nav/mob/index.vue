@@ -1,54 +1,54 @@
 <template>
   <div class="nav-mob">
-    <a
-      v-for="({ title, icon, href, isAccent, method }, itemIndex) in props.items"
+    <nuxt-link
+      v-for="({ title, icon, href, isAccent, method }, itemIndex) in items"
       :key="itemIndex"
       class="item"
       :class="{'is-accent': isAccent}"
       @click.prevent="clickItem(method)"
-      :href="href"
+      :to="href"
     >
       <atomic-icon :id="icon"/><span>{{ title }}</span>
-    </a>
+    </nuxt-link>
   </div>
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    items: {
-      type: Array,
-      default: () => [
-        {
-          title: 'Menu',
-          icon: 'ui-menu',
-          href: '#',
-          method: 'toggleDrawer',
-        },
-        {
-          title: 'Casino',
-          icon: 'cherry',
-          href: '#',
-        },
-        {
-          title: 'Deposit',
-          icon: 'ui-wallet',
-          href: '#',
-          isAccent: true,
-        },
-        {
-          title: 'Sport',
-          icon: 'sport',
-          href: '#',
-        },
-        {
-          title: 'Support',
-          icon: 'live-support',
-          href: '#',
-        },
-      ],
-    },
-  });
+  import { storeToRefs } from 'pinia';
+
   const layoutStore = useLayoutStore();
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+  const { showModal, openDepositModal } = useLayoutStore();
+
+  const items = computed(() => [
+    {
+      title: 'Menu',
+      icon: 'ui-menu',
+      method: 'toggleDrawer',
+    },
+    {
+      title: 'Casino',
+      icon: 'cherry',
+      href: '/main',
+    },
+    {
+      title: isLoggedIn.value ? 'Deposit' : 'Login',
+      icon: isLoggedIn.value ? 'ui-wallet' : 'ui-user',
+      isAccent: true,
+      method: 'openModal',
+    },
+    {
+      title: 'Sport',
+      icon: 'sport',
+      href: '/betting',
+    },
+    {
+      title: 'Support',
+      icon: 'live-support',
+      href: '/contact',
+    },
+  ]);
 
   // eslint-disable-next-line no-unused-vars
   function toggleDrawer():void {
@@ -56,7 +56,13 @@
   }
 
   function clickItem(method?:string):void {
-    if (method) layoutStore[method]();
+    if (method) {
+      if (method === 'openModal') {
+        isLoggedIn.value ? openDepositModal() : showModal('signIn');
+      } else {
+        layoutStore[method]();
+      }
+    }
   }
 </script>
 
