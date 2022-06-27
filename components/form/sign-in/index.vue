@@ -4,7 +4,7 @@
       v-model:value="authorizationFormData.email"
       @blur="onBlur('email')"
       @focus="loginError = false"
-      type="text"
+      type="email"
       :is-required="true"
       :label="fieldsContent.email?.label || ''"
       name="email"
