@@ -52,9 +52,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-
-  const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT');
-
+  
   useHead({
     bodyAttrs: {
       class: 'stop-transition',
@@ -76,6 +74,7 @@
   useLazyAsyncData('fieldsContent', getFieldsContent);
   useLazyAsyncData('commonData', getCommonData);
 
+  const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT');
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const projectMethods = useProjectMethods();
@@ -107,8 +106,4 @@
 
 <style lang="scss">
 @import "@/scss/style.scss";
-
-.stop-transition * {
-  transition: none !important;
-}
 </style>
