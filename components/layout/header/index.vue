@@ -21,7 +21,7 @@
 
       <template v-else>
         <button-base
-          type="secondary"
+          type="primary"
           size="md"
           @click="showModal('register')"
         >
@@ -29,7 +29,7 @@
         </button-base>
 
         <button-base
-          type="primary"
+          type="secondary"
           size="md"
           @click="showModal('signIn')"
         >

@@ -6,7 +6,7 @@
       <form-input-toggle
         v-if="!isActive"
         name="toggle"
-        :value="false"
+        :value="isChecked"
         @change="changeActive"
       >
         Use currency
@@ -59,6 +59,7 @@
     },
   });
 
+  const isChecked = ref<boolean>(false);
   const { currencies } = useGlobalStore();
   const { openWithdrawModal, openDepositModal } = useLayoutStore();
 
@@ -68,11 +69,17 @@
   const currencyName = computed(() => `${currentCurrency.name} (${currentCurrency.code})`);
 
   const { switchAccount, hideAccount } = useWalletStore();
+
+  const wait = async (ms:number) => new Promise((resolve) => setTimeout(resolve, ms));
+
   const changeActive = async ():Promise<void> => {
+    isChecked.value = true;
+    await wait(400);
     await switchAccount({
       accountId: props.id,
       currency: currentCurrency.code,
     });
+    isChecked.value = false;
   };
 
   const hide = async ():Promise<void> => {

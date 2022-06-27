@@ -53,7 +53,6 @@
     }
 
     &.is-open {
-
       --color: var(--yellow-500);
 
       .icon {
@@ -78,19 +77,20 @@
   }
 
   &.is-compact {
-    .text, .items, .bage, .btn-toggle {
-      display: none;
-    }
+    @include media(l) {
+      .text, .items, .bage, .btn-toggle {
+        display: none;
+      }
 
-    .icon {
-      transform: translateX(#{rem(2px)});
-      --icon-size: #{rem(24px)};
-    }
+      .icon {
+        --icon-size: #{rem(24px)};
+      }
 
-    .link {
-      --padding: 0;
-      justify-content: center;
-      @include box(40px);
+      .link {
+        --padding: 0;
+        justify-content: center;
+        @include box(40px);
+      }
     }
   }
 }

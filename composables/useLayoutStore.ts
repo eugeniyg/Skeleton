@@ -103,9 +103,9 @@ export const useLayoutStore = defineStore('layoutStore', {
     },
 
     compactDrawer():void {
-      this.isDrawerCompact = !this.isDrawerCompact;
-      const getMainLayout = document.querySelector('.main-layout');
-      getMainLayout.classList.toggle('drawer-minimize');
+      // this.isDrawerCompact = !this.isDrawerCompact;
+      // const getMainLayout = document.querySelector('.main-layout');
+      // getMainLayout.classList.toggle('drawer-minimize');
       window.dispatchEvent(new Event('resize'));
     },
 

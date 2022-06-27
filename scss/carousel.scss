@@ -42,3 +42,8 @@
   top: calc(50% - #{rem(8px)}) !important;
   --vc-nav-background-color: var(--gray-800);
 }
+
+.carousel__slide {
+  border-radius: 8px;
+  overflow: hidden;
+}

@@ -1,26 +1,37 @@
 .btn-deposit {
-  @include box(40px);
   @extend %skip-btn;
+  @include box(40px);
   @extend %flex-all-center;
-  border-radius: 50%;
-  transform: rotate(var(--deg, 0));
-  background-color: var(--bg, var(--yellow-500));
-  box-shadow: var(--shadow, unset);
-  transition: all .2s ease-in-out;
+  border-radius: var(--radius, 50%);
+  padding: var(--btn-padding, 0);
+  grid-column-gap: rem(4px);
 
-  --icon-size: #{rem(20px)};
-  --padding: 0 0;
+  span {
+    @include font($heading-2);
+    display: var(--display, none);
+  }
+
+  --bg: var(--gradient-new);
   --color: var(--gray-900);
+
+  @include media(md) {
+    --width: auto;
+    --radius:  999px;
+    --btn-padding: #{rem(10px)} #{rem(24px)};
+
+    span {
+      --display: block;
+    }
+  }
 
   &:hover {
     cursor: pointer;
-
-    --shadow: 0 0 0 3px var(--yellow-900);
+    --bg: var(--gradient-new-hover);
+    --color: var(--black-primary);
   }
 
-  &:active, &.is-active  {
-    --bg: var(--yellow-600);
-    --color: var(--gray-900);
-    --shadow: inset 0 2px 0px var(--yellow-700);
+  &:focus {
+    --bg: var(--gradient-new-focus);
+    --color: var(--black-primary);
   }
 }

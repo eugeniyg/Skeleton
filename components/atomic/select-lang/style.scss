@@ -18,7 +18,9 @@
     margin-right: rem(-8px);
 
     .is-compact & {
-      padding-left: rem(8px);
+      @include media(l) {
+        padding-left: rem(8px);
+      }
     }
 
     .icon {
@@ -89,8 +91,10 @@
     left: 0;
 
     .is-compact & {
-      z-index: 1;
-      --padding: 0;
+      @include media(l) {
+        z-index: 1;
+        --padding: 0;
+      }
     }
 
     .title {
@@ -106,7 +110,9 @@
     visibility: var(--title-visibility, visible);
 
     .is-compact & {
-      --title-visibility: hidden;
+      @include media(l) {
+        --title-visibility: hidden;
+      }
     }
   }
 

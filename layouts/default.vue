@@ -1,5 +1,5 @@
 <template>
-  <div class="main-layout">
+  <div :class="['main-layout', {'drawer-minimize': IS_DRAWER_COMPACT}]">
     <Head>
       <Title>Slotsbet</Title>
       <Meta name="description" content="Platform Project" />
@@ -17,7 +17,12 @@
       @logout="logout"
     />
 
-    <layout-drawer :is-logged-in="isLoggedIn" :is-compact="isDrawerCompact" @compact="compact"/>
+    <layout-drawer
+      :is-logged-in="isLoggedIn"
+      :is-compact="IS_DRAWER_COMPACT"
+      @compact="compact"
+      @toggle-open="toggleOpen"
+    />
 
     <main class="app-main" :class="{'is-overflow': projectMethods.isHomePage()}">
       <slot/>
@@ -48,6 +53,14 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
+  const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT');
+
+  useHead({
+    bodyAttrs: {
+      class: 'stop-transition',
+    },
+  });
+
   const {
     getCurrencies, getLocales, getCountries, getValidationMessages, getCommonData, getFieldsContent,
   } = useGlobalStore();
@@ -67,7 +80,7 @@
   const profileStore = useProfileStore();
   const projectMethods = useProjectMethods();
 
-  const { isDrawerCompact, isShowAlert, alertProps } = storeToRefs(layoutStore);
+  const { isShowAlert, alertProps } = storeToRefs(layoutStore);
   const { compactDrawer, checkModals } = layoutStore;
   checkModals();
 
@@ -79,10 +92,23 @@
   }
 
   function compact():void {
+    IS_DRAWER_COMPACT.value = !IS_DRAWER_COMPACT.value;
     compactDrawer();
   }
+
+  function toggleOpen():void {
+    layoutStore.toggleDrawer();
+  }
+
+  onMounted(() => {
+    document.body.classList.remove('stop-transition');
+  });
 </script>
 
 <style lang="scss">
 @import "@/scss/style.scss";
+
+.stop-transition * {
+  transition: none !important;
+}
 </style>
