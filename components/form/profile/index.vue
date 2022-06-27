@@ -98,7 +98,7 @@
   };
 
   const onBlur = (fieldName:string):void => {
-    v$.value[fieldName].$touch();
+    v$.value[fieldName]?.$touch();
     if (serverFormErrors.value[fieldName]) {
       serverFormErrors.value[fieldName] = undefined;
     }
@@ -116,7 +116,7 @@
       emit('toggle-profile-edit');
     } catch (error) {
       if (error.response?.status === 422) {
-        serverFormErrors.value = error.data?.error?.fields;
+        serverFormErrors.value = error.data?.errors?.fields;
       } else throw error;
     }
   };

@@ -66,13 +66,6 @@
   import { useGlobalMethods } from '~/CORE/index';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
-  const props = defineProps({
-    show: {
-      type: Boolean,
-      required: true,
-    },
-  });
-
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
   const { setFormData } = useGlobalMethods();
@@ -124,7 +117,7 @@
       closeModal('register');
     } catch (error) {
       if (error.response?.status === 422) {
-        serverFormErrors.value = error.data?.error?.fields;
+        serverFormErrors.value = error.data?.errors;
       } else throw error;
     }
   };
