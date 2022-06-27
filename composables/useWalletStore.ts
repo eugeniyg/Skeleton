@@ -3,7 +3,6 @@ import { AccountInterface, AccountRequestInterface } from '~/types/walletTypes';
 import { useWalletApi } from '~/CORE';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { useProfileStore } from '~/composables/useProfileStore';
-import { CurrencyInterface } from '~/types/globalDataTypes';
 
 export type WalletStateType = {
   accounts: AccountInterface[],

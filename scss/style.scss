@@ -203,3 +203,7 @@ body {
   padding: rem(8px) 0;
   margin: auto;
 }
+
+.stop-transition * {
+  transition: none !important;
+}
