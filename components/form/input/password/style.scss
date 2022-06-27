@@ -32,7 +32,7 @@
     }
 
     &::-ms-reveal {
-      display: none;
+      display: none !important;
     }
   }
 
