@@ -883,7 +883,7 @@ export const useFakeStore = () => {
           src: '/providers/1.svg',
           showPlayBtn: false,
           showTryBtn: false,
-          providerId: '8a3f419d-c86b-4a94-978f-dfff38bfcd79',
+          providerId: 'turbo-games',
         },
         {
           src: '/providers/2.svg',
