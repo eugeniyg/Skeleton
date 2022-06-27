@@ -80,7 +80,7 @@
   };
 
   const onKeyDown = (e:any):void => {
-    if (String(props.value).length > 9 && /\d/.test(e.key)) e.preventDefault();
+    if (String(props.value).length > 9 && /[0-9.,]/.test(e.key)) e.preventDefault();
   };
 
   const isError = computed(() => props.hint && props.hint.variant === 'error');
