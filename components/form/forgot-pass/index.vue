@@ -4,7 +4,7 @@
       type="email"
       name="email"
       :is-required="true"
-      v-model:value="state.emailText"
+      v-model:value="emailText"
       :label="fieldsContent.email.label"
       :placeholder="fieldsContent.email.placeholder"
     />
@@ -26,11 +26,10 @@
   const { showModal } = useLayoutStore();
 
   const { fieldsContent } = storeToRefs(globalStore);
-  const state = reactive({
-    emailText: '',
-  });
 
-  const isDisabledButton = computed(() => !(state.emailText.length > 0));
+  const emailText = ref<string>('');
+
+  const isDisabledButton = computed(() => !emailText.value.length);
 </script>
 
 <style lang="scss" src="./style.scss" />
