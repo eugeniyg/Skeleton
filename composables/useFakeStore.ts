@@ -2155,6 +2155,44 @@ export const useFakeStore = () => {
     },
   };
 
+  const bonusPage = {
+    src: '/promo/drone-v2.png',
+    title: 'Weekly Cashback',
+    subTitle: 'Take your 10% cashback every Friday.',
+    description: 'Every Friday you can get a portion of your staked money back thanks to our Cashback Bonus. Receive yours!',
+    list: {
+      title: 'How to receive this bonus?',
+      items: [
+        '1. Create an account;',
+        '2. Make the minimum or larger deposit as stated in the promotion;',
+        '3. Find your bonus in the profile;',
+        [
+          '20 free spins - 0.00057 BTC;',
+          '50 free spins - 0.00085 BTC;',
+          '100 free spins - 0.0011 BTC;',
+        ],
+        '4. Contact live chat if you have questions.',
+      ],
+    },
+
+    detail: {
+      title: 'Bonus Terms:',
+      items: [
+        '1. To get the bonus, enter the bonus code WEDNESDAY before the deposit.',
+        '2. Minimum deposit to get a bonus:',
+        [
+          '20 free spins - 0.00057 BTC;',
+          '50 free spins - 0.00085 BTC;',
+          '100 free spins - 0.0011 BTC;',
+        ],
+        '3. Full wagering requires making bets for the amount 40 times the amount of the bonus received: (winnings from free spins) ×40.',
+        '4. Free spins will be automatically credited to your account!',
+        '5. Limitation of the maximum bet while wagering is 0.00003 BTC.',
+        '6. The bonus is available only on Wednesday from 00-00 to 23-59.',
+      ],
+    },
+  };
+
   const filter = (cardsArray: any[], key: string): any[] => cardsArray.filter((item: any) => item.variant === key)[0];
   const depositItems = () => payments.filter((item) => item.useForDeposit === true);
   const withdrawItems = () => payments.filter((item) => item.useForWithDraw === true);
@@ -2222,6 +2260,7 @@ export const useFakeStore = () => {
     menu,
     sliders,
     promotion,
+    bonusPage,
     depositItems,
     withdrawItems,
     betsHistoryTbBettingItems,
