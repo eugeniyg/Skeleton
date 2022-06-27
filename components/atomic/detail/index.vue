@@ -1,17 +1,15 @@
 <template>
-  <div class="detail" :class="{ 'is-open': state.open }" @resize="updateScrollHeight">
+  <div class="detail" :class="{ 'is-open': open }" @resize="updateScrollHeight">
     <div class="header" @click="toggleOpen">
-      <div class="title">{{ title }}</div>
-      <atomic-icon id="ui-arrow_expand-close"/>
+      <div class="title">{{ props.title }}</div>
+      <atomic-icon id="ui-arrow_expand-close" />
     </div>
-    <div class="items" ref="items">
+    <div class="items" ref="refItems">
       <ol>
-        <template v-for="(item, itemIndex) in items">
+        <template v-for="(item, itemIndex) in props.items">
           <li v-if="!Array.isArray(item)" :key="itemIndex">{{ item }}</li>
           <ul v-else>
-            <li v-for="(item, itemIndex) in item" :key="itemIndex">
-              {{ item }}
-            </li>
+            <li v-for="item in item" :key="item">{{ item }}</li>
           </ul>
         </template>
       </ol>
@@ -20,36 +18,35 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    title: {
-      type: String,
-    },
-    items: {
-      type: Array,
-      default: () => [],
-    },
-    isOpen: {
-      type: Boolean,
-      default: false,
-    },
-  });
+const props = defineProps({
+  title: {
+    type: String,
+  },
+  items: {
+    type: Array,
+    default: () => [],
+  },
+  isOpen: {
+    type: Boolean,
+    default: false,
+  },
+});
 
-  const state = reactive({
-    open: props.isOpen,
-    scrollHeight: 0,
-  });
+const open = ref<boolean>(props.isOpen);
+const scrollHeight = ref<number>(0);
+const refItems = ref();
 
-  const toggleOpen = ():void => {
-    state.open = !state.open;
-    const height = state.open ? state.scrollHeight : 0;
-    this.$refs.items.style.setProperty('--items-height', `${height}px`);
-  };
+const toggleOpen = (): void => {
+  open.value = !open.value;
+  const height = open.value ? scrollHeight.value : 0;
+  refItems.value.style.setProperty("--items-height", `${height}px`);
+};
 
-  const updateScrollHeight = ():void => {
-    state.scrollHeight = this.$refs.items.scrollHeight;
-  };
+const updateScrollHeight = (): void => {
+  scrollHeight.value = refItems.value.scrollHeight;
+};
 
-  onMounted(() => updateScrollHeight());
+onMounted(() => updateScrollHeight());
 </script>
 
 <style lang="scss" src="./style.scss"></style>

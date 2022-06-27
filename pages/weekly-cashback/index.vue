@@ -23,10 +23,10 @@
         size="lg"
         @click="isLoggedIn ? openDepositModal() : showModal('register')"
       >Get bonus</button-base>
-      <!-- <atomic-detail
+      <atomic-detail
         :title="bonusPage.detail.title"
         :items="bonusPage.detail.items"
-      /> -->
+      />
     </div>
   </div>
 </template>
