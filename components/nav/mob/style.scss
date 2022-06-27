@@ -12,7 +12,7 @@
   visibility: var(--mob-nav-visibility, visible);
   width: var(--width-nav-mob, auto);
 
-  @include media(md) {
+  @include media(l) {
     visibility: hidden;
   }
 

@@ -91,4 +91,30 @@
   @return calc(#{$percents} - #{$offset}px);
 }
 
+@mixin scrollbar {
+  scrollbar-color: var(--gray-700);
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: rem(6px);
+    height: rem(6px);
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--gray-700);
+    border-radius: 8px;
+  }
+}
+
+@mixin scrollbar-hide {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none;
+  }
+}
+
+
 

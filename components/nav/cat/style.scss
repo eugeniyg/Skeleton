@@ -2,6 +2,7 @@
   overflow: hidden;
   margin-right: rem(-16px);
   height: var(--height, #{rem(32px)});
+  margin-top: var(--margin-top, #{rem(24px)});
 }
 
 .nav-cat {

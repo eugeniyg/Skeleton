@@ -1,6 +1,7 @@
 <template>
   <button class="btn-deposit" @click="openDepositModal">
     <atomic-icon id="ui-plus"/>
+    <span>Deposit</span>
   </button>
 </template>
 

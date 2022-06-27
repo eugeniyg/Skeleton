@@ -4,7 +4,9 @@
   grid-gap: rem(4px);
 
   .drawer-minimize & {
-    --display: none;
+    @include media(l) {
+      --display: none;
+    }
   }
 
   > a {

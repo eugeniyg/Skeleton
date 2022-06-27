@@ -96,6 +96,7 @@ body {
     --header-z-index: 3;
     --close-decor-index: 2;
     --close-btn-visibility: visible;
+    --drawer-transition: (transform .2s ease-in)
   }
 
   &.drawer-open {
@@ -105,6 +106,7 @@ body {
     --opacity-layer-visibility: visible;
     --main-pointer-events: none;
     --drawer-visibility: visible;
+
 
     .nav-mob {
       right: 4px;
@@ -137,8 +139,9 @@ body {
   grid-template-columns: var(--body-template-columns, 0 1fr);
   grid-template-rows: auto 1fr auto;
   grid-auto-flow: row;
+  align-items: flex-start;
 
-  @include media(md) {
+  @include media(l) {
     --body-template-columns: #{rem(240px)} 1fr;
     --drawer-translate-x: translateX(0);
 
@@ -165,7 +168,7 @@ body {
     --padding: #{rem(24px)} #{rem(32px)}
   }
 
-  .cards, .tabs, .nav-cat-wrap {
+  .cards, .tabs {
     margin-top: #{24px};
   }
 }

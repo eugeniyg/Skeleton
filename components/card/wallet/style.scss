@@ -4,6 +4,8 @@
   position: relative;
   flex-basis: rem(334px);
   height: rem(199px);
+  transition: padding .2s ease;
+  padding: rem(2px);
 
   .title {
     @include font($body-2);
@@ -85,7 +87,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background-image: linear-gradient(89.73deg, #FFDC8A 1.37%, #FFC12E 49.58%, #E6A409 98.17%);
+      background: linear-gradient(89.73deg, #FFDC8A 1.37%, #FFC12E 49.58%, #E6A409 98.17%);
     }
 
     .content {
@@ -110,6 +112,7 @@
   display: grid;
   grid-template-columns: var(--columns, 1fr);
   grid-gap: rem(16px);
+  transition: all .2s ease;
 
   @include media(sm) {
     --columns: repeat(2, 1fr);

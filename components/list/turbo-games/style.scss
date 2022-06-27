@@ -19,12 +19,14 @@
   }
 
   &.is-compact {
-    .item:not(:first-child) {
-      display: none;
-    }
+    @include media(l) {
+      .item:not(:first-child) {
+        display: none;
+      }
 
-    --padding-left: 0;
-    --img-width:§ #{rem(40px)};
-    --img-height: #{rem(40px)};
+      --padding-left: 0;
+      --img-width: § #{rem(40px)};
+      --img-height: #{rem(40px)};
+    }
   }
 }

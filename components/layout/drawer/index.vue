@@ -1,7 +1,7 @@
 <template>
   <div class="drawer" :class="{'is-compact' : props.isCompact}">
     <div class="header">
-      <button-toggle-drawer @toggle="emit('compact')" :is-active="props.isCompact"/>
+      <button-toggle-drawer @toggle-minimize="emit('compact')" @toggle-open="$emit('toggle-open')" :is-active="props.isCompact"/>
       <button-toggler :items="fakeStore.togglerBtnItems" :is-compact="props.isCompact"/>
     </div>
 
@@ -35,7 +35,7 @@
     },
   });
   const fakeStore = useFakeStore();
-  const emit = defineEmits(['compact']);
+  const emit = defineEmits(['compact', 'toggleOpen']);
 </script>
 
 <style lang="scss" src="./style.scss"/>
