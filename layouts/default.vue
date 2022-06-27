@@ -37,6 +37,7 @@
     <client-only>
       <modal-register />
       <modal-sign-in />
+      <modal-forgot-pass />
       <modal-deposit />
       <modal-withdraw />
       <modal-success />
@@ -52,7 +53,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  
+
   useHead({
     bodyAttrs: {
       class: 'stop-transition',

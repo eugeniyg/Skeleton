@@ -1,5 +1,14 @@
 <template>
-  <button-base class="btn-forgot-pass" type="ghost" size="xs">Forgot Password?</button-base>
+  <button-base
+    class="btn-forgot-pass"
+    type="ghost"
+    size="xs"
+    @click="showModal('forgotPass')"
+  >Forgot Password?</button-base>
 </template>
 
-<style lang="scss" src="./style.scss"/>
+<script setup lang="ts">
+  const { showModal } = useLayoutStore();
+</script>
+
+<style lang="scss" src="./style.scss" />
