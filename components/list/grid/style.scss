@@ -8,10 +8,6 @@
     display: flex;
     flex-wrap: wrap;
     grid-gap: var(--gap, rem(8px));
-
-    @include media(xs) {
-      --gap: #{rem(16px)};
-    }
   }
 
   .item {

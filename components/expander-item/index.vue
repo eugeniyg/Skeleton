@@ -35,11 +35,11 @@
   const styles = computed(() => ({ '--max-height': open.value ? `${maxHeight.value}px` : '0px' }));
   const raw = computed(() => props.content.join(''));
 
+  const content = ref(null);
   const toggle = ():void => {
     open.value = !open.value;
+    maxHeight.value = open.value ? content.value.scrollHeight : 0;
   };
-
-  const content = ref();
   onMounted(() => {
     maxHeight.value = content.value.scrollHeight;
   });

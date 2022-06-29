@@ -1,7 +1,7 @@
 <template>
   <form>
     <form-input-number
-      label="Withdraw sum"
+      label="Withdrawal sum"
       name="withdrawSum"
       :min="props.amountMin"
       :max="props.amountMax"
