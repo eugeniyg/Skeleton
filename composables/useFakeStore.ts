@@ -1007,49 +1007,49 @@ export const useFakeStore = () => {
           href: '/games/9ccf90c5-a39c-45e4-b7f5-f43a604728b5',
         },
         {
-          src: '/latest-winners/big_bass_bonanza.png',
+          src: '/latest-winners/book_of_dead.png',
           title: 'Lukas',
           subTitle: 'Book Of Dead',
           items: ['0.0005', 'BTC'],
           href: '/games/9ccf90c5-a39c-45e4-b7f5-f43a604728b5',
         },
         {
-          src: '/latest-winners/fruit_zen.png',
+          src: '/latest-winners/bigger_bass_bonanza.png',
           title: 'Xman',
           subTitle: 'Bigger Bass Bonanza',
           items: ['0.0077', 'BTC'],
           href: '/games/d7e2f16a-bb66-4090-a681-e68ef70b46a0',
         },
         {
-          src: '/latest-winners/book_of_dead.png',
+          src: '/latest-winners/gold_vein.png',
           title: 'Melly',
           subTitle: 'Gold Vein',
           items: ['0.0087', 'BTC'],
           href: '/games/0bbd1ad7-a6f3-47d0-87f2-af2188550700',
         },
         {
-          src: '/latest-winners/sizzling_eggs.png',
+          src: '/latest-winners/power_of_gods.png',
           title: 'Neil',
-          subTitle: 'The Pantheon',
+          subTitle: 'Power of Gods',
           items: ['0.0001', 'BTC'],
           href: '/games/a70c0b18-8d9d-44d6-85d6-afbbab3555f5',
         },
         {
-          src: '/latest-winners/vegas_vip_gold.png',
+          src: '/latest-winners/fruit_zen.png',
           title: 'giselle',
           subTitle: 'Fruit Zen',
           items: ['0.0001', 'BTC'],
           href: '/games/c1d0159a-18f8-44a7-b9be-183c0ac528a5',
         },
         {
-          src: '/latest-winners/gold_diggers.png',
+          src: '/latest-winners/aztec_pyramids.png',
           title: 'Saichon',
           subTitle: 'Aztec Pyramids',
           items: ['0.0001', 'BTC'],
           href: '/games/3bf8e36f-1c85-4a28-98e8-c83a5799c575',
         },
         {
-          src: '/latest-winners/gold_diggers.png',
+          src: '/latest-winners/champions_of_rome.png',
           title: 'Saichon',
           subTitle: 'Champions of Rome',
           items: ['0.0001', 'BTC'],
@@ -1508,8 +1508,8 @@ export const useFakeStore = () => {
       title: 'Interac E-transfer',
       value: 'interac',
       mask: '/svg/payment-systems/interac.svg',
-      balance: { value: 79.4, title: 'EUR' },
-      withdraw: { value: 54.73, title: 'EUR' },
+      balance: {value: 79.4, title: 'EUR'},
+      withdraw: {value: 54.73, title: 'EUR'},
       useForDeposit: true,
       useForWithDraw: true,
     },
@@ -1517,7 +1517,7 @@ export const useFakeStore = () => {
       title: 'visa',
       value: 'visa',
       mask: '/svg/payment-systems/visa.svg',
-      balance: { value: 79.4, title: 'EUR' },
+      balance: {value: 79.4, title: 'EUR'},
       useForDeposit: true,
       useForWithDraw: false,
     },
@@ -1525,7 +1525,7 @@ export const useFakeStore = () => {
       title: 'MiFinity',
       value: 'mifinity',
       mask: '/svg/payment-systems/mifinity.svg',
-      balance: { value: 79.4, title: 'EUR' },
+      balance: {value: 79.4, title: 'EUR'},
       useForDeposit: true,
       useForWithDraw: true,
     },
@@ -1568,8 +1568,8 @@ export const useFakeStore = () => {
       title: 'volt',
       value: 'volt',
       mask: '/svg/payment-systems/volt.svg',
-      balance: { value: 79.4, title: 'EUR' },
-      withdraw: { value: 54.73, title: 'EUR' },
+      balance: {value: 79.4, title: 'EUR'},
+      withdraw: {value: 54.73, title: 'EUR'},
       useForDeposit: true,
       useForWithDraw: true,
     },
@@ -1577,8 +1577,8 @@ export const useFakeStore = () => {
       title: 'Bank Transfer',
       value: 'etransfer',
       mask: '/svg/payment-systems/e-transfer.svg',
-      balance: { value: 100.4, title: 'EUR' },
-      withdraw: { value: 77.73, title: 'EUR' },
+      balance: {value: 100.4, title: 'EUR'},
+      withdraw: {value: 77.73, title: 'EUR'},
       useForDeposit: false,
       useForWithDraw: true,
     },
@@ -1693,21 +1693,21 @@ export const useFakeStore = () => {
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
         createdAt: '15.04.2022, 15:21',
-        status: { variant: 'current', text: 'Current' },
+        status: {variant: 'current', text: 'Current'},
       },
       {
         device: 'mobile',
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
         createdAt: '15.04.2022, 15:21',
-        status: { variant: 'current', text: 'Current' },
+        status: {variant: 'current', text: 'Current'},
       },
       {
         device: 'mobile',
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
         createdAt: '15.04.2022, 15:21',
-        status: { variant: 'closed', text: 'Closed' },
+        status: {variant: 'closed', text: 'Closed'},
       },
     ],
   };
@@ -2076,7 +2076,7 @@ export const useFakeStore = () => {
             primary: 'Get bonus',
             secondary: {
               title: 'More info',
-              href: '/first-deposit-bonus',
+              href: '/bonus/first-deposit-bonus',
             },
           },
         },
@@ -2088,7 +2088,7 @@ export const useFakeStore = () => {
             primary: 'Get bonus',
             secondary: {
               title: 'More info',
-              href: '/second-deposit-bonus',
+              href: '/bonus/second-deposit-bonus',
             },
           },
         },
@@ -2100,7 +2100,7 @@ export const useFakeStore = () => {
             primary: 'Get bonus',
             secondary: {
               title: 'More info',
-              href: '/third-deposit-bonus',
+              href: '/bonus/third-deposit-bonus',
             },
           },
         },
@@ -2112,7 +2112,7 @@ export const useFakeStore = () => {
             primary: 'Get bonus',
             secondary: {
               title: 'More info',
-              href: '/fourth-deposit-bonus',
+              href: '/bonus/fourth-deposit-bonus',
             },
           },
         },
@@ -2129,7 +2129,7 @@ export const useFakeStore = () => {
             primary: 'Get bonus',
             secondary: {
               title: 'More info',
-              href: '/monday-reload-bonus',
+              href: '/bonus/monday-reload-bonus',
             },
           },
         },
@@ -2141,7 +2141,7 @@ export const useFakeStore = () => {
             primary: 'Get bonus',
             secondary: {
               title: 'More info',
-              href: '/wednesday-free-spins',
+              href: '/bonus/wednesday-free-spins',
             },
           },
         },
@@ -2153,18 +2153,18 @@ export const useFakeStore = () => {
             primary: 'Get bonus',
             secondary: {
               title: 'More info',
-              href: '/weekly-cashback',
+              href: '/bonus/weekly-cashback',
             },
           },
         },
       ],
     },
     howToGet: {
-      title: 'Hot to get your bonuses:',
+      title: 'How to get your bonuses:',
       src: '/promo/nft_gift.png',
       items: [
         'Make a successful deposit',
-        'Go to Bonuses tab and activate your Free spin',
+        'Go to Bonuses tab and activate your Free spins',
         'Enjoy the great gaming experience!',
       ],
     },
@@ -2208,6 +2208,192 @@ export const useFakeStore = () => {
     },
   };
 
+  const bonusPages = {
+    'first-deposit-bonus': {
+      src: '/promo/drone-v2.png',
+      title: '1st deposit bonus',
+      subTitle: 'Get your 100% bonus up to 1.5 BTC and 100 FS',
+      description: 'Slotsbet greeting you with a huge first bonus! As you’re new to us, we’re offering you a 100% up to 1.5 BTC + 100 Free Spins on your first deposit. Play in one of these games from Platipus: Cleo\'s Gold, Fruity Sevens or Arabian Tales.',
+      list: {
+        title: 'Getting your bonus is easy:',
+        items: [
+          '1. Create an account and top it up with at least 0.001 BTC.',
+          '2. Instantly receive a bonus worth 100% of the amount you deposited (up to a maximum of 1.5 BTC (or the same value in other cryptocurrencies))',
+          '3. Collect your 100 free spins you can find these in the Bonus section of your account.',
+        ],
+      },
+      detail: {
+        title: 'Bonus Terms:',
+        items: [
+          '1. For getting the bonus, you must place a deposit of at least 0.001 BTC or the same value in other cryptocurrencies.',
+          '2. The maximum bonus amount is 100% of the deposit amount, but not more than 1.5 BTC or the same value in other cryptocurrencies + amount of winnings obtained after the completion of the free spins.',
+          '3. Full wagering requires making bets 40 times the amount of the bonus received: (deposit bonus + winnings from free spins) × 40.',
+          '4. The deposit bonus is valid for 5 days, starting from the date you receive it.',
+          '5. 100 free spins are available in one of these games: Cleo\'s Gold, Fruity Sevens, or Arabian Tales by Platipus. Free Spins bonus can be activated only for one chosen game. Make sure to activate your free spins in the "bonus section" in your account. Free spins can be activated for 5 days before they expire. After activation free spins are valid for 5 days. If not used, they will expire.',
+          '6. 50 free spins will be given per day within two days of the day you activated the bonus.',
+          '7. Please note that spins must be activated within a day.',
+          '8. The maximum bet amount when wagering is 0.0003 BTC or the same value in other cryptocurrencies.',
+          '9. General bonus terms and conditions apply.',
+        ],
+      },
+    },
+    'second-deposit-bonus': {
+      src: '/promo/drone-v2.png',
+      title: '2nd deposit bonus',
+      subTitle: 'Grab your 75% bonus up to 1 BTC and 50 FS',
+      description: 'Enjoy playing games with the bonus on your second deposit! We’re so happy to see you again! It looks like the time for a second deposit has come. To fill the best with Slotsbet, we are pleased to give you a bonus of 75% up to 1 BTC + 50 Free Spins on slot Elvis Frog in Vegas (BGaming) on your second deposit.',
+      list: {
+        title: 'The road to get the bonus:',
+        items: [
+          '1. Top up your account with at least 0.001 BTC.',
+          '2. Instantly receive a bonus worth 75% of the amount you deposited (up to a maximum of 1 BTC (or the same value in other cryptocurrencies)).',
+          '3. Collect your 50 Free Spins that you can find in the Bonus section of your account.',
+        ],
+      },
+      detail: {
+        title: 'Bonus Terms:',
+        items: [
+          '1. To get the bonus, you must place a deposit of at least 0.001 BTC or the same value in other cryptocurrencies.',
+          '2. The maximum bonus amount is 75% of the deposit amount, but not more than 1 BTC or the same value in other cryptocurrencies + amount of winnings obtained after the completion of the free spins.',
+          '3. Full wagering requires making bets 40 times the amount of the bonus received: (deposit bonus + winnings from free spins) × 40.',
+          '4. The deposit bonus is valid for 5 days, starting from the date you receive it.',
+          '5. 50 free spins are available for the game Elvis Frog in Vegas (BGaming). Make sure to activate your free spins in the "bonus section" in your account. Free spins can be activated for 5 days before they expire. After activation free spins are valid for 5 days. If not used, they will expire.',
+          '6. 25 Free Spins will be given per day within two days of the day you activated the bonus.',
+          '7. Please note that spins must be activated within a day.',
+          '8. The maximum bet amount when wagering is 0.0003 BTC or the same value in other cryptocurrencies.',
+          '9. General bonus terms and conditions apply.',
+        ],
+      },
+    },
+    'third-deposit-bonus': {
+      src: '/promo/drone-v2.png',
+      title: '3rd deposit bonus',
+      subTitle: 'Take your 50% bonus up to 1 BTC and 50 FS',
+      description: 'Grab your chance to play on at Slotsbet with a head start, thanks to our third deposit bonus!',
+      list: {
+        title: 'How to get the bonus:',
+        items: [
+          '1. Place a deposit onto your account with at least 0.001 BTC.',
+          '2. Instantly receive a 50% bonus of up to 1 BTC.',
+          '3. Collect your 50 Free Spins that you can find in the Bonus section of your account.',
+        ],
+      },
+      detail: {
+        title: 'Bonus Terms:',
+        items: [
+          '1. In order to get the bonus, you must place a deposit of at least 0.001 BTC or the same value in cryptocurrencies.',
+          '2. The maximum bonus amount is 50% of the deposit amount, but not more than 1 BTC or the same value in other cryptocurrencies.',
+          '3. Full wagering requires making bets 40 times the amount of the bonus received: (deposit + bonus) × 40.',
+          '4. The deposit bonus is valid for 5 days, starting from the date you receive it.',
+          '5. The maximum bet amount when wagering is 0.0003 BTC or the same value in other cryptocurrencies.',
+          '6. 25 Free Spins will be given per day within two days of the day you activated the bonus.',
+          '7. General bonus terms and conditions apply.',
+        ],
+      },
+    },
+    'fourth-deposit-bonus': {
+      src: '/promo/drone-v2.png',
+      title: '4th deposit bonus',
+      subTitle: 'Play more with 100% bonus up to 1.5 BTC and 100 FS.',
+      description: 'We will double your fourth deposit. Just play and we will do the rest for you.',
+      list: {
+        title: 'How to get the bonus:',
+        items: [
+          '1. Place a deposit onto your account with at least 0.001 BTC.',
+          '2. Instantly receive a 100% bonus of up to 1.5 BTC.',
+          '3. Collect your 100 Free Spins that you can find in the Bonus section of your account.',
+        ],
+      },
+      detail: {
+        title: 'Bonus Terms:',
+        items: [
+          '1. In order to get the bonus, you must place a deposit of at least 0.001 BTC or the same value in cryptocurrencies.',
+          '2. The maximum bonus amount is 100% of the deposit amount, but not more than 1.5 BTC or the same value in other cryptocurrencies.',
+          '3. Full wagering requires making bets 40 times the amount of the bonus received: (deposit + bonus) × 40.',
+          '4. The deposit bonus is valid for 5 days, starting from the date you receive it.',
+          '5. The maximum bet amount when wagering is 0.0003 BTC or the same value in other cryptocurrencies.',
+          '6. 50 Free Spins will be given per day within two days of the day you activated the bonus.',
+          '7. General bonus terms and conditions apply.',
+        ],
+      },
+    },
+    'monday-reload-bonus': {
+      src: '/promo/drone-v2.png',
+      title: 'Monday Reload Bonus',
+      subTitle: '30% bonus of up to 0.0035 BTC on Monday',
+      description: 'Start your week on a high note with Slotsbet! Grabbing yourself a 30% bonus of up to 0.0035 BTC is easy:',
+      list: {
+        // title: 'How to get the bonus:',
+        items: [
+          '1. Make a deposit of at least 0.001 BTC.',
+          '2. Instantly receive a bonus worth 30% of the amount you deposited (up to a maximum of 0.0035 BTC).',
+        ],
+      },
+      detail: {
+        title: 'Bonus Terms:',
+        items: [
+          '1. To get the bonus, you must place a deposit of at least 0.001 BTC or the same value in cryptocurrencies.',
+          '2. The maximum bonus amount is 30% of the deposit amount, but not more than 0.0035 BTC or the same value in cryptocurrencies.',
+          '3. Full wagering requires making bets 40 times the amount of the bonus received: (deposit bonus) × 40.',
+          '4. The deposit bonus is valid for 5 days, starting from the date you receive it.',
+          '5. The maximum bet amount when wagering is 0.0003 BTC or the same value in cryptocurrencies.',
+        ],
+      },
+    },
+    'wednesday-free-spins': {
+      src: '/promo/drone-v2.png',
+      title: 'Wednesday Free Spins',
+      subTitle: 'Get 100 Free Spins every Wednesday',
+      description: 'On Wednesdays, our players receive either 30, 50, or 100 free spins just for making a deposit. Make sure you seize the opportunity for some Wednesday free spins when the day comes!',
+      // list: {
+      //   title: '',
+      //   items: [],
+      // },
+      detail: {
+        title: 'Bonus Terms:',
+        items: [
+          '1. To get the bonus, enter the bonus code WEDNESDAY before the deposit.',
+          '2. Minimum deposit to get a bonus:',
+          [
+            '20 free spins - 0.001 BTC;',
+            '50 free spins - 0.0015 BTC;',
+            '100 free spins - 0.002 BTC.',
+          ],
+          '3. Full wagering requires making bets for the amount 40 times the amount of the bonus received: (winnings from free spins) ×40.',
+          '4. Free spins will be automatically credited to your account!',
+          '5. Limitation of the maximum bet while wagering is 0.0003 BTC.',
+          '6. The bonus is available only on Wednesday from 00-00 to 23-59.',
+        ],
+      },
+    },
+    'weekly-cashback': {
+      src: '/promo/drone-v2.png',
+      title: 'Weekly Cashback',
+      subTitle: 'Take your 10% cashback every Friday.',
+      description: 'Every Friday you can get a portion of your staked money back thanks to our Cashback Bonus. Receive yours!',
+      list: {
+        title: 'How to receive this bonus?',
+        items: [
+          'Create an account;',
+          'Make the minimum or larger deposit as stated in the promotion;',
+          'Find your bonus in the profile;',
+          'Contact live chat if you have questions.',
+        ],
+      },
+      detail: {
+        title: 'Bonus Terms:',
+        items: [
+          '1. The promotion\'s period is from Friday 00:00 to Thursday 23:59 UTC every week. No additional opt in is required.',
+          '2. This promotion is only valid for games played in the Casino section. Funds spent in other verticals (Live Casino) are not taken into account for this promotion.',
+          '3. Minimum eligible cashback amount to be credited is 0.0001 BTC.',
+          '4. All cashback amounts due are calculated by the formula: (total deposits during the promotional period - remaining available balance from the deposits during the promo period - total withdrawals during the promo period - total bonus credited during the promo period) x cashback % eligible at the time of request.',
+          '5. Any cashback amount due must be requested in Live Chat or by email by the player on the Friday following this promotion\'s period, by 23:59 UTC. In case the customer does not request the cashback amount, any entitlement of the cashback is considered as void.',
+          '6. Cashback is credited on the real balance of the customer\'s account. All credited cashback amounts are subject to a x1 wagering requirement before a withdrawal is allowed.',
+        ],
+      },
+    },
+};
+
   const filter = (cardsArray: any[], key: string): any[] => cardsArray.filter((item: any) => item.variant === key)[0];
   const depositItems = () => payments.filter((item) => item.useForDeposit === true);
   const withdrawItems = () => payments.filter((item) => item.useForWithDraw === true);
@@ -2225,43 +2411,43 @@ export const useFakeStore = () => {
   const providerCards = () => filter(cards, 'providers');
 
   const mainBanner = {
-      image: {
-            source: [
-              {
-                media: '(max-width: 360px)',
-                src: '/sliders/main/1/328.png',
-              },
-              {
-                media: '(max-width: 528px)',
-                src: '/sliders/main/1/464.png',
-              },
-              {
-                media: '(max-width: 768px)',
-                src: '/sliders/main/1/704.png',
-              },
-              {
-                media: '(max-width: 1024px)',
-                src: '/sliders/main/1/944.png',
-              },
-              {
-                media: '(max-width: 2264px)',
-                src: '/sliders/main/1/3776.png',
-              },
-            ],
-            src: '/sliders/main/1/944.png',
-          },
-          title: '<h4>Play and win every day at Slotsbet</h4>',
-          actions: {
-            primary: {
-              title: 'Play now',
-              href: '#',
-            },
-            // secondary: {
-            //   title: 'Secondary',
-            //   href: '#'
-            // },
-          },
-    };
+    image: {
+      source: [
+        {
+          media: '(max-width: 360px)',
+          src: '/sliders/main/1/328.png',
+        },
+        {
+          media: '(max-width: 528px)',
+          src: '/sliders/main/1/464.png',
+        },
+        {
+          media: '(max-width: 768px)',
+          src: '/sliders/main/1/704.png',
+        },
+        {
+          media: '(max-width: 1024px)',
+          src: '/sliders/main/1/944.png',
+        },
+        {
+          media: '(max-width: 2264px)',
+          src: '/sliders/main/1/3776.png',
+        },
+      ],
+      src: '/sliders/main/1/944.png',
+    },
+    title: '<h4>Play and win every day at Slotsbet</h4>',
+    actions: {
+      primary: {
+        title: 'Play now',
+        href: '#',
+      },
+      // secondary: {
+      //   title: 'Secondary',
+      //   href: '#'
+      // },
+    },
+  };
 
   return {
     topMenuItems,
@@ -2277,6 +2463,7 @@ export const useFakeStore = () => {
     sliders,
     promotion,
     bonusPage,
+    bonusPages,
     depositItems,
     withdrawItems,
     betsHistoryTbBettingItems,

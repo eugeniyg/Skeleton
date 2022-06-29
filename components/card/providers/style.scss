@@ -27,7 +27,7 @@
       --scroll-snap-align: start;
     }
 
-    --width: #{column(4, 16px)};
+    --width: #{column(4, 8px)};
   }
 
   @include media(sm) {
@@ -39,7 +39,7 @@
       --scroll-snap-align: start;
     }
 
-    --width: #{column(6, 16px)};
+    --width: #{column(6, 8px)};
   }
 
   @include media(md) {
@@ -47,7 +47,7 @@
   }
 
   @include media(l) {
-    --width: #{column(6, 16px)};
+    --width: #{column(6, 8px)};
   }
 
   @include media(xl) {
@@ -59,7 +59,7 @@
       --scroll-snap-align: start;
     }
 
-    --width: #{column(7, 16px)};
+    --width: #{column(9, 8px)};
   }
 
   @include media(xxl) {
@@ -71,6 +71,6 @@
       --scroll-snap-align: start
     }
 
-    --width: #{column(9, 16px)};
+    --width: #{column(9, 8px)};
   }
 }

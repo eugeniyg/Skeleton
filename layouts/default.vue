@@ -48,6 +48,8 @@
       :isShow="isShowAlert"
       v-bind="alertProps"
     />
+
+    <!--<atomic-preloader/>-->
   </div>
 </template>
 

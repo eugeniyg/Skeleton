@@ -11,7 +11,7 @@
         :key="itemIndex"
         class="item"
         :class="{'is-active': getCurrentUrl() === href}"
-        @click.prevent="() => navigate(href)"
+        @click.prevent="select(href)"
       >
         <atomic-icon :id="icon" />
         {{ title }}
@@ -38,6 +38,10 @@
   };
   const close = ():void => {
     isOpen.value = false;
+  };
+  const select = (val) => {
+    navigate(val);
+    close();
   };
 </script>
 

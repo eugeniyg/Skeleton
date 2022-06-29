@@ -43,7 +43,7 @@
   const navItems = [
     {
       id: 'all',
-      title: 'All currency',
+      title: 'All Currencies',
     },
     {
       id: 'crypto',

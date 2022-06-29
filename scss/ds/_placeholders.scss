@@ -313,6 +313,11 @@
       color: var(--white);
       text-align: var(--text-align, center);
       flex-grow: 1;
+      margin-left: #{rem(-32px)};
+
+      @include media(xs) {
+        margin-left: 0;
+      }
     }
   }
 
