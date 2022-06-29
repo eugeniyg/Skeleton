@@ -909,12 +909,12 @@ export const useFakeStore = () => {
           showTryBtn: false,
           providerId: 'wazdan',
         },
-        {
-          src: '/providers/6.svg',
-          showPlayBtn: false,
-          showTryBtn: false,
-          providerId: 'kalamba',
-        },
+        // {
+        //   src: '/providers/6.svg',
+        //   showPlayBtn: false,
+        //   showTryBtn: false,
+        //   providerId: '9f9736ca-32f1-47cd-8c22-0ab8d8d4b23b',
+        // },
         {
           src: '/providers/7.svg',
           showPlayBtn: false,

@@ -167,21 +167,21 @@
     },
   );
 
-  watch(
-    () => route.query.provider,
-    async (providerId: string) => {
-      console.log('route.query.provider', route.query.provider, 'currentProvider.value.identity', currentProvider.value.identity);
+  // watch(
+  //   () => route.query.provider,
+  //   async (providerId: string) => {
+  //     console.log('route.query.provider', route.query.provider, 'currentProvider.value.identity', currentProvider.value.identity);
       
-      if (
-        route.name === 'games'
-        && route.query.provider !== currentProvider.value.identity
-      ) {
-        console.log('watcher providerId', providerId);
+  //     if (
+  //       route.name === 'games'
+  //       && route.query.provider !== currentProvider.value.identity
+  //     ) {
+  //       console.log('watcher providerId', providerId);
         
-        await changeProvider(providerId);
-      }
-    },
-  );
+  //       await changeProvider(providerId);
+  //     }
+  //   },
+  // );
 </script>
 
 <style lang="scss" src="./games.scss" />

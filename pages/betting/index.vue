@@ -16,9 +16,9 @@
   import { storeToRefs } from 'pinia';
   import { useGamesApi } from '~/CORE';
 
-  definePageMeta({
-    middleware: ['auth'],
-  });
+  // definePageMeta({
+  //   middleware: ['auth'],
+  // });
 
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
@@ -28,13 +28,7 @@
 
   const { getStartGame } = useGamesApi();
 
-  onMounted(async () => {
-    if (isMobile.value) {
-      document.querySelector('footer').style.display = 'none';
-    }
-
-    walletStore.updateAccounts();
-
+  const startGame = async ():Promise<void> => {
     const redirectUrl = window.location.origin;
     const startParams = {
       accountId: activeAccount.value.id,
@@ -46,6 +40,30 @@
     };
     const startResponse = await getStartGame('10239b19-ddcb-4ba5-b95d-417f3cbbb1bc', startParams);
     frameLink.value = startResponse.gameUrl;
+  };
+
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+  const { showModal } = useLayoutStore();
+
+  onMounted(async () => {
+    if (isMobile.value) {
+      document.querySelector('footer').style.display = 'none';
+    }
+
+    walletStore.updateAccounts();
+
+    if (!isLoggedIn.value) {
+      showModal('register');
+    } else {
+      await startGame();
+    }
+  });
+
+  watch(() => isLoggedIn.value, async (newValue:boolean) => {
+    if (newValue) {
+      await startGame();
+    }
   });
 
   onBeforeUnmount(() => {

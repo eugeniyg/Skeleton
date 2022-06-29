@@ -8,7 +8,9 @@
       @click.prevent="clickItem(method)"
       :to="href"
     >
-      <atomic-icon :id="icon"/><span>{{ title }}</span>
+      <client-only>
+        <atomic-icon :id="icon"/><span>{{ title }}</span>
+      </client-only>
     </nuxt-link>
   </div>
 </template>
