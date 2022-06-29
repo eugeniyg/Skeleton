@@ -14,7 +14,8 @@
       class="btn-show-all"
       type="ghost"
       @click="openGames(props.identity)"
-    >Show all</button-base>
+    >Show all  <span :style="{ color: 'red' }">  {{ showArrowButtons }} -> </span>
+    </button-base>
 
     <button-arrows
       v-if="showArrowButtons"
@@ -100,7 +101,7 @@
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
   const nextDisabled = ref<boolean>(false);
-  const showArrowButtons = ref<boolean>(props.showArrows);
+  const showArrowButtons = ref<boolean>(props.showArrows);  
 
   const scrollHandler = ():void => {
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
@@ -120,8 +121,13 @@
 
   onMounted(() => {
     if (props.showArrows) {
+
+      // console.log('showArrowButtons.value', props.showArrows && (!prevDisabled.value || !nextDisabled.value));
+      
+      
       scrollHandler();
       showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
+       console.log('props.showArrows', props.showArrows, 'cond', props.showArrows && (!prevDisabled.value || !nextDisabled.value));
     }
   });
 

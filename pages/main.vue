@@ -110,6 +110,8 @@
   const { getFilteredGames } = useGamesApi();
 
   const providerCards = fakeStore.providerCards();
+  console.log('providerCards', providerCards);
+  
   const latestWinnersCards = fakeStore.latestWinnersCards();
   const promotionsCards = fakeStore.promotionCards();
 
