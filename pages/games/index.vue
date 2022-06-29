@@ -6,17 +6,15 @@
       {{ activeCollection.name }}
     </atomic-cat-heading>
 
-    <!-- <form-input-search
+    <form-input-search
       v-model:value="searchValue"
       placeholder="Search your game"
       @input="searchInput"
-    /> -->
-
-    <span :style="{ color: 'red' }">{{ currentProvider.id }}</span>
+    />
 
     <div class="filters">
       <form-dropdown-base
-        v-model:value="currentProvider.id"
+        :value="currentProvider.id"
         name="providers"
         placeholder="Providers"
         :options="selectOptions.providers"
@@ -40,6 +38,7 @@
   import { useGamesApi } from '~/CORE/index';
   import {
     CollectionInterface,
+    GameProviderInterface,
     GameInterface,
     GamesResponseInterface,
     PaginationMetaInterface,
@@ -62,14 +61,11 @@
     ) || gameCollections[0],
   );
 
-  const currentProvider = ref(
+  const currentProvider = ref<GameProviderInterface>(
     selectOptions.providers.find(
-      (provider) => provider.identity === route.query.provider,
+      (provider: GameProviderInterface) => provider.identity === route.query.provider,
     ) || selectOptions.providers[0],
   );
-
-  console.log("stsart", currentProvider.value);
-  
 
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
@@ -83,8 +79,6 @@
     if (activeCollection.value?.id) {
       params.collectionId = activeCollection.value.id;
     }
-    // console.log('getItems', currentProvider.value);
-    
     if (currentProvider.value?.id !== 'all') {
       params.providerId = currentProvider.value.id;
     }
@@ -107,25 +101,16 @@
   const changeProvider = async (providerId: string): Promise<void> => {
     loadPage.value = 1;
 
-    // console.log('changeProvider', providerId);
-
-    // currentProvider.value = selectOptions.providers.find(
-    //   (provider) => provider.id === providerId,
-    // );
-
-    console.log('changeProvider', currentProvider.value);
-    // console.log('arr', selectOptions.providers);
-    console.log('providerId', providerId);
-    
-    
-
+    currentProvider.value = selectOptions.providers.find(
+      (provider: GameProviderInterface) => provider.id === providerId,
+    );
 
     router.replace({
       query: {
         ...route.query,
         provider:
           currentProvider.value.id !== 'all'
-            ? 'all'
+            ? currentProvider.value.identity
             : undefined,
       },
     });
@@ -170,26 +155,9 @@
         && route.query.category !== activeCollection.value.identity
       ) {
         await changeCategory(newValue);
-      // await changeProvider();
       }
     },
   );
-
-  // watch(
-  //   () => route.query.provider,
-  //   async (providerId: string) => {
-  //     console.log('route.query.provider', route.query.provider, 'currentProvider.value.identity', currentProvider.value.identity);
-      
-  //     if (
-  //       route.name === 'games'
-  //       && route.query.provider !== currentProvider.value.identity
-  //     ) {
-  //       console.log('watcher providerId', providerId);
-        
-  //       await changeProvider(providerId);
-  //     }
-  //   },
-  // );
 </script>
 
 <style lang="scss" src="./games.scss" />
