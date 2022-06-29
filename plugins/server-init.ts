@@ -1,5 +1,5 @@
 // import parser from 'accept-language-parser';
-import { useAuthApi } from '~/CORE/index';
+// import { useAuthApi } from '~/CORE/index';
 
 const useAppCookie = () => useCookie('bearer');
 
@@ -22,14 +22,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         ]);
       } catch (error) {
         if (error.response?.status === 401) {
-          const { refreshToken } = useAuthApi();
-          const { setToken } = useProfileStore();
-          try {
-            const refresh = await refreshToken();
-            setToken(refresh);
-          } catch {
-            bearer.value = undefined;
-          }
+          const { logOutUser } = useProfileStore();
+          logOutUser();
         } else {
           console.log(error);
         }
