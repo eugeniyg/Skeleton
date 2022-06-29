@@ -6,10 +6,12 @@
     </div>
 
     <div class="content">
-      <template v-if="props.isLoggedIn">
-        <card-profile :is-compact="props.isCompact"/>
-        <atomic-divider/>
-      </template>
+      <client-only>
+        <template v-if="props.isLoggedIn">
+          <card-profile :is-compact="props.isCompact"/>
+          <atomic-divider/>
+        </template>
+      </client-only>
       <nav-list :items="fakeStore.topMenuItems" :is-compact="props.isCompact"/>
       <atomic-divider/>
       <nav-list :items="fakeStore.centerMenuItems" :is-compact="props.isCompact"/>
