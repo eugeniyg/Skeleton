@@ -16,9 +16,9 @@
   import { storeToRefs } from 'pinia';
   import { useGamesApi } from '~/CORE';
 
-  definePageMeta({
-    middleware: ['auth'],
-  });
+  // definePageMeta({
+  //   middleware: ['auth'],
+  // });
 
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);

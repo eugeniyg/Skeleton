@@ -4,39 +4,41 @@
 
     <button-search @click="showSearch = true" data-show="mobile"/>
 
-    <div class="items">
-      <search
-        :isShow="showSearch"
-        @hideSearch="showSearch = false"
-      />
-      <button-search @click="showSearch = true" data-show="desktop"/>
+    <client-only>
+      <div class="items">
+        <search
+          :isShow="showSearch"
+          @hideSearch="showSearch = false"
+        />
+        <button-search @click="showSearch = true" data-show="desktop"/>
 
-      <template v-if="props.isLoggedIn">
-        <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
-        <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
-        <form-input-deposit/>
-        <atomic-avatar @toggle="toggleProfileNav" :is-button="true"/>
-        <nav-user :avatar-items="avatarItems" @logout="logout"/>
-      </template>
+        <template v-if="props.isLoggedIn">
+          <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
+          <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
+          <form-input-deposit/>
+          <atomic-avatar @toggle="toggleProfileNav" :is-button="true"/>
+          <nav-user :avatar-items="avatarItems" @logout="logout"/>
+        </template>
 
-      <template v-else>
-        <button-base
-          type="primary"
-          size="md"
-          @click="showModal('register')"
-        >
-          Registration
-        </button-base>
+        <template v-else>
+          <button-base
+            type="primary"
+            size="md"
+            @click="showModal('register')"
+          >
+            Registration
+          </button-base>
 
-        <button-base
-          type="secondary"
-          size="md"
-          @click="showModal('signIn')"
-        >
-          Login
-        </button-base>
-      </template>
-    </div>
+          <button-base
+            type="secondary"
+            size="md"
+            @click="showModal('signIn')"
+          >
+            Login
+          </button-base>
+        </template>
+      </div>
+    </client-only>
   </header>
 </template>
 
