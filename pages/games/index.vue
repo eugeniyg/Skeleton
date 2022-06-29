@@ -68,6 +68,9 @@
     ) || selectOptions.providers[0],
   );
 
+  console.log("stsart", currentProvider.value);
+  
+
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
   const gameItems = ref<GameInterface[]>([]);
@@ -80,7 +83,7 @@
     if (activeCollection.value?.id) {
       params.collectionId = activeCollection.value.id;
     }
-    console.log('getItems', currentProvider.value);
+    // console.log('getItems', currentProvider.value);
     
     if (currentProvider.value?.id !== 'all') {
       params.providerId = currentProvider.value.id;
@@ -104,20 +107,25 @@
   const changeProvider = async (providerId: string): Promise<void> => {
     loadPage.value = 1;
 
-    console.log('changeProvider', providerId);
+    // console.log('changeProvider', providerId);
 
-    currentProvider.value = selectOptions.providers.find(
-      (provider) => provider.id === providerId,
-    );
+    // currentProvider.value = selectOptions.providers.find(
+    //   (provider) => provider.id === providerId,
+    // );
 
     console.log('changeProvider', currentProvider.value);
+    // console.log('arr', selectOptions.providers);
+    console.log('providerId', providerId);
+    
+    
+
 
     router.replace({
       query: {
         ...route.query,
         provider:
           currentProvider.value.id !== 'all'
-            ? currentProvider.value.identity
+            ? 'all'
             : undefined,
       },
     });

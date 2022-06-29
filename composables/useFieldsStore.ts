@@ -49,6 +49,8 @@ export const useFieldsStore = defineStore('fieldsStore', {
           code: option.id,
           value: option.identity,
         }));
+        console.log("optionsArr ->", optionsArr);
+        
         this.selectOptions[optionName] = [allProvidersItem, ...optionsArr];
       } else {
         this.selectOptions[optionName] = options.map((option) => ({
