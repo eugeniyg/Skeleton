@@ -77,13 +77,13 @@
   const scrollHandler = async ():Promise<void> => {
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
-    nextDisabled.value = scrollWidth === Math.floor(scrollLeft) + offsetWidth;
+    nextDisabled.value = (scrollWidth === Math.floor(scrollLeft) + offsetWidth) && pageMeta.value?.page === pageMeta.value?.totalPages;
   };
 
   const clickAction = (goNext: boolean):void => {
     const { offsetWidth } = scrollContainer.value;
     scrollContainer.value.scrollBy({
-      left: goNext ? offsetWidth + 7.5 : -offsetWidth - 7.5,
+      left: goNext ? offsetWidth : -offsetWidth,
       behavior: 'smooth',
     });
   };
@@ -105,7 +105,7 @@
   onMounted(async () => {
     initObserver(loadMore.value, {
       onInView: moreGames,
-      settings: { root: scrollContainer.value, rootMargin: '80%', threshold: 0 },
+      settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
     });
 
     const gamesResponse = await getFilteredGames({ collectionId: props.category.id, perPage: 18 });

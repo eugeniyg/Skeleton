@@ -88,7 +88,8 @@
   $percents: math.div(100%, $columns_count);
   $offset: math.div($columns_count * strip-unit($gap), $columns_count + 1);
 
-  @return calc(#{$percents} - #{$offset}px);
+  //@return calc(#{$percents} - #{$offset}px);
+  @return #{$percents};
 }
 
 @mixin scrollbar {
