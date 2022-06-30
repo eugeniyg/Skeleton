@@ -50,6 +50,10 @@
       type: String,
       required: true,
     },
+    identity: {
+      type: String,
+      required: true,
+    },
     isDemoMode: {
       type: Boolean,
       default: true,
@@ -75,11 +79,11 @@
 
   const openGame = (isReal: boolean):void => {
     if (!isReal) {
-      router.push(`/games/${props.id}?demo=true`);
+      router.push(`/games/${props.identity}?demo=true`);
     } else if (!isLoggedIn.value) {
       showModal('register');
     } else {
-      router.push(`/games/${props.id}`);
+      router.push(`/games/${props.identity}`);
     }
   };
 
