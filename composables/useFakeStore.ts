@@ -1,169 +1,169 @@
 export const useFakeStore = () => {
   const sliders = {
     main: [
-      {
-        image: {
-          source: [
-            {
-              media: '(max-width: 360px)',
-              src: '/sliders/main/1/328.png',
-            },
-            {
-              media: '(max-width: 528px)',
-              src: '/sliders/main/1/464.png',
-            },
-            {
-              media: '(max-width: 768px)',
-              src: '/sliders/main/1/704.png',
-            },
-            {
-              media: '(max-width: 1024px)',
-              src: '/sliders/main/1/944.png',
-            },
-            {
-              media: '(max-width: 2264px)',
-              src: '/sliders/main/1/3776.png',
-            },
-          ],
-          src: '/sliders/main/1/944.png',
-        },
-        title: '<h4>Welcome package <br> Get 5 BTC + 300 FS</h4>',
-        actions: {
-          primary: {
-            title: 'Get bonus',
-            // href: '#',
+        {
+          image: {
+            source: [
+              {
+                media: '(max-width: 360px)',
+                src: ['/sliders/main/1/328/1.png', '/sliders/main/1/328/2.png'],
+              },
+              {
+                media: '(max-width: 528px)',
+                src: ['/sliders/main/1/464/1.png', '/sliders/main/1/464/2.png'],
+              },
+              {
+                media: '(max-width: 768px)',
+                src: ['/sliders/main/1/704/1.png', '/sliders/main/1/704/2.png'],
+              },
+              {
+                media: '(max-width: 1024px)',
+                src: ['/sliders/main/1/944/1.png', '/sliders/main/1/944/2.png'],
+              },
+              {
+                media: '(max-width: 2264px)',
+                src: ['/sliders/main/1/3776/1.png', '/sliders/main/1/3776/2.png'],
+              },
+            ],
+            src: ['/sliders/main/1/944/1.png', '/sliders/main/1/944/2.png'],
           },
-          // secondary: {
-          //   title: 'Secondary',
-          //   href: '#'
-          // },
-        },
-      },
-      {
-        image: {
-          source: [
-            {
-              media: '(max-width: 360px)',
-              src: '/sliders/main/2/328.png',
+          title: '<h4>Welcome package <br> Get 5 BTC + 300 FS</h4>',
+          actions: {
+            primary: {
+              title: 'Get bonus',
+              href: '#',
             },
-            {
-              media: '(max-width: 528px)',
-              src: '/sliders/main/2/464.png',
-            },
-            {
-              media: '(max-width: 768px)',
-              src: '/sliders/main/2/704.png',
-            },
-            {
-              media: '(max-width: 1024px)',
-              src: '/sliders/main/2/944.png',
-            },
-            {
-              media: '(max-width: 2264px)',
-              src: '/sliders/main/2/3776.png',
-            },
-          ],
-          src: '/sliders/main/2/944.png',
-        },
-        title: '<h5>Choose the safest crypto casino</h5>',
-        list: [
-          'Provably fair slots & games;',
-          '24/7 Live Chat Support;',
-          'Privacy and security.',
-        ],
-        actions: {
-          primary: {
-            title: 'Get bonus',
-            // href: '#',
+            // secondary: {
+            //   title: 'Secondary',
+            //   href: '#'
+            // },
           },
-          // secondary: {
-          //   title: 'Secondary',
-          //   href: '#'
-          // },
         },
-      },
-      {
-        image: {
-          source: [
-            {
-              media: '(max-width: 360px)',
-              src: '/sliders/main/3/328.png',
-            },
-            {
-              media: '(max-width: 528px)',
-              src: '/sliders/main/3/464.png',
-            },
-            {
-              media: '(max-width: 768px)',
-              src: '/sliders/main/3/704.png',
-            },
-            {
-              media: '(max-width: 1024px)',
-              src: '/sliders/main/3/944.png',
-            },
-            {
-              media: '(max-width: 2264px)',
-              src: '/sliders/main/3/3776.png',
-            },
-          ],
-          src: '/sliders/main/3/944.png',
-        },
-        title: '<h5>Enjoy fast games on <br>Slotsbet.</h5>',
-        actions: {
-          primary: {
-            title: 'Play now',
-            // href: '#',
+        {
+          image: {
+            source: [
+              {
+                media: '(max-width: 360px)',
+                src: ['/sliders/main/2/328/1.png', '/sliders/main/2/328/2.png'],
+              },
+              {
+                media: '(max-width: 528px)',
+                src: ['/sliders/main/2/464/1.png', '/sliders/main/2/464/2.png'],
+              },
+              {
+                media: '(max-width: 768px)',
+                src: ['/sliders/main/2/704/1.png', '/sliders/main/2/704/2.png'],
+              },
+              {
+                media: '(max-width: 1024px)',
+                src: ['/sliders/main/2/944/1.png', '/sliders/main/2/944/2.png'],
+              },
+              {
+                media: '(max-width: 2264px)',
+                src: ['/sliders/main/2/3776/1.png', '/sliders/main/2/3776/2.png'],
+              },
+            ],
+            src: ['/sliders/main/2/944/1.png', '/sliders/main/2/944/2.png'],
           },
-          // secondary: {
-          //   title: 'Secondary',
-          //   href: '#'
-          // },
-        },
-      },
-      {
-        image: {
-          source: [
-            {
-              media: '(max-width: 360px)',
-              src: '/sliders/main/4/328.png',
-            },
-            {
-              media: '(max-width: 528px)',
-              src: '/sliders/main/4/464.png',
-            },
-            {
-              media: '(max-width: 768px)',
-              src: '/sliders/main/4/704.png',
-            },
-            {
-              media: '(max-width: 1024px)',
-              src: '/sliders/main/4/944.png',
-            },
-            {
-              media: '(max-width: 2264px)',
-              src: '/sliders/main/4/3776.png',
-            },
+          title: '<h5>Choose the safest crypto casino</h5>',
+          list: [
+            'Provably fair slots & games;',
+            '24/7 Live Chat Support;',
+            'Privacy and security.',
           ],
-          src: '/sliders/main/4/944.png',
-        },
-        title: '<h5>Get bonuses every week</h5>',
-        list: [
-          'Provably fair slots & games;',
-          '24/7 Live Chat Support;',
-          'Privacy and security.',
-        ],
-        actions: {
-          primary: {
-            title: 'Get bonus',
-            // href: '#',
+          actions: {
+            primary: {
+              title: 'Get bonus',
+              href: '#',
+            },
+            // secondary: {
+            //   title: 'Secondary',
+            //   href: '#'
+            // },
           },
-          // secondary: {
-          //   title: 'Secondary',
-          //   href: '#'
-          // },
         },
-      },
-    ],
+        {
+          image: {
+            source: [
+              {
+                media: '(max-width: 360px)',
+                src: ['/sliders/main/3/328/1.png', '/sliders/main/3/328/2.png'],
+              },
+              {
+                media: '(max-width: 528px)',
+                src: ['/sliders/main/3/464/1.png', '/sliders/main/3/464/2.png'],
+              },
+              {
+                media: '(max-width: 768px)',
+                src: ['/sliders/main/3/704/1.png', '/sliders/main/3/704/2.png'],
+              },
+              {
+                media: '(max-width: 1024px)',
+                src: ['/sliders/main/3/944/1.png', '/sliders/main/3/944/2.png'],
+              },
+              {
+                media: '(max-width: 2264px)',
+                src: ['/sliders/main/3/3776/1.png', '/sliders/main/3/3776/2.png'],
+              },
+            ],
+            src: ['/sliders/main/3/944/1.png', '/sliders/main/3/944/2.png'],
+          },
+          title: '<h5>Enjoy fast games on <br>Slotsbet.</h5>',
+          actions: {
+            primary: {
+              title: 'Play now',
+              href: '#',
+            },
+            // secondary: {
+            //   title: 'Secondary',
+            //   href: '#'
+            // },
+          },
+        },
+        {
+          image: {
+            source: [
+              {
+                media: '(max-width: 360px)',
+                src: ['/sliders/main/4/328/1.png', '/sliders/main/4/328/2.png'],
+              },
+              {
+                media: '(max-width: 528px)',
+                src: ['/sliders/main/4/464/1.png', '/sliders/main/4/464/2.png'],
+              },
+              {
+                media: '(max-width: 768px)',
+                src: ['/sliders/main/4/704/1.png', '/sliders/main/4/704/2.png'],
+              },
+              {
+                media: '(max-width: 1024px)',
+                src: ['/sliders/main/4/944/1.png', '/sliders/main/4/944/2.png'],
+              },
+              {
+                media: '(max-width: 2264px)',
+                src: ['/sliders/main/4/3776/1.png', '/sliders/main/4/3776/2.png'],
+              },
+            ],
+            src: ['/sliders/main/4/944/1.png', '/sliders/main/4/944/2.png'],
+          },
+          title: '<h5>Get bonuses every week</h5>',
+          list: [
+            'Provably fair slots & games;',
+            '24/7 Live Chat Support;',
+            'Privacy and security.',
+          ],
+          actions: {
+            primary: {
+              title: 'Get bonus',
+              href: '#',
+            },
+            // secondary: {
+            //   title: 'Secondary',
+            //   href: '#'
+            // },
+          },
+        },
+      ],
   };
 
   const cards = [
@@ -1508,8 +1508,8 @@ export const useFakeStore = () => {
       title: 'Interac E-transfer',
       value: 'interac',
       mask: '/svg/payment-systems/interac.svg',
-      balance: {value: 79.4, title: 'EUR'},
-      withdraw: {value: 54.73, title: 'EUR'},
+      balance: { value: 79.4, title: 'EUR' },
+      withdraw: { value: 54.73, title: 'EUR' },
       useForDeposit: true,
       useForWithDraw: true,
     },
@@ -1517,7 +1517,7 @@ export const useFakeStore = () => {
       title: 'visa',
       value: 'visa',
       mask: '/svg/payment-systems/visa.svg',
-      balance: {value: 79.4, title: 'EUR'},
+      balance: { value: 79.4, title: 'EUR' },
       useForDeposit: true,
       useForWithDraw: false,
     },
@@ -1525,7 +1525,7 @@ export const useFakeStore = () => {
       title: 'MiFinity',
       value: 'mifinity',
       mask: '/svg/payment-systems/mifinity.svg',
-      balance: {value: 79.4, title: 'EUR'},
+      balance: { value: 79.4, title: 'EUR' },
       useForDeposit: true,
       useForWithDraw: true,
     },
@@ -1568,8 +1568,8 @@ export const useFakeStore = () => {
       title: 'volt',
       value: 'volt',
       mask: '/svg/payment-systems/volt.svg',
-      balance: {value: 79.4, title: 'EUR'},
-      withdraw: {value: 54.73, title: 'EUR'},
+      balance: { value: 79.4, title: 'EUR' },
+      withdraw: { value: 54.73, title: 'EUR' },
       useForDeposit: true,
       useForWithDraw: true,
     },
@@ -1577,8 +1577,8 @@ export const useFakeStore = () => {
       title: 'Bank Transfer',
       value: 'etransfer',
       mask: '/svg/payment-systems/e-transfer.svg',
-      balance: {value: 100.4, title: 'EUR'},
-      withdraw: {value: 77.73, title: 'EUR'},
+      balance: { value: 100.4, title: 'EUR' },
+      withdraw: { value: 77.73, title: 'EUR' },
       useForDeposit: false,
       useForWithDraw: true,
     },
@@ -1693,21 +1693,21 @@ export const useFakeStore = () => {
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
         createdAt: '15.04.2022, 15:21',
-        status: {variant: 'current', text: 'Current'},
+        status: { variant: 'current', text: 'Current' },
       },
       {
         device: 'mobile',
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
         createdAt: '15.04.2022, 15:21',
-        status: {variant: 'current', text: 'Current'},
+        status: { variant: 'current', text: 'Current' },
       },
       {
         device: 'mobile',
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
         createdAt: '15.04.2022, 15:21',
-        status: {variant: 'closed', text: 'Closed'},
+        status: { variant: 'closed', text: 'Closed' },
       },
     ],
   };
@@ -2412,30 +2412,30 @@ export const useFakeStore = () => {
 
   const mainBanner = {
     image: {
-      source: [
-        {
-          media: '(max-width: 360px)',
-          src: '/sliders/main/1/328.png',
-        },
-        {
-          media: '(max-width: 528px)',
-          src: '/sliders/main/1/464.png',
-        },
-        {
-          media: '(max-width: 768px)',
-          src: '/sliders/main/1/704.png',
-        },
-        {
-          media: '(max-width: 1024px)',
-          src: '/sliders/main/1/944.png',
-        },
-        {
-          media: '(max-width: 2264px)',
-          src: '/sliders/main/1/3776.png',
-        },
-      ],
-      src: '/sliders/main/1/944.png',
-    },
+        source: [
+          {
+            media: '(max-width: 360px)',
+            src: ['/sliders/main/1/328/1.png', '/sliders/main/1/328/2.png'],
+          },
+          {
+            media: '(max-width: 528px)',
+            src: ['/sliders/main/1/464/1.png', '/sliders/main/2/464/2.png'],
+          },
+          {
+            media: '(max-width: 768px)',
+            src: ['/sliders/main/1/704/1.png', '/sliders/main/1/704/2.png'],
+          },
+          {
+            media: '(max-width: 1024px)',
+            src: ['/sliders/main/1/944/1.png', '/sliders/main/1/944/2.png'],
+          },
+          {
+            media: '(max-width: 2264px)',
+            src: ['/sliders/main/1/3776/1.png', '/sliders/main/1/3776/2.png'],
+          },
+        ],
+        src: ['/sliders/main/1/944/1.png', '/sliders/main/1/944/2.png'],
+      },
     title: '<h4>Play and win every day at Slotsbet</h4>',
     actions: {
       primary: {
