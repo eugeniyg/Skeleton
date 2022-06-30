@@ -130,6 +130,7 @@
       grid-area: sub-title;
       @include font($heading-1);
       color: var(--yellow-500);
+      padding-top: rem(6px);
     }
   }
 
@@ -145,6 +146,7 @@
     grid-template-columns: auto 1fr;
     grid-gap: rem(8px);
     position: relative;
+    width: 100%;
 
     @include media(sm) {
       grid-template-areas:
@@ -157,6 +159,16 @@
 
     &:nth-of-type(1) {
       --bg: linear-gradient(187.95deg, #950428 44.73%, #28263b 93.88%);
+
+      .arrow {
+        display: none;
+      }
+
+      @include media(sm) {
+        .arrow {
+          display: flex;
+        }
+      }
     }
 
     &:nth-of-type(2) {
@@ -241,6 +253,14 @@
     grid-area: actions;
     margin-top: var(--margin-top, #{rem(8px)});
 
+    .btn-primary {
+      @include upd-font($heading-2);
+    }
+
+    .btn-ghost {
+      @include upd-font($heading-1);
+    }
+
     @include media(sm) {
       flex-direction: column;
       --margin-top: #{rem(24px)};
@@ -266,7 +286,10 @@
     display: grid;
     grid-gap: rem(16px);
     overflow: hidden;
-    grid-template-columns: repeat(2, 1fr);
+
+    @include media(sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
 
     .title {
       @include upd-font($heading-4);
@@ -314,17 +337,20 @@
   .btn-ghost {
     white-space: nowrap;
     --padding: #{rem(11px)} #{rem(8px)};
+
   }
 
   .btn-primary {
+    @include upd-font($heading-2);
+
     @include media(xs) {
       --width: 100%;
     }
+
   }
 
   .btn-ghost {
-    @include media(xs) {
-    }
+    @include upd-font($heading-1);
   }
 
   .actions {

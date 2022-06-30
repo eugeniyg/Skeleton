@@ -8,7 +8,7 @@
     </div>
 
     <div class="row" v-if="props.withdraw">
-      <div class="label">Withdraw</div>
+      <div class="label">Withdrawable</div>
       <div class="value">
         {{ activeAccount.formatBalance.amount }} {{ activeAccount.formatBalance.currency }}
       </div>

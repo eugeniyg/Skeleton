@@ -18,35 +18,35 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  title: {
-    type: String,
-  },
-  items: {
-    type: Array,
-    default: () => [],
-  },
-  isOpen: {
-    type: Boolean,
-    default: false,
-  },
-});
+  const props = defineProps({
+    title: {
+      type: String,
+    },
+    items: {
+      type: Array,
+      default: () => [],
+    },
+    isOpen: {
+      type: Boolean,
+      default: false,
+    },
+  });
 
-const open = ref<boolean>(props.isOpen);
-const scrollHeight = ref<number>(0);
-const refItems = ref();
+  const open = ref<boolean>(props.isOpen);
+  const scrollHeight = ref<number>(0);
+  const refItems = ref();
 
-const toggleOpen = (): void => {
-  open.value = !open.value;
-  const height = open.value ? scrollHeight.value : 0;
-  refItems.value.style.setProperty("--items-height", `${height}px`);
-};
+  const toggleOpen = (): void => {
+    open.value = !open.value;
+    const height = open.value ? scrollHeight.value : 0;
+    refItems.value.style.setProperty('--items-height', `${height}px`);
+  };
 
-const updateScrollHeight = (): void => {
-  scrollHeight.value = refItems.value.scrollHeight;
-};
+  const updateScrollHeight = (): void => {
+    scrollHeight.value = refItems.value.scrollHeight;
+  };
 
-onMounted(() => updateScrollHeight());
+  onMounted(() => setTimeout(updateScrollHeight, 100));
 </script>
 
 <style lang="scss" src="./style.scss"></style>

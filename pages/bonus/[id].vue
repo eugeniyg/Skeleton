@@ -7,17 +7,19 @@
       <h1 class="title">{{ bonusPage.title }}</h1>
       <h3 class="sub-title">{{ bonusPage.subTitle }}</h3>
       <p class="description">{{ bonusPage.description }}</p>
-      <h4 class="list-title">{{ bonusPage.list.title }}</h4>
-      <ol>
-        <template v-for="(item, itemIndex) in bonusPage.list.items">
-          <li v-if="!Array.isArray(item)" :key="itemIndex">{{ item }}</li>
-          <ul v-else>
-            <li v-for="(item, itemIndex) in item" :key="itemIndex">
-              {{ item }}
-            </li>
-          </ul>
-        </template>
-      </ol>
+      <template v-if="bonusPage.list">
+        <h4 class="list-title">{{ bonusPage.list.title }}</h4>
+        <ol>
+          <template v-for="(item, itemIndex) in bonusPage.list.items">
+            <li v-if="!Array.isArray(item)" :key="itemIndex">{{ item }}</li>
+            <ul v-else>
+              <li v-for="(item, itemIndex) in item" :key="itemIndex">
+                {{ item }}
+              </li>
+            </ul>
+          </template>
+        </ol>
+      </template>
       <button-base
         type="primary"
         size="lg"
@@ -34,10 +36,15 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const { bonusPage } = useFakeStore();
+  const route = useRoute();
+
+  const { bonusPages } = useFakeStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { openDepositModal, showModal } = useLayoutStore();
+
+  const bonusPage = computed(() => bonusPages[route.params.id]);
+
 </script>
 
 <style lang="scss" src="./style.scss"></style>

@@ -1,8 +1,8 @@
 <template>
-  <a class="card-benefit" href="#">
+  <div class="card-benefit">
     <img class="icon" :src="`/img${props.src}`" alt="" />
     <div class="title" v-html="props.title"></div>
-  </a>
+  </div>
 </template>
 
 <script setup lang="ts">
