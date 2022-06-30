@@ -65,7 +65,7 @@
         isLoggedIn.value ? openDepositModal() : showModal('signIn');
       }
       if (method === 'toBetting') {
-        isLoggedIn.value ? router.push('/betting') : showModal('signIn');
+        isLoggedIn.value ? router.push('/betting') : showModal('register');
       } else {
         layoutStore[method]();
       }
