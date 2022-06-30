@@ -26,7 +26,6 @@
         @click="isLoggedIn ? openDepositModal() : showModal('register')"
       >Get bonus</button-base>
       <atomic-detail
-        :key="$route.fullPath"
         :title="bonusPage.detail.title"
         :items="bonusPage.detail.items"
       />
