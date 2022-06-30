@@ -1,3 +1,8 @@
+.carousel {
+  max-height: rem(308px);
+  height: 100%;
+}
+
 .carousel__pagination {
   padding: rem(8px) 0 0 0;
   display: flex;

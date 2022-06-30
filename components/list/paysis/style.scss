@@ -3,7 +3,11 @@
   align-items: center;
   grid-gap: rem(24px);
   overflow-x: auto;
-  justify-content: center;
+
+  @include media(sm) {
+    overflow-x: hidden;
+    justify-content: center;
+  }
 
   &::-webkit-scrollbar {
     display: none;
