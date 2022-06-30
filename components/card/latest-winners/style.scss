@@ -15,17 +15,14 @@
   align-self: stretch;
   align-items: flex-start;
   text-decoration: none;
+  @extend %cards-items;
 
    @include media(md) {
-    --min-width: #{column(5, 8px)};
-  }
-
-  @include media(xl) {
-    --min-width: #{column(5, 8px)};
+    --min-width: #{column(5)};
   }
 
   @include media(xxl) {
-    --min-width: #{column(6, 8px)};
+    --min-width: #{column(6)};
   }
 
   .img {

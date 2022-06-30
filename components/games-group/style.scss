@@ -64,8 +64,8 @@
     grid-area: items;
     display: var(--display, flex);
     align-items: center;
-    //grid-column-gap: var(--items-column-gap, #{rem(8px)});
     overflow-x: auto;
+    margin: 0  rem(-4px);
 
     &::-webkit-scrollbar {
       display: none;

@@ -64,9 +64,8 @@
     grid-area: items;
     display: var(--display, flex);
     align-items: center;
-    //grid-column-gap: var(--items-column-gap, #{rem(8px)});
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    @extend %cards-items-negative;
 
     &::-webkit-scrollbar {
       display: none;

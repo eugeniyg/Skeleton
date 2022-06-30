@@ -7,7 +7,6 @@
   .items {
     display: flex;
     flex-wrap: wrap;
-    grid-gap: var(--gap, rem(8px));
   }
 
   .item {
