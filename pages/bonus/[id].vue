@@ -28,7 +28,6 @@
       <atomic-detail
         :title="bonusPage.detail.title"
         :items="bonusPage.detail.items"
-        :key="route.params.id"
       />
     </div>
   </div>

@@ -4,10 +4,6 @@
       <div class="title">{{ props.title }}</div>
       <atomic-icon id="ui-arrow_expand-close" />
     </div>
-    {{ props.items }}
-    <br />
-    <br />
-    {{ scrollHeight }}
     <div class="items" ref="refItems">
       <ol>
         <template v-for="(item, itemIndex) in props.items">
@@ -46,15 +42,11 @@
     refItems.value.style.setProperty('--items-height', `${height}px`);
   };
 
-  const updateScrollHeight = async (): Promise<void> => {
-    console.log('53 ->', refItems.value);
-
-    await nextTick();
-
+  const updateScrollHeight = (): void => {
     scrollHeight.value = refItems.value.scrollHeight;
   };
 
-  onMounted(async () => updateScrollHeight());
+  onMounted(() => setTimeout(updateScrollHeight, 100));
 </script>
 
 <style lang="scss" src="./style.scss"></style>
