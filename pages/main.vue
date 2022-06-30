@@ -108,7 +108,6 @@
   import {
     Carousel, Slide, Pagination, Navigation,
   } from 'vue3-carousel';
-  import { onBeforeMount } from '@vue/runtime-core';
 
   const fakeStore = useFakeStore();
   const router = useRouter();
