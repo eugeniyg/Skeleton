@@ -39,12 +39,14 @@
       showAllBtn
       showArrows
       :category="sortCategory[0]"
+      @initialLoad="gamesGroupLoaded++"
     />
 
     <games-group
       showAllBtn
       showArrows
       :category="sortCategory[1]"
+      @initialLoad="gamesGroupLoaded++"
     />
 
     <cards-group v-if="providerCards.games?.length" v-bind="providerCards">
@@ -57,12 +59,14 @@
       showAllBtn
       showArrows
       :category="sortCategory[2]"
+      @initialLoad="gamesGroupLoaded++"
     />
 
     <games-group
       showAllBtn
       showArrows
       :category="sortCategory[3]"
+      @initialLoad="gamesGroupLoaded++"
     />
 
     <cards-group v-if="latestWinnersCards" v-bind="latestWinnersCards">
@@ -75,12 +79,14 @@
       showAllBtn
       showArrows
       :category="sortCategory[4]"
+      @initialLoad="gamesGroupLoaded++"
     />
 
     <games-group
       showAllBtn
       showArrows
       :category="sortCategory[5]"
+      @initialLoad="gamesGroupLoaded++"
     />
 
     <cards-group v-if="promotionsCards" v-bind="promotionsCards">
@@ -102,6 +108,7 @@
   import {
     Carousel, Slide, Pagination, Navigation,
   } from 'vue3-carousel';
+  import { onBeforeMount } from '@vue/runtime-core';
 
   const fakeStore = useFakeStore();
   const router = useRouter();
@@ -126,6 +133,18 @@
       wrapAround: true,
     },
   };
+
+  onBeforeMount(() => {
+    if (document.querySelector('.preloader.is-hide')) window.startPagePreloader();
+  });
+
+  const gamesGroupLoaded = ref<number>(0);
+  watch(() => gamesGroupLoaded.value, (newValue:number) => {
+    if (newValue === mainCategories.length) {
+      const doneEvent = new Event('preloader:done', { bubbles: false, cancelable: true });
+      document.dispatchEvent(doneEvent);
+    }
+  });
 
   // function selectTab(id: string): void {
   //   selectedTabId.value = id;

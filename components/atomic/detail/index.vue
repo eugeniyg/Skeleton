@@ -45,8 +45,11 @@
   const updateScrollHeight = (): void => {
     scrollHeight.value = refItems.value.scrollHeight;
   };
-
-  onMounted(() => updateScrollHeight());
+  onMounted(() => {
+    setTimeout(() => {
+      updateScrollHeight();
+    }, 100);
+  });
 </script>
 
 <style lang="scss" src="./style.scss"></style>

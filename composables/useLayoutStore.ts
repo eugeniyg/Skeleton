@@ -32,6 +32,7 @@ export type LayoutStoreStateType = {
     error: string,
     forgotPass: string,
   },
+  showPreloader: boolean,
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -41,6 +42,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       isCurrencyNavOpen: false,
       isDrawerCompact: false,
       isShowAlert: false,
+      showPreloader: true,
       alertProps: {
         title: undefined,
         text: undefined,
@@ -166,6 +168,10 @@ export const useLayoutStore = defineStore('layoutStore', {
       const { getWithdrawMethods } = useWalletStore();
       await getWithdrawMethods();
       this.showModal('withdraw');
+    },
+
+    togglePreloader(switchOn:boolean):void {
+      this.showPreloader = switchOn;
     },
   },
 });

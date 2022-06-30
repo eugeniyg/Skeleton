@@ -102,6 +102,7 @@
   const loadMore = ref();
   const { initObserver } = useGlobalMethods();
 
+  const emit = defineEmits(['initialLoad']);
   onMounted(async () => {
     initObserver(loadMore.value, {
       onInView: moreGames,
@@ -112,6 +113,7 @@
     games.value = gamesResponse.data;
     pageMeta.value = gamesResponse.meta;
     await nextTick();
+    emit('initialLoad');
 
     if (props.showArrows) {
       scrollHandler();

@@ -50,6 +50,16 @@ export default defineNuxtConfig({
       '~/components',
     ],
   },
+  app: {
+    head: {
+      script: [
+        { src: '/preloader/preloader.js', defer: true },
+      ],
+      link: [
+        { rel: 'stylesheet', href: '/preloader/preloader.css' },
+      ],
+    },
+  },
   build,
   vite: viteConfig,
 });
