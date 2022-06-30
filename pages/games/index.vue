@@ -75,7 +75,7 @@
   const { getFilteredGames } = useGamesApi();
 
   const getItems = async (): Promise<GamesResponseInterface> => {
-    const params: any = { page: loadPage.value };
+    const params: any = { page: loadPage.value, perPage: 18 };
     if (activeCollection.value?.id) {
       params.collectionId = activeCollection.value.id;
     }
