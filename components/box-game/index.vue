@@ -12,18 +12,11 @@
     <nav-game/>
     <panel-mode @changeMode="emit('changeMode')"/>
 
-    <cards-group
-      v-if="popularGames.length"
-      v-bind="popularCategory"
-      titleIcon="ui-heart"
-      :games="popularGames"
+    <games-group
+      :category="popularCategory"
       showArrows
       subTitle="The best games for you"
-    >
-      <template v-slot:card="item">
-        <card-base v-bind="item"/>
-      </template>
-    </cards-group>
+    />
   </div>
 </template>
 

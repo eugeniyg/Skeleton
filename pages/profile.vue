@@ -3,7 +3,7 @@
     <nav-profile :items="menu.profile"/>
 
     <client-only>
-      <NuxtPage :page-key="`profile-child${$route.fullPath}`" />
+      <NuxtPage :key="`profile-child${$route.fullPath}`" />
     </client-only>
   </div>
 </template>
