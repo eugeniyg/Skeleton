@@ -7,9 +7,9 @@
     <div class="items" ref="refItems">
       <ol>
         <template v-for="(item, itemIndex) in props.items">
-          <li v-if="!Array.isArray(item)" :key="itemIndex">{{ item }}</li>
-          <ul v-else>
-            <li v-for="item in item" :key="item">{{ item }}</li>
+          <li v-if="!Array.isArray(item)" :key="`li-${itemIndex}`">{{ item }}</li>
+          <ul v-else :key="`ul-${itemIndex}`">
+            <li v-for="listItem in item" :key="`list-${listItem}`">{{ listItem }}</li>
           </ul>
         </template>
       </ol>
@@ -46,7 +46,7 @@
     scrollHeight.value = refItems.value.scrollHeight;
   };
 
-  onMounted(() => setTimeout(updateScrollHeight, 100));
+  onMounted(() => updateScrollHeight());
 </script>
 
 <style lang="scss" src="./style.scss"></style>
