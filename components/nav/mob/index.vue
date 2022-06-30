@@ -4,12 +4,12 @@
       v-for="({ title, icon, href, isAccent, method }, itemIndex) in items"
       :key="itemIndex"
       class="item"
-      :class="{'is-accent': isAccent}"
+      :class="{ 'is-accent': isAccent }"
       @click.prevent="clickItem(method)"
-      :to="href"
+      :to="href !== '/betting' && href"
     >
       <client-only>
-        <atomic-icon :id="icon"/><span>{{ title }}</span>
+        <atomic-icon :id="icon" /><span>{{ title }}</span>
       </client-only>
     </nuxt-link>
   </div>
@@ -18,6 +18,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
+  const router = useRouter();
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
@@ -44,6 +45,7 @@
       title: 'Sport',
       icon: 'sport',
       href: '/betting',
+      method: 'toBetting',
     },
     {
       title: 'Support',
@@ -53,14 +55,17 @@
   ]);
 
   // eslint-disable-next-line no-unused-vars
-  function toggleDrawer():void {
+  function toggleDrawer(): void {
     layoutStore.toggleDrawer();
   }
 
-  function clickItem(method?:string):void {
+  function clickItem(method?: string): void {
     if (method) {
       if (method === 'openModal') {
         isLoggedIn.value ? openDepositModal() : showModal('signIn');
+      }
+      if (method === 'toBetting') {
+        isLoggedIn.value ? router.push('/betting') : showModal('register');
       } else {
         layoutStore[method]();
       }
@@ -68,4 +73,4 @@
   }
 </script>
 
-<style lang="scss" src="./style.scss"/>
+<style lang="scss" src="./style.scss" />
