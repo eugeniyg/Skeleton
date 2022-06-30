@@ -79,15 +79,15 @@
         },
         {
           title: 'Monday Reload Bonus',
-          href: '/monday-reload-bonus',
+          href: '/bonus/monday-reload-bonus',
         },
         {
           title: 'Wednesday Free Spins',
-          href: '/wednesday-free-spins',
+          href: '/bonus/wednesday-free-spins',
         },
         {
           title: 'Weekly Cashback',
-          href: '/weekly-cashback',
+          href: '/bonus/weekly-cashback',
         },
       ],
       order: 1,
