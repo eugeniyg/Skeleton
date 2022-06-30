@@ -14,6 +14,7 @@
   background-position: var(--bg-position, center);
   min-width: var(--min-width, #{column(3, 8px)});
   scroll-snap-align: var(--scroll-snap-align, unset);
+  border: 4px solid var(--black-primary);
 
   &:nth-of-type(3n + 1) {
     --scroll-snap-align: start;
