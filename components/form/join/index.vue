@@ -77,9 +77,9 @@
 
   const mainFields = registrationFields.value.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = registrationFields.value.filter((field) => groupFooterFields.includes(field.name));
-
   const registrationFormData = reactive(setFormData(registrationFields.value));
   if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
+  if (registrationFormData.hasOwnProperty('country')) registrationFormData.country = 'NL';
 
   const { getFormRules } = useProjectMethods();
   const registrationFormRules = getFormRules(registrationFields.value, true);
