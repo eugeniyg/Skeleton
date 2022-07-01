@@ -76,7 +76,7 @@ export default defineEventHandler(() => ({
     placeholder: 'Select your currency',
   },
   agreements: {
-    label: 'I accept the <a href="/terms-and-conditions"> Terms and Conditions</a> and <a href="/privacy-policy">Privacy Policy</a><sup>*</sup>',
+    label: 'I accept the <a href="/terms-and-conditions"> Terms and Conditions</a> and <a href="/privacy-policy">Privacy Policy</a>',
     placeholder: '',
   },
   receiveEmailPromo: {

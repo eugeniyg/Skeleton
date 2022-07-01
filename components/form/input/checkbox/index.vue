@@ -11,7 +11,9 @@
       />
 
       <atomic-icon id="ui-check"/>
-      <slot/>
+      <span v-html="label">
+        <sup v-if="isRequired">*</sup>
+      </span>
     </label>
   </div>
 </template>
@@ -22,9 +24,17 @@
       type: Boolean,
       default: false,
     },
+    isRequired: {
+      type: Boolean,
+      default: false,
+    },
     isError: {
       type: [Boolean, Object],
       default: false,
+    },
+    label: {
+      type: String,
+      required: false,
     },
     name: {
       type: String,
