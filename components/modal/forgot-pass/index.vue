@@ -8,7 +8,7 @@
       <div class="scroll">
         <div class="header">
           <button-modal-close @close="closeForgotPassModal" />
-          <div class="title">Forgot your password?</div>
+          <div class="title">Forgot password?</div>
         </div>
         <p class="text">
           Enter your email address and we will send you a password reset link.

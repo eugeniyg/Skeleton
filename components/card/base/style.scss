@@ -9,7 +9,7 @@
   align-items: flex-start;
   background-color: var(--bg, transparent);
   background-repeat: var(--bg-repeat, no-repeat);
-  background-size: var(--bg-size, auto 113%);
+  background-size: var(--bg-size, 100%);
   background-position: var(--bg-position, center);
   min-width: var(--min-width, #{column(3)});
   @extend %cards-items;
@@ -46,14 +46,12 @@
     bottom: 0;
     opacity: var(--opacity-info, 0);
     transition: var(--transition-info, (opacity .6s ease));
-    transition-delay: .2s;
-
+    pointer-events: var(--pointer-events, none);
     will-change: opacity;
   }
 
   &:hover {
-    transition-delay: 0s;
-    --visibility-info: visible;
+    --pointer-events: auto;
     --opacity-info: 1;
     --transition-info: (opacity .6s ease);
 
