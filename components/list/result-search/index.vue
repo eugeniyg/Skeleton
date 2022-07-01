@@ -60,8 +60,8 @@
   const router = useRouter();
   const clickGame = (gameData:GameInterface):void => {
     if (!isLoggedIn.value) {
-      router.push(`/games/${gameData.id}${gameData.isDemoMode ? '?demo=true' : ''}`);
-    } else router.push(`/games/${gameData.id}`);
+      router.push(`/games/${gameData.identity}${gameData.isDemoMode ? '?demo=true' : ''}`);
+    } else router.push(`/games/${gameData.identity}`);
     emit('hideSearch');
   };
 
