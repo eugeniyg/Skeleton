@@ -14,7 +14,7 @@
 
     <div class="filters">
       <form-dropdown-base
-        v-model:value="currentProvider"
+        :value="currentProvider.id"
         name="providers"
         placeholder="Providers"
         :options="selectOptions.providers"
@@ -38,6 +38,7 @@
   import { useGamesApi } from '~/CORE/index';
   import {
     CollectionInterface,
+    GameProviderInterface,
     GameInterface,
     GamesResponseInterface,
     PaginationMetaInterface,
@@ -48,7 +49,11 @@
   const route = useRoute();
   const router = useRouter();
 
-  if (!route.query.category) router.replace({ query: { ...route.query, category: gameCollections[0].identity } });
+  if (!route.query.category) {
+    router.replace({
+      query: { ...route.query, category: gameCollections[0].identity },
+    });
+  }
 
   const activeCollection = ref<CollectionInterface>(
     gameCollections.find(
@@ -56,20 +61,26 @@
     ) || gameCollections[0],
   );
 
-  const currentProvider = ref<any>(route.query.provider || 'all');
+  const currentProvider = ref<GameProviderInterface>(
+    selectOptions.providers.find(
+      (provider: GameProviderInterface) => provider.identity === route.query.provider,
+    ) || selectOptions.providers[0],
+  );
+
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
   const gameItems = ref<GameInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
 
   const { getFilteredGames } = useGamesApi();
+
   const getItems = async (): Promise<GamesResponseInterface> => {
-    const params: any = { page: loadPage.value };
+    const params: any = { page: loadPage.value, perPage: 18 };
     if (activeCollection.value?.id) {
       params.collectionId = activeCollection.value.id;
     }
-    if (currentProvider.value !== 'all') {
-      params.providerId = currentProvider.value;
+    if (currentProvider.value?.id !== 'all') {
+      params.providerId = currentProvider.value.id;
     }
     if (searchValue.value) params.name = searchValue.value;
 
@@ -84,16 +95,23 @@
     pageMeta.value = response.meta;
   };
 
-  const { data } = await useAsyncData('items', getItems);
+  const { data } = await useAsyncData('items', getItems, { initialCache: false });
   setItems(data.value);
 
-  const changeProvider = async (): Promise<void> => {
+  const changeProvider = async (providerId: string): Promise<void> => {
     loadPage.value = 1;
-    router.push({
+
+    currentProvider.value = selectOptions.providers.find(
+      (provider: GameProviderInterface) => provider.id === providerId,
+    );
+
+    router.replace({
       query: {
         ...route.query,
         provider:
-          currentProvider.value !== 'all' ? currentProvider.value : undefined,
+          currentProvider.value.id !== 'all'
+            ? currentProvider.value.identity
+            : undefined,
       },
     });
     const response = await getItems();
@@ -105,7 +123,7 @@
     activeCollection.value = gameCollections.find(
       (collection) => collection.identity === categoryId,
     );
-    router.push({ query: { ...route.query, category: categoryId } });
+    router.replace({ query: { ...route.query, category: categoryId } });
     const response = await getItems();
     setItems(response);
   };
@@ -132,7 +150,10 @@
   watch(
     () => route.query.category,
     async (newValue: string) => {
-      if (route.name === 'games' && route.query.category !== activeCollection.value.identity) {
+      if (
+        route.name === 'games'
+        && route.query.category !== activeCollection.value.identity
+      ) {
         await changeCategory(newValue);
       }
     },

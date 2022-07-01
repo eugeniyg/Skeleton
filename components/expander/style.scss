@@ -10,7 +10,7 @@
 
     &.is-open {
       --title-color: var(--yellow-500);
-      --btn-rotate: rotate(180deg);
+      --btn-rotate: rotate(0);
 
       .icon {
         --color: var(--yellow-500);
@@ -25,7 +25,7 @@
     }
 
     .btn {
-      transform: var(--btn-rotate, rotate(0));
+      transform: var(--btn-rotate, rotate(180deg));
       transition: transform .2s ease-in-out;
       --color: var(--white);
       --bg: transparent;

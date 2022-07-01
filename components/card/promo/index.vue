@@ -5,9 +5,19 @@
         v-for="({media, src}, index) in props.image.source"
         :key="index"
         :media="media"
-        :srcset="`/img${src}`"
+        :srcset="`/img${src[1]}`"
       />
-      <img :src="`/img${props.image.src}`" />
+      <img class="back" :src="`/img${props.image.src[1]}`" alt=""/>
+    </picture>
+
+    <picture>
+      <source
+        v-for="({media, src}, index) in props.image.source"
+        :key="index"
+        :media="media"
+        :srcset="`/img${src[0]}`"
+      />
+      <img class="front" :src="`/img${props.image.src[0]}`" alt=""/>
     </picture>
 
     <div class="info">

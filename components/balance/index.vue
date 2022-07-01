@@ -3,14 +3,14 @@
     <div class="row">
       <div class="label">Balance</div>
       <div class="value">
-        {{ activeAccount.formatBalance.amount }} {{ activeAccount.formatBalance.currency }}
+        {{ activeAccount.balance }} {{ activeAccount.currency }}
       </div>
     </div>
 
     <div class="row" v-if="props.withdraw">
-      <div class="label">Withdraw</div>
+      <div class="label">Withdrawable</div>
       <div class="value">
-        {{ activeAccount.formatBalance.amount }} {{ activeAccount.formatBalance.currency }}
+        {{ activeAccount.balance }} {{ activeAccount.currency }}
       </div>
     </div>
     <atomic-divider />

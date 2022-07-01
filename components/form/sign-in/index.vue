@@ -4,7 +4,7 @@
       v-model:value="authorizationFormData.email"
       @blur="onBlur('email')"
       @focus="loginError = false"
-      type="text"
+      type="email"
       :is-required="true"
       :label="fieldsContent.email?.label || ''"
       name="email"
@@ -84,7 +84,7 @@
   const v$ = useVuelidate(authorizationFormRules, authorizationFormData);
 
   const onBlur = (fieldName:string):void => {
-    v$.value[fieldName].$touch();
+    v$.value[fieldName]?.$touch();
     if (serverFormErrors.value[fieldName]) {
       serverFormErrors.value[fieldName] = undefined;
     }

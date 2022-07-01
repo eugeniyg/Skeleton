@@ -15,7 +15,8 @@
           class="item"
           @click="clickGame(game)"
         >
-          <img :src="`/img/cards/card-${getRandomInt(1, 12)}.png`" />
+          <img v-if="game.images['200x200']" :src="gameImageSrc(game.images)" />
+          <img v-else :src="`/img/default-game-tumb.png`" />
           <span>{{ game.name }}</span>
         </div>
 
@@ -29,8 +30,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useGlobalMethods } from '~/CORE';
-  import { GameInterface } from '~/types/gameTypes';
+  import { GameImagesInterface, GameInterface } from '~/types/gameTypes';
 
   const props = defineProps({
     isShow: {
@@ -53,7 +53,6 @@
 
   const emit = defineEmits(['loadMore', 'hideSearch']);
 
-  const { getRandomInt } = useGlobalMethods();
   const activeItems = computed(() => (props.items.length ? props.items : props.defaultItems));
 
   const profileStore = useProfileStore();
@@ -61,10 +60,14 @@
   const router = useRouter();
   const clickGame = (gameData:GameInterface):void => {
     if (!isLoggedIn.value) {
-      router.push(`/games/${gameData.id}${gameData.isDemoMode ? '?demo=true' : ''}`);
-    } else router.push(`/games/${gameData.id}`);
+      router.push(`/games/${gameData.identity}${gameData.isDemoMode ? '?demo=true' : ''}`);
+    } else router.push(`/games/${gameData.identity}`);
     emit('hideSearch');
   };
+
+  const { baseApiUrl } = useGlobalStore();
+  const { getImageUrl } = useProjectMethods();
+  const gameImageSrc = (imagesData: GameImagesInterface):string => `${baseApiUrl}/img/gcdn${getImageUrl(imagesData, 'square')}`;
 </script>
 
 <style lang="scss" src="./style.scss"/>

@@ -44,8 +44,9 @@
       :name="field.name"
       @change="v$[field.name]?.$touch()"
       :isError="setError(field.name)"
+      :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
+      :label="fieldsContent[field.name]?.label ? fieldsContent[field.name]?.label === 'Send promos by Email' ? 'I agree to receive bonus & marketing emails' : fieldsContent[field.name]?.label : ''"
     >
-      <p v-html="fieldsContent[field.name]?.label ? fieldsContent[field.name]?.label === 'Send promos by Email' ? 'I agree to receive bonus & marketing emails' : fieldsContent[field.name]?.label : ''" />
     </form-input-checkbox>
 
     <button-base
@@ -66,13 +67,6 @@
   import { useGlobalMethods } from '~/CORE/index';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
-  const props = defineProps({
-    show: {
-      type: Boolean,
-      required: true,
-    },
-  });
-
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
   const { setFormData } = useGlobalMethods();
@@ -84,9 +78,9 @@
 
   const mainFields = registrationFields.value.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = registrationFields.value.filter((field) => groupFooterFields.includes(field.name));
-
   const registrationFormData = reactive(setFormData(registrationFields.value));
   if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
+  if (registrationFormData.hasOwnProperty('country')) registrationFormData.country = 'NL';
 
   const { getFormRules } = useProjectMethods();
   const registrationFormRules = getFormRules(registrationFields.value, true);

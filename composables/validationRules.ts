@@ -16,40 +16,6 @@ export const accepted = (value):boolean => !validationRules.helpers.req(value) |
 
 export const declined = (value):boolean => !validationRules.helpers.req(value) || ['no', 'off', 0, false].includes(value);
 
-function leapYear(year) {
-  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-}
-
-function checkFalsePositiveDates(dateString = '') {
-  if (dateString.length === 10) {
-    const normalizedDate = dateString.replace('.', '-').replace('/', '-');
-    const parts = normalizedDate.split('-');
-    if (parts.length === 3) {
-      if (parts[0].length === 4) {
-        const y = parseInt(parts[0], 10);
-        const m = parseInt(parts[1], 10);
-        const d = parseInt(parts[2], 10);
-        if (m === 2) {
-          if (leapYear(y)) {
-            if (d > 29) {
-              return false;
-            }
-          } else if (d > 28) {
-              return false;
-            }
-        }
-        if (m === 4 || m === 6 || m === 9 || m === 11) {
-          if (d > 30) {
-            return false;
-          }
-        }
-      }
-    }
-    return true;
-  }
-  return true;
-}
-
 function isValidDate(dateString) {
   let testDate;
   if (typeof dateString === 'number') {
@@ -57,19 +23,6 @@ function isValidDate(dateString) {
     if (typeof testDate === 'object') {
       return true;
     }
-  }
-
-  testDate = new Date(dateString);
-  if (typeof testDate === 'object') {
-    if (testDate.toString() === 'Invalid Date') {
-      return false;
-    }
-
-    if (!checkFalsePositiveDates(dateString)) {
-      return false;
-    }
-
-    return true;
   }
 
   const regexDate = /^\d{4}-\d{1,2}-\d{1,2}$/;

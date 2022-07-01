@@ -65,7 +65,7 @@
   const { showModal } = useLayoutStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
   const fieldHint = computed(() => ({
-    message: `Min deposit = ${props.amountMin} ${activeAccount.value.currency}, max deposit = ${props.amountMax} ${activeAccount.value.currency}`,
+    message: `Min deposit: ${props.amountMin} ${activeAccount.value.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
@@ -98,7 +98,8 @@
     try {
       const depositResponse = await depositAccount(params);
       const redirectUrl = depositResponse?.[0]?.action;
-      if (redirectUrl) window.location.href = redirectUrl;
+      if (redirectUrl) window.open(redirectUrl, '_blank');
+      setTimeout(() => { isSending.value = false; }, 1000);
     } catch {
       isSending.value = false;
       showModal('error');

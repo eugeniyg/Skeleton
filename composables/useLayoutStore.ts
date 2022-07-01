@@ -30,6 +30,7 @@ export type LayoutStoreStateType = {
     signIn: string,
     success: string,
     error: string,
+    forgotPass: string,
   },
 }
 
@@ -62,6 +63,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         signIn: 'sign-in',
         success: 'success',
         error: 'error',
+        forgotPass: 'forgot-pass',
       },
   } as LayoutStoreStateType),
 

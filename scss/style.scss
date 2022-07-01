@@ -84,7 +84,7 @@ body {
   font-family: 'NeoSansPro', sans-serif;
   margin: 0;
   background-color: var(--black-primary);
-  @extend %scrollbar;
+  @extend %scrollbar-hide;
 
   &.nav-user-open {
     overflow-y: hidden;
@@ -168,7 +168,7 @@ body {
     --padding: #{rem(24px)} #{rem(32px)}
   }
 
-  .cards, .tabs {
+  .cards, .game-cards, .tabs {
     margin-top: #{24px};
   }
 }

@@ -10,7 +10,7 @@
       --padding: 0 0 0 #{rem(64px)};
     }
 
-    .cards {
+    .game-cards {
       display: none;
       margin-top: rem(40px);
     }
@@ -18,7 +18,7 @@
     @include media(md) {
       --padding: #{rem(24px)} #{rem(32px)};
 
-      .cards {
+      .game-cards {
         display: grid;
       }
     }

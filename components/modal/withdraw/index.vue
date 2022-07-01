@@ -18,7 +18,7 @@
         <div class="scroll">
           <div class="header">
             <button-modal-close @close="closeModal('withdraw')"/>
-            <div class="title">Withdraw</div>
+            <div class="title">Withdrawal</div>
           </div>
 
           <atomic-titles :title="currentMethod.names?.en"/>

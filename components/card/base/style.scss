@@ -3,77 +3,28 @@
   padding: var(--padding, 1px);
   @include ratio(104px, 156px);
   flex-shrink: 0;
-  @include radius(8px);
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: flex-start;
   background-color: var(--bg, transparent);
   background-repeat: var(--bg-repeat, no-repeat);
-  background-size: var(--bg-size, auto 113%);
+  background-size: var(--bg-size, 100%);
   background-position: var(--bg-position, center);
-  min-width: var(--min-width, #{column(3, 8px)});
-  scroll-snap-align: var(--scroll-snap-align, unset);
-
-  &:nth-of-type(3n + 1) {
-    --scroll-snap-align: start;
-  }
+  min-width: var(--min-width, #{column(3)});
+  @extend %cards-items;
 
   @include media(xs) {
-    &:nth-of-type(3n + 1) {
-      --scroll-snap-align: unset;
-    }
-
-    &:nth-of-type(5n + 1) {
-      --scroll-snap-align: start;
-    }
-
-    --min-width: #{column(4, 16px)};
+    --min-width: #{column(4)};
   }
 
   @include media(sm) {
-    &:nth-of-type(5n + 1) {
-      --scroll-snap-align: unset;
-    }
-
-    &:nth-of-type(6n + 1) {
-      --scroll-snap-align: start;
-    }
-
     --padding: 1px;
-    --min-width: #{column(6, 16px)};
-  }
-
-  @include media(md) {
-    --min-width: #{column(6, 8px)};
-  }
-
-  @include media(l) {
-    --min-width: #{column(6, 16px)};
+    --min-width: #{column(6)};
   }
 
   @include media(xl) {
-    &:nth-of-type(6n + 1) {
-      --scroll-snap-align: unset;
-    }
-
-    &:nth-of-type(7n + 1) {
-      --scroll-snap-align: start;
-    }
-
-    --min-width: #{column(7, 16px)};
-  }
-
-  @include media(xxl) {
-    &:nth-of-type(7n + 1) {
-      --scroll-snap-align: unset;
-    }
-
-    &:nth-of-type(9n + 1) {
-      --scroll-snap-align: start
-    }
-
-    --min-width: #{column(9, 16px)};
+    --min-width: #{column(9)};
   }
 
   .info {
@@ -93,17 +44,14 @@
     left: -2px;
     right: -2px;
     bottom: 0;
-    //visibility: var(--visibility-info, hidden);
     opacity: var(--opacity-info, 0);
     transition: var(--transition-info, (opacity .6s ease));
-    transition-delay: .2s;
-
+    pointer-events: var(--pointer-events, none);
     will-change: opacity;
   }
 
   &:hover {
-    transition-delay: 0s;
-    --visibility-info: visible;
+    --pointer-events: auto;
     --opacity-info: 1;
     --transition-info: (opacity .6s ease);
 

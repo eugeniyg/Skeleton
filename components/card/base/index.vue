@@ -35,11 +35,16 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useGlobalMethods } from '~/CORE';
+  import { PropType } from '@vue/runtime-core';
+  import { GameImagesInterface } from '~/types/gameTypes';
 
   const props = defineProps({
     src: {
       type: String,
+      required: false,
+    },
+    images: {
+      type: Object as PropType<GameImagesInterface>,
       required: false,
     },
     name: {
@@ -47,6 +52,10 @@
       default: '',
     },
     id: {
+      type: String,
+      required: true,
+    },
+    identity: {
       type: String,
       required: true,
     },
@@ -75,16 +84,21 @@
 
   const openGame = (isReal: boolean):void => {
     if (!isReal) {
-      router.push(`/games/${props.id}?demo=true`);
+      router.push(`/games/${props.identity}?demo=true`);
     } else if (!isLoggedIn.value) {
       showModal('register');
     } else {
-      router.push(`/games/${props.id}`);
+      router.push(`/games/${props.identity}`);
     }
   };
 
-  const { getRandomInt } = useGlobalMethods();
-  const backgroundImage = computed(() => `background-image:url(/img/cards/card-${getRandomInt(1, 12)}.png)`);
+  const { baseApiUrl } = useGlobalStore();
+  const { getImageUrl } = useProjectMethods();
+  const backgroundImage = computed(() => {
+    if (props.images.hasOwnProperty('200x300')) {
+      return `background-image:url(${baseApiUrl}/img/gcdn${getImageUrl(props.images, 'vertical')})`;
+    } return 'background-image: none';
+  });
 </script>
 
 <style lang="scss" src="./style.scss"/>

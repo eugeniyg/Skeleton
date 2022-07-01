@@ -64,21 +64,8 @@
     grid-area: items;
     display: var(--display, flex);
     align-items: center;
-    grid-column-gap: var(--items-column-gap, #{rem(8px)});
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
-
-    @include media(xs) {
-      --items-column-gap: #{rem(16px)}
-    }
-
-    @include media(md) {
-      --items-column-gap: #{rem(8px)}
-    }
-
-    @include media(l) {
-      --items-column-gap: #{rem(16px)}
-    }
+    @extend %cards-items-negative;
 
     &::-webkit-scrollbar {
       display: none;
@@ -158,6 +145,22 @@
 
     @include media(sm) {
       grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+
+.cards-latest-winners {
+  margin-right: #{rem(-16px)};
+
+  > .items {
+    padding-right: #{rem(16px)};
+  }
+
+  @include media(md) {
+    margin-right: 0;
+
+    > .items {
+      padding-right: 0;
     }
   }
 }

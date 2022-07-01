@@ -4,7 +4,7 @@
     <form-input-copy
       name="name7"
       label="Send any amount of BTC (plus miner fee) to"
-      :hint="{message: 'Min deposit = 0.0001 BTC'}"
+      :hint="{message: 'Min: 0.0001 BTC'}"
       value="3DPAYfeYGRgPg6xDehQQFC7hqm49eo1..."
     />
     <atomic-divider/>

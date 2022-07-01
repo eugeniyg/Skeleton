@@ -84,11 +84,10 @@
   }
 }
 
-@function column($columns_count, $gap) {
+@function column($columns_count) {
   $percents: math.div(100%, $columns_count);
-  $offset: math.div($columns_count * strip-unit($gap), $columns_count + 1);
-
-  @return calc(#{$percents} - #{$offset}px);
+  $offset: math.div($columns_count, $columns_count + 1);
+  @return #{$percents};
 }
 
 @mixin scrollbar {

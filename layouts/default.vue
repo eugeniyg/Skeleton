@@ -12,6 +12,8 @@
       />
     </Head>
 
+    <atomic-preloader/>
+
     <layout-header
       :is-logged-in="isLoggedIn"
       @logout="logout"
@@ -37,6 +39,7 @@
     <client-only>
       <modal-register />
       <modal-sign-in />
+      <modal-forgot-pass />
       <modal-deposit />
       <modal-withdraw />
       <modal-success />
@@ -52,7 +55,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  
+
   useHead({
     bodyAttrs: {
       class: 'stop-transition',
@@ -98,7 +101,7 @@
   function toggleOpen():void {
     layoutStore.toggleDrawer();
   }
-
+  
   onMounted(() => {
     document.body.classList.remove('stop-transition');
   });

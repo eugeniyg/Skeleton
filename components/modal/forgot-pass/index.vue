@@ -7,11 +7,13 @@
     <div class="modal-forgot-pass" @click.stop>
       <div class="scroll">
         <div class="header">
-          <button-modal-close @close="closeModal('forgotPass')"/>
-          <div class="title">Forgot your password?</div>
+          <button-modal-close @close="closeForgotPassModal" />
+          <div class="title">Forgot password?</div>
         </div>
-        <p class="text">Enter your email address and we will send you a password reset link.</p>
-        <form-forgot-pass/>
+        <p class="text">
+          Enter your email address and we will send you a password reset link.
+        </p>
+        <form-forgot-pass />
       </div>
     </div>
   </vue-final-modal>
@@ -22,7 +24,12 @@
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
+  const { closeModal, showModal } = layoutStore;
+
+  const closeForgotPassModal = ():void => {
+    closeModal('forgotPass');
+    showModal('signIn');
+  };
 </script>
 
-<style lang="scss" src="./style.scss"/>
+<style lang="scss" src="./style.scss" />

@@ -1,3 +1,16 @@
+export interface GameImagesInterface {
+  '200x200': {
+    '1x': string,
+    '2x'?: string,
+    '3x'?: string,
+  },
+  '200x300': {
+    '1x': string,
+    '2x'?: string,
+    '3x'?: string,
+  }
+}
+
 export interface GameInterface {
   id: string,
   identity: string,
@@ -7,7 +20,8 @@ export interface GameInterface {
   volatility: number,
   platforms: number[],
   screenHeightRatio: number|null,
-  screenWidthRatio: number|null
+  screenWidthRatio: number|null,
+  images:GameImagesInterface,
 }
 
 export interface CollectionInterface {

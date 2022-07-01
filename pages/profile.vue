@@ -2,7 +2,9 @@
   <div class="user-profile">
     <nav-profile :items="menu.profile"/>
 
-    <NuxtPage :page-key="`profile-child${$route.fullPath}`" />
+    <client-only>
+      <NuxtPage :key="`profile-child${$route.fullPath}`" />
+    </client-only>
   </div>
 </template>
 
@@ -10,9 +12,9 @@
   const { getProfileFields } = useProfileStore();
   await useAsyncData('profileFields', getProfileFields);
 
-  definePageMeta({
-    middleware: ['auth'],
-  });
+  // definePageMeta({
+  //   middleware: ['auth'],
+  // });
   const { menu } = useFakeStore();
 </script>
 
