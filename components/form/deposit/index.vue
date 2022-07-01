@@ -65,7 +65,7 @@
   const { showModal } = useLayoutStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
   const fieldHint = computed(() => ({
-    message: `Min: ${props.amountMin} ${activeAccount.value.currency}, max: ${props.amountMax} ${activeAccount.value.currency}`,
+    message: `Min deposit: ${props.amountMin} ${activeAccount.value.currency}`,
   }));
 
   const isSending = ref<boolean>(false);

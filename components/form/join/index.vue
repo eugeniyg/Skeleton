@@ -117,7 +117,7 @@
       closeModal('register');
     } catch (error) {
       if (error.response?.status === 422) {
-        serverFormErrors.value = error.data?.errors;
+        serverFormErrors.value = error.data?.error?.fields;
       } else throw error;
     }
   };
