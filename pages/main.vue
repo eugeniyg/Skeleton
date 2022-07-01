@@ -138,10 +138,10 @@
   });
 
   const gamesGroupLoaded = ref<number>(0);
+  const { dispatchPreloaderDone } = useProjectMethods();
   watch(() => gamesGroupLoaded.value, (newValue:number) => {
     if (newValue === mainCategories.length) {
-      const doneEvent = new Event('preloader:done', { bubbles: false, cancelable: true });
-      document.dispatchEvent(doneEvent);
+      dispatchPreloaderDone();
     }
   });
 

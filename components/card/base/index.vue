@@ -42,6 +42,10 @@
       type: String,
       required: false,
     },
+    images: {
+      type: Object,
+      required: true,
+    },
     name: {
       type: String,
       default: '',
@@ -89,6 +93,7 @@
 
   const { getRandomInt } = useGlobalMethods();
   const backgroundImage = computed(() => `background-image:url(/img/cards/card-${getRandomInt(1, 12)}.png)`);
+  // const backgroundImage = computed(() => `background-image:url(${process.env.API_BASE_URL || ''}/img/gcdn/${props.images['200x300']['2x']}`);
 </script>
 
 <style lang="scss" src="./style.scss"/>
