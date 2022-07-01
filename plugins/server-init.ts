@@ -4,7 +4,7 @@
 const useAppCookie = () => useCookie('bearer');
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  if (process.server) {
+  if (process.server && process.env.NODE_ENV === 'development') {
     const globalStore = useGlobalStore();
     globalStore.baseApiUrl = process.env.API_BASE_URL || '';
   }
