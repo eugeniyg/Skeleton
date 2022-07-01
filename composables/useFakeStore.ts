@@ -1214,6 +1214,14 @@ export const useFakeStore = () => {
     // },
   ];
 
+  const sbtTokenMenuItems = [
+    {
+      title: 'SBT Token',
+      icon: 'tfs-token',
+      href: '/sbt-token',
+    },
+  ];
+
   const bottomMenuItems = [
     // {
     //   title: 'Favorites',
@@ -2071,7 +2079,7 @@ export const useFakeStore = () => {
         {
           title: 'Get your 100% bonus up to 1.5 BTC and 100 FS.',
           subTitle: '1st deposit bonus',
-          src: '/promo/drone-v2.png',
+          src: '/promo/1-deposit.png',
           actions: {
             primary: 'Get bonus',
             secondary: {
@@ -2083,7 +2091,7 @@ export const useFakeStore = () => {
         {
           title: 'Grab your 75% bonus up to 1 BTC and 50 FS.',
           subTitle: '2nd deposit bonus',
-          src: '/promo/drone-v2.png',
+          src: '/promo/2-deposit.png',
           actions: {
             primary: 'Get bonus',
             secondary: {
@@ -2095,7 +2103,7 @@ export const useFakeStore = () => {
         {
           title: 'Take your 50% bonus up to 1 BTC and 50 FS.',
           subTitle: '3rd deposit bonus',
-          src: '/promo/drone-v2.png',
+          src: '/promo/3-deposit.png',
           actions: {
             primary: 'Get bonus',
             secondary: {
@@ -2107,7 +2115,7 @@ export const useFakeStore = () => {
         {
           title: 'Play more with 100% bonus up to 1.5 BTC and 100 FS.',
           subTitle: '4th deposit bonus',
-          src: '/promo/drone-v2.png',
+          src: '/promo/4-deposit.png',
           actions: {
             primary: 'Get bonus',
             secondary: {
@@ -2124,7 +2132,7 @@ export const useFakeStore = () => {
         {
           title: '30% bonus of up to 0.0035 BTC on Monday',
           subTitle: 'Monday Reload Bonus',
-          src: '/promo/drone-v2.png',
+          src: '/promo/monday.png',
           actions: {
             primary: 'Get bonus',
             secondary: {
@@ -2136,7 +2144,7 @@ export const useFakeStore = () => {
         {
           title: 'Get 100 Free Spins every Wednesday',
           subTitle: 'Wednesday Free Spins',
-          src: '/promo/drone-v2.png',
+          src: '/promo/wednesday.png',
           actions: {
             primary: 'Get bonus',
             secondary: {
@@ -2148,7 +2156,7 @@ export const useFakeStore = () => {
         {
           title: 'Take your 10% cashback every Friday.',
           subTitle: 'Weekly Cashback',
-          src: '/promo/drone-v2.png',
+          src: '/promo/weekly.png',
           actions: {
             primary: 'Get bonus',
             secondary: {
@@ -2210,7 +2218,8 @@ export const useFakeStore = () => {
 
   const bonusPages = {
     'first-deposit-bonus': {
-      src: '/promo/drone-v2.png',
+      bg: 'red',
+      src: '/promo/1-deposit.png',
       title: '1st deposit bonus',
       subTitle: 'Get your 100% bonus up to 1.5 BTC and 100 FS',
       description: 'Slotsbet greeting you with a huge first bonus! As you’re new to us, we’re offering you a 100% up to 1.5 BTC + 100 Free Spins on your first deposit. Play in one of these games from Platipus: Cleo\'s Gold, Fruity Sevens or Arabian Tales.',
@@ -2238,7 +2247,8 @@ export const useFakeStore = () => {
       },
     },
     'second-deposit-bonus': {
-      src: '/promo/drone-v2.png',
+      bg: 'yellow',
+      src: '/promo/2-deposit.png',
       title: '2nd deposit bonus',
       subTitle: 'Grab your 75% bonus up to 1 BTC and 50 FS',
       description: 'Enjoy playing games with the bonus on your second deposit! We’re so happy to see you again! It looks like the time for a second deposit has come. To fill the best with Slotsbet, we are pleased to give you a bonus of 75% up to 1 BTC + 50 Free Spins on slot Elvis Frog in Vegas (BGaming) on your second deposit.',
@@ -2266,7 +2276,8 @@ export const useFakeStore = () => {
       },
     },
     'third-deposit-bonus': {
-      src: '/promo/drone-v2.png',
+      bg: 'green',
+      src: '/promo/3-deposit.png',
       title: '3rd deposit bonus',
       subTitle: 'Take your 50% bonus up to 1 BTC and 50 FS',
       description: 'Grab your chance to play on at Slotsbet with a head start, thanks to our third deposit bonus!',
@@ -2292,7 +2303,8 @@ export const useFakeStore = () => {
       },
     },
     'fourth-deposit-bonus': {
-      src: '/promo/drone-v2.png',
+      bg: 'blue',
+      src: '/promo/4-deposit.png',
       title: '4th deposit bonus',
       subTitle: 'Play more with 100% bonus up to 1.5 BTC and 100 FS.',
       description: 'We will double your fourth deposit. Just play and we will do the rest for you.',
@@ -2318,7 +2330,8 @@ export const useFakeStore = () => {
       },
     },
     'monday-reload-bonus': {
-      src: '/promo/drone-v2.png',
+      bg: 'gray',
+      src: '/promo/monday.png',
       title: 'Monday Reload Bonus',
       subTitle: '30% bonus of up to 0.0035 BTC on Monday',
       description: 'Start your week on a high note with Slotsbet! Grabbing yourself a 30% bonus of up to 0.0035 BTC is easy:',
@@ -2341,7 +2354,8 @@ export const useFakeStore = () => {
       },
     },
     'wednesday-free-spins': {
-      src: '/promo/drone-v2.png',
+      bg: 'gray',
+      src: '/promo/wednesday.png',
       title: 'Wednesday Free Spins',
       subTitle: 'Get 100 Free Spins every Wednesday',
       description: 'On Wednesdays, our players receive either 30, 50, or 100 free spins just for making a deposit. Make sure you seize the opportunity for some Wednesday free spins when the day comes!',
@@ -2367,7 +2381,8 @@ export const useFakeStore = () => {
       },
     },
     'weekly-cashback': {
-      src: '/promo/drone-v2.png',
+      bg: 'gray',
+      src: '/promo/weekly.png',
       title: 'Weekly Cashback',
       subTitle: 'Take your 10% cashback every Friday.',
       description: 'Every Friday you can get a portion of your staked money back thanks to our Cashback Bonus. Receive yours!',
@@ -2452,6 +2467,7 @@ export const useFakeStore = () => {
   return {
     topMenuItems,
     centerMenuItems,
+    sbtTokenMenuItems,
     bottomMenuItems,
     subMenuItems,
     staticMenuItems,

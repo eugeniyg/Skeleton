@@ -14,6 +14,8 @@
       </client-only>
       <nav-list :items="fakeStore.topMenuItems" :is-compact="props.isCompact"/>
       <atomic-divider/>
+      <nav-list :items="fakeStore.sbtTokenMenuItems" :is-compact="props.isCompact"/>
+      <atomic-divider/>
       <nav-list :items="fakeStore.centerMenuItems" :is-compact="props.isCompact"/>
       <atomic-divider/>
       <atomic-select-lang/>
