@@ -19,10 +19,16 @@ export const useProjectMethods = () => {
     return createFormRules(fields, validationRules, validationMessages, includeContext);
   };
 
+  const dispatchPreloaderDone = ():void => {
+    const doneEvent = new Event('preloader:done', { bubbles: false, cancelable: true });
+    document.dispatchEvent(doneEvent);
+  };
+
   return {
     navigate,
     getCurrentUrl,
     isHomePage,
     getFormRules,
+    dispatchPreloaderDone,
   };
 };

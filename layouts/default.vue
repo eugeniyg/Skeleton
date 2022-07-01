@@ -12,6 +12,8 @@
       />
     </Head>
 
+    <atomic-preloader/>
+
     <layout-header
       :is-logged-in="isLoggedIn"
       @logout="logout"
@@ -48,8 +50,6 @@
       :isShow="isShowAlert"
       v-bind="alertProps"
     />
-
-    <!--<atomic-preloader/>-->
   </div>
 </template>
 
@@ -101,7 +101,7 @@
   function toggleOpen():void {
     layoutStore.toggleDrawer();
   }
-
+  
   onMounted(() => {
     document.body.classList.remove('stop-transition');
   });

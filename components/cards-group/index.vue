@@ -120,8 +120,10 @@
 
   onMounted(() => {
     if (props.showArrows) {
-      scrollHandler();
-      showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
+      setTimeout(() => {
+        scrollHandler();
+        showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
+      }, 100);
     }
   });
 

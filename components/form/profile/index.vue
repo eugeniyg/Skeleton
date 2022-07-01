@@ -74,12 +74,7 @@
   const rowsFields = cleanFields.filter((field) => field.name !== 'email');
 
   const { selectOptions } = storeToRefs(fieldsStore);
-  const emailHint = computed(() => {
-    if (profile.confirmedAt) {
-      return { variant: 'verified', message: 'Your email is verified' };
-    }
-    return { variant: 'unverified', message: 'Your email is unverified' };
-  });
+  const emailHint = { variant: 'verified', message: 'Your email is verified' };
 
   const emit = defineEmits(['toggle-profile-edit']);
   const profileFormData = reactive(setFormData(cleanFields));

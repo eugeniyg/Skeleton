@@ -1,12 +1,12 @@
 <template>
-  <div :class="classes" ref="preloader">
+  <div class="preloader is-hide is-none" ref="preloader">
     <div class="blobs">
-      <div class="blob"></div>
-      <div class="blob"></div>
+      <div class="blob"/>
+      <div class="blob"/>
+
       <div class="scene">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
           x="0px"
           y="0px"
           viewBox="0 0 120 120"
@@ -18,7 +18,8 @@
           />
         </svg>
       </div>
-      <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+      <svg xmlns="http://www.w3.org/2000/svg">
         <defs>
           <filter id="goo">
             <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"/>
@@ -35,20 +36,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-  const props = defineProps({
-    isShow: {
-      type: Boolean,
-      default: true,
-    },
-  });
-  const shown = ref<boolean>(props.isShow);
-  const classes = computed(() => ['preloader', shown.value ? 'is-show' : 'is-hide']);
-
-  onMounted(() => {
-    setTimeout(() => shown.value = false, 1000);
-  });
-</script>
-
-<style lang="scss" src="./style.scss"></style>
