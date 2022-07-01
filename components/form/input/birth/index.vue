@@ -12,6 +12,7 @@
       :options="days"
       :hint="{ ...props.hint, message: '' }"
       @input="onInputDays"
+      @focus="emit('focus')"
     />
 
     <form-dropdown-base
@@ -22,6 +23,7 @@
       v-model:value="selected.month"
       :hint="{ ...props.hint, message: '' }"
       @input="onInputMonth"
+      @focus="emit('focus')"
     />
 
     <form-dropdown-base
@@ -32,6 +34,7 @@
       v-model:value="selected.year"
       :hint="{ ...props.hint, message: '' }"
       @input="onInputYear"
+      @focus="emit('focus')"
     />
 
     <atomic-hint v-if="hint" v-bind="hint" />
@@ -83,7 +86,7 @@
     return items;
   };
 
-  const years = createItems(1920, maxYear.value, false);
+  const years = createItems(1920, maxYear.value, false).reverse();
   const months = createItems(1, 12, true);
   const days = createItems(1, 31, true);
 
@@ -94,7 +97,7 @@
     selected.day = Number(dateArr[2]);
   }
 
-  const emit = defineEmits(['update:value', 'blur']);
+  const emit = defineEmits(['update:value', 'blur', 'focus']);
   const changeInputValue = ():void => {
     const { year, month, day } = selected;
     if (year && month && day) {

@@ -114,11 +114,11 @@
   const open = ():void => {
     if (props.isDisabled) return;
     isOpen.value = !isOpen.value;
+    emit('focus');
   };
 
   const onBlur = ():void => {
     isOpen.value = false;
-    emit('focus');
   };
 </script>
 
