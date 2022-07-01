@@ -11,9 +11,10 @@
       />
 
       <atomic-icon id="ui-check"/>
-      <span v-html="label">
+      <p>
+        <span v-html="label"/>
         <sup v-if="isRequired">*</sup>
-      </span>
+      </p>
     </label>
   </div>
 </template>
