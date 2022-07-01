@@ -18,13 +18,13 @@
     visibility: hidden;
   }
 
-  p {
+  span {
     margin: 0;
     color: var(--white);
 
     @include font($body-2);
 
-    > a {
+    a {
       color: var(--yellow-500);
       text-decoration: none;
 

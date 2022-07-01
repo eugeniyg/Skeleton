@@ -2219,7 +2219,7 @@ export const useFakeStore = () => {
   const bonusPages = {
     'first-deposit-bonus': {
       bg: 'red',
-      src: '/promo/1-deposit.png',
+      src: '/promo/1-deposit-big.png',
       title: '1st deposit bonus',
       subTitle: 'Get your 100% bonus up to 1.5 BTC and 100 FS',
       description: 'Slotsbet greeting you with a huge first bonus! As you’re new to us, we’re offering you a 100% up to 1.5 BTC + 100 Free Spins on your first deposit. Play in one of these games from Platipus: Cleo\'s Gold, Fruity Sevens or Arabian Tales.',
@@ -2248,7 +2248,7 @@ export const useFakeStore = () => {
     },
     'second-deposit-bonus': {
       bg: 'yellow',
-      src: '/promo/2-deposit.png',
+      src: '/promo/2-deposit-big.png',
       title: '2nd deposit bonus',
       subTitle: 'Grab your 75% bonus up to 1 BTC and 50 FS',
       description: 'Enjoy playing games with the bonus on your second deposit! We’re so happy to see you again! It looks like the time for a second deposit has come. To fill the best with Slotsbet, we are pleased to give you a bonus of 75% up to 1 BTC + 50 Free Spins on slot Elvis Frog in Vegas (BGaming) on your second deposit.',
@@ -2277,7 +2277,7 @@ export const useFakeStore = () => {
     },
     'third-deposit-bonus': {
       bg: 'green',
-      src: '/promo/3-deposit.png',
+      src: '/promo/3-deposit-big.png',
       title: '3rd deposit bonus',
       subTitle: 'Take your 50% bonus up to 1 BTC and 50 FS',
       description: 'Grab your chance to play on at Slotsbet with a head start, thanks to our third deposit bonus!',
@@ -2304,7 +2304,7 @@ export const useFakeStore = () => {
     },
     'fourth-deposit-bonus': {
       bg: 'blue',
-      src: '/promo/4-deposit.png',
+      src: '/promo/4-deposit-big.png',
       title: '4th deposit bonus',
       subTitle: 'Play more with 100% bonus up to 1.5 BTC and 100 FS.',
       description: 'We will double your fourth deposit. Just play and we will do the rest for you.',
@@ -2331,7 +2331,7 @@ export const useFakeStore = () => {
     },
     'monday-reload-bonus': {
       bg: 'gray',
-      src: '/promo/monday.png',
+      src: '/promo/monday-big.png',
       title: 'Monday Reload Bonus',
       subTitle: '30% bonus of up to 0.0035 BTC on Monday',
       description: 'Start your week on a high note with Slotsbet! Grabbing yourself a 30% bonus of up to 0.0035 BTC is easy:',
@@ -2355,7 +2355,7 @@ export const useFakeStore = () => {
     },
     'wednesday-free-spins': {
       bg: 'gray',
-      src: '/promo/wednesday.png',
+      src: '/promo/wednesday-big.png',
       title: 'Wednesday Free Spins',
       subTitle: 'Get 100 Free Spins every Wednesday',
       description: 'On Wednesdays, our players receive either 30, 50, or 100 free spins just for making a deposit. Make sure you seize the opportunity for some Wednesday free spins when the day comes!',
@@ -2382,7 +2382,7 @@ export const useFakeStore = () => {
     },
     'weekly-cashback': {
       bg: 'gray',
-      src: '/promo/weekly.png',
+      src: '/promo/weekly-big.png',
       title: 'Weekly Cashback',
       subTitle: 'Take your 10% cashback every Friday.',
       description: 'Every Friday you can get a portion of your staked money back thanks to our Cashback Bonus. Receive yours!',
