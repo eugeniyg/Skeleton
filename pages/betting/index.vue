@@ -38,7 +38,7 @@
       demoMode: false,
       platform: isMobile.value ? 1 : 2,
     };
-    const startResponse = await getStartGame('10239b19-ddcb-4ba5-b95d-417f3cbbb1bc', startParams);
+    const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
     frameLink.value = startResponse.gameUrl;
   };
 

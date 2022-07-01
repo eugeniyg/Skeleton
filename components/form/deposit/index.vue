@@ -98,7 +98,8 @@
     try {
       const depositResponse = await depositAccount(params);
       const redirectUrl = depositResponse?.[0]?.action;
-      if (redirectUrl) window.location.href = redirectUrl;
+      if (redirectUrl) window.open(redirectUrl, '_blank');
+      setTimeout(() => { isSending.value = false; }, 1000);
     } catch {
       isSending.value = false;
       showModal('error');
