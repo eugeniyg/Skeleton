@@ -30,9 +30,9 @@ export const useGamesStore = defineStore('gamesStore', {
     async getGameProviders(): Promise<void> {
       const { getGameProviders } = useGamesApi();
       const data = await getGameProviders();
-      this.gameProviders = data;
+      this.gameProviders = data.filter((provider: GameProviderInterface) => provider.identity !== 'betsy');
       const { setOptions } = useFieldsStore();
-      setOptions('providers', data);
+      setOptions('providers', this.gameProviders);
     },
 
     async getGameCollections(): Promise<void> {
