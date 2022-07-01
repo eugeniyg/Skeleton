@@ -16,6 +16,7 @@ export type GlobalStoreStateType = {
   isMobile: boolean,
   browserLanguage: string,
   fieldsContent: any,
+  baseApiUrl: string,
 }
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -29,6 +30,7 @@ export const useGlobalStore = defineStore('globalStore', {
     isMobile: false,
     browserLanguage: 'en',
     fieldsContent: {},
+    baseApiUrl: '',
   } as GlobalStoreStateType),
 
   actions: {

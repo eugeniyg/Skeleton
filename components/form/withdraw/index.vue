@@ -62,7 +62,7 @@
     activeAccount, activeAccountType,
   } = storeToRefs(walletStore);
   const fieldHint = computed(() => ({
-    message: `Min withdraw = ${props.amountMin} ${activeAccount.value.currency}, max withdraw = ${props.amountMax} ${activeAccount.value.currency}`,
+    message: `Min withdraw: ${props.amountMin} ${activeAccount.value.currency}`,
   }));
 
   const isSending = ref<boolean>(false);

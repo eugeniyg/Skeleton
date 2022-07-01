@@ -4,6 +4,11 @@
 const useAppCookie = () => useCookie('bearer');
 
 export default defineNuxtPlugin(async (nuxtApp) => {
+  if (process.server) {
+    const globalStore = useGlobalStore();
+    globalStore.baseApiUrl = process.env.API_BASE_URL || '';
+  }
+
   if (process.client) {
     // const { parseUserAgent, setBrowserLanguage } = useGlobalStore();
     // const languages = parser.parse(nuxtApp.ssrContext.req.headers['accept-language']);
