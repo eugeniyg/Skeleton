@@ -9,6 +9,7 @@
   background-color: var(--bg, var(--gray-800));
   top: var(--top, 0);
   right: var(--right, 0);
+  cursor: pointer;
 
   .icon {
     visibility: var(--visibility, hidden);
