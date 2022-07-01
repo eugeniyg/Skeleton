@@ -17,7 +17,8 @@
     <div v-for="n in Math.ceil(rowsFields.length / 2)" :key="`row-${n}`" class="row">
       <component
         :is="fieldsTypeMap[field.name].component || 'form-input-text'"
-        @blur="onBlur(field.name)"
+        @blur="v$[field.name]?.$touch()"
+        @focus="onFocus(field.name)"
         :isDisabled="profile[field.name] && !field.editable"
         v-model:value="profileFormData[field.name]"
         v-for="field in rowsFields.slice(2 * (n - 1), 2 * (n - 1) + 2)"
@@ -92,8 +93,7 @@
     return undefined;
   };
 
-  const onBlur = (fieldName:string):void => {
-    v$.value[fieldName]?.$touch();
+  const onFocus = (fieldName:string):void => {
     if (serverFormErrors.value[fieldName]) {
       serverFormErrors.value[fieldName] = undefined;
     }
@@ -111,7 +111,7 @@
       emit('toggle-profile-edit');
     } catch (error) {
       if (error.response?.status === 422) {
-        serverFormErrors.value = error.data?.errors?.fields;
+        serverFormErrors.value = error.data?.error?.fields;
       } else throw error;
     }
   };
