@@ -1,6 +1,6 @@
 <template>
   <div v-if="bonusPage" class="bonus-page">
-    <div class="header">
+    <div class="header" :data-bg="bonusPage.bg">
       <img class="img" :src="`/img${bonusPage.src}`" alt="" />
     </div>
     <div class="content">

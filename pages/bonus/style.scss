@@ -1,8 +1,34 @@
 .bonus-page {
+  margin-top: rem(-24px);
   > .header {
-    background-color: var(--gray-900);
+    background: var(--bg, var(--gray-900));
     height: var(--height, #{rem(200px)});
     padding-top: rem(40px);
+    margin: var(--margin, 0 #{rem(-16px)});
+
+    @include media(sm) {
+      --margin: 0 #{rem(-32px)}
+    }
+
+    &[data-bg="gray"] {
+      --bg: var(--gray-900);
+    }
+
+    &[data-bg="red"] {
+      --bg: linear-gradient(187.95deg, #950428 44.73%, #28263B 93.88%);
+    }
+
+    &[data-bg="yellow"] {
+      --bg: linear-gradient(187.95deg, #A04800 44.73%, #28263B 93.88%);
+    }
+
+    &[data-bg="green"] {
+      --bg: linear-gradient(187.95deg, #045518 44.73%, #28263B 93.88%);
+    }
+
+    &[data-bg="blue"] {
+      --bg: linear-gradient(187.95deg, #320647 44.73%, #28263B 93.88%);
+    }
 
     .img {
       width: var(--width, #{rem(160px)});
