@@ -7,6 +7,7 @@
     <div class="items" @mouseleave="close">
       <router-link
         v-for="({ href, title, count }, index) in props.items"
+        @click="toggle"
         :key="index"
         class="item"
         :class="{'is-active': $route.path === href}"

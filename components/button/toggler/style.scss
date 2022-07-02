@@ -38,7 +38,7 @@
   }
 
 
-  &.is-compact {
+  .is-compact & {
     @include media(l) {
 
       @include radius(999px);

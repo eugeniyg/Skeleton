@@ -1,26 +1,26 @@
 <template>
   <div class="drawer" :class="{'is-compact' : props.isCompact}">
     <div class="header">
-      <button-toggle-drawer @toggle-minimize="emit('compact')" @toggle-open="$emit('toggle-open')" :is-active="props.isCompact"/>
-      <button-toggler :items="fakeStore.togglerBtnItems" :is-compact="props.isCompact"/>
+      <button-toggle-drawer @toggle-minimize="emit('compact')" @toggle-open="$emit('toggle-open')"/>
+      <button-toggler :items="fakeStore.togglerBtnItems"/>
     </div>
 
     <div class="content">
       <client-only>
         <template v-if="props.isLoggedIn">
-          <card-profile :is-compact="props.isCompact"/>
+          <card-profile/>
           <atomic-divider/>
         </template>
       </client-only>
-      <nav-list :items="fakeStore.topMenuItems" :is-compact="props.isCompact"/>
+      <nav-list :items="fakeStore.topMenuItems"/>
       <atomic-divider/>
-      <nav-list :items="fakeStore.sbtTokenMenuItems" :is-compact="props.isCompact"/>
+      <nav-list :items="fakeStore.sbtTokenMenuItems"/>
       <atomic-divider/>
-      <nav-list :items="fakeStore.centerMenuItems" :is-compact="props.isCompact"/>
+      <nav-list :items="fakeStore.centerMenuItems"/>
       <atomic-divider/>
       <atomic-select-lang/>
       <atomic-divider/>
-      <nav-list :items="fakeStore.bottomMenuItems" :is-compact="props.isCompact"/>
+      <nav-list :items="fakeStore.bottomMenuItems"/>
       <atomic-divider/>
       <nav-static :items="fakeStore.staticMenuItems"/>
     </div>
