@@ -960,7 +960,7 @@ export const useFakeStore = () => {
           src: '/providers/14.svg',
           showPlayBtn: false,
           showTryBtn: false,
-          providerId: 'playn-go',
+          providerId: 'play-n-go',
         },
         // {
         //   src: '/providers/15.svg',
@@ -1004,14 +1004,14 @@ export const useFakeStore = () => {
           title: 'Benny',
           subTitle: 'Book Of Dead',
           items: ['0.0052', 'BTC'],
-          href: '/games/book-of-dead-playn-go',
+          href: '/games/book-of-dead-play-n-go',
         },
         {
           src: '/latest-winners/book_of_dead.png',
           title: 'Lukas',
           subTitle: 'Book Of Dead',
           items: ['0.0005', 'BTC'],
-          href: '/games/book-of-dead-playn-go',
+          href: '/games/book-of-dead-play-n-go',
         },
         {
           src: '/latest-winners/bigger_bass_bonanza.png',
