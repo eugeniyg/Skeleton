@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-list" :class="{'is-compact' : props.isCompact}">
+  <div class="nav-list">
     <div v-for="({ href, title, icon, bage, items, list }, index) in props.items" :key="index" class="item">
       <template v-if="items">
         <div class="link" @click.prevent="toggleOpen" :class="{'is-open': open}">
@@ -38,10 +38,6 @@
     items: {
       type: Array,
       default: () => [],
-    },
-    isCompact: {
-      type: Boolean,
-      default: false,
     },
     isOpen: {
       type: Boolean,
