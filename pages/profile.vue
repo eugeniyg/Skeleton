@@ -12,10 +12,17 @@
   const { getProfileFields } = useProfileStore();
   await useAsyncData('profileFields', getProfileFields);
 
-  // definePageMeta({
-  //   middleware: ['auth'],
-  // });
   const { menu } = useFakeStore();
+
+  definePageMeta({
+    middleware: () => {
+      const bearer = useCookie('bearer');
+
+      if (!bearer.value) {
+        return navigateTo({ name: 'index' });
+      }
+    },
+  });
 </script>
 
 <style lang="scss" src="./profile/style.scss"/>
