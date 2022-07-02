@@ -13,8 +13,8 @@
       size="md"
       isDisabledButton
       :is-disabled="isDisabledButton"
-      @click="showModal('register')"
-    >Sign up</button-base>
+      @click="closeModal('forgotPass')"
+    >Reset password</button-base>
     <button-text-join />
   </form>
 </template>
@@ -23,7 +23,7 @@
   import { storeToRefs } from 'pinia';
 
   const globalStore = useGlobalStore();
-  const { showModal } = useLayoutStore();
+  const { closeModal } = useLayoutStore();
 
   const { fieldsContent } = storeToRefs(globalStore);
 
