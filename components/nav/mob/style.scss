@@ -12,6 +12,12 @@
   visibility: var(--mob-nav-visibility, visible);
   width: var(--width-nav-mob, auto);
 
+  .router-link-exact-active {
+    .icon, span {
+      color: #FFC12E !important;
+    }    
+  }
+
   @include media(l) {
     visibility: hidden;
   }
@@ -70,6 +76,4 @@
       --display-mob-nav-justify: center;
     }
   }
-
-
 }
