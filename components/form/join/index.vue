@@ -72,7 +72,7 @@
   const { setFormData } = useGlobalMethods();
   const { showModal, closeModal } = useLayoutStore();
   const profileStore = useProfileStore();
-  const { registrationFields, isLockedAsyncButton } = storeToRefs(profileStore);
+  const { registrationFields } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
   const { fieldsContent } = storeToRefs(globalStore);
 
@@ -107,6 +107,8 @@
   };
 
   const { registration } = profileStore;
+  const isLockedAsyncButton = ref<boolean>(false);
+
   const signUp = async ():Promise<void> => {
     if (v$.value.$invalid) return;
     v$.value.$reset();
@@ -114,7 +116,7 @@
     if (!validFormData) return;
 
     try {
-      profileStore.updateAsyncButton(true);
+      isLockedAsyncButton.value = true;
       await registration(registrationFormData);
       closeModal('register');
     } catch (error) {
@@ -122,7 +124,7 @@
         serverFormErrors.value = error.data?.error?.fields;
       } else throw error;
     } finally {
-      profileStore.updateAsyncButton(false);
+      isLockedAsyncButton.value = false;
     }
   };
 </script>

@@ -99,8 +99,8 @@
     return undefined;
   };
 
-  const profileStore = useProfileStore();
-  const { isLockedAsyncButton } = storeToRefs(profileStore);
+  const { logIn } = useProfileStore();
+  const isLockedAsyncButton = ref<boolean>(false);
 
   const login = async ():Promise<void> => {
     if (v$.value.$invalid) return;
@@ -110,8 +110,8 @@
     if (!validFormData) return;
 
     try {
-      profileStore.updateAsyncButton(true);
-      await profileStore.logIn(authorizationFormData);
+      isLockedAsyncButton.value = true;
+      await logIn(authorizationFormData);
       closeModal('signIn');
     } catch (error) {
       if (error.response?.status === 401) {
@@ -120,7 +120,7 @@
         serverFormErrors.value = error.data?.error?.fields;
       } else throw error;
     } finally {
-      profileStore.updateAsyncButton(false);
+      isLockedAsyncButton.value = false;
     }
   };
 </script>
