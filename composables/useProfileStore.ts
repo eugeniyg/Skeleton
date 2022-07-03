@@ -6,6 +6,7 @@ import { useWalletStore } from '~/composables/useWalletStore';
 import { useLayoutStore } from '~/composables/useLayoutStore';
 
 export type ProfileStoreStateType = {
+  isLockedAsyncButton: boolean,
   isLoggedIn: boolean,
   avatarItems: {
     label: string,
@@ -20,6 +21,7 @@ export type ProfileStoreStateType = {
 
 export const useProfileStore = defineStore('profileStore', {
   state: () => ({
+    isLockedAsyncButton: false,
     isLoggedIn: false,
     avatarItems: {
       label: '25 lvl',
@@ -84,6 +86,10 @@ export const useProfileStore = defineStore('profileStore', {
       const profileInfo = await getProfile();
       this.profile = profileInfo;
       this.isLoggedIn = true;
+    },
+
+    updateAsyncButton(value: boolean): void {
+      this.isLockedAsyncButton = value;
     },
 
     setProfileData(data:ProfileInterface):void {

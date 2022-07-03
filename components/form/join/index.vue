@@ -53,7 +53,7 @@
       tagName="div"
       type="primary"
       size="md"
-      :isDisabled="v$.$invalid"
+      :isDisabled="v$.$invalid || isLockedAsyncButton"
       @click="signUp"
     >Sign up</button-base>
 
@@ -72,7 +72,7 @@
   const { setFormData } = useGlobalMethods();
   const { showModal, closeModal } = useLayoutStore();
   const profileStore = useProfileStore();
-  const { registrationFields } = storeToRefs(profileStore);
+  const { registrationFields, isLockedAsyncButton } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
   const { fieldsContent } = storeToRefs(globalStore);
 
@@ -114,12 +114,15 @@
     if (!validFormData) return;
 
     try {
+      profileStore.updateAsyncButton(true);
       await registration(registrationFormData);
       closeModal('register');
     } catch (error) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
       } else throw error;
+    } finally {
+      profileStore.updateAsyncButton(false);
     }
   };
 </script>
