@@ -29,11 +29,7 @@
         type="primary"
         size="lg"
         :is-disabled="isDisabledButton"
-        @click="layoutStore.showAlert({
-          title: 'Thank you!',
-          text: undefined,
-          variant: 'done',
-        })"
+        @click="submitContactForm"
       >Let’s talk! <atomic-icon id="ui-arrow_next"/></button-base>
     </div>
   </div>
@@ -52,6 +48,17 @@
   });
 
   const isDisabledButton = computed(() => (!(state.emailText.length > 0 && state.messageText.length > 0)));
+
+  const submitContactForm = ():void => {
+    layoutStore.showAlert({
+      title: 'Thank you!',
+      text: undefined,
+      variant: 'done',
+    });
+
+    state.emailText = '';
+    state.messageText = '';
+  };
 </script>
 
 <style lang="scss" src="./style.scss" />
