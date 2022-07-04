@@ -1,6 +1,7 @@
 .arrows {
   @extend %flex-items-center;
   grid-column-gap: 4px;
+
   .btn-prev, .btn-next {
     @include box(32px);
     @extend %flex-all-center;
@@ -11,17 +12,13 @@
     --bg: var(--gray-800);
     --color: var(--white);
 
-    &:hover {
-      cursor: pointer;
-      --bg: var(--gray-800);
-      --color: var(--yellow-500);
-      --shadow: 0 0 0 #{rem(3px)} var(--gray-900);
-    }
-
-    &:focus {
-      --bg: var(--gray-700);
-      --color: var(--yellow-500);
-      --shadow: 0 0 0 inset 0px 2px 0px var(--gray-800);
+    @include media(l) {
+      &:hover {
+        cursor: pointer;
+        --bg: var(--gray-800);
+        --color: var(--yellow-500);
+        --shadow: 0 0 0 #{rem(3px)} var(--gray-900);
+      }
     }
 
     &[disabled] {

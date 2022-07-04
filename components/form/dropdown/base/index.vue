@@ -9,7 +9,7 @@
 
     <div class="selected" @click="open">
       <img v-if="valueObject.mask" class="mask" :src="valueObject.mask" />
-      <template v-if="valueObject.value">{{ valueObject.value }}</template>
+      <span v-if="valueObject.value">{{ valueObject.value }}</span>
       <span v-else-if="props.placeholder" class="placeholder">{{ props.placeholder }}</span>
       <atomic-icon id="ui-arrow_expand-close"/>
     </div>
@@ -23,7 +23,7 @@
         @click="select(option)"
       >
         <img v-if="option.mask" class="mask" :src="option.mask" />
-        {{ option.value }}
+        <span>{{ option.value }}</span>
         <atomic-icon v-if="option.code === valueObject.code" id="ui-check"/>
       </div>
     </div>
