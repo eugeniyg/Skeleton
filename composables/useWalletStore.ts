@@ -81,7 +81,7 @@ export const useWalletStore = defineStore('walletStore', {
       if (isLoggedIn) await this.getUserAccounts();
       this.requestTimer = setTimeout(() => {
         this.updateAccounts();
-      }, 30000);
+      }, 5000);
     },
 
     stopUpdateAccounts():void {
