@@ -17,7 +17,9 @@
     cursor: pointer;
     user-select: none;
     padding: var(--select-padding-y, rem(11px)) rem(36px) var(--select-padding-y, rem(11px)) rem(16px);
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: auto 1fr;
     align-items: center;
     background-color: var(--bg, var(--gray-800));
     position: relative;
@@ -29,9 +31,17 @@
       position: absolute;
       top: 0;
       bottom: 0;
-      right: 8px;
+      right: rem(8px);
       margin-top: auto;
       margin-bottom: auto;
+
+    }
+
+    span {
+      overflow: hidden;
+      max-width: 100%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
@@ -48,7 +58,8 @@
   .items {
     position: absolute;
     left: 0;
-    min-width: 100%;
+    max-width: 100%;
+    width: 100%;
     padding: rem(8px);
     visibility: var(--items-visibility, hidden);
     max-height: calc((#{rem(38px)} * 4) + #{4px});
@@ -70,16 +81,26 @@
     background-color: var(--bg, transparent);
     transition: background-color .2s ease-in-out;
     position: relative;
-    display: flex;
     align-items: center;
     grid-column-gap: rem(8px);
     text-overflow: ellipsis;
     white-space: nowrap;
 
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: auto 1fr;
+
+    span {
+      overflow: hidden;
+      max-width: 100%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     .icon {
       margin-left: auto;
       position: relative;
-      transform: var(--icon-transform, rotate(0));
+      transform: var(--icon-transform, (rotate(0) translateX(#{rem(8px)})));
       transition: transform .2s ease-in-out;
       --icon-color: var(--white);
     }

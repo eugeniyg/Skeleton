@@ -36,8 +36,12 @@
 
   @include media(sm) {
     --direction: row;
-    --padding: #{rem(16px)};
+    --padding: #{rem(16px)} #{rem(106px)} #{rem(16px)} #{rem(16px)};
     --gap: #{rem(8px)};
+  }
+
+  @include media(md) {
+    --padding: #{rem(24px)} #{rem(106px)} #{rem(24px)} #{rem(24px)};
   }
 
   .items {
@@ -90,14 +94,13 @@
     position: var(--position, absolute);
     width: var(--width, #{rem(88px)});
     height: auto;
-    top: 0;
+    top: var(--top, 0);
     right: 0;
     transform: var(--transform, translateY(#{rem(-4px)}));
 
     @include media(sm) {
-      align-self: center;
-      --position: relative;
-      --transform: translateY(0);
+      --top: 50%;
+      --transform: translateY(-50%) translateX(#{rem(-10px)});
     }
   }
 }
