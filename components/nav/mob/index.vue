@@ -6,7 +6,7 @@
       class="item"
       :class="{ 'is-accent': isAccent }"
       @click.prevent="clickItem(method)"
-      :to="href !== '/betting' && href"
+      :to="href"
     >
       <client-only>
         <atomic-icon :id="icon" /><span>{{ title }}</span>
@@ -54,20 +54,16 @@
     },
   ]);
 
-  // eslint-disable-next-line no-unused-vars
-  function toggleDrawer(): void {
-    layoutStore.toggleDrawer();
-  }
-
-  function clickItem(method?: string): void {
+  function clickItem(method: string | undefined): void {
     if (method) {
       if (method === 'openModal') {
         isLoggedIn.value ? openDepositModal() : showModal('signIn');
       }
       if (method === 'toBetting') {
         isLoggedIn.value ? router.push('/betting') : showModal('register');
-      } else {
-        layoutStore[method]();
+      }
+      if (method === 'toggleDrawer') {
+        layoutStore.toggleDrawer();
       }
     }
   }
