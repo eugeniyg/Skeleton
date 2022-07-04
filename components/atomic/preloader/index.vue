@@ -1,5 +1,5 @@
 <template>
-  <div class="preloader is-hide is-none" ref="preloader">
+  <div class="preloader" ref="preloader">
     <div class="blobs">
       <div class="blob"/>
       <div class="blob"/>
