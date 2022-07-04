@@ -6,6 +6,11 @@
   align-items: var(--align-items, flex-end);
   grid-template-columns: 1fr auto;
   width: 100%;
+  margin-top: -24px;
+
+  @include media(l) {
+    margin-top: 0;
+  }
 
   .container {
     background-color: var(--black-primary);
@@ -13,9 +18,9 @@
     position: relative;
     width: 100%;
     --safe-area-inset-bottom: env(safe-area-inset-bottom);
-    height: calc(var(--vh, 1vh) * 100 - 144px - var(--safe-area-inset-bottom));
+    height: calc(var(--vh, 1vh) * 100 - 120px - var(--safe-area-inset-bottom));
 
-    @include media(md) {
+    @include media(l) {
       height: calc(100vh - 88px);
     }
 
