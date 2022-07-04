@@ -960,7 +960,7 @@ export const useFakeStore = () => {
           src: '/providers/14.svg',
           showPlayBtn: false,
           showTryBtn: false,
-          providerId: 'playn-go',
+          providerId: 'play-n-go',
         },
         // {
         //   src: '/providers/15.svg',
@@ -1004,14 +1004,14 @@ export const useFakeStore = () => {
           title: 'Benny',
           subTitle: 'Book Of Dead',
           items: ['0.0052', 'BTC'],
-          href: '/games/book-of-dead-playn-go',
+          href: '/games/book-of-dead-play-n-go',
         },
         {
           src: '/latest-winners/book_of_dead.png',
           title: 'Lukas',
           subTitle: 'Book Of Dead',
           items: ['0.0005', 'BTC'],
-          href: '/games/book-of-dead-playn-go',
+          href: '/games/book-of-dead-play-n-go',
         },
         {
           src: '/latest-winners/bigger_bass_bonanza.png',
@@ -1075,19 +1075,19 @@ export const useFakeStore = () => {
           src: '/promotions/2.png',
           title: 'Wednesday bonus',
           subTitle: '100 free spins',
-          href: '/wednesday-free-spins',
+          href: '/bonus/wednesday-free-spins',
         },
         {
           src: '/promotions/3.png',
           title: 'Just play and get',
           subTitle: '10% Weekly Cashback',
-          href: '/weekly-cashback',
+          href: '/bonus/weekly-cashback',
         },
         {
           src: '/promotions/4.png',
           title: '30% Reload bonus',
           subTitle: 'every week',
-          href: '/monday-reload-bonus',
+          href: '/bonus/monday-reload-bonus',
         },
       ],
     },
@@ -2425,31 +2425,31 @@ export const useFakeStore = () => {
   const latestWinnersCards = () => filter(cards, 'latest-winners');
   const providerCards = () => filter(cards, 'providers');
 
-  const mainBanner = {
+  const promoCard = {
     image: {
         source: [
           {
             media: '(max-width: 360px)',
-            src: ['/sliders/main/1/328/1.png', '/sliders/main/1/328/2.png'],
+            src: ['/promo-card/328/1.png', '/promo-card/328/2.png'],
           },
           {
             media: '(max-width: 528px)',
-            src: ['/sliders/main/1/464/1.png', '/sliders/main/2/464/2.png'],
+            src: ['/promo-card/464/1.png', '/sliders/main/2/464/2.png'],
           },
           {
             media: '(max-width: 768px)',
-            src: ['/sliders/main/1/704/1.png', '/sliders/main/1/704/2.png'],
+            src: ['/promo-card/704/1.png', '/promo-card/704/2.png'],
           },
           {
             media: '(max-width: 1024px)',
-            src: ['/sliders/main/1/944/1.png', '/sliders/main/1/944/2.png'],
+            src: ['/promo-card/944/1.png', '/promo-card/944/2.png'],
           },
           {
             media: '(max-width: 2264px)',
-            src: ['/sliders/main/1/3776/1.png', '/sliders/main/1/3776/2.png'],
+            src: ['/promo-card/3776/1.png', '/promo-card/3776/2.png'],
           },
         ],
-        src: ['/sliders/main/1/944/1.png', '/sliders/main/1/944/2.png'],
+        src: ['/promo-card/944/1.png', '/promo-card/944/2.png'],
       },
     title: '<h4>Play and win every day at Slotsbet</h4>',
     actions: {
@@ -2495,6 +2495,6 @@ export const useFakeStore = () => {
     providerCards,
     userProfileBonusesTabs,
     userProfileHistoryTabs,
-    mainBanner,
+    promoCard,
   };
 };

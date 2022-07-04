@@ -25,7 +25,7 @@
       cursor: pointer;
     }
 
-    &:active, &.is-active {
+    &.is-compact {
       @include media(l) {
         --bg: var(--gray-800);
       }
@@ -47,7 +47,7 @@
     }
   }
 
-  &.is-active {
+  .is-compact & {
     @include media(l) {
     padding: rem(16px) rem(20px);
     background-color: var(--gray-900);

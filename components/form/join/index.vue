@@ -53,7 +53,7 @@
       tagName="div"
       type="primary"
       size="md"
-      :isDisabled="v$.$invalid"
+      :isDisabled="v$.$invalid || isLockedAsyncButton"
       @click="signUp"
     >Sign up</button-base>
 
@@ -107,6 +107,8 @@
   };
 
   const { registration } = profileStore;
+  const isLockedAsyncButton = ref<boolean>(false);
+
   const signUp = async ():Promise<void> => {
     if (v$.value.$invalid) return;
     v$.value.$reset();
@@ -114,12 +116,15 @@
     if (!validFormData) return;
 
     try {
+      isLockedAsyncButton.value = true;
       await registration(registrationFormData);
       closeModal('register');
     } catch (error) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
       } else throw error;
+    } finally {
+      isLockedAsyncButton.value = false;
     }
   };
 </script>

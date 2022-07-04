@@ -76,7 +76,7 @@
     --margin-left: auto
   }
 
-  &.is-compact {
+  .is-compact & {
     @include media(l) {
       .text, .items, .bage, .btn-toggle {
         display: none;

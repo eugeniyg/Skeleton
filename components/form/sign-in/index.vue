@@ -33,7 +33,7 @@
       size="md"
       tagName="div"
       @click="login"
-      :isDisabled="v$.$invalid"
+      :isDisabled="v$.$invalid || isLockedAsyncButton"
     >
       Sign in
     </button-base>
@@ -100,6 +100,8 @@
   };
 
   const { logIn } = useProfileStore();
+  const isLockedAsyncButton = ref<boolean>(false);
+
   const login = async ():Promise<void> => {
     if (v$.value.$invalid) return;
 
@@ -108,6 +110,7 @@
     if (!validFormData) return;
 
     try {
+      isLockedAsyncButton.value = true;
       await logIn(authorizationFormData);
       closeModal('signIn');
     } catch (error) {
@@ -116,6 +119,8 @@
       } else if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
       } else throw error;
+    } finally {
+      isLockedAsyncButton.value = false;
     }
   };
 </script>

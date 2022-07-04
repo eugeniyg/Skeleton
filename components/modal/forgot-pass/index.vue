@@ -7,7 +7,7 @@
     <div class="modal-forgot-pass" @click.stop>
       <div class="scroll">
         <div class="header">
-          <button-modal-close @close="closeForgotPassModal" />
+          <button-modal-close @close="closeModal('forgotPass')" />
           <div class="title">Forgot password?</div>
         </div>
         <p class="text">
@@ -24,12 +24,7 @@
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
-  const { closeModal, showModal } = layoutStore;
-
-  const closeForgotPassModal = ():void => {
-    closeModal('forgotPass');
-    showModal('signIn');
-  };
+  const { closeModal } = layoutStore;
 </script>
 
 <style lang="scss" src="./style.scss" />

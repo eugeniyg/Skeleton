@@ -1,5 +1,5 @@
 <template>
-  <div class="toggler-btn" :class="{'is-compact' : props.isCompact}">
+  <div class="toggler-btn">
     <button-base
       v-for="(button, index) in props.items"
       :key="index"
@@ -19,10 +19,6 @@
     items: {
       type: Array,
       default: () => [],
-    },
-    isCompact: {
-      type: Boolean,
-      default: false,
     },
   });
 

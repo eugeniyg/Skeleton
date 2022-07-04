@@ -1,5 +1,5 @@
 <template>
-  <div class="card-profile" :class="{'is-compact' : props.isCompact}">
+  <div class="card-profile">
     <atomic-avatar :nickname="publicNickname" :label="props.avatarItems.label">
       <template v-slot:progress-bar>
         <profile-progress-bar/>
@@ -23,10 +23,6 @@
   import { storeToRefs } from 'pinia';
 
   const props = defineProps({
-    isCompact: {
-      type: Boolean,
-      default: false,
-    },
     avatarItems: {
       type: Object as PropType<{nickname: string, label: string}>,
       default: () => ({

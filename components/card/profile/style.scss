@@ -19,7 +19,7 @@
     --bg: var(--gray-900)
   }
 
-  &.is-compact {
+  .is-compact & {
     @include media(l) {
       .btn-secondary, .nickname, .progress-bar {
         display: none;

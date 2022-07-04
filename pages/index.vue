@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="promo-card-wrapper">
-      <card-promo v-bind="mainBanner" />
+      <card-promo v-bind="promoCard" />
     </div>
     <cards-group v-bind="benCards">
       <template v-slot:card="item">
@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
   const {
-    categories, mainBanner, benefitsCards, promotionCards,
+    categories, promoCard, benefitsCards, promotionCards,
   } = useFakeStore();
   const benCards = benefitsCards();
   const promoCards = promotionCards();
