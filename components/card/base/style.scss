@@ -59,6 +59,10 @@
       transform: scale(1);
       transition-delay: .2s;
     }
+
+    .btn-try {
+      animation: delay-pointer-events .2s ease-in-out;
+    }
   }
 
   img {
@@ -95,6 +99,7 @@
     white-space: nowrap;
     width: 100%;
     @include font($body-1);
+    opacity: 1;
   }
 
   .btn-play {
@@ -112,5 +117,20 @@
       --width: #{rem(56px)};
       --height: #{rem(56px)};
     }
+  }
+}
+
+@keyframes delay-pointer-events {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+  }
+  50% {
+    visibility: hidden;
+    opacity: 0;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
   }
 }

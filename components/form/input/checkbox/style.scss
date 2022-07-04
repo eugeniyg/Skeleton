@@ -6,7 +6,7 @@
     display: grid;
     grid-column-gap: rem(8px);
     grid-template-columns: auto 1fr;
-    align-items: center;
+    align-items: flex-start;
 
     &:hover {
       cursor: pointer;
