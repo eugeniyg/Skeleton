@@ -95,12 +95,14 @@
       redirectErrorUrl: errorRedirect,
     };
     const { depositAccount } = useWalletApi();
+    const windowReference = window.open();
     try {
       const depositResponse = await depositAccount(params);
       const redirectUrl = depositResponse?.[0]?.action;
-      if (redirectUrl) window.open(redirectUrl, '_blank');
+      windowReference.location = redirectUrl;
       setTimeout(() => { isSending.value = false; }, 1000);
     } catch {
+      windowReference.close();
       isSending.value = false;
       showModal('error');
     }
