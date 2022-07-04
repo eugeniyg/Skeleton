@@ -2425,31 +2425,31 @@ export const useFakeStore = () => {
   const latestWinnersCards = () => filter(cards, 'latest-winners');
   const providerCards = () => filter(cards, 'providers');
 
-  const mainBanner = {
+  const promoCard = {
     image: {
         source: [
           {
             media: '(max-width: 360px)',
-            src: ['/sliders/main/1/328/1.png', '/sliders/main/1/328/2.png'],
+            src: ['/promo-card/328/1.png', '/promo-card/328/2.png'],
           },
           {
             media: '(max-width: 528px)',
-            src: ['/sliders/main/1/464/1.png', '/sliders/main/2/464/2.png'],
+            src: ['/promo-card/464/1.png', '/sliders/main/2/464/2.png'],
           },
           {
             media: '(max-width: 768px)',
-            src: ['/sliders/main/1/704/1.png', '/sliders/main/1/704/2.png'],
+            src: ['/promo-card/704/1.png', '/promo-card/704/2.png'],
           },
           {
             media: '(max-width: 1024px)',
-            src: ['/sliders/main/1/944/1.png', '/sliders/main/1/944/2.png'],
+            src: ['/promo-card/944/1.png', '/promo-card/944/2.png'],
           },
           {
             media: '(max-width: 2264px)',
-            src: ['/sliders/main/1/3776/1.png', '/sliders/main/1/3776/2.png'],
+            src: ['/promo-card/3776/1.png', '/promo-card/3776/2.png'],
           },
         ],
-        src: ['/sliders/main/1/944/1.png', '/sliders/main/1/944/2.png'],
+        src: ['/promo-card/944/1.png', '/promo-card/944/2.png'],
       },
     title: '<h4>Play and win every day at Slotsbet</h4>',
     actions: {
@@ -2495,6 +2495,6 @@ export const useFakeStore = () => {
     providerCards,
     userProfileBonusesTabs,
     userProfileHistoryTabs,
-    mainBanner,
+    promoCard,
   };
 };

@@ -68,10 +68,15 @@
   }
 
   .title {
-    @include font($heading-2);
+    @include font($heading-0);
     color: var(--color-info-title, var(--white));
     grid-area: title;
     text-align: center;
+    height: 60px;
+
+    @include media(sm) {
+      @include upd-font($heading-2);
+    }
   }
 
   .sub-title {
@@ -89,6 +94,7 @@
     justify-self: center;
     white-space: nowrap;
     width: 100%;
+    @include font($body-1);
   }
 
   .btn-play {
@@ -97,5 +103,14 @@
     transition: transform .2s ease-out;
     transform: scale(0);
     will-change: transform;
+    margin-top: rem(-16px);
+
+    --width: #{rem(48px)};
+    --height: #{rem(48px)};
+
+    @include media(sm) {
+      --width: #{rem(56px)};
+      --height: #{rem(56px)};
+    }
   }
 }
