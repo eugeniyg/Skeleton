@@ -18,7 +18,7 @@
     height: var(--img-height, #{rem(56px)});
   }
 
-  &.is-compact {
+  .is-compact & {
     @include media(l) {
       .item:not(:first-child) {
         display: none;
