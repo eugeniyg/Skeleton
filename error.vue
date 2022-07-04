@@ -17,10 +17,10 @@
 
 <script setup lang="ts">
   const goHome = () => clearError({ redirect: '/' });
-  const { dispatchPreloaderDone } = useProjectMethods();
+  const { preloaderDone } = useProjectMethods();
 
   onMounted(() => {
-    dispatchPreloaderDone();
+    preloaderDone();
   });
 </script>
 

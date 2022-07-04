@@ -101,7 +101,7 @@
   function toggleOpen():void {
     layoutStore.toggleDrawer();
   }
-  
+
   onMounted(() => {
     document.body.classList.remove('stop-transition');
   });

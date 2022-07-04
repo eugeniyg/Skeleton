@@ -20,9 +20,22 @@ export const useProjectMethods = () => {
     return createFormRules(fields, validationRules, validationMessages, includeContext);
   };
 
-  const dispatchPreloaderDone = ():void => {
-    const doneEvent = new Event('preloader:done', { bubbles: false, cancelable: true });
-    document.dispatchEvent(doneEvent);
+  const preloaderDone = ():void => {
+    const preloaderEl = document.querySelector('.preloader');
+    if (preloaderEl.classList.contains('is-none')) return;
+
+    setTimeout(() => {
+      preloaderEl.classList.add('is-hide');
+    }, 500);
+
+    setTimeout(() => {
+      preloaderEl.classList.add('is-none');
+    }, 1000);
+  };
+
+  const preloaderStart = ():void => {
+    const preloaderEl = document.querySelector('.preloader');
+    if (preloaderEl) preloaderEl.classList.value = 'preloader';
   };
 
   const getImageUrl = (imageData:GameImagesInterface, orientation:string):string => {
@@ -35,7 +48,8 @@ export const useProjectMethods = () => {
     getCurrentUrl,
     isHomePage,
     getFormRules,
-    dispatchPreloaderDone,
+    preloaderDone,
     getImageUrl,
+    preloaderStart,
   };
 };

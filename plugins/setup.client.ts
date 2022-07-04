@@ -1,8 +1,8 @@
 export default defineNuxtPlugin((nuxtApp) => {
-  const finishEvent = new Event('preloader:done', { bubbles: false, cancelable: true });
   nuxtApp.hook('page:finish', () => {
     const route = useRoute();
-    if (route.name !== 'main') document.dispatchEvent(finishEvent);
+    const { preloaderDone } = useProjectMethods();
+    if (route.name !== 'main') preloaderDone();
   });
 
   const setWindowHeight = ():void => {

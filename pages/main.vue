@@ -133,15 +133,15 @@
     },
   };
 
+  const { preloaderDone, preloaderStart } = useProjectMethods();
   onBeforeMount(() => {
-    if (document.querySelector('.preloader.is-hide')) window.startPagePreloader();
+    preloaderStart();
   });
 
   const gamesGroupLoaded = ref<number>(0);
-  const { dispatchPreloaderDone } = useProjectMethods();
   watch(() => gamesGroupLoaded.value, (newValue:number) => {
     if (newValue === mainCategories.length) {
-      dispatchPreloaderDone();
+      preloaderDone();
     }
   });
 
