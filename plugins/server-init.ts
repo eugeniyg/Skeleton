@@ -10,11 +10,11 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
 
   if (process.client) {
-    // const { parseUserAgent, setBrowserLanguage } = useGlobalStore();
+    const { parseUserAgent } = useGlobalStore();
     // const languages = parser.parse(nuxtApp.ssrContext.req.headers['accept-language']);
     // setBrowserLanguage(languages);
-    // const userAgent = nuxtApp.ssrContext.req.headers['user-agent'];
-    // parseUserAgent(userAgent);
+    const { userAgent } = window.navigator;
+    parseUserAgent(userAgent);
 
     const { getProfileData } = useProfileStore();
     const { getUserAccounts } = useWalletStore();
