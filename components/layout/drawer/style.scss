@@ -25,7 +25,7 @@
     top: 0;
     z-index: 1;
     grid-row-gap: var(--drawer-header-row-gap, 0);
-    height: rem(64px);
+    min-height: rem(64px);
 
     .drawer-minimize &, .drawer-open & {
       box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
