@@ -1,22 +1,49 @@
 <template>
-  <div class="card">
+  <div class="card" @click="openGame">
     <div class="img" :style="backgroundImage"/>
-    <div class="title">{{ props.title }}</div>
+    <div class="title">{{ name }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
+  import { PropType } from '@vue/runtime-core';
+  import { GameImagesInterface } from '~/types/gameTypes';
+
   const props = defineProps({
-    src: {
+    images: {
+      type: Object as PropType<GameImagesInterface>,
+      required: false,
+    },
+    name: {
+      type: String,
+      default: '',
+    },
+    id: {
       type: String,
       required: true,
     },
-    title: {
+    identity: {
       type: String,
       required: true,
+    },
+    isDemoMode: {
+      type: Boolean,
+      default: true,
     },
   });
-  const backgroundImage = computed(() => `background-image:url(/img${props.src})`);
+
+  const { baseApiUrl } = useGlobalStore();
+  const { getImageUrl } = useProjectMethods();
+  const backgroundImage = computed(() => {
+    if (props.images.hasOwnProperty('200x200')) {
+      return `background-image: url(${baseApiUrl}/img/gcdn${getImageUrl(props.images, 'vertical')})`;
+    } return 'background-image: url(/img/default-game-tumb.png)';
+  });
+
+  const router = useRouter();
+  const openGame = ():void => {
+    router.push(`/games/${props.identity}`);
+  };
 </script>
 
 <style lang="scss" src="./style.scss"/>

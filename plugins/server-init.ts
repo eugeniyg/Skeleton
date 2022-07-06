@@ -18,6 +18,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
     const { getProfileData } = useProfileStore();
     const { getUserAccounts } = useWalletStore();
+    const { getFavoriteGames } = useGamesStore();
     const bearer = useAppCookie();
     if (bearer.value) {
       try {
@@ -25,6 +26,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           getProfileData(),
           getUserAccounts(),
         ]);
+        getFavoriteGames();
       } catch (error) {
         if (error.response?.status === 401) {
           const { logOutUser } = useProfileStore();

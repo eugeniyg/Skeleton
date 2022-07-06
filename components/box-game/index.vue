@@ -9,10 +9,10 @@
         width="100%"
       />
     </div>
-    <nav-game/>
+    <nav-game :gameInfo="gameInfo"/>
     <panel-mode @changeMode="emit('changeMode')"/>
 
-    <games-group
+    <group-games
       :category="popularCategory"
       showArrows
       subTitle="The best games for you"
@@ -21,9 +21,6 @@
 </template>
 
 <script setup lang="ts">
-  import { GameInterface } from '~/types/gameTypes';
-  import { useGamesApi } from '~/CORE/index';
-
   const props = defineProps({
     frameLink: {
       type: String,
@@ -35,18 +32,9 @@
     },
   });
   const emit = defineEmits(['changeMode']);
-  const popularGames = ref<GameInterface[]>([]);
 
   const { gameCollections } = useGamesStore();
   const popularCategory = gameCollections.find((collection) => collection.identity === 'popular');
-
-  const { getFilteredGames } = useGamesApi();
-  onMounted(async () => {
-    if (popularCategory) {
-      const { data } = await getFilteredGames({ collectionId: popularCategory.id });
-      popularGames.value = data;
-    }
-  });
 </script>
 
 <style lang="scss" src="./style.scss"/>

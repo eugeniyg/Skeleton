@@ -26,12 +26,30 @@ const useGamesApi = () => {
     return data;
   };
 
+  const getFavorite = async ():Promise<any> => {
+    const { data } = await useFetchInstance('/api/game/games/favorite');
+    return data;
+  };
+
+  const setFavorite = async (gameId: string):Promise<any> => {
+    const { data } = await useFetchInstance('/api/game/games/favorite', { method: 'POST', body: { gameId } });
+    return data;
+  };
+
+  const deleteFavorite = async (gameId: string):Promise<any> => {
+    const { data } = await useFetchInstance('/api/game/games/favorite', { method: 'DELETE', body: { gameId } });
+    return data;
+  };
+
   return {
     getGameCollections,
     getGameProviders,
     getFilteredGames,
     getGamesInfo,
     getStartGame,
+    getFavorite,
+    setFavorite,
+    deleteFavorite,
   };
 };
 

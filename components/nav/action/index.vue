@@ -1,29 +1,43 @@
 <template>
   <div class="nav-action">
     <button
-      v-for="{icon, id} in props.items"
-      :key="id"
       class="item"
-      @click="clickButton(id)"
-      :class="{'is-active': isActive(id)}"
+      @click="closeGame"
     >
-      <atomic-icon :id="icon"/>
+      <atomic-icon id="ui-close"/>
+    </button>
+
+    <button
+      class="item"
+      @click="toggleFullScreen"
+    >
+      <atomic-icon id="ui-video-expand"/>
+    </button>
+
+    <button
+      v-if="isLoggedIn"
+      class="item"
+      @click="toggleFavorite"
+      :class="{ 'is-active': isFavorite }"
+    >
+      <atomic-icon id="ui-heart-outline"/>
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
-    items: {
-      type: Array,
-      default: () => [],
+    gameInfo: {
+      type: Object,
+      required: true,
     },
   });
 
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
   const router = useRouter();
-  const pressed = ref<any>([]);
-
-  const isActive = (id:any):boolean => pressed.value.includes(id);
 
   const closeGame = ():void => {
     if (window.history.state.back) {
@@ -44,16 +58,13 @@
     }
   };
 
-  const toggleFavorite = ():void => {
-    if (pressed.value.includes('favorites')) {
-      pressed.value = [...pressed.value.filter((item) => item !== 'favorites')];
-    } else pressed.value.push('favorites');
-  };
-
-  const clickButton = (id:string):void => {
-    if (id === 'close') closeGame();
-    else if (id === 'full-screen') toggleFullScreen();
-    else if (id === 'favorites') toggleFavorite();
+  const gameStore = useGamesStore();
+  const { favoriteGames } = storeToRefs(gameStore);
+  const isFavorite = computed(() => favoriteGames.value.map((game) => game.id).includes(props.gameInfo.id));
+  const toggleFavorite = async ():Promise<void> => {
+    if (favoriteGames.value.find((game) => game.id === props.gameInfo.id)) {
+      await gameStore.deleteFavoriteGame(props.gameInfo.id);
+    } else await gameStore.setFavoriteGame(props.gameInfo.id);
   };
 </script>
 

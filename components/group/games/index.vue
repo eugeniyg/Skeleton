@@ -1,5 +1,5 @@
 <template>
-  <div class="game-cards">
+  <div class="group-games">
     <atomic-icon v-if="titleIcon" :id="titleIcon"/>
 
     <div v-if="props.category.name && props.subTitle" class="titles">
@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
   import { GameInterface, PaginationMetaInterface } from '~/types/gameTypes';
-  import { useGamesApi, useGlobalMethods } from '~/CORE/index';
+  import { useGamesApi, useGlobalMethods } from '~/CORE';
 
   const props = defineProps({
     category: {

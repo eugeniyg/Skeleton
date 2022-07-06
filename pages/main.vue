@@ -15,34 +15,32 @@
 
     <nav-cat @clickCategory="changeCategory" />
 
-    <!-- <tab-component @select-tab="selectTab" :selected="selectedTabId">
-      <tab-item :is-active="selectedTabId === 'favorites'">
-        <cards-group v-bind="fakeStore.favoritesCards">
-          <template v-slot:card="item">
-            <card-simple v-bind="item" :variant="fakeStore.favoritesCards.variant" />
-          </template>
-        </cards-group>
-      </tab-item>
+    <client-only>
+      <tab-component v-if="isLoggedIn && favoriteGames.length" @select-tab="selectTab" :selected="selectedTabId">
+        <tab-item :is-active="selectedTabId === 'favorites'">
+          <group-favorites/>
+        </tab-item>
 
-      <tab-item :is-active="selectedTabId === 'recently-played'">
-        <cards-group v-bind="fakeStore.recentlyCards">
-          <template v-slot:card="item">
-            <card-simple v-bind="item" :variant="fakeStore.recentlyCards.variant"/>
-          </template>
-        </cards-group>
-      </tab-item>
-    </tab-component> -->
+        <!--      <tab-item :is-active="selectedTabId === 'recently-played'">-->
+        <!--        <cards-group v-bind="fakeStore.recentlyCards">-->
+        <!--          <template v-slot:card="item">-->
+        <!--            <card-simple v-bind="item" :variant="fakeStore.recentlyCards.variant"/>-->
+        <!--          </template>-->
+        <!--        </cards-group>-->
+        <!--      </tab-item>-->
+      </tab-component>
+    </client-only>
 
     <br />
 
-    <games-group
+    <group-games
       showAllBtn
       showArrows
       :category="sortCategory[0]"
       @initialLoad="gamesGroupLoaded++"
     />
 
-    <games-group
+    <group-games
       showAllBtn
       showArrows
       :category="sortCategory[1]"
@@ -55,14 +53,14 @@
       </template>
     </cards-group>
 
-    <games-group
+    <group-games
       showAllBtn
       showArrows
       :category="sortCategory[2]"
       @initialLoad="gamesGroupLoaded++"
     />
 
-    <games-group
+    <group-games
       showAllBtn
       showArrows
       :category="sortCategory[3]"
@@ -75,14 +73,14 @@
       </template>
     </cards-group>
 
-    <games-group
+    <group-games
       showAllBtn
       showArrows
       :category="sortCategory[4]"
       @initialLoad="gamesGroupLoaded++"
     />
 
-    <games-group
+    <group-games
       showAllBtn
       showArrows
       :category="sortCategory[5]"
@@ -108,20 +106,24 @@
   import {
     Carousel, Slide, Pagination, Navigation,
   } from 'vue3-carousel';
+  import { storeToRefs } from 'pinia';
 
   const fakeStore = useFakeStore();
   const router = useRouter();
-  const { gameCollections } = useGamesStore();
+  const gameStore = useGamesStore();
+  const { gameCollections, favoriteGames } = storeToRefs(gameStore);
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
 
   const providerCards = fakeStore.providerCards();
   const latestWinnersCards = fakeStore.latestWinnersCards();
   const promotionsCards = fakeStore.promotionCards();
 
   const mainCategories = ['hot', 'slots', 'turbogames', 'new', 'table', 'live'];
-  const sortCategory = gameCollections.filter((item) => mainCategories.find((el) => el === item.identity))
+  const sortCategory = gameCollections.value.filter((item) => mainCategories.find((el) => el === item.identity))
     .sort((a, b) => mainCategories.map((e) => e).indexOf(a.identity) - mainCategories.map((e) => e).indexOf(b.identity));
 
-  // const selectedTabId = ref<string>('favorites');
+  const selectedTabId = ref<string>('favorites');
   const topSliderProps = {
     settings: {
       itemsToShow: 1,
@@ -145,9 +147,9 @@
     }
   });
 
-  // function selectTab(id: string): void {
-  //   selectedTabId.value = id;
-  // }
+  function selectTab(id: string): void {
+    selectedTabId.value = id;
+  }
 
   const changeCategory = (categoryId: string) => {
     router.push({ path: '/games', query: { category: categoryId } });

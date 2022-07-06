@@ -15,7 +15,7 @@
 
       <div v-if="props.subTitle" class="sub-title">{{ props.subTitle }}</div>
 
-      <button-favorite v-if="props.showFavorite"/>
+      <button-favorite v-if="isLoggedIn" :gameId="id"/>
 
       <button-play @click="openGame(true)"/>
 
@@ -39,10 +39,6 @@
   import { GameImagesInterface } from '~/types/gameTypes';
 
   const props = defineProps({
-    src: {
-      type: String,
-      required: false,
-    },
     images: {
       type: Object as PropType<GameImagesInterface>,
       required: false,
@@ -70,10 +66,6 @@
     bages: {
       type: Array || undefined,
       default: () => [],
-    },
-    showFavorite: {
-      type: Boolean,
-      default: false,
     },
   });
 

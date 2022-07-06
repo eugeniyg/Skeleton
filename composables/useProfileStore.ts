@@ -4,6 +4,7 @@ import { ProfileInterface } from '~/types/userTypes';
 import { FieldInterface } from '~/types/formTypes';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useLayoutStore } from '~/composables/useLayoutStore';
+import { useGamesStore } from '~/composables/useGamesStore';
 
 export type ProfileStoreStateType = {
   isLoggedIn: boolean,
@@ -61,6 +62,8 @@ export const useProfileStore = defineStore('profileStore', {
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
+      const { getFavoriteGames } = useGamesStore();
+      getFavoriteGames();
     },
 
     async registration(registrationData:any):Promise<any> {
