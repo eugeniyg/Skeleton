@@ -1,6 +1,6 @@
 <template>
   <div class="tabs">
-    <div class="header">
+    <div class="header" v-if="props.items.length > 1">
       <button-base
         v-for="({ icon, title, id }, itemIndex) in props.items"
         :key="itemIndex"
@@ -28,11 +28,11 @@
           id: 'favorites',
           isActive: true,
         },
-        {
-          title: 'Recently played',
-          icon: 'ui-history',
-          id: 'recently-played',
-        },
+        // {
+        //   title: 'Recently played',
+        //   icon: 'ui-history',
+        //   id: 'recently-played',
+        // },
       ]),
     },
     selected: {

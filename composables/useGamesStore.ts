@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
 import { useGamesApi } from '~/CORE/index';
-import { CollectionInterface, GameProviderInterface } from '~/types/gameTypes';
+import { CollectionInterface, GameInterface, GameProviderInterface } from '~/types/gameTypes';
 import { useFieldsStore } from '~/composables/useFieldsStore';
 
 export type GamesStoreStateType = {
   gameProviders: GameProviderInterface[];
   gameCollections: CollectionInterface[];
+  favoriteGames: GameInterface[];
   sortedCategories: { [key: string]: string };
 };
 
@@ -24,6 +25,7 @@ export const useGamesStore = defineStore('gamesStore', {
         live: 'live-casino',
         popular: 'ui-heart',
       },
+      favoriteGames: [],
     } as GamesStoreStateType),
 
   actions: {
@@ -43,6 +45,21 @@ export const useGamesStore = defineStore('gamesStore', {
         (a, b) => Object.keys(this.sortedCategories).map((e) => e).indexOf(a.identity)
           - Object.keys(this.sortedCategories).map((e) => e).indexOf(b.identity),
       );
+    },
+
+    async getFavoriteGames(): Promise<void> {
+      const { getFavorite } = useGamesApi();
+      this.favoriteGames = await getFavorite();
+    },
+
+    async setFavoriteGame(gameId:string): Promise<void> {
+      const { setFavorite } = useGamesApi();
+      this.favoriteGames = await setFavorite(gameId);
+    },
+
+    async deleteFavoriteGame(gameId:string): Promise<void> {
+      const { deleteFavorite } = useGamesApi();
+      this.favoriteGames = await deleteFavorite(gameId);
     },
   },
 });
