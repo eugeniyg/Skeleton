@@ -37,9 +37,9 @@
 
   const calcItems = ():void => {
     const cardSimple:any = document.querySelector('.group-favorites .card');
-    const containerWidth = container.value.offsetWidth;
-    const cardWidth = cardSimple.offsetWidth;
-    cardInBlock.value = Math.floor(containerWidth / cardWidth);
+    const containerWidth = getComputedStyle(container.value).width.replace('px', '');
+    const cardWidth = getComputedStyle(cardSimple).width.replace('px', '');
+    cardInBlock.value = Math.floor(Number(containerWidth) / Number(cardWidth));
   };
 
   onMounted(() => {
