@@ -3,18 +3,18 @@
     <div class="favorites__title">Favorite games</div>
 
     <client-only>
-      <list-grid
-        v-if="favoriteGames.length"
-        :items="currentFavoriteList"
-        :meta="pageMeta"
-        @loadMore="currentPage++"
-      />
-
       <atomic-empty
         v-if="!favoriteGames.length"
         title="Nothing found"
         subTitle="You have no favorite games yet"
         variant="search-result"
+      />
+
+      <list-grid
+        v-else
+        :items="currentFavoriteList"
+        :meta="pageMeta"
+        @loadMore="currentPage++"
       />
 
       <group-games
