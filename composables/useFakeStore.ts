@@ -1222,6 +1222,14 @@ export const useFakeStore = () => {
     },
   ];
 
+  const userMenuItems = [
+    {
+      title: 'Favorites',
+      icon: 'ui-heart',
+      href: '/favorites',
+    },
+  ];
+
   const bottomMenuItems = [
     // {
     //   title: 'Favorites',
@@ -2465,6 +2473,7 @@ export const useFakeStore = () => {
   };
 
   return {
+    userMenuItems,
     topMenuItems,
     centerMenuItems,
     sbtTokenMenuItems,
