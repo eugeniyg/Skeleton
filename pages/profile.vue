@@ -20,7 +20,7 @@
 
       if (!bearer.value) {
         return navigateTo({ name: 'index' });
-      }
+      } return true;
     },
   });
 </script>

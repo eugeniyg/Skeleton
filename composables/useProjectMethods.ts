@@ -4,16 +4,7 @@ import { useGlobalStore } from '~/composables/useGlobalStore';
 import { GameImagesInterface } from '~/types/gameTypes';
 
 export const useProjectMethods = () => {
-  const router = useRouter();
   const { validationMessages } = useGlobalStore();
-
-  const navigate = (href:string):void => {
-    router.push(href);
-  };
-
-  const getCurrentUrl = ():string => router.currentRoute.value.fullPath;
-
-  const isHomePage = ():boolean => router.currentRoute.value.name === 'index';
 
   const getFormRules = (fields:any[], includeContext:boolean = false):any => {
     const { createFormRules } = useGlobalMethods();
@@ -33,6 +24,18 @@ export const useProjectMethods = () => {
     }, 1000);
   };
 
+  const localizePath = (path:string):string => {
+    const { currentLocale, defaultLocale } = useGlobalStore();
+
+    if (currentLocale.code === defaultLocale.code) return path;
+    return `/${currentLocale.code}${path}`;
+  };
+
+  const isHomePage = ():boolean => {
+    const route = useRoute();
+    return route.name === 'index' || route.name === 'locale-index';
+  };
+
   const preloaderStart = ():void => {
     const preloaderEl = document.querySelector('.preloader');
     if (preloaderEl) preloaderEl.classList.value = 'preloader';
@@ -44,12 +47,11 @@ export const useProjectMethods = () => {
   };
 
   return {
-    navigate,
-    getCurrentUrl,
-    isHomePage,
     getFormRules,
     preloaderDone,
     getImageUrl,
     preloaderStart,
+    localizePath,
+    isHomePage,
   };
 };
