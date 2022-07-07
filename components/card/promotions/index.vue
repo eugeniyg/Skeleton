@@ -7,7 +7,7 @@
       <div class="sub-title">{{ props.subTitle }}</div>
       <div class="actions">
         <button-base type="primary" size="md" @click="isLoggedIn ? openDepositModal() : showModal('register') ">{{ props.bonusBtnTitle }}</button-base>
-        <nuxt-link class="link-more" :to="props.href">{{ props.linkMoreText }}</nuxt-link>
+        <nuxt-link class="link-more" :to="localizePath(props.href)">{{ props.linkMoreText }}</nuxt-link>
       </div>
     </div>
   </div>
@@ -43,6 +43,7 @@
     },
   });
 
+  const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal, openDepositModal } = useLayoutStore();

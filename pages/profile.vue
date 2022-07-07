@@ -16,10 +16,11 @@
 
   definePageMeta({
     middleware: () => {
+      const { localizePath } = useProjectMethods();
       const bearer = useCookie('bearer');
 
       if (!bearer.value) {
-        return navigateTo({ name: 'index' });
+        return navigateTo({ path: localizePath('/') });
       } return true;
     },
   });

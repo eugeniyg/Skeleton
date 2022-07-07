@@ -5,6 +5,7 @@ import { FieldInterface } from '~/types/formTypes';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useLayoutStore } from '~/composables/useLayoutStore';
 import { useGamesStore } from '~/composables/useGamesStore';
+import { useProjectMethods } from '~/composables/useProjectMethods';
 
 export type ProfileStoreStateType = {
   isLoggedIn: boolean,
@@ -102,7 +103,8 @@ export const useProfileStore = defineStore('profileStore', {
         bearer.value = undefined;
         this.isLoggedIn = false;
         const router = useRouter();
-        router.push({ name: 'index' });
+        const { localizePath } = useProjectMethods();
+        router.push(localizePath('/'));
       }
     },
 

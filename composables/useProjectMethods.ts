@@ -28,7 +28,7 @@ export const useProjectMethods = () => {
     const { currentLocale, defaultLocale } = useGlobalStore();
 
     if (currentLocale.code === defaultLocale.code) return path;
-    return `/${currentLocale.code}${path}`;
+    return `/${currentLocale.code}${path === '/' ? '' : path}`;
   };
 
   const isHomePage = ():boolean => {

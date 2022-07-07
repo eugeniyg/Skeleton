@@ -6,7 +6,7 @@
       class="item"
       :class="{ 'is-accent': isAccent }"
       @click.prevent="clickItem(method)"
-      :to="href"
+      :to="localizePath(href)"
     >
       <client-only>
         <atomic-icon :id="icon" /><span>{{ title }}</span>
@@ -54,13 +54,14 @@
     },
   ]);
 
+  const { localizePath } = useProjectMethods();
   function clickItem(method: string | undefined): void {
     if (method) {
       if (method === 'openModal') {
         isLoggedIn.value ? openDepositModal() : showModal('signIn');
       }
       if (method === 'toBetting') {
-        isLoggedIn.value ? router.push('/betting') : showModal('register');
+        isLoggedIn.value ? router.push(localizePath('/betting')) : showModal('register');
       }
       if (method === 'toggleDrawer') {
         layoutStore.toggleDrawer();

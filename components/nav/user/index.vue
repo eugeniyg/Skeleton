@@ -7,7 +7,7 @@
         v-for="(item, index) in props.items"
         :key="index"
         class="item"
-        :class="{ 'is-active': $route.fullPath === localizePath(item.url) }"
+        :class="{ 'is-active': $route.path === localizePath(item.url) }"
         @click="clickItem(item.url)"
       >
         <atomic-icon :id="item.icon"/>{{ item.title }}

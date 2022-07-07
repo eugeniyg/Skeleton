@@ -12,8 +12,10 @@
 <script setup lang="ts">
   definePageMeta({
     middleware: (to) => {
-      if (to.name === 'questions') {
-        return navigateTo({ name: 'questions-most-popular' });
+      const { localizePath } = useProjectMethods();
+
+      if (to.path === localizePath('/questions')) {
+        return navigateTo({ path: localizePath('/questions/most-popular') });
       }
       return true;
     },

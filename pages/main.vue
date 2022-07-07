@@ -135,7 +135,7 @@
     },
   };
 
-  const { preloaderDone, preloaderStart } = useProjectMethods();
+  const { preloaderDone, preloaderStart, localizePath } = useProjectMethods();
   onBeforeMount(() => {
     preloaderStart();
   });
@@ -152,6 +152,6 @@
   }
 
   const changeCategory = (categoryId: string) => {
-    router.push({ path: '/games', query: { category: categoryId } });
+    router.push({ path: localizePath('/games'), query: { category: categoryId } });
   };
 </script>
