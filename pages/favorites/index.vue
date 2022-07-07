@@ -3,7 +3,12 @@
     <div class="favorites__title">Favorite games</div>
 
     <client-only>
-      <list-grid :items="currentFavoriteList" :meta="pageMeta" @loadMore="currentPage++" />
+      <list-grid
+        v-if="favoriteGames.length"
+        :items="currentFavoriteList"
+        :meta="pageMeta"
+        @loadMore="currentPage++"
+      />
 
       <atomic-empty
         v-if="!favoriteGames.length"
