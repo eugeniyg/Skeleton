@@ -1,6 +1,6 @@
 <template>
   <div class="group-games">
-    <atomic-icon v-if="titleIcon" :id="titleIcon"/>
+    <atomic-icon v-if="titleIcon && !props.subTitle" :id="titleIcon"/>
 
     <div v-if="props.category.name && props.subTitle" class="titles">
       <h2 class="title">{{ props.category.name }}</h2>

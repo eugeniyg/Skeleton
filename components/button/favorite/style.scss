@@ -1,13 +1,14 @@
 .btn-favorite {
-  @include box(40px);
+  @include box(24px);
   border-radius: 50%;
   @extend %skip-btn;
   @extend %flex-all-center;
   transition: all .2s ease-in-out;
   box-shadow: var(--shadow, unset);
+  padding: 0;
 
-  --icon-size: #{rem(20px)};
-  --padding: 0 0;
+  --icon-size: #{rem(18px)};
+  --padding: 0;
   --color: var(--gray-400);
 
   &:hover {
@@ -20,9 +21,6 @@
   }
 
   &.active {
-    box-shadow: inset 0 3px 0 var(--gray-800);
-    --bg: var(--gray-700);
-
     .icon {
       --color: var(--yellow-500);
     }
