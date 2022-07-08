@@ -1,0 +1,33 @@
+.security {
+  .form-change {
+    grid-template-areas:
+      "current"
+      "new"
+      "re"
+      "save";
+
+    @include media(xs) {
+      grid-template-areas:
+      "current ."
+      "new re"
+      "save save";
+    }
+  }
+
+  .row-current {
+    grid-area: current;
+  }
+
+  .row-new {
+    grid-area: new;
+  }
+
+  .row-re {
+    grid-area: re;
+  }
+
+  .btn-primary {
+    grid-area: save;
+  }
+
+}
