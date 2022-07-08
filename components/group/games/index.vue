@@ -121,9 +121,10 @@
     }
   });
 
+  const { localizePath } = useProjectMethods();
   const openGames = ():void => {
     const router = useRouter();
-    router.push(`/games?category=${props.category.identity}`);
+    router.push(localizePath(`/games?category=${props.category.identity}`));
   };
 </script>
 

@@ -3,7 +3,7 @@
     :is="props.url ? NuxtLink : props.tagName"
     :class="componentClasses"
     :disabled="props.isDisabled || null"
-    :to="url"
+    :to="localizePath(url)"
   >
     <slot/>
   </component>
@@ -40,6 +40,7 @@
     },
   });
 
+  const { localizePath } = useProjectMethods();
   const NuxtLink = resolveComponent('nuxt-link');
 
   const componentClasses = computed(() => [

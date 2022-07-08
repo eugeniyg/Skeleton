@@ -18,9 +18,10 @@
 
   const router = useRouter();
 
+  const { localizePath } = useProjectMethods();
   const routeToGames = (): void => {
     router.push({
-      path: 'games',
+      path: localizePath('/games'),
       query: { category: 'all', provider: props.providerId },
     });
   };

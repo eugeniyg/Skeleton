@@ -13,7 +13,7 @@
             v-for="({ title, href }, itemIndex) in items"
             :key="itemIndex"
             class="link"
-            :to="href"
+            :to="localizePath(href)"
           >
             <span class="text">{{ title }}</span>
           </nuxt-link>
@@ -56,13 +56,14 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal } = useLayoutStore();
 
+  const { localizePath } = useProjectMethods();
   const defineCurrentAction = (href: string):void => {
     // specific actions like open modal etc
     if (!isLoggedIn.value && href === '/betting') {
       showModal('register');
     } else {
       // instead of <nuxt-link :to="href"
-      router.push(href);
+      router.push(localizePath(href));
     }
   };
 </script>

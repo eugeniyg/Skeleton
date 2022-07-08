@@ -5,6 +5,7 @@
     display: flex;
     align-items: center;
     grid-column-gap: rem(8px);
+    text-decoration: none;
     @include font($body-2);
   }
 

@@ -15,7 +15,9 @@
 
       <div v-if="props.subTitle" class="sub-title">{{ props.subTitle }}</div>
 
-      <button-favorite v-if="isLoggedIn" :gameId="id"/>
+      <client-only>
+        <button-favorite v-if="isLoggedIn" :gameId="id"/>
+      </client-only>
 
       <button-play @click="openGame(true)"/>
 
@@ -73,19 +75,19 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal } = useLayoutStore();
+  const { localizePath, getImageUrl } = useProjectMethods();
 
   const openGame = (isReal: boolean):void => {
     if (!isReal) {
-      router.push(`/games/${props.identity}?demo=true`);
+      router.push(localizePath(`/games/${props.identity}?demo=true`));
     } else if (!isLoggedIn.value) {
       showModal('register');
     } else {
-      router.push(`/games/${props.identity}`);
+      router.push(localizePath(`/games/${props.identity}`));
     }
   };
 
   const { baseApiUrl } = useGlobalStore();
-  const { getImageUrl } = useProjectMethods();
   const backgroundImage = computed(() => {
     if (props.images.hasOwnProperty('200x300')) {
       return `background-image:url(${baseApiUrl}/img/gcdn${getImageUrl(props.images, 'vertical')})`;

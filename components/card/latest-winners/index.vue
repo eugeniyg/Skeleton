@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link class="card-latest-winners" :to="`${props.href}${!isLoggedIn ? '?demo=true' : '' }`">
+  <nuxt-link class="card-latest-winners" :to="localizePath(`${props.href}${!isLoggedIn ? '?demo=true' : '' }`)">
     <div class="img" :style="backgroundImage"></div>
     <div class="title">{{ props.title }}</div>
     <div class="sub-title">{{ props.subTitle }}</div>
@@ -35,6 +35,7 @@
     },
   });
 
+  const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 

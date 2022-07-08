@@ -12,7 +12,7 @@ export type GlobalStoreStateType = {
   countries: CountryInterface[],
   validationMessages: any,
   timeZones: TimeZoneInterface[],
-  currentLocale: string,
+  defaultLocale: LocaleInterface|undefined,
   isMobile: boolean,
   browserLanguage: string,
   fieldsContent: any,
@@ -26,12 +26,21 @@ export const useGlobalStore = defineStore('globalStore', {
     countries: [],
     validationMessages: {},
     timeZones: [],
-    currentLocale: '',
+    defaultLocale: undefined,
     isMobile: false,
     browserLanguage: 'en',
     fieldsContent: {},
     baseApiUrl: '',
   } as GlobalStoreStateType),
+
+  getters: {
+    currentLocale():LocaleInterface {
+      const route = useRoute();
+      const findLocale = this.locales.find((locale) => locale.code === route.params.locale);
+      if (route.params.locale && findLocale) return findLocale;
+      return this.defaultLocale;
+    },
+  },
 
   actions: {
     async getCurrencies():Promise<void> {
@@ -54,6 +63,7 @@ export const useGlobalStore = defineStore('globalStore', {
       const { getLocales } = useGlobalApi();
       const data = await getLocales();
       this.locales = data;
+      this.defaultLocale = data.find((locale) => locale.isDefault);
     },
 
     async getCountries():Promise<void> {

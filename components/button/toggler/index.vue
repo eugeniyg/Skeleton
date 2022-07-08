@@ -3,7 +3,7 @@
     <button-base
       v-for="(button, index) in props.items"
       :key="index"
-      :isActive="$route.path === button.url"
+      :isActive="$route.path === localizePath(button.url)"
       @click="selectTab(button.url)"
     >
       <atomic-icon :id="button.icon"/>
@@ -26,10 +26,11 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal } = useLayoutStore();
   const router = useRouter();
+  const { localizePath } = useProjectMethods();
 
   const selectTab = (url: string):void => {
     if (url === '/betting' && !isLoggedIn.value) showModal('register');
-    else router.push(url);
+    else router.push(localizePath(url));
   };
 </script>
 

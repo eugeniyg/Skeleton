@@ -33,7 +33,7 @@
   });
 
   const { baseApiUrl } = useGlobalStore();
-  const { getImageUrl } = useProjectMethods();
+  const { getImageUrl, localizePath } = useProjectMethods();
   const backgroundImage = computed(() => {
     if (props.images.hasOwnProperty('200x200')) {
       return `background-image: url(${baseApiUrl}/img/gcdn${getImageUrl(props.images, 'vertical')})`;
@@ -42,7 +42,7 @@
 
   const router = useRouter();
   const openGame = ():void => {
-    router.push(`/games/${props.identity}`);
+    router.push(localizePath(`/games/${props.identity}`));
   };
 </script>
 
