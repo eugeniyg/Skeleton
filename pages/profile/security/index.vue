@@ -11,7 +11,7 @@
         <form-input-password
           value=""
           type="password"
-          name="password"
+          name="currentPassword"
           label="Current password"
           placeholder="Enter your current password"
           :is-required="true"
@@ -23,7 +23,7 @@
         <form-input-password
           value=""
           type="password"
-          name="password"
+          name="newPassword"
           @blur="() => {}"
           @focus="() => {}"
           @submit="() => {}"
@@ -38,7 +38,7 @@
         <form-input-password
           value=""
           type="password"
-          name="password"
+          name="rePassword"
           label="New password again"
           placeholder="Re-enter new password"
           :is-required="true"
