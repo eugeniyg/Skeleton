@@ -1,15 +1,15 @@
 .security {
   .form-change {
     grid-template-areas:
-      "current"
+      "old"
       "new"
-      "re"
+      "reenter"
       "save";
 
     @include media(xs) {
       grid-template-areas:
-      "current ."
-      "new re"
+      "old ."
+      "new reenter"
       "save save";
     }
   }
@@ -22,8 +22,8 @@
     grid-area: new;
   }
 
-  .row-re {
-    grid-area: re;
+  .row-reenter {
+    grid-area: reenter;
   }
 
   .btn-primary {
