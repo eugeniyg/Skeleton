@@ -1228,6 +1228,11 @@ export const useFakeStore = () => {
       icon: 'ui-heart',
       href: '/favorites',
     },
+    {
+      title: 'Recently played',
+      icon: 'ui-history',
+      href: '/recently-played',
+    },
   ];
 
   const bottomMenuItems = [
