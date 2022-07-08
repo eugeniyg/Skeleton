@@ -8,7 +8,7 @@ export default function LocaleRoutesModule() {
   this.nuxt.hook('pages:extend', (pages: Array<any>) => {
     const localeRoutes = pages.map((page) => ({
         name: `locale-${page.name}`,
-        path: `/:locale${page.path}`,
+        path: `/:locale([a-z]{2}|[a-z]{2}-[a-z]{2})${page.path}`,
         file: page.file,
         children: changeName(page.children),
       }));
