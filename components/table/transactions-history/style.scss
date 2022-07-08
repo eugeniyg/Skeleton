@@ -13,4 +13,12 @@
       minmax(rem(158px), 1fr)
       minmax(rem(52px), 1fr);
   }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    grid-row: 2;
+    grid-column: 1/7;
+    padding-bottom: rem(16px);
+  }
 }

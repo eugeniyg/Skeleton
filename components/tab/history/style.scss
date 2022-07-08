@@ -44,12 +44,12 @@
       }
     }
   }
-
-
 }
 
 .tab-history {
-  display: grid;
-  color: var(--white);
-  grid-row-gap: rem(24px);
+  &__content, &__tb {
+    display: grid;
+    color: var(--white);
+    grid-row-gap: rem(24px);
+  }
 }
