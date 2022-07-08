@@ -9,12 +9,13 @@
   const props = defineProps({
     variant: {
       type: String,
-      validator: (val:string) => ['current', 'closed', 'pending', 'success', 'failed', 'unfinished', 'canceled'].includes(val),
+      validator: (val:string) => ['current', 'active', 'closed', 'pending', 'success', 'failed', 'unfinished', 'canceled'].includes(val),
       default: 'current',
     },
     items: {
       type: Object,
       default: () => ({
+        active: 'dot',
         current: 'dot',
         closed: 'ui-info',
         pending: 'ui-clock',

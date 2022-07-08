@@ -11,7 +11,7 @@
     min-width: #{rem(20px)};
   }
 
-  &.is-current {
+  &.is-current, &.is-active {
     --color: var(--green-500);
 
     .icon {

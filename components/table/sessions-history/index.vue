@@ -20,14 +20,14 @@
         <atomic-row-user-agent>{{ row.userAgent }}</atomic-row-user-agent>
       </div>
 
-      <div class="td">{{ row.createdAt }}</div>
+      <div class="td" v-html="row.createdAt"/>
 
       <div class="td">
         <atomic-row-status :variant="row.status.variant">{{ row.status.text }}</atomic-row-status>
       </div>
 
       <div class="td">
-        <button-close-session v-if="row.status.variant === 'current'"/>
+        <button-close-session v-if="row.status.variant === 'active'"/>
       </div>
     </div>
   </div>
