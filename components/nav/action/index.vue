@@ -38,12 +38,13 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const router = useRouter();
+  const { localizePath } = useProjectMethods();
 
   const closeGame = ():void => {
     if (window.history.state.back) {
       router.back();
     } else {
-      router.push({ name: 'index' });
+      router.push(localizePath('/'));
     }
   };
 

@@ -24,6 +24,7 @@ const viteConfig: any = {
 export default defineNuxtConfig({
   buildModules: [
     '@pinia/nuxt',
+    '@/modules/localeRoutes',
   ],
   components: {
     dirs: [

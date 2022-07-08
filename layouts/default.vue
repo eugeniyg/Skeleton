@@ -26,7 +26,7 @@
       @toggle-open="toggleOpen"
     />
 
-    <main class="app-main" :class="{'is-overflow': projectMethods.isHomePage()}">
+    <main class="app-main" :class="{'is-overflow': isHomePage()}">
       <slot/>
     </main>
 
@@ -62,11 +62,24 @@
     },
   });
 
+  const cookieLanguage = useCookie('user-language');
+  const route = useRoute();
+
+  if (route.name && !route.params.locale && cookieLanguage.value) {
+    navigateTo(`/${cookieLanguage.value}${route.fullPath === '/' ? '' : route.fullPath}`);
+  }
+
   const {
-    getCurrencies, getLocales, getCountries, getValidationMessages, getCommonData, getFieldsContent,
+    getCurrencies,
+    getLocales,
+    getCountries,
+    getValidationMessages,
+    getCommonData,
+    getFieldsContent,
   } = useGlobalStore();
   const { getRegistrationFields } = useProfileStore();
   const { getGameProviders, getGameCollections } = useGamesStore();
+
   useAsyncData('currencies', getCurrencies);
   useAsyncData('locales', getLocales);
   useAsyncData('countries', getCountries);
@@ -80,7 +93,7 @@
   const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT');
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
-  const projectMethods = useProjectMethods();
+  const { isHomePage } = useProjectMethods();
 
   const { isShowAlert, alertProps } = storeToRefs(layoutStore);
   const { compactDrawer, checkModals } = layoutStore;

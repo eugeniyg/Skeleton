@@ -2,7 +2,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook('page:finish', () => {
     const route = useRoute();
     const { preloaderDone } = useProjectMethods();
-    if (route.name !== 'main') preloaderDone();
+    if (route.name !== 'main' && route.name !== 'locale-main') preloaderDone();
   });
 
   const setWindowHeight = ():void => {
