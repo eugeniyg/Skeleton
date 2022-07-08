@@ -10,8 +10,8 @@
         <div class="td">{{ row.status }}</div>
         <div class="td">{{ row.amount }}</div>
         <div class="td">{{ row.wager }}</div>
-        <div class="td">{{ row.date }}</div>
-        <div class="td">{{ row.validUntil }}</div>
+        <div class="td" v-html="row.date"/>
+        <div class="td" v-html="row.validUntil"/>
       </div>
     </div>
 

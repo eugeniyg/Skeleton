@@ -9,7 +9,7 @@
         <div class="td">{{ game }}</div>
         <div class="td">{{ bet }}</div>
         <div class="td">{{ result }}</div>
-        <div class="td">{{ date }}</div>
+        <div class="td" v-html="date"/>
       </div>
     </div>
 

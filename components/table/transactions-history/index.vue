@@ -6,7 +6,7 @@
       </div>
 
       <div v-for="(row, rowIndex) in props.items.rows" :key="rowIndex" class="row">
-        <div class="td">{{ row.date }}</div>
+        <div class="td" v-html="row.date"/>
         <div class="td">{{ row.type }}</div>
         <div class="td">{{ row.paymentMethod }}</div>
 

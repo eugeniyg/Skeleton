@@ -1615,35 +1615,35 @@ export const useFakeStore = () => {
         game: 'Game name',
         bet: '0.00000009 mBTC',
         result: '- 0.00000009 mBTC',
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
       },
       {
         key: 'betting',
         game: 'Game name',
         bet: '20.00 $',
         result: '- 20.00 $',
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
       },
       {
         key: 'betting',
         game: 'Game name',
         bet: '50.00 $',
         result: '-50.00 $',
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
       },
       {
         key: 'casino',
         game: 'Game name',
         bet: '0.00000009 mBTC',
         result: '- 0.00000009 mBTC',
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
       },
       {
         key: 'casino',
         game: 'Game name',
         bet: '0.00000009 mBTC',
         result: '- 0.00000009 mBTC',
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
       },
     ],
   };
@@ -1656,7 +1656,7 @@ export const useFakeStore = () => {
         status: 'Active',
         amount: '0.00000009 mBTC',
         wager: '84%',
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
         validUntil: '15.04.2022, 15:21',
       },
       {
@@ -1664,7 +1664,7 @@ export const useFakeStore = () => {
         status: 'Active',
         amount: '0.00000009 mBTC',
         wager: '84%',
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
         validUntil: '15.04.2022, 15:21',
       },
       {
@@ -1672,7 +1672,7 @@ export const useFakeStore = () => {
         status: 'Active',
         amount: '0.00000009 mBTC',
         wager: '84%',
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
         validUntil: '15.04.2022, 15:21',
       },
       {
@@ -1680,7 +1680,7 @@ export const useFakeStore = () => {
         status: 'Active',
         amount: '0.00000009 mBTC',
         wager: '84%',
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
         validUntil: '15.04.2022, 15:21',
       },
       {
@@ -1688,7 +1688,7 @@ export const useFakeStore = () => {
         status: 'Active',
         amount: '0.00000009 mBTC',
         wager: '84%',
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
         validUntil: '15.04.2022, 15:21',
       },
     ],
@@ -1708,21 +1708,21 @@ export const useFakeStore = () => {
         device: 'desktop',
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
-        createdAt: '15.04.2022, 15:21',
+        createdAt: '15.04.2022, <br>15:21',
         status: { variant: 'current', text: 'Current' },
       },
       {
         device: 'mobile',
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
-        createdAt: '15.04.2022, 15:21',
-        status: { variant: 'current', text: 'Current' },
+        createdAt: '15.04.2022, <br>15:21',
+        status: { variant: 'active', text: 'Active' },
       },
       {
         device: 'mobile',
         country: 'US',
         userAgent: 'Chrome on Mac OS 10',
-        createdAt: '15.04.2022, 15:21',
+        createdAt: '15.04.2022, <br>15:21',
         status: { variant: 'closed', text: 'Closed' },
       },
     ],
@@ -1732,7 +1732,7 @@ export const useFakeStore = () => {
     columns: ['Date', 'Type', 'Payment Method', 'Status', 'Sum'],
     rows: [
       {
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
         type: 'Withdrawal',
         paymentMethod: 'Skrill',
         status: {
@@ -1742,7 +1742,7 @@ export const useFakeStore = () => {
         sum: '0.00000009 mBTC',
       },
       {
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
         type: 'Deposit',
         paymentMethod: 'Skrill',
         status: {
@@ -1752,7 +1752,7 @@ export const useFakeStore = () => {
         sum: '0.00000009 mBTC',
       },
       {
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
         type: 'Withdrawal',
         paymentMethod: 'Skrill',
         status: {
@@ -1766,7 +1766,7 @@ export const useFakeStore = () => {
         },
       },
       {
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
         type: 'Deposit',
         paymentMethod: 'Skrill',
         status: {
@@ -1776,7 +1776,7 @@ export const useFakeStore = () => {
         sum: '0.00000009 mBTC',
       },
       {
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
         type: 'Deposit',
         paymentMethod: 'Skrill',
         status: {
@@ -1790,7 +1790,7 @@ export const useFakeStore = () => {
         },
       },
       {
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
         type: 'Deposit',
         paymentMethod: 'Skrill',
         status: {
@@ -1800,7 +1800,7 @@ export const useFakeStore = () => {
         sum: '0.00000009 mBTC',
       },
       {
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
         type: 'Withdrawal',
         paymentMethod: 'Skrill',
         status: {
@@ -1814,7 +1814,7 @@ export const useFakeStore = () => {
         },
       },
       {
-        date: '15.04.2022, 15:21',
+        date: '15.04.2022, <br>15:21',
         type: 'Deposit',
         paymentMethod: 'Skrill',
         status: {

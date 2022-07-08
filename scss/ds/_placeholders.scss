@@ -103,23 +103,20 @@
   border-radius: 50%;
   --color: var(--gray-900);
   --icon-size: 18px;
-  background-color: var(--bg, var(--yellow-500));
-  box-shadow: var(--shadow, none);
+  background: var(--btn-bg, var(--gradient-new));
 
   &:hover {
-    --shadow: 0 0 0 3px var(--yellow-900);
+    --btn-bg: var(--gradient-new-hover);
   }
 
   &:focus {
-    --shadow: inset 0px 2px 0px #B07B00;
-    --bg: var(--yellow-600);
+    --btn-bg: var(--gradient-new-focus);
   }
 
   [disabled] {
     pointer-events: none;
     --bg: var(--yellow-900);
   }
-
 }
 
 %icon-btn-ghost {
