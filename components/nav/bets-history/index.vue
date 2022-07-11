@@ -24,7 +24,7 @@
           isActive: true,
         },
         {
-          title: 'Betting',
+          title: 'Sports',
           icon: 'sport',
           id: 'betting',
         },
