@@ -1,6 +1,6 @@
 <template>
   <footer class="app-footer">
-    <template v-if="projectMethods.isHomePage()">
+    <template v-if="isHomePage()">
       <atomic-text-wrap>
         <h2 class="heading-primary">Bitcoin Betting Flagship</h2>
         <p>Sportsbet.io is where you can find competitive odds, on a platform offering the best Bitcoin betting experience. Our team continues to work hard to give you the competitive odds, betting props and interactive experience offering you the fulfilling betting journey you've been looking for. At Sportsbet.io, we are working hard to give you the opportunity to enjoy a fun, fast and fair betting experience.</p>
@@ -30,7 +30,7 @@
         </template>
 
         <template v-slot:content="{ item }">
-          <nuxt-link :to="item.href">{{ item.title }}</nuxt-link>
+          <nuxt-link :to="localizePath(item.href)">{{ item.title }}</nuxt-link>
         </template>
       </accordeon>
 
@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-  const projectMethods = useProjectMethods();
+  const { isHomePage, localizePath} = useProjectMethods();
 
   // FAKE DATA
   const accordeonItems = {

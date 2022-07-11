@@ -1,7 +1,7 @@
 <template>
   <nav class="nav-profile" :class="{'is-open': isOpen}">
     <button class="selected" @click="toggle">
-      {{ selected.title }}<atomic-icon id="ui-arrow_expand-close"/>
+      {{ selected?.title }}<atomic-icon id="ui-arrow_expand-close"/>
     </button>
 
     <div class="items" @mouseleave="close">
@@ -10,12 +10,12 @@
         @click="toggle"
         :key="index"
         class="item"
-        :class="{'is-active': $route.path === href}"
-        :to="href"
+        :class="{'is-active': $route.path === localizePath(href)}"
+        :to="localizePath(href)"
       >
         {{ title }}<span v-if="count" class="count">{{ count }}</span>
 
-        <template v-if="$route.path === href">
+        <template v-if="$route.path === localizePath(href)">
           <atomic-icon id="ui-check"/>
         </template>
       </router-link>
@@ -31,9 +31,10 @@
     },
   });
 
+  const { localizePath } = useProjectMethods();
   const route = useRoute();
   const isOpen = ref<boolean>(false);
-  const selected = computed(() => props.items.find((item:any) => item.href === route.path));
+  const selected = computed(() => props.items.find((item:any) => localizePath(item.href) === route.path));
 
   const toggle = ():void => {
     isOpen.value = !isOpen.value;

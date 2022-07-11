@@ -1,6 +1,6 @@
 <template>
-  <div class="game-cards">
-    <atomic-icon v-if="titleIcon" :id="titleIcon"/>
+  <div class="group-games">
+    <atomic-icon v-if="titleIcon && !props.subTitle" :id="titleIcon"/>
 
     <div v-if="props.category.name && props.subTitle" class="titles">
       <h2 class="title">{{ props.category.name }}</h2>
@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
   import { GameInterface, PaginationMetaInterface } from '~/types/gameTypes';
-  import { useGamesApi, useGlobalMethods } from '~/CORE/index';
+  import { useGamesApi, useGlobalMethods } from '~/CORE';
 
   const props = defineProps({
     category: {
@@ -121,9 +121,10 @@
     }
   });
 
+  const { localizePath } = useProjectMethods();
   const openGames = ():void => {
     const router = useRouter();
-    router.push(`/games?category=${props.category.identity}`);
+    router.push(localizePath(`/games?category=${props.category.identity}`));
   };
 </script>
 

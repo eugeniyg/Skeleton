@@ -1,15 +1,29 @@
 <template>
-  <button class="btn-favorite" @click="onClick">
+  <button class="btn-favorite" :class="{ active: isActive }" @click="toggleFavorite">
     <atomic-icon id="ui-heart-outline"/>
   </button>
 </template>
 
 <script setup lang="ts">
-  const emit = defineEmits(['add-to-favorites']);
+  import { storeToRefs } from 'pinia';
 
-  function onClick(e:Event):void {
-    emit('add-to-favorites', e);
-  }
+  const props = defineProps({
+    gameId: {
+      type: String,
+      required: true,
+    },
+  });
+
+  const gameStore = useGamesStore();
+  const { favoriteGames } = storeToRefs(gameStore);
+
+  const isActive = computed(() => favoriteGames.value.map((game) => game.id).includes(props.gameId));
+
+  const toggleFavorite = async ():Promise<void> => {
+    if (favoriteGames.value.find((game) => game.id === props.gameId)) {
+      await gameStore.deleteFavoriteGame(props.gameId);
+    } else await gameStore.setFavoriteGame(props.gameId);
+  };
 </script>
 
 <style lang="scss" src="./style.scss"/>

@@ -151,7 +151,7 @@
     () => route.query.category,
     async (newValue: string) => {
       if (
-        route.name === 'games'
+        (route.name === 'games' || route.name === 'locale-games')
         && route.query.category !== activeCollection.value.identity
       ) {
         await changeCategory(newValue);

@@ -51,10 +51,11 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal } = useLayoutStore();
+  const { localizePath } = useProjectMethods();
 
   const changePage = ():void => {
     if (props.action.href === '/betting' && !isLoggedIn.value) showModal('register');
-    else router.push(props.action.href);
+    else router.push(localizePath(props.action.href));
   };
 </script>
 

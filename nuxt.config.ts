@@ -24,6 +24,7 @@ const viteConfig: any = {
 export default defineNuxtConfig({
   buildModules: [
     '@pinia/nuxt',
+    '@/modules/localeRoutes',
   ],
   components: {
     dirs: [
@@ -52,9 +53,6 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      script: [
-        { src: '/preloader/preloader.js', defer: true },
-      ],
       link: [
         { rel: 'stylesheet', href: '/preloader/preloader.css' },
       ],

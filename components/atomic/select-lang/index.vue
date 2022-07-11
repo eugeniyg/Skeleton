@@ -1,77 +1,80 @@
 <template>
   <div class="select-lang" :class="{ 'is-open': isOpen }">
     <div class="selected" @click="toggleOpen">
-      <img class="img" :src="`/img${selected.src}`" alt="" />
-      <span class="title">{{ selected.title }}</span>
+      <img class="img" :src="`/img/flags/${languageFlagsMap[currentLocale.code.toLowerCase()]}.svg`" alt="" />
+      <span class="title">{{ currentLocale.nativeName }}</span>
       <atomic-icon id="ui-arrow_expand-close" />
     </div>
+
     <div class="items">
-      <div
+      <component
+        :is="currentLocale.code.toLowerCase() === locale.code.toLowerCase() ? 'div' : 'a'"
         class="item"
-        v-for="{ src, title, value } in props.items"
-        :key="title"
-        :class="{ 'is-selected': selected.value === value }"
-        @click="select(value)"
+        v-for="locale in locales"
+        :key="locale.code"
+        :class="{ 'is-selected': currentLocale.code.toLowerCase() === locale.code.toLowerCase() }"
+        :href="linkToLocale(locale)"
+        @click="setCookie(locale)"
       >
-        <img class="img" :src="`/img${src}`" alt="" />
-        <span class="title">{{ title }}</span>
+        <img class="img" :src="`/img/flags/${languageFlagsMap[locale.code.toLowerCase()]}.svg`" alt="" />
+        <span class="title">{{ locale.nativeName }}</span>
         <atomic-icon id="ui-check" />
-      </div>
+      </component>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const state = reactive({
-    selected: 'en',
-  });
+  import { storeToRefs } from 'pinia';
+  import { LocaleInterface } from '~/types/globalDataTypes';
 
-  const props = defineProps({
-    items: {
-      type: Array,
-      default: () => [
-        {
-          value: 'en',
-          title: 'English',
-          src: '/flags/en.png',
-        },
-        {
-          value: 'de',
-          title: 'German',
-          src: '/flags/de.png',
-        },
-        {
-          value: 'jp',
-          title: 'Japanese',
-          src: '/flags/jp.png',
-        },
-      ],
-    },
-  });
+  const languageFlagsMap = {
+    uk: 'ua',
+    ru: 'ru',
+    en: 'us',
+  };
 
-  onMounted(() => {
-    const storageLang = localStorage.getItem('lang');
-
-    if (storageLang) {
-      state.selected = storageLang;
-    }
-  });
-
+  const route = useRoute();
+  const globalStore = useGlobalStore();
+  const { locales, currentLocale } = storeToRefs(globalStore);
   const isOpen = ref<boolean>(false);
+  const cookieLanguage = useCookie('user-language');
 
-  const selected = computed(
-    () => props.items.find((item) => item.value === state.selected),
-  );
+  const setCookie = (locale: LocaleInterface):void => {
+    if (locale.isDefault) cookieLanguage.value = undefined;
+    else cookieLanguage.value = locale.code.toLowerCase();
+  };
+
+  const linkToLocale = (locale: LocaleInterface):string => {
+    const routerLocale:any = route.params.locale;
+
+    if (locale.isDefault) {
+      const deleteLocale = route.fullPath.replace(`/${routerLocale}`, '');
+      return deleteLocale || '/';
+    }
+
+    if (routerLocale) {
+      return route.fullPath.replace(routerLocale, locale.code.toLowerCase());
+    } return `/${locale.code.toLowerCase()}${route.fullPath === '/' ? '' : route.fullPath}`;
+  };
 
   const toggleOpen = (): void => {
     isOpen.value = !isOpen.value;
   };
 
-  const select = (value: string): void => {
-    state.selected = value;
-    localStorage.setItem('lang', value);
-    toggleOpen();
+  const checkLanguageDropdown = (e:any):void => {
+    if (!e.target.closest('.select-lang')) isOpen.value = false;
   };
+
+  onMounted(() => {
+    setTimeout(() => {
+      document.addEventListener('click', checkLanguageDropdown);
+    }, 100);
+  });
+
+  onBeforeUnmount(() => {
+    document.removeEventListener('click', checkLanguageDropdown);
+  });
 </script>
 
 <style lang="scss" src="./style.scss"></style>

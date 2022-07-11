@@ -16,7 +16,7 @@
           @click="clickGame(game)"
         >
           <img v-if="game.images['200x200']" :src="gameImageSrc(game.images)" />
-          <img v-else :src="`/img/default-game-tumb.png`" />
+          <img v-else src="/img/default-game-tumb.png" />
           <span>{{ game.name }}</span>
         </div>
 
@@ -58,10 +58,12 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const router = useRouter();
+
+  const { localizePath } = useProjectMethods();
   const clickGame = (gameData:GameInterface):void => {
     if (!isLoggedIn.value) {
-      router.push(`/games/${gameData.identity}${gameData.isDemoMode ? '?demo=true' : ''}`);
-    } else router.push(`/games/${gameData.identity}`);
+      router.push(localizePath(`/games/${gameData.identity}${gameData.isDemoMode ? '?demo=true' : ''}`));
+    } else router.push(localizePath(`/games/${gameData.identity}`));
     emit('hideSearch');
   };
 

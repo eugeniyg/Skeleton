@@ -18,6 +18,8 @@
       <atomic-divider/>
       <nav-list :items="fakeStore.centerMenuItems"/>
       <atomic-divider/>
+      <nav-list :items="fakeStore.userMenuItems"/>
+      <atomic-divider/>
       <atomic-select-lang/>
       <atomic-divider/>
       <nav-list :items="fakeStore.bottomMenuItems"/>

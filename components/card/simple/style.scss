@@ -1,7 +1,14 @@
 .card {
+  flex-shrink: 0;
   width: var(--width, 25%);
   height: var(--height, auto);
   align-items: flex-start;
+  cursor: pointer;
+  padding: 0 4px;
+
+  @include media(md) {
+    padding: 0 8px;
+  }
 
   .img {
     @include ratio(66px, 66px);
@@ -25,7 +32,7 @@
     max-width: rem(96px);
 
     .title {
-      display: block !important;
+      display: block;
       @include upd-font($body-1);
     }
   }

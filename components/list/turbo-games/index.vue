@@ -4,7 +4,7 @@
       v-for="(item, index) in props.items"
       :key="index"
       class="item"
-      :to="`${item.href}${!isLoggedIn ? '?demo=true' : '' }`"
+      :to="localizePath(`${item.href}${!isLoggedIn ? '?demo=true' : '' }`)"
     >
       <img class="img" :src="`/img/${item.src}`" alt="" />
     </nuxt-link>
@@ -25,6 +25,7 @@
     },
   });
 
+  const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 </script>

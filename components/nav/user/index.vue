@@ -7,7 +7,7 @@
         v-for="(item, index) in props.items"
         :key="index"
         class="item"
-        :class="{'is-active': projectMethods.getCurrentUrl === item.url}"
+        :class="{ 'is-active': $route.path === localizePath(item.url) }"
         @click="clickItem(item.url)"
       >
         <atomic-icon :id="item.icon"/>{{ item.title }}
@@ -52,12 +52,12 @@
     },
   });
   const emit = defineEmits(['logout']);
-  const projectMethods = useProjectMethods();
-  const layoutStore = useLayoutStore();
-  const { closeUserNav } = layoutStore;
+  const { localizePath } = useProjectMethods();
+  const { closeUserNav } = useLayoutStore();
 
   function clickItem(url: string):void {
-    projectMethods.navigate(url);
+    const router = useRouter();
+    router.push(localizePath(url));
     closeUserNav();
   }
 </script>
