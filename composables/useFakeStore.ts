@@ -1159,7 +1159,7 @@ export const useFakeStore = () => {
       ],
     },
     {
-      title: 'Sport betting',
+      title: 'Sports',
       icon: 'sport-book',
       href: '/betting',
     },
@@ -1352,7 +1352,7 @@ export const useFakeStore = () => {
     },
     {
       icon: 'sport',
-      title: 'Betting',
+      title: 'Sports',
       url: '/betting',
     },
   ];
@@ -2039,12 +2039,12 @@ export const useFakeStore = () => {
     {
       title: {
         icon: 'sport',
-        text: 'Betting',
+        text: 'Sports',
       },
       src: '/categories/2.png',
       subTitle: 'The most competitive odds and markets. Bet and win right now',
       action: {
-        title: 'Go to Betting',
+        title: 'Go to Sports',
         href: '/betting',
       },
     },

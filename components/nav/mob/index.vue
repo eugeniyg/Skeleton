@@ -42,7 +42,7 @@
       method: 'openModal',
     },
     {
-      title: 'Sport',
+      title: 'Sports',
       icon: 'sport',
       href: '/betting',
       method: 'toBetting',
