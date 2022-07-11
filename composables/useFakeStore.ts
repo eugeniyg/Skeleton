@@ -1472,10 +1472,10 @@ export const useFakeStore = () => {
         href: '/profile/notifications',
         // count: 999,
       },
-      // {
-      //   title: 'Security & Verification',
-      //   href: '/profile/security',
-      // },
+      {
+        title: 'Security & Verification',
+        href: '/profile/security',
+      },
       {
         title: 'History',
         href: '/profile/history',
