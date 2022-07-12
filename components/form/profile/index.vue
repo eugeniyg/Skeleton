@@ -37,7 +37,7 @@
       <button-base
         type="primary"
         size="md"
-        :isDisabled="v$.$invalid"
+        :isDisabled="sendDisabled"
         @click="changePersonalData"
       >
         Save changes
@@ -83,6 +83,8 @@
   const profileFormRules = getFormRules(cleanFields);
   const serverFormErrors = ref<any>({});
   const v$ = useVuelidate(profileFormRules, profileFormData);
+  const focused = ref<boolean>(false);
+  const sendDisabled = computed(() => v$.value.$invalid || !focused.value);
 
   const setError = (fieldName:string):undefined|{ variant: string, message: any } => {
     if (v$.value[fieldName]?.$error) {
@@ -94,6 +96,7 @@
   };
 
   const onFocus = (fieldName:string):void => {
+    focused.value = true;
     if (serverFormErrors.value[fieldName]) {
       serverFormErrors.value[fieldName] = undefined;
     }
