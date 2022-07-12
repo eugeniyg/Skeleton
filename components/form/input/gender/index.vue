@@ -59,8 +59,9 @@
       required: false,
     },
   });
-  const emit = defineEmits(['update:value']);
+  const emit = defineEmits(['update:value', 'focus']);
   const changeValue = (value:string):void => {
+    emit('focus', value);
     emit('update:value', value);
   };
 </script>
