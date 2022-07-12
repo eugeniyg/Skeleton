@@ -1159,7 +1159,7 @@ export const useFakeStore = () => {
       ],
     },
     {
-      title: 'Sports',
+      title: 'Sportsbook',
       icon: 'sport-book',
       href: '/betting',
     },

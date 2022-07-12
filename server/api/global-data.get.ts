@@ -22,7 +22,7 @@ export default defineEventHandler(() => ({
       ],
     },
     {
-      title: 'Sports',
+      title: 'Sportsbook',
       icon: 'sport-book',
     },
   ],
