@@ -2,9 +2,30 @@ import { useGlobalMethods } from '~/CORE/index';
 import * as projectRules from './validationRules';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { GameImagesInterface } from '~/types/gameTypes';
+import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
 export const useProjectMethods = () => {
   const { validationMessages } = useGlobalStore();
+
+  const createValidationRules = (fields:any[], includeContext?:boolean):any => {
+    const validationRules = {};
+
+    if (includeContext) {
+      fields.forEach((field) => {
+        if (field.isRequired) validationRules[field.name] = [{ rule: 'required' }];
+        if (fieldsTypeMap[field.name].validation?.length) {
+          validationRules[field.name] = [...validationRules[field.name], ...fieldsTypeMap[field.name].validation];
+        }
+      });
+    } else {
+      fields.forEach((field) => {
+        if (fieldsTypeMap[field.name].validation?.length) {
+          validationRules[field.name] = fieldsTypeMap[field.name].validation;
+        }
+      });
+    }
+    return validationRules;
+  };
 
   const getFormRules = (fieldsRules:any):any => {
     const { createFormRules } = useGlobalMethods();
@@ -47,6 +68,7 @@ export const useProjectMethods = () => {
   };
 
   return {
+    createValidationRules,
     getFormRules,
     preloaderDone,
     getImageUrl,

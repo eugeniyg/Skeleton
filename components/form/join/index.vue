@@ -82,14 +82,8 @@
   if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
   if (registrationFormData.hasOwnProperty('country')) registrationFormData.country = 'NL';
 
-  const { getFormRules } = useProjectMethods();
-  const registrationRules = {};
-  registrationFields.value.forEach((field) => {
-    if (field.isRequired) registrationRules[field.name] = [{ rule: 'required' }];
-    if (fieldsTypeMap[field.name].validation?.length) {
-      registrationRules[field.name] = [...registrationRules[field.name], ...fieldsTypeMap[field.name].validation];
-    }
-  });
+  const { getFormRules, createValidationRules } = useProjectMethods();
+  const registrationRules = createValidationRules(registrationFields.value, true);
   const registrationFormRules = getFormRules(registrationRules);
   const serverFormErrors = ref<any>({});
   const v$ = useVuelidate(registrationFormRules, registrationFormData);
