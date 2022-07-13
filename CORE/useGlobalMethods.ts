@@ -1,5 +1,3 @@
-import { rule } from 'postcss';
-
 const useGlobalMethods = () => {
   const setFormData = (fields: any[]):any => {
     const formData:any = {};
