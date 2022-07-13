@@ -80,7 +80,13 @@
   const emit = defineEmits(['toggle-profile-edit']);
   const profileFormData = reactive(setFormData(cleanFields));
   const { getFormRules } = useProjectMethods();
-  const profileFormRules = getFormRules(cleanFields);
+  const profileRules = {};
+  cleanFields.forEach((field) => {
+    if (fieldsTypeMap[field.name].validation?.length) {
+      profileRules[field.name] = fieldsTypeMap[field.name].validation;
+    }
+  });
+  const profileFormRules = getFormRules(profileRules);
   const serverFormErrors = ref<any>({});
   const v$ = useVuelidate(profileFormRules, profileFormData);
   const focused = ref<boolean>(false);

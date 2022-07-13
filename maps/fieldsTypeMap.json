@@ -1,7 +1,11 @@
 {
   "password": {
     "component": "form-input-password",
-    "type": "password"
+    "type": "password",
+    "validation": [{
+      "rule": "min",
+      "arguments": "6"
+    }]
   },
   "firstName": {
     "component": "form-input-text",
@@ -69,7 +73,8 @@
   },
   "email": {
     "component": "form-input-text",
-    "type": "email"
+    "type": "email",
+    "validation": [{ "rule": "email" }]
   },
   "country": {
     "component": "form-dropdown-base",
@@ -97,7 +102,8 @@
   },
   "birthdate": {
     "component": "form-input-birth",
-    "type": "birthdate"
+    "type": "birthdate",
+    "validation": [{ "rule": "date" }]
   },
   "placeOfBirth": {
     "component": "form-input-text",

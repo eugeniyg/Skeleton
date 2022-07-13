@@ -1,14 +1,14 @@
 import { useGlobalMethods } from '~/CORE/index';
-import * as validationRules from './validationRules';
+import * as projectRules from './validationRules';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { GameImagesInterface } from '~/types/gameTypes';
 
 export const useProjectMethods = () => {
   const { validationMessages } = useGlobalStore();
 
-  const getFormRules = (fields:any[], includeContext:boolean = false):any => {
+  const getFormRules = (fieldsRules:any):any => {
     const { createFormRules } = useGlobalMethods();
-    return createFormRules(fields, validationRules, validationMessages, includeContext);
+    return createFormRules(fieldsRules, projectRules, validationMessages);
   };
 
   const preloaderDone = ():void => {

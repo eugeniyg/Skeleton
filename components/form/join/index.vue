@@ -83,7 +83,14 @@
   if (registrationFormData.hasOwnProperty('country')) registrationFormData.country = 'NL';
 
   const { getFormRules } = useProjectMethods();
-  const registrationFormRules = getFormRules(registrationFields.value, true);
+  const registrationRules = {};
+  registrationFields.value.forEach((field) => {
+    if (field.isRequired) registrationRules[field.name] = [{ rule: 'required' }];
+    if (fieldsTypeMap[field.name].validation?.length) {
+      registrationRules[field.name] = [...registrationRules[field.name], ...fieldsTypeMap[field.name].validation];
+    }
+  });
+  const registrationFormRules = getFormRules(registrationRules);
   const serverFormErrors = ref<any>({});
   const v$ = useVuelidate(registrationFormRules, registrationFormData);
 
