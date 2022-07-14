@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-  import { useGamesApi } from '~/CORE/index';
+  import { useGamesApi } from '~/CORE';
   import {
     CollectionInterface,
     GameProviderInterface,

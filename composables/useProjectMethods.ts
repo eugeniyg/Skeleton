@@ -1,7 +1,6 @@
-import { useGlobalMethods } from '~/CORE/index';
+import { useGlobalMethods, GameImagesInterface } from '~/CORE';
 import * as projectRules from './validationRules';
 import { useGlobalStore } from '~/composables/useGlobalStore';
-import { GameImagesInterface } from '~/types/gameTypes';
 import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
 export const useProjectMethods = () => {
@@ -62,7 +61,7 @@ export const useProjectMethods = () => {
     if (preloaderEl) preloaderEl.classList.value = 'preloader';
   };
 
-  const getImageUrl = (imageData:GameImagesInterface, orientation:string):string => {
+  const getImageUrl = (imageData: GameImagesInterface, orientation: string):string => {
     if (orientation === 'vertical') return imageData['200x300']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
     return imageData['200x200']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
   };

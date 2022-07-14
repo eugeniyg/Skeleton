@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { LocaleInterface } from '~/types/globalDataTypes';
+  import { LocaleInterface } from '~/CORE';
 
   const languageFlagsMap = {
     uk: 'ua',
@@ -77,4 +77,4 @@
   });
 </script>
 
-<style lang="scss" src="./style.scss"></style>
+<style lang="scss" src="./style.scss"/>

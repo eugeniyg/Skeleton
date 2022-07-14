@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { useAuthApi, useProfileApi } from '~/CORE/index';
-import { ProfileInterface } from '~/types/userTypes';
-import { FieldInterface } from '~/types/formTypes';
+import {
+  useAuthApi, useProfileApi, ProfileInterface, FieldInterface, AuthorizationResponse,
+} from '~/CORE';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useLayoutStore } from '~/composables/useLayoutStore';
 import { useGamesStore } from '~/composables/useGamesStore';
@@ -48,7 +48,7 @@ export const useProfileStore = defineStore('profileStore', {
   },
 
   actions: {
-    setToken(authData:any):void {
+    setToken(authData: AuthorizationResponse):void {
       const bearer = useCookie('bearer');
       bearer.value = authData.accessToken;
       this.sessionId = authData.sessionId;
@@ -90,7 +90,7 @@ export const useProfileStore = defineStore('profileStore', {
       this.isLoggedIn = true;
     },
 
-    setProfileData(data:ProfileInterface):void {
+    setProfileData(data: ProfileInterface):void {
       this.profile = data;
     },
 

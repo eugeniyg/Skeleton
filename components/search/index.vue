@@ -20,8 +20,9 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useGamesApi } from '~/CORE';
-  import { GameInterface, GamesResponseInterface, PaginationMetaInterface } from '~/types/gameTypes';
+  import {
+    useGamesApi, GameInterface, GamesResponseInterface, PaginationMetaInterface,
+  } from '~/CORE';
 
   const props = defineProps({
     isShow: {

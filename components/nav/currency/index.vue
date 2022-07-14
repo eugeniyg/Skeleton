@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { CurrencyInterface } from '~/types/globalDataTypes';
+  import { CurrencyInterface } from '~/CORE';
   import { useWalletStore } from '~/composables/useWalletStore';
 
   const navItems = [

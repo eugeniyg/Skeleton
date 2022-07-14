@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useGlobalMethods, useWalletApi } from '~/CORE/index';
+  import { useGlobalMethods, useWalletApi } from '~/CORE';
 
   const props = defineProps({
     amountMax: {

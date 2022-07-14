@@ -1,3 +1,5 @@
+import { ObserverOptionsInterface } from './types';
+
 const useGlobalMethods = () => {
   const setFormData = (fields: any[]):any => {
     const formData:any = {};
@@ -50,7 +52,7 @@ const useGlobalMethods = () => {
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-  const initObserver = (el:any, options:any):void => {
+  const initObserver = (el:any, options:ObserverOptionsInterface):void => {
     const optionsThing = {
       onInView: options?.onInView,
       onOutView: options?.onOutView,

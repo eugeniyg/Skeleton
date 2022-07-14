@@ -11,17 +11,12 @@ export interface GameImagesInterface {
   }
 }
 
-export interface GameInterface {
+export interface GameProviderInterface {
   id: string,
   identity: string,
   name: string,
-  isDemoMode: boolean,
-  paylines: number,
-  volatility: number,
-  platforms: number[],
-  screenHeightRatio: number|null,
-  screenWidthRatio: number|null,
-  images:GameImagesInterface,
+  code?: string,
+  value?: string,
 }
 
 export interface CollectionInterface {
@@ -30,11 +25,20 @@ export interface CollectionInterface {
   name: string
 }
 
-export interface GameProviderInterface {
+export interface GameInterface {
   id: string,
   identity: string,
-  code?: string,
-  value?: string,
+  name: string,
+  isDemoMode: boolean,
+  paylines: number,
+  volatility: string,
+  type: string,
+  platforms: number[],
+  screenHeightRatio: number|null,
+  screenWidthRatio: number|null,
+  images: GameImagesInterface,
+  provider: GameProviderInterface,
+  collections: CollectionInterface[],
 }
 
 export interface PaginationMetaInterface {
@@ -49,12 +53,11 @@ export interface GamesResponseInterface {
   meta: PaginationMetaInterface,
 }
 
-export interface GameInfoInterface extends GameInterface, GameProviderInterface {}
-
 export interface GameStartInterface {
   accountId: string,
   lobbyUrl: string,
   locale: string,
   countryCode: string,
   platform: number,
+  demoMode: boolean,
 }

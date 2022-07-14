@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
-import { useGamesApi } from '~/CORE/index';
-import { CollectionInterface, GameInterface, GameProviderInterface } from '~/types/gameTypes';
+import {
+ useGamesApi, CollectionInterface, GameInterface, GameProviderInterface,
+} from '~/CORE';
 import { useFieldsStore } from '~/composables/useFieldsStore';
 
 export type GamesStoreStateType = {
