@@ -21,21 +21,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
-    label: {
-      type: String,
-      default: '',
-    },
-    nickname: {
-      type: String,
-      default: '',
-    },
-    amount: {
-      type: Array,
-      default: () => [],
-    },
-  });
-
   const profileStore = useProfileStore();
   const { publicNickname } = storeToRefs(profileStore);
   const walletStore = useWalletStore();

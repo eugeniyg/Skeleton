@@ -115,6 +115,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { PaymentMethodInterface } from '~/CORE';
 
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
@@ -124,7 +125,7 @@
   const { closeModal } = layoutStore;
   const { withdrawMethods } = storeToRefs(walletStore);
   const formKey = ref<number>(0);
-  const currentMethod = ref<any>({});
+  const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
 
   watch(() => withdrawMethods.value, () => {
     currentMethod.value = withdrawMethods.value[0] || {};

@@ -1,14 +1,34 @@
-import { useGlobalMethods } from '~/CORE/index';
-import * as validationRules from './validationRules';
+import { useGlobalMethods, GameImagesInterface } from '~/CORE';
+import * as projectRules from './validationRules';
 import { useGlobalStore } from '~/composables/useGlobalStore';
-import { GameImagesInterface } from '~/types/gameTypes';
+import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
 export const useProjectMethods = () => {
   const { validationMessages } = useGlobalStore();
 
-  const getFormRules = (fields:any[], includeContext:boolean = false):any => {
+  const createValidationRules = (fields:any[], includeContext?:boolean):any => {
+    const validationRules = {};
+
+    if (includeContext) {
+      fields.forEach((field) => {
+        if (field.isRequired) validationRules[field.name] = [{ rule: 'required' }];
+        if (fieldsTypeMap[field.name].validation?.length) {
+          validationRules[field.name] = [...validationRules[field.name], ...fieldsTypeMap[field.name].validation];
+        }
+      });
+    } else {
+      fields.forEach((field) => {
+        if (fieldsTypeMap[field.name].validation?.length) {
+          validationRules[field.name] = fieldsTypeMap[field.name].validation;
+        }
+      });
+    }
+    return validationRules;
+  };
+
+  const getFormRules = (fieldsRules:any):any => {
     const { createFormRules } = useGlobalMethods();
-    return createFormRules(fields, validationRules, validationMessages, includeContext);
+    return createFormRules(fieldsRules, projectRules, validationMessages);
   };
 
   const preloaderDone = ():void => {
@@ -41,12 +61,13 @@ export const useProjectMethods = () => {
     if (preloaderEl) preloaderEl.classList.value = 'preloader';
   };
 
-  const getImageUrl = (imageData:GameImagesInterface, orientation:string):string => {
+  const getImageUrl = (imageData: GameImagesInterface, orientation: string):string => {
     if (orientation === 'vertical') return imageData['200x300']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
     return imageData['200x200']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
   };
 
   return {
+    createValidationRules,
     getFormRules,
     preloaderDone,
     getImageUrl,

@@ -64,7 +64,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
-  import { useGlobalMethods } from '~/CORE/index';
+  import { useGlobalMethods } from '~/CORE';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
@@ -82,8 +82,9 @@
   if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
   if (registrationFormData.hasOwnProperty('country')) registrationFormData.country = 'NL';
 
-  const { getFormRules } = useProjectMethods();
-  const registrationFormRules = getFormRules(registrationFields.value, true);
+  const { getFormRules, createValidationRules } = useProjectMethods();
+  const registrationRules = createValidationRules(registrationFields.value, true);
+  const registrationFormRules = getFormRules(registrationRules);
   const serverFormErrors = ref<any>({});
   const v$ = useVuelidate(registrationFormRules, registrationFormData);
 

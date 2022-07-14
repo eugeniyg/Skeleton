@@ -1,6 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { AccountInterface, AccountRequestInterface } from '~/types/walletTypes';
-import { useWalletApi } from '~/CORE';
+import { useWalletApi, AccountInterface, AccountRequestInterface } from '~/CORE';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 
@@ -66,13 +65,13 @@ export const useWalletStore = defineStore('walletStore', {
 
     async getDepositMethods():Promise<void> {
       const { getDepositMethods } = useWalletApi();
-      const data = await getDepositMethods(this.activeAccount.id, this.activeAccount.currency);
+      const data = await getDepositMethods({ accountId: this.activeAccount.id, currency: this.activeAccount.currency });
       this.depositMethods = data;
     },
 
     async getWithdrawMethods():Promise<void> {
       const { getWithdrawMethods } = useWalletApi();
-      const data = await getWithdrawMethods(this.activeAccount.id, this.activeAccount.currency);
+      const data = await getWithdrawMethods({ accountId: this.activeAccount.id, currency: this.activeAccount.currency });
       this.withdrawMethods = data;
     },
 

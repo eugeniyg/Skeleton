@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { GameImagesInterface, GameInterface } from '~/types/gameTypes';
+  import { GameImagesInterface, GameInterface } from '~/CORE';
 
   const props = defineProps({
     isShow: {
@@ -60,7 +60,7 @@
   const router = useRouter();
 
   const { localizePath } = useProjectMethods();
-  const clickGame = (gameData:GameInterface):void => {
+  const clickGame = (gameData: GameInterface):void => {
     if (!isLoggedIn.value) {
       router.push(localizePath(`/games/${gameData.identity}${gameData.isDemoMode ? '?demo=true' : ''}`));
     } else router.push(localizePath(`/games/${gameData.identity}`));

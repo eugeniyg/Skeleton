@@ -1,5 +1,5 @@
 // import parser from 'accept-language-parser';
-// import { useAuthApi } from '~/CORE/index';
+// import { useAuthApi } from '~/CORE';
 
 const useAppCookie = () => useCookie('bearer');
 

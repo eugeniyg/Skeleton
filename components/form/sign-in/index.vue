@@ -47,38 +47,18 @@
 <script setup lang="ts">
   import useVuelidate from '@vuelidate/core';
   import { storeToRefs } from 'pinia';
-  import { useGlobalMethods } from '~/CORE';
 
-  const props = defineProps({
-    show: {
-      type: Boolean,
-      required: true,
-    },
-  });
-
-  const { setFormData } = useGlobalMethods();
   const globalStore = useGlobalStore();
   const { validationMessages, fieldsContent } = storeToRefs(globalStore);
   const { showModal, closeModal } = useLayoutStore();
-  const authorizationFields = [
-    {
-      name: 'email',
-      description: 'Email',
-      isRequired: true,
-      validationRules: [{ rule: 'email', arguments: null }],
-    },
-    {
-      name: 'password',
-      description: 'Password',
-      isRequired: true,
-      validationRules: [],
-    },
-  ];
 
-  const authorizationFormData = reactive(setFormData(authorizationFields));
-
+  const authorizationFormData = reactive({ email: '', password: '' });
   const { getFormRules } = useProjectMethods();
-  const authorizationFormRules = getFormRules(authorizationFields, true);
+  const authorizationRules = {
+    email: [{ rule: 'required' }, { rule: 'email' }],
+    password: [{ rule: 'required' }],
+  };
+  const authorizationFormRules = getFormRules(authorizationRules);
   const serverFormErrors = ref<any>({});
   const loginError = ref<boolean>(false);
   const v$ = useVuelidate(authorizationFormRules, authorizationFormData);

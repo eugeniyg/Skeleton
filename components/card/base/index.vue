@@ -38,7 +38,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { PropType } from '@vue/runtime-core';
-  import { GameImagesInterface } from '~/types/gameTypes';
+  import { GameImagesInterface } from '~/CORE';
 
   const props = defineProps({
     images: {
