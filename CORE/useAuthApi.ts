@@ -1,4 +1,5 @@
 import { useFetchInstance } from './apiInstance';
+import { useCoreStore } from './useCoreStore';
 import { AuthorizationResponse, FieldInterface } from './types';
 
 const useAuthApi = () => {
@@ -23,11 +24,14 @@ const useAuthApi = () => {
     return data;
   };
 
-  const refreshToken = async ():Promise<AuthorizationResponse> => {
-    const { data } = await useFetchInstance('/api/player/sessions/refresh', {
-      method: 'POST',
-    });
-    return data;
+  const refreshToken = ():any => {
+    const coreStore = useCoreStore();
+    if (!coreStore.refreshPromise) {
+      coreStore.refreshPromise = useFetchInstance('/api/player/sessions/refresh', {
+        method: 'POST',
+      });
+    }
+    return coreStore.refreshPromise;
   };
 
   const logOut = async ():Promise<{message: string}> => {

@@ -55,7 +55,7 @@ export const useProfileStore = defineStore('profileStore', {
       this.profile = authData.profile;
     },
 
-    async logIn(loginData:any):Promise<any> {
+    async logIn(loginData:any):Promise<void> {
       const { submitLoginData } = useAuthApi();
       const { getUserAccounts } = useWalletStore();
       const submitResult = await submitLoginData(loginData);
@@ -67,7 +67,7 @@ export const useProfileStore = defineStore('profileStore', {
       getFavoriteGames();
     },
 
-    async registration(registrationData:any):Promise<any> {
+    async registration(registrationData:any):Promise<void> {
       const { submitRegistrationData } = useAuthApi();
       const { getUserAccounts } = useWalletStore();
       const submitResult = await submitRegistrationData(registrationData);

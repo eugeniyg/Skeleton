@@ -1,6 +1,9 @@
+import { useAuthApi } from './useAuthApi';
+import { useCoreStore } from './useCoreStore';
+
 const appCookie = () => useCookie('bearer');
 
-export const useFetchInstance = (url:string, options?:any):any => {
+export const useFetchInstance = async (url:string, options?:any):Promise<any> => {
   const baseURL = process.server && process.env.API_BASE_URL ? process.env.API_BASE_URL : '';
   const newOptions = {
     ...options,
@@ -18,5 +21,22 @@ export const useFetchInstance = (url:string, options?:any):any => {
     }
   }
 
- return $fetch(url, newOptions);
+  const fetchResponse = await $fetch(url, newOptions).catch(async (err) => {
+    if (err.response.status === 401) {
+      const { refreshToken } = useAuthApi();
+      const coreStore = useCoreStore();
+      try {
+        const { data } = await refreshToken();
+        coreStore.refreshPromise = undefined;
+        const token = appCookie();
+        token.value = data.accessToken;
+        newOptions.headers.Authorization = `Bearer ${token.value}`;
+        return $fetch(url, newOptions);
+      } catch {
+        throw new Error(err);
+      }
+    } throw new Error(err);
+  });
+
+ return fetchResponse;
 };
