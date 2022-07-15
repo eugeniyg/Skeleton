@@ -23,7 +23,7 @@ export default defineEventHandler(() => ({
   alpha_num: 'The field value must only contain letters and numbers',
   array: 'The field value must be an array',
   boolean: 'The field value must be true or false',
-  confirmed: 'The field confirmation does not match',
+  confirmed: 'Doesn\'t match the New password',
   date: 'The field value is not a valid date',
   date_equals: 'The field value must be a date equal to {param}',
   different: 'The field value and {param} value must be different',

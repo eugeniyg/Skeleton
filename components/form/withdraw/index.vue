@@ -103,10 +103,10 @@
     if (buttonDisabled.value) return;
 
     isSending.value = true;
-    const formatFields = Object.entries(withdrawFormData).map(([key, value]) => ({ key, value }));
+    // const formatFields = Object.entries(withdrawFormData).map(([key, value]) => ({ key, value }));
     const params = {
       method: props.method,
-      fields: formatFields,
+      // fields: formatFields,
       currency: activeAccount.value.currency,
       amount: Number(amountValue.value),
       accountId: activeAccount.value.id,

@@ -69,6 +69,12 @@
     return undefined;
   };
 
+  const clearForm = ():void => {
+    Object.keys(changeFormData).forEach((field) => { changeFormData[field] = ''; });
+    v$.value.$reset();
+  };
+
+  const { showAlert } = useLayoutStore();
   const isLockedAsyncButton = ref<boolean>(false);
   const { changeProfilePassword } = useProfileApi();
   const onSubmit = async ():Promise<void> => {
@@ -80,8 +86,12 @@
     try {
       isLockedAsyncButton.value = true;
       await changeProfilePassword(changeFormData);
-      // await registration(registrationFormData);
-      // closeModal('register');
+      showAlert({
+        title: 'Success',
+        text: 'You have successfully changed your password!',
+        variant: 'done',
+      });
+      clearForm();
     } catch (error) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
