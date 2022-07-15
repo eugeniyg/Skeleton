@@ -3,6 +3,18 @@ export default defineEventHandler(() => ({
     label: 'Password',
     placeholder: 'Enter your password',
   },
+  currentPassword: {
+    label: 'Current password',
+    placeholder: 'Enter your current password',
+  },
+  newPassword: {
+    label: 'New password',
+    placeholder: 'Enter new password',
+  },
+  repeatNewPassword: {
+    label: 'New password again',
+    placeholder: 'Re-enter new password',
+  },
   firstName: {
     label: 'First name',
     placeholder: 'Enter first name',

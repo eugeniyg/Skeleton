@@ -32,7 +32,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           const { logOutUser } = useProfileStore();
           logOutUser();
         } else {
-          console.log(error);
+          throw error;
         }
       }
     }

@@ -33,9 +33,9 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
         newOptions.headers.Authorization = `Bearer ${token.value}`;
         return $fetch(url, newOptions);
       } catch {
-        throw new Error(err);
+        throw err;
       }
-    } throw new Error(err);
+    } throw err;
   });
 
  return fetchResponse;

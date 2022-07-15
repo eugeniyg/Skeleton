@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { AuthorizationResponse } from './types';
 
 export type CoreStoreStateType = {
-  refreshPromise: Promise<AuthorizationResponse>,
+  refreshPromise: Promise<{data: AuthorizationResponse}>,
 }
 
 export const useCoreStore = defineStore('useCoreStore', {
