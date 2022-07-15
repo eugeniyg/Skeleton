@@ -1,5 +1,5 @@
 import { useFetchInstance } from './apiInstance';
-import { FieldInterface, ProfileInterface } from './types';
+import { ChangePasswordRequestInterface, FieldInterface, ProfileInterface } from './types';
 
 const useProfileApi = () => {
   const getProfile = async ():Promise<ProfileInterface> => {
@@ -17,6 +17,11 @@ const useProfileApi = () => {
     return data;
   };
 
+  const changeProfilePassword = async (passwordData:ChangePasswordRequestInterface):Promise<ProfileInterface> => {
+    const { data } = await useFetchInstance('/api/player/passwords', { method: 'PUT', body: passwordData });
+    return data;
+  };
+
   const changePromo = async (promoData:any):Promise<ProfileInterface> => {
     const { data } = await useFetchInstance('/api/player/profile/promo', { method: 'PUT', body: promoData });
     return data;
@@ -27,6 +32,7 @@ const useProfileApi = () => {
     getProfileFields,
     changeProfileData,
     changePromo,
+    changeProfilePassword,
   };
 };
 

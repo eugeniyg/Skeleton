@@ -35,3 +35,9 @@ export interface AuthorizationResponse {
   sessionId: string,
   profile: ProfileInterface,
 }
+
+export interface ChangePasswordRequestInterface {
+  currentPassword?: string,
+  newPassword: string,
+  repeatNewPassword: string,
+}

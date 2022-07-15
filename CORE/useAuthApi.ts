@@ -24,7 +24,7 @@ const useAuthApi = () => {
     return data;
   };
 
-  const refreshToken = ():Promise<AuthorizationResponse> => {
+  const refreshToken = ():Promise<{data: AuthorizationResponse}> => {
     const coreStore = useCoreStore();
     if (!coreStore.refreshPromise) {
       coreStore.refreshPromise = useFetchInstance('/api/player/sessions/refresh', {
