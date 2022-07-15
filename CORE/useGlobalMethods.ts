@@ -43,7 +43,6 @@ const useGlobalMethods = () => {
         });
         formRules[field] = rules;
     });
-    console.log(formRules);
     return formRules;
   };
 
