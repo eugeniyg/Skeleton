@@ -54,3 +54,10 @@ export interface ObserverOptionsInterface {
   onOutView?: Function,
   settings: { root: HTMLElement|null, rootMargin: string, threshold: number },
 }
+
+export interface PaginationMetaInterface {
+  page: number,
+  perPage: number,
+  totalPages: number,
+  totalRows: number,
+}

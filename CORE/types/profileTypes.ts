@@ -1,4 +1,4 @@
-import { PaginationMetaInterface } from './gameTypes';
+import { PaginationMetaInterface } from './globalDataTypes';
 
 export interface ProfileInterface {
   id: string,
