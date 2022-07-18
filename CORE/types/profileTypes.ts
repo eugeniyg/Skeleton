@@ -1,3 +1,5 @@
+import { PaginationMetaInterface } from './gameTypes';
+
 export interface ProfileInterface {
   id: string,
   status: number,
@@ -40,4 +42,20 @@ export interface ChangePasswordRequestInterface {
   currentPassword?: string,
   newPassword: string,
   repeatNewPassword: string,
+}
+
+export interface SessionInterface {
+  sessionId: string,
+  playerId: string,
+  ip: string,
+  country: string,
+  deviceType: string,
+  userAgent: string,
+  closedAt: string|null,
+  createdAt: string,
+}
+
+export interface SessionsResponseInterface {
+  data: SessionInterface[],
+  meta: PaginationMetaInterface,
 }

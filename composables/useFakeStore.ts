@@ -2063,10 +2063,10 @@ export const useFakeStore = () => {
   ];
 
   const userProfileHistoryTabs = [
-    // {
-    //   title: 'Sessions history',
-    //   id: 'sessions-history',
-    // },
+    {
+      title: 'Sessions history',
+      id: 'sessions-history',
+    },
     {
       title: 'Bonuses history',
       id: 'bonuses-history',

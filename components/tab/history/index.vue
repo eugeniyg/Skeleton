@@ -19,12 +19,14 @@
 </template>
 
 <script setup lang="ts">
+  import { PropType } from '@vue/runtime-core';
+
   const props = defineProps({
     items: {
-      type: Array,
+      type: Array as PropType<{title: string, id: string}[]>,
     },
   });
-  const selected = ref<string>('bonuses-history');
+  const selected = ref<string>(props.items[0].id);
   const loadTab = (name:string):string => `tab-history-${name}`;
 </script>
 

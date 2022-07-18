@@ -2,44 +2,114 @@
   <div class="tb-sessions-history">
     <div class="row">
       <div
-        v-for="(th, thItems) in props.items.columns"
-        :key="thItems"
+        v-for="(th, thIndex) in headTitles"
+        :key="thIndex"
         class="th"
         v-html="th"
       />
     </div>
 
-    <div v-for="(row, rowIndex) in props.items.rows" :key="rowIndex" class="row">
-      <div class="td">
-        <atomic-row-device :variant="row.device"/>
+    <template v-if="sessions.length">
+      <div v-for="session in sessions" :key="session.sessionId" class="row">
+        <div class="td">
+          <atomic-row-device :variant="session.deviceType === 'desktop' ? 'desktop' : 'mobile'"/>
+        </div>
+
+        <div class="td">{{ session.country }}</div>
+
+        <div class="td">
+          <atomic-row-user-agent :tooltip="session.userAgent">
+            {{ shortUserAgent(session.userAgent) }}
+          </atomic-row-user-agent>
+        </div>
+
+        <div class="td">
+          <p>{{ getSessionDate(session.createdAt) }},</p>
+          <p>{{ getSessionTime(session.createdAt) }}</p>
+        </div>
+
+        <div class="td">
+          <atomic-row-status
+            :variant="sessionStatus(session)"
+            :tooltip="session.closedAt ? `${getSessionDate(session.closedAt)}, ${getSessionTime(session.closedAt)}`: ''"
+          >
+            {{ statusText[sessionStatus(session)] }}
+          </atomic-row-status>
+        </div>
+
+        <div class="td">
+          <button-close-session v-if="sessionStatus(session) === 'active'" @click.once="closeSession(session.sessionId)"/>
+        </div>
       </div>
+    </template>
 
-      <div class="td">{{ row.country }}</div>
-
-      <div class="td">
-        <atomic-row-user-agent>{{ row.userAgent }}</atomic-row-user-agent>
-      </div>
-
-      <div class="td" v-html="row.createdAt"/>
-
-      <div class="td">
-        <atomic-row-status :variant="row.status.variant">{{ row.status.text }}</atomic-row-status>
-      </div>
-
-      <div class="td">
-        <button-close-session v-if="row.status.variant === 'active'"/>
-      </div>
-    </div>
+    <atomic-pagination
+      v-if="pageMeta?.totalPages > 1"
+      v-bind="pageMeta"
+      @selectPage="changePage"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    items: {
-      type: Object,
-      required: true,
-    },
-  });
+  import parser from 'ua-parser-js';
+  import {
+    PaginationMetaInterface, SessionInterface, useGlobalMethods, useProfileApi,
+  } from '~/CORE';
+
+  const headTitles = ['', 'Country', 'User Agent', 'Created At', 'Status'];
+  const { getUserSessions, closeActiveSession } = useProfileApi();
+  const sessions = ref<SessionInterface[]>([]);
+  const pageMeta = ref<PaginationMetaInterface>();
+
+  const loading = ref<boolean>(true);
+  const resolveSessionsRequest = async (page: number = 1):Promise<void> => {
+    loading.value = true;
+    const response = await getUserSessions(page, 12);
+    sessions.value = response.data;
+    pageMeta.value = response.meta;
+    loading.value = false;
+  };
+
+  const getSessionDate = (timeString: string):string => timeString.split(' ')[0]?.split('-')?.reverse()?.join('.');
+  const getSessionTime = (timeString: string):string => timeString.split(' ')[1].slice(0, -3);
+
+  const { decodeToken } = useGlobalMethods();
+  const token = useCookie('bearer');
+  const sessionStatus = (session: SessionInterface): string => {
+    if (session.closedAt) return 'closed';
+    const sessionId = decodeToken(token.value)?.sessionId;
+    if (session.sessionId === sessionId) return 'current';
+    return 'active';
+  };
+
+  const shortUserAgent = (userAgent: string):string => {
+    const parsedUserAgent = parser(userAgent);
+    return `${parsedUserAgent.browser?.name}, ${parsedUserAgent.os?.name} ${parsedUserAgent.os?.version}`;
+  };
+
+  const closeSession = async (sessionId: string):Promise<void> => {
+    const response = await closeActiveSession(sessionId);
+    const closedIndex = sessions.value.findIndex((session) => session.sessionId === sessionId);
+    sessions.value[closedIndex] = response;
+  };
+
+  const statusText = {
+    closed: 'Closed',
+    current: 'Current',
+    active: 'Active',
+  };
+
+  const changePage = (page: number):void => {
+    if (loading.value) return;
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    resolveSessionsRequest(page);
+  };
+
+  onMounted(() => { resolveSessionsRequest(); });
 </script>
 
 <style lang="scss" src="./style.scss"/>
