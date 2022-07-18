@@ -43,7 +43,10 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { openDepositModal, showModal } = useLayoutStore();
 
-  const bonusPage = computed(() => bonusPages[route.params.id]);
+  const bonusPage = computed(() => {
+    const pageId:any = route.params.id;
+    return bonusPages[pageId];
+  });
 
 </script>
 

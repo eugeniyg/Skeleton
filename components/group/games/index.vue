@@ -42,8 +42,9 @@
 </template>
 
 <script setup lang="ts">
-  import { GameInterface, PaginationMetaInterface } from '~/types/gameTypes';
-  import { useGamesApi, useGlobalMethods } from '~/CORE';
+  import {
+    useGamesApi, useGlobalMethods, GameInterface, PaginationMetaInterface,
+  } from '~/CORE';
 
   const props = defineProps({
     category: {

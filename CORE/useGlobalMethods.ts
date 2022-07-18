@@ -1,3 +1,5 @@
+import { ObserverOptionsInterface } from './types';
+
 const useGlobalMethods = () => {
   const setFormData = (fields: any[]):any => {
     const formData:any = {};
@@ -23,28 +25,23 @@ const useGlobalMethods = () => {
     return newMessage;
   };
 
-  const createFormRules = (fields: any[], validationRules:any, validationMessages:any, includeContext:boolean = false):any => {
+  const createFormRules = (fieldsRules: any, projectRules:any, validationMessages:any):any => {
     const formRules:any = {};
 
-    fields.forEach((field) => {
-      if (field.validationRules.length || field.isRequired) {
+    Object.keys(fieldsRules).forEach((field) => {
         const rules:any = {};
-        if (includeContext && field.isRequired) {
-          rules.required = validationRules.helpers.withMessage(validationMessages.required, validationRules.required);
-        }
 
-        field.validationRules.forEach((rule:any) => {
-          if (!validationRules[rule.rule]) return;
+      fieldsRules[field].forEach((item:any) => {
+          if (!projectRules[item.rule]) return;
 
-          if (rule.arguments) {
+          if (item.arguments) {
             // @ts-ignore
-            rules[rule.rule] = validationRules.helpers.withMessage(({ $params }) => createCustomMessage($params, validationMessages[rule.rule]), validationRules[rule.rule](rule.arguments));
+            rules[item.rule] = projectRules.helpers.withMessage(({ $params }) => createCustomMessage($params, validationMessages[item.rule]), projectRules[item.rule](item.arguments));
           } else {
-            rules[rule.rule] = validationRules.helpers.withMessage(validationMessages[rule.rule], validationRules[rule.rule]);
+            rules[item.rule] = projectRules.helpers.withMessage(validationMessages[item.rule], projectRules[item.rule]);
           }
         });
-        formRules[field.name] = rules;
-      }
+        formRules[field] = rules;
     });
     return formRules;
   };
@@ -55,7 +52,7 @@ const useGlobalMethods = () => {
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-  const initObserver = (el:any, options:any):void => {
+  const initObserver = (el:any, options:ObserverOptionsInterface):void => {
     const optionsThing = {
       onInView: options?.onInView,
       onOutView: options?.onOutView,

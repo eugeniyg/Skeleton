@@ -24,6 +24,8 @@
 </template>
 
 <script setup lang="ts">
+  import { PaymentMethodInterface } from '~/CORE';
+
   const props = defineProps({
     items: {
       type: Array,
@@ -42,7 +44,7 @@
     { 'is-open': isOpen.value },
   ]);
 
-  const select = (method:any):void => {
+  const select = (method: PaymentMethodInterface):void => {
     emit('update:activeMethod', method);
     isOpen.value = false;
   };

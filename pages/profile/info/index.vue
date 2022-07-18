@@ -79,8 +79,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useProfileApi } from '~/CORE';
-  import { CountryInterface } from '~/types/globalDataTypes';
+  import { useProfileApi, CountryInterface } from '~/CORE';
 
   const { changePromo } = useProfileApi();
   const profileStore = useProfileStore();

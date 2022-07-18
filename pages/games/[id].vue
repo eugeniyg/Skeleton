@@ -4,13 +4,12 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { GameInfoInterface, GameStartInterface } from '~/types/gameTypes';
-  import { useGamesApi } from '~/CORE/index';
+  import { useGamesApi, GameInterface } from '~/CORE';
 
   const route = useRoute();
   const isDemo = ref<boolean>(route.query.demo === 'true');
-  const gameInfo = ref<GameInfoInterface>();
-  const gameStart = ref<GameStartInterface>();
+  const gameInfo = ref<GameInterface>();
+  const gameStart = ref<string>();
   const { getGamesInfo, getStartGame } = useGamesApi();
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
@@ -18,7 +17,7 @@
   const { showModal } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const { isMobile } = useGlobalStore();
-  const infoResponse = await useAsyncData('gameInfo', () => getGamesInfo(route.params.id));
+  const infoResponse = await useAsyncData('gameInfo', () => getGamesInfo(route.params.id as string));
   gameInfo.value = infoResponse.data.value;
 
   const startGame = async ():Promise<void> => {
@@ -31,7 +30,7 @@
       demoMode: isDemo.value,
       platform: isMobile ? 1 : 2,
     };
-    const startResponse = await getStartGame(route.params.id, startParams);
+    const startResponse = await getStartGame(route.params.id as string, startParams);
     gameStart.value = startResponse.gameUrl;
   };
 

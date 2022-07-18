@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-  const { isHomePage, localizePath} = useProjectMethods();
+  const { isHomePage, localizePath } = useProjectMethods();
 
   // FAKE DATA
   const accordeonItems = {

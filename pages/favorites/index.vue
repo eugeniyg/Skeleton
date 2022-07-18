@@ -3,22 +3,22 @@
     <div class="favorites__title">Favorite games</div>
 
     <client-only>
-      <atomic-empty
-        v-if="!favoriteGames.length"
-        title="Nothing found"
-        subTitle="You have no favorite games yet"
-        variant="search-result"
-      />
-
       <list-grid
-        v-else
+        v-if="showFavorites"
         :items="currentFavoriteList"
         :meta="pageMeta"
         @loadMore="currentPage++"
       />
 
+      <atomic-empty
+        v-else
+        title="Nothing found"
+        subTitle="You have no favorite games yet"
+        variant="search-result"
+      />
+
       <group-games
-        v-if="!favoriteGames.length"
+        v-if="!showFavorites"
         :category="popularCategory"
         showArrows
         subTitle="The best games for you"
@@ -31,7 +31,9 @@
   import { storeToRefs } from 'pinia';
 
   const gameStore = useGamesStore();
+  const profileStore = useProfileStore();
   const { favoriteGames } = storeToRefs(gameStore);
+  const { isLoggedIn } = storeToRefs(profileStore);
   const currentPage = ref<number>(1);
   const currentFavoriteList = computed(() => favoriteGames.value.slice(0, currentPage.value * 18));
 
@@ -43,6 +45,7 @@
 
   const { gameCollections } = useGamesStore();
   const popularCategory = gameCollections.find((collection) => collection.identity === 'popular');
+  const showFavorites = computed(() => favoriteGames.value && isLoggedIn.value);
 </script>
 
 <style lang="scss" src="./style.scss" />

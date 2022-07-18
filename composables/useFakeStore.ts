@@ -1159,7 +1159,7 @@ export const useFakeStore = () => {
       ],
     },
     {
-      title: 'Sport betting',
+      title: 'Sportsbook',
       icon: 'sport-book',
       href: '/betting',
     },
@@ -1352,7 +1352,7 @@ export const useFakeStore = () => {
     },
     {
       icon: 'sport',
-      title: 'Betting',
+      title: 'Sports',
       url: '/betting',
     },
   ];
@@ -1472,10 +1472,10 @@ export const useFakeStore = () => {
         href: '/profile/notifications',
         // count: 999,
       },
-      // {
-      //   title: 'Security & Verification',
-      //   href: '/profile/security',
-      // },
+      {
+        title: 'Security & Verification',
+        href: '/profile/security',
+      },
       {
         title: 'History',
         href: '/profile/history',
@@ -2039,12 +2039,12 @@ export const useFakeStore = () => {
     {
       title: {
         icon: 'sport',
-        text: 'Betting',
+        text: 'Sports',
       },
       src: '/categories/2.png',
       subTitle: 'The most competitive odds and markets. Bet and win right now',
       action: {
-        title: 'Go to Betting',
+        title: 'Go to Sports',
         href: '/betting',
       },
     },

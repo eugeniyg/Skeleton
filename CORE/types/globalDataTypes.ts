@@ -13,13 +13,15 @@ export interface LocaleInterface {
   nativeName: string,
   code: string,
   languageCode: string,
-  isDefault: boolean
+  isDefault: boolean,
+  value?:string,
 }
 
 export interface CountryInterface {
   name: string,
   nativeName: string,
   code: string,
+  phonePrefix: string,
   value?:string,
 }
 
@@ -35,4 +37,20 @@ export interface BrowserLanguageInterface {
   script: null|string,
   region: undefined|string,
   quality: number,
+}
+
+export interface ScenariosInterface {
+  id: string,
+  name: string,
+}
+
+export interface CommonDataInterface {
+  scenarios: ScenariosInterface[],
+  timeZone: TimeZoneInterface[],
+}
+
+export interface ObserverOptionsInterface {
+  onInView?: Function,
+  onOutView?: Function,
+  settings: { root: HTMLElement|null, rootMargin: string, threshold: number },
 }

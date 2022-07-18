@@ -9,6 +9,7 @@
     <div class="row">
       <input
         class="field"
+        step="0.01"
         type="number"
         :name="name"
         :value="props.value"
@@ -80,7 +81,10 @@
   };
 
   const onKeyDown = (e:any):void => {
-    if (String(props.value).length > 9 && /[0-9.,]/.test(e.key)) e.preventDefault();
+    if (e.code === 'KeyE'
+      || e.key === '+'
+      || e.key === '-'
+      || (String(props.value).length > 9 && /[0-9.,]/.test(e.key))) e.preventDefault();
   };
 
   const isError = computed(() => props.hint && props.hint.variant === 'error');

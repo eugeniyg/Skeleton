@@ -4,3 +4,4 @@ export { useProfileApi } from './useProfileApi';
 export { useGamesApi } from './useGamesApi';
 export { useWalletApi } from './useWalletApi';
 export { useGlobalMethods } from './useGlobalMethods';
+export * from './types';

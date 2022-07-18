@@ -1,6 +1,10 @@
 import { defineStore } from 'pinia';
-import { CountryInterface, CurrencyInterface, TimeZoneInterface } from '~/types/globalDataTypes';
-import { GameProviderInterface } from '~/types/gameTypes';
+import {
+  CountryInterface,
+  CurrencyInterface,
+  TimeZoneInterface,
+  GameProviderInterface,
+} from 'CORE';
 
 export type FieldsStoreStateType = {
   selectOptions: {
