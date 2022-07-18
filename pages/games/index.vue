@@ -35,14 +35,14 @@
 </template>
 
 <script setup lang="ts">
-  import { useGamesApi } from '~/CORE';
   import {
+    useGamesApi,
     CollectionInterface,
     GameProviderInterface,
     GameInterface,
     GamesResponseInterface,
     PaginationMetaInterface,
-  } from '~/types/gameTypes';
+  } from '~/CORE';
 
   const { gameCollections, sortedCategories } = useGamesStore();
   const { selectOptions } = useFieldsStore();

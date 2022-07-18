@@ -86,11 +86,14 @@ const useGlobalMethods = () => {
     });
   };
 
+  const decodeToken = (token: string):any => JSON.parse(window.atob(token.split('.')[1]));
+
   return {
     setFormData,
     createFormRules,
     getRandomInt,
     initObserver,
+    decodeToken,
   };
 };
 

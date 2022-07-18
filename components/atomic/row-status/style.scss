@@ -76,4 +76,11 @@
     }
   }
 
+  .tooltip .message {
+    width: auto;
+    white-space: nowrap;
+    left: 50%;
+    right: auto;
+    transform: translateY(calc(-100% - 4px)) translateX(-50%);
+  }
 }

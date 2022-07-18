@@ -1,7 +1,8 @@
 <template>
   <div class="row-status" :class="classes">
     <slot>statusText</slot>
-    <atomic-icon :id="iconId"/>
+    <atomic-tooltip v-if="variant === 'closed'" :text="props.tooltip"/>
+    <atomic-icon v-else :id="iconId"/>
   </div>
 </template>
 
@@ -12,21 +13,22 @@
       validator: (val:string) => ['current', 'active', 'closed', 'pending', 'success', 'failed', 'unfinished', 'canceled'].includes(val),
       default: 'current',
     },
-    items: {
-      type: Object,
-      default: () => ({
-        active: 'dot',
-        current: 'dot',
-        closed: 'ui-info',
-        pending: 'ui-clock',
-        success: 'ui-done',
-        failed: 'ui-warning',
-        unfinished: 'ui-clock',
-        canceled: 'ui-warning',
-      }),
+    tooltip: {
+      type: String,
+      required: false,
     },
   });
-  const iconId = computed(() => props.items[props.variant]);
+  const items = {
+    active: 'dot',
+    current: 'dot',
+    closed: 'ui-info',
+    pending: 'ui-clock',
+    success: 'ui-done',
+    failed: 'ui-warning',
+    unfinished: 'ui-clock',
+    canceled: 'ui-warning',
+  };
+  const iconId = computed(() => items[props.variant]);
   const classes = computed(() => `is-${props.variant}`);
 </script>
 
