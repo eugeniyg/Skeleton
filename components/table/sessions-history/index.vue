@@ -65,7 +65,7 @@
   const loading = ref<boolean>(true);
   const resolveSessionsRequest = async (page: number = 1):Promise<void> => {
     loading.value = true;
-    const response = await getUserSessions(page, 12);
+    const response = await getUserSessions(page, 10);
     sessions.value = response.data;
     pageMeta.value = response.meta;
     loading.value = false;
