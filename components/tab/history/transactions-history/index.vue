@@ -115,8 +115,15 @@
     resolveInvoicesRequest();
   };
 
+  const { showAlert } = useLayoutStore();
   const cancelPayment = async (invoiceId: string):Promise<void> => {
     const response = await cancelInvoice(invoiceId);
+    showAlert({
+      title: 'Success',
+      text: 'You have successfully canceled your withdrawal.',
+      variant: 'done',
+    });
+
     const closedIndex = invoices.value.findIndex((invoice) => invoice.id === invoiceId);
     invoices.value[closedIndex] = response;
   };
