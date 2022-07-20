@@ -39,13 +39,13 @@ const useWalletApi = () => {
     return data;
   };
 
-  const getDepositMethods = async (methodsData: AccountRequestInterface):Promise<PaymentMethodInterface[]> => {
-    const { data } = await useFetchInstance(`/api/payment/methods/deposit?accountId=${methodsData.accountId}&currency=${methodsData.currency}`);
+  const getDepositMethods = async (currency: string):Promise<PaymentMethodInterface[]> => {
+    const { data } = await useFetchInstance(`/api/payment/methods/deposit?currency=${currency}`);
     return data;
   };
 
-  const getWithdrawMethods = async (methodsData: AccountRequestInterface):Promise<PaymentMethodInterface[]> => {
-    const { data } = await useFetchInstance(`/api/payment/methods/withdrawal?accountId=${methodsData.accountId}&currency=${methodsData.currency}`);
+  const getWithdrawMethods = async (currency: string):Promise<PaymentMethodInterface[]> => {
+    const { data } = await useFetchInstance(`/api/payment/methods/withdrawal?currency=${currency}`);
     return data;
   };
 
