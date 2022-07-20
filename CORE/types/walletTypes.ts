@@ -1,3 +1,5 @@
+import { PaginationMetaInterface } from '~/CORE';
+
 export interface AccountInterface {
   id: string,
   balance: number,
@@ -54,4 +56,31 @@ export interface ResponseWithdrawInterface {
   currency: string,
   amount: number,
   accountId: string,
+}
+
+export interface InvoiceInterface {
+  id: string,
+  amount: number,
+  currency: string,
+  status: number,
+  statusResult: string,
+  paymentProvider: string,
+  invoiceType: number,
+  createdAt: string,
+  updatedAt: string|null,
+}
+
+export interface ResponseInvoicesInterface {
+  data: InvoiceInterface[],
+  meta: PaginationMetaInterface,
+}
+
+export interface InvoicesRequestOptionsInterface {
+  page: number,
+  perPage: number,
+  dateFrom?: string,
+  dateTo?: string,
+  type?: string,
+  currency?: string,
+  status?: string,
 }

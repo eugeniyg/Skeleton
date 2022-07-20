@@ -1,12 +1,12 @@
 import { useFetchInstance } from './apiInstance';
 import {
   AccountInterface,
-  AccountRequestInterface,
+  AccountRequestInterface, InvoiceInterface, InvoicesRequestOptionsInterface,
   PaymentMethodInterface,
   RequestDepositInterface,
   RequestWithdrawInterface,
-  ResponseDepositInterface,
-  ResponseWithdrawInterface,
+  ResponseDepositInterface, ResponseInvoicesInterface,
+  ResponseWithdrawInterface, SessionInterface,
 } from './types';
 
 const useWalletApi = () => {
@@ -65,6 +65,16 @@ const useWalletApi = () => {
     return data;
   };
 
+  const getPlayerInvoices = async (requestOptions: InvoicesRequestOptionsInterface):Promise<ResponseInvoicesInterface> => {
+    const invoicesResponse = await useFetchInstance('/api/payment/invoices', { params: requestOptions });
+    return invoicesResponse;
+  };
+
+  const cancelInvoice = async (invoiceId: string):Promise<InvoiceInterface> => {
+    const { data } = await useFetchInstance(`/api/payment/invoices/${invoiceId}/decline`, { method: 'POST' });
+    return data;
+  };
+
   return {
     getAccounts,
     addAccount,
@@ -74,6 +84,8 @@ const useWalletApi = () => {
     depositAccount,
     getWithdrawMethods,
     withdrawAccount,
+    getPlayerInvoices,
+    cancelInvoice,
   };
 };
 

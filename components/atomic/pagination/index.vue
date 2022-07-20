@@ -88,8 +88,8 @@
     formPagination(paginationLength.value);
   });
 
-  watch(() => props.page, () => {
-    if (props.totalPages > paginationLength.value) formPagination(paginationLength.value);
+  watch(props, () => {
+    formPagination(paginationLength.value);
   });
 </script>
 
