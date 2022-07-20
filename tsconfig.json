@@ -4,7 +4,8 @@
   "compilerOptions": {
     "types": [
       "vue-final-modal",
-      "@pinia/nuxt"
+      "@pinia/nuxt",
+      "~/components.d.ts",
     ]
   }
 }

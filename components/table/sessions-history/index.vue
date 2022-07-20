@@ -24,14 +24,13 @@
         </div>
 
         <div class="td">
-          <p>{{ getSessionDate(session.createdAt) }},</p>
-          <p>{{ getSessionTime(session.createdAt) }}</p>
+          <p>{{ getFormatDate(session.createdAt) }}</p>
         </div>
 
         <div class="td">
           <atomic-row-status
             :variant="sessionStatus(session)"
-            :tooltip="session.closedAt ? `${getSessionDate(session.closedAt)}, ${getSessionTime(session.closedAt)}`: ''"
+            :tooltip="session.closedAt ? `${getFormatDate(session.closedAt)}`: ''"
           >
             {{ statusText[sessionStatus(session)] }}
           </atomic-row-status>
@@ -61,6 +60,7 @@
   const { getUserSessions, closeActiveSession } = useProfileApi();
   const sessions = ref<SessionInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
+  const { getFormatDate } = useProjectMethods();
 
   const loading = ref<boolean>(true);
   const resolveSessionsRequest = async (page: number = 1):Promise<void> => {
@@ -70,9 +70,6 @@
     pageMeta.value = response.meta;
     loading.value = false;
   };
-
-  const getSessionDate = (timeString: string):string => timeString.split(' ')[0]?.split('-')?.reverse()?.join('.');
-  const getSessionTime = (timeString: string):string => timeString.split(' ')[1].slice(0, -3);
 
   const { decodeToken } = useGlobalMethods();
   const token = useCookie('bearer');

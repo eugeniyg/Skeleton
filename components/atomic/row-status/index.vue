@@ -10,7 +10,7 @@
   const props = defineProps({
     variant: {
       type: String,
-      validator: (val:string) => ['current', 'active', 'closed', 'pending', 'success', 'failed', 'unfinished', 'canceled'].includes(val),
+      validator: (val:string) => ['current', 'active', 'closed', 'pending', 'success', 'failed', 'unfinished', 'canceled', 'rejected', 'review'].includes(val),
       default: 'current',
     },
     tooltip: {
@@ -25,7 +25,9 @@
     pending: 'ui-clock',
     success: 'ui-done',
     failed: 'ui-warning',
+    rejected: 'ui-warning',
     unfinished: 'ui-clock',
+    review: 'ui-clock',
     canceled: 'ui-warning',
   };
   const iconId = computed(() => items[props.variant]);
