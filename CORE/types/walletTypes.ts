@@ -1,4 +1,4 @@
-import {PaginationMetaInterface} from "~/CORE";
+import { PaginationMetaInterface } from '~/CORE';
 
 export interface AccountInterface {
   id: string,
