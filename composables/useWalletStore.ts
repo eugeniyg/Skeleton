@@ -65,13 +65,13 @@ export const useWalletStore = defineStore('walletStore', {
 
     async getDepositMethods():Promise<void> {
       const { getDepositMethods } = useWalletApi();
-      const data = await getDepositMethods({ accountId: this.activeAccount.id, currency: this.activeAccount.currency });
+      const data = await getDepositMethods(this.activeAccount.currency);
       this.depositMethods = data;
     },
 
     async getWithdrawMethods():Promise<void> {
       const { getWithdrawMethods } = useWalletApi();
-      const data = await getWithdrawMethods({ accountId: this.activeAccount.id, currency: this.activeAccount.currency });
+      const data = await getWithdrawMethods(this.activeAccount.currency);
       this.withdrawMethods = data;
     },
 
