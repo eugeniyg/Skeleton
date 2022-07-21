@@ -148,7 +148,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       queryArr.forEach((query) => {
         if (query === 'sign-up') {
           isLoggedIn ? this.closeModal('register') : this.showModal('register');
-        } else if (query === 'register') {
+        } else if (query === 'sign-in') {
           isLoggedIn ? this.closeModal('signIn') : this.showModal('signIn');
         } else if (this.modalsUrl[query]) {
           this.showModal(query, route.query[query]);
