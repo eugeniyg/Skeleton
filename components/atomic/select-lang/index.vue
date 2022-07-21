@@ -6,6 +6,7 @@
         :src="`/img/flags/${currentLocaleImg}.svg`"
         alt=""
       />
+      test
       <span class="title">{{ currentLocale.nativeName }}</span>
       <atomic-icon id="ui-arrow_expand-close" />
     </div>
