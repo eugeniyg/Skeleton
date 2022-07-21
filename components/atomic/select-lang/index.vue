@@ -1,15 +1,16 @@
 <template>
   <div class="select-lang" :class="{ 'is-open': isOpen }">
-    <div class="selected" @click="toggleOpen">
-      <img
-        class="img"
-        :src="`/img/flags/${currentLocaleImg}.svg`"
-        alt=""
-      />
-      test
-      <span class="title">{{ currentLocale.nativeName }}</span>
-      <atomic-icon id="ui-arrow_expand-close" />
-    </div>
+    <client-only>
+      <div class="selected" @click="toggleOpen">
+        <img
+          class="img"
+          :src="`/img/flags/${languageFlagsMap[currentLocale.code.toLowerCase()]}.svg`"
+          alt=""
+        />
+        <span class="title">{{ currentLocale.nativeName }}</span>
+        <atomic-icon id="ui-arrow_expand-close" />
+      </div>
+    </client-only>
 
     <div class="items">
       <component
@@ -44,7 +45,6 @@
   const { locales, currentLocale } = storeToRefs(globalStore);
   const isOpen = ref<boolean>(false);
   const cookieLanguage = useCookie('user-language');
-  const currentLocaleImg = computed(() => languageFlagsMap[currentLocale.value.code.toLowerCase()]);
 
   const setCookie = (locale: LocaleInterface):void => {
     if (locale.isDefault) cookieLanguage.value = undefined;
