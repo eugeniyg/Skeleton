@@ -4,7 +4,7 @@
       <atomic-icon id="ui-cookies"/>
     </div>
 
-    <div class="text" v-html="text"></div>
+    <div class="text" v-html="text"/>
     <button-base type="primary" size="md" @click="acceptCookie">Accept</button-base>
   </div>
 </template>
