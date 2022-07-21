@@ -2,9 +2,8 @@
   <div class="select-lang" :class="{ 'is-open': isOpen }">
     <div class="selected" @click="toggleOpen">
       <img
-        :key="currentLocale.code"
         class="img"
-        :src="`/img/flags/${languageFlagsMap[currentLocale.code.toLowerCase()]}.svg`"
+        :src="`/img/flags/${currentLocaleImg}.svg`"
         alt=""
       />
       <span class="title">{{ currentLocale.nativeName }}</span>
@@ -44,6 +43,7 @@
   const { locales, currentLocale } = storeToRefs(globalStore);
   const isOpen = ref<boolean>(false);
   const cookieLanguage = useCookie('user-language');
+  const currentLocaleImg = computed(() => languageFlagsMap[currentLocale.value.code.toLowerCase()]);
 
   const setCookie = (locale: LocaleInterface):void => {
     if (locale.isDefault) cookieLanguage.value = undefined;
