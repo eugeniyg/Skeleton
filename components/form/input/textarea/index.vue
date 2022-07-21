@@ -10,6 +10,8 @@
       :name="props.name"
       :placeholder="props.placeholder"
       :required="props.isRequired ? 'required': false"
+      @focus="onFocus"
+      @blur="onBlur"
       @input="onInput"
       rows="6"
       cols="50"
@@ -47,13 +49,20 @@
     },
   });
 
-  const emit = defineEmits(['input', 'update:value']);
+  const emit = defineEmits(['input', 'blur', 'focus', 'update:value']);
 
   const isError = computed(() => props.hint && props.hint.variant === 'error');
   const classes = computed(() => [
     'input-textarea',
     { 'has-error': isError.value },
   ]);
+
+  const onBlur = (e:any) => {
+    emit('blur', e.target.value);
+  };
+  const onFocus = (e:any) => {
+    emit('focus', e.target.value);
+  };
 
   const onInput = (e:any) => {
     emit('input', e.target.value);
