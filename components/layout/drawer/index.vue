@@ -18,7 +18,7 @@
       <atomic-divider/>
       <nav-list :items="fakeStore.centerMenuItems"/>
       <atomic-divider/>
-      <nav-list :items="fakeStore.userMenuItems"/>
+      <nav-list :items="dynamicUserMenu"/>
       <atomic-divider/>
       <atomic-select-lang/>
       <atomic-divider/>
@@ -42,6 +42,12 @@
   });
   const fakeStore = useFakeStore();
   const emit = defineEmits(['compact', 'toggleOpen']);
+
+  const profileStore = useProfileStore();
+  const dynamicUserMenu = computed(() => {
+    if (profileStore.isLoggedIn) return fakeStore.userMenuItems;
+    return fakeStore.userMenuItems.filter((item) => item.href !== '/favorites');
+  });
 </script>
 
 <style lang="scss" src="./style.scss"/>
