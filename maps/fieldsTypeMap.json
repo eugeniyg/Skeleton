@@ -145,5 +145,9 @@
   "personalIdNumber": {
     "component": "form-input-text",
     "type": "text"
+  },
+  "messageText": {
+    "component": "form-input-textarea",
+    "type": "text"
   }
 }
