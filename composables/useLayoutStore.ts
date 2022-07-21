@@ -8,6 +8,7 @@ export type LayoutStoreStateType = {
   isCurrencyNavOpen: boolean,
   isDrawerCompact: boolean,
   isShowAlert: boolean,
+  showCookiePopup: boolean,
   alertProps: {
     title: string | undefined,
     text: string | undefined,
@@ -41,6 +42,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       isCurrencyNavOpen: false,
       isDrawerCompact: false,
       isShowAlert: false,
+      showCookiePopup: false,
       alertProps: {
         title: undefined,
         text: undefined,

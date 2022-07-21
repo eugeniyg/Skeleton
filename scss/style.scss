@@ -207,3 +207,23 @@ body {
 .stop-transition * {
   transition: none !important;
 }
+
+// CLASSES FOR VUE TRANSITIONS ELEMENT
+.fade-down {
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.3s;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
