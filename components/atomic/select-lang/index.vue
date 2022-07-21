@@ -1,7 +1,12 @@
 <template>
   <div class="select-lang" :class="{ 'is-open': isOpen }">
     <div class="selected" @click="toggleOpen">
-      <img class="img" :src="`/img/flags/${languageFlagsMap[currentLocale.code.toLowerCase()]}.svg`" alt="" />
+      <img
+        :key="currentLocale.code"
+        class="img"
+        :src="`/img/flags/${languageFlagsMap[currentLocale.code.toLowerCase()]}.svg`"
+        alt=""
+      />
       <span class="title">{{ currentLocale.nativeName }}</span>
       <atomic-icon id="ui-arrow_expand-close" />
     </div>
