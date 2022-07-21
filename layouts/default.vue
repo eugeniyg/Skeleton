@@ -36,6 +36,10 @@
 
     <nav-mob />
 
+    <transition name="fade-down">
+      <layout-cookies v-if="showCookiesMessage" />
+    </transition>
+
     <client-only>
       <modal-register />
       <modal-sign-in />
@@ -93,9 +97,9 @@
   const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT');
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
-  const { isHomePage } = useProjectMethods();
+  const { isHomePage, localizePath } = useProjectMethods();
 
-  const { isShowAlert, alertProps } = storeToRefs(layoutStore);
+  const { isShowAlert, alertProps, showCookiePopup } = storeToRefs(layoutStore);
   const { compactDrawer, checkModals } = layoutStore;
   checkModals();
 
@@ -115,8 +119,25 @@
     layoutStore.toggleDrawer();
   }
 
+  const showCookiesMessage = computed(() => showCookiePopup.value
+    && route.name !== 'games-id'
+    && route.name !== 'locale-games-id'
+    && route.path !== localizePath('/betting'));
+
+  const timer = ref<any>();
   onMounted(() => {
     document.body.classList.remove('stop-transition');
+
+    const cookieValue = useCookie('accept-cookie');
+    if (!cookieValue.value) {
+      timer.value = setTimeout(() => {
+        showCookiePopup.value = true;
+      }, 1500);
+    }
+  });
+
+  onBeforeUnmount(() => {
+    if (timer.value) clearTimeout(timer.value);
   });
 </script>
 
