@@ -146,7 +146,7 @@
     "component": "form-input-text",
     "type": "text"
   },
-  "messageText": {
+  "message": {
     "component": "form-input-textarea",
     "type": "text"
   }
