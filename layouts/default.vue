@@ -19,12 +19,14 @@
       @logout="logout"
     />
 
-    <layout-drawer
-      :is-logged-in="isLoggedIn"
-      :is-compact="IS_DRAWER_COMPACT"
-      @compact="compact"
-      @toggle-open="toggleOpen"
-    />
+    <client-only>
+      <layout-drawer
+        :is-logged-in="isLoggedIn"
+        :is-compact="IS_DRAWER_COMPACT"
+        @compact="compact"
+        @toggle-open="toggleOpen"
+      />
+    </client-only>
 
     <main class="app-main" :class="{'is-overflow': isHomePage()}">
       <slot/>
