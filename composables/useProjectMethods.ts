@@ -13,7 +13,9 @@ export const useProjectMethods = () => {
       fields.forEach((field) => {
         if (field.isRequired) validationRules[field.name] = [{ rule: 'required' }];
         if (fieldsTypeMap[field.name].validation?.length) {
-          validationRules[field.name] = [...validationRules[field.name], ...fieldsTypeMap[field.name].validation];
+          if (validationRules[field.name]) {
+            validationRules[field.name] = [...validationRules[field.name], ...fieldsTypeMap[field.name].validation];
+          } else validationRules[field.name] = fieldsTypeMap[field.name].validation;
         }
       });
     } else {
@@ -74,6 +76,12 @@ export const useProjectMethods = () => {
     return date.toLocaleString().slice(0, -3);
   };
 
+  const getNicknameFromEmail = (email: string):string => {
+    const getFirstPath = email.split('@')[0];
+    if (getFirstPath.length < 4) return `${getFirstPath.slice(0, 1)}***`;
+    return `${getFirstPath.slice(0, -3)}***`;
+  };
+
   return {
     createValidationRules,
     getFormRules,
@@ -83,5 +91,6 @@ export const useProjectMethods = () => {
     localizePath,
     isHomePage,
     getFormatDate,
+    getNicknameFromEmail,
   };
 };

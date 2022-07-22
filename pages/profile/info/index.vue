@@ -27,7 +27,7 @@
         <atomic-avatar-profile :is-edit="false"/>
 
         <div class="items">
-          <div class="nickname">{{ publicNickname }}</div>
+          <div class="nickname">{{ profile.nickname || '' }}</div>
 
           <div class="item" v-show="profile.firstName || profile.lastName">
             <atomic-icon id="ui-user"/>
@@ -83,7 +83,7 @@
 
   const { changePromo } = useProfileApi();
   const profileStore = useProfileStore();
-  const { profile, profileFields, publicNickname } = storeToRefs(profileStore);
+  const { profile, profileFields } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
   const { countries, fieldsContent } = storeToRefs(globalStore);
   const route = useRoute();
