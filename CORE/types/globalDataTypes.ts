@@ -52,7 +52,7 @@ export interface CommonDataInterface {
 export interface ObserverOptionsInterface {
   onInView?: Function,
   onOutView?: Function,
-  settings: { root: HTMLElement|null, rootMargin: string, threshold: number },
+  settings: { root: null|HTMLElement, rootMargin: string, threshold: number },
 }
 
 export interface PaginationMetaInterface {

@@ -16,5 +16,7 @@
 
   .btn-load-more {
     margin: auto;
+    visibility: hidden !important;
+    opacity: 0 !important;
   }
 }
