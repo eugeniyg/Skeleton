@@ -63,6 +63,7 @@
     'input-text',
     { 'has-error': isError.value },
     { 'is-disabled': props.isDisabled },
+    { 'is-hidden': props.type === 'hidden' },
   ]);
 
   const onBlur = (e:any) => {
