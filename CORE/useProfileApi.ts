@@ -24,11 +24,6 @@ const useProfileApi = () => {
     return data;
   };
 
-  const changePromo = async (promoData:any):Promise<ProfileInterface> => {
-    const { data } = await useFetchInstance('/api/player/profile/promo', { method: 'PUT', body: promoData });
-    return data;
-  };
-
   const getUserSessions = async (page: number, perPage: number):Promise<SessionsResponseInterface> => {
     const sessionsResponse = await useFetchInstance(`/api/player/sessions?page=${page}&perPage=${perPage}`);
     return sessionsResponse;
@@ -43,7 +38,6 @@ const useProfileApi = () => {
     getProfile,
     getProfileFields,
     changeProfileData,
-    changePromo,
     changeProfilePassword,
     getUserSessions,
     closeActiveSession,

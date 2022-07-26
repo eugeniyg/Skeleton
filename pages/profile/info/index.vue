@@ -81,7 +81,7 @@
   import { storeToRefs } from 'pinia';
   import { useProfileApi, CountryInterface } from '~/CORE';
 
-  const { changePromo } = useProfileApi();
+  const { changeProfileData } = useProfileApi();
   const profileStore = useProfileStore();
   const { profile, profileFields } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
@@ -101,7 +101,7 @@
   };
 
   const changeSubscription = async (fieldName:string):Promise<void> => {
-    const data = await changePromo({ [fieldName]: !profile.value[fieldName] });
+    const data = await changeProfileData({ [fieldName]: !profile.value[fieldName] });
     profileStore.setProfileData(data);
   };
 </script>
