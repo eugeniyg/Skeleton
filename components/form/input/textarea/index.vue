@@ -51,10 +51,9 @@
 
   const emit = defineEmits(['input', 'blur', 'focus', 'update:value']);
 
-  const isError = computed(() => props.hint && props.hint.variant === 'error');
   const classes = computed(() => [
     'input-textarea',
-    { 'has-error': isError.value },
+    { 'has-error': props.hint?.variant === 'error' },
   ]);
 
   const onBlur = (e:any) => {

@@ -130,8 +130,11 @@
     "type": "checkbox"
   },
   "phone": {
-    "component": "form-input-text",
-    "type": "text"
+    "component": "form-input-phone",
+    "type": "text",
+    "validation": [{
+      "rule": "phone"
+    }]
   },
   "birthdate": {
     "component": "form-input-birth",

@@ -36,7 +36,7 @@
     },
     label: {
       type: String,
-      required: true,
+      default: '',
     },
     placeholder: {
       type: String,
@@ -57,11 +57,9 @@
   });
   const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);
 
-  const isError = computed(() => props.hint && props.hint.variant === 'error');
-
   const classes = computed(() => [
     'input-text',
-    { 'has-error': isError.value },
+    { 'has-error': props.hint?.variant === 'error' },
     { 'is-disabled': props.isDisabled },
     { 'is-hidden': props.type === 'hidden' },
   ]);

@@ -91,10 +91,9 @@
     } else emit('blur', e.target.value);
   };
 
-  const isError = computed(() => props.hint && props.hint.variant === 'error');
   const classes = computed(() => [
     'input-number',
-    { 'has-error': isError.value },
+    { 'has-error': props.hint?.variant === 'error' },
     { 'is-bigger': props.isBigger },
   ]);
 </script>

@@ -28,7 +28,7 @@
     "accept-language-parser": "^1.5.0",
     "css-loader": "^6.7.1",
     "flatpickr": "^4.6.13",
-    "js-cookie": "^3.0.1",
+    "libphonenumber-js": "^1.10.10",
     "lodash": "^4.17.21",
     "maska": "^1.5.0",
     "pinia": "^2.0.14",

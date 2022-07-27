@@ -14,6 +14,31 @@
   @extend %input-label;
 
   .dropdown {
-    min-width: rem(120px);
+    min-width: rem(150px);
+  }
+
+  .field {
+    width: 100%;
+    background-color: var(--bg, var(--gray-800));
+    padding: var(--input-padding-y, #{rem(11px)}) rem(16px);
+    border: 1px solid var(--border-color, var(--gray-800));
+    color: var(--color, var(--white));
+    border-radius: 8px;
+    @include font($body-2);
+    transition: border-color .2s ease-in-out;
+
+    &::placeholder {
+      color: var(--gray-400);
+    }
+
+    &:focus {
+      --border-color: var(--gray-300);
+    }
+  }
+
+  &.has-error {
+    .field {
+      --border-color: var(--red-800);
+    }
   }
 }

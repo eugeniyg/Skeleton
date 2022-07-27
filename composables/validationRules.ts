@@ -1,4 +1,5 @@
 import * as validationRules from '@vuelidate/validators';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 
 export * from '@vuelidate/validators';
 
@@ -6,7 +7,7 @@ export const countryCode = (value):boolean => !validationRules.helpers.req(value
 
 export const languageCode = (value):boolean => !validationRules.helpers.req(value) || /^[a-z]{2}$/.test(value);
 
-export const phone = (value):boolean => !validationRules.helpers.req(value) || /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/.test(value);
+export const phone = (value):boolean => !validationRules.helpers.req(value) || isValidPhoneNumber(`+${value}`);
 
 export const lowercase = (value):boolean => !validationRules.helpers.req(value) || (value.toLowerCase() === value);
 
