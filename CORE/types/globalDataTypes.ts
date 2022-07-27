@@ -32,6 +32,13 @@ export interface TimeZoneInterface {
   value?: string,
 }
 
+export interface PhoneCodeInterface {
+  countryCode: string,
+  code: string,
+  mask?: string,
+  value?: string,
+}
+
 export interface BrowserLanguageInterface {
   code: string,
   script: null|string,
