@@ -18,6 +18,8 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
     const token = appCookie();
     if (token.value) {
       newOptions.headers.Authorization = `Bearer ${token.value}`;
+    } else {
+      newOptions.headers.Authorization = "";
     }
   }
 
