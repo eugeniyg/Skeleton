@@ -36,7 +36,6 @@
 
 <script setup lang="ts">
   import {
-    useGamesApi,
     CollectionInterface,
     GameProviderInterface,
     GameInterface,
@@ -72,7 +71,7 @@
   const gameItems = ref<GameInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
 
-  const { getFilteredGames } = useGamesApi();
+  const { getFilteredGames } = useCoreGamesApi();
 
   const getItems = async (): Promise<GamesResponseInterface> => {
     const params: any = { page: loadPage.value, perPage: 36 };

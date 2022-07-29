@@ -49,8 +49,6 @@
     InvoiceInterface,
     InvoicesRequestOptionsInterface,
     PaginationMetaInterface,
-    useWalletApi,
-    useCoreStore,
   } from '~/CORE';
 
   const coreStore = useCoreStore();
@@ -91,7 +89,7 @@
 
   const invoices = ref<InvoiceInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
-  const { getPlayerInvoices, cancelInvoice } = useWalletApi();
+  const { getPlayerInvoices, cancelInvoice } = useCoreWalletApi();
   const loading = ref<boolean>(true);
   const resolveInvoicesRequest = async ():Promise<void> => {
     loading.value = true;

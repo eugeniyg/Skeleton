@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import {
-  useAuthApi, useProfileApi, ProfileInterface, FieldInterface, AuthorizationResponse,
+  ProfileInterface, FieldInterface, AuthorizationResponse,
 } from '~/CORE';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useLayoutStore } from '~/composables/useLayoutStore';
@@ -43,7 +43,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async logIn(loginData:any):Promise<void> {
-      const { submitLoginData } = useAuthApi();
+      const { submitLoginData } = useCoreAuthApi();
       const { getUserAccounts } = useWalletStore();
       const submitResult = await submitLoginData(loginData);
       this.setToken(submitResult);
@@ -55,7 +55,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async registration(registrationData:any):Promise<void> {
-      const { submitRegistrationData } = useAuthApi();
+      const { submitRegistrationData } = useCoreAuthApi();
       const { getUserAccounts } = useWalletStore();
       const submitResult = await submitRegistrationData(registrationData);
       this.setToken(submitResult);
@@ -71,7 +71,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async getProfileData():Promise<void> {
-      const { getProfile } = useProfileApi();
+      const { getProfile } = useCoreProfileApi();
       const profileInfo = await getProfile();
       this.profile = profileInfo;
       this.isLoggedIn = true;
@@ -82,7 +82,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async logOutUser():Promise<void> {
-      const { logOut } = useAuthApi();
+      const { logOut } = useCoreAuthApi();
       const bearer = useCookie('bearer');
       try {
         await logOut();
@@ -96,13 +96,13 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async getProfileFields():Promise<void> {
-      const { getProfileFields } = useProfileApi();
+      const { getProfileFields } = useCoreProfileApi();
       const data = await getProfileFields();
       this.profileFields = data;
     },
 
     async getRegistrationFields():Promise<void> {
-      const { getRegistrationFields } = useAuthApi();
+      const { getRegistrationFields } = useCoreAuthApi();
       const data = await getRegistrationFields();
       this.registrationFields = data;
     },

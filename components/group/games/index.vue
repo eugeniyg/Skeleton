@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
   import {
-    useGamesApi, useGlobalMethods, GameInterface, PaginationMetaInterface,
+    GameInterface, PaginationMetaInterface,
   } from '~/CORE';
 
   const props = defineProps({
@@ -73,7 +73,7 @@
   const titleIcon = sortedCategories[props.category.identity];
   const games = ref<GameInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
-  const { getFilteredGames } = useGamesApi();
+  const { getFilteredGames } = useCoreGamesApi();
 
   const scrollHandler = async ():Promise<void> => {
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
@@ -101,7 +101,7 @@
   };
 
   const loadMore = ref();
-  const { initObserver } = useGlobalMethods();
+  const { initObserver } = useCoreMethods();
 
   const emit = defineEmits(['initialLoad']);
   onMounted(async () => {

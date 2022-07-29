@@ -45,7 +45,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useWalletApi } from '~/CORE';
 
   const props = defineProps({
     amountMax: {
@@ -96,7 +95,7 @@
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
     };
-    const { depositAccount } = useWalletApi();
+    const { depositAccount } = useCoreWalletApi();
     const windowReference = window.open();
     try {
       const depositResponse = await depositAccount(params);

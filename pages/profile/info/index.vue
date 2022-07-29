@@ -79,9 +79,9 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useProfileApi, CountryInterface } from '~/CORE';
+  import { CountryInterface } from '~/CORE';
 
-  const { changeProfileData } = useProfileApi();
+  const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
   const { profile, profileFields } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();

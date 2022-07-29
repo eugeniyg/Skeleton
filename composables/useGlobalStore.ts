@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import {
-  useGlobalApi,
   BrowserLanguageInterface,
   CountryInterface,
   CurrencyInterface,
@@ -47,7 +46,7 @@ export const useGlobalStore = defineStore('globalStore', {
 
   actions: {
     async getCurrencies():Promise<void> {
-      const { getCurrencies } = useGlobalApi();
+      const { getCurrencies } = useCoreGlobalApi();
       const data = await getCurrencies();
       this.currencies = data;
       const { setOptions } = useFieldsStore();
@@ -63,14 +62,14 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getLocales():Promise<void> {
-      const { getLocales } = useGlobalApi();
+      const { getLocales } = useCoreGlobalApi();
       const data = await getLocales();
       this.locales = data;
       this.defaultLocale = data.find((locale) => locale.isDefault);
     },
 
     async getCountries():Promise<void> {
-      const { getCountries } = useGlobalApi();
+      const { getCountries } = useCoreGlobalApi();
       const data = await getCountries();
       this.countries = data;
       const { setOptions } = useFieldsStore();
@@ -78,7 +77,7 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getCommonData():Promise<void> {
-      const { getCommonData } = useGlobalApi();
+      const { getCommonData } = useCoreGlobalApi();
       const data = await getCommonData();
       this.timeZones = data.timeZone;
       const { setOptions } = useFieldsStore();

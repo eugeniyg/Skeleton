@@ -21,7 +21,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import {
-    useGamesApi, GameInterface, GamesResponseInterface, PaginationMetaInterface,
+    GameInterface, GamesResponseInterface, PaginationMetaInterface,
   } from '~/CORE';
 
   const props = defineProps({
@@ -44,7 +44,7 @@
   const isShowSearchResult = computed(() => searchValue.value.length > 1 && !pendingGames.value);
   const showLoadMore = computed(() => !!gameItems.value.length && (pageMeta.value.totalPages > pageMeta.value.page));
 
-  const { getFilteredGames } = useGamesApi();
+  const { getFilteredGames } = useCoreGamesApi();
   const getItems = async (): Promise<GamesResponseInterface> => {
     const params: any = { page: loadPage.value, perPage: 5, name: searchValue.value };
 

@@ -37,7 +37,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
-  import { useProfileApi } from '~/CORE';
 
   const globalStore = useGlobalStore();
   const { fieldsContent } = storeToRefs(globalStore);
@@ -76,7 +75,7 @@
 
   const { showAlert } = useLayoutStore();
   const isLockedAsyncButton = ref<boolean>(false);
-  const { changeProfilePassword } = useProfileApi();
+  const { changeProfilePassword } = useCoreProfileApi();
   const onSubmit = async ():Promise<void> => {
     if (v$.value.$invalid) return;
     v$.value.$reset();

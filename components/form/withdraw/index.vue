@@ -36,7 +36,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useGlobalMethods, useWalletApi } from '~/CORE';
 
   const props = defineProps({
     amountMax: {
@@ -69,7 +68,7 @@
   const isSending = ref<boolean>(false);
   const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : 0.01);
   const amountValue = ref<number>(amountDefaultValue.value);
-  const { setFormData } = useGlobalMethods();
+  const { setFormData } = useCoreMethods();
   const withdrawFormData = reactive(setFormData(props.fields));
   const buttonAmount = computed(() => {
     if (amountValue.value > props.amountMax) return props.amountMax;
@@ -114,7 +113,7 @@
       accountId: activeAccount.value.id,
     };
 
-    const { withdrawAccount } = useWalletApi();
+    const { withdrawAccount } = useCoreWalletApi();
 
     try {
       await withdrawAccount(params);

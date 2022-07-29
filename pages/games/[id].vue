@@ -4,13 +4,13 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useGamesApi, GameInterface } from '~/CORE';
+  import { GameInterface } from '~/CORE';
 
   const route = useRoute();
   const isDemo = ref<boolean>(route.query.demo === 'true');
   const gameInfo = ref<GameInterface>();
   const gameStart = ref<string>();
-  const { getGamesInfo, getStartGame } = useGamesApi();
+  const { getGamesInfo, getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn } = storeToRefs(profileStore);
