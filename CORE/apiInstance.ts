@@ -19,6 +19,9 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
     if (token.value) {
       newOptions.headers.Authorization = `Bearer ${token.value}`;
     }
+
+    // try to fix safari
+    newOptions.credentials = 'omit';
   }
 
   const fetchResponse = await $fetch(url, newOptions).catch(async (err) => {
