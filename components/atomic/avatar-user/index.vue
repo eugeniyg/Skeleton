@@ -9,7 +9,7 @@
     </div>
 
     <div class="row">
-      <div class="nickname">{{ publicNickname }}</div>
+      <div class="nickname">{{ profile.nickname || '' }}</div>
 
       <div v-if="activeAccount" class="amount">
         {{ activeAccount.formatBalance.amount }} {{ activeAccount.formatBalance.currency }}
@@ -22,7 +22,7 @@
   import { storeToRefs } from 'pinia';
 
   const profileStore = useProfileStore();
-  const { publicNickname } = storeToRefs(profileStore);
+  const { profile } = storeToRefs(profileStore);
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
 </script>

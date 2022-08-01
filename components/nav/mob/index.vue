@@ -6,7 +6,7 @@
       class="item"
       :class="{ 'is-accent': isAccent }"
       @click.prevent="clickItem(method)"
-      :to="localizePath(href)"
+      :to="href ? localizePath(href) : ''"
     >
       <client-only>
         <atomic-icon :id="icon" /><span>{{ title }}</span>

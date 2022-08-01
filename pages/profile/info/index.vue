@@ -27,7 +27,7 @@
         <atomic-avatar-profile :is-edit="false"/>
 
         <div class="items">
-          <div class="nickname">{{ publicNickname }}</div>
+          <div class="nickname">{{ profile.nickname || '' }}</div>
 
           <div class="item" v-show="profile.firstName || profile.lastName">
             <atomic-icon id="ui-user"/>
@@ -81,9 +81,9 @@
   import { storeToRefs } from 'pinia';
   import { useProfileApi, CountryInterface } from '~/CORE';
 
-  const { changePromo } = useProfileApi();
+  const { changeProfileData } = useProfileApi();
   const profileStore = useProfileStore();
-  const { profile, profileFields, publicNickname } = storeToRefs(profileStore);
+  const { profile, profileFields } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
   const { countries, fieldsContent } = storeToRefs(globalStore);
   const route = useRoute();
@@ -101,7 +101,7 @@
   };
 
   const changeSubscription = async (fieldName:string):Promise<void> => {
-    const data = await changePromo({ [fieldName]: !profile.value[fieldName] });
+    const data = await changeProfileData({ [fieldName]: !profile.value[fieldName] });
     profileStore.setProfileData(data);
   };
 </script>

@@ -1,3 +1,5 @@
+import { PaginationMetaInterface } from './globalDataTypes';
+
 export interface GameImagesInterface {
   '200x200': {
     '1x': string,
@@ -39,13 +41,6 @@ export interface GameInterface {
   images: GameImagesInterface,
   provider: GameProviderInterface,
   collections: CollectionInterface[],
-}
-
-export interface PaginationMetaInterface {
-  page: number,
-  perPage: number,
-  totalPages: number,
-  totalRows: number,
 }
 
 export interface GamesResponseInterface {

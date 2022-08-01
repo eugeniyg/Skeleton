@@ -6,6 +6,7 @@
       :min="props.amountMin"
       :max="props.amountMax"
       v-model:value="amountValue"
+      :defaultValue="amountDefaultValue"
       :currency="activeAccount.currency"
       :hint="fieldHint"
     />
@@ -66,7 +67,8 @@
   }));
 
   const isSending = ref<boolean>(false);
-  const amountValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : 0.01);
+  const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : 0.01);
+  const amountValue = ref<number>(amountDefaultValue.value);
   const { setFormData } = useGlobalMethods();
   const withdrawFormData = reactive(setFormData(props.fields));
   const buttonAmount = computed(() => {

@@ -52,6 +52,10 @@
     }
   }
 
+  &.is-hidden {
+    display: none !important;
+  }
+
   &.size-xs {
     --input-padding-y: #{rem(4px)};
     @include upd-font($body-1);

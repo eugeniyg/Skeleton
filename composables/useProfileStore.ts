@@ -34,19 +34,6 @@ export const useProfileStore = defineStore('profileStore', {
     profileFields: [],
   } as ProfileStoreStateType),
 
-  getters: {
-    publicNickname():string {
-      if (!this.isLoggedIn) return '';
-
-      if (!this.profile.nickname) {
-        const getFirstPath = this.profile.email.split('@')[0];
-        if (getFirstPath.length < 4) return `${getFirstPath.slice(0, 1)}***`;
-        return `${getFirstPath.slice(0, -3)}***`;
-      }
-      return this.profile.nickname;
-    },
-  },
-
   actions: {
     setToken(authData: AuthorizationResponse):void {
       const bearer = useCookie('bearer');

@@ -18,6 +18,7 @@
           :hint="setError(field.name)"
         />
       </template>
+
       <component
         v-else
         :key="field.name"
@@ -25,7 +26,7 @@
         @focus="onFocus(field.name)"
         :is="fieldsTypeMap[field.name].component || 'form-input-text'"
         v-model:value="registrationFormData[field.name]"
-        :type="fieldsTypeMap[field.name].type || 'text'"
+        :type="field.name === 'nickname' ? 'hidden' : fieldsTypeMap[field.name].type || 'text'"
         :label="fieldsContent[field.name]?.label || ''"
         :name="field.name"
         :placeholder="fieldsContent[field.name]?.placeholder || ''"
@@ -79,6 +80,7 @@
   const mainFields = registrationFields.value.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = registrationFields.value.filter((field) => groupFooterFields.includes(field.name));
   const registrationFormData = reactive(setFormData(registrationFields.value));
+  if (registrationFormData.hasOwnProperty('nickname')) registrationFormData.nickname = 'undefined';
   if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
   if (registrationFormData.hasOwnProperty('country')) registrationFormData.country = 'NL';
 
@@ -110,11 +112,16 @@
   const { registration } = profileStore;
   const isLockedAsyncButton = ref<boolean>(false);
 
+  const { getNicknameFromEmail } = useProjectMethods();
   const signUp = async ():Promise<void> => {
     if (v$.value.$invalid) return;
     v$.value.$reset();
     const validFormData = await v$.value.$validate();
     if (!validFormData) return;
+
+    if (registrationFormData.hasOwnProperty('nickname')) {
+      registrationFormData.nickname = getNicknameFromEmail(registrationFormData.email);
+    }
 
     try {
       isLockedAsyncButton.value = true;

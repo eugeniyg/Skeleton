@@ -1,50 +1,148 @@
 <template>
   <div>
-    <!--<atomic-filters class="filters-transactions-history">
-      <form-input-date label="Date from / to:" :settings="settings"/>
+    <atomic-filters class="filters-transactions-history">
+      <form-input-date label="Date from / to:" :settings="dateConfig" @change="changeDate"/>
 
       <form-dropdown-base
         label="Type:"
-        value=""
-        name="type-select"
-        placeholder="All"
-        :options="selects.types"
+        v-model:value="filters.type"
+        name="invoiceType"
+        placeholder=""
+        :options="typeOptions"
+        @input="changeFilters"
       />
 
       <form-dropdown-base
         label="Currency:"
-        value=""
-        name="currency-select"
-        placeholder="All"
-        :options="selects.currency"
+        v-model:value="filters.currency"
+        name="invoiceCurrency"
+        placeholder=""
+        :options="currenciesOptions"
+        @input="changeFilters"
       />
 
       <form-dropdown-base
         label="Status:"
-        value=""
-        name="status-select"
-        placeholder="All"
-        :options="selects.statuses"
+        v-model:value="filters.status"
+        name="invoiceStatus"
+        placeholder=""
+        :options="statusOptions"
+        @input="changeFilters"
       />
     </atomic-filters>
 
-    <table-transactions-history :items="transactionsHistoryTb"/>-->
-    <atomic-empty variant="transactions" sub-title="You don’t have any successful transactions yet."/>
+    <table-transactions-history v-if="invoices.length" :invoices="invoices" @cancelPayment="cancelPayment"/>
+
+    <atomic-pagination
+      v-if="pageMeta?.totalPages > 1"
+      @selectPage="changePage"
+      v-bind="pageMeta"
+    />
+
+    <atomic-empty v-if="!invoices.length" variant="transactions" sub-title="You don’t have any successful transactions yet."/>
   </div>
 </template>
 
 <script setup lang="ts">
-  // const { transactionsHistoryTb, selects } = useFakeStore();
-  // const settings = {
-  //   config: {
-  //     // wrap: true, // set wrap to true only when using 'input-group'
-  //     // altFormat: 'M j, Y',
-  //     altInput: true,
-  //     dateFormat: 'Y-m-d',
-  //     mode: 'range',
-  //     monthSelectorType: 'static',
-  //   },
-  // };
-</script>
+  import { storeToRefs } from 'pinia';
+  import {
+    InvoiceInterface,
+    InvoicesRequestOptionsInterface,
+    PaginationMetaInterface,
+    useWalletApi,
+    useCoreStore,
+  } from '~/CORE';
 
-<style lang="scss" src="./style.scss"/>
+  const coreStore = useCoreStore();
+  const optionsDefaultValue = { value: 'All', code: 'all' };
+
+  const typeOptions = computed(() => {
+    const storeOptions = coreStore.invoiceTypes.map((item) => ({ value: item.name.charAt(0).toUpperCase() + item.name.slice(1), code: item.id }));
+    return [optionsDefaultValue, ...storeOptions];
+  });
+
+  const statusOptions = computed(() => {
+    const storeOptions = coreStore.invoiceStatuses.map((item) => ({ value: item.name.charAt(0).toUpperCase() + item.name.slice(1), code: item.id }));
+    return [optionsDefaultValue, ...storeOptions];
+  });
+
+  const fieldsStore = useFieldsStore();
+  const { selectOptions } = storeToRefs(fieldsStore);
+  const currenciesOptions = computed(() => [optionsDefaultValue, ...selectOptions.value.currency]);
+
+  const filters = reactive({
+    page: 1,
+    perPage: 10,
+    dateFrom: undefined,
+    dateTo: undefined,
+    type: 'all',
+    currency: 'all',
+    status: 'all',
+  });
+
+  const dateConfig = {
+    mode: 'range',
+    disable: [
+      function (date) {
+        return (date > Date.now());
+      },
+    ],
+  };
+
+  const invoices = ref<InvoiceInterface[]>([]);
+  const pageMeta = ref<PaginationMetaInterface>();
+  const { getPlayerInvoices, cancelInvoice } = useWalletApi();
+  const loading = ref<boolean>(true);
+  const resolveInvoicesRequest = async ():Promise<void> => {
+    loading.value = true;
+    const requestOptions: InvoicesRequestOptionsInterface = {} as InvoicesRequestOptionsInterface;
+    Object.keys(filters).forEach((param) => {
+      if (filters[param] && filters[param] !== 'all') requestOptions[param] = filters[param];
+    });
+    const response = await getPlayerInvoices(requestOptions);
+    invoices.value = response.data;
+    pageMeta.value = response.meta;
+    loading.value = false;
+  };
+
+  const changePage = (page: number):void => {
+    if (loading.value) return;
+    filters.page = page;
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    resolveInvoicesRequest();
+  };
+
+  const { showAlert } = useLayoutStore();
+  const cancelPayment = async (invoiceId: string):Promise<void> => {
+    const response = await cancelInvoice(invoiceId);
+    showAlert({
+      title: 'Success',
+      text: 'You have successfully canceled your withdrawal.',
+      variant: 'done',
+    });
+
+    const closedIndex = invoices.value.findIndex((invoice) => invoice.id === invoiceId);
+    invoices.value[closedIndex] = response;
+  };
+
+  const changeFilters = ():void => {
+    filters.page = 1;
+    resolveInvoicesRequest();
+  };
+
+  const changeDate = (dates: string[]):void => {
+    if (dates.length === 2 && (dates[0] !== filters.dateFrom || dates[1] !== filters.dateTo)) {
+      [filters.dateFrom, filters.dateTo] = dates;
+      resolveInvoicesRequest();
+    } else if (dates[0] !== filters.dateFrom || dates[1] !== filters.dateTo) {
+      filters.dateFrom = undefined;
+      filters.dateTo = undefined;
+      resolveInvoicesRequest();
+    }
+  };
+
+  onMounted(() => { resolveInvoicesRequest(); });
+</script>

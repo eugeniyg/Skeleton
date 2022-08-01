@@ -1,9 +1,3 @@
 <template>
-  <table-sessions-history :items="sessionHistoryTb"/>
+  <table-sessions-history />
 </template>
-
-<script setup lang="ts">
-  const { sessionHistoryTb } = useFakeStore();
-</script>
-
-<style lang="scss" src="./style.scss"/>

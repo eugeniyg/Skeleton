@@ -52,7 +52,8 @@
     }
   }
 
-  &.is-unfinished {
+  &.is-unfinished,
+  &.is-review {
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
@@ -64,7 +65,7 @@
     }
   }
 
-  &.is-failed, &.is-canceled {
+  &.is-failed, &.is-canceled, &.is-rejected {
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
@@ -76,4 +77,11 @@
     }
   }
 
+  .tooltip .message {
+    width: auto;
+    white-space: nowrap;
+    left: 50%;
+    right: auto;
+    transform: translateY(calc(-100% - 4px)) translateX(-50%);
+  }
 }

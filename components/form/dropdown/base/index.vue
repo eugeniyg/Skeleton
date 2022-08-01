@@ -88,14 +88,12 @@
 
   const emit = defineEmits(['input', 'focus', 'update:value']);
 
-  const isError = computed(() => (props.hint && props.hint.variant === 'error'));
-
   const isOpen = ref<boolean>(false);
 
   const classes = computed(() => [
     props.size ? `size-${props.size}` : null,
     { 'is-open': isOpen.value },
-    { 'has-error': isError.value },
+    { 'has-error': props.hint?.variant === 'error' },
     { 'is-disabled': props.isDisabled },
   ]);
 

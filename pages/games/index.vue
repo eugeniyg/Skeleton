@@ -35,14 +35,14 @@
 </template>
 
 <script setup lang="ts">
-  import { useGamesApi } from '~/CORE';
   import {
+    useGamesApi,
     CollectionInterface,
     GameProviderInterface,
     GameInterface,
     GamesResponseInterface,
     PaginationMetaInterface,
-  } from '~/types/gameTypes';
+  } from '~/CORE';
 
   const { gameCollections, sortedCategories } = useGamesStore();
   const { selectOptions } = useFieldsStore();
@@ -75,7 +75,7 @@
   const { getFilteredGames } = useGamesApi();
 
   const getItems = async (): Promise<GamesResponseInterface> => {
-    const params: any = { page: loadPage.value, perPage: 18 };
+    const params: any = { page: loadPage.value, perPage: 36 };
     if (activeCollection.value?.id) {
       params.collectionId = activeCollection.value.id;
     }

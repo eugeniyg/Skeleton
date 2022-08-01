@@ -55,10 +55,9 @@
     },
   });
 
-  const isError = computed(() => props.hint && props.hint.variant === 'error');
   const classes = computed(() => [
     'input-copy',
-    { 'has-error': isError.value },
+    { 'has-error': props.hint?.variant === 'error' },
   ]);
 
   const emit = defineEmits(['blur', 'input']);

@@ -32,6 +32,13 @@ export interface TimeZoneInterface {
   value?: string,
 }
 
+export interface PhoneCodeInterface {
+  countryCode: string,
+  code: string,
+  mask?: string,
+  value?: string,
+}
+
 export interface BrowserLanguageInterface {
   code: string,
   script: null|string,
@@ -52,5 +59,12 @@ export interface CommonDataInterface {
 export interface ObserverOptionsInterface {
   onInView?: Function,
   onOutView?: Function,
-  settings: { root: HTMLElement|null, rootMargin: string, threshold: number },
+  settings: { root: null|HTMLElement, rootMargin: string, threshold: number },
+}
+
+export interface PaginationMetaInterface {
+  page: number,
+  perPage: number,
+  totalPages: number,
+  totalRows: number,
 }

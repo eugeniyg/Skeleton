@@ -18,8 +18,10 @@
       <atomic-divider/>
       <nav-list :items="fakeStore.centerMenuItems"/>
       <atomic-divider/>
-      <nav-list :items="fakeStore.userMenuItems"/>
-      <atomic-divider/>
+      <template v-if="props.isLoggedIn">
+        <nav-list  :items="fakeStore.userMenuItems"/>
+        <atomic-divider/>
+      </template>
       <atomic-select-lang/>
       <atomic-divider/>
       <nav-list :items="fakeStore.bottomMenuItems"/>

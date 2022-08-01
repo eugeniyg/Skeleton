@@ -9,15 +9,16 @@
     <div class="row">
       <input
         class="field"
-        step="0.01"
-        type="number"
+        type="text"
+        inputmode="decimal"
+        maxlength="10"
+        v-maska="'#*.#*'"
         :name="name"
         :value="props.value"
         :required="props.isRequired"
         :placeholder="props.placeholder"
         @blur="onBlur"
         @input="onInput"
-        @keydown="onKeyDown"
       />
       <span class="mask" v-if="props.currency">{{ props.currency }}</span>
     </div>
@@ -68,29 +69,31 @@
       type: Boolean,
       default: false,
     },
+    defaultValue: {
+      type: Number,
+      required: true,
+    },
   });
 
   const emit = defineEmits(['blur', 'update:value', 'input']);
   const onInput = (e:any):void => {
+    e.target.value = e.target.value.replace(/^0[0-9]/, (match:string) => match.slice(1));
     emit('input', e.target.value);
     emit('update:value', e.target.value);
   };
 
   const onBlur = (e:any):void => {
-    emit('blur', e.target.value);
+    if (!e.target.value || e.target.value < props.min || e.target.value > props.max) {
+      e.target.value = props.defaultValue;
+      emit('input', e.target.value);
+      emit('update:value', e.target.value);
+      emit('blur', props.defaultValue);
+    } else emit('blur', e.target.value);
   };
 
-  const onKeyDown = (e:any):void => {
-    if (e.code === 'KeyE'
-      || e.key === '+'
-      || e.key === '-'
-      || (String(props.value).length > 9 && /[0-9.,]/.test(e.key))) e.preventDefault();
-  };
-
-  const isError = computed(() => props.hint && props.hint.variant === 'error');
   const classes = computed(() => [
     'input-number',
-    { 'has-error': isError.value },
+    { 'has-error': props.hint?.variant === 'error' },
     { 'is-bigger': props.isBigger },
   ]);
 </script>

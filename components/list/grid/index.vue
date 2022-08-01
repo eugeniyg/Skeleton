@@ -4,11 +4,13 @@
       <card-base v-for="item in props.items" :key="item.id" v-bind="item"/>
     </div>
 
-    <button-load-more v-if="props.meta.totalPages > props.meta.page" @click="emit('loadMore')">Load more</button-load-more>
+    <button-load-more v-show="props.meta.totalPages > props.meta.page" ref="loadMore" />
   </div>
 </template>
 
 <script setup lang="ts">
+  import { useGlobalMethods } from '~/CORE';
+
   const props = defineProps({
     items: {
       type: Array,
@@ -20,6 +22,20 @@
     },
   });
   const emit = defineEmits(['loadMore']);
+
+  const loadMore = ref();
+  const { initObserver } = useGlobalMethods();
+
+  const observerLoadMore = ():void => {
+    if (props.meta.totalPages > props.meta.page) emit('loadMore');
+  };
+
+  onMounted(async () => {
+    initObserver(loadMore.value.$el, {
+      onInView: observerLoadMore,
+      settings: { root: null, rootMargin: '0px 0px 400px 0px', threshold: 0 },
+    });
+  });
 </script>
 
 <style lang="scss" src="./style.scss"/>

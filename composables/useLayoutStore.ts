@@ -8,6 +8,7 @@ export type LayoutStoreStateType = {
   isCurrencyNavOpen: boolean,
   isDrawerCompact: boolean,
   isShowAlert: boolean,
+  showCookiePopup: boolean,
   alertProps: {
     title: string | undefined,
     text: string | undefined,
@@ -41,6 +42,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       isCurrencyNavOpen: false,
       isDrawerCompact: false,
       isShowAlert: false,
+      showCookiePopup: false,
       alertProps: {
         title: undefined,
         text: undefined,
@@ -148,7 +150,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       queryArr.forEach((query) => {
         if (query === 'sign-up') {
           isLoggedIn ? this.closeModal('register') : this.showModal('register');
-        } else if (query === 'register') {
+        } else if (query === 'sign-in') {
           isLoggedIn ? this.closeModal('signIn') : this.showModal('signIn');
         } else if (this.modalsUrl[query]) {
           this.showModal(query, route.query[query]);

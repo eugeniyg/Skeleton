@@ -1,12 +1,12 @@
 import { useFetchInstance } from './apiInstance';
 import {
   AccountInterface,
-  AccountRequestInterface,
+  AccountRequestInterface, InvoiceInterface, InvoicesRequestOptionsInterface,
   PaymentMethodInterface,
   RequestDepositInterface,
   RequestWithdrawInterface,
-  ResponseDepositInterface,
-  ResponseWithdrawInterface,
+  ResponseDepositInterface, ResponseInvoicesInterface,
+  ResponseWithdrawInterface, SessionInterface,
 } from './types';
 
 const useWalletApi = () => {
@@ -39,13 +39,13 @@ const useWalletApi = () => {
     return data;
   };
 
-  const getDepositMethods = async (methodsData: AccountRequestInterface):Promise<PaymentMethodInterface[]> => {
-    const { data } = await useFetchInstance(`/api/payment/methods/deposit?accountId=${methodsData.accountId}&currency=${methodsData.currency}`);
+  const getDepositMethods = async (currency: string):Promise<PaymentMethodInterface[]> => {
+    const { data } = await useFetchInstance(`/api/payment/methods/deposit?currency=${currency}`);
     return data;
   };
 
-  const getWithdrawMethods = async (methodsData: AccountRequestInterface):Promise<PaymentMethodInterface[]> => {
-    const { data } = await useFetchInstance(`/api/payment/methods/withdrawal?accountId=${methodsData.accountId}&currency=${methodsData.currency}`);
+  const getWithdrawMethods = async (currency: string):Promise<PaymentMethodInterface[]> => {
+    const { data } = await useFetchInstance(`/api/payment/methods/withdrawal?currency=${currency}`);
     return data;
   };
 
@@ -65,6 +65,16 @@ const useWalletApi = () => {
     return data;
   };
 
+  const getPlayerInvoices = async (requestOptions: InvoicesRequestOptionsInterface):Promise<ResponseInvoicesInterface> => {
+    const invoicesResponse = await useFetchInstance('/api/payment/invoices', { params: requestOptions });
+    return invoicesResponse;
+  };
+
+  const cancelInvoice = async (invoiceId: string):Promise<InvoiceInterface> => {
+    const { data } = await useFetchInstance(`/api/payment/invoices/${invoiceId}/decline`, { method: 'POST' });
+    return data;
+  };
+
   return {
     getAccounts,
     addAccount,
@@ -74,6 +84,8 @@ const useWalletApi = () => {
     depositAccount,
     getWithdrawMethods,
     withdrawAccount,
+    getPlayerInvoices,
+    cancelInvoice,
   };
 };
 

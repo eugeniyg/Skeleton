@@ -1,5 +1,7 @@
 import { useFetchInstance } from './apiInstance';
-import { ChangePasswordRequestInterface, FieldInterface, ProfileInterface } from './types';
+import {
+  ChangePasswordRequestInterface, FieldInterface, ProfileInterface, SessionInterface, SessionsResponseInterface,
+} from './types';
 
 const useProfileApi = () => {
   const getProfile = async ():Promise<ProfileInterface> => {
@@ -22,8 +24,13 @@ const useProfileApi = () => {
     return data;
   };
 
-  const changePromo = async (promoData:any):Promise<ProfileInterface> => {
-    const { data } = await useFetchInstance('/api/player/profile/promo', { method: 'PUT', body: promoData });
+  const getUserSessions = async (page: number, perPage: number):Promise<SessionsResponseInterface> => {
+    const sessionsResponse = await useFetchInstance(`/api/player/sessions?page=${page}&perPage=${perPage}`);
+    return sessionsResponse;
+  };
+
+  const closeActiveSession = async (sessionId: string):Promise<SessionInterface> => {
+    const { data } = await useFetchInstance('/api/player/sessions/close', { method: 'PUT', body: { sessionId } });
     return data;
   };
 
@@ -31,8 +38,9 @@ const useProfileApi = () => {
     getProfile,
     getProfileFields,
     changeProfileData,
-    changePromo,
     changeProfilePassword,
+    getUserSessions,
+    closeActiveSession,
   };
 };
 

@@ -13,7 +13,9 @@ export const useProjectMethods = () => {
       fields.forEach((field) => {
         if (field.isRequired) validationRules[field.name] = [{ rule: 'required' }];
         if (fieldsTypeMap[field.name].validation?.length) {
-          validationRules[field.name] = [...validationRules[field.name], ...fieldsTypeMap[field.name].validation];
+          if (validationRules[field.name]) {
+            validationRules[field.name] = [...validationRules[field.name], ...fieldsTypeMap[field.name].validation];
+          } else validationRules[field.name] = fieldsTypeMap[field.name].validation;
         }
       });
     } else {
@@ -66,6 +68,20 @@ export const useProjectMethods = () => {
     return imageData['200x200']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
   };
 
+  const getFormatDate = (timeString: string):string => {
+    const splitString = timeString.split(' ');
+    const parseDate = splitString[0].split('-');
+    const parseTime = splitString[1].split(':');
+    const date = new Date(Date.UTC(+parseDate[0], +parseDate[1] - 1, +parseDate[2], +parseTime[0], +parseTime[1], +parseTime[2]));
+    return date.toLocaleString().slice(0, -3);
+  };
+
+  const getNicknameFromEmail = (email: string):string => {
+    const getFirstPath = email.split('@')[0];
+    if (getFirstPath.length < 4) return `${getFirstPath.slice(0, 1)}***`;
+    return `${getFirstPath.slice(0, -3)}***`;
+  };
+
   return {
     createValidationRules,
     getFormRules,
@@ -74,5 +90,7 @@ export const useProjectMethods = () => {
     preloaderStart,
     localizePath,
     isHomePage,
+    getFormatDate,
+    getNicknameFromEmail,
   };
 };
