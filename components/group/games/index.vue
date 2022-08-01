@@ -44,7 +44,7 @@
 <script setup lang="ts">
   import {
     GameInterface, PaginationMetaInterface,
-  } from '~/CORE';
+  } from '@platform/frontend-core/dist/module';
 
   const props = defineProps({
     category: {

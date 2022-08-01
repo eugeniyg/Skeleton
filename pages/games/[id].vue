@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { GameInterface } from '~/CORE';
+  import { GameInterface } from '@platform/frontend-core/dist/module';
 
   const route = useRoute();
   const isDemo = ref<boolean>(route.query.demo === 'true');

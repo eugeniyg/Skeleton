@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import {
   ProfileInterface, FieldInterface, AuthorizationResponse,
-} from '~/CORE';
+} from '@platform/frontend-core/dist/module';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useLayoutStore } from '~/composables/useLayoutStore';
 import { useGamesStore } from '~/composables/useGamesStore';

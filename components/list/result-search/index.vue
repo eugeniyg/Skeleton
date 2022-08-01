@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { GameImagesInterface, GameInterface } from '~/CORE';
+  import { GameImagesInterface, GameInterface } from '@platform/frontend-core/dist/module';
 
   const props = defineProps({
     isShow: {

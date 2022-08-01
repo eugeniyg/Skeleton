@@ -3,7 +3,7 @@ import {
   CollectionInterface,
   GameInterface,
   GameProviderInterface,
-} from '~/CORE';
+} from '@platform/frontend-core/dist/module';
 import { useFieldsStore } from '~/composables/useFieldsStore';
 
 export type GamesStoreStateType = {

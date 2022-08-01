@@ -4,7 +4,7 @@ import {
   CurrencyInterface,
   TimeZoneInterface,
   GameProviderInterface,
-} from 'CORE';
+} from '@platform/frontend-core/dist/module';
 
 export type FieldsStoreStateType = {
   selectOptions: {

@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { AccountInterface, AccountRequestInterface } from '~/CORE';
+import { AccountInterface, AccountRequestInterface } from '@platform/frontend-core/dist/module';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 

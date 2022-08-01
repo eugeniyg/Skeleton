@@ -41,7 +41,7 @@
     GameInterface,
     GamesResponseInterface,
     PaginationMetaInterface,
-  } from '~/CORE';
+  } from '@platform/frontend-core/dist/module';
 
   const { gameCollections, sortedCategories } = useGamesStore();
   const { selectOptions } = useFieldsStore();

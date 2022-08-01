@@ -1,4 +1,4 @@
-import { GameImagesInterface } from '~/CORE';
+import { GameImagesInterface } from '@platform/frontend-core/dist/module';
 import * as projectRules from './validationRules';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import fieldsTypeMap from '~/maps/fieldsTypeMap.json';

@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
 import {
-  BrowserLanguageInterface,
   CountryInterface,
   CurrencyInterface,
   LocaleInterface,
   TimeZoneInterface,
-} from '~/CORE/index';
+} from '@platform/frontend-core/dist/module';
+import { BrowserLanguageInterface } from '~/types';
 import { useFieldsStore } from '~/composables/useFieldsStore';
 
 export type GlobalStoreStateType = {

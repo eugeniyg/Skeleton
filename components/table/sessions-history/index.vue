@@ -54,7 +54,7 @@
   import parser from 'ua-parser-js';
   import {
     PaginationMetaInterface, SessionInterface,
-  } from '~/CORE';
+  } from '@platform/frontend-core/dist/module';
 
   const headTitles = ['', 'Country', 'User Agent', 'Created At', 'Status'];
   const { getUserSessions, closeActiveSession } = useCoreProfileApi();

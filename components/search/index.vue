@@ -22,7 +22,7 @@
   import { storeToRefs } from 'pinia';
   import {
     GameInterface, GamesResponseInterface, PaginationMetaInterface,
-  } from '~/CORE';
+  } from '@platform/frontend-core/dist/module';
 
   const props = defineProps({
     isShow: {

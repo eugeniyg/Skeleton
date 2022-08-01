@@ -49,7 +49,7 @@
     InvoiceInterface,
     InvoicesRequestOptionsInterface,
     PaginationMetaInterface,
-  } from '~/CORE';
+  } from '@platform/frontend-core/dist/module';
 
   const coreStore = useCoreStore();
   const optionsDefaultValue = { value: 'All', code: 'all' };
