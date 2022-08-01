@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia';
 import {
- useGamesApi, CollectionInterface, GameInterface, GameProviderInterface,
-} from '~/CORE';
+  CollectionInterface,
+  GameInterface,
+  GameProviderInterface,
+} from '@platform/frontend-core/dist/module';
 import { useFieldsStore } from '~/composables/useFieldsStore';
 
 export type GamesStoreStateType = {
@@ -31,7 +33,7 @@ export const useGamesStore = defineStore('gamesStore', {
 
   actions: {
     async getGameProviders(): Promise<void> {
-      const { getGameProviders } = useGamesApi();
+      const { getGameProviders } = useCoreGamesApi();
       const data = await getGameProviders();
       this.gameProviders = data.filter((provider: GameProviderInterface) => provider.identity !== 'betsy');
       const { setOptions } = useFieldsStore();
@@ -39,7 +41,7 @@ export const useGamesStore = defineStore('gamesStore', {
     },
 
     async getGameCollections(): Promise<void> {
-      const { getGameCollections } = useGamesApi();
+      const { getGameCollections } = useCoreGamesApi();
       const data = await getGameCollections();
 
       this.gameCollections = data.filter((item) => Object.keys(this.sortedCategories).find((el) => el === item.identity)).sort(
@@ -49,17 +51,17 @@ export const useGamesStore = defineStore('gamesStore', {
     },
 
     async getFavoriteGames(): Promise<void> {
-      const { getFavorite } = useGamesApi();
+      const { getFavorite } = useCoreGamesApi();
       this.favoriteGames = await getFavorite();
     },
 
     async setFavoriteGame(gameId:string): Promise<void> {
-      const { setFavorite } = useGamesApi();
+      const { setFavorite } = useCoreGamesApi();
       this.favoriteGames = await setFavorite(gameId);
     },
 
     async deleteFavoriteGame(gameId:string): Promise<void> {
-      const { deleteFavorite } = useGamesApi();
+      const { deleteFavorite } = useCoreGamesApi();
       this.favoriteGames = await deleteFavorite(gameId);
     },
   },

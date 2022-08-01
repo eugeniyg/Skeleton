@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { PaymentMethodInterface } from '~/CORE';
+  import { PaymentMethodInterface } from '@platform/frontend-core/dist/module';
 
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();

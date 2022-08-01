@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-  import { PaymentMethodInterface } from '~/CORE';
+  import { PaymentMethodInterface } from '@platform/frontend-core/dist/module';
 
   const props = defineProps({
     items: {

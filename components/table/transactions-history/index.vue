@@ -35,8 +35,6 @@
 </template>
 
 <script setup lang="ts">
-  import { useCoreStore } from '~/CORE';
-
   const props = defineProps({
     invoices: {
       type: Array,

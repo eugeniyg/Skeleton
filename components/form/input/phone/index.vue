@@ -35,6 +35,7 @@
 <script setup lang="ts">
   import parsePhoneNumber from 'libphonenumber-js';
   import phoneCodes from '~/maps/phoneCodes.json';
+  import { PhoneCodeInterface } from '~/types';
 
   const props = defineProps({
     label: {
@@ -59,7 +60,7 @@
     },
   });
 
-  const selectItems = phoneCodes.map((item) => ({ ...item, value: item.code, mask: `/img/flags/${item.countryCode.toLowerCase()}.svg` }));
+  const selectItems:PhoneCodeInterface[] = phoneCodes.map((item) => ({ ...item, value: item.code, mask: `/img/flags/${item.countryCode.toLowerCase()}.svg` }));
   const codeValue = ref<string>('');
   const numberValue = ref<string>('');
   const profileStore = useProfileStore();

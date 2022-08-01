@@ -65,12 +65,11 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
-  import { useGlobalMethods } from '~/CORE';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
-  const { setFormData } = useGlobalMethods();
+  const { setFormData } = useCoreMethods();
   const { showModal, closeModal } = useLayoutStore();
   const profileStore = useProfileStore();
   const { registrationFields } = storeToRefs(profileStore);

@@ -35,7 +35,6 @@
   const profileStore = useProfileStore();
   const { openDepositModal } = useLayoutStore();
   const { profile } = storeToRefs(profileStore);
-
 </script>
 
 <style lang="scss" src="./style.scss"/>

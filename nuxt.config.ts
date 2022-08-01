@@ -26,6 +26,9 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@/modules/localeRoutes',
   ],
+  modules: [
+    '@platform/frontend-core',
+  ],
   components: {
     dirs: [
       {
