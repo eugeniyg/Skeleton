@@ -47,7 +47,7 @@ export const useWalletStore = defineStore('walletStore', {
 
     async createAccount(currency: string):Promise<void> {
       const { addAccount } = useCoreWalletApi();
-      const data = await addAccount({ currency });
+      const data = await addAccount(currency);
       this.accounts = data;
     },
 

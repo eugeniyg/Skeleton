@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import {
-  ProfileInterface, FieldInterface, AuthorizationResponse,
+  ProfileInterface, FieldInterface, AuthorizationResponseInterface,
 } from '@platform/frontend-core/dist/module';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useLayoutStore } from '~/composables/useLayoutStore';
@@ -35,7 +35,7 @@ export const useProfileStore = defineStore('profileStore', {
   } as ProfileStoreStateType),
 
   actions: {
-    setToken(authData: AuthorizationResponse):void {
+    setToken(authData: AuthorizationResponseInterface):void {
       const bearer = useCookie('bearer');
       bearer.value = authData.accessToken;
       this.sessionId = authData.sessionId;
