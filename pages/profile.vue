@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-  const { getProfileFields } = useProfileStore();
+  const { getProfileFields } = useFieldsStore();
   await useAsyncData('profileFields', getProfileFields);
 
   const { menu } = useFakeStore();
@@ -18,9 +18,11 @@
     middleware: () => {
       const { localizePath } = useProjectMethods();
       const bearer = useCookie('bearer');
+      const router = useRouter();
 
       if (!bearer.value) {
-        return navigateTo({ path: localizePath('/') });
+        return router.replace(localizePath('/'));
+        // return navigateTo(localizePath('/'));
       } return true;
     },
   });

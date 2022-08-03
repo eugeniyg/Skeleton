@@ -4,7 +4,6 @@ import {
   GameInterface,
   GameProviderInterface,
 } from '@platform/frontend-core/dist/module';
-import { useFieldsStore } from '~/composables/useFieldsStore';
 
 export type GamesStoreStateType = {
   gameProviders: GameProviderInterface[];
@@ -31,13 +30,28 @@ export const useGamesStore = defineStore('gamesStore', {
       favoriteGames: [],
     } as GamesStoreStateType),
 
+  getters: {
+    providersSelectOptions():GameProviderInterface[] {
+      const allProvidersItem = {
+        id: 'all',
+        identity: 'all',
+        code: 'all',
+        value: 'All Providers',
+      };
+      const optionsArr = this.gameProviders.map((provider) => ({
+        ...provider,
+        code: provider.id,
+        value: provider.name,
+      }));
+      return [allProvidersItem, ...optionsArr];
+    },
+  },
+
   actions: {
     async getGameProviders(): Promise<void> {
       const { getGameProviders } = useCoreGamesApi();
       const data = await getGameProviders();
       this.gameProviders = data.filter((provider: GameProviderInterface) => provider.identity !== 'betsy');
-      const { setOptions } = useFieldsStore();
-      setOptions('providers', this.gameProviders);
     },
 
     async getGameCollections(): Promise<void> {

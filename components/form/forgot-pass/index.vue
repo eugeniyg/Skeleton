@@ -22,10 +22,10 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const globalStore = useGlobalStore();
   const { closeModal } = useLayoutStore();
+  const fieldsStore = useFieldsStore();
 
-  const { fieldsContent } = storeToRefs(globalStore);
+  const { fieldsContent } = storeToRefs(fieldsStore);
 
   const emailText = ref<string>('');
 

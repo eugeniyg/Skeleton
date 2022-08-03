@@ -38,8 +38,8 @@
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
 
-  const globalStore = useGlobalStore();
-  const { fieldsContent } = storeToRefs(globalStore);
+  const fieldsStore = useFieldsStore();
+  const { fieldsContent } = storeToRefs(fieldsStore);
 
   const changeFormData = reactive({
     currentPassword: '',

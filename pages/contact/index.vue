@@ -46,8 +46,8 @@
   import useVuelidate from '@vuelidate/core';
 
   const layoutStore = useLayoutStore();
-  const globalStore = useGlobalStore();
-  const { fieldsContent } = storeToRefs(globalStore);
+  const fieldsStore = useFieldsStore();
+  const { fieldsContent } = storeToRefs(fieldsStore);
 
   const state = reactive({
     email: '',

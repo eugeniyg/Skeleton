@@ -48,8 +48,8 @@
   import useVuelidate from '@vuelidate/core';
   import { storeToRefs } from 'pinia';
 
-  const globalStore = useGlobalStore();
-  const { validationMessages, fieldsContent } = storeToRefs(globalStore);
+  const fieldsStore = useFieldsStore();
+  const { fieldsContent, validationMessages } = storeToRefs(fieldsStore);
   const { showModal, closeModal } = useLayoutStore();
 
   const authorizationFormData = reactive({ email: '', password: '' });
