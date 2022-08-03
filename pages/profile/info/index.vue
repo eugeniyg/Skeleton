@@ -83,9 +83,11 @@
 
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
-  const { profile, profileFields } = storeToRefs(profileStore);
+  const { profile } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
-  const { countries, fieldsContent } = storeToRefs(globalStore);
+  const fieldsStore = useFieldsStore();
+  const { fieldsContent, profileFields } = storeToRefs(fieldsStore);
+  const { countries } = storeToRefs(globalStore);
   const route = useRoute();
   const router = useRouter();
 

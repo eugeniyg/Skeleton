@@ -15,7 +15,7 @@
       const { localizePath } = useProjectMethods();
 
       if (to.path === localizePath('/questions')) {
-        return navigateTo({ path: localizePath('/questions/most-popular') });
+        return navigateTo(localizePath('/questions/most-popular'));
       }
       return true;
     },

@@ -71,10 +71,8 @@
 
   const { setFormData } = useCoreMethods();
   const { showModal, closeModal } = useLayoutStore();
-  const profileStore = useProfileStore();
-  const { registrationFields } = storeToRefs(profileStore);
-  const globalStore = useGlobalStore();
-  const { fieldsContent } = storeToRefs(globalStore);
+  const fieldsStore = useFieldsStore();
+  const { fieldsContent, selectOptions, registrationFields } = storeToRefs(fieldsStore);
 
   const mainFields = registrationFields.value.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = registrationFields.value.filter((field) => groupFooterFields.includes(field.name));
@@ -95,8 +93,6 @@
     }
   };
 
-  const fieldsStore = useFieldsStore();
-  const { selectOptions } = storeToRefs(fieldsStore);
   const showPromoInput = ref<boolean>(false);
 
   const setError = (fieldName:string):undefined|{ variant: string, message: any } => {
@@ -108,7 +104,7 @@
     return undefined;
   };
 
-  const { registration } = profileStore;
+  const { registration } = useProfileStore();
   const isLockedAsyncButton = ref<boolean>(false);
 
   const { getNicknameFromEmail } = useProjectMethods();

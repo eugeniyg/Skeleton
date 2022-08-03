@@ -4,8 +4,6 @@ import { useGlobalStore } from '~/composables/useGlobalStore';
 import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
 export const useProjectMethods = () => {
-  const { validationMessages } = useGlobalStore();
-
   const createValidationRules = (fields:any[], includeContext?:boolean):any => {
     const validationRules = {};
 
@@ -29,6 +27,7 @@ export const useProjectMethods = () => {
   };
 
   const getFormRules = (fieldsRules:any):any => {
+    const { validationMessages } = useFieldsStore();
     const { createFormRules } = useCoreMethods();
     return createFormRules(fieldsRules, projectRules, validationMessages);
   };

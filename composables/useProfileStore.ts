@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import {
-  ProfileInterface, FieldInterface, AuthorizationResponseInterface,
+  ProfileInterface, AuthorizationResponseInterface,
 } from '@platform/frontend-core/dist/module';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useLayoutStore } from '~/composables/useLayoutStore';
@@ -15,9 +15,7 @@ export type ProfileStoreStateType = {
     amount: any,
   },
   sessionId: string,
-  registrationFields: FieldInterface[],
   profile: ProfileInterface|undefined,
-  profileFields: FieldInterface[],
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -30,8 +28,6 @@ export const useProfileStore = defineStore('profileStore', {
     },
     sessionId: '',
     profile: undefined,
-    registrationFields: [],
-    profileFields: [],
   } as ProfileStoreStateType),
 
   actions: {
@@ -93,18 +89,6 @@ export const useProfileStore = defineStore('profileStore', {
         const { localizePath } = useProjectMethods();
         router.push(localizePath('/'));
       }
-    },
-
-    async getProfileFields():Promise<void> {
-      const { getProfileFields } = useCoreProfileApi();
-      const data = await getProfileFields();
-      this.profileFields = data;
-    },
-
-    async getRegistrationFields():Promise<void> {
-      const { getRegistrationFields } = useCoreAuthApi();
-      const data = await getRegistrationFields();
-      this.registrationFields = data;
     },
   },
 });
