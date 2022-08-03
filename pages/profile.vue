@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-  const { getProfileFields } = useProfileStore();
+  const { getProfileFields } = useFieldsStore();
   await useAsyncData('profileFields', getProfileFields);
 
   const { menu } = useFakeStore();
@@ -20,7 +20,7 @@
       const bearer = useCookie('bearer');
 
       if (!bearer.value) {
-        return navigateTo({ path: localizePath('/') });
+        return navigateTo(localizePath('/'));
       } return true;
     },
   });

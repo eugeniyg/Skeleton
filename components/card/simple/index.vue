@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
   import { PropType } from '@vue/runtime-core';
-  import { GameImagesInterface } from '~/CORE';
+  import { GameImagesInterface } from '@platform/frontend-core/dist/module';
 
   const props = defineProps({
     images: {

@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { LocaleInterface } from '~/CORE';
+  import { LocaleInterface } from '@platform/frontend-core/dist/module';
 
   const languageFlagsMap = {
     uk: 'ua',

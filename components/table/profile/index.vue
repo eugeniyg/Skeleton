@@ -30,11 +30,10 @@
     'receiveEmailPromo',
   ];
   const profileStore = useProfileStore();
-  const { profileFields, profile } = storeToRefs(profileStore);
+  const { profile } = storeToRefs(profileStore);
+  const fieldsStore = useFieldsStore();
+  const { fieldsContent, profileFields } = storeToRefs(fieldsStore);
   const profileViewFields = profileFields.value.filter((field) => !hideFields.includes(field.name));
-
-  const globalStore = useGlobalStore();
-  const { fieldsContent } = storeToRefs(globalStore);
 </script>
 
 <style lang="scss" src="./style.scss"/>

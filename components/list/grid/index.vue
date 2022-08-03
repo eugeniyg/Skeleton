@@ -9,8 +9,6 @@
 </template>
 
 <script setup lang="ts">
-  import { useGlobalMethods } from '~/CORE';
-
   const props = defineProps({
     items: {
       type: Array,
@@ -24,7 +22,7 @@
   const emit = defineEmits(['loadMore']);
 
   const loadMore = ref();
-  const { initObserver } = useGlobalMethods();
+  const { initObserver } = useCoreMethods();
 
   const observerLoadMore = ():void => {
     if (props.meta.totalPages > props.meta.page) emit('loadMore');

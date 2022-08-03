@@ -14,7 +14,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useGamesApi } from '~/CORE';
 
   // definePageMeta({
   //   middleware: ['auth'],
@@ -26,7 +25,7 @@
   const { activeAccount } = storeToRefs(walletStore);
   const frameLink = ref<string>('');
 
-  const { getStartGame } = useGamesApi();
+  const { getStartGame } = useCoreGamesApi();
 
   const startGame = async ():Promise<void> => {
     const redirectUrl = window.location.origin;

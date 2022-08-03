@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { useWalletApi, AccountInterface, AccountRequestInterface } from '~/CORE';
+import { AccountInterface, AccountRequestInterface } from '@platform/frontend-core/dist/module';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 
@@ -40,37 +40,37 @@ export const useWalletStore = defineStore('walletStore', {
 
   actions: {
     async getUserAccounts():Promise<void> {
-      const { getAccounts } = useWalletApi();
+      const { getAccounts } = useCoreWalletApi();
       const data = await getAccounts();
       this.accounts = data;
     },
 
     async createAccount(currency: string):Promise<void> {
-      const { addAccount } = useWalletApi();
-      const data = await addAccount({ currency });
+      const { addAccount } = useCoreWalletApi();
+      const data = await addAccount(currency);
       this.accounts = data;
     },
 
     async switchAccount(switchData: AccountRequestInterface):Promise<void> {
-      const { switchActiveAccount } = useWalletApi();
+      const { switchActiveAccount } = useCoreWalletApi();
       const data = await switchActiveAccount(switchData);
       this.accounts = data;
     },
 
     async hideAccount(hideData: AccountRequestInterface):Promise<void> {
-      const { hideWalletAccount } = useWalletApi();
+      const { hideWalletAccount } = useCoreWalletApi();
       const data = await hideWalletAccount(hideData);
       this.accounts = data;
     },
 
     async getDepositMethods():Promise<void> {
-      const { getDepositMethods } = useWalletApi();
+      const { getDepositMethods } = useCoreWalletApi();
       const data = await getDepositMethods(this.activeAccount.currency);
       this.depositMethods = data;
     },
 
     async getWithdrawMethods():Promise<void> {
-      const { getWithdrawMethods } = useWalletApi();
+      const { getWithdrawMethods } = useCoreWalletApi();
       const data = await getWithdrawMethods(this.activeAccount.currency);
       this.withdrawMethods = data;
     },

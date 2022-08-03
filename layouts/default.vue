@@ -75,23 +75,9 @@
     navigateTo(`/${cookieLanguage.value}${route.fullPath === '/' ? '' : route.fullPath}`);
   }
 
-  const {
-    getCurrencies,
-    getLocales,
-    getCountries,
-    getValidationMessages,
-    getCommonData,
-    getFieldsContent,
-  } = useGlobalStore();
-  const { getRegistrationFields } = useProfileStore();
-  const { getGameProviders, getGameCollections } = useGamesStore();
+  const { getCommonData } = useGlobalStore();
+  const { getValidationMessages, getFieldsContent } = useFieldsStore();
 
-  useAsyncData('currencies', getCurrencies);
-  useAsyncData('locales', getLocales);
-  useAsyncData('countries', getCountries);
-  useAsyncData('registrationFields', getRegistrationFields);
-  useAsyncData('collections', getGameCollections);
-  useAsyncData('providers', getGameProviders);
   useLazyAsyncData('validationMessages', getValidationMessages);
   useLazyAsyncData('fieldsContent', getFieldsContent);
   useLazyAsyncData('commonData', getCommonData);

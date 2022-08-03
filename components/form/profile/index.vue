@@ -52,7 +52,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
-  import { useGlobalMethods, useProfileApi } from '~/CORE';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
   const hideFields = [
@@ -62,19 +61,17 @@
     'receiveEmailPromo',
   ];
 
-  const { profile, profileFields, setProfileData } = useProfileStore();
+  const { profile, setProfileData } = useProfileStore();
   const fieldsStore = useFieldsStore();
-  const { setFormData } = useGlobalMethods();
-  const { changeProfileData } = useProfileApi();
+  const { setFormData } = useCoreMethods();
+  const { changeProfileData } = useCoreProfileApi();
 
-  const globalStore = useGlobalStore();
-  const { fieldsContent } = storeToRefs(globalStore);
+  const { fieldsContent, selectOptions, profileFields } = storeToRefs(fieldsStore);
 
-  const fieldsWithValue = profileFields.map((field) => ({ ...field, value: profile[field.name] }));
+  const fieldsWithValue = profileFields.value.map((field) => ({ ...field, value: profile[field.name] }));
   const cleanFields = fieldsWithValue.filter((field) => !hideFields.includes(field.name));
   const rowsFields = cleanFields.filter((field) => field.name !== 'email');
 
-  const { selectOptions } = storeToRefs(fieldsStore);
   const emailHint = { variant: 'verified', message: 'Your email is verified' };
 
   const emit = defineEmits(['toggle-profile-edit']);

@@ -4,63 +4,65 @@ import {
   CurrencyInterface,
   TimeZoneInterface,
   GameProviderInterface,
-} from 'CORE';
+  FieldInterface,
+} from '@platform/frontend-core/dist/module';
+import { useGlobalStore } from '~/composables/useGlobalStore';
+import { useGamesStore } from '~/composables/useGamesStore';
 
 export type FieldsStoreStateType = {
-  selectOptions: {
-    currency: CurrencyInterface[],
-    country: CountryInterface[],
-    timeZone: TimeZoneInterface[],
-    providers: GameProviderInterface[],
-  },
+  validationMessages: any,
+  fieldsContent: any,
+  profileFields: FieldInterface[],
+  registrationFields: FieldInterface[],
+}
+
+interface SelectOptionsInterface {
+  currency: CurrencyInterface[],
+  country: CountryInterface[],
+  timeZone: TimeZoneInterface[],
+  providers: GameProviderInterface[],
 }
 
 export const useFieldsStore = defineStore('fieldsStore', {
   state: () => ({
-    selectOptions: {
-      currency: [],
-      country: [],
-      timeZone: [],
-      providers: [],
-    },
+    validationMessages: {},
+    fieldsContent: {},
+    profileFields: [],
+    registrationFields: [],
   } as FieldsStoreStateType),
 
+  getters: {
+    selectOptions():SelectOptionsInterface {
+      const globalStore = useGlobalStore();
+      const gameStore = useGamesStore();
+      return {
+        currency: globalStore.currenciesSelectOptions,
+        country: globalStore.countriesSelectOptions,
+        timeZone: globalStore.timeZonesSelectOptions,
+        providers: gameStore.providersSelectOptions,
+      };
+    },
+  },
+
   actions: {
-    setOptions(optionName: string, options: any[]):void {
-      if (optionName === 'currency') {
-        this.selectOptions[optionName] = options.map((option) => ({ ...option, value: option.code }));
-      } else if (optionName === 'country') {
-        this.selectOptions[optionName] = options.map((option) => ({
-          ...option,
-          value: option.name,
-          mask: `/img/flags/${option.code.toLowerCase()}.svg`,
-        }));
-      } else if (optionName === 'timeZone') {
-        this.selectOptions[optionName] = options.map((option) => ({
-          ...option,
-          code: option.id,
-          value: option.name,
-        }));
-      } else if (optionName === 'providers') {
-        const allProvidersItem = {
-          id: 'all',
-          identity: 'all',
-          code: 'all',
-          value: 'All Providers',
-        };
-        const optionsArr = options.map((option) => ({
-          ...option,
-          code: option.id,
-          value: option.name,
-        }));
-        this.selectOptions[optionName] = [allProvidersItem, ...optionsArr];
-      } else {
-        this.selectOptions[optionName] = options.map((option) => ({
-          ...option,
-          code: option.code || option.id,
-          value: option.name || option.identity,
-        }));
-      }
+    async getValidationMessages():Promise<void> {
+      this.validationMessages = await $fetch('/api/content/validation-message');
+    },
+
+    async getFieldsContent():Promise<void> {
+      this.fieldsContent = await $fetch('/api/content/fields');
+    },
+
+    async getRegistrationFields():Promise<void> {
+      const { getRegistrationFields } = useCoreAuthApi();
+      const data = await getRegistrationFields();
+      this.registrationFields = data;
+    },
+
+    async getProfileFields():Promise<void> {
+      const { getProfileFields } = useCoreProfileApi();
+      const data = await getProfileFields();
+      this.profileFields = data;
     },
   },
 });

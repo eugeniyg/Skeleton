@@ -53,11 +53,11 @@
 <script setup lang="ts">
   import parser from 'ua-parser-js';
   import {
-    PaginationMetaInterface, SessionInterface, useGlobalMethods, useProfileApi,
-  } from '~/CORE';
+    PaginationMetaInterface, SessionInterface,
+  } from '@platform/frontend-core/dist/module';
 
   const headTitles = ['', 'Country', 'User Agent', 'Created At', 'Status'];
-  const { getUserSessions, closeActiveSession } = useProfileApi();
+  const { getUserSessions, closeActiveSession } = useCoreProfileApi();
   const sessions = ref<SessionInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
   const { getFormatDate } = useProjectMethods();
@@ -71,7 +71,7 @@
     loading.value = false;
   };
 
-  const { decodeToken } = useGlobalMethods();
+  const { decodeToken } = useCoreMethods();
   const token = useCookie('bearer');
   const sessionStatus = (session: SessionInterface): string => {
     if (session.closedAt) return 'closed';

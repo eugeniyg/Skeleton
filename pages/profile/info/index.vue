@@ -79,13 +79,15 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useProfileApi, CountryInterface } from '~/CORE';
+  import { CountryInterface } from '@platform/frontend-core/dist/module';
 
-  const { changeProfileData } = useProfileApi();
+  const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
-  const { profile, profileFields } = storeToRefs(profileStore);
+  const { profile } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
-  const { countries, fieldsContent } = storeToRefs(globalStore);
+  const fieldsStore = useFieldsStore();
+  const { fieldsContent, profileFields } = storeToRefs(fieldsStore);
+  const { countries } = storeToRefs(globalStore);
   const route = useRoute();
   const router = useRouter();
 
