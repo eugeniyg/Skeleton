@@ -18,11 +18,9 @@
     middleware: () => {
       const { localizePath } = useProjectMethods();
       const bearer = useCookie('bearer');
-      const router = useRouter();
 
       if (!bearer.value) {
-        return router.replace(localizePath('/'));
-        // return navigateTo(localizePath('/'));
+        return navigateTo(localizePath('/'));
       } return true;
     },
   });
