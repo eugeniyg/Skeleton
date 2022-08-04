@@ -1,6 +1,6 @@
 <template>
   <div class="card-profile">
-    <atomic-avatar :nickname="profile.nickname || ''" :label="props.avatarItems.label">
+    <atomic-avatar :nickname="userNickname" :label="props.avatarItems.label">
       <template v-slot:progress-bar>
         <profile-progress-bar/>
       </template>
@@ -34,7 +34,7 @@
 
   const profileStore = useProfileStore();
   const { openDepositModal } = useLayoutStore();
-  const { profile } = storeToRefs(profileStore);
+  const { userNickname } = storeToRefs(profileStore);
 </script>
 
 <style lang="scss" src="./style.scss"/>

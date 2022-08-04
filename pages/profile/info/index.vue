@@ -27,7 +27,7 @@
         <atomic-avatar-profile :is-edit="false"/>
 
         <div class="items">
-          <div class="nickname">{{ profile.nickname || '' }}</div>
+          <div class="nickname">{{ userNickname }}</div>
 
           <div class="item" v-show="profile.firstName || profile.lastName">
             <atomic-icon id="ui-user"/>
@@ -83,7 +83,7 @@
 
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
-  const { profile } = storeToRefs(profileStore);
+  const { profile, userNickname } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
   const fieldsStore = useFieldsStore();
   const { fieldsContent, profileFields } = storeToRefs(fieldsStore);
