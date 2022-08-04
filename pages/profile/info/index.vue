@@ -40,7 +40,8 @@
           </div>
 
           <div class="item" v-show="profile.email">
-            <atomic-icon class="is-success" id="ui-done"/>
+            <atomic-icon v-if="profile.confirmedAt" class="is-success" id="ui-done"/>
+            <atomic-icon v-else class="is-warning" id="ui-warning"/>
             {{ profile.email }}
           </div>
         </div>

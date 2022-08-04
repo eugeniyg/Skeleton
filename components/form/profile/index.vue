@@ -61,18 +61,20 @@
     'receiveEmailPromo',
   ];
 
-  const { profile, setProfileData } = useProfileStore();
+  const profileStore = useProfileStore();
+  const { profile } = storeToRefs(profileStore);
+  const { setProfileData } = profileStore;
   const fieldsStore = useFieldsStore();
   const { setFormData } = useCoreMethods();
   const { changeProfileData } = useCoreProfileApi();
 
   const { fieldsContent, selectOptions, profileFields } = storeToRefs(fieldsStore);
 
-  const fieldsWithValue = profileFields.value.map((field) => ({ ...field, value: profile[field.name] }));
+  const fieldsWithValue = profileFields.value.map((field) => ({ ...field, value: profile.value[field.name] }));
   const cleanFields = fieldsWithValue.filter((field) => !hideFields.includes(field.name));
   const rowsFields = cleanFields.filter((field) => field.name !== 'email');
 
-  const emailHint = { variant: 'verified', message: 'Your email is verified' };
+  const emailHint = profile.value.confirmedAt ? { variant: 'verified', message: 'Your email is verified' } : { variant: 'unverified', message: 'Your email is unverified' };
 
   const emit = defineEmits(['toggle-profile-edit']);
   const profileFormData = reactive(setFormData(cleanFields));
