@@ -13,17 +13,25 @@
   await useAsyncData('profileFields', getProfileFields);
 
   const { menu } = useFakeStore();
+  const { needToChangeLanguage } = useProjectMethods();
 
-  definePageMeta({
-    middleware: () => {
-      const { localizePath } = useProjectMethods();
-      const bearer = useCookie('bearer');
+  if (!needToChangeLanguage()) {
+    const { localizePath } = useProjectMethods();
+    const route = useRoute();
+    const bearer = useCookie('bearer');
 
-      if (!bearer.value) {
-        return navigateTo(localizePath('/'));
-      } return true;
-    },
-  });
+    if (route.params.confirmCode) {
+      const { confirmProfile } = useCoreProfileApi();
+      try {
+        await confirmProfile(route.params.confirmCode as string);
+        navigateTo(localizePath('/?confirm=true'), { replace: true });
+      } catch {
+        navigateTo(localizePath('/'), { replace: true });
+      }
+    } else if (!bearer.value) {
+      navigateTo(localizePath('/'), { replace: true });
+    }
+  }
 </script>
 
 <style lang="scss" src="./profile/style.scss"/>

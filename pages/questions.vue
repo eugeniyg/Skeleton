@@ -10,17 +10,17 @@
 </template>
 
 <script setup lang="ts">
-  definePageMeta({
-    middleware: (to) => {
-      const { localizePath } = useProjectMethods();
-
-      if (to.path === localizePath('/questions')) {
-        return navigateTo(localizePath('/questions/most-popular'));
-      }
-      return true;
-    },
-  });
   const { menu } = useFakeStore();
+  const { needToChangeLanguage } = useProjectMethods();
+
+  if (!needToChangeLanguage()) {
+    const { localizePath } = useProjectMethods();
+    const route = useRoute();
+
+    if (route.path === localizePath('/questions')) {
+      navigateTo(localizePath('/questions/most-popular'), { replace: true });
+    }
+  }
 </script>
 
 <style lang="scss" src="./questions/style.scss"/>
