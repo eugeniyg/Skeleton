@@ -12,6 +12,4 @@ export default defineNuxtRouteMiddleware((from, to) => {
   if (to.fullPath !== from.fullPath && layoutStore.isDrawerOpen) {
     layoutStore.toggleDrawer();
   }
-
-  return true;
 });

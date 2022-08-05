@@ -18,7 +18,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
 
   if (process.server) {
-
     try {
       await Promise.all([
         getCurrencies(),
