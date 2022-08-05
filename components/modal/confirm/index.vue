@@ -11,8 +11,8 @@
         </div>
 
         <img class="img" src="@/assets/svg/colored/confirm.svg" />
-        <p class="text"> Your account has been confirmed</p>
-        <button-base type="primary" size="md">Confirm</button-base>
+        <p class="text">Your account has been successfully confirmed!</p>
+        <button-base type="primary" size="md" @click="closeModal('confirm')">OK</button-base>
       </div>
     </div>
   </vue-final-modal>
@@ -26,4 +26,4 @@
   const { closeModal } = layoutStore;
 </script>
 
-<style lang="scss" src="./style.scss"></style>
+<style lang="scss" src="./style.scss"/>

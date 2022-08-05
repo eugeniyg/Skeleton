@@ -81,6 +81,12 @@ export const useProjectMethods = () => {
     return `${getFirstPath.slice(0, -3)}***`;
   };
 
+  const needToChangeLanguage = ():boolean => {
+    const cookieLanguage = useCookie('user-language');
+    const route = useRoute();
+    return route.name && !route.params.locale && !!cookieLanguage.value;
+  };
+
   return {
     createValidationRules,
     getFormRules,
@@ -91,5 +97,6 @@ export const useProjectMethods = () => {
     isHomePage,
     getFormatDate,
     getNicknameFromEmail,
+    needToChangeLanguage,
   };
 };

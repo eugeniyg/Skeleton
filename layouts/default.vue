@@ -50,6 +50,7 @@
       <modal-withdraw />
       <modal-success />
       <modal-error />
+      <modal-confirm />
     </client-only>
 
     <atomic-alert
@@ -68,11 +69,12 @@
     },
   });
 
+  const { needToChangeLanguage } = useProjectMethods();
   const cookieLanguage = useCookie('user-language');
   const route = useRoute();
 
-  if (route.name && !route.params.locale && cookieLanguage.value) {
-    navigateTo(`/${cookieLanguage.value}${route.fullPath === '/' ? '' : route.fullPath}`);
+  if (needToChangeLanguage()) {
+    await navigateTo(`/${cookieLanguage.value}${route.fullPath === '/' ? '' : route.fullPath}`, { replace: true });
   }
 
   const { getCommonData } = useGlobalStore();
