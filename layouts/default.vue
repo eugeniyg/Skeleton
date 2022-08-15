@@ -124,6 +124,9 @@
         showCookiePopup.value = true;
       }, 1500);
     }
+
+    const { initWebSocket } = useWebSocket();
+    initWebSocket();
   });
 
   onBeforeUnmount(() => {
