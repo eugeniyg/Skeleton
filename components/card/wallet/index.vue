@@ -13,8 +13,8 @@
       </form-input-toggle>
 
       <div class="amount">
-        <span class="amount">{{ props.formatBalance.amount }}</span>
-        <span class="currency">{{ props.formatBalance.currency }}</span>
+        <span class="amount">{{ balanceFormat.amount }}</span>
+        <span class="currency">{{ balanceFormat.currency }}</span>
       </div>
 
       <button-base
@@ -37,10 +37,6 @@
 
 <script setup lang="ts">
   const props = defineProps({
-    formatBalance: {
-      type: Object,
-      required: true,
-    },
     id: {
       type: String,
       required: true,
@@ -62,9 +58,11 @@
   const isChecked = ref<boolean>(false);
   const { currencies } = useGlobalStore();
   const { openWithdrawModal, openDepositModal } = useLayoutStore();
+  const { formatBalance } = useProjectMethods();
+  const balanceFormat = computed(() => formatBalance(props.currency, props.balance));
 
   const isActive = computed(() => props.status === 1);
-  const showHideCurrencyButton = computed(() => Number(props.formatBalance.amount) === 0 && !isActive.value);
+  const showHideCurrencyButton = computed(() => props.balance === 0 && !isActive.value);
   const currentCurrency = currencies.find((curr) => curr.code === props.currency);
   const currencyName = computed(() => `${currentCurrency.name} (${currentCurrency.code})`);
 
