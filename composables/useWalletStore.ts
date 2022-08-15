@@ -75,18 +75,27 @@ export const useWalletStore = defineStore('walletStore', {
       this.withdrawMethods = data;
     },
 
+    updateAccount(webSocketResponse:any):void {
+      const accountData:AccountInterface = webSocketResponse.data.account;
+      console.log(accountData);
+      this.accounts = this.accounts.map((account) => {
+        if (account.id === accountData.id) return accountData;
+        return account;
+      });
+    },
+
     async updateAccounts():Promise<void> {
-      const { isLoggedIn } = useProfileStore();
-      if (isLoggedIn) await this.getUserAccounts();
-      this.requestTimer = setTimeout(() => {
-        this.updateAccounts();
-      }, 5000);
+      // const { isLoggedIn } = useProfileStore();
+      // if (isLoggedIn) await this.getUserAccounts();
+      // this.requestTimer = setTimeout(() => {
+      //   this.updateAccounts();
+      // }, 5000);
     },
 
     stopUpdateAccounts():void {
-      const { isLoggedIn } = useProfileStore();
-      clearTimeout(this.requestTimer);
-      if (isLoggedIn) this.getUserAccounts();
+      // const { isLoggedIn } = useProfileStore();
+      // clearTimeout(this.requestTimer);
+      // if (isLoggedIn) this.getUserAccounts();
     },
   },
 });
