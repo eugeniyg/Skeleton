@@ -20,7 +20,8 @@
         :options="selectOptions.providers"
         @input="changeProvider"
       />
-      <!--      <form-filters/>-->
+
+      <atomic-game-sort v-model:value="sortOrder" @change="changeSort"/>
     </div>
 
     <list-grid :items="gameItems" :meta="pageMeta" @loadMore="loadMoreItems" />
@@ -66,6 +67,7 @@
     ) || selectOptions.providers[0],
   );
 
+  const sortOrder = ref<string>(route.query.sort as string || 'asc');
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
   const gameItems = ref<GameInterface[]>([]);
@@ -74,10 +76,13 @@
   const { getFilteredGames } = useCoreGamesApi();
 
   const getItems = async (): Promise<GamesResponseInterface> => {
-    const params: any = { page: loadPage.value, perPage: 36 };
-    if (activeCollection.value?.id) {
-      params.collectionId = activeCollection.value.id;
-    }
+    const params: any = {
+      page: loadPage.value,
+      perPage: 36,
+      collectionId: activeCollection.value.id,
+      sortBy: 'name',
+      sortOrder: sortOrder.value,
+    };
     if (currentProvider.value?.id !== 'all') {
       params.providerId = currentProvider.value.id;
     }
@@ -123,6 +128,14 @@
       (collection) => collection.identity === categoryId,
     );
     router.replace({ query: { ...route.query, category: categoryId } });
+    const response = await getItems();
+    setItems(response);
+  };
+
+  const changeSort = async (sortId: string): Promise<void> => {
+    loadPage.value = 1;
+    sortOrder.value = sortId;
+    router.replace({ query: { ...route.query, sort: sortId } });
     const response = await getItems();
     setItems(response);
   };

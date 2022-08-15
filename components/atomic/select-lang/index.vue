@@ -44,7 +44,7 @@
   const globalStore = useGlobalStore();
   const { locales, currentLocale } = storeToRefs(globalStore);
   const isOpen = ref<boolean>(false);
-  const cookieLanguage = useCookie('user-language');
+  const cookieLanguage = useCookie('user-language', { maxAge: 60 * 60 * 24 * 365 * 10 });
 
   const setCookie = (locale: LocaleInterface):void => {
     if (locale.isDefault) cookieLanguage.value = undefined;

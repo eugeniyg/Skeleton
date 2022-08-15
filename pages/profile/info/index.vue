@@ -27,7 +27,7 @@
         <atomic-avatar-profile :is-edit="false"/>
 
         <div class="items">
-          <div class="nickname">{{ profile.nickname || '' }}</div>
+          <div class="nickname">{{ userNickname }}</div>
 
           <div class="item" v-show="profile.firstName || profile.lastName">
             <atomic-icon id="ui-user"/>
@@ -40,7 +40,8 @@
           </div>
 
           <div class="item" v-show="profile.email">
-            <atomic-icon class="is-success" id="ui-done"/>
+            <atomic-icon v-if="profile.confirmedAt" class="is-success" id="ui-done"/>
+            <atomic-icon v-else class="is-warning" id="ui-warning"/>
             {{ profile.email }}
           </div>
         </div>
@@ -83,7 +84,7 @@
 
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
-  const { profile } = storeToRefs(profileStore);
+  const { profile, userNickname } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
   const fieldsStore = useFieldsStore();
   const { fieldsContent, profileFields } = storeToRefs(fieldsStore);

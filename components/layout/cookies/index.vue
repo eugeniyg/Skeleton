@@ -15,7 +15,7 @@
 
   const layoutStore = useLayoutStore();
   const acceptCookie = ():void => {
-    const userCookie = useCookie('accept-cookie');
+    const userCookie = useCookie('accept-cookie', { maxAge: 60 * 60 * 24 * 365 * 10 });
     userCookie.value = 'accepted';
     layoutStore.showCookiePopup = false;
   };

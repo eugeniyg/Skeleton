@@ -30,9 +30,15 @@ export const useProfileStore = defineStore('profileStore', {
     profile: undefined,
   } as ProfileStoreStateType),
 
+  getters: {
+    userNickname():string {
+      return this.profile.nickname || 'Unknown';
+    },
+  },
+
   actions: {
     setToken(authData: AuthorizationResponseInterface):void {
-      const bearer = useCookie('bearer');
+      const bearer = useCookie('bearer', { maxAge: 60 * 60 * 24 * 365 * 10 });
       bearer.value = authData.accessToken;
       this.sessionId = authData.sessionId;
       this.profile = authData.profile;

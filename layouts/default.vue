@@ -50,6 +50,7 @@
       <modal-withdraw />
       <modal-success />
       <modal-error />
+      <modal-confirm />
     </client-only>
 
     <atomic-alert
@@ -68,11 +69,12 @@
     },
   });
 
+  const { needToChangeLanguage } = useProjectMethods();
   const cookieLanguage = useCookie('user-language');
   const route = useRoute();
 
-  if (route.name && !route.params.locale && cookieLanguage.value) {
-    navigateTo(`/${cookieLanguage.value}${route.fullPath === '/' ? '' : route.fullPath}`);
+  if (needToChangeLanguage()) {
+    await navigateTo(`/${cookieLanguage.value}${route.fullPath === '/' ? '' : route.fullPath}`, { replace: true });
   }
 
   const { getCommonData } = useGlobalStore();
@@ -82,7 +84,7 @@
   useLazyAsyncData('fieldsContent', getFieldsContent);
   useLazyAsyncData('commonData', getCommonData);
 
-  const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT');
+  const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT', { maxAge: 60 * 60 * 24 * 365 * 10 });
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isHomePage, localizePath } = useProjectMethods();
