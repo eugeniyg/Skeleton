@@ -5,11 +5,16 @@
     "panel nav";
   align-items: var(--align-items, flex-end);
   grid-template-columns: 1fr auto;
-  width: 100%;
-  margin-top: -24px;
+  margin: -24px -16px 0 -16px;
+
+  @include media(sm) {
+    margin-right: -2rem;
+    margin-left: -2rem;
+  }
 
   @include media(l) {
-    margin-top: 0;
+    width: 100%;
+    margin: 0;
   }
 
   .container {

@@ -36,7 +36,7 @@
 
       <list-base :items="trustIcons">
         <template #header>
-          <h4>Responsible Gaming</h4>
+          <h4>Gambling with responsibility</h4>
         </template>
 
         <template v-slot:item="{ item }">
@@ -51,12 +51,12 @@
 
     <atomic-divider/>
 
-    <div class="info">
-      <img src="~/assets/img/info-logo.svg" />
-      <p>Slotsbet.io is owned and operated by Company registered and established under the laws of Curacao. Company is licensed and regulated by Antillephone N.V. It is the player’s sole responsibility to inquire about the existing laws and regulations of the given jurisdiction for online gambling. Company is officially registered by the Government of Curaçao as an Information Provider, legally authorized to conduct online gaming operations from Curaçao. Remote gaming licensing and supervision is provided by Antillephone N.V. All payments with Paysafe are made via Company.</p>
-    </div>
+    <!--    <div class="info">-->
+    <!--      <img src="~/assets/img/info-logo.svg" />-->
+    <!--      <p>Slotsbet.io is owned and operated by Company registered and established under the laws of Curacao. Company is licensed and regulated by Antillephone N.V. It is the player’s sole responsibility to inquire about the existing laws and regulations of the given jurisdiction for online gambling. Company is officially registered by the Government of Curaçao as an Information Provider, legally authorized to conduct online gaming operations from Curaçao. Remote gaming licensing and supervision is provided by Antillephone N.V. All payments with Paysafe are made via Company.</p>-->
+    <!--    </div>-->
 
-    <atomic-divider/>
+    <!--    <atomic-divider/>-->
 
     <div class="copy-info">
       <p>© 2022 Slotsbet.io | All Rights Reserved.</p>
@@ -109,8 +109,12 @@
           href: '/privacy-policy',
         },
         {
-          title: 'Responsible Gaming',
-          href: '/responsible-gaming',
+          title: 'Gambling with responsibility',
+          href: '/gambling-with-responsibility',
+        },
+        {
+          title: 'KYC Policy',
+          href: '/kyc-policy',
         },
       ],
       order: 1,

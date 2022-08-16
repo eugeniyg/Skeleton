@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <h1 class="heading">Responsible Gaming</h1>
+    <h1 class="heading">Gambling with responsibility</h1>
     <expander :items="accordeons.responsibleGaming"/>
   </div>
 </template>
