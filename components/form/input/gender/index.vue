@@ -8,10 +8,10 @@
       type="radio"
       name="gender-select"
       :is-disabled="props.isDisabled"
-      value="Male"
-      id="Male"
-      :isChecked="props.value === 'Male'"
-      @change="changeValue('Male')"
+      value="male"
+      id="male"
+      :isChecked="props.value === 'male'"
+      @change="changeValue('male')"
     >
       Male<atomic-icon id="ui-male"/>
     </form-input-radio>
@@ -20,10 +20,10 @@
       type="radio"
       name="gender-select"
       :is-disabled="props.isDisabled"
-      value="Female"
-      id="Female"
-      :isChecked="props.value === 'Female'"
-      @change="changeValue('Female')"
+      value="female"
+      id="female"
+      :isChecked="props.value === 'female'"
+      @change="changeValue('female')"
     >
       Female<atomic-icon id="ui-female"/>
     </form-input-radio>

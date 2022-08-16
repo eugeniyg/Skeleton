@@ -1,3 +1,5 @@
+import { useWalletStore } from '~/composables/useWalletStore';
+
 export default defineNuxtPlugin(async (nuxtApp) => {
   const { parseUserAgent } = useGlobalStore();
   // const languages = parser.parse(nuxtApp.ssrContext.req.headers['accept-language']);
@@ -37,9 +39,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     await initWebSocket();
 
     if (bearer.value) {
-      const { createSubscription } = useWebSocket();
-      const { updateAccount } = useWalletStore();
-      createSubscription(`wallet:accounts#${profileStore.profile.id}`, updateAccount);
+      const { subscribeAccountSocket } = useWalletStore();
+      subscribeAccountSocket();
     }
   });
 
