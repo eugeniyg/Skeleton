@@ -8,16 +8,16 @@
   const props = defineProps({
     value: {
       type: String,
-      validator: (val:string) => ['Male', 'Female'].includes(val),
+      validator: (val:string) => ['male', 'female'].includes(val),
       required: false,
     },
   });
 
   const iconName = computed(() => {
     switch (props.value) {
-    case 'Male':
+    case 'male':
       return 'ui-male';
-    case 'Female':
+    case 'female':
       return 'ui-female';
     default:
       return 'ui-male';
