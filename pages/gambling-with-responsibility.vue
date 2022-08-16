@@ -2,6 +2,7 @@
   <atomic-text-editor>
     <h1>Gambling with responsibility</h1>
     <i>Last updated: 19.07.2022</i>
+    <br/>
 
     <p>Please read this information carefully for your own benefit.</p>
     <p><a href="https://slotsbet.io/">slotsbet.io</a> is operated by Geminilab N.V., having its office at

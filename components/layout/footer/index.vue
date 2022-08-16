@@ -112,6 +112,10 @@
           title: 'Gambling with responsibility',
           href: '/gambling-with-responsibility',
         },
+        {
+          title: 'KYC Policy',
+          href: '/kyc-policy',
+        },
       ],
       order: 1,
       isOpen: true,
