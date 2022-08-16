@@ -36,7 +36,7 @@
 
       <list-base :items="trustIcons">
         <template #header>
-          <h4>Responsible Gaming</h4>
+          <h4>Gambling with responsibility</h4>
         </template>
 
         <template v-slot:item="{ item }">
@@ -109,8 +109,8 @@
           href: '/privacy-policy',
         },
         {
-          title: 'Responsible Gaming',
-          href: '/responsible-gaming',
+          title: 'Gambling with responsibility',
+          href: '/gambling-with-responsibility',
         },
       ],
       order: 1,

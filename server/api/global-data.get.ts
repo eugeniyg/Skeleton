@@ -103,7 +103,7 @@ export default defineEventHandler(() => ({
       title: 'Privacy Policy',
     },
     {
-      title: 'Responsible Gaming',
+      title: 'Gambling with responsibility',
     },
   ],
   staticMenuItems: [
@@ -112,7 +112,7 @@ export default defineEventHandler(() => ({
     'Payment methods',
     'F.A.Q',
     'Privacy Policy',
-    'Responsible Gaming',
+    'Gambling with responsibility',
   ],
   togglerBtnItems: [
     {
