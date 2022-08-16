@@ -12,7 +12,7 @@
       <div class="nickname">{{ userNickname }}</div>
 
       <div v-if="activeAccount" class="amount">
-        {{ activeAccount.formatBalance.amount }} {{ activeAccount.formatBalance.currency }}
+        {{ balanceFormat.amount }} {{ balanceFormat.currency }}
       </div>
     </div>
   </div>
@@ -25,6 +25,8 @@
   const { userNickname } = storeToRefs(profileStore);
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
+  const { formatBalance } = useProjectMethods();
+  const balanceFormat = computed(() => formatBalance(activeAccount.value.currency, activeAccount.value.balance));
 </script>
 
 <style lang="scss" src="./style.scss"/>
