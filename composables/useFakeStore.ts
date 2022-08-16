@@ -1298,6 +1298,10 @@ export const useFakeStore = () => {
       title: 'Gambling with responsibility',
       href: '/gambling-with-responsibility',
     },
+    {
+      title: 'KYC Policy',
+      href: '/kyc-policy',
+    },
   ];
 
   const catNavItems = [
