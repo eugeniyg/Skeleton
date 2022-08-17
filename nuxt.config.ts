@@ -18,6 +18,9 @@ const viteConfig: any = {
       },
     },
   },
+  optimizeDeps: {
+    include: ['centrifuge'],
+  },
 };
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
