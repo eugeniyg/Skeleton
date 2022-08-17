@@ -1273,7 +1273,7 @@ export const useFakeStore = () => {
       title: 'Privacy Policy',
     },
     {
-      title: 'Responsible Gaming',
+      title: 'Gambling with responsibility',
     },
   ];
 
@@ -1295,8 +1295,12 @@ export const useFakeStore = () => {
       href: '/privacy-policy',
     },
     {
-      title: 'Responsible Gaming',
-      href: '/responsible-gaming',
+      title: 'Gambling with responsibility',
+      href: '/gambling-with-responsibility',
+    },
+    {
+      title: 'KYC Policy',
+      href: '/kyc-policy',
     },
   ];
 
@@ -1517,8 +1521,8 @@ export const useFakeStore = () => {
         icon: 'security',
       },
       {
-        title: 'Responsible Gaming',
-        href: '/questions/responsible-gaming',
+        title: 'Gambling with responsibility',
+        href: '/questions/gambling-with-responsibility',
         icon: 'ui-18',
       },
     ],
