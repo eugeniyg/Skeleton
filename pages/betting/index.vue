@@ -50,8 +50,6 @@
       document.querySelector('footer').style.display = 'none';
     }
 
-    walletStore.updateAccounts();
-
     if (!isLoggedIn.value) {
       showModal('register');
     } else {
@@ -66,7 +64,6 @@
   });
 
   onBeforeUnmount(() => {
-    walletStore.stopUpdateAccounts();
     document.querySelector('footer').style.display = null;
   });
 </script>
