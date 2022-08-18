@@ -69,6 +69,15 @@
     return undefined;
   };
 
+  const { closeModal, showAlert } = useLayoutStore();
+  const showErrorAlert = ():void => {
+    showAlert({
+      title: 'Error',
+      text: 'Sorry, but your password reset link is not valid. Please request another password reset.',
+      variant: 'error',
+    });
+  };
+
   const isLockedAsyncButton = ref<boolean>(false);
   const { resetProfilePassword } = useCoreProfileApi();
   const resetPassword = async ():Promise<void> => {
@@ -81,7 +90,6 @@
       isLockedAsyncButton.value = true;
       const route = useRoute();
       await resetProfilePassword({ ...resetFormData, code: route.query.resetCode });
-      const { closeModal, showAlert } = useLayoutStore();
       showAlert({
         title: 'Success',
         text: 'You have successfully changed your password.',
@@ -90,8 +98,9 @@
       closeModal('resetPass');
     } catch (error) {
       if (error.response?.status === 422) {
-        serverFormErrors.value = error.data?.error?.fields;
-      } else throw error;
+        if (error.data?.error?.fields.code) showErrorAlert();
+        else serverFormErrors.value = error.data?.error?.fields;
+      } else showErrorAlert();
     } finally {
       isLockedAsyncButton.value = false;
     }
