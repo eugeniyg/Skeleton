@@ -33,6 +33,7 @@ export type LayoutStoreStateType = {
     error: string,
     confirm: string,
     forgotPass: string,
+    resetPass: string,
   },
 }
 
@@ -68,6 +69,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         error: 'error',
         confirm: 'confirm',
         forgotPass: 'forgot-pass',
+        resetPass: 'reset-pass',
       },
   } as LayoutStoreStateType),
 
@@ -131,7 +133,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       const router = useRouter();
       const { query } = useRoute();
 
-      router.replace({ query: { ...query, [this.modalsUrl[modalName]]: undefined } });
+      router.replace({ query: { ...query, [this.modalsUrl[modalName]]: undefined, resetCode: undefined } });
     },
 
     showModal(modalName: string, queryValue?:string):void {
@@ -150,12 +152,14 @@ export const useLayoutStore = defineStore('layoutStore', {
       const queryArr = Object.keys(route.query);
 
       queryArr.forEach((query) => {
-        if (query === 'sign-up') {
-          isLoggedIn ? this.closeModal('register') : this.showModal('register');
-        } else if (query === 'sign-in') {
-          isLoggedIn ? this.closeModal('signIn') : this.showModal('signIn');
-        } else if (this.modalsUrl[query]) {
-          this.showModal(query, route.query[query]);
+        const modalKey = Object.keys(this.modalsUrl).find((key) => this.modalsUrl[key] === query);
+        if (!modalKey) return;
+
+        const authModals = ['register', 'signIn', 'forgotPass', 'resetPass'];
+        if (authModals.includes(modalKey)) {
+          isLoggedIn ? this.closeModal(modalKey) : this.showModal(modalKey);
+        } else {
+          this.showModal(modalKey, route.query[query]);
         }
       });
     },
