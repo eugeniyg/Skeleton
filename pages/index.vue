@@ -1,8 +1,11 @@
 <template>
   <div class="home">
-    <div class="promo-card-wrapper">
-      <card-promo v-bind="promoCard" />
-    </div>
+    <client-only>
+      <div class="promo-card-wrapper">
+        <card-promo v-bind="promoCard" />
+      </div>
+    </client-only>
+
     <cards-group v-bind="benCards">
       <template v-slot:card="item">
         <card-benefit v-bind="item" />

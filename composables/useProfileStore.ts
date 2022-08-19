@@ -37,7 +37,7 @@ export const useProfileStore = defineStore('profileStore', {
 
     playerStatusName():string {
       const { playerStatuses } = useCoreStore();
-      return playerStatuses.find((status) => status.id === this.profile.status)?.name;
+      return playerStatuses.find((status) => status.id === this.profile?.status)?.name;
     },
   },
 

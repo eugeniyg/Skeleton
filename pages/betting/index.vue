@@ -15,9 +15,9 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  // definePageMeta({
-  //   middleware: ['auth'],
-  // });
+  definePageMeta({
+    middleware: ['status-limited'],
+  });
 
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
@@ -43,17 +43,13 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
-  const { showModal, showAlert } = useLayoutStore();
+  const { showModal, showPlayLimitAlert } = useLayoutStore();
 
   const redirectLimitedPlayer = ():void => {
     const { localizePath } = useProjectMethods();
     const router = useRouter();
-    router.push(localizePath('/'));
-    showAlert({
-      title: 'Error',
-      text: 'Sorry, but you can\'t play in real mode for now. Please, contact our support team for more information.',
-      variant: 'error',
-    });
+    router.replace(localizePath('/'));
+    showPlayLimitAlert();
   };
 
   onMounted(async () => {
@@ -74,7 +70,9 @@
     if (!newValue) return;
 
     if (playerStatusName.value === 'Limited') {
-      redirectLimitedPlayer();
+      setTimeout(() => {
+        redirectLimitedPlayer();
+      });
     } else {
       await startGame();
     }

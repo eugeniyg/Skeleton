@@ -18,16 +18,11 @@
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
-  const { showModal, showAlert } = useLayoutStore();
+  const { showModal, showPlayLimitAlert } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const { isMobile } = useGlobalStore();
   const infoResponse = await useAsyncData('gameInfo', () => getGamesInfo(route.params.id as string));
   gameInfo.value = infoResponse.data.value;
-  const limitedAlertData = {
-    title: 'Error',
-    text: 'Sorry, but you can\'t play in real mode for now. Please, contact our support team for more information.',
-    variant: 'error',
-  };
   const router = useRouter();
 
   const startGame = async ():Promise<void> => {
@@ -51,7 +46,7 @@
     }
 
     if (isDemo.value && playerStatusName.value === 'Limited') {
-      showAlert(limitedAlertData);
+      showPlayLimitAlert();
       return;
     }
 
@@ -65,7 +60,7 @@
     else {
       const { localizePath } = useProjectMethods();
       router.push(localizePath('/'));
-      showAlert(limitedAlertData);
+      showPlayLimitAlert();
     }
   };
 
@@ -73,7 +68,9 @@
     if (!newValue) return;
 
     if (!isDemo.value && playerStatusName.value === 'Limited') {
-      redirectLimitedPlayer();
+      setTimeout(() => {
+        redirectLimitedPlayer();
+      });
     } else {
       await startGame();
     }
