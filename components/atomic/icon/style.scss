@@ -1,4 +1,5 @@
 .icon {
+  flex-shrink: 0;
   width: var(--icon-size, 22px);
   height: var(--icon-size, 22px);
   color: var(--color, var(--gray-900));

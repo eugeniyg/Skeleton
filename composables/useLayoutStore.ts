@@ -12,7 +12,7 @@ export type LayoutStoreStateType = {
   alertProps: {
     title: string | undefined,
     text: string | undefined,
-    variant: 'info' | 'error' | 'warning' | 'done' | undefined,
+    variant: string | undefined, // 'info' | 'error' | 'warning' | 'done'
   },
   modals: {
     register: boolean,
@@ -75,9 +75,15 @@ export const useLayoutStore = defineStore('layoutStore', {
 
   actions: {
     showAlert(props: LayoutStoreStateType['alertProps']): void {
+      if (this.isShowAlert) {
+        this.hideAlert();
+        this.showAlert(props);
+        return;
+      }
+
       setTimeout(() => {
-        this.isShowAlert = true;
         this.alertProps = props;
+        this.isShowAlert = true;
       }, 200);
     },
 
@@ -174,6 +180,14 @@ export const useLayoutStore = defineStore('layoutStore', {
       const { getWithdrawMethods } = useWalletStore();
       await getWithdrawMethods();
       this.showModal('withdraw');
+    },
+
+    showPlayLimitAlert():void {
+      this.showAlert({
+        title: 'Error',
+        text: 'Sorry, but you can\'t play in real mode for now. Please, contact our support team for more information.',
+        variant: 'error',
+      });
     },
   },
 });

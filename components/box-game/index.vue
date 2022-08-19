@@ -9,7 +9,9 @@
         width="100%"
       />
     </div>
-    <nav-game :gameInfo="gameInfo"/>
+    <client-only>
+      <nav-game :gameInfo="gameInfo"/>
+    </client-only>
     <panel-mode @changeMode="emit('changeMode')"/>
 
     <group-games
@@ -28,7 +30,7 @@
     },
     gameInfo: {
       type: Object,
-      required: true,
+      required: false,
     },
   });
   const emit = defineEmits(['changeMode']);

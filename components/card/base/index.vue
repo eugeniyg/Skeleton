@@ -73,8 +73,8 @@
 
   const router = useRouter();
   const profileStore = useProfileStore();
-  const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal } = useLayoutStore();
+  const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
+  const { showModal, showPlayLimitAlert } = useLayoutStore();
   const { localizePath, getImageUrl } = useProjectMethods();
 
   const openGame = (isReal: boolean):void => {
@@ -82,6 +82,8 @@
       router.push(localizePath(`/games/${props.identity}?demo=true`));
     } else if (!isLoggedIn.value) {
       showModal('register');
+    } else if (playerStatusName.value === 'Limited') {
+      showPlayLimitAlert();
     } else {
       router.push(localizePath(`/games/${props.identity}`));
     }

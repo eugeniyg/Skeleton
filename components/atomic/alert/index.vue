@@ -50,6 +50,7 @@
   const timer = ref<any>();
 
   const setTimer = ():void => {
+    clearTimeout(timer.value);
     timer.value = setTimeout(() => {
       hideAlert();
     }, 5000);
