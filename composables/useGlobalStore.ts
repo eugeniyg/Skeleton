@@ -4,6 +4,7 @@ import {
   CurrencyInterface,
   LocaleInterface,
   TimeZoneInterface,
+  InitUserInfoInterface,
 } from '@platform/frontend-core/dist/module';
 import { BrowserLanguageInterface } from '~/types';
 
@@ -16,6 +17,7 @@ export type GlobalStoreStateType = {
   isMobile: boolean,
   browserLanguage: string,
   baseApiUrl: string,
+  initUserInfo: InitUserInfoInterface,
 }
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -28,6 +30,7 @@ export const useGlobalStore = defineStore('globalStore', {
     isMobile: false,
     browserLanguage: 'en',
     baseApiUrl: '',
+    initUserInfo: undefined,
   } as GlobalStoreStateType),
 
   getters: {
@@ -88,6 +91,12 @@ export const useGlobalStore = defineStore('globalStore', {
       const { getCommonData } = useCoreGlobalApi();
       const data = await getCommonData();
       this.timeZones = data.timeZone;
+    },
+
+    async getInitUserInformation():Promise<void> {
+      const { getInitUserInfo } = useCoreGlobalApi();
+      const data = await getInitUserInfo();
+      this.initUserInfo = data;
     },
   },
 });
