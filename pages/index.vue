@@ -1,10 +1,8 @@
 <template>
   <div class="home">
-    <client-only>
-      <div class="promo-card-wrapper">
-        <card-promo v-bind="promoCard" />
-      </div>
-    </client-only>
+    <div class="promo-card-wrapper">
+      <card-promo v-bind="promoCard" />
+    </div>
 
     <cards-group v-bind="benCards">
       <template v-slot:card="item">
