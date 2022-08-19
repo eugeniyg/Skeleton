@@ -73,7 +73,7 @@
 
   const router = useRouter();
   const profileStore = useProfileStore();
-  const { isLoggedIn } = storeToRefs(profileStore);
+  const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
   const { showModal } = useLayoutStore();
   const { localizePath, getImageUrl } = useProjectMethods();
 
@@ -82,6 +82,13 @@
       router.push(localizePath(`/games/${props.identity}?demo=true`));
     } else if (!isLoggedIn.value) {
       showModal('register');
+    } else if (playerStatusName.value === 'Limited') {
+      const { showAlert } = useLayoutStore();
+      showAlert({
+        title: 'Error',
+        text: 'Sorry, but you can\'t play in real mode for now. Please, contact our support team for more information.',
+        variant: 'error',
+      });
     } else {
       router.push(localizePath(`/games/${props.identity}`));
     }

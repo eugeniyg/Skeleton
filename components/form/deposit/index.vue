@@ -83,6 +83,17 @@
   const getDeposit = async ():Promise<void> => {
     if (buttonDisabled.value) return;
 
+    const profileStore = useProfileStore();
+    if (profileStore.playerStatusName === 'Limited' && activeAccountType.value === 'fiat') {
+      const { showAlert } = useLayoutStore();
+      showAlert({
+        title: 'Error',
+        text: 'Sorry, but you can\'t deposit for now. Please, contact our support team for more information.',
+        variant: 'error',
+      });
+      return;
+    }
+
     isSending.value = true;
     const locationQuery = window.location.search;
     const successRedirect = `${window.location.href}${locationQuery ? '&' : '?'}success=deposit`;

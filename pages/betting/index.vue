@@ -42,8 +42,19 @@
   };
 
   const profileStore = useProfileStore();
-  const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal } = useLayoutStore();
+  const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
+  const { showModal, showAlert } = useLayoutStore();
+
+  const redirectLimitedPlayer = ():void => {
+    const { localizePath } = useProjectMethods();
+    const router = useRouter();
+    router.push(localizePath('/'));
+    showAlert({
+      title: 'Error',
+      text: 'Sorry, but you can\'t play in real mode for now. Please, contact our support team for more information.',
+      variant: 'error',
+    });
+  };
 
   onMounted(async () => {
     if (isMobile.value) {
@@ -52,13 +63,19 @@
 
     if (!isLoggedIn.value) {
       showModal('register');
+    } else if (playerStatusName.value === 'Limited') {
+      redirectLimitedPlayer();
     } else {
       await startGame();
     }
   });
 
   watch(() => isLoggedIn.value, async (newValue:boolean) => {
-    if (newValue) {
+    if (!newValue) return;
+
+    if (playerStatusName.value === 'Limited') {
+      redirectLimitedPlayer();
+    } else {
       await startGame();
     }
   });

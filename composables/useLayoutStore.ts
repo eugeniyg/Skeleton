@@ -12,7 +12,7 @@ export type LayoutStoreStateType = {
   alertProps: {
     title: string | undefined,
     text: string | undefined,
-    variant: 'info' | 'error' | 'warning' | 'done' | undefined,
+    variant: string | undefined, // 'info' | 'error' | 'warning' | 'done'
   },
   modals: {
     register: boolean,
