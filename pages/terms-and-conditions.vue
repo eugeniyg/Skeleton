@@ -70,8 +70,9 @@
         Sint Eustatius, Saba, Aruba, Curaçao and Sint Maarten,</li>
       <li>Australia and its territories,</li>
       <li>United Kingdom of Great Britain and Northern Ireland,</li>
-      <li>Spain</li>
+      <li>Spain,</li>
       <li>Cyprus,</li>
+      <li>Austria</li>
     </ul>
     <p>4.1.4. To collect nicknames, e-mail addresses and/or other information of other Customers by any means
       (for example, by sending spam, other types of unsolicited emails or the unauthorised framing of, or linking to,

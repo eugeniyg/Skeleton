@@ -34,7 +34,7 @@
       <li>Country is not a Restricted Country: United States of America and its territories, France and its territories,
         Netherlands and its territories and countries that form the Kingdom of Netherlands including Bonaire,
         Sint Eustatius, Saba, Aruba, Curacao and Sint Maarten, Australia and its territories, United Kingdom
-        of Great Britain, Northern Ireland, Spain.</li>
+        of Great Britain, Northern Ireland, Spain, Austria.</li>
       <li>Full Name matches client’s name</li>
       <li>Document does not expire in the next 3 months</li>
       <li>Owner is over 18 years of age</li>
@@ -45,7 +45,7 @@
       <li>Country is not a Restricted Country: United States of America and its territories, France and its territories,
         Netherlands and its territories and countries that form the Kingdom of Netherlands including Bonaire,
         Sint Eustatius, Saba, Aruba, Curacao and Sint Maarten, Australia and its territories, United Kingdom of
-        Great Britain, Northern Ireland, Spain, and Cyprus.</li>
+        Great Britain, Northern Ireland, Spain, Cyprus and Austria.</li>
       <li>Full Name matches client’s name and is same as in proof of ID.</li>
       <li>Date of Issue: In the last 3 months</li>
     </ul>
