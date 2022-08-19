@@ -66,7 +66,6 @@
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
-  import { useGlobalStore } from '~/composables/useGlobalStore';
 
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
