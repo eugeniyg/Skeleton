@@ -15,7 +15,6 @@
 
     <form-input-password
       v-model:value="resetFormData.repeatNewPassword"
-      ref="dima"
       type="password"
       name="repeatNewPassword"
       :label="fieldsContent.repeatNewPassword?.label || ''"

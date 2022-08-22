@@ -18,7 +18,7 @@
           :hint="setError(field)"
           @blur="v$[field]?.$touch()"
           @focus="onFocus(field)"
-          @input="inputNewPassword"
+          @input="inputNewPassword(field)"
         />
       </div>
 
@@ -54,8 +54,8 @@
     serverFormErrors, v$, onFocus, setError,
   } = useFormValidation(changeFormRules, changeFormData);
 
-  const inputNewPassword = ():void => {
-    if (v$.value.repeatNewPassword.$dirty) {
+  const inputNewPassword = (fieldName):void => {
+    if (fieldName === 'newPassword' && v$.value.repeatNewPassword.$dirty) {
       const oldValue = changeFormData.repeatNewPassword;
       changeFormData.repeatNewPassword = '';
       changeFormData.repeatNewPassword = oldValue;
