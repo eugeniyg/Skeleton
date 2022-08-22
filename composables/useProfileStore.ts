@@ -92,11 +92,11 @@ export const useProfileStore = defineStore('profileStore', {
       this.profile = data;
     },
 
-    async logOutUser():Promise<void> {
+    async logOutUser(needRequest:boolean = true):Promise<void> {
       const { logOut } = useCoreAuthApi();
       const bearer = useCookie('bearer');
       try {
-        await logOut();
+        if (needRequest) await logOut();
       } finally {
         bearer.value = undefined;
         this.isLoggedIn = false;

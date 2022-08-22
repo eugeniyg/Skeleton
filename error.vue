@@ -16,10 +16,14 @@
 </template>
 
 <script setup lang="ts">
+  const props = defineProps({
+    error: Object,
+  });
   const goHome = () => clearError({ redirect: '/' });
   const { preloaderDone } = useProjectMethods();
 
   onMounted(() => {
+    console.error(props.error);
     preloaderDone();
   });
 </script>

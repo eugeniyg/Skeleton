@@ -78,9 +78,11 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     subscribeAccountSocket():void {
-      const { createSubscription } = useWebSocket();
       const profileStore = useProfileStore();
-      this.accountSubscription = createSubscription(`wallet:accounts#${profileStore.profile.id}`, this.updateAccount);
+      if (profileStore.profile?.id) {
+        const { createSubscription } = useWebSocket();
+        this.accountSubscription = createSubscription(`wallet:accounts#${profileStore.profile.id}`, this.updateAccount);
+      }
     },
 
     unsubscribeAccountSocket():void {

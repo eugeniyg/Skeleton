@@ -3,7 +3,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook('vue:error', async (err:any) => {
     if (err?.response?.status === 401) {
       const { logOutUser } = useProfileStore();
-      return logOutUser();
+      return logOutUser(false);
     }
 
     if (errorStatusesHandling.includes(err?.response?.status)) {
