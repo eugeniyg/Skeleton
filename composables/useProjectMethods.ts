@@ -47,6 +47,7 @@ export const useProjectMethods = () => {
 
   const localizePath = (path:string):string => {
     const { currentLocale, defaultLocale } = useGlobalStore();
+    console.log(currentLocale);
 
     if (currentLocale.code.toLowerCase() === defaultLocale.code.toLowerCase()) return path;
     return `/${currentLocale.code.toLowerCase()}${!path || path === '/' ? '' : path}`;
