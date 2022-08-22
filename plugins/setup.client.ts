@@ -21,7 +21,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       getFavoriteGames();
     } catch (error) {
       if (error.response?.status === 401) {
-        profileStore.logOutUser();
+        profileStore.logOutUser(false);
       } else {
         throw error;
       }
