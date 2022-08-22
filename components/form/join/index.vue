@@ -64,7 +64,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import useVuelidate from '@vuelidate/core';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
@@ -89,25 +88,11 @@
   const { getFormRules, createValidationRules } = useProjectMethods();
   const registrationRules = createValidationRules(registrationFields.value, true);
   const registrationFormRules = getFormRules(registrationRules);
-  const serverFormErrors = ref<any>({});
-  const v$ = useVuelidate(registrationFormRules, registrationFormData);
-
-  const onFocus = (fieldName:string):void => {
-    if (serverFormErrors.value[fieldName]) {
-      serverFormErrors.value[fieldName] = undefined;
-    }
-  };
+  const {
+    serverFormErrors, v$, onFocus, setError,
+  } = useFormValidation(registrationFormRules, registrationFormData);
 
   const showPromoInput = ref<boolean>(false);
-
-  const setError = (fieldName:string):undefined|{ variant: string, message: any } => {
-    if (v$.value[fieldName]?.$error) {
-      return { variant: 'error', message: v$.value[fieldName].$errors[0].$message };
-    } if (serverFormErrors.value[fieldName]) {
-      return { variant: 'error', message: serverFormErrors.value[fieldName][0] };
-    }
-    return undefined;
-  };
 
   const { registration } = useProfileStore();
   const isLockedAsyncButton = ref<boolean>(false);

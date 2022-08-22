@@ -2,8 +2,8 @@
   <form class="form-sign-in">
     <form-input-text
       v-model:value="authorizationFormData.email"
-      @blur="onBlur('email')"
-      @focus="loginError = false"
+      @blur="v$.email?.$touch()"
+      @focus="focusField('email')"
       type="email"
       :is-required="true"
       :label="fieldsContent.email?.label || ''"
@@ -15,8 +15,8 @@
 
     <form-input-password
       v-model:value="authorizationFormData.password"
-      @blur="onBlur('password')"
-      @focus="loginError = false"
+      @blur="v$.password?.$touch()"
+      @focus="'password'"
       type="password"
       :is-required="true"
       :label="fieldsContent.password?.label || ''"
@@ -45,7 +45,6 @@
 </template>
 
 <script setup lang="ts">
-  import useVuelidate from '@vuelidate/core';
   import { storeToRefs } from 'pinia';
 
   const fieldsStore = useFieldsStore();
@@ -59,24 +58,14 @@
     password: [{ rule: 'required' }],
   };
   const authorizationFormRules = getFormRules(authorizationRules);
-  const serverFormErrors = ref<any>({});
+  const {
+    serverFormErrors, v$, onFocus, setError,
+  } = useFormValidation(authorizationFormRules, authorizationFormData);
   const loginError = ref<boolean>(false);
-  const v$ = useVuelidate(authorizationFormRules, authorizationFormData);
 
-  const onBlur = (fieldName:string):void => {
-    v$.value[fieldName]?.$touch();
-    if (serverFormErrors.value[fieldName]) {
-      serverFormErrors.value[fieldName] = undefined;
-    }
-  };
-
-  const setError = (fieldName:string):undefined|{ variant: string, message: any } => {
-    if (v$.value[fieldName]?.$error) {
-      return { variant: 'error', message: v$.value[fieldName].$errors[0].$message };
-    } if (serverFormErrors.value[fieldName]) {
-      return { variant: 'error', message: serverFormErrors.value[fieldName][0] };
-    }
-    return undefined;
+  const focusField = (fieldName:string):void => {
+    loginError.value = false;
+    onFocus(fieldName);
   };
 
   const { logIn } = useProfileStore();
