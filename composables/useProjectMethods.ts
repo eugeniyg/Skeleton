@@ -46,11 +46,11 @@ export const useProjectMethods = () => {
   };
 
   const localizePath = (path:string):string => {
-    const globalStore = useGlobalStore();
-    console.log(globalStore.currentLocale);
+    const { currentLocale, defaultLocale } = useGlobalStore();
+    console.log(currentLocale);
 
-    if (globalStore.currentLocale.code.toLowerCase() === globalStore.defaultLocale.code.toLowerCase()) return path;
-    return `/${globalStore.currentLocale.code.toLowerCase()}${!path || path === '/' ? '' : path}`;
+    if (currentLocale.code.toLowerCase() === defaultLocale.code.toLowerCase()) return path;
+    return `/${currentLocale.code.toLowerCase()}${!path || path === '/' ? '' : path}`;
   };
 
   const isHomePage = ():boolean => {
