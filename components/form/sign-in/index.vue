@@ -16,7 +16,7 @@
     <form-input-password
       v-model:value="authorizationFormData.password"
       @blur="v$.password?.$touch()"
-      @focus="'password'"
+      @focus="focusField('password')"
       type="password"
       :is-required="true"
       :label="fieldsContent.password?.label || ''"
