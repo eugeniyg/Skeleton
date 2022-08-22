@@ -3,13 +3,13 @@
     <form-input-text
       v-model:value="forgotFormData.email"
       @blur="v$.email?.$touch()"
-      @focus="onFocus"
+      @focus="onFocus('email')"
       type="email"
       :is-required="true"
       :label="fieldsContent.email?.label || ''"
       name="email"
       :placeholder="fieldsContent.email?.placeholder || ''"
-      :hint="setError()"
+      :hint="setError('email')"
       @submit="sendEmail"
     />
 
@@ -29,7 +29,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import useVuelidate from '@vuelidate/core';
 
   const fieldsStore = useFieldsStore();
   const { fieldsContent } = storeToRefs(fieldsStore);
@@ -40,23 +39,9 @@
     email: [{ rule: 'required' }, { rule: 'email' }],
   };
   const forgotFormRules = getFormRules(forgotRules);
-  const serverFormErrors = ref<any>({});
-  const v$ = useVuelidate(forgotFormRules, forgotFormData);
-
-  const onFocus = ():void => {
-    if (serverFormErrors.value.email) {
-      serverFormErrors.value.email = undefined;
-    }
-  };
-
-  const setError = ():undefined|{ variant: string, message: any } => {
-    if (v$.value.email?.$error) {
-      return { variant: 'error', message: v$.value.email.$errors[0].$message };
-    } if (serverFormErrors.value.email) {
-      return { variant: 'error', message: serverFormErrors.value.email[0] };
-    }
-    return undefined;
-  };
+  const {
+    serverFormErrors, v$, onFocus, setError,
+  } = useFormValidation(forgotFormRules, forgotFormData);
 
   const { forgotProfilePassword } = useCoreProfileApi();
   const isLockedAsyncButton = ref<boolean>(false);

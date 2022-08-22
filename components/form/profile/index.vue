@@ -18,7 +18,7 @@
       <component
         :is="fieldsTypeMap[field.name].component || 'form-input-text'"
         @blur="v$[field.name]?.$touch()"
-        @focus="onFocus(field.name)"
+        @focus="focusField(field.name)"
         :isDisabled="profile[field.name] && !field.editable"
         v-model:value="profileFormData[field.name]"
         v-for="field in rowsFields.slice(2 * (n - 1), 2 * (n - 1) + 2)"
@@ -51,7 +51,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import useVuelidate from '@vuelidate/core';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
   const hideFields = [
@@ -81,25 +80,15 @@
   const { getFormRules, createValidationRules } = useProjectMethods();
   const profileRules = createValidationRules(cleanFields, true);
   const profileFormRules = getFormRules(profileRules);
-  const serverFormErrors = ref<any>({});
-  const v$ = useVuelidate(profileFormRules, profileFormData);
+  const {
+    serverFormErrors, v$, onFocus, setError,
+  } = useFormValidation(profileFormRules, profileFormData);
   const focused = ref<boolean>(false);
   const sendDisabled = computed(() => v$.value.$invalid || !focused.value);
 
-  const setError = (fieldName:string):undefined|{ variant: string, message: any } => {
-    if (v$.value[fieldName]?.$error) {
-      return { variant: 'error', message: v$.value[fieldName].$errors[0].$message };
-    } if (serverFormErrors.value[fieldName]) {
-      return { variant: 'error', message: serverFormErrors.value[fieldName][0] };
-    }
-    return undefined;
-  };
-
-  const onFocus = (fieldName:string):void => {
+  const focusField = (fieldName:string):void => {
     focused.value = true;
-    if (serverFormErrors.value[fieldName]) {
-      serverFormErrors.value[fieldName] = undefined;
-    }
+    onFocus(fieldName);
   };
 
   const changePersonalData = async ():Promise<void> => {
