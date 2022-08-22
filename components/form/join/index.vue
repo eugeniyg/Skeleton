@@ -79,7 +79,12 @@
   const registrationFormData = reactive(setFormData(registrationFields.value));
   if (registrationFormData.hasOwnProperty('nickname')) registrationFormData.nickname = 'undefined';
   if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
-  if (registrationFormData.hasOwnProperty('country')) registrationFormData.country = 'NL';
+  if (registrationFormData.hasOwnProperty('country')) {
+    const { initUserInfo, countries } = useGlobalStore();
+    if (countries.find((country) => country.code === initUserInfo.country)) {
+      registrationFormData.country = initUserInfo.country;
+    }
+  }
 
   const { getFormRules, createValidationRules } = useProjectMethods();
   const registrationRules = createValidationRules(registrationFields.value, true);

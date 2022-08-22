@@ -98,6 +98,13 @@
         loginError.value = true;
       } else if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
+      } else if (error.response?.status === 403) {
+        const { showAlert } = useLayoutStore();
+        showAlert({
+          title: 'Error',
+          text: 'Sorry, but your account is blocked. Please, contact our support team for more information.',
+          variant: 'error',
+        });
       } else throw error;
     } finally {
       isLockedAsyncButton.value = false;

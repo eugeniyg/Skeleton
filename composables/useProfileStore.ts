@@ -34,6 +34,11 @@ export const useProfileStore = defineStore('profileStore', {
     userNickname():string {
       return this.profile.nickname || 'Unknown';
     },
+
+    playerStatusName():string {
+      const { playerStatuses } = useCoreStore();
+      return playerStatuses.find((status) => status.id === this.profile?.status)?.name;
+    },
   },
 
   actions: {
@@ -42,28 +47,32 @@ export const useProfileStore = defineStore('profileStore', {
       bearer.value = authData.accessToken;
       this.sessionId = authData.sessionId;
       this.profile = authData.profile;
+      const { reconnectSocket } = useWebSocket();
+      reconnectSocket();
     },
 
     async logIn(loginData:any):Promise<void> {
       const { submitLoginData } = useCoreAuthApi();
-      const { getUserAccounts } = useWalletStore();
+      const { getUserAccounts, subscribeAccountSocket } = useWalletStore();
       const submitResult = await submitLoginData(loginData);
       this.setToken(submitResult);
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
+      subscribeAccountSocket();
       const { getFavoriteGames } = useGamesStore();
       getFavoriteGames();
     },
 
     async registration(registrationData:any):Promise<void> {
       const { submitRegistrationData } = useCoreAuthApi();
-      const { getUserAccounts } = useWalletStore();
+      const { getUserAccounts, subscribeAccountSocket } = useWalletStore();
       const submitResult = await submitRegistrationData(registrationData);
       this.setToken(submitResult);
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
+      subscribeAccountSocket();
       const { showAlert } = useLayoutStore();
       showAlert({
         title: 'Welcome',
@@ -83,14 +92,16 @@ export const useProfileStore = defineStore('profileStore', {
       this.profile = data;
     },
 
-    async logOutUser():Promise<void> {
+    async logOutUser(needRequest:boolean = true):Promise<void> {
       const { logOut } = useCoreAuthApi();
       const bearer = useCookie('bearer');
       try {
-        await logOut();
+        if (needRequest) await logOut();
       } finally {
         bearer.value = undefined;
         this.isLoggedIn = false;
+        const { unsubscribeAccountSocket } = useWalletStore();
+        unsubscribeAccountSocket();
         const router = useRouter();
         const { localizePath } = useProjectMethods();
         router.push(localizePath('/'));

@@ -3,6 +3,7 @@
     <div class="promo-card-wrapper">
       <card-promo v-bind="promoCard" />
     </div>
+
     <cards-group v-bind="benCards">
       <template v-slot:card="item">
         <card-benefit v-bind="item" />

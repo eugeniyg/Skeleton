@@ -46,6 +46,7 @@
       <modal-register />
       <modal-sign-in />
       <modal-forgot-pass />
+      <modal-reset-pass />
       <modal-deposit />
       <modal-withdraw />
       <modal-success />
@@ -77,12 +78,13 @@
     await navigateTo(`/${cookieLanguage.value}${route.fullPath === '/' ? '' : route.fullPath}`, { replace: true });
   }
 
-  const { getCommonData } = useGlobalStore();
+  const { getCommonData, getInitUserInformation } = useGlobalStore();
   const { getValidationMessages, getFieldsContent } = useFieldsStore();
 
   useLazyAsyncData('validationMessages', getValidationMessages);
   useLazyAsyncData('fieldsContent', getFieldsContent);
   useLazyAsyncData('commonData', getCommonData);
+  useLazyAsyncData('initUserData', getInitUserInformation);
 
   const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT', { maxAge: 60 * 60 * 24 * 365 * 10 });
   const layoutStore = useLayoutStore();

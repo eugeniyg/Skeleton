@@ -15,9 +15,9 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  // definePageMeta({
-  //   middleware: ['auth'],
-  // });
+  definePageMeta({
+    middleware: ['status-limited'],
+  });
 
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
@@ -42,31 +42,43 @@
   };
 
   const profileStore = useProfileStore();
-  const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal } = useLayoutStore();
+  const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
+  const { showModal, showPlayLimitAlert } = useLayoutStore();
+
+  const redirectLimitedPlayer = ():void => {
+    const { localizePath } = useProjectMethods();
+    const router = useRouter();
+    router.replace(localizePath('/'));
+    showPlayLimitAlert();
+  };
 
   onMounted(async () => {
     if (isMobile.value) {
       document.querySelector('footer').style.display = 'none';
     }
 
-    walletStore.updateAccounts();
-
     if (!isLoggedIn.value) {
       showModal('register');
+    } else if (playerStatusName.value === 'Limited') {
+      redirectLimitedPlayer();
     } else {
       await startGame();
     }
   });
 
   watch(() => isLoggedIn.value, async (newValue:boolean) => {
-    if (newValue) {
+    if (!newValue) return;
+
+    if (playerStatusName.value === 'Limited') {
+      setTimeout(() => {
+        redirectLimitedPlayer();
+      });
+    } else {
       await startGame();
     }
   });
 
   onBeforeUnmount(() => {
-    walletStore.stopUpdateAccounts();
     document.querySelector('footer').style.display = null;
   });
 </script>

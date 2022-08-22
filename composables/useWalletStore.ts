@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { AccountInterface, AccountRequestInterface } from '@platform/frontend-core/dist/module';
+import { AccountInterface, AccountRequestInterface, WebSocketResponseInterface } from '@platform/frontend-core/dist/module';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 
@@ -13,7 +13,8 @@ export type WalletStateType = {
     Inactive: 2,
     Hidden: 3,
     Disabled: 4,
-  }
+  },
+  accountSubscription: any,
 }
 
 export const useWalletStore = defineStore('walletStore', {
@@ -22,6 +23,7 @@ export const useWalletStore = defineStore('walletStore', {
     depositMethods: [],
     withdrawMethods: [],
     requestTimer: '',
+    accountSubscription: undefined,
   } as WalletStateType),
 
   getters: {
@@ -75,18 +77,27 @@ export const useWalletStore = defineStore('walletStore', {
       this.withdrawMethods = data;
     },
 
-    async updateAccounts():Promise<void> {
-      const { isLoggedIn } = useProfileStore();
-      if (isLoggedIn) await this.getUserAccounts();
-      this.requestTimer = setTimeout(() => {
-        this.updateAccounts();
-      }, 5000);
+    subscribeAccountSocket():void {
+      const profileStore = useProfileStore();
+      if (profileStore.profile?.id) {
+        const { createSubscription } = useWebSocket();
+        this.accountSubscription = createSubscription(`wallet:accounts#${profileStore.profile.id}`, this.updateAccount);
+      }
     },
 
-    stopUpdateAccounts():void {
-      const { isLoggedIn } = useProfileStore();
-      clearTimeout(this.requestTimer);
-      if (isLoggedIn) this.getUserAccounts();
+    unsubscribeAccountSocket():void {
+      if (this.accountSubscription) {
+        this.accountSubscription.unsubscribe();
+        this.accountSubscription.removeAllListeners();
+      }
+    },
+
+    updateAccount(webSocketResponse:WebSocketResponseInterface):void {
+      const accountData:AccountInterface = webSocketResponse.data.account;
+      this.accounts = this.accounts.map((account) => {
+        if (account.id === accountData.id) return accountData;
+        return account;
+      });
     },
   },
 });
