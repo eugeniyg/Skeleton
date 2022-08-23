@@ -78,12 +78,20 @@
   const registrationFormData = reactive(setFormData(registrationFields.value));
   if (registrationFormData.hasOwnProperty('nickname')) registrationFormData.nickname = 'undefined';
   if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
-  if (registrationFormData.hasOwnProperty('country')) {
-    const { initUserInfo, countries } = useGlobalStore();
-    if (countries.find((country) => country.code === initUserInfo.country)) {
-      registrationFormData.country = initUserInfo.country;
+
+  const globalStore = useGlobalStore();
+  const { initUserInfo, countries } = storeToRefs(globalStore);
+  const checkInitCountry = ():void => {
+    if (registrationFormData.hasOwnProperty('country') && !registrationFormData.country) {
+      if (countries.value.find((country) => country.code === initUserInfo.value?.country)) {
+        registrationFormData.country = initUserInfo.value.country;
+      }
     }
-  }
+  };
+  checkInitCountry();
+  watch(() => initUserInfo.value, () => {
+    checkInitCountry();
+  });
 
   const { getFormRules, createValidationRules } = useProjectMethods();
   const registrationRules = createValidationRules(registrationFields.value, true);

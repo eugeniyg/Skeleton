@@ -1,7 +1,8 @@
 <template>
   <vue-final-modal
     v-model="modals.withdraw"
-    @beforeOpen="formKey++"
+    @beforeOpen="showForm = true"
+    @closed="showForm = false"
     esc-to-close
   >
     <div class="modal-withdraw">
@@ -22,7 +23,7 @@
           </div>
 
           <atomic-titles :title="currentMethod.names?.en"/>
-          <form-withdraw :key="formKey" v-bind="currentMethod" />
+          <form-withdraw v-if="showForm" v-bind="currentMethod" />
 
           <!--          <form>-->
           <!--            <form-input-number-->
@@ -124,7 +125,7 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { closeModal } = layoutStore;
   const { withdrawMethods } = storeToRefs(walletStore);
-  const formKey = ref<number>(0);
+  const showForm = ref<boolean>(false);
   const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
 
   watch(() => withdrawMethods.value, () => {

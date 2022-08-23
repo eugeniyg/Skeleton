@@ -1,7 +1,8 @@
 <template>
   <vue-final-modal
     v-model="modals.resetPass"
-    @beforeOpen="formKey++"
+    @beforeOpen="showForm = true"
+    @closed="showForm = false"
     esc-to-close
   >
     <div class="modal-reset-pass">
@@ -11,7 +12,7 @@
           <div class="title">Reset account <br> password</div>
         </div>
 
-        <form-reset-pass :key="formKey" />
+        <form-reset-pass v-if="showForm" />
       </div>
     </div>
   </vue-final-modal>
@@ -23,7 +24,7 @@
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-  const formKey = ref<number>(0);
+  const showForm = ref<boolean>(false);
 </script>
 
 <style lang="scss" src="./style.scss"/>

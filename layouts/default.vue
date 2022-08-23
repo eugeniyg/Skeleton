@@ -84,7 +84,6 @@
   useLazyAsyncData('validationMessages', getValidationMessages);
   useLazyAsyncData('fieldsContent', getFieldsContent);
   useLazyAsyncData('commonData', getCommonData);
-  useLazyAsyncData('initUserData', getInitUserInformation);
 
   const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT', { maxAge: 60 * 60 * 24 * 365 * 10 });
   const layoutStore = useLayoutStore();
@@ -117,7 +116,7 @@
     && route.path !== localizePath('/betting'));
 
   const timer = ref<any>();
-  onMounted(() => {
+  onMounted(async () => {
     document.body.classList.remove('stop-transition');
 
     const cookieValue = useCookie('accept-cookie');
@@ -126,6 +125,7 @@
         showCookiePopup.value = true;
       }, 1500);
     }
+    await getInitUserInformation();
   });
 
   onBeforeUnmount(() => {

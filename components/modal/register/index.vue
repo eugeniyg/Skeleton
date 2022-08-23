@@ -1,7 +1,8 @@
 <template>
   <vue-final-modal
     v-model="modals.register"
-    @beforeOpen="formKey++"
+    @beforeOpen="showForm = true"
+    @closed="showForm = false"
     esc-to-close
   >
     <div class="modal-register">
@@ -15,7 +16,7 @@
             <button-modal-close @close="closeModal('register')"/>
             <div class="title">Join Slotsbet</div>
           </div>
-          <form-join :key="formKey" :show="modals.register"/>
+          <form-join v-if="showForm"/>
         </div>
       </div>
     </div>
@@ -25,10 +26,10 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
+  const showForm = ref<boolean>(false);
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-  const formKey = ref<number>(0);
 </script>
 
 <style lang="scss" src="./style.scss"/>
