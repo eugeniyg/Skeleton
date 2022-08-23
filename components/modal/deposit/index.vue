@@ -1,7 +1,8 @@
 <template>
   <vue-final-modal
     v-model="modals.deposit"
-    @beforeOpen="formKey++"
+    @beforeOpen="showForm = true"
+    @closed="showForm = false"
     esc-to-close
   >
     <div class="modal-deposit">
@@ -20,7 +21,7 @@
             <button-modal-close @close="closeModal('deposit')"/>
             <div class="title">Deposit</div>
           </div>
-          <form-deposit :key="formKey" v-bind="currentMethod"/>
+          <form-deposit v-if="showForm" v-bind="currentMethod"/>
           <!--          <form-deposit-additional/>-->
           <!--          <form-deposit-crypto/>-->
         </div>
@@ -41,7 +42,7 @@
   const { closeModal } = layoutStore;
   const { depositMethods } = storeToRefs(walletStore);
   const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
-  const formKey = ref<number>(0);
+  const showForm = ref<boolean>(false);
 
   watch(() => depositMethods.value, () => {
     currentMethod.value = depositMethods.value[0] || {};
