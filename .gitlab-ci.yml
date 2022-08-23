@@ -21,5 +21,5 @@ stages:
     - aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_REGISTRY
   script:
     - aws ecr describe-repositories --repository-names $SERVICE_NAME || aws ecr create-repository --repository-name $SERVICE_NAME
-    - docker build -t $ECR_REGISTRY/$SERVICE_NAME:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA --build-arg NPM_TOKEN=$CI_JOB_TOKEN .
+    - docker build -t $ECR_REGISTRY/$SERVICE_NAME:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA --build-arg NPM_TOKEN=$NPM_TOKEN .
     - docker push $ECR_REGISTRY/$SERVICE_NAME:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA
