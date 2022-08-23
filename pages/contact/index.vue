@@ -13,22 +13,22 @@
     </div>
     <div class="form">
       <form-input-text
-        v-model:value="state.email"
+        v-model:value="contactFormData.email"
         type="email"
         name="email"
         :label="fieldsContent.email.label || ''"
         :placeholder="fieldsContent.email.placeholder || ''"
         :hint="setError('email')"
-        @blur="onBlur('email')"
+        @blur="v$.email?.$touch()"
       />
 
       <form-input-textarea
-        v-model:value="state.message"
+        v-model:value="contactFormData.message"
         name="message"
         :label="fieldsContent.message.label || ''"
         :placeholder="fieldsContent.message.placeholder || ''"
         :hint="setError('message')"
-        @blur="onBlur('message')"
+        @blur="v$.message?.$touch()"
       />
 
       <button-base
@@ -43,13 +43,12 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import useVuelidate from '@vuelidate/core';
 
   const layoutStore = useLayoutStore();
   const fieldsStore = useFieldsStore();
   const { fieldsContent } = storeToRefs(fieldsStore);
 
-  const state = reactive({
+  const contactFormData = reactive({
     email: '',
     message: '',
   });
@@ -61,18 +60,7 @@
 
   const { getFormRules } = useProjectMethods();
   const contactUsFormRules = getFormRules(contactUsRules);
-  const v$ = useVuelidate(contactUsFormRules, state);
-
-  const onBlur = (fieldName:string):void => {
-    v$.value[fieldName]?.$touch();
-  };
-
-  const setError = (fieldName:string):undefined|{ variant: string, message: any } => {
-    if (v$.value[fieldName]?.$error) {
-      return { variant: 'error', message: v$.value[fieldName].$errors[0].$message };
-    }
-    return undefined;
-  };
+  const { v$, setError } = useFormValidation(contactUsFormRules, contactFormData);
 
   const submitContactForm = async ():Promise<void> => {
     if (v$.value.$invalid) return;
@@ -87,8 +75,8 @@
       variant: 'done',
     });
 
-    state.email = '';
-    state.message = '';
+    contactFormData.email = '';
+    contactFormData.message = '';
     v$.value.$reset();
   };
 </script>

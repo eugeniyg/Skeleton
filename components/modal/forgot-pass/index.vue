@@ -1,7 +1,8 @@
 <template>
   <vue-final-modal
     v-model="modals.forgotPass"
-    @beforeOpen="formKey++"
+    @beforeOpen="showForm = true"
+    @closed="showForm = false"
     esc-to-close
   >
     <div class="modal-forgot-pass">
@@ -19,7 +20,7 @@
         <p class="text">
           Enter your email address and we will send you a password reset link.
         </p>
-        <form-forgot-pass :key="formKey" />
+        <form-forgot-pass v-if="showForm" />
       </div>
     </div>
   </vue-final-modal>
@@ -31,7 +32,7 @@
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal, showModal } = layoutStore;
-  const formKey = ref<number>(0);
+  const showForm = ref<boolean>(false);
 
   const returnLoginModal = () => {
     showModal('signIn');

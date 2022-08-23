@@ -10,6 +10,7 @@
       :hint="setError('newPassword')"
       @blur="v$.newPassword?.$touch()"
       @focus="onFocus('newPassword')"
+      @input="inputNewPassword"
     />
 
     <form-input-password
@@ -38,7 +39,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import useVuelidate from '@vuelidate/core';
 
   const fieldsStore = useFieldsStore();
   const { fieldsContent } = storeToRefs(fieldsStore);
@@ -51,22 +51,16 @@
   const { getFormRules, createValidationRules } = useProjectMethods();
   const resetRules = createValidationRules(Object.keys(resetFormData).map((field) => ({ name: field })));
   const resetFormRules = getFormRules(resetRules);
-  const serverFormErrors = ref<any>({});
-  const v$ = useVuelidate(resetFormRules, resetFormData);
+  const {
+    serverFormErrors, v$, onFocus, setError,
+  } = useFormValidation(resetFormRules, resetFormData);
 
-  const onFocus = (fieldName:string):void => {
-    if (serverFormErrors.value[fieldName]) {
-      serverFormErrors.value[fieldName] = undefined;
+  const inputNewPassword = ():void => {
+    if (v$.value.repeatNewPassword.$dirty) {
+      const oldValue = resetFormData.repeatNewPassword;
+      resetFormData.repeatNewPassword = '';
+      resetFormData.repeatNewPassword = oldValue;
     }
-  };
-
-  const setError = (fieldName:string):undefined|{ variant: string, message: any } => {
-    if (v$.value[fieldName]?.$error) {
-      return { variant: 'error', message: v$.value[fieldName].$errors[0].$message };
-    } if (serverFormErrors.value[fieldName]) {
-      return { variant: 'error', message: serverFormErrors.value[fieldName][0] };
-    }
-    return undefined;
   };
 
   const { closeModal, showAlert } = useLayoutStore();

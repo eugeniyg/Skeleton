@@ -64,7 +64,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import useVuelidate from '@vuelidate/core';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
@@ -79,35 +78,29 @@
   const registrationFormData = reactive(setFormData(registrationFields.value));
   if (registrationFormData.hasOwnProperty('nickname')) registrationFormData.nickname = 'undefined';
   if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
-  if (registrationFormData.hasOwnProperty('country')) {
-    const { initUserInfo, countries } = useGlobalStore();
-    if (countries.find((country) => country.code === initUserInfo.country)) {
-      registrationFormData.country = initUserInfo.country;
+
+  const globalStore = useGlobalStore();
+  const { initUserInfo, countries } = storeToRefs(globalStore);
+  const checkInitCountry = ():void => {
+    if (registrationFormData.hasOwnProperty('country') && !registrationFormData.country) {
+      if (countries.value.find((country) => country.code === initUserInfo.value?.country)) {
+        registrationFormData.country = initUserInfo.value.country;
+      }
     }
-  }
+  };
+  checkInitCountry();
+  watch(() => initUserInfo.value, () => {
+    checkInitCountry();
+  });
 
   const { getFormRules, createValidationRules } = useProjectMethods();
   const registrationRules = createValidationRules(registrationFields.value, true);
   const registrationFormRules = getFormRules(registrationRules);
-  const serverFormErrors = ref<any>({});
-  const v$ = useVuelidate(registrationFormRules, registrationFormData);
-
-  const onFocus = (fieldName:string):void => {
-    if (serverFormErrors.value[fieldName]) {
-      serverFormErrors.value[fieldName] = undefined;
-    }
-  };
+  const {
+    serverFormErrors, v$, onFocus, setError,
+  } = useFormValidation(registrationFormRules, registrationFormData);
 
   const showPromoInput = ref<boolean>(false);
-
-  const setError = (fieldName:string):undefined|{ variant: string, message: any } => {
-    if (v$.value[fieldName]?.$error) {
-      return { variant: 'error', message: v$.value[fieldName].$errors[0].$message };
-    } if (serverFormErrors.value[fieldName]) {
-      return { variant: 'error', message: serverFormErrors.value[fieldName][0] };
-    }
-    return undefined;
-  };
 
   const { registration } = useProfileStore();
   const isLockedAsyncButton = ref<boolean>(false);
