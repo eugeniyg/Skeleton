@@ -1,0 +1,120 @@
+{
+  "repeatNewPassword": {
+    "label": "New password again",
+    "placeholder": "Re-enter new password"
+  },
+  "placeOfBirth": {
+    "label": "Place of birth",
+    "placeholder": "Enter your place of birth"
+  },
+  "lastName": {
+    "label": "Last name",
+    "placeholder": "Enter last name"
+  },
+  "gender": {
+    "label": "Gender",
+    "placeholder": "Enter gender"
+  },
+  "personalIdNumber": {
+    "label": "Personal ID number",
+    "placeholder": "Identity reference number (if available)"
+  },
+  "securityQuestion": {
+    "label": "Security Question",
+    "placeholder": "Enter your security question"
+  },
+  "message": {
+    "label": "Text",
+    "placeholder": "Enter your message"
+  },
+  "agreements": {
+    "label": "I accept the <a href=\"/terms-and-conditions\"> Terms and Conditions</a> and <a href=\"/privacy-policy\">Privacy Policy</a>"
+  },
+  "city": {
+    "label": "City",
+    "placeholder": "Your city"
+  },
+  "bonusCode": {
+    "label": "Code (optional)",
+    "placeholder": "Enter code"
+  },
+  "birthdate": {
+    "label": "Date of Birth",
+    "placeholder": "Birth date"
+  },
+  "additionalAddress": {
+    "label": "Additional Address",
+    "placeholder": "Enter your additional address"
+  },
+  "nickname": {
+    "label": "Nickname",
+    "placeholder": "Enter your nickname"
+  },
+  "phone": {
+    "label": "Mobile phone",
+    "placeholder": "Phone number"
+  },
+  "currency": {
+    "label": "Currency",
+    "placeholder": "Select your currency"
+  },
+  "currentPassword": {
+    "label": "Current password",
+    "placeholder": "Enter your current password"
+  },
+  "address": {
+    "label": "Address",
+    "placeholder": "Enter your address"
+  },
+  "receiveEmailPromo": {
+    "label": "Send promos by Email"
+  },
+  "country": {
+    "label": "Country",
+    "placeholder": "Select your country"
+  },
+  "postalCode": {
+    "label": "Postal code",
+    "placeholder": "Postal code"
+  },
+  "language": {
+    "label": "Language",
+    "placeholder": "Enter your language"
+  },
+  "timeZone": {
+    "label": "Time Zone",
+    "placeholder": "Select time zone"
+  },
+  "receiveSmsPromo": {
+    "label": "Send promos by SMS"
+  },
+  "locale": "en",
+  "newPassword": {
+    "label": "New password",
+    "placeholder": "Enter new password"
+  },
+  "firstName": {
+    "label": "First name",
+    "placeholder": "Enter first name"
+  },
+  "password": {
+    "label": "Password",
+    "placeholder": "Enter your password"
+  },
+  "profession": {
+    "label": "Profession",
+    "placeholder": "Enter your profession"
+  },
+  "nationality": {
+    "label": "Nationality",
+    "placeholder": "Enter your nationality"
+  },
+  "email": {
+    "label": "Email Address",
+    "placeholder": "Enter your email"
+  },
+  "securityAnswer": {
+    "label": "Security Answer",
+    "placeholder": "Enter an answer to your security question"
+  }
+}
