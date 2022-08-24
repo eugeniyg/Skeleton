@@ -71,7 +71,9 @@
   const { setFormData } = useCoreMethods();
   const { showModal, closeModal } = useLayoutStore();
   const fieldsStore = useFieldsStore();
-  const { fieldsContent, selectOptions, registrationFields } = storeToRefs(fieldsStore);
+  const { selectOptions, registrationFields } = storeToRefs(fieldsStore);
+  const globalStore = useGlobalStore();
+  const { initUserInfo, countries, fieldsContent } = storeToRefs(globalStore);
 
   const mainFields = registrationFields.value.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = registrationFields.value.filter((field) => groupFooterFields.includes(field.name));
@@ -79,8 +81,6 @@
   if (registrationFormData.hasOwnProperty('nickname')) registrationFormData.nickname = 'undefined';
   if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
 
-  const globalStore = useGlobalStore();
-  const { initUserInfo, countries } = storeToRefs(globalStore);
   const checkInitCountry = ():void => {
     if (registrationFormData.hasOwnProperty('country') && !registrationFormData.country) {
       if (countries.value.find((country) => country.code === initUserInfo.value?.country)) {

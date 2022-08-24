@@ -30,8 +30,8 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const fieldsStore = useFieldsStore();
-  const { fieldsContent } = storeToRefs(fieldsStore);
+  const globalStore = useGlobalStore();
+  const { fieldsContent } = storeToRefs(globalStore);
 
   const forgotFormData = reactive({ email: '' });
   const { getFormRules } = useProjectMethods();

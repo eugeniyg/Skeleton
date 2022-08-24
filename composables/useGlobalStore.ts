@@ -18,6 +18,8 @@ export type GlobalStoreStateType = {
   browserLanguage: string,
   baseApiUrl: string,
   initUserInfo: InitUserInfoInterface,
+  validationMessages: any,
+  fieldsContent: any,
 }
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -31,6 +33,8 @@ export const useGlobalStore = defineStore('globalStore', {
     browserLanguage: 'en',
     baseApiUrl: '',
     initUserInfo: undefined,
+    validationMessages: {},
+    fieldsContent: {},
   } as GlobalStoreStateType),
 
   getters: {
@@ -97,6 +101,15 @@ export const useGlobalStore = defineStore('globalStore', {
       const { getInitUserInfo } = useCoreGlobalApi();
       const data = await getInitUserInfo();
       this.initUserInfo = data;
+    },
+
+    async getGlobalContent():Promise<void> {
+      const [validations, fieldsData] = await Promise.allSettled([
+        queryContent(`validations/${this.currentLocale.code}`).findOne(),
+        queryContent(`fields/${this.currentLocale.code}`).findOne(),
+      ]);
+      if (validations.status !== 'rejected') this.validationMessages = validations.value;
+      if (fieldsData.status !== 'rejected') this.fieldsContent = fieldsData.value;
     },
   },
 });

@@ -26,7 +26,7 @@
       @submit="login"
     />
 
-    <atomic-hint v-if="loginError" variant="error" :message="validationMessages.login" />
+    <atomic-hint v-if="loginError" variant="error" :message="validationMessages.login || ''" />
 
     <button-base
       type="primary"
@@ -47,8 +47,8 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const fieldsStore = useFieldsStore();
-  const { fieldsContent, validationMessages } = storeToRefs(fieldsStore);
+  const globalStore = useGlobalStore();
+  const { validationMessages, fieldsContent } = storeToRefs(globalStore);
   const { showModal, closeModal } = useLayoutStore();
 
   const authorizationFormData = reactive({ email: '', password: '' });

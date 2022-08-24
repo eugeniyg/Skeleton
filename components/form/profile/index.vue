@@ -66,8 +66,10 @@
   const fieldsStore = useFieldsStore();
   const { setFormData } = useCoreMethods();
   const { changeProfileData } = useCoreProfileApi();
+  const globalStore = useGlobalStore();
 
-  const { fieldsContent, selectOptions, profileFields } = storeToRefs(fieldsStore);
+  const { selectOptions, profileFields } = storeToRefs(fieldsStore);
+  const { fieldsContent } = storeToRefs(globalStore);
 
   const fieldsWithValue = profileFields.value.map((field) => ({ ...field, value: profile.value[field.name] }));
   const cleanFields = fieldsWithValue.filter((field) => !hideFields.includes(field.name));

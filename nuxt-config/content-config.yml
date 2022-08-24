@@ -1,0 +1,272 @@
+backend:
+  repo: platform/customer-frontends/slotsbet
+  branch: dev
+collections:
+  - name: validationMessages
+    label: Validation Messages
+    create: true
+    identifier_field: locale
+    extension: json
+    format: json
+    folder: content/validations
+    editor:
+      preview: false
+    fields:
+      - name: locale
+        label: Locale (settings)
+        widget: string
+        hint: Rules will be use for LOCALE. You have props "param", "min", "max".
+          You need to wrap your prop to {}, like {param}. param - params of validation rule;
+      - name: countryCode
+        label: Country Code
+        widget: string
+      - name: languageCode
+        label: Language Code
+        widget: string
+      - name: minAge
+        label: Min Age
+        widget: string
+      - name: maxAge
+        label: Max Age
+        widget: string
+      - name: phone
+        label: Phone
+        widget: string
+      - name: lowercase
+        label: Lowercase
+        widget: string
+      - name: uppercase
+        label: Uppercase
+        widget: string
+      - name: accepted
+        label: Accepted
+        widget: string
+      - name: declined
+        label: Declined
+        widget: string
+      - name: before
+        label: Before (date)
+        widget: string
+      - name: before_or_equal
+        label: Before or Equal (date)
+        widget: string
+      - name: after
+        label: After (date)
+        widget: string
+      - name: after_or_equal
+        label: After or Equal (date)
+        widget: string
+      - name: alpha
+        label: Alpha
+        widget: string
+      - name: alpha_dash
+        label: Alpha Dash
+        widget: string
+      - name: alpha_num
+        label: Alpha Num
+        widget: string
+      - name: array
+        label: Array
+        widget: string
+      - name: boolean
+        label: Boolean
+        widget: string
+      - name: confirmed
+        label: Confirmed
+        widget: string
+      - name: date
+        label: Date
+        widget: string
+      - name: date_equals
+        label: Date Equals
+        widget: string
+      - name: different
+        label: Defferent
+        widget: string
+      - name: digits
+        label: Digits
+        widget: string
+      - name: digits_between
+        label: Digits Between
+        widget: string
+      - name: email
+        label: Email
+        widget: string
+      - name: ip
+        label: IP
+        widget: string
+      - name: mac_address
+        label: Mac Address
+        widget: string
+      - name: max
+        label: Max
+        widget: string
+      - name: min
+        label: Min
+        widget: string
+      - name: numeric
+        label: Numeric
+        widget: string
+      - name: regex
+        label: Regex
+        widget: string
+      - name: not_regex
+        label: Not Regex
+        widget: string
+      - name: required
+        label: Required
+        widget: string
+      - name: required_if
+        label: Required If
+        widget: string
+      - name: string
+        label: String
+        widget: string
+      - name: url
+        label: Url
+        widget: string
+      - name: login
+        label: Login (invalid data error)
+        widget: string
+
+  - name: fields
+    label: Fields
+    create: true
+    identifier_field: locale
+    extension: json
+    format: json
+    folder: content/fields
+    __fields-variable: &fieldsObject
+      - name: label
+        label: Label
+        widget: string
+      - name: placeholder
+        label: Placeholder
+        widget: string
+        required: false
+    editor:
+      preview: false
+    fields:
+      - name: locale
+        label: Locale (settings)
+        widget: string
+      - name: password
+        label: Password
+        widget: object
+        fields: *fieldsObject
+      - name: currentPassword
+        label: Current Password
+        widget: object
+        fields: *fieldsObject
+      - name: newPassword
+        label: New Password
+        widget: object
+        fields: *fieldsObject
+      - name: repeatNewPassword
+        label: Repeat New Password
+        widget: object
+        fields: *fieldsObject
+      - name: firstName
+        label: First Name
+        widget: object
+        fields: *fieldsObject
+      - name: lastName
+        label: Last Name
+        widget: object
+        fields: *fieldsObject
+      - name: nationality
+        label: Nationality
+        widget: object
+        fields: *fieldsObject
+      - name: nickname
+        label: Nickname
+        widget: object
+        fields: *fieldsObject
+      - name: gender
+        label: Gender
+        widget: object
+        fields: *fieldsObject
+      - name: city
+        label: City
+        widget: object
+        fields: *fieldsObject
+      - name: address
+        label: Address
+        widget: object
+        fields: *fieldsObject
+      - name: additionalAddress
+        label: Additional Address
+        widget: object
+        fields: *fieldsObject
+      - name: postalCode
+        label: Postal Code
+        widget: object
+        fields: *fieldsObject
+      - name: timeZone
+        label: Time Zone
+        widget: object
+        fields: *fieldsObject
+      - name: profession
+        label: Profession
+        widget: object
+        fields: *fieldsObject
+      - name: language
+        label: Language
+        widget: object
+        fields: *fieldsObject
+      - name: bonusCode
+        label: Bonus Code
+        widget: object
+        fields: *fieldsObject
+      - name: securityQuestion
+        label: Security Question
+        widget: object
+        fields: *fieldsObject
+      - name: securityAnswer
+        label: Security Answer
+        widget: object
+        fields: *fieldsObject
+      - name: email
+        label: Email
+        widget: object
+        fields: *fieldsObject
+      - name: country
+        label: Country
+        widget: object
+        fields: *fieldsObject
+      - name: currency
+        label: Currency
+        widget: object
+        fields: *fieldsObject
+      - name: agreements
+        label: Agreements
+        widget: object
+        fields: *fieldsObject
+      - name: receiveEmailPromo
+        label: Receive Email Promo
+        widget: object
+        fields: *fieldsObject
+      - name: receiveSmsPromo
+        label: Receive Sms Promo
+        widget: object
+        fields: *fieldsObject
+      - name: phone
+        label: Phone
+        widget: object
+        fields: *fieldsObject
+      - name: birthdate
+        label: Birthdate
+        widget: object
+        fields: *fieldsObject
+      - name: placeOfBirth
+        label: Place of Birth
+        widget: object
+        fields: *fieldsObject
+      - name: personalIdNumber
+        label: Personal Id Number
+        widget: object
+        fields: *fieldsObject
+      - name: message
+        label: Message
+        widget: object
+        fields: *fieldsObject

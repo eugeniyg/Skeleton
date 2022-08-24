@@ -16,8 +16,8 @@
         v-model:value="contactFormData.email"
         type="email"
         name="email"
-        :label="fieldsContent.email.label || ''"
-        :placeholder="fieldsContent.email.placeholder || ''"
+        :label="fieldsContent.email?.label || ''"
+        :placeholder="fieldsContent.email?.placeholder || ''"
         :hint="setError('email')"
         @blur="v$.email?.$touch()"
       />
@@ -25,8 +25,8 @@
       <form-input-textarea
         v-model:value="contactFormData.message"
         name="message"
-        :label="fieldsContent.message.label || ''"
-        :placeholder="fieldsContent.message.placeholder || ''"
+        :label="fieldsContent.message?.label || ''"
+        :placeholder="fieldsContent.message?.placeholder || ''"
         :hint="setError('message')"
         @blur="v$.message?.$touch()"
       />
@@ -45,8 +45,8 @@
   import { storeToRefs } from 'pinia';
 
   const layoutStore = useLayoutStore();
-  const fieldsStore = useFieldsStore();
-  const { fieldsContent } = storeToRefs(fieldsStore);
+  const globalStore = useGlobalStore();
+  const { fieldsContent } = storeToRefs(globalStore);
 
   const contactFormData = reactive({
     email: '',

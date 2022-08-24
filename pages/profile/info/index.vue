@@ -87,8 +87,8 @@
   const { profile, userNickname } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
   const fieldsStore = useFieldsStore();
-  const { fieldsContent, profileFields } = storeToRefs(fieldsStore);
-  const { countries } = storeToRefs(globalStore);
+  const { profileFields } = storeToRefs(fieldsStore);
+  const { countries, fieldsContent } = storeToRefs(globalStore);
   const route = useRoute();
   const router = useRouter();
 
