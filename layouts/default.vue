@@ -79,10 +79,6 @@
   }
 
   const { getCommonData, getInitUserInformation } = useGlobalStore();
-  const { getValidationMessages, getFieldsContent } = useFieldsStore();
-
-  useLazyAsyncData('validationMessages', getValidationMessages);
-  useLazyAsyncData('fieldsContent', getFieldsContent);
   useLazyAsyncData('commonData', getCommonData);
 
   const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT', { maxAge: 60 * 60 * 24 * 365 * 10 });

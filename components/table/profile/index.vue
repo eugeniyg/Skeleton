@@ -31,8 +31,10 @@
   ];
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
+  const globalStore = useGlobalStore();
+  const { fieldsContent } = storeToRefs(globalStore);
   const fieldsStore = useFieldsStore();
-  const { fieldsContent, profileFields } = storeToRefs(fieldsStore);
+  const { profileFields } = storeToRefs(fieldsStore);
   const profileViewFields = profileFields.value.filter((field) => !hideFields.includes(field.name));
 </script>
 

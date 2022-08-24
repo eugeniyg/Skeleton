@@ -3,6 +3,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     getCurrencies,
     getLocales,
     getCountries,
+    getGlobalContent,
   } = useGlobalStore();
   const { getRegistrationFields } = useFieldsStore();
   const { getGameProviders, getGameCollections } = useGamesStore();
@@ -22,6 +23,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         getGameProviders(),
         getGameCollections(),
       ]);
+      await getGlobalContent();
     } catch (error) {
       console.error(error);
       throw error;
