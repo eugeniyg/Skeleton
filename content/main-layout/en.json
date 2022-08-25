@@ -118,29 +118,6 @@
       }
     ]
   },
-  "mobileMenu": [
-    {
-      "label": "Menu"
-    },
-    {
-      "label": "Casino",
-      "url": "/main"
-    },
-    {
-      "label": "Login"
-    },
-    {
-      "label": "Deposit"
-    },
-    {
-      "label": "Sports",
-      "url": "/betting"
-    },
-    {
-      "label": "Support",
-      "url": "/contact"
-    }
-  ],
   "locale": "en",
   "header": {
     "loginButton": "Login",
