@@ -1,0 +1,239 @@
+{
+  "siteSidebar": {
+    "gamesToggler": [
+      {
+        "label": "Casino",
+        "url": "/main"
+      },
+      {
+        "label": "Sports",
+        "url": "/betting"
+      }
+    ],
+    "topMenuItems": [
+      {
+        "gameList": [],
+        "label": "Slots",
+        "url": "/games?category=slots"
+      },
+      {
+        "url": "/games?category=live",
+        "label": "Live Casino"
+      },
+      {
+        "label": "Table Games",
+        "url": "/games?category=table"
+      },
+      {
+        "url": "/games?category=turbogames",
+        "label": "Turbogames",
+        "gameList": [
+          "crash-x-turbo-games",
+          "dice-twice-turbo-games",
+          "mines-turbo-games"
+        ]
+      },
+      {
+        "label": "Sportsbook",
+        "url": "/betting"
+      }
+    ],
+    "profileMenu": {
+      "levelLabel": "lvl",
+      "depositButton": "Deposit",
+      "profileButton": {
+        "label": "Profile",
+        "url": "/profile/info"
+      }
+    },
+    "tokenMenuItems": [
+      {
+        "label": "SBT Token",
+        "url": "/sbt-token"
+      }
+    ],
+    "middleMenuItems": [
+      {
+        "label": "Bonuses",
+        "items": [
+          {
+            "url": "/welcome-package",
+            "label": "Welcome package"
+          },
+          {
+            "label": "Monday Reload Bonus",
+            "url": "/bonus/monday-reload-bonus"
+          },
+          {
+            "label": "Wednesday Free Spins",
+            "url": "/bonus/wednesday-free-spins"
+          },
+          {
+            "label": "Weekly Cashback",
+            "url": "/bonus/weekly-cashback"
+          }
+        ]
+      }
+    ],
+    "userMenuItems": [
+      {
+        "label": "Favorites",
+        "url": "/favorites"
+      },
+      {
+        "label": "Recently played",
+        "url": "/recently-played"
+      }
+    ],
+    "bottomMenuItems": [
+      {
+        "label": "Support",
+        "url": "/contact"
+      }
+    ],
+    "staticMenuItems": [
+      {
+        "label": "T&C",
+        "url": "/terms-and-conditions"
+      },
+      {
+        "label": "Bonus terms",
+        "url": "/bonus-terms"
+      },
+      {
+        "label": "F.A.Q",
+        "url": "/questions"
+      },
+      {
+        "label": "Privacy Policy",
+        "url": "/privacy-policy"
+      },
+      {
+        "label": "Gambling with responsibility",
+        "url": "/gambling-with-responsibility"
+      },
+      {
+        "label": "KYC Policy",
+        "url": "/kyc-policy"
+      }
+    ]
+  },
+  "locale": "en",
+  "header": {
+    "loginButton": "Login",
+    "registrationButton": "Registration",
+    "search": {
+      "placeholder": "Search your game",
+      "moreButton": "Load more",
+      "emptyLabel": "Nothing found",
+      "emptyText": "Try searching for something else",
+      "tryLabel": "Or try these popular games:"
+    },
+    "depositButton": "Deposit"
+  },
+  "userNavigation": {
+    "profileLinks": [
+      {
+        "label": "Wallet",
+        "url": "/profile/wallet"
+      },
+      {
+        "label": "Bonuses",
+        "url": "/profile/bonuses"
+      },
+      {
+        "label": "Profile info",
+        "url": "/profile/info"
+      },
+      {
+        "label": "History",
+        "url": "/profile/history"
+      }
+    ],
+    "logoutButton": "Log out"
+  },
+  "footer": {
+    "promoMenu": {
+      "title": "Promo",
+      "items": [
+        {
+          "label": "Welcome package",
+          "url": "/welcome-package"
+        },
+        {
+          "label": "Monday Reload Bonus",
+          "url": "/bonus/monday-reload-bonus"
+        },
+        {
+          "label": "Wednesday Free Spins",
+          "url": "/bonus/wednesday-free-spins"
+        },
+        {
+          "label": "Weekly Cashback",
+          "url": "/bonus/weekly-cashback"
+        }
+      ]
+    },
+    "infoMenu": {
+      "title": "Info",
+      "items": [
+        {
+          "label": "T&C",
+          "url": "/terms-and-conditions"
+        },
+        {
+          "label": "Bonus Terms",
+          "url": "/bonus-terms"
+        },
+        {
+          "label": "Privacy Policy",
+          "url": "/privacy-policy"
+        },
+        {
+          "label": "Gambling with responsibility",
+          "url": "/gambling-with-responsibility"
+        },
+        {
+          "label": "KYC Policy",
+          "url": "/kyc-policy"
+        }
+      ]
+    },
+    "helpMenu": {
+      "title": "Help",
+      "items": [
+        {
+          "label": "F.A.Q",
+          "url": "/questions"
+        },
+        {
+          "label": "Contact us",
+          "url": "/contact"
+        }
+      ]
+    },
+    "responsibilityLabel": "Gambling with responsibility",
+    "copyright": "© 2022 Slotsbet.io | All Rights Reserved."
+  },
+  "cookiePopup": {
+    "text": "We use cookies to improve your experience. By using our website you are accepting our [Terms and Conditions](/terms-and-conditions) and [Privacy Policy](/privacy-policy)",
+    "acceptButton": "Accept"
+  },
+  "mobileMenu": {
+    "menuLabel": "Menu",
+    "items": [
+      {
+        "label": "Casino",
+        "url": "/main"
+      },
+      {
+        "label": "Sports",
+        "url": "/betting"
+      },
+      {
+        "label": "Support",
+        "url": "/contact"
+      }
+    ]
+  }
+}
