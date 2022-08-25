@@ -218,5 +218,22 @@
   "cookiePopup": {
     "text": "We use cookies to improve your experience. By using our website you are accepting our [Terms and Conditions](/terms-and-conditions) and [Privacy Policy](/privacy-policy)",
     "acceptButton": "Accept"
+  },
+  "mobileMenu": {
+    "menuLabel": "Menu",
+    "items": [
+      {
+        "label": "Casino",
+        "url": "/main"
+      },
+      {
+        "label": "Sports",
+        "url": "/betting"
+      },
+      {
+        "label": "Support",
+        "url": "/contact"
+      }
+    ]
   }
 }
