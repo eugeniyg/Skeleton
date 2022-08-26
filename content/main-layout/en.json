@@ -39,7 +39,7 @@
       }
     ],
     "profileMenu": {
-      "levelLabel": "lvl",
+      "levelLabel": "lvl.",
       "depositButton": "Deposit",
       "profileButton": {
         "label": "Profile",
