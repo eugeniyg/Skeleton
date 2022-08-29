@@ -2,23 +2,6 @@
   "locale": "en",
   "slider": [
     {
-      "images": {
-        "mobile": {
-          "backgroundImage": "/img/uploads/1-mobile-background.png",
-          "faceImage": "/img/uploads/1-mobile-face.png"
-        },
-        "desktop": {
-          "backgroundImage": "/img/uploads/1-desktop-background.png",
-          "faceImage": "/img/uploads/1-desktop-face.png"
-        }
-      },
-      "slideStatus": "Published",
-      "title": "#### Welcome package<br>Get 5 BTC + 300 FS",
-      "button": {
-        "label": "Get bonus"
-      }
-    },
-    {
       "slideStatus": "Published",
       "title": "##### Choose the safest crypto casino",
       "content": "* Provably fair slots & games;\n* 24/7 Live Chat Support;\n* Privacy and security.",
@@ -34,6 +17,23 @@
           "backgroundImage": "/img/uploads/2-desktop-backgroun.png",
           "faceImage": "/img/uploads/2-desktop-face.png"
         }
+      }
+    },
+    {
+      "images": {
+        "mobile": {
+          "backgroundImage": "/img/uploads/1-mobile-background.png",
+          "faceImage": "/img/uploads/1-mobile-face.png"
+        },
+        "desktop": {
+          "backgroundImage": "/img/uploads/1-desktop-background.png",
+          "faceImage": "/img/uploads/1-desktop-face.png"
+        }
+      },
+      "slideStatus": "Published",
+      "title": "#### Welcome package<br>Get 5 BTC + 300 FS",
+      "button": {
+        "label": "Get bonus"
       }
     },
     {
