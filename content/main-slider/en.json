@@ -17,6 +17,24 @@
       "button": {
         "label": "Get bonus"
       }
+    },
+    {
+      "slideStatus": "Published",
+      "title": "##### Choose the safest crypto casino",
+      "content": "* Provably fair slots & games;\n* 24/7 Live Chat Support;\n* Privacy and security.",
+      "button": {
+        "label": "Get bonus"
+      },
+      "images": {
+        "mobile": {
+          "backgroundImage": "/img/uploads/2-mobile-background.png",
+          "faceImage": "/img/uploads/2-mobile-face.png"
+        },
+        "desktop": {
+          "backgroundImage": "/img/uploads/2-desktop-backgroun.png",
+          "faceImage": "/img/uploads/2-desktop-face.png"
+        }
+      }
     }
   ]
 }
