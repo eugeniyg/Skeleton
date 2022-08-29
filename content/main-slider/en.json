@@ -35,6 +35,23 @@
           "faceImage": "/img/uploads/2-desktop-face.png"
         }
       }
+    },
+    {
+      "slideStatus": "Published",
+      "title": "##### Enjoy fast games on \n\n##### Slotsbet.",
+      "button": {
+        "label": "Play now"
+      },
+      "images": {
+        "mobile": {
+          "backgroundImage": "/img/uploads/3-mobile-background.png",
+          "faceImage": "/img/uploads/3-mobile-face.png"
+        },
+        "desktop": {
+          "backgroundImage": "/img/uploads/3-desktop-background.png",
+          "faceImage": "/img/uploads/3-desktop-face.png"
+        }
+      }
     }
   ]
 }
