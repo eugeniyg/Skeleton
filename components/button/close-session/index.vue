@@ -1,6 +1,6 @@
 <template>
   <button class="btn-close-session">
-    <atomic-icon id="ui-log-out"/>
+    <atomic-icon id="log-out"/>
   </button>
 </template>
 

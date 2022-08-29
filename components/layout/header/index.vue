@@ -26,7 +26,7 @@
             size="md"
             @click="showModal('register')"
           >
-            Registration
+            {{ headerContent?.registrationButton }}
           </button-base>
 
           <button-base
@@ -34,7 +34,7 @@
             size="md"
             @click="showModal('signIn')"
           >
-            Login
+            {{ headerContent?.loginButton }}
           </button-base>
         </template>
       </div>
@@ -54,6 +54,7 @@
   const emit = defineEmits(['login', 'register', 'logout']);
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
+  const { headerContent } = useGlobalStore();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal } = layoutStore;
   const { avatarItems } = storeToRefs(profileStore);

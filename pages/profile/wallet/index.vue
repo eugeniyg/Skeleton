@@ -10,7 +10,7 @@
         :isDisabled="currencyNavEmpty"
         @click="openCurrNav"
       >
-        <atomic-icon id="ui-plus"/>Add currency
+        <atomic-icon id="plus"/>Add currency
       </button-base>
     </div>
 

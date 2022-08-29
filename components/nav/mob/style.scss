@@ -12,12 +12,6 @@
   visibility: var(--mob-nav-visibility, visible);
   width: var(--width-nav-mob, auto);
 
-  .router-link-exact-active {
-    .icon, span {
-      color: #FFC12E !important;
-    }    
-  }
-
   @include media(l) {
     visibility: hidden;
   }
@@ -30,6 +24,7 @@
     text-decoration: none;
     width: 100%;
     height: 100%;
+    padding: 0;
 
     .icon {
       @include box(22px);
@@ -62,6 +57,12 @@
         .icon {
           --color: var(--yellow-500);
         }
+      }
+    }
+
+    &.active {
+      .icon, span {
+        color: #FFC12E !important;
       }
     }
   }

@@ -16,11 +16,11 @@
   const iconName = computed(() => {
     switch (props.value) {
     case 'male':
-      return 'ui-male';
+      return 'male';
     case 'female':
-      return 'ui-female';
+      return 'female';
     default:
-      return 'ui-male';
+      return 'male';
     }
   });
 </script>

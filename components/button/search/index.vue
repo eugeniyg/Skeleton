@@ -1,6 +1,6 @@
 <template>
   <button class="btn-search" @click="onClick">
-    <atomic-icon id="ui-search"/>
+    <atomic-icon id="search"/>
   </button>
 </template>
 

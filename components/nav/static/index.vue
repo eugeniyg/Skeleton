@@ -1,6 +1,12 @@
 <template>
   <div class="nav-static">
-    <nuxt-link v-for="(item, itemIndex) in props.items" :key="itemIndex" :to="localizePath(item.href)">{{ item.title }}</nuxt-link>
+    <nuxt-link
+      v-for="(item, itemIndex) in props.items"
+      :key="itemIndex"
+      :to="localizePath(item.url)"
+    >
+      {{ item.label }}
+    </nuxt-link>
   </div>
 </template>
 

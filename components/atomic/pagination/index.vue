@@ -5,7 +5,7 @@
       :disabled="props.page === 1"
       @click="changePage(props.page - 1)"
     >
-      <atomic-icon id="ui-arrow_previous"/>
+      <atomic-icon id="arrow_previous"/>
     </button>
 
     <button
@@ -23,7 +23,7 @@
       :disabled="props.page === props.totalPages"
       @click="changePage(props.page + 1)"
     >
-      <atomic-icon id="ui-arrow_next"/>
+      <atomic-icon id="arrow_next"/>
     </button>
   </div>
 </template>

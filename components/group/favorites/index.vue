@@ -1,6 +1,6 @@
 <template>
   <div class="group-favorites">
-    <atomic-icon :id="'ui-heart'"/>
+    <atomic-icon :id="'heart'"/>
 
     <h2 class="title">Favorites</h2>
 

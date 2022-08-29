@@ -6,8 +6,8 @@
       :isActive="$route.path === localizePath(button.url)"
       @click="selectTab(button.url)"
     >
-      <atomic-icon :id="button.icon"/>
-      <span class="text">{{ button.title }}</span>
+      <atomic-icon v-if="buttonIcons[index]" :id="buttonIcons[index]" />
+      <span class="text">{{ button.label }}</span>
     </button-base>
   </div>
 </template>
@@ -21,6 +21,7 @@
       default: () => [],
     },
   });
+  const buttonIcons = ['cherry', 'sport'];
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);

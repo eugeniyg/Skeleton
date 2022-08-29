@@ -9,7 +9,7 @@
         size="xs"
         :is-disabled="!props.items.length"
       >
-        <atomic-icon id="ui-read-all"/>Mark all as read
+        <atomic-icon id="read-all"/>Mark all as read
       </button-base>
     </div>
     <atomic-divider/>
@@ -20,7 +20,7 @@
       <template v-if="isShowReadAllBtn">
         <atomic-divider/>
         <button-base type="ghost" size="xs" @click="emit('read-all')">
-          Read all<atomic-icon id="ui-arrow_next"/>
+          Read all<atomic-icon id="arrow_next"/>
         </button-base>
       </template>
     </template>

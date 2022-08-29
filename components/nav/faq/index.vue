@@ -2,7 +2,7 @@
   <nav class="nav-faq" :class="{'is-open': isOpen}">
     <button class="selected" @click="toggle">
       {{ selected?.title }}
-      <atomic-icon id="ui-arrow_expand-close"/>
+      <atomic-icon id="arrow_expand-close"/>
     </button>
 
     <div class="items" @mouseleave="close">
@@ -16,7 +16,7 @@
         <atomic-icon :id="icon" />
         {{ title }}
         <span v-if="count" class="count">{{ count }}</span>
-        <atomic-icon v-show="$route.path === localizePath(href)" id="ui-check"/>
+        <atomic-icon v-show="$route.path === localizePath(href)" id="check"/>
       </div>
     </div>
   </nav>

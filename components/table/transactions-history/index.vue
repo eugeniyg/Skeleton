@@ -25,7 +25,7 @@
             size="sm"
             @click.once="emit('cancelPayment', invoice.id)"
           >
-            <atomic-icon id="ui-trash"/>
+            <atomic-icon id="trash"/>
             <span>Cancel payment</span>
           </button-base>
         </div>

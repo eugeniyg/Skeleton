@@ -10,8 +10,8 @@
       />
 
       <div class="slider">
-        <atomic-icon id="ui-check"/>
-        <atomic-icon id="ui-close"/>
+        <atomic-icon id="check"/>
+        <atomic-icon id="close"/>
       </div>
       <slot/>
     </label>

@@ -29,7 +29,7 @@
     },
     heading: {
       type: String,
-      required: true,
+      default: '',
     },
     items: {
       type: Array,

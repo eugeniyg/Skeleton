@@ -9,7 +9,7 @@ import {
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { useGamesStore } from '~/composables/useGamesStore';
 
-export type FieldsStoreStateType = {
+interface FieldsStoreStateInterface {
   profileFields: FieldInterface[],
   registrationFields: FieldInterface[],
 }
@@ -22,10 +22,10 @@ interface SelectOptionsInterface {
 }
 
 export const useFieldsStore = defineStore('fieldsStore', {
-  state: () => ({
+  state: ():FieldsStoreStateInterface => ({
     profileFields: [],
     registrationFields: [],
-  } as FieldsStoreStateType),
+  }),
 
   getters: {
     selectOptions():SelectOptionsInterface {

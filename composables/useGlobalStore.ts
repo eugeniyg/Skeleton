@@ -6,9 +6,14 @@ import {
   TimeZoneInterface,
   InitUserInfoInterface,
 } from '@platform/frontend-core/dist/module';
-import { BrowserLanguageInterface } from '~/types';
+import {
+  BrowserLanguageInterface, CookiePopupInterface,
+  FieldsContentInterface, FooterInterface, HeaderInterface,
+  MainLayoutInterface, MobileMenuInterface, SiteSidebarInterface, UserNavigationInterface,
+  ValidationMessageInterface,
+} from '~/types';
 
-export type GlobalStoreStateType = {
+interface GlobalStoreStateInterface {
   currencies: CurrencyInterface[],
   locales: LocaleInterface[],
   countries: CountryInterface[],
@@ -18,48 +23,68 @@ export type GlobalStoreStateType = {
   browserLanguage: string,
   baseApiUrl: string,
   initUserInfo: InitUserInfoInterface,
-  validationMessages: any,
-  fieldsContent: any,
+  validationMessages: ValidationMessageInterface|{},
+  fieldsContent: FieldsContentInterface|{},
+  layoutData: MainLayoutInterface,
 }
 
 export const useGlobalStore = defineStore('globalStore', {
-  state: () => ({
-    currencies: [],
-    locales: [],
-    countries: [],
-    timeZones: [],
-    defaultLocale: undefined,
-    isMobile: false,
-    browserLanguage: 'en',
-    baseApiUrl: '',
-    initUserInfo: undefined,
-    validationMessages: {},
-    fieldsContent: {},
-  } as GlobalStoreStateType),
+  state: ():GlobalStoreStateInterface => ({
+      currencies: [],
+      locales: [],
+      countries: [],
+      timeZones: [],
+      defaultLocale: undefined,
+      isMobile: false,
+      browserLanguage: 'en',
+      baseApiUrl: '',
+      initUserInfo: undefined,
+      validationMessages: {},
+      fieldsContent: {},
+      layoutData: undefined,
+    }),
 
   getters: {
-    currentLocale():LocaleInterface {
+    currentLocale(state):LocaleInterface {
       const route = useRoute();
-      const findLocale = this.locales.find((locale) => locale.code === route.params.locale);
+      const findLocale = state.locales.find((locale) => locale.code === route.params.locale);
       if (route.params.locale && findLocale) return findLocale;
-      return this.defaultLocale;
+      return state.defaultLocale;
     },
-    currenciesSelectOptions():CurrencyInterface[] {
-      return this.currencies.map((currency) => ({ ...currency, value: currency.code }));
+    currenciesSelectOptions(state):CurrencyInterface[] {
+      return state.currencies.map((currency) => ({ ...currency, value: currency.code }));
     },
-    countriesSelectOptions():CountryInterface[] {
-      return this.countries.map((country) => ({
+    countriesSelectOptions(state):CountryInterface[] {
+      return state.countries.map((country) => ({
         ...country,
         value: country.name,
         mask: `/img/flags/${country.code.toLowerCase()}.svg`,
       }));
     },
-    timeZonesSelectOptions():TimeZoneInterface[] {
-      return this.timeZones.map((zone) => ({
+    timeZonesSelectOptions(state):TimeZoneInterface[] {
+      return state.timeZones.map((zone) => ({
         ...zone,
         code: zone.id,
         value: zone.name,
       }));
+    },
+    headerContent(state): HeaderInterface {
+      return state.layoutData?.header;
+    },
+    sidebarContent(state):SiteSidebarInterface {
+      return state.layoutData?.siteSidebar;
+    },
+    userNavigationContent(state):UserNavigationInterface {
+      return state.layoutData?.userNavigation;
+    },
+    footerContent(state):FooterInterface {
+      return state.layoutData?.footer;
+    },
+    cookiePopupContent(state):CookiePopupInterface {
+      return state.layoutData?.cookiePopup;
+    },
+    mobileMenuContent(state):MobileMenuInterface {
+      return state.layoutData?.mobileMenu;
     },
   },
 
@@ -104,12 +129,14 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getGlobalContent():Promise<void> {
-      const [validations, fieldsData] = await Promise.allSettled([
+      const [validations, fieldsData, layoutData] = await Promise.allSettled([
         queryContent(`validations/${this.currentLocale.code}`).findOne(),
         queryContent(`fields/${this.currentLocale.code}`).findOne(),
+        queryContent(`main-layout/${this.currentLocale.code}`).findOne(),
       ]);
       if (validations.status !== 'rejected') this.validationMessages = validations.value;
       if (fieldsData.status !== 'rejected') this.fieldsContent = fieldsData.value;
+      if (layoutData.status !== 'rejected') this.layoutData = layoutData.value;
     },
   },
 });

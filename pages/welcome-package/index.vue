@@ -38,7 +38,7 @@
             }}</button-base>
           </div>
           <div class="arrow">
-            <atomic-icon id="ui-arrow_expand-close" />
+            <atomic-icon id="arrow_expand-close" />
           </div>
         </div>
       </div>

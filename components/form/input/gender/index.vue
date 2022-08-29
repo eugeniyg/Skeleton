@@ -13,7 +13,7 @@
       :isChecked="props.value === 'male'"
       @change="changeValue('male')"
     >
-      Male<atomic-icon id="ui-male"/>
+      Male<atomic-icon id="male"/>
     </form-input-radio>
 
     <form-input-radio
@@ -25,7 +25,7 @@
       :isChecked="props.value === 'female'"
       @change="changeValue('female')"
     >
-      Female<atomic-icon id="ui-female"/>
+      Female<atomic-icon id="female"/>
     </form-input-radio>
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>

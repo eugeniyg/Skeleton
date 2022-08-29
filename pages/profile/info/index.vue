@@ -8,14 +8,14 @@
         size="md"
         @click="toggleProfileEdit"
       >
-        <atomic-icon id="ui-edit"/>Edit your profile
+        <atomic-icon id="edit"/>Edit your profile
 
         <!--        <template v-if="isProfileEdit">-->
-        <!--          <atomic-icon id="ui-done"/>Done editing-->
+        <!--          <atomic-icon id="done"/>Done editing-->
         <!--        </template>-->
 
         <!--        <template v-else>-->
-        <!--          <atomic-icon id="ui-edit"/>Edit your profile-->
+        <!--          <atomic-icon id="edit"/>Edit your profile-->
         <!--        </template>-->
       </button-base>
     </div>
@@ -30,18 +30,18 @@
           <div class="nickname">{{ userNickname }}</div>
 
           <div class="item" v-show="profile.firstName || profile.lastName">
-            <atomic-icon id="ui-user"/>
+            <atomic-icon id="user"/>
             {{ `${profile.firstName} ` }}{{ profile.lastName }}
           </div>
 
           <div class="item" v-show="profile.country || profile.city">
-            <atomic-icon id="ui-location"/>
+            <atomic-icon id="location"/>
             {{ userCountryName }}{{ profile.city ? `, ${profile.city}` : '' }}
           </div>
 
           <div class="item" v-show="profile.email">
-            <atomic-icon v-if="profile.confirmedAt" class="is-success" id="ui-done"/>
-            <atomic-icon v-else class="is-warning" id="ui-warning"/>
+            <atomic-icon v-if="profile.confirmedAt" class="is-success" id="done"/>
+            <atomic-icon v-else class="is-warning" id="warning"/>
             {{ profile.email }}
           </div>
         </div>
@@ -73,7 +73,7 @@
     <h4 class="heading">Manage account</h4>
 
     <button-base type="ghost" size="md" @click="profileStore.logOutUser">
-      <atomic-icon id="ui-log-out"/>Log out
+      <atomic-icon id="log-out"/>Log out
     </button-base>
   </div>
 </template>

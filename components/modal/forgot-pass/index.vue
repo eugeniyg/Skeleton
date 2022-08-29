@@ -9,11 +9,11 @@
       <div class="scroll">
         <div class="header">
           <button class="modal-forgot-pass__previous" @click.prevent="returnLoginModal">
-            <atomic-icon id="ui-arrow_previous"/>
+            <atomic-icon id="arrow_previous"/>
           </button>
           <div class="title">Forgot password?</div>
           <button class="modal-forgot-pass__close" @click.prevent="closeModal('forgotPass')">
-            <atomic-icon id="ui-close"/>
+            <atomic-icon id="close"/>
           </button>
         </div>
 

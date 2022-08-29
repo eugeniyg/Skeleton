@@ -1,18 +1,18 @@
 <template>
   <div class="cookies">
     <div class="box">
-      <atomic-icon id="ui-cookies"/>
+      <atomic-icon id="cookies"/>
     </div>
 
-    <div class="text" v-html="text"/>
-    <button-base type="primary" size="md" @click="acceptCookie">Accept</button-base>
+    <div v-if="cookiePopupContent?.text" class="text" v-html="marked.parse(cookiePopupContent.text)" />
+    <button-base type="primary" size="md" @click="acceptCookie">{{ cookiePopupContent?.acceptButton }}</button-base>
   </div>
 </template>
 
 <script setup lang="ts">
-  const { localizePath } = useProjectMethods();
-  const text = `<p>We use cookies to improve your experience. By using our website you are accepting our <a href="${localizePath('/terms-and-conditions')}">Terms and Conditions</a> and <a href="${localizePath('/privacy-policy')}">Privacy Policy</a></p>`;
+  import { marked } from 'marked';
 
+  const { cookiePopupContent } = useGlobalStore();
   const layoutStore = useLayoutStore();
   const acceptCookie = ():void => {
     const userCookie = useCookie('accept-cookie', { maxAge: 60 * 60 * 24 * 365 * 10 });

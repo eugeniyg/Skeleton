@@ -6,8 +6,8 @@
 
 <script setup lang="ts">
   const items = {
-    text: 'ui-eye-visibility',
-    password: 'ui-eye-invisible',
+    text: 'eye-visibility',
+    password: 'eye-invisible',
   };
   const hide = ref<boolean>(true);
   const type = computed(() => Object.keys(items)[Number(hide.value)]);

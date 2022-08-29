@@ -13,7 +13,7 @@
   const props = defineProps({
     icon: {
       type: String,
-      default: 'ui-info',
+      default: 'info',
     },
     title: {
       type: String,
