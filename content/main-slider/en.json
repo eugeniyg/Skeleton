@@ -52,6 +52,24 @@
           "faceImage": "/img/uploads/3-desktop-face.png"
         }
       }
+    },
+    {
+      "slideStatus": "Published",
+      "title": "##### Get bonuses every week",
+      "content": "* Provably fair slots & games;\n* 24/7 Live Chat Support;\n* Privacy and security.",
+      "button": {
+        "label": "Get bonus"
+      },
+      "images": {
+        "mobile": {
+          "backgroundImage": "/img/uploads/4-mobile-background.png",
+          "faceImage": "/img/uploads/4-mobile-face.png"
+        },
+        "desktop": {
+          "backgroundImage": "/img/uploads/4-desktop-background.png",
+          "faceImage": "/img/uploads/4-desktop-face.png"
+        }
+      }
     }
   ]
 }
