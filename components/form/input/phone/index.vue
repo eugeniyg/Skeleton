@@ -34,7 +34,8 @@
 
 <script setup lang="ts">
   import parsePhoneNumber from 'libphonenumber-js';
-  import phoneCodes from '~/maps/phoneCodes.json';
+  import { storeToRefs } from 'pinia';
+  import { InitUserInfoInterface } from '@platform/frontend-core/dist/module';
   import { PhoneCodeInterface } from '~/types';
 
   const props = defineProps({
@@ -60,19 +61,37 @@
     },
   });
 
-  const selectItems:PhoneCodeInterface[] = phoneCodes.map((item) => ({ ...item, value: item.code, mask: `/img/flags/${item.countryCode.toLowerCase()}.svg` }));
+  const globalStore = useGlobalStore();
+  const { countries, initUserInfo } = storeToRefs(globalStore);
+  const selectItems:PhoneCodeInterface[] = countries.value.map((country) => ({
+    countryCode: country.code,
+    code: country.phonePrefix,
+    mask: `/img/flags/${country.code.toLowerCase()}.svg`,
+    value: `+${country.phonePrefix}`,
+  }));
   const codeValue = ref<string>('');
   const numberValue = ref<string>('');
   const profileStore = useProfileStore();
+  const { profile } = storeToRefs(profileStore);
+
+  const setMobileCode = (countryCode: string):void => {
+    const searchPhone = selectItems.find((phoneObj) => phoneObj.countryCode === countryCode);
+    codeValue.value = searchPhone?.code || '';
+  };
 
   if (props.value) {
-    const parsePhone = parsePhoneNumber(`+${profileStore.profile.phone}`);
+    const parsePhone = parsePhoneNumber(`+${profile.value.phone}`);
     if (parsePhone) {
-      const searchPhone = phoneCodes.find((item) => item.countryCode === parsePhone.country || item.code === `+${parsePhone.countryCallingCode}`);
+      const searchPhone = selectItems.find((phoneObj) => phoneObj.countryCode === parsePhone.country);
       codeValue.value = searchPhone?.code || '';
       numberValue.value = parsePhone.number.replace(searchPhone?.code, '');
     }
-  }
+  } else if (profile.value.country) setMobileCode(profile.value.country);
+  else if (initUserInfo.value.country) setMobileCode(initUserInfo.value.country);
+
+  watch(() => initUserInfo.value, (newValue: InitUserInfoInterface) => {
+    if (!props.value) setMobileCode(newValue.country);
+  });
 
   const emit = defineEmits(['focus', 'input', 'update:value', 'blur']);
   const onFocus = ():void => {
@@ -81,8 +100,8 @@
 
   const onInput = ():void => {
     if (codeValue.value && numberValue.value) {
-      emit('update:value', codeValue.value.slice(1) + numberValue.value);
-      emit('input', codeValue.value.slice(1) + numberValue.value);
+      emit('update:value', codeValue.value + numberValue.value);
+      emit('input', codeValue.value + numberValue.value);
     } else {
       emit('update:value', '');
       emit('input', '');
