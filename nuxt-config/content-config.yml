@@ -9,6 +9,10 @@ __link-url: &linkUrl
   name: url
   label: Url
   widget: string
+__locale-field: &localeField
+  name: locale
+  label: Locale (settings)
+  widget: string
 __link-variable: &linkArray
   - *linkLabel
   - *linkUrl
@@ -165,9 +169,7 @@ collections:
     editor:
       preview: false
     fields:
-      - name: locale
-        label: Locale (settings)
-        widget: string
+      - *localeField
       - name: password
         label: Password
         widget: object
@@ -299,9 +301,7 @@ collections:
     editor:
       preview: false
     fields:
-      - name: locale
-        label: Locale (settings)
-        widget: string
+      - *localeField
       - name: header
         label: Header
         widget: object
@@ -487,3 +487,121 @@ collections:
           - name: acceptButton
             label: Accept Button
             widget: string
+
+  - name: mainSlider
+    label: Main Slider
+    create: true
+    identifier_field: locale
+    extension: json
+    format: json
+    folder: content/main-slider
+    editor:
+      preview: false
+    fields:
+      - *localeField
+      - name: slider
+        label: Slider
+        widget: list
+        label_singular: slide
+        summary: '{{fields.title}}'
+        fields:
+          - name: slideStatus
+            label: Slide Status
+            widget: select
+            options: ['Published', 'Hide']
+          - name: title
+            label: Slide Title
+            widget: markdown
+          - name: content
+            label: Slide Content
+            widget: markdown
+            required: false
+          - name: button
+            label: Slide Button
+            widget: object
+            required: false
+            fields:
+              - *linkLabel
+              - name: url
+                label: Url
+                widget: string
+                required: false
+          - name: images
+            label: Images
+            widget: object
+            fields:
+              - name: mobile
+                label: Mobile Layout
+                widget: object
+                fields:
+                  - name: backgroundImage
+                    label: Background Image
+                    widget: image
+                    allow_multiple: false
+                  - name: faceImage
+                    label: Face Image
+                    widget: image
+                    asslow_multiple: false
+              - name: desktop
+                label: Desktop Layout
+                widget: object
+                fields:
+                  - name: backgroundImage
+                    label: Background Image
+                    widget: image
+                    allow_multiple: false
+                  - name: faceImage
+                    label: Face Image
+                    widget: image
+                    asslow_multiple: false
+
+  - name: popups
+    label: Site Popups
+    create: true
+    identifier_field: locale
+    extension: json
+    format: json
+    folder: content/popups
+    editor:
+      preview: false
+    fields:
+      - *localeField
+      - name: login
+        label: Login Popup
+        widget: object
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: loginButton
+            label: Login Button Label
+            widget: string
+          - name: forgotButton
+            label: Forgot Button Label
+            widget: string
+            hint: Put text inside "*" to highlight it (*test*)
+          - name: registrationButton
+            label: Registration Button Label
+            widget: string
+            hint: Put text inside "*" to highlight it (*test*)
+      - name: forgot
+        label: Forgot Password Popup
+        widget: object
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: description
+            label: Description
+            widget: string
+            required: false
+          - name: forgotButton
+            label: Forgot Button Label
+            widget: string
+          - name: registrationButton
+            label: Registration Button Label
+            widget: string
+            hint: Put text inside "*" to highlight it (*test*)
+
+
+

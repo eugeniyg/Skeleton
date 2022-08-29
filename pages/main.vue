@@ -1,9 +1,9 @@
 <template>
   <div>
     <client-only>
-      <carousel v-bind="topSliderProps">
-        <slide v-for="(props, index) in fakeStore.sliders.main" :key="index">
-          <card-promo v-bind="props" />
+      <carousel v-if="sliderItems?.length" v-bind="topSliderProps">
+        <slide v-for="(slide, index) in sliderItems" :key="index">
+          <card-promo v-if="slide.slideStatus === 'Published'" v-bind="slide" />
         </slide>
 
         <template v-slot:addons>
@@ -107,6 +107,10 @@
     Carousel, Slide, Pagination, Navigation,
   } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
+
+  const { currentLocale } = useGlobalStore();
+  const sliderResponse = await useAsyncData('sliderData', () => queryContent(`main-slider/${currentLocale.code}`).findOne());
+  const sliderItems = sliderResponse.data.value?.slider;
 
   const fakeStore = useFakeStore();
   const router = useRouter();

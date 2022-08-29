@@ -4,6 +4,7 @@
   position: relative;
   border-radius: 8px;
   overflow: hidden;
+  min-height: 132px;
 
   @include media(md) {
     height: rem(280px);
@@ -84,7 +85,7 @@
 
   }
 
-  .list {
+  ul {
     color: var(--white);
     display: var(--display, none);
     flex-direction: column;
@@ -92,7 +93,7 @@
     padding: 0 0 0 rem(16px);
     grid-gap: rem(2px);
 
-    .item {
+    li {
       @include font($heading-3);
       text-decoration: none;
     }

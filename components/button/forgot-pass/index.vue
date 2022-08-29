@@ -4,7 +4,9 @@
     type="ghost"
     size="xs"
     @click="showModal('forgotPass')"
-  >Forgot Password?</button-base>
+  >
+    Forgot Password?
+  </button-base>
 </template>
 
 <script setup lang="ts">
