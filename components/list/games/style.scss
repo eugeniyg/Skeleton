@@ -1,4 +1,4 @@
-.turbo-games {
+.list-games {
   @extend %flex-items-center;
   grid-column-gap: rem(8px);
   padding-left: var(--padding-left, #{rem(12px)});

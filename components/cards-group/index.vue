@@ -69,7 +69,7 @@
     titleIcon: {
       type: String,
       validator: (val:string) => [
-        'ui-heart', 'hot', 'turbo-games', 'new', 'bonuses', 'ui-history', '',
+        'heart', 'hot', 'turbo-games', 'new', 'bonuses', 'history', '',
       ].includes(val),
       default: '',
     },

@@ -1,6 +1,6 @@
 <template>
   <button class="btn-favorite" :class="{ active: isActive }" @click="toggleFavorite">
-    <atomic-icon id="ui-heart-outline"/>
+    <atomic-icon id="heart-outline"/>
   </button>
 </template>
 

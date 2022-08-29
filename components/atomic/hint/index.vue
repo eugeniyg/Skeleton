@@ -21,9 +21,9 @@
   const emailIcon = computed(() => {
     switch (props.variant) {
     case 'unverified':
-      return 'ui-warning';
+      return 'warning';
     case 'verified':
-      return 'ui-done';
+      return 'done';
     default:
       return null;
     }

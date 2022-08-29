@@ -29,9 +29,9 @@
 
 <script setup lang="ts">
   const isProcessSimulate = ref<boolean>(false);
-  const cardNumberMaskDefault = { type: 'icon', value: 'ui-credit-card' };
+  const cardNumberMaskDefault = { type: 'icon', value: 'credit-card' };
   const cardNumberMaskCheck = { type: 'img', value: '/svg/colored/visa.svg' };
-  const securityCodeMask = { type: 'icon', value: 'ui-info' };
+  const securityCodeMask = { type: 'icon', value: 'info' };
 
   onMounted(() => {
     setTimeout(() => {

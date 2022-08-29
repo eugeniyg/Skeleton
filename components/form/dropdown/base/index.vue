@@ -11,7 +11,7 @@
       <img v-if="valueObject.mask" class="mask" :src="valueObject.mask" />
       <span v-if="valueObject.value">{{ valueObject.value }}</span>
       <span v-else-if="props.placeholder" class="placeholder">{{ props.placeholder }}</span>
-      <atomic-icon id="ui-arrow_expand-close"/>
+      <atomic-icon id="arrow_expand-close"/>
     </div>
 
     <div class="items" v-if="props.options.length">
@@ -24,7 +24,7 @@
       >
         <img v-if="option.mask" class="mask" :src="option.mask" />
         <span>{{ option.value }}</span>
-        <atomic-icon v-if="option.code === valueObject.code" id="ui-check"/>
+        <atomic-icon v-if="option.code === valueObject.code" id="check"/>
       </div>
     </div>
 

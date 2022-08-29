@@ -8,7 +8,7 @@
     </div>
 
     <button class="btn-alert-close" @click.prevent="hide">
-      <atomic-icon id="ui-close"/>
+      <atomic-icon id="close"/>
     </button>
   </div>
 </template>
@@ -39,10 +39,10 @@
   });
 
   const types = {
-    info: 'ui-info',
-    error: 'ui-warning',
-    warning: 'ui-info',
-    done: 'ui-done',
+    info: 'info',
+    error: 'warning',
+    warning: 'info',
+    done: 'done',
   };
 
   const { hideAlert } = useLayoutStore();

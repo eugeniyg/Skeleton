@@ -1,6 +1,6 @@
 <template>
   <button class="btn-edit" @click.prevent>
-    <atomic-icon id="ui-edit"/>
+    <atomic-icon id="edit"/>
   </button>
 </template>
 

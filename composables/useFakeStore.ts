@@ -676,7 +676,7 @@ export const useFakeStore = () => {
     {
       variant: 'recently',
       identity: 'Recently played',
-      titleIcon: 'ui-history',
+      titleIcon: 'history',
       id: 'recently',
       showAllBtn: false,
       showArrows: false,
@@ -703,7 +703,7 @@ export const useFakeStore = () => {
       variant: 'favorites',
       identity: 'Favorites',
       id: 'favorites',
-      titleIcon: 'ui-heart',
+      titleIcon: 'heart',
       showAllBtn: true,
       showArrows: false,
       games: [
@@ -1225,12 +1225,12 @@ export const useFakeStore = () => {
   const userMenuItems = [
     {
       title: 'Favorites',
-      icon: 'ui-heart',
+      icon: 'heart',
       href: '/favorites',
     },
     {
       title: 'Recently played',
-      icon: 'ui-history',
+      icon: 'history',
       href: '/recently-played',
     },
   ];
@@ -1238,12 +1238,12 @@ export const useFakeStore = () => {
   const bottomMenuItems = [
     // {
     //   title: 'Favorites',
-    //   icon: 'ui-heart',
+    //   icon: 'heart',
     //   count: 2,
     // },
     // {
     //   title: 'Recently played',
-    //   icon: 'ui-history',
+    //   icon: 'history',
     //   count: 10,
     // },
     {
@@ -1343,7 +1343,7 @@ export const useFakeStore = () => {
 
     {
       title: 'All categories',
-      icon: 'ui-more-menu',
+      icon: 'more-menu',
       href: '#',
     },
   ];
@@ -1498,12 +1498,12 @@ export const useFakeStore = () => {
       {
         title: 'Account',
         href: '/questions/account',
-        icon: 'ui-user',
+        icon: 'user',
       },
       {
         title: 'Deposits & Withdrawals',
         href: '/questions/deposits-and-withdrawals',
-        icon: 'ui-wallet',
+        icon: 'wallet',
       },
       {
         title: 'Bonuses',
@@ -1513,7 +1513,7 @@ export const useFakeStore = () => {
       {
         title: 'Games',
         href: '/questions/games',
-        icon: 'ui-gamepad',
+        icon: 'gamepad',
       },
       {
         title: 'Security',
@@ -1523,7 +1523,7 @@ export const useFakeStore = () => {
       {
         title: 'Gambling with responsibility',
         href: '/questions/gambling-with-responsibility',
-        icon: 'ui-18',
+        icon: 'age',
       },
     ],
   };

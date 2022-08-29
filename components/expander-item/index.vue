@@ -4,7 +4,7 @@
       <div class="title" v-html="props.title"/>
 
       <button-base>
-        <atomic-icon id="ui-arrow_expand-open"/>
+        <atomic-icon id="arrow_expand-open"/>
       </button-base>
     </div>
 

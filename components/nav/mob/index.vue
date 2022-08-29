@@ -1,17 +1,34 @@
 <template>
   <div class="nav-mob">
-    <nuxt-link
-      v-for="({ title, icon, href, isAccent, method }, itemIndex) in items"
-      :key="itemIndex"
+    <button-base class="item" @click.prevent="layoutStore.toggleDrawer()">
+      <atomic-icon :id="'menu'" /><span>{{mobileMenuContent?.menuLabel}}</span>
+    </button-base>
+
+    <button-base
+      v-if="mobileMenuContent?.items?.[0]"
       class="item"
-      :class="{ 'is-accent': isAccent }"
-      @click.prevent="clickItem(method)"
-      :to="href ? localizePath(href) : ''"
+      :class="{ active: $route.path === localizePath(mobileMenuContent.items[0].url)}"
+      @click="clickItem(mobileMenuContent.items[0].url)"
     >
+      <atomic-icon :id="mobileMenuContent.items[0].icon" /><span>{{ mobileMenuContent.items[0].label }}</span>
+    </button-base>
+
+    <button-base class="item is-accent" @click.prevent="clickMainButton">
       <client-only>
-        <atomic-icon :id="icon" /><span>{{ title }}</span>
+        <atomic-icon :id="isLoggedIn ? 'wallet' : 'user'" />
+        <span>{{isLoggedIn ? headerContent?.depositButton : headerContent?.loginButton }}</span>
       </client-only>
-    </nuxt-link>
+    </button-base>
+
+    <button-base
+      v-for="link in mobileMenuContent?.items?.slice(1)"
+      :key="link.url"
+      class="item"
+      :class="{ active: $route.path === localizePath(link.url) }"
+      @click="clickItem(link.url)"
+    >
+      <atomic-icon :id="link.icon" /><span>{{ link.label }}</span>
+    </button-base>
   </div>
 </template>
 
@@ -23,51 +40,17 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal, openDepositModal } = useLayoutStore();
-
-  const items = computed(() => [
-    {
-      title: 'Menu',
-      icon: 'ui-menu',
-      method: 'toggleDrawer',
-    },
-    {
-      title: 'Casino',
-      icon: 'cherry',
-      href: '/main',
-    },
-    {
-      title: isLoggedIn.value ? 'Deposit' : 'Login',
-      icon: isLoggedIn.value ? 'ui-wallet' : 'ui-user',
-      isAccent: true,
-      method: 'openModal',
-    },
-    {
-      title: 'Sports',
-      icon: 'sport',
-      href: '/betting',
-      method: 'toBetting',
-    },
-    {
-      title: 'Support',
-      icon: 'live-support',
-      href: '/contact',
-    },
-  ]);
-
+  const { mobileMenuContent, headerContent } = useGlobalStore();
   const { localizePath } = useProjectMethods();
-  function clickItem(method: string | undefined): void {
-    if (method) {
-      if (method === 'openModal') {
-        isLoggedIn.value ? openDepositModal() : showModal('signIn');
-      }
-      if (method === 'toBetting') {
-        isLoggedIn.value ? router.push(localizePath('/betting')) : showModal('register');
-      }
-      if (method === 'toggleDrawer') {
-        layoutStore.toggleDrawer();
-      }
-    }
-  }
+  const clickItem = (url: string):void => {
+    if (url === '/betting') {
+      isLoggedIn.value ? router.push(localizePath(url)) : showModal('register');
+    } else router.push(localizePath(url));
+  };
+
+  const clickMainButton = ():void => {
+    isLoggedIn.value ? openDepositModal() : showModal('signIn');
+  };
 </script>
 
 <style lang="scss" src="./style.scss" />

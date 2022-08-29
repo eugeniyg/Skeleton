@@ -14,11 +14,11 @@
   });
   // const modeItems = [
   //   {
-  //     icon: 'ui-device',
+  //     icon: 'device',
   //     id: 'device',
   //   },
   //   {
-  //     icon: 'ui-device-split',
+  //     icon: 'device-split',
   //     id: 'device-split',
   //   },
   // ];

@@ -7,7 +7,7 @@ import { useLayoutStore } from '~/composables/useLayoutStore';
 import { useGamesStore } from '~/composables/useGamesStore';
 import { useProjectMethods } from '~/composables/useProjectMethods';
 
-export type ProfileStoreStateType = {
+interface ProfileStoreStateInterface {
   isLoggedIn: boolean,
   avatarItems: {
     label: string,
@@ -19,7 +19,7 @@ export type ProfileStoreStateType = {
 }
 
 export const useProfileStore = defineStore('profileStore', {
-  state: () => ({
+  state: (): ProfileStoreStateInterface => ({
     isLoggedIn: false,
     avatarItems: {
       label: '25 lvl',
@@ -28,16 +28,16 @@ export const useProfileStore = defineStore('profileStore', {
     },
     sessionId: '',
     profile: undefined,
-  } as ProfileStoreStateType),
+  }),
 
   getters: {
-    userNickname():string {
-      return this.profile.nickname || 'Unknown';
+    userNickname(state):string {
+      return state.profile.nickname || 'Unknown';
     },
 
-    playerStatusName():string {
+    playerStatusName(state):string {
       const { playerStatuses } = useCoreStore();
-      return playerStatuses.find((status) => status.id === this.profile?.status)?.name;
+      return playerStatuses.find((status) => status.id === state.profile?.status)?.name;
     },
   },
 

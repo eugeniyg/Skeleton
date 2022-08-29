@@ -6,8 +6,8 @@
       :isActive="$route.path === localizePath(button.url)"
       @click="selectTab(button.url)"
     >
-      <atomic-icon :id="button.icon"/>
-      <span class="text">{{ button.title }}</span>
+      <atomic-icon :id="button.icon" />
+      <span class="text">{{ button.label }}</span>
     </button-base>
   </div>
 </template>

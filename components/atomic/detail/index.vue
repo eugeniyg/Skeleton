@@ -2,7 +2,7 @@
   <div class="detail" :class="{ 'is-open': open }" @resize="updateScrollHeight">
     <div class="header" @click="toggleOpen">
       <div class="title">{{ props.title }}</div>
-      <atomic-icon id="ui-arrow_expand-close" />
+      <atomic-icon id="arrow_expand-close" />
     </div>
     <div class="items" ref="refItems">
       <ol>

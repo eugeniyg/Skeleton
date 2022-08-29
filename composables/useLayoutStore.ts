@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 
-export type LayoutStoreStateType = {
+interface LayoutStoreStateInterface {
   isUserNavOpen: boolean,
   isDrawerOpen: boolean,
   isCurrencyNavOpen: boolean,
@@ -38,7 +38,7 @@ export type LayoutStoreStateType = {
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
-  state: () => ({
+  state: (): LayoutStoreStateInterface => ({
       isUserNavOpen: false,
       isDrawerOpen: false,
       isCurrencyNavOpen: false,
@@ -71,10 +71,10 @@ export const useLayoutStore = defineStore('layoutStore', {
         forgotPass: 'forgot-pass',
         resetPass: 'reset-pass',
       },
-  } as LayoutStoreStateType),
+  }),
 
   actions: {
-    showAlert(props: LayoutStoreStateType['alertProps']): void {
+    showAlert(props: LayoutStoreStateInterface['alertProps']): void {
       if (this.isShowAlert) {
         this.hideAlert();
         this.showAlert(props);

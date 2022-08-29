@@ -36,7 +36,7 @@
         size="lg"
         :is-disabled="v$.$invalid"
         @click="submitContactForm"
-      >Let’s talk! <atomic-icon id="ui-arrow_next"/></button-base>
+      >Let’s talk! <atomic-icon id="arrow_next"/></button-base>
     </div>
   </div>
 </template>

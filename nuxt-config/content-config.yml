@@ -1,6 +1,24 @@
 backend:
   repo: platform/customer-frontends/slotsbet
   branch: dev
+__link-label: &linkLabel
+  name: label
+  label: Label
+  widget: string
+__link-url: &linkUrl
+  name: url
+  label: Url
+  widget: string
+__link-variable: &linkArray
+  - *linkLabel
+  - *linkUrl
+__project-icon: &projectIcon
+  name: icon
+  label: Icon
+  widget: select
+  options: ['cherry', 'sport', 'slots', 'live-casino', 'table-games', 'turbo-games', 'sport-book', 'tfs-token',
+            'bonuses', 'live-support', 'vip', 'tournament', 'lottery', 'quest', 'shop', 'heart', 'history', 'wallet',
+            'bonus', 'user', 'log-out']
 collections:
   - name: validationMessages
     label: Validation Messages
@@ -136,7 +154,7 @@ collections:
     extension: json
     format: json
     folder: content/fields
-    __fields-variable: &fieldsObject
+    __fields-array: &fieldsArray
       - name: label
         label: Label
         widget: string
@@ -153,120 +171,319 @@ collections:
       - name: password
         label: Password
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: currentPassword
         label: Current Password
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: newPassword
         label: New Password
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: repeatNewPassword
         label: Repeat New Password
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: firstName
         label: First Name
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: lastName
         label: Last Name
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: nationality
         label: Nationality
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: nickname
         label: Nickname
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: gender
         label: Gender
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: city
         label: City
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: address
         label: Address
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: additionalAddress
         label: Additional Address
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: postalCode
         label: Postal Code
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: timeZone
         label: Time Zone
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: profession
         label: Profession
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: language
         label: Language
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: bonusCode
         label: Bonus Code
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: securityQuestion
         label: Security Question
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: securityAnswer
         label: Security Answer
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: email
         label: Email
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: country
         label: Country
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: currency
         label: Currency
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: agreements
         label: Agreements
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: receiveEmailPromo
         label: Receive Email Promo
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: receiveSmsPromo
         label: Receive Sms Promo
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: phone
         label: Phone
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: birthdate
         label: Birthdate
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: placeOfBirth
         label: Place of Birth
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: personalIdNumber
         label: Personal Id Number
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
       - name: message
         label: Message
         widget: object
-        fields: *fieldsObject
+        fields: *fieldsArray
+
+  - name: mainLayout
+    label: Main Layout
+    create: true
+    identifier_field: locale
+    extension: json
+    format: json
+    folder: content/main-layout
+    editor:
+      preview: false
+    fields:
+      - name: locale
+        label: Locale (settings)
+        widget: string
+      - name: header
+        label: Header
+        widget: object
+        fields:
+          - name: loginButton
+            label: Login Button
+            widget: string
+          - name: registrationButton
+            label: Registration Button
+            widget: string
+          - name: search
+            label: search
+            widget: object
+            fields:
+              - name: placeholder
+                label: Placeholder
+                widget: string
+              - name: moreButton
+                label: More Button
+                widget: string
+              - name: emptyLabel
+                label: Empty Label
+                widget: string
+              - name: emptyText
+                label: Empty Text
+                widget: string
+              - name: tryLabel
+                label: Try Label
+                widget: string
+          - name: depositButton
+            label: Deposit Button
+            widget: string
+
+      - name: userNavigation
+        label: User Navigation
+        widget: object
+        fields:
+          - name: profileLinks
+            label: Profile Links
+            label_singular: link
+            widget: list
+            fields:
+              - *linkLabel
+              - *linkUrl
+              - *projectIcon
+          - name: logoutButton
+            label: Logout Button
+            widget: string
+
+      - name: siteSidebar
+        label: Site Sidebar
+        widget: object
+        __sidebar-block: &sidebarBlock
+          - *linkLabel
+          - name: url
+            label: Url
+            required: false
+            widget: string
+          - *projectIcon
+          - name: items
+            label: Items
+            widget: list
+            label_singular: link
+            fields: *linkArray
+        fields:
+          - name: gamesToggler
+            label: Game Toggler
+            widget: list
+            min: 2
+            max: 2
+            fields:
+              - *linkLabel
+              - *linkUrl
+              - *projectIcon
+          - name: profileMenu
+            label: Profile Menu
+            widget: object
+            fields:
+              - name: levelLabel
+                label: Level Label
+                widget: string
+              - name: depositButton
+                label: Deposit  Button
+                widget: string
+              - name: profileButton
+                label: Profile Button
+                widget: object
+                fields: *linkArray
+          - name: topMenu
+            label: Top Menu
+            widget: list
+            label_singular: item
+            fields:
+              - *linkLabel
+              - *linkUrl
+              - *projectIcon
+              - name: gameList
+                label: Game List
+                widget: list
+                label_singular: game identity
+                field: {name: gameIdentity, label: Game Identity, widget: string}
+          - name: tokenMenu
+            label: Token Menu
+            widget: list
+            label_singular: item
+            fields: *sidebarBlock
+          - name: bonusesMenu
+            label: Bonuses Menu
+            widget: list
+            label_singular: item
+            fields: *sidebarBlock
+          - name: userMenu
+            label: User Menu
+            widget: list
+            label_singular: item
+            fields: *sidebarBlock
+          - name: bottomMenu
+            label: Bottom Menu
+            widget: list
+            label_singular: item
+            fields: *sidebarBlock
+          - name: sidebarFooterMenu
+            label: Sidebar Footer Menu
+            widget: list
+            label_singular: link
+            fields: *linkArray
+
+      - name: footer
+        label: Footer
+        widget: object
+        __group-list: &groupList
+          - name: title
+            label: Title
+            widget: string
+          - name: items
+            label: Links
+            widget: list
+            fields: *linkArray
+        fields:
+          - name: promoMenu
+            label: Promo Menu
+            widget: object
+            fields: *groupList
+          - name: infoMenu
+            label: Info Menu
+            widget: object
+            fields: *groupList
+          - name: helpMenu
+            label: Help Menu
+            widget: object
+            fields: *groupList
+          - name: responsibilityLabel
+            label: Responsibility Label
+            widget: string
+          - name: copyright
+            label: Copyright
+            widget: string
+
+      - name: mobileMenu
+        label: Mobile Menu
+        widget: object
+        fields:
+          - name: menuLabel
+            label: Menu Label
+            widget: string
+          - name: items
+            label: Menu Links
+            widget: list
+            min: 3
+            max: 3
+            fields:
+              - *linkLabel
+              - *linkUrl
+              - *projectIcon
+
+      - name: cookiePopup
+        label: Cookie Popup
+        widget: object
+        fields:
+          - name: text
+            label: Text
+            widget: markdown
+          - name: acceptButton
+            label: Accept Button
+            widget: string

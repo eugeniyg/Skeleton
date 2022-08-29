@@ -14,9 +14,9 @@
   const iconId = computed(() => {
     switch (props.variant) {
     case 'mobile':
-      return 'ui-mobile';
+      return 'mobile';
     case 'desktop':
-      return 'ui-device';
+      return 'device';
     default:
       return 'desktop';
     }

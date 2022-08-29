@@ -6,7 +6,7 @@
     @click.prevent="toggle"
     @focusout="toggle"
   >
-    <atomic-icon id="ui-notification"/>
+    <atomic-icon id="notification"/>
     <atomic-bulb v-if="props.isActive"/>
   </a>
 </template>

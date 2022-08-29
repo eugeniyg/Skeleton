@@ -5,15 +5,15 @@ import {
   GameProviderInterface,
 } from '@platform/frontend-core/dist/module';
 
-export type GamesStoreStateType = {
+interface GamesStoreStateInterface {
   gameProviders: GameProviderInterface[];
   gameCollections: CollectionInterface[];
   favoriteGames: GameInterface[];
   sortedCategories: { [key: string]: string };
-};
+}
 
 export const useGamesStore = defineStore('gamesStore', {
-  state: () => ({
+  state: (): GamesStoreStateInterface => ({
       gameProviders: [],
       gameCollections: [],
       // sorted categories for tabs (for MVP will be 8)
@@ -25,20 +25,21 @@ export const useGamesStore = defineStore('gamesStore', {
         new: 'new',
         table: 'table-games',
         live: 'live-casino',
-        popular: 'ui-heart',
+        popular: 'heart',
       },
       favoriteGames: [],
-    } as GamesStoreStateType),
+    }),
 
   getters: {
-    providersSelectOptions():GameProviderInterface[] {
+    providersSelectOptions(state):GameProviderInterface[] {
       const allProvidersItem = {
         id: 'all',
+        name: 'All Providers',
         identity: 'all',
         code: 'all',
         value: 'All Providers',
       };
-      const optionsArr = this.gameProviders.map((provider) => ({
+      const optionsArr = state.gameProviders.map((provider) => ({
         ...provider,
         code: provider.id,
         value: provider.name,

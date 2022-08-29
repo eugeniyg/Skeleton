@@ -1,6 +1,6 @@
 <template>
   <button class="btn-play" @click="onClick">
-    <atomic-icon id="ui-play"/>
+    <atomic-icon id="play"/>
   </button>
 </template>
 

@@ -2,12 +2,12 @@
   <div class="result-search" :class="{'is-show': props.isShow}">
     <div class="box">
       <div class="header" v-if="!props.items.length">
-        <div class="heading">Nothing found</div>
-        <div class="text">Try searching for something else</div>
+        <div class="heading">{{ headerContent?.search?.emptyLabel }}</div>
+        <div class="text">{{ headerContent?.search?.emptyText }}</div>
       </div>
 
       <div class="items">
-        <div class="label" v-if="!props.items.length">Or try these popular games:</div>
+        <div class="label" v-if="!props.items.length">{{ headerContent?.search?.tryLabel }}</div>
 
         <div
           v-for="game in activeItems"
@@ -21,7 +21,7 @@
         </div>
 
         <div class="footer" v-if="isShowLoadMore">
-          <button-base type="ghost" size="xs" @click="emit('loadMore')">Load more</button-base>
+          <button-base type="ghost" size="xs" @click="emit('loadMore')">{{ headerContent?.search?.moreButton }}</button-base>
         </div>
       </div>
     </div>
@@ -67,7 +67,7 @@
     emit('hideSearch');
   };
 
-  const { baseApiUrl } = useGlobalStore();
+  const { baseApiUrl, headerContent } = useGlobalStore();
   const { getImageUrl } = useProjectMethods();
   const gameImageSrc = (imagesData: GameImagesInterface):string => `${baseApiUrl}/img/gcdn${getImageUrl(imagesData, 'square')}`;
 </script>

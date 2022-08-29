@@ -1,7 +1,7 @@
 <template>
   <div class="avatar" @click="emit('toggle')">
     <span v-if="props.isButton" class="close-decor">
-      <atomic-icon id="ui-plus" />
+      <atomic-icon id="plus" />
     </span>
 
     <span class="thumb">

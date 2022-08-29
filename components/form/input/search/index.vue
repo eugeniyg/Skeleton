@@ -9,7 +9,7 @@
         :value="props.value"
         @input="onInput"
       />
-      <atomic-icon id="ui-search"/>
+      <atomic-icon id="search"/>
     </div>
   </div>
 </template>

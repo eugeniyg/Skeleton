@@ -5,7 +5,7 @@
   >
     <div v-if="props.items.length" class="selected" @click="open">
       <img v-if="props.activeMethod.logo" class="mask" :src="props.activeMethod.logo" />
-      <atomic-icon id="ui-arrow_expand-close"/>
+      <atomic-icon id="arrow_expand-close"/>
     </div>
 
     <div class="items" v-if="props.items.length">
