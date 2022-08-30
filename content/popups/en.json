@@ -16,7 +16,7 @@
   },
   "error": {
     "title": "Error",
-    "description": "Sorry, something went wrong.  Please, try again.",
+    "description": "Sorry, something went wrong.\n\nPlease, try again.",
     "button": "Try again"
   },
   "login": {
