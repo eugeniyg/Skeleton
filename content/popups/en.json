@@ -1,0 +1,84 @@
+{
+  "confirm": {
+    "title": "Your account has been successfully confirmed!",
+    "button": "OK"
+  },
+  "success": {
+    "title": "Success",
+    "description": "Your deposit is successful! Money is already on your balance.",
+    "button": "Done"
+  },
+  "forgot": {
+    "title": "Forgot password?",
+    "description": "Enter your email address and we will send you a password reset link.",
+    "forgotButton": "Reset password",
+    "registrationButton": " Don't have an account? *Join*"
+  },
+  "error": {
+    "title": "Error",
+    "description": "Sorry, something went wrong.\n\nPlease, try again.",
+    "button": "Try again"
+  },
+  "login": {
+    "title": "Sign in",
+    "loginButton": "Sing in",
+    "forgotButton": "*Forgot Password?*",
+    "registrationButton": " Don't have an account? *Join*"
+  },
+  "withdraw": {
+    "title": "Withdrawal",
+    "balanceLabel": "Balance",
+    "withdrawLabel": "Withdrawable",
+    "sumLabel": "Withdrawal sum",
+    "minSum": "Min withdraw:",
+    "wallet": {
+      "label": "Wallet number",
+      "placeholder": "Enter wallet number"
+    },
+    "withdrawButton": "Withdraw"
+  },
+  "reset": {
+    "title": "Reset account password",
+    "resetButton": "Confirm"
+  },
+  "registration": {
+    "title": "Join Slotsbet",
+    "registrationButton": "Sign up",
+    "loginButton": " Already a member? *Sign in*",
+    "promo": {
+      "title": "Welcome package",
+      "secondTitle": "5 BTC",
+      "additionalTitle": "+ 300 FS",
+      "advantages": [
+        {
+          "icon": "turbo-games",
+          "label": "Over 3000 provably fair games"
+        },
+        {
+          "icon": "speed",
+          "label": "Fast withdrawals"
+        },
+        {
+          "icon": "live-support",
+          "label": "24/7 Live Chat Support"
+        }
+      ]
+    }
+  },
+  "locale": "en",
+  "deposit": {
+    "title": "Deposit",
+    "balanceLabel": "Balance",
+    "sumLabel": "Deposit sum",
+    "minSum": "Min deposit:",
+    "togglerLabel": "I have bonus code",
+    "bonuses": [
+      {
+        "image": "/img/uploads/icn-notification.svg",
+        "title": "Get your welcome bonuses:",
+        "description": "5 BTC + 300 FS"
+      }
+    ],
+    "depositButton": "Deposit"
+  }
+}
