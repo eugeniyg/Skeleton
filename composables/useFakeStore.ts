@@ -2443,41 +2443,19 @@ export const useFakeStore = () => {
   const providerCards = () => filter(cards, 'providers');
 
   const promoCard = {
-    image: {
-        source: [
-          {
-            media: '(max-width: 360px)',
-            src: ['/promo-card/328/1.png', '/promo-card/328/2.png'],
-          },
-          {
-            media: '(max-width: 528px)',
-            src: ['/promo-card/464/1.png', '/sliders/main/2/464/2.png'],
-          },
-          {
-            media: '(max-width: 768px)',
-            src: ['/promo-card/704/1.png', '/promo-card/704/2.png'],
-          },
-          {
-            media: '(max-width: 1024px)',
-            src: ['/promo-card/944/1.png', '/promo-card/944/2.png'],
-          },
-          {
-            media: '(max-width: 2264px)',
-            src: ['/promo-card/3776/1.png', '/promo-card/3776/2.png'],
-          },
-        ],
-        src: ['/promo-card/944/1.png', '/promo-card/944/2.png'],
+    title: '#### Play and win every day at Slotsbet',
+    button: {
+      label: 'Play now',
+    },
+    images: {
+      mobile: {
+        backgroundImage: '/img/uploads/1-mobile-background.png',
+        faceImage: '/img/uploads/home-face-mobile.png',
       },
-    title: '<h4>Play and win every day at Slotsbet</h4>',
-    actions: {
-      primary: {
-        title: 'Play now',
-        href: '#',
+      desktop: {
+        backgroundImage: '/img/uploads/1-desktop-background.png',
+        faceImage: '/img/uploads/home-face-desktop.png',
       },
-      // secondary: {
-      //   title: 'Secondary',
-      //   href: '#'
-      // },
     },
   };
 
