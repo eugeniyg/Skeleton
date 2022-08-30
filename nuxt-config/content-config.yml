@@ -22,7 +22,7 @@ __project-icon: &projectIcon
   widget: select
   options: ['cherry', 'sport', 'slots', 'live-casino', 'table-games', 'turbo-games', 'sport-book', 'tfs-token',
             'bonuses', 'live-support', 'vip', 'tournament', 'lottery', 'quest', 'shop', 'heart', 'history', 'wallet',
-            'bonus', 'user', 'log-out']
+            'bonus', 'user', 'log-out', 'speed']
 collections:
   - name: validationMessages
     label: Validation Messages
@@ -566,6 +566,40 @@ collections:
       preview: false
     fields:
       - *localeField
+      - name: registration
+        label: Registration Popups
+        widget: object
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: registrationButton
+            label: Button Label
+            widget: string
+          - name: loginButton
+            label: Login Button Label
+            widget: string
+            hint: Put text inside "*" to highlight it (*test*)
+          - name: promo
+            label: Promo Banner
+            widget: object
+            fields:
+              - name: title
+                label: Promo Title
+                widget: string
+              - name: secondTitle
+                label: Second Line Title
+                widget: string
+              - name: additionalTitle
+                label: Additional Title
+                widget: string
+              - name: advantages
+                label: Advantages List
+                widget: list
+                label_singular: item
+                fields:
+                  - *projectIcon
+                  - *linkLabel
       - name: login
         label: Login Popup
         widget: object
@@ -602,6 +636,3 @@ collections:
             label: Registration Button Label
             widget: string
             hint: Put text inside "*" to highlight it (*test*)
-
-
-
