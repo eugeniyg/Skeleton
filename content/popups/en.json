@@ -31,10 +31,6 @@
     "withdrawLabel": "Withdrawable",
     "sumLabel": "Withdrawal sum",
     "minSum": "Min withdraw:",
-    "wallet": {
-      "label": "Wallet number",
-      "placeholder": "Enter wallet number"
-    },
     "withdrawButton": "Withdraw"
   },
   "reset": {

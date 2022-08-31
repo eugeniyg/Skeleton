@@ -87,3 +87,105 @@ export interface MainLayoutInterface {
   cookiePopup: CookiePopupInterface,
   mobileMenu: MobileMenuInterface
 }
+
+export interface ConfirmInterface {
+  title: string,
+  button: string
+}
+
+export interface SuccessInterface {
+  title: string,
+  description: string,
+  button: string
+}
+
+export interface ForgotInterface {
+  title: string,
+  description?: string,
+  forgotButton: string,
+  registrationButton: string
+}
+
+export interface ErrorInterface {
+  title: string,
+  description: string,
+  button: string
+}
+
+export interface LoginInterface {
+  title: string,
+  loginButton: string,
+  forgotButton: string,
+  registrationButton: string
+}
+
+export interface WithdrawInterface {
+  title: string,
+  balanceLabel: string,
+  withdrawLabel: string,
+  sumLabel: string,
+  minSum: string,
+  withdrawButton: string
+}
+
+export interface ResetInterface {
+  title: string,
+  resetButton: string
+}
+
+export interface RegistrationInterface {
+  title: string,
+  agreeEmailLabel: string,
+  agreeSmsLabel: string,
+  registrationButton: string,
+  loginButton: string,
+  promo: {
+    title: string,
+    secondTitle: string,
+    additionalTitle: string,
+    advantages?: { icon: string, label: string }[]
+  }
+}
+
+export interface DepositInterface {
+  title: string,
+  balanceLabel: string,
+  sumLabel: string,
+  minSum: string,
+  togglerLabel: string,
+  bonuses?: { image?: string, title: string, description?: string }[],
+  depositButton: string
+}
+
+export interface PopupsInterface {
+  confirm: ConfirmInterface,
+  success: SuccessInterface,
+  forgot: ForgotInterface,
+  error: ErrorInterface,
+  login: LoginInterface,
+  withdraw: WithdrawInterface,
+  reset: ResetInterface,
+  registration: RegistrationInterface,
+  deposit: DepositInterface
+}
+
+interface SlideImageInterface {
+  backgroundImage: string,
+  faceImage: string
+}
+
+interface SlideImagesInterface {
+  mobile: SlideImageInterface,
+  desktop: SlideImageInterface
+}
+
+export interface SlideInterface {
+  slideStatus: string,
+  title: string,
+  content?: string,
+  button?: {
+    label: string,
+    url?: string,
+  }
+  images: SlideImagesInterface
+}

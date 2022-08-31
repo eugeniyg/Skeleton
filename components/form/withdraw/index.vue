@@ -1,7 +1,7 @@
 <template>
   <form>
     <form-input-number
-      label="Withdrawal sum"
+      :label="withdrawContent?.sumLabel || ''"
       name="withdrawSum"
       :min="props.amountMin"
       :max="props.amountMax"
@@ -15,9 +15,9 @@
       v-for="field in props.fields"
       :key="field.key"
       :name="field.key"
-      :label="field.labels.en"
+      :label="field.labels[currentLocale.code]"
       type="text"
-      :placeholder="field.hints.en"
+      :placeholder="field.hints[currentLocale.code]"
       v-model:value="withdrawFormData[field.key]"
       :onFocus="onFocus(field.key)"
       :hint="setError(field.key)"
@@ -29,13 +29,14 @@
       :isDisabled="buttonDisabled"
       @click="getWithdraw"
     >
-      Withdraw {{ buttonAmount }} {{ activeAccount.currency }}
+      {{ withdrawContent?.withdrawButton }} {{ buttonAmount }} {{ activeAccount.currency }}
     </button-base>
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { WithdrawInterface } from '~/types';
 
   const props = defineProps({
     amountMax: {
@@ -56,13 +57,16 @@
     },
   });
 
+  const globalStore = useGlobalStore();
+  const { popupsData, currentLocale } = storeToRefs(globalStore);
+  const withdrawContent: WithdrawInterface|undefined = popupsData.value?.withdraw;
   const walletStore = useWalletStore();
   const { closeModal, showAlert } = useLayoutStore();
   const {
     activeAccount, activeAccountType,
   } = storeToRefs(walletStore);
   const fieldHint = computed(() => ({
-    message: `Min withdraw: ${props.amountMin} ${activeAccount.value.currency}`,
+    message: `${withdrawContent?.minSum || ''} ${props.amountMin} ${activeAccount.value.currency}`,
   }));
 
   const isSending = ref<boolean>(false);

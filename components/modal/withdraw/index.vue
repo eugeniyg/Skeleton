@@ -8,7 +8,7 @@
     <div class="modal-withdraw">
       <div v-if="isLoggedIn" class="container">
         <div class="slot">
-          <balance :withdraw="true">
+          <balance withdraw>
             <form-input-payments
               :items="withdrawMethods"
               v-model:activeMethod="currentMethod"
@@ -19,7 +19,7 @@
         <div class="scroll">
           <div class="header">
             <button-modal-close @close="closeModal('withdraw')"/>
-            <div class="title">Withdrawal</div>
+            <div class="title">{{ withdrawContent?.title }}</div>
           </div>
 
           <atomic-titles :title="currentMethod.names?.en"/>
@@ -117,6 +117,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { PaymentMethodInterface } from '@platform/frontend-core/dist/module';
+  import { WithdrawInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
@@ -127,6 +128,9 @@
   const { withdrawMethods } = storeToRefs(walletStore);
   const showForm = ref<boolean>(false);
   const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
+
+  const { popupsData } = useGlobalStore();
+  const withdrawContent: WithdrawInterface|undefined = popupsData?.withdraw;
 
   watch(() => withdrawMethods.value, () => {
     currentMethod.value = withdrawMethods.value[0] || {};

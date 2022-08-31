@@ -9,7 +9,7 @@
       <div class="scroll">
         <div class="header">
           <button-modal-close @close="closeModal('resetPass')"/>
-          <div class="title">Reset account <br> password</div>
+          <div class="title">{{ resetContent?.title }}</div>
         </div>
 
         <form-reset-pass v-if="showForm" />
@@ -20,11 +20,14 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { ResetInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
   const showForm = ref<boolean>(false);
+  const { popupsData } = useGlobalStore();
+  const resetContent: ResetInterface|undefined = popupsData?.reset;
 </script>
 
 <style lang="scss" src="./style.scss"/>

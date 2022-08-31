@@ -11,8 +11,8 @@
         </div>
 
         <img class="img" src="@/assets/svg/colored/confirm.svg" />
-        <p class="text">Your account has been successfully confirmed!</p>
-        <button-base type="primary" size="md" @click="closeModal('confirm')">OK</button-base>
+        <p class="text">{{ confirmContent?.title }}</p>
+        <button-base type="primary" size="md" @click="closeModal('confirm')">{{ confirmContent?.button }}</button-base>
       </div>
     </div>
   </vue-final-modal>
@@ -20,10 +20,13 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { ConfirmInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
+  const { popupsData } = useGlobalStore();
+  const confirmContent: ConfirmInterface|undefined = popupsData?.confirm;
 </script>
 
 <style lang="scss" src="./style.scss"/>
