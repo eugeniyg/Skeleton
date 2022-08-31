@@ -778,3 +778,162 @@ collections:
           - name: button
             label: Button Label
             widget: string
+
+
+  - name: alerts
+    label: Site Alerts
+    create: true
+    identifier_field: locale
+    extension: json
+    format: json
+    folder: content/alerts
+    editor:
+      preview: false
+    __alert-title: &alertTitle
+      name: title
+      label: Title
+      widget: string
+    __alert-description: &alertDescription
+      name: description
+      label: Description
+      widget: string
+      required: false
+    __alert-types: &alertTypes
+      - info
+      - error
+      - warning
+      - done
+    fields:
+      - *localeField
+      - name: limitedRealGame
+        label: Limited status in real game mode
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: error
+      - name: limitedDeposit
+        label: Limited status in deposit
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: error
+      - name: sentResetLink
+        label: Sent reset password link
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: done
+      - name: invalidResetCode
+        label: Invalid reset password code
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: error
+      - name: passwordChanged
+        label: Password changed
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: done
+      - name: accountBlocked
+        label: Account blocked
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: error
+      - name: withdrawalProcessed
+        label: Withdrawal is being processed
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: done
+      - name: somethingWrong
+        label: Something went wrong
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: error
+      - name: userCanceledWithdrawal
+        label: User canceled withdrawal
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: done
+      - name: successRegistration
+        label: Success Registration
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: done
+      - name: sentMessage
+        label: Sent user message
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: done

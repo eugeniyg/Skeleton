@@ -58,7 +58,7 @@
   });
 
   const globalStore = useGlobalStore();
-  const { popupsData, currentLocale } = storeToRefs(globalStore);
+  const { popupsData, currentLocale, alertsData } = storeToRefs(globalStore);
   const withdrawContent: WithdrawInterface|undefined = popupsData.value?.withdraw;
   const walletStore = useWalletStore();
   const { closeModal, showAlert } = useLayoutStore();
@@ -122,20 +122,12 @@
     try {
       await withdrawAccount(params);
       closeModal('withdraw');
-      showAlert({
-        title: 'Pending!',
-        text: 'Your withdrawal is being processed. We will check your request in a short while.',
-        variant: 'done',
-      });
+      showAlert(alertsData.value?.withdrawalProcessed);
     } catch (err) {
       if (err.response?.status === 422) {
         serverFormErrors.value = err.data?.error?.fields;
       } else {
-        showAlert({
-          title: 'Error!',
-          text: 'Something went wrong!',
-          variant: 'error',
-        });
+        showAlert(alertsData.value?.somethingWrong);
       }
       isSending.value = false;
     }

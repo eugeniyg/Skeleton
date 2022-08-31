@@ -67,7 +67,7 @@
     },
   });
 
-  const { popupsData, fieldsContent } = useGlobalStore();
+  const { popupsData, fieldsContent, alertsData } = useGlobalStore();
   const depositContent: DepositInterface|undefined = popupsData?.deposit;
 
   const walletStore = useWalletStore();
@@ -95,11 +95,7 @@
     const profileStore = useProfileStore();
     if (profileStore.playerStatusName === 'Limited' && activeAccountType.value === 'fiat') {
       const { showAlert } = useLayoutStore();
-      showAlert({
-        title: 'Error',
-        text: 'Sorry, but you can\'t deposit for now. Please, contact our support team for more information.',
-        variant: 'error',
-      });
+      showAlert(alertsData?.limitedDeposit);
       return;
     }
 

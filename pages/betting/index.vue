@@ -20,7 +20,7 @@
   });
 
   const globalStore = useGlobalStore();
-  const { isMobile } = storeToRefs(globalStore);
+  const { isMobile, alertsData } = storeToRefs(globalStore);
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const frameLink = ref<string>('');
@@ -43,13 +43,13 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
-  const { showModal, showPlayLimitAlert } = useLayoutStore();
+  const { showModal, showAlert } = useLayoutStore();
 
   const redirectLimitedPlayer = ():void => {
     const { localizePath } = useProjectMethods();
     const router = useRouter();
     router.replace(localizePath('/'));
-    showPlayLimitAlert();
+    showAlert(alertsData.value?.limitedRealGame);
   };
 
   onMounted(async () => {

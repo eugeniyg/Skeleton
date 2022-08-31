@@ -6,6 +6,7 @@ import { useWalletStore } from '~/composables/useWalletStore';
 import { useLayoutStore } from '~/composables/useLayoutStore';
 import { useGamesStore } from '~/composables/useGamesStore';
 import { useProjectMethods } from '~/composables/useProjectMethods';
+import { useGlobalStore } from '~/composables/useGlobalStore';
 
 interface ProfileStoreStateInterface {
   isLoggedIn: boolean,
@@ -74,11 +75,8 @@ export const useProfileStore = defineStore('profileStore', {
       this.isLoggedIn = true;
       subscribeAccountSocket();
       const { showAlert } = useLayoutStore();
-      showAlert({
-        title: 'Welcome',
-        text: 'You have been successfully registered!',
-        variant: 'done',
-      });
+      const { alertsData } = useGlobalStore();
+      showAlert(alertsData?.successRegistration);
     },
 
     async getProfileData():Promise<void> {
