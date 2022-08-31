@@ -35,21 +35,23 @@
       @click="login"
       :isDisabled="v$.$invalid || isLockedAsyncButton"
     >
-      Sign in
+      {{ loginContent?.loginButton }}
     </button-base>
 
-    <button-forgot-pass/>
+    <button-popup :buttonLabel="loginContent?.forgotButton" openModal="forgotPass"/>
 
-    <button-text-join @click="showModal('register')"/>
+    <button-popup :buttonLabel="loginContent?.registrationButton" openModal="register" />
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { LoginInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { validationMessages, fieldsContent } = storeToRefs(globalStore);
-  const { showModal, closeModal } = useLayoutStore();
+  const { validationMessages, fieldsContent, popupsData } = storeToRefs(globalStore);
+  const { closeModal } = useLayoutStore();
+  const loginContent: LoginInterface|undefined = popupsData.value?.login;
 
   const authorizationFormData = reactive({ email: '', password: '' });
   const { getFormRules } = useProjectMethods();

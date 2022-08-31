@@ -305,6 +305,7 @@ collections:
       - name: header
         label: Header
         widget: object
+        collapsed: true
         fields:
           - name: loginButton
             label: Login Button
@@ -315,6 +316,7 @@ collections:
           - name: search
             label: search
             widget: object
+            collapsed: true
             fields:
               - name: placeholder
                 label: Placeholder
@@ -338,11 +340,13 @@ collections:
       - name: userNavigation
         label: User Navigation
         widget: object
+        collapsed: true
         fields:
           - name: profileLinks
             label: Profile Links
             label_singular: link
             widget: list
+            collapsed: true
             fields:
               - *linkLabel
               - *linkUrl
@@ -354,6 +358,7 @@ collections:
       - name: siteSidebar
         label: Site Sidebar
         widget: object
+        collapsed: true
         __sidebar-block: &sidebarBlock
           - *linkLabel
           - name: url
@@ -370,6 +375,7 @@ collections:
           - name: gamesToggler
             label: Game Toggler
             widget: list
+            collapsed: true
             min: 2
             max: 2
             fields:
@@ -379,6 +385,7 @@ collections:
           - name: profileMenu
             label: Profile Menu
             widget: object
+            collapsed: true
             fields:
               - name: levelLabel
                 label: Level Label
@@ -393,6 +400,7 @@ collections:
           - name: topMenu
             label: Top Menu
             widget: list
+            collapsed: true
             label_singular: item
             fields:
               - *linkLabel
@@ -406,32 +414,38 @@ collections:
           - name: tokenMenu
             label: Token Menu
             widget: list
+            collapsed: true
             label_singular: item
             fields: *sidebarBlock
           - name: bonusesMenu
             label: Bonuses Menu
             widget: list
+            collapsed: true
             label_singular: item
             fields: *sidebarBlock
           - name: userMenu
             label: User Menu
             widget: list
+            collapsed: true
             label_singular: item
             fields: *sidebarBlock
           - name: bottomMenu
             label: Bottom Menu
             widget: list
+            collapsed: true
             label_singular: item
             fields: *sidebarBlock
           - name: sidebarFooterMenu
             label: Sidebar Footer Menu
             widget: list
+            collapsed: true
             label_singular: link
             fields: *linkArray
 
       - name: footer
         label: Footer
         widget: object
+        collapsed: true
         __group-list: &groupList
           - name: title
             label: Title
@@ -444,14 +458,17 @@ collections:
           - name: promoMenu
             label: Promo Menu
             widget: object
+            collapsed: true
             fields: *groupList
           - name: infoMenu
             label: Info Menu
             widget: object
+            collapsed: true
             fields: *groupList
           - name: helpMenu
             label: Help Menu
             widget: object
+            collapsed: true
             fields: *groupList
           - name: responsibilityLabel
             label: Responsibility Label
@@ -463,6 +480,7 @@ collections:
       - name: mobileMenu
         label: Mobile Menu
         widget: object
+        collapsed: true
         fields:
           - name: menuLabel
             label: Menu Label
@@ -480,6 +498,7 @@ collections:
       - name: cookiePopup
         label: Cookie Popup
         widget: object
+        collapsed: true
         fields:
           - name: text
             label: Text
@@ -502,6 +521,7 @@ collections:
       - name: slider
         label: Slider
         widget: list
+        collapsed: true
         label_singular: slide
         summary: '{{fields.title}}'
         fields:
@@ -569,9 +589,16 @@ collections:
       - name: registration
         label: Registration Popups
         widget: object
+        collapsed: true
         fields:
           - name: title
             label: Title
+            widget: string
+          - name: agreeEmailLabel
+            label: Agree Email Label
+            widget: string
+          - name: agreeSmsLabel
+            label: Agree Sms Label
             widget: string
           - name: registrationButton
             label: Button Label
@@ -579,7 +606,7 @@ collections:
           - name: loginButton
             label: Login Button Label
             widget: string
-            hint: Put text inside "*" to highlight it (*test*)
+            hint: Put text inside "*" to highlight it
           - name: promo
             label: Promo Banner
             widget: object
@@ -597,12 +624,14 @@ collections:
                 label: Advantages List
                 widget: list
                 label_singular: item
+                summary: '{{fields.label}}'
                 fields:
                   - *projectIcon
                   - *linkLabel
       - name: login
         label: Login Popup
         widget: object
+        collapsed: true
         fields:
           - name: title
             label: Title
@@ -613,14 +642,15 @@ collections:
           - name: forgotButton
             label: Forgot Button Label
             widget: string
-            hint: Put text inside "*" to highlight it (*test*)
+            hint: Put text inside "*" to highlight it
           - name: registrationButton
             label: Registration Button Label
             widget: string
-            hint: Put text inside "*" to highlight it (*test*)
+            hint: Put text inside "*" to highlight it
       - name: forgot
         label: Forgot Password Popup
         widget: object
+        collapsed: true
         fields:
           - name: title
             label: Title
@@ -635,4 +665,116 @@ collections:
           - name: registrationButton
             label: Registration Button Label
             widget: string
-            hint: Put text inside "*" to highlight it (*test*)
+            hint: Put text inside "*" to highlight it
+      - name: reset
+        label: Reset Popup
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: resetButton
+            label: Reset Button Label
+            widget: string
+      - name: deposit
+        label: Deposit Popup
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: balanceLabel
+            label: Balance Label
+            widget: string
+          - name: sumLabel
+            label: Sum Label
+            widget: string
+          - name: minSum
+            label: Min Sum Label
+            widget: string
+          - name: togglerLabel
+            label: Bonus Toggler Label
+            widget: string
+          - name: bonuses
+            label: Bonuses List
+            widget: list
+            label_singular: item
+            fields:
+              - name: image
+                label: Image
+                widget: image
+                required: false
+              - name: title
+                label: Bonus Title
+                widget: string
+              - name: description
+                label: Bonus Description
+                widget: string
+                required: false
+          - name: depositButton
+            label: Deposit Button
+            widget: string
+      - name: withdraw
+        label: Withdraw Popup
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: balanceLabel
+            label: Balance Label
+            widget: string
+          - name: withdrawLabel
+            label: Withdraw Label
+            widget: string
+          - name: sumLabel
+            label: Sum Label
+            widget: string
+          - name: minSum
+            label: Min Sum Label
+            widget: string
+          - name: withdrawButton
+            label: Withdraw Button
+            widget: string
+      - name: confirm
+        label: Confirm Popup
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: button
+            label: Button Label
+            widget: string
+      - name: error
+        label: Error Popup
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: description
+            label: Description
+            widget: markdown
+          - name: button
+            label: Button Label
+            widget: string
+      - name: success
+        label: Success Popup
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: description
+            label: Description
+            widget: markdown
+          - name: button
+            label: Button Label
+            widget: string

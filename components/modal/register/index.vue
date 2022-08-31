@@ -14,7 +14,7 @@
         <div class="scroll">
           <div class="header">
             <button-modal-close @close="closeModal('register')"/>
-            <div class="title">Join Slotsbet</div>
+            <div class="title">{{ registrationContent?.title }}</div>
           </div>
           <form-join v-if="showForm"/>
         </div>
@@ -25,11 +25,14 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { RegistrationInterface } from '~/types';
 
   const showForm = ref<boolean>(false);
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
+  const { popupsData } = useGlobalStore();
+  const registrationContent: RegistrationInterface|undefined = popupsData?.registration;
 </script>
 
 <style lang="scss" src="./style.scss"/>

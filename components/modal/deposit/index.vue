@@ -19,7 +19,7 @@
         <div class="scroll">
           <div class="header">
             <button-modal-close @close="closeModal('deposit')"/>
-            <div class="title">Deposit</div>
+            <div class="title">{{ depositContent?.title }}</div>
           </div>
           <form-deposit v-if="showForm" v-bind="currentMethod"/>
           <!--          <form-deposit-additional/>-->
@@ -33,6 +33,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { PaymentMethodInterface } from '@platform/frontend-core/dist/module';
+  import { DepositInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
@@ -43,6 +44,9 @@
   const { depositMethods } = storeToRefs(walletStore);
   const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
   const showForm = ref<boolean>(false);
+
+  const { popupsData } = useGlobalStore();
+  const depositContent: DepositInterface|undefined = popupsData?.deposit;
 
   watch(() => depositMethods.value, () => {
     currentMethod.value = depositMethods.value[0] || {};

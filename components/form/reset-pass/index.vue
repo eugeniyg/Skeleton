@@ -32,16 +32,18 @@
       :isDisabled="v$.$invalid || isLockedAsyncButton"
       @click="resetPassword"
     >
-      Confirm
+      {{ resetContent?.resetButton }}
     </button-base>
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { ResetInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { fieldsContent } = storeToRefs(globalStore);
+  const { fieldsContent, popupsData } = storeToRefs(globalStore);
+  const resetContent: ResetInterface|undefined = popupsData.value?.reset;
 
   const resetFormData = reactive({
     newPassword: '',

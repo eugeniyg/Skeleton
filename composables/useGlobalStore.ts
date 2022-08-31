@@ -9,7 +9,7 @@ import {
 import {
   BrowserLanguageInterface, CookiePopupInterface,
   FieldsContentInterface, FooterInterface, HeaderInterface,
-  MainLayoutInterface, MobileMenuInterface, SiteSidebarInterface, UserNavigationInterface,
+  MainLayoutInterface, MobileMenuInterface, PopupsInterface, SiteSidebarInterface, UserNavigationInterface,
   ValidationMessageInterface,
 } from '~/types';
 
@@ -26,6 +26,7 @@ interface GlobalStoreStateInterface {
   validationMessages: ValidationMessageInterface|{},
   fieldsContent: FieldsContentInterface|{},
   layoutData: MainLayoutInterface,
+  popupsData: PopupsInterface|undefined,
 }
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -42,6 +43,7 @@ export const useGlobalStore = defineStore('globalStore', {
       validationMessages: {},
       fieldsContent: {},
       layoutData: undefined,
+      popupsData: undefined,
     }),
 
   getters: {
@@ -129,14 +131,16 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getGlobalContent():Promise<void> {
-      const [validations, fieldsData, layoutData] = await Promise.allSettled([
+      const [validations, fieldsData, layoutData, popupsData] = await Promise.allSettled([
         queryContent(`validations/${this.currentLocale.code}`).findOne(),
         queryContent(`fields/${this.currentLocale.code}`).findOne(),
         queryContent(`main-layout/${this.currentLocale.code}`).findOne(),
+        queryContent(`popups/${this.currentLocale.code}`).findOne(),
       ]);
       if (validations.status !== 'rejected') this.validationMessages = validations.value;
       if (fieldsData.status !== 'rejected') this.fieldsContent = fieldsData.value;
       if (layoutData.status !== 'rejected') this.layoutData = layoutData.value;
+      if (popupsData.status !== 'rejected') this.popupsData = popupsData.value;
     },
   },
 });

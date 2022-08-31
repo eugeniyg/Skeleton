@@ -46,10 +46,6 @@
       type: String,
       required: false,
     },
-    subTitle: {
-      type: String,
-      default: 'Win big by choosing the correct side. Pick a side and let luck decide!',
-    },
     button: {
       type: Object,
       required: false,
