@@ -12,7 +12,7 @@
   const props = defineProps({
     buttonLabel: {
       type: String,
-      required: true,
+      default: '',
     },
     openModal: {
       type: String,

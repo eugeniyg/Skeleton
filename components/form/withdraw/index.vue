@@ -1,7 +1,7 @@
 <template>
   <form>
     <form-input-number
-      :label="withdrawContent?.sumLabel"
+      :label="withdrawContent?.sumLabel || ''"
       name="withdrawSum"
       :min="props.amountMin"
       :max="props.amountMax"
@@ -66,7 +66,7 @@
     activeAccount, activeAccountType,
   } = storeToRefs(walletStore);
   const fieldHint = computed(() => ({
-    message: `${withdrawContent?.minSum} ${props.amountMin} ${activeAccount.value.currency}`,
+    message: `${withdrawContent?.minSum || ''} ${props.amountMin} ${activeAccount.value.currency}`,
   }));
 
   const isSending = ref<boolean>(false);

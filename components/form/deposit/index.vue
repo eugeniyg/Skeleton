@@ -74,7 +74,7 @@
   const { showModal } = useLayoutStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
   const fieldHint = computed(() => ({
-    message: `${depositContent?.minSum} ${props.amountMin} ${activeAccount.value.currency}`,
+    message: `${depositContent?.minSum || ''} ${props.amountMin} ${activeAccount.value.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
