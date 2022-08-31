@@ -114,13 +114,10 @@
   };
 
   const { showAlert } = useLayoutStore();
+  const { alertsData } = useGlobalStore();
   const cancelPayment = async (invoiceId: string):Promise<void> => {
     const response = await cancelInvoice(invoiceId);
-    showAlert({
-      title: 'Success',
-      text: 'You have successfully canceled your withdrawal.',
-      variant: 'done',
-    });
+    showAlert(alertsData?.userCanceledWithdrawal);
 
     const closedIndex = invoices.value.findIndex((invoice) => invoice.id === invoiceId);
     invoices.value[closedIndex] = response;

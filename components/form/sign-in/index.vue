@@ -49,7 +49,9 @@
   import { LoginInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { validationMessages, fieldsContent, popupsData } = storeToRefs(globalStore);
+  const {
+    validationMessages, fieldsContent, popupsData, alertsData,
+  } = storeToRefs(globalStore);
   const { closeModal } = useLayoutStore();
   const loginContent: LoginInterface|undefined = popupsData.value?.login;
 
@@ -91,11 +93,7 @@
         serverFormErrors.value = error.data?.error?.fields;
       } else if (error.response?.status === 403) {
         const { showAlert } = useLayoutStore();
-        showAlert({
-          title: 'Error',
-          text: 'Sorry, but your account is blocked. Please, contact our support team for more information.',
-          variant: 'error',
-        });
+        showAlert(alertsData.value?.accountBlocked);
       } else throw error;
     } finally {
       isLockedAsyncButton.value = false;

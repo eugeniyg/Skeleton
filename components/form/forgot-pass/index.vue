@@ -32,7 +32,7 @@
   import { ForgotInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { fieldsContent, popupsData } = storeToRefs(globalStore);
+  const { fieldsContent, popupsData, alertsData } = storeToRefs(globalStore);
   const forgotContent: ForgotInterface|undefined = popupsData.value?.forgot;
 
   const forgotFormData = reactive({ email: '' });
@@ -59,11 +59,7 @@
       isLockedAsyncButton.value = true;
       await forgotProfilePassword(forgotFormData);
       const { closeModal, showAlert } = useLayoutStore();
-      showAlert({
-        title: 'Success',
-        text: 'A password reset link was sent. Click the link in the email to create a new password.',
-        variant: 'done',
-      });
+      showAlert(alertsData.value?.sentResetLink);
       closeModal('forgotPass');
     } catch (error) {
       if (error.response?.status === 422) {

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useProfileStore } from '~/composables/useProfileStore';
+import { AlertInterface } from '~/types';
 
 interface LayoutStoreStateInterface {
   isUserNavOpen: boolean,
@@ -9,11 +10,7 @@ interface LayoutStoreStateInterface {
   isDrawerCompact: boolean,
   isShowAlert: boolean,
   showCookiePopup: boolean,
-  alertProps: {
-    title: string | undefined,
-    text: string | undefined,
-    variant: string | undefined, // 'info' | 'error' | 'warning' | 'done'
-  },
+  alertProps: AlertInterface|undefined,
   modals: {
     register: boolean,
     signIn: boolean,
@@ -45,11 +42,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       isDrawerCompact: false,
       isShowAlert: false,
       showCookiePopup: false,
-      alertProps: {
-        title: undefined,
-        text: undefined,
-        variant: undefined,
-      },
+      alertProps: undefined,
       modals: {
         register: false,
         signIn: false,
@@ -74,7 +67,7 @@ export const useLayoutStore = defineStore('layoutStore', {
   }),
 
   actions: {
-    showAlert(props: LayoutStoreStateInterface['alertProps']): void {
+    showAlert(props: AlertInterface): void {
       if (this.isShowAlert) {
         this.hideAlert();
         this.showAlert(props);
@@ -180,14 +173,6 @@ export const useLayoutStore = defineStore('layoutStore', {
       const { getWithdrawMethods } = useWalletStore();
       await getWithdrawMethods();
       this.showModal('withdraw');
-    },
-
-    showPlayLimitAlert():void {
-      this.showAlert({
-        title: 'Error',
-        text: 'Sorry, but you can\'t play in real mode for now. Please, contact our support team for more information.',
-        variant: 'error',
-      });
     },
   },
 });

@@ -74,7 +74,8 @@
   const router = useRouter();
   const profileStore = useProfileStore();
   const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
-  const { showModal, showPlayLimitAlert } = useLayoutStore();
+  const { baseApiUrl, alertsData } = useGlobalStore();
+  const { showModal, showAlert } = useLayoutStore();
   const { localizePath, getImageUrl } = useProjectMethods();
 
   const openGame = (isReal: boolean):void => {
@@ -83,13 +84,12 @@
     } else if (!isLoggedIn.value) {
       showModal('register');
     } else if (playerStatusName.value === 'Limited') {
-      showPlayLimitAlert();
+      showAlert(alertsData?.limitedRealGame);
     } else {
       router.push(localizePath(`/games/${props.identity}`));
     }
   };
 
-  const { baseApiUrl } = useGlobalStore();
   const backgroundImage = computed(() => {
     if (props.images.hasOwnProperty('200x300')) {
       return `background-image:url(${baseApiUrl}/img/gcdn${getImageUrl(props.images, 'vertical')})`;

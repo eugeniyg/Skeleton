@@ -4,7 +4,7 @@
 
     <div class="content">
       <div class="title" v-if="props.title">{{ props.title }}</div>
-      <p class="text" v-if="props.text">{{ props.text }}</p>
+      <p class="text" v-if="props.description">{{ props.description }}</p>
     </div>
 
     <button class="btn-alert-close" @click.prevent="hide">
@@ -15,9 +15,8 @@
 
 <script setup lang="ts">
   const props = defineProps({
-    variant: {
+    type: {
       type: String,
-      validator: (val:string) => ['info', 'error', 'warning', 'done'].includes(val),
       default: 'info',
     },
     isShow: {
@@ -26,11 +25,11 @@
     },
     title: {
       type: String,
-      required: false,
+      default: '',
     },
-    text: {
+    description: {
       type: String,
-      required: false,
+      default: '',
     },
     autoHide: {
       type: Boolean,
@@ -69,9 +68,9 @@
 
   const classes = computed(() => [{
     'is-show': props.isShow,
-  }, `variant-${props.variant}`]);
+  }, `variant-${props.type}`]);
 
-  const currentIcon = computed(() => types[props.variant]);
+  const currentIcon = computed(() => types[props.type]);
 
   onBeforeUnmount(() => {
     clearTimeout(timer.value);

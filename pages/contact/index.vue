@@ -46,7 +46,7 @@
 
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();
-  const { fieldsContent } = storeToRefs(globalStore);
+  const { fieldsContent, alertsData } = storeToRefs(globalStore);
 
   const contactFormData = reactive({
     email: '',
@@ -69,11 +69,7 @@
     const validFormData = await v$.value.$validate();
     if (!validFormData) return;
 
-    layoutStore.showAlert({
-      title: 'Thank you!',
-      text: undefined,
-      variant: 'done',
-    });
+    layoutStore.showAlert(alertsData.value?.sentMessage);
 
     contactFormData.email = '';
     contactFormData.message = '';

@@ -39,7 +39,7 @@
   import { storeToRefs } from 'pinia';
 
   const globalStore = useGlobalStore();
-  const { fieldsContent } = storeToRefs(globalStore);
+  const { fieldsContent, alertsData } = storeToRefs(globalStore);
 
   const changeFormData = reactive({
     currentPassword: '',
@@ -79,11 +79,7 @@
     try {
       isLockedAsyncButton.value = true;
       await changeProfilePassword(changeFormData);
-      showAlert({
-        title: 'Success',
-        text: 'You have successfully changed your password!',
-        variant: 'done',
-      });
+      showAlert(alertsData.value?.passwordChanged);
       clearForm();
     } catch (error) {
       if (error.response?.status === 422) {

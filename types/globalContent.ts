@@ -189,3 +189,23 @@ export interface SlideInterface {
   }
   images: SlideImagesInterface
 }
+
+export interface AlertInterface {
+  type: string,
+  title: string,
+  description?: string
+}
+
+export interface AlertsListInterface {
+  limitedDeposit: AlertInterface,
+  invalidResetCode: AlertInterface,
+  limitedRealGame: AlertInterface,
+  sentMessage: AlertInterface,
+  sentResetLink: AlertInterface,
+  somethingWrong: AlertInterface,
+  userCanceledWithdrawal: AlertInterface,
+  withdrawalProcessed: AlertInterface,
+  passwordChanged: AlertInterface,
+  successRegistration: AlertInterface,
+  accountBlocked: AlertInterface,
+}
