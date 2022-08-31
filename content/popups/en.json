@@ -16,7 +16,7 @@
   },
   "error": {
     "title": "Error",
-    "description": "Sorry, something went wrong.\n\nPlease, try again.",
+    "description": "Sorry, something went wrong.<br>Please, try again.",
     "button": "Try again"
   },
   "login": {
@@ -38,7 +38,7 @@
     "withdrawButton": "Withdraw"
   },
   "reset": {
-    "title": "Reset account password",
+    "title": "Reset password",
     "resetButton": "Confirm"
   },
   "registration": {
