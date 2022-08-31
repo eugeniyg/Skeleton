@@ -125,10 +125,6 @@ export interface WithdrawInterface {
   withdrawLabel: string,
   sumLabel: string,
   minSum: string,
-  wallet: {
-    label: string,
-    placeholder?: string
-  },
   withdrawButton: string
 }
 
