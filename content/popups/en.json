@@ -63,7 +63,9 @@
           "label": "24/7 Live Chat Support"
         }
       ]
-    }
+    },
+    "agreeEmailLabel": "I agree to receive bonus & marketing emails",
+    "agreeSmsLabel": "Send promos by SMS"
   },
   "locale": "en",
   "deposit": {
