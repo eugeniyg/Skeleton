@@ -942,7 +942,7 @@ collections:
     label: Static Pages
     create: true
     slug: "{{fields.locale}}-{{fields.pageUrl}}"
-    summary: "[{{locale}}] - {{title}}"
+    summary: "[{{locale}}] - {{adminTitle}}"
     extension: json
     format: json
     folder: content/static
@@ -954,11 +954,61 @@ collections:
         label: Page Url (setting)
         widget: string
         hint: Page url must be the same for all locales!
-      - name: title
+      - name: adminTitle
         label: Page Title (setting)
         widget: string
       - name: content
         label: Page Content
         widget: markdown
 
+  - name: bonusPages
+    label: Bonus Pages
+    create: true
+    slug: "{{fields.locale}}-{{fields.pageUrl}}"
+    summary: "[{{locale}}] - {{adminTitle}}"
+    extension: json
+    format: json
+    folder: content/bonus
+    editor:
+      preview: false
+    fields:
+      - *localeField
+      - name: pageUrl
+        label: Page Url (setting)
+        widget: string
+        hint: Page url must be the same for all locales!
+      - name: adminTitle
+        label: Page Title (setting)
+        widget: string
+      - name: backgroundColor
+        label: Image Background Color
+        widget: select
+        options: ['gray', 'red', 'yellow', 'green', 'blue']
+      - name: image
+        lable: Image
+        widget: image
+      - name: title
+        label: Title
+        widget: string
+      - name: subtitle
+        label: Subtitle
+        sidget: string
+      - name: description
+        label: Description
+        widget: markdown
+      - name: button
+        label: Button
+        widget: object
+        fields:
+          - *linkLabel
+          - name: url
+            label: Url
+            widget: string
+            required: false
+      - name: termsLabel
+        label: Terms Label
+        widget: string
+      - name: termsContent
+        label: Terms Content
+        widget: markdown
 

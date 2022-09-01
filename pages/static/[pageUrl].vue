@@ -10,7 +10,7 @@
   const { currentLocale } = storeToRefs(globalStore);
   const route = useRoute();
   const { pageUrl } = route.params;
-  const contentRequest = await useAsyncData('pageContent', () => queryContent(`static/${currentLocale.value.code}-${pageUrl}`).findOne());
+  const contentRequest = await useAsyncData('pageContent', () => queryContent(`static/${currentLocale.value.code}-${pageUrl}`).findOne(), { initialCache: false });
   if (contentRequest.error.value) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
   else pageContent.value = contentRequest.data.value.content;
 </script>
