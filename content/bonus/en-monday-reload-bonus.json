@@ -1,0 +1,15 @@
+{
+  "pageUrl": "monday-reload-bonus",
+  "adminTitle": "Monday Reload bonus",
+  "termsLabel": "Bonus Terms:",
+  "termsContent": "1. To get the bonus, you must place a deposit of at least 0.001 BTC or the same value in cryptocurrencies.\n2. The maximum bonus amount is 30% of the deposit amount, but not more than 0.0035 BTC or the same value in cryptocurrencies.\n3. Full wagering requires making bets 40 times the amount of the bonus received: (deposit bonus) × 40.\n4. The deposit bonus is valid for 5 days, starting from the date you receive it.\n5. The maximum bet amount when wagering is 0.0003 BTC or the same value in cryptocurrencies.",
+  "button": {
+    "label": "Get bonus"
+  },
+  "backgroundColor": "gray",
+  "subtitle": "30% bonus of up to 0.0035 BTC on Monday",
+  "title": "Monday Reload Bonus",
+  "locale": "en",
+  "image": "/img/uploads/monday-big.png",
+  "description": "Start your week on a high note with Slotsbet! Grabbing yourself a 30% bonus of up to 0.0035 BTC is easy:\n\n1. Make a deposit of at least 0.001 BTC.\n2. Instantly receive a bonus worth 30% of the amount you deposited (up to a maximum of 0.0035 BTC)."
+}
