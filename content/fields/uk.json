@@ -28,7 +28,7 @@
     "placeholder": "Введіть своє повідомлення"
   },
   "agreements": {
-    "label": "Я приймаю <a href=\"/terms-and-conditions\"> Загальні положення та умови</a> та <a href=\"/privacy-policy\">Політику конфіденційності</a>"
+    "label": "Я приймаю <a href=\"/static/terms-and-conditions\"> Загальні положення та умови</a> та <a href=\"/static/privacy-policy\">Політику конфіденційності</a>"
   },
   "city": {
     "label": "Місто",

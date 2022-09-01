@@ -143,11 +143,11 @@
     "sidebarFooterMenu": [
       {
         "label": "T&C",
-        "url": "/terms-and-conditions"
+        "url": "/static/terms-and-conditions"
       },
       {
         "label": "Bonus terms",
-        "url": "/bonus-terms"
+        "url": "/static/bonus-terms"
       },
       {
         "label": "F.A.Q",
@@ -155,15 +155,15 @@
       },
       {
         "label": "Privacy Policy",
-        "url": "/privacy-policy"
+        "url": "/static/privacy-policy"
       },
       {
         "label": "Gambling with responsibility",
-        "url": "/gambling-with-responsibility"
+        "url": "/static/gambling-with-responsibility"
       },
       {
         "label": "KYC Policy",
-        "url": "/kyc-policy"
+        "url": "/static/kyc-policy"
       }
     ]
   },
@@ -194,23 +194,23 @@
       "items": [
         {
           "label": "T&C",
-          "url": "/terms-and-conditions"
+          "url": "/static/terms-and-conditions"
         },
         {
           "label": "Bonus Terms",
-          "url": "/bonus-terms"
+          "url": "/static/bonus-terms"
         },
         {
           "label": "Privacy Policy",
-          "url": "/privacy-policy"
+          "url": "/static/privacy-policy"
         },
         {
           "label": "Gambling with responsibility",
-          "url": "/gambling-with-responsibility"
+          "url": "/static/gambling-with-responsibility"
         },
         {
           "label": "KYC Policy",
-          "url": "/kyc-policy"
+          "url": "/static/kyc-policy"
         }
       ]
     },
@@ -251,7 +251,7 @@
     ]
   },
   "cookiePopup": {
-    "text": "We use cookies to improve your experience. By using our website you are accepting our [Terms and Conditions](/terms-and-conditions) and [Privacy Policy](/privacy-policy).",
+    "text": "We use cookies to improve your experience. By using our website you are accepting our [Terms and Conditions](/static/terms-and-conditions) and [Privacy Policy](/static/privacy-policy).",
     "acceptButton": "Accept"
   }
 }
