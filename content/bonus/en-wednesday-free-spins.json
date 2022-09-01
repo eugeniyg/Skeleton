@@ -2,7 +2,7 @@
   "pageUrl": "wednesday-free-spins",
   "adminTitle": "Wednesday Free Spins",
   "termsLabel": "Bonus terms:",
-  "termsContent": "1. To get the bonus, enter the bonus code WEDNESDAY before the deposit.\n2. Minimum deposit to get a bonus:\n\n   * 20 free spins - 0.001 BTC;\n   * 50 free spins - 0.0015 BTC;\n   * 100 free spins - 0.002 BTC.\n3. Full wagering requires making bets for the amount 40 times the amount of the bonus received: (winnings from free spins) ×40.\n4. Free spins will be automatically credited to your account!\n5. Limitation of the maximum bet while wagering is 0.0003 BTC.\n6. The bonus is available only on Wednesday from 00-00 to 23-59.",
+  "termsContent": "1. To get the bonus, enter the bonus code WEDNESDAY before the deposit.\n2. Minimum deposit to get a bonus:<br>\n\n   * 20 free spins - 0.001 BTC;\n   * 50 free spins - 0.0015 BTC;\n   * 100 free spins - 0.002 BTC.\n3. Full wagering requires making bets for the amount 40 times the amount of the bonus received: (winnings from free spins) ×40.\n4. Free spins will be automatically credited to your account!\n5. Limitation of the maximum bet while wagering is 0.0003 BTC.\n6. The bonus is available only on Wednesday from 00-00 to 23-59.",
   "button": {
     "label": "Get bonus"
   },
