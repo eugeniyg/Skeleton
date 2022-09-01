@@ -18,7 +18,7 @@
     transition: color 0.2s ease-in-out;
   }
 
-  .items {
+  .detail-content {
     padding: 0;
     height: var(--items-height, 0);
     overflow: hidden;
@@ -35,7 +35,7 @@
       --transform: rotate(-180deg);
     }
 
-    .items {
+    .detail-content {
       max-height: 100%;
     }
   }
@@ -47,7 +47,6 @@
   }
 
   ol {
-    list-style: none;
     @include font($body-2-paragraph);
     padding: 0;
 

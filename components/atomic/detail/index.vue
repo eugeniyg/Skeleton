@@ -4,15 +4,9 @@
       <div class="title">{{ props.title }}</div>
       <atomic-icon id="arrow_expand-close" />
     </div>
-    <div class="items" ref="refItems">
-      <ol>
-        <template v-for="(item, itemIndex) in props.items">
-          <li v-if="!Array.isArray(item)" :key="`li-${itemIndex}`">{{ item }}</li>
-          <ul v-else :key="`ul-${itemIndex}`">
-            <li v-for="listItem in item" :key="`list-${listItem}`">{{ listItem }}</li>
-          </ul>
-        </template>
-      </ol>
+
+    <div class="detail-content" ref="refItems">
+      <atomic-text-editor class="description" :content="props.content" />
     </div>
   </div>
 </template>
@@ -21,10 +15,11 @@
   const props = defineProps({
     title: {
       type: String,
+      required: true,
     },
-    items: {
-      type: Array,
-      default: () => [],
+    content: {
+      type: String,
+      required: true,
     },
     isOpen: {
       type: Boolean,

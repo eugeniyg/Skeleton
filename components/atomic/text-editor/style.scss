@@ -46,9 +46,9 @@
   }
 
   ol {
-    list-style: none;
     padding: 0;
     margin: rem(12px) 0;
+    list-style-position: inside;
 
     ul, ol {
       padding-left: rem(20px);
