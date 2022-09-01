@@ -12,7 +12,8 @@ __link-url: &linkUrl
 __locale-field: &localeField
   name: locale
   label: Locale (settings)
-  widget: string
+  widget: select
+  options: ['en', 'uk', 'ru']
 __link-variable: &linkArray
   - *linkLabel
   - *linkUrl
@@ -779,7 +780,6 @@ collections:
             label: Button Label
             widget: string
 
-
   - name: alerts
     label: Site Alerts
     create: true
@@ -937,3 +937,28 @@ collections:
             widget: select
             options: *alertTypes
             default: done
+
+  - name: staticPages
+    label: Static Pages
+    create: true
+    slug: "{{fields.locale}}-{{fields.pageUrl}}"
+    summary: "[{{locale}}] - {{title}}"
+    extension: json
+    format: json
+    folder: content/static
+    editor:
+      preview: false
+    fields:
+      - *localeField
+      - name: pageUrl
+        label: Page Url (setting)
+        widget: string
+        hint: Page url must be the same for all locales!
+      - name: title
+        label: Page Title (setting)
+        widget: string
+      - name: content
+        label: Page Content
+        widget: markdown
+
+

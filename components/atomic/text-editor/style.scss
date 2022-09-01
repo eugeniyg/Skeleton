@@ -2,7 +2,7 @@
   @extend %text-page-max;
   color: var(--white);
 
-  i {
+  i, em {
     @include font($body-1);
     color: var(--gray-400);
     display: block;
