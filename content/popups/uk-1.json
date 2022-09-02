@@ -9,7 +9,7 @@
     "button": "Done"
   },
   "forgot": {
-    "title": "Forgot password?",
+    "title": "Забули пароль?",
     "description": "Enter your email address and we will send you a password reset link.",
     "forgotButton": "Reset password",
     "registrationButton": "Don't have an account? *Join*"
@@ -20,10 +20,10 @@
     "button": "Try again"
   },
   "login": {
-    "title": "Sign in",
-    "loginButton": "Sing in",
-    "forgotButton": "*Forgot Password?*",
-    "registrationButton": " Don't have an account? *Join*"
+    "title": "Логін",
+    "loginButton": "Логін",
+    "forgotButton": "*Забули пароль?*",
+    "registrationButton": "Ще не маєте аккаунт? *Приєднуйтесь!*"
   },
   "withdraw": {
     "title": "Withdrawal",
