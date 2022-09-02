@@ -4,7 +4,7 @@
     "loginButton": "Логін",
     "registrationButton": "Реєстрація",
     "search": {
-      "placeholder": "Search your game",
+      "placeholder": "Знайти гру",
       "moreButton": "Load more",
       "emptyLabel": "Nothing found",
       "emptyText": "Try searching for something else",
