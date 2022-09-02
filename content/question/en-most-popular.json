@@ -1,0 +1,25 @@
+{
+  "locale": "en",
+  "pageUrl": "most-popular",
+  "title": "Most popular",
+  "icon": "hot",
+  "questionList": [
+    {
+      "question": "Are the games fair?",
+      "answer": "All games on Slotsbet are 100% fair."
+    },
+    {
+      "question": "What should I do if I have forgotten my password?",
+      "answer": "You can easily create a new password. Just click the Forgot Password link in the Sign in form. Then we will send an email that will direct you to a new link. There you will create a new password and log in to your account."
+    },
+    {
+      "question": "Can I close my account?",
+      "answer": "Of course. Please contact Customer Support in online chat and give a brief explanation to why you want to close your account."
+    },
+    {
+      "question": "I didn't receive a confirmation email. What should I do?",
+      "answer": "Check your promotions, spam or junk folder and any tabs in your inbox. If there you did not find the letter either, please contact support via online chat or email."
+    }
+  ],
+  "generalTitle": "Frequently asked questions"
+}
