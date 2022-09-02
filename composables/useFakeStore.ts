@@ -1047,6 +1047,41 @@ export const useFakeStore = () => {
     ],
   };
 
+  const menu = {
+    profile: [
+      {
+        title: 'Profile info',
+        href: '/profile/info',
+      },
+      {
+        title: 'Wallet',
+        href: '/profile/wallet',
+      },
+      {
+        title: 'Bonuses',
+        href: '/profile/bonuses',
+        // count: 12,
+      },
+      {
+        title: 'Notifications',
+        href: '/profile/notifications',
+        // count: 999,
+      },
+      {
+        title: 'Security & Verification',
+        href: '/profile/security',
+      },
+      {
+        title: 'History',
+        href: '/profile/history',
+      },
+      // {
+      //   title: 'Limits',
+      //   href: '/profile/limits',
+      // },
+    ],
+  };
+
   const payments = [
     {
       title: 'Interac E-transfer',
@@ -1597,6 +1632,7 @@ export const useFakeStore = () => {
     catNavItems,
     items,
     selects,
+    menu,
     promotion,
     bonusPage,
     depositItems,

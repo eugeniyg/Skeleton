@@ -206,7 +206,16 @@ collections:
       - name: gender
         label: Gender
         widget: object
-        fields: *fieldsArray
+        fields:
+          - name: label
+            label: Label
+            widget: string
+          - name: maleLabel
+            label: Male Label
+            widget: string
+          - name: femaleLabel
+            label: Female Label
+            widget: string
       - name: city
         label: City
         widget: object
@@ -278,7 +287,22 @@ collections:
       - name: birthdate
         label: Birthdate
         widget: object
-        fields: *fieldsArray
+        fields:
+          - name: label
+            label: Label
+            widget: string
+          - name: placeholderDay
+            label: Day Placeholder
+            widget: string
+            required: false
+          - name: placeholderMonth
+            label: Month Placeholder
+            widget: string
+            required: false
+          - name: placeholderYear
+            label: Year Placeholder
+            widget: string
+            required: false
       - name: placeOfBirth
         label: Place of Birth
         widget: object
