@@ -1,8 +1,8 @@
 {
   "locale": "uk",
   "header": {
-    "loginButton": "Login",
-    "registrationButton": "Registration",
+    "loginButton": "Логін",
+    "registrationButton": "Реєстрація",
     "search": {
       "placeholder": "Search your game",
       "moreButton": "Load more",
