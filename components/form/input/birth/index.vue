@@ -6,7 +6,7 @@
 
     <form-dropdown-base
       name="birth-day"
-      placeholder="Day"
+      :placeholder="fieldsContent?.birthdate?.placeholderDay || ''"
       :is-disabled="props.isDisabled"
       v-model:value="selected.day"
       :options="days"
@@ -17,7 +17,7 @@
 
     <form-dropdown-base
       name="birth-month"
-      placeholder="Month"
+      :placeholder="fieldsContent?.birthdate?.placeholderMonth || ''"
       :is-disabled="props.isDisabled"
       :options="months"
       v-model:value="selected.month"
@@ -28,7 +28,7 @@
 
     <form-dropdown-base
       name="birth-year"
-      placeholder="Year"
+      :placeholder="fieldsContent?.birthdate?.placeholderYear || ''"
       :is-disabled="props.isDisabled"
       :options="years"
       v-model:value="selected.year"
@@ -65,6 +65,7 @@
     },
   });
 
+  const { fieldsContent } = useGlobalStore();
   const selected = reactive({
     year: 0,
     month: 0,

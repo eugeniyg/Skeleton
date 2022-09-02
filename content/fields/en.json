@@ -13,7 +13,6 @@
   },
   "gender": {
     "label": "Gender",
-    "placeholder": "Enter gender",
     "maleLabel": "Male",
     "femaleLabel": "Female"
   },
@@ -42,7 +41,6 @@
   },
   "birthdate": {
     "label": "Date of Birth",
-    "placeholder": "Birth date",
     "placeholderDay": "Day",
     "placeholderMonth": "Month",
     "placeholderYear": "Year"

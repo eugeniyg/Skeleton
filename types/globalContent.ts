@@ -1,5 +1,42 @@
 export interface ValidationMessageInterface {
-  [key: string]: string
+  countryCode: string,
+  mac_address: string,
+  max: string,
+  alpha_num: string,
+  languageCode: string,
+  digits: string,
+  regex: string,
+  ip: string,
+  accepted: string,
+  boolean: string,
+  login: string,
+  minAge: string,
+  numeric: string,
+  declined: string,
+  phone: string,
+  date: string,
+  url: string,
+  digits_between: string,
+  date_equals: string,
+  string: string,
+  lowercase: string,
+  min: string,
+  uppercase: string,
+  alpha_dash: string,
+  before_or_equal: string,
+  different: string,
+  array: string,
+  locale: string,
+  after_or_equal: string,
+  maxAge: string,
+  not_regex: string,
+  after: string,
+  email: string,
+  required_if: string,
+  alpha: string,
+  confirmed: string,
+  before: string,
+  required: string
 }
 
 interface FieldInterface {
@@ -8,7 +45,45 @@ interface FieldInterface {
 }
 
 export interface FieldsContentInterface {
-  [key: string]: FieldInterface
+  repeatNewPassword: FieldInterface,
+  placeOfBirth: FieldInterface,
+  lastName: FieldInterface,
+  gender: {
+    label: string,
+    maleLabel: string,
+    femaleLabel: string
+  },
+  personalIdNumber: FieldInterface,
+  securityQuestion: FieldInterface,
+  message: FieldInterface,
+  agreements: FieldInterface,
+  city: FieldInterface,
+  bonusCode: FieldInterface,
+  birthdate: {
+    label: string,
+    placeholderDay?: string,
+    placeholderMonth?: string,
+    placeholderYear?: string
+  },
+  additionalAddress: FieldInterface,
+  nickname: FieldInterface,
+  phone: FieldInterface,
+  currency: FieldInterface,
+  currentPassword: FieldInterface,
+  address: FieldInterface,
+  receiveEmailPromo: FieldInterface,
+  country: FieldInterface,
+  postalCode: FieldInterface,
+  language: FieldInterface,
+  timeZone: FieldInterface,
+  receiveSmsPromo: FieldInterface,
+  newPassword: FieldInterface,
+  firstName: FieldInterface,
+  password: FieldInterface,
+  profession: FieldInterface,
+  nationality: FieldInterface,
+  email: FieldInterface,
+  securityAnswer: FieldInterface
 }
 
 interface LinkInterface {
