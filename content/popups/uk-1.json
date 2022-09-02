@@ -38,9 +38,9 @@
     "resetButton": "Confirm"
   },
   "registration": {
-    "title": "Join Slotsbet",
-    "registrationButton": "Sign up",
-    "loginButton": " Already a member? *Sign in*",
+    "title": "Приєднуйся до Slotsbet",
+    "registrationButton": "Зареєструватися",
+    "loginButton": " Маєте аккаунт? *Увійти*",
     "promo": {
       "title": "Welcome package",
       "secondTitle": "5 BTC",
