@@ -13,7 +13,9 @@
   },
   "gender": {
     "label": "Gender",
-    "placeholder": "Enter gender"
+    "placeholder": "Enter gender",
+    "maleLabel": "Male",
+    "femaleLabel": "Female"
   },
   "personalIdNumber": {
     "label": "Personal ID number",
