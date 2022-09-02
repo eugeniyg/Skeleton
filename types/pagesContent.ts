@@ -17,3 +17,16 @@ export interface BonusPageInterface {
   image: string,
   description: string
 }
+
+export interface QuestionInterface {
+  question: string,
+  answer: string,
+}
+
+export interface QuestionPageInterface {
+  generalTitle: string,
+  pageUrl: string,
+  title: string,
+  icon: string,
+  questionList: QuestionInterface[]
+}

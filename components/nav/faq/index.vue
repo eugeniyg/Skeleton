@@ -7,16 +7,14 @@
 
     <div class="items" @mouseleave="close">
       <div
-        v-for="({ icon, href, title, count }, itemIndex) in props.items"
+        v-for="(item, itemIndex) in props.items"
         :key="itemIndex"
         class="item"
-        :class="{'is-active': $route.path === localizePath(href) }"
-        @click.prevent="select(href)"
+        :class="{'is-active': $route.path === localizePath(`/questions/${item.pageUrl}`) }"
+        @click.prevent="select(`/questions/${item.pageUrl}`)"
       >
-        <atomic-icon :id="icon" />
-        {{ title }}
-        <span v-if="count" class="count">{{ count }}</span>
-        <atomic-icon v-show="$route.path === localizePath(href)" id="check"/>
+        <atomic-icon :id="item.icon" />{{ item.title }}
+        <atomic-icon v-show="$route.path === localizePath(`/questions/${item.pageUrl}`)" id="check"/>
       </div>
     </div>
   </nav>
@@ -32,7 +30,7 @@
   const { localizePath } = useProjectMethods();
   const isOpen = ref<boolean>(false);
   const route = useRoute();
-  const selected = computed(() => props.items.find((item:any) => localizePath(item.href) === route.path));
+  const selected = computed(() => props.items.find((item:any) => localizePath(`/questions/${item.pageUrl}`) === route.path));
 
   const toggle = ():void => {
     isOpen.value = !isOpen.value;
