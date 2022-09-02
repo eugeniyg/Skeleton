@@ -23,7 +23,7 @@ __project-icon: &projectIcon
   widget: select
   options: ['cherry', 'sport', 'slots', 'live-casino', 'table-games', 'turbo-games', 'sport-book', 'tfs-token',
             'bonuses', 'live-support', 'vip', 'tournament', 'lottery', 'quest', 'shop', 'heart', 'history', 'wallet',
-            'bonus', 'user', 'log-out', 'speed']
+            'bonus', 'user', 'log-out', 'speed', 'gamepad', 'security', 'age', 'hot']
 collections:
   - name: validationMessages
     label: Validation Messages
@@ -1012,3 +1012,60 @@ collections:
         label: Terms Content
         widget: markdown
 
+  - name: questionPages
+    label: Question Pages
+    create: true
+    slug: "{{fields.locale}}-{{fields.pageUrl}}"
+    summary: "[{{locale}}] - {{title}}"
+    extension: json
+    format: json
+    folder: content/question
+    editor:
+      preview: false
+    fields:
+      - *localeField
+      - name: pageUrl
+        label: Page Url (setting)
+        widget: string
+        hint: Page url must be the same for all locales!
+      - name: title
+        label: Title
+        widget: string
+      - *projectIcon
+      - name: position
+        label: Position In Menu
+        widget: number
+        value_type: int
+        required: false
+      - name: questionList
+        label: Question List
+        widget: list
+        label_singular: question
+        collapsed: true
+        fields:
+          - name: question
+            label: Question
+            widget: string
+          - name: answer
+            label: Answer
+            widget: markdown
+
+  - name: pageControls
+    label: Page Controls Content
+    create: true
+    identifier_field: locale
+    extension: json
+    format: json
+    folder: content/page-controls
+    editor:
+      preview: false
+    fields:
+      - *localeField
+      - name: questionPage
+        label: Question Page
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Title
+            widget: string
