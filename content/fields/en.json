@@ -42,7 +42,10 @@
   },
   "birthdate": {
     "label": "Date of Birth",
-    "placeholder": "Birth date"
+    "placeholder": "Birth date",
+    "placeholderDay": "Day",
+    "placeholderMonth": "Month",
+    "placeholderYear": "Year"
   },
   "additionalAddress": {
     "label": "Additional Address",
