@@ -50,7 +50,7 @@
     }
   },
   "locale": "en",
-  "session": {
+  "sessions": {
     "tabLabel": "Sessions history",
     "tableColumns": {
       "country": "Country",
@@ -58,7 +58,7 @@
       "createdAt": "Created At",
       "status": "Status"
     },
-    "sessionStatuses": {
+    "sessionsStatuses": {
       "current": "Current",
       "active": "Active",
       "closed": "Closed"
