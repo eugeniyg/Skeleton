@@ -57,6 +57,11 @@
       "userAgent": "User Agent",
       "createdAt": "Created At",
       "status": "Status"
+    },
+    "sessionStatuses": {
+      "current": "Current",
+      "active": "Active",
+      "closed": "Closed"
     }
   }
 }
