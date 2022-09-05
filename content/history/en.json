@@ -1,0 +1,62 @@
+{
+  "bonuses": {
+    "empty": {
+      "icon": "empty-bonuses",
+      "title": "There is no data yet!",
+      "description": "You have not received bonuses yet."
+    },
+    "tabLabel": "Bonuses history"
+  },
+  "bets": {
+    "empty": {
+      "icon": "empty-bets-history",
+      "title": "There is no data yet!",
+      "description": "You have not placed any bets yet."
+    },
+    "tabLabel": "Bets history"
+  },
+  "transactions": {
+    "empty": {
+      "icon": "empty-transactions",
+      "title": "There is no data yet!",
+      "description": "You don’t have any successful transactions yet."
+    },
+    "tabLabel": "Transactions history",
+    "dateLabel": "Date from / to:",
+    "allFilterOption": "All",
+    "typeFilter": {
+      "label": "Type:",
+      "options": {
+        "deposit": "Deposit",
+        "withdrawal": "Withdrawal"
+      }
+    },
+    "currencyLabel": "Currency:",
+    "statusFilter": {
+      "label": "Status:",
+      "options": {
+        "review": "Review",
+        "pending": "Pending",
+        "success": "Success",
+        "rejected": "Rejected"
+      }
+    },
+    "tableColumns": {
+      "date": "Date",
+      "type": "Type",
+      "method": "Payment Method",
+      "status": "Status",
+      "sum": "Sum"
+    }
+  },
+  "locale": "en",
+  "session": {
+    "tabLabel": "Sessions history",
+    "tableColumns": {
+      "country": "Country",
+      "userAgent": "User Agent",
+      "createdAt": "Created At",
+      "status": "Status"
+    }
+  }
+}
