@@ -1,0 +1,25 @@
+{
+  "locale": "uk",
+  "pageUrl": "account",
+  "title": "Аккаунт",
+  "icon": "user",
+  "questionList": [
+    {
+      "question": "Як створити акаунт Slotsbet?",
+      "answer": "All you have to do to get started is click the “Registration” button and fill in all the fields. Then you get a verification email with a link."
+    },
+    {
+      "question": "Can I have more than one account?",
+      "answer": "No. All details on Terms & Conditions."
+    },
+    {
+      "question": "Can I change my registered email address?",
+      "answer": "Sorry, but that's impossible."
+    },
+    {
+      "question": "How do I add another currency to my account?",
+      "answer": "Go to your account and choose \"Wallet\". Click on \"+\" and choose the currency that you prefer."
+    }
+  ],
+  "position": 2
+}
