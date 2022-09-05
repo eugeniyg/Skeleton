@@ -11,7 +11,7 @@
   },
   "limitedRealGame": {
     "type": "error",
-    "title": "Помилка1",
+    "title": "Помилка",
     "description": "Sorry, but you can't play in real mode for now. Please, contact our support team for more information."
   },
   "sentMessage": {
