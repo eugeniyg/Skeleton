@@ -1,0 +1,34 @@
+{
+  "locale": "en",
+  "info": {
+    "title": "Profile info",
+    "editButton": "Edit your profile",
+    "saveButton": "Save changes",
+    "cancelButton": "Cancel",
+    "subscriptionTitle": "Subscriptions",
+    "manageTitle": "Manage account"
+  },
+  "wallet": {
+    "title": "Wallet",
+    "addButton": "Add currency",
+    "allTab": "All currencies",
+    "cryptoTab": "Crypto",
+    "changeButton": "Use currency",
+    "hideButton": "Hide currency",
+    "depositButton": "Deposit",
+    "withdrawButton": "Withdraw"
+  },
+  "bonuses": {
+    "title": "Bonuses"
+  },
+  "notifications": {
+    "title": "Notifications"
+  },
+  "security": {
+    "title": "Security & Verification",
+    "saveButton": "Save changes"
+  },
+  "history": {
+    "title": "History"
+  }
+}
