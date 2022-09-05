@@ -5,7 +5,8 @@
       "title": "There is no data yet!",
       "description": "You have not received bonuses yet."
     },
-    "tabLabel": "Bonuses history"
+    "tabLabel": "Bonuses history",
+    "tabPosition": 2
   },
   "bets": {
     "empty": {
@@ -13,25 +14,12 @@
       "title": "There is no data yet!",
       "description": "You have not placed any bets yet."
     },
-    "tabLabel": "Bets history"
+    "tabLabel": "Bets history",
+    "tabPosition": 3
   },
   "transactions": {
-    "empty": {
-      "icon": "empty-transactions",
-      "title": "There is no data yet!",
-      "description": "You don’t have any successful transactions yet."
-    },
-    "tabLabel": "Transactions history",
-    "dateLabel": "Date from / to:",
-    "allFilterOption": "All",
-    "typeFilter": {
-      "label": "Type:",
-      "options": {
-        "deposit": "Deposit",
-        "withdrawal": "Withdrawal"
-      }
-    },
     "currencyLabel": "Currency:",
+    "dateLabel": "Date from / to:",
     "statusFilter": {
       "label": "Status:",
       "options": {
@@ -41,13 +29,28 @@
         "rejected": "Rejected"
       }
     },
+    "empty": {
+      "icon": "empty-transactions",
+      "title": "There is no data yet!",
+      "description": "You don’t have any successful transactions yet."
+    },
+    "allFilterOption": "All",
     "tableColumns": {
       "date": "Date",
       "type": "Type",
       "method": "Payment Method",
       "status": "Status",
       "sum": "Sum"
-    }
+    },
+    "typeFilter": {
+      "label": "Type:",
+      "options": {
+        "deposit": "Deposit",
+        "withdrawal": "Withdrawal"
+      }
+    },
+    "tabPosition": 4,
+    "tabLabel": "Transactions history"
   },
   "locale": "en",
   "sessions": {
@@ -62,6 +65,7 @@
       "current": "Current",
       "active": "Active",
       "closed": "Closed"
-    }
+    },
+    "tabPosition": 1
   }
 }
