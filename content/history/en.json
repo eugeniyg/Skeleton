@@ -49,6 +49,7 @@
         "withdrawal": "Withdrawal"
       }
     },
+    "cancelPaymentButton": "Cancel payment",
     "tabPosition": 4,
     "tabLabel": "Transactions history"
   },
