@@ -1,7 +1,8 @@
 <template>
   <div class="content">
     <div class="header">
-      <h1 class="heading">Notifications</h1>
+      <h1 class="heading">{{ notificationsContent?.title }}</h1>
+
       <form-dropdown-base
         value=""
         placeholder="View all"
@@ -30,5 +31,12 @@
 </template>
 
 <script setup lang="ts">
+  import { ProfileNotificationsInterface } from '~/types';
+
   const { selects, items } = useFakeStore();
+
+  const globalStore = useGlobalStore();
+  const notificationsContent = ref<ProfileNotificationsInterface|undefined>(undefined);
+  const notificationsContentRequest = await useAsyncData('notificationsContent', () => queryContent(`profile/${globalStore.currentLocale.code}`).only(['notifications']).findOne());
+  if (notificationsContentRequest.data.value?.notifications) notificationsContent.value = notificationsContentRequest.data.value.notifications as ProfileNotificationsInterface;
 </script>

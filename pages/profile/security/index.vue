@@ -1,7 +1,7 @@
 <template>
   <div class="security content">
     <div class="header">
-      <h1 class="heading">Security & Verification</h1>
+      <h1 class="heading">{{ securityContent?.title }}</h1>
     </div>
 
     <hr/>
@@ -29,7 +29,7 @@
         @click="onSubmit"
         :isDisabled="v$.$invalid || isLockedAsyncButton"
       >
-        Save changes
+        {{ securityContent?.saveButton }}
       </button-base>
     </form>
   </div>
@@ -37,9 +37,14 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { ProfileSecurityInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { fieldsContent, alertsData } = storeToRefs(globalStore);
+  const { fieldsContent, alertsData, currentLocale } = storeToRefs(globalStore);
+
+  const securityContent = ref<ProfileSecurityInterface|undefined>(undefined);
+  const securityContentRequest = await useAsyncData('securityContent', () => queryContent(`profile/${currentLocale.value.code}`).only(['security']).findOne());
+  if (securityContentRequest.data.value?.security) securityContent.value = securityContentRequest.data.value.security as ProfileSecurityInterface;
 
   const changeFormData = reactive({
     currentPassword: '',

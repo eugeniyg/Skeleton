@@ -1,10 +1,14 @@
 <template>
   <div>
     <atomic-filters class="filters-transactions-history">
-      <form-input-date label="Date from / to:" :settings="dateConfig" @change="changeDate"/>
+      <form-input-date
+        :label="transactionsContent.dateLabel"
+        :settings="dateConfig"
+        @change="changeDate"
+      />
 
       <form-dropdown-base
-        label="Type:"
+        :label="transactionsContent.typeFilter.label"
         v-model:value="filters.type"
         name="invoiceType"
         placeholder=""
@@ -13,7 +17,7 @@
       />
 
       <form-dropdown-base
-        label="Currency:"
+        :label="transactionsContent.currencyLabel"
         v-model:value="filters.currency"
         name="invoiceCurrency"
         placeholder=""
@@ -22,7 +26,7 @@
       />
 
       <form-dropdown-base
-        label="Status:"
+        :label="transactionsContent.statusFilter.label"
         v-model:value="filters.status"
         name="invoiceStatus"
         placeholder=""
@@ -31,7 +35,12 @@
       />
     </atomic-filters>
 
-    <table-transactions-history v-if="invoices.length" :invoices="invoices" @cancelPayment="cancelPayment"/>
+    <table-transactions-history
+      v-if="invoices.length"
+      :invoices="invoices"
+      @cancelPayment="cancelPayment"
+      :transactionsContent="transactionsContent"
+    />
 
     <atomic-pagination
       v-if="pageMeta?.totalPages > 1"
@@ -39,7 +48,12 @@
       v-bind="pageMeta"
     />
 
-    <atomic-empty v-if="!invoices.length" variant="transactions" sub-title="You don’t have any successful transactions yet."/>
+    <atomic-empty
+      v-if="!invoices.length"
+      variant="transactions"
+      :title="transactionsContent.empty.title"
+      :subTitle="transactionsContent.empty.description"
+    />
   </div>
 </template>
 
@@ -50,17 +64,27 @@
     InvoicesRequestOptionsInterface,
     PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
+  import { PropType } from '@vue/runtime-core';
+  import { HistoryTransactionsInterface, HistoryTabInterface } from '~/types';
 
+  const props = defineProps({
+    content: {
+      type: Object as PropType<HistoryTabInterface>,
+      required: true,
+    },
+  });
+
+  const transactionsContent:HistoryTransactionsInterface = props.content.transactions;
   const coreStore = useCoreStore();
-  const optionsDefaultValue = { value: 'All', code: 'all' };
+  const optionsDefaultValue = { value: transactionsContent.allFilterOption, code: 'all' };
 
   const typeOptions = computed(() => {
-    const storeOptions = coreStore.invoiceTypes.map((item) => ({ value: item.name.charAt(0).toUpperCase() + item.name.slice(1), code: item.id }));
+    const storeOptions = coreStore.invoiceTypes.map((item) => ({ value: transactionsContent.typeFilter.options[item.name], code: item.id }));
     return [optionsDefaultValue, ...storeOptions];
   });
 
   const statusOptions = computed(() => {
-    const storeOptions = coreStore.invoiceStatuses.map((item) => ({ value: item.name.charAt(0).toUpperCase() + item.name.slice(1), code: item.id }));
+    const storeOptions = coreStore.invoiceStatuses.map((item) => ({ value: transactionsContent.statusFilter.options[item.name], code: item.id }));
     return [optionsDefaultValue, ...storeOptions];
   });
 

@@ -1,22 +1,21 @@
 <template>
   <div class="user-profile">
-    <nav-profile :items="menu.profile"/>
+    <nav-profile v-if="profileMenu.length" :items="profileMenu"/>
 
     <client-only>
-      <NuxtPage :key="`profile-child${$route.fullPath}`" />
+      <NuxtPage />
     </client-only>
   </div>
 </template>
 
 <script setup lang="ts">
-  const { getProfileFields } = useFieldsStore();
-  await useAsyncData('profileFields', getProfileFields);
+  import { storeToRefs } from 'pinia';
+  import { ProfileContentInterface } from '~/types';
 
-  const { menu } = useFakeStore();
+  const { localizePath } = useProjectMethods();
   const { needToChangeLanguage } = useProjectMethods();
 
   if (!needToChangeLanguage()) {
-    const { localizePath } = useProjectMethods();
     const route = useRoute();
     const bearer = useCookie('bearer');
 
@@ -31,6 +30,26 @@
     } else if (!bearer.value) {
       navigateTo(localizePath('/'), { replace: true });
     }
+  }
+
+  const { getProfileFields } = useFieldsStore();
+  const globalStore = useGlobalStore();
+  const profileContent = ref<ProfileContentInterface|undefined>(undefined);
+  const profileMenu = ref<{title: string, url: string }[]>([]);
+  const { currentLocale } = storeToRefs(globalStore);
+  const contentRequest = await useAsyncData('profileContent', () => queryContent(`profile/${currentLocale.value.code}`).findOne());
+  profileContent.value = contentRequest.data.value as ProfileContentInterface;
+  await useAsyncData('profileFields', getProfileFields);
+
+  if (profileContent.value) {
+    const filteredArray = Object.keys(profileContent.value).filter((key) => {
+      if (profileContent.value[key]?.title) return key;
+      return false;
+    });
+    profileMenu.value = filteredArray.map((key) => ({
+      title: profileContent.value[key].title,
+      url: localizePath(`/profile/${key}`),
+    }));
   }
 </script>
 
