@@ -5,7 +5,8 @@
       "title": "There is no data yet!",
       "description": "You have not received bonuses yet."
     },
-    "tabLabel": "Bonuses history"
+    "tabLabel": "Bonuses history",
+    "tabPosition": 2
   },
   "bets": {
     "empty": {
@@ -13,7 +14,8 @@
       "title": "There is no data yet!",
       "description": "You have not placed any bets yet."
     },
-    "tabLabel": "Bets history"
+    "tabLabel": "Bets history",
+    "tabPosition": 3
   },
   "transactions": {
     "currencyLabel": "Currency:",
