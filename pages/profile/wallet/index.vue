@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="header">
-      <h1 class="heading">Wallet</h1>
+      <h1 class="heading">{{ walletContent?.title }}</h1>
 
       <button-base
         id="open-currency-nav"
@@ -10,18 +10,20 @@
         :isDisabled="currencyNavEmpty"
         @click="openCurrNav"
       >
-        <atomic-icon id="plus"/>Add currency
+        <atomic-icon id="plus"/>{{ walletContent?.addButton }}
       </button-base>
     </div>
 
     <client-only>
-      <nav-currency @toggleNavEmpty="currencyNavEmpty = $event"/>
+      <nav-currency :tabs="navTabs" @toggleNavEmpty="currencyNavEmpty = $event"/>
     </client-only>
+
     <div class="cards-wallet">
       <card-wallet
         v-for="account in accounts"
         :key="account.id"
         v-bind="account"
+        :content="walletContent"
       />
     </div>
   </div>
@@ -29,7 +31,26 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { ProfileWalletInterface } from '~/types';
 
+  const globalStore = useGlobalStore();
+  const { currentLocale } = storeToRefs(globalStore);
+  const walletContent = ref<ProfileWalletInterface|undefined>();
+  const walletContentRequest = await useAsyncData('walletContent', () => queryContent(`profile/${currentLocale.value.code}`).only(['wallet']).findOne());
+  walletContent.value = walletContentRequest.data.value?.wallet as ProfileWalletInterface || undefined;
+  const navTabs = ref<{id:string, title: string}[]>([]);
+  if (walletContent.value) {
+    navTabs.value = [
+      {
+        id: 'all',
+        title: walletContent.value.allTab,
+      },
+      {
+        id: 'crypto',
+        title: walletContent.value.cryptoTab,
+      },
+    ];
+  }
   const walletStore = useWalletStore();
   const { accounts } = storeToRefs(walletStore);
   const layoutStore = useLayoutStore();

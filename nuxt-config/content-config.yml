@@ -1093,3 +1093,313 @@ collections:
           - name: title
             label: Title
             widget: string
+
+  - name: profilePages
+    label: Profile Pages
+    create: true
+    identifier_field: locale
+    extension: json
+    format: json
+    folder: content/profile
+    editor:
+      preview: false
+    fields:
+      - *localeField
+      - name: info
+        label: Profile Info
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Page Title
+            widget: string
+          - name: editButton
+            label: Edit Button Label
+            widget: string
+          - name: saveButton
+            lable: Save Button Label
+            widget: string
+          - name: cancelButton
+            label: Cancel Button Label
+            widget: string
+          - name: subscriptionTitle
+            label: Subscription Title
+            widget: string
+          - name: manageTitle
+            label: Manage Title
+            widget: string
+      - name: wallet
+        label: Profile Wallet
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Page Title
+            widget: string
+          - name: addButton
+            label: Add Button Label
+            widget: string
+          - name: allTab
+            label: All Tab Label
+            widget: string
+          - name: cryptoTab
+            label: Crypto Tab Label
+            widget: string
+          - name: changeButton
+            label: Change Currency Button
+            widget: string
+          - name: hideButton
+            label: Hide Currency Button
+            widget: string
+          - name: depositButton
+            label: Deposit Button Label
+            widget: string
+          - name: withdrawButton
+            label: Withdraw Button Label
+            widget: string
+      - name: bonuses
+        label: Profile Bonuses
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Page Title
+            widget: string
+      - name: notifications
+        label: Profile Notificaitons
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Page Title
+            widget: string
+      - name: security
+        label: Profile Security
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Page Title
+            widget: string
+          - name: saveButton
+            label: Save Button Label
+            widget: string
+      - name: history
+        label: Profile History
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Page Title
+            widget: string
+
+  - name: historyTabs
+    label: Profile History Tabs
+    create: true
+    identifier_field: locale
+    extension: json
+    format: json
+    folder: content/history
+    editor:
+      preview: false
+    fields:
+      - *localeField
+      - name: sessions
+        label: Sessions Tab
+        widget: object
+        collapsed: true
+        fields:
+          - name: tabLabel
+            label: Tab Label
+            widget: string
+          - name: tabPosition
+            label: Tab Position
+            widget: number
+            required: false
+          - name: sessionsStatuses
+            label: Sessions Statuses
+            widget: object
+            fields:
+              - name: current
+                label: Current
+                widget: string
+              - name: active
+                label: Active
+                widget: string
+              - name: closed
+                label: Closed
+                widget: string
+          - name: tableColumns
+            label: Table Columns
+            widget: object
+            fields:
+              - name: country
+                label: Country
+                widget: string
+              - name: userAgent
+                label: User Agent
+                widget: string
+              - name: createdAt
+                label: Created
+                widget: string
+              - name: status
+                label: Status
+                widget: string
+      - name: bonuses
+        label: Bonuses Tab
+        widget: object
+        collapsed: true
+        fields:
+          - name: tabLabel
+            label: Tab Label
+            widget: string
+          - name: tabPosition
+            label: Tab Position
+            widget: number
+            required: false
+          - name: empty
+            label: Empty Data
+            widget: object
+            collapsed: true
+            fields:
+              - name: icon
+                label: Icon
+                widget: hidden
+                default: empty-bonuses
+              - name: title
+                label: Title
+                widget: string
+                required: false
+              - name: description
+                label: Description
+                widget: text
+                required: false
+      - name: bets
+        label: Bets Tab
+        widget: object
+        collapsed: true
+        fields:
+          - name: tabLabel
+            label: Tab Label
+            widget: string
+          - name: tabPosition
+            label: Tab Position
+            widget: number
+            required: false
+          - name: empty
+            label: Empty Data
+            widget: object
+            collapsed: true
+            fields:
+              - name: icon
+                label: Icon
+                widget: hidden
+                default: empty-bets-history
+              - name: title
+                label: Title
+                widget: string
+                required: false
+              - name: description
+                label: Description
+                widget: text
+                required: false
+      - name: transactions
+        label: Transactions Tab
+        widget: object
+        collapsed: true
+        fields:
+          - name: tabLabel
+            label: Tab Label
+            widget: string
+          - name: tabPosition
+            label: Tab Position
+            widget: number
+            required: false
+          - name: dateLabel
+            label: Date Label
+            widget: string
+          - name: allFilterOption
+            label: All Filter Option
+            widget: string
+          - name: typeFilter
+            label: Type Filter
+            widget: object
+            fields:
+              - name: label
+                label: Label
+                widget: string
+              - name: options
+                label: Options
+                widget: object
+                fields:
+                  - name: deposit
+                    label: Deposit Label
+                    widget: string
+                  - name: withdrawal
+                    label: Withdrawal Label
+                    widget: string
+          - name: currencyLabel
+            label: Currency Filter Label
+            widget: string
+          - name: statusFilter
+            label: Status Filter
+            widget: object
+            fields:
+              - name: label
+                label: Label
+                widget: string
+              - name: options
+                label: Options
+                widget: object
+                fields:
+                  - name: review
+                    label: Review Label
+                    widget: string
+                  - name: pending
+                    label: Pending Label
+                    widget: string
+                  - name: success
+                    label: Success Label
+                    widget: string
+                  - name: rejected
+                    label: Rejected Label
+                    widget: string
+          - name: tableColumns
+            label: Table Columns
+            widget: object
+            fields:
+              - name: date
+                label: Date
+                widget: string
+              - name: type
+                label: Type
+                widget: string
+              - name: method
+                label: Payment Method
+                widget: string
+              - name: status
+                label: Status
+                widget: string
+              - name: sum
+                label: Sum
+                widget: string
+          - name: cancelPaymentButton
+            label: Cancel Payment Label
+            widget: string
+          - name: empty
+            label: Empty Data
+            widget: object
+            collapsed: true
+            fields:
+              - name: icon
+                label: Icon
+                widget: hidden
+                default: empty-transactions
+              - name: title
+                label: Title
+                widget: string
+                required: false
+              - name: description
+                label: Description
+                widget: text
+                required: false
