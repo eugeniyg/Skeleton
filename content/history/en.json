@@ -3,7 +3,7 @@
     "empty": {
       "icon": "empty-bonuses",
       "title": "There is no data yet!",
-      "description": "You have not received bonuses yet."
+      "description": "You have not received bonuses yet"
     },
     "tabLabel": "Bonuses history",
     "tabPosition": 2
@@ -12,7 +12,7 @@
     "empty": {
       "icon": "empty-bets-history",
       "title": "There is no data yet!",
-      "description": "You have not placed any bets yet."
+      "description": "You have not placed any bets yet"
     },
     "tabLabel": "Bets history",
     "tabPosition": 3
