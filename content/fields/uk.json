@@ -13,7 +13,9 @@
   },
   "gender": {
     "label": "Стать",
-    "placeholder": "Введіть стать"
+    "placeholder": "Введіть стать",
+    "maleLabel": "Чоловік",
+    "femaleLabel": "Жінка"
   },
   "personalIdNumber": {
     "label": "Персональний ID номер",
@@ -40,7 +42,10 @@
   },
   "birthdate": {
     "label": "Дата народження",
-    "placeholder": "Дата народження"
+    "placeholder": "Дата народження",
+    "placeholderDay": "День",
+    "placeholderMonth": "Місяць",
+    "placeholderYear": "Рік"
   },
   "additionalAddress": {
     "label": "Додаткова адреса",
