@@ -2,5 +2,67 @@
   "locale": "uk",
   "questionPage": {
     "title": "Запитання та відповіді"
+  },
+  "homePage": {
+    "banner": {
+      "image": {
+        "mobile": {
+          "backgroundImage": "/img/uploads/1-mobile-background.png",
+          "faceImage": "/img/uploads/home-face-mobile.png"
+        },
+        "desktop": {
+          "backgroundImage": "/img/uploads/1-desktop-background.png",
+          "faceImage": "/img/uploads/home-face-desktop.png"
+        }
+      },
+      "title": "#### Грайте та вигравайте щодня на Slotsbet",
+      "button": {
+        "label": "Грати зараз"
+      }
+    },
+    "benefits": {
+      "items": [
+        {
+          "image": "/img/uploads/benefit-1.png",
+          "title": "Швидке<br>виведення коштів"
+        },
+        {
+          "image": "/img/uploads/benefit-2.png",
+          "title": "24/7 чат<br>підтримка"
+        },
+        {
+          "image": "/img/uploads/benefit-3.png",
+          "title": "Переконливо чесні слоти<br>та ігри"
+        },
+        {
+          "image": "/img/uploads/benefit-4.png",
+          "title": "Конфіденційність<br>та безпека"
+        }
+      ],
+      "label": "Переваги Slotsbet",
+      "icon": "bonuses"
+    },
+    "categories": {
+      "casino": {
+        "image": "/img/uploads/category-casino.png",
+        "icon": "cherry",
+        "title": "Казино",
+        "description": "Насолоджуйтесь більш ніж 3000+ доказово чесних слотів та ігор",
+        "button": {
+          "label": "Перейти до Казино",
+          "url": "/main"
+        }
+      },
+      "sports": {
+        "image": "/img/uploads/category-sports.png",
+        "icon": "sport",
+        "title": "Спорт",
+        "description": "Найконкурентніші шанси та ринки. Ставте і вигравайте прямо зараз",
+        "button": {
+          "label": "Перейти до спорту",
+          "url": "/betting"
+        }
+      }
+    }
   }
 }
