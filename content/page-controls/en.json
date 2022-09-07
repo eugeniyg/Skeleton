@@ -2,5 +2,113 @@
   "locale": "en",
   "questionPage": {
     "title": "Frequently asked questions"
+  },
+  "homePage": {
+    "banner": {
+      "image": {
+        "mobile": {
+          "backgroundImage": "/img/uploads/1-mobile-background.png",
+          "faceImage": "/img/uploads/home-face-mobile.png"
+        },
+        "desktop": {
+          "backgroundImage": "/img/uploads/1-desktop-background.png",
+          "faceImage": "/img/uploads/home-face-desktop.png"
+        }
+      },
+      "title": "#### Play and win every day at Slotsbet",
+      "button": {
+        "label": "Play now"
+      }
+    },
+    "benefits": {
+      "items": [
+        {
+          "image": "/img/uploads/benefit-1.png",
+          "title": "Fast<br>withdrawals"
+        },
+        {
+          "image": "/img/uploads/benefit-2.png",
+          "title": "24/7 Live Chat<br>Support"
+        },
+        {
+          "image": "/img/uploads/benefit-3.png",
+          "title": "Provably fair slots<br>& games"
+        },
+        {
+          "image": "/img/uploads/benefit-4.png",
+          "title": "Privacy<br>and security"
+        }
+      ],
+      "label": "Slotsbet benefits",
+      "icon": "bonuses"
+    },
+    "categories": {
+      "casino": {
+        "image": "/img/uploads/category-casino.png",
+        "icon": "cherry",
+        "title": "Casino",
+        "description": "Enjoy more than 3000+ provably fair slots & games",
+        "button": {
+          "label": "Go to Casino",
+          "url": "/main"
+        }
+      },
+      "sports": {
+        "image": "/img/uploads/category-sports.png",
+        "icon": "sport",
+        "title": "Sports",
+        "description": "The most competitive odds and markets. Bet and win right now",
+        "button": {
+          "label": "Go to Sports",
+          "url": "/betting"
+        }
+      }
+    },
+    "promotions": {
+      "label": "Slotsbet promotions",
+      "icon": "bonuses",
+      "items": [
+        {
+          "image": "/img/uploads/promotion-1.png",
+          "title": "Welcome package",
+          "description": "5 BTC + 300 FS",
+          "buttonLabel": "Get bonus",
+          "link": {
+            "label": "learn more",
+            "url": "/welcome-package"
+          }
+        },
+        {
+          "image": "/img/uploads/promotion-2.png",
+          "title": "Wednesday bonus",
+          "description": "100 free spins",
+          "buttonLabel": "Get bonus",
+          "link": {
+            "label": "learn more",
+            "url": "/bonus/wednesday-free-spins"
+          }
+        },
+        {
+          "image": "/img/uploads/promotion-3.png",
+          "title": "Just play and get",
+          "description": "10% Weekly Cashback",
+          "buttonLabel": "Get bonus",
+          "link": {
+            "label": "learn more",
+            "url": "/bonus/weekly-cashback"
+          }
+        },
+        {
+          "image": "/img/uploads/promotion-4.png",
+          "title": "30% Reload bonus",
+          "description": "every week",
+          "buttonLabel": "Get bonus",
+          "link": {
+            "label": "learn more",
+            "url": "/bonus/monday-reload-bonus"
+          }
+        }
+      ]
+    }
   }
 }
