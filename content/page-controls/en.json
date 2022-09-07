@@ -63,6 +63,52 @@
           "url": "/betting"
         }
       }
+    },
+    "promotions": {
+      "label": "Slotsbet promotions",
+      "icon": "bonuses",
+      "items": [
+        {
+          "image": "/img/uploads/promotion-1.png",
+          "title": "Welcome package",
+          "description": "5 BTC + 300 FS",
+          "buttonLabel": "Get bonus",
+          "link": {
+            "label": "learn more",
+            "url": "/welcome-package"
+          }
+        },
+        {
+          "image": "/img/uploads/promotion-2.png",
+          "title": "Wednesday bonus",
+          "description": "100 free spins",
+          "buttonLabel": "Get bonus",
+          "link": {
+            "label": "learn more",
+            "url": "/bonus/wednesday-free-spins"
+          }
+        },
+        {
+          "image": "/img/uploads/promotion-3.png",
+          "title": "Just play and get",
+          "description": "10% Weekly Cashback",
+          "buttonLabel": "Get bonus",
+          "link": {
+            "label": "learn more",
+            "url": "/bonus/weekly-cashback"
+          }
+        },
+        {
+          "image": "/img/uploads/promotion-4.png",
+          "title": "30% Reload bonus",
+          "description": "every week",
+          "buttonLabel": "Get bonus",
+          "link": {
+            "label": "learn more",
+            "url": "/bonus/monday-reload-bonus"
+          }
+        }
+      ]
     }
   }
 }
