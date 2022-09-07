@@ -40,7 +40,8 @@
         }
       ],
       "label": "Slotsbet benefits",
-      "icon": "bonuses"
+      "icon": "bonuses",
+      "title": "Slotsbet benefits"
     },
     "categories": {
       "casino": {
@@ -109,6 +110,28 @@
           }
         }
       ]
+    },
+    "dima": {
+      "items": [
+        {
+          "image": "/img/uploads/benefit-1.png",
+          "title": "Fast<br>withdrawals"
+        },
+        {
+          "image": "/img/uploads/benefit-2.png",
+          "title": "24/7 Live Chat<br>Support"
+        },
+        {
+          "image": "/img/uploads/benefit-3.png",
+          "title": "Provably fair slots<br>& games"
+        },
+        {
+          "image": "/img/uploads/benefit-4.png",
+          "title": "Privacy<br>and security"
+        }
+      ],
+      "label": "Slotsbet benefits",
+      "icon": "bonuses"
     }
   }
 }
