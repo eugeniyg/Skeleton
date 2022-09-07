@@ -63,6 +63,52 @@
           "url": "/betting"
         }
       }
+    },
+    "promotions": {
+      "label": "Акції Slotsbet",
+      "icon": "bonuses",
+      "items": [
+        {
+          "image": "/img/uploads/promotion-1.png",
+          "title": "Вітальний пакет",
+          "description": "5 BTC + 300 FS",
+          "buttonLabel": "Отримати бонус",
+          "link": {
+            "label": "читати більше",
+            "url": "/welcome-package"
+          }
+        },
+        {
+          "image": "/img/uploads/promotion-2.png",
+          "title": "Бонус середи",
+          "description": "100 безкоштовних спінів",
+          "buttonLabel": "Отримати бонус",
+          "link": {
+            "label": "читати більше",
+            "url": "/bonus/wednesday-free-spins"
+          }
+        },
+        {
+          "image": "/img/uploads/promotion-3.png",
+          "title": "Просто грай і отримуй",
+          "description": "10% кешбеку щотижня",
+          "buttonLabel": "Отримати бонус",
+          "link": {
+            "label": "читати більше",
+            "url": "/bonus/weekly-cashback"
+          }
+        },
+        {
+          "image": "/img/uploads/promotion-4.png",
+          "title": "30% бонус на перезавантаження",
+          "description": "кожен тиждень",
+          "buttonLabel": "Отримати бонус",
+          "link": {
+            "label": "читати більше",
+            "url": "/bonus/monday-reload-bonus"
+          }
+        }
+      ]
     }
   }
 }
