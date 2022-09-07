@@ -5,7 +5,7 @@
   },
   "homePage": {
     "banner": {
-      "image": {
+      "images": {
         "mobile": {
           "backgroundImage": "/img/uploads/1-mobile-background.png",
           "faceImage": "/img/uploads/home-face-mobile.png"
