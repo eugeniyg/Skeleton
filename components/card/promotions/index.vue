@@ -1,12 +1,12 @@
 <template>
-  <div class="card-promotions">
-    <atomic-icon :id="props.icon"/>
-    <h2 class="title">{{ props.label }}</h2>
+  <div v-if="promotionsContent" class="card-promotions">
+    <atomic-icon :id="promotionsContent.icon"/>
+    <h2 class="title">{{ promotionsContent.label }}</h2>
 
     <div class="card-promotions__list">
       <div
         class="card-promotions__item"
-        v-for="(promotion, index) in props.items"
+        v-for="(promotion, index) in promotionsContent.items"
         :key="index"
       >
         <div class="img" :style="backgroundImage(promotion.image)"/>
@@ -39,21 +39,10 @@
 
 <script  setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { PromotionsContentInterface } from '~/types';
 
-  const props = defineProps<{
-    icon: string,
-    label: string,
-    items: {
-      image: string,
-      title: string,
-      description: string,
-      buttonLabel: string,
-      link: {
-        label: string,
-        url: string
-      }
-    }[]
-  }>();
+  const { globalComponentsContent } = useGlobalStore();
+  const promotionsContent:PromotionsContentInterface|undefined = globalComponentsContent?.promotions;
 
   const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();

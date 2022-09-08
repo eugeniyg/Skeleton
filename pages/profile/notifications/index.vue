@@ -36,7 +36,6 @@
   const { selects, items } = useFakeStore();
 
   const globalStore = useGlobalStore();
-  const notificationsContent = ref<ProfileNotificationsInterface|undefined>(undefined);
   const notificationsContentRequest = await useAsyncData('notificationsContent', () => queryContent(`profile/${globalStore.currentLocale.code}`).only(['notifications']).findOne());
-  if (notificationsContentRequest.data.value?.notifications) notificationsContent.value = notificationsContentRequest.data.value.notifications as ProfileNotificationsInterface;
+  const notificationsContent:ProfileNotificationsInterface|undefined = notificationsContentRequest.data.value?.notifications;
 </script>

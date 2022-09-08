@@ -29,7 +29,7 @@
         size="xs"
         @click="openGame(false)"
       >
-        Try for fun
+        {{ groupContent?.demoButton }}
       </button-base>
     </div>
   </div>
@@ -39,6 +39,7 @@
   import { storeToRefs } from 'pinia';
   import { PropType } from '@vue/runtime-core';
   import { GameImagesInterface } from '@platform/frontend-core/dist/module';
+  import { CardsGroupInterface } from '~/types';
 
   const props = defineProps({
     images: {
@@ -74,9 +75,10 @@
   const router = useRouter();
   const profileStore = useProfileStore();
   const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
-  const { baseApiUrl, alertsData } = useGlobalStore();
+  const { baseApiUrl, alertsData, globalComponentsContent } = useGlobalStore();
   const { showModal, showAlert } = useLayoutStore();
   const { localizePath, getImageUrl } = useProjectMethods();
+  const groupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
 
   const openGame = (isReal: boolean):void => {
     if (!isReal) {

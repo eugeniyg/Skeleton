@@ -1,8 +1,8 @@
 <template>
   <div class="group-favorites">
-    <atomic-icon :id="'heart'"/>
+    <atomic-icon v-if="groupContent?.favorites" :id="groupContent.favorites.icon"/>
 
-    <h2 class="title">Favorites</h2>
+    <h2 class="title">{{ groupContent?.favorites.label }}</h2>
 
     <button-base
       v-if="showAllBtn"
@@ -10,7 +10,7 @@
       url="/favorites"
       type="ghost"
     >
-      Show all
+      {{ groupContent?.moreButton }}
     </button-base>
 
     <div class="items" ref="container">
@@ -26,6 +26,10 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { CardsGroupInterface } from '~/types';
+
+  const { globalComponentsContent } = useGlobalStore();
+  const groupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);

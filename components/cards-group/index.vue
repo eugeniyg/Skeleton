@@ -7,14 +7,16 @@
       <h4 class="sub-title">{{ props.subTitle }}</h4>
     </div>
 
-    <h2 v-else class="title">{{ props.name ? props.name : props.identity }}</h2>
+    <h2 v-else class="title">{{ props.name || props.identity }}</h2>
 
     <button-base
       v-if="props.showAllBtn"
       class="btn-show-all"
       type="ghost"
       @click="openGames(props.identity)"
-    >Show all</button-base>
+    >
+      {{ groupContent?.moreButton }}
+    </button-base>
 
     <button-arrows
       v-if="showArrowButtons"
@@ -40,6 +42,8 @@
 </template>
 
 <script setup lang="ts">
+  import { CardsGroupInterface } from '~/types';
+
   const props = defineProps({
     games: {
       type: Array,
@@ -79,7 +83,7 @@
     },
     identity: {
       type: String,
-      default: 'Title',
+      default: '',
     },
     subTitle: {
       type: String,
@@ -95,8 +99,10 @@
     },
   });
 
-  const router = useRouter();
+  const { globalComponentsContent } = useGlobalStore();
+  const groupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
 
+  const router = useRouter();
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
   const nextDisabled = ref<boolean>(false);

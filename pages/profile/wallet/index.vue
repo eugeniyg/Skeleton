@@ -35,19 +35,19 @@
 
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
-  const walletContent = ref<ProfileWalletInterface|undefined>();
   const walletContentRequest = await useAsyncData('walletContent', () => queryContent(`profile/${currentLocale.value.code}`).only(['wallet']).findOne());
-  walletContent.value = walletContentRequest.data.value?.wallet as ProfileWalletInterface || undefined;
+  const walletContent:ProfileWalletInterface|undefined = walletContentRequest.data.value?.wallet;
+
   const navTabs = ref<{id:string, title: string}[]>([]);
-  if (walletContent.value) {
+  if (walletContent) {
     navTabs.value = [
       {
         id: 'all',
-        title: walletContent.value.allTab,
+        title: walletContent.allTab,
       },
       {
         id: 'crypto',
-        title: walletContent.value.cryptoTab,
+        title: walletContent.cryptoTab,
       },
     ];
   }

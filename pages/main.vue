@@ -47,7 +47,12 @@
       @initialLoad="gamesGroupLoaded++"
     />
 
-    <cards-group v-if="providerCards.games?.length" v-bind="providerCards">
+    <cards-group
+      v-if="providerCards.games?.length"
+      v-bind="providerCards"
+      :identity="groupContent?.providers.label"
+      :titleIcon="groupContent?.providers.icon"
+    >
       <template v-slot:card="item">
         <card-providers v-bind="item" />
       </template>
@@ -67,7 +72,12 @@
       @initialLoad="gamesGroupLoaded++"
     />
 
-    <cards-group v-if="latestWinnersCards" v-bind="latestWinnersCards">
+    <cards-group
+      v-if="latestWinnersCards"
+      v-bind="latestWinnersCards"
+      :identity="groupContent?.latestWinners.label"
+      :titleIcon="groupContent?.latestWinners.icon"
+    >
       <template v-slot:card="item">
         <card-latest-winners v-bind="item" />
       </template>
@@ -87,11 +97,7 @@
       @initialLoad="gamesGroupLoaded++"
     />
 
-    <cards-group v-if="promotionsCards" v-bind="promotionsCards">
-      <template v-slot:card="item">
-        <card-promotions v-bind="item" />
-      </template>
-    </cards-group>
+    <card-promotions v-if="globalComponentsContent?.promotions" v-bind="globalComponentsContent.promotions" />
 
     <!-- <cards-group v-bind="fakeStore.newRelisesCards">
       <template v-slot:card="item">
@@ -107,10 +113,13 @@
     Carousel, Slide, Pagination, Navigation,
   } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
+  import { CardsGroupInterface, SlideInterface } from '~/types';
 
-  const { currentLocale } = useGlobalStore();
-  const sliderResponse = await useAsyncData('sliderData', () => queryContent(`main-slider/${currentLocale.code}`).findOne());
-  const sliderItems = sliderResponse.data.value?.slider;
+  const globalStore = useGlobalStore();
+  const { currentLocale, globalComponentsContent } = storeToRefs(globalStore);
+  const sliderResponse = await useAsyncData('sliderData', () => queryContent(`main-slider/${currentLocale.value.code}`).findOne());
+  const sliderItems:SlideInterface[]|undefined = sliderResponse.data.value?.slider;
+  const groupContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
 
   const fakeStore = useFakeStore();
   const router = useRouter();
@@ -121,7 +130,6 @@
 
   const providerCards = fakeStore.providerCards();
   const latestWinnersCards = fakeStore.latestWinnersCards();
-  const promotionsCards = fakeStore.promotionCards();
 
   const mainCategories = ['hot', 'slots', 'turbogames', 'new', 'table', 'live'];
   const sortCategory = gameCollections.value.filter((item) => mainCategories.find((el) => el === item.identity))
