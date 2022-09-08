@@ -1,0 +1,85 @@
+.card-benefits {
+  display: grid;
+  align-items: center;
+  grid-template-areas:
+  "icon heading heading arrows"
+  "items items items items"
+  "btn-show-all btn-show-all btn-show-all btn-show-all";
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
+  grid-column-gap: var(--column-gap, #{rem(8px)});
+  grid-row-gap: var(--row-gap, #{rem(16px)});
+  margin-top: #{24px};
+
+  @include media(xs) {
+    grid-template-areas:
+  "icon heading btn-show-all arrows"
+  "items items items items";
+  }
+
+  > [data-icon] {
+    font-size: rem(20px);
+    grid-area: icon;
+  }
+
+  > .icon {
+    grid-area: icon;
+    --iccon-size: #{rem(20px)};
+    --color: var(--gray-400);
+  }
+
+  > .title {
+    flex-grow: 1;
+    grid-area: heading;
+    @include font($heading-4);
+    color: var(--white);
+    margin: 0;
+  }
+
+  > &__list {
+    grid-area: items;
+    display: var(--display, grid);
+    align-items: normal;
+    overflow-x: auto;
+    @extend %cards-items-negative;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: var(--items-column-gap, #{rem(8px)});
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @include media(sm) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__item {
+    text-decoration: none;
+    padding: rem(24px) rem(16px);
+    background-color: var(--gray-800);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+    border-radius: 8px;
+    display: grid;
+    grid-row-gap: 8px;
+    justify-content: center;
+    align-items: flex-start;
+
+    .icon {
+      width: var(--width, #{rem(48px)});
+      height: var(--height, #{rem(48px)});
+      display: block;
+      justify-self: center;
+
+      @include media(l) {
+        --width: #{rem(88px)};
+        --height: #{rem(88px)};
+      }
+    }
+
+    .title {
+      @include font($heading-3);
+      color: var(--white);
+      text-align: center;
+    }
+  }
+}
