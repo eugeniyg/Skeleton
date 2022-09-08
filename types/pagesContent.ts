@@ -246,3 +246,23 @@ export interface GlobalComponentsInterface {
   cardsGroup: CardsGroupInterface,
   categories: GameCategoryInterface[]
 }
+
+export interface FavoritesPageInterface {
+  title: string,
+  empty: {
+    image: string,
+    title: string,
+    description: string
+  },
+  categorySubtitle: string
+}
+
+export interface RecentlyPageInterface {
+  title: string,
+  empty: {
+    image: string,
+    title: string,
+    description: string
+  },
+  categorySubtitle: string
+}

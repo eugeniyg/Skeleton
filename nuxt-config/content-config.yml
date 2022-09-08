@@ -1613,3 +1613,53 @@ collections:
                     label: Button
                     widget: object
                     fields: *linkArray
+      - name: favoritesPage
+        label: Favorites Page
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Page Title
+            widget: string
+          - name: empty
+            label: Empty
+            widget: object
+            fields:
+              - name: image
+                label: Image
+                widget: image
+              - name: title
+                label: Title
+                widget: string
+              - name: description
+                label: Description
+                widget: string
+                required: false
+          - name: categorySubtitle
+            label: Games Category Subtitle
+            widget: string
+      - name: recentlyPage
+        label: Recently-Played Page
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Page Title
+            widget: string
+          - name: empty
+            label: Empty
+            widget: object
+            fields:
+              - name: image
+                label: Image
+                widget: image
+              - name: title
+                label: Title
+                widget: string
+              - name: description
+                label: Description
+                widget: string
+                required: false
+          - name: categorySubtitle
+            label: Games Category Subtitle
+            widget: string
