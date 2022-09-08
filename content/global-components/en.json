@@ -72,7 +72,20 @@
     "demoButton": "Try for fun"
   },
   "cardsGroup": {
-    "moreButton": "Show all"
+    "moreButton": "Show all",
+    "demoButton": "Try for fun",
+    "favorites": {
+      "icon": "heart",
+      "lable": "Favorites"
+    },
+    "providers": {
+      "icon": "turbo-games",
+      "lable": "Providers"
+    },
+    "latestWinners": {
+      "icon": "bonuses",
+      "lable": "Latest winners"
+    }
   },
   "categories": [
     {
