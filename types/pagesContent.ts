@@ -152,3 +152,67 @@ export interface HistoryTabInterface {
   transactions: HistoryTransactionsInterface,
   sessions: HistorySessionsInterface,
 }
+
+export interface BenefitItemInterface {
+  image: string,
+  title: string,
+}
+
+export interface BenefitsContentInterface {
+  icon: string,
+  label: string,
+  items: BenefitItemInterface[],
+}
+
+export interface PromotionItemInterface {
+  image: string,
+  title: string,
+  description: string,
+  buttonLabel: string,
+  link: {
+    label: string,
+    url: string
+  }
+}
+
+export interface PromotionsContentInterface {
+  icon: string,
+  label: string,
+  items: PromotionItemInterface[]
+}
+
+export interface CategoryInterface {
+  image: string,
+  icon: string,
+  title: string,
+  description: string,
+  button: {
+    label: string,
+    url: string
+  }
+}
+
+export interface HomeContentInterface {
+  banner: {
+    image: {
+      mobile: {
+        backgroundImage: string,
+        faceImage: string
+      },
+      desktop: {
+        backgroundImage: string,
+        faceImage: string
+      }
+    },
+    title: string,
+    content?: string,
+    button: {
+      label: string,
+      url?: string
+    }
+  },
+  categories: {
+    casino: CategoryInterface,
+    sports: CategoryInterface
+  }
+}

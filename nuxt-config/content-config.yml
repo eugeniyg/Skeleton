@@ -1074,26 +1074,6 @@ collections:
             label: Answer
             widget: markdown
 
-  - name: pageControls
-    label: Page Controls Content
-    create: true
-    identifier_field: locale
-    extension: json
-    format: json
-    folder: content/page-controls
-    editor:
-      preview: false
-    fields:
-      - *localeField
-      - name: questionPage
-        label: Question Page
-        widget: object
-        collapsed: true
-        fields:
-          - name: title
-            label: Title
-            widget: string
-
   - name: profilePages
     label: Profile Pages
     create: true
@@ -1403,3 +1383,182 @@ collections:
                 label: Description
                 widget: text
                 required: false
+
+  - name: globalComponents
+    label: Global Components
+    create: true
+    identifier_field: locale
+    extension: json
+    format: json
+    folder: content/global-components
+    editor:
+      preview: false
+    fields:
+      - *localeField
+      - name: benefits
+        label: Site Benefits
+        widget: object
+        collapsed: true
+        fields:
+          - name: label
+            label: Label
+            widget: string
+          - *projectIcon
+          - name: items
+            label: Cards
+            widget: list
+            label_singular: card
+            summary: '{{fields.title}}'
+            max: 4
+            fields:
+              - name: image
+                label: Image
+                widget: image
+              - name: title
+                label: Title
+                widget: markdown
+      - name: promotions
+        label: Site Promotions
+        widget: object
+        collapsed: true
+        fields:
+          - name: label
+            label: Label
+            widget: string
+          - *projectIcon
+          - name: items
+            label: Cards
+            widget: list
+            summary: '{{fields.title}}'
+            label_singular: card
+            max: 4
+            fields:
+              - name: image
+                label: Image
+                widget: image
+              - name: title
+                label: Title
+                widget: string
+              - name: description
+                label: Description
+                widget: string
+              - name: buttonLabel
+                label: Button Label
+                widget: string
+              - name: link
+                label: Link
+                widget: object
+                fields: *linkArray
+  - name: pageControls
+    label: Page Controls Content
+    create: true
+    identifier_field: locale
+    extension: json
+    format: json
+    folder: content/page-controls
+    editor:
+      preview: false
+    fields:
+      - *localeField
+      - name: questionPage
+        label: Question Page
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Title
+            widget: string
+      - name: homePage
+        label: Home Page
+        widget: object
+        collapsed: true
+        fields:
+          - name: banner
+            label: Banner
+            widget: object
+            fields:
+              - name: images
+                label: Images
+                widget: object
+                fields:
+                  - name: mobile
+                    label: Mobile Layout
+                    widget: object
+                    fields:
+                      - name: backgroundImage
+                        label: Background Image
+                        widget: image
+                        allow_multiple: false
+                      - name: faceImage
+                        label: Face Image
+                        widget: image
+                        asslow_multiple: false
+                  - name: desktop
+                    label: Desktop Layout
+                    widget: object
+                    fields:
+                      - name: backgroundImage
+                        label: Background Image
+                        widget: image
+                        allow_multiple: false
+                      - name: faceImage
+                        label: Face Image
+                        widget: image
+                        asslow_multiple: false
+              - name: title
+                label: Banner Title
+                widget: markdown
+              - name: content
+                label: Banner Content
+                widget: markdown
+                required: false
+              - name: button
+                label: Banner Button
+                widget: object
+                required: false
+                fields:
+                  - *linkLabel
+                  - name: url
+                    label: Url
+                    widget: string
+                    required: false
+          - name: categories
+            label: Categories
+            widget: object
+            fields:
+              - name: casino
+                label: Casino
+                widget: object
+                fields:
+                  - name: image
+                    label: Image
+                    widget: image
+                  - *projectIcon
+                  - name: title
+                    label: Title
+                    widget: string
+                  - name: description
+                    label: Description
+                    widget: string
+                  - name: button
+                    label: Button
+                    widget: object
+                    fields: *linkArray
+              - name: sports
+                label: Sports
+                widget: object
+                fields:
+                  - name: image
+                    label: Image
+                    widget: image
+                  - *projectIcon
+                  - name: title
+                    label: Title
+                    widget: string
+                  - name: description
+                    label: Description
+                    widget: string
+                  - name: button
+                    label: Button
+                    widget: object
+                    fields: *linkArray

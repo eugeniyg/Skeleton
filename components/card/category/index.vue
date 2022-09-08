@@ -1,21 +1,21 @@
 <template>
   <div class="card-category">
     <div class="cover">
-      <img class="img" :src="`/img${src}`" alt="">
+      <img class="img" :src="props.image" alt="">
     </div>
 
     <div class="title">
-      <atomic-icon :id="props.title.icon"/>{{ props.title.text }}
+      <atomic-icon :id="props.icon"/>{{ props.title }}
     </div>
 
-    <div class="sub-title">{{ props.subTitle }}</div>
+    <div class="sub-title">{{ props.description }}</div>
 
     <button-base
       type="primary"
       size="md"
-      @click="changePage"
+      @click="changePage(props.button.url)"
     >
-      {{ props.action.title }}
+      {{ props.button.label }}
     </button-base>
   </div>
 </template>
@@ -23,29 +23,16 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
-    title: {
-      type: Object,
-      default: () => ({
-        icon: 'cherry',
-        text: 'text',
-      }),
-    },
-    src: {
-      type: String,
-    },
-    subTitle: {
-      type: String,
-      default: 'sub title',
-    },
-    action: {
-      type: Object,
-      default: () => ({
-        title: 'Go to',
-        href: '#',
-      }),
-    },
-  });
+  const props = defineProps<{
+    image: string,
+    icon: string,
+    title: string,
+    description: string,
+    button: {
+      label: string,
+      url: string
+    }
+  }>();
 
   const router = useRouter();
   const profileStore = useProfileStore();
@@ -53,9 +40,9 @@
   const { showModal } = useLayoutStore();
   const { localizePath } = useProjectMethods();
 
-  const changePage = ():void => {
-    if (props.action.href === '/betting' && !isLoggedIn.value) showModal('register');
-    else router.push(localizePath(props.action.href));
+  const changePage = (link:string):void => {
+    if (link === '/betting' && !isLoggedIn.value) showModal('register');
+    else router.push(localizePath(link));
   };
 </script>
 
