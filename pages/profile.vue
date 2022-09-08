@@ -34,20 +34,19 @@
 
   const { getProfileFields } = useFieldsStore();
   const globalStore = useGlobalStore();
-  const profileContent = ref<ProfileContentInterface|undefined>(undefined);
   const profileMenu = ref<{title: string, url: string }[]>([]);
   const { currentLocale } = storeToRefs(globalStore);
   const contentRequest = await useAsyncData('profileContent', () => queryContent(`profile/${currentLocale.value.code}`).findOne());
-  profileContent.value = contentRequest.data.value as ProfileContentInterface;
+  const profileContent:ProfileContentInterface|undefined = contentRequest.data.value as ProfileContentInterface;
   await useAsyncData('profileFields', getProfileFields);
 
-  if (profileContent.value) {
-    const filteredArray = Object.keys(profileContent.value).filter((key) => {
-      if (profileContent.value[key]?.title) return key;
+  if (profileContent) {
+    const filteredArray = Object.keys(profileContent).filter((key) => {
+      if (profileContent[key]?.title) return key;
       return false;
     });
     profileMenu.value = filteredArray.map((key) => ({
-      title: profileContent.value[key].title,
+      title: profileContent[key].title,
       url: localizePath(`/profile/${key}`),
     }));
   }

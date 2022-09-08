@@ -89,9 +89,8 @@
   import { ProfileInfoInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const infoContent = ref<ProfileInfoInterface|undefined>(undefined);
   const infoContentRequest = await useAsyncData('infoContent', () => queryContent(`profile/${globalStore.currentLocale.code}`).only(['info']).findOne());
-  if (infoContentRequest.data.value?.info) infoContent.value = infoContentRequest.data.value.info as ProfileInfoInterface;
+  const infoContent:ProfileInfoInterface|undefined = infoContentRequest.data.value?.info;
 
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();

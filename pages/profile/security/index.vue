@@ -42,9 +42,8 @@
   const globalStore = useGlobalStore();
   const { fieldsContent, alertsData, currentLocale } = storeToRefs(globalStore);
 
-  const securityContent = ref<ProfileSecurityInterface|undefined>(undefined);
   const securityContentRequest = await useAsyncData('securityContent', () => queryContent(`profile/${currentLocale.value.code}`).only(['security']).findOne());
-  if (securityContentRequest.data.value?.security) securityContent.value = securityContentRequest.data.value.security as ProfileSecurityInterface;
+  const securityContent:ProfileSecurityInterface|undefined = securityContentRequest.data.value?.security;
 
   const changeFormData = reactive({
     currentPassword: '',

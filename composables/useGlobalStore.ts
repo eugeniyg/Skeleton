@@ -9,7 +9,7 @@ import {
 import {
   AlertsListInterface,
   BrowserLanguageInterface, CookiePopupInterface,
-  FieldsContentInterface, FooterInterface, HeaderInterface,
+  FieldsContentInterface, FooterInterface, GameCategoryInterface, GlobalComponentsInterface, HeaderInterface,
   MainLayoutInterface, MobileMenuInterface, PopupsInterface, SiteSidebarInterface, UserNavigationInterface,
   ValidationMessageInterface,
 } from '~/types';
@@ -29,6 +29,7 @@ interface GlobalStoreStateInterface {
   layoutData: MainLayoutInterface,
   popupsData: PopupsInterface|undefined,
   alertsData: AlertsListInterface|undefined,
+  globalComponentsContent: GlobalComponentsInterface|undefined,
 }
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -47,6 +48,7 @@ export const useGlobalStore = defineStore('globalStore', {
       layoutData: undefined,
       popupsData: undefined,
       alertsData: undefined,
+      globalComponentsContent: undefined,
     }),
 
   getters: {
@@ -91,6 +93,15 @@ export const useGlobalStore = defineStore('globalStore', {
     mobileMenuContent(state):MobileMenuInterface {
       return state.layoutData?.mobileMenu;
     },
+    gameCategoriesObj(state):{ [key: string]: GameCategoryInterface } {
+      const categoriesObj = {};
+      if (state.globalComponentsContent?.categories) {
+        state.globalComponentsContent?.categories.forEach((category) => {
+          categoriesObj[category.identity] = category;
+        });
+      }
+      return categoriesObj;
+    },
   },
 
   actions: {
@@ -134,18 +145,20 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getGlobalContent():Promise<void> {
-      const [validations, fieldsData, layoutData, popupsData, alertsData] = await Promise.allSettled([
+      const [validations, fieldsData, layoutData, popupsData, alertsData, globalContent] = await Promise.allSettled([
         queryContent(`validations/${this.currentLocale.code}`).findOne(),
         queryContent(`fields/${this.currentLocale.code}`).findOne(),
         queryContent(`main-layout/${this.currentLocale.code}`).findOne(),
         queryContent(`popups/${this.currentLocale.code}`).findOne(),
         queryContent(`alerts/${this.currentLocale.code}`).findOne(),
+        queryContent(`global-components/${this.currentLocale.code}`).findOne(),
       ]);
       if (validations.status !== 'rejected') this.validationMessages = validations.value;
       if (fieldsData.status !== 'rejected') this.fieldsContent = fieldsData.value;
       if (layoutData.status !== 'rejected') this.layoutData = layoutData.value;
       if (popupsData.status !== 'rejected') this.popupsData = popupsData.value;
       if (alertsData.status !== 'rejected') this.alertsData = alertsData.value;
+      if (globalContent.status !== 'rejected') this.globalComponentsContent = globalContent.value;
     },
   },
 });

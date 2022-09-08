@@ -24,11 +24,11 @@ export interface QuestionInterface {
 }
 
 export interface QuestionPageInterface {
-  generalTitle: string,
   pageUrl: string,
   title: string,
   icon: string,
-  questionList: QuestionInterface[]
+  questionList: QuestionInterface[],
+  position?: number
 }
 
 export interface ProfileInfoInterface {
@@ -215,4 +215,34 @@ export interface HomeContentInterface {
     casino: CategoryInterface,
     sports: CategoryInterface
   }
+}
+
+export interface GameCategoryInterface {
+  icon: string,
+  identity: string,
+  label: string
+}
+
+export interface CardsGroupInterface {
+  moreButton: string,
+  demoButton: string,
+  favorites: {
+    icon: string,
+    label: string
+  },
+  providers: {
+    icon: string,
+    label: string
+  },
+  latestWinners: {
+    icon: string,
+    label: string
+  }
+}
+
+export interface GlobalComponentsInterface {
+  benefits: BenefitsContentInterface,
+  promotions: PromotionsContentInterface,
+  cardsGroup: CardsGroupInterface,
+  categories: GameCategoryInterface[]
 }

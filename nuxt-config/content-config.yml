@@ -23,7 +23,7 @@ __project-icon: &projectIcon
   widget: select
   options: ['cherry', 'sport', 'slots', 'live-casino', 'table-games', 'turbo-games', 'sport-book', 'tfs-token',
             'bonuses', 'live-support', 'vip', 'tournament', 'lottery', 'quest', 'shop', 'heart', 'history', 'wallet',
-            'bonus', 'user', 'log-out', 'speed', 'gamepad', 'security', 'age', 'hot']
+            'bonus', 'user', 'log-out', 'speed', 'gamepad', 'security', 'age', 'hot', 'new']
 collections:
   - name: validationMessages
     label: Validation Messages
@@ -1449,6 +1449,57 @@ collections:
                 label: Link
                 widget: object
                 fields: *linkArray
+      - name: categories
+        label: Game Categories
+        widget: list
+        label_singular: category
+        summary: "{{fields.label}}"
+        collapsed: true
+        fields:
+          - *projectIcon
+          - name: identity
+            label: Category Identity
+            widget: string
+            hint: Identity must be the same as back category identity. It's importent for sort games and form link url!
+          - name: label
+            label: Category Label
+            sidget: String
+      - name: cardsGroup
+        label: Cards Group
+        widget: object
+        collapsed: true
+        fields:
+          - name: moreButton
+            label: More Button
+            widget: string
+          - name: demoButton
+            label: Demo Button
+            widget: string
+          - name: favorites
+            label: Favorites Group
+            widget: object
+            fields:
+              - *projectIcon
+              - name: label
+                label: Group Label
+                widget: string
+          - name: providers
+            label: Providers Group
+            widget: object
+            fields:
+              - *projectIcon
+              - name: label
+                label: Group Label
+                widget: string
+          - name: latestWinners
+            label: Winners Group
+            widget: object
+            fields:
+              - *projectIcon
+              - name: label
+                label: Group Label
+                widget: string
+
   - name: pageControls
     label: Page Controls Content
     create: true
