@@ -67,5 +67,53 @@
       }
     ]
   },
-  "locale": "en"
+  "locale": "en",
+  "gameCard": {
+    "demoButton": "Try for fun"
+  },
+  "cardsGroup": {
+    "moreButton": "Show all"
+  },
+  "categories": [
+    {
+      "icon": "cherry",
+      "identity": "all",
+      "label": "All Games"
+    },
+    {
+      "icon": "hot",
+      "identity": "hot",
+      "label": "Hot"
+    },
+    {
+      "icon": "slots",
+      "identity": "slots",
+      "label": "Slots"
+    },
+    {
+      "icon": "turbo-games",
+      "identity": "turbogames",
+      "label": "Turbogames"
+    },
+    {
+      "icon": "new",
+      "identity": "new",
+      "label": "New"
+    },
+    {
+      "icon": "table-games",
+      "identity": "table",
+      "label": "Table"
+    },
+    {
+      "icon": "live-casino",
+      "identity": "live",
+      "label": "Live"
+    },
+    {
+      "icon": "heart",
+      "identity": "popular",
+      "label": "Popular"
+    }
+  ]
 }
