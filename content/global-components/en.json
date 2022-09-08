@@ -68,23 +68,20 @@
     ]
   },
   "locale": "en",
-  "gameCard": {
-    "demoButton": "Try for fun"
-  },
   "cardsGroup": {
     "moreButton": "Show all",
     "demoButton": "Try for fun",
     "favorites": {
       "icon": "heart",
-      "lable": "Favorites"
+      "label": "Favorites"
     },
     "providers": {
       "icon": "turbo-games",
-      "lable": "Providers"
+      "label": "Providers"
     },
     "latestWinners": {
       "icon": "bonuses",
-      "lable": "Latest winners"
+      "label": "Latest winners"
     }
   },
   "categories": [
