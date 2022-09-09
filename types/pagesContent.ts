@@ -273,3 +273,45 @@ export interface ContactPageInterface {
   description: string,
   buttonLabel: string
 }
+
+interface WelcomeItemInterface {
+  topLabel: string,
+  image: string,
+  title: string,
+  buttonLabel: string,
+  link: {
+    label: string,
+    url: string
+  }
+}
+
+interface BonusesItemInterface {
+  title: string,
+  subtitle: string,
+  image: string,
+  buttonLabel: string,
+  link: {
+    label: string,
+    url: string
+  }
+}
+
+export interface WelcomePageInterface {
+  title: string,
+  description: string,
+  howGet: {
+    label: string,
+    first: string,
+    second: string,
+    third: string,
+    image: string
+  },
+  welcome: {
+    label: string,
+    items: WelcomeItemInterface[]
+  },
+  bonuses: {
+    label: string,
+    items: BonusesItemInterface[]
+  }
+}
