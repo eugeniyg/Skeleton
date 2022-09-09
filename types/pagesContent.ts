@@ -266,3 +266,10 @@ export interface RecentlyPageInterface {
   },
   categorySubtitle: string
 }
+
+export interface ContactPageInterface {
+  image: string,
+  title: string,
+  description: string,
+  buttonLabel: string
+}

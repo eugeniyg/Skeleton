@@ -1663,3 +1663,21 @@ collections:
           - name: categorySubtitle
             label: Games Category Subtitle
             widget: string
+      - name: contactPage
+        label: Contact Us Page
+        widget: object
+        collapsed: true
+        fields:
+          - name: image
+            label: Image
+            widget: image
+          - name: title
+            label: Page Title
+            widget: string
+          - name: description
+            label: Description
+            widget: text
+          - name: buttonLabel
+            label: Button Label
+            widget: string
+
