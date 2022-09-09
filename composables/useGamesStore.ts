@@ -32,19 +32,11 @@ export const useGamesStore = defineStore('gamesStore', {
 
   getters: {
     providersSelectOptions(state):GameProviderInterface[] {
-      const allProvidersItem = {
-        id: 'all',
-        name: 'All Providers',
-        identity: 'all',
-        code: 'all',
-        value: 'All Providers',
-      };
-      const optionsArr = state.gameProviders.map((provider) => ({
+      return state.gameProviders.map((provider) => ({
         ...provider,
         code: provider.id,
         value: provider.name,
       }));
-      return [allProvidersItem, ...optionsArr];
     },
   },
 

@@ -1,6 +1,7 @@
 <template>
   <div class="game-sort">
-    <span class="label">Sort by:</span>
+    <span class="label">{{ props.label }}:</span>
+
     <button
       v-for="{ id, title } in items"
       :key="id"
@@ -17,6 +18,10 @@
     value: {
       type: String,
       default: 'asc',
+    },
+    label: {
+      type: String,
+      required: false,
     },
   });
 

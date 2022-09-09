@@ -322,3 +322,13 @@ export interface GamePageInterface {
   demoButton: string,
   switcherLabel: string
 }
+
+export interface CategoryGamesInterface {
+  empty: {
+    image: string,
+    title: string,
+    description: string
+  },
+  providersLabel: string,
+  sortLabel: string
+}
