@@ -3,12 +3,14 @@
     :frameLink="gameStart"
     :gameInfo="gameInfo"
     @changeMode="changeGameMode"
+    :gameContent="gameContent"
   />
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { GameInterface } from '@platform/frontend-core/dist/module';
+  import { GamePageInterface } from '~/types';
 
   const route = useRoute();
   const isDemo = ref<boolean>(route.query.demo === 'true');
@@ -21,8 +23,10 @@
   const { showModal, showAlert } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
-  const { isMobile, alertsData } = storeToRefs(globalStore);
+  const { isMobile, alertsData, currentLocale } = storeToRefs(globalStore);
   const infoResponse = await useAsyncData('gameInfo', () => getGamesInfo(route.params.id as string));
+  const gameContentRequest = await useAsyncData('gameContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['gamePage']).findOne());
+  const gameContent:GamePageInterface|undefined = gameContentRequest.data.value?.gamePage;
   gameInfo.value = infoResponse.data.value;
   const router = useRouter();
 

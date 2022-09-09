@@ -1768,6 +1768,26 @@ collections:
           - name: buttonLabel
             label: Button Label
             widget: string
+      - name: gamePage
+        label: Game Page
+        widget: object
+        collapsed: true
+        fields:
+          - name: realLabel
+            label: Real Mode Label
+            widget: string
+          - name: realButton
+            label: Real Mode Button
+            widget: string
+          - name: demoLabel
+            label: Demo Mode Label
+            widget: string
+          - name: demoButton
+            label: Demo Mode Button
+            widget: string
+          - name: switcherLabel
+            label: Switcher Label
+            widget: string
 
 
 

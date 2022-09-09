@@ -314,3 +314,11 @@ export interface WelcomePageInterface {
     items: BonusesItemInterface[]
   }
 }
+
+export interface GamePageInterface {
+  realLabel: string,
+  realButton: string,
+  demoLabel: string,
+  demoButton: string,
+  switcherLabel: string
+}

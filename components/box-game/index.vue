@@ -9,20 +9,25 @@
         width="100%"
       />
     </div>
+
     <client-only>
       <nav-game :gameInfo="gameInfo"/>
     </client-only>
-    <panel-mode @changeMode="emit('changeMode')"/>
+
+    <panel-mode :gameContent="gameContent" @changeMode="emit('changeMode')"/>
 
     <group-games
       :category="popularCategory"
       showArrows
-      subTitle="The best games for you"
+      subTitle
     />
   </div>
 </template>
 
 <script setup lang="ts">
+  import { PropType } from '@vue/runtime-core';
+  import { GamePageInterface } from '~/types';
+
   const props = defineProps({
     frameLink: {
       type: String,
@@ -30,6 +35,10 @@
     },
     gameInfo: {
       type: Object,
+      required: false,
+    },
+    gameContent: {
+      type: Object as PropType<GamePageInterface>,
       required: false,
     },
   });
