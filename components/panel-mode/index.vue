@@ -1,7 +1,7 @@
 <template>
   <div class="panel-mode">
     <span class="title">
-      {{ isRealMode ? gameContent?.realLabel : gameContent?.demoLabel}}
+      {{ isRealMode ? props.gameContent?.realLabel : props.gameContent?.demoLabel }}
     </span>
 
     <button-base
@@ -9,7 +9,7 @@
       size="sm"
       @click="clickButton"
     >
-      {{ isRealMode ? gameContent?.realButton : gameContent?.demoButton }}
+      {{ isRealMode ? props.gameContent?.realButton : props.gameContent?.demoButton }}
     </button-base>
 
     <div class="switch">
@@ -21,22 +21,23 @@
       />
 
       <div class="switch-label" @click="emit('changeMode')">
-        {{ gameContent?.switcherLabel }}
+        {{ props.gameContent?.switcherLabel }}
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { PropType } from '@vue/runtime-core';
-  import { GamePageInterface } from '~/types';
-
-  const props = defineProps({
-    gameContent: {
-      type: Object as PropType<GamePageInterface>,
-      required: false,
-    },
-  });
+  interface Props {
+    gameContent?: {
+      realLabel: string,
+      realButton: string,
+      demoLabel: string,
+      demoButton: string,
+      switcherLabel: string
+    }
+  }
+  const props = defineProps<Props>();
 
   const route = useRoute();
   const isRealMode = ref<boolean>(route.query.demo !== 'true');
