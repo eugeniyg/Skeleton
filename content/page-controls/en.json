@@ -49,8 +49,7 @@
       "image": "/img/uploads/search-bg.png",
       "title": "Nothing found",
       "description": "You have no favorite games yet"
-    },
-    "categorySubtitle": "The best games for you"
+    }
   },
   "recentlyPage": {
     "title": "Recently Played",
@@ -58,8 +57,7 @@
       "image": "/img/uploads/search-bg.png",
       "title": "Nothing found",
       "description": "You haven't played any games yet"
-    },
-    "categorySubtitle": "The best games for you"
+    }
   },
   "contactPage": {
     "image": "/img/uploads/msg.png",

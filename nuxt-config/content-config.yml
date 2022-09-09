@@ -1473,6 +1473,9 @@ collections:
           - name: demoButton
             label: Demo Button
             widget: string
+          - name: recommendedSubtitle
+            label: Recomended Subtitle
+            widget: string
           - name: favorites
             label: Favorites Group
             widget: object
@@ -1726,9 +1729,6 @@ collections:
                 label: Description
                 widget: string
                 required: false
-          - name: categorySubtitle
-            label: Games Category Subtitle
-            widget: string
       - name: recentlyPage
         label: Recently-Played Page
         widget: object
@@ -1751,9 +1751,6 @@ collections:
                 label: Description
                 widget: string
                 required: false
-          - name: categorySubtitle
-            label: Games Category Subtitle
-            widget: string
       - name: contactPage
         label: Contact Us Page
         widget: object

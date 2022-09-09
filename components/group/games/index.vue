@@ -6,7 +6,7 @@
       <h2 class="title">
         {{ gameCategoriesObj[props.category.identity]?.label || props.category.name || props.category.identity }}
       </h2>
-      <h4 class="sub-title">{{ props.subTitle }}</h4>
+      <h4 class="sub-title">{{ cardsGroupContent?.recommendedSubtitle }}</h4>
     </div>
 
     <h2 v-else class="title">
@@ -57,7 +57,7 @@
       required: true,
     },
     subTitle: {
-      type: String,
+      type: Boolean,
       required: false,
     },
     showAllBtn: {
