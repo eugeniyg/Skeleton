@@ -110,5 +110,29 @@
         }
       ]
     }
+  },
+  "favoritesPage": {
+    "title": "Улюблені ігри",
+    "empty": {
+      "image": "/img/uploads/search-bg.png",
+      "title": "Нічого не знайдено",
+      "description": "У вас ще немає улюблених ігор"
+    },
+    "categorySubtitle": "Найкращі ігри для вас"
+  },
+  "recentlyPage": {
+    "title": "Нещодавно зіграно",
+    "empty": {
+      "image": "/img/uploads/search-bg.png",
+      "title": "Нічого не знайдено",
+      "description": "Ви ще не грали в ігри"
+    },
+    "categorySubtitle": "Найкращі ігри для вас"
+  },
+  "contactPage": {
+    "image": "/img/uploads/msg.png",
+    "title": "Зв'яжіться з нами",
+    "description": "Будь ласка, заповніть інформацію нижче. Всі поля обов'язкові для заповнення.",
+    "buttonLabel": "Давай поговоримо!"
   }
 }
