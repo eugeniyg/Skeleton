@@ -60,5 +60,11 @@
       "description": "You haven't played any games yet"
     },
     "categorySubtitle": "The best games for you"
+  },
+  "contactPage": {
+    "image": "/img/uploads/msg.png",
+    "title": "Contact us",
+    "description": "Please, fill the information below. All Fields are required.",
+    "buttonLabel": "Let's talk!"
   }
 }
