@@ -71,6 +71,7 @@
   "cardsGroup": {
     "moreButton": "Show all",
     "demoButton": "Try for fun",
+    "recommendedSubtitle": "The best games for you",
     "favorites": {
       "icon": "heart",
       "label": "Favorites"

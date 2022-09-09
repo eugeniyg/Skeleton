@@ -21,7 +21,7 @@
         v-if="!favoriteGames.length"
         :category="popularCategory"
         showArrows
-        :subTitle="recentlyContent?.categorySubtitle"
+        subTitle
       />
     </client-only>
   </div>

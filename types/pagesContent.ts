@@ -226,6 +226,7 @@ export interface GameCategoryInterface {
 export interface CardsGroupInterface {
   moreButton: string,
   demoButton: string,
+  recommendedSubtitle: string
   favorites: {
     icon: string,
     label: string
@@ -253,8 +254,7 @@ export interface FavoritesPageInterface {
     image: string,
     title: string,
     description: string
-  },
-  categorySubtitle: string
+  }
 }
 
 export interface RecentlyPageInterface {
@@ -263,8 +263,7 @@ export interface RecentlyPageInterface {
     image: string,
     title: string,
     description: string
-  },
-  categorySubtitle: string
+  }
 }
 
 export interface ContactPageInterface {

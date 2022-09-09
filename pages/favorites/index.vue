@@ -21,7 +21,7 @@
         v-if="!showFavorites"
         :category="popularCategory"
         showArrows
-        :subTitle="favoritesContent?.categorySubtitle"
+        subTitle
       />
     </client-only>
   </div>
