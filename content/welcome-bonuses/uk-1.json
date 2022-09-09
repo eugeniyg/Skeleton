@@ -1,0 +1,92 @@
+{
+  "locale": "uk",
+  "title": "Вітальний пакет. До 5 BTC + 300 безкоштовних обертань",
+  "description": "Вітальний пакет — одна з найщедріших пропозицій Slotsbet! Це бонусний пакет для ваших 4 початкових депозитів після реєстрації!",
+  "howGet": {
+    "label": "Як отримати свої бонуси:",
+    "first": "Зробіть успішний депозит",
+    "third": "Насолоджуйтесь чудовим досвідом гри!",
+    "second": "Перейдіть на вкладку Бонуси та активуйте безкоштовні обертання",
+    "image": "/img/uploads/nft_gift.png"
+  },
+  "welcome": {
+    "label": "Вітальний пакет",
+    "items": [
+      {
+        "topLabel": "Бонус на 1 депозит",
+        "image": "/img/uploads/1-deposit.png",
+        "title": "Отримайте свій 100% бонус до 1,5 BTC і 100 FS.",
+        "buttonLabel": "Отримати бонус",
+        "link": {
+          "label": "Більше інформації",
+          "url": "/bonus/first-deposit-bonus"
+        }
+      },
+      {
+        "topLabel": "Бонус за 2 депозит",
+        "image": "/img/uploads/2-deposit.png",
+        "title": "Отримайте свій 75% бонус до 1 BTC і 50 FS.",
+        "buttonLabel": "Отримати бонус",
+        "link": {
+          "label": "Більше інформації",
+          "url": "/bonus/second-deposit-bonus"
+        }
+      },
+      {
+        "topLabel": "Бонус на 3 депозит",
+        "image": "/img/uploads/3-deposit.png",
+        "title": "Отримайте свій 50% бонус до 1 BTC і 50 FS.",
+        "buttonLabel": "Отримати бонус",
+        "link": {
+          "label": "Більше інформації",
+          "url": "/bonus/third-deposit-bonus"
+        }
+      },
+      {
+        "topLabel": "Бонус на 4 депозит",
+        "image": "/img/uploads/4-deposit.png",
+        "title": "Грайте більше зі 100% бонусом до 1,5 BTC і 100 FS.",
+        "buttonLabel": "Отримати бонус",
+        "link": {
+          "label": "Більше інформації",
+          "url": "/bonus/fourth-deposit-bonus"
+        }
+      }
+    ]
+  },
+  "bonuses": {
+    "label": "Щотижневі бонуси",
+    "items": [
+      {
+        "title": "Понеділковий бонус за перезавантаження",
+        "subtitle": "30% бонус до 0,0035 BTC у понеділок",
+        "image": "/img/uploads/monday-big.png",
+        "buttonLabel": "Отримати бонус",
+        "link": {
+          "label": "Більше інформації",
+          "url": "/bonus/monday-reload-bonus"
+        }
+      },
+      {
+        "title": "Безкоштовні обертання середи",
+        "subtitle": "Отримуйте 100 безкоштовних обертань щосереди",
+        "image": "/img/uploads/wednesday-big.png",
+        "buttonLabel": "Отримати бонус",
+        "link": {
+          "label": "Більше інформації",
+          "url": "/bonus/wednesday-free-spins"
+        }
+      },
+      {
+        "title": "Щотижневий кешбек",
+        "subtitle": "Отримуйте 10% кешбеку щоп'ятниці.",
+        "image": "/img/uploads/weekly-big.png",
+        "buttonLabel": "Отримати бонус",
+        "link": {
+          "label": "Більше інформації",
+          "url": "/bonus/weekly-cashback"
+        }
+      }
+    ]
+  }
+}
