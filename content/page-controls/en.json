@@ -71,5 +71,14 @@
     "demoLabel": "Ready to play for real?",
     "demoButton": "Yes, play for real",
     "switcherLabel": "Real mode"
+  },
+  "gamesPage": {
+    "empty": {
+      "image": "/img/uploads/search-bg.png",
+      "title": "Nothing found",
+      "description": "Try searching for something else"
+    },
+    "providersLabel": "All Providers",
+    "sortLabel": "Sort by:"
   }
 }
