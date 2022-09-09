@@ -64,5 +64,12 @@
     "title": "Contact us",
     "description": "Please, fill the information below. All Fields are required.",
     "buttonLabel": "Let's talk!"
+  },
+  "gamePage": {
+    "realLabel": "Ready to go big?",
+    "realButton": "Yes, I’m ready",
+    "demoLabel": "Ready to play for real?",
+    "demoButton": "Yes, play for real",
+    "switcherLabel": "Real mode"
   }
 }
