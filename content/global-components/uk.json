@@ -67,5 +67,64 @@
       }
     ]
   },
-  "locale": "uk"
+  "locale": "uk",
+  "categories": [
+    {
+      "icon": "cherry",
+      "identity": "all",
+      "label": "Всі ігри"
+    },
+    {
+      "icon": "hot",
+      "identity": "hot",
+      "label": "Гаряче"
+    },
+    {
+      "icon": "slots",
+      "identity": "slots",
+      "label": "Слоти"
+    },
+    {
+      "icon": "turbo-games",
+      "identity": "turbogames",
+      "label": "Турбоігри"
+    },
+    {
+      "identity": "new",
+      "icon": "new",
+      "label": "Нове"
+    },
+    {
+      "identity": "table",
+      "icon": "table-games",
+      "label": "Настільні ігри"
+    },
+    {
+      "identity": "live",
+      "icon": "live-casino",
+      "label": "Живі ігри"
+    },
+    {
+      "identity": "popular",
+      "icon": "heart",
+      "label": "Популярні"
+    }
+  ],
+  "cardsGroup": {
+    "moreButton": "Показати все",
+    "demoButton": "Спробуйте для задоволення",
+    "recommendedSubtitle": "Найкращі ігри для вас",
+    "favorites": {
+      "icon": "heart",
+      "label": "Вибране"
+    },
+    "providers": {
+      "label": "Провайдери",
+      "icon": "turbo-games"
+    },
+    "latestWinners": {
+      "label": "Останні переможці",
+      "icon": "bonuses"
+    }
+  }
 }
