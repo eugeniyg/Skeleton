@@ -1409,7 +1409,6 @@ collections:
             widget: list
             label_singular: card
             summary: '{{fields.title}}'
-            max: 4
             fields:
               - name: image
                 label: Image
@@ -1431,7 +1430,6 @@ collections:
             widget: list
             summary: '{{fields.title}}'
             label_singular: card
-            max: 4
             fields:
               - name: image
                 label: Image
@@ -1499,6 +1497,99 @@ collections:
               - name: label
                 label: Group Label
                 widget: string
+
+  - name: welcomeBonuses
+    label: Welcome Bonuses Page
+    create: true
+    identifier_field: locale
+    extension: json
+    format: json
+    folder: content/welcome-bonuses
+    editor:
+      preview: false
+    fields:
+      - *localeField
+      - name: title
+        label: Page Title
+        widget: string
+      - name: description
+        label: Descrwidgetiption
+        widget: text
+      - name: howGet
+        label: How To Get Block
+        widget: object
+        fields:
+          - name: label
+            label: Label
+            widget: string
+          - name: first
+            label: First Point
+            widget: text
+          - name: second
+            label: Second Point
+            widget: text
+          - name: third
+            label: Third Point
+            widget: text
+          - name: image
+            label: Image
+            widget: image
+      - name: welcome
+        label: Welcome Block
+        widget: object
+        fields:
+          - name: label
+            label: Label
+            widget: string
+          - name: items
+            label: Cards
+            widget: list
+            label_singular: card
+            fields:
+              - name: topLabel
+                label: Top Label
+                widget: string
+              - name: image
+                label: Image
+                widget: image
+              - name: title
+                label: Card Title
+                widget: string
+              - name: buttonLabel
+                label: Button Label
+                widget: string
+              - name: link
+                label: Card Link
+                widget: object
+                fields: *linkArray
+      - name: bonuses
+        label: Bonuses Block
+        widget: object
+        fields:
+          - name: label
+            label: Block Label
+            widget: string
+          - name: items
+            label: Cards
+            widget: list
+            label_singular: card
+            fields:
+              - name: title
+                label: Bonus Title
+                widget: string
+              - name: subtitle
+                label: Bonus Subtitle
+                widget: string
+              - name: image
+                label: Image
+                widget: image
+              - name: buttonLabel
+                label: Button Label
+                widget: string
+              - name: link
+                label: Link
+                widget: object
+                fields: *linkArray
 
   - name: pageControls
     label: Page Controls Content
@@ -1663,3 +1754,23 @@ collections:
           - name: categorySubtitle
             label: Games Category Subtitle
             widget: string
+      - name: contactPage
+        label: Contact Us Page
+        widget: object
+        collapsed: true
+        fields:
+          - name: image
+            label: Image
+            widget: image
+          - name: title
+            label: Page Title
+            widget: string
+          - name: description
+            label: Description
+            widget: text
+          - name: buttonLabel
+            label: Button Label
+            widget: string
+
+
+

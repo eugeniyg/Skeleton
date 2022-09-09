@@ -1,16 +1,19 @@
 <template>
   <div class="contact">
     <img
+      v-if="contactContent?.image"
       class="img"
-      src="@/assets/img/msg.png"
+      :src="contactContent.image"
       width="348"
       height="301"
       alt=""
     />
+
     <div class="header">
-      <div class="heading">Contact us</div>
-      <p class="info">Please, fill the information below. All Fields are required.</p>
+      <div class="heading">{{ contactContent?.title }}</div>
+      <p class="info">{{ contactContent?.description }}</p>
     </div>
+
     <div class="form">
       <form-input-text
         v-model:value="contactFormData.email"
@@ -36,17 +39,22 @@
         size="lg"
         :is-disabled="v$.$invalid"
         @click="submitContactForm"
-      >Let’s talk! <atomic-icon id="arrow_next"/></button-base>
+      >
+        {{ contactContent?.buttonLabel }} <atomic-icon id="arrow_next"/>
+      </button-base>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { ContactPageInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();
-  const { fieldsContent, alertsData } = storeToRefs(globalStore);
+  const { fieldsContent, alertsData, currentLocale } = storeToRefs(globalStore);
+  const contactContentRequest = await useAsyncData('contactContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['contactPage']).findOne());
+  const contactContent:ContactPageInterface|undefined = contactContentRequest.data.value?.contactPage;
 
   const contactFormData = reactive({
     email: '',
