@@ -53,12 +53,15 @@
 
     <atomic-divider/>
 
-    <!--    <div class="info">-->
-    <!--      <img src="~/assets/img/info-logo.svg" />-->
-    <!--      <p>Slotsbet.io is owned and operated by Company registered and established under the laws of Curacao. Company is licensed and regulated by Antillephone N.V. It is the player’s sole responsibility to inquire about the existing laws and regulations of the given jurisdiction for online gambling. Company is officially registered by the Government of Curaçao as an Information Provider, legally authorized to conduct online gaming operations from Curaçao. Remote gaming licensing and supervision is provided by Antillephone N.V. All payments with Paysafe are made via Company.</p>-->
-    <!--    </div>-->
+    <div v-if="footerContent?.curacao?.url" class="info">
+      <a class="info__link" :href="footerContent.curacao.url" target="_blank">
+        <img :src="footerContent.curacao.image" />
+      </a>
 
-    <!--    <atomic-divider/>-->
+      <div class="info__text" v-html="marked.parse(footerContent.curacao.text || '')" />
+    </div>
+
+    <atomic-divider/>
 
     <div class="copy-info">
       <p>{{ footerContent?.copyright }}</p>
@@ -68,6 +71,8 @@
 </template>
 
 <script setup lang="ts">
+  import { marked } from 'marked';
+
   const { isHomePage, localizePath } = useProjectMethods();
 
   const { footerContent } = useGlobalStore();
