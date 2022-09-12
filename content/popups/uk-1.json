@@ -10,9 +10,9 @@
   },
   "forgot": {
     "title": "Забули пароль?",
-    "description": "Enter your email address and we will send you a password reset link.",
-    "forgotButton": "Reset password",
-    "registrationButton": "Don't have an account? *Join*"
+    "description": "Введіть адресу електронної пошти, і ми надішлемо вам посилання для зміни пароля.",
+    "forgotButton": "Скинути пароль",
+    "registrationButton": "Немає облікового запису? *Приєднуйтесь*"
   },
   "error": {
     "title": "Error",
@@ -34,8 +34,8 @@
     "withdrawButton": "Withdraw"
   },
   "reset": {
-    "title": "Reset password",
-    "resetButton": "Confirm"
+    "title": "Скинути пароль",
+    "resetButton": "Підтвердити"
   },
   "registration": {
     "title": "Приєднуйся до Slotsbet",
@@ -60,16 +60,16 @@
         }
       ]
     },
-    "agreeEmailLabel": "I agree to receive bonus & marketing emails",
-    "agreeSmsLabel": "Send promos by SMS"
+    "agreeEmailLabel": "Я погоджуюся отримувати бонуси та маркетингові електронні листи",
+    "agreeSmsLabel": "Розсилайте акції за допомогою SMS"
   },
   "locale": "uk",
   "deposit": {
-    "title": "Deposit",
-    "balanceLabel": "Balance",
-    "sumLabel": "Deposit sum",
-    "minSum": "Min deposit:",
-    "togglerLabel": "I have bonus code",
+    "title": "Депозит",
+    "balanceLabel": "Баланс",
+    "sumLabel": "Сума депозиту",
+    "minSum": "Мінімальний депозит:",
+    "togglerLabel": "У мене є бонусний код",
     "bonuses": [
       {
         "image": "/img/uploads/icn-notification.svg",
