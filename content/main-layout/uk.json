@@ -228,7 +228,12 @@
       ]
     },
     "responsibilityLabel": "Gambling with responsibility",
-    "copyright": "© 2022 Slotsbet.io | All Rights Reserved."
+    "copyright": "© 2022 Slotsbet.io | All Rights Reserved.",
+    "curacao": {
+      "url": "https://licensing.gaming-curacao.com/validator/?lh=95426453d291d7c01ec3a7e5aaf8b499",
+      "image": "/img/uploads/info-logo.svg",
+      "text": "Copyright © 2022 [Slotsbet.io](http://slotsbet.io/ \"http\\://slotsbet.io/\") is owned and operated by Geminilab N.V., a company registered and established under the laws of Curaçao, with registration number 161235, Geminilab N.V. is licensed and authorized by the Government of Curacao and operates under the Master License of Gaming Services Provider, N.V. #365/JAZ"
+    }
   },
   "mobileMenu": {
     "menuLabel": "Меню",
