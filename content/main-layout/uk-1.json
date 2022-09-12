@@ -1,7 +1,7 @@
 {
   "locale": "uk",
   "header": {
-    "loginButton": "Login",
+    "loginButton": "Логін",
     "registrationButton": "Реєстрація",
     "search": {
       "placeholder": "Знайти гру",
@@ -10,32 +10,32 @@
       "emptyText": "Try searching for something else",
       "tryLabel": "Or try these popular games:"
     },
-    "depositButton": "Deposit"
+    "depositButton": "Депозит"
   },
   "userNavigation": {
     "profileLinks": [
       {
-        "label": "Wallet",
+        "label": "Гаманець",
         "url": "/profile/wallet",
         "icon": "wallet"
       },
       {
-        "label": "Bonuses",
+        "label": "Бонуси",
         "url": "/profile/bonuses",
         "icon": "bonus"
       },
       {
-        "label": "Profile info",
+        "label": "Інформація про профіль",
         "url": "/profile/info",
         "icon": "user"
       },
       {
-        "label": "History",
+        "label": "Історія",
         "url": "/profile/history",
         "icon": "history"
       }
     ],
-    "logoutButton": "Log out"
+    "logoutButton": "Вийти"
   },
   "siteSidebar": {
     "gamesToggler": [
@@ -169,7 +169,7 @@
   },
   "footer": {
     "promoMenu": {
-      "title": "Promo",
+      "title": "Промо",
       "items": [
         {
           "label": "Welcome package",
@@ -190,7 +190,7 @@
       ]
     },
     "infoMenu": {
-      "title": "Info",
+      "title": "Інформація",
       "items": [
         {
           "label": "T&C",
@@ -231,27 +231,27 @@
     "copyright": "© 2022 Slotsbet.io | All Rights Reserved."
   },
   "mobileMenu": {
-    "menuLabel": "Menu",
+    "menuLabel": "Меню",
     "items": [
       {
-        "label": "Casino",
+        "label": "Казино",
         "url": "/main",
         "icon": "cherry"
       },
       {
-        "label": "Sports",
+        "label": "Спорт",
         "url": "/betting",
         "icon": "sport"
       },
       {
-        "label": "Support",
+        "label": "Підтримка",
         "url": "/contact",
         "icon": "live-support"
       }
     ]
   },
   "cookiePopup": {
-    "text": "We use cookies to improve your experience. By using our website you are accepting our [Terms and Conditions](/terms-and-conditions) and [Privacy Policy](/privacy-policy).",
-    "acceptButton": "Accept"
+    "text": "Ми використовуємо файли cookie, щоб покращити ваш досвід. Використовуючи наш веб-сайт, ви приймаєте наші [Умови](/terms-and-conditions) і [Політику конфіденційності](/privacy-policy).",
+    "acceptButton": "Прийняти"
   }
 }
