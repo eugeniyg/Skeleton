@@ -5,12 +5,7 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    id: {
-      type: String,
-      required: true,
-    },
-  });
+  const props = defineProps<{id: string}>();
 </script>
 
 <style lang="scss" src="./style.scss"/>

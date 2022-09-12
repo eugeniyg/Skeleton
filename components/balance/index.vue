@@ -31,6 +31,7 @@
       default: false,
     },
   });
+
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const { popupsData } = useGlobalStore();

@@ -7,12 +7,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
-    gameId: {
-      type: String,
-      required: true,
-    },
-  });
+  const props = defineProps<{gameId: string}>();
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);

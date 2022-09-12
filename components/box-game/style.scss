@@ -13,11 +13,7 @@
     grid-area: container;
     position: relative;
     width: 100%;
-    height: calc(100vh - 56px);
-
-    @media (orientation: landscape) {
-      height: 100vh;
-    }
+    height: 100vh;
 
     @include media(md) {
       height: calc(100vh - 160px);

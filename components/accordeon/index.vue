@@ -1,16 +1,16 @@
 <template>
   <div class="accordeon" :class="classes">
     <div class="header">
-      <slot name="header" v-bind:heading="props.heading"/>
-      <button-toggle @toggle="toggle" :is-active="state"/>
+      <slot name="header" :heading="props.heading" />
+      <button-toggle :is-active="state" @toggle="toggle" />
     </div>
 
-    <div class="content" ref="content" :style="heightStyle">
+    <div ref="content" class="content" :style="heightStyle">
       <slot
         v-for="(item, index) in props.items"
         :key="index"
         name="content"
-        v-bind:item="item"
+        :item="item"
       />
     </div>
   </div>
@@ -57,4 +57,4 @@
   });
 </script>
 
-<style lang="scss" src="./style.scss"/>
+<style lang="scss" src="./style.scss" />

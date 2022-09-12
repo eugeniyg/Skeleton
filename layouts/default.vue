@@ -36,7 +36,9 @@
 
     <atomic-opacity-layer />
 
-    <nav-mob />
+    <transition name="fade" mode="out-in">
+      <nav-mob v-if="!$route.name.includes('games-id')" />
+    </transition>
 
     <transition name="fade-down">
       <layout-cookies v-if="showCookiesMessage" />

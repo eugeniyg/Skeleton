@@ -25,9 +25,6 @@
 </template>
 
 <script setup lang="ts">
-  import { PropType } from '@vue/runtime-core';
-  import { GamePageInterface } from '~/types';
-
   const props = defineProps({
     frameLink: {
       type: String,
@@ -38,7 +35,7 @@
       required: false,
     },
     gameContent: {
-      type: Object as PropType<GamePageInterface>,
+      type: Object,
       required: false,
     },
   });

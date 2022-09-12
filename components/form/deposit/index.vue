@@ -52,20 +52,11 @@
   import { storeToRefs } from 'pinia';
   import { DepositInterface } from '~/types';
 
-  const props = defineProps({
-    amountMax: {
-      type: Number,
-      required: false,
-    },
-    amountMin: {
-      type: Number,
-      required: false,
-    },
-    method: {
-      type: String,
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    amountMax?: number,
+    amountMin?: number,
+    method?: string
+  }>();
 
   const { popupsData, fieldsContent, alertsData } = useGlobalStore();
   const depositContent: DepositInterface|undefined = popupsData?.deposit;

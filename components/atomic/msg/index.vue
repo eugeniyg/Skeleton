@@ -20,11 +20,11 @@
     },
     title: {
       type: String,
-      default: 'Please, verify your email due to security reasons',
+      default: '',
     },
     date: {
       type: String,
-      default: 'May 14, 2019 • 19:00',
+      default: '',
     },
   });
 </script>
