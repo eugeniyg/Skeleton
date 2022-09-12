@@ -6,14 +6,14 @@
       </div>
 
       <div class="value">
-        {{ activeAccount.balance }} {{ activeAccount.currency }}
+        {{ balanceFormat.amount }} {{ balanceFormat.currency }}
       </div>
     </div>
 
     <div class="row" v-if="props.withdraw">
       <div class="label">{{ withdrawContent?.withdrawLabel }}</div>
       <div class="value">
-        {{ activeAccount.balance }} {{ activeAccount.currency }}
+        {{ balanceFormat.amount }} {{ balanceFormat.currency }}
       </div>
     </div>
     <atomic-divider />
@@ -37,6 +37,8 @@
   const { popupsData } = useGlobalStore();
   const depositContent: DepositInterface|undefined = popupsData?.deposit;
   const withdrawContent: WithdrawInterface|undefined = popupsData?.withdraw;
+  const { formatBalance } = useProjectMethods();
+  const balanceFormat = computed(() => formatBalance(activeAccount.value.currency, activeAccount.value.balance));
 </script>
 
 <style lang="scss" src="./style.scss"/>
