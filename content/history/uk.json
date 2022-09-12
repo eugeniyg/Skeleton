@@ -1,0 +1,72 @@
+{
+  "bonuses": {
+    "empty": {
+      "icon": "empty-bonuses",
+      "title": "Даних ще немає!",
+      "description": "Ви ще не отримували бонусів"
+    },
+    "tabLabel": "Історія бонусів",
+    "tabPosition": 2
+  },
+  "bets": {
+    "empty": {
+      "icon": "empty-bets-history",
+      "title": "Даних ще немає!",
+      "description": "Ви ще не зробили жодної ставки"
+    },
+    "tabLabel": "Історія ставок",
+    "tabPosition": 3
+  },
+  "transactions": {
+    "currencyLabel": "Валюта:",
+    "dateLabel": "Дата з/до:",
+    "statusFilter": {
+      "label": "Статус:",
+      "options": {
+        "review": "Review",
+        "pending": "Pending",
+        "success": "Success",
+        "rejected": "Rejected"
+      }
+    },
+    "empty": {
+      "icon": "empty-transactions",
+      "title": "Даних ще немає!",
+      "description": "У вас ще немає успішних транзакцій."
+    },
+    "allFilterOption": "All",
+    "tableColumns": {
+      "date": "Дата",
+      "type": "Type",
+      "method": "Payment Method",
+      "status": "Status",
+      "sum": "Sum"
+    },
+    "typeFilter": {
+      "label": "Тип:",
+      "options": {
+        "deposit": "Депозит",
+        "withdrawal": "Зняття коштів"
+      }
+    },
+    "cancelPaymentButton": "Cancel payment",
+    "tabPosition": 4,
+    "tabLabel": "Історія транзакцій"
+  },
+  "locale": "uk",
+  "sessions": {
+    "tabLabel": "Історія сеансів",
+    "tableColumns": {
+      "country": "Країна",
+      "userAgent": "Агент користувача",
+      "createdAt": "Створено",
+      "status": "Статус"
+    },
+    "sessionsStatuses": {
+      "current": "Поточний",
+      "active": "Активний",
+      "closed": "Закритий"
+    },
+    "tabPosition": 1
+  }
+}
