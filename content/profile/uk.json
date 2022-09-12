@@ -1,0 +1,34 @@
+{
+  "locale": "uk",
+  "info": {
+    "title": "Інформація про профіль",
+    "editButton": "Відредагуйте свій профіль",
+    "saveButton": "Зберегти зміни",
+    "cancelButton": "Скасувати",
+    "subscriptionTitle": "Підписки",
+    "manageTitle": "Керувати обліковим записом"
+  },
+  "wallet": {
+    "title": "Гаманець",
+    "addButton": "Додайте валюту",
+    "allTab": "Всі валюти",
+    "cryptoTab": "Крипто",
+    "changeButton": "Використовуйте валюту",
+    "hideButton": "Приховати валюту",
+    "depositButton": "Депозит",
+    "withdrawButton": "Виводити"
+  },
+  "bonuses": {
+    "title": "Бонус"
+  },
+  "notifications": {
+    "title": "Сповіщення"
+  },
+  "security": {
+    "title": "Безпека та перевірка",
+    "saveButton": "Зберегти зміни"
+  },
+  "history": {
+    "title": "Історія"
+  }
+}
