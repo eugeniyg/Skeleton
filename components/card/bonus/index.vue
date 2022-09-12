@@ -1,7 +1,7 @@
 <template>
   <div class="card-bonus" :class="{'is-active': active}">
     <div class="content">
-      <div class="title">{{ title }}</div>
+      <div class="title">{{ props.title }}</div>
       <form-input-toggle name="toggle" :is-checked="active" @change="select">Use currency</form-input-toggle>
 
       <div class="amount">
@@ -23,14 +23,11 @@
   const props = defineProps({
     title: {
       type: String,
-      default: 'Bitcoin (BTC)',
+      default: '',
     },
     balance: {
       type: Object,
-      default: () => ({
-        currency: 'uBTC',
-        amount: '0.00000000',
-      }),
+      required: true,
     },
     isActive: {
       type: Boolean,

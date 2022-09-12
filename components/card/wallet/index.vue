@@ -41,28 +41,15 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    id: {
-      type: String,
-      required: true,
-    },
-    balance: {
-      type: Number,
-      required: true,
-    },
-    currency: {
-      type: String,
-      required: true,
-    },
-    status: {
-      type: Number,
-      required: true,
-    },
-    content: {
-      type: Object,
-      required: false,
-    },
-  });
+  import { ProfileWalletInterface } from '~/types';
+
+  const props = defineProps<{
+    id: string,
+    balance: number,
+    currency: string,
+    status: number,
+    content: ProfileWalletInterface
+  }>();
 
   const isChecked = ref<boolean>(false);
   const { currencies } = useGlobalStore();

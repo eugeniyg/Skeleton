@@ -6,12 +6,7 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    tooltip: {
-      type: String,
-      required: true,
-    },
-  });
+  const props = defineProps<{tooltip: string}>();
 </script>
 
 <style lang="scss" src="./style.scss"/>

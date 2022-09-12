@@ -8,16 +8,7 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    title: {
-      type: String,
-      required: false,
-    },
-    subTitle: {
-      type: String,
-      required: false,
-    },
-  });
+  const props = defineProps<{title?: string, subTitle?: string}>();
 </script>
 
 <style lang="scss" src="./style.scss"/>

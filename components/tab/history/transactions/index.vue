@@ -64,15 +64,11 @@
     InvoicesRequestOptionsInterface,
     PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
-  import { PropType } from '@vue/runtime-core';
   import { HistoryTransactionsInterface, HistoryTabInterface } from '~/types';
 
-  const props = defineProps({
-    content: {
-      type: Object as PropType<HistoryTabInterface>,
-      required: true,
-    },
-  });
+  const props = defineProps<{
+    content: HistoryTabInterface
+  }>();
 
   const transactionsContent:HistoryTransactionsInterface = props.content.transactions;
   const coreStore = useCoreStore();

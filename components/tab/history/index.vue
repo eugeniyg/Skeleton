@@ -19,15 +19,11 @@
 </template>
 
 <script setup lang="ts">
-  import { PropType } from '@vue/runtime-core';
   import { HistoryTabInterface } from '~/types';
 
-  const props = defineProps({
-    content: {
-      type: Object as PropType<HistoryTabInterface>,
-      required: true,
-    },
-  });
+  const props = defineProps<{
+    content: HistoryTabInterface
+  }>();
 
   const filterContent = Object.keys(props.content).filter((key) => {
     if (props.content[key]?.tabLabel) return key;

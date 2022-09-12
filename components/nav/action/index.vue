@@ -27,13 +27,11 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { GameInterface } from '@platform/frontend-core/dist/module';
 
-  const props = defineProps({
-    gameInfo: {
-      type: Object,
-      required: true,
-    },
-  });
+  const props = defineProps<{
+    gameInfo: GameInterface
+  }>();
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);

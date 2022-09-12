@@ -5,16 +5,10 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    src: {
-      type: String,
-      required: true,
-    },
-    providerId: {
-      type: String,
-      required: true,
-    },
-  });
+  const props = defineProps<{
+    src: string,
+    providerId: string
+  }>();
 
   const router = useRouter();
 

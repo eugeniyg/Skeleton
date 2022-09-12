@@ -28,16 +28,11 @@
 </template>
 
 <script setup lang="ts">
-  interface Props {
-    gameContent?: {
-      realLabel: string,
-      realButton: string,
-      demoLabel: string,
-      demoButton: string,
-      switcherLabel: string
-    }
-  }
-  const props = defineProps<Props>();
+  import { GamePageInterface } from '~/types';
+
+  const props = defineProps<{
+    gameContent: GamePageInterface
+  }>();
 
   const route = useRoute();
   const isRealMode = ref<boolean>(route.query.demo !== 'true');

@@ -1,14 +1,18 @@
 <template>
   <div class="alert" :class="classes">
-    <atomic-icon :id="currentIcon"/>
+    <atomic-icon :id="currentIcon" />
 
     <div class="content">
-      <div class="title" v-if="props.title">{{ props.title }}</div>
-      <p class="text" v-if="props.description">{{ props.description }}</p>
+      <div v-if="props.title" class="title">
+        {{ props.title }}
+      </div>
+      <p v-if="props.description" class="text">
+        {{ props.description }}
+      </p>
     </div>
 
     <button class="btn-alert-close" @click.prevent="hide">
-      <atomic-icon id="close"/>
+      <atomic-icon id="close" />
     </button>
   </div>
 </template>
@@ -56,7 +60,7 @@
   };
 
   const hide = ():void => {
-    if (props.autoHide) clearTimeout(timer.value);
+    if (props.autoHide) { clearTimeout(timer.value); }
     hideAlert();
   };
 
@@ -77,4 +81,4 @@
   });
 </script>
 
-<style lang="scss" src="./style.scss"/>
+<style lang="scss" src="./style.scss" />

@@ -6,8 +6,8 @@
         class="img"
         :src="profile.avatar"
         alt=""
-      />
-      <button-edit v-if="props.isEdit"/>
+      >
+      <button-edit v-if="props.isEdit" />
     </span>
   </div>
 </template>
@@ -25,4 +25,4 @@
   const { profile } = storeToRefs(profileStore);
 </script>
 
-<style lang="scss" src="./style.scss"/>
+<style lang="scss" src="./style.scss" />
