@@ -90,23 +90,15 @@ export const useProjectMethods = () => {
   const formatBalance = (currency: string, amount: number):{ currency: string, amount: string|number } => {
     const { currencies } = useGlobalStore();
     const currencyConfig = currencies.find((item) => item.code === currency);
-    if (currencyConfig.type === 'fiat' || amount === 0) return { currency, amount };
+    const specialCurrencies = ['BTC', 'ETH'];
+    if (currencyConfig.type === 'fiat' || !specialCurrencies.includes(currencyConfig.code)) return { currency, amount };
 
-    const satoshi = Number((amount * currencyConfig.subunitToUnit).toFixed());
-    let format = { currency: currencyConfig.code, amount: (satoshi / currencyConfig.subunitToUnit).toString() };
+    const subcurrencyConfig = currencyConfig.subCurrencies.find((subcurrency) => subcurrency.subunitToUnit === 1000);
+    if (amount === 0) return { currency: subcurrencyConfig.code, amount };
 
-    if (currencyConfig.subCurrencies.length) {
-      currencyConfig.subCurrencies.forEach((subCurrency) => {
-        if (satoshi % (currencyConfig.subunitToUnit / subCurrency.subunitToUnit) === 0) {
-          format = {
-            currency: subCurrency.code,
-            amount: ((subCurrency.subunitToUnit / currencyConfig.subunitToUnit) * satoshi).toFixed(),
-          };
-        }
-      });
-    }
+    const afterDigits = amount.toString().split('.')[1]?.length || 0;
 
-    return format;
+    return { currency: subcurrencyConfig.code, amount: (amount * 1000).toFixed(afterDigits < 4 ? 0 : (afterDigits - 3)) };
   };
 
   return {
