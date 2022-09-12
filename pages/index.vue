@@ -4,7 +4,7 @@
       <card-promo v-bind="homeContent.banner" />
     </div>
 
-    <card-benefits />
+    <group-benefits />
 
     <div v-if="homeContent?.categories" class="categories">
       <card-category
@@ -14,7 +14,7 @@
       />
     </div>
 
-    <card-promotions />
+    <group-promotions />
   </div>
 </template>
 

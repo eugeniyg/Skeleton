@@ -29,24 +29,13 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    page: {
-      type: Number,
-      required: true,
-    },
-    perPage: {
-      type: Number,
-      required: true,
-    },
-    totalPages: {
-      type: Number,
-      required: true,
-    },
-    totalRows: {
-      type: Number,
-      required: true,
-    },
-  });
+  const props = defineProps<{
+    page: number,
+    perPage: number,
+    totalPages: number,
+    totalRows: number
+  }>();
+
   const emit = defineEmits(['selectPage']);
   const changePage = (page: number|string):void => {
     if (typeof page === 'number' && page !== props.page) emit('selectPage', page);

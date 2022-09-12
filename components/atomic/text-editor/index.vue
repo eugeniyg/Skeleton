@@ -5,9 +5,7 @@
 <script setup lang="ts">
   import { marked } from 'marked';
 
-  const props = defineProps<{
-    content: string
-  }>();
+  const props = defineProps<{content: string}>();
 </script>
 
 <style lang="scss" src="./style.scss"/>

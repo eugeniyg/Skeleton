@@ -1,11 +1,11 @@
 <template>
-  <div v-if="promotionsContent" class="card-promotions">
+  <div v-if="promotionsContent" class="group-promotions">
     <atomic-icon :id="promotionsContent.icon"/>
     <h2 class="title">{{ promotionsContent.label }}</h2>
 
-    <div class="card-promotions__list">
+    <div class="group-promotions__list">
       <div
-        class="card-promotions__item"
+        class="group-promotions__item"
         v-for="(promotion, index) in promotionsContent.items"
         :key="index"
       >

@@ -97,7 +97,7 @@
       @initialLoad="gamesGroupLoaded++"
     />
 
-    <card-promotions v-if="globalComponentsContent?.promotions" v-bind="globalComponentsContent.promotions" />
+    <group-promotions v-if="globalComponentsContent?.promotions" v-bind="globalComponentsContent.promotions" />
 
     <!-- <cards-group v-bind="fakeStore.newRelisesCards">
       <template v-slot:card="item">
