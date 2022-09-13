@@ -69,7 +69,7 @@
     "balanceLabel": "Баланс",
     "sumLabel": "Сума депозиту",
     "minSum": "Мінімальний депозит:",
-    "togglerLabel": "У мене є бонусний код",
+    "togglerLabel": "У мене є бонус код",
     "bonuses": [
       {
         "image": "/img/uploads/icn-notification.svg",
