@@ -1827,3 +1827,18 @@ collections:
           - name: sortLabel
             label: Sort Filter Label
             widget: string
+      - name: errorPage
+        label: Error Page
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: description
+            label: Description
+            widget: text
+          - name: button
+            label: Button
+            widget: object
+            fields: *linkArray

@@ -332,3 +332,12 @@ export interface CategoryGamesInterface {
   providersLabel: string,
   sortLabel: string
 }
+
+export interface ErrorPageInterface {
+  title: string,
+  description: string,
+  button: {
+    label: string,
+    url: string
+  }
+}
