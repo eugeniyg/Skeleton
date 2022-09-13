@@ -37,6 +37,10 @@
 
     .icon {
       --color: var(--gray-400);
+
+      &:last-child {
+        transform: translateX(-2px);
+      }
     }
 
     &:after {

@@ -1,9 +1,11 @@
 .modal-deposit {
   @extend %modal;
 
-  @media (max-width: 33rem) {
-    .scroll {
-      padding: rem(8px);
+  .scroll {
+    padding: 0 rem(8px);
+
+    @include media(md) {
+      padding: rem(16px);
     }
   }
 }

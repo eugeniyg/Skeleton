@@ -211,7 +211,7 @@
     --height: auto;
 
     @include media(md) {
-      width: #{rem(264px)};
+      width: #{rem(160px)};
       padding: #{rem(32px)};
       background-color: var(--black-primary);
     }

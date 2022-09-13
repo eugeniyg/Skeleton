@@ -23,7 +23,7 @@
           </div>
           <form-deposit v-if="showForm" v-bind="currentMethod"/>
           <!--          <form-deposit-additional/>-->
-          <!--          <form-deposit-crypto/>-->
+<!--          <form-deposit-crypto v-if="showForm" v-bind="currentMethod"/>-->
         </div>
       </div>
     </div>
