@@ -18,7 +18,7 @@
         "title": "100% бонус до 1.5 BTC + 100 FS",
         "buttonLabel": "Отримати бонус",
         "link": {
-          "label": "Більше інформації",
+          "label": "Деталі",
           "url": "/bonus/first-deposit-bonus"
         }
       },
@@ -28,7 +28,7 @@
         "title": "75% бонус до 1 BTC + 50 FS",
         "buttonLabel": "Отримати бонус",
         "link": {
-          "label": "Більше інформації",
+          "label": "Деталі",
           "url": "/bonus/second-deposit-bonus"
         }
       },
@@ -38,7 +38,7 @@
         "title": "50% бонус до 1 BTC + 50 FS",
         "buttonLabel": "Отримати бонус",
         "link": {
-          "label": "Більше інформації",
+          "label": "Деталі",
           "url": "/bonus/third-deposit-bonus"
         }
       },
@@ -48,7 +48,7 @@
         "title": "100% бонус до 1,5 BTC + 100 FS",
         "buttonLabel": "Отримати бонус",
         "link": {
-          "label": "Більше інформації",
+          "label": "Деталі",
           "url": "/bonus/fourth-deposit-bonus"
         }
       }
