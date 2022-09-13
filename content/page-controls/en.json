@@ -1,7 +1,18 @@
 {
-  "locale": "en",
-  "questionPage": {
-    "title": "Frequently asked questions"
+  "gamePage": {
+    "realLabel": "Ready to go big?",
+    "realButton": "Yes, I’m ready",
+    "demoLabel": "Ready to play for real?",
+    "demoButton": "Yes, play for real",
+    "switcherLabel": "Real mode"
+  },
+  "favoritesPage": {
+    "title": "Favorite games",
+    "empty": {
+      "image": "/img/uploads/search-bg.png",
+      "title": "Nothing found",
+      "description": "You have no favorite games yet"
+    }
   },
   "homePage": {
     "banner": {
@@ -43,12 +54,30 @@
       }
     }
   },
-  "favoritesPage": {
-    "title": "Favorite games",
+  "contactPage": {
+    "image": "/img/uploads/msg.png",
+    "title": "Contact us",
+    "description": "Please, fill the information below. All Fields are required.",
+    "buttonLabel": "Let's talk!"
+  },
+  "gamesPage": {
     "empty": {
       "image": "/img/uploads/search-bg.png",
       "title": "Nothing found",
-      "description": "You have no favorite games yet"
+      "description": "Try searching for something else"
+    },
+    "providersLabel": "All Providers",
+    "sortLabel": "Sort by"
+  },
+  "questionPage": {
+    "title": "Frequently asked questions"
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "description": "The page you are trying to access does not exist or has been moved. Try going back to our homepage.",
+    "button": {
+      "label": "Homepage",
+      "url": "/"
     }
   },
   "recentlyPage": {
@@ -59,26 +88,5 @@
       "description": "You haven't played any games yet"
     }
   },
-  "contactPage": {
-    "image": "/img/uploads/msg.png",
-    "title": "Contact us",
-    "description": "Please, fill the information below. All Fields are required.",
-    "buttonLabel": "Let's talk!"
-  },
-  "gamePage": {
-    "realLabel": "Ready to go big?",
-    "realButton": "Yes, I’m ready",
-    "demoLabel": "Ready to play for real?",
-    "demoButton": "Yes, play for real",
-    "switcherLabel": "Real mode"
-  },
-  "gamesPage": {
-    "empty": {
-      "image": "/img/uploads/search-bg.png",
-      "title": "Nothing found",
-      "description": "Try searching for something else"
-    },
-    "providersLabel": "All Providers",
-    "sortLabel": "Sort by"
-  }
+  "locale": "en"
 }
