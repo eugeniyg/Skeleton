@@ -47,7 +47,7 @@
     });
     profileMenu.value = filteredArray.map((key) => ({
       title: profileContent[key].title,
-      url: localizePath(`/profile/${key}`),
+      url: `/profile/${key}`,
     }));
   }
 </script>
