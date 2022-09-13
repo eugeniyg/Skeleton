@@ -30,9 +30,16 @@
     }
 
     &:nth-of-type(even) {
+      margin-bottom: rem(16px);
+
       .value {
-        @include upd-font($body-1);
-        --color: var(--gray-400);
+        @include upd-font($body-2);
+        --color: var(--white);
+        text-align: right;
+
+        @include media(md) {
+          text-align: left;
+        }
       }
     }
 
