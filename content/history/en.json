@@ -5,7 +5,7 @@
       "title": "There is no data yet!",
       "description": "You have not received bonuses yet"
     },
-    "tabLabel": "Bonuses history",
+    "tabLabel": "Bonuses",
     "tabPosition": 2
   },
   "bets": {
@@ -14,7 +14,7 @@
       "title": "There is no data yet!",
       "description": "You have not placed any bets yet"
     },
-    "tabLabel": "Bets history",
+    "tabLabel": "Spins",
     "tabPosition": 3
   },
   "transactions": {
@@ -51,11 +51,11 @@
     },
     "cancelPaymentButton": "Cancel payment",
     "tabPosition": 4,
-    "tabLabel": "Transactions history"
+    "tabLabel": "Transactions"
   },
   "locale": "en",
   "sessions": {
-    "tabLabel": "Sessions history",
+    "tabLabel": "Sessions",
     "tableColumns": {
       "country": "Country",
       "userAgent": "User Agent",
