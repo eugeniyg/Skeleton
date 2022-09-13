@@ -31,7 +31,7 @@
         "description": "5 BTC + 300 FS",
         "buttonLabel": "Get bonus",
         "link": {
-          "label": "learn more",
+          "label": "Learn more",
           "url": "/welcome-package"
         }
       },
@@ -41,7 +41,7 @@
         "description": "100 free spins",
         "buttonLabel": "Get bonus",
         "link": {
-          "label": "learn more",
+          "label": "Learn more",
           "url": "/bonus/wednesday-free-spins"
         }
       },
@@ -51,7 +51,7 @@
         "description": "10% Weekly Cashback",
         "buttonLabel": "Get bonus",
         "link": {
-          "label": "learn more",
+          "label": "Learn more",
           "url": "/bonus/weekly-cashback"
         }
       },
@@ -61,7 +61,7 @@
         "description": "every week",
         "buttonLabel": "Get bonus",
         "link": {
-          "label": "learn more",
+          "label": "Learn more",
           "url": "/bonus/monday-reload-bonus"
         }
       }
