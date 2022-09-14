@@ -1,5 +1,4 @@
 image: 038978826977.dkr.ecr.eu-central-1.amazonaws.com/infrastructure/gitlab-builder:latest
-# test
 
 services:
   - name: docker:dind
