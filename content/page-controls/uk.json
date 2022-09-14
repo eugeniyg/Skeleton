@@ -1,7 +1,19 @@
 {
-  "locale": "uk",
-  "questionPage": {
-    "title": "Запитання та відповіді"
+  "gamePage": {
+    "realLabel": "Готові досягти великого успіху?",
+    "realButton": "Так, я готовий",
+    "demoLabel": "Готові грати по-справжньому?",
+    "demoButton": "Так, грати по-справжньому!",
+    "switcherLabel": "Реальний режим"
+  },
+  "favoritesPage": {
+    "title": "Улюблені ігри",
+    "empty": {
+      "image": "/img/uploads/search-bg.png",
+      "title": "Нічого не знайдено",
+      "description": "У вас ще немає улюблених ігор"
+    },
+    "categorySubtitle": "Найкращі ігри для вас"
   },
   "homePage": {
     "banner": {
@@ -111,14 +123,31 @@
       ]
     }
   },
-  "favoritesPage": {
-    "title": "Улюблені ігри",
+  "contactPage": {
+    "image": "/img/uploads/msg.png",
+    "title": "Зв'яжіться з нами",
+    "description": "Будь ласка, заповніть інформацію нижче. Всі поля обов'язкові для заповнення.",
+    "buttonLabel": "Давай поговоримо!"
+  },
+  "gamesPage": {
     "empty": {
       "image": "/img/uploads/search-bg.png",
       "title": "Нічого не знайдено",
-      "description": "У вас ще немає улюблених ігор"
+      "description": "Спробуйте пошукати щось інше"
     },
-    "categorySubtitle": "Найкращі ігри для вас"
+    "sortLabel": "Сортувати за",
+    "providersLabel": "Усі постачальники"
+  },
+  "questionPage": {
+    "title": "Запитання та відповіді"
+  },
+  "errorPage": {
+    "title": "Щось пішло не так",
+    "description": "Сторінка, до якої ви намагаєтеся отримати доступ, не існує або була переміщена. Спробуйте повернутися на нашу домашню сторінку.",
+    "button": {
+      "label": "Домашня сторінка",
+      "url": "/"
+    }
   },
   "recentlyPage": {
     "title": "Нещодавно зіграно",
@@ -129,26 +158,5 @@
     },
     "categorySubtitle": "Найкращі ігри для вас"
   },
-  "contactPage": {
-    "image": "/img/uploads/msg.png",
-    "title": "Зв'яжіться з нами",
-    "description": "Будь ласка, заповніть інформацію нижче. Всі поля обов'язкові для заповнення.",
-    "buttonLabel": "Давай поговоримо!"
-  },
-  "gamePage": {
-    "realLabel": "Готові досягти великого успіху?",
-    "realButton": "Так, я готовий",
-    "demoLabel": "Готові грати по-справжньому?",
-    "demoButton": "Так, грати по-справжньому!",
-    "switcherLabel": "Реальний режим"
-  },
-  "gamesPage": {
-    "empty": {
-      "image": "/img/uploads/search-bg.png",
-      "title": "Нічого не знайдено",
-      "description": "Спробуйте пошукати щось інше"
-    },
-    "sortLabel": "Сортувати за",
-    "providersLabel": "Усі постачальники"
-  }
+  "locale": "uk"
 }
