@@ -14,6 +14,17 @@
       "description": "You have no favorite games yet"
     }
   },
+  "mainPage": {
+    "seo": {
+      "title": "Main page",
+      "description": "This is main page",
+      "text": {
+        "visible": "Visible main page text",
+        "hidden": "Hidden main page text",
+        "button": "More text"
+      }
+    }
+  },
   "homePage": {
     "banner": {
       "images": {
@@ -51,6 +62,15 @@
           "label": "Go to Sports",
           "url": "/betting"
         }
+      }
+    },
+    "seo": {
+      "title": "Home page",
+      "description": "This is Home page",
+      "text": {
+        "visible": "## Bitcoin Betting Flagship\n\nSportsbet.io is where you can find competitive odds, on a platform offering the best Bitcoin betting experience. Our team continues to work hard to give you the competitive odds, betting props and interactive experience offering you the fulfilling betting journey you've been looking for. At Sportsbet.io, we are working hard to give you the opportunity to enjoy a fun, fast and fair betting experience.\n\n#### Reliable Bitcoin Betting\n\nSportsbet.io takes pride in being the home of Bitcoin. Youse every single one of your Bitcoins anywhere on the site. With many options to choose from, we can assure you that you will enjoy your time in maximising your wagers with...",
+        "hidden": "## Bitcoin Sportsbook with a lot to offer\n\nFrom football, basketball, baseball and even the growing Esports industry, we have you covered. Sportsbet.io features more than 20 sports, and we endeavour to give you a fair chance of having a betting win by offering competitive odds for each sport.\n\n#### Limitless Betting Chances\n\nOur sports betting platform offers an in-play option if you want to get in amongst the action or place a smart bet as the game happens. You can even browse upcoming games in our comprehensive and regularly updated list of future sporting events.\n\n#### Unique Offers\n\nSportsbet.io regularly offers a variety of promotions giving you more chances to increase your earnings and even better your chances of placing winning bets. From extra boosts and mystery prizes, our unique promotions help you enjoy the best betting experience!",
+        "button": "Show more"
       }
     }
   },
