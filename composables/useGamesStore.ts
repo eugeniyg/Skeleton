@@ -9,7 +9,6 @@ interface GamesStoreStateInterface {
   gameProviders: GameProviderInterface[];
   gameCollections: CollectionInterface[];
   favoriteGames: GameInterface[];
-  sortedCategories: { [key: string]: string };
 }
 
 export const useGamesStore = defineStore('gamesStore', {
@@ -17,16 +16,6 @@ export const useGamesStore = defineStore('gamesStore', {
       gameProviders: [],
       gameCollections: [],
       // sorted categories for tabs (for MVP will be 8)
-      sortedCategories: {
-        all: 'cherry',
-        hot: 'hot',
-        slots: 'slots',
-        turbogames: 'turbo-games',
-        new: 'new',
-        table: 'table-games',
-        live: 'live-casino',
-        popular: 'heart',
-      },
       favoriteGames: [],
     }),
 
@@ -50,11 +39,7 @@ export const useGamesStore = defineStore('gamesStore', {
     async getGameCollections(): Promise<void> {
       const { getGameCollections } = useCoreGamesApi();
       const data = await getGameCollections();
-
-      this.gameCollections = data.filter((item) => Object.keys(this.sortedCategories).find((el) => el === item.identity)).sort(
-        (a, b) => Object.keys(this.sortedCategories).map((e) => e).indexOf(a.identity)
-          - Object.keys(this.sortedCategories).map((e) => e).indexOf(b.identity),
-      );
+      this.gameCollections = data;
     },
 
     async getFavoriteGames(): Promise<void> {
