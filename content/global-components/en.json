@@ -87,14 +87,24 @@
   },
   "categories": [
     {
-      "icon": "cherry",
-      "identity": "all",
-      "label": "All Games"
-    },
-    {
       "icon": "hot",
       "identity": "hot",
       "label": "Hot"
+    },
+    {
+      "icon": "heart",
+      "identity": "popular",
+      "label": "Popular"
+    },
+    {
+      "icon": "new",
+      "identity": "new",
+      "label": "New"
+    },
+    {
+      "icon": "cherry",
+      "identity": "all",
+      "label": "All Games"
     },
     {
       "icon": "slots",
@@ -107,11 +117,6 @@
       "label": "Turbogames"
     },
     {
-      "icon": "new",
-      "identity": "new",
-      "label": "New"
-    },
-    {
       "icon": "table-games",
       "identity": "table",
       "label": "Table"
@@ -120,11 +125,6 @@
       "icon": "live-casino",
       "identity": "live",
       "label": "Live"
-    },
-    {
-      "icon": "heart",
-      "identity": "popular",
-      "label": "Popular"
     }
   ]
 }
