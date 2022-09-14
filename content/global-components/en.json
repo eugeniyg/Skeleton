@@ -125,6 +125,11 @@
       "icon": "live-casino",
       "identity": "live",
       "label": "Live"
+    },
+    {
+      "icon": "sport",
+      "identity": "test12",
+      "label": "Test 12"
     }
   ]
 }
