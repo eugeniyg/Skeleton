@@ -6,17 +6,31 @@
     "saveButton": "Save changes",
     "cancelButton": "Cancel",
     "subscriptionTitle": "Subscriptions",
-    "manageTitle": "Manage account"
+    "manageTitle": "Manage account",
+    "seo": {
+      "text": {
+        "visible": "## Profile info seo text title\n\nProfile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text",
+        "hidden": "## Profile info seo text title\n\nProfile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text",
+        "button": "more button"
+      }
+    }
   },
   "wallet": {
-    "title": "Wallet",
+    "changeButton": "Use currency",
+    "depositButton": "Deposit",
     "addButton": "Add currency",
     "allTab": "All currencies",
     "cryptoTab": "Crypto",
-    "changeButton": "Use currency",
     "hideButton": "Hide currency",
-    "depositButton": "Deposit",
-    "withdrawButton": "Withdraw"
+    "title": "Wallet",
+    "withdrawButton": "Withdraw",
+    "seo": {
+      "text": {
+        "visible": "## Profile wallet text title\n\nProfile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text",
+        "hidden": "## Profile wallet text title\n\nProfile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text",
+        "button": "More"
+      }
+    }
   },
   "bonuses": {
     "title": "Bonuses"
