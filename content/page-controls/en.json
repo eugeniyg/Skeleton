@@ -4,7 +4,12 @@
     "realButton": "Yes, I’m ready",
     "demoLabel": "Ready to play for real?",
     "demoButton": "Yes, play for real",
-    "switcherLabel": "Real mode"
+    "switcherLabel": "Real mode",
+    "seo": {
+      "text": {
+        "visible": "## Game page seo text title\n\nGame page seo text text Game page seo text text Game page seo text text Game page seo text text Game page seo text text Game page seo text textGame page seo text text Game page seo text textGame page seo text text Game page seo text textGame page seo text textGame page seo text text Game page seo text textGame page seo text text Game page seo text text Game page seo text text"
+      }
+    }
   },
   "favoritesPage": {
     "title": "Favorite games",
@@ -12,6 +17,11 @@
       "image": "/img/uploads/search-bg.png",
       "title": "Nothing found",
       "description": "You have no favorite games yet"
+    },
+    "seo": {
+      "text": {
+        "visible": "## Favorite games seo text title\n\nFavorite games seo text text Favorite games seo text text Favorite games seo text text Favorite games seo text textFavorite games seo text text  Favorite games seo text text Favorite games seo text text Favorite games seo text textFavorite games seo text text Favorite games seo text textFavorite games seo text text Favorite games seo text text Favorite games seo text text Favorite games seo text text Favorite games seo text text Favorite games seo text textFavorite games seo text text"
+      }
     }
   },
   "tokenPage": {
@@ -92,7 +102,12 @@
     "image": "/img/uploads/msg.png",
     "title": "Contact us",
     "description": "Please, fill the information below. All Fields are required.",
-    "buttonLabel": "Let's talk!"
+    "buttonLabel": "Let's talk!",
+    "seo": {
+      "text": {
+        "visible": "## Contact seo text title\n\nContact seo text text Contact seo text text Contact seo text text Contact seo text text Contact seo text text Contact seo text text Contact seo text text Contact seo text text Contact seo text textContact seo text text Contact seo text textContact seo text text Contact seo text textContact seo text text  Contact seo text text Contact seo text text Contact seo text text Contact seo text text Contact seo text text"
+      }
+    }
   },
   "gamesPage": {
     "empty": {
@@ -101,7 +116,12 @@
       "description": "Try searching for something else"
     },
     "providersLabel": "All Providers",
-    "sortLabel": "Sort by"
+    "sortLabel": "Sort by",
+    "seo": {
+      "text": {
+        "visible": "## Games category seo title\n\nGames category seo text  Games category seo text Games category seo text Games category seo text Games category seo text Games category seo textGames category seo textGames category seo textGames category seo textGames category seo text Games category seo textGames category seo text"
+      }
+    }
   },
   "questionPage": {
     "title": "Frequently asked questions",
@@ -126,6 +146,11 @@
       "image": "/img/uploads/search-bg.png",
       "title": "Nothing found",
       "description": "You haven't played any games yet"
+    },
+    "seo": {
+      "text": {
+        "visible": "## Recently Played seo text title\n\nRecently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text"
+      }
     }
   },
   "locale": "en"
