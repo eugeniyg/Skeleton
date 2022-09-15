@@ -530,19 +530,8 @@ collections:
             label: Responsibility Label
             widget: string
           - name: curacao
-            label: Curacao Content
-            widget: object
-            collapsed: true
-            fields:
-              - name: image
-                label: Image
-                widget: image
-              - name: url
-                label: Image Link
-                widget: string
-              - name: text
-                label: Text
-                widget: markdown
+            label: Curacao Text
+            widget: markdown
           - name: copyright
             label: Copyright
             widget: string

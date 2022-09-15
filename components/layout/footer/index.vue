@@ -35,12 +35,15 @@
 
     <atomic-divider/>
 
-    <div v-if="footerContent?.curacao?.url" class="info">
-      <a class="info__link" :href="footerContent.curacao.url" target="_blank">
-        <img :src="footerContent.curacao.image" />
-      </a>
+    <div v-if="footerContent?.curacao" class="info">
+      <iframe
+        src="https://licensing.gaming-curacao.com/validator/?lh=95426453d291d7c01ec3a7e5aaf8b499&template=tseal"
+        width="130px"
+        height="50px"
+        style="border:none;"
+      />
 
-      <div class="info__text" v-html="marked.parse(footerContent.curacao.text || '')" />
+      <div class="info__text" v-html="marked.parse(footerContent.curacao || '')" />
     </div>
 
     <atomic-divider/>
