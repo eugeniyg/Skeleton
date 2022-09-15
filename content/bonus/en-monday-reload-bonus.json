@@ -11,5 +11,10 @@
   "title": "Monday Reload Bonus",
   "locale": "en",
   "image": "/img/uploads/monday-big.png",
-  "description": "Start your week on a high note with Slotsbet! Grabbing yourself a 30% bonus of up to 0.0035 BTC is easy:\n\n1. Make a deposit of at least 0.001 BTC.\n2. Instantly receive a bonus worth 30% of the amount you deposited (up to a maximum of 0.0035 BTC)."
+  "description": "Start your week on a high note with Slotsbet! Grabbing yourself a 30% bonus of up to 0.0035 BTC is easy:\n\n1. Make a deposit of at least 0.001 BTC.\n2. Instantly receive a bonus worth 30% of the amount you deposited (up to a maximum of 0.0035 BTC).",
+  "seo": {
+    "text": {
+      "visible": "## Monday reload bonus seo text title\n\nMonday reload bonus seo text text Monday reload bonus seo text text Monday reload bonus seo text textMonday reload bonus seo text text Monday reload bonus seo text text Monday reload bonus seo text text Monday reload bonus seo text text Monday reload bonus seo text text Monday reload bonus seo text text Monday reload bonus seo text text Monday reload bonus seo text text Monday reload bonus seo text text Monday reload bonus seo text text Monday reload bonus seo text text"
+    }
+  }
 }
