@@ -9,78 +9,89 @@
         width="100%"
       />
     </div>
+    <atomic-seo-text v-if="bettingContent?.seo?.text" v-bind="bettingContent?.seo?.text" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
+  import { storeToRefs } from 'pinia';
+  import { BettingContentInterface } from '~/types';
 
-definePageMeta({
-  middleware: ['status-limited']
-})
+  definePageMeta({
+    middleware: ['status-limited'],
+  });
 
-const globalStore = useGlobalStore()
-const { isMobile, alertsData } = storeToRefs(globalStore)
-const walletStore = useWalletStore()
-const { activeAccount } = storeToRefs(walletStore)
-const frameLink = ref<string>('')
+  const globalStore = useGlobalStore();
+  const { isMobile, alertsData, currentLocale } = storeToRefs(globalStore);
+  const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['bettingPage']).findOne());
+  const bettingContent:BettingContentInterface|undefined = bettingContentRequest.data.value?.bettingPage;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(bettingContent?.seo);
 
-const { getStartGame } = useCoreGamesApi()
+  const walletStore = useWalletStore();
+  const { activeAccount } = storeToRefs(walletStore);
+  const frameLink = ref<string>('');
 
-const startGame = async ():Promise<void> => {
-  const redirectUrl = window.location.origin
-  const startParams = {
-    accountId: activeAccount.value.id,
-    lobbyUrl: redirectUrl,
-    locale: 'en',
-    countryCode: 'UA',
-    demoMode: false,
-    platform: isMobile.value ? 1 : 2
-  }
-  const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams)
-  frameLink.value = startResponse.gameUrl
-}
+  const { getStartGame } = useCoreGamesApi();
 
-const profileStore = useProfileStore()
-const { isLoggedIn, playerStatusName } = storeToRefs(profileStore)
-const { showModal, showAlert } = useLayoutStore()
+  const startGame = async ():Promise<void> => {
+    const redirectUrl = window.location.origin;
+    const startParams = {
+      accountId: activeAccount.value.id,
+      lobbyUrl: redirectUrl,
+      locale: 'en',
+      countryCode: 'UA',
+      demoMode: false,
+      platform: isMobile.value ? 1 : 2,
+    };
+    const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
+    frameLink.value = startResponse.gameUrl;
+  };
 
-const redirectLimitedPlayer = ():void => {
-  const { localizePath } = useProjectMethods()
-  const router = useRouter()
-  router.replace(localizePath('/'))
-  showAlert(alertsData.value?.limitedRealGame)
-}
+  const profileStore = useProfileStore();
+  const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
+  const { showModal, showAlert } = useLayoutStore();
 
-onMounted(async () => {
-  if (isMobile.value) {
-    document.querySelector('footer').style.display = 'none'
-  }
+  const redirectLimitedPlayer = ():void => {
+    const { localizePath } = useProjectMethods();
+    const router = useRouter();
+    router.replace(localizePath('/'));
+    showAlert(alertsData.value?.limitedRealGame);
+  };
 
-  if (!isLoggedIn.value) {
-    showModal('register')
-  } else if (playerStatusName.value === 'Limited') {
-    redirectLimitedPlayer()
-  } else {
-    await startGame()
-  }
-})
+  onMounted(async () => {
+    if (isMobile.value) {
+      document.querySelector('footer').style.display = 'none';
+      const seoTextBlock:any = document.querySelector('.text-wrap');
+      if (seoTextBlock) seoTextBlock.style.display = 'none';
+    }
 
-watch(() => isLoggedIn.value, async (newValue:boolean) => {
-  if (!newValue) { return }
+    if (!isLoggedIn.value) {
+      showModal('register');
+    } else if (playerStatusName.value === 'Limited') {
+      redirectLimitedPlayer();
+    } else {
+      await startGame();
+    }
+  });
 
-  if (playerStatusName.value === 'Limited') {
-    setTimeout(() => {
-      redirectLimitedPlayer()
-    })
-  } else {
-    await startGame()
-  }
-})
+  watch(() => isLoggedIn.value, async (newValue:boolean) => {
+    if (!newValue) { return; }
 
-onBeforeUnmount(() => {
-  document.querySelector('footer').style.display = null
-})
+    if (playerStatusName.value === 'Limited') {
+      setTimeout(() => {
+        redirectLimitedPlayer();
+      });
+    } else {
+      await startGame();
+    }
+  });
+
+  onBeforeUnmount(() => {
+    document.querySelector('footer').style.display = null;
+    const seoTextBlock:any = document.querySelector('.text-wrap');
+    if (seoTextBlock) seoTextBlock.style.display = null;
+  });
 </script>
 
 <style lang="scss" src="./style.scss" />

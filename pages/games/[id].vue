@@ -1,10 +1,13 @@
 <template>
-  <box-game
-    :frameLink="gameStart"
-    :gameInfo="gameInfo"
-    @changeMode="changeGameMode"
-    :gameContent="gameContent"
-  />
+  <div>
+    <box-game
+      :frameLink="gameStart"
+      :gameInfo="gameInfo"
+      @changeMode="changeGameMode"
+      :gameContent="gameContent"
+    />
+    <atomic-seo-text v-if="gameContent?.seo?.text" v-bind="gameContent?.seo?.text" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -27,6 +30,8 @@
   const infoResponse = await useAsyncData('gameInfo', () => getGamesInfo(route.params.id as string));
   const gameContentRequest = await useAsyncData('gameContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['gamePage']).findOne());
   const gameContent:GamePageInterface|undefined = gameContentRequest.data.value?.gamePage;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(gameContent?.seo);
   gameInfo.value = infoResponse.data.value;
   const router = useRouter();
 

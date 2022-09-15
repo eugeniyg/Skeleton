@@ -24,6 +24,37 @@ __project-icon: &projectIcon
   options: ['cherry', 'sport', 'slots', 'live-casino', 'table-games', 'turbo-games', 'sport-book', 'tfs-token',
             'bonuses', 'live-support', 'vip', 'tournament', 'lottery', 'quest', 'shop', 'heart', 'history', 'wallet',
             'bonus', 'user', 'log-out', 'speed', 'gamepad', 'security', 'age', 'hot', 'new']
+__seo-block: &seoBlock
+  name: seo
+  label: Page Seo
+  widget: object
+  collapsed: true
+  fields:
+    - name: title
+      label: Page Title
+      widget: string
+      required: false
+    - name: description
+      label: Page Description
+      widget: text
+      required: false
+    - name: text
+      label: Page Seo Text
+      widget: object
+      fields:
+        - name: visible
+          label: Visible Text
+          widget: markdown
+          required: false
+        - name: hidden
+          label: Hidden Text
+          widget: markdown
+          required: false
+        - name: button
+          label: More Button Label
+          widget: string
+          required: false
+
 collections:
   - name: validationMessages
     label: Validation Messages
@@ -998,6 +1029,7 @@ collections:
       - name: content
         label: Page Content
         widget: markdown
+      - *seoBlock
 
   - name: bonusPages
     label: Bonus Pages
@@ -1049,6 +1081,7 @@ collections:
       - name: termsContent
         label: Terms Content
         widget: markdown
+      - *seoBlock
 
   - name: questionPages
     label: Question Pages
@@ -1122,6 +1155,7 @@ collections:
           - name: manageTitle
             label: Manage Title
             widget: string
+          - *seoBlock
       - name: wallet
         label: Profile Wallet
         widget: object
@@ -1151,6 +1185,7 @@ collections:
           - name: withdrawButton
             label: Withdraw Button Label
             widget: string
+          - *seoBlock
       - name: bonuses
         label: Profile Bonuses
         widget: object
@@ -1159,6 +1194,7 @@ collections:
           - name: title
             label: Page Title
             widget: string
+          - *seoBlock
       - name: notifications
         label: Profile Notificaitons
         widget: object
@@ -1167,6 +1203,7 @@ collections:
           - name: title
             label: Page Title
             widget: string
+          - *seoBlock
       - name: security
         label: Profile Security
         widget: object
@@ -1178,6 +1215,7 @@ collections:
           - name: saveButton
             label: Save Button Label
             widget: string
+          - *seoBlock
       - name: history
         label: Profile History
         widget: object
@@ -1186,6 +1224,7 @@ collections:
           - name: title
             label: Page Title
             widget: string
+          - *seoBlock
 
   - name: historyTabs
     label: Profile History Tabs
@@ -1514,6 +1553,18 @@ collections:
               - name: label
                 label: Group Label
                 widget: string
+      - name: globalSeo
+        label: Global Page Seo
+        widget: object
+        collapsed: true
+        hint: Seo data, that will be used when page seo data is empty
+        fields:
+          - name: title
+            label: Page Title
+            widget: string
+          - name: description
+            label: Page Description
+            widget: text
 
   - name: welcomeBonuses
     label: Welcome Bonuses Page
@@ -1607,6 +1658,7 @@ collections:
                 label: Link
                 widget: object
                 fields: *linkArray
+      - *seoBlock
 
   - name: pageControls
     label: Page Controls Content
@@ -1627,6 +1679,7 @@ collections:
           - name: title
             label: Title
             widget: string
+          - *seoBlock
       - name: homePage
         label: Home Page
         widget: object
@@ -1721,6 +1774,13 @@ collections:
                     label: Button
                     widget: object
                     fields: *linkArray
+          - *seoBlock
+      - name: mainPage
+        label: Main Casino Page
+        widget: object
+        collapsed: true
+        fields:
+          - *seoBlock
       - name: favoritesPage
         label: Favorites Page
         widget: object
@@ -1743,6 +1803,7 @@ collections:
                 label: Description
                 widget: string
                 required: false
+          - *seoBlock
       - name: recentlyPage
         label: Recently-Played Page
         widget: object
@@ -1765,6 +1826,7 @@ collections:
                 label: Description
                 widget: string
                 required: false
+          - *seoBlock
       - name: contactPage
         label: Contact Us Page
         widget: object
@@ -1782,6 +1844,7 @@ collections:
           - name: buttonLabel
             label: Button Label
             widget: string
+          - *seoBlock
       - name: gamePage
         label: Game Page
         widget: object
@@ -1802,6 +1865,7 @@ collections:
           - name: switcherLabel
             label: Switcher Label
             widget: string
+          - *seoBlock
       - name: gamesPage
         label: Category Games Page
         widget: object
@@ -1827,6 +1891,19 @@ collections:
           - name: sortLabel
             label: Sort Filter Label
             widget: string
+          - *seoBlock
+      - name: bettingPage
+        label: Sports Page
+        widget: object
+        collapsed: true
+        fields:
+          - *seoBlock
+      - name: tokenPage
+        label: SBT Token Page
+        widget: object
+        collapsed: true
+        fields:
+          - *seoBlock
       - name: errorPage
         label: Error Page
         widget: object

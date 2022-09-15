@@ -16,4 +16,6 @@
   const historyTabContentRequest = await useAsyncData('historyTabContent', () => queryContent(`history/${globalStore.currentLocale.code}`).findOne());
   const historyContent:ProfileHistoryInterface|undefined = historyContentRequest.data.value?.history;
   const historyTabContent:HistoryTabInterface|undefined = historyTabContentRequest.data.value as HistoryTabInterface;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(historyContent?.seo);
 </script>

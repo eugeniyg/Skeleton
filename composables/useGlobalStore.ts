@@ -8,9 +8,19 @@ import {
 } from '@platform/frontend-core/dist/module';
 import {
   AlertsListInterface,
-  BrowserLanguageInterface, CookiePopupInterface,
-  FieldsContentInterface, FooterInterface, GameCategoryInterface, GlobalComponentsInterface, HeaderInterface,
-  MainLayoutInterface, MobileMenuInterface, PopupsInterface, SiteSidebarInterface, UserNavigationInterface,
+  BrowserLanguageInterface,
+  CookiePopupInterface,
+  FieldsContentInterface,
+  FooterInterface,
+  GameCategoryInterface,
+  GlobalComponentsInterface,
+  HeaderInterface,
+  MainLayoutInterface,
+  MobileMenuInterface,
+  PopupsInterface,
+  SeoContentInterface,
+  SiteSidebarInterface,
+  UserNavigationInterface,
   ValidationMessageInterface,
 } from '~/types';
 
@@ -101,6 +111,9 @@ export const useGlobalStore = defineStore('globalStore', {
         });
       }
       return categoriesObj;
+    },
+    globalSeo(state):SeoContentInterface|undefined {
+      return state.globalComponentsContent?.globalSeo;
     },
   },
 

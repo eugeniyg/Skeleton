@@ -16,4 +16,6 @@
   const globalStore = useGlobalStore();
   const bonusesContentRequest = await useAsyncData('bonusesContent', () => queryContent(`profile/${globalStore.currentLocale.code}`).only(['bonuses']).findOne());
   const bonusesContent:ProfileBonusesInterface|undefined = bonusesContentRequest.data.value?.bonuses;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(bonusesContent?.seo);
 </script>

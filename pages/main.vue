@@ -104,6 +104,8 @@
         <card-base v-bind="item" />
       </template>
     </cards-group> -->
+
+    <atomic-seo-text v-if="mainContent?.seo?.text" v-bind="mainContent.seo.text" />
   </div>
 </template>
 
@@ -113,11 +115,13 @@
     Carousel, Slide, Pagination, Navigation,
   } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
-  import { CardsGroupInterface, SlideInterface } from '~/types';
+  import { CardsGroupInterface, MainContentInterface, SlideInterface } from '~/types';
 
   const globalStore = useGlobalStore();
   const { currentLocale, globalComponentsContent } = storeToRefs(globalStore);
   const sliderResponse = await useAsyncData('sliderData', () => queryContent(`main-slider/${currentLocale.value.code}`).findOne());
+  const mainContentResponse = await useAsyncData('mainContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['mainPage']).findOne());
+  const mainContent:MainContentInterface|undefined = mainContentResponse.data.value?.mainPage;
   const sliderItems:SlideInterface[]|undefined = sliderResponse.data.value?.slider;
   const groupContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
 
@@ -147,7 +151,10 @@
     },
   };
 
-  const { preloaderDone, preloaderStart, localizePath } = useProjectMethods();
+  const {
+    preloaderDone, preloaderStart, localizePath, setPageSeo,
+  } = useProjectMethods();
+  setPageSeo(mainContent?.seo);
   onBeforeMount(() => {
     preloaderStart();
   });

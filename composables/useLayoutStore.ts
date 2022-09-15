@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useProfileStore } from '~/composables/useProfileStore';
-import { AlertInterface } from '~/types';
+import { AlertInterface, SeoContentInterface } from '~/types';
 
 interface LayoutStoreStateInterface {
   isUserNavOpen: boolean,

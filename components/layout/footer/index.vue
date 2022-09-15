@@ -1,23 +1,5 @@
 <template>
   <footer class="app-footer">
-    <template v-if="isHomePage()">
-      <atomic-text-wrap>
-        <h2 class="heading-primary">Bitcoin Betting Flagship</h2>
-        <p>Sportsbet.io is where you can find competitive odds, on a platform offering the best Bitcoin betting experience. Our team continues to work hard to give you the competitive odds, betting props and interactive experience offering you the fulfilling betting journey you've been looking for. At Sportsbet.io, we are working hard to give you the opportunity to enjoy a fun, fast and fair betting experience.</p>
-        <h4 class="heading-secondary">Reliable Bitcoin Betting</h4>
-        <p>Sportsbet.io takes pride in being the home of Bitcoin. Youse every single one of your Bitcoins anywhere on the site. With many options to choose from, we can assure you that you will enjoy your time in maximising your wagers with...</p>
-      </atomic-text-wrap>
-
-      <atomic-text-wrap :hide-text="true">
-        <h2 class="heading-primary">Bitcoin Sportsbook with a lot to offer</h2>
-        <p>From football, basketball, baseball and even the growing Esports industry, we have you covered. Sportsbet.io features more than 20 sports, and we endeavour to give you a fair chance of having a betting win by offering competitive odds for each sport.</p>
-        <h4 class="heading-secondary">Limitless Betting Chances</h4>
-        <p>Our sports betting platform offers an in-play option if you want to get in amongst the action or place a smart bet as the game happens. You can even browse upcoming games in our comprehensive and regularly updated list of future sporting events.</p>
-        <h4 class="heading-secondary">Unique Offers</h4>
-        <p>Sportsbet.io regularly offers a variety of promotions giving you more chances to increase your earnings and even better your chances of placing winning bets. From extra boosts and mystery prizes, our unique promotions help you enjoy the best betting experience!</p>
-      </atomic-text-wrap>
-    </template>
-
     <div class="group">
       <accordeon
         v-for="(menu, index) in accordeonItems"
@@ -73,7 +55,7 @@
 <script setup lang="ts">
   import { marked } from 'marked';
 
-  const { isHomePage, localizePath } = useProjectMethods();
+  const { localizePath } = useProjectMethods();
 
   const { footerContent } = useGlobalStore();
   const accordeonItems = [footerContent?.promoMenu, footerContent?.infoMenu, footerContent?.helpMenu];

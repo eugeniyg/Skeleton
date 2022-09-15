@@ -24,6 +24,8 @@
         subTitle
       />
     </client-only>
+
+    <atomic-seo-text v-if="recentlyContent?.seo?.text" v-bind="recentlyContent?.seo?.text" />
   </div>
 </template>
 
@@ -35,6 +37,8 @@
   const { currentLocale } = storeToRefs(globalStore);
   const recentlyContentRequest = await useAsyncData('recentlyContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['recentlyPage']).findOne());
   const recentlyContent:RecentlyPageInterface|undefined = recentlyContentRequest.data.value?.recentlyPage;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(recentlyContent?.seo);
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);

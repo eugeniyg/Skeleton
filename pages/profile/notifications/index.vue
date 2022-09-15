@@ -38,4 +38,6 @@
   const globalStore = useGlobalStore();
   const notificationsContentRequest = await useAsyncData('notificationsContent', () => queryContent(`profile/${globalStore.currentLocale.code}`).only(['notifications']).findOne());
   const notificationsContent:ProfileNotificationsInterface|undefined = notificationsContentRequest.data.value?.notifications;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(notificationsContent?.seo);
 </script>

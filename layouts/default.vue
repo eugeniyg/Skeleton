@@ -1,17 +1,5 @@
 <template>
   <div :class="['main-layout', {'drawer-minimize': IS_DRAWER_COMPACT}]">
-    <Head>
-      <Title>Slotsbet</Title>
-      <Meta name="description" content="Platform Project" />
-      <Meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, user-scalable=0" />
-      <Link
-        rel="icon"
-        type="image/svg"
-        sizes="16x16"
-        href="/favicon/logo-short.svg"
-      />
-    </Head>
-
     <atomic-preloader/>
 
     <layout-header
@@ -29,7 +17,7 @@
     </client-only>
 
     <main class="app-main" :class="{'is-overflow': isHomePage()}">
-      <slot/>
+      <slot />
     </main>
 
     <layout-footer />
@@ -88,7 +76,9 @@
   const profileStore = useProfileStore();
   const { isHomePage, localizePath } = useProjectMethods();
 
-  const { isShowAlert, alertProps, showCookiePopup } = storeToRefs(layoutStore);
+  const {
+    isShowAlert, alertProps, showCookiePopup,
+  } = storeToRefs(layoutStore);
   const { compactDrawer, checkModals } = layoutStore;
   checkModals();
 
