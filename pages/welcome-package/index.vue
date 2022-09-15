@@ -40,7 +40,7 @@
               <button-base
                 type="primary"
                 size="md"
-                @click="isLoggedIn ? openDepositModal : showModal('register')"
+                @click="isLoggedIn ? openDepositModal() : showModal('register')"
               >
                 {{ card.buttonLabel }}
               </button-base>
