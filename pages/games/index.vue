@@ -35,6 +35,8 @@
       :subTitle="gamesContent?.empty.description"
       :image="gamesContent?.empty.image"
     />
+
+    <atomic-seo-text v-if="gamesContent?.seo?.text" v-bind="gamesContent?.seo?.text" />
   </div>
 </template>
 
@@ -53,6 +55,8 @@
   const { currentLocale, gameCategoriesObj, headerContent } = storeToRefs(globalStore);
   const gamesContentRequest = await useAsyncData('gamesContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['gamesPage']).findOne());
   const gamesContent:CategoryGamesInterface|undefined = gamesContentRequest.data.value?.gamesPage;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(gamesContent?.seo);
 
   const { gameCollections } = useGamesStore();
   const { selectOptions } = useFieldsStore();

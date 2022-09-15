@@ -1,6 +1,6 @@
 <template>
   <button class="btn-show-more" @click="onClick">
-    <slot>Show more</slot>
+    <slot/>
     <atomic-icon id="arrow_expand-close"/>
   </button>
 </template>

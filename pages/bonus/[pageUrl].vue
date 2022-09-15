@@ -28,6 +28,8 @@
         :content="pageContent.termsContent"
       />
     </div>
+
+    <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent?.seo?.text" />
   </div>
 </template>
 
@@ -43,6 +45,8 @@
   const contentRequest = await useAsyncData('pageContent', () => queryContent(`bonus/${currentLocale.value.code}-${pageUrl}`).findOne(), { initialCache: false });
   if (contentRequest.error.value) throw contentRequest.error.value;
   else pageContent.value = contentRequest.data.value as BonusPageInterface;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(pageContent.value?.seo);
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);

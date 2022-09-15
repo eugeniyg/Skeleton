@@ -24,6 +24,7 @@
         subTitle
       />
     </client-only>
+    <atomic-seo-text v-if="favoritesContent?.seo?.text" v-bind="favoritesContent?.seo?.text" />
   </div>
 </template>
 
@@ -35,6 +36,8 @@
   const { currentLocale } = storeToRefs(globalStore);
   const favoritesContentRequest = await useAsyncData('favoritesContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['favoritesPage']).findOne());
   const favoritesContent:FavoritesPageInterface|undefined = favoritesContentRequest.data.value?.favoritesPage;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(favoritesContent?.seo);
 
   const gameStore = useGamesStore();
   const profileStore = useProfileStore();

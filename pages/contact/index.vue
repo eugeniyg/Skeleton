@@ -1,48 +1,52 @@
 <template>
-  <div class="contact">
-    <img
-      v-if="contactContent?.image"
-      class="img"
-      :src="contactContent.image"
-      width="348"
-      height="301"
-      alt=""
-    />
-
-    <div class="header">
-      <div class="heading">{{ contactContent?.title }}</div>
-      <p class="info">{{ contactContent?.description }}</p>
-    </div>
-
-    <div class="form">
-      <form-input-text
-        v-model:value="contactFormData.email"
-        type="email"
-        name="email"
-        :label="fieldsContent.email?.label || ''"
-        :placeholder="fieldsContent.email?.placeholder || ''"
-        :hint="setError('email')"
-        @blur="v$.email?.$touch()"
+  <div>
+    <div class="contact">
+      <img
+        v-if="contactContent?.image"
+        class="img"
+        :src="contactContent.image"
+        width="348"
+        height="301"
+        alt=""
       />
 
-      <form-input-textarea
-        v-model:value="contactFormData.message"
-        name="message"
-        :label="fieldsContent.message?.label || ''"
-        :placeholder="fieldsContent.message?.placeholder || ''"
-        :hint="setError('message')"
-        @blur="v$.message?.$touch()"
-      />
+      <div class="header">
+        <div class="heading">{{ contactContent?.title }}</div>
+        <p class="info">{{ contactContent?.description }}</p>
+      </div>
 
-      <button-base
-        type="primary"
-        size="lg"
-        :is-disabled="v$.$invalid"
-        @click="submitContactForm"
-      >
-        {{ contactContent?.buttonLabel }} <atomic-icon id="arrow_next"/>
-      </button-base>
+      <div class="form">
+        <form-input-text
+          v-model:value="contactFormData.email"
+          type="email"
+          name="email"
+          :label="fieldsContent.email?.label || ''"
+          :placeholder="fieldsContent.email?.placeholder || ''"
+          :hint="setError('email')"
+          @blur="v$.email?.$touch()"
+        />
+
+        <form-input-textarea
+          v-model:value="contactFormData.message"
+          name="message"
+          :label="fieldsContent.message?.label || ''"
+          :placeholder="fieldsContent.message?.placeholder || ''"
+          :hint="setError('message')"
+          @blur="v$.message?.$touch()"
+        />
+
+        <button-base
+          type="primary"
+          size="lg"
+          :is-disabled="v$.$invalid"
+          @click="submitContactForm"
+        >
+          {{ contactContent?.buttonLabel }} <atomic-icon id="arrow_next"/>
+        </button-base>
+      </div>
     </div>
+
+    <atomic-seo-text v-if="contactContent?.seo?.text" v-bind="contactContent?.seo?.text" />
   </div>
 </template>
 
@@ -55,6 +59,8 @@
   const { fieldsContent, alertsData, currentLocale } = storeToRefs(globalStore);
   const contactContentRequest = await useAsyncData('contactContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['contactPage']).findOne());
   const contactContent:ContactPageInterface|undefined = contactContentRequest.data.value?.contactPage;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(contactContent?.seo);
 
   const contactFormData = reactive({
     email: '',

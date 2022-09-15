@@ -91,6 +91,8 @@
   const globalStore = useGlobalStore();
   const infoContentRequest = await useAsyncData('infoContent', () => queryContent(`profile/${globalStore.currentLocale.code}`).only(['info']).findOne());
   const infoContent:ProfileInfoInterface|undefined = infoContentRequest.data.value?.info;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(infoContent?.seo);
 
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();

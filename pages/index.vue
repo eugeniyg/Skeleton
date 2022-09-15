@@ -15,6 +15,8 @@
     </div>
 
     <group-promotions />
+
+    <atomic-seo-text v-if="homeContent?.seo?.text" v-bind="homeContent.seo.text" />
   </div>
 </template>
 
@@ -30,4 +32,7 @@
     () => queryContent(`page-controls/${currentLocale.value.code}`).only(['homePage']).findOne(),
   );
   const homeContent:HomeContentInterface|undefined = homeContentRequest.data.value?.homePage;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(homeContent?.seo);
+
 </script>

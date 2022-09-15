@@ -2,6 +2,8 @@ import { GameImagesInterface } from '@platform/frontend-core/dist/module';
 import * as projectRules from './validationRules';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
+import { SeoContentInterface } from '~/types';
+import { useLayoutStore } from '~/composables/useLayoutStore';
 
 export const useProjectMethods = () => {
   const createValidationRules = (fields:any[], includeContext?:boolean):any => {
@@ -101,6 +103,19 @@ export const useProjectMethods = () => {
     return { currency: subcurrencyConfig.code, amount: (amount * 1000).toFixed(afterDigits < 4 ? 0 : (afterDigits - 3)) };
   };
 
+  const setPageSeo = (seoData:SeoContentInterface|undefined):void => {
+    const globalStore = useGlobalStore();
+    useHead({
+      title: seoData?.title || globalStore.globalSeo?.title,
+      meta: [
+        {
+          name: 'description',
+          content: seoData?.description || globalStore.globalSeo?.description,
+        },
+      ],
+    });
+  };
+
   return {
     createValidationRules,
     getFormRules,
@@ -113,5 +128,6 @@ export const useProjectMethods = () => {
     getNicknameFromEmail,
     needToChangeLanguage,
     formatBalance,
+    setPageSeo,
   };
 };

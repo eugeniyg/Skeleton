@@ -1,6 +1,17 @@
+export interface SeoContentInterface {
+  title?: string,
+  description?: string,
+  text?: {
+    visible?: string,
+    hidden?: string,
+    button?: string
+  }
+}
+
 export interface StaticPageInterface {
   pageUrl: string,
-  content: string
+  content: string,
+  seo: SeoContentInterface
 }
 
 export interface BonusPageInterface {
@@ -15,7 +26,8 @@ export interface BonusPageInterface {
   subtitle: string,
   title: string,
   image: string,
-  description: string
+  description: string,
+  seo: SeoContentInterface
 }
 
 export interface QuestionInterface {
@@ -31,13 +43,19 @@ export interface QuestionPageInterface {
   position?: number
 }
 
+export interface QuestionPagesInterface {
+  title: string,
+  seo: SeoContentInterface
+}
+
 export interface ProfileInfoInterface {
   title: string,
   editButton: string,
   saveButton: string,
   cancelButton: string,
   subscriptionTitle: string,
-  manageTitle: string
+  manageTitle: string,
+  seo: SeoContentInterface
 }
 
 export interface ProfileWalletInterface {
@@ -48,24 +66,29 @@ export interface ProfileWalletInterface {
   changeButton: string,
   hideButton: string,
   depositButton: string,
-  withdrawButton: string
+  withdrawButton: string,
+  seo: SeoContentInterface
 }
 
 export interface ProfileBonusesInterface {
-  title: string
+  title: string,
+  seo: SeoContentInterface
 }
 
 export interface ProfileNotificationsInterface {
-  title: string
+  title: string,
+  seo: SeoContentInterface
 }
 
 export interface ProfileSecurityInterface {
   title: string,
-  saveButton: string
+  saveButton: string,
+  seo: SeoContentInterface
 }
 
 export interface ProfileHistoryInterface {
-  title: string
+  title: string,
+  seo: SeoContentInterface
 }
 
 export interface ProfileContentInterface {
@@ -215,6 +238,11 @@ export interface HomeContentInterface {
     casino: CategoryInterface,
     sports: CategoryInterface
   }
+  seo: SeoContentInterface
+}
+
+export interface MainContentInterface {
+  seo: SeoContentInterface
 }
 
 export interface GameCategoryInterface {
@@ -245,7 +273,8 @@ export interface GlobalComponentsInterface {
   benefits: BenefitsContentInterface,
   promotions: PromotionsContentInterface,
   cardsGroup: CardsGroupInterface,
-  categories: GameCategoryInterface[]
+  categories: GameCategoryInterface[],
+  globalSeo: SeoContentInterface
 }
 
 export interface FavoritesPageInterface {
@@ -254,7 +283,8 @@ export interface FavoritesPageInterface {
     image: string,
     title: string,
     description: string
-  }
+  },
+  seo: SeoContentInterface
 }
 
 export interface RecentlyPageInterface {
@@ -263,14 +293,16 @@ export interface RecentlyPageInterface {
     image: string,
     title: string,
     description: string
-  }
+  },
+  seo: SeoContentInterface
 }
 
 export interface ContactPageInterface {
   image: string,
   title: string,
   description: string,
-  buttonLabel: string
+  buttonLabel: string,
+  seo: SeoContentInterface
 }
 
 interface WelcomeItemInterface {
@@ -312,7 +344,8 @@ export interface WelcomePageInterface {
   bonuses: {
     label: string,
     items: BonusesItemInterface[]
-  }
+  },
+  seo: SeoContentInterface
 }
 
 export interface GamePageInterface {
@@ -320,7 +353,8 @@ export interface GamePageInterface {
   realButton: string,
   demoLabel: string,
   demoButton: string,
-  switcherLabel: string
+  switcherLabel: string,
+  seo: SeoContentInterface
 }
 
 export interface CategoryGamesInterface {
@@ -330,7 +364,8 @@ export interface CategoryGamesInterface {
     description: string
   },
   providersLabel: string,
-  sortLabel: string
+  sortLabel: string,
+  seo: SeoContentInterface
 }
 
 export interface ErrorPageInterface {
@@ -340,4 +375,12 @@ export interface ErrorPageInterface {
     label: string,
     url: string
   }
+}
+
+export interface BettingContentInterface {
+  seo: SeoContentInterface
+}
+
+export interface TokenContentInterface {
+  seo: SeoContentInterface
 }

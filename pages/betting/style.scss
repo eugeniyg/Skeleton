@@ -2,7 +2,8 @@
   display: grid;
   grid-template-areas:
     "container nav"
-    "panel nav";
+    "panel nav"
+    "seo nav";
   align-items: var(--align-items, flex-end);
   grid-template-columns: 1fr auto;
   margin: -24px -16px 0 -16px;
@@ -34,5 +35,9 @@
       max-width: 100%;
       border: none !important;
     }
+  }
+
+  .text-wrap {
+    grid-area: seo;
   }
 }
