@@ -90,7 +90,13 @@
     "sortLabel": "Sort by"
   },
   "questionPage": {
-    "title": "Frequently asked questions"
+    "title": "Frequently asked questions",
+    "seo": {
+      "text": {
+        "visible": "## Question visible text\n\nQuestion visible text Question visible text Question visible text Question visible text Question visible text Question visible text Question visible text Question visible text Question visible text",
+        "button": "More button"
+      }
+    }
   },
   "errorPage": {
     "title": "Something went wrong",
