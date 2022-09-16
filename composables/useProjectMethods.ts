@@ -3,7 +3,6 @@ import * as projectRules from './validationRules';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 import { SeoContentInterface } from '~/types';
-import { useLayoutStore } from '~/composables/useLayoutStore';
 
 export const useProjectMethods = () => {
   const createValidationRules = (fields:any[], includeContext?:boolean):any => {
@@ -69,11 +68,8 @@ export const useProjectMethods = () => {
     return imageData['200x200']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
   };
 
-  const getFormatDate = (timeString: string):string => {
-    const splitString = timeString.split(' ');
-    const parseDate = splitString[0].split('-');
-    const parseTime = splitString[1].split(':');
-    const date = new Date(Date.UTC(+parseDate[0], +parseDate[1] - 1, +parseDate[2], +parseTime[0], +parseTime[1], +parseTime[2]));
+  const getFormatDate = (timeUtcIsoString: string):string => {
+    const date = new Date(timeUtcIsoString);
     return date.toLocaleString().slice(0, -3);
   };
 

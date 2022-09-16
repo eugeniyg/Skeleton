@@ -19,6 +19,7 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'vue/no-setup-props-destructure': 'off',
     'no-plusplus': 'off',
     'no-unused-expressions': 'off',
     'no-param-reassign': 'off',
