@@ -65,11 +65,9 @@
   },
   "locale": "en",
   "deposit": {
-    "title": "Deposit",
-    "balanceLabel": "Balance",
+    "addressTitle": "Address",
+    "addressDescription": "This is your personal address for deposits. Your funds will be available as soon as they pass through the necessary confirmations.",
     "sumLabel": "Deposit sum",
-    "minSum": "Min deposit:",
-    "togglerLabel": "I have bonus code",
     "bonuses": [
       {
         "image": "/img/uploads/icn-notification.svg",
@@ -77,6 +75,10 @@
         "description": "5 BTC + 300 FS"
       }
     ],
-    "depositButton": "Deposit"
+    "depositButton": "Deposit",
+    "togglerLabel": "I have bonus code",
+    "balanceLabel": "Balance",
+    "title": "Deposit",
+    "minSum": "Min deposit:"
   }
 }
