@@ -79,6 +79,7 @@
     "togglerLabel": "I have bonus code",
     "balanceLabel": "Balance",
     "title": "Deposit",
-    "minSum": "Min deposit:"
+    "minSum": "Min deposit:",
+    "addressInputLabel": "Send any amount to:"
   }
 }
