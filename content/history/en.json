@@ -15,7 +15,13 @@
       "description": "You have not placed any bets yet"
     },
     "tabLabel": "Spins",
-    "tabPosition": 3
+    "tabPosition": 3,
+    "tableColumns": {
+      "game": "Game",
+      "bet": "Bet",
+      "result": "Result",
+      "date": "Date"
+    }
   },
   "transactions": {
     "currencyLabel": "Currency:",
