@@ -49,7 +49,7 @@
     />
 
     <atomic-empty
-      v-if="!invoices.length"
+      v-if="!invoices.length && !loading"
       variant="transactions"
       :title="transactionsContent.empty.title"
       :subTitle="transactionsContent.empty.description"

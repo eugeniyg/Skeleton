@@ -110,6 +110,12 @@ export interface HistoryBonusesInterface {
 }
 
 export interface HistoryBetsInterface {
+  tableColumns: {
+    game: string,
+    bet: string,
+    result: string,
+    date: string
+  },
   empty: {
     icon: string,
     title?: string,

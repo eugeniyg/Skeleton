@@ -1308,6 +1308,22 @@ collections:
             label: Tab Position
             widget: number
             required: false
+          - name: tableColumns
+            label: Table Columns
+            widget: object
+            fields:
+              - name: game
+                label: Game
+                widget: string
+              - name: bet
+                label: Bet
+                widget: string
+              - name: result
+                label: Result
+                widget: string
+              - name: date
+                label: Date
+                widget: string
           - name: empty
             label: Empty Data
             widget: object
