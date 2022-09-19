@@ -7,7 +7,7 @@
     "switcherLabel": "Real mode",
     "seo": {
       "text": {
-        "visible": "## Game page seo text title\n\nGame page seo text text Game page seo text text Game page seo text text Game page seo text text Game page seo text text Game page seo text textGame page seo text text Game page seo text textGame page seo text text Game page seo text textGame page seo text textGame page seo text text Game page seo text textGame page seo text text Game page seo text text Game page seo text text"
+        "visible": ""
       }
     }
   },
@@ -30,7 +30,7 @@
   "tokenPage": {
     "seo": {
       "text": {
-        "visible": "## Token seo text title\n\nToken seo text text  Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text Token seo text text"
+        "visible": ""
       }
     }
   },
@@ -97,7 +97,7 @@
   "bettingPage": {
     "seo": {
       "text": {
-        "visible": "## Sports seo text title\n\nSports seo text text Sports seo text text Sports seo text text Sports seo text text Sports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text textSports seo text text"
+        "visible": ""
       }
     }
   },
@@ -108,7 +108,7 @@
     "buttonLabel": "Let's talk!",
     "seo": {
       "text": {
-        "visible": "## Contact seo text title\n\nContact seo text text Contact seo text text Contact seo text text Contact seo text text Contact seo text text Contact seo text text Contact seo text text Contact seo text text Contact seo text textContact seo text text Contact seo text textContact seo text text Contact seo text textContact seo text text  Contact seo text text Contact seo text text Contact seo text text Contact seo text text Contact seo text text"
+        "visible": ""
       }
     }
   },
@@ -122,7 +122,7 @@
     "sortLabel": "Sort by",
     "seo": {
       "text": {
-        "visible": "## Games category seo title\n\nGames category seo text  Games category seo text Games category seo text Games category seo text Games category seo text Games category seo textGames category seo textGames category seo textGames category seo textGames category seo text Games category seo textGames category seo text"
+        "visible": ""
       }
     }
   },
@@ -154,7 +154,7 @@
     },
     "seo": {
       "text": {
-        "visible": "## Recently Played seo text title\n\nRecently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text Recently Played seo text text"
+        "visible": ""
       }
     }
   },
