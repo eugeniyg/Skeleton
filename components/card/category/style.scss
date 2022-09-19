@@ -42,7 +42,6 @@
       @include media(xxl) {
         max-height: rem(320px);
         transform: scale(1.2);
-
       }
     }
 
@@ -81,13 +80,13 @@
   }
 
   .btn-primary {
-    --width: 100%;
-    --padding: #{rem(7px)};
+    --width: fit-content;
+    --padding: #{rem(7px)} #{rem(24px)};
     @include upd-font($heading-2);
     margin-top: auto;
 
     @include media(l) {
-      --padding: #{rem(12px)};
+      --padding: #{rem(7px)} #{rem(24px)};
     }
   }
 }

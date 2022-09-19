@@ -23,7 +23,7 @@
 
   > .icon {
     grid-area: icon;
-    --iccon-size: #{rem(20px)};
+    --icon-size: #{rem(20px)};
     --color: var(--gray-400);
   }
 
@@ -70,7 +70,7 @@
       display: block;
       justify-self: center;
 
-      @include media(l) {
+      @include media(md) {
         --width: #{rem(88px)};
         --height: #{rem(88px)};
       }
