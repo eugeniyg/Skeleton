@@ -1,34 +1,32 @@
 <template>
-  <div class="tab-history__tb">
-    <div class="tb-transactions-history">
-      <div class="row">
-        <div v-for="(th, thIndex) in headTitles" :key="thIndex" class="th">{{ th }}</div>
+  <div class="tb-transactions-history">
+    <div class="row">
+      <div v-for="(th, thIndex) in headTitles" :key="thIndex" class="th">{{ th }}</div>
+    </div>
+
+    <div v-for="invoice in props.invoices" :key="invoice.id" class="row">
+      <div class="td">{{ getFormatDate(invoice.createdAt) }}</div>
+      <div class="td" style="text-transform: capitalize">{{ getInvoiceType(invoice.invoiceType) }}</div>
+      <div class="td">------</div>
+
+      <div class="td" style="text-transform: capitalize">
+        <atomic-row-status :variant="getInvoiceStatus(invoice.status).toLowerCase()">
+          {{ getInvoiceStatus(invoice.status) }}
+        </atomic-row-status>
       </div>
 
-      <div v-for="invoice in props.invoices" :key="invoice.id" class="row">
-        <div class="td">{{ getFormatDate(invoice.createdAt) }}</div>
-        <div class="td" style="text-transform: capitalize">{{ getInvoiceType(invoice.invoiceType) }}</div>
-        <div class="td">------</div>
+      <div class="td">{{ invoice.amount }} {{ invoice.currency }}</div>
 
-        <div class="td" style="text-transform: capitalize">
-          <atomic-row-status :variant="getInvoiceStatus(invoice.status).toLowerCase()">
-            {{ getInvoiceStatus(invoice.status) }}
-          </atomic-row-status>
-        </div>
-
-        <div class="td">{{ invoice.amount }} {{ invoice.currency }}</div>
-
-        <div class="actions" v-if="getInvoiceStatus(invoice.status) === 'Pending' && getInvoiceType(invoice.invoiceType) === 'Withdrawal'">
-          <button-base
-            class="btn-cancel-payment"
-            type="secondary"
-            size="sm"
-            @click.once="emit('cancelPayment', invoice.id)"
-          >
-            <atomic-icon id="trash"/>
-            <span>{{ transactionsContent.cancelPaymentButton }}</span>
-          </button-base>
-        </div>
+      <div class="actions" v-if="getInvoiceStatus(invoice.status) === 'Pending' && getInvoiceType(invoice.invoiceType) === 'Withdrawal'">
+        <button-base
+          class="btn-cancel-payment"
+          type="secondary"
+          size="sm"
+          @click.once="emit('cancelPayment', invoice.id)"
+        >
+          <atomic-icon id="trash"/>
+          <span>{{ transactionsContent.cancelPaymentButton }}</span>
+        </button-base>
       </div>
     </div>
   </div>
