@@ -16,6 +16,10 @@
     "maleLabel": "Male",
     "femaleLabel": "Female"
   },
+  "wallet_id": {
+    "label": "Wallet address",
+    "placeholder": "Enter wallet address"
+  },
   "personalIdNumber": {
     "label": "Personal ID number",
     "placeholder": "Identity reference number (if available)"
@@ -83,6 +87,10 @@
   "language": {
     "label": "Language",
     "placeholder": "Enter your language"
+  },
+  "card_number": {
+    "label": "Card number",
+    "placeholder": "Enter card number"
   },
   "timeZone": {
     "label": "Time Zone",
