@@ -1,5 +1,3 @@
-import { defineNuxtConfig } from 'nuxt';
-
 const build = require('./nuxt-config/_build.ts');
 
 const viteConfig: any = {

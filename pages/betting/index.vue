@@ -61,9 +61,12 @@
 
   onMounted(async () => {
     if (isMobile.value) {
-      document.querySelector('footer').style.display = 'none';
-      const seoTextBlock:any = document.querySelector('.text-wrap');
-      if (seoTextBlock) seoTextBlock.style.display = 'none';
+      // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587
+      setTimeout(() => {
+        document.querySelector('footer').style.display = 'none';
+        const seoTextBlock:any = document.querySelector('.text-wrap');
+        if (seoTextBlock) seoTextBlock.style.display = 'none';
+      }, 100);
     }
 
     if (!isLoggedIn.value) {

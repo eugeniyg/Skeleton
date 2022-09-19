@@ -1,5 +1,5 @@
 .is-game-page {
-  .app-footer, .app-header,  .nav-game, .panel-mode {
+  .app-footer, .app-header,  .nav-game, .panel-mode, .text-wrap {
     display: none;
   }
 
@@ -39,6 +39,10 @@
 
     .panel-mode {
       display: flex;
+    }
+
+    .text-wrap {
+      display: block;
     }
   }
 }
