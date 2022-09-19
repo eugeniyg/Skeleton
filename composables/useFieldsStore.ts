@@ -9,9 +9,7 @@ import {
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { useGamesStore } from '~/composables/useGamesStore';
 
-export type FieldsStoreStateType = {
-  validationMessages: any,
-  fieldsContent: any,
+interface FieldsStoreStateInterface {
   profileFields: FieldInterface[],
   registrationFields: FieldInterface[],
 }
@@ -24,12 +22,10 @@ interface SelectOptionsInterface {
 }
 
 export const useFieldsStore = defineStore('fieldsStore', {
-  state: () => ({
-    validationMessages: {},
-    fieldsContent: {},
+  state: ():FieldsStoreStateInterface => ({
     profileFields: [],
     registrationFields: [],
-  } as FieldsStoreStateType),
+  }),
 
   getters: {
     selectOptions():SelectOptionsInterface {
@@ -45,14 +41,6 @@ export const useFieldsStore = defineStore('fieldsStore', {
   },
 
   actions: {
-    async getValidationMessages():Promise<void> {
-      this.validationMessages = await $fetch('/api/content/validation-message');
-    },
-
-    async getFieldsContent():Promise<void> {
-      this.fieldsContent = await $fetch('/api/content/fields');
-    },
-
     async getRegistrationFields():Promise<void> {
       const { getRegistrationFields } = useCoreAuthApi();
       const data = await getRegistrationFields();

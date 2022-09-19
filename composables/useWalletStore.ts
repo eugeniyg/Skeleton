@@ -3,32 +3,26 @@ import { AccountInterface, AccountRequestInterface, WebSocketResponseInterface }
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 
-export type WalletStateType = {
+interface WalletStateInterface {
   accounts: AccountInterface[],
   depositMethods: any[],
   withdrawMethods: any[],
   requestTimer: any,
-  accountsStatuses: {
-    Active: 1,
-    Inactive: 2,
-    Hidden: 3,
-    Disabled: 4,
-  },
   accountSubscription: any,
 }
 
 export const useWalletStore = defineStore('walletStore', {
-  state: () => ({
+  state: (): WalletStateInterface => ({
     accounts: [],
     depositMethods: [],
     withdrawMethods: [],
     requestTimer: '',
     accountSubscription: undefined,
-  } as WalletStateType),
+  }),
 
   getters: {
-    activeAccount():AccountInterface {
-      return this.accounts.find((acc) => acc.status === 1);
+    activeAccount(state):AccountInterface {
+      return state.accounts.find((acc) => acc.status === 1);
     },
 
     activeAccountType():string {

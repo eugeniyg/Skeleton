@@ -4,14 +4,14 @@
       class="item"
       @click="closeGame"
     >
-      <atomic-icon id="ui-close"/>
+      <atomic-icon id="close"/>
     </button>
 
     <button
       class="item"
       @click="toggleFullScreen"
     >
-      <atomic-icon id="ui-video-expand"/>
+      <atomic-icon id="video-expand"/>
     </button>
 
     <button
@@ -20,20 +20,18 @@
       @click="toggleFavorite"
       :class="{ 'is-active': isFavorite }"
     >
-      <atomic-icon id="ui-heart-outline"/>
+      <atomic-icon id="heart-outline"/>
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { GameInterface } from '@platform/frontend-core/dist/module';
 
-  const props = defineProps({
-    gameInfo: {
-      type: Object,
-      required: true,
-    },
-  });
+  const props = defineProps<{
+    gameInfo: GameInterface
+  }>();
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);

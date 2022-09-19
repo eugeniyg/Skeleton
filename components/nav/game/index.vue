@@ -6,22 +6,11 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    gameInfo: {
-      type: Object,
-      required: true,
-    },
-  });
-  // const modeItems = [
-  //   {
-  //     icon: 'ui-device',
-  //     id: 'device',
-  //   },
-  //   {
-  //     icon: 'ui-device-split',
-  //     id: 'device-split',
-  //   },
-  // ];
+  import { GameInterface } from '@platform/frontend-core/dist/module';
+
+  const props = defineProps<{
+    gameInfo: GameInterface
+  }>();
 </script>
 
 <style lang="scss" src="./style.scss"/>

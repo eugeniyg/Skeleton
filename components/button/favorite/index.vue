@@ -1,18 +1,13 @@
 <template>
   <button class="btn-favorite" :class="{ active: isActive }" @click="toggleFavorite">
-    <atomic-icon id="ui-heart-outline"/>
+    <atomic-icon id="heart-outline"/>
   </button>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
-    gameId: {
-      type: String,
-      required: true,
-    },
-  });
+  const props = defineProps<{gameId: string}>();
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);

@@ -1,14 +1,19 @@
 <template>
-  <box-game
-    :frameLink="gameStart"
-    :gameInfo="gameInfo"
-    @changeMode="changeGameMode"
-  />
+  <div>
+    <box-game
+      :frameLink="gameStart"
+      :gameInfo="gameInfo"
+      @changeMode="changeGameMode"
+      :gameContent="gameContent"
+    />
+    <atomic-seo-text v-if="gameContent?.seo?.text" v-bind="gameContent?.seo?.text" />
+  </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { GameInterface } from '@platform/frontend-core/dist/module';
+  import { GamePageInterface } from '~/types';
 
   const route = useRoute();
   const isDemo = ref<boolean>(route.query.demo === 'true');
@@ -18,10 +23,15 @@
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
-  const { showModal, showPlayLimitAlert } = useLayoutStore();
+  const { showModal, showAlert } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
-  const { isMobile } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { isMobile, alertsData, currentLocale } = storeToRefs(globalStore);
   const infoResponse = await useAsyncData('gameInfo', () => getGamesInfo(route.params.id as string));
+  const gameContentRequest = await useAsyncData('gameContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['gamePage']).findOne());
+  const gameContent:GamePageInterface|undefined = gameContentRequest.data.value?.gamePage;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(gameContent?.seo);
   gameInfo.value = infoResponse.data.value;
   const router = useRouter();
 
@@ -33,7 +43,7 @@
       locale: 'en', // currentLocale || browserLanguage,
       countryCode: 'UA',
       demoMode: isDemo.value,
-      platform: isMobile ? 1 : 2,
+      platform: isMobile.value ? 1 : 2,
     };
     const startResponse = await getStartGame(route.params.id as string, startParams);
     gameStart.value = startResponse.gameUrl;
@@ -46,7 +56,7 @@
     }
 
     if (isDemo.value && playerStatusName.value === 'Limited') {
-      showPlayLimitAlert();
+      showAlert(alertsData.value?.limitedRealGame);
       return;
     }
 
@@ -60,7 +70,7 @@
     else {
       const { localizePath } = useProjectMethods();
       router.push(localizePath('/'));
-      showPlayLimitAlert();
+      showAlert(alertsData.value?.limitedRealGame);
     }
   };
 

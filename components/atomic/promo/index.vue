@@ -1,25 +1,24 @@
 <template>
   <div class="promo">
     <div class="header">
-      <div class="title">Welcome package</div>
-      <span class="sub-title">5 BTC</span>
-      <span class="sub-title">+ 300 FS</span>
+      <div class="title">{{ registrationContent?.promo?.title }}</div>
+      <span class="sub-title">{{ registrationContent?.promo?.secondTitle }}</span>
+      <span class="sub-title">{{ registrationContent?.promo?.additionalTitle }}</span>
     </div>
 
-    <div class="items">
-      <div class="item">
-        <atomic-icon id="turbo-games"/>Over 3000 provably fair games
-      </div>
-
-      <div class="item">
-        <atomic-icon id="speed"/>Fast withdrawals
-      </div>
-
-      <div class="item">
-        <atomic-icon id="live-support"/>24/7 Live Chat Support
+    <div v-if="registrationContent?.promo?.advantages?.length" class="items">
+      <div v-for="(advantage, index) in registrationContent.promo.advantages" :key="index" class="item">
+        <atomic-icon :id="advantage.icon"/>{{ advantage.label }}
       </div>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+  import { RegistrationInterface } from '~/types';
+
+  const { popupsData } = useGlobalStore();
+  const registrationContent: RegistrationInterface|undefined = popupsData?.registration;
+</script>
 
 <style lang="scss" src="./style.scss"/>

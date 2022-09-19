@@ -46,7 +46,7 @@
       @change="v$[field.name]?.$touch()"
       :isError="setError(field.name)"
       :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
-      :label="fieldsContent[field.name]?.label ? fieldsContent[field.name]?.label === 'Send promos by Email' ? 'I agree to receive bonus & marketing emails' : fieldsContent[field.name]?.label : ''"
+      :label="getCheckboxLabel(field.name)"
     >
     </form-input-checkbox>
 
@@ -56,22 +56,30 @@
       size="md"
       :isDisabled="v$.$invalid || isLockedAsyncButton"
       @click="signUp"
-    >Sign up</button-base>
+    >
+      {{ registrationContent?.registrationButton}}
+    </button-base>
 
-    <button-text-sign @click="showModal('signIn')" />
+    <button-popup :buttonLabel="registrationContent?.loginButton" openModal="signIn" />
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
+  import { RegistrationInterface } from '~/types';
 
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
   const { setFormData } = useCoreMethods();
-  const { showModal, closeModal } = useLayoutStore();
+  const { closeModal } = useLayoutStore();
   const fieldsStore = useFieldsStore();
-  const { fieldsContent, selectOptions, registrationFields } = storeToRefs(fieldsStore);
+  const { selectOptions, registrationFields } = storeToRefs(fieldsStore);
+  const globalStore = useGlobalStore();
+  const {
+    initUserInfo, countries, fieldsContent, popupsData,
+  } = storeToRefs(globalStore);
+  const registrationContent: RegistrationInterface|undefined = popupsData.value?.registration;
 
   const mainFields = registrationFields.value.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = registrationFields.value.filter((field) => groupFooterFields.includes(field.name));
@@ -79,8 +87,6 @@
   if (registrationFormData.hasOwnProperty('nickname')) registrationFormData.nickname = 'undefined';
   if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
 
-  const globalStore = useGlobalStore();
-  const { initUserInfo, countries } = storeToRefs(globalStore);
   const checkInitCountry = ():void => {
     if (registrationFormData.hasOwnProperty('country') && !registrationFormData.country) {
       if (countries.value.find((country) => country.code === initUserInfo.value?.country)) {
@@ -92,6 +98,12 @@
   watch(() => initUserInfo.value, () => {
     checkInitCountry();
   });
+
+  const getCheckboxLabel = (fieldName: string):string => {
+    if (fieldName === 'receiveEmailPromo') return registrationContent?.agreeEmailLabel;
+    if (fieldName === 'receiveSmsPromo') return registrationContent?.agreeSmsLabel;
+    return fieldsContent.value[fieldName]?.label || '';
+  };
 
   const { getFormRules, createValidationRules } = useProjectMethods();
   const registrationRules = createValidationRules(registrationFields.value, true);

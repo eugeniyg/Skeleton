@@ -22,11 +22,17 @@
     display: flex;
     flex-direction: column;
 
-
-    img {
-      width: 64px;
-      height: auto;
+    iframe {
       margin: var(--img-margin, 0 auto 24px);
+      background-color: var(--gray-700);
+      border-radius: 10px;
+    }
+
+    &__text {
+      a {
+        color: var(--gray-500);
+        text-decoration: underline;
+      }
     }
 
     @include media(l) {

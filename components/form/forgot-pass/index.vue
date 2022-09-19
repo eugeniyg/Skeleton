@@ -20,18 +20,20 @@
       :isDisabled="v$.$invalid || isLockedAsyncButton"
       @click="sendEmail"
     >
-      Reset password
+      {{ forgotContent?.forgotButton }}
     </button-base>
 
-    <button-text-join />
+    <button-popup :buttonLabel="forgotContent?.registrationButton || ''" openModal="register" />
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { ForgotInterface } from '~/types';
 
-  const fieldsStore = useFieldsStore();
-  const { fieldsContent } = storeToRefs(fieldsStore);
+  const globalStore = useGlobalStore();
+  const { fieldsContent, popupsData, alertsData } = storeToRefs(globalStore);
+  const forgotContent: ForgotInterface|undefined = popupsData.value?.forgot;
 
   const forgotFormData = reactive({ email: '' });
   const { getFormRules } = useProjectMethods();
@@ -57,11 +59,7 @@
       isLockedAsyncButton.value = true;
       await forgotProfilePassword(forgotFormData);
       const { closeModal, showAlert } = useLayoutStore();
-      showAlert({
-        title: 'Success',
-        text: 'A password reset link was sent. Click the link in the email to create a new password.',
-        variant: 'done',
-      });
+      showAlert(alertsData.value?.sentResetLink);
       closeModal('forgotPass');
     } catch (error) {
       if (error.response?.status === 422) {

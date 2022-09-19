@@ -1,6 +1,6 @@
 <template>
   <span :class="classes">
-    <slot/>
+    <slot />
   </span>
 </template>
 
@@ -18,4 +18,4 @@
   }));
 </script>
 
-<style lang="scss" src="./style.scss"/>
+<style lang="scss" src="./style.scss" />

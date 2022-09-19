@@ -5,7 +5,7 @@
       :disabled="props.page === 1"
       @click="changePage(props.page - 1)"
     >
-      <atomic-icon id="ui-arrow_previous"/>
+      <atomic-icon id="arrow_previous"/>
     </button>
 
     <button
@@ -23,30 +23,19 @@
       :disabled="props.page === props.totalPages"
       @click="changePage(props.page + 1)"
     >
-      <atomic-icon id="ui-arrow_next"/>
+      <atomic-icon id="arrow_next"/>
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    page: {
-      type: Number,
-      required: true,
-    },
-    perPage: {
-      type: Number,
-      required: true,
-    },
-    totalPages: {
-      type: Number,
-      required: true,
-    },
-    totalRows: {
-      type: Number,
-      required: true,
-    },
-  });
+  const props = defineProps<{
+    page: number,
+    perPage: number,
+    totalPages: number,
+    totalRows: number
+  }>();
+
   const emit = defineEmits(['selectPage']);
   const changePage = (page: number|string):void => {
     if (typeof page === 'number' && page !== props.page) emit('selectPage', page);

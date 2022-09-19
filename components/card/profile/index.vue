@@ -1,6 +1,6 @@
 <template>
   <div class="card-profile">
-    <atomic-avatar :nickname="userNickname" :label="props.avatarItems.label">
+    <atomic-avatar :nickname="userNickname">
       <template v-slot:progress-bar>
         <profile-progress-bar/>
       </template>
@@ -8,30 +8,26 @@
 
     <div class="actions">
       <button-base type="primary" size="md" @click="openDepositModal">
-        <atomic-icon id="ui-plus"/>Deposit
+        <atomic-icon id="plus"/>{{ profileMenuContent?.depositButton}}
       </button-base>
 
-      <button-base type="secondary" size="md" url="/profile/info">
-        Profile
+      <button-base
+        v-if="profileMenuContent?.profileButton"
+        type="secondary"
+        size="md"
+        :url="profileMenuContent.profileButton.url"
+      >
+        {{ profileMenuContent.profileButton.label}}
       </button-base>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { PropType } from '@vue/runtime-core';
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
-    avatarItems: {
-      type: Object as PropType<{nickname: string, label: string}>,
-      default: () => ({
-        nickname: '',
-        label: '',
-      }),
-    },
-  });
-
+  const { sidebarContent } = useGlobalStore();
+  const profileMenuContent = sidebarContent?.profileMenu;
   const profileStore = useProfileStore();
   const { openDepositModal } = useLayoutStore();
   const { userNickname } = storeToRefs(profileStore);

@@ -90,6 +90,10 @@
       --drawer-content-height: calc(100vh - #{rem(200px)})
     }
   }
+
+  .avatar {
+    border-radius: 16px;
+  }
 }
 
 

@@ -1,7 +1,7 @@
 <template>
   <div class="security content">
     <div class="header">
-      <h1 class="heading">Security & Verification</h1>
+      <h1 class="heading">{{ securityContent?.title }}</h1>
     </div>
 
     <hr/>
@@ -29,7 +29,7 @@
         @click="onSubmit"
         :isDisabled="v$.$invalid || isLockedAsyncButton"
       >
-        Save changes
+        {{ securityContent?.saveButton }}
       </button-base>
     </form>
   </div>
@@ -37,9 +37,15 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { ProfileSecurityInterface } from '~/types';
 
-  const fieldsStore = useFieldsStore();
-  const { fieldsContent } = storeToRefs(fieldsStore);
+  const globalStore = useGlobalStore();
+  const { fieldsContent, alertsData, currentLocale } = storeToRefs(globalStore);
+
+  const securityContentRequest = await useAsyncData('securityContent', () => queryContent(`profile/${currentLocale.value.code}`).only(['security']).findOne());
+  const securityContent:ProfileSecurityInterface|undefined = securityContentRequest.data.value?.security;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(securityContent?.seo);
 
   const changeFormData = reactive({
     currentPassword: '',
@@ -79,11 +85,7 @@
     try {
       isLockedAsyncButton.value = true;
       await changeProfilePassword(changeFormData);
-      showAlert({
-        title: 'Success',
-        text: 'You have successfully changed your password!',
-        variant: 'done',
-      });
+      showAlert(alertsData.value?.passwordChanged);
       clearForm();
     } catch (error) {
       if (error.response?.status === 422) {

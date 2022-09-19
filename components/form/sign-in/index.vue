@@ -26,7 +26,7 @@
       @submit="login"
     />
 
-    <atomic-hint v-if="loginError" variant="error" :message="validationMessages.login" />
+    <atomic-hint v-if="loginError" variant="error" :message="validationMessages.login || ''" />
 
     <button-base
       type="primary"
@@ -35,21 +35,25 @@
       @click="login"
       :isDisabled="v$.$invalid || isLockedAsyncButton"
     >
-      Sign in
+      {{ loginContent?.loginButton }}
     </button-base>
 
-    <button-forgot-pass/>
+    <button-popup :buttonLabel="loginContent?.forgotButton" openModal="forgotPass"/>
 
-    <button-text-join @click="showModal('register')"/>
+    <button-popup :buttonLabel="loginContent?.registrationButton" openModal="register" />
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { LoginInterface } from '~/types';
 
-  const fieldsStore = useFieldsStore();
-  const { fieldsContent, validationMessages } = storeToRefs(fieldsStore);
-  const { showModal, closeModal } = useLayoutStore();
+  const globalStore = useGlobalStore();
+  const {
+    validationMessages, fieldsContent, popupsData, alertsData,
+  } = storeToRefs(globalStore);
+  const { closeModal } = useLayoutStore();
+  const loginContent: LoginInterface|undefined = popupsData.value?.login;
 
   const authorizationFormData = reactive({ email: '', password: '' });
   const { getFormRules } = useProjectMethods();
@@ -89,11 +93,7 @@
         serverFormErrors.value = error.data?.error?.fields;
       } else if (error.response?.status === 403) {
         const { showAlert } = useLayoutStore();
-        showAlert({
-          title: 'Error',
-          text: 'Sorry, but your account is blocked. Please, contact our support team for more information.',
-          variant: 'error',
-        });
+        showAlert(alertsData.value?.accountBlocked);
       } else throw error;
     } finally {
       isLockedAsyncButton.value = false;

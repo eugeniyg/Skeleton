@@ -13,7 +13,7 @@
       :isChecked="props.value === 'male'"
       @change="changeValue('male')"
     >
-      Male<atomic-icon id="ui-male"/>
+      {{ fieldsContent?.gender?.maleLabel }}<atomic-icon id="male"/>
     </form-input-radio>
 
     <form-input-radio
@@ -25,7 +25,7 @@
       :isChecked="props.value === 'female'"
       @change="changeValue('female')"
     >
-      Female<atomic-icon id="ui-female"/>
+      {{ fieldsContent?.gender?.femaleLabel }}<atomic-icon id="female"/>
     </form-input-radio>
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
@@ -59,6 +59,8 @@
       required: false,
     },
   });
+
+  const { fieldsContent } = useGlobalStore();
   const emit = defineEmits(['update:value', 'focus']);
   const changeValue = (value:string):void => {
     emit('focus', value);

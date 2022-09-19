@@ -22,6 +22,13 @@
     margin-bottom: var(--margin-bottom, #{rem(16px)});
   }
 
+  &__image {
+    display: block;
+    width: rem(267px);
+    height: auto;
+    margin: 0 auto;
+  }
+
   &.variant-bonuses {
     --icon-width: #{rem(240px)};
     --icon-height: #{rem(240px)};
@@ -40,15 +47,6 @@
   &.variant-transactions {
     --icon-width: #{rem(240px)};
     --icon-height: #{rem(260px)};
-  }
-
-  &.variant-search-result {
-    img {
-      display: block;
-      width: rem(267px);
-      height: auto;
-      margin: 0 auto;
-    }
   }
 }
 

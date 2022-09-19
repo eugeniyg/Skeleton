@@ -1,0 +1,134 @@
+{
+  "benefits": {
+    "items": [
+      {
+        "image": "/img/uploads/benefit-1.png",
+        "title": "Швидке<br>виведення коштів"
+      },
+      {
+        "image": "/img/uploads/benefit-2.png",
+        "title": "24/7 чат<br>підтримка"
+      },
+      {
+        "image": "/img/uploads/benefit-3.png",
+        "title": "Переконливо чесні слоти<br>та ігри"
+      },
+      {
+        "image": "/img/uploads/benefit-4.png",
+        "title": "Конфіденційність<br>та безпека"
+      }
+    ],
+    "label": "Переваги Slotsbet",
+    "icon": "bonuses"
+  },
+  "promotions": {
+    "label": "Акції Slotsbet",
+    "icon": "bonuses",
+    "items": [
+      {
+        "image": "/img/uploads/promotion-1.png",
+        "title": "Вітальний пакет",
+        "description": "5 BTC + 300 FS",
+        "buttonLabel": "Отримати бонус",
+        "link": {
+          "label": "читати більше",
+          "url": "/welcome-package"
+        }
+      },
+      {
+        "image": "/img/uploads/promotion-2.png",
+        "title": "Бонус середи",
+        "description": "100 безкоштовних спінів",
+        "buttonLabel": "Отримати бонус",
+        "link": {
+          "label": "читати більше",
+          "url": "/bonus/wednesday-free-spins"
+        }
+      },
+      {
+        "image": "/img/uploads/promotion-3.png",
+        "title": "Просто грай і отримуй",
+        "description": "10% кешбеку щотижня",
+        "buttonLabel": "Отримати бонус",
+        "link": {
+          "label": "читати більше",
+          "url": "/bonus/weekly-cashback"
+        }
+      },
+      {
+        "image": "/img/uploads/promotion-4.png",
+        "title": "30% бонус на перезавантаження",
+        "description": "кожен тиждень",
+        "buttonLabel": "Отримати бонус",
+        "link": {
+          "label": "читати більше",
+          "url": "/bonus/monday-reload-bonus"
+        }
+      }
+    ]
+  },
+  "locale": "uk",
+  "categories": [
+    {
+      "icon": "cherry",
+      "identity": "all",
+      "label": "Всі ігри"
+    },
+    {
+      "icon": "hot",
+      "identity": "hot",
+      "label": "Гаряче"
+    },
+    {
+      "icon": "slots",
+      "identity": "slots",
+      "label": "Слоти"
+    },
+    {
+      "icon": "turbo-games",
+      "identity": "turbogames",
+      "label": "Турбоігри"
+    },
+    {
+      "identity": "new",
+      "icon": "new",
+      "label": "Нове"
+    },
+    {
+      "identity": "table",
+      "icon": "table-games",
+      "label": "Настільні ігри"
+    },
+    {
+      "identity": "live",
+      "icon": "live-casino",
+      "label": "Живі ігри"
+    },
+    {
+      "identity": "popular",
+      "icon": "heart",
+      "label": "Популярні"
+    }
+  ],
+  "cardsGroup": {
+    "moreButton": "Показати все",
+    "demoButton": "Демо",
+    "recommendedSubtitle": "Найкращі ігри для вас",
+    "favorites": {
+      "icon": "heart",
+      "label": "Вибране"
+    },
+    "providers": {
+      "label": "Провайдери",
+      "icon": "turbo-games"
+    },
+    "latestWinners": {
+      "label": "Останні переможці",
+      "icon": "bonuses"
+    }
+  },
+  "globalSeo": {
+    "title": "Slotsbet.io",
+    "description": "Slotsbet"
+  }
+}

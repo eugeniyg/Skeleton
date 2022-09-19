@@ -1,7 +1,12 @@
 <template>
   <div class="empty" :class="currentClass">
-    <img v-if="variant ==='search-result'" src="~/assets/img/search-bg.png" alt="">
-    <atomic-icon-colored v-else :id="currentIcon"/>
+    <img
+      class="empty__image"
+      v-if="props.image"
+      :src="props.image"
+      alt=""
+    >
+    <atomic-icon-colored v-else-if="currentIcon" :id="currentIcon"/>
     <div class="title">{{ props.title }}</div>
     <div class="sub-title">{{ props.subTitle }}</div>
   </div>
@@ -16,22 +21,25 @@
         'notification',
         'bonuses',
         'bets-history',
-        'search-result',
       ].includes(val),
-      default: 'transactions',
+      required: false,
+    },
+    image: {
+      type: String,
+      required: false,
     },
     title: {
       type: String,
-      default: 'There is no data yet!',
+      default: '',
     },
     subTitle: {
       type: String,
-      default: 'You don`t  have any personal notification',
+      default: '',
     },
   });
 
-  const currentClass = computed(() => `variant-${props.variant}`);
-  const currentIcon = computed(() => `empty-${props.variant}`);
+  const currentClass = computed(() => (props.variant ? `variant-${props.variant}` : undefined));
+  const currentIcon = computed(() => (props.variant ? `empty-${props.variant}` : undefined));
 </script>
 
 <style lang="scss" src="./style.scss"/>

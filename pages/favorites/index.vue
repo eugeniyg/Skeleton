@@ -1,6 +1,6 @@
 <template>
   <div class="favorites">
-    <div class="favorites__title">Favorite games</div>
+    <div class="favorites__title">{{ favoritesContent?.title }}</div>
 
     <client-only>
       <list-grid
@@ -12,23 +12,32 @@
 
       <atomic-empty
         v-else
-        title="Nothing found"
-        subTitle="You have no favorite games yet"
-        variant="search-result"
+        :title="favoritesContent?.empty.title"
+        :subTitle="favoritesContent?.empty.description"
+        :image="favoritesContent?.empty.image"
       />
 
       <group-games
         v-if="!showFavorites"
         :category="popularCategory"
         showArrows
-        subTitle="The best games for you"
+        subTitle
       />
     </client-only>
+    <atomic-seo-text v-if="favoritesContent?.seo?.text" v-bind="favoritesContent?.seo?.text" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { FavoritesPageInterface } from '~/types';
+
+  const globalStore = useGlobalStore();
+  const { currentLocale } = storeToRefs(globalStore);
+  const favoritesContentRequest = await useAsyncData('favoritesContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['favoritesPage']).findOne());
+  const favoritesContent:FavoritesPageInterface|undefined = favoritesContentRequest.data.value?.favoritesPage;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(favoritesContent?.seo);
 
   const gameStore = useGamesStore();
   const profileStore = useProfileStore();
@@ -45,7 +54,7 @@
 
   const { gameCollections } = useGamesStore();
   const popularCategory = gameCollections.find((collection) => collection.identity === 'popular');
-  const showFavorites = computed(() => favoriteGames.value && isLoggedIn.value);
+  const showFavorites = computed(() => favoriteGames.value?.length && isLoggedIn.value);
 </script>
 
 <style lang="scss" src="./style.scss" />

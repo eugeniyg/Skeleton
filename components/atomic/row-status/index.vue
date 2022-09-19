@@ -21,14 +21,14 @@
   const items = {
     active: 'dot',
     current: 'dot',
-    closed: 'ui-info',
-    pending: 'ui-clock',
-    success: 'ui-done',
-    failed: 'ui-warning',
-    rejected: 'ui-warning',
-    unfinished: 'ui-clock',
-    review: 'ui-clock',
-    canceled: 'ui-warning',
+    closed: 'info',
+    pending: 'clock',
+    success: 'done',
+    failed: 'warning',
+    rejected: 'warning',
+    unfinished: 'clock',
+    review: 'clock',
+    canceled: 'warning',
   };
   const iconId = computed(() => items[props.variant]);
   const classes = computed(() => `is-${props.variant}`);

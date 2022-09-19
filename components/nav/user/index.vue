@@ -4,13 +4,14 @@
 
     <div class="items">
       <div
-        v-for="(item, index) in props.items"
+        v-for="(item, index) in profileLinks"
         :key="index"
         class="item"
         :class="{ 'is-active': $route.path === localizePath(item.url) }"
         @click="clickItem(item.url)"
       >
-        <atomic-icon :id="item.icon"/>{{ item.title }}
+        <atomic-icon :id="item.icon" />
+        {{ item.label }}
       </div>
     </div>
 
@@ -25,35 +26,12 @@
       type: Object,
       default: () => ({}),
     },
-    items: {
-      type: Array,
-      default: () => [
-        {
-          icon: 'ui-wallet',
-          title: 'Wallet',
-          url: '/profile/wallet',
-        },
-        {
-          icon: 'ui-bonus',
-          title: 'Bonuses',
-          url: '/profile/bonuses',
-        },
-        {
-          icon: 'ui-user',
-          title: 'Profile info',
-          url: '/profile/info',
-        },
-        {
-          icon: 'ui-history',
-          title: 'History',
-          url: '/profile/history',
-        },
-      ],
-    },
   });
   const emit = defineEmits(['logout']);
   const { localizePath } = useProjectMethods();
   const { closeUserNav } = useLayoutStore();
+  const { userNavigationContent } = useGlobalStore();
+  const profileLinks = userNavigationContent?.profileLinks || [];
 
   function clickItem(url: string):void {
     const router = useRouter();

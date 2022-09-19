@@ -9,7 +9,7 @@
         :value="isChecked"
         @change="clickToggle"
       >
-        Use currency
+        {{ content?.changeButton }}
       </form-input-toggle>
 
       <div class="amount">
@@ -24,36 +24,32 @@
         size="xs"
         @click="hide"
       >
-        Hide currency
+        {{ content?.hideButton }}
       </button-base>
 
       <div v-if="isActive" class="actions">
-        <button-base type="primary" size="md" @click="openDepositModal">Deposit</button-base>
-        <button-base type="secondary" size="md" @click="openWithdrawModal">Withdraw</button-base>
+        <button-base type="primary" size="md" @click="openDepositModal">
+          {{ content?.depositButton }}
+        </button-base>
+
+        <button-base type="secondary" size="md" @click="openWithdrawModal">
+          {{  content?.withdrawButton }}
+        </button-base>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    id: {
-      type: String,
-      required: true,
-    },
-    balance: {
-      type: Number,
-      required: true,
-    },
-    currency: {
-      type: String,
-      required: true,
-    },
-    status: {
-      type: Number,
-      required: true,
-    },
-  });
+  import { ProfileWalletInterface } from '~/types';
+
+  const props = defineProps<{
+    id: string,
+    balance: number,
+    currency: string,
+    status: number,
+    content: ProfileWalletInterface
+  }>();
 
   const isChecked = ref<boolean>(false);
   const { currencies } = useGlobalStore();

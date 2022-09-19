@@ -2,6 +2,7 @@ import { GameImagesInterface } from '@platform/frontend-core/dist/module';
 import * as projectRules from './validationRules';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
+import { SeoContentInterface } from '~/types';
 
 export const useProjectMethods = () => {
   const createValidationRules = (fields:any[], includeContext?:boolean):any => {
@@ -27,7 +28,7 @@ export const useProjectMethods = () => {
   };
 
   const getFormRules = (fieldsRules:any):any => {
-    const { validationMessages } = useFieldsStore();
+    const { validationMessages } = useGlobalStore();
     const { createFormRules } = useCoreMethods();
     return createFormRules(fieldsRules, projectRules, validationMessages);
   };
@@ -67,11 +68,8 @@ export const useProjectMethods = () => {
     return imageData['200x200']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
   };
 
-  const getFormatDate = (timeString: string):string => {
-    const splitString = timeString.split(' ');
-    const parseDate = splitString[0].split('-');
-    const parseTime = splitString[1].split(':');
-    const date = new Date(Date.UTC(+parseDate[0], +parseDate[1] - 1, +parseDate[2], +parseTime[0], +parseTime[1], +parseTime[2]));
+  const getFormatDate = (timeUtcIsoString: string):string => {
+    const date = new Date(timeUtcIsoString);
     return date.toLocaleString().slice(0, -3);
   };
 
@@ -90,23 +88,28 @@ export const useProjectMethods = () => {
   const formatBalance = (currency: string, amount: number):{ currency: string, amount: string|number } => {
     const { currencies } = useGlobalStore();
     const currencyConfig = currencies.find((item) => item.code === currency);
-    if (currencyConfig.type === 'fiat' || amount === 0) return { currency, amount };
+    const specialCurrencies = ['BTC', 'ETH'];
+    if (currencyConfig.type === 'fiat' || !specialCurrencies.includes(currencyConfig.code)) return { currency, amount };
 
-    const satoshi = Number((amount * currencyConfig.subunitToUnit).toFixed());
-    let format = { currency: currencyConfig.code, amount: (satoshi / currencyConfig.subunitToUnit).toString() };
+    const subcurrencyConfig = currencyConfig.subCurrencies.find((subcurrency) => subcurrency.subunitToUnit === 1000);
+    if (amount === 0) return { currency: subcurrencyConfig.code, amount };
 
-    if (currencyConfig.subCurrencies.length) {
-      currencyConfig.subCurrencies.forEach((subCurrency) => {
-        if (satoshi % (currencyConfig.subunitToUnit / subCurrency.subunitToUnit) === 0) {
-          format = {
-            currency: subCurrency.code,
-            amount: ((subCurrency.subunitToUnit / currencyConfig.subunitToUnit) * satoshi).toFixed(),
-          };
-        }
-      });
-    }
+    const afterDigits = amount.toString().split('.')[1]?.length || 0;
 
-    return format;
+    return { currency: subcurrencyConfig.code, amount: (amount * 1000).toFixed(afterDigits < 4 ? 0 : (afterDigits - 3)) };
+  };
+
+  const setPageSeo = (seoData:SeoContentInterface|undefined):void => {
+    const globalStore = useGlobalStore();
+    useHead({
+      title: seoData?.title || globalStore.globalSeo?.title,
+      meta: [
+        {
+          name: 'description',
+          content: seoData?.description || globalStore.globalSeo?.description,
+        },
+      ],
+    });
   };
 
   return {
@@ -121,5 +124,6 @@ export const useProjectMethods = () => {
     getNicknameFromEmail,
     needToChangeLanguage,
     formatBalance,
+    setPageSeo,
   };
 };

@@ -1,0 +1,82 @@
+{
+  "confirm": {
+    "title": "Your account has been successfully confirmed!",
+    "button": "OK"
+  },
+  "success": {
+    "title": "Success",
+    "description": "Your deposit is successful! Money is already on your balance.",
+    "button": "Done"
+  },
+  "forgot": {
+    "title": "Забули пароль?",
+    "description": "Введіть адресу електронної пошти, і ми надішлемо вам посилання для зміни пароля.",
+    "forgotButton": "Скинути пароль",
+    "registrationButton": "Немає облікового запису? *Приєднуйтесь*"
+  },
+  "error": {
+    "title": "Error",
+    "description": "Sorry, something went wrong.<br>Please, try again.",
+    "button": "Try again"
+  },
+  "login": {
+    "title": "Логін",
+    "loginButton": "Логін",
+    "forgotButton": "*Забули пароль?*",
+    "registrationButton": "Ще не маєте аккаунт? *Приєднуйтесь!*"
+  },
+  "withdraw": {
+    "title": "Withdrawal",
+    "balanceLabel": "Balance",
+    "withdrawLabel": "Withdrawable",
+    "sumLabel": "Withdrawal sum",
+    "minSum": "Min withdraw:",
+    "withdrawButton": "Withdraw"
+  },
+  "reset": {
+    "title": "Скинути пароль",
+    "resetButton": "Підтвердити"
+  },
+  "registration": {
+    "title": "Приєднуйся до Slotsbet",
+    "registrationButton": "Зареєструватися",
+    "loginButton": " Маєте аккаунт? *Увійти*",
+    "promo": {
+      "title": "Welcome package",
+      "secondTitle": "5 BTC",
+      "additionalTitle": "+ 300 FS",
+      "advantages": [
+        {
+          "icon": "turbo-games",
+          "label": "Over 3000 provably fair games"
+        },
+        {
+          "icon": "speed",
+          "label": "Fast withdrawals"
+        },
+        {
+          "icon": "live-support",
+          "label": "24/7 Live Chat Support"
+        }
+      ]
+    },
+    "agreeEmailLabel": "Я погоджуюся отримувати бонуси та маркетингові електронні листи",
+    "agreeSmsLabel": "Розсилайте акції за допомогою SMS"
+  },
+  "locale": "uk",
+  "deposit": {
+    "title": "Депозит",
+    "balanceLabel": "Баланс",
+    "sumLabel": "Сума депозиту",
+    "minSum": "Мінімальний депозит:",
+    "togglerLabel": "У мене є бонус код",
+    "bonuses": [
+      {
+        "image": "/img/uploads/icn-notification.svg",
+        "title": "Get your welcome bonuses:",
+        "description": "5 BTC + 300 FS"
+      }
+    ],
+    "depositButton": "Deposit"
+  }
+}

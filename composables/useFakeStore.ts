@@ -1,171 +1,4 @@
 export const useFakeStore = () => {
-  const sliders = {
-    main: [
-        {
-          image: {
-            source: [
-              {
-                media: '(max-width: 360px)',
-                src: ['/sliders/main/1/328/1.png', '/sliders/main/1/328/2.png'],
-              },
-              {
-                media: '(max-width: 528px)',
-                src: ['/sliders/main/1/464/1.png', '/sliders/main/1/464/2.png'],
-              },
-              {
-                media: '(max-width: 768px)',
-                src: ['/sliders/main/1/704/1.png', '/sliders/main/1/704/2.png'],
-              },
-              {
-                media: '(max-width: 1024px)',
-                src: ['/sliders/main/1/944/1.png', '/sliders/main/1/944/2.png'],
-              },
-              {
-                media: '(max-width: 2264px)',
-                src: ['/sliders/main/1/3776/1.png', '/sliders/main/1/3776/2.png'],
-              },
-            ],
-            src: ['/sliders/main/1/944/1.png', '/sliders/main/1/944/2.png'],
-          },
-          title: '<h4>Welcome package <br> Get 5 BTC + 300 FS</h4>',
-          actions: {
-            primary: {
-              title: 'Get bonus',
-              href: '#',
-            },
-            // secondary: {
-            //   title: 'Secondary',
-            //   href: '#'
-            // },
-          },
-        },
-        {
-          image: {
-            source: [
-              {
-                media: '(max-width: 360px)',
-                src: ['/sliders/main/2/328/1.png', '/sliders/main/2/328/2.png'],
-              },
-              {
-                media: '(max-width: 528px)',
-                src: ['/sliders/main/2/464/1.png', '/sliders/main/2/464/2.png'],
-              },
-              {
-                media: '(max-width: 768px)',
-                src: ['/sliders/main/2/704/1.png', '/sliders/main/2/704/2.png'],
-              },
-              {
-                media: '(max-width: 1024px)',
-                src: ['/sliders/main/2/944/1.png', '/sliders/main/2/944/2.png'],
-              },
-              {
-                media: '(max-width: 2264px)',
-                src: ['/sliders/main/2/3776/1.png', '/sliders/main/2/3776/2.png'],
-              },
-            ],
-            src: ['/sliders/main/2/944/1.png', '/sliders/main/2/944/2.png'],
-          },
-          title: '<h5>Choose the safest crypto casino</h5>',
-          list: [
-            'Provably fair slots & games;',
-            '24/7 Live Chat Support;',
-            'Privacy and security.',
-          ],
-          actions: {
-            primary: {
-              title: 'Get bonus',
-              href: '#',
-            },
-            // secondary: {
-            //   title: 'Secondary',
-            //   href: '#'
-            // },
-          },
-        },
-        {
-          image: {
-            source: [
-              {
-                media: '(max-width: 360px)',
-                src: ['/sliders/main/3/328/1.png', '/sliders/main/3/328/2.png'],
-              },
-              {
-                media: '(max-width: 528px)',
-                src: ['/sliders/main/3/464/1.png', '/sliders/main/3/464/2.png'],
-              },
-              {
-                media: '(max-width: 768px)',
-                src: ['/sliders/main/3/704/1.png', '/sliders/main/3/704/2.png'],
-              },
-              {
-                media: '(max-width: 1024px)',
-                src: ['/sliders/main/3/944/1.png', '/sliders/main/3/944/2.png'],
-              },
-              {
-                media: '(max-width: 2264px)',
-                src: ['/sliders/main/3/3776/1.png', '/sliders/main/3/3776/2.png'],
-              },
-            ],
-            src: ['/sliders/main/3/944/1.png', '/sliders/main/3/944/2.png'],
-          },
-          title: '<h5>Enjoy fast games on <br>Slotsbet.</h5>',
-          actions: {
-            primary: {
-              title: 'Play now',
-              href: '#',
-            },
-            // secondary: {
-            //   title: 'Secondary',
-            //   href: '#'
-            // },
-          },
-        },
-        {
-          image: {
-            source: [
-              {
-                media: '(max-width: 360px)',
-                src: ['/sliders/main/4/328/1.png', '/sliders/main/4/328/2.png'],
-              },
-              {
-                media: '(max-width: 528px)',
-                src: ['/sliders/main/4/464/1.png', '/sliders/main/4/464/2.png'],
-              },
-              {
-                media: '(max-width: 768px)',
-                src: ['/sliders/main/4/704/1.png', '/sliders/main/4/704/2.png'],
-              },
-              {
-                media: '(max-width: 1024px)',
-                src: ['/sliders/main/4/944/1.png', '/sliders/main/4/944/2.png'],
-              },
-              {
-                media: '(max-width: 2264px)',
-                src: ['/sliders/main/4/3776/1.png', '/sliders/main/4/3776/2.png'],
-              },
-            ],
-            src: ['/sliders/main/4/944/1.png', '/sliders/main/4/944/2.png'],
-          },
-          title: '<h5>Get bonuses every week</h5>',
-          list: [
-            'Provably fair slots & games;',
-            '24/7 Live Chat Support;',
-            'Privacy and security.',
-          ],
-          actions: {
-            primary: {
-              title: 'Get bonus',
-              href: '#',
-            },
-            // secondary: {
-            //   title: 'Secondary',
-            //   href: '#'
-            // },
-          },
-        },
-      ],
-  };
-
   const cards = [
     {
       variant: 'recomended',
@@ -676,7 +509,7 @@ export const useFakeStore = () => {
     {
       variant: 'recently',
       identity: 'Recently played',
-      titleIcon: 'ui-history',
+      titleIcon: 'history',
       id: 'recently',
       showAllBtn: false,
       showArrows: false,
@@ -703,7 +536,7 @@ export const useFakeStore = () => {
       variant: 'favorites',
       identity: 'Favorites',
       id: 'favorites',
-      titleIcon: 'ui-heart',
+      titleIcon: 'heart',
       showAllBtn: true,
       showArrows: false,
       games: [
@@ -1123,187 +956,6 @@ export const useFakeStore = () => {
     },
   ];
 
-  const topMenuItems = [
-    {
-      title: 'Slots',
-      icon: 'slots',
-      href: '/games?category=slots',
-    },
-    {
-      title: 'Live Casino',
-      icon: 'live-casino',
-      href: '/games?category=live',
-    },
-    {
-      title: 'Table Games',
-      icon: 'table-games',
-      href: '/games?category=table',
-    },
-    {
-      title: 'Turbogames',
-      icon: 'turbo-games',
-      href: '/games?category=turbogames',
-      list: [
-        {
-          src: 'turbogames/crash_x.jpg',
-          href: '/games/crash-x-turbo-games',
-        },
-        {
-          src: 'turbogames/dice.jpeg',
-          href: '/games/dice-twice-turbo-games',
-        },
-        {
-          src: 'turbogames/mines.jpeg',
-          href: '/games/mines-turbo-games',
-        },
-      ],
-    },
-    {
-      title: 'Sportsbook',
-      icon: 'sport-book',
-      href: '/betting',
-    },
-  ];
-
-  const centerMenuItems = [
-    {
-      title: 'Bonuses',
-      icon: 'bonuses',
-      items: [
-        {
-          title: 'Welcome package',
-          href: '/welcome-package',
-        },
-        {
-          title: 'Monday Reload Bonus',
-          href: '/bonus/monday-reload-bonus',
-        },
-        {
-          title: 'Wednesday Free Spins',
-          href: '/bonus/wednesday-free-spins',
-        },
-        {
-          title: 'Weekly Cashback',
-          href: '/bonus/weekly-cashback',
-        },
-      ],
-    },
-    // {
-    //   title: 'VIP  Program',
-    //   icon: 'vip',
-    //   bage: {
-    //     type: 'new',
-    //     text: 'new',
-    //   },
-    // },
-    // {
-    //   title: 'Tournament',
-    //   icon: 'tournament',
-    // },
-    // {
-    //   title: 'Lotteries',
-    //   icon: 'lottery',
-    // },
-    // {
-    //   title: 'Ouests',
-    //   icon: 'quest',
-    // },
-    // {
-    //   title: 'Shop',
-    //   icon: 'shop',
-    // },
-  ];
-
-  const sbtTokenMenuItems = [
-    {
-      title: 'SBT Token',
-      icon: 'tfs-token',
-      href: '/sbt-token',
-    },
-  ];
-
-  const userMenuItems = [
-    {
-      title: 'Favorites',
-      icon: 'ui-heart',
-      href: '/favorites',
-    },
-    {
-      title: 'Recently played',
-      icon: 'ui-history',
-      href: '/recently-played',
-    },
-  ];
-
-  const bottomMenuItems = [
-    // {
-    //   title: 'Favorites',
-    //   icon: 'ui-heart',
-    //   count: 2,
-    // },
-    // {
-    //   title: 'Recently played',
-    //   icon: 'ui-history',
-    //   count: 10,
-    // },
-    {
-      title: 'Support',
-      icon: 'live-support',
-      href: '/contact',
-    },
-  ];
-
-  const subMenuItems = [
-    {
-      title: 'T&C',
-    },
-    {
-      title: 'Bonus terms',
-    },
-    {
-      title: 'About us',
-    },
-    {
-      title: 'Payment methods',
-    },
-    {
-      title: 'F.A.Q',
-    },
-    {
-      title: 'Privacy Policy',
-    },
-    {
-      title: 'Gambling with responsibility',
-    },
-  ];
-
-  const staticMenuItems = [
-    {
-      title: 'T&C',
-      href: '/terms-and-conditions',
-    },
-    {
-      title: 'Bonus terms',
-      href: '/bonus-terms',
-    },
-    {
-      title: 'F.A.Q',
-      href: '/questions',
-    },
-    {
-      title: 'Privacy Policy',
-      href: '/privacy-policy',
-    },
-    {
-      title: 'Gambling with responsibility',
-      href: '/gambling-with-responsibility',
-    },
-    {
-      title: 'KYC Policy',
-      href: '/kyc-policy',
-    },
-  ];
-
   const catNavItems = [
     {
       title: 'Casino',
@@ -1343,21 +995,8 @@ export const useFakeStore = () => {
 
     {
       title: 'All categories',
-      icon: 'ui-more-menu',
+      icon: 'more-menu',
       href: '#',
-    },
-  ];
-
-  const togglerBtnItems = [
-    {
-      icon: 'cherry',
-      title: 'Casino',
-      url: '/main',
-    },
-    {
-      icon: 'sport',
-      title: 'Sports',
-      url: '/betting',
     },
   ];
 
@@ -1392,54 +1031,6 @@ export const useFakeStore = () => {
   };
 
   const selects = {
-    country: [
-      {
-        title: 'USA',
-        value: 'USA',
-        mask: '/img/flags/us.svg',
-      },
-      {
-        title: 'USA',
-        value: 'USA',
-        mask: '/img/flags/us.svg',
-      },
-    ],
-    currency: [
-      {
-        title: 'USD',
-        value: 'USD',
-      },
-      {
-        title: 'CAD',
-        value: 'CAD',
-      },
-      {
-        title: 'NOK',
-        value: 'NOK',
-      },
-      {
-        title: 'PLN',
-        value: 'PLN',
-      },
-    ],
-    timeZones: [
-      {
-        title: '(GTM +00:000) UTC',
-        value: '(GTM +00:000) UTC',
-      },
-      {
-        title: '(GTM +00:000) UTC',
-        value: '(GTM +00:000) UTC',
-      },
-      {
-        title: '(GTM +00:000) UTC',
-        value: '(GTM +00:000) UTC',
-      },
-      {
-        title: '(GTM +00:000) UTC',
-        value: '(GTM +00:000) UTC',
-      },
-    ],
     notification: [
       {
         title: 'item 1',
@@ -1488,43 +1079,6 @@ export const useFakeStore = () => {
       //   title: 'Limits',
       //   href: '/profile/limits',
       // },
-    ],
-    faq: [
-      {
-        title: 'Most popular',
-        href: '/questions/most-popular',
-        icon: 'hot',
-      },
-      {
-        title: 'Account',
-        href: '/questions/account',
-        icon: 'ui-user',
-      },
-      {
-        title: 'Deposits & Withdrawals',
-        href: '/questions/deposits-and-withdrawals',
-        icon: 'ui-wallet',
-      },
-      {
-        title: 'Bonuses',
-        href: '/questions/bonuses',
-        icon: 'bonuses',
-      },
-      {
-        title: 'Games',
-        href: '/questions/games',
-        icon: 'ui-gamepad',
-      },
-      {
-        title: 'Security',
-        href: '/questions/security',
-        icon: 'security',
-      },
-      {
-        title: 'Gambling with responsibility',
-        href: '/questions/gambling-with-responsibility',
-        icon: 'ui-18',
-      },
     ],
   };
 
@@ -1835,198 +1389,6 @@ export const useFakeStore = () => {
     ],
   };
 
-  const accordeons = {
-    account: [
-      {
-        title: 'How can I create an account in the Slotsbet?',
-        content: [
-          '<p>All you have to do to get started is click the “Registration” button and fill in all the fields. Then you get a verification email with a link.</p>',
-        ],
-        isOpen: false,
-      },
-      {
-        title: 'Can I have more than one account?',
-        content: ['<p>No. All details on Terms & Conditions.</p>'],
-        isOpen: false,
-      },
-      {
-        title: 'Can I change my registered email address?',
-        content: ["<p>Sorry, but that's impossible.</p>"],
-        isOpen: false,
-      },
-      {
-        title: 'How do I add another currency to my account?',
-        content: [
-          '<p>Go to your account and choose "Wallet". Click on "+" and choose the currency that you prefer.</p>',
-        ],
-        isOpen: false,
-      },
-    ],
-    mostPopular: [
-      {
-        title: 'Are the games fair?',
-        content: ['<p>All games on Slotsbet are 100% fair.</p>'],
-        isOpen: false,
-      },
-      {
-        title: 'What should I do if I have forgotten my password?',
-        content: [
-          '<p>You can easily create a new password. Just click the Forgot Password link in the Sign in form. Then we will send an email that will direct you to a new link. There you will create a new password and log in to your account.</p>',
-        ],
-        isOpen: false,
-      },
-      {
-        title: 'Can I close my account?',
-        content: [
-          '<p>Of course. Please contact Customer Support in online chat and give a brief explanation to why you want to close your account.</p>',
-        ],
-        isOpen: false,
-      },
-      {
-        title: "I didn't receive a confirmation email. What should I do?",
-        content: [
-          '<p>Check your promotions, spam or junk folder and any tabs in your inbox. If there you did not find the letter either, please contact support via online chat or email.</p>',
-        ],
-        isOpen: false,
-      },
-    ],
-    depositsAndWithdrawals: [
-      {
-        title: 'What currencies does Slotsbet accept?',
-        content: ['<p>Slotsbet accepts BTC, ETH, LTC, USDT.</p>'],
-        isOpen: false,
-      },
-      {
-        title: 'How can I choose a different currency?',
-        content: ['<p>Choose required currency and tap on deposit.</p>'],
-        isOpen: false,
-      },
-      {
-        title:
-          'Do I need to pay any service fees for deposits and withdrawals?',
-        content: [
-          '<p> It depends on the currency and the method of payment you plan to use. Some of them are free, others might charge a small fee.</p>',
-        ],
-        isOpen: false,
-      },
-      {
-        title:
-          "What's the minimum and maximum amount of money I can deposit and withdraw?",
-        content: [
-          "<p>The minimum deposit and withdrawal amount are 0.00027 BTC and it's equivalent. The maximum deposit and withdrawal depend on your payment method.</p>",
-        ],
-        isOpen: false,
-      },
-      {
-        title: 'How soon can I receive my withdrawal?',
-        content: [
-          '<p>Usually you receive your money immediately, but it depends on the payment method.</p>',
-        ],
-        isOpen: false,
-      },
-    ],
-    bonuses: [
-      {
-        title: 'What is a bonus?',
-        content: [
-          "<p>Bonuses are additional money added to your balance. It gives you an advantage and increases your chances of winning bigger amounts. But you should remember that the bonus size depends on the promotional offer's terms. So don't forget to check out our promotions and mindfully read the offer's terms.</p>",
-        ],
-        isOpen: false,
-      },
-      {
-        title: 'How can I find out what the bonus wager is?',
-        content: [
-          '<p>Just go to your personal profile. There you can find all the information about active bonuses. And if you need any help you can always text to our support.</p>',
-        ],
-        isOpen: false,
-      },
-      {
-        title: 'How can I get my welcome bonus?',
-        content: [
-          '<p>The bonus will be automatically credited as soon as you make the deposit.</p>',
-        ],
-        isOpen: false,
-      },
-      {
-        title: 'How many times do I need to wager my bonus?',
-        content: [
-          '<p> All deposit-related bonuses have a x45 wagering requirement. For more information, please visit our <a href="/bonus-terms">Bonus Terms Page.</a></p>',
-        ],
-        isOpen: false,
-      },
-      {
-        title:
-          "I got my bonus, but the required bonus wager isn't decreasing. Why?",
-        content: [
-          '<p>Different casino games contribute differently to the wagering requirement. <a href="/bonus-terms">On the Bonus Terms Page</a> you can read more information about bonus wager.</p>',
-        ],
-        isOpen: false,
-      },
-    ],
-    games: [
-      {
-        title: 'The game stalls in the middle of a round. What should I do?',
-        content: [
-          '<p>We store every single spin you make in our database in order to help with these problems. If you feel that an error has occurred during your game play, then please contact our support team.</p>',
-        ],
-        isOpen: false,
-      },
-      {
-        title: 'I can’t open a game. What should I do?',
-        content: [
-          '<p>We recommend relaunching the webpage, browser and/or device. If none of these helps, please contact our support team.</p>',
-        ],
-        isOpen: false,
-      },
-    ],
-    security: [
-      {
-        title: 'Am I required to upload documents and why?',
-        content: [
-          '<p>You can use the website, play, and win without documents. But if you want to withdrawal your winnings, you will need to upload documents to verify your identity. We have to follow the standards set out by the Curacao licensing authority. This means that, in certain situations, we may ask our players to provide additional supporting documentation.</p>',
-        ],
-        isOpen: false,
-      },
-      {
-        title: 'Сan I edit the data in my profile?',
-        content: [
-          '<p>Yes, you can edit your profile information. But some fields are not editable. Please, contact our support team to change the data.</p>',
-        ],
-        isOpen: false,
-      },
-      {
-        title: 'Is my personal information secure in the Slotsbet?',
-        content: [
-          '<p>Please be confident that your documents and other personal data will be protected.</p>',
-        ],
-        isOpen: false,
-      },
-      {
-        title:
-          ' Am I required to verify my account in order to make a deposit or a withdrawal?',
-        content: [
-          '<p> Yes, you need to verify your account by adding personal documents for withdrawals.</p>',
-        ],
-        isOpen: false,
-      },
-      {
-        title: 'How should I send my documentation?',
-        content: [
-          '<p>Go to the “Security & Verification” tab in your Profile. There you will find all the necessary documents. Upload documents in JPG or PNG (max size 2MB).</p>',
-        ],
-        isOpen: false,
-      },
-    ],
-    responsibleGaming: [
-      {
-        title: 'Can I close my account for a while?',
-        content: [
-          '<p>Yes. If you want to close your account for a while (6-12 months), choose self-exclusion. Also, you can set a cooling-off period. You won’t be able to make deposits and play during the specified period (from 1 day to 6 months), also you will be excluded from all advertising offers. Go to the “Responsible Gambling” tab on your Profile.</p>',
-        ],
-      },
-    ],
-  };
-
   const categories = [
     {
       title: {
@@ -2233,199 +1595,6 @@ export const useFakeStore = () => {
     },
   };
 
-  const bonusPages = {
-    'first-deposit-bonus': {
-      bg: 'red',
-      src: '/promo/1-deposit-big.png',
-      title: '1st deposit bonus',
-      subTitle: 'Get your 100% bonus up to 1.5 BTC and 100 FS',
-      description: 'Slotsbet greeting you with a huge first bonus! As you’re new to us, we’re offering you a 100% up to 1.5 BTC + 100 Free Spins on your first deposit. Play in one of these games from Platipus: Cleo\'s Gold, Fruity Sevens or Arabian Tales.',
-      list: {
-        title: 'Getting your bonus is easy:',
-        items: [
-          '1. Create an account and top it up with at least 0.001 BTC.',
-          '2. Instantly receive a bonus worth 100% of the amount you deposited (up to a maximum of 1.5 BTC (or the same value in other cryptocurrencies))',
-          '3. Collect your 100 free spins you can find these in the Bonus section of your account.',
-        ],
-      },
-      detail: {
-        title: 'Bonus Terms:',
-        items: [
-          '1. For getting the bonus, you must place a deposit of at least 0.001 BTC or the same value in other cryptocurrencies.',
-          '2. The maximum bonus amount is 100% of the deposit amount, but not more than 1.5 BTC or the same value in other cryptocurrencies + amount of winnings obtained after the completion of the free spins.',
-          '3. Full wagering requires making bets 40 times the amount of the bonus received: (deposit bonus + winnings from free spins) × 40.',
-          '4. The deposit bonus is valid for 5 days, starting from the date you receive it.',
-          '5. 100 free spins are available in one of these games: Cleo\'s Gold, Fruity Sevens, or Arabian Tales by Platipus. Free Spins bonus can be activated only for one chosen game. Make sure to activate your free spins in the "bonus section" in your account. Free spins can be activated for 5 days before they expire. After activation free spins are valid for 5 days. If not used, they will expire.',
-          '6. 50 free spins will be given per day within two days of the day you activated the bonus.',
-          '7. Please note that spins must be activated within a day.',
-          '8. The maximum bet amount when wagering is 0.0003 BTC or the same value in other cryptocurrencies.',
-          '9. General bonus terms and conditions apply.',
-        ],
-      },
-    },
-    'second-deposit-bonus': {
-      bg: 'yellow',
-      src: '/promo/2-deposit-big.png',
-      title: '2nd deposit bonus',
-      subTitle: 'Grab your 75% bonus up to 1 BTC and 50 FS',
-      description: 'Enjoy playing games with the bonus on your second deposit! We’re so happy to see you again! It looks like the time for a second deposit has come. To fill the best with Slotsbet, we are pleased to give you a bonus of 75% up to 1 BTC + 50 Free Spins on slot Elvis Frog in Vegas (BGaming) on your second deposit.',
-      list: {
-        title: 'The road to get the bonus:',
-        items: [
-          '1. Top up your account with at least 0.001 BTC.',
-          '2. Instantly receive a bonus worth 75% of the amount you deposited (up to a maximum of 1 BTC (or the same value in other cryptocurrencies)).',
-          '3. Collect your 50 Free Spins that you can find in the Bonus section of your account.',
-        ],
-      },
-      detail: {
-        title: 'Bonus Terms:',
-        items: [
-          '1. To get the bonus, you must place a deposit of at least 0.001 BTC or the same value in other cryptocurrencies.',
-          '2. The maximum bonus amount is 75% of the deposit amount, but not more than 1 BTC or the same value in other cryptocurrencies + amount of winnings obtained after the completion of the free spins.',
-          '3. Full wagering requires making bets 40 times the amount of the bonus received: (deposit bonus + winnings from free spins) × 40.',
-          '4. The deposit bonus is valid for 5 days, starting from the date you receive it.',
-          '5. 50 free spins are available for the game Elvis Frog in Vegas (BGaming). Make sure to activate your free spins in the "bonus section" in your account. Free spins can be activated for 5 days before they expire. After activation free spins are valid for 5 days. If not used, they will expire.',
-          '6. 25 Free Spins will be given per day within two days of the day you activated the bonus.',
-          '7. Please note that spins must be activated within a day.',
-          '8. The maximum bet amount when wagering is 0.0003 BTC or the same value in other cryptocurrencies.',
-          '9. General bonus terms and conditions apply.',
-        ],
-      },
-    },
-    'third-deposit-bonus': {
-      bg: 'green',
-      src: '/promo/3-deposit-big.png',
-      title: '3rd deposit bonus',
-      subTitle: 'Take your 50% bonus up to 1 BTC and 50 FS',
-      description: 'Grab your chance to play on at Slotsbet with a head start, thanks to our third deposit bonus!',
-      list: {
-        title: 'How to get the bonus:',
-        items: [
-          '1. Place a deposit onto your account with at least 0.001 BTC.',
-          '2. Instantly receive a 50% bonus of up to 1 BTC.',
-          '3. Collect your 50 Free Spins that you can find in the Bonus section of your account.',
-        ],
-      },
-      detail: {
-        title: 'Bonus Terms:',
-        items: [
-          '1. In order to get the bonus, you must place a deposit of at least 0.001 BTC or the same value in cryptocurrencies.',
-          '2. The maximum bonus amount is 50% of the deposit amount, but not more than 1 BTC or the same value in other cryptocurrencies.',
-          '3. Full wagering requires making bets 40 times the amount of the bonus received: (deposit + bonus) × 40.',
-          '4. The deposit bonus is valid for 5 days, starting from the date you receive it.',
-          '5. The maximum bet amount when wagering is 0.0003 BTC or the same value in other cryptocurrencies.',
-          '6. 25 Free Spins will be given per day within two days of the day you activated the bonus.',
-          '7. General bonus terms and conditions apply.',
-        ],
-      },
-    },
-    'fourth-deposit-bonus': {
-      bg: 'blue',
-      src: '/promo/4-deposit-big.png',
-      title: '4th deposit bonus',
-      subTitle: 'Play more with 100% bonus up to 1.5 BTC and 100 FS.',
-      description: 'We will double your fourth deposit. Just play and we will do the rest for you.',
-      list: {
-        title: 'How to get the bonus:',
-        items: [
-          '1. Place a deposit onto your account with at least 0.001 BTC.',
-          '2. Instantly receive a 100% bonus of up to 1.5 BTC.',
-          '3. Collect your 100 Free Spins that you can find in the Bonus section of your account.',
-        ],
-      },
-      detail: {
-        title: 'Bonus Terms:',
-        items: [
-          '1. In order to get the bonus, you must place a deposit of at least 0.001 BTC or the same value in cryptocurrencies.',
-          '2. The maximum bonus amount is 100% of the deposit amount, but not more than 1.5 BTC or the same value in other cryptocurrencies.',
-          '3. Full wagering requires making bets 40 times the amount of the bonus received: (deposit + bonus) × 40.',
-          '4. The deposit bonus is valid for 5 days, starting from the date you receive it.',
-          '5. The maximum bet amount when wagering is 0.0003 BTC or the same value in other cryptocurrencies.',
-          '6. 50 Free Spins will be given per day within two days of the day you activated the bonus.',
-          '7. General bonus terms and conditions apply.',
-        ],
-      },
-    },
-    'monday-reload-bonus': {
-      bg: 'gray',
-      src: '/promo/monday-big.png',
-      title: 'Monday Reload Bonus',
-      subTitle: '30% bonus of up to 0.0035 BTC on Monday',
-      description: 'Start your week on a high note with Slotsbet! Grabbing yourself a 30% bonus of up to 0.0035 BTC is easy:',
-      list: {
-        // title: 'How to get the bonus:',
-        items: [
-          '1. Make a deposit of at least 0.001 BTC.',
-          '2. Instantly receive a bonus worth 30% of the amount you deposited (up to a maximum of 0.0035 BTC).',
-        ],
-      },
-      detail: {
-        title: 'Bonus Terms:',
-        items: [
-          '1. To get the bonus, you must place a deposit of at least 0.001 BTC or the same value in cryptocurrencies.',
-          '2. The maximum bonus amount is 30% of the deposit amount, but not more than 0.0035 BTC or the same value in cryptocurrencies.',
-          '3. Full wagering requires making bets 40 times the amount of the bonus received: (deposit bonus) × 40.',
-          '4. The deposit bonus is valid for 5 days, starting from the date you receive it.',
-          '5. The maximum bet amount when wagering is 0.0003 BTC or the same value in cryptocurrencies.',
-        ],
-      },
-    },
-    'wednesday-free-spins': {
-      bg: 'gray',
-      src: '/promo/wednesday-big.png',
-      title: 'Wednesday Free Spins',
-      subTitle: 'Get 100 Free Spins every Wednesday',
-      description: 'On Wednesdays, our players receive either 30, 50, or 100 free spins just for making a deposit. Make sure you seize the opportunity for some Wednesday free spins when the day comes!',
-      // list: {
-      //   title: '',
-      //   items: [],
-      // },
-      detail: {
-        title: 'Bonus Terms:',
-        items: [
-          '1. To get the bonus, enter the bonus code WEDNESDAY before the deposit.',
-          '2. Minimum deposit to get a bonus:',
-          [
-            '20 free spins - 0.001 BTC;',
-            '50 free spins - 0.0015 BTC;',
-            '100 free spins - 0.002 BTC.',
-          ],
-          '3. Full wagering requires making bets for the amount 40 times the amount of the bonus received: (winnings from free spins) ×40.',
-          '4. Free spins will be automatically credited to your account!',
-          '5. Limitation of the maximum bet while wagering is 0.0003 BTC.',
-          '6. The bonus is available only on Wednesday from 00-00 to 23-59.',
-        ],
-      },
-    },
-    'weekly-cashback': {
-      bg: 'gray',
-      src: '/promo/weekly-big.png',
-      title: 'Weekly Cashback',
-      subTitle: 'Take your 10% cashback every Friday.',
-      description: 'Every Friday you can get a portion of your staked money back thanks to our Cashback Bonus. Receive yours!',
-      list: {
-        title: 'How to receive this bonus?',
-        items: [
-          'Create an account;',
-          'Make the minimum or larger deposit as stated in the promotion;',
-          'Find your bonus in the profile;',
-          'Contact live chat if you have questions.',
-        ],
-      },
-      detail: {
-        title: 'Bonus Terms:',
-        items: [
-          '1. The promotion\'s period is from Friday 00:00 to Thursday 23:59 UTC every week. No additional opt in is required.',
-          '2. This promotion is only valid for games played in the Casino section. Funds spent in other verticals (Live Casino) are not taken into account for this promotion.',
-          '3. Minimum eligible cashback amount to be credited is 0.0001 BTC.',
-          '4. All cashback amounts due are calculated by the formula: (total deposits during the promotional period - remaining available balance from the deposits during the promo period - total withdrawals during the promo period - total bonus credited during the promo period) x cashback % eligible at the time of request.',
-          '5. Any cashback amount due must be requested in Live Chat or by email by the player on the Friday following this promotion\'s period, by 23:59 UTC. In case the customer does not request the cashback amount, any entitlement of the cashback is considered as void.',
-          '6. Cashback is credited on the real balance of the customer\'s account. All credited cashback amounts are subject to a x1 wagering requirement before a withdrawal is allowed.',
-        ],
-      },
-    },
-};
-
   const filter = (cardsArray: any[], key: string): any[] => cardsArray.filter((item: any) => item.variant === key)[0];
   const depositItems = () => payments.filter((item) => item.useForDeposit === true);
   const withdrawItems = () => payments.filter((item) => item.useForWithDraw === true);
@@ -2443,61 +1612,29 @@ export const useFakeStore = () => {
   const providerCards = () => filter(cards, 'providers');
 
   const promoCard = {
-    image: {
-        source: [
-          {
-            media: '(max-width: 360px)',
-            src: ['/promo-card/328/1.png', '/promo-card/328/2.png'],
-          },
-          {
-            media: '(max-width: 528px)',
-            src: ['/promo-card/464/1.png', '/sliders/main/2/464/2.png'],
-          },
-          {
-            media: '(max-width: 768px)',
-            src: ['/promo-card/704/1.png', '/promo-card/704/2.png'],
-          },
-          {
-            media: '(max-width: 1024px)',
-            src: ['/promo-card/944/1.png', '/promo-card/944/2.png'],
-          },
-          {
-            media: '(max-width: 2264px)',
-            src: ['/promo-card/3776/1.png', '/promo-card/3776/2.png'],
-          },
-        ],
-        src: ['/promo-card/944/1.png', '/promo-card/944/2.png'],
+    title: '#### Play and win every day at Slotsbet',
+    button: {
+      label: 'Play now',
+    },
+    images: {
+      mobile: {
+        backgroundImage: '/img/uploads/1-mobile-background.png',
+        faceImage: '/img/uploads/home-face-mobile.png',
       },
-    title: '<h4>Play and win every day at Slotsbet</h4>',
-    actions: {
-      primary: {
-        title: 'Play now',
-        href: '#',
+      desktop: {
+        backgroundImage: '/img/uploads/1-desktop-background.png',
+        faceImage: '/img/uploads/home-face-desktop.png',
       },
-      // secondary: {
-      //   title: 'Secondary',
-      //   href: '#'
-      // },
     },
   };
 
   return {
-    userMenuItems,
-    topMenuItems,
-    centerMenuItems,
-    sbtTokenMenuItems,
-    bottomMenuItems,
-    subMenuItems,
-    staticMenuItems,
     catNavItems,
-    togglerBtnItems,
     items,
     selects,
     menu,
-    sliders,
     promotion,
     bonusPage,
-    bonusPages,
     depositItems,
     withdrawItems,
     betsHistoryTbBettingItems,
@@ -2505,7 +1642,6 @@ export const useFakeStore = () => {
     bonusesHistoryTb,
     sessionHistoryTb,
     transactionsHistoryTb,
-    accordeons,
     categories,
     benefitsCards,
     promotionCards,

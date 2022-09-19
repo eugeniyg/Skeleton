@@ -1,0 +1,24 @@
+{
+  "pageUrl": "weekly-cashback",
+  "adminTitle": "Weekly Cashback",
+  "termsLabel": "Bonus Terms:",
+  "termsContent": "1. The promotion's period is from Friday 00:00 to Thursday 23:59 UTC every week. No additional opt in is required.\n2. This promotion is only valid for games played in the Casino section. Funds spent in other verticals (Live Casino) are not taken into account for this promotion.\n3. Minimum eligible cashback amount to be credited is 0.0001 BTC.\n4. All cashback amounts due are calculated by the formula: (total deposits during the promotional period - remaining available balance from the deposits during the promo period - total withdrawals during the promo period - total bonus credited during the promo period) x cashback % eligible at the time of request.\n5. Any cashback amount due must be requested in Live Chat or by email by the player on the Friday following this promotion's period, by 23:59 UTC. In case the customer does not request the cashback amount, any entitlement of the cashback is considered as void.\n6. Cashback is credited on the real balance of the customer's account. All credited cashback amounts are subject to a x1 wagering requirement before a withdrawal is allowed.",
+  "button": {
+    "label": "Get bonus"
+  },
+  "backgroundColor": "gray",
+  "subtitle": "Take your 10% cashback every Friday.",
+  "title": "Weekly Cashback",
+  "locale": "uk",
+  "image": "/img/uploads/weekly-big.png",
+  "description": "Every Friday you can get a portion of your staked money back thanks to our Cashback Bonus. Receive yours!\n\n#### How to receive this bonus?\n\n1. Create an account;\n2. Make the minimum or larger deposit as stated in the promotion;\n3. Find your bonus in the profile;\n4. Contact live chat if you have questions.",
+  "seo": {
+    "text": {
+      "visible": "<!--StartFragment-->\n\n## Флагман ставок на біткойн\n\nSportsbet.io – це місце, де ви можете знайти конкурентоспроможні коефіцієнти на платформі, яка пропонує найкращий досвід ставок на біткоіни. Наша команда продовжує наполегливо працювати, щоб надати вам конкурентоспроможні коефіцієнти, підказки для ставок та інтерактивний досвід, щоб запропонувати вам повноцінну подорож до ставок, яку ви шукали. У Sportsbet.io ми наполегливо працюємо, щоб дати вам можливість насолоджуватися веселими, швидкими та чесними ставками.\n\n#### Надійні ставки на біткоіни\n\nSportsbet.io пишається тим, що є батьківщиною біткойнів. Ви використовуєте кожен свій біткойн будь-де на сайті. Маючи на вибір багато варіантів, ми можемо запевнити вас, що ви будете насолоджуватися часом, максимізуючи свої ставки з...\n\n<!--EndFragment-->",
+      "hidden": "<!--StartFragment-->\n\n## Спортивна букмекерська контора Bitcoin, яка пропонує багато можливостей\n\nВід футболу, баскетболу, бейсболу та навіть індустрії кіберспорту, що розвивається, ми допоможемо вам. Sportsbet.io пропонує понад 20 видів спорту, і ми намагаємося надати вам справедливі шанси на виграш у ставках, пропонуючи конкурентні коефіцієнти для кожного виду спорту.\n\n#### Безмежні шанси на ставки\n\nНаша платформа спортивних ставок пропонує опцію під час гри, якщо ви хочете взяти участь у події або зробити розумну ставку під час гри. Ви навіть можете переглядати майбутні ігри в нашому повному та регулярно оновлюваному списку майбутніх спортивних подій.\n\n#### Унікальні пропозиції\n\nSportsbet.io регулярно пропонує різноманітні рекламні акції, що дає вам більше шансів збільшити свої прибутки та навіть підвищити шанси зробити виграшні ставки. Від додаткових прискорень і таємничих призів, наші унікальні рекламні акції допоможуть вам отримати найкращий досвід ставок!\n\n<!--EndFragment-->",
+      "button": "Показати більше"
+    },
+    "title": "Щотижневий кешбек",
+    "description": "Щотижневий кешбек"
+  }
+}

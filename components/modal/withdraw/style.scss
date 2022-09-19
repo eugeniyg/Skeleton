@@ -1,6 +1,7 @@
 .modal-withdraw {
   @extend %modal;
   max-width: rem(400px);
+  width: 100%;
 
   @include media(md) {
     max-width: rem(664px);

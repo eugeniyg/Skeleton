@@ -4,6 +4,7 @@
   position: relative;
   border-radius: 8px;
   overflow: hidden;
+  min-height: 132px;
 
   @include media(md) {
     height: rem(280px);
@@ -16,6 +17,8 @@
     height: 100%;
     border-radius: 8px;
     object-fit: cover;
+    min-height: rem(140px);
+    min-height: rem(140px);
 
     &.front {
       position: absolute;
@@ -67,7 +70,7 @@
     top: 0;
     bottom: 0;
     grid-row-gap: var(--row-gap, #{rem(8px)});
-    width: var(--width, 70%);
+    width: var(--width, calc(50% - 32px));
     padding: var(--padding, #{0 0 0 rem(24px)});
 
     @include media(xs) {
@@ -84,7 +87,7 @@
 
   }
 
-  .list {
+  ul {
     color: var(--white);
     display: var(--display, none);
     flex-direction: column;
@@ -92,7 +95,7 @@
     padding: 0 0 0 rem(16px);
     grid-gap: rem(2px);
 
-    .item {
+    li {
       @include font($heading-3);
       text-decoration: none;
     }

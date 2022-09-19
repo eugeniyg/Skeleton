@@ -9,15 +9,17 @@
         width="100%"
       />
     </div>
+
     <client-only>
       <nav-game :gameInfo="gameInfo"/>
     </client-only>
-    <panel-mode @changeMode="emit('changeMode')"/>
+
+    <panel-mode :gameContent="gameContent" @changeMode="emit('changeMode')"/>
 
     <group-games
       :category="popularCategory"
       showArrows
-      subTitle="The best games for you"
+      subTitle
     />
   </div>
 </template>
@@ -29,6 +31,10 @@
       required: false,
     },
     gameInfo: {
+      type: Object,
+      required: false,
+    },
+    gameContent: {
       type: Object,
       required: false,
     },

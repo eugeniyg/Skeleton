@@ -1,9 +1,9 @@
 <template>
   <div>
     <client-only>
-      <carousel v-bind="topSliderProps">
-        <slide v-for="(props, index) in fakeStore.sliders.main" :key="index">
-          <card-promo v-bind="props" />
+      <carousel v-if="sliderItems?.length" v-bind="topSliderProps">
+        <slide v-for="(slide, index) in sliderItems" :key="index">
+          <card-promo v-if="slide.slideStatus === 'Published'" v-bind="slide" />
         </slide>
 
         <template v-slot:addons>
@@ -47,7 +47,12 @@
       @initialLoad="gamesGroupLoaded++"
     />
 
-    <cards-group v-if="providerCards.games?.length" v-bind="providerCards">
+    <cards-group
+      v-if="providerCards.games?.length"
+      v-bind="providerCards"
+      :identity="groupContent?.providers.label"
+      :titleIcon="groupContent?.providers.icon"
+    >
       <template v-slot:card="item">
         <card-providers v-bind="item" />
       </template>
@@ -67,7 +72,12 @@
       @initialLoad="gamesGroupLoaded++"
     />
 
-    <cards-group v-if="latestWinnersCards" v-bind="latestWinnersCards">
+    <cards-group
+      v-if="latestWinnersCards"
+      v-bind="latestWinnersCards"
+      :identity="groupContent?.latestWinners.label"
+      :titleIcon="groupContent?.latestWinners.icon"
+    >
       <template v-slot:card="item">
         <card-latest-winners v-bind="item" />
       </template>
@@ -87,17 +97,15 @@
       @initialLoad="gamesGroupLoaded++"
     />
 
-    <cards-group v-if="promotionsCards" v-bind="promotionsCards">
-      <template v-slot:card="item">
-        <card-promotions v-bind="item" />
-      </template>
-    </cards-group>
+    <group-promotions v-if="globalComponentsContent?.promotions" v-bind="globalComponentsContent.promotions" />
 
     <!-- <cards-group v-bind="fakeStore.newRelisesCards">
       <template v-slot:card="item">
         <card-base v-bind="item" />
       </template>
     </cards-group> -->
+
+    <atomic-seo-text v-if="mainContent?.seo?.text" v-bind="mainContent.seo.text" />
   </div>
 </template>
 
@@ -107,6 +115,15 @@
     Carousel, Slide, Pagination, Navigation,
   } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
+  import { CardsGroupInterface, MainContentInterface, SlideInterface } from '~/types';
+
+  const globalStore = useGlobalStore();
+  const { currentLocale, globalComponentsContent } = storeToRefs(globalStore);
+  const sliderResponse = await useAsyncData('sliderData', () => queryContent(`main-slider/${currentLocale.value.code}`).findOne());
+  const mainContentResponse = await useAsyncData('mainContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['mainPage']).findOne());
+  const mainContent:MainContentInterface|undefined = mainContentResponse.data.value?.mainPage;
+  const sliderItems:SlideInterface[]|undefined = sliderResponse.data.value?.slider;
+  const groupContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
 
   const fakeStore = useFakeStore();
   const router = useRouter();
@@ -117,7 +134,6 @@
 
   const providerCards = fakeStore.providerCards();
   const latestWinnersCards = fakeStore.latestWinnersCards();
-  const promotionsCards = fakeStore.promotionCards();
 
   const mainCategories = ['hot', 'slots', 'turbogames', 'new', 'table', 'live'];
   const sortCategory = gameCollections.value.filter((item) => mainCategories.find((el) => el === item.identity))
@@ -135,7 +151,10 @@
     },
   };
 
-  const { preloaderDone, preloaderStart, localizePath } = useProjectMethods();
+  const {
+    preloaderDone, preloaderStart, localizePath, setPageSeo,
+  } = useProjectMethods();
+  setPageSeo(mainContent?.seo);
   onBeforeMount(() => {
     preloaderStart();
   });

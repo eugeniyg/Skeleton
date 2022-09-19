@@ -4,7 +4,7 @@
       <div class="header">
         <template v-if="cryptoCurrencies.length">
           <button-base
-            v-for="{id, title} in navItems"
+            v-for="{id, title} in props.tabs"
             :key="id"
             :id="id"
             type="ghost"
@@ -40,16 +40,10 @@
   import { CurrencyInterface } from '@platform/frontend-core/dist/module';
   import { useWalletStore } from '~/composables/useWalletStore';
 
-  const navItems = [
-    {
-      id: 'all',
-      title: 'All Currencies',
-    },
-    {
-      id: 'crypto',
-      title: 'Crypto',
-    },
-  ];
+  const props = defineProps({
+    tabs: Array,
+    default: () => [],
+  });
 
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();

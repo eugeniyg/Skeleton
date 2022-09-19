@@ -2,12 +2,16 @@
   <div class="group-games">
     <atomic-icon v-if="titleIcon && !props.subTitle" :id="titleIcon"/>
 
-    <div v-if="props.category.name && props.subTitle" class="titles">
-      <h2 class="title">{{ props.category.name }}</h2>
-      <h4 class="sub-title">{{ props.subTitle }}</h4>
+    <div v-if="props.subTitle" class="titles">
+      <h2 class="title">
+        {{ gameCategoriesObj[props.category.identity]?.label || props.category.name || props.category.identity }}
+      </h2>
+      <h4 class="sub-title">{{ cardsGroupContent?.recommendedSubtitle }}</h4>
     </div>
 
-    <h2 v-else class="title">{{ props.category.name || props.category.identity }}</h2>
+    <h2 v-else class="title">
+      {{ gameCategoriesObj[props.category.identity]?.label || props.category.name || props.category.identity }}
+    </h2>
 
     <button-base
       v-if="props.showAllBtn"
@@ -15,7 +19,7 @@
       type="ghost"
       @click="openGames"
     >
-      Show all
+      {{ cardsGroupContent?.moreButton }}
     </button-base>
 
     <button-arrows
@@ -45,6 +49,7 @@
   import {
     GameInterface, PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
+  import { CardsGroupInterface } from '~/types';
 
   const props = defineProps({
     category: {
@@ -52,7 +57,7 @@
       required: true,
     },
     subTitle: {
-      type: String,
+      type: Boolean,
       required: false,
     },
     showAllBtn: {
@@ -65,12 +70,14 @@
     },
   });
 
+  const { globalComponentsContent, gameCategoriesObj } = useGlobalStore();
+  const cardsGroupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
+  const titleIcon = gameCategoriesObj[props.category.identity]?.icon;
+
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
   const nextDisabled = ref<boolean>(false);
   const showArrowButtons = ref<boolean>(props.showArrows);
-  const { sortedCategories } = useGamesStore();
-  const titleIcon = sortedCategories[props.category.identity];
   const games = ref<GameInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
   const { getFilteredGames } = useCoreGamesApi();

@@ -1,5 +1,3 @@
-import { defineNuxtConfig } from 'nuxt';
-
 const build = require('./nuxt-config/_build.ts');
 
 const viteConfig: any = {
@@ -29,6 +27,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@/modules/localeRoutes',
     '@platform/frontend-core',
+    '@nuxt/content',
   ],
   components: {
     dirs: [

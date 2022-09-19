@@ -59,7 +59,7 @@
     border-radius: 8px;
     @extend %scrollbar;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    //grid-template-columns: repeat(2, 1fr);
     grid-gap: rem(8px);
 
     @include media(md) {

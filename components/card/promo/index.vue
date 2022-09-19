@@ -1,45 +1,29 @@
 <template>
   <div class="promo-card">
     <picture>
-      <source
-        v-for="({media, src}, index) in props.image.source"
-        :key="index"
-        :media="media"
-        :srcset="`/img${src[1]}`"
-      />
-      <img class="back" :src="`/img${props.image.src[1]}`" alt=""/>
+      <source :media="'(max-width: 1279px)'" :srcset="props.images.mobile.backgroundImage" />
+      <source :media="'(max-width: 2264px)'" :srcset="props.images.desktop.backgroundImage" />
+      <img class="back" :src="props.images.mobile.backgroundImage" alt=""/>
     </picture>
 
     <picture>
-      <source
-        v-for="({media, src}, index) in props.image.source"
-        :key="index"
-        :media="media"
-        :srcset="`/img${src[0]}`"
-      />
-      <img class="front" :src="`/img${props.image.src[0]}`" alt=""/>
+      <source :media="'(max-width: 1279px)'" :srcset="props.images.mobile.faceImage" />
+      <source :media="'(max-width: 2264px)'" :srcset="props.images.desktop.faceImage" />
+      <img class="front" :src="props.images.mobile.faceImage" alt=""/>
     </picture>
 
     <div class="info">
-      <div class="title" v-if="props.title" v-html="props.title"/>
+      <div class="title" v-if="props.title" v-html="marked.parse(props.title)" />
+      <div class="content" v-if="props.content" v-html="marked.parse(props.content)" />
 
-      <ul class="list" v-if="props.list.length">
-        <li class="item" v-for="(item, itemIndex) in props.list" :key="itemIndex">{{ item }}</li>
-      </ul>
-
-      <div class="actions" v-if="props.actions">
+      <div class="actions" v-if="props.button">
         <button-base
-          v-if="props.actions.primary"
           type="primary"
           size="md"
-          @click="showModal(isLoggedIn ? 'deposit': 'register')"
-        >{{ props.actions.primary.title }}</button-base>
-        <button-base
-          v-if="props.actions.secondary"
-          type="secondary"
-          size="md"
-          @click="showModal(isLoggedIn ? 'deposit': 'register')"
-        >{{ props.actions.secondary.title }}</button-base>
+          @click="clickButton(props.button.url)"
+        >
+          {{ props.button.label }}
+        </button-base>
       </div>
     </div>
   </div>
@@ -47,25 +31,22 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { marked } from 'marked';
 
   const props = defineProps({
-    image: {
+    images: {
       type: Object,
       required: true,
     },
     title: {
       type: String,
-      default: 'Play over 3000 provably fair games',
+      default: '',
     },
-    subTitle: {
+    content: {
       type: String,
-      default: 'Win big by choosing the correct side. Pick a side and let luck decide!',
+      required: false,
     },
-    list: {
-      type: Array,
-      default: () => [],
-    },
-    actions: {
+    button: {
       type: Object,
       required: false,
     },
@@ -74,6 +55,14 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal } = useLayoutStore();
+
+  const clickButton = (url:string):void => {
+    if (url) {
+      const router = useRouter();
+      const { localizePath } = useProjectMethods();
+      router.push(localizePath(url));
+    } else showModal(isLoggedIn.value ? 'deposit' : 'register');
+  };
 </script>
 
 <style lang="scss" src="./style.scss"/>

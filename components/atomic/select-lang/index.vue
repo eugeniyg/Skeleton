@@ -8,7 +8,7 @@
           alt=""
         />
         <span class="title">{{ currentLocale.nativeName }}</span>
-        <atomic-icon id="ui-arrow_expand-close" />
+        <atomic-icon id="arrow_expand-close" />
       </div>
     </client-only>
 
@@ -24,7 +24,7 @@
       >
         <img class="img" :src="`/img/flags/${languageFlagsMap[locale.code.toLowerCase()]}.svg`" alt="" />
         <span class="title">{{ locale.nativeName }}</span>
-        <atomic-icon id="ui-check" />
+        <atomic-icon id="check" />
       </component>
     </div>
   </div>
@@ -73,6 +73,7 @@
   };
 
   onMounted(() => {
+    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587
     setTimeout(() => {
       document.addEventListener('click', checkLanguageDropdown);
     }, 100);

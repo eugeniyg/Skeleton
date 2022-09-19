@@ -1,32 +1,34 @@
 <template>
   <div class="nav-list">
-    <div v-for="({ href, title, icon, bage, items, list }, index) in props.items" :key="index" class="item">
-      <template v-if="items">
+    <div v-for="(listItem, index) in props.items" :key="index" class="item">
+      <template v-if="listItem?.items?.length">
         <div class="link" @click.prevent="toggleOpen" :class="{'is-open': open}">
-          <atomic-icon :id="icon"/>
-          <div class="text">{{ title }}</div>
+          <atomic-icon :id="listItem.icon"/>
+          <div class="text">{{ listItem.label }}</div>
           <button-toggle/>
         </div>
 
         <div class="items">
           <nuxt-link
-            v-for="({ title, href }, itemIndex) in items"
+            v-for="(link, itemIndex) in listItem.items"
             :key="itemIndex"
             class="link"
-            :to="localizePath(href)"
+            :to="localizePath(link.url)"
           >
-            <span class="text">{{ title }}</span>
+            <span class="text">{{ link.label }}</span>
           </nuxt-link>
         </div>
       </template>
 
-      <div v-else class="link" @click="defineCurrentAction(href)">
-        <atomic-icon :id="icon"/>
-        <div class="text">{{ title }}</div>
-        <atomic-bage v-if="bage" :variant="bage.variant">{{ bage.text }}</atomic-bage>
+      <div v-else class="link" @click="defineCurrentAction(listItem.url)">
+        <atomic-icon :id="listItem.icon"/>
+        <div class="text">{{ listItem.label }}</div>
       </div>
 
-      <list-turbo-games v-if="list" :items="list" :is-compact="props.isCompact"/>
+      <list-games
+        v-if="listItem.gameList?.length"
+        :items="listItem.gameList.slice(0, 3)"
+      />
     </div>
   </div>
 </template>
@@ -58,6 +60,7 @@
 
   const { localizePath } = useProjectMethods();
   const defineCurrentAction = (href: string):void => {
+    if (!href) return;
     // specific actions like open modal etc
     if (!isLoggedIn.value && href === '/betting') {
       showModal('register');

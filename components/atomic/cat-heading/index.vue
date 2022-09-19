@@ -6,12 +6,7 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    icon: {
-      type: String,
-      required: true,
-    },
-  });
+  const props = defineProps<{icon: string}>();
 </script>
 
 <style lang="scss" src="./style.scss"/>

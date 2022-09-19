@@ -29,7 +29,7 @@
         size="xs"
         @click="openGame(false)"
       >
-        Try for fun
+        {{ groupContent?.demoButton }}
       </button-base>
     </div>
   </div>
@@ -39,6 +39,7 @@
   import { storeToRefs } from 'pinia';
   import { PropType } from '@vue/runtime-core';
   import { GameImagesInterface } from '@platform/frontend-core/dist/module';
+  import { CardsGroupInterface } from '~/types';
 
   const props = defineProps({
     images: {
@@ -74,8 +75,10 @@
   const router = useRouter();
   const profileStore = useProfileStore();
   const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
-  const { showModal, showPlayLimitAlert } = useLayoutStore();
+  const { baseApiUrl, alertsData, globalComponentsContent } = useGlobalStore();
+  const { showModal, showAlert } = useLayoutStore();
   const { localizePath, getImageUrl } = useProjectMethods();
+  const groupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
 
   const openGame = (isReal: boolean):void => {
     if (!isReal) {
@@ -83,13 +86,12 @@
     } else if (!isLoggedIn.value) {
       showModal('register');
     } else if (playerStatusName.value === 'Limited') {
-      showPlayLimitAlert();
+      showAlert(alertsData?.limitedRealGame);
     } else {
       router.push(localizePath(`/games/${props.identity}`));
     }
   };
 
-  const { baseApiUrl } = useGlobalStore();
   const backgroundImage = computed(() => {
     if (props.images.hasOwnProperty('200x300')) {
       return `background-image:url(${baseApiUrl}/img/gcdn${getImageUrl(props.images, 'vertical')})`;

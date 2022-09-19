@@ -40,9 +40,11 @@
         :isDisabled="sendDisabled"
         @click="changePersonalData"
       >
-        Save changes
+        {{ props.saveButton || '' }}
       </button-base>
-      <button-base type="ghost" size="md" @click.prevent="emit('toggle-profile-edit')">Cancel</button-base>
+      <button-base type="ghost" size="md" @click.prevent="emit('toggle-profile-edit')">
+        {{ props.cancelButton || '' }}
+      </button-base>
     </div>
 
     <atomic-divider/>
@@ -52,6 +54,11 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
+
+  const props = defineProps<{
+    saveButton?: string,
+    cancelButton?: string,
+  }>();
 
   const hideFields = [
     'password',
@@ -66,8 +73,10 @@
   const fieldsStore = useFieldsStore();
   const { setFormData } = useCoreMethods();
   const { changeProfileData } = useCoreProfileApi();
+  const globalStore = useGlobalStore();
 
-  const { fieldsContent, selectOptions, profileFields } = storeToRefs(fieldsStore);
+  const { selectOptions, profileFields } = storeToRefs(fieldsStore);
+  const { fieldsContent } = storeToRefs(globalStore);
 
   const fieldsWithValue = profileFields.value.map((field) => ({ ...field, value: profile.value[field.name] }));
   const cleanFields = fieldsWithValue.filter((field) => !hideFields.includes(field.name));

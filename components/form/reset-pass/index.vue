@@ -32,16 +32,18 @@
       :isDisabled="v$.$invalid || isLockedAsyncButton"
       @click="resetPassword"
     >
-      Confirm
+      {{ resetContent?.resetButton }}
     </button-base>
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { ResetInterface } from '~/types';
 
-  const fieldsStore = useFieldsStore();
-  const { fieldsContent } = storeToRefs(fieldsStore);
+  const globalStore = useGlobalStore();
+  const { fieldsContent, popupsData, alertsData } = storeToRefs(globalStore);
+  const resetContent: ResetInterface|undefined = popupsData.value?.reset;
 
   const resetFormData = reactive({
     newPassword: '',
@@ -65,11 +67,7 @@
 
   const { closeModal, showAlert } = useLayoutStore();
   const showErrorAlert = ():void => {
-    showAlert({
-      title: 'Error',
-      text: 'Sorry, but your password reset link is not valid. Please request another password reset.',
-      variant: 'error',
-    });
+    showAlert(alertsData.value?.invalidResetCode);
   };
 
   const isLockedAsyncButton = ref<boolean>(false);
@@ -84,11 +82,7 @@
       isLockedAsyncButton.value = true;
       const route = useRoute();
       await resetProfilePassword({ ...resetFormData, code: route.query.resetCode });
-      showAlert({
-        title: 'Success',
-        text: 'You have successfully changed your password.',
-        variant: 'done',
-      });
+      showAlert(alertsData.value?.passwordChanged);
       closeModal('resetPass');
     } catch (error) {
       if (error.response?.status === 422) {

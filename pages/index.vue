@@ -1,35 +1,38 @@
 <template>
   <div class="home">
-    <div class="promo-card-wrapper">
-      <card-promo v-bind="promoCard" />
+    <div v-if="homeContent?.banner" class="promo-card-wrapper">
+      <card-promo v-bind="homeContent.banner" />
     </div>
 
-    <cards-group v-bind="benCards">
-      <template v-slot:card="item">
-        <card-benefit v-bind="item" />
-      </template>
-    </cards-group>
+    <group-benefits />
 
-    <div class="categories">
+    <div v-if="homeContent?.categories" class="categories">
       <card-category
-        v-for="(item, itemIndex) in categories"
+        v-for="(item, itemIndex) in Object.keys(homeContent.categories)"
         :key="itemIndex"
-        v-bind="item"
+        v-bind="homeContent.categories[item]"
       />
     </div>
 
-    <cards-group v-bind="promoCards">
-      <template v-slot:card="item">
-        <card-promotions v-bind="item" />
-      </template>
-    </cards-group>
+    <group-promotions />
+
+    <atomic-seo-text v-if="homeContent?.seo?.text" v-bind="homeContent.seo.text" />
   </div>
 </template>
 
 <script setup lang="ts">
-  const {
-    categories, promoCard, benefitsCards, promotionCards,
-  } = useFakeStore();
-  const benCards = benefitsCards();
-  const promoCards = promotionCards();
+  import { storeToRefs } from 'pinia';
+  import { HomeContentInterface } from '~/types';
+
+  const globalStore = useGlobalStore();
+  const { currentLocale } = storeToRefs(globalStore);
+
+  const homeContentRequest = await useAsyncData(
+    'homeContent',
+    () => queryContent(`page-controls/${currentLocale.value.code}`).only(['homePage']).findOne(),
+  );
+  const homeContent:HomeContentInterface|undefined = homeContentRequest.data.value?.homePage;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(homeContent?.seo);
+
 </script>

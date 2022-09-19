@@ -1,0 +1,125 @@
+{
+  "repeatNewPassword": {
+    "label": "Повторіть новий пароль",
+    "placeholder": "Повторно введіть новий пароль"
+  },
+  "placeOfBirth": {
+    "label": "Місце народження",
+    "placeholder": "Введіть своє місце народження"
+  },
+  "lastName": {
+    "label": "Прізвище",
+    "placeholder": "Введіть прізвище"
+  },
+  "gender": {
+    "label": "Стать",
+    "placeholder": "Введіть стать",
+    "maleLabel": "Чоловік",
+    "femaleLabel": "Жінка"
+  },
+  "personalIdNumber": {
+    "label": "Персональний ID номер",
+    "placeholder": "Персональний номер (якщо доступний)"
+  },
+  "securityQuestion": {
+    "label": "Питання безпеки",
+    "placeholder": "Введіть своє таємне запитання"
+  },
+  "message": {
+    "label": "Текст",
+    "placeholder": "Введіть своє повідомлення"
+  },
+  "agreements": {
+    "label": "Я приймаю <a href=\"/static/terms-and-conditions\"> Загальні положення та умови</a> та <a href=\"/static/privacy-policy\">Політику конфіденційності</a>"
+  },
+  "city": {
+    "label": "Місто",
+    "placeholder": "Ваше місто"
+  },
+  "bonusCode": {
+    "label": "Код (необов'язково)",
+    "placeholder": "Введіть код"
+  },
+  "birthdate": {
+    "label": "Дата народження",
+    "placeholder": "Дата народження",
+    "placeholderDay": "День",
+    "placeholderMonth": "Місяць",
+    "placeholderYear": "Рік"
+  },
+  "additionalAddress": {
+    "label": "Додаткова адреса",
+    "placeholder": "Введіть свою додаткову адресу"
+  },
+  "nickname": {
+    "label": "Псевдонім",
+    "placeholder": "Введіть свій псевдонім"
+  },
+  "phone": {
+    "label": "Номер мобільного",
+    "placeholder": "Номер телефону"
+  },
+  "currency": {
+    "label": "Валюта",
+    "placeholder": "Виберіть свою валюту"
+  },
+  "currentPassword": {
+    "label": "Поточний пароль",
+    "placeholder": "Введіть поточний пароль"
+  },
+  "address": {
+    "label": "Адреса",
+    "placeholder": "Введіть свою адресу"
+  },
+  "receiveEmailPromo": {
+    "label": "Надсилати промо електронною поштою"
+  },
+  "country": {
+    "label": "Країна",
+    "placeholder": "Виберіть свою країну"
+  },
+  "postalCode": {
+    "label": "Поштовий індекс",
+    "placeholder": "Поштовий індекс"
+  },
+  "language": {
+    "label": "Мова",
+    "placeholder": "Введіть свою мову"
+  },
+  "timeZone": {
+    "label": "Часовий пояс",
+    "placeholder": "Виберіть часовий пояс"
+  },
+  "receiveSmsPromo": {
+    "label": "Надсилати промо SMS-повідомленнями"
+  },
+  "locale": "uk",
+  "newPassword": {
+    "label": "Новий пароль",
+    "placeholder": "Введіть новий пароль"
+  },
+  "firstName": {
+    "label": "Ім'я",
+    "placeholder": "Введіть ім'я"
+  },
+  "password": {
+    "label": "Пароль",
+    "placeholder": "Введіть свій пароль"
+  },
+  "profession": {
+    "label": "Професія",
+    "placeholder": "Введіть свою професію"
+  },
+  "nationality": {
+    "label": "Національність",
+    "placeholder": "Введіть своє громадянство"
+  },
+  "email": {
+    "label": "Електронна адреса",
+    "placeholder": "Введіть свою електронну адресу"
+  },
+  "securityAnswer": {
+    "label": "Відповідь безпеки",
+    "placeholder": "Введіть відповідь на таємне запитання"
+  }
+}

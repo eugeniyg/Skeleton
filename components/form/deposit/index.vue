@@ -2,7 +2,7 @@
   <form class="form-deposit">
     <form-input-number
       :hint="fieldHint"
-      label="Deposit sum"
+      :label="depositContent?.sumLabel || ''"
       name="depositSum"
       :min="props.amountMin"
       :max="props.amountMax"
@@ -12,23 +12,28 @@
       :is-bigger="true"
     />
 
-    <atomic-divider/>
-    <atomic-bonus/>
-    <atomic-divider/>
+    <template v-if="depositContent?.bonuses?.length">
+      <atomic-divider/>
+      <template v-for="(bonus, index) in depositContent?.bonuses" :key="index">
+        <atomic-bonus v-bind="bonus" />
+        <atomic-divider />
+      </template>
+    </template>
+
     <div class="row">
       <form-input-toggle
         name="bonus-toggle"
         v-model:value="hasBonusCode"
         @change="hasBonusCode = !hasBonusCode"
       >
-        I have bonus code
+        {{ depositContent?.togglerLabel || '' }}
       </form-input-toggle>
 
       <form-input-text
         v-if="hasBonusCode"
         v-model:value="bonusValue"
         label=""
-        placeholder="Enter code"
+        :placeholder="fieldsContent?.bonusCode?.placeholder || ''"
         name="bonus-code"
       />
     </div>
@@ -38,34 +43,29 @@
       :isDisabled="buttonDisabled"
       @click="getDeposit"
     >
-      Deposit {{ buttonAmount }} {{ activeAccount.currency }}
+      {{ depositContent?.depositButton }} {{ buttonAmount }} {{ activeAccount.currency }}
     </button-base>
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { DepositInterface } from '~/types';
 
-  const props = defineProps({
-    amountMax: {
-      type: Number,
-      required: false,
-    },
-    amountMin: {
-      type: Number,
-      required: false,
-    },
-    method: {
-      type: String,
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    amountMax?: number,
+    amountMin?: number,
+    method?: string
+  }>();
+
+  const { popupsData, fieldsContent, alertsData } = useGlobalStore();
+  const depositContent: DepositInterface|undefined = popupsData?.deposit;
 
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
   const fieldHint = computed(() => ({
-    message: `Min deposit: ${props.amountMin} ${activeAccount.value.currency}`,
+    message: `${depositContent?.minSum || ''} ${props.amountMin} ${activeAccount.value.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
@@ -86,11 +86,7 @@
     const profileStore = useProfileStore();
     if (profileStore.playerStatusName === 'Limited' && activeAccountType.value === 'fiat') {
       const { showAlert } = useLayoutStore();
-      showAlert({
-        title: 'Error',
-        text: 'Sorry, but you can\'t deposit for now. Please, contact our support team for more information.',
-        variant: 'error',
-      });
+      showAlert(alertsData?.limitedDeposit);
       return;
     }
 

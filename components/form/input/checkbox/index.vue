@@ -10,7 +10,7 @@
         @change="onChange"
       />
 
-      <atomic-icon id="ui-check"/>
+      <atomic-icon id="check"/>
       <p>
         <span v-html="label"/>
         <sup v-if="isRequired">*</sup>

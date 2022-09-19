@@ -1,26 +1,31 @@
 <template>
   <div class="content">
     <div class="header">
-      <h1 class="heading">Profile info</h1>
+      <h1 class="heading">{{ infoContent?.title }}</h1>
+
       <button-base
         v-if="!isProfileEdit"
         type="secondary"
         size="md"
         @click="toggleProfileEdit"
       >
-        <atomic-icon id="ui-edit"/>Edit your profile
+        <atomic-icon id="edit"/>{{ infoContent?.editButton }}
 
         <!--        <template v-if="isProfileEdit">-->
-        <!--          <atomic-icon id="ui-done"/>Done editing-->
+        <!--          <atomic-icon id="done"/>Done editing-->
         <!--        </template>-->
 
         <!--        <template v-else>-->
-        <!--          <atomic-icon id="ui-edit"/>Edit your profile-->
+        <!--          <atomic-icon id="edit"/>Edit your profile-->
         <!--        </template>-->
       </button-base>
     </div>
 
-    <form-profile v-if="isProfileEdit" @toggle-profile-edit="toggleProfileEdit"/>
+    <form-profile
+      v-if="isProfileEdit"
+      @toggle-profile-edit="toggleProfileEdit"
+      v-bind="{ saveButton: infoContent?.saveButton, cancelButton: infoContent?.cancelButton }"
+    />
 
     <template v-else>
       <div class="row-user">
@@ -30,18 +35,18 @@
           <div class="nickname">{{ userNickname }}</div>
 
           <div class="item" v-show="profile.firstName || profile.lastName">
-            <atomic-icon id="ui-user"/>
+            <atomic-icon id="user"/>
             {{ `${profile.firstName} ` }}{{ profile.lastName }}
           </div>
 
           <div class="item" v-show="profile.country || profile.city">
-            <atomic-icon id="ui-location"/>
+            <atomic-icon id="location"/>
             {{ userCountryName }}{{ profile.city ? `, ${profile.city}` : '' }}
           </div>
 
           <div class="item" v-show="profile.email">
-            <atomic-icon v-if="profile.confirmedAt" class="is-success" id="ui-done"/>
-            <atomic-icon v-else class="is-warning" id="ui-warning"/>
+            <atomic-icon v-if="profile.confirmedAt" class="is-success" id="done"/>
+            <atomic-icon v-else class="is-warning" id="warning"/>
             {{ profile.email }}
           </div>
         </div>
@@ -53,7 +58,7 @@
     </template>
 
     <template v-if="subscriptionFields.length">
-      <h4 class="heading">Subscriptions</h4>
+      <h4 class="heading">{{ infoContent?.subscriptionTitle }}</h4>
 
       <div class="group">
         <form-input-toggle
@@ -70,10 +75,10 @@
       </div>
     </template>
 
-    <h4 class="heading">Manage account</h4>
+    <h4 class="heading">{{ infoContent?.manageTitle }}</h4>
 
     <button-base type="ghost" size="md" @click="profileStore.logOutUser">
-      <atomic-icon id="ui-log-out"/>Log out
+      <atomic-icon id="log-out"/>{{ userNavigationContent?.logoutButton }}
     </button-base>
   </div>
 </template>
@@ -81,14 +86,20 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { CountryInterface } from '@platform/frontend-core/dist/module';
+  import { ProfileInfoInterface } from '~/types';
+
+  const globalStore = useGlobalStore();
+  const infoContentRequest = await useAsyncData('infoContent', () => queryContent(`profile/${globalStore.currentLocale.code}`).only(['info']).findOne());
+  const infoContent:ProfileInfoInterface|undefined = infoContentRequest.data.value?.info;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(infoContent?.seo);
 
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
   const { profile, userNickname } = storeToRefs(profileStore);
-  const globalStore = useGlobalStore();
   const fieldsStore = useFieldsStore();
-  const { fieldsContent, profileFields } = storeToRefs(fieldsStore);
-  const { countries } = storeToRefs(globalStore);
+  const { profileFields } = storeToRefs(fieldsStore);
+  const { countries, fieldsContent, userNavigationContent } = storeToRefs(globalStore);
   const route = useRoute();
   const router = useRouter();
 

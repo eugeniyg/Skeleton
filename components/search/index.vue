@@ -3,7 +3,7 @@
     <form-input-search
       ref="inputElement"
       v-model:value="searchValue"
-      placeholder="Search your game"
+      :placeholder="headerContent?.search?.placeholder"
       @input="searchInput"
     />
 
@@ -35,7 +35,7 @@
   });
 
   const emit = defineEmits(['hideSearch']);
-
+  const { headerContent } = useGlobalStore();
   const searchValue = ref<string>('');
   const pendingGames = ref<boolean>(true);
   const loadPage = ref<number>(1);

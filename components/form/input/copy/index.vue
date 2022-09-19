@@ -19,7 +19,7 @@
       />
 
       <button class="btn-copy" @click.prevent="copy">
-        <atomic-icon id="ui-copy"/>
+        <atomic-icon id="copy"/>
       </button>
     </div>
 

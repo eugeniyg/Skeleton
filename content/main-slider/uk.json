@@ -1,0 +1,75 @@
+{
+  "locale": "uk",
+  "slider": [
+    {
+      "slideStatus": "Published",
+      "title": "##### Choose the safest crypto casino",
+      "content": "* Provably fair slots & games;\n* 24/7 Live Chat Support;\n* Privacy and security.",
+      "button": {
+        "label": "Отримати бонус"
+      },
+      "images": {
+        "mobile": {
+          "backgroundImage": "/img/uploads/2-mobile-background.png",
+          "faceImage": "/img/uploads/2-mobile-face.png"
+        },
+        "desktop": {
+          "backgroundImage": "/img/uploads/2-desktop-backgroun.png",
+          "faceImage": "/img/uploads/2-desktop-face.png"
+        }
+      }
+    },
+    {
+      "images": {
+        "mobile": {
+          "backgroundImage": "/img/uploads/1-mobile-background.png",
+          "faceImage": "/img/uploads/1-mobile-face.png"
+        },
+        "desktop": {
+          "backgroundImage": "/img/uploads/1-desktop-background.png",
+          "faceImage": "/img/uploads/1-desktop-face.png"
+        }
+      },
+      "slideStatus": "Published",
+      "title": "#### Welcome package<br>Get 5 BTC + 300 FS",
+      "button": {
+        "label": "Отримати бонус"
+      }
+    },
+    {
+      "slideStatus": "Published",
+      "title": "##### Насолоджуйся іграми зі<br>Slotsbet.",
+      "button": {
+        "label": "Грати зараз"
+      },
+      "images": {
+        "mobile": {
+          "backgroundImage": "/img/uploads/3-mobile-background.png",
+          "faceImage": "/img/uploads/3-mobile-face.png"
+        },
+        "desktop": {
+          "backgroundImage": "/img/uploads/3-desktop-background.png",
+          "faceImage": "/img/uploads/3-desktop-face.png"
+        }
+      }
+    },
+    {
+      "slideStatus": "Published",
+      "title": "##### Отримуй бонуси щотижня",
+      "content": "* Provably fair slots & games;\n* 24/7 Live Chat Support;\n* Privacy and security.",
+      "button": {
+        "label": "Отримати бонус"
+      },
+      "images": {
+        "mobile": {
+          "backgroundImage": "/img/uploads/4-mobile-background.png",
+          "faceImage": "/img/uploads/4-mobile-face.png"
+        },
+        "desktop": {
+          "backgroundImage": "/img/uploads/4-desktop-background.png",
+          "faceImage": "/img/uploads/4-desktop-face.png"
+        }
+      }
+    }
+  ]
+}

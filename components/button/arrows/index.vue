@@ -6,7 +6,7 @@
       data-action="prev"
       @click="clickNavigation(false)"
     >
-      <atomic-icon id="ui-arrow_expand-close"/>
+      <atomic-icon id="arrow_expand-close"/>
     </button>
 
     <button
@@ -15,7 +15,7 @@
       data-action="next"
       @click="clickNavigation(true)"
     >
-      <atomic-icon id="ui-arrow_expand-close"/>
+      <atomic-icon id="arrow_expand-close"/>
     </button>
   </div>
 </template>

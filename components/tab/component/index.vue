@@ -24,13 +24,13 @@
       default: () => ([
         {
           title: 'favorites',
-          icon: 'ui-heart',
+          icon: 'heart',
           id: 'favorites',
           isActive: true,
         },
         // {
         //   title: 'Recently played',
-        //   icon: 'ui-history',
+        //   icon: 'history',
         //   id: 'recently-played',
         // },
       ]),

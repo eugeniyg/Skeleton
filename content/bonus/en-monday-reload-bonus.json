@@ -1,0 +1,21 @@
+{
+  "pageUrl": "monday-reload-bonus",
+  "adminTitle": "Monday Reload bonus",
+  "termsLabel": "Bonus Terms:",
+  "termsContent": "1. To get the bonus, you must place a deposit of at least 1 mBTC or the same value in cryptocurrencies.\n2. The maximum bonus amount is 30% of the deposit amount, but not more than 3.5 mBTC or the same value in cryptocurrencies.\n3. Full wagering requires making bets 40 times the amount of the bonus received: (deposit bonus) × 40.\n4. The deposit bonus is valid for 5 days, starting from the date you receive it.\n5. The maximum bet amount when wagering is 0.3 mBTC or the same value in cryptocurrencies.",
+  "button": {
+    "label": "Get bonus"
+  },
+  "backgroundColor": "gray",
+  "subtitle": "30% bonus of up to 3.5 mBTC on Monday",
+  "title": "Monday Reload Bonus",
+  "locale": "en",
+  "image": "/img/uploads/monday-big.png",
+  "description": "Start your week on a high note with Slotsbet! Grabbing yourself a 30% bonus of up to 3.5 mBTC is easy:\n\n1. Make a deposit of at least 1 mBTC.\n2. Instantly receive a bonus worth 30% of the amount you deposited (up to a maximum of 3.5 mBTC).",
+  "seo": {
+    "text": {
+      "visible": "## Bitcoin Betting Flagship\n\nSlotsbet.io is where you can find competitive odds, on a platform offering the best Bitcoin betting experience. Our team continues to work hard to give you the competitive odds, betting props and interactive experience offering you the fulfilling betting journey you've been looking for. At Slotsbet.io, we are working hard to give you the opportunity to enjoy a fun, fast and fair betting experience.\n\n#### Reliable Bitcoin Betting\n\nSlotsbet.io takes pride in being the home of Bitcoin. Youse every single one of your Bitcoins anywhere on the site.",
+      "hidden": "## Bitcoin Sportsbook with a lot to offer\n\nFrom football, basketball, baseball and even the growing Esports industry, we have you covered. Slotsbet.io features more than 20 sports, and we endeavour to give you a fair chance of having a betting win by offering competitive odds for each sport.\n\n#### Limitless Betting Chances\n\nOur sports betting platform offers an in-play option if you want to get in amongst the action or place a smart bet as the game happens. You can even browse upcoming games in our comprehensive and regularly updated list of future sporting events.\n\n#### Unique Offers\n\nSlotsbet.io regularly offers a variety of promotions giving you more chances to increase your earnings and even better your chances of placing winning bets. From extra boosts and mystery prizes, our unique promotions help you enjoy the best betting experience!"
+    }
+  }
+}

@@ -2,13 +2,16 @@
   <div class="category">
     <nav-cat @clickCategory="changeCategory" />
 
-    <atomic-cat-heading :icon="sortedCategories[activeCollection.identity]">
-      {{ activeCollection.name }}
+    <atomic-cat-heading
+      v-if="gameCategoriesObj[activeCollection.identity]"
+      :icon="gameCategoriesObj[activeCollection.identity].icon"
+    >
+      {{ gameCategoriesObj[activeCollection.identity].label || activeCollection.name }}
     </atomic-cat-heading>
 
     <form-input-search
       v-model:value="searchValue"
-      placeholder="Search your game"
+      :placeholder="headerContent?.search.placeholder"
       @input="searchInput"
     />
 
@@ -17,21 +20,23 @@
         :value="currentProvider.id"
         name="providers"
         placeholder="Providers"
-        :options="selectOptions.providers"
+        :options="providerDropdownOptions"
         @input="changeProvider"
       />
 
-      <atomic-game-sort v-model:value="sortOrder" @change="changeSort"/>
+      <atomic-game-sort v-model:value="sortOrder" :label="gamesContent?.sortLabel" @change="changeSort"/>
     </div>
 
     <list-grid :items="gameItems" :meta="pageMeta" @loadMore="loadMoreItems" />
 
     <atomic-empty
       v-if="gameItems.length === 0"
-      title="Nothing found"
-      subTitle="Try searching for something else"
-      variant="search-result"
+      :title="gamesContent?.empty.title"
+      :subTitle="gamesContent?.empty.description"
+      :image="gamesContent?.empty.image"
     />
+
+    <atomic-seo-text v-if="gamesContent?.seo?.text" v-bind="gamesContent?.seo?.text" />
   </div>
 </template>
 
@@ -43,9 +48,28 @@
     GamesResponseInterface,
     PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
+  import { storeToRefs } from 'pinia';
+  import { CategoryGamesInterface } from '~/types';
 
-  const { gameCollections, sortedCategories } = useGamesStore();
+  const globalStore = useGlobalStore();
+  const { currentLocale, gameCategoriesObj, headerContent } = storeToRefs(globalStore);
+  const gamesContentRequest = await useAsyncData('gamesContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['gamesPage']).findOne());
+  const gamesContent:CategoryGamesInterface|undefined = gamesContentRequest.data.value?.gamesPage;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(gamesContent?.seo);
+
+  const { gameCollections } = useGamesStore();
   const { selectOptions } = useFieldsStore();
+  const providerDropdownOptions:GameProviderInterface[] = [
+    {
+      id: 'all',
+      name: gamesContent?.providersLabel || 'All Providers',
+      identity: 'all',
+      code: 'all',
+      value: gamesContent?.providersLabel || 'All Providers',
+    },
+    ...selectOptions.providers,
+  ];
   const route = useRoute();
   const router = useRouter();
 
@@ -62,9 +86,9 @@
   );
 
   const currentProvider = ref<GameProviderInterface>(
-    selectOptions.providers.find(
+    providerDropdownOptions.find(
       (provider: GameProviderInterface) => provider.identity === route.query.provider,
-    ) || selectOptions.providers[0],
+    ) || providerDropdownOptions[0],
   );
 
   const sortOrder = ref<string>(route.query.sort as string || 'asc');
@@ -105,7 +129,7 @@
   const changeProvider = async (providerId: string): Promise<void> => {
     loadPage.value = 1;
 
-    currentProvider.value = selectOptions.providers.find(
+    currentProvider.value = providerDropdownOptions.find(
       (provider: GameProviderInterface) => provider.id === providerId,
     );
 

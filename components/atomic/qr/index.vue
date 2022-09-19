@@ -1,24 +1,24 @@
 <template>
   <div class="qr">
-    <div class="title">{{ props.title }}</div>
-    <div class="description">{{ props.description }}</div>
+    <div class="title">{{ props.content?.addressTitle }}</div>
+    <div class="description">{{ props.content?.addressDescription }}</div>
+
     <div class="box">
-      <img src="~/assets/img/qr.png" width="100" height="100" />
+      <img
+        v-if="props.qrLink"
+        :src="`https://chart.googleapis.com/chart?chs=116x116&cht=qr&chl=${props.qrLink}&choe=UTF-8`"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    title: {
-      type: String,
-      default: 'Address',
-    },
-    description: {
-      type: String,
-      default: 'This is your personal address for deposits. Your funds will be available as soon as they pass through the necessary confirmations.',
-    },
-  });
+  import { DepositInterface } from '~/types';
+
+  const props = defineProps<{
+    content: DepositInterface|undefined,
+    qrLink: string
+  }>();
 </script>
 
 <style lang="scss" src="./style.scss"/>

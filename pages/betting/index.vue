@@ -9,18 +9,25 @@
         width="100%"
       />
     </div>
+    <atomic-seo-text v-if="bettingContent?.seo?.text" v-bind="bettingContent?.seo?.text" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { BettingContentInterface } from '~/types';
 
   definePageMeta({
     middleware: ['status-limited'],
   });
 
   const globalStore = useGlobalStore();
-  const { isMobile } = storeToRefs(globalStore);
+  const { isMobile, alertsData, currentLocale } = storeToRefs(globalStore);
+  const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['bettingPage']).findOne());
+  const bettingContent:BettingContentInterface|undefined = bettingContentRequest.data.value?.bettingPage;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(bettingContent?.seo);
+
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const frameLink = ref<string>('');
@@ -43,18 +50,23 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
-  const { showModal, showPlayLimitAlert } = useLayoutStore();
+  const { showModal, showAlert } = useLayoutStore();
 
   const redirectLimitedPlayer = ():void => {
     const { localizePath } = useProjectMethods();
     const router = useRouter();
     router.replace(localizePath('/'));
-    showPlayLimitAlert();
+    showAlert(alertsData.value?.limitedRealGame);
   };
 
   onMounted(async () => {
     if (isMobile.value) {
-      document.querySelector('footer').style.display = 'none';
+      // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587
+      setTimeout(() => {
+        document.querySelector('footer').style.display = 'none';
+        const seoTextBlock:any = document.querySelector('.text-wrap');
+        if (seoTextBlock) seoTextBlock.style.display = 'none';
+      }, 100);
     }
 
     if (!isLoggedIn.value) {
@@ -67,7 +79,7 @@
   });
 
   watch(() => isLoggedIn.value, async (newValue:boolean) => {
-    if (!newValue) return;
+    if (!newValue) { return; }
 
     if (playerStatusName.value === 'Limited') {
       setTimeout(() => {
@@ -80,7 +92,9 @@
 
   onBeforeUnmount(() => {
     document.querySelector('footer').style.display = null;
+    const seoTextBlock:any = document.querySelector('.text-wrap');
+    if (seoTextBlock) seoTextBlock.style.display = null;
   });
 </script>
 
-<style lang="scss" src="./style.scss"/>
+<style lang="scss" src="./style.scss" />

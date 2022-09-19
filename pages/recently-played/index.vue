@@ -1,13 +1,13 @@
 <template>
   <div class="recently-played">
-    <div class="recently-played__title">Recently Played</div>
+    <div class="recently-played__title">{{ recentlyContent?.title }}</div>
 
     <client-only>
       <atomic-empty
         v-if="!favoriteGames.length"
-        title="Nothing found"
-        subTitle="You haven't played any games yet"
-        variant="search-result"
+        :title="recentlyContent?.empty.title"
+        :subTitle="recentlyContent?.empty.description"
+        :image="recentlyContent?.empty.image"
       />
 
       <list-grid
@@ -21,14 +21,24 @@
         v-if="!favoriteGames.length"
         :category="popularCategory"
         showArrows
-        subTitle="The best games for you"
+        subTitle
       />
     </client-only>
+
+    <atomic-seo-text v-if="recentlyContent?.seo?.text" v-bind="recentlyContent?.seo?.text" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { RecentlyPageInterface } from '~/types';
+
+  const globalStore = useGlobalStore();
+  const { currentLocale } = storeToRefs(globalStore);
+  const recentlyContentRequest = await useAsyncData('recentlyContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['recentlyPage']).findOne());
+  const recentlyContent:RecentlyPageInterface|undefined = recentlyContentRequest.data.value?.recentlyPage;
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo(recentlyContent?.seo);
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
