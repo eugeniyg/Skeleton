@@ -4,7 +4,7 @@
 
     <form-input-copy
       name="walletNumber"
-      :label="depositContent?.addressInputLabel"
+      :label="depositContent?.addressInputLabel || ''"
       :hint="fieldHint"
       :value="walletNumber"
     />
