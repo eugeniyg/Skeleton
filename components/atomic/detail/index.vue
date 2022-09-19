@@ -41,6 +41,7 @@
     scrollHeight.value = refItems.value.scrollHeight;
   };
   onMounted(() => {
+    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587
     setTimeout(() => {
       updateScrollHeight();
     }, 100);
