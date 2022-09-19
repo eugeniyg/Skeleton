@@ -51,10 +51,10 @@
       }
     ],
     "profileMenu": {
-      "levelLabel": "lvl.",
-      "depositButton": "Deposit",
+      "levelLabel": "рів.",
+      "depositButton": "Депозит",
       "profileButton": {
-        "label": "Profile",
+        "label": "Профіль",
         "url": "/profile/info"
       }
     },
