@@ -15,7 +15,13 @@
       "description": "Ви ще не зробили жодної ставки"
     },
     "tabLabel": "Історія ставок",
-    "tabPosition": 3
+    "tabPosition": 3,
+    "tableColumns": {
+      "game": "Гра",
+      "bet": "Ставка",
+      "result": "Результат",
+      "date": "Дата"
+    }
   },
   "transactions": {
     "currencyLabel": "Валюта:",
@@ -23,10 +29,10 @@
     "statusFilter": {
       "label": "Статус:",
       "options": {
-        "review": "Review",
-        "pending": "Pending",
-        "success": "Success",
-        "rejected": "Rejected"
+        "review": "Огляд",
+        "pending": "В очікуванні",
+        "success": "Успіх",
+        "rejected": "Відхилено"
       }
     },
     "empty": {
@@ -34,13 +40,13 @@
       "title": "Даних ще немає!",
       "description": "У вас ще немає успішних транзакцій."
     },
-    "allFilterOption": "All",
+    "allFilterOption": "Всі",
     "tableColumns": {
       "date": "Дата",
-      "type": "Type",
-      "method": "Payment Method",
-      "status": "Status",
-      "sum": "Sum"
+      "type": "Тип",
+      "method": "Спосіб оплати",
+      "status": "Статус",
+      "sum": "Сума"
     },
     "typeFilter": {
       "label": "Тип:",
@@ -49,7 +55,7 @@
         "withdrawal": "Зняття коштів"
       }
     },
-    "cancelPaymentButton": "Cancel payment",
+    "cancelPaymentButton": "Скасувати платіж",
     "tabPosition": 4,
     "tabLabel": "Історія транзакцій"
   },
