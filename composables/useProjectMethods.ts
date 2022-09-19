@@ -112,8 +112,6 @@ export const useProjectMethods = () => {
     const subcurrencyConfig = currencyConfig.subCurrencies.find((subcurrency) => subcurrency.code === currency);
     if (amount === 0) return { currency: currencyConfig.code, amount };
 
-    // const afterDigits = amount.toString().split('.')[1]?.length || 0;
-
     return { currency: currencyConfig.code, amount: amount / subcurrencyConfig.subunitToUnit };
   };
 
