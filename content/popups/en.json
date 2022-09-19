@@ -30,7 +30,7 @@
     "balanceLabel": "Balance",
     "withdrawLabel": "Withdrawable",
     "sumLabel": "Withdrawal sum",
-    "minSum": "Min withdraw:",
+    "minSum": "Min withdrawal:",
     "withdrawButton": "Withdraw"
   },
   "reset": {
