@@ -750,6 +750,15 @@ collections:
           - name: sumLabel
             label: Sum Label
             widget: string
+          - name: addressTitle
+            label: Crypto Address Title
+            widget: string
+          - name: addressDescription
+            label: Crypto Address Description
+            widget: text
+          - name: addressInputLabel
+            label: Address Input Label
+            widget: string
           - name: minSum
             label: Min Sum Label
             widget: string

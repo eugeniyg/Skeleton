@@ -21,9 +21,13 @@
             <button-modal-close @close="closeModal('deposit')"/>
             <div class="title">{{ depositContent?.title }}</div>
           </div>
-          <form-deposit v-if="showForm" v-bind="currentMethod"/>
+          <form-deposit v-if="showForm && currentMethod.type === 'form'" v-bind="currentMethod"/>
           <!--          <form-deposit-additional/>-->
-<!--          <form-deposit-crypto v-if="showForm" v-bind="currentMethod"/>-->
+          <form-deposit-crypto
+            v-if="showForm && currentMethod.type === 'address'"
+            v-bind="currentMethod"
+            :key="currentMethod.method"
+          />
         </div>
       </div>
     </div>

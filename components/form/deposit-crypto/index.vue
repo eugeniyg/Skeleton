@@ -1,49 +1,75 @@
 <template>
-<form class="form-deposit-crypto">
-  <atomic-qr/>
-  <form-input-copy
-    name="name7"
-    label="Send any amount of BTC (plus miner fee) to"
-    :hint="{message: 'Min: 0.0001 BTC'}"
-    value="3DPAYfeYGRgPg6xDehQQFC7hqm49eo1..."
-  />
+  <form class="form-deposit-crypto">
+    <atomic-qr :content="depositContent" :qrLink="qrLink"/>
 
-  <template v-if="depositContent?.bonuses?.length">
-    <atomic-divider/>
-    <template v-for="(bonus, index) in depositContent?.bonuses" :key="index">
-      <atomic-bonus v-bind="bonus"/>
-      <atomic-divider/>
-    </template>
-  </template>
-
-  <div class="row">
-    <form-input-toggle
-      name="bonus-toggle"
-      v-model:value="hasBonusCode"
-      @change="hasBonusCode = !hasBonusCode"
-    >
-      {{ depositContent?.togglerLabel || '' }}
-    </form-input-toggle>
-
-    <form-input-text
-      v-if="hasBonusCode"
-      v-model:value="bonusValue"
-      label=""
-      :placeholder="fieldsContent?.bonusCode?.placeholder || ''"
-      name="bonus-code"
+    <form-input-copy
+      name="walletNumber"
+      :label="depositContent?.addressInputLabel || ''"
+      :hint="fieldHint"
+      :value="walletNumber"
     />
-  </div>
-</form>
+
+    <template v-if="depositContent?.bonuses?.length">
+      <atomic-divider/>
+
+      <template v-for="(bonus, index) in depositContent?.bonuses" :key="index">
+        <atomic-bonus v-bind="bonus"/>
+        <atomic-divider/>
+      </template>
+    </template>
+  </form>
 </template>
 
 <script setup lang="ts">
-import {DepositInterface} from '~/types';
+  import { storeToRefs } from 'pinia';
+  import { DepositInterface } from '~/types';
 
-const hasBonusCode = ref<boolean>(false);
- const bonusValue = ref<string>('');
-const {popupsData, fieldsContent, alertsData} = useGlobalStore();
+  const props = defineProps<{
+    amountMax?: number,
+    amountMin?: number,
+    method?: string
+  }>();
 
-const depositContent: DepositInterface | undefined = popupsData?.deposit;
+  const walletNumber = ref<string>('');
+  const qrLink = ref<string>('');
+
+  const walletStore = useWalletStore();
+  const { showModal } = useLayoutStore();
+  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
+
+  const { popupsData, alertsData } = useGlobalStore();
+
+  const depositContent: DepositInterface | undefined = popupsData?.deposit;
+  const fieldHint = computed(() => ({
+    message: `${depositContent?.minSum || ''} ${props.amountMin} ${activeAccount.value.currency}`,
+  }));
+
+  onMounted(async () => {
+    const profileStore = useProfileStore();
+    if (profileStore.playerStatusName === 'Limited' && activeAccountType.value === 'fiat') {
+      const { showAlert } = useLayoutStore();
+      showAlert(alertsData?.limitedDeposit);
+      return;
+    }
+
+    const params = {
+      method: props.method,
+      currency: activeAccount.value.currency,
+      amount: props.amountMin,
+      accountId: activeAccount.value.id,
+      redirectSuccessUrl: window.location.href,
+      redirectErrorUrl: window.location.href,
+    };
+
+    const { depositAccount } = useCoreWalletApi();
+    try {
+      const depositResponse = await depositAccount(params);
+      walletNumber.value = depositResponse.address;
+      qrLink.value = depositResponse.qrAddress;
+    } catch {
+      showModal('error');
+    }
+  });
 </script>
 
 <style lang="scss" src="./style.scss"/>
