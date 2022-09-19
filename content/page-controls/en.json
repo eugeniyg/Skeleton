@@ -8,7 +8,8 @@
     "seo": {
       "text": {
         "visible": ""
-      }
+      },
+      "title": "Slotsbet | Play over 3000 slots and games"
     }
   },
   "favoritesPage": {
@@ -31,7 +32,8 @@
     "seo": {
       "text": {
         "visible": ""
-      }
+      },
+      "title": "Slotsbet | SBT Token"
     }
   },
   "mainPage": {
@@ -98,7 +100,8 @@
     "seo": {
       "text": {
         "visible": ""
-      }
+      },
+      "title": "Slotsbet | Sportsbook"
     }
   },
   "contactPage": {
@@ -109,7 +112,8 @@
     "seo": {
       "text": {
         "visible": ""
-      }
+      },
+      "title": "Slotsbet | Contact Us"
     }
   },
   "gamesPage": {
@@ -123,7 +127,8 @@
     "seo": {
       "text": {
         "visible": ""
-      }
+      },
+      "title": "Slotsbet | Find favorite slots and games"
     }
   },
   "questionPage": {
@@ -155,7 +160,8 @@
     "seo": {
       "text": {
         "visible": ""
-      }
+      },
+      "title": "Slotsbet | Recently played"
     }
   },
   "locale": "en"
