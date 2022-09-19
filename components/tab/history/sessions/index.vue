@@ -1,49 +1,51 @@
 <template>
-  <div class="tb-sessions-history">
-    <div class="row">
-      <div
-        v-for="(column, columnIndex) in headTitles"
-        :key="columnIndex"
-        class="th"
-        v-html="column"
-      />
-    </div>
-
-    <template v-if="sessions.length">
-      <div v-for="session in sessions" :key="session.sessionId" class="row">
-        <div class="td">
-          <atomic-row-device :variant="session.deviceType === 'desktop' ? 'desktop' : 'mobile'"/>
-        </div>
-
-        <div class="td">{{ session.country }}</div>
-
-        <div class="td">
-          <atomic-row-user-agent :tooltip="session.userAgent">
-            {{ shortUserAgent(session.userAgent) }}
-          </atomic-row-user-agent>
-        </div>
-
-        <div class="td">
-          <p>{{ getFormatDate(session.createdAt) }}</p>
-        </div>
-
-        <div class="td">
-          <atomic-row-status
-            :variant="sessionStatus(session)"
-            :tooltip="session.closedAt ? `${getFormatDate(session.closedAt)}`: ''"
-          >
-            {{ sessionsContent.sessionsStatuses[sessionStatus(session)] }}
-          </atomic-row-status>
-        </div>
-
-        <div class="td">
-          <button-close-session
-            v-if="sessionStatus(session) === 'active'"
-            @click.once="closeSession(session.sessionId)"
-          />
-        </div>
+  <div class="tab-history__tb">
+    <div class="tb-sessions-history">
+      <div class="row">
+        <div
+          v-for="(column, columnIndex) in headTitles"
+          :key="columnIndex"
+          class="th"
+          v-html="column"
+        />
       </div>
-    </template>
+
+      <template v-if="sessions.length">
+        <div v-for="session in sessions" :key="session.sessionId" class="row">
+          <div class="td">
+            <atomic-row-device :variant="session.deviceType === 'desktop' ? 'desktop' : 'mobile'"/>
+          </div>
+
+          <div class="td">{{ session.country }}</div>
+
+          <div class="td">
+            <atomic-row-user-agent :tooltip="session.userAgent">
+              {{ shortUserAgent(session.userAgent) }}
+            </atomic-row-user-agent>
+          </div>
+
+          <div class="td">
+            <p>{{ getFormatDate(session.createdAt) }}</p>
+          </div>
+
+          <div class="td">
+            <atomic-row-status
+              :variant="sessionStatus(session)"
+              :tooltip="session.closedAt ? `${getFormatDate(session.closedAt)}`: ''"
+            >
+              {{ sessionsContent.sessionsStatuses[sessionStatus(session)] }}
+            </atomic-row-status>
+          </div>
+
+          <div class="td">
+            <button-close-session
+              v-if="sessionStatus(session) === 'active'"
+              @click.once="closeSession(session.sessionId)"
+            />
+          </div>
+        </div>
+      </template>
+    </div>
 
     <atomic-pagination
       v-if="pageMeta?.totalPages > 1"

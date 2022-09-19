@@ -1,5 +1,5 @@
 <template>
-  <div v-if="spins.length">
+  <div class="tab-history__tb" v-if="spins.length">
     <div class="tb-bets-history">
       <div class="row">
         <div

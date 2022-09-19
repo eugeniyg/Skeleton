@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tab-history__tb">
     <atomic-filters class="filters-transactions-history">
       <form-input-date
         :label="transactionsContent.dateLabel"
