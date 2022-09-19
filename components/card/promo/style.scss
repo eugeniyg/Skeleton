@@ -70,7 +70,7 @@
     top: 0;
     bottom: 0;
     grid-row-gap: var(--row-gap, #{rem(8px)});
-    width: var(--width, 70%);
+    width: var(--width, calc(50% - 32px));
     padding: var(--padding, #{0 0 0 rem(24px)});
 
     @include media(xs) {
