@@ -45,7 +45,7 @@
       "date": "Date",
       "type": "Type",
       "method": "Payment Method",
-      "status": "Status",
+      "status": "Status:",
       "sum": "Sum"
     },
     "typeFilter": {
