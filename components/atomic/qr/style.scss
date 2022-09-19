@@ -21,15 +21,11 @@
 
   .box {
     grid-area: box;
+    width: 116px;
+    height: 116px;
     background-color: var(--white);
-    padding: rem(8px);
     border-radius: 8px;
     align-self: flex-start;
-
-    img {
-      display: block;
-      max-width: 100%;
-      height: auto;
-    }
+    overflow: hidden;
   }
 }

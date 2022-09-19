@@ -106,6 +106,7 @@
     const windowReference = window.open();
     try {
       const depositResponse = await depositAccount(params);
+      console.log(depositResponse);
       const redirectUrl = depositResponse?.[0]?.action;
       windowReference.location = redirectUrl;
       setTimeout(() => { isSending.value = false; }, 1000);
