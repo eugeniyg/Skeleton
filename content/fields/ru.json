@@ -13,7 +13,6 @@
   },
   "gender": {
     "label": "Gender",
-    "placeholder": "Введіть стать",
     "maleLabel": "Male",
     "femaleLabel": "Female"
   },
@@ -46,7 +45,6 @@
   },
   "birthdate": {
     "label": "Date of Birth",
-    "placeholder": "Дата народження",
     "placeholderDay": "Day",
     "placeholderMonth": "Month",
     "placeholderYear": "Year"
@@ -101,7 +99,7 @@
   "receiveSmsPromo": {
     "label": "Send promos by SMS"
   },
-  "locale": "uk",
+  "locale": "ru",
   "newPassword": {
     "label": "New password",
     "placeholder": "Enter new password"

@@ -1,5 +1,5 @@
 {
-  "locale": "uk",
+  "locale": "ru",
   "slider": [
     {
       "slideStatus": "Published",
@@ -20,6 +20,11 @@
       }
     },
     {
+      "slideStatus": "Published",
+      "title": "#### Welcome package<br>Get 5000 mBTC + 300 FS",
+      "button": {
+        "label": "Get bonus"
+      },
       "images": {
         "mobile": {
           "backgroundImage": "/img/uploads/1-mobile-background.png",
@@ -29,11 +34,6 @@
           "backgroundImage": "/img/uploads/1-desktop-background.png",
           "faceImage": "/img/uploads/1-desktop-face.png"
         }
-      },
-      "slideStatus": "Published",
-      "title": "#### Welcome package<br>Get 5000 mBTC + 300 FS",
-      "button": {
-        "label": "Get bonus"
       }
     },
     {
