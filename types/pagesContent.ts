@@ -275,14 +275,6 @@ export interface CardsGroupInterface {
   }
 }
 
-export interface GlobalComponentsInterface {
-  benefits: BenefitsContentInterface,
-  promotions: PromotionsContentInterface,
-  cardsGroup: CardsGroupInterface,
-  categories: GameCategoryInterface[],
-  globalSeo: SeoContentInterface
-}
-
 export interface FavoritesPageInterface {
   title: string,
   empty: {
@@ -389,4 +381,30 @@ export interface BettingContentInterface {
 
 export interface TokenContentInterface {
   seo: SeoContentInterface
+}
+
+export interface TurboItemInterface {
+  url: string,
+  image: string,
+  title: string,
+  infoValue: string,
+  categoryValue: string
+}
+
+export interface TurbogamesGroupInterface {
+  label: string,
+  icon: string,
+  buttonLabel: string,
+  infoLabel: string,
+  categoryLabel: string,
+  items: TurboItemInterface[]
+}
+
+export interface GlobalComponentsInterface {
+  benefits: BenefitsContentInterface,
+  promotions: PromotionsContentInterface,
+  cardsGroup: CardsGroupInterface,
+  categories: GameCategoryInterface[],
+  turbogames: TurbogamesGroupInterface,
+  globalSeo: SeoContentInterface
 }
