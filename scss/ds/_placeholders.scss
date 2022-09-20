@@ -421,10 +421,6 @@
     color: var(--white);
     position: relative;
     background-color: inherit;
-
-    &:first-of-type {
-      @include upd-font($body-1);
-    }
   }
 }
 

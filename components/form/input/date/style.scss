@@ -54,6 +54,10 @@
     transform: var(--icon-transform, rotate(0));
     transition: transform .2s ease-in-out;
   }
+
+  .label {
+    color: var(--white);
+  }
 }
 
 @import "~/scss/flatpickr-calendar.scss";

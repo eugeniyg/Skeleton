@@ -68,8 +68,8 @@ export const useProjectMethods = () => {
     return imageData['200x200']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
   };
 
-  const getFormatDate = (timeUtcIsoString: string):string => {
-    const date = new Date(timeUtcIsoString);
+  const getFormatDate = (dateUtcIsoString: string):string => {
+    const date = new Date(dateUtcIsoString);
     return date.toLocaleString().slice(0, -3);
   };
 
