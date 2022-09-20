@@ -156,88 +156,81 @@
         "categoryValue": "Multiplayer"
       },
       {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/benefit-1.png",
-        "title": "Game 2",
-        "infoValue": "95%",
-        "categoryValue": "Multiplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/benefit-3.png",
-        "title": "Game 3",
-        "infoValue": "93%",
-        "categoryValue": "Singleplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/icn-notification.svg",
-        "title": "Game 4",
-        "infoValue": "93%",
-        "categoryValue": "Multiplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/promotion-2.png",
-        "title": "Game 5",
-        "infoValue": "95%",
-        "categoryValue": "Singleplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/promotion-3.png",
-        "title": "Game 6",
-        "infoValue": "94%",
-        "categoryValue": "Multiplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/wednesday-big.png",
-        "title": "Game 7",
+        "url": "/games/turbo-games-turboplinko?demo=true",
+        "image": "/img/uploads/turbo_plinko-1-.png",
+        "title": "Turbo Plinko",
         "infoValue": "99%",
         "categoryValue": "Singleplayer"
       },
       {
+        "url": "/games/bayraktar-turbo-games?demo=true",
+        "image": "/img/uploads/bayraktar-1-.png",
+        "title": "Bayraktar",
+        "infoValue": "95%",
+        "categoryValue": "Singleplayer"
+      },
+      {
         "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/benefit-3.png",
-        "title": "Game 8",
+        "image": "/img/uploads/limbo-1-.png",
+        "title": "Limbo Rider",
+        "infoValue": "95%",
+        "categoryValue": "Singleplayer"
+      },
+      {
+        "url": "/games/ball-ball-turbo-games?demo=true",
+        "image": "/img/uploads/ball-ball-1-.png",
+        "title": "Ball & Ball",
+        "infoValue": "99%",
+        "categoryValue": "Singleplayer"
+      },
+      {
+        "url": "/games/stairs-turbo-games?demo=true",
+        "image": "/img/uploads/furystairs-1-.png",
+        "title": "Stairs",
+        "infoValue": "97%",
+        "categoryValue": "Singleplayer"
+      },
+      {
+        "url": "/games/towers-turbo-games?demo=true",
+        "image": "/img/uploads/towers-1-.png",
+        "title": "Towers",
+        "infoValue": "95%",
+        "categoryValue": "Singleplayer"
+      },
+      {
+        "url": "/games/neko-turbo-games?demo=true",
+        "image": "/img/uploads/neko-1-.png",
+        "title": "Neko",
         "infoValue": "95%",
         "categoryValue": "Multiplayer"
       },
       {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/monday-big.png",
-        "title": "Game 9",
-        "infoValue": "93%",
+        "url": "/games/mines-turbo-games?demo=true",
+        "image": "/img/uploads/mines-1-.png",
+        "title": "Mines",
+        "infoValue": "95%",
         "categoryValue": "Singleplayer"
       },
       {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/promotion-3.png",
-        "title": "Game 10",
-        "infoValue": "97%",
+        "url": "/games/hamsta-turbo-games?demo=true",
+        "image": "/img/uploads/hamsta-1-.png",
+        "title": "Hamsta",
+        "infoValue": "95%",
+        "categoryValue": "Singleplayer"
+      },
+      {
+        "url": "/games/dice-twice-turbo-games?demo=true",
+        "image": "/img/uploads/dicetwice-1-.png",
+        "title": "Dice Twice",
+        "infoValue": "98%",
+        "categoryValue": "Singleplayer"
+      },
+      {
+        "url": "/games/crash-x-turbo-games?demo=true",
+        "image": "/img/uploads/crashx-1-.png",
+        "title": "Crash X",
+        "infoValue": "95%",
         "categoryValue": "Multiplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/wednesday-big.png",
-        "title": "Game 11",
-        "infoValue": "96%",
-        "categoryValue": "Singleplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/promotion-2.png",
-        "title": "Game 12",
-        "infoValue": "92%",
-        "categoryValue": "Multiplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/1-deposit.png",
-        "title": "Game 13",
-        "infoValue": "100%",
-        "categoryValue": "Singleplayer"
       },
       {
         "url": "/games/turbo-games-save-the-princess?demo=true",
