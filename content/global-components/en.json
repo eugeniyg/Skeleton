@@ -240,11 +240,11 @@
         "categoryValue": "Singleplayer"
       },
       {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/2-deposit.png",
-        "title": "Game 14",
-        "infoValue": "94%",
-        "categoryValue": "Multiplayer"
+        "url": "/games/turbo-games-save-the-princess?demo=true",
+        "image": "/img/uploads/save_the_princess.jpg",
+        "title": "Save the Princess",
+        "infoValue": "95%",
+        "categoryValue": "Singleplayer"
       }
     ]
   }
