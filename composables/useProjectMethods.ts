@@ -68,9 +68,24 @@ export const useProjectMethods = () => {
     return imageData['200x200']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
   };
 
-  const getFormatDate = (timeUtcIsoString: string):string => {
-    const date = new Date(timeUtcIsoString);
+  const getFormatDate = (dateUtcIsoString: string):string => {
+    const date = new Date(dateUtcIsoString);
     return date.toLocaleString().slice(0, -3);
+  };
+
+  const formUtcDate = (dateLocalString: string):string => {
+    const date = new Date(dateLocalString);
+    const utcDate = Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      date.getUTCHours(),
+      date.getUTCMinutes(),
+      date.getUTCSeconds(),
+    );
+    console.log(utcDate);
+    console.log(utcDate.toString());
+    return utcDate.toString();
   };
 
   const getNicknameFromEmail = (email: string):string => {

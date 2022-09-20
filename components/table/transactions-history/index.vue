@@ -6,18 +6,18 @@
 
     <div v-for="invoice in props.invoices" :key="invoice.id" class="row">
       <div class="td">{{ getFormatDate(invoice.createdAt) }}</div>
-      <div class="td" style="text-transform: capitalize">{{ getInvoiceType(invoice.invoiceType) }}</div>
+      <div class="td">{{ getInvoiceTypeLabel(invoice.invoiceType) }}</div>
       <div class="td">------</div>
 
-      <div class="td" style="text-transform: capitalize">
-        <atomic-row-status :variant="getInvoiceStatus(invoice.status).toLowerCase()">
-          {{ getInvoiceStatus(invoice.status) }}
+      <div class="td">
+        <atomic-row-status :variant="getInvoiceStatus(invoice.status)">
+          {{ getInvoiceStatusLabel(invoice.status) }}
         </atomic-row-status>
       </div>
 
       <div class="td">{{ invoice.amount }} {{ invoice.currency }}</div>
 
-      <div class="actions" v-if="getInvoiceStatus(invoice.status) === 'Pending' && getInvoiceType(invoice.invoiceType) === 'Withdrawal'">
+      <div class="actions" v-if="getInvoiceStatus(invoice.status) === 'pending' && getInvoiceType(invoice.invoiceType) === 'withdrawal'">
         <button-base
           class="btn-cancel-payment"
           type="secondary"
@@ -54,12 +54,22 @@
 
   const getInvoiceType = (type: number):string => {
     const findInvoiceType = coreStore.invoiceTypes.find((storeType) => storeType.id === type);
-    return props.transactionsContent.typeFilter.options[findInvoiceType.name] || '';
+    return findInvoiceType.name;
+  };
+
+  const getInvoiceTypeLabel = (type: number):string => {
+    const typeName = getInvoiceType(type);
+    return props.transactionsContent.typeFilter.options[typeName] || '';
   };
 
   const getInvoiceStatus = (status: number):string => {
     const findInvoiceStatus = coreStore.invoiceStatuses.find((storeStatus) => storeStatus.id === status);
-    return props.transactionsContent.statusFilter.options[findInvoiceStatus.name] || '';
+    return findInvoiceStatus.name;
+  };
+
+  const getInvoiceStatusLabel = (status: number):string => {
+    const statusName = getInvoiceStatus(status);
+    return props.transactionsContent.statusFilter.options[statusName] || '';
   };
 </script>
 
