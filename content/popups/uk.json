@@ -1,12 +1,12 @@
 {
   "confirm": {
-    "title": "Your account has been successfully confirmed!",
-    "button": "OK"
+    "title": "Ваш обліковий запис успішно підтверджено!",
+    "button": "ОК"
   },
   "success": {
-    "title": "Success",
-    "description": "Your deposit is successful! Money is already on your balance.",
-    "button": "Done"
+    "title": "Успіх",
+    "description": "Ваш депозит виконано! Гроші вже на вашому балансі.",
+    "button": "Готово"
   },
   "forgot": {
     "title": "Забули пароль?",
@@ -15,9 +15,9 @@
     "registrationButton": "Немає облікового запису? *Приєднуйтесь*"
   },
   "error": {
-    "title": "Error",
-    "description": "Sorry, something went wrong.<br>Please, try again.",
-    "button": "Try again"
+    "title": "Помилка",
+    "description": "Вибачте, щось пішло не так.<br>Спробуйте ще раз.",
+    "button": "Спробуйте знову"
   },
   "login": {
     "title": "Логін",
@@ -26,12 +26,12 @@
     "registrationButton": "Ще не маєте аккаунт? *Приєднуйтесь!*"
   },
   "withdraw": {
-    "title": "Withdrawal",
-    "balanceLabel": "Balance",
-    "withdrawLabel": "Withdrawable",
-    "sumLabel": "Withdrawal sum",
-    "minSum": "Min withdraw:",
-    "withdrawButton": "Withdraw"
+    "title": "Виплати",
+    "balanceLabel": "Баланс",
+    "withdrawLabel": "Виплати",
+    "sumLabel": "Сума виплату",
+    "minSum": "Мінімальна виплата",
+    "withdrawButton": "Виплатити"
   },
   "reset": {
     "title": "Скинути пароль",
@@ -65,11 +65,9 @@
   },
   "locale": "uk",
   "deposit": {
-    "title": "Депозит",
-    "balanceLabel": "Баланс",
+    "addressTitle": "Адреса",
+    "addressDescription": "Це ваша особиста адреса для депозитів. Ваші кошти будуть доступні, щойно вони пройдуть необхідні підтвердження.",
     "sumLabel": "Сума депозиту",
-    "minSum": "Мінімальний депозит:",
-    "togglerLabel": "У мене є бонус код",
     "bonuses": [
       {
         "image": "/img/uploads/icn-notification.svg",
@@ -77,6 +75,11 @@
         "description": "5 BTC + 300 FS"
       }
     ],
-    "depositButton": "Deposit"
+    "depositButton": "Депозит",
+    "togglerLabel": "У мене є бонус код",
+    "balanceLabel": "Баланс",
+    "title": "Депозит",
+    "minSum": "Мінімальний депозит:",
+    "addressInputLabel": "Надішліть будь-яку суму на адресу:"
   }
 }
