@@ -6,23 +6,23 @@
   "questionList": [
     {
       "question": "Що таке бонус?",
-      "answer": "Bonuses are additional money added to your balance. It gives you an advantage and increases your chances of winning bigger amounts. But you should remember that the bonus size depends on the promotional offer's terms. So don't forget to check out our promotions and mindfully read the offer's terms."
+      "answer": "Бонуси - це додаткові гроші, які додаються на ваш баланс. Це дає вам перевагу та збільшує ваші шанси виграти більші суми. Але пам'ятайте, що розмір бонусу залежить від умов акційної пропозиції. Тож не забудьте переглянути наші акції та уважно прочитати умови пропозиції."
     },
     {
-      "question": "How can I find out what the bonus wager is?",
-      "answer": "Just go to your personal profile. There you can find all the information about active bonuses. And if you need any help you can always text to our support."
+      "question": "Як я можу дізнатися, яка бонусна ставка?",
+      "answer": "Просто зайдіть у свій особистий профіль. Там ви можете знайти всю інформацію про активні бонуси. А якщо вам потрібна допомога, ви завжди можете написати в нашу службу підтримки."
     },
     {
       "question": "Як отримати welcome bonus?",
-      "answer": "The bonus will be automatically credited as soon as you make the deposit."
+      "answer": "Бонус буде автоматично зараховано, як тільки ви зробите депозит."
     },
     {
-      "question": "How many times do I need to wager my bonus?",
-      "answer": "All deposit-related bonuses have a x45 wagering requirement. For more information, please visit our [Bonus Terms Page.](https://slotsbet.io/bonus-terms)"
+      "question": "Скільки разів мені потрібно поставити свій бонус?",
+      "answer": "Усі бонуси, пов’язані з депозитами, мають вимогу щодо ставок x45. Щоб дізнатися більше, відвідайте нашу [Сторінку умов бонусів.](https://slotsbet.io/bonus-terms)"
     },
     {
-      "question": "I got my bonus, but the required bonus wager isn't decreasing. Why?",
-      "answer": "Different casino games contribute differently to the wagering requirement. [On the Bonus Terms Page](https://slotsbet.io/bonus-terms) you can read more information about bonus wager."
+      "question": "Я отримав свій бонус, але необхідна бонусна ставка не зменшується. чому",
+      "answer": "Різні ігри казино по-різному впливають на вимоги щодо ставок. [На сторінці умов бонусів](https://slotsbet.io/bonus-terms) ви можете прочитати більше інформації про бонусні ставки."
     }
   ],
   "position": 4
