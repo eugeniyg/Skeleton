@@ -17,6 +17,9 @@
     "maleLabel": "Чоловік",
     "femaleLabel": "Жінка"
   },
+  "wallet_id": {
+    "label": "Адреса гаманця"
+  },
   "personalIdNumber": {
     "label": "Персональний ID номер",
     "placeholder": "Персональний номер (якщо доступний)"
@@ -85,6 +88,9 @@
   "language": {
     "label": "Мова",
     "placeholder": "Введіть свою мову"
+  },
+  "card_number": {
+    "label": "Номер картки"
   },
   "timeZone": {
     "label": "Часовий пояс",
