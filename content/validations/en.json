@@ -18,7 +18,7 @@
   "url": "The field value must be a valid URL",
   "digits_between": "The field value must be between {min} and {max} digits",
   "date_equals": "The field value must be a date equal to {param}",
-  "string": "he field value must be a string",
+  "string": "The field value must be a string",
   "lowercase": "The field value must be lowercase",
   "min": "The field value must be at least {param}",
   "uppercase": "The field value must be uppercase",
