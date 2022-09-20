@@ -59,10 +59,6 @@
         transform: scale(1.2);
       }
     }
-
-    @include media(l) {
-      --margin-bottom: #{rem(16px)}
-    }
   }
 
   .items {
