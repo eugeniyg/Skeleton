@@ -149,11 +149,11 @@
     "categoryLabel": "Category",
     "items": [
       {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/1-deposit.png",
-        "title": "Game 1",
-        "infoValue": "98%",
-        "categoryValue": "Singleplayer"
+        "url": "/games/turbo-games-javelin-x?demo=true",
+        "image": "/img/uploads/javelin_2_3_no-1-.jpg",
+        "title": "JavelinX",
+        "infoValue": "95%",
+        "categoryValue": "Multiplayer"
       },
       {
         "url": "/games/limbo-rider-turbo-games?demo=true",
@@ -244,48 +244,6 @@
         "image": "/img/uploads/2-deposit.png",
         "title": "Game 14",
         "infoValue": "94%",
-        "categoryValue": "Multiplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/weekly-big.png",
-        "title": "Game 15",
-        "infoValue": "96%",
-        "categoryValue": "Singleplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/promotion-3.png",
-        "title": "Game 16",
-        "infoValue": "96%",
-        "categoryValue": "Multiplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/wednesday-big.png",
-        "title": "Game 17",
-        "infoValue": "95%",
-        "categoryValue": "Singleplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/3-deposit.png",
-        "title": "Game 18",
-        "infoValue": "98%",
-        "categoryValue": "Multiplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/4-deposit.png",
-        "title": "Game 19",
-        "infoValue": "97%",
-        "categoryValue": "Singleplayer"
-      },
-      {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
-        "image": "/img/uploads/benefit-3.png",
-        "title": "Game 20",
-        "infoValue": "20%",
         "categoryValue": "Multiplayer"
       }
     ]
