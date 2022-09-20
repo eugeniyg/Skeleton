@@ -1,57 +1,57 @@
 {
   "limitedDeposit": {
     "type": "error",
-    "title": "Помилка",
-    "description": "Вибачте, але зараз ви не можете внести депозит. Для отримання додаткової інформації зверніться до нашої служби підтримки."
+    "title": "Error",
+    "description": "Sorry, but you can't deposit for now. Please, contact our support team for more information."
   },
   "invalidResetCode": {
     "type": "error",
-    "title": "Помилка",
-    "description": "Вибачте, але ваше посилання для зміни пароля недійсне. Будь ласка, надішліть запит на повторне скидання пароля."
+    "title": "Error",
+    "description": "Sorry, but your password reset link is not valid. Please request another password reset."
   },
   "limitedRealGame": {
     "type": "error",
-    "title": "Помилка",
-    "description": "Вибачте, але зараз ви не можете грати в реальному режимі. Для отримання додаткової інформації зверніться до нашої служби підтримки."
+    "title": "Error",
+    "description": "Sorry, but you can't play in real mode for now. Please, contact our support team for more information."
   },
   "sentMessage": {
     "type": "done",
-    "title": "Дякую!"
+    "title": "Thank you!"
   },
   "sentResetLink": {
     "type": "done",
-    "title": "Успіх",
-    "description": "Посилання для зміни пароля було надіслано. Натисніть посилання в електронному листі, щоб створити новий пароль."
+    "title": "Success",
+    "description": "A password reset link was sent. Click the link in the email to create a new password."
   },
   "somethingWrong": {
     "type": "error",
-    "title": "Помилка!",
-    "description": "Щось пішло не так!"
+    "title": "Error!",
+    "description": "Something went wrong!"
   },
   "userCanceledWithdrawal": {
     "type": "done",
-    "title": "Успіх",
-    "description": "Ви успішно скасували зняття."
+    "title": "Success",
+    "description": "You have successfully canceled your withdrawal."
   },
   "withdrawalProcessed": {
     "type": "done",
-    "title": "В очікуванні!",
-    "description": "Ваше зняття обробляється. Ми перевіримо ваш запит найближчим часом."
+    "title": "Pending!",
+    "description": "Your withdrawal is being processed. We will check your request in a short while."
   },
   "passwordChanged": {
     "type": "done",
-    "title": "Успіх",
-    "description": "Ви успішно змінили свій пароль."
+    "title": "Success",
+    "description": "You have successfully changed your password."
   },
   "locale": "uk",
   "successRegistration": {
     "type": "done",
-    "title": "Ласкаво просимо",
-    "description": "Ви успішно зареєструвалися!"
+    "title": "Welcome",
+    "description": "You have been successfully registered!"
   },
   "accountBlocked": {
     "type": "error",
-    "title": "Помилка",
-    "description": "Вибачте, але ваш обліковий запис заблоковано. Для отримання додаткової інформації зверніться до нашої служби підтримки."
+    "title": "Error",
+    "description": "Sorry, but your account is blocked. Please, contact our support team for more information."
   }
 }
