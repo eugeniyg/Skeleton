@@ -30,7 +30,7 @@
     "balanceLabel": "Balance",
     "withdrawLabel": "Withdrawable",
     "sumLabel": "Withdrawal sum",
-    "minSum": "Min withdraw:",
+    "minSum": "Min withdrawal:",
     "withdrawButton": "Withdraw"
   },
   "reset": {
@@ -43,7 +43,7 @@
     "loginButton": " Already a member? *Sign in*",
     "promo": {
       "title": "Welcome package",
-      "secondTitle": "5 BTC",
+      "secondTitle": "5000 mBTC",
       "additionalTitle": "+ 300 FS",
       "advantages": [
         {
@@ -72,7 +72,7 @@
       {
         "image": "/img/uploads/icn-notification.svg",
         "title": "Get your welcome bonuses:",
-        "description": "5 BTC + 300 FS"
+        "description": "5000 mBTC + 300 FS"
       }
     ],
     "depositButton": "Deposit",

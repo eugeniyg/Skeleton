@@ -1,7 +1,7 @@
 {
   "locale": "uk",
   "header": {
-    "loginButton": "Логін",
+    "loginButton": "Логін1",
     "registrationButton": "Реєстрація",
     "search": {
       "placeholder": "Знайти гру",
@@ -51,10 +51,10 @@
       }
     ],
     "profileMenu": {
-      "levelLabel": "lvl.",
-      "depositButton": "Deposit",
+      "levelLabel": "рів.",
+      "depositButton": "Депозит",
       "profileButton": {
-        "label": "Profile",
+        "label": "Профіль",
         "url": "/profile/info"
       }
     },

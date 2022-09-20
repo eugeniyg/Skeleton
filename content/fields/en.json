@@ -16,6 +16,10 @@
     "maleLabel": "Male",
     "femaleLabel": "Female"
   },
+  "wallet_id": {
+    "label": "Wallet address",
+    "placeholder": "Enter wallet address"
+  },
   "personalIdNumber": {
     "label": "Personal ID number",
     "placeholder": "Identity reference number (if available)"
@@ -33,7 +37,7 @@
   },
   "city": {
     "label": "City",
-    "placeholder": "Your city"
+    "placeholder": "Enter your city"
   },
   "bonusCode": {
     "label": "Code (optional)",
@@ -55,7 +59,7 @@
   },
   "phone": {
     "label": "Mobile phone",
-    "placeholder": "Phone number"
+    "placeholder": "Enter phone number"
   },
   "currency": {
     "label": "Currency",
@@ -78,11 +82,15 @@
   },
   "postalCode": {
     "label": "Postal code",
-    "placeholder": "Postal code"
+    "placeholder": "Enter postal code"
   },
   "language": {
     "label": "Language",
     "placeholder": "Enter your language"
+  },
+  "card_number": {
+    "label": "Card number",
+    "placeholder": "Enter card number"
   },
   "timeZone": {
     "label": "Time Zone",

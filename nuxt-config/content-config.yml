@@ -346,6 +346,14 @@ collections:
         label: Message
         widget: object
         fields: *fieldsArray
+      - name: wallet_id
+        label: Wallet Address
+        widget: object
+        fields: *fieldsArray
+      - name: card_number
+        label: Card Number
+        widget: object
+        fields: *fieldsArray
 
   - name: mainLayout
     label: Main Layout

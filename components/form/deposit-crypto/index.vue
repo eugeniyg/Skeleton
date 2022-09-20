@@ -40,9 +40,14 @@
   const { popupsData, alertsData } = useGlobalStore();
 
   const depositContent: DepositInterface | undefined = popupsData?.deposit;
-  const fieldHint = computed(() => ({
-    message: `${depositContent?.minSum || ''} ${props.amountMin} ${activeAccount.value.currency}`,
-  }));
+
+  const { formatBalance } = useProjectMethods();
+  const fieldHint = computed(() => {
+    const formatSum = formatBalance(activeAccount.value.currency, props.amountMin);
+    return {
+      message: `${depositContent?.minSum || ''} ${formatSum.amount} ${formatSum.currency}`,
+    };
+  });
 
   onMounted(async () => {
     const profileStore = useProfileStore();
