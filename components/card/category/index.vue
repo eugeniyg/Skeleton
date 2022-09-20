@@ -4,19 +4,22 @@
       <img class="img" :src="props.image" alt="">
     </div>
 
-    <div class="title">
-      <atomic-icon :id="props.icon"/>{{ props.title }}
+    <div class="items">
+      <div class="title">
+        <atomic-icon :id="props.icon"/>
+        {{ props.title }}
+      </div>
+
+      <div class="sub-title">{{ props.description }}</div>
+
+      <button-base
+        type="primary"
+        size="md"
+        @click="changePage(props.button.url)"
+      >
+        {{ props.button.label }}
+      </button-base>
     </div>
-
-    <div class="sub-title">{{ props.description }}</div>
-
-    <button-base
-      type="primary"
-      size="md"
-      @click="changePage(props.button.url)"
-    >
-      {{ props.button.label }}
-    </button-base>
   </div>
 </template>
 
@@ -40,7 +43,7 @@
   const { showModal } = useLayoutStore();
   const { localizePath } = useProjectMethods();
 
-  const changePage = (link:string):void => {
+  const changePage = (link: string): void => {
     if (link === '/betting' && !isLoggedIn.value) showModal('register');
     else router.push(localizePath(link));
   };
