@@ -61,13 +61,7 @@
   const selectDate = (selectedDates):void => {
     let valueArr = [];
     if (selectedDates.length) {
-      valueArr = selectedDates.map((selectedDate) => {
-        const currentDate = new Date(selectedDate);
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth() + 1;
-        const day = currentDate.getDate();
-        return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`;
-      });
+      valueArr = selectedDates.map((selectedDate) => selectedDate.toISOString());
     }
     emit('change', valueArr);
   };

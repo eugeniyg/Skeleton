@@ -81,7 +81,6 @@
 
   const statusOptions = computed(() => {
     const storeOptions = coreStore.invoiceStatuses.map((item) => ({ value: transactionsContent.statusFilter.options[item.name], code: item.id }));
-    console.log([optionsDefaultValue, ...storeOptions]);
     return [optionsDefaultValue, ...storeOptions];
   });
 
@@ -111,7 +110,6 @@
   const invoices = ref<InvoiceInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
   const { getPlayerInvoices, cancelInvoice } = useCoreWalletApi();
-  const { formUtcDate } = useProjectMethods();
   const loading = ref<boolean>(true);
   const resolveInvoicesRequest = async ():Promise<void> => {
     loading.value = true;
@@ -152,9 +150,7 @@
 
   const changeDate = (dates: string[]):void => {
     if (dates.length === 2 && (dates[0] !== filters.dateFrom || dates[1] !== filters.dateTo)) {
-      formUtcDate(filters.dateFrom);
-      filters.dateFrom = `${dates[0]} 00:00:00`;
-      filters.dateTo = `${dates[1]} 00:00:00`;
+      [filters.dateFrom, filters.dateTo] = dates;
       resolveInvoicesRequest();
     } else if (dates[0] !== filters.dateFrom || dates[1] !== filters.dateTo) {
       filters.dateFrom = undefined;

@@ -73,21 +73,6 @@ export const useProjectMethods = () => {
     return date.toLocaleString().slice(0, -3);
   };
 
-  const formUtcDate = (dateLocalString: string):string => {
-    const date = new Date(dateLocalString);
-    const utcDate = Date.UTC(
-      date.getUTCFullYear(),
-      date.getUTCMonth(),
-      date.getUTCDate(),
-      date.getUTCHours(),
-      date.getUTCMinutes(),
-      date.getUTCSeconds(),
-    );
-    console.log(utcDate);
-    console.log(utcDate.toString());
-    return utcDate.toString();
-  };
-
   const getNicknameFromEmail = (email: string):string => {
     const getFirstPath = email.split('@')[0];
     if (getFirstPath.length < 4) return `${getFirstPath.slice(0, 1)}***`;

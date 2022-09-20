@@ -1,5 +1,8 @@
 <template>
-  <div class="tb-transactions-history">
+  <div
+    class="tb-transactions-history"
+    :class="{ 'tb-transactions-history__short': props.invoices?.length < 3 }"
+  >
     <div class="row">
       <div v-for="(th, thIndex) in headTitles" :key="thIndex" class="th">{{ th }}</div>
     </div>
