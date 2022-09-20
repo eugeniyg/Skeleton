@@ -1,7 +1,7 @@
 {
   "confirm": {
     "title": "Your account has been successfully confirmed!",
-    "button": "ОК"
+    "button": "OK"
   },
   "success": {
     "title": "Success",
@@ -21,7 +21,7 @@
   },
   "login": {
     "title": "Sign in",
-    "loginButton": "Sign in",
+    "loginButton": "Sing in",
     "forgotButton": "*Forgot Password?*",
     "registrationButton": " Don't have an account? *Join*"
   },
@@ -39,6 +39,8 @@
   },
   "registration": {
     "title": "Join Slotsbet",
+    "agreeEmailLabel": "I agree to receive bonus & marketing emails",
+    "agreeSmsLabel": "Send promos by SMS",
     "registrationButton": "Sign up",
     "loginButton": "Already a member? *Sign in*",
     "promo": {
@@ -59,11 +61,9 @@
           "label": "24/7 Live Chat Support"
         }
       ]
-    },
-    "agreeEmailLabel": "I agree to receive bonus & marketing emails",
-    "agreeSmsLabel": "Send promos by SMS"
+    }
   },
-  "locale": "uk",
+  "locale": "ru",
   "deposit": {
     "addressTitle": "Address",
     "addressDescription": "This is your personal address for deposits. Your funds will be available as soon as they pass through the necessary confirmations.",

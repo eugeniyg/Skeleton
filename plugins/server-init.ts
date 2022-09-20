@@ -23,10 +23,11 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         getGameProviders(),
         getGameCollections(),
       ]);
-      await getGlobalContent();
     } catch (error) {
       console.error(error);
       throw error;
+    } finally {
+      await getGlobalContent();
     }
   }
 });

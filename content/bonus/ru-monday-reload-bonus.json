@@ -9,16 +9,10 @@
   "backgroundColor": "gray",
   "subtitle": "30% bonus of up to 3.5 mBTC on Monday",
   "title": "Monday Reload Bonus",
-  "locale": "uk",
+  "locale": "ru",
   "image": "/img/uploads/monday-big.png",
   "description": "Start your week on a high note with Slotsbet! Grabbing yourself a 30% bonus of up to 3.5 mBTC is easy:\n\n1. Make a deposit of at least 1 mBTC.\n2. Instantly receive a bonus worth 30% of the amount you deposited (up to a maximum of 3.5 mBTC).",
   "seo": {
-    "text": {
-      "visible": "",
-      "hidden": "",
-      "button": ""
-    },
-    "title": "Slotsbet | Monday Reload bonus",
-    "description": ""
+    "title": "Slotsbet | Monday Reload bonus"
   }
 }
