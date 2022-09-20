@@ -9,16 +9,10 @@
   "backgroundColor": "gray",
   "subtitle": "Take your 10% cashback every Friday.",
   "title": "Weekly Cashback",
-  "locale": "uk",
+  "locale": "ru",
   "image": "/img/uploads/weekly-big.png",
   "description": "Every Friday you can get a portion of your staked money back thanks to our Cashback Bonus. Receive yours!\n\n#### How to receive this bonus?\n\n1. Create an account;\n2. Make the minimum or larger deposit as stated in the promotion;\n3. Find your bonus in the profile;\n4. Contact live chat if you have questions.",
   "seo": {
-    "text": {
-      "visible": "",
-      "hidden": "",
-      "button": ""
-    },
-    "title": "Slotsbet | Weekly Cashback",
-    "description": ""
+    "title": "Slotsbet | Weekly Cashback"
   }
 }

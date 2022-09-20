@@ -1,5 +1,5 @@
 {
-  "locale": "en",
+  "locale": "ru",
   "info": {
     "title": "Profile info",
     "editButton": "Edit your profile",
@@ -8,11 +8,6 @@
     "subscriptionTitle": "Subscriptions",
     "manageTitle": "Manage account",
     "seo": {
-      "text": {
-        "visible": "",
-        "hidden": "",
-        "button": ""
-      },
       "title": "Slotsbet | Profile info"
     }
   },
@@ -26,11 +21,6 @@
     "title": "Wallet",
     "withdrawButton": "Withdraw",
     "seo": {
-      "text": {
-        "visible": "",
-        "hidden": "",
-        "button": ""
-      },
       "title": "Slotsbet | Wallet"
     }
   },

@@ -59,20 +59,20 @@
     "tabPosition": 4,
     "tabLabel": "Transactions"
   },
-  "locale": "uk",
+  "locale": "ru",
   "sessions": {
     "tabLabel": "Sessions",
-    "tableColumns": {
-      "country": "Country",
-      "userAgent": "User Agent",
-      "createdAt": "Created At",
-      "status": "Status"
-    },
+    "tabPosition": -3,
     "sessionsStatuses": {
       "current": "Current",
       "active": "Active",
       "closed": "Closed"
     },
-    "tabPosition": 1
+    "tableColumns": {
+      "country": "Country",
+      "userAgent": "User Agent",
+      "createdAt": "Created At",
+      "status": "Status"
+    }
   }
 }
