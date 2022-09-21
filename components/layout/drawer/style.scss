@@ -62,7 +62,11 @@
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior: contain;
-    margin: #{rem(8px)} 0 #{rem(8px)} 0;
+    margin: var(--margin-content, #{rem(8px)} 0 #{rem(8px)} 0);
+
+    .drawer-minimize & {
+      --margin-content: #{rem(16px)} 0 #{rem(8px)} 0
+    }
 
     @include media(l) {
       .drawer-minimize & {
