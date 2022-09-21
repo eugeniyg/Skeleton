@@ -129,7 +129,23 @@
       transform: translateY(100%);
     }
 
-    &:hover {
+    @include media(md) {
+      &:hover {
+        .actions {
+          transform: translateY(0);
+        }
+
+        .content {
+          transform: translateY(calc(-86px));
+        }
+
+        &:after {
+          opacity: 1;
+        }
+      }
+    }
+
+    &.hovered {
       .actions {
         transform: translateY(0);
       }
