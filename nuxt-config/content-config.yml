@@ -346,6 +346,14 @@ collections:
         label: Message
         widget: object
         fields: *fieldsArray
+      - name: wallet_id
+        label: Wallet Address
+        widget: object
+        fields: *fieldsArray
+      - name: card_number
+        label: Card Number
+        widget: object
+        fields: *fieldsArray
 
   - name: mainLayout
     label: Main Layout
@@ -1566,6 +1574,45 @@ collections:
               - *projectIcon
               - name: label
                 label: Group Label
+                widget: string
+      - name: turbogames
+        label: Turbogames Group
+        widget: object
+        collapsed: true
+        fields:
+          - name: label
+            label: Label
+            widget: string
+          - *projectIcon
+          - name: buttonLabel
+            label: Game Button Label
+            widget: string
+          - name: infoLabel
+            label: Game Info Label
+            widget: string
+          - name: categoryLabel
+            label: Game Category Label
+            widget: string
+          - name: items
+            label: Games
+            widget: list
+            summary: '{{fields.title}}'
+            label_singular: game
+            fields:
+              - name: url
+                label: Game Url
+                widget: string
+              - name: image
+                label: Image
+                widget: image
+              - name: title
+                label: Title
+                widget: string
+              - name: infoValue
+                label: Game Info Value
+                widget: string
+              - name: categoryValue
+                label: Game Category Value
                 widget: string
       - name: globalSeo
         label: Global Page Seo

@@ -68,8 +68,8 @@ export const useProjectMethods = () => {
     return imageData['200x200']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
   };
 
-  const getFormatDate = (timeUtcIsoString: string):string => {
-    const date = new Date(timeUtcIsoString);
+  const getFormatDate = (dateUtcIsoString: string):string => {
+    const date = new Date(dateUtcIsoString);
     return date.toLocaleString().slice(0, -3);
   };
 
@@ -85,7 +85,7 @@ export const useProjectMethods = () => {
     return route.name && !route.params.locale && !!cookieLanguage.value;
   };
 
-  const formatBalance = (currency: string, amount: number):{ currency: string, amount: string|number } => {
+  const formatBalance = (currency: string, amount: number):{ currency: string, amount: number } => {
     const { currencies } = useGlobalStore();
     const currencyConfig = currencies.find((item) => item.code === currency);
     const specialCurrencies = ['BTC', 'ETH'];
@@ -96,7 +96,23 @@ export const useProjectMethods = () => {
 
     const afterDigits = amount.toString().split('.')[1]?.length || 0;
 
-    return { currency: subcurrencyConfig.code, amount: (amount * 1000).toFixed(afterDigits < 4 ? 0 : (afterDigits - 3)) };
+    return { currency: subcurrencyConfig.code, amount: Number((amount * 1000).toFixed(afterDigits < 4 ? 0 : (afterDigits - 3))) };
+  };
+
+  const getMainBalanceFormat = (currency: string, amount: number):{ currency: string, amount: string|number } => {
+    const { currencies } = useGlobalStore();
+    const currencyConfig = currencies.find((item) => {
+      if (!item.subCurrencies?.length) return item.code === currency;
+
+      return item.subCurrencies.some((subcurrency) => subcurrency.code === currency);
+    });
+    const specialCurrencies = ['BTC', 'ETH'];
+    if (currencyConfig.type === 'fiat' || !specialCurrencies.includes(currencyConfig.code)) return { currency, amount };
+
+    const subcurrencyConfig = currencyConfig.subCurrencies.find((subcurrency) => subcurrency.code === currency);
+    if (amount === 0) return { currency: currencyConfig.code, amount };
+
+    return { currency: currencyConfig.code, amount: amount / subcurrencyConfig.subunitToUnit };
   };
 
   const setPageSeo = (seoData:SeoContentInterface|undefined):void => {
@@ -124,6 +140,7 @@ export const useProjectMethods = () => {
     getNicknameFromEmail,
     needToChangeLanguage,
     formatBalance,
+    getMainBalanceFormat,
     setPageSeo,
   };
 };

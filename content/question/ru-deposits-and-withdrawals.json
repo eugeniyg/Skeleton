@@ -1,0 +1,17 @@
+{
+  "locale": "ru",
+  "pageUrl": "deposits-and-withdrawals",
+  "title": "Deposits & Withdrawals",
+  "icon": "wallet",
+  "position": 3,
+  "questionList": [
+    {
+      "question": "What currencies does Slotsbet accept?",
+      "answer": "Slotsbet accepts BTC, ETH, LTC, USDT."
+    },
+    {
+      "question": "How can I choose a different currency?",
+      "answer": "Choose required currency and tap on deposit."
+    }
+  ]
+}

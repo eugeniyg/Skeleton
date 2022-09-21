@@ -22,8 +22,10 @@
 
 .card-category {
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  position: relative;
 
   .cover {
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
@@ -32,6 +34,19 @@
     margin-bottom: var(--margin-bottom, #{rem(8px)});
     position: relative;
     overflow: hidden;
+
+    @include media(sm) {
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        background: linear-gradient(180deg, rgba(14, 9, 30, 0) 0%, #0E091E 100%);
+        border-radius: 8px;
+      }
+    }
 
     .img {
       width: 100%;
@@ -44,9 +59,18 @@
         transform: scale(1.2);
       }
     }
+  }
 
-    @include media(l) {
-      --margin-bottom: #{rem(16px)}
+  .items {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+
+    @include media(sm) {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: rem(24px) rem(24px) rem(32px) rem(24px);
     }
   }
 
@@ -80,13 +104,20 @@
   }
 
   .btn-primary {
-    --width: fit-content;
+    --width: 100%;
     --padding: #{rem(7px)} #{rem(24px)};
     @include upd-font($heading-2);
     margin-top: auto;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    text-align: center;
 
-    @include media(l) {
-      --padding: #{rem(7px)} #{rem(24px)};
+    @include media(xs) {
+      --padding: #{rem(11px)} #{rem(24px)};
+      --width: fit-content;
     }
   }
 }

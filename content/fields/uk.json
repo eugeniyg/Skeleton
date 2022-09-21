@@ -1,125 +1,133 @@
 {
   "repeatNewPassword": {
-    "label": "Повторіть новий пароль",
-    "placeholder": "Повторно введіть новий пароль"
+    "label": "New password again",
+    "placeholder": "Re-enter new password"
   },
   "placeOfBirth": {
-    "label": "Місце народження",
-    "placeholder": "Введіть своє місце народження"
+    "label": "Place of birth",
+    "placeholder": "Enter your place of birth"
   },
   "lastName": {
-    "label": "Прізвище",
-    "placeholder": "Введіть прізвище"
+    "label": "Last name",
+    "placeholder": "Enter last name"
   },
   "gender": {
-    "label": "Стать",
+    "label": "Gender",
     "placeholder": "Введіть стать",
-    "maleLabel": "Чоловік",
-    "femaleLabel": "Жінка"
+    "maleLabel": "Male",
+    "femaleLabel": "Female"
+  },
+  "wallet_id": {
+    "label": "Wallet address",
+    "placeholder": "Enter wallet address"
   },
   "personalIdNumber": {
-    "label": "Персональний ID номер",
-    "placeholder": "Персональний номер (якщо доступний)"
+    "label": "Personal ID number",
+    "placeholder": "Identity reference number (if available)"
   },
   "securityQuestion": {
-    "label": "Питання безпеки",
-    "placeholder": "Введіть своє таємне запитання"
+    "label": "Security Question",
+    "placeholder": "Enter your security question"
   },
   "message": {
-    "label": "Текст",
-    "placeholder": "Введіть своє повідомлення"
+    "label": "Text",
+    "placeholder": "Enter your message"
   },
   "agreements": {
-    "label": "Я приймаю <a href=\"/static/terms-and-conditions\"> Загальні положення та умови</a> та <a href=\"/static/privacy-policy\">Політику конфіденційності</a>"
+    "label": "I accept the <a href=\"/static/terms-and-conditions\"> Terms and Conditions</a> and <a href=\"/static/privacy-policy\">Privacy Policy</a>"
   },
   "city": {
-    "label": "Місто",
-    "placeholder": "Ваше місто"
+    "label": "City",
+    "placeholder": "Enter your city"
   },
   "bonusCode": {
-    "label": "Код (необов'язково)",
-    "placeholder": "Введіть код"
+    "label": "Code (optional)",
+    "placeholder": "Enter code"
   },
   "birthdate": {
-    "label": "Дата народження",
+    "label": "Date of Birth",
     "placeholder": "Дата народження",
-    "placeholderDay": "День",
-    "placeholderMonth": "Місяць",
-    "placeholderYear": "Рік"
+    "placeholderDay": "Day",
+    "placeholderMonth": "Month",
+    "placeholderYear": "Year"
   },
   "additionalAddress": {
-    "label": "Додаткова адреса",
-    "placeholder": "Введіть свою додаткову адресу"
+    "label": "Additional Address",
+    "placeholder": "Enter your additional address"
   },
   "nickname": {
-    "label": "Псевдонім",
-    "placeholder": "Введіть свій псевдонім"
+    "label": "Nickname",
+    "placeholder": "Enter your nickname"
   },
   "phone": {
-    "label": "Номер мобільного",
-    "placeholder": "Номер телефону"
+    "label": "Mobile phone",
+    "placeholder": "Enter phone number"
   },
   "currency": {
-    "label": "Валюта",
-    "placeholder": "Виберіть свою валюту"
+    "label": "Currency",
+    "placeholder": "Select your currency"
   },
   "currentPassword": {
-    "label": "Поточний пароль",
-    "placeholder": "Введіть поточний пароль"
+    "label": "Current password",
+    "placeholder": "Enter your current password"
   },
   "address": {
-    "label": "Адреса",
-    "placeholder": "Введіть свою адресу"
+    "label": "Address",
+    "placeholder": "Enter your address"
   },
   "receiveEmailPromo": {
-    "label": "Надсилати промо електронною поштою"
+    "label": "Send promos by Email"
   },
   "country": {
-    "label": "Країна",
-    "placeholder": "Виберіть свою країну"
+    "label": "Country",
+    "placeholder": "Select your country"
   },
   "postalCode": {
-    "label": "Поштовий індекс",
-    "placeholder": "Поштовий індекс"
+    "label": "Postal code",
+    "placeholder": "Enter postal code"
   },
   "language": {
-    "label": "Мова",
-    "placeholder": "Введіть свою мову"
+    "label": "Language",
+    "placeholder": "Enter your language"
+  },
+  "card_number": {
+    "label": "Card number",
+    "placeholder": "Enter card number"
   },
   "timeZone": {
-    "label": "Часовий пояс",
-    "placeholder": "Виберіть часовий пояс"
+    "label": "Time Zone",
+    "placeholder": "Select time zone"
   },
   "receiveSmsPromo": {
-    "label": "Надсилати промо SMS-повідомленнями"
+    "label": "Send promos by SMS"
   },
   "locale": "uk",
   "newPassword": {
-    "label": "Новий пароль",
-    "placeholder": "Введіть новий пароль"
+    "label": "New password",
+    "placeholder": "Enter new password"
   },
   "firstName": {
-    "label": "Ім'я",
-    "placeholder": "Введіть ім'я"
+    "label": "First name",
+    "placeholder": "Enter first name"
   },
   "password": {
-    "label": "Пароль",
-    "placeholder": "Введіть свій пароль"
+    "label": "Password",
+    "placeholder": "Enter your password"
   },
   "profession": {
-    "label": "Професія",
-    "placeholder": "Введіть свою професію"
+    "label": "Profession",
+    "placeholder": "Enter your profession"
   },
   "nationality": {
-    "label": "Національність",
-    "placeholder": "Введіть своє громадянство"
+    "label": "Nationality",
+    "placeholder": "Enter your nationality"
   },
   "email": {
-    "label": "Електронна адреса",
-    "placeholder": "Введіть свою електронну адресу"
+    "label": "Email Address",
+    "placeholder": "Enter your email"
   },
   "securityAnswer": {
-    "label": "Відповідь безпеки",
-    "placeholder": "Введіть відповідь на таємне запитання"
+    "label": "Security Answer",
+    "placeholder": "Enter an answer to your security question"
   }
 }

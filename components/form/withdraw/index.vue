@@ -3,11 +3,11 @@
     <form-input-number
       :label="withdrawContent?.sumLabel || ''"
       name="withdrawSum"
-      :min="props.amountMin"
-      :max="props.amountMax"
+      :min="formatAmountMin.amount"
+      :max="formatAmountMax.amount"
       v-model:value="amountValue"
       :defaultValue="amountDefaultValue"
-      :currency="activeAccount.currency"
+      :currency="defaultInputSum.currency"
       :hint="fieldHint"
     />
 
@@ -15,11 +15,12 @@
       v-for="field in props.fields"
       :key="field.key"
       :name="field.key"
-      :label="field.labels[currentLocale.code]"
+      :label="fieldsContent[field.key]?.label || ''"
       type="text"
-      :placeholder="field.hints[currentLocale.code]"
+      :placeholder="fieldsContent[field.key]?.placeholder || ''"
       v-model:value="withdrawFormData[field.key]"
-      :onFocus="onFocus(field.key)"
+      @focus="onFocus(field.key)"
+      @blur="v$[field.key]?.$touch()"
       :hint="setError(field.key)"
     />
 
@@ -29,7 +30,7 @@
       :isDisabled="buttonDisabled"
       @click="getWithdraw"
     >
-      {{ withdrawContent?.withdrawButton }} {{ buttonAmount }} {{ activeAccount.currency }}
+      {{ withdrawContent?.withdrawButton }} {{ buttonAmount }} {{ defaultInputSum.currency }}
     </button-base>
   </form>
 </template>
@@ -58,62 +59,62 @@
   });
 
   const globalStore = useGlobalStore();
-  const { popupsData, currentLocale, alertsData } = storeToRefs(globalStore);
+  const {
+    popupsData, alertsData, fieldsContent,
+  } = storeToRefs(globalStore);
   const withdrawContent: WithdrawInterface|undefined = popupsData.value?.withdraw;
   const walletStore = useWalletStore();
   const { closeModal, showAlert } = useLayoutStore();
   const {
     activeAccount, activeAccountType,
   } = storeToRefs(walletStore);
+
+  const { formatBalance, getMainBalanceFormat } = useProjectMethods();
+  const formatAmountMax = formatBalance(activeAccount.value.currency, props.amountMax);
+  const formatAmountMin = formatBalance(activeAccount.value.currency, props.amountMin);
+  const activeAccountFormat = formatBalance(activeAccount.value.currency, activeAccount.value.balance);
   const fieldHint = computed(() => ({
-    message: `${withdrawContent?.minSum || ''} ${props.amountMin} ${activeAccount.value.currency}`,
+    message: `${withdrawContent?.minSum || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
-  const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : 0.01);
+  const defaultInputSum = formatBalance(activeAccount.value.currency, 0.01);
+  const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : Number(defaultInputSum.amount));
   const amountValue = ref<number>(amountDefaultValue.value);
-  const { setFormData } = useCoreMethods();
-  const withdrawFormData = reactive(setFormData(props.fields));
+  const withdrawFormData = reactive({});
+  const withdrawRules = {};
+  props.fields.forEach((field:any) => {
+    withdrawFormData[field.key] = '';
+    withdrawRules[field.key] = [];
+    if (field.isRequired) withdrawRules[field.key].push({ rule: 'required' });
+    if (field.regexp) withdrawRules[field.key].push({ rule: 'regex', arguments: field.regexp });
+  });
+  const { getFormRules } = useProjectMethods();
+  const withdrawFormRules = getFormRules(withdrawRules);
+  const {
+    serverFormErrors, v$, onFocus, setError,
+  } = useFormValidation(withdrawFormRules, withdrawFormData);
+
   const buttonAmount = computed(() => {
-    if (amountValue.value > props.amountMax) return props.amountMax;
-    if (amountValue.value < props.amountMin) return props.amountMin;
+    if (amountValue.value > formatAmountMax.amount) return formatAmountMax.amount;
+    if (amountValue.value < formatAmountMin.amount) return formatAmountMin.amount;
     return amountValue.value;
   });
-  const fieldsValid = computed(() => {
-    let valid = true;
-    props.fields.forEach((field:any) => {
-      if (field.isRequired && !withdrawFormData[field.key]) valid = false;
-    });
-    return valid;
-  });
-  const buttonDisabled = computed(() => !fieldsValid.value || amountValue.value > activeAccount.value.balance
-    || amountValue.value < props.amountMin || amountValue.value > props.amountMax || isSending.value);
 
-  const serverFormErrors = ref<any>({});
-
-  const setError = (fieldName:string):undefined|{ variant: string, message: any } => {
-    if (serverFormErrors.value[fieldName]) {
-      return { variant: 'error', message: serverFormErrors.value[fieldName][0] };
-    }
-    return undefined;
-  };
-
-  const onFocus = (fieldName:string):void => {
-    if (serverFormErrors.value[fieldName]) {
-      serverFormErrors.value[fieldName] = undefined;
-    }
-  };
+  const buttonDisabled = computed(() => v$.value.$invalid || amountValue.value > activeAccountFormat.amount
+    || amountValue.value < formatAmountMin.amount || amountValue.value > formatAmountMax.amount || isSending.value);
 
   const getWithdraw = async ():Promise<void> => {
     if (buttonDisabled.value) return;
 
     isSending.value = true;
-    // const formatFields = Object.entries(withdrawFormData).map(([key, value]) => ({ key, value }));
+    const formatFields = Object.entries(withdrawFormData).map(([key, value]) => ({ key, value }));
+    const mainCurrencyAmount = getMainBalanceFormat(activeAccountFormat.currency, Number(amountValue.value));
     const params = {
       method: props.method,
-      // fields: formatFields,
+      fields: formatFields,
       currency: activeAccount.value.currency,
-      amount: Number(amountValue.value),
+      amount: mainCurrencyAmount.amount,
       accountId: activeAccount.value.id,
     };
 

@@ -14,6 +14,8 @@
       />
     </div>
 
+    <group-turbo />
+
     <group-promotions />
 
     <atomic-seo-text v-if="homeContent?.seo?.text" v-bind="homeContent.seo.text" />

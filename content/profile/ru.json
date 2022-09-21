@@ -1,0 +1,52 @@
+{
+  "locale": "ru",
+  "info": {
+    "title": "Profile info",
+    "editButton": "Edit your profile",
+    "saveButton": "Save changes",
+    "cancelButton": "Cancel",
+    "subscriptionTitle": "Subscriptions",
+    "manageTitle": "Manage account",
+    "seo": {
+      "title": "Slotsbet | Profile info"
+    }
+  },
+  "wallet": {
+    "changeButton": "Use currency",
+    "depositButton": "Deposit",
+    "addButton": "Add currency",
+    "allTab": "All currencies",
+    "cryptoTab": "Crypto",
+    "hideButton": "Hide currency",
+    "title": "Wallet",
+    "withdrawButton": "Withdraw",
+    "seo": {
+      "title": "Slotsbet | Wallet"
+    }
+  },
+  "bonuses": {
+    "title": "Bonuses",
+    "seo": {
+      "title": "Slotsbet | Bonuses"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "seo": {
+      "title": "Slotsbet | Notifications"
+    }
+  },
+  "security": {
+    "title": "Security & Verification",
+    "saveButton": "Save changes",
+    "seo": {
+      "title": "Slotsbet | Security & Verification"
+    }
+  },
+  "history": {
+    "title": "History",
+    "seo": {
+      "title": "Slotsbet | History"
+    }
+  }
+}

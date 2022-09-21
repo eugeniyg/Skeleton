@@ -1,7 +1,7 @@
 {
   "confirm": {
     "title": "Your account has been successfully confirmed!",
-    "button": "OK"
+    "button": "ОК"
   },
   "success": {
     "title": "Success",
@@ -9,10 +9,10 @@
     "button": "Done"
   },
   "forgot": {
-    "title": "Забули пароль?",
-    "description": "Введіть адресу електронної пошти, і ми надішлемо вам посилання для зміни пароля.",
-    "forgotButton": "Скинути пароль",
-    "registrationButton": "Немає облікового запису? *Приєднуйтесь*"
+    "title": "Forgot password?",
+    "description": "Enter your email address and we will send you a password reset link.",
+    "forgotButton": "Reset password",
+    "registrationButton": "Don't have an account? *Join*"
   },
   "error": {
     "title": "Error",
@@ -20,30 +20,30 @@
     "button": "Try again"
   },
   "login": {
-    "title": "Логін",
-    "loginButton": "Логін",
-    "forgotButton": "*Забули пароль?*",
-    "registrationButton": "Ще не маєте аккаунт? *Приєднуйтесь!*"
+    "title": "Sign in",
+    "loginButton": "Sign in",
+    "forgotButton": "*Forgot Password?*",
+    "registrationButton": " Don't have an account? *Join*"
   },
   "withdraw": {
     "title": "Withdrawal",
     "balanceLabel": "Balance",
     "withdrawLabel": "Withdrawable",
     "sumLabel": "Withdrawal sum",
-    "minSum": "Min withdraw:",
+    "minSum": "Min withdrawal:",
     "withdrawButton": "Withdraw"
   },
   "reset": {
-    "title": "Скинути пароль",
-    "resetButton": "Підтвердити"
+    "title": "Reset password",
+    "resetButton": "Confirm"
   },
   "registration": {
-    "title": "Приєднуйся до Slotsbet",
-    "registrationButton": "Зареєструватися",
-    "loginButton": " Маєте аккаунт? *Увійти*",
+    "title": "Join Slotsbet",
+    "registrationButton": "Sign up",
+    "loginButton": "Already a member? *Sign in*",
     "promo": {
       "title": "Welcome package",
-      "secondTitle": "5 BTC",
+      "secondTitle": "5000 mBTC",
       "additionalTitle": "+ 300 FS",
       "advantages": [
         {
@@ -60,23 +60,26 @@
         }
       ]
     },
-    "agreeEmailLabel": "Я погоджуюся отримувати бонуси та маркетингові електронні листи",
-    "agreeSmsLabel": "Розсилайте акції за допомогою SMS"
+    "agreeEmailLabel": "I agree to receive bonus & marketing emails",
+    "agreeSmsLabel": "Send promos by SMS"
   },
   "locale": "uk",
   "deposit": {
-    "title": "Депозит",
-    "balanceLabel": "Баланс",
-    "sumLabel": "Сума депозиту",
-    "minSum": "Мінімальний депозит:",
-    "togglerLabel": "У мене є бонус код",
+    "addressTitle": "Address",
+    "addressDescription": "This is your personal address for deposits. Your funds will be available as soon as they pass through the necessary confirmations.",
+    "sumLabel": "Deposit sum",
     "bonuses": [
       {
         "image": "/img/uploads/icn-notification.svg",
         "title": "Get your welcome bonuses:",
-        "description": "5 BTC + 300 FS"
+        "description": "5000 mBTC + 300 FS"
       }
     ],
-    "depositButton": "Deposit"
+    "depositButton": "Deposit",
+    "togglerLabel": "I have bonus code",
+    "balanceLabel": "Balance",
+    "title": "Deposit",
+    "minSum": "Min deposit:",
+    "addressInputLabel": "Send any amount to:"
   }
 }

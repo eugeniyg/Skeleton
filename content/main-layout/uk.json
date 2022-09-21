@@ -1,41 +1,41 @@
 {
   "locale": "uk",
   "header": {
-    "loginButton": "Логін",
-    "registrationButton": "Реєстрація",
+    "loginButton": "Login",
+    "registrationButton": "Registration",
     "search": {
-      "placeholder": "Знайти гру",
+      "placeholder": "Search your game",
       "moreButton": "Load more",
       "emptyLabel": "Nothing found",
       "emptyText": "Try searching for something else",
       "tryLabel": "Or try these popular games:"
     },
-    "depositButton": "Депозит"
+    "depositButton": "Deposit"
   },
   "userNavigation": {
     "profileLinks": [
       {
-        "label": "Гаманець",
+        "label": "Wallet",
         "url": "/profile/wallet",
         "icon": "wallet"
       },
       {
-        "label": "Бонуси",
+        "label": "Bonuses",
         "url": "/profile/bonuses",
         "icon": "bonus"
       },
       {
-        "label": "Інформація про профіль",
+        "label": "Profile info",
         "url": "/profile/info",
         "icon": "user"
       },
       {
-        "label": "Історія",
+        "label": "History",
         "url": "/profile/history",
         "icon": "history"
       }
     ],
-    "logoutButton": "Вийти"
+    "logoutButton": "Log out"
   },
   "siteSidebar": {
     "gamesToggler": [
@@ -169,7 +169,7 @@
   },
   "footer": {
     "promoMenu": {
-      "title": "Промо",
+      "title": "Promo",
       "items": [
         {
           "label": "Welcome package",
@@ -190,7 +190,7 @@
       ]
     },
     "infoMenu": {
-      "title": "Інформація",
+      "title": "Info",
       "items": [
         {
           "label": "T&C",
@@ -232,27 +232,27 @@
     "curacao": "Copyright © 2022 [Slotsbet.io](http://slotsbet.io/ \"http\\://slotsbet.io/\") is owned and operated by Geminilab N.V., a company registered and established under the laws of Curaçao, with registration number 161235, Geminilab N.V. is licensed and authorized by the Government of Curacao and operates under the Master License of Gaming Services Provider, N.V. #365/JAZ"
   },
   "mobileMenu": {
-    "menuLabel": "Меню",
+    "menuLabel": "Menu",
     "items": [
       {
-        "label": "Казино",
+        "label": "Casino",
         "url": "/main",
         "icon": "cherry"
       },
       {
-        "label": "Спорт",
+        "label": "Sports",
         "url": "/betting",
         "icon": "sport"
       },
       {
-        "label": "Підтримка",
+        "label": "Support",
         "url": "/contact",
         "icon": "live-support"
       }
     ]
   },
   "cookiePopup": {
-    "text": "Ми використовуємо файли cookie, щоб покращити ваш досвід. Використовуючи наш веб-сайт, ви приймаєте наші [Умови](/terms-and-conditions) і [Політику конфіденційності](/privacy-policy).",
-    "acceptButton": "Прийняти"
+    "text": "We use cookies to improve your experience. By using our website you are accepting our [Terms and Conditions](/static/terms-and-conditions) and [Privacy Policy](/static/privacy-policy).",
+    "acceptButton": "Accept"
   }
 }

@@ -9,10 +9,11 @@
     "manageTitle": "Manage account",
     "seo": {
       "text": {
-        "visible": "## Profile info seo text title\n\nProfile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text",
-        "hidden": "## Profile info seo text title\n\nProfile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text Profile info seo text text",
-        "button": "more button"
-      }
+        "visible": "",
+        "hidden": "",
+        "button": ""
+      },
+      "title": "Slotsbet | Profile info"
     }
   },
   "wallet": {
@@ -26,23 +27,36 @@
     "withdrawButton": "Withdraw",
     "seo": {
       "text": {
-        "visible": "## Profile wallet text title\n\nProfile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text",
-        "hidden": "## Profile wallet text title\n\nProfile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text Profile wallet text text",
-        "button": "More"
-      }
+        "visible": "",
+        "hidden": "",
+        "button": ""
+      },
+      "title": "Slotsbet | Wallet"
     }
   },
   "bonuses": {
-    "title": "Bonuses"
+    "title": "Bonuses",
+    "seo": {
+      "title": "Slotsbet | Bonuses"
+    }
   },
   "notifications": {
-    "title": "Notifications"
+    "title": "Notifications",
+    "seo": {
+      "title": "Slotsbet | Notifications"
+    }
   },
   "security": {
     "title": "Security & Verification",
-    "saveButton": "Save changes"
+    "saveButton": "Save changes",
+    "seo": {
+      "title": "Slotsbet | Security & Verification"
+    }
   },
   "history": {
-    "title": "History"
+    "title": "History",
+    "seo": {
+      "title": "Slotsbet | History"
+    }
   }
 }
