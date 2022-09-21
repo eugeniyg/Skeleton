@@ -111,6 +111,10 @@
   const subscriptionFields = computed(() => profileFields.value.filter((field) => field.name === 'receiveSmsPromo' || field.name === 'receiveEmailPromo'));
 
   const toggleProfileEdit = ():void => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
     router.push({ query: { ...route.query, edit: isProfileEdit.value ? undefined : 'true' } });
   };
 
