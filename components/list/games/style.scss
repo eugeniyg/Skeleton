@@ -15,6 +15,7 @@
     max-width: 100%;
     transition: max-width .2s ease-in-out;
     width: var(--img-width, #{rem(56px)});
+    min-width: var(--img-width, #{rem(56px)});
     height: var(--img-height, #{rem(56px)});
   }
 
@@ -25,7 +26,7 @@
       }
 
       --padding-left: 0;
-      --img-width: § #{rem(40px)};
+      --img-width: #{rem(40px)};
       --img-height: #{rem(40px)};
     }
   }
