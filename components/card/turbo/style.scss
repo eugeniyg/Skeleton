@@ -95,7 +95,7 @@
 
 
   @include media(xs) {
-    --min-width: #{column(4)};
+    --min-width: #{column(3)};
   }
 
   @include media(sm) {
