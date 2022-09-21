@@ -65,22 +65,11 @@
     grid-area: items;
     display: var(--display, flex);
     align-items: center;
-    grid-column-gap: var(--items-column-gap, #{rem(8px)});
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-
-    @include media(xs) {
-      --items-column-gap: #{rem(16px)}
-    }
-
-    @include media(md) {
-      --items-column-gap: #{rem(8px)}
-    }
-
-    @include media(l) {
-      --items-column-gap: #{rem(16px)}
-    }
+    padding: rem(11px) 0;
+    margin-top: rem(-11px);
 
     &::-webkit-scrollbar {
       display: none;
