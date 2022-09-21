@@ -14,7 +14,7 @@
       />
     </div>
 
-    <!--    <group-turbo />-->
+    <group-turbo />
 
     <group-promotions />
 
