@@ -116,7 +116,6 @@ export const useLayoutStore = defineStore('layoutStore', {
     addModalQuery(modalName:string, queryValue:string):void {
       const router = useRouter();
       const { query, name } = useRoute();
-      console.log(name);
       if (!name || name === 'slug' || name === 'locale-slug') return;
       const modalsArr = Object.keys(this.modals);
       const newQuery = { ...query };
