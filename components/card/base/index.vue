@@ -1,5 +1,10 @@
 <template>
-  <div class="card-base" :style="backgroundImage">
+  <div
+    class="card-base"
+    :style="backgroundImage"
+    :class="[{ 'hovered': gameHovered }, `game-${props.id}`]"
+    @click="clickGame"
+  >
     <div v-if="props.bages && props.bages.length" class="bages">
       <atomic-bage
         v-for="(bage, bageIndex) in props.bages"
@@ -96,6 +101,31 @@
     if (props.images.hasOwnProperty('200x300')) {
       return `background-image:url(${baseApiUrl}/img/gcdn${getImageUrl(props.images, 'vertical')})`;
     } return 'background-image: none';
+  });
+
+  const gameHovered = ref<string|undefined>(undefined);
+  const globalStore = useGlobalStore();
+  const { isMobile } = storeToRefs(globalStore);
+  const clickGame = ():void => {
+    if (isMobile.value) {
+      gameHovered.value = gameHovered.value === props.id ? undefined : props.id;
+    }
+  };
+
+  const clickOutside = (e:any):void => {
+    if (e.target.closest(`.game-${props.id}`)) return;
+    gameHovered.value = undefined;
+  };
+
+  onMounted(() => {
+    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587
+    setTimeout(() => {
+      document.addEventListener('click', clickOutside);
+    }, 100);
+  });
+
+  onBeforeUnmount(() => {
+    document.removeEventListener('click', clickOutside);
   });
 </script>
 

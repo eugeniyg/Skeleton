@@ -50,7 +50,24 @@
     will-change: opacity;
   }
 
-  &:hover {
+  @include media(md) {
+    &:hover {
+      --pointer-events: auto;
+      --opacity-info: 1;
+      --transition-info: (opacity .6s ease);
+
+      .btn-play {
+        transform: scale(1);
+        transition-delay: .2s;
+      }
+
+      .btn-try {
+        animation: delay-pointer-events .2s ease-in-out;
+      }
+    }
+  }
+
+  &.hovered {
     --pointer-events: auto;
     --opacity-info: 1;
     --transition-info: (opacity .6s ease);
