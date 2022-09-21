@@ -2,7 +2,7 @@
   <div
     class="card-base"
     :style="backgroundImage"
-    :class="[{ 'hovered': gameHovered }, `game-${props.id}`]"
+    :class="[{ 'hovered': gameHovered }, `card-${props.id}`]"
     @click="clickGame"
   >
     <div v-if="props.bages && props.bages.length" class="bages">
@@ -113,7 +113,7 @@
   };
 
   const clickOutside = (e:any):void => {
-    if (e.target.closest(`.game-${props.id}`)) return;
+    if (e.target.closest(`.card-${props.id}`)) return;
     gameHovered.value = undefined;
   };
 
