@@ -4,7 +4,11 @@
     :class="classes"
   >
     <div v-if="props.items.length" class="selected" @click="open">
-      <img v-if="props.activeMethod.logo" class="mask" :src="props.activeMethod.logo" />
+      <img
+        v-if="props.activeMethod.logo || defaultLogoUrl()"
+        class="mask"
+        :src="props.activeMethod.logo || defaultLogoUrl()"
+      />
       <atomic-icon id="arrow_expand-close"/>
     </div>
 
@@ -16,7 +20,7 @@
         :class="{'is-selected': item.method === props.activeMethod.method }"
         @click="select(item)"
       >
-        <img v-if="item.logo" class="mask" :src="item.logo" />
+        <img v-if="item.logo || defaultLogoUrl()" class="mask" :src="item.logo || defaultLogoUrl()" />
       </div>
     </div>
     <input type="hidden" name="payments" :value="props.activeMethod.method" />
@@ -25,6 +29,7 @@
 
 <script setup lang="ts">
   import { PaymentMethodInterface } from '@platform/frontend-core/dist/module';
+  import { storeToRefs } from 'pinia';
 
   const props = defineProps({
     items: {
@@ -51,6 +56,15 @@
 
   const open = ():void => {
     isOpen.value = !isOpen.value;
+  };
+
+  const walletStore = useWalletStore();
+  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
+  const defaultLogoUrl = ():string => {
+    if (activeAccountType.value === 'fiat') return '';
+    if (activeAccount.value.currency === 'BTC') return '/img/bitcoin-logo.svg';
+    if (activeAccount.value.currency === 'ETH') return '/img/ethereum-logo.svg';
+    return '';
   };
 </script>
 
