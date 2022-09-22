@@ -1952,6 +1952,23 @@ collections:
           - name: sortLabel
             label: Sort Filter Label
             widget: string
+          - name: sortOptions
+            label: Sort Options
+            widget: list
+            label_singular: option
+            fields:
+              - name: label
+                label: Option Label
+                widget: string
+              - name: sortBy
+                label: Sort By
+                widget: select
+                options: ['default', 'name']
+              - name: sortOrder
+                label: Sort Order
+                widget: select
+                options: ['asc', 'desc']
+
           - *seoBlock
       - name: bettingPage
         label: Sports Page
