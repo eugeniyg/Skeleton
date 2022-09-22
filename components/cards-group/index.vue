@@ -117,7 +117,7 @@
   const clickAction = (direction: string):void => {
     const { offsetWidth } = scrollContainer.value;
     scrollContainer.value.scrollBy({
-      left: direction ? offsetWidth : -offsetWidth,
+      left: direction === 'next' ? offsetWidth : -offsetWidth,
       behavior: 'smooth',
     });
   };
