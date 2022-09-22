@@ -129,7 +129,24 @@
         "visible": ""
       },
       "title": "Slotsbet | Find favorite slots and games"
-    }
+    },
+    "sortOptions": [
+      {
+        "label": "Most popular",
+        "sortBy": "default",
+        "sortOrder": "asc"
+      },
+      {
+        "label": "A-Z",
+        "sortBy": "name",
+        "sortOrder": "asc"
+      },
+      {
+        "label": "Z-A",
+        "sortBy": "name",
+        "sortOrder": "desc"
+      }
+    ]
   },
   "questionPage": {
     "title": "Frequently asked questions",
