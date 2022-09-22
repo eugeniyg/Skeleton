@@ -1,19 +1,21 @@
 <template>
   <div class="arrows">
     <button
+      :key="'prev'"
       class="btn-prev"
       :disabled="props.prevDisabled"
       data-action="prev"
-      @click="clickNavigation(false)"
+      @click="clickNavigation('prev')"
     >
       <atomic-icon id="arrow_expand-close"/>
     </button>
 
     <button
+      :key="'next'"
       class="btn-next"
       :disabled="props.nextDisabled"
       data-action="next"
-      @click="clickNavigation(true)"
+      @click="clickNavigation('next')"
     >
       <atomic-icon id="arrow_expand-close"/>
     </button>
@@ -32,9 +34,9 @@
     },
   });
   const emit = defineEmits(['clickAction']);
-  const clickNavigation = (goNext:boolean):void => {
-    if ((goNext && props.nextDisabled) || (!goNext && props.prevDisabled)) return;
-    emit('clickAction', goNext);
+  const clickNavigation = (direction:string):void => {
+    if ((direction === 'next' && props.nextDisabled) || (direction === 'prev' && props.prevDisabled)) return;
+    emit('clickAction', direction);
   };
 </script>
 
