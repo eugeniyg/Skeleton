@@ -114,10 +114,10 @@
     nextDisabled.value = scrollWidth === Math.floor(scrollLeft) + offsetWidth;
   };
 
-  const clickAction = (goNext: boolean):void => {
+  const clickAction = (direction: string):void => {
     const { offsetWidth } = scrollContainer.value;
     scrollContainer.value.scrollBy({
-      left: goNext ? offsetWidth : -offsetWidth,
+      left: direction ? offsetWidth : -offsetWidth,
       behavior: 'smooth',
     });
   };

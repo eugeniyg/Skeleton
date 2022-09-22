@@ -88,10 +88,10 @@
     nextDisabled.value = (scrollWidth === Math.floor(scrollLeft) + offsetWidth) && pageMeta.value?.page === pageMeta.value?.totalPages;
   };
 
-  const clickAction = (goNext: boolean):void => {
+  const clickAction = (direction: string):void => {
     const { offsetWidth } = scrollContainer.value;
     scrollContainer.value.scrollBy({
-      left: goNext ? offsetWidth : -offsetWidth,
+      left: direction === 'next' ? offsetWidth : -offsetWidth,
       behavior: 'smooth',
     });
   };
