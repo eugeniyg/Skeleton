@@ -85,7 +85,8 @@
   const scrollHandler = async ():Promise<void> => {
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
-    nextDisabled.value = (scrollWidth === Math.round(scrollLeft) + offsetWidth) && pageMeta.value?.page === pageMeta.value?.totalPages;
+    nextDisabled.value = scrollWidth < (scrollLeft + offsetWidth + 20) && scrollWidth > (scrollLeft + offsetWidth - 20)
+      && pageMeta.value?.page === pageMeta.value?.totalPages;
   };
 
   const clickAction = (direction: string):void => {
