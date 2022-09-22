@@ -9,7 +9,7 @@
 
   .title {
     @include font($heading-2);
-    color: var(--gray-400);
+    color: var(--white);
     grid-area: title;
   }
 
