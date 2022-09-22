@@ -111,9 +111,9 @@
       page: loadPage.value,
       perPage: 36,
       collectionId: activeCollection.value.id,
+      sortBy: sortBy.value,
+      sortOrder: sortOrder.value,
     };
-    if (sortBy.value) params.sortBy = sortBy.value;
-    if (sortOrder.value) params.sortOrder = sortOrder.value;
 
     if (currentProvider.value?.id !== 'all') {
       params.providerId = currentProvider.value.id;
