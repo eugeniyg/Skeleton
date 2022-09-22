@@ -129,6 +129,11 @@
         "visible": ""
       },
       "title": "Slotsbet | Find favorite slots and games"
+    },
+    "sortOptions": {
+      "popular": "Most popular",
+      "asc": "A-Z",
+      "desc": "Z-A"
     }
   },
   "questionPage": {
