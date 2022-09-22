@@ -355,6 +355,12 @@ export interface GamePageInterface {
   seo: SeoContentInterface
 }
 
+export interface SortOptionInterface {
+  label: string,
+  sortBy: string,
+  sortOrder: string
+}
+
 export interface CategoryGamesInterface {
   empty: {
     image: string,
@@ -363,6 +369,7 @@ export interface CategoryGamesInterface {
   },
   providersLabel: string,
   sortLabel: string,
+  sortOptions: SortOptionInterface[],
   seo: SeoContentInterface
 }
 

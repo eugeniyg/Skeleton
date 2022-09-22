@@ -1,45 +1,33 @@
 <template>
   <div class="game-sort">
-    <span class="label">{{ props.label }}:</span>
+    <span class="label">{{ props.sortLabel }}:</span>
 
     <button
-      v-for="{ id, title } in items"
-      :key="id"
-      :class="{ 'is-selected': props.value === id}"
-      @click="changeSort(id)"
+      v-for="{ label, sortBy, sortOrder } in sortOptions"
+      :key="label"
+      :class="{ 'is-selected': props.sortByValue === sortBy && props.sortOrderValue === sortOrder }"
+      @click="changeSort(sortBy, sortOrder)"
     >
-      {{ title }}
+      {{ label }}
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    value: {
-      type: String,
-      default: 'asc',
-    },
-    label: {
-      type: String,
-      required: false,
-    },
-  });
 
-  const items = [
-    {
-      title: 'A-Z',
-      id: 'asc',
-    },
-    {
-      title: 'Z-A',
-      id: 'desc',
-    },
-  ];
+  import { SortOptionInterface } from '~/types';
+
+  const props = defineProps<{
+    sortByValue: string,
+    sortOrderValue: string,
+    sortLabel: string,
+    sortOptions: SortOptionInterface[]
+  }>();
 
   const emit = defineEmits(['change']);
-  const changeSort = (sortId: string):void => {
-    if (props.value !== sortId) {
-      emit('change', sortId);
+  const changeSort = (sortBy: string, sortOrder: string):void => {
+    if (props.sortByValue !== sortBy || props.sortOrderValue !== sortOrder) {
+      emit('change', sortBy, sortOrder);
     }
   };
 </script>
