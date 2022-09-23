@@ -22,7 +22,7 @@
     <panel-mode v-if="!showPlug" :gameContent="gameContent" @changeMode="emit('changeMode')"/>
 
     <group-games
-      :category="popularCategory"
+      :category="recommendedCategory"
       showArrows
       subTitle
     />
@@ -51,7 +51,7 @@
   const emit = defineEmits(['changeMode']);
 
   const { gameCollections } = useGamesStore();
-  const popularCategory = gameCollections.find((collection) => collection.identity === 'popular');
+  const recommendedCategory = gameCollections.find((collection) => collection.identity === 'recommended');
 </script>
 
 <style lang="scss" src="./style.scss"/>
