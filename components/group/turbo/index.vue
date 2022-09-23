@@ -7,7 +7,7 @@
     <button-base
       class="btn-show-all"
       type="ghost"
-      :url="localizePath('/games?category=turbogames')"
+      :url="'/games?category=turbogames'"
     >
       {{ groupCardContent?.moreButton }}
     </button-base>
@@ -44,8 +44,6 @@
   const { globalComponentsContent } = useGlobalStore();
   const groupTurboContent:TurbogamesGroupInterface|undefined = globalComponentsContent?.turbogames;
   const groupCardContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
-
-  const { localizePath } = useProjectMethods();
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
