@@ -10,6 +10,11 @@
         "visible": ""
       },
       "title": "Slotsbet | Play over 3000 slots and games"
+    },
+    "plug": {
+      "title": "Please, login",
+      "image": "/img/uploads/ex-sign.svg",
+      "description": "This game is not available in the fun mode, please login or register to play."
     }
   },
   "favoritesPage": {
