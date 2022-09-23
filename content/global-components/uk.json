@@ -139,6 +139,13 @@
     "categoryLabel": "Категорія",
     "items": [
       {
+        "url": "/games/dice-twice-turbo-games?demo=true",
+        "image": "/img/uploads/dicetwice-1-.png",
+        "title": "Dice Twice",
+        "infoValue": "98%",
+        "categoryValue": "Singleplayer"
+      },
+      {
         "url": "/games/turbo-games-turboplinko",
         "image": "/img/uploads/turbo_plinko-1-.png",
         "title": "Turbo Plinko",
@@ -151,13 +158,6 @@
         "title": "JavelinX",
         "infoValue": "95%",
         "categoryValue": "Multiplayer"
-      },
-      {
-        "url": "/games/dice-twice-turbo-games?demo=true",
-        "image": "/img/uploads/dicetwice-1-.png",
-        "title": "Dice Twice",
-        "infoValue": "98%",
-        "categoryValue": "Singleplayer"
       }
     ]
   }
