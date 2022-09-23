@@ -19,7 +19,7 @@
 
       <group-games
         v-if="!showFavorites"
-        :category="popularCategory"
+        :category="recommendedCategory"
         showArrows
         subTitle
       />
@@ -53,7 +53,7 @@
   }));
 
   const { gameCollections } = useGamesStore();
-  const popularCategory = gameCollections.find((collection) => collection.identity === 'popular');
+  const recommendedCategory = gameCollections.find((collection) => collection.identity === 'recommended');
   const showFavorites = computed(() => favoriteGames.value?.length && isLoggedIn.value);
 </script>
 

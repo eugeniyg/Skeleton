@@ -48,6 +48,7 @@
     @include font($body-3);
     color: var(--white);
     text-align: center;
+    max-width: 320px;
   }
 
   &.is-single-mode .text {

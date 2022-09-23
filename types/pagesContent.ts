@@ -352,6 +352,11 @@ export interface GamePageInterface {
   demoLabel: string,
   demoButton: string,
   switcherLabel: string,
+  plug: {
+    title: string,
+    image: string,
+    description: string
+  },
   seo: SeoContentInterface
 }
 
