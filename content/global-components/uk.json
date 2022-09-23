@@ -132,25 +132,25 @@
     "description": "Slotsbet"
   },
   "turbogames": {
-    "label": "Turbogames",
-    "icon": "hot",
-    "buttonLabel": "Play now",
+    "label": "Турбоігри",
+    "icon": "user",
+    "buttonLabel": "Грати",
     "infoLabel": "RTP",
-    "categoryLabel": "Category",
+    "categoryLabel": "Категорія",
     "items": [
+      {
+        "url": "/games/turbo-games-turboplinko",
+        "image": "/img/uploads/turbo_plinko-1-.png",
+        "title": "Turbo Plinko",
+        "infoValue": "98%",
+        "categoryValue": "Один гравець"
+      },
       {
         "url": "/games/turbo-games-javelin-x?demo=true",
         "image": "/img/uploads/javelin_2_3_no-1-.jpg",
         "title": "JavelinX",
         "infoValue": "95%",
         "categoryValue": "Multiplayer"
-      },
-      {
-        "url": "/games/turbo-games-turboplinko?demo=true",
-        "image": "/img/uploads/turbo_plinko-1-.png",
-        "title": "Turbo Plinko",
-        "infoValue": "99%",
-        "categoryValue": "Singleplayer"
       },
       {
         "url": "/games/bayraktar-turbo-games?demo=true",
