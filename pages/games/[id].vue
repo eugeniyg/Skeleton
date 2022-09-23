@@ -5,6 +5,7 @@
       :gameInfo="gameInfo"
       @changeMode="changeGameMode"
       :gameContent="gameContent"
+      :showPlug="showPlug && !isLoggedIn && !gameInfo.isDemoMode"
     />
     <atomic-seo-text v-if="gameContent?.seo?.text" v-bind="gameContent?.seo?.text" />
   </div>
@@ -16,6 +17,7 @@
   import { GamePageInterface } from '~/types';
 
   const route = useRoute();
+  const showPlug = ref<boolean>(false);
   const isDemo = ref<boolean>(route.query.demo === 'true');
   const gameInfo = ref<GameInterface>();
   const gameStart = ref<string>();
@@ -77,6 +79,7 @@
   watch(() => isLoggedIn.value, async (newValue:boolean) => {
     if (!newValue) return;
 
+    showPlug.value = false;
     if (!isDemo.value && playerStatusName.value === 'Limited') {
       setTimeout(() => {
         redirectLimitedPlayer();
@@ -91,7 +94,8 @@
     document.body.classList.add('is-game-page');
 
     if (!isDemo.value && !isLoggedIn.value) {
-      showModal('register');
+      if (gameInfo.value.isDemoMode) changeGameMode();
+      else showPlug.value = true;
     } else if (!isDemo.value && playerStatusName.value === 'Limited') {
       redirectLimitedPlayer();
     } else {

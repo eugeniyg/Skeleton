@@ -1,6 +1,6 @@
 <template>
   <div class="nav-game">
-    <nav-action :gameInfo="props.gameInfo" />
+    <nav-action :showPlug="showPlug" :gameInfo="props.gameInfo" />
     <!--    <nav-mode :items="modeItems"/>-->
   </div>
 </template>
@@ -9,7 +9,8 @@
   import { GameInterface } from '@platform/frontend-core/dist/module';
 
   const props = defineProps<{
-    gameInfo: GameInterface
+    gameInfo: GameInterface,
+    showPlug: boolean,
   }>();
 </script>
 

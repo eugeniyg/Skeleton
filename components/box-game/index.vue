@@ -1,11 +1,6 @@
 <template>
   <div class="box-game">
     <div class="container">
-      <!--<not-auth-game
-        text="This game is not available in the fun mode, <br>please login or register to play."
-        src="/svg/colored/ex-sign.svg"
-        title="Please, login"
-      />-->
       <iframe
         v-if="props.frameLink"
         :key="props.frameLink"
@@ -13,13 +8,18 @@
         height="100%"
         width="100%"
       />
+
+      <not-auth-game
+        v-else-if="showPlug && gameContent?.plug"
+        :gameContent="gameContent"
+      />
     </div>
 
     <client-only>
-      <nav-game :gameInfo="gameInfo"/>
+      <nav-game :showPlug="showPlug" :gameInfo="gameInfo"/>
     </client-only>
 
-    <panel-mode :gameContent="gameContent" @changeMode="emit('changeMode')"/>
+    <panel-mode v-if="!showPlug" :gameContent="gameContent" @changeMode="emit('changeMode')"/>
 
     <group-games
       :category="popularCategory"
@@ -34,6 +34,10 @@
     frameLink: {
       type: String,
       required: false,
+    },
+    showPlug: {
+      type: Boolean,
+      default: true,
     },
     gameInfo: {
       type: Object,

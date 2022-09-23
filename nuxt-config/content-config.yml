@@ -1926,6 +1926,19 @@ collections:
           - name: switcherLabel
             label: Switcher Label
             widget: string
+          - name: plug
+            label: Unlogged Plug
+            widget: object
+            fields:
+              - name: title
+                label: Title
+                widget: string
+              - name: image
+                label: Image
+                widget: image
+              - name: description
+                label: Description
+                widget: text
           - *seoBlock
       - name: gamesPage
         label: Category Games Page

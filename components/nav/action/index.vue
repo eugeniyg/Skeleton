@@ -8,6 +8,7 @@
     </button>
 
     <button
+      v-if="!props.showPlug"
       class="item"
       @click="toggleFullScreen"
     >
@@ -30,7 +31,8 @@
   import { GameInterface } from '@platform/frontend-core/dist/module';
 
   const props = defineProps<{
-    gameInfo: GameInterface
+    gameInfo: GameInterface,
+    showPlug: boolean,
   }>();
 
   const profileStore = useProfileStore();

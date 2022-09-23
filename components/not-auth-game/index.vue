@@ -1,40 +1,49 @@
 <template>
   <div class="not-auth-game" :class="modeClassName">
-    <div class="title" v-if="props.title">{{ props.title }}</div>
+    <div class="title" v-if="props.gameContent?.plug?.title">{{ props.gameContent.plug.title }}</div>
+
     <img
       class="img"
-      :src="`/assets${src}`"
+      :src="props.gameContent.plug.image"
       width="104"
       height="104"
       alt=""
     />
-    <p class="text" v-html="props.text"></p>
+
+    <p class="text">{{ props.gameContent.plug.description }}</p>
+
     <div class="actions">
-      <button-base type="primary" :size="modeBtnSize">Registration</button-base>
-      <button-base type="secondary" :size="modeBtnSize">Login</button-base>
+      <button-base
+        type="primary"
+        :size="modeBtnSize"
+        @click="showModal('register')"
+      >
+        {{ headerContent?.registrationButton }}
+      </button-base>
+
+      <button-base
+        type="secondary"
+        :size="modeBtnSize"
+        @click="showModal('signIn')"
+      >
+        {{ headerContent?.loginButton }}
+      </button-base>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+  import { GamePageInterface } from '~/types';
+
   const props = defineProps<{
-    title: {
-      type: String,
-      default: ''
-    },
-    text: {
-      type: String,
-    },
-    isSingleMode: {
-      type: Boolean | true,
-    },
-    src: {
-      type: String,
-    }
+    gameContent: GamePageInterface,
+    singleMode?: boolean
   }>();
 
-  const modeClassName = computed(() => ({ 'is-single-mode': props.isSingleMode }));
-  const modeBtnSize = computed(() => (props.isSingleMode ? 'md' : 'lg'));
+  const modeClassName = computed(() => ({ 'is-single-mode': props.singleMode }));
+  const modeBtnSize = computed(() => (props.singleMode ? 'md' : 'lg'));
+  const { showModal } = useLayoutStore();
+  const { headerContent } = useGlobalStore();
 </script>
 
 <style lang="scss" src="./style.scss"></style>
