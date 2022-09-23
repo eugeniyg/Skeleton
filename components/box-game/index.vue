@@ -1,6 +1,11 @@
 <template>
   <div class="box-game">
     <div class="container">
+      <!--<not-auth-game
+        text="This game is not available in the fun mode, <br>please login or register to play."
+        src="/svg/colored/ex-sign.svg"
+        title="Please, login"
+      />-->
       <iframe
         v-if="props.frameLink"
         :key="props.frameLink"
