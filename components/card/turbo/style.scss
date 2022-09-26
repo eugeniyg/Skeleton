@@ -114,7 +114,19 @@
   &:first-of-type {
     .btn-secondary {
       background: var(--gradient-new);
-      --color: var(--gray-900)
+      --color: var(--gray-900);
+
+      @media (hover: hover) {
+        &:hover {
+          background: var(--gradient-new-hover);
+          --color: var(--black-primary);
+        }
+      }
+
+      &:focus {
+        background: var(--gradient-new-focus);
+        --color: var(--black-primary);
+      }
     }
   }
 
