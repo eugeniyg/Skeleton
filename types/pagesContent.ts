@@ -51,6 +51,10 @@ export interface QuestionPagesInterface {
 export interface ProfileInfoInterface {
   title: string,
   editButton: string,
+  sendButton: string,
+  verifyButton: string,
+  verifiedLabel: string,
+  unverifiedLabel: string,
   saveButton: string,
   cancelButton: string,
   subscriptionTitle: string,

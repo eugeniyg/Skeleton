@@ -15,7 +15,14 @@
         @input="onInput"
         @keyup.enter="emit('submit', $event)"
       />
-      <button-verify :is-shown="true">Verify</button-verify>
+
+      <button-verify
+        :is-shown="!props.confirmed"
+        :class="{ disabled: resentVerifyEmail }"
+        @click.once="profileStore.resendVerifyEmail"
+      >
+        {{ props.verifyButton }}
+      </button-verify>
     </div>
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
@@ -23,6 +30,8 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     type: {
       type: String,
@@ -56,11 +65,22 @@
       type: Object,
       required: false,
     },
+    verifyButton: {
+      type: String,
+      default: 'Verify',
+    },
+    confirmed: {
+      type: Boolean,
+      required: true,
+    },
   });
   const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);
 
+  const profileStore = useProfileStore();
+  const { resentVerifyEmail } = storeToRefs(profileStore);
+
   const classes = computed(() => [
-    'input-text',
+    'input-email-verify',
     { 'has-error': props.hint?.variant === 'error' },
     { 'is-disabled': props.isDisabled },
     { 'is-hidden': props.type === 'hidden' },
