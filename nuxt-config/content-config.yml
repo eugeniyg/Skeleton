@@ -1988,6 +1988,16 @@ collections:
         widget: object
         collapsed: true
         fields:
+          - name: plug
+            label: Unlogged Plug
+            widget: object
+            fields:
+              - name: image
+                label: Image
+                widget: image
+              - name: description
+                label: Description
+                widget: text
           - *seoBlock
       - name: tokenPage
         label: SBT Token Page

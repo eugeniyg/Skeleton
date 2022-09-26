@@ -11,7 +11,7 @@
 
       <not-auth-game
         v-else-if="showPlug && gameContent?.plug"
-        :gameContent="gameContent"
+        v-bind="gameContent.plug"
       />
     </div>
 

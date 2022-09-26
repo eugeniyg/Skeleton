@@ -388,6 +388,10 @@ export interface ErrorPageInterface {
 }
 
 export interface BettingContentInterface {
+  plug: {
+    image: string,
+    description: string
+  },
   seo: SeoContentInterface
 }
 
