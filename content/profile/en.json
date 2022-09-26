@@ -2,8 +2,10 @@
   "locale": "en",
   "info": {
     "verifyButton": "Verify",
+    "verifiedLabel": "Your email is verified",
     "cancelButton": "Cancel",
     "saveButton": "Save changes",
+    "unverifiedLabel": "Your email is unverified",
     "manageTitle": "Manage account",
     "title": "Profile info",
     "sendButton": "Send link",
