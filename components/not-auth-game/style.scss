@@ -52,8 +52,12 @@
   }
 
   &.is-single-mode .text {
-    @include upd-font($heading-5);
+    @include upd-font($heading-4);
     max-width: 480px;
+
+    @include media(md) {
+      @include upd-font($heading-5);
+    }
   }
 
   .actions {
