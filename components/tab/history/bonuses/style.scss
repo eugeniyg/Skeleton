@@ -3,6 +3,7 @@
   @extend %scrollbar;
   overflow-x: auto;
   overscroll-behavior: auto;
+  padding-bottom: rem(8px);
 
   .row {
     grid-template-columns:
