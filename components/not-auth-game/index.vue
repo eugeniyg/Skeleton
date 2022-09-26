@@ -1,16 +1,16 @@
 <template>
   <div class="not-auth-game" :class="modeClassName">
-    <div class="title" v-if="props.gameContent?.plug?.title">{{ props.gameContent.plug.title }}</div>
+    <div class="title" v-if="props.title">{{ props.title }}</div>
 
     <img
       class="img"
-      :src="props.gameContent.plug.image"
+      :src="props.image"
       width="104"
       height="104"
       alt=""
     />
 
-    <p class="text">{{ props.gameContent.plug.description }}</p>
+    <p class="text">{{ props.description }}</p>
 
     <div class="actions">
       <button-base
@@ -33,10 +33,10 @@
 </template>
 
 <script setup lang="ts">
-  import { GamePageInterface } from '~/types';
-
   const props = defineProps<{
-    gameContent: GamePageInterface,
+    title?: string,
+    image: string,
+    description: string,
     singleMode?: boolean
   }>();
 

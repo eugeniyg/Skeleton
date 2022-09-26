@@ -53,6 +53,7 @@
 
   &.is-single-mode .text {
     @include upd-font($heading-5);
+    max-width: 480px;
   }
 
   .actions {
