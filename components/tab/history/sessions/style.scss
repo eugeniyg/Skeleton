@@ -6,6 +6,12 @@
   position: relative;
   padding-bottom: rem(8px);
 
+  .td-date {
+    span {
+      @include font($body-1);
+    }
+  }
+
   .row {
     grid-template-columns:
       minmax(rem(52px), 1fr)
