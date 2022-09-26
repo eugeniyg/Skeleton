@@ -17,7 +17,7 @@
       />
 
       <button-verify
-        :is-shown="!props.confirmed"
+        :is-shown="!profile.confirmedAt"
         :class="{ disabled: resentVerifyEmail }"
         @click.once="profileStore.resendVerifyEmail"
       >
@@ -69,15 +69,11 @@
       type: String,
       default: 'Verify',
     },
-    confirmed: {
-      type: Boolean,
-      required: true,
-    },
   });
   const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);
 
   const profileStore = useProfileStore();
-  const { resentVerifyEmail } = storeToRefs(profileStore);
+  const { resentVerifyEmail, profile } = storeToRefs(profileStore);
 
   const classes = computed(() => [
     'input-email-verify',

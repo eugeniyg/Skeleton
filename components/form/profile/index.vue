@@ -11,7 +11,6 @@
         :hint="emailHint"
         :label="fieldsContent.email?.label || ''"
         :placeholder="fieldsContent.email?.placeholder || ''"
-        :confirmed="!!profile.confirmedAt"
         name="email"
       />
     </div>
