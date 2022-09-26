@@ -1,12 +1,14 @@
 {
   "locale": "en",
   "info": {
-    "title": "Profile info",
-    "editButton": "Edit your profile",
-    "saveButton": "Save changes",
+    "verifyButton": "Verify",
     "cancelButton": "Cancel",
-    "subscriptionTitle": "Subscriptions",
+    "saveButton": "Save changes",
     "manageTitle": "Manage account",
+    "title": "Profile info",
+    "sendButton": "Send link",
+    "subscriptionTitle": "Subscriptions",
+    "editButton": "Edit your profile",
     "seo": {
       "text": {
         "visible": "",
