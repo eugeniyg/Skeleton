@@ -48,6 +48,7 @@
             <atomic-icon v-if="profile.confirmedAt" class="is-success" id="done"/>
             <atomic-icon v-else class="is-warning" id="warning"/>
             {{ profile.email }}
+            <a class="btn-primary size-xs" href="#">Send link</a>
           </div>
         </div>
       </div>

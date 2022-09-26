@@ -21,6 +21,10 @@
     display: flex;
     grid-column-gap: rem(4px);
     color: var(--white);
+
+    .btn-primary {
+      margin-left: rem(8px);
+    }
   }
 
   .nickname {

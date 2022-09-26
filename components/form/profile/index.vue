@@ -2,8 +2,7 @@
   <form class="form-profile">
     <div class="row">
       <atomic-avatar-profile :is-edit="false"/>
-
-      <form-input-text
+      <form-input-email-verify
         type="email"
         v-model:value="profileFormData.email"
         isDisabled
