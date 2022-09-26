@@ -1012,6 +1012,18 @@ collections:
             widget: select
             options: *alertTypes
             default: done
+      - name: resentVerification
+        label: Resent Verification Link
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: done
 
   - name: staticPages
     label: Static Pages
@@ -1145,6 +1157,18 @@ collections:
         fields:
           - name: title
             label: Page Title
+            widget: string
+          - name: sendButton
+            label: Send Link Button
+            widget: string
+          - name: verifyButton
+            label: Verify Button
+            widget: string
+          - name: verifiedLabel
+            label: Account Verified Label
+            widget: string
+          - name: unverifiedLabel
+            label: Account Unverified Label
             widget: string
           - name: editButton
             label: Edit Button Label

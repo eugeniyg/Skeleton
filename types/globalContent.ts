@@ -291,4 +291,5 @@ export interface AlertsListInterface {
   passwordChanged: AlertInterface,
   successRegistration: AlertInterface,
   accountBlocked: AlertInterface,
+  resentVerification: AlertInterface,
 }

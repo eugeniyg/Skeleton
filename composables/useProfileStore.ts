@@ -16,6 +16,7 @@ interface ProfileStoreStateInterface {
     amount: any,
   },
   sessionId: string,
+  resentVerifyEmail: boolean,
   profile: ProfileInterface|undefined,
 }
 
@@ -28,6 +29,7 @@ export const useProfileStore = defineStore('profileStore', {
       amount: [0, 0.00004682, 'BTC'],
     },
     sessionId: '',
+    resentVerifyEmail: false,
     profile: undefined,
   }),
 
@@ -104,6 +106,13 @@ export const useProfileStore = defineStore('profileStore', {
         const { localizePath } = useProjectMethods();
         router.push(localizePath('/'));
       }
+    },
+
+    async resendVerifyEmail():Promise<void> {
+      const { showAlert } = useLayoutStore();
+      const { alertsData } = useGlobalStore();
+      showAlert(alertsData?.resentVerification);
+      this.resentVerifyEmail = true;
     },
   },
 });
