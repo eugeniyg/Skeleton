@@ -1,7 +1,7 @@
 <template>
-  <button class="btn-verify" @click="$emit('verify')" v-show="props.isShown">
-    <slot></slot>
-  </button>
+  <span class="btn-verify" v-show="props.isShown">
+    <slot />
+  </span>
 </template>
 
 <script setup type="ts">
@@ -13,4 +13,4 @@
   });
 </script>
 
-<style lang="scss" src="./style.scss"></style>
+<style lang="scss" src="./style.scss" />

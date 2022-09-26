@@ -24,6 +24,12 @@
 
     .btn-primary {
       margin-left: rem(8px);
+
+      &.disabled {
+        pointer-events: none;
+        --bg: var(--yellow-900);
+        --color: var(--black-primary);
+      }
     }
   }
 

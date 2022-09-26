@@ -24,7 +24,7 @@
     <form-profile
       v-if="isProfileEdit"
       @toggle-profile-edit="toggleProfileEdit"
-      v-bind="{ saveButton: infoContent?.saveButton, cancelButton: infoContent?.cancelButton }"
+      v-bind="infoContent"
     />
 
     <template v-else>
@@ -48,7 +48,15 @@
             <atomic-icon v-if="profile.confirmedAt" class="is-success" id="done"/>
             <atomic-icon v-else class="is-warning" id="warning"/>
             {{ profile.email }}
-            <a class="btn-primary size-xs" href="#">Send link</a>
+
+            <span
+              v-if="!profile.confirmedAt"
+              class="btn-primary size-xs"
+              @click.once="profileStore.resendVerifyEmail"
+              :class="{ disabled: resentVerifyEmail }"
+            >
+              {{ infoContent?.sendButton }}
+            </span>
           </div>
         </div>
       </div>
@@ -97,10 +105,12 @@
 
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
-  const { profile, userNickname } = storeToRefs(profileStore);
+  const { profile, userNickname, resentVerifyEmail } = storeToRefs(profileStore);
   const fieldsStore = useFieldsStore();
   const { profileFields } = storeToRefs(fieldsStore);
-  const { countries, fieldsContent, userNavigationContent } = storeToRefs(globalStore);
+  const {
+    countries, fieldsContent, userNavigationContent,
+  } = storeToRefs(globalStore);
   const route = useRoute();
   const router = useRouter();
 
