@@ -11,6 +11,7 @@
         :key="bageIndex"
         :variant="bage.variant"
       >
+        <atomic-icon :id="bage.icon"/>
         {{ bage.title }}
       </atomic-bage>
     </div>
