@@ -83,6 +83,13 @@
       "description": "You have not placed any bets yet."
     },
     "settledTab": "Settled",
-    "unsettledTab": "Unsettled"
+    "unsettledTab": "Unsettled",
+    "statuses": {
+      "pending": "Pending",
+      "won": "Won",
+      "lost": "Lost",
+      "refund": "Refund",
+      "cashout": "Cash Out"
+    }
   }
 }
