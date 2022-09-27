@@ -81,6 +81,8 @@
     "empty": {
       "title": "There is no data yet!",
       "description": "You have not placed any bets yet."
-    }
+    },
+    "settledTab": "Settled",
+    "unsettledTab": "Unsettled"
   }
 }
