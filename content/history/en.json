@@ -90,6 +90,13 @@
       "lost": "Lost",
       "refund": "Refund",
       "cashout": "Cash Out"
+    },
+    "betCard": {
+      "coefficientLabel": "Odds",
+      "betLabel": "Bet",
+      "resultLabel": "Result",
+      "copyButton": "Copy bet ID",
+      "copyTooltip": "Bet ID copied to clipboard"
     }
   }
 }
