@@ -8,7 +8,7 @@
     "tabLabel": "Bonuses",
     "tabPosition": 2
   },
-  "bets": {
+  "spins": {
     "empty": {
       "icon": "empty-bets-history",
       "title": "There is no data yet!",
