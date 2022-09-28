@@ -1,10 +1,13 @@
 <template>
   <div class="card-bet-combo" :class="{'is-open': isOpen}">
     <div class="head">
-      <span class="num">#1</span>
-      <span class="date">26.07</span>
-      <span class="time">16:15</span>
-      <button-copy text="123"/>
+      <span class="date">{{ formatDate(props.createdAt, false) }}</span>
+
+      <button-copy
+        :copyButton="betCard.copyButton"
+        :copyTooltip="betCard.copyTooltip"
+        :text="props.id"
+      />
     </div>
 
     <div class="content">
@@ -12,110 +15,111 @@
         <button class="btn-toggle-expand" @click="isOpen = !isOpen">
           <atomic-icon id="ui-arrow_expand-close"/>
         </button>
-        <div class="row-title">Combo</div>
+
+        <div class="row-title">{{ betCard.comboLabel }}</div>
+
         <div class="more-group">
-          <span class="type">Soccer</span>
-          <div class="tooltip">
-            <span class="more">+4 more</span>
-            <atomic-tooltip text="Soccer, Dota 2, PUBG, Hokey, CS:GO"/>
+          <span class="type">{{ props.items[0].discipline }}</span>
+
+          <div v-if="comboDisciplines.length" class="tooltip">
+            <span class="more">{{ `+${comboDisciplines.length} ${betCard.comboDisciplinesTooltip}` }}</span>
+            <atomic-tooltip :text="comboDisciplines.join(', ')"/>
           </div>
         </div>
       </div>
 
       <div class="items">
-        <span class="label">Match winner</span>
-        <span class="sep"></span>
-        <span class="label">Odds</span>
-        <span class="value">3.5</span>
-        <span class="sep"></span>
-        <span class="label">Bet</span>
-        <span class="value">0.00000009 mBTC</span>
+        <span class="label">{{ `${props.items.length} ${betCard.comboBetsLabel}` }}</span>
+        <span class="sep" />
+        <span class="label">{{ betCard.coefficientLabel }}</span>
+        <span class="value">{{ props.coefficient }}</span>
+        <span class="sep" />
+        <span class="label">{{ betCard.betLabel }}</span>
+        <span class="value">{{ betSum }}</span>
       </div>
 
-      <atomic-bet-status variant="pending"/>
+      <atomic-bet-status
+        v-if="props.status !== 1 && betStatusName"
+        :variant="betStatusName"
+      >
+        {{ props.statuses[betStatusName] }}
+      </atomic-bet-status>
 
-      <div class="amount">
-        <span class="label">Possible win</span>
-        <span class="value">0.00000138 mBTC</span>
+      <div v-if="props.status !== 1" class="amount">
+        <span class="label">{{ betCard.resultLabel }}</span>
+        <span class="value">{{ resultSum }}</span>
       </div>
     </div>
 
     <div class="expand-content">
-      <!-- item -->
-      <div class="item">
+      <div v-for="(betItem, itemIndex) in props.items" :key="itemIndex" class="item">
         <div class="row">
-          <span class="type">Soccer</span>
-          <span class="sep"></span>
-          <span class="desc">Beijing Guoan F.C. (virtual_3) vs Shanghai Shenhua (virtual_4)</span>
+          <span class="type">{{ betItem.discipline }}</span>
+          <span class="sep" />
+          <span class="desc">{{ betItem.event }}</span>
           <span class="date">
-            <span>26.07.2022</span>
-            <span>16:15</span>
+            <span>{{ formatDate(betItem.eventDate) }}</span>
           </span>
         </div>
+
         <div class="row-skip">
-          <div class="title">Liverpool (Virtual_3)</div>
+          <div class="title">{{ betItem.outcome }}</div>
 
           <div class="column">
-            <span class="label">Match winner</span>
-            <span class="sep"></span>
-            <span class="label">Odds</span>
-            <span class="value">3.5</span>
+            <span class="label">{{ betItem.market }}</span>
+            <span class="sep" />
+            <span class="label">{{ betCard.coefficientLabel }}</span>
+            <span class="value">{{ betItem.coefficient }}</span>
           </div>
         </div>
       </div>
-      <!--/ item -->
-      <!-- item -->
-      <div class="item">
-        <div class="row">
-          <span class="type">Soccer</span>
-          <span class="sep"></span>
-          <span class="desc">Beijing Guoan F.C. (virtual_3) vs Shanghai Shenhua (virtual_4)</span>
-          <span class="date">
-            <span>26.07.2022</span>
-            <span>16:15</span>
-          </span>
-        </div>
-        <div class="row-skip">
-          <div class="title">Liverpool (Virtual_3)</div>
-
-          <div class="column">
-            <span class="label">Match winner</span>
-            <span class="sep"></span>
-            <span class="label">Odds</span>
-            <span class="value">3.5</span>
-          </div>
-        </div>
-      </div>
-      <!--/ item -->
-      <!-- item -->
-      <div class="item">
-        <div class="row">
-          <span class="type">Soccer</span>
-          <span class="sep"></span>
-          <span class="desc">Beijing Guoan F.C. (virtual_3) vs Shanghai Shenhua (virtual_4)</span>
-          <span class="date">
-            <span>26.07.2022</span>
-            <span>16:15</span>
-          </span>
-        </div>
-        <div class="row-skip">
-          <div class="title">Liverpool (Virtual_3)</div>
-
-          <div class="column">
-            <span class="label">Match winner</span>
-            <span class="sep"></span>
-            <span class="label">Odds</span>
-            <span class="value">3.5</span>
-          </div>
-        </div>
-      </div>
-      <!--/ item -->
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const isOpen = ref<boolean>(true);
+  import { BetItemInterface } from '@platform/frontend-core/dist/module';
+  import { BetCardInterface, BetStatusesInterface } from '~/types';
+
+  const props = defineProps<{
+    id: string,
+    betAmount: number,
+    currency: string,
+    createdAt: string,
+    resultBalance: number,
+    items: BetItemInterface[],
+    status: number,
+    coefficient: number,
+    statuses: BetStatusesInterface,
+    betCard: BetCardInterface,
+  }>();
+
+  const isOpen = ref<boolean>(false);
+
+  const formatDate = (dateUtcIsoString: string, needYear: boolean = true):string => {
+    const date = new Date(dateUtcIsoString);
+    if (needYear) return date.toLocaleString().slice(0, -3);
+    return `${date.toLocaleString().slice(0, -15)}${date.toLocaleString().slice(-10, -3)}`;
+  };
+
+  const comboDisciplines = computed(() => {
+    const disciplinesArr = props.items.map((betItem) => betItem.discipline).filter((discipline) => discipline !== props.items[0].discipline);
+    return disciplinesArr;
+  });
+
+  const { betStatuses } = useCoreStore();
+  const betStatusName = betStatuses.find((status) => status.id === props.status)?.name;
+
+  const { formatBalance } = useProjectMethods();
+  const betSum = computed(() => {
+    const balanceFormat = formatBalance(props.currency, props.betAmount);
+    return `${balanceFormat.amount} ${balanceFormat.currency}`;
+  });
+
+  const resultSum = computed(() => {
+    const balanceFormat = formatBalance(props.currency, props.resultBalance);
+    return `${balanceFormat.amount} ${balanceFormat.currency}`;
+  });
 </script>
 
 <style lang="scss" src="./style.scss"/>
