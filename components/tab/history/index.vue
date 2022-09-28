@@ -14,12 +14,6 @@
 
     <div class="tab-history">
       <component :content="props.content" :is="loadTab(selected)"/>
-
-      <!--      <div class="cards-bet-tab">-->
-      <!--        <card-bet-ordinar/>-->
-      <!--        <card-bet-combo/>-->
-      <!--      </div>-->
-
     </div>
   </div>
 </template>

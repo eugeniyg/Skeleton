@@ -1,21 +1,23 @@
 <template>
-  <div class="bet-status" :class="statusClassName">{{ statusTitle }}</div>
+  <div class="bet-status" :class="statusClassName">
+    <slot />
+  </div>
 </template>
 
-<script setup type="ts">
-  const statuses = {
-    pending: 'Pending',
-    won: 'Won',
-    lost: 'Lost',
-    refund: 'Refund',
-    'cash-out': 'Cash out',
-  };
+<script setup lang="ts">
   const props = defineProps({
-    variant: string,
+    variant: {
+      type: String,
+      validator: (val:string) => [
+        'pending',
+        'won',
+        'lost',
+        'refund',
+        'cashout',
+      ].includes(val),
+    },
   });
   const statusClassName = computed(() => `variant-${props.variant}`);
-  const statusTitle = computed(() => statuses[props.variant]);
 </script>
 
-<style lang="scss" src="./style.scss"></style>
-
+<style lang="scss" src="./style.scss" />

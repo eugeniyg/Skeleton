@@ -17,12 +17,14 @@
 
   &__wrap {
     position: relative;
-    overflow: hidden;
   }
 
   &__input {
-    transform: translateY(-200%);
     position: absolute;
+    right: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
 
     &:focus {
       ~ .btn-copy {
@@ -50,5 +52,17 @@
         --color: var(--yellow-500);
       }
     }
+  }
+
+  &__tooltip {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    right: -24px;
+    padding: 2px 8px;
+    background-color: var(--green-700);
+    color: var(--white);
+    white-space: nowrap;
+
+    @include font($body-1);
   }
 }

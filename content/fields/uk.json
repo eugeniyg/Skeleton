@@ -47,9 +47,9 @@
   "birthdate": {
     "label": "Date of Birth",
     "placeholder": "Дата народження",
-    "placeholderDay": "Day",
-    "placeholderMonth": "Month",
-    "placeholderYear": "Year"
+    "placeholderDay": "День",
+    "placeholderMonth": "Місяць",
+    "placeholderYear": "Рік"
   },
   "additionalAddress": {
     "label": "Additional Address",

@@ -4,7 +4,7 @@
   </span>
 </template>
 
-<script setup type="ts">
+<script setup lang="ts">
   const props = defineProps({
     isShown: {
       type: Boolean,
