@@ -20,19 +20,20 @@
     @include media(l) {
       --width: #{rem(348px)};
       align-self: center;
+      --margin-bottom: 0;
     }
   }
 
   .header {
     display: grid;
     grid-gap: rem(8px);
-    margin-bottom: rem(16px);
     grid-area: header;
   }
 
   .info {
     @include font($body-2-paragraph);
     color: var(--gray-400);
+    margin: 0 0 rem(40px);
   }
 
   .heading {
@@ -49,6 +50,8 @@
     --width: 100%;
     @include media(l) {
       --width: fit-content;
+      @include upd-font($heading-2);
+      --padding: #{rem(11px)} #{rem(24px)};
     }
   }
 }
