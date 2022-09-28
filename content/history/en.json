@@ -96,7 +96,10 @@
       "betLabel": "Bet",
       "resultLabel": "Result",
       "copyButton": "Copy bet ID",
-      "copyTooltip": "Bet ID copied to clipboard"
+      "copyTooltip": "Bet ID copied to clipboard",
+      "comboLabel": "Combo",
+      "comboDisciplinesTooltip": "more",
+      "comboBetsLabel": "Bets"
     }
   }
 }
