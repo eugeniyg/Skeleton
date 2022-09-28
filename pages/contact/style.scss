@@ -51,7 +51,7 @@
     @include media(l) {
       --width: fit-content;
       @include upd-font($heading-2);
-      --padding: #{rem(11px)} #{rem(24px)};
+      --padding: #{rem(9px)} #{rem(24px)};
     }
   }
 }
