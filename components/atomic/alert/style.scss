@@ -16,6 +16,7 @@
   right: var(--right, #{rem(16px)});
   left: var(--left, #{rem(16px)});
   top: var(--top, initial);
+  align-items: center;
 
 
   @include media(md) {
