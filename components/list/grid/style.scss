@@ -1,9 +1,4 @@
 .grid {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  align-items: flex-start;
-  grid-row-gap: rem(16px);
-
   .items {
     display: flex;
     flex-wrap: wrap;
