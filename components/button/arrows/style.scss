@@ -1,6 +1,8 @@
 .arrows {
   @extend %flex-items-center;
   grid-column-gap: 4px;
+  padding: rem(3px);
+  margin-left: rem(3px);
 
   .btn-prev, .btn-next {
     @include box(32px);
@@ -24,7 +26,6 @@
     &[disabled] {
       --color: var(--gray-600);
       --bg: var(--gray-800);
-      pointer-events: none;
     }
   }
 

@@ -3,10 +3,11 @@
     <div class="row">
       <atomic-avatar-profile :is-edit="false"/>
 
-      <form-input-text
+      <form-input-email-verify
         type="email"
         v-model:value="profileFormData.email"
         isDisabled
+        :verifyButton="props.verifyButton"
         :hint="emailHint"
         :label="fieldsContent.email?.label || ''"
         :placeholder="fieldsContent.email?.placeholder || ''"
@@ -58,6 +59,9 @@
   const props = defineProps<{
     saveButton?: string,
     cancelButton?: string,
+    verifyButton?: string,
+    verifiedLabel?: string,
+    unverifiedLabel?: string,
   }>();
 
   const hideFields = [
@@ -82,7 +86,9 @@
   const cleanFields = fieldsWithValue.filter((field) => !hideFields.includes(field.name));
   const rowsFields = cleanFields.filter((field) => field.name !== 'email');
 
-  const emailHint = profile.value.confirmedAt ? { variant: 'verified', message: 'Your email is verified' } : { variant: 'unverified', message: 'Your email is unverified' };
+  const emailHint = profile.value.confirmedAt
+    ? { variant: 'verified', message: props.verifiedLabel || 'Your email is verified' }
+    : { variant: 'unverified', message: props.unverifiedLabel || 'Your email is unverified' };
 
   const emit = defineEmits(['toggle-profile-edit']);
   const profileFormData = reactive(setFormData(cleanFields));

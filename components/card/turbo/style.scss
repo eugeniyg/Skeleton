@@ -9,6 +9,31 @@
   align-self: stretch;
   border-right: 8px solid var(--black-primary);
   border-left: 8px solid var(--black-primary);
+  scroll-snap-align: var(--scroll-snap-align, start);
+
+  @include media(xs) {
+    --scroll-snap-align: unset;
+
+    &:nth-of-type(2n + 1) {
+      scroll-snap-align: start;
+    }
+  }
+
+  @include media(sm) {
+    --scroll-snap-align: unset;
+
+    &:nth-of-type(3n + 1) {
+      scroll-snap-align: start;
+    }
+  }
+
+  @include media(md) {
+    --scroll-snap-align: unset;
+
+    &:nth-of-type(3n + 1) {
+      scroll-snap-align: start;
+    }
+  }
 
   .thumb {
     grid-area: img;
@@ -89,7 +114,19 @@
   &:first-of-type {
     .btn-secondary {
       background: var(--gradient-new);
-      --color: var(--gray-900)
+      --color: var(--gray-900);
+
+      @media (hover: hover) {
+        &:hover {
+          background: var(--gradient-new-hover);
+          --color: var(--black-primary);
+        }
+      }
+
+      &:focus {
+        background: var(--gradient-new-focus);
+        --color: var(--black-primary);
+      }
     }
   }
 

@@ -111,13 +111,13 @@
   const scrollHandler = ():void => {
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
-    nextDisabled.value = scrollWidth === Math.floor(scrollLeft) + offsetWidth;
+    nextDisabled.value = scrollWidth < (scrollLeft + offsetWidth + 20) && scrollWidth > (scrollLeft + offsetWidth - 20);
   };
 
-  const clickAction = (goNext: boolean):void => {
+  const clickAction = (direction: string):void => {
     const { offsetWidth } = scrollContainer.value;
     scrollContainer.value.scrollBy({
-      left: goNext ? offsetWidth : -offsetWidth,
+      left: direction === 'next' ? offsetWidth : -offsetWidth,
       behavior: 'smooth',
     });
   };

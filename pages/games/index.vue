@@ -24,7 +24,13 @@
         @input="changeProvider"
       />
 
-      <atomic-game-sort v-model:value="sortOrder" :label="gamesContent?.sortLabel" @change="changeSort"/>
+      <atomic-game-sort
+        v-if="gamesContent?.sortOptions?.length"
+        :sortOrderValue="sortOrder"
+        :sortByValue="sortBy"
+        @change="changeSort"
+        v-bind="gamesContent"
+      />
     </div>
 
     <list-grid :items="gameItems" :meta="pageMeta" @loadMore="loadMoreItems" />
@@ -91,7 +97,8 @@
     ) || providerDropdownOptions[0],
   );
 
-  const sortOrder = ref<string>(route.query.sort as string || 'asc');
+  const sortBy = ref<string|undefined>(route.query.sortBy as string || gamesContent?.sortOptions?.[0]?.sortBy || 'default');
+  const sortOrder = ref<string|undefined>(route.query.sortOrder as string || gamesContent?.sortOptions?.[0]?.sortOrder || 'asc');
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
   const gameItems = ref<GameInterface[]>([]);
@@ -104,12 +111,14 @@
       page: loadPage.value,
       perPage: 36,
       collectionId: activeCollection.value.id,
-      sortBy: 'name',
+      sortBy: sortBy.value,
       sortOrder: sortOrder.value,
     };
+
     if (currentProvider.value?.id !== 'all') {
       params.providerId = currentProvider.value.id;
     }
+
     if (searchValue.value) params.name = searchValue.value;
 
     const response = await getFilteredGames(params);
@@ -152,14 +161,20 @@
       (collection) => collection.identity === categoryId,
     );
     router.replace({ query: { ...route.query, category: categoryId } });
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
     const response = await getItems();
     setItems(response);
   };
 
-  const changeSort = async (sortId: string): Promise<void> => {
+  const changeSort = async (...args): Promise<void> => {
+    const [by, order] = args;
     loadPage.value = 1;
-    sortOrder.value = sortId;
-    router.replace({ query: { ...route.query, sort: sortId } });
+    sortBy.value = by;
+    sortOrder.value = order;
+    router.replace({ query: { ...route.query, sortBy: by, sortOrder: order } });
     const response = await getItems();
     setItems(response);
   };

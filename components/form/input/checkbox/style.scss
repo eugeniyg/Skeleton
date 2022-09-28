@@ -46,8 +46,10 @@
   }
 
   .label {
-    &:hover {
-      --shadow: 0 0 0 3px #2F363D;
+    @media (hover: hover) {
+      &:hover {
+        --shadow: 0 0 0 3px #2F363D;
+      }
     }
   }
 
@@ -57,10 +59,12 @@
       --color: var(--white);
     }
 
-    &:hover {
-      .icon {
-        --bg: var(--green-700);
-        --shadow: 0 0 0 3px #045518;
+    @media (hover: hover) {
+      &:hover {
+        .icon {
+          --bg: var(--green-700);
+          --shadow: 0 0 0 3px #045518;
+        }
       }
     }
   }

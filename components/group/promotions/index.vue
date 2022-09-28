@@ -8,6 +8,8 @@
         class="group-promotions__item"
         v-for="(promotion, index) in promotionsContent.items"
         :key="index"
+        :class="{ 'hovered': hoverCard === index }"
+        @click="clickCard(index)"
       >
         <div class="img" :style="backgroundImage(promotion.image)"/>
 
@@ -19,7 +21,7 @@
             <button-base
               type="primary"
               size="md"
-              @click="isLoggedIn ? openDepositModal : showModal('register')"
+              @click="isLoggedIn ? openDepositModal() : showModal('register')"
             >
               {{ promotion.buttonLabel }}
             </button-base>
@@ -41,7 +43,8 @@
   import { storeToRefs } from 'pinia';
   import { PromotionsContentInterface } from '~/types';
 
-  const { globalComponentsContent } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent } = globalStore;
   const promotionsContent:PromotionsContentInterface|undefined = globalComponentsContent?.promotions;
 
   const { localizePath } = useProjectMethods();
@@ -50,6 +53,29 @@
   const { showModal, openDepositModal } = useLayoutStore();
 
   const backgroundImage = (img:string):string => `background-image:url(${img})`;
+  const hoverCard = ref<number|undefined>(undefined);
+  const { isMobile } = storeToRefs(globalStore);
+  const clickCard = (index: number):void => {
+    if (isMobile.value) {
+      hoverCard.value = hoverCard.value === index ? undefined : index;
+    }
+  };
+
+  const clickOutside = (e):void => {
+    if (e.target.closest('.group-promotions__item')) return;
+    hoverCard.value = undefined;
+  };
+
+  onMounted(() => {
+    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587
+    setTimeout(() => {
+      document.addEventListener('click', clickOutside);
+    }, 100);
+  });
+
+  onBeforeUnmount(() => {
+    document.removeEventListener('click', clickOutside);
+  });
 </script>
 
 <style lang="scss" src="./style.scss"/>

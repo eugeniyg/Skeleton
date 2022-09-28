@@ -1,5 +1,7 @@
 {
   "benefits": {
+    "label": "Slotsbet benefits",
+    "icon": "bonuses",
     "items": [
       {
         "image": "/img/uploads/benefit-1.png",
@@ -17,9 +19,7 @@
         "image": "/img/uploads/benefit-4.png",
         "title": "Privacy<br>and security"
       }
-    ],
-    "label": "Slotsbet benefits",
-    "icon": "bonuses"
+    ]
   },
   "promotions": {
     "label": "Slotsbet promotions",
@@ -48,12 +48,12 @@
       {
         "image": "/img/uploads/promotion-3.png",
         "title": "Weekly Cashback",
-        "description": "Just play and get 10% cashback",
         "buttonLabel": "Get bonus",
         "link": {
           "label": "Learn more",
           "url": "/bonus/weekly-cashback"
-        }
+        },
+        "description": "Just play and get 10% cashback"
       },
       {
         "image": "/img/uploads/promotion-4.png",
@@ -67,17 +67,26 @@
       }
     ]
   },
-  "locale": "uk",
   "categories": [
-    {
-      "icon": "cherry",
-      "identity": "all",
-      "label": "All Games"
-    },
     {
       "icon": "hot",
       "identity": "hot",
       "label": "Hot"
+    },
+    {
+      "icon": "heart",
+      "identity": "popular",
+      "label": "Popular"
+    },
+    {
+      "icon": "new",
+      "identity": "new",
+      "label": "New"
+    },
+    {
+      "icon": "cherry",
+      "identity": "all",
+      "label": "All Games"
     },
     {
       "icon": "slots",
@@ -90,24 +99,14 @@
       "label": "Turbogames"
     },
     {
-      "identity": "new",
-      "icon": "new",
-      "label": "New"
-    },
-    {
-      "identity": "table",
       "icon": "table-games",
-      "label": "Table games"
+      "identity": "table",
+      "label": "Table"
     },
     {
-      "identity": "live",
       "icon": "live-casino",
+      "identity": "live",
       "label": "Live"
-    },
-    {
-      "identity": "popular",
-      "icon": "heart",
-      "label": "Popular"
     }
   ],
   "cardsGroup": {
@@ -119,17 +118,13 @@
       "label": "Favorites"
     },
     "providers": {
-      "label": "Providers",
-      "icon": "turbo-games"
+      "icon": "turbo-games",
+      "label": "Providers"
     },
     "latestWinners": {
-      "label": "Latest winners",
-      "icon": "bonuses"
+      "icon": "bonuses",
+      "label": "Latest winners"
     }
-  },
-  "globalSeo": {
-    "title": "Slotsbet",
-    "description": "Slotsbet"
   },
   "turbogames": {
     "label": "Turbogames",
@@ -230,5 +225,10 @@
         "categoryValue": "Singleplayer"
       }
     ]
-  }
+  },
+  "globalSeo": {
+    "title": "Slotsbet",
+    "description": "Slotsbet"
+  },
+  "locale": "uk"
 }

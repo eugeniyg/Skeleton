@@ -7,7 +7,7 @@
     <button-base
       class="btn-show-all"
       type="ghost"
-      :url="localizePath('/games?category=turbogames')"
+      :url="'/games?category=turbogames'"
     >
       {{ groupCardContent?.moreButton }}
     </button-base>
@@ -45,8 +45,6 @@
   const groupTurboContent:TurbogamesGroupInterface|undefined = globalComponentsContent?.turbogames;
   const groupCardContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
 
-  const { localizePath } = useProjectMethods();
-
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
   const nextDisabled = ref<boolean>(false);
@@ -56,13 +54,13 @@
     if (!scrollContainer.value) return;
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
-    nextDisabled.value = scrollWidth === Math.floor(scrollLeft) + offsetWidth;
+    nextDisabled.value = scrollWidth < (scrollLeft + offsetWidth + 20) && scrollWidth > (scrollLeft + offsetWidth - 20);
   };
 
-  const clickAction = (goNext: boolean):void => {
+  const clickAction = (direction: string):void => {
     const { offsetWidth } = scrollContainer.value;
     scrollContainer.value.scrollBy({
-      left: goNext ? offsetWidth : -offsetWidth,
+      left: direction === 'next' ? offsetWidth / 1.4 : -offsetWidth / 1.4,
       behavior: 'smooth',
     });
   };

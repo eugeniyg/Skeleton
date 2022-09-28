@@ -13,6 +13,10 @@
   transition: all .2s ease-in-out;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
 
+  @include media(sm) {
+    border-radius: 8px;
+  }
+
 
   @include media(md) {
     position: absolute;
@@ -39,10 +43,26 @@
 
   .btn-ghost {
     --width: 100%;
+    white-space: nowrap;
+    @include upd-font($body-2);
+
+    &.is-active {
+      --color: var(--white);
+    }
+
+    @include media(sm) {
+      @include upd-font($body-1);
+    }
   }
 
   .btn-primary {
     --width: 100%;
+    white-space: nowrap;
+    @include upd-font($body-2);
+
+    @include media(sm) {
+      @include upd-font($body-1);
+    }
   }
 
   .content {

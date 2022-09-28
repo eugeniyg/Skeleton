@@ -4,6 +4,13 @@
   overflow-x: auto;
   overscroll-behavior: auto;
   position: relative;
+  padding-bottom: rem(8px);
+
+  .td-date {
+    span {
+      @include font($body-1);
+    }
+  }
 
   .row {
     grid-template-columns:

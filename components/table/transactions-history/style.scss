@@ -3,6 +3,7 @@
   @extend %scrollbar;
   overflow-x: auto;
   overscroll-behavior: auto;
+  padding-bottom: rem(8px);
 
   .row {
     grid-template-columns:
@@ -15,11 +16,20 @@
   }
 
   .actions {
+    grid-column: 1/7;
+    grid-row: 2;
+    padding-bottom: rem(16px);
+    width: calc(100vw - #{rem(32px)});
     display: flex;
     justify-content: center;
-    grid-row: 2;
-    grid-column: 1/7;
-    padding-bottom: rem(16px);
+    position: sticky;
+    left: 0;
+    right: 0;
+
+
+    @include media(sm) {
+      width: auto;
+    }
   }
 
   &__short {

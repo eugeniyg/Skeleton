@@ -51,6 +51,10 @@ export interface QuestionPagesInterface {
 export interface ProfileInfoInterface {
   title: string,
   editButton: string,
+  sendButton: string,
+  verifyButton: string,
+  verifiedLabel: string,
+  unverifiedLabel: string,
   saveButton: string,
   cancelButton: string,
   subscriptionTitle: string,
@@ -352,7 +356,18 @@ export interface GamePageInterface {
   demoLabel: string,
   demoButton: string,
   switcherLabel: string,
+  plug: {
+    title: string,
+    image: string,
+    description: string
+  },
   seo: SeoContentInterface
+}
+
+export interface SortOptionInterface {
+  label: string,
+  sortBy: string,
+  sortOrder: string
 }
 
 export interface CategoryGamesInterface {
@@ -363,6 +378,7 @@ export interface CategoryGamesInterface {
   },
   providersLabel: string,
   sortLabel: string,
+  sortOptions: SortOptionInterface[],
   seo: SeoContentInterface
 }
 
@@ -376,6 +392,10 @@ export interface ErrorPageInterface {
 }
 
 export interface BettingContentInterface {
+  plug: {
+    image: string,
+    description: string
+  },
   seo: SeoContentInterface
 }
 

@@ -8,7 +8,14 @@
         height="100%"
         width="100%"
       />
+
+      <not-auth-game
+        v-else-if="showPlug && bettingContent?.plug"
+        v-bind="bettingContent.plug"
+        singleMode
+      />
     </div>
+
     <atomic-seo-text v-if="bettingContent?.seo?.text" v-bind="bettingContent?.seo?.text" />
   </div>
 </template>
@@ -21,6 +28,7 @@
     middleware: ['status-limited'],
   });
 
+  const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();
   const { isMobile, alertsData, currentLocale } = storeToRefs(globalStore);
   const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['bettingPage']).findOne());
@@ -50,7 +58,7 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
-  const { showModal, showAlert } = useLayoutStore();
+  const { showAlert } = useLayoutStore();
 
   const redirectLimitedPlayer = ():void => {
     const { localizePath } = useProjectMethods();
@@ -70,7 +78,7 @@
     }
 
     if (!isLoggedIn.value) {
-      showModal('register');
+      showPlug.value = true;
     } else if (playerStatusName.value === 'Limited') {
       redirectLimitedPlayer();
     } else {
@@ -81,6 +89,7 @@
   watch(() => isLoggedIn.value, async (newValue:boolean) => {
     if (!newValue) { return; }
 
+    showPlug.value = false;
     if (playerStatusName.value === 'Limited') {
       setTimeout(() => {
         redirectLimitedPlayer();

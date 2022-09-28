@@ -24,7 +24,7 @@
     <form-profile
       v-if="isProfileEdit"
       @toggle-profile-edit="toggleProfileEdit"
-      v-bind="{ saveButton: infoContent?.saveButton, cancelButton: infoContent?.cancelButton }"
+      v-bind="infoContent"
     />
 
     <template v-else>
@@ -48,6 +48,15 @@
             <atomic-icon v-if="profile.confirmedAt" class="is-success" id="done"/>
             <atomic-icon v-else class="is-warning" id="warning"/>
             {{ profile.email }}
+
+            <span
+              v-if="!profile.confirmedAt"
+              class="btn-primary size-xs"
+              @click.once="profileStore.resendVerifyEmail"
+              :class="{ disabled: resentVerifyEmail }"
+            >
+              {{ infoContent?.sendButton }}
+            </span>
           </div>
         </div>
       </div>
@@ -96,10 +105,12 @@
 
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
-  const { profile, userNickname } = storeToRefs(profileStore);
+  const { profile, userNickname, resentVerifyEmail } = storeToRefs(profileStore);
   const fieldsStore = useFieldsStore();
   const { profileFields } = storeToRefs(fieldsStore);
-  const { countries, fieldsContent, userNavigationContent } = storeToRefs(globalStore);
+  const {
+    countries, fieldsContent, userNavigationContent,
+  } = storeToRefs(globalStore);
   const route = useRoute();
   const router = useRouter();
 
@@ -111,6 +122,10 @@
   const subscriptionFields = computed(() => profileFields.value.filter((field) => field.name === 'receiveSmsPromo' || field.name === 'receiveEmailPromo'));
 
   const toggleProfileEdit = ():void => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
     router.push({ query: { ...route.query, edit: isProfileEdit.value ? undefined : 'true' } });
   };
 

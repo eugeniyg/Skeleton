@@ -24,8 +24,8 @@
             </atomic-row-user-agent>
           </div>
 
-          <div class="td">
-            <p>{{ getFormatDate(session.createdAt) }}</p>
+          <div class="td td-date">
+            <span>{{ getFormatDate(session.createdAt) }}</span>
           </div>
 
           <div class="td">

@@ -14,15 +14,15 @@
     }
   }
 
-  .row-current {
-    grid-area: current;
+  .row-currentPassword {
+    grid-area: old;
   }
 
-  .row-new {
+  .row-newPassword {
     grid-area: new;
   }
 
-  .row-reenter {
+  .row-repeatNewPassword {
     grid-area: reenter;
   }
 

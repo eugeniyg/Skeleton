@@ -1,0 +1,54 @@
+.btn-copy {
+  background-color: var(--copy-btn-bg, transparent);
+  @extend %skip-btn;
+  @include font($heading-1);
+  padding: rem(2px) rem(16px);
+  display: flex;
+  align-items: center;
+  grid-column-gap: rem(4px);
+  color: var(--color, var(--gray-400));
+  cursor: pointer;
+  border-radius: 999px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  z-index: 1;
+  min-height: rem(24px);
+
+  &__wrap {
+    position: relative;
+    overflow: hidden;
+  }
+
+  &__input {
+    transform: translateY(-200%);
+    position: absolute;
+
+    &:focus {
+      ~ .btn-copy {
+        --copy-btn-bg: var(--gray-700);
+        --color: var(--yellow-500);
+
+        .icon {
+          --color: var(--yellow-500);
+        }
+      }
+    }
+  }
+
+  .icon {
+    --color: var(--gray-400);
+    --icon-size: 20px;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      --color: var(--yellow-500);
+      transition: color .2s ease-in-out;
+
+      .icon {
+        --color: var(--yellow-500);
+      }
+    }
+  }
+}

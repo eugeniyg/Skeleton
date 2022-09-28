@@ -13,6 +13,11 @@
       },
       "title": "Slotsbet | Play over 3000 slots and games",
       "description": ""
+    },
+    "plug": {
+      "title": "Будь ласка, увійдіть",
+      "image": "/img/uploads/ex-sign.svg",
+      "description": "Ця гра недоступна в розважальному режимі, увійдіть або зареєструйтеся, щоб грати."
     }
   },
   "favoritesPage": {
@@ -214,7 +219,24 @@
       },
       "title": "Slotsbet | Find favorite slots and games",
       "description": ""
-    }
+    },
+    "sortOptions": [
+      {
+        "sortOrder": "asc",
+        "sortBy": "name",
+        "label": "А-Я"
+      },
+      {
+        "label": "За замовчування ",
+        "sortBy": "default",
+        "sortOrder": "asc"
+      },
+      {
+        "label": "Я-А",
+        "sortBy": "name",
+        "sortOrder": "desc"
+      }
+    ]
   },
   "questionPage": {
     "title": "Frequently asked questions",
