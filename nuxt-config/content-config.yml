@@ -1337,8 +1337,8 @@ collections:
                 label: Description
                 widget: text
                 required: false
-      - name: bets
-        label: Bets Tab
+      - name: spins
+        label: Spins Tab
         widget: object
         collapsed: true
         fields:
@@ -1364,6 +1364,90 @@ collections:
                 widget: string
               - name: date
                 label: Date
+                widget: string
+          - name: empty
+            label: Empty Data
+            widget: object
+            collapsed: true
+            fields:
+              - name: icon
+                label: Icon
+                widget: hidden
+                default: empty-bets-history
+              - name: title
+                label: Title
+                widget: string
+                required: false
+              - name: description
+                label: Description
+                widget: text
+                required: false
+      - name: bets
+        label: Bets Tab
+        widget: object
+        collapsed: true
+        fields:
+          - name: tabLabel
+            label: Tab Label
+            widget: string
+          - name: tabPosition
+            label: Tab Position
+            widget: number
+            required: false
+          - name: settledTab
+            label: Settled Tab
+            widget: string
+          - name: unsettledTab
+            label: Unsettled Tab
+            widget: string
+          - name: statuses
+            label: Bets Statuses
+            widget: object
+            collapsed: true
+            fields:
+              - name: pending
+                label: Pending
+                widget: string
+              - name: won
+                label: Won
+                widget: string
+              - name: lost
+                label: Lost
+                widget: string
+              - name: refund
+                label: Refund
+                widget: string
+              - name: cashout
+                label: Cashout
+                widget: string
+          - name: betCard
+            label: Bet Card
+            widget: object
+            collapsed: true
+            fields:
+              - name: coefficientLabel
+                label: Coefficient Label
+                widget: string
+              - name: betLabel
+                label: Bet Label
+                widget: string
+              - name: resultLabel
+                label: Result Label
+                widget: string
+              - name: copyButton
+                label: Copy Button
+                widget: string
+              - name: copyTooltip
+                label: Copy Tooltip
+                widget: string
+              - name: comboLabel
+                label: Combo Label
+                widget: string
+              - name: comboDisciplinesTooltip
+                label: Combo Disciplines Tooltip
+                widget: string
+              - name: comboBetsLabel
+                label: Combo Bets Label
                 widget: string
           - name: empty
             label: Empty Data

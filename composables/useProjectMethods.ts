@@ -93,8 +93,12 @@ export const useProjectMethods = () => {
 
     const subcurrencyConfig = currencyConfig.subCurrencies.find((subcurrency) => subcurrency.subunitToUnit === 1000);
     if (amount === 0) return { currency: subcurrencyConfig.code, amount };
-
-    const afterDigits = amount.toString().split('.')[1]?.length || 0;
+    let afterDigits;
+    if (amount.toString().split('e-')[1]) {
+      afterDigits = Number(amount.toString().split('e-')[1]) || 0;
+    } else {
+      afterDigits = amount.toString().split('.')[1]?.length || 0;
+    }
 
     return { currency: subcurrencyConfig.code, amount: Number((amount * 1000).toFixed(afterDigits < 4 ? 0 : (afterDigits - 3))) };
   };
