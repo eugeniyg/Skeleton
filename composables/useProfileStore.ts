@@ -111,8 +111,15 @@ export const useProfileStore = defineStore('profileStore', {
     async resendVerifyEmail():Promise<void> {
       const { showAlert } = useLayoutStore();
       const { alertsData } = useGlobalStore();
-      showAlert(alertsData?.resentVerification);
-      this.resentVerifyEmail = true;
+      const { resendVerifyEmail } = useCoreProfileApi();
+      try {
+        await resendVerifyEmail();
+        showAlert(alertsData?.resentVerification);
+      } catch {
+        showAlert(alertsData?.somethingWrong);
+      } finally {
+        this.resentVerifyEmail = true;
+      }
     },
   },
 });
