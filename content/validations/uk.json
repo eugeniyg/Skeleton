@@ -9,7 +9,7 @@
   "ip": "The field value must be a valid IP address",
   "accepted": "Field must be accepted",
   "boolean": "The field value must be true or false",
-  "login": "The data is incorrect. Please check the data and try again(test)",
+  "login": "The data is incorrect. Please check the data and try again",
   "minAge": "Age must be {param} years old or above",
   "numeric": "The field value must be a number",
   "declined": "Field must be declined",
