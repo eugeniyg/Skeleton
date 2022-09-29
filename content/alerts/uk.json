@@ -9,6 +9,11 @@
     "title": "Error",
     "description": "Sorry, but your password reset link is not valid. Please request another password reset."
   },
+  "resentVerification": {
+    "title": "Успіх",
+    "description": "Ми надіслали електронний лист із посиланням для підтвердження на вашу електронну адресу.",
+    "type": "done"
+  },
   "limitedRealGame": {
     "type": "error",
     "title": "Error",
