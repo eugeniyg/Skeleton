@@ -243,25 +243,25 @@
   },
   "gameTags": [
     {
-      "identity": "HOT",
+      "identity": "hot",
       "label": "HOT",
       "color": "orange",
       "icon": "hot"
     },
     {
-      "identity": "NEW",
+      "identity": "new",
       "label": "NEW",
       "color": "green",
       "icon": "new"
     },
     {
-      "identity": "FAST GAMES",
+      "identity": "fast-games",
       "label": "FAST GAMES",
       "color": "red",
       "icon": "turbo-games"
     },
     {
-      "identity": "BUY BONUS",
+      "identity": "buy-bonus",
       "label": "BUY BONUS",
       "color": "blue",
       "icon": "bonuses"
