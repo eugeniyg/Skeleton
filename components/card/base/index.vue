@@ -5,15 +5,12 @@
     :class="[{ 'hovered': gameHovered }, `card-${props.id}`]"
     @click="clickGame"
   >
-    <div v-if="props.bages && props.bages.length" class="bages">
+    <div v-if="gameBages?.length" class="bages">
       <atomic-bage
-        v-for="(bage, bageIndex) in props.bages"
+        v-for="(bage, bageIndex) in gameBages"
         :key="bageIndex"
-        :variant="bage.variant"
-      >
-        <atomic-icon :id="bage.icon"/>
-        {{ bage.title }}
-      </atomic-bage>
+        v-bind="bage"
+      />
     </div>
 
     <div class="info">
@@ -72,8 +69,8 @@
       type: String,
       default: '',
     },
-    bages: {
-      type: Array || undefined,
+    labels: {
+      type: Array,
       default: () => [],
     },
   });
@@ -85,6 +82,8 @@
   const { showModal, showAlert } = useLayoutStore();
   const { localizePath, getImageUrl } = useProjectMethods();
   const groupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
+
+  const gameBages = globalComponentsContent?.gameTags?.filter((bage) => props.labels.includes(bage.identity));
 
   const openGame = (isReal: boolean):void => {
     if (!isReal) {

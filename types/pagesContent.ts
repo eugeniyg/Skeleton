@@ -453,11 +453,19 @@ export interface TurbogamesGroupInterface {
   items: TurboItemInterface[]
 }
 
+export interface GameTagInterface {
+  identity: string,
+  label: string,
+  icon: string,
+  color: string,
+}
+
 export interface GlobalComponentsInterface {
   benefits: BenefitsContentInterface,
   promotions: PromotionsContentInterface,
   cardsGroup: CardsGroupInterface,
   categories: GameCategoryInterface[],
   turbogames: TurbogamesGroupInterface,
+  gameTags: GameTagInterface[],
   globalSeo: SeoContentInterface
 }
