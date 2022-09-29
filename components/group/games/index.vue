@@ -83,6 +83,7 @@
   const { getFilteredGames } = useCoreGamesApi();
 
   const scrollHandler = async ():Promise<void> => {
+    if (!scrollContainer.value) return;
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
     nextDisabled.value = scrollWidth < (scrollLeft + offsetWidth + 20) && scrollWidth > (scrollLeft + offsetWidth - 20)
