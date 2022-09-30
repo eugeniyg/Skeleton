@@ -152,6 +152,14 @@
 .cards-latest-winners {
   margin-right: #{rem(-16px)};
 
+  .arrows {
+    display: var(--arrows-display, none);
+
+    @include media(md) {
+      --arrows-display: flex
+    }
+  }
+
   > .items {
     padding-right: #{rem(16px)};
   }
