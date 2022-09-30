@@ -230,5 +230,31 @@
     "title": "Slotsbet",
     "description": "Slotsbet"
   },
-  "locale": "uk"
+  "locale": "uk",
+  "gameTags": [
+    {
+      "identity": "hot",
+      "label": "Гарячі",
+      "color": "red",
+      "icon": "hot"
+    },
+    {
+      "identity": "new",
+      "label": "Нові",
+      "color": "green",
+      "icon": "new"
+    },
+    {
+      "identity": "fast-games",
+      "label": "Швидкі",
+      "color": "blue",
+      "icon": "speed"
+    },
+    {
+      "identity": "buy-bonus",
+      "label": "Бонусні",
+      "color": "orange",
+      "icon": "bonus"
+    }
+  ]
 }
