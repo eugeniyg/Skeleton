@@ -23,7 +23,11 @@
     color: var(--white);
 
     .btn-primary {
-      margin-left: rem(8px);
+      margin-left: var(--margin-left-btn, auto);
+
+      @include media(md) {
+        --margin-left-btn: #{rem(8px)};
+      }
 
       &.disabled {
         pointer-events: none;
