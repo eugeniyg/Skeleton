@@ -120,7 +120,3 @@
     if (timer.value) clearTimeout(timer.value);
   });
 </script>
-
-<style lang="scss">
-@import "@/scss/style.scss";
-</style>

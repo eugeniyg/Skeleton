@@ -1,0 +1,111 @@
+<template>
+  <div class="avatar-user">
+    <div class="row">
+      <span class="thumb">
+        <img class="img" src="~/assets/img/avatar-bg.png" alt="">
+      </span>
+
+      <!--<div v-if="props.label" class="label">{{ props.label }}</div>-->
+    </div>
+
+    <div class="row">
+      <div class="nickname">
+        {{ userNickname }}
+      </div>
+
+      <div v-if="activeAccount" class="amount">
+        {{ balanceFormat.amount }} {{ balanceFormat.currency }}
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
+  const profileStore = useProfileStore();
+  const { userNickname } = storeToRefs(profileStore);
+  const walletStore = useWalletStore();
+  const { activeAccount } = storeToRefs(walletStore);
+  const { formatBalance } = useProjectMethods();
+  const balanceFormat = computed(() => formatBalance(activeAccount.value.currency, activeAccount.value.balance));
+</script>
+
+<style lang="scss">
+.avatar-user {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  grid-column-gap: rem(4px);
+
+  .thumb {
+    position: relative;
+    @include radius(50%);
+    @include box(40px);
+    display: flex;
+    margin: 0 auto;
+    z-index: 0;
+    background-color: var(--gray-800);
+    background-image: url(~/assets/img/avatar-bg.png);
+    background-position: center;
+    background-size: contain;
+
+    .icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      bottom: 0;
+      display: flex;
+      @include box(24px);
+      color: var(--color, var(--gray-400));
+      transition: color .2s ease-in-out;
+      z-index: 0;
+    }
+
+    &:hover {
+      .icon  {
+        --color: var(--yellow-500);
+      }
+
+      box-shadow: 0 0 0 3px var(--gray-900);
+    }
+  }
+
+  .img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .label {
+    background-color: var(--yellow-500);
+    border: 2px solid var(--gray-800);
+    display: flex;
+    font-weight: 400;
+    font-size: rem(12px);
+    line-height: rem(12px);
+    justify-content: center;
+    padding: 1px 6px;
+    white-space: nowrap;
+    border-radius: 8px;
+    transform: translateY(rem(-4px));
+    position: relative;
+    z-index: 1;
+  }
+
+  .nickname {
+    @include font($body-1);
+    color: var(--color, var(--gray-300));
+    word-break: break-word;
+  }
+
+  .amount {
+    @include font($heading-2);
+    color: var(--white);
+    word-break: break-word;
+  }
+}
+</style>

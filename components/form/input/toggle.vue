@@ -1,0 +1,106 @@
+<template>
+  <div class="input-toggle" :class="{ 'input-toggle--checked': props.value }">
+    <label class="label">
+      <input
+        class="checkbox"
+        type="checkbox"
+        :name="props.name"
+        :checked="props.value"
+        @change="emit('change')"
+      />
+
+      <div class="slider">
+        <atomic-icon id="check"/>
+        <atomic-icon id="close"/>
+      </div>
+      <slot/>
+    </label>
+  </div>
+</template>
+
+<script setup lang="ts">
+  const props = defineProps({
+    value: {
+      type: Boolean,
+      default: false,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+  });
+  const emit = defineEmits(['change']);
+</script>
+
+<style lang="scss">
+.input-toggle {
+  display: flex;
+  align-items: center;
+
+  .checkbox {
+    position: absolute;
+    visibility: hidden;
+  }
+
+  .label {
+    display: flex;
+    align-items: center;
+    grid-column-gap: rem(8px);
+    @include font($body-2);
+    color: var(--white);
+    cursor: pointer;
+    white-space: nowrap;
+
+    &::selection {
+      background-color: transparent;
+    }
+  }
+
+  .slider {
+    position: relative;
+    width: rem(48px);
+    height: rem(24px);
+    padding: rem(2px);
+    overflow: hidden;
+    background-color: var(--slider-bg, var(--gray-900));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    grid-column-gap: 4px;
+    transition: background-color .2s ease;
+    flex-shrink: 0;
+
+    .icon {
+      --color: var(--gray-400);
+
+      &:last-child {
+        transform: translateX(-2px);
+      }
+    }
+
+    &:after {
+      content: '';
+      width: rem(20px);
+      height: rem(20px);
+      background-color: var(--thumb-bg, var(--gray-800));
+      border-radius: 50%;
+      position: absolute;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+      transition: all .2s ease-in-out;
+      transform: var(--thumb-transform, translateX(0));
+      left: rem(2px);
+      top: rem(2px);
+    }
+  }
+
+  &.input-toggle--checked .label {
+    --slider-bg: var(--yellow-500);
+    --thumb-bg: var(--yellow-900);
+    --thumb-transform: translateX(#{24px});
+
+    .icon {
+      --color: var(--white);
+    }
+  }
+}
+</style>

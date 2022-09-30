@@ -1,9 +1,0 @@
-.btn-close-session {
-  @extend %skip-btn;
-  @extend %icon-btn;
-  --icon-size: #{rem(20px)};
-
-  &:hover {
-    cursor: pointer;
-  }
-}

@@ -1,9 +1,0 @@
-.btn-edit {
-  @extend %skip-btn;
-  @extend %link;
-  @extend %icon-btn;
-
-  &:hover {
-    cursor: pointer;
-  }
-}
