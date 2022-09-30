@@ -28,6 +28,18 @@
       {{ fieldsContent?.gender?.femaleLabel }}<atomic-icon id="female"/>
     </form-input-radio>
 
+    <!--<form-input-radio
+      type="radio"
+      name="gender-select"
+      :is-disabled="props.isDisabled"
+      value="other"
+      id="other"
+      :isChecked="props.value === 'other'"
+      @change="changeValue('other')"
+    >
+      {{ fieldsContent?.gender?.otherLabel }}<atomic-icon id="other"/>
+    </form-input-radio>-->
+
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
   </div>
 </template>

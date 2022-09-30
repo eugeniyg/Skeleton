@@ -2,9 +2,9 @@
   width: 100%;
   display: grid;
   grid-template-areas:
-    "label label"
-    ". ."
-    "hint hint";
+    "label label label"
+    ". . ."
+    "hint hint hint";
   @extend %input-label;
 
   .label {
