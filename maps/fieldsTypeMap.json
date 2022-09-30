@@ -77,7 +77,7 @@
     "type": "text"
   },
   "timeZone": {
-    "component": "form-dropdown-base",
+    "component": "form-input-dropdown",
     "type": "dropdown"
   },
   "profession": {
@@ -85,7 +85,7 @@
     "type": "text"
   },
   "language": {
-    "component": "form-dropdown-base",
+    "component": "form-input-dropdown",
     "type": "dropdown"
   },
   "captcha": {
@@ -110,11 +110,11 @@
     "validation": [{ "rule": "email" }]
   },
   "country": {
-    "component": "form-dropdown-base",
+    "component": "form-input-dropdown",
     "type": "dropdown"
   },
   "currency": {
-    "component": "form-dropdown-base",
+    "component": "form-input-dropdown",
     "type": "dropdown"
   },
   "agreements": {

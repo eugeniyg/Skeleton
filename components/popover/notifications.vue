@@ -1,0 +1,93 @@
+<template>
+  <div class="popover-notifications">
+    <list-notifications :items="props.items" :max="props.maxCount" :is-show-read-all-btn="true"/>
+    <atomic-empty
+      v-if="!props.items.length"
+      title="Nothing found"
+      sub-title="Try searching for something else"
+      variant="notification"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+  const props = defineProps({
+    maxCount: {
+      type: Number,
+      default: 5,
+    },
+    items: {
+      type: Array,
+      default: () => [],
+    },
+  });
+</script>
+
+<style  lang="scss">
+.popover-notifications {
+  padding: 16px;
+  background-color: var(--gray-800);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+  border-radius: 8px;
+  position: absolute;
+  top: 0;
+  width: rem(288px);
+  transform: translateY(rem(64px)) translateX(-50%);
+  transition: background-color .2s ease-in-out;
+  visibility: var(--visibility, hidden);
+
+  @include media(md) {
+    transform: translateY(rem(64px)) translateX(0);
+    right: rem(32px);
+  }
+
+  .header {
+    display: flex;
+
+    > .btn-ghost {
+      --width: auto;
+    }
+  }
+
+  .msg {
+    --bg-content: var(--gray-900);
+
+    &:not(.is-unread) {
+      --bg: transparent;
+      --bg-content: transparent;
+    }
+
+    &:hover {
+      --bg-content: var(--gray-900);
+      cursor: pointer;
+    }
+
+  }
+
+  .empty {
+    margin-top: rem(8px);
+    --margin-bottom: 0;
+    --icon-width: #{rem(146px)};
+    --icon-height: #{rem(202px)};
+
+    .title {
+      order: 1;
+      align-self: flex-start;
+      @include upd-font($heading-2);
+      --color: var(--white);
+      --margin-bottom: #{rem(4px)};
+    }
+
+    .sub-title {
+      order: 2;
+      align-self: flex-start;
+      @include upd-font($body-1);
+      --margin-bottom: #{rem(8px)};
+    }
+
+    .icon-colored {
+      order: 3;
+    }
+  }
+}
+</style>

@@ -16,7 +16,7 @@
     />
 
     <div class="filters">
-      <form-dropdown-base
+      <form-input-dropdown
         :value="currentProvider.id"
         name="providers"
         placeholder="Providers"
@@ -211,4 +211,24 @@
   );
 </script>
 
-<style lang="scss" src="./games.scss" />
+<style lang="scss">
+.category {
+  display: grid;
+  grid-gap: rem(16px);
+
+  .nav-cat-wrap {
+    --margin-top: 0;
+  }
+
+  .filters {
+    display: grid;
+    grid-gap: rem(16px);
+
+    @include media(xs) {
+      display: flex;
+      justify-content: space-between;
+      --select-width: auto;
+    }
+  }
+}
+</style>

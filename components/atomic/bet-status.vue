@@ -1,0 +1,54 @@
+<template>
+  <div class="bet-status" :class="statusClassName">
+    <slot />
+  </div>
+</template>
+
+<script setup lang="ts">
+  const props = defineProps({
+    variant: {
+      type: String,
+      validator: (val:string) => [
+        'pending',
+        'won',
+        'lost',
+        'refund',
+        'cashout',
+      ].includes(val),
+    },
+  });
+  const statusClassName = computed(() => `variant-${props.variant}`);
+</script>
+
+<style lang="scss">
+.bet-status {
+  display: flex;
+  align-items: center;
+  grid-column-gap: rem(8px);
+  @include font($body-0);
+  color: var(--white);
+
+  &:before {
+    content: '';
+    min-width: rem(6px);
+    min-height: rem(6px);
+    border-radius: 50%;
+    background-color: var(--dot-bg, transparent);
+    align-self: center;
+  }
+
+  &.variant-pending,
+  &.variant-refund,
+  &.variant-cashout {
+    --dot-bg: var(--yellow-500);
+  }
+
+  &.variant-won {
+    --dot-bg: var(--green-500);
+  }
+
+  &.variant-lost {
+    --dot-bg: var(--red-500);
+  }
+}
+</style>

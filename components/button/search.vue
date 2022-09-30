@@ -1,0 +1,88 @@
+<template>
+  <button class="btn-search" @click="onClick">
+    <atomic-icon id="search"/>
+  </button>
+</template>
+
+<script setup lang="ts">
+  const emits = defineEmits(['show-search']);
+
+  function onClick():void {
+    emits('show-search');
+  }
+</script>
+
+<style lang="scss">
+.btn-search {
+  display: var(--display, none);
+  @include box(40px);
+  @include radius(50%);
+  @extend %skip-btn;
+  @extend %flex-all-center;
+  position: relative;
+  box-shadow: var(--shadow, unset);
+  right: 0;
+
+  --icon-size: #{rem(20px)};
+  --padding: 0 0;
+  --color: var(--gray-400);
+
+  &[data-show="mobile"] {
+    --display: block;
+
+    @include media(l) {
+      --display: none;
+    }
+  }
+
+  &[data-show="desktop"] {
+
+    @include media(l) {
+      --display: block;
+    }
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    min-height: rem(40px);
+    border-left: 1px solid var(--gray-800);
+    opacity: 1;
+    transition: opacity .2s ease-in-out;
+  }
+
+  @include media(xs) {
+    &:before {
+      display: none;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    --color: var(--yellow-500);
+
+    @include media(l) {
+      --bg: var(--gray-800);
+    }
+
+    &:before {
+      opacity: 0;
+    }
+  }
+
+  &:focus {
+    //box-shadow: inset 0 3px 0 var(--gray-800);
+
+    //--bg: var(--gray-700);
+    --color: var(--yellow-500);
+
+    //&:before {
+    //  opacity: 0;
+    //}
+  }
+}
+</style>

@@ -1,0 +1,51 @@
+<template>
+  <button class="btn-deposit" @click="openDepositModal">
+    <atomic-icon id="plus"/>
+    <span>{{ headerContent?.depositButton }}</span>
+  </button>
+</template>
+
+<script setup lang="ts">
+  const { openDepositModal } = useLayoutStore();
+  const { headerContent } = useGlobalStore();
+</script>
+
+<style lang="scss">
+.btn-deposit {
+  @extend %skip-btn;
+  @include box(40px);
+  @extend %flex-all-center;
+  border-radius: var(--radius, 50%);
+  padding: var(--btn-padding, 0);
+  grid-column-gap: rem(4px);
+
+  span {
+    @include font($heading-2);
+    display: var(--display, none);
+  }
+
+  --bg: var(--gradient-new);
+  --color: var(--gray-900);
+
+  @include media(md) {
+    --width: auto;
+    --radius:  999px;
+    --btn-padding: #{rem(10px)} #{rem(24px)};
+
+    span {
+      --display: block;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+    --bg: var(--gradient-new-hover);
+    --color: var(--black-primary);
+  }
+
+  &:focus {
+    --bg: var(--gradient-new-focus);
+    --color: var(--black-primary);
+  }
+}
+</style>

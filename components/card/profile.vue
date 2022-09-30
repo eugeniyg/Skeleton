@@ -1,0 +1,86 @@
+<template>
+  <div class="card-profile">
+    <atomic-avatar :nickname="userNickname">
+      <template v-slot:progress-bar>
+        <profile-progress-bar/>
+      </template>
+    </atomic-avatar>
+
+    <div class="actions">
+      <button-base type="primary" size="md" @click="openDepositModal">
+        <atomic-icon id="plus"/>{{ profileMenuContent?.depositButton}}
+      </button-base>
+
+      <button-base
+        v-if="profileMenuContent?.profileButton"
+        type="secondary"
+        size="md"
+        :url="profileMenuContent.profileButton.url"
+      >
+        {{ profileMenuContent.profileButton.label}}
+      </button-base>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
+  const { sidebarContent } = useGlobalStore();
+  const profileMenuContent = sidebarContent?.profileMenu;
+  const profileStore = useProfileStore();
+  const { openDepositModal } = useLayoutStore();
+  const { userNickname } = storeToRefs(profileStore);
+</script>
+
+<style lang="scss">
+.card-profile {
+  @extend %flex-column;
+  grid-row-gap: rem(16px);
+
+  .avatar {
+    --padding: #{rem(12px) rem(16px)};
+  }
+
+  .actions {
+    @extend %flex-column;
+    grid-row-gap: rem(8px);
+  }
+
+  .btn-primary, .btn-secondary {
+    --width: 100%
+  }
+
+  .btn-secondary {
+    --bg: var(--gray-900)
+  }
+
+  .is-compact & {
+    @include media(l) {
+      .btn-secondary, .nickname, .progress-bar {
+        display: none;
+      }
+
+      .btn-primary {
+        font-size: 0;
+
+        --width: #{rem(40px)};
+        --height: #{rem(40px)};
+        --padding: 0;
+        --bg: var(--gray-900);
+
+        .icon {
+          transform: translateX(#{rem(2px)});
+          color: var(--yellow-500);
+        }
+      }
+
+      .avatar {
+        --padding: 0;
+        --bg: transparent;
+        --width: fit-content;
+      }
+    }
+  }
+}
+</style>
