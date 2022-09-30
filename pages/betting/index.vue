@@ -41,14 +41,16 @@
   const frameLink = ref<string>('');
 
   const { getStartGame } = useCoreGamesApi();
+  const profileStore = useProfileStore();
+  const { isLoggedIn, playerStatusName, profile } = storeToRefs(profileStore);
 
   const startGame = async ():Promise<void> => {
     const redirectUrl = window.location.origin;
     const startParams = {
       accountId: activeAccount.value.id,
       lobbyUrl: redirectUrl,
-      locale: 'en',
-      countryCode: 'UA',
+      locale: currentLocale.value.code,
+      countryCode: profile.value.country,
       demoMode: false,
       platform: isMobile.value ? 1 : 2,
     };
@@ -56,8 +58,6 @@
     frameLink.value = startResponse.gameUrl;
   };
 
-  const profileStore = useProfileStore();
-  const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
   const { showAlert } = useLayoutStore();
 
   const redirectLimitedPlayer = ():void => {
