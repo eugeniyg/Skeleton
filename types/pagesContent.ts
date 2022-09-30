@@ -113,7 +113,7 @@ export interface HistoryBonusesInterface {
   tabLabel: string
 }
 
-export interface HistoryBetsInterface {
+export interface HistorySpinsInterface {
   tableColumns: {
     game: string,
     bet: string,
@@ -126,6 +126,38 @@ export interface HistoryBetsInterface {
     description?: string
   },
   tabLabel: string
+}
+
+export interface BetStatusesInterface {
+  pending: string,
+  won: string,
+  lost: string,
+  refund: string,
+  cashout: string,
+}
+
+export interface BetCardInterface {
+  coefficientLabel: string,
+  betLabel: string,
+  resultLabel: string,
+  copyButton: string,
+  copyTooltip: string,
+  comboLabel: string,
+  comboDisciplinesTooltip: string,
+  comboBetsLabel: string
+}
+
+export interface HistoryBetsInterface {
+  empty: {
+    icon: string,
+    title?: string,
+    description?: string
+  },
+  tabLabel: string,
+  settledTab: string,
+  unsettledTab: string,
+  statuses: BetStatusesInterface,
+  betCard: BetCardInterface,
 }
 
 export interface HistoryTransactionsInterface {
@@ -181,6 +213,7 @@ export interface HistorySessionsInterface {
 
 export interface HistoryTabInterface {
   bonuses: HistoryBonusesInterface,
+  spins: HistorySpinsInterface,
   bets: HistoryBetsInterface,
   transactions: HistoryTransactionsInterface,
   sessions: HistorySessionsInterface,
@@ -420,11 +453,19 @@ export interface TurbogamesGroupInterface {
   items: TurboItemInterface[]
 }
 
+export interface GameTagInterface {
+  identity: string,
+  label: string,
+  icon: string,
+  color: string,
+}
+
 export interface GlobalComponentsInterface {
   benefits: BenefitsContentInterface,
   promotions: PromotionsContentInterface,
   cardsGroup: CardsGroupInterface,
   categories: GameCategoryInterface[],
   turbogames: TurbogamesGroupInterface,
+  gameTags: GameTagInterface[],
   globalSeo: SeoContentInterface
 }

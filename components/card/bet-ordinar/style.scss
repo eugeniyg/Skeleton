@@ -1,6 +1,5 @@
 .card-bet-ordinar {
   border-radius: 16px;
-  overflow: hidden;
 
   .date {
     @include font($body-1);
@@ -24,11 +23,13 @@
     padding: rem(11px) rem(24px);
     align-items: center;
     border-bottom: 1px solid var(--gray-700);
+    border-radius: 16px 16px 0 0;
   }
 
   .content {
     padding: rem(8px) rem(24px) rem(18px);
     background-color: var(--gray-900);
+    border-radius: 0 0 16px 16px;
 
     .date {
       --color: var(--gray-500);

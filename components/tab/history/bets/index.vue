@@ -1,23 +1,21 @@
 <template>
-  <div class="tab-history__tb" v-if="spins.length">
-    <div class="tb-bets-history">
-      <div class="row">
+  <div class="tab-history__tb" v-if="bets.length">
+    <div class="cards-bet-tab">
+      <div class="nav-bets-history">
         <div
-          v-for="(column, itemIndex) in headTitles"
-          :key="itemIndex"
-          class="th"
+          class="item"
+          v-for="{ title, id } in betsTab"
+          :key="id"
+          :class="{'is-active': id === selectedBetsTab}"
+          @click="changeBetsTab(id)"
         >
-          {{ column }}
+          {{ title }}
         </div>
       </div>
 
-      <template v-if="spins.length">
-        <div v-for="(spin, itemIndex) in spins" :key="itemIndex" class="row">
-          <div class="td">{{ spin.game}}</div>
-          <div class="td">{{ formatSum(spin.currency, spin.betAmount) }}</div>
-          <div class="td">{{ formatSum(spin.currency, spin.resultBalance) }}</div>
-          <div class="td">{{ getFormatDate(spin.createdAt) }}</div>
-        </div>
+      <template v-for="betItem in bets" :key="betItem.id">
+        <card-bet-combo v-if="betItem.items?.length > 1" v-bind="{ ...betItem, ...betsContent }" />
+        <card-bet-ordinar v-else v-bind="{ ...betItem, ...betsContent }" />
       </template>
     </div>
 
@@ -37,28 +35,44 @@
 </template>
 
 <script setup lang="ts">
-  import { PaginationMetaInterface, SpinHistoryInterface } from '@platform/frontend-core/dist/module';
-  import { HistoryTabInterface } from '~/types';
+  import { BetHistoryInterface, PaginationMetaInterface } from '@platform/frontend-core/dist/module';
+  import { HistoryBetsInterface, HistoryTabInterface } from '~/types';
 
   const props = defineProps<{
     content: HistoryTabInterface,
   }>();
 
-  const headTitles = Object.values(props.content.bets.tableColumns || {});
   const loading = ref<boolean>(true);
-  const spins = ref<SpinHistoryInterface[]>([]);
+  const bets = ref<BetHistoryInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
+  const betsContent:HistoryBetsInterface|undefined = props.content?.bets;
 
-  const { getSpinsHistory } = useCoreGamesApi();
-  const spinsRequest = async (page: number = 1):Promise<void> => {
+  const betsTab = [
+    {
+      title: betsContent?.settledTab || 'Settled',
+      id: 'settled',
+    },
+    {
+      title: betsContent?.unsettledTab || 'Unsettled',
+      id: 'unsettled',
+    },
+  ];
+  const selectedBetsTab = ref<string>(betsTab[0].id);
+
+  const { getBetsHistory } = useCoreGamesApi();
+  const betsRequest = async (page: number = 1):Promise<void> => {
     loading.value = true;
-    const response = await getSpinsHistory(page, 10);
-    spins.value = response.data;
+    const response = await getBetsHistory(page, 10, selectedBetsTab.value === 'settled');
+    bets.value = response.data;
     pageMeta.value = response.meta;
     loading.value = false;
   };
 
-  const { getFormatDate } = useProjectMethods();
+  const changeBetsTab = (tabId: string):void => {
+    if (selectedBetsTab.value === tabId) return;
+    selectedBetsTab.value = tabId;
+    betsRequest();
+  };
 
   const changePage = (page: number):void => {
     if (loading.value) return;
@@ -66,16 +80,10 @@
       top: 0,
       behavior: 'smooth',
     });
-    spinsRequest(page);
+    betsRequest(page);
   };
 
-  const { formatBalance } = useProjectMethods();
-  const formatSum = (currency: string, amount: number):string => {
-    const balanceFormat = formatBalance(currency, amount);
-    return `${balanceFormat.amount} ${balanceFormat.currency}`;
-  };
-
-  onMounted(() => { spinsRequest(); });
+  onMounted(() => { betsRequest(); });
 </script>
 
 <style lang="scss" src="./style.scss"/>

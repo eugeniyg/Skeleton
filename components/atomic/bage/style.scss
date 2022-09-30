@@ -25,35 +25,37 @@
     --icon-size: #{rem(16px)};
   }
 
-  &.variant-new {
-    --bg: var(--green-500);
+  &.bg {
+    &--green {
+      --bg: var(--green-500);
 
-    .icon {
-      --color: var(--green-200);
+      .icon {
+        --color: var(--green-200);
+      }
     }
-  }
 
-  &.variant-fast-games {
-    --bg: var(--red-500);
+    &--red {
+      --bg: var(--red-500);
 
-    .icon {
-      --color: var(--red-200);
+      .icon {
+        --color: var(--red-200);
+      }
     }
-  }
 
-  &.variant-hot {
-    --bg: var(--orange-500);
+    &--orange {
+      --bg: var(--orange-500);
 
-    .icon {
-      --color: var(--orange-200);
+      .icon {
+        --color: var(--orange-200);
+      }
     }
-  }
 
-  &.variant-buy-bonus {
-    --bg: var(--blue-500);
+    &--blue {
+      --bg: var(--blue-500);
 
-    .icon {
-      --color: var(--blue-200);
+      .icon {
+        --color: var(--blue-200);
+      }
     }
   }
 }

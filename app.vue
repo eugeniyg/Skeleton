@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout>
     <Head>
-      <Meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, user-scalable=0" />
+      <Meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, user-scalable=0" />
       <Link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
       <Link
         rel="icon"

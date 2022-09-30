@@ -24,7 +24,7 @@
   const { getGamesInfo, getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
-  const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
+  const { isLoggedIn, playerStatusName, profile } = storeToRefs(profileStore);
   const { showModal, showAlert } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
@@ -42,8 +42,8 @@
     const startParams = {
       accountId: isDemo.value ? undefined : activeAccount.value.id,
       lobbyUrl: redirectUrl,
-      locale: 'en', // currentLocale || browserLanguage,
-      countryCode: 'UA',
+      locale: currentLocale.value.code,
+      countryCode: profile.value.country,
       demoMode: isDemo.value,
       platform: isMobile.value ? 1 : 2,
     };

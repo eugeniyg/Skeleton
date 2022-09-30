@@ -3,11 +3,17 @@
     <input
       class="btn-copy__input"
       ref="input"
-      :type="text"
-      :value="text"
-      readonly=""
+      type="text"
+      :value="props.text"
+      readonly
     >
-    <button class="btn-copy" @click="actionClick">Copy bet ID
+
+    <transition name="fade" mode="out-in">
+      <div v-if="tooltipVisible" class="btn-copy__tooltip">{{ props.copyTooltip}}</div>
+    </transition>
+
+    <button class="btn-copy" @click="actionClick">
+      {{ props.copyButton }}
       <atomic-icon id="ui-copy"/>
     </button>
   </div>
@@ -15,17 +21,29 @@
 
 <script setup lang="ts">
   const input = ref(null);
-  const props = defineProps({
-    text: {
-      type: String,
-    },
-  });
+  const props = defineProps<{
+    text: string,
+    copyButton: string,
+    copyTooltip: string,
+  }>();
+
+  const tooltipVisible = ref<boolean>(false);
+  const tooltipTimer = ref<any>(undefined);
+
+  const showTooltip = ():void => {
+    tooltipVisible.value = true;
+    clearTimeout(tooltipTimer.value);
+    tooltipTimer.value = setTimeout(() => {
+      tooltipVisible.value = false;
+    }, 2000);
+  };
 
   const actionClick = () => {
     input.value.focus();
     input.value.select();
     document.execCommand('copy');
+    showTooltip();
   };
 </script>
 
-<style lang="scss" src="./style.scss"></style>
+<style lang="scss" src="./style.scss" />

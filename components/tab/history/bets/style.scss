@@ -1,23 +1,38 @@
-.tb-bets-history {
-  @extend %tb;
-  @extend %scrollbar;
-  overflow-x: auto;
-  overscroll-behavior: auto;
-  padding-bottom: rem(8px);
+.cards-bet-tab {
+  display: grid;
+  grid-row-gap: rem(8px);
+  align-items: flex-start;
 
-  .row {
-    grid-template-columns:
-      minmax(rem(152px), 1fr)
-      minmax(rem(158px), 1fr)
-      minmax(rem(158px), 1fr)
-      minmax(rem(100px), 1fr);
+  .nav-bets-history {
+    display: flex;
+    background-color: var(--gray-800);
+    border: 4px solid var(--gray-800);
+    border-radius: 999px;
+    margin-bottom: 8px;
 
-    @include media(md) {
-      grid-template-columns:
-      minmax(rem(278px), 1fr)
-      minmax(rem(158px), 1fr)
-      minmax(rem(158px), 1fr)
-      minmax(rem(100px), 1fr)
+    .item {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 32px;
+      @include font($body-1);
+      padding: rem(2px);
+      border-radius: 999px;
+      background-color: var(--bg, inherit);
+      color: var(--color, inherit);
+      transition: all .2s ease-in-out;
+      grid-column-gap: rem(4px);
+      --color: var(--gray-300);
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &.is-active {
+        --bg: var(--gray-700);
+        --color: var(--white) !important;
+      }
     }
   }
 }
