@@ -2,6 +2,7 @@
   <div class="input-birth">
     <span v-if="props.label" class="label">
       {{ props.label }}<sup v-if="props.isRequired">*</sup>
+      <!--<button-clear-input/>-->
     </span>
 
     <form-dropdown-base
