@@ -73,6 +73,7 @@
     />
 
     <cards-group
+      showArrows
       v-if="latestWinnersCards"
       v-bind="latestWinnersCards"
       :identity="groupContent?.latestWinners.label"
