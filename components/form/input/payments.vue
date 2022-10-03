@@ -5,9 +5,9 @@
   >
     <div v-if="props.items.length" class="selected" @click="open">
       <img
-        v-if="props.activeMethod.logo || defaultLogoUrl()"
+        v-if="defaultLogoUrl() || props.activeMethod.logo"
         class="mask"
-        :src="props.activeMethod.logo || defaultLogoUrl()"
+        :src="defaultLogoUrl() || props.activeMethod.logo"
       />
       <atomic-icon id="arrow_expand-close"/>
     </div>
@@ -20,7 +20,7 @@
         :class="{'is-selected': item.method === props.activeMethod.method }"
         @click="select(item)"
       >
-        <img v-if="item.logo || defaultLogoUrl()" class="mask" :src="item.logo || defaultLogoUrl()" />
+        <img v-if="defaultLogoUrl() || item.logo" class="mask" :src="defaultLogoUrl() || item.logo" />
       </div>
     </div>
     <input type="hidden" name="payments" :value="props.activeMethod.method" />
@@ -60,10 +60,10 @@
 
   const walletStore = useWalletStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
+  const hasMethodsIcons = ['BTC', 'ETH', 'LTC', 'USDT'];
   const defaultLogoUrl = ():string => {
-    if (activeAccountType.value === 'fiat') return '';
-    if (activeAccount.value.currency === 'BTC') return '/img/bitcoin-logo.svg';
-    if (activeAccount.value.currency === 'ETH') return '/img/ethereum-logo.svg';
+    if (activeAccountType.value === 'fiat') return '/img/methods-icons/credit-card.svg';
+    if (hasMethodsIcons.includes(activeAccount.value.currency)) return `/img/methods-icons/${activeAccount.value.currency}.svg`;
     return '';
   };
 </script>
