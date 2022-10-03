@@ -1,5 +1,5 @@
 <template>
-  <div :class="['main-layout', {'drawer-minimize': IS_DRAWER_COMPACT}]">
+  <div :class="layoutClasses">
     <atomic-preloader/>
 
     <layout-header
@@ -54,12 +54,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  useHead({
-    bodyAttrs: {
-      class: 'stop-transition',
-    },
-  });
-
   const { needToChangeLanguage } = useProjectMethods();
   const cookieLanguage = useCookie('user-language');
   const route = useRoute();
@@ -104,9 +98,15 @@
     && route.path !== localizePath('/betting'));
 
   const timer = ref<any>();
-  onMounted(async () => {
-    document.body.classList.remove('stop-transition');
+  const disabledTransition = ref<boolean>(true);
+  const layoutClasses = computed(() => [
+    'main-layout',
+    { 'drawer-minimize': IS_DRAWER_COMPACT.value },
+    { 'stop-transition': disabledTransition.value },
+  ]);
 
+  onMounted(async () => {
+    disabledTransition.value = false;
     const cookieValue = useCookie('accept-cookie');
     if (!cookieValue.value) {
       timer.value = setTimeout(() => {

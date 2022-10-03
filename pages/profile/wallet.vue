@@ -72,16 +72,12 @@
         closeCurrencyNav();
       }
     });
-
-    document.body.classList.remove('stop-transition');
   });
 
-  const selectedFirst = () => [...accounts.value].reduce((acc, item) => {
+  const orderedAccounts = computed(() => accounts.value.reduce((acc, item) => {
     item.status === 1 ? acc.unshift(item) : acc.push(item);
     return acc;
-  }, []);
-
-  const orderedAccounts = computed(() => selectedFirst());
+  }, []));
 </script>
 
 <style lang="scss">
