@@ -14,7 +14,8 @@
   "gender": {
     "label": "Gender",
     "maleLabel": "Male",
-    "femaleLabel": "Female"
+    "femaleLabel": "Female",
+    "otherLabel": "Other"
   },
   "wallet_id": {
     "label": "Wallet address",
