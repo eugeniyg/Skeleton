@@ -247,6 +247,9 @@ collections:
           - name: femaleLabel
             label: Female Label
             widget: string
+          - name: otherLabel
+            label: Other Label
+            widget: string
       - name: city
         label: City
         widget: object

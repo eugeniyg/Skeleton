@@ -20,7 +20,7 @@
         :is="fieldsTypeMap[field.name].component || 'form-input-text'"
         @blur="v$[field.name]?.$touch()"
         @focus="focusField(field.name)"
-        :isDisabled="profile[field.name] && !field.editable"
+        :isDisabled="!!profile[field.name] && !field.editable"
         v-model:value="profileFormData[field.name]"
         v-for="field in rowsFields.slice(2 * (n - 1), 2 * (n - 1) + 2)"
         :key="field.name"
