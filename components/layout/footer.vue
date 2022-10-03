@@ -38,9 +38,8 @@
     <div v-if="footerContent?.curacao" class="info">
       <iframe
         src="https://licensing.gaming-curacao.com/validator/?lh=95426453d291d7c01ec3a7e5aaf8b499&template=tseal"
-        width="130px"
-        height="50px"
-        style="border:none;"
+        width="132px"
+        height="62px"
       />
 
       <div class="info__text" v-html="marked.parse(footerContent.curacao || '')" />
@@ -104,8 +103,9 @@
 
     iframe {
       margin: var(--img-margin, 0 auto 24px);
-      background-color: var(--gray-700);
-      border-radius: 10px;
+      background-color: var(--gray-600);
+      border-radius: 8px;
+      border: rem(6px) solid var(--gray-600);
     }
 
     &__text {
