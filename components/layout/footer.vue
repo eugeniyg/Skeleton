@@ -106,6 +106,9 @@
       background-color: var(--gray-600);
       border-radius: 8px;
       border: rem(8px) solid var(--gray-600);
+      box-sizing: content-box;
+      width: calc(106px + 16px);
+      height: calc(34px + 16px);
     }
 
     &__text {
