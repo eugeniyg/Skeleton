@@ -1,6 +1,6 @@
 <template>
   <div class="row-sex">
-    {{ props.value }}<atomic-icon :id="iconName"/>
+    {{ valueName }}<atomic-icon v-if="iconName" :id="iconName"/>
   </div>
 </template>
 
@@ -13,6 +13,18 @@
     },
   });
 
+  const { fieldsContent } = useGlobalStore();
+  const valueName = computed(() => {
+    switch (props.value) {
+    case 'male':
+      return fieldsContent?.gender.maleLabel;
+    case 'female':
+      return fieldsContent?.gender.femaleLabel;
+    default:
+      return '';
+    }
+  });
+
   const iconName = computed(() => {
     switch (props.value) {
     case 'male':
@@ -20,7 +32,7 @@
     case 'female':
       return 'female';
     default:
-      return 'male';
+      return '';
     }
   });
 </script>

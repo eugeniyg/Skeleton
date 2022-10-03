@@ -6,9 +6,9 @@
       @focus="onFocus('email')"
       type="email"
       :is-required="true"
-      :label="fieldsContent.email?.label || ''"
+      :label="fieldsContent?.email?.label || ''"
       name="email"
-      :placeholder="fieldsContent.email?.placeholder || ''"
+      :placeholder="fieldsContent?.email?.placeholder || ''"
       :hint="setError('email')"
       @submit="sendEmail"
     />

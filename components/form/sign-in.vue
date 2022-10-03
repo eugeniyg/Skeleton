@@ -6,9 +6,9 @@
       @focus="focusField('email')"
       type="email"
       :is-required="true"
-      :label="fieldsContent.email?.label || ''"
+      :label="fieldsContent?.email?.label || ''"
       name="email"
-      :placeholder="fieldsContent.email?.placeholder || ''"
+      :placeholder="fieldsContent?.email?.placeholder || ''"
       :hint="setError('email')"
       @submit="login"
     />
@@ -19,9 +19,9 @@
       @focus="focusField('password')"
       type="password"
       :is-required="true"
-      :label="fieldsContent.password?.label || ''"
+      :label="fieldsContent?.password?.label || ''"
       name="password"
-      :placeholder="fieldsContent.password?.placeholder || ''"
+      :placeholder="fieldsContent?.password?.placeholder || ''"
       :hint="setError('password')"
       @submit="login"
     />
