@@ -46,11 +46,11 @@
     "placeholder": "Enter code"
   },
   "birthdate": {
-    "label": "Date of Birth",
+    "label": "Дата народження",
     "placeholder": "Дата народження",
-    "placeholderDay": "Day",
-    "placeholderMonth": "Month",
-    "placeholderYear": "Year"
+    "placeholderDay": "День",
+    "placeholderMonth": "Місяць",
+    "placeholderYear": "Рік"
   },
   "additionalAddress": {
     "label": "Additional Address",
