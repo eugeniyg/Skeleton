@@ -1,5 +1,5 @@
 <template>
-  <div class="card-wallet" :class="{'is-active': isActive}">
+  <div ref="card" class="card-wallet" :class="{'is-active': isActive}">
     <div class="content">
       <div class="title">{{ currencyName }}</div>
 
@@ -64,6 +64,8 @@
 
   const { switchAccount, hideAccount } = useWalletStore();
 
+  const card = ref(null);
+
   const changeActive = async ():Promise<void> => {
     await switchAccount({
       accountId: props.id,
@@ -74,9 +76,11 @@
 
   const clickToggle = ():void => {
     isChecked.value = true;
+    document.querySelector('.card-wallet').classList.remove('is-active');
+    card.value.classList.add('is-active');
     setTimeout(() => {
       changeActive();
-    }, 300);
+    }, 400);
   };
 
   const hide = async ():Promise<void> => {
@@ -94,8 +98,19 @@
   position: relative;
   flex-basis: rem(334px);
   height: rem(199px);
-  transition: padding .2s ease;
   padding: rem(2px);
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: linear-gradient(89.73deg, #FFDC8A 1.37%, #FFC12E 49.58%, #E6A409 98.17%);
+    opacity: 0;
+    transition: opacity .4s ease-in-out ;
+  }
 
   .title {
     @include font($body-2);
@@ -141,7 +156,7 @@
     background: linear-gradient(107.86deg, #28263B 1.67%, #3D3D51 87.33%),
     linear-gradient(107.86deg, #19192F 1.67%, #28263B 87.33%);
     border-radius: inherit;
-    padding: rem(26px);
+    padding: rem(24px);
     display: grid;
     grid-template-columns: 1fr minmax(0, auto);
     grid-template-areas:
@@ -164,20 +179,14 @@
       background-repeat: no-repeat;
       background-size: rem(596px) rem(596px);
     }
-
   }
 
   &.is-active {
     padding: rem(2px);
+    z-index: 1;
 
     &:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(89.73deg, #FFDC8A 1.37%, #FFC12E 49.58%, #E6A409 98.17%);
+      opacity: 1;
     }
 
     .content {

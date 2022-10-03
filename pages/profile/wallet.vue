@@ -19,12 +19,14 @@
     </client-only>
 
     <div class="cards-wallet">
-      <card-wallet
-        v-for="account in accounts"
-        :key="account.id"
-        v-bind="account"
-        :content="walletContent"
-      />
+      <TransitionGroup name="card">
+        <card-wallet
+          v-for="account in orderedAccounts"
+          :key="account.id"
+          v-bind="account"
+          :content="walletContent"
+        />
+      </TransitionGroup>
     </div>
   </div>
 </template>
@@ -70,5 +72,20 @@
         closeCurrencyNav();
       }
     });
+
+    document.body.classList.remove('stop-transition');
   });
+
+  const selectedFirst = () => [...accounts.value].reduce((acc, item) => {
+    item.status === 1 ? acc.unshift(item) : acc.push(item);
+    return acc;
+  }, []);
+
+  const orderedAccounts = computed(() => selectedFirst());
 </script>
+
+<style lang="scss">
+.card-move {
+  transition: all .4s ease;
+}
+</style>
