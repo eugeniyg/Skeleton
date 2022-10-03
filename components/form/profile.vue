@@ -9,8 +9,8 @@
         isDisabled
         :verifyButton="props.verifyButton"
         :hint="emailHint"
-        :label="fieldsContent.email?.label || ''"
-        :placeholder="fieldsContent.email?.placeholder || ''"
+        :label="fieldsContent?.email?.label || ''"
+        :placeholder="fieldsContent?.email?.placeholder || ''"
         name="email"
       />
     </div>
@@ -25,9 +25,9 @@
         v-for="field in rowsFields.slice(2 * (n - 1), 2 * (n - 1) + 2)"
         :key="field.name"
         :type="fieldsTypeMap[field.name].type || 'text'"
-        :label="fieldsContent[field.name]?.label || ''"
+        :label="fieldsContent?.[field.name]?.label || ''"
         :name="field.name"
-        :placeholder="fieldsContent[field.name]?.placeholder || ''"
+        :placeholder="fieldsContent?.[field.name]?.placeholder || ''"
         :isRequired="profileFormRules[field.name]?.hasOwnProperty('required')"
         :options="selectOptions[field.name]"
         :hint="setError(field.name)"

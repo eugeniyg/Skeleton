@@ -10,9 +10,9 @@
           :key="field.name"
           type="text"
           :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
-          :label="fieldsContent[field.name]?.label || ''"
+          :label="fieldsContent?.[field.name]?.label || ''"
           :name="field.name"
-          :placeholder="fieldsContent[field.name]?.placeholder || ''"
+          :placeholder="fieldsContent?.[field.name]?.placeholder || ''"
           @blur="v$[field.name]?.$touch()"
           @focus="onFocus(field.name)"
           :hint="setError(field.name)"
@@ -27,9 +27,9 @@
         :is="fieldsTypeMap[field.name].component || 'form-input-text'"
         v-model:value="registrationFormData[field.name]"
         :type="field.name === 'nickname' ? 'hidden' : fieldsTypeMap[field.name].type || 'text'"
-        :label="fieldsContent[field.name]?.label || ''"
+        :label="fieldsContent?.[field.name]?.label || ''"
         :name="field.name"
-        :placeholder="fieldsContent[field.name]?.placeholder || ''"
+        :placeholder="fieldsContent?.[field.name]?.placeholder || ''"
         :options="selectOptions[field.name]"
         :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
         :hint="setError(field.name)"
@@ -102,7 +102,7 @@
   const getCheckboxLabel = (fieldName: string):string => {
     if (fieldName === 'receiveEmailPromo') return registrationContent?.agreeEmailLabel;
     if (fieldName === 'receiveSmsPromo') return registrationContent?.agreeSmsLabel;
-    return fieldsContent.value[fieldName]?.label || '';
+    return fieldsContent.value?.[fieldName]?.label || '';
   };
 
   const { getFormRules, createValidationRules } = useProjectMethods();

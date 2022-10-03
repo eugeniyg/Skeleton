@@ -77,7 +77,7 @@
           :value="profile[field.name]"
           @change="changeSubscription(field.name)"
         >
-          {{ fieldsContent[field.name]?.label }}
+          {{ fieldsContent?.[field.name]?.label }}
         </form-input-toggle>
 
         <atomic-divider/>
