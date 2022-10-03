@@ -105,7 +105,7 @@
       margin: var(--img-margin, 0 auto 24px);
       background-color: var(--gray-600);
       border-radius: 8px;
-      border: rem(6px) solid var(--gray-600);
+      border: rem(8px) solid var(--gray-600);
     }
 
     &__text {
