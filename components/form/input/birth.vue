@@ -2,7 +2,7 @@
   <div class="input-birth">
     <span v-if="props.label" class="label">
       {{ props.label }}<sup v-if="props.isRequired">*</sup>
-      <!--<button-clear-input/>-->
+      <button-clear-input v-if="!props.isDisabled" @click="clearInput"/>
     </span>
 
     <form-input-dropdown
@@ -121,6 +121,15 @@
   const onInputDays = (day):void => {
     selected.day = day;
     changeInputValue();
+  };
+
+  const clearInput = ():void => {
+    selected.year = 0;
+    selected.month = 0;
+    selected.day = 0;
+    emit('update:value', null);
+    emit('blur', null);
+    emit('focus');
   };
 </script>
 
