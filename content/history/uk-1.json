@@ -76,7 +76,7 @@
     "tabPosition": 1
   },
   "bets": {
-    "tabLabel": "Bets",
+    "tabLabel": "Bets(test)",
     "tabPosition": 4,
     "empty": {
       "title": "There is no data yet!",
