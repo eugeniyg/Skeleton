@@ -1,4 +1,5 @@
 import { useWalletStore } from '~/composables/useWalletStore';
+import { useGamesStore } from '~/composables/useGamesStore';
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const { parseUserAgent } = useGlobalStore();
@@ -42,6 +43,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       const { subscribeAccountSocket } = useWalletStore();
       subscribeAccountSocket();
     }
+    const { subscribeWinnersSocket } = useGamesStore();
+    subscribeWinnersSocket();
   });
 
   const setWindowHeight = ():void => {

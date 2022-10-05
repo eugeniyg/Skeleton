@@ -2,13 +2,14 @@ import { defineStore } from 'pinia';
 import {
   CollectionInterface,
   GameInterface,
-  GameProviderInterface,
+  GameProviderInterface, WebSocketResponseInterface,
 } from '@platform/frontend-core/dist/module';
 
 interface GamesStoreStateInterface {
-  gameProviders: GameProviderInterface[];
-  gameCollections: CollectionInterface[];
-  favoriteGames: GameInterface[];
+  gameProviders: GameProviderInterface[],
+  gameCollections: CollectionInterface[],
+  favoriteGames: GameInterface[],
+  winnersSubscription: any,
 }
 
 export const useGamesStore = defineStore('gamesStore', {
@@ -17,6 +18,7 @@ export const useGamesStore = defineStore('gamesStore', {
       gameCollections: [],
       // sorted categories for tabs (for MVP will be 8)
       favoriteGames: [],
+      winnersSubscription: undefined,
     }),
 
   getters: {
@@ -55,6 +57,29 @@ export const useGamesStore = defineStore('gamesStore', {
     async deleteFavoriteGame(gameId:string): Promise<void> {
       const { deleteFavorite } = useCoreGamesApi();
       this.favoriteGames = await deleteFavorite(gameId);
+    },
+
+    subscribeWinnersSocket():void {
+      const { createSubscription } = useWebSocket();
+      this.winnersSubscription = createSubscription('game:winners', this.updateWinners);
+      console.log(this.winnersSubscription);
+    },
+
+    unsubscribeWinnersSocket():void {
+      if (this.winnersSubscription) {
+        this.winnersSubscription.unsubscribe();
+        this.winnersSubscription.removeAllListeners();
+      }
+    },
+
+    updateWinners(webSocketResponse:WebSocketResponseInterface):void {
+      console.log('dima');
+      console.log(webSocketResponse);
+      // const accountData:AccountInterface = webSocketResponse.data.account;
+      // this.accounts = this.accounts.map((account) => {
+      //   if (account.id === accountData.id) return accountData;
+      //   return account;
+      // });
     },
   },
 });
