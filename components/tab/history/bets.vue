@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-history__tb" v-if="bets.length">
+  <div class="tab-history__tb">
     <div class="cards-bet-tab">
       <div class="nav-bets-history">
         <div
@@ -13,6 +13,13 @@
         </div>
       </div>
 
+      <atomic-empty
+        v-if="!loading && !bets.length"
+        variant="bets-history"
+        :title="props.content.bets.empty.title"
+        :subTitle="props.content.bets.empty.description"
+      />
+
       <template v-for="betItem in bets" :key="betItem.id">
         <card-bet-combo v-if="betItem.items?.length > 1" v-bind="{ ...betItem, ...betsContent }" />
         <card-bet-ordinar v-else v-bind="{ ...betItem, ...betsContent }" />
@@ -25,13 +32,6 @@
       @selectPage="changePage"
     />
   </div>
-
-  <atomic-empty
-    v-else-if="!loading"
-    variant="bets-history"
-    :title="props.content.bets.empty.title"
-    :subTitle="props.content.bets.empty.description"
-  />
 </template>
 
 <script setup lang="ts">
