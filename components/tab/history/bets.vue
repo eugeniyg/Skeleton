@@ -88,16 +88,12 @@
 
 <style lang="scss">
 .cards-bet-tab {
-  display: grid;
-  grid-row-gap: rem(8px);
-  align-items: flex-start;
-
   .nav-bets-history {
     display: flex;
     background-color: var(--gray-800);
     border: 4px solid var(--gray-800);
     border-radius: 999px;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
 
     .item {
       flex-grow: 1;
@@ -123,6 +119,11 @@
         --color: var(--white) !important;
       }
     }
+  }
+
+  .card-bet-ordinar,
+  .card-bet-combo {
+    margin-top: 8px;
   }
 }
 </style>
