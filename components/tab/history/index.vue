@@ -61,10 +61,7 @@
 
 <style lang="scss">
 .tabs-history {
-  display: grid;
-  max-width: 100%;
   overflow: hidden;
-  grid-row-gap: rem(24px);
 
   > .nav {
     display: flex;
@@ -73,6 +70,7 @@
     border-bottom: 1px solid var(--gray-700);
     @extend %scrollbar-hide;
     overflow-x: auto;
+    margin-bottom: 24px;
 
     > .item {
       color: var(--color, var(--gray-400));
@@ -106,13 +104,9 @@
       }
     }
   }
-}
 
-.tab-history {
-  &__content, &__tb {
-    display: grid;
-    color: var(--white);
-    grid-row-gap: rem(24px);
+  .pagination {
+    margin-top: rem(24px);
   }
 }
 </style>
