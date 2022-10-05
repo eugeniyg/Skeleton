@@ -12,10 +12,11 @@
     "placeholder": "Enter last name"
   },
   "gender": {
-    "label": "Gender",
+    "label": "Стать",
     "placeholder": "Введіть стать",
-    "maleLabel": "Male",
-    "femaleLabel": "Female"
+    "maleLabel": "Чоловік",
+    "femaleLabel": "Жінка",
+    "otherLabel": "Інший"
   },
   "wallet_id": {
     "label": "Wallet address",
@@ -45,7 +46,7 @@
     "placeholder": "Enter code"
   },
   "birthdate": {
-    "label": "Date of Birth",
+    "label": "Дата народження",
     "placeholder": "Дата народження",
     "placeholderDay": "День",
     "placeholderMonth": "Місяць",

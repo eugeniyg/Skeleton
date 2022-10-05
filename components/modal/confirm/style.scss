@@ -1,7 +1,0 @@
-.modal-confirm {
-  @extend %modal-info;
-
-  .text {
-    @include upd-font($heading-5);
-  }
-}

@@ -56,7 +56,7 @@
       }
     },
     "cancelPaymentButton": "Cancel payment",
-    "tabPosition": 4,
+    "tabPosition": 5,
     "tabLabel": "Transactions"
   },
   "locale": "uk",
@@ -74,5 +74,32 @@
       "closed": "Closed"
     },
     "tabPosition": 1
+  },
+  "bets": {
+    "tabLabel": "Bets",
+    "tabPosition": 4,
+    "empty": {
+      "title": "There is no data yet!",
+      "description": "You have not placed any bets yet."
+    },
+    "settledTab": "Settled",
+    "unsettledTab": "Unsettled",
+    "statuses": {
+      "pending": "Pending",
+      "won": "Won",
+      "lost": "Lost",
+      "refund": "Refund",
+      "cashout": "Cash Out"
+    },
+    "betCard": {
+      "coefficientLabel": "Odds",
+      "betLabel": "Bet",
+      "resultLabel": "Result",
+      "copyButton": "Copy bet ID",
+      "copyTooltip": "Bet ID copied to clipboard",
+      "comboLabel": "Combo",
+      "comboDisciplinesTooltip": "more",
+      "comboBetsLabel": "Bets"
+    }
   }
 }

@@ -4,7 +4,7 @@ const viteConfig: any = {
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@import "@/scss/ds/_shared.scss";',
+        additionalData: '@use "@/scss/ds/_shared.scss" as *;',
       },
     },
   },
@@ -38,11 +38,6 @@ export default defineNuxtConfig({
       },
       {
         global: true,
-        path: '~/components/form/dropdown',
-        prefix: 'FormDropdown',
-      },
-      {
-        global: true,
         path: '~/components/tab/bonuses',
         prefix: 'TabBonuses',
       },
@@ -62,5 +57,8 @@ export default defineNuxtConfig({
     },
   },
   build,
+  css: [
+    '@/scss/style.scss',
+  ],
   vite: viteConfig,
 });

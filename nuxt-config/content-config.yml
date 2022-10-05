@@ -247,6 +247,9 @@ collections:
           - name: femaleLabel
             label: Female Label
             widget: string
+          - name: otherLabel
+            label: Other Label
+            widget: string
       - name: city
         label: City
         widget: object
@@ -1722,6 +1725,25 @@ collections:
               - name: categoryValue
                 label: Game Category Value
                 widget: string
+      - name: gameTags
+        label: Game Tags
+        widget: list
+        collapsed: true
+        label_singular: tag
+        summary: '{{fields.label}}'
+        fields:
+          - name: identity
+            label: Tag Identity
+            widget: string
+            hint: Must be the same as identity in BackOffice!
+          - name: label
+            label: Tag Label
+            widget: string
+          - name: color
+            label: Tag Color
+            widget: select
+            options: [ 'green', 'orange', 'red', 'blue' ]
+          - *projectIcon
       - name: globalSeo
         label: Global Page Seo
         widget: object

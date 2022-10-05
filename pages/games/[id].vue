@@ -24,7 +24,7 @@
   const { getGamesInfo, getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
-  const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
+  const { isLoggedIn, playerStatusName, profile } = storeToRefs(profileStore);
   const { showModal, showAlert } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
@@ -42,8 +42,8 @@
     const startParams = {
       accountId: isDemo.value ? undefined : activeAccount.value.id,
       lobbyUrl: redirectUrl,
-      locale: 'en', // currentLocale || browserLanguage,
-      countryCode: 'UA',
+      locale: currentLocale.value.code,
+      countryCode: profile.value.country,
       demoMode: isDemo.value,
       platform: isMobile.value ? 1 : 2,
     };
@@ -109,4 +109,54 @@
   });
 </script>
 
-<style lang="scss" src="./game.scss"/>
+<style lang="scss">
+.is-game-page {
+  .app-footer, .app-header,  .nav-game, .panel-mode, .text-wrap {
+    display: none;
+  }
+
+  .app-main {
+    --padding: 0;
+
+    // if mob nav exist
+    //@media (orientation: landscape) and (max-width: #{rem(1024px)}) {
+    //  --padding: 0 0 0 #{rem(64px)};
+    //}
+
+    .group-games {
+      display: none;
+      margin-top: rem(40px);
+    }
+
+    @include media(md) {
+      --padding: #{rem(24px)} #{rem(32px)};
+
+      .group-games {
+        display: grid;
+      }
+    }
+  }
+
+  @include media(md) {
+    .app-footer {
+      display: grid;
+    }
+
+    .app-header {
+      display: flex;
+    }
+
+    .nav-game {
+      display: grid;
+    }
+
+    .panel-mode {
+      display: flex;
+    }
+
+    .text-wrap {
+      display: block;
+    }
+  }
+}
+</style>

@@ -1,0 +1,42 @@
+<template>
+  <button class="btn-play" @click="onClick">
+    <atomic-icon id="play"/>
+  </button>
+</template>
+
+<script setup lang="ts">
+  const emit = defineEmits(['game-play']);
+
+  function onClick(e:Event):void {
+    emit('game-play', e);
+  }
+</script>
+
+<style lang="scss">
+.btn-play {
+  @include box(40px);
+  @extend %skip-btn;
+  @extend %flex-all-center;
+  border-radius: 50%;
+  background-color: var(--bg, var(--yellow-500));
+  box-shadow: var(--shadow, unset);
+  transition: all .2s ease-in-out;
+
+  --padding: 0 0;
+  --color: var(--gray-900);
+  --icon-size: #{rem(24px)};
+  --width: #{rem(56px)};
+  --height: #{rem(56px)};
+
+  &:hover {
+    cursor: pointer;
+    --shadow: 0 0 0 3px var(--yellow-900);
+  }
+
+  &:active, &.is-active {
+    --bg: var(--yellow-600);
+    --color: var(--gray-900);
+    --shadow: inset 0 2px 0px var(--yellow-700);
+  }
+}
+</style>

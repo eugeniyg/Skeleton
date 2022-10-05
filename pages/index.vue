@@ -36,5 +36,4 @@
   const homeContent:HomeContentInterface|undefined = homeContentRequest.data.value?.homePage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(homeContent?.seo);
-
 </script>

@@ -31,4 +31,64 @@
   const loadTab = (name:string):string => `tab-bonuses-${name}`;
 </script>
 
-<style lang="scss" src="./style.scss"/>
+<style lang="scss">
+.tabs-bonuses {
+  display: grid;
+  max-width: 100%;
+  overflow: hidden;
+  grid-row-gap: rem(24px);
+
+  > .nav {
+    display: flex;
+    align-items: center;
+    grid-column-gap: rem(24px);
+    border-bottom: 1px solid var(--gray-700);
+    @extend %scrollbar-hide;
+    overflow-x: auto;
+
+    > .item {
+      color: var(--color, var(--gray-400));
+      @include font($heading-2);
+      position: relative;
+      padding: rem(10px) 0;
+      transition: color .2s ease-in-out;
+      user-select: none;
+      cursor: var(--cursor, pointer);
+      white-space: nowrap;
+
+      &:after {
+        content: '';
+        display: block;
+        height: 2px;
+        border-radius: 1px;
+        position: absolute;
+        background-color: var(--border-color, transparent);
+        left: var(--left, 50%);
+        right: var(--right, 50%);
+        bottom: 0;
+        transition: all .2s ease-in-out;
+      }
+
+      &.is-selected {
+        --color: var(--white);
+        --border-color: var(--yellow-500);
+        --left: 0;
+        --right: 0;
+        --cursor: text;
+      }
+    }
+  }
+}
+
+.tab-bonuses {
+  display: grid;
+  color: var(--white);
+  grid-row-gap: rem(24px);
+
+  .link-bonus {
+    @include font($body-2);
+    color: var(--yellow-500);
+    text-decoration: none;
+  }
+}
+</style>

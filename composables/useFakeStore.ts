@@ -830,7 +830,7 @@ export const useFakeStore = () => {
       id: 'latest-winners',
       titleIcon: 'bonuses',
       showAllBtn: false,
-      showArrows: false,
+      showArrows: true,
       games: [
         {
           src: '/latest-winners/book_of_dead.png',

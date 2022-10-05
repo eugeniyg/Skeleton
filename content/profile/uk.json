@@ -1,12 +1,16 @@
 {
   "locale": "uk",
   "info": {
-    "title": "Profile info",
-    "editButton": "Edit your profile",
-    "saveButton": "Save changes",
+    "verifyButton": "Підтвердити",
+    "verifiedLabel": "Ваша електронна пошта підтверджена",
     "cancelButton": "Cancel",
-    "subscriptionTitle": "Subscriptions",
+    "saveButton": "Save changes",
+    "unverifiedLabel": "Ваша електронна пошта не підтверджена",
     "manageTitle": "Manage account",
+    "title": "Profile info",
+    "sendButton": "Отправить ссылку",
+    "subscriptionTitle": "Subscriptions",
+    "editButton": "Edit your profile",
     "seo": {
       "description": "",
       "text": {
