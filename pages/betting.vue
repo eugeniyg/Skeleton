@@ -50,7 +50,7 @@
       accountId: activeAccount.value.id,
       lobbyUrl: redirectUrl,
       locale: currentLocale.value.code,
-      countryCode: profile.value.country,
+      countryCode: profile.value?.country || 'UA',
       demoMode: false,
       platform: isMobile.value ? 1 : 2,
     };
