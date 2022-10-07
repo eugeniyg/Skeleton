@@ -12,9 +12,9 @@
 
     <div class="dropzones-list">
       <dropzone
-        v-for="dropzone in dropzones"
-        v-bind="dropzone"
-        :key="dropzone"
+        v-for="item in dropzones"
+        v-bind="item"
+        :key="item"
       />
     </div>
   </form>
