@@ -4,6 +4,14 @@
       <h1 class="heading">{{ securityContent?.title }}</h1>
     </div>
 
+    <!--
+    <div class="get-file-grid">
+      <form-get-file class="identity" v-bind="securityVerificationIdentity"/>
+      <form-get-file class="address" v-bind="securityVerificationAddress"/>
+      <form-get-file class="payment" v-bind="securityVerificationPayment"/>
+    </div>
+    -->
+
     <hr/>
 
     <form class="form form-change">
@@ -38,6 +46,8 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { ProfileSecurityInterface } from '~/types';
+
+  // const { securityVerificationIdentity, securityVerificationAddress, securityVerificationPayment } = useFakeStore();
 
   const globalStore = useGlobalStore();
   const { fieldsContent, alertsData, currentLocale } = storeToRefs(globalStore);
@@ -128,6 +138,39 @@
 
   .btn-primary {
     grid-area: save;
+  }
+}
+
+.get-file-grid {
+  display: grid;
+  width: 100%;
+  grid-template-areas:
+    "identity identity"
+    "address address"
+    "payment payment";
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: rem(16px);
+
+  @include media(sm) {
+    grid-template-areas:
+      "identity identity"
+      "address payment";
+  }
+
+  @include media(md) {
+    grid-gap: rem(24px);
+  }
+
+  .identity {
+    grid-area: identity;
+  }
+
+  .address {
+    grid-area: address;
+  }
+
+  .payment {
+    grid-area: payment;
   }
 }
 </style>
