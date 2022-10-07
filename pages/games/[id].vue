@@ -43,7 +43,7 @@
       accountId: isDemo.value ? undefined : activeAccount.value.id,
       lobbyUrl: redirectUrl,
       locale: currentLocale.value.code,
-      countryCode: profile.value.country,
+      countryCode: profile.value?.country || 'UA',
       demoMode: isDemo.value,
       platform: isMobile.value ? 1 : 2,
     };
