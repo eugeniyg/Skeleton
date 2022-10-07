@@ -469,3 +469,10 @@ export interface GlobalComponentsInterface {
   gameTags: GameTagInterface[],
   globalSeo: SeoContentInterface
 }
+
+export interface DropZoneInterface {
+  title: string,
+  subTitle: string,
+  desc: string,
+  hint: string,
+}
