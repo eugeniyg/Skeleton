@@ -35,6 +35,7 @@
       @click="login"
       :isDisabled="v$.$invalid || isLockedAsyncButton"
     >
+      <atomic-spinner :is-shown="isShowSpinner"/>
       {{ loginContent?.loginButton }}
     </button-base>
 
@@ -48,6 +49,7 @@
   import { storeToRefs } from 'pinia';
   import { LoginInterface } from '~/types';
 
+  const isShowSpinner = ref<boolean>(false);
   const globalStore = useGlobalStore();
   const {
     validationMessages, fieldsContent, popupsData, alertsData,
@@ -84,6 +86,7 @@
 
     try {
       isLockedAsyncButton.value = true;
+      isShowSpinner.value = true;
       await logIn(authorizationFormData);
       closeModal('signIn');
     } catch (error) {
