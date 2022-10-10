@@ -22,6 +22,7 @@
         placeholder="Providers"
         :options="providerDropdownOptions"
         @input="changeProvider"
+        isFitContent
       />
 
       <atomic-game-sort
