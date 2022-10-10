@@ -57,6 +57,7 @@
       :isDisabled="v$.$invalid || isLockedAsyncButton"
       @click="signUp"
     >
+      <atomic-spinner :is-shown="isShowSpinner"/>
       {{ registrationContent?.registrationButton}}
     </button-base>
 
@@ -113,6 +114,7 @@
   } = useFormValidation(registrationFormRules, registrationFormData);
 
   const showPromoInput = ref<boolean>(false);
+  const isShowSpinner = ref<boolean>(false);
 
   const { registration } = useProfileStore();
   const isLockedAsyncButton = ref<boolean>(false);
@@ -130,6 +132,7 @@
 
     try {
       isLockedAsyncButton.value = true;
+      isShowSpinner.value = true;
       await registration(registrationFormData);
       closeModal('register');
     } catch (error) {
