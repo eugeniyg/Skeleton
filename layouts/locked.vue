@@ -1,5 +1,5 @@
 <template>
-  <div class="locked" v-if="route.path === '/locked'">
+  <div class="locked">
     <img class="locked__logo" src="assets/svg/logo-light.svg" alt="">
     <img class="locked__media" src="assets/img/locked.png" alt=""/>
 
