@@ -20,6 +20,7 @@
       :isDisabled="v$.$invalid || isLockedAsyncButton"
       @click="sendEmail"
     >
+      <atomic-spinner :is-shown="isLockedAsyncButton"/>
       {{ forgotContent?.forgotButton }}
     </button-base>
 
