@@ -1,146 +1,4 @@
 {
-  "benefits": {
-    "items": [
-      {
-        "image": "/img/uploads/benefit-1.png",
-        "title": "Fast<br>withdrawals"
-      },
-      {
-        "image": "/img/uploads/benefit-2.png",
-        "title": "24/7 Live Chat<br>Support"
-      },
-      {
-        "image": "/img/uploads/benefit-3.png",
-        "title": "Provably fair slots<br>& games"
-      },
-      {
-        "image": "/img/uploads/benefit-4.png",
-        "title": "Privacy<br>and security"
-      }
-    ],
-    "label": "Slotsbet benefits",
-    "icon": "bonuses"
-  },
-  "promotions": {
-    "label": "Slotsbet promotions",
-    "icon": "bonuses",
-    "items": [
-      {
-        "image": "/img/uploads/promotion-1.png",
-        "title": "Welcome package",
-        "description": "5000 mBTC + 300 FS",
-        "buttonLabel": "Get bonus",
-        "link": {
-          "label": "Learn more",
-          "url": "/welcome-package"
-        }
-      },
-      {
-        "image": "/img/uploads/promotion-2.png",
-        "title": "Wednesday bonus",
-        "description": "100 free spins",
-        "buttonLabel": "Get bonus",
-        "link": {
-          "label": "Learn more",
-          "url": "/bonus/wednesday-free-spins"
-        }
-      },
-      {
-        "image": "/img/uploads/promotion-3.png",
-        "title": "Weekly Cashback",
-        "description": "Just play and get 10% cashback",
-        "buttonLabel": "Get bonus",
-        "link": {
-          "label": "Learn more",
-          "url": "/bonus/weekly-cashback"
-        }
-      },
-      {
-        "image": "/img/uploads/promotion-4.png",
-        "title": "30% Reload bonus",
-        "description": "every week",
-        "buttonLabel": "Get bonus",
-        "link": {
-          "label": "Learn more",
-          "url": "/bonus/monday-reload-bonus"
-        }
-      }
-    ]
-  },
-  "locale": "en",
-  "cardsGroup": {
-    "moreButton": "Show all",
-    "demoButton": "Try for fun",
-    "recommendedSubtitle": "The best games for you",
-    "favorites": {
-      "icon": "heart",
-      "label": "Favorites"
-    },
-    "providers": {
-      "icon": "turbo-games",
-      "label": "Providers"
-    },
-    "latestWinners": {
-      "icon": "bonuses",
-      "label": "Latest winners"
-    }
-  },
-  "categories": [
-    {
-      "icon": "hot",
-      "identity": "hot",
-      "label": "Hot"
-    },
-    {
-      "icon": "heart",
-      "identity": "popular",
-      "label": "Popular"
-    },
-    {
-      "icon": "new",
-      "identity": "new",
-      "label": "New"
-    },
-    {
-      "icon": "cherry",
-      "identity": "all",
-      "label": "All Games"
-    },
-    {
-      "icon": "slots",
-      "identity": "slots",
-      "label": "Slots"
-    },
-    {
-      "icon": "turbo-games",
-      "identity": "turbogames",
-      "label": "Turbogames"
-    },
-    {
-      "icon": "table-games",
-      "identity": "table",
-      "label": "Table"
-    },
-    {
-      "icon": "live-casino",
-      "identity": "live",
-      "label": "Live"
-    },
-    {
-      "icon": "sport",
-      "identity": "test12",
-      "label": "Test 12"
-    },
-    {
-      "icon": "security",
-      "identity": "999",
-      "label": "9-9-9"
-    }
-  ],
-  "globalSeo": {
-    "title": "Slotsbet",
-    "description": "Slotsbet"
-  },
   "turbogames": {
     "label": "Turbogames",
     "icon": "hot",
@@ -266,5 +124,151 @@
       "color": "blue",
       "icon": "bonuses"
     }
-  ]
+  ],
+  "latestWinners": {
+    "icon": "bonus",
+    "title": "Latest winners"
+  },
+  "promotions": {
+    "label": "Slotsbet promotions",
+    "icon": "bonuses",
+    "items": [
+      {
+        "image": "/img/uploads/promotion-1.png",
+        "title": "Welcome package",
+        "description": "5000 mBTC + 300 FS",
+        "buttonLabel": "Get bonus",
+        "link": {
+          "label": "Learn more",
+          "url": "/welcome-package"
+        }
+      },
+      {
+        "image": "/img/uploads/promotion-2.png",
+        "title": "Wednesday bonus",
+        "description": "100 free spins",
+        "buttonLabel": "Get bonus",
+        "link": {
+          "label": "Learn more",
+          "url": "/bonus/wednesday-free-spins"
+        }
+      },
+      {
+        "image": "/img/uploads/promotion-3.png",
+        "title": "Weekly Cashback",
+        "description": "Just play and get 10% cashback",
+        "buttonLabel": "Get bonus",
+        "link": {
+          "label": "Learn more",
+          "url": "/bonus/weekly-cashback"
+        }
+      },
+      {
+        "image": "/img/uploads/promotion-4.png",
+        "title": "30% Reload bonus",
+        "description": "every week",
+        "buttonLabel": "Get bonus",
+        "link": {
+          "label": "Learn more",
+          "url": "/bonus/monday-reload-bonus"
+        }
+      }
+    ]
+  },
+  "globalSeo": {
+    "title": "Slotsbet",
+    "description": "Slotsbet"
+  },
+  "locale": "en",
+  "cardsGroup": {
+    "moreButton": "Show all",
+    "demoButton": "Try for fun",
+    "recommendedSubtitle": "The best games for you",
+    "favorites": {
+      "icon": "heart",
+      "label": "Favorites"
+    },
+    "providers": {
+      "icon": "turbo-games",
+      "label": "Providers"
+    },
+    "latestWinners": {
+      "icon": "bonuses",
+      "label": "Latest winners"
+    }
+  },
+  "categories": [
+    {
+      "icon": "hot",
+      "identity": "hot",
+      "label": "Hot"
+    },
+    {
+      "icon": "heart",
+      "identity": "popular",
+      "label": "Popular"
+    },
+    {
+      "icon": "new",
+      "identity": "new",
+      "label": "New"
+    },
+    {
+      "icon": "cherry",
+      "identity": "all",
+      "label": "All Games"
+    },
+    {
+      "icon": "slots",
+      "identity": "slots",
+      "label": "Slots"
+    },
+    {
+      "icon": "turbo-games",
+      "identity": "turbogames",
+      "label": "Turbogames"
+    },
+    {
+      "icon": "table-games",
+      "identity": "table",
+      "label": "Table"
+    },
+    {
+      "icon": "live-casino",
+      "identity": "live",
+      "label": "Live"
+    },
+    {
+      "icon": "sport",
+      "identity": "test12",
+      "label": "Test 12"
+    },
+    {
+      "icon": "security",
+      "identity": "999",
+      "label": "9-9-9"
+    }
+  ],
+  "benefits": {
+    "items": [
+      {
+        "image": "/img/uploads/benefit-1.png",
+        "title": "Fast<br>withdrawals"
+      },
+      {
+        "image": "/img/uploads/benefit-2.png",
+        "title": "24/7 Live Chat<br>Support"
+      },
+      {
+        "image": "/img/uploads/benefit-3.png",
+        "title": "Provably fair slots<br>& games"
+      },
+      {
+        "image": "/img/uploads/benefit-4.png",
+        "title": "Privacy<br>and security"
+      }
+    ],
+    "label": "Slotsbet benefits",
+    "icon": "bonuses"
+  }
 }
