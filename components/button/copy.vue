@@ -63,6 +63,7 @@
   flex-grow: 0;
   z-index: 1;
   min-height: rem(24px);
+  transform: translateX(16px);
 
   &__wrap {
     position: relative;

@@ -18,14 +18,15 @@
 
         <div class="status">
           <span class="date">{{ formatDate(betItem.eventDate) }}</span>
-          <span class="sep" />
 
-          <atomic-bet-status
-            v-if="props.status !== 1 && betStatusName"
-            :variant="betStatusName"
-          >
-            {{ props.statuses[betStatusName] }}
-          </atomic-bet-status>
+          <template v-if="props.status !== 1 && betStatusName">
+            <span class="sep" />
+            <atomic-bet-status
+              :variant="betStatusName"
+            >
+              {{ props.statuses[betStatusName] }}
+            </atomic-bet-status>
+          </template>
         </div>
       </div>
 
@@ -71,8 +72,10 @@
 
   const formatDate = (dateUtcIsoString: string, needYear: boolean = true):string => {
     const date = new Date(dateUtcIsoString);
-    if (needYear) return date.toLocaleString().slice(0, -3);
-    return `${date.toLocaleString().slice(0, -15)}${date.toLocaleString().slice(-10, -3)}`;
+    let dateWithComma;
+    if (needYear) dateWithComma = date.toLocaleString('UA').slice(0, -3);
+    else dateWithComma = `${date.toLocaleString('UA').slice(0, -15)}${date.toLocaleString('UA').slice(-10, -3)}`;
+    return dateWithComma.replace(',', ' ');
   };
 
   const { betStatuses } = useCoreStore();
@@ -157,6 +160,7 @@
     align-items: center;
     grid-column-gap: rem(8px);
     margin-left: auto;
+    white-space: nowrap;
   }
 
   .btn-copy__wrap {
@@ -166,7 +170,12 @@
   .row {
     display: flex;
     align-items: center;
-    grid-column-gap: rem(16px);
+    grid-column-gap: rem(8px);
+    white-space: nowrap;
+
+    @include media(md) {
+      grid-column-gap: rem(16px);
+    }
   }
 
   .items {
@@ -209,6 +218,7 @@
       @include font($body-2);
       color: var(--gray-500);
       align-self: flex-end;
+      padding-bottom: 2px;
     }
 
     .value {

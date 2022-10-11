@@ -93,6 +93,12 @@
 
   .label {
     grid-area: label;
+
+    &[for="other"] {
+      .icon {
+          --icon-size: 28px;
+      }
+    }
   }
 
   .hint {

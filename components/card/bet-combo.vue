@@ -98,8 +98,10 @@
 
   const formatDate = (dateUtcIsoString: string, needYear: boolean = true):string => {
     const date = new Date(dateUtcIsoString);
-    if (needYear) return date.toLocaleString().slice(0, -3);
-    return `${date.toLocaleString().slice(0, -15)}${date.toLocaleString().slice(-10, -3)}`;
+    let dateWithComma;
+    if (needYear) dateWithComma = date.toLocaleString('UA').slice(0, -3);
+    else dateWithComma = `${date.toLocaleString('UA').slice(0, -15)}${date.toLocaleString('UA').slice(-10, -3)}`;
+    return dateWithComma.replace(',', ' ');
   };
 
   const comboDisciplines = computed(() => {
@@ -194,7 +196,6 @@
       "amount amount";
 
     @include media(md) {
-      grid-row-gap: 0;
       grid-template-areas:
       "row status"
       "items amount";
@@ -238,13 +239,19 @@
   .row {
     display: flex;
     align-items: center;
-    grid-column-gap: rem(16px);
+    grid-column-gap: rem(8px);
     grid-area: row;
     position: relative;
+    white-space: nowrap;
+
+    @include media(md) {
+      grid-column-gap: rem(16px);
+    }
   }
 
   .items {
     grid-area: items;
+    grid-column-gap: rem(4px);
     display: flex;
 
     .label {
@@ -321,6 +328,14 @@
 
       + .item {
         border-top: 1px solid var(--gray-700);
+      }
+
+      .row .sep {
+        display: none;
+
+        @include media(md) {
+          display: block;
+        }
       }
     }
   }
