@@ -43,7 +43,7 @@
       :isDisabled="buttonDisabled"
       @click="getDeposit"
     >
-      <atomic-spinner :is-shown="isShowSpinner"/>
+      <atomic-spinner :is-shown="isSending"/>
       {{ depositContent?.depositButton }} {{ buttonAmount }} {{ defaultInputSum.currency }}
     </button-base>
   </form>
@@ -59,7 +59,6 @@
     method?: string
   }>();
 
-  const isShowSpinner = ref<boolean>(false);
   const { popupsData, fieldsContent, alertsData } = useGlobalStore();
   const depositContent: DepositInterface|undefined = popupsData?.deposit;
 
@@ -114,7 +113,6 @@
     const { depositAccount } = useCoreWalletApi();
     const windowReference = window.open();
     try {
-      isShowSpinner.value = true;
       const depositResponse = await depositAccount(params);
       const redirectUrl = depositResponse?.action;
       windowReference.location = redirectUrl;
