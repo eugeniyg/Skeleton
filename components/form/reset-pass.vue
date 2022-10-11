@@ -32,7 +32,7 @@
       :isDisabled="v$.$invalid || isLockedAsyncButton"
       @click="resetPassword"
     >
-      <atomic-spinner :is-shown="isShowSpinner"/>
+      <atomic-spinner :is-shown="isLockedAsyncButton"/>
       {{ resetContent?.resetButton }}
     </button-base>
   </form>
@@ -41,8 +41,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { ResetInterface } from '~/types';
-
-  const isShowSpinner = ref<boolean>(false);
 
   const globalStore = useGlobalStore();
   const { fieldsContent, popupsData, alertsData } = storeToRefs(globalStore);
@@ -83,7 +81,6 @@
 
     try {
       isLockedAsyncButton.value = true;
-      isShowSpinner.value = true;
       const route = useRoute();
       await resetProfilePassword({ ...resetFormData, code: route.query.resetCode });
       showAlert(alertsData.value?.passwordChanged);
