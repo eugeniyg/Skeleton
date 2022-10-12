@@ -1,24 +1,24 @@
-image: 038978826977.dkr.ecr.eu-central-1.amazonaws.com/infrastructure/gitlab-builder:latest
-
-services:
-  - name: docker:dind
-    alias: docker
-    command: [ "--tls=false" ]
 
 variables:
   SERVICE_NAME: customer-frontends/slotsbet
-  DOCKER_TLS_CERTDIR: ""
 
 stages:
   - build
 
 "Build docker image":
   stage: build
+  image: gcr.io/kaniko-project/executor:debug
+
+  before_script:
+    - echo "$DOCKER_AUTH_CONFIG" > /kaniko/.docker/config.json
+
+  script:
+    - /kaniko/executor
+      --build-arg NPM_TOKEN=$NPM_TOKEN
+      --context $CI_PROJECT_DIR
+      --dockerfile $CI_PROJECT_DIR/Dockerfile
+      --destination $ECR_REGISTRY/$SERVICE_NAME:$CI_COMMIT_TAG
+
   only:
     - dev
     - main
-  before_script:
-    - aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_REGISTRY
-  script:
-    - docker build -t $ECR_REGISTRY/$SERVICE_NAME:$CI_COMMIT_BRANCH --build-arg NPM_TOKEN=$NPM_TOKEN .
-    - docker push $ECR_REGISTRY/$SERVICE_NAME:$CI_COMMIT_BRANCH
