@@ -72,17 +72,7 @@
       @initialLoad="gamesGroupLoaded++"
     />
 
-    <cards-group
-      showArrows
-      v-if="latestWinnersCards"
-      v-bind="latestWinnersCards"
-      :identity="groupContent?.latestWinners.label"
-      :titleIcon="groupContent?.latestWinners.icon"
-    >
-      <template v-slot:card="item">
-        <card-latest-winners v-bind="item" />
-      </template>
-    </cards-group>
+    <group-winners showArrows />
 
     <group-games
       showAllBtn

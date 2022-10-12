@@ -1,45 +1,47 @@
 <template>
-  <nuxt-link class="card-latest-winners" :to="localizePath(`${props.href}${!isLoggedIn ? '?demo=true' : '' }`)">
+  <nuxt-link class="card-latest-winners" :to="gameUrl">
     <div class="img" :style="backgroundImage"></div>
-    <div class="title">{{ props.title }}</div>
-    <div class="sub-title">{{ props.subTitle }}</div>
+    <div class="title">{{ props.nickname }}</div>
+    <div class="sub-title">{{ props.gameName }}</div>
     <div class="items">
-      <span v-for="(item, itemIndex) in props.items" :key="itemIndex" class="item">{{ item }}</span>
+      <span class="item">{{ formatedSum.amount }} {{ formatedSum.currency }}</span>
     </div>
   </nuxt-link>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { GameImagesInterface } from '@platform/frontend-core/dist/module';
 
-  const props = defineProps({
-    src: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      default: '',
-    },
-    subTitle: {
-      type: String,
-      default: '',
-    },
-    items: {
-      type: Array,
-      default: () => [],
-    },
-    href: {
-      type: String,
-      default: '',
-    },
-  });
+  const props = defineProps<{
+    nickname: string|null,
+    amount: number,
+    currency: string,
+    resultBalance: number,
+    gameId: string,
+    gameName: string,
+    isDemoMode: boolean,
+    gameImages: GameImagesInterface
+  }>();
 
-  const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
+  const { localizePath, getImageUrl, formatBalance } = useProjectMethods();
+  const globalStore = useGlobalStore();
+  const { baseApiUrl } = storeToRefs(globalStore);
 
-  const backgroundImage = computed(() => `background-image:url(/img${props.src})`);
+  const gameUrl = computed(() => {
+    if (!isLoggedIn.value && props.isDemoMode) return localizePath(`/games/${props.gameId}?demo=true`);
+    return localizePath(`/games/${props.gameId}`);
+  });
+
+  const formatedSum = computed(() => formatBalance(props.currency, props.resultBalance));
+
+  const backgroundImage = computed(() => {
+    if (props.gameImages.hasOwnProperty('200x200')) {
+      return `background-image:url(${baseApiUrl.value}/img/gcdn${getImageUrl(props.gameImages, 'square')})`;
+    } return 'background-image: none';
+  });
 </script>
 
 <style lang="scss">
@@ -61,6 +63,7 @@
   align-items: flex-start;
   text-decoration: none;
   @extend %cards-items;
+  scroll-snap-align: var(--scroll-snap-align, start);
 
   @include media(md) {
     --min-width: #{column(5)};
@@ -86,6 +89,7 @@
     grid-area: title;
     @include font($body-1);
     color: var(--gray-300);
+    min-height: 16px;
   }
 
   .sub-title {
