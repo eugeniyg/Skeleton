@@ -8,6 +8,7 @@ import {
 } from '@platform/frontend-core/dist/module';
 import throttle from 'lodash/throttle';
 import { useGlobalStore } from '~/composables/useGlobalStore';
+import { useProfileStore } from '~/composables/useProfileStore';
 
 interface GamesStoreStateInterface {
   gameProviders: GameProviderInterface[],
@@ -67,7 +68,8 @@ export const useGamesStore = defineStore('gamesStore', {
     subscribeWinnersSocket():void {
       const { createSubscription } = useWebSocket();
       const globalStore = useGlobalStore();
-      this.winnersSubscription = createSubscription(`game:winners:${globalStore.isMobile ? 'mobile' : 'desktop'}:UA`, this.updateWinners);
+      const profileStore = useProfileStore();
+      this.winnersSubscription = createSubscription(`game:winners:${globalStore.isMobile ? 'mobile' : 'desktop'}:${profileStore.profile?.country || 'UA'}`, this.updateWinners);
     },
 
     setWinners(winners: WinnerInterface[]):void {
