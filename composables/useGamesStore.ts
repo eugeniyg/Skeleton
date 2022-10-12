@@ -21,7 +21,6 @@ export const useGamesStore = defineStore('gamesStore', {
   state: (): GamesStoreStateInterface => ({
       gameProviders: [],
       gameCollections: [],
-      // sorted categories for tabs (for MVP will be 8)
       favoriteGames: [],
       winnersSubscription: undefined,
       latestWinners: [],
