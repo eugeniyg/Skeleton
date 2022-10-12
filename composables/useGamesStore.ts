@@ -2,14 +2,19 @@ import { defineStore } from 'pinia';
 import {
   CollectionInterface,
   GameInterface,
-  GameProviderInterface, WebSocketResponseInterface,
+  GameProviderInterface,
+  WebSocketResponseInterface,
+  WinnerInterface,
 } from '@platform/frontend-core/dist/module';
+import throttle from 'lodash/throttle';
+import { useGlobalStore } from '~/composables/useGlobalStore';
 
 interface GamesStoreStateInterface {
   gameProviders: GameProviderInterface[],
   gameCollections: CollectionInterface[],
   favoriteGames: GameInterface[],
   winnersSubscription: any,
+  latestWinners: WinnerInterface[]
 }
 
 export const useGamesStore = defineStore('gamesStore', {
@@ -19,6 +24,7 @@ export const useGamesStore = defineStore('gamesStore', {
       // sorted categories for tabs (for MVP will be 8)
       favoriteGames: [],
       winnersSubscription: undefined,
+      latestWinners: [],
     }),
 
   getters: {
@@ -61,25 +67,20 @@ export const useGamesStore = defineStore('gamesStore', {
 
     subscribeWinnersSocket():void {
       const { createSubscription } = useWebSocket();
-      this.winnersSubscription = createSubscription('game:winners', this.updateWinners);
-      console.log(this.winnersSubscription);
+      const globalStore = useGlobalStore();
+      this.winnersSubscription = createSubscription(`game:winners:${globalStore.isMobile ? 'mobile' : 'desktop'}:UA`, this.updateWinners);
     },
 
-    unsubscribeWinnersSocket():void {
-      if (this.winnersSubscription) {
-        this.winnersSubscription.unsubscribe();
-        this.winnersSubscription.removeAllListeners();
-      }
+    setWinners(winners: WinnerInterface[]):void {
+      const getLimitArr = winners.slice(0, 12);
+      this.latestWinners = [...getLimitArr, ...this.latestWinners].slice(0, 12);
     },
 
-    updateWinners(webSocketResponse:WebSocketResponseInterface):void {
-      console.log('dima');
-      console.log(webSocketResponse);
-      // const accountData:AccountInterface = webSocketResponse.data.account;
-      // this.accounts = this.accounts.map((account) => {
-      //   if (account.id === accountData.id) return accountData;
-      //   return account;
-      // });
-    },
+    updateWinners: throttle(function (winners:WebSocketResponseInterface):void {
+      if (winners.data.winner.gameId === this.latestWinners[0]?.gameId
+        || winners.data.winner.nickname === this.latestWinners[0]?.nickname) return;
+
+      this.latestWinners = [winners.data.winner, ...this.latestWinners].slice(0, 12);
+    }, 3000, { leading: false }),
   },
 });

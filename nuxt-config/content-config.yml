@@ -1744,6 +1744,15 @@ collections:
             widget: select
             options: [ 'green', 'orange', 'red', 'blue' ]
           - *projectIcon
+      - name: latestWinners
+        label: Latest Winners
+        widget: object
+        collapsed: true
+        fields:
+          - *projectIcon
+          - name: title
+            label: Group Title
+            widget: string
       - name: globalSeo
         label: Global Page Seo
         widget: object

@@ -460,6 +460,11 @@ export interface GameTagInterface {
   color: string,
 }
 
+export interface LatestWinnersInterface {
+  icon: string,
+  title: string
+}
+
 export interface GlobalComponentsInterface {
   benefits: BenefitsContentInterface,
   promotions: PromotionsContentInterface,
@@ -467,7 +472,8 @@ export interface GlobalComponentsInterface {
   categories: GameCategoryInterface[],
   turbogames: TurbogamesGroupInterface,
   gameTags: GameTagInterface[],
-  globalSeo: SeoContentInterface
+  globalSeo: SeoContentInterface,
+  latestWinners: LatestWinnersInterface
 }
 
 export interface DropZoneInterface {
