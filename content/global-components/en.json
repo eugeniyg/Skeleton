@@ -195,6 +195,10 @@
     "latestWinners": {
       "icon": "bonuses",
       "label": "Latest winners"
+    },
+    "recentlyPlayed": {
+      "icon": "history",
+      "label": "Recently played"
     }
   },
   "categories": [
