@@ -16,19 +16,7 @@
     <nav-cat @clickCategory="changeCategory" />
 
     <client-only>
-      <tab-component v-if="isLoggedIn && favoriteGames.length" @select-tab="selectTab" :selected="selectedTabId">
-        <tab-item :is-active="selectedTabId === 'favorites'">
-          <group-favorites/>
-        </tab-item>
-
-        <!--      <tab-item :is-active="selectedTabId === 'recently-played'">-->
-        <!--        <cards-group v-bind="fakeStore.recentlyCards">-->
-        <!--          <template v-slot:card="item">-->
-        <!--            <card-simple v-bind="item" :variant="fakeStore.recentlyCards.variant"/>-->
-        <!--          </template>-->
-        <!--        </cards-group>-->
-        <!--      </tab-item>-->
-      </tab-component>
+      <favorite-recently v-if="isLoggedIn" />
     </client-only>
 
     <br />
@@ -107,6 +95,7 @@
   } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
   import { CardsGroupInterface, MainContentInterface, SlideInterface } from '~/types';
+  import FavoriteRecently from '~/components/favorite-recently.vue';
 
   const globalStore = useGlobalStore();
   const { currentLocale, globalComponentsContent } = storeToRefs(globalStore);
@@ -119,18 +108,16 @@
   const fakeStore = useFakeStore();
   const router = useRouter();
   const gameStore = useGamesStore();
-  const { gameCollections, favoriteGames } = storeToRefs(gameStore);
+  const { gameCollections } = storeToRefs(gameStore);
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 
   const providerCards = fakeStore.providerCards();
-  const latestWinnersCards = fakeStore.latestWinnersCards();
 
   const mainCategories = ['hot', 'slots', 'turbogames', 'new', 'table', 'live'];
   const sortCategory = gameCollections.value.filter((item) => mainCategories.find((el) => el === item.identity))
     .sort((a, b) => mainCategories.map((e) => e).indexOf(a.identity) - mainCategories.map((e) => e).indexOf(b.identity));
 
-  const selectedTabId = ref<string>('favorites');
   const topSliderProps = {
     settings: {
       itemsToShow: 1,
@@ -156,10 +143,6 @@
       preloaderDone();
     }
   });
-
-  function selectTab(id: string): void {
-    selectedTabId.value = id;
-  }
 
   const changeCategory = (categoryId: string) => {
     router.push({ path: localizePath('/games'), query: { category: categoryId } });
