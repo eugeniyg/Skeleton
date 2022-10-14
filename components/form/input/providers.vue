@@ -2,7 +2,7 @@
   <div ref="input" class="input-providers">
     <button class="input-providers__toggle" @click.prevent="toggleOpen" :class="{'is-open': isOpen}">
       <span class="input-providers__title">Providers</span>
-      <span class="input-providers__count" :class="{'is-visible': selected.length > 0}">{{ selected.length }}</span>
+      <span class="input-providers__count" :class="{'is-visible': count}">{{ count }}</span>
       <atomic-icon id="arrow_expand-open"/>
     </button>
 
@@ -12,15 +12,16 @@
           <span class="input-providers__title">All providers</span>
           <atomic-icon class="input-providers__checkbox" id="check"/>
         </div>
-        <div v-for="item in props.items" :key="item.id" class="input-providers__item">
-          <label class="input-providers__label" @change="actionChange(item)">
-            <img class="input-providers__logo" :src="`/assets/svg/${item.src}`" :alt="item.title">
-            <span class="input-providers__title">{{ item.title }}</span>
+        <div v-for="provider in props.items" :key="provider.id" class="input-providers__item">
+          <label class="input-providers__label">
+            <!--            <img class="input-providers__logo" :src="`/assets/svg/${item.src}`" :alt="item.title">-->
+            <span class="input-providers__title">{{ provider.name }}</span>
             <input
               type="checkbox"
               name="providers"
-              :value="item.id"
+              v-model="inputValues[provider.id]"
               class="input-providers__input"
+              @change="change"
             >
             <atomic-icon class="input-providers__checkbox" id="check"/>
           </label>
@@ -41,17 +42,19 @@
 </template>
 
 <script setup lang="ts">
-  import { ProvidersItem } from '~/types';
+  // import { ProvidersItem } from '~/types';
 
   const props = defineProps<{
     isSelectedAll: boolean,
-    items: ProvidersItem[],
+    items: any,
   }>();
 
   const selectedAll = ref(props.isSelectedAll);
-  const selected = ref<ProvidersItem[]>([]);
+  const selected = ref([]);
   const isOpen = ref<boolean>(false);
   const inputs = ref<HTMLInputElement[]>([]);
+  const inputValues = ref({});
+  const count = ref(0);
 
   const selectAll = () => {
     inputs.value?.forEach((input: HTMLInputElement) => {
@@ -73,14 +76,14 @@
     selectedAll.value = !selectedAll.value ? selectAll() : unSelectAll();
   };
 
-  const actionChange = (inputValue: ProvidersItem) => {
-    const isExist = selected.value.find((item) => item.title === inputValue.title);
-    if (!isExist) {
-      selected.value.push(inputValue);
-    } else {
-      selected.value = selected.value.filter((item) => item.title !== inputValue.title);
-    }
-  };
+  // const actionChange = (inputValue) => {
+  //   const isExist = selected.value.find((item) => item.name === inputValue.name);
+  //   if (!isExist) {
+  //     selected.value.push(inputValue);
+  //   } else {
+  //     selected.value = selected.value.filter((item) => item.name !== inputValue.name);
+  //   }
+  // };
 
   const clear = () => {
     selectedAll.value = false;
@@ -115,6 +118,13 @@
   onUnmounted(() => {
     document.removeEventListener('mouseup', inputUnfocus);
   });
+  const emit = defineEmits(['update:value']);
+
+  const change = ():void => {
+    const providersArr = Object.keys(inputValues.value).filter((key) => inputValues.value[key]);
+    emit('update:value', providersArr);
+    count.value = providersArr.length
+  };
 
 </script>
 

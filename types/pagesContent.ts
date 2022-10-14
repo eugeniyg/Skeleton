@@ -482,9 +482,3 @@ export interface DropZoneInterface {
   desc: string,
   hint: string,
 }
-
-export interface ProvidersItem {
-  id: string,
-  title: string,
-  src: string,
-}
