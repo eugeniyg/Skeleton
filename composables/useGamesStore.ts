@@ -73,15 +73,13 @@ export const useGamesStore = defineStore('gamesStore', {
     },
 
     setWinners(winners: WinnerInterface[]):void {
-      const getLimitArr = winners.slice(0, 12);
-      this.latestWinners = [...getLimitArr, ...this.latestWinners].slice(0, 12);
+      this.latestWinners = winners.slice(0, 12);
     },
 
-    updateWinners: throttle(function (winners:WebSocketResponseInterface):void {
-      if (winners.data.winner.gameId === this.latestWinners[0]?.gameId
-        || winners.data.winner.nickname === this.latestWinners[0]?.nickname) return;
-
-      this.latestWinners = [winners.data.winner, ...this.latestWinners].slice(0, 12);
+    updateWinners: throttle(function (winnerData:WebSocketResponseInterface):void {
+      const { winner } = winnerData.data;
+      const filteredWinners = this.latestWinners.filter((item) => item.gameId !== winner.gameId);
+      this.latestWinners = [winner, ...filteredWinners].slice(0, 12);
     }, 3000, { leading: false }),
   },
 });
