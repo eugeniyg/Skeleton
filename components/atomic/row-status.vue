@@ -42,7 +42,7 @@
   grid-column-gap: rem(4px);
   @include font($body-2);
 
-  .icon {
+  > .icon {
     --color: var(--green-500);
     --icon-size: #{rem(15px)};
     min-width: #{rem(15px)};
@@ -51,7 +51,7 @@
   &.is-current, &.is-active {
     --color: var(--green-500);
 
-    .icon {
+   > .icon {
       --color: var(--green-500);
     }
   }
@@ -59,7 +59,7 @@
   &.is-closed {
     --color: var(--gray-400);
 
-    .icon {
+    > .icon {
       --color: var(--gray-400);
     }
   }
@@ -72,7 +72,7 @@
 
     --color: var(--white);
 
-    .icon {
+    > .icon {
       --color: var(--yellow-500);
     }
   }
@@ -84,7 +84,7 @@
     align-self: flex-start;
     --color: var(--white);
 
-    .icon {
+    > .icon {
       --color: var(--green-500);
     }
   }
@@ -97,7 +97,7 @@
     align-self: flex-start;
     --color: var(--white);
 
-    .icon {
+    > .icon {
       --color: var(--orange-500);
     }
   }
@@ -109,21 +109,9 @@
     align-self: flex-start;
     --color: var(--white);
 
-    .icon {
+    > .icon {
       --color: var(--red-500);
     }
-  }
-
-  .tooltip {
-    align-items: center;
-  }
-
-  .tooltip .message {
-    width: auto;
-    white-space: nowrap;
-    left: 50%;
-    right: auto;
-    transform: translateY(calc(-100% - 4px)) translateX(-50%);
   }
 }
 </style>

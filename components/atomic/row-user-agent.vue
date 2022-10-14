@@ -17,15 +17,8 @@
   grid-column-gap: rem(4px);
   @include font($body-2);
 
-  .icon {
-    --color: var(--gray-500);
-    --icon-size: #{rem(20px)};
-  }
-
-  .tooltip .message {
-    left: 50%;
-    right: auto;
-    transform: translateY(calc(-100% - 4px)) translateX(-50%);
+  .tooltip {
+    margin-left: auto;
   }
 }
 </style>
