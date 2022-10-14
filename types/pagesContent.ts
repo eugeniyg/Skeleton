@@ -309,6 +309,10 @@ export interface CardsGroupInterface {
   latestWinners: {
     icon: string,
     label: string
+  },
+  recentlyPlayed: {
+    icon: string,
+    label: string
   }
 }
 
@@ -473,7 +477,6 @@ export interface GlobalComponentsInterface {
   turbogames: TurbogamesGroupInterface,
   gameTags: GameTagInterface[],
   globalSeo: SeoContentInterface,
-  latestWinners: LatestWinnersInterface
 }
 
 export interface DropZoneInterface {

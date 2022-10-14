@@ -125,10 +125,6 @@
       "icon": "bonuses"
     }
   ],
-  "latestWinners": {
-    "icon": "bonuses",
-    "title": "Latest winners"
-  },
   "promotions": {
     "label": "Slotsbet promotions",
     "icon": "bonuses",
@@ -195,6 +191,10 @@
     "latestWinners": {
       "icon": "bonuses",
       "label": "Latest winners"
+    },
+    "recentlyPlayed": {
+      "icon": "history",
+      "label": "Recently played"
     }
   },
   "categories": [
