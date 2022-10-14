@@ -60,7 +60,7 @@
       @initialLoad="gamesGroupLoaded++"
     />
 
-    <!--    <group-winners showArrows />-->
+    <group-winners showArrows />
 
     <group-games
       showAllBtn
