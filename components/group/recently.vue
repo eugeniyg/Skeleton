@@ -1,13 +1,13 @@
 <template>
-  <div class="group-favorites">
-    <atomic-icon v-if="groupContent?.favorites" :id="groupContent.favorites.icon"/>
+  <div class="group-recently">
+    <atomic-icon v-if="groupContent?.recentlyPlayed" :id="groupContent.recentlyPlayed.icon"/>
 
-    <h2 class="title">{{ groupContent?.favorites.label }}</h2>
+    <h2 class="title">{{ groupContent?.recentlyPlayed?.label }}</h2>
 
     <button-base
       v-if="showAllBtn"
       class="btn-show-all"
-      url="/favorites"
+      url="/recently-played"
       type="ghost"
     >
       {{ groupContent?.moreButton }}
@@ -15,44 +15,56 @@
 
     <div class="items" ref="container">
       <card-simple
-        v-for="(favorite, favoriteIndex) in favoriteList"
-        :key="favoriteIndex"
-        v-bind="favorite"
+        v-for="(game, gameIndex) in currentGames"
+        :key="gameIndex"
+        v-bind="game"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+  import { GameInterface } from '@platform/frontend-core/dist/module';
   import { storeToRefs } from 'pinia';
   import { CardsGroupInterface } from '~/types';
 
-  const { globalComponentsContent } = useGlobalStore();
-  const groupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
+  const props = defineProps<{
+    gamesList: GameInterface[]
+  }>();
 
-  const gameStore = useGamesStore();
-  const { favoriteGames } = storeToRefs(gameStore);
-  const container = ref();
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent } = storeToRefs(globalStore);
+  const groupContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
 
   const showAllBtn = ref<boolean>(true);
   const cardInBlock = ref<number>(20);
-  const favoriteList = computed(() => favoriteGames.value.slice(0, cardInBlock.value));
+  const currentGames = computed(() => props.gamesList.slice(0, cardInBlock.value));
+  const container = ref();
 
   const calcItems = ():void => {
-    if (!favoriteGames.value.length) return;
-    const cardSimple:any = document.querySelector('.group-favorites .card');
+    if (!props.gamesList.length) return;
+    const cardSimple:any = document.querySelector('.group-recently .card');
     const containerWidth = getComputedStyle(container.value).width.replace('px', '');
     const cardWidth = getComputedStyle(cardSimple).width.replace('px', '');
     cardInBlock.value = Math.floor(Number(containerWidth) / Number(cardWidth));
   };
 
-  onMounted(() => {
+  onMounted(async () => {
     calcItems();
+  });
+
+  const gameStore = useGamesStore();
+  const { favoriteGames } = storeToRefs(gameStore);
+  watch(() => favoriteGames.value, async (newValue:GameInterface[], oldValue:GameInterface[]) => {
+    if ((newValue.length === 0 || oldValue.length === 0) && props.gamesList.length) {
+      await nextTick();
+      calcItems();
+    }
   });
 </script>
 
 <style lang="scss">
-.group-favorites {
+.group-recently {
   display: grid;
   align-items: center;
   grid-template-areas:

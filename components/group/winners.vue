@@ -1,8 +1,8 @@
 <template>
   <div class="group-winners" v-if="latestWinners.length">
-    <atomic-icon v-if="winnersContent?.icon" :id="winnersContent?.icon"/>
+    <atomic-icon v-if="winnersContent?.latestWinners?.icon" :id="winnersContent.latestWinners.icon"/>
 
-    <h2 class="title">{{ winnersContent?.title }}</h2>
+    <h2 class="title">{{ winnersContent?.latestWinners?.label }}</h2>
 
     <button-arrows
       v-if="showArrowButtons"
@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { LatestWinnersInterface } from '~/types';
+  import { CardsGroupInterface } from '~/types';
   import { useGamesStore } from '~/composables/useGamesStore';
 
   const props = defineProps({
@@ -36,10 +36,9 @@
       default: true,
     },
   });
-
   const globalStore = useGlobalStore();
   const { globalComponentsContent, isMobile } = storeToRefs(globalStore);
-  const winnersContent:LatestWinnersInterface|undefined = globalComponentsContent.value?.latestWinners;
+  const winnersContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
   const gameStore = useGamesStore();
