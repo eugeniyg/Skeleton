@@ -1,20 +1,28 @@
 <template>
   <div ref="input" class="input-providers">
-    <button class="input-providers__toggle" @click.prevent="toggleOpen" :class="{'is-open': isOpen}">
+    <button
+      class="input-providers__toggle"
+      @click.prevent="toggleOpen"
+      :class="{'is-open': isOpen}"
+    >
       <span class="input-providers__title">Providers</span>
       <span class="input-providers__count" :class="{'is-visible': count}">{{ count }}</span>
       <atomic-icon id="arrow_expand-open"/>
     </button>
 
-    <div class="input-providers__content">
+    <div class="input-providers__content" ref="content">
       <div class="input-providers__list">
-        <div class="input-providers__item" @click.prevent="toggleAll" :class="{'is-checked': selectedAll}">
+        <div
+          class="input-providers__item"
+          @click.prevent="selectAll"
+          :class="{'is-checked': selectedAll}"
+        >
           <span class="input-providers__title">All providers</span>
           <atomic-icon class="input-providers__checkbox" id="check"/>
         </div>
-        <div v-for="provider in props.items" :key="provider.id" class="input-providers__item">
+        <div v-for="provider in props.providers" :key="provider.id" class="input-providers__item">
           <label class="input-providers__label">
-            <!--            <img class="input-providers__logo" :src="`/assets/svg/${item.src}`" :alt="item.title">-->
+            <!--<img class="input-providers__logo" :src="`/assets/svg/${item.src}`" :alt="item.title">-->
             <span class="input-providers__title">{{ provider.name }}</span>
             <input
               type="checkbox"
@@ -31,7 +39,7 @@
             type="ghost"
             size="xs"
             @click.prevent="clear"
-            :is-disabled="isDisabled"
+            :is-disabled="!count"
           >Clear all
           </button-base>
         </div>
@@ -42,70 +50,55 @@
 </template>
 
 <script setup lang="ts">
-  // import { ProvidersItem } from '~/types';
+  import { GameProviderInterface } from '@platform/frontend-core/dist/module';
 
   const props = defineProps<{
-    isSelectedAll: boolean,
-    items: any,
+    isSelectedAll?: boolean,
+    providers: GameProviderInterface[],
+    value: string[]
   }>();
 
-  const selectedAll = ref(props.isSelectedAll);
-  const selected = ref([]);
-  const isOpen = ref<boolean>(false);
   const inputs = ref<HTMLInputElement[]>([]);
+  const selectedAll = ref(props.isSelectedAll);
+  const isOpen = ref<boolean>(false);
   const inputValues = ref({});
-  const count = ref(0);
+  const selected = ref<string[]>([]);
+  const input = ref(null);
+  const content = ref(null);
 
-  const selectAll = () => {
-    inputs.value?.forEach((input: HTMLInputElement) => {
-      input.checked = true;
-    });
-    selected.value = [...props.items];
-    return true;
-  };
-
-  const unSelectAll = () => {
-    inputs.value?.forEach((input: HTMLInputElement) => {
-      input.checked = false;
-    });
-    selected.value = [];
-    return false;
-  };
-
-  const toggleAll = () => {
-    selectedAll.value = !selectedAll.value ? selectAll() : unSelectAll();
-  };
-
-  // const actionChange = (inputValue) => {
-  //   const isExist = selected.value.find((item) => item.name === inputValue.name);
-  //   if (!isExist) {
-  //     selected.value.push(inputValue);
-  //   } else {
-  //     selected.value = selected.value.filter((item) => item.name !== inputValue.name);
-  //   }
-  // };
-
-  const clear = () => {
-    selectedAll.value = false;
-    selected.value = [];
-    inputs.value?.forEach((input: HTMLInputElement) => {
-      input.checked = selectedAll.value;
-    });
-  };
+  const emit = defineEmits(['update:value']);
 
   const toggleOpen = () => {
     isOpen.value = !isOpen.value;
   };
 
-  const isDisabled = computed(() => !selected.value.length);
-
-  const input = ref(null);
-
   const inputUnfocus = (e) => {
-    if (!input.value?.contains(e.target)) {
+    if (!content.value?.contains(e.target) && !e.target.closest('.input-providers__toggle')) {
       isOpen.value = false;
     }
   };
+
+  const selectAll = () => {
+    selectedAll.value = !selectedAll.value;
+
+    inputs.value?.forEach((checkbox: HTMLInputElement) => {
+      if (selectedAll.value && !checkbox.checked) checkbox.click();
+      if (!selectedAll.value && checkbox.checked) checkbox.click();
+    });
+  };
+
+  const change = ():void => {
+    selected.value = Object.keys(inputValues.value).filter((key) => inputValues.value[key]);
+    emit('update:value', selected.value);
+  };
+
+  const clear = () => {
+    inputs.value?.forEach((checkbox: HTMLInputElement) => {
+      if (checkbox.checked) checkbox.click();
+    });
+  };
+
+  const count = computed(() => selected.value.length);
 
   onMounted(() => {
     document.addEventListener('mouseup', inputUnfocus);
@@ -118,14 +111,6 @@
   onUnmounted(() => {
     document.removeEventListener('mouseup', inputUnfocus);
   });
-  const emit = defineEmits(['update:value']);
-
-  const change = ():void => {
-    const providersArr = Object.keys(inputValues.value).filter((key) => inputValues.value[key]);
-    emit('update:value', providersArr);
-    count.value = providersArr.length
-  };
-
 </script>
 
 <style lang="scss">
@@ -247,6 +232,10 @@
     border-bottom: 1px solid var(--gray-600);
     margin-right: 8px;
 
+    &:first-of-type {
+      cursor: pointer;
+    }
+
     &.is-checked {
       .input-providers__checkbox {
         --color: var(--white);
@@ -284,7 +273,7 @@
   }
 
   &__content {
-    position: absolute;
+    position: relative;
     left: 0;
     top: auto;
     transform: translateY(#{rem(4px)});
