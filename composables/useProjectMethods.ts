@@ -65,7 +65,7 @@ export const useProjectMethods = () => {
 
   const getImageUrl = (imageData: GameImagesInterface, orientation: string):string => {
     if (orientation === 'vertical') return imageData['200x300']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
-    return imageData['200x200']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
+    return imageData['200x200']['3x'] || imageData['200x200']['2x'] || imageData['200x200']['1x'];
   };
 
   const getFormatDate = (dateUtcIsoString: string):string => {
