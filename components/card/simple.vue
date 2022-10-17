@@ -36,7 +36,7 @@
   const { getImageUrl, localizePath } = useProjectMethods();
   const backgroundImage = computed(() => {
     if (props.images.hasOwnProperty('200x200')) {
-      return `background-image: url(${baseApiUrl}/img/gcdn${getImageUrl(props.images, 'vertical')})`;
+      return `background-image: url(${baseApiUrl}/img/gcdn${getImageUrl(props.images, 'square')})`;
     } return 'background-image: url(/img/default-game-tumb.png)';
   });
 
