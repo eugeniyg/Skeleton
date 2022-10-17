@@ -20,9 +20,9 @@
           <span class="input-providers__title">All providers</span>
           <atomic-icon class="input-providers__checkbox" id="check"/>
         </div>
-        <div v-for="provider in props.providers" :key="provider.id" class="input-providers__item">
+        <div v-for="provider in gameProviders" :key="provider.id" class="input-providers__item">
           <label class="input-providers__label">
-            <!--<img class="input-providers__logo" :src="`/assets/svg/${item.src}`" :alt="item.title">-->
+            <!--<img class="input-providers__logo" :src="provider.logo" :alt="item.title">-->
             <span class="input-providers__title">{{ provider.name }}</span>
             <input
               type="checkbox"
@@ -50,15 +50,13 @@
 </template>
 
 <script setup lang="ts">
-  import { GameProviderInterface } from '@platform/frontend-core/dist/module';
+  const { gameProviders } = useGamesStore();
 
   const props = defineProps<{
     isSelectedAll?: boolean,
-    providers: GameProviderInterface[],
     value: string[]
   }>();
 
-  const inputs = ref<HTMLInputElement[]>([]);
   const selectedAll = ref(props.isSelectedAll);
   const isOpen = ref<boolean>(false);
   const inputValues = ref({});
@@ -78,34 +76,28 @@
     }
   };
 
-  const selectAll = () => {
-    selectedAll.value = !selectedAll.value;
-
-    inputs.value?.forEach((checkbox: HTMLInputElement) => {
-      if (selectedAll.value && !checkbox.checked) checkbox.click();
-      if (!selectedAll.value && checkbox.checked) checkbox.click();
-    });
-  };
-
   const change = ():void => {
     selected.value = Object.keys(inputValues.value).filter((key) => inputValues.value[key]);
     emit('update:value', selected.value);
   };
 
-  const clear = () => {
-    inputs.value?.forEach((checkbox: HTMLInputElement) => {
-      if (checkbox.checked) checkbox.click();
+  const selectAll = () => {
+    selectedAll.value = !selectedAll.value;
+    Object.values(gameProviders).forEach((provider) => {
+      inputValues.value[provider.id] = selectedAll.value;
     });
+    change();
+  };
+
+  const clear = () => {
+    selectedAll.value = true;
+    selectAll();
   };
 
   const count = computed(() => selected.value.length);
 
   onMounted(() => {
     document.addEventListener('mouseup', inputUnfocus);
-
-    nextTick(() => {
-      inputs.value = Array.from(document.querySelectorAll('.input-providers__input'));
-    });
   });
 
   onUnmounted(() => {

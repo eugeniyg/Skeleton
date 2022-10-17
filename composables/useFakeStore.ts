@@ -1679,104 +1679,6 @@ export const useFakeStore = () => {
     ],
   };
 
-  const providersInputItems = [
-    {
-      id: '1spin4win',
-      title: '1spin4win',
-      src: 'providers/pushgaming.svg',
-    },
-    {
-      id: 'amusnet_interactive',
-      title: 'Amusnet Interactive',
-      src: 'providers/amusnet_Interactive.svg',
-    },
-    {
-      id: 'Betsoft Gaming',
-      title: 'betsoft_Gaming',
-      src: 'providers/betsoft_gaming.svg',
-    },
-    {
-      id: 'booming_games',
-      title: 'Booming Games',
-      src: 'providers/booming.svg',
-    },
-    {
-      id: 'bgaming',
-      title: 'BGaming',
-      src: 'providers/booming.svg',
-    },
-    {
-      id: 'booongo',
-      title: 'Booongo',
-      src: 'providers/booongo.svg',
-    },
-    {
-      id: 'evoplay_entertainment',
-      title: 'Evoplay Entertainment',
-      src: 'providers/endorphina.svg',
-    },
-    {
-      id: 'fugaso',
-      title: 'Fugaso',
-      src: 'providers/habanero.svg',
-    },
-    {
-      id: 'hacksaw',
-      title: 'Hacksaw',
-      src: 'providers/hacksawgaming.svg',
-    },
-    {
-      id: 'ka_gaming',
-      title: 'KA Gaming',
-      src: 'providers/ka_gaming.svg',
-    },
-    {
-      id: 'mascot',
-      title: 'Mascot',
-      src: 'providers/microgaming.svg',
-    },
-    {
-      id: 'netent',
-      title: 'Netent',
-      src: 'providers/netent.svg',
-    },
-    {
-      id: 'nolimit',
-      title: 'Nolimit',
-      src: 'providers/nolimit.svg',
-    },
-    {
-      id: 'onlyplay',
-      title: 'Onlyplay',
-      src: 'providers/onlyplay.svg',
-    },
-    {
-      id: 'platipus',
-      title: 'Platipus',
-      src: 'providers/platipus.svg',
-    },
-    {
-      id: 'play_n_go',
-      title: 'Play\'n GO',
-      src: 'providers/playngo.svg',
-    },
-    {
-      id: 'playson',
-      title: 'Playson',
-      src: 'providers/swintt.svg',
-    },
-    {
-      id: 'pragmatic_play',
-      title: 'Pragmatic Play',
-      src: 'providers/pragmatic_play.svg',
-    },
-    {
-      id: 'push_gaming',
-      title: 'Push Gaming',
-      src: 'providers/push_gaming.svg',
-    },
-  ];
-
   return {
     catNavItems,
     items,
@@ -1802,6 +1704,5 @@ export const useFakeStore = () => {
     securityVerificationIdentity,
     securityVerificationAddress,
     securityVerificationPayment,
-    providersInputItems,
   };
 };
