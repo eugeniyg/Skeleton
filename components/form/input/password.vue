@@ -128,6 +128,7 @@
     @include font($body-2);
     transition: border-color .2s ease-in-out;
     width: 100%;
+    @extend %inputMask;
 
     &::placeholder {
       color: var(--gray-400);
