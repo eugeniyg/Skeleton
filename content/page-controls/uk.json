@@ -186,6 +186,10 @@
       },
       "title": "Slotsbet | Sportsbook",
       "description": ""
+    },
+    "plug": {
+      "image": "/img/uploads/info-logo.svg",
+      "description": "test"
     }
   },
   "contactPage": {
@@ -259,10 +263,10 @@
     }
   },
   "recentlyPage": {
-    "title": "Recently Played",
+    "title": "Нещодавно зіграні",
     "empty": {
       "image": "/img/uploads/search-bg.png",
-      "title": "Nothing found",
+      "title": "Нічого не знайдено",
       "description": "You haven't played any games yet"
     },
     "categorySubtitle": "Найкращі ігри для вас",
