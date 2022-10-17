@@ -130,7 +130,7 @@
       setTimeout(() => {
         scrollHandler();
         showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
-      }, 100);
+      }, 400);
     }
   });
 
