@@ -80,7 +80,8 @@
         "label": "Payment",
         "description": "Please upload the screenshot or photo from online bank, bank statement, Skrill page, etc.",
         "payment": "Proof of Payment"
-      }
+      },
+      "moreInfo": "More info"
     }
   },
   "history": {
