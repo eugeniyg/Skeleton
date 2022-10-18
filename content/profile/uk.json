@@ -64,14 +64,12 @@
   },
   "security": {
     "title": "Security & Verification",
-    "saveButton": "Save changes",
+    "password": {
+      "label": "Change Password",
+      "saveButton": "Save changes"
+    },
     "seo": {
-      "title": "Slotsbet | Security & Verification",
-      "text": {
-        "visible": "",
-        "hidden": "",
-        "button": ""
-      }
+      "title": "Slotsbet | Security & Verification"
     }
   },
   "history": {

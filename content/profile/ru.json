@@ -38,7 +38,10 @@
   },
   "security": {
     "title": "Security & Verification",
-    "saveButton": "Save changes",
+    "password": {
+      "label": "Change Password",
+      "saveButton": "Save changes"
+    },
     "seo": {
       "title": "Slotsbet | Security & Verification"
     }
