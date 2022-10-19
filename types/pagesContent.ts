@@ -84,9 +84,38 @@ export interface ProfileNotificationsInterface {
   seo: SeoContentInterface
 }
 
+export interface ProfileDocumentsInterface {
+  moreInfo: string,
+  uploadPlaceholder: string,
+  uploadHint: string,
+  uploadButton: string,
+  uploadMore: string,
+  identity: {
+    label: string,
+    description: string,
+    identity_front: string,
+    identity_back: string,
+    identity_selfie_id: string
+  },
+  address: {
+    label: string,
+    description: string,
+    address: string
+  },
+  payment: {
+    label: string,
+    description: string,
+    payment: string
+  }
+}
+
 export interface ProfileSecurityInterface {
   title: string,
-  saveButton: string,
+  password: {
+    label: string,
+    saveButton: string
+  },
+  documents: ProfileDocumentsInterface,
   seo: SeoContentInterface
 }
 

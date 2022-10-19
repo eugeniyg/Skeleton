@@ -1,5 +1,5 @@
 <template>
-  <div :class="['input-file', {'is-show-more-btn': props.showMoreBtn}]">
+  <div :class="['input-file', {'is-show-more-btn': props.showMoreButton}]">
 
     <input
       accept=".png, .jpg, .jpeg, .pdf"
@@ -7,27 +7,24 @@
       ref="input"
       type="file"
       @change="changeAction"
-      multiple
     >
 
     <div class="input-file__text">
-      <h5 class="input-file__sub-title">{{ props.subTitle }}</h5>
-
-      <transition name="fade" mode="out-in" v-if="errorText">
-        <div class="input-file__error">{{ errorText }}</div>
-      </transition>
-      <p class="input-file__desc" v-else>{{ props.desc }}</p>
+      <h5 class="input-file__sub-title">{{ props.placeholder }}</h5>
+      <p class="input-file__desc">{{ props.hint }}</p>
     </div>
 
     <div class="input-file__actions">
       <hr/>
-      <div class="input-file__load-more" v-if="props.showMoreBtn">
+      <div class="input-file__load-more" v-if="props.showMoreButton">
         <button-base
+          :isDisabled="props.loading"
           @click.prevent="clickAction"
           class="input-file__load-more-btn"
           type="secondary"
           size="xs"
-        >Load more files
+        >
+          {{ props.uploadMore }}
         </button-base>
       </div>
 
@@ -37,28 +34,31 @@
         class="btn-select-file"
         type="primary"
         size="xs"
-      >Upload file
+        :isDisabled="props.loading"
+      >
+        {{ props.uploadButton }}
       </button-base>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const input = ref(null);
-  const errorText = ref('');
-
   const props = defineProps<{
-    title: string,
-    subTitle: string,
-    hint: string,
-    desc: string,
-    showMoreBtn: boolean,
+    placeholder?: string,
+    hint?: string,
+    uploadButton?: string,
+    uploadMore?: string,
+    showMoreButton?: boolean,
+    loading: boolean
   }>();
 
   const emit = defineEmits(['change']);
 
+  const input = ref(null);
+
   const changeAction = () => {
     emit('change', input.value.files);
+    input.value.value = '';
   };
 
   const clickAction = () => {
@@ -124,13 +124,6 @@
 
   &__text {
     grid-area: text;
-  }
-
-  &__error {
-    @include font($body-0);
-    color: var(--red-300);
-    width: 100%;
-    margin-bottom: rem(8px);
   }
 
   &__actions {
