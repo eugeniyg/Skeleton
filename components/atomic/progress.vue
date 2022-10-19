@@ -18,15 +18,11 @@
   onMounted(() => {
     setTimeout(() => {
       percentage.value = 100;
-    }, 1000);
+    }, 500);
 
     setTimeout(() => {
       emit('hide-progress');
     }, 2000);
-
-    setTimeout(() => {
-      emit('change-status');
-    }, 3000);
   });
 </script>
 
@@ -48,7 +44,7 @@
     bottom: 0;
     left: 0;
     width: var(--progress-bar, 0%);
-    transition: width .4s ease-in-out;
+    transition: width 1s ease-in-out;
     background-color: var(--blue-500);
   }
 }

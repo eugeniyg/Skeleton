@@ -1,23 +1,22 @@
 <template>
-  <div class="file" :class="fileClasses">
+  <div class="file">
     <div class="file__progress">
-      <div class="file__name">{{ props.title }}</div>
+      <div class="file__name">{{ props.fileName }}</div>
 
-      <atomic-icon :class="statusIconClasses" :id="statusIcon"/>
+      <atomic-icon v-if="fileStatus" :class="statusIconClasses" :id="statusIcon"/>
 
-      <button class="file__rm-btn" @click.prevent="removeFile">
+      <button v-if="fileStatus" class="file__rm-btn" @click.prevent="emit('remove')">
         <atomic-icon id="close"/>
       </button>
 
       <atomic-progress
-        @change-status="ChangeFileStatusDemo"
         @hide-progress="hideProgress"
-        v-show="isShowProgress"
+        v-show="(!fileStatus || isShowProgress) && !props.error"
       />
 
       <transition name="fade" mode="out-in">
-        <div class="file__error" v-if="isErrorText">
-          {{ isErrorText }}
+        <div class="file__error" v-if="props.error">
+          {{ props.error }}
         </div>
       </transition>
     </div>
@@ -25,78 +24,38 @@
 </template>
 
 <script setup lang="ts">
-  const fileStatuses = {
-    error: 'info',
-    unverified: 'info',
-    pending: 'clock',
-    seen: 'eye-visibility',
-    verified: 'done',
-  };
-
-  const emit = defineEmits([
-    'rm-file',
-    'file-has-error',
-    'file-error-off',
-  ]);
-
   const props = defineProps<{
-    title: string,
-    size: string,
+    id?: string,
+    fileName?: string,
+    status?: number,
+    type?: string,
+    createdAt?: string,
+    error?: string,
   }>();
 
-  const fileStatus = ref('pending');
-  const statusIcon = ref(fileStatuses.pending);
-  const isPrepared = ref(false);
-  const isError = ref(false);
-  const isLoading = ref(true);
-  const isShowProgress = ref(true);
-  const fileHasError = ref(false);
+  const fileStatuses = {
+    1: 'approve',
+    2: 'pending',
+    3: 'canceled',
+  };
 
-  const isErrorText = ref('');
+  const statusIcons = {
+    approve: 'done',
+    pending: 'eye-visibility',
+    canceled: 'info',
+  };
 
-  const fileClasses = computed(() => ({
-    'is-prepared': isPrepared.value,
-    'is-error': isError.value,
-    'is-loading': isLoading.value,
-  }));
+  const emit = defineEmits(['remove']);
+
+  const fileStatus = computed(() => fileStatuses[props.status]);
+  const statusIcon = computed(() => statusIcons[fileStatus.value]);
+
+  const isShowProgress = ref(false);
 
   const statusIconClasses = computed(() => [
     'file__status-icon',
     `status-${fileStatus.value}`,
   ]);
-
-  const removeFile = () => {
-    emit('rm-file', props.title);
-    if (fileHasError.value) {
-      emit('file-error-off');
-    }
-  };
-
-  const enableError = () => {
-    emit('file-has-error');
-    fileHasError.value = true;
-  };
-
-  const ChangeFileStatusDemo = () => {
-    const keys = Object.keys(fileStatuses);
-    const key = keys[Math.floor(Math.random() * keys.length)];
-    fileStatus.value = key;
-    statusIcon.value = fileStatuses[key];
-    isLoading.value = false;
-
-    switch (key) {
-    case 'unverified':
-      isErrorText.value = 'Unforturately, we do not accept scanned documents. Please upload a photo pf your Passport.';
-      enableError();
-      break;
-    case 'error':
-      isErrorText.value = 'File has an error';
-      enableError();
-      break;
-    default:
-      isErrorText.value = '';
-    }
-  };
 
   const hideProgress = () => {
     isShowProgress.value = false;
@@ -148,11 +107,11 @@
       --color: var(--yellow-500);
     }
 
-    &.status-verified {
+    &.status-approve {
       --color: var(--green-500);
     }
 
-    &.status-unverified {
+    &.status-canceled {
       --color: var(--orange-500);
     }
   }

@@ -6,28 +6,29 @@
     @dragover.prevent
     @drop.prevent="onDrop"
   >
-    <atomic-icon class="dropzone__icon" :id="!isFileLoaded ? 'ui-upload': 'ui-file'"/>
+    <atomic-icon class="dropzone__icon" :id="!fileList?.length ? 'ui-upload': 'ui-file'"/>
 
     <div class="dropzone__content">
-      <h4 class="dropzone__title">{{ props.title }}</h4>
+      <h4 class="dropzone__title">{{ props.fileName }}</h4>
 
       <div class="dropzone__files">
         <atomic-file
-          v-for="file in filesList"
-          :title="file.name"
-          :key="file"
-          @rm-file="removeFile(file.name)"
-          @file-has-error="highlightBorderOn"
-          @file-error-off="highlightBorderOff"
+          v-for="file in props.fileList"
+          v-bind="file"
+          :key="file.id"
+          :error="file.error"
+          @remove="emit('remove', file.id)"
         />
       </div>
 
       <form-input-file
-        @change="changeAction"
-        :value="inputValue"
-        :sub-title="props.subTitle"
-        :desc="props.desc"
-        :show-more-btn="isShowMoreBtn"
+        :placeholder="documentsContent?.uploadPlaceholder"
+        :hint="documentsContent?.uploadHint"
+        :uploadButton="documentsContent?.uploadButton"
+        :uploadMore="documentsContent?.uploadMore"
+        :showMoreButton="!!props.fileList?.length"
+        :loading="props.loading"
+        @change="addFiles"
       />
     </div>
   </div>
@@ -35,66 +36,39 @@
 </template>
 
 <script setup lang="ts">
-  const isFileLoaded = ref(false);
-  const isActive = ref(false);
-  const isError = ref(false);
-  const inputValue = ref('');
-  const filesList = ref([]);
-  const isShowMoreBtn = ref(false);
+  import { SecurityFileInterface } from '@platform/frontend-core/dist/module';
+  import { ProfileDocumentsInterface } from '~/types';
 
   const props = defineProps<{
-    title: string,
-    subTitle: string,
-    desc: string,
-    hint: string,
+    fileName: string,
+    loading: boolean,
+    fileList: SecurityFileInterface[]
   }>();
+
+  const emit = defineEmits(['remove', 'change']);
+
+  const isActive = ref(false);
+  const documentsContent:ProfileDocumentsInterface = inject('documentsContent');
+  const errorFiles = computed(() => props.fileList.filter((file) => file.error));
 
   const dropzoneClasses = computed(() => ({
     dropzone: true,
     'is-active': isActive.value,
-    'is-error': isError.value,
+    'is-error': errorFiles.value.length,
   }));
 
   const toggleActive = () => {
     isActive.value = !isActive.value;
   };
 
-  const changeDropZoneIcon = () => {
-    isFileLoaded.value = true;
-  };
-
-  const addFiles = (files) => {
-    filesList.value.push(...files);
+  const addFiles = (fileList: File[]):void => {
     isActive.value = false;
-    isShowMoreBtn.value = true;
-
-    if (!isFileLoaded.value) {
-      changeDropZoneIcon();
-    }
+    emit('change', fileList);
   };
 
   const onDrop = (e) => {
     const { files } = e.dataTransfer;
     addFiles(files);
-  };
-
-  const changeAction = (files) => addFiles(files);
-
-  const removeFile = (name) => {
-    filesList.value = filesList.value.filter((file) => file.name !== name);
-
-    if (filesList.value.length === 0) {
-      isShowMoreBtn.value = false;
-      isFileLoaded.value = false;
-    }
-  };
-
-  const highlightBorderOn = () => {
-    isError.value = true;
-  };
-
-  const highlightBorderOff = () => {
-    isError.value = false;
   };
 </script>
 

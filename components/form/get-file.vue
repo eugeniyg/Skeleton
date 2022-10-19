@@ -1,37 +1,58 @@
 <template>
-  <form class="get-file">
-    <div class="get-file__title">{{ props.title }}</div>
+  <form class="get-file" :class="props.type">
+    <div class="get-file__title">{{ documentsContent?.[props.type]?.label }}</div>
     <div
       ref="excerpt"
       data-exerpt
       :class="['get-file__description', {'is-expanded': isTextExpanded}]"
-      v-html="props.description"
-    />
+    >
+      {{ documentsContent?.[props.type]?.description }}
+    </div>
 
-    <button class="show-more-btn" @click.prevent="clickAction" v-show="isShowMoreBtn">More info</button>
+    <button
+      class="show-more-btn"
+      @click.prevent="clickAction"
+      v-show="isShowMoreBtn"
+    >
+      {{ documentsContent?.moreInfo }}
+    </button>
 
     <div class="dropzones-list">
       <dropzone
-        v-for="item in dropzones"
-        v-bind="item"
+        v-for="item in Object.keys(props.formData)"
+        :fileName="documentsContent?.[props.type]?.[item]"
+        :fileList="props.formData[item]"
         :key="item"
+        :loading="props.loadingFields.includes(item)"
+        @remove="emit('removeFile', { fieldName: item, fileId: $event })"
+        @change="emit('addFiles', { fieldName: item, fileList: $event })"
       />
     </div>
   </form>
 </template>
 
 <script setup lang="ts">
-  import { DropZoneInterface } from '~/types';
+  import { SecurityFileInterface } from '@platform/frontend-core/dist/module';
+  import { ProfileDocumentsInterface } from '~/types';
+
+  const props = defineProps<{
+    type: 'identity'|'address'|'payment',
+    loadingFields: string[],
+    formData: {
+      identity_front?: SecurityFileInterface[],
+      identity_back?: SecurityFileInterface[],
+      identity_selfie_id?: SecurityFileInterface[],
+      address?: SecurityFileInterface[],
+      payment?: SecurityFileInterface[],
+    },
+  }>();
+
+  const emit = defineEmits(['removeFile', 'addFiles']);
 
   const excerpt = ref(null);
   const isShowMoreBtn = ref<boolean>(false);
   const isTextExpanded = ref<boolean>(false);
-
-  const props = defineProps<{
-    title: string,
-    description: string,
-    dropzones: DropZoneInterface[],
-  }>();
+  const documentsContent:ProfileDocumentsInterface = inject('documentsContent');
 
   const textHasDots = (el: HTMLElement): boolean => el.scrollHeight > el.offsetHeight;
 
