@@ -22,7 +22,7 @@
         </div>
         <div v-for="provider in gameProviders" :key="provider.id" class="input-providers__item">
           <label class="input-providers__label">
-            <!--<img class="input-providers__logo" :src="provider.logo" :alt="item.title">-->
+            <img class="input-providers__logo" src="/assets/svg/provider-empty-placeholder.svg" alt="">
             <span class="input-providers__title">{{ provider.name }}</span>
             <input
               type="checkbox"
