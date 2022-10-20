@@ -1,4 +1,3 @@
-import { setSafariPolyfill } from '~/assets/js/polyfills/safari-focus';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useGamesStore } from '~/composables/useGamesStore';
 
@@ -37,8 +36,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   });
 
   nuxtApp.hook('app:mounted', async () => {
-    setSafariPolyfill();
-
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
 
