@@ -15,8 +15,8 @@
       />
 
       <transition name="fade" mode="out-in">
-        <div class="file__error" v-if="props.error">
-          {{ props.error }}
+        <div class="file__error" v-if="props.error || props.rejectReason">
+          {{ props.error || props.rejectReason}}
         </div>
       </transition>
     </div>
@@ -31,6 +31,7 @@
     type?: string,
     createdAt?: string,
     error?: string,
+    rejectReason: null|string
   }>();
 
   const fileStatuses = {
@@ -42,7 +43,7 @@
   const statusIcons = {
     approve: 'done',
     pending: 'eye-visibility',
-    canceled: 'info',
+    canceled: 'warning',
   };
 
   const emit = defineEmits(['remove']);
@@ -95,15 +96,7 @@
     align-items: center;
     justify-content: center;
 
-    &.status-error {
-      --color: var(--red-500);
-    }
-
     &.status-pending {
-      --color: var(--yellow-500);
-    }
-
-    &.status-seen {
       --color: var(--yellow-500);
     }
 
@@ -112,7 +105,7 @@
     }
 
     &.status-canceled {
-      --color: var(--orange-500);
+      --color: var(--red-500);
     }
   }
 

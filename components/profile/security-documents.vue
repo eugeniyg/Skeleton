@@ -64,7 +64,7 @@
     }
   };
 
-  const addFileError = (field: string, fieldsErrors: string):void => {
+  const addFileError = (field: string, fieldsErrors: object):void => {
     const error = fieldsErrors[field]?.[0];
     if (identityFormData.hasOwnProperty(field)) {
       const lastElIndex = identityFormData[field].length - 1;
@@ -109,6 +109,7 @@
       status: 0,
       type: filesData.fieldName,
       createdAt: `${filesData.fileList[0].lastModified}`,
+      rejectReason: null,
     };
 
     addFileData(filesData.fieldName, fileObject);
@@ -119,7 +120,9 @@
     } catch (err) {
       if (err?.response?.status === 422) {
         addFileError(filesData.fieldName, err.data?.error?.fields);
-      }
+      } else if (err?.response?.status === 413) {
+        addFileError(filesData.fieldName, { [filesData.fieldName]: ['File size to large!'] });
+      } else addFileError(filesData.fieldName, { [filesData.fieldName]: ['File upload error!'] });
     } finally {
       loadingFields.value = loadingFields.value.filter((field) => field !== filesData.fieldName);
     }
