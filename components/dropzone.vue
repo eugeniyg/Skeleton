@@ -40,7 +40,7 @@
   import { ProfileDocumentsInterface } from '~/types';
 
   const props = defineProps<{
-    fileName: string,
+    fileName?: string,
     loading: boolean,
     fileList: SecurityFileInterface[]
   }>();
