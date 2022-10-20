@@ -6,7 +6,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "start": "node .output/server/index.mjs",
-    "svg-icons-optimize": "svgo -r -f ./assets/svg/icons -o ./assets/svg/icons/optimized --config ./assets/svgo.config.js",
+    "svg-icons-optimize": "svgo -r -f ./assets/svg/icons -o ./assets/svg/icons/optimized --config ./assets/js/helpers/svgo.config.js",
     "svg-icons-sprite": "svg-sprite-generate -d ./assets/svg/icons/optimized -o ./public/sprite.svg",
     "svg-icons": "npm run svg-icons-optimize && npm run svg-icons-sprite && rm -rf ./assets/svg/icons/optimized",
     "svg-sprite": "svg-sprite-generate -d ./assets/svg/icons-colored -o ./public/svg-sprite.svg"
