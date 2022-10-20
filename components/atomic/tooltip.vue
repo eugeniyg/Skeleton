@@ -77,6 +77,18 @@
   const hide = () => {
     isShow.value = false;
   };
+
+  onMounted(() => {
+    const scrollParent = getTooltipParent();
+    if (scrollParent) scrollParent.addEventListener('scroll', hide);
+    document.addEventListener('scroll', hide);
+  });
+
+  onBeforeUnmount(() => {
+    const scrollParent = getTooltipParent();
+    if (scrollParent) scrollParent.removeEventListener('scroll', hide);
+    document.removeEventListener('scroll', hide);
+  });
 </script>
 
 <style lang="scss">
