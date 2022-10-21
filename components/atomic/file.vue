@@ -114,6 +114,8 @@
     color: var(--name-color, var(--white));
     transition: color .4s ease-in-out;
     flex-grow: 1;
+    max-width: calc(100% - 54px);
+    margin-right: auto;
 
     .is-loading & {
       --name-color: var(--gray-400)
