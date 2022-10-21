@@ -73,4 +73,7 @@ export default defineNuxtConfig({
     '@/scss/style.scss',
   ],
   vite: viteConfig,
+  experimental: {
+    writeEarlyHints: false,
+  },
 });
