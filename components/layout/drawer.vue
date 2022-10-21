@@ -6,12 +6,10 @@
     </div>
 
     <div class="content">
-      <client-only>
-        <template v-if="props.isLoggedIn">
-          <card-profile/>
-          <atomic-divider/>
-        </template>
-      </client-only>
+      <template v-if="props.isLoggedIn">
+        <card-profile/>
+        <atomic-divider/>
+      </template>
       <nav-list :items="sidebarContent?.topMenu"/>
       <atomic-divider/>
       <nav-list :items="sidebarContent?.tokenMenu"/>

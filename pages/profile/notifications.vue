@@ -8,14 +8,14 @@
         placeholder="View all"
         name="notification"
         :options="selects.notification"
-        :is-disabled="selects.notification"
+        :is-disabled="!!selects.notification?.length"
       />
     </div>
 
     <list-notifications
       :items="items.notifications"
       :max="10"
-      :isShowMarkReadBtn="items.notifications.length"
+      :isShowMarkReadBtn="!!items.notifications.length"
     />
 
     <button-load-more v-if="items.notifications.length"/>
