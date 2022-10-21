@@ -86,6 +86,7 @@ export interface ProfileNotificationsInterface {
 
 export interface ProfileDocumentsInterface {
   moreInfo: string,
+  hideText: string,
   uploadPlaceholder: string,
   uploadHint: string,
   uploadButton: string,

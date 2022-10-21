@@ -12,9 +12,8 @@
     <button
       class="show-more-btn"
       @click.prevent="clickAction"
-      v-show="isShowMoreBtn"
     >
-      {{ documentsContent?.moreInfo }}
+      {{ isTextExpanded ? documentsContent?.hideText : documentsContent?.moreInfo }}
     </button>
 
     <div class="dropzones-list">
@@ -57,8 +56,8 @@
   const textHasDots = (el: HTMLElement): boolean => el.scrollHeight > el.offsetHeight;
 
   const clickAction = () => {
-    isTextExpanded.value = true;
-    isShowMoreBtn.value = false;
+    isTextExpanded.value = !isTextExpanded.value;
+    isShowMoreBtn.value = !isShowMoreBtn.value;
   };
 
   onMounted(() => {
@@ -80,6 +79,7 @@
   padding: rem(24px);
   background-color: var(--gray-900);
   border-radius: 16px;
+  align-self: flex-start;
 
   &__title {
     @include font($heading-4);
@@ -113,13 +113,14 @@
     }
   }
 
-  .show-more-btn {
+  .show-more-btn, .hide-text-btn {
     @extend %skip-btn;
     text-decoration: none;
     @include font($body-1-paragraph);
     color: var(--white);
     margin: -24px auto 24px;
     display: block;
+    font-family: inherit;
   }
 
   &__files {
@@ -143,6 +144,7 @@
 
   @include media(sm) {
     grid-auto-flow: column;
+    grid-auto-columns: 1fr;
   }
 }
 </style>
