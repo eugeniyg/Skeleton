@@ -4,8 +4,12 @@ const AUTH_PASSWORD = "perunplay";
 
 export default defineEventHandler((event) => {
     const host = event.req.headers?.host;
-    let allow = host !== 'slotsbet.io';
 
+    if(host !== 'slotsbet.io') {
+        return;
+    }
+
+    let allow = false;
     const base64Credentials = event.req.headers?.authorization?.split(" ")?.[1];
 
     if (base64Credentials) {
