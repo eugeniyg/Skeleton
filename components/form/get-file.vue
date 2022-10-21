@@ -13,7 +13,7 @@
       class="show-more-btn"
       @click.prevent="clickAction"
     >
-      {{ isTextExpanded ? 'Hide text' : documentsContent?.moreInfo }}
+      {{ isTextExpanded ? documentsContent?.hideText : documentsContent?.moreInfo }}
     </button>
 
     <div class="dropzones-list">
