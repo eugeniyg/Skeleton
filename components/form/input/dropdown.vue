@@ -8,6 +8,7 @@
   >
     <span v-if="props.label" class="label">{{ props.label }}<sup v-if="props.isRequired">*</sup></span>
 
+    <span style="color: white">{{valueObject.value}}</span>
     <div class="selected" @click="open">
       <img v-if="valueObject.mask" class="mask" :src="valueObject.mask" />
       <span v-if="valueObject.value">{{ valueObject.value }}</span>
@@ -128,9 +129,10 @@
 
   onMounted(() => {
     if (props.isFitContent) {
+      // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
       setTimeout(() => {
         drop.value.style.width = `${dropItems.value.offsetWidth}px`;
-      }, 100);
+      }, 300);
     }
   });
 </script>
