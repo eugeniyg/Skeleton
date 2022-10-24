@@ -8,7 +8,6 @@
   >
     <span v-if="props.label" class="label">{{ props.label }}<sup v-if="props.isRequired">*</sup></span>
 
-    <span style="color: white">{{valueObject.value}}</span>
     <div class="selected" @click="open">
       <img v-if="valueObject.mask" class="mask" :src="valueObject.mask" />
       <span v-if="valueObject.value">{{ valueObject.value }}</span>
