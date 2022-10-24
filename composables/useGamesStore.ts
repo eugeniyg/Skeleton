@@ -69,7 +69,7 @@ export const useGamesStore = defineStore('gamesStore', {
       const { createSubscription } = useWebSocket();
       const globalStore = useGlobalStore();
       const profileStore = useProfileStore();
-      this.winnersSubscription = createSubscription(`game:winners:${globalStore.isMobile ? 'mobile' : 'desktop'}:${profileStore.profile?.country || 'UA'}`, this.updateWinners);
+      this.winnersSubscription = createSubscription(`game:winners:${globalStore.isMobile ? 'mobile' : 'desktop'}:${profileStore.profile?.country || globalStore.headerCountry || 'UA'}`, this.updateWinners);
     },
 
     setWinners(winners: WinnerInterface[]):void {

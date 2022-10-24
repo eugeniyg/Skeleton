@@ -30,7 +30,9 @@
 
   const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();
-  const { isMobile, alertsData, currentLocale } = storeToRefs(globalStore);
+  const {
+    isMobile, alertsData, currentLocale, headerCountry,
+  } = storeToRefs(globalStore);
   const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['bettingPage']).findOne());
   const bettingContent:BettingContentInterface|undefined = bettingContentRequest.data.value?.bettingPage;
   const { setPageSeo } = useProjectMethods();
@@ -50,7 +52,7 @@
       accountId: activeAccount.value.id,
       lobbyUrl: redirectUrl,
       locale: currentLocale.value.code,
-      countryCode: profile.value?.country || 'UA',
+      countryCode: profile.value?.country || headerCountry.value || 'UA',
       demoMode: false,
       platform: isMobile.value ? 1 : 2,
     };

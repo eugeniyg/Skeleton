@@ -4,6 +4,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     getLocales,
     getCountries,
     getGlobalContent,
+    getRequestCountry,
   } = useGlobalStore();
   const { getRegistrationFields } = useFieldsStore();
   const { getGameProviders, getGameCollections } = useGamesStore();
@@ -14,6 +15,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
 
   if (process.server) {
+    getRequestCountry();
+
     try {
       await Promise.all([
         getCurrencies(),
