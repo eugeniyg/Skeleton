@@ -116,6 +116,7 @@
     flex-grow: 1;
     max-width: calc(100% - 54px);
     margin-right: auto;
+    word-break: break-word;
 
     .is-loading & {
       --name-color: var(--gray-400)
