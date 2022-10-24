@@ -75,5 +75,6 @@ export default defineNuxtConfig({
   vite: viteConfig,
   experimental: {
     writeEarlyHints: false,
+    inlineSSRStyles: false,
   },
 });

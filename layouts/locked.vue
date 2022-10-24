@@ -9,7 +9,7 @@
     <div class="locked__support">
       <h3 class="locked__support-title">Get in touch</h3>
       <h4 class="locked__support-sub-title">If you have questions please contact</h4>
-      <a href="mailto:support@slotsbet.io" class="locked__support-mail-to">mailto:support@slotsbet.io</a>
+      <a href="mailto:support@slotsbet.io" class="locked__support-mail-to">support@slotsbet.io</a>
     </div>
 
   </div>
