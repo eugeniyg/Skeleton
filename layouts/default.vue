@@ -62,7 +62,7 @@
     await navigateTo(`/${cookieLanguage.value}${route.fullPath === '/' ? '' : route.fullPath}`, { replace: true });
   }
 
-  const { getCommonData, getInitUserInformation } = useGlobalStore();
+  const { getCommonData } = useGlobalStore();
   useLazyAsyncData('commonData', getCommonData);
 
   const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT', { maxAge: 60 * 60 * 24 * 365 * 10 });
@@ -113,7 +113,6 @@
         showCookiePopup.value = true;
       }, 1500);
     }
-    await getInitUserInformation();
   });
 
   onBeforeUnmount(() => {

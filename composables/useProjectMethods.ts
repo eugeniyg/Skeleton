@@ -132,12 +132,6 @@ export const useProjectMethods = () => {
     });
   };
 
-  const getRequestCountry = ():string|undefined => {
-    const { countryHeaderName } = useCoreStore();
-    const headersCountry = useRequestHeaders([countryHeaderName]);
-    return headersCountry[countryHeaderName];
-  };
-
   return {
     createValidationRules,
     getFormRules,
@@ -152,6 +146,5 @@ export const useProjectMethods = () => {
     formatBalance,
     getMainBalanceFormat,
     setPageSeo,
-    getRequestCountry,
   };
 };

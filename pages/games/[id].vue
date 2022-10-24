@@ -28,7 +28,9 @@
   const { showModal, showAlert } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
-  const { isMobile, alertsData, currentLocale } = storeToRefs(globalStore);
+  const {
+    isMobile, alertsData, currentLocale, headerCountry,
+  } = storeToRefs(globalStore);
   const infoResponse = await useAsyncData('gameInfo', () => getGamesInfo(route.params.id as string));
   const gameContentRequest = await useAsyncData('gameContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['gamePage']).findOne());
   const gameContent:GamePageInterface|undefined = gameContentRequest.data.value?.gamePage;
@@ -43,7 +45,7 @@
       accountId: isDemo.value ? undefined : activeAccount.value.id,
       lobbyUrl: redirectUrl,
       locale: currentLocale.value.code,
-      countryCode: profile.value?.country || 'UA',
+      countryCode: profile.value?.country || headerCountry.value || 'UA',
       demoMode: isDemo.value,
       platform: isMobile.value ? 1 : 2,
     };

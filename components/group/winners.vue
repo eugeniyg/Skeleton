@@ -37,7 +37,7 @@
     },
   });
   const globalStore = useGlobalStore();
-  const { globalComponentsContent, isMobile } = storeToRefs(globalStore);
+  const { globalComponentsContent, isMobile, headerCountry } = storeToRefs(globalStore);
   const winnersContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
@@ -71,7 +71,7 @@
     const winnersResponse = await getLatestWinners({
       platform: isMobile.value ? 1 : 2,
       perPage: 12,
-      countryCode: profile.value?.country || 'UA',
+      countryCode: profile.value?.country || headerCountry.value || 'UA',
     });
     setWinners(winnersResponse);
     await nextTick();

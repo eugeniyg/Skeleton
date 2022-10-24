@@ -78,7 +78,7 @@
   const { selectOptions, registrationFields } = storeToRefs(fieldsStore);
   const globalStore = useGlobalStore();
   const {
-    initUserInfo, countries, fieldsContent, popupsData,
+    countries, fieldsContent, popupsData, headerCountry,
   } = storeToRefs(globalStore);
   const registrationContent: RegistrationInterface|undefined = popupsData.value?.registration;
 
@@ -87,18 +87,11 @@
   const registrationFormData = reactive(setFormData(registrationFields.value));
   if (registrationFormData.hasOwnProperty('nickname')) registrationFormData.nickname = 'undefined';
   if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
-
-  const checkInitCountry = ():void => {
-    if (registrationFormData.hasOwnProperty('country') && !registrationFormData.country) {
-      if (countries.value.find((country) => country.code === initUserInfo.value?.country)) {
-        registrationFormData.country = initUserInfo.value.country;
-      }
+  if (registrationFormData.hasOwnProperty('country') && !registrationFormData.country) {
+    if (countries.value.find((country) => country.code === headerCountry.value)) {
+      registrationFormData.country = headerCountry.value;
     }
-  };
-  checkInitCountry();
-  watch(() => initUserInfo.value, () => {
-    checkInitCountry();
-  });
+  }
 
   const getCheckboxLabel = (fieldName: string):string => {
     if (fieldName === 'receiveEmailPromo') return registrationContent?.agreeEmailLabel;
@@ -114,7 +107,6 @@
   } = useFormValidation(registrationFormRules, registrationFormData);
 
   const showPromoInput = ref<boolean>(false);
-  const isShowSpinner = ref<boolean>(false);
 
   const { registration } = useProfileStore();
   const isLockedAsyncButton = ref<boolean>(false);

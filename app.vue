@@ -5,10 +5,8 @@
 </template>
 
 <script setup lang="ts">
-  const { countries } = useGlobalStore();
-  const { getRequestCountry } = useProjectMethods();
+  const { countries, headerCountry } = useGlobalStore();
 
-  const headersCountry = getRequestCountry();
-  const allowedCountry = headersCountry ? countries.find((country) => country.code.toUpperCase() === headersCountry.toUpperCase()) : true;
+  const allowedCountry = headerCountry ? countries.find((country) => country.code === headerCountry) : true;
   const layout = allowedCountry ? 'default' : 'locked';
 </script>
