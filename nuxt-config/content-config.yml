@@ -1245,9 +1245,85 @@ collections:
           - name: title
             label: Page Title
             widget: string
-          - name: saveButton
-            label: Save Button Label
-            widget: string
+          - name: documents
+            label: Documents Block
+            widget: object
+            collapsed: true
+            fields:
+              - name: hideText
+                label: Hide text Button
+                widget: string
+              - name: moreInfo
+                label: More Info Button
+                widget: string
+              - name: uploadPlaceholder
+                label: Upload Placeholder
+                widget: string
+              - name: uploadHint
+                label: Upload Hint
+                widget: string
+              - name: uploadButton
+                label: Upload Button
+                widget: string
+              - name: uploadMore
+                label: Upload More Button
+                widget: string
+              - name: identity
+                label: Identity Block
+                widget: object
+                fields:
+                  - name: label
+                    label: Label
+                    widget: string
+                  - name: description
+                    label: Description
+                    widget: text
+                  - name: identity_front
+                    label: Identity Front File Name
+                    widget: string
+                  - name: identity_back
+                    label: Identity Back File Name
+                    widget: string
+                  - name: identity_selfie_id
+                    label: Identity Selfie File Name
+                    widget: string
+              - name: address
+                label: Address Block
+                widget: object
+                fields:
+                  - name: label
+                    label: Label
+                    widget: string
+                  - name: description
+                    label: Description
+                    widget: text
+                  - name: address
+                    label: Addres File Name
+                    widget: string
+              - name: payment
+                label: Payment Block
+                widget: object
+                fields:
+                  - name: label
+                    label: Label
+                    widget: string
+                  - name: description
+                    label: Description
+                    widget: text
+                  - name: payment
+                    label: Payment File Name
+                    widget: string
+          - name: password
+            label: Password Block
+            widget: object
+            collapsed: true
+            fields:
+              - name: label
+                label: Block Label
+                widget: string
+              - name: saveButton
+                label: Save Button Label
+                widget: string
           - *seoBlock
       - name: history
         label: Profile History
@@ -1680,6 +1756,14 @@ collections:
                 widget: string
           - name: latestWinners
             label: Winners Group
+            widget: object
+            fields:
+              - *projectIcon
+              - name: label
+                label: Group Label
+                widget: string
+          - name: recentlyPlayed
+            label: Recently Played Group
             widget: object
             fields:
               - *projectIcon

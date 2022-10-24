@@ -43,6 +43,7 @@
       :isDisabled="buttonDisabled"
       @click="getDeposit"
     >
+      <atomic-spinner :is-shown="isSending"/>
       {{ depositContent?.depositButton }} {{ buttonAmount }} {{ defaultInputSum.currency }}
     </button-base>
   </form>

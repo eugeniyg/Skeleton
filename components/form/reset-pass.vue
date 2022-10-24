@@ -32,6 +32,7 @@
       :isDisabled="v$.$invalid || isLockedAsyncButton"
       @click="resetPassword"
     >
+      <atomic-spinner :is-shown="isLockedAsyncButton"/>
       {{ resetContent?.resetButton }}
     </button-base>
   </form>

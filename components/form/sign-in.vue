@@ -35,6 +35,7 @@
       @click="login"
       :isDisabled="v$.$invalid || isLockedAsyncButton"
     >
+      <atomic-spinner :is-shown="isLockedAsyncButton"/>
       {{ loginContent?.loginButton }}
     </button-base>
 

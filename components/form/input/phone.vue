@@ -35,7 +35,6 @@
 <script setup lang="ts">
   import parsePhoneNumber from 'libphonenumber-js';
   import { storeToRefs } from 'pinia';
-  import { InitUserInfoInterface } from '@platform/frontend-core/dist/module';
   import { PhoneCodeInterface } from '~/types';
 
   const props = defineProps({
@@ -62,7 +61,7 @@
   });
 
   const globalStore = useGlobalStore();
-  const { countries, initUserInfo } = storeToRefs(globalStore);
+  const { countries, headerCountry } = storeToRefs(globalStore);
   const selectItems:PhoneCodeInterface[] = countries.value.map((country) => ({
     countryCode: country.code,
     code: country.phonePrefix,
@@ -87,11 +86,7 @@
       numberValue.value = parsePhone.number.replace(searchPhone?.code, '');
     }
   } else if (profile.value.country) setMobileCode(profile.value.country);
-  else if (initUserInfo.value.country) setMobileCode(initUserInfo.value.country);
-
-  watch(() => initUserInfo.value, (newValue: InitUserInfoInterface) => {
-    if (!props.value) setMobileCode(newValue.country);
-  });
+  else if (headerCountry.value) setMobileCode(headerCountry.value);
 
   const emit = defineEmits(['focus', 'input', 'update:value', 'blur']);
   const onFocus = ():void => {

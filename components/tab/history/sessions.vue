@@ -1,6 +1,12 @@
 <template>
   <div class="tab-history__tb">
-    <div class="tb-sessions-history">
+    <div
+      class="tb-sessions-history"
+      @scroll="scrollAction"
+      ref="tb"
+      tabindex="0"
+      data-tooltip-parent
+    >
       <div class="row">
         <div
           v-for="(column, columnIndex) in headTitles"
@@ -112,7 +118,31 @@
     resolveSessionsRequest(page);
   };
 
-  onMounted(() => { resolveSessionsRequest(); });
+  const tb = ref(null);
+  const state = reactive({
+    isScrolling: false,
+    timeOut: null,
+  });
+
+  const scrollAction = () => {
+    clearTimeout(state.timeOut);
+    if (!state.isScrolling) {
+      tb.value.focus();
+      state.isScrolling = true;
+    }
+    state.timeOut = setTimeout(() => {
+      state.isScrolling = false;
+    }, 200);
+  };
+
+  onMounted(() => {
+    resolveSessionsRequest();
+    window.addEventListener('scroll', scrollAction, false);
+  });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('scroll', scrollAction);
+  });
 </script>
 
 <style lang="scss">

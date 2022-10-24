@@ -1628,6 +1628,57 @@ export const useFakeStore = () => {
     },
   };
 
+  const securityVerificationIdentity = {
+    title: 'Identity',
+    description: '<p>Please upload your proof of identity. All documents must be laying on a flat surface with all 4 corners inside the frame. All information should be clear and identifiable. Also upload your selfie with passport/ID in your hands. It should</p>',
+    dropzones: [
+      {
+        title: 'Proof of Identity (Front)',
+        subTitle: 'Select a file or drag and drop here',
+        desc: 'Following file types are accepted: .png, .jpg, .pdf. Max size 2MB.',
+        hint: 'File size is to large',
+      },
+      {
+        title: 'Proof of Identity (Back)',
+        subTitle: 'Select a file or drag and drop here',
+        desc: 'Following file types are accepted: .png, .jpg, .pdf. Max size 2MB.',
+        hint: 'File size is to large',
+      },
+      {
+        title: 'Selfie & ID',
+        subTitle: 'Select a file or drag and drop here',
+        desc: 'Following file types are accepted: .png, .jpg, .pdf. Max size 2MB.',
+        hint: 'File size is to large',
+      },
+    ],
+  };
+
+  const securityVerificationAddress = {
+    title: 'Address',
+    description: '<p>Please upload the utility bill, phone bill, or bank statement, in which your name and... More info</p>',
+    dropzones: [
+      {
+        title: 'Proof of Identity (Front)',
+        subTitle: 'Select a file or drag and drop here',
+        desc: 'Following file types are accepted: .png, .jpg, .pdf. Max size 2MB.',
+        hint: 'File size is to large',
+      },
+    ],
+  };
+
+  const securityVerificationPayment = {
+    title: 'Payment',
+    description: '<p>Please upload the screenshot or photo from online bank, bank statement, Skrill page, etc</p>',
+    dropzones: [
+      {
+        title: 'Proof of Identity (Front)',
+        subTitle: 'Select a file or drag and drop here',
+        desc: 'Following file types are accepted: .png, .jpg, .pdf. Max size 2MB.',
+        hint: 'File size is to large',
+      },
+    ],
+  };
+
   return {
     catNavItems,
     items,
@@ -1650,5 +1701,8 @@ export const useFakeStore = () => {
     userProfileBonusesTabs,
     userProfileHistoryTabs,
     promoCard,
+    securityVerificationIdentity,
+    securityVerificationAddress,
+    securityVerificationPayment,
   };
 };

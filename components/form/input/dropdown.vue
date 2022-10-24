@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="drop"
     class="dropdown"
     :class="classes"
     :tabindex="props.tabindex"
@@ -14,7 +15,7 @@
       <atomic-icon id="arrow_expand-close"/>
     </div>
 
-    <div class="items" v-if="props.options.length">
+    <div ref="dropItems" class="items" v-if="props.options.length">
       <div
         class="item"
         v-for="(option, i) in props.options"
@@ -22,7 +23,7 @@
         :class="{'is-selected': option.code === valueObject.code }"
         @click="select(option)"
       >
-        <img v-if="option.mask" class="mask" :src="option.mask" />
+        <img v-if="option.mask" class="mask" :src="option.mask"/>
         <span>{{ option.value }}</span>
         <atomic-icon v-if="option.code === valueObject.code" id="check"/>
       </div>
@@ -67,7 +68,7 @@
     },
     size: {
       type: String,
-      validator: (val:string) => ['xs', 'sm', 'md', 'lg', ''].includes(val),
+      validator: (val: string) => ['xs', 'sm', 'md', 'lg', ''].includes(val),
       default: '',
     },
     isDisabled: {
@@ -77,6 +78,9 @@
     hint: {
       type: Object,
       required: false,
+    },
+    isFitContent: {
+      type: Boolean,
     },
   });
 
@@ -89,12 +93,15 @@
   const emit = defineEmits(['input', 'focus', 'update:value']);
 
   const isOpen = ref<boolean>(false);
+  const drop = ref(null);
+  const dropItems = ref(null);
 
   const classes = computed(() => [
     props.size ? `size-${props.size}` : null,
     { 'is-open': isOpen.value },
     { 'has-error': props.hint?.variant === 'error' },
     { 'is-disabled': props.isDisabled },
+    { 'is-fit-content': props.isFitContent },
   ]);
 
   const select = (option: any) => {
@@ -118,6 +125,15 @@
   const onBlur = ():void => {
     isOpen.value = false;
   };
+
+  onMounted(() => {
+    if (props.isFitContent) {
+      // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
+      setTimeout(() => {
+        drop.value.style.width = `${dropItems.value.offsetWidth}px`;
+      }, 300);
+    }
+  });
 </script>
 
 <style lang="scss">
@@ -126,6 +142,17 @@
   width: var(--select-width, 100%);
   outline: none;
   @include font($body-2);
+
+  &.is-fit-content {
+    .items {
+      max-width: none;
+      width: auto;
+
+      span {
+        overflow: unset;
+      }
+    }
+  }
 
   .icon {
     color: var(--icon-color, var(--gray-400));
@@ -245,6 +272,7 @@
 
   &.is-open {
     z-index: 2;
+
     .selected {
       --border-color: var(--gray-300);
       --color: var(--white);

@@ -3,9 +3,7 @@
     <div class="user-profile">
       <nav-profile v-if="profileMenu.length" :items="profileMenu"/>
 
-      <client-only>
-        <NuxtPage />
-      </client-only>
+      <NuxtPage />
     </div>
 
     <atomic-seo-text v-if="activePageSeo?.text" v-bind="activePageSeo?.text" />

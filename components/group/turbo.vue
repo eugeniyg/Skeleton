@@ -32,8 +32,6 @@
         :infoLabel="groupTurboContent.infoLabel"
         :categoryLabel="groupTurboContent.categoryLabel"
       />
-
-      <div class="load-more" ref="loadMore"/>
     </div>
   </div>
 </template>
@@ -66,11 +64,11 @@
   };
 
   onMounted(() => {
-    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587
+    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
     setTimeout(() => {
       scrollHandler();
       showArrowButtons.value = !prevDisabled.value || !nextDisabled.value;
-    }, 100);
+    }, 300);
   });
 </script>
 

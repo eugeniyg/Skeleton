@@ -4,7 +4,6 @@ import {
   CurrencyInterface,
   LocaleInterface,
   TimeZoneInterface,
-  InitUserInfoInterface,
 } from '@platform/frontend-core/dist/module';
 import {
   AlertsListInterface,
@@ -33,13 +32,13 @@ interface GlobalStoreStateInterface {
   isMobile: boolean,
   browserLanguage: string,
   baseApiUrl: string,
-  initUserInfo: InitUserInfoInterface,
   validationMessages: ValidationMessageInterface|{},
   fieldsContent: FieldsContentInterface|undefined,
   layoutData: MainLayoutInterface,
   popupsData: PopupsInterface|undefined,
   alertsData: AlertsListInterface|undefined,
   globalComponentsContent: GlobalComponentsInterface|undefined,
+  headerCountry: string|undefined,
 }
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -52,13 +51,13 @@ export const useGlobalStore = defineStore('globalStore', {
       isMobile: false,
       browserLanguage: 'en',
       baseApiUrl: '',
-      initUserInfo: undefined,
       validationMessages: {},
       fieldsContent: undefined,
       layoutData: undefined,
       popupsData: undefined,
       alertsData: undefined,
       globalComponentsContent: undefined,
+      headerCountry: undefined,
     }),
 
   getters: {
@@ -151,12 +150,6 @@ export const useGlobalStore = defineStore('globalStore', {
       this.timeZones = data.timeZone;
     },
 
-    async getInitUserInformation():Promise<void> {
-      const { getInitUserInfo } = useCoreGlobalApi();
-      const data = await getInitUserInfo();
-      this.initUserInfo = data;
-    },
-
     async getGlobalContent():Promise<void> {
       const [validations, fieldsData, layoutData, popupsData, alertsData, globalContent] = await Promise.allSettled([
         queryContent(`validations/${this.currentLocale.code}`).findOne(),
@@ -172,6 +165,12 @@ export const useGlobalStore = defineStore('globalStore', {
       if (popupsData.status !== 'rejected') this.popupsData = popupsData.value;
       if (alertsData.status !== 'rejected') this.alertsData = alertsData.value;
       if (globalContent.status !== 'rejected') this.globalComponentsContent = globalContent.value;
+    },
+
+    getRequestCountry():void {
+      const { countryHeaderName } = useCoreStore();
+      const headersCountry = useRequestHeaders([countryHeaderName]);
+      if (headersCountry[countryHeaderName]) this.headerCountry = headersCountry[countryHeaderName].toUpperCase();
     },
   },
 });

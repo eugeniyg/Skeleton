@@ -15,7 +15,6 @@
 
     <div class="items" ref="container">
       <card-simple
-        ref="cardSimple"
         v-for="(favorite, favoriteIndex) in favoriteList"
         :key="favoriteIndex"
         v-bind="favorite"
@@ -33,13 +32,14 @@
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
-
-  const showAllBtn = ref<boolean>(true);
-  const cardInBlock = ref<number>(4);
-  const favoriteList = computed(() => favoriteGames.value.slice(0, cardInBlock.value));
   const container = ref();
 
+  const showAllBtn = ref<boolean>(true);
+  const cardInBlock = ref<number>(20);
+  const favoriteList = computed(() => favoriteGames.value.slice(0, cardInBlock.value));
+
   const calcItems = ():void => {
+    if (!favoriteGames.value.length) return;
     const cardSimple:any = document.querySelector('.group-favorites .card');
     const containerWidth = getComputedStyle(container.value).width.replace('px', '');
     const cardWidth = getComputedStyle(cardSimple).width.replace('px', '');
@@ -47,10 +47,7 @@
   };
 
   onMounted(() => {
-    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587
-    setTimeout(() => {
-      calcItems();
-    }, 100);
+    calcItems();
   });
 </script>
 
@@ -94,9 +91,14 @@
   }
 
   > .icon {
+    display: none;
     grid-area: icon;
     --iccon-size: #{rem(20px)};
     --color: var(--gray-400);
+
+    @include media(sm) {
+      display: initial;
+    }
   }
 
   > .btn-show-all {
@@ -118,11 +120,16 @@
   }
 
   > .title {
+    display: none;
     flex-grow: 1;
     grid-area: heading;
     @include font($heading-4);
     color: var(--white);
     margin: 0;
+
+    @include media(sm) {
+      display: initial;
+    }
   }
 
   > .items {

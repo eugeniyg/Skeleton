@@ -84,9 +84,39 @@ export interface ProfileNotificationsInterface {
   seo: SeoContentInterface
 }
 
+export interface ProfileDocumentsInterface {
+  moreInfo: string,
+  hideText: string,
+  uploadPlaceholder: string,
+  uploadHint: string,
+  uploadButton: string,
+  uploadMore: string,
+  identity: {
+    label: string,
+    description: string,
+    identity_front: string,
+    identity_back: string,
+    identity_selfie_id: string
+  },
+  address: {
+    label: string,
+    description: string,
+    address: string
+  },
+  payment: {
+    label: string,
+    description: string,
+    payment: string
+  }
+}
+
 export interface ProfileSecurityInterface {
   title: string,
-  saveButton: string,
+  password: {
+    label: string,
+    saveButton: string
+  },
+  documents: ProfileDocumentsInterface,
   seo: SeoContentInterface
 }
 
@@ -309,6 +339,10 @@ export interface CardsGroupInterface {
   latestWinners: {
     icon: string,
     label: string
+  },
+  recentlyPlayed: {
+    icon: string,
+    label: string
   }
 }
 
@@ -460,6 +494,11 @@ export interface GameTagInterface {
   color: string,
 }
 
+export interface LatestWinnersInterface {
+  icon: string,
+  title: string
+}
+
 export interface GlobalComponentsInterface {
   benefits: BenefitsContentInterface,
   promotions: PromotionsContentInterface,
@@ -467,5 +506,12 @@ export interface GlobalComponentsInterface {
   categories: GameCategoryInterface[],
   turbogames: TurbogamesGroupInterface,
   gameTags: GameTagInterface[],
-  globalSeo: SeoContentInterface
+  globalSeo: SeoContentInterface,
+}
+
+export interface DropZoneInterface {
+  title: string,
+  subTitle: string,
+  desc: string,
+  hint: string,
 }

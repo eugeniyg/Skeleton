@@ -30,7 +30,9 @@
 
   const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();
-  const { isMobile, alertsData, currentLocale } = storeToRefs(globalStore);
+  const {
+    isMobile, alertsData, currentLocale, headerCountry,
+  } = storeToRefs(globalStore);
   const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['bettingPage']).findOne());
   const bettingContent:BettingContentInterface|undefined = bettingContentRequest.data.value?.bettingPage;
   const { setPageSeo } = useProjectMethods();
@@ -50,7 +52,7 @@
       accountId: activeAccount.value.id,
       lobbyUrl: redirectUrl,
       locale: currentLocale.value.code,
-      countryCode: profile.value?.country || 'UA',
+      countryCode: profile.value?.country || headerCountry.value || 'UA',
       demoMode: false,
       platform: isMobile.value ? 1 : 2,
     };
@@ -69,12 +71,12 @@
 
   onMounted(async () => {
     if (isMobile.value) {
-      // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587
+      // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
       setTimeout(() => {
         document.querySelector('footer').style.display = 'none';
         const seoTextBlock:any = document.querySelector('.text-wrap');
         if (seoTextBlock) seoTextBlock.style.display = 'none';
-      }, 100);
+      }, 300);
     }
 
     if (!isLoggedIn.value) {
