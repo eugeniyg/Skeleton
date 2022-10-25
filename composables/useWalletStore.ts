@@ -116,16 +116,17 @@ export const useWalletStore = defineStore('walletStore', {
       const formattedSum = formatBalance(eventCurrency, eventAmount);
       const invoiceSuccess = webSocketResponse.data.invoice.status === 2;
 
-      const formattedDescription = (cmsMessage: string):string => {
+      const formattedDescription = (cmsMessage: string|undefined):string => {
+        if (!cmsMessage) return '';
         const formattedMessage = cmsMessage.replace('{sum}', `${formattedSum.amount} ${formattedSum.currency}`);
         return formattedMessage.replace('{date}', invoiceDate);
       };
 
       if (webSocketResponse.data?.event === 'invoice.deposit.updated') {
-        const cmsMessage = invoiceSuccess ? alertsData?.depositSuccess.description : alertsData?.depositError.description;
+        const cmsMessage = invoiceSuccess ? alertsData?.depositSuccess?.description : alertsData?.depositError?.description;
         showAlert(invoiceSuccess ? { ...alertsData?.depositSuccess, description: formattedDescription(cmsMessage) } : { ...alertsData?.depositError, description: formattedDescription(cmsMessage) });
       } else if (webSocketResponse.data?.event === 'invoice.withdrawal.updated') {
-        const cmsMessage = invoiceSuccess ? alertsData?.withdrawSuccess.description : alertsData?.withdrawError.description;
+        const cmsMessage = invoiceSuccess ? alertsData?.withdrawSuccess?.description : alertsData?.withdrawError?.description;
         showAlert(invoiceSuccess ? { ...alertsData?.withdrawSuccess, description: formattedDescription(cmsMessage) } : { ...alertsData?.withdrawError, description: formattedDescription(cmsMessage) });
       }
     },
