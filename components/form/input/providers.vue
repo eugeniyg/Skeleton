@@ -79,6 +79,9 @@
   const change = ():void => {
     selected.value = Object.keys(inputValues.value).filter((key) => inputValues.value[key]);
     emit('update:value', selected.value);
+    if (selected.value.length < gameProviders.length) {
+      selectedAll.value = false;
+    }
   };
 
   const selectAll = () => {
@@ -145,6 +148,8 @@
     grid-column-gap: rem(4px);
     border-radius: 8px;
     transition: all .2s ease-in-out;
+    min-width: rem(150px);
+    justify-content: flex-start;
 
     .icon {
       width: rem(20px);
@@ -189,6 +194,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    .input-providers__toggle & {
+      flex-grow: 0;
+    }
   }
 
   &__logo {
@@ -224,6 +233,7 @@
     position: relative;
     border-bottom: 1px solid var(--gray-600);
     margin-right: 8px;
+    user-select: none;
 
     &:first-of-type {
       cursor: pointer;
@@ -233,6 +243,13 @@
       .input-providers__checkbox {
         --color: var(--white);
         background-color: var(--green-500);
+      }
+
+      ~ .input-providers__item {
+        .input-providers__checkbox {
+          --color: var(--gray-600);
+          background-color: transparent;
+        }
       }
     }
   }
@@ -263,6 +280,7 @@
     grid-column-gap: rem(8px);
     overflow: hidden;
     cursor: pointer;
+    user-select: none;
   }
 
   &__content {
