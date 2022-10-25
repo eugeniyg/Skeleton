@@ -2,6 +2,7 @@ import { defineStore, storeToRefs } from 'pinia';
 import { AccountInterface, AccountRequestInterface, WebSocketResponseInterface } from '@platform/frontend-core/dist/module';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { useProfileStore } from '~/composables/useProfileStore';
+import { useProjectMethods } from '~/composables/useProjectMethods';
 
 interface WalletStateInterface {
   accounts: AccountInterface[],
@@ -9,6 +10,7 @@ interface WalletStateInterface {
   withdrawMethods: any[],
   requestTimer: any,
   accountSubscription: any,
+  invoicesSubscription: any,
 }
 
 export const useWalletStore = defineStore('walletStore', {
@@ -18,6 +20,7 @@ export const useWalletStore = defineStore('walletStore', {
     withdrawMethods: [],
     requestTimer: '',
     accountSubscription: undefined,
+    invoicesSubscription: undefined,
   }),
 
   getters: {
@@ -92,6 +95,46 @@ export const useWalletStore = defineStore('walletStore', {
         if (account.id === accountData.id) return accountData;
         return account;
       });
+    },
+
+    subscribeInvoicesSocket():void {
+      const profileStore = useProfileStore();
+      if (profileStore.profile?.id) {
+        const { createSubscription } = useWebSocket();
+        this.invoicesSubscription = createSubscription(`payment:invoice#${profileStore.profile.id}`, this.showInvoiceStatus);
+      }
+    },
+
+    showInvoiceStatus(webSocketResponse:WebSocketResponseInterface):void {
+      const { formatBalance } = useProjectMethods();
+      const { alertsData } = useGlobalStore();
+      const { showAlert } = useLayoutStore();
+      const invoiceUtcDate = new Date(webSocketResponse.data.invoice.createdAt);
+      const invoiceDate = invoiceUtcDate.toLocaleString().slice(0, 10);
+      const eventAmount = webSocketResponse.data.invoice.amount;
+      const eventCurrency = webSocketResponse.data.invoice.currency;
+      const formattedSum = formatBalance(eventCurrency, eventAmount);
+      const invoiceSuccess = webSocketResponse.data.invoice.status === 2;
+
+      const formattedDescription = (cmsMessage: string):string => {
+        const formattedMessage = cmsMessage.replace('{sum}', `${formattedSum.amount} ${formattedSum.currency}`);
+        return formattedMessage.replace('{date}', invoiceDate);
+      };
+
+      if (webSocketResponse.data?.event === 'invoice.deposit.updated') {
+        const cmsMessage = invoiceSuccess ? alertsData?.depositSuccess.description : alertsData?.depositError.description;
+        showAlert(invoiceSuccess ? { ...alertsData?.depositSuccess, description: formattedDescription(cmsMessage) } : { ...alertsData?.depositError, description: formattedDescription(cmsMessage) });
+      } else if (webSocketResponse.data?.event === 'invoice.withdrawal.updated') {
+        const cmsMessage = invoiceSuccess ? alertsData?.withdrawSuccess.description : alertsData?.withdrawError.description;
+        showAlert(invoiceSuccess ? { ...alertsData?.withdrawSuccess, description: formattedDescription(cmsMessage) } : { ...alertsData?.withdrawError, description: formattedDescription(cmsMessage) });
+      }
+    },
+
+    unsubscribeInvoiceSocket():void {
+      if (this.invoicesSubscription) {
+        this.invoicesSubscription.unsubscribe();
+        this.invoicesSubscription.removeAllListeners();
+      }
     },
   },
 });
