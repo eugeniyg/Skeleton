@@ -40,8 +40,9 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     await initWebSocket();
 
     if (bearer.value) {
-      const { subscribeAccountSocket } = useWalletStore();
+      const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       subscribeAccountSocket();
+      subscribeInvoicesSocket();
     }
     const { subscribeWinnersSocket } = useGamesStore();
     subscribeWinnersSocket();

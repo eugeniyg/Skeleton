@@ -292,4 +292,8 @@ export interface AlertsListInterface {
   successRegistration: AlertInterface,
   accountBlocked: AlertInterface,
   resentVerification: AlertInterface,
+  depositSuccess: AlertInterface,
+  depositError: AlertInterface,
+  withdrawSuccess: AlertInterface,
+  withdrawError: AlertInterface,
 }
