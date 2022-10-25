@@ -4,6 +4,11 @@
     "title": "Error",
     "description": "Sorry, but you can't deposit for now. Please, contact our support team for more information."
   },
+  "depositSuccess": {
+    "type": "done",
+    "title": "Success",
+    "description": "Your {sum} deposit made on {date} is successful!"
+  },
   "invalidResetCode": {
     "type": "error",
     "title": "Error",
@@ -13,6 +18,11 @@
     "title": "Success",
     "description": "We have sent an email with the verification link to your email address.",
     "type": "done"
+  },
+  "depositError": {
+    "title": "Error",
+    "description": "Sorry, but something went wrong with your {sum} deposit from {date}. Please try again.",
+    "type": "error"
   },
   "limitedRealGame": {
     "type": "error",
@@ -38,6 +48,11 @@
     "title": "Success",
     "description": "You have successfully canceled your withdrawal."
   },
+  "withdrawSuccess": {
+    "title": "Success",
+    "description": "Your {sum} withdrawal from {date} was approved!",
+    "type": "done"
+  },
   "withdrawalProcessed": {
     "type": "done",
     "title": "Pending!",
@@ -53,6 +68,11 @@
     "type": "done",
     "title": "Welcome",
     "description": "You have been successfully registered!"
+  },
+  "withdrawError": {
+    "type": "error",
+    "title": "Canceled withdrawal",
+    "description": "Your {sum} withdrawal from {date} is being canceled. Please, contact our Support Team for more information."
   },
   "accountBlocked": {
     "type": "error",
