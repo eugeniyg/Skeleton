@@ -14,10 +14,8 @@
     </button-base>
 
     <button-base class="item is-accent" @click.prevent="clickMainButton">
-      <client-only>
-        <atomic-icon :id="isLoggedIn ? 'wallet' : 'user'" />
-        <span>{{isLoggedIn ? headerContent?.depositButton : headerContent?.loginButton }}</span>
-      </client-only>
+      <atomic-icon :id="isLoggedIn ? 'wallet' : 'user'" />
+      <span>{{isLoggedIn ? headerContent?.depositButton : headerContent?.loginButton }}</span>
     </button-base>
 
     <button-base

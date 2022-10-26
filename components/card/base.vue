@@ -18,9 +18,7 @@
 
       <div v-if="props.subTitle" class="sub-title">{{ props.subTitle }}</div>
 
-      <client-only>
-        <button-favorite v-if="isLoggedIn" :gameId="id"/>
-      </client-only>
+      <button-favorite v-if="isLoggedIn" :gameId="id"/>
 
       <button-play @click="openGame(true)"/>
 

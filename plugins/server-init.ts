@@ -18,6 +18,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
 
   if (process.server) {
+    getRequestCountry();
     const headerCookie = useRequestHeaders(['cookie']);
     let token;
     if (headerCookie.cookie) {
@@ -27,41 +28,36 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       token = cookieObj.bearer;
     }
 
-    const profileStore = useProfileStore();
+    const { getProfileData, logOutUser } = useProfileStore();
     const { getUserAccounts } = useWalletStore();
     const { getFavoriteGames } = useGamesStore();
+
+    const settingsRequest = Promise.all([
+      getCurrencies(),
+      getLocales(),
+      getCountries(),
+      getRegistrationFields(),
+      getGameProviders(),
+      getGameCollections(),
+    ]);
+
     if (token) {
-      try {
-        await Promise.all([
-          profileStore.getProfileData(),
-          getUserAccounts(),
-        ]);
-        getFavoriteGames();
-      } catch (error) {
-        if (error.response?.status === 401) {
-          profileStore.logOutUser(false);
-        } else {
-          throw error;
-        }
-      }
-    }
-
-    getRequestCountry();
-
-    try {
-      await Promise.all([
-        getCurrencies(),
-        getLocales(),
-        getCountries(),
-        getRegistrationFields(),
-        getGameProviders(),
-        getGameCollections(),
+      const profileRequests = Promise.all([
+        getProfileData(),
+        getUserAccounts(),
       ]);
-    } catch (error) {
-      console.error(error);
-      throw error;
-    } finally {
-      await getGlobalContent();
+
+      const requestResult = await Promise.allSettled([
+        settingsRequest,
+        profileRequests,
+      ]);
+
+      if (requestResult[1].status === 'fulfilled') {
+        await getFavoriteGames();
+      } else if (requestResult[1].reason.response.status === 401) logOutUser(false);
+    } else {
+      await settingsRequest;
     }
+    await getGlobalContent();
   }
 });

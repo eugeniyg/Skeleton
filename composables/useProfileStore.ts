@@ -35,7 +35,7 @@ export const useProfileStore = defineStore('profileStore', {
 
   getters: {
     userNickname(state):string {
-      return state.profile.nickname || 'Unknown';
+      return state.profile?.nickname || 'Unknown';
     },
 
     playerStatusName(state):string {
@@ -86,6 +86,7 @@ export const useProfileStore = defineStore('profileStore', {
     async getProfileData():Promise<void> {
       const { getProfile } = useCoreProfileApi();
       const profileInfo = await getProfile();
+      console.log('Profile info:', profileInfo);
       this.profile = profileInfo;
       this.isLoggedIn = true;
     },

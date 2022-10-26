@@ -2,28 +2,27 @@
   <div class="favorites">
     <div class="favorites__title">{{ favoritesContent?.title }}</div>
 
-    <client-only>
-      <list-grid
-        v-if="showFavorites"
-        :items="currentFavoriteList"
-        :meta="pageMeta"
-        @loadMore="currentPage++"
-      />
+    <list-grid
+      v-if="showFavorites"
+      :items="currentFavoriteList"
+      :meta="pageMeta"
+      @loadMore="currentPage++"
+    />
 
-      <atomic-empty
-        v-else
-        :title="favoritesContent?.empty.title"
-        :subTitle="favoritesContent?.empty.description"
-        :image="favoritesContent?.empty.image"
-      />
+    <atomic-empty
+      v-else
+      :title="favoritesContent?.empty.title"
+      :subTitle="favoritesContent?.empty.description"
+      :image="favoritesContent?.empty.image"
+    />
 
-      <group-games
-        v-if="!showFavorites"
-        :category="recommendedCategory"
-        showArrows
-        subTitle
-      />
-    </client-only>
+    <group-games
+      v-if="!showFavorites"
+      :category="recommendedCategory"
+      showArrows
+      subTitle
+    />
+
     <atomic-seo-text v-if="favoritesContent?.seo?.text" v-bind="favoritesContent?.seo?.text" />
   </div>
 </template>

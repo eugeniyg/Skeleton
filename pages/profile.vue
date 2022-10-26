@@ -16,11 +16,11 @@
 
   const { localizePath } = useProjectMethods();
   const { needToChangeLanguage } = useProjectMethods();
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
 
   const route = useRoute();
   if (!needToChangeLanguage()) {
-    const bearer = useCookie('bearer');
-
     if (route.params.confirmCode) {
       const { confirmProfile } = useCoreProfileApi();
       try {
@@ -29,7 +29,7 @@
       } catch {
         navigateTo(localizePath('/'), { replace: true });
       }
-    } else if (!bearer.value) {
+    } else if (!isLoggedIn.value) {
       navigateTo(localizePath('/'), { replace: true });
     }
   }

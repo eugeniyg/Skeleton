@@ -14,20 +14,18 @@
       </button-base>
     </div>
 
-    <client-only>
-      <nav-currency :tabs="navTabs" @toggleNavEmpty="currencyNavEmpty = $event"/>
+    <nav-currency :tabs="navTabs" @toggleNavEmpty="currencyNavEmpty = $event"/>
 
-      <div class="cards-wallet">
-        <TransitionGroup name="card">
-          <card-wallet
-            v-for="account in orderedAccounts"
-            :key="account.id"
-            v-bind="account"
-            :content="walletContent"
-          />
-        </TransitionGroup>
-      </div>
-    </client-only>
+    <div class="cards-wallet">
+      <TransitionGroup name="card">
+        <card-wallet
+          v-for="account in orderedAccounts"
+          :key="account.id"
+          v-bind="account"
+          :content="walletContent"
+        />
+      </TransitionGroup>
+    </div>
   </div>
 </template>
 
