@@ -22,3 +22,20 @@ stages:
   only:
     - dev
     - main
+
+"Build docker image (Auth)":
+  stage: build
+  image: gcr.io/kaniko-project/executor:debug
+
+  before_script:
+    - echo "$DOCKER_AUTH_CONFIG" > /kaniko/.docker/config.json
+
+  script:
+    - /kaniko/executor
+      --build-arg NPM_TOKEN=$NPM_TOKEN
+      --context $CI_PROJECT_DIR
+      --dockerfile $CI_PROJECT_DIR/Dockerfile
+      --destination $ECR_REGISTRY/$SERVICE_NAME:$CI_COMMIT_BRANCH
+
+  only:
+    - try-back-auth
