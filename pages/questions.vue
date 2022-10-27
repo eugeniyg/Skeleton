@@ -17,7 +17,7 @@
   import { storeToRefs } from 'pinia';
   import { QuestionPagesInterface } from '~/types';
 
-  const { needToChangeLanguage, localizePath } = useProjectMethods();
+  const { localizePath } = useProjectMethods();
   const route = useRoute();
 
   const listContent = ref([]);
@@ -30,10 +30,8 @@
   const { setPageSeo } = useProjectMethods();
   setPageSeo(questionPageContent?.seo);
 
-  if (!needToChangeLanguage()) {
-    if (route.path === localizePath('/questions')) {
-      navigateTo(localizePath(`/questions/${listContent.value[0]?.pageUrl || 'most-popular'}`), { replace: true });
-    }
+  if (route.name === 'questions' || route.name === 'locale-questions') {
+    navigateTo(localizePath(`/questions/${listContent.value[0]?.pageUrl || 'most-popular'}`), { replace: true });
   }
 </script>
 
