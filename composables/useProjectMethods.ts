@@ -79,12 +79,6 @@ export const useProjectMethods = () => {
     return `${getFirstPath.slice(0, -3)}***`;
   };
 
-  const needToChangeLanguage = ():boolean => {
-    const cookieLanguage = useCookie('user-language');
-    const route = useRoute();
-    return route.name && !route.params.locale && !!cookieLanguage.value;
-  };
-
   const formatBalance = (currency: string, amount: number):{ currency: string, amount: number } => {
     const { currencies } = useGlobalStore();
     const currencyConfig = currencies.find((item) => item.code === currency);
@@ -142,7 +136,6 @@ export const useProjectMethods = () => {
     isHomePage,
     getFormatDate,
     getNicknameFromEmail,
-    needToChangeLanguage,
     formatBalance,
     getMainBalanceFormat,
     setPageSeo,

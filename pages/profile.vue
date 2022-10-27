@@ -14,14 +14,12 @@
   import { storeToRefs } from 'pinia';
   import { ProfileContentInterface, SeoContentInterface } from '~/types';
 
-  const { localizePath } = useProjectMethods();
-  const { needToChangeLanguage } = useProjectMethods();
+  definePageMeta({
+    middleware: 'auth',
+  });
 
+  const { localizePath } = useProjectMethods();
   const route = useRoute();
-  const bearer = useCookie('bearer');
-  if (!needToChangeLanguage() && !bearer.value) {
-    navigateTo(localizePath('/'), { replace: true });
-  }
 
   const { getProfileFields } = useFieldsStore();
   const globalStore = useGlobalStore();

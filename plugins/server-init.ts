@@ -5,6 +5,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     getCountries,
     getGlobalContent,
     getRequestCountry,
+    pagesWithoutLocale,
   } = useGlobalStore();
   const { getRegistrationFields } = useFieldsStore();
   const { getGameProviders, getGameCollections } = useGamesStore();
@@ -13,6 +14,16 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     const globalStore = useGlobalStore();
     globalStore.baseApiUrl = process.env.API_BASE_URL || '';
   }
+
+  const checkLanguage = ():void => {
+    const cookieLanguage = useCookie('user-language');
+    const route = useRoute();
+    const needChangeLanguage = route.name && !route.params.locale && !!cookieLanguage.value;
+
+    if (needChangeLanguage && !pagesWithoutLocale.includes(route.name as string)) {
+      navigateTo(`/${cookieLanguage.value}${route.fullPath === '/' ? '' : route.fullPath}`, { replace: true });
+    }
+  };
 
   if (process.server) {
     getRequestCountry();
@@ -26,6 +37,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         getGameProviders(),
         getGameCollections(),
       ]);
+
+      checkLanguage();
     } catch (error) {
       console.error(error);
       throw error;
