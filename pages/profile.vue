@@ -18,20 +18,9 @@
   const { needToChangeLanguage } = useProjectMethods();
 
   const route = useRoute();
-  if (!needToChangeLanguage()) {
-    const bearer = useCookie('bearer');
-
-    if (route.params.confirmCode) {
-      const { confirmProfile } = useCoreProfileApi();
-      try {
-        await confirmProfile(route.params.confirmCode as string);
-        navigateTo(localizePath('/?confirm=true'), { replace: true });
-      } catch {
-        navigateTo(localizePath('/'), { replace: true });
-      }
-    } else if (!bearer.value) {
-      navigateTo(localizePath('/'), { replace: true });
-    }
+  const bearer = useCookie('bearer');
+  if (!needToChangeLanguage() && !bearer.value) {
+    navigateTo(localizePath('/'), { replace: true });
   }
 
   const { getProfileFields } = useFieldsStore();
