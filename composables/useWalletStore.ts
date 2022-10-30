@@ -101,7 +101,7 @@ export const useWalletStore = defineStore('walletStore', {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
         const { createSubscription } = useWebSocket();
-        this.invoicesSubscription = createSubscription(`payment:invoice#${profileStore.profile.id}`, this.showInvoiceStatus);
+        this.invoicesSubscription = createSubscription(`payment:invoices#${profileStore.profile.id}`, this.showInvoiceStatus);
       }
     },
 
