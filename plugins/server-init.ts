@@ -31,6 +31,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   if (process.server) {
     getRequestCountry();
 
+    const token = useCookie('bearer');
+
     const { getProfileData, logOutUser } = useProfileStore();
     const { getUserAccounts } = useWalletStore();
     const { getFavoriteGames } = useGamesStore();
@@ -44,7 +46,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       getGameCollections(),
     ]);
 
-    if (token) {
+    if (token.value) {
       const profileRequests = Promise.all([
         getProfileData(),
         getUserAccounts(),

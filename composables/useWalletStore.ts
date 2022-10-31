@@ -41,7 +41,6 @@ export const useWalletStore = defineStore('walletStore', {
     async getUserAccounts():Promise<void> {
       const { getAccounts } = useCoreWalletApi();
       const data = await getAccounts();
-      console.log('Accounts: ', data);
       this.accounts = data;
     },
 

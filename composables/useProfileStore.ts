@@ -86,7 +86,6 @@ export const useProfileStore = defineStore('profileStore', {
     async getProfileData():Promise<void> {
       const { getProfile } = useCoreProfileApi();
       const profileInfo = await getProfile();
-      console.log('Profile info:', profileInfo);
       this.profile = profileInfo;
       this.isLoggedIn = true;
     },
