@@ -3,11 +3,14 @@
 </template>
 
 <script setup lang="ts">
-  const { needToChangeLanguage } = useProjectMethods();
-
-  if (!needToChangeLanguage()) {
-    const { localizePath } = useProjectMethods();
-    const route = useRoute();
-    navigateTo(localizePath(`/?reset-pass=true&resetCode=${route.params.resetCode}`), { replace: true });
-  }
+  definePageMeta({
+    middleware: [
+      function (to) {
+        if (to.params.resetCode) {
+          return navigateTo(`/?reset-pass=true&resetCode=${to.params.resetCode}`, { replace: true });
+        }
+        return navigateTo('/', { replace: true });
+      },
+    ],
+  });
 </script>

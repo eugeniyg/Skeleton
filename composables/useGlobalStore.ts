@@ -39,6 +39,7 @@ interface GlobalStoreStateInterface {
   alertsData: AlertsListInterface|undefined,
   globalComponentsContent: GlobalComponentsInterface|undefined,
   headerCountry: string|undefined,
+  pagesWithoutLocale: string[],
 }
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -58,6 +59,14 @@ export const useGlobalStore = defineStore('globalStore', {
       alertsData: undefined,
       globalComponentsContent: undefined,
       headerCountry: undefined,
+      pagesWithoutLocale: [
+        'verify-confirmCode',
+        'locale-verify-confirmCode',
+        'password-reset-resetCode',
+        'locale-password-reset-resetCode',
+        'questions',
+        'locale-questions',
+      ],
     }),
 
   getters: {

@@ -52,14 +52,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const { needToChangeLanguage } = useProjectMethods();
-  const cookieLanguage = useCookie('user-language');
-  const route = useRoute();
-
-  if (needToChangeLanguage()) {
-    await navigateTo(`/${cookieLanguage.value}${route.fullPath === '/' ? '' : route.fullPath}`, { replace: true });
-  }
-
   const { getCommonData } = useGlobalStore();
   useLazyAsyncData('commonData', getCommonData);
 
@@ -90,6 +82,7 @@
     layoutStore.toggleDrawer();
   }
 
+  const route = useRoute();
   const showCookiesMessage = computed(() => showCookiePopup.value
     && route.name !== 'games-id'
     && route.name !== 'locale-games-id'

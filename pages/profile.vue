@@ -14,25 +14,12 @@
   import { storeToRefs } from 'pinia';
   import { ProfileContentInterface, SeoContentInterface } from '~/types';
 
-  const { localizePath } = useProjectMethods();
-  const { needToChangeLanguage } = useProjectMethods();
-  const profileStore = useProfileStore();
-  const { isLoggedIn } = storeToRefs(profileStore);
+  definePageMeta({
+    middleware: 'auth',
+  });
 
+  const { localizePath } = useProjectMethods();
   const route = useRoute();
-  if (!needToChangeLanguage()) {
-    if (route.params.confirmCode) {
-      const { confirmProfile } = useCoreProfileApi();
-      try {
-        await confirmProfile(route.params.confirmCode as string);
-        navigateTo(localizePath('/?confirm=true'), { replace: true });
-      } catch {
-        navigateTo(localizePath('/'), { replace: true });
-      }
-    } else if (!isLoggedIn.value) {
-      navigateTo(localizePath('/'), { replace: true });
-    }
-  }
 
   const { getProfileFields } = useFieldsStore();
   const globalStore = useGlobalStore();
