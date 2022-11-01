@@ -1,8 +1,13 @@
 {
   "limitedDeposit": {
     "type": "error",
-    "title": "Error",
-    "description": "Sorry, but you can't deposit for now. Please, contact our support team for more information."
+    "title": "Помилка",
+    "description": "Вибачте, але зараз ви не можете внести депозит. Для отримання додаткової інформації зверніться до нашої служби підтримки."
+  },
+  "depositSuccess": {
+    "title": "Успіх",
+    "description": "Ваш депозит на суму {sum}, зроблений {date}, виконано!",
+    "type": "done"
   },
   "invalidResetCode": {
     "type": "error",
@@ -13,6 +18,11 @@
     "title": "Успіх",
     "description": "Ми надіслали електронний лист із посиланням для підтвердження на вашу електронну адресу.",
     "type": "done"
+  },
+  "depositError": {
+    "title": "Помилка",
+    "description": "Вибачте, але з вашим депозитом {sum} від {date} сталася помилка. Будь ласка спробуйте ще раз.",
+    "type": "error"
   },
   "limitedRealGame": {
     "type": "error",
@@ -35,13 +45,18 @@
   },
   "userCanceledWithdrawal": {
     "type": "done",
-    "title": "Success",
-    "description": "You have successfully canceled your withdrawal."
+    "title": "Успіх",
+    "description": "Ви успішно скасували зняття."
+  },
+  "withdrawSuccess": {
+    "description": "Ваше зняття {sum} від {date} схвалено!",
+    "title": "Успіх",
+    "type": "done"
   },
   "withdrawalProcessed": {
-    "type": "done",
-    "title": "Pending!",
-    "description": "Your withdrawal is being processed. We will check your request in a short while."
+    "type": "pending",
+    "title": "В очікуванні!",
+    "description": "Ваше зняття обробляється. Ми перевіримо ваш запит найближчим часом."
   },
   "passwordChanged": {
     "type": "done",
@@ -53,6 +68,11 @@
     "type": "done",
     "title": "Welcome",
     "description": "You have been successfully registered!"
+  },
+  "withdrawError": {
+    "title": "Скасовано зняття коштів",
+    "description": "Ваше зняття в розмірі {sum} від {date} скасовується. Для отримання додаткової інформації зверніться до нашої служби підтримки.",
+    "type": "error"
   },
   "accountBlocked": {
     "type": "error",
