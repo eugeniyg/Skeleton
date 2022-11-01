@@ -46,6 +46,7 @@
     error: 'warning',
     warning: 'info',
     done: 'done',
+    pending: 'clock',
   };
 
   const { hideAlert } = useLayoutStore();
@@ -174,7 +175,8 @@
     }
   }
 
-  &.variant-warning {
+  &.variant-warning,
+  &.variant-pending {
     > .icon {
       --color: var(--yellow-500);
     }

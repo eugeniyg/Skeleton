@@ -17,7 +17,7 @@
       <nav-list :items="sidebarContent?.bonusesMenu"/>
       <atomic-divider/>
       <template v-if="props.isLoggedIn">
-        <nav-list  :items="sidebarContent?.userMenu"/>
+        <nav-list :items="userMenuContent"/>
         <atomic-divider/>
       </template>
       <atomic-select-lang/>
@@ -30,6 +30,8 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     isCompact: {
       type: Boolean,
@@ -40,8 +42,16 @@
       default: false,
     },
   });
+
   const { sidebarContent } = useGlobalStore();
   const emit = defineEmits(['compact', 'toggleOpen']);
+
+  const gamesStore = useGamesStore();
+  const { favoriteGames } = storeToRefs(gamesStore);
+  const userMenuContent = computed(() => sidebarContent?.userMenu?.map((menuItem) => {
+    if (menuItem.url === '/favorites') return { ...menuItem, counter: favoriteGames.value.length };
+    return menuItem;
+  }));
 </script>
 
 <style lang="scss">

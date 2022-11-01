@@ -54,7 +54,7 @@
     "type": "done"
   },
   "withdrawalProcessed": {
-    "type": "done",
+    "type": "pending",
     "title": "Pending!",
     "description": "Your withdrawal is being processed. We will check your request in a short while."
   },
