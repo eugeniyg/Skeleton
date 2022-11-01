@@ -40,11 +40,9 @@
   const updateScrollHeight = (): void => {
     scrollHeight.value = refItems.value.scrollHeight;
   };
+
   onMounted(() => {
-    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
-    setTimeout(() => {
-      updateScrollHeight();
-    }, 300);
+    updateScrollHeight();
   });
 </script>
 

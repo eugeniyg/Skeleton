@@ -10,17 +10,20 @@
   >
     <slot/>
     <atomic-icon :id="props.icon"/>
-    <Teleport to="[data-tooltip-parent]">
-      <div
-        ref="tooltipMsg"
-        class="tooltip__message"
-        :class="{'is-active': isShow}"
-        :style="`top: ${coords.top}px; left: ${coords.left}px`"
-      >
-        <div class="title" v-if="props.title">{{ props.title }}</div>
-        <div class="text" v-if="props.text">{{ props.text }}</div>
-      </div>
-    </Teleport>
+
+    <client-only>
+      <Teleport to="[data-tooltip-parent]">
+        <div
+          ref="tooltipMsg"
+          class="tooltip__message"
+          :class="{'is-active': isShow}"
+          :style="`top: ${coords.top}px; left: ${coords.left}px`"
+        >
+          <div class="title" v-if="props.title">{{ props.title }}</div>
+          <div class="text" v-if="props.text">{{ props.text }}</div>
+        </div>
+      </Teleport>
+    </client-only>
   </button>
 </template>
 
@@ -89,11 +92,9 @@
   };
 
   onMounted(() => {
-    setTimeout(() => {
-      const scrollParent = getTooltipParent();
-      if (scrollParent) scrollParent.addEventListener('scroll', hide);
-      document.addEventListener('scroll', hide);
-    }, 300);
+    const scrollParent = getTooltipParent();
+    if (scrollParent) scrollParent.addEventListener('scroll', hide);
+    document.addEventListener('scroll', hide);
   });
 
   onBeforeUnmount(() => {

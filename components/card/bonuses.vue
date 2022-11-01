@@ -13,12 +13,11 @@
         <div class="card-bonuses__info">
           <atomic-tooltip
             align="bottom"
-            :text="props.tooltipText.join('')"
+            :text="props.tooltipText"
           >
             <span class="card-bonuses__info-title">Wager requirements</span>
           </atomic-tooltip>
         </div>
-
       </div>
 
       <div class="card-bonuses__amount">
@@ -34,7 +33,6 @@
         <span class="card-bonuses__progress-value">{{ props.progressValue }}%</span>
         <span class="card-bonuses__progress-value">100%</span>
       </div>
-
     </div>
   </div>
 </template>

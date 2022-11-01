@@ -42,10 +42,7 @@
   };
 
   onMounted(() => {
-    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
-    setTimeout(() => {
-      maxHeight.value = content.value.scrollHeight;
-    }, 300);
+    maxHeight.value = content.value.scrollHeight;
   });
 </script>
 

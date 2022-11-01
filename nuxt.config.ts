@@ -67,6 +67,8 @@ export default defineNuxtConfig({
         { rel: 'stylesheet', href: '/preloader/preloader.css' },
       ],
     },
+    pageTransition: false,
+    layoutTransition: false,
   },
   build,
   css: [

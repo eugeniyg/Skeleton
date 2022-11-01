@@ -128,10 +128,7 @@
 
   onMounted(() => {
     if (props.isFitContent) {
-      // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
-      setTimeout(() => {
-        drop.value.style.width = `${dropItems.value.offsetWidth}px`;
-      }, 300);
+      drop.value.style.width = `${dropItems.value.offsetWidth}px`;
     }
   });
 </script>
