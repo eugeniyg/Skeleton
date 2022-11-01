@@ -23,6 +23,7 @@
       <div v-else class="link" @click="defineCurrentAction(listItem.url)">
         <atomic-icon :id="listItem.icon"/>
         <div class="text">{{ listItem.label }}</div>
+        <div v-if="listItem.counter" class="counter">{{ listItem.counter }}</div>
       </div>
 
       <list-games
@@ -108,12 +109,30 @@
       --color: var(--gray-400);
     }
 
+    .counter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      @include font($body-1);
+      margin-left: auto;
+      margin-right: -13px;
+      color: var(--gray-500);
+      transition: color .2s ease-in-out;
+    }
+
     &:hover {
       cursor: pointer;
       --color: var(--white);
 
       .icon {
         --color: var(--white);
+      }
+
+      .counter {
+        color: var(--gray-300);;
       }
     }
 
@@ -150,7 +169,7 @@
 
   .is-compact & {
     @include media(l) {
-      .text, .items, .bage, .btn-toggle {
+      .text, .items, .bage, .btn-toggle, .counter {
         display: none;
       }
 
