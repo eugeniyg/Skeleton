@@ -1,7 +1,8 @@
 <template>
   <div data-tooltip-parent>
     <a class="link-bonus" href="#">See your bonuses history</a>
-    <!--<atomic-empty variant="bonuses" sub-title="You have not received bonuses yet."/>-->
+    <atomic-empty variant="bonuses" sub-title="You have not received bonuses yet."/>
+
     <div class="cards-bonuses">
       <h4 class="cards-bonuses__title">Cash bonuses</h4>
 

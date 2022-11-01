@@ -33,6 +33,11 @@
         <span class="card-bonuses__progress-value">{{ props.progressValue }}%</span>
         <span class="card-bonuses__progress-value">100%</span>
       </div>
+
+      <div class="card-bonuses__achive" v-if="isRiched">
+        <atomic-icon id="clock"/>
+        <span>Waiting for results of Sportsbook bets</span>
+      </div>
     </div>
   </div>
 </template>
@@ -267,6 +272,20 @@
         justify-content: flex-end;
         color: var(--end-value-color, var(--gray-400));
       }
+    }
+  }
+
+  &__achive {
+    margin-top: rem(4px);
+    @include font($body-1);
+    display: flex;
+    grid-column-gap: rem(4px);
+    align-items: center;
+    color: var(--gray-400);
+
+    .icon {
+      --color: var(--gray-400);
+      --icon-size: 16px;
     }
   }
 }
