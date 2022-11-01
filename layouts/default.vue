@@ -42,6 +42,7 @@
       <modal-success />
       <modal-error />
       <modal-confirm />
+      <modal-confirm-bonus/>
     </client-only>
 
     <atomic-alert

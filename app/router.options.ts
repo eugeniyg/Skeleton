@@ -14,7 +14,7 @@ export default <RouterConfig>{
           left: 0,
           behaviour: 'smooth',
         });
-      }, 200);
+      }, 100);
     });
 
     const resolve = await promise;
