@@ -71,12 +71,9 @@
 
   onMounted(async () => {
     if (isMobile.value) {
-      // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
-      setTimeout(() => {
-        document.querySelector('footer').style.display = 'none';
-        const seoTextBlock:any = document.querySelector('.text-wrap');
-        if (seoTextBlock) seoTextBlock.style.display = 'none';
-      }, 300);
+      document.querySelector('footer').style.display = 'none';
+      const seoTextBlock:any = document.querySelector('.text-wrap');
+      if (seoTextBlock) seoTextBlock.style.display = 'none';
     }
 
     if (!isLoggedIn.value) {

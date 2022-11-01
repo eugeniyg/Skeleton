@@ -116,10 +116,7 @@
   };
 
   onMounted(() => {
-    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
-    setTimeout(() => {
-      document.addEventListener('click', clickOutside);
-    }, 300);
+    document.addEventListener('click', clickOutside);
   });
 
   onBeforeUnmount(() => {

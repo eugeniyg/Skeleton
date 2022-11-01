@@ -64,11 +64,8 @@
   };
 
   onMounted(() => {
-    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
-    setTimeout(() => {
-      scrollHandler();
-      showArrowButtons.value = !prevDisabled.value || !nextDisabled.value;
-    }, 300);
+    scrollHandler();
+    showArrowButtons.value = !prevDisabled.value || !nextDisabled.value;
   });
 </script>
 

@@ -1422,10 +1422,10 @@ export const useFakeStore = () => {
       id: 'my-bonuses',
       isActive: true,
     },
-    // {
-    //   title: 'Bonus Code',
-    //   id: 'bonus-code',
-    // },
+    {
+      title: 'Bonus Code',
+      id: 'bonus-code',
+    },
   ];
 
   const userProfileHistoryTabs = [
@@ -1679,7 +1679,27 @@ export const useFakeStore = () => {
     ],
   };
 
+  const cashBonuses = [
+    {
+      title: '1st deposit Welcome bonus 100% + 100 FS',
+      tooltipText: 'Casino Wager Requirements - x45 Bonus Sportsbook Wager Requirements - x5 Bonus',
+      progressValue: 17,
+      amountValue: '75 from 100FS',
+      amountDate: new Date(),
+      expireDate: new Date().toUTCString(),
+    },
+
+    {
+      title: '1st deposit Welcome bonus 100% + 100 FS',
+      tooltipText: 'Casino Wager Requirements - x45 Bonus Sportsbook Wager Requirements - x5 Bonus',
+      progressValue: 100,
+      amountValue: '100 from 100FS',
+      expireDate: new Date().toUTCString(),
+    },
+  ];
+
   return {
+    cashBonuses,
     catNavItems,
     items,
     selects,
