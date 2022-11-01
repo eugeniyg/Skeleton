@@ -881,6 +881,7 @@ collections:
       - error
       - warning
       - done
+      - pending
     fields:
       - *localeField
       - name: limitedRealGame
