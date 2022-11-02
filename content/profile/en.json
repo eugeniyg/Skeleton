@@ -13,7 +13,7 @@
     "editButton": "Edit your profile",
     "seo": {
       "text": {
-        "visible": "t﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettete",
+        "visible": "",
         "hidden": "",
         "button": ""
       },
@@ -31,7 +31,7 @@
     "withdrawButton": "Withdraw",
     "seo": {
       "text": {
-        "visible": "",
+        "visible": "t﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettete",
         "hidden": "",
         "button": ""
       },
@@ -47,7 +47,10 @@
   "notifications": {
     "title": "Notifications",
     "seo": {
-      "title": "Slotsbet | Notifications"
+      "title": "Slotsbet | Notifications",
+      "text": {
+        "visible": "t﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettetet﻿estetesteteeteetetetetetetetetetetettete"
+      }
     }
   },
   "security": {
