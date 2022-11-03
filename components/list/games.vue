@@ -44,9 +44,13 @@
 
 <style lang="scss">
 .list-games {
+  background-color: var(--gray-900);
   @extend %flex-items-center;
   grid-column-gap: rem(8px);
-  padding-left: var(--padding-left, #{rem(12px)});
+  padding: var(--padding, #{rem(8px)});
+  border-radius: 8px;
+  max-width: rem(200px);
+  margin: 0 auto;
 
   .item {
     overflow: hidden;
@@ -59,9 +63,9 @@
     display: block;
     max-width: 100%;
     transition: max-width .2s ease-in-out;
-    width: var(--img-width, #{rem(56px)});
-    min-width: var(--img-width, #{rem(56px)});
-    height: var(--img-height, #{rem(56px)});
+    width: var(--img-width, #{rem(40px)});
+    min-width: var(--img-width, #{rem(40px)});
+    height: var(--img-height, #{rem(40px)});
   }
 
   .is-compact & {
@@ -70,9 +74,11 @@
         display: none;
       }
 
-      --padding-left: 0;
+      //--padding-left: 0;
       --img-width: #{rem(40px)};
       --img-height: #{rem(40px)};
+
+      padding: 0;
     }
   }
 }

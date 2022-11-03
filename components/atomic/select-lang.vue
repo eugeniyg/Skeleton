@@ -100,7 +100,7 @@
     border-radius: 8px;
     cursor: pointer;
     padding: rem(8px) rem(8px) rem(8px) rem(16px);
-    margin-right: rem(-8px);
+    //margin-right: rem(-8px);
 
     .is-compact & {
       @include media(l) {
@@ -137,7 +137,7 @@
     color: var(--color, var(--white));
     background-color: var(--bg, transparent);
     cursor: pointer;
-    padding: rem(8px);
+    padding: rem(8px) 0 rem(8px) rem(8px);
     border-radius: 4px;
 
     .icon {
@@ -172,7 +172,7 @@
     min-width: rem(40px);
     padding: var(--padding, #{rem(8px)});
     top: var(--top, #{rem(44px)});
-    right: rem(-8px);
+    right: 0;
     left: 0;
 
     .is-compact & {
