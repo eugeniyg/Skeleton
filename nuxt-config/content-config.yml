@@ -1660,7 +1660,7 @@ collections:
                 widget: object
                 fields:
                   - name: processing
-                    label: Review Label
+                    label: Processing Label
                     widget: string
                   - name: pending
                     label: Pending Label
