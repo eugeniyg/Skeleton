@@ -1659,8 +1659,8 @@ collections:
                 label: Options
                 widget: object
                 fields:
-                  - name: review
-                    label: Review Label
+                  - name: processing
+                    label: Processing Label
                     widget: string
                   - name: pending
                     label: Pending Label

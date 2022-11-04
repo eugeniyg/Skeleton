@@ -29,7 +29,7 @@
     "statusFilter": {
       "label": "Status:",
       "options": {
-        "review": "Review",
+        "processing": "Processing",
         "pending": "Pending",
         "success": "Success",
         "rejected": "Rejected"

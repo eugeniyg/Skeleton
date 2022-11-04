@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.3",
-    "@platform/frontend-core": "^0.0.2-rc.81",
+    "@platform/frontend-core": "^0.0.2-rc.89",
     "@types/lodash": "^4.14.186",
     "@types/ua-parser-js": "^0.7.36",
     "@vuelidate/core": "^2.0.0",
