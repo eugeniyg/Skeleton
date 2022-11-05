@@ -30,18 +30,16 @@
       <layout-cookies v-if="showCookiesMessage" />
     </transition>
 
-    <client-only>
-      <modal-register />
-      <modal-sign-in />
-      <modal-forgot-pass />
-      <modal-reset-pass />
-      <modal-deposit />
-      <modal-withdraw />
-      <modal-success />
-      <modal-error />
-      <modal-confirm />
-      <modal-confirm-bonus/>
-    </client-only>
+    <modal-register />
+    <modal-sign-in />
+    <modal-forgot-pass />
+    <modal-reset-pass />
+    <modal-deposit />
+    <modal-withdraw />
+    <modal-success />
+    <modal-error />
+    <modal-confirm />
+    <modal-confirm-bonus/>
 
     <atomic-alert
       :isShow="isShowAlert"
