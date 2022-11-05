@@ -70,6 +70,12 @@
   transition: all .2s ease;
   position: relative;
 
+  ~ .cards-bonuses {
+    @include media(md) {
+      margin-top: rem(16px);
+    }
+  }
+
   &__title {
     @include font($heading-5);
     color: var(--white);
@@ -120,7 +126,6 @@
     bottom: rem(-2px);
     border-radius: 16px;
     background-image: linear-gradient(107.86deg, #28263B 1.67%, #3D3D51 87.33%), linear-gradient(107.86deg, #19192F 1.67%, #28263B 87.33%);
-
   }
 
   &.is-active {
@@ -186,6 +191,7 @@
 
   &__value {
     flex-grow: 1;
+    white-space: nowrap;
   }
 
   &__msg {
@@ -194,6 +200,7 @@
     display: flex;
     align-items: center;
     grid-column-gap: rem(2px);
+    white-space: nowrap;
 
     .icon {
       --color: var(--gray-400);
