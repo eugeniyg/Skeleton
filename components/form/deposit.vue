@@ -20,23 +20,19 @@
       </template>
     </template>
 
-    <div class="row">
-      <form-input-toggle
-        name="bonus-toggle"
-        v-model:value="hasBonusCode"
-        @change="hasBonusCode = !hasBonusCode"
-      >
-        {{ depositContent?.togglerLabel || '' }}
-      </form-input-toggle>
+    <form-input-toggle
+      name="bonus-toggle"
+      v-model:value="hasBonusCode"
+      @change="hasBonusCode = !hasBonusCode"
+    >
+      {{ depositContent?.togglerLabel || '' }}
+    </form-input-toggle>
 
-      <form-input-text
-        v-if="hasBonusCode"
-        v-model:value="bonusValue"
-        label=""
-        :placeholder="fieldsContent?.bonusCode?.placeholder || ''"
-        name="bonus-code"
-      />
-    </div>
+    <form-bonus-code
+      v-if="hasBonusCode"
+      v-model:value="bonusValue"
+    />
+
     <button-base
       type="primary"
       size="md"
@@ -59,7 +55,7 @@
     method?: string
   }>();
 
-  const { popupsData, fieldsContent, alertsData } = useGlobalStore();
+  const { popupsData, alertsData } = useGlobalStore();
   const depositContent: DepositInterface|undefined = popupsData?.deposit;
 
   const walletStore = useWalletStore();
@@ -130,21 +126,6 @@
   .input-toggle {
     width: 100%;
     --slider-bg: var(--black-primary);
-  }
-
-  .input-text {
-    .field {
-      text-align: center;
-      padding: rem(11px) rem(8px);
-      max-width: rem(130px);
-      margin-left: auto;
-    }
-  }
-
-  .row {
-    display: flex;
-    grid-column-gap: rem(8px);
-    min-height: rem(44px);
   }
 }
 </style>

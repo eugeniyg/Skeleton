@@ -142,6 +142,7 @@
     height: rem(24px);
     @extend %skip-btn;
     padding: 0;
+    align-self: flex-start;
 
     .icon {
       --icon-size: 22px;
