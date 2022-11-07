@@ -47,7 +47,7 @@
   const open = ref<boolean>(checkUrl());
   watch(() => route.fullPath, () => {
     const hasNestedLink = checkUrl();
-    if (hasNestedLink) open.value = true;
+    open.value = hasNestedLink;
   });
 
   const toggleOpen = ():void => {
