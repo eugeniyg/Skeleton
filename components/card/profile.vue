@@ -37,6 +37,7 @@
 .card-profile {
   @extend %flex-column;
   grid-row-gap: rem(16px);
+  padding: 0 rem(4px);
 
   .avatar {
     --padding: #{rem(12px) rem(16px)};
