@@ -74,7 +74,6 @@
         display: none;
       }
 
-      //--padding-left: 0;
       --img-width: #{rem(40px)};
       --img-height: #{rem(40px)};
 

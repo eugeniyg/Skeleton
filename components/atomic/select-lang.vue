@@ -100,7 +100,6 @@
     border-radius: 8px;
     cursor: pointer;
     padding: rem(8px) rem(8px) rem(8px) rem(16px);
-    //margin-right: rem(-8px);
 
     .is-compact & {
       @include media(l) {
