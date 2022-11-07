@@ -31,7 +31,7 @@
           </div>
 
           <div class="td td-date">
-            <span>{{ getFormatDate(session.createdAt) }}</span>
+            <span v-html="format(getFormatDate(session.createdAt))"></span>
           </div>
 
           <div class="td">
@@ -143,6 +143,8 @@
   onBeforeUnmount(() => {
     window.removeEventListener('scroll', scrollAction);
   });
+
+  const format = (str) => str.split(',').join('<br>');
 </script>
 
 <style lang="scss">
