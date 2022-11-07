@@ -1212,13 +1212,13 @@ export const useFakeStore = () => {
   };
 
   const bonusesHistoryTb = {
-    columns: ['Title', 'Status', 'Amount', 'Wager', 'Date', 'Valid until'],
+    columns: ['Title', 'Status', 'Amount', 'Progress', 'Date', 'Valid until'],
     rows: [
       {
         title: 'Special 1st deposit bonus 100% + 100 FS',
         status: 'Active',
         amount: '0.00000009 mBTC',
-        wager: '84%',
+        progress: '84%',
         date: '2022-11-04T15:11:16.000+00:00',
         validUntil: '2022-11-04T15:11:16.000+00:00',
       },
@@ -1226,7 +1226,7 @@ export const useFakeStore = () => {
         title: 'Special 1st deposit bonus 100% + 100 FS',
         status: 'Active',
         amount: '0.00000009 mBTC',
-        wager: '84%',
+        progress: '84%',
         date: '2022-11-04T15:11:16.000+00:00',
         validUntil: '2022-11-04T15:11:16.000+00:00',
       },
@@ -1234,7 +1234,7 @@ export const useFakeStore = () => {
         title: 'Special 1st deposit bonus 100% + 100 FS',
         status: 'Active',
         amount: '0.00000009 mBTC',
-        wager: '84%',
+        progress: '84%',
         date: '2022-11-04T15:11:16.000+00:00',
         validUntil: '2022-11-04T15:11:16.000+00:00',
       },
@@ -1242,7 +1242,7 @@ export const useFakeStore = () => {
         title: 'Special 1st deposit bonus 100% + 100 FS',
         status: 'Active',
         amount: '0.00000009 mBTC',
-        wager: '84%',
+        progress: '84%',
         date: '2022-11-04T15:11:16.000+00:00',
         validUntil: '2022-11-04T15:11:16.000+00:00',
       },
@@ -1250,7 +1250,7 @@ export const useFakeStore = () => {
         title: 'Special 1st deposit bonus 100% + 100 FS',
         status: 'Active',
         amount: '0.00000009 mBTC',
-        wager: '84%',
+        progress: '84%',
         date: '2022-11-04T15:11:16.000+00:00',
         validUntil: '2022-11-04T15:11:16.000+00:00',
       },

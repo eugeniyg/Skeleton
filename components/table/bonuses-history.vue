@@ -9,7 +9,7 @@
         <div class="td">{{ row.title }}</div>
         <div class="td">{{ row.status }}</div>
         <div class="td">{{ row.amount }}</div>
-        <div class="td">{{ row.wager }}</div>
+        <div class="td">{{ row.progress }}</div>
         <div class="td" v-html="format(getFormatDate(row.date))"/>
         <div class="td" v-html="format(getFormatDate(row.validUntil))"/>
       </div>
