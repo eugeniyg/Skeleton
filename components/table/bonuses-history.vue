@@ -9,9 +9,9 @@
         <div class="td">{{ row.title }}</div>
         <div class="td">{{ row.status }}</div>
         <div class="td">{{ row.amount }}</div>
-        <div class="td">{{ row.wager }}</div>
-        <div class="td" v-html="row.date"/>
-        <div class="td" v-html="row.validUntil"/>
+        <div class="td">{{ row.progress }}</div>
+        <div class="td" v-html="format(getFormatDate(row.date))"/>
+        <div class="td" v-html="format(getFormatDate(row.validUntil))"/>
       </div>
     </div>
 
@@ -20,6 +20,8 @@
 </template>
 
 <script setup lang="ts">
+  const { getFormatDate } = useProjectMethods();
+
   const props = defineProps({
     items: {
       type: Object,
@@ -27,6 +29,8 @@
     },
   });
   const selectedPage = ref<number>(1);
+
+  const format = (str) => str.split(',').join('<br>');
 </script>
 
 <style lang="scss">

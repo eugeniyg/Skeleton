@@ -1,26 +1,14 @@
 <template>
   <div class="nav-list">
     <div v-for="(listItem, index) in props.items" :key="index" class="item">
-      <template v-if="listItem?.items?.length">
-        <div class="link" @click.prevent="toggleOpen" :class="{'is-open': open}">
-          <atomic-icon :id="listItem.icon"/>
-          <div class="text">{{ listItem.label }}</div>
-          <button-toggle/>
-        </div>
+      <atomic-menu-category v-if="listItem?.items?.length" v-bind="listItem" />
 
-        <div class="items">
-          <nuxt-link
-            v-for="(link, itemIndex) in listItem.items"
-            :key="itemIndex"
-            class="link"
-            :to="localizePath(link.url)"
-          >
-            <span class="text">{{ link.label }}</span>
-          </nuxt-link>
-        </div>
-      </template>
-
-      <div v-else class="link" @click="defineCurrentAction(listItem.url)">
+      <div
+        v-else
+        class="link"
+        @click="defineCurrentAction(listItem.url)"
+        :class="{'is-active': $route.fullPath === localizePath(listItem.url)}"
+      >
         <atomic-icon :id="listItem.icon"/>
         <div class="text">{{ listItem.label }}</div>
         <div v-if="listItem.counter" class="counter">{{ listItem.counter }}</div>
@@ -28,7 +16,7 @@
 
       <list-games
         v-if="listItem.gameList?.length"
-        :items="listItem.gameList.slice(0, 3)"
+        :items="listItem.gameList.slice(0, 4)"
       />
     </div>
   </div>
@@ -48,18 +36,13 @@
     },
   });
 
-  const open = ref<boolean>(props.isOpen);
-
-  const toggleOpen = ():void => {
-    open.value = !open.value;
-  };
-
   const router = useRouter();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal } = useLayoutStore();
 
   const { localizePath } = useProjectMethods();
+
   const defineCurrentAction = (href: string):void => {
     if (!href) return;
     // specific actions like open modal etc
@@ -78,6 +61,7 @@
   padding: 0;
   grid-gap: rem(4px);
   display: grid;
+  user-select: none;
 
   > .item {
     @extend %flex-column;
@@ -91,6 +75,14 @@
     max-height: 0;
     transition: max-height .2s ease-in-out;
 
+    .link {
+      max-width: rem(176px);
+
+      .text {
+        @include upd-font($body-2);
+      }
+    }
+
     .link:first-of-type {
       margin-top: rem(4px);
     }
@@ -100,7 +92,7 @@
     @extend %link;
     @extend %flex-items-center;
     grid-column-gap: #{rem(8px)};
-    padding: var(--padding, #{rem(8px) rem(16px)});
+    padding: var(--padding, #{rem(8px)} 0 #{rem(8px)} #{rem(16px)});
     transition: color .2s ease-in-out;
     min-height: rem(40px);
     --color: var(--gray-300);
@@ -118,7 +110,6 @@
       flex-shrink: 0;
       @include font($body-1);
       margin-left: auto;
-      margin-right: -13px;
       color: var(--gray-500);
       transition: color .2s ease-in-out;
     }
@@ -136,7 +127,7 @@
       }
     }
 
-    &:focus, &:active, &.is-active {
+    &:focus, &.is-active {
       --color: var(--yellow-500);
 
       .icon {
@@ -145,15 +136,13 @@
     }
 
     &.is-open {
-      --color: var(--yellow-500);
-
-      .icon {
-        --color: var(--yellow-500);
-      }
-
       ~ .items {
         max-height: 100%;
       }
+    }
+
+    &.router-link-active {
+      --color: var(--yellow-500);
     }
   }
 
