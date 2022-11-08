@@ -1,6 +1,3 @@
-import { useWalletStore } from '~/composables/useWalletStore';
-import { useGamesStore } from '~/composables/useGamesStore';
-
 export default defineNuxtPlugin(async (nuxtApp) => {
   const { parseUserAgent } = useGlobalStore();
   // const languages = parser.parse(nuxtApp.ssrContext.req.headers['accept-language']);
@@ -11,6 +8,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const profileStore = useProfileStore();
   const { getUserAccounts } = useWalletStore();
   const { getFavoriteGames } = useGamesStore();
+  const route = useRoute();
   const bearer = useCookie('bearer');
 
   if (bearer.value) {
@@ -30,10 +28,21 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
 
   nuxtApp.hook('page:finish', () => {
-    const route = useRoute();
     const { preloaderDone } = useProjectMethods();
     if (route.name !== 'main' && route.name !== 'locale-main') preloaderDone();
   });
+
+  const checkAffiliateTag = ():void => {
+    const historyBack = window.history.state.back;
+
+    if (profileStore.isLoggedIn) {
+      localStorage.removeItem('affiliateTag');
+    } else if (route.query?.stag) {
+      localStorage.setItem('affiliateTag', route.query.stag as string);
+    } else if (!historyBack) {
+      localStorage.removeItem('affiliateTag');
+    }
+  };
 
   nuxtApp.hook('app:mounted', async () => {
     const { initWebSocket } = useWebSocket();
@@ -46,6 +55,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     }
     const { subscribeWinnersSocket } = useGamesStore();
     subscribeWinnersSocket();
+    checkAffiliateTag();
   });
 
   const setWindowHeight = ():void => {
