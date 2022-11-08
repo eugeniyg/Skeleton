@@ -91,7 +91,6 @@
 }
 
 
-
 @mixin scrollbar {
   scrollbar-color: var(--gray-700);
   scrollbar-width: thin;
@@ -117,5 +116,10 @@
   }
 }
 
+@mixin use-hover {
+  @media (hover: hover) {
+    @content
+  }
+}
 
 
