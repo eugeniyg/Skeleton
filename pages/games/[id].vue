@@ -120,11 +120,6 @@
   .app-main {
     --padding: 0;
 
-    // if mob nav exist
-    //@media (orientation: landscape) and (max-width: #{rem(1024px)}) {
-    //  --padding: 0 0 0 #{rem(64px)};
-    //}
-
     .group-games {
       display: none;
       margin-top: rem(40px);
