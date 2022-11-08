@@ -81,7 +81,9 @@
         "gameList": [
           "crash-x-turbo-games",
           "dice-twice-turbo-games",
-          "mines-turbo-games"
+          "mines-turbo-games",
+          "neko-turbo-games",
+          "turbo-games-turbomines"
         ]
       },
       {
