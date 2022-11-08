@@ -5,35 +5,16 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const { userAgent } = window.navigator;
   parseUserAgent(userAgent);
 
-  const profileStore = useProfileStore();
-  const { getUserAccounts } = useWalletStore();
-  const { getFavoriteGames } = useGamesStore();
-  const route = useRoute();
-  const bearer = useCookie('bearer');
-
-  if (bearer.value) {
-    try {
-      await Promise.all([
-        profileStore.getProfileData(),
-        getUserAccounts(),
-      ]);
-      getFavoriteGames();
-    } catch (error) {
-      if (error.response?.status === 401) {
-        profileStore.logOutUser(false);
-      } else {
-        throw error;
-      }
-    }
-  }
-
   nuxtApp.hook('page:finish', () => {
+    const route = useRoute();
     const { preloaderDone } = useProjectMethods();
     if (route.name !== 'main' && route.name !== 'locale-main') preloaderDone();
   });
 
   const checkAffiliateTag = ():void => {
     const historyBack = window.history.state.back;
+    const profileStore = useProfileStore();
+    const route = useRoute();
 
     if (profileStore.isLoggedIn) {
       localStorage.removeItem('affiliateTag');
@@ -47,6 +28,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   nuxtApp.hook('app:mounted', async () => {
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
+    const bearer = useCookie('bearer');
 
     if (bearer.value) {
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();

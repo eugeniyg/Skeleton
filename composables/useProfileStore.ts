@@ -35,7 +35,7 @@ export const useProfileStore = defineStore('profileStore', {
 
   getters: {
     userNickname(state):string {
-      return state.profile.nickname || 'Unknown';
+      return state.profile?.nickname || 'Unknown';
     },
 
     playerStatusName(state):string {

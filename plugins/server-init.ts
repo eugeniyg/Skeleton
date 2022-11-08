@@ -1,3 +1,6 @@
+import { useWalletStore } from '~/composables/useWalletStore';
+import { useGamesStore } from '~/composables/useGamesStore';
+
 export default defineNuxtPlugin(async (nuxtApp) => {
   const {
     getCurrencies,
@@ -28,22 +31,39 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   if (process.server) {
     getRequestCountry();
 
-    try {
-      await Promise.all([
-        getCurrencies(),
-        getLocales(),
-        getCountries(),
-        getRegistrationFields(),
-        getGameProviders(),
-        getGameCollections(),
+    const token = useCookie('bearer');
+
+    const { getProfileData, logOutUser } = useProfileStore();
+    const { getUserAccounts } = useWalletStore();
+    const { getFavoriteGames } = useGamesStore();
+
+    const settingsRequest = Promise.all([
+      getCurrencies(),
+      getLocales(),
+      getCountries(),
+      getRegistrationFields(),
+      getGameProviders(),
+      getGameCollections(),
+    ]);
+
+    if (token.value) {
+      const profileRequests = Promise.all([
+        getProfileData(),
+        getUserAccounts(),
       ]);
 
-      checkLanguage();
-    } catch (error) {
-      console.error(error);
-      throw error;
-    } finally {
-      await getGlobalContent();
+      const requestResult = await Promise.allSettled([
+        settingsRequest,
+        profileRequests,
+      ]);
+
+      if (requestResult[1].status === 'fulfilled') {
+        await getFavoriteGames();
+      } else if (requestResult[1].reason.response.status === 401) logOutUser(false);
+    } else {
+      await settingsRequest;
     }
+    checkLanguage();
+    await getGlobalContent();
   }
 });

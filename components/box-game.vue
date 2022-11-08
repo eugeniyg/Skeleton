@@ -15,9 +15,7 @@
       />
     </div>
 
-    <client-only>
-      <nav-game :showPlug="showPlug" :gameInfo="gameInfo"/>
-    </client-only>
+    <nav-game :showPlug="showPlug" :gameInfo="gameInfo"/>
 
     <panel-mode v-if="!showPlug" :gameContent="gameContent" @changeMode="emit('changeMode')"/>
 

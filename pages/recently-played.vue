@@ -2,27 +2,25 @@
   <div class="recently-played">
     <div class="recently-played__title">{{ recentlyContent?.title }}</div>
 
-    <client-only>
-      <atomic-empty
-        v-if="!recentlyGames.length && !loadingData"
-        :title="recentlyContent?.empty.title"
-        :subTitle="recentlyContent?.empty.description"
-        :image="recentlyContent?.empty.image"
-      />
+    <atomic-empty
+      v-if="!recentlyGames.length && !loadingData"
+      :title="recentlyContent?.empty.title"
+      :subTitle="recentlyContent?.empty.description"
+      :image="recentlyContent?.empty.image"
+    />
 
-      <list-grid
-        v-else
-        :items="recentlyGames"
-        :meta="pageMeta"
-      />
+    <list-grid
+      v-else
+      :items="recentlyGames"
+      :meta="pageMeta"
+    />
 
-      <group-games
-        v-if="!recentlyGames.length && !loadingData"
-        :category="recommendedCategory"
-        showArrows
-        subTitle
-      />
-    </client-only>
+    <group-games
+      v-if="!recentlyGames.length && !loadingData"
+      :category="recommendedCategory"
+      showArrows
+      subTitle
+    />
 
     <atomic-seo-text v-if="recentlyContent?.seo?.text" v-bind="recentlyContent?.seo?.text" />
   </div>

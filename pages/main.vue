@@ -15,9 +15,7 @@
 
     <nav-cat @clickCategory="changeCategory" />
 
-    <client-only>
-      <favorite-recently v-if="isLoggedIn" />
-    </client-only>
+    <favorite-recently v-if="isLoggedIn" />
 
     <br />
 

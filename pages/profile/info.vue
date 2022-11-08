@@ -21,70 +21,68 @@
       </button-base>
     </div>
 
-    <client-only>
-      <form-profile
-        v-if="isProfileEdit"
-        @toggle-profile-edit="toggleProfileEdit"
-        v-bind="infoContent"
-      />
+    <form-profile
+      v-if="isProfileEdit"
+      @toggle-profile-edit="toggleProfileEdit"
+      v-bind="infoContent"
+    />
 
-      <template v-else>
-        <div class="row-user">
-          <atomic-avatar-profile :is-edit="false"/>
+    <template v-else>
+      <div class="row-user">
+        <atomic-avatar-profile :is-edit="false"/>
 
-          <div class="items">
-            <div class="nickname">{{ userNickname }}</div>
+        <div class="items">
+          <div class="nickname">{{ userNickname }}</div>
 
-            <div class="item" v-show="profile.firstName || profile.lastName">
-              <atomic-icon id="user"/>
-              {{ `${profile.firstName} ` }}{{ profile.lastName }}
-            </div>
+          <div class="item" v-show="profile.firstName || profile.lastName">
+            <atomic-icon id="user"/>
+            {{ `${profile.firstName} ` }}{{ profile.lastName }}
+          </div>
 
-            <div class="item" v-show="profile.country || profile.city">
-              <atomic-icon id="location"/>
-              {{ userCountryName }}{{ profile.city ? `, ${profile.city}` : '' }}
-            </div>
+          <div class="item" v-show="profile.country || profile.city">
+            <atomic-icon id="location"/>
+            {{ userCountryName }}{{ profile.city ? `, ${profile.city}` : '' }}
+          </div>
 
-            <div class="item" v-show="profile.email">
-              <atomic-icon v-if="profile.confirmedAt" class="is-success" id="done"/>
-              <atomic-icon v-else class="is-warning" id="warning"/>
-              {{ profile.email }}
+          <div class="item" v-show="profile.email">
+            <atomic-icon v-if="profile.confirmedAt" class="is-success" id="done"/>
+            <atomic-icon v-else class="is-warning" id="warning"/>
+            {{ profile.email }}
 
-              <span
-                v-if="!profile.confirmedAt"
-                class="btn-primary size-xs"
-                @click.once="profileStore.resendVerifyEmail"
-                :class="{ disabled: resentVerifyEmail }"
-              >
-                {{ infoContent?.sendButton }}
-              </span>
-            </div>
+            <span
+              v-if="!profile.confirmedAt"
+              class="btn-primary size-xs"
+              @click.once="profileStore.resendVerifyEmail"
+              :class="{ disabled: resentVerifyEmail }"
+            >
+              {{ infoContent?.sendButton }}
+            </span>
           </div>
         </div>
+      </div>
 
-        <table-profile/>
+      <table-profile/>
+
+      <atomic-divider/>
+    </template>
+
+    <template v-if="subscriptionFields.length">
+      <h4 class="heading">{{ infoContent?.subscriptionTitle }}</h4>
+
+      <div class="group">
+        <form-input-toggle
+          v-for="field in subscriptionFields"
+          :key="field.name"
+          :name="field.name"
+          :value="profile[field.name]"
+          @change="changeSubscription(field.name)"
+        >
+          {{ fieldsContent?.[field.name]?.label }}
+        </form-input-toggle>
 
         <atomic-divider/>
-      </template>
-
-      <template v-if="subscriptionFields.length">
-        <h4 class="heading">{{ infoContent?.subscriptionTitle }}</h4>
-
-        <div class="group">
-          <form-input-toggle
-            v-for="field in subscriptionFields"
-            :key="field.name"
-            :name="field.name"
-            :value="profile[field.name]"
-            @change="changeSubscription(field.name)"
-          >
-            {{ fieldsContent?.[field.name]?.label }}
-          </form-input-toggle>
-
-          <atomic-divider/>
-        </div>
-      </template>
-    </client-only>
+      </div>
+    </template>
 
     <h4 class="heading">{{ infoContent?.manageTitle }}</h4>
 
