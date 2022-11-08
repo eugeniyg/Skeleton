@@ -122,9 +122,13 @@
       registrationFormData.nickname = getNicknameFromEmail(registrationFormData.email);
     }
 
+    const affiliateTag = localStorage.getItem('affiliateTag');
+    if (affiliateTag) registrationFormData.affiliateTag = affiliateTag;
+
     try {
       isLockedAsyncButton.value = true;
       await registration(registrationFormData);
+      if (affiliateTag) localStorage.removeItem('affiliateTag');
       closeModal('register');
     } catch (error) {
       if (error.response?.status === 422) {

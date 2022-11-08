@@ -1,6 +1,3 @@
-import { useWalletStore } from '~/composables/useWalletStore';
-import { useGamesStore } from '~/composables/useGamesStore';
-
 export default defineNuxtPlugin(async (nuxtApp) => {
   const { parseUserAgent } = useGlobalStore();
   // const languages = parser.parse(nuxtApp.ssrContext.req.headers['accept-language']);
@@ -14,6 +11,20 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     if (route.name !== 'main' && route.name !== 'locale-main') preloaderDone();
   });
 
+  const checkAffiliateTag = ():void => {
+    const historyBack = window.history.state.back;
+    const profileStore = useProfileStore();
+    const route = useRoute();
+
+    if (profileStore.isLoggedIn) {
+      localStorage.removeItem('affiliateTag');
+    } else if (route.query?.stag) {
+      localStorage.setItem('affiliateTag', route.query.stag as string);
+    } else if (!historyBack) {
+      localStorage.removeItem('affiliateTag');
+    }
+  };
+
   nuxtApp.hook('app:mounted', async () => {
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
@@ -26,6 +37,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     }
     const { subscribeWinnersSocket } = useGamesStore();
     subscribeWinnersSocket();
+    checkAffiliateTag();
   });
 
   const setWindowHeight = ():void => {
