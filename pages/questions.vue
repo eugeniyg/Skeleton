@@ -42,7 +42,6 @@
   flex-direction: column;
   position: relative;
   align-items: flex-start;
-  @extend %text-page-max;
 
   > .header {
     display: grid;
