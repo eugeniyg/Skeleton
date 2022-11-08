@@ -109,10 +109,6 @@
 </script>
 
 <style lang="scss">
-.app-main {
-  min-height: 100vh;
-}
-
 .input-providers {
   position: relative;
 
