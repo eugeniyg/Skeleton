@@ -80,7 +80,7 @@
   .form-control {
     background: none;
     background-color: var(--bg, var(--gray-800));
-    padding: var(--input-padding-y, #{rem(11px)}) rem(44px);
+    padding: var(--input-padding-y, #{rem(7px)}) rem(44px);
     border: 1px solid var(--border-color, var(--gray-800));
     color: var(--color, var(--white));
     border-radius: 8px;

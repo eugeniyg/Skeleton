@@ -163,7 +163,7 @@
     color: var(--color, var(--white));
     cursor: pointer;
     user-select: none;
-    padding: var(--select-padding-y, rem(11px)) rem(36px) var(--select-padding-y, rem(11px)) rem(16px);
+    padding: var(--select-padding-y, rem(8px) rem(36px) rem(8px) rem(16px));
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: auto 1fr;
@@ -173,6 +173,11 @@
     transition: border-color .2s ease-in-out;
     min-height: rem(42px);
     grid-column-gap: rem(8px);
+
+    .filters & {
+      @include font($body-1);
+      min-height: unset;
+    }
 
     .icon {
       position: absolute;
@@ -236,6 +241,10 @@
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: auto 1fr;
+
+    .filters & {
+      @include font($body-1);
+    }
 
     span {
       overflow: hidden;

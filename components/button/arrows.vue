@@ -51,7 +51,7 @@
     @include box(32px);
     @extend %flex-all-center;
     @extend %skip-btn;
-    border-radius: 50%;
+    border-radius: 8px;
     box-shadow: var(--shadow, none);
 
     --bg: var(--gray-800);

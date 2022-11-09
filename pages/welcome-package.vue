@@ -330,7 +330,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%;
+    border-radius: 8px;
     background-color: var(--gray-800);
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
     z-index: 1;
