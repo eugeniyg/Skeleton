@@ -10,6 +10,7 @@
     </div>
 
     <button
+      v-if="isShowMoreBtn"
       class="show-more-btn"
       @click.prevent="clickAction"
     >
@@ -57,7 +58,6 @@
 
   const clickAction = () => {
     isTextExpanded.value = !isTextExpanded.value;
-    isShowMoreBtn.value = !isShowMoreBtn.value;
   };
 
   onMounted(() => {
@@ -113,14 +113,19 @@
     }
   }
 
-  .show-more-btn, .hide-text-btn {
+  .show-more-btn {
     @extend %skip-btn;
+    display: block;
     text-decoration: none;
     @include font($body-1-paragraph);
-    color: var(--white);
-    margin: -24px auto 24px;
-    display: block;
     font-family: inherit;
+    color: var(--white);
+    transform: translateY(calc(-100% - #{rem(4px)}));
+    margin: 0 auto;
+
+    @include use-hover {
+      cursor: pointer;
+    }
   }
 
   &__files {
