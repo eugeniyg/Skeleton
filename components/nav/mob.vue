@@ -91,7 +91,7 @@
     &.is-accent {
       .icon {
         @include box(36px);
-        background-color: var(--yellow-600);
+        background: var(--gradient-radial);
         padding: rem(6px);
         @include radius(50%);
       }

@@ -15,7 +15,7 @@
   @extend %skip-btn;
   @include box(40px);
   @extend %flex-all-center;
-  border-radius: var(--radius, 50%);
+  border-radius: var(--radius, 12px);
   padding: var(--btn-padding, 0);
   grid-column-gap: rem(4px);
 
@@ -29,8 +29,8 @@
 
   @include media(md) {
     --width: auto;
-    --radius:  999px;
-    --btn-padding: #{rem(10px)} #{rem(24px)};
+    --radius:  12px;
+    --btn-padding: #{rem(11px)} #{rem(24px)};
 
     span {
       --display: block;

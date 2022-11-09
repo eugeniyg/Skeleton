@@ -80,6 +80,7 @@
     align-self: center;
     --padding: #{rem(4px)} #{rem(16px)};
     @include upd-font($heading-1);
+    --btn-border-radius: 8px;
 
     @include media(md) {
       --padding: #{rem(11px)} #{rem(24px)};

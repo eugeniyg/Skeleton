@@ -18,7 +18,7 @@
 
 <style lang="scss">
 .input-deposit {
-  @include radius(999px);
+  @include radius(12px);
   @include font($heading-2);
   @extend %flex-items-center;
   background-color: var(--gray-900);
