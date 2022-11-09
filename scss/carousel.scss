@@ -4,6 +4,10 @@
     height: 100%;
   }
 
+  .carousel__viewport {
+    border-radius: 8px;
+  }
+
   .carousel__pagination {
     padding: rem(8px) 0 0 0;
     display: flex;
@@ -30,8 +34,8 @@
     @include use-hover {
       &:hover {
         &:after {
-           background-image: var(--gradient-radial);
-           --vc-pgn-active-color: var(--gray-600);
+          background-image: var(--gradient-radial);
+          --vc-pgn-active-color: var(--gray-600);
         }
       }
     }
@@ -69,6 +73,14 @@
     --vc-nav-width: #{rem(32px)};
     --vc-nav-height: #{rem(32px)};
     transition: all .2s ease-in-out;
+
+    &:hover {
+      color: var(--white);
+    }
+
+    &:active {
+      color: var(--yellow-500);
+    }
 
     @include use-hover {
       &:hover {
