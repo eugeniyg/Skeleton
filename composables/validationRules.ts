@@ -3,21 +3,21 @@ import { isValidPhoneNumber } from 'libphonenumber-js';
 
 export * from '@vuelidate/validators';
 
-export const countryCode = (value):boolean => !validationRules.helpers.req(value) || /^[A-Z]{2}$/.test(value);
+export const countryCode = (value:any):boolean => !validationRules.helpers.req(value) || /^[A-Z]{2}$/.test(value);
 
-export const languageCode = (value):boolean => !validationRules.helpers.req(value) || /^[a-z]{2}$/.test(value);
+export const languageCode = (value:any):boolean => !validationRules.helpers.req(value) || /^[a-z]{2}$/.test(value);
 
-export const phone = (value):boolean => !validationRules.helpers.req(value) || isValidPhoneNumber(`+${value}`);
+export const phone = (value:any):boolean => !validationRules.helpers.req(value) || isValidPhoneNumber(`+${value}`);
 
-export const lowercase = (value):boolean => !validationRules.helpers.req(value) || (value.toLowerCase() === value);
+export const lowercase = (value:any):boolean => !validationRules.helpers.req(value) || (value.toLowerCase() === value);
 
-export const uppercase = (value):boolean => !validationRules.helpers.req(value) || (value.toUpperCase() === value);
+export const uppercase = (value:any):boolean => !validationRules.helpers.req(value) || (value.toUpperCase() === value);
 
-export const accepted = (value):boolean => !validationRules.helpers.req(value) || ['yes', 'on', 1, true].includes(value);
+export const accepted = (value:any):boolean => !validationRules.helpers.req(value) || ['yes', 'on', 1, true].includes(value);
 
-export const declined = (value):boolean => !validationRules.helpers.req(value) || ['no', 'off', 0, false].includes(value);
+export const declined = (value:any):boolean => !validationRules.helpers.req(value) || ['no', 'off', 0, false].includes(value);
 
-function isValidDate(dateString) {
+function isValidDate(dateString:any) {
   let testDate;
   if (typeof dateString === 'number') {
     testDate = new Date(dateString);
@@ -133,14 +133,14 @@ export const after_or_equal = (param:string) => validationRules.helpers.withPara
   );
 
 // eslint-disable-next-line
-export const alpha_dash = (value):boolean => !validationRules.helpers.req(value) || /^[a-zA-Z0-9_-]+$/.test(value);
+export const alpha_dash = (value:any):boolean => !validationRules.helpers.req(value) || /^[a-zA-Z0-9_-]+$/.test(value);
 
 // eslint-disable-next-line
 export const alpha_num = validationRules.alphaNum;
 
-export const array = (value):boolean => !validationRules.helpers.req(value) || (value instanceof Array);
+export const array = (value:any):boolean => !validationRules.helpers.req(value) || (value instanceof Array);
 
-export const boolean = (value):boolean => !validationRules.helpers.req(value) || [true, false, 1, 0, '1', '0'].includes(value);
+export const boolean = (value:any):boolean => !validationRules.helpers.req(value) || [true, false, 1, 0, '1', '0'].includes(value);
 
 export const confirmed = (param: string) => validationRules.helpers.withParams(
     { param },
@@ -187,7 +187,7 @@ export const different = (param: string) => validationRules.helpers.withParams(
     },
   );
 
-function getParameters(ruleValue) {
+function getParameters(ruleValue:any) {
   let value = [];
 
   if (typeof ruleValue === 'string') {
@@ -248,7 +248,7 @@ export const ip = validationRules.ipAddress;
 // eslint-disable-next-line
 export const mac_address = validationRules.macAddress;
 
-function getSize(value) {
+function getSize(value:any) {
   if (value instanceof Array) {
     return value.length;
   }
@@ -282,7 +282,7 @@ export const min = (param: string) => validationRules.helpers.withParams(
     },
   );
 
-export const regex = (param) => validationRules.helpers.withParams(
+export const regex = (param:any) => validationRules.helpers.withParams(
     { param },
     (value:any) => {
       if (!validationRules.helpers.req(value)) return true;
@@ -298,7 +298,7 @@ export const regex = (param) => validationRules.helpers.withParams(
   );
 
 // eslint-disable-next-line
-export const not_regex = (param) => validationRules.helpers.withParams(
+export const not_regex = (param:any) => validationRules.helpers.withParams(
     { param },
     (value:any) => {
       if (!validationRules.helpers.req(value)) return true;
@@ -326,7 +326,7 @@ export const required_if = (param: string) => validationRules.helpers.withParams
     },
   );
 
-export const string = (value):boolean => !validationRules.helpers.req(value) || (typeof value === 'string');
+export const string = (value:any):boolean => !validationRules.helpers.req(value) || (typeof value === 'string');
 
 export const minAge = (param:string) => validationRules.helpers.withParams(
     { param },

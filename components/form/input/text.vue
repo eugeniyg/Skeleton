@@ -57,7 +57,7 @@
     },
     autocomplete: {
       type: String,
-      default: 'on'
+      default: 'on',
     },
   });
   const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);

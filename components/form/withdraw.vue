@@ -54,7 +54,7 @@
     },
     method: {
       type: String,
-      required: false,
+      default: '',
     },
   });
 
@@ -70,19 +70,19 @@
   } = storeToRefs(walletStore);
 
   const { formatBalance, getMainBalanceFormat } = useProjectMethods();
-  const formatAmountMax = formatBalance(activeAccount.value.currency, props.amountMax);
-  const formatAmountMin = formatBalance(activeAccount.value.currency, props.amountMin);
-  const activeAccountFormat = formatBalance(activeAccount.value.currency, activeAccount.value.balance);
+  const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
+  const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
+  const activeAccountFormat = formatBalance(activeAccount.value?.currency, activeAccount.value?.balance);
   const fieldHint = computed(() => ({
     message: `${withdrawContent?.minSum || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
-  const defaultInputSum = formatBalance(activeAccount.value.currency, 0.01);
+  const defaultInputSum = formatBalance(activeAccount.value?.currency, 0.01);
   const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : Number(defaultInputSum.amount));
   const amountValue = ref<number>(amountDefaultValue.value);
-  const withdrawFormData = reactive({});
-  const withdrawRules = {};
+  const withdrawFormData = reactive<{[key:string]:string}>({});
+  const withdrawRules:any = {};
   props.fields.forEach((field:any) => {
     withdrawFormData[field.key] = '';
     withdrawRules[field.key] = [];
@@ -113,9 +113,9 @@
     const params = {
       method: props.method,
       fields: formatFields,
-      currency: activeAccount.value.currency,
+      currency: activeAccount.value?.currency || '',
       amount: mainCurrencyAmount.amount,
-      accountId: activeAccount.value.id,
+      accountId: activeAccount.value?.id || '',
     };
 
     const { withdrawAccount } = useCoreWalletApi();
@@ -124,7 +124,7 @@
       await withdrawAccount(params);
       closeModal('withdraw');
       showAlert(alertsData.value?.withdrawalProcessed);
-    } catch (err) {
+    } catch (err:any) {
       if (err.response?.status === 422) {
         serverFormErrors.value = err.data?.error?.fields;
       } else {

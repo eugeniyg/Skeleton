@@ -57,7 +57,7 @@
 
   const getInvoiceType = (type: number):string => {
     const findInvoiceType = coreStore.invoiceTypes.find((storeType) => storeType.id === type);
-    return findInvoiceType.name;
+    return findInvoiceType?.name || '';
   };
 
   const getInvoiceTypeLabel = (type: number):string => {
@@ -67,7 +67,7 @@
 
   const getInvoiceStatus = (status: number):string => {
     const findInvoiceStatus = coreStore.invoiceStatuses.find((storeStatus) => storeStatus.id === status);
-    return findInvoiceStatus.name;
+    return findInvoiceStatus?.name || '';
   };
 
   const getInvoiceStatusLabel = (status: number):string => {

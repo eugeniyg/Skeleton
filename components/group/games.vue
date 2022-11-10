@@ -100,9 +100,10 @@
 
   const moreGames = async ():Promise<void> => {
     if (pageMeta.value?.page === pageMeta.value?.totalPages) return;
+
     const gamesResponse = await getFilteredGames({
       collectionId: props.category.id,
-      page: pageMeta.value.page + 1,
+      page: pageMeta.value ? pageMeta.value.page + 1 : 1,
       perPage: 18,
     });
     games.value = games.value.concat(gamesResponse.data);

@@ -7,6 +7,7 @@ import { useLayoutStore } from '~/composables/useLayoutStore';
 import { useGamesStore } from '~/composables/useGamesStore';
 import { useProjectMethods } from '~/composables/useProjectMethods';
 import { useGlobalStore } from '~/composables/useGlobalStore';
+import { CookieRef } from '#app';
 
 interface ProfileStoreStateInterface {
   isLoggedIn: boolean,
@@ -38,7 +39,7 @@ export const useProfileStore = defineStore('profileStore', {
       return state.profile?.nickname || 'Unknown';
     },
 
-    playerStatusName(state):string {
+    playerStatusName(state):string|undefined {
       const { playerStatuses } = useCoreStore();
       return playerStatuses.find((status) => status.id === state.profile?.status)?.name;
     },
@@ -96,7 +97,7 @@ export const useProfileStore = defineStore('profileStore', {
 
     async logOutUser(needRequest:boolean = true):Promise<void> {
       const { logOut } = useCoreAuthApi();
-      const bearer = useCookie('bearer');
+      const bearer: CookieRef<string|undefined> = useCookie('bearer');
       try {
         if (needRequest) await logOut();
       } finally {

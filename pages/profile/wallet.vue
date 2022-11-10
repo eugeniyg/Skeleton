@@ -31,11 +31,12 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { AccountInterface } from '@platform/frontend-core/dist/module';
   import { ProfileWalletInterface } from '~/types';
 
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
-  const walletContentRequest = await useAsyncData('walletContent', () => queryContent(`profile/${currentLocale.value.code}`).only(['wallet']).findOne());
+  const walletContentRequest = await useAsyncData('walletContent', () => queryContent(`profile/${currentLocale.value?.code}`).only(['wallet']).findOne());
   const walletContent:ProfileWalletInterface|undefined = walletContentRequest.data.value?.wallet;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(walletContent?.seo);
@@ -75,7 +76,7 @@
   const orderedAccounts = computed(() => accounts.value.reduce((acc, item) => {
     item.status === 1 ? acc.unshift(item) : acc.push(item);
     return acc;
-  }, []));
+  }, [] as AccountInterface[]));
 </script>
 
 <style lang="scss">

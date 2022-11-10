@@ -30,7 +30,7 @@
   });
   const selectedPage = ref<number>(1);
 
-  const format = (str) => str.split(',').join('<br>');
+  const format = (str:string) => str.split(',').join('<br>');
 </script>
 
 <style lang="scss">

@@ -63,14 +63,14 @@
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
 
   const { formatBalance, getMainBalanceFormat } = useProjectMethods();
-  const formatAmountMax = formatBalance(activeAccount.value.currency, props.amountMax);
-  const formatAmountMin = formatBalance(activeAccount.value.currency, props.amountMin);
+  const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
+  const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
   const fieldHint = computed(() => ({
     message: `${depositContent?.minSum || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
-  const defaultInputSum = formatBalance(activeAccount.value.currency, 0.01);
+  const defaultInputSum = formatBalance(activeAccount.value?.currency, 0.01);
   const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : Number(defaultInputSum.amount));
   const amountValue = ref<number>(amountDefaultValue.value);
   const hasBonusCode = ref<boolean>(false);
@@ -99,15 +99,15 @@
     const errorRedirect = `${window.location.href}${locationQuery ? '&' : '?'}error=deposit`;
     const mainCurrencyAmount = getMainBalanceFormat(defaultInputSum.currency, Number(amountValue.value));
     const params = {
-      method: props.method,
-      currency: activeAccount.value.currency,
+      method: props.method || '',
+      currency: activeAccount.value?.currency || '',
       amount: mainCurrencyAmount.amount,
-      accountId: activeAccount.value.id,
+      accountId: activeAccount.value?.id || '',
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
     };
     const { depositAccount } = useCoreWalletApi();
-    const windowReference = window.open();
+    const windowReference:any = window.open();
     try {
       const depositResponse = await depositAccount(params);
       const redirectUrl = depositResponse?.action;

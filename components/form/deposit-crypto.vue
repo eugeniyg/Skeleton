@@ -58,7 +58,7 @@
 
   const { formatBalance } = useProjectMethods();
   const fieldHint = computed(() => {
-    const formatSum = formatBalance(activeAccount.value.currency, props.amountMin);
+    const formatSum = formatBalance(activeAccount.value?.currency, props.amountMin);
     return {
       message: `${depositContent?.minSum || ''} ${formatSum.amount} ${formatSum.currency}`,
     };
@@ -73,10 +73,10 @@
     }
 
     const params = {
-      method: props.method,
-      currency: activeAccount.value.currency,
-      amount: props.amountMin,
-      accountId: activeAccount.value.id,
+      method: props.method || '',
+      currency: activeAccount.value?.currency || '',
+      amount: props.amountMin || 0,
+      accountId: activeAccount.value?.id || '',
       redirectSuccessUrl: window.location.href,
       redirectErrorUrl: window.location.href,
     };

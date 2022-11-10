@@ -79,13 +79,15 @@
   };
 
   if (props.value) {
-    const parsePhone = parsePhoneNumber(`+${profile.value.phone}`);
+    const parsePhone = parsePhoneNumber(`+${profile.value?.phone}`);
     if (parsePhone) {
       const searchPhone = selectItems.find((phoneObj) => phoneObj.countryCode === parsePhone.country);
-      codeValue.value = searchPhone?.code || '';
-      numberValue.value = parsePhone.number.replace(searchPhone?.code, '');
+      if (searchPhone?.code) {
+        codeValue.value = searchPhone.code || '';
+        numberValue.value = parsePhone.number.replace(searchPhone.code, '');
+      }
     }
-  } else if (profile.value.country) setMobileCode(profile.value.country);
+  } else if (profile.value?.country) setMobileCode(profile.value.country);
   else if (headerCountry.value) setMobileCode(headerCountry.value);
 
   const emit = defineEmits(['focus', 'input', 'update:value', 'blur']);

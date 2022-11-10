@@ -33,15 +33,15 @@
   const globalStore = useGlobalStore();
   const { alertsData } = storeToRefs(globalStore);
 
-  const identityFormData = reactive({
+  const identityFormData = reactive<{[key:string]:SecurityFileInterface[]}>({
     identity_front: [],
     identity_back: [],
     identity_selfie_id: [],
   });
-  const addressFormData = reactive({
+  const addressFormData = reactive<{[key:string]:SecurityFileInterface[]}>({
     address: [],
   });
-  const paymentFormData = reactive({
+  const paymentFormData = reactive<{[key:string]:SecurityFileInterface[]}>({
     payment: [],
   });
 
@@ -64,7 +64,7 @@
     }
   };
 
-  const addFileError = (field: string, fieldsErrors: object):void => {
+  const addFileError = (field: string, fieldsErrors: any):void => {
     const error = fieldsErrors[field]?.[0];
     if (identityFormData.hasOwnProperty(field)) {
       const lastElIndex = identityFormData[field].length - 1;
@@ -85,7 +85,7 @@
   const loadingFields = ref<string[]>([]);
   const { showAlert } = useLayoutStore();
 
-  const removeFile = async ({ fieldName, fileId }):Promise<void> => {
+  const removeFile = async ({ fieldName, fileId }:{fieldName: string, fileId:string}):Promise<void> => {
     try {
       await deleteSecurityFile(fileId);
       if (identityFormData.hasOwnProperty(fieldName)) {
@@ -117,7 +117,7 @@
     try {
       const securityFiles = await uploadSecurityFiles({ [filesData.fieldName]: filesData.fileList[0] });
       replaceFileData(filesData.fieldName, securityFiles[securityFiles.length - 1]);
-    } catch (err) {
+    } catch (err:any) {
       if (err?.response?.status === 422) {
         addFileError(filesData.fieldName, err.data?.error?.fields);
       } else if (err?.response?.status === 413) {

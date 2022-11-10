@@ -51,13 +51,13 @@
         itemsArr[maxItems - 2] = '...';
         itemsArr[maxItems - 1] = props.totalPages;
       } else if (props.page > props.totalPages - (maxItems - 3)) {
-        itemsArr = itemsArr.map((item, index) => {
+        itemsArr = itemsArr.map((item:number, index:number) => {
           if (!index) return 1;
           if (index === 1) return '...';
           return props.totalPages - (maxItems - index - 1);
         });
       } else {
-        itemsArr = itemsArr.map((item, index) => {
+        itemsArr = itemsArr.map((item:number, index:number) => {
           if (!index) return 1;
           if (index === 1 || index === maxItems - 2) return '...';
           if (index === maxItems - 1) return props.totalPages;
@@ -70,7 +70,7 @@
     paginationItems.value = itemsArr;
   };
 
-  const paginationLength = ref<number>();
+  const paginationLength = ref<number>(9);
   onMounted(() => {
     if (window.innerWidth > 399) paginationLength.value = 9;
     else paginationLength.value = 7;

@@ -30,7 +30,7 @@
       required: false,
     },
   });
-  const items = {
+  const items:{[index: string]:string} = {
     active: 'dot',
     current: 'dot',
     closed: 'info',

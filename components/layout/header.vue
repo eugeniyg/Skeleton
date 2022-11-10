@@ -11,7 +11,7 @@
       />
       <button-search @click="showSearch = true" data-show="desktop"/>
 
-      <template v-if="props.isLoggedIn">
+      <template v-if="isLoggedIn">
         <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
         <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
         <form-input-deposit/>
@@ -43,19 +43,13 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
-    isLoggedIn: {
-      type: Boolean,
-      default: false,
-    },
-  });
   const emit = defineEmits(['login', 'register', 'logout']);
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { headerContent } = useGlobalStore();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal } = layoutStore;
-  const { avatarItems } = storeToRefs(profileStore);
+  const { avatarItems, isLoggedIn } = storeToRefs(profileStore);
   const fakeStore = useFakeStore();
 
   function toggleProfileNav():void {

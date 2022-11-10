@@ -34,13 +34,13 @@
     rejectReason: null|string
   }>();
 
-  const fileStatuses = {
+  const fileStatuses:{[index: number]: string} = {
     1: 'approve',
     2: 'pending',
     3: 'canceled',
   };
 
-  const statusIcons = {
+  const statusIcons:{[index: string]: string} = {
     approve: 'done',
     pending: 'eye-visibility',
     canceled: 'warning',
@@ -48,8 +48,8 @@
 
   const emit = defineEmits(['remove']);
 
-  const fileStatus = computed(() => fileStatuses[props.status]);
-  const statusIcon = computed(() => statusIcons[fileStatus.value]);
+  const fileStatus = computed(() => (props.status ? fileStatuses[props.status] : undefined));
+  const statusIcon = computed(() => (fileStatus.value ? statusIcons[fileStatus.value] : undefined));
 
   const isShowProgress = ref(false);
 

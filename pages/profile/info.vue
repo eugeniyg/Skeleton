@@ -98,7 +98,7 @@
   import { ProfileInfoInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const infoContentRequest = await useAsyncData('infoContent', () => queryContent(`profile/${globalStore.currentLocale.code}`).only(['info']).findOne());
+  const infoContentRequest = await useAsyncData('infoContent', () => queryContent(`profile/${globalStore.currentLocale?.code}`).only(['info']).findOne());
   const infoContent:ProfileInfoInterface|undefined = infoContentRequest.data.value?.info;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(infoContent?.seo);
@@ -116,7 +116,7 @@
 
   const isProfileEdit = computed(() => route.query.edit === 'true');
   const userCountryName = computed(() => {
-    const countryObject:CountryInterface|undefined = countries.value.find((country) => country.code === profile.value.country);
+    const countryObject:CountryInterface|undefined = countries.value.find((country) => country.code === profile.value?.country);
     return countryObject?.nativeName || '';
   });
   const subscriptionFields = computed(() => profileFields.value.filter((field) => field.name === 'receiveSmsPromo' || field.name === 'receiveEmailPromo'));
@@ -130,7 +130,7 @@
   };
 
   const changeSubscription = async (fieldName:string):Promise<void> => {
-    const data = await changeProfileData({ [fieldName]: !profile.value[fieldName] });
+    const data = await changeProfileData({ [fieldName]: !profile.value?.[fieldName] });
     profileStore.setProfileData(data);
   };
 </script>

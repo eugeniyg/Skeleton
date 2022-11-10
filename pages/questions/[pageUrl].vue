@@ -22,7 +22,7 @@
   const { currentLocale } = storeToRefs(globalStore);
   const route = useRoute();
   const { pageUrl } = route.params;
-  const contentRequest = await useAsyncData('pageContent', () => queryContent(`question/${currentLocale.value.code}-${pageUrl}`).findOne(), { initialCache: false });
+  const contentRequest = await useAsyncData('pageContent', () => queryContent(`question/${currentLocale.value?.code}-${pageUrl}`).findOne(), { initialCache: false });
   if (contentRequest.error.value) throw contentRequest.error.value;
   else pageContent.value = contentRequest.data.value as QuestionPageInterface;
 </script>

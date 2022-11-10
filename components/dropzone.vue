@@ -48,7 +48,7 @@
   const emit = defineEmits(['remove', 'change']);
 
   const isActive = ref(false);
-  const documentsContent:ProfileDocumentsInterface = inject('documentsContent');
+  const documentsContent:ProfileDocumentsInterface|undefined = inject('documentsContent');
   const errorFiles = computed(() => props.fileList.filter((file) => file.error));
 
   const dropzoneClasses = computed(() => ({
@@ -66,7 +66,7 @@
     emit('change', fileList);
   };
 
-  const onDrop = (e) => {
+  const onDrop = (e:any) => {
     const { files } = e.dataTransfer;
     addFiles(files);
   };

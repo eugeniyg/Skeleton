@@ -41,7 +41,7 @@
   };
 
   const router = useRouter();
-  const select = (val) => {
+  const select = (val:string) => {
     router.push(localizePath(val));
     close();
   };

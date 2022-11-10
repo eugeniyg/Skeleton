@@ -34,7 +34,7 @@ interface GlobalStoreStateInterface {
   baseApiUrl: string,
   validationMessages: ValidationMessageInterface|{},
   fieldsContent: FieldsContentInterface|undefined,
-  layoutData: MainLayoutInterface,
+  layoutData: MainLayoutInterface|undefined,
   popupsData: PopupsInterface|undefined,
   alertsData: AlertsListInterface|undefined,
   globalComponentsContent: GlobalComponentsInterface|undefined,
@@ -70,7 +70,7 @@ export const useGlobalStore = defineStore('globalStore', {
     }),
 
   getters: {
-    currentLocale(state):LocaleInterface {
+    currentLocale(state):LocaleInterface|undefined {
       const route = useRoute();
       const findLocale = state.locales.find((locale) => locale.code === route.params.locale);
       if (route.params.locale && findLocale) return findLocale;
@@ -93,26 +93,26 @@ export const useGlobalStore = defineStore('globalStore', {
         value: zone.name,
       }));
     },
-    headerContent(state): HeaderInterface {
+    headerContent(state): HeaderInterface|undefined {
       return state.layoutData?.header;
     },
-    sidebarContent(state):SiteSidebarInterface {
+    sidebarContent(state):SiteSidebarInterface|undefined {
       return state.layoutData?.siteSidebar;
     },
-    userNavigationContent(state):UserNavigationInterface {
+    userNavigationContent(state):UserNavigationInterface|undefined {
       return state.layoutData?.userNavigation;
     },
-    footerContent(state):FooterInterface {
+    footerContent(state):FooterInterface|undefined {
       return state.layoutData?.footer;
     },
-    cookiePopupContent(state):CookiePopupInterface {
+    cookiePopupContent(state):CookiePopupInterface|undefined {
       return state.layoutData?.cookiePopup;
     },
-    mobileMenuContent(state):MobileMenuInterface {
+    mobileMenuContent(state):MobileMenuInterface|undefined {
       return state.layoutData?.mobileMenu;
     },
     gameCategoriesObj(state):{ [key: string]: GameCategoryInterface } {
-      const categoriesObj = {};
+      const categoriesObj:any = {};
       if (state.globalComponentsContent?.categories) {
         state.globalComponentsContent?.categories.forEach((category) => {
           categoriesObj[category.identity] = category;
@@ -161,25 +161,25 @@ export const useGlobalStore = defineStore('globalStore', {
 
     async getGlobalContent():Promise<void> {
       const [validations, fieldsData, layoutData, popupsData, alertsData, globalContent] = await Promise.allSettled([
-        queryContent(`validations/${this.currentLocale.code}`).findOne(),
-        queryContent(`fields/${this.currentLocale.code}`).findOne(),
-        queryContent(`main-layout/${this.currentLocale.code}`).findOne(),
-        queryContent(`popups/${this.currentLocale.code}`).findOne(),
-        queryContent(`alerts/${this.currentLocale.code}`).findOne(),
-        queryContent(`global-components/${this.currentLocale.code}`).findOne(),
+        queryContent(`validations/${this.currentLocale?.code}`).findOne(),
+        queryContent(`fields/${this.currentLocale?.code}`).findOne(),
+        queryContent(`main-layout/${this.currentLocale?.code}`).findOne(),
+        queryContent(`popups/${this.currentLocale?.code}`).findOne(),
+        queryContent(`alerts/${this.currentLocale?.code}`).findOne(),
+        queryContent(`global-components/${this.currentLocale?.code}`).findOne(),
       ]);
       if (validations.status !== 'rejected') this.validationMessages = validations.value;
-      if (fieldsData.status !== 'rejected') this.fieldsContent = fieldsData.value;
-      if (layoutData.status !== 'rejected') this.layoutData = layoutData.value;
-      if (popupsData.status !== 'rejected') this.popupsData = popupsData.value;
-      if (alertsData.status !== 'rejected') this.alertsData = alertsData.value;
-      if (globalContent.status !== 'rejected') this.globalComponentsContent = globalContent.value;
+      if (fieldsData.status !== 'rejected') this.fieldsContent = (fieldsData.value as unknown) as FieldsContentInterface;
+      if (layoutData.status !== 'rejected') this.layoutData = (layoutData.value as unknown) as MainLayoutInterface;
+      if (popupsData.status !== 'rejected') this.popupsData = (popupsData.value as unknown) as PopupsInterface;
+      if (alertsData.status !== 'rejected') this.alertsData = (alertsData.value as unknown) as AlertsListInterface;
+      if (globalContent.status !== 'rejected') this.globalComponentsContent = (globalContent.value as unknown) as GlobalComponentsInterface;
     },
 
     getRequestCountry():void {
       const { countryHeaderName } = useCoreStore();
       const headersCountry = useRequestHeaders([countryHeaderName]);
-      if (headersCountry[countryHeaderName]) this.headerCountry = headersCountry[countryHeaderName].toUpperCase();
+      if (headersCountry[countryHeaderName]) this.headerCountry = headersCountry[countryHeaderName]?.toUpperCase();
     },
   },
 });

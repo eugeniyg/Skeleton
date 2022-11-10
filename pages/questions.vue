@@ -15,17 +15,17 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { QuestionPagesInterface } from '~/types';
+  import { QuestionPageInterface, QuestionPagesInterface } from '~/types';
 
   const { localizePath } = useProjectMethods();
   const route = useRoute();
 
-  const listContent = ref([]);
+  const listContent = ref<QuestionPageInterface[]>([]);
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
-  const listRequest = await useAsyncData('pageList', () => queryContent('question').where({ locale: currentLocale.value.code }).sort({ position: 1 }).find());
-  const controlsRequest = await useAsyncData('pageControls', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['questionPage']).findOne());
-  listContent.value = listRequest.data.value;
+  const listRequest = await useAsyncData('pageList', () => queryContent('question').where({ locale: currentLocale.value?.code || 'en' }).sort({ position: 1 }).find());
+  const controlsRequest = await useAsyncData('pageControls', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['questionPage']).findOne());
+  listContent.value = (listRequest.data.value as unknown) as QuestionPageInterface[];
   const questionPageContent:QuestionPagesInterface|undefined = controlsRequest.data.value?.questionPage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(questionPageContent?.seo);

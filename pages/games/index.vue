@@ -56,11 +56,12 @@
     PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
   import { storeToRefs } from 'pinia';
+  import debounce from 'lodash/debounce';
   import { CategoryGamesInterface } from '~/types';
 
   const globalStore = useGlobalStore();
   const { currentLocale, gameCategoriesObj, headerContent } = storeToRefs(globalStore);
-  const gamesContentRequest = await useAsyncData('gamesContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['gamesPage']).findOne());
+  const gamesContentRequest = await useAsyncData('gamesContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['gamesPage']).findOne());
   const gamesContent:CategoryGamesInterface|undefined = gamesContentRequest.data.value?.gamesPage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(gamesContent?.seo);
@@ -86,13 +87,13 @@
     });
   }
 
-  const activeCollection = ref<CollectionInterface>(
+  const activeCollection = ref<CollectionInterface|undefined>(
     gameCollections.find(
       (collection) => collection.identity === route.query.category,
     ) || gameCollections[0],
   );
 
-  const currentProvider = ref<GameProviderInterface>(
+  const currentProvider = ref<GameProviderInterface|undefined>(
     providerDropdownOptions.find(
       (provider: GameProviderInterface) => provider.identity === route.query.provider,
     ) || providerDropdownOptions[0],
@@ -111,13 +112,13 @@
     const params: any = {
       page: loadPage.value,
       perPage: 36,
-      collectionId: activeCollection.value.id,
+      collectionId: activeCollection.value?.id,
       sortBy: sortBy.value,
       sortOrder: sortOrder.value,
     };
 
     if (currentProvider.value?.id !== 'all') {
-      params.providerId = currentProvider.value.id;
+      params.providerId = currentProvider.value?.id;
     }
 
     if (searchValue.value) params.name = searchValue.value;
@@ -134,7 +135,7 @@
   };
 
   const { data } = await useAsyncData('items', getItems, { initialCache: false });
-  setItems(data.value);
+  setItems(data.value as GamesResponseInterface);
 
   const changeProvider = async (providerId: string): Promise<void> => {
     loadPage.value = 1;
@@ -147,8 +148,8 @@
       query: {
         ...route.query,
         provider:
-          currentProvider.value.id !== 'all'
-            ? currentProvider.value.identity
+          currentProvider.value?.id !== 'all'
+            ? currentProvider.value?.identity
             : undefined,
       },
     });
@@ -170,7 +171,7 @@
     setItems(response);
   };
 
-  const changeSort = async (...args): Promise<void> => {
+  const changeSort = async (...args:any): Promise<void> => {
     const [by, order] = args;
     loadPage.value = 1;
     sortBy.value = by;
@@ -180,36 +181,25 @@
     setItems(response);
   };
 
-  const { $_ } = useNuxtApp();
-  const searchInput = $_.debounce(
-    async (): Promise<void> => {
-      if (searchValue.value.length > 1 || !searchValue.value) {
-        loadPage.value = 1;
-        const response = await getItems();
-        setItems(response);
-      }
-    },
-    500,
-    { leading: false },
-  );
+  const searchInput = debounce(async (): Promise<void> => {
+    if (searchValue.value.length > 1 || !searchValue.value) {
+      loadPage.value = 1;
+      const response = await getItems();
+      setItems(response);
+    }
+  }, 500, { leading: false });
 
   const loadMoreItems = async (): Promise<void> => {
-    loadPage.value = pageMeta.value.page + 1;
+    loadPage.value = (pageMeta.value?.page || 0) + 1;
     const response = await getItems();
     setItems(response, true);
   };
 
-  watch(
-    () => route.query.category,
-    async (newValue: string) => {
-      if (
-        (route.name === 'games' || route.name === 'locale-games')
-        && route.query.category !== activeCollection.value.identity
-      ) {
-        await changeCategory(newValue);
-      }
-    },
-  );
+  watch(() => route.query.category as string, async (newValue:string) => {
+    if ((route.name === 'games' || route.name === 'locale-games') && route.query.category !== activeCollection.value?.identity) {
+      await changeCategory(newValue);
+    }
+  });
 </script>
 
 <style lang="scss">

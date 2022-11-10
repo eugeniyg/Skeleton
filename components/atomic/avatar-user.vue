@@ -28,7 +28,7 @@
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const { formatBalance } = useProjectMethods();
-  const balanceFormat = computed(() => formatBalance(activeAccount.value.currency, activeAccount.value.balance));
+  const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
 </script>
 
 <style lang="scss">

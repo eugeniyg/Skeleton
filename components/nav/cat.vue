@@ -20,10 +20,11 @@
   const { gameCollections } = useGamesStore();
   const { gameCategoriesObj, globalComponentsContent } = useGlobalStore();
   const filteredCategories = gameCollections.filter((collection) => !collection.isHidden).map((category) => {
-    const contentArrayIndex = globalComponentsContent.categories?.findIndex((item) => item.identity === category.identity);
-    return { ...category, sortIndex: contentArrayIndex < 0 ? undefined : contentArrayIndex };
+    const contentArrayIndex = globalComponentsContent?.categories?.findIndex((item) => item.identity === category.identity);
+    return { ...category, sortIndex: contentArrayIndex && contentArrayIndex < 0 ? undefined : contentArrayIndex };
   });
   const sortedCategories = filteredCategories.sort((prevEl, nextEl) => {
+    if (!prevEl.sortIndex || !nextEl.sortIndex) return 1;
     if (prevEl.sortIndex < nextEl.sortIndex) return -1;
     return 1;
   });

@@ -23,6 +23,7 @@
   import {
     GameInterface, GamesResponseInterface, PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
+  import debounce from 'lodash/debounce';
 
   const props = defineProps({
     isShow: {
@@ -42,7 +43,7 @@
   const pageMeta = ref<PaginationMetaInterface>();
   const gameItems = ref<GameInterface[]>([]);
   const isShowSearchResult = computed(() => searchValue.value.length > 1 && !pendingGames.value);
-  const showLoadMore = computed(() => !!gameItems.value.length && (pageMeta.value.totalPages > pageMeta.value.page));
+  const showLoadMore = computed(() => !!gameItems.value.length && ((pageMeta.value?.totalPages || 1) > (pageMeta.value?.page || 1)));
 
   const { getFilteredGames } = useCoreGamesApi();
   const getItems = async (): Promise<GamesResponseInterface> => {
@@ -60,24 +61,19 @@
   };
 
   const loadMoreItems = async (): Promise<void> => {
-    loadPage.value = pageMeta.value.page + 1;
+    loadPage.value = (pageMeta.value?.page || 0) + 1;
     const response = await getItems();
     setItems(response, true);
   };
 
-  const { $_ } = useNuxtApp();
-  const searchInput = $_.debounce(
-    async (): Promise<void> => {
-      if (searchValue.value.length > 1) {
-        loadPage.value = 1;
-        const response = await getItems();
-        setItems(response);
-        pendingGames.value = false;
-      } else pendingGames.value = true;
-    },
-    500,
-    { leading: false },
-  );
+  const searchInput = debounce(async (): Promise<void> => {
+    if (searchValue.value.length > 1) {
+      loadPage.value = 1;
+      const response = await getItems();
+      setItems(response);
+      pendingGames.value = false;
+    } else pendingGames.value = true;
+  }, 500, { leading: false });
 
   const inputElement = ref();
   watch(() => props.isShow, (newValue:boolean) => {

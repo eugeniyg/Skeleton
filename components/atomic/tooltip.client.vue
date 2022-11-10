@@ -48,11 +48,11 @@
     left: 0,
   });
 
-  const tooltip = ref(null);
-  const tooltipMsg = ref(null);
+  const tooltip = ref<HTMLElement>();
+  const tooltipMsg = ref<HTMLElement>();
   const isShow = ref<boolean>(false);
 
-  const getTooltipParent = () => tooltip.value.closest('[data-tooltip-parent]');
+  const getTooltipParent = () => tooltip.value?.closest('[data-tooltip-parent]');
 
   const setCoords = () => {
     const parent = getTooltipParent();

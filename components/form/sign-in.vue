@@ -87,7 +87,7 @@
       isLockedAsyncButton.value = true;
       await logIn(authorizationFormData);
       closeModal('signIn');
-    } catch (error) {
+    } catch (error:any) {
       if (error.response?.status === 401) {
         loginError.value = true;
       } else if (error.response?.status === 422) {

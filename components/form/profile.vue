@@ -82,11 +82,11 @@
   const { selectOptions, profileFields } = storeToRefs(fieldsStore);
   const { fieldsContent } = storeToRefs(globalStore);
 
-  const fieldsWithValue = profileFields.value.map((field) => ({ ...field, value: profile.value[field.name] }));
+  const fieldsWithValue = profileFields.value.map((field) => ({ ...field, value: profile.value?.[field.name] }));
   const cleanFields = fieldsWithValue.filter((field) => !hideFields.includes(field.name));
   const rowsFields = cleanFields.filter((field) => field.name !== 'email');
 
-  const emailHint = profile.value.confirmedAt
+  const emailHint = profile.value?.confirmedAt
     ? { variant: 'verified', message: props.verifiedLabel || 'Your email is verified' }
     : { variant: 'unverified', message: props.unverifiedLabel || 'Your email is unverified' };
 
@@ -116,7 +116,7 @@
       const submitResult = await changeProfileData(profileFormData);
       setProfileData(submitResult);
       emit('toggle-profile-edit');
-    } catch (error) {
+    } catch (error:any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
       } else throw error;

@@ -42,7 +42,7 @@
   const { localizePath } = useProjectMethods();
   const route = useRoute();
 
-  const checkUrl = ():boolean => props.items.some((link: { url: string }) => localizePath(link.url) === route.fullPath);
+  const checkUrl = ():boolean => props.items.some((link:any) => localizePath(link.url) === route.fullPath);
 
   const open = ref<boolean>(checkUrl());
   watch(() => route.fullPath, () => {
