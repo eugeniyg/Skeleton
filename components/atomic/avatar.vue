@@ -87,11 +87,11 @@
 
   .thumb {
     position: relative;
-    @include radius(50%);
+    @include radius(12px);
     @include box(40px);
     display: block;
     background-color: var(--gray-800);
-    background-image: url(~/assets/img/avatar-bg.png);
+    background-image: url(/assets/img/avatar-bg.png);
     background-position: center;
     background-size: contain;
 

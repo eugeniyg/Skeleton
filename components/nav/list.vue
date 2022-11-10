@@ -1,7 +1,7 @@
 <template>
   <div class="nav-list">
     <div v-for="(listItem, index) in props.items" :key="index" class="item">
-      <atomic-menu-category v-if="listItem?.items?.length" v-bind="listItem" />
+      <atomic-menu-category v-if="listItem?.items?.length" v-bind="listItem"/>
 
       <div
         v-else
@@ -43,7 +43,7 @@
 
   const { localizePath } = useProjectMethods();
 
-  const defineCurrentAction = (href: string):void => {
+  const defineCurrentAction = (href: string): void => {
     if (!href) return;
     // specific actions like open modal etc
     if (!isLoggedIn.value && href === '/betting') {
@@ -101,6 +101,16 @@
       --color: var(--gray-400);
     }
 
+    &.is-open {
+      .icon {
+        --color: var(--yellow-500);
+      }
+
+      .text {
+        --color: var(--yellow-500);
+      }
+    }
+
     .counter {
       display: flex;
       align-items: center;
@@ -114,7 +124,7 @@
       transition: color .2s ease-in-out;
     }
 
-    &:hover {
+    &:not(.is-open):hover {
       cursor: pointer;
       --color: var(--white);
 
@@ -127,10 +137,14 @@
       }
     }
 
-    &:focus, &.is-active {
+    &:active, &.is-active {
       --color: var(--yellow-500);
 
       .icon {
+        --color: var(--yellow-500);
+      }
+
+      .text {
         --color: var(--yellow-500);
       }
     }
@@ -143,13 +157,18 @@
 
     &.router-link-active {
       --color: var(--yellow-500);
+
+      &:hover {
+        --color: var(--yellow-500);
+      }
     }
   }
 
   .text {
     @include font($heading-2);
     @extend %text-elipsis;
-    --color: var(--gray-300);
+    color: var(--color, var(--gray-300));
+    transition: color .2s ease-in-out;
   }
 
   .btn-toggle {

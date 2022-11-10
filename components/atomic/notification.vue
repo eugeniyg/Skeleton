@@ -31,7 +31,7 @@
 .notification {
   @extend %flex-all-center;
   @include box(40px);
-  @include radius(8px);
+  @include radius(12px);
   position: relative;
   background-color: var(--bg, transparent);
   transition: all .2s ease-in-out;

@@ -44,7 +44,6 @@
   background-color: var(--gray-900);
   flex-grow: 1;
   width: 100%;
-  border-radius: 12px;
 
   .btn {
     box-shadow: var(--shadow, none);
