@@ -1,7 +1,8 @@
 <template>
   <div class="home">
     <div v-if="homeContent?.banner" class="promo-card-wrapper">
-      <card-promo v-bind="homeContent.banner" />
+      <!--<card-promo v-bind="homeContent.banner" />-->
+      <card-home v-bind="homeContent.banner" />
     </div>
 
     <group-benefits />
