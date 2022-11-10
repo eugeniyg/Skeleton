@@ -25,7 +25,7 @@
             class="item"
             @click="addCurrency(currency)"
           >
-            <img v-if="currency.code" class="img" :src="`/img/currency/${currency.code}.png`" />
+            <img class="img" :src="`/img/currency/${currency.code}.png`" />
             <span class="title">{{ currency.name }}</span>
             <span class="label">{{ currency.code }}</span>
           </div>
