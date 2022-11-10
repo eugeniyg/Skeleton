@@ -63,7 +63,7 @@
   const emit = defineEmits(['blur', 'input']);
   const copyInput = ref();
 
-  const copy = ():void => {
+  const copy = (): void => {
     copyInput.value.select();
     document.execCommand('copy');
   };
@@ -121,13 +121,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transform: none;
 
-    &:hover {
-      cursor: pointer;
-      --bg: var(--gradient-radial-hover);
+    .icon {
+      --color: var(--white);
     }
 
-    &:focus, &:active {
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
+        --bg: var(--gradient-radial-hover);
+
+        .icon {
+          --color: var(--white);
+        }
+      }
+    }
+
+    &:active, &:focus {
       --bg: var(--gradient-radial-focus);
     }
   }
