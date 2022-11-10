@@ -92,6 +92,11 @@
       display: block;
       margin-right: rem(8px);
     }
+
+    p {
+      display: inline;
+      font: inherit;
+    }
   }
 
   p {
