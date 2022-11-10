@@ -38,7 +38,11 @@
   onMounted(async () => {
     const { getFilteredGames } = useCoreGamesApi();
     const { data } = await getFilteredGames({ identity: props.items });
-    gamesArray.value = data;
+    gamesArray.value = data.reduce((acc: GameInterface[], item: GameInterface) => {
+      const getGameIndex = props.items?.findIndex((gameIdentity) => gameIdentity === item.identity);
+      if (getGameIndex > -1) acc[getGameIndex] = item;
+      return acc;
+    }, []);
   });
 </script>
 
