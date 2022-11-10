@@ -190,7 +190,6 @@
   .img {
     @include box(24px);
     display: block;
-    padding: rem(2px);
     margin-right: rem(8px);
   }
 }
