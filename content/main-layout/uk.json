@@ -79,11 +79,12 @@
         "url": "/games?category=turbogames",
         "icon": "turbo-games",
         "gameList": [
+          "ball-ball-turbo-games",
           "crash-x-turbo-games",
           "dice-twice-turbo-games",
           "mines-turbo-games",
-          "neko-turbo-games",
-          "turbo-games-turbomines"
+          "turbo-games-turbomines",
+          "neko-turbo-games"
         ]
       },
       {
