@@ -63,7 +63,7 @@
     padding: rem(2px);
     overflow: hidden;
     background-color: var(--slider-bg, var(--gray-900));
-    border-radius: 8px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     grid-column-gap: 4px;
@@ -83,7 +83,7 @@
       width: rem(20px);
       height: rem(20px);
       background-color: var(--thumb-bg, var(--gray-800));
-      border-radius: 6px;
+      border-radius: 50%;
       position: absolute;
       box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
       transition: all .2s ease-in-out;
