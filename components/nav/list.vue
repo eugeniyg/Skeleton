@@ -124,9 +124,12 @@
       transition: color .2s ease-in-out;
     }
 
-    &:not(.is-open):hover {
+    &:not(.is-open):not(.is-active):hover {
       cursor: pointer;
-      --color: var(--white);
+
+      .text {
+        --color: var(--white);
+      }
 
       .icon {
         --color: var(--white);

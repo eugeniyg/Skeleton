@@ -92,7 +92,7 @@
     display: flex;
     background-color: var(--gray-800);
     border: 4px solid var(--gray-800);
-    border-radius: 999px;
+    border-radius: 12px;
     margin-bottom: 16px;
 
     .item {
@@ -103,7 +103,7 @@
       min-height: 32px;
       @include font($body-1);
       padding: rem(2px);
-      border-radius: 999px;
+      border-radius: 8px;
       background-color: var(--bg, inherit);
       color: var(--color, inherit);
       transition: all .2s ease-in-out;
