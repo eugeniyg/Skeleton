@@ -90,7 +90,7 @@
   &.size-lg {
     @include font($heading-3);
     --padding: #{rem(16px) rem(40px)};
-    --btn-border-radius: 8px;
+    --btn-border-radius: 12px;
   }
 }
 
