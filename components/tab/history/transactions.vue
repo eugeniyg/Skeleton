@@ -88,7 +88,7 @@
   const { selectOptions } = storeToRefs(fieldsStore);
   const currenciesOptions = computed(() => [optionsDefaultValue, ...selectOptions.value.currency]);
 
-  const filters = reactive({
+  const filters = reactive<{[key:string]:any}>({
     page: 1,
     perPage: 10,
     dateFrom: undefined,
@@ -101,7 +101,7 @@
   const dateConfig = {
     mode: 'range',
     disable: [
-      function (date) {
+      function (date:number) {
         return (date > Date.now());
       },
     ],

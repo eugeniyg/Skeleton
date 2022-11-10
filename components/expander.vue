@@ -34,15 +34,15 @@
   const maxHeight = ref<number>(0);
 
   const styles = computed(() => ({ '--max-height': open.value ? `${maxHeight.value}px` : '0px' }));
-  const content = ref(null);
+  const content = ref<HTMLElement>();
 
   const toggle = ():void => {
     open.value = !open.value;
-    maxHeight.value = open.value ? content.value.scrollHeight : 0;
+    maxHeight.value = open.value ? content.value?.scrollHeight || 0 : 0;
   };
 
   onMounted(() => {
-    maxHeight.value = content.value.scrollHeight;
+    maxHeight.value = content.value?.scrollHeight || 0;
   });
 </script>
 

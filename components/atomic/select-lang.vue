@@ -31,6 +31,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { LocaleInterface } from '@platform/frontend-core/dist/module';
+  import { CookieRef } from '#app';
 
   const languageFlagsMap = {
     uk: 'ua',
@@ -42,7 +43,7 @@
   const globalStore = useGlobalStore();
   const { locales, currentLocale } = storeToRefs(globalStore);
   const isOpen = ref<boolean>(false);
-  const cookieLanguage = useCookie('user-language', { maxAge: 60 * 60 * 24 * 365 * 10 });
+  const cookieLanguage:CookieRef<string|undefined> = useCookie('user-language', { maxAge: 60 * 60 * 24 * 365 * 10 });
 
   const setCookie = (locale: LocaleInterface):void => {
     if (locale.isDefault) cookieLanguage.value = undefined;

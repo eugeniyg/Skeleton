@@ -44,7 +44,7 @@ interface FieldInterface {
   placeholder?: string
 }
 
-export interface FieldsContentInterface {
+export interface FieldsContentInterface extends Record<string, any>{
   repeatNewPassword: FieldInterface,
   placeOfBirth: FieldInterface,
   lastName: FieldInterface,

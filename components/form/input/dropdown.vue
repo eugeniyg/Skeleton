@@ -93,8 +93,8 @@
   const emit = defineEmits(['input', 'focus', 'update:value']);
 
   const isOpen = ref<boolean>(false);
-  const drop = ref(null);
-  const dropItems = ref(null);
+  const drop = ref<HTMLElement>();
+  const dropItems = ref<HTMLElement>();
 
   const classes = computed(() => [
     props.size ? `size-${props.size}` : null,
@@ -112,7 +112,7 @@
     isOpen.value = false;
   };
 
-  watch(() => props.value, (newValue:string) => {
+  watch(() => props.value, (newValue:any) => {
     valueObject.value = props.options.find((option:any) => option.code === newValue) || '';
   });
 
@@ -127,8 +127,8 @@
   };
 
   onMounted(() => {
-    if (props.isFitContent) {
-      drop.value.style.width = `${dropItems.value.offsetWidth}px`;
+    if (props.isFitContent && drop.value) {
+      drop.value.style.width = `${dropItems.value?.offsetWidth}px`;
     }
   });
 </script>

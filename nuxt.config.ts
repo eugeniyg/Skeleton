@@ -67,16 +67,18 @@ export default defineNuxtConfig({
         { rel: 'stylesheet', href: '/preloader/preloader.css' },
       ],
     },
-    pageTransition: false,
-    layoutTransition: false,
   },
   build,
   css: [
     '@/scss/style.scss',
   ],
   vite: viteConfig,
-  experimental: {
-    writeEarlyHints: false,
-    inlineSSRStyles: false,
+  nitro: {
+    devProxy: {
+      '/api': {
+        target: 'https://test.dev.getplatform.tech/api',
+        changeOrigin: true,
+      },
+    },
   },
 });

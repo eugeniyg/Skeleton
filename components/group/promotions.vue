@@ -61,7 +61,7 @@
     }
   };
 
-  const clickOutside = (e):void => {
+  const clickOutside = (e:any):void => {
     if (e.target.closest('.group-promotions__item')) return;
     hoverCard.value = undefined;
   };

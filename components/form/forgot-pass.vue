@@ -62,7 +62,7 @@
       const { closeModal, showAlert } = useLayoutStore();
       showAlert(alertsData.value?.sentResetLink);
       closeModal('forgotPass');
-    } catch (error) {
+    } catch (error:any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
       } else throw error;

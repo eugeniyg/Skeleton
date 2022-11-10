@@ -33,7 +33,7 @@
 
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
-  const favoritesContentRequest = await useAsyncData('favoritesContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['favoritesPage']).findOne());
+  const favoritesContentRequest = await useAsyncData('favoritesContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['favoritesPage']).findOne());
   const favoritesContent:FavoritesPageInterface|undefined = favoritesContentRequest.data.value?.favoritesPage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(favoritesContent?.seo);

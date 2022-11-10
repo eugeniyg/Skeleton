@@ -32,19 +32,19 @@
     isMobile, alertsData, currentLocale, headerCountry,
   } = storeToRefs(globalStore);
   const infoResponse = await useAsyncData('gameInfo', () => getGamesInfo(route.params.id as string));
-  const gameContentRequest = await useAsyncData('gameContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['gamePage']).findOne());
+  const gameContentRequest = await useAsyncData('gameContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['gamePage']).findOne());
   const gameContent:GamePageInterface|undefined = gameContentRequest.data.value?.gamePage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(gameContent?.seo);
-  gameInfo.value = infoResponse.data.value;
+  gameInfo.value = infoResponse.data?.value as GameInterface;
   const router = useRouter();
 
   const startGame = async ():Promise<void> => {
     const redirectUrl = window.location.origin + (window.history.state.back || '');
     const startParams = {
-      accountId: isDemo.value ? undefined : activeAccount.value.id,
+      accountId: isDemo.value ? undefined : activeAccount.value?.id,
       lobbyUrl: redirectUrl,
-      locale: currentLocale.value.code,
+      locale: currentLocale.value?.code || 'en',
       countryCode: profile.value?.country || headerCountry.value || 'UA',
       demoMode: isDemo.value,
       platform: isMobile.value ? 1 : 2,
@@ -70,7 +70,7 @@
   };
 
   const redirectLimitedPlayer = ():void => {
-    if (gameInfo.value.isDemoMode) changeGameMode();
+    if (gameInfo.value?.isDemoMode) changeGameMode();
     else {
       const { localizePath } = useProjectMethods();
       router.push(localizePath('/'));
@@ -96,7 +96,7 @@
     document.body.classList.add('is-game-page');
 
     if (!isDemo.value && !isLoggedIn.value) {
-      if (gameInfo.value.isDemoMode) changeGameMode();
+      if (gameInfo.value?.isDemoMode) changeGameMode();
       else showPlug.value = true;
     } else if (!isDemo.value && playerStatusName.value === 'Limited') {
       redirectLimitedPlayer();

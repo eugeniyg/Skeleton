@@ -19,7 +19,7 @@ interface GamesStoreStateInterface {
 }
 
 export const useGamesStore = defineStore('gamesStore', {
-  state: (): GamesStoreStateInterface => ({
+  state: ():GamesStoreStateInterface => ({
       gameProviders: [],
       gameCollections: [],
       favoriteGames: [],
@@ -76,10 +76,13 @@ export const useGamesStore = defineStore('gamesStore', {
       this.latestWinners = winners.slice(0, 12);
     },
 
-    updateWinners: throttle(function (winnerData:WebSocketResponseInterface):void {
-      const { winner } = winnerData.data;
-      const filteredWinners = this.latestWinners.filter((item) => item.gameId !== winner.gameId);
-      this.latestWinners = [winner, ...filteredWinners].slice(0, 12);
-    }, 3000, { leading: false }),
+    updateWinners(winnerData:WebSocketResponseInterface):void {
+      const that = this;
+      throttle(() => {
+        const { winner } = winnerData.data;
+        const filteredWinners = that.latestWinners.filter((item) => item.gameId !== winner?.gameId);
+        if (winner) that.latestWinners = [winner, ...filteredWinners].slice(0, 12);
+      }, 3000, { leading: false })();
+    },
   },
 });

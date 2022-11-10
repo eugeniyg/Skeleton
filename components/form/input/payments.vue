@@ -63,7 +63,7 @@
   const hasMethodsIcons = ['BTC', 'ETH', 'LTC', 'USDT'];
   const defaultLogoUrl = ():string => {
     if (activeAccountType.value === 'fiat') return '/img/methods-icons/credit-card.svg';
-    if (hasMethodsIcons.includes(activeAccount.value.currency)) return `/img/methods-icons/${activeAccount.value.currency}.svg`;
+    if (activeAccount.value?.currency && hasMethodsIcons.includes(activeAccount.value.currency)) return `/img/methods-icons/${activeAccount.value?.currency}.svg`;
     return '';
   };
 </script>

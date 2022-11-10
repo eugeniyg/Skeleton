@@ -125,7 +125,7 @@ export interface ProfileHistoryInterface {
   seo: SeoContentInterface
 }
 
-export interface ProfileContentInterface {
+export interface ProfileContentInterface extends Record<string, any>{
   info: ProfileInfoInterface,
   wallet: ProfileWalletInterface,
   bonuses: ProfileBonusesInterface,
@@ -190,7 +190,19 @@ export interface HistoryBetsInterface {
   betCard: BetCardInterface,
 }
 
-export interface HistoryTransactionsInterface {
+interface TransactionTypeFilterOptions extends Record<string, any> {
+  deposit: string,
+  withdrawal: string
+}
+
+interface TransactionStatusFilterOptions extends Record<string, any> {
+  review: string,
+  pending: string,
+  success: string,
+  rejected: string
+}
+
+export interface HistoryTransactionsInterface extends Record<string, any>{
   empty: {
     icon: string,
     title?: string,
@@ -201,20 +213,12 @@ export interface HistoryTransactionsInterface {
   allFilterOption: string,
   typeFilter: {
     label: string,
-    options: {
-      deposit: string,
-      withdrawal: string
-    }
+    options: TransactionTypeFilterOptions
   },
   currencyLabel: string,
   statusFilter: {
     label: string,
-    options: {
-      review: string,
-      pending: string,
-      success: string,
-      rejected: string
-    }
+    options: TransactionStatusFilterOptions
   },
   tableColumns: {
     date: string,
@@ -241,7 +245,7 @@ export interface HistorySessionsInterface {
   }
 }
 
-export interface HistoryTabInterface {
+export interface HistoryTabInterface extends Record<string, any>{
   bonuses: HistoryBonusesInterface,
   spins: HistorySpinsInterface,
   bets: HistoryBetsInterface,

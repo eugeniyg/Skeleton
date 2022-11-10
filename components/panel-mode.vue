@@ -38,7 +38,7 @@
   const isRealMode = ref<boolean>(route.query.demo !== 'true');
   const emit = defineEmits(['changeMode']);
 
-  watch(() => route.query.demo, (newValue:string) => {
+  watch(() => route.query.demo, (newValue) => {
     isRealMode.value = newValue !== 'true';
   });
 

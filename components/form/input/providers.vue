@@ -59,10 +59,10 @@
 
   const selectedAll = ref(props.isSelectedAll);
   const isOpen = ref<boolean>(false);
-  const inputValues = ref({});
+  const inputValues = ref<{[key:string]:boolean|undefined}>({});
   const selected = ref<string[]>([]);
   const input = ref(null);
-  const content = ref(null);
+  const content = ref<HTMLElement>();
 
   const emit = defineEmits(['update:value']);
 
@@ -70,7 +70,7 @@
     isOpen.value = !isOpen.value;
   };
 
-  const inputUnfocus = (e) => {
+  const inputUnfocus = (e:any) => {
     if (!content.value?.contains(e.target) && !e.target.closest('.input-providers__toggle')) {
       isOpen.value = false;
     }

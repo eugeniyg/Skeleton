@@ -107,7 +107,7 @@
 
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
-  const welcomeContentRequest = await useAsyncData('welcomeContent', () => queryContent(`welcome-bonuses/${currentLocale.value.code}`).findOne());
+  const welcomeContentRequest = await useAsyncData('welcomeContent', () => queryContent(`welcome-bonuses/${currentLocale.value?.code}`).findOne());
   const welcomeContent:WelcomePageInterface|undefined = welcomeContentRequest.data.value as WelcomePageInterface;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(welcomeContent?.seo);

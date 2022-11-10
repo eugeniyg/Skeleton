@@ -35,7 +35,7 @@
   const globalStore = useGlobalStore();
   const { defaultLocale } = storeToRefs(globalStore);
   const route = useRoute();
-  const pageLocale = route.params.locale || defaultLocale.value.code;
+  const pageLocale = route.params.locale || defaultLocale.value?.code;
   const errorContentRequest = await useAsyncData('errorContent', () => queryContent(`page-controls/${pageLocale}`).only(['errorPage']).findOne());
   const errorContent:ErrorPageInterface|undefined = errorContentRequest.data.value?.errorPage;
 

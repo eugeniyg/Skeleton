@@ -49,10 +49,10 @@
 
   const emit = defineEmits(['removeFile', 'addFiles']);
 
-  const excerpt = ref(null);
+  const excerpt = ref<HTMLElement>();
   const isShowMoreBtn = ref<boolean>(false);
   const isTextExpanded = ref<boolean>(false);
-  const documentsContent:ProfileDocumentsInterface = inject('documentsContent');
+  const documentsContent:ProfileDocumentsInterface|undefined = inject('documentsContent');
 
   const textHasDots = (el: HTMLElement): boolean => el.scrollHeight > el.offsetHeight;
 
@@ -61,7 +61,7 @@
   };
 
   onMounted(() => {
-    if (textHasDots(excerpt.value)) {
+    if (excerpt.value && textHasDots(excerpt.value)) {
       isShowMoreBtn.value = true;
     }
   });

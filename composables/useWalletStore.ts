@@ -24,7 +24,7 @@ export const useWalletStore = defineStore('walletStore', {
   }),
 
   getters: {
-    activeAccount(state):AccountInterface {
+    activeAccount(state):AccountInterface|undefined {
       return state.accounts.find((acc) => acc.status === 1);
     },
 
@@ -32,8 +32,8 @@ export const useWalletStore = defineStore('walletStore', {
       const globalStore = useGlobalStore();
       const { currencies } = storeToRefs(globalStore);
 
-      const activeCurrency = currencies.value.find((currency) => currency.code === this.activeAccount.currency);
-      return activeCurrency.type;
+      const activeCurrency = currencies.value.find((currency) => currency.code === this.activeAccount?.currency);
+      return activeCurrency?.type || '';
     },
   },
 
@@ -64,13 +64,13 @@ export const useWalletStore = defineStore('walletStore', {
 
     async getDepositMethods():Promise<void> {
       const { getDepositMethods } = useCoreWalletApi();
-      const data = await getDepositMethods(this.activeAccount.currency);
+      const data = await getDepositMethods(this.activeAccount?.currency || '');
       this.depositMethods = data;
     },
 
     async getWithdrawMethods():Promise<void> {
       const { getWithdrawMethods } = useCoreWalletApi();
-      const data = await getWithdrawMethods(this.activeAccount.currency);
+      const data = await getWithdrawMethods(this.activeAccount?.currency || '');
       this.withdrawMethods = data;
     },
 
@@ -90,9 +90,9 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     updateAccount(webSocketResponse:WebSocketResponseInterface):void {
-      const accountData:AccountInterface = webSocketResponse.data.account;
+      const accountData:AccountInterface|undefined = webSocketResponse.data.account;
       this.accounts = this.accounts.map((account) => {
-        if (account.id === accountData.id) return accountData;
+        if (account.id === accountData?.id) return accountData;
         return account;
       });
     },
@@ -109,12 +109,12 @@ export const useWalletStore = defineStore('walletStore', {
       const { formatBalance } = useProjectMethods();
       const { alertsData } = useGlobalStore();
       const { showAlert } = useLayoutStore();
-      const invoiceUtcDate = new Date(webSocketResponse.data.invoice.createdAt);
+      const invoiceUtcDate = new Date(webSocketResponse.data?.invoice?.createdAt || '');
       const invoiceDate = invoiceUtcDate.toLocaleString().slice(0, 10);
-      const eventAmount = webSocketResponse.data.invoice.amount;
-      const eventCurrency = webSocketResponse.data.invoice.currency;
+      const eventAmount = webSocketResponse.data?.invoice?.amount;
+      const eventCurrency = webSocketResponse.data?.invoice?.currency;
       const formattedSum = formatBalance(eventCurrency, eventAmount);
-      const invoiceSuccess = webSocketResponse.data.invoice.status === 2;
+      const invoiceSuccess = webSocketResponse.data?.invoice?.status === 2;
 
       const formattedDescription = (cmsMessage: string|undefined):string => {
         if (!cmsMessage) return '';
@@ -124,10 +124,14 @@ export const useWalletStore = defineStore('walletStore', {
 
       if (webSocketResponse.data?.event === 'invoice.deposit.updated') {
         const cmsMessage = invoiceSuccess ? alertsData?.depositSuccess?.description : alertsData?.depositError?.description;
-        showAlert(invoiceSuccess ? { ...alertsData?.depositSuccess, description: formattedDescription(cmsMessage) } : { ...alertsData?.depositError, description: formattedDescription(cmsMessage) });
+        const depositSuccessAlertData = alertsData?.depositSuccess ? { ...alertsData.depositSuccess, description: formattedDescription(cmsMessage) } : undefined;
+        const depositErrorAlertData = alertsData?.depositError ? { ...alertsData.depositError, description: formattedDescription(cmsMessage) } : undefined;
+        showAlert(invoiceSuccess ? depositSuccessAlertData : depositErrorAlertData);
       } else if (webSocketResponse.data?.event === 'invoice.withdrawal.updated') {
         const cmsMessage = invoiceSuccess ? alertsData?.withdrawSuccess?.description : alertsData?.withdrawError?.description;
-        showAlert(invoiceSuccess ? { ...alertsData?.withdrawSuccess, description: formattedDescription(cmsMessage) } : { ...alertsData?.withdrawError, description: formattedDescription(cmsMessage) });
+        const withdrawSuccessAlertData = alertsData?.withdrawSuccess ? { ...alertsData.withdrawSuccess, description: formattedDescription(cmsMessage) } : undefined;
+        const withdrawErrorAlertData = alertsData?.withdrawError ? { ...alertsData.withdrawError, description: formattedDescription(cmsMessage) } : undefined;
+        showAlert(invoiceSuccess ? withdrawSuccessAlertData : withdrawErrorAlertData);
       }
     },
 

@@ -39,7 +39,13 @@
 
   const passwordContent:{label: string, saveButton:string}|undefined = inject('passwordContent');
 
-  const changeFormData = reactive({
+  interface ChangeFormDataInterface extends Record<string, any>{
+    currentPassword: string,
+    newPassword: string,
+    repeatNewPassword: string,
+  }
+
+  const changeFormData = reactive<ChangeFormDataInterface>({
     currentPassword: '',
     newPassword: '',
     repeatNewPassword: '',
@@ -52,7 +58,7 @@
     serverFormErrors, v$, onFocus, setError,
   } = useFormValidation(changeFormRules, changeFormData);
 
-  const inputNewPassword = (fieldName):void => {
+  const inputNewPassword = (fieldName:string):void => {
     if (fieldName === 'newPassword' && v$.value.repeatNewPassword.$dirty) {
       const oldValue = changeFormData.repeatNewPassword;
       changeFormData.repeatNewPassword = '';
@@ -79,7 +85,7 @@
       await changeProfilePassword(changeFormData);
       showAlert(alertsData.value?.passwordChanged);
       clearForm();
-    } catch (error) {
+    } catch (error:any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
       } else throw error;

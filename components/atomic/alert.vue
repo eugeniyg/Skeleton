@@ -41,7 +41,7 @@
     },
   });
 
-  const types = {
+  const types: {[index: string]: string} = {
     info: 'info',
     error: 'warning',
     warning: 'info',

@@ -108,17 +108,17 @@
     }
   };
 
-  const onInputYear = (year):void => {
+  const onInputYear = (year:number):void => {
     selected.year = year;
     changeInputValue();
   };
 
-  const onInputMonth = (month):void => {
+  const onInputMonth = (month:number):void => {
     selected.month = month;
     changeInputValue();
   };
 
-  const onInputDays = (day):void => {
+  const onInputDays = (day:number):void => {
     selected.day = day;
     changeInputValue();
   };

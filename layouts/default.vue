@@ -3,12 +3,10 @@
     <atomic-preloader/>
 
     <layout-header
-      :is-logged-in="isLoggedIn"
       @logout="logout"
     />
 
     <layout-drawer
-      :is-logged-in="isLoggedIn"
       :is-compact="IS_DRAWER_COMPACT"
       @compact="compact"
       @toggle-open="toggleOpen"
@@ -66,7 +64,6 @@
   checkModals();
 
   const { logOutUser } = profileStore;
-  const { isLoggedIn } = storeToRefs(profileStore);
 
   function logout():void {
     logOutUser();

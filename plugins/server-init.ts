@@ -1,7 +1,4 @@
-import { useWalletStore } from '~/composables/useWalletStore';
-import { useGamesStore } from '~/composables/useGamesStore';
-
-export default defineNuxtPlugin(async (nuxtApp) => {
+export default defineNuxtPlugin(async () => {
   const {
     getCurrencies,
     getLocales,

@@ -6,20 +6,23 @@
     </div>
 
     <div class="content">
-      <template v-if="props.isLoggedIn">
+      <template v-if="isLoggedIn">
         <card-profile/>
         <atomic-divider/>
       </template>
+
       <nav-list :items="sidebarContent?.topMenu"/>
       <atomic-divider/>
       <nav-list :items="sidebarContent?.tokenMenu"/>
       <atomic-divider/>
       <nav-list :items="sidebarContent?.bonusesMenu"/>
       <atomic-divider/>
-      <template v-if="props.isLoggedIn">
+
+      <template v-if="isLoggedIn">
         <nav-list :items="userMenuContent"/>
         <atomic-divider/>
       </template>
+
       <atomic-select-lang/>
       <atomic-divider/>
       <nav-list :items="sidebarContent?.bottomMenu"/>
@@ -37,14 +40,13 @@
       type: Boolean,
       default: false,
     },
-    isLoggedIn: {
-      type: Boolean,
-      default: false,
-    },
   });
 
   const { sidebarContent } = useGlobalStore();
   const emit = defineEmits(['compact', 'toggleOpen']);
+
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
 
   const gamesStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gamesStore);

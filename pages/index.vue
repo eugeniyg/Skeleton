@@ -31,7 +31,7 @@
 
   const homeContentRequest = await useAsyncData(
     'homeContent',
-    () => queryContent(`page-controls/${currentLocale.value.code}`).only(['homePage']).findOne(),
+    () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['homePage']).findOne(),
   );
   const homeContent:HomeContentInterface|undefined = homeContentRequest.data.value?.homePage;
   const { setPageSeo } = useProjectMethods();

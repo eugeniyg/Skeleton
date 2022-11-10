@@ -3,7 +3,30 @@ import { useWalletStore } from '~/composables/useWalletStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 import { AlertInterface } from '~/types';
 
-interface LayoutStoreStateInterface {
+interface ModalsInterface extends Record<string, any> {
+  register: boolean,
+  signIn: boolean,
+  deposit: boolean,
+  confirm: boolean,
+  confirmBonus: boolean,
+  error: boolean,
+  forgotPass: boolean,
+  resetPass: boolean,
+  success: boolean,
+  withdraw: boolean,
+}
+
+interface ModalsUrlsInterface extends Record<string, any> {
+  register: string,
+  signIn: string,
+  success: string,
+  error: string,
+  confirm: string,
+  forgotPass: string,
+  resetPass: string,
+}
+
+interface LayoutStoreStateInterface extends Record<string, any>{
   isUserNavOpen: boolean,
   isDrawerOpen: boolean,
   isCurrencyNavOpen: boolean,
@@ -11,27 +34,8 @@ interface LayoutStoreStateInterface {
   isShowAlert: boolean,
   showCookiePopup: boolean,
   alertProps: AlertInterface|undefined,
-  modals: {
-    register: boolean,
-    signIn: boolean,
-    deposit: boolean,
-    confirm: boolean,
-    confirmBonus: boolean,
-    error: boolean,
-    forgotPass: boolean,
-    resetPass: boolean,
-    success: boolean,
-    withdraw: boolean,
-  },
-  modalsUrl: {
-    register: string,
-    signIn: string,
-    success: string,
-    error: string,
-    confirm: string,
-    forgotPass: string,
-    resetPass: string,
-  },
+  modals: ModalsInterface,
+  modalsUrl: ModalsUrlsInterface,
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -67,7 +71,7 @@ export const useLayoutStore = defineStore('layoutStore', {
   }),
 
   actions: {
-    showAlert(props: AlertInterface): void {
+    showAlert(props: AlertInterface|undefined): void {
       if (this.isShowAlert) {
         this.hideAlert();
         this.showAlert(props);
@@ -113,12 +117,12 @@ export const useLayoutStore = defineStore('layoutStore', {
       window.dispatchEvent(new Event('resize'));
     },
 
-    addModalQuery(modalName:string, queryValue:string):void {
+    addModalQuery(modalName:string, queryValue:string|undefined):void {
       const router = useRouter();
       const { query, name } = useRoute();
       if (!name || name === 'slug' || name === 'locale-slug') return;
       const modalsArr = Object.keys(this.modals);
-      const newQuery = { ...query };
+      const newQuery:any = { ...query };
 
       modalsArr.forEach((modalKey) => {
         if (modalKey !== modalName) {
@@ -160,7 +164,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         if (authModals.includes(modalKey)) {
           isLoggedIn ? this.closeModal(modalKey) : this.showModal(modalKey);
         } else {
-          this.showModal(modalKey, route.query[query]);
+          this.showModal(modalKey, route.query?.[query] as string);
         }
       });
     },

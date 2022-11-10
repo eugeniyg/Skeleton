@@ -54,15 +54,15 @@
 
   const emit = defineEmits(['change']);
 
-  const input = ref(null);
+  const input = ref<HTMLInputElement>();
 
   const changeAction = () => {
-    emit('change', input.value.files);
-    input.value.value = '';
+    emit('change', input.value?.files);
+    if (input.value) input.value.value = '';
   };
 
   const clickAction = () => {
-    input.value.click();
+    input.value?.click();
   };
 </script>
 

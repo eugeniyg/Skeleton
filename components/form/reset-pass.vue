@@ -82,10 +82,10 @@
     try {
       isLockedAsyncButton.value = true;
       const route = useRoute();
-      await resetProfilePassword({ ...resetFormData, code: route.query.resetCode });
+      await resetProfilePassword({ ...resetFormData, code: route.query.resetCode as string });
       showAlert(alertsData.value?.passwordChanged);
       closeModal('resetPass');
-    } catch (error) {
+    } catch (error:any) {
       if (error.response?.status === 422) {
         if (error.data?.error?.fields.code) showErrorAlert();
         else serverFormErrors.value = error.data?.error?.fields;

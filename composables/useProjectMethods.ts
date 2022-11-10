@@ -6,21 +6,22 @@ import { SeoContentInterface } from '~/types';
 
 export const useProjectMethods = () => {
   const createValidationRules = (fields:any[], includeContext?:boolean):any => {
-    const validationRules = {};
+    const validationRules:any = {};
+    const fieldsType:any = fieldsTypeMap;
 
     if (includeContext) {
       fields.forEach((field) => {
         if (field.isRequired) validationRules[field.name] = [{ rule: 'required' }];
-        if (fieldsTypeMap[field.name].validation?.length) {
+        if (fieldsType[field.name].validation?.length) {
           if (validationRules[field.name]) {
-            validationRules[field.name] = [...validationRules[field.name], ...fieldsTypeMap[field.name].validation];
-          } else validationRules[field.name] = fieldsTypeMap[field.name].validation;
+            validationRules[field.name] = [...validationRules[field.name], ...fieldsType[field.name].validation];
+          } else validationRules[field.name] = fieldsType[field.name].validation;
         }
       });
     } else {
       fields.forEach((field) => {
-        if (fieldsTypeMap[field.name].validation?.length) {
-          validationRules[field.name] = fieldsTypeMap[field.name].validation;
+        if (fieldsType[field.name].validation?.length) {
+          validationRules[field.name] = fieldsType[field.name].validation;
         }
       });
     }
@@ -35,22 +36,22 @@ export const useProjectMethods = () => {
 
   const preloaderDone = ():void => {
     const preloaderEl = document.querySelector('.preloader');
-    if (preloaderEl.classList.contains('is-none')) return;
+    if (preloaderEl?.classList.contains('is-none')) return;
 
     setTimeout(() => {
-      preloaderEl.classList.add('is-hide');
+      preloaderEl?.classList.add('is-hide');
     }, 500);
 
     setTimeout(() => {
-      preloaderEl.classList.add('is-none');
+      preloaderEl?.classList.add('is-none');
     }, 1000);
   };
 
   const localizePath = (path:string):string => {
     const globalStore = useGlobalStore();
 
-    if (globalStore.currentLocale.code.toLowerCase() === globalStore.defaultLocale.code.toLowerCase()) return path;
-    return `/${globalStore.currentLocale.code.toLowerCase()}${!path || path === '/' ? '' : path}`;
+    if (globalStore.currentLocale?.code.toLowerCase() === globalStore.defaultLocale?.code.toLowerCase()) return path;
+    return `/${globalStore.currentLocale?.code.toLowerCase()}${!path || path === '/' ? '' : path}`;
   };
 
   const isHomePage = ():boolean => {
@@ -79,14 +80,20 @@ export const useProjectMethods = () => {
     return `${getFirstPath.slice(0, -3)}***`;
   };
 
-  const formatBalance = (currency: string, amount: number):{ currency: string, amount: number } => {
+  const formatBalance = (currency: string|undefined, amount: number|undefined):{ currency: string, amount: number } => {
+    if (!currency && amount === undefined) return { currency: '', amount: 0 };
+    if (!currency) return { currency: '', amount: amount || 0 };
+    if (amount === undefined) return { currency, amount: 0 };
+
     const { currencies } = useGlobalStore();
     const currencyConfig = currencies.find((item) => item.code === currency);
+    if (!currencyConfig) return { currency, amount };
+
     const specialCurrencies = ['BTC', 'ETH'];
     if (currencyConfig.type === 'fiat' || !specialCurrencies.includes(currencyConfig.code)) return { currency, amount };
 
-    const subcurrencyConfig = currencyConfig.subCurrencies.find((subcurrency) => subcurrency.subunitToUnit === 1000);
-    if (amount === 0) return { currency: subcurrencyConfig.code, amount };
+    const subCurrencyConfig = currencyConfig.subCurrencies?.find((subCurrency) => subCurrency.subunitToUnit === 1000);
+    if (amount === 0) return { currency: subCurrencyConfig?.code || '', amount };
     let afterDigits;
     if (amount.toString().split('e-')[1]) {
       afterDigits = Number(amount.toString().split('e-')[1]) || 0;
@@ -94,23 +101,24 @@ export const useProjectMethods = () => {
       afterDigits = amount.toString().split('.')[1]?.length || 0;
     }
 
-    return { currency: subcurrencyConfig.code, amount: Number((amount * 1000).toFixed(afterDigits < 4 ? 0 : (afterDigits - 3))) };
+    return { currency: subCurrencyConfig?.code || '', amount: Number((amount * 1000).toFixed(afterDigits < 4 ? 0 : (afterDigits - 3))) };
   };
 
-  const getMainBalanceFormat = (currency: string, amount: number):{ currency: string, amount: string|number } => {
+  const getMainBalanceFormat = (currency: string, amount: number):{ currency: string, amount: number } => {
     const { currencies } = useGlobalStore();
     const currencyConfig = currencies.find((item) => {
       if (!item.subCurrencies?.length) return item.code === currency;
 
-      return item.subCurrencies.some((subcurrency) => subcurrency.code === currency);
+      return item.subCurrencies.some((subCurrency) => subCurrency.code === currency);
     });
+    if (!currencyConfig) return { currency, amount };
     const specialCurrencies = ['BTC', 'ETH'];
     if (currencyConfig.type === 'fiat' || !specialCurrencies.includes(currencyConfig.code)) return { currency, amount };
 
-    const subcurrencyConfig = currencyConfig.subCurrencies.find((subcurrency) => subcurrency.code === currency);
+    const subCurrencyConfig = currencyConfig.subCurrencies?.find((subCurrency) => subCurrency.code === currency);
     if (amount === 0) return { currency: currencyConfig.code, amount };
 
-    return { currency: currencyConfig.code, amount: amount / subcurrencyConfig.subunitToUnit };
+    return { currency: currencyConfig.code, amount: amount / (subCurrencyConfig?.subunitToUnit || 1) };
   };
 
   const setPageSeo = (seoData:SeoContentInterface|undefined):void => {

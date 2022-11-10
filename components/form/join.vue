@@ -93,7 +93,7 @@
     }
   }
 
-  const getCheckboxLabel = (fieldName: string):string => {
+  const getCheckboxLabel = (fieldName: string):string|undefined => {
     if (fieldName === 'receiveEmailPromo') return registrationContent?.agreeEmailLabel;
     if (fieldName === 'receiveSmsPromo') return registrationContent?.agreeSmsLabel;
     return fieldsContent.value?.[fieldName]?.label || '';
@@ -130,7 +130,7 @@
       await registration(registrationFormData);
       if (affiliateTag) localStorage.removeItem('affiliateTag');
       closeModal('register');
-    } catch (error) {
+    } catch (error:any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
       } else throw error;

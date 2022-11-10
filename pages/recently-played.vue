@@ -33,8 +33,8 @@
   import { RecentlyPageInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { currentLocale, isMobile } = storeToRefs(globalStore);
-  const recentlyContentRequest = await useAsyncData('recentlyContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['recentlyPage']).findOne());
+  const { currentLocale, isMobile, headerCountry } = storeToRefs(globalStore);
+  const recentlyContentRequest = await useAsyncData('recentlyContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['recentlyPage']).findOne());
   const recentlyContent:RecentlyPageInterface|undefined = recentlyContentRequest.data.value?.recentlyPage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(recentlyContent?.seo);
@@ -58,7 +58,7 @@
       const recentlyResponse = await getRecentlyPlayed({
         perPage: 18,
         platform: isMobile.value ? 1 : 2,
-        countryCode: profile.value?.country,
+        countryCode: profile.value?.country || headerCountry.value || 'UA',
       });
       recentlyGames.value = recentlyResponse;
     } finally {
