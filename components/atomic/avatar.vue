@@ -69,13 +69,13 @@
     position: absolute;
     z-index: var(--close-decor-index, 1);
     background-color: var(--gray-700);
-    border-radius: 50%;
+    border-radius: 12px;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0 3px 0 #28263B;
+    box-shadow: inset 0 2px 0 #28263B;
     --color: var(--yellow-500);
     cursor: pointer;
     visibility: var(--close-btn-visibility, hidden);
