@@ -56,13 +56,13 @@
       }
     },
     "cancelPaymentButton": "Cancel payment",
-    "tabPosition": 4,
+    "tabPosition": -2,
     "tabLabel": "Transactions"
   },
   "locale": "ru",
   "sessions": {
     "tabLabel": "Sessions",
-    "tabPosition": -3,
+    "tabPosition": 1,
     "sessionsStatuses": {
       "current": "Current",
       "active": "Active",
@@ -73,6 +73,33 @@
       "userAgent": "User Agent",
       "createdAt": "Created At",
       "status": "Status"
+    }
+  },
+  "bets": {
+    "tabLabel": "Bets",
+    "tabPosition": 4,
+    "settledTab": "Settled",
+    "unsettledTab": "Unsettled",
+    "statuses": {
+      "pending": "Pending",
+      "won": "Won",
+      "lost": "Lost",
+      "refund": "Refund",
+      "cashout": "Cash Out"
+    },
+    "betCard": {
+      "coefficientLabel": "Odds",
+      "betLabel": "Bet",
+      "resultLabel": "Result",
+      "copyButton": "Copy bet ID",
+      "copyTooltip": "Bet ID copied to clipboard",
+      "comboLabel": "Combo",
+      "comboDisciplinesTooltip": "more",
+      "comboBetsLabel": "Bets"
+    },
+    "empty": {
+      "title": "There is no data yet!",
+      "description": "You have not placed any bets yet."
     }
   }
 }
