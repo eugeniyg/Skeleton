@@ -16,7 +16,7 @@
   position: var(--position, relative);
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 8px;
   background-color: var(--bg, var(--gray-800));
   top: var(--top, 0);
   right: var(--right, 0);

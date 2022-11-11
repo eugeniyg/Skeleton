@@ -5,7 +5,7 @@
     size="xs"
     @click="showModal(props.openModal)"
   >
-    <template v-html="buttonHtml" />
+    <div v-html="buttonHtml" />
   </button-base>
 </template>
 

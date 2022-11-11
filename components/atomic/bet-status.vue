@@ -32,7 +32,7 @@
     content: '';
     min-width: rem(6px);
     min-height: rem(6px);
-    border-radius: 50%;
+    border-radius: 4px;
     background-color: var(--dot-bg, transparent);
     align-self: center;
   }

@@ -125,6 +125,7 @@
     display: flex;
     align-items: center;
     grid-column-gap: rem(8px);
+    border-radius: 8px;
 
     .icon {
       margin-left: auto;
@@ -140,7 +141,6 @@
     }
 
     @include media(l) {
-      border-radius: 24px;
       --item-padding: #{7px} #{16px};
       --color: var(--gray-300);
 
@@ -169,11 +169,9 @@
     }
 
     &:hover {
-      border-radius: 4px;
       --bg: var(--gray-700);
 
       @include media(l) {
-        border-radius: 24px;
         --bg: var(--gray-800);
       }
     }
