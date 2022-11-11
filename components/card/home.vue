@@ -87,6 +87,7 @@
   position: relative;
   border-radius: 8px;
   overflow: hidden;
+  border: 1px solid white;
 
   img {
     width: var(--width, 100%);
@@ -105,14 +106,15 @@
       bottom: 0;
       --width: 50.72%;
       z-index: 3;
+      object-fit: cover;
+      object-position: top;
 
       @include media(xs) {
-        // background: greenyellow;
+        background: greenyellow;
       }
 
       @include media(sm) {
-        --width: 53%;
-        // background: red;
+        background: red;
       }
 
       @include media(md) {
