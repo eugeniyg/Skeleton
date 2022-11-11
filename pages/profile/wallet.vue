@@ -14,30 +14,29 @@
       </button-base>
     </div>
 
-    <client-only>
-      <nav-currency :tabs="navTabs" @toggleNavEmpty="currencyNavEmpty = $event"/>
+    <nav-currency :tabs="navTabs" @toggleNavEmpty="currencyNavEmpty = $event"/>
 
-      <div class="cards-wallet">
-        <TransitionGroup name="card">
-          <card-wallet
-            v-for="account in orderedAccounts"
-            :key="account.id"
-            v-bind="account"
-            :content="walletContent"
-          />
-        </TransitionGroup>
-      </div>
-    </client-only>
+    <div class="cards-wallet">
+      <TransitionGroup name="card">
+        <card-wallet
+          v-for="account in orderedAccounts"
+          :key="account.id"
+          v-bind="account"
+          :content="walletContent"
+        />
+      </TransitionGroup>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { AccountInterface } from '@platform/frontend-core/dist/module';
   import { ProfileWalletInterface } from '~/types';
 
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
-  const walletContentRequest = await useAsyncData('walletContent', () => queryContent(`profile/${currentLocale.value.code}`).only(['wallet']).findOne());
+  const walletContentRequest = await useAsyncData('walletContent', () => queryContent(`profile/${currentLocale.value?.code}`).only(['wallet']).findOne());
   const walletContent:ProfileWalletInterface|undefined = walletContentRequest.data.value?.wallet;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(walletContent?.seo);
@@ -77,7 +76,7 @@
   const orderedAccounts = computed(() => accounts.value.reduce((acc, item) => {
     item.status === 1 ? acc.unshift(item) : acc.push(item);
     return acc;
-  }, []));
+  }, [] as AccountInterface[]));
 </script>
 
 <style lang="scss">

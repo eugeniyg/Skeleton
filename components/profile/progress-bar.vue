@@ -47,7 +47,7 @@
 
   .bar {
     background-color: var(--bg, var(--gray-700));
-    @include radius(999px);
+    @include radius(4px);
     position: relative;
     overflow: hidden;
     display: flex;
@@ -61,7 +61,7 @@
       width: var(--bar-percents, 0);
       height: var(--height);
       background-color: var(--bg, var(--gray-300));
-      @include radius(999px);
+      @include radius(4px);
       transition: width .4s ease-in-out;
       min-width: rem(6px);
     }

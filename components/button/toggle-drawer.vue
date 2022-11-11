@@ -22,7 +22,7 @@
     justify-content: center;
     align-items: center;
     @extend %skip-btn;
-    border-radius: 50%;
+    border-radius: 8px;
     padding: 0;
     position: var(--position, absolute);
     transform: var(--translate, translate(50%, 50%));

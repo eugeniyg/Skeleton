@@ -38,7 +38,7 @@
   const depositContent: DepositInterface|undefined = popupsData?.deposit;
   const withdrawContent: WithdrawInterface|undefined = popupsData?.withdraw;
   const { formatBalance } = useProjectMethods();
-  const balanceFormat = computed(() => formatBalance(activeAccount.value.currency, activeAccount.value.balance));
+  const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
 </script>
 
 <style lang="scss">

@@ -7,6 +7,7 @@ import { useLayoutStore } from '~/composables/useLayoutStore';
 import { useGamesStore } from '~/composables/useGamesStore';
 import { useProjectMethods } from '~/composables/useProjectMethods';
 import { useGlobalStore } from '~/composables/useGlobalStore';
+import { CookieRef } from '#app';
 
 interface ProfileStoreStateInterface {
   isLoggedIn: boolean,
@@ -35,10 +36,10 @@ export const useProfileStore = defineStore('profileStore', {
 
   getters: {
     userNickname(state):string {
-      return state.profile.nickname || 'Unknown';
+      return state.profile?.nickname || 'Unknown';
     },
 
-    playerStatusName(state):string {
+    playerStatusName(state):string|undefined {
       const { playerStatuses } = useCoreStore();
       return playerStatuses.find((status) => status.id === state.profile?.status)?.name;
     },
@@ -56,26 +57,28 @@ export const useProfileStore = defineStore('profileStore', {
 
     async logIn(loginData:any):Promise<void> {
       const { submitLoginData } = useCoreAuthApi();
-      const { getUserAccounts, subscribeAccountSocket } = useWalletStore();
+      const { getUserAccounts, subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       const submitResult = await submitLoginData(loginData);
       this.setToken(submitResult);
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
       subscribeAccountSocket();
+      subscribeInvoicesSocket();
       const { getFavoriteGames } = useGamesStore();
       getFavoriteGames();
     },
 
     async registration(registrationData:any):Promise<void> {
       const { submitRegistrationData } = useCoreAuthApi();
-      const { getUserAccounts, subscribeAccountSocket } = useWalletStore();
+      const { getUserAccounts, subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       const submitResult = await submitRegistrationData(registrationData);
       this.setToken(submitResult);
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
       subscribeAccountSocket();
+      subscribeInvoicesSocket();
       const { showAlert } = useLayoutStore();
       const { alertsData } = useGlobalStore();
       showAlert(alertsData?.successRegistration);
@@ -94,14 +97,15 @@ export const useProfileStore = defineStore('profileStore', {
 
     async logOutUser(needRequest:boolean = true):Promise<void> {
       const { logOut } = useCoreAuthApi();
-      const bearer = useCookie('bearer');
+      const bearer: CookieRef<string|undefined> = useCookie('bearer');
       try {
         if (needRequest) await logOut();
       } finally {
         bearer.value = undefined;
         this.isLoggedIn = false;
-        const { unsubscribeAccountSocket } = useWalletStore();
+        const { unsubscribeAccountSocket, unsubscribeInvoiceSocket } = useWalletStore();
         unsubscribeAccountSocket();
+        unsubscribeInvoiceSocket();
         const router = useRouter();
         const { localizePath } = useProjectMethods();
         router.push(localizePath('/'));

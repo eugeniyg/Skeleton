@@ -16,6 +16,19 @@
         <atomic-bonus v-bind="bonus"/>
         <atomic-divider/>
       </template>
+
+      <form-input-toggle
+        name="bonus-toggle"
+        v-model:value="hasBonusCode"
+        @change="hasBonusCode = !hasBonusCode"
+      >
+        {{ depositContent?.togglerLabel || '' }}
+      </form-input-toggle>
+
+      <form-bonus-code
+        v-if="hasBonusCode"
+        v-model:value="bonusValue"
+      />
     </template>
   </form>
 </template>
@@ -32,6 +45,8 @@
 
   const walletNumber = ref<string>('');
   const qrLink = ref<string>('');
+  const hasBonusCode = ref<boolean>(false);
+  const bonusValue = ref<string>('');
 
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
@@ -43,7 +58,7 @@
 
   const { formatBalance } = useProjectMethods();
   const fieldHint = computed(() => {
-    const formatSum = formatBalance(activeAccount.value.currency, props.amountMin);
+    const formatSum = formatBalance(activeAccount.value?.currency, props.amountMin);
     return {
       message: `${depositContent?.minSum || ''} ${formatSum.amount} ${formatSum.currency}`,
     };
@@ -58,10 +73,10 @@
     }
 
     const params = {
-      method: props.method,
-      currency: activeAccount.value.currency,
-      amount: props.amountMin,
-      accountId: activeAccount.value.id,
+      method: props.method || '',
+      currency: activeAccount.value?.currency || '',
+      amount: props.amountMin || 0,
+      accountId: activeAccount.value?.id || '',
       redirectSuccessUrl: window.location.href,
       redirectErrorUrl: window.location.href,
     };
@@ -82,15 +97,6 @@
   .input-toggle {
     width: 100%;
     --slider-bg: var(--black-primary);
-  }
-
-  .input-text {
-    .field {
-      text-align: center;
-      padding: rem(11px) rem(8px);
-      max-width: rem(130px);
-      margin-left: auto;
-    }
   }
 
   .row {

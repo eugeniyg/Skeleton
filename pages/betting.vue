@@ -33,7 +33,7 @@
   const {
     isMobile, alertsData, currentLocale, headerCountry,
   } = storeToRefs(globalStore);
-  const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['bettingPage']).findOne());
+  const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['bettingPage']).findOne());
   const bettingContent:BettingContentInterface|undefined = bettingContentRequest.data.value?.bettingPage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(bettingContent?.seo);
@@ -49,9 +49,9 @@
   const startGame = async ():Promise<void> => {
     const redirectUrl = window.location.origin;
     const startParams = {
-      accountId: activeAccount.value.id,
+      accountId: activeAccount.value?.id,
       lobbyUrl: redirectUrl,
-      locale: currentLocale.value.code,
+      locale: currentLocale.value?.code || 'en',
       countryCode: profile.value?.country || headerCountry.value || 'UA',
       demoMode: false,
       platform: isMobile.value ? 1 : 2,
@@ -71,12 +71,10 @@
 
   onMounted(async () => {
     if (isMobile.value) {
-      // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
-      setTimeout(() => {
-        document.querySelector('footer').style.display = 'none';
-        const seoTextBlock:any = document.querySelector('.text-wrap');
-        if (seoTextBlock) seoTextBlock.style.display = 'none';
-      }, 300);
+      const footerEl:HTMLElement|null = document.querySelector('footer');
+      if (footerEl) footerEl.style.display = 'none';
+      const seoTextBlock:HTMLElement|null = document.querySelector('.text-wrap');
+      if (seoTextBlock) seoTextBlock.style.display = 'none';
     }
 
     if (!isLoggedIn.value) {
@@ -102,7 +100,8 @@
   });
 
   onBeforeUnmount(() => {
-    document.querySelector('footer').style.display = null;
+    const footerEl:any = document.querySelector('footer');
+    if (footerEl) footerEl.style.display = null;
     const seoTextBlock:any = document.querySelector('.text-wrap');
     if (seoTextBlock) seoTextBlock.style.display = null;
   });

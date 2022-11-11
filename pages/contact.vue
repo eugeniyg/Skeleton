@@ -57,7 +57,7 @@
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();
   const { fieldsContent, alertsData, currentLocale } = storeToRefs(globalStore);
-  const contactContentRequest = await useAsyncData('contactContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['contactPage']).findOne());
+  const contactContentRequest = await useAsyncData('contactContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['contactPage']).findOne());
   const contactContent:ContactPageInterface|undefined = contactContentRequest.data.value?.contactPage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(contactContent?.seo);

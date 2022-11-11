@@ -10,6 +10,7 @@
       :readonly="props.isDisabled"
       :required="props.isRequired ? 'required': false"
       :placeholder="props.placeholder"
+      :autocomplete="props.autocomplete"
       @focus="onFocus"
       @blur="onBlur"
       @input="onInput"
@@ -53,6 +54,10 @@
     hint: {
       type: Object,
       required: false,
+    },
+    autocomplete: {
+      type: String,
+      default: 'on',
     },
   });
   const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);

@@ -4,60 +4,52 @@
 
     <button-search @click="showSearch = true" data-show="mobile"/>
 
-    <client-only>
-      <div class="items">
-        <search
-          :isShow="showSearch"
-          @hideSearch="showSearch = false"
-        />
-        <button-search @click="showSearch = true" data-show="desktop"/>
+    <div class="items">
+      <search
+        :isShow="showSearch"
+        @hideSearch="showSearch = false"
+      />
+      <button-search @click="showSearch = true" data-show="desktop"/>
 
-        <template v-if="props.isLoggedIn">
-          <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
-          <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
-          <form-input-deposit/>
-          <atomic-avatar @toggle="toggleProfileNav" :is-button="true"/>
-          <nav-user :avatar-items="avatarItems" @logout="logout"/>
-        </template>
+      <template v-if="isLoggedIn">
+        <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
+        <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
+        <form-input-deposit/>
+        <atomic-avatar @toggle="toggleProfileNav" :is-button="true"/>
+        <nav-user :avatar-items="avatarItems" @logout="logout"/>
+      </template>
 
-        <template v-else>
-          <button-base
-            type="primary"
-            size="md"
-            @click="showModal('register')"
-          >
-            {{ headerContent?.registrationButton }}
-          </button-base>
+      <template v-else>
+        <button-base
+          type="primary"
+          size="md"
+          @click="showModal('register')"
+        >
+          {{ headerContent?.registrationButton }}
+        </button-base>
 
-          <button-base
-            type="secondary"
-            size="md"
-            @click="showModal('signIn')"
-          >
-            {{ headerContent?.loginButton }}
-          </button-base>
-        </template>
-      </div>
-    </client-only>
+        <button-base
+          type="secondary"
+          size="md"
+          @click="showModal('signIn')"
+        >
+          {{ headerContent?.loginButton }}
+        </button-base>
+      </template>
+    </div>
   </header>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
-    isLoggedIn: {
-      type: Boolean,
-      default: false,
-    },
-  });
   const emit = defineEmits(['login', 'register', 'logout']);
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { headerContent } = useGlobalStore();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal } = layoutStore;
-  const { avatarItems } = storeToRefs(profileStore);
+  const { avatarItems, isLoggedIn } = storeToRefs(profileStore);
   const fakeStore = useFakeStore();
 
   function toggleProfileNav():void {

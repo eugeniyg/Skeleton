@@ -14,8 +14,8 @@
         <p class="text"> The status of the currently active bonus will change to Cancelled. Are you sure you want to activate this bonus?</p>
 
         <div class="actions">
-          <button-base type="primary" size="md">Yes</button-base>
-          <button-base type="secondary" size="md">No</button-base>
+          <button-base type="primary" size="md" @click="activateBonus">Yes</button-base>
+          <button-base type="secondary" size="md" @click="closeModal('confirmBonus')">No</button-base>
         </div>
       </div>
     </div>
@@ -27,7 +27,19 @@
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
+  const { closeModal, showAlert } = layoutStore;
+
+  const activateBonus = () => {
+    closeModal('confirmBonus');
+    const alertProps = {
+      autoHide: true,
+      type: 'done',
+      title: 'You have succsfuly activated the bonus',
+    };
+    setTimeout(() => {
+      showAlert(alertProps);
+    }, 1000);
+  };
 </script>
 
 <style lang="scss">

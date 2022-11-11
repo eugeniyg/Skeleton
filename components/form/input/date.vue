@@ -3,7 +3,7 @@
     <span class="label">{{ props.label }}</span>
     <div class="row">
       <client-only>
-        <vue-flat-pickr
+        <flat-pickr
           v-model="date"
           :config="{ ...defaultSettings, ...props.settings }"
           placeholder="-- / -- / ----"
@@ -19,20 +19,9 @@
 </template>
 
 <script setup lang="ts">
-  import vueFlatPickr from 'vue-flatpickr-component';
-  import flatpickr from 'flatpickr';
-
-  const { currentLocale } = useGlobalStore();
-  if (currentLocale.code !== 'en') {
-    let localeOptions;
-
-    if (currentLocale.name === 'Russian') {
-      localeOptions = await import('flatpickr/dist/l10n/ru');
-    } else if (currentLocale.name === 'Ukrainian') {
-      localeOptions = await import('flatpickr/dist/l10n/uk');
-    }
-    flatpickr.localize(localeOptions[currentLocale.name]);
-  }
+  import flatPickr from 'vue-flatpickr-component';
+  import { Ukrainian } from 'flatpickr/dist/l10n/uk';
+  import { Russian } from 'flatpickr/dist/l10n/ru';
 
   const props = defineProps({
     label: {
@@ -51,15 +40,21 @@
     dateFormat: 'Y-m-d',
     monthSelectorType: 'static',
     disableMobile: 'true',
-    locale: {
-      rangeSeparator: ' - ',
-    },
+    locale: {},
   };
 
-  const date = ref<any>(undefined);
+  const { currentLocale } = useGlobalStore();
+  let localeOption:any;
+  if (currentLocale?.code === 'uk') localeOption = Ukrainian;
+  else if (currentLocale?.code === 'ru') localeOption = Russian;
+
+  if (localeOption) defaultSettings.locale = { ...localeOption, rangeSeparator: ' - ' };
+  else defaultSettings.locale = { rangeSeparator: ' - ' };
+
+  const date = ref<any>(null);
   const emit = defineEmits(['change']);
-  const selectDate = (selectedDates):void => {
-    let valueArr = [];
+  const selectDate = (selectedDates:Date[]):void => {
+    let valueArr:string[] = [];
     if (selectedDates.length) {
       valueArr = selectedDates.map((selectedDate) => selectedDate.toISOString());
     }
@@ -80,7 +75,7 @@
   .form-control {
     background: none;
     background-color: var(--bg, var(--gray-800));
-    padding: var(--input-padding-y, #{rem(11px)}) rem(44px);
+    padding: var(--input-padding-y, #{rem(7px)}) rem(44px);
     border: 1px solid var(--border-color, var(--gray-800));
     color: var(--color, var(--white));
     border-radius: 8px;

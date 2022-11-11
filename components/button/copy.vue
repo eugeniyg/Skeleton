@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-  const input = ref(null);
+  const input = ref<HTMLInputElement>();
   const props = defineProps<{
     text: string,
     copyButton: string,
@@ -39,10 +39,12 @@
   };
 
   const actionClick = () => {
-    input.value.focus();
-    input.value.select();
-    document.execCommand('copy');
-    showTooltip();
+    if (input.value) {
+      input.value.focus();
+      input.value.select();
+      document.execCommand('copy');
+      showTooltip();
+    }
   };
 </script>
 

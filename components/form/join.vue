@@ -93,7 +93,7 @@
     }
   }
 
-  const getCheckboxLabel = (fieldName: string):string => {
+  const getCheckboxLabel = (fieldName: string):string|undefined => {
     if (fieldName === 'receiveEmailPromo') return registrationContent?.agreeEmailLabel;
     if (fieldName === 'receiveSmsPromo') return registrationContent?.agreeSmsLabel;
     return fieldsContent.value?.[fieldName]?.label || '';
@@ -122,11 +122,15 @@
       registrationFormData.nickname = getNicknameFromEmail(registrationFormData.email);
     }
 
+    const affiliateTag = localStorage.getItem('affiliateTag');
+    if (affiliateTag) registrationFormData.affiliateTag = affiliateTag;
+
     try {
       isLockedAsyncButton.value = true;
       await registration(registrationFormData);
+      if (affiliateTag) localStorage.removeItem('affiliateTag');
       closeModal('register');
-    } catch (error) {
+    } catch (error:any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
       } else throw error;

@@ -52,10 +52,12 @@
 
     --color: var(--white);
     --padding: #{rem(4px) rem(12px)};
+    --btn-border-radius: 8px;
 
-    &:hover {
-      --bg: var(--gray-700);
-      --shadow: 0 0 0 3px #2F363D;
+    @include use-hover {
+      &:hover {
+        --bg: var(--gray-700);
+      }
     }
 
     &:active, &.is-active {
@@ -63,7 +65,6 @@
       --color: var(--yellow-500);
       --text-color: var(--yellow-500);
       --icon-color: var(--yellow-500);
-      --shadow: inset 0 2px 0 #2F363D;
     }
   }
 
@@ -72,12 +73,12 @@
     @extend %text-elipsis;
     display: var(--text-display, block);
     color: var(--color, var(--white));
+    transition: color .4s ease-in-out;
   }
 
   .is-compact & {
     @include media(l) {
-
-      @include radius(999px);
+      border-radius: 8px;
       width: fit-content;
       align-items: center;
 

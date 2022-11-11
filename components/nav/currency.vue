@@ -25,7 +25,7 @@
             class="item"
             @click="addCurrency(currency)"
           >
-            <img class="img" :src="`/img/currency/${currency.type === 'crypto' ? '1.png' : '2.png'}`" />
+            <img class="img" :src="`/img/currency/${currency.code}.svg`" />
             <span class="title">{{ currency.name }}</span>
             <span class="label">{{ currency.code }}</span>
           </div>
@@ -188,9 +188,8 @@
   }
 
   .img {
-    @include box(22px);
+    @include box(24px);
     display: block;
-    padding: rem(2px);
     margin-right: rem(8px);
   }
 }

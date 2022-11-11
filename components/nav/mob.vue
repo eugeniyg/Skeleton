@@ -14,10 +14,8 @@
     </button-base>
 
     <button-base class="item is-accent" @click.prevent="clickMainButton">
-      <client-only>
-        <atomic-icon :id="isLoggedIn ? 'wallet' : 'user'" />
-        <span>{{isLoggedIn ? headerContent?.depositButton : headerContent?.loginButton }}</span>
-      </client-only>
+      <atomic-icon :id="isLoggedIn ? 'wallet' : 'user'" />
+      <span>{{isLoggedIn ? headerContent?.depositButton : headerContent?.loginButton }}</span>
     </button-base>
 
     <button-base
@@ -93,7 +91,7 @@
     &.is-accent {
       .icon {
         @include box(36px);
-        background-color: var(--yellow-600);
+        background: var(--gradient-radial);
         padding: rem(6px);
         @include radius(50%);
       }

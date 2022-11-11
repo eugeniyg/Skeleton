@@ -881,6 +881,7 @@ collections:
       - error
       - warning
       - done
+      - pending
     fields:
       - *localeField
       - name: limitedRealGame
@@ -1022,6 +1023,70 @@ collections:
         fields:
           - *alertTitle
           - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: done
+      - name: depositSuccess
+        label: Deposit Success
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - name: description
+            label: Description
+            widget: string
+            required: false
+            hint: 'Put variables {sum}: deposit sum and {date}: deposit date in text!'
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: done
+      - name: depositError
+        label: Deposit Error
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - name: description
+            label: Description
+            widget: string
+            required: false
+            hint: 'Put variables {sum}: deposit sum and {date}: deposit date in text!'
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: error
+      - name: withdrawSuccess
+        label: Withdraw Success
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - name: description
+            label: Description
+            widget: string
+            required: false
+            hint: 'Put variables {sum}: withdrawal sum and {date}: withdrawal date in text!'
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: done
+      - name: withdrawError
+        label: Withdraw Error
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - name: description
+            label: Description
+            widget: string
+            required: false
+            hint: 'Put variables {sum}: withdrawal sum and {date}: withdrawal date in text!'
           - name: type
             label: Alert Type
             widget: select
@@ -1594,8 +1659,8 @@ collections:
                 label: Options
                 widget: object
                 fields:
-                  - name: review
-                    label: Review Label
+                  - name: processing
+                    label: Processing Label
                     widget: string
                   - name: pending
                     label: Pending Label

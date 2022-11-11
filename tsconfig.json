@@ -5,7 +5,6 @@
     "types": [
       "vue-final-modal",
       "@pinia/nuxt",
-      "~/components.d.ts",
     ]
   }
 }

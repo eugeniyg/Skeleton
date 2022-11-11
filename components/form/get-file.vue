@@ -10,6 +10,7 @@
     </div>
 
     <button
+      v-if="isShowMoreBtn"
       class="show-more-btn"
       @click.prevent="clickAction"
     >
@@ -48,20 +49,19 @@
 
   const emit = defineEmits(['removeFile', 'addFiles']);
 
-  const excerpt = ref(null);
+  const excerpt = ref<HTMLElement>();
   const isShowMoreBtn = ref<boolean>(false);
   const isTextExpanded = ref<boolean>(false);
-  const documentsContent:ProfileDocumentsInterface = inject('documentsContent');
+  const documentsContent:ProfileDocumentsInterface|undefined = inject('documentsContent');
 
   const textHasDots = (el: HTMLElement): boolean => el.scrollHeight > el.offsetHeight;
 
   const clickAction = () => {
     isTextExpanded.value = !isTextExpanded.value;
-    isShowMoreBtn.value = !isShowMoreBtn.value;
   };
 
   onMounted(() => {
-    if (textHasDots(excerpt.value)) {
+    if (excerpt.value && textHasDots(excerpt.value)) {
       isShowMoreBtn.value = true;
     }
   });
@@ -113,14 +113,19 @@
     }
   }
 
-  .show-more-btn, .hide-text-btn {
+  .show-more-btn {
     @extend %skip-btn;
+    display: block;
     text-decoration: none;
     @include font($body-1-paragraph);
-    color: var(--white);
-    margin: -24px auto 24px;
-    display: block;
     font-family: inherit;
+    color: var(--white);
+    transform: translateY(calc(-100% - #{rem(4px)}));
+    margin: 0 auto;
+
+    @include use-hover {
+      cursor: pointer;
+    }
   }
 
   &__files {

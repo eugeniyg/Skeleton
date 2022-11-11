@@ -60,24 +60,24 @@
   const isActive = computed(() => props.status === 1);
   const showHideCurrencyButton = computed(() => props.balance === 0 && !isActive.value);
   const currentCurrency = currencies.find((curr) => curr.code === props.currency);
-  const currencyName = computed(() => `${currentCurrency.name} (${currentCurrency.code})`);
+  const currencyName = computed(() => `${currentCurrency?.name} (${currentCurrency?.code})`);
 
   const { switchAccount, hideAccount } = useWalletStore();
 
-  const card = ref(null);
+  const card = ref<HTMLElement>();
 
   const changeActive = async ():Promise<void> => {
     await switchAccount({
       accountId: props.id,
-      currency: currentCurrency.code,
+      currency: currentCurrency?.code || '',
     });
     isChecked.value = false;
   };
 
   const clickToggle = ():void => {
     isChecked.value = true;
-    document.querySelector('.card-wallet').classList.remove('is-active');
-    card.value.classList.add('is-active');
+    document.querySelector('.card-wallet')?.classList.remove('is-active');
+    card.value?.classList.add('is-active');
     setTimeout(() => {
       changeActive();
     }, 400);
@@ -86,7 +86,7 @@
   const hide = async ():Promise<void> => {
     await hideAccount({
       accountId: props.id,
-      currency: currentCurrency.code,
+      currency: currentCurrency?.code || '',
     });
   };
 </script>

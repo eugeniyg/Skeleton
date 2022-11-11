@@ -18,9 +18,7 @@
 
       <div v-if="props.subTitle" class="sub-title">{{ props.subTitle }}</div>
 
-      <client-only>
-        <button-favorite v-if="isLoggedIn" :gameId="id"/>
-      </client-only>
+      <button-favorite v-if="isLoggedIn" :gameId="id"/>
 
       <button-play @click="openGame(true)"/>
 
@@ -98,7 +96,7 @@
   };
 
   const backgroundImage = computed(() => {
-    if (props.images.hasOwnProperty('200x300')) {
+    if (props.images?.hasOwnProperty('200x300')) {
       return `background-image:url(${baseApiUrl}/img/gcdn${getImageUrl(props.images, 'vertical')})`;
     } return 'background-image: none';
   });
@@ -118,10 +116,7 @@
   };
 
   onMounted(() => {
-    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
-    setTimeout(() => {
-      document.addEventListener('click', clickOutside);
-    }, 300);
+    document.addEventListener('click', clickOutside);
   });
 
   onBeforeUnmount(() => {

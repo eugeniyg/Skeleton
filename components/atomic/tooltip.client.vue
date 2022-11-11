@@ -8,7 +8,9 @@
     @mouseleave="hide"
     @focusout="hide"
   >
+    <slot/>
     <atomic-icon :id="props.icon"/>
+
     <Teleport to="[data-tooltip-parent]">
       <div
         ref="tooltipMsg"
@@ -35,6 +37,10 @@
     text: {
       type: String,
     },
+    align: {
+      validator: (val: string | null) => ['bottom', null].includes(val),
+      default: null,
+    },
   });
 
   const coords = reactive({
@@ -42,30 +48,35 @@
     left: 0,
   });
 
-  const tooltip = ref(null);
-  const tooltipMsg = ref(null);
+  const tooltip = ref<HTMLElement>();
+  const tooltipMsg = ref<HTMLElement>();
   const isShow = ref<boolean>(false);
 
-  const getTooltipParent = () => tooltip.value.closest('[data-tooltip-parent]');
+  const getTooltipParent = () => tooltip.value?.closest('[data-tooltip-parent]');
 
   const setCoords = () => {
     const parent = getTooltipParent();
-    const pRect = parent.getBoundingClientRect();
-    const tRect = tooltip.value.getBoundingClientRect();
-    const mRect = tooltipMsg.value.getBoundingClientRect();
+    const pRect = parent?.getBoundingClientRect();
+    const tRect = tooltip.value?.getBoundingClientRect();
+    const mRect = tooltipMsg.value?.getBoundingClientRect();
 
-    const lockLeft = pRect.x - tRect.width / 2 >= tRect.x - mRect.width / 2;
-    const lockRight = pRect.x - tRect.width / 2 + pRect.width - mRect.width / 2 <= tRect.x;
+    if (parent && pRect && tRect && mRect) {
+      const lockLeft = pRect.x - tRect.width / 2 >= tRect.x - mRect.width / 2;
+      const lockRight = pRect.x - tRect.width / 2 + pRect.width - mRect.width / 2 <= tRect.x;
 
-    if (lockLeft) {
-      coords.left = pRect.x;
-      coords.top = tRect.y;
-    } else if (lockRight) {
-      coords.left = (pRect.x + pRect.width) - (mRect.width);
-      coords.top = tRect.top;
-    } else {
-      coords.left = (tRect.x + tRect.width) - mRect.width / 2;
-      coords.top = tRect.top;
+      if (lockLeft) {
+        coords.left = pRect.x;
+      } else if (lockRight) {
+        coords.left = (pRect.x + pRect.width) - (mRect.width);
+      } else {
+        coords.left = (tRect.x + tRect.width) - mRect.width / 2;
+      }
+
+      if (props.align === 'bottom') {
+        coords.top = tRect.top + tRect.height + (tRect.height / 2) + mRect.height;
+      } else {
+        coords.top = tRect.top;
+      }
     }
   };
 
@@ -78,7 +89,8 @@
     isShow.value = false;
   };
 
-  onMounted(() => {
+  onMounted(async () => {
+    await nextTick();
     const scrollParent = getTooltipParent();
     if (scrollParent) scrollParent.addEventListener('scroll', hide);
     document.addEventListener('scroll', hide);
@@ -95,10 +107,11 @@
 .tooltip {
   position: relative;
   z-index: 0;
-  width: rem(20px);
-  height: rem(20px);
+  min-width: rem(20px);
+  min-height: rem(20px);
   display: flex;
   align-items: center;
+  grid-column-gap: rem(4px);
   @extend %skip-btn;
 
   .icon {
@@ -137,7 +150,7 @@
     margin: 0;
     text-decoration: none;
     color: var(--white);
-    min-width: min-content ;
+    min-width: min-content;
     max-width: #{rem(240px)};
     left: 0;
     top: 0;
@@ -145,7 +158,7 @@
     border-radius: 2px;
     visibility: var(--visibility, hidden);
     opacity: var(--opacity, 0);
-    transform: translateY(calc(-100% - 4px)) ;
+    transform: translateY(calc(-100% - 4px));
     transition: opacity .2s ease-in;
     pointer-events: none;
     z-index: 7;

@@ -1,5 +1,5 @@
 module.exports = {
-  extend(config) {
+  extend(config:any) {
     config.module.rules.push({
       test: /\.s[ac]ss$/i,
       use: [

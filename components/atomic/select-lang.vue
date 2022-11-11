@@ -1,16 +1,14 @@
 <template>
   <div class="select-lang" :class="{ 'is-open': isOpen }">
-    <client-only>
-      <div class="selected" @click="toggleOpen">
-        <img
-          class="img"
-          :src="`/img/flags/${languageFlagsMap[currentLocale.code.toLowerCase()]}.svg`"
-          alt=""
-        />
-        <span class="title">{{ currentLocale.nativeName }}</span>
-        <atomic-icon id="arrow_expand-close" />
-      </div>
-    </client-only>
+    <div class="selected" @click="toggleOpen">
+      <img
+        class="img"
+        :src="`/img/flags/${languageFlagsMap[currentLocale.code.toLowerCase()]}.svg`"
+        alt=""
+      />
+      <span class="title">{{ currentLocale.nativeName }}</span>
+      <atomic-icon id="arrow_expand-close" />
+    </div>
 
     <div class="items">
       <component
@@ -33,6 +31,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { LocaleInterface } from '@platform/frontend-core/dist/module';
+  import { CookieRef } from '#app';
 
   const languageFlagsMap = {
     uk: 'ua',
@@ -44,7 +43,7 @@
   const globalStore = useGlobalStore();
   const { locales, currentLocale } = storeToRefs(globalStore);
   const isOpen = ref<boolean>(false);
-  const cookieLanguage = useCookie('user-language', { maxAge: 60 * 60 * 24 * 365 * 10 });
+  const cookieLanguage:CookieRef<string|undefined> = useCookie('user-language', { maxAge: 60 * 60 * 24 * 365 * 10 });
 
   const setCookie = (locale: LocaleInterface):void => {
     if (locale.isDefault) cookieLanguage.value = undefined;
@@ -73,10 +72,7 @@
   };
 
   onMounted(() => {
-    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
-    setTimeout(() => {
-      document.addEventListener('click', checkLanguageDropdown);
-    }, 300);
+    document.addEventListener('click', checkLanguageDropdown);
   });
 
   onBeforeUnmount(() => {
@@ -103,7 +99,6 @@
     border-radius: 8px;
     cursor: pointer;
     padding: rem(8px) rem(8px) rem(8px) rem(16px);
-    margin-right: rem(-8px);
 
     .is-compact & {
       @include media(l) {
@@ -140,7 +135,7 @@
     color: var(--color, var(--white));
     background-color: var(--bg, transparent);
     cursor: pointer;
-    padding: rem(8px);
+    padding: rem(8px) 0 rem(8px) rem(8px);
     border-radius: 4px;
 
     .icon {
@@ -175,7 +170,7 @@
     min-width: rem(40px);
     padding: var(--padding, #{rem(8px)});
     top: var(--top, #{rem(44px)});
-    right: rem(-8px);
+    right: 0;
     left: 0;
 
     .is-compact & {

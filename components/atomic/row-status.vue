@@ -10,7 +10,19 @@
   const props = defineProps({
     variant: {
       type: String,
-      validator: (val:string) => ['current', 'active', 'closed', 'pending', 'success', 'failed', 'unfinished', 'canceled', 'rejected', 'review'].includes(val),
+      validator: (val:string) => [
+        'current',
+        'active',
+        'closed',
+        'pending',
+        'success',
+        'failed',
+        'unfinished',
+        'canceled',
+        'rejected',
+        'review',
+        'processing',
+      ].includes(val),
       default: 'current',
     },
     tooltip: {
@@ -18,7 +30,7 @@
       required: false,
     },
   });
-  const items = {
+  const items:{[index: string]:string} = {
     active: 'dot',
     current: 'dot',
     closed: 'info',
@@ -28,6 +40,7 @@
     rejected: 'warning',
     unfinished: 'clock',
     review: 'clock',
+    processing: 'clock',
     canceled: 'warning',
   };
   const iconId = computed(() => items[props.variant]);
@@ -64,7 +77,8 @@
     }
   }
 
-  &.is-pending {
+  &.is-pending,
+  &.is-processing {
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-end;

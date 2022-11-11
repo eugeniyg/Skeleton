@@ -6,20 +6,23 @@
     </div>
 
     <div class="content">
-      <template v-if="props.isLoggedIn">
+      <template v-if="isLoggedIn">
         <card-profile/>
         <atomic-divider/>
       </template>
+
       <nav-list :items="sidebarContent?.topMenu"/>
       <atomic-divider/>
       <nav-list :items="sidebarContent?.tokenMenu"/>
       <atomic-divider/>
       <nav-list :items="sidebarContent?.bonusesMenu"/>
       <atomic-divider/>
-      <template v-if="props.isLoggedIn">
-        <nav-list  :items="sidebarContent?.userMenu"/>
+
+      <template v-if="isLoggedIn">
+        <nav-list :items="userMenuContent"/>
         <atomic-divider/>
       </template>
+
       <atomic-select-lang/>
       <atomic-divider/>
       <nav-list :items="sidebarContent?.bottomMenu"/>
@@ -30,18 +33,27 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     isCompact: {
       type: Boolean,
       default: false,
     },
-    isLoggedIn: {
-      type: Boolean,
-      default: false,
-    },
   });
+
   const { sidebarContent } = useGlobalStore();
   const emit = defineEmits(['compact', 'toggleOpen']);
+
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+
+  const gamesStore = useGamesStore();
+  const { favoriteGames } = storeToRefs(gamesStore);
+  const userMenuContent = computed(() => sidebarContent?.userMenu?.map((menuItem) => {
+    if (menuItem.url === '/favorites') return { ...menuItem, counter: favoriteGames.value.length };
+    return menuItem;
+  }));
 </script>
 
 <style lang="scss">
@@ -105,7 +117,7 @@
     height: var(--drawer-content-height, calc(100vh - #{rem(62px)} - #{rem(24px)}));
     position: relative;
     z-index: 0;
-    padding: var(--drawer-content-padding, (#{rem(16px)} #{rem(20px)} #{rem(40px)} #{rem(20px)}));
+    padding: var(--drawer-content-padding, (#{rem(16px)} #{rem(16px)} #{rem(40px)} #{rem(16px)}));
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior: contain;

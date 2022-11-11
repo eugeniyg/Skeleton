@@ -128,7 +128,7 @@
       --item-padding: #{7px} #{16px};
       --color: var(--gray-300);
       justify-content: space-between;
-      border-radius: 24px;
+      border-radius: 8px;
 
       &.is-active {
         --bg: var(--gray-800);
@@ -151,17 +151,13 @@
     }
 
     &:hover {
-      border-radius: 4px;
+      cursor: pointer;
+      border-radius: 8px;
       --bg: var(--gray-700);
 
       @include media(l) {
-        border-radius: 24px;
         --bg: var(--gray-800);
       }
-    }
-
-    &:hover {
-      cursor: pointer;
     }
   }
 

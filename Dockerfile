@@ -1,4 +1,4 @@
-FROM node:lts-alpine AS builder
+FROM node:16-alpine as builder
 
 ARG NPM_TOKEN
 

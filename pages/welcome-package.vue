@@ -107,7 +107,7 @@
 
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
-  const welcomeContentRequest = await useAsyncData('welcomeContent', () => queryContent(`welcome-bonuses/${currentLocale.value.code}`).findOne());
+  const welcomeContentRequest = await useAsyncData('welcomeContent', () => queryContent(`welcome-bonuses/${currentLocale.value?.code}`).findOne());
   const welcomeContent:WelcomePageInterface|undefined = welcomeContentRequest.data.value as WelcomePageInterface;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(welcomeContent?.seo);
@@ -122,6 +122,7 @@
 <style lang="scss">
 .promotion {
   @extend %text-page-max;
+  margin: 0 auto;
 
   hr {
     --margin: #{rem(40px)} 0;
@@ -330,7 +331,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%;
+    border-radius: 8px;
     background-color: var(--gray-800);
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
     z-index: 1;

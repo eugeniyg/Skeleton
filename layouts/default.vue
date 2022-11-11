@@ -3,18 +3,14 @@
     <atomic-preloader/>
 
     <layout-header
-      :is-logged-in="isLoggedIn"
       @logout="logout"
     />
 
-    <client-only>
-      <layout-drawer
-        :is-logged-in="isLoggedIn"
-        :is-compact="IS_DRAWER_COMPACT"
-        @compact="compact"
-        @toggle-open="toggleOpen"
-      />
-    </client-only>
+    <layout-drawer
+      :is-compact="IS_DRAWER_COMPACT"
+      @compact="compact"
+      @toggle-open="toggleOpen"
+    />
 
     <main class="app-main" :class="{'is-overflow': isHomePage()}">
       <slot />
@@ -32,17 +28,16 @@
       <layout-cookies v-if="showCookiesMessage" />
     </transition>
 
-    <client-only>
-      <modal-register />
-      <modal-sign-in />
-      <modal-forgot-pass />
-      <modal-reset-pass />
-      <modal-deposit />
-      <modal-withdraw />
-      <modal-success />
-      <modal-error />
-      <modal-confirm />
-    </client-only>
+    <modal-register />
+    <modal-sign-in />
+    <modal-forgot-pass />
+    <modal-reset-pass />
+    <modal-deposit />
+    <modal-withdraw />
+    <modal-success />
+    <modal-error />
+    <modal-confirm />
+    <modal-confirm-bonus/>
 
     <atomic-alert
       :isShow="isShowAlert"
@@ -53,14 +48,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-
-  const { needToChangeLanguage } = useProjectMethods();
-  const cookieLanguage = useCookie('user-language');
-  const route = useRoute();
-
-  if (needToChangeLanguage()) {
-    await navigateTo(`/${cookieLanguage.value}${route.fullPath === '/' ? '' : route.fullPath}`, { replace: true });
-  }
 
   const { getCommonData } = useGlobalStore();
   useLazyAsyncData('commonData', getCommonData);
@@ -77,7 +64,6 @@
   checkModals();
 
   const { logOutUser } = profileStore;
-  const { isLoggedIn } = storeToRefs(profileStore);
 
   function logout():void {
     logOutUser();
@@ -92,6 +78,7 @@
     layoutStore.toggleDrawer();
   }
 
+  const route = useRoute();
   const showCookiesMessage = computed(() => showCookiePopup.value
     && route.name !== 'games-id'
     && route.name !== 'locale-games-id'

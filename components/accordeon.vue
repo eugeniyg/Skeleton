@@ -51,9 +51,9 @@
     state.value = !state.value;
   }
 
-  const content = ref(null);
+  const content = ref<HTMLElement>();
   onMounted(() => {
-    openHeight.value = content.value.scrollHeight;
+    openHeight.value = content.value?.scrollHeight || 0;
   });
 </script>
 

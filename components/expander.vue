@@ -34,18 +34,15 @@
   const maxHeight = ref<number>(0);
 
   const styles = computed(() => ({ '--max-height': open.value ? `${maxHeight.value}px` : '0px' }));
-  const content = ref(null);
+  const content = ref<HTMLElement>();
 
   const toggle = ():void => {
     open.value = !open.value;
-    maxHeight.value = open.value ? content.value.scrollHeight : 0;
+    maxHeight.value = open.value ? content.value?.scrollHeight || 0 : 0;
   };
 
   onMounted(() => {
-    // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
-    setTimeout(() => {
-      maxHeight.value = content.value.scrollHeight;
-    }, 300);
+    maxHeight.value = content.value?.scrollHeight || 0;
   });
 </script>
 

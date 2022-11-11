@@ -20,7 +20,7 @@
   });
   const isShown = ref<boolean>(false);
 
-  function toggle():void {
+  function toggle(): void {
     setTimeout(() => {
       isShown.value = !isShown.value;
     }, 200);
@@ -31,7 +31,7 @@
 .notification {
   @extend %flex-all-center;
   @include box(40px);
-  @include radius(50%);
+  @include radius(12px);
   position: relative;
   background-color: var(--bg, transparent);
   transition: all .2s ease-in-out;
@@ -43,7 +43,7 @@
   }
 
   .icon {
-    --color: var(--white);
+    --color: var(--gray-400);
   }
 
   .bulb {
@@ -63,12 +63,14 @@
     }
   }
 
-  &:hover {
-    cursor: pointer;
-    --bg: var(--gray-800);
+  @include use-hover {
+    &:hover {
+      cursor: pointer;
+      --bg: var(--gray-800);
 
-    &:before {
-      --icon-color: var(--yellow-500);
+      .icon {
+        color: var(--yellow-500);
+      }
     }
   }
 

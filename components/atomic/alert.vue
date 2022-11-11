@@ -41,11 +41,12 @@
     },
   });
 
-  const types = {
+  const types: {[index: string]: string} = {
     info: 'info',
     error: 'warning',
     warning: 'info',
     done: 'done',
+    pending: 'clock',
   };
 
   const { hideAlert } = useLayoutStore();
@@ -141,6 +142,7 @@
     height: rem(24px);
     @extend %skip-btn;
     padding: 0;
+    align-self: flex-start;
 
     .icon {
       --icon-size: 22px;
@@ -174,7 +176,8 @@
     }
   }
 
-  &.variant-warning {
+  &.variant-warning,
+  &.variant-pending {
     > .icon {
       --color: var(--yellow-500);
     }

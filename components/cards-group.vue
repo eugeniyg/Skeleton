@@ -126,11 +126,8 @@
 
   onMounted(() => {
     if (props.showArrows) {
-      // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
-      setTimeout(() => {
-        scrollHandler();
-        showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
-      }, 400);
+      scrollHandler();
+      showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
     }
   });
 

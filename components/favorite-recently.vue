@@ -29,7 +29,7 @@
   import { CardsGroupInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent, isMobile } = storeToRefs(globalStore);
+  const { globalComponentsContent, isMobile, headerCountry } = storeToRefs(globalStore);
   const groupContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
 
   const gameStore = useGamesStore();
@@ -71,7 +71,7 @@
     const recentlyResponse = await getRecentlyPlayed({
       perPage: 18,
       platform: isMobile.value ? 1 : 2,
-      countryCode: profile.value?.country,
+      countryCode: profile.value?.country || headerCountry.value || 'UA',
     });
     recentlyGames.value = recentlyResponse;
     loadingRecently.value = false;

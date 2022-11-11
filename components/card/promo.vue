@@ -185,10 +185,10 @@
   .btn-primary, .btn-secondary {
     white-space: nowrap;
     @include upd-font($heading-2);
-    --padding: #{rem(11px) rem(24px)};
+    --padding: #{rem(12px) rem(24px)};
 
     @include media(md) {
-      --padding: #{rem(17px) rem(40px)};
+      --padding: #{rem(12px) rem(32px)};
     }
   }
 }

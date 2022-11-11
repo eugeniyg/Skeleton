@@ -14,31 +14,18 @@
   import { storeToRefs } from 'pinia';
   import { ProfileContentInterface, SeoContentInterface } from '~/types';
 
+  definePageMeta({
+    middleware: 'auth',
+  });
+
   const { localizePath } = useProjectMethods();
-  const { needToChangeLanguage } = useProjectMethods();
-
   const route = useRoute();
-  if (!needToChangeLanguage()) {
-    const bearer = useCookie('bearer');
-
-    if (route.params.confirmCode) {
-      const { confirmProfile } = useCoreProfileApi();
-      try {
-        await confirmProfile(route.params.confirmCode as string);
-        navigateTo(localizePath('/?confirm=true'), { replace: true });
-      } catch {
-        navigateTo(localizePath('/'), { replace: true });
-      }
-    } else if (!bearer.value) {
-      navigateTo(localizePath('/'), { replace: true });
-    }
-  }
 
   const { getProfileFields } = useFieldsStore();
   const globalStore = useGlobalStore();
   const profileMenu = ref<{title: string, url: string, seo: SeoContentInterface }[]>([]);
   const { currentLocale } = storeToRefs(globalStore);
-  const contentRequest = await useAsyncData('profileContent', () => queryContent(`profile/${currentLocale.value.code}`).findOne());
+  const contentRequest = await useAsyncData('profileContent', () => queryContent(`profile/${currentLocale.value?.code}`).findOne());
   const profileContent:ProfileContentInterface|undefined = contentRequest.data.value as ProfileContentInterface;
   await useAsyncData('profileFields', getProfileFields);
 

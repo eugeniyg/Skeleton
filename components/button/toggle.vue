@@ -28,7 +28,7 @@
   @include box(24px);
   @extend %flex-all-center;
   @extend %skip-btn;
-  border-radius: 50%;
+  border-radius: 8px;
   padding: 0;
   transition: all .2s ease-in-out;
   transform: rotate(var(--deg, 0));

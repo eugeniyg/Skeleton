@@ -31,7 +31,7 @@
           </div>
 
           <div class="td td-date">
-            <span>{{ getFormatDate(session.createdAt) }}</span>
+            <span v-html="format(getFormatDate(session.createdAt))"></span>
           </div>
 
           <div class="td">
@@ -118,8 +118,8 @@
     resolveSessionsRequest(page);
   };
 
-  const tb = ref(null);
-  const state = reactive({
+  const tb = ref<HTMLElement>();
+  const state = reactive<any>({
     isScrolling: false,
     timeOut: null,
   });
@@ -127,7 +127,7 @@
   const scrollAction = () => {
     clearTimeout(state.timeOut);
     if (!state.isScrolling) {
-      tb.value.focus();
+      tb.value?.focus();
       state.isScrolling = true;
     }
     state.timeOut = setTimeout(() => {
@@ -143,6 +143,8 @@
   onBeforeUnmount(() => {
     window.removeEventListener('scroll', scrollAction);
   });
+
+  const format = (str:string) => str.split(',').join('<br>');
 </script>
 
 <style lang="scss">

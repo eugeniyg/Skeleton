@@ -93,8 +93,8 @@
   const emit = defineEmits(['input', 'focus', 'update:value']);
 
   const isOpen = ref<boolean>(false);
-  const drop = ref(null);
-  const dropItems = ref(null);
+  const drop = ref<HTMLElement>();
+  const dropItems = ref<HTMLElement>();
 
   const classes = computed(() => [
     props.size ? `size-${props.size}` : null,
@@ -112,7 +112,7 @@
     isOpen.value = false;
   };
 
-  watch(() => props.value, (newValue:string) => {
+  watch(() => props.value, (newValue:any) => {
     valueObject.value = props.options.find((option:any) => option.code === newValue) || '';
   });
 
@@ -127,11 +127,8 @@
   };
 
   onMounted(() => {
-    if (props.isFitContent) {
-      // TODO CLEAR TIMEOUT AFTER FIX A BUG https://github.com/nuxt/framework/issues/3587; https://github.com/vuejs/core/issues/5844
-      setTimeout(() => {
-        drop.value.style.width = `${dropItems.value.offsetWidth}px`;
-      }, 300);
+    if (props.isFitContent && drop.value) {
+      drop.value.style.width = `${dropItems.value?.offsetWidth}px`;
     }
   });
 </script>
@@ -166,7 +163,7 @@
     color: var(--color, var(--white));
     cursor: pointer;
     user-select: none;
-    padding: var(--select-padding-y, rem(11px)) rem(36px) var(--select-padding-y, rem(11px)) rem(16px);
+    padding: var(--select-padding-y, rem(8px) rem(36px) rem(8px) rem(16px));
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: auto 1fr;
@@ -176,6 +173,11 @@
     transition: border-color .2s ease-in-out;
     min-height: rem(42px);
     grid-column-gap: rem(8px);
+
+    .filters & {
+      @include font($body-1);
+      min-height: unset;
+    }
 
     .icon {
       position: absolute;
@@ -239,6 +241,10 @@
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: auto 1fr;
+
+    .filters & {
+      @include font($body-1);
+    }
 
     span {
       overflow: hidden;

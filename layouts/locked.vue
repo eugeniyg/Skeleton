@@ -11,9 +11,13 @@
       <h4 class="locked__support-sub-title">If you have questions please contact</h4>
       <a href="mailto:support@slotsbet.io" class="locked__support-mail-to">support@slotsbet.io</a>
     </div>
-
   </div>
 </template>
+
+<script setup lang="ts">
+  const { setPageSeo } = useProjectMethods();
+  setPageSeo({});
+</script>
 
 <style lang="scss">
 .locked {

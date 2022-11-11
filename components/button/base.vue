@@ -56,7 +56,7 @@
   @extend %link;
   @extend %flex-all-center;
   padding: var(--padding, rem(4px) rem(16px));
-  border-radius: 999px;
+  border-radius: var(--btn-border-radius, 8px);
   width: var(--width, fit-content);
   height: var(--height, auto);
   grid-column-gap: rem(4px);
@@ -72,21 +72,25 @@
   &.size-xs {
     @include font($heading-1);
     --padding: #{rem(4px) rem(16px)};
+    --btn-border-radius: 8px;
   }
 
   &.size-sm {
     @include font($heading-2);
     --padding: #{rem(7px) rem(20px)};
+    --btn-border-radius: 8px;
   }
 
   &.size-md {
     @include font($heading-2);
     --padding: #{rem(11px) rem(24px)};
+    --btn-border-radius: 12px;
   }
 
   &.size-lg {
     @include font($heading-3);
-    --padding: #{rem(17.5px) rem(40px)};
+    --padding: #{rem(16px) rem(40px)};
+    --btn-border-radius: 12px;
   }
 }
 
@@ -100,13 +104,11 @@
   &:hover {
     --bg: var(--gradient-new-hover);
     --color: var(--black-primary);
-    //--shadow: 0 0 3px var(--yellow-900);
   }
 
   &:focus, &.is-active {
     --bg: var(--gradient-new-focus);
     --color: var(--black-primary);
-    //--shadow: inset 0 2px 0 var(--yellow-700);
   }
 
   &[disabled] {

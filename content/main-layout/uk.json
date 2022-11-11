@@ -35,7 +35,7 @@
         "icon": "history"
       }
     ],
-    "logoutButton": "Вихід"
+    "logoutButton": "Log out"
   },
   "siteSidebar": {
     "gamesToggler": [
@@ -79,9 +79,12 @@
         "url": "/games?category=turbogames",
         "icon": "turbo-games",
         "gameList": [
+          "ball-ball-turbo-games",
           "crash-x-turbo-games",
           "dice-twice-turbo-games",
-          "mines-turbo-games"
+          "mines-turbo-games",
+          "turbo-games-turbomines",
+          "neko-turbo-games"
         ]
       },
       {

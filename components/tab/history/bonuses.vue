@@ -1,30 +1,12 @@
 <template>
   <div>
-    <!--<atomic-filters class="filters-bonuses-history">
-      <form-input-dropdown
-        label="Currency:"
-        value=""
-        name="currency-select"
-        placeholder="All"
-        :options="selects.currency"
-      />
-
-      <form-input-dropdown
-        label="Status:"
-        value=""
-        name="status-select"
-        placeholder="All"
-        :options="selects.statuses"
-      />
-      <form-input-date label="Date:"/>
-    </atomic-filters>
-    <table-bonuses-history :items="bonusesHistoryTb"/>-->
+    <!--<table-bonuses-history :items="bonusesHistoryTb"/>-->
     <atomic-empty variant="bonuses" sub-title="You have not received bonuses yet."/>
   </div>
 </template>
 
 <script setup lang="ts">
-  // const { bonusesHistoryTb, selects } = useFakeStore();
+  // const { bonusesHistoryTb } = useFakeStore();
 </script>
 
 <style lang="scss">

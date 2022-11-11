@@ -149,6 +149,7 @@
   align-items: center;
   user-select: none;
   max-width: rem(400px);
+  min-width: rem(320px);
 
   @include media(md) {
     width: auto;
@@ -295,7 +296,7 @@
     @extend %scrollbar;
 
     @include media(xs) {
-      border-radius: 16px;
+      border-radius: 12px;
     }
   }
 
@@ -434,7 +435,6 @@
 
 %text-page-max {
   max-width: rem(1024px);
-  margin: 0 auto;
 }
 
 %cards-items {

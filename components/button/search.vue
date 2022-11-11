@@ -16,7 +16,7 @@
 .btn-search {
   display: var(--display, none);
   @include box(40px);
-  @include radius(50%);
+  @include radius(12px);
   @extend %skip-btn;
   @extend %flex-all-center;
   position: relative;

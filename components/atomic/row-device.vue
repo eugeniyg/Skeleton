@@ -8,7 +8,7 @@
   const props = defineProps({
     variant: {
       type: String,
-      variant: (val) => ['mobile', 'desktop'].includes(val),
+      variant: (val:string) => ['mobile', 'desktop'].includes(val),
     },
   });
   const iconId = computed(() => {

@@ -2,27 +2,25 @@
   <div class="recently-played">
     <div class="recently-played__title">{{ recentlyContent?.title }}</div>
 
-    <client-only>
-      <atomic-empty
-        v-if="!recentlyGames.length && !loadingData"
-        :title="recentlyContent?.empty.title"
-        :subTitle="recentlyContent?.empty.description"
-        :image="recentlyContent?.empty.image"
-      />
+    <atomic-empty
+      v-if="!recentlyGames.length && !loadingData"
+      :title="recentlyContent?.empty.title"
+      :subTitle="recentlyContent?.empty.description"
+      :image="recentlyContent?.empty.image"
+    />
 
-      <list-grid
-        v-else
-        :items="recentlyGames"
-        :meta="pageMeta"
-      />
+    <list-grid
+      v-else
+      :items="recentlyGames"
+      :meta="pageMeta"
+    />
 
-      <group-games
-        v-if="!recentlyGames.length && !loadingData"
-        :category="recommendedCategory"
-        showArrows
-        subTitle
-      />
-    </client-only>
+    <group-games
+      v-if="!recentlyGames.length && !loadingData"
+      :category="recommendedCategory"
+      showArrows
+      subTitle
+    />
 
     <atomic-seo-text v-if="recentlyContent?.seo?.text" v-bind="recentlyContent?.seo?.text" />
   </div>
@@ -35,8 +33,8 @@
   import { RecentlyPageInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { currentLocale, isMobile } = storeToRefs(globalStore);
-  const recentlyContentRequest = await useAsyncData('recentlyContent', () => queryContent(`page-controls/${currentLocale.value.code}`).only(['recentlyPage']).findOne());
+  const { currentLocale, isMobile, headerCountry } = storeToRefs(globalStore);
+  const recentlyContentRequest = await useAsyncData('recentlyContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['recentlyPage']).findOne());
   const recentlyContent:RecentlyPageInterface|undefined = recentlyContentRequest.data.value?.recentlyPage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(recentlyContent?.seo);
@@ -60,7 +58,7 @@
       const recentlyResponse = await getRecentlyPlayed({
         perPage: 18,
         platform: isMobile.value ? 1 : 2,
-        countryCode: profile.value?.country,
+        countryCode: profile.value?.country || headerCountry.value || 'UA',
       });
       recentlyGames.value = recentlyResponse;
     } finally {

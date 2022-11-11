@@ -1212,47 +1212,47 @@ export const useFakeStore = () => {
   };
 
   const bonusesHistoryTb = {
-    columns: ['Title', 'Status', 'Amount', 'Wager', 'Date', 'Valid until'],
+    columns: ['Title', 'Status', 'Amount', 'Progress', 'Date', 'Valid until'],
     rows: [
       {
         title: 'Special 1st deposit bonus 100% + 100 FS',
         status: 'Active',
         amount: '0.00000009 mBTC',
-        wager: '84%',
-        date: '15.04.2022, <br>15:21',
-        validUntil: '15.04.2022, 15:21',
+        progress: '84%',
+        date: '2022-11-04T15:11:16.000+00:00',
+        validUntil: '2022-11-04T15:11:16.000+00:00',
       },
       {
         title: 'Special 1st deposit bonus 100% + 100 FS',
         status: 'Active',
         amount: '0.00000009 mBTC',
-        wager: '84%',
-        date: '15.04.2022, <br>15:21',
-        validUntil: '15.04.2022, 15:21',
+        progress: '84%',
+        date: '2022-11-04T15:11:16.000+00:00',
+        validUntil: '2022-11-04T15:11:16.000+00:00',
       },
       {
         title: 'Special 1st deposit bonus 100% + 100 FS',
         status: 'Active',
         amount: '0.00000009 mBTC',
-        wager: '84%',
-        date: '15.04.2022, <br>15:21',
-        validUntil: '15.04.2022, 15:21',
+        progress: '84%',
+        date: '2022-11-04T15:11:16.000+00:00',
+        validUntil: '2022-11-04T15:11:16.000+00:00',
       },
       {
         title: 'Special 1st deposit bonus 100% + 100 FS',
         status: 'Active',
         amount: '0.00000009 mBTC',
-        wager: '84%',
-        date: '15.04.2022, <br>15:21',
-        validUntil: '15.04.2022, 15:21',
+        progress: '84%',
+        date: '2022-11-04T15:11:16.000+00:00',
+        validUntil: '2022-11-04T15:11:16.000+00:00',
       },
       {
         title: 'Special 1st deposit bonus 100% + 100 FS',
         status: 'Active',
         amount: '0.00000009 mBTC',
-        wager: '84%',
-        date: '15.04.2022, <br>15:21',
-        validUntil: '15.04.2022, 15:21',
+        progress: '84%',
+        date: '2022-11-04T15:11:16.000+00:00',
+        validUntil: '2022-11-04T15:11:16.000+00:00',
       },
     ],
   };
@@ -1422,10 +1422,10 @@ export const useFakeStore = () => {
       id: 'my-bonuses',
       isActive: true,
     },
-    // {
-    //   title: 'Bonus Code',
-    //   id: 'bonus-code',
-    // },
+    {
+      title: 'Bonus Code',
+      id: 'bonus-code',
+    },
   ];
 
   const userProfileHistoryTabs = [
@@ -1679,7 +1679,27 @@ export const useFakeStore = () => {
     ],
   };
 
+  const cashBonuses = [
+    {
+      title: '1st deposit Welcome bonus 100% + 100 FS',
+      tooltipText: 'Casino Wager Requirements - x45 Bonus Sportsbook Wager Requirements - x5 Bonus',
+      progressValue: 17,
+      amountValue: '75 from 100FS',
+      amountDate: new Date(),
+      expireDate: new Date().toUTCString(),
+    },
+
+    {
+      title: '1st deposit Welcome bonus 100% + 100 FS',
+      tooltipText: 'Casino Wager Requirements - x45 Bonus Sportsbook Wager Requirements - x5 Bonus',
+      progressValue: 100,
+      amountValue: '100 from 100FS',
+      expireDate: new Date().toUTCString(),
+    },
+  ];
+
   return {
+    cashBonuses,
     catNavItems,
     items,
     selects,
