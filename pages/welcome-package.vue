@@ -122,6 +122,7 @@
 <style lang="scss">
 .promotion {
   @extend %text-page-max;
+  margin: 0 auto;
 
   hr {
     --margin: #{rem(40px)} 0;
