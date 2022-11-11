@@ -25,7 +25,7 @@
             class="item"
             @click="addCurrency(currency)"
           >
-            <img class="img" :src="`/img/currency/${currency.code}.png`" />
+            <img class="img" :src="`/img/currency/${currency.code}.svg`" />
             <span class="title">{{ currency.name }}</span>
             <span class="label">{{ currency.code }}</span>
           </div>
