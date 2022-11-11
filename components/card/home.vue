@@ -11,8 +11,20 @@
       <source :media="'(max-width: 2264px)'" :srcset="props.images.desktop.faceImage" />
       <img class="front" :src="props.images.mobile.faceImage" alt=""/>
     </picture>-->
+
     <div class="content">
-      <img src="/assets/img/home-banner/bg.svg" alt="">
+      <picture>
+        <source :media="'(max-width: 1279px)'" srcset="~/assets/img/home-banner/bg.svg" />
+        <source :media="'(max-width: 2264px)'" srcset="~/assets/img/home-banner/bg.svg" />
+        <img class="back" src="~/assets/img/home-banner/bg.svg" alt="">
+      </picture>
+
+      <picture>
+        <source :media="'(max-width: 1279px)'" srcset="~/assets/img/home-banner/person.png" />
+        <source :media="'(max-width: 2264px)'" srcset="~/assets/img/home-banner/person.png" />
+        <img class="front" src="~/assets/img/home-banner/person.png" alt="">
+      </picture>
+
     </div>
 
     <div class="info">
@@ -75,31 +87,32 @@
   position: relative;
   border-radius: 8px;
   overflow: hidden;
-  min-height: 132px;
-
-  @include media(md) {
-    height: rem(280px);
-  }
 
   img {
+    width: var(--width, 100%);
     grid-area: layer;
     display: block;
-    width: var(--width, 100%);
     height: 100%;
     border-radius: 8px;
-    object-fit: cover;
-    min-height: rem(140px);
-    min-height: rem(140px);
+    object-fit: scale-down;
+    position: relative;
+    z-index: 0;
 
     &.front {
       position: absolute;
-      right: 0;
-      top: 0;
+      top: 30px;
+      right: 16px;
       bottom: 0;
-      --width: 65%;
+      --width: 50.72%;
+      z-index: 3;
+
+      @include media(xs) {
+        // background: greenyellow;
+      }
 
       @include media(sm) {
         --width: 53%;
+        // background: red;
       }
 
       @include media(md) {
@@ -131,6 +144,38 @@
     }
   }
 
+  .content {
+    position: relative;
+    min-height: 204px;
+    max-height: 204px;
+    overflow: hidden;
+
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      background: linear-gradient(360deg, #0E091E 0%, rgba(14, 9, 30, 0) 100%);
+      // background: blue;
+      left: 0;
+      right: 0;
+      height: 40%;
+      z-index: 4;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      background: linear-gradient(270deg, #0E091E 0%, rgba(14, 9, 30, 0) 96.21%);
+      right: 0;
+      width: 50%;
+
+      //background: red;
+      z-index: 1;
+    }
+  }
+
   .info {
     position: absolute;
     @extend %flex-column;
@@ -139,9 +184,10 @@
     text-align: left;
     top: 0;
     bottom: 0;
-    grid-row-gap: var(--row-gap, #{rem(8px)});
+    grid-row-gap: var(--row-gap, #{rem(16px)});
     width: var(--info-width, 70%);
     padding: var(--padding, #{0 0 0 rem(24px)});
+    z-index: 4;
 
     .home & {
       --info-width: 50%;
