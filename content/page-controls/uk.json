@@ -15,9 +15,9 @@
       "description": ""
     },
     "plug": {
-      "title": "Будь ласка, увійдіть",
+      "title": "Please, login",
       "image": "/img/uploads/ex-sign.svg",
-      "description": "Ця гра недоступна в розважальному режимі, увійдіть або зареєструйтеся, щоб грати."
+      "description": "This game is not available in the fun mode, please login or register to play."
     }
   },
   "favoritesPage": {
@@ -188,8 +188,8 @@
       "description": ""
     },
     "plug": {
-      "image": "/img/uploads/info-logo.svg",
-      "description": "test"
+      "image": "/img/uploads/plug-sports.png",
+      "description": "This game is not available in the fun mode, please login or register to play."
     }
   },
   "contactPage": {
@@ -227,16 +227,16 @@
     "sortOptions": [
       {
         "sortOrder": "asc",
-        "sortBy": "name",
-        "label": "А-Я"
+        "sortBy": "default",
+        "label": "Most popular"
       },
       {
-        "label": "За замовчування ",
-        "sortBy": "default",
+        "label": "A-Z",
+        "sortBy": "name",
         "sortOrder": "asc"
       },
       {
-        "label": "Я-А",
+        "label": "Z-A",
         "sortBy": "name",
         "sortOrder": "desc"
       }
@@ -263,10 +263,10 @@
     }
   },
   "recentlyPage": {
-    "title": "Нещодавно зіграні",
+    "title": "Recently Played",
     "empty": {
       "image": "/img/uploads/search-bg.png",
-      "title": "Нічого не знайдено",
+      "title": "Nothing found",
       "description": "You haven't played any games yet"
     },
     "categorySubtitle": "Найкращі ігри для вас",
