@@ -39,7 +39,7 @@
 
   .thumb {
     position: relative;
-    border-radius: 50%;
+    border-radius: 12px;
     background-color: var(--gray-900);
     background-image: url(~/assets/img/avatar-bg.png);
     background-position: center;

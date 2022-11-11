@@ -4,8 +4,9 @@
     type="ghost"
     size="xs"
     @click="showModal(props.openModal)"
-    v-html="buttonHtml"
-  />
+  >
+    <div v-html="buttonHtml" />
+  </button-base>
 </template>
 
 <script setup lang="ts">
