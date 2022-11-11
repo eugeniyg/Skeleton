@@ -1,12 +1,12 @@
 {
   "limitedDeposit": {
     "type": "error",
-    "title": "Помилка",
-    "description": "Вибачте, але зараз ви не можете внести депозит. Для отримання додаткової інформації зверніться до нашої служби підтримки."
+    "title": "Error",
+    "description": "Sorry, but you can't deposit for now. Please, contact our support team for more information."
   },
   "depositSuccess": {
-    "title": "Успіх",
-    "description": "Ваш депозит на суму {sum}, зроблений {date}, виконано!",
+    "title": "Success",
+    "description": "Your {sum} deposit made on {date} is successful!",
     "type": "done"
   },
   "invalidResetCode": {
@@ -15,13 +15,13 @@
     "description": "Sorry, but your password reset link is not valid. Please request another password reset."
   },
   "resentVerification": {
-    "title": "Успіх",
-    "description": "Ми надіслали електронний лист із посиланням для підтвердження на вашу електронну адресу.",
+    "title": "Success",
+    "description": "We have sent an email with the verification link to your email address.",
     "type": "done"
   },
   "depositError": {
-    "title": "Помилка",
-    "description": "Вибачте, але з вашим депозитом {sum} від {date} сталася помилка. Будь ласка спробуйте ще раз.",
+    "title": "Error",
+    "description": "Sorry, but something went wrong with your {sum} deposit from {date}. Please try again.",
     "type": "error"
   },
   "limitedRealGame": {
@@ -45,18 +45,18 @@
   },
   "userCanceledWithdrawal": {
     "type": "done",
-    "title": "Успіх",
-    "description": "Ви успішно скасували зняття."
+    "title": "Success",
+    "description": "You have successfully canceled your withdrawal."
   },
   "withdrawSuccess": {
-    "description": "Ваше зняття {sum} від {date} схвалено!",
-    "title": "Успіх",
+    "description": "Your {sum} withdrawal from {date} was approved!",
+    "title": "Success",
     "type": "done"
   },
   "withdrawalProcessed": {
     "type": "pending",
-    "title": "В очікуванні!",
-    "description": "Ваше зняття обробляється. Ми перевіримо ваш запит найближчим часом."
+    "title": "Pending!",
+    "description": "Your withdrawal is being processed. We will check your request in a short while."
   },
   "passwordChanged": {
     "type": "done",
@@ -70,8 +70,8 @@
     "description": "You have been successfully registered!"
   },
   "withdrawError": {
-    "title": "Скасовано зняття коштів",
-    "description": "Ваше зняття в розмірі {sum} від {date} скасовується. Для отримання додаткової інформації зверніться до нашої служби підтримки.",
+    "title": "Canceled withdrawal",
+    "description": "Your {sum} withdrawal from {date} is being canceled. Please, contact our Support Team for more information.",
     "type": "error"
   },
   "accountBlocked": {
