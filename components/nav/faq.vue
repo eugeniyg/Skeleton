@@ -169,11 +169,9 @@
     }
 
     &:hover {
-      border-radius: 4px;
       --bg: var(--gray-700);
 
       @include media(l) {
-        border-radius: 24px;
         --bg: var(--gray-800);
       }
     }
