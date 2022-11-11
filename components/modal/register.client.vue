@@ -50,7 +50,7 @@
     background-color: var(--gray-900);
 
     @include media(xs) {
-      border-radius: rem(16px);
+      border-radius: 12px;
     }
 
     @include media(md) {
