@@ -13,17 +13,9 @@
     </picture>-->
 
     <div class="content">
-      <picture>
-        <source :media="'(max-width: 1279px)'" srcset="~/assets/img/home-banner/bg.svg" />
-        <source :media="'(max-width: 2264px)'" srcset="~/assets/img/home-banner/bg.svg" />
-        <img class="back" src="~/assets/img/home-banner/bg.svg" alt="">
-      </picture>
 
-      <picture>
-        <source :media="'(max-width: 1279px)'" srcset="~/assets/img/home-banner/person.png" />
-        <source :media="'(max-width: 2264px)'" srcset="~/assets/img/home-banner/person.png" />
-        <img class="front" src="~/assets/img/home-banner/person.png" alt="">
-      </picture>
+      <div class="back" :style="{backgroundImage: `url(${backBg})`}"></div>
+      <div class="front" :style="{backgroundImage: `url(${frontBg})`}"></div>
 
     </div>
 
@@ -45,8 +37,11 @@
 </template>
 
 <script setup lang="ts">
+
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
+  import backBg from '~/assets/img/home-banner/bg.svg';
+  import frontBg from '~/assets/img/home-banner/person.png';
 
   const props = defineProps({
     images: {
@@ -81,51 +76,109 @@
 </script>
 
 <style lang="scss">
+@use "sass:math";
+
 .card-home {
-  display: block;
+  display: grid;
   width: 100%;
   position: relative;
-  border-radius: 8px;
   overflow: hidden;
-  border: 1px solid white;
+  height: var(--height-card, 204px);
 
-  img {
-    width: var(--width, 100%);
-    grid-area: layer;
-    display: block;
-    height: 100%;
-    border-radius: 8px;
-    object-fit: scale-down;
-    position: relative;
-    z-index: 0;
+  @include media(l) {
+    --height-card: #{rem(309px)};
+  }
 
-    &.front {
-      position: absolute;
-      top: 30px;
-      right: 16px;
-      bottom: 0;
-      --width: 50.72%;
-      z-index: 3;
-      object-fit: cover;
-      object-position: top;
+  @include media(xxxl) {
+    --height-card: #{rem(390px)};
+  }
 
-      @include media(xs) {
-        background: greenyellow;
-      }
+  .back {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-position: top left;
+    mix-blend-mode: multiply;
+    opacity: 0.6;
 
-      @include media(sm) {
-        background: red;
-      }
+    @include media(md) {
+      background-size: 75%;
+    }
+  }
 
-      @include media(md) {
-        --width: 49%;
-      }
+  .front {
+    position: absolute;
+    top: 30px;
+    right: 16px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: var(--width-front-img, #{rem(200px)});
+    z-index: 3;
+
+    &:before {
+      width: 100%;
+      content: '';
+      padding-top: 90%;
+      display: block;
+    }
+
+    @include media(xs) {
+      right: rem(32px);
+      max-width: 250px;
+      --width-front-img:  40%;
+    }
+
+    @include media(sm) {
+      right: rem(40px);
+      --width-front-img:  30%;
+    }
+
+    @include media(md) {
+      right: rem(75px);
+      --width-front-img:  22%;
+    }
+
+    @include media(l) {
+      right: 65px;
+      max-width: 360px;
+      --width-front-img: 40%;
+    }
+
+    @include media(xl) {
+      right: 65px;
+      max-width: 410px;
+      --width-front-img: 60%;
+    }
+
+    @include media(xxl) {
+      --width-front-img: 603px;
+      right: 135px;
+    }
+
+    @include media(xxxl) {
+      --width-front-img: 603px;
+      right: 400px;
     }
   }
 
   .title {
     color: var(--white);
     text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
+    max-width: rem(240px);
+
+    @include media(xs) {
+      max-width: rem(270px);
+    }
+
+    @include media(xxxl) {
+      max-width: 670px;
+      // border: 1px solid red
+    }
 
     h1, h2, h3, h4, h5, h6 {
       margin: 0;
@@ -133,23 +186,29 @@
       @include font($heading-4);
 
       @include media(xs) {
-        @include upd-font($heading-5);
-      }
-
-      @include media(sm) {
         @include upd-font($heading-7);
       }
 
-      @include media(md) {
-        @include upd-font($heading-8);
+      //@include media(sm) {
+      //  @include upd-font($heading-7);
+      //}
+      //
+      //@include media(md) {
+      //  @include upd-font($heading-7);
+      //}
+      //
+      //@include media(xl) {
+      //  @include upd-font($heading-7);
+      //}
+
+      @include media(xxxl) {
+        @include upd-font($heading-9);
       }
     }
   }
 
   .content {
     position: relative;
-    min-height: 204px;
-    max-height: 204px;
     overflow: hidden;
 
     &:before {
@@ -157,11 +216,11 @@
       position: absolute;
       bottom: 0;
       background: linear-gradient(360deg, #0E091E 0%, rgba(14, 9, 30, 0) 100%);
-      // background: blue;
       left: 0;
       right: 0;
-      height: 40%;
+      height: 100%;
       z-index: 4;
+      transform: translateY(50%);
     }
 
     &:after {
@@ -172,8 +231,6 @@
       background: linear-gradient(270deg, #0E091E 0%, rgba(14, 9, 30, 0) 96.21%);
       right: 0;
       width: 50%;
-
-      //background: red;
       z-index: 1;
     }
   }
