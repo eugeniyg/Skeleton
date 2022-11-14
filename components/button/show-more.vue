@@ -14,6 +14,7 @@
 
 <style lang="scss">
 .btn-show-more {
+  font-family: 'NeoSansPro', sans-serif;
   @include font($heading-1);
   @extend %flex-all-center;
   @extend %skip-btn;
