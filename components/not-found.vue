@@ -7,29 +7,15 @@
     <button-base
       type="primary"
       size="md"
-      @click="goHome"
+      :url="'/'"
     >
       {{ errorPageContent?.button?.label || pageStaticContent.button.label }}
     </button-base>
-
-    <dev-only>
-      <div class="not-found" style="color: white">
-        <div style="font-size: 80px; font-weight: 700; text-align: center">{{ props.error.statusCode }}</div>
-        <div style="font-size: 32px; text-align: center">{{ props.error.statusMessage || props.error.message }}</div>
-      </div>
-    </dev-only>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-
-  const props = defineProps({
-    error: {
-      type: Object,
-      required: true,
-    },
-  });
 
   const pageStaticContent = {
     title: 'Something went wrong',
@@ -42,20 +28,8 @@
 
   const globalStore = useGlobalStore();
   const { errorPageContent } = storeToRefs(globalStore);
-
-  const { localizePath } = useProjectMethods();
-  const goHome = () => clearError({ redirect: localizePath(errorPageContent.value?.button.url || pageStaticContent.button.url) });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "scss/error";
-
-.not-found {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
-}
 </style>

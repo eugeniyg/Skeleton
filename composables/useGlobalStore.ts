@@ -9,6 +9,7 @@ import {
   AlertsListInterface,
   BrowserLanguageInterface,
   CookiePopupInterface,
+  ErrorPageInterface,
   FieldsContentInterface,
   FooterInterface,
   GameCategoryInterface,
@@ -40,6 +41,7 @@ interface GlobalStoreStateInterface {
   globalComponentsContent: GlobalComponentsInterface|undefined,
   headerCountry: string|undefined,
   pagesWithoutLocale: string[],
+  errorPageContent: ErrorPageInterface|undefined,
 }
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -67,6 +69,7 @@ export const useGlobalStore = defineStore('globalStore', {
         'questions',
         'locale-questions',
       ],
+      errorPageContent: undefined,
     }),
 
   getters: {
@@ -160,20 +163,22 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getGlobalContent():Promise<void> {
-      const [validations, fieldsData, layoutData, popupsData, alertsData, globalContent] = await Promise.allSettled([
+      const [validationsResponse, fieldsDataResponse, layoutDataResponse, popupsDataResponse, alertsDataResponse, globalContentResponse, errorPageResponse] = await Promise.allSettled([
         queryContent(`validations/${this.currentLocale?.code}`).findOne(),
         queryContent(`fields/${this.currentLocale?.code}`).findOne(),
         queryContent(`main-layout/${this.currentLocale?.code}`).findOne(),
         queryContent(`popups/${this.currentLocale?.code}`).findOne(),
         queryContent(`alerts/${this.currentLocale?.code}`).findOne(),
         queryContent(`global-components/${this.currentLocale?.code}`).findOne(),
+        queryContent(`page-controls/${this.currentLocale?.code}`).only(['errorPage']).findOne(),
       ]);
-      if (validations.status !== 'rejected') this.validationMessages = validations.value;
-      if (fieldsData.status !== 'rejected') this.fieldsContent = (fieldsData.value as unknown) as FieldsContentInterface;
-      if (layoutData.status !== 'rejected') this.layoutData = (layoutData.value as unknown) as MainLayoutInterface;
-      if (popupsData.status !== 'rejected') this.popupsData = (popupsData.value as unknown) as PopupsInterface;
-      if (alertsData.status !== 'rejected') this.alertsData = (alertsData.value as unknown) as AlertsListInterface;
-      if (globalContent.status !== 'rejected') this.globalComponentsContent = (globalContent.value as unknown) as GlobalComponentsInterface;
+      if (validationsResponse.status !== 'rejected') this.validationMessages = validationsResponse.value;
+      if (fieldsDataResponse.status !== 'rejected') this.fieldsContent = (fieldsDataResponse.value as unknown) as FieldsContentInterface;
+      if (layoutDataResponse.status !== 'rejected') this.layoutData = (layoutDataResponse.value as unknown) as MainLayoutInterface;
+      if (popupsDataResponse.status !== 'rejected') this.popupsData = (popupsDataResponse.value as unknown) as PopupsInterface;
+      if (alertsDataResponse.status !== 'rejected') this.alertsData = (alertsDataResponse.value as unknown) as AlertsListInterface;
+      if (globalContentResponse.status !== 'rejected') this.globalComponentsContent = (globalContentResponse.value as unknown) as GlobalComponentsInterface;
+      if (errorPageResponse.status !== 'rejected') this.errorPageContent = (errorPageResponse.value.errorPage as unknown) as ErrorPageInterface;
     },
 
     getRequestCountry():void {
