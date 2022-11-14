@@ -119,8 +119,7 @@ export const useLayoutStore = defineStore('layoutStore', {
 
     addModalQuery(modalName:string, queryValue:string|undefined):void {
       const router = useRouter();
-      const { query, name } = useRoute();
-      if (!name || name === 'slug' || name === 'locale-slug') return;
+      const { query } = useRoute();
       const modalsArr = Object.keys(this.modals);
       const newQuery:any = { ...query };
 
@@ -135,8 +134,7 @@ export const useLayoutStore = defineStore('layoutStore', {
 
     removeModalQuery(modalName:string):void {
       const router = useRouter();
-      const { query, name } = useRoute();
-      if (!name || name === 'slug' || name === 'locale-slug') return;
+      const { query } = useRoute();
 
       router.replace({ query: { ...query, [this.modalsUrl[modalName]]: undefined, resetCode: undefined } });
     },

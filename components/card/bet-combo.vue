@@ -21,7 +21,7 @@
         <div class="more-group">
           <span class="type">{{ props.items[0].discipline }}</span>
 
-          <div v-if="comboDisciplines.length" class="tooltip">
+          <div v-if="comboDisciplines.length" class="tooltip" data-tooltip-parent>
             <span class="more">{{ `+${comboDisciplines.length} ${betCard.comboDisciplinesTooltip}` }}</span>
             <atomic-tooltip :text="comboDisciplines.join(', ')"/>
           </div>

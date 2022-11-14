@@ -4,7 +4,7 @@
     href="#"
     :class="{'is-active': props.isActive, 'is-shown': isShown}"
     @click.prevent="toggle"
-    @focusout="toggle"
+    @focusout="isShown = false"
   >
     <atomic-icon id="notification"/>
     <atomic-bulb v-if="props.isActive"/>
@@ -78,8 +78,8 @@
     box-shadow: inset 0 3px 0 var(--gray-800);
     --bg: var(--gray-700);
 
-    &:before {
-      --icon-color: var(--yellow-500);
+    .icon {
+      --color: var(--yellow-500);
     }
 
     ~ .popover-notifications {

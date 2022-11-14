@@ -44,6 +44,7 @@
   background: var(--bg, transparent);
   color: var(--color, var(--gray-400));
   border: var(--border, 0);
+  font-family: 'NeoSansPro', sans-serif;
 }
 
 %radius-50 {
@@ -431,10 +432,6 @@
       margin: 0;
     }
   }
-}
-
-%text-page-max {
-  max-width: rem(1024px);
 }
 
 %cards-items {
