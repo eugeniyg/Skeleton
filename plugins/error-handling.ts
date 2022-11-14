@@ -1,14 +1,11 @@
 export default defineNuxtPlugin((nuxtApp) => {
-  const errorStatusesHandling = [400, '400', 404, '404', 500, '500'];
   nuxtApp.hook('vue:error', async (err:any) => {
     if (err?.response?.status === 401) {
       const { logOutUser } = useProfileStore();
-      return logOutUser(false);
+      await logOutUser(false);
+      return;
     }
 
-    if (errorStatusesHandling.includes(err?.response?.status)) {
-      return throwError(err);
-    }
-    return err;
+    showError(err);
   });
 });

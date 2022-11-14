@@ -14,19 +14,21 @@
       :hint="props.hint ? { variant: 'error', message: '' } : undefined"
     />
 
-    <input
-      inputmode="numeric"
-      v-maska="'##########'"
-      class="field"
-      type="text"
-      name="phoneNumber"
-      v-model="numberValue"
-      :readonly="props.isDisabled"
-      :placeholder="props.placeholder"
-      @focus="onFocus"
-      @blur="onBlur"
-      @input="onInput"
-    />
+    <client-only>
+      <input
+        inputmode="numeric"
+        v-maska="'##########'"
+        class="field"
+        type="text"
+        name="phoneNumber"
+        v-model="numberValue"
+        :readonly="props.isDisabled"
+        :placeholder="props.placeholder"
+        @focus="onFocus"
+        @blur="onBlur"
+        @input="onInput"
+      />
+    </client-only>
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
   </div>
