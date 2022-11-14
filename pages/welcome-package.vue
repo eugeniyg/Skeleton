@@ -121,7 +121,7 @@
 
 <style lang="scss">
 .promotion {
-  @extend %text-page-max;
+  @include text-page-max;
   margin: 0 auto;
 
   hr {
@@ -453,6 +453,7 @@
     position: absolute;
     top: 0;
     right: 0;
+    pointer-events: none;
 
     @include media(md) {
       --width: #{rem(232px)};

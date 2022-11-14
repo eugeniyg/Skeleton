@@ -10,7 +10,7 @@
 
 <style lang="scss">
 .text-editor {
-  @extend %text-page-max;
+  @include text-page-max;
   color: var(--white);
 
   i, em {
