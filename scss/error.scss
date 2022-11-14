@@ -1,5 +1,5 @@
 .not-found {
-  @extend %text-page-max;
+  @include text-page-max;
   display: grid;
   grid-gap: rem(8px);
   justify-content: center;

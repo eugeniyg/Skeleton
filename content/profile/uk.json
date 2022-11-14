@@ -1,14 +1,14 @@
 {
   "locale": "uk",
   "info": {
-    "verifyButton": "Підтвердити",
-    "verifiedLabel": "Ваша електронна пошта підтверджена",
+    "verifyButton": "Verify",
+    "verifiedLabel": "Your email is verified",
     "cancelButton": "Cancel",
     "saveButton": "Save changes",
-    "unverifiedLabel": "Ваша електронна пошта не підтверджена",
+    "unverifiedLabel": "Your email is unverified",
     "manageTitle": "Manage account",
     "title": "Profile info",
-    "sendButton": "Отправить ссылку",
+    "sendButton": "Send link",
     "subscriptionTitle": "Subscriptions",
     "editButton": "Edit your profile",
     "seo": {
@@ -32,9 +32,9 @@
     "withdrawButton": "Withdraw",
     "seo": {
       "text": {
-        "button": "Show more",
-        "hidden": "## Bitcoin Sportsbook with a lot to offer\n\nFrom football, basketball, baseball and even the growing Esports industry, we have you covered. Slotsbet.io features more than 20 sports, and we endeavour to give you a fair chance of having a betting win by offering competitive odds for each sport.\n\n#### Limitless Betting Chances\n\nOur sports betting platform offers an in-play option if you want to get in amongst the action or place a smart bet as the game happens. You can even browse upcoming games in our comprehensive and regularly updated list of future sporting events.\n\n#### Unique Offers\n\nSlotsbet.io regularly offers a variety of promotions giving you more chances to increase your earnings and even better your chances of placing winning bets. From extra boosts and mystery prizes, our unique promotions help you enjoy the best betting experience!",
-        "visible": "## Bitcoin Betting Flagship\n\nSlotsbet.io is where you can find competitive odds, on a platform offering the best Bitcoin betting experience. Our team continues to work hard to give you the competitive odds, betting props and interactive experience offering you the fulfilling betting journey you've been looking for. At Slotsbet.io, we are working hard to give you the opportunity to enjoy a fun, fast and fair betting experience.\n\n#### Reliable Bitcoin Betting\n\nSlotsbet.io takes pride in being the home of Bitcoin. Youse every single one of your Bitcoins anywhere on the site."
+        "button": "",
+        "hidden": "",
+        "visible": ""
       },
       "title": "Slotsbet | Wallet",
       "description": ""
@@ -72,28 +72,28 @@
       "title": "Slotsbet | Security & Verification"
     },
     "documents": {
-      "moreInfo": "Більше інформації",
+      "moreInfo": "More info",
       "payment": {
-        "label": "Оплата",
-        "description": "Будь ласка, завантажте знімок екрана або фотографію з онлайн-банку, банківської виписки, сторінки Skrill тощо.",
-        "payment": "Підтвердження платежу"
+        "label": "Payment",
+        "description": "Please upload the screenshot or photo from online bank, bank statement, Skrill page, etc.",
+        "payment": "Proof of Payment"
       },
-      "uploadHint": "Приймаються такі типи файлів: .png, .jpg, .pdf. Максимальний розмір 20 Мб.",
-      "hideText": "Сховати текст",
-      "uploadPlaceholder": "Виберіть файл або перетягніть сюди",
-      "uploadButton": "Завантажити файл",
+      "uploadHint": "Following file types are accepted: .png, .jpg, .pdf. Max size 2MB.",
+      "hideText": "Hide text",
+      "uploadPlaceholder": "Select a file or drag and drop here",
+      "uploadButton": "Upload file",
       "address": {
-        "label": "Адреса",
-        "description": "Будь ласка, завантажте рахунок за комунальні послуги, телефонний рахунок або виписку з банківського рахунку, у якому ваше ім’я.",
-        "address": "Підтвердження адреси"
+        "label": "Address",
+        "description": "Please upload the utility bill, phone bill, or bank statement, in which your name.",
+        "address": "Proof of Address"
       },
-      "uploadMore": "Завантажити більше файлів",
+      "uploadMore": "Load more files",
       "identity": {
-        "label": "Ідентичність",
-        "description": "Завантажте своє підтвердження особи. Усі документи повинні лежати на рівній поверхні, усі 4 кути всередині рамки. Уся інформація має бути чіткою та доступною для ідентифікації. Також завантажте своє селфі з паспортом/посвідченням особи в руках. Це повинно бути. Завантажте своє підтвердження особи. Усі документи повинні лежати на рівній поверхні, усі 4 кути всередині рамки. Уся інформація має бути чіткою та доступною для ідентифікації. Також завантажте своє селфі з паспортом/посвідченням особи в руках. Це повинно бути. Завантажте своє підтвердження особи. Усі документи повинні лежати на рівній поверхні, усі 4 кути всередині рамки. Уся інформація має бути чіткою та доступною для ідентифікації. Також завантажте своє селфі з паспортом/посвідченням особи в руках. Це повинно бути.",
-        "identity_front": "Підтвердження особи (спереду)",
-        "identity_back": "Підтвердження особи (задня сторона)",
-        "identity_selfie_id": "Селфі та ID"
+        "label": "Identity",
+        "description": "Please upload your proof of identity. All documents must be laying on a flat surface with all 4 corners inside the frame. All information should be clear and identifiable. Also upload your selfie with passport/ID in your hands. ",
+        "identity_front": "Proof of Identity (Front)",
+        "identity_back": "Proof of Identity (Back)",
+        "identity_selfie_id": "Selfie & ID"
       }
     }
   },

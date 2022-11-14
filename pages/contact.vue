@@ -93,7 +93,7 @@
 
 <style lang="scss">
 .contact {
-  @extend %text-page-max;
+  @include text-page-max;
   display: grid;
   grid-template-areas: var(--areas, "img" "header" "form");
 

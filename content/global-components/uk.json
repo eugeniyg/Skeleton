@@ -127,7 +127,7 @@
     },
     "recentlyPlayed": {
       "icon": "history",
-      "label": "Нещодавно зіграні"
+      "label": "Recently played"
     }
   },
   "turbogames": {
@@ -238,25 +238,25 @@
   "gameTags": [
     {
       "identity": "hot",
-      "label": "Гарячі",
+      "label": "HOT",
       "color": "red",
       "icon": "hot"
     },
     {
       "identity": "new",
-      "label": "Нові",
+      "label": "NEW",
       "color": "green",
       "icon": "new"
     },
     {
       "identity": "fast-games",
-      "label": "Швидкі",
+      "label": "TURBO",
       "color": "blue",
       "icon": "speed"
     },
     {
       "identity": "buy-bonus",
-      "label": "Бонусні",
+      "label": "BONUS BUY",
       "color": "orange",
       "icon": "bonus"
     }
