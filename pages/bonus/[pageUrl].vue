@@ -110,7 +110,7 @@
   }
 
   .content {
-    @extend %text-page-max;
+    @include text-page-max;
     padding-top: rem(40px);
 
     > .title {
