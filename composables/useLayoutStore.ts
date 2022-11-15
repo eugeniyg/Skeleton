@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import ScrollLock from 'scroll-lock';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 import { AlertInterface } from '~/types';
@@ -93,14 +93,14 @@ export const useLayoutStore = defineStore('layoutStore', {
       this.isUserNavOpen = true;
       document.body.classList.add('nav-user-open');
       const userNavEl:HTMLElement|null = document.querySelector('.nav-user');
-      if (userNavEl) ScrollLock.disablePageScroll(userNavEl);
+      if (userNavEl) disableBodyScroll(userNavEl);
     },
 
     closeUserNav():void {
       this.isUserNavOpen = false;
       document.body.classList.remove('nav-user-open');
       const userNavEl:HTMLElement|null = document.querySelector('.nav-user');
-      if (userNavEl) ScrollLock.enablePageScroll(userNavEl);
+      if (userNavEl) enableBodyScroll(userNavEl);
     },
 
     openCurrencyNav():void {
@@ -117,7 +117,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       this.isDrawerOpen = !this.isDrawerOpen;
       document.body.classList.toggle('drawer-open');
       const drawerContentEl:HTMLElement|null = document.querySelector('.drawer .content');
-      if (drawerContentEl) this.isDrawerOpen ? ScrollLock.disablePageScroll(drawerContentEl) : ScrollLock.enablePageScroll(drawerContentEl);
+      if (drawerContentEl) this.isDrawerOpen ? disableBodyScroll(drawerContentEl) : enableBodyScroll(drawerContentEl);
     },
 
     compactDrawer():void {
