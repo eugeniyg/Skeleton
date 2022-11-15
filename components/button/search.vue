@@ -1,15 +1,24 @@
 <template>
-  <button class="btn-search" @click="onClick">
+  <button
+    class="btn-search"
+    @click="emit('show-search')"
+    :class="{'is-active': active}"
+  >
     <atomic-icon id="search"/>
   </button>
 </template>
 
 <script setup lang="ts">
-  const emits = defineEmits(['show-search']);
+  const emit = defineEmits(['show-search']);
 
-  function onClick():void {
-    emits('show-search');
-  }
+  const props = defineProps({
+    isActive: {
+      type: Boolean,
+      default: false,
+    },
+  });
+
+  const active = computed(() => props.isActive);
 </script>
 
 <style lang="scss">
@@ -60,29 +69,25 @@
     }
   }
 
-  &:hover {
-    cursor: pointer;
+  @include use-hover {
+    &:hover {
+      cursor: pointer;
 
-    --color: var(--yellow-500);
+      --color: var(--yellow-500);
 
-    @include media(l) {
-      --bg: var(--gray-800);
-    }
+      @include media(l) {
+        --bg: var(--gray-800);
+      }
 
-    &:before {
-      opacity: 0;
+      &:before {
+        opacity: 0;
+      }
     }
   }
 
-  &:focus {
-    //box-shadow: inset 0 3px 0 var(--gray-800);
-
-    //--bg: var(--gray-700);
+  &.is-active {
     --color: var(--yellow-500);
-
-    //&:before {
-    //  opacity: 0;
-    //}
   }
+
 }
 </style>
