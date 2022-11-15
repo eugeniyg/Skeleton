@@ -76,7 +76,7 @@ export default defineNuxtConfig({
   nitro: {
     devProxy: {
       '/api': {
-        target: 'https://test.dev.getplatform.tech/api',
+        target: 'https://dev.slotsbet.io/api',
         changeOrigin: true,
       },
     },
