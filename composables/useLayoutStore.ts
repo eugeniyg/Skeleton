@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { disablePageScroll, enablePageScroll } from 'scroll-lock';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 import { AlertInterface } from '~/types';
@@ -91,11 +92,15 @@ export const useLayoutStore = defineStore('layoutStore', {
     openUserNav():void {
       this.isUserNavOpen = true;
       document.body.classList.add('nav-user-open');
+      const userNavEl:HTMLElement|null = document.querySelector('.nav-user');
+      if (userNavEl) disablePageScroll(userNavEl);
     },
 
     closeUserNav():void {
       this.isUserNavOpen = false;
       document.body.classList.remove('nav-user-open');
+      const userNavEl:HTMLElement|null = document.querySelector('.nav-user');
+      if (userNavEl) enablePageScroll(userNavEl);
     },
 
     openCurrencyNav():void {
@@ -111,6 +116,8 @@ export const useLayoutStore = defineStore('layoutStore', {
     toggleDrawer():void {
       this.isDrawerOpen = !this.isDrawerOpen;
       document.body.classList.toggle('drawer-open');
+      const drawerContentEl:HTMLElement|null = document.querySelector('.drawer .content');
+      if (drawerContentEl) this.isDrawerOpen ? disablePageScroll(drawerContentEl) : enablePageScroll(drawerContentEl);
     },
 
     compactDrawer():void {
@@ -119,8 +126,7 @@ export const useLayoutStore = defineStore('layoutStore', {
 
     addModalQuery(modalName:string, queryValue:string|undefined):void {
       const router = useRouter();
-      const { query, name } = useRoute();
-      if (!name || name === 'slug' || name === 'locale-slug') return;
+      const { query } = useRoute();
       const modalsArr = Object.keys(this.modals);
       const newQuery:any = { ...query };
 
@@ -135,8 +141,7 @@ export const useLayoutStore = defineStore('layoutStore', {
 
     removeModalQuery(modalName:string):void {
       const router = useRouter();
-      const { query, name } = useRoute();
-      if (!name || name === 'slug' || name === 'locale-slug') return;
+      const { query } = useRoute();
 
       router.replace({ query: { ...query, [this.modalsUrl[modalName]]: undefined, resetCode: undefined } });
     },

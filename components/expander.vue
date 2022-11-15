@@ -114,5 +114,10 @@
       color: var(--yellow-500);
     }
   }
+
+  .text-editor {
+    margin: 0;
+    padding-right: rem(40px);
+  }
 }
 </style>

@@ -64,9 +64,8 @@
   width: var(--drawer-width, #{rem(240px)});
   position: var(--drawer-position, fixed);
   top: 0;
-  bottom: 0;
   left: 0;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   visibility: var(--drawer-visibility, visible);
   transform: var(--drawer-translate-x, translateX(calc(-100% - #{rem(32px)})));
   z-index: 3;
@@ -114,7 +113,7 @@
 
   .content {
     @include scrollbar-hide;
-    height: var(--drawer-content-height, calc(100vh - #{rem(62px)} - #{rem(24px)}));
+    height: var(--drawer-content-height, calc(var(--vh, 1vh) * 100 - #{rem(62px)} - #{rem(24px)}));
     position: relative;
     z-index: 0;
     padding: var(--drawer-content-padding, (#{rem(16px)} #{rem(16px)} #{rem(40px)} #{rem(16px)}));
@@ -134,13 +133,13 @@
       }
 
       .drawer-open.drawer-minimize & {
-        --drawer-content-height: calc(100vh - #{rem(160px)});
+        --drawer-content-height: calc(var(--vh, 1vh) * 100 - #{rem(160px)});
       }
     }
 
     .drawer-open & {
       //--drawer-content-padding: #{rem(16px)};
-      --drawer-content-height: calc(100vh - #{rem(62px)} - #{rem(24px)});
+      --drawer-content-height: calc(var(--vh, 1vh) * 100 - #{rem(62px)} - #{rem(24px)});
     }
 
   }
@@ -149,7 +148,7 @@
     @include media(l) {
       --drawer-width: #{rem(72px)};
       --drawer-header-row-gap: #{rem(16px)};
-      --drawer-content-height: calc(100vh - #{rem(200px)})
+      --drawer-content-height: calc(var(--vh, 1vh) * 100 - #{rem(200px)})
     }
   }
 
