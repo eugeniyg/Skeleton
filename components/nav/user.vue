@@ -55,7 +55,7 @@
   //border-radius: 8px;
   top: rem(64px);
   right: 0;
-  bottom: 0;
+  height: calc(var(--vh, 1vh) * 100);
   position: fixed;
   align-items: flex-start;
   visibility: var(--nav-user-visibility, hidden);

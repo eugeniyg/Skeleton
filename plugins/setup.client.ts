@@ -40,9 +40,16 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     checkAffiliateTag();
   });
 
+  const setWindowStaticHeight = ():void => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh-static', `${vh}px`);
+  };
+
   const setWindowHeight = ():void => {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
   };
+  setWindowStaticHeight();
   setWindowHeight();
+  window.addEventListener('resize', setWindowHeight);
 });
