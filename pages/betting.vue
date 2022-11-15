@@ -134,7 +134,7 @@
     position: relative;
     width: 100%;
     --safe-area-inset-bottom: env(safe-area-inset-bottom);
-    height: calc(var(--vh, 1vh) * 100 - 120px - var(--safe-area-inset-bottom));
+    height: calc(var(--vh-static, 1vh) * 100 - 120px - var(--safe-area-inset-bottom));
 
     @include media(l) {
       height: calc(100vh - 88px);

@@ -14,6 +14,7 @@
   "devDependencies": {
     "@nuxt/content": "^2.2.1",
     "@types/marked": "^4.0.7",
+    "@types/scroll-lock": "^2.1.0",
     "@typescript-eslint/eslint-plugin": "^5.42.1",
     "@typescript-eslint/parser": "^5.42.1",
     "eslint": "^8.27.0",
@@ -39,6 +40,7 @@
     "marked": "^4.2.2",
     "maska": "^1.5.0",
     "pinia": "^2.0.23",
+    "scroll-lock": "^2.1.5",
     "style-loader": "^3.3.1",
     "svg-sprite-generator": "^0.0.7",
     "svgo": "^2.8.0",
