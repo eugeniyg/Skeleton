@@ -21,7 +21,7 @@
   },
   "login": {
     "title": "Sign in",
-    "loginButton": "Sing in",
+    "loginButton": "Sign in",
     "forgotButton": "*Forgot Password?*",
     "registrationButton": " Don't have an account? *Join*"
   },
