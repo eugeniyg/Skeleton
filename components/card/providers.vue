@@ -22,6 +22,17 @@
 </script>
 
 <style lang="scss">
+.cards-providers {
+  border-radius: 16px;
+  background-color: var(--gray-900);
+  padding: rem(16px);
+  margin-top: rem(40px);
+
+  @include media(md) {
+    padding: rem(24px);
+  }
+}
+
 .card-providers {
   background-color: var(--gray-800);
   position: relative;
@@ -29,7 +40,8 @@
   flex-shrink: 0;
   width: var(--width, #{column(3)});
   cursor: pointer;
-  @extend %cards-items;
+  border: 4px solid var(--gray-900);
+  border-radius: 8px;
 
   .img {
     max-width: 100%;
