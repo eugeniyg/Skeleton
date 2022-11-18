@@ -175,7 +175,8 @@
   }
 
   .btn-toggle {
-    --margin-left: auto
+    --margin-left: auto;
+    margin-right: rem(8px);
   }
 
   .is-compact & {

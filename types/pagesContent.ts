@@ -256,6 +256,7 @@ export interface HistoryTabInterface extends Record<string, any>{
 export interface BenefitItemInterface {
   image: string,
   title: string,
+  text: string,
 }
 
 export interface BenefitsContentInterface {

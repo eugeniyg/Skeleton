@@ -1,16 +1,14 @@
 <template>
   <div v-if="benefitsContent" class="group-benefits">
-    <atomic-icon :id="benefitsContent.icon"/>
-    <h2 class="title">{{ benefitsContent.label }}</h2>
-
     <div class="group-benefits__list">
       <div
         class="group-benefits__item"
         v-for="(benefit, index) in benefitsContent.items"
         :key="index"
       >
-        <img class="icon" :src="benefit.image" alt="" />
-        <div class="title" v-html="marked.parse(benefit.title)" />
+        <img class="icon" :src="benefit.image" alt=""/>
+        <h2 class="title" v-html="marked.parse(benefit.title)"/>
+        <div class="text" v-html="marked.parse(benefit.text)"/>
       </div>
     </div>
   </div>
@@ -21,92 +19,96 @@
   import { BenefitsContentInterface } from '~/types';
 
   const { globalComponentsContent } = useGlobalStore();
-  const benefitsContent:BenefitsContentInterface|undefined = globalComponentsContent?.benefits;
+  const benefitsContent: BenefitsContentInterface | undefined = globalComponentsContent?.benefits;
 </script>
 
 <style lang="scss">
 .group-benefits {
-  display: grid;
-  align-items: center;
-  grid-template-areas:
-  "icon heading heading arrows"
-  "items items items items"
-  "btn-show-all btn-show-all btn-show-all btn-show-all";
-  grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
-  grid-column-gap: var(--column-gap, #{rem(8px)});
-  grid-row-gap: var(--row-gap, #{rem(16px)});
-  margin-top: #{24px};
 
-  @include media(xs) {
-    grid-template-areas:
-  "icon heading btn-show-all arrows"
-  "items items items items";
+  @include media(xxxl) {
+    max-width: rem(464px);
   }
 
-  > [data-icon] {
-    font-size: rem(20px);
-    grid-area: icon;
-  }
-
-  > .icon {
-    grid-area: icon;
-    --icon-size: #{rem(20px)};
-    --color: var(--gray-400);
-  }
-
-  > .title {
-    flex-grow: 1;
-    grid-area: heading;
-    @include font($heading-4);
-    color: var(--white);
-    margin: 0;
-  }
-
-  > &__list {
-    grid-area: items;
+  &__list {
     display: var(--display, grid);
+    flex-wrap: wrap;
     align-items: normal;
-    overflow-x: auto;
-    @extend %cards-items-negative;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: var(--items-column-gap, #{rem(8px)});
+    height: 100%;
+    grid-gap: rem(16px);
 
-    &::-webkit-scrollbar {
-      display: none;
+    @include media(md) {
+      grid-template-columns: repeat(4, 1fr);
     }
 
-    @include media(sm) {
-      grid-template-columns: repeat(4, 1fr);
+    @include media(xxl) {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
   &__item {
-    text-decoration: none;
-    padding: rem(24px) rem(16px);
-    background-color: var(--gray-800);
+    background-color: var(--gray-900);
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
     border-radius: 8px;
     display: grid;
-    grid-row-gap: 8px;
-    justify-content: center;
-    align-items: flex-start;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: repeat(2, auto);
+    position: relative;
+    padding: rem(16px) rem(8px) rem(16px) rem(16px);
+    align-content: center;
+    align-items: center;
+    grid-row-gap: rem(4px);
 
     .icon {
-      width: var(--width, #{rem(48px)});
-      height: var(--height, #{rem(48px)});
+      width: var(--width, #{rem(64px)});
+      height: var(--height, #{rem(64px)});
       display: block;
       justify-self: center;
-
-      @include media(md) {
-        --width: #{rem(88px)};
-        --height: #{rem(88px)};
-      }
+      grid-column: 2;
+      grid-row: 1/3;
+      align-self: center;
     }
 
     .title {
-      @include font($heading-3);
+      @include font($heading-2);
       color: var(--white);
-      text-align: center;
+      grid-column: 1;
+      margin: 0;
+      grid-row: 1/3;
+      word-break: break-word;
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
+
+      p {
+        margin: 0;
+      }
+
+      @include media(xs) {
+        br {
+          content: ''
+        }
+      }
+
+      @include media(md) {
+        grid-row: 1;
+        align-self: flex-end;
+      }
+    }
+
+    .text {
+      @include font($body-1);
+      color: var(--gray-300);
+      grid-column: 1;
+      display: none;
+      align-self: flex-start;
+
+      p {
+        margin: 0;
+      }
+
+      @include media(md) {
+        display: block;
+        grid-row: 2/3;
+      }
     }
   }
 }

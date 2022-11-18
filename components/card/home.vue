@@ -1,27 +1,13 @@
 <template>
   <div class="card-home">
-    <!--<picture>
-      <source :media="'(max-width: 1279px)'" :srcset="props.images.mobile.backgroundImage" />
-      <source :media="'(max-width: 2264px)'" :srcset="props.images.desktop.backgroundImage" />
-      <img class="back" :src="props.images.mobile.backgroundImage" alt=""/>
-    </picture>
-
-    <picture>
-      <source :media="'(max-width: 1279px)'" :srcset="props.images.mobile.faceImage" />
-      <source :media="'(max-width: 2264px)'" :srcset="props.images.desktop.faceImage" />
-      <img class="front" :src="props.images.mobile.faceImage" alt=""/>
-    </picture>-->
-
     <div class="content">
-
-      <div class="back" :style="{backgroundImage: `url(${backBg})`}"></div>
-      <div class="front" :style="{backgroundImage: `url(${frontBg})`}"></div>
-
+      <div class="back-bg" :style="{backgroundImage: `url(${props.images.backgroundImage})`}"></div>
+      <div class="front-bg" :style="{backgroundImage: `url(${props.images.faceImage})`}"></div>
     </div>
 
     <div class="info">
-      <div class="title" v-if="props.title" v-html="marked.parse(props.title)" />
-      <div class="content" v-if="props.content" v-html="marked.parse(props.content)" />
+      <div class="title" v-if="props.title" v-html="marked.parse(props.title)"/>
+      <div class="content" v-if="props.content" v-html="marked.parse(props.content)"/>
 
       <div class="actions" v-if="props.button">
         <button-base
@@ -33,6 +19,7 @@
         </button-base>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -40,8 +27,6 @@
 
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
-  import backBg from '~/assets/img/home-banner/bg.svg';
-  import frontBg from '~/assets/img/home-banner/person.png';
 
   const props = defineProps({
     images: {
@@ -66,7 +51,7 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal, openDepositModal } = useLayoutStore();
 
-  const clickButton = (url:string):void => {
+  const clickButton = (url: string): void => {
     if (url) {
       const router = useRouter();
       const { localizePath } = useProjectMethods();
@@ -82,87 +67,118 @@
   display: grid;
   width: 100%;
   position: relative;
-  overflow: hidden;
-  height: var(--height-card, 204px);
+  max-height: 309px;
 
-  @include media(l) {
-    --height-card: #{rem(309px)};
+  //&:before {
+  //  width: 16px;
+  //  content: "";
+  //  position: absolute;
+  //  top: 0;
+  //  right: 0;
+  //  height: var(--measure-height, 204px);
+  //  background: orange;
+  //  z-index: 7;
+  //
+  //  @include media(l) {
+  //    background: green;
+  //    --measure-height: 309px;
+  //  }
+  //}
+
+  &:after {
+    content: '';
+    padding-top: 52%;
+  }
+
+  @include media(sm) {
+    max-height: 309px;
   }
 
   @include media(xxxl) {
-    --height-card: #{rem(390px)};
+    max-height: 390px;
   }
 
-  .back {
+  .back-bg {
     position: absolute;
     top: 0;
-    bottom: 0;
     left: 0;
-    right: 0;
+    width: 100%;
+    height: 100vh;
     background-repeat: no-repeat;
-    background-size: 80%;
-    background-position: top left;
+    background-size: 100%;
+    background-position: top center;
     mix-blend-mode: multiply;
     opacity: 0.6;
-
-    @include media(md) {
-      background-size: 75%;
-    }
-  }
-
-  .front {
-    position: absolute;
-    top: 30px;
-    right: 16px;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-    width: var(--width-front-img, #{rem(200px)});
-    z-index: 3;
-
-    &:before {
-      width: 100%;
-      content: '';
-      padding-top: 90%;
-      display: block;
-    }
-
-    @include media(xs) {
-      right: rem(32px);
-      max-width: 250px;
-      --width-front-img:  40%;
-    }
-
-    @include media(sm) {
-      right: rem(40px);
-      --width-front-img:  30%;
-    }
-
-    @include media(md) {
-      right: rem(75px);
-      --width-front-img:  22%;
-    }
+    max-height: 912px;
 
     @include media(l) {
-      right: 65px;
-      max-width: 360px;
-      --width-front-img: 40%;
+      max-height: 508px;
     }
 
     @include media(xl) {
-      right: 65px;
-      max-width: 410px;
-      --width-front-img: 60%;
+      max-height: 620px;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      background: linear-gradient(360deg, #0E091E 0%, rgba(14, 9, 30, 0) 100%);
+      //background: greenyellow;
+      left: 0;
+      right: 0;
+      height: 50%;
+      z-index: 4;
+    }
+
+    &:after {
+      //content: '';
+      //position: absolute;
+      //top: 0;
+      //bottom: 0;
+      //background: linear-gradient(270deg, #0E091E 0%, rgba(14, 9, 30, 0) 96.21%);
+      //right: 0;
+      //width: 50%;
+      //z-index: 1;
+    }
+  }
+
+  .front-bg {
+    position: absolute;
+    top: 30px;
+    right: 12px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: top right;
+    z-index: 3;
+    width: 52%;
+    height: 100%;
+    background-image: linear-gradient(270deg, #0E091E 0%, rgba(14, 9, 30, 0) 96.21%);
+
+    @include media(xs) {
+      right: rem(32px);
+    }
+
+    @include media(sm) {
+      right: rem(39px);
+    }
+
+    @include media(md) {
+      right: rem(65px);
+    }
+
+    @include media(l) {
+      right: 155px;
+      height: 110%;
+    }
+
+    @include media(xl) {
+      height: 162%;
     }
 
     @include media(xxl) {
-      --width-front-img: 603px;
-      right: 135px;
-    }
-
-    @include media(xxxl) {
-      --width-front-img: 603px;
-      right: 400px;
+      padding-top: 24%;
+      right: 308px
     }
   }
 
@@ -208,31 +224,9 @@
   }
 
   .content {
-    position: relative;
-    overflow: hidden;
-
-    &:before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      background: linear-gradient(360deg, #0E091E 0%, rgba(14, 9, 30, 0) 100%);
-      left: 0;
-      right: 0;
-      height: 100%;
-      z-index: 4;
-      transform: translateY(50%);
-    }
-
-    &:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      background: linear-gradient(270deg, #0E091E 0%, rgba(14, 9, 30, 0) 96.21%);
-      right: 0;
-      width: 50%;
-      z-index: 1;
-    }
+    position: absolute;
+    height: 100%;
+    width: 100%;
   }
 
   .info {
@@ -299,13 +293,16 @@
       --padding: #{rem(12px) rem(32px)};
     }
   }
+
 }
 
 .promo-card-wrapper {
-  margin-bottom: rem(40px);
+  //margin-bottom: rem(40px);
   margin-top: rem(-24px);
   margin-left: var(--margin-left, #{rem(-16px)});
   margin-right: var(--margin-right, #{rem(-16px)});
+  position: relative;
+  z-index: 0;
 
   @include media(sm) {
     --margin-left: #{rem(-32px)};
