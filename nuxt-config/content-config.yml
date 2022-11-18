@@ -2028,9 +2028,9 @@ collections:
                 widget: object
                 fields:
                   - name: backgroundImage
-                      label: Background Image
-                      widget: image
-                      allow_multiple: false
+                    label: Background Image
+                    widget: image
+                    allow_multiple: false
                   - name: faceImage
                     label: Face Image
                     widget: image
