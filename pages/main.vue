@@ -17,8 +17,6 @@
 
     <favorite-recently v-if="isLoggedIn" />
 
-    <br />
-
     <group-games
       showAllBtn
       showArrows
