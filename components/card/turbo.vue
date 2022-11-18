@@ -20,12 +20,9 @@
 <script setup lang="ts">
   const props = defineProps<{
     buttonLabel: string,
-    infoLabel: string,
-    categoryLabel: string,
     url: string,
     image: string,
     title: string,
-    infoValue: string,
     categoryValue: string
   }>();
 

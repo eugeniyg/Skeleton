@@ -71,37 +71,9 @@
         "label": "Play now"
       }
     },
-    "benefits": {
-      "items": [
-        {
-          "image": "/img/uploads/benefit-1.png",
-          "title": "Швидке<br>виведення коштів",
-          "text": "Блискавичне виведення без затримок"
-        },
-        {
-          "image": "/img/uploads/benefit-2.png",
-          "title": "24/7<br>підтримка",
-          "text": "Наша служба підтримки клієнтів доступна завжди"
-        },
-        {
-          "image": "/img/uploads/benefit-3.png",
-          "title": "Переконливо чесні слоти<br>та ігри",
-          "text": ""
-        },
-        {
-          "image": "/img/uploads/benefit-4.png",
-          "title": "Конфіденційність<br>та безпека",
-          "text": "Завоювання та збереження довіри наших клієнтів"
-
-        }
-      ],
-      "label": "Переваги Slotsbet",
-      "icon": "bonuses"
-    },
     "categories": {
       "casino": {
         "image": "/img/uploads/category-casino.png",
-        "mod": "casino",
         "title": "Casino",
         "description": "Enjoy more than 3000+ provably fair slots & games",
         "button": {
@@ -111,7 +83,6 @@
       },
       "sports": {
         "image": "/img/uploads/category-betting.png",
-        "mod": "betting",
         "title": "Betting",
         "description": "The most competitive odds and markets. Bet and win right now",
         "button": {

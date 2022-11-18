@@ -238,12 +238,12 @@
     "items": [
       {
         "image": "/img/uploads/benefit-1.png",
-        "title": "Fast<br>withdrawals",
+        "title": "Fast withdrawals",
         "text": "Lightning-speed withdrawals with no delays"
       },
       {
         "image": "/img/uploads/benefit-2.png",
-        "title": "24/7 Live<br>Support",
+        "title": "24/7 Live Support",
         "text": "Our customer support team is always"
       },
       {
@@ -253,7 +253,7 @@
       },
       {
         "image": "/img/uploads/benefit-4.png",
-        "title": "Privacy<br>and security",
+        "title": "Privacy and security",
         "text": "Earning and keeping the trust of our customer"
       }
     ],

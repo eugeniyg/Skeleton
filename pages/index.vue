@@ -9,6 +9,7 @@
         <card-category
           v-for="(item, itemIndex) in Object.keys(homeContent.categories)"
           :key="itemIndex"
+          :mod="item"
           v-bind="homeContent.categories[item]"
         />
       </div>

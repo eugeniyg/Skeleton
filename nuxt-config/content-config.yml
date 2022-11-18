@@ -1742,7 +1742,10 @@ collections:
                 widget: image
               - name: title
                 label: Title
-                widget: markdown
+                widget: string
+              - name: text
+                label: Description
+                widget: string
       - name: promotions
         label: Site Promotions
         widget: object
@@ -1847,12 +1850,6 @@ collections:
           - name: buttonLabel
             label: Game Button Label
             widget: string
-          - name: infoLabel
-            label: Game Info Label
-            widget: string
-          - name: categoryLabel
-            label: Game Category Label
-            widget: string
           - name: items
             label: Games
             widget: list
@@ -1867,9 +1864,6 @@ collections:
                 widget: image
               - name: title
                 label: Title
-                widget: string
-              - name: infoValue
-                label: Game Info Value
                 widget: string
               - name: categoryValue
                 label: Game Category Value
@@ -2033,30 +2027,14 @@ collections:
                 label: Images
                 widget: object
                 fields:
-                  - name: mobile
-                    label: Mobile Layout
-                    widget: object
-                    fields:
-                      - name: backgroundImage
-                        label: Background Image
-                        widget: image
-                        allow_multiple: false
-                      - name: faceImage
-                        label: Face Image
-                        widget: image
-                        asslow_multiple: false
-                  - name: desktop
-                    label: Desktop Layout
-                    widget: object
-                    fields:
-                      - name: backgroundImage
-                        label: Background Image
-                        widget: image
-                        allow_multiple: false
-                      - name: faceImage
-                        label: Face Image
-                        widget: image
-                        asslow_multiple: false
+                  - name: backgroundImage
+                      label: Background Image
+                      widget: image
+                      allow_multiple: false
+                  - name: faceImage
+                    label: Face Image
+                    widget: image
+                    allow_multiple: false
               - name: title
                 label: Banner Title
                 widget: markdown
@@ -2085,7 +2063,6 @@ collections:
                   - name: image
                     label: Image
                     widget: image
-                  - *projectIcon
                   - name: title
                     label: Title
                     widget: string
@@ -2096,14 +2073,13 @@ collections:
                     label: Button
                     widget: object
                     fields: *linkArray
-              - name: sports
-                label: Sports
+              - name: betting
+                label: Betting
                 widget: object
                 fields:
                   - name: image
                     label: Image
                     widget: image
-                  - *projectIcon
                   - name: title
                     label: Title
                     widget: string

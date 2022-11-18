@@ -82,12 +82,6 @@
         margin: 0;
       }
 
-      @include media(xs) {
-        br {
-          content: ''
-        }
-      }
-
       @include media(md) {
         grid-row: 1;
         align-self: flex-end;
