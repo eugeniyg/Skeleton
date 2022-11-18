@@ -10,7 +10,7 @@
     <div v-for="invoice in props.invoices" :key="invoice.id" class="row">
       <div class="td">{{ getFormatDate(invoice.createdAt) }}</div>
       <div class="td">{{ getInvoiceTypeLabel(invoice.invoiceType) }}</div>
-      <div class="td">------</div>
+      <div class="td">{{ invoice.paymentMethod }}</div>
 
       <div class="td">
         <atomic-row-status :variant="getInvoiceStatus(invoice.status)">
