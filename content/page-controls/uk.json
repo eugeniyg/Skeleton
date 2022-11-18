@@ -63,46 +63,17 @@
   "homePage": {
     "banner": {
       "images": {
-        "mobile": {
-          "backgroundImage": "/img/uploads/1-mobile-background.png",
-          "faceImage": "/img/uploads/home-face-mobile.png"
-        },
-        "desktop": {
-          "backgroundImage": "/img/uploads/1-desktop-background.png",
-          "faceImage": "/img/uploads/home-face-desktop.png"
-        }
+        "backgroundImage": "/img/uploads/home-bg.svg",
+        "faceImage": "/img/uploads/home-face.png"
       },
       "title": "#### Play and win at Slotsbet",
       "button": {
         "label": "Play now"
       }
     },
-    "benefits": {
-      "items": [
-        {
-          "image": "/img/uploads/benefit-1.png",
-          "title": "Швидке<br>виведення коштів"
-        },
-        {
-          "image": "/img/uploads/benefit-2.png",
-          "title": "24/7 чат<br>підтримка"
-        },
-        {
-          "image": "/img/uploads/benefit-3.png",
-          "title": "Переконливо чесні слоти<br>та ігри"
-        },
-        {
-          "image": "/img/uploads/benefit-4.png",
-          "title": "Конфіденційність<br>та безпека"
-        }
-      ],
-      "label": "Переваги Slotsbet",
-      "icon": "bonuses"
-    },
     "categories": {
       "casino": {
         "image": "/img/uploads/category-casino.png",
-        "icon": "cherry",
         "title": "Casino",
         "description": "Enjoy more than 3000+ provably fair slots & games",
         "button": {
@@ -110,13 +81,12 @@
           "url": "/main"
         }
       },
-      "sports": {
-        "image": "/img/uploads/category-sports.png",
-        "icon": "sport",
-        "title": "Sports",
+      "betting": {
+        "image": "/img/uploads/category-betting.png",
+        "title": "Betting",
         "description": "The most competitive odds and markets. Bet and win right now",
         "button": {
-          "label": "Go to Sports",
+          "label": "Go to Betting",
           "url": "/betting"
         }
       }

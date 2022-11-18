@@ -1,24 +1,27 @@
 <template>
   <div class="home">
     <div v-if="homeContent?.banner" class="promo-card-wrapper">
-      <card-promo v-bind="homeContent.banner" />
+      <card-home v-bind="homeContent.banner"/>
     </div>
 
-    <group-benefits />
+    <div class="cards-wrap">
+      <div class="cards-cat" v-if="homeContent?.categories">
+        <card-category
+          v-for="(item, itemIndex) in Object.keys(homeContent.categories)"
+          :key="itemIndex"
+          :mod="item"
+          v-bind="homeContent.categories[item]"
+        />
+      </div>
 
-    <div v-if="homeContent?.categories" class="categories">
-      <card-category
-        v-for="(item, itemIndex) in Object.keys(homeContent.categories)"
-        :key="itemIndex"
-        v-bind="homeContent.categories[item]"
-      />
+      <group-benefits/>
     </div>
 
-    <group-turbo />
+    <group-turbo/>
 
-    <group-promotions />
+    <group-promotions/>
 
-    <atomic-seo-text v-if="homeContent?.seo?.text" v-bind="homeContent.seo.text" />
+    <atomic-seo-text v-if="homeContent?.seo?.text" v-bind="homeContent.seo.text"/>
   </div>
 </template>
 
@@ -33,7 +36,7 @@
     'homeContent',
     () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['homePage']).findOne(),
   );
-  const homeContent:HomeContentInterface|undefined = homeContentRequest.data.value?.homePage;
+  const homeContent: HomeContentInterface | undefined = homeContentRequest.data.value?.homePage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(homeContent?.seo);
 </script>

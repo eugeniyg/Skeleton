@@ -43,14 +43,8 @@
   "homePage": {
     "banner": {
       "images": {
-        "mobile": {
-          "backgroundImage": "/img/uploads/1-mobile-background.png",
-          "faceImage": "/img/uploads/home-face-mobile.png"
-        },
-        "desktop": {
-          "backgroundImage": "/img/uploads/1-desktop-background.png",
-          "faceImage": "/img/uploads/home-face-desktop.png"
-        }
+        "backgroundImage": "/img/uploads/home-bg.svg",
+        "faceImage": "/img/uploads/home-face.png"
       },
       "title": "#### Play and win at Slotsbet",
       "button": {
@@ -60,7 +54,6 @@
     "categories": {
       "casino": {
         "image": "/img/uploads/category-casino.png",
-        "icon": "cherry",
         "title": "Casino",
         "description": "Enjoy more than 3000+ provably fair slots & games",
         "button": {
@@ -68,13 +61,12 @@
           "url": "/main"
         }
       },
-      "sports": {
-        "image": "/img/uploads/category-sports.png",
-        "icon": "sport",
+      "betting": {
+        "image": "/img/uploads/category-betting.png",
         "title": "Sports",
         "description": "The most competitive odds and markets. Bet and win right now",
         "button": {
-          "label": "Go to Sports",
+          "label": "Go to Betting",
           "url": "/betting"
         }
       }

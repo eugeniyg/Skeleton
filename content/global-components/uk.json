@@ -5,19 +5,23 @@
     "items": [
       {
         "image": "/img/uploads/benefit-1.png",
-        "title": "Fast<br>withdrawals"
+        "title": "Fast withdrawals",
+        "text": "Lightning-speed withdrawals with no delays"
       },
       {
         "image": "/img/uploads/benefit-2.png",
-        "title": "24/7 Live Chat<br>Support"
+        "title": "24/7 Live Chat Support",
+        "text": "Our customer support team is always"
       },
       {
         "image": "/img/uploads/benefit-3.png",
-        "title": "Provably fair slots<br>& games"
+        "title": "Provably fair slots",
+        "text": "We've got over 3000 games from the top game"
       },
       {
         "image": "/img/uploads/benefit-4.png",
-        "title": "Privacy<br>and security"
+        "title": "Privacy and security",
+        "text": "Earning and keeping the trust of our customer"
       }
     ]
   },
@@ -134,98 +138,83 @@
     "label": "Turbogames",
     "icon": "hot",
     "buttonLabel": "Play now",
-    "infoLabel": "RTP",
-    "categoryLabel": "Category",
     "items": [
       {
         "url": "/games/turbo-games-javelin-x?demo=true",
         "image": "/img/uploads/javelin_2_3_no-1-.jpg",
         "title": "JavelinX",
-        "infoValue": "95%",
         "categoryValue": "Multiplayer"
       },
       {
         "url": "/games/turbo-games-turboplinko?demo=true",
         "image": "/img/uploads/turbo_plinko-1-.png",
         "title": "Turbo Plinko",
-        "infoValue": "99%",
         "categoryValue": "Singleplayer"
       },
       {
         "url": "/games/bayraktar-turbo-games?demo=true",
         "image": "/img/uploads/bayraktar-1-.png",
         "title": "Bayraktar",
-        "infoValue": "95%",
         "categoryValue": "Singleplayer"
       },
       {
         "url": "/games/limbo-rider-turbo-games?demo=true",
         "image": "/img/uploads/limbo-1-.png",
         "title": "Limbo Rider",
-        "infoValue": "95%",
         "categoryValue": "Singleplayer"
       },
       {
         "url": "/games/ball-ball-turbo-games?demo=true",
         "image": "/img/uploads/ball-ball-1-.png",
         "title": "Ball & Ball",
-        "infoValue": "99%",
         "categoryValue": "Singleplayer"
       },
       {
         "url": "/games/stairs-turbo-games?demo=true",
         "image": "/img/uploads/furystairs-1-.png",
         "title": "Stairs",
-        "infoValue": "97%",
         "categoryValue": "Singleplayer"
       },
       {
         "url": "/games/towers-turbo-games?demo=true",
         "image": "/img/uploads/towers-1-.png",
         "title": "Towers",
-        "infoValue": "95%",
         "categoryValue": "Singleplayer"
       },
       {
         "url": "/games/neko-turbo-games?demo=true",
         "image": "/img/uploads/neko-1-.png",
         "title": "Neko",
-        "infoValue": "95%",
         "categoryValue": "Multiplayer"
       },
       {
         "url": "/games/mines-turbo-games?demo=true",
         "image": "/img/uploads/mines-1-.png",
         "title": "Mines",
-        "infoValue": "95%",
         "categoryValue": "Singleplayer"
       },
       {
         "url": "/games/hamsta-turbo-games?demo=true",
         "image": "/img/uploads/hamsta-1-.png",
         "title": "Hamsta",
-        "infoValue": "95%",
         "categoryValue": "Singleplayer"
       },
       {
         "url": "/games/dice-twice-turbo-games?demo=true",
         "image": "/img/uploads/dicetwice-1-.png",
         "title": "Dice Twice",
-        "infoValue": "98%",
         "categoryValue": "Singleplayer"
       },
       {
         "url": "/games/crash-x-turbo-games?demo=true",
         "image": "/img/uploads/crashx-1-.png",
         "title": "Crash X",
-        "infoValue": "95%",
         "categoryValue": "Multiplayer"
       },
       {
         "url": "/games/turbo-games-save-the-princess?demo=true",
         "image": "/img/uploads/save_the_princess.jpg",
         "title": "Save the Princess",
-        "infoValue": "95%",
         "categoryValue": "Singleplayer"
       }
     ]
