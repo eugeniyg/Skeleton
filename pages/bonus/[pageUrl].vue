@@ -42,7 +42,7 @@
   const { currentLocale } = storeToRefs(globalStore);
   const route = useRoute();
   const { pageUrl } = route.params;
-  const contentRequest = await useAsyncData('pageContent', () => queryContent(`bonus/${currentLocale.value?.code}-${pageUrl}`).findOne(), { initialCache: false });
+  const contentRequest = await useAsyncData('pageContent', () => queryContent(`bonus/${currentLocale.value?.code}-${pageUrl}`).findOne());
   if (contentRequest.error.value) throw contentRequest.error.value;
   else pageContent.value = contentRequest.data.value as BonusPageInterface;
   const { setPageSeo } = useProjectMethods();
