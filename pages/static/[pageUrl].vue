@@ -14,7 +14,7 @@
   const { currentLocale } = storeToRefs(globalStore);
   const route = useRoute();
   const { pageUrl } = route.params;
-  const pageContentRequest = await useAsyncData('pageContent', () => queryContent(`static/${currentLocale.value?.code}-${pageUrl}`).findOne(), { initialCache: false });
+  const pageContentRequest = await useAsyncData('pageContent', () => queryContent(`static/${currentLocale.value?.code}-${pageUrl}`).findOne());
   if (pageContentRequest.error.value) throw pageContentRequest.error.value;
   else pageContent.value = pageContentRequest.data.value as StaticPageInterface;
   const { setPageSeo } = useProjectMethods();

@@ -134,7 +134,7 @@
     pageMeta.value = response.meta;
   };
 
-  const { data } = await useAsyncData('items', getItems, { initialCache: false });
+  const { data } = await useAsyncData('items', getItems);
   setItems(data.value as GamesResponseInterface);
 
   const changeProvider = async (providerId: string): Promise<void> => {
