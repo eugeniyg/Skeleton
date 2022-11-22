@@ -47,7 +47,7 @@
     @include font($body-2);
     color: var(--gray-300);
     background-color: var(--bg, var(--gray-800));
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid var(--border-color, var(--gray-800));
     padding: rem(10px) rem(16px) rem(10px) rem(44px);
     transition: all .2s ease-in-out;

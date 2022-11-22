@@ -153,8 +153,7 @@
   .content {
     position: relative;
     height: 100%;
-    background: linear-gradient(107.86deg, #28263B 1.67%, #3D3D51 87.33%),
-    linear-gradient(107.86deg, #19192F 1.67%, #28263B 87.33%);
+    background: linear-gradient(107.86deg, #1C212B 1.67%, #3D4451 87.33%);
     border-radius: inherit;
     padding: rem(24px);
     display: grid;
@@ -168,7 +167,7 @@
       display: block;
       content: '';
       position: absolute;
-      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA1OTggNTk3Ij48ZWxsaXBzZSBjeD0iMjk5LjIzNSIgY3k9IjI5OC44NjYiIGZpbGw9IiMwRTA5MUUiIG9wYWNpdHk9Ii4xNiIgcng9IjI5OC40NzkiIHJ5PSIyOTcuOTU2Ii8+PC9zdmc+);
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA1OTggNTk3Ij48ZWxsaXBzZSBjeD0iMjk5LjIzNSIgY3k9IjI5OC44NjYiIGZpbGw9IiMxMTE0MUMiIG9wYWNpdHk9Ii4xNiIgcng9IjI5OC40NzkiIHJ5PSIyOTcuOTU2Ii8+PC9zdmc+Cg==);
       width: rem(596px);
       right: 0;
       top: 0;

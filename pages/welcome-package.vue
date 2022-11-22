@@ -262,7 +262,8 @@
 
   .item {
     border-radius: 16px;
-    background: var(--bg, transparent);
+    background-color: var(--bgc, transparent);
+    background-image: var(--bgi);
     padding: var(--padding, #{rem(16px)});
     display: grid;
     grid-template-areas:
@@ -284,7 +285,8 @@
     }
 
     &:nth-of-type(1) {
-      --bg: linear-gradient(187.95deg, #950428 44.73%, #28263b 93.88%);
+      --bgc: var(--red-900);
+      --bgi: linear-gradient(187.95deg, #950428 44.73%, #28263b 93.88%);
 
       .arrow {
         display: none;
@@ -298,15 +300,18 @@
     }
 
     &:nth-of-type(2) {
-      --bg: linear-gradient(187.95deg, #a04800 44.73%, #28263b 93.88%);
+      --bgc: var(--orange-900);
+      --bgi: linear-gradient(187.95deg, rgba(17, 20, 28, 0) 44.73%, rgba(17, 20, 28, 0.8) 93.88%);
     }
 
     &:nth-of-type(3) {
-      --bg: linear-gradient(187.95deg, #045518 44.73%, #28263b 93.88%);
+      --bgc: var(--green-900);
+      --bgi: linear-gradient(187.95deg, rgba(17, 20, 28, 0) 44.73%, rgba(17, 20, 28, 0.8) 93.88%);
     }
 
     &:nth-of-type(4) {
-      background: linear-gradient(187.95deg, #320647 44.73%, #28263b 93.88%);
+      --bgc: var(--violet-900);
+      --bgi: linear-gradient(187.95deg, rgba(17, 20, 28, 0) 44.73%, rgba(17, 20, 28, 0.8) 93.88%);
 
       @include media(sm) {
         .arrow {
