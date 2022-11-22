@@ -158,7 +158,7 @@
   }
 
   .selected {
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid var(--border-color, var(--gray-800));
     color: var(--color, var(--white));
     cursor: pointer;
@@ -220,7 +220,7 @@
     background-color: var(--gray-800);
     transform: translateY(#{rem(8px)});
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+    border-radius: 12px;
 
     @extend %scrollbar;
   }
