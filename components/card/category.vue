@@ -51,7 +51,7 @@
   position: relative;
   flex-direction: column;
   grid-gap: rem(16px);
-  background: linear-gradient(360deg, #0E091E 0%, rgba(14, 9, 30, 0) 100%), linear-gradient(270deg, #0E091E 0%, rgba(14, 9, 30, 0) 96.21%);;
+  background: linear-gradient(360deg, #11141C 0%, rgba(17, 20, 28, 0) 100%);
 
   @include media(xxl) {
     flex-direction: row;
