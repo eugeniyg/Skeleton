@@ -66,28 +66,28 @@
         "backgroundImage": "/img/uploads/home-bg.svg",
         "faceImage": "/img/uploads/home-face.png"
       },
-      "title": "**Грайте та вигравайте щодня на Slotsbet**",
+      "title": "#### Play and win at Slotsbet",
       "button": {
-        "label": "Грати зараз"
+        "label": "Play now"
       },
-      "content": "Грайте і вигравайте кожен день"
+      "content": ""
     },
     "categories": {
       "casino": {
         "image": "/img/uploads/category-casino.png",
-        "title": "Казино",
-        "description": "Насолоджуйтесь більш ніж 3000+ доказово чесних слотів та ігор",
+        "title": "Casino",
+        "description": "Enjoy more than 3000+ provably fair slots & games",
         "button": {
-          "label": "Йти в казино",
+          "label": "Go to Casino",
           "url": "/main"
         }
       },
       "betting": {
         "image": "/img/uploads/category-betting.png",
-        "title": "Ставки",
-        "description": "Найконкурентніші шанси та ринки. Ставте і вигравайте прямо зараз",
+        "title": "Betting",
+        "description": "The most competitive odds and markets. Bet and win right now",
         "button": {
-          "label": "Перейдіть до Ставок",
+          "label": "Go to Betting",
           "url": "/betting"
         }
       }
