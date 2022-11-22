@@ -15,7 +15,7 @@
         v-for="(link, itemIndex) in props.items"
         :key="itemIndex"
         class="link"
-        :to="localizePath(link.url + 'sdfgdfg')"
+        :to="localizePath(link.url)"
       >
         <span class="text">{{ link.label }}</span>
       </nuxt-link>
