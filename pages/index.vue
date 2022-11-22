@@ -20,9 +20,10 @@
     <group-turbo/>
 
     <group-games
+      v-if="hotCategory"
       showAllBtn
       showArrows
-      :category="sortCategory[0]"
+      :category="hotCategory"
     />
 
     <cards-group
@@ -37,9 +38,10 @@
     </cards-group>
 
     <group-games
+      v-if="newCategory"
       showAllBtn
       showArrows
-      :category="sortCategory[1]"
+      :category="newCategory"
     />
 
     <group-promotions/>
@@ -68,8 +70,6 @@
   const { setPageSeo } = useProjectMethods();
   setPageSeo(homeContent?.seo);
 
-  const homeCategories = ['hot', 'new'];
-
-  const sortCategory = gameCollections.value.filter((item) => homeCategories.find((el) => el === item.identity))
-    .sort((a, b) => homeCategories.map((e) => e).indexOf(a.identity) - homeCategories.map((e) => e).indexOf(b.identity));
+  const hotCategory = gameCollections.value.find((collection) => collection.identity === 'hot');
+  const newCategory = gameCollections.value.find((collection) => collection.identity === 'new');
 </script>
