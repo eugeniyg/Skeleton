@@ -137,19 +137,19 @@
   "turbogames": {
     "label": "Turbogames",
     "icon": "hot",
-    "buttonLabel": "Play now",
+    "buttonLabel": "Грати",
     "items": [
-      {
-        "url": "/games/turbo-games-javelin-x?demo=true",
-        "image": "/img/uploads/javelin_2_3_no-1-.jpg",
-        "title": "JavelinX",
-        "categoryValue": "Multiplayer"
-      },
       {
         "url": "/games/turbo-games-turboplinko?demo=true",
         "image": "/img/uploads/turbo_plinko-1-.png",
         "title": "Turbo Plinko",
         "categoryValue": "Singleplayer"
+      },
+      {
+        "url": "/games/turbo-games-javelin-x",
+        "image": "/img/uploads/javelin_2_3_no-1-.jpg",
+        "title": "Javelin-X",
+        "categoryValue": "Мультіплеер"
       },
       {
         "url": "/games/bayraktar-turbo-games?demo=true",
