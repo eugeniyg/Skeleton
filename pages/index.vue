@@ -23,7 +23,6 @@
       showAllBtn
       showArrows
       :category="sortCategory[0]"
-      @initialLoad="gamesGroupLoaded++"
     />
 
     <cards-group
@@ -41,7 +40,6 @@
       showAllBtn
       showArrows
       :category="sortCategory[1]"
-      @initialLoad="gamesGroupLoaded++"
     />
 
     <group-promotions/>
@@ -54,7 +52,6 @@
   import { storeToRefs } from 'pinia';
   import { CardsGroupInterface, HomeContentInterface } from '~/types';
 
-  const { preloaderDone, preloaderStart } = useProjectMethods();
   const globalStore = useGlobalStore();
   const gameStore = useGamesStore();
   const fakeStore = useFakeStore();
@@ -71,19 +68,8 @@
   const { setPageSeo } = useProjectMethods();
   setPageSeo(homeContent?.seo);
 
-  const mainCategories = ['hot', 'new'];
-  const gamesGroupLoaded = ref<number>(0);
+  const homeCategories = ['hot', 'new'];
 
-  watch(() => gamesGroupLoaded.value, (newValue:number) => {
-    if (newValue === mainCategories.length) {
-      preloaderDone();
-    }
-  });
-
-  const sortCategory = gameCollections.value.filter((item) => mainCategories.find((el) => el === item.identity))
-    .sort((a, b) => mainCategories.map((e) => e).indexOf(a.identity) - mainCategories.map((e) => e).indexOf(b.identity));
-
-  onBeforeMount(() => {
-    preloaderStart();
-  });
+  const sortCategory = gameCollections.value.filter((item) => homeCategories.find((el) => el === item.identity))
+    .sort((a, b) => homeCategories.map((e) => e).indexOf(a.identity) - homeCategories.map((e) => e).indexOf(b.identity));
 </script>
