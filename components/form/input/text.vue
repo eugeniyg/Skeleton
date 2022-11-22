@@ -101,7 +101,7 @@
     padding: var(--input-padding-y, #{rem(11px)}) rem(16px);
     border: 1px solid var(--border-color, var(--gray-800));
     color: var(--color, var(--white));
-    border-radius: 8px;
+    border-radius: 12px;
     @include font($body-2);
     transition: border-color .2s ease-in-out;
     @extend %inputMask;
