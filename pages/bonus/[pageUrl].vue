@@ -68,6 +68,17 @@
     height: var(--height, #{rem(200px)});
     padding-top: rem(40px);
     margin: var(--margin, 0 #{rem(-16px)});
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-image: linear-gradient(187.95deg, rgba(17, 20, 28, 0) 44.73%, rgba(17, 20, 28, 0.8) 93.88%)
+    }
 
     @include media(sm) {
       --margin: 0 #{rem(-32px)}
@@ -78,19 +89,19 @@
     }
 
     &[data-bg="red"] {
-      --bg: linear-gradient(187.95deg, #950428 44.73%, #28263B 93.88%);
+      --bg: var(--red-900);
     }
 
     &[data-bg="yellow"] {
-      --bg: linear-gradient(187.95deg, #A04800 44.73%, #28263B 93.88%);
+      --bg: var(--orange-900);
     }
 
     &[data-bg="green"] {
-      --bg: linear-gradient(187.95deg, #045518 44.73%, #28263B 93.88%);
+      --bg: var(--green-900);
     }
 
     &[data-bg="blue"] {
-      --bg: linear-gradient(187.95deg, #320647 44.73%, #28263B 93.88%);
+      --bg: var(--blue-900);
     }
 
     .img {
@@ -98,6 +109,7 @@
       height: auto;
       display: block;
       margin: 0 auto;
+      position: relative;
     }
 
     @include media(xs) {
