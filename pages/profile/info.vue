@@ -36,7 +36,7 @@
 
           <div class="item" v-show="profile.firstName || profile.lastName">
             <atomic-icon id="user"/>
-            {{profile.firstName}} {{ profile.lastName }}
+            {{ profile.firstName }} {{ profile.lastName }}
           </div>
 
           <div class="item" v-show="profile.country || profile.city">
