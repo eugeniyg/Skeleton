@@ -15,6 +15,7 @@
           size="md"
           @click="clickButton(props.button.url)"
         >
+          <atomic-icon v-if="props.button.icon" :id="props.button.icon" />
           {{ props.button.label }}
         </button-base>
       </div>
