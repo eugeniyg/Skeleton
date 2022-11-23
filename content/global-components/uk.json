@@ -75,7 +75,7 @@
     {
       "icon": "hot",
       "identity": "hot",
-      "label": "Hot"
+      "label": "Hot1"
     },
     {
       "icon": "heart",
@@ -85,7 +85,7 @@
     {
       "icon": "new",
       "identity": "new",
-      "label": "New"
+      "label": "New1"
     },
     {
       "icon": "cherry",
@@ -100,7 +100,7 @@
     {
       "icon": "turbo-games",
       "identity": "turbogames",
-      "label": "Turbogames"
+      "label": "Turbogames1"
     },
     {
       "icon": "table-games",
@@ -114,8 +114,8 @@
     }
   ],
   "cardsGroup": {
-    "moreButton": "Show all",
-    "demoButton": "Try for fun",
+    "moreButton": "Show all1",
+    "demoButton": "Try for fun1",
     "recommendedSubtitle": "The best games for you",
     "favorites": {
       "icon": "heart",
