@@ -62,7 +62,6 @@
   } from '@platform/frontend-core/dist/module';
   import { storeToRefs } from 'pinia';
   import debounce from 'lodash/debounce';
-  import { onMounted } from '@vue/runtime-core';
   import { CategoryGamesInterface } from '~/types';
 
   const globalStore = useGlobalStore();
