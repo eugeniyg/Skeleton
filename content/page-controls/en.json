@@ -60,7 +60,8 @@
       },
       "title": "#### Play and win at Slotsbet",
       "button": {
-        "label": "Play now"
+        "label": "Play now",
+        "icon": "cherry"
       }
     },
     "categories": {
