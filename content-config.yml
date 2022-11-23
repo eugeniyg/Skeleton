@@ -17,13 +17,15 @@ __locale-field: &localeField
 __link-variable: &linkArray
   - *linkLabel
   - *linkUrl
+__icon-options: &iconOptions [ 'cherry', 'sport', 'slots', 'live-casino', 'table-games', 'turbo-games', 'sport-book',
+                               'tfs-token', 'bonuses', 'live-support', 'vip', 'tournament', 'lottery', 'quest', 'shop',
+                               'heart', 'history', 'wallet', 'bonus', 'user', 'log-out', 'speed', 'gamepad',
+                               'security', 'age', 'hot', 'new' ]
 __project-icon: &projectIcon
   name: icon
   label: Icon
   widget: select
-  options: ['cherry', 'sport', 'slots', 'live-casino', 'table-games', 'turbo-games', 'sport-book', 'tfs-token',
-            'bonuses', 'live-support', 'vip', 'tournament', 'lottery', 'quest', 'shop', 'heart', 'history', 'wallet',
-            'bonus', 'user', 'log-out', 'speed', 'gamepad', 'security', 'age', 'hot', 'new']
+  options: *iconOptions
 __seo-block: &seoBlock
   name: seo
   label: Page Seo
@@ -2051,6 +2053,11 @@ collections:
                   - name: url
                     label: Url
                     widget: string
+                    required: false
+                  - name: icon
+                    label: Button Icon
+                    widget: select
+                    options: *iconOptions
                     required: false
           - name: categories
             label: Categories
