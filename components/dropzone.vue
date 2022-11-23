@@ -111,7 +111,7 @@
     grid-area: content;
   }
 
-  &__icon {
+  .icon.dropzone__icon {
     color: var(--gray-400);
     grid-area: icon;
     align-self: center;
