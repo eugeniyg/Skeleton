@@ -95,7 +95,7 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
-  margin-right: #{rem(-16px)};
+  padding: 0 rem(24px);
 
   @include media(xs) {
     grid-template-areas:
@@ -104,10 +104,10 @@
   }
 
   @include media(md) {
-    margin-right: 0;
 
     > .items {
       padding-right: 0;
+      margin: 0 rem(-24px)
     }
   }
 

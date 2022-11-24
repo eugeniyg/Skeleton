@@ -25,11 +25,10 @@
 .cards-providers {
   border-radius: 16px;
   background-color: var(--gray-900);
-  padding: rem(16px);
-  margin-top: rem(40px);
+  padding: rem(16px) rem(16px) 0 rem(16px);
 
   @include media(md) {
-    padding: rem(24px);
+    padding: rem(24px) rem(24px) 0 rem(24px);
   }
 }
 

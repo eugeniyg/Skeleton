@@ -36,9 +36,8 @@
   order: 1;
   align-self: stretch;
   scroll-snap-align: var(--scroll-snap-align, start);
-  background: var(--gray-800);
   border-radius: 16px;
-  border: 10px solid var(--gray-900);
+  padding: rem(10px);
   width: calc(100% / 2.5 );
 
   @include media(xs) {
@@ -93,6 +92,7 @@
     border-radius: 8px;
     height: 100%;
     min-width: 120px;
+    background-color: var(--gray-800);
   }
 
   .title {

@@ -150,6 +150,7 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
+  padding: 0 rem(24px);
 
   @include media(xs) {
     grid-template-areas:
@@ -171,10 +172,11 @@
   > .btn-show-all {
     grid-area: btn-show-all;
     @include font($heading-1);
+    margin: 0 rem(-24px);
 
     --font-size: #{rem(12px)};
     --color: var(--gray-500);
-    --width: 100%;
+    --width: auto;
 
     @include media(xs) {
       padding: 0;
@@ -207,7 +209,7 @@
     display: var(--display, flex);
     align-items: center;
     overflow-x: auto;
-    margin: 0  rem(-4px);
+    margin: 0  rem(-24px);
 
     &::-webkit-scrollbar {
       display: none;

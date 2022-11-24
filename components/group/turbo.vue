@@ -82,8 +82,6 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(8px)});
-  margin-top: rem(32px);
-  margin-bottom: rem(40px);
   position: relative;
   background-color: var(--gray-900);
   padding: rem(16px);
