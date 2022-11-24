@@ -12,7 +12,8 @@
 <style lang="scss">
 .row-user-agent {
   color: var(--color, var(--white));
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
   grid-column-gap: rem(4px);
   @include font($body-2);
