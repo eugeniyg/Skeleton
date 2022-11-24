@@ -204,6 +204,7 @@
       top: 100%;
       transition: all .2s ease-in-out;
       transform: translateY(100%);
+      user-select: none;
     }
 
     @include media(md) {
@@ -258,12 +259,27 @@
 
     .link-more {
       @include font($heading-1);
-      color: var(--gray-300);
+      background-color: var(--bgc, transparent);
+      color: var(--color, var(--gray-300));
       text-decoration: none;
       padding: rem(4px) rem(16px);
       display: flex;
       align-items: center;
       justify-content: center;
+      border-radius: 8px;
+      transition: all .2s ease-in-out;
+
+      @include use-hover {
+        &:hover {
+          --bgc: var(--gray-800);
+          --color: var(--yellow-500);
+        }
+      }
+
+      &:active {
+        --bgc: var(--gray-700);
+        --color: var(--yellow-500);
+      }
     }
   }
 }
