@@ -25,10 +25,10 @@
 .cards-providers {
   border-radius: 16px;
   background-color: var(--gray-900);
-  padding: rem(16px) rem(16px) 0 rem(16px);
+  padding: rem(16px) rem(16px) rem(14px) rem(16px);
 
   @include media(md) {
-    padding: rem(24px) rem(24px) 0 rem(24px);
+    padding: rem(24px) rem(24px) rem(20px) rem(24px);
   }
 }
 
@@ -40,7 +40,7 @@
   width: var(--width, #{column(3)});
   cursor: pointer;
   border: 4px solid var(--gray-900);
-  border-radius: 8px;
+  border-radius: 14px;
 
   .img {
     max-width: 100%;
