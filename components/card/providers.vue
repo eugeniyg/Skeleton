@@ -40,7 +40,7 @@
   width: var(--width, #{column(3)});
   cursor: pointer;
   border: 4px solid var(--gray-900);
-  border-radius: 14px;
+  border-radius: 12px;
 
   .img {
     max-width: 100%;
