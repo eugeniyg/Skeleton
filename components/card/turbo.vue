@@ -71,10 +71,11 @@
     z-index: 1;
     border-radius: 8px;
     background-position: center center;
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     overflow: hidden;
     margin: rem(-46px) auto rem(16px);
+    filter: drop-shadow(0px 0px 12px rgba(0, 0, 0, 0.16));
 
     &:after {
       width: 100%;
