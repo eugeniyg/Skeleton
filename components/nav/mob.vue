@@ -60,7 +60,7 @@
   left: 0;
   right: var(--right-nav-mob, 0);
   flex-direction: var(--direction-nav-mob);
-  padding: rem(8px);
+  padding: rem(8px) rem(8px) rem(16px) rem(8px);
   background-color: var(--black-primary);
   z-index: var(--mob-nav-index, 1);
   visibility: var(--mob-nav-visibility, visible);
