@@ -6,7 +6,7 @@
         :src="`/img/flags/${languageFlagsMap[currentLocale.code.toLowerCase()]}.svg`"
         alt=""
       />
-      <span class="title">{{ currentLocale.nativeName }}</span>
+      <span class="title">{{ currentLocale.nativeName || currentLocale.name }}</span>
       <atomic-icon id="arrow_expand-close" />
     </div>
 
@@ -21,7 +21,7 @@
         @click="setCookie(locale)"
       >
         <img class="img" :src="`/img/flags/${languageFlagsMap[locale.code.toLowerCase()]}.svg`" alt="" />
-        <span class="title">{{ locale.nativeName }}</span>
+        <span class="title">{{ locale.nativeName || locale.name }}</span>
         <atomic-icon id="check" />
       </component>
     </div>
