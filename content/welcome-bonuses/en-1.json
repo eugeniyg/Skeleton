@@ -1,0 +1,98 @@
+{
+  "locale": "en",
+  "title": "Welcome package. Up to 5000 mBTC + 300 Free Spins",
+  "description": "Welcome package is one of the most generous Slotsbet offers! It's a bonus bundle for your 4 initial deposits after the registration!",
+  "howGet": {
+    "label": "How to get your bonuses:",
+    "first": "Make a successful deposit",
+    "second": "Go to Bonuses tab and activate your Free spins",
+    "third": "Enjoy the great gaming experience!",
+    "image": "/img/uploads/nft_gift.png"
+  },
+  "welcome": {
+    "label": "Welcome package",
+    "items": [
+      {
+        "topLabel": "1st deposit bonus",
+        "image": "/img/uploads/1-deposit.png",
+        "title": "Get your 100% bonus up to 1500 mBTC and 100 FS",
+        "buttonLabel": "Get bonus",
+        "link": {
+          "label": "More info",
+          "url": "/bonus/first-deposit-bonus"
+        }
+      },
+      {
+        "topLabel": "2nd deposit bonus",
+        "image": "/img/uploads/2-deposit.png",
+        "title": "Grab your 75% bonus up to 1000 mBTC and 50 FS",
+        "buttonLabel": "Get bonus",
+        "link": {
+          "label": "More info",
+          "url": "/bonus/second-deposit-bonus"
+        }
+      },
+      {
+        "topLabel": "3rd deposit bonus",
+        "image": "/img/uploads/3-deposit.png",
+        "title": "Take your 50% bonus up to 1000 mBTC and 50 FS",
+        "buttonLabel": "Get bonus",
+        "link": {
+          "label": "More info",
+          "url": "/bonus/third-deposit-bonus"
+        }
+      },
+      {
+        "topLabel": "4th deposit bonus",
+        "image": "/img/uploads/4-deposit.png",
+        "title": "Play more with 100% bonus up to 1500 mBTC and 100 FS",
+        "buttonLabel": "Get bonus",
+        "link": {
+          "label": "More info",
+          "url": "/bonus/fourth-deposit-bonus"
+        }
+      }
+    ]
+  },
+  "bonuses": {
+    "label": "Weekly bonuses",
+    "items": [
+      {
+        "title": "Monday Reload Bonus",
+        "subtitle": "30% bonus of up to 3.5 mBTC on Monday",
+        "image": "/img/uploads/monday-big.png",
+        "buttonLabel": "Get bonus",
+        "link": {
+          "label": "More info",
+          "url": "/bonus/monday-reload-bonus"
+        }
+      },
+      {
+        "title": "Wednesday Free Spins",
+        "subtitle": "Get 100 Free Spins every Wednesday",
+        "image": "/img/uploads/wednesday-big.png",
+        "buttonLabel": "Get bonus",
+        "link": {
+          "label": "More info",
+          "url": "/bonus/wednesday-free-spins"
+        }
+      },
+      {
+        "title": "Weekly Cashback",
+        "subtitle": "Take your 10% cashback every Friday",
+        "image": "/img/uploads/weekly-big.png",
+        "buttonLabel": "Get bonus",
+        "link": {
+          "label": "More info",
+          "url": "/bonus/weekly-cashback"
+        }
+      }
+    ]
+  },
+  "seo": {
+    "text": {
+      "visible": ""
+    },
+    "title": "Slotsbet | Bonuses"
+  }
+}
