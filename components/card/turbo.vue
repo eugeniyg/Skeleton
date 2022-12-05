@@ -75,7 +75,7 @@
     background-repeat: no-repeat;
     overflow: hidden;
     margin: rem(-46px) auto rem(16px);
-    filter: drop-shadow(0px 0px 12px rgba(0, 0, 0, 0.16));
+    box-shadow: 0 0 29px 4px rgba(0, 0, 0, 0.38);
 
     &:after {
       width: 100%;
