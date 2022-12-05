@@ -34,9 +34,8 @@
   import { CookieRef } from '#app';
 
   const languageFlagsMap = {
-    uk: 'ua',
-    ru: 'ru',
     en: 'us',
+    de: 'de',
   };
 
   const route = useRoute();
