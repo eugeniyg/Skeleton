@@ -22,12 +22,25 @@
             <div class="title">{{ depositContent?.title }}</div>
           </div>
           <form-deposit v-if="showForm && currentMethod.type === 'form'" v-bind="currentMethod"/>
-          <!--          <form-deposit-additional/>-->
-          <form-deposit-crypto
-            v-if="showForm && currentMethod.type === 'address'"
-            v-bind="currentMethod"
-            :key="currentMethod.method"
+
+          <form-input-dropdown
+            class="dropdown-network"
+            v-bind="networkSelect"
+            v-model:value="selectedNetwork"
+            @input="selectNetwork"
           />
+
+          <!--<form-deposit-additional/>-->
+
+          <div class="dropdown-network__content">
+            <template v-if="selectedNetwork">
+              <form-deposit-crypto
+                v-if="showForm && currentMethod.type === 'address'"
+                v-bind="currentMethod"
+                :key="currentMethod.method"
+              />
+            </template>
+          </div>
         </div>
       </div>
     </div>
@@ -56,6 +69,29 @@
     currentMethod.value = depositMethods.value[0] || {};
   });
 
+  const networkSelect = ref({
+    placeholder: 'Network',
+    name: 'networkSelect',
+    label: 'Select your network',
+    options: [
+      {
+        mask: '/img/currency/BTC.svg',
+        code: 'BTC',
+        value: 'BTC',
+      },
+      {
+        mask: '/img/currency/USD.svg',
+        code: 'USD',
+        value: 'USD',
+      }],
+  });
+
+  const selectedNetwork = ref('');
+
+  const selectNetwork = (value: string) => {
+    console.log(value);
+  };
+
 </script>
 
 <style lang="scss">
@@ -68,6 +104,14 @@
     @include media(md) {
       padding: rem(16px);
     }
+  }
+}
+
+.dropdown-network {
+  margin-bottom: rem(24px);
+
+  &__content {
+    min-height: 200px;
   }
 }
 </style>
