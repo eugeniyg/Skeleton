@@ -33,7 +33,12 @@
           <!--<form-deposit-additional/>-->
 
           <div class="dropdown-network__content">
-            <template v-if="selectedNetwork">
+
+            <div class="dropdown-network__info" v-if="!selectedNetwork">
+              To continue,<br>
+              select network 👆👆👆
+            </div>
+            <template v-else>
               <form-deposit-crypto
                 v-if="showForm && currentMethod.type === 'address'"
                 v-bind="currentMethod"
@@ -112,6 +117,12 @@
 
   &__content {
     min-height: 200px;
+  }
+
+  &__info {
+    @include font($heading-4);
+    color: var(--white);
+    text-align: center;
   }
 }
 </style>
