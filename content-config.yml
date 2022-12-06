@@ -13,7 +13,7 @@ __locale-field: &localeField
   name: locale
   label: Locale (settings)
   widget: select
-  options: ['en', 'uk', 'ru']
+  options: ['en', 'de']
 __link-variable: &linkArray
   - *linkLabel
   - *linkUrl
