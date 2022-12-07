@@ -180,15 +180,15 @@
   .title {
     color: var(--white);
     text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
-    max-width: rem(240px);
+
+    max-width: var(--title-max-width, #{rem(190px)});
 
     @include media(xs) {
-      max-width: rem(270px);
+      --title-max-width: #{rem(300px)};
     }
 
-    @include media(xxxl) {
-      max-width: 670px;
-      // border: 1px solid red
+    @include media(sm) {
+      --title-max-width: #{rem(400px)};
     }
 
     h1, h2, h3, h4, h5, h6 {
@@ -197,20 +197,12 @@
       @include font($heading-4);
 
       @include media(xs) {
-        @include upd-font($heading-7);
+        @include upd-font($heading-6);
       }
 
-      //@include media(sm) {
-      //  @include upd-font($heading-7);
-      //}
-      //
-      //@include media(md) {
-      //  @include upd-font($heading-7);
-      //}
-      //
-      //@include media(xl) {
-      //  @include upd-font($heading-7);
-      //}
+      @include media(sm) {
+        @include upd-font($heading-7);
+      }
 
       @include media(xxxl) {
         @include upd-font($heading-9);
@@ -238,7 +230,7 @@
     z-index: 4;
 
     .home & {
-      --info-width: 50%;
+      --info-width: 60%;
     }
 
     @include media(xs) {
