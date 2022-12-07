@@ -74,7 +74,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: rem(16px) rem(24px);
+  padding: var(--card-padding, #{rem(16px)} #{rem(24px)});
   isolation: isolate;
   min-height: var(--card-min-height, #{rem(167px)});
   background: var(--orange-700);
@@ -82,6 +82,10 @@
   align-content: flex-start;
   flex-grow: 1;
   width: 100%;
+
+  @include media(md) {
+    --card-padding: #{rem(24px)} #{rem(24px)};
+  }
 
   .title {
     @include font($heading-5);
