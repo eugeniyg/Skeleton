@@ -106,7 +106,7 @@
     position: relative;
     z-index: 1;
     margin-bottom: rem(24px);
-    width: 57%;
+    width: 54%;
   }
 
   .btn-secondary {
@@ -130,6 +130,7 @@
     margin: auto 0;
 
     @include media(md) {
+      transform: translateX(#{rem(16px)});
       width: rem(260px);
       height: rem(220px);
       top: auto;
