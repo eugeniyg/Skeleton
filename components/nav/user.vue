@@ -1,6 +1,6 @@
 <template>
   <nav class="nav-user">
-    <atomic-avatar-user v-bind="props.avatarItems"/>
+    <atomic-avatar-user/>
 
     <div class="items">
       <div
@@ -21,12 +21,6 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    avatarItems: {
-      type: Object,
-      default: () => ({}),
-    },
-  });
   const emit = defineEmits(['logout']);
   const { localizePath } = useProjectMethods();
   const { closeUserNav } = useLayoutStore();

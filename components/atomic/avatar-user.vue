@@ -4,8 +4,6 @@
       <span class="thumb">
         <img class="img" src="~/assets/img/avatar-bg.png" alt="">
       </span>
-
-      <!--<div v-if="props.label" class="label">{{ props.label }}</div>-->
     </div>
 
     <div class="row">

@@ -24,7 +24,7 @@
         <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
         <form-input-deposit/>
         <atomic-avatar @toggle="toggleProfileNav" :is-button="true"/>
-        <nav-user :avatar-items="avatarItems" @logout="logout"/>
+        <nav-user @logout="logout"/>
       </template>
 
       <template v-else>
@@ -57,7 +57,7 @@
   const { headerContent } = useGlobalStore();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal } = layoutStore;
-  const { avatarItems, isLoggedIn } = storeToRefs(profileStore);
+  const { isLoggedIn } = storeToRefs(profileStore);
   const fakeStore = useFakeStore();
 
   function toggleProfileNav():void {
