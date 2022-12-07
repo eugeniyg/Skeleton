@@ -11,11 +11,6 @@ import { CookieRef } from '#app';
 
 interface ProfileStoreStateInterface {
   isLoggedIn: boolean,
-  avatarItems: {
-    label: string,
-    nickname: string,
-    amount: any,
-  },
   sessionId: string,
   resentVerifyEmail: boolean,
   profile: ProfileInterface|undefined,
@@ -24,11 +19,6 @@ interface ProfileStoreStateInterface {
 export const useProfileStore = defineStore('profileStore', {
   state: (): ProfileStoreStateInterface => ({
     isLoggedIn: false,
-    avatarItems: {
-      label: '25 lvl',
-      nickname: 'Twiy_nikname_96',
-      amount: [0, 0.00004682, 'BTC'],
-    },
     sessionId: '',
     resentVerifyEmail: false,
     profile: undefined,
