@@ -2,14 +2,22 @@
   <header class="app-header">
     <atomic-logo/>
 
-    <button-search @click="showSearch = true" data-show="mobile"/>
+    <button-search
+      data-show="mobile"
+      @show-search="toggle"
+      :is-active="isShowSearch"
+    />
 
     <div class="items">
       <search
-        :isShow="showSearch"
-        @hideSearch="showSearch = false"
+        :isShow="isShowSearch"
+        @hideSearch="isShowSearch = false"
       />
-      <button-search @click="showSearch = true" data-show="desktop"/>
+      <button-search
+        data-show="desktop"
+        @show-search="toggle"
+        :is-active="isShowSearch"
+      />
 
       <template v-if="isLoggedIn">
         <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
@@ -66,11 +74,15 @@
     emit('logout');
   }
 
-  const showSearch = ref<boolean>(false);
+  const isShowSearch = ref<boolean>(false);
+
+  const toggle = () => {
+    isShowSearch.value = !isShowSearch.value;
+  };
 
   const checkSearch = (e:any):void => {
-    if (showSearch.value && !e.target.closest('.search') && !e.target.closest('.btn-search')) {
-      showSearch.value = false;
+    if (isShowSearch.value && !e.target.closest('.search') && !e.target.closest('.btn-search')) {
+      isShowSearch.value = false;
     }
   };
 

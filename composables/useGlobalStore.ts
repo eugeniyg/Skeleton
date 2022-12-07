@@ -183,7 +183,7 @@ export const useGlobalStore = defineStore('globalStore', {
 
     getRequestCountry():void {
       const { countryHeaderName } = useCoreStore();
-      const headersCountry = useRequestHeaders([countryHeaderName]);
+      const headersCountry:Record<string, any> = useRequestHeaders([countryHeaderName]);
       if (headersCountry[countryHeaderName]) this.headerCountry = headersCountry[countryHeaderName]?.toUpperCase();
     },
   },

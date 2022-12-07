@@ -20,8 +20,7 @@
 
 <script setup lang="ts">
   import flatPickr from 'vue-flatpickr-component';
-  import { Ukrainian } from 'flatpickr/dist/l10n/uk';
-  import { Russian } from 'flatpickr/dist/l10n/ru';
+  import { German } from 'flatpickr/dist/l10n/de';
 
   const props = defineProps({
     label: {
@@ -45,8 +44,7 @@
 
   const { currentLocale } = useGlobalStore();
   let localeOption:any;
-  if (currentLocale?.code === 'uk') localeOption = Ukrainian;
-  else if (currentLocale?.code === 'ru') localeOption = Russian;
+  if (currentLocale?.code === 'de') localeOption = German;
 
   if (localeOption) defaultSettings.locale = { ...localeOption, rangeSeparator: ' - ' };
   else defaultSettings.locale = { rangeSeparator: ' - ' };

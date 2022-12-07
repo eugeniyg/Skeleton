@@ -17,8 +17,6 @@
 
     <favorite-recently v-if="isLoggedIn" />
 
-    <br />
-
     <group-games
       showAllBtn
       showArrows
@@ -38,6 +36,7 @@
       v-bind="providerCards"
       :identity="groupContent?.providers.label"
       :titleIcon="groupContent?.providers.icon"
+      :showAllBtn="false"
     >
       <template v-slot:card="item">
         <card-providers v-bind="item" />

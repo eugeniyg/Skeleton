@@ -93,7 +93,7 @@
   const token = useCookie('bearer');
   const sessionStatus = (session: SessionInterface): string => {
     if (session.closedAt) return 'closed';
-    const sessionId = decodeToken(token.value)?.sessionId;
+    const sessionId = token.value ? decodeToken(token.value)?.sessionId : undefined;
     if (session.sessionId === sessionId) return 'current';
     return 'active';
   };

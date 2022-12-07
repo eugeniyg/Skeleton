@@ -86,7 +86,7 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
-  margin-top: #{24px};
+  padding: 0 rem(24px);
 
   @include media(xs) {
     grid-template-areas:
@@ -121,6 +121,7 @@
     @extend %cards-items-negative;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: var(--items-column-gap, #{rem(8px)});
+    margin: 0 rem(-24px);
 
     &::-webkit-scrollbar {
       display: none;
@@ -150,7 +151,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: var(--gradient-dark);
+      background-color: var(--gray-900);
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
       z-index: 0;
     }
 
@@ -161,10 +163,11 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: var(--gradient-dark-img-hover);
       z-index: 3;
       opacity: 0;
       transition: opacity .2s ease-in-out;
+      background-image: linear-gradient(180deg, rgba(17, 20, 28, 0) 0%, var(--black-primary) 100%);
+      filter: blur(2px)
     }
 
     .img {
@@ -204,6 +207,7 @@
       top: 100%;
       transition: all .2s ease-in-out;
       transform: translateY(100%);
+      user-select: none;
     }
 
     @include media(md) {
@@ -258,12 +262,27 @@
 
     .link-more {
       @include font($heading-1);
-      color: var(--gray-300);
+      background-color: var(--bgc, transparent);
+      color: var(--color, var(--gray-300));
       text-decoration: none;
       padding: rem(4px) rem(16px);
       display: flex;
       align-items: center;
       justify-content: center;
+      border-radius: 8px;
+      transition: all .2s ease-in-out;
+
+      @include use-hover {
+        &:hover {
+          --bgc: var(--gray-800);
+          --color: var(--yellow-500);
+        }
+      }
+
+      &:active {
+        --bgc: var(--gray-700);
+        --color: var(--yellow-500);
+      }
     }
   }
 }

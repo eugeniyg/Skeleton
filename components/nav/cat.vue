@@ -33,9 +33,15 @@
 <style lang="scss">
 .nav-cat-wrap {
   overflow: hidden;
-  margin-right: rem(-16px);
   height: var(--height, #{rem(32px)});
   margin-top: var(--margin-top, #{rem(24px)});
+  margin-bottom: var(--margin-bottom, #{rem(24px)});
+  margin-right: var(--margin-right, #{rem(-16px)});
+
+  @include media(md) {
+    --margin-right: 0;
+    --margin-bottom: #{rem(40px)};
+  }
 }
 
 .nav-cat {

@@ -1,25 +1,21 @@
 <template>
-  <div class="card-category">
-    <div class="cover">
-      <img class="img" :src="props.image" alt="">
+  <div class="card-cat" :class="`card-cat-${props.mod}`">
+    <div class="title">
+      {{ props.title }}
     </div>
 
-    <div class="items">
-      <div class="title">
-        <atomic-icon :id="props.icon"/>
-        {{ props.title }}
-      </div>
+    <div class="sub-title">{{ props.description }}</div>
 
-      <div class="sub-title">{{ props.description }}</div>
+    <img class="icon" :src="props.image" alt="">
 
-      <button-base
-        type="primary"
-        size="md"
-        @click="changePage(props.button.url)"
-      >
-        {{ props.button.label }}
-      </button-base>
-    </div>
+    <button-base
+      type="secondary"
+      size="md"
+      @click="changePage(props.button.url)"
+    >
+      {{ props.button.label }}
+    </button-base>
+
   </div>
 </template>
 
@@ -28,7 +24,7 @@
 
   const props = defineProps<{
     image: string,
-    icon: string,
+    mod: string,
     title: string,
     description: string,
     button: {
@@ -50,127 +46,117 @@
 </script>
 
 <style lang="scss">
-.categories {
+.cards-wrap {
   display: flex;
-  grid-gap: var(--gap, #{rem(16px)});
-  padding: var(--padding, #{rem(40px)} #{rem(16px)});
-  background-color: var(--gray-900);
-  margin-top: rem(40px);
-  margin-left: var(--margin-left, #{rem(-16px)});
-  margin-right: var(--margin-right, #{rem(-16px)});
+  position: relative;
+  flex-direction: column;
+  grid-gap: rem(16px);
+  background: linear-gradient(360deg, #11141C 0%, rgba(17, 20, 28, 0) 100%);
 
-  @include media(sm) {
-    --margin-left: #{rem(-32px)};
-    --margin-right: #{rem(-32px)};
-  }
-
-  @include media(l) {
-    --padding: #{rem(40px)} #{rem(40px)};
-    --gap: #{32px};
-    --margin-left: #{rem(-40px)};
-    --margin-right: #{rem(-40px)};
+  @include media(xxl) {
+    flex-direction: row;
   }
 }
 
-.card-category {
-  width: 100%;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  overflow: hidden;
+.cards-cat {
   position: relative;
+  display: flex;
+  grid-gap: rem(16px);
+  flex-direction: column;
+  flex-grow: 1;
 
-  .cover {
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
-    border-radius: 8px;
-    width: 100%;
-    margin-bottom: var(--margin-bottom, #{rem(8px)});
-    position: relative;
-    overflow: hidden;
-
-    @include media(sm) {
-      &:after {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
-        background: linear-gradient(180deg, rgba(14, 9, 30, 0) 0%, #0E091E 100%);
-        border-radius: 8px;
-      }
-    }
-
-    .img {
-      width: 100%;
-      display: block;
-      object-fit: cover;
-      margin: 0 auto;
-
-      @include media(xxl) {
-        max-height: rem(320px);
-        transform: scale(1.2);
-      }
-    }
+  @include media(sm) {
+    flex-direction: row;
   }
+}
 
-  .items {
-    display: grid;
-    grid-template-rows: auto auto 1fr;
-
-    @include media(sm) {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: rem(24px) rem(24px) rem(32px) rem(24px);
-    }
-  }
+.card-cat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: rem(16px) rem(24px);
+  isolation: isolate;
+  min-height: var(--card-min-height, #{rem(167px)});
+  background: var(--orange-700);
+  border-radius: 8px;
+  align-content: flex-start;
+  flex-grow: 1;
+  width: 100%;
 
   .title {
-    @include font($heading-4);
+    @include font($heading-5);
     color: var(--white);
-    display: flex;
-    align-items: center;
-    grid-gap: rem(8px);
-    margin-bottom: var(--margin-bottom, #{rem(4px)});
+    position: relative;
+    z-index: 1;
+    margin-bottom: rem(4px);
+    width: 57%;
 
-    @include media(l) {
-      @include upd-font($heading-5);
-      --margin-bottom: #{rem(8px)}
+    @include media(md) {
+      @include upd-font($heading-6)
     }
-  }
 
-  .icon {
-    --icon-size: #{rem(22px)};
-    --color: var(--white);
+    @include media(xxxl) {
+      @include upd-font($heading-7)
+    }
   }
 
   .sub-title {
-    @include font($body-1);
-    color: var(--gray-300);
-    margin-bottom: rem(8px);
-
-    @include media(l) {
-      @include upd-font($body-3);
-    }
+    @include font($body-2);
+    color: var(--white);
+    position: relative;
+    z-index: 1;
+    margin-bottom: rem(24px);
+    width: 57%;
   }
 
-  .btn-primary {
-    --width: 100%;
-    --padding: #{rem(7px)} #{rem(24px)};
-    @include upd-font($heading-2);
+  .btn-secondary {
+    z-index: 1;
     margin-top: auto;
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    text-align: center;
+  }
 
-    @include media(xs) {
-      --padding: #{rem(11px)} #{rem(24px)};
-      --width: fit-content;
+  @include media(l) {
+    --card-min-height: #{rem(188px)};
+  }
+
+  .icon {
+    grid-area: icon;
+    width: rem(160px);
+    height: rem(136px);
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto 0;
+
+    @include media(md) {
+      width: rem(260px);
+      height: rem(220px);
+      top: auto;
     }
   }
+}
+
+.card-cat-casino {
+  background-color: #d16004;
+  background-image: linear-gradient(
+      -94.47deg,
+      rgba(96, 12, 135, 0) 1.41%,
+      rgba(95, 12, 135, 0.44) 97.61%
+  ),
+  linear-gradient(
+      240.53deg,
+      rgba(17, 20, 28, 0) 56.15%,
+      rgba(17, 20, 28, 0.24) 87.99%
+  );
+
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+}
+
+.card-cat-betting {
+  background-color: #640B8E;
+  background-image: linear-gradient(94.47deg, rgba(230, 164, 9, 0) 1.41%, rgba(230, 164, 9, 0.44) 97.61%),
+  linear-gradient(240.53deg, rgba(17, 20, 28, 0) 56.15%, rgba(17, 20, 28, 0.24) 87.99%);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
 }
 </style>

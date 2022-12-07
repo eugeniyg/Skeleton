@@ -1,5 +1,3 @@
-const build = require('./nuxt-config/_build.ts');
-
 const viteConfig: any = {
   css: {
     preprocessorOptions: {
@@ -13,11 +11,9 @@ const viteConfig: any = {
   },
 };
 
-// https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
-    '@/modules/localeRoutes',
     '@platform/frontend-core',
     '@nuxt/content',
   ],
@@ -67,8 +63,9 @@ export default defineNuxtConfig({
         { rel: 'stylesheet', href: '/preloader/preloader.css' },
       ],
     },
+    pageTransition: true,
+    layoutTransition: true,
   },
-  build,
   css: [
     '@/scss/style.scss',
   ],

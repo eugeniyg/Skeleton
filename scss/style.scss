@@ -92,12 +92,9 @@ body {
   @extend %scrollbar-hide;
 
   &.nav-user-open {
-    overflow-y: hidden;
     --nav-user-visibility: visible;
     --nav-user-translate-x: 0;
-    --body-overflow: hidden;
     --opacity-layer-visibility: visible;
-    --main-pointer-events: none;
     --header-z-index: 3;
     --close-decor-index: 2;
     --close-btn-visibility: visible;
@@ -105,17 +102,9 @@ body {
   }
 
   &.drawer-open {
-    overflow-y: hidden;
     --drawer-translate-x: translateX(0);
-    --body-overflow: hidden;
     --opacity-layer-visibility: visible;
-    --main-pointer-events: none;
     --drawer-visibility: visible;
-
-
-    .nav-mob {
-      right: 4px;
-    }
   }
 
   &.nav-currency-open {
@@ -173,8 +162,12 @@ body {
     --padding: #{rem(24px)} #{rem(32px)}
   }
 
-  .cards, .group-games, .group-winners, .favorite-recently {
-    margin-top: #{24px};
+  .group-games, .group-winners, .favorite-recently, .cards-providers, .cards-wrap, .group-turbo {
+    margin-bottom: rem(32px);
+
+    @include media(l) {
+      margin-bottom: rem(40px);
+    }
   }
 }
 

@@ -34,10 +34,15 @@
       />
     </div>
 
-    <list-grid :items="gameItems" :meta="pageMeta" @loadMore="loadMoreItems" />
+    <list-grid
+      v-if="gameItems.length"
+      :items="gameItems"
+      :meta="pageMeta"
+      @loadMore="loadMoreItems"
+    />
 
     <atomic-empty
-      v-if="gameItems.length === 0"
+      v-if="!gameItems.length && !loadingGames"
       :title="gamesContent?.empty.title"
       :subTitle="gamesContent?.empty.description"
       :image="gamesContent?.empty.image"
@@ -105,6 +110,7 @@
   const loadPage = ref<number>(1);
   const gameItems = ref<GameInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
+  const loadingGames = ref<boolean>(true);
 
   const { getFilteredGames } = useCoreGamesApi();
 
@@ -123,6 +129,7 @@
 
     if (searchValue.value) params.name = searchValue.value;
 
+    loadingGames.value = true;
     const response = await getFilteredGames(params);
     return response;
   };
@@ -132,10 +139,8 @@
       ? gameItems.value.concat(response.data)
       : response.data;
     pageMeta.value = response.meta;
+    loadingGames.value = false;
   };
-
-  const { data } = await useAsyncData('items', getItems, { initialCache: false });
-  setItems(data.value as GamesResponseInterface);
 
   const changeProvider = async (providerId: string): Promise<void> => {
     loadPage.value = 1;
@@ -199,6 +204,11 @@
     if ((route.name === 'games' || route.name === 'locale-games') && route.query.category !== activeCollection.value?.identity) {
       await changeCategory(newValue);
     }
+  });
+
+  onMounted(async () => {
+    const itemsResponse = await getItems();
+    setItems(itemsResponse);
   });
 </script>
 

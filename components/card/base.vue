@@ -139,6 +139,7 @@
   background-size: var(--bg-size, 100%);
   background-position: var(--bg-position, center);
   min-width: var(--min-width, #{column(3)});
+  filter: drop-shadow(0px 0px 12px rgba(0, 0, 0, 0.16));
   @extend %cards-items;
 
   @include media(xs) {

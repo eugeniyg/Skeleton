@@ -256,6 +256,7 @@ export interface HistoryTabInterface extends Record<string, any>{
 export interface BenefitItemInterface {
   image: string,
   title: string,
+  text: string,
 }
 
 export interface BenefitsContentInterface {
@@ -283,7 +284,6 @@ export interface PromotionsContentInterface {
 
 export interface CategoryInterface {
   image: string,
-  icon: string,
   title: string,
   description: string,
   button: {
@@ -295,14 +295,8 @@ export interface CategoryInterface {
 export interface HomeContentInterface {
   banner: {
     image: {
-      mobile: {
-        backgroundImage: string,
-        faceImage: string
-      },
-      desktop: {
-        backgroundImage: string,
-        faceImage: string
-      }
+      backgroundImage: string,
+      faceImage: string
     },
     title: string,
     content?: string,
@@ -313,7 +307,7 @@ export interface HomeContentInterface {
   },
   categories: {
     casino: CategoryInterface,
-    sports: CategoryInterface
+    betting: CategoryInterface
   }
   seo: SeoContentInterface
 }
@@ -478,7 +472,6 @@ export interface TurboItemInterface {
   url: string,
   image: string,
   title: string,
-  infoValue: string,
   categoryValue: string
 }
 
@@ -486,8 +479,6 @@ export interface TurbogamesGroupInterface {
   label: string,
   icon: string,
   buttonLabel: string,
-  infoLabel: string,
-  categoryLabel: string,
   items: TurboItemInterface[]
 }
 
