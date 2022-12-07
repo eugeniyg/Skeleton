@@ -101,6 +101,9 @@
     color: var(--white);
     margin-bottom: rem(4px);
     text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .sub-title {
