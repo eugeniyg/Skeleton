@@ -1,7 +1,7 @@
 <template>
   <nuxt-link class="card-latest-winners" :to="gameUrl">
     <div class="img" :style="backgroundImage"></div>
-    <div class="title">{{ props.nickname }}</div>
+    <div class="title">{{ props.nickname || 'Unknown' }}</div>
     <div class="sub-title">{{ props.gameName }}</div>
     <div class="items">
       <span class="item">{{ formatedSum.amount }} {{ formatedSum.currency }}</span>

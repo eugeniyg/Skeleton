@@ -39,6 +39,10 @@
   grid-row-gap: rem(16px);
   padding: 0 rem(4px);
 
+  .nickname {
+    margin-bottom: rem(8px);
+  }
+
   .is-compact & {
     grid-row-gap: rem(8px);
     padding: 0;

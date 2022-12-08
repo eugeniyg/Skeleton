@@ -74,7 +74,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: rem(16px) rem(24px);
+  padding: var(--card-padding, #{rem(16px)} #{rem(24px)});
   isolation: isolate;
   min-height: var(--card-min-height, #{rem(167px)});
   background: var(--orange-700);
@@ -82,6 +82,10 @@
   align-content: flex-start;
   flex-grow: 1;
   width: 100%;
+
+  @include media(md) {
+    --card-padding: #{rem(24px)} #{rem(24px)};
+  }
 
   .title {
     @include font($heading-5);
@@ -106,7 +110,7 @@
     position: relative;
     z-index: 1;
     margin-bottom: rem(24px);
-    width: 57%;
+    width: 54%;
   }
 
   .btn-secondary {
@@ -130,6 +134,7 @@
     margin: auto 0;
 
     @include media(md) {
+      transform: translateX(#{rem(16px)});
       width: rem(260px);
       height: rem(220px);
       top: auto;
