@@ -9,8 +9,7 @@ export default async (inlineOptions:any, nuxt:any) => {
   if (process.env.NODE_ENV === 'development') return;
   const mapPages: any = [];
 
-  console.log(process.env);
-  const baseUrl = process.env.API_BASE_URL;
+  const baseUrl = process.env.API_BASE_URL || 'https://slotsbet.io';
   // const localesResponse: { data: LocaleInterface[] } = await $fetch(`${baseUrl}/api/settings/locales`);
   let gamesIdentities:string[] = [];
   const getGames = async (page: number):Promise<void> => {
