@@ -5,10 +5,11 @@ import { GamesResponseInterface } from '@platform/frontend-core/dist/module';
 const { createWriteStream, readdirSync } = require('fs');
 const { SitemapStream } = require('sitemap');
 
-export default async (nuxt:any) => {
+export default async (inlineOptions:any, nuxt:any) => {
   if (process.env.NODE_ENV === 'development') return;
   const mapPages: any = [];
 
+  console.log(process.env);
   const baseUrl = process.env.API_BASE_URL;
   // const localesResponse: { data: LocaleInterface[] } = await $fetch(`${baseUrl}/api/settings/locales`);
   let gamesIdentities:string[] = [];
