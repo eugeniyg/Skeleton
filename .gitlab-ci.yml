@@ -1,7 +1,6 @@
 
 variables:
   SERVICE_NAME: customer-frontends/slotsbet
-  API_BASE_URL: https://slotsbet.io
 
 stages:
   - build
