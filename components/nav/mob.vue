@@ -55,7 +55,7 @@
 .nav-mob {
   display: flex;
   position: fixed;
-  height: var(--height-nav-mob, rem(56px));
+  height: var(--height-nav-mob, rem(64px));
   bottom: var(--bottom-nav-mob, 0);
   left: 0;
   right: var(--right-nav-mob, 0);
