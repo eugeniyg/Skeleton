@@ -4,7 +4,7 @@
       v-for="(game, index) in gamesArray"
       :key="index"
       class="item"
-      :to="localizePath(`/games/${game.identity}${!isLoggedIn ? '?demo=true' : '' }`)"
+      :to="localizePath(`/games/${game.identity}${!isLoggedIn ? '' : '?real=true' }`)"
     >
       <img class="img" v-if="game.images['200x200']" :src="gameImageSrc(game.images)" />
     </nuxt-link>
