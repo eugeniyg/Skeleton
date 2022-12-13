@@ -6,9 +6,7 @@
       <div v-if="props.title" class="title">
         {{ props.title }}
       </div>
-      <p v-if="props.description" class="text">
-        {{ props.description }}
-      </p>
+      <p v-if="props.description" class="text" v-html="props.description" />
     </div>
 
     <button class="btn-alert-close" @click.prevent="hide">
@@ -132,6 +130,14 @@
     color: var(--white);
     margin: 0;
     padding: 0;
+
+    a {
+      color: var(--yellow-500);
+    }
+
+    b {
+      font-weight: 700;
+    }
   }
 
   .btn-alert-close {
@@ -181,6 +187,10 @@
     > .icon {
       --color: var(--yellow-500);
     }
+  }
+
+  .icon {
+    align-self: flex-start;
   }
 }
 </style>
