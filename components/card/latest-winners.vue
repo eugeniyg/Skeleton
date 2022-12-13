@@ -31,8 +31,8 @@
   const { baseApiUrl } = storeToRefs(globalStore);
 
   const gameUrl = computed(() => {
-    if (!isLoggedIn.value && props.isDemoMode) return localizePath(`/games/${props.gameId}?demo=true`);
-    return localizePath(`/games/${props.gameId}`);
+    if (!isLoggedIn.value && props.isDemoMode) return localizePath(`/games/${props.gameId}`);
+    return localizePath(`/games/${props.gameId}?real=true`);
   });
 
   const formatedSum = computed(() => formatBalance(props.currency, props.resultBalance));

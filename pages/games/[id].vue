@@ -18,7 +18,7 @@
 
   const route = useRoute();
   const showPlug = ref<boolean>(false);
-  const isDemo = ref<boolean>(route.query.demo === 'true');
+  const isDemo = ref<boolean>(route.query.real !== 'true');
   const gameInfo = ref<GameInterface>();
   const gameStart = ref<string>();
   const { getGamesInfo, getStartGame } = useCoreGamesApi();
@@ -66,7 +66,7 @@
 
     isDemo.value = !isDemo.value;
     await startGame();
-    router.replace({ query: { demo: `${isDemo.value}` } });
+    router.replace({ query: { real: `${!isDemo.value}` } });
   };
 
   const redirectLimitedPlayer = ():void => {

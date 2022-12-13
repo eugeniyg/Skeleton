@@ -62,8 +62,8 @@
   const { localizePath } = useProjectMethods();
   const clickGame = (gameData: GameInterface):void => {
     if (!isLoggedIn.value) {
-      router.push(localizePath(`/games/${gameData.identity}${gameData.isDemoMode ? '?demo=true' : ''}`));
-    } else router.push(localizePath(`/games/${gameData.identity}`));
+      router.push(localizePath(`/games/${gameData.identity}${gameData.isDemoMode ? '' : '?real=true'}`));
+    } else router.push(localizePath(`/games/${gameData.identity}?real=true`));
     emit('hideSearch');
   };
 
