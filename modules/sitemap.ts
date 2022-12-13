@@ -1,6 +1,6 @@
 import { NuxtPage } from '@nuxt/schema';
 import { $fetch } from 'ofetch';
-import { GamesResponseInterface } from '@platform/frontend-core/dist/module';
+import { GamesResponseInterface, LocaleInterface, CollectionInterface } from '@platform/frontend-core/dist/module';
 
 const { createWriteStream, readdirSync } = require('fs');
 const { SitemapStream } = require('sitemap');
@@ -8,9 +8,11 @@ const { SitemapStream } = require('sitemap');
 export default async (inlineOptions:any, nuxt:any) => {
   if (process.env.NODE_ENV === 'development') return;
   const mapPages: any = [];
+  let hookRan: boolean = false;
 
   const baseUrl = process.env.API_BASE_URL || 'https://slotsbet.io';
-  // const localesResponse: { data: LocaleInterface[] } = await $fetch(`${baseUrl}/api/settings/locales`);
+  const localesResponse: { data: LocaleInterface[] } = await $fetch(`${baseUrl}/api/settings/locales`);
+  const collectionsResponse:{ data: CollectionInterface[] } = await $fetch(`${baseUrl}/api/game/collections`);
   let gamesIdentities:string[] = [];
   const getGames = async (page: number):Promise<void> => {
     const gamesResponse: GamesResponseInterface = await $fetch(`${baseUrl}/api/game/games`, { params: { page, perPage: 100 } });
@@ -35,11 +37,27 @@ export default async (inlineOptions:any, nuxt:any) => {
   };
 
   const changeDate = new Date().toISOString();
-  const baseDataObj = {
-    url: '',
-    changefreq: 'daily',
-    priority: 0.8,
-    lastmod: changeDate,
+
+  const createLocalesLinks = (url: string):{ lang:string, url: string }[] => {
+    const linksArr:{ lang:string, url: string }[] = [];
+    localesResponse.data.forEach((locale) => {
+      linksArr.push({
+        lang: locale.code,
+        url: locale.isDefault ? url : `/${locale.code}${url}`,
+      });
+    });
+    return linksArr;
+  };
+
+  const pushItem = (nativeLink: string):void => {
+    const localeLinks = createLocalesLinks(nativeLink);
+    localesResponse.data.forEach((locale) => {
+      mapPages.push({
+        url: locale.isDefault ? nativeLink : `/${locale.code}${nativeLink}`,
+        lastmod: changeDate,
+        links: localeLinks,
+      });
+    });
   };
 
   const addMapData = (page: NuxtPage):void => {
@@ -53,29 +71,52 @@ export default async (inlineOptions:any, nuxt:any) => {
     if (page.name === 'bonus-pageUrl') {
       const bonusesNames = getContentFileNames(getBonusesPageNames);
       bonusesNames.forEach((bonusName) => {
-        mapPages.push({ ...baseDataObj, url: page.path.replace(':pageUrl', bonusName) });
+        const linkUrl = page.path.replace(':pageUrl', bonusName);
+        pushItem(linkUrl);
       });
     } else if (page.name === 'games-id') {
       gamesIdentities.forEach((gameIdentity) => {
-        mapPages.push({ ...baseDataObj, url: page.path.replace(':id', gameIdentity) });
+        const linkUrl = page.path.replace(':id', gameIdentity);
+        pushItem(linkUrl);
       });
     } else if (page.name === 'static-pageUrl') {
       const staticNames = getContentFileNames(getStaticPageNames);
       staticNames.forEach((staticName) => {
-        mapPages.push({ ...baseDataObj, url: page.path.replace(':pageUrl', staticName) });
+        const linkUrl = page.path.replace(':pageUrl', staticName);
+        pushItem(linkUrl);
       });
     } else if (page.name === 'questions-pageUrl') {
       const questionsNames = getContentFileNames(getQuestionsPageNames);
       questionsNames.forEach((questionName) => {
-        mapPages.push({ ...baseDataObj, url: page.path.replace(':pageUrl', questionName) });
+        const linkUrl = page.path.replace(':pageUrl', questionName);
+        pushItem(linkUrl);
+      });
+    } else if (page.name === 'games') {
+      collectionsResponse.data.forEach((collection) => {
+        if (!collection.isHidden) {
+          const linkUrl = `${page.path}?category=${collection.identity}`;
+          pushItem(linkUrl);
+        }
       });
     } else {
-      mapPages.push({ ...baseDataObj, url: page.path });
+      pushItem(page.path);
     }
   };
 
+  const hidePages = [
+    'betting',
+    'slug',
+    'password-reset-resetCode',
+    'verify-confirmCode',
+    'profile',
+    'favorites',
+    'recently-played',
+  ];
+
   nuxt.hook('pages:extend', (pages: NuxtPage[]) => {
-    const hidePages = ['slug', 'password-reset-resetCode', 'verify-confirmCode'];
+    if (hookRan) return;
+
+    hookRan = true;
     pages.forEach((page) => {
       if (page.name && hidePages.includes(page.name)) return;
       addMapData(page);
