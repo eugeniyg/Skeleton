@@ -227,6 +227,16 @@ export interface RegistrationInterface {
   }
 }
 
+export interface RegistrationCancelInterface {
+  title: string,
+  backToSignUpButton: string,
+  closeButton: string,
+  bonus: {
+    icon: string,
+    text: string,
+  }
+}
+
 export interface DepositInterface {
   title: string,
   balanceLabel: string,
@@ -249,6 +259,7 @@ export interface PopupsInterface {
   withdraw: WithdrawInterface,
   reset: ResetInterface,
   registration: RegistrationInterface,
+  registrationCancel: RegistrationCancelInterface,
   deposit: DepositInterface
 }
 

@@ -2,7 +2,7 @@
   <vue-final-modal
     v-model="modals.register"
     @beforeOpen="showForm = true"
-    @closed="showForm = false"
+    @closed="popupClosed"
     esc-to-close
   >
     <div class="modal-register">
@@ -30,9 +30,14 @@
   const showForm = ref<boolean>(false);
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
+  const { closeModal, showModal } = layoutStore;
   const { popupsData } = useGlobalStore();
   const registrationContent: RegistrationInterface|undefined = popupsData?.registration;
+
+  const popupClosed = () => {
+    showForm.value = false;
+    showModal('registerCancel');
+  };
 </script>
 
 <style lang="scss">
@@ -107,6 +112,12 @@
   .dropdown:nth-of-type(2) {
     max-width: calc(100% - #{rem(16px)} - #{rem(98px)});
     margin-top: rem(-88px);
+  }
+
+  .btn-modal-close {
+    @include media(md) {
+      --top: #{rem(-16px)};
+    }
   }
 }
 </style>
