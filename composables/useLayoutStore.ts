@@ -6,6 +6,7 @@ import { AlertInterface } from '~/types';
 
 interface ModalsInterface extends Record<string, any> {
   register: boolean,
+  registerCancel: boolean,
   signIn: boolean,
   deposit: boolean,
   confirm: boolean,
@@ -59,6 +60,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         resetPass: false,
         success: false,
         withdraw: false,
+        registerCancel: false,
       },
       modalsUrl: {
         register: 'sign-up',

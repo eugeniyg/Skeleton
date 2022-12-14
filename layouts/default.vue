@@ -29,6 +29,7 @@
     </transition>
 
     <modal-register />
+    <modal-register-cancel />
     <modal-sign-in />
     <modal-forgot-pass />
     <modal-reset-pass />

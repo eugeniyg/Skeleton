@@ -11,8 +11,8 @@
 <style lang="scss">
 .btn-modal-close {
   @extend %skip-btn;
-  width: rem(32px);
-  height: rem(32px);
+  min-width: rem(32px);
+  min-height: rem(32px);
   position: var(--position, relative);
   align-items: center;
   justify-content: center;

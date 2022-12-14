@@ -2,7 +2,7 @@
   <vue-final-modal
     v-model="modals.register"
     @beforeOpen="showForm = true"
-    @closed="showForm = false"
+    @closed="popupClosed"
     esc-to-close
   >
     <div class="modal-register">
@@ -13,7 +13,7 @@
 
         <div class="scroll">
           <div class="header">
-            <button-modal-close @close="closeModal('register')"/>
+            <button-modal-close @close="openCancelModal"/>
             <div class="title">{{ registrationContent?.title }}</div>
           </div>
           <form-join v-if="showForm"/>
@@ -30,9 +30,24 @@
   const showForm = ref<boolean>(false);
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
+  const { closeModal, showModal } = layoutStore;
   const { popupsData } = useGlobalStore();
   const registrationContent: RegistrationInterface|undefined = popupsData?.registration;
+
+  const openCancelModal = () => {
+    closeModal('register');
+    showModal('registerCancel');
+  };
+
+  const popupClosed = () => {
+    if (!modals.value.registerCancel) {
+      showForm.value = false;
+    }
+  };
+
+  watch(() => modals.value.registerCancel, (newValue: boolean) => {
+    if (!newValue) showForm.value = false;
+  });
 </script>
 
 <style lang="scss">
@@ -107,6 +122,12 @@
   .dropdown:nth-of-type(2) {
     max-width: calc(100% - #{rem(16px)} - #{rem(98px)});
     margin-top: rem(-88px);
+  }
+
+  .btn-modal-close {
+    @include media(md) {
+      --top: #{rem(-16px)};
+    }
   }
 }
 </style>
