@@ -229,12 +229,10 @@ export interface RegistrationInterface {
 
 export interface RegistrationCancelInterface {
   title: string,
-  backToSignUpButton: string,
-  closeButton: string,
-  bonus: {
-    icon: string,
-    text: string,
-  }
+  bonusImage: string,
+  bonusText: string,
+  backButton: string,
+  closeButton: string
 }
 
 export interface DepositInterface {

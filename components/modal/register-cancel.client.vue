@@ -8,19 +8,30 @@
       <div class="scroll">
         <div class="header">
           <button-modal-close @close="closeModal('registerCancel')"/>
-          <h4 class="title">{{ registrationCancelContent?.title || 'Are you sure you want to cancel your registration ?' }}</h4>
+          <h4 class="title">{{ registrationCancelContent?.title }}</h4>
         </div>
+
         <div class="bonus">
-          <img :src="registrationCancelContent?.bonus?.icon || bonusIcon" alt="">
-          <div
-            class="bonus-text"
-            v-html="registrationCancelContent?.bonus?.text ||
-              'Sign-up takes only a minute and welcome you with up to <span>5 BTC + 300 FS</span>'"
-          />
+          <img v-if="registrationCancelContent?.bonusImage" :src="registrationCancelContent.bonusImage" alt="">
+          <div class="bonus-text" v-html="bonusContent" />
         </div>
+
         <div class="actions">
-          <button-base type="primary" size="md" @click="showModal('register')">{{ registrationCancelContent?.backToSignUpButton || 'Back to Sign Up' }}</button-base>
-          <button-base type="ghost" size="xs" @click="closeModal('registerCancel')">{{ registrationCancelContent?.closeButton || 'Close' }}</button-base>
+          <button-base
+            type="primary"
+            size="md"
+            @click="showModal('register')"
+          >
+            {{ registrationCancelContent?.backButton }}
+          </button-base>
+
+          <button-base
+            type="ghost"
+            size="xs"
+            @click="closeModal('registerCancel')"
+          >
+            {{ registrationCancelContent?.closeButton }}
+          </button-base>
         </div>
       </div>
     </div>
@@ -30,13 +41,15 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { RegistrationCancelInterface } from '~/types';
-  import bonusIcon from '~/assets/svg/colored/icn-notification.svg';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { showModal, closeModal } = layoutStore;
   const { popupsData } = useGlobalStore();
   const registrationCancelContent: RegistrationCancelInterface|undefined = popupsData?.registrationCancel;
+
+  const { replaceContent } = useCoreMethods();
+  const bonusContent = registrationCancelContent?.bonusText ? replaceContent(registrationCancelContent?.bonusText, '*') : '';
 </script>
 
 <style lang="scss">

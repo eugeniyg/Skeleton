@@ -13,7 +13,7 @@
 
         <div class="scroll">
           <div class="header">
-            <button-modal-close @close="closeModal('register')"/>
+            <button-modal-close @close="openCancelModal"/>
             <div class="title">{{ registrationContent?.title }}</div>
           </div>
           <form-join v-if="showForm"/>
@@ -34,10 +34,20 @@
   const { popupsData } = useGlobalStore();
   const registrationContent: RegistrationInterface|undefined = popupsData?.registration;
 
-  const popupClosed = () => {
-    showForm.value = false;
+  const openCancelModal = () => {
+    closeModal('register');
     showModal('registerCancel');
   };
+
+  const popupClosed = () => {
+    if (!modals.value.registerCancel) {
+      showForm.value = false;
+    }
+  };
+
+  watch(() => modals.value.registerCancel, (newValue: boolean) => {
+    if (!newValue) showForm.value = false;
+  });
 </script>
 
 <style lang="scss">
