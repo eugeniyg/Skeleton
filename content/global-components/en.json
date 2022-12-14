@@ -5,79 +5,79 @@
     "buttonLabel": "Play now",
     "items": [
       {
-        "url": "/games/turbo-games-javelin-x?demo=true",
+        "url": "/games/turbo-games-javelin-x",
         "image": "/img/uploads/javelin_2_3_no-1-.jpg",
         "title": "JavelinX",
         "categoryValue": "RTP - 95%"
       },
       {
-        "url": "/games/turbo-games-turboplinko?demo=true",
+        "url": "/games/turbo-games-turboplinko",
         "image": "/img/uploads/turbo_plinko-1-.png",
         "title": "Turbo Plinko",
         "categoryValue": "RTP - 99% "
       },
       {
-        "url": "/games/bayraktar-turbo-games?demo=true",
+        "url": "/games/bayraktar-turbo-games",
         "image": "/img/uploads/bayraktar-1-.png",
         "title": "Bayraktar",
         "categoryValue": "RTP - 95% "
       },
       {
-        "url": "/games/limbo-rider-turbo-games?demo=true",
+        "url": "/games/limbo-rider-turbo-games",
         "image": "/img/uploads/limbo-1-.png",
         "title": "Limbo Rider",
         "categoryValue": "RTP - 95% "
       },
       {
-        "url": "/games/ball-ball-turbo-games?demo=true",
+        "url": "/games/ball-ball-turbo-games",
         "image": "/img/uploads/ball-ball-1-.png",
         "title": "Ball & Ball",
         "categoryValue": "RTP - 99% "
       },
       {
-        "url": "/games/stairs-turbo-games?demo=true",
+        "url": "/games/stairs-turbo-games",
         "image": "/img/uploads/furystairs-1-.png",
         "title": "Stairs",
         "categoryValue": "RTP - 97% "
       },
       {
-        "url": "/games/towers-turbo-games?demo=true",
+        "url": "/games/towers-turbo-games",
         "image": "/img/uploads/towers-1-.png",
         "title": "Towers",
         "categoryValue": "RTP - 95%"
       },
       {
-        "url": "/games/neko-turbo-games?demo=true",
+        "url": "/games/neko-turbo-games",
         "image": "/img/uploads/neko-1-.png",
         "title": "Neko",
         "categoryValue": "RTP - 95%"
       },
       {
-        "url": "/games/mines-turbo-games?demo=true",
+        "url": "/games/mines-turbo-games",
         "image": "/img/uploads/mines-1-.png",
         "title": "Mines",
         "categoryValue": "RTP - 95%"
       },
       {
-        "url": "/games/hamsta-turbo-games?demo=true",
+        "url": "/games/hamsta-turbo-games",
         "image": "/img/uploads/hamsta-1-.png",
         "title": "Hamsta",
         "categoryValue": "RTP - 95%"
       },
       {
-        "url": "/games/dice-twice-turbo-games?demo=true",
+        "url": "/games/dice-twice-turbo-games",
         "image": "/img/uploads/dicetwice-1-.png",
         "title": "Dice Twice",
         "categoryValue": "RTP - 97.5%"
       },
       {
-        "url": "/games/crash-x-turbo-games?demo=true",
+        "url": "/games/crash-x-turbo-games",
         "image": "/img/uploads/crashx-1-.png",
         "title": "Crash X",
         "categoryValue": "RTP - 95%"
       },
       {
-        "url": "/games/turbo-games-save-the-princess?demo=true",
+        "url": "/games/turbo-games-save-the-princess",
         "image": "/img/uploads/save_the_princess.jpg",
         "title": "Save the Princess",
         "categoryValue": "RTP - 95%"
