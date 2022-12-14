@@ -38,7 +38,7 @@
         <button-base
           type="primary"
           size="lg"
-          :is-disabled="v$.$invalid"
+          :isDisabled="v$.$invalid || isLockedAsyncButton"
           @click="submitContactForm"
         >
           {{ contactContent?.buttonLabel }} <atomic-icon id="arrow_next"/>
@@ -72,10 +72,12 @@
     message: [{ rule: 'required' }],
   };
 
+  const isLockedAsyncButton = ref<boolean>(false);
   const { getFormRules } = useProjectMethods();
   const contactUsFormRules = getFormRules(contactUsRules);
-  const { v$, setError } = useFormValidation(contactUsFormRules, contactFormData);
+  const { serverFormErrors, v$, setError } = useFormValidation(contactUsFormRules, contactFormData);
 
+  const { sendContactMessage } = useCoreNotificationApi();
   const submitContactForm = async ():Promise<void> => {
     if (v$.value.$invalid) return;
 
@@ -83,11 +85,20 @@
     const validFormData = await v$.value.$validate();
     if (!validFormData) return;
 
-    layoutStore.showAlert(alertsData.value?.sentMessage);
-
-    contactFormData.email = '';
-    contactFormData.message = '';
-    v$.value.$reset();
+    try {
+      isLockedAsyncButton.value = true;
+      await sendContactMessage(contactFormData);
+      layoutStore.showAlert(alertsData.value?.sentMessage);
+      contactFormData.email = '';
+      contactFormData.message = '';
+      v$.value.$reset();
+    } catch (err:any) {
+      if (err.response?.status === 422) {
+        serverFormErrors.value = err.data?.error?.fields;
+      } else throw err;
+    } finally {
+      isLockedAsyncButton.value = false;
+    }
   };
 </script>
 
