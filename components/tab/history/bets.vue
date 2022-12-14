@@ -76,10 +76,7 @@
 
   const changePage = (page: number):void => {
     if (loading.value) return;
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    window.scroll(0, 0);
     betsRequest(page);
   };
 

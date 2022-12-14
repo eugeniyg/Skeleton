@@ -168,10 +168,7 @@
       (collection) => collection.identity === categoryId,
     );
     router.replace({ query: { ...route.query, category: categoryId } });
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    window.scroll(0, 0);
     const response = await getItems();
     setItems(response);
   };
