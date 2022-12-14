@@ -85,13 +85,13 @@
 
   const openGame = (isReal: boolean):void => {
     if (!isReal) {
-      router.push(localizePath(`/games/${props.identity}?demo=true`));
+      router.push(localizePath(`/games/${props.identity}`));
     } else if (!isLoggedIn.value) {
       showModal('register');
     } else if (playerStatusName.value === 'Limited') {
       showAlert(alertsData?.limitedRealGame);
     } else {
-      router.push(localizePath(`/games/${props.identity}`));
+      router.push(localizePath(`/games/${props.identity}?real=true`));
     }
   };
 
