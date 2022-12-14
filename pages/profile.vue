@@ -91,11 +91,7 @@
     display: grid;
     grid-row-gap: rem(16px);
     align-items: center;
-
-    @include media(xs) {
-      grid-template-columns: 1fr minmax(0, auto);
-      grid-column-gap: rem(16px);
-    }
+    grid-template-columns: 1fr minmax(0, auto);
   }
 
   .heading {

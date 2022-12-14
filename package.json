@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.5",
-    "@platform/frontend-core": "^0.0.3-rc.7",
+    "@platform/frontend-core": "^0.0.3-rc.8",
     "@types/lodash": "^4.14.189",
     "@types/ua-parser-js": "^0.7.36",
     "@vuelidate/core": "^2.0.0",
@@ -39,6 +39,7 @@
     "marked": "^4.2.3",
     "maska": "^1.5.1",
     "pinia": "^2.0.25",
+    "sitemap": "^7.1.1",
     "svg-sprite-generator": "^0.0.7",
     "svgo": "^2.8.0",
     "svgo-autocrop": "^1.1.2",
