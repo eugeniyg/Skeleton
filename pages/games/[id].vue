@@ -86,8 +86,8 @@
       setTimeout(() => {
         redirectLimitedPlayer();
       });
-    } else {
-      await startGame();
+    } else if (isDemo.value) {
+      await changeGameMode();
     }
   });
 
