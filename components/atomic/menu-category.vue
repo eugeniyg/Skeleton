@@ -58,8 +58,7 @@
     open.value = hasNestedLink;
   });
 
-  const toggleOpen = (e: Event):void => {
+  const toggleOpen = ():void => {
     open.value = !open.value;
-    e.preventDefault();
   };
 </script>
