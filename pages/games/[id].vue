@@ -88,6 +88,8 @@
       });
     } else if (isDemo.value) {
       await changeGameMode();
+    } else {
+      await startGame();
     }
   });
 
