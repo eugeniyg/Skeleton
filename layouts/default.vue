@@ -59,7 +59,7 @@
   const { isHomePage, localizePath } = useProjectMethods();
 
   const {
-    isShowAlert, alertProps, showCookiePopup,
+    isShowAlert, alertProps, showCookiePopup, isDrawerCompact,
   } = storeToRefs(layoutStore);
   const { compactDrawer, checkModals } = layoutStore;
   checkModals();
@@ -105,5 +105,9 @@
 
   onBeforeUnmount(() => {
     if (timer.value) clearTimeout(timer.value);
+  });
+
+  watch(layoutClasses, () => {
+    isDrawerCompact.value = IS_DRAWER_COMPACT.value;
   });
 </script>

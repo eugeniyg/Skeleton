@@ -32,7 +32,7 @@ interface LayoutStoreStateInterface extends Record<string, any>{
   isUserNavOpen: boolean,
   isDrawerOpen: boolean,
   isCurrencyNavOpen: boolean,
-  isDrawerCompact: boolean,
+  isDrawerCompact: boolean | null,
   isShowAlert: boolean,
   showCookiePopup: boolean,
   alertProps: AlertInterface|undefined,

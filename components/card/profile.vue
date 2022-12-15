@@ -1,10 +1,6 @@
 <template>
   <div class="card-profile">
-    <atomic-avatar :nickname="userNickname">
-      <template v-slot:progress-bar>
-        <profile-progress-bar/>
-      </template>
-    </atomic-avatar>
+    <atomic-avatar :nickname="userNickname"/>
 
     <div class="actions">
       <button-base type="primary" size="md" @click="openDepositModal">
@@ -38,10 +34,6 @@
   @extend %flex-column;
   grid-row-gap: rem(16px);
   padding: 0 rem(4px);
-
-  .nickname {
-    margin-bottom: rem(8px);
-  }
 
   .is-compact & {
     grid-row-gap: rem(8px);

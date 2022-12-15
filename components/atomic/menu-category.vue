@@ -2,10 +2,13 @@
   <div>
     <div
       class="link"
-      @click.prevent="toggleOpen"
+      @click="toggleOpen"
       :class="{'is-open': open }"
     >
-      <atomic-icon :id="props.icon"/>
+      <router-link v-if="isDrawerCompact" :to="localizePath(props.items[0].url)">
+        <atomic-icon :id="props.icon"/>
+      </router-link>
+      <atomic-icon v-else :id="props.icon"/>
       <div class="text">{{ props.label }}</div>
       <button-toggle/>
     </div>
@@ -24,6 +27,8 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     label: {
       type: String,
@@ -39,6 +44,9 @@
     },
   });
 
+  const layoutStore = useLayoutStore();
+  const { isDrawerCompact } = storeToRefs(layoutStore);
+
   const { localizePath } = useProjectMethods();
   const route = useRoute();
 
@@ -50,7 +58,8 @@
     open.value = hasNestedLink;
   });
 
-  const toggleOpen = ():void => {
+  const toggleOpen = (e: Event):void => {
     open.value = !open.value;
+    e.preventDefault();
   };
 </script>
