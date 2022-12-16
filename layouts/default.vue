@@ -63,6 +63,7 @@
   } = storeToRefs(layoutStore);
   const { compactDrawer, checkModals } = layoutStore;
   checkModals();
+  isDrawerCompact.value = IS_DRAWER_COMPACT.value;
 
   const { logOutUser } = profileStore;
 
@@ -73,6 +74,7 @@
   function compact():void {
     IS_DRAWER_COMPACT.value = !IS_DRAWER_COMPACT.value;
     compactDrawer();
+    isDrawerCompact.value = IS_DRAWER_COMPACT.value;
   }
 
   function toggleOpen():void {
@@ -105,9 +107,5 @@
 
   onBeforeUnmount(() => {
     if (timer.value) clearTimeout(timer.value);
-  });
-
-  watch(layoutClasses, () => {
-    isDrawerCompact.value = IS_DRAWER_COMPACT.value;
   });
 </script>

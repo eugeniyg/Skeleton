@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-  const emit = defineEmits(['toggle']);
+  const emit = defineEmits(['toggle-minimize', 'toggle-open']);
 </script>
 
 <style lang="scss">
