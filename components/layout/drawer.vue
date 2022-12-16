@@ -1,7 +1,7 @@
 <template>
   <div class="drawer" :class="{'is-compact' : props.isCompact}">
     <div class="header">
-      <button-toggle-drawer @toggle-minimize="emit('compact')" @toggle-open="$emit('toggle-open')"/>
+      <button-toggle-drawer @toggle-minimize="emit('compact')" @toggle-open="emit('toggle-open')"/>
       <button-toggler :items="sidebarContent?.gamesToggler"/>
     </div>
 

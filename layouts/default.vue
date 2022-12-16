@@ -59,10 +59,11 @@
   const { isHomePage, localizePath } = useProjectMethods();
 
   const {
-    isShowAlert, alertProps, showCookiePopup,
+    isShowAlert, alertProps, showCookiePopup, isDrawerCompact,
   } = storeToRefs(layoutStore);
   const { compactDrawer, checkModals } = layoutStore;
   checkModals();
+  isDrawerCompact.value = IS_DRAWER_COMPACT.value;
 
   const { logOutUser } = profileStore;
 
@@ -73,6 +74,7 @@
   function compact():void {
     IS_DRAWER_COMPACT.value = !IS_DRAWER_COMPACT.value;
     compactDrawer();
+    isDrawerCompact.value = IS_DRAWER_COMPACT.value;
   }
 
   function toggleOpen():void {

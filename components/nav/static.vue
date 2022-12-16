@@ -41,9 +41,18 @@
     display: flex;
     transition: color .2s .2s ease-in-out;
 
-    &:hover {
-      --color: var(--white);
+    &.router-link-active {
+      color: var(--yellow-500);
     }
+
+    @include use-hover {
+      &:not(.router-link-active) {
+        &:hover {
+          --color: var(--white);
+        }
+      }
+    }
+
   }
 }
 </style>
