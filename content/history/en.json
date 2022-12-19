@@ -27,7 +27,7 @@
     "currencyLabel": "Currency:",
     "dateLabel": "Date from / to:",
     "statusFilter": {
-      "label": "Status:",
+      "label": "Status",
       "options": {
         "processing": "Processing",
         "pending": "Pending",
