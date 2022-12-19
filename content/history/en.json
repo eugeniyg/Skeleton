@@ -27,7 +27,7 @@
     "currencyLabel": "Currency:",
     "dateLabel": "Date from / to:",
     "statusFilter": {
-      "label": "Status",
+      "label": "Status:",
       "options": {
         "processing": "Processing",
         "pending": "Pending",
@@ -59,7 +59,7 @@
     "tabPosition": 5,
     "tabLabel": "Transactions"
   },
-  "locale": "en",
+  "locale": "de",
   "sessions": {
     "tabLabel": "Sessions",
     "tableColumns": {
