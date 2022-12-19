@@ -122,12 +122,14 @@
     align-items: center;
   }
 
-  .label {
-    flex-direction: row-reverse;
-    @include font($body-1);
-    color: var(--white);
-    grid-area: label;
-    position: relative;
+  .input-toggle {
+    .label {
+      flex-direction: row-reverse;
+      @include upd-font($body-1);
+      color: var(--white);
+      grid-area: label;
+      position: relative;
+    }
   }
 
   .amount {
