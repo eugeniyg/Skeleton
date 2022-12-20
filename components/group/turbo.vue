@@ -93,6 +93,10 @@
     "items items items items";
   }
 
+  @include media(l) {
+    padding: rem(24px) rem(24px) rem(16px);
+  }
+
   > [data-icon] {
     font-size: rem(20px);
     grid-area: icon;

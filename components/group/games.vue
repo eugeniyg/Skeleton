@@ -158,6 +158,10 @@
     "items items items items";
   }
 
+  @include media(l) {
+    padding: 0 rem(24px);
+  }
+
   > [data-icon] {
     font-size: rem(20px);
     grid-area: icon;
@@ -209,7 +213,11 @@
     display: var(--display, flex);
     align-items: center;
     overflow-x: auto;
-    margin: 0  rem(-24px);
+    margin: 0  rem(-20px);
+
+    @include media(l) {
+      margin: 0  rem(-28px);
+    }
 
     &::-webkit-scrollbar {
       display: none;
