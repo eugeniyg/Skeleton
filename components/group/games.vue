@@ -150,12 +150,16 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
-  padding: 0 rem(24px);
+  padding: 0 rem(16px);
 
   @include media(xs) {
     grid-template-areas:
     "icon heading btn-show-all arrows"
     "items items items items";
+  }
+
+  @include media(l) {
+    padding: 0 rem(24px);
   }
 
   > [data-icon] {
@@ -165,7 +169,7 @@
 
   > .icon {
     grid-area: icon;
-    --iccon-size: #{rem(20px)};
+    --icon-size: #{rem(20px)};
     --color: var(--gray-400);
   }
 
@@ -209,7 +213,11 @@
     display: var(--display, flex);
     align-items: center;
     overflow-x: auto;
-    margin: 0  rem(-24px);
+    margin: 0  rem(-20px);
+
+    @include media(l) {
+      margin: 0  rem(-28px);
+    }
 
     &::-webkit-scrollbar {
       display: none;
