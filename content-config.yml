@@ -700,6 +700,27 @@ collections:
                 fields:
                   - *projectIcon
                   - *linkLabel
+      - name: registrationCancel
+        label: Registration Cancel Popup
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: bonusImage
+            label: Bonus Image
+            widget: image
+          - name: bonusText
+            label: Bonus Text
+            widget: text
+            hint: Put text inside "*" to highlight it
+          - name: backButton
+            label: Back Button
+            widget: string
+          - name: closeButton
+            label: Close Button
+            widget: string
       - name: login
         label: Login Popup
         widget: object

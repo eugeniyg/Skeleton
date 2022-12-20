@@ -79,6 +79,7 @@ a {
 
 html {
   font-size: variables.$base-font-size;
+  scroll-behavior: smooth;
 }
 
 
@@ -160,6 +161,10 @@ body {
 
   @include media(sm) {
     --padding: #{rem(24px)} #{rem(32px)}
+  }
+
+  @include media(l) {
+    --padding: #{rem(24px)} #{rem(48px)}
   }
 
   .group-games, .group-winners, .favorite-recently, .cards-providers, .cards-wrap, .group-turbo {

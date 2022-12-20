@@ -33,7 +33,9 @@
     const filteredArray = Object.keys(profileContent).filter((key) => {
       if (profileContent[key]?.title) return key;
       return false;
-    });
+    })
+      .filter((item) => item !== 'notifications');
+
     profileMenu.value = filteredArray.map((key) => ({
       title: profileContent[key].title,
       url: `/profile/${key}`,
