@@ -100,7 +100,7 @@
   padding: rem(2px);
 
   @include media(sm) {
-    //min-height: rem(199px);
+    min-height: rem(199px);
   }
 
   &:before {
