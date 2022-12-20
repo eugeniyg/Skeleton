@@ -104,7 +104,7 @@
 
   > .icon {
     grid-area: icon;
-    --iccon-size: #{rem(20px)};
+    --icon-size: #{rem(20px)};
     --color: var(--gray-400);
   }
 
@@ -145,8 +145,8 @@
   .items-wrapper {
     grid-area: items;
     position: relative;
-    margin-left: -32px;
-    margin-right: -32px;
+    margin-left: -28px;
+    margin-right: -28px;
 
     @include media(sm) {
       margin-left: -48px;
