@@ -184,9 +184,19 @@
   },
   "categories": [
     {
+      "icon": "cherry",
+      "identity": "all",
+      "label": "All Games"
+    },
+    {
       "icon": "hot",
       "identity": "hot",
       "label": "Hot"
+    },
+    {
+      "icon": "turbo-games",
+      "identity": "turbogames",
+      "label": "Turbogames"
     },
     {
       "icon": "heart",
@@ -199,19 +209,9 @@
       "label": "New"
     },
     {
-      "icon": "cherry",
-      "identity": "all",
-      "label": "All Games"
-    },
-    {
       "icon": "slots",
       "identity": "slots",
       "label": "Slots"
-    },
-    {
-      "icon": "turbo-games",
-      "identity": "turbogames",
-      "label": "Turbogames"
     },
     {
       "icon": "table-games",
