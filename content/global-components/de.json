@@ -227,6 +227,11 @@
       "icon": "security",
       "identity": "999",
       "label": "9-9-9"
+    },
+    {
+      "icon": "live-casino",
+      "identity": "live",
+      "label": "Live"
     }
   ],
   "benefits": {
