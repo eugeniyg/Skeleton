@@ -184,6 +184,11 @@
   },
   "categories": [
     {
+      "icon": "new",
+      "identity": "new",
+      "label": "New"
+    },
+    {
       "icon": "hot",
       "identity": "hot",
       "label": "Hot"
@@ -192,11 +197,6 @@
       "icon": "heart",
       "identity": "popular",
       "label": "Popular"
-    },
-    {
-      "icon": "new",
-      "identity": "new",
-      "label": "New"
     },
     {
       "icon": "cherry",
