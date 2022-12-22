@@ -224,11 +224,6 @@
       "label": "Live"
     },
     {
-      "icon": "vip",
-      "identity": "recommended",
-      "label": "RECOMMENDED"
-    },
-    {
       "icon": "age",
       "identity": "endgame",
       "label": "END"
