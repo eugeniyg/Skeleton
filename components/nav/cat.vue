@@ -35,27 +35,41 @@
   overflow: hidden;
   height: var(--height, #{rem(32px)});
   margin-top: var(--margin-top, #{rem(24px)});
-  margin-bottom: var(--margin-bottom, #{rem(24px)});
   margin-right: var(--margin-right, #{rem(-16px)});
+  margin-bottom: var(--margin-bottom, #{rem(24px)});
+  margin-left: var(--margin-right, #{rem(-16px)});
+
+  @include media(sm) {
+    --margin-left: #{rem(-32px)};
+    --margin-right: #{rem(-32px)};
+  }
 
   @include media(md) {
-    --margin-right: 0;
     --margin-bottom: #{rem(40px)};
+  }
+
+  @include media(l) {
+    --margin-left: 0;
+    --margin-right: 0;
   }
 }
 
 .nav-cat {
   @extend %flex-items-center;
   overflow-x: auto;
+  padding: var(--padding, 0 #{rem(16px)});
+
+  @include media(sm) {
+    --padding: 0 #{rem(32px)};
+  }
+
+  @include media(l) {
+    --padding: 0;
+  }
 
   &::-webkit-scrollbar {
     display: block;
     width: 0;
-  }
-
-  &:after {
-    content: '';
-    min-width: 16px;
   }
 
   &::-webkit-scrollbar {
