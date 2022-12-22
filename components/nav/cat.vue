@@ -2,7 +2,7 @@
   <div class="nav-cat-wrap">
     <div class="nav-cat">
       <span
-        v-for="{ id, identity, name } in sortedCategories"
+        v-for="{ id, identity, name } in filteredCategories"
         :key="id"
         class="item"
         :class="{ 'is-active': $route.query.category === identity }"
@@ -18,16 +18,8 @@
 <script setup lang="ts">
   const emit = defineEmits(['clickCategory']);
   const { gameCollections } = useGamesStore();
-  const { gameCategoriesObj, globalComponentsContent } = useGlobalStore();
-  const filteredCategories = gameCollections.filter((collection) => !collection.isHidden).map((category) => {
-    const contentArrayIndex = globalComponentsContent?.categories?.findIndex((item) => item.identity === category.identity);
-    return { ...category, sortIndex: contentArrayIndex && contentArrayIndex < 0 ? undefined : contentArrayIndex };
-  });
-  const sortedCategories = filteredCategories.sort((prevEl, nextEl) => {
-    if (!prevEl.sortIndex || !nextEl.sortIndex) return 1;
-    if (prevEl.sortIndex < nextEl.sortIndex) return -1;
-    return 1;
-  });
+  const { gameCategoriesObj } = useGlobalStore();
+  const filteredCategories = gameCollections.filter((collection) => !collection.isHidden);
 </script>
 
 <style lang="scss">
