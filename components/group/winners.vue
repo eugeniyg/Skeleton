@@ -95,7 +95,7 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
-  padding: 0 rem(24px);
+  padding: 0 rem(16px);
 
   @include media(xs) {
     grid-template-areas:
@@ -103,12 +103,8 @@
     "items items items items";
   }
 
-  @include media(md) {
-
-    > .items {
-      padding-right: 0;
-      margin: 0 rem(-24px)
-    }
+  @include media(l) {
+    padding: 0 rem(24px);
   }
 
   > [data-icon] {
@@ -146,10 +142,18 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    padding-right: 12px;
+    margin: 0 rem(-46px);
+    scroll-padding: rem(36px);
+    padding: 0 rem(26px);
 
     @include media(md) {
-      padding-right: 0;
+      scroll-padding: 0;
+      margin: 0 rem(-18px);
+      padding: 0;
+    }
+
+    @include media(l) {
+      margin: 0 rem(-28px);
     }
 
     &::-webkit-scrollbar {

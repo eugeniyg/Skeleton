@@ -57,7 +57,7 @@
     "img items";
   grid-template-columns: rem(56px) 1fr;
   grid-column-gap: rem(8px);
-  border-radius: rem(8px);
+  border-radius: rem(12px);
   flex-shrink: 0;
   align-self: stretch;
   align-items: flex-start;
