@@ -184,11 +184,6 @@
   },
   "categories": [
     {
-      "icon": "cherry",
-      "identity": "all",
-      "label": "All Games"
-    },
-    {
       "icon": "hot",
       "identity": "hot",
       "label": "Hot"
@@ -197,6 +192,11 @@
       "icon": "turbo-games",
       "identity": "turbogames",
       "label": "Turbogames"
+    },
+    {
+      "icon": "cherry",
+      "identity": "all",
+      "label": "All Games"
     },
     {
       "icon": "heart",
@@ -224,14 +224,14 @@
       "label": "Live"
     },
     {
-      "icon": "sport",
-      "identity": "test12",
-      "label": "Test 12"
+      "icon": "vip",
+      "identity": "recommended",
+      "label": "RECOMMENDED"
     },
     {
-      "icon": "security",
-      "identity": "999",
-      "label": "9-9-9"
+      "icon": "age",
+      "identity": "endgame",
+      "label": "END"
     }
   ],
   "benefits": {
