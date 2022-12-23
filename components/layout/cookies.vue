@@ -76,7 +76,7 @@
     --color: var(--white);
   }
 
-  .btn-primary {
+  .size-md.btn-primary {
     align-self: center;
     --padding: #{rem(4px)} #{rem(16px)};
     @include upd-font($heading-1);
