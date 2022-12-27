@@ -126,7 +126,7 @@
 
   .btn-modal-close {
     @include media(md) {
-      --top: #{rem(-16px)};
+      transform: translate(50%, -50%);
     }
   }
 }
