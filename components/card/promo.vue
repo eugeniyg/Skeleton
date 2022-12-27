@@ -206,7 +206,6 @@
 
   @include media(l) {
     --padding: #{rem(40px)} #{rem(40px)};
-    --gap: #{32px};
     --margin-left: #{rem(-48px)};
     --margin-right: #{rem(-48px)};
   }
