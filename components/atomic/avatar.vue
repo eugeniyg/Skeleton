@@ -1,12 +1,12 @@
 <template>
   <div class="avatar" @click="emit('toggle')">
     <span v-if="props.isButton" class="close-decor">
-      <atomic-icon id="plus" />
+      <atomic-icon id="plus"/>
     </span>
 
     <span class="thumb">
       <img class="img" src="~/assets/img/avatar-bg.png" alt="">
-      <atomic-bulb v-if="props.showBulb" />
+      <atomic-bulb v-if="props.showBulb"/>
     </span>
 
     <div v-if="props.label" class="label">
@@ -17,7 +17,7 @@
       {{ props.nickname }}
     </div>
 
-    <slot name="progress-bar" />
+    <slot name="progress-bar"/>
 
     <div v-if="props.amount.length" class="amount">
       <span v-for="(item, index) in props.amount" :key="index">
@@ -110,12 +110,26 @@
 
     --icon-size: #{rem(18px)};
 
-    &:hover {
-      box-shadow: 0 0 0 3px var(--gray-900);
-      cursor: pointer;
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
 
-      .icon {
-        --color: var(--yellow-500);
+        &:after {
+          position: absolute;
+          content: '';
+          box-shadow: inset 0 0 0 3px var(--gray-900);
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          z-index: 2;
+          border-radius: 12px;
+          pointer-events: none;
+        }
+
+        .icon {
+          --color: var(--yellow-500);
+        }
       }
     }
   }
