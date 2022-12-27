@@ -39,7 +39,7 @@
       {{ loginContent?.loginButton }}
     </button-base>
 
-    <button-popup :buttonLabel="loginContent?.forgotButton" openModal="forgotPass"/>
+    <button-popup class="btn-forgot" :buttonLabel="loginContent?.forgotButton" openModal="forgotPass"/>
 
     <button-popup :buttonLabel="loginContent?.registrationButton" openModal="register" />
   </form>
@@ -116,7 +116,12 @@
 
     &.size-md {
       --padding: #{rem(11px) rem(24px)};
+      margin-top: 0;
     }
+  }
+
+  .btn-forgot {
+    margin-top: rem(-8px);
   }
 }
 </style>
