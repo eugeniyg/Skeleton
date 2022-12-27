@@ -37,6 +37,13 @@
     "title": "Reset password",
     "resetButton": "Confirm"
   },
+  "registrationCancel": {
+    "title": "Are you sure you want to cancel your registration?",
+    "bonusImage": "/img/uploads/icn-notification.svg",
+    "bonusText": "Sign-up takes only a minute and welcome you with up to *5000 mBTC + 300 FS*",
+    "backButton": "Back to Sign Up",
+    "closeButton": "Close"
+  },
   "registration": {
     "title": "Join Slotsbet",
     "registrationButton": "Sign up",
