@@ -16,7 +16,7 @@
         class="cat-select"
         ref="catSelect"
         @click="toggle"
-        :class="{'is-open': isCatSelectOpen}"
+        :class="{'is-open': isOpen}"
       >
         <atomic-icon id="more-menu"/>
         <span>All categories</span>
@@ -41,6 +41,7 @@
 
 <script setup lang="ts">
   import { GameInterface } from '@platform/frontend-core/dist/module';
+  import { weight } from 'postcss-minify-font-values/types/lib/keywords';
 
   const emit = defineEmits(['clickCategory']);
   const { gameCollections } = useGamesStore();
@@ -53,31 +54,45 @@
   const catNav = ref<HTMLElement>();
   const catSelect = ref<HTMLElement>();
   const visibleIndexes = ref<number[]>([0]);
-  const isCatSelectOpen = ref<boolean>(false);
+  const isOpen = ref<boolean>(false);
+  const timeoutId = ref<any>();
   const toggle = () => {
-    isCatSelectOpen.value = !isCatSelectOpen.value;
+    isOpen.value = !isOpen.value;
+  };
+
+  const clickOutside = (e: Event) => {
+    if (!e.target?.closest('.cat-select')) {
+      isOpen.value = false;
+    }
   };
 
   const lastItemClass = (index: number) => ({ 'last-item': index === visibleCatItems.value.length - 1 });
 
-  const init = () => {
-    const items = Array.from(catNav.value?.querySelectorAll('.item'));
-
-    items.reduce((acc, curr, index) => {
-      const width = acc + curr.scrollWidth;
-      const wrapWidth = catNavWrap.value?.offsetWidth || 0;
-
-      if (width <= wrapWidth) {
-        visibleIndexes.value.push(index);
-      }
-      return width;
-    }, catSelect.value?.scrollWidth || 0);
-
-    visibleCatItems.value = visibleCatItems.value.slice(0, visibleIndexes.value.length - 1);
-    subCatItems.value = filteredCategories.slice(-7);
+  const tick = () => {
+    console.log('update');
+    console.log(window.innerWidth >= 280);
   };
 
-  onMounted(init);
+  const update = () => {
+    clearTimeout(timeoutId.value);
+    if (window.innerWidth >= 1280) {
+      timeoutId.value = setTimeout(tick, 250);
+    } else {
+      visibleCatItems.value = [...filteredCategories];
+    }
+  };
+
+  onMounted(() => {
+    window.addEventListener('resize', update);
+    document.addEventListener('click', clickOutside);
+    update();
+  });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('resize', update);
+    document.removeEventListener('click', clickOutside);
+  });
+
 </script>
 
 <style lang="scss">
@@ -97,10 +112,10 @@
 
   @include media(md) {
     --margin-bottom: #{rem(40px)};
-    overflow-x: visible;
   }
 
   @include media(l) {
+    overflow-x: visible;
     --margin-left: 0;
     --margin-right: 0;
   }
@@ -111,6 +126,7 @@
   padding: rem(4px) rem(16px);
   display: inline-flex;
   border-radius: 8px;
+  user-select: none;
 
   @include media(l) {
     padding: rem(4px);
@@ -169,6 +185,10 @@
     &.last-item {
       border-top-right-radius: (8px);
       border-bottom-right-radius: (8px);
+
+      @include media(l) {
+        border-radius: 0;
+      }
     }
   }
 }
@@ -200,6 +220,8 @@
 
   @include media(l) {
     display: flex;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 
   &.is-open {
