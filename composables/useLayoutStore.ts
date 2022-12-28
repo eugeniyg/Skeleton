@@ -53,7 +53,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         register: false,
         signIn: false,
         deposit: false,
-        confirm: true,
+        confirm: false,
         confirmBonus: false,
         error: false,
         forgotPass: false,
