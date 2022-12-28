@@ -341,7 +341,7 @@
   }
 
   .img {
-    width: rem(104px);
+    width: rem(134px);
     height: auto;
     display: grid;
     margin: 0 auto;
@@ -356,12 +356,7 @@
 
   .btn-primary {
     --width: 100%;
-    //--padding: #{rem(16px)} #{rem(50px)};
     margin: rem(8px) auto 0;
-
-    //@include media(xs) {
-    //  --width: fit-content;
-    //}
   }
 }
 
