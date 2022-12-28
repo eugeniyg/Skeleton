@@ -60,21 +60,19 @@
     position: var(--position, absolute);
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
+    border-radius: 8px;
     background-color: var(--bg, var(--gray-800));
-    top: var(--top, 0);
-    right: var(--right, 0);
     cursor: pointer;
-    --top: 0;
-    --right: #{rem(-8px)};
     --bg: transparent;
 
-    &:hover {
-      --bg: var(--gray-800);
-      transition: background-color .2s ease-in-out;
+    @include use-hover {
+      &:hover {
+        transition: background-color .2s ease-in-out;
+        --bg: var(--gray-800);
 
-      .icon {
-        --color: var(--yellow-500);
+        .icon {
+          --color: var(--yellow-500);
+        }
       }
     }
 
@@ -93,14 +91,11 @@
 
   &__previous {
     --position: relative;
-    --top: auto;
-    --right: auto;
+  }
 
-    @include media(sm) {
-      --position: absolute;
-      --top: calc(50% + 10px);
-      transform: translateY(-50%);
-    }
+  &__close {
+    top: rem(-24px);
+    right: rem(-16px);
   }
 }
 </style>
