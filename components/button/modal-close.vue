@@ -13,14 +13,15 @@
   @extend %skip-btn;
   min-width: rem(32px);
   min-height: rem(32px);
-  position: var(--position, relative);
+  position: var(--position, absolute);
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  background-color: var(--bg, var(--gray-800));
+  background-color: var(--bg, var(--gray-900));
   top: var(--top, 0);
-  right: var(--right, 0);
+  right: var(--right, #{rem(-4px)});
   cursor: pointer;
+  transform: translate(0, -50%);
 
   .icon {
     visibility: var(--visibility, hidden);
@@ -31,43 +32,26 @@
     left: 0;
     display: flex;
     margin: auto;
-    --icon-size: 24px;
+    --icon-size: 22px;
 
     &:first-of-type {
-      --visibility: visible;
-      --color: var(--white);
+      --visibility: hidden;
     }
 
     &:last-of-type {
-      --visibility: hidden;
-      --color: var(--gray-400);
+      --visibility: visible;
+      background: transparent;
+      color: var(--color, var(--gray-400));
     }
   }
 
-  @include media(md) {
-    cursor: pointer;
-    --top: 0;
-    --right: 0;
-    --bg: transparent;
-    --position: absolute;
+  @include use-hover {
+    &:hover {
+      background-color: var(--gray-800);
 
-    @include use-hover {
-      &:hover {
-        --bg: var(--gray-800);
-        transition: background-color .2s ease-in-out;
-
-        .icon {
-          --color: var(--yellow-500);
-        }
+      .icon {
+        --color: var(--yellow-400);
       }
-    }
-
-    .icon:first-of-type {
-      --visibility: hidden
-    }
-
-    .icon:last-of-type {
-      --visibility: visible
     }
   }
 }

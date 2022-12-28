@@ -277,6 +277,7 @@
   max-width: 400px;
   width: 100%;
   user-select: none;
+  margin: 0 rem(16px);
 
   .scroll {
     display: flex;
@@ -291,10 +292,12 @@
     border-left: rem(8px) solid var(--gray-900);
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
     position: relative;
-    padding: 0 16px 20px 16px;
+    padding: rem(24px) rem(22px) rem(22px) rem(22px);
     grid-row-gap: rem(16px);
     width: 100%;
     @extend %scrollbar;
+
+    border-radius: 16px;
 
     @include media(xs) {
       border-radius: 12px;
@@ -305,19 +308,12 @@
     display: flex;
     align-items: center;
     position: relative;
-    padding-top: rem(20px);
-    grid-row-gap: rem(8px);
 
     .title {
       @include font($heading-6);
       color: var(--white);
       text-align: var(--text-align, center);
       flex-grow: 1;
-      margin-left: #{rem(-32px)};
-
-      @include media(xs) {
-        margin-left: 0;
-      }
     }
   }
 
@@ -332,12 +328,10 @@
   }
 
   .btn-modal-close {
-    --top: 0;
-    --right: 0;
-
-    @include media(xs) {
-      --right: #{rem(-8px)};
-    }
+    position: absolute;
+    --bg: var(--gray-900);
+    --right: #{rem(-16px)};
+    --top: #{rem(-8px)};
   }
 
   .img {

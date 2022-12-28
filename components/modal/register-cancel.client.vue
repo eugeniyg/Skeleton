@@ -67,15 +67,6 @@
     }
   }
 
-  .scroll {
-    grid-row-gap: rem(24px);
-    padding: 0 #{rem(16px)} #{rem(20px)} #{rem(16px)};
-
-    @include media(l) {
-      padding: #{rem(8px)} #{rem(24px)} #{rem(24px)} #{rem(24px)};
-    }
-  }
-
   .btn-primary {
     margin: 0 0 rem(8px);
   }
@@ -99,14 +90,6 @@
 
     span {
       color: var(--yellow-500);
-    }
-  }
-
-  .btn-modal-close {
-    --right: 0;
-
-    @include media(md) {
-      --right: #{rem(-8px)};
     }
   }
 }
