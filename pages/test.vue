@@ -41,7 +41,6 @@
 
 <script setup lang="ts">
   import { GameInterface } from '@platform/frontend-core/dist/module';
-  import { weight } from 'postcss-minify-font-values/types/lib/keywords';
 
   const emit = defineEmits(['clickCategory']);
   const { gameCollections } = useGamesStore();
@@ -70,7 +69,20 @@
 
   const tick = () => {
     console.log('update');
-    console.log(window.innerWidth >= 280);
+    const stopWidth = catSelect?.value.offsetWidth || 0;
+    let lastIndex = 0;
+
+    const items = Array.from(catNav.value?.querySelectorAll('.item'));
+
+    items.reduce((acc, item, index) => {
+      acc += item?.offsetWidth;
+      if (acc <= catNavWrap.value?.offsetWidth) {
+        lastIndex = index;
+      }
+      return acc;
+    }, stopWidth);
+
+    console.log(lastIndex)
   };
 
   const update = () => {
