@@ -32,6 +32,7 @@
 <style lang="scss">
 .modal-confirm {
   @extend %modal-info;
+  margin: 0 rem(16px);
 
   .header {
     position: relative;
@@ -48,6 +49,7 @@
 
   .scroll {
     padding-top: rem(20px);
+    border-radius: 16px;
   }
 
   .btn-primary {
@@ -59,6 +61,7 @@
     position: absolute;
     transform: translate(0, -50%);
     --bg: var(--gray-900);
+    --right: #{rem(-4px)};
 
     @include use-hover {
       &:hover {
