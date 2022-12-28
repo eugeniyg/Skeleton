@@ -51,12 +51,14 @@
     --bg: transparent;
     --position: absolute;
 
-    &:hover {
-      --bg: var(--gray-800);
-      transition: background-color .2s ease-in-out;
+    @include use-hover {
+      &:hover {
+        --bg: var(--gray-800);
+        transition: background-color .2s ease-in-out;
 
-      .icon {
-        --color: var(--yellow-500);
+        .icon {
+          --color: var(--yellow-500);
+        }
       }
     }
 

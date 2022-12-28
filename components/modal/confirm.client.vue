@@ -33,8 +33,49 @@
 .modal-confirm {
   @extend %modal-info;
 
+  .header {
+    position: relative;
+    padding-top: 0;
+    grid-row-gap: 0;
+  }
+
   .text {
-    @include upd-font($heading-5);
+    @include font($heading-5);
+    text-align: center;
+    color: var(--white);
+    margin: 0 0;
+  }
+
+  .scroll {
+    padding-top: rem(20px);
+  }
+
+  .btn-primary {
+    --width: 100%;
+    margin: rem(8px) auto 0;
+  }
+
+  .btn-modal-close {
+    position: absolute;
+    transform: translate(0, -50%);
+    --bg: var(--gray-900);
+
+    @include use-hover {
+      &:hover {
+        --bg: var(--gray-800);
+      }
+    }
+
+    .icon {
+      &:first-of-type {
+        --visibility: hidden;
+      }
+
+      &:last-of-type {
+        --visibility: visible;
+        background: transparent;
+      }
+    }
   }
 }
 </style>
