@@ -86,7 +86,7 @@
     max-height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-    padding: 16px 16px 24px 24px;
+    padding: 4px 16px 24px 24px;
     border-top: 12px solid var(--gray-900);
     border-right: 8px solid var(--gray-900);
     border-bottom: 12px solid var(--gray-900);
@@ -105,6 +105,7 @@
         color: var(--white);
         text-align: var(--text-align, center);
         flex-grow: 1;
+        margin-left: rem(32px);
       }
     }
 
@@ -125,8 +126,44 @@
   }
 
   .btn-modal-close {
+    transform: translate(0, 0);
+    --right: auto;
+    --top: 4px;
+    --bg: var(--gray-800);
+
+    .icon {
+      --color: var(--white);
+
+      &:first-of-type {
+        --visibility: visible;
+      }
+
+      &:last-of-type {
+        --visibility: hidden;
+      }
+
+      @include media(xs) {
+        --color: var(--gray-400);
+
+        &:first-of-type {
+          --visibility: hidden;
+        }
+
+        &:last-of-type {
+          --visibility: visible;
+        }
+      }
+    }
+
+    @include media(xs) {
+      --top: #{rem(-4px)};
+      --right: #{rem(-16px)};
+      --bg: transparent;
+    }
+
     @include media(md) {
-      transform: translate(50%, -50%);
+      --top: #{rem(-16px)};
+      --right: #{rem(-16px)};
     }
   }
 }
