@@ -6,9 +6,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   parseUserAgent(userAgent);
 
   nuxtApp.hook('page:finish', () => {
-    const route = useRoute();
     const { preloaderDone } = useProjectMethods();
-    if (route.name !== 'main' && route.name !== 'locale-main') preloaderDone();
+    preloaderDone();
   });
 
   const checkAffiliateTag = ():void => {

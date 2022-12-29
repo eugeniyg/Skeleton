@@ -21,14 +21,12 @@
       showAllBtn
       showArrows
       :category="sortCategory[0]"
-      @initialLoad="gamesGroupLoaded++"
     />
 
     <group-games
       showAllBtn
       showArrows
       :category="sortCategory[1]"
-      @initialLoad="gamesGroupLoaded++"
     />
 
     <cards-group
@@ -47,14 +45,12 @@
       showAllBtn
       showArrows
       :category="sortCategory[2]"
-      @initialLoad="gamesGroupLoaded++"
     />
 
     <group-games
       showAllBtn
       showArrows
       :category="sortCategory[3]"
-      @initialLoad="gamesGroupLoaded++"
     />
 
     <group-winners showArrows />
@@ -63,14 +59,12 @@
       showAllBtn
       showArrows
       :category="sortCategory[4]"
-      @initialLoad="gamesGroupLoaded++"
     />
 
     <group-games
       showAllBtn
       showArrows
       :category="sortCategory[5]"
-      @initialLoad="gamesGroupLoaded++"
     />
 
     <group-promotions v-if="globalComponentsContent?.promotions" v-bind="globalComponentsContent.promotions" />
@@ -127,19 +121,9 @@
   };
 
   const {
-    preloaderDone, preloaderStart, localizePath, setPageSeo,
+    localizePath, setPageSeo,
   } = useProjectMethods();
   setPageSeo(mainContent?.seo);
-  onBeforeMount(() => {
-    preloaderStart();
-  });
-
-  const gamesGroupLoaded = ref<number>(0);
-  watch(() => gamesGroupLoaded.value, (newValue:number) => {
-    if (newValue === mainCategories.length) {
-      preloaderDone();
-    }
-  });
 
   const changeCategory = (categoryId: string) => {
     router.push({ path: localizePath('/games'), query: { category: categoryId } });

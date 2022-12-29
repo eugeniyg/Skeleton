@@ -32,13 +32,20 @@
     <div
       ref="scrollContainer"
       class="items"
+      :class="{ 'disabled-scroll-block': !games.length }"
       @scroll="scrollHandler"
     >
-      <card-base
-        v-for="(game, gameIndex) in games"
-        :key="gameIndex"
-        v-bind="game"
-      />
+      <template v-if="games.length">
+        <card-base
+          v-for="(game, gameIndex) in games"
+          :key="gameIndex"
+          v-bind="game"
+        />
+      </template>
+
+      <template v-else>
+        <div v-for="n in 9" :key="n" class="card-base" />
+      </template>
 
       <div class="load-more" ref="loadMore"/>
     </div>
@@ -76,13 +83,13 @@
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
-  const nextDisabled = ref<boolean>(false);
+  const nextDisabled = ref<boolean>(true);
   const showArrowButtons = ref<boolean>(props.showArrows);
   const games = ref<GameInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
   const { getFilteredGames } = useCoreGamesApi();
 
-  const scrollHandler = async ():Promise<void> => {
+  const scrollHandler = ():void => {
     if (!scrollContainer.value) return;
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
@@ -221,6 +228,10 @@
 
     &::-webkit-scrollbar {
       display: none;
+    }
+
+    &.disabled-scroll-block {
+      pointer-events: none !important;
     }
   }
 
