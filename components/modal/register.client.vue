@@ -16,7 +16,10 @@
             <button-modal-close @close="openCancelModal"/>
             <div class="title">{{ registrationContent?.title }}</div>
           </div>
-          <form-join v-if="showForm"/>
+          <form-join
+            v-if="showForm && registrationFields.length"
+            :registrationFields="registrationFields"
+          />
         </div>
       </div>
     </div>
@@ -25,6 +28,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { FieldInterface } from '@platform/frontend-core/dist/module';
   import { RegistrationInterface } from '~/types';
 
   const showForm = ref<boolean>(false);
@@ -47,6 +51,13 @@
 
   watch(() => modals.value.registerCancel, (newValue: boolean) => {
     if (!newValue) showForm.value = false;
+  });
+
+  const registrationFields = ref<FieldInterface[]>([]);
+  const { getRegistrationFields } = useCoreAuthApi();
+  onMounted(async () => {
+    const fieldsResponse = await getRegistrationFields();
+    registrationFields.value = fieldsResponse;
   });
 </script>
 
