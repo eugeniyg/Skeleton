@@ -67,24 +67,29 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { FieldInterface } from '@platform/frontend-core/dist/module';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
   import { RegistrationInterface } from '~/types';
+
+  const props = defineProps<{
+    registrationFields: FieldInterface[]
+  }>();
 
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
   const { setFormData } = useCoreMethods();
   const { closeModal } = useLayoutStore();
   const fieldsStore = useFieldsStore();
-  const { selectOptions, registrationFields } = storeToRefs(fieldsStore);
+  const { selectOptions } = storeToRefs(fieldsStore);
   const globalStore = useGlobalStore();
   const {
     countries, fieldsContent, popupsData, headerCountry,
   } = storeToRefs(globalStore);
   const registrationContent: RegistrationInterface|undefined = popupsData.value?.registration;
 
-  const mainFields = registrationFields.value.filter((field) => !groupFooterFields.includes(field.name));
-  const footerFields = registrationFields.value.filter((field) => groupFooterFields.includes(field.name));
-  const registrationFormData = reactive(setFormData(registrationFields.value));
+  const mainFields = props.registrationFields.filter((field) => !groupFooterFields.includes(field.name));
+  const footerFields = props.registrationFields.filter((field) => groupFooterFields.includes(field.name));
+  const registrationFormData = reactive(setFormData(props.registrationFields));
   if (registrationFormData.hasOwnProperty('nickname')) registrationFormData.nickname = 'undefined';
   if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
   if (registrationFormData.hasOwnProperty('country') && !registrationFormData.country) {
@@ -100,7 +105,7 @@
   };
 
   const { getFormRules, createValidationRules } = useProjectMethods();
-  const registrationRules = createValidationRules(registrationFields.value, true);
+  const registrationRules = createValidationRules(props.registrationFields, true);
   const registrationFormRules = getFormRules(registrationRules);
   const {
     serverFormErrors, v$, onFocus, setError,
