@@ -42,7 +42,6 @@ export const useGamesStore = defineStore('gamesStore', {
       const { getGameProviders } = useCoreGamesApi();
       const data = await getGameProviders();
       this.gameProviders = data.filter((provider: GameProviderInterface) => provider.identity !== 'betsy');
-      this.gameProviders = data;
     },
 
     async getGameCollections(): Promise<void> {
