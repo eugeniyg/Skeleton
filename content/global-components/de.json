@@ -184,6 +184,11 @@
   },
   "categories": [
     {
+      "icon": "new",
+      "identity": "new",
+      "label": "New"
+    },
+    {
       "icon": "hot",
       "identity": "hot",
       "label": "Hot"
@@ -192,11 +197,6 @@
       "icon": "heart",
       "identity": "popular",
       "label": "Popular"
-    },
-    {
-      "icon": "new",
-      "identity": "new",
-      "label": "New"
     },
     {
       "icon": "cherry",
@@ -219,11 +219,6 @@
       "label": "Table"
     },
     {
-      "icon": "live-casino",
-      "identity": "live",
-      "label": "Live"
-    },
-    {
       "icon": "sport",
       "identity": "test12",
       "label": "Test 12"
@@ -232,6 +227,11 @@
       "icon": "security",
       "identity": "999",
       "label": "9-9-9"
+    },
+    {
+      "icon": "live-casino",
+      "identity": "live",
+      "label": "Live"
     }
   ],
   "benefits": {

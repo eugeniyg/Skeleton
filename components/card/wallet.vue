@@ -123,6 +123,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
+    padding-top: rem(3px);
   }
 
   .input-toggle {
@@ -142,7 +143,6 @@
     color: var(--white);
     grid-column-gap: rem(4px);
     display: flex;
-    align-items: baseline;
     position: relative;
     margin: var(--margin, #{rem(20px)} 0 #{rem(8px)});
 
@@ -154,6 +154,7 @@
   .currency {
     @include font($body-3);
     position: relative;
+    padding-top: rem(11px);
   }
 
   .content {
@@ -208,8 +209,16 @@
   }
 
   .hide-currency {
-    color: var(--gray-300);
-    transform: translateX(#{rem(-12px)});
+    --color: var(--gray-300);
+    --padding: #{rem(8px)} 0;
+    position: relative;
+
+    @include use-hover {
+      &:hover {
+        --color: var(--yellow-500);
+        --bg: transparent;
+      }
+    }
   }
 }
 
