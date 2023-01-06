@@ -79,7 +79,7 @@
   const isRiched = computed(() => props.progressValue === 100);
   const greaterZero = computed(() => props.progressValue > 0);
 
-  // 1/6/2023, 5:36:29 =>
+  // 1/6/2023, 5:36:29 ==> [10.06.2023, 05:36]
   const format = (dateStr: string) => {
     const [date, time] = dateStr.split(',');
     const timeArr = time.split(':').slice(0, 2);
