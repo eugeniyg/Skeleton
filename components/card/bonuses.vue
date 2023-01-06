@@ -33,7 +33,6 @@
           <atomic-icon id="history"/>
 
           <div class="card-bonuses__date">
-            <pre>{{ getFormatDate(props.expireDate) }}</pre>
             <span class="date">{{ format(getFormatDate(props.expireDate)).date }}</span>
             <span class="time">{{ format(getFormatDate(props.expireDate)).time }}</span>
           </div>
