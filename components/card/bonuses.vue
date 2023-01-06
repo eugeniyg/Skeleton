@@ -11,12 +11,19 @@
         />
 
         <div class="card-bonuses__info">
+          <!-- variant 1 -->
           <atomic-tooltip
             align="bottom"
             :text="props.tooltipText"
           >
             <span class="card-bonuses__info-title">Wager requirements</span>
           </atomic-tooltip>
+
+          <!-- variant 2 -->
+          <span class="card-bonuses__link">
+            <span class="label">Game:</span>
+            <a class="title" href="#" @click.prevent>Sweet Bonanza Xmas</a>
+          </span>
         </div>
       </div>
 
@@ -24,7 +31,19 @@
         <div class="card-bonuses__value">{{ props.amountValue }}</div>
         <div class="card-bonuses__msg">
           <atomic-icon id="history"/>
-          {{ getFormatDate(props.expireDate) }}
+
+          <div class="card-bonuses__date">
+            <pre>{{ getFormatDate(props.expireDate) }}</pre>
+            <span class="date">{{ format(getFormatDate(props.expireDate)).date }}</span>
+            <span class="time">{{ format(getFormatDate(props.expireDate)).time }}</span>
+          </div>
+
+          <span class="trash-icon">
+            <button>
+              <atomic-icon id="trash"/>
+            </button>
+          </span>
+
         </div>
       </div>
 
@@ -60,6 +79,22 @@
 
   const isRiched = computed(() => props.progressValue === 100);
   const greaterZero = computed(() => props.progressValue > 0);
+
+  // 1/6/2023, 5:36:29 =>
+  const format = (dateStr: string) => {
+    const [date, time] = dateStr.split(',');
+    const timeArr = time.split(':').slice(0, 2);
+    const dateArr = date.split('/');
+    const zeroPrefix = (str: string): string | number => {
+      const num = Number(str);
+      return num < 10 ? `0${num}` : num;
+    };
+
+    return {
+      date: dateArr.map((str) => zeroPrefix(str)).join('.'),
+      time: timeArr.map((str) => zeroPrefix(str)).join(':'),
+    };
+  };
 </script>
 
 <style lang="scss">
@@ -80,7 +115,7 @@
     @include font($heading-5);
     color: var(--white);
     grid-column: 1/2;
-    margin: 24px 0 8px;
+    margin: rem(24px) 0 rem(8px);
   }
 
   @include media(sm) {
@@ -100,13 +135,11 @@
   }
 
   @include media(xxl) {
-    --columns: repeat(4, 1fr);
 
     &__title {
       grid-column: 1/5;
     }
   }
-
 }
 
 .card-bonuses {
@@ -135,27 +168,31 @@
   }
 
   &__body {
-    padding: rem(24px);
+    padding: rem(24px) rem(16px);
     background-image: linear-gradient(107.86deg, #28263B 1.67%, #3D3D51 87.33%), linear-gradient(107.86deg, #19192F 1.67%, #28263B 87.33%);
     border-radius: 14px;
     position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    @include media(md) {
+      padding: rem(24px);
+    }
   }
 
   &__header {
-    display: grid;
-    grid-template-areas:
-      "title toggle"
-      "info toggle";
-    grid-template-columns: 1fr auto;
-    align-items: flex-start;
-    margin-bottom: rem(8px);
-    grid-row-gap: rem(4px);
     grid-column-gap: rem(8px);
+    display: flex;
+    flex-wrap: wrap;
     position: relative;
+    margin-bottom: auto;
+    padding-bottom: rem(8px);
 
     .input-toggle {
-      height: 0;
-      transform: translateY(#{rem(12px)});
+      position: absolute;
+      top: 0;
+      right: 0;
     }
   }
 
@@ -163,21 +200,29 @@
     @include font($body-1);
     color: var(--white);
     margin: 0;
-    word-break: break-word;
+    word-break: break-all;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: rem(56px);
+    width: 100%;
   }
 
   &__info {
     display: flex;
-    grid-column-gap: rem(4px);
-    align-items: center;
+    align-items: flex-start;
+    margin-top: rem(4px);
 
-    .tooltip.is-show {
-      .icon {
-        --color: var(--yellow-500)
+    .tooltip {
+      padding-left: 0;
+      margin-top: rem(-4px);
+
+      &.is-show {
+        .icon {
+          --color: var(--yellow-500)
+        }
       }
     }
   }
@@ -185,13 +230,13 @@
   &__amount {
     @include font($heading-4);
     display: flex;
+    flex-wrap: wrap;
     margin-bottom: rem(16px);
     grid-column-gap: rem(8px);
   }
 
   &__value {
-    flex-grow: 1;
-    white-space: nowrap;
+    @include font($heading-3);
   }
 
   &__msg {
@@ -200,10 +245,41 @@
     display: flex;
     align-items: center;
     grid-column-gap: rem(2px);
-    white-space: nowrap;
+    margin-left: auto;
 
     .icon {
       --color: var(--gray-400);
+      --icon-size: 20px;
+    }
+
+    .trash-icon {
+      display: flex;
+      align-items: center;
+      grid-column-gap: rem(4px);
+      margin-left: rem(6px);
+
+      button {
+        background: transparent;
+        padding: 0;
+        border: 0;
+
+        @include use-hover {
+          &:hover {
+            cursor: pointer;
+
+            .icon {
+              --color: var(--yellow-500)
+            }
+          }
+        }
+      }
+
+      &:before {
+        content: '';
+        display: inherit;
+        height: rem(19px);
+        border-left: 1px solid var(--gray-500);
+      }
     }
   }
 
@@ -294,6 +370,33 @@
       --color: var(--gray-400);
       --icon-size: 16px;
     }
+  }
+
+  &__link {
+    display: flex;
+    @include font($body-0);
+    color: var(--yellow-500);
+    grid-column-gap: rem(4px);
+
+    .title {
+      color: inherit;
+      text-decoration: none;
+
+      @include use-hover {
+        &:hover {
+          cursor: pointer;
+          color: var(--yellow-600)
+        }
+      }
+    }
+  }
+
+  &__date {
+    display: flex;
+    flex-wrap: wrap;
+    @include font($body-0);
+    color: var(--gray-400);
+    grid-column-gap: rem(4px);
   }
 }
 </style>
