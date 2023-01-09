@@ -65,5 +65,27 @@
   .titles {
     margin-bottom: rem(16px);
   }
+
+  .container {
+    .scroll {
+      border: 0;
+
+      @include media(md) {
+          border: 8px solid var(--gray-900);
+      }
+    }
+  }
+
+  .header {
+    .btn-modal-close {
+      --top: 16px;
+      --right: 8px;
+
+      @include media(md)  {
+        --top: 0;
+        --right: -16px;
+      }
+    }
+  }
 }
 </style>

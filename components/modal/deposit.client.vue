@@ -62,11 +62,15 @@
 .modal-deposit {
   @extend %modal;
 
-  .scroll {
-    padding: 0 rem(8px);
+  .header {
+    .btn-modal-close {
+      --top: 16px;
+      --right: 8px;
 
-    @include media(md) {
-      padding: rem(16px);
+      @include media(md)  {
+        --top: -8px;
+        --right: -16px;
+      }
     }
   }
 }
