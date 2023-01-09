@@ -1,56 +1,60 @@
 <template>
-  <div class="nav-cat-wrap" ref="viewport">
-    <div class="nav-cat" ref="navCat">
-      <span
-        v-for="({ id, identity, name }, index) in testItems"
-        class="nav-cat-item"
-        :data-index="index"
-        :data-debug="visibleIndexes.length"
-        :class="{
-          'is-active': $route.query.category === identity,
-          'is-hidden': isLoaded && !visibleIndexes.includes(index)
-        }"
-        @click="emit('clickCategory', identity)"
-        :key="id"
-      >
-        <atomic-icon v-if="gameCategoriesObj[identity]?.icon" :id="gameCategoriesObj[identity].icon"/>
-        <span>{{ gameCategoriesObj[identity]?.label || name }}</span>
-      </span>
 
-      <span
-        class="nav-cat-select"
-        :class="{
-          //'is-hidden' : visibleIndexes.length === testItems.length
-        }"
-        ref="toggleSelect"
-        @click="toggle"
-      >
-        <atomic-icon id="more-menu"/>
-        <span>All categories</span>
-        <atomic-icon id="arrow_expand-close"/>
-
-        <div
-          class="nav-cat-select-items"
+  <div class="nav-cat-scroll">
+    <div class="nav-cat-wrap" ref="viewport">
+      <div class="nav-cat">
+        <span
+          v-for="({ id, identity, name }, index) in filteredCategories"
+          class="nav-cat-item"
+          :data-index="index"
           :class="{
+            'is-active': $route.query.category === identity,
+            'is-hidden': index >= visibleIndex.length,
+            'is-no-icon': !gameCategoriesObj[identity]?.icon
+          }"
+          @click="emit('clickCategory', identity)"
+          :key="id"
+        >
+          <atomic-icon v-if="gameCategoriesObj[identity]?.icon" :id="gameCategoriesObj[identity].icon"/>
+          <span>{{ gameCategoriesObj[identity]?.label || name }}</span>
+        </span>
+
+        <span
+          class="nav-cat-select"
+          :class="{
+            'is-hidden' : isSelectHidden,
             'is-open': isOpen,
           }"
+          ref="select"
+          @click="toggle"
         >
+          <atomic-icon id="more-menu"/>
+          <span>All categories</span>
+          <atomic-icon class="icon-expand" id="arrow_expand-close"/>
+
           <span
-            v-for="({ id, identity, name }, index) in testItems"
-            :key="id"
-            class="nav-cat-select-item"
-            :class="{
-              'is-active': $route.query.category === identity,
-            }"
-            @click="emit('clickCategory', identity)"
+            class="nav-cat-select-items"
           >
-            <atomic-icon v-if="gameCategoriesObj[identity]?.icon" :id="gameCategoriesObj[identity].icon"/>
-            <span>{{ gameCategoriesObj[identity]?.label || name }}</span>
+            <span
+              v-for="({ id, identity, name }, index) in filteredCategories"
+              :key="id"
+              class="nav-cat-select-item"
+              :class="{
+                'is-active': $route.query.category === identity,
+                'is-hidden':  index < visibleIndex.length,
+              }"
+              @click="emit('clickCategory', identity)"
+            >
+              <atomic-icon v-if="gameCategoriesObj[identity]?.icon" :id="gameCategoriesObj[identity].icon"/>
+              <span>{{ gameCategoriesObj[identity]?.label || name }}</span>
+              <atomic-icon v-if="$route.query.category === identity" id="check"/>
+            </span>
           </span>
-        </div>
-      </span>
+        </span>
+      </div>
     </div>
   </div>
+
 </template>
 
 <script setup lang="ts">
@@ -59,60 +63,40 @@
   const { gameCategoriesObj } = useGlobalStore();
   const filteredCategories = gameCollections.filter((collection) => !collection.isHidden);
 
-  const testItems = ref([
-    ...filteredCategories,
-    ...filteredCategories.slice(0, 3),
-  ]);
+  const viewport = ref<HTMLElement>();
+  const select = ref<HTMLElement>();
 
-  const viewport = ref<HTMLElement | undefined>();
-  const navCat = ref<HTMLElement | undefined>();
-  const items = ref<NodeListOf<HTMLElement>>();
-  const subItems = ref<NodeListOf<HTMLElement>>();
-  const toggleSelect = ref<HTMLElement | undefined>();
-  const width = ref<string[]>([]);
-  const visibleIndexes = ref<number[]>([]);
-  const timeoutId = ref<any>();
-
-  const isLoaded = ref<boolean>(false);
   const isOpen = ref<boolean>(false);
-  const toggleWidth = ref<number | undefined>(0);
-  const isToggleHidden = ref<boolean>(false);
+  const isSelectHidden = ref<boolean>(false);
+  const visibleIndex = ref<any[]>([]);
+  const timeoutId = ref<any>();
 
   const toggle = () => {
     isOpen.value = !isOpen.value;
   };
+
+  const getItemsData = () => {
+    const offset = 4;
+    return [...document.querySelectorAll('.nav-cat-item')]
+      .map((item) => item.offsetWidth + offset)
+      .reduce((acc, curr) => {
+        acc.totalWidth += curr;
+        acc.width.push(acc.totalWidth);
+        return acc;
+      }, {
+        totalWidth: 0,
+        width: [],
+      });
+  };
+
   const update = () => {
-    console.clear();
-    const indexes: number[] = [];
+    const viewportWidth = viewport.value?.offsetWidth || 0;
+    const toggleWidth = select.value?.offsetWidth || 0;
+    const { width, totalWidth } = getItemsData();
 
-    width.value.reduce((acc, curr, index) => {
-      acc += curr;
+    visibleIndex.value = width.filter((item: any) => item < viewportWidth - toggleWidth || viewportWidth > totalWidth);
 
-      if (acc < viewport.value.offsetWidth) {
-        indexes.push(index);
-        console.log(index)
-      }
-
-      // if (!indexes) isToggleHidden.value = false;
-
-      return acc;
-    }, 0);
-
-    visibleIndexes.value = [...indexes];
-
-    indexes.length = 0;
-
-    console.log(visibleIndexes.value.length  items.value.length)
-
-    // items.value?.forEach((item, index) => {
-    //   item.style.display = visibleIndexes.value.includes(index) ? 'flex' : 'none';
-    // });
-
-    subItems.value?.forEach((item, index) => {
-      item.style.display = !visibleIndexes.value.includes(index) ? 'flex' : 'none';
-    });
-
-    toggleSelect.value.style.display = isToggleHidden.value ? 'none' : 'flex';
+    isSelectHidden.value = visibleIndex.value.length === width.length;
   };
 
   const onResize = () => {
@@ -128,17 +112,9 @@
   };
 
   onMounted(() => {
-    setTimeout(() => {
-      items.value = document.querySelectorAll('.nav-cat-item');
-      subItems.value = document.querySelectorAll('.nav-cat-select-item');
-      width.value = [...items.value].map((item) => (item ? item.offsetWidth : 0));
-      toggleWidth.value = toggleSelect.value?.offsetWidth;
-      isLoaded.value = true;
-      update();
-    }, 200);
-
-    window.addEventListener('resize', onResize);
+    setTimeout(update, 250);
     document.addEventListener('click', clickOutside);
+    window.addEventListener('resize', onResize);
   });
 
   onBeforeUnmount(() => {
@@ -150,16 +126,18 @@
 
 <style lang="scss">
 .nav-cat-wrap {
+  border-radius: 8px;
+}
+
+.nav-cat-scroll {
+  @extend %scrollbar-hide;
   overflow: auto;
-  min-height: var(--height, #{rem(32px)});
   margin-top: var(--margin-top, #{rem(24px)});
   margin-right: var(--margin-right, #{rem(-16px)});
   margin-bottom: var(--margin-bottom, #{rem(24px)});
   margin-left: var(--margin-left, #{rem(-16px)});
-  @extend %scrollbar-hide;
   position: relative;
   z-index: 1;
-  background: antiquewhite;
 
   @include media(sm) {
     --margin-left: #{rem(-32px)};
@@ -171,10 +149,10 @@
   }
 
   @include media(l) {
+    overflow: visible;
     max-width: 100%;
     min-width: 0;
     width: 100%;
-    overflow: visible;
     --margin-left: 0;
     --margin-right: 0;
   }
@@ -182,20 +160,41 @@
 
 .nav-cat {
   @extend %flex-items-center;
-  padding: rem(4px) rem(16px);
+  padding: rem(0px) rem(22px);
   display: inline-flex;
   border-radius: 8px;
   user-select: none;
+  grid-column-gap: 4px;
+  position: relative;
 
   @include media(sm) {
-    padding: rem(4px) rem(32px);
+    padding: rem(4px) rem(36px);
   }
 
   @include media(l) {
     padding: rem(4px);
-    margin-left: rem(-4px);
-    margin-right: rem(-4px);
     overflow-x: visible;
+  }
+
+  &:before {
+    background: var(--gray-800);
+    position: absolute;
+    content: '';
+    top: 0;
+    right: var(--right, 16px);
+    bottom: 0;
+    left: var(--left, 16px);
+    border-radius: 8px;
+
+    @include media(sm) {
+      --left: 32px;
+      --right: 32px;
+    }
+
+    @include media(l) {
+      --left: 0;
+      --right: 0;
+    }
   }
 
   &::-webkit-scrollbar {
@@ -209,58 +208,74 @@
 }
 
 .nav-cat-item {
-  @include font($heading-1);
-  @extend %flex-items-center;
+  position: relative;
   grid-column-gap: rem(4px);
-  padding: #{rem(8px)} #{rem(12px)} #{rem(8px)} #{rem(8px)};
-  height: var(--height, #{rem(32px)});
+  padding: var(--item-padding, 0 #{rem(12px)} 0 #{rem(8px)});
+  height: var(--item-height, #{rem(24px)});
   cursor: pointer;
-  background-color: var(--gray-800);
+  background-color: var(--bg, var(--gray-800));
   color: var(--color, var(--gray-300));
   text-decoration: none;
   white-space: nowrap;
   transition: color .2s ease-in-out;
+  border-radius: 8px;
+  @include font($heading-1);
+  @extend %flex-items-center;
 
-  .icon {
-    --color: var(--gray-400);
-  }
+  @include use-hover {
+    &:hover {
+      --color: var(--white);
 
-  &:first-of-type {
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-  }
-
-  &.is-last-mob {
-    border-top-right-radius: (8px);
-    border-bottom-right-radius: (8px);
-
-    @include media(l) {
-      border-radius: 0;
+      .icon {
+        --color: var(--white);
+      }
     }
   }
 
-  &.is-last-desk {
-    border-top-right-radius: (8px);
-    border-bottom-right-radius: (8px);
+  @include media(l) {
+    --item-height: #{rem(32px)};
+    --item-padding: 0 #{rem(16px)};
+    @include upd-font($heading-2);
+  }
+
+  &.is-no-icon {
+    --item-padding: 0 #{rem(8px)};
+
+    @include media(sm) {
+      --item-padding: 0 #{rem(16px)};
+    }
   }
 
   &.is-hidden {
     @include media(l) {
-      display: none;
+      position: absolute;
+      visibility: hidden;
+    }
+  }
+
+  .icon {
+    --color: var(--gray-400);
+    --icon-size: 20px;
+  }
+
+  &.is-active {
+    --bg: var(--gray-700);
+    --border-color: var(--gray-700);
+    --color: var(--white);
+
+    .icon {
+      --color: var(--white);
     }
   }
 }
 
 .nav-cat-select {
-  position: relative;
-  display: var(--display, none);
   @include font($heading-1);
+  display: flex;
   @extend %flex-items-center;
-  padding: #{rem(8px)} #{rem(14px)};
-  height: var(--height, #{rem(32px)});
-  cursor: pointer;
+  padding: #{rem(8px)} #{rem(14px)} #{rem(8px)} #{rem(18px)};
+  height: var(--height, #{rem(24px)});
   background-color: var(--gray-800);
-  color: var(--color, var(--gray-300));
   text-decoration: none;
   white-space: nowrap;
   transition: color .2s ease-in-out;
@@ -269,35 +284,64 @@
   grid-template-columns: auto 1fr;
   grid-column-gap: rem(8px);
   border-radius: 8px;
+  cursor: pointer;
+  margin-left: rem(-4px);
+  color: var(--color, var(--gray-300));
+  position: var(--position, absolute);
+  visibility: var(--visibility, hidden);
 
   .icon {
     position: relative;
     transition: transform .2s ease-in-out;
-    --color: var(--white);
+    transform: var(--icon-transform, rotate(0));
+    --color: var(--gray-400);
+    --icon-size: 20px;
   }
 
   @include media(l) {
-    --display: flex;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    @include upd-font($heading-2);
+    --height: #{rem(32px)};
+    --position: relative;
+    --visibility: visible;
   }
 
   &.is-hidden {
-    --display: none;
+    --position: absolute;
+    --visibility: hidden;
   }
 
   &.is-open {
+    .icon-expand {
+      --icon-transform: rotate(-180deg);
+    }
+
     .nav-cat-select-items {
       display: grid;
+    }
+
+    > .icon {
+      --color: var(--white);
+    }
+
+    --color: var(--white);
+  }
+
+  @include use-hover {
+    &:hover {
+      --color: var(--white);
+
+      > .icon {
+        --color: var(--white);
+      }
     }
   }
 }
 
 .nav-cat-select-items {
+  color: var(--gray-300);
   display: none;
   position: absolute;
-  left: 0;
-  max-width: 100%;
+  right: rem(-4px);
   width: 100%;
   padding: rem(8px);
   max-height: calc((#{rem(38px)} * 4) + #{16px});
@@ -310,16 +354,12 @@
   top: rem(30px);
 
   @extend %scrollbar;
-
-  &.is-open {
-    display: grid;
-  }
 }
 
 .nav-cat-select-item {
   @include font($body-1);
-  color: var(--color, var(--white));
-  padding: rem(8px);
+  color: var(--gray-300);
+  padding: rem(8px) rem(6px);
   cursor: pointer;
   user-select: none;
   background-color: var(--bg, transparent);
@@ -329,11 +369,18 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   min-height: rem(38px);
-
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: auto 1fr;
   grid-column-gap: rem(8px);
+  border-radius: 8px;
+
+  @include use-hover {
+    &:hover {
+      --bg: var(--gray-700);
+      color: var(--white);
+    }
+  }
 
   span {
     overflow: hidden;
@@ -345,7 +392,18 @@
   .icon {
     position: relative;
     transition: transform .2s ease-in-out;
-    --color: var(--white);
+    --icon-size: 20px;
+    --color: var(--gray-400);
+    justify-self: flex-end;
+  }
+
+  &.is-active {
+    --border-color: var(--gray-700);
+    color: var(--white);
+
+    .icon {
+      --color: var(--white);
+    }
   }
 
   &.is-hidden {
