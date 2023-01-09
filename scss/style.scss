@@ -154,6 +154,7 @@ body {
   position: relative;
   z-index: 0;
   overflow: hidden;
+  min-height: rem(375px);
 
   &.is-overflow {
     overflow: hidden;
