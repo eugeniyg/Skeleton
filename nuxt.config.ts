@@ -18,6 +18,9 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@/modules/sitemap',
   ],
+  routeRules: {
+    '/static/**': { static: true },
+  },
   components: {
     dirs: [
       {
