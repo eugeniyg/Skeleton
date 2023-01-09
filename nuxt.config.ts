@@ -18,9 +18,6 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@/modules/sitemap',
   ],
-  routeRules: {
-    '/static/privacy-policy': { static: true },
-  },
   components: {
     dirs: [
       {
