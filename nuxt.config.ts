@@ -19,7 +19,7 @@ export default defineNuxtConfig({
     '@/modules/sitemap',
   ],
   routeRules: {
-    '/static/**': { static: true },
+    '/static/privacy-policy': { static: true },
   },
   components: {
     dirs: [
