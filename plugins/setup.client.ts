@@ -6,9 +6,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   parseUserAgent(userAgent);
 
   nuxtApp.hook('page:finish', () => {
-    const route = useRoute();
     const { preloaderDone } = useProjectMethods();
-    if (route.name !== 'main' && route.name !== 'locale-main') preloaderDone();
+    preloaderDone();
   });
 
   const checkAffiliateTag = ():void => {
@@ -25,6 +24,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     }
   };
 
+  const { getFavoriteGames } = useGamesStore();
   nuxtApp.hook('app:mounted', async () => {
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
@@ -34,6 +34,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       subscribeAccountSocket();
       subscribeInvoicesSocket();
+      getFavoriteGames();
     }
     const { subscribeWinnersSocket } = useGamesStore();
     subscribeWinnersSocket();

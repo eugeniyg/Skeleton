@@ -134,7 +134,7 @@
   overflow: hidden;
   display: flex;
   align-items: flex-start;
-  background-color: var(--bg, transparent);
+  background-color: var(--bg, rgba(black, 0.2));
   background-repeat: var(--bg-repeat, no-repeat);
   background-size: var(--bg-size, 100%);
   background-position: var(--bg-position, center);
