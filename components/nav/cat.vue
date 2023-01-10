@@ -139,6 +139,11 @@
   position: relative;
   z-index: 1;
 
+  .category & {
+    --margin-top: 0;
+    --margin-bottom: 0;
+  }
+
   @include media(sm) {
     --margin-left: #{rem(-32px)};
     --margin-right: #{rem(-32px)};
@@ -160,7 +165,7 @@
 
 .nav-cat {
   @extend %flex-items-center;
-  padding: rem(0px) rem(22px);
+  padding: rem(4px) rem(20px);
   display: inline-flex;
   border-radius: 8px;
   user-select: none;
