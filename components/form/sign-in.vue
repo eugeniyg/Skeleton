@@ -1,15 +1,15 @@
 <template>
   <form class="form-sign-in">
     <form-input-text
-      v-model:value="authorizationFormData.email"
-      @blur="v$.email?.$touch()"
-      @focus="focusField('email')"
+      v-model:value="authorizationFormData.login"
+      @blur="v$.login?.$touch()"
+      @focus="focusField('login')"
       type="email"
       :is-required="true"
       :label="fieldsContent?.email?.label || ''"
-      name="email"
+      name="login"
       :placeholder="fieldsContent?.email?.placeholder || ''"
-      :hint="setError('email')"
+      :hint="setError('login')"
       @submit="login"
     />
 
@@ -56,10 +56,10 @@
   const { closeModal } = useLayoutStore();
   const loginContent: LoginInterface|undefined = popupsData.value?.login;
 
-  const authorizationFormData = reactive({ email: '', password: '' });
+  const authorizationFormData = reactive({ login: '', password: '' });
   const { getFormRules } = useProjectMethods();
   const authorizationRules = {
-    email: [{ rule: 'required' }, { rule: 'email' }],
+    login: [{ rule: 'required' }, { rule: 'email' }],
     password: [{ rule: 'required' }],
   };
   const authorizationFormRules = getFormRules(authorizationRules);
