@@ -1,7 +1,11 @@
 <template>
   <div class="input-deposit">
-    <div class="amount">{{ balanceFormat.amount }}</div>
-    <div class="label">{{ balanceFormat.currency }}</div>
+    <div class="select">
+      <div class="amount">{{ balanceFormat.amount }}</div>
+      <div class="label">{{ balanceFormat.currency }}</div>
+      <atomic-icon v-if="true" class="icon-expand" id="arrow_expand-close"/>
+      <list-currencies/>
+    </div>
     <button-deposit/>
   </div>
 </template>
@@ -20,13 +24,12 @@
 .input-deposit {
   @include radius(12px);
   @include font($heading-2);
-  @extend %flex-items-center;
+  display: flex;
   background-color: var(--gray-900);
   color: var(--gray-500);
 
   .amount {
     @extend %flex-items-center;
-    padding-left: rem(16px);
 
     span:first-child {
       color: var(--white);
@@ -36,6 +39,19 @@
   .label {
     @extend %flex-items-center;
     margin: 0 rem(8px) 0 rem(4px);
+  }
+
+  .select {
+    display: flex;
+    position: relative;
+    padding: 0 16px;
+    flex-shrink: 1;
+    align-items: center;
+  }
+
+  .icon-expand {
+    --color: var(--white);
+    --icon-size: 20px;
   }
 }
 </style>
