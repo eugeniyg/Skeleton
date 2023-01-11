@@ -73,5 +73,16 @@
       }
     }
   }
+
+  .list-currencies {
+    .header {
+      border-bottom: 1px solid var(--gray-700);
+      display: flex;
+      padding: 0 0 rem(8px) 0;
+      grid-column-gap: rem(4px);
+      margin-bottom: rem(8px);
+      position: relative;
+    }
+  }
 }
 </style>
