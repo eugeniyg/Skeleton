@@ -1,10 +1,15 @@
 <template>
   <div class="input-deposit">
-    <div class="select">
+    <div
+      id="currencies-select"
+      class="select"
+      :class="{'is-open': isShow}"
+      @click="openSelect"
+    >
       <div class="amount">{{ balanceFormat.amount }}</div>
       <div class="label">{{ balanceFormat.currency }}</div>
       <atomic-icon v-if="true" class="icon-expand" id="arrow_expand-close"/>
-      <list-currencies/>
+      <list-currencies :is-open="isShow" @hide-currencies-list="isShow = false"/>
     </div>
     <button-deposit/>
   </div>
@@ -17,7 +22,29 @@
   const { formatBalance } = useProjectMethods();
   const { activeAccount } = storeToRefs(walletStore);
 
+  const isShow = ref<boolean>(false);
+
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
+
+  const openSelect = () => {
+    isShow.value = !isShow.value;
+  };
+
+  const clickOutside = (e: Event) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('#currencies-select')) return;
+    if (isShow.value && !target.closest('#currencies-select')) {
+      isShow.value = false;
+    }
+  };
+
+  onMounted(() => {
+    document.addEventListener('click', clickOutside);
+  });
+
+  onUnmounted(() => {
+    document.removeEventListener('click', clickOutside);
+  });
 </script>
 
 <style lang="scss">
@@ -27,13 +54,11 @@
   display: flex;
   background-color: var(--gray-900);
   color: var(--gray-500);
+  user-select: none;
 
   .amount {
     @extend %flex-items-center;
-
-    span:first-child {
-      color: var(--white);
-    }
+    color: var(--white);
   }
 
   .label {
@@ -47,10 +72,25 @@
     padding: 0 16px;
     flex-shrink: 1;
     align-items: center;
+
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &.is-open {
+      .icon-expand {
+        --icon-transform: rotate(-180deg);
+        --color: var(--white);
+      }
+    }
   }
 
   .icon-expand {
-    --color: var(--white);
+    transform: var(--icon-transform, rotate(0));
+    transition: transform 0.2s ease-in-out;
+    --color: var(--gray-400);
     --icon-size: 20px;
   }
 }
