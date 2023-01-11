@@ -2,7 +2,7 @@
   <div class="sbt-token">
     <div class="container">
       <iframe
-        src="https://widget.true-play.io/?demo=true&operator=slotsbet&tokenName=SBT"
+        src="https://widget.trueplay.io/new/?demo=true&operator=slotsbet&tokenName=SBT"
         height="100%"
         width="100%"
       />
