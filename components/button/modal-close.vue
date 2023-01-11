@@ -32,16 +32,20 @@
     left: 0;
     display: flex;
     margin: auto;
+    --color: var(--white);
     --icon-size: 22px;
+
+    @include media(sm) {
+      --color: var(--gray-400);
+    }
 
     &:first-of-type {
       --visibility: hidden;
     }
 
     &:last-of-type {
-      --visibility: visible;
       background: transparent;
-      color: var(--color, var(--gray-400));
+      --visibility: visible;
     }
   }
 
