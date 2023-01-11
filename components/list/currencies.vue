@@ -33,6 +33,13 @@
   import { ProfileWalletInterface } from '~/types';
   import { useWalletStore } from '~/composables/useWalletStore';
 
+  const props = defineProps({
+    isOpen: {
+      type: Boolean,
+      default: false,
+    },
+  });
+
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
   const { accounts } = storeToRefs(walletStore);
@@ -59,13 +66,6 @@
   }
 
   const emit = defineEmits(['hide-currencies-list']);
-
-  const props = defineProps({
-    isOpen: {
-      type: Boolean,
-      default: false,
-    },
-  });
 
   const cryptoCurrencies = computed(() => currencies.value.filter((currency) => currency.type === 'crypto'));
 

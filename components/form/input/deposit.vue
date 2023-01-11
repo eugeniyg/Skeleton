@@ -4,11 +4,11 @@
       id="currencies-select"
       class="select"
       :class="{'is-open': isShow}"
-      @click="openSelect"
+      @click="toggleSelect"
     >
       <div class="amount">{{ balanceFormat.amount }}</div>
       <div class="label">{{ balanceFormat.currency }}</div>
-      <atomic-icon v-if="true" class="icon-expand" id="arrow_expand-close"/>
+      <atomic-icon class="icon-expand" id="arrow_expand-close"/>
       <list-currencies :is-open="isShow" @hide-currencies-list="isShow = false"/>
     </div>
     <button-deposit/>
@@ -26,13 +26,12 @@
 
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
 
-  const openSelect = () => {
+  const toggleSelect = () => {
     isShow.value = !isShow.value;
   };
 
   const clickOutside = (e: Event) => {
     const target = e.target as HTMLElement;
-    if (target.closest('#currencies-select')) return;
     if (isShow.value && !target.closest('#currencies-select')) {
       isShow.value = false;
     }
