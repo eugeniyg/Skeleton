@@ -95,15 +95,15 @@
         accountId: id,
         currency: currency || '',
       });
-      emit('hide-currencies-list');
     } else {
       const { id, currency } = hasAddedCurrency;
       await switchAccount({
         accountId: id,
         currency: currency || '',
       });
-      emit('hide-currencies-list');
     }
+
+    emit('hide-currencies-list');
   };
 
   const switchTabNav = (id:string) => {
