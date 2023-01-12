@@ -50,9 +50,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const { getCommonData } = useGlobalStore();
-  useLazyAsyncData('commonData', getCommonData);
-
   const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT', { maxAge: 60 * 60 * 24 * 365 * 10 });
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();

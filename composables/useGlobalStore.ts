@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
 import {
+  CoreConstantsInterface,
   CountryInterface,
   CurrencyInterface,
-  LocaleInterface,
+  LocaleInterface, StatusInterface,
   TimeZoneInterface,
 } from '@platform/frontend-core/dist/module';
 import {
@@ -28,7 +29,7 @@ interface GlobalStoreStateInterface {
   currencies: CurrencyInterface[],
   locales: LocaleInterface[],
   countries: CountryInterface[],
-  timeZones: TimeZoneInterface[],
+  settingsConstants: CoreConstantsInterface|undefined,
   defaultLocale: LocaleInterface|undefined,
   isMobile: boolean,
   browserLanguage: string,
@@ -49,7 +50,7 @@ export const useGlobalStore = defineStore('globalStore', {
       currencies: [],
       locales: [],
       countries: [],
-      timeZones: [],
+      settingsConstants: undefined,
       defaultLocale: undefined,
       isMobile: false,
       browserLanguage: 'en',
@@ -90,11 +91,12 @@ export const useGlobalStore = defineStore('globalStore', {
       }));
     },
     timeZonesSelectOptions(state):TimeZoneInterface[] {
-      return state.timeZones.map((zone) => ({
+      const zonesArr = state.settingsConstants?.player.timeZone.map((zone) => ({
         ...zone,
         code: zone.id,
         value: zone.name,
       }));
+      return zonesArr || [];
     },
     headerContent(state): HeaderInterface|undefined {
       return state.layoutData?.header;
@@ -126,6 +128,21 @@ export const useGlobalStore = defineStore('globalStore', {
     globalSeo(state):SeoContentInterface|undefined {
       return state.globalComponentsContent?.globalSeo;
     },
+    playerStatuses(state):StatusInterface[] {
+      return state.settingsConstants?.player.playerStatuses || [];
+    },
+    invoiceStatuses(state):StatusInterface[] {
+      return state.settingsConstants?.payment.invoiceStatuses || [];
+    },
+    invoiceTypes(state):StatusInterface[] {
+      return state.settingsConstants?.payment.invoiceTypes || [];
+    },
+    betStatuses(state):StatusInterface[] {
+      return state.settingsConstants?.game.bet.status || [];
+    },
+    documentStatuses(state):StatusInterface[] {
+      return state.settingsConstants?.player.document.status || [];
+    },
   },
 
   actions: {
@@ -156,10 +173,10 @@ export const useGlobalStore = defineStore('globalStore', {
       this.countries = data;
     },
 
-    async getCommonData():Promise<void> {
-      const { getCommonData } = useCoreGlobalApi();
-      const data = await getCommonData();
-      this.timeZones = data.timeZone;
+    async getSettingsConstants():Promise<void> {
+      const { getCoreConstants } = useCoreGlobalApi();
+      const data = await getCoreConstants();
+      this.settingsConstants = data;
     },
 
     async getGlobalContent():Promise<void> {
