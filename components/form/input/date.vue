@@ -54,7 +54,10 @@
   const selectDate = (selectedDates:Date[]):void => {
     let valueArr:string[] = [];
     if (selectedDates.length) {
-      valueArr = selectedDates.map((selectedDate) => selectedDate.toISOString());
+      valueArr = selectedDates.map((selectedDate, index) => {
+        if (index) selectedDate.setHours(23, 59, 59, 999);
+        return selectedDate.toISOString();
+      });
     }
     emit('change', valueArr);
   };
