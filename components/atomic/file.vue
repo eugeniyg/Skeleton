@@ -34,11 +34,7 @@
     rejectReason: null|string
   }>();
 
-  const fileStatuses:{[index: number]: string} = {
-    1: 'approve',
-    2: 'pending',
-    3: 'canceled',
-  };
+  const globalStore = useGlobalStore();
 
   const statusIcons:{[index: string]: string} = {
     approve: 'done',
@@ -48,7 +44,12 @@
 
   const emit = defineEmits(['remove']);
 
-  const fileStatus = computed(() => (props.status ? fileStatuses[props.status] : undefined));
+  const fileStatus = computed(() => {
+    if (!props.status) return undefined;
+
+    const findStatus = globalStore.documentStatuses.find((status) => status.id === props.status);
+    return findStatus ? findStatus.name.toLowerCase() : undefined;
+  });
   const statusIcon = computed(() => (fileStatus.value ? statusIcons[fileStatus.value] : undefined));
 
   const isShowProgress = ref(false);

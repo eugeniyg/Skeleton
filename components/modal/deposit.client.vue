@@ -50,7 +50,7 @@
   const showForm = ref<boolean>(false);
 
   const { popupsData } = useGlobalStore();
-  const depositContent: DepositInterface|undefined = popupsData?.deposit;
+  const depositContent: DepositInterface | undefined = popupsData?.deposit;
 
   watch(() => depositMethods.value, () => {
     currentMethod.value = depositMethods.value[0] || {};
@@ -63,13 +63,51 @@
   @extend %modal;
 
   .header {
-    .btn-modal-close {
-      --top: 16px;
-      --right: 8px;
+    padding: rem(4px) rem(16px) 0 rem(16px);
 
-      @include media(md)  {
-        --top: -8px;
+    @include media(md) {
+      padding: 0;
+    }
+
+    .btn-modal-close {
+      --top: 24px;
+      --right: auto;
+      --bg: var(--gray-800);
+
+      @include media(md) {
+        --bg: var(--gray-900);
+        --top: -4px;
         --right: -16px;
+      }
+
+      .icon {
+        &:first-of-type {
+          color: var(--color, var(--white));
+          --visibility: visible;
+        }
+
+        &:last-of-type {
+          --visibility: hidden;
+        }
+
+        @include media(md) {
+          &:first-of-type {
+            --visibility: hidden;
+            color: var(--color, var(--gray-400));
+          }
+
+          &:last-of-type {
+            --visibility: visible;
+          }
+        }
+      }
+    }
+  }
+
+  .container {
+    .scroll {
+      @include media(md) {
+        padding-top: rem(20px);
       }
     }
   }

@@ -122,7 +122,7 @@
 
     @include media(md) {
       width: rem(400px);
-      padding: 16px 16px 24px 32px;
+      padding: 20px 16px 24px 32px;
     }
   }
 
@@ -143,8 +143,6 @@
     --bg: var(--gray-800);
 
     .icon {
-      --color: var(--white);
-
       &:first-of-type {
         --visibility: visible;
       }
@@ -154,8 +152,6 @@
       }
 
       @include media(xs) {
-        --color: var(--gray-400);
-
         &:first-of-type {
           --visibility: hidden;
         }
@@ -168,13 +164,13 @@
 
     @include media(xs) {
       --top: #{rem(-4px)};
-      --right: #{rem(-16px)};
+      --right: #{rem(-14px)};
       --bg: transparent;
     }
 
     @include media(md) {
       --top: #{rem(-16px)};
-      --right: #{rem(-16px)};
+      --right: #{rem(-14px)};
     }
   }
 }
