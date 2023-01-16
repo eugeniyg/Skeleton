@@ -23,7 +23,6 @@
       @blur="v$[field.key]?.$touch()"
       :hint="setError(field.key)"
     />
-    <h1 style="color: white">{{withdrawFormData}}</h1>
 
     <button-base
       type="primary"
