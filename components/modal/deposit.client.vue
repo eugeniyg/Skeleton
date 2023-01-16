@@ -21,12 +21,12 @@
             <button-modal-close @close="closeModal('deposit')"/>
             <div class="title">{{ depositContent?.title }}</div>
           </div>
-          <form-deposit v-if="showForm && currentMethod.type === 'form'" v-bind="currentMethod"/>
+          <form-deposit :key="methodKey" v-if="showForm && currentMethod.type === 'form'" v-bind="currentMethod"/>
           <!--          <form-deposit-additional/>-->
           <form-deposit-crypto
             v-if="showForm && currentMethod.type === 'address'"
             v-bind="currentMethod"
-            :key="currentMethod.method"
+            :key="`${currentMethod.method}-${methodKey}`"
           />
         </div>
       </div>
@@ -52,8 +52,10 @@
   const { popupsData } = useGlobalStore();
   const depositContent: DepositInterface | undefined = popupsData?.deposit;
 
+  const methodKey = ref<number>(0);
   watch(() => depositMethods.value, () => {
     currentMethod.value = depositMethods.value[0] || {};
+    methodKey.value += 1;
   });
 </script>
 
