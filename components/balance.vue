@@ -2,11 +2,33 @@
   <div class="balance">
     <div class="row">
       <div class="label">
-        {{ props.withdraw ?  depositContent?.balanceLabel : withdrawContent?.balanceLabel}}
+        {{ props.withdraw ? depositContent?.balanceLabel : withdrawContent?.balanceLabel }}
       </div>
 
-      <div class="value">
+      <div v-if="props.withdraw" class="value">
         {{ balanceFormat.amount }} {{ balanceFormat.currency }}
+      </div>
+
+      <div
+        v-else
+        id="currencies-select"
+        class="select"
+        :class="{'is-open': isSelectOpen}"
+        @click="toggleSelect"
+      >
+        <span class="amount">
+          <span>{{ balanceFormat.amount }}</span>
+          <span>{{ balanceFormat.currency }}</span>
+        </span>
+        <atomic-icon class="icon-expand" id="arrow_expand-close"/>
+
+        <list-currencies
+          :is-open="isSelectOpen"
+          hideBalance
+          @hide-currencies-list="isSelectOpen = false"
+          @click.stop.prevent
+          @changeActiveAccount="walletStore.getDepositMethods"
+        />
       </div>
     </div>
 
@@ -16,7 +38,7 @@
         {{ balanceFormat.amount }} {{ balanceFormat.currency }}
       </div>
     </div>
-    <atomic-divider />
+    <atomic-divider/>
     <slot/>
   </div>
 </template>
@@ -35,10 +57,31 @@
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const { popupsData } = useGlobalStore();
-  const depositContent: DepositInterface|undefined = popupsData?.deposit;
-  const withdrawContent: WithdrawInterface|undefined = popupsData?.withdraw;
+  const depositContent: DepositInterface | undefined = popupsData?.deposit;
+  const withdrawContent: WithdrawInterface | undefined = popupsData?.withdraw;
   const { formatBalance } = useProjectMethods();
+  const isSelectOpen = ref<boolean>(false);
+
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
+
+  const toggleSelect = () => {
+    isSelectOpen.value = !isSelectOpen.value;
+  };
+
+  const clickOutside = (e: Event) => {
+    const target = e.target as HTMLElement;
+    if (isSelectOpen.value && !target.closest('#currencies-select')) {
+      isSelectOpen.value = false;
+    }
+  };
+
+  onMounted(() => {
+    document.addEventListener('click', clickOutside);
+  });
+
+  onUnmounted(() => {
+    document.removeEventListener('click', clickOutside);
+  });
 </script>
 
 <style lang="scss">
@@ -89,6 +132,7 @@
 
     &:nth-of-type(odd) {
       margin-bottom: rem(16px);
+
       .value {
         text-align: right;
 
@@ -96,6 +140,61 @@
           text-align: left;
         }
       }
+    }
+
+    .amount {
+      display: flex;
+      align-items: center;
+      color: var(--white);
+      @include font($body-1);
+      grid-column-gap: rem(4px);
+    }
+
+    .select {
+      display: flex;
+      position: relative;
+      padding: rem(6px) rem(8px) rem(6px) rem(16px);
+      flex-shrink: 1;
+      align-items: center;
+      @include font($body-1);
+      grid-column-gap: rem(8px);
+      border-radius: 8px;
+      background-color: var(--bg, transparent);
+      justify-self: flex-end;
+      margin-left: -16px;
+
+      .icon-expand {
+        --icon-size: 20px;
+        --color: var(--gray-400);
+      }
+
+      @include use-hover {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      &.is-open {
+        .icon-expand {
+          --icon-transform: rotate(-180deg);
+          --color: var(--white);
+        }
+      }
+
+      .list-currencies {
+        transform: translateX(calc(-50% - #{rem(40px)})) translateY(#{rem(36px)});
+
+        @include media(md) {
+          transform: translateX(calc(-50% + #{rem(40px)})) translateY(#{rem(36px)});
+        }
+      }
+    }
+
+    .icon-expand {
+      transform: var(--icon-transform, rotate(0));
+      transition: transform 0.2s ease-in-out;
+      --color: var(--gray-400);
+      --icon-size: 20px;
     }
   }
 

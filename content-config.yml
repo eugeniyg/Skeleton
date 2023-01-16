@@ -1288,12 +1288,6 @@ collections:
           - name: addButton
             label: Add Button Label
             widget: string
-          - name: allTab
-            label: All Tab Label
-            widget: string
-          - name: cryptoTab
-            label: Crypto Tab Label
-            widget: string
           - name: changeButton
             label: Change Currency Button
             widget: string
@@ -1910,6 +1904,16 @@ collections:
             widget: select
             options: [ 'green', 'orange', 'red', 'blue' ]
           - *projectIcon
+      - name: currencyTabs
+        label: Currency Tabs
+        widget: object
+        fields:
+          - name: allTab
+            label: All Currencies Tab
+            widget: string
+          - name: cryptoTab
+            label: Crypto Currencies Tab
+            widget: string
       - name: globalSeo
         label: Global Page Seo
         widget: object

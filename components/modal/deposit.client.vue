@@ -55,7 +55,6 @@
   watch(() => depositMethods.value, () => {
     currentMethod.value = depositMethods.value[0] || {};
   });
-
 </script>
 
 <style lang="scss">
@@ -109,6 +108,17 @@
       @include media(md) {
         padding-top: rem(20px);
       }
+    }
+  }
+
+  .list-currencies {
+    .header {
+      border-bottom: 1px solid var(--gray-700);
+      display: flex;
+      padding: 0 0 rem(8px) 0;
+      grid-column-gap: rem(4px);
+      margin-bottom: rem(8px);
+      position: relative;
     }
   }
 }
