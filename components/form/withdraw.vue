@@ -108,11 +108,10 @@
     if (buttonDisabled.value) return;
 
     isSending.value = true;
-    const formatFields = Object.entries(withdrawFormData).map(([key, value]) => ({ key, value }));
     const mainCurrencyAmount = getMainBalanceFormat(activeAccountFormat.currency, Number(amountValue.value));
     const params = {
       method: props.method,
-      fields: formatFields,
+      fields: withdrawFormData,
       currency: activeAccount.value?.currency || '',
       amount: mainCurrencyAmount.amount,
       accountId: activeAccount.value?.id || '',
