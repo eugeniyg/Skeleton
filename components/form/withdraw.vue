@@ -23,6 +23,7 @@
       @blur="v$[field.key]?.$touch()"
       :hint="setError(field.key)"
     />
+    <h1 style="color: white">{{withdrawFormData}}</h1>
 
     <button-base
       type="primary"
@@ -108,11 +109,10 @@
     if (buttonDisabled.value) return;
 
     isSending.value = true;
-    const formatFields = Object.entries(withdrawFormData).map(([key, value]) => ({ key, value }));
     const mainCurrencyAmount = getMainBalanceFormat(activeAccountFormat.currency, Number(amountValue.value));
     const params = {
       method: props.method,
-      fields: formatFields,
+      fields: withdrawFormData,
       currency: activeAccount.value?.currency || '',
       amount: mainCurrencyAmount.amount,
       accountId: activeAccount.value?.id || '',
