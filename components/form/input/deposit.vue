@@ -9,7 +9,7 @@
       <div class="amount">{{ balanceFormat.amount }}</div>
       <div class="label">{{ balanceFormat.currency }}</div>
       <atomic-icon class="icon-expand" id="arrow_expand-close"/>
-      <list-currencies :is-open="isShow" @hide-currencies-list="isShow = false"/>
+      <list-currencies :is-open="isShow" @hide-currencies-list="isShow = false" @click.stop />
     </div>
     <button-deposit/>
   </div>

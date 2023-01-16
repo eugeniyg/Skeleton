@@ -5,11 +5,12 @@
         {{ props.withdraw ? depositContent?.balanceLabel : withdrawContent?.balanceLabel }}
       </div>
 
-      <!--      <div class="value">-->
-      <!--        {{ balanceFormat.amount }} {{ balanceFormat.currency }}-->
-      <!--      </div>-->
+      <div v-if="props.withdraw" class="value">
+        {{ balanceFormat.amount }} {{ balanceFormat.currency }}
+      </div>
 
       <div
+        v-else
         id="currencies-select"
         class="select"
         :class="{'is-open': isSelectOpen}"
@@ -23,7 +24,10 @@
 
         <list-currencies
           :is-open="isSelectOpen"
+          hideBalance
           @hide-currencies-list="isSelectOpen = false"
+          @click.stop.prevent
+          @changeActiveAccount="walletStore.getDepositMethods"
         />
       </div>
     </div>
@@ -158,10 +162,6 @@
       background-color: var(--bg, transparent);
       justify-self: flex-end;
       margin-left: -16px;
-
-      &.is-open {
-        --bg: var(--gray-700);
-      }
 
       .icon-expand {
         --icon-size: 20px;

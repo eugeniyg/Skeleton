@@ -1,28 +1,29 @@
 <template>
-  <div class="list-currencies" :class="{'is-show': isOpen}">
+  <div class="list-currencies" :class="{'is-show': props.isOpen}">
     <div class="header">
       <button-base
-        v-for="{id, title} in navTabs"
+        v-for="{id, title} in currencyTabs"
         :is-active="id === selected"
         :key="id"
         type="ghost"
         size="xs"
         @click.stop="switchTabNav(id)"
-      >{{ title }}
+      >
+        {{ title }}
       </button-base>
     </div>
 
     <div class="items">
       <div
         v-for="item in selectedItems"
-        :key="item.code"
+        :key="item.nativeCurrency"
         class="item"
-        :class="{'is-active': active.currency === item.code}"
-        @click="selectCurrency(item.code)"
+        :class="{'is-active': activeAccount.currency === item.nativeCurrency}"
+        @click="selectCurrency(item.nativeCurrency)"
       >
-        <img class="img" :src="`/img/currency/${item.code}.svg`" alt=""/>
-        <span class="code-title">{{ item.code }}</span>
-        <span class="amount">{{ balance[item.code] }}</span>
+        <img class="img" :src="`/img/currency/${item.nativeCurrency}.svg`" alt=""/>
+        <span class="code-title">{{ item.currency }}</span>
+        <span v-if="!props.hideBalance" class="amount">{{ item.amount }}</span>
       </div>
     </div>
   </div>
@@ -30,11 +31,14 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ProfileWalletInterface } from '~/types';
-  import { useWalletStore } from '~/composables/useWalletStore';
+  import { AccountInterface, CurrencyInterface } from '@platform/frontend-core/dist/module';
 
   const props = defineProps({
     isOpen: {
+      type: Boolean,
+      default: false,
+    },
+    hideBalance: {
       type: Boolean,
       default: false,
     },
@@ -42,68 +46,70 @@
 
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
-  const { accounts } = storeToRefs(walletStore);
-  const { currencies, currentLocale } = storeToRefs(globalStore);
+  const { accounts, currencyTabs, activeAccount } = storeToRefs(walletStore);
+  const { currencies } = storeToRefs(globalStore);
   const { switchAccount } = useWalletStore();
   const { createAccount } = useWalletStore();
+  const { formatBalance } = useProjectMethods();
+  const { sortByAlphabet } = useProjectMethods();
 
-  const walletContentRequest = await useAsyncData('walletContent', () => queryContent(`profile/${currentLocale.value?.code}`).only(['wallet']).findOne());
-  const walletContent:ProfileWalletInterface|undefined = walletContentRequest.data.value?.wallet;
-
-  const navTabs = ref<{id:string, title: string}[]>([]);
-
-  if (walletContent) {
-    navTabs.value = [
-      {
-        id: 'all',
-        title: walletContent.allTab,
-      },
-      {
-        id: 'crypto',
-        title: walletContent.cryptoTab,
-      },
-    ];
-  }
-
-  const emit = defineEmits(['hide-currencies-list']);
+  const emit = defineEmits(['hide-currencies-list', 'changeActiveAccount']);
 
   const cryptoCurrencies = computed(() => currencies.value.filter((currency) => currency.type === 'crypto'));
 
   const selected = ref<string>('all');
 
+  const getAccountByCurrency = (currency: string):AccountInterface|undefined => accounts.value.find((account) => (account.currency === currency));
+
   const selectedItems = computed(() => {
-    if (selected.value === 'all' || !cryptoCurrencies.value.length) return currencies.value;
-    return cryptoCurrencies.value;
+    let currenciesList:CurrencyInterface[];
+    if (selected.value === 'all' || !cryptoCurrencies.value.length) currenciesList = currencies.value;
+    else currenciesList = cryptoCurrencies.value;
+
+    const formatList:{ nativeCurrency: string, currency: string, amount: number }[] = currenciesList.map((currency) => {
+      const findAccount = getAccountByCurrency(currency.code);
+      const formattedAcc = formatBalance(findAccount?.currency || currency.code, findAccount?.balance || 0);
+      return { nativeCurrency: currency.code, ...formattedAcc };
+    });
+
+    const withBalanceList:{ nativeCurrency: string, currency: string, amount: number }[] = [];
+    const withoutBalanceList:{ nativeCurrency: string, currency: string, amount: number }[] = [];
+
+    formatList.forEach((formatItem) => {
+      if (formatItem.amount) withBalanceList.push(formatItem);
+      else withoutBalanceList.push(formatItem);
+    });
+
+    const withBalanceSortedList = withBalanceList.sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
+    const withoutBalanceSortedList = withoutBalanceList.sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
+
+    return [...withBalanceSortedList, ...withoutBalanceSortedList];
   });
 
-  const active = computed(() => accounts.value.find(({ status }) => status === 1));
+  const selectCurrency = async (currency: string): Promise<void> => {
+    if (activeAccount.value?.currency === currency) return;
 
-  const balance = computed(() => accounts.value.reduce((acc, item) => {
-    acc[item.currency] = item.balance;
-    return acc;
-  }, {}));
-
-  const getAccount = (code:string) => accounts.value.find((account) => account.currency === code);
-
-  const selectCurrency = async (code: string): Promise<void> => {
-    const hasAddedCurrency = getAccount(code);
-
-    if (!hasAddedCurrency) {
-      await createAccount(code);
-      const { id, currency } = getAccount(code);
-      await switchAccount({
-        accountId: id,
-        currency: currency || '',
-      });
-    } else {
-      const { id, currency } = hasAddedCurrency;
-      await switchAccount({
-        accountId: id,
-        currency: currency || '',
-      });
-    }
+    const findAccount = getAccountByCurrency(currency);
 
     emit('hide-currencies-list');
+
+    if (findAccount) {
+      await switchAccount({
+        accountId: findAccount.id,
+        currency: findAccount.currency,
+      });
+    } else {
+      await createAccount(currency);
+      const findNewAccount = getAccountByCurrency(currency);
+      if (findNewAccount) {
+        await switchAccount({
+          accountId: findNewAccount.id,
+          currency: findNewAccount.currency,
+        });
+      }
+    }
+
+    emit('changeActiveAccount');
   };
 
   const switchTabNav = (id:string) => {

@@ -55,7 +55,6 @@
   watch(() => depositMethods.value, () => {
     currentMethod.value = depositMethods.value[0] || {};
   });
-
 </script>
 
 <style lang="scss">

@@ -65,8 +65,6 @@ export interface ProfileInfoInterface {
 export interface ProfileWalletInterface {
   title: string,
   addButton: string,
-  allTab: string,
-  cryptoTab: string,
   changeButton: string,
   hideButton: string,
   depositButton: string,
@@ -494,6 +492,11 @@ export interface LatestWinnersInterface {
   title: string
 }
 
+export interface CurrencyTabsInterface {
+  allTab: string,
+  cryptoTab: string
+}
+
 export interface GlobalComponentsInterface {
   benefits: BenefitsContentInterface,
   promotions: PromotionsContentInterface,
@@ -501,6 +504,7 @@ export interface GlobalComponentsInterface {
   categories: GameCategoryInterface[],
   turbogames: TurbogamesGroupInterface,
   gameTags: GameTagInterface[],
+  currencyTabs: CurrencyTabsInterface,
   globalSeo: SeoContentInterface,
 }
 
