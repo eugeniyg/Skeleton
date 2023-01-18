@@ -69,8 +69,8 @@
     showAlert(alertsData.value?.limitedRealGame);
   };
 
-  watch(() => activeAccount.value, async (oldValue, newValue) => {
-    if (oldValue && newValue) await startGame();
+  watch(() => activeAccount.value?.id, async (oldValue, newValue) => {
+    if (oldValue && newValue && oldValue !== newValue) await startGame();
   });
 
   onMounted(async () => {
