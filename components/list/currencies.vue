@@ -173,14 +173,12 @@
     max-height: calc(calc(calc(#{rem(32px)} + #{rem(4px)}) * 6) - #{rem(4px)});
     overflow-y: scroll;
     @include scrollbar;
-    padding-right: 2px;
     margin-right: -6px;
     grid-row-gap: 4px;
   }
 
   .item {
     height: rem(32px);
-    background-color: var(--bg, transparent);
     display: flex;
     align-items: center;
     border-radius: 4px;
@@ -188,20 +186,20 @@
     grid-column-gap: rem(4px);
     transition: all .2s ease-in-out;
 
+    &.is-active {
+      cursor: text;
+      background-color: var(--gray-700);
+
+      .amount {
+        --color: var(--yellow-500);
+      }
+    }
+
     @include use-hover {
       &:hover {
         &:not(.is-active) {
           cursor: pointer;
-          --bg: var(--gray-700);
-        }
-      }
-
-      &.is-active {
-        cursor: text;
-        --bg: var(--gray-700);
-
-        .amount {
-          --color: var(--yellow-500);
+          background-color: var(--gray-700);
         }
       }
     }

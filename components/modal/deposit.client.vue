@@ -107,8 +107,13 @@
 
   .container {
     .scroll {
+      padding-left: 0;
+      padding-right: 0;
+
       @include media(md) {
         padding-top: rem(20px);
+        padding-left: rem(16px);
+        padding-right: rem(16px);
       }
     }
   }
