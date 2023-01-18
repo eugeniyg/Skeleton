@@ -64,7 +64,7 @@
   @extend %modal;
 
   .header {
-    padding: rem(4px) rem(16px) 0 rem(16px);
+    padding: rem(4px) rem(8px) 0 rem(8px);
 
     @include media(md) {
       padding: 0;
