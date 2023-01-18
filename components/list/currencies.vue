@@ -149,7 +149,7 @@
   .btn-ghost {
     @include upd-font($body-2);
     white-space: nowrap;
-    --padding: #{rem(4px)} #{rem(6px)};
+    --padding: #{rem(4px)} #{rem(6px)} !important;
     --color: var(--gray-300);
     --width: 100%;
 
