@@ -87,10 +87,16 @@
 <style lang="scss">
 .balance {
   background-color: var(--black-primary);
+  border-radius: 8px;
   padding: var(--items-padding, #{rem(16px)});
   margin: var(--margin, 0);
   align-items: flex-start;
   width: 100%;
+
+  @include media(md) {
+    min-width: 144px;
+    border-radius: unset;
+  }
 
   hr {
     display: var(--hr-display, none);
@@ -107,13 +113,12 @@
   }
 
   .row {
-    display: grid;
-    grid-row-gap: rem(8px);
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    align-items: center;
 
     @include media(md) {
-      grid-row-gap: rem(2px);
-      grid-template-columns: unset;
+      flex-direction: column;
+      align-items: flex-start;
     }
 
     &:nth-of-type(even) {
@@ -148,24 +153,38 @@
       color: var(--white);
       @include font($body-1);
       grid-column-gap: rem(4px);
+      margin-right: 8px;
     }
 
     .select {
       display: flex;
+      justify-content: flex-end;
       position: relative;
       padding: rem(6px) rem(8px) rem(6px) rem(16px);
-      flex-shrink: 1;
       align-items: center;
       @include font($body-1);
-      grid-column-gap: rem(8px);
       border-radius: 8px;
-      background-color: var(--bg, transparent);
-      justify-self: flex-end;
-      margin-left: -16px;
+      transition: all 0.2s;
+
+      @include media(md) {
+        width: 100%;
+        justify-content: space-between;
+        background-color: var(--gray-800);
+        border: 1px solid var(--gray-800);
+        margin-top: 4px;
+      }
 
       .icon-expand {
         --icon-size: 20px;
         --color: var(--gray-400);
+      }
+
+      &.is-open {
+        background-color: var(--gray-700);
+
+        @include media(md) {
+          border: 1px solid var(--gray-300);
+        }
       }
 
       @include use-hover {
@@ -182,10 +201,18 @@
       }
 
       .list-currencies {
-        transform: translateX(calc(-50% - #{rem(40px)})) translateY(#{rem(36px)});
+        right: 0;
+        left: auto;
+        min-width: 144px;
+        width: 100%;
+        top: calc(100% + 6px);
+        transform: none;
 
         @include media(md) {
-          transform: translateX(calc(-50% + #{rem(40px)})) translateY(#{rem(36px)});
+          right: auto;
+          left: -1px;
+          min-width: initial;
+          width: calc(100% + 2px);
         }
       }
     }

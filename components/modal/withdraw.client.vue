@@ -77,14 +77,14 @@
   }
 
   .header {
-    padding: 4px 16px 0 46px;
+    padding: 4px 8px 0 8px;
 
     @include media(md)  {
       padding: 0;
     }
 
     .btn-modal-close {
-      left: 16px;
+      left: 8px;
       --top: 24px;
       --right: auto;
       --bg: var(--gray-800);

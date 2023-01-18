@@ -64,7 +64,7 @@
   @extend %modal;
 
   .header {
-    padding: rem(4px) rem(16px) 0 rem(16px);
+    padding: rem(4px) rem(8px) 0 rem(8px);
 
     @include media(md) {
       padding: 0;
@@ -107,8 +107,13 @@
 
   .container {
     .scroll {
+      padding-left: 0;
+      padding-right: 0;
+
       @include media(md) {
         padding-top: rem(20px);
+        padding-left: rem(16px);
+        padding-right: rem(16px);
       }
     }
   }
