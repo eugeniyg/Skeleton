@@ -77,8 +77,9 @@
 
       @include media(md) {
         --bg: var(--gray-900);
-        --top: -4px;
-        --right: -16px;
+        --top: -16px;
+        --right: -8px;
+        transform: none;
       }
 
       .icon {

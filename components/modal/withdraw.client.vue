@@ -92,8 +92,9 @@
       @include media(md) {
         left: auto;
         --bg: var(--gray-900);
-        --top: -2px;
+        --top: -16px;
         --right: -16px;
+        transform: none;
       }
 
       .icon {
