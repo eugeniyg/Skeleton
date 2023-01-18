@@ -77,13 +77,46 @@
   }
 
   .header {
-    .btn-modal-close {
-      --top: 16px;
-      --right: 8px;
+    padding: 4px 8px 0 8px;
 
-      @include media(md)  {
-        --top: 0;
+    @include media(md)  {
+      padding: 0;
+    }
+
+    .btn-modal-close {
+      left: 8px;
+      --top: 24px;
+      --right: auto;
+      --bg: var(--gray-800);
+
+      @include media(md) {
+        left: auto;
+        --bg: var(--gray-900);
+        --top: -16px;
         --right: -16px;
+        transform: none;
+      }
+
+      .icon {
+        &:first-of-type {
+          color: var(--color, var(--white));
+          --visibility: visible;
+        }
+
+        &:last-of-type {
+          --visibility: hidden;
+        }
+
+        @include media(md) {
+          &:first-of-type {
+            color: var(--color, var(--gray-400));
+            --visibility: hidden;
+          }
+
+          &:last-of-type {
+            --visibility: visible;
+          }
+        }
       }
     }
   }

@@ -21,12 +21,12 @@
             <button-modal-close @close="closeModal('deposit')"/>
             <div class="title">{{ depositContent?.title }}</div>
           </div>
-          <form-deposit v-if="showForm && currentMethod.type === 'form'" v-bind="currentMethod"/>
+          <form-deposit :key="methodKey" v-if="showForm && currentMethod.type === 'form'" v-bind="currentMethod"/>
           <!--          <form-deposit-additional/>-->
           <form-deposit-crypto
             v-if="showForm && currentMethod.type === 'address'"
             v-bind="currentMethod"
-            :key="currentMethod.method"
+            :key="`${currentMethod.method}-${methodKey}`"
           />
         </div>
       </div>
@@ -50,12 +50,13 @@
   const showForm = ref<boolean>(false);
 
   const { popupsData } = useGlobalStore();
-  const depositContent: DepositInterface|undefined = popupsData?.deposit;
+  const depositContent: DepositInterface | undefined = popupsData?.deposit;
 
+  const methodKey = ref<number>(0);
   watch(() => depositMethods.value, () => {
     currentMethod.value = depositMethods.value[0] || {};
+    methodKey.value += 1;
   });
-
 </script>
 
 <style lang="scss">
@@ -63,14 +64,69 @@
   @extend %modal;
 
   .header {
-    .btn-modal-close {
-      --top: 16px;
-      --right: 8px;
+    padding: rem(4px) rem(8px) 0 rem(8px);
 
-      @include media(md)  {
-        --top: -8px;
-        --right: -16px;
+    @include media(md) {
+      padding: 0;
+    }
+
+    .btn-modal-close {
+      --top: 24px;
+      --right: auto;
+      --bg: var(--gray-800);
+
+      @include media(md) {
+        --bg: var(--gray-900);
+        --top: -16px;
+        --right: -8px;
+        transform: none;
       }
+
+      .icon {
+        &:first-of-type {
+          color: var(--color, var(--white));
+          --visibility: visible;
+        }
+
+        &:last-of-type {
+          --visibility: hidden;
+        }
+
+        @include media(md) {
+          &:first-of-type {
+            --visibility: hidden;
+            color: var(--color, var(--gray-400));
+          }
+
+          &:last-of-type {
+            --visibility: visible;
+          }
+        }
+      }
+    }
+  }
+
+  .container {
+    .scroll {
+      padding-left: 0;
+      padding-right: 0;
+
+      @include media(md) {
+        padding-top: rem(20px);
+        padding-left: rem(16px);
+        padding-right: rem(16px);
+      }
+    }
+  }
+
+  .list-currencies {
+    .header {
+      border-bottom: 1px solid var(--gray-700);
+      display: flex;
+      padding: 0 0 rem(8px) 0;
+      grid-column-gap: rem(4px);
+      margin-bottom: rem(8px);
+      position: relative;
     }
   }
 }

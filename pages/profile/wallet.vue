@@ -14,7 +14,7 @@
       </button-base>
     </div>
 
-    <nav-currency :tabs="navTabs" @toggleNavEmpty="currencyNavEmpty = $event"/>
+    <nav-currency :tabs="currencyTabs" @toggleNavEmpty="currencyNavEmpty = $event"/>
 
     <div class="cards-wallet">
       <TransitionGroup name="card">
@@ -41,21 +41,8 @@
   const { setPageSeo } = useProjectMethods();
   setPageSeo(walletContent?.seo);
 
-  const navTabs = ref<{id:string, title: string}[]>([]);
-  if (walletContent) {
-    navTabs.value = [
-      {
-        id: 'all',
-        title: walletContent.allTab,
-      },
-      {
-        id: 'crypto',
-        title: walletContent.cryptoTab,
-      },
-    ];
-  }
   const walletStore = useWalletStore();
-  const { accounts } = storeToRefs(walletStore);
+  const { accounts, currencyTabs } = storeToRefs(walletStore);
   const layoutStore = useLayoutStore();
   const { isCurrencyNavOpen } = storeToRefs(layoutStore);
   const { openCurrencyNav, closeCurrencyNav } = layoutStore;

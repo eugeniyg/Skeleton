@@ -2,11 +2,33 @@
   <div class="balance">
     <div class="row">
       <div class="label">
-        {{ props.withdraw ?  depositContent?.balanceLabel : withdrawContent?.balanceLabel}}
+        {{ props.withdraw ? depositContent?.balanceLabel : withdrawContent?.balanceLabel }}
       </div>
 
-      <div class="value">
+      <div v-if="props.withdraw" class="value">
         {{ balanceFormat.amount }} {{ balanceFormat.currency }}
+      </div>
+
+      <div
+        v-else
+        id="currencies-select"
+        class="select"
+        :class="{'is-open': isSelectOpen}"
+        @click="toggleSelect"
+      >
+        <span class="amount">
+          <span>{{ balanceFormat.amount }}</span>
+          <span>{{ balanceFormat.currency }}</span>
+        </span>
+        <atomic-icon class="icon-expand" id="arrow_expand-close"/>
+
+        <list-currencies
+          :is-open="isSelectOpen"
+          hideBalance
+          @hide-currencies-list="isSelectOpen = false"
+          @click.stop.prevent
+          @changeActiveAccount="walletStore.getDepositMethods"
+        />
       </div>
     </div>
 
@@ -16,7 +38,7 @@
         {{ balanceFormat.amount }} {{ balanceFormat.currency }}
       </div>
     </div>
-    <atomic-divider />
+    <atomic-divider/>
     <slot/>
   </div>
 </template>
@@ -35,19 +57,46 @@
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const { popupsData } = useGlobalStore();
-  const depositContent: DepositInterface|undefined = popupsData?.deposit;
-  const withdrawContent: WithdrawInterface|undefined = popupsData?.withdraw;
+  const depositContent: DepositInterface | undefined = popupsData?.deposit;
+  const withdrawContent: WithdrawInterface | undefined = popupsData?.withdraw;
   const { formatBalance } = useProjectMethods();
+  const isSelectOpen = ref<boolean>(false);
+
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
+
+  const toggleSelect = () => {
+    isSelectOpen.value = !isSelectOpen.value;
+  };
+
+  const clickOutside = (e: Event) => {
+    const target = e.target as HTMLElement;
+    if (isSelectOpen.value && !target.closest('#currencies-select')) {
+      isSelectOpen.value = false;
+    }
+  };
+
+  onMounted(() => {
+    document.addEventListener('click', clickOutside);
+  });
+
+  onUnmounted(() => {
+    document.removeEventListener('click', clickOutside);
+  });
 </script>
 
 <style lang="scss">
 .balance {
   background-color: var(--black-primary);
+  border-radius: 8px;
   padding: var(--items-padding, #{rem(16px)});
   margin: var(--margin, 0);
   align-items: flex-start;
   width: 100%;
+
+  @include media(md) {
+    min-width: 144px;
+    border-radius: unset;
+  }
 
   hr {
     display: var(--hr-display, none);
@@ -64,13 +113,12 @@
   }
 
   .row {
-    display: grid;
-    grid-row-gap: rem(8px);
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    align-items: center;
 
     @include media(md) {
-      grid-row-gap: rem(2px);
-      grid-template-columns: unset;
+      flex-direction: column;
+      align-items: flex-start;
     }
 
     &:nth-of-type(even) {
@@ -89,6 +137,7 @@
 
     &:nth-of-type(odd) {
       margin-bottom: rem(16px);
+
       .value {
         text-align: right;
 
@@ -96,6 +145,83 @@
           text-align: left;
         }
       }
+    }
+
+    .amount {
+      display: flex;
+      align-items: center;
+      color: var(--white);
+      @include font($body-1);
+      grid-column-gap: rem(4px);
+      margin-right: 8px;
+    }
+
+    .select {
+      display: flex;
+      justify-content: flex-end;
+      position: relative;
+      padding: rem(6px) rem(8px) rem(6px) rem(16px);
+      align-items: center;
+      @include font($body-1);
+      border-radius: 8px;
+      transition: all 0.2s;
+
+      @include media(md) {
+        width: 100%;
+        justify-content: space-between;
+        background-color: var(--gray-800);
+        border: 1px solid var(--gray-800);
+        margin-top: 4px;
+      }
+
+      .icon-expand {
+        --icon-size: 20px;
+        --color: var(--gray-400);
+      }
+
+      &.is-open {
+        background-color: var(--gray-700);
+
+        @include media(md) {
+          border: 1px solid var(--gray-300);
+        }
+      }
+
+      @include use-hover {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      &.is-open {
+        .icon-expand {
+          --icon-transform: rotate(-180deg);
+          --color: var(--white);
+        }
+      }
+
+      .list-currencies {
+        right: 0;
+        left: auto;
+        min-width: 144px;
+        width: 100%;
+        top: calc(100% + 6px);
+        transform: none;
+
+        @include media(md) {
+          right: auto;
+          left: -1px;
+          min-width: initial;
+          width: calc(100% + 2px);
+        }
+      }
+    }
+
+    .icon-expand {
+      transform: var(--icon-transform, rotate(0));
+      transition: transform 0.2s ease-in-out;
+      --color: var(--gray-400);
+      --icon-size: 20px;
     }
   }
 

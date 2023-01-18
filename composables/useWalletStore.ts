@@ -35,6 +35,21 @@ export const useWalletStore = defineStore('walletStore', {
       const activeCurrency = currencies.value.find((currency) => currency.code === this.activeAccount?.currency);
       return activeCurrency?.type || '';
     },
+
+    currencyTabs():{ id: string, title: string }[] {
+      const globalStore = useGlobalStore();
+      const { globalComponentsContent } = storeToRefs(globalStore);
+      return [
+        {
+          id: 'all',
+          title: globalComponentsContent.value?.currencyTabs.allTab || 'All',
+        },
+        {
+          id: 'crypto',
+          title: globalComponentsContent.value?.currencyTabs.cryptoTab || 'Crypto',
+        },
+      ];
+    },
   },
 
   actions: {

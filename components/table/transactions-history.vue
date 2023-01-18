@@ -51,12 +51,12 @@
   });
 
   const emit = defineEmits(['cancelPayment']);
-  const coreStore = useCoreStore();
   const headTitles = Object.values(props.transactionsContent.tableColumns);
+  const globalStore = useGlobalStore();
   const { getFormatDate } = useProjectMethods();
 
   const getInvoiceType = (type: number):string => {
-    const findInvoiceType = coreStore.invoiceTypes.find((storeType) => storeType.id === type);
+    const findInvoiceType = globalStore.invoiceTypes.find((storeType) => storeType.id === type);
     return findInvoiceType?.name || '';
   };
 
@@ -66,7 +66,7 @@
   };
 
   const getInvoiceStatus = (status: number):string => {
-    const findInvoiceStatus = coreStore.invoiceStatuses.find((storeStatus) => storeStatus.id === status);
+    const findInvoiceStatus = globalStore.invoiceStatuses.find((storeStatus) => storeStatus.id === status);
     return findInvoiceStatus?.name || '';
   };
 

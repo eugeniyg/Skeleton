@@ -69,6 +69,10 @@
     showAlert(alertsData.value?.limitedRealGame);
   };
 
+  watch(() => activeAccount.value?.id, async (oldValue, newValue) => {
+    if (oldValue && newValue && oldValue !== newValue) await startGame();
+  });
+
   onMounted(async () => {
     if (isMobile.value) {
       const footerEl:HTMLElement|null = document.querySelector('footer');

@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { GameInterface } from '@platform/frontend-core/dist/module';
+  import { AccountInterface, GameInterface } from '@platform/frontend-core/dist/module';
   import { GamePageInterface } from '~/types';
 
   const route = useRoute();
@@ -91,6 +91,10 @@
     } else {
       await startGame();
     }
+  });
+
+  watch(() => activeAccount.value?.id, async (oldValue, newValue) => {
+    if (oldValue && newValue && oldValue !== newValue) await startGame();
   });
 
   onMounted(async () => {
