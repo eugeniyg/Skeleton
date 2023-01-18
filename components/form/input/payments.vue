@@ -65,6 +65,21 @@
     if (activeAccount.value?.currency) return `/img/methods-icons/${activeAccount.value?.currency}.svg`;
     return '';
   };
+
+  const clickOutside = (e: Event) => {
+    const target = e.target as HTMLElement;
+    if (isOpen.value && !target.closest('.input-payments')) {
+      isOpen.value = false;
+    }
+  };
+
+  onMounted(() => {
+    document.addEventListener('click', clickOutside);
+  });
+
+  onUnmounted(() => {
+    document.removeEventListener('click', clickOutside);
+  });
 </script>
 
 <style lang="scss">
