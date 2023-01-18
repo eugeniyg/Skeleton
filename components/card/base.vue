@@ -32,6 +32,8 @@
       >
         {{ groupContent?.demoButton }}
       </button-base>
+
+      <div class="info__provider">{{ props.provider.name }}</div>
     </div>
   </div>
 </template>
@@ -39,7 +41,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { PropType } from '@vue/runtime-core';
-  import { GameImagesInterface } from '@platform/frontend-core/dist/module';
+  import { GameImagesInterface, GameProviderInterface } from '@platform/frontend-core/dist/module';
   import { CardsGroupInterface } from '~/types';
 
   const props = defineProps({
@@ -70,6 +72,10 @@
     labels: {
       type: Array,
       default: () => [],
+    },
+    provider: {
+      type: Object as PropType<GameProviderInterface>,
+      required: true,
     },
   });
 
@@ -156,7 +162,7 @@
   }
 
   .info {
-    padding: var(--padding-info, #{rem(16px) rem(12px)});
+    padding: var(--padding-info, #{rem(16px) rem(12px) rem(8px)});
     background-color: var(--bg-info, rgba(14, 9, 30, .8));
     display: var(--display, grid);
     grid-row-gap: 8px;
@@ -165,7 +171,8 @@
       "title btn-favorite"
       "btn-play btn-play"
       "btn-try btn-try"
-      "sub-title sub-title";
+      "sub-title sub-title"
+      "info__provider info__provider";
     grid-template-columns: 1fr rem(24px);
     grid-template-rows: 1fr auto auto 1fr;
     top: 0;
@@ -176,6 +183,14 @@
     transition: var(--transition-info, (opacity .6s ease));
     pointer-events: var(--pointer-events, none);
     will-change: opacity;
+
+    &__provider {
+      @include font($body-1);
+      @extend %text-elipsis;
+      color: var(--gray-300);
+      margin-top: auto;
+      grid-column: 1/3;
+    }
   }
 
   @include media(md) {
