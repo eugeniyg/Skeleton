@@ -154,7 +154,7 @@
   }
 
   .info {
-    padding: var(--padding-info, #{rem(16px) rem(12px) rem(8px)});
+    padding: var(--padding-info, #{rem(8px) rem(8px) 0});
     background-color: var(--bg-info, rgba(14, 9, 30, .8));
     display: var(--display, grid);
     grid-row-gap: 8px;
@@ -176,12 +176,20 @@
     pointer-events: var(--pointer-events, none);
     will-change: opacity;
 
+    @include media(md) {
+      padding: var(--padding-info, #{rem(16px) rem(12px) rem(8px)});
+    }
+
     &__provider {
-      @include font($body-1);
+      @include font($body-0);
       @extend %text-elipsis;
       color: var(--gray-300);
       margin-top: auto;
       grid-column: 1/3;
+
+      @include media(md) {
+        @include font($body-1);
+      }
     }
   }
 
@@ -227,10 +235,18 @@
     @include font($heading-0);
     color: var(--color-info-title, var(--white));
     grid-area: title;
-    height: 60px;
+    height: 40px;
+
+    @media (min-width: 380px) {
+      height: 50px;
+    }
 
     @include media(sm) {
       @include upd-font($heading-2);
+    }
+
+    @include media(md) {
+      height: 60px;
     }
   }
 
