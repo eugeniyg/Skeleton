@@ -21,6 +21,7 @@
 
         <span
           class="nav-cat-select"
+          v-click-outside="close"
           :class="{
             'is-hidden' : isSelectHidden,
             'is-open': isOpen,
@@ -75,6 +76,10 @@
     isOpen.value = !isOpen.value;
   };
 
+  const close = () => {
+    if (isOpen.value) isOpen.value = false;
+  };
+
   const getItemsData = () => {
     const offset = 4;
     return [...document.querySelectorAll('.nav-cat-item')]
@@ -104,22 +109,13 @@
     timeoutId.value = setTimeout(update, 250);
   };
 
-  const clickOutside = (e: Event) => {
-    const target = e.target as HTMLElement;
-    if (!target.closest('.nav-cat-select')) {
-      isOpen.value = false;
-    }
-  };
-
   onMounted(() => {
     setTimeout(update, 250);
-    document.addEventListener('click', clickOutside);
     window.addEventListener('resize', onResize);
   });
 
   onBeforeUnmount(() => {
     window.removeEventListener('resize', onResize);
-    document.removeEventListener('click', clickOutside);
   });
 
 </script>

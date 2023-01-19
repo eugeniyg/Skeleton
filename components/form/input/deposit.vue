@@ -1,10 +1,10 @@
 <template>
   <div class="input-deposit">
     <div
-      id="currencies-select"
       class="select"
       :class="{'is-open': isShow}"
       @click="toggleSelect"
+      v-click-outside="closeDropdown"
     >
       <div class="amount">{{ balanceFormat.amount }}</div>
       <div class="label">{{ balanceFormat.currency }}</div>
@@ -30,20 +30,9 @@
     isShow.value = !isShow.value;
   };
 
-  const clickOutside = (e: Event) => {
-    const target = e.target as HTMLElement;
-    if (isShow.value && !target.closest('#currencies-select')) {
-      isShow.value = false;
-    }
+  const closeDropdown = () => {
+    if (isShow.value) isShow.value = false;
   };
-
-  onMounted(() => {
-    document.addEventListener('click', clickOutside);
-  });
-
-  onUnmounted(() => {
-    document.removeEventListener('click', clickOutside);
-  });
 </script>
 
 <style lang="scss">

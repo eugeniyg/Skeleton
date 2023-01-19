@@ -2,6 +2,7 @@
   <div
     class="input-payments"
     :class="classes"
+    v-click-outside="close"
   >
     <div v-if="props.items.length" class="selected" @click="open">
       <img
@@ -58,6 +59,10 @@
     isOpen.value = !isOpen.value;
   };
 
+  const close = ():void => {
+    if (isOpen.value) isOpen.value = false;
+  };
+
   const walletStore = useWalletStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
   const defaultLogoUrl = ():string => {
@@ -65,21 +70,6 @@
     if (activeAccount.value?.currency) return `/img/methods-icons/${activeAccount.value?.currency}.svg`;
     return '';
   };
-
-  const clickOutside = (e: Event) => {
-    const target = e.target as HTMLElement;
-    if (isOpen.value && !target.closest('.input-payments')) {
-      isOpen.value = false;
-    }
-  };
-
-  onMounted(() => {
-    document.addEventListener('click', clickOutside);
-  });
-
-  onUnmounted(() => {
-    document.removeEventListener('click', clickOutside);
-  });
 </script>
 
 <style lang="scss">
