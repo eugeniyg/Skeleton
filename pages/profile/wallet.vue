@@ -52,12 +52,18 @@
     openCurrencyNav();
   };
 
+  const clickOutside = (e:any) => {
+    if (!e.target.closest('.nav-currency') && !e.target.closest('#open-currency-nav') && isCurrencyNavOpen.value) {
+      closeCurrencyNav();
+    }
+  };
+
   onMounted(() => {
-    document.body.addEventListener('click', (e:any) => {
-      if (!e.target.closest('.nav-currency') && !e.target.closest('#open-currency-nav') && isCurrencyNavOpen.value) {
-        closeCurrencyNav();
-      }
-    });
+    document.body.addEventListener('click', clickOutside);
+  });
+
+  onBeforeUnmount(() => {
+    document.body.removeEventListener('click', clickOutside);
   });
 
   const orderedAccounts = computed(() => accounts.value.reduce((acc, item) => {

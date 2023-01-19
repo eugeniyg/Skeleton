@@ -2,8 +2,9 @@
   <div
     class="card-base"
     :style="backgroundImage"
-    :class="[{ 'hovered': gameHovered }, `card-${props.id}`]"
+    :class="{ 'hovered': gameHovered }"
     @click="clickGame"
+    v-click-outside="hideHover"
   >
     <div v-if="gameBages?.length" class="bages">
       <atomic-bage
@@ -107,27 +108,18 @@
     } return 'background-image: none';
   });
 
-  const gameHovered = ref<string|undefined>(undefined);
+  const gameHovered = ref<boolean>(false);
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
   const clickGame = ():void => {
     if (isMobile.value) {
-      gameHovered.value = gameHovered.value === props.id ? undefined : props.id;
+      gameHovered.value = !gameHovered.value;
     }
   };
 
-  const clickOutside = (e:any):void => {
-    if (e.target.closest(`.card-${props.id}`)) return;
-    gameHovered.value = undefined;
+  const hideHover = () => {
+    if (gameHovered.value) gameHovered.value = false;
   };
-
-  onMounted(() => {
-    document.addEventListener('click', clickOutside);
-  });
-
-  onBeforeUnmount(() => {
-    document.removeEventListener('click', clickOutside);
-  });
 </script>
 
 <style lang="scss">

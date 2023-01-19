@@ -11,7 +11,7 @@
 
       <div
         v-else
-        id="currencies-select"
+        v-click-outside="closeSelect"
         class="select"
         :class="{'is-open': isSelectOpen}"
         @click="toggleSelect"
@@ -68,20 +68,9 @@
     isSelectOpen.value = !isSelectOpen.value;
   };
 
-  const clickOutside = (e: Event) => {
-    const target = e.target as HTMLElement;
-    if (isSelectOpen.value && !target.closest('#currencies-select')) {
-      isSelectOpen.value = false;
-    }
+  const closeSelect = () => {
+    if (isSelectOpen.value) isSelectOpen.value = false;
   };
-
-  onMounted(() => {
-    document.addEventListener('click', clickOutside);
-  });
-
-  onUnmounted(() => {
-    document.removeEventListener('click', clickOutside);
-  });
 </script>
 
 <style lang="scss">
