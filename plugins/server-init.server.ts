@@ -33,7 +33,8 @@ export default defineNuxtPlugin(async ():Promise<any> => {
 
   getRequestCountry();
 
-  const token = useCookie('bearer');
+  const { getSessionToken } = useCoreAuthStore();
+  const sessionToken = getSessionToken();
 
   const { getProfileData, logOutUser } = useProfileStore();
   const { getUserAccounts } = useWalletStore();
@@ -47,19 +48,16 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     getGameCollections(),
   ]);
 
-  if (token.value) {
+  if (sessionToken) {
     const profileRequests = Promise.all([
       getProfileData(),
       getUserAccounts(),
     ]);
 
-    const requestResult = await Promise.allSettled([
+    await Promise.allSettled([
       settingsRequest,
       profileRequests,
     ]);
-
-    if (requestResult[1].status === 'rejected'
-        && requestResult[1].reason.response.status === 401) logOutUser(false);
   } else {
     await settingsRequest;
   }

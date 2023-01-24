@@ -87,11 +87,11 @@
     loading.value = false;
   };
 
-  const { decodeToken } = useCoreMethods();
-  const token = useCookie('bearer');
+  const { getCurrentSession } = useCoreAuthStore();
+  const currentSession = getCurrentSession();
   const sessionStatus = (session: SessionInterface): string => {
     if (session.closedAt) return 'closed';
-    const sessionId = token.value ? decodeToken(token.value)?.sessionId : undefined;
+    const sessionId = currentSession ? currentSession.sessionId : undefined;
     if (session.sessionId === sessionId) return 'current';
     return 'active';
   };
