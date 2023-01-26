@@ -36,7 +36,7 @@ export default defineNuxtPlugin(async ():Promise<any> => {
   const { getSessionToken } = useCoreAuthStore();
   const sessionToken = getSessionToken();
 
-  const { getProfileData, logOutUser } = useProfileStore();
+  const { getProfileData } = useProfileStore();
   const { getUserAccounts } = useWalletStore();
 
   const settingsRequest = Promise.all([
