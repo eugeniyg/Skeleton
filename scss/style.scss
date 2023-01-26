@@ -194,7 +194,8 @@ body {
 }
 
 .vfm__overlay {
-  background-color: rgba(0, 0, 0, 0.72) !important;
+  background-color: rgba(0, 0, 0, 0.88) !important;
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
 }
