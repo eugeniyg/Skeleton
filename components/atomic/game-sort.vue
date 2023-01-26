@@ -53,7 +53,7 @@
     transition: all .2s ease-in-out;
     cursor: pointer;
     @include font($body-1);
-    font-family: 'NeoSansPro', sans-serif;
+    font-family: 'Rubik', sans-serif;
 
     &.is-selected {
       --bg: var(--gray-700);
