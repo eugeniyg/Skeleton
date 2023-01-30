@@ -26,6 +26,17 @@
       :category="hotCategory"
     />
 
+    <div id="sports-container" />
+
+    <group-games
+      v-if="newCategory"
+      showAllBtn
+      showArrows
+      :category="newCategory"
+    />
+
+    <group-promotions/>
+
     <cards-group
       v-if="providerCards.games?.length"
       v-bind="providerCards"
@@ -37,15 +48,6 @@
         <card-providers v-bind="item" />
       </template>
     </cards-group>
-
-    <group-games
-      v-if="newCategory"
-      showAllBtn
-      showArrows
-      :category="newCategory"
-    />
-
-    <group-promotions/>
 
     <atomic-seo-text v-if="homeContent?.seo?.text" v-bind="homeContent.seo.text"/>
   </div>
@@ -73,4 +75,34 @@
 
   const hotCategory = gameCollections.value.find((collection) => collection.identity === 'hot');
   const newCategory = gameCollections.value.find((collection) => collection.identity === 'new');
+
+  const { betsyParams } = useGamesStore();
+  const startBetsyWidget = ():void => {
+    const mainHost = window.location.origin;
+    const params = {
+      ...betsyParams,
+      mainFrameUrl: `${mainHost}/betting`,
+      lang: currentLocale.value?.code || 'en',
+      containerId: 'sports-container',
+      height: '372px',
+    };
+
+    if (window.BetSdk) window.BetSdk.initTopEventsWidget(params);
+  };
+
+  onMounted(() => {
+    startBetsyWidget();
+  });
 </script>
+
+<style lang="scss">
+.home {
+  #sports-container {
+    margin-bottom: rem(32px);
+
+    @include media(l) {
+      margin-bottom: rem(40px);
+    }
+  }
+}
+</style>
