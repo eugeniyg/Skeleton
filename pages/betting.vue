@@ -20,10 +20,6 @@
     middleware: ['status-limited'],
   });
 
-  useHead({
-    script: [{ src: 'https://ui-stage.betsy.software/assets/sdk/init.js' }],
-  });
-
   const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();
   const {
@@ -41,16 +37,14 @@
   const profileStore = useProfileStore();
   const { isLoggedIn, playerStatusName, profile } = storeToRefs(profileStore);
 
-  const sdkParams = {
-    token: '',
-    cid: 'perunplay-stage',
-    lang: '',
-    host: 'https://ui-stage.betsy.software',
+  const sdkDefaultParams = {
     containerId: 'betting-container',
     width: '100%',
     height: '100%',
     parent: false,
   };
+
+  const { betsyParams } = useGamesStore();
 
   const startGame = async ():Promise<void> => {
     const redirectUrl = window.location.origin;
@@ -63,10 +57,14 @@
       platform: isMobile.value ? 1 : 2,
     };
     const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
-    sdkParams.token = startResponse.token;
-    sdkParams.lang = currentLocale.value?.code || 'en';
+    const params = {
+      ...sdkDefaultParams,
+      ...betsyParams,
+      token: startResponse.token,
+      lang: currentLocale.value?.code || 'en',
+    };
 
-    if (window.BetSdk) window.BetSdk.init(sdkParams);
+    if (window.BetSdk) window.BetSdk.init(params);
   };
 
   const { showAlert } = useLayoutStore();

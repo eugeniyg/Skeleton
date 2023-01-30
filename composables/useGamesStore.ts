@@ -15,17 +15,25 @@ interface GamesStoreStateInterface {
   gameCollections: CollectionInterface[],
   favoriteGames: GameInterface[],
   winnersSubscription: any,
-  latestWinners: WinnerInterface[]
+  latestWinners: WinnerInterface[],
+  betsyParams: {
+    host: string,
+    cid: string
+  },
 }
 
 export const useGamesStore = defineStore('gamesStore', {
   state: ():GamesStoreStateInterface => ({
-      gameProviders: [],
-      gameCollections: [],
-      favoriteGames: [],
-      winnersSubscription: undefined,
-      latestWinners: [],
-    }),
+    gameProviders: [],
+    gameCollections: [],
+    favoriteGames: [],
+    winnersSubscription: undefined,
+    latestWinners: [],
+    betsyParams: {
+      host: 'https://ui-stage.betsy.software',
+      cid: 'perunplay-stage',
+    },
+  }),
 
   getters: {
     providersSelectOptions(state):GameProviderInterface[] {

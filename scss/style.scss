@@ -168,7 +168,7 @@ body {
     --padding: #{rem(24px)} #{rem(48px)}
   }
 
-  .group-games, .group-winners, .favorite-recently, .cards-providers, .cards-wrap, .group-turbo {
+  .group-games, .group-winners, .group-promotions, .favorite-recently, .cards-wrap, .group-turbo {
     margin-bottom: rem(32px);
 
     @include media(l) {
