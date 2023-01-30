@@ -70,7 +70,7 @@
     () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['homePage']).findOne(),
   );
   const homeContent: HomeContentInterface | undefined = homeContentRequest.data.value?.homePage;
-  const { setPageSeo } = useProjectMethods();
+  const { setPageSeo, localizePath } = useProjectMethods();
   setPageSeo(homeContent?.seo);
 
   const hotCategory = gameCollections.value.find((collection) => collection.identity === 'hot');
@@ -81,7 +81,7 @@
     const mainHost = window.location.origin;
     const params = {
       ...betsyParams,
-      mainFrameUrl: `${mainHost}/betting`,
+      mainFrameUrl: mainHost + localizePath('/betting'),
       lang: currentLocale.value?.code || 'en',
       containerId: 'sports-container',
       height: '372px',
