@@ -135,6 +135,12 @@
   position: relative;
   z-index: 1;
 
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   .category & {
     --margin-top: 0;
     --margin-bottom: 0;
@@ -161,7 +167,7 @@
 
 .nav-cat {
   @extend %flex-items-center;
-  padding: rem(4px) rem(20px);
+  padding: rem(4px) rem(22px);
   display: inline-flex;
   border-radius: 8px;
   user-select: none;

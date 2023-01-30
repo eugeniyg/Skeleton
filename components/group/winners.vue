@@ -38,7 +38,7 @@
   });
   const globalStore = useGlobalStore();
   const { globalComponentsContent, isMobile, headerCountry } = storeToRefs(globalStore);
-  const winnersContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
+  const winnersContent: CardsGroupInterface | undefined = globalComponentsContent.value?.cardsGroup;
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
   const gameStore = useGamesStore();
@@ -50,7 +50,7 @@
   const showArrowButtons = ref<boolean>(props.showArrows);
   const { getLatestWinners } = useCoreGamesApi();
 
-  const scrollHandler = ():void => {
+  const scrollHandler = (): void => {
     if (!scrollContainer.value) return;
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
@@ -58,7 +58,7 @@
     showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
   };
 
-  const clickAction = (direction: string):void => {
+  const clickAction = (direction: string): void => {
     const { offsetWidth } = scrollContainer.value;
     scrollContainer.value.scrollBy({
       left: direction === 'next' ? offsetWidth : -offsetWidth,
@@ -95,7 +95,10 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
-  padding: 0 rem(16px);
+  background-color: var(--gray-900);
+  border-radius: 16px;
+  padding: 16px 16px 16px 16px;
+  position: relative;
 
   @include media(xs) {
     grid-template-areas:
@@ -103,8 +106,28 @@
     "items items items items";
   }
 
-  @include media(l) {
-    padding: 0 rem(24px);
+  @include media(md) {
+    padding: 24px 24px 16px 24px;
+
+    overflow: hidden;
+
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 24px;
+      background-color: var(--layer-bg, var(--gray-900));
+      z-index: 2;
+    }
+
+    &:before {
+      left: 0;
+    }
+
+    &:after {
+      right: 0;
+    }
   }
 
   > [data-icon] {
@@ -114,7 +137,7 @@
 
   > .icon {
     grid-area: icon;
-    --iccon-size: #{rem(20px)};
+    --icon-size: #{rem(20px)};
     --color: var(--gray-400);
   }
 
@@ -142,18 +165,14 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    margin: 0 rem(-46px);
-    scroll-padding: rem(36px);
-    padding: 0 rem(26px);
+    margin: -4px -36px 0;
+    padding: 0 32px;
+    scroll-padding: 32px;
 
     @include media(md) {
       scroll-padding: 0;
-      margin: 0 rem(-18px);
       padding: 0;
-    }
-
-    @include media(l) {
-      margin: 0 rem(-28px);
+      margin: -8px -8px 0;
     }
 
     &::-webkit-scrollbar {

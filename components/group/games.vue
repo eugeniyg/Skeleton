@@ -157,16 +157,11 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
-  padding: 0 rem(16px);
 
   @include media(xs) {
     grid-template-areas:
     "icon heading btn-show-all arrows"
     "items items items items";
-  }
-
-  @include media(l) {
-    padding: 0 rem(24px);
   }
 
   > [data-icon] {
@@ -176,14 +171,18 @@
 
   > .icon {
     grid-area: icon;
+    margin-left: 16px;
     --icon-size: #{rem(20px)};
     --color: var(--gray-400);
+
+    @include media(sm) {
+      margin-left: 24px;
+    }
   }
 
   > .btn-show-all {
     grid-area: btn-show-all;
     @include font($heading-1);
-    margin: 0 rem(-24px);
 
     --font-size: #{rem(12px)};
     --color: var(--gray-500);
@@ -201,9 +200,11 @@
 
   > .arrows {
     grid-area: arrows;
+    margin-right: 16px;
 
-    @include media(xs) {
+    @include media(sm) {
       margin-left: rem(24px);
+      margin-right: 24px;
     }
   }
 
@@ -220,10 +221,17 @@
     display: var(--display, flex);
     align-items: center;
     overflow-x: auto;
-    margin: 0  rem(-20px);
+    margin: -4px -20px 0;
+    padding: 0 16px;
+    scroll-padding: 16px;
+
+    @include media(sm) {
+      margin: -4px -8px 0;
+      padding: 0;
+    }
 
     @include media(l) {
-      margin: 0  rem(-28px);
+      //margin: 0  rem(-32px);
     }
 
     &::-webkit-scrollbar {

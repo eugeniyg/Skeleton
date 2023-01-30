@@ -87,15 +87,37 @@
   padding: rem(16px);
   border-radius: rem(16px);
 
+  @include media(sm) {
+    overflow: hidden;
+
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 24px;
+      background-color: var(--layer-bg, var(--gray-900));
+      z-index: 2;
+    }
+
+    &:before {
+      left: 0;
+    }
+
+    &:after {
+      right: 0;
+    }
+  }
+
   @include media(xs) {
     grid-template-areas:
     "icon heading btn-show-all arrows"
     "items items items items";
   }
 
-  @include media(l) {
-    padding: rem(24px) rem(24px) rem(16px);
-  }
+  //@include media(l) {
+  //  padding: rem(24px) rem(24px) rem(16px);
+  //}
 
   > [data-icon] {
     font-size: rem(20px);
@@ -104,8 +126,13 @@
 
   > .icon {
     grid-area: icon;
+
     --icon-size: #{rem(20px)};
     --color: var(--gray-400);
+
+    @include media(sm) {
+      margin-left: 8px;
+    }
   }
 
   > .btn-show-all {
@@ -128,9 +155,11 @@
 
   .arrows {
     grid-area: arrows;
+    margin-left: 16px;
 
-    @include media(xs) {
+    @include media(sm) {
       margin-left: rem(24px);
+      margin-right: 8px;
     }
   }
 
@@ -145,67 +174,27 @@
   .items-wrapper {
     grid-area: items;
     position: relative;
-    margin-left: -28px;
-    margin-right: -28px;
-
-    @include media(sm) {
-      margin-left: -48px;
-      margin-right: -48px;
-    }
-
-    @include media(md) {
-      margin-left: -10px;
-      margin-right: -10px;
-    }
   }
 
   .items {
     display: var(--display, flex);
-    padding: rem(32px) 0 0 0;
+    padding: 32px 36px 0 36px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
+    margin: 0 -40px;
+    scroll-padding: 36px;
 
-    &:before {
-      grid-area: start;
-      content: "";
-      min-width: 16px;
-      max-width: 38px;
-      min-height: rem(20px);
-      position: relative;
-      display: flex;
-      scroll-snap-align: start;
-      order: 1;
-
-      @include media(sm) {
-        min-width: 38px;
-      }
-    }
-
-    &:after {
-      grid-area: end;
-      content: "";
-      min-width: 16px;
-      max-width: 38px;
-      min-height: rem(20px);
-      position: relative;
-      display: flex;
-      scroll-snap-align: end;
-      order: 3;
-
-      @include media(sm) {
-        min-width: 38px;
-      }
+    @include media(sm) {
+      margin: 0;
+      padding: 32px 0 0 0;
+      scroll-padding: 0;
     }
 
     @include media(md) {
       scroll-padding: 0;
       margin-right: 0;
       margin-left: 0;
-
-      &:before, &:after {
-        display: none;
-      }
     }
 
     &::-webkit-scrollbar {

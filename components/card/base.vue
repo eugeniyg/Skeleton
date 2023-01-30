@@ -125,7 +125,6 @@
 <style lang="scss">
 .card-base {
   height: var(--height, auto);
-  padding: var(--padding, 1px);
   @include ratio(104px, 156px);
   flex-shrink: 0;
   position: relative;
@@ -140,12 +139,14 @@
   filter: drop-shadow(0px 0px 12px rgba(0, 0, 0, 0.16));
   @extend %cards-items;
 
+  --min-width: #{column(3.3)};
+
   @include media(xs) {
-    --min-width: #{column(4)};
+    --min-width: #{column(3.3)};
   }
 
   @include media(sm) {
-    --padding: 1px;
+    border: 8px solid var(--black-primary);
     --min-width: #{column(6)};
   }
 
@@ -186,6 +187,7 @@
       color: var(--gray-300);
       margin-top: auto;
       grid-column: 1/3;
+      text-align: center;
 
       @include media(md) {
         @include font($body-1);

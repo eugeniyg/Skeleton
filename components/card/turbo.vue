@@ -37,8 +37,9 @@
   align-self: stretch;
   scroll-snap-align: var(--scroll-snap-align, start);
   border-radius: 16px;
-  padding: rem(10px);
-  width: calc(100% / 2.5 );
+  width: calc(100% / 2.4 );
+  min-width: 128px;
+  border: 4px solid var(--gray-900);
 
   @include media(xs) {
     --scroll-snap-align: unset;
@@ -49,6 +50,7 @@
   }
 
   @include media(sm) {
+    border: 8px solid var(--gray-900);
     --scroll-snap-align: unset;
 
     &:nth-of-type(3n + 1) {
@@ -142,11 +144,11 @@
   }
 
   @include media(xs) {
-    width: calc(100% / 3.6);
+    width: calc(100% / 3.4);
   }
 
   @include media(sm) {
-    width: calc(100% / 4.6);
+    width: calc(100% / 4);
   }
 
   @include media(md) {

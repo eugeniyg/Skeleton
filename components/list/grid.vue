@@ -39,8 +39,18 @@
 <style lang="scss">
 .grid {
   .items {
-    display: flex;
+    display: grid;
     flex-wrap: wrap;
+    grid-template-columns: repeat(3, 1fr);
+    margin: -4px -4px 0;
+
+    @include media(sm) {
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    @include media(xl) {
+      grid-template-columns: repeat(9, 1fr);
+    }
   }
 
   .item {
@@ -52,6 +62,10 @@
     margin: auto;
     visibility: hidden !important;
     opacity: 0 !important;
+  }
+
+  .card-base {
+    --min-width: 100%;
   }
 }
 </style>

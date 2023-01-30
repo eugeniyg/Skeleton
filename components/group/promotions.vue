@@ -86,7 +86,7 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
-  padding: 0 rem(24px);
+  padding: 0 16px;
 
   @include media(xs) {
     grid-template-areas:
@@ -118,7 +118,7 @@
     display: var(--display, grid);
     align-items: normal;
     overflow-x: auto;
-    @extend %cards-items-negative;
+    //@extend %cards-items-negative;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: var(--items-column-gap, #{rem(8px)});
     margin: 0 rem(-24px);

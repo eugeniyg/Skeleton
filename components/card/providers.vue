@@ -1,6 +1,6 @@
 <template>
   <div class="card-providers" @click="routeToGames">
-    <img class="img" :src="`/img${props.src}`" />
+    <img class="img" :src="`/img${props.src}`"/>
   </div>
 </template>
 
@@ -25,14 +25,30 @@
 .cards-providers {
   border-radius: 16px;
   background-color: var(--gray-900);
-  padding: var(--card-padding, #{rem(16px)} #{rem(16px)} 0 #{rem(16px)});
+  padding: var(--card-padding, 16px);
 
-  @include media(xs) {
-    --card-padding: #{rem(16px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
-  }
+  position: relative;
 
-  @include media(md) {
-    --card-padding: #{rem(24px)} #{rem(24px)} #{rem(20px)} #{rem(24px)};
+  @include media(sm) {
+    overflow: hidden;
+
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 24px;
+      background-color: var(--layer-bg, var(--gray-900));
+      z-index: 2;
+    }
+
+    &:before {
+      left: 0;
+    }
+
+    &:after {
+      right: 0;
+    }
   }
 }
 
@@ -41,10 +57,14 @@
   position: relative;
   padding: rem(16px);
   flex-shrink: 0;
-  width: var(--width, #{column(3)});
+  width: var(--width, #{column(2.5)});
   cursor: pointer;
+  border-radius: 16px;
   border: 4px solid var(--gray-900);
-  border-radius: 12px;
+
+  @include media(sm) {
+    border: 8px solid var(--gray-900);
+  }
 
   .img {
     max-width: 100%;

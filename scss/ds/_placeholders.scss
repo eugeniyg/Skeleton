@@ -423,13 +423,12 @@
 }
 
 %cards-items {
-  border-radius: 12px;
-  border: 4px solid var(--black-primary);
-}
+  border-radius: 16px;
+  border: 4px solid var(--border-color, var(--black-primary));
 
-%cards-items-negative {
-  margin-left: rem(-4px);
-  margin-right: rem(-4px);
+  @include media(sm) {
+    border: 8px solid var(--border-color, var(--black-primary));
+  }
 }
 
 %inputMask {
