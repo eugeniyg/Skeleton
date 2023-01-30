@@ -1,16 +1,8 @@
 <template>
   <div class="betting">
-    <div class="container">
-      <iframe
-        v-if="frameLink"
-        :key="frameLink"
-        :src="frameLink"
-        height="100%"
-        width="100%"
-      />
-
+    <div id="betting-container" class="container">
       <not-auth-game
-        v-else-if="showPlug && bettingContent?.plug"
+        v-if="showPlug && bettingContent?.plug"
         v-bind="bettingContent.plug"
         singleMode
       />
@@ -28,6 +20,10 @@
     middleware: ['status-limited'],
   });
 
+  useHead({
+    script: [{ src: 'https://ui-stage.betsy.software/assets/sdk/init.js' }],
+  });
+
   const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();
   const {
@@ -40,11 +36,24 @@
 
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
-  const frameLink = ref<string>('');
 
   const { getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
   const { isLoggedIn, playerStatusName, profile } = storeToRefs(profileStore);
+
+  const sdkParams = {
+    token: '',
+    cid: 'perunplay-stage',
+    lang: '',
+    host: 'https://ui-stage.betsy.software',
+    containerId: 'betting-container',
+    width: '100%',
+    height: '100%',
+    parent: false,
+    customStyles: false,
+    sub_partner_id: false,
+    allowParentUrlUpdate: false,
+  };
 
   const startGame = async ():Promise<void> => {
     const redirectUrl = window.location.origin;
@@ -57,7 +66,10 @@
       platform: isMobile.value ? 1 : 2,
     };
     const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
-    frameLink.value = startResponse.gameUrl;
+    sdkParams.token = startResponse.token;
+    sdkParams.lang = currentLocale.value?.code || 'en';
+
+    if (window.BetSdk) window.BetSdk.init(sdkParams);
   };
 
   const { showAlert } = useLayoutStore();
