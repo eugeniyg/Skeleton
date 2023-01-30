@@ -50,9 +50,6 @@
     width: '100%',
     height: '100%',
     parent: false,
-    customStyles: false,
-    sub_partner_id: false,
-    allowParentUrlUpdate: false,
   };
 
   const startGame = async ():Promise<void> => {
