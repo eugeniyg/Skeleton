@@ -44,7 +44,7 @@
   const sdkParams = {
     token: '',
     cid: 'perunplay-stage',
-    lang: currentLocale.value?.code || 'en',
+    lang: '',
     host: 'https://ui-stage.betsy.software',
     containerId: 'betting-container',
     width: '100%',
@@ -53,12 +53,6 @@
     customStyles: false,
     sub_partner_id: false,
     allowParentUrlUpdate: false,
-  };
-
-  const getBetsyToken = (gameUrl:string):string => {
-    const getQueryParams = gameUrl.split('?')[1].split('&').map((query) => query.split('='));
-    const queryObj = Object.fromEntries(getQueryParams);
-    return queryObj.token || '';
   };
 
   const startGame = async ():Promise<void> => {
@@ -72,8 +66,8 @@
       platform: isMobile.value ? 1 : 2,
     };
     const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
-    const betsyToken = getBetsyToken(startResponse.gameUrl);
-    sdkParams.token = betsyToken;
+    sdkParams.token = startResponse.token;
+    sdkParams.lang = currentLocale.value?.code || 'en';
 
     if (window.BetSdk) window.BetSdk.init(sdkParams);
   };
@@ -136,7 +130,7 @@
     "container nav"
     "panel nav"
     "seo nav";
-  //align-items: var(--align-items, flex-end);
+  align-items: var(--align-items, flex-end);
   grid-template-columns: 1fr auto;
   margin: -24px -16px 0 -16px;
 
