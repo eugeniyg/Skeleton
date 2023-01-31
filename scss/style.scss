@@ -27,6 +27,10 @@ input:-webkit-autofill-and-obscured {
   background-color: var(--gray-800) !important;
 }
 
+input, button, ::placeholder, textarea {
+  font-family: Rubik, sans-serif;
+}
+
 @mixin radius($size) {
   border-radius: $size;
 }
