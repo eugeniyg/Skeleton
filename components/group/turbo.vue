@@ -156,20 +156,20 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    padding: rem(32px) rem(32px) 0 rem(32px);
-    margin: 16px rem(-32px) 0;
+    padding: rem(36px) rem(32px) 0 rem(32px);
+    margin: 0 rem(-32px) 0;
     scroll-padding: rem(32px);
     grid-column-gap: rem(8px);
 
     @include media(sm) {
       margin: 0;
-      padding: rem(32px) 0;
+      padding: rem(36px) 0 rem(32px);
       scroll-padding: 0;
       grid-column-gap: rem(16px);
     }
 
     @include media(md) {
-      padding: rem(24px) 0 0;
+      padding: rem(36px) 0 0;
       margin: 0;
     }
 
