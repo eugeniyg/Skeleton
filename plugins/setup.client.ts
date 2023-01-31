@@ -28,9 +28,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   nuxtApp.hook('app:mounted', async () => {
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
-    const bearer = useCookie('bearer');
+    const { getSessionToken } = useCoreAuthStore();
+    const sessionToken = getSessionToken();
 
-    if (bearer.value) {
+    if (sessionToken) {
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       subscribeAccountSocket();
       subscribeInvoicesSocket();

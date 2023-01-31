@@ -7,7 +7,6 @@ import { useLayoutStore } from '~/composables/useLayoutStore';
 import { useGamesStore } from '~/composables/useGamesStore';
 import { useProjectMethods } from '~/composables/useProjectMethods';
 import { useGlobalStore } from '~/composables/useGlobalStore';
-import { CookieRef } from '#app';
 
 interface ProfileStoreStateInterface {
   isLoggedIn: boolean,
@@ -36,10 +35,7 @@ export const useProfileStore = defineStore('profileStore', {
   },
 
   actions: {
-    setToken(authData: AuthorizationResponseInterface):void {
-      const bearer = useCookie('bearer', { maxAge: 60 * 60 * 24 * 365 * 10 });
-      bearer.value = authData.accessToken;
-      this.sessionId = authData.sessionId;
+    startSession(authData: AuthorizationResponseInterface):void {
       this.profile = authData.profile;
       const { reconnectSocket } = useWebSocket();
       reconnectSocket();
@@ -49,7 +45,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { submitLoginData } = useCoreAuthApi();
       const { getUserAccounts, subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       const submitResult = await submitLoginData(loginData);
-      this.setToken(submitResult);
+      this.startSession(submitResult);
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
@@ -63,7 +59,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { submitRegistrationData } = useCoreAuthApi();
       const { getUserAccounts, subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       const submitResult = await submitRegistrationData(registrationData);
-      this.setToken(submitResult);
+      this.startSession(submitResult);
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
@@ -85,13 +81,11 @@ export const useProfileStore = defineStore('profileStore', {
       this.profile = data;
     },
 
-    async logOutUser(needRequest:boolean = true):Promise<void> {
+    async logOutUser():Promise<void> {
       const { logOut } = useCoreAuthApi();
-      const bearer: CookieRef<string|null> = useCookie('bearer');
       try {
-        if (needRequest) await logOut();
+        await logOut();
       } finally {
-        bearer.value = null;
         this.isLoggedIn = false;
         const { unsubscribeAccountSocket, unsubscribeInvoiceSocket } = useWalletStore();
         unsubscribeAccountSocket();

@@ -1,13 +1,13 @@
 <template>
-  <nav class="nav-profile" :class="{'is-open': isOpen}">
+  <nav class="nav-profile" :class="{'is-open': isOpen}" v-click-outside="close">
     <button class="selected" @click="toggle">
       {{ selected?.title }}<atomic-icon id="arrow_expand-close"/>
     </button>
 
-    <div class="items" @mouseleave="close">
+    <div class="items">
       <router-link
         v-for="(item, index) in props.items"
-        @click="toggle"
+        @click="close"
         :key="index"
         class="item"
         :class="{'is-active': $route.path === localizePath(item.url)}"
@@ -41,7 +41,7 @@
   };
 
   const close = ():void => {
-    isOpen.value = false;
+    if (isOpen.value) isOpen.value = false;
   };
 </script>
 

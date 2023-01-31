@@ -34,30 +34,30 @@ input:-webkit-autofill-and-obscured {
 $font-path: '~/assets/fonts/';
 
 @font-face {
-  font-family: 'NeoSansPro';
-  src: url('#{$font-path}/NeoSansPro-Regular.woff2') format('woff2'),
-  url('#{$font-path}NeoSansPro-Regular.woff') format('woff'),
-  url('#{$font-path}NeoSansPro-Regular.ttf') format('truetype');
+  font-family: 'Rubik';
+  src: url('#{$font-path}Rubik-Regular.woff2') format('woff2'),
+  url('#{$font-path}Rubik-Regular.woff') format('woff'),
+  url('#{$font-path}Rubik-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'NeoSansPro';
-  src: url('#{$font-path}NeoSansPro-Medium.woff2') format('woff2'),
-  url('#{$font-path}NeoSansPro-Medium.woff') format('woff'),
-  url('#{$font-path}NeoSansPro-Medium.ttf') format('truetype');
+  font-family: 'Rubik';
+  src: url('#{$font-path}Rubik-Medium.woff2') format('woff2'),
+  url('#{$font-path}Rubik-Medium.woff') format('woff'),
+  url('#{$font-path}Rubik-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'NeoSansPro';
-  src: url('#{$font-path}/NeoSansPro-Bold.woff2') format('woff2'),
-  url('#{$font-path}NeoSansPro-Bold.woff') format('woff'),
-  url('#{$font-path}NeoSansPro-Bold.ttf') format('truetype');
+  font-family: 'Rubik';
+  src: url('#{$font-path}Rubik-Bold.woff2') format('woff2'),
+  url('#{$font-path}Rubik-Bold.woff') format('woff'),
+  url('#{$font-path}Rubik-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -87,7 +87,7 @@ html {
 //@import "ds/placeholders";
 
 body {
-  font-family: 'NeoSansPro', sans-serif;
+  font-family: 'Rubik', sans-serif;
   margin: 0;
   background-color: var(--black-primary);
   @extend %scrollbar-hide;
@@ -168,7 +168,7 @@ body {
     --padding: #{rem(24px)} #{rem(48px)}
   }
 
-  .group-games, .group-winners, .favorite-recently, .cards-providers, .cards-wrap, .group-turbo {
+  .group-games, .group-winners, .group-promotions, .favorite-recently, .cards-wrap, .group-turbo {
     margin-bottom: rem(32px);
 
     @include media(l) {
@@ -194,7 +194,8 @@ body {
 }
 
 .vfm__overlay {
-  background-color: rgba(0, 0, 0, 0.72) !important;
+  background-color: rgba(0, 0, 0, 0.88) !important;
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
 }

@@ -2,8 +2,9 @@
   <div
     class="card-base"
     :style="backgroundImage"
-    :class="[{ 'hovered': gameHovered }, `card-${props.id}`]"
+    :class="{ 'hovered': gameHovered }"
     @click="clickGame"
+    v-click-outside="hideHover"
   >
     <div v-if="gameBages?.length" class="bages">
       <atomic-bage
@@ -32,6 +33,8 @@
       >
         {{ groupContent?.demoButton }}
       </button-base>
+
+      <div class="info__provider">{{ props.provider.name }}</div>
     </div>
   </div>
 </template>
@@ -39,7 +42,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { PropType } from '@vue/runtime-core';
-  import { GameImagesInterface } from '@platform/frontend-core/dist/module';
+  import { GameImagesInterface, GameProviderInterface } from '@platform/frontend-core/dist/module';
   import { CardsGroupInterface } from '~/types';
 
   const props = defineProps({
@@ -71,6 +74,10 @@
       type: Array,
       default: () => [],
     },
+    provider: {
+      type: Object as PropType<GameProviderInterface>,
+      required: true,
+    },
   });
 
   const router = useRouter();
@@ -101,27 +108,18 @@
     } return 'background-image: none';
   });
 
-  const gameHovered = ref<string|undefined>(undefined);
+  const gameHovered = ref<boolean>(false);
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
   const clickGame = ():void => {
     if (isMobile.value) {
-      gameHovered.value = gameHovered.value === props.id ? undefined : props.id;
+      gameHovered.value = !gameHovered.value;
     }
   };
 
-  const clickOutside = (e:any):void => {
-    if (e.target.closest(`.card-${props.id}`)) return;
-    gameHovered.value = undefined;
+  const hideHover = () => {
+    if (gameHovered.value) gameHovered.value = false;
   };
-
-  onMounted(() => {
-    document.addEventListener('click', clickOutside);
-  });
-
-  onBeforeUnmount(() => {
-    document.removeEventListener('click', clickOutside);
-  });
 </script>
 
 <style lang="scss">
@@ -156,7 +154,7 @@
   }
 
   .info {
-    padding: var(--padding-info, #{rem(16px) rem(12px)});
+    padding: var(--padding-info, #{rem(8px) rem(8px) 0});
     background-color: var(--bg-info, rgba(14, 9, 30, .8));
     display: var(--display, grid);
     grid-row-gap: 8px;
@@ -165,7 +163,8 @@
       "title btn-favorite"
       "btn-play btn-play"
       "btn-try btn-try"
-      "sub-title sub-title";
+      "sub-title sub-title"
+      "info__provider info__provider";
     grid-template-columns: 1fr rem(24px);
     grid-template-rows: 1fr auto auto 1fr;
     top: 0;
@@ -176,6 +175,22 @@
     transition: var(--transition-info, (opacity .6s ease));
     pointer-events: var(--pointer-events, none);
     will-change: opacity;
+
+    @include media(md) {
+      padding: var(--padding-info, #{rem(16px) rem(12px) rem(8px)});
+    }
+
+    &__provider {
+      @include font($body-0);
+      @extend %text-elipsis;
+      color: var(--gray-300);
+      margin-top: auto;
+      grid-column: 1/3;
+
+      @include media(md) {
+        @include font($body-1);
+      }
+    }
   }
 
   @include media(md) {
@@ -220,10 +235,18 @@
     @include font($heading-0);
     color: var(--color-info-title, var(--white));
     grid-area: title;
-    height: 60px;
+    height: 40px;
+
+    @media (min-width: 380px) {
+      height: 50px;
+    }
 
     @include media(sm) {
       @include upd-font($heading-2);
+    }
+
+    @include media(md) {
+      height: 60px;
     }
   }
 

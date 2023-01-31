@@ -18,7 +18,8 @@
 
 <style lang="scss">
 .opacity-layer {
-  background-color: var(--opacity-layer-bg, rgba(0, 0, 0, 0.72));
+  background-color: var(--opacity-layer-bg, rgba(0, 0, 0, 0.88));
+  backdrop-filter: blur(8px);
   position: fixed;
   top: 0;
   left: 0;

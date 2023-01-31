@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { AccountInterface, GameInterface } from '@platform/frontend-core/dist/module';
+  import { GameInterface } from '@platform/frontend-core/dist/module';
   import { GamePageInterface } from '~/types';
 
   const route = useRoute();

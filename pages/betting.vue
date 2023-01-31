@@ -1,16 +1,8 @@
 <template>
   <div class="betting">
-    <div class="container">
-      <iframe
-        v-if="frameLink"
-        :key="frameLink"
-        :src="frameLink"
-        height="100%"
-        width="100%"
-      />
-
+    <div id="betting-container" class="container">
       <not-auth-game
-        v-else-if="showPlug && bettingContent?.plug"
+        v-if="showPlug && bettingContent?.plug"
         v-bind="bettingContent.plug"
         singleMode
       />
@@ -40,11 +32,19 @@
 
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
-  const frameLink = ref<string>('');
 
   const { getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
   const { isLoggedIn, playerStatusName, profile } = storeToRefs(profileStore);
+
+  const sdkDefaultParams = {
+    containerId: 'betting-container',
+    width: '100%',
+    height: '100%',
+    parent: false,
+  };
+
+  const { betsyParams } = useGamesStore();
 
   const startGame = async ():Promise<void> => {
     const redirectUrl = window.location.origin;
@@ -57,7 +57,14 @@
       platform: isMobile.value ? 1 : 2,
     };
     const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
-    frameLink.value = startResponse.gameUrl;
+    const params = {
+      ...sdkDefaultParams,
+      ...betsyParams,
+      token: startResponse.token,
+      lang: currentLocale.value?.code || 'en',
+    };
+
+    if (window.BetSdk) window.BetSdk.init(params);
   };
 
   const { showAlert } = useLayoutStore();
