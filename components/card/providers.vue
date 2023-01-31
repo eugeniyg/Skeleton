@@ -25,17 +25,16 @@
 .cards-providers {
   border-radius: 16px;
   background-color: var(--gray-900);
-  padding: var(--card-padding, 16px);
+  padding: var(--card-padding, 16px 16px 8px);
   position: relative;
 
-  @include media(sm) {
-    --card-padding: 16px 24px;
-
-    @include scroll-overlay;
+  @include media(xs) {
+    --card-padding: 16px 16px 24px;
   }
 
   @include media(md) {
     --card-padding: 24px;
+    @include scroll-overlay;
   }
 }
 

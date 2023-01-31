@@ -118,7 +118,6 @@
     display: var(--display, grid);
     align-items: normal;
     overflow-x: auto;
-    //@extend %cards-items-negative;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: var(--items-column-gap, #{rem(8px)});
     margin: 0 rem(-24px);

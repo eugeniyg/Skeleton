@@ -19,21 +19,21 @@
       @clickAction="clickAction"
     />
 
-    <div class="items-wrapper">
-      <div
-        ref="scrollContainer"
-        class="items"
-        @scroll="scrollHandler"
-      >
-        <card-turbo
-          v-for="(item, itemIndex) in groupTurboContent.items"
-          :key="itemIndex"
-          v-bind="item"
-          :buttonLabel="groupTurboContent.buttonLabel"
-          :infoLabel="groupTurboContent.infoLabel"
-          :categoryLabel="groupTurboContent.categoryLabel"
-        />
-      </div>
+    <!--    <div class="items-wrapper">-->
+    <div
+      ref="scrollContainer"
+      class="items"
+      @scroll="scrollHandler"
+    >
+      <card-turbo
+        v-for="(item, itemIndex) in groupTurboContent.items"
+        :key="itemIndex"
+        v-bind="item"
+        :buttonLabel="groupTurboContent.buttonLabel"
+        :infoLabel="groupTurboContent.infoLabel"
+        :categoryLabel="groupTurboContent.categoryLabel"
+      />
+      <!--      </div>-->
     </div>
   </div>
 </template>
@@ -95,12 +95,12 @@
   }
 
   @include media(sm) {
-    padding: rem(16px) rem(24px) 0;
+    padding: rem(16px) rem(24px) rem(16px);
   }
 
   @include media(md) {
     @include scroll-overlay;
-    padding: rem(24px) rem(24px) 0;
+    padding: rem(24px);
   }
 
   > [data-icon] {
@@ -150,18 +150,14 @@
     margin: 0;
   }
 
-  .items-wrapper {
-    grid-area: items;
-    position: relative;
-  }
-
   .items {
+    grid-area: items;
     display: var(--display, flex);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     padding: rem(32px) rem(32px) 0 rem(32px);
-    margin: 0 rem(-32px);
+    margin: 16px rem(-32px) 0;
     scroll-padding: rem(32px);
     grid-column-gap: rem(8px);
 
@@ -170,6 +166,11 @@
       padding: rem(32px) 0;
       scroll-padding: 0;
       grid-column-gap: rem(16px);
+    }
+
+    @include media(md) {
+      padding: rem(24px) 0 0;
+      margin: 0;
     }
 
     &::-webkit-scrollbar {

@@ -97,17 +97,18 @@
   grid-row-gap: var(--row-gap, #{rem(16px)});
   background-color: var(--gray-900);
   border-radius: 16px;
-  padding: rem(16px) rem(16px) rem(16px) rem(16px);
+  padding: rem(16px) rem(16px) rem(8px) rem(16px);
   position: relative;
 
   @include media(xs) {
     grid-template-areas:
     "icon heading btn-show-all arrows"
     "items items items items";
+    padding: rem(16px) rem(16px) rem(24px) rem(16px);
   }
 
   @include media(sm) {
-    padding: rem(24px) rem(24px) rem(16px) rem(24px);
+    padding: rem(24px);
   }
 
   @include media(md) {
@@ -158,6 +159,9 @@
 
     @include media(sm) {
       grid-column-gap: 16px;
+      margin: 0 -56px 0;
+      padding: 0 56px;
+      scroll-padding: 56px;
     }
 
     @include media(md) {

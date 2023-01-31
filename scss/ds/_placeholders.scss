@@ -422,14 +422,6 @@
   }
 }
 
-%cards-items {
-  border-radius: 16px;
-  //border: 4px solid var(--border-color, var(--black-primary));
-
-  @include media(sm) {
-    //border: 8px solid var(--border-color, var(--black-primary));
-  }
-}
 
 %inputMask {
   box-shadow: inset 0 0 0 1000px var(--gray-800);

@@ -46,14 +46,15 @@
 
 <style lang="scss">
 .card-latest-winners {
-  --col-count: 2.5;
+  --col-count: 1.4;
   --col-gap: 8px;
 
-  width: var(--min-width, #{rem(224px)});
   height: var(--height, auto);
+  width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap)/var(--col-count))));
   padding: rem(8px);
   background-color: var(--bg, var(--gray-800));
   display: grid;
+  align-content: center;
   grid-template-areas:
     "img title"
     "img sub-title"
@@ -63,10 +64,20 @@
   align-self: stretch;
   align-items: flex-start;
   text-decoration: none;
-  @extend %cards-items;
+  border-radius: 16px;
+  grid-column-gap: rem(8px);
   scroll-snap-align: var(--scroll-snap-align, start);
 
+  @include media(xs) {
+    --col-count: 2.4;
+  }
+
+  @include media(xs) {
+    --col-count: 2.89;
+  }
+
   @include media(md) {
+    --col-gap: 16px;
     --col-count: 5;
   }
 

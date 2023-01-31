@@ -70,7 +70,6 @@
     }
   }
 
-
   @include media(l) {
     --col-count: 6;
   }
