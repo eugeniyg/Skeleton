@@ -35,7 +35,6 @@
 <style lang="scss">
 .text-wrap {
   color: var(--gray-500);
-  padding-top: 40px;
   margin-bottom: -24px;
 
   h1, h2 {

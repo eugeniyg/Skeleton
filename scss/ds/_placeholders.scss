@@ -424,10 +424,10 @@
 
 %cards-items {
   border-radius: 16px;
-  border: 4px solid var(--border-color, var(--black-primary));
+  //border: 4px solid var(--border-color, var(--black-primary));
 
   @include media(sm) {
-    border: 8px solid var(--border-color, var(--black-primary));
+    //border: 8px solid var(--border-color, var(--black-primary));
   }
 }
 

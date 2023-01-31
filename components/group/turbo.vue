@@ -81,43 +81,26 @@
     "btn-show-all btn-show-all btn-show-all btn-show-all";
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
-  grid-row-gap: var(--row-gap, #{rem(8px)});
+  grid-row-gap: var(--row-gap, #{rem(16px)});
   position: relative;
   background-color: var(--gray-900);
   padding: rem(16px);
   border-radius: rem(16px);
 
-  @include media(sm) {
-    overflow: hidden;
-
-    &:before, &:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 24px;
-      background-color: var(--layer-bg, var(--gray-900));
-      z-index: 2;
-    }
-
-    &:before {
-      left: 0;
-    }
-
-    &:after {
-      right: 0;
-    }
-  }
-
   @include media(xs) {
     grid-template-areas:
     "icon heading btn-show-all arrows"
     "items items items items";
+    padding: rem(16px) rem(16px) rem(24px);
   }
 
-  //@include media(l) {
-  //  padding: rem(24px) rem(24px) rem(16px);
-  //}
+  @include media(sm) {
+    padding: rem(16px) rem(24px) 0;
+  }
+
+  @include media(md) {
+    @include scroll-overlay;
+  }
 
   > [data-icon] {
     font-size: rem(20px);
@@ -129,10 +112,6 @@
 
     --icon-size: #{rem(20px)};
     --color: var(--gray-400);
-
-    @include media(sm) {
-      margin-left: 8px;
-    }
   }
 
   > .btn-show-all {
@@ -155,11 +134,10 @@
 
   .arrows {
     grid-area: arrows;
-    margin-left: 16px;
+    margin-left: rem(16px);
 
     @include media(sm) {
       margin-left: rem(24px);
-      margin-right: 8px;
     }
   }
 
@@ -178,23 +156,19 @@
 
   .items {
     display: var(--display, flex);
-    padding: 32px 36px 0 36px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    margin: 0 -40px;
-    scroll-padding: 36px;
+    padding: rem(32px) rem(32px) 0 rem(32px);
+    margin: 0 rem(-32px);
+    scroll-padding: rem(32px);
+    grid-column-gap: rem(8px);
 
     @include media(sm) {
       margin: 0;
-      padding: 32px 0 0 0;
+      padding: rem(32px) 0;
       scroll-padding: 0;
-    }
-
-    @include media(md) {
-      scroll-padding: 0;
-      margin-right: 0;
-      margin-left: 0;
+      grid-column-gap: rem(16px);
     }
 
     &::-webkit-scrollbar {

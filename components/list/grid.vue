@@ -38,18 +38,26 @@
 
 <style lang="scss">
 .grid {
+  --col-gap: 8px;
+
   .items {
     display: grid;
     flex-wrap: wrap;
     grid-template-columns: repeat(3, 1fr);
-    margin: -4px -4px 0;
+    margin: 0;
+    grid-gap: var(--col-gap);
 
     @include media(sm) {
+      --col-gap: 16px;
       grid-template-columns: repeat(6, 1fr);
     }
 
     @include media(xl) {
       grid-template-columns: repeat(9, 1fr);
+    }
+
+    .card-base {
+      width: 100%;
     }
   }
 

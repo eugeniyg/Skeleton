@@ -171,12 +171,12 @@
 
   > .icon {
     grid-area: icon;
-    margin-left: 16px;
+    margin-left: rem(16px);
     --icon-size: #{rem(20px)};
     --color: var(--gray-400);
 
     @include media(sm) {
-      margin-left: 24px;
+      margin-left: rem(24px);
     }
   }
 
@@ -200,11 +200,11 @@
 
   > .arrows {
     grid-area: arrows;
-    margin-right: 16px;
+    margin-right: rem(16px);
 
     @include media(sm) {
       margin-left: rem(24px);
-      margin-right: 24px;
+      margin-right: rem(24px);
     }
   }
 
@@ -221,17 +221,15 @@
     display: var(--display, flex);
     align-items: center;
     overflow-x: auto;
-    margin: -4px -20px 0;
-    padding: 0 16px;
-    scroll-padding: 16px;
+    margin: 0 rem(-16px) 0;
+    padding: 0 rem(16px);
+    scroll-padding: rem(16px);
+    grid-column-gap: 8px;
 
     @include media(sm) {
-      margin: -4px -8px 0;
+      margin: 0;
       padding: 0;
-    }
-
-    @include media(l) {
-      //margin: 0  rem(-32px);
+      grid-column-gap: 16px;
     }
 
     &::-webkit-scrollbar {

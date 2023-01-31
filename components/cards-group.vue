@@ -166,7 +166,7 @@
     --color: var(--gray-400);
 
     @include media(sm) {
-      margin-left: 8px;
+      margin-left: rem(8px);
     }
   }
 
@@ -190,10 +190,6 @@
 
   > .arrows {
     grid-area: arrows;
-
-    @include media(sm) {
-      margin-right: 8px;
-    }
   }
 
   > .title {
@@ -209,12 +205,14 @@
     display: var(--display, flex);
     align-items: center;
     overflow-x: auto;
-    margin: -4px -36px 0;
+    margin: 0 -32px 0;
     padding: 0 32px;
     scroll-padding: 32px;
+    grid-column-gap: 8px;
 
     @include media(sm) {
-      margin: -8px 0 0;
+      grid-column-gap: 16px;
+      margin:  0;
       padding: 0;
     }
 

@@ -97,7 +97,7 @@
   grid-row-gap: var(--row-gap, #{rem(16px)});
   background-color: var(--gray-900);
   border-radius: 16px;
-  padding: 16px 16px 16px 16px;
+  padding: rem(16px) rem(16px) rem(16px) rem(16px);
   position: relative;
 
   @include media(xs) {
@@ -106,28 +106,14 @@
     "items items items items";
   }
 
+  @include media(sm) {
+    padding: rem(24px) rem(24px) rem(16px) rem(24px);
+  }
+
   @include media(md) {
-    padding: 24px 24px 16px 24px;
+    padding: rem(24px) rem(24px) rem(16px) rem(24px);
 
-    overflow: hidden;
-
-    &:before, &:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 24px;
-      background-color: var(--layer-bg, var(--gray-900));
-      z-index: 2;
-    }
-
-    &:before {
-      left: 0;
-    }
-
-    &:after {
-      right: 0;
-    }
+    @include scroll-overlay;
   }
 
   > [data-icon] {
@@ -165,14 +151,19 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    margin: -4px -36px 0;
+    margin: 0 -32px 0;
     padding: 0 32px;
     scroll-padding: 32px;
+    grid-column-gap: 8px;
+
+    @include media(sm) {
+      grid-column-gap: 16px;
+    }
 
     @include media(md) {
       scroll-padding: 0;
       padding: 0;
-      margin: -8px -8px 0;
+      margin:  0;
     }
 
     &::-webkit-scrollbar {
