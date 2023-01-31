@@ -81,7 +81,7 @@
     "btn-show-all btn-show-all btn-show-all btn-show-all";
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
-  grid-row-gap: var(--row-gap, #{rem(8px)});
+  grid-row-gap: var(--row-gap, #{rem(16px)});
   position: relative;
   background-color: var(--gray-900);
   padding: rem(16px);
@@ -91,10 +91,15 @@
     grid-template-areas:
     "icon heading btn-show-all arrows"
     "items items items items";
+    padding: rem(16px) rem(16px) rem(24px);
   }
 
-  @include media(l) {
-    padding: rem(24px) rem(24px) rem(16px);
+  @include media(sm) {
+    padding: rem(16px) rem(24px) 0;
+  }
+
+  @include media(md) {
+    @include scroll-overlay;
   }
 
   > [data-icon] {
@@ -104,6 +109,7 @@
 
   > .icon {
     grid-area: icon;
+
     --icon-size: #{rem(20px)};
     --color: var(--gray-400);
   }
@@ -128,8 +134,9 @@
 
   .arrows {
     grid-area: arrows;
+    margin-left: rem(16px);
 
-    @include media(xs) {
+    @include media(sm) {
       margin-left: rem(24px);
     }
   }
@@ -145,67 +152,23 @@
   .items-wrapper {
     grid-area: items;
     position: relative;
-    margin-left: -28px;
-    margin-right: -28px;
-
-    @include media(sm) {
-      margin-left: -48px;
-      margin-right: -48px;
-    }
-
-    @include media(md) {
-      margin-left: -10px;
-      margin-right: -10px;
-    }
   }
 
   .items {
     display: var(--display, flex);
-    padding: rem(32px) 0 0 0;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
+    padding: rem(32px) rem(32px) 0 rem(32px);
+    margin: 0 rem(-32px);
+    scroll-padding: rem(32px);
+    grid-column-gap: rem(8px);
 
-    &:before {
-      grid-area: start;
-      content: "";
-      min-width: 16px;
-      max-width: 38px;
-      min-height: rem(20px);
-      position: relative;
-      display: flex;
-      scroll-snap-align: start;
-      order: 1;
-
-      @include media(sm) {
-        min-width: 38px;
-      }
-    }
-
-    &:after {
-      grid-area: end;
-      content: "";
-      min-width: 16px;
-      max-width: 38px;
-      min-height: rem(20px);
-      position: relative;
-      display: flex;
-      scroll-snap-align: end;
-      order: 3;
-
-      @include media(sm) {
-        min-width: 38px;
-      }
-    }
-
-    @include media(md) {
+    @include media(sm) {
+      margin: 0;
+      padding: rem(32px) 0;
       scroll-padding: 0;
-      margin-right: 0;
-      margin-left: 0;
-
-      &:before, &:after {
-        display: none;
-      }
+      grid-column-gap: rem(16px);
     }
 
     &::-webkit-scrollbar {

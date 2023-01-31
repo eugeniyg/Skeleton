@@ -34,7 +34,11 @@
     align-items: normal;
     grid-template-columns: repeat(2, 1fr);
     height: 100%;
-    grid-gap: rem(16px);
+    grid-gap: rem(8px);
+
+    @include media(sm) {
+      grid-gap: rem(16px);
+    }
 
     @include media(md) {
       grid-template-columns: repeat(4, 1fr);

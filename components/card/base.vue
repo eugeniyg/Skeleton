@@ -124,8 +124,10 @@
 
 <style lang="scss">
 .card-base {
+  --col-count: 3.3;
+  --col-gap: 8px;
+
   height: var(--height, auto);
-  padding: var(--padding, 1px);
   @include ratio(104px, 156px);
   flex-shrink: 0;
   position: relative;
@@ -136,21 +138,17 @@
   background-repeat: var(--bg-repeat, no-repeat);
   background-size: var(--bg-size, 100%);
   background-position: var(--bg-position, center);
-  min-width: var(--min-width, #{column(3)});
   filter: drop-shadow(0px 0px 12px rgba(0, 0, 0, 0.16));
-  @extend %cards-items;
-
-  @include media(xs) {
-    --min-width: #{column(4)};
-  }
+  border-radius: 8px;
+  width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap)/var(--col-count))));
 
   @include media(sm) {
-    --padding: 1px;
-    --min-width: #{column(6)};
+    --col-count: 6;
+    --col-gap: 16px;
   }
 
   @include media(xl) {
-    --min-width: #{column(9)};
+    --col-count: 9;
   }
 
   .info {
@@ -186,6 +184,7 @@
       color: var(--gray-300);
       margin-top: auto;
       grid-column: 1/3;
+      text-align: center;
 
       @include media(md) {
         @include font($body-1);
