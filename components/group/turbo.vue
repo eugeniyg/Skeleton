@@ -100,6 +100,7 @@
 
   @include media(md) {
     @include scroll-overlay;
+    padding: rem(24px) rem(24px) 0;
   }
 
   > [data-icon] {
