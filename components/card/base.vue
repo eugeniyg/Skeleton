@@ -184,7 +184,6 @@
       color: var(--gray-300);
       margin-top: auto;
       grid-column: 1/3;
-      text-align: center;
 
       @include media(md) {
         @include font($body-1);
@@ -281,12 +280,13 @@
     will-change: transform;
     margin-top: rem(-16px);
 
-    --width: #{rem(48px)};
-    --height: #{rem(48px)};
+    display: block;
+    --min-width: #{rem(48px)};
+    --min-height: #{rem(48px)};
 
     @include media(sm) {
-      --width: #{rem(56px)};
-      --height: #{rem(56px)};
+      --min-width: #{rem(56px)};
+      --min-height: #{rem(56px)};
     }
   }
 }
