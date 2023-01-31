@@ -33,6 +33,10 @@
 
     @include scroll-overlay;
   }
+
+  @include media(md) {
+    --card-padding: 24px;
+  }
 }
 
 .card-providers {
