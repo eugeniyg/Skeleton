@@ -1,1 +1,1 @@
-Sitemap: https://slotsbet.io/sitemap.xml
+User-agent: *Disallow: /
