@@ -124,7 +124,7 @@
 
 <style lang="scss">
 .card-base {
-  --col-count: 3.3;
+  --col-count: 3.1;
   --col-gap: 8px;
 
   height: var(--height, auto);

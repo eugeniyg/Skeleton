@@ -100,8 +100,13 @@
 
   > .icon {
     grid-area: icon;
-    --iccon-size: #{rem(20px)};
+    margin-left: rem(16px);
+    --icon-size: #{rem(20px)};
     --color: var(--gray-400);
+
+    @include media(sm) {
+      margin-left: rem(24px);
+    }
   }
 
   > .title {
