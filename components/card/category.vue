@@ -67,6 +67,10 @@
   display: flex;
   flex-grow: 1;
   grid-gap: rem(8px);
+
+  @include media(md) {
+    grid-gap: rem(16px);
+  }
 }
 
 .card-cat {

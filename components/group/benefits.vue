@@ -23,9 +23,11 @@
 
 <style lang="scss">
 .group-benefits {
+  display: none;
 
   @include media(xxxl) {
     max-width: rem(464px);
+    display: block;
   }
 
   &__list {

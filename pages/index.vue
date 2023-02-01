@@ -14,7 +14,7 @@
         />
       </div>
 
-      <!--<group-benefits/>-->
+      <group-benefits/>
     </div>
 
     <group-turbo/>

@@ -124,17 +124,6 @@
       height: 50%;
       z-index: 4;
     }
-
-    &:after {
-      //content: '';
-      //position: absolute;
-      //top: 0;
-      //bottom: 0;
-      //background: linear-gradient(270deg, #0E091E 0%, rgba(14, 9, 30, 0) 96.21%);
-      //right: 0;
-      //width: 50%;
-      //z-index: 1;
-    }
   }
 
   .front-bg {
@@ -188,6 +177,10 @@
 
     @include media(sm) {
       --title-max-width: #{rem(400px)};
+    }
+
+    @include media(xxxl) {
+      --title-max-width: #{rem(650px)};
     }
 
     h1, h2, h3, h4, h5, h6 {
@@ -283,7 +276,6 @@
 }
 
 .promo-card-wrapper {
-  margin-bottom: rem(40px);
   margin-top: rem(-24px);
   margin-left: var(--margin-left, #{rem(-16px)});
   margin-right: var(--margin-right, #{rem(-16px)});
