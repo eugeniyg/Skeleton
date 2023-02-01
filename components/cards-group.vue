@@ -209,11 +209,13 @@
     padding: 0 32px;
     scroll-padding: 32px;
     grid-column-gap: 8px;
+    scroll-snap-type: x mandatory;
 
     @include media(sm) {
       grid-column-gap: 16px;
       margin:  0;
       padding: 0;
+      scroll-padding: 0;
     }
 
     &::-webkit-scrollbar {
@@ -278,10 +280,6 @@
       grid-template-columns: repeat(4, 1fr);
     }
   }
-}
-
-.card-base:nth-of-type(3n + 1) {
-  scroll-snap-align: start;
 }
 
 .cards-benefits {

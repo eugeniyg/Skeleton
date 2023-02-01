@@ -225,11 +225,13 @@
     padding: 0 rem(16px);
     scroll-padding: rem(16px);
     grid-column-gap: 8px;
+    scroll-snap-type: x mandatory;
 
     @include media(sm) {
       margin: 0;
       padding: 0;
       grid-column-gap: 16px;
+      scroll-padding: 0;
     }
 
     &::-webkit-scrollbar {
