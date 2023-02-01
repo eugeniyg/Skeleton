@@ -51,7 +51,7 @@
 
   height: var(--height, auto);
   width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap)/var(--col-count))));
-  padding: rem(8px);
+  padding: rem(15px) rem(8px) ;
   background-color: var(--bg, var(--gray-800));
   display: grid;
   align-content: center;
@@ -64,9 +64,10 @@
   align-self: stretch;
   align-items: flex-start;
   text-decoration: none;
-  border-radius: 16px;
+  border-radius: 8px;
   grid-column-gap: rem(8px);
   scroll-snap-align: var(--scroll-snap-align, start);
+  min-width: var(--card-min-width, 224px);
 
   @include media(xs) {
     --col-count: 2.4;
@@ -78,7 +79,8 @@
 
   @include media(md) {
     --col-gap: 16px;
-    --col-count: 5;
+    --col-count: 4;
+    --card-min-width: auto;
   }
 
   @include media(xxl) {
