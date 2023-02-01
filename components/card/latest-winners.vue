@@ -83,10 +83,6 @@
     --card-min-width: auto;
   }
 
-  @include media(l) {
-    --col-count: 5;
-  }
-
   @include media(xxl) {
     --col-count: 6;
   }
