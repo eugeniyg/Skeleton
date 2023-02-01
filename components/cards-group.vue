@@ -164,10 +164,6 @@
     grid-area: icon;
     --icon-size: #{rem(20px)};
     --color: var(--gray-400);
-
-    @include media(sm) {
-      margin-left: rem(8px);
-    }
   }
 
   > .btn-show-all {
