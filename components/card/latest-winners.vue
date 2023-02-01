@@ -51,7 +51,7 @@
 
   height: var(--height, auto);
   width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap)/var(--col-count))));
-  padding: rem(15px) rem(8px) ;
+  padding: rem(8px);
   background-color: var(--bg, var(--gray-800));
   display: grid;
   align-content: center;
@@ -81,6 +81,10 @@
     --col-gap: 16px;
     --col-count: 4;
     --card-min-width: auto;
+  }
+
+  @include media(l) {
+    --col-count: 5;
   }
 
   @include media(xxl) {
