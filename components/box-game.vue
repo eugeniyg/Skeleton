@@ -20,6 +20,7 @@
     <panel-mode v-if="!showPlug" :gameContent="gameContent" @changeMode="emit('changeMode')"/>
 
     <group-games
+      v-if="recommendedCategory"
       :category="recommendedCategory"
       showArrows
       subTitle
