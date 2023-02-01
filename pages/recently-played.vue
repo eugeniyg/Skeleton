@@ -16,7 +16,7 @@
     />
 
     <group-games
-      v-if="!recentlyGames.length && !loadingData"
+      v-if="!recentlyGames.length && !loadingData && recommendedCategory"
       :category="recommendedCategory"
       showArrows
       subTitle

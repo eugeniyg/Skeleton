@@ -18,12 +18,14 @@
     <favorite-recently v-if="isLoggedIn" />
 
     <group-games
+      v-if="sortCategory[0]"
       showAllBtn
       showArrows
       :category="sortCategory[0]"
     />
 
     <group-games
+      v-if="sortCategory[1]"
       showAllBtn
       showArrows
       :category="sortCategory[1]"
@@ -42,12 +44,14 @@
     </cards-group>
 
     <group-games
+      v-if="sortCategory[2]"
       showAllBtn
       showArrows
       :category="sortCategory[2]"
     />
 
     <group-games
+      v-if="sortCategory[3]"
       showAllBtn
       showArrows
       :category="sortCategory[3]"
@@ -56,12 +60,14 @@
     <group-winners showArrows />
 
     <group-games
+      v-if="sortCategory[4]"
       showAllBtn
       showArrows
       :category="sortCategory[4]"
     />
 
     <group-games
+      v-if="sortCategory[5]"
       showAllBtn
       showArrows
       :category="sortCategory[5]"
