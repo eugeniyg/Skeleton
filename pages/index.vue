@@ -35,8 +35,6 @@
       :category="newCategory"
     />
 
-    <group-promotions/>
-
     <cards-group
       v-if="providerCards.games?.length"
       v-bind="providerCards"
@@ -48,6 +46,8 @@
         <card-providers v-bind="item" />
       </template>
     </cards-group>
+
+    <group-promotions/>
 
     <atomic-seo-text v-if="homeContent?.seo?.text" v-bind="homeContent.seo.text"/>
   </div>

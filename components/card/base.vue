@@ -141,6 +141,7 @@
   filter: drop-shadow(0px 0px 12px rgba(0, 0, 0, 0.16));
   border-radius: 8px;
   width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap)/var(--col-count))));
+  scroll-snap-align: start;
 
   @include media(sm) {
     --col-count: 6;

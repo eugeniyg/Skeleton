@@ -49,6 +49,7 @@
   cursor: pointer;
   border-radius: 8px;
   width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap) / var(--col-count))));
+  scroll-snap-align: start;
 
   @include media(xs) {
     --col-count: 3.5;

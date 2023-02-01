@@ -43,31 +43,13 @@
 
   width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap)/var(--col-count))));
 
-  @include media(xs) {
-    --scroll-snap-align: unset;
-
-    &:nth-of-type(2n + 1) {
-      scroll-snap-align: start;
-    }
-  }
-
   @include media(sm) {
-    --scroll-snap-align: unset;
     --col-count: 4;
     --col-gap: 16px;
-
-    &:nth-of-type(3n + 1) {
-      scroll-snap-align: start;
-    }
   }
 
   @include media(md) {
-    --scroll-snap-align: unset;
     --col-count: 5;
-
-    &:nth-of-type(3n + 1) {
-      scroll-snap-align: start;
-    }
   }
 
   @include media(l) {
