@@ -112,7 +112,7 @@
   }
 
   @include media(md) {
-    padding: rem(24px) rem(24px) rem(16px) rem(24px);
+    padding: rem(24px);
 
     @include scroll-overlay;
   }
