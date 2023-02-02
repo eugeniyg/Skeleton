@@ -25,7 +25,11 @@
         <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
         -->
         <form-input-deposit/>
-        <atomic-avatar @toggle="toggleProfileNav" :is-button="true"/>
+        <atomic-avatar
+          @toggle="toggleProfileNav"
+          @focus-out="closeProfileNav"
+          :is-button="true"
+        />
         <nav-user @logout="logout"/>
       </template>
 
@@ -60,7 +64,13 @@
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal } = layoutStore;
   const { isLoggedIn } = storeToRefs(profileStore);
-  const fakeStore = useFakeStore();
+  // const fakeStore = useFakeStore();
+
+  function closeProfileNav() {
+    setTimeout(() => {
+      closeUserNav();
+    }, 250);
+  }
 
   function toggleProfileNav():void {
     if (isUserNavOpen.value) closeUserNav();
