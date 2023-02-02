@@ -56,6 +56,10 @@
   transform: translateX(var(--nav-user-translate-x, 100%));
   transition: transform .2s ease-in-out;
 
+  @include media(sm) {
+    height: auto;
+  }
+
   .items {
     display: grid;
     grid-row-gap: rem(4px);
