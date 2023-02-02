@@ -58,7 +58,7 @@
     transition: none;
     height: auto;
     border-radius: 8px;
-    right: rem(34px);
+    right: rem(32px);
     top: rem(56px);
     max-width: 198px;
   }
