@@ -67,7 +67,8 @@
     if (window.BetSdk) window.BetSdk.init(params);
   };
 
-  const { showAlert } = useLayoutStore();
+  const layoutStore = useLayoutStore();
+  const { showAlert, compactDrawer } = layoutStore;
 
   const redirectLimitedPlayer = ():void => {
     const { localizePath } = useProjectMethods();
@@ -78,6 +79,14 @@
 
   watch(() => activeAccount.value?.id, async (oldValue, newValue) => {
     if (oldValue && newValue && oldValue !== newValue) await startGame();
+  });
+
+  let oldDrawerCompactState:boolean;
+
+  onBeforeMount(() => {
+    oldDrawerCompactState = layoutStore.isDrawerCompact;
+
+    compactDrawer(true);
   });
 
   onMounted(async () => {
@@ -115,6 +124,8 @@
     if (footerEl) footerEl.style.display = null;
     const seoTextBlock:any = document.querySelector('.text-wrap');
     if (seoTextBlock) seoTextBlock.style.display = null;
+
+    compactDrawer(oldDrawerCompactState);
   });
 </script>
 
