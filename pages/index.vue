@@ -85,6 +85,7 @@
       lang: currentLocale.value?.code || 'en',
       containerId: 'sports-container',
       height: '372px',
+      theme: 'slotsbet',
     };
 
     if (window.BetSdk) window.BetSdk.initTopEventsWidget(params);
