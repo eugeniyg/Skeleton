@@ -41,12 +41,10 @@
   background-color: var(--gray-800);
   padding: rem(16px);
   width: var(--width, #{rem(288px)});
-
   z-index: 1;
   grid-gap: rem(8px);
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
 
-  //border-radius: 8px;
   top: rem(64px);
   right: 0;
   height: calc(var(--vh, 1vh) * 100);
@@ -57,12 +55,17 @@
   transition: transform .2s ease-in-out;
 
   @include media(sm) {
+    transition: none;
     height: auto;
+    border-radius: 8px;
+    right: rem(32px);
+    top: rem(56px);
+    max-width: 198px;
   }
 
   .items {
     display: grid;
-    grid-row-gap: rem(4px);
+    grid-row-gap: rem(8px);
   }
 
   .item {
@@ -71,7 +74,7 @@
     display: flex;
     align-items: center;
     padding: rem(6px) rem(8px);
-    grid-column-gap: rem(4px);
+    grid-column-gap: rem(8px);
     align-self: stretch;
     flex-grow: 0;
     border-radius: 4px;
@@ -80,6 +83,7 @@
 
     .icon {
       --color: var(--gray-400);
+      --icon-size: 20px;
     }
 
     &:hover {

@@ -103,7 +103,13 @@ body {
     --header-z-index: 3;
     --close-decor-index: 2;
     --close-btn-visibility: visible;
-    --drawer-transition: (transform .2s ease-in)
+    --drawer-transition: (transform .2s ease-in);
+
+    @include media(sm) {
+      --close-btn-visibility: hidden;
+      --drawer-transition: none;
+      --opacity-layer-visibility: hidden;
+    }
   }
 
   &.drawer-open {
