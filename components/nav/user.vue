@@ -66,6 +66,10 @@
   .items {
     display: grid;
     grid-row-gap: rem(8px);
+
+    @include media(sm) {
+      grid-row-gap: rem(2px);
+    }
   }
 
   .item {

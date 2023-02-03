@@ -1,8 +1,7 @@
 <template>
-  <button
+  <div
     class="avatar"
     @click="emit('toggle')"
-    @focusout="emit('focus-out')"
   >
     <span v-if="props.isButton" class="close-decor">
       <atomic-icon id="plus"/>
@@ -28,7 +27,7 @@
         {{ item }}
       </span>
     </span>
-  </button>
+  </div>
 </template>
 
 <script setup lang="ts">
