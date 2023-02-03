@@ -141,11 +141,11 @@
   }
 
   @include media(sm) {
-    --padding: 0 #{rem(32px)}
+    --padding: 0 #{rem(32px)};
   }
 
   @include media(l) {
-    --padding: 0 #{rem(48px)}
+    --padding: 0 #{rem(48px)};
   }
 }
 </style>
