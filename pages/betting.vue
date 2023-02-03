@@ -138,16 +138,17 @@
     "seo nav";
   align-items: var(--align-items, flex-end);
   grid-template-columns: 1fr auto;
-  margin: -24px -16px 0 -16px;
+  margin: rem(-24px) rem(-16px) 0 rem(-16px);
 
   @include media(sm) {
-    margin-right: -2rem;
-    margin-left: -2rem;
+    margin-right: rem(-32px);
+    margin-left: rem(-32px);
   }
 
-  @include media(l) {
-    width: 100%;
-    margin: 0;
+  @include media(md) {
+    margin-top: 0;
+    margin-left: rem(-10px);
+    margin-right: rem(-10px);
   }
 
   .container {

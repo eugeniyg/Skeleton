@@ -120,6 +120,10 @@
   z-index: var(--header-z-index, 2);
   grid-column-gap: rem(12px);
 
+  max-width: var(--container-max-width);
+  width: 100%;
+  margin: 0 auto;
+
   .avatar {
     --padding: 0;
     --bg: transparent;
@@ -130,15 +134,7 @@
     justify-self: flex-end;
     margin-left: auto;
     grid-column-gap: rem(8px);
-
-    //@include media(xs) {
-    //  margin-left: 0;
-    //}
   }
-
-  //> .btn-search {
-  //  margin-right: rem(2px);
-  //}
 
   > .notification {
     margin-right: rem(16px);
@@ -146,6 +142,10 @@
 
   @include media(sm) {
     --padding: 0 #{rem(32px)}
+  }
+
+  @include media(l) {
+    --padding: 0 #{rem(48px)}
   }
 }
 </style>
