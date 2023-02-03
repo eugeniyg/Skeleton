@@ -81,12 +81,8 @@
     if (oldValue && newValue && oldValue !== newValue) await startGame();
   });
 
-  let oldDrawerCompactState:boolean;
-
   onBeforeMount(() => {
-    oldDrawerCompactState = layoutStore.isDrawerCompact;
-
-    compactDrawer(true);
+    compactDrawer(true, false);
   });
 
   onMounted(async () => {
@@ -125,7 +121,8 @@
     const seoTextBlock:any = document.querySelector('.text-wrap');
     if (seoTextBlock) seoTextBlock.style.display = null;
 
-    compactDrawer(oldDrawerCompactState);
+    const storageDrawerCompact = localStorage.getItem('IS_DRAWER_COMPACT') === 'true';
+    compactDrawer(storageDrawerCompact, false);
   });
 </script>
 
