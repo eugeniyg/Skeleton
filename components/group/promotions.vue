@@ -86,7 +86,6 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
-  padding: 0 rem(24px);
 
   @include media(xs) {
     grid-template-areas:
@@ -101,8 +100,13 @@
 
   > .icon {
     grid-area: icon;
-    --iccon-size: #{rem(20px)};
+    margin-left: rem(16px);
+    --icon-size: #{rem(20px)};
     --color: var(--gray-400);
+
+    @include media(sm) {
+      margin-left: rem(24px);
+    }
   }
 
   > .title {
@@ -118,10 +122,8 @@
     display: var(--display, grid);
     align-items: normal;
     overflow-x: auto;
-    @extend %cards-items-negative;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: var(--items-column-gap, #{rem(8px)});
-    margin: 0 rem(-24px);
 
     &::-webkit-scrollbar {
       display: none;

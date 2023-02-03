@@ -27,6 +27,10 @@ input:-webkit-autofill-and-obscured {
   background-color: var(--gray-800) !important;
 }
 
+input, button, ::placeholder, textarea {
+  font-family: Rubik, sans-serif;
+}
+
 @mixin radius($size) {
   border-radius: $size;
 }
@@ -99,7 +103,13 @@ body {
     --header-z-index: 3;
     --close-decor-index: 2;
     --close-btn-visibility: visible;
-    --drawer-transition: (transform .2s ease-in)
+    --drawer-transition: (transform .2s ease-in);
+
+    @include media(sm) {
+      --close-btn-visibility: hidden;
+      --drawer-transition: none;
+      --opacity-layer-visibility: hidden;
+    }
   }
 
   &.drawer-open {
@@ -168,7 +178,7 @@ body {
     --padding: #{rem(24px)} #{rem(48px)}
   }
 
-  .group-games, .group-winners, .group-promotions, .favorite-recently, .cards-wrap, .group-turbo {
+  .group-games, .group-winners, .group-promotions, .favorite-recently, .cards-wrap, .group-turbo, .cards-providers {
     margin-bottom: rem(32px);
 
     @include media(l) {

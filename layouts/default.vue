@@ -7,8 +7,6 @@
     />
 
     <layout-drawer
-      :is-compact="IS_DRAWER_COMPACT"
-      @compact="compact"
       @toggle-open="toggleOpen"
     />
 
@@ -50,7 +48,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT', { maxAge: 60 * 60 * 24 * 365 * 10 });
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isHomePage, localizePath } = useProjectMethods();
@@ -58,20 +55,13 @@
   const {
     isShowAlert, alertProps, showCookiePopup, isDrawerCompact,
   } = storeToRefs(layoutStore);
-  const { compactDrawer, checkModals } = layoutStore;
+  const { checkModals } = layoutStore;
   checkModals();
-  isDrawerCompact.value = IS_DRAWER_COMPACT.value;
 
   const { logOutUser } = profileStore;
 
   function logout():void {
     logOutUser();
-  }
-
-  function compact():void {
-    IS_DRAWER_COMPACT.value = !IS_DRAWER_COMPACT.value;
-    compactDrawer();
-    isDrawerCompact.value = IS_DRAWER_COMPACT.value;
   }
 
   function toggleOpen():void {
@@ -88,11 +78,17 @@
   const disabledTransition = ref<boolean>(true);
   const layoutClasses = computed(() => [
     'main-layout',
-    { 'drawer-minimize': IS_DRAWER_COMPACT.value },
+    { 'drawer-minimize': isDrawerCompact.value },
     { 'stop-transition': disabledTransition.value },
   ]);
 
+  const checkDrawer = ():void => {
+    const clientCompactDrawer = localStorage.getItem('IS_DRAWER_COMPACT');
+    isDrawerCompact.value = clientCompactDrawer === 'true';
+  };
+
   onMounted(async () => {
+    checkDrawer();
     disabledTransition.value = false;
     const cookieValue = useCookie('accept-cookie');
     if (!cookieValue.value) {

@@ -1,7 +1,11 @@
 <template>
-  <div class="drawer" :class="{'is-compact' : props.isCompact}">
+  <div class="drawer" :class="{ 'is-compact' : isDrawerCompact }">
     <div class="header">
-      <button-toggle-drawer @toggle-minimize="emit('compact')" @toggle-open="emit('toggle-open')"/>
+      <button-toggle-drawer
+        @toggle-minimize="compactDrawer(!isDrawerCompact)"
+        @toggle-open="emit('toggle-open')"
+      />
+
       <button-toggler :items="sidebarContent?.gamesToggler"/>
     </div>
 
@@ -35,15 +39,12 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
-    isCompact: {
-      type: Boolean,
-      default: false,
-    },
-  });
-
   const { sidebarContent } = useGlobalStore();
-  const emit = defineEmits(['compact', 'toggleOpen']);
+  const emit = defineEmits(['toggle-open']);
+
+  const layoutStore = useLayoutStore();
+  const { compactDrawer } = layoutStore;
+  const { isDrawerCompact } = storeToRefs(layoutStore);
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);

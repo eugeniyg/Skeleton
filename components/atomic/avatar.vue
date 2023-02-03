@@ -1,5 +1,9 @@
 <template>
-  <div class="avatar" @click="emit('toggle')">
+  <button
+    class="avatar"
+    @click="emit('toggle')"
+    @focusout="emit('focus-out')"
+  >
     <span v-if="props.isButton" class="close-decor">
       <atomic-icon id="plus"/>
     </span>
@@ -9,22 +13,22 @@
       <atomic-bulb v-if="props.showBulb"/>
     </span>
 
-    <div v-if="props.label" class="label">
+    <span v-if="props.label" class="label">
       {{ props.label }}
-    </div>
+    </span>
 
-    <div v-if="props.nickname" class="nickname">
+    <span v-if="props.nickname" class="nickname">
       {{ props.nickname }}
-    </div>
+    </span>
 
     <slot name="progress-bar"/>
 
-    <div v-if="props.amount.length" class="amount">
+    <span v-if="props.amount.length" class="amount">
       <span v-for="(item, index) in props.amount" :key="index">
         {{ item }}
       </span>
-    </div>
-  </div>
+    </span>
+  </button>
 </template>
 
 <script setup lang="ts">
@@ -64,18 +68,18 @@
   align-items: center;
   width: var(--width, auto);
   user-select: none;
+  border: 0;
 
   .close-decor {
     position: absolute;
     z-index: var(--close-decor-index, 1);
     background-color: var(--gray-700);
-    border-radius: 12px;
+    border-radius: 50%;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0 2px 0 #28263B;
     --color: var(--yellow-500);
     cursor: pointer;
     visibility: var(--close-btn-visibility, hidden);
@@ -87,7 +91,7 @@
 
   .thumb {
     position: relative;
-    @include radius(12px);
+    border-radius: 50%;
     @include box(40px);
     display: block;
     background-color: var(--gray-800);

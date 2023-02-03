@@ -124,8 +124,10 @@
 
 <style lang="scss">
 .card-base {
+  --col-count: 3.1;
+  --col-gap: 8px;
+
   height: var(--height, auto);
-  padding: var(--padding, 1px);
   @include ratio(104px, 156px);
   flex-shrink: 0;
   position: relative;
@@ -136,21 +138,18 @@
   background-repeat: var(--bg-repeat, no-repeat);
   background-size: var(--bg-size, 100%);
   background-position: var(--bg-position, center);
-  min-width: var(--min-width, #{column(3)});
   filter: drop-shadow(0px 0px 12px rgba(0, 0, 0, 0.16));
-  @extend %cards-items;
-
-  @include media(xs) {
-    --min-width: #{column(4)};
-  }
+  border-radius: 8px;
+  width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap)/var(--col-count))));
+  scroll-snap-align: start;
 
   @include media(sm) {
-    --padding: 1px;
-    --min-width: #{column(6)};
+    --col-count: 6;
+    --col-gap: 16px;
   }
 
   @include media(xl) {
-    --min-width: #{column(9)};
+    --col-count: 9;
   }
 
   .info {
@@ -282,12 +281,13 @@
     will-change: transform;
     margin-top: rem(-16px);
 
-    --width: #{rem(48px)};
-    --height: #{rem(48px)};
+    display: block;
+    --min-width: #{rem(48px)};
+    --min-height: #{rem(48px)};
 
     @include media(sm) {
-      --width: #{rem(56px)};
-      --height: #{rem(56px)};
+      --min-width: #{rem(56px)};
+      --min-height: #{rem(56px)};
     }
   }
 }

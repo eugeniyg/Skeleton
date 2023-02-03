@@ -56,7 +56,7 @@
     },
     variant: {
       type: String,
-      validator: (val:string) => [
+      validator: (val: string) => [
         'favorites',
         'recently',
         'hot',
@@ -72,7 +72,7 @@
     },
     titleIcon: {
       type: String,
-      validator: (val:string) => [
+      validator: (val: string) => [
         'heart', 'hot', 'turbo-games', 'new', 'bonuses', 'history', '',
       ].includes(val),
       default: '',
@@ -100,7 +100,7 @@
   });
 
   const { globalComponentsContent } = useGlobalStore();
-  const groupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
+  const groupContent: CardsGroupInterface | undefined = globalComponentsContent?.cardsGroup;
 
   const router = useRouter();
   const scrollContainer = ref();
@@ -108,13 +108,13 @@
   const nextDisabled = ref<boolean>(false);
   const showArrowButtons = ref<boolean>(props.showArrows);
 
-  const scrollHandler = ():void => {
+  const scrollHandler = (): void => {
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
     nextDisabled.value = scrollWidth < (scrollLeft + offsetWidth + 20) && scrollWidth > (scrollLeft + offsetWidth - 20);
   };
 
-  const clickAction = (direction: string):void => {
+  const clickAction = (direction: string): void => {
     const { offsetWidth } = scrollContainer.value;
     scrollContainer.value.scrollBy({
       left: direction === 'next' ? offsetWidth : -offsetWidth,
@@ -132,7 +132,7 @@
   });
 
   const { localizePath } = useProjectMethods();
-  const openGames = (identity: string):void => {
+  const openGames = (identity: string): void => {
     router.push(localizePath(`/games?category=${identity}`));
   };
 </script>
@@ -186,10 +186,6 @@
 
   > .arrows {
     grid-area: arrows;
-
-    @include media(xs) {
-      margin-left: rem(24px);
-    }
   }
 
   > .title {
@@ -205,7 +201,18 @@
     display: var(--display, flex);
     align-items: center;
     overflow-x: auto;
-    @extend %cards-items-negative;
+    margin: 0 -32px 0;
+    padding: 0 32px;
+    scroll-padding: 32px;
+    grid-column-gap: 8px;
+    scroll-snap-type: x mandatory;
+
+    @include media(sm) {
+      grid-column-gap: 16px;
+      margin:  0;
+      padding: 0;
+      scroll-padding: 0;
+    }
 
     &::-webkit-scrollbar {
       display: none;
@@ -269,10 +276,6 @@
       grid-template-columns: repeat(4, 1fr);
     }
   }
-}
-
-.card-base:nth-of-type(3n + 1) {
-  scroll-snap-align: start;
 }
 
 .cards-benefits {

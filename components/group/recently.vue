@@ -148,7 +148,6 @@
     grid-area: items;
     display: var(--display, flex);
     align-items: flex-start;
-    @extend %cards-items-negative;
   }
 }
 </style>

@@ -14,7 +14,7 @@
         />
       </div>
 
-      <group-benefits/>
+      <!--<group-benefits/>-->
     </div>
 
     <group-turbo/>
@@ -35,8 +35,6 @@
       :category="newCategory"
     />
 
-    <group-promotions/>
-
     <cards-group
       v-if="providerCards.games?.length"
       v-bind="providerCards"
@@ -48,6 +46,8 @@
         <card-providers v-bind="item" />
       </template>
     </cards-group>
+
+    <group-promotions/>
 
     <atomic-seo-text v-if="homeContent?.seo?.text" v-bind="homeContent.seo.text"/>
   </div>
@@ -85,6 +85,7 @@
       lang: currentLocale.value?.code || 'en',
       containerId: 'sports-container',
       height: '372px',
+      theme: 'slotsbet',
     };
 
     if (window.BetSdk) window.BetSdk.initTopEventsWidget(params);

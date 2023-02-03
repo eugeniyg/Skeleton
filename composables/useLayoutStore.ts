@@ -32,7 +32,7 @@ interface LayoutStoreStateInterface extends Record<string, any>{
   isUserNavOpen: boolean,
   isDrawerOpen: boolean,
   isCurrencyNavOpen: boolean,
-  isDrawerCompact: boolean | null,
+  isDrawerCompact: boolean,
   isShowAlert: boolean,
   showCookiePopup: boolean,
   alertProps: AlertInterface|undefined,
@@ -115,15 +115,18 @@ export const useLayoutStore = defineStore('layoutStore', {
       document.body.classList.remove('nav-currency-open');
     },
 
+    async compactDrawer(compact: boolean):Promise<void> {
+      localStorage.setItem('IS_DRAWER_COMPACT', `${compact}`);
+      this.isDrawerCompact = compact;
+      await nextTick();
+      window.dispatchEvent(new Event('resize'));
+    },
+
     toggleDrawer():void {
       this.isDrawerOpen = !this.isDrawerOpen;
       document.body.classList.toggle('drawer-open');
       const drawerContentEl:HTMLElement|null = document.querySelector('.drawer .content');
       if (drawerContentEl) this.isDrawerOpen ? disableBodyScroll(drawerContentEl) : enableBodyScroll(drawerContentEl);
-    },
-
-    compactDrawer():void {
-      window.dispatchEvent(new Event('resize'));
     },
 
     addModalQuery(modalName:string, queryValue:string|undefined):void {

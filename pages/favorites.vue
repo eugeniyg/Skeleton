@@ -17,7 +17,7 @@
     />
 
     <group-games
-      v-if="!showFavorites"
+      v-if="!showFavorites && recommendedCategory"
       :category="recommendedCategory"
       showArrows
       subTitle
