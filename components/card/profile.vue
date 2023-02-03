@@ -2,6 +2,8 @@
   <div class="card-profile">
     <atomic-avatar :nickname="userNickname"/>
 
+    <balance-extended/>
+
     <div class="actions">
       <button-base type="primary" size="md" @click="openDepositModal">
         <atomic-icon id="plus"/>{{ profileMenuContent?.depositButton}}
@@ -33,7 +35,14 @@
 .card-profile {
   @extend %flex-column;
   grid-row-gap: rem(16px);
-  padding: 0 rem(4px);
+  padding: rem(12px);
+  background: var(--gray-900);
+  border-radius: 16px;
+
+  .nickname {
+    @include upd-font($body-1);
+    --color: var(--gray-300);
+  }
 
   .is-compact & {
     grid-row-gap: rem(8px);
@@ -41,7 +50,8 @@
   }
 
   .avatar {
-    --padding: #{rem(12px) rem(16px)};
+    //--padding: #{rem(12px) rem(16px)};
+    --padding: 0;
   }
 
   .actions {
