@@ -115,8 +115,8 @@ export const useLayoutStore = defineStore('layoutStore', {
       document.body.classList.remove('nav-currency-open');
     },
 
-    async compactDrawer(compact: boolean):Promise<void> {
-      localStorage.setItem('IS_DRAWER_COMPACT', `${compact}`);
+    async compactDrawer(compact: boolean, writeStorage = true):Promise<void> {
+      if (writeStorage) localStorage.setItem('IS_DRAWER_COMPACT', `${compact}`);
       this.isDrawerCompact = compact;
       await nextTick();
       window.dispatchEvent(new Event('resize'));
