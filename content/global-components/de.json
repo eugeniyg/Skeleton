@@ -110,6 +110,10 @@
       "icon": "bonuses"
     }
   ],
+  "currencyTabs": {
+    "allTab": "All",
+    "cryptoTab": "Crypto"
+  },
   "promotions": {
     "label": "Slotsbet promotions",
     "icon": "bonuses",
@@ -259,9 +263,5 @@
     ],
     "label": "Slotsbet benefits",
     "icon": "bonuses"
-  },
-  "currencyTabs": {
-    "allTab": "All currencies",
-    "cryptoTab": "Crypto"
   }
 }
