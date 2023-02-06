@@ -30,8 +30,8 @@ export const useGamesStore = defineStore('gamesStore', {
     winnersSubscription: undefined,
     latestWinners: [],
     betsyParams: {
-      host: 'https://ui-stage.betsy.software',
-      cid: 'perunplay-stage',
+      host: 'https://turboplatform-dev.betsy.gg',
+      cid: 'turboplatform-dev',
     },
   }),
 

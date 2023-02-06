@@ -25,12 +25,15 @@
         <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
         -->
         <form-input-deposit/>
-        <atomic-avatar
-          @toggle="toggleProfileNav"
-          @focus-out="closeProfileNav"
-          :is-button="true"
-        />
-        <nav-user @logout="logout"/>
+
+        <div v-click-outside="closeUserNav">
+          <atomic-avatar
+            @toggle="toggleProfileNav"
+            :is-button="true"
+          />
+          <nav-user @logout="logout"/>
+        </div>
+
       </template>
 
       <template v-else>
@@ -65,12 +68,6 @@
   const { closeUserNav, openUserNav, showModal } = layoutStore;
   const { isLoggedIn } = storeToRefs(profileStore);
   // const fakeStore = useFakeStore();
-
-  function closeProfileNav() {
-    setTimeout(() => {
-      closeUserNav();
-    }, 250);
-  }
 
   function toggleProfileNav():void {
     if (isUserNavOpen.value) closeUserNav();
@@ -120,6 +117,10 @@
   z-index: var(--header-z-index, 2);
   grid-column-gap: rem(12px);
 
+  max-width: var(--container-max-width);
+  width: 100%;
+  margin: 0 auto;
+
   .avatar {
     --padding: 0;
     --bg: transparent;
@@ -130,22 +131,18 @@
     justify-self: flex-end;
     margin-left: auto;
     grid-column-gap: rem(8px);
-
-    //@include media(xs) {
-    //  margin-left: 0;
-    //}
   }
-
-  //> .btn-search {
-  //  margin-right: rem(2px);
-  //}
 
   > .notification {
     margin-right: rem(16px);
   }
 
   @include media(sm) {
-    --padding: 0 #{rem(32px)}
+    --padding: 0 #{rem(32px)};
+  }
+
+  @include media(l) {
+    --padding: 0 #{rem(48px)};
   }
 }
 </style>
