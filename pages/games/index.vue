@@ -252,7 +252,12 @@
       height: 100%;
       min-height: auto;
       border-left-color: var(--gray-700);
-      padding: 10px 8px 10px 16px;
+      padding: 8px 8px 8px 16px;
+
+      span {
+        max-width: none;
+        overflow: unset;
+      }
 
       .icon {
         position: relative;
@@ -270,7 +275,11 @@
     .item {
       span {
         max-width: none;
-        overflow: visible;
+        overflow: unset;
+      }
+
+      .icon {
+        --icon-transform: rotate(0) translatex(0);
       }
     }
 
