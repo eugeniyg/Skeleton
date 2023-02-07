@@ -61,6 +61,7 @@
     right: rem(32px);
     top: rem(56px);
     max-width: 198px;
+    --nav-user-translate-x: 0;
   }
 
   .items {

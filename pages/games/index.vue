@@ -1,6 +1,6 @@
 <template>
   <div class="category">
-    <nav-cat @clickCategory="changeCategory" />
+    <nav-cat @clickCategory="changeCategory"/>
 
     <atomic-cat-heading
       v-if="gameCategoriesObj[activeCollection?.identity]"
@@ -48,7 +48,7 @@
       :image="gamesContent?.empty.image"
     />
 
-    <atomic-seo-text v-if="gamesContent?.seo?.text" v-bind="gamesContent?.seo?.text" />
+    <atomic-seo-text v-if="gamesContent?.seo?.text" v-bind="gamesContent?.seo?.text"/>
   </div>
 </template>
 
@@ -67,13 +67,13 @@
   const globalStore = useGlobalStore();
   const { currentLocale, gameCategoriesObj, headerContent } = storeToRefs(globalStore);
   const gamesContentRequest = await useAsyncData('gamesContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['gamesPage']).findOne());
-  const gamesContent:CategoryGamesInterface|undefined = gamesContentRequest.data.value?.gamesPage;
+  const gamesContent: CategoryGamesInterface | undefined = gamesContentRequest.data.value?.gamesPage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(gamesContent?.seo);
 
   const { gameCollections } = useGamesStore();
   const { selectOptions } = useFieldsStore();
-  const providerDropdownOptions:GameProviderInterface[] = [
+  const providerDropdownOptions: GameProviderInterface[] = [
     {
       id: 'all',
       name: gamesContent?.providersLabel || 'All Providers',
@@ -92,20 +92,20 @@
     });
   }
 
-  const activeCollection = ref<CollectionInterface|undefined>(
+  const activeCollection = ref<CollectionInterface | undefined>(
     gameCollections.find(
       (collection) => collection.identity === route.query.category,
     ) || gameCollections[0],
   );
 
-  const currentProvider = ref<GameProviderInterface|undefined>(
+  const currentProvider = ref<GameProviderInterface | undefined>(
     providerDropdownOptions.find(
       (provider: GameProviderInterface) => provider.identity === route.query.provider,
     ) || providerDropdownOptions[0],
   );
 
-  const sortBy = ref<string|undefined>(route.query.sortBy as string || gamesContent?.sortOptions?.[0]?.sortBy || 'default');
-  const sortOrder = ref<string|undefined>(route.query.sortOrder as string || gamesContent?.sortOptions?.[0]?.sortOrder || 'asc');
+  const sortBy = ref<string | undefined>(route.query.sortBy as string || gamesContent?.sortOptions?.[0]?.sortBy || 'default');
+  const sortOrder = ref<string | undefined>(route.query.sortOrder as string || gamesContent?.sortOptions?.[0]?.sortOrder || 'asc');
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
   const gameItems = ref<GameInterface[]>([]);
@@ -173,7 +173,7 @@
     setItems(response);
   };
 
-  const changeSort = async (...args:any): Promise<void> => {
+  const changeSort = async (...args: any): Promise<void> => {
     const [by, order] = args;
     loadPage.value = 1;
     sortBy.value = by;
@@ -197,7 +197,7 @@
     setItems(response, true);
   };
 
-  watch(() => route.query.category as string, async (newValue:string) => {
+  watch(() => route.query.category as string, async (newValue: string) => {
     if ((route.name === 'games' || route.name === 'locale-games') && route.query.category !== activeCollection.value?.identity) {
       await changeCategory(newValue);
     }
@@ -244,21 +244,21 @@
     }
   }
 
-  .selected {
-    border-radius: 0 16px 16px 0;
-    height: 100%;
-    min-height: auto;
-    border-left-color: var(--gray-700);
-    padding: 10px 8px 10px 16px;
-
-    .icon {
-      position: relative;
-      right: 0;
-    }
-  }
-
   .dropdown {
     --select-width: auto;
+
+    .selected {
+      border-radius: 0 16px 16px 0;
+      height: 100%;
+      min-height: auto;
+      border-left-color: var(--gray-700);
+      padding: 10px 8px 10px 16px;
+
+      .icon {
+        position: relative;
+        right: 0;
+      }
+    }
 
     .items {
       border-radius: 8px;
