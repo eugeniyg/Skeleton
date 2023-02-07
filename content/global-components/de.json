@@ -17,6 +17,12 @@
         "categoryValue": "RTP - 95%"
       },
       {
+        "url": "/games/turbo-games-turbomines",
+        "image": "/img/uploads/turbo-m.png",
+        "title": "Turbo Mines",
+        "categoryValue": "RTP - 95%"
+      },
+      {
         "url": "/games/turbo-games-turboplinko?demo=true",
         "image": "/img/uploads/turbo_plinko-1-.png",
         "title": "Turbo Plinko",
@@ -80,12 +86,6 @@
         "url": "/games/turbo-games-save-the-princess?demo=true",
         "image": "/img/uploads/save_the_princess.jpg",
         "title": "Save the Princess",
-        "categoryValue": "RTP - 95%"
-      },
-      {
-        "url": "/games/turbo-games-turbomines",
-        "image": "/img/uploads/turbo-m.png",
-        "title": "Turbo Mines",
         "categoryValue": "RTP - 95%"
       }
     ]
