@@ -9,22 +9,22 @@
       {{ gameCategoriesObj[activeCollection?.identity].label || activeCollection?.name }}
     </atomic-cat-heading>
 
-    <form-input-search
-      v-model:value="searchValue"
-      :placeholder="headerContent?.search.placeholder"
-      @input="searchInput"
-    />
+    <div class="game-filter">
+      <div class="game-filter__search">
+        <form-input-search
+          v-model:value="searchValue"
+          :placeholder="headerContent?.search.placeholder"
+          @input="searchInput"
+        />
 
-    <div class="filters">
-      <form-input-dropdown
-        :value="currentProvider.id"
-        name="providers"
-        placeholder="Providers"
-        :options="providerDropdownOptions"
-        @input="changeProvider"
-        isFitContent
-      />
-
+        <form-input-dropdown
+          :value="currentProvider.id"
+          name="providers"
+          placeholder="Providers"
+          :options="providerDropdownOptions"
+          @input="changeProvider"
+        />
+      </div>
       <atomic-game-sort
         v-if="gamesContent?.sortOptions?.length"
         :sortOrderValue="sortOrder"
@@ -218,15 +218,66 @@
     --margin-top: 0;
     --margin-bottom: 0;
   }
+}
 
-  .filters {
-    display: grid;
-    grid-gap: rem(16px);
+.game-filter {
+  display: flex;
+  justify-content: space-between;
+  grid-column-gap: 40px;
+  grid-row-gap: 16px;
+  flex-wrap: wrap;
 
-    @include media(xs) {
-      display: flex;
-      justify-content: space-between;
-      --select-width: auto;
+  .icon {
+    --icon-size: 20px;
+  }
+
+  &__search {
+    display: flex;
+    flex-grow: 1;
+
+    .input-search {
+      flex-grow: 1;
+
+      .field {
+        border-radius: 12px 0 0 12px;
+      }
+    }
+  }
+
+  .selected {
+    border-radius: 0 16px 16px 0;
+    height: 100%;
+    min-height: auto;
+    border-left-color: var(--gray-700);
+    padding: 10px 8px 10px 16px;
+
+    .icon {
+      position: relative;
+      right: 0;
+    }
+  }
+
+  .dropdown {
+    --select-width: auto;
+
+    .items {
+      border-radius: 8px;
+      right: 0;
+      width: auto;
+      left: auto;
+    }
+
+    .item {
+      span {
+        max-width: none;
+        overflow: visible;
+      }
+    }
+
+    &.is-open {
+      .selected {
+        border-left-color: var(--white);
+      }
     }
   }
 }
