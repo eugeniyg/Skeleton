@@ -62,6 +62,7 @@
       ...betsyParams,
       token: startResponse.token,
       lang: currentLocale.value?.code || 'en',
+      theme: 'turbo_slotsbet',
     };
 
     if (window.BetSdk) window.BetSdk.init(params);
