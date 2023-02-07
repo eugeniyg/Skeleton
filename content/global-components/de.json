@@ -5,9 +5,21 @@
     "buttonLabel": "Play now",
     "items": [
       {
-        "url": "/games/turbo-games-javelin-x?demo=true",
-        "image": "/img/uploads/javelin_2_3_no-1-.jpg",
-        "title": "JavelinX",
+        "url": "/games/crash-x-turbo-games?demo=true",
+        "image": "/img/uploads/crashx-1-.png",
+        "title": "Crash X",
+        "categoryValue": "RTP - 95%"
+      },
+      {
+        "url": "/games/mines-turbo-games?demo=true",
+        "image": "/img/uploads/mines-1-.png",
+        "title": "Mines",
+        "categoryValue": "RTP - 95%"
+      },
+      {
+        "url": "/games/turbo-games-turbomines",
+        "image": "/img/uploads/turbo-m.png",
+        "title": "Turbo Mines",
         "categoryValue": "RTP - 95%"
       },
       {
@@ -15,6 +27,12 @@
         "image": "/img/uploads/turbo_plinko-1-.png",
         "title": "Turbo Plinko",
         "categoryValue": "RTP - 99%"
+      },
+      {
+        "url": "/games/turbo-games-javelin-x?demo=true",
+        "image": "/img/uploads/javelin_2_3_no-1-.jpg",
+        "title": "JavelinX",
+        "categoryValue": "RTP - 95%"
       },
       {
         "url": "/games/bayraktar-turbo-games?demo=true",
@@ -53,12 +71,6 @@
         "categoryValue": "RTP - 95%"
       },
       {
-        "url": "/games/mines-turbo-games?demo=true",
-        "image": "/img/uploads/mines-1-.png",
-        "title": "Mines",
-        "categoryValue": "RTP - 95%"
-      },
-      {
         "url": "/games/hamsta-turbo-games?demo=true",
         "image": "/img/uploads/hamsta-1-.png",
         "title": "Hamsta",
@@ -69,12 +81,6 @@
         "image": "/img/uploads/dicetwice-1-.png",
         "title": "Dice Twice",
         "categoryValue": "RTP - 97.5%"
-      },
-      {
-        "url": "/games/crash-x-turbo-games?demo=true",
-        "image": "/img/uploads/crashx-1-.png",
-        "title": "Crash X",
-        "categoryValue": "RTP - 95%"
       },
       {
         "url": "/games/turbo-games-save-the-princess?demo=true",
