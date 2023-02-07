@@ -9,6 +9,7 @@
         <atomic-icon id="plus"/>{{ profileMenuContent?.depositButton}}
       </button-base>
 
+      <!--
       <button-base
         v-if="profileMenuContent?.profileButton"
         type="secondary"
@@ -17,6 +18,7 @@
       >
         {{ profileMenuContent.profileButton.label}}
       </button-base>
+      -->
     </div>
   </div>
 </template>
@@ -33,13 +35,13 @@
 
 <style lang="scss">
 .card-profile {
-  @extend %flex-column;
-  grid-row-gap: rem(16px);
-  padding: rem(12px);
+  padding: rem(20px) rem(12px) rem(12px) rem(12px);
   background: var(--gray-900);
   border-radius: 16px;
 
   .nickname {
+    margin-top: 12px;
+    margin-bottom: 4px;
     @include upd-font($body-1);
     --color: var(--gray-300);
   }
@@ -50,13 +52,13 @@
   }
 
   .avatar {
-    //--padding: #{rem(12px) rem(16px)};
     --padding: 0;
   }
 
   .actions {
     @extend %flex-column;
     grid-row-gap: rem(8px);
+    margin-top: 20px;
   }
 
   .btn-primary, .btn-secondary {

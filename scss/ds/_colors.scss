@@ -11,6 +11,7 @@ $neutrals-colors: (
   gray-600: #4F5664,
   gray-700: #3D4451,
   gray-800: #282F3E,
+  gray-850: #222834,
   gray-900: #1C212B,
   black-primary: #11141C,
 );
@@ -117,4 +118,3 @@ $colors: map-collect(
     $violet-colors,
     $gradients,
 );
-
