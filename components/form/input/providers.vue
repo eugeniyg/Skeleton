@@ -22,7 +22,7 @@
         </div>
         <div v-for="provider in gameProviders" :key="provider.id" class="input-providers__item">
           <label class="input-providers__label">
-            <img class="input-providers__logo" src="/assets/svg/provider-empty-placeholder.svg" alt="">
+            <img class="input-providers__logo" src="~/assets/svg/provider-empty-placeholder.svg" alt="">
             <span class="input-providers__title">{{ provider.name }}</span>
             <input
               type="checkbox"
@@ -110,7 +110,6 @@
 
 <style lang="scss">
 .input-providers {
-  position: relative;
 
   &__count {
     min-width: 24px;
@@ -142,10 +141,12 @@
     display: flex;
     align-items: center;
     grid-column-gap: rem(4px);
-    border-radius: 8px;
+    border-radius: 0 12px 12px 0;
     transition: all .2s ease-in-out;
     min-width: rem(150px);
     justify-content: flex-start;
+    height: 100%;
+    border-left-color: var(--border-left-color, var(--gray-700));
 
     .icon {
       width: rem(20px);
@@ -170,6 +171,7 @@
     &.is-open {
       --bg: var(--gray-700);
       --border-color: var(--gray-300);
+      --border-left-color: var(--gray-300);
 
       .icon {
         transform: rotate(0deg);
@@ -280,8 +282,9 @@
   }
 
   &__content {
-    position: relative;
-    left: 0;
+    position: absolute;
+    left: 16px;
+    right: 16px;
     top: auto;
     transform: translateY(#{rem(4px)});
     padding: rem(24px) rem(16px) rem(16px) rem(16px);
@@ -291,7 +294,11 @@
     max-width: rem(760px);
     pointer-events: var(--content-events, none);
     opacity: var(--content-opacity, 0);
-    width: 100%;
+    z-index: 1;
+
+    @include media(sm) {
+      left: auto;
+    }
   }
 
   &__clear {

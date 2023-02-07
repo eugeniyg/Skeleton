@@ -48,7 +48,7 @@
   top: rem(64px);
   right: 0;
   height: calc(var(--vh, 1vh) * 100);
-  position: fixed;
+  position: absolute;
   align-items: flex-start;
   visibility: var(--nav-user-visibility, hidden);
   transform: translateX(var(--nav-user-translate-x, 100%));
