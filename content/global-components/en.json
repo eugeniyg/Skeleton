@@ -17,6 +17,12 @@
         "categoryValue": "RTP - 95%"
       },
       {
+        "url": "/games/turbo-games-turbomines",
+        "image": "/img/uploads/turbo-m.png",
+        "title": "Turbo Mines",
+        "categoryValue": "RTP - 95%"
+      },
+      {
         "url": "/games/turbo-games-turboplinko",
         "image": "/img/uploads/turbo_plinko-1-.png",
         "title": "Turbo Plinko",
