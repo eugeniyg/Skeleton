@@ -18,25 +18,29 @@
   @extend %skip-btn;
   @extend %flex-all-center;
   border-radius: 50%;
-  background-color: var(--bg, var(--yellow-500));
+  background-image: var(--bg, var(--gradient-radial));
   box-shadow: var(--shadow, unset);
   transition: all .2s ease-in-out;
+  position: relative;
+
+  .icon {
+    transform: translateX(1px);
+  }
 
   --padding: 0 0;
   --color: var(--gray-900);
-  --icon-size: #{rem(24px)};
-  --width: #{rem(56px)};
-  --height: #{rem(56px)};
+  --icon-size: 24px;
+  --width: 48px;
+  --height: 48px;
 
   &:hover {
     cursor: pointer;
-    --shadow: 0 0 0 3px var(--yellow-900);
+    --bg: var(--gradient-radial-hover);
   }
 
   &:active, &.is-active {
     --bg: var(--yellow-600);
     --color: var(--gray-900);
-    --shadow: inset 0 2px 0px var(--yellow-700);
   }
 }
 </style>

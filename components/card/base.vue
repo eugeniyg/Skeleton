@@ -21,18 +21,20 @@
 
       <button-favorite v-if="isLoggedIn" :gameId="id"/>
 
-      <button-play @click="openGame(true)"/>
+      <div class="info__actions">
+        <button-play @click="openGame(true)"/>
 
-      <button-base
-        v-if="props.isDemoMode"
-        class="btn-try"
-        tag-name="span"
-        type="secondary"
-        size="xs"
-        @click="openGame(false)"
-      >
-        {{ groupContent?.demoButton }}
-      </button-base>
+        <button-base
+          v-if="props.isDemoMode"
+          class="btn-try"
+          tag-name="span"
+          type="secondary"
+          size="xs"
+          @click="openGame(false)"
+        >
+          {{ groupContent?.demoButton }}
+        </button-base>
+      </div>
 
       <div class="info__provider">{{ props.provider.name }}</div>
     </div>
@@ -153,30 +155,28 @@
   }
 
   .info {
-    padding: var(--padding-info, #{rem(8px) rem(8px) 0});
+    padding: var(--padding-info, 8px);
     background-color: var(--bg-info, rgba(14, 9, 30, .8));
     display: var(--display, grid);
-    grid-row-gap: 8px;
     position: var(--position-info, absolute);
     grid-template-areas:
       "title btn-favorite"
-      "btn-play btn-play"
-      "btn-try btn-try"
-      "sub-title sub-title"
-      "info__provider info__provider";
-    grid-template-columns: 1fr rem(24px);
-    grid-template-rows: 1fr auto auto 1fr;
+      "actions actions"
+      "sub-title sub-title";
+    grid-template-columns: 1fr rem(20px);
+    grid-template-rows: auto 1fr auto;
     top: 0;
-    left: -2px;
-    right: -2px;
+    left: 0;
+    right: 0;
     bottom: 0;
+    align-content: center;
     opacity: var(--opacity-info, 0);
     transition: var(--transition-info, (opacity .6s ease));
     pointer-events: var(--pointer-events, none);
     will-change: opacity;
 
     @include media(md) {
-      padding: var(--padding-info, #{rem(16px) rem(12px) rem(8px)});
+      padding: rem(16px);
     }
 
     &__provider {
@@ -184,11 +184,42 @@
       @extend %text-elipsis;
       color: var(--gray-300);
       margin-top: auto;
-      grid-column: 1/3;
+      grid-area: sub-title;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      @include media(xs) {
+        @include upd-font($body-1);
+      }
+
+      @include media(xs) {
+        @include upd-font($body-0);
+      }
 
       @include media(md) {
-        @include font($body-1);
+        @include upd-font($body-1);
       }
+
+      @include media(xl) {
+        @include upd-font($body-0);
+      }
+
+      @include media(xxl) {
+        @include upd-font($body-1);
+      }
+    }
+
+    &__actions {
+      grid-area: actions;
+      display: flex;
+      flex-direction: column;
+      align-self: center;
+      justify-self: center;
+      align-items: center;
+      grid-gap: 8px;
+      margin-bottom: 8px;
+      margin-top: -6px;
     }
   }
 
@@ -234,25 +265,33 @@
     @include font($heading-0);
     color: var(--color-info-title, var(--white));
     grid-area: title;
-    height: 40px;
+    height: 45px;
 
-    @media (min-width: 380px) {
-      height: 50px;
-    }
-
-    @include media(sm) {
+    @include media(xs) {
       @include upd-font($heading-2);
     }
 
+    @include media(sm) {
+      @include upd-font($heading-0);
+    }
+
     @include media(md) {
-      height: 60px;
+      @include upd-font($heading-2);
+    }
+
+    @include media(xxl) {
+      @include upd-font($heading-2);
     }
   }
 
   .btn-favorite {
     grid-area: btn-favorite;
     position: relative;
-    transform: translateY(#{rem(-2px)});
+    transform: translateY(#{rem(-4px)});
+
+    .icon {
+      --icon-size: 20px;
+    }
   }
 
   .sub-title {
@@ -271,21 +310,25 @@
     white-space: nowrap;
     @include font($body-1);
     opacity: 1;
+    height: 24px;
+    --padding: 0 16px;
   }
 
   .btn-play {
+    padding: 0;
     grid-area: btn-play;
     justify-self: center;
     transition: transform .2s ease-out;
     transform: scale(0);
     will-change: transform;
-    margin-top: rem(-16px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    display: block;
     --min-width: #{rem(48px)};
     --min-height: #{rem(48px)};
 
-    @include media(sm) {
+    @include media(md) {
       --min-width: #{rem(56px)};
       --min-height: #{rem(56px)};
     }

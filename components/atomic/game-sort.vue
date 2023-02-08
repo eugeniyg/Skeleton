@@ -48,7 +48,6 @@
     @extend %skip-btn;
     padding: rem(4px) rem(8px);
     border-radius: 8px;
-    background-color: var(--bg, transparent);
     color: var(--color, var(--gray-300));
     transition: all .2s ease-in-out;
     cursor: pointer;
@@ -56,8 +55,7 @@
     font-family: 'Rubik', sans-serif;
 
     &.is-selected {
-      --bg: var(--gray-700);
-      --color: var(--white);
+      --color: var(--yellow-500);
     }
   }
 }
