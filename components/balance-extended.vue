@@ -1,45 +1,23 @@
 <template>
-  <div class="balance-extended" :class="{'is-open': isOpen}">
+  <div class="balance-extended" :class="{'is-open': isOpen, 'is-row-mode': isRowMode}">
     <div class="balance-extended__toggle" @click.prevent="toggleOpen">
       <div>
-        <span class="balance-extended__toggle-amount">469567</span>
-        <span class="balance-extended__toggle-value">EUR</span>
+        <span class="balance-extended__toggle-amount">{{ amount }}</span>
+        <span class="balance-extended__toggle-value">{{ currency }}</span>
       </div>
       <atomic-icon id="arrow_expand-open"/>
     </div>
 
     <div class="balance-extended__items">
 
-      <div class="balance-extended__item">
+      <div class="balance-extended__item" v-for="{ title, amount, currency } in demoBalance.items">
         <span class="balance-extended__label">
           <atomic-icon id="wallet"/>
-          <span class="balance-extended__title">Real</span>
+          <span class="balance-extended__title">{{ title }}</span>
         </span>
         <div class="balance-extended__value">
-          <span class="balance-extended__amount">469567</span>
-          <span class="balance-extended__currency">EUR</span>
-        </div>
-      </div>
-
-      <div class="balance-extended__item">
-        <span class="balance-extended__label">
-          <atomic-icon id="bonus"/>
-          <span class="balance-extended__title">Bonus</span>
-        </span>
-        <div class="balance-extended__value">
-          <span class="balance-extended__amount">469567</span>
-          <span class="balance-extended__currency">EUR</span>
-        </div>
-      </div>
-
-      <div class="balance-extended__item">
-        <span class="balance-extended__label">
-          <atomic-icon id="locked"/>
-          <span class="balance-extended__title">Locked</span>
-        </span>
-        <div class="balance-extended__value">
-          <span class="balance-extended__amount">469567</span>
-          <span class="balance-extended__currency">EUR</span>
+          <span class="balance-extended__amount">{{ checkLength(amount) }}</span>
+          <span class="balance-extended__currency">{{ currency }}</span>
         </div>
       </div>
     </div>
@@ -49,6 +27,34 @@
 
 <script setup lang="ts">
   const isOpen = ref<boolean>(false);
+  const isRowMode = ref<boolean>(false);
+
+  const demoBalance = {
+    items: [
+      {
+        title: 'Real',
+        amount: '46956777',
+        currency: 'EUR',
+      },
+      {
+        title: 'Bonus',
+        amount: '469567',
+        currency: 'EUR',
+      },
+      {
+        title: 'Locked',
+        amount: '469567',
+        currency: 'EUR',
+      },
+    ],
+  };
+
+  const [{ amount, currency }] = demoBalance.items;
+
+  const checkLength = (title:string):string => {
+    if (!isRowMode.value && title.length >= 7) isRowMode.value = true;
+    return title;
+  };
 
   const toggleOpen = () => {
     isOpen.value = !isOpen.value;
@@ -119,6 +125,10 @@
     grid-gap: 4px;
     justify-content: space-between;
     flex-wrap: wrap;
+
+    .is-row-mode & {
+      flex-direction: column;
+    }
   }
 
   &__label {
