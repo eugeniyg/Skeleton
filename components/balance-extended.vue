@@ -76,6 +76,15 @@
     user-select: none;
     margin-bottom: 8px;
 
+    @include use-hover {
+      &:hover {
+        --color: var(--yellow-500);
+        .icon {
+          --color: var(--yellow-500);
+        }
+      }
+    }
+
     .is-open & {
       .icon {
         --color: var(--yellow-500);
