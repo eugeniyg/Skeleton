@@ -1,6 +1,9 @@
 <template>
   <div class="card-profile">
-    <atomic-avatar :nickname="userNickname"/>
+
+    <router-link class="card-profile__avatar" to="/profile/info">
+      <atomic-avatar :nickname="userNickname"/>
+    </router-link>
 
     <balance-extended/>
 
@@ -38,6 +41,10 @@
   padding: rem(20px) rem(12px) rem(12px) rem(12px);
   background: var(--gray-900);
   border-radius: 16px;
+
+  &__avatar {
+    text-decoration: none;
+  }
 
   .nickname {
     margin-top: 12px;

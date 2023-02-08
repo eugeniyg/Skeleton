@@ -10,7 +10,7 @@
 
     <div class="balance-extended__items">
 
-      <div class="balance-extended__item" v-for="{ title, amount, currency } in demoBalance.items">
+      <div class="balance-extended__item" v-for="{ title, amount, currency } in demoBalance.items" :key="title">
         <span class="balance-extended__label">
           <atomic-icon id="wallet"/>
           <span class="balance-extended__title">{{ title }}</span>
