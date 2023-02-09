@@ -69,7 +69,7 @@
     grid-area: container;
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
 
     @include media(md) {
       height: calc(100vh - 160px);
