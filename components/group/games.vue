@@ -194,6 +194,7 @@
 
       &:hover {
         --color: var(--white);
+        --bg: transparent;
       }
     }
   }

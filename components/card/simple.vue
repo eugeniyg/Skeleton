@@ -68,6 +68,7 @@
   }
 
   .title {
+    display: none;
     @include font($heading-1);
     color: var(--white);
     margin-top: rem(8px);

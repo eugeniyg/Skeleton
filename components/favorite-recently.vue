@@ -86,9 +86,14 @@
   padding: rem(16px) rem(16px) rem(8px);
   background-color: var(--gray-900);
 
+  @include media(sm) {
+    padding: rem(16px) rem(24px);
+  }
+
   .header {
     @extend %flex-items-center;
-    padding: var(--padding, 0 0 8px 0);
+    grid-column-gap: 4px;
+    margin-bottom: 16px;
 
     @include media(sm) {
       display: none;
@@ -111,8 +116,6 @@
   }
 
   @include media(sm) {
-    padding-bottom: rem(16px);
-
     .content {
       display: grid;
       grid-auto-flow: column;

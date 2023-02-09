@@ -114,7 +114,12 @@
     margin-bottom: rem(24px);
 
     @include media(md) {
+      @include upd-font($body-2);
       width: 54%;
+    }
+
+    @include media(xxxl) {
+      @include upd-font($body-3);
     }
   }
 

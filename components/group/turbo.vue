@@ -119,7 +119,6 @@
     @include font($heading-1);
     grid-area: btn-show-all;
 
-    --font-size: #{rem(12px)};
     --color: var(--gray-500);
     --width: 100%;
 
@@ -130,6 +129,10 @@
       &:hover {
         --color: var(--white);
       }
+    }
+
+    @include media(md) {
+      @include font($heading-2);
     }
   }
 
