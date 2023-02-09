@@ -190,11 +190,11 @@
 
     @include media(xs) {
       padding: 0;
-      --bg: transparent;
+      background: none;
     }
 
     @include media(sm) {
-      @include font($heading-2);
+      @include upd-font($heading-2);
 
       &:hover {
         --color: var(--white);

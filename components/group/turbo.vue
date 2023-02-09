@@ -115,7 +115,7 @@
     --color: var(--gray-400);
   }
 
-  > .btn-show-all {
+  .btn-show-all {
     @include font($heading-1);
     grid-area: btn-show-all;
 
@@ -124,7 +124,7 @@
 
     @include media(xs) {
       padding: 0;
-      --bg: transparent;
+      background: none;
 
       &:hover {
         --color: var(--white);
@@ -132,7 +132,7 @@
     }
 
     @include media(sm) {
-      @include font($heading-2);
+      @include upd-font($heading-2);
 
       &:hover {
         --color: var(--white);
