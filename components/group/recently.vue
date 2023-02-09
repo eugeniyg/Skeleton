@@ -108,7 +108,7 @@
     }
   }
 
-  > .btn-show-all {
+  .btn-show-all {
     grid-area: btn-show-all;
     @include font($heading-1);
     transform: translateX(8px);
@@ -120,7 +120,7 @@
 
     @include media(sm) {
       margin-top: 0;
-      --bg: transparent;
+      background: none;
 
       &:hover {
         --color: var(--white);
