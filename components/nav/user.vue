@@ -51,7 +51,8 @@
   position: absolute;
   align-items: flex-start;
   visibility: var(--nav-user-visibility, hidden);
-  transform: translateX(var(--nav-user-translate-x, 100%));
+  transform: translateX(var(--nav-user-translate-x, 100%)) rotateY(var(--nav-user-rotate-y, 90deg));
+  transform-origin: right;
   transition: all .4s  ease-in;
 
   @include media(sm) {
