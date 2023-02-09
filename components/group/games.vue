@@ -44,7 +44,7 @@
       </template>
 
       <template v-else>
-        <div v-for="n in 9" :key="n" class="card-base" />
+        <div v-for="n in 9" :key="n" class="card-base"/>
       </template>
 
       <div class="load-more" ref="loadMore"/>
@@ -78,7 +78,7 @@
   });
 
   const { globalComponentsContent, gameCategoriesObj } = useGlobalStore();
-  const cardsGroupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
+  const cardsGroupContent: CardsGroupInterface | undefined = globalComponentsContent?.cardsGroup;
   const titleIcon = gameCategoriesObj[props.category.identity]?.icon;
 
   const scrollContainer = ref();
@@ -89,7 +89,7 @@
   const pageMeta = ref<PaginationMetaInterface>();
   const { getFilteredGames } = useCoreGamesApi();
 
-  const scrollHandler = ():void => {
+  const scrollHandler = (): void => {
     if (!scrollContainer.value) return;
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
@@ -97,7 +97,7 @@
       && pageMeta.value?.page === pageMeta.value?.totalPages;
   };
 
-  const clickAction = (direction: string):void => {
+  const clickAction = (direction: string): void => {
     const { offsetWidth } = scrollContainer.value;
     scrollContainer.value.scrollBy({
       left: direction === 'next' ? offsetWidth : -offsetWidth,
@@ -105,7 +105,7 @@
     });
   };
 
-  const moreGames = async ():Promise<void> => {
+  const moreGames = async (): Promise<void> => {
     if (pageMeta.value?.page === pageMeta.value?.totalPages) return;
 
     const gamesResponse = await getFilteredGames({
@@ -140,7 +140,7 @@
   });
 
   const { localizePath } = useProjectMethods();
-  const openGames = ():void => {
+  const openGames = (): void => {
     const router = useRouter();
     router.push(localizePath(`/games?category=${props.category.identity}`));
   };
@@ -180,7 +180,7 @@
     }
   }
 
-  > .btn-show-all {
+  .btn-show-all {
     grid-area: btn-show-all;
     @include font($heading-1);
 
@@ -191,6 +191,10 @@
     @include media(xs) {
       padding: 0;
       --bg: transparent;
+    }
+
+    @include media(sm) {
+      @include font($heading-2);
 
       &:hover {
         --color: var(--white);

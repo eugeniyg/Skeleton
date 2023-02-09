@@ -131,8 +131,13 @@
       }
     }
 
-    @include media(md) {
+    @include media(sm) {
       @include font($heading-2);
+
+      &:hover {
+        --color: var(--white);
+        --bg: transparent;
+      }
     }
   }
 
