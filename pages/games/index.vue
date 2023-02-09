@@ -254,10 +254,10 @@
       border-left-color: var(--gray-700);
       padding: 8px 8px 8px 16px;
 
-      span {
-        max-width: none;
-        overflow: unset;
-      }
+      //span {
+      //  max-width: none;
+      //  overflow: unset;
+      //}
 
       .icon {
         position: relative;

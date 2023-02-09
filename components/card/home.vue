@@ -269,6 +269,7 @@
     --padding: #{rem(12px) rem(24px)};
 
     @include media(md) {
+      @include upd-font($heading-3);
       --padding: #{rem(12px) rem(32px)};
     }
   }

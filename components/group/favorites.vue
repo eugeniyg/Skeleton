@@ -60,18 +60,13 @@
     "items items items items"
     "btn-show-all btn-show-all btn-show-all btn-show-all";
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
-  grid-column-gap: var(--column-gap, #{rem(8px)});
-  grid-row-gap: var(--row-gap, #{rem(16px)});
+  grid-column-gap: var(--column-gap, 8px);
 
   @include media(xs) {
     grid-template-areas:
     "icon heading heading arrows"
     "items items items items"
     "btn-show-all btn-show-all btn-show-all btn-show-all";
-
-    > .btn-show-all {
-      padding: rem(4px) rem(16px);
-    }
   }
 
   @include media(sm) {
@@ -93,7 +88,7 @@
   > .icon {
     display: none;
     grid-area: icon;
-    --iccon-size: #{rem(20px)};
+    --icon-size: 20px;
     --color: var(--gray-400);
 
     @include media(sm) {
@@ -104,13 +99,16 @@
   > .btn-show-all {
     grid-area: btn-show-all;
     @include font($heading-1);
+    transform: translateX(8px);
+    margin-top: 4px;
+    --padding: 4px 16px;
 
     --font-size: #{rem(12px)};
     --color: var(--gray-500);
     --width: 100%;
 
-    @include media(xs) {
-      padding: 0;
+    @include media(sm) {
+      margin-top: 0;
       --bg: transparent;
 
       &:hover {
@@ -136,7 +134,10 @@
     grid-area: items;
     display: var(--display, flex);
     align-items: flex-start;
-    //@extend %cards-items-negative;
+
+    @include media(sm) {
+      margin-top: 16px;
+    }
   }
 }
 </style>

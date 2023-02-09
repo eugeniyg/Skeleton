@@ -131,6 +131,7 @@
 
     @include media(sm) {
       grid-template-columns: repeat(4, 1fr);
+      --items-column-gap: #{rem(16px)}
     }
   }
 
@@ -256,6 +257,10 @@
     .sub-title {
       @include font($body-1);
       color: var(--white);
+
+      @include media(md) {
+        @include upd-font($body-2);
+      }
     }
 
     .btn-primary {
