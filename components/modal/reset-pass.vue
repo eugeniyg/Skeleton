@@ -1,31 +1,28 @@
 <template>
   <vue-final-modal
     v-model="modals.resetPass"
-    @beforeOpen="showForm = true"
-    @closed="showForm = false"
-    esc-to-close
+    class="modal-reset-pass"
+    :clickToClose="false"
   >
-    <div class="modal-reset-pass">
-      <div class="scroll">
-        <div class="header">
-          <button-modal-close @close="closeModal('resetPass')"/>
-          <div class="title">{{ resetContent?.title }}</div>
-        </div>
-
-        <form-reset-pass v-if="showForm" />
+    <div class="scroll">
+      <div class="header">
+        <button-modal-close @close="closeModal('resetPass')"/>
+        <div class="title">{{ resetContent?.title }}</div>
       </div>
+
+      <form-reset-pass />
     </div>
   </vue-final-modal>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { VueFinalModal } from 'vue-final-modal';
   import { ResetInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-  const showForm = ref<boolean>(false);
   const { popupsData } = useGlobalStore();
   const resetContent: ResetInterface|undefined = popupsData?.reset;
 </script>

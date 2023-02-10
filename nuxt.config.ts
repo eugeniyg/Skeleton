@@ -70,6 +70,7 @@ export default defineNuxtConfig({
   },
   css: [
     '@/scss/style.scss',
+    'vue-final-modal/style.css',
   ],
   vite: viteConfig,
   nitro: {
