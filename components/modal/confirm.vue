@@ -1,25 +1,25 @@
 <template>
   <vue-final-modal
     v-model="modals.confirm"
-    @click="closeModal('confirm')"
-    esc-to-close
+    class="modal-confirm"
+    :clickToClose="false"
+    @clickOutside="closeModal('confirm')"
   >
-    <div class="modal-confirm" @click.stop>
-      <div class="scroll">
-        <div class="header">
-          <button-modal-close @close="closeModal('confirm')"/>
-        </div>
-
-        <img class="img" src="@/assets/svg/colored/confirm.svg"/>
-        <p class="text">{{ confirmContent?.title }}</p>
-        <button-base type="primary" size="md" @click="closeModal('confirm')">{{ confirmContent?.button }}</button-base>
+    <div class="scroll">
+      <div class="header">
+        <button-modal-close @close="closeModal('confirm')"/>
       </div>
+
+      <img class="img" src="@/assets/svg/colored/confirm.svg"/>
+      <p class="text">{{ confirmContent?.title }}</p>
+      <button-base type="primary" size="md" @click="closeModal('confirm')">{{ confirmContent?.button }}</button-base>
     </div>
   </vue-final-modal>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { VueFinalModal } from 'vue-final-modal';
   import { ConfirmInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
