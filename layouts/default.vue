@@ -47,7 +47,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  // import { ModalsContainer } from 'vue-final-modal';
 
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
