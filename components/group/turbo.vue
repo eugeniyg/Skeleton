@@ -42,8 +42,8 @@
   import { TurbogamesGroupInterface, CardsGroupInterface } from '~/types';
 
   const { globalComponentsContent } = useGlobalStore();
-  const groupTurboContent: TurbogamesGroupInterface | undefined = globalComponentsContent?.turbogames;
-  const groupCardContent: CardsGroupInterface | undefined = globalComponentsContent?.cardsGroup;
+  const groupTurboContent: Maybe<TurbogamesGroupInterface> = globalComponentsContent?.turbogames;
+  const groupCardContent: Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);

@@ -100,7 +100,7 @@
   });
 
   const { globalComponentsContent } = useGlobalStore();
-  const groupContent: CardsGroupInterface | undefined = globalComponentsContent?.cardsGroup;
+  const groupContent: Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
 
   const router = useRouter();
   const scrollContainer = ref();

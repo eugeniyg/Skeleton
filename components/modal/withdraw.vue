@@ -40,7 +40,7 @@
   const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
 
   const { popupsData } = useGlobalStore();
-  const withdrawContent: WithdrawInterface|undefined = popupsData?.withdraw;
+  const withdrawContent: Maybe<WithdrawInterface> = popupsData?.withdraw;
 
   watch(() => withdrawMethods.value, () => {
     currentMethod.value = withdrawMethods.value[0] || {};

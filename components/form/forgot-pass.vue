@@ -34,7 +34,7 @@
 
   const globalStore = useGlobalStore();
   const { fieldsContent, popupsData, alertsData } = storeToRefs(globalStore);
-  const forgotContent: ForgotInterface|undefined = popupsData.value?.forgot;
+  const forgotContent: Maybe<ForgotInterface> = popupsData.value?.forgot;
 
   const forgotFormData = reactive({ email: '' });
   const { getFormRules } = useProjectMethods();

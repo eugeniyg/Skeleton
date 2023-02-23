@@ -20,7 +20,7 @@
   const { currentLocale } = storeToRefs(globalStore);
 
   const securityContentRequest = await useAsyncData('securityContent', () => queryContent(`profile/${currentLocale.value?.code}`).only(['security']).findOne());
-  const securityContent:ProfileSecurityInterface|undefined = securityContentRequest.data.value?.security;
+  const securityContent: Maybe<ProfileSecurityInterface> = securityContentRequest.data.value?.security;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(securityContent?.seo);
 

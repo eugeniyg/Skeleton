@@ -85,7 +85,7 @@
   const {
     countries, fieldsContent, popupsData, headerCountry,
   } = storeToRefs(globalStore);
-  const registrationContent: RegistrationInterface|undefined = popupsData.value?.registration;
+  const registrationContent: Maybe<RegistrationInterface> = popupsData.value?.registration;
 
   const mainFields = props.registrationFields.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = props.registrationFields.filter((field) => groupFooterFields.includes(field.name));

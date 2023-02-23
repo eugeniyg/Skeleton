@@ -78,7 +78,7 @@
   });
 
   const { globalComponentsContent, gameCategoriesObj } = useGlobalStore();
-  const cardsGroupContent: CardsGroupInterface | undefined = globalComponentsContent?.cardsGroup;
+  const cardsGroupContent: Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
   const titleIcon = gameCategoriesObj[props.category.identity]?.icon;
 
   const scrollContainer = ref();

@@ -35,7 +35,7 @@ interface LayoutStoreStateInterface extends Record<string, any>{
   isDrawerCompact: boolean,
   isShowAlert: boolean,
   showCookiePopup: boolean,
-  alertProps: AlertInterface|undefined,
+  alertProps: Maybe<AlertInterface>,
   modals: ModalsInterface,
   modalsUrl: ModalsUrlsInterface,
 }
@@ -74,7 +74,7 @@ export const useLayoutStore = defineStore('layoutStore', {
   }),
 
   actions: {
-    showAlert(props: AlertInterface|undefined): void {
+    showAlert(props: Maybe<AlertInterface>): void {
       if (this.isShowAlert) {
         this.hideAlert();
         this.showAlert(props);
@@ -129,7 +129,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       if (drawerContentEl) this.isDrawerOpen ? disableBodyScroll(drawerContentEl) : enableBodyScroll(drawerContentEl);
     },
 
-    addModalQuery(modalName:string, queryValue:string|undefined):void {
+    addModalQuery(modalName:string, queryValue: Maybe<string>):void {
       const router = useRouter();
       const { query } = useRoute();
       const modalsArr = Object.keys(this.modals);

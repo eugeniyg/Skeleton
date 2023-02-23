@@ -18,7 +18,7 @@
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
   const tokenContentRequest = await useAsyncData('tokenContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['tokenPage']).findOne());
-  const tokenContent:TokenContentInterface|undefined = tokenContentRequest.data.value?.tokenPage;
+  const tokenContent: Maybe<TokenContentInterface> = tokenContentRequest.data.value?.tokenPage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(tokenContent?.seo);
 </script>

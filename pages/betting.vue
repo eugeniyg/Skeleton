@@ -26,7 +26,7 @@
     isMobile, alertsData, currentLocale, headerCountry,
   } = storeToRefs(globalStore);
   const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['bettingPage']).findOne());
-  const bettingContent:BettingContentInterface|undefined = bettingContentRequest.data.value?.bettingPage;
+  const bettingContent:Maybe<BettingContentInterface> = bettingContentRequest.data.value?.bettingPage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(bettingContent?.seo);
 
