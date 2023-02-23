@@ -195,7 +195,6 @@
 }
 
 .promo-card-wrapper {
-  margin-bottom: rem(40px);
   margin-top: rem(-24px);
   margin-left: var(--margin-left, #{rem(-16px)});
   margin-right: var(--margin-right, #{rem(-16px)});
