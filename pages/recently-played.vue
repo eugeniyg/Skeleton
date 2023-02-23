@@ -35,7 +35,7 @@
   const globalStore = useGlobalStore();
   const { currentLocale, isMobile, headerCountry } = storeToRefs(globalStore);
   const recentlyContentRequest = await useAsyncData('recentlyContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['recentlyPage']).findOne());
-  const recentlyContent:RecentlyPageInterface|undefined = recentlyContentRequest.data.value?.recentlyPage;
+  const recentlyContent: Maybe<RecentlyPageInterface> = recentlyContentRequest.data.value?.recentlyPage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(recentlyContent?.seo);
 

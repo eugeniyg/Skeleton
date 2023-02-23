@@ -62,7 +62,7 @@
   const {
     popupsData, alertsData, fieldsContent,
   } = storeToRefs(globalStore);
-  const withdrawContent: WithdrawInterface|undefined = popupsData.value?.withdraw;
+  const withdrawContent: Maybe<WithdrawInterface> = popupsData.value?.withdraw;
   const walletStore = useWalletStore();
   const { closeModal, showAlert } = useLayoutStore();
   const {

@@ -52,7 +52,7 @@
   const excerpt = ref<HTMLElement>();
   const isShowMoreBtn = ref<boolean>(false);
   const isTextExpanded = ref<boolean>(false);
-  const documentsContent:ProfileDocumentsInterface|undefined = inject('documentsContent');
+  const documentsContent: Maybe<ProfileDocumentsInterface> = inject('documentsContent');
 
   const textHasDots = (el: HTMLElement): boolean => el.scrollHeight > el.offsetHeight;
 

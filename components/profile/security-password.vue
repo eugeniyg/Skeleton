@@ -37,7 +37,7 @@
   const globalStore = useGlobalStore();
   const { fieldsContent, alertsData } = storeToRefs(globalStore);
 
-  const passwordContent:{label: string, saveButton:string}|undefined = inject('passwordContent');
+  const passwordContent: Maybe<{label: string, saveButton:string}> = inject('passwordContent');
 
   interface ChangeFormDataInterface extends Record<string, any>{
     currentPassword: string,

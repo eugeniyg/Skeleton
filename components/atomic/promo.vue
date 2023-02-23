@@ -18,7 +18,7 @@
   import { RegistrationInterface } from '~/types';
 
   const { popupsData } = useGlobalStore();
-  const registrationContent: RegistrationInterface|undefined = popupsData?.registration;
+  const registrationContent: Maybe<RegistrationInterface> = popupsData?.registration;
 </script>
 
 <style lang="scss">

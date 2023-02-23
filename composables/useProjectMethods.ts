@@ -121,7 +121,7 @@ export const useProjectMethods = () => {
     return { currency: currencyConfig.code, amount: amount / (subCurrencyConfig?.subunitToUnit || 1) };
   };
 
-  const setPageSeo = (seoData:SeoContentInterface|undefined):void => {
+  const setPageSeo = (seoData: Maybe<SeoContentInterface>):void => {
     const globalStore = useGlobalStore();
     useHead({
       title: seoData?.title || globalStore.globalSeo?.title,

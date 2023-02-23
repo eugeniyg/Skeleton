@@ -24,7 +24,7 @@
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
   const { popupsData } = useGlobalStore();
-  const loginContent: LoginInterface|undefined = popupsData?.login;
+  const loginContent: Maybe<LoginInterface> = popupsData?.login;
 </script>
 
 <style lang="scss">

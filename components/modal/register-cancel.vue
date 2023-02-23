@@ -46,7 +46,7 @@
   const { modals } = storeToRefs(layoutStore);
   const { showModal, closeModal } = layoutStore;
   const { popupsData } = useGlobalStore();
-  const registrationCancelContent: RegistrationCancelInterface|undefined = popupsData?.registrationCancel;
+  const registrationCancelContent: Maybe<RegistrationCancelInterface> = popupsData?.registrationCancel;
 
   const { replaceContent } = useCoreMethods();
   const bonusContent = registrationCancelContent?.bonusText ? replaceContent(registrationCancelContent?.bonusText, '*') : '';

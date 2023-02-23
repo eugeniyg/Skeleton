@@ -59,7 +59,7 @@
 
   const selected = ref<string>('all');
 
-  const getAccountByCurrency = (currency: string):AccountInterface|undefined => accounts.value.find((account) => (account.currency === currency));
+  const getAccountByCurrency = (currency: string): Maybe<AccountInterface> => accounts.value.find((account) => (account.currency === currency));
 
   const selectedItems = computed(() => {
     let currenciesList:CurrencyInterface[];

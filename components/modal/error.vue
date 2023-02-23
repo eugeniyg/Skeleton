@@ -31,7 +31,7 @@
   const { modals } = storeToRefs(layoutStore);
   const { closeModal, openDepositModal } = layoutStore;
   const { popupsData } = useGlobalStore();
-  const errorContent: ErrorInterface|undefined = popupsData?.error;
+  const errorContent: Maybe<ErrorInterface> = popupsData?.error;
 
   const tryAgain = async ():Promise<void> => {
     await openDepositModal();

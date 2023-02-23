@@ -30,7 +30,7 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, isMobile, headerCountry } = storeToRefs(globalStore);
-  const groupContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
+  const groupContent:Maybe<CardsGroupInterface> = globalComponentsContent.value?.cardsGroup;
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);

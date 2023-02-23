@@ -12,7 +12,7 @@ interface ProfileStoreStateInterface {
   isLoggedIn: boolean,
   sessionId: string,
   resentVerifyEmail: boolean,
-  profile: ProfileInterface|undefined,
+  profile: Maybe<ProfileInterface>,
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -28,7 +28,7 @@ export const useProfileStore = defineStore('profileStore', {
       return state.profile?.nickname || 'Unknown';
     },
 
-    playerStatusName(state):string|undefined {
+    playerStatusName(state): Maybe<string> {
       const { playerStatuses } = useGlobalStore();
       return playerStatuses.find((status) => status.id === state.profile?.status)?.name;
     },

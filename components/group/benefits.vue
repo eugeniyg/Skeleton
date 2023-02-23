@@ -18,7 +18,7 @@
   import { BenefitsContentInterface } from '~/types';
 
   const { globalComponentsContent } = useGlobalStore();
-  const benefitsContent: BenefitsContentInterface | undefined = globalComponentsContent?.benefits;
+  const benefitsContent: Maybe<BenefitsContentInterface> = globalComponentsContent?.benefits;
 </script>
 
 <style lang="scss">

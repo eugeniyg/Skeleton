@@ -99,7 +99,7 @@
 
   const globalStore = useGlobalStore();
   const infoContentRequest = await useAsyncData('infoContent', () => queryContent(`profile/${globalStore.currentLocale?.code}`).only(['info']).findOne());
-  const infoContent:ProfileInfoInterface|undefined = infoContentRequest.data.value?.info;
+  const infoContent: Maybe<ProfileInfoInterface> = infoContentRequest.data.value?.info;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(infoContent?.seo);
 
@@ -116,7 +116,7 @@
 
   const isProfileEdit = computed(() => route.query.edit === 'true');
   const userCountryName = computed(() => {
-    const countryObject:CountryInterface|undefined = countries.value.find((country) => country.code === profile.value?.country);
+    const countryObject: Maybe<CountryInterface> = countries.value.find((country) => country.code === profile.value?.country);
     return countryObject?.nativeName || '';
   });
   const subscriptionFields = computed(() => profileFields.value.filter((field) => field.name === 'receiveSmsPromo' || field.name === 'receiveEmailPromo'));

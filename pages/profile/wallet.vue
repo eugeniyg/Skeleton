@@ -37,7 +37,7 @@
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
   const walletContentRequest = await useAsyncData('walletContent', () => queryContent(`profile/${currentLocale.value?.code}`).only(['wallet']).findOne());
-  const walletContent:ProfileWalletInterface|undefined = walletContentRequest.data.value?.wallet;
+  const walletContent: Maybe<ProfileWalletInterface> = walletContentRequest.data.value?.wallet;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(walletContent?.seo);
 

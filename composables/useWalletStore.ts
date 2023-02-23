@@ -24,7 +24,7 @@ export const useWalletStore = defineStore('walletStore', {
   }),
 
   getters: {
-    activeAccount(state):AccountInterface|undefined {
+    activeAccount(state): Maybe<AccountInterface> {
       return state.accounts.find((acc) => acc.status === 1);
     },
 
@@ -105,7 +105,7 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     updateAccount(webSocketResponse:WebSocketResponseInterface):void {
-      const accountData:AccountInterface|undefined = webSocketResponse.data.account;
+      const accountData: Maybe<AccountInterface> = webSocketResponse.data.account;
       this.accounts = this.accounts.map((account) => {
         if (account.id === accountData?.id) return accountData;
         return account;

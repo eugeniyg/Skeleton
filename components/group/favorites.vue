@@ -28,7 +28,7 @@
   import { CardsGroupInterface } from '~/types';
 
   const { globalComponentsContent } = useGlobalStore();
-  const groupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
+  const groupContent: Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);

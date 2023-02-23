@@ -33,7 +33,7 @@
   } = storeToRefs(globalStore);
   const infoResponse = await useAsyncData('gameInfo', () => getGamesInfo(route.params.id as string));
   const gameContentRequest = await useAsyncData('gameContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['gamePage']).findOne());
-  const gameContent:GamePageInterface|undefined = gameContentRequest.data.value?.gamePage;
+  const gameContent: Maybe<GamePageInterface> = gameContentRequest.data.value?.gamePage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(gameContent?.seo);
   gameInfo.value = infoResponse.data?.value as GameInterface;

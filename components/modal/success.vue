@@ -37,7 +37,7 @@
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
   const { popupsData } = useGlobalStore();
-  const successContent: SuccessInterface|undefined = popupsData?.success;
+  const successContent: Maybe<SuccessInterface> = popupsData?.success;
 </script>
 
 <style lang="scss">

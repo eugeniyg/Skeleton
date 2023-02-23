@@ -24,7 +24,7 @@
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
   const { popupsData } = useGlobalStore();
-  const resetContent: ResetInterface|undefined = popupsData?.reset;
+  const resetContent: Maybe<ResetInterface> = popupsData?.reset;
 </script>
 
 <style lang="scss">

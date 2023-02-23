@@ -26,7 +26,7 @@
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
   const { popupsData } = useGlobalStore();
-  const confirmContent: ConfirmInterface | undefined = popupsData?.confirm;
+  const confirmContent: Maybe<ConfirmInterface> = popupsData?.confirm;
 </script>
 
 <style lang="scss">

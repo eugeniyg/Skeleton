@@ -33,7 +33,7 @@
   const { closeModal, showModal } = layoutStore;
 
   const { popupsData } = useGlobalStore();
-  const forgotContent: ForgotInterface|undefined = popupsData?.forgot;
+  const forgotContent: Maybe<ForgotInterface> = popupsData?.forgot;
 
   const returnLoginModal = () => {
     showModal('signIn');
