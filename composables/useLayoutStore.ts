@@ -61,6 +61,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         success: false,
         withdraw: false,
         registerCancel: false,
+        depositLimit: true,
       },
       modalsUrl: {
         register: 'sign-up',
