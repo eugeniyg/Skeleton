@@ -63,7 +63,10 @@ export default defineNuxtConfig({
         { rel: 'mask-icon', href: '/favicon/safari-pinned-tab.svg', color: '#5bbad5' },
         { rel: 'stylesheet', href: '/preloader/preloader.css' },
       ],
-      script: [{ src: 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js' }],
+      script: [
+        { src: 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js' },
+        { src: '/scripts/sw-register.js' },
+      ],
     },
     pageTransition: true,
     layoutTransition: true,
