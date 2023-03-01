@@ -24,7 +24,7 @@
   const { getGamesInfo, getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
-  const { isLoggedIn, playerStatusName, profile } = storeToRefs(profileStore);
+  const { isLoggedIn, profile } = storeToRefs(profileStore);
   const { showModal, showAlert } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
@@ -59,7 +59,7 @@
       return;
     }
 
-    if (isDemo.value && playerStatusName.value === 'Limited') {
+    if (isDemo.value && profile.value?.status === 2) {
       showAlert(alertsData.value?.limitedRealGame);
       return;
     }
@@ -82,7 +82,7 @@
     if (!newValue) return;
 
     showPlug.value = false;
-    if (!isDemo.value && playerStatusName.value === 'Limited') {
+    if (!isDemo.value && profile.value?.status === 2) {
       setTimeout(() => {
         redirectLimitedPlayer();
       });
@@ -104,7 +104,7 @@
     if (!isDemo.value && !isLoggedIn.value) {
       if (gameInfo.value?.isDemoMode) changeGameMode();
       else showPlug.value = true;
-    } else if (!isDemo.value && playerStatusName.value === 'Limited') {
+    } else if (!isDemo.value && profile.value?.status === 2) {
       redirectLimitedPlayer();
     } else {
       await startGame();

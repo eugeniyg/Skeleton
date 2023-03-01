@@ -66,7 +66,7 @@
 
   onMounted(async () => {
     const profileStore = useProfileStore();
-    if (profileStore.playerStatusName === 'Limited' && activeAccountType.value === 'fiat') {
+    if (profileStore.profile?.status === 2 && activeAccountType.value === 'fiat') {
       const { showAlert } = useLayoutStore();
       showAlert(alertsData?.limitedDeposit);
       return;

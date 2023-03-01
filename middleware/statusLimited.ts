@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
   const { alertsData } = useGlobalStore();
   const { showAlert } = useLayoutStore();
 
-  if (profileStore.playerStatusName === 'Limited') {
+  if (profileStore.profile?.status === 2) {
     if (from.name && from.name !== to.name) {
       showAlert(alertsData?.limitedRealGame);
       return abortNavigation();

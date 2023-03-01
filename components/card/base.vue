@@ -84,7 +84,7 @@
 
   const router = useRouter();
   const profileStore = useProfileStore();
-  const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
+  const { isLoggedIn, profile } = storeToRefs(profileStore);
   const {
     baseApiUrl,
     alertsData,
@@ -107,7 +107,7 @@
       router.push(localizePath(`/games/${props.identity}`));
     } else if (!isLoggedIn.value) {
       showModal('register');
-    } else if (playerStatusName.value === 'Limited') {
+    } else if (profile.value?.status === 2) {
       showAlert(getContent(alertsData, defaultLocaleAlertsData, 'limitedRealGame'));
     } else {
       router.push(localizePath(`/games/${props.identity}?real=true`));

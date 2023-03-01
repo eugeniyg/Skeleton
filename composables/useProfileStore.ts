@@ -27,11 +27,6 @@ export const useProfileStore = defineStore('profileStore', {
     userNickname(state):string {
       return state.profile?.nickname || 'Unknown';
     },
-
-    playerStatusName(state): Maybe<string> {
-      const { playerStatuses } = useGlobalStore();
-      return playerStatuses.find((status) => status.id === state.profile?.status)?.name;
-    },
   },
 
   actions: {

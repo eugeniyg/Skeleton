@@ -35,7 +35,7 @@
 
   const { getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
-  const { isLoggedIn, playerStatusName, profile } = storeToRefs(profileStore);
+  const { isLoggedIn, profile } = storeToRefs(profileStore);
 
   const sdkDefaultParams = {
     containerId: 'betting-container',
@@ -96,7 +96,7 @@
 
     if (!isLoggedIn.value) {
       showPlug.value = true;
-    } else if (playerStatusName.value === 'Limited') {
+    } else if (profile.value?.status === 2) {
       redirectLimitedPlayer();
     } else {
       await startGame();
@@ -107,7 +107,7 @@
     if (!newValue) { return; }
 
     showPlug.value = false;
-    if (playerStatusName.value === 'Limited') {
+    if (profile.value?.status === 2) {
       setTimeout(() => {
         redirectLimitedPlayer();
       });
