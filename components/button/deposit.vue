@@ -1,13 +1,17 @@
 <template>
   <button class="btn-deposit" @click="openDepositModal">
     <atomic-icon id="plus"/>
-    <span>{{ headerContent?.depositButton }}</span>
+
+    <span>
+      {{ getContent(headerContent, defaultLocaleHeaderContent, 'depositButton') }}
+    </span>
   </button>
 </template>
 
 <script setup lang="ts">
   const { openDepositModal } = useLayoutStore();
-  const { headerContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
+  const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
 </script>
 
 <style lang="scss">

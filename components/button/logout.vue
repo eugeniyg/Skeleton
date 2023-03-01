@@ -1,13 +1,14 @@
 <template>
   <button class="btn-logout" @click="emit('logout')">
     <atomic-icon id="log-out"/>
-    {{ userNavigationContent?.logoutButton }}
+    {{ getContent(userNavigationContent, defaultLocaleUserNavigationContent, 'logoutButton') }}
   </button>
 </template>
 
 <script setup lang="ts">
   const emit = defineEmits(['logout']);
-  const { userNavigationContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
+  const { userNavigationContent, defaultLocaleUserNavigationContent } = useGlobalStore();
 </script>
 
 <style lang="scss">

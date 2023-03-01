@@ -32,7 +32,7 @@
           size="xs"
           @click="openGame(false)"
         >
-          {{ groupContent?.demoButton }}
+          {{ getContent(groupContent, defaultLocaleGroupContent, 'demoButton') }}
         </button-base>
       </div>
 
@@ -45,7 +45,7 @@
   import { storeToRefs } from 'pinia';
   import { PropType } from '@vue/runtime-core';
   import { GameImagesInterface, GameProviderInterface } from '@platform/frontend-core/dist/module';
-  import { CardsGroupInterface } from '~/types';
+  import { CardsGroupInterface, GameTagInterface } from '~/types';
 
   const props = defineProps({
     images: {
@@ -85,12 +85,22 @@
   const router = useRouter();
   const profileStore = useProfileStore();
   const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
-  const { baseApiUrl, alertsData, globalComponentsContent } = useGlobalStore();
+  const {
+    baseApiUrl,
+    alertsData,
+    defaultLocaleAlertsData,
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+  } = useGlobalStore();
   const { showModal, showAlert } = useLayoutStore();
-  const { localizePath, getImageUrl } = useProjectMethods();
-  const groupContent:Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
+  const { localizePath, getImageUrl, getContent } = useProjectMethods();
 
-  const gameBages = globalComponentsContent?.gameTags?.filter((bage) => props.labels.includes(bage.identity));
+  const groupContent: Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
+  const defaultLocaleGroupContent: Maybe<CardsGroupInterface> = defaultLocaleGlobalComponentsContent?.cardsGroup;
+
+  const gameTagsContent: Maybe<GameTagInterface[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags');
+
+  const gameBages = gameTagsContent?.filter((bage) => props.labels.includes(bage.identity));
 
   const openGame = (isReal: boolean):void => {
     if (!isReal) {
@@ -98,7 +108,7 @@
     } else if (!isLoggedIn.value) {
       showModal('register');
     } else if (playerStatusName.value === 'Limited') {
-      showAlert(alertsData?.limitedRealGame);
+      showAlert(getContent(alertsData, defaultLocaleAlertsData, 'limitedRealGame'));
     } else {
       router.push(localizePath(`/games/${props.identity}?real=true`));
     }

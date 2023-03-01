@@ -1,13 +1,25 @@
 <template>
   <div class="promo">
     <div class="header">
-      <div class="title">{{ registrationContent?.promo?.title }}</div>
-      <span class="sub-title">{{ registrationContent?.promo?.secondTitle }}</span>
-      <span class="sub-title">{{ registrationContent?.promo?.additionalTitle }}</span>
+      <div class="title">
+        {{ getContent(registrationContent, defaultLocaleRegistrationContent, 'promo.title') }}
+      </div>
+
+      <span class="sub-title">
+        {{ getContent(registrationContent, defaultLocaleRegistrationContent, 'promo.secondTitle') }}
+      </span>
+
+      <span class="sub-title">
+        {{ getContent(registrationContent, defaultLocaleRegistrationContent, 'promo.additionalTitle') }}
+      </span>
     </div>
 
-    <div v-if="registrationContent?.promo?.advantages?.length" class="items">
-      <div v-for="(advantage, index) in registrationContent.promo.advantages" :key="index" class="item">
+    <div v-if="getContent(registrationContent, defaultLocaleRegistrationContent, 'promo.advantages')?.length" class="items">
+      <div
+        v-for="(advantage, index) in getContent(registrationContent, defaultLocaleRegistrationContent, 'promo.advantages')"
+        :key="index"
+        class="item"
+      >
         <atomic-icon :id="advantage.icon"/>{{ advantage.label }}
       </div>
     </div>
@@ -17,8 +29,11 @@
 <script setup lang="ts">
   import { RegistrationInterface } from '~/types';
 
-  const { popupsData } = useGlobalStore();
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
+
   const registrationContent: Maybe<RegistrationInterface> = popupsData?.registration;
+  const defaultLocaleRegistrationContent: Maybe<RegistrationInterface> = defaultLocalePopupsData?.registration;
 </script>
 
 <style lang="scss">

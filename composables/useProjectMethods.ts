@@ -1,4 +1,5 @@
 import { GameImagesInterface } from '@platform/frontend-core/dist/module';
+import get from 'lodash/get';
 import * as projectRules from './validationRules';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
@@ -140,6 +141,12 @@ export const useProjectMethods = () => {
     return 0;
   };
 
+  const getContent = (
+      contentData: any,
+      defaultLocaleContentData: any,
+      path: string,
+  ): any => get(contentData, path) || get(defaultLocaleContentData, path);
+
   return {
     createValidationRules,
     getFormRules,
@@ -154,5 +161,6 @@ export const useProjectMethods = () => {
     getMainBalanceFormat,
     setPageSeo,
     sortByAlphabet,
+    getContent,
   };
 };
