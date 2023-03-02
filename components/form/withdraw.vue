@@ -1,7 +1,7 @@
 <template>
   <form>
     <form-input-number
-      :label="getContent(withdrawContent, defaultLocaleWithdrawContent, 'sumLabel') || ''"
+      :label="getContent(popupsData, defaultLocalePopupsData, 'withdraw.sumLabel') || ''"
       name="withdrawSum"
       :min="formatAmountMin.amount"
       :max="formatAmountMax.amount"
@@ -30,14 +30,13 @@
       :isDisabled="buttonDisabled"
       @click="getWithdraw"
     >
-      {{ getContent(withdrawContent, defaultLocaleWithdrawContent, 'withdrawButton') }} {{ buttonAmount }} {{ defaultInputSum.currency }}
+      {{ getContent(popupsData, defaultLocalePopupsData, 'withdraw.withdrawButton') }} {{ buttonAmount }} {{ defaultInputSum.currency }}
     </button-base>
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { WithdrawInterface } from '~/types';
 
   const props = defineProps({
     amountMax: {
@@ -68,9 +67,6 @@
     defaultLocaleFieldsContent,
   } = storeToRefs(globalStore);
 
-  const withdrawContent: Maybe<WithdrawInterface> = popupsData.value?.withdraw;
-  const defaultLocaleWithdrawContent: Maybe<WithdrawInterface> = defaultLocalePopupsData.value?.withdraw;
-
   const walletStore = useWalletStore();
   const { closeModal, showAlert } = useLayoutStore();
   const {
@@ -82,7 +78,7 @@
   const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
   const activeAccountFormat = formatBalance(activeAccount.value?.currency, activeAccount.value?.balance);
   const fieldHint = computed(() => ({
-    message: `${getContent(withdrawContent, defaultLocaleWithdrawContent, 'minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
+    message: `${getContent(popupsData, defaultLocalePopupsData, 'withdraw.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
@@ -130,12 +126,12 @@
     try {
       await withdrawAccount(params);
       closeModal('withdraw');
-      showAlert(getContent(alertsData.value, defaultLocaleAlertsData.value, 'withdrawalProcessed'));
+      showAlert(alertsData.value?.withdrawalProcessed || defaultLocaleAlertsData.value?.withdrawalProcessed);
     } catch (err:any) {
       if (err.response?.status === 422) {
         serverFormErrors.value = err.data?.error?.fields;
       } else {
-        showAlert(getContent(alertsData.value, defaultLocaleAlertsData.value, 'somethingWrong'));
+        showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
       }
       isSending.value = false;
     }

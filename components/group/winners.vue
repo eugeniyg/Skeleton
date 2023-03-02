@@ -1,12 +1,12 @@
 <template>
   <div class="group-winners" v-if="latestWinners.length">
     <atomic-icon
-      v-if="getContent(winnersContent, defaultLocaleWinnersContent, 'latestWinners.icon')"
-      :id="getContent(winnersContent, defaultLocaleWinnersContent, 'latestWinners.icon')"
+      v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.latestWinners.icon')"
+      :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.latestWinners.icon')"
     />
 
     <h2 class="title">
-      {{ getContent(winnersContent, defaultLocaleWinnersContent, 'latestWinners.label') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.latestWinners.label') }}
     </h2>
 
     <button-arrows
@@ -32,7 +32,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { CardsGroupInterface } from '~/types';
   import { useGamesStore } from '~/composables/useGamesStore';
 
   const props = defineProps({
@@ -48,8 +47,6 @@
     isMobile,
     headerCountry,
   } = storeToRefs(globalStore);
-  const winnersContent: Maybe<CardsGroupInterface> = globalComponentsContent.value?.cardsGroup;
-  const defaultLocaleWinnersContent: Maybe<CardsGroupInterface> = defaultLocaleGlobalComponentsContent.value?.cardsGroup;
   const { getContent } = useProjectMethods();
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);

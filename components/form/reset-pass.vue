@@ -33,14 +33,13 @@
       @click="resetPassword"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
-      {{ getContent(resetContent, defaultLocaleResetContent, 'resetButton') }}
+      {{ getContent(popupsData, defaultLocalePopupsData, 'reset.resetButton') }}
     </button-base>
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ResetInterface } from '~/types';
 
   const globalStore = useGlobalStore();
   const {
@@ -51,8 +50,6 @@
     alertsData,
     defaultLocaleAlertsData,
   } = storeToRefs(globalStore);
-  const resetContent: Maybe<ResetInterface> = popupsData.value?.reset;
-  const defaultLocaleResetContent: Maybe<ResetInterface> = defaultLocalePopupsData.value?.reset;
 
   const resetFormData = reactive({
     newPassword: '',
@@ -76,7 +73,7 @@
 
   const { closeModal, showAlert } = useLayoutStore();
   const showErrorAlert = ():void => {
-    showAlert(getContent(alertsData.value, defaultLocaleAlertsData.value, 'invalidResetCode'));
+    showAlert(alertsData.value?.invalidResetCode || defaultLocaleAlertsData.value?.invalidResetCode);
   };
 
   const isLockedAsyncButton = ref<boolean>(false);
@@ -91,7 +88,7 @@
       isLockedAsyncButton.value = true;
       const route = useRoute();
       await resetProfilePassword({ ...resetFormData, code: route.query.resetCode as string });
-      showAlert(getContent(alertsData.value, defaultLocaleAlertsData.value, 'passwordChanged'));
+      showAlert(alertsData.value?.passwordChanged || defaultLocaleAlertsData.value?.passwordChanged);
       closeModal('resetPass');
     } catch (error:any) {
       if (error.response?.status === 422) {

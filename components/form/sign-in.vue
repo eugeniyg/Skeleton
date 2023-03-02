@@ -40,17 +40,17 @@
       :isDisabled="v$.$invalid || isLockedAsyncButton"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
-      {{ getContent(loginContent, defaultLocaleLoginContent, 'loginButton') }}
+      {{ getContent(popupsData, defaultLocalePopupsData, 'login.loginButton') }}
     </button-base>
 
     <button-popup
       class="btn-forgot"
-      :buttonLabel="getContent(loginContent, defaultLocaleLoginContent, 'forgotButton')"
+      :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.forgotButton')"
       openModal="forgotPass"
     />
 
     <button-popup
-      :buttonLabel="getContent(loginContent, defaultLocaleLoginContent, 'registrationButton')"
+      :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.registrationButton')"
       openModal="register"
     />
   </form>
@@ -58,7 +58,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { LoginInterface } from '~/types';
 
   const globalStore = useGlobalStore();
   const {
@@ -72,8 +71,6 @@
     defaultLocaleAlertsData,
   } = storeToRefs(globalStore);
   const { closeModal } = useLayoutStore();
-  const loginContent: Maybe<LoginInterface> = popupsData.value?.login;
-  const defaultLocaleLoginContent: Maybe<LoginInterface> = defaultLocalePopupsData.value?.login;
 
   const authorizationFormData = reactive({ login: '', password: '' });
   const { getFormRules, getContent } = useProjectMethods();
@@ -113,7 +110,7 @@
         serverFormErrors.value = error.data?.error?.fields;
       } else if (error.response?.status === 403) {
         const { showAlert } = useLayoutStore();
-        showAlert(getContent(alertsData.value, defaultLocaleAlertsData.value, 'accountBlocked'));
+        showAlert(alertsData.value?.accountBlocked || defaultLocaleAlertsData.value?.accountBlocked);
       } else throw error;
     } finally {
       isLockedAsyncButton.value = false;

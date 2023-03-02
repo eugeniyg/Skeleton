@@ -4,16 +4,16 @@
 
     <div class="actions">
       <button-base type="primary" size="md" @click="openDepositModal">
-        <atomic-icon id="plus"/>{{ getContent(profileMenuContent, defaultLocaleProfileMenuContent, 'depositButton') }}
+        <atomic-icon id="plus"/>{{ getContent(sidebarContent, defaultLocaleSidebarContent, 'profileMenu.depositButton') }}
       </button-base>
 
       <button-base
-        v-if="getContent(profileMenuContent, defaultLocaleProfileMenuContent, 'profileButton')"
+        v-if="getContent(sidebarContent, defaultLocaleSidebarContent, 'profileMenu.profileButton')"
         type="secondary"
         size="md"
-        :url="getContent(profileMenuContent, defaultLocaleProfileMenuContent, 'profileButton.url')"
+        :url="getContent(sidebarContent, defaultLocaleSidebarContent, 'profileMenu.profileButton.url')"
       >
-        {{ getContent(profileMenuContent, defaultLocaleProfileMenuContent, 'profileButton.label') }}
+        {{ getContent(sidebarContent, defaultLocaleSidebarContent, 'profileMenu.profileButton.label') }}
       </button-base>
     </div>
   </div>
@@ -24,8 +24,6 @@
 
   const { sidebarContent, defaultLocaleSidebarContent } = useGlobalStore();
   const { getContent } = useProjectMethods();
-  const profileMenuContent = sidebarContent?.profileMenu;
-  const defaultLocaleProfileMenuContent = defaultLocaleSidebarContent?.profileMenu;
   const profileStore = useProfileStore();
   const { openDepositModal } = useLayoutStore();
   const { userNickname } = storeToRefs(profileStore);

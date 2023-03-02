@@ -1,12 +1,12 @@
 <template>
   <div class="group-recently">
     <atomic-icon
-      v-if="getContent(groupContent, defaultLocaleGroupContent, 'recentlyPlayed')"
-      :id="getContent(groupContent, defaultLocaleGroupContent, 'recentlyPlayed.icon')"
+      v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.recentlyPlayed')"
+      :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.recentlyPlayed.icon')"
     />
 
     <h2 class="title">
-      {{ getContent(groupContent, defaultLocaleGroupContent, 'recentlyPlayed.label') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.recentlyPlayed.label') }}
     </h2>
 
     <button-base
@@ -15,7 +15,7 @@
       url="/recently-played"
       type="ghost"
     >
-      {{ getContent(groupContent, defaultLocaleGroupContent, 'moreButton') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
     <div class="items" ref="container">
@@ -31,7 +31,6 @@
 <script setup lang="ts">
   import { GameInterface } from '@platform/frontend-core/dist/module';
   import { storeToRefs } from 'pinia';
-  import { CardsGroupInterface } from '~/types';
 
   const props = defineProps<{
     gamesList: GameInterface[]
@@ -39,8 +38,6 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const groupContent: Maybe<CardsGroupInterface> = globalComponentsContent.value?.cardsGroup;
-  const defaultLocaleGroupContent: Maybe<CardsGroupInterface> = defaultLocaleGlobalComponentsContent.value?.cardsGroup;
   const { getContent } = useProjectMethods();
 
   const showAllBtn = ref<boolean>(true);

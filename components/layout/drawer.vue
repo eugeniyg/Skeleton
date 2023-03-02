@@ -6,7 +6,7 @@
         @toggle-open="emit('toggle-open')"
       />
 
-      <button-toggler :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'gamesToggler')"/>
+      <button-toggler :items="sidebarContent?.gamesToggler || defaultLocaleSidebarContent?.gamesToggler"/>
     </div>
 
     <div class="content">
@@ -15,11 +15,11 @@
         <atomic-divider/>
       </template>
 
-      <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'topMenu')"/>
+      <nav-list :items="sidebarContent?.topMenu || defaultLocaleSidebarContent?.topMenu"/>
       <atomic-divider/>
-      <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'tokenMenu')"/>
+      <nav-list :items="sidebarContent?.tokenMenu || defaultLocaleSidebarContent?.tokenMenu"/>
       <atomic-divider/>
-      <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'bonusesMenu')"/>
+      <nav-list :items="sidebarContent?.bonusesMenu || defaultLocaleSidebarContent?.bonusesMenu"/>
       <atomic-divider/>
 
       <template v-if="isLoggedIn">
@@ -29,9 +29,9 @@
 
       <atomic-select-lang/>
       <atomic-divider/>
-      <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'bottomMenu')"/>
+      <nav-list :items="sidebarContent?.bottomMenu || defaultLocaleSidebarContent?.bottomMenu"/>
       <atomic-divider/>
-      <nav-static :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'sidebarFooterMenu')"/>
+      <nav-static :items="sidebarContent?.sidebarFooterMenu || defaultLocaleSidebarContent?.sidebarFooterMenu"/>
     </div>
   </div>
 </template>

@@ -32,7 +32,7 @@
           size="xs"
           @click="openGame(false)"
         >
-          {{ getContent(groupContent, defaultLocaleGroupContent, 'demoButton') }}
+          {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.demoButton') }}
         </button-base>
       </div>
 
@@ -45,7 +45,7 @@
   import { storeToRefs } from 'pinia';
   import { PropType } from '@vue/runtime-core';
   import { GameImagesInterface, GameProviderInterface } from '@platform/frontend-core/dist/module';
-  import { CardsGroupInterface, GameTagInterface } from '~/types';
+  import { GameTagInterface } from '~/types';
 
   const props = defineProps({
     images: {
@@ -95,9 +95,6 @@
   const { showModal, showAlert } = useLayoutStore();
   const { localizePath, getImageUrl, getContent } = useProjectMethods();
 
-  const groupContent: Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
-  const defaultLocaleGroupContent: Maybe<CardsGroupInterface> = defaultLocaleGlobalComponentsContent?.cardsGroup;
-
   const gameTagsContent: Maybe<GameTagInterface[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags');
 
   const gameBages = gameTagsContent?.filter((bage) => props.labels.includes(bage.identity));
@@ -108,7 +105,7 @@
     } else if (!isLoggedIn.value) {
       showModal('register');
     } else if (profile.value?.status === 2) {
-      showAlert(getContent(alertsData, defaultLocaleAlertsData, 'limitedRealGame'));
+      showAlert(alertsData?.limitedRealGame || defaultLocaleAlertsData?.limitedRealGame);
     } else {
       router.push(localizePath(`/games/${props.identity}?real=true`));
     }

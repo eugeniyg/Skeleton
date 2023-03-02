@@ -1,11 +1,13 @@
 <template>
   <div class="group-favorites">
     <atomic-icon
-      v-if="getContent(groupContent, defaultLocaleGroupContent, 'favorites')"
-      :id="getContent(groupContent, defaultLocaleGroupContent, 'favorites.icon')"
+      v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.favorites')"
+      :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.favorites.icon')"
     />
 
-    <h2 class="title">{{ getContent(groupContent, defaultLocaleGroupContent, 'favorites.label') }}</h2>
+    <h2 class="title">
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.favorites.label') }}
+    </h2>
 
     <button-base
       v-if="showAllBtn"
@@ -13,7 +15,7 @@
       url="/favorites"
       type="ghost"
     >
-      {{ getContent(groupContent, defaultLocaleGroupContent, 'moreButton') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
     <div class="items" ref="container">
@@ -28,11 +30,8 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { CardsGroupInterface } from '~/types';
 
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const groupContent: Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
-  const defaultLocaleGroupContent: Maybe<CardsGroupInterface> = defaultLocaleGlobalComponentsContent?.cardsGroup;
   const { getContent } = useProjectMethods();
 
   const gameStore = useGamesStore();

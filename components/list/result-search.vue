@@ -2,12 +2,14 @@
   <div class="result-search" :class="{'is-show': props.isShow}">
     <div class="box">
       <div class="header" v-if="!props.items.length">
-        <div class="heading">{{ headerContent?.search?.emptyLabel }}</div>
-        <div class="text">{{ headerContent?.search?.emptyText }}</div>
+        <div class="heading">{{ getContent(headerContent, defaultLocaleHeaderContent, 'search.emptyLabel') }}</div>
+        <div class="text">{{ getContent(headerContent, defaultLocaleHeaderContent, 'search.emptyText') }}</div>
       </div>
 
       <div class="items">
-        <div class="label" v-if="!props.items.length">{{ headerContent?.search?.tryLabel }}</div>
+        <div class="label" v-if="!props.items.length">
+          {{ getContent(headerContent, defaultLocaleHeaderContent, 'search.tryLabel') }}
+        </div>
 
         <div
           v-for="game in activeItems"
@@ -21,7 +23,9 @@
         </div>
 
         <div class="footer" v-if="isShowLoadMore">
-          <button-base type="ghost" size="xs" @click="emit('loadMore')">{{ headerContent?.search?.moreButton }}</button-base>
+          <button-base type="ghost" size="xs" @click="emit('loadMore')">
+            {{ getContent(headerContent, defaultLocaleHeaderContent, 'search.moreButton') }}
+          </button-base>
         </div>
       </div>
     </div>
@@ -67,8 +71,8 @@
     emit('hideSearch');
   };
 
-  const { baseApiUrl, headerContent } = useGlobalStore();
-  const { getImageUrl } = useProjectMethods();
+  const { baseApiUrl, headerContent, defaultLocaleHeaderContent } = useGlobalStore();
+  const { getImageUrl, getContent } = useProjectMethods();
   const gameImageSrc = (imagesData: GameImagesInterface):string => `${baseApiUrl}/img/gcdn${getImageUrl(imagesData, 'square')}`;
 </script>
 

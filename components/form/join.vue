@@ -58,11 +58,11 @@
       @click="signUp"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
-      {{ getContent(registrationContent, defaultLocaleRegistrationContent, 'registrationButton') }}
+      {{ getContent(popupsData, defaultLocalePopupsData, 'registration.registrationButton') }}
     </button-base>
 
     <button-popup
-      :buttonLabel="getContent(registrationContent, defaultLocaleRegistrationContent, 'loginButton')"
+      :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'registration.loginButton')"
       openModal="signIn"
     />
   </form>
@@ -72,7 +72,6 @@
   import { storeToRefs } from 'pinia';
   import { FieldInterface } from '@platform/frontend-core/dist/module';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
-  import { RegistrationInterface } from '~/types';
 
   const props = defineProps<{
     registrationFields: FieldInterface[]
@@ -93,8 +92,6 @@
     defaultLocalePopupsData,
     headerCountry,
   } = storeToRefs(globalStore);
-  const registrationContent: Maybe<RegistrationInterface> = popupsData.value?.registration;
-  const defaultLocaleRegistrationContent: Maybe<RegistrationInterface> = defaultLocalePopupsData.value?.registration;
   const { getContent } = useProjectMethods();
 
   const mainFields = props.registrationFields.filter((field) => !groupFooterFields.includes(field.name));
@@ -109,8 +106,8 @@
   }
 
   const getCheckboxLabel = (fieldName: string):string|undefined => {
-    if (fieldName === 'receiveEmailPromo') return getContent(registrationContent, defaultLocaleRegistrationContent, 'agreeEmailLabel');
-    if (fieldName === 'receiveSmsPromo') return getContent(registrationContent, defaultLocaleRegistrationContent, 'agreeSmsLabel');
+    if (fieldName === 'receiveEmailPromo') return getContent(popupsData, defaultLocalePopupsData, 'registration.agreeEmailLabel');
+    if (fieldName === 'receiveSmsPromo') return getContent(popupsData, defaultLocalePopupsData, 'registration.agreeSmsLabel');
     return getContent(fieldsContent, defaultLocaleFieldsContent, `${fieldName}.label`) || '';
   };
 

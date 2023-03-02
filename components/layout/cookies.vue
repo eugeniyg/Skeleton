@@ -5,13 +5,13 @@
     </div>
 
     <div
-      v-if="getContent(cookiePopupContent, defaultLocaleCookiePopupContent, 'text')"
+      v-if="cookiePopupContent?.text || defaultLocaleCookiePopupContent?.text"
       class="text"
-      v-html="marked.parse(getContent(cookiePopupContent, defaultLocaleCookiePopupContent, 'text'))"
+      v-html="marked.parse(cookiePopupContent?.text || defaultLocaleCookiePopupContent?.text)"
     />
 
     <button-base type="primary" size="md" @click="acceptCookie">
-      {{ getContent(cookiePopupContent, defaultLocaleCookiePopupContent, 'acceptButton') }}
+      {{ cookiePopupContent?.acceptButton || defaultLocaleCookiePopupContent?.acceptButton }}
     </button-base>
   </div>
 </template>
@@ -20,7 +20,6 @@
   import { marked } from 'marked';
 
   const { cookiePopupContent, defaultLocaleCookiePopupContent } = useGlobalStore();
-  const { getContent } = useProjectMethods();
   const layoutStore = useLayoutStore();
   const acceptCookie = ():void => {
     const userCookie = useCookie('accept-cookie', { maxAge: 60 * 60 * 24 * 365 * 10 });

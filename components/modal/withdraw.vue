@@ -17,7 +17,7 @@
       <div class="scroll">
         <div class="header">
           <button-modal-close @close="closeModal('withdraw')"/>
-          <div class="title">{{ withdrawContent?.title }}</div>
+          <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'withdraw.title') }}</div>
         </div>
 
         <form-withdraw :key="currentMethod.method" v-bind="currentMethod" />
@@ -30,7 +30,6 @@
   import { storeToRefs } from 'pinia';
   import { PaymentMethodInterface } from '@platform/frontend-core/dist/module';
   import { VueFinalModal } from 'vue-final-modal';
-  import { WithdrawInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const walletStore = useWalletStore();
@@ -39,8 +38,8 @@
   const { withdrawMethods } = storeToRefs(walletStore);
   const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
 
-  const { popupsData } = useGlobalStore();
-  const withdrawContent: Maybe<WithdrawInterface> = popupsData?.withdraw;
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   watch(() => withdrawMethods.value, () => {
     currentMethod.value = withdrawMethods.value[0] || {};

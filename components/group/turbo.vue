@@ -1,12 +1,12 @@
 <template>
-  <div v-if="getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'items')?.length" class="group-turbo">
+  <div v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.items')?.length" class="group-turbo">
     <atomic-icon
-      v-if="getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'icon')"
-      :id="getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'icon')"
+      v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.icon')"
+      :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.icon')"
     />
 
     <h2 class="title">
-      {{ getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'label') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.label') }}
     </h2>
 
     <button-base
@@ -14,7 +14,7 @@
       type="ghost"
       :url="'/games?category=turbogames'"
     >
-      {{ getContent(groupCardContent, defaultLocaleGroupCardContent, 'moreButton') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
     <button-arrows
@@ -24,33 +24,25 @@
       @clickAction="clickAction"
     />
 
-    <!--    <div class="items-wrapper">-->
     <div
       ref="scrollContainer"
       class="items"
       @scroll="scrollHandler"
     >
       <card-turbo
-        v-for="(item, itemIndex) in getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'items')"
+        v-for="(item, itemIndex) in getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.items')"
         :key="itemIndex"
         v-bind="item"
-        :buttonLabel="getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'buttonLabel')"
-        :infoLabel="getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'infoLabel')"
-        :categoryLabel="getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'categoryLabel')"
+        :buttonLabel="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.buttonLabel')"
+        :infoLabel="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.infoLabel')"
+        :categoryLabel="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.categoryLabel')"
       />
-      <!--      </div>-->
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { TurbogamesGroupInterface, CardsGroupInterface } from '~/types';
-
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const groupTurboContent: Maybe<TurbogamesGroupInterface> = globalComponentsContent?.turbogames;
-  const defaultLocaleGroupTurboContent: Maybe<TurbogamesGroupInterface> = defaultLocaleGlobalComponentsContent?.turbogames;
-  const groupCardContent: Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
-  const defaultLocaleGroupCardContent: Maybe<CardsGroupInterface> = defaultLocaleGlobalComponentsContent?.cardsGroup;
   const { getContent } = useProjectMethods();
 
   const scrollContainer = ref();

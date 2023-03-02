@@ -7,7 +7,7 @@
         {{ gameCategoriesObj[props.category.identity]?.label || props.category.name || props.category.identity }}
       </h2>
       <h4 class="sub-title">
-        {{ getContent(cardsGroupContent, defaultLocaleCardsGroupContent, 'recommendedSubtitle') }}
+        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.recommendedSubtitle') }}
       </h4>
     </div>
 
@@ -21,7 +21,7 @@
       type="ghost"
       @click="openGames"
     >
-      {{ getContent(cardsGroupContent, defaultLocaleCardsGroupContent, 'moreButton') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
     <button-arrows
@@ -58,7 +58,6 @@
   import {
     GameInterface, PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
-  import { CardsGroupInterface } from '~/types';
 
   const props = defineProps({
     category: {
@@ -80,8 +79,6 @@
   });
 
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = useGlobalStore();
-  const cardsGroupContent: Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
-  const defaultLocaleCardsGroupContent: Maybe<CardsGroupInterface> = defaultLocaleGlobalComponentsContent?.cardsGroup;
   const { getContent } = useProjectMethods();
   const titleIcon = gameCategoriesObj[props.category.identity]?.icon;
 

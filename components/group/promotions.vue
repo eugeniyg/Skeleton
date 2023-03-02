@@ -1,15 +1,15 @@
 <template>
-  <div v-if="promotionsContent || defaultLocalePromotionsContent" class="group-promotions">
-    <atomic-icon :id="getContent(promotionsContent, defaultLocalePromotionsContent, 'icon')"/>
+  <div v-if="globalComponentsContent?.promotions || defaultLocaleGlobalComponentsContent?.promotions" class="group-promotions">
+    <atomic-icon :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'promotions.icon')"/>
 
     <h2 class="title">
-      {{ getContent(promotionsContent, defaultLocalePromotionsContent, 'label') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'promotions.label') }}
     </h2>
 
     <div class="group-promotions__list">
       <div
         class="group-promotions__item"
-        v-for="(promotion, index) in getContent(promotionsContent, defaultLocalePromotionsContent, 'items')"
+        v-for="(promotion, index) in getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'promotions.items')"
         :key="index"
         :class="{ 'hovered': hoverCard === index }"
         @click="clickCard(index)"
@@ -44,12 +44,9 @@
 
 <script  setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { PromotionsContentInterface } from '~/types';
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
-  const promotionsContent: Maybe<PromotionsContentInterface> = globalComponentsContent?.promotions;
-  const defaultLocalePromotionsContent: Maybe<PromotionsContentInterface> = defaultLocaleGlobalComponentsContent?.promotions;
 
   const { localizePath, getContent } = useProjectMethods();
   const profileStore = useProfileStore();

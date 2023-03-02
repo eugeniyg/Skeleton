@@ -1,18 +1,18 @@
 <template>
   <form class="form-deposit-crypto">
-    <atomic-qr :content="depositContent || defaultLocaleDepositContent" :qrLink="qrLink"/>
+    <atomic-qr :content="popupsData?.deposit || defaultLocalePopupsData?.deposit" :qrLink="qrLink"/>
 
     <form-input-copy
       name="walletNumber"
-      :label="getContent(depositContent, defaultLocaleDepositContent, 'addressInputLabel') || ''"
+      :label="getContent(popupsData, defaultLocalePopupsData, 'deposit.addressInputLabel') || ''"
       :hint="fieldHint"
       :value="walletNumber"
     />
 
-    <template v-if="getContent(depositContent, defaultLocaleDepositContent, 'bonuses')?.length">
+    <template v-if="getContent(popupsData, defaultLocalePopupsData, 'deposit.bonuses')?.length">
       <atomic-divider/>
 
-      <template v-for="(bonus, index) in getContent(depositContent, defaultLocaleDepositContent, 'bonuses')" :key="index">
+      <template v-for="(bonus, index) in getContent(popupsData, defaultLocalePopupsData, 'deposit.bonuses')" :key="index">
         <atomic-bonus v-bind="bonus"/>
         <atomic-divider/>
       </template>
@@ -22,7 +22,7 @@
         v-model:value="hasBonusCode"
         @change="hasBonusCode = !hasBonusCode"
       >
-        {{ getContent(depositContent, defaultLocaleDepositContent, 'togglerLabel') || '' }}
+        {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.togglerLabel') || '' }}
       </form-input-toggle>
 
       <form-bonus-code
@@ -35,7 +35,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { DepositInterface } from '~/types';
 
   const props = defineProps<{
     amountMax?: number,
@@ -59,14 +58,11 @@
     defaultLocaleAlertsData,
   } = useGlobalStore();
 
-  const depositContent: Maybe<DepositInterface> = popupsData?.deposit;
-  const defaultLocaleDepositContent: Maybe<DepositInterface> = defaultLocalePopupsData?.deposit;
-
   const { formatBalance, getContent } = useProjectMethods();
   const fieldHint = computed(() => {
     const formatSum = formatBalance(activeAccount.value?.currency, props.amountMin);
     return {
-      message: `${getContent(depositContent, defaultLocaleDepositContent, 'minSum') || ''} ${formatSum.amount} ${formatSum.currency}`,
+      message: `${getContent(popupsData, defaultLocalePopupsData, 'deposit.minSum') || ''} ${formatSum.amount} ${formatSum.currency}`,
     };
   });
 
@@ -74,7 +70,7 @@
     const profileStore = useProfileStore();
     if (profileStore.profile?.status === 2 && activeAccountType.value === 'fiat') {
       const { showAlert } = useLayoutStore();
-      showAlert(getContent(alertsData, defaultLocaleAlertsData, 'limitedDeposit'));
+      showAlert(alertsData?.limitedDeposit || defaultLocaleAlertsData?.limitedDeposit);
       return;
     }
 

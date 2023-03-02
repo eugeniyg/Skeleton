@@ -21,11 +21,11 @@
       @click="sendEmail"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
-      {{ getContent(forgotContent, defaultLocaleForgotContent, 'forgotButton') }}
+      {{ getContent(popupsData, defaultLocalePopupsData, 'forgot.forgotButton') }}
     </button-base>
 
     <button-popup
-      :buttonLabel="getContent(forgotContent, defaultLocaleForgotContent, 'registrationButton') || ''"
+      :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'forgot.registrationButton') || ''"
       openModal="register"
     />
   </form>
@@ -33,7 +33,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ForgotInterface } from '~/types';
 
   const globalStore = useGlobalStore();
   const {
@@ -44,9 +43,6 @@
     alertsData,
     defaultLocaleAlertsData,
   } = storeToRefs(globalStore);
-
-  const forgotContent: Maybe<ForgotInterface> = popupsData.value?.forgot;
-  const defaultLocaleForgotContent: Maybe<ForgotInterface> = defaultLocalePopupsData.value?.forgot;
 
   const forgotFormData = reactive({ email: '' });
   const { getFormRules, getContent } = useProjectMethods();
@@ -72,7 +68,7 @@
       isLockedAsyncButton.value = true;
       await forgotProfilePassword(forgotFormData);
       const { closeModal, showAlert } = useLayoutStore();
-      showAlert(getContent(alertsData.value, defaultLocaleAlertsData.value, 'sentResetLink'));
+      showAlert(alertsData.value?.sentResetLink || defaultLocaleAlertsData.value?.sentResetLink);
       closeModal('forgotPass');
     } catch (error:any) {
       if (error.response?.status === 422) {

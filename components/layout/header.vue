@@ -42,7 +42,7 @@
           size="md"
           @click="showModal('register')"
         >
-          {{ getContent(headerContent, defaultLocaleHeaderContent, 'registrationButton') }}
+          {{ headerContent?.registrationButton || defaultLocaleHeaderContent?.registrationButton }}
         </button-base>
 
         <button-base
@@ -50,7 +50,7 @@
           size="md"
           @click="showModal('signIn')"
         >
-          {{ getContent(headerContent, defaultLocaleHeaderContent, 'loginButton') }}
+          {{ headerContent?.loginButton || defaultLocaleHeaderContent?.loginButton }}
         </button-base>
       </template>
     </div>
@@ -64,7 +64,6 @@
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
-  const { getContent } = useProjectMethods();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal } = layoutStore;
   const { isLoggedIn } = storeToRefs(profileStore);
