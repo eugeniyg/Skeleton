@@ -106,9 +106,9 @@
   }
 
   const getCheckboxLabel = (fieldName: string):string|undefined => {
-    if (fieldName === 'receiveEmailPromo') return getContent(popupsData, defaultLocalePopupsData, 'registration.agreeEmailLabel');
-    if (fieldName === 'receiveSmsPromo') return getContent(popupsData, defaultLocalePopupsData, 'registration.agreeSmsLabel');
-    return getContent(fieldsContent, defaultLocaleFieldsContent, `${fieldName}.label`) || '';
+    if (fieldName === 'receiveEmailPromo') return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.agreeEmailLabel');
+    if (fieldName === 'receiveSmsPromo') return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.agreeSmsLabel');
+    return getContent(fieldsContent.value, defaultLocaleFieldsContent.value, `${fieldName}.label`) || '';
   };
 
   const { getFormRules, createValidationRules } = useProjectMethods();
