@@ -1,18 +1,18 @@
 <template>
   <form class="form-deposit-crypto">
-    <atomic-qr :content="depositContent" :qrLink="qrLink"/>
+    <atomic-qr :content="depositContent || defaultLocaleDepositContent" :qrLink="qrLink"/>
 
     <form-input-copy
       name="walletNumber"
-      :label="depositContent?.addressInputLabel || ''"
+      :label="getContent(depositContent, defaultLocaleDepositContent, 'addressInputLabel') || ''"
       :hint="fieldHint"
       :value="walletNumber"
     />
 
-    <template v-if="depositContent?.bonuses?.length">
+    <template v-if="getContent(depositContent, defaultLocaleDepositContent, 'bonuses')?.length">
       <atomic-divider/>
 
-      <template v-for="(bonus, index) in depositContent?.bonuses" :key="index">
+      <template v-for="(bonus, index) in getContent(depositContent, defaultLocaleDepositContent, 'bonuses')" :key="index">
         <atomic-bonus v-bind="bonus"/>
         <atomic-divider/>
       </template>
@@ -22,7 +22,7 @@
         v-model:value="hasBonusCode"
         @change="hasBonusCode = !hasBonusCode"
       >
-        {{ depositContent?.togglerLabel || '' }}
+        {{ getContent(depositContent, defaultLocaleDepositContent, 'togglerLabel') || '' }}
       </form-input-toggle>
 
       <form-bonus-code
@@ -52,15 +52,21 @@
   const { showModal } = useLayoutStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
 
-  const { popupsData, alertsData } = useGlobalStore();
+  const {
+    popupsData,
+    defaultLocalePopupsData,
+    alertsData,
+    defaultLocaleAlertsData,
+  } = useGlobalStore();
 
   const depositContent: Maybe<DepositInterface> = popupsData?.deposit;
+  const defaultLocaleDepositContent: Maybe<DepositInterface> = defaultLocalePopupsData?.deposit;
 
-  const { formatBalance } = useProjectMethods();
+  const { formatBalance, getContent } = useProjectMethods();
   const fieldHint = computed(() => {
     const formatSum = formatBalance(activeAccount.value?.currency, props.amountMin);
     return {
-      message: `${depositContent?.minSum || ''} ${formatSum.amount} ${formatSum.currency}`,
+      message: `${getContent(depositContent, defaultLocaleDepositContent, 'minSum') || ''} ${formatSum.amount} ${formatSum.currency}`,
     };
   });
 
@@ -68,7 +74,7 @@
     const profileStore = useProfileStore();
     if (profileStore.profile?.status === 2 && activeAccountType.value === 'fiat') {
       const { showAlert } = useLayoutStore();
-      showAlert(alertsData?.limitedDeposit);
+      showAlert(getContent(alertsData, defaultLocaleAlertsData, 'limitedDeposit'));
       return;
     }
 

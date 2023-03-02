@@ -4,16 +4,16 @@
 
     <div class="actions">
       <button-base type="primary" size="md" @click="openDepositModal">
-        <atomic-icon id="plus"/>{{ profileMenuContent?.depositButton}}
+        <atomic-icon id="plus"/>{{ getContent(profileMenuContent, defaultLocaleProfileMenuContent, 'depositButton') }}
       </button-base>
 
       <button-base
-        v-if="profileMenuContent?.profileButton"
+        v-if="getContent(profileMenuContent, defaultLocaleProfileMenuContent, 'profileButton')"
         type="secondary"
         size="md"
-        :url="profileMenuContent.profileButton.url"
+        :url="getContent(profileMenuContent, defaultLocaleProfileMenuContent, 'profileButton.url')"
       >
-        {{ profileMenuContent.profileButton.label}}
+        {{ getContent(profileMenuContent, defaultLocaleProfileMenuContent, 'profileButton.label') }}
       </button-base>
     </div>
   </div>
@@ -22,8 +22,10 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const { sidebarContent } = useGlobalStore();
+  const { sidebarContent, defaultLocaleSidebarContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
   const profileMenuContent = sidebarContent?.profileMenu;
+  const defaultLocaleProfileMenuContent = defaultLocaleSidebarContent?.profileMenu;
   const profileStore = useProfileStore();
   const { openDepositModal } = useLayoutStore();
   const { userNickname } = storeToRefs(profileStore);

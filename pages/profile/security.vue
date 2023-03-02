@@ -13,17 +13,26 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { ProfileSecurityInterface } from '~/types';
 
-  const globalStore = useGlobalStore();
-  const { currentLocale } = storeToRefs(globalStore);
+  const { getContentLocalesArray, findLocalesContentData } = useProjectMethods();
 
-  const securityContentRequest = await useAsyncData('securityContent', () => queryContent(`profile/${currentLocale.value?.code}`).only(['security']).findOne());
-  const securityContent: Maybe<ProfileSecurityInterface> = securityContentRequest.data.value?.security;
+  const contentLocalesArr = getContentLocalesArray();
+
+  const securityContentRequest = await useAsyncData('securityContent', () => queryContent('profile')
+    .where({ locale: { $in: contentLocalesArr } })
+    .only(['security', 'locale']).find());
+
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(securityContentRequest.data.value);
+  const securityContent: Maybe<ProfileSecurityInterface> = currentLocaleData?.security;
+  const defaultLocaleSecurityContent: Maybe<ProfileSecurityInterface> = defaultLocaleData?.security;
+
   const { setPageSeo } = useProjectMethods();
   setPageSeo(securityContent?.seo);
 
   provide('documentsContent', securityContent?.documents);
+  provide('defaultLocaleDocumentsContent', defaultLocaleSecurityContent?.documents);
+
   provide('passwordContent', securityContent?.password);
+  provide('defaultLocalesPasswordContent', defaultLocaleSecurityContent?.password);
 </script>

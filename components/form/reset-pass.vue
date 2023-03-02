@@ -4,8 +4,8 @@
       v-model:value="resetFormData.newPassword"
       type="password"
       name="newPassword"
-      :label="fieldsContent?.newPassword?.label || ''"
-      :placeholder="fieldsContent?.newPassword?.placeholder || ''"
+      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'newPassword.label') || ''"
+      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'newPassword.placeholder') || ''"
       :is-required="true"
       :hint="setError('newPassword')"
       @blur="v$.newPassword?.$touch()"
@@ -17,8 +17,8 @@
       v-model:value="resetFormData.repeatNewPassword"
       type="password"
       name="repeatNewPassword"
-      :label="fieldsContent?.repeatNewPassword?.label || ''"
-      :placeholder="fieldsContent?.repeatNewPassword?.placeholder || ''"
+      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'repeatNewPassword.label') || ''"
+      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'repeatNewPassword.placeholder') || ''"
       :is-required="true"
       :hint="setError('repeatNewPassword')"
       @blur="v$.repeatNewPassword?.$touch()"
@@ -33,7 +33,7 @@
       @click="resetPassword"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
-      {{ resetContent?.resetButton }}
+      {{ getContent(resetContent, defaultLocaleResetContent, 'resetButton') }}
     </button-base>
   </form>
 </template>
@@ -43,15 +43,23 @@
   import { ResetInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { fieldsContent, popupsData, alertsData } = storeToRefs(globalStore);
+  const {
+    fieldsContent,
+    defaultLocaleFieldsContent,
+    popupsData,
+    defaultLocalePopupsData,
+    alertsData,
+    defaultLocaleAlertsData,
+  } = storeToRefs(globalStore);
   const resetContent: Maybe<ResetInterface> = popupsData.value?.reset;
+  const defaultLocaleResetContent: Maybe<ResetInterface> = defaultLocalePopupsData.value?.reset;
 
   const resetFormData = reactive({
     newPassword: '',
     repeatNewPassword: '',
   });
 
-  const { getFormRules, createValidationRules } = useProjectMethods();
+  const { getFormRules, createValidationRules, getContent } = useProjectMethods();
   const resetRules = createValidationRules(Object.keys(resetFormData).map((field) => ({ name: field })));
   const resetFormRules = getFormRules(resetRules);
   const {
@@ -68,7 +76,7 @@
 
   const { closeModal, showAlert } = useLayoutStore();
   const showErrorAlert = ():void => {
-    showAlert(alertsData.value?.invalidResetCode);
+    showAlert(getContent(alertsData.value, defaultLocaleAlertsData.value, 'invalidResetCode'));
   };
 
   const isLockedAsyncButton = ref<boolean>(false);
@@ -83,7 +91,7 @@
       isLockedAsyncButton.value = true;
       const route = useRoute();
       await resetProfilePassword({ ...resetFormData, code: route.query.resetCode as string });
-      showAlert(alertsData.value?.passwordChanged);
+      showAlert(getContent(alertsData.value, defaultLocaleAlertsData.value, 'passwordChanged'));
       closeModal('resetPass');
     } catch (error:any) {
       if (error.response?.status === 422) {

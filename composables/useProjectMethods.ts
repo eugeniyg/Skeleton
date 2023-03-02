@@ -141,6 +141,30 @@ export const useProjectMethods = () => {
     return 0;
   };
 
+  const getContentLocalesArray = (): string[] => {
+    const globalStore = useGlobalStore();
+
+    const localesArr:string[] = [];
+    if (globalStore.currentLocale?.code) localesArr.push(globalStore.currentLocale?.code);
+    if (globalStore.defaultLocale?.code && globalStore.defaultLocale?.code !== globalStore.currentLocale?.code) {
+      localesArr.push(globalStore.defaultLocale?.code);
+    }
+
+    return localesArr;
+  };
+
+  const findLocalesContentData = (responseData?: any[]|null):any => {
+    if (!responseData) return {};
+
+    const globalStore = useGlobalStore();
+
+    const currentLocaleData = responseData.find((contentData) => contentData.locale === globalStore.currentLocale?.code);
+    if (globalStore.currentLocale?.code === globalStore.defaultLocale?.code) return { currentLocaleData };
+
+    const defaultLocaleData = responseData.find((contentData) => contentData.locale === globalStore.defaultLocale?.code);
+    return { currentLocaleData, defaultLocaleData };
+  };
+
   const getContent = (
       contentData: any,
       defaultLocaleContentData: any,
@@ -162,5 +186,7 @@ export const useProjectMethods = () => {
     setPageSeo,
     sortByAlphabet,
     getContent,
+    getContentLocalesArray,
+    findLocalesContentData,
   };
 };

@@ -6,9 +6,9 @@
       @focus="onFocus('email')"
       type="email"
       :is-required="true"
-      :label="fieldsContent?.email?.label || ''"
+      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.label') || ''"
       name="email"
-      :placeholder="fieldsContent?.email?.placeholder || ''"
+      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.placeholder') || ''"
       :hint="setError('email')"
       @submit="sendEmail"
     />
@@ -21,10 +21,13 @@
       @click="sendEmail"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
-      {{ forgotContent?.forgotButton }}
+      {{ getContent(forgotContent, defaultLocaleForgotContent, 'forgotButton') }}
     </button-base>
 
-    <button-popup :buttonLabel="forgotContent?.registrationButton || ''" openModal="register" />
+    <button-popup
+      :buttonLabel="getContent(forgotContent, defaultLocaleForgotContent, 'registrationButton') || ''"
+      openModal="register"
+    />
   </form>
 </template>
 
@@ -33,11 +36,20 @@
   import { ForgotInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { fieldsContent, popupsData, alertsData } = storeToRefs(globalStore);
+  const {
+    fieldsContent,
+    defaultLocaleFieldsContent,
+    popupsData,
+    defaultLocalePopupsData,
+    alertsData,
+    defaultLocaleAlertsData,
+  } = storeToRefs(globalStore);
+
   const forgotContent: Maybe<ForgotInterface> = popupsData.value?.forgot;
+  const defaultLocaleForgotContent: Maybe<ForgotInterface> = defaultLocalePopupsData.value?.forgot;
 
   const forgotFormData = reactive({ email: '' });
-  const { getFormRules } = useProjectMethods();
+  const { getFormRules, getContent } = useProjectMethods();
   const forgotRules = {
     email: [{ rule: 'required' }, { rule: 'email' }],
   };
@@ -60,7 +72,7 @@
       isLockedAsyncButton.value = true;
       await forgotProfilePassword(forgotFormData);
       const { closeModal, showAlert } = useLayoutStore();
-      showAlert(alertsData.value?.sentResetLink);
+      showAlert(getContent(alertsData.value, defaultLocaleAlertsData.value, 'sentResetLink'));
       closeModal('forgotPass');
     } catch (error:any) {
       if (error.response?.status === 422) {

@@ -221,11 +221,9 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getGlobalContent():Promise<void> {
-      const localesArr:string[] = [];
-      if (this.currentLocale?.code) localesArr.push(this.currentLocale?.code);
-      if (this.defaultLocale?.code && this.defaultLocale?.code !== this.currentLocale?.code) {
-        localesArr.push(this.defaultLocale?.code);
-      }
+      const { getContentLocalesArray, findLocalesContentData } = useProjectMethods();
+
+      const localesArr = getContentLocalesArray();
 
       const [
         validationsResponse,
@@ -245,52 +243,44 @@ export const useGlobalStore = defineStore('globalStore', {
         queryContent('page-controls').where({ locale: { $in: localesArr } }).only(['errorPage', 'locale']).find(),
       ]);
 
-      const findLocalesData = (responseData: any[]):any => {
-        const currentLocaleData = responseData.find((contentData) => contentData.locale === this.currentLocale?.code);
-        if (this.currentLocale?.code === this.defaultLocale?.code) return { currentLocaleData };
-
-        const defaultLocaleData = responseData.find((contentData) => contentData.locale === this.defaultLocale?.code);
-        return { currentLocaleData, defaultLocaleData };
-      };
-
       if (validationsResponse.status !== 'rejected') {
-        const { currentLocaleData, defaultLocaleData } = findLocalesData(validationsResponse.value);
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(validationsResponse.value);
         this.validationMessages = currentLocaleData as ValidationMessageInterface;
         this.defaultLocaleValidationMessages = defaultLocaleData as ValidationMessageInterface;
       }
 
       if (fieldsDataResponse.status !== 'rejected') {
-        const { currentLocaleData, defaultLocaleData } = findLocalesData(fieldsDataResponse.value);
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(fieldsDataResponse.value);
         this.fieldsContent = currentLocaleData as FieldsContentInterface;
         this.defaultLocaleFieldsContent = defaultLocaleData as FieldsContentInterface;
       }
 
       if (layoutDataResponse.status !== 'rejected') {
-        const { currentLocaleData, defaultLocaleData } = findLocalesData(layoutDataResponse.value);
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(layoutDataResponse.value);
         this.layoutData = currentLocaleData as MainLayoutInterface;
         this.defaultLocaleLayoutData = defaultLocaleData as MainLayoutInterface;
       }
 
       if (popupsDataResponse.status !== 'rejected') {
-        const { currentLocaleData, defaultLocaleData } = findLocalesData(popupsDataResponse.value);
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(popupsDataResponse.value);
         this.popupsData = currentLocaleData as PopupsInterface;
         this.defaultLocalePopupsData = defaultLocaleData as PopupsInterface;
       }
 
       if (alertsDataResponse.status !== 'rejected') {
-        const { currentLocaleData, defaultLocaleData } = findLocalesData(alertsDataResponse.value);
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(alertsDataResponse.value);
         this.alertsData = currentLocaleData as AlertsListInterface;
         this.defaultLocaleAlertsData = defaultLocaleData as AlertsListInterface;
       }
 
       if (globalContentResponse.status !== 'rejected') {
-        const { currentLocaleData, defaultLocaleData } = findLocalesData(globalContentResponse.value);
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(globalContentResponse.value);
         this.globalComponentsContent = currentLocaleData as GlobalComponentsInterface;
         this.defaultLocaleGlobalComponentsContent = defaultLocaleData as GlobalComponentsInterface;
       }
 
       if (errorPageResponse.status !== 'rejected') {
-        const { currentLocaleData, defaultLocaleData } = findLocalesData(errorPageResponse.value);
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(errorPageResponse.value);
         this.errorPageContent = currentLocaleData.errorPage as ErrorPageInterface;
         this.defaultLocaleErrorPageContent = defaultLocaleData as ErrorPageInterface;
       }

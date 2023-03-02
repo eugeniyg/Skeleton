@@ -2,7 +2,7 @@
   <form class="form-deposit">
     <form-input-number
       :hint="fieldHint"
-      :label="depositContent?.sumLabel || ''"
+      :label="getContent(depositContent, defaultLocaleDepositContent, 'sumLabel') || ''"
       name="depositSum"
       :min="formatAmountMin.amount"
       :max="formatAmountMax.amount"
@@ -12,9 +12,9 @@
       :is-bigger="true"
     />
 
-    <template v-if="depositContent?.bonuses?.length">
+    <template v-if="getContent(depositContent, defaultLocaleDepositContent, 'bonuses')?.length">
       <atomic-divider/>
-      <template v-for="(bonus, index) in depositContent?.bonuses" :key="index">
+      <template v-for="(bonus, index) in getContent(depositContent, defaultLocaleDepositContent, 'bonuses')" :key="index">
         <atomic-bonus v-bind="bonus" />
         <atomic-divider />
       </template>
@@ -25,7 +25,7 @@
       v-model:value="hasBonusCode"
       @change="hasBonusCode = !hasBonusCode"
     >
-      {{ depositContent?.togglerLabel || '' }}
+      {{ getContent(depositContent, defaultLocaleDepositContent, 'togglerLabel') || '' }}
     </form-input-toggle>
 
     <form-bonus-code
@@ -40,7 +40,7 @@
       @click="getDeposit"
     >
       <atomic-spinner :is-shown="isSending"/>
-      {{ depositContent?.depositButton }} {{ buttonAmount }} {{ defaultInputSum.currency }}
+      {{ getContent(depositContent, defaultLocaleDepositContent, 'depositButton') }} {{ buttonAmount }} {{ defaultInputSum.currency }}
     </button-base>
   </form>
 </template>
@@ -55,18 +55,21 @@
     method?: string
   }>();
 
-  const { popupsData, alertsData } = useGlobalStore();
+  const {
+    popupsData, defaultLocalePopupsData, alertsData, defaultLocaleAlertsData,
+  } = useGlobalStore();
   const depositContent: Maybe<DepositInterface> = popupsData?.deposit;
+  const defaultLocaleDepositContent: Maybe<DepositInterface> = defaultLocalePopupsData?.deposit;
 
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
 
-  const { formatBalance, getMainBalanceFormat } = useProjectMethods();
+  const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
   const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
   const fieldHint = computed(() => ({
-    message: `${depositContent?.minSum || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
+    message: `${getContent(depositContent, defaultLocaleDepositContent, 'minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
@@ -89,7 +92,7 @@
     const profileStore = useProfileStore();
     if (profileStore.profile?.status === 2 && activeAccountType.value === 'fiat') {
       const { showAlert } = useLayoutStore();
-      showAlert(alertsData?.limitedDeposit);
+      showAlert(getContent(alertsData, defaultLocaleAlertsData, 'limitedDeposit'));
       return;
     }
 
