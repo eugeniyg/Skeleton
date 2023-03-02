@@ -1,8 +1,13 @@
 <template>
   <div class="group-winners" v-if="latestWinners.length">
-    <atomic-icon v-if="winnersContent?.latestWinners?.icon" :id="winnersContent.latestWinners.icon"/>
+    <atomic-icon
+      v-if="getContent(winnersContent, defaultLocaleWinnersContent, 'latestWinners.icon')"
+      :id="getContent(winnersContent, defaultLocaleWinnersContent, 'latestWinners.icon')"
+    />
 
-    <h2 class="title">{{ winnersContent?.latestWinners?.label }}</h2>
+    <h2 class="title">
+      {{ getContent(winnersContent, defaultLocaleWinnersContent, 'latestWinners.label') }}
+    </h2>
 
     <button-arrows
       v-if="showArrowButtons"
@@ -37,8 +42,15 @@
     },
   });
   const globalStore = useGlobalStore();
-  const { globalComponentsContent, isMobile, headerCountry } = storeToRefs(globalStore);
+  const {
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+    isMobile,
+    headerCountry,
+  } = storeToRefs(globalStore);
   const winnersContent: Maybe<CardsGroupInterface> = globalComponentsContent.value?.cardsGroup;
+  const defaultLocaleWinnersContent: Maybe<CardsGroupInterface> = defaultLocaleGlobalComponentsContent.value?.cardsGroup;
+  const { getContent } = useProjectMethods();
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
   const gameStore = useGamesStore();

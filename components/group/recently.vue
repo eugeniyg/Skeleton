@@ -1,8 +1,13 @@
 <template>
   <div class="group-recently">
-    <atomic-icon v-if="groupContent?.recentlyPlayed" :id="groupContent.recentlyPlayed.icon"/>
+    <atomic-icon
+      v-if="getContent(groupContent, defaultLocaleGroupContent, 'recentlyPlayed')"
+      :id="getContent(groupContent, defaultLocaleGroupContent, 'recentlyPlayed.icon')"
+    />
 
-    <h2 class="title">{{ groupContent?.recentlyPlayed?.label }}</h2>
+    <h2 class="title">
+      {{ getContent(groupContent, defaultLocaleGroupContent, 'recentlyPlayed.label') }}
+    </h2>
 
     <button-base
       v-if="showAllBtn"
@@ -10,7 +15,7 @@
       url="/recently-played"
       type="ghost"
     >
-      {{ groupContent?.moreButton }}
+      {{ getContent(groupContent, defaultLocaleGroupContent, 'moreButton') }}
     </button-base>
 
     <div class="items" ref="container">
@@ -33,8 +38,10 @@
   }>();
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent } = storeToRefs(globalStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
   const groupContent: Maybe<CardsGroupInterface> = globalComponentsContent.value?.cardsGroup;
+  const defaultLocaleGroupContent: Maybe<CardsGroupInterface> = defaultLocaleGlobalComponentsContent.value?.cardsGroup;
+  const { getContent } = useProjectMethods();
 
   const showAllBtn = ref<boolean>(true);
   const cardInBlock = ref<number>(20);

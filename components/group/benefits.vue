@@ -1,9 +1,9 @@
 <template>
-  <div v-if="benefitsContent" class="group-benefits">
+  <div v-if="benefitsContent || defaultLocaleBenefitsContent" class="group-benefits">
     <div class="group-benefits__list">
       <div
         class="group-benefits__item"
-        v-for="(benefit, index) in benefitsContent.items"
+        v-for="(benefit, index) in getContent(benefitsContent, defaultLocaleBenefitsContent, 'items')"
         :key="index"
       >
         <img class="icon" :src="benefit.image" alt=""/>
@@ -17,8 +17,11 @@
 <script setup lang="ts">
   import { BenefitsContentInterface } from '~/types';
 
-  const { globalComponentsContent } = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const benefitsContent: Maybe<BenefitsContentInterface> = globalComponentsContent?.benefits;
+  const defaultLocaleBenefitsContent: Maybe<BenefitsContentInterface> = defaultLocaleGlobalComponentsContent?.benefits;
+
+  const { getContent } = useProjectMethods();
 </script>
 
 <style lang="scss">

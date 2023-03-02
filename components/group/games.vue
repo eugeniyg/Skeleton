@@ -6,7 +6,9 @@
       <h2 class="title">
         {{ gameCategoriesObj[props.category.identity]?.label || props.category.name || props.category.identity }}
       </h2>
-      <h4 class="sub-title">{{ cardsGroupContent?.recommendedSubtitle }}</h4>
+      <h4 class="sub-title">
+        {{ getContent(cardsGroupContent, defaultLocaleCardsGroupContent, 'recommendedSubtitle') }}
+      </h4>
     </div>
 
     <h2 v-else class="title">
@@ -19,7 +21,7 @@
       type="ghost"
       @click="openGames"
     >
-      {{ cardsGroupContent?.moreButton }}
+      {{ getContent(cardsGroupContent, defaultLocaleCardsGroupContent, 'moreButton') }}
     </button-base>
 
     <button-arrows
@@ -77,8 +79,10 @@
     },
   });
 
-  const { globalComponentsContent, gameCategoriesObj } = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = useGlobalStore();
   const cardsGroupContent: Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
+  const defaultLocaleCardsGroupContent: Maybe<CardsGroupInterface> = defaultLocaleGlobalComponentsContent?.cardsGroup;
+  const { getContent } = useProjectMethods();
   const titleIcon = gameCategoriesObj[props.category.identity]?.icon;
 
   const scrollContainer = ref();

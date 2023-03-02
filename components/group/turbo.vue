@@ -1,15 +1,20 @@
 <template>
-  <div v-if="groupTurboContent?.items?.length" class="group-turbo">
-    <atomic-icon v-if="groupTurboContent?.icon" :id="groupTurboContent.icon"/>
+  <div v-if="getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'items')?.length" class="group-turbo">
+    <atomic-icon
+      v-if="getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'icon')"
+      :id="getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'icon')"
+    />
 
-    <h2 class="title">{{ groupTurboContent?.label }}</h2>
+    <h2 class="title">
+      {{ getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'label') }}
+    </h2>
 
     <button-base
       class="btn-show-all"
       type="ghost"
       :url="'/games?category=turbogames'"
     >
-      {{ groupCardContent?.moreButton }}
+      {{ getContent(groupCardContent, defaultLocaleGroupCardContent, 'moreButton') }}
     </button-base>
 
     <button-arrows
@@ -26,12 +31,12 @@
       @scroll="scrollHandler"
     >
       <card-turbo
-        v-for="(item, itemIndex) in groupTurboContent.items"
+        v-for="(item, itemIndex) in getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'items')"
         :key="itemIndex"
         v-bind="item"
-        :buttonLabel="groupTurboContent.buttonLabel"
-        :infoLabel="groupTurboContent.infoLabel"
-        :categoryLabel="groupTurboContent.categoryLabel"
+        :buttonLabel="getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'buttonLabel')"
+        :infoLabel="getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'infoLabel')"
+        :categoryLabel="getContent(groupTurboContent, defaultLocaleGroupTurboContent, 'categoryLabel')"
       />
       <!--      </div>-->
     </div>
@@ -41,9 +46,12 @@
 <script setup lang="ts">
   import { TurbogamesGroupInterface, CardsGroupInterface } from '~/types';
 
-  const { globalComponentsContent } = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const groupTurboContent: Maybe<TurbogamesGroupInterface> = globalComponentsContent?.turbogames;
+  const defaultLocaleGroupTurboContent: Maybe<TurbogamesGroupInterface> = defaultLocaleGlobalComponentsContent?.turbogames;
   const groupCardContent: Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
+  const defaultLocaleGroupCardContent: Maybe<CardsGroupInterface> = defaultLocaleGlobalComponentsContent?.cardsGroup;
+  const { getContent } = useProjectMethods();
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);

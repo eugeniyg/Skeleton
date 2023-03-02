@@ -1,12 +1,15 @@
 <template>
-  <div v-if="promotionsContent" class="group-promotions">
-    <atomic-icon :id="promotionsContent.icon"/>
-    <h2 class="title">{{ promotionsContent.label }}</h2>
+  <div v-if="promotionsContent || defaultLocalePromotionsContent" class="group-promotions">
+    <atomic-icon :id="getContent(promotionsContent, defaultLocalePromotionsContent, 'icon')"/>
+
+    <h2 class="title">
+      {{ getContent(promotionsContent, defaultLocalePromotionsContent, 'label') }}
+    </h2>
 
     <div class="group-promotions__list">
       <div
         class="group-promotions__item"
-        v-for="(promotion, index) in promotionsContent.items"
+        v-for="(promotion, index) in getContent(promotionsContent, defaultLocalePromotionsContent, 'items')"
         :key="index"
         :class="{ 'hovered': hoverCard === index }"
         @click="clickCard(index)"
@@ -44,10 +47,11 @@
   import { PromotionsContentInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent } = globalStore;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
   const promotionsContent: Maybe<PromotionsContentInterface> = globalComponentsContent?.promotions;
+  const defaultLocalePromotionsContent: Maybe<PromotionsContentInterface> = defaultLocaleGlobalComponentsContent?.promotions;
 
-  const { localizePath } = useProjectMethods();
+  const { localizePath, getContent } = useProjectMethods();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal, openDepositModal } = useLayoutStore();
