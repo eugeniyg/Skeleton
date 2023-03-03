@@ -1,6 +1,5 @@
 const registerServiceWorker = async () => {
   if ('serviceWorker' in navigator) {
-    console.log('register worker');
     try {
       const registration = await navigator.serviceWorker.register('/redirector.js', {
         scope: '/',
