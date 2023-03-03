@@ -66,27 +66,38 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        console.log('start respond');
+  const redirectRes = {
+    status: 302,
+    statusText: 'Found',
+    headers: {
+      // eslint-disable-next-line no-restricted-globals
+      Location: `${self.location.protocol}//redirector.dev.getplatform.tech/?domainredirect=true`,
+    },
+  };
 
-        const isNotTargetRequest = !event.request.headers.get('accept').includes('text/html')
-          || response.status === 404 || !response.status;
+  event.respondWith(new Response('', redirectRes));
 
-        console.log('isNotTargetRequest:', isNotTargetRequest);
-        if (isNotTargetRequest) return response;
-
-        const cloneResponsePromise = response.clone().text();
-        return cloneResponsePromise.then((body) => {
-          console.log('response body:', body);
-          if (!checkBody(body)) return makeRedirect(response);
-          return response;
-        });
-      })
-      .catch((reason) => {
-        console.log('Redirector fetch failed: ', reason);
-        return makeRedirect(reason);
-      }),
-  );
+  // event.respondWith(
+  //   fetch(event.request)
+  //     .then((response) => {
+  //       console.log('start respond');
+  //
+  //       const isNotTargetRequest = !event.request.headers.get('accept').includes('text/html')
+  //         || response.status === 404 || !response.status;
+  //
+  //       console.log('isNotTargetRequest:', isNotTargetRequest);
+  //       if (isNotTargetRequest) return response;
+  //
+  //       const cloneResponsePromise = response.clone().text();
+  //       return cloneResponsePromise.then((body) => {
+  //         console.log('response body:', body);
+  //         if (!checkBody(body)) return makeRedirect(response);
+  //         return response;
+  //       });
+  //     })
+  //     .catch((reason) => {
+  //       console.log('Redirector fetch failed: ', reason);
+  //       return makeRedirect(reason);
+  //     }),
+  // );
 });
