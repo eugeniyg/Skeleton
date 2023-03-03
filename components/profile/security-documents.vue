@@ -31,7 +31,7 @@
   import { SecurityFileInterface } from '@platform/frontend-core/dist/module';
 
   const globalStore = useGlobalStore();
-  const { alertsData } = storeToRefs(globalStore);
+  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
   const identityFormData = reactive<{[key:string]:SecurityFileInterface[]}>({
     identity_front: [],
@@ -96,7 +96,7 @@
         paymentFormData[fieldName] = paymentFormData[fieldName].filter((file) => file.id !== fileId);
       }
     } catch {
-      showAlert(alertsData.value?.somethingWrong);
+      showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
     }
   };
 

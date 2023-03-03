@@ -1,8 +1,8 @@
 <template>
   <div class="progress-bar">
     <div class="labels">
-      <span class="label">1{{ sidebarContent?.profileMenu?.levelLabel}}</span>
-      <span class="label">2{{ sidebarContent?.profileMenu?.levelLabel}}</span>
+      <span class="label">1{{ getContent(sidebarContent, defaultLocaleSidebarContent, 'profileMenu.levelLabel') }}</span>
+      <span class="label">2{{ getContent(sidebarContent, defaultLocaleSidebarContent, 'profileMenu.levelLabel') }}</span>
     </div>
 
     <div class="bar" :style="`--bar-percents: ${props.percents}`"></div>
@@ -17,7 +17,8 @@
       default: '50%',
     },
   });
-  const { sidebarContent } = useGlobalStore();
+  const { sidebarContent, defaultLocaleSidebarContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 </script>
 
 <style lang="scss">

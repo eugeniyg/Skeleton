@@ -142,6 +142,9 @@ export const useGlobalStore = defineStore('globalStore', {
     defaultLocaleCookiePopupContent(state): Maybe<CookiePopupInterface> {
       return state.defaultLocaleLayoutData?.cookiePopup;
     },
+    mobileMenuContent(state): Maybe<MobileMenuInterface> {
+      return state.layoutData?.mobileMenu;
+    },
     defaultLocaleMobileMenuContent(state): Maybe<MobileMenuInterface> {
       return state.defaultLocaleLayoutData?.mobileMenu;
     },

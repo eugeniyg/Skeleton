@@ -18,7 +18,7 @@
         :size="modeBtnSize"
         @click="showModal('register')"
       >
-        {{ headerContent?.registrationButton }}
+        {{ headerContent?.registrationButton || defaultLocaleHeaderContent?.registrationButton }}
       </button-base>
 
       <button-base
@@ -26,7 +26,7 @@
         :size="modeBtnSize"
         @click="showModal('signIn')"
       >
-        {{ headerContent?.loginButton }}
+        {{ headerContent?.loginButton || defaultLocaleHeaderContent?.loginButton }}
       </button-base>
     </div>
   </div>
@@ -43,7 +43,7 @@
   const modeClassName = computed(() => ({ 'is-single-mode': props.singleMode }));
   const modeBtnSize = computed(() => (props.singleMode ? 'md' : 'lg'));
   const { showModal } = useLayoutStore();
-  const { headerContent } = useGlobalStore();
+  const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
 </script>
 
 <style lang="scss">
