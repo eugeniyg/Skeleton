@@ -30,9 +30,10 @@ export const useProjectMethods = () => {
   };
 
   const getFormRules = (fieldsRules:any):any => {
-    const { validationMessages } = useGlobalStore();
+    const { validationMessages, defaultLocaleValidationMessages } = useGlobalStore();
+    const messages = { ...defaultLocaleValidationMessages, ...validationMessages };
     const { createFormRules } = useCoreMethods();
-    return createFormRules(fieldsRules, projectRules, validationMessages);
+    return createFormRules(fieldsRules, projectRules, messages);
   };
 
   const preloaderDone = ():void => {

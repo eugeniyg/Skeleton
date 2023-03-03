@@ -150,27 +150,19 @@ export const useGlobalStore = defineStore('globalStore', {
     },
     gameCategoriesObj(state):{ [key: string]: GameCategoryInterface } {
       const categoriesObj:any = {};
-      if (state.globalComponentsContent?.categories) {
-        state.globalComponentsContent?.categories.forEach((category) => {
-          categoriesObj[category.identity] = category;
-        });
-      }
-      return categoriesObj;
-    },
-    defaultLocaleGameCategoriesObj(state):{ [key: string]: GameCategoryInterface } {
-      const categoriesObj:any = {};
-      if (state.defaultLocaleGlobalComponentsContent?.categories) {
-        state.defaultLocaleGlobalComponentsContent?.categories.forEach((category) => {
+
+      const categoriesContent = state.globalComponentsContent?.categories
+          || state.defaultLocaleGlobalComponentsContent?.categories;
+
+      if (categoriesContent) {
+        categoriesContent.forEach((category) => {
           categoriesObj[category.identity] = category;
         });
       }
       return categoriesObj;
     },
     globalSeo(state): Maybe<SeoContentInterface> {
-      return state.globalComponentsContent?.globalSeo;
-    },
-    defaultLocaleGlobalSeo(state): Maybe<SeoContentInterface> {
-      return state.defaultLocaleGlobalComponentsContent?.globalSeo;
+      return state.globalComponentsContent?.globalSeo || state.defaultLocaleGlobalComponentsContent?.globalSeo;
     },
     playerStatuses(state):StatusInterface[] {
       return state.settingsConstants?.player.playerStatuses || [];

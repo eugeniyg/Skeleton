@@ -61,8 +61,8 @@ export const useProfileStore = defineStore('profileStore', {
       subscribeAccountSocket();
       subscribeInvoicesSocket();
       const { showAlert } = useLayoutStore();
-      const { alertsData } = useGlobalStore();
-      showAlert(alertsData?.successRegistration);
+      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+      showAlert(alertsData?.successRegistration || defaultLocaleAlertsData?.successRegistration);
     },
 
     async getProfileData():Promise<void> {
@@ -93,13 +93,13 @@ export const useProfileStore = defineStore('profileStore', {
 
     async resendVerifyEmail():Promise<void> {
       const { showAlert } = useLayoutStore();
-      const { alertsData } = useGlobalStore();
+      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
       const { resendVerifyEmail } = useCoreProfileApi();
       try {
         await resendVerifyEmail();
-        showAlert(alertsData?.resentVerification);
+        showAlert(alertsData?.resentVerification || defaultLocaleAlertsData?.resentVerification);
       } catch {
-        showAlert(alertsData?.somethingWrong);
+        showAlert(alertsData?.somethingWrong || defaultLocaleAlertsData?.somethingWrong);
       } finally {
         this.resentVerifyEmail = true;
       }

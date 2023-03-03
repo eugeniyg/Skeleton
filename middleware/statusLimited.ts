@@ -1,11 +1,11 @@
 export default defineNuxtRouteMiddleware((to, from) => {
   const profileStore = useProfileStore();
-  const { alertsData } = useGlobalStore();
+  const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
   const { showAlert } = useLayoutStore();
 
   if (profileStore.profile?.status === 2) {
     if (from.name && from.name !== to.name) {
-      showAlert(alertsData?.limitedRealGame);
+      showAlert(alertsData?.limitedRealGame || defaultLocaleAlertsData?.limitedRealGame);
       return abortNavigation();
     }
   } return true;
