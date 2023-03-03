@@ -98,9 +98,9 @@
   const { currentLocale, globalComponentsContent } = storeToRefs(globalStore);
   const sliderResponse = await useAsyncData('sliderData', () => queryContent(`main-slider/${currentLocale.value?.code}`).findOne());
   const mainContentResponse = await useAsyncData('mainContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['mainPage']).findOne());
-  const mainContent:MainContentInterface|undefined = mainContentResponse.data.value?.mainPage;
-  const sliderItems:SlideInterface[]|undefined = sliderResponse.data.value?.slider;
-  const groupContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
+  const mainContent: Maybe<MainContentInterface> = mainContentResponse.data.value?.mainPage;
+  const sliderItems: Maybe<SlideInterface[]> = sliderResponse.data.value?.slider;
+  const groupContent: Maybe<CardsGroupInterface> = globalComponentsContent.value?.cardsGroup;
 
   const fakeStore = useFakeStore();
   const router = useRouter();

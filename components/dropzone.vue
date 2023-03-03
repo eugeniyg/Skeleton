@@ -48,7 +48,7 @@
   const emit = defineEmits(['remove', 'change']);
 
   const isActive = ref(false);
-  const documentsContent:ProfileDocumentsInterface|undefined = inject('documentsContent');
+  const documentsContent:Maybe<ProfileDocumentsInterface> = inject('documentsContent');
   const errorFiles = computed(() => props.fileList.filter((file) => file.error));
 
   const dropzoneClasses = computed(() => ({

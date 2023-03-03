@@ -38,7 +38,7 @@
   const { modals } = storeToRefs(layoutStore);
   const { closeModal, showModal } = layoutStore;
   const { popupsData } = useGlobalStore();
-  const registrationContent: RegistrationInterface|undefined = popupsData?.registration;
+  const registrationContent: Maybe<RegistrationInterface> = popupsData?.registration;
 
   const openCancelModal = () => {
     closeModal('register');

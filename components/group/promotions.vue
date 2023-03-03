@@ -45,7 +45,7 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent } = globalStore;
-  const promotionsContent:PromotionsContentInterface|undefined = globalComponentsContent?.promotions;
+  const promotionsContent: Maybe<PromotionsContentInterface> = globalComponentsContent?.promotions;
 
   const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();

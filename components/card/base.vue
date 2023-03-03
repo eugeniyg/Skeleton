@@ -88,7 +88,7 @@
   const { baseApiUrl, alertsData, globalComponentsContent } = useGlobalStore();
   const { showModal, showAlert } = useLayoutStore();
   const { localizePath, getImageUrl } = useProjectMethods();
-  const groupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
+  const groupContent:Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
 
   const gameBages = globalComponentsContent?.gameTags?.filter((bage) => props.labels.includes(bage.identity));
 

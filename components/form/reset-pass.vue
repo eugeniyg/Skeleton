@@ -44,7 +44,7 @@
 
   const globalStore = useGlobalStore();
   const { fieldsContent, popupsData, alertsData } = storeToRefs(globalStore);
-  const resetContent: ResetInterface|undefined = popupsData.value?.reset;
+  const resetContent: Maybe<ResetInterface> = popupsData.value?.reset;
 
   const resetFormData = reactive({
     newPassword: '',

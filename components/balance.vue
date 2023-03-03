@@ -57,8 +57,8 @@
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const { popupsData } = useGlobalStore();
-  const depositContent: DepositInterface | undefined = popupsData?.deposit;
-  const withdrawContent: WithdrawInterface | undefined = popupsData?.withdraw;
+  const depositContent: Maybe<DepositInterface> = popupsData?.deposit;
+  const withdrawContent: Maybe<WithdrawInterface> = popupsData?.withdraw;
   const { formatBalance } = useProjectMethods();
   const isSelectOpen = ref<boolean>(false);
 

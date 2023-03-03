@@ -45,7 +45,7 @@
   const loading = ref<boolean>(true);
   const bets = ref<BetHistoryInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
-  const betsContent:HistoryBetsInterface|undefined = props.content?.bets;
+  const betsContent: Maybe<HistoryBetsInterface> = props.content?.bets;
 
   const betsTab = [
     {

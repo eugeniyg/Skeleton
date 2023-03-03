@@ -63,13 +63,13 @@
   const providerCards = fakeStore.providerCards();
   const { gameCollections } = storeToRefs(gameStore);
   const { currentLocale, globalComponentsContent } = storeToRefs(globalStore);
-  const groupContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
+  const groupContent: Maybe<CardsGroupInterface> = globalComponentsContent.value?.cardsGroup;
 
   const homeContentRequest = await useAsyncData(
     'homeContent',
     () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['homePage']).findOne(),
   );
-  const homeContent: HomeContentInterface | undefined = homeContentRequest.data.value?.homePage;
+  const homeContent: Maybe<HomeContentInterface> = homeContentRequest.data.value?.homePage;
   const { setPageSeo, localizePath } = useProjectMethods();
   setPageSeo(homeContent?.seo);
 

@@ -67,7 +67,7 @@
   const globalStore = useGlobalStore();
   const { currentLocale, gameCategoriesObj, headerContent } = storeToRefs(globalStore);
   const gamesContentRequest = await useAsyncData('gamesContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['gamesPage']).findOne());
-  const gamesContent: CategoryGamesInterface | undefined = gamesContentRequest.data.value?.gamesPage;
+  const gamesContent: Maybe<CategoryGamesInterface> = gamesContentRequest.data.value?.gamesPage;
   const { setPageSeo } = useProjectMethods();
   setPageSeo(gamesContent?.seo);
 

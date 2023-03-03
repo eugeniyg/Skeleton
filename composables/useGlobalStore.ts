@@ -29,20 +29,20 @@ interface GlobalStoreStateInterface {
   currencies: CurrencyInterface[],
   locales: LocaleInterface[],
   countries: CountryInterface[],
-  settingsConstants: CoreConstantsInterface|undefined,
-  defaultLocale: LocaleInterface|undefined,
+  settingsConstants: Maybe<CoreConstantsInterface>,
+  defaultLocale: Maybe<LocaleInterface>,
   isMobile: boolean,
   browserLanguage: string,
   baseApiUrl: string,
   validationMessages: ValidationMessageInterface|{},
-  fieldsContent: FieldsContentInterface|undefined,
-  layoutData: MainLayoutInterface|undefined,
-  popupsData: PopupsInterface|undefined,
-  alertsData: AlertsListInterface|undefined,
-  globalComponentsContent: GlobalComponentsInterface|undefined,
-  headerCountry: string|undefined,
+  fieldsContent: Maybe<FieldsContentInterface>,
+  layoutData: Maybe<MainLayoutInterface>,
+  popupsData: Maybe<PopupsInterface>,
+  alertsData: Maybe<AlertsListInterface>,
+  globalComponentsContent: Maybe<GlobalComponentsInterface>,
+  headerCountry: Maybe<string>,
   pagesWithoutLocale: string[],
-  errorPageContent: ErrorPageInterface|undefined,
+  errorPageContent: Maybe<ErrorPageInterface>,
 }
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -74,7 +74,7 @@ export const useGlobalStore = defineStore('globalStore', {
     }),
 
   getters: {
-    currentLocale(state):LocaleInterface|undefined {
+    currentLocale(state): Maybe<LocaleInterface> {
       const route = useRoute();
       const findLocale = state.locales.find((locale) => locale.code === route.params.locale);
       if (route.params.locale && findLocale) return findLocale;
@@ -98,22 +98,22 @@ export const useGlobalStore = defineStore('globalStore', {
       }));
       return zonesArr || [];
     },
-    headerContent(state): HeaderInterface|undefined {
+    headerContent(state): Maybe<HeaderInterface> {
       return state.layoutData?.header;
     },
-    sidebarContent(state):SiteSidebarInterface|undefined {
+    sidebarContent(state): Maybe<SiteSidebarInterface> {
       return state.layoutData?.siteSidebar;
     },
-    userNavigationContent(state):UserNavigationInterface|undefined {
+    userNavigationContent(state): Maybe<UserNavigationInterface> {
       return state.layoutData?.userNavigation;
     },
-    footerContent(state):FooterInterface|undefined {
+    footerContent(state): Maybe<FooterInterface> {
       return state.layoutData?.footer;
     },
-    cookiePopupContent(state):CookiePopupInterface|undefined {
+    cookiePopupContent(state): Maybe<CookiePopupInterface> {
       return state.layoutData?.cookiePopup;
     },
-    mobileMenuContent(state):MobileMenuInterface|undefined {
+    mobileMenuContent(state): Maybe<MobileMenuInterface> {
       return state.layoutData?.mobileMenu;
     },
     gameCategoriesObj(state):{ [key: string]: GameCategoryInterface } {
@@ -125,7 +125,7 @@ export const useGlobalStore = defineStore('globalStore', {
       }
       return categoriesObj;
     },
-    globalSeo(state):SeoContentInterface|undefined {
+    globalSeo(state): Maybe<SeoContentInterface> {
       return state.globalComponentsContent?.globalSeo;
     },
     playerStatuses(state):StatusInterface[] {

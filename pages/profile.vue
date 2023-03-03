@@ -26,7 +26,7 @@
   const profileMenu = ref<{title: string, url: string, seo: SeoContentInterface }[]>([]);
   const { currentLocale } = storeToRefs(globalStore);
   const contentRequest = await useAsyncData('profileContent', () => queryContent(`profile/${currentLocale.value?.code}`).findOne());
-  const profileContent:ProfileContentInterface|undefined = contentRequest.data.value as ProfileContentInterface;
+  const profileContent: Maybe<ProfileContentInterface> = contentRequest.data.value as ProfileContentInterface;
   await useAsyncData('profileFields', getProfileFields);
 
   if (profileContent) {

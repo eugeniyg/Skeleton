@@ -38,7 +38,7 @@
   });
   const globalStore = useGlobalStore();
   const { globalComponentsContent, isMobile, headerCountry } = storeToRefs(globalStore);
-  const winnersContent: CardsGroupInterface | undefined = globalComponentsContent.value?.cardsGroup;
+  const winnersContent: Maybe<CardsGroupInterface> = globalComponentsContent.value?.cardsGroup;
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
   const gameStore = useGamesStore();

@@ -54,7 +54,7 @@
 
   const { popupsData, alertsData } = useGlobalStore();
 
-  const depositContent: DepositInterface | undefined = popupsData?.deposit;
+  const depositContent: Maybe<DepositInterface> = popupsData?.deposit;
 
   const { formatBalance } = useProjectMethods();
   const fieldHint = computed(() => {

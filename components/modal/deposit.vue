@@ -50,7 +50,7 @@
   const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
 
   const { popupsData } = useGlobalStore();
-  const depositContent: DepositInterface | undefined = popupsData?.deposit;
+  const depositContent: Maybe<DepositInterface> = popupsData?.deposit;
 
   const methodKey = ref<number>(0);
   watch(() => depositMethods.value, () => {

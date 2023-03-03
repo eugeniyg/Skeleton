@@ -54,7 +54,7 @@
     validationMessages, fieldsContent, popupsData, alertsData,
   } = storeToRefs(globalStore);
   const { closeModal } = useLayoutStore();
-  const loginContent: LoginInterface|undefined = popupsData.value?.login;
+  const loginContent: Maybe<LoginInterface> = popupsData.value?.login;
 
   const authorizationFormData = reactive({ login: '', password: '' });
   const { getFormRules } = useProjectMethods();
