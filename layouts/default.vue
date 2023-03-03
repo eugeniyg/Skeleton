@@ -38,6 +38,7 @@
     <modal-confirm />
     <modal-confirm-bonus/>
     <modal-deposit-limit/>
+    <modal-edit-limit/>
 
     <atomic-alert
       :isShow="isShowAlert"

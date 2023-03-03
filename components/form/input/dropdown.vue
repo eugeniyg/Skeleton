@@ -214,7 +214,7 @@
     width: 100%;
     padding: rem(8px);
     visibility: var(--items-visibility, hidden);
-    max-height: calc((#{rem(38px)} * 4) + #{4px});
+    max-height: calc((#{rem(38px)} * 4) + #{8px});
     overflow-x: hidden;
     overflow-y: auto;
     background-color: var(--gray-800);

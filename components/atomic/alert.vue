@@ -125,6 +125,8 @@
 
   .content {
     flex-grow: 1;
+    display: grid;
+    grid-row-gap: 4px;
   }
 
   .text {
@@ -138,14 +140,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: rem(24px);
-    height: rem(24px);
+    width: rem(20px);
+    height: rem(20px);
     @extend %skip-btn;
     padding: 0;
     align-self: flex-start;
 
     .icon {
-      --icon-size: 22px;
+      --icon-size: 20px;
       --color: var(--gray-400);
     }
 
@@ -180,6 +182,12 @@
   &.variant-pending {
     > .icon {
       --color: var(--yellow-500);
+    }
+  }
+
+  &[class*="variant"] {
+    > .icon {
+      align-self: flex-start;
     }
   }
 }

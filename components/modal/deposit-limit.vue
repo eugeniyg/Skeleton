@@ -2,8 +2,8 @@
   <vue-final-modal
     v-model="modals.depositLimit"
     class="modal-deposit-limit"
-    clickToClose
     @clickOutside="closeModal('depositLimit')"
+    clickToClose
   >
     <div class="scroll">
       <div class="header">
@@ -21,9 +21,18 @@
         >{{ item }}</span>
       </div>
 
-      <form-input-currencies />
+      <form-input-currencies/>
 
-      <p>The restriction takes effect instantly. You can reduce your limit at any time, this change will take effect
+      <form-input-number
+        :is-required="false"
+        currency="EUR"
+        :min="0"
+        :value="0"
+        placeholder="0"
+      />
+
+      <p class="modal-deposit-limit__description">The restriction takes effect instantly. You can reduce your limit at any
+        time, this change will take effect
         immediately. You can increase the limit, however, in order for this change to take effect, you need 24 hours.
         Cancellation of the deposit limit takes 24 hours. After the limit is exceeded, you will receive an email
         notification.</p>
@@ -52,6 +61,67 @@
 .modal-deposit-limit {
   @extend %modal-info;
 
+  .vfm__content {
+    margin: 0;
+  }
+
+  .scroll {
+    grid-row-gap: 0;
+  }
+
+  .header {
+    .title {
+      @include upd-font($heading-6);
+      margin-bottom: 24px;
+      margin-left: 40px;
+
+      @include media(xs) {
+        margin-left: 0;
+      }
+    }
+
+    .btn-modal-close {
+      transform: translate(0, 0);
+      left: 0;
+      --right: auto;
+      --top: 0;
+      --bg: var(--gray-800);
+
+      .icon {
+        &:first-of-type {
+          --visibility: visible;
+        }
+
+        &:last-of-type {
+          --visibility: hidden;
+        }
+
+        @include media(xs) {
+          &:first-of-type {
+            --visibility: hidden;
+          }
+
+          &:last-of-type {
+            --visibility: visible;
+          }
+        }
+      }
+
+      @include media(xs) {
+        --top: #{rem(-4px)};
+        --right: #{rem(-14px)};
+        --bg: transparent;
+        left: auto;
+        transform: translateY(-50%);
+      }
+
+      @include media(md) {
+        --top: #{rem(-6px)};
+        --right: #{rem(-14px)};
+      }
+    }
+  }
+
   &__tabs {
     border-radius: 8px;
     padding: 4px;
@@ -59,6 +129,7 @@
     display: flex;
     align-items: center;
     grid-gap: 4px;
+    margin-bottom: 24px;
 
     &-item {
       @include font($body-1);
@@ -84,6 +155,24 @@
         }
       }
     }
+  }
+
+  &__description {
+    @include font($body-1);
+    color: var(--gray-400);
+    margin: 24px 0 0 0;
+  }
+
+  .btn-primary {
+    margin: 24px 0 0;
+  }
+
+  .field[data-maska-value="0"] {
+    color: var(--gray-500);
+  }
+
+  .input-number {
+    margin-top: 16px;
   }
 }
 </style>

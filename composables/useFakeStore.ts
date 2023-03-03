@@ -1698,7 +1698,219 @@ export const useFakeStore = () => {
     },
   ];
 
+  const profileLimits = {
+    deposit: {
+      title: 'Deposit limits',
+      subTitle: 'This setting limits the amount you can deposit per day, week or month',
+      tooltip: {
+        text: 'This setting limits the amount you can deposit per day, week or month.',
+        align: 'bottom',
+      },
+      buttons: {
+        primary: {
+          title: 'Add new',
+        },
+        edit: {
+          base: 'Edit limits',
+          done: 'Done editing',
+        },
+      },
+      periods: {
+        daily: {
+          title: 'Daily',
+          items: [
+            {
+              title: '240 of 1000 EUR left',
+              subTitle: '23h 56m 39s until reset',
+              progress: 43.7,
+              status: {
+                type: 'active',
+                title: 'Active till 2022-11-18 14:33:29',
+              },
+            },
+            {
+              title: '0 of 1000 CAD left',
+              subTitle: '24h 00m 00s until reset',
+              progress: 0,
+              status: {
+                type: 'pending',
+                title: 'Pending email confirmation for change to 100 EUR on 2022-04-20 14:10',
+              },
+            },
+            {
+              title: '0 of 1000 CAD left',
+              subTitle: '24h 00m 00s until reset',
+              progress: 50,
+              status: {
+                type: 'active',
+                title: 'Active till 2022-11-18 14:33:29',
+              },
+            },
+          ],
+        },
+        weekly: {
+          title: 'Weekly',
+          items: [
+            {
+              title: '240 of 1000 EUR left',
+              subTitle: '23h 56m 39s until reset',
+              progress: 43.7,
+              status: {
+                type: 'active',
+                title: 'Active till 2022-11-18 14:33:29',
+              },
+            },
+            {
+              title: '0 of 1000 CAD left',
+              subTitle: '24h 00m 00s until reset',
+              progress: 100,
+              status: {
+                type: 'pending',
+                title: 'Pending email confirmation for change to 100 EUR on 2022-04-20 14:10',
+              },
+            },
+            {
+              title: '0 of 1000 CAD left',
+              subTitle: '24h 00m 00s until reset',
+              progress: 50,
+              status: {
+                type: 'active',
+                title: 'Active till 2022-11-18 14:33:29',
+              },
+            },
+          ],
+        },
+        monsly: {
+          title: 'Monsly',
+          items: [
+            {
+              title: '240 of 1000 EUR left',
+              subTitle: '23h 56m 39s until reset',
+              progress: 43.7,
+              status: {
+                type: 'active',
+                title: 'Active till 2022-11-18 14:33:29',
+              },
+            },
+            {
+              title: '0 of 1000 CAD left',
+              subTitle: '24h 00m 00s until reset',
+              progress: 0,
+              status: {
+                type: 'pending',
+                title: 'Pending email confirmation for change to 100 EUR on 2022-04-20 14:10',
+              },
+            },
+            {
+              title: '0 of 1000 CAD left',
+              subTitle: '24h 00m 00s until reset',
+              progress: 50,
+              status: {
+                type: 'active',
+                title: 'Active till 2022-11-18 14:33:29',
+              },
+            },
+          ],
+        },
+      },
+      editPopup: {
+        title: 'Edit daily deposit limit',
+        buttons: {
+          primary: {
+            title: 'Update',
+            disabled: true,
+          },
+          secondary: {
+            title: 'Delete',
+          },
+        },
+        successMsg: {
+          title: 'Limit update successfully',
+        },
+        warning: {
+          title: 'New limit sum is bigger than the previous one',
+        },
+      },
+    },
+    lossLimits: {
+      title: 'Loss limits',
+      info: '<p>This setting limits the amount you can deposit per day, week or month</p>',
+      buttons: {
+        primary: {
+          title: 'Add new',
+        },
+      },
+    },
+    wagerLimits: {
+      title: 'Wager limits',
+      info: '<p>This setting limits the amount you can wager per day, week or month.</p>',
+      buttons: {
+        primary: {
+          title: 'Add new',
+        },
+      },
+    },
+    sessionLimit: {
+      title: 'Session limit',
+      info: '<p>The restriction takes effect instantly. If you hit the limit, you will be automatically logged out of your account.</p>',
+      dropdown: {
+        placeholder: '0',
+        options: [
+          { value: '3 Months', code: '3 Months' },
+          { value: '6 Months', code: '6 Months' },
+          { value: '9 Months', code: '9 Months' },
+          { value: '1 Year', code: '1 Year' },
+        ],
+      },
+      buttons: {
+        submit: {
+          title: 'Set',
+        },
+      },
+    },
+    coolingOff: {
+      title: 'Cooling off',
+      placeholder: 'None',
+      dropdown: {
+        placeholder: 'None',
+        options: [
+          { value: '1 Day', code: '1 Day' },
+          { value: '3 Days', code: '3 Days' },
+          { value: '1 Week', code: '1 Week' },
+          { value: '1 Months', code: '1 Months' },
+          { value: '3 Months', code: '3 Months' },
+          { value: '6 Months', code: '6 Months' },
+        ],
+      },
+      info: '<p>The restriction takes effect instantly. You won’t be able to make deposits and play during the specified period, also you will be excluded from all advertising offers.</p>',
+      buttons: {
+        submit: {
+          title: 'Set',
+        },
+      },
+    },
+    selfExclusion: {
+      title: 'Self exclusion',
+      dropdown: {
+        placeholder: '0',
+        options: [
+          { value: '3 Months', code: '3 Months' },
+          { value: '6 Months', code: '6 Months' },
+          { value: '9 Months', code: '9 Months' },
+          { value: '1 Year', code: '1 Year' },
+        ],
+      },
+      buttons: {
+        submit: {
+          title: 'Set',
+        },
+      },
+      info: '<p>You can set a self-exclusion limit for a definite or an indefinite period of time. The restriction takes effect instantly. During the set period you will not be able to log into your account. To be excluded from gambling on our site for an indefinite period of time, please, contact our support team via <a href="#">live-chat</a></p>',
+    },
+  };
+
   return {
+    profileLimits,
     cashBonuses,
     catNavItems,
     items,

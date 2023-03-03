@@ -1,8 +1,21 @@
 <template>
-  <div class="input-currencies">
-    <div class="input-currencies__selected">
-      <template v-if="!selectedCurrency">
+  <div class="input-currencies" v-click-outside="close" :class="{'is-open': isOpen, 'has-error': true}">
+    <div class="input-currencies__selected" @click.stop="toggleOpen">
+      <template v-if="!selectedCurrency.name">
+        <atomic-icon id="currency" class="input-currencies__selected-icon"/>
+        <span class="input-currencies__selected-label">Choose currency</span>
       </template>
+      <template v-else>
+        <img
+          class="input-currencies__selected-icon"
+          :src="`/img/currency/${selectedCurrency.code}.svg`"
+          width="24"
+          height="24"
+          alt=""
+        />
+        <span class="input-currencies__selected-label">{{ selectedCurrency.name }}</span>
+      </template>
+      <atomic-icon id="arrow_expand-open" class="input-currencies__expand-icon"/>
     </div>
 
     <div class="input-currencies__content">
@@ -28,13 +41,20 @@
           :class="{'is-active': selectedCurrency.name === currency.name}"
           @click="selectCurrency(currency)"
         >
-          <img class="input-currencies__item-img" :src="`/img/currency/${currency.code}.svg`" alt=""/>
+          <img
+            class="input-currencies__item-img"
+            :src="`/img/currency/${currency.code}.svg`"
+            width="24"
+            height="24"
+            alt=""
+          />
           <span class="input-currencies__item-title">{{ currency.name }}</span>
           <span class="input-currencies__item-code">{{ currency.code }}</span>
         </div>
       </div>
     </div>
 
+    <div class="input-currencies__error">Please, select your currency for new deposit limit</div>
   </div>
 </template>
 
@@ -51,7 +71,8 @@
   const cryptoCurrencies = computed(() => currencies.value.filter((currency) => currency.type === 'crypto'));
 
   const selected = ref<string>('all');
-  const selectedCurrency = ref<CurrencyInterface>({});
+  const selectedCurrency = ref({});
+  const isOpen = ref<boolean>(false);
 
   const selectedItems = computed(() => {
     if (selected.value === 'all' || !cryptoCurrencies.value.length) return currencies.value;
@@ -62,14 +83,75 @@
     selected.value = id;
   };
 
-  const selectCurrency = (currency: CurrencyInterface) => {
+  const selectCurrency = (currency: CurrencyInterface): void => {
     selectedCurrency.value = currency;
+    isOpen.value = false;
+  };
+
+  const toggleOpen = (): void => {
+    isOpen.value = !isOpen.value;
+  };
+
+  const close = (): void => {
+    if (isOpen.value) isOpen.value = false;
   };
 </script>
 
 <style lang="scss">
 .input-currencies {
+  position: relative;
+
+  &.has-error {
+    --error-display: block;
+    --border-color: var(--red-800);
+    --icon-color: var(--red-500);
+  }
+
+  &.is-open {
+    --dropdown-display: block;
+  }
+
   &__selected {
+    display: flex;
+    align-items: center;
+    height: rem(40px);
+    grid-column-gap: rem(8px);
+    background-color: var(--bg, var(--gray-800));
+    border: 1px solid var(--border-color, var(--gray-800));
+    border-radius: 12px;
+    padding: 8px 16px;
+    user-select: none;
+
+    .is-open & {
+      --bg: var(--gray-700);
+      --border-color: var(--gray-300);
+    }
+
+    &-label {
+      @include font($body-2);
+      color: var(--white);
+      flex-grow: 1;
+    }
+
+    &-icon {
+      --color: var(--white);
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__expand-icon {
+    transform: var(--icon-rotate, rotate(-180deg));
+    transition: transform .2s ease-in-out;
+
+    .is-open & {
+      --icon-rotate: rotate(0);
+    }
+
+    --color: var(--icon-color, var(--gray-400));
+    --icon-size: 20px;
   }
 
   &__tabs {
@@ -77,7 +159,7 @@
     align-items: center;
     grid-gap: 4px;
     border-bottom: 1px solid var(--gray-700);
-    padding-bottom: 12px;
+    padding-bottom: 8px;
   }
 
   &__tab {
@@ -89,6 +171,10 @@
     background-color: var(--bg, transparent);
     border-radius: 8px;
 
+    &:hover {
+      cursor: pointer;
+    }
+
     &.is-active {
       --color: var(--white);
       --bg: var(--gray-700);
@@ -98,12 +184,19 @@
   &__content {
     background-color: var(--gray-800);
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+    display: var(--dropdown-display, none);
+    position: absolute;
     border-radius: 8px;
     padding: 16px;
+    top: 46px;
+    left: 0;
+    right: 0;
+    z-index: 2;
   }
 
   &__list {
     padding: 0;
+    margin-top: 4px;
   }
 
   &__item {
@@ -111,6 +204,7 @@
     align-items: center;
     padding: 4px;
     background-color: var(--item-bg);
+    border-radius: 8px;
 
     &.is-active {
       --item-bg: var(--gray-900);
@@ -121,6 +215,7 @@
       width: 24px;
       height: 24px;
       margin-right: 8px;
+      display: block;
     }
 
     &-title {
@@ -133,6 +228,13 @@
       @include font($body-0);
       color: var(--gray-400);
     }
+  }
+
+  &__error {
+    @include font($body-0);
+    color: var(--red-300);
+    display: var(--error-display, none);
+    margin-top: 4px;
   }
 }
 </style>
