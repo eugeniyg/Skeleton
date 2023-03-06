@@ -7,7 +7,7 @@
 
     <form-input-dropdown
       name="birth-day"
-      :placeholder="fieldsContent?.birthdate?.placeholderDay || ''"
+      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'birthdate.placeholderDay') || ''"
       :is-disabled="props.isDisabled"
       v-model:value="selected.day"
       :options="days"
@@ -18,7 +18,7 @@
 
     <form-input-dropdown
       name="birth-month"
-      :placeholder="fieldsContent?.birthdate?.placeholderMonth || ''"
+      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'birthdate.placeholderMonth') || ''"
       :is-disabled="props.isDisabled"
       :options="months"
       v-model:value="selected.month"
@@ -29,7 +29,7 @@
 
     <form-input-dropdown
       name="birth-year"
-      :placeholder="fieldsContent?.birthdate?.placeholderYear || ''"
+      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'birthdate.placeholderYear') || ''"
       :is-disabled="props.isDisabled"
       :options="years"
       v-model:value="selected.year"
@@ -66,7 +66,8 @@
     },
   });
 
-  const { fieldsContent } = useGlobalStore();
+  const { fieldsContent, defaultLocaleFieldsContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
   const selected = reactive({
     year: 0,
     month: 0,

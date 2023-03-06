@@ -3,7 +3,7 @@
     <form-input-text
       v-model:value="bonusValue"
       label=""
-      :placeholder="fieldsContent?.bonusCode?.placeholder || ''"
+      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'bonusCode.placeholder') || ''"
       name="bonus-code"
       autocomplete="off"
     />
@@ -19,7 +19,8 @@
 </template>
 
 <script setup lang="ts">
-  const { fieldsContent } = useGlobalStore();
+  const { fieldsContent, defaultLocaleFieldsContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
   const { showAlert } = useLayoutStore();
 
   const bonusValue = ref<string>('');

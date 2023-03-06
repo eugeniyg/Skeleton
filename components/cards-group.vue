@@ -15,7 +15,7 @@
       type="ghost"
       @click="openGames(props.identity)"
     >
-      {{ groupContent?.moreButton }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
     <button-arrows
@@ -42,8 +42,6 @@
 </template>
 
 <script setup lang="ts">
-  import { CardsGroupInterface } from '~/types';
-
   const props = defineProps({
     games: {
       type: Array,
@@ -99,8 +97,8 @@
     },
   });
 
-  const { globalComponentsContent } = useGlobalStore();
-  const groupContent: Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   const router = useRouter();
   const scrollContainer = ref();

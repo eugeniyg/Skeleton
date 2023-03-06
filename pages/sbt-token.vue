@@ -16,10 +16,12 @@
   import { TokenContentInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { currentLocale } = storeToRefs(globalStore);
-  const tokenContentRequest = await useAsyncData('tokenContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['tokenPage']).findOne());
-  const tokenContent: Maybe<TokenContentInterface> = tokenContentRequest.data.value?.tokenPage;
-  const { setPageSeo } = useProjectMethods();
+  const { contentLocalesArray } = storeToRefs(globalStore);
+  const { setPageSeo, findLocalesContentData } = useProjectMethods();
+  const tokenContentRequest = await useAsyncData('tokenContent', () => queryContent('page-controls')
+    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'tokenPage']).find());
+  const { currentLocaleData } = findLocalesContentData(tokenContentRequest.data.value);
+  const tokenContent: Maybe<TokenContentInterface> = currentLocaleData?.tokenPage;
   setPageSeo(tokenContent?.seo);
 </script>
 

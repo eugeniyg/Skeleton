@@ -24,8 +24,8 @@
   const emit = defineEmits(['logout']);
   const { localizePath } = useProjectMethods();
   const { closeUserNav } = useLayoutStore();
-  const { userNavigationContent } = useGlobalStore();
-  const profileLinks = userNavigationContent?.profileLinks || [];
+  const { userNavigationContent, defaultLocaleUserNavigationContent } = useGlobalStore();
+  const profileLinks = userNavigationContent?.profileLinks || defaultLocaleUserNavigationContent?.profileLinks || [];
 
   function clickItem(url: string):void {
     const router = useRouter();

@@ -9,14 +9,14 @@
         <button class="modal-forgot-pass__previous" @click.prevent="returnLoginModal">
           <atomic-icon id="arrow_previous"/>
         </button>
-        <div class="title">{{ forgotContent?.title }}</div>
+        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'forgot.title') }}</div>
         <button class="modal-forgot-pass__close" @click.prevent="closeModal('forgotPass')">
           <atomic-icon id="close"/>
         </button>
       </div>
 
       <p class="text">
-        {{ forgotContent?.description }}
+        {{ getContent(popupsData, defaultLocalePopupsData, 'forgot.description') }}
       </p>
       <form-forgot-pass />
     </div>
@@ -26,14 +26,13 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import { ForgotInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal, showModal } = layoutStore;
 
-  const { popupsData } = useGlobalStore();
-  const forgotContent: Maybe<ForgotInterface> = popupsData?.forgot;
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   const returnLoginModal = () => {
     showModal('signIn');

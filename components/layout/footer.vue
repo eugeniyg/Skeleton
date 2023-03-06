@@ -20,7 +20,7 @@
 
       <list-base :items="trustIcons">
         <template #header>
-          <h4>{{ footerContent?.responsibilityLabel }}</h4>
+          <h4>{{ footerContent?.responsibilityLabel || defaultLocaleFooterContent?.responsibilityLabel }}</h4>
         </template>
 
         <template v-slot:item="{ item }">
@@ -35,20 +35,20 @@
 
     <atomic-divider/>
 
-    <div v-if="footerContent?.curacao" class="info">
+    <div v-if="footerContent?.curacao || defaultLocaleFooterContent?.curacao" class="info">
       <iframe
         src="https://licensing.gaming-curacao.com/validator/?lh=95426453d291d7c01ec3a7e5aaf8b499&template=tseal"
         width="132px"
         height="62px"
       />
 
-      <div class="info__text" v-html="marked.parse(footerContent.curacao || '')" />
+      <div class="info__text" v-html="marked.parse(footerContent?.curacao || defaultLocaleFooterContent?.curacao || '')" />
     </div>
 
     <atomic-divider/>
 
     <div class="copy-info">
-      <p>{{ footerContent?.copyright }}</p>
+      <p>{{ footerContent?.copyright || defaultLocaleFooterContent?.copyright }}</p>
       <!--      <img src="~/assets/img/copy-logo.svg" width="150" height="22" />-->
     </div>
   </footer>
@@ -59,8 +59,12 @@
 
   const { localizePath } = useProjectMethods();
 
-  const { footerContent } = useGlobalStore();
-  const accordeonItems = [footerContent?.promoMenu, footerContent?.infoMenu, footerContent?.helpMenu];
+  const { footerContent, defaultLocaleFooterContent } = useGlobalStore();
+  const accordeonItems = [
+    footerContent?.promoMenu || defaultLocaleFooterContent?.promoMenu,
+    footerContent?.infoMenu || defaultLocaleFooterContent?.infoMenu,
+    footerContent?.helpMenu || defaultLocaleFooterContent?.helpMenu,
+  ];
   const trustIcons = [
     '/trust-icons/1.svg',
     '/trust-icons/2.svg',

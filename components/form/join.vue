@@ -10,9 +10,9 @@
           :key="field.name"
           type="text"
           :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
-          :label="fieldsContent?.[field.name]?.label || ''"
+          :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) || ''"
           :name="field.name"
-          :placeholder="fieldsContent?.[field.name]?.placeholder || ''"
+          :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.placeholder`) || ''"
           @blur="v$[field.name]?.$touch()"
           @focus="onFocus(field.name)"
           :hint="setError(field.name)"
@@ -27,9 +27,9 @@
         :is="fieldsTypeMap[field.name].component || 'form-input-text'"
         v-model:value="registrationFormData[field.name]"
         :type="field.name === 'nickname' ? 'hidden' : fieldsTypeMap[field.name].type || 'text'"
-        :label="fieldsContent?.[field.name]?.label || ''"
+        :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) || ''"
         :name="field.name"
-        :placeholder="fieldsContent?.[field.name]?.placeholder || ''"
+        :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.placeholder`) || ''"
         :options="selectOptions[field.name]"
         :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
         :hint="setError(field.name)"
@@ -58,10 +58,13 @@
       @click="signUp"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
-      {{ registrationContent?.registrationButton}}
+      {{ getContent(popupsData, defaultLocalePopupsData, 'registration.registrationButton') }}
     </button-base>
 
-    <button-popup :buttonLabel="registrationContent?.loginButton" openModal="signIn" />
+    <button-popup
+      :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'registration.loginButton')"
+      openModal="signIn"
+    />
   </form>
 </template>
 
@@ -69,7 +72,6 @@
   import { storeToRefs } from 'pinia';
   import { FieldInterface } from '@platform/frontend-core/dist/module';
   import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
-  import { RegistrationInterface } from '~/types';
 
   const props = defineProps<{
     registrationFields: FieldInterface[]
@@ -83,9 +85,14 @@
   const { selectOptions } = storeToRefs(fieldsStore);
   const globalStore = useGlobalStore();
   const {
-    countries, fieldsContent, popupsData, headerCountry,
+    countries,
+    fieldsContent,
+    defaultLocaleFieldsContent,
+    popupsData,
+    defaultLocalePopupsData,
+    headerCountry,
   } = storeToRefs(globalStore);
-  const registrationContent: Maybe<RegistrationInterface> = popupsData.value?.registration;
+  const { getContent } = useProjectMethods();
 
   const mainFields = props.registrationFields.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = props.registrationFields.filter((field) => groupFooterFields.includes(field.name));
@@ -99,9 +106,9 @@
   }
 
   const getCheckboxLabel = (fieldName: string):string|undefined => {
-    if (fieldName === 'receiveEmailPromo') return registrationContent?.agreeEmailLabel;
-    if (fieldName === 'receiveSmsPromo') return registrationContent?.agreeSmsLabel;
-    return fieldsContent.value?.[fieldName]?.label || '';
+    if (fieldName === 'receiveEmailPromo') return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.agreeEmailLabel');
+    if (fieldName === 'receiveSmsPromo') return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.agreeSmsLabel');
+    return getContent(fieldsContent.value, defaultLocaleFieldsContent.value, `${fieldName}.label`) || '';
   };
 
   const { getFormRules, createValidationRules } = useProjectMethods();

@@ -7,7 +7,7 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('signIn')"/>
-        <div class="title">{{ loginContent?.title }}</div>
+        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'login.title') }}</div>
       </div>
 
       <form-sign-in />
@@ -18,13 +18,12 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import { LoginInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-  const { popupsData } = useGlobalStore();
-  const loginContent: Maybe<LoginInterface> = popupsData?.login;
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 </script>
 
 <style lang="scss">

@@ -8,11 +8,11 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('registerCancel')"/>
-        <h4 class="title">{{ registrationCancelContent?.title }}</h4>
+        <h4 class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.title') }}</h4>
       </div>
 
       <div class="bonus">
-        <img :src="registrationCancelContent?.bonusImage" alt="">
+        <img :src="getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.bonusImage')" alt="">
         <div class="bonus-text" v-html="bonusContent" />
       </div>
 
@@ -22,7 +22,7 @@
           size="md"
           @click="showModal('register')"
         >
-          {{ registrationCancelContent?.backButton }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.backButton') }}
         </button-base>
 
         <button-base
@@ -30,7 +30,7 @@
           size="xs"
           @click="closeModal('registerCancel')"
         >
-          {{ registrationCancelContent?.closeButton }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.closeButton') }}
         </button-base>
       </div>
     </div>
@@ -40,16 +40,16 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import { RegistrationCancelInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { showModal, closeModal } = layoutStore;
-  const { popupsData } = useGlobalStore();
-  const registrationCancelContent: Maybe<RegistrationCancelInterface> = popupsData?.registrationCancel;
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   const { replaceContent } = useCoreMethods();
-  const bonusContent = registrationCancelContent?.bonusText ? replaceContent(registrationCancelContent?.bonusText, '*') : '';
+  const bonusContent = getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.bonusText')
+    ? replaceContent(getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.bonusText'), '*') : '';
 </script>
 
 <style lang="scss">

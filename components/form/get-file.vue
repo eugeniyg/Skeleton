@@ -1,12 +1,15 @@
 <template>
   <form class="get-file" :class="props.type">
-    <div class="get-file__title">{{ documentsContent?.[props.type]?.label }}</div>
+    <div class="get-file__title">
+      {{ getContent(documentsContent, defaultLocaleDocumentsContent, `${props.type}.label`) }}
+    </div>
+
     <div
       ref="excerpt"
       data-exerpt
       :class="['get-file__description', {'is-expanded': isTextExpanded}]"
     >
-      {{ documentsContent?.[props.type]?.description }}
+      {{ getContent(documentsContent, defaultLocaleDocumentsContent, `${props.type}.description`) }}
     </div>
 
     <button
@@ -14,13 +17,14 @@
       class="show-more-btn"
       @click.prevent="clickAction"
     >
-      {{ isTextExpanded ? documentsContent?.hideText : documentsContent?.moreInfo }}
+      {{ isTextExpanded ? getContent(documentsContent, defaultLocaleDocumentsContent, 'hideText')
+        : getContent(documentsContent, defaultLocaleDocumentsContent, 'moreInfo') }}
     </button>
 
     <div class="dropzones-list">
       <dropzone
         v-for="item in Object.keys(props.formData)"
-        :fileName="documentsContent?.[props.type]?.[item]"
+        :fileName="getContent(documentsContent, defaultLocaleDocumentsContent, `${props.type}.${item}`)"
         :fileList="props.formData[item]"
         :key="item"
         :loading="props.loadingFields.includes(item)"
@@ -53,6 +57,8 @@
   const isShowMoreBtn = ref<boolean>(false);
   const isTextExpanded = ref<boolean>(false);
   const documentsContent: Maybe<ProfileDocumentsInterface> = inject('documentsContent');
+  const defaultLocaleDocumentsContent: Maybe<ProfileDocumentsInterface> = inject('defaultLocaleDocumentsContent');
+  const { getContent } = useProjectMethods();
 
   const textHasDots = (el: HTMLElement): boolean => el.scrollHeight > el.offsetHeight;
 

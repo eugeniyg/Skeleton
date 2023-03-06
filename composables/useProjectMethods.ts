@@ -1,4 +1,5 @@
 import { GameImagesInterface } from '@platform/frontend-core/dist/module';
+import get from 'lodash/get';
 import * as projectRules from './validationRules';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
@@ -29,9 +30,10 @@ export const useProjectMethods = () => {
   };
 
   const getFormRules = (fieldsRules:any):any => {
-    const { validationMessages } = useGlobalStore();
+    const { validationMessages, defaultLocaleValidationMessages } = useGlobalStore();
+    const messages = { ...defaultLocaleValidationMessages, ...validationMessages };
     const { createFormRules } = useCoreMethods();
-    return createFormRules(fieldsRules, projectRules, validationMessages);
+    return createFormRules(fieldsRules, projectRules, messages);
   };
 
   const preloaderDone = ():void => {
@@ -140,6 +142,24 @@ export const useProjectMethods = () => {
     return 0;
   };
 
+  const findLocalesContentData = (responseData?: any[]|null):any => {
+    if (!responseData) return {};
+
+    const globalStore = useGlobalStore();
+
+    const currentLocaleData = responseData.find((contentData) => contentData.locale === globalStore.currentLocale?.code);
+    if (globalStore.currentLocale?.code === globalStore.defaultLocale?.code) return { currentLocaleData };
+
+    const defaultLocaleData = responseData.find((contentData) => contentData.locale === globalStore.defaultLocale?.code);
+    return { currentLocaleData, defaultLocaleData };
+  };
+
+  const getContent = (
+      contentData: any,
+      defaultLocaleContentData: any,
+      path: string,
+  ): any => get(contentData, path) || get(defaultLocaleContentData, path);
+
   return {
     createValidationRules,
     getFormRules,
@@ -154,5 +174,7 @@ export const useProjectMethods = () => {
     getMainBalanceFormat,
     setPageSeo,
     sortByAlphabet,
+    getContent,
+    findLocalesContentData,
   };
 };

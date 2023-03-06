@@ -1,3 +1,1 @@
-export default defineEventHandler(() => {
-  return "pong"
-});
+export default defineEventHandler(() => 'pong');

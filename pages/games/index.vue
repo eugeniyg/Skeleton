@@ -13,7 +13,7 @@
       <div class="game-filter__search">
         <form-input-search
           v-model:value="searchValue"
-          :placeholder="headerContent?.search.placeholder"
+          :placeholder="getContent(headerContent, defaultLocaleHeaderContent, 'search.placeholder')"
           @input="searchInput"
         />
 
@@ -26,11 +26,11 @@
         />
       </div>
       <atomic-game-sort
-        v-if="gamesContent?.sortOptions?.length"
+        v-if="getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions')?.length"
         :sortOrderValue="sortOrder"
         :sortByValue="sortBy"
         @change="changeSort"
-        v-bind="gamesContent"
+        v-bind="gamesContent?.sortOptions?.length ? gamesContent : defaultLocaleGamesContent"
       />
     </div>
 
@@ -43,9 +43,9 @@
 
     <atomic-empty
       v-if="!gameItems.length && !loadingGames"
-      :title="gamesContent?.empty.title"
-      :subTitle="gamesContent?.empty.description"
-      :image="gamesContent?.empty.image"
+      :title="getContent(gamesContent, defaultLocaleGamesContent, 'empty.title')"
+      :subTitle="getContent(gamesContent, defaultLocaleGamesContent, 'empty.description')"
+      :image="getContent(gamesContent, defaultLocaleGamesContent, 'empty.image')"
     />
 
     <atomic-seo-text v-if="gamesContent?.seo?.text" v-bind="gamesContent?.seo?.text"/>
@@ -65,10 +65,24 @@
   import { CategoryGamesInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { currentLocale, gameCategoriesObj, headerContent } = storeToRefs(globalStore);
-  const gamesContentRequest = await useAsyncData('gamesContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['gamesPage']).findOne());
-  const gamesContent: Maybe<CategoryGamesInterface> = gamesContentRequest.data.value?.gamesPage;
-  const { setPageSeo } = useProjectMethods();
+  const {
+    gameCategoriesObj,
+    headerContent,
+    defaultLocaleHeaderContent,
+    contentLocalesArray,
+  } = storeToRefs(globalStore);
+
+  const {
+    setPageSeo,
+    getContent,
+    findLocalesContentData,
+  } = useProjectMethods();
+  const gamesContentRequest = await useAsyncData('gamesContent', () => queryContent('page-controls')
+    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'gamesPage']).find());
+
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(gamesContentRequest.data.value);
+  const gamesContent: Maybe<CategoryGamesInterface> = currentLocaleData?.gamesPage;
+  const defaultLocaleGamesContent: Maybe<CategoryGamesInterface> = defaultLocaleData?.gamesPage;
   setPageSeo(gamesContent?.seo);
 
   const { gameCollections } = useGamesStore();
@@ -76,10 +90,10 @@
   const providerDropdownOptions: GameProviderInterface[] = [
     {
       id: 'all',
-      name: gamesContent?.providersLabel || 'All Providers',
+      name: gamesContent?.providersLabel || defaultLocaleGamesContent?.providersLabel || 'All Providers',
       identity: 'all',
       code: 'all',
-      value: gamesContent?.providersLabel || 'All Providers',
+      value: gamesContent?.providersLabel || defaultLocaleGamesContent?.providersLabel || 'All Providers',
     },
     ...selectOptions.providers,
   ];
@@ -104,8 +118,10 @@
     ) || providerDropdownOptions[0],
   );
 
-  const sortBy = ref<string | undefined>(route.query.sortBy as string || gamesContent?.sortOptions?.[0]?.sortBy || 'default');
-  const sortOrder = ref<string | undefined>(route.query.sortOrder as string || gamesContent?.sortOptions?.[0]?.sortOrder || 'asc');
+  const sortBy = ref<string | undefined>(route.query.sortBy as string
+    || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortBy') || 'default');
+  const sortOrder = ref<string | undefined>(route.query.sortOrder as string
+    || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortOrder') || 'asc');
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
   const gameItems = ref<GameInterface[]>([]);

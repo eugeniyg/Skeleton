@@ -1,8 +1,8 @@
 <template>
   <div>
     <client-only>
-      <carousel v-if="sliderItems?.length" v-bind="topSliderProps">
-        <slide v-for="(slide, index) in sliderItems" :key="index">
+      <carousel v-if="sliderItems?.length || defaultLocaleSliderItems?.length" v-bind="topSliderProps">
+        <slide v-for="(slide, index) in sliderItems?.length ? sliderItems : defaultLocaleSliderItems" :key="index">
           <card-promo v-if="slide.slideStatus === 'Published'" v-bind="slide" />
         </slide>
 
@@ -34,8 +34,8 @@
     <cards-group
       v-if="providerCards.games?.length"
       v-bind="providerCards"
-      :identity="groupContent?.providers.label"
-      :titleIcon="groupContent?.providers.icon"
+      :identity="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.label')"
+      :titleIcon="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.icon')"
       :showAllBtn="false"
     >
       <template v-slot:card="item">
@@ -91,16 +91,31 @@
     Carousel, Slide, Pagination, Navigation,
   } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
-  import { CardsGroupInterface, MainContentInterface, SlideInterface } from '~/types';
+  import { MainContentInterface, SlideInterface } from '~/types';
   import FavoriteRecently from '~/components/favorite-recently.vue';
 
   const globalStore = useGlobalStore();
-  const { currentLocale, globalComponentsContent } = storeToRefs(globalStore);
-  const sliderResponse = await useAsyncData('sliderData', () => queryContent(`main-slider/${currentLocale.value?.code}`).findOne());
-  const mainContentResponse = await useAsyncData('mainContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['mainPage']).findOne());
-  const mainContent: Maybe<MainContentInterface> = mainContentResponse.data.value?.mainPage;
-  const sliderItems: Maybe<SlideInterface[]> = sliderResponse.data.value?.slider;
-  const groupContent: Maybe<CardsGroupInterface> = globalComponentsContent.value?.cardsGroup;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, contentLocalesArray } = storeToRefs(globalStore);
+  const {
+    localizePath,
+    setPageSeo,
+    findLocalesContentData,
+    getContent,
+  } = useProjectMethods();
+
+  const [sliderResponse, mainContentResponse] = await Promise.all([
+    useAsyncData('sliderData', () => queryContent('main-slider')
+      .where({ locale: { $in: contentLocalesArray.value } }).find()),
+    useAsyncData('mainContent', () => queryContent('page-controls')
+      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'mainPage']).find()),
+  ]);
+
+  const mainContentData = findLocalesContentData(mainContentResponse.data.value);
+  const mainContent: Maybe<MainContentInterface> = mainContentData.currentLocaleData?.mainPage;
+
+  const sliderContentData = findLocalesContentData(sliderResponse.data.value);
+  const sliderItems: Maybe<SlideInterface[]> = sliderContentData.currentLocaleData?.slider;
+  const defaultLocaleSliderItems: Maybe<SlideInterface[]> = sliderContentData.defaultLocaleData?.slider;
 
   const fakeStore = useFakeStore();
   const router = useRouter();
@@ -126,9 +141,6 @@
     },
   };
 
-  const {
-    localizePath, setPageSeo,
-  } = useProjectMethods();
   setPageSeo(mainContent?.seo);
 
   const changeCategory = (categoryId: string) => {

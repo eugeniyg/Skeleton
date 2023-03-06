@@ -6,9 +6,9 @@
       @focus="focusField('login')"
       type="email"
       :is-required="true"
-      :label="fieldsContent?.email?.label || ''"
+      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.label') || ''"
       name="login"
-      :placeholder="fieldsContent?.email?.placeholder || ''"
+      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.placeholder') || ''"
       :hint="setError('login')"
       @submit="login"
     />
@@ -19,14 +19,18 @@
       @focus="focusField('password')"
       type="password"
       :is-required="true"
-      :label="fieldsContent?.password?.label || ''"
+      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'password.label') || ''"
       name="password"
-      :placeholder="fieldsContent?.password?.placeholder || ''"
+      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'password.placeholder') || ''"
       :hint="setError('password')"
       @submit="login"
     />
 
-    <atomic-hint v-if="loginError" variant="error" :message="validationMessages.login || ''" />
+    <atomic-hint
+      v-if="loginError"
+      variant="error"
+      :message="getContent(validationMessages, defaultLocaleValidationMessages, 'login') || ''"
+    />
 
     <button-base
       type="primary"
@@ -36,28 +40,40 @@
       :isDisabled="v$.$invalid || isLockedAsyncButton"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
-      {{ loginContent?.loginButton }}
+      {{ getContent(popupsData, defaultLocalePopupsData, 'login.loginButton') }}
     </button-base>
 
-    <button-popup class="btn-forgot" :buttonLabel="loginContent?.forgotButton" openModal="forgotPass"/>
+    <button-popup
+      class="btn-forgot"
+      :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.forgotButton')"
+      openModal="forgotPass"
+    />
 
-    <button-popup :buttonLabel="loginContent?.registrationButton" openModal="register" />
+    <button-popup
+      :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.registrationButton')"
+      openModal="register"
+    />
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { LoginInterface } from '~/types';
 
   const globalStore = useGlobalStore();
   const {
-    validationMessages, fieldsContent, popupsData, alertsData,
+    validationMessages,
+    defaultLocaleValidationMessages,
+    fieldsContent,
+    defaultLocaleFieldsContent,
+    popupsData,
+    defaultLocalePopupsData,
+    alertsData,
+    defaultLocaleAlertsData,
   } = storeToRefs(globalStore);
   const { closeModal } = useLayoutStore();
-  const loginContent: Maybe<LoginInterface> = popupsData.value?.login;
 
   const authorizationFormData = reactive({ login: '', password: '' });
-  const { getFormRules } = useProjectMethods();
+  const { getFormRules, getContent } = useProjectMethods();
   const authorizationRules = {
     login: [{ rule: 'required' }, { rule: 'email' }],
     password: [{ rule: 'required' }],
@@ -94,7 +110,7 @@
         serverFormErrors.value = error.data?.error?.fields;
       } else if (error.response?.status === 403) {
         const { showAlert } = useLayoutStore();
-        showAlert(alertsData.value?.accountBlocked);
+        showAlert(alertsData.value?.accountBlocked || defaultLocaleAlertsData.value?.accountBlocked);
       } else throw error;
     } finally {
       isLockedAsyncButton.value = false;

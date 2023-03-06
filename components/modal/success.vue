@@ -8,12 +8,12 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('success')"/>
-        <div class="title">{{ successContent?.title }}</div>
+        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'success.title') }}</div>
       </div>
 
       <img class="img" src="@/assets/svg/colored/success.svg" />
       <client-only>
-        <p class="text" v-html="marked.parse(successContent?.description || '')" />
+        <p class="text" v-html="marked.parse(getContent(popupsData, defaultLocalePopupsData, 'success.description') || '')" />
       </client-only>
 
       <button-base
@@ -21,7 +21,7 @@
         size="md"
         @click="closeModal('success')"
       >
-        {{ successContent?.button }}
+        {{ getContent(popupsData, defaultLocalePopupsData, 'success.button') }}
       </button-base>
     </div>
   </vue-final-modal>
@@ -31,13 +31,12 @@
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
   import { VueFinalModal } from 'vue-final-modal';
-  import { SuccessInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-  const { popupsData } = useGlobalStore();
-  const successContent: Maybe<SuccessInterface> = popupsData?.success;
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 </script>
 
 <style lang="scss">
