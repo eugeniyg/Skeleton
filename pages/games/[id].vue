@@ -4,7 +4,7 @@
       :frameLink="gameStart"
       :gameInfo="gameInfo"
       @changeMode="changeGameMode"
-      :gameContent="gameContent"
+      :gameContent="gameContent || defaultLocaleGameContent"
       :showPlug="showPlug && !isLoggedIn && !gameInfo.isDemoMode"
     />
     <atomic-seo-text v-if="gameContent?.seo?.text" v-bind="gameContent?.seo?.text" />
@@ -29,12 +29,28 @@
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
   const {
-    isMobile, alertsData, currentLocale, headerCountry,
+    isMobile,
+    alertsData,
+    defaultLocaleAlertsData,
+    currentLocale,
+    headerCountry,
+    contentLocalesArray,
   } = storeToRefs(globalStore);
-  const infoResponse = await useAsyncData('gameInfo', () => getGamesInfo(route.params.id as string));
-  const gameContentRequest = await useAsyncData('gameContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['gamePage']).findOne());
-  const gameContent: Maybe<GamePageInterface> = gameContentRequest.data.value?.gamePage;
-  const { setPageSeo } = useProjectMethods();
+
+  const {
+    setPageSeo,
+    findLocalesContentData,
+  } = useProjectMethods();
+
+  const [infoResponse, gameContentRequest] = await Promise.all([
+    useAsyncData('gameInfo', () => getGamesInfo(route.params.id as string)),
+    useAsyncData('gameContent', () => queryContent('page-controls')
+      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'gamePage']).find()),
+  ]);
+
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(gameContentRequest.data.value);
+  const gameContent: Maybe<GamePageInterface> = currentLocaleData?.gamePage;
+  const defaultLocaleGameContent: Maybe<GamePageInterface> = defaultLocaleData?.gamePage;
   setPageSeo(gameContent?.seo);
   gameInfo.value = infoResponse.data?.value as GameInterface;
   const router = useRouter();
@@ -60,7 +76,7 @@
     }
 
     if (isDemo.value && profile.value?.status === 2) {
-      showAlert(alertsData.value?.limitedRealGame);
+      showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
       return;
     }
 
@@ -74,7 +90,7 @@
     else {
       const { localizePath } = useProjectMethods();
       router.push(localizePath('/'));
-      showAlert(alertsData.value?.limitedRealGame);
+      showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
     }
   };
 

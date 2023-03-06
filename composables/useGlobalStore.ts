@@ -94,6 +94,15 @@ export const useGlobalStore = defineStore('globalStore', {
       if (route.params.locale && findLocale) return findLocale;
       return state.defaultLocale;
     },
+    contentLocalesArray(state): string[] {
+      const localesArr:string[] = [];
+      if (this.currentLocale?.code) localesArr.push(this.currentLocale?.code);
+      if (state.defaultLocale?.code && state.defaultLocale?.code !== this.currentLocale?.code) {
+        localesArr.push(state.defaultLocale?.code);
+      }
+
+      return localesArr;
+    },
     currenciesSelectOptions(state):CurrencyInterface[] {
       return state.currencies.map((currency) => ({ ...currency, value: currency.code }));
     },
@@ -216,9 +225,7 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getGlobalContent():Promise<void> {
-      const { getContentLocalesArray, findLocalesContentData } = useProjectMethods();
-
-      const localesArr = getContentLocalesArray();
+      const { findLocalesContentData } = useProjectMethods();
 
       const [
         validationsResponse,
@@ -229,13 +236,13 @@ export const useGlobalStore = defineStore('globalStore', {
         globalContentResponse,
         errorPageResponse,
       ] = await Promise.allSettled([
-        queryContent('validations').where({ locale: { $in: localesArr } }).find(),
-        queryContent('fields').where({ locale: { $in: localesArr } }).find(),
-        queryContent('main-layout').where({ locale: { $in: localesArr } }).find(),
-        queryContent('popups').where({ locale: { $in: localesArr } }).find(),
-        queryContent('alerts').where({ locale: { $in: localesArr } }).find(),
-        queryContent('global-components').where({ locale: { $in: localesArr } }).find(),
-        queryContent('page-controls').where({ locale: { $in: localesArr } }).only(['errorPage', 'locale']).find(),
+        queryContent('validations').where({ locale: { $in: this.contentLocalesArray } }).find(),
+        queryContent('fields').where({ locale: { $in: this.contentLocalesArray } }).find(),
+        queryContent('main-layout').where({ locale: { $in: this.contentLocalesArray } }).find(),
+        queryContent('popups').where({ locale: { $in: this.contentLocalesArray } }).find(),
+        queryContent('alerts').where({ locale: { $in: this.contentLocalesArray } }).find(),
+        queryContent('global-components').where({ locale: { $in: this.contentLocalesArray } }).find(),
+        queryContent('page-controls').where({ locale: { $in: this.contentLocalesArray } }).only(['locale', 'errorPage']).find(),
       ]);
 
       if (validationsResponse.status !== 'rejected') {
@@ -276,8 +283,8 @@ export const useGlobalStore = defineStore('globalStore', {
 
       if (errorPageResponse.status !== 'rejected') {
         const { currentLocaleData, defaultLocaleData } = findLocalesContentData(errorPageResponse.value);
-        this.errorPageContent = currentLocaleData.errorPage as ErrorPageInterface;
-        this.defaultLocaleErrorPageContent = defaultLocaleData as ErrorPageInterface;
+        this.errorPageContent = currentLocaleData?.errorPage as ErrorPageInterface;
+        this.defaultLocaleErrorPageContent = defaultLocaleData?.errorPage as ErrorPageInterface;
       }
     },
 

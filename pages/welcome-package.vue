@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="promotion">
-      <h1 class="title">{{ welcomeContent?.title }}</h1>
-      <h4 class="sub-title">{{ welcomeContent?.description }}</h4>
+      <h1 class="title">{{ getContent(welcomeContent, defaultLocaleWelcomeContent, 'title') }}</h1>
+      <h4 class="sub-title">{{ getContent(welcomeContent, defaultLocaleWelcomeContent, 'description') }}</h4>
 
-      <div v-if="welcomeContent?.howGet" class="steps">
-        <div class="title">{{ welcomeContent.howGet.label }}</div>
+      <div v-if="getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet')" class="steps">
+        <div class="title">{{ getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.label') }}</div>
 
         <div class="items">
           <div
@@ -18,19 +18,23 @@
           </div>
         </div>
 
-        <img v-if="welcomeContent?.howGet.image" class="img" :src="welcomeContent?.howGet.image" />
+        <img
+          v-if="getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.image')"
+          class="img"
+          :src="getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.image')"
+        />
       </div>
 
       <atomic-divider />
 
       <div class="welcome">
-        <h4 class="title">{{ welcomeContent?.welcome.label }}</h4>
+        <h4 class="title">{{ getContent(welcomeContent, defaultLocaleWelcomeContent, 'welcome.label') }}</h4>
 
-        <div v-if="welcomeContent?.welcome.items?.length" class="items">
+        <div v-if="getContent(welcomeContent, defaultLocaleWelcomeContent, 'welcome.items')?.length" class="items">
           <div
             class="item"
             :key="itemIndex"
-            v-for="(card, itemIndex) in welcomeContent.welcome.items"
+            v-for="(card, itemIndex) in welcomeContent?.welcome.items.length ? welcomeContent.welcome.items : defaultLocaleWelcomeContent?.welcome.items"
           >
             <div class="title">{{ card.title }}</div>
             <div class="sub-title">{{ card.topLabel }}</div>
@@ -64,13 +68,13 @@
       <atomic-divider />
 
       <div class="bonuses">
-        <h4 class="title">{{ welcomeContent?.bonuses.label }}</h4>
+        <h4 class="title">{{ getContent(welcomeContent, defaultLocaleWelcomeContent, 'bonuses.label') }}</h4>
 
-        <div v-if="welcomeContent?.bonuses.items?.length" class="items">
+        <div v-if="getContent(welcomeContent, defaultLocaleWelcomeContent, 'bonuses.items')?.length" class="items">
           <div
             class="item"
             :key="itemIndex"
-            v-for="(card, itemIndex) in welcomeContent.bonuses.items"
+            v-for="(card, itemIndex) in welcomeContent?.bonuses.items.length ? welcomeContent.bonuses.items : defaultLocaleWelcomeContent?.bonuses.items"
           >
             <div class="title">{{ card.subtitle }}</div>
             <div class="sub-title">{{ card.title }}</div>
@@ -105,14 +109,29 @@
   import { storeToRefs } from 'pinia';
   import { WelcomePageInterface } from '~/types';
 
+  const {
+    setPageSeo,
+    findLocalesContentData,
+    getContent,
+  } = useProjectMethods();
+
   const globalStore = useGlobalStore();
-  const { currentLocale } = storeToRefs(globalStore);
-  const welcomeContentRequest = await useAsyncData('welcomeContent', () => queryContent(`welcome-bonuses/${currentLocale.value?.code}`).findOne());
-  const welcomeContent: Maybe<WelcomePageInterface> = welcomeContentRequest.data.value as WelcomePageInterface;
-  const { setPageSeo } = useProjectMethods();
+  const { contentLocalesArray } = storeToRefs(globalStore);
+
+  const welcomeContentRequest = await useAsyncData('welcomeContent', () => queryContent('welcome-bonuses')
+    .where({ locale: { $in: contentLocalesArray.value } }).find());
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(welcomeContentRequest.data.value);
+  const welcomeContent: Maybe<WelcomePageInterface> = currentLocaleData as WelcomePageInterface;
+  const defaultLocaleWelcomeContent: Maybe<WelcomePageInterface> = defaultLocaleData as WelcomePageInterface;
   setPageSeo(welcomeContent?.seo);
   let howGetItems = [];
-  if (welcomeContent?.howGet) howGetItems = [welcomeContent.howGet.first, welcomeContent.howGet.second, welcomeContent.howGet.third];
+  if (getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet')) {
+    howGetItems = [
+      getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.first'),
+      getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.second'),
+      getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.third'),
+    ];
+  }
 
   const profileStore = useProfileStore();
   const { openDepositModal, showModal } = useLayoutStore();

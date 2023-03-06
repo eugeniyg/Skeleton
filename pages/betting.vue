@@ -2,8 +2,8 @@
   <div class="betting">
     <div id="betting-container" class="container">
       <not-auth-game
-        v-if="showPlug && bettingContent?.plug"
-        v-bind="bettingContent.plug"
+        v-if="showPlug && (bettingContent?.plug || defaultLocaleBettingContent?.plug)"
+        v-bind="bettingContent?.plug || defaultLocaleBettingContent?.plug"
         singleMode
       />
     </div>
@@ -23,11 +23,23 @@
   const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();
   const {
-    isMobile, alertsData, currentLocale, headerCountry,
+    isMobile,
+    alertsData,
+    defaultLocaleAlertsData,
+    currentLocale,
+    headerCountry,
+    contentLocalesArray,
   } = storeToRefs(globalStore);
-  const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['bettingPage']).findOne());
-  const bettingContent:Maybe<BettingContentInterface> = bettingContentRequest.data.value?.bettingPage;
-  const { setPageSeo } = useProjectMethods();
+
+  const {
+    setPageSeo,
+    findLocalesContentData,
+  } = useProjectMethods();
+  const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent('page-controls')
+    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'bettingPage']).find());
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(bettingContentRequest.data.value);
+  const bettingContent: Maybe<BettingContentInterface> = currentLocaleData?.bettingPage;
+  const defaultLocaleBettingContent: Maybe<BettingContentInterface> = defaultLocaleData?.bettingPage;
   setPageSeo(bettingContent?.seo);
 
   const walletStore = useWalletStore();
@@ -75,7 +87,7 @@
     const { localizePath } = useProjectMethods();
     const router = useRouter();
     router.replace(localizePath('/'));
-    showAlert(alertsData.value?.limitedRealGame);
+    showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
   };
 
   watch(() => activeAccount.value?.id, async (oldValue, newValue) => {

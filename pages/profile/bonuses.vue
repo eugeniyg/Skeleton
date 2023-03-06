@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="header">
-      <h1 class="heading">{{ bonusesContent?.title }}</h1>
+      <h1 class="heading">{{ bonusesContent?.title || defaultLocaleBonusesContent?.title }}</h1>
     </div>
 
     <atomic-empty variant="bonuses" sub-title="You have not received bonuses yet."/>
@@ -10,13 +10,16 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
   import { ProfileBonusesInterface } from '~/types';
 
-  // const { userProfileBonusesTabs } = useFakeStore();
-
   const globalStore = useGlobalStore();
-  const bonusesContentRequest = await useAsyncData('bonusesContent', () => queryContent(`profile/${globalStore.currentLocale?.code}`).only(['bonuses']).findOne());
-  const bonusesContent: Maybe<ProfileBonusesInterface> = bonusesContentRequest.data.value?.bonuses;
-  const { setPageSeo } = useProjectMethods();
+  const { contentLocalesArray } = storeToRefs(globalStore);
+  const { setPageSeo, findLocalesContentData } = useProjectMethods();
+  const bonusesContentRequest = await useAsyncData('bonusesContent', () => queryContent('profile')
+    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'bonuses']).find());
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(bonusesContentRequest.data.value);
+  const bonusesContent: Maybe<ProfileBonusesInterface> = currentLocaleData?.bonuses;
+  const defaultLocaleBonusesContent: Maybe<ProfileBonusesInterface> = defaultLocaleData?.bonuses;
   setPageSeo(bonusesContent?.seo);
 </script>

@@ -1,10 +1,10 @@
 <template>
   <div class="content">
-    <h1 class="heading">{{ pageContent?.title }}</h1>
+    <h1 class="heading">{{ pageContent?.title || defaultLocalePageContent?.title }}</h1>
 
-    <div v-if="pageContent?.questionList?.length">
+    <div v-if="getContent(pageContent, defaultLocalePageContent, 'questionList')?.length">
       <expander
-        v-for="(item, itemIndex) in pageContent.questionList"
+        v-for="(item, itemIndex) in pageContent?.questionList ? pageContent.questionList : defaultLocalePageContent?.questionList"
         :key="itemIndex"
         :title="item.question"
         :content="item.answer"
@@ -18,11 +18,22 @@
   import { QuestionPageInterface } from '~/types';
 
   const pageContent = ref<QuestionPageInterface|undefined>(undefined);
-  const globalStore = useGlobalStore();
-  const { currentLocale } = storeToRefs(globalStore);
+  const defaultLocalePageContent = ref<QuestionPageInterface|undefined>(undefined);
   const route = useRoute();
   const { pageUrl } = route.params;
-  const contentRequest = await useAsyncData('pageContent', () => queryContent(`question/${currentLocale.value?.code}-${pageUrl}`).findOne());
-  if (contentRequest.error.value) throw contentRequest.error.value;
-  else pageContent.value = contentRequest.data.value as QuestionPageInterface;
+
+  const globalStore = useGlobalStore();
+  const { contentLocalesArray } = storeToRefs(globalStore);
+
+  const { findLocalesContentData, getContent } = useProjectMethods();
+  const contentRequest = await useAsyncData('questionsPageContent', () => queryContent('question')
+    .where({ locale: { $in: contentLocalesArray.value }, pageUrl }).find());
+
+  if (contentRequest.error.value || !contentRequest.data.value?.length) {
+    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  } else {
+    const { currentLocaleData, defaultLocaleData } = findLocalesContentData(contentRequest.data.value);
+    pageContent.value = currentLocaleData as QuestionPageInterface;
+    defaultLocalePageContent.value = defaultLocaleData as QuestionPageInterface;
+  }
 </script>

@@ -142,18 +142,6 @@ export const useProjectMethods = () => {
     return 0;
   };
 
-  const getContentLocalesArray = (): string[] => {
-    const globalStore = useGlobalStore();
-
-    const localesArr:string[] = [];
-    if (globalStore.currentLocale?.code) localesArr.push(globalStore.currentLocale?.code);
-    if (globalStore.defaultLocale?.code && globalStore.defaultLocale?.code !== globalStore.currentLocale?.code) {
-      localesArr.push(globalStore.defaultLocale?.code);
-    }
-
-    return localesArr;
-  };
-
   const findLocalesContentData = (responseData?: any[]|null):any => {
     if (!responseData) return {};
 
@@ -187,7 +175,6 @@ export const useProjectMethods = () => {
     setPageSeo,
     sortByAlphabet,
     getContent,
-    getContentLocalesArray,
     findLocalesContentData,
   };
 };
