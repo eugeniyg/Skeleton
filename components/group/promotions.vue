@@ -9,7 +9,7 @@
     <div class="group-promotions__list">
       <div
         class="group-promotions__item"
-        v-for="(promotion, index) in getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'promotions.items')"
+        v-for="(promotion, index) in promotionsList"
         :key="index"
         :class="{ 'hovered': hoverCard === index }"
         @click="clickCard(index)"
@@ -66,6 +66,11 @@
     if (e.target.closest('.group-promotions__item')) return;
     hoverCard.value = undefined;
   };
+
+  const promotionsList = computed(() => {
+    if (globalComponentsContent?.promotions?.items?.length) return globalComponentsContent.promotions.items;
+    return defaultLocaleGlobalComponentsContent?.promotions?.items || [];
+  });
 
   onMounted(() => {
     document.addEventListener('click', clickOutside);

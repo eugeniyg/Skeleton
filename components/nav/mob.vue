@@ -26,7 +26,7 @@
     </button-base>
 
     <button-base
-      v-for="link in getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items')?.slice(1)"
+      v-for="link in linksList?.slice(1)"
       :key="link.url"
       class="item"
       :class="{ active: $route.path === localizePath(link.url) }"
@@ -61,6 +61,11 @@
   const clickMainButton = ():void => {
     isLoggedIn.value ? openDepositModal() : showModal('signIn');
   };
+
+  const linksList = computed(() => {
+    if (mobileMenuContent?.items?.length) return mobileMenuContent.items;
+    return defaultLocaleMobileMenuContent?.items || [];
+  });
 </script>
 
 <style lang="scss">

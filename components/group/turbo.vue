@@ -30,7 +30,7 @@
       @scroll="scrollHandler"
     >
       <card-turbo
-        v-for="(item, itemIndex) in getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.items')"
+        v-for="(item, itemIndex) in gamesList"
         :key="itemIndex"
         v-bind="item"
         :buttonLabel="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.buttonLabel')"
@@ -64,6 +64,11 @@
       behavior: 'smooth',
     });
   };
+
+  const gamesList = computed(() => {
+    if (globalComponentsContent?.turbogames?.items?.length) return globalComponentsContent.turbogames.items;
+    return defaultLocaleGlobalComponentsContent?.turbogames?.items || [];
+  });
 
   onMounted(() => {
     scrollHandler();

@@ -9,10 +9,13 @@
       :value="walletNumber"
     />
 
-    <template v-if="getContent(popupsData, defaultLocalePopupsData, 'deposit.bonuses')?.length">
+    <template v-if="bonusesList?.length">
       <atomic-divider/>
 
-      <template v-for="(bonus, index) in getContent(popupsData, defaultLocalePopupsData, 'deposit.bonuses')" :key="index">
+      <template
+        v-for="(bonus, index) in bonusesList"
+        :key="index"
+      >
         <atomic-bonus v-bind="bonus"/>
         <atomic-divider/>
       </template>
@@ -64,6 +67,11 @@
     return {
       message: `${getContent(popupsData, defaultLocalePopupsData, 'deposit.minSum') || ''} ${formatSum.amount} ${formatSum.currency}`,
     };
+  });
+
+  const bonusesList = computed(() => {
+    if (popupsData?.deposit?.bonuses?.length) return popupsData.deposit.bonuses;
+    return defaultLocalePopupsData?.deposit?.bonuses || [];
   });
 
   onMounted(async () => {

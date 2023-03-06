@@ -14,9 +14,9 @@
       </span>
     </div>
 
-    <div v-if="getContent(popupsData, defaultLocalePopupsData, 'registration.promo.advantages')?.length" class="items">
+    <div v-if="advantagesList?.length" class="items">
       <div
-        v-for="(advantage, index) in getContent(popupsData, defaultLocalePopupsData, 'registration.promo.advantages')"
+        v-for="(advantage, index) in advantagesList"
         :key="index"
         class="item"
       >
@@ -29,6 +29,11 @@
 <script setup lang="ts">
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
+
+  const advantagesList = computed(() => {
+    if (popupsData?.registration?.promo?.advantages?.length) return popupsData.registration.promo.advantages;
+    return defaultLocalePopupsData?.registration?.promo?.advantages || [];
+  });
 </script>
 
 <style lang="scss">

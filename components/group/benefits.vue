@@ -3,7 +3,7 @@
     <div class="group-benefits__list">
       <div
         class="group-benefits__item"
-        v-for="(benefit, index) in getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'benefits.items')"
+        v-for="(benefit, index) in benefitsList"
         :key="index"
       >
         <img class="icon" :src="benefit.image" alt=""/>
@@ -16,7 +16,11 @@
 
 <script setup lang="ts">
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const { getContent } = useProjectMethods();
+
+  const benefitsList = computed(() => {
+    if (globalComponentsContent?.benefits?.items?.length) return globalComponentsContent.benefits.items;
+    return defaultLocaleGlobalComponentsContent?.benefits?.items || [];
+  });
 </script>
 
 <style lang="scss">

@@ -4,7 +4,7 @@
 
     <div v-if="getContent(pageContent, defaultLocalePageContent, 'questionList')?.length">
       <expander
-        v-for="(item, itemIndex) in pageContent?.questionList ? pageContent.questionList : defaultLocalePageContent?.questionList"
+        v-for="(item, itemIndex) in questionsList"
         :key="itemIndex"
         :title="item.question"
         :content="item.answer"
@@ -36,4 +36,9 @@
     pageContent.value = currentLocaleData as QuestionPageInterface;
     defaultLocalePageContent.value = defaultLocaleData as QuestionPageInterface;
   }
+
+  const questionsList = computed(() => {
+    if (pageContent.value?.questionList?.length) return pageContent.value.questionList;
+    return defaultLocalePageContent.value?.questionList || [];
+  });
 </script>

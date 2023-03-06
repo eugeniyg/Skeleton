@@ -12,9 +12,9 @@
       :is-bigger="true"
     />
 
-    <template v-if="getContent(popupsData, defaultLocalePopupsData, 'deposit.bonuses')?.length">
+    <template v-if="bonusesList?.length">
       <atomic-divider/>
-      <template v-for="(bonus, index) in getContent(popupsData, defaultLocalePopupsData, 'deposit.bonuses')" :key="index">
+      <template v-for="(bonus, index) in bonusesList" :key="index">
         <atomic-bonus v-bind="bonus" />
         <atomic-divider />
       </template>
@@ -82,6 +82,11 @@
   });
   const buttonDisabled = computed(() => amountValue.value < formatAmountMin.amount
     || amountValue.value > formatAmountMax.amount || isSending.value);
+
+  const bonusesList = computed(() => {
+    if (popupsData?.deposit?.bonuses?.length) return popupsData.deposit.bonuses;
+    return defaultLocalePopupsData?.deposit?.bonuses || [];
+  });
 
   const getDeposit = async ():Promise<void> => {
     if (buttonDisabled.value) return;

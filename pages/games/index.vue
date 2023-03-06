@@ -30,7 +30,7 @@
         :sortOrderValue="sortOrder"
         :sortByValue="sortBy"
         @change="changeSort"
-        v-bind="gamesContent || defaultLocaleGamesContent"
+        v-bind="gamesContent?.sortOptions?.length ? gamesContent : defaultLocaleGamesContent"
       />
     </div>
 
