@@ -1,8 +1,13 @@
 <template>
   <div class="group-recently">
-    <atomic-icon v-if="groupContent?.recentlyPlayed" :id="groupContent.recentlyPlayed.icon"/>
+    <atomic-icon
+      v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.recentlyPlayed')"
+      :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.recentlyPlayed.icon')"
+    />
 
-    <h2 class="title">{{ groupContent?.recentlyPlayed?.label }}</h2>
+    <h2 class="title">
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.recentlyPlayed.label') }}
+    </h2>
 
     <button-base
       v-if="showAllBtn"
@@ -10,7 +15,7 @@
       url="/recently-played"
       type="ghost"
     >
-      {{ groupContent?.moreButton }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
     <div class="items" ref="container">
@@ -26,15 +31,14 @@
 <script setup lang="ts">
   import { GameInterface } from '@platform/frontend-core/dist/module';
   import { storeToRefs } from 'pinia';
-  import { CardsGroupInterface } from '~/types';
 
   const props = defineProps<{
     gamesList: GameInterface[]
   }>();
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent } = storeToRefs(globalStore);
-  const groupContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
 
   const showAllBtn = ref<boolean>(true);
   const cardInBlock = ref<number>(20);
@@ -72,18 +76,13 @@
     "items items items items"
     "btn-show-all btn-show-all btn-show-all btn-show-all";
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
-  grid-column-gap: var(--column-gap, #{rem(8px)});
-  grid-row-gap: var(--row-gap, #{rem(16px)});
+  grid-column-gap: var(--column-gap, 8px);
 
   @include media(xs) {
     grid-template-areas:
     "icon heading heading arrows"
     "items items items items"
     "btn-show-all btn-show-all btn-show-all btn-show-all";
-
-    > .btn-show-all {
-      padding: rem(4px) rem(16px);
-    }
   }
 
   @include media(sm) {
@@ -105,7 +104,7 @@
   > .icon {
     display: none;
     grid-area: icon;
-    --iccon-size: #{rem(20px)};
+    --icon-size: 20px;
     --color: var(--gray-400);
 
     @include media(sm) {
@@ -113,17 +112,19 @@
     }
   }
 
-  > .btn-show-all {
+  .btn-show-all {
     grid-area: btn-show-all;
     @include font($heading-1);
+    transform: translateX(8px);
+    margin-top: 4px;
+    --padding: 4px 16px;
 
-    --font-size: #{rem(12px)};
     --color: var(--gray-500);
     --width: 100%;
 
-    @include media(xs) {
-      padding: 0;
-      --bg: transparent;
+    @include media(sm) {
+      margin-top: 0;
+      background: none;
 
       &:hover {
         --color: var(--white);
@@ -148,6 +149,10 @@
     grid-area: items;
     display: var(--display, flex);
     align-items: flex-start;
+
+    @include media(sm) {
+      margin-top: 16px;
+    }
   }
 }
 </style>

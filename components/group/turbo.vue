@@ -1,15 +1,20 @@
 <template>
-  <div v-if="groupTurboContent?.items?.length" class="group-turbo">
-    <atomic-icon v-if="groupTurboContent?.icon" :id="groupTurboContent.icon"/>
+  <div v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.items')?.length" class="group-turbo">
+    <atomic-icon
+      v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.icon')"
+      :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.icon')"
+    />
 
-    <h2 class="title">{{ groupTurboContent?.label }}</h2>
+    <h2 class="title">
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.label') }}
+    </h2>
 
     <button-base
       class="btn-show-all"
       type="ghost"
       :url="'/games?category=turbogames'"
     >
-      {{ groupCardContent?.moreButton }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
     <button-arrows
@@ -19,31 +24,26 @@
       @clickAction="clickAction"
     />
 
-    <!--    <div class="items-wrapper">-->
     <div
       ref="scrollContainer"
       class="items"
       @scroll="scrollHandler"
     >
       <card-turbo
-        v-for="(item, itemIndex) in groupTurboContent.items"
+        v-for="(item, itemIndex) in gamesList"
         :key="itemIndex"
         v-bind="item"
-        :buttonLabel="groupTurboContent.buttonLabel"
-        :infoLabel="groupTurboContent.infoLabel"
-        :categoryLabel="groupTurboContent.categoryLabel"
+        :buttonLabel="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.buttonLabel')"
+        :infoLabel="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.infoLabel')"
+        :categoryLabel="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.categoryLabel')"
       />
-      <!--      </div>-->
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { TurbogamesGroupInterface, CardsGroupInterface } from '~/types';
-
-  const { globalComponentsContent } = useGlobalStore();
-  const groupTurboContent: TurbogamesGroupInterface | undefined = globalComponentsContent?.turbogames;
-  const groupCardContent: CardsGroupInterface | undefined = globalComponentsContent?.cardsGroup;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
@@ -64,6 +64,11 @@
       behavior: 'smooth',
     });
   };
+
+  const gamesList = computed(() => {
+    if (globalComponentsContent?.turbogames?.items?.length) return globalComponentsContent.turbogames.items;
+    return defaultLocaleGlobalComponentsContent?.turbogames?.items || [];
+  });
 
   onMounted(() => {
     scrollHandler();
@@ -115,20 +120,28 @@
     --color: var(--gray-400);
   }
 
-  > .btn-show-all {
+  .btn-show-all {
     @include font($heading-1);
     grid-area: btn-show-all;
 
-    --font-size: #{rem(12px)};
     --color: var(--gray-500);
     --width: 100%;
 
     @include media(xs) {
       padding: 0;
-      --bg: transparent;
+      background: none;
 
       &:hover {
         --color: var(--white);
+      }
+    }
+
+    @include media(sm) {
+      @include upd-font($heading-2);
+
+      &:hover {
+        --color: var(--white);
+        --bg: transparent;
       }
     }
   }

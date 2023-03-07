@@ -42,7 +42,7 @@
           size="md"
           @click="showModal('register')"
         >
-          {{ headerContent?.registrationButton }}
+          {{ headerContent?.registrationButton || defaultLocaleHeaderContent?.registrationButton }}
         </button-base>
 
         <button-base
@@ -50,7 +50,7 @@
           size="md"
           @click="showModal('signIn')"
         >
-          {{ headerContent?.loginButton }}
+          {{ headerContent?.loginButton || defaultLocaleHeaderContent?.loginButton }}
         </button-base>
       </template>
     </div>
@@ -63,11 +63,10 @@
   const emit = defineEmits(['login', 'register', 'logout']);
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
-  const { headerContent } = useGlobalStore();
+  const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal } = layoutStore;
   const { isLoggedIn } = storeToRefs(profileStore);
-  // const fakeStore = useFakeStore();
 
   function toggleProfileNav():void {
     if (isUserNavOpen.value) closeUserNav();

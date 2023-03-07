@@ -32,7 +32,7 @@
           size="xs"
           @click="openGame(false)"
         >
-          {{ groupContent?.demoButton }}
+          {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.demoButton') }}
         </button-base>
       </div>
 
@@ -45,7 +45,7 @@
   import { storeToRefs } from 'pinia';
   import { PropType } from '@vue/runtime-core';
   import { GameImagesInterface, GameProviderInterface } from '@platform/frontend-core/dist/module';
-  import { CardsGroupInterface } from '~/types';
+  import { GameTagInterface } from '~/types';
 
   const props = defineProps({
     images: {
@@ -84,21 +84,28 @@
 
   const router = useRouter();
   const profileStore = useProfileStore();
-  const { isLoggedIn, playerStatusName } = storeToRefs(profileStore);
-  const { baseApiUrl, alertsData, globalComponentsContent } = useGlobalStore();
+  const { isLoggedIn, profile } = storeToRefs(profileStore);
+  const {
+    baseApiUrl,
+    alertsData,
+    defaultLocaleAlertsData,
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+  } = useGlobalStore();
   const { showModal, showAlert } = useLayoutStore();
-  const { localizePath, getImageUrl } = useProjectMethods();
-  const groupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
+  const { localizePath, getImageUrl, getContent } = useProjectMethods();
 
-  const gameBages = globalComponentsContent?.gameTags?.filter((bage) => props.labels.includes(bage.identity));
+  const gameTagsContent: Maybe<GameTagInterface[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags');
+
+  const gameBages = gameTagsContent?.filter((bage) => props.labels.includes(bage.identity));
 
   const openGame = (isReal: boolean):void => {
     if (!isReal) {
       router.push(localizePath(`/games/${props.identity}`));
     } else if (!isLoggedIn.value) {
       showModal('register');
-    } else if (playerStatusName.value === 'Limited') {
-      showAlert(alertsData?.limitedRealGame);
+    } else if (profile.value?.status === 2) {
+      showAlert(alertsData?.limitedRealGame || defaultLocaleAlertsData?.limitedRealGame);
     } else {
       router.push(localizePath(`/games/${props.identity}?real=true`));
     }

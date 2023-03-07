@@ -1,12 +1,15 @@
 <template>
-  <div v-if="promotionsContent" class="group-promotions">
-    <atomic-icon :id="promotionsContent.icon"/>
-    <h2 class="title">{{ promotionsContent.label }}</h2>
+  <div v-if="globalComponentsContent?.promotions || defaultLocaleGlobalComponentsContent?.promotions" class="group-promotions">
+    <atomic-icon :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'promotions.icon')"/>
+
+    <h2 class="title">
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'promotions.label') }}
+    </h2>
 
     <div class="group-promotions__list">
       <div
         class="group-promotions__item"
-        v-for="(promotion, index) in promotionsContent.items"
+        v-for="(promotion, index) in promotionsList"
         :key="index"
         :class="{ 'hovered': hoverCard === index }"
         @click="clickCard(index)"
@@ -41,13 +44,11 @@
 
 <script  setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { PromotionsContentInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent } = globalStore;
-  const promotionsContent:PromotionsContentInterface|undefined = globalComponentsContent?.promotions;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
 
-  const { localizePath } = useProjectMethods();
+  const { localizePath, getContent } = useProjectMethods();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal, openDepositModal } = useLayoutStore();
@@ -65,6 +66,11 @@
     if (e.target.closest('.group-promotions__item')) return;
     hoverCard.value = undefined;
   };
+
+  const promotionsList = computed(() => {
+    if (globalComponentsContent?.promotions?.items?.length) return globalComponentsContent.promotions.items;
+    return defaultLocaleGlobalComponentsContent?.promotions?.items || [];
+  });
 
   onMounted(() => {
     document.addEventListener('click', clickOutside);
@@ -131,6 +137,7 @@
 
     @include media(sm) {
       grid-template-columns: repeat(4, 1fr);
+      --items-column-gap: #{rem(16px)}
     }
   }
 
@@ -256,6 +263,10 @@
     .sub-title {
       @include font($body-1);
       color: var(--white);
+
+      @include media(md) {
+        @include upd-font($body-2);
+      }
     }
 
     .btn-primary {

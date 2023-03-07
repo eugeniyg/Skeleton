@@ -1,9 +1,10 @@
 <template>
   <div class="input-date">
     <span class="label">{{ props.label }}</span>
-    <div class="row">
+    <div class="row" @click="togglePickr">
       <client-only>
         <flat-pickr
+          ref="pickrComponent"
           v-model="date"
           :config="{ ...defaultSettings, ...props.settings }"
           placeholder="-- / -- / ----"
@@ -39,6 +40,7 @@
     dateFormat: 'Y-m-d',
     monthSelectorType: 'static',
     disableMobile: 'true',
+    clickOpens: false,
     locale: {},
   };
 
@@ -60,6 +62,11 @@
       });
     }
     emit('change', valueArr);
+  };
+
+  const pickrComponent = ref();
+  const togglePickr = ():void => {
+    pickrComponent.value.fp.toggle();
   };
 </script>
 
@@ -83,6 +90,7 @@
     @include font($heading-2);
     transition: border-color .2s ease-in-out;
     width: 100%;
+    cursor: pointer;
 
     &::placeholder {
       color: var(--gray-400);
@@ -107,7 +115,7 @@
     bottom: 0;
     margin: auto;
     --color: var(--white);
-
+    pointer-events: none;
   }
 
   .mask-toggle {
@@ -119,6 +127,7 @@
     color: var(--icon-color, var(--gray-400));
     transform: var(--icon-transform, rotate(0));
     transition: transform .2s ease-in-out;
+    pointer-events: none;
   }
 
   .label {

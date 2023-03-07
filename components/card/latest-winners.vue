@@ -14,7 +14,7 @@
   import { GameImagesInterface } from '@platform/frontend-core/dist/module';
 
   const props = defineProps<{
-    nickname: string|null,
+    nickname: Maybe<string>,
     amount: number,
     currency: string,
     resultBalance: number,

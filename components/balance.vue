@@ -2,7 +2,8 @@
   <div class="balance">
     <div class="row">
       <div class="label">
-        {{ props.withdraw ? depositContent?.balanceLabel : withdrawContent?.balanceLabel }}
+        {{ props.withdraw ? getContent(popupsData, defaultLocalePopupsData, 'deposit.balanceLabel')
+          : getContent(popupsData, defaultLocalePopupsData, 'withdraw.balanceLabel') }}
       </div>
 
       <div v-if="props.withdraw" class="value">
@@ -33,7 +34,7 @@
     </div>
 
     <div class="row" v-if="props.withdraw">
-      <div class="label">{{ withdrawContent?.withdrawLabel }}</div>
+      <div class="label">{{ getContent(popupsData, defaultLocalePopupsData, 'withdraw.withdrawLabel') }}</div>
       <div class="value">
         {{ balanceFormat.amount }} {{ balanceFormat.currency }}
       </div>
@@ -45,7 +46,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { DepositInterface, WithdrawInterface } from '~/types';
 
   const props = defineProps({
     withdraw: {
@@ -56,10 +56,8 @@
 
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
-  const { popupsData } = useGlobalStore();
-  const depositContent: DepositInterface | undefined = popupsData?.deposit;
-  const withdrawContent: WithdrawInterface | undefined = popupsData?.withdraw;
-  const { formatBalance } = useProjectMethods();
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { formatBalance, getContent } = useProjectMethods();
   const isSelectOpen = ref<boolean>(false);
 
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));

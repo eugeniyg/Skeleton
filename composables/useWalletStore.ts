@@ -24,7 +24,7 @@ export const useWalletStore = defineStore('walletStore', {
   }),
 
   getters: {
-    activeAccount(state):AccountInterface|undefined {
+    activeAccount(state): Maybe<AccountInterface> {
       return state.accounts.find((acc) => acc.status === 1);
     },
 
@@ -38,15 +38,17 @@ export const useWalletStore = defineStore('walletStore', {
 
     currencyTabs():{ id: string, title: string }[] {
       const globalStore = useGlobalStore();
-      const { globalComponentsContent } = storeToRefs(globalStore);
+      const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+      const { getContent } = useProjectMethods();
+
       return [
         {
           id: 'all',
-          title: globalComponentsContent.value?.currencyTabs.allTab || 'All',
+          title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'currencyTabs.allTab') || 'All',
         },
         {
           id: 'crypto',
-          title: globalComponentsContent.value?.currencyTabs.cryptoTab || 'Crypto',
+          title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'currencyTabs.cryptoTab') || 'Crypto',
         },
       ];
     },
@@ -105,7 +107,7 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     updateAccount(webSocketResponse:WebSocketResponseInterface):void {
-      const accountData:AccountInterface|undefined = webSocketResponse.data.account;
+      const accountData: Maybe<AccountInterface> = webSocketResponse.data.account;
       this.accounts = this.accounts.map((account) => {
         if (account.id === accountData?.id) return accountData;
         return account;
@@ -121,8 +123,8 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     showInvoiceStatus(webSocketResponse:WebSocketResponseInterface):void {
-      const { formatBalance } = useProjectMethods();
-      const { alertsData } = useGlobalStore();
+      const { formatBalance, getContent } = useProjectMethods();
+      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
       const { showAlert } = useLayoutStore();
       const invoiceUtcDate = new Date(webSocketResponse.data?.invoice?.createdAt || '');
       const invoiceDate = invoiceUtcDate.toLocaleString().slice(0, 10);
@@ -138,14 +140,26 @@ export const useWalletStore = defineStore('walletStore', {
       };
 
       if (webSocketResponse.data?.event === 'invoice.deposit.updated') {
-        const cmsMessage = invoiceSuccess ? alertsData?.depositSuccess?.description : alertsData?.depositError?.description;
-        const depositSuccessAlertData = alertsData?.depositSuccess ? { ...alertsData.depositSuccess, description: formattedDescription(cmsMessage) } : undefined;
-        const depositErrorAlertData = alertsData?.depositError ? { ...alertsData.depositError, description: formattedDescription(cmsMessage) } : undefined;
+        const cmsMessage = invoiceSuccess
+            ? getContent(alertsData, defaultLocaleAlertsData, 'depositSuccess.description')
+            : getContent(alertsData, defaultLocaleAlertsData, 'depositError.description');
+
+        const depositSuccessObj = alertsData?.depositSuccess || defaultLocaleAlertsData?.depositSuccess;
+        const depositErrorObj = alertsData?.depositError || defaultLocaleAlertsData?.depositError;
+
+        const depositSuccessAlertData = depositSuccessObj ? { ...depositSuccessObj, description: formattedDescription(cmsMessage) } : undefined;
+        const depositErrorAlertData = depositErrorObj ? { ...depositErrorObj, description: formattedDescription(cmsMessage) } : undefined;
         showAlert(invoiceSuccess ? depositSuccessAlertData : depositErrorAlertData);
       } else if (webSocketResponse.data?.event === 'invoice.withdrawal.updated') {
-        const cmsMessage = invoiceSuccess ? alertsData?.withdrawSuccess?.description : alertsData?.withdrawError?.description;
-        const withdrawSuccessAlertData = alertsData?.withdrawSuccess ? { ...alertsData.withdrawSuccess, description: formattedDescription(cmsMessage) } : undefined;
-        const withdrawErrorAlertData = alertsData?.withdrawError ? { ...alertsData.withdrawError, description: formattedDescription(cmsMessage) } : undefined;
+        const cmsMessage = invoiceSuccess
+            ? getContent(alertsData, defaultLocaleAlertsData, 'withdrawSuccess.description')
+            : getContent(alertsData, defaultLocaleAlertsData, 'withdrawError.description');
+
+        const withdrawSuccessObj = alertsData?.withdrawSuccess || defaultLocaleAlertsData?.withdrawSuccess;
+        const withdrawErrorObj = alertsData?.withdrawError || defaultLocaleAlertsData?.withdrawError;
+
+        const withdrawSuccessAlertData = withdrawSuccessObj ? { ...withdrawSuccessObj, description: formattedDescription(cmsMessage) } : undefined;
+        const withdrawErrorAlertData = withdrawErrorObj ? { ...withdrawErrorObj, description: formattedDescription(cmsMessage) } : undefined;
         showAlert(invoiceSuccess ? withdrawSuccessAlertData : withdrawErrorAlertData);
       }
     },

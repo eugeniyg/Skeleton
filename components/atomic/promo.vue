@@ -1,13 +1,25 @@
 <template>
   <div class="promo">
     <div class="header">
-      <div class="title">{{ registrationContent?.promo?.title }}</div>
-      <span class="sub-title">{{ registrationContent?.promo?.secondTitle }}</span>
-      <span class="sub-title">{{ registrationContent?.promo?.additionalTitle }}</span>
+      <div class="title">
+        {{ getContent(popupsData, defaultLocalePopupsData, 'registration.promo.title') }}
+      </div>
+
+      <span class="sub-title">
+        {{ getContent(popupsData, defaultLocalePopupsData, 'registration.promo.secondTitle') }}
+      </span>
+
+      <span class="sub-title">
+        {{ getContent(popupsData, defaultLocalePopupsData, 'registration.promo.additionalTitle') }}
+      </span>
     </div>
 
-    <div v-if="registrationContent?.promo?.advantages?.length" class="items">
-      <div v-for="(advantage, index) in registrationContent.promo.advantages" :key="index" class="item">
+    <div v-if="advantagesList?.length" class="items">
+      <div
+        v-for="(advantage, index) in advantagesList"
+        :key="index"
+        class="item"
+      >
         <atomic-icon :id="advantage.icon"/>{{ advantage.label }}
       </div>
     </div>
@@ -15,10 +27,13 @@
 </template>
 
 <script setup lang="ts">
-  import { RegistrationInterface } from '~/types';
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
-  const { popupsData } = useGlobalStore();
-  const registrationContent: RegistrationInterface|undefined = popupsData?.registration;
+  const advantagesList = computed(() => {
+    if (popupsData?.registration?.promo?.advantages?.length) return popupsData.registration.promo.advantages;
+    return defaultLocalePopupsData?.registration?.promo?.advantages || [];
+  });
 </script>
 
 <style lang="scss">

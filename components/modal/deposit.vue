@@ -1,34 +1,36 @@
 <template>
   <vue-final-modal
     v-model="modals.deposit"
-    @beforeOpen="showForm = true"
-    @closed="showForm = false"
-    esc-to-close
+    class="modal-deposit"
+    :clickToClose="false"
   >
-    <div class="modal-deposit">
-      <div v-if="isLoggedIn" class="container">
-        <div class="slot">
-          <balance>
-            <form-input-payments
-              :items="depositMethods"
-              v-model:activeMethod="currentMethod"
-            />
-          </balance>
+    <div class="container">
+      <div class="slot">
+        <balance>
+          <form-input-payments
+            :items="depositMethods"
+            v-model:activeMethod="currentMethod"
+          />
+        </balance>
+      </div>
+
+      <div class="scroll">
+        <div class="header">
+          <button-modal-close @close="closeModal('deposit')"/>
+          <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'deposit.title') }}</div>
         </div>
 
-        <div class="scroll">
-          <div class="header">
-            <button-modal-close @close="closeModal('deposit')"/>
-            <div class="title">{{ depositContent?.title }}</div>
-          </div>
-          <form-deposit :key="methodKey" v-if="showForm && currentMethod.type === 'form'" v-bind="currentMethod"/>
-          <!--          <form-deposit-additional/>-->
-          <form-deposit-crypto
-            v-if="showForm && currentMethod.type === 'address'"
-            v-bind="currentMethod"
-            :key="`${currentMethod.method}-${methodKey}`"
-          />
-        </div>
+        <form-deposit
+          :key="methodKey"
+          v-if="currentMethod.type === 'form'"
+          v-bind="currentMethod"
+        />
+        <!--          <form-deposit-additional/>-->
+        <form-deposit-crypto
+          v-if="currentMethod.type === 'address'"
+          v-bind="currentMethod"
+          :key="`${currentMethod.method}-${methodKey}`"
+        />
       </div>
     </div>
   </vue-final-modal>
@@ -37,20 +39,17 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { PaymentMethodInterface } from '@platform/frontend-core/dist/module';
-  import { DepositInterface } from '~/types';
+  import { VueFinalModal } from 'vue-final-modal';
 
   const layoutStore = useLayoutStore();
-  const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { modals } = storeToRefs(layoutStore);
-  const { isLoggedIn } = storeToRefs(profileStore);
   const { closeModal } = layoutStore;
   const { depositMethods } = storeToRefs(walletStore);
   const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
-  const showForm = ref<boolean>(false);
 
-  const { popupsData } = useGlobalStore();
-  const depositContent: DepositInterface | undefined = popupsData?.deposit;
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   const methodKey = ref<number>(0);
   watch(() => depositMethods.value, () => {
