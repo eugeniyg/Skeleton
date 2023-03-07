@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <table-bonuses-history :items="bonusesHistoryTb"/>
+    <!--<table-bonuses-history :items="bonusesHistoryTb"/>-->
 
     <atomic-empty variant="bonuses" sub-title="You have not received bonuses yet."/>
   </div>
