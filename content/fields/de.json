@@ -111,7 +111,7 @@
   },
   "password": {
     "label": "Passwort",
-    "placeholder": "Enter your password"
+    "placeholder": ""
   },
   "profession": {
     "label": "Profession",
