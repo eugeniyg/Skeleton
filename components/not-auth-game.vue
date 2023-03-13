@@ -29,6 +29,22 @@
         {{ headerContent?.loginButton || defaultLocaleHeaderContent?.loginButton }}
       </button-base>
     </div>
+
+    <!-- TPBE-1644
+    <div class="actions">
+      <button-base type="primary" size="lg">
+        <atomic-icon id="play" />
+        Registration
+      </button-base>
+
+      <button-base
+        type="secondary"
+        size="lg"
+      >
+        Demo
+      </button-base>
+    </div>
+    -->
   </div>
 </template>
 

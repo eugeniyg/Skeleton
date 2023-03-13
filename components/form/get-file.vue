@@ -74,13 +74,6 @@
 </script>
 
 <style lang="scss">
-@mixin line-clamp($rows: 3) {
-  display: -webkit-box;
-  -webkit-line-clamp: $rows;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
 .get-file {
   padding: rem(24px);
   background-color: var(--gray-900);
