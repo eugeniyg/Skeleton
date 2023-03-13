@@ -2,10 +2,18 @@
   <header class="app-header">
     <atomic-logo/>
 
+    <atomic-vertical-divider/>
+
     <button-search
       data-show="mobile"
       @show-search="toggle"
       :is-active="isShowSearch"
+    />
+
+    <atomic-gift-notification
+      v-if="isLoggedIn"
+      display="mobile"
+      :is-active="isBonusExist"
     />
 
     <div class="items">
@@ -13,10 +21,16 @@
         :isShow="isShowSearch"
         @hideSearch="isShowSearch = false"
       />
+
       <button-search
         data-show="desktop"
         @show-search="toggle"
         :is-active="isShowSearch"
+      />
+
+      <atomic-gift-notification
+        display="desktop"
+        :is-active="isBonusExist"
       />
 
       <template v-if="isLoggedIn">
@@ -84,6 +98,8 @@
 
   const isShowSearch = ref<boolean>(false);
 
+  const isBonusExist = ref<boolean>(false);
+
   const toggle = () => {
     isShowSearch.value = !isShowSearch.value;
   };
@@ -114,7 +130,7 @@
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
   background-color: var(--black-primary);
   z-index: var(--header-z-index, 2);
-  grid-column-gap: rem(12px);
+  grid-column-gap: 2px;
 
   max-width: var(--container-max-width);
   width: 100%;
