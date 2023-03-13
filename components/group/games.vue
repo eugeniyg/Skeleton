@@ -227,15 +227,15 @@
     display: var(--display, flex);
     align-items: center;
     overflow-x: auto;
-    margin: 0 rem(-16px) 0;
-    padding: 0 rem(16px);
+    margin: rem(-16px) rem(-16px) 0;
+    padding: rem(16px) rem(16px) 0;
     scroll-padding: rem(16px);
     grid-column-gap: 8px;
     scroll-snap-type: x mandatory;
 
     @include media(sm) {
-      margin: 0;
-      padding: 0;
+      margin: rem(-16px) 0 0 0;
+      padding: rem(16px) 0 0 0;
       grid-column-gap: 16px;
       scroll-padding: 0;
     }

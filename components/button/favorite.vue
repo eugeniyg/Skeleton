@@ -7,14 +7,14 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps<{gameId: string}>();
+  const props = defineProps<{ gameId: string }>();
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
 
   const isActive = computed(() => favoriteGames.value.map((game) => game.id).includes(props.gameId));
 
-  const toggleFavorite = async ():Promise<void> => {
+  const toggleFavorite = async (): Promise<void> => {
     if (favoriteGames.value.find((game) => game.id === props.gameId)) {
       await gameStore.deleteFavoriteGame(props.gameId);
     } else await gameStore.setFavoriteGame(props.gameId);
@@ -23,29 +23,22 @@
 
 <style lang="scss">
 .btn-favorite {
-  @include box(24px);
-  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   @extend %skip-btn;
-  @extend %flex-all-center;
-  transition: all .2s ease-in-out;
-  box-shadow: var(--shadow, unset);
+  @include box(24px);
   padding: 0;
+  border-radius: 8px;
+  background-color: var(--bgc, transparent);
+  transition: all .2s ease-in-out;
+  --icon-size: 20px;
+  --color: var(--violet-100);
 
-  --icon-size: #{rem(18px)};
-  --padding: 0;
-  --color: var(--gray-400);
-
-  &:hover {
-    cursor: pointer;
-    --bg: var(--gray-800);
-
-    .icon {
-      --icon-color: var(--yellow-500);
-    }
-  }
-
-  &.active {
-    .icon {
+  @include use-hover {
+    &:hover {
+      cursor: pointer;
+      --bgc: var(--violet-900);
       --color: var(--yellow-500);
     }
   }

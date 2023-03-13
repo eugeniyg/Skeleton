@@ -1,7 +1,6 @@
 @use "variables";
 @use "colors";
 @use "sass:math";
-//@use "font-icons";
 
 @function strip-unit($num) {
   @if type-of($num) == 'number' and not unitless($num) {
@@ -147,4 +146,11 @@
   &:after {
     right: 0;
   }
+}
+
+@mixin line-clamp($rows: 3) {
+  display: -webkit-box;
+  -webkit-line-clamp: $rows;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
