@@ -497,6 +497,11 @@ export interface CurrencyTabsInterface {
   cryptoTab: string
 }
 
+export interface CurrencyEmptyInterface {
+  title: string,
+  description: string
+}
+
 export interface GlobalComponentsInterface {
   benefits: BenefitsContentInterface,
   promotions: PromotionsContentInterface,
@@ -504,7 +509,10 @@ export interface GlobalComponentsInterface {
   categories: GameCategoryInterface[],
   turbogames: TurbogamesGroupInterface,
   gameTags: GameTagInterface[],
-  currencyTabs: CurrencyTabsInterface,
+  currency: {
+    tabs: CurrencyTabsInterface,
+    empty: CurrencyEmptyInterface
+  }
   globalSeo: SeoContentInterface,
 }
 

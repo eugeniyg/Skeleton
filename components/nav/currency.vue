@@ -28,10 +28,15 @@
             <span class="label">{{ currency.code }}</span>
           </div>
         </div>
-        <div class="nav-currency__plug" v-if="!selectedItems.length && !cryptoCurrencies.length">
+
+        <div class="nav-currency__plug" v-if="selected === 'crypto' && !cryptoCurrencies.length">
           <img class="nav-currency__plug-img" src="@/assets/img/currency-plug.svg" alt="">
-          <h4 class="nav-currency__plug-title">Done!</h4>
-          <p class="nav-currency__plug-text">You have already added all currencies</p>
+          <h4 class="nav-currency__plug-title">
+            {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'currency.empty.title') }}
+          </h4>
+          <p class="nav-currency__plug-text">
+            {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'currency.empty.description') }}
+          </p>
         </div>
       </div>
     </div>
@@ -51,7 +56,12 @@
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
   const { accounts } = storeToRefs(walletStore);
-  const { currencies } = storeToRefs(globalStore);
+  const {
+    currencies,
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+  } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
 
   const accountCurrencies = computed(() => accounts.value.map((account) => account.currency));
 
