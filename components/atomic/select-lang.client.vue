@@ -41,6 +41,7 @@
   const languageFlagsMap = {
     en: 'us',
     de: 'de',
+    uk: 'ua',
   };
 
   const route = useRoute();
