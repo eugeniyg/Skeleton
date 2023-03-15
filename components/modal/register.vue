@@ -1,26 +1,27 @@
 <template>
   <vue-final-modal
     v-model="modals.register"
-    @beforeOpen="showForm = true"
-    @closed="popupClosed"
-    esc-to-close
+    class="modal-register"
+    displayDirective="show"
+    @closed="closedEvent"
+    :clickToClose="false"
   >
-    <div class="modal-register">
-      <div class="container">
-        <div class="slot">
-          <atomic-promo/>
+    <div class="container">
+      <div class="slot">
+        <atomic-promo/>
+      </div>
+
+      <div class="scroll">
+        <div class="header">
+          <button-modal-close @close="openCancelModal"/>
+          <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'registration.title') }}</div>
         </div>
 
-        <div class="scroll">
-          <div class="header">
-            <button-modal-close @close="openCancelModal"/>
-            <div class="title">{{ registrationContent?.title }}</div>
-          </div>
-          <form-join
-            v-if="showForm && registrationFields.length"
-            :registrationFields="registrationFields"
-          />
-        </div>
+        <form-join
+          v-if="registrationFields.length"
+          :registrationFields="registrationFields"
+          :key="formKey"
+        />
       </div>
     </div>
   </vue-final-modal>
@@ -29,28 +30,26 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { FieldInterface } from '@platform/frontend-core/dist/module';
-  import { RegistrationInterface } from '~/types';
+  import { VueFinalModal } from 'vue-final-modal';
 
-  const showForm = ref<boolean>(false);
+  const formKey = ref<number>(0);
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal, showModal } = layoutStore;
-  const { popupsData } = useGlobalStore();
-  const registrationContent: RegistrationInterface|undefined = popupsData?.registration;
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   const openCancelModal = () => {
     closeModal('register');
     showModal('registerCancel');
   };
 
-  const popupClosed = () => {
-    if (!modals.value.registerCancel) {
-      showForm.value = false;
-    }
+  const closedEvent = ():void => {
+    if (!modals.value.registerCancel) formKey.value += 1;
   };
 
   watch(() => modals.value.registerCancel, (newValue: boolean) => {
-    if (!newValue) showForm.value = false;
+    if (!newValue && !modals.value.register) formKey.value += 1;
   });
 
   const registrationFields = ref<FieldInterface[]>([]);
@@ -63,11 +62,6 @@
 
 <style lang="scss">
 .modal-register {
-  height: 100%;
-  display: flex;
-  overflow: hidden;
-  align-items: center;
-
   .container {
     display: flex;
     overflow: hidden;

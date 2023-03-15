@@ -1,8 +1,13 @@
 <template>
   <div class="group-favorites">
-    <atomic-icon v-if="groupContent?.favorites" :id="groupContent.favorites.icon"/>
+    <atomic-icon
+      v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.favorites')"
+      :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.favorites.icon')"
+    />
 
-    <h2 class="title">{{ groupContent?.favorites.label }}</h2>
+    <h2 class="title">
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.favorites.label') }}
+    </h2>
 
     <button-base
       v-if="showAllBtn"
@@ -10,7 +15,7 @@
       url="/favorites"
       type="ghost"
     >
-      {{ groupContent?.moreButton }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
     <div class="items" ref="container">
@@ -25,10 +30,9 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { CardsGroupInterface } from '~/types';
 
-  const { globalComponentsContent } = useGlobalStore();
-  const groupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
@@ -60,18 +64,13 @@
     "items items items items"
     "btn-show-all btn-show-all btn-show-all btn-show-all";
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
-  grid-column-gap: var(--column-gap, #{rem(8px)});
-  grid-row-gap: var(--row-gap, #{rem(16px)});
+  grid-column-gap: var(--column-gap, 8px);
 
   @include media(xs) {
     grid-template-areas:
     "icon heading heading arrows"
     "items items items items"
     "btn-show-all btn-show-all btn-show-all btn-show-all";
-
-    > .btn-show-all {
-      padding: rem(4px) rem(16px);
-    }
   }
 
   @include media(sm) {
@@ -93,7 +92,7 @@
   > .icon {
     display: none;
     grid-area: icon;
-    --iccon-size: #{rem(20px)};
+    --icon-size: 20px;
     --color: var(--gray-400);
 
     @include media(sm) {
@@ -101,17 +100,20 @@
     }
   }
 
-  > .btn-show-all {
+  .btn-show-all {
     grid-area: btn-show-all;
     @include font($heading-1);
+    transform: translateX(8px);
+    margin-top: 4px;
+    --padding: 4px 16px;
 
     --font-size: #{rem(12px)};
     --color: var(--gray-500);
     --width: 100%;
 
-    @include media(xs) {
-      padding: 0;
-      --bg: transparent;
+    @include media(sm) {
+      margin-top: 0;
+      background: none;
 
       &:hover {
         --color: var(--white);
@@ -136,7 +138,10 @@
     grid-area: items;
     display: var(--display, flex);
     align-items: flex-start;
-    //@extend %cards-items-negative;
+
+    @include media(sm) {
+      margin-top: 16px;
+    }
   }
 }
 </style>

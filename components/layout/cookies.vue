@@ -4,15 +4,22 @@
       <atomic-icon id="cookies"/>
     </div>
 
-    <div v-if="cookiePopupContent?.text" class="text" v-html="marked.parse(cookiePopupContent.text)" />
-    <button-base type="primary" size="md" @click="acceptCookie">{{ cookiePopupContent?.acceptButton }}</button-base>
+    <div
+      v-if="cookiePopupContent?.text || defaultLocaleCookiePopupContent?.text"
+      class="text"
+      v-html="marked.parse(cookiePopupContent?.text || defaultLocaleCookiePopupContent?.text)"
+    />
+
+    <button-base type="primary" size="md" @click="acceptCookie">
+      {{ cookiePopupContent?.acceptButton || defaultLocaleCookiePopupContent?.acceptButton }}
+    </button-base>
   </div>
 </template>
 
 <script setup lang="ts">
   import { marked } from 'marked';
 
-  const { cookiePopupContent } = useGlobalStore();
+  const { cookiePopupContent, defaultLocaleCookiePopupContent } = useGlobalStore();
   const layoutStore = useLayoutStore();
   const acceptCookie = ():void => {
     const userCookie = useCookie('accept-cookie', { maxAge: 60 * 60 * 24 * 365 * 10 });

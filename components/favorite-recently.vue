@@ -26,11 +26,15 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { GameInterface } from '@platform/frontend-core/dist/module';
-  import { CardsGroupInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent, isMobile, headerCountry } = storeToRefs(globalStore);
-  const groupContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
+  const {
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+    isMobile,
+    headerCountry,
+  } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
@@ -38,13 +42,13 @@
   const selectedTabs = ref<string[]>([]);
 
   const favoritesItem = {
-    title: groupContent?.favorites.label,
-    icon: groupContent?.favorites.icon,
+    title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'cardsGroup.favorites.label'),
+    icon: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'cardsGroup.favorites.icon'),
     id: 'favorites',
   };
   const recentlyItem = {
-    title: groupContent?.recentlyPlayed.label,
-    icon: groupContent?.recentlyPlayed.icon,
+    title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'cardsGroup.recentlyPlayed.label'),
+    icon: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'cardsGroup.recentlyPlayed.icon'),
     id: 'recently-played',
   };
 
@@ -86,9 +90,14 @@
   padding: rem(16px) rem(16px) rem(8px);
   background-color: var(--gray-900);
 
+  @include media(sm) {
+    padding: rem(16px) rem(24px);
+  }
+
   .header {
     @extend %flex-items-center;
-    padding: var(--padding, 0 0 8px 0);
+    grid-column-gap: 4px;
+    margin-bottom: 16px;
 
     @include media(sm) {
       display: none;
@@ -111,8 +120,6 @@
   }
 
   @include media(sm) {
-    padding-bottom: rem(16px);
-
     .content {
       display: grid;
       grid-auto-flow: column;

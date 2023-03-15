@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="header">
-      <h1 class="heading">{{ walletContent?.title }}</h1>
+      <h1 class="heading">{{ walletContent?.title || defaultLocaleWalletContent?.title }}</h1>
 
       <button-base
         id="open-currency-nav"
@@ -10,7 +10,7 @@
         :isDisabled="currencyNavEmpty"
         @click="openCurrNav"
       >
-        <atomic-icon id="plus"/>{{ walletContent?.addButton }}
+        <atomic-icon id="plus"/>{{ walletContent?.addButton || defaultLocaleWalletContent?.addButton }}
       </button-base>
     </div>
 
@@ -22,7 +22,7 @@
           v-for="account in orderedAccounts"
           :key="account.id"
           v-bind="account"
-          :content="walletContent"
+          :content="walletContent || defaultLocaleWalletContent"
         />
       </TransitionGroup>
     </div>
@@ -35,10 +35,17 @@
   import { ProfileWalletInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { currentLocale } = storeToRefs(globalStore);
-  const walletContentRequest = await useAsyncData('walletContent', () => queryContent(`profile/${currentLocale.value?.code}`).only(['wallet']).findOne());
-  const walletContent:ProfileWalletInterface|undefined = walletContentRequest.data.value?.wallet;
-  const { setPageSeo } = useProjectMethods();
+  const { contentLocalesArray } = storeToRefs(globalStore);
+  const {
+    setPageSeo,
+    findLocalesContentData,
+  } = useProjectMethods();
+  const walletContentRequest = await useAsyncData('walletContent', () => queryContent('profile')
+    .where({ locale: { $in: contentLocalesArray.value } })
+    .only(['locale', 'wallet']).find());
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(walletContentRequest.data.value);
+  const walletContent: Maybe<ProfileWalletInterface> = currentLocaleData?.wallet;
+  const defaultLocaleWalletContent: Maybe<ProfileWalletInterface> = defaultLocaleData?.wallet;
   setPageSeo(walletContent?.seo);
 
   const walletStore = useWalletStore();

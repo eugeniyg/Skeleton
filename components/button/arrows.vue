@@ -67,6 +67,7 @@
     &[disabled] {
       --color: var(--gray-600);
       --bg: var(--gray-800);
+      cursor: default;
     }
   }
 

@@ -6,7 +6,9 @@
       <h2 class="title">
         {{ gameCategoriesObj[props.category.identity]?.label || props.category.name || props.category.identity }}
       </h2>
-      <h4 class="sub-title">{{ cardsGroupContent?.recommendedSubtitle }}</h4>
+      <h4 class="sub-title">
+        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.recommendedSubtitle') }}
+      </h4>
     </div>
 
     <h2 v-else class="title">
@@ -19,7 +21,7 @@
       type="ghost"
       @click="openGames"
     >
-      {{ cardsGroupContent?.moreButton }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
     <button-arrows
@@ -44,7 +46,7 @@
       </template>
 
       <template v-else>
-        <div v-for="n in 9" :key="n" class="card-base" />
+        <div v-for="n in 9" :key="n" class="card-base"/>
       </template>
 
       <div class="load-more" ref="loadMore"/>
@@ -56,7 +58,6 @@
   import {
     GameInterface, PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
-  import { CardsGroupInterface } from '~/types';
 
   const props = defineProps({
     category: {
@@ -77,8 +78,8 @@
     },
   });
 
-  const { globalComponentsContent, gameCategoriesObj } = useGlobalStore();
-  const cardsGroupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = useGlobalStore();
+  const { getContent } = useProjectMethods();
   const titleIcon = gameCategoriesObj[props.category.identity]?.icon;
 
   const scrollContainer = ref();
@@ -89,7 +90,7 @@
   const pageMeta = ref<PaginationMetaInterface>();
   const { getFilteredGames } = useCoreGamesApi();
 
-  const scrollHandler = ():void => {
+  const scrollHandler = (): void => {
     if (!scrollContainer.value) return;
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
@@ -97,7 +98,7 @@
       && pageMeta.value?.page === pageMeta.value?.totalPages;
   };
 
-  const clickAction = (direction: string):void => {
+  const clickAction = (direction: string): void => {
     const { offsetWidth } = scrollContainer.value;
     scrollContainer.value.scrollBy({
       left: direction === 'next' ? offsetWidth : -offsetWidth,
@@ -105,7 +106,7 @@
     });
   };
 
-  const moreGames = async ():Promise<void> => {
+  const moreGames = async (): Promise<void> => {
     if (pageMeta.value?.page === pageMeta.value?.totalPages) return;
 
     const gamesResponse = await getFilteredGames({
@@ -140,7 +141,7 @@
   });
 
   const { localizePath } = useProjectMethods();
-  const openGames = ():void => {
+  const openGames = (): void => {
     const router = useRouter();
     router.push(localizePath(`/games?category=${props.category.identity}`));
   };
@@ -180,7 +181,7 @@
     }
   }
 
-  > .btn-show-all {
+  .btn-show-all {
     grid-area: btn-show-all;
     @include font($heading-1);
 
@@ -190,10 +191,15 @@
 
     @include media(xs) {
       padding: 0;
-      --bg: transparent;
+      background: none;
+    }
+
+    @include media(sm) {
+      @include upd-font($heading-2);
 
       &:hover {
         --color: var(--white);
+        --bg: transparent;
       }
     }
   }
@@ -221,15 +227,15 @@
     display: var(--display, flex);
     align-items: center;
     overflow-x: auto;
-    margin: 0 rem(-16px) 0;
-    padding: 0 rem(16px);
+    margin: rem(-16px) rem(-16px) 0;
+    padding: rem(16px) rem(16px) 0;
     scroll-padding: rem(16px);
     grid-column-gap: 8px;
     scroll-snap-type: x mandatory;
 
     @include media(sm) {
-      margin: 0;
-      padding: 0;
+      margin: rem(-16px) 0 0 0;
+      padding: rem(16px) 0 0 0;
       grid-column-gap: 16px;
       scroll-padding: 0;
     }

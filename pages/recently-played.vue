@@ -1,12 +1,12 @@
 <template>
   <div class="recently-played">
-    <div class="recently-played__title">{{ recentlyContent?.title }}</div>
+    <div class="recently-played__title">{{ recentlyContent?.title || defaultLocaleRecentlyContent?.title }}</div>
 
     <atomic-empty
       v-if="!recentlyGames.length && !loadingData"
-      :title="recentlyContent?.empty.title"
-      :subTitle="recentlyContent?.empty.description"
-      :image="recentlyContent?.empty.image"
+      :title="getContent(recentlyContent, defaultLocaleRecentlyContent, 'empty.title')"
+      :subTitle="getContent(recentlyContent, defaultLocaleRecentlyContent, 'empty.description')"
+      :image="getContent(recentlyContent, defaultLocaleRecentlyContent, 'empty.image')"
     />
 
     <list-grid
@@ -33,10 +33,18 @@
   import { RecentlyPageInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { currentLocale, isMobile, headerCountry } = storeToRefs(globalStore);
-  const recentlyContentRequest = await useAsyncData('recentlyContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['recentlyPage']).findOne());
-  const recentlyContent:RecentlyPageInterface|undefined = recentlyContentRequest.data.value?.recentlyPage;
-  const { setPageSeo } = useProjectMethods();
+  const { isMobile, headerCountry, contentLocalesArray } = storeToRefs(globalStore);
+  const {
+    setPageSeo,
+    findLocalesContentData,
+    getContent,
+  } = useProjectMethods();
+  const recentlyContentRequest = await useAsyncData('recentlyContent', () => queryContent('page-controls')
+    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'recentlyPage']).find());
+
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(recentlyContentRequest.data.value);
+  const recentlyContent: Maybe<RecentlyPageInterface> = currentLocaleData?.recentlyPage;
+  const defaultLocaleRecentlyContent: Maybe<RecentlyPageInterface> = defaultLocaleData?.recentlyPage;
   setPageSeo(recentlyContent?.seo);
 
   const { gameCollections } = useGamesStore();

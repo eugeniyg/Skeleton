@@ -1,3 +1,4 @@
+// eslint-disable-next-line consistent-return
 export default defineNuxtRouteMiddleware((to, from) => {
   const cookieLanguage = useCookie('user-language');
   const { getSessionToken } = useCoreAuthStore();

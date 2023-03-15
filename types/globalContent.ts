@@ -92,7 +92,7 @@ interface LinkInterface {
   gameList?: string[]
 }
 
-interface MenuItemInterface {
+export interface MenuItemInterface {
   label: string,
   url?: string,
   items?: LinkInterface[]

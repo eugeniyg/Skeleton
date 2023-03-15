@@ -29,20 +29,27 @@ interface GlobalStoreStateInterface {
   currencies: CurrencyInterface[],
   locales: LocaleInterface[],
   countries: CountryInterface[],
-  settingsConstants: CoreConstantsInterface|undefined,
-  defaultLocale: LocaleInterface|undefined,
+  settingsConstants: Maybe<CoreConstantsInterface>,
+  defaultLocale: Maybe<LocaleInterface>,
   isMobile: boolean,
   browserLanguage: string,
   baseApiUrl: string,
   validationMessages: ValidationMessageInterface|{},
-  fieldsContent: FieldsContentInterface|undefined,
-  layoutData: MainLayoutInterface|undefined,
-  popupsData: PopupsInterface|undefined,
-  alertsData: AlertsListInterface|undefined,
-  globalComponentsContent: GlobalComponentsInterface|undefined,
-  headerCountry: string|undefined,
+  defaultLocaleValidationMessages: ValidationMessageInterface|{},
+  fieldsContent: Maybe<FieldsContentInterface>,
+  defaultLocaleFieldsContent: Maybe<FieldsContentInterface>,
+  layoutData: Maybe<MainLayoutInterface>,
+  defaultLocaleLayoutData: Maybe<MainLayoutInterface>,
+  popupsData: Maybe<PopupsInterface>,
+  defaultLocalePopupsData: Maybe<PopupsInterface>,
+  alertsData: Maybe<AlertsListInterface>,
+  defaultLocaleAlertsData: Maybe<AlertsListInterface>,
+  globalComponentsContent: Maybe<GlobalComponentsInterface>,
+  defaultLocaleGlobalComponentsContent: Maybe<GlobalComponentsInterface>,
+  headerCountry: Maybe<string>,
   pagesWithoutLocale: string[],
-  errorPageContent: ErrorPageInterface|undefined,
+  errorPageContent: Maybe<ErrorPageInterface>,
+  defaultLocaleErrorPageContent: Maybe<ErrorPageInterface>,
 }
 
 export const useGlobalStore = defineStore('globalStore', {
@@ -56,11 +63,17 @@ export const useGlobalStore = defineStore('globalStore', {
       browserLanguage: 'en',
       baseApiUrl: '',
       validationMessages: {},
+      defaultLocaleValidationMessages: {},
       fieldsContent: undefined,
+      defaultLocaleFieldsContent: undefined,
       layoutData: undefined,
+      defaultLocaleLayoutData: undefined,
       popupsData: undefined,
+      defaultLocalePopupsData: undefined,
       alertsData: undefined,
+      defaultLocaleAlertsData: undefined,
       globalComponentsContent: undefined,
+      defaultLocaleGlobalComponentsContent: undefined,
       headerCountry: undefined,
       pagesWithoutLocale: [
         'verify-confirmCode',
@@ -71,14 +84,24 @@ export const useGlobalStore = defineStore('globalStore', {
         'locale-questions',
       ],
       errorPageContent: undefined,
+      defaultLocaleErrorPageContent: undefined,
     }),
 
   getters: {
-    currentLocale(state):LocaleInterface|undefined {
+    currentLocale(state): Maybe<LocaleInterface> {
       const route = useRoute();
       const findLocale = state.locales.find((locale) => locale.code === route.params.locale);
       if (route.params.locale && findLocale) return findLocale;
       return state.defaultLocale;
+    },
+    contentLocalesArray(state): string[] {
+      const localesArr:string[] = [];
+      if (this.currentLocale?.code) localesArr.push(this.currentLocale?.code);
+      if (state.defaultLocale?.code && state.defaultLocale?.code !== this.currentLocale?.code) {
+        localesArr.push(state.defaultLocale?.code);
+      }
+
+      return localesArr;
     },
     currenciesSelectOptions(state):CurrencyInterface[] {
       return state.currencies.map((currency) => ({ ...currency, value: currency.code }));
@@ -98,35 +121,57 @@ export const useGlobalStore = defineStore('globalStore', {
       }));
       return zonesArr || [];
     },
-    headerContent(state): HeaderInterface|undefined {
+    headerContent(state): Maybe<HeaderInterface> {
       return state.layoutData?.header;
     },
-    sidebarContent(state):SiteSidebarInterface|undefined {
+    defaultLocaleHeaderContent(state): Maybe<HeaderInterface> {
+      return state.defaultLocaleLayoutData?.header;
+    },
+    sidebarContent(state): Maybe<SiteSidebarInterface> {
       return state.layoutData?.siteSidebar;
     },
-    userNavigationContent(state):UserNavigationInterface|undefined {
+    defaultLocaleSidebarContent(state): Maybe<SiteSidebarInterface> {
+      return state.defaultLocaleLayoutData?.siteSidebar;
+    },
+    userNavigationContent(state): Maybe<UserNavigationInterface> {
       return state.layoutData?.userNavigation;
     },
-    footerContent(state):FooterInterface|undefined {
+    defaultLocaleUserNavigationContent(state): Maybe<UserNavigationInterface> {
+      return state.defaultLocaleLayoutData?.userNavigation;
+    },
+    footerContent(state): Maybe<FooterInterface> {
       return state.layoutData?.footer;
     },
-    cookiePopupContent(state):CookiePopupInterface|undefined {
+    defaultLocaleFooterContent(state): Maybe<FooterInterface> {
+      return state.defaultLocaleLayoutData?.footer;
+    },
+    cookiePopupContent(state): Maybe<CookiePopupInterface> {
       return state.layoutData?.cookiePopup;
     },
-    mobileMenuContent(state):MobileMenuInterface|undefined {
+    defaultLocaleCookiePopupContent(state): Maybe<CookiePopupInterface> {
+      return state.defaultLocaleLayoutData?.cookiePopup;
+    },
+    mobileMenuContent(state): Maybe<MobileMenuInterface> {
       return state.layoutData?.mobileMenu;
+    },
+    defaultLocaleMobileMenuContent(state): Maybe<MobileMenuInterface> {
+      return state.defaultLocaleLayoutData?.mobileMenu;
     },
     gameCategoriesObj(state):{ [key: string]: GameCategoryInterface } {
       const categoriesObj:any = {};
-      if (state.globalComponentsContent?.categories) {
-        state.globalComponentsContent?.categories.forEach((category) => {
+
+      const categoriesContent = state.globalComponentsContent?.categories
+          || state.defaultLocaleGlobalComponentsContent?.categories;
+
+      if (categoriesContent) {
+        categoriesContent.forEach((category) => {
           categoriesObj[category.identity] = category;
         });
       }
       return categoriesObj;
     },
-    globalSeo(state):SeoContentInterface|undefined {
-      return state.globalComponentsContent?.globalSeo;
+    globalSeo(state): Maybe<SeoContentInterface> {
+      return state.globalComponentsContent?.globalSeo || state.defaultLocaleGlobalComponentsContent?.globalSeo;
     },
     playerStatuses(state):StatusInterface[] {
       return state.settingsConstants?.player.playerStatuses || [];
@@ -180,22 +225,67 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getGlobalContent():Promise<void> {
-      const [validationsResponse, fieldsDataResponse, layoutDataResponse, popupsDataResponse, alertsDataResponse, globalContentResponse, errorPageResponse] = await Promise.allSettled([
-        queryContent(`validations/${this.currentLocale?.code}`).findOne(),
-        queryContent(`fields/${this.currentLocale?.code}`).findOne(),
-        queryContent(`main-layout/${this.currentLocale?.code}`).findOne(),
-        queryContent(`popups/${this.currentLocale?.code}`).findOne(),
-        queryContent(`alerts/${this.currentLocale?.code}`).findOne(),
-        queryContent(`global-components/${this.currentLocale?.code}`).findOne(),
-        queryContent(`page-controls/${this.currentLocale?.code}`).only(['errorPage']).findOne(),
+      const { findLocalesContentData } = useProjectMethods();
+
+      const [
+        validationsResponse,
+        fieldsDataResponse,
+        layoutDataResponse,
+        popupsDataResponse,
+        alertsDataResponse,
+        globalContentResponse,
+        errorPageResponse,
+      ] = await Promise.allSettled([
+        queryContent('validations').where({ locale: { $in: this.contentLocalesArray } }).find(),
+        queryContent('fields').where({ locale: { $in: this.contentLocalesArray } }).find(),
+        queryContent('main-layout').where({ locale: { $in: this.contentLocalesArray } }).find(),
+        queryContent('popups').where({ locale: { $in: this.contentLocalesArray } }).find(),
+        queryContent('alerts').where({ locale: { $in: this.contentLocalesArray } }).find(),
+        queryContent('global-components').where({ locale: { $in: this.contentLocalesArray } }).find(),
+        queryContent('page-controls').where({ locale: { $in: this.contentLocalesArray } }).only(['locale', 'errorPage']).find(),
       ]);
-      if (validationsResponse.status !== 'rejected') this.validationMessages = validationsResponse.value;
-      if (fieldsDataResponse.status !== 'rejected') this.fieldsContent = (fieldsDataResponse.value as unknown) as FieldsContentInterface;
-      if (layoutDataResponse.status !== 'rejected') this.layoutData = (layoutDataResponse.value as unknown) as MainLayoutInterface;
-      if (popupsDataResponse.status !== 'rejected') this.popupsData = (popupsDataResponse.value as unknown) as PopupsInterface;
-      if (alertsDataResponse.status !== 'rejected') this.alertsData = (alertsDataResponse.value as unknown) as AlertsListInterface;
-      if (globalContentResponse.status !== 'rejected') this.globalComponentsContent = (globalContentResponse.value as unknown) as GlobalComponentsInterface;
-      if (errorPageResponse.status !== 'rejected') this.errorPageContent = (errorPageResponse.value.errorPage as unknown) as ErrorPageInterface;
+
+      if (validationsResponse.status !== 'rejected') {
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(validationsResponse.value);
+        this.validationMessages = currentLocaleData as ValidationMessageInterface;
+        this.defaultLocaleValidationMessages = defaultLocaleData as ValidationMessageInterface;
+      }
+
+      if (fieldsDataResponse.status !== 'rejected') {
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(fieldsDataResponse.value);
+        this.fieldsContent = currentLocaleData as FieldsContentInterface;
+        this.defaultLocaleFieldsContent = defaultLocaleData as FieldsContentInterface;
+      }
+
+      if (layoutDataResponse.status !== 'rejected') {
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(layoutDataResponse.value);
+        this.layoutData = currentLocaleData as MainLayoutInterface;
+        this.defaultLocaleLayoutData = defaultLocaleData as MainLayoutInterface;
+      }
+
+      if (popupsDataResponse.status !== 'rejected') {
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(popupsDataResponse.value);
+        this.popupsData = currentLocaleData as PopupsInterface;
+        this.defaultLocalePopupsData = defaultLocaleData as PopupsInterface;
+      }
+
+      if (alertsDataResponse.status !== 'rejected') {
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(alertsDataResponse.value);
+        this.alertsData = currentLocaleData as AlertsListInterface;
+        this.defaultLocaleAlertsData = defaultLocaleData as AlertsListInterface;
+      }
+
+      if (globalContentResponse.status !== 'rejected') {
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(globalContentResponse.value);
+        this.globalComponentsContent = currentLocaleData as GlobalComponentsInterface;
+        this.defaultLocaleGlobalComponentsContent = defaultLocaleData as GlobalComponentsInterface;
+      }
+
+      if (errorPageResponse.status !== 'rejected') {
+        const { currentLocaleData, defaultLocaleData } = findLocalesContentData(errorPageResponse.value);
+        this.errorPageContent = currentLocaleData?.errorPage as ErrorPageInterface;
+        this.defaultLocaleErrorPageContent = defaultLocaleData?.errorPage as ErrorPageInterface;
+      }
     },
 
     getRequestCountry():void {

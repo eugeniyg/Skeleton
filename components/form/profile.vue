@@ -9,8 +9,8 @@
         isDisabled
         :verifyButton="props.verifyButton"
         :hint="emailHint"
-        :label="fieldsContent?.email?.label || ''"
-        :placeholder="fieldsContent?.email?.placeholder || ''"
+        :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.label') || ''"
+        :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.placeholder') || ''"
         name="email"
       />
     </div>
@@ -25,9 +25,9 @@
         v-for="field in rowsFields.slice(2 * (n - 1), 2 * (n - 1) + 2)"
         :key="field.name"
         :type="fieldsTypeMap[field.name].type || 'text'"
-        :label="fieldsContent?.[field.name]?.label || ''"
+        :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) || ''"
         :name="field.name"
-        :placeholder="fieldsContent?.[field.name]?.placeholder || ''"
+        :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.placeholder`) || ''"
         :isRequired="profileFormRules[field.name]?.hasOwnProperty('required')"
         :options="selectOptions[field.name]"
         :hint="setError(field.name)"
@@ -80,7 +80,7 @@
   const globalStore = useGlobalStore();
 
   const { selectOptions, profileFields } = storeToRefs(fieldsStore);
-  const { fieldsContent } = storeToRefs(globalStore);
+  const { fieldsContent, defaultLocaleFieldsContent } = storeToRefs(globalStore);
 
   const fieldsWithValue = profileFields.value.map((field) => ({ ...field, value: profile.value?.[field.name] }));
   const cleanFields = fieldsWithValue.filter((field) => !hideFields.includes(field.name));
@@ -92,7 +92,7 @@
 
   const emit = defineEmits(['toggle-profile-edit']);
   const profileFormData = reactive(setFormData(cleanFields));
-  const { getFormRules, createValidationRules } = useProjectMethods();
+  const { getFormRules, createValidationRules, getContent } = useProjectMethods();
   const profileRules = createValidationRules(cleanFields, true);
   const profileFormRules = getFormRules(profileRules);
   const {

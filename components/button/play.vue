@@ -1,42 +1,127 @@
 <template>
   <button class="btn-play" @click="onClick">
-    <atomic-icon id="play"/>
+    <span class="icon-box">
+      <atomic-icon id="play"/>
+    </span>
   </button>
 </template>
 
 <script setup lang="ts">
   const emit = defineEmits(['game-play']);
 
-  function onClick(e:Event):void {
+  function onClick(e: Event): void {
     emit('game-play', e);
   }
 </script>
 
 <style lang="scss">
 .btn-play {
-  @include box(40px);
+  display: flex;
+  position: relative;
+  padding: 0;
   @extend %skip-btn;
   @extend %flex-all-center;
   border-radius: 50%;
-  background-color: var(--bg, var(--yellow-500));
-  box-shadow: var(--shadow, unset);
-  transition: all .2s ease-in-out;
+  margin: auto;
+  align-self: center;
+  justify-self: center;
+  transition: opacity .4s ease-in-out;
+  opacity: var(--play-btn-opacity, 1);
+  --glow-offset: 0;
 
-  --padding: 0 0;
-  --color: var(--gray-900);
-  --icon-size: #{rem(24px)};
-  --width: #{rem(56px)};
-  --height: #{rem(56px)};
+  &:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(100% + var(--glow-offset));
+    height: calc(100% + var(--glow-offset));
+    background-image: linear-gradient(224.62deg, rgba(255, 193, 46, 0.24) 26.06%, rgba(255, 69, 71, 0.24) 116.69%);
+    border-radius: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    opacity: 0;
+  }
+
+  .icon-box {
+    width: var(--icon-box-size);
+    height: var(--icon-box-size);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    background-image: var(--bgi, var(--gradient-radial));
+    border-radius: 50%;
+    transition: all .2s ease;
+    --icon-box-size: 48px;
+
+    [data-size="min"] & {
+      --icon-box-size: 48px;
+    }
+
+    [data-size="def"] & {
+      --icon-box-size: 64px;
+    }
+
+    [data-size="max"] & {
+      --icon-box-size: 96px;
+    }
+  }
+
+  .icon {
+    transform: translateX(1px);
+    width: var(--icon-size);
+    height: var(--icon-size);
+    --icon-size: 24px;
+
+    [data-size="min"] & {
+      --icon-size: 24px;
+    }
+
+    [data-size="def"] & {
+      --icon-size: 32px;
+    }
+
+    [data-size="max"] & {
+      --icon-size: 48px;
+    }
+  }
 
   &:hover {
     cursor: pointer;
-    --shadow: 0 0 0 3px var(--yellow-900);
+    --glow-offset: 12px;
+    --bgi: var(--gradient-radial-hover);
+
+    [data-size="min"] & {
+      --glow-offset: 12px;
+    }
+
+    [data-size="def"] & {
+      --glow-offset: 16px;
+    }
+
+    [data-size="max"] & {
+      --glow-offset: 20px;
+    }
+
+    &:before {
+      animation: pulse-border 2000ms ease-out infinite;
+    }
   }
 
-  &:active, &.is-active {
-    --bg: var(--yellow-600);
-    --color: var(--gray-900);
-    --shadow: inset 0 2px 0px var(--yellow-700);
+  &:active {
+    --bgi: var(--gradient-radial-focus);
+  }
+}
+
+@keyframes pulse-border {
+  0% {
+    transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.5);
+    opacity: 0;
   }
 }
 </style>

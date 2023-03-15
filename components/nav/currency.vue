@@ -2,19 +2,17 @@
   <teleport to="body">
     <div class="nav-currency" @mouseleave="close">
       <div class="header">
-        <template v-if="cryptoCurrencies.length">
-          <button-base
-            v-for="{id, title} in props.tabs"
-            :key="id"
-            :id="id"
-            type="ghost"
-            size="sm"
-            :is-active="selected === id"
-            @click="select(id)"
-          >
-            {{ title }}
-          </button-base>
-        </template>
+        <button-base
+          v-for="{id, title} in props.tabs"
+          :key="id"
+          :id="id"
+          type="ghost"
+          size="sm"
+          :is-active="selected === id"
+          @click="select(id)"
+        >
+          {{ title }}
+        </button-base>
       </div>
 
       <div class="content">
@@ -25,10 +23,20 @@
             class="item"
             @click="addCurrency(currency)"
           >
-            <img class="img" :src="`/img/currency/${currency.code}.svg`" />
+            <img class="img" :src="`/img/currency/${currency.code}.svg`" alt=""/>
             <span class="title">{{ currency.name }}</span>
             <span class="label">{{ currency.code }}</span>
           </div>
+        </div>
+
+        <div class="nav-currency__plug" v-if="selected === 'crypto' && !cryptoCurrencies.length">
+          <img class="nav-currency__plug-img" src="@/assets/img/currency-plug.svg" alt="">
+          <h4 class="nav-currency__plug-title">
+            {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'currency.empty.title') }}
+          </h4>
+          <p class="nav-currency__plug-text">
+            {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'currency.empty.description') }}
+          </p>
         </div>
       </div>
     </div>
@@ -48,7 +56,12 @@
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
   const { accounts } = storeToRefs(walletStore);
-  const { currencies } = storeToRefs(globalStore);
+  const {
+    currencies,
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+  } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
 
   const accountCurrencies = computed(() => accounts.value.map((account) => account.currency));
 
@@ -63,7 +76,7 @@
       emit('toggleNavEmpty', true);
     } else emit('toggleNavEmpty', false);
 
-    if (selected.value === 'all' || !cryptoCurrencies.value.length) return filteredCurrencies.value;
+    if (selected.value === 'all') return filteredCurrencies.value;
     return cryptoCurrencies.value;
   });
 
@@ -191,6 +204,29 @@
     @include box(24px);
     display: block;
     margin-right: rem(8px);
+  }
+
+  &__plug {
+    padding: 24px 16px;
+    text-align: center;
+
+    &-img {
+      @include box(156px);
+      display: block;
+      margin: 0 auto;
+    }
+
+    &-title {
+      @include font($heading-4);
+      color: var(--gray-500);
+      margin: 16px 0 0;
+    }
+
+    &-text {
+      @include font($body-2);
+      color: var(--gray-600);
+      margin: 8px 0 0;
+    }
   }
 }
 </style>

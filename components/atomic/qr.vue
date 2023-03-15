@@ -16,7 +16,7 @@
   import { DepositInterface } from '~/types';
 
   const props = defineProps<{
-    content: DepositInterface|undefined,
+    content: Maybe<DepositInterface>,
     qrLink: string
   }>();
 </script>

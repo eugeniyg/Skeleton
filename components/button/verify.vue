@@ -33,7 +33,7 @@
   }
 
   &:active, &.is-active {
-    --bg: var(--gradient-radisl-focus);
+    --bg: var(--gradient-radial-focus);
     --color: var(--gray-900);
   }
 }

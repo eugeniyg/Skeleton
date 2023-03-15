@@ -1,6 +1,6 @@
 <template>
   <div class="category">
-    <nav-cat @clickCategory="changeCategory" />
+    <nav-cat @clickCategory="changeCategory"/>
 
     <atomic-cat-heading
       v-if="gameCategoriesObj[activeCollection?.identity]"
@@ -9,28 +9,28 @@
       {{ gameCategoriesObj[activeCollection?.identity].label || activeCollection?.name }}
     </atomic-cat-heading>
 
-    <form-input-search
-      v-model:value="searchValue"
-      :placeholder="headerContent?.search.placeholder"
-      @input="searchInput"
-    />
+    <div class="game-filter">
+      <div class="game-filter__search">
+        <form-input-search
+          v-model:value="searchValue"
+          :placeholder="getContent(headerContent, defaultLocaleHeaderContent, 'search.placeholder')"
+          @input="searchInput"
+        />
 
-    <div class="filters">
-      <form-input-dropdown
-        :value="currentProvider.id"
-        name="providers"
-        placeholder="Providers"
-        :options="providerDropdownOptions"
-        @input="changeProvider"
-        isFitContent
-      />
-
+        <form-input-dropdown
+          :value="currentProvider.id"
+          name="providers"
+          placeholder="Providers"
+          :options="providerDropdownOptions"
+          @input="changeProvider"
+        />
+      </div>
       <atomic-game-sort
-        v-if="gamesContent?.sortOptions?.length"
+        v-if="getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions')?.length"
         :sortOrderValue="sortOrder"
         :sortByValue="sortBy"
         @change="changeSort"
-        v-bind="gamesContent"
+        v-bind="gamesContent?.sortOptions?.length ? gamesContent : defaultLocaleGamesContent"
       />
     </div>
 
@@ -43,12 +43,12 @@
 
     <atomic-empty
       v-if="!gameItems.length && !loadingGames"
-      :title="gamesContent?.empty.title"
-      :subTitle="gamesContent?.empty.description"
-      :image="gamesContent?.empty.image"
+      :title="getContent(gamesContent, defaultLocaleGamesContent, 'empty.title')"
+      :subTitle="getContent(gamesContent, defaultLocaleGamesContent, 'empty.description')"
+      :image="getContent(gamesContent, defaultLocaleGamesContent, 'empty.image')"
     />
 
-    <atomic-seo-text v-if="gamesContent?.seo?.text" v-bind="gamesContent?.seo?.text" />
+    <atomic-seo-text v-if="gamesContent?.seo?.text" v-bind="gamesContent?.seo?.text"/>
   </div>
 </template>
 
@@ -65,21 +65,35 @@
   import { CategoryGamesInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { currentLocale, gameCategoriesObj, headerContent } = storeToRefs(globalStore);
-  const gamesContentRequest = await useAsyncData('gamesContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['gamesPage']).findOne());
-  const gamesContent:CategoryGamesInterface|undefined = gamesContentRequest.data.value?.gamesPage;
-  const { setPageSeo } = useProjectMethods();
+  const {
+    gameCategoriesObj,
+    headerContent,
+    defaultLocaleHeaderContent,
+    contentLocalesArray,
+  } = storeToRefs(globalStore);
+
+  const {
+    setPageSeo,
+    getContent,
+    findLocalesContentData,
+  } = useProjectMethods();
+  const gamesContentRequest = await useAsyncData('gamesContent', () => queryContent('page-controls')
+    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'gamesPage']).find());
+
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(gamesContentRequest.data.value);
+  const gamesContent: Maybe<CategoryGamesInterface> = currentLocaleData?.gamesPage;
+  const defaultLocaleGamesContent: Maybe<CategoryGamesInterface> = defaultLocaleData?.gamesPage;
   setPageSeo(gamesContent?.seo);
 
   const { gameCollections } = useGamesStore();
   const { selectOptions } = useFieldsStore();
-  const providerDropdownOptions:GameProviderInterface[] = [
+  const providerDropdownOptions: GameProviderInterface[] = [
     {
       id: 'all',
-      name: gamesContent?.providersLabel || 'All Providers',
+      name: gamesContent?.providersLabel || defaultLocaleGamesContent?.providersLabel || 'All Providers',
       identity: 'all',
       code: 'all',
-      value: gamesContent?.providersLabel || 'All Providers',
+      value: gamesContent?.providersLabel || defaultLocaleGamesContent?.providersLabel || 'All Providers',
     },
     ...selectOptions.providers,
   ];
@@ -92,20 +106,22 @@
     });
   }
 
-  const activeCollection = ref<CollectionInterface|undefined>(
+  const activeCollection = ref<CollectionInterface | undefined>(
     gameCollections.find(
       (collection) => collection.identity === route.query.category,
     ) || gameCollections[0],
   );
 
-  const currentProvider = ref<GameProviderInterface|undefined>(
+  const currentProvider = ref<GameProviderInterface | undefined>(
     providerDropdownOptions.find(
       (provider: GameProviderInterface) => provider.identity === route.query.provider,
     ) || providerDropdownOptions[0],
   );
 
-  const sortBy = ref<string|undefined>(route.query.sortBy as string || gamesContent?.sortOptions?.[0]?.sortBy || 'default');
-  const sortOrder = ref<string|undefined>(route.query.sortOrder as string || gamesContent?.sortOptions?.[0]?.sortOrder || 'asc');
+  const sortBy = ref<string | undefined>(route.query.sortBy as string
+    || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortBy') || 'default');
+  const sortOrder = ref<string | undefined>(route.query.sortOrder as string
+    || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortOrder') || 'asc');
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
   const gameItems = ref<GameInterface[]>([]);
@@ -173,7 +189,7 @@
     setItems(response);
   };
 
-  const changeSort = async (...args:any): Promise<void> => {
+  const changeSort = async (...args: any): Promise<void> => {
     const [by, order] = args;
     loadPage.value = 1;
     sortBy.value = by;
@@ -197,7 +213,7 @@
     setItems(response, true);
   };
 
-  watch(() => route.query.category as string, async (newValue:string) => {
+  watch(() => route.query.category as string, async (newValue: string) => {
     if ((route.name === 'games' || route.name === 'locale-games') && route.query.category !== activeCollection.value?.identity) {
       await changeCategory(newValue);
     }
@@ -218,15 +234,75 @@
     --margin-top: 0;
     --margin-bottom: 0;
   }
+}
 
-  .filters {
-    display: grid;
-    grid-gap: rem(16px);
+.game-filter {
+  display: flex;
+  justify-content: space-between;
+  grid-column-gap: 40px;
+  grid-row-gap: 16px;
+  flex-wrap: wrap;
 
-    @include media(xs) {
-      display: flex;
-      justify-content: space-between;
-      --select-width: auto;
+  .icon {
+    --icon-size: 20px;
+  }
+
+  &__search {
+    display: flex;
+    flex-grow: 1;
+
+    .input-search {
+      flex-grow: 1;
+
+      .field {
+        border-radius: 12px 0 0 12px;
+      }
+    }
+  }
+
+  .dropdown {
+    --select-width: auto;
+
+    .selected {
+      border-radius: 0 16px 16px 0;
+      height: 100%;
+      min-height: auto;
+      border-left-color: var(--gray-700);
+      padding: 8px 8px 8px 16px;
+
+      //span {
+      //  max-width: none;
+      //  overflow: unset;
+      //}
+
+      .icon {
+        position: relative;
+        right: 0;
+      }
+    }
+
+    .items {
+      border-radius: 8px;
+      right: 0;
+      width: auto;
+      left: auto;
+    }
+
+    .item {
+      span {
+        max-width: none;
+        overflow: unset;
+      }
+
+      .icon {
+        --icon-transform: rotate(0) translatex(0);
+      }
+    }
+
+    &.is-open {
+      .selected {
+        border-left-color: var(--white);
+      }
     }
   }
 }

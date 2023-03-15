@@ -2,7 +2,7 @@
   <form class="form-deposit">
     <form-input-number
       :hint="fieldHint"
-      :label="depositContent?.sumLabel || ''"
+      :label="getContent(popupsData, defaultLocalePopupsData, 'deposit.sumLabel') || ''"
       name="depositSum"
       :min="formatAmountMin.amount"
       :max="formatAmountMax.amount"
@@ -12,9 +12,9 @@
       :is-bigger="true"
     />
 
-    <template v-if="depositContent?.bonuses?.length">
+    <template v-if="bonusesList?.length">
       <atomic-divider/>
-      <template v-for="(bonus, index) in depositContent?.bonuses" :key="index">
+      <template v-for="(bonus, index) in bonusesList" :key="index">
         <atomic-bonus v-bind="bonus" />
         <atomic-divider />
       </template>
@@ -25,7 +25,7 @@
       v-model:value="hasBonusCode"
       @change="hasBonusCode = !hasBonusCode"
     >
-      {{ depositContent?.togglerLabel || '' }}
+      {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.togglerLabel') || '' }}
     </form-input-toggle>
 
     <form-bonus-code
@@ -40,14 +40,13 @@
       @click="getDeposit"
     >
       <atomic-spinner :is-shown="isSending"/>
-      {{ depositContent?.depositButton }} {{ buttonAmount }} {{ defaultInputSum.currency }}
+      {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.depositButton') }} {{ buttonAmount }} {{ defaultInputSum.currency }}
     </button-base>
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { DepositInterface } from '~/types';
 
   const props = defineProps<{
     amountMax?: number,
@@ -55,18 +54,19 @@
     method?: string
   }>();
 
-  const { popupsData, alertsData } = useGlobalStore();
-  const depositContent: DepositInterface|undefined = popupsData?.deposit;
+  const {
+    popupsData, defaultLocalePopupsData, alertsData, defaultLocaleAlertsData,
+  } = useGlobalStore();
 
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
 
-  const { formatBalance, getMainBalanceFormat } = useProjectMethods();
+  const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
   const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
   const fieldHint = computed(() => ({
-    message: `${depositContent?.minSum || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
+    message: `${getContent(popupsData, defaultLocalePopupsData, 'deposit.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
@@ -83,13 +83,18 @@
   const buttonDisabled = computed(() => amountValue.value < formatAmountMin.amount
     || amountValue.value > formatAmountMax.amount || isSending.value);
 
+  const bonusesList = computed(() => {
+    if (popupsData?.deposit?.bonuses?.length) return popupsData.deposit.bonuses;
+    return defaultLocalePopupsData?.deposit?.bonuses || [];
+  });
+
   const getDeposit = async ():Promise<void> => {
     if (buttonDisabled.value) return;
 
     const profileStore = useProfileStore();
-    if (profileStore.playerStatusName === 'Limited' && activeAccountType.value === 'fiat') {
+    if (profileStore.profile?.status === 2 && activeAccountType.value === 'fiat') {
       const { showAlert } = useLayoutStore();
-      showAlert(alertsData?.limitedDeposit);
+      showAlert(alertsData?.limitedDeposit || defaultLocaleAlertsData?.limitedDeposit);
       return;
     }
 

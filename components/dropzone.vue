@@ -22,10 +22,10 @@
       </div>
 
       <form-input-file
-        :placeholder="documentsContent?.uploadPlaceholder"
-        :hint="documentsContent?.uploadHint"
-        :uploadButton="documentsContent?.uploadButton"
-        :uploadMore="documentsContent?.uploadMore"
+        :placeholder="documentsContent?.uploadPlaceholder || defaultLocaleDocumentsContent?.uploadPlaceholder"
+        :hint="documentsContent?.uploadHint || defaultLocaleDocumentsContent?.uploadHint"
+        :uploadButton="documentsContent?.uploadButton || defaultLocaleDocumentsContent?.uploadButton"
+        :uploadMore="documentsContent?.uploadMore || defaultLocaleDocumentsContent?.uploadMore"
         :showMoreButton="!!props.fileList?.length"
         :loading="props.loading"
         @change="addFiles"
@@ -48,7 +48,8 @@
   const emit = defineEmits(['remove', 'change']);
 
   const isActive = ref(false);
-  const documentsContent:ProfileDocumentsInterface|undefined = inject('documentsContent');
+  const documentsContent: Maybe<ProfileDocumentsInterface> = inject('documentsContent');
+  const defaultLocaleDocumentsContent: Maybe<ProfileDocumentsInterface> = inject('defaultLocaleDocumentsContent');
   const errorFiles = computed(() => props.fileList.filter((file) => file.error));
 
   const dropzoneClasses = computed(() => ({

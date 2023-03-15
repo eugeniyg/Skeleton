@@ -24,8 +24,8 @@
   const emit = defineEmits(['logout']);
   const { localizePath } = useProjectMethods();
   const { closeUserNav } = useLayoutStore();
-  const { userNavigationContent } = useGlobalStore();
-  const profileLinks = userNavigationContent?.profileLinks || [];
+  const { userNavigationContent, defaultLocaleUserNavigationContent } = useGlobalStore();
+  const profileLinks = userNavigationContent?.profileLinks || defaultLocaleUserNavigationContent?.profileLinks || [];
 
   function clickItem(url: string):void {
     const router = useRouter();
@@ -48,10 +48,11 @@
   top: rem(64px);
   right: 0;
   height: calc(var(--vh, 1vh) * 100);
-  position: fixed;
+  position: absolute;
   align-items: flex-start;
   visibility: var(--nav-user-visibility, hidden);
-  transform: translateX(var(--nav-user-translate-x, 100%));
+  transform: translateX(var(--nav-user-translate-x, 100%)) rotateY(var(--nav-user-rotate-y, 90deg));
+  transform-origin: right;
   transition: all .4s  ease-in;
 
   @include media(sm) {
@@ -61,6 +62,7 @@
     right: rem(32px);
     top: rem(56px);
     max-width: 198px;
+    --nav-user-translate-x: 0;
   }
 
   .items {

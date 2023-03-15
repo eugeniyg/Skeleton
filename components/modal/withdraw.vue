@@ -1,29 +1,26 @@
 <template>
   <vue-final-modal
     v-model="modals.withdraw"
-    @beforeOpen="showForm = true"
-    @closed="showForm = false"
-    esc-to-close
+    class="modal-withdraw"
+    :clickToClose="false"
   >
-    <div class="modal-withdraw">
-      <div v-if="isLoggedIn" class="container">
-        <div class="slot">
-          <balance withdraw>
-            <form-input-payments
-              :items="withdrawMethods"
-              v-model:activeMethod="currentMethod"
-            />
-          </balance>
+    <div class="container">
+      <div class="slot">
+        <balance withdraw>
+          <form-input-payments
+            :items="withdrawMethods"
+            v-model:activeMethod="currentMethod"
+          />
+        </balance>
+      </div>
+
+      <div class="scroll">
+        <div class="header">
+          <button-modal-close @close="closeModal('withdraw')"/>
+          <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'withdraw.title') }}</div>
         </div>
 
-        <div class="scroll">
-          <div class="header">
-            <button-modal-close @close="closeModal('withdraw')"/>
-            <div class="title">{{ withdrawContent?.title }}</div>
-          </div>
-
-          <form-withdraw v-if="showForm" :key="currentMethod.method" v-bind="currentMethod" />
-        </div>
+        <form-withdraw :key="currentMethod.method" v-bind="currentMethod" />
       </div>
     </div>
   </vue-final-modal>
@@ -32,20 +29,17 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { PaymentMethodInterface } from '@platform/frontend-core/dist/module';
-  import { WithdrawInterface } from '~/types';
+  import { VueFinalModal } from 'vue-final-modal';
 
   const layoutStore = useLayoutStore();
-  const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { modals } = storeToRefs(layoutStore);
-  const { isLoggedIn } = storeToRefs(profileStore);
   const { closeModal } = layoutStore;
   const { withdrawMethods } = storeToRefs(walletStore);
-  const showForm = ref<boolean>(false);
   const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
 
-  const { popupsData } = useGlobalStore();
-  const withdrawContent: WithdrawInterface|undefined = popupsData?.withdraw;
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   watch(() => withdrawMethods.value, () => {
     currentMethod.value = withdrawMethods.value[0] || {};
@@ -55,11 +49,14 @@
 <style lang="scss">
 .modal-withdraw {
   @extend %modal;
-  max-width: rem(400px);
-  width: 100%;
 
-  @include media(md) {
-    max-width: rem(664px);
+  .vfm__content {
+    max-width: rem(400px);
+    width: 100%;
+
+    @include media(md) {
+      max-width: rem(664px);
+    }
   }
 
   .titles {

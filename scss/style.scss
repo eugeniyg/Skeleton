@@ -99,6 +99,8 @@ body {
   &.nav-user-open {
     --nav-user-visibility: visible;
     --nav-user-translate-x: 0;
+    --nav-user-translate-y: 0deg;
+    --nav-user-rotate-y: 0;
     --opacity-layer-visibility: visible;
     --header-z-index: 3;
     --close-decor-index: 2;
@@ -163,8 +165,8 @@ body {
   pointer-events: var(--main-pointer-events, initial);
   position: relative;
   z-index: 0;
-  overflow: hidden;
   min-height: rem(375px);
+  overflow: hidden;
 
   &.is-overflow {
     overflow: hidden;

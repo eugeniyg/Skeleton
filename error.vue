@@ -1,15 +1,20 @@
 <template>
   <div class="not-found">
     <img class="img" src="@/assets/img/404.png" />
-    <div class="title">{{ errorPageContent?.title || pageStaticContent.title }}</div>
-    <p class="text">{{ errorPageContent?.description || pageStaticContent.description }}</p>
+    <div class="title">
+      {{ errorPageContent?.title || defaultLocaleErrorPageContent?.title || pageStaticContent.title }}
+    </div>
+
+    <p class="text">
+      {{ errorPageContent?.description || defaultLocaleErrorPageContent?.description || pageStaticContent.description }}
+    </p>
 
     <button-base
       type="primary"
       size="md"
       @click="goHome"
     >
-      {{ errorPageContent?.button?.label || pageStaticContent.button.label }}
+      {{ getContent(errorPageContent, defaultLocaleErrorPageContent, 'button.label') || pageStaticContent.button.label }}
     </button-base>
 
     <dev-only>
@@ -41,10 +46,13 @@
   };
 
   const globalStore = useGlobalStore();
-  const { errorPageContent } = storeToRefs(globalStore);
+  const { errorPageContent, defaultLocaleErrorPageContent } = storeToRefs(globalStore);
 
-  const { localizePath } = useProjectMethods();
-  const goHome = () => clearError({ redirect: localizePath(errorPageContent.value?.button.url || pageStaticContent.button.url) });
+  const { localizePath, getContent } = useProjectMethods();
+  const goHome = () => clearError({
+    redirect: localizePath(getContent(errorPageContent.value, defaultLocaleErrorPageContent.value, 'button.url')
+      || pageStaticContent.button.url),
+  });
 </script>
 
 <style lang="scss" scoped>
