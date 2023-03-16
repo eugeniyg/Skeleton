@@ -86,6 +86,9 @@ html {
   scroll-behavior: smooth;
 }
 
+html, body {
+  overscroll-behavior: none;
+}
 
 //@import "ds/mixins";
 //@import "ds/placeholders";
