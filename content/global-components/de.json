@@ -168,8 +168,8 @@
       "cryptoTab": "Crypto"
     },
     "empty": {
-      "title": "Готово!",
-      "description": "Ви додали всі валюти!"
+      "title": "Done!",
+      "description": "You have already added all currencies"
     }
   },
   "globalSeo": {
