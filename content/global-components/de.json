@@ -116,16 +116,6 @@
       "icon": "bonuses"
     }
   ],
-  "currency": {
-    "tabs": {
-      "allTab": "All",
-      "cryptoTab": "Crypto"
-    },
-    "empty": {
-      "title": "Done!",
-      "description": "You have already added all currencies"
-    }
-  },
   "promotions": {
     "label": "Slotsbet promotions",
     "icon": "bonuses",
@@ -171,6 +161,16 @@
         }
       }
     ]
+  },
+  "currency": {
+    "tabs": {
+      "allTab": "All",
+      "cryptoTab": "Crypto"
+    },
+    "empty": {
+      "title": "Готово!",
+      "description": "Ви додали всі валюти!"
+    }
   },
   "globalSeo": {
     "title": "Slotsbet",
