@@ -9,7 +9,7 @@
     <button-base
       v-if="getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0')"
       class="item"
-      :class="{ active: $route.path === localizePath(getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.url'))}"
+      :class="{ active: $route.path === localizePath(getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.url')) || $route.query.category}"
       @click="clickItem(getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.url'))"
     >
       <atomic-icon
