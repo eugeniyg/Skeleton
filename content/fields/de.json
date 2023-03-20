@@ -121,6 +121,9 @@
     "label": "Nationality",
     "placeholder": "Enter your nationality"
   },
+  "receiveBonus": {
+    "label": "Receive bonuses"
+  },
   "email": {
     "label": "Email Address",
     "placeholder": "Enter your email"
