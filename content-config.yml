@@ -316,6 +316,10 @@ collections:
         label: Receive Sms Promo
         widget: object
         fields: *fieldsArray
+      - name: receiveBonus
+        label: Receive Bonus
+        widget: object
+        fields: *fieldsArray
       - name: phone
         label: Phone
         widget: object

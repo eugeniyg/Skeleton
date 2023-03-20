@@ -66,23 +66,21 @@
       <atomic-divider/>
     </template>
 
-    <template v-if="subscriptionFields.length">
-      <h4 class="heading">{{ infoContent?.subscriptionTitle || defaultLocaleInfoContent?.subscriptionTitle }}</h4>
+    <h4 class="heading">{{ infoContent?.subscriptionTitle || defaultLocaleInfoContent?.subscriptionTitle }}</h4>
 
-      <div class="group">
-        <form-input-toggle
-          v-for="field in subscriptionFields"
-          :key="field.name"
-          :name="field.name"
-          :value="profile[field.name]"
-          @change="changeSubscription(field.name)"
-        >
-          {{ getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) }}
-        </form-input-toggle>
+    <div class="group">
+      <form-input-toggle
+        v-for="field in subscriptionFields"
+        :key="field.name"
+        :name="field.name"
+        :value="profile[field.name]"
+        @change="changeSubscription(field.name)"
+      >
+        {{ getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) }}
+      </form-input-toggle>
 
-        <atomic-divider/>
-      </div>
-    </template>
+      <atomic-divider/>
+    </div>
 
     <h4 class="heading">{{ infoContent?.manageTitle || defaultLocaleInfoContent?.manageTitle }}</h4>
 
@@ -132,7 +130,12 @@
     const countryObject: Maybe<CountryInterface> = countries.value.find((country) => country.code === profile.value?.country);
     return countryObject?.nativeName || '';
   });
-  const subscriptionFields = computed(() => profileFields.value.filter((field) => field.name === 'receiveSmsPromo' || field.name === 'receiveEmailPromo'));
+
+  const receiveBonusField = { isRequired: false, name: 'receiveBonus' };
+  const subscriptionFields = computed(() => {
+    const receiveFields = profileFields.value.filter((field) => field.name === 'receiveSmsPromo' || field.name === 'receiveEmailPromo');
+    return [...receiveFields, receiveBonusField];
+  });
 
   const toggleProfileEdit = ():void => {
     window.scroll(0, 0);
