@@ -78,5 +78,18 @@
     "type": "error",
     "title": "Error",
     "description": "Sorry, but your account is blocked. Please, contact our support team for more information."
+  },
+  "bonusActivated": {
+    "type": "done",
+    "title": "Active",
+    "description": "The bonus has been activated"
+  },
+  "bonusNotAvailable": {
+    "type": "pending",
+    "title": "Sorry, but the bonus with the entered bonus code is not available for you."
+  },
+  "bonusIncorrect": {
+    "type": "error",
+    "title": "Sorry, but you entered the incorrect bonus code."
   }
 }
