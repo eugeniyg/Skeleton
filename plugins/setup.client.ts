@@ -24,7 +24,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     }
   };
 
-  const { getFavoriteGames } = useGamesStore();
   nuxtApp.hook('app:mounted', async () => {
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
@@ -32,9 +31,9 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     const sessionToken = getSessionToken();
 
     if (sessionToken) {
-      const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
-      subscribeAccountSocket();
-      subscribeInvoicesSocket();
+      const { getFavoriteGames } = useGamesStore();
+      const { subscribeProfileSockets } = useProfileStore();
+      subscribeProfileSockets();
       getFavoriteGames();
     }
     const { subscribeWinnersSocket } = useGamesStore();

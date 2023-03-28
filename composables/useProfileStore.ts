@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
 import {
-  ProfileInterface, AuthorizationResponseInterface,
+  ProfileInterface,
+  AuthorizationResponseInterface,
+  WebSocketResponseInterface,
+  SocketBonusNotifyInterface,
 } from '@platform/frontend-core/dist/module';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useLayoutStore } from '~/composables/useLayoutStore';
@@ -13,6 +16,7 @@ interface ProfileStoreStateInterface {
   sessionId: string,
   resentVerifyEmail: boolean,
   profile: Maybe<ProfileInterface>,
+  bonusSubscription: any,
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -21,6 +25,7 @@ export const useProfileStore = defineStore('profileStore', {
     sessionId: '',
     resentVerifyEmail: false,
     profile: undefined,
+    bonusSubscription: undefined,
   }),
 
   getters: {
@@ -36,30 +41,42 @@ export const useProfileStore = defineStore('profileStore', {
       reconnectSocket();
     },
 
+    subscribeProfileSockets():void {
+      const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
+      subscribeAccountSocket();
+      subscribeInvoicesSocket();
+      this.subscribeBonusSocket();
+    },
+
+    unsubscribeProfileSockets():void {
+      const { unsubscribeAccountSocket, unsubscribeInvoiceSocket } = useWalletStore();
+      unsubscribeAccountSocket();
+      unsubscribeInvoiceSocket();
+      this.unsubscribeBonusSocket();
+    },
+
     async logIn(loginData:any):Promise<void> {
       const { submitLoginData } = useCoreAuthApi();
-      const { getUserAccounts, subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
+      const { getUserAccounts } = useWalletStore();
       const submitResult = await submitLoginData(loginData);
       this.startSession(submitResult);
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
-      subscribeAccountSocket();
-      subscribeInvoicesSocket();
+      this.subscribeProfileSockets();
       const { getFavoriteGames } = useGamesStore();
       getFavoriteGames();
     },
 
     async registration(registrationData:any):Promise<void> {
       const { submitRegistrationData } = useCoreAuthApi();
-      const { getUserAccounts, subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
+      const { getUserAccounts } = useWalletStore();
       const submitResult = await submitRegistrationData(registrationData);
       this.startSession(submitResult);
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
-      subscribeAccountSocket();
-      subscribeInvoicesSocket();
+      this.subscribeProfileSockets();
       const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
       showAlert(alertsData?.successRegistration || defaultLocaleAlertsData?.successRegistration);
@@ -82,9 +99,7 @@ export const useProfileStore = defineStore('profileStore', {
         await logOut();
       } finally {
         this.isLoggedIn = false;
-        const { unsubscribeAccountSocket, unsubscribeInvoiceSocket } = useWalletStore();
-        unsubscribeAccountSocket();
-        unsubscribeInvoiceSocket();
+        this.unsubscribeProfileSockets();
         const router = useRouter();
         const { localizePath } = useProjectMethods();
         router.push(localizePath('/'));
@@ -102,6 +117,44 @@ export const useProfileStore = defineStore('profileStore', {
         showAlert(alertsData?.somethingWrong || defaultLocaleAlertsData?.somethingWrong);
       } finally {
         this.resentVerifyEmail = true;
+      }
+    },
+
+    subscribeBonusSocket():void {
+      const profileStore = useProfileStore();
+      if (profileStore.profile?.id) {
+        const { createSubscription } = useWebSocket();
+        console.log('subscribe channel');
+        this.bonusSubscription = createSubscription(`bonus:player-bonus-codes#${profileStore.profile.id}`, this.showBonusNotification);
+      }
+    },
+
+    unsubscribeBonusSocket():void {
+      if (this.bonusSubscription) {
+        this.bonusSubscription.unsubscribe();
+        this.bonusSubscription.removeAllListeners();
+      }
+    },
+
+    showBonusNotification(webSocketResponse:WebSocketResponseInterface):void {
+      console.log('catch event');
+      const { showAlert } = useLayoutStore();
+      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+
+      const bonusNotificationData: Maybe<SocketBonusNotifyInterface> = webSocketResponse.data.playerBonusCode;
+
+      switch (bonusNotificationData?.status) {
+        case 1:
+          showAlert(alertsData?.bonusActivated || defaultLocaleAlertsData?.bonusActivated);
+          break;
+        case 2:
+          showAlert(alertsData?.bonusIncorrect || defaultLocaleAlertsData?.bonusIncorrect);
+          break;
+        case 3:
+          showAlert(alertsData?.bonusNotAvailable || defaultLocaleAlertsData?.bonusNotAvailable);
+          break;
+        default:
+          break;
       }
     },
   },
