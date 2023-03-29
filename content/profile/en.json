@@ -38,6 +38,13 @@
   },
   "bonuses": {
     "title": "Bonuses",
+    "historyLink": "See your bonuses history",
+    "bonusCode": {
+      "title": "Have a promocode?",
+      "timerText": "until the next try",
+      "buttonLabel": "Add",
+      "tryError": "The bonus code is incorrect. Try again after 3 minutes"
+    },
     "seo": {
       "title": "Slotsbet | Bonuses"
     }
