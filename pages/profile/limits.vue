@@ -278,7 +278,7 @@
     width: var(--card-width, 100%);
 
     @include media(xs) {
-      --card-width: calc(50% - 16px);
+      --card-width: calc(50% - 8px);
     }
 
     &.is-full-width {

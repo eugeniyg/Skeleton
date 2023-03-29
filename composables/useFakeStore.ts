@@ -1721,7 +1721,7 @@ export const useFakeStore = () => {
           items: [
             {
               title: '240 of 1000 EUR left',
-              subTitle: '23h 56m 39s until reset',
+              subTitle: '23h 56m 39s until activate',
               progress: 43.7,
               status: {
                 type: 'active',
@@ -1729,17 +1729,17 @@ export const useFakeStore = () => {
               },
             },
             {
-              title: '0 of 1000 CAD left',
-              subTitle: '24h 00m 00s until reset',
+              title: '1000 CAD',
+              subTitle: '23h 56m 39s until activate',
               progress: 0,
               status: {
                 type: 'pending',
-                title: 'Pending email confirmation for change to 100 EUR on 2022-04-20 14:10',
+                title: 'Pending till 2022-04-20 14.10',
               },
             },
             {
               title: '0 of 1000 CAD left',
-              subTitle: '24h 00m 00s until reset',
+              subTitle: '23h 56m 39s until activate',
               progress: 50,
               status: {
                 type: 'active',
@@ -1753,7 +1753,7 @@ export const useFakeStore = () => {
           items: [
             {
               title: '240 of 1000 EUR left',
-              subTitle: '23h 56m 39s until reset',
+              subTitle: '23h 56m 39s until activate',
               progress: 43.7,
               status: {
                 type: 'active',
@@ -1761,17 +1761,17 @@ export const useFakeStore = () => {
               },
             },
             {
-              title: '0 of 1000 CAD left',
-              subTitle: '24h 00m 00s until reset',
+              title: '240 of 1000 EUR left',
+              subTitle: '23h 56m 39s until activate',
               progress: 100,
               status: {
-                type: 'pending',
-                title: 'Pending email confirmation for change to 100 EUR on 2022-04-20 14:10',
+                type: 'active',
+                title: 'Pending till 2022-04-20 14.10',
               },
             },
             {
               title: '0 of 1000 CAD left',
-              subTitle: '24h 00m 00s until reset',
+              subTitle: '23h 56m 39s until activate',
               progress: 50,
               status: {
                 type: 'active',
@@ -1785,7 +1785,7 @@ export const useFakeStore = () => {
           items: [
             {
               title: '240 of 1000 EUR left',
-              subTitle: '23h 56m 39s until reset',
+              subTitle: '23h 56m 39s until activate',
               progress: 43.7,
               status: {
                 type: 'active',
@@ -1793,17 +1793,17 @@ export const useFakeStore = () => {
               },
             },
             {
-              title: '0 of 1000 CAD left',
-              subTitle: '24h 00m 00s until reset',
+              title: '1000 CAD',
+              subTitle: '23h 56m 39s until activate',
               progress: 0,
               status: {
                 type: 'pending',
-                title: 'Pending email confirmation for change to 100 EUR on 2022-04-20 14:10',
+                title: 'Pending till 2022-04-20 14.10',
               },
             },
             {
               title: '0 of 1000 CAD left',
-              subTitle: '24h 00m 00s until reset',
+              subTitle: '23h 56m 39s until activate',
               progress: 50,
               status: {
                 type: 'active',

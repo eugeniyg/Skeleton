@@ -134,7 +134,7 @@
       grid-column: 1/3;
 
       &.is-full {
-        --bg: var(--green-600);
+        --bg: var(--red-600);
       }
 
       &:after {
@@ -180,11 +180,11 @@
         }
 
         &--active {
-          --color: var(--green-500)
+          --bg: var(--green-500)
         }
 
         &--pending {
-          --color: var(--yellow-500)
+          --bg: var(--yellow-500)
         }
       }
     }

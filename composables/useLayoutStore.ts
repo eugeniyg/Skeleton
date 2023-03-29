@@ -16,6 +16,8 @@ interface ModalsInterface extends Record<string, any> {
   resetPass: boolean,
   success: boolean,
   withdraw: boolean,
+  editLimit: boolean,
+  editLimitConfirm: boolean,
 }
 
 interface ModalsUrlsInterface extends Record<string, any> {
@@ -63,6 +65,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         registerCancel: false,
         depositLimit: true,
         editLimit: true,
+        editLimitConfirm: true,
       },
       modalsUrl: {
         register: 'sign-up',
