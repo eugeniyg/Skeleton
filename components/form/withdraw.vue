@@ -1,7 +1,7 @@
 <template>
   <form>
     <form-input-number
-      :label="withdrawContent?.sumLabel || ''"
+      :label="getContent(popupsData, defaultLocalePopupsData, 'withdraw.sumLabel') || ''"
       name="withdrawSum"
       :min="formatAmountMin.amount"
       :max="formatAmountMax.amount"
@@ -15,9 +15,9 @@
       v-for="field in props.fields"
       :key="field.key"
       :name="field.key"
-      :label="fieldsContent?.[field.key]?.label || ''"
+      :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.key}.label`) || ''"
       type="text"
-      :placeholder="fieldsContent?.[field.key]?.placeholder || ''"
+      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.key}.placeholder`) || ''"
       v-model:value="withdrawFormData[field.key]"
       @focus="onFocus(field.key)"
       @blur="v$[field.key]?.$touch()"
@@ -30,14 +30,13 @@
       :isDisabled="buttonDisabled"
       @click="getWithdraw"
     >
-      {{ withdrawContent?.withdrawButton }} {{ buttonAmount }} {{ defaultInputSum.currency }}
+      {{ getContent(popupsData, defaultLocalePopupsData, 'withdraw.withdrawButton') }} {{ buttonAmount }} {{ defaultInputSum.currency }}
     </button-base>
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { WithdrawInterface } from '~/types';
 
   const props = defineProps({
     amountMax: {
@@ -60,21 +59,26 @@
 
   const globalStore = useGlobalStore();
   const {
-    popupsData, alertsData, fieldsContent,
+    popupsData,
+    defaultLocalePopupsData,
+    alertsData,
+    defaultLocaleAlertsData,
+    fieldsContent,
+    defaultLocaleFieldsContent,
   } = storeToRefs(globalStore);
-  const withdrawContent: Maybe<WithdrawInterface> = popupsData.value?.withdraw;
+
   const walletStore = useWalletStore();
   const { closeModal, showAlert } = useLayoutStore();
   const {
     activeAccount, activeAccountType,
   } = storeToRefs(walletStore);
 
-  const { formatBalance, getMainBalanceFormat } = useProjectMethods();
+  const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
   const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
   const activeAccountFormat = formatBalance(activeAccount.value?.currency, activeAccount.value?.balance);
   const fieldHint = computed(() => ({
-    message: `${withdrawContent?.minSum || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
+    message: `${getContent(popupsData, defaultLocalePopupsData, 'withdraw.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
@@ -122,12 +126,12 @@
     try {
       await withdrawAccount(params);
       closeModal('withdraw');
-      showAlert(alertsData.value?.withdrawalProcessed);
+      showAlert(alertsData.value?.withdrawalProcessed || defaultLocaleAlertsData.value?.withdrawalProcessed);
     } catch (err:any) {
       if (err.response?.status === 422) {
         serverFormErrors.value = err.data?.error?.fields;
       } else {
-        showAlert(alertsData.value?.somethingWrong);
+        showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
       }
       isSending.value = false;
     }

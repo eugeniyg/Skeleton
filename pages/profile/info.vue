@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="header">
-      <h1 class="heading">{{ infoContent?.title }}</h1>
+      <h1 class="heading">{{ infoContent?.title || defaultLocaleInfoContent?.title }}</h1>
 
       <button-base
         v-if="!isProfileEdit"
@@ -9,7 +9,7 @@
         size="md"
         @click="toggleProfileEdit"
       >
-        <atomic-icon id="edit"/>{{ infoContent?.editButton }}
+        <atomic-icon id="edit"/>{{ infoContent?.editButton || defaultLocaleInfoContent?.editButton }}
 
         <!--        <template v-if="isProfileEdit">-->
         <!--          <atomic-icon id="done"/>Done editing-->
@@ -24,7 +24,7 @@
     <form-profile
       v-if="isProfileEdit"
       @toggle-profile-edit="toggleProfileEdit"
-      v-bind="infoContent"
+      v-bind="infoContent || defaultLocaleInfoContent"
     />
 
     <template v-else>
@@ -55,7 +55,7 @@
               @click.once="profileStore.resendVerifyEmail"
               :class="{ disabled: resentVerifyEmail }"
             >
-              {{ infoContent?.sendButton }}
+              {{ infoContent?.sendButton || defaultLocaleInfoContent?.sendButton }}
             </span>
           </div>
         </div>
@@ -66,28 +66,26 @@
       <atomic-divider/>
     </template>
 
-    <template v-if="subscriptionFields.length">
-      <h4 class="heading">{{ infoContent?.subscriptionTitle }}</h4>
+    <h4 class="heading">{{ infoContent?.subscriptionTitle || defaultLocaleInfoContent?.subscriptionTitle }}</h4>
 
-      <div class="group">
-        <form-input-toggle
-          v-for="field in subscriptionFields"
-          :key="field.name"
-          :name="field.name"
-          :value="profile[field.name]"
-          @change="changeSubscription(field.name)"
-        >
-          {{ fieldsContent?.[field.name]?.label }}
-        </form-input-toggle>
+    <div class="group">
+      <form-input-toggle
+        v-for="field in subscriptionFields"
+        :key="field.name"
+        :name="field.name"
+        :value="profile[field.name]"
+        @change="changeSubscription(field.name)"
+      >
+        {{ getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) }}
+      </form-input-toggle>
 
-        <atomic-divider/>
-      </div>
-    </template>
+      <atomic-divider/>
+    </div>
 
-    <h4 class="heading">{{ infoContent?.manageTitle }}</h4>
+    <h4 class="heading">{{ infoContent?.manageTitle || defaultLocaleInfoContent?.manageTitle }}</h4>
 
     <button-base type="ghost" size="md" @click="profileStore.logOutUser">
-      <atomic-icon id="log-out"/>{{ userNavigationContent?.logoutButton }}
+      <atomic-icon id="log-out"/>{{ userNavigationContent?.logoutButton || defaultLocaleUserNavigationContent?.logoutButton }}
     </button-base>
   </div>
 </template>
@@ -98,9 +96,25 @@
   import { ProfileInfoInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const infoContentRequest = await useAsyncData('infoContent', () => queryContent(`profile/${globalStore.currentLocale?.code}`).only(['info']).findOne());
-  const infoContent: Maybe<ProfileInfoInterface> = infoContentRequest.data.value?.info;
-  const { setPageSeo } = useProjectMethods();
+  const {
+    countries,
+    fieldsContent,
+    defaultLocaleFieldsContent,
+    userNavigationContent,
+    defaultLocaleUserNavigationContent,
+    contentLocalesArray,
+  } = storeToRefs(globalStore);
+
+  const {
+    setPageSeo,
+    findLocalesContentData,
+    getContent,
+  } = useProjectMethods();
+  const infoContentRequest = await useAsyncData('infoContent', () => queryContent('profile')
+    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'info']).find());
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(infoContentRequest.data.value);
+  const infoContent: Maybe<ProfileInfoInterface> = currentLocaleData?.info;
+  const defaultLocaleInfoContent: Maybe<ProfileInfoInterface> = defaultLocaleData?.info;
   setPageSeo(infoContent?.seo);
 
   const { changeProfileData } = useCoreProfileApi();
@@ -108,9 +122,6 @@
   const { profile, userNickname, resentVerifyEmail } = storeToRefs(profileStore);
   const fieldsStore = useFieldsStore();
   const { profileFields } = storeToRefs(fieldsStore);
-  const {
-    countries, fieldsContent, userNavigationContent,
-  } = storeToRefs(globalStore);
   const route = useRoute();
   const router = useRouter();
 
@@ -119,7 +130,12 @@
     const countryObject: Maybe<CountryInterface> = countries.value.find((country) => country.code === profile.value?.country);
     return countryObject?.nativeName || '';
   });
-  const subscriptionFields = computed(() => profileFields.value.filter((field) => field.name === 'receiveSmsPromo' || field.name === 'receiveEmailPromo'));
+
+  const receiveBonusField = { isRequired: false, name: 'receiveBonus' };
+  const subscriptionFields = computed(() => {
+    const receiveFields = profileFields.value.filter((field) => field.name === 'receiveSmsPromo' || field.name === 'receiveEmailPromo');
+    return [...receiveFields, receiveBonusField];
+  });
 
   const toggleProfileEdit = ():void => {
     window.scroll(0, 0);

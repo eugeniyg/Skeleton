@@ -6,7 +6,9 @@
       <h2 class="title">
         {{ gameCategoriesObj[props.category.identity]?.label || props.category.name || props.category.identity }}
       </h2>
-      <h4 class="sub-title">{{ cardsGroupContent?.recommendedSubtitle }}</h4>
+      <h4 class="sub-title">
+        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.recommendedSubtitle') }}
+      </h4>
     </div>
 
     <h2 v-else class="title">
@@ -19,7 +21,7 @@
       type="ghost"
       @click="openGames"
     >
-      {{ cardsGroupContent?.moreButton }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
     <button-arrows
@@ -56,7 +58,6 @@
   import {
     GameInterface, PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
-  import { CardsGroupInterface } from '~/types';
 
   const props = defineProps({
     category: {
@@ -77,8 +78,8 @@
     },
   });
 
-  const { globalComponentsContent, gameCategoriesObj } = useGlobalStore();
-  const cardsGroupContent: Maybe<CardsGroupInterface> = globalComponentsContent?.cardsGroup;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = useGlobalStore();
+  const { getContent } = useProjectMethods();
   const titleIcon = gameCategoriesObj[props.category.identity]?.icon;
 
   const scrollContainer = ref();
@@ -226,15 +227,15 @@
     display: var(--display, flex);
     align-items: center;
     overflow-x: auto;
-    margin: 0 rem(-16px) 0;
-    padding: 0 rem(16px);
+    margin: rem(-16px) rem(-16px) 0;
+    padding: rem(16px) rem(16px) 0;
     scroll-padding: rem(16px);
     grid-column-gap: 8px;
     scroll-snap-type: x mandatory;
 
     @include media(sm) {
-      margin: 0;
-      padding: 0;
+      margin: rem(-16px) 0 0 0;
+      padding: rem(16px) 0 0 0;
       grid-column-gap: 16px;
       scroll-padding: 0;
     }

@@ -14,7 +14,7 @@
       <div class="scroll">
         <div class="header">
           <button-modal-close @close="openCancelModal"/>
-          <div class="title">{{ registrationContent?.title }}</div>
+          <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'registration.title') }}</div>
         </div>
 
         <form-join
@@ -31,14 +31,13 @@
   import { storeToRefs } from 'pinia';
   import { FieldInterface } from '@platform/frontend-core/dist/module';
   import { VueFinalModal } from 'vue-final-modal';
-  import { RegistrationInterface } from '~/types';
 
   const formKey = ref<number>(0);
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal, showModal } = layoutStore;
-  const { popupsData } = useGlobalStore();
-  const registrationContent: Maybe<RegistrationInterface> = popupsData?.registration;
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   const openCancelModal = () => {
     closeModal('register');

@@ -26,11 +26,15 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { GameInterface } from '@platform/frontend-core/dist/module';
-  import { CardsGroupInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent, isMobile, headerCountry } = storeToRefs(globalStore);
-  const groupContent:Maybe<CardsGroupInterface> = globalComponentsContent.value?.cardsGroup;
+  const {
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+    isMobile,
+    headerCountry,
+  } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
@@ -38,13 +42,13 @@
   const selectedTabs = ref<string[]>([]);
 
   const favoritesItem = {
-    title: groupContent?.favorites.label,
-    icon: groupContent?.favorites.icon,
+    title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'cardsGroup.favorites.label'),
+    icon: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'cardsGroup.favorites.icon'),
     id: 'favorites',
   };
   const recentlyItem = {
-    title: groupContent?.recentlyPlayed.label,
-    icon: groupContent?.recentlyPlayed.icon,
+    title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'cardsGroup.recentlyPlayed.label'),
+    icon: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'cardsGroup.recentlyPlayed.icon'),
     id: 'recently-played',
   };
 

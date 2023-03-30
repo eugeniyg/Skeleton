@@ -131,10 +131,10 @@
   };
 
   const { showAlert } = useLayoutStore();
-  const { alertsData } = storeToRefs(globalStore);
+  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const cancelPayment = async (invoiceId: string):Promise<void> => {
     const response = await cancelInvoice(invoiceId);
-    showAlert(alertsData.value?.userCanceledWithdrawal);
+    showAlert(alertsData.value?.userCanceledWithdrawal || defaultLocaleAlertsData.value?.userCanceledWithdrawal);
 
     const closedIndex = invoices.value.findIndex((invoice) => invoice.id === invoiceId);
     invoices.value[closedIndex] = response;

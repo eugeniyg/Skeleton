@@ -1,25 +1,32 @@
 <template>
   <div class="nav-mob">
     <button-base class="item" @click.prevent="layoutStore.toggleDrawer()">
-      <atomic-icon :id="'menu'" /><span>{{mobileMenuContent?.menuLabel}}</span>
+      <atomic-icon :id="'menu'" /><span>
+        {{ getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'menuLabel') }}
+      </span>
     </button-base>
 
     <button-base
-      v-if="mobileMenuContent?.items?.[0]"
+      v-if="getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0')"
       class="item"
-      :class="{ active: $route.path === localizePath(mobileMenuContent.items[0].url)}"
-      @click="clickItem(mobileMenuContent.items[0].url)"
+      :class="{ active: $route.path === localizePath(getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.url')) || $route.query.category}"
+      @click="clickItem(getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.url'))"
     >
-      <atomic-icon :id="mobileMenuContent.items[0].icon" /><span>{{ mobileMenuContent.items[0].label }}</span>
+      <atomic-icon
+        :id="getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.icon')"
+      /><span>{{ getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.label') }}</span>
     </button-base>
 
     <button-base class="item is-accent" @click.prevent="clickMainButton">
       <atomic-icon :id="isLoggedIn ? 'wallet' : 'user'" />
-      <span>{{isLoggedIn ? headerContent?.depositButton : headerContent?.loginButton }}</span>
+      <span>
+        {{ isLoggedIn ? headerContent?.depositButton || defaultLocaleHeaderContent?.depositButton
+          : headerContent?.loginButton || defaultLocaleHeaderContent?.loginButton }}
+      </span>
     </button-base>
 
     <button-base
-      v-for="link in mobileMenuContent?.items?.slice(1)"
+      v-for="link in linksList?.slice(1)"
       :key="link.url"
       class="item"
       :class="{ active: $route.path === localizePath(link.url) }"
@@ -38,8 +45,13 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal, openDepositModal } = useLayoutStore();
-  const { mobileMenuContent, headerContent } = useGlobalStore();
-  const { localizePath } = useProjectMethods();
+  const {
+    mobileMenuContent,
+    defaultLocaleMobileMenuContent,
+    headerContent,
+    defaultLocaleHeaderContent,
+  } = useGlobalStore();
+  const { localizePath, getContent } = useProjectMethods();
   const clickItem = (url: string):void => {
     if (url === '/betting') {
       isLoggedIn.value ? router.push(localizePath(url)) : showModal('register');
@@ -49,6 +61,11 @@
   const clickMainButton = ():void => {
     isLoggedIn.value ? openDepositModal() : showModal('signIn');
   };
+
+  const linksList = computed(() => {
+    if (mobileMenuContent?.items?.length) return mobileMenuContent.items;
+    return defaultLocaleMobileMenuContent?.items || [];
+  });
 </script>
 
 <style lang="scss">

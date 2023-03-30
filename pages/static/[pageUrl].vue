@@ -1,6 +1,6 @@
 <template>
   <div>
-    <atomic-text-editor :content="pageContent?.content" />
+    <atomic-text-editor :content="pageContent?.content || defaultLocalePageContent?.content" />
     <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent?.seo?.text" />
   </div>
 </template>
@@ -10,13 +10,25 @@
   import { StaticPageInterface } from '~/types';
 
   const pageContent = ref<StaticPageInterface|undefined>(undefined);
-  const globalStore = useGlobalStore();
-  const { currentLocale } = storeToRefs(globalStore);
+  const defaultLocalePageContent = ref<StaticPageInterface|undefined>(undefined);
   const route = useRoute();
   const { pageUrl } = route.params;
-  const pageContentRequest = await useAsyncData('pageContent', () => queryContent(`static/${currentLocale.value?.code}-${pageUrl}`).findOne());
-  if (pageContentRequest.error.value) throw pageContentRequest.error.value;
-  else pageContent.value = pageContentRequest.data.value as StaticPageInterface;
-  const { setPageSeo } = useProjectMethods();
+  const globalStore = useGlobalStore();
+  const { contentLocalesArray } = storeToRefs(globalStore);
+  const {
+    setPageSeo,
+    findLocalesContentData,
+  } = useProjectMethods();
+  const pageContentRequest = await useAsyncData('staticPageContent', () => queryContent('static')
+    .where({ locale: { $in: contentLocalesArray.value }, pageUrl }).find());
+
+  if (pageContentRequest.error.value || !pageContentRequest.data.value?.length) {
+    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  } else {
+    const { currentLocaleData, defaultLocaleData } = findLocalesContentData(pageContentRequest.data.value);
+    pageContent.value = currentLocaleData as StaticPageInterface;
+    defaultLocalePageContent.value = defaultLocaleData as StaticPageInterface;
+  }
+
   setPageSeo(pageContent.value?.seo);
 </script>

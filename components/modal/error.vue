@@ -8,15 +8,17 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('error')"/>
-        <div class="title">{{ errorContent?.title }}</div>
+        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'error.title') }}</div>
       </div>
 
       <img class="img" src="@/assets/svg/colored/error.svg" />
       <client-only>
-        <p class="text" v-html="marked.parse(errorContent?.description || '')" />
+        <p class="text" v-html="marked.parse(getContent(popupsData, defaultLocalePopupsData, 'error.description') || '')" />
       </client-only>
 
-      <button-base type="primary" size="md" @click="tryAgain">{{ errorContent?.button }}</button-base>
+      <button-base type="primary" size="md" @click="tryAgain">
+        {{ getContent(popupsData, defaultLocalePopupsData, 'error.button') }}
+      </button-base>
     </div>
   </vue-final-modal>
 </template>
@@ -25,13 +27,12 @@
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
   import { VueFinalModal } from 'vue-final-modal';
-  import { ErrorInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal, openDepositModal } = layoutStore;
-  const { popupsData } = useGlobalStore();
-  const errorContent: Maybe<ErrorInterface> = popupsData?.error;
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   const tryAgain = async ():Promise<void> => {
     await openDepositModal();

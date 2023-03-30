@@ -2,10 +2,10 @@
   <div>
     <div class="faq">
       <div class="header">
-        <div class="title">{{ questionPageContent?.title || '' }}</div>
+        <div class="title">{{ questionPageContent?.title || defaultLocaleQuestionsPageContent?.title || '' }}</div>
         <!--<div class="sub-title">Didn’t find an answer? Conact to or <a hef="#">Contact Support</a></div>-->
       </div>
-      <nav-faq :items="listContent"/>
+      <nav-faq :items="listContent?.length ? listContent : defaultLocaleListContent"/>
       <NuxtPage />
     </div>
 
@@ -21,17 +21,35 @@
   const route = useRoute();
 
   const listContent = ref<QuestionPageInterface[]>([]);
+  const defaultLocaleListContent = ref<QuestionPageInterface[]>([]);
   const globalStore = useGlobalStore();
-  const { currentLocale } = storeToRefs(globalStore);
-  const listRequest = await useAsyncData('pageList', () => queryContent('question').where({ locale: currentLocale.value?.code || 'en' }).sort({ position: 1 }).find());
-  const controlsRequest = await useAsyncData('pageControls', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['questionPage']).findOne());
-  listContent.value = (listRequest.data.value as unknown) as QuestionPageInterface[];
-  const questionPageContent: Maybe<QuestionPagesInterface> = controlsRequest.data.value?.questionPage;
-  const { setPageSeo } = useProjectMethods();
+  const { currentLocale, defaultLocale, contentLocalesArray } = storeToRefs(globalStore);
+  const {
+    setPageSeo,
+    findLocalesContentData,
+  } = useProjectMethods();
+
+  const [currentLocaleListRequest, defaultLocaleListRequest, controlsRequest] = await Promise.all([
+    useAsyncData('currentLocalePageList', () => queryContent('question')
+      .where({ locale: currentLocale.value?.code || '' }).sort({ position: 1 }).find()),
+    useAsyncData('defaultLocalePageList', () => queryContent('question')
+      .where({ locale: defaultLocale.value?.code || '' }).sort({ position: 1 }).find()),
+    useAsyncData('pageControls', () => queryContent('page-controls')
+      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'questionPage']).find()),
+  ]);
+
+  listContent.value = (currentLocaleListRequest.data.value as unknown) as QuestionPageInterface[];
+  defaultLocaleListContent.value = (defaultLocaleListRequest.data.value as unknown) as QuestionPageInterface[];
+
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(controlsRequest.data.value);
+  const questionPageContent: Maybe<QuestionPagesInterface> = currentLocaleData?.questionPage;
+  const defaultLocaleQuestionsPageContent: Maybe<QuestionPagesInterface> = defaultLocaleData?.questionPage;
   setPageSeo(questionPageContent?.seo);
 
   if (route.name === 'questions' || route.name === 'locale-questions') {
-    navigateTo(localizePath(`/questions/${listContent.value[0]?.pageUrl || 'most-popular'}`), { replace: true });
+    navigateTo(localizePath(`/questions/${listContent.value[0]?.pageUrl
+      || defaultLocaleListContent.value[0]?.pageUrl
+      || 'most-popular'}`), { replace: true });
   }
 </script>
 

@@ -6,10 +6,12 @@
       @click="toggleSelect"
       v-click-outside="closeDropdown"
     >
-      <div class="amount">{{ balanceFormat.amount }}</div>
-      <div class="label">{{ balanceFormat.currency }}</div>
+      <div class="select__content">
+        <div class="amount">{{ balanceFormat.amount }}</div>
+        <div class="label">{{ balanceFormat.currency }}</div>
+      </div>
       <atomic-icon class="icon-expand" id="arrow_expand-close"/>
-      <list-currencies :is-open="isShow" @hide-currencies-list="isShow = false" @click.stop />
+      <list-currencies :is-open="isShow" @hide-currencies-list="isShow = false" @click.stop/>
     </div>
     <button-deposit/>
   </div>
@@ -38,11 +40,17 @@
 <style lang="scss">
 .input-deposit {
   @include radius(12px);
-  @include font($heading-2);
   display: flex;
   background-color: var(--gray-900);
   color: var(--gray-500);
   user-select: none;
+  position: relative;
+  margin-left: -8px;
+  width: fit-content;
+
+  @include media(xs) {
+    margin-left: 0;
+  }
 
   .amount {
     @extend %flex-items-center;
@@ -51,15 +59,46 @@
 
   .label {
     @extend %flex-items-center;
-    margin: 0 rem(8px) 0 rem(4px);
   }
 
   .select {
     display: flex;
     position: relative;
-    padding: 0 16px;
     flex-shrink: 1;
     align-items: center;
+    padding: 0 8px 0 16px;
+    grid-column-gap: 4px;
+
+    @include media(l) {
+      padding: 0 16px;
+    }
+
+    &__content {
+      display: grid;
+
+      @include media(l) {
+        display: flex;
+      }
+
+      .amount {
+        @include font($heading-1);
+
+        @include media(l) {
+          @include upd-font($heading-2);
+        }
+      }
+
+      .label {
+        @include font($heading-0);
+        order: -1;
+
+        @include media(l) {
+          margin: 0 0 0 rem(4px);
+          @include upd-font($heading-2);
+          order: 0;
+        }
+      }
+    }
 
     @include use-hover {
       &:hover {

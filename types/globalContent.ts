@@ -92,7 +92,7 @@ interface LinkInterface {
   gameList?: string[]
 }
 
-interface MenuItemInterface {
+export interface MenuItemInterface {
   label: string,
   url?: string,
   items?: LinkInterface[]
@@ -305,4 +305,7 @@ export interface AlertsListInterface {
   depositError: AlertInterface,
   withdrawSuccess: AlertInterface,
   withdrawError: AlertInterface,
+  bonusActivated: AlertInterface,
+  bonusNotAvailable: AlertInterface,
+  bonusIncorrect: AlertInterface,
 }

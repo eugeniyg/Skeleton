@@ -11,8 +11,10 @@
       </div>
 
       <img class="img" src="@/assets/svg/colored/confirm.svg"/>
-      <p class="text">{{ confirmContent?.title }}</p>
-      <button-base type="primary" size="md" @click="closeModal('confirm')">{{ confirmContent?.button }}</button-base>
+      <p class="text">{{ getContent(popupsData, defaultLocalePopupsData, 'confirm.title') }}</p>
+      <button-base type="primary" size="md" @click="closeModal('confirm')">
+        {{ getContent(popupsData, defaultLocalePopupsData, 'confirm.button') }}
+      </button-base>
     </div>
   </vue-final-modal>
 </template>
@@ -20,13 +22,12 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import { ConfirmInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-  const { popupsData } = useGlobalStore();
-  const confirmContent: Maybe<ConfirmInterface> = popupsData?.confirm;
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 </script>
 
 <style lang="scss">

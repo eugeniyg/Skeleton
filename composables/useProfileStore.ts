@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia';
 import {
-  ProfileInterface, AuthorizationResponseInterface,
+  ProfileInterface,
+  AuthorizationResponseInterface,
 } from '@platform/frontend-core/dist/module';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useLayoutStore } from '~/composables/useLayoutStore';
 import { useGamesStore } from '~/composables/useGamesStore';
 import { useProjectMethods } from '~/composables/useProjectMethods';
 import { useGlobalStore } from '~/composables/useGlobalStore';
+import { useBonusStore } from '~/composables/useBonusStore';
 
 interface ProfileStoreStateInterface {
   isLoggedIn: boolean,
@@ -27,11 +29,6 @@ export const useProfileStore = defineStore('profileStore', {
     userNickname(state):string {
       return state.profile?.nickname || 'Unknown';
     },
-
-    playerStatusName(state): Maybe<string> {
-      const { playerStatuses } = useGlobalStore();
-      return playerStatuses.find((status) => status.id === state.profile?.status)?.name;
-    },
   },
 
   actions: {
@@ -41,33 +38,53 @@ export const useProfileStore = defineStore('profileStore', {
       reconnectSocket();
     },
 
+    startProfileDependencies():void {
+      const { getFavoriteGames } = useGamesStore();
+      const { getPlayerBonuses } = useBonusStore();
+      getFavoriteGames();
+      getPlayerBonuses();
+
+      const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
+      const { subscribeBonusSocket } = useBonusStore();
+      subscribeAccountSocket();
+      subscribeInvoicesSocket();
+      subscribeBonusSocket();
+    },
+
+    finishProfileDependencies():void {
+      const bonusStore = useBonusStore();
+      bonusStore.$reset();
+
+      const { unsubscribeAccountSocket, unsubscribeInvoiceSocket } = useWalletStore();
+      const { unsubscribeBonusSocket } = useBonusStore();
+      unsubscribeAccountSocket();
+      unsubscribeInvoiceSocket();
+      unsubscribeBonusSocket();
+    },
+
     async logIn(loginData:any):Promise<void> {
       const { submitLoginData } = useCoreAuthApi();
-      const { getUserAccounts, subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
+      const { getUserAccounts } = useWalletStore();
       const submitResult = await submitLoginData(loginData);
       this.startSession(submitResult);
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
-      subscribeAccountSocket();
-      subscribeInvoicesSocket();
-      const { getFavoriteGames } = useGamesStore();
-      getFavoriteGames();
+      this.startProfileDependencies();
     },
 
     async registration(registrationData:any):Promise<void> {
       const { submitRegistrationData } = useCoreAuthApi();
-      const { getUserAccounts, subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
+      const { getUserAccounts } = useWalletStore();
       const submitResult = await submitRegistrationData(registrationData);
       this.startSession(submitResult);
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
-      subscribeAccountSocket();
-      subscribeInvoicesSocket();
+      this.startProfileDependencies();
       const { showAlert } = useLayoutStore();
-      const { alertsData } = useGlobalStore();
-      showAlert(alertsData?.successRegistration);
+      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+      showAlert(alertsData?.successRegistration || defaultLocaleAlertsData?.successRegistration);
     },
 
     async getProfileData():Promise<void> {
@@ -87,9 +104,7 @@ export const useProfileStore = defineStore('profileStore', {
         await logOut();
       } finally {
         this.isLoggedIn = false;
-        const { unsubscribeAccountSocket, unsubscribeInvoiceSocket } = useWalletStore();
-        unsubscribeAccountSocket();
-        unsubscribeInvoiceSocket();
+        this.finishProfileDependencies();
         const router = useRouter();
         const { localizePath } = useProjectMethods();
         router.push(localizePath('/'));
@@ -98,13 +113,13 @@ export const useProfileStore = defineStore('profileStore', {
 
     async resendVerifyEmail():Promise<void> {
       const { showAlert } = useLayoutStore();
-      const { alertsData } = useGlobalStore();
+      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
       const { resendVerifyEmail } = useCoreProfileApi();
       try {
         await resendVerifyEmail();
-        showAlert(alertsData?.resentVerification);
+        showAlert(alertsData?.resentVerification || defaultLocaleAlertsData?.resentVerification);
       } catch {
-        showAlert(alertsData?.somethingWrong);
+        showAlert(alertsData?.somethingWrong || defaultLocaleAlertsData?.somethingWrong);
       } finally {
         this.resentVerifyEmail = true;
       }

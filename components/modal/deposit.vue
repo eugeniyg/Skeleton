@@ -17,7 +17,7 @@
       <div class="scroll">
         <div class="header">
           <button-modal-close @close="closeModal('deposit')"/>
-          <div class="title">{{ depositContent?.title }}</div>
+          <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'deposit.title') }}</div>
         </div>
 
         <form-deposit
@@ -40,7 +40,6 @@
   import { storeToRefs } from 'pinia';
   import { PaymentMethodInterface } from '@platform/frontend-core/dist/module';
   import { VueFinalModal } from 'vue-final-modal';
-  import { DepositInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const walletStore = useWalletStore();
@@ -49,8 +48,8 @@
   const { depositMethods } = storeToRefs(walletStore);
   const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
 
-  const { popupsData } = useGlobalStore();
-  const depositContent: Maybe<DepositInterface> = popupsData?.deposit;
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   const methodKey = ref<number>(0);
   watch(() => depositMethods.value, () => {

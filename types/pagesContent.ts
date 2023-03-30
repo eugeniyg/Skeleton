@@ -72,8 +72,17 @@ export interface ProfileWalletInterface {
   seo: SeoContentInterface
 }
 
+export interface BonusCodeBlockInterface {
+  title: string,
+  timerText: string,
+  buttonLabel: string,
+  tryError: string
+}
+
 export interface ProfileBonusesInterface {
   title: string,
+  historyLink: string,
+  bonusCode: BonusCodeBlockInterface,
   seo: SeoContentInterface
 }
 
@@ -497,6 +506,11 @@ export interface CurrencyTabsInterface {
   cryptoTab: string
 }
 
+export interface CurrencyEmptyInterface {
+  title: string,
+  description: string
+}
+
 export interface GlobalComponentsInterface {
   benefits: BenefitsContentInterface,
   promotions: PromotionsContentInterface,
@@ -504,7 +518,10 @@ export interface GlobalComponentsInterface {
   categories: GameCategoryInterface[],
   turbogames: TurbogamesGroupInterface,
   gameTags: GameTagInterface[],
-  currencyTabs: CurrencyTabsInterface,
+  currency: {
+    tabs: CurrencyTabsInterface,
+    empty: CurrencyEmptyInterface
+  }
   globalSeo: SeoContentInterface,
 }
 

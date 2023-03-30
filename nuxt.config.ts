@@ -27,11 +27,6 @@ export default defineNuxtConfig({
       },
       {
         global: true,
-        path: '~/components/tab/bonuses',
-        prefix: 'TabBonuses',
-      },
-      {
-        global: true,
         path: '~/components/tab/history',
         prefix: 'TabHistory',
       },

@@ -59,7 +59,7 @@
     "tabPosition": 5,
     "tabLabel": "Transactions"
   },
-  "locale": "de",
+  "locale": "en",
   "sessions": {
     "tabLabel": "Sessions",
     "tableColumns": {

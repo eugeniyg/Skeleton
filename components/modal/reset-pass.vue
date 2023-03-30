@@ -7,7 +7,7 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('resetPass')"/>
-        <div class="title">{{ resetContent?.title }}</div>
+        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'reset.title') }}</div>
       </div>
 
       <form-reset-pass />
@@ -18,13 +18,12 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import { ResetInterface } from '~/types';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-  const { popupsData } = useGlobalStore();
-  const resetContent: Maybe<ResetInterface> = popupsData?.reset;
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 </script>
 
 <style lang="scss">
