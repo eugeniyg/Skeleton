@@ -13,7 +13,11 @@
         :class="{'is-active': $route.path === localizePath(item.url)}"
         :to="localizePath(item.url)"
       >
-        {{ item.title }}<span v-if="item.count" class="count">{{ item.count }}</span>
+        {{ item.title }}
+
+        <span v-if="item.id === 'bonuses' && activePlayerBonuses.length" class="count">
+          {{ activePlayerBonuses.length }}
+        </span>
 
         <template v-if="$route.path === localizePath(item.url)">
           <atomic-icon id="check"/>
@@ -24,6 +28,8 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     items: {
       type: Array,
@@ -35,6 +41,9 @@
   const route = useRoute();
   const isOpen = ref<boolean>(false);
   const selected = computed(() => props.items.find((item:any) => localizePath(item.url) === route.path));
+
+  const bonusStore = useBonusStore();
+  const { activePlayerBonuses } = storeToRefs(bonusStore);
 
   const toggle = ():void => {
     isOpen.value = !isOpen.value;
