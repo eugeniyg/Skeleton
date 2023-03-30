@@ -1,6 +1,7 @@
 <template>
   <div class="bonus-code-timer">
     <atomic-icon id="history"/>
+
     <div class="time">
       <span class="value">{{ Math.floor(currentTime / 60) }}</span>
       <span class="title">m</span>
@@ -8,13 +9,15 @@
       <span class="value">{{ String(currentTime % 60).padStart(2, 0) }}</span>
       <span class="title">s</span>
     </div>
-    <div class="message">until the next try</div>
+
+    <div class="message">{{ props.timerText }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
   const props = defineProps<{
-    timerValue: number
+    timerValue: number,
+    timerText?: string,
   }>();
 
   const timer = ref<any>(undefined);
