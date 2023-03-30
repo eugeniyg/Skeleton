@@ -95,11 +95,22 @@
 
 <style lang="scss">
 .bonus-code-block {
-  width: calc((100% - 32px) / 3);
   padding: rem(24px) rem(18px);
   background-color: var(--gray-900);
   border-radius: 16px;
   user-select: none;
+
+  @include media(sm) {
+    width: calc((100% - 32px) / 2);
+  }
+
+  @include media(xl) {
+    width: calc((100% - 32px) / 3);
+  }
+
+  @include media(xxxl) {
+    width: calc((100% - 32px) / 4);
+  }
 
   &__title {
     @include font($heading-4);

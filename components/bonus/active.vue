@@ -34,7 +34,22 @@
   &__list {
     display: grid;
     grid-gap: 16px;
-    grid-template-columns: 1fr 1fr 1fr;
+
+    @include media(sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include media(xl) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include media(xl) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include media(xxxl) {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   .empty {
