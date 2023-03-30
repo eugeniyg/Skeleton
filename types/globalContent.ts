@@ -305,4 +305,7 @@ export interface AlertsListInterface {
   depositError: AlertInterface,
   withdrawSuccess: AlertInterface,
   withdrawError: AlertInterface,
+  bonusActivated: AlertInterface,
+  bonusNotAvailable: AlertInterface,
+  bonusIncorrect: AlertInterface,
 }

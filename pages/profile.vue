@@ -25,7 +25,7 @@
   const { contentLocalesArray } = storeToRefs(globalStore);
 
   const { getProfileFields } = useFieldsStore();
-  const profileMenu = ref<{title: string, url: string, seo: SeoContentInterface }[]>([]);
+  const profileMenu = ref<{ id: string, title: string, url: string, seo: SeoContentInterface }[]>([]);
 
   const [contentRequest] = await Promise.all([
     useAsyncData('profileContent', () => queryContent('profile')
@@ -46,6 +46,7 @@
       .filter((item) => item !== 'notifications');
 
     profileMenu.value = filteredArray.map((key) => ({
+      id: key,
       title: profileContentObj[key].title,
       url: `/profile/${key}`,
       seo: profileContentObj[key].seo,

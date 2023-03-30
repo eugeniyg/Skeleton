@@ -1,7 +1,5 @@
 export default defineNuxtPlugin(async (nuxtApp) => {
   const { parseUserAgent } = useGlobalStore();
-  // const languages = parser.parse(nuxtApp.ssrContext.req.headers['accept-language']);
-  // setBrowserLanguage(languages);
   const { userAgent } = window.navigator;
   parseUserAgent(userAgent);
 
@@ -24,7 +22,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     }
   };
 
-  const { getFavoriteGames } = useGamesStore();
   nuxtApp.hook('app:mounted', async () => {
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
@@ -32,11 +29,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     const sessionToken = getSessionToken();
 
     if (sessionToken) {
-      const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
-      subscribeAccountSocket();
-      subscribeInvoicesSocket();
-      getFavoriteGames();
+      const { startProfileDependencies } = useProfileStore();
+      startProfileDependencies();
     }
+
     const { subscribeWinnersSocket } = useGamesStore();
     subscribeWinnersSocket();
     checkAffiliateTag();
