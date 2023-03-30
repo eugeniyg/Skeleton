@@ -1,9 +1,10 @@
 <template>
   <div class="bonus-code-block">
-    <h4 class="bonus-code-block__title">Have a promocode?</h4>
+    <h4 class="bonus-code-block__title">{{ props.content?.title }}</h4>
 
     <atomic-bonus-code-timer
       v-if="bonusBlocked"
+      :timerText="props.content?.timerText"
       :timerValue="timerValue"
       @timeOut="openBonus"
     />
@@ -23,17 +24,23 @@
         @click="sendBonus"
         :isDisabled="!bonusValue || bonusBlocked"
       >
-        Add
+        {{ props.content?.buttonLabel }}
       </button-base>
     </div>
 
     <div v-if="showErrorMessage" class="bonus-code-block__error">
-      The bonus code is incorrect. Try again after 3 minutes
+      {{ props.content?.tryError }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+  import { BonusCodeBlockInterface } from '~/types';
+
+  const props = defineProps<{
+    content?: BonusCodeBlockInterface
+  }>();
+
   const bonusValue = ref<string>('');
   const defaultTimerSeconds = 180;
   const timerValue = ref<number>(defaultTimerSeconds);

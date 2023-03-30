@@ -8,10 +8,10 @@
       class="link-bonus"
       :to="localizePath('/profile/history?tab=bonuses')"
     >
-      See your bonuses history
+      {{ bonusesContent?.historyLink || defaultLocaleBonusesContent?.historyLink }}
     </nuxt-link>
 
-    <bonus-code />
+    <bonus-code :content="bonusesContent?.bonusCode || defaultLocaleBonusesContent?.bonusCode" />
     <bonus-active />
   </div>
 </template>
