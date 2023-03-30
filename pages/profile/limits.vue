@@ -14,9 +14,9 @@
 
     <div class="limits__grid">
       <div
-        v-if="isAdvancedModeEnabled"
-        :class="makeFullWidth(deposit.periods)"
         class="limits__card"
+        :class="makeFullWidth(deposit.periods)"
+        v-if="isAdvancedModeEnabled"
       >
         <h4 class="limits__card-title" data-tooltip-parent>
           {{ deposit.title }}
@@ -54,23 +54,30 @@
         </div>
       </div>
 
+      <!-- loss -->
       <div class="limits__card">
         <h4 class="limits__card-title">{{ lossLimits.title }}</h4>
+
         <div class="limits__card-info is-text-center" v-html="lossLimits.info"/>
+
         <div class="limits__card-actions">
           <button-base type="primary">{{ lossLimits.buttons.primary.title }}</button-base>
         </div>
       </div>
 
+      <!-- wager -->
       <div class="limits__card">
         <h4 class="limits__card-title">{{ wagerLimits.title }}</h4>
+
         <div class="limits__card-info is-text-center" v-html="wagerLimits.info"/>
+
         <div class="limits__card-actions">
           <button-base type="primary">{{ wagerLimits.buttons.primary.title }}</button-base>
         </div>
       </div>
 
-      <div class="limits__card" session>
+      <!--  session -->
+      <div class="limits__card">
         <h4 class="limits__card-title">{{ sessionLimit.title }}</h4>
 
         <atomic-session-limits
@@ -80,7 +87,6 @@
           @back="isShowSessionLimitValues = false"
         />
         <div class="limits__card-dropdown" v-else>
-
           <form-input-dropdown
             name="sessionLimitsDropdown"
             v-model:value="sessionLimitValue"
@@ -97,7 +103,9 @@
         <div class="limits__card-info" v-html="sessionLimit.info"/>
       </div>
 
-      <div class="limits__card" cooling>
+      <!-- cooling off -->
+
+      <div class="limits__card">
         <h4 class="limits__card-title">{{ coolingOff.title }}</h4>
 
         <atomic-session-limits
@@ -123,6 +131,8 @@
 
         <div class="limits__card-info" v-html="coolingOff.info"/>
       </div>
+
+      <!-- selfExclusion -->
 
       <div class="limits__card" v-if="isAdvancedModeEnabled">
         <h2 class="limits__card-title">{{ selfExclusion.title }}</h2>
