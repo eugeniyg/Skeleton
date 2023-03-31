@@ -88,5 +88,18 @@
     "title": "Deposit",
     "minSum": "Min deposit:",
     "addressInputLabel": "Send any amount to:"
+  },
+  "changeActiveBonus": {
+    "title": "Confirm bonus update",
+    "description": "The status of the currently active bonus will change to Cancelled. Are you sure you want to activate this bonus?",
+    "confirmButton": "Yes",
+    "cancelButton": "No"
+  },
+  "cancelBonus": {
+    "title": "Confirm bonus cancel",
+    "activeBonusDescription": "All your winnings will be lost. Are you sure you want to cancel this bonus?",
+    "issuedBonusDescription": "Are you sure you want to cancel this bonus?",
+    "confirmButton": "Yes",
+    "cancelButton": "No"
   }
 }
