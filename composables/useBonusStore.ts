@@ -20,7 +20,12 @@ export const useBonusStore = defineStore('bonusStore', {
 
   getters: {
     activePlayerBonuses(state):PlayerBonusInterface[] {
-      return state.playerBonuses.filter((playerBonus) => [1, 2].includes(playerBonus.status));
+      const walletStore = useWalletStore();
+      return state.playerBonuses.filter((playerBonus) => [1, 2].includes(playerBonus.status) && walletStore.activeAccount?.currency === playerBonus.currency);
+    },
+
+    activePlayerCashBonuses():PlayerBonusInterface[] {
+      return this.activePlayerBonuses.filter((playerBonus) => playerBonus.bonusType === 1);
     },
   },
 

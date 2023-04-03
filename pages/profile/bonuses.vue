@@ -12,7 +12,7 @@
     </nuxt-link>
 
     <bonus-code :content="bonusesContent?.bonusCode || defaultLocaleBonusesContent?.bonusCode" />
-    <bonus-active />
+    <bonus-active :content="bonusesContent?.cashBonuses || defaultLocaleBonusesContent?.cashBonuses" />
   </div>
 </template>
 
