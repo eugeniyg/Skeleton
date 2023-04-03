@@ -902,7 +902,7 @@ collections:
             label: Cancel Button
             widget: string
       - name: cancelBonus
-        label: Cancel Bonus Popup
+        label: Cancel Bonus Popu
         widget: object
         collapsed: true
         fields:
@@ -1428,6 +1428,16 @@ collections:
               - name: waitingResult
                 label: Waiting Result Text
                 widget: string
+              - name: empty
+                label: Empty Block
+                widget: object
+                fields:
+                  - name: title
+                    label: Title
+                    widget: string
+                  - name: description
+                    label: Description
+                    widget: text
           - *seoBlock
       - name: notifications
         label: Profile Notificaitons
