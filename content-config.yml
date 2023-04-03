@@ -902,7 +902,7 @@ collections:
             label: Cancel Button
             widget: string
       - name: cancelBonus
-        label: Cancel Bonus Popu
+        label: Cancel Bonus Popup
         widget: object
         collapsed: true
         fields:
