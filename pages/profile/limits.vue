@@ -13,9 +13,10 @@
     </div>
 
     <div class="limits__grid">
+      <!-- deposit -->
       <div
         class="limits__card"
-        :class="makeFullWidth(deposit.periods)"
+        :class="makeFullWidth(deposit.depositPeriods)"
         v-if="isAdvancedModeEnabled"
       >
         <h4 class="limits__card-title" data-tooltip-parent>
@@ -23,9 +24,9 @@
           <atomic-tooltip v-if="isShowPeriods" v-bind="deposit.tooltip"/>
         </h4>
 
-        <atomic-limits-periods
+        <atomic-limits-periods-list
           v-if="isShowPeriods"
-          :periods="deposit.periods"
+          :periods="deposit.depositPeriods"
           :is-show-edit="isShowEdit"
         />
         <p v-else class="limits__card-sub-title">{{ deposit.subTitle }}</p>
@@ -55,10 +56,18 @@
       </div>
 
       <!-- loss -->
-      <div class="limits__card">
+      <div
+        class="limits__card"
+        :class="makeFullWidth(deposit.lossPeriods)"
+      >
         <h4 class="limits__card-title">{{ lossLimits.title }}</h4>
 
-        <div class="limits__card-info is-text-center" v-html="lossLimits.info"/>
+        <atomic-limits-periods-list
+          v-if="isShowPeriods"
+          :periods="deposit.lossPeriods"
+          :is-show-edit="isShowEdit"
+        />
+        <div v-else class="limits__card-info is-text-center" v-html="lossLimits.info"/>
 
         <div class="limits__card-actions">
           <button-base type="primary">{{ lossLimits.buttons.primary.title }}</button-base>
@@ -104,7 +113,6 @@
       </div>
 
       <!-- cooling off -->
-
       <div class="limits__card">
         <h4 class="limits__card-title">{{ coolingOff.title }}</h4>
 
@@ -133,7 +141,6 @@
       </div>
 
       <!-- selfExclusion -->
-
       <div class="limits__card" v-if="isAdvancedModeEnabled">
         <h2 class="limits__card-title">{{ selfExclusion.title }}</h2>
 
@@ -153,12 +160,22 @@
         <div class="limits__card-info" v-html="selfExclusion.info"/>
       </div>
 
+      <modal-deposit-limit/>
+      <modal-edit-limit/>
+      <modal-edit-limit-confirm/>
+
     </div>
 
   </div>
 </template>
 
 <script setup lang="ts">
+  import { onMounted } from '@vue/runtime-core';
+
+  const {
+    getPlayerLimits,
+  } = useCoreProfileApi();
+
   const {
     profileLimits: {
       deposit,
@@ -239,6 +256,15 @@
   onUnmounted(() => {
     const main = document.querySelector('.app-main') as HTMLElement;
     main.classList.remove('is-overflow-off');
+  });
+
+  onMounted(async () => {
+    try {
+      const data = await getPlayerLimits();
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
   });
 </script>
 

@@ -1,42 +1,47 @@
 <template>
-  <div class="limits-periods" :class="{'is-show-edit': isShowEdit}">
+  <div class="limits-periods-list" :class="{'is-show-edit': isShowEdit}">
     <div
       :key="title"
-      class="limits-periods__column"
+      class="limits-periods-list__column"
       v-for="{title, items} in props.periods"
     >
-      <h4 class="limits-periods__title">
+      <h4 class="limits-periods-list__title">
         {{ title }}
       </h4>
 
-      <div class="limits-periods__items">
+      <div class="limits-periods-list__items">
         <div
+          v-for="{limitId, amount, title, subTitle, progress, status} in items"
+          class="limits-periods-list__item"
           :key="title"
-          class="limits-periods__item"
-          v-for="{title, subTitle, progress, status} in items"
         >
-          <h4 class="limits-periods__item-title">{{ title }}</h4>
-          <p class="limits-periods__item-sub-title">{{ subTitle }}</p>
+          <h4 class="limits-periods-list__item-title">{{ title }}</h4>
+
+          <p class="limits-periods-list__item-sub-title">{{ subTitle }}</p>
+
           <button-base
             v-if="isShowEdit"
-            class="limits-periods__item-edit"
+            class="limits-periods-list__item-edit"
             type="ghost"
-            @click="showModal('editLimit')"
+            @click="editLimit({ limitId, amount })"
           >
             <atomic-icon id="edit"/>
           </button-base>
+
           <div
-            class="limits-periods__item-progress"
+            class="limits-periods-list__item-progress"
             :style="`--progress-width:${progress}%`"
             :class="{'is-full': progress === 100}"
-          ></div>
-          <div class="limits-periods__item-status">
+          />
+
+          <div class="limits-periods-list__item-status">
             <span
-              class="limits-periods__item-status-type"
-              :class="`limits-periods__item-status-type--${status.type}`"
+              class="limits-periods-list__item-status-type"
+              :class="`limits-periods-list__item-status-type--${status.type}`"
             />
-            <span class="limits-periods__item-status-title">{{ status.title }}</span>
+            <span class="limits-periods-list__item-status-title">{{ status.title }}</span>
           </div>
+
         </div>
       </div>
     </div>
@@ -55,10 +60,15 @@
   });
 
   const { showModal } = useLayoutStore();
+
+  const editLimit = ({ limitId, amount }) => {
+    showModal('editLimit');
+    console.log(limitId, amount);
+  };
 </script>
 
 <style lang="scss">
-.limits-periods {
+.limits-periods-list {
   display: grid;
   grid-gap: 49px;
   grid-auto-flow: column;

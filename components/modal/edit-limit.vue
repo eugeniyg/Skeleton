@@ -8,30 +8,31 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('editLimit')"/>
-        <div class="title">Edit daily deposit limit</div>
+        <div class="title">{{ editLimitTitle }}</div>
       </div>
 
       <form-input-number
         :is-required="false"
         currency="EUR"
         :min="0"
-        :value="0"
+        v-model:value="state.amount"
         placeholder="0"
       />
 
       <div class="modal-edit-limit__info">
         <div class="modal-edit-limit__info-title">
           <atomic-icon id="warning"/>
-          <div>New limit sum is bigger than the previous one</div>
+          <div>{{ editLimitWarning }}</div>
         </div>
+
         <div class="modal-edit-limit__info-text">
           Email confirmation will be needed. The change will be applied in 24 hours.
         </div>
       </div>
 
       <div class="modal-edit-limit__actions">
-        <button-base type="primary" size="md" @click="showAlert(alertProps)">Update</button-base>
-        <button-base type="secondary" size="md">Delete</button-base>
+        <button-base type="primary" size="md" @click="update">Update</button-base>
+        <button-base type="secondary" size="md" @click="remove">Delete</button-base>
       </div>
     </div>
   </vue-final-modal>
@@ -46,10 +47,27 @@
   const { modals } = storeToRefs(layoutStore);
   const { showAlert } = useLayoutStore();
 
+  const editLimitTitle = 'Edit daily deposit limit';
+  const editLimitWarning = 'New limit sum is bigger than the previous one';
+
   const alertProps = {
     title: 'Limit update successfully',
     description: 'Please, check your email and follow the received confirmation link to activate limit change.',
     type: 'warning',
+  };
+
+  const state = reactive({
+    amount: 0,
+    currency: 'EUR',
+  });
+
+  const update = () => {
+    closeModal('editLimit');
+    showAlert(alertProps);
+  };
+
+  const remove = (limitId: string) => {
+    console.log('remove', limitId);
   };
 </script>
 
