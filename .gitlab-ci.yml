@@ -1,24 +1,25 @@
+include:
+  - project: "platform/gitlab-ci"
+    file: "/customer-frontends/workflow.yaml"
 
 variables:
   SERVICE_NAME: customer-frontends/slotsbet
 
-stages:
-  - build
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: always
+      variables:
+        IMAGE_TAG: $CI_COMMIT_BRANCH
 
-"Build docker image":
-  stage: build
-  image: gcr.io/kaniko-project/executor:debug
+    - if: $CI_COMMIT_BRANCH == "dev"
+      when: always
+      variables:
+        IMAGE_TAG: $CI_COMMIT_BRANCH
 
-  before_script:
-    - echo "$DOCKER_AUTH_CONFIG" > /kaniko/.docker/config.json
+    - if: $CI_COMMIT_BRANCH =~ /tpbe-\d+/i
+      when: always
+      variables:
+        IS_TASK_BRANCH: "1"
 
-  script:
-    - /kaniko/executor
-      --build-arg NPM_TOKEN=$NPM_TOKEN
-      --context $CI_PROJECT_DIR
-      --dockerfile $CI_PROJECT_DIR/Dockerfile
-      --destination $ECR_REGISTRY/$SERVICE_NAME:$CI_COMMIT_BRANCH
-
-  only:
-    - dev
-    - main
+    - when: never
