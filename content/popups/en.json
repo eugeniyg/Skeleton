@@ -84,6 +84,8 @@
     ],
     "depositButton": "Deposit",
     "togglerLabel": "I have bonus code",
+    "addBonusButton": "Add",
+    "cancelBonusButton": "Cancel",
     "balanceLabel": "Balance",
     "title": "Deposit",
     "minSum": "Min deposit:",
