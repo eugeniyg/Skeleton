@@ -15,7 +15,7 @@
         :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'bonusCode.placeholder') || ''"
         name="bonus-code"
         autocomplete="off"
-        :isDisabled="storeBonusCode"
+        :isDisabled="currentDepositBonusCode"
       />
 
       <button-base
@@ -25,7 +25,7 @@
         :isDisabled="bonusChecking"
       >
         <atomic-spinner :is-shown="bonusChecking"/>
-        {{ storeBonusCode ? getContent(popupsData, defaultLocalePopupsData, 'deposit.cancelBonusButton')
+        {{ currentDepositBonusCode ? getContent(popupsData, defaultLocalePopupsData, 'deposit.cancelBonusButton')
           : getContent(popupsData, defaultLocalePopupsData, 'deposit.addBonusButton') }}
       </button-base>
     </div>
@@ -46,12 +46,24 @@
   const bonusValue = ref<string>('');
   const bonusChecking = ref<boolean>(false);
 
-  const { addBonusCode } = useCoreBonusApi();
+  const { getBonusCodes, addBonusCode, deleteBonusCode } = useCoreBonusApi();
   const { showBonusNotification } = useBonusStore();
-  const sendBonus = async ():Promise<boolean> => {
-    if (bonusChecking.value) return false;
-    bonusChecking.value = true;
 
+  const currentDepositBonusCode = ref<string|undefined>();
+  const getDepositBonus = async ():Promise<void> => {
+    try {
+      const bonusCodeResponse = await getBonusCodes(3);
+      if (bonusCodeResponse.length) {
+        currentDepositBonusCode.value = bonusCodeResponse[0].bonusCode;
+        bonusValue.value = currentDepositBonusCode.value || '';
+        hasBonusCode.value = true;
+      }
+    } catch (err: any) {
+      console.error(err);
+    }
+  };
+
+  const sendManualBonus = async ():Promise<boolean> => {
     try {
       const response = await addBonusCode(bonusValue.value, 1);
       if (response.status === 1) {
@@ -62,41 +74,62 @@
       return false;
     } catch (err: any) {
       return false;
-    } finally {
-      bonusChecking.value = false;
     }
   };
 
-  const storeBonusCode = ref<string|null>(null);
+  const sendDepositBonus = async ():Promise<boolean> => {
+    try {
+      await addBonusCode(bonusValue.value, 3);
+      return true;
+    } catch (err: any) {
+      return false;
+    }
+  };
+
+  const deleteDepositBonus = async ():Promise<boolean> => {
+    try {
+      await deleteBonusCode(3);
+      return true;
+    } catch (err: any) {
+      return false;
+    }
+  };
+
   const toggleStorage = async ():Promise<void> => {
-    if (storeBonusCode.value) {
-      localStorage.removeItem('depositBonusCode');
-      storeBonusCode.value = null;
-      bonusValue.value = '';
+    if (bonusChecking.value) return;
+    bonusChecking.value = true;
+
+    if (currentDepositBonusCode.value) {
+      const deleteBonus = await deleteDepositBonus();
+      if (deleteBonus) {
+        currentDepositBonusCode.value = undefined;
+        bonusValue.value = '';
+      }
     } else if (bonusValue.value) {
-      const bonusActivated = await sendBonus();
+      const bonusActivated = await sendManualBonus();
+
       if (!bonusActivated) {
-        localStorage.setItem('depositBonusCode', bonusValue.value);
-        storeBonusCode.value = bonusValue.value;
+        const sendDepositCode = await sendDepositBonus();
+        if (sendDepositCode) currentDepositBonusCode.value = bonusValue.value;
       }
     }
+
+    bonusChecking.value = false;
   };
 
   const toggleBonusField = ():void => {
     if (!hasBonusCode.value) hasBonusCode.value = true;
-    else {
+    else if (currentDepositBonusCode.value) {
       hasBonusCode.value = false;
-      localStorage.removeItem('depositBonusCode');
-      storeBonusCode.value = null;
+      toggleStorage();
+    } else {
+      hasBonusCode.value = false;
       bonusValue.value = '';
     }
   };
 
-  onMounted(() => {
-    storeBonusCode.value = localStorage.getItem('depositBonusCode');
-    bonusValue.value = storeBonusCode.value || '';
-
-    if (storeBonusCode.value) toggleBonusField();
+  onMounted(async () => {
+    await getDepositBonus();
   });
 </script>
 
