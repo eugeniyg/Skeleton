@@ -84,6 +84,10 @@
     "agreeSmsLabel": "Send promos by SMS"
   },
   "locale": "en",
+  "displayInFiat": {
+    "title": "Display in fiat",
+    "description": "Please note that these are currency approximations. All bets & transactions will be settled in the crypto equivalent. For further details feel free to contact our live support."
+  },
   "deposit": {
     "addressTitle": "Address",
     "addressDescription": "This is your personal address for deposits. Your funds will be available as soon as they pass through the necessary confirmations.",
