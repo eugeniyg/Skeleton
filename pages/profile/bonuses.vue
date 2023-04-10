@@ -23,8 +23,14 @@
   const globalStore = useGlobalStore();
   const { contentLocalesArray } = storeToRefs(globalStore);
   const { setPageSeo, findLocalesContentData, localizePath } = useProjectMethods();
-  const bonusesContentRequest = await useAsyncData('bonusesContent', () => queryContent('profile')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'bonuses']).find());
+  const { getPlayerBonuses } = useBonusStore();
+
+  const [bonusesContentRequest] = await Promise.all([
+    useAsyncData('bonusesContent', () => queryContent('profile')
+      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'bonuses']).find()),
+    useAsyncData('updatePlayerBonuses', getPlayerBonuses),
+  ]);
+
   const { currentLocaleData, defaultLocaleData } = findLocalesContentData(bonusesContentRequest.data.value);
   const bonusesContent: Maybe<ProfileBonusesInterface> = currentLocaleData?.bonuses;
   const defaultLocaleBonusesContent: Maybe<ProfileBonusesInterface> = defaultLocaleData?.bonuses;
