@@ -85,7 +85,7 @@
   },
   "locale": "en",
   "displayInFiat": {
-    "title": "Display in fiat",
+    "title": "Display In Fiat",
     "description": "Please note that these are currency approximations. All bets & transactions will be settled in the crypto equivalent. For further details feel free to contact our live support."
   },
   "deposit": {
