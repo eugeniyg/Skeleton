@@ -26,6 +26,9 @@
         <span v-if="!props.hideBalance" class="amount">{{ item.amount }}</span>
       </div>
     </div>
+
+    <atomic-fiat-toggler v-if="showFiatToggler"/>
+
   </div>
 </template>
 
@@ -39,6 +42,10 @@
       default: false,
     },
     hideBalance: {
+      type: Boolean,
+      default: false,
+    },
+    showFiatToggler: {
       type: Boolean,
       default: false,
     },

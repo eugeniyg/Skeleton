@@ -1,13 +1,26 @@
 <template>
   <div class="balance">
-    <div class="row">
+    <div
+      class="row"
+      :class="{ 'row--compact': isShowFiatDisplay }"
+    >
       <div class="label">
-        {{ props.withdraw ? getContent(popupsData, defaultLocalePopupsData, 'deposit.balanceLabel')
-          : getContent(popupsData, defaultLocalePopupsData, 'withdraw.balanceLabel') }}
+        {{
+          props.withdraw ? getContent(popupsData, defaultLocalePopupsData, 'deposit.balanceLabel')
+          : getContent(popupsData, defaultLocalePopupsData, 'withdraw.balanceLabel')
+        }}
       </div>
 
       <div v-if="props.withdraw" class="value">
         {{ balanceFormat.amount }} {{ balanceFormat.currency }}
+      </div>
+
+      <div
+        v-if="props.withdraw && isShowFiatDisplay"
+        class="converted-value"
+      >
+        <span>{{ demoValue.currency }}</span>
+        <span>{{ demoValue.code }}</span>
       </div>
 
       <div
@@ -38,6 +51,13 @@
       <div class="value">
         {{ balanceFormat.amount }} {{ balanceFormat.currency }}
       </div>
+      <div
+        class="converted-value"
+        v-if="isShowFiatDisplay"
+      >
+        <span>{{ demoValue.currency }}</span>
+        <span>{{ demoValue.code }}</span>
+      </div>
     </div>
     <atomic-divider/>
     <slot/>
@@ -54,11 +74,18 @@
     },
   });
 
+  const layoutStore = useLayoutStore();
+  const { isShowFiatDisplay } = storeToRefs(layoutStore);
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { formatBalance, getContent } = useProjectMethods();
   const isSelectOpen = ref<boolean>(false);
+
+  const demoValue = {
+    currency: 0.00000136,
+    code: 'BTC',
+  };
 
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
 
@@ -102,6 +129,7 @@
   .row {
     display: flex;
     align-items: center;
+    grid-row-gap: rem(2px);
 
     @include media(md) {
       flex-direction: column;
@@ -111,9 +139,14 @@
     &:nth-of-type(even) {
       margin-bottom: rem(16px);
 
+      .label {
+        @include upd-font($body-1);
+        --color: var(--gray-400);
+      }
+
       .value {
         @include upd-font($body-2);
-        --color: var(--white);
+        --color: var(--gray-400);
         text-align: right;
 
         @include media(md) {
@@ -125,8 +158,13 @@
     &:nth-of-type(odd) {
       margin-bottom: rem(16px);
 
+      &.row--compact {
+        margin-bottom: 8px;
+      }
+
       .value {
         text-align: right;
+        --color: var(--white);
 
         @include media(md) {
           text-align: left;
@@ -221,9 +259,13 @@
 
   .value {
     @include font($body-2);
-    color: var(--color, var(--white));
+    color: var(--color, var(--gray-500));
     flex-grow: 1;
     margin: 0;
+
+    &--accented {
+      --color: var(--white);
+    }
   }
 
   .items {
@@ -239,6 +281,12 @@
         display: none;
       }
     }
+  }
+
+  .converted-value {
+    color: var(--gray-500);
+    @include font($body-0);
+    margin-top: rem(2px);
   }
 }
 </style>

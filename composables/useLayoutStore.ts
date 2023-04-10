@@ -16,6 +16,7 @@ interface ModalsInterface extends Record<string, any> {
   resetPass: boolean,
   success: boolean,
   withdraw: boolean,
+  fiat: boolean,
 }
 
 interface ModalsUrlsInterface extends Record<string, any> {
@@ -26,6 +27,7 @@ interface ModalsUrlsInterface extends Record<string, any> {
   confirm: string,
   forgotPass: string,
   resetPass: string,
+  fiat: string,
 }
 
 interface LayoutStoreStateInterface extends Record<string, any>{
@@ -49,6 +51,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       isShowAlert: false,
       showCookiePopup: false,
       alertProps: undefined,
+      isShowFiatDisplay: false,
       modals: {
         register: false,
         signIn: false,
@@ -61,6 +64,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         success: false,
         withdraw: false,
         registerCancel: false,
+        fiat: false,
       },
       modalsUrl: {
         register: 'sign-up',
@@ -70,10 +74,22 @@ export const useLayoutStore = defineStore('layoutStore', {
         confirm: 'confirm',
         forgotPass: 'forgot-pass',
         resetPass: 'reset-pass',
+        fiat: 'show-fiat',
       },
   }),
 
   actions: {
+    showFiatDisplay() {
+      this.isShowFiatDisplay = true;
+      localStorage.setItem('SHOW_FIAT_DISPLAY', 'true');
+    },
+
+    hideFiatDisplay() {
+      this.isShowFiatDisplay = false;
+      localStorage.removeItem('SHOW_FIAT_DISPLAY');
+      localStorage.removeItem('FIAT_CODE');
+    },
+
     showAlert(props: Maybe<AlertInterface>): void {
       if (this.isShowAlert) {
         this.hideAlert();
