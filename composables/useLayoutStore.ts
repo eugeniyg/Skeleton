@@ -27,7 +27,6 @@ interface ModalsUrlsInterface extends Record<string, any> {
   confirm: string,
   forgotPass: string,
   resetPass: string,
-  fiat: string,
 }
 
 interface LayoutStoreStateInterface extends Record<string, any>{
@@ -74,7 +73,6 @@ export const useLayoutStore = defineStore('layoutStore', {
         confirm: 'confirm',
         forgotPass: 'forgot-pass',
         resetPass: 'reset-pass',
-        fiat: 'show-fiat',
       },
   }),
 

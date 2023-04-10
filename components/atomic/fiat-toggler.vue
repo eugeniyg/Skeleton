@@ -21,7 +21,7 @@
   const layoutStore = useLayoutStore();
   const { showModal, showFiatDisplay, hideFiatDisplay } = layoutStore;
 
-  const isChecked = ref<string | null | boolean>(false);
+  const isChecked = ref<boolean|string>(false);
   const selectedCurrencyCode = ref('USD');
 
   const toggle = () => {
@@ -32,7 +32,7 @@
   };
 
   onMounted(() => {
-    isChecked.value = localStorage.getItem('SHOW_FIAT_DISPLAY');
+    isChecked.value = localStorage.getItem('SHOW_FIAT_DISPLAY') || false;
   });
 </script>
 

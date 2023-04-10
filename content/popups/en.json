@@ -83,7 +83,7 @@
     "agreeEmailLabel": "I agree to receive bonus & marketing emails",
     "agreeSmsLabel": "Send promos by SMS"
   },
-  "locale": "de",
+  "locale": "en",
   "displayInFiat": {
     "title": "Display in fiat",
     "description": "Please note that these are currency approximations. All bets & transactions will be settled in the crypto equivalent. For further details feel free to contact our live support."

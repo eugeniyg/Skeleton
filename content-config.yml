@@ -922,7 +922,7 @@ collections:
             label: Cancel Button
             widget: string
       - name: displayInFiat
-        label: Display in fiat Popup
+        label: Display In Fiat Popup
         widget: object
         collapsed: true
         fields:
