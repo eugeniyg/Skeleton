@@ -1,5 +1,9 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { AccountInterface, AccountRequestInterface, WebSocketResponseInterface } from '@platform/frontend-core/dist/module';
+import {
+  AccountInterface,
+  AccountRequestInterface,
+  WebSocketResponseInterface,
+} from '@platform/frontend-core/dist/module';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 import { useProjectMethods } from '~/composables/useProjectMethods';
@@ -26,6 +30,22 @@ export const useWalletStore = defineStore('walletStore', {
   getters: {
     activeAccount(state): Maybe<AccountInterface> {
       return state.accounts.find((acc) => acc.status === 1);
+    },
+
+    activeEquivalentAccount(): Maybe<{ balance: number, currency: string }> {
+      const globalStore = useGlobalStore();
+      if (!globalStore.equivalentCurrency || !this.activeAccount || !globalStore.baseCurrency) return undefined;
+
+      const currentCurrency = globalStore.currencies.find((currency) => currency.code === this.activeAccount?.currency);
+      if (!currentCurrency) return undefined;
+
+      // here baseAmount will be in float
+      const balanceInBaseCurrency = this.activeAccount.balance * (currentCurrency.subunitToUnit / currentCurrency.rate.rate);
+
+      // convert to int + divide onto rate
+      const equivalentAmount = balanceInBaseCurrency * (globalStore.baseCurrency.subunitToUnit / globalStore.equivalentCurrency.rate.rate);
+
+      return { balance: Number(equivalentAmount.toFixed(2)), currency: globalStore.equivalentCurrency.code };
     },
 
     activeAccountType():string {

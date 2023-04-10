@@ -27,8 +27,7 @@
       </div>
     </div>
 
-    <atomic-fiat-toggler v-if="showFiatToggler"/>
-
+    <atomic-fiat-toggler v-if="showFiatToggler && activeAccountType === 'crypto'" />
   </div>
 </template>
 
@@ -53,16 +52,19 @@
 
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
-  const { accounts, currencyTabs, activeAccount } = storeToRefs(walletStore);
-  const { currencies } = storeToRefs(globalStore);
+  const {
+    accounts,
+    currencyTabs,
+    activeAccount,
+    activeAccountType,
+  } = storeToRefs(walletStore);
+  const { currencies, cryptoCurrencies } = storeToRefs(globalStore);
   const { switchAccount } = useWalletStore();
   const { createAccount } = useWalletStore();
   const { formatBalance } = useProjectMethods();
   const { sortByAlphabet } = useProjectMethods();
 
   const emit = defineEmits(['hide-currencies-list', 'changeActiveAccount']);
-
-  const cryptoCurrencies = computed(() => currencies.value.filter((currency) => currency.type === 'crypto'));
 
   const selected = ref<string>('all');
 

@@ -10,7 +10,8 @@
       "emptyText": "Try searching for something else",
       "tryLabel": "Or try these popular games:"
     },
-    "depositButton": "Deposit"
+    "depositButton": "Deposit",
+    "fiatToggler": "Display in Fiat"
   },
   "userNavigation": {
     "profileLinks": [
