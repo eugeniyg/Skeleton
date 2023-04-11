@@ -884,6 +884,43 @@ collections:
           - name: button
             label: Button Label
             widget: string
+      - name: changeActiveBonus
+        label: Change Active Bonus Popup
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: description
+            label: Description
+            widget: text
+          - name: confirmButton
+            label: Confirm Button
+            widget: string
+          - name: cancelButton
+            label: Cancel Button
+            widget: string
+      - name: cancelBonus
+        label: Cancel Bonus Popup
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: activeBonusDescription
+            label: Active Bonus Description
+            widget: text
+          - name: issuedBonusDescription
+            label: Issued Bonus Description
+            widget: text
+          - name: confirmButton
+            label: Confirm Button
+            widget: string
+          - name: cancelButton
+            label: Cancel Button
+            widget: string
 
   - name: alerts
     label: Site Alerts
@@ -1369,6 +1406,38 @@ collections:
               - name: tryError
                 label: Try Error
                 widget: string
+          - name: cashBonuses
+            label: Cash Bonuses
+            widget: object
+            collapsed: true
+            fields:
+              - name: title
+                label: Title
+                widget: string
+              - name: wagerHintLabel
+                label: Wager Hint Label
+                widget: string
+              - name: casinoWagerLabel
+                label: Casino Wager Label
+                widget: string
+                hint: 'Put variables {wager}: casino wager in text!'
+              - name: sportsbookWagerLabel
+                label: Sportsbook Wager Label
+                widget: string
+                hint: 'Put variables {wager}: sportsbook wager in text!'
+              - name: waitingResult
+                label: Waiting Result Text
+                widget: string
+              - name: empty
+                label: Empty Block
+                widget: object
+                fields:
+                  - name: title
+                    label: Title
+                    widget: string
+                  - name: description
+                    label: Description
+                    widget: text
           - *seoBlock
       - name: notifications
         label: Profile Notificaitons
