@@ -21,7 +21,7 @@ export const useBonusStore = defineStore('bonusStore', {
   getters: {
     activePlayerBonuses(state):PlayerBonusInterface[] {
       const walletStore = useWalletStore();
-      return state.playerBonuses.filter((playerBonus) => [1, 2].includes(playerBonus.status) && walletStore.activeAccount?.currency === playerBonus.currency);
+      return state.playerBonuses.filter((playerBonus) => walletStore.activeAccount?.currency === playerBonus.currency);
     },
 
     activePlayerCashBonuses():PlayerBonusInterface[] {
@@ -32,7 +32,7 @@ export const useBonusStore = defineStore('bonusStore', {
   actions: {
     async getPlayerBonuses():Promise<void> {
       const { getPlayerBonuses } = useCoreBonusApi();
-      const data = await getPlayerBonuses();
+      const data = await getPlayerBonuses({ status: [1, 2] });
       this.playerBonuses = data;
     },
 

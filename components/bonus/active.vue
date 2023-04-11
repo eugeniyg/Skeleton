@@ -36,6 +36,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { PlayerBonusInterface } from '@platform/frontend-core/dist/module';
+  import { cloneDeep } from 'lodash';
   import { CashBonusesInterface } from '~/types';
 
   const props = defineProps<{
@@ -73,6 +74,7 @@
     popupsData,
     defaultLocalePopupsData,
   } = storeToRefs(globalStore);
+
   const changeBonuses = (processBonus: PlayerBonusInterface, processMode: 'activate'|'cancel'):void => {
     modalState.bonusInfo = processBonus;
     modalState.mode = processMode;
@@ -115,11 +117,12 @@
       showModal.value = false;
 
       setTimeout(() => {
-        playerBonuses.value = playerBonuses.value.map((bonus) => {
-          if (bonus.status === 2) return { ...bonus, status: 1 };
-          if (bonus.id === modalState.bonusInfo?.id) return { ...bonus, status: 2 };
-          return bonus;
-        });
+        const cloneList = cloneDeep(orderedBonuses.value);
+        const currentBonusIndex:number = cloneList.findIndex((bonus) => bonus.id === modalState.bonusInfo?.id);
+        const activeBonus = cloneList[0];
+        cloneList[0] = { ...modalState.bonusInfo as PlayerBonusInterface, status: 2 };
+        cloneList[currentBonusIndex] = { ...activeBonus, status: 1 };
+        playerBonuses.value = cloneList;
       }, 200);
 
       setTimeout(() => {
@@ -142,15 +145,12 @@
 
       if (modalState.bonusInfo.status === 2) {
         setTimeout(() => {
-          let hasActive = false;
-          playerBonuses.value = playerBonuses.value.reverse().map((bonus) => {
-            if (bonus.status === 1 && !hasActive) {
-              hasActive = true;
-              return { ...bonus, status: 2 };
-            }
-            if (bonus.status === 2) return { ...bonus, status: 1 };
-            return bonus;
-          }).reverse();
+          const cloneList = cloneDeep(orderedBonuses.value);
+          const activeBonus = cloneList[0];
+          const nextBonus = cloneList[1];
+          cloneList[0] = { ...nextBonus, status: 2 };
+          cloneList[1] = { ...activeBonus, status: 1 };
+          playerBonuses.value = cloneList;
         }, 200);
       }
 
