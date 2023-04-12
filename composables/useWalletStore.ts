@@ -32,7 +32,7 @@ export const useWalletStore = defineStore('walletStore', {
       return state.accounts.find((acc) => acc.status === 1);
     },
 
-    activeEquivalentAccount(): { balance: number, currency: string } {
+    activeEquivalentAccount(): { balance: number, currency: string, currencySymbol: string } {
       const { getEquivalentAccount } = useProjectMethods();
       return getEquivalentAccount(this.activeAccount?.balance, this.activeAccount?.currency);
     },
