@@ -24,6 +24,8 @@
     "changeButton": "Use currency",
     "depositButton": "Deposit",
     "addButton": "Add currency",
+    "allTab": "All",
+    "cryptoTab": "Crypto",
     "hideButton": "Hide currency",
     "title": "Wallet",
     "withdrawButton": "Withdraw",
