@@ -1,16 +1,18 @@
 <template>
   <div class="fiat-toggler">
-    <div class="fiat-toggler__label">Display in Fiat</div>
+    <div class="fiat-toggler__label" @click="toggle">
+      {{ headerContent?.fiatToggler || defaultLocaleHeaderContent?.fiatToggler }}
+    </div>
 
     <transition name="fade">
-      <div class="fiat-toggler__selected" v-if="isChecked" @click="showModal('fiat')">
-        <img class="fiat-toggler__selected-logo" :src="`/img/currency/${selectedCurrencyCode}.svg`" alt=""/>
-        <span class="fiat-toggler__selected-currency">{{ selectedCurrencyCode }}</span>
+      <div v-if="equivalentCurrency" class="fiat-toggler__selected" @click="showModal('fiat')">
+        <img class="fiat-toggler__selected-logo" :src="`/img/currency/${equivalentCurrency.code}.svg`" alt=""/>
+        <span class="fiat-toggler__selected-currency">{{ equivalentCurrency.code }}</span>
       </div>
     </transition>
 
     <form-input-toggle
-      v-model:value="isChecked"
+      :value="!!equivalentCurrency"
       @change="toggle"
       name="fiat"
     />
@@ -18,22 +20,22 @@
 </template>
 
 <script setup lang="ts">
-  const layoutStore = useLayoutStore();
-  const { showModal, showFiatDisplay, hideFiatDisplay } = layoutStore;
+  import { storeToRefs } from 'pinia';
 
-  const isChecked = ref<boolean>(false);
-  const selectedCurrencyCode = ref('USD');
+  const layoutStore = useLayoutStore();
+  const { showModal } = layoutStore;
+
+  const globalStore = useGlobalStore();
+  const { equivalentCurrency, headerContent, defaultLocaleHeaderContent } = storeToRefs(globalStore);
+  const { setEquivalentCurrency, removeEquivalentCurrency } = globalStore;
 
   const toggle = () => {
-    isChecked.value = !isChecked.value;
-    nextTick(() => {
-      isChecked.value ? showFiatDisplay() : hideFiatDisplay();
-    });
+    if (equivalentCurrency.value) {
+      removeEquivalentCurrency();
+    } else {
+      setEquivalentCurrency('USD');
+    }
   };
-
-  onMounted(() => {
-    isChecked.value = !!localStorage.getItem('SHOW_FIAT_DISPLAY');
-  });
 </script>
 
 <style lang="scss">

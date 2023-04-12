@@ -23,12 +23,11 @@
       >
         <img class="img" :src="`/img/currency/${item.nativeCurrency}.svg`" alt=""/>
         <span class="code-title">{{ item.currency }}</span>
-        <span v-if="!props.hideBalance" class="amount">{{ item.amount }}</span>
+        <span v-if="!props.hideBalance" class="amount">{{ item.currencySymbol }} {{ item.amount }}</span>
       </div>
     </div>
 
-    <atomic-fiat-toggler v-if="showFiatToggler"/>
-
+    <atomic-fiat-toggler v-if="showFiatToggler" />
   </div>
 </template>
 
@@ -53,34 +52,54 @@
 
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
-  const { accounts, currencyTabs, activeAccount } = storeToRefs(walletStore);
-  const { currencies } = storeToRefs(globalStore);
+  const {
+    accounts,
+    currencyTabs,
+    activeAccount,
+    activeAccountType,
+  } = storeToRefs(walletStore);
+  const { currencies, cryptoCurrencies, equivalentCurrency } = storeToRefs(globalStore);
   const { switchAccount } = useWalletStore();
   const { createAccount } = useWalletStore();
-  const { formatBalance } = useProjectMethods();
-  const { sortByAlphabet } = useProjectMethods();
+  const { formatBalance, sortByAlphabet, getEquivalentAccount } = useProjectMethods();
 
   const emit = defineEmits(['hide-currencies-list', 'changeActiveAccount']);
-
-  const cryptoCurrencies = computed(() => currencies.value.filter((currency) => currency.type === 'crypto'));
 
   const selected = ref<string>('all');
 
   const getAccountByCurrency = (currency: string): Maybe<AccountInterface> => accounts.value.find((account) => (account.currency === currency));
+
+  interface DisplayAccountInterface {
+    nativeCurrency: string,
+    currency: string,
+    amount: number,
+    currencySymbol?: string
+  }
 
   const selectedItems = computed(() => {
     let currenciesList:CurrencyInterface[];
     if (selected.value === 'all' || !cryptoCurrencies.value.length) currenciesList = currencies.value;
     else currenciesList = cryptoCurrencies.value;
 
-    const formatList:{ nativeCurrency: string, currency: string, amount: number }[] = currenciesList.map((currency) => {
+    const formatList:DisplayAccountInterface[] = currenciesList.map((currency) => {
       const findAccount = getAccountByCurrency(currency.code);
+
+      if (equivalentCurrency.value && currency.type === 'crypto') {
+        const equivalentAccount = getEquivalentAccount(findAccount?.balance || 0, findAccount?.currency || currency.code);
+        return {
+          nativeCurrency: currency.code,
+          amount: equivalentAccount.balance,
+          currency: currency.code,
+          currencySymbol: equivalentAccount.currencySymbol,
+        };
+      }
+
       const formattedAcc = formatBalance(findAccount?.currency || currency.code, findAccount?.balance || 0);
-      return { nativeCurrency: currency.code, ...formattedAcc };
+      return { nativeCurrency: currency.code, ...formattedAcc, currencySymbol: equivalentCurrency.value ? currency.symbol : undefined };
     });
 
-    const withBalanceList:{ nativeCurrency: string, currency: string, amount: number }[] = [];
-    const withoutBalanceList:{ nativeCurrency: string, currency: string, amount: number }[] = [];
+    const withBalanceList:DisplayAccountInterface[] = [];
+    const withoutBalanceList:DisplayAccountInterface[] = [];
 
     formatList.forEach((formatItem) => {
       if (formatItem.amount) withBalanceList.push(formatItem);

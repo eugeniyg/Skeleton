@@ -1,44 +1,54 @@
 <template>
   <div
     class="fiat-display"
-    :class="{ 'is-show-fiat-tooltip': isShowFiatTooltip }"
+    :class="{ 'is-show-fiat-tooltip': isShowFiatTooltip && !props.showCurrencyPopup }"
     @mouseenter="showFiatTooltip"
     @mouseleave="hideFiatTooltip"
   >
-    <img class="fiat-display__logo" :src="`/img/currency/${ currency.code }.svg`" alt=""/>
-    <span class="fiat-display__amount">{{ currency.amount }}</span>
-    <span class="fiat-display__currency">{{ currency.code }}</span>
+    <img
+      class="fiat-display__logo"
+      :src="`/img/currency/${ activeAccount?.currency }.svg`"
+      alt=""
+    />
+    <span class="fiat-display__amount">{{ equivalentBalanceFormat.amount }}</span>
+    <span class="fiat-display__currency">{{ equivalentBalanceFormat.currency }}</span>
 
     <div class="fiat-display__tooltip">
-      <img class="fiat-display__logo" :src="`/img/currency/${ crypto.code }.svg`" alt=""/>
-      <span class="fiat-display__amount">{{ crypto.code }}</span>
-      <span class="fiat-display__currency">{{ crypto.amount }}</span>
+      <img class="fiat-display__logo" :src="`/img/currency/${ activeAccount?.currency }.svg`" alt=""/>
+      <span class="fiat-display__amount">{{ activeBalanceFormat.amount }}</span>
+      <span class="fiat-display__currency">{{ activeBalanceFormat.currency }}</span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const currency = {
-    code: 'USD',
-    amount: 137.37,
-  };
+  import { storeToRefs } from 'pinia';
 
-  const crypto = {
-    code: 'BTC',
-    amount: '0.00000136',
-  };
+  const props = defineProps<{
+    showCurrencyPopup: boolean
+  }>();
+
+  const walletStore = useWalletStore();
+  const { activeAccount, activeEquivalentAccount } = storeToRefs(walletStore);
+  const { formatBalance } = useProjectMethods();
+
+  const equivalentBalanceFormat = computed(() => formatBalance(activeEquivalentAccount.value?.currency, activeEquivalentAccount.value?.balance));
+  const activeBalanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
 
   const isShowFiatTooltip = ref<boolean>(false);
 
   const showFiatTooltip = () => {
+    if (props.showCurrencyPopup) return;
     isShowFiatTooltip.value = true;
   };
 
   const hideFiatTooltip = () => {
-    setTimeout(() => {
-      isShowFiatTooltip.value = false;
-    }, 1000);
+    isShowFiatTooltip.value = false;
   };
+
+  watch(() => props.showCurrencyPopup, (newValue) => {
+    if (newValue) hideFiatTooltip();
+  });
 </script>
 
 <style lang="scss">

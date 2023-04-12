@@ -20,7 +20,7 @@
           <div
             v-for="item in fiatCurrencies"
             class="modal-fiat__item"
-            :class="{ 'is-active': getFiatCode() === item.code }"
+            :class="{ 'is-active': equivalentCurrency.code === item.code }"
             :key="item.code"
             @click="selectFiat(item.code)"
           >
@@ -40,18 +40,19 @@
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+
+  const globalStore = useGlobalStore();
+  const {
+    popupsData,
+    defaultLocalePopupsData,
+    equivalentCurrency,
+    fiatCurrencies,
+  } = storeToRefs(globalStore);
+  const { setEquivalentCurrency } = globalStore;
   const { getContent } = useProjectMethods();
-  const { currencies } = useGlobalStore();
-
-  const fiatCurrencies = computed(() => currencies.filter((currency) => currency.type === 'fiat'));
-
-  const saveFiatCode = (code: string) => code && localStorage.setItem('FIAT_CODE', `${code}`);
-
-  const getFiatCode = () => localStorage.getItem('FIAT_CODE');
 
   const selectFiat = (code: string) => {
-    saveFiatCode(code);
+    setEquivalentCurrency(code);
     closeModal('fiat');
   };
 </script>

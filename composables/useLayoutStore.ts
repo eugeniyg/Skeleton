@@ -50,7 +50,6 @@ export const useLayoutStore = defineStore('layoutStore', {
       isShowAlert: false,
       showCookiePopup: false,
       alertProps: undefined,
-      isShowFiatDisplay: false,
       modals: {
         register: false,
         signIn: false,
@@ -77,17 +76,6 @@ export const useLayoutStore = defineStore('layoutStore', {
   }),
 
   actions: {
-    showFiatDisplay() {
-      this.isShowFiatDisplay = true;
-      localStorage.setItem('SHOW_FIAT_DISPLAY', 'true');
-    },
-
-    hideFiatDisplay() {
-      this.isShowFiatDisplay = false;
-      localStorage.removeItem('SHOW_FIAT_DISPLAY');
-      localStorage.removeItem('FIAT_CODE');
-    },
-
     showAlert(props: Maybe<AlertInterface>): void {
       if (this.isShowAlert) {
         this.hideAlert();

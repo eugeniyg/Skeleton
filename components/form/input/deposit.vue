@@ -7,7 +7,10 @@
         @click="toggleSelect"
         v-click-outside="closeDropdown"
       >
-        <atomic-fiat-display v-if="isShowFiatDisplay"/>
+        <atomic-fiat-display
+          v-if="activeAccountType === 'crypto' && equivalentCurrency"
+          :showCurrencyPopup="isShow"
+        />
         <div class="select__content" v-else>
           <div class="amount">{{ balanceFormat.amount }}</div>
           <div class="label">{{ balanceFormat.currency }}</div>
@@ -32,11 +35,10 @@
   import { storeToRefs } from 'pinia';
 
   const walletStore = useWalletStore();
+  const globalStore = useGlobalStore();
   const { formatBalance } = useProjectMethods();
-  const { activeAccount } = storeToRefs(walletStore);
-  const layoutStore = useLayoutStore();
-  const { showFiatDisplay } = layoutStore;
-  const { isShowFiatDisplay } = storeToRefs(layoutStore);
+  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
+  const { equivalentCurrency } = storeToRefs(globalStore);
 
   const isShow = ref<boolean>(false);
 
@@ -49,12 +51,6 @@
   const closeDropdown = () => {
     if (isShow.value) isShow.value = false;
   };
-
-  onMounted(() => {
-    if (localStorage.getItem('SHOW_FIAT_DISPLAY')) {
-      showFiatDisplay();
-    }
-  });
 </script>
 
 <style lang="scss">
