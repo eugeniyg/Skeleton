@@ -1,11 +1,11 @@
 <template>
-  <div class="fiat-toggler" @click="toggle">
-    <div class="fiat-toggler__label">
+  <div class="fiat-toggler">
+    <div class="fiat-toggler__label" @click="toggle">
       {{ headerContent?.fiatToggler || defaultLocaleHeaderContent?.fiatToggler }}
     </div>
 
     <transition name="fade">
-      <div v-if="equivalentCurrency" class="fiat-toggler__selected" @click.stop="showModal('fiat')">
+      <div v-if="equivalentCurrency" class="fiat-toggler__selected" @click="showModal('fiat')">
         <img class="fiat-toggler__selected-logo" :src="`/img/currency/${equivalentCurrency.code}.svg`" alt=""/>
         <span class="fiat-toggler__selected-currency">{{ equivalentCurrency.code }}</span>
       </div>
@@ -13,6 +13,7 @@
 
     <form-input-toggle
       :value="!!equivalentCurrency"
+      @change="toggle"
       name="fiat"
     />
   </div>

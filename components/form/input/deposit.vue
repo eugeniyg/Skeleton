@@ -8,7 +8,7 @@
         v-click-outside="closeDropdown"
       >
         <atomic-fiat-display
-          v-if="activeAccountType === 'crypto' && activeEquivalentAccount"
+          v-if="activeAccountType === 'crypto' && equivalentCurrency"
           :showCurrencyPopup="isShow"
         />
         <div class="select__content" v-else>
@@ -35,8 +35,10 @@
   import { storeToRefs } from 'pinia';
 
   const walletStore = useWalletStore();
+  const globalStore = useGlobalStore();
   const { formatBalance } = useProjectMethods();
-  const { activeAccount, activeAccountType, activeEquivalentAccount } = storeToRefs(walletStore);
+  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
+  const { equivalentCurrency } = storeToRefs(globalStore);
 
   const isShow = ref<boolean>(false);
 

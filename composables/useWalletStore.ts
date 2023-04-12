@@ -32,20 +32,9 @@ export const useWalletStore = defineStore('walletStore', {
       return state.accounts.find((acc) => acc.status === 1);
     },
 
-    activeEquivalentAccount(): Maybe<{ balance: number, currency: string }> {
-      const globalStore = useGlobalStore();
-      if (!globalStore.equivalentCurrency || !this.activeAccount || !globalStore.baseCurrency) return undefined;
-
-      const currentCurrency = globalStore.currencies.find((currency) => currency.code === this.activeAccount?.currency);
-      if (!currentCurrency) return undefined;
-
-      // here baseAmount will be in float
-      const balanceInBaseCurrency = this.activeAccount.balance * (currentCurrency.subunitToUnit / currentCurrency.rate.rate);
-
-      // convert to int + divide onto rate
-      const equivalentAmount = balanceInBaseCurrency * (globalStore.baseCurrency.subunitToUnit / globalStore.equivalentCurrency.rate.rate);
-
-      return { balance: Number(equivalentAmount.toFixed(2)), currency: globalStore.equivalentCurrency.code };
+    activeEquivalentAccount(): { balance: number, currency: string } {
+      const { getEquivalentAccount } = useProjectMethods();
+      return getEquivalentAccount(this.activeAccount?.balance, this.activeAccount?.currency);
     },
 
     activeAccountType():string {

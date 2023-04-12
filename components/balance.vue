@@ -2,7 +2,7 @@
   <div class="balance">
     <div
       class="row"
-      :class="{ 'row--compact': isShowFiatDisplay }"
+      :class="{ 'row--compact': showEquivalentBalance }"
     >
       <div class="label">
         {{
@@ -11,17 +11,18 @@
         }}
       </div>
 
-      <div v-if="props.withdraw" class="value">
-        {{ balanceFormat.amount }} {{ balanceFormat.currency }}
-      </div>
+      <template v-if="props.withdraw">
+        <div
+          v-if="showEquivalentBalance"
+          class="value"
+        >
+          {{ activeEquivalentAccount.balance }} {{ activeEquivalentAccount.currency }}
+        </div>
 
-      <div
-        v-if="props.withdraw && isShowFiatDisplay"
-        class="converted-value"
-      >
-        <span>{{ demoValue.currency }}</span>
-        <span>{{ demoValue.code }}</span>
-      </div>
+        <div :class="showEquivalentBalance ? 'converted-value' : 'value'">
+          {{ balanceFormat.amount }} {{ balanceFormat.currency }}
+        </div>
+      </template>
 
       <div
         v-else
@@ -48,15 +49,16 @@
 
     <div class="row" v-if="props.withdraw">
       <div class="label">{{ getContent(popupsData, defaultLocalePopupsData, 'withdraw.withdrawLabel') }}</div>
-      <div class="value">
-        {{ balanceFormat.amount }} {{ balanceFormat.currency }}
-      </div>
+
       <div
-        class="converted-value"
-        v-if="isShowFiatDisplay"
+        class="value"
+        v-if="showEquivalentBalance"
       >
-        <span>{{ demoValue.currency }}</span>
-        <span>{{ demoValue.code }}</span>
+        {{ activeEquivalentAccount.balance }} {{ activeEquivalentAccount.currency }}
+      </div>
+
+      <div :class="showEquivalentBalance ? 'converted-value' : 'value'">
+        {{ balanceFormat.amount }} {{ balanceFormat.currency }}
       </div>
     </div>
     <atomic-divider/>
@@ -74,20 +76,15 @@
     },
   });
 
-  const layoutStore = useLayoutStore();
-  const { isShowFiatDisplay } = storeToRefs(layoutStore);
   const walletStore = useWalletStore();
-  const { activeAccount } = storeToRefs(walletStore);
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { activeAccount, activeAccountType, activeEquivalentAccount } = storeToRefs(walletStore);
+  const { popupsData, defaultLocalePopupsData, equivalentCurrency } = storeToRefs(globalStore);
   const { formatBalance, getContent } = useProjectMethods();
   const isSelectOpen = ref<boolean>(false);
 
-  const demoValue = {
-    currency: 0.00000136,
-    code: 'BTC',
-  };
-
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
+  const showEquivalentBalance = computed(() => equivalentCurrency.value && activeAccountType.value === 'crypto');
 
   const toggleSelect = () => {
     isSelectOpen.value = !isSelectOpen.value;
