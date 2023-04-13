@@ -1,43 +1,50 @@
 <template>
   <vue-final-modal
-    v-model="modals.depositLimit"
+    v-model="modals.addLimit"
     class="modal-deposit-limit"
-    @clickOutside="closeModal('depositLimit')"
+    @clickOutside="closeModal('addLimit')"
     clickToClose
   >
     <div class="scroll">
+      <pre style="color:white">{{ formState }}</pre>
       <div class="header">
-        <button-modal-close @close="closeModal('depositLimit')"/>
-        <div class="title">New deposit limit</div>
+        <button-modal-close @close="closeModal('addLimit')"/>
+        <div class="title">{{ titleMapping[props.definition] }}</div>
       </div>
 
       <div class="modal-deposit-limit__tabs">
         <span
           class="modal-deposit-limit__tabs-item"
-          :class="{'is-active': item === selectedTab}"
-          v-for="item in tabs"
-          :key="item"
-          @click="changeTab(item)"
-        >{{ item }}</span>
+          :class="{'is-active': period.id === selectedTab.id}"
+          v-for="period in limitsCashPeriod"
+          :key="period.id"
+          @click="changeTab(period)"
+        >
+          {{ period.name }}
+        </span>
       </div>
 
-      <form-input-currencies/>
+      <form-input-currencies
+        @select="selectCurrency"
+        @blur="blurCurrencySelect"
+      />
 
       <form-input-number
         :is-required="false"
-        currency="EUR"
+        :currency="formState.currency"
         :min="0"
         :value="0"
         placeholder="0"
       />
 
-      <p class="modal-deposit-limit__description">The restriction takes effect instantly. You can reduce your limit at any
+      <p class="modal-deposit-limit__description">
+        The restriction takes effect instantly. You can reduce your limit at any
         time, this change will take effect
         immediately. You can increase the limit, however, in order for this change to take effect, you need 24 hours.
         Cancellation of the deposit limit takes 24 hours. After the limit is exceeded, you will receive an email
         notification.</p>
 
-      <button-base type="primary" size="md">Add</button-base>
+      <button-base type="primary" size="md" @click="addLimit">Add</button-base>
     </div>
   </vue-final-modal>
 </template>
@@ -45,16 +52,82 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
+  import { CurrencyInterface } from '@platform/frontend-core/dist/module';
 
+  const { createPlayerLimit } = useCoreProfileApi();
+
+  interface ModalPropsInterface {
+    definition?: number | undefined,
+  }
+
+  interface PeriodInterFace {
+    id: string,
+    name: string,
+  }
+
+  interface FormStateInterface {
+    definition: number | undefined,
+    period?: string,
+    currency?: string,
+    amount?: number,
+  }
+
+  const props = defineProps<ModalPropsInterface>();
+
+  const { settingsConstants } = useGlobalStore();
   const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
+  const { modals } = storeToRefs(layoutStore);
 
-  const tabs = ref<string[]>(['Daily', 'Weekly', 'Monthly']);
-  const selectedTab = ref<string>(tabs.value[0]);
-  const changeTab = (value: string) => {
-    selectedTab.value = value;
+  const limitsCashPeriod = ref(settingsConstants?.player?.limit?.cashPeriod);
+
+  const titleMapping = {
+    1: 'New wagger limit',
+    2: 'New loss limit',
+    3: 'New deposit limit',
   };
+
+  const selectedTab = ref<PeriodInterFace>(limitsCashPeriod.value[0]);
+
+  const formState = reactive<FormStateInterface>({
+    definition: props.definition,
+  });
+
+  const changeTab = (period: PeriodInterFace) => {
+    selectedTab.value = period;
+    formState.period = period.id;
+  };
+
+  const selectCurrency = (currency: CurrencyInterface) => {
+    console.log(currency);
+    formState.currency = currency.code;
+  };
+
+  const blurCurrencySelect = () => {
+    console.log('blur currency select');
+  };
+
+  const addLimit = async () => {
+    try {
+      console.log(formState);
+      // await createPlayerLimit({
+      //   definition: 3,
+      //   period: 'daily',
+      //   currency: 'USD',
+      //   amount: 1,
+      // });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  onMounted(() => {
+    // console.log(limitsCashPeriod.value);
+
+    console.log(settingsConstants?.player?.limit?.cashPeriod);
+
+    // formState.definition = props.definition;
+  });
 </script>
 
 <style lang="scss">

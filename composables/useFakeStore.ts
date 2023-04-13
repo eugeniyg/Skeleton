@@ -1945,9 +1945,13 @@ export const useFakeStore = () => {
         },
       },
     },
-    wagerLimits: {
+    betLimits: {
       title: 'Wager limits',
       info: '<p>This setting limits the amount you can wager per day, week or month.</p>',
+      tooltip: {
+        text: 'This setting limits the amount you can deposit per day, week or month.',
+        align: 'bottom',
+      },
       buttons: {
         primary: {
           title: 'Add new',

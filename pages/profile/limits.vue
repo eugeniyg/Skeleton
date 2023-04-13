@@ -12,155 +12,35 @@
       </div>
     </div>
 
+    <!--<pre style="color: white">{{ state.limitsList }}</pre>-->
+
     <div class="limits__grid">
-      <!-- deposit -->
-      <div
-        class="limits__card"
-        :class="makeFullWidth(deposit.depositPeriods)"
+
+      <card-deposit-limits
         v-if="isAdvancedModeEnabled"
-      >
-        <h4 class="limits__card-title" data-tooltip-parent>
-          {{ deposit.title }}
-          <atomic-tooltip v-if="isShowPeriods" v-bind="deposit.tooltip"/>
-        </h4>
+        :limits="depositLimits"
+        @open-limit-modal="openLimitModal"
+      />
 
-        <atomic-limits-periods-list
-          v-if="isShowPeriods"
-          :periods="deposit.depositPeriods"
-          :is-show-edit="isShowEdit"
-        />
-        <p v-else class="limits__card-sub-title">{{ deposit.subTitle }}</p>
+      <card-loss-limits :limits="lossLimits"/>
 
-        <div class="limits__card-actions">
-          <button-base type="primary">
-            {{ deposit.buttons.primary.title }}
-          </button-base>
+      <card-bet-limits
+        :limits="betLimits"
+        :definition="state.definition"
+        @open-limit-modal="openLimitModal"
+      />
 
-          <button-base
-            v-if="isShowPeriods && !isShowEdit"
-            type="secondary"
-            @click="isShowEdit = true"
-          >
-            {{ deposit.buttons.edit.base }}
-          </button-base>
+      <card-cooling-off-limits :limits="coolingOffLimits"/>
 
-          <button-base
-            v-if="isShowPeriods && isShowEdit"
-            type="secondary"
-            @click="isShowEdit = false"
-          >
-            {{ deposit.buttons.edit.done }}
-          </button-base>
+      <card-self-exclusion-limits
+        v-if="isAdvancedModeEnabled"
+        :limits="selfExclusionLimits"
+      />
 
-        </div>
-      </div>
-
-      <!-- loss -->
-      <div
-        class="limits__card"
-        :class="makeFullWidth(deposit.lossPeriods)"
-      >
-        <h4 class="limits__card-title">{{ lossLimits.title }}</h4>
-
-        <atomic-limits-periods-list
-          v-if="isShowPeriods"
-          :periods="deposit.lossPeriods"
-          :is-show-edit="isShowEdit"
-        />
-        <div v-else class="limits__card-info is-text-center" v-html="lossLimits.info"/>
-
-        <div class="limits__card-actions">
-          <button-base type="primary">{{ lossLimits.buttons.primary.title }}</button-base>
-        </div>
-      </div>
-
-      <!-- wager -->
-      <div class="limits__card">
-        <h4 class="limits__card-title">{{ wagerLimits.title }}</h4>
-
-        <div class="limits__card-info is-text-center" v-html="wagerLimits.info"/>
-
-        <div class="limits__card-actions">
-          <button-base type="primary">{{ wagerLimits.buttons.primary.title }}</button-base>
-        </div>
-      </div>
-
-      <!--  session -->
-      <div class="limits__card">
-        <h4 class="limits__card-title">{{ sessionLimit.title }}</h4>
-
-        <atomic-session-limits
-          v-if="isShowSessionLimitValues"
-          :items="sessionLimitValues"
-          @remove="removeSessionLimit"
-          @back="isShowSessionLimitValues = false"
-        />
-        <div class="limits__card-dropdown" v-else>
-          <form-input-dropdown
-            name="sessionLimitsDropdown"
-            v-model:value="sessionLimitValue"
-            v-bind="sessionLimit.dropdown"
-          />
-          <button-base
-            type="primary"
-            :is-disabled="!sessionLimitValue"
-            @click="() => isShowSessionLimitValues = true"
-          >{{ sessionLimit.buttons.submit.title }}
-          </button-base>
-        </div>
-
-        <div class="limits__card-info" v-html="sessionLimit.info"/>
-      </div>
-
-      <!-- cooling off -->
-      <div class="limits__card">
-        <h4 class="limits__card-title">{{ coolingOff.title }}</h4>
-
-        <atomic-session-limits
-          v-if="isShowCoolingOffValues"
-          :items="coolingOffValues"
-          @remove="removeCoolingOff"
-          @back="isShowCoolingOffValues = false"
-        />
-        <div class="limits__card-dropdown" v-else>
-
-          <form-input-dropdown
-            name="coolingOffDropdown"
-            v-model:value="coolingOffValue"
-            v-bind="coolingOff.dropdown"
-          />
-          <button-base
-            type="primary"
-            :is-disabled="!coolingOffValue"
-            @click="() => isShowCoolingOffValues = true"
-          >{{ coolingOff.buttons.submit.title }}
-          </button-base>
-        </div>
-
-        <div class="limits__card-info" v-html="coolingOff.info"/>
-      </div>
-
-      <!-- selfExclusion -->
-      <div class="limits__card" v-if="isAdvancedModeEnabled">
-        <h2 class="limits__card-title">{{ selfExclusion.title }}</h2>
-
-        <div class="limits__card-dropdown">
-          <form-input-dropdown
-            name="selfExclusionDropdown"
-            v-model:value="selfExclusionValue"
-            v-bind="selfExclusion.dropdown"
-          />
-          <button-base
-            type="primary"
-            :is-disabled="!selfExclusionValue"
-          >{{ selfExclusion.buttons.submit.title }}
-          </button-base>
-        </div>
-
-        <div class="limits__card-info" v-html="selfExclusion.info"/>
-      </div>
-
-      <modal-deposit-limit/>
+      <modal-add-limit
+        :definition="state.definition"
+        :key="modalKey++"
+      />
       <modal-edit-limit/>
       <modal-edit-limit-confirm/>
 
@@ -171,87 +51,45 @@
 
 <script setup lang="ts">
   import { onMounted } from '@vue/runtime-core';
+  import { LimitInterface } from '~/types/limits';
 
-  const {
-    getPlayerLimits,
-  } = useCoreProfileApi();
+  const { getPlayerLimits } = useCoreProfileApi();
 
-  const {
-    profileLimits: {
-      deposit,
-      coolingOff,
-      lossLimits,
-      sessionLimit,
-      wagerLimits,
-      selfExclusion,
-    },
-  } = useFakeStore();
+  const { showModal } = useLayoutStore();
 
-  const sessionLimitValue = ref<string>('');
-  const sessionLimitValues = ref<any[]>([]);
-  const isShowSessionLimitValues = ref<boolean>(false);
+  interface StateInterface {
+    limitsList: LimitInterface[],
+    definition: number | undefined,
+  }
 
-  const coolingOffValue = ref<string>('');
-  const coolingOffValues = ref<any[]>([]);
-  const isShowCoolingOffValues = ref<boolean>(false);
+  const state = reactive<StateInterface>({
+    limitsList: [],
+    definition: undefined,
+  });
 
-  const selfExclusionValue = ref<string>('');
+  const modalKey = 0;
 
-  const isAdvancedModeEnabled = ref<boolean>(false);
-  const isShowPeriods = ref<boolean>(true);
+  const isAdvancedModeEnabled = ref<boolean>(true);
 
-  const isShowEdit = ref<boolean>(false);
+  const openLimitModal = (definition: number | undefined) => {
+    state.definition = definition;
+    showModal('addLimit');
+  };
 
   const clickToggle = () => {
     isAdvancedModeEnabled.value = !isAdvancedModeEnabled.value;
   };
 
-  const removeCoolingOff = () => {
-    coolingOffValue.value = '';
-    isShowCoolingOffValues.value = false;
-    coolingOffValues.value = [];
-  };
+  const betLimits = computed(() => state.limitsList.filter((limit) => limit.definition === 1));
+  const lossLimits = computed(() => state.limitsList.filter((limit) => limit.definition === 2));
+  const depositLimits = computed(() => state.limitsList.filter((limit) => limit.definition === 3));
+  const selfExclusionLimits = computed(() => state.limitsList.filter((limit) => limit.definition === 4));
+  const coolingOffLimits = computed(() => state.limitsList.filter((limit) => limit.definition === 5));
 
-  const removeSessionLimit = () => {
-    sessionLimitValue.value = '';
-    isShowSessionLimitValues.value = false;
-    sessionLimitValues.value = [];
-  };
-
-  const makeFullWidth = (columns: any) => ({ 'is-full-width': Object.keys(columns).length > 1 });
-
-  watch(sessionLimitValue, () => {
-    if (sessionLimitValues.value.find((item) => item.value === sessionLimitValue.value)) return;
-
-    sessionLimitValues.value.push(
-      {
-        value: sessionLimitValue.value,
-        status: {
-          type: 'pending',
-          msg: 'Pending. The limit will change to 789 on 2022-04-19 23:44.',
-        },
-      },
-    );
-  });
-
-  watch(coolingOffValue, () => {
-    if (coolingOffValues.value.find((item) => item.value === coolingOffValue.value)) return;
-
-    coolingOffValues.value.push(
-      {
-        value: coolingOffValue.value,
-        status: {
-          type: 'pending',
-          msg: 'Pending. The limit will change to 789 on 2022-04-19 23:44.',
-        },
-      },
-    );
-  });
-
-  onMounted(() => {
+  const addOverflowToMain = () => {
     const main = document.querySelector('.app-main') as HTMLElement;
     main.classList.add('is-overflow-off');
-  });
+  };
 
   onUnmounted(() => {
     const main = document.querySelector('.app-main') as HTMLElement;
@@ -260,8 +98,8 @@
 
   onMounted(async () => {
     try {
-      const data = await getPlayerLimits();
-      console.log(data);
+      addOverflowToMain();
+      state.limitsList = await getPlayerLimits();
     } catch (e) {
       console.log(e);
     }

@@ -70,6 +70,8 @@
 
   const cryptoCurrencies = computed(() => currencies.value.filter((currency) => currency.type === 'crypto'));
 
+  const emit = defineEmits(['blur', 'select']);
+
   const selected = ref<string>('all');
   const selectedCurrency = ref({});
   const isOpen = ref<boolean>(false);
@@ -86,6 +88,7 @@
   const selectCurrency = (currency: CurrencyInterface): void => {
     selectedCurrency.value = currency;
     isOpen.value = false;
+    emit('select', currency);
   };
 
   const toggleOpen = (): void => {
@@ -94,6 +97,7 @@
 
   const close = (): void => {
     if (isOpen.value) isOpen.value = false;
+    emit('blur');
   };
 </script>
 
@@ -205,6 +209,7 @@
     padding: 4px;
     background-color: var(--item-bg);
     border-radius: 8px;
+    cursor: pointer;
 
     &.is-active {
       --item-bg: var(--gray-900);
