@@ -76,7 +76,7 @@
 
   &__amount {
     @include font($heading-2);
-    color: var(--gray-500);
+    color: var(--white);
   }
 
   &__currency {
