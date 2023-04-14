@@ -1,9 +1,8 @@
-include:
-  - project: "platform/gitlab-ci"
-    file: "/customer-frontends/workflow.yaml"
-
 variables:
   SERVICE_NAME: customer-frontends/slotsbet
+
+stages:
+  - build
 
 workflow:
   rules:
@@ -23,3 +22,23 @@ workflow:
         IS_TASK_BRANCH: "1"
 
     - when: never
+
+default:
+  before_script:
+    - |
+      [[ -z "$SERVICE_NAME" ]] && echo "SERVICE_NAME not set" && exit 1
+      [[ -n "$IS_TASK_BRANCH" ]] && export IMAGE_TAG=$(echo $CI_COMMIT_BRANCH | sed -E "s/^.*(tpbe-[0-9]+).*$/\1/gi" | awk '{print toupper($0)}')
+      [[ -z "$IMAGE_TAG" ]] && echo "IMAGE_TAG not set" && exit 1
+      echo "$DOCKER_AUTH_CONFIG" > /kaniko/.docker/config.json
+
+
+"Build image":
+  stage: build
+  image: gcr.io/kaniko-project/executor:debug
+
+  script:
+    - /kaniko/executor
+      --build-arg NPM_TOKEN=$NPM_TOKEN
+      --context $CI_PROJECT_DIR
+      --dockerfile $CI_PROJECT_DIR/Dockerfile
+      --destination $ECR_REGISTRY/$SERVICE_NAME:$IMAGE_TAG

@@ -14,10 +14,23 @@
     "forgotButton": "Reset password",
     "registrationButton": "Don't have an account? *Join*"
   },
+  "cancelBonus": {
+    "title": "Confirm bonus cancel",
+    "activeBonusDescription": "All your winnings will be lost. Are you sure you want to cancel this bonus?",
+    "issuedBonusDescription": "Are you sure you want to cancel this bonus?",
+    "confirmButton": "Yes",
+    "cancelButton": "No"
+  },
   "error": {
     "title": "Error",
     "description": "Sorry, something went wrong.<br>Please, try again.",
     "button": "Try again"
+  },
+  "changeActiveBonus": {
+    "title": "Confirm bonus update",
+    "description": "The status of the currently active bonus will change to Cancelled. Are you sure you want to activate this bonus?",
+    "confirmButton": "Yes",
+    "cancelButton": "No"
   },
   "login": {
     "title": "Sign in",
@@ -71,6 +84,10 @@
     "agreeSmsLabel": "Send promos by SMS"
   },
   "locale": "en",
+  "displayInFiat": {
+    "title": "Display in fiat",
+    "description": "Please note that these are currency approximations. All bets & transactions will be settled in the crypto equivalent. For further details feel free to contact our live support."
+  },
   "deposit": {
     "addressTitle": "Address",
     "addressDescription": "This is your personal address for deposits. Your funds will be available as soon as they pass through the necessary confirmations.",
@@ -82,26 +99,13 @@
         "description": "5000 mBTC + 300 FS"
       }
     ],
+    "addBonusButton": "Add",
     "depositButton": "Deposit",
     "togglerLabel": "I have bonus code",
-    "addBonusButton": "Add",
     "cancelBonusButton": "Cancel",
     "balanceLabel": "Balance",
     "title": "Deposit",
     "minSum": "Min deposit:",
     "addressInputLabel": "Send any amount to:"
-  },
-  "changeActiveBonus": {
-    "title": "Confirm bonus update",
-    "description": "The status of the currently active bonus will change to Cancelled. Are you sure you want to activate this bonus?",
-    "confirmButton": "Yes",
-    "cancelButton": "No"
-  },
-  "cancelBonus": {
-    "title": "Confirm bonus cancel",
-    "activeBonusDescription": "All your winnings will be lost. Are you sure you want to cancel this bonus?",
-    "issuedBonusDescription": "Are you sure you want to cancel this bonus?",
-    "confirmButton": "Yes",
-    "cancelButton": "No"
   }
 }
