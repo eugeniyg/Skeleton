@@ -41,8 +41,10 @@ export const useProfileStore = defineStore('profileStore', {
     startProfileDependencies():void {
       const { getFavoriteGames } = useGamesStore();
       const { getPlayerBonuses } = useBonusStore();
+      const { getLimits } = useLimitsStore();
       getFavoriteGames();
       getPlayerBonuses();
+      getLimits();
 
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       const { subscribeBonusSocket } = useBonusStore();

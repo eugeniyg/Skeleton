@@ -12,8 +12,6 @@
       </div>
     </div>
 
-    <!--<pre style="color: white">{{ state.limitsList }}</pre>-->
-
     <div class="limits__grid">
 
       <card-deposit-limits
@@ -51,9 +49,11 @@
 
 <script setup lang="ts">
   import { onMounted } from '@vue/runtime-core';
+  import { storeToRefs } from 'pinia';
   import { LimitInterface } from '~/types/limits';
 
-  const { getPlayerLimits } = useCoreProfileApi();
+  const limitsStore = useLimitsStore();
+  const { limits } = storeToRefs(limitsStore);
 
   const { showModal } = useLayoutStore();
 
@@ -80,11 +80,11 @@
     isAdvancedModeEnabled.value = !isAdvancedModeEnabled.value;
   };
 
-  const betLimits = computed(() => state.limitsList.filter((limit) => limit.definition === 1));
-  const lossLimits = computed(() => state.limitsList.filter((limit) => limit.definition === 2));
-  const depositLimits = computed(() => state.limitsList.filter((limit) => limit.definition === 3));
-  const selfExclusionLimits = computed(() => state.limitsList.filter((limit) => limit.definition === 4));
-  const coolingOffLimits = computed(() => state.limitsList.filter((limit) => limit.definition === 5));
+  const betLimits = computed(() => limits.value.filter((limit) => limit.definition === 1));
+  const lossLimits = computed(() => limits.value.filter((limit) => limit.definition === 2));
+  const depositLimits = computed(() => limits.value.filter((limit) => limit.definition === 3));
+  const selfExclusionLimits = computed(() => limits.value.filter((limit) => limit.definition === 4));
+  const coolingOffLimits = computed(() => limits.value.filter((limit) => limit.definition === 5));
 
   const addOverflowToMain = () => {
     const main = document.querySelector('.app-main') as HTMLElement;
@@ -99,7 +99,6 @@
   onMounted(async () => {
     try {
       addOverflowToMain();
-      state.limitsList = await getPlayerLimits();
     } catch (e) {
       console.log(e);
     }
