@@ -124,11 +124,14 @@
   }
 
   .row {
-    display: flex;
-    align-items: center;
-    grid-row-gap: rem(2px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "label value" "label sub-value";
 
     @include media(md) {
+      align-items: center;
+      grid-row-gap: rem(2px);
+      display: flex;
       flex-direction: column;
       align-items: flex-start;
     }
@@ -137,7 +140,6 @@
       margin-bottom: rem(16px);
 
       .label {
-        @include upd-font($body-1);
         --color: var(--gray-400);
       }
 
@@ -252,6 +254,7 @@
     color: var(--gray-400);
     flex-grow: 1;
     margin: 0;
+    grid-area: label;
   }
 
   .value {
@@ -259,6 +262,7 @@
     color: var(--color, var(--gray-500));
     flex-grow: 1;
     margin: 0;
+    grid-area: value;
 
     &--accented {
       --color: var(--white);
@@ -283,6 +287,9 @@
   .converted-value {
     color: var(--gray-500);
     @include font($body-0);
+    grid-area: sub-value;
+    display: flex;
+    justify-content: flex-end;
     margin-top: rem(2px);
   }
 }
