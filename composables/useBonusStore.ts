@@ -4,18 +4,21 @@ import {
   SocketBonusNotifyInterface,
   WebSocketResponseInterface,
 } from '@platform/frontend-core/dist/module';
+import { BonusCodeInterface } from '@platform/frontend-core';
 import { useLayoutStore } from '~/composables/useLayoutStore';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 
 interface BonusStateInterface {
   bonusSubscription: any,
-  playerBonuses: PlayerBonusInterface[]
+  playerBonuses: PlayerBonusInterface[],
+  depositBonusCode: Maybe<BonusCodeInterface>
 }
 
 export const useBonusStore = defineStore('bonusStore', {
   state: (): BonusStateInterface => ({
     bonusSubscription: undefined,
     playerBonuses: [],
+    depositBonusCode: undefined,
   }),
 
   getters: {
@@ -27,8 +30,14 @@ export const useBonusStore = defineStore('bonusStore', {
   actions: {
     async getPlayerBonuses():Promise<void> {
       const { getPlayerBonuses } = useCoreBonusApi();
-      const data = await getPlayerBonuses();
-      this.playerBonuses = data;
+      this.playerBonuses = await getPlayerBonuses();
+    },
+
+    async getDepositBonusCode():Promise<void> {
+      const { getBonusCodes } = useCoreBonusApi();
+
+      const bonusCodeResponse = await getBonusCodes(3);
+      this.depositBonusCode = bonusCodeResponse[0] || undefined;
     },
 
     subscribeBonusSocket():void {
