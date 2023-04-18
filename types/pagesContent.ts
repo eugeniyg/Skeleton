@@ -72,8 +72,17 @@ export interface ProfileWalletInterface {
   seo: SeoContentInterface
 }
 
+export interface BonusCodeBlockInterface {
+  title: string,
+  timerText: string,
+  buttonLabel: string,
+  tryError: string
+}
+
 export interface ProfileBonusesInterface {
   title: string,
+  historyLink: string,
+  bonusCode: BonusCodeBlockInterface,
   seo: SeoContentInterface
 }
 

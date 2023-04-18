@@ -129,6 +129,10 @@
     "component": "form-input-checkbox",
     "type": "checkbox"
   },
+  "receiveBonus": {
+    "component": "form-input-checkbox",
+    "type": "checkbox"
+  },
   "phone": {
     "component": "form-input-phone",
     "type": "text",

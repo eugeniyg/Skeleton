@@ -38,6 +38,24 @@
   },
   "bonuses": {
     "title": "Bonuses",
+    "historyLink": "See your bonuses history",
+    "bonusCode": {
+      "title": "Have a promocode?",
+      "timerText": "until the next try",
+      "buttonLabel": "Add",
+      "tryError": "The bonus code is incorrect. Try again after 3 minutes"
+    },
+    "cashBonuses": {
+      "title": "Cash bonuses",
+      "wagerHintLabel": "Wager requirements",
+      "casinoWagerLabel": "Casino Wager Requirements - x{wager} Bonus",
+      "sportsbookWagerLabel": "Sportsbook Wager Requirements - x{wager} Bonus",
+      "waitingResult": "Waiting for results of Sportsbook bets",
+      "empty": {
+        "title": "There is no data yet!",
+        "description": "You currently do not have any bonuses"
+      }
+    },
     "seo": {
       "title": "Slotsbet | Bonuses"
     }
