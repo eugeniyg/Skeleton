@@ -55,7 +55,7 @@ function makeRedirect(mainFetchResult) {
 
 // eslint-disable-next-line no-restricted-globals
 self.addEventListener('fetch', (event) => {
-  if (event.request.url && checkIfFile(event)) {
+  if (event.request.url && (event.request.url.includes('/api/') || checkIfFile(event))) {
     return;
   }
 
