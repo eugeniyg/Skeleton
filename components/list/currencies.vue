@@ -94,18 +94,12 @@
     emit('hide-currencies-list');
 
     if (findAccount) {
-      await switchAccount({
-        accountId: findAccount.id,
-        currency: findAccount.currency,
-      });
+      await switchAccount(findAccount.id);
     } else {
       await createAccount(currency);
       const findNewAccount = getAccountByCurrency(currency);
       if (findNewAccount) {
-        await switchAccount({
-          accountId: findNewAccount.id,
-          currency: findNewAccount.currency,
-        });
+        await switchAccount(findNewAccount.id);
       }
     }
 
