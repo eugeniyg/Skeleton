@@ -27,7 +27,7 @@ export const useBonusStore = defineStore('bonusStore', {
   actions: {
     async getPlayerBonuses():Promise<void> {
       const { getPlayerBonuses } = useCoreBonusApi();
-      const data = await getPlayerBonuses();
+      const { data } = await getPlayerBonuses();
       this.playerBonuses = data;
     },
 

@@ -2,35 +2,95 @@
   <div>
     <div class="tb-bonuses-history">
       <div class="row">
-        <div v-for="(th, thIndex) in props.items.columns" :key="thIndex" class="th">{{ th }}</div>
+        <div
+          v-for="(columnName, columnIndex) in tableColumns"
+          :key="columnIndex"
+          class="th"
+        >
+          {{ columnName }}
+        </div>
       </div>
 
-      <div v-for="(row, rowIndex) in props.items.rows" :key="rowIndex" class="row">
-        <div class="td">{{ row.title }}</div>
-        <div class="td">{{ row.status }}</div>
-        <div class="td">{{ row.amount }}</div>
-        <div class="td">{{ row.progress }}</div>
-        <div class="td" v-html="format(getFormatDate(row.date))"/>
-        <div class="td" v-html="format(getFormatDate(row.validUntil))"/>
+      <div v-for="bonus in props.bonusesData" :key="bonus.id" class="row">
+        <div class="td">{{ bonus.name }}</div>
+        <div class="td">{{ getBonusFinallyStatus(bonus) }}</div>
+        <div class="td">
+          {{ formatBalance(bonus.currency, bonus.amount).amount }}
+          {{ formatBalance(bonus.currency, bonus.amount).currency }}
+        </div>
+        <div class="td">{{ bonus.currentWagerPercentage || 0 }}%</div>
+        <div class="td" v-html="format(getFormatDate(bonus.createdAt))"/>
+        <div class="td" v-html="expiredAtDate(bonus) || '-'"/>
       </div>
     </div>
 
-    <atomic-pagination @select-page="selectedPage = $event" :selected="selectedPage" :total="100"/>
+    <atomic-pagination
+      v-if="props.bonusesMeta?.totalPages > 1"
+      v-bind="props.bonusesMeta"
+      @selectPage="emit('changePage', $event)"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-  const { getFormatDate } = useProjectMethods();
+  import { PaginationMetaInterface, PlayerBonusInterface } from '@platform/frontend-core/dist/module';
+  import { storeToRefs } from 'pinia';
+  import { HistoryBonusesInterface } from '~/types';
 
-  const props = defineProps({
-    items: {
-      type: Object,
-      required: true,
-    },
+  const props = defineProps<{
+    content: HistoryBonusesInterface,
+    bonusesData: PlayerBonusInterface[],
+    bonusesMeta: Maybe<PaginationMetaInterface>
+  }>();
+
+  const emit = defineEmits(['changePage']);
+
+  const tableColumns = Object.values(props.content.tableColumns);
+
+  const globalStore = useGlobalStore();
+  const { bonusesStatuses, bonusesResults } = storeToRefs(globalStore);
+  const bonusStatusesObj = computed(() => {
+    const statusesObj: { [key: number]: string } = {};
+    bonusesStatuses.value.forEach((status) => {
+      statusesObj[status.id as number] = status.name;
+    });
+    return statusesObj;
   });
-  const selectedPage = ref<number>(1);
 
-  const format = (str:string) => str.split(',').join('<br>');
+  const bonusResultsObj = computed(() => {
+    const resultsObj: { [key: number]: string } = {};
+    bonusesResults.value.forEach((result) => {
+      resultsObj[result.id as number] = result.name;
+    });
+    return resultsObj;
+  });
+
+  const getBonusFinallyStatus = (bonusInfo: PlayerBonusInterface):string => {
+    if ([1, 2].includes(bonusInfo.status)) return bonusStatusesObj.value[bonusInfo.status];
+    return bonusResultsObj.value[bonusInfo.result];
+  };
+
+  const { getFormatDate, formatBalance } = useProjectMethods();
+  const format = (str:string) => str.replace(',', ',</br>');
+
+  const expiredAtDate = (bonusInfo: PlayerBonusInterface) => {
+    if (bonusInfo.status === 2) {
+      if (bonusInfo.wageringExpiredAt) {
+        return format(getFormatDate(bonusInfo.wageringExpiredAt));
+      }
+      return undefined;
+    }
+
+    if (bonusInfo.activationExpiredAt) {
+      return format(getFormatDate(bonusInfo.activationExpiredAt));
+    }
+
+    if (bonusInfo.wageringExpiredAt) {
+      return format(getFormatDate(bonusInfo.wageringExpiredAt));
+    }
+
+    return undefined;
+  };
 </script>
 
 <style lang="scss">
