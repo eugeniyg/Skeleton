@@ -806,6 +806,12 @@ collections:
           - name: togglerLabel
             label: Bonus Toggler Label
             widget: string
+          - name: addBonusButton
+            label: Add Bonus Button
+            widget: string
+          - name: cancelBonusButton
+            label: Cancel Bonus Button
+            widget: string
           - name: bonuses
             label: Bonuses List
             widget: list
