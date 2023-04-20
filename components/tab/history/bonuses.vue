@@ -70,9 +70,9 @@
     } catch {
       state.bonusesData = [];
       state.bonusesMeta = undefined;
-    } finally {
-      state.loading = false;
     }
+
+    state.loading = false;
   };
 
   const changePage = async (page: number):Promise<void> => {
