@@ -1610,6 +1610,28 @@ collections:
             label: Tab Position
             widget: number
             required: false
+          - name: tableColumns
+            label: Table Columns
+            widget: object
+            fields:
+              - name: title
+                label: Bonus Name
+                widget: string
+              - name: status
+                label: Status
+                widget: string
+              - name: amount
+                label: Amount
+                widget: string
+              - name: progress
+                label: Progress
+                widget: string
+              - name: created
+                label: Created Date
+                widget: string
+              - name: expired
+                label: Expired Date
+                widget: string
           - name: empty
             label: Empty Data
             widget: object
