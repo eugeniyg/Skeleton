@@ -154,7 +154,7 @@ export interface HistoryBonusesInterface {
     status: string,
     amount: string,
     progress: string,
-    date: string,
+    created: string,
     expired: string
   }
 }
