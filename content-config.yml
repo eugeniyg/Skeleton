@@ -76,9 +76,6 @@ collections:
       - name: countryCode
         label: Country Code
         widget: string
-      - name: testField
-        label: Test Field
-        widget: string
       - name: languageCode
         label: Language Code
         widget: string
