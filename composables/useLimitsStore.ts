@@ -1,20 +1,24 @@
 import { defineStore } from 'pinia';
 
-import { PlayerLimitInterface } from '@platform/frontend-core/dist/module';
+import { CreateLimitInterface, PlayerLimitInterface } from '@platform/frontend-core/dist/module';
 
 interface LimitsStateInteface {
-  limits: PlayerLimitInterface[]
+  activeLimits: PlayerLimitInterface[]
 }
 
 export const useLimitsStore = defineStore('limitsStore', {
   state: (): LimitsStateInteface => ({
-    limits: [],
+    activeLimits: [],
   }),
   actions: {
     async getLimits():Promise<void> {
       const { getPlayerLimits } = useCoreProfileApi();
       const data = await getPlayerLimits();
-      this.limits = data;
+      this.activeLimits = data;
+    },
+    async createLimit(payload: CreateLimitInterface) :Promise<void> {
+      const { createPlayerLimit } = useCoreProfileApi();
+      await createPlayerLimit({ ...payload });
     },
   },
 });

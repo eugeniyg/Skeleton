@@ -5,8 +5,8 @@
       <div class="limits__mode">
         <span class="limits__mode-label">Advanced mode</span>
         <form-input-toggle
+          v-model:value="isAdvancedModeEnabled"
           name="toggle"
-          :value="isAdvancedModeEnabled"
           @change="clickToggle"
         />
       </div>
@@ -20,6 +20,7 @@
         @open-limit-modal="openLimitModal"
       />
 
+      <!--
       <card-loss-limits :limits="lossLimits"/>
 
       <card-bet-limits
@@ -34,14 +35,17 @@
         v-if="isAdvancedModeEnabled"
         :limits="selfExclusionLimits"
       />
+      -->
 
       <modal-add-limit
         :definition="state.definition"
         :key="modalKey++"
       />
-      <modal-edit-limit/>
-      <modal-edit-limit-confirm/>
 
+      <modal-edit-limit/>
+      <!--
+      <modal-edit-limit-confirm/>
+      -->
     </div>
 
   </div>
@@ -53,7 +57,7 @@
   import { LimitInterface } from '~/types/limits';
 
   const limitsStore = useLimitsStore();
-  const { limits } = storeToRefs(limitsStore);
+  const { activeLimits } = storeToRefs(limitsStore);
 
   const { showModal } = useLayoutStore();
 
@@ -80,29 +84,28 @@
     isAdvancedModeEnabled.value = !isAdvancedModeEnabled.value;
   };
 
-  const betLimits = computed(() => limits.value.filter((limit) => limit.definition === 1));
-  const lossLimits = computed(() => limits.value.filter((limit) => limit.definition === 2));
-  const depositLimits = computed(() => limits.value.filter((limit) => limit.definition === 3));
-  const selfExclusionLimits = computed(() => limits.value.filter((limit) => limit.definition === 4));
-  const coolingOffLimits = computed(() => limits.value.filter((limit) => limit.definition === 5));
+  const betLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 1));
+  const lossLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 2));
+  const depositLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 3));
+  const selfExclusionLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 4));
+  const coolingOffLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 5));
 
   const addOverflowToMain = () => {
     const main = document.querySelector('.app-main') as HTMLElement;
     main.classList.add('is-overflow-off');
   };
 
-  onUnmounted(() => {
+  const removeOverflowFromMain = () => {
     const main = document.querySelector('.app-main') as HTMLElement;
     main.classList.remove('is-overflow-off');
-  });
+  };
 
-  onMounted(async () => {
-    try {
-      addOverflowToMain();
-    } catch (e) {
-      console.log(e);
-    }
-  });
+  onMounted(addOverflowToMain);
+  onUnmounted(removeOverflowFromMain);
+
+  // watch(() => depositLimits.value, () => {
+  //   console.log(depositLimits.value);
+  // });
 </script>
 
 <style lang="scss">

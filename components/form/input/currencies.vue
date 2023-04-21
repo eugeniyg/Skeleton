@@ -1,6 +1,10 @@
 <template>
-  <div class="input-currencies" v-click-outside="close" :class="{'is-open': isOpen, 'has-error': true}">
-    <div class="input-currencies__selected" @click.stop="toggleOpen">
+  <div
+    class="input-currencies"
+    v-click-outside="close"
+    :class="{ 'is-open': isOpen, 'has-error': props.showError }"
+  >
+    <div class="input-currencies__selected" @click.stop="toggleOpen" :class="{'is-disabled': !selectedItems.length}">
       <template v-if="!selectedCurrency.name">
         <atomic-icon id="currency" class="input-currencies__selected-icon"/>
         <span class="input-currencies__selected-label">Choose currency</span>
@@ -54,7 +58,7 @@
       </div>
     </div>
 
-    <div class="input-currencies__error">Please, select your currency for new deposit limit</div>
+    <div class="input-currencies__error" v-if="props.showError">Please, select your currency for new deposit limit</div>
   </div>
 </template>
 
@@ -63,12 +67,15 @@
   import { CurrencyInterface } from '@platform/frontend-core/dist/module';
   import { useWalletStore } from '~/composables/useWalletStore';
 
-  const walletStore = useWalletStore();
-  const globalStore = useGlobalStore();
-  const { currencyTabs } = storeToRefs(walletStore);
-  const { currencies } = storeToRefs(globalStore);
+  interface PropsInterface {
+    showError: boolean,
+    items: CurrencyInterface[]
+  }
 
-  const cryptoCurrencies = computed(() => currencies.value.filter((currency) => currency.type === 'crypto'));
+  const props = defineProps<PropsInterface>();
+
+  const walletStore = useWalletStore();
+  const { currencyTabs } = storeToRefs(walletStore);
 
   const emit = defineEmits(['blur', 'select']);
 
@@ -76,9 +83,11 @@
   const selectedCurrency = ref({});
   const isOpen = ref<boolean>(false);
 
+  const cryptoCurrencies = computed(() => props.items.filter((currency) => currency.type === 'crypto'));
+
   const selectedItems = computed(() => {
-    if (selected.value === 'all' || !cryptoCurrencies.value.length) return currencies.value;
-    return cryptoCurrencies.value;
+    const currencies = (selected.value === 'all' || !cryptoCurrencies.value.length) ? props.items : cryptoCurrencies.value;
+    return currencies.filter((currency) => !currency.disabled);
   });
 
   const select = (id: string): void => {
@@ -96,9 +105,15 @@
   };
 
   const close = (): void => {
-    if (isOpen.value) isOpen.value = false;
-    emit('blur');
+    if (isOpen.value) {
+      isOpen.value = false;
+      if (!selectedCurrency.value.name) emit('blur');
+    }
   };
+
+  onMounted(() => {
+    console.log(props.items);
+  });
 </script>
 
 <style lang="scss">
@@ -126,6 +141,12 @@
     padding: 8px 16px;
     user-select: none;
 
+    &.is-disabled {
+      --bg: var(--gray-800);
+      --border-color: var(--gray-800);
+      pointer-events: none;
+    }
+
     .is-open & {
       --bg: var(--gray-700);
       --border-color: var(--gray-300);
@@ -133,12 +154,20 @@
 
     &-label {
       @include font($body-2);
-      color: var(--white);
+      color: var(--color, var(--white));
       flex-grow: 1;
+
+      .is-disabled & {
+        --color: var(--gray-500);
+      }
     }
 
     &-icon {
       --color: var(--white);
+
+      .is-disabled & {
+        opacity: 0.4;
+      }
     }
 
     &:hover {
@@ -149,6 +178,10 @@
   &__expand-icon {
     transform: var(--icon-rotate, rotate(-180deg));
     transition: transform .2s ease-in-out;
+
+    .is-disabled & {
+      --icon-color: var(--gary-600);
+    }
 
     .is-open & {
       --icon-rotate: rotate(0);

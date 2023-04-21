@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-  import { LimitInterface } from '~/types/limits';
+  import { PlayerLimitInterface } from '@platform/frontend-core/dist/module';
 
   const {
     profileLimits: {
@@ -28,7 +28,7 @@
   } = useFakeStore();
 
   interface PropsInterface {
-    limits?: LimitInterface[],
+    limits?: PlayerLimitInterface[],
   }
 
   const props = defineProps<PropsInterface>();

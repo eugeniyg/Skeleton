@@ -13,27 +13,30 @@
       </div>
 
       <div class="modal-deposit-limit__tabs">
-        <span
+        <button
           class="modal-deposit-limit__tabs-item"
           :class="{'is-active': period.id === selectedTab.id}"
-          v-for="period in limitsCashPeriod"
+          v-for="period in periodOptions"
           :key="period.id"
           @click="changeTab(period)"
+          :disabled="period.disabled"
         >
           {{ period.name }}
-        </span>
+        </button>
       </div>
 
       <form-input-currencies
         @select="selectCurrency"
         @blur="blurCurrencySelect"
+        :show-error="formState.showCurrenciesError"
+        :items="currenciesOptions"
       />
 
       <form-input-number
         :is-required="false"
         :currency="formState.currency"
         :min="0"
-        :value="0"
+        v-model:value="formState.amount"
         placeholder="0"
       />
 
@@ -44,7 +47,13 @@
         Cancellation of the deposit limit takes 24 hours. After the limit is exceeded, you will receive an email
         notification.</p>
 
-      <button-base type="primary" size="md" @click="addLimit">Add</button-base>
+      <button-base
+        type="primary"
+        size="md"
+        @click="addLimit"
+        :is-disabled="isAddButtonDisabled"
+      >Add</button-base>
+
     </div>
   </vue-final-modal>
 </template>
@@ -52,24 +61,13 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import { CurrencyInterface } from '@platform/frontend-core/dist/module';
+  import { CreateLimitInterface, CurrencyInterface, StatusInterface } from '@platform/frontend-core/dist/module';
 
-  const { createPlayerLimit } = useCoreProfileApi();
+  const globalStore = useGlobalStore();
+  const { currencies } = storeToRefs(globalStore);
 
   interface ModalPropsInterface {
-    definition?: number | undefined,
-  }
-
-  interface PeriodInterFace {
-    id: string,
-    name: string,
-  }
-
-  interface FormStateInterface {
-    definition: number | undefined,
-    period?: string,
-    currency?: string,
-    amount?: number,
+    definition: number,
   }
 
   const props = defineProps<ModalPropsInterface>();
@@ -78,8 +76,11 @@
   const layoutStore = useLayoutStore();
   const { closeModal } = layoutStore;
   const { modals } = storeToRefs(layoutStore);
+  const limitsStore = useLimitsStore();
+  const { activeLimits } = storeToRefs(limitsStore);
+  const { createLimit } = limitsStore;
 
-  const limitsCashPeriod = ref(settingsConstants?.player?.limit?.cashPeriod);
+  const limitsCashPeriod = ref<StatusInterface[]>(settingsConstants?.player.limit.cashPeriod || []);
 
   const titleMapping = {
     1: 'New wagger limit',
@@ -87,47 +88,87 @@
     3: 'New deposit limit',
   };
 
-  const selectedTab = ref<PeriodInterFace>(limitsCashPeriod.value[0]);
+  const selectedTab = ref<StatusInterface>(limitsCashPeriod.value[0]);
 
-  const formState = reactive<FormStateInterface>({
-    definition: props.definition,
+  const formState = reactive<CreateLimitInterface>({
+    definition: -1,
+    period: '',
+    showCurrenciesError: false,
   });
 
-  const changeTab = (period: PeriodInterFace) => {
+  const changeTab = (period: StatusInterface) => {
     selectedTab.value = period;
     formState.period = period.id;
   };
 
   const selectCurrency = (currency: CurrencyInterface) => {
-    console.log(currency);
     formState.currency = currency.code;
+    formState.showCurrenciesError = false;
   };
 
   const blurCurrencySelect = () => {
-    console.log('blur currency select');
+    formState.showCurrenciesError = true;
   };
 
   const addLimit = async () => {
     try {
-      console.log(formState);
-      // await createPlayerLimit({
-      //   definition: 3,
-      //   period: 'daily',
-      //   currency: 'USD',
-      //   amount: 1,
-      // });
+      await createLimit(formState);
     } catch (e) {
       console.log(e);
     }
   };
 
+  const isPeriodDisabled = (period: { id: string }) => {
+    const limits = activeLimits?.value.filter((limit) => limit.definition === formState.definition
+      && limit.period === period.id);
+    return (
+      limits?.length && currencies.value.every((currency) => limits?.find((limit) => (
+        limit.definition === formState.definition
+        && limit.period === period.id
+        && limit.currency === (!formState.currency ? currency.code : formState.currency))))
+    );
+  };
+
+  const periodOptions = computed(() => Object.values(limitsCashPeriod.value)?.map((period:StatusInterface) => {
+    if (isPeriodDisabled(period)) {
+      return {
+        ...period,
+        disabled: true,
+      };
+    }
+    return period;
+  }));
+
+  const isCurrencySelectedInPeriod = (currency: {
+    code: string
+  }) => activeLimits?.value.some((limit) => (
+    limit.definition === formState.definition
+    && limit.period === formState.period
+    && limit.currency === currency.code));
+
+  const isCurrencySelectedInAllPeriods = (currency: { code: string }) => limitsCashPeriod.value?.every((period) => activeLimits?.value.some(
+    (limit) => limit.definition === formState.definition
+      && limit.period === period.id
+      && limit.currency === currency.code,
+  ));
+
+  const isCurrencyDisabled = (currency: {
+    code: string
+  }) => isCurrencySelectedInPeriod(currency) || isCurrencySelectedInAllPeriods(currency);
+
+  const currenciesOptions = computed(() => currencies.value?.map((currency) => {
+    if (isCurrencyDisabled(currency)) {
+      return { ...currency, disabled: true };
+    }
+    return currency;
+  }));
+
+  const isAddButtonDisabled = computed(() => !formState.currency && !formState.period);
+
   onMounted(() => {
-    // console.log(limitsCashPeriod.value);
-
-    console.log(settingsConstants?.player?.limit?.cashPeriod);
-
-    // formState.definition = props.definition;
+    formState.definition = props.definition;
   });
+
 </script>
 
 <style lang="scss">
@@ -213,9 +254,11 @@
       border-radius: 8px;
       transition: all .2s ease-in-out;
       user-select: none;
+      background-color: var(--bg, transparent);
+      border: none;
 
       &.is-active {
-        background-color: var(--gray-700);
+        background-color: var(--bg, var(--gray-700));
         --color: var(--white);
       }
 
@@ -226,6 +269,11 @@
             --color: var(--yellow-500);
           }
         }
+      }
+
+      &[disabled] {
+        --color: var(--gray-600);
+        --bg: transparent;
       }
     }
   }

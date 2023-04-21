@@ -1,70 +1,66 @@
 <template>
-  <div class="limits-periods-list" :class="{'is-show-edit': isShowEdit}">
+  <div class="limits-periods-list" :class="{'is-show-edit': props.isShowEdit}">
+    <!--    <pre style="color:white">{{ columns }}</pre>-->
     <div
-      :key="title"
+      :key="column.title"
       class="limits-periods-list__column"
-      v-for="{title, items} in props.periods"
+      v-for="column in columns"
     >
-      <h4 class="limits-periods-list__title">
-        {{ title }}
-      </h4>
+      <h4 class="limits-periods-list__title">{{ column.title }}</h4>
 
       <div class="limits-periods-list__items">
-        <div
-          v-for="{limitId, amount, title, subTitle, progress, status} in items"
-          class="limits-periods-list__item"
-          :key="title"
-        >
-          <h4 class="limits-periods-list__item-title">{{ title }}</h4>
-
-          <p class="limits-periods-list__item-sub-title">{{ subTitle }}</p>
-
-          <button-base
-            v-if="isShowEdit"
-            class="limits-periods-list__item-edit"
-            type="ghost"
-            @click="editLimit({ limitId, amount })"
-          >
-            <atomic-icon id="edit"/>
-          </button-base>
-
-          <div
-            class="limits-periods-list__item-progress"
-            :style="`--progress-width:${progress}%`"
-            :class="{'is-full': progress === 100}"
-          />
-
-          <div class="limits-periods-list__item-status">
-            <span
-              class="limits-periods-list__item-status-type"
-              :class="`limits-periods-list__item-status-type--${status.type}`"
-            />
-            <span class="limits-periods-list__item-status-title">{{ status.title }}</span>
-          </div>
-
-        </div>
+        <atomic-period-item
+          v-for="item in column.items"
+          :key="item"
+          v-bind="item"
+          :is-show-edit="isShowEdit"
+          @edit="editLimit"
+        />
       </div>
     </div>
   </div>
 </template>
 
-<script setup type="ts">
-  const props = defineProps({
-    periods: {
-      type: Object,
-    },
-    isShowEdit: {
-      type: Boolean,
-      default: true,
-    },
-  });
+<script setup lang="ts">
+  import { PlayerLimitInterface } from '@platform/frontend-core/dist/module';
+
+  interface PropsInterface {
+    limits: PlayerLimitInterface[],
+    periods: any,
+    isShowEdit: boolean,
+  }
+
+  const props = defineProps<PropsInterface>();
+
+  const periodsTitles: Record<string, string> = {
+    daily: 'Daily',
+    monthly: 'Monthly',
+    weekly: 'Weekly',
+  };
 
   const { showModal } = useLayoutStore();
 
-  const editLimit = ({ limitId, amount }) => {
+  const editLimit = ({ id, amount }: {id: string, amount:number}) => {
     showModal('editLimit');
-    console.log(limitId, amount);
+    console.clear();
+    console.log(id, amount);
   };
+
+  const columns = computed(() => Object.keys(periodsTitles).map((period:string) => ({
+    title: periodsTitles[period],
+    items: props?.limits.filter((limit) => limit.period === period) || [],
+  })));
+  // .filter((column) => column.items.length));
+
+  onMounted(() => {
+    console.log(props.periods);
+    // console.log(props.limits);
+    // console.log(accounts.value);
+
+    // const result = Object.keys(periodsTitles).map((period) => ({ [period]: props?.limits.filter((limit) => limit.period === period) || [] }));
+
+    // console.log(result)
+  });
 </script>
 
 <style lang="scss">

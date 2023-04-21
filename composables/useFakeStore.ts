@@ -1720,8 +1720,9 @@ export const useFakeStore = () => {
           title: 'Daily',
           items: [
             {
-              limitId: 1,
+              id: 1,
               amount: 1,
+              currency: 'USD',
               title: '240 of 1000 EUR left',
               subTitle: '23h 56m 39s until activate',
               progress: 43.7,
@@ -1731,7 +1732,7 @@ export const useFakeStore = () => {
               },
             },
             {
-              limitId: 2,
+              id: 2,
               amount: 2,
               title: '1000 CAD',
               subTitle: '23h 56m 39s until activate',
@@ -1742,7 +1743,7 @@ export const useFakeStore = () => {
               },
             },
             {
-              limitId: 3,
+              id: 3,
               amount: 3,
               title: '0 of 1000 CAD left',
               subTitle: '23h 56m 39s until activate',

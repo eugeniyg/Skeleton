@@ -3,20 +3,18 @@
     class="limits__card"
     :class="makeFullWidth(deposit.depositPeriods)"
   >
-    <pre>{{ props.limits }}</pre>
-
     <h4 class="limits__card-title" data-tooltip-parent>
       {{ deposit.title }}
-      <atomic-tooltip v-if="isShowPeriods" v-bind="deposit.tooltip"/>
+      <atomic-tooltip v-if="state.isShowPeriods" v-bind="deposit.tooltip"/>
     </h4>
 
     <atomic-limits-periods-list
-      v-if="isShowPeriods"
-      :periods="deposit.depositPeriods"
-      :is-show-edit="isShowEdit"
+      v-if="state.isShowPeriods"
+      :limits="props.limits"
+      :is-show-edit="state.isShowEdit"
     />
 
-    <p v-else class="limits__card-sub-title">{{ deposit.subTitle }}</p>
+    <p v-else class="limits__card-sub-title">This setting limits the amount you can deposit per day, week or month'</p>
 
     <div class="limits__card-actions">
       <button-base
@@ -27,19 +25,19 @@
       </button-base>
 
       <button-base
-        v-if="isShowPeriods && !isShowEdit"
+        v-if="state.isShowPeriods && !state.isShowEdit"
         type="secondary"
-        @click="isShowEdit = true"
+        @click="state.isShowEdit = true"
       >
-        {{ deposit.buttons.edit.base }}
+        Edit limits
       </button-base>
 
       <button-base
-        v-if="isShowPeriods && isShowEdit"
+        v-if="state.isShowPeriods && state.isShowEdit"
         type="secondary"
-        @click="isShowEdit = false"
+        @click="state.isShowEdit = false"
       >
-        {{ deposit.buttons.edit.done }}
+        Done editing
       </button-base>
 
     </div>
@@ -47,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-  import { LimitInterface } from '~/types/limits';
+  import { PlayerLimitInterface } from '@platform/frontend-core/dist/module';
 
   const {
     profileLimits: {
@@ -56,13 +54,25 @@
   } = useFakeStore();
 
   interface PropsInterface {
-    limits?: LimitInterface[],
+    limits: PlayerLimitInterface[],
   }
 
   const props = defineProps<PropsInterface>();
   const emit = defineEmits(['open-limit-modal']);
-  const isShowPeriods = ref<boolean>(true);
-  const isShowEdit = ref<boolean>(false);
+
+  interface StateInterface {
+    isShowPeriods: boolean,
+    isShowEdit: boolean
+  }
+
+  const state = reactive<StateInterface>({
+    isShowPeriods: true,
+    isShowEdit: false,
+  });
 
   const makeFullWidth = (columns: any) => ({ 'is-full-width': Object.keys(columns).length > 1 });
+
+  onMounted(() => {
+    console.log(props.limits)
+  })
 </script>
