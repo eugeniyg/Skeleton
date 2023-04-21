@@ -18,6 +18,9 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@/modules/sitemap',
   ],
+  content: {
+    api: { baseURL: '/_content' },
+  },
   components: {
     dirs: [
       {

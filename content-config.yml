@@ -409,6 +409,9 @@ collections:
           - name: depositButton
             label: Deposit Button
             widget: string
+          - name: fiatToggler
+            label: Display In Fiat
+            widget: string
 
       - name: userNavigation
         label: User Navigation
@@ -926,6 +929,17 @@ collections:
             widget: string
           - name: cancelButton
             label: Cancel Button
+            widget: string
+      - name: displayInFiat
+        label: Display In Fiat Popup
+        widget: object
+        collapsed: true
+        fields:
+          - name: title
+            label: Title
+            widget: string
+          - name: description
+            label: Decription
             widget: string
 
   - name: alerts
@@ -1616,6 +1630,28 @@ collections:
             label: Tab Position
             widget: number
             required: false
+          - name: tableColumns
+            label: Table Columns
+            widget: object
+            fields:
+              - name: title
+                label: Bonus Name
+                widget: string
+              - name: status
+                label: Status
+                widget: string
+              - name: amount
+                label: Amount
+                widget: string
+              - name: progress
+                label: Progress
+                widget: string
+              - name: created
+                label: Created Date
+                widget: string
+              - name: expired
+                label: Expired Date
+                widget: string
           - name: empty
             label: Empty Data
             widget: object
