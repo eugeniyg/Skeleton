@@ -73,8 +73,8 @@
 
     if (depositBonusCode.value) {
       await deleteBonusCode(depositBonusCode.value?.id as string);
-      depositBonusCode.value = undefined;
       bonusValue.value = '';
+      depositBonusCode.value = undefined;
     } else if (bonusValue.value) {
       const bonusActivated = await sendManualBonus();
 
@@ -96,6 +96,12 @@
       bonusValue.value = '';
     }
   };
+
+  watch(() => depositBonusCode.value, (newValue) => {
+    if (!newValue && bonusValue.value) {
+      toggleBonusField();
+    }
+  });
 
   onMounted(() => {
     if (depositBonusCode.value) {
