@@ -53,11 +53,17 @@
 
 <style lang="scss">
 .fiat-display {
-  display: flex;
   position: relative;
   align-items: center;
   z-index: 1;
   column-gap: rem(4px);
+
+  display: grid;
+  grid-template: "logo currency" "logo amount";
+
+  @include media(l) {
+    display: flex;
+  }
 
   &.is-show-fiat-tooltip {
     --fiat-tooltip-opacity: 1;
@@ -72,16 +78,27 @@
   &__logo {
     display: block;
     @include box(20px);
+    grid-area: logo;
   }
 
   &__amount {
-    @include font($heading-2);
     color: var(--white);
+    grid-area: amount;
+    @include font($heading-1);
+
+    @include media(l) {
+      @include upd-font($heading-2);
+    }
   }
 
   &__currency {
-    @include font($heading-2);
     color: var(--gray-500);
+    grid-area: currency;
+    @include font($heading-1);
+
+    @include media(l) {
+      @include upd-font($heading-2);
+    }
   }
 
   &__tooltip {
