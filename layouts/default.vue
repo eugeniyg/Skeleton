@@ -36,7 +36,6 @@
     <modal-success />
     <modal-error />
     <modal-confirm />
-    <modal-confirm-bonus/>
     <modal-fiat/>
 
     <atomic-alert
