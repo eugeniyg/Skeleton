@@ -1,9 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia';
-import {
-  AccountInterface,
-  AccountRequestInterface,
-  WebSocketResponseInterface,
-} from '@platform/frontend-core/dist/module';
+import { AccountInterface, WebSocketResponseInterface } from '@platform/frontend-core/dist/module';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 import { useProjectMethods } from '~/composables/useProjectMethods';
@@ -76,15 +72,15 @@ export const useWalletStore = defineStore('walletStore', {
       this.accounts = data;
     },
 
-    async switchAccount(switchData: AccountRequestInterface):Promise<void> {
+    async switchAccount(accountId: string):Promise<void> {
       const { switchActiveAccount } = useCoreWalletApi();
-      const data = await switchActiveAccount(switchData);
+      const data = await switchActiveAccount(accountId);
       this.accounts = data;
     },
 
-    async hideAccount(hideData: AccountRequestInterface):Promise<void> {
+    async hideAccount(accountId: string):Promise<void> {
       const { hideWalletAccount } = useCoreWalletApi();
-      const data = await hideWalletAccount(hideData);
+      const data = await hideWalletAccount(accountId);
       this.accounts = data;
     },
 
