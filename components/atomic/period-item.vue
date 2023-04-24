@@ -2,12 +2,12 @@
   <div
     class="limits-periods-list__item"
   >
-    <h4 class="limits-periods-list__item-title">{{ amount }} of {{ getBalance(currency) }} {{ currency }} left</h4>
+    <h4 class="limits-periods-list__item-title">{{ amount - currentAmount }} of {{ amount }} {{ currency }} left</h4>
 
     <p class="limits-periods-list__item-sub-title">subTitle</p>
 
     <button-base
-      v-if="props.isShowEdit"
+      v-if="props.isShowEdit && (status === 1)"
       class="limits-periods-list__item-edit"
       type="ghost"
       @click="emit('edit', { id, amount })"
@@ -17,8 +17,8 @@
 
     <div
       class="limits-periods-list__item-progress"
-      :style="`--progress-width:${ getBalanceDiff(amount, currency) }%`"
-      :class="{'is-full': getBalanceDiff(amount, currency) === 100 }"
+      :style="`--progress-width:${ getPercentage(currentAmount, amount) }%`"
+      :class="{'is-full': currentAmount >= amount }"
     />
 
     <div class="limits-periods-list__item-status">
@@ -27,7 +27,6 @@
         :class="`limits-periods-list__item-status-type--${ limitsStatuses[status].toLowerCase()  }`"
         :data-status="limitsStatuses[status]"
       />
-      <pre style="color: white">{{ status }}</pre>
       <span class="limits-periods-list__item-status-title">{{ limitsStatuses[status] }} till {{ dayjs(createdAt).utc().format(DATE_FORMAT) }}</span>
     </div>
 
@@ -36,17 +35,20 @@
 
 <script setup lang="ts">
   import dayjs from 'dayjs';
-  import { storeToRefs } from 'pinia';
   import utc from 'dayjs/plugin/utc';
+  import duration from 'dayjs/plugin/duration';
+  import timezone from 'dayjs/plugin/timezone';
 
   interface PropsInterface {
     id: string,
-    status: string,
-    createdAt?: string,
+    status: number,
+    createdAt: string,
     currency: string,
-    expiredAt: string|null,
+    currentAmount: number,
+    startedAt: string,
+    expiredAt: string,
     cancelProcess: boolean,
-    amount: string|number,
+    amount: number,
     title: string,
     isShowEdit: boolean,
   }
@@ -55,11 +57,17 @@
 
   const emit = defineEmits(['edit']);
 
-  const walletStore = useWalletStore();
-  const { accounts } = storeToRefs(walletStore);
+  const state = reactive({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
   dayjs.extend(utc);
-  const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+  dayjs.extend(duration);
+  dayjs.extend(timezone);
 
   const limitsStatuses: Record<number, string> = {
     1: 'Active',
@@ -68,18 +76,35 @@
     4: 'Finished',
   };
 
-  const getBalance = (currency: string) => accounts?.value.find((account) => account.currency === currency)?.balance;
+  const getPercentage = (currentAmount: number, amount: number) => (currentAmount >= amount ? 100 : (((amount - currentAmount) / amount) * 100));
 
-  const getBalanceDiff = (amount: number, currency: string) => {
-    if (amount && currency) {
-      const balance = getBalance(currency) || 0;
-      return (amount / balance) * 100;
-    }
-    return 0;
+  const countdown = (startDate: string, endDate: string, onCountdownEnd: any) => {
+    const targetDate = dayjs(endDate);
+
+    const intervalId = setInterval(() => {
+      const remainingTimeSeconds = targetDate.diff(dayjs(), 'second');
+
+      if (remainingTimeSeconds <= 0) {
+        clearInterval(intervalId);
+        onCountdownEnd();
+      } else {
+        const remainingTime = dayjs.duration(remainingTimeSeconds, 'second');
+        // const remainingDays = Math.floor(remainingTime.asDays());
+        state.hours = remainingTime.hours();
+        state.minutes = remainingTime.minutes();
+        state.seconds = remainingTime.seconds();
+      }
+    }, 1000);
   };
 
-  const getAmountDiff = (amount: number, currency: string) => {
-    const balance = getBalance(currency) || 0;
-    return balance ? balance - amount : balance;
+  const onCountdownEnd = () => {
+    console.log('Countdown has ended!');
+  // Do something else here, such as displaying a message or triggering another function
   };
+
+  // countdown('2023-04-24T10:25:11+03:00', '2023-04-25T12:25:11+03:00', onCountdownEnd);
+
+  // onMounted(() => {
+  //   console.log(dayjs().format());
+  // });
 </script>
