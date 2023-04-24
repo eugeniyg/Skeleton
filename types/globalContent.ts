@@ -123,7 +123,8 @@ export interface HeaderInterface {
     emptyText: string,
     tryLabel: string
   },
-  depositButton: string
+  depositButton: string,
+  fiatToggler: string,
 }
 
 export interface UserNavigationInterface {
@@ -263,6 +264,11 @@ export interface CancelBonusInterface extends Record<string, any>{
   cancelButton: string
 }
 
+export interface DisplayInFiatInterface {
+  title: string,
+  description: string
+}
+
 export interface PopupsInterface {
   confirm: ConfirmInterface,
   success: SuccessInterface,
@@ -275,7 +281,8 @@ export interface PopupsInterface {
   registrationCancel: RegistrationCancelInterface,
   deposit: DepositInterface,
   changeActiveBonus: ChangeActiveBonusInterface,
-  cancelBonus: CancelBonusInterface
+  cancelBonus: CancelBonusInterface,
+  displayInFiat: DisplayInFiatInterface
 }
 
 interface SlideImageInterface {

@@ -56,13 +56,13 @@ export const useBonusStore = defineStore('bonusStore', {
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
 
       switch (status) {
-        case 1:
+        case 2:
           showAlert(alertsData?.bonusActivated || defaultLocaleAlertsData?.bonusActivated);
           break;
-        case 2:
+        case 3:
           showAlert(alertsData?.bonusIncorrect || defaultLocaleAlertsData?.bonusIncorrect);
           break;
-        case 3:
+        case 4:
           showAlert(alertsData?.bonusNotAvailable || defaultLocaleAlertsData?.bonusNotAvailable);
           break;
         default:

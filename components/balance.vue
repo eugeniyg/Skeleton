@@ -1,14 +1,28 @@
 <template>
   <div class="balance">
-    <div class="row">
+    <div
+      class="row"
+      :class="{ 'row--compact': showEquivalentBalance }"
+    >
       <div class="label">
-        {{ props.withdraw ? getContent(popupsData, defaultLocalePopupsData, 'deposit.balanceLabel')
-          : getContent(popupsData, defaultLocalePopupsData, 'withdraw.balanceLabel') }}
+        {{
+          props.withdraw ? getContent(popupsData, defaultLocalePopupsData, 'deposit.balanceLabel')
+          : getContent(popupsData, defaultLocalePopupsData, 'withdraw.balanceLabel')
+        }}
       </div>
 
-      <div v-if="props.withdraw" class="value">
-        {{ balanceFormat.amount }} {{ balanceFormat.currency }}
-      </div>
+      <template v-if="props.withdraw">
+        <div
+          v-if="showEquivalentBalance"
+          class="value"
+        >
+          {{ activeEquivalentAccount.balance }} {{ activeEquivalentAccount.currency }}
+        </div>
+
+        <div :class="showEquivalentBalance ? 'converted-value' : 'value'">
+          {{ balanceFormat.amount }} {{ balanceFormat.currency }}
+        </div>
+      </template>
 
       <div
         v-else
@@ -35,7 +49,15 @@
 
     <div class="row" v-if="props.withdraw">
       <div class="label">{{ getContent(popupsData, defaultLocalePopupsData, 'withdraw.withdrawLabel') }}</div>
-      <div class="value">
+
+      <div
+        class="value"
+        v-if="showEquivalentBalance"
+      >
+        {{ activeEquivalentAccount.balance }} {{ activeEquivalentAccount.currency }}
+      </div>
+
+      <div :class="showEquivalentBalance ? 'converted-value' : 'value'">
         {{ balanceFormat.amount }} {{ balanceFormat.currency }}
       </div>
     </div>
@@ -55,12 +77,14 @@
   });
 
   const walletStore = useWalletStore();
-  const { activeAccount } = storeToRefs(walletStore);
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { activeAccount, activeAccountType, activeEquivalentAccount } = storeToRefs(walletStore);
+  const { popupsData, defaultLocalePopupsData, equivalentCurrency } = storeToRefs(globalStore);
   const { formatBalance, getContent } = useProjectMethods();
   const isSelectOpen = ref<boolean>(false);
 
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
+  const showEquivalentBalance = computed(() => equivalentCurrency.value && activeAccountType.value === 'crypto');
 
   const toggleSelect = () => {
     isSelectOpen.value = !isSelectOpen.value;
@@ -100,10 +124,14 @@
   }
 
   .row {
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "label value" "label sub-value";
 
     @include media(md) {
+      align-items: center;
+      grid-row-gap: rem(2px);
+      display: flex;
       flex-direction: column;
       align-items: flex-start;
     }
@@ -111,9 +139,13 @@
     &:nth-of-type(even) {
       margin-bottom: rem(16px);
 
+      .label {
+        --color: var(--gray-400);
+      }
+
       .value {
         @include upd-font($body-2);
-        --color: var(--white);
+        --color: var(--gray-400);
         text-align: right;
 
         @include media(md) {
@@ -125,8 +157,13 @@
     &:nth-of-type(odd) {
       margin-bottom: rem(16px);
 
+      &.row--compact {
+        margin-bottom: 8px;
+      }
+
       .value {
         text-align: right;
+        --color: var(--white);
 
         @include media(md) {
           text-align: left;
@@ -217,13 +254,19 @@
     color: var(--gray-400);
     flex-grow: 1;
     margin: 0;
+    grid-area: label;
   }
 
   .value {
     @include font($body-2);
-    color: var(--color, var(--white));
+    color: var(--color, var(--gray-500));
     flex-grow: 1;
     margin: 0;
+    grid-area: value;
+
+    &--accented {
+      --color: var(--white);
+    }
   }
 
   .items {
@@ -239,6 +282,15 @@
         display: none;
       }
     }
+  }
+
+  .converted-value {
+    color: var(--gray-500);
+    @include font($body-0);
+    grid-area: sub-value;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: rem(2px);
   }
 }
 </style>
