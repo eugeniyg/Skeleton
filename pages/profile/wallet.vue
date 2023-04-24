@@ -78,9 +78,3 @@
     return acc;
   }, [] as AccountInterface[]));
 </script>
-
-<style lang="scss">
-.card-move {
-  transition: all .4s ease;
-}
-</style>

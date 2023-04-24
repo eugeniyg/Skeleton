@@ -1,5 +1,9 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { AccountInterface, AccountRequestInterface, WebSocketResponseInterface } from '@platform/frontend-core/dist/module';
+import {
+  AccountInterface,
+  AccountRequestInterface,
+  WebSocketResponseInterface,
+} from '@platform/frontend-core/dist/module';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 import { useProjectMethods } from '~/composables/useProjectMethods';
@@ -26,6 +30,11 @@ export const useWalletStore = defineStore('walletStore', {
   getters: {
     activeAccount(state): Maybe<AccountInterface> {
       return state.accounts.find((acc) => acc.status === 1);
+    },
+
+    activeEquivalentAccount(): { balance: number, currency: string, currencySymbol: string } {
+      const { getEquivalentAccount } = useProjectMethods();
+      return getEquivalentAccount(this.activeAccount?.balance, this.activeAccount?.currency);
     },
 
     activeAccountType():string {
