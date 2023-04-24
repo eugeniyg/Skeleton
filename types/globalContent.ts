@@ -123,7 +123,8 @@ export interface HeaderInterface {
     emptyText: string,
     tryLabel: string
   },
-  depositButton: string
+  depositButton: string,
+  fiatToggler: string,
 }
 
 export interface UserNavigationInterface {
@@ -248,6 +249,11 @@ export interface DepositInterface {
   depositButton: string
 }
 
+export interface DisplayInFiatInterface {
+  title: string,
+  description: string
+}
+
 export interface PopupsInterface {
   confirm: ConfirmInterface,
   success: SuccessInterface,
@@ -258,7 +264,8 @@ export interface PopupsInterface {
   reset: ResetInterface,
   registration: RegistrationInterface,
   registrationCancel: RegistrationCancelInterface,
-  deposit: DepositInterface
+  deposit: DepositInterface,
+  displayInFiat: DisplayInFiatInterface
 }
 
 interface SlideImageInterface {
