@@ -1,26 +1,25 @@
 <template>
-  <div class="card-bonuses" :class="{'is-active': isChecked}">
+  <div class="card-bonuses" :class="{'is-active': props.bonus.status === 2}">
     <div class="card-bonuses__body">
       <div class="card-bonuses__header">
-        <h4 class="card-bonuses__title">{{ props.title }}</h4>
+        <h4 class="card-bonuses__title">{{ props.bonus.name }}</h4>
 
         <form-input-toggle
           name="toggle"
-          :value="isChecked"
+          :value="props.bonus.status === 2"
           @change="clickToggle"
         />
 
         <div class="card-bonuses__info">
-          <!-- variant 1 -->
           <atomic-tooltip
+            v-if="props.mode === 'bonus'"
             align="bottom"
-            :text="props.tooltipText"
+            :text="tooltipContent"
           >
-            <span class="card-bonuses__info-title">Wager requirements</span>
+            <span class="card-bonuses__info-title">{{ props.content?.wagerHintLabel }}</span>
           </atomic-tooltip>
 
-          <!-- variant 2 -->
-          <span class="card-bonuses__link">
+          <span v-if="props.mode === 'free-spin'" class="card-bonuses__link">
             <span class="label">Game:</span>
             <a class="title" href="#" @click.prevent>Sweet Bonanza Xmas</a>
           </span>
@@ -28,17 +27,18 @@
       </div>
 
       <div class="card-bonuses__amount">
-        <div class="card-bonuses__value">{{ props.amountValue }}</div>
+        <div class="card-bonuses__value">{{ balanceFormat.amount }} {{ balanceFormat.currency }}</div>
         <div class="card-bonuses__msg">
-          <atomic-icon id="history"/>
+          <template v-if="expiredAtDate">
+            <atomic-icon id="history" />
 
-          <div class="card-bonuses__date">
-            <span class="date">{{ format(getFormatDate(props.expireDate)).date }}</span>
-            <span class="time">{{ format(getFormatDate(props.expireDate)).time }}</span>
-          </div>
+            <div class="card-bonuses__date">
+              {{ expiredAtDate }}
+            </div>
+          </template>
 
           <span class="trash-icon">
-            <button>
+            <button @click="emit('removeBonus')">
               <atomic-icon id="trash"/>
             </button>
           </span>
@@ -47,53 +47,62 @@
       </div>
 
       <div class="card-bonuses__progress" :class="{'is-riched': isRiched, 'is-greater-zero': greaterZero}">
-        <div class="card-bonuses__progress-line" :style="{'--progress': `${props.progressValue}%`}"></div>
-        <span class="card-bonuses__progress-value">{{ props.progressValue }}%</span>
+        <div class="card-bonuses__progress-line" :style="{'--progress': `${props.bonus.currentWagerPercentage}%`}"></div>
+        <span class="card-bonuses__progress-value">{{ props.bonus.currentWagerPercentage }}%</span>
         <span class="card-bonuses__progress-value">100%</span>
       </div>
 
-      <div class="card-bonuses__achive" v-if="isRiched">
+      <div v-if="isRiched" class="card-bonuses__achive">
         <atomic-icon id="clock"/>
-        <span>Waiting for results of Sportsbook bets</span>
+        <span>{{ props.content?.waitingResult }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const { getFormatDate } = useProjectMethods();
+  import { PlayerBonusInterface } from '@platform/frontend-core/dist/module';
+  import { CashBonusesInterface } from '~/types';
+
   const props = defineProps<{
-    title: string,
-    tooltipText: string,
-    progressValue: number,
-    amountValue: string,
-    expireDate: string
+    bonus: PlayerBonusInterface,
+    content?: CashBonusesInterface,
+    mode: 'bonus'|'free-spin'
   }>();
 
-  const isChecked = ref<boolean>(false);
+  const { getFormatDate, formatBalance } = useProjectMethods();
+  const balanceFormat = computed(() => formatBalance(props.bonus.currency, props.bonus.amount));
+  const tooltipContent = computed(() => {
+    const bonusWagerText = props.content?.casinoWagerLabel.replace('{wager}', `${props.bonus.wagerCasino}`);
+    const sportsbookWagerText = props.content?.sportsbookWagerLabel.replace('{wager}', `${props.bonus.wagerSportsbook}`);
+    return `${bonusWagerText}</br>${sportsbookWagerText}`;
+  });
 
-  const clickToggle = () => {
-    isChecked.value = !isChecked.value;
+  const expiredAtDate = computed(() => {
+    if (props.bonus.status === 2) {
+      if (props.bonus.wageringExpiredAt) {
+        return getFormatDate(props.bonus.wageringExpiredAt);
+      } return undefined;
+    }
+
+    if (props.bonus.activationExpiredAt) {
+      return getFormatDate(props.bonus.activationExpiredAt);
+    }
+
+    if (props.bonus.wageringExpiredAt) {
+      return getFormatDate(props.bonus.wageringExpiredAt);
+    }
+
+    return undefined;
+  });
+
+  const emit = defineEmits(['switchBonus', 'removeBonus']);
+  const clickToggle = ():void => {
+    emit('switchBonus');
   };
 
-  const isRiched = computed(() => props.progressValue === 100);
-  const greaterZero = computed(() => props.progressValue > 0);
-
-  // 1/6/2023, 5:36:29 ==> [10.06.2023, 05:36]
-  const format = (dateStr: string) => {
-    const [date, time] = dateStr.split(',');
-    const timeArr = time.split(':').slice(0, 2);
-    const dateArr = date.split('/');
-    const zeroPrefix = (str: string): string | number => {
-      const num = Number(str);
-      return num < 10 ? `0${num}` : num;
-    };
-
-    return {
-      date: dateArr.map((str) => zeroPrefix(str)).join('.'),
-      time: timeArr.map((str) => zeroPrefix(str)).join(':'),
-    };
-  };
+  const isRiched = computed(() => props.bonus.currentWagerPercentage === 100);
+  const greaterZero = computed(() => (props.bonus.currentWagerPercentage || 0) > 0);
 </script>
 
 <style lang="scss">
@@ -254,8 +263,6 @@
     .trash-icon {
       display: flex;
       align-items: center;
-      grid-column-gap: rem(4px);
-      margin-left: rem(6px);
 
       button {
         background: transparent;
@@ -271,13 +278,6 @@
             }
           }
         }
-      }
-
-      &:before {
-        content: '';
-        display: inherit;
-        height: rem(19px);
-        border-left: 1px solid var(--gray-500);
       }
     }
   }
@@ -392,10 +392,19 @@
 
   &__date {
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
     @include font($body-0);
     color: var(--gray-400);
-    grid-column-gap: rem(4px);
+    grid-column-gap: rem(8px);
+    margin-right: rem(4px);
+
+    &:after {
+      content: '';
+      display: inherit;
+      height: rem(19px);
+      border-right: 1px solid var(--gray-500);
+    }
   }
 }
 </style>

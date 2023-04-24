@@ -159,5 +159,10 @@
   @include media(l) {
     --padding: 0 #{rem(48px)};
   }
+
+  .list-currencies {
+    min-width: rem(248px);
+    z-index: 0;
+  }
 }
 </style>
