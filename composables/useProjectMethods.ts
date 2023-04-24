@@ -1,7 +1,6 @@
 import { GameImagesInterface } from '@platform/frontend-core/dist/module';
 import get from 'lodash/get';
 import * as projectRules from './validationRules';
-import { useGlobalStore } from '~/composables/useGlobalStore';
 import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 import { SeoContentInterface } from '~/types';
 
@@ -160,6 +159,29 @@ export const useProjectMethods = () => {
       path: string,
   ): any => get(contentData, path) || get(defaultLocaleContentData, path);
 
+  const getEquivalentAccount = (targetBalance: number|undefined, targetCurrency: string|undefined): {
+    balance: number,
+    currency: string,
+    currencySymbol: string
+  } => {
+    const { baseCurrency, equivalentCurrency, currencies } = useGlobalStore();
+    if (!baseCurrency || !equivalentCurrency) return { balance: 0, currency: '', currencySymbol: '' };
+    const currentCurrency = currencies.find((currency) => currency.code === targetCurrency);
+    if (!currentCurrency) return { balance: 0, currency: '', currencySymbol: '' };
+
+    // here baseAmount will be in float
+    const balanceInBaseCurrency = (targetBalance || 0) * (currentCurrency.subunitToUnit / currentCurrency.rate.rate);
+
+    // convert to int + divide onto rate
+    const equivalentAmount = balanceInBaseCurrency * (baseCurrency.subunitToUnit / equivalentCurrency.rate.rate);
+
+    return {
+      balance: Number(equivalentAmount.toFixed(2)),
+      currency: equivalentCurrency.code,
+      currencySymbol: equivalentCurrency.symbol,
+    };
+  };
+
   return {
     createValidationRules,
     getFormRules,
@@ -176,5 +198,6 @@ export const useProjectMethods = () => {
     sortByAlphabet,
     getContent,
     findLocalesContentData,
+    getEquivalentAccount,
   };
 };
