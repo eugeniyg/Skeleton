@@ -79,10 +79,23 @@ export interface BonusCodeBlockInterface {
   tryError: string
 }
 
+export interface CashBonusesInterface {
+  title: string,
+  wagerHintLabel: string,
+  casinoWagerLabel: string,
+  sportsbookWagerLabel: string,
+  waitingResult: string,
+  empty: {
+    title: string,
+    description: string
+  }
+}
+
 export interface ProfileBonusesInterface {
   title: string,
   historyLink: string,
   bonusCode: BonusCodeBlockInterface,
+  cashBonuses: CashBonusesInterface,
   seo: SeoContentInterface
 }
 

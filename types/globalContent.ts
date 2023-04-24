@@ -249,6 +249,21 @@ export interface DepositInterface {
   depositButton: string
 }
 
+export interface ChangeActiveBonusInterface extends Record<string, any>{
+  title: string,
+  description: string,
+  confirmButton: string,
+  cancelButton: string
+}
+
+export interface CancelBonusInterface extends Record<string, any>{
+  title: string,
+  activeBonusDescription: string,
+  issuedBonusDescription: string,
+  confirmButton: string,
+  cancelButton: string
+}
+
 export interface DisplayInFiatInterface {
   title: string,
   description: string
@@ -265,6 +280,8 @@ export interface PopupsInterface {
   registration: RegistrationInterface,
   registrationCancel: RegistrationCancelInterface,
   deposit: DepositInterface,
+  changeActiveBonus: ChangeActiveBonusInterface,
+  cancelBonus: CancelBonusInterface,
   displayInFiat: DisplayInFiatInterface
 }
 
