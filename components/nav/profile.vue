@@ -15,9 +15,11 @@
       >
         {{ item.title }}
 
-        <span v-if="item.id === 'bonuses' && activePlayerBonuses.length" class="count">
-          {{ activePlayerBonuses.length }}
-        </span>
+        <client-only>
+          <span v-if="item.id === 'bonuses' && activePlayerBonuses.length" class="count">
+            {{ activePlayerBonuses.length }}
+          </span>
+        </client-only>
 
         <template v-if="$route.path === localizePath(item.url)">
           <atomic-icon id="check"/>
