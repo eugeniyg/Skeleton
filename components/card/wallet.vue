@@ -67,10 +67,7 @@
   const card = ref<HTMLElement>();
 
   const changeActive = async ():Promise<void> => {
-    await switchAccount({
-      accountId: props.id,
-      currency: currentCurrency?.code || '',
-    });
+    await switchAccount(props.id);
     isChecked.value = false;
   };
 
@@ -84,10 +81,7 @@
   };
 
   const hide = async ():Promise<void> => {
-    await hideAccount({
-      accountId: props.id,
-      currency: currentCurrency?.code || '',
-    });
+    await hideAccount(props.id);
   };
 </script>
 
