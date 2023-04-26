@@ -13,8 +13,11 @@
 
       <form-input-number
         :is-required="false"
-        currency="EUR"
+        :currency="state.currency"
         :min="0"
+        :default-value="0"
+        label=""
+        name="edit-limit-currency"
         v-model:value="state.amount"
         placeholder="0"
       />

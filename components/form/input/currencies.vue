@@ -110,10 +110,6 @@
       if (!selectedCurrency.value.name) emit('blur');
     }
   };
-
-  onMounted(() => {
-    console.log(props.items);
-  });
 </script>
 
 <style lang="scss">

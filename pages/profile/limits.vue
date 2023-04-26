@@ -21,15 +21,16 @@
         :periods="depositPeriods"
         @open-limit-modal="openLimitModal"
         @open-edit-modal="openEditModal"
+        @update-limits="updateLimits"
       />
 
-      <!--
       <card-cash-limits
         title="Loss limits"
         :definition="2"
         :periods="lossPeriods"
         @open-limit-modal="openLimitModal"
         @open-edit-modal="openEditModal"
+        @update-limits="updateLimits"
       />
 
       <card-cash-limits
@@ -38,8 +39,8 @@
         :periods="betPeriods"
         @open-limit-modal="openLimitModal"
         @open-edit-modal="openEditModal"
+        @update-limits="updateLimits"
       />
-      -->
 
       <!--
 
@@ -91,14 +92,14 @@
   }
 
   interface StateInterface {
-    definition: number | undefined,
+    definition: number|undefined,
     editProps: EditPropsInterface
   }
 
   const isAdvancedModeEnabled = ref<boolean>(true);
 
   const state = reactive<StateInterface>({
-    definition: undefined,
+    definition: -1,
     editProps: {},
   });
 
@@ -164,15 +165,11 @@
 
   const updateLimits = async () => {
     await getLimits();
+    console.log('update limits');
   };
 
   onMounted(addOverflowToMain);
   onUnmounted(removeOverflowFromMain);
-
-  // watch(() => depositLimits.value, () => {
-  //   console.log(depositLimits.value);
-  // });
-
 </script>
 
 <style lang="scss">

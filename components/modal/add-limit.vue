@@ -36,6 +36,9 @@
         :is-required="false"
         :currency="formState.currency"
         :min="0"
+        :defaultValue="0"
+        label=""
+        name="limit-currency"
         v-model:value="formState.amount"
         placeholder="0"
       />

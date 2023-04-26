@@ -10,7 +10,7 @@
       v-if="props.isShowEdit && (status === 1) && !cancelProcess"
       class="limits-periods-list__item-edit"
       type="ghost"
-      @click="emit('edit-limit', { id, amount, currency })"
+      @click="emit('edit-limit')"
     >
       <atomic-icon id="edit"/>
     </button-base>
@@ -39,6 +39,9 @@
   import duration from 'dayjs/plugin/duration';
   import timezone from 'dayjs/plugin/timezone';
 
+  const limitsStore = useLimitsStore();
+  const { getLimits } = limitsStore;
+
   interface PropsInterface {
     id: string,
     status: number,
@@ -50,13 +53,13 @@
     expiredAt: string,
     cancelProcess: boolean,
     amount: number,
-    title: string,
-    isShowEdit: boolean,
+    title?: string,
+    isShowEdit?: boolean,
   }
 
   const props = defineProps<PropsInterface>();
 
-  const emit = defineEmits(['edit']);
+  const emit = defineEmits(['edit-limit']);
 
   interface StateInterface {
     hours: string|number,
@@ -106,8 +109,9 @@
     }, 1000);
   };
 
-  const onCountdownEnd = () => {
-    console.log('Countdown has ended!');
+  const onCountdownEnd = async () => {
+    await getLimits();
+    console.log('eneded');
   };
 
   const isShowContDown = (() => props.period === 'weekly' || props.period === 'monthly');
