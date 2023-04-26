@@ -14,20 +14,34 @@
 
     <div class="limits__grid">
 
-      <card-deposit-limits
+      <card-cash-limits
         v-if="isAdvancedModeEnabled"
-        :limits="depositLimits"
+        title="Deposit limits"
+        :definition="3"
+        :periods="depositPeriods"
         @open-limit-modal="openLimitModal"
+        @open-edit-modal="openEditModal"
       />
 
       <!--
-      <card-loss-limits :limits="lossLimits"/>
-
-      <card-bet-limits
-        :limits="betLimits"
-        :definition="state.definition"
+      <card-cash-limits
+        title="Loss limits"
+        :definition="2"
+        :periods="lossPeriods"
         @open-limit-modal="openLimitModal"
+        @open-edit-modal="openEditModal"
       />
+
+      <card-cash-limits
+        title="Bet limits"
+        :definition="1"
+        :periods="betPeriods"
+        @open-limit-modal="openLimitModal"
+        @open-edit-modal="openEditModal"
+      />
+      -->
+
+      <!--
 
       <card-cooling-off-limits :limits="coolingOffLimits"/>
 
@@ -35,14 +49,21 @@
         v-if="isAdvancedModeEnabled"
         :limits="selfExclusionLimits"
       />
+
       -->
 
       <modal-add-limit
         :definition="state.definition"
-        :key="modalKey++"
+        :key="addModalKey"
+        @update-limits="updateLimits"
       />
 
-      <modal-edit-limit/>
+      <modal-edit-limit
+        v-bind="state.editProps"
+        :key="editModalKey"
+        @update-limits="updateLimits"
+      />
+
       <!--
       <modal-edit-limit-confirm/>
       -->
@@ -54,50 +75,95 @@
 <script setup lang="ts">
   import { onMounted } from '@vue/runtime-core';
   import { storeToRefs } from 'pinia';
-  import { LimitInterface } from '~/types/limits';
+  import { PlayerLimitInterface } from '@platform/frontend-core/dist/module';
 
   const limitsStore = useLimitsStore();
+  const { getLimits } = limitsStore;
   const { activeLimits } = storeToRefs(limitsStore);
 
   const { showModal } = useLayoutStore();
 
-  interface StateInterface {
-    limitsList: LimitInterface[],
-    definition: number | undefined,
+  interface EditPropsInterface {
+    limitId?: string,
+    definition?: number,
+    amount?: number,
+    currency?: string,
   }
 
-  const state = reactive<StateInterface>({
-    limitsList: [],
-    definition: undefined,
-  });
-
-  const modalKey = 0;
+  interface StateInterface {
+    definition: number | undefined,
+    editProps: EditPropsInterface
+  }
 
   const isAdvancedModeEnabled = ref<boolean>(true);
 
+  const state = reactive<StateInterface>({
+    definition: undefined,
+    editProps: {},
+  });
+
+  const addModalKey = ref(0);
+  const editModalKey = ref(0);
+
   const openLimitModal = (definition: number | undefined) => {
     state.definition = definition;
+    addModalKey.value += 1;
     showModal('addLimit');
+  };
+
+  const openEditModal = ({ limitId, amount, currency }: EditPropsInterface) => {
+    state.editProps.limitId = limitId;
+    state.editProps.amount = amount;
+    state.editProps.currency = currency;
+    state.editProps.definition = state.definition;
+    editModalKey.value += 1;
+    showModal('editLimit');
   };
 
   const clickToggle = () => {
     isAdvancedModeEnabled.value = !isAdvancedModeEnabled.value;
   };
 
-  const betLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 1));
-  const lossLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 2));
-  const depositLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 3));
-  const selfExclusionLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 4));
-  const coolingOffLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 5));
+  const periodsTitles: Record<string, string> = {
+    daily: 'Daily',
+    weekly: 'Weekly',
+    monthly: 'Monthly',
+  };
+
+  const transformToPeriods = (limits: PlayerLimitInterface[]) => Object.keys(periodsTitles).map((period:string) => ({
+    title: periodsTitles[period],
+    items: limits.filter((limit) => limit.period === period) || [],
+  })).filter((column) => column.items.length);
+
+  const betPeriods = computed(() => {
+    const limits = activeLimits.value.filter((limit) => limit.definition === 1);
+    return transformToPeriods(limits) || [];
+  });
+
+  const lossPeriods = computed(() => {
+    const limits = activeLimits.value.filter((limit) => limit.definition === 2);
+    return transformToPeriods(limits) || [];
+  });
+
+  const depositPeriods = computed(() => {
+    const limits = activeLimits.value.filter((limit) => limit.definition === 3);
+    return transformToPeriods(limits) || [];
+  });
+  // const selfExclusionLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 4));
+  // const coolingOffLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 5));
 
   const addOverflowToMain = () => {
-    const main = document.querySelector('.app-main') as HTMLElement;
-    main.classList.add('is-overflow-off');
+    // const main = document.querySelector('.app-main') as HTMLElement;
+    // main.classList.add('is-overflow-off');
   };
 
   const removeOverflowFromMain = () => {
-    const main = document.querySelector('.app-main') as HTMLElement;
-    main.classList.remove('is-overflow-off');
+    // const main = document.querySelector('.app-main') as HTMLElement;
+    // main.classList.remove('is-overflow-off');
+  };
+
+  const updateLimits = async () => {
+    await getLimits();
   };
 
   onMounted(addOverflowToMain);
@@ -106,6 +172,7 @@
   // watch(() => depositLimits.value, () => {
   //   console.log(depositLimits.value);
   // });
+
 </script>
 
 <style lang="scss">
@@ -153,7 +220,7 @@
     border-radius: 16px;
     width: var(--card-width, 100%);
 
-    @include media(xs) {
+    @include media(md) {
       --card-width: calc(50% - 8px);
     }
 
@@ -185,6 +252,13 @@
       .tooltip__message {
         transform: translateY(calc(-100% - 14px));
       }
+    }
+
+    &-sub-title {
+      @include font($body-1-paragraph);
+      color: var(--gray-400);
+      margin: rem(4px) 0 0;
+      text-align: center;
     }
 
     &-info {

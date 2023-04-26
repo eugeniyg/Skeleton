@@ -4,13 +4,13 @@
   >
     <h4 class="limits-periods-list__item-title">{{ amount - currentAmount }} of {{ amount }} {{ currency }} left</h4>
 
-    <p class="limits-periods-list__item-sub-title">subTitle</p>
+    <p class="limits-periods-list__item-sub-title" v-if="isShowContDown">{{ state.hours }}h {{ state.minutes }}m {{ state.seconds }}s until reset</p>
 
     <button-base
-      v-if="props.isShowEdit && (status === 1)"
+      v-if="props.isShowEdit && (status === 1) && !cancelProcess"
       class="limits-periods-list__item-edit"
       type="ghost"
-      @click="emit('edit', { id, amount })"
+      @click="emit('edit-limit', { id, amount, currency })"
     >
       <atomic-icon id="edit"/>
     </button-base>
@@ -42,6 +42,7 @@
   interface PropsInterface {
     id: string,
     status: number,
+    period: string|null,
     createdAt: string,
     currency: string,
     currentAmount: number,
@@ -57,7 +58,13 @@
 
   const emit = defineEmits(['edit']);
 
-  const state = reactive({
+  interface StateInterface {
+    hours: string|number,
+    minutes: string|number,
+    seconds: string|number,
+  }
+
+  const state = reactive<StateInterface>({
     hours: 0,
     minutes: 0,
     seconds: 0,
@@ -78,6 +85,8 @@
 
   const getPercentage = (currentAmount: number, amount: number) => (currentAmount >= amount ? 100 : (((amount - currentAmount) / amount) * 100));
 
+  const format = (value: number): number|string => (value < 10 ? `0${value}` : value);
+
   const countdown = (startDate: string, endDate: string, onCountdownEnd: any) => {
     const targetDate = dayjs(endDate);
 
@@ -90,21 +99,22 @@
       } else {
         const remainingTime = dayjs.duration(remainingTimeSeconds, 'second');
         // const remainingDays = Math.floor(remainingTime.asDays());
-        state.hours = remainingTime.hours();
-        state.minutes = remainingTime.minutes();
-        state.seconds = remainingTime.seconds();
+        state.hours = format(remainingTime.hours());
+        state.minutes = format(remainingTime.minutes());
+        state.seconds = format(remainingTime.seconds());
       }
     }, 1000);
   };
 
   const onCountdownEnd = () => {
     console.log('Countdown has ended!');
-  // Do something else here, such as displaying a message or triggering another function
   };
 
-  // countdown('2023-04-24T10:25:11+03:00', '2023-04-25T12:25:11+03:00', onCountdownEnd);
+  const isShowContDown = (() => props.period === 'weekly' || props.period === 'monthly');
 
-  // onMounted(() => {
-  //   console.log(dayjs().format());
-  // });
+  onMounted(() => {
+    if (props.createdAt && props.expiredAt) {
+      countdown(props.createdAt, props.expiredAt, onCountdownEnd);
+    }
+  });
 </script>

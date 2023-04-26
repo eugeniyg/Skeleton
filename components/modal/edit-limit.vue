@@ -19,19 +19,25 @@
         placeholder="0"
       />
 
-      <div class="modal-edit-limit__info">
+      <div class="modal-edit-limit__info" v-if="isGreaterPrev">
         <div class="modal-edit-limit__info-title">
           <atomic-icon id="warning"/>
           <div>{{ editLimitWarning }}</div>
         </div>
-
         <div class="modal-edit-limit__info-text">
           Email confirmation will be needed. The change will be applied in 24 hours.
         </div>
       </div>
 
       <div class="modal-edit-limit__actions">
-        <button-base type="primary" size="md" @click="update">Update</button-base>
+        <button-base
+          type="primary"
+          size="md"
+          @click="update"
+          :is-disabled="isDisableUpdate"
+        >
+          Update
+        </button-base>
         <button-base type="secondary" size="md" @click="remove">Delete</button-base>
       </div>
     </div>
@@ -42,10 +48,21 @@
   import { VueFinalModal } from 'vue-final-modal';
   import { storeToRefs } from 'pinia';
 
+  interface PropsInterface {
+    limitId?: string,
+    period?: string,
+    amount?: number,
+    currency? : string,
+  }
+
+  const props = defineProps<PropsInterface>();
+  const emit = defineEmits(['update-limits']);
+
   const { closeModal } = useLayoutStore();
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { showAlert } = useLayoutStore();
+  const { deletePlayerLimit, updatePlayerLimit } = useCoreProfileApi();
 
   const editLimitTitle = 'Edit daily deposit limit';
   const editLimitWarning = 'New limit sum is bigger than the previous one';
@@ -56,18 +73,52 @@
     type: 'warning',
   };
 
-  const state = reactive({
-    amount: 0,
-    currency: 'EUR',
+  interface StateInterface {
+    prevAmount?: string|number,
+    limitId?: string,
+    period?: string,
+    amount?: string|number,
+    currency?: string,
+  }
+
+  const state = reactive<StateInterface>({
+    prevAmount: props.amount,
+    limitId: props.limitId,
+    period: props.period,
+    amount: props.amount,
+    currency: props.currency,
   });
 
-  const update = () => {
-    closeModal('editLimit');
-    showAlert(alertProps);
+  const isDisableUpdate = computed(() => Number(state.prevAmount) === Number(state.amount) || state.amount === '');
+
+  const isGreaterPrev = computed(() => Number(state.amount) > Number(state.prevAmount));
+
+  const update = async () => {
+    try {
+      await updatePlayerLimit({
+        period: props.period,
+        limitId: state.limitId,
+        amount: state.amount,
+      });
+      emit('update-limits');
+      showAlert(alertProps);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      closeModal('editLimit');
+    }
   };
 
-  const remove = (limitId: string) => {
-    console.log('remove', limitId);
+  const remove = async () => {
+    try {
+      await deletePlayerLimit(state.limitId);
+      emit('update-limits');
+      showAlert(alertProps);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      closeModal('editLimit');
+    }
   };
 </script>
 

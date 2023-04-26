@@ -8,18 +8,18 @@
     <div class="scroll">
       <pre style="color:white">{{ formState }}</pre>
       <div class="header">
-        <button-modal-close @close="closeModal('addLimit')"/>
+        <button-modal-close @click="closeModal('addLimit')"/>
         <div class="title">{{ titleMapping[props.definition] }}</div>
       </div>
 
       <div class="modal-deposit-limit__tabs">
         <button
+          v-for="period in periodOptions"
           class="modal-deposit-limit__tabs-item"
           :class="{'is-active': period.id === selectedTab.id}"
-          v-for="period in periodOptions"
+          :disabled="period.disabled"
           :key="period.id"
           @click="changeTab(period)"
-          :disabled="period.disabled"
         >
           {{ period.name }}
         </button>
@@ -66,11 +66,13 @@
   const globalStore = useGlobalStore();
   const { currencies } = storeToRefs(globalStore);
 
-  interface ModalPropsInterface {
+  interface PropsInterface {
     definition: number,
   }
 
-  const props = defineProps<ModalPropsInterface>();
+  const props = defineProps<PropsInterface>();
+
+  const emit = defineEmits(['update-limits']);
 
   const { settingsConstants } = useGlobalStore();
   const layoutStore = useLayoutStore();
@@ -91,7 +93,7 @@
   const selectedTab = ref<StatusInterface>(limitsCashPeriod.value[0]);
 
   const formState = reactive<CreateLimitInterface>({
-    definition: -1,
+    definition: props.definition,
     period: '',
     showCurrenciesError: false,
   });
@@ -113,8 +115,11 @@
   const addLimit = async () => {
     try {
       await createLimit(formState);
+      emit('update-limits');
     } catch (e) {
       console.log(e);
+    } finally {
+      closeModal('addLimit');
     }
   };
 
@@ -164,11 +169,6 @@
   }));
 
   const isAddButtonDisabled = computed(() => !formState.currency && !formState.period);
-
-  onMounted(() => {
-    formState.definition = props.definition;
-  });
-
 </script>
 
 <style lang="scss">

@@ -1,20 +1,19 @@
 <template>
   <div class="limits-periods-list" :class="{'is-show-edit': props.isShowEdit}">
-    <!--    <pre style="color:white">{{ columns }}</pre>-->
     <div
-      :key="column.title"
+      :key="period.title"
       class="limits-periods-list__column"
-      v-for="column in columns"
+      v-for="period in props.periods"
     >
-      <h4 class="limits-periods-list__title">{{ column.title }}</h4>
+      <h4 class="limits-periods-list__title">{{ period.title }}</h4>
 
       <div class="limits-periods-list__items">
         <atomic-period-item
-          v-for="item in column.items"
-          :key="item"
+          v-for="item in period.items"
           v-bind="item"
           :is-show-edit="isShowEdit"
-          @edit="editLimit"
+          :key="item"
+          @edit-limit="emit('open-edit-modal', { limitId: item.id, amount: item.amount, currency: item.currency })"
         />
       </div>
     </div>
@@ -25,42 +24,16 @@
   import { PlayerLimitInterface } from '@platform/frontend-core/dist/module';
 
   interface PropsInterface {
-    limits: PlayerLimitInterface[],
-    periods: any,
+    periods: {
+      title: string,
+      items: PlayerLimitInterface[]
+    }[],
     isShowEdit: boolean,
   }
 
   const props = defineProps<PropsInterface>();
 
-  const periodsTitles: Record<string, string> = {
-    daily: 'Daily',
-    monthly: 'Monthly',
-    weekly: 'Weekly',
-  };
-
-  const { showModal } = useLayoutStore();
-
-  const editLimit = ({ id, amount }: {id: string, amount:number}) => {
-    showModal('editLimit');
-    console.clear();
-    console.log(id, amount);
-  };
-
-  const columns = computed(() => Object.keys(periodsTitles).map((period:string) => ({
-    title: periodsTitles[period],
-    items: props?.limits.filter((limit) => limit.period === period) || [],
-  })));
-  // .filter((column) => column.items.length));
-
-  onMounted(() => {
-    console.log(props.periods);
-    // console.log(props.limits);
-    // console.log(accounts.value);
-
-    // const result = Object.keys(periodsTitles).map((period) => ({ [period]: props?.limits.filter((limit) => limit.period === period) || [] }));
-
-    // console.log(result)
-  });
+  const emit = defineEmits(['open-edit-modal']);
 </script>
 
 <style lang="scss">
