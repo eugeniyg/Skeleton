@@ -36,7 +36,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { PlayerBonusInterface } from '@platform/frontend-core/dist/module';
-  import { cloneDeep } from 'lodash';
+  import cloneDeep from 'lodash/cloneDeep';
   import { CashBonusesInterface } from '~/types';
 
   const props = defineProps<{
