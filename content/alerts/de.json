@@ -1,4 +1,8 @@
 {
+  "bonusCodeNotAvailable": {
+    "title": "Sorry, but the bonus with the entered bonus code is not available for you.",
+    "type": "warning"
+  },
   "limitedDeposit": {
     "type": "error",
     "title": "Error",
@@ -19,6 +23,10 @@
     "description": "We have sent an email with the verification link to your email address.",
     "type": "done"
   },
+  "bonusIncorrect": {
+    "type": "error",
+    "title": "Sorry, but you entered the incorrect bonus code."
+  },
   "depositError": {
     "title": "Error",
     "description": "Sorry, but something went wrong with your {sum} deposit from {date}. Please try again.",
@@ -38,10 +46,19 @@
     "title": "Success",
     "description": "A password reset link was sent. Click the link in the email to create a new password."
   },
+  "bonusActivated": {
+    "type": "done",
+    "title": "Active",
+    "description": "The bonus has been activated"
+  },
   "somethingWrong": {
     "type": "error",
     "title": "Error!",
     "description": "Something went wrong!"
+  },
+  "bonusNotAvailable": {
+    "type": "pending",
+    "title": "Sorry, but the bonus with the entered bonus code is not available for you."
   },
   "userCanceledWithdrawal": {
     "type": "done",
@@ -57,6 +74,10 @@
     "type": "pending",
     "title": "Pending!",
     "description": "Your withdrawal is being processed. We will check your request in a short while."
+  },
+  "bonusCodeIncorrect": {
+    "title": "Sorry, but you entered the incorrect bonus code.",
+    "type": "error"
   },
   "passwordChanged": {
     "type": "done",
@@ -78,18 +99,5 @@
     "type": "error",
     "title": "Error",
     "description": "Sorry, but your account is blocked. Please, contact our support team for more information."
-  },
-  "bonusActivated": {
-    "type": "done",
-    "title": "Active",
-    "description": "The bonus has been activated"
-  },
-  "bonusNotAvailable": {
-    "type": "pending",
-    "title": "Sorry, but the bonus with the entered bonus code is not available for you."
-  },
-  "bonusIncorrect": {
-    "type": "error",
-    "title": "Sorry, but you entered the incorrect bonus code."
   }
 }
