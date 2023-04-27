@@ -4,7 +4,7 @@
   >
     <h4 class="limits-periods-list__item-title">{{ amount - currentAmount }} of {{ amount }} {{ currency }} left</h4>
 
-    <p class="limits-periods-list__item-sub-title" v-if="isShowContDown">{{ state.hours }}h {{ state.minutes }}m {{ state.seconds }}s until reset</p>
+    <p class="limits-periods-list__item-sub-title" v-if="isShowContDown">{{ state.hours }}h {{ state.minutes }}m {{ state.seconds }}s until activate</p>
 
     <button-base
       v-if="props.isShowEdit && (status === 1) && !cancelProcess"
@@ -38,9 +38,6 @@
   import utc from 'dayjs/plugin/utc';
   import duration from 'dayjs/plugin/duration';
   import timezone from 'dayjs/plugin/timezone';
-
-  const limitsStore = useLimitsStore();
-  const { getLimits } = limitsStore;
 
   interface PropsInterface {
     id: string,
@@ -101,7 +98,6 @@
         onCountdownEnd();
       } else {
         const remainingTime = dayjs.duration(remainingTimeSeconds, 'second');
-        // const remainingDays = Math.floor(remainingTime.asDays());
         state.hours = format(remainingTime.hours());
         state.minutes = format(remainingTime.minutes());
         state.seconds = format(remainingTime.seconds());
@@ -109,9 +105,10 @@
     }, 1000);
   };
 
-  const onCountdownEnd = async () => {
-    await getLimits();
-    console.log('eneded');
+  const onCountdownEnd = () => {
+    state.hours = '00';
+    state.minutes = '00';
+    state.seconds = '00';
   };
 
   const isShowContDown = (() => props.period === 'weekly' || props.period === 'monthly');

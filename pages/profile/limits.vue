@@ -154,13 +154,13 @@
   // const coolingOffLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 5));
 
   const addOverflowToMain = () => {
-    // const main = document.querySelector('.app-main') as HTMLElement;
-    // main.classList.add('is-overflow-off');
+    const main = document.querySelector('.app-main') as HTMLElement;
+    main.classList.add('is-overflow-off');
   };
 
   const removeOverflowFromMain = () => {
-    // const main = document.querySelector('.app-main') as HTMLElement;
-    // main.classList.remove('is-overflow-off');
+    const main = document.querySelector('.app-main') as HTMLElement;
+    main.classList.remove('is-overflow-off');
   };
 
   const updateLimits = async () => {

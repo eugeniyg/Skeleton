@@ -105,8 +105,18 @@
       });
       emit('update-limits');
       showAlert(alertProps);
-    } catch (e) {
-      console.log(e);
+    } catch (error: any) {
+      if (error.response?.status === 422) {
+        showAlert({
+          title: error.data?.error?.message,
+          type: 'error',
+        });
+      } else {
+        showAlert({
+          title: 'Something went wrong',
+          type: 'error',
+        });
+      }
     } finally {
       closeModal('editLimit');
     }
@@ -117,8 +127,18 @@
       await deletePlayerLimit(state.limitId);
       emit('update-limits');
       showAlert(alertProps);
-    } catch (e) {
-      console.log(e);
+    } catch (error: any) {
+      if (error.response?.status === 422) {
+        showAlert({
+          title: error.data?.error?.message,
+          type: 'error',
+        });
+      } else {
+        showAlert({
+          title: 'Something went wrong',
+          type: 'error',
+        });
+      }
     } finally {
       closeModal('editLimit');
     }

@@ -9,13 +9,13 @@
         <atomic-tooltip v-if="isShowPeriods" v-bind="tooltipProps"/>
       </h4>
 
-      <!--    <pre style="color:white; font-size: 10px">{{ props.periods }}</pre>-->
-
       <atomic-limits-periods-list
         v-if="isShowPeriods"
+        :key="periodKey"
         :periods="props.periods"
         :is-show-edit="state.isShowEdit"
         @open-edit-modal="openEditModal"
+        @update="periodKey += 1"
       />
 
       <p v-else class="limits__card-sub-title">This setting limits the amount you can deposit per day, week or month</p>
@@ -30,7 +30,7 @@
         </button-base>
 
         <button-base
-          v-if="!state.isShowEdit"
+          v-if="!state.isShowEdit && !isEditLocked"
           type="secondary"
           @click="state.isShowEdit = true"
           :is-disabled="isEditLocked"
@@ -79,6 +79,8 @@
     isShowEdit: false,
   });
 
+  const periodKey = ref(0);
+
   const tooltipProps = {
     text: 'This setting limits the amount you can deposit per day, week or month.',
     align: 'bottom',
@@ -86,12 +88,9 @@
 
   const isShowPeriods = computed(() => props.periods.length);
 
-  // const makeFullWidth = computed(() => ({ 'is-full-width': Object.keys(props.periods).length > 1 }));
-
   const openEditModal = ({ limitId, amount, currency }: UpdateLimitInterface) => {
     emit('open-edit-modal', { limitId, amount, currency });
   };
 
-  // const isEditLocked = computed(() => props.limits.every((limit) => limit.cancelProcess));
-  const isEditLocked = false;
+  const isEditLocked = computed(() => props.periods.every((period) => period.items.filter((item) => item.status === 1).every((item) => item.cancelProcess)));
 </script>

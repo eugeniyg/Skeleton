@@ -6,7 +6,6 @@
     clickToClose
   >
     <div class="scroll">
-      <pre style="color:white">{{ formState }}</pre>
       <div class="header">
         <button-modal-close @click="closeModal('addLimit')"/>
         <div class="title">{{ titleMapping[props.definition] }}</div>
@@ -66,9 +65,6 @@
   import { VueFinalModal } from 'vue-final-modal';
   import { CreateLimitInterface, CurrencyInterface, StatusInterface } from '@platform/frontend-core/dist/module';
 
-  const globalStore = useGlobalStore();
-  const { currencies } = storeToRefs(globalStore);
-
   interface PropsInterface {
     definition: number,
   }
@@ -84,6 +80,9 @@
   const limitsStore = useLimitsStore();
   const { activeLimits } = storeToRefs(limitsStore);
   const { createLimit } = limitsStore;
+  const { showAlert } = useLayoutStore();
+  const globalStore = useGlobalStore();
+  const { currencies } = storeToRefs(globalStore);
 
   const limitsCashPeriod = ref<StatusInterface[]>(settingsConstants?.player.limit.cashPeriod || []);
 
@@ -93,40 +92,13 @@
     3: 'New deposit limit',
   };
 
-  const selectedTab = ref<StatusInterface>(limitsCashPeriod.value[0]);
-
   const formState = reactive<CreateLimitInterface>({
     definition: props.definition,
-    period: '',
+    period: undefined,
     showCurrenciesError: false,
   });
 
-  const changeTab = (period: StatusInterface) => {
-    selectedTab.value = period;
-    formState.period = period.id;
-  };
-
-  const selectCurrency = (currency: CurrencyInterface) => {
-    formState.currency = currency.code;
-    formState.showCurrenciesError = false;
-  };
-
-  const blurCurrencySelect = () => {
-    formState.showCurrenciesError = true;
-  };
-
-  const addLimit = async () => {
-    try {
-      await createLimit(formState);
-      emit('update-limits');
-    } catch (e) {
-      console.log(e);
-    } finally {
-      closeModal('addLimit');
-    }
-  };
-
-  const isPeriodDisabled = (period: { id: string }) => {
+  const isPeriodDisabled = (period: { id: string|number }) => {
     const limits = activeLimits?.value.filter((limit) => limit.definition === formState.definition
       && limit.period === period.id);
     return (
@@ -137,7 +109,7 @@
     );
   };
 
-  const periodOptions = computed(() => Object.values(limitsCashPeriod.value)?.map((period:StatusInterface) => {
+  const periodOptions = computed(() => Object.values(limitsCashPeriod.value)?.map((period) => {
     if (isPeriodDisabled(period)) {
       return {
         ...period,
@@ -171,7 +143,50 @@
     return currency;
   }));
 
+  const selectedPeriod = computed(() => periodOptions.value?.filter((period) => !period.disabled)[0]);
+
+  const selectedTab = ref<StatusInterface>(selectedPeriod?.value);
+
   const isAddButtonDisabled = computed(() => !formState.currency && !formState.period);
+
+  const changeTab = (period: { id: string; name: string }) => {
+    selectedTab.value = period;
+    formState.period = period.id;
+  };
+
+  const selectCurrency = (currency: CurrencyInterface) => {
+    formState.currency = currency.code;
+    formState.showCurrenciesError = false;
+  };
+
+  const blurCurrencySelect = () => {
+    formState.showCurrenciesError = true;
+  };
+
+  const addLimit = async () => {
+    try {
+      await createLimit(formState);
+      emit('update-limits');
+    } catch (error: any) {
+      if (error.response?.status === 422) {
+        showAlert({
+          title: error.data?.error?.message,
+          type: 'error',
+        });
+      } else {
+        showAlert({
+          title: 'Something went wrong',
+          type: 'error',
+        });
+      }
+    } finally {
+      closeModal('addLimit');
+    }
+  };
+
+  onMounted(() => {
+    formState.period = selectedPeriod.value.id;
+  });
 </script>
 
 <style lang="scss">
