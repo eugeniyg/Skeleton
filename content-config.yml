@@ -1210,7 +1210,7 @@ collections:
             label: Description
             widget: text
             required: false
-            hint: 'Put variables {amount}: bonus amount and {currency}: amount currency in text!'
+            hint: 'Put variable {amount}: bonus amount width currency in text!'
           - name: type
             label: Alert Type
             widget: select
@@ -1226,7 +1226,7 @@ collections:
             label: Description
             widget: text
             required: false
-            hint: 'Put variables {amount}: bonus amount and {currency}: amount currency in text!'
+            hint: 'Put variable {amount}: bonus amount width currency in text!'
           - name: type
             label: Alert Type
             widget: select
@@ -1242,7 +1242,7 @@ collections:
             label: Description
             widget: text
             required: false
-            hint: 'Put variables {amount}: bonus amount and {currency}: amount currency in text!'
+            hint: 'Put variable {amount}: bonus amount width currency in text!'
           - name: type
             label: Alert Type
             widget: select
@@ -1258,7 +1258,7 @@ collections:
             label: Description
             widget: text
             required: false
-            hint: 'Put variables {amount}: bonus amount and {currency}: amount currency in text!'
+            hint: 'Put variable {amount}: bonus amount width currency in text!'
           - name: type
             label: Alert Type
             widget: select
@@ -1274,7 +1274,7 @@ collections:
             label: Description
             widget: text
             required: false
-            hint: 'Put variables {amount}: bonus amount and {currency}: amount currency in text!'
+            hint: 'Put variable {amount}: bonus amount width currency in text!'
           - name: type
             label: Alert Type
             widget: select
@@ -1290,7 +1290,7 @@ collections:
             label: Description
             widget: text
             required: false
-            hint: 'Put variables {amount}: bonus amount and {currency}: amount currency in text!'
+            hint: 'Put variable {amount}: bonus amount width currency in text!'
           - name: type
             label: Alert Type
             widget: select
