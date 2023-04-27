@@ -5,7 +5,7 @@
   },
   "bonusLost": {
     "title": "Lost",
-    "description": "The {amount} {currency} bonus hasn’t been wagered",
+    "description": "The {amount} bonus hasn’t been wagered",
     "type": "error"
   },
   "limitedDeposit": {
@@ -25,7 +25,7 @@
   },
   "bonusExpired": {
     "title": "Expired",
-    "description": "The {amount} {currency} bonus has expired",
+    "description": "The {amount} bonus has expired",
     "type": "error"
   },
   "resentVerification": {
@@ -49,7 +49,7 @@
   },
   "bonusIssued": {
     "title": "Issued",
-    "description": "The {amount} {currency} bonus has been issued",
+    "description": "The {amount} bonus has been issued",
     "type": "pending"
   },
   "sentMessage": {
@@ -64,11 +64,11 @@
   "bonusActivated": {
     "type": "done",
     "title": "Active",
-    "description": "The {amount} {currency} bonus has been activated"
+    "description": "The {amount} bonus has been activated"
   },
   "bonusPlayed": {
     "title": "Finished",
-    "description": "The {amount} {currency} bonus has been successfully wagered. Your winnings are already in your real balance",
+    "description": "The {amount} bonus has been successfully wagered. Your winnings are already in your real balance",
     "type": "done"
   },
   "somethingWrong": {
@@ -82,7 +82,7 @@
   },
   "bonusCanceled": {
     "title": "Canceled",
-    "description": "The {amount} {currency} bonus has been canceled",
+    "description": "The {amount} bonus has been canceled",
     "type": "error"
   },
   "userCanceledWithdrawal": {
