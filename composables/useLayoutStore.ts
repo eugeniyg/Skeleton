@@ -11,12 +11,12 @@ interface ModalsInterface extends Record<string, any> {
   signIn: boolean,
   deposit: boolean,
   confirm: boolean,
-  confirmBonus: boolean,
   error: boolean,
   forgotPass: boolean,
   resetPass: boolean,
   success: boolean,
   withdraw: boolean,
+  fiat: boolean,
 }
 
 interface ModalsUrlsInterface extends Record<string, any> {
@@ -51,13 +51,13 @@ export const useLayoutStore = defineStore('layoutStore', {
         signIn: false,
         deposit: false,
         confirm: false,
-        confirmBonus: false,
         error: false,
         forgotPass: false,
         resetPass: false,
         success: false,
         withdraw: false,
         registerCancel: false,
+        fiat: false,
       },
       modalsUrl: {
         register: 'sign-up',

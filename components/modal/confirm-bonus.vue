@@ -1,45 +1,46 @@
 <template>
   <vue-final-modal
-    v-model="modals.confirmBonus"
+    :modelValue="props.showModal"
     class="modal-confirm-bonus"
     :clickToClose="false"
-    @clickOutside="closeModal('confirmBonus')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('confirmBonus')"/>
-        <div class="title">Confirm bonus update</div>
+        <button-modal-close @close="emit('closeModal')"/>
+        <div class="title">{{ props.title }}</div>
       </div>
 
-      <p class="text"> The status of the currently active bonus will change to Cancelled. Are you sure you want to activate this bonus?</p>
+      <p class="text">{{ props.description }}</p>
 
       <div class="actions">
-        <button-base type="primary" size="md" @click="activateBonus">Yes</button-base>
-        <button-base type="secondary" size="md" @click="closeModal('confirmBonus')">No</button-base>
+        <button-base
+          type="primary"
+          size="md"
+          @click="emit('confirm')"
+          :isDisabled="bonusesUpdating"
+        >
+          <atomic-spinner :is-shown="props.bonusesUpdating"/>
+          {{ props.confirmButton }}
+        </button-base>
+        <button-base type="secondary" size="md" @click="emit('closeModal')">{{ props.cancelButton }}</button-base>
       </div>
     </div>
   </vue-final-modal>
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
 
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { closeModal, showAlert } = layoutStore;
+  const props = defineProps<{
+    showModal: boolean,
+    title?: string,
+    description?: string,
+    confirmButton?: string,
+    cancelButton?: string,
+    bonusesUpdating?: boolean
+  }>();
 
-  const activateBonus = () => {
-    closeModal('confirmBonus');
-    const alertProps = {
-      autoHide: true,
-      type: 'done',
-      title: 'You have succsfuly activated the bonus',
-    };
-    setTimeout(() => {
-      showAlert(alertProps);
-    }, 1000);
-  };
+  const emit = defineEmits(['closeModal', 'confirm']);
 </script>
 
 <style lang="scss">

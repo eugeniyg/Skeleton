@@ -1176,6 +1176,30 @@ collections:
             widget: select
             options: *alertTypes
             default: done
+      - name: bonusCodeIncorrect
+        label: Bonus Code Incorrect
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: error
+      - name: bonusCodeNotAvailable
+        label: Bonus Code Not Available
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: pending
       - name: bonusActivated
         label: Bonus Activated
         widget: object
@@ -1188,30 +1212,6 @@ collections:
             widget: select
             options: *alertTypes
             default: done
-      - name: bonusNotAvailable
-        label: Bonus Not Available
-        widget: object
-        collapsed: true
-        fields:
-          - *alertTitle
-          - *alertDescription
-          - name: type
-            label: Alert Type
-            widget: select
-            options: *alertTypes
-            default: pending
-      - name: bonusIncorrect
-        label: Bonus Incorrect
-        widget: object
-        collapsed: true
-        fields:
-          - *alertTitle
-          - *alertDescription
-          - name: type
-            label: Alert Type
-            widget: select
-            options: *alertTypes
-            default: error
 
   - name: staticPages
     label: Static Pages

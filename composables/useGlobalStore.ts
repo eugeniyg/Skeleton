@@ -27,6 +27,8 @@ import {
 
 interface GlobalStoreStateInterface {
   currencies: CurrencyInterface[],
+  baseCurrency: Maybe<CurrencyInterface>,
+  equivalentCurrency: Maybe<CurrencyInterface>,
   locales: LocaleInterface[],
   countries: CountryInterface[],
   settingsConstants: Maybe<CoreConstantsInterface>,
@@ -54,37 +56,39 @@ interface GlobalStoreStateInterface {
 
 export const useGlobalStore = defineStore('globalStore', {
   state: ():GlobalStoreStateInterface => ({
-      currencies: [],
-      locales: [],
-      countries: [],
-      settingsConstants: undefined,
-      defaultLocale: undefined,
-      isMobile: false,
-      browserLanguage: 'en',
-      baseApiUrl: '',
-      validationMessages: {},
-      defaultLocaleValidationMessages: {},
-      fieldsContent: undefined,
-      defaultLocaleFieldsContent: undefined,
-      layoutData: undefined,
-      defaultLocaleLayoutData: undefined,
-      popupsData: undefined,
-      defaultLocalePopupsData: undefined,
-      alertsData: undefined,
-      defaultLocaleAlertsData: undefined,
-      globalComponentsContent: undefined,
-      defaultLocaleGlobalComponentsContent: undefined,
-      headerCountry: undefined,
-      pagesWithoutLocale: [
-        'verify-confirmCode',
-        'locale-verify-confirmCode',
-        'password-reset-resetCode',
-        'locale-password-reset-resetCode',
-        'questions',
-        'locale-questions',
-      ],
-      errorPageContent: undefined,
-      defaultLocaleErrorPageContent: undefined,
+    currencies: [],
+    baseCurrency: undefined,
+    equivalentCurrency: undefined,
+    locales: [],
+    countries: [],
+    settingsConstants: undefined,
+    defaultLocale: undefined,
+    isMobile: false,
+    browserLanguage: 'en',
+    baseApiUrl: '',
+    validationMessages: {},
+    defaultLocaleValidationMessages: {},
+    fieldsContent: undefined,
+    defaultLocaleFieldsContent: undefined,
+    layoutData: undefined,
+    defaultLocaleLayoutData: undefined,
+    popupsData: undefined,
+    defaultLocalePopupsData: undefined,
+    alertsData: undefined,
+    defaultLocaleAlertsData: undefined,
+    globalComponentsContent: undefined,
+    defaultLocaleGlobalComponentsContent: undefined,
+    headerCountry: undefined,
+    pagesWithoutLocale: [
+      'verify-confirmCode',
+      'locale-verify-confirmCode',
+      'password-reset-resetCode',
+      'locale-password-reset-resetCode',
+      'questions',
+      'locale-questions',
+    ],
+    errorPageContent: undefined,
+    defaultLocaleErrorPageContent: undefined,
     }),
 
   getters: {
@@ -102,6 +106,12 @@ export const useGlobalStore = defineStore('globalStore', {
       }
 
       return localesArr;
+    },
+    fiatCurrencies(state):CurrencyInterface[] {
+      return state.currencies.filter((currency) => currency.type === 'fiat');
+    },
+    cryptoCurrencies(state): CurrencyInterface[] {
+      return state.currencies.filter((currency) => currency.type === 'crypto');
     },
     currenciesSelectOptions(state):CurrencyInterface[] {
       return state.currencies.map((currency) => ({ ...currency, value: currency.code }));
@@ -193,8 +203,9 @@ export const useGlobalStore = defineStore('globalStore', {
   actions: {
     async getCurrencies():Promise<void> {
       const { getCurrencies } = useCoreGlobalApi();
-      const data = await getCurrencies();
-      this.currencies = data;
+      const data = await getCurrencies(1);
+      this.currencies = data.filter((currency) => currency.isEnabled);
+      this.baseCurrency = data.find((currency) => currency.isBase);
     },
 
     parseUserAgent(agent: string):void {
@@ -292,6 +303,16 @@ export const useGlobalStore = defineStore('globalStore', {
       const { countryHeaderName } = useCoreStore();
       const headersCountry:Record<string, any> = useRequestHeaders([countryHeaderName]);
       if (headersCountry[countryHeaderName]) this.headerCountry = headersCountry[countryHeaderName]?.toUpperCase();
+    },
+
+    setEquivalentCurrency(currencyCode: string):void {
+      this.equivalentCurrency = this.currencies.find((currency) => currency.code === currencyCode);
+      if (this.equivalentCurrency) localStorage.setItem('equivalentCurrency', this.equivalentCurrency.code);
+    },
+
+    removeEquivalentCurrency():void {
+      localStorage.removeItem('equivalentCurrency');
+      this.equivalentCurrency = undefined;
     },
   },
 });
