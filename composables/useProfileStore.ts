@@ -42,13 +42,19 @@ export const useProfileStore = defineStore('profileStore', {
       const { getFavoriteGames } = useGamesStore();
       const { getPlayerBonuses, getDepositBonusCode } = useBonusStore();
       getFavoriteGames();
-      getPlayerBonuses();
       getDepositBonusCode();
 
+      const route = useRoute();
+      const routeName = route.name as string;
+      if (!routeName.includes('profile-bonuses')) {
+        getPlayerBonuses();
+      }
+
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
-      const { subscribeBonusSocket } = useBonusStore();
+      const { subscribeBonusCodeSocket, subscribeBonusSocket } = useBonusStore();
       subscribeAccountSocket();
       subscribeInvoicesSocket();
+      subscribeBonusCodeSocket();
       subscribeBonusSocket();
 
       const { setEquivalentCurrency } = useGlobalStore();
@@ -61,9 +67,10 @@ export const useProfileStore = defineStore('profileStore', {
       bonusStore.$reset();
 
       const { unsubscribeAccountSocket, unsubscribeInvoiceSocket } = useWalletStore();
-      const { unsubscribeBonusSocket } = useBonusStore();
+      const { unsubscribeBonusCodeSocket, unsubscribeBonusSocket } = useBonusStore();
       unsubscribeAccountSocket();
       unsubscribeInvoiceSocket();
+      unsubscribeBonusCodeSocket();
       unsubscribeBonusSocket();
     },
 

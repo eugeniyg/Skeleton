@@ -37,6 +37,7 @@ interface LayoutStoreStateInterface extends Record<string, any>{
   showCookiePopup: boolean,
   modals: ModalsInterface,
   modalsUrl: ModalsUrlsInterface,
+  lastNotificationTime: number,
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -68,18 +69,36 @@ export const useLayoutStore = defineStore('layoutStore', {
         forgotPass: 'forgot-pass',
         resetPass: 'reset-pass',
       },
+    lastNotificationTime: 0,
   }),
 
   actions: {
     showAlert(props: Maybe<AlertInterface>): void {
       const { notify } = useNotification();
+      const currentTime = Date.now();
+      const timeDiff = currentTime - this.lastNotificationTime;
 
-      notify({
-        id: Date.now(),
-        type: props?.type,
-        title: props?.title,
-        text: props?.description,
-      });
+      if (timeDiff < 400) {
+        this.lastNotificationTime += 400;
+
+        setTimeout(() => {
+          notify({
+            id: Date.now(),
+            type: props?.type,
+            title: props?.title,
+            text: props?.description,
+          });
+        }, this.lastNotificationTime - currentTime);
+      } else {
+        this.lastNotificationTime = currentTime;
+
+        notify({
+          id: currentTime,
+          type: props?.type,
+          title: props?.title,
+          text: props?.description,
+        });
+      }
     },
 
     openUserNav():void {

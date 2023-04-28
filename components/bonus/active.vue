@@ -80,21 +80,17 @@
     modalState.mode = processMode;
 
     if (processBonus.status === 1) {
-      modalState.title = processMode === 'activate'
-        ? popupsData.value?.changeActiveBonus.title || defaultLocalePopupsData?.value?.changeActiveBonus.title
-        : popupsData.value?.cancelBonus.title || defaultLocalePopupsData?.value?.cancelBonus.title;
-
-      modalState.description = processMode === 'activate'
-        ? popupsData.value?.changeActiveBonus.description || defaultLocalePopupsData?.value?.changeActiveBonus.description
-        : popupsData.value?.cancelBonus.issuedBonusDescription || defaultLocalePopupsData?.value?.cancelBonus.issuedBonusDescription;
-
-      modalState.confirmButton = processMode === 'activate'
-        ? popupsData.value?.changeActiveBonus.confirmButton || defaultLocalePopupsData?.value?.changeActiveBonus.confirmButton
-        : popupsData.value?.cancelBonus.confirmButton || defaultLocalePopupsData?.value?.cancelBonus.confirmButton;
-
-      modalState.cancelButton = processMode === 'activate'
-        ? popupsData.value?.changeActiveBonus.cancelButton || defaultLocalePopupsData?.value?.changeActiveBonus.cancelButton
-        : popupsData.value?.cancelBonus.cancelButton || defaultLocalePopupsData?.value?.cancelBonus.cancelButton;
+      if (processMode === 'activate') {
+        modalState.title = popupsData.value?.changeActiveBonus.title || defaultLocalePopupsData?.value?.changeActiveBonus.title;
+        modalState.description = popupsData.value?.changeActiveBonus.description || defaultLocalePopupsData?.value?.changeActiveBonus.description;
+        modalState.confirmButton = popupsData.value?.changeActiveBonus.confirmButton || defaultLocalePopupsData?.value?.changeActiveBonus.confirmButton;
+        modalState.cancelButton = popupsData.value?.changeActiveBonus.cancelButton || defaultLocalePopupsData?.value?.changeActiveBonus.cancelButton;
+      } else {
+        modalState.title = popupsData.value?.cancelBonus.title || defaultLocalePopupsData?.value?.cancelBonus.title;
+        modalState.description = popupsData.value?.cancelBonus.issuedBonusDescription || defaultLocalePopupsData?.value?.cancelBonus.issuedBonusDescription;
+        modalState.confirmButton = popupsData.value?.cancelBonus.confirmButton || defaultLocalePopupsData?.value?.cancelBonus.confirmButton;
+        modalState.cancelButton = popupsData.value?.cancelBonus.cancelButton || defaultLocalePopupsData?.value?.cancelBonus.cancelButton;
+      }
     } else {
       modalState.title = popupsData.value?.cancelBonus.title || defaultLocalePopupsData?.value?.cancelBonus.title;
       modalState.description = popupsData.value?.cancelBonus.activeBonusDescription || defaultLocalePopupsData?.value?.cancelBonus.activeBonusDescription;
@@ -116,18 +112,18 @@
       bonusesUpdating.value = false;
       showModal.value = false;
 
-      setTimeout(() => {
-        const cloneList = cloneDeep(orderedBonuses.value);
-        const currentBonusIndex:number = cloneList.findIndex((bonus) => bonus.id === modalState.bonusInfo?.id);
-        const activeBonus = cloneList[0];
-        cloneList[0] = { ...modalState.bonusInfo as PlayerBonusInterface, status: 2 };
-        cloneList[currentBonusIndex] = { ...activeBonus, status: 1 };
-        playerBonuses.value = cloneList;
-      }, 200);
-
-      setTimeout(() => {
-        bonusStore.getPlayerBonuses();
-      }, 800);
+      // setTimeout(() => {
+      //   const cloneList = cloneDeep(orderedBonuses.value);
+      //   const currentBonusIndex:number = cloneList.findIndex((bonus) => bonus.id === modalState.bonusInfo?.id);
+      //   const activeBonus = cloneList[0];
+      //   cloneList[0] = { ...modalState.bonusInfo as PlayerBonusInterface, status: 2 };
+      //   cloneList[currentBonusIndex] = { ...activeBonus, status: 1 };
+      //   playerBonuses.value = cloneList;
+      // }, 200);
+      //
+      // setTimeout(() => {
+      //   bonusStore.getPlayerBonuses();
+      // }, 800);
     } catch {
       bonusesUpdating.value = false;
       showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
@@ -143,20 +139,20 @@
       bonusesUpdating.value = false;
       showModal.value = false;
 
-      if (modalState.bonusInfo.status === 2) {
-        setTimeout(() => {
-          const cloneList = cloneDeep(orderedBonuses.value);
-          const activeBonus = cloneList[0];
-          const nextBonus = cloneList[1];
-          cloneList[0] = { ...nextBonus, status: 2 };
-          cloneList[1] = { ...activeBonus, status: 1 };
-          playerBonuses.value = cloneList;
-        }, 200);
-      }
-
-      setTimeout(() => {
-        bonusStore.getPlayerBonuses();
-      }, modalState.bonusInfo.status === 2 ? 800 : 200);
+      // if (modalState.bonusInfo.status === 2) {
+      //   setTimeout(() => {
+      //     const cloneList = cloneDeep(orderedBonuses.value);
+      //     const activeBonus = cloneList[0];
+      //     const nextBonus = cloneList[1];
+      //     cloneList[0] = { ...nextBonus, status: 2 };
+      //     cloneList[1] = { ...activeBonus, status: 1 };
+      //     playerBonuses.value = cloneList;
+      //   }, 200);
+      // }
+      //
+      // setTimeout(() => {
+      //   bonusStore.getPlayerBonuses();
+      // }, modalState.bonusInfo.status === 2 ? 800 : 200);
     } catch {
       bonusesUpdating.value = false;
       showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
