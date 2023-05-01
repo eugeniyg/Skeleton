@@ -190,8 +190,22 @@ export const useLayoutStore = defineStore('layoutStore', {
 
     async openDepositModal():Promise<void> {
       const { getDepositMethods } = useWalletStore();
-      await getDepositMethods();
-      this.showModal('deposit');
+      try {
+        await getDepositMethods();
+        this.showModal('deposit');
+      } catch (error: any) {
+        if (error.data?.error?.code === 13100) {
+          const router = useRouter();
+          const { localizePath } = useProjectMethods();
+          await router.push(localizePath('/profile/limits'));
+          this.showModal('editLimitConfirm');
+        } else {
+          this.showAlert({
+            title: 'Something went wrong',
+            type: 'error',
+          });
+        }
+      }
     },
 
     async openWithdrawModal():Promise<void> {

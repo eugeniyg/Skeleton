@@ -11,6 +11,8 @@
         <div class="title">{{ editLimitTitle }}</div>
       </div>
 
+<!--      <pre style="color:white">{{ state }}</pre>-->
+
       <form-input-number
         :is-required="false"
         :currency="state.currency"
@@ -66,6 +68,7 @@
   const { modals } = storeToRefs(layoutStore);
   const { showAlert } = useLayoutStore();
   const { deletePlayerLimit, updatePlayerLimit } = useCoreProfileApi();
+  const { formatBalance, getMainBalanceFormat } = useProjectMethods();
 
   const editLimitTitle = 'Edit daily deposit limit';
   const editLimitWarning = 'New limit sum is bigger than the previous one';
@@ -79,17 +82,17 @@
   interface StateInterface {
     prevAmount?: string|number,
     limitId?: string,
-    period?: string,
     amount?: string|number,
     currency?: string,
   }
 
+  const formattedBalance = formatBalance(props.currency, props.amount);
+
   const state = reactive<StateInterface>({
-    prevAmount: props.amount,
+    prevAmount: formattedBalance.amount,
+    amount: formattedBalance.amount,
+    currency: formattedBalance.currency,
     limitId: props.limitId,
-    period: props.period,
-    amount: props.amount,
-    currency: props.currency,
   });
 
   const isDisableUpdate = computed(() => Number(state.prevAmount) === Number(state.amount) || state.amount === '');
@@ -98,10 +101,10 @@
 
   const update = async () => {
     try {
+      const formattedMainBalance = getMainBalanceFormat(state.currency, state.amount);
       await updatePlayerLimit({
-        period: props.period,
         limitId: state.limitId,
-        amount: state.amount,
+        amount: formattedMainBalance.amount,
       });
       emit('update-limits');
       showAlert(alertProps);

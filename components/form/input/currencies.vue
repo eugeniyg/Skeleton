@@ -53,7 +53,7 @@
             alt=""
           />
           <span class="input-currencies__item-title">{{ currency.name }}</span>
-          <span class="input-currencies__item-code">{{ currency.code }}</span>
+          <span class="input-currencies__item-code">{{ formatBalance(currency.code, 0).currency }}</span>
         </div>
       </div>
     </div>
@@ -74,10 +74,11 @@
 
   const props = defineProps<PropsInterface>();
 
+  const emit = defineEmits(['blur', 'select']);
+
   const walletStore = useWalletStore();
   const { currencyTabs } = storeToRefs(walletStore);
-
-  const emit = defineEmits(['blur', 'select']);
+  const { formatBalance } = useProjectMethods();
 
   const selected = ref<string>('all');
   const selectedCurrency = ref({});

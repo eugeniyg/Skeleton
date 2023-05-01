@@ -11,11 +11,9 @@
 
       <atomic-limits-periods-list
         v-if="isShowPeriods"
-        :key="periodKey"
         :periods="props.periods"
         :is-show-edit="state.isShowEdit"
         @open-edit-modal="openEditModal"
-        @update="periodKey += 1"
       />
 
       <p v-else class="limits__card-sub-title">This setting limits the amount you can deposit per day, week or month</p>
@@ -78,8 +76,6 @@
   const state = reactive<StateInterface>({
     isShowEdit: false,
   });
-
-  const periodKey = ref(0);
 
   const tooltipProps = {
     text: 'This setting limits the amount you can deposit per day, week or month.',

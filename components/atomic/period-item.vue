@@ -2,9 +2,20 @@
   <div
     class="limits-periods-list__item"
   >
-    <h4 class="limits-periods-list__item-title">{{ amount - currentAmount }} of {{ amount }} {{ currency }} left</h4>
+    <h4 class="limits-periods-list__item-title">{{ getSum(amount, currentAmount, currency) }} of {{ formatBalance(currency, amount).amount  }} {{ formatBalance(currency, amount).currency }} left</h4>
 
-    <p class="limits-periods-list__item-sub-title" v-if="isShowContDown">{{ state.hours }}h {{ state.minutes }}m {{ state.seconds }}s until activate</p>
+    <p class="limits-periods-list__item-sub-title" v-if="isShowContDown">
+      <template v-if="state.isAlmostDone">
+        Almost done
+      </template>
+      <template v-else>
+        <span class="time-span">{{ state.hours }}h</span>
+        <span class="time-span">{{ state.minutes }}m</span>
+        <span class="time-span">{{ state.seconds }}s</span>
+        until activate
+      </template>
+
+    </p>
 
     <button-base
       v-if="props.isShowEdit && (status === 1) && !cancelProcess"
@@ -27,7 +38,7 @@
         :class="`limits-periods-list__item-status-type--${ limitsStatuses[status].toLowerCase()  }`"
         :data-status="limitsStatuses[status]"
       />
-      <span class="limits-periods-list__item-status-title">{{ limitsStatuses[status] }} till {{ dayjs(createdAt).utc().format(DATE_FORMAT) }}</span>
+      <span class="limits-periods-list__item-status-title">{{ limitsStatuses[status] }} till {{ dayjs(expiredAt).format(DATE_FORMAT) }}</span>
     </div>
 
   </div>
@@ -59,18 +70,25 @@
   const emit = defineEmits(['edit-limit']);
 
   interface StateInterface {
+    isAlmostDone: boolean,
+    diffInSeconds: number,
     hours: string|number,
     minutes: string|number,
     seconds: string|number,
   }
 
   const state = reactive<StateInterface>({
+    isAlmostDone: false,
+    diffInSeconds: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   });
 
   const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+  const limitsStore = useLimitsStore();
+  const { formatBalance } = useProjectMethods();
+  const { getLimits } = limitsStore;
 
   dayjs.extend(utc);
   dayjs.extend(duration);
@@ -83,39 +101,56 @@
     4: 'Finished',
   };
 
-  const getPercentage = (currentAmount: number, amount: number) => (currentAmount >= amount ? 100 : (((amount - currentAmount) / amount) * 100));
+  const getPercentage = (currentAmount: number, amount: number) => ((amount === 0) ? 100 : ((currentAmount / amount) * 100));
 
   const format = (value: number): number|string => (value < 10 ? `0${value}` : value);
 
-  const countdown = (startDate: string, endDate: string, onCountdownEnd: any) => {
-    const targetDate = dayjs(endDate);
+  const countdown = () => {
+    const tick = async () => {
+      if (state.diffInSeconds <= 0) {
+        state.isAlmostDone = true;
 
-    const intervalId = setInterval(() => {
-      const remainingTimeSeconds = targetDate.diff(dayjs(), 'second');
-
-      if (remainingTimeSeconds <= 0) {
-        clearInterval(intervalId);
-        onCountdownEnd();
+        setTimeout(getLimits, 60000);
       } else {
-        const remainingTime = dayjs.duration(remainingTimeSeconds, 'second');
-        state.hours = format(remainingTime.hours());
-        state.minutes = format(remainingTime.minutes());
-        state.seconds = format(remainingTime.seconds());
-      }
-    }, 1000);
-  };
+        state.diffInSeconds -= 1;
 
-  const onCountdownEnd = () => {
-    state.hours = '00';
-    state.minutes = '00';
-    state.seconds = '00';
+        state.hours = format(Math.floor(state.diffInSeconds / 3600));
+        state.minutes = format(Math.floor((state.diffInSeconds % 3600) / 60));
+        state.seconds = format(state.diffInSeconds % 60);
+
+        setTimeout(tick, 1000);
+      }
+    };
+
+    tick();
   };
 
   const isShowContDown = (() => props.period === 'weekly' || props.period === 'monthly');
 
+  const getSum = (amount: number, currentAmount: number, currency: string) => {
+    const balance = formatBalance(currency, amount);
+    return balance.amount < currentAmount ? 0 : balance.amount - currentAmount;
+  };
+
   onMounted(() => {
-    if (props.createdAt && props.expiredAt) {
-      countdown(props.createdAt, props.expiredAt, onCountdownEnd);
+    if (props.expiredAt) {
+      const start = Date.now();
+      const end = new Date(props.expiredAt).getTime();
+
+      state.diffInSeconds = Math.ceil((end - start) / 1000);
+
+      countdown();
     }
   });
 </script>
+
+<style lang="scss">
+.time-span {
+  min-width: 22px;
+  display: inline-flex;
+
+  &:not(:first-of-type) {
+    margin-left: 4px;
+  }
+}
+</style>

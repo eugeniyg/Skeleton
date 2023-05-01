@@ -33,9 +33,9 @@
 
       <form-input-number
         :is-required="false"
-        :currency="formState.currency"
+        :currency="formattedBalance.currency"
         :min="0"
-        :defaultValue="0"
+        defaultValue=""
         label=""
         name="limit-currency"
         v-model:value="formState.amount"
@@ -83,6 +83,7 @@
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();
   const { currencies } = storeToRefs(globalStore);
+  const { formatBalance, getMainBalanceFormat } = useProjectMethods();
 
   const limitsCashPeriod = ref<StatusInterface[]>(settingsConstants?.player.limit.cashPeriod || []);
 
@@ -94,6 +95,8 @@
 
   const formState = reactive<CreateLimitInterface>({
     definition: props.definition,
+    currency: '',
+    amount: 0,
     period: undefined,
     showCurrenciesError: false,
   });
@@ -145,6 +148,8 @@
 
   const selectedPeriod = computed(() => periodOptions.value?.filter((period) => !period.disabled)[0]);
 
+  const formattedBalance = computed(() => formatBalance(formState.currency, formState.amount));
+
   const selectedTab = ref<StatusInterface>(selectedPeriod?.value);
 
   const isAddButtonDisabled = computed(() => !formState.currency && !formState.period);
@@ -155,7 +160,7 @@
   };
 
   const selectCurrency = (currency: CurrencyInterface) => {
-    formState.currency = currency.code;
+    formState.currency = formatBalance(currency.code, 0).currency;
     formState.showCurrenciesError = false;
   };
 
@@ -165,7 +170,15 @@
 
   const addLimit = async () => {
     try {
-      await createLimit(formState);
+      const converted = getMainBalanceFormat(formState.currency, formState.amount);
+
+      await createLimit({
+        period: formState.period,
+        definition: formState.definition,
+        amount: converted.amount,
+        currency: converted.currency,
+      });
+
       emit('update-limits');
     } catch (error: any) {
       if (error.response?.status === 422) {
@@ -304,10 +317,6 @@
 
   .btn-primary {
     margin: 24px 0 0;
-  }
-
-  .field[data-maska-value="0"] {
-    color: var(--gray-500);
   }
 
   .input-number {

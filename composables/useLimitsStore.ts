@@ -3,12 +3,14 @@ import { defineStore } from 'pinia';
 import { CreateLimitInterface, PlayerLimitInterface } from '@platform/frontend-core/dist/module';
 
 interface LimitsStateInteface {
-  activeLimits: PlayerLimitInterface[]
+  activeLimits: PlayerLimitInterface[],
+  isLoaded: boolean,
 }
 
 export const useLimitsStore = defineStore('limitsStore', {
   state: (): LimitsStateInteface => ({
     activeLimits: [],
+    isLoaded: false,
   }),
   actions: {
     async getLimits():Promise<void> {

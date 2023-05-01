@@ -65,9 +65,7 @@
         @update-limits="updateLimits"
       />
 
-      <!--
       <modal-edit-limit-confirm/>
-      -->
     </div>
 
   </div>
@@ -150,6 +148,7 @@
     const limits = activeLimits.value.filter((limit) => limit.definition === 3);
     return transformToPeriods(limits) || [];
   });
+
   // const selfExclusionLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 4));
   // const coolingOffLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 5));
 
@@ -165,7 +164,6 @@
 
   const updateLimits = async () => {
     await getLimits();
-    console.log('update limits');
   };
 
   onMounted(addOverflowToMain);
