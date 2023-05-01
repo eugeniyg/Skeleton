@@ -36,7 +36,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { PlayerBonusInterface } from '@platform/frontend-core/dist/module';
-  import cloneDeep from 'lodash/cloneDeep';
   import { CashBonusesInterface } from '~/types';
 
   const props = defineProps<{
@@ -63,7 +62,7 @@
 
   const showModal = ref<boolean>(false);
   const bonusStore = useBonusStore();
-  const { activePlayerCashBonuses, playerBonuses } = storeToRefs(bonusStore);
+  const { activePlayerCashBonuses } = storeToRefs(bonusStore);
   const orderedBonuses = computed(() => (activePlayerCashBonuses.value.reduce((acc: PlayerBonusInterface[], currentBonus) => (currentBonus.status === 2 ? [currentBonus, ...acc] : [...acc, currentBonus]), [])));
 
   const { showAlert } = useLayoutStore();
@@ -109,25 +108,12 @@
 
     try {
       await activatePlayerBonus(modalState.bonusInfo.id);
-      bonusesUpdating.value = false;
       showModal.value = false;
-
-      // setTimeout(() => {
-      //   const cloneList = cloneDeep(orderedBonuses.value);
-      //   const currentBonusIndex:number = cloneList.findIndex((bonus) => bonus.id === modalState.bonusInfo?.id);
-      //   const activeBonus = cloneList[0];
-      //   cloneList[0] = { ...modalState.bonusInfo as PlayerBonusInterface, status: 2 };
-      //   cloneList[currentBonusIndex] = { ...activeBonus, status: 1 };
-      //   playerBonuses.value = cloneList;
-      // }, 200);
-      //
-      // setTimeout(() => {
-      //   bonusStore.getPlayerBonuses();
-      // }, 800);
     } catch {
-      bonusesUpdating.value = false;
       showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
     }
+
+    bonusesUpdating.value = false;
   };
 
   const cancelBonus = async ():Promise<void> => {
@@ -136,27 +122,12 @@
 
     try {
       await cancelPlayerBonus(modalState.bonusInfo.id);
-      bonusesUpdating.value = false;
       showModal.value = false;
-
-      // if (modalState.bonusInfo.status === 2) {
-      //   setTimeout(() => {
-      //     const cloneList = cloneDeep(orderedBonuses.value);
-      //     const activeBonus = cloneList[0];
-      //     const nextBonus = cloneList[1];
-      //     cloneList[0] = { ...nextBonus, status: 2 };
-      //     cloneList[1] = { ...activeBonus, status: 1 };
-      //     playerBonuses.value = cloneList;
-      //   }, 200);
-      // }
-      //
-      // setTimeout(() => {
-      //   bonusStore.getPlayerBonuses();
-      // }, modalState.bonusInfo.status === 2 ? 800 : 200);
     } catch {
-      bonusesUpdating.value = false;
       showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
     }
+
+    bonusesUpdating.value = false;
   };
 
   const confirmAction = ():void => {
