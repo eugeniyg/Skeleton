@@ -18,17 +18,17 @@
     <favorite-recently v-if="isLoggedIn" />
 
     <group-games
-      v-if="sortCategory[0]"
+      v-if="mainCategoriesData.hot"
       showAllBtn
       showArrows
-      :category="sortCategory[0]"
+      :category="mainCategoriesData.hot"
     />
 
     <group-games
-      v-if="sortCategory[1]"
+      v-if="mainCategoriesData.slots"
       showAllBtn
       showArrows
-      :category="sortCategory[1]"
+      :category="mainCategoriesData.slots"
     />
 
     <cards-group
@@ -44,33 +44,33 @@
     </cards-group>
 
     <group-games
-      v-if="sortCategory[2]"
+      v-if="mainCategoriesData.turbogames"
       showAllBtn
       showArrows
-      :category="sortCategory[2]"
+      :category="mainCategoriesData.turbogames"
     />
 
     <group-games
-      v-if="sortCategory[3]"
+      v-if="mainCategoriesData.new"
       showAllBtn
       showArrows
-      :category="sortCategory[3]"
+      :category="mainCategoriesData.new"
     />
 
     <group-winners showArrows />
 
     <group-games
-      v-if="sortCategory[4]"
+      v-if="mainCategoriesData.table"
       showAllBtn
       showArrows
-      :category="sortCategory[4]"
+      :category="mainCategoriesData.table"
     />
 
     <group-games
-      v-if="sortCategory[5]"
+      v-if="mainCategoriesData.live"
       showAllBtn
       showArrows
-      :category="sortCategory[5]"
+      :category="mainCategoriesData.live"
     />
 
     <group-promotions v-if="globalComponentsContent?.promotions" v-bind="globalComponentsContent.promotions" />
@@ -120,15 +120,17 @@
   const fakeStore = useFakeStore();
   const router = useRouter();
   const gameStore = useGamesStore();
-  const { gameCollections } = storeToRefs(gameStore);
+  const { currentLocaleCollections } = storeToRefs(gameStore);
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 
   const providerCards = fakeStore.providerCards();
 
   const mainCategories = ['hot', 'slots', 'turbogames', 'new', 'table', 'live'];
-  const sortCategory = gameCollections.value.filter((item) => mainCategories.find((el) => el === item.identity))
-    .sort((a, b) => mainCategories.map((e) => e).indexOf(a.identity) - mainCategories.map((e) => e).indexOf(b.identity));
+  const mainCategoriesData = mainCategories.reduce((categoriesObj, currentCategoryIdentity) => {
+    const findCategory = currentLocaleCollections.value.find((collection) => collection.identity === currentCategoryIdentity);
+    return findCategory ? { ...categoriesObj, [currentCategoryIdentity]: findCategory } : categoriesObj;
+  }, {});
 
   const topSliderProps = {
     settings: {

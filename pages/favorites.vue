@@ -59,8 +59,8 @@
     totalPages: Math.ceil(favoriteGames.value.length / 18),
   }));
 
-  const { gameCollections } = useGamesStore();
-  const recommendedCategory = gameCollections.find((collection) => collection.identity === 'recommended');
+  const { currentLocaleCollections } = useGamesStore();
+  const recommendedCategory = currentLocaleCollections.find((collection) => collection.identity === 'recommended');
   const showFavorites = computed(() => favoriteGames.value?.length && isLoggedIn.value);
 </script>
 

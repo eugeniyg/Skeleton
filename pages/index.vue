@@ -61,7 +61,7 @@
   const gameStore = useGamesStore();
   const fakeStore = useFakeStore();
   const providerCards = fakeStore.providerCards();
-  const { gameCollections } = storeToRefs(gameStore);
+  const { currentLocaleCollections } = storeToRefs(gameStore);
   const {
     currentLocale,
     globalComponentsContent,
@@ -83,8 +83,8 @@
   const defaultLocaleHomeContent: Maybe<HomeContentInterface> = defaultLocaleData?.homePage;
   setPageSeo(homeContent?.seo);
 
-  const hotCategory = gameCollections.value.find((collection) => collection.identity === 'hot');
-  const newCategory = gameCollections.value.find((collection) => collection.identity === 'new');
+  const hotCategory = currentLocaleCollections.value.find((collection) => collection.identity === 'hot');
+  const newCategory = currentLocaleCollections.value.find((collection) => collection.identity === 'new');
 
   const { betsyParams } = useGamesStore();
   const startBetsyWidget = ():void => {
