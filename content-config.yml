@@ -947,7 +947,7 @@ collections:
         collapsed: true
         fields:
           - name: addCashLimit
-            label: Add Cash Limit Label 
+            label: Add Cash Limit
             widget: object
             collapsed: true
             fields:
@@ -976,6 +976,7 @@ collections:
                     widget: string
               - name: successConfirmLabel
                 label: Success Confirm Label
+                widget: string
           - name: editCashLimit
             label: Edit Cash Limit Label
             widget: object
@@ -989,14 +990,19 @@ collections:
                 widget: string
               - name: updateButtonLabel
                 label: Update Button Label
+                widget: string
               - name: deleteButtonLabel
                 label: Delete Button Label
+                widget: string
               - name: lessAmountTitle
                 label: Less Amount Confirm Title
+                widget: string
               - name: greaterAmountTitle
                 label: Greater Amount Confirm Title
+                widget: string
               - name: greaterAmountDescription
-                label: Greater Amount Confirm Description  
+                label: Greater Amount Confirm Description
+                widget: string 
           - name: selfExlusionConfirm
             label: Self Exlusion Confirm
             widget: object
@@ -1740,6 +1746,7 @@ collections:
             widget: string
           - name: editButtonLabel
             label: Edit Button Label
+            widget: string
           - name: doneButtonLabel
             label: Done Button Label
             widget: string
@@ -1809,14 +1816,19 @@ collections:
             fields:
               - name: bet
                 label: Bet
+                widget: string
               - name: loss
                 label: Loss
+                widget: string
               - name: deposit
                 label: Deposit
+                widget: string
               - name: selfExclusion
                 label: Self Exclusion
+                widget: string
               - name: coolingOff
                 label: Cooling Off
+                widget: string
           - name: deposit
             label: Deposit Block
             widget: object
@@ -1825,7 +1837,8 @@ collections:
                 label: Label
                 widget: string
               - name: hint
-                label: Hint 
+                label: Hint
+                widget: string 
           - name: loss
             label: Loss Block
             widget: object
@@ -1835,6 +1848,7 @@ collections:
                 widget: string
               - name: hint
                 label: Hint
+                widget: string
           - name: bet
             label: Bet Block
             widget: object
@@ -1844,6 +1858,7 @@ collections:
                 widget: string
               - name: hint
                 label: Hint
+                widget: string
           - name: coolingOff
             label: Cooling Off Block
             widget: object
@@ -1875,6 +1890,7 @@ collections:
                 widget: string
               - name: chatLinkText
                 label: Chat Link Text
+                widget: string
   - name: historyTabs
     label: Profile History Tabs
     create: true
