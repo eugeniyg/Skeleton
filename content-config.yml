@@ -941,7 +941,88 @@ collections:
           - name: description
             label: Decription
             widget: string
-
+      - name: limitsPopups
+        label: Limits Popups
+        widget: object
+        collapsed: true
+        fields:
+          - name: addCashLimit
+            label: Add Cash Limit Label 
+            widget: object
+            collapsed: true
+            fields:
+              - name: label
+                label: Label
+                widget: string
+              - name: hint
+                label: Hint
+                widget: string
+              - name: chooseCurrencyLabel
+                label: Choose Currency Label
+                widget: string
+              - name: chooseCurrencyError
+                label: Choose Currency Error
+                widget: string
+              - name: currencyTabs 
+                label: Currency Tabs
+                widget: object
+                collapsed: true
+                fields:
+                  - name: allLabel  
+                    label: All Label
+                    widget: string
+                  - name: cryptoLabel
+                    label: Crypto Label
+                    widget: string
+              - name: successConfirmLabel
+                label: Success Confirm Label
+          - name: editCashLimit
+            label: Edit Cash Limit Label
+            widget: object
+            collapsed: true
+            fields:
+              - name: label
+                label: Label
+                widget: string
+              - name: hint
+                label: Hint
+                widget: string
+              - name: updateButtonLabel
+                label: Update Button Label
+              - name: deleteButtonLabel
+                label: Delete Button Label
+              - name: lessAmountTitle
+                label: Less Amount Confirm Title
+              - name: greaterAmountTitle
+                label: Greater Amount Confirm Title
+              - name: greaterAmountDescription
+                label: Greater Amount Confirm Description  
+          - name: selfExlusionConfirm
+            label: Self Exlusion Confirm
+            widget: object
+            collapsed: true
+            fields:
+              - name: updateTitle
+                label: Update Title
+                widget: string
+              - name: updateDescription
+                label: Update Description
+                widget: string
+              - name: okButtonLabel
+                label: Ok Button Label
+                widget: string
+              - name: cancelButtonLabel
+                label: Cancel Button Label
+                widget: string
+          - name: exceededLimitConfirm
+            label: Exceeded Limit Confirm
+            widget: object
+            collapsed: true
+            fields:
+              - name: label
+                widget: string
+              - name: description
+                widget: string
   - name: alerts
     label: Site Alerts
     create: true
@@ -1649,7 +1730,151 @@ collections:
             label: Page Title
             widget: string
           - *seoBlock
-
+      - name: limits
+        label: Profile Limits
+        widget: object
+        collapsed: true
+        fields:
+          - name: addButtonLabel
+            label: Add Button Label
+            widget: string
+          - name: editButtonLabel
+            label: Edit Button Label
+          - name: doneButtonLabel
+            label: Done Button Label
+            widget: string
+          - name: setButtonLabel
+            label: Set Button Label
+            widget: string
+          - name: modeToggle
+            label: Advanced Mode Toggle
+            widget: string
+          - name: titleTooltip
+            label: Title Tooltip
+            widget: string
+          - name: activeStatusLabel
+            label: Active Status Label
+            widget: string
+          - name: pendingStatusLabel
+            label: Pending Status Label
+            widget: string
+          - name: timerLabel
+            label: Timer Label
+            widget: string     
+          - name: periodOptions
+            label: Period Options
+            widget: object
+            collapsed: true
+            fields:
+              - name: daily
+                label: Daily
+                widget: string
+              - name: weekly
+                label: Weekly
+                widget: string
+              - name: monthly
+                label: Monthly
+                widget: string
+              - name: 1_day
+                label: 1 Day
+                widget: string
+              - name: 3_days
+                label: 3 Days
+                widget: string
+              - name: 1_week
+                label: 1 Week
+                widget: string
+              - name: 1_month
+                label: 1 Month
+                widget: string
+              - name: 3_months
+                label: 3 Months
+                widget: string
+              - name: 6_months
+                label: 6 Months
+                widget: string
+              - name: 9_months
+                label: 9 Months
+                widget: string                
+              - name: 1_year
+                label: 1 year
+                widget: string
+              - name: forever
+                label: Forever
+                widget: string    
+          - name: definition
+            label: Definition 
+            widget: object
+            collapsed: true
+            fields:
+              - name: bet
+                label: Bet
+              - name: loss
+                label: Loss
+              - name: deposit
+                label: Deposit
+              - name: selfExclusion
+                label: Self Exclusion
+              - name: coolingOff
+                label: Cooling Off
+          - name: deposit
+            label: Deposit Block
+            widget: object
+            fields:
+              - name: label
+                label: Label
+                widget: string
+              - name: hint
+                label: Hint 
+          - name: loss
+            label: Loss Block
+            widget: object
+            fields:
+              - name: label
+                label: Label
+                widget: string
+              - name: hint
+                label: Hint
+          - name: bet
+            label: Bet Block
+            widget: object
+            fields:
+              - name: label
+                label: Label
+                widget: string
+              - name: hint
+                label: Hint
+          - name: coolingOff
+            label: Cooling Off Block
+            widget: object
+            fields:
+              - name: label
+                label: Label
+                widget: string
+              - name: hint
+                label: Hint
+                widget: string
+              - name: pendingStatusLabel
+                label: Pending Status Label
+                widget: string
+              - name: deleteConfirmTitle
+                label: Delete Confirm Title
+                widget: string
+              - name: deleteConfirmDescription
+                label: Delete Confirm Description
+                widget: string
+          - name: selfExclusion
+            label: Cooling Off Block
+            widget: object
+            fields:
+              - name: label
+                label: Label
+                widget: string
+              - name: hint
+                label: Hint
+                widget: string
+              - name: chatLinkText
+                label: Chat Link Text
   - name: historyTabs
     label: Profile History Tabs
     create: true
