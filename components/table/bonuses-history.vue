@@ -12,7 +12,7 @@
       </div>
 
       <div v-for="bonus in props.bonusesData" :key="bonus.id" class="row">
-        <div class="td">{{ bonus.name }}</div>
+        <div class="td"><span class="bonus-name">{{ bonus.name }}</span></div>
         <div class="td">{{ getBonusFinallyStatus(bonus) }}</div>
         <div class="td">
           {{ formatBalance(bonus.currency, bonus.amount).amount }}
@@ -109,6 +109,15 @@
       minmax(rem(75px), 1fr)
       minmax(rem(100px), 1fr)
       minmax(rem(100px), 1fr);
+
+    .bonus-name {
+      overflow: hidden;
+      display: -webkit-box;
+      overflow-wrap: anywhere;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   }
 }
 </style>
