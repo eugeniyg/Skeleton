@@ -110,15 +110,18 @@
   },
   "limitsPopups": {
     "addCashLimit": {
-      "label": "New deposit limit",
-      "chooseCurrencyLabel": "Choose currency",
-      "hint": "The restriction takes effect instantly. You can reduce your limit at any time, this change will take effect immediately. You can increase the limit, however, in order for this change to take effect, you need 24 hours. Cancellation of the deposit limit takes 24 hours. After the limit is exceeded, you will receive an email notification.",
       "chooseCurrencyError": "Please, select your currency for new deposit limit",
-      "successConfirmLabel": "Limit set successfully",
+      "addBetlabel": "New wagger limit",
+      "hint": "The restriction takes effect instantly. You can reduce your limit at any time, this change will take effect immediately. You can increase the limit, however, in order for this change to take effect, you need 24 hours. Cancellation of the deposit limit takes 24 hours. After the limit is exceeded, you will receive an email notification.",
+      "chooseCurrencyLabel": "Choose currency",
       "currencyTabs": {
         "allLabel": "All ",
         "cryptoLabel": "Crypto"
-      }
+      },
+      "addLosslabel": "New loss limit",
+      "label": "New deposit limit",
+      "addDepositlabel": "New deposit limit",
+      "successConfirmLabel": "Limit set successfully"
     },
     "editCashLimit": {
       "label": "Edit daily deposit limit",
