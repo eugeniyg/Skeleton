@@ -107,5 +107,37 @@
     "title": "Deposit",
     "minSum": "Min deposit:",
     "addressInputLabel": "Send any amount to:"
+  },
+  "limitsPopups": {
+    "addCashLimit": {
+      "label": "New deposit limit",
+      "chooseCurrencyLabel": "Choose currency",
+      "hint": "The restriction takes effect instantly. You can reduce your limit at any time, this change will take effect immediately. You can increase the limit, however, in order for this change to take effect, you need 24 hours. Cancellation of the deposit limit takes 24 hours. After the limit is exceeded, you will receive an email notification.",
+      "chooseCurrencyError": "Please, select your currency for new deposit limit",
+      "successConfirmLabel": "Limit set successfully",
+      "currencyTabs": {
+        "allLabel": "All ",
+        "cryptoLabel": "Crypto"
+      }
+    },
+    "editCashLimit": {
+      "label": "Edit daily deposit limit",
+      "hint": "Email confirmation will be needed. The change will be applied in 24 hours.",
+      "updateButtonLabel": "Update",
+      "deleteButtonLabel": "Delete",
+      "lessAmountTitle": "Limit update successfully",
+      "greaterAmountTitle": "Limit update successfully",
+      "greaterAmountDescription": "Please, check your email and follow the received confirmation link to activate limit change."
+    },
+    "selfExlusionConfirm": {
+      "updateTitle": "Confirm limit update",
+      "updateDescription": "Are you sure you want to set self exclusion limit to 6 Months",
+      "okButtonLabel": "Yes",
+      "cancelButtonLabel": "No"
+    },
+    "exceededLimitConfirm": {
+      "label": "Edit your limits",
+      "description": "Sorry, but you can't make deposits for now because you have active limits."
+    }
   }
 }
