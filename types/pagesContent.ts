@@ -498,6 +498,10 @@ export interface TurboItemInterface {
 export interface TurbogamesGroupInterface {
   label: string,
   icon: string,
+  showAll: {
+    label: string,
+    url: string
+  },
   buttonLabel: string,
   items: TurboItemInterface[]
 }
