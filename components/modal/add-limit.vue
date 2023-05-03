@@ -5,11 +5,10 @@
     @clickOutside="closeModal('addLimit')"
     clickToClose
   >
-    <pre style="color:white">{{ popupsData }}</pre>
     <div class="scroll">
       <div class="header">
         <button-modal-close @click="closeModal('addLimit')"/>
-<!--        <div class="title">{{ titleMapping[props.definition] }}</div>-->
+        <div class="title">{{ titleMapping[props.definition] }}</div>
       </div>
 
       <div class="modal-deposit-limit__tabs">
@@ -43,12 +42,7 @@
         placeholder="0"
       />
 
-      <p class="modal-deposit-limit__description">
-        The restriction takes effect instantly. You can reduce your limit at any
-        time, this change will take effect
-        immediately. You can increase the limit, however, in order for this change to take effect, you need 24 hours.
-        Cancellation of the deposit limit takes 24 hours. After the limit is exceeded, you will receive an email
-        notification.</p>
+      <p class="modal-deposit-limit__description">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.addCashLimit.hint') }}</p>
 
       <button-base
         type="primary"
@@ -91,14 +85,11 @@
 
   const limitsCashPeriod = ref<StatusInterface[]>(settingsConstants?.player.limit.cashPeriod || []);
 
-  const titleMapping = computed(() => {
-    console.log(
-      popupsData.value,
-    // 1: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addBetlabel'),
-    // 2: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addLosslabel'),
-    // 3: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addDepositlabel'),
-    );
-  });
+  const titleMapping = computed(() => ({
+    1: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addBetlabel'),
+    2: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addLosslabel'),
+    3: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addDepositlabel'),
+  }));
 
   const formState = reactive<CreateLimitInterface>({
     definition: props.definition,

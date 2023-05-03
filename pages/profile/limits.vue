@@ -3,7 +3,7 @@
     <div class="limits__header">
       <h1 class="limits__heading">Limits</h1>
       <div class="limits__mode">
-        <span class="limits__mode-label">Advanced mode</span>
+        <span class="limits__mode-label">{{ limitsContent?.modeToggle || defaultLimitsContent?.modeToggle }}</span>
         <form-input-toggle
           v-model:value="isAdvancedModeEnabled"
           name="toggle"
@@ -13,10 +13,9 @@
     </div>
 
     <div class="limits__grid">
-
       <card-cash-limits
         v-if="isAdvancedModeEnabled"
-        title="Deposit limits"
+        :title="limitsContent?.deposit?.label || defaultLimitsContent?.deposit?.label"
         :definition="3"
         :periods="depositPeriods"
         @open-limit-modal="openLimitModal"
@@ -25,7 +24,7 @@
       />
 
       <card-cash-limits
-        title="Loss limits"
+        :title="limitsContent?.loss?.label || defaultLimitsContent?.loss?.label"
         :definition="2"
         :periods="lossPeriods"
         @open-limit-modal="openLimitModal"
@@ -75,10 +74,23 @@
   import { onMounted } from '@vue/runtime-core';
   import { storeToRefs } from 'pinia';
   import { PlayerLimitInterface } from '@platform/frontend-core/dist/module';
+  import { ProfileLimitsContentInterface } from '~/types';
 
   const limitsStore = useLimitsStore();
-  const { getLimits } = limitsStore;
-  const { activeLimits } = storeToRefs(limitsStore);
+  const { getLimits, setLimitsContent } = limitsStore;
+  const { activeLimits, limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
+  const globalStore = useGlobalStore();
+  const { contentLocalesArray } = storeToRefs(globalStore);
+  const { findLocalesContentData } = useProjectMethods();
+
+  const limitsContentRequest = await useAsyncData('limitsContent', () => queryContent('profile')
+    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'limits']).find());
+
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(limitsContentRequest.data.value);
+  const currenctLocaleLimitsContent: Maybe<ProfileLimitsContentInterface> = currentLocaleData?.limits;
+  const defaultLocaleLimitsContent: Maybe<ProfileLimitsContentInterface> = defaultLocaleData?.limits;
+
+  setLimitsContent(currenctLocaleLimitsContent, defaultLocaleLimitsContent);
 
   const { showModal } = useLayoutStore();
 
@@ -166,7 +178,9 @@
     await getLimits();
   };
 
-  onMounted(addOverflowToMain);
+  onMounted(async () => {
+    addOverflowToMain();
+  });
   onUnmounted(removeOverflowFromMain);
 </script>
 

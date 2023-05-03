@@ -53,7 +53,7 @@
   import { PlayerLimitInterface, UpdateLimitInterface } from '@platform/frontend-core/dist/module';
 
   interface PropsInterface {
-    title: string,
+    title?: string,
     definition: number,
     periods: {
       title: string,
