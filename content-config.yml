@@ -2366,6 +2366,16 @@ collections:
             label: Label
             widget: string
           - *projectIcon
+          - name: showAll
+            label: Show All Button
+            widget: object
+            fields:
+              - name: label
+                label: Label
+                widget: string
+              - name: url
+                label: Url
+                widget: string
           - name: buttonLabel
             label: Game Button Label
             widget: string
