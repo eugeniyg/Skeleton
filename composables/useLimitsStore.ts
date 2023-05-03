@@ -22,5 +22,14 @@ export const useLimitsStore = defineStore('limitsStore', {
       const { createPlayerLimit } = useCoreProfileApi();
       await createPlayerLimit({ ...payload });
     },
+    log() {
+      console.log(123);
+    },
+  },
+
+  getters: {
+    showLog() {
+      //this.log();
+    },
   },
 });

@@ -199,12 +199,7 @@ export const useLayoutStore = defineStore('layoutStore', {
           const { localizePath } = useProjectMethods();
           await router.push(localizePath('/profile/limits'));
           this.showModal('editLimitConfirm');
-        } else {
-          this.showAlert({
-            title: 'Something went wrong',
-            type: 'error',
-          });
-        }
+        } else throw error;
       }
     },
 
