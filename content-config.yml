@@ -951,9 +951,15 @@ collections:
             widget: object
             collapsed: true
             fields:
-              - name: label
-                label: Label
+              - name: addBetlabel
+                label: Add Bet Label
                 widget: string
+              - name: addLosslabel
+                label: Add Loss Label
+                widget: string
+              - name: addDepositlabel
+                label: Add Deposit Label
+                widget: string    
               - name: hint
                 label: Hint
                 widget: string
