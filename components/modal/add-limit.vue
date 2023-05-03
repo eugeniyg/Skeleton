@@ -85,6 +85,9 @@
   const { currencies } = storeToRefs(globalStore);
   const { formatBalance, getMainBalanceFormat } = useProjectMethods();
 
+  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
+
   const limitsCashPeriod = ref<StatusInterface[]>(settingsConstants?.player.limit.cashPeriod || []);
 
   const titleMapping = {
