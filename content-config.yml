@@ -1868,7 +1868,7 @@ collections:
                 widget: string
               - name: hint
                 label: Hint
-                widget: string
+                widget: text
               - name: pendingStatusLabel
                 label: Pending Status Label
                 widget: string
@@ -1879,7 +1879,7 @@ collections:
                 label: Delete Confirm Description
                 widget: string
           - name: selfExclusion
-            label: Cooling Off Block
+            label: Self Exclusion Block
             widget: object
             fields:
               - name: label
@@ -1887,7 +1887,7 @@ collections:
                 widget: string
               - name: hint
                 label: Hint
-                widget: string
+                widget: text
               - name: chatLinkText
                 label: Chat Link Text
                 widget: string
