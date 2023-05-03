@@ -5,10 +5,11 @@
     @clickOutside="closeModal('addLimit')"
     clickToClose
   >
+    <pre style="color:white">{{ popupsData }}</pre>
     <div class="scroll">
       <div class="header">
         <button-modal-close @click="closeModal('addLimit')"/>
-        <div class="title">{{ titleMapping[props.definition] }}</div>
+<!--        <div class="title">{{ titleMapping[props.definition] }}</div>-->
       </div>
 
       <div class="modal-deposit-limit__tabs">
@@ -90,11 +91,14 @@
 
   const limitsCashPeriod = ref<StatusInterface[]>(settingsConstants?.player.limit.cashPeriod || []);
 
-  const titleMapping = {
-    1: 'New wagger limit',
-    2: 'New loss limit',
-    3: 'New deposit limit',
-  };
+  const titleMapping = computed(() => {
+    console.log(
+      popupsData.value,
+    // 1: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addBetlabel'),
+    // 2: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addLosslabel'),
+    // 3: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addDepositlabel'),
+    );
+  });
 
   const formState = reactive<CreateLimitInterface>({
     definition: props.definition,
@@ -199,10 +203,6 @@
       closeModal('addLimit');
     }
   };
-
-  onMounted(() => {
-    formState.period = selectedPeriod.value.id;
-  });
 </script>
 
 <style lang="scss">
