@@ -111,5 +111,62 @@
     "seo": {
       "title": "Slotsbet | History"
     }
+  },
+  "limits": {
+    "setButtonLabel": "Set",
+    "doneButtonLabel": "Done editing",
+    "addButtonLabel": "Add new",
+    "selfExclusion": {
+      "label": "Self exclusion",
+      "hint": "You can set a self-exclusion limit for a definite or an indefinite period of time. The restriction takes effect instantly. During the set period you will not be able to log into your account. To be excluded from gambling on our site for an indefinite period of time, please, contact our support team via",
+      "chatLinkText": "live-chat"
+    },
+    "loss": {
+      "hint": "This setting limits the amount you can deposit per day, week or month",
+      "label": "Loss limits"
+    },
+    "pendingStatusLabel": "Pending till",
+    "titleTooltip": "This setting limits the amount you can deposit per day, week or month.",
+    "timerLabel": "until activate",
+    "bet": {
+      "hint": "This setting limits the amount you can deposit per day, week or month",
+      "label": "Bet limits"
+    },
+    "definition": {
+      "bet": "Bet",
+      "loss": "Loss",
+      "deposit": "Deposit",
+      "selfExclusion": "Self exclusion",
+      "coolingOff": "Cooling off"
+    },
+    "coolingOff": {
+      "label": "Cooling off",
+      "hint": "The restriction takes effect instantly. You won’t be able to make deposits and play during the specified period, also you will be excluded from all advertising offers.",
+      "pendingStatusLabel": "Pending till",
+      "deleteConfirmTitle": "Limit update successfully",
+      "deleteConfirmDescription": "The limit will be canceled after 24 hours"
+    },
+    "modeToggle": "Advanced mode",
+    "title": "Limits",
+    "editButtonLabel": "Edit limits",
+    "activeStatusLabel": "Active till",
+    "periodOptions": {
+      "weekly": "Weekly",
+      "1_week": "1 week",
+      "3_days": "3 days",
+      "forever": "Forever",
+      "1_year": "1 year",
+      "monthly": "Monthly",
+      "1_day": "1 day",
+      "1_month": "1 month",
+      "9_months": "9 months",
+      "daily": "Daily",
+      "6_months": "6 months",
+      "3_months": "3 months"
+    },
+    "deposit": {
+      "label": "Deposit limits",
+      "hint": "This setting limits the amount you can deposit per day, week or month"
+    }
   }
 }

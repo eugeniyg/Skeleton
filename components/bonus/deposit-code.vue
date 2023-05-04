@@ -11,11 +11,14 @@
     <div v-if="hasBonusCode" class="deposit-bonus-code__code">
       <form-input-text
         v-model:value="bonusValue"
+        ref="bonusField"
         label=""
         :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'bonusCode.placeholder') || ''"
         name="bonus-code"
         autocomplete="off"
         :isDisabled="!!depositBonusCode"
+        @touchend="focusInput"
+        @touchmove="touchMove = true"
       />
 
       <button-base
@@ -35,12 +38,13 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
+  const globalStore = useGlobalStore();
   const {
     popupsData,
     defaultLocalePopupsData,
     fieldsContent,
     defaultLocaleFieldsContent,
-  } = useGlobalStore();
+  } = globalStore;
 
   const { getContent } = useProjectMethods();
 
@@ -90,6 +94,20 @@
       hasBonusCode.value = false;
       bonusValue.value = '';
     }
+  };
+
+  const bonusField = ref();
+  const touchMove = ref<boolean>(false);
+  const focusInput = ():void => {
+    if (!globalStore.isIOSPlatform) return;
+
+    if (touchMove.value) {
+      touchMove.value = false;
+      return;
+    }
+
+    const inputElement: HTMLInputElement = bonusField.value.$el.querySelector('input');
+    if (inputElement) inputElement.focus();
   };
 
   watch(() => depositBonusCode.value, (newValue) => {
