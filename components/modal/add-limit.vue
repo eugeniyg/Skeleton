@@ -60,6 +60,7 @@
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
   import { CreateLimitInterface, CurrencyInterface, StatusInterface } from '@platform/frontend-core/dist/module';
+  import { useGlobalStore } from '~/composables/useGlobalStore';
 
   interface PropsInterface {
     definition: number,
@@ -77,6 +78,7 @@
   const { createLimit, closeModal } = limitsStore;
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();
+  const { alertsData, defaultLocaleAlertsData } = globalStore;
   const { currencies, popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
 
