@@ -47,8 +47,8 @@
   const defaultLocaleRecentlyContent: Maybe<RecentlyPageInterface> = defaultLocaleData?.recentlyPage;
   setPageSeo(recentlyContent?.seo);
 
-  const { gameCollections } = useGamesStore();
-  const recommendedCategory = gameCollections.find((collection) => collection.identity === 'recommended');
+  const { currentLocaleCollections } = useGamesStore();
+  const recommendedCategory = currentLocaleCollections.find((collection) => collection.identity === 'recommended');
   const pageMeta = computed(() => ({
     page: 1,
     perPage: 18,

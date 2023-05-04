@@ -49,8 +49,8 @@
   });
   const emit = defineEmits(['changeMode']);
 
-  const { gameCollections } = useGamesStore();
-  const recommendedCategory = gameCollections.find((collection) => collection.identity === 'recommended');
+  const { currentLocaleCollections } = useGamesStore();
+  const recommendedCategory = currentLocaleCollections.find((collection) => collection.identity === 'recommended');
 </script>
 
 <style lang="scss">
