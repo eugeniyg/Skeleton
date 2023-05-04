@@ -50,6 +50,10 @@ export const useProfileStore = defineStore('profileStore', {
       subscribeAccountSocket();
       subscribeInvoicesSocket();
       subscribeBonusSocket();
+
+      const { setEquivalentCurrency } = useGlobalStore();
+      const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
+      if (storageEquivalentCurrency) setEquivalentCurrency(storageEquivalentCurrency);
     },
 
     finishProfileDependencies():void {

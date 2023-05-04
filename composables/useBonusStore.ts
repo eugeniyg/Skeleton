@@ -3,8 +3,8 @@ import {
   PlayerBonusInterface,
   SocketBonusNotifyInterface,
   WebSocketResponseInterface,
+  BonusCodeInterface,
 } from '@platform/frontend-core/dist/module';
-import { BonusCodeInterface } from '@platform/frontend-core';
 import { useLayoutStore } from '~/composables/useLayoutStore';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 
@@ -23,14 +23,19 @@ export const useBonusStore = defineStore('bonusStore', {
 
   getters: {
     activePlayerBonuses(state):PlayerBonusInterface[] {
-      return state.playerBonuses.filter((playerBonus) => [1, 2].includes(playerBonus.status));
+      const walletStore = useWalletStore();
+      return state.playerBonuses.filter((playerBonus) => walletStore.activeAccount?.currency === playerBonus.currency);
+    },
+
+    activePlayerCashBonuses():PlayerBonusInterface[] {
+      return this.activePlayerBonuses.filter((playerBonus) => playerBonus.bonusType === 1);
     },
   },
 
   actions: {
     async getPlayerBonuses():Promise<void> {
       const { getPlayerBonuses } = useCoreBonusApi();
-      this.playerBonuses = await getPlayerBonuses();
+      this.playerBonuses = await getPlayerBonuses({ status: [1, 2] });
     },
 
     async getDepositBonusCode():Promise<void> {
