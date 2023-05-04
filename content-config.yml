@@ -1392,6 +1392,54 @@ collections:
             widget: select
             options: *alertTypes
             default: error
+      - name: cashLimitAdd
+        label: Cash Limit Add
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: success   
+      - name: cashLimitEditLargeAmount
+        label: Cash Limit Edit Large Amount
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: warning
+      - name: cashLimitEditSmallerAmount
+        label: Cash Limit Edit Smaller Amount
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: success
+      - name: cashLimitCancel
+        label: Cash Limit Cancel
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: warning                
 
   - name: staticPages
     label: Static Pages
