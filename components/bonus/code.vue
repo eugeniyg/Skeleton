@@ -79,17 +79,17 @@
   };
 
   const { addBonusCode } = useCoreBonusApi();
-  const { showBonusNotification } = useBonusStore();
+  const { showBonusCodeNotification } = useBonusStore();
   const sendBonus = async ():Promise<void> => {
     if (!bonusValue.value || bonusBlocked.value) return;
 
     try {
       const response = await addBonusCode(bonusValue.value, 1);
-      showBonusNotification(response.status);
+      showBonusCodeNotification(response.status);
     } catch (err: any) {
       if (err.response?.status === 400 && err.data?.error?.code === 5) {
         blockBonus();
-      } else showBonusNotification();
+      } else showBonusCodeNotification(3);
     } finally {
       bonusValue.value = '';
     }

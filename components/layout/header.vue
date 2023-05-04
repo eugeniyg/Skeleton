@@ -13,7 +13,7 @@
     <atomic-gift-notification
       v-if="isLoggedIn"
       display="mobile"
-      :is-active="isBonusExist"
+      :is-active="!!activePlayerBonuses.length"
     />
 
     <div class="items">
@@ -28,12 +28,11 @@
         :is-active="isShowSearch"
       />
 
-      <atomic-gift-notification
-        display="desktop"
-        :is-active="isBonusExist"
-      />
-
       <template v-if="isLoggedIn">
+        <atomic-gift-notification
+          display="desktop"
+          :is-active="!!activePlayerBonuses.length"
+        />
         <!--
         <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
         <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
@@ -77,10 +76,12 @@
   const emit = defineEmits(['login', 'register', 'logout']);
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
+  const bonusStore = useBonusStore();
   const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal } = layoutStore;
   const { isLoggedIn } = storeToRefs(profileStore);
+  const { activePlayerBonuses } = storeToRefs(bonusStore);
 
   function toggleProfileNav():void {
     if (isUserNavOpen.value) closeUserNav();
@@ -97,8 +98,6 @@
   }
 
   const isShowSearch = ref<boolean>(false);
-
-  const isBonusExist = ref<boolean>(false);
 
   const toggle = () => {
     isShowSearch.value = !isShowSearch.value;

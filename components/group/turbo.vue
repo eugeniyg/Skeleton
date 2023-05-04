@@ -12,9 +12,9 @@
     <button-base
       class="btn-show-all"
       type="ghost"
-      :url="'/games?category=turbogames'"
+      :url="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.showAll.url')"
     >
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.showAll.label') }}
     </button-base>
 
     <button-arrows
