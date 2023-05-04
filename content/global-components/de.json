@@ -90,8 +90,8 @@
       }
     ],
     "showAll": {
-      "label": "Zeige alles!",
-      "url": "/games?category=hot"
+      "label": "Show all",
+      "url": "/games?category=turbogames"
     }
   },
   "gameTags": [
