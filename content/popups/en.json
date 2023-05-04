@@ -119,6 +119,7 @@
         "cryptoLabel": "Crypto"
       },
       "addLosslabel": "New loss limit",
+      "addButton": "Add",
       "label": "New deposit limit",
       "addDepositlabel": "New deposit limit",
       "successConfirmLabel": "Limit set successfully"
