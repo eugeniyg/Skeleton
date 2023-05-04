@@ -123,7 +123,8 @@ export interface HeaderInterface {
     emptyText: string,
     tryLabel: string
   },
-  depositButton: string
+  depositButton: string,
+  fiatToggler: string,
 }
 
 export interface UserNavigationInterface {
@@ -244,8 +245,30 @@ export interface DepositInterface {
   addressInputLabel: string,
   minSum: string,
   togglerLabel: string,
+  addBonusButton: string,
+  cancelBonusButton: string,
   bonuses?: { image?: string, title: string, description?: string }[],
   depositButton: string
+}
+
+export interface ChangeActiveBonusInterface extends Record<string, any>{
+  title: string,
+  description: string,
+  confirmButton: string,
+  cancelButton: string
+}
+
+export interface CancelBonusInterface extends Record<string, any>{
+  title: string,
+  activeBonusDescription: string,
+  issuedBonusDescription: string,
+  confirmButton: string,
+  cancelButton: string
+}
+
+export interface DisplayInFiatInterface {
+  title: string,
+  description: string
 }
 
 export interface PopupsInterface {
@@ -258,7 +281,10 @@ export interface PopupsInterface {
   reset: ResetInterface,
   registration: RegistrationInterface,
   registrationCancel: RegistrationCancelInterface,
-  deposit: DepositInterface
+  deposit: DepositInterface,
+  changeActiveBonus: ChangeActiveBonusInterface,
+  cancelBonus: CancelBonusInterface,
+  displayInFiat: DisplayInFiatInterface
 }
 
 interface SlideImageInterface {

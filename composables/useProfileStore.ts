@@ -40,15 +40,20 @@ export const useProfileStore = defineStore('profileStore', {
 
     startProfileDependencies():void {
       const { getFavoriteGames } = useGamesStore();
-      const { getPlayerBonuses } = useBonusStore();
+      const { getPlayerBonuses, getDepositBonusCode } = useBonusStore();
       getFavoriteGames();
       getPlayerBonuses();
+      getDepositBonusCode();
 
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       const { subscribeBonusSocket } = useBonusStore();
       subscribeAccountSocket();
       subscribeInvoicesSocket();
       subscribeBonusSocket();
+
+      const { setEquivalentCurrency } = useGlobalStore();
+      const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
+      if (storageEquivalentCurrency) setEquivalentCurrency(storageEquivalentCurrency);
     },
 
     finishProfileDependencies():void {

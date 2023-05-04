@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { useNotification } from '@kyvg/vue3-notification';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 import { AlertInterface } from '~/types';
@@ -10,12 +11,12 @@ interface ModalsInterface extends Record<string, any> {
   signIn: boolean,
   deposit: boolean,
   confirm: boolean,
-  confirmBonus: boolean,
   error: boolean,
   forgotPass: boolean,
   resetPass: boolean,
   success: boolean,
   withdraw: boolean,
+  fiat: boolean,
 }
 
 interface ModalsUrlsInterface extends Record<string, any> {
@@ -33,9 +34,7 @@ interface LayoutStoreStateInterface extends Record<string, any>{
   isDrawerOpen: boolean,
   isCurrencyNavOpen: boolean,
   isDrawerCompact: boolean,
-  isShowAlert: boolean,
   showCookiePopup: boolean,
-  alertProps: Maybe<AlertInterface>,
   modals: ModalsInterface,
   modalsUrl: ModalsUrlsInterface,
 }
@@ -46,21 +45,19 @@ export const useLayoutStore = defineStore('layoutStore', {
       isDrawerOpen: false,
       isCurrencyNavOpen: false,
       isDrawerCompact: false,
-      isShowAlert: false,
       showCookiePopup: false,
-      alertProps: undefined,
       modals: {
         register: false,
         signIn: false,
         deposit: false,
         confirm: false,
-        confirmBonus: false,
         error: false,
         forgotPass: false,
         resetPass: false,
         success: false,
         withdraw: false,
         registerCancel: false,
+        fiat: false,
       },
       modalsUrl: {
         register: 'sign-up',
@@ -75,20 +72,14 @@ export const useLayoutStore = defineStore('layoutStore', {
 
   actions: {
     showAlert(props: Maybe<AlertInterface>): void {
-      if (this.isShowAlert) {
-        this.hideAlert();
-        this.showAlert(props);
-        return;
-      }
+      const { notify } = useNotification();
 
-      setTimeout(() => {
-        this.alertProps = props;
-        this.isShowAlert = true;
-      }, 200);
-    },
-
-    hideAlert() {
-      this.isShowAlert = false;
+      notify({
+        id: Date.now(),
+        type: props?.type,
+        title: props?.title,
+        text: props?.description,
+      });
     },
 
     openUserNav():void {

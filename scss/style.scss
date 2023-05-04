@@ -264,3 +264,21 @@ body {
     opacity: 1;
   }
 }
+
+.vue-notification-group {
+  bottom: #{rem(72px)} !important;
+
+  @include media(md) {
+    top: #{rem(72px)} !important;
+    right: #{rem(32px)} !important;
+    left: auto !important;
+    bottom: auto !important;
+  }
+}
+
+.card {
+  &-move {
+    transition: all .4s ease;
+  }
+}
+

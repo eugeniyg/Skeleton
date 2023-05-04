@@ -19,20 +19,9 @@
         <atomic-bonus v-bind="bonus"/>
         <atomic-divider/>
       </template>
-
-      <form-input-toggle
-        name="bonus-toggle"
-        v-model:value="hasBonusCode"
-        @change="hasBonusCode = !hasBonusCode"
-      >
-        {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.togglerLabel') || '' }}
-      </form-input-toggle>
-
-      <form-bonus-code
-        v-if="hasBonusCode"
-        v-model:value="bonusValue"
-      />
     </template>
+
+    <bonus-deposit-code />
   </form>
 </template>
 
@@ -47,8 +36,6 @@
 
   const walletNumber = ref<string>('');
   const qrLink = ref<string>('');
-  const hasBonusCode = ref<boolean>(false);
-  const bonusValue = ref<string>('');
 
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
@@ -104,11 +91,6 @@
 
 <style lang="scss">
 .form-deposit-crypto {
-  .input-toggle {
-    width: 100%;
-    --slider-bg: var(--black-primary);
-  }
-
   .row {
     display: flex;
     min-height: rem(44px);

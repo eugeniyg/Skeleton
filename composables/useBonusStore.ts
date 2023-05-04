@@ -3,24 +3,32 @@ import {
   PlayerBonusInterface,
   SocketBonusNotifyInterface,
   WebSocketResponseInterface,
+  BonusCodeInterface,
 } from '@platform/frontend-core/dist/module';
 import { useLayoutStore } from '~/composables/useLayoutStore';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 
 interface BonusStateInterface {
   bonusSubscription: any,
-  playerBonuses: PlayerBonusInterface[]
+  playerBonuses: PlayerBonusInterface[],
+  depositBonusCode: Maybe<BonusCodeInterface>
 }
 
 export const useBonusStore = defineStore('bonusStore', {
   state: (): BonusStateInterface => ({
     bonusSubscription: undefined,
     playerBonuses: [],
+    depositBonusCode: undefined,
   }),
 
   getters: {
     activePlayerBonuses(state):PlayerBonusInterface[] {
-      return state.playerBonuses.filter((playerBonus) => [1, 2].includes(playerBonus.status));
+      const walletStore = useWalletStore();
+      return state.playerBonuses.filter((playerBonus) => walletStore.activeAccount?.currency === playerBonus.currency);
+    },
+
+    activePlayerCashBonuses():PlayerBonusInterface[] {
+      return this.activePlayerBonuses.filter((playerBonus) => playerBonus.bonusType === 1);
     },
   },
 
@@ -29,6 +37,13 @@ export const useBonusStore = defineStore('bonusStore', {
       const { getPlayerBonuses } = useCoreBonusApi();
       const { data } = await getPlayerBonuses();
       this.playerBonuses = data;
+    },
+
+    async getDepositBonusCode():Promise<void> {
+      const { getBonusCodes } = useCoreBonusApi();
+
+      const bonusCodeResponse = await getBonusCodes(3);
+      this.depositBonusCode = bonusCodeResponse[0] || undefined;
     },
 
     subscribeBonusSocket():void {

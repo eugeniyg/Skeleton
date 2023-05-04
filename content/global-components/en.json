@@ -88,7 +88,11 @@
         "title": "Save the Princess",
         "categoryValue": "RTP - 95%"
       }
-    ]
+    ],
+    "showAll": {
+      "label": "Show all",
+      "url": "/games?category=turbogames"
+    }
   },
   "gameTags": [
     {
@@ -116,16 +120,6 @@
       "icon": "bonuses"
     }
   ],
-  "currency": {
-    "tabs": {
-      "allTab": "All",
-      "cryptoTab": "Crypto"
-    },
-    "empty": {
-      "title": "Done!",
-      "description": "You have already added all currencies"
-    }
-  },
   "promotions": {
     "label": "Slotsbet promotions",
     "icon": "bonuses",
@@ -171,6 +165,16 @@
         }
       }
     ]
+  },
+  "currency": {
+    "tabs": {
+      "allTab": "All",
+      "cryptoTab": "Crypto"
+    },
+    "empty": {
+      "title": "Done!",
+      "description": "You have already added all currencies"
+    }
   },
   "globalSeo": {
     "title": "Slotsbet",
