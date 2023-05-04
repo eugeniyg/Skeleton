@@ -20,18 +20,7 @@
       </template>
     </template>
 
-    <form-input-toggle
-      name="bonus-toggle"
-      v-model:value="hasBonusCode"
-      @change="hasBonusCode = !hasBonusCode"
-    >
-      {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.togglerLabel') || '' }}
-    </form-input-toggle>
-
-    <form-bonus-code
-      v-if="hasBonusCode"
-      v-model:value="bonusValue"
-    />
+    <bonus-deposit-code />
 
     <button-base
       type="primary"
@@ -55,7 +44,10 @@
   }>();
 
   const {
-    popupsData, defaultLocalePopupsData, alertsData, defaultLocaleAlertsData,
+    popupsData,
+    defaultLocalePopupsData,
+    alertsData,
+    defaultLocaleAlertsData,
   } = useGlobalStore();
 
   const walletStore = useWalletStore();
@@ -73,8 +65,6 @@
   const defaultInputSum = formatBalance(activeAccount.value?.currency, 0.01);
   const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : Number(defaultInputSum.amount));
   const amountValue = ref<number>(amountDefaultValue.value);
-  const hasBonusCode = ref<boolean>(false);
-  const bonusValue = ref<string>('');
   const buttonAmount = computed(() => {
     if (amountValue.value > formatAmountMax.amount) return formatAmountMax.amount;
     if (amountValue.value < formatAmountMin.amount) return formatAmountMin.amount;
@@ -125,12 +115,3 @@
     }
   };
 </script>
-
-<style lang="scss">
-.form-deposit {
-  .input-toggle {
-    width: 100%;
-    --slider-bg: var(--black-primary);
-  }
-}
-</style>

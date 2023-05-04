@@ -26,6 +26,7 @@
     "sass": "^1.60.0"
   },
   "dependencies": {
+    "@kyvg/vue3-notification": "^2.9.0",
     "@pinia/nuxt": "^0.4.7",
     "@platform/frontend-core": "1.1.1",
     "@types/lodash": "^4.14.191",

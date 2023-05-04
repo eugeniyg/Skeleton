@@ -198,6 +198,12 @@ export const useGlobalStore = defineStore('globalStore', {
     documentStatuses(state):StatusInterface[] {
       return state.settingsConstants?.player.document.status || [];
     },
+    isIOSPlatform():boolean|null {
+      if (!window?.navigator?.platform && !window?.navigator?.userAgent) return null;
+
+      return /iPad|iPhone|iPod/.test(window.navigator.platform)
+        || /iPad|iPhone|iPod/.test(window.navigator.userAgent);
+    },
   },
 
   actions: {
