@@ -35,7 +35,8 @@ export const useBonusStore = defineStore('bonusStore', {
   actions: {
     async getPlayerBonuses():Promise<void> {
       const { getPlayerBonuses } = useCoreBonusApi();
-      this.playerBonuses = await getPlayerBonuses({ status: [1, 2] });
+      const { data } = await getPlayerBonuses();
+      this.playerBonuses = data;
     },
 
     async getDepositBonusCode():Promise<void> {
