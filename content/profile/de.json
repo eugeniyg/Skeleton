@@ -147,6 +147,7 @@
       "deleteConfirmDescription": "The limit will be canceled after 24 hours"
     },
     "modeToggle": "Advanced mode",
+    "title": "Limits",
     "editButtonLabel": "Edit limits",
     "activeStatusLabel": "Active till",
     "periodOptions": {

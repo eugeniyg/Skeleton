@@ -160,7 +160,16 @@ export interface HistoryBonusesInterface {
     title?: string,
     description?: string
   },
-  tabLabel: string
+  tabLabel: string,
+  tabPosition: number,
+  tableColumns: {
+    title: string,
+    status: string,
+    amount: string,
+    progress: string,
+    created: string,
+    expired: string
+  }
 }
 
 export interface HistorySpinsInterface {

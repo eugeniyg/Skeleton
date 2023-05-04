@@ -38,10 +38,7 @@
     <modal-confirm />
     <modal-fiat/>
 
-    <atomic-alert
-      :isShow="isShowAlert"
-      v-bind="alertProps"
-    />
+    <atomic-alert />
   </div>
 </template>
 
@@ -53,7 +50,7 @@
   const { isHomePage, localizePath } = useProjectMethods();
 
   const {
-    isShowAlert, alertProps, showCookiePopup, isDrawerCompact,
+    showCookiePopup, isDrawerCompact,
   } = storeToRefs(layoutStore);
   const { checkModals } = layoutStore;
   checkModals();
