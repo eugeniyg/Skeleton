@@ -4,9 +4,9 @@ import { CreateLimitInterface, PlayerLimitInterface } from '@platform/frontend-c
 import { ProfileLimitsContentInterface } from '~/types';
 
 interface LimitsModalInterface {
-  addLimits: boolean,
+  addLimit: boolean,
   editLimit: boolean,
-  editLimitConfirm: boolean,
+  exceededLimitConfirm: boolean,
 }
 
 interface LimitsStateInteface {
@@ -34,9 +34,9 @@ export const useLimitsStore = defineStore('limitsStore', {
     limitsContent: undefined,
     defaultLimitsContent: undefined,
     modals: {
-      addLimits: false,
+      addLimit: false,
       editLimit: false,
-      editLimitConfirm: false,
+      exceededLimitConfirm: false,
     },
   }),
 
@@ -60,7 +60,7 @@ export const useLimitsStore = defineStore('limitsStore', {
       this.modals[modalName] = true;
     },
 
-    closeModal(modalName: string) {
+    closeModal(modalName: keyof LimitsModalInterface) {
       this.modals[modalName] = false;
     },
   },

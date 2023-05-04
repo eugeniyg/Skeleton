@@ -1,13 +1,12 @@
 <template>
   <vue-final-modal
-    v-model="modals.editLimitConfirm"
+    v-model="modals.exceededLimitConfirm"
     class="modal-edit-limit-confirm"
     :clickToClose="false"
-    @clickOutside="closeModal('editLimitConfirm')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('editLimitConfirm')"/>
+        <button-modal-close @close="closeModal('exceededLimitConfirm')"/>
         <div class="title">Edit your limits</div>
       </div>
 

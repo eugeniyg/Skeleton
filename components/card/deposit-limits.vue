@@ -63,7 +63,6 @@
   const emit = defineEmits([
     'open-limit-modal',
     'open-edit-modal',
-    'update-limits',
   ]);
 
   const limitsStore = useLimitsStore();

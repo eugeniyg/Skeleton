@@ -24,7 +24,7 @@
         placeholder="0"
       />
 
-      <div class="modal-edit-limit__info" v-if="isGreaterPrev">
+      <div class="modal-edit-limit__info" v-if="isLargeAmount">
         <div class="modal-edit-limit__info-title">
           <atomic-icon id="warning"/>
           <div>{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.greaterAmountTitle') }}</div>
@@ -54,7 +54,6 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import { storeToRefs } from 'pinia';
-  import { AlertsListInterface } from '~/types';
 
   interface PropsInterface {
     limitId?: string,
@@ -64,28 +63,20 @@
   }
 
   const props = defineProps<PropsInterface>();
-  const emit = defineEmits(['update-limits']);
 
   const limitsStore = useLimitsStore();
-  const { closeModal } = useLimitsStore();
+  const { closeModal, getLimits } = useLimitsStore();
   const { modals } = storeToRefs(limitsStore);
   const { showAlert } = useLayoutStore();
   const { deletePlayerLimit, updatePlayerLimit } = useCoreProfileApi();
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
-
-  // const alertProps = {
-  //   title: 'Limit update successfully',
-  //   description: 'Please, check your email and follow the received confirmation link to activate limit change.',
-  //   type: 'warning',
-  // };
-
-  const alertProps = ref<{
-    type: string,
-    title: string,
-    description?: string}
-  >();
+  const {
+    alertsData,
+    defaultLocaleAlertsData,
+    popupsData,
+    defaultLocalePopupsData,
+  } = storeToRefs(globalStore);
 
   interface StateInterface {
     prevAmount?: string|number,
@@ -105,36 +96,43 @@
 
   const isDisableUpdate = computed(() => Number(state.prevAmount) === Number(state.amount) || state.amount === '');
 
-  const isGreaterPrev = computed(() => Number(state.amount) > Number(state.prevAmount));
+  const isLargeAmount = computed(() => Number(state.amount) > Number(state.prevAmount));
 
   const update = async () => {
     closeModal('editLimit');
+
     const formattedMainBalance = getMainBalanceFormat(state.currency, state.amount);
+
     await updatePlayerLimit({
       limitId: state.limitId,
       amount: formattedMainBalance.amount,
     });
-    emit('update-limits');
+    await getLimits();
 
-    if (isGreaterPrev.value) {
-      alertProps.value = {
-        title: 'Limit update successfully',
-        description: 'Please, check your email and follow the received confirmation link to activate limit change.',
-        type: 'warning',
-      };
+    if (isLargeAmount.value) {
+      showAlert({
+        title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditLargeAmount.title'),
+        description: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditLargeAmount.description'),
+        type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditLargeAmount.type'),
+      });
     } else {
-      alertProps.value = {
-        title: 'Limit update successfully',
-        type: 'success',
-      };
+      showAlert({
+        title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditSmallerAmount.title'),
+        type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditSmallerAmount.type'),
+      });
     }
   };
 
   const remove = async () => {
     closeModal('editLimit');
     await deletePlayerLimit(state.limitId);
-    emit('update-limits');
-    // showAlert(alertProps);
+    await getLimits();
+
+    showAlert({
+      title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitCancel.title'),
+      description: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitCancel.description'),
+      type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitCancel.type'),
+    });
   };
 </script>
 

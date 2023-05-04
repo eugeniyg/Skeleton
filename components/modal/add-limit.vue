@@ -6,6 +6,7 @@
     clickToClose
   >
     <div class="scroll">
+      <pre style="color:white">{{ getContent(alertsData, defaultLocaleAlertsData, 'cashLimitAdd.title') }} {{ getContent(alertsData, defaultLocaleAlertsData, 'cashLimitAdd.type') }}</pre>
       <div class="header">
         <button-modal-close @click="closeModal('addLimit')"/>
         <div class="title">{{ titleMapping[props.definition] }}</div>
@@ -68,18 +69,21 @@
 
   const props = defineProps<PropsInterface>();
 
-  const emit = defineEmits(['update-limits']);
-
   const { settingsConstants } = useGlobalStore();
   const limitsStore = useLimitsStore();
   const {
     activeLimits, limitsContent, defaultLimitsContent, modals,
   } = storeToRefs(limitsStore);
-  const { createLimit, closeModal } = limitsStore;
+  const { getLimits, createLimit, closeModal } = limitsStore;
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();
-  const { alertsData, defaultLocaleAlertsData } = globalStore;
-  const { currencies, popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
+  const {
+    currencies,
+    alertsData,
+    defaultLocaleAlertsData,
+    popupsData,
+    defaultLocalePopupsData,
+  } = storeToRefs(globalStore);
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
 
   const limitsCashPeriod = ref<StatusInterface[]>(settingsConstants?.player.limit.cashPeriod || []);
@@ -166,27 +170,22 @@
   };
 
   const addLimit = async () => {
-    try {
-      const converted = getMainBalanceFormat(formState.currency, formState.amount);
+    closeModal('addLimit');
+    const converted = getMainBalanceFormat(formState.currency, formState.amount);
 
-      await createLimit({
-        period: formState.period,
-        definition: formState.definition,
-        amount: converted.amount,
-        currency: converted.currency,
-      });
+    await createLimit({
+      period: formState.period,
+      definition: formState.definition,
+      amount: converted.amount,
+      currency: converted.currency,
+    });
 
-      emit('update-limits');
-    } catch (error: any) {
-      if (error.response?.status === 422) {
-        showAlert({
-          title: error.data?.error?.message,
-          type: 'error',
-        });
-      } throw error;
-    } finally {
-      closeModal('addLimit');
-    }
+    await getLimits();
+
+    showAlert({
+      title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitAdd.title'),
+      type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitAdd.type'),
+    });
   };
 </script>
 

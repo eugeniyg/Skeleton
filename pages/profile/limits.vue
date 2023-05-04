@@ -17,19 +17,16 @@
         v-if="isAdvancedModeEnabled"
         @open-limit-modal="openLimitModal"
         @open-edit-modal="openEditModal"
-        @update-limits="updateLimits"
       />
 
       <card-loss-limits
         @open-limit-modal="openLimitModal"
         @open-edit-modal="openEditModal"
-        @update-limits="updateLimits"
       />
 
       <card-bet-limits
         @open-limit-modal="openLimitModal"
         @open-edit-modal="openEditModal"
-        @update-limits="updateLimits"
       />
 
       <!--
@@ -46,16 +43,14 @@
       <modal-add-limit
         :definition="state.definition"
         :key="addModalKey"
-        @update-limits="updateLimits"
       />
 
       <modal-edit-limit
         v-bind="state.editProps"
         :key="editModalKey"
-        @update-limits="updateLimits"
       />
 
-      <modal-edit-limit-confirm/>
+      <modal-exceeded-limit-confirm/>
     </div>
 
   </div>
