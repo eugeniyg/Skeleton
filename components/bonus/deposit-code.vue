@@ -55,16 +55,11 @@
   const { addBonusCode, deleteBonusCode } = useCoreBonusApi();
   const bonusStore = useBonusStore();
   const { depositBonusCode } = storeToRefs(bonusStore);
-  const { showBonusNotification } = bonusStore;
 
   const sendManualBonus = async ():Promise<boolean> => {
     try {
       const response = await addBonusCode(bonusValue.value, 1);
-      if (response.status === 2) {
-        showBonusNotification(response.status);
-        bonusValue.value = '';
-        return true;
-      }
+      if (response.status === 2) return true;
       return false;
     } catch (err: any) {
       return false;

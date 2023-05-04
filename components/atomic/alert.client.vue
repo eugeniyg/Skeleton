@@ -1,10 +1,9 @@
 <template>
   <notifications
     :position="isMobile ? 'bottom center' : 'top right'"
-    :duration="5000"
+    :duration="8000"
     :speed="200"
     :width="328"
-    pauseOnHover
   >
     <template #body="{ item, close}">
       <div class="alert" :class="`variant-${item.type}`">

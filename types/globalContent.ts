@@ -314,7 +314,7 @@ export interface AlertInterface {
   description?: string
 }
 
-export interface AlertsListInterface {
+export interface AlertsListInterface extends Record<string, any>{
   limitedDeposit: AlertInterface,
   invalidResetCode: AlertInterface,
   limitedRealGame: AlertInterface,
@@ -331,7 +331,12 @@ export interface AlertsListInterface {
   depositError: AlertInterface,
   withdrawSuccess: AlertInterface,
   withdrawError: AlertInterface,
+  bonusCodeIncorrect: AlertInterface,
+  bonusCodeNotAvailable: AlertInterface,
+  bonusIssued: AlertInterface,
   bonusActivated: AlertInterface,
-  bonusNotAvailable: AlertInterface,
-  bonusIncorrect: AlertInterface,
+  bonusPlayed: AlertInterface,
+  bonusCanceled: AlertInterface,
+  bonusExpired: AlertInterface,
+  bonusLost: AlertInterface,
 }
