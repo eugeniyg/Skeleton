@@ -70,9 +70,6 @@
   const emit = defineEmits(['update-limits']);
 
   const { settingsConstants } = useGlobalStore();
-  // const layoutStore = useLayoutStore();
-  // const { closeModal } = layoutStore;
-  // const { modals } = storeToRefs(layoutStore);
   const limitsStore = useLimitsStore();
   const {
     activeLimits, limitsContent, defaultLimitsContent, modals,

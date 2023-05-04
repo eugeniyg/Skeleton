@@ -8,10 +8,10 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('editLimit')"/>
-        <div class="title">{{ editLimitTitle }}</div>
+        <div class="title">
+          {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.label') }}
+        </div>
       </div>
-
-<!--      <pre style="color:white">{{ state }}</pre>-->
 
       <form-input-number
         :is-required="false"
@@ -27,11 +27,10 @@
       <div class="modal-edit-limit__info" v-if="isGreaterPrev">
         <div class="modal-edit-limit__info-title">
           <atomic-icon id="warning"/>
-          <div>{{ editLimitWarning }}</div>
+          <div>{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.greaterAmountTitle') }}</div>
         </div>
         <div class="modal-edit-limit__info-text">
           {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.hint') }}
-<!--          Email confirmation will be needed. The change will be applied in 24 hours.-->
         </div>
       </div>
 
@@ -42,9 +41,11 @@
           @click="update"
           :is-disabled="isDisableUpdate"
         >
-          Update
+          {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.updateButtonLabel') }}
         </button-base>
-        <button-base type="secondary" size="md" @click="remove">Delete</button-base>
+        <button-base type="secondary" size="md" @click="remove">
+          {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.deleteButtonLabel') }}
+        </button-base>
       </div>
     </div>
   </vue-final-modal>
@@ -53,6 +54,7 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import { storeToRefs } from 'pinia';
+  import { AlertsListInterface } from '~/types';
 
   interface PropsInterface {
     limitId?: string,
@@ -73,14 +75,17 @@
   const globalStore = useGlobalStore();
   const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 
-  const editLimitTitle = 'Edit daily deposit limit';
-  const editLimitWarning = 'New limit sum is bigger than the previous one';
+  // const alertProps = {
+  //   title: 'Limit update successfully',
+  //   description: 'Please, check your email and follow the received confirmation link to activate limit change.',
+  //   type: 'warning',
+  // };
 
-  const alertProps = {
-    title: 'Limit update successfully',
-    description: 'Please, check your email and follow the received confirmation link to activate limit change.',
-    type: 'warning',
-  };
+  const alertProps = ref<{
+    type: string,
+    title: string,
+    description?: string}
+  >();
 
   interface StateInterface {
     prevAmount?: string|number,
@@ -103,51 +108,33 @@
   const isGreaterPrev = computed(() => Number(state.amount) > Number(state.prevAmount));
 
   const update = async () => {
-    try {
-      const formattedMainBalance = getMainBalanceFormat(state.currency, state.amount);
-      await updatePlayerLimit({
-        limitId: state.limitId,
-        amount: formattedMainBalance.amount,
-      });
-      emit('update-limits');
-      showAlert(alertProps);
-    } catch (error: any) {
-      if (error.response?.status === 422) {
-        showAlert({
-          title: error.data?.error?.message,
-          type: 'error',
-        });
-      } else {
-        showAlert({
-          title: 'Something went wrong',
-          type: 'error',
-        });
-      }
-    } finally {
-      closeModal('editLimit');
+    closeModal('editLimit');
+    const formattedMainBalance = getMainBalanceFormat(state.currency, state.amount);
+    await updatePlayerLimit({
+      limitId: state.limitId,
+      amount: formattedMainBalance.amount,
+    });
+    emit('update-limits');
+
+    if (isGreaterPrev.value) {
+      alertProps.value = {
+        title: 'Limit update successfully',
+        description: 'Please, check your email and follow the received confirmation link to activate limit change.',
+        type: 'warning',
+      };
+    } else {
+      alertProps.value = {
+        title: 'Limit update successfully',
+        type: 'success',
+      };
     }
   };
 
   const remove = async () => {
-    try {
-      await deletePlayerLimit(state.limitId);
-      emit('update-limits');
-      showAlert(alertProps);
-    } catch (error: any) {
-      if (error.response?.status === 422) {
-        showAlert({
-          title: error.data?.error?.message,
-          type: 'error',
-        });
-      } else {
-        showAlert({
-          title: 'Something went wrong',
-          type: 'error',
-        });
-      }
-    } finally {
-      closeModal('editLimit');
-    }
+    closeModal('editLimit');
+    await deletePlayerLimit(state.limitId);
+    emit('update-limits');
+    // showAlert(alertProps);
   };
 </script>
 

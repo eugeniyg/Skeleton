@@ -19,6 +19,7 @@ interface LimitsStateInteface {
 
 const transformToPeriods = (limits: PlayerLimitInterface[]) => {
   const periods = ['daily', 'weekly', 'monthly'];
+
   return periods.map((period) => ({
     title: period,
     items: limits.filter((limit) => limit.period === period) || [],
@@ -59,7 +60,7 @@ export const useLimitsStore = defineStore('limitsStore', {
       this.modals[modalName] = true;
     },
 
-    closeModal(modalName: keyof LimitsModalInterface) {
+    closeModal(modalName: string) {
       this.modals[modalName] = false;
     },
   },

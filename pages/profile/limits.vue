@@ -129,29 +129,6 @@
     monthly: 'Monthly',
   };
 
-  // const transformToPeriods = (limits: PlayerLimitInterface[]) => Object.keys(periodsTitles).map((period:string) => ({
-  //   title: periodsTitles[period],
-  //   items: limits.filter((limit) => limit.period === period) || [],
-  // })).filter((column) => column.items.length);
-  //
-  // const betPeriods = computed(() => {
-  //   const limits = activeLimits.value.filter((limit) => limit.definition === 1);
-  //   return transformToPeriods(limits) || [];
-  // });
-
-  // const lossPeriods = computed(() => {
-  //   const limits = activeLimits.value.filter((limit) => limit.definition === 2);
-  //   return transformToPeriods(limits) || [];
-  // });
-
-  // const depositPeriods = computed(() => {
-  //   const limits = activeLimits.value.filter((limit) => limit.definition === 3);
-  //   return transformToPeriods(limits) || [];
-  // });
-
-  // const selfExclusionLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 4));
-  // const coolingOffLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 5));
-
   const addOverflowToMain = () => {
     const main = document.querySelector('.app-main') as HTMLElement;
     main.classList.add('is-overflow-off');
@@ -168,6 +145,7 @@
 
   onMounted(async () => {
     addOverflowToMain();
+    await getLimits();
   });
 
   onUnmounted(removeOverflowFromMain);
