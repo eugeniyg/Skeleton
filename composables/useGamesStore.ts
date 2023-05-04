@@ -43,6 +43,12 @@ export const useGamesStore = defineStore('gamesStore', {
         value: provider.name,
       }));
     },
+    currentLocaleCollections(state):CollectionInterface[] {
+      const globalStore = useGlobalStore();
+      if (!globalStore.currentLocale) return [];
+
+      return state.gameCollections.filter((collection) => !collection.locale.length || collection.locale.includes(globalStore.currentLocale?.code as string));
+    },
   },
 
   actions: {

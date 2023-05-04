@@ -3,13 +3,19 @@
     class="gift-notification"
     :class="{'is-active': props.isActive}"
     :data-display="props.display"
-    @click="$emit('go')"
+    @click="toBonuses"
   >
     <atomic-icon id="bonuses"/>
   </button>
 </template>
 
 <script setup lang="ts">
+  const { localizePath } = useProjectMethods();
+  const router = useRouter();
+  const toBonuses = ():void => {
+    router.push(localizePath('/profile/bonuses'));
+  };
+
   const props = defineProps({
     display: {
       type: String,
@@ -32,6 +38,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  cursor: pointer;
 
   &:after {
     display: block;
@@ -80,7 +87,6 @@
   }
 
   &:hover {
-    cursor: pointer;
     --bgc: var(--gray-800);
 
     .icon {

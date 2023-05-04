@@ -64,6 +64,10 @@
   import debounce from 'lodash/debounce';
   import { CategoryGamesInterface } from '~/types';
 
+  definePageMeta({
+    middleware: 'games-collection',
+  });
+
   const globalStore = useGlobalStore();
   const {
     gameCategoriesObj,
@@ -85,7 +89,8 @@
   const defaultLocaleGamesContent: Maybe<CategoryGamesInterface> = defaultLocaleData?.gamesPage;
   setPageSeo(gamesContent?.seo);
 
-  const { gameCollections } = useGamesStore();
+  const gamesStore = useGamesStore();
+  const { currentLocaleCollections } = storeToRefs(gamesStore);
   const { selectOptions } = useFieldsStore();
   const providerDropdownOptions: GameProviderInterface[] = [
     {
@@ -100,16 +105,8 @@
   const route = useRoute();
   const router = useRouter();
 
-  if (!route.query.category) {
-    router.replace({
-      query: { ...route.query, category: gameCollections[0].identity },
-    });
-  }
-
   const activeCollection = ref<CollectionInterface | undefined>(
-    gameCollections.find(
-      (collection) => collection.identity === route.query.category,
-    ) || gameCollections[0],
+    currentLocaleCollections.value.find((collection) => collection.identity === route.query.category),
   );
 
   const currentProvider = ref<GameProviderInterface | undefined>(
@@ -180,7 +177,7 @@
 
   const changeCategory = async (categoryId: string): Promise<void> => {
     loadPage.value = 1;
-    activeCollection.value = gameCollections.find(
+    activeCollection.value = currentLocaleCollections.value.find(
       (collection) => collection.identity === categoryId,
     );
     router.replace({ query: { ...route.query, category: categoryId } });

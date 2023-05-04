@@ -11,7 +11,9 @@
       >
         <atomic-icon :id="listItem.icon"/>
         <div class="text">{{ listItem.label }}</div>
-        <div v-if="listItem.counter" class="counter">{{ listItem.counter }}</div>
+        <client-only>
+          <div v-if="listItem.counter" class="counter">{{ listItem.counter }}</div>
+        </client-only>
       </div>
 
       <list-games

@@ -215,7 +215,16 @@ export interface HistoryBonusesInterface {
     title?: string,
     description?: string
   },
-  tabLabel: string
+  tabLabel: string,
+  tabPosition: number,
+  tableColumns: {
+    title: string,
+    status: string,
+    amount: string,
+    progress: string,
+    created: string,
+    expired: string
+  }
 }
 
 export interface HistorySpinsInterface {
@@ -553,6 +562,10 @@ export interface TurboItemInterface {
 export interface TurbogamesGroupInterface {
   label: string,
   icon: string,
+  showAll: {
+    label: string,
+    url: string
+  },
   buttonLabel: string,
   items: TurboItemInterface[]
 }

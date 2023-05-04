@@ -969,6 +969,9 @@ collections:
               - name: chooseCurrencyError
                 label: Choose Currency Error
                 widget: string
+              - name: addButton
+                label: Add Button Label
+                widget: string  
               - name: currencyTabs 
                 label: Currency Tabs
                 widget: object
@@ -984,7 +987,7 @@ collections:
                 label: Success Confirm Label
                 widget: string
           - name: editCashLimit
-            label: Edit Cash Limit Label
+            label: Edit Cash Limit
             widget: object
             collapsed: true
             fields:

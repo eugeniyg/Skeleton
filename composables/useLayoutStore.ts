@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { useNotification } from '@kyvg/vue3-notification';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 import { AlertInterface } from '~/types';
@@ -34,11 +35,10 @@ interface LayoutStoreStateInterface extends Record<string, any>{
   isDrawerOpen: boolean,
   isCurrencyNavOpen: boolean,
   isDrawerCompact: boolean,
-  isShowAlert: boolean,
   showCookiePopup: boolean,
-  alertProps: Maybe<AlertInterface>,
   modals: ModalsInterface,
   modalsUrl: ModalsUrlsInterface,
+  lastNotificationTime: number,
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -47,9 +47,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       isDrawerOpen: false,
       isCurrencyNavOpen: false,
       isDrawerCompact: false,
-      isShowAlert: false,
       showCookiePopup: false,
-      alertProps: undefined,
       modals: {
         register: false,
         signIn: false,
@@ -73,24 +71,36 @@ export const useLayoutStore = defineStore('layoutStore', {
         forgotPass: 'forgot-pass',
         resetPass: 'reset-pass',
       },
+    lastNotificationTime: 0,
   }),
 
   actions: {
     showAlert(props: Maybe<AlertInterface>): void {
-      if (this.isShowAlert) {
-        this.hideAlert();
-        this.showAlert(props);
-        return;
+      const { notify } = useNotification();
+      const currentTime = Date.now();
+      const timeDiff = currentTime - this.lastNotificationTime;
+
+      if (timeDiff < 400) {
+        this.lastNotificationTime += 400;
+
+        setTimeout(() => {
+          notify({
+            id: Date.now(),
+            type: props?.type,
+            title: props?.title,
+            text: props?.description,
+          });
+        }, this.lastNotificationTime - currentTime);
+      } else {
+        this.lastNotificationTime = currentTime;
+
+        notify({
+          id: currentTime,
+          type: props?.type,
+          title: props?.title,
+          text: props?.description,
+        });
       }
-
-      setTimeout(() => {
-        this.alertProps = props;
-        this.isShowAlert = true;
-      }, 200);
-    },
-
-    hideAlert() {
-      this.isShowAlert = false;
     },
 
     openUserNav():void {
