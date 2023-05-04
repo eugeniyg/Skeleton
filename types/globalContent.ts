@@ -245,6 +245,8 @@ export interface DepositInterface {
   addressInputLabel: string,
   minSum: string,
   togglerLabel: string,
+  addBonusButton: string,
+  cancelBonusButton: string,
   bonuses?: { image?: string, title: string, description?: string }[],
   depositButton: string
 }
