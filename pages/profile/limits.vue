@@ -1,7 +1,7 @@
 <template>
   <div class="limits">
     <div class="limits__header">
-      <h1 class="limits__heading">Limits</h1>
+      <h1 class="limits__heading">{{ limitsContent?.title || defaultLimitsContent?.title }}</h1>
       <div class="limits__mode">
         <span class="limits__mode-label">{{ limitsContent?.modeToggle || defaultLimitsContent?.modeToggle }}</span>
         <form-input-toggle
@@ -13,29 +13,20 @@
     </div>
 
     <div class="limits__grid">
-      <card-cash-limits
+      <card-deposit-limits
         v-if="isAdvancedModeEnabled"
-        :title="limitsContent?.deposit?.label || defaultLimitsContent?.deposit?.label"
-        :definition="3"
-        :periods="depositPeriods"
         @open-limit-modal="openLimitModal"
         @open-edit-modal="openEditModal"
         @update-limits="updateLimits"
       />
 
-      <card-cash-limits
-        :title="limitsContent?.loss?.label || defaultLimitsContent?.loss?.label"
-        :definition="2"
-        :periods="lossPeriods"
+      <card-loss-limits
         @open-limit-modal="openLimitModal"
         @open-edit-modal="openEditModal"
         @update-limits="updateLimits"
       />
 
-      <card-cash-limits
-        title="Bet limits"
-        :definition="1"
-        :periods="betPeriods"
+      <card-bet-limits
         @open-limit-modal="openLimitModal"
         @open-edit-modal="openEditModal"
         @update-limits="updateLimits"
@@ -73,12 +64,11 @@
 <script setup lang="ts">
   import { onMounted } from '@vue/runtime-core';
   import { storeToRefs } from 'pinia';
-  import { PlayerLimitInterface } from '@platform/frontend-core/dist/module';
   import { ProfileLimitsContentInterface } from '~/types';
 
   const limitsStore = useLimitsStore();
-  const { getLimits, setLimitsContent } = limitsStore;
-  const { activeLimits, limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
+  const { getLimits, setLimitsContent, showModal } = limitsStore;
+  const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
   const globalStore = useGlobalStore();
   const { contentLocalesArray } = storeToRefs(globalStore);
   const { findLocalesContentData } = useProjectMethods();
@@ -92,7 +82,7 @@
 
   setLimitsContent(currenctLocaleLimitsContent, defaultLocaleLimitsContent);
 
-  const { showModal } = useLayoutStore();
+  // const { showModal } = useLayoutStore();
 
   interface EditPropsInterface {
     limitId?: string,
@@ -101,14 +91,12 @@
     currency?: string,
   }
 
-  interface StateInterface {
-    definition: number|undefined,
-    editProps: EditPropsInterface
-  }
-
   const isAdvancedModeEnabled = ref<boolean>(true);
 
-  const state = reactive<StateInterface>({
+  const state = reactive<{
+    definition: number|undefined,
+    editProps: EditPropsInterface
+  }>({
     definition: -1,
     editProps: {},
   });
@@ -141,25 +129,25 @@
     monthly: 'Monthly',
   };
 
-  const transformToPeriods = (limits: PlayerLimitInterface[]) => Object.keys(periodsTitles).map((period:string) => ({
-    title: periodsTitles[period],
-    items: limits.filter((limit) => limit.period === period) || [],
-  })).filter((column) => column.items.length);
+  // const transformToPeriods = (limits: PlayerLimitInterface[]) => Object.keys(periodsTitles).map((period:string) => ({
+  //   title: periodsTitles[period],
+  //   items: limits.filter((limit) => limit.period === period) || [],
+  // })).filter((column) => column.items.length);
+  //
+  // const betPeriods = computed(() => {
+  //   const limits = activeLimits.value.filter((limit) => limit.definition === 1);
+  //   return transformToPeriods(limits) || [];
+  // });
 
-  const betPeriods = computed(() => {
-    const limits = activeLimits.value.filter((limit) => limit.definition === 1);
-    return transformToPeriods(limits) || [];
-  });
+  // const lossPeriods = computed(() => {
+  //   const limits = activeLimits.value.filter((limit) => limit.definition === 2);
+  //   return transformToPeriods(limits) || [];
+  // });
 
-  const lossPeriods = computed(() => {
-    const limits = activeLimits.value.filter((limit) => limit.definition === 2);
-    return transformToPeriods(limits) || [];
-  });
-
-  const depositPeriods = computed(() => {
-    const limits = activeLimits.value.filter((limit) => limit.definition === 3);
-    return transformToPeriods(limits) || [];
-  });
+  // const depositPeriods = computed(() => {
+  //   const limits = activeLimits.value.filter((limit) => limit.definition === 3);
+  //   return transformToPeriods(limits) || [];
+  // });
 
   // const selfExclusionLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 4));
   // const coolingOffLimits = computed(() => activeLimits.value.filter((limit) => limit.definition === 5));
@@ -181,6 +169,7 @@
   onMounted(async () => {
     addOverflowToMain();
   });
+
   onUnmounted(removeOverflowFromMain);
 </script>
 

@@ -5,7 +5,9 @@
       class="limits-periods-list__column"
       v-for="period in props.periods"
     >
-      <h4 class="limits-periods-list__title">{{ period.title }}</h4>
+      <h4 class="limits-periods-list__title">
+        {{ limitsContent?.periodOptions[period.title] ||  defaultLimitsContent?.periodOptions[period.title] }}
+      </h4>
 
       <div class="limits-periods-list__items">
         <atomic-period-item
@@ -22,18 +24,20 @@
 
 <script setup lang="ts">
   import { PlayerLimitInterface } from '@platform/frontend-core/dist/module';
+  import { storeToRefs } from 'pinia';
 
-  interface PropsInterface {
+  const props = defineProps<{
     periods: {
       title: string,
       items: PlayerLimitInterface[]
     }[],
     isShowEdit: boolean,
-  }
-
-  const props = defineProps<PropsInterface>();
+  }>();
 
   const emit = defineEmits(['open-edit-modal']);
+
+  const limitsStore = useLimitsStore();
+  const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
 </script>
 
 <style lang="scss">

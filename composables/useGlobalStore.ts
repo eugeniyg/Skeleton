@@ -278,9 +278,6 @@ export const useGlobalStore = defineStore('globalStore', {
         const { currentLocaleData, defaultLocaleData } = findLocalesContentData(popupsDataResponse.value);
         this.popupsData = currentLocaleData as PopupsInterface;
         this.defaultLocalePopupsData = defaultLocaleData as PopupsInterface;
-        console.log(this.popupsData)
-      } else {
-        console.log(333)
       }
 
       if (alertsDataResponse.status !== 'rejected') {

@@ -20,7 +20,8 @@
           :key="period.id"
           @click="changeTab(period)"
         >
-          {{ period.name }}
+          {{ limitsContent?.periodOptions[period.id] || defaultLimitsContent?.periodOptions[period.id] }}
+
         </button>
       </div>
 
@@ -35,7 +36,7 @@
         :is-required="false"
         :currency="formattedBalance.currency"
         :min="0"
-        defaultValue=""
+        :defaultValue="0"
         label=""
         name="limit-currency"
         v-model:value="formState.amount"
@@ -69,19 +70,18 @@
   const emit = defineEmits(['update-limits']);
 
   const { settingsConstants } = useGlobalStore();
-  const layoutStore = useLayoutStore();
-  const { closeModal } = layoutStore;
-  const { modals } = storeToRefs(layoutStore);
+  // const layoutStore = useLayoutStore();
+  // const { closeModal } = layoutStore;
+  // const { modals } = storeToRefs(layoutStore);
   const limitsStore = useLimitsStore();
-  const { activeLimits } = storeToRefs(limitsStore);
-  const { createLimit } = limitsStore;
+  const {
+    activeLimits, limitsContent, defaultLimitsContent, modals,
+  } = storeToRefs(limitsStore);
+  const { createLimit, closeModal } = limitsStore;
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();
-  const { currencies } = storeToRefs(globalStore);
-  const { formatBalance, getMainBalanceFormat } = useProjectMethods();
-
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
+  const { currencies, popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
+  const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
 
   const limitsCashPeriod = ref<StatusInterface[]>(settingsConstants?.player.limit.cashPeriod || []);
 
@@ -184,12 +184,7 @@
           title: error.data?.error?.message,
           type: 'error',
         });
-      } else {
-        showAlert({
-          title: 'Something went wrong',
-          type: 'error',
-        });
-      }
+      } throw error;
     } finally {
       closeModal('addLimit');
     }

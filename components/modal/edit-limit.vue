@@ -30,7 +30,8 @@
           <div>{{ editLimitWarning }}</div>
         </div>
         <div class="modal-edit-limit__info-text">
-          Email confirmation will be needed. The change will be applied in 24 hours.
+          {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.hint') }}
+<!--          Email confirmation will be needed. The change will be applied in 24 hours.-->
         </div>
       </div>
 
@@ -63,12 +64,14 @@
   const props = defineProps<PropsInterface>();
   const emit = defineEmits(['update-limits']);
 
-  const { closeModal } = useLayoutStore();
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
+  const limitsStore = useLimitsStore();
+  const { closeModal } = useLimitsStore();
+  const { modals } = storeToRefs(limitsStore);
   const { showAlert } = useLayoutStore();
   const { deletePlayerLimit, updatePlayerLimit } = useCoreProfileApi();
-  const { formatBalance, getMainBalanceFormat } = useProjectMethods();
+  const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
+  const globalStore = useGlobalStore();
+  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 
   const editLimitTitle = 'Edit daily deposit limit';
   const editLimitWarning = 'New limit sum is bigger than the previous one';

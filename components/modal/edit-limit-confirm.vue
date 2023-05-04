@@ -23,9 +23,9 @@
   import { VueFinalModal } from 'vue-final-modal';
   import { storeToRefs } from 'pinia';
 
-  const { closeModal } = useLayoutStore();
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
+  const limitsStore = useLimitsStore();
+  const { closeModal } = limitsStore;
+  const { modals } = storeToRefs(limitsStore);
 </script>
 
 <style lang="scss">

@@ -105,6 +105,7 @@ export interface ProfileNotificationsInterface {
 }
 
 export interface ProfileLimitsContentInterface {
+  title: string,
   setButtonLabel: string,
   doneButtonLabel: string,
   addButtonLabel : string,
@@ -141,7 +142,7 @@ export interface ProfileLimitsContentInterface {
   modeToggle: string,
   editButtonLabel: string,
   activeStatusLabel: string,
-  periodOptions?: {
+  periodOptions: {
     '1_day': string,
     '3_days': string,
     '1_week': string,
@@ -152,7 +153,7 @@ export interface ProfileLimitsContentInterface {
     '1_year': string,
     forever: string,
   },
-  deposit?: {
+  deposit: {
     label: string,
     hint: string,
   }

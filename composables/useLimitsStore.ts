@@ -3,12 +3,28 @@ import { defineStore } from 'pinia';
 import { CreateLimitInterface, PlayerLimitInterface } from '@platform/frontend-core/dist/module';
 import { ProfileLimitsContentInterface } from '~/types';
 
+interface LimitsModalInterface {
+  addLimits: boolean,
+  editLimit: boolean,
+  editLimitConfirm: boolean,
+}
+
 interface LimitsStateInteface {
   activeLimits: PlayerLimitInterface[],
   isLoaded: boolean,
-  limitsContent: ProfileLimitsContentInterface | undefined,
-  defaultLimitsContent: ProfileLimitsContentInterface | undefined,
+  limitsContent: Maybe<ProfileLimitsContentInterface>,
+  defaultLimitsContent: Maybe<ProfileLimitsContentInterface>,
+  modals: LimitsModalInterface
 }
+
+const transformToPeriods = (limits: PlayerLimitInterface[]) => {
+  const periods = ['daily', 'weekly', 'monthly'];
+  return periods.map((period) => ({
+    title: period,
+    items: limits.filter((limit) => limit.period === period) || [],
+  }))
+    .filter((column) => column.items.length);
+};
 
 export const useLimitsStore = defineStore('limitsStore', {
   state: (): LimitsStateInteface => ({
@@ -16,26 +32,52 @@ export const useLimitsStore = defineStore('limitsStore', {
     isLoaded: false,
     limitsContent: undefined,
     defaultLimitsContent: undefined,
+    modals: {
+      addLimits: false,
+      editLimit: false,
+      editLimitConfirm: false,
+    },
   }),
+
   actions: {
     async getLimits():Promise<void> {
       const { getPlayerLimits } = useCoreProfileApi();
-      const data = await getPlayerLimits();
-      this.activeLimits = data;
+      this.activeLimits = await getPlayerLimits();
     },
+
     async createLimit(payload: CreateLimitInterface) :Promise<void> {
       const { createPlayerLimit } = useCoreProfileApi();
       await createPlayerLimit({ ...payload });
     },
-    setLimitsContent(content: ProfileLimitsContentInterface, defaultContent: ProfileLimitsContentInterface) {
+
+    setLimitsContent(content: Maybe<ProfileLimitsContentInterface>, defaultContent: Maybe<ProfileLimitsContentInterface>) {
       this.limitsContent = content;
       this.defaultLimitsContent = defaultContent;
     },
+
+    showModal(modalName: keyof LimitsModalInterface) {
+      this.modals[modalName] = true;
+    },
+
+    closeModal(modalName: keyof LimitsModalInterface) {
+      this.modals[modalName] = false;
+    },
   },
 
-  // getters: {
-  //   limitsTextContent(state) {
-  //     return state.limitsContent;
-  //   },
-  // },
+  getters: {
+    betPeriods(state) {
+      const limits = state.activeLimits.filter((limit) => limit.definition === 1);
+      return transformToPeriods(limits) || [];
+    },
+
+    lossPeriods(state) {
+      const limits = state.activeLimits.filter((limit) => limit.definition === 2);
+      return transformToPeriods(limits) || [];
+    },
+
+    depositPeriods(state) {
+      const limits = state.activeLimits.filter((limit) => limit.definition === 3);
+      return transformToPeriods(limits) || [];
+    },
+  },
 });
