@@ -130,7 +130,7 @@
       "updateButtonLabel": "Update",
       "deleteButtonLabel": "Delete",
       "lessAmountTitle": "Limit update successfully",
-      "greaterAmountTitle": "Limit update successfully",
+      "greaterAmountTitle": "New limit sum is bigger than the previous one",
       "greaterAmountDescription": "Please, check your email and follow the received confirmation link to activate limit change."
     },
     "selfExlusionConfirm": {
