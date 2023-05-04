@@ -111,7 +111,7 @@
   "limitsPopups": {
     "addCashLimit": {
       "chooseCurrencyError": "Please, select your currency for new deposit limit",
-      "addBetlabel": "New wagger limit",
+      "addBetlabel": "New bet limit",
       "hint": "The restriction takes effect instantly. You can reduce your limit at any time, this change will take effect immediately. You can increase the limit, however, in order for this change to take effect, you need 24 hours. Cancellation of the deposit limit takes 24 hours. After the limit is exceeded, you will receive an email notification.",
       "chooseCurrencyLabel": "Choose currency",
       "currencyTabs": {
