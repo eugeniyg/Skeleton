@@ -5,10 +5,10 @@
       :class="{ 'is-full-width': depositPeriods.length > 1 }"
     >
       <h4 class="limits__card-title" data-tooltip-parent>
-        {{ limitsContent?.deposit?.label || defaultLimitsContent?.deposit?.label }}
+        {{ getContent(limitsContent, defaultLimitsContent, 'deposit.label') }}
         <atomic-tooltip
           v-if="depositPeriods.length"
-          :text="limitsContent?.titleTooltip || defaultLimitsContent?.titleTooltip"
+          :text="getContent(limitsContent, defaultLimitsContent, 'titleTooltip')"
           align="bottom"
         />
       </h4>
@@ -21,7 +21,7 @@
       />
 
       <p v-else class="limits__card-sub-title">
-        {{ limitsContent?.deposit?.hint || defaultLimitsContent?.deposit?.hint }}
+        {{ getContent(limitsContent, defaultLimitsContent, 'deposit?.hint') }}
       </p>
 
       <div class="limits__card-actions">
@@ -29,7 +29,7 @@
           type="primary"
           @click="emit('open-limit-modal', definition)"
         >
-          {{ limitsContent?.addButtonLabel || defaultLimitsContent?.addButtonLabel }}
+          {{ getContent(limitsContent, defaultLimitsContent, 'addButtonLabel') }}
         </button-base>
 
         <button-base
@@ -38,7 +38,7 @@
           @click="state.isShowEdit = true"
           :is-disabled="isEditLocked"
         >
-          {{ limitsContent?.editButtonLabel || defaultLimitsContent?.editButtonLabel }}
+          {{ getContent(limitsContent, defaultLimitsContent, 'editButtonLabel') }}
         </button-base>
 
         <button-base
@@ -46,7 +46,7 @@
           type="secondary"
           @click="state.isShowEdit = false"
         >
-          {{ limitsContent?.doneButtonLabel || defaultLimitsContent?.doneButtonLabel }}
+          {{ getContent(limitsContent, defaultLimitsContent, 'doneButtonLabel') }}
         </button-base>
       </div>
 
@@ -65,6 +65,7 @@
   ]);
 
   const limitsStore = useLimitsStore();
+  const { getContent } = useProjectMethods();
   const { depositPeriods, limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
 
   const state = reactive<{isShowEdit: boolean}>({

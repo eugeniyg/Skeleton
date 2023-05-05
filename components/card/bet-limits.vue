@@ -5,10 +5,10 @@
       :class="{ 'is-full-width': betPeriods.length > 1 }"
     >
       <h4 class="limits__card-title" data-tooltip-parent>
-        {{ limitsContent?.bet?.label || defaultLimitsContent?.bet?.label }}
+        {{ getContent(limitsContent, defaultLimitsContent, 'bet.label') }}
         <atomic-tooltip
           v-if="betPeriods.length"
-          :text="limitsContent?.titleTooltip || defaultLimitsContent?.titleTooltip"
+          :text="getContent(limitsContent, defaultLimitsContent, 'titleTooltip')"
           align="bottom"
         />
       </h4>
@@ -21,7 +21,7 @@
       />
 
       <p v-else class="limits__card-sub-title">
-        {{ limitsContent?.bet?.hint || defaultLimitsContent?.bet?.hint }}
+        {{ getContent(limitsContent, defaultLimitsContent, 'bet.hint') }}
       </p>
 
       <div class="limits__card-actions">
@@ -30,7 +30,7 @@
           type="primary"
           @click="emit('open-limit-modal', definition)"
         >
-          {{ limitsContent?.addButtonLabel || defaultLimitsContent?.addButtonLabel }}
+          {{ getContent(limitsContent, defaultLimitsContent, 'addButtonLabel') }}
         </button-base>
 
         <button-base
@@ -39,7 +39,7 @@
           @click="state.isShowEdit = true"
           :is-disabled="isEditLocked"
         >
-          {{ limitsContent?.editButtonLabel || defaultLimitsContent?.editButtonLabel }}
+          {{ getContent(limitsContent, defaultLimitsContent, 'editButtonLabel') }}
         </button-base>
 
         <button-base
@@ -47,7 +47,7 @@
           type="secondary"
           @click="state.isShowEdit = false"
         >
-          {{ limitsContent?.doneButtonLabel || defaultLimitsContent?.doneButtonLabel }}
+          {{ getContent(limitsContent, defaultLimitsContent, 'doneButtonLabel') }}
         </button-base>
       </div>
 
@@ -68,6 +68,7 @@
 
   const limitsStore = useLimitsStore();
   const { betPeriods, limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
+  const { getContent } = useProjectMethods();
 
   const state = reactive<{isShowEdit: boolean}>({
     isShowEdit: false,

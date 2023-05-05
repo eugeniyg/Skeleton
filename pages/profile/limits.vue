@@ -1,9 +1,9 @@
 <template>
   <div class="limits">
     <div class="limits__header">
-      <h1 class="limits__heading">{{ limitsContent?.title || defaultLimitsContent?.title }}</h1>
+      <h1 class="limits__heading">{{ getContent(limitsContent, defaultLimitsContent, 'title') }}</h1>
       <div class="limits__mode">
-        <span class="limits__mode-label">{{ limitsContent?.modeToggle || defaultLimitsContent?.modeToggle }}</span>
+        <span class="limits__mode-label">{{ getContent(limitsContent, defaultLimitsContent, 'modeToggle') }}</span>
         <form-input-toggle
           v-model:value="isAdvancedModeEnabled"
           name="toggle"
@@ -28,17 +28,6 @@
         @open-limit-modal="openLimitModal"
         @open-edit-modal="openEditModal"
       />
-
-      <!--
-
-      <card-cooling-off-limits :limits="coolingOffLimits"/>
-
-      <card-self-exclusion-limits
-        v-if="isAdvancedModeEnabled"
-        :limits="selfExclusionLimits"
-      />
-
-      -->
 
       <modal-add-limit
         :definition="state.definition"
@@ -66,7 +55,7 @@
   const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
   const globalStore = useGlobalStore();
   const { contentLocalesArray } = storeToRefs(globalStore);
-  const { findLocalesContentData } = useProjectMethods();
+  const { findLocalesContentData, getContent } = useProjectMethods();
 
   const limitsContentRequest = await useAsyncData('limitsContent', () => queryContent('profile')
     .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'limits']).find());

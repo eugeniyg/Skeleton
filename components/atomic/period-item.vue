@@ -9,10 +9,10 @@
         Almost done
       </template>
       <template v-else>
-        <span class="time-span" v-if="state.days">{{ format(state.days) }}d</span>
-        <span class="time-span">{{ format(state.hours) }}h</span>
-        <span class="time-span">{{ format(state.minutes) }}m</span>
-        <span class="time-span">{{ format(state.seconds) }}s</span>
+        <span class="time-span" v-if="state.days">{{ format(state.days) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerDaysLabel') }}</span>
+        <span class="time-span">{{ format(state.hours) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerHoursLabel') }}</span>
+        <span class="time-span">{{ format(state.minutes) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerMinutesLabel') }}</span>
+        <span class="time-span">{{ format(state.seconds) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerSecondsLabel') }}</span>
         until activate
       </template>
 
@@ -47,9 +47,7 @@
 
 <script setup lang="ts">
   import dayjs from 'dayjs';
-  import utc from 'dayjs/plugin/utc';
-  import duration from 'dayjs/plugin/duration';
-  import timezone from 'dayjs/plugin/timezone';
+  import { storeToRefs } from 'pinia';
 
   interface PropsInterface {
     id: string,
@@ -90,12 +88,9 @@
 
   const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
   const limitsStore = useLimitsStore();
-  const { formatBalance } = useProjectMethods();
+  const { formatBalance, getContent } = useProjectMethods();
   const { getLimits } = limitsStore;
-
-  dayjs.extend(utc);
-  dayjs.extend(duration);
-  dayjs.extend(timezone);
+  const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
 
   const limitsStatuses: Record<number, string> = {
     1: 'Active',
