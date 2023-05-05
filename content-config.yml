@@ -1819,6 +1819,9 @@ collections:
           - name: titleTooltip
             label: Title Tooltip
             widget: string
+          - name: availableLimitSum
+            label: Available Limit Sum Label
+            widget: string  
           - name: activeStatusLabel
             label: Active Status Label
             widget: string
