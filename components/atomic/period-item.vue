@@ -2,7 +2,10 @@
   <div
     class="limits-periods-list__item"
   >
-    <h4 class="limits-periods-list__item-title">{{ getSum(amount, currentAmount, currency) }} of {{ formatBalance(currency, amount).amount  }} {{ formatBalance(currency, amount).currency }} left</h4>
+    <h4 class="limits-periods-list__item-title">
+      {{ getSum(amount, currentAmount, currency) }} of {{ formatBalance(currency, amount).amount  }} {{ formatBalance(currency, amount).currency }} left
+
+    </h4>
 
     <p class="limits-periods-list__item-sub-title" v-if="isShowContDown">
       <template v-if="state.isAlmostDone">
@@ -41,8 +44,6 @@
       />
       <span class="limits-periods-list__item-status-title">
         {{ limitsStatuses[status] }} till {{ dayjs(expiredAt).format(DATE_FORMAT) }}
-        { status } till { date }
-        updateStatusLabel
       </span>
     </div>
 

@@ -111,9 +111,6 @@
     }
   },
   "limits": {
-    "availableLimitSum": "{amount} of {balance} left",
-    "activeStatusLabel": "Active till {date}",
-    "pendingStatusLabel": "Pending till {date}",
     "setButtonLabel": "Set",
     "doneButtonLabel": "Done editing",
     "addButtonLabel": "Add new",
@@ -126,7 +123,9 @@
       "hint": "This setting limits the amount you can deposit per day, week or month",
       "label": "Loss limits"
     },
+    "timerHoursLabel": "h",
     "timerHours": "h",
+    "pendingStatusLabel": "Pending till {date}",
     "titleTooltip": "This setting limits the amount you can deposit per day, week or month.",
     "timerMinutes Label": "m",
     "timerSeconds Label": "s",
@@ -153,7 +152,12 @@
     "modeToggle": "Advanced mode",
     "title": "Limits",
     "editButtonLabel": "Edit limits ",
+    "timerDaysLabel": "d",
+    "availableLimitSum": "{amount} of {balance} left",
+    "timerMinutesLabel": "m",
+    "timerSecondsLabel": "s",
     "timerDays": "d",
+    "activeStatusLabel": "Active till {date}",
     "periodOptions": {
       "weekly": "Weekly",
       "1_week": "1 week",
@@ -171,6 +175,7 @@
     "deposit": {
       "label": "Deposit limits",
       "hint": "This setting limits the amount you can deposit per day, week or month"
-    }
+    },
+    "timerAlmostDoneLabel": "Almost done"
   }
 }
