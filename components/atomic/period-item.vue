@@ -9,9 +9,10 @@
         Almost done
       </template>
       <template v-else>
-        <span class="time-span">{{ state.hours }}h</span>
-        <span class="time-span">{{ state.minutes }}m</span>
-        <span class="time-span">{{ state.seconds }}s</span>
+        <span class="time-span" v-if="state.days">{{ format(state.days) }}d</span>
+        <span class="time-span">{{ format(state.hours) }}h</span>
+        <span class="time-span">{{ format(state.minutes) }}m</span>
+        <span class="time-span">{{ format(state.seconds) }}s</span>
         until activate
       </template>
 
@@ -72,6 +73,7 @@
   interface StateInterface {
     isAlmostDone: boolean,
     diffInSeconds: number,
+    days: string|number,
     hours: string|number,
     minutes: string|number,
     seconds: string|number,
@@ -80,6 +82,7 @@
   const state = reactive<StateInterface>({
     isAlmostDone: false,
     diffInSeconds: 0,
+    days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
@@ -113,10 +116,10 @@
         setTimeout(getLimits, 60000);
       } else {
         state.diffInSeconds -= 1;
-
-        state.hours = format(Math.floor(state.diffInSeconds / 3600));
-        state.minutes = format(Math.floor((state.diffInSeconds % 3600) / 60));
-        state.seconds = format(state.diffInSeconds % 60);
+        state.days = Math.floor(state.diffInSeconds / (24 * 3600));
+        state.hours = Math.floor(state.diffInSeconds / 3600) % 24;
+        state.minutes = Math.floor((state.diffInSeconds % 3600) / 60);
+        state.seconds = state.diffInSeconds % 60;
 
         setTimeout(tick, 1000);
       }

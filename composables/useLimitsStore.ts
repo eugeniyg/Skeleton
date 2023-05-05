@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 
 import { CreateLimitInterface, PlayerLimitInterface } from '@platform/frontend-core/dist/module';
 import { ProfileLimitsContentInterface } from '~/types';
+import { useGlobalStore } from '~/composables/useGlobalStore';
 
 interface LimitsModalInterface {
   addLimit: boolean,
@@ -48,7 +49,7 @@ export const useLimitsStore = defineStore('limitsStore', {
 
     async createLimit(payload: CreateLimitInterface) :Promise<void> {
       const { createPlayerLimit } = useCoreProfileApi();
-      await createPlayerLimit({ ...payload });
+      await createPlayerLimit(payload);
     },
 
     setLimitsContent(content: Maybe<ProfileLimitsContentInterface>, defaultContent: Maybe<ProfileLimitsContentInterface>) {
@@ -79,6 +80,11 @@ export const useLimitsStore = defineStore('limitsStore', {
     depositPeriods(state) {
       const limits = state.activeLimits.filter((limit) => limit.definition === 3);
       return transformToPeriods(limits) || [];
+    },
+
+    limitsCashPeriod() {
+      const { settingsConstants } = useGlobalStore();
+      return settingsConstants?.player.limit.cashPeriod || [];
     },
   },
 });

@@ -11,7 +11,6 @@ interface ModalsInterface extends Record<string, any> {
   signIn: boolean,
   deposit: boolean,
   confirm: boolean,
-  confirmBonus: boolean,
   error: boolean,
   forgotPass: boolean,
   resetPass: boolean,
@@ -53,7 +52,6 @@ export const useLayoutStore = defineStore('layoutStore', {
         signIn: false,
         deposit: false,
         confirm: false,
-        confirmBonus: false,
         error: false,
         forgotPass: false,
         resetPass: false,
@@ -193,6 +191,7 @@ export const useLayoutStore = defineStore('layoutStore', {
 
     async openDepositModal():Promise<void> {
       const { getDepositMethods } = useWalletStore();
+      const { showModal } = useLimitsStore();
       try {
         await getDepositMethods();
         this.showModal('deposit');
@@ -201,7 +200,7 @@ export const useLayoutStore = defineStore('layoutStore', {
           const router = useRouter();
           const { localizePath } = useProjectMethods();
           await router.push(localizePath('/profile/limits'));
-          this.showModal('editLimitConfirm');
+          showModal('exceededLimitConfirm');
         } else throw error;
       }
     },

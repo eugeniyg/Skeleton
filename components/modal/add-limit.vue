@@ -6,7 +6,6 @@
     clickToClose
   >
     <div class="scroll">
-      <pre style="color:white">{{ getContent(alertsData, defaultLocaleAlertsData, 'cashLimitAdd.title') }} {{ getContent(alertsData, defaultLocaleAlertsData, 'cashLimitAdd.type') }}</pre>
       <div class="header">
         <button-modal-close @click="closeModal('addLimit')"/>
         <div class="title">{{ titleMapping[props.definition] }}</div>
@@ -22,7 +21,6 @@
           @click="changeTab(period)"
         >
           {{ limitsContent?.periodOptions[period.id] || defaultLimitsContent?.periodOptions[period.id] }}
-
         </button>
       </div>
 
@@ -51,7 +49,9 @@
         size="md"
         @click="addLimit"
         :is-disabled="isAddButtonDisabled"
-      >Add</button-base>
+      >
+        {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.addCashLimit.addButton') }}
+      </button-base>
 
     </div>
   </vue-final-modal>
@@ -63,30 +63,21 @@
   import { CreateLimitInterface, CurrencyInterface, StatusInterface } from '@platform/frontend-core/dist/module';
   import { useGlobalStore } from '~/composables/useGlobalStore';
 
-  interface PropsInterface {
-    definition: number,
-  }
+  const props = defineProps<{ definition: number }>();
 
-  const props = defineProps<PropsInterface>();
-
-  const { settingsConstants } = useGlobalStore();
   const limitsStore = useLimitsStore();
-  const {
-    activeLimits, limitsContent, defaultLimitsContent, modals,
-  } = storeToRefs(limitsStore);
   const { getLimits, createLimit, closeModal } = limitsStore;
+  const {
+    limitsCashPeriod, activeLimits, limitsContent, defaultLimitsContent, modals,
+  } = storeToRefs(limitsStore);
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();
   const {
-    currencies,
-    alertsData,
-    defaultLocaleAlertsData,
-    popupsData,
-    defaultLocalePopupsData,
+    currencies, alertsData, defaultLocaleAlertsData, popupsData, defaultLocalePopupsData,
   } = storeToRefs(globalStore);
-  const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
-
-  const limitsCashPeriod = ref<StatusInterface[]>(settingsConstants?.player.limit.cashPeriod || []);
+  const {
+    formatBalance, getMainBalanceFormat, getContent,
+  } = useProjectMethods();
 
   const titleMapping = computed(() => ({
     1: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addBetlabel'),
@@ -96,7 +87,7 @@
 
   const formState = reactive<CreateLimitInterface>({
     definition: props.definition,
-    currency: '',
+    currency: undefined,
     amount: 0,
     period: undefined,
     showCurrenciesError: false,

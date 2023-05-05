@@ -77,13 +77,11 @@
 
   setLimitsContent(currenctLocaleLimitsContent, defaultLocaleLimitsContent);
 
-  // const { showModal } = useLayoutStore();
-
   interface EditPropsInterface {
-    limitId?: string,
-    definition?: number,
-    amount?: number,
-    currency?: string,
+    limitId: string|undefined,
+    definition: number|undefined,
+    amount: number|undefined,
+    currency: string|undefined,
   }
 
   const isAdvancedModeEnabled = ref<boolean>(true);
@@ -92,14 +90,19 @@
     definition: number|undefined,
     editProps: EditPropsInterface
   }>({
-    definition: -1,
-    editProps: {},
+    definition: undefined,
+    editProps: {
+      limitId: undefined,
+      definition: undefined,
+      amount: undefined,
+      currency: undefined,
+    },
   });
 
   const addModalKey = ref(0);
   const editModalKey = ref(0);
 
-  const openLimitModal = (definition: number | undefined) => {
+  const openLimitModal = (definition: number) => {
     state.definition = definition;
     addModalKey.value += 1;
     showModal('addLimit');
@@ -118,12 +121,6 @@
     isAdvancedModeEnabled.value = !isAdvancedModeEnabled.value;
   };
 
-  const periodsTitles: Record<string, string> = {
-    daily: 'Daily',
-    weekly: 'Weekly',
-    monthly: 'Monthly',
-  };
-
   const addOverflowToMain = () => {
     const main = document.querySelector('.app-main') as HTMLElement;
     main.classList.add('is-overflow-off');
@@ -132,10 +129,6 @@
   const removeOverflowFromMain = () => {
     const main = document.querySelector('.app-main') as HTMLElement;
     main.classList.remove('is-overflow-off');
-  };
-
-  const updateLimits = async () => {
-    await getLimits();
   };
 
   onMounted(async () => {

@@ -25,7 +25,6 @@
       </p>
 
       <div class="limits__card-actions">
-
         <button-base
           type="primary"
           @click="emit('open-limit-modal', definition)"
