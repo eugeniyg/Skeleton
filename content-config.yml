@@ -1828,19 +1828,19 @@ collections:
           - name: timerLabel
             label: Timer Label
             widget: string
-          - name: timerDays
+          - name: timerDaysLabel
             label: Timer Days Label
             widget: string
-          - name: timerHours  
+          - name: timerHoursLabel  
             label: Timer Hours Label
             widget: string
-          - name: timerMinutes Label
+          - name: timerMinutesLabel
             label: Timer Minutes 
             widget: string
-          - name: timerSeconds Label
+          - name: timerSecondsLabel
             label: Timer Seconds
             widget: string
-          - name: timerAlmostDone
+          - name: timerAlmostDoneLabel
             label: Timer Almost Done Label
             widget: string    
           - name: periodOptions
