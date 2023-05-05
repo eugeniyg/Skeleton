@@ -10,7 +10,7 @@
       @toggle-open="toggleOpen"
     />
 
-    <main class="app-main" :class="{'is-overflow': isHomePage()}">
+    <main class="app-main" :class="{'is-overflow': isHomePage() || isProfileLimitsPage() }" :data-route="route.name">
       <slot />
     </main>
 
@@ -47,7 +47,7 @@
 
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
-  const { isHomePage, localizePath } = useProjectMethods();
+  const { isHomePage, isProfileLimitsPage, localizePath } = useProjectMethods();
 
   const {
     showCookiePopup, isDrawerCompact,

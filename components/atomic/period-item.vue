@@ -6,14 +6,14 @@
 
     <p class="limits-periods-list__item-sub-title" v-if="isShowContDown">
       <template v-if="state.isAlmostDone">
-        Almost done
+        {{ getContent(limitsContent, defaultLimitsContent, 'timerAlmostDone') }}
       </template>
       <template v-else>
         <span class="time-span" v-if="state.days">{{ format(state.days) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerDaysLabel') }}</span>
         <span class="time-span">{{ format(state.hours) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerHoursLabel') }}</span>
         <span class="time-span">{{ format(state.minutes) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerMinutesLabel') }}</span>
         <span class="time-span">{{ format(state.seconds) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerSecondsLabel') }}</span>
-        until activate
+        {{ getContent(limitsContent, defaultLimitsContent, 'timerLabel') }}
       </template>
 
     </p>
@@ -39,7 +39,11 @@
         :class="`limits-periods-list__item-status-type--${ limitsStatuses[status].toLowerCase()  }`"
         :data-status="limitsStatuses[status]"
       />
-      <span class="limits-periods-list__item-status-title">{{ limitsStatuses[status] }} till {{ dayjs(expiredAt).format(DATE_FORMAT) }}</span>
+      <span class="limits-periods-list__item-status-title">
+        {{ limitsStatuses[status] }} till {{ dayjs(expiredAt).format(DATE_FORMAT) }}
+        { status } till { date }
+        updateStatusLabel
+      </span>
     </div>
 
   </div>
@@ -102,6 +106,8 @@
   const getPercentage = (currentAmount: number, amount: number) => ((amount === 0) ? 100 : ((currentAmount / amount) * 100));
 
   const format = (value: number): number|string => (value < 10 ? `0${value}` : value);
+
+  const formatPeriodStatus = () => {};
 
   const countdown = () => {
     const tick = async () => {

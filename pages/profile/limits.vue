@@ -110,22 +110,9 @@
     isAdvancedModeEnabled.value = !isAdvancedModeEnabled.value;
   };
 
-  const addOverflowToMain = () => {
-    const main = document.querySelector('.app-main') as HTMLElement;
-    main.classList.add('is-overflow-off');
-  };
-
-  const removeOverflowFromMain = () => {
-    const main = document.querySelector('.app-main') as HTMLElement;
-    main.classList.remove('is-overflow-off');
-  };
-
   onMounted(async () => {
-    addOverflowToMain();
     await getLimits();
   });
-
-  onUnmounted(removeOverflowFromMain);
 </script>
 
 <style lang="scss">

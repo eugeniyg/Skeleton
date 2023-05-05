@@ -60,6 +60,11 @@ export const useProjectMethods = () => {
     return route.name === 'index' || route.name === 'locale-index';
   };
 
+  const isProfileLimitsPage = (): boolean => {
+    const route = useRoute();
+    return route.name === 'profile-limits' || route.name === 'locale-profile-limits';
+  };
+
   const preloaderStart = ():void => {
     const preloaderEl = document.querySelector('.preloader');
     if (preloaderEl) preloaderEl.classList.value = 'preloader';
@@ -190,6 +195,7 @@ export const useProjectMethods = () => {
     preloaderStart,
     localizePath,
     isHomePage,
+    isProfileLimitsPage,
     getFormatDate,
     getNicknameFromEmail,
     formatBalance,
