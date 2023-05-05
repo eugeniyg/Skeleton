@@ -123,8 +123,11 @@
       "hint": "This setting limits the amount you can deposit per day, week or month",
       "label": "Loss limits"
     },
+    "timerHours": "h",
     "pendingStatusLabel": "Pending till",
     "titleTooltip": "This setting limits the amount you can deposit per day, week or month.",
+    "timerMinutes Label": "m",
+    "timerSeconds Label": "s",
     "timerLabel": "until activate",
     "bet": {
       "label": "Bet limits",
@@ -137,6 +140,7 @@
       "selfExclusion": "Self exclusion",
       "coolingOff": "Cooling off"
     },
+    "timerAlmostDone": "Almost done",
     "coolingOff": {
       "label": "Cooling off",
       "hint": "The restriction takes effect instantly. You won’t be able to make deposits and play during the specified period, also you will be excluded from all advertising offers.",
@@ -147,6 +151,7 @@
     "modeToggle": "Advanced mode",
     "title": "Limits",
     "editButtonLabel": "Edit limits ",
+    "timerDays": "d",
     "activeStatusLabel": "Active till",
     "periodOptions": {
       "weekly": "Weekly",
