@@ -1827,7 +1827,22 @@ collections:
             widget: string
           - name: timerLabel
             label: Timer Label
-            widget: string     
+            widget: string
+          - name: timerDays
+            label: Timer Days Label
+            widget: string
+          - name: timerHours  
+            label: Timer Hours Label
+            widget: string
+          - name: timerMinutes Label
+            label: Timer Minutes 
+            widget: string
+          - name: timerSeconds Label
+            label: Timer Seconds
+            widget: string
+          - name: timerAlmostDone
+            label: Timer Almost Done Label
+            widget: string    
           - name: periodOptions
             label: Period Options
             widget: object
