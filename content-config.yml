@@ -996,31 +996,31 @@ collections:
                 widget: object
                 collapsed: true
                 fields:  
-                - name: editDailyDeposit
+                - name: edit_daily_3
                   label: Edit Daily Deposit
                   widget: string
-                - name: editWeeklyDeposit
+                - name: edit_weekly_3
                   label: Edit Weekly Deposit
                   widget: string
-                - name: editMonthlyDeposit
+                - name: edit_monthly_3
                   label: Edit Monthly Deposit
                   widget: string
-                - name: editDailyLoss
+                - name: edit_daily_2
                   label: Edit Daily Loss
                   widget: string
-                - name: editWeeklyLoss
+                - name: edit_weekly_2
                   label: Edit Weekly Loss
                   widget: string
-                - name: editMonthlyLoss
+                - name: edit_monthly_2
                   label: Edit Monthly Loss
                   widget: string
-                - name: editDailyBet
+                - name: edit_daily_1
                   label: Edit Daily Bet
                   widget: string
-                - name: editWeeklyBet
+                - name: edit_weekly_1
                   label: Edit Weekly Bet
                   widget: string
-                - name: editMonthlyBet
+                - name: edit_monthly_1
                   label: Edit Monthly Bet
                   widget: string
               - name: hint
