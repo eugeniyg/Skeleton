@@ -991,7 +991,7 @@ collections:
             widget: object
             collapsed: true
             fields:
-              - name: label
+              - name: popupLabel
                 label: Label
                 widget: object
                 collapsed: true
