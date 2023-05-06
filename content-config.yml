@@ -1020,8 +1020,8 @@ collections:
                 - name: editWeeklyBetLabel
                   label: Edit Weekly Bet Label
                   widget: string
-                - name: editMonthlyBetitLabel
-                  label: Edit Monthly Betit Label
+                - name: editMonthlyBetLabel
+                  label: Edit Monthly Bet Label
                   widget: string
               - name: hint
                 label: Hint
