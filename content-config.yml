@@ -996,32 +996,32 @@ collections:
                 widget: object
                 collapsed: true
                 fields:  
-                - name: editDailyDepositLabel
-                  label: Edit Daily Deposit Label
+                - name: editDailyDeposit
+                  label: Edit Daily Deposit
                   widget: string
-                - name: editWeeklyDepositLabel
-                  label: Edit Weekly Deposit Label
+                - name: editWeeklyDeposit
+                  label: Edit Weekly Deposit
                   widget: string
-                - name: editMonthlyDepositLabel
-                  label: Edit Monthly Deposit Label
+                - name: editMonthlyDeposit
+                  label: Edit Monthly Deposit
                   widget: string
-                - name: editDailyLossLabel
-                  label: Edit Daily Loss Label
+                - name: editDailyLoss
+                  label: Edit Daily Loss
                   widget: string
-                - name: editWeeklyLossLabel
-                  label: Edit Weekly Loss Label
+                - name: editWeeklyLoss
+                  label: Edit Weekly Loss
                   widget: string
-                - name: editMonthlyLossLabel
-                  label: Edit Monthly Loss Label
+                - name: editMonthlyLoss
+                  label: Edit Monthly Loss
                   widget: string
-                - name: editDailyBetLabel
-                  label: Edit Daily Bet Label
+                - name: editDailyBet
+                  label: Edit Daily Bet
                   widget: string
-                - name: editWeeklyBetLabel
-                  label: Edit Weekly Bet Label
+                - name: editWeeklyBet
+                  label: Edit Weekly Bet
                   widget: string
-                - name: editMonthlyBetLabel
-                  label: Edit Monthly Bet Label
+                - name: editMonthlyBet
+                  label: Edit Monthly Bet
                   widget: string
               - name: hint
                 label: Hint
