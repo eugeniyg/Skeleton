@@ -125,13 +125,28 @@
       "successConfirmLabel": "Limit set successfully"
     },
     "editCashLimit": {
-      "label": "Edit daily deposit limit",
-      "hint": "Email confirmation will be needed. The change will be applied in 24 hours.",
-      "updateButtonLabel": "Update",
-      "deleteButtonLabel": "Delete",
-      "lessAmountTitle": "Limit update successfully",
       "greaterAmountTitle": "New limit sum is bigger than the previous one",
-      "greaterAmountDescription": "Please, check your email and follow the received confirmation link to activate limit change."
+      "lessAmountTitle": "Limit update successfully",
+      "hint": "Email confirmation will be needed. The change will be applied in 24 hours.",
+      "popupLabel": {
+        "editDailyBet": "Edit daily bet",
+        "editMonthlyLoss": "Edit monthly loss",
+        "editWeeklyBet": "Edit weekly bet",
+        "editWeeklyLoss": "Edit weekly loss",
+        "editMonthlyBet": "Edit monthly bet",
+        "editDailyDeposit": "Edit daily deposit",
+        "editDailyLoss": "Edit daily loss",
+        "editWeeklyDeposit": "Edit weekly deposit",
+        "editMonthlyDeposit": "Edit monthly deposit"
+      },
+      "greaterAmountDescription": "Please, check your email and follow the received confirmation link to activate limit change.",
+      "label": "Edit daily deposit limit",
+      "deleteButtonLabel": "Delete",
+      "updateButtonLabel": "Update",
+      "actions": {
+        "updateButtonLabel": "Update",
+        "deleteButtonLabel": "Delete"
+      }
     },
     "selfExlusionConfirm": {
       "updateTitle": "Confirm limit update",
