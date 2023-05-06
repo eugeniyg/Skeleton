@@ -8,9 +8,7 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('editLimit')"/>
-        <div class="title">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.label') }}
-        </div>
+        <div class="title">{{ label }}</div>
       </div>
 
       <form-input-number
@@ -58,6 +56,7 @@
   interface PropsInterface {
     limitId?: string,
     period?: string,
+    definition: number|undefined,
     amount?: number,
     currency? : string,
   }
@@ -92,6 +91,12 @@
     amount: formattedBalance.amount,
     currency: formattedBalance.currency,
     limitId: props.limitId,
+  });
+
+  const label = computed(() => {
+    const labels = getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.editCashLimit.popupLabel');
+    console.log(labels, props);
+    return `${props.period}-${props.definition}`;
   });
 
   const isDisableUpdate = computed(() => Number(state.prevAmount) === Number(state.amount) || state.amount === '');

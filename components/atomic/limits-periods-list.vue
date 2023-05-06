@@ -15,7 +15,7 @@
           v-bind="item"
           :is-show-edit="isShowEdit"
           :key="item.id + item.updatedAt"
-          @edit-limit="emit('open-edit-modal', { limitId: item.id, amount: item.amount, currency: item.currency, period: item.period })"
+          @edit-limit="emit('open-edit-modal', { limitId: item.id, amount: item.amount, currency: item.currency, period: item.period, definition: item.definition })"
         />
       </div>
     </div>

@@ -74,8 +74,12 @@
 
   const definition = 3;
 
-  const openEditModal = ({ limitId, amount, currency }: UpdateLimitInterface) => {
-    emit('open-edit-modal', { limitId, amount, currency });
+  const openEditModal = ({
+    limitId, amount, currency, period, definition,
+  }: UpdateLimitInterface) => {
+    emit('open-edit-modal', {
+      limitId, amount, currency, period, definition,
+    });
   };
 
   const isEditLocked = computed(() => depositPeriods.value.every((period) => period.items.filter((item) => item.status === 1).every((item) => item.cancelProcess)));

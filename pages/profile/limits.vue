@@ -71,6 +71,7 @@
     definition: number|undefined,
     amount: number|undefined,
     currency: string|undefined,
+    period: string|undefined,
   }
 
   const isAdvancedModeEnabled = ref<boolean>(true);
@@ -85,6 +86,7 @@
       definition: undefined,
       amount: undefined,
       currency: undefined,
+      period: undefined,
     },
   });
 
@@ -97,11 +99,14 @@
     showModal('addLimit');
   };
 
-  const openEditModal = ({ limitId, amount, currency }: EditPropsInterface) => {
+  const openEditModal = ({
+    limitId, amount, currency, period, definition,
+  }: EditPropsInterface) => {
     state.editProps.limitId = limitId;
     state.editProps.amount = amount;
     state.editProps.currency = currency;
-    state.editProps.definition = state.definition;
+    state.editProps.period = period;
+    state.editProps.definition = definition;
     editModalKey.value += 1;
     showModal('editLimit');
   };
