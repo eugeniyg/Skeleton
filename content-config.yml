@@ -991,18 +991,52 @@ collections:
             widget: object
             collapsed: true
             fields:
-              - name: label
+              - name: popupLabel
                 label: Label
-                widget: string
+                widget: object
+                collapsed: true
+                fields:  
+                - name: editDailyDepositLabel
+                  label: Edit Daily Deposit Label
+                  widget: string
+                - name: editWeeklyDepositLabel
+                  label: Edit Weekly Deposit Label
+                  widget: string
+                - name: editMonthlyDepositLabel
+                  label: Edit Monthly Deposit Label
+                  widget: string
+                - name: editDailyLossLabel
+                  label: Edit Daily Loss Label
+                  widget: string
+                - name: editWeeklyLossLabel
+                  label: Edit Weekly Loss Label
+                  widget: string
+                - name: editMonthlyLossLabel
+                  label: Edit Monthly Loss Label
+                  widget: string
+                - name: editDailyBetLabel
+                  label: Edit Daily Bet Label
+                  widget: string
+                - name: editWeeklyBetLabel
+                  label: Edit Weekly Bet Label
+                  widget: string
+                - name: editMonthlyBetLabel
+                  label: Edit Monthly Bet Label
+                  widget: string
               - name: hint
                 label: Hint
                 widget: string
-              - name: updateButtonLabel
-                label: Update Button Label
-                widget: string
-              - name: deleteButtonLabel
-                label: Delete Button Label
-                widget: string
+              - name: actions
+                label: Actions
+                widget: object
+                collapsed: true
+                fields:  
+                - name: updateButtonLabel
+                  label: Update Button Label
+                  widget: string
+                - name: deleteButtonLabel
+                  label: Delete Button Label
+                  widget: string
               - name: lessAmountTitle
                 label: Less Amount Confirm Title
                 widget: string
