@@ -2,10 +2,7 @@
   <div
     class="limits-periods-list__item"
   >
-    <h4 class="limits-periods-list__item-title">
-      {{ getSum(amount, currentAmount, currency) }} of {{ formatBalance(currency, amount).amount  }} {{ formatBalance(currency, amount).currency }} left
-
-    </h4>
+    <h4 class="limits-periods-list__item-title">{{ formatPeriodStatus }}</h4>
 
     <p class="limits-periods-list__item-sub-title" v-if="isShowContDown">
       <template v-if="state.isAlmostDone">
@@ -108,7 +105,19 @@
 
   const format = (value: number): number|string => (value < 10 ? `0${value}` : value);
 
-  const formatPeriodStatus = () => {};
+  const formatPeriodStatus = computed(() => {
+    const message = getContent(limitsContent.value, defaultLimitsContent.value, 'availableLimitSum');
+    const { amount, currency } = formatBalance(props.currency, props.amount);
+    const balance = amount < props.currentAmount ? 0 : amount - props.currentAmount;
+
+    const correction: Record<string, any> = {
+      '{amount}': amount,
+      '{balance}': balance,
+      '{currency}': currency,
+    };
+
+    return Object.keys(correction).reduce((acc, key) => acc.replace(key, correction[key]), message);
+  });
 
   const countdown = () => {
     const tick = async () => {
@@ -131,11 +140,6 @@
   };
 
   const isShowContDown = (() => props.period === 'weekly' || props.period === 'monthly');
-
-  const getSum = (amount: number, currentAmount: number, currency: string) => {
-    const balance = formatBalance(currency, amount);
-    return balance.amount < currentAmount ? 0 : balance.amount - currentAmount;
-  };
 
   onMounted(() => {
     if (props.expiredAt) {
