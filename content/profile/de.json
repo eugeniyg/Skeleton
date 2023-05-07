@@ -162,17 +162,17 @@
     "activeStatusLabel": "Active till {date}",
     "periodOptions": {
       "weekly": "Weekly",
-      "1_week": "1 week",
-      "3_days": "3 days",
+      "1_week": "1 Week",
+      "3_days": "3 Days",
       "forever": "Forever",
-      "1_year": "1 year",
+      "1_year": "1 Year",
       "monthly": "Monthly",
-      "1_day": "1 day",
-      "1_month": "1 month",
-      "9_months": "9 months",
+      "1_day": "1 Day",
+      "1_month": "1 Month",
+      "9_months": "9 Months",
       "daily": "Daily",
-      "6_months": "6 months",
-      "3_months": "3 months"
+      "6_months": "6 Months",
+      "3_months": "3 Months"
     },
     "deposit": {
       "label": "Deposit limits",
