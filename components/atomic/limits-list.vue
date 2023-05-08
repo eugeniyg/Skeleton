@@ -1,30 +1,27 @@
 <template>
-  <div class="session-limits">
+  <div class="limits-list">
     <div
-      class="session-limits__item"
-      v-for="(item, index) in props.items"
-      :key="item.value"
+      class="limits-list__item"
+      v-for="limit in props.limits"
     >
-      <div class="session-limits__input">
-        <span class="session-limits__value">{{ item.value }}</span>
-        <div class="session-limits__actions" v-if="index === 0">
-          <button-base type="primary" @click="emit('back')">
+      <div class="limits-list__input">
+        <span class="limits-list__value">{{ limit.period }}</span>
+        <div class="limits-list__actions" v-if="limit.status === 1 && !limit.cancelProcess">
+          <button-base type="primary" @click="emit('edit', { limitId: limit.id, period: limit.period })">
             <atomic-icon id="edit"/>
           </button-base>
-          <button-base type="ghost" @click="emit('remove')">
+          <button-base type="ghost" @click="remove(limit.id)">
             <atomic-icon id="trash"/>
           </button-base>
         </div>
       </div>
 
-      <!-- statuses: pending, active-->
-
       <div
-        class="session-limits__status"
-        :class="`session-limits__status--${item.status.type}`"
+        class="limits-list__status"
+        :class="`limits-list__status--${limit.status === 1 ? 'active': 'pending'}`"
       >
-        <span class="session-limits__status-dot"></span>
-        <span class="session-limits__status-msg">{{ item.status.msg }}</span>
+        <span class="limits-list__status-dot"></span>
+        <span class="limits-list__status-msg">{{ limit.expiredAt }}</span>
       </div>
 
     </div>
@@ -32,18 +29,38 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    items: {
-      type: Array,
-      required: true,
-    },
-  });
+  import { PlayerLimitInterface } from '@platform/frontend-core/dist/module';
 
-  const emit = defineEmits(['back', 'remove']);
+  const props = defineProps<{
+    limits: PlayerLimitInterface[]
+  }>();
+
+  const emit = defineEmits(['edit']);
+
+  const { deletePlayerLimit } = useCoreProfileApi();
+  const { getLimits } = useLimitsStore();
+
+  const remove = async (limitId: string) => {
+    await deletePlayerLimit(limitId);
+    await getLimits();
+
+    // if (isLargeAmount.value) {
+    //   showAlert({
+    //     title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditLargeAmount.title'),
+    //     description: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditLargeAmount.description'),
+    //     type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditLargeAmount.type'),
+    //   });
+    // } else {
+    //   showAlert({
+    //     title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditSmallerAmount.title'),
+    //     type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditSmallerAmount.type'),
+    //   });
+    // }
+  };
 </script>
 
 <style lang="scss">
-.session-limits {
+.limits-list {
   display: grid;
   grid-row-gap: 16px;
 

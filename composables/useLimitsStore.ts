@@ -8,6 +8,7 @@ interface LimitsModalInterface {
   addLimit: boolean,
   editLimit: boolean,
   exceededLimitConfirm: boolean,
+  confirmLimitUpdate: boolean,
 }
 
 interface LimitsStateInteface {
@@ -38,6 +39,7 @@ export const useLimitsStore = defineStore('limitsStore', {
       addLimit: false,
       editLimit: false,
       exceededLimitConfirm: false,
+      confirmLimitUpdate: false,
     },
   }),
 
@@ -82,9 +84,35 @@ export const useLimitsStore = defineStore('limitsStore', {
       return transformToPeriods(limits) || [];
     },
 
-    limitsCashPeriod() {
+    selfExclusionLimits(state) {
+      return state.activeLimits.filter((limit) => limit.definition === 4);
+    },
+
+    coolingOffLimits(state) {
+      return state.activeLimits.filter((limit) => limit.definition === 5);
+    },
+
+    limitCashPeriod() {
       const { settingsConstants } = useGlobalStore();
+      console.log(settingsConstants?.player.limit.coolingOffPeriod)
       return settingsConstants?.player.limit.cashPeriod || [];
     },
+
+    coolingOffPeriod() {
+      const { settingsConstants } = useGlobalStore();
+      return settingsConstants?.player.limit.coolingOffPeriod.map((period) => ({
+        value: period.name,
+        code: period.id,
+      })) || [];
+    },
+
+    selfExclusionPeriod() {
+      const { settingsConstants } = useGlobalStore();
+      return settingsConstants?.player.limit.selfExclusionPeriod.map((period) => ({
+        value: period.name,
+        code: period.id,
+      })) || [];
+    },
+
   },
 });

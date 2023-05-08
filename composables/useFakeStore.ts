@@ -1698,48 +1698,6 @@ export const useFakeStore = () => {
     },
   ];
 
-  // const profileLimits = {
-  //   coolingOff: {
-  //     title: 'Cooling off',
-  //     placeholder: 'None',
-  //     dropdown: {
-  //       placeholder: 'None',
-  //       options: [
-  //         { value: '1 Day', code: '1 Day' },
-  //         { value: '3 Days', code: '3 Days' },
-  //         { value: '1 Week', code: '1 Week' },
-  //         { value: '1 Months', code: '1 Months' },
-  //         { value: '3 Months', code: '3 Months' },
-  //         { value: '6 Months', code: '6 Months' },
-  //       ],
-  //     },
-  //     info: '<p>The restriction takes effect instantly. You won’t be able to make deposits and play during the specified period, also you will be excluded from all advertising offers.</p>',
-  //     buttons: {
-  //       submit: {
-  //         title: 'Set',
-  //       },
-  //     },
-  //   },
-  //   selfExclusion: {
-  //     title: 'Self exclusion',
-  //     dropdown: {
-  //       placeholder: '0',
-  //       options: [
-  //         { value: '3 Months', code: '3 Months' },
-  //         { value: '6 Months', code: '6 Months' },
-  //         { value: '9 Months', code: '9 Months' },
-  //         { value: '1 Year', code: '1 Year' },
-  //       ],
-  //     },
-  //     buttons: {
-  //       submit: {
-  //         title: 'Set',
-  //       },
-  //     },
-  //     info: '<p>You can set a self-exclusion limit for a definite or an indefinite period of time. The restriction takes effect instantly. During the set period you will not be able to log into your account. To be excluded from gambling on our site for an indefinite period of time, please, contact our support team via <a href="#">live-chat</a></p>',
-  //   },
-  // };
-
   return {
     cashBonuses,
     catNavItems,

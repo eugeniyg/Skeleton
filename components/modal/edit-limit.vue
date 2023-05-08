@@ -54,9 +54,9 @@
   import { storeToRefs } from 'pinia';
 
   interface PropsInterface {
-    limitId?: string,
+    limitId?: string|undefined,
     period?: string,
-    definition: number|undefined,
+    definition?: number|undefined,
     amount?: number,
     currency? : string,
   }
@@ -77,26 +77,22 @@
     defaultLocalePopupsData,
   } = storeToRefs(globalStore);
 
-  interface StateInterface {
-    prevAmount?: string|number,
-    limitId?: string,
-    amount?: string|number,
-    currency?: string,
-  }
-
   const formattedBalance = formatBalance(props.currency, props.amount);
 
-  const state = reactive<StateInterface>({
+  const state = reactive<{
+    prevAmount: number|undefined,
+    amount: string|number,
+    currency: string,
+  }>({
     prevAmount: formattedBalance.amount,
     amount: formattedBalance.amount,
     currency: formattedBalance.currency,
-    limitId: props.limitId,
   });
 
   const label = computed(() => {
     const labels = getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.editCashLimit.popupLabel');
-    console.log(labels, props);
-    return `${props.period}-${props.definition}`;
+    if (!labels) return '';
+    return labels[`edit_${props.period}_${props.definition}`];
   });
 
   const isDisableUpdate = computed(() => Number(state.prevAmount) === Number(state.amount) || state.amount === '');
@@ -109,7 +105,7 @@
     const formattedMainBalance = getMainBalanceFormat(state.currency, state.amount);
 
     await updatePlayerLimit({
-      limitId: state.limitId,
+      limitId: props.limitId,
       amount: formattedMainBalance.amount,
     });
     await getLimits();
@@ -130,7 +126,7 @@
 
   const remove = async () => {
     closeModal('editLimit');
-    await deletePlayerLimit(state.limitId);
+    await deletePlayerLimit(props.limitId);
     await getLimits();
 
     showAlert({

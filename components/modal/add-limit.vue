@@ -63,12 +63,12 @@
   import { CreateLimitInterface, CurrencyInterface, StatusInterface } from '@platform/frontend-core/dist/module';
   import { useGlobalStore } from '~/composables/useGlobalStore';
 
-  const props = defineProps<{ definition: number }>();
+  const props = defineProps<{ definition?: number|undefined }>();
 
   const limitsStore = useLimitsStore();
   const { getLimits, createLimit, closeModal } = limitsStore;
   const {
-    limitsCashPeriod, activeLimits, limitsContent, defaultLimitsContent, modals,
+    limitCashPeriod, activeLimits, limitsContent, defaultLimitsContent, modals,
   } = storeToRefs(limitsStore);
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();
@@ -104,7 +104,7 @@
     );
   };
 
-  const periodOptions = computed(() => Object.values(limitsCashPeriod.value)?.map((period) => {
+  const periodOptions = computed(() => Object.values(limitCashPeriod.value)?.map((period) => {
     if (isPeriodDisabled(period)) {
       return {
         ...period,
@@ -121,7 +121,7 @@
     && limit.period === formState.period
     && limit.currency === currency.code));
 
-  const isCurrencySelectedInAllPeriods = (currency: { code: string }) => limitsCashPeriod.value?.every((period) => activeLimits?.value.some(
+  const isCurrencySelectedInAllPeriods = (currency: { code: string }) => limitCashPeriod.value?.every((period) => activeLimits?.value.some(
     (limit) => limit.definition === formState.definition
       && limit.period === period.id
       && limit.currency === currency.code,

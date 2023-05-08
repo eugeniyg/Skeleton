@@ -21,7 +21,7 @@
       />
 
       <p v-else class="limits__card-sub-title">
-        {{ getContent(limitsContent, defaultLimitsContent, 'deposit?.hint') }}
+        {{ getContent(limitsContent, defaultLimitsContent, 'deposit.hint') }}
       </p>
 
       <div class="limits__card-actions">

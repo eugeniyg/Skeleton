@@ -29,6 +29,13 @@
         @open-edit-modal="openEditModal"
       />
 
+      <card-cooling-off-limits />
+
+      <card-self-exclusion-limits
+        v-if="isAdvancedModeEnabled"
+        @open-confirm-modal="openConfirmModal"
+      />
+
       <modal-add-limit
         :definition="state.definition"
         :key="addModalKey"
@@ -38,22 +45,26 @@
         v-bind="state.editProps"
         :key="editModalKey"
       />
-
-      <modal-exceeded-limit-confirm/>
     </div>
+
+    <modal-exceeded-limit-confirm/>
+
+    <modal-confirm-limit-update
+      :period="state.period"
+      :key="confirmModalKey"
+    />
 
   </div>
 </template>
 
 <script setup lang="ts">
-  import { onMounted } from '@vue/runtime-core';
   import { storeToRefs } from 'pinia';
   import { ProfileLimitsContentInterface } from '~/types';
 
   const limitsStore = useLimitsStore();
+  const globalStore = useGlobalStore();
   const { getLimits, setLimitsContent, showModal } = limitsStore;
   const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
-  const globalStore = useGlobalStore();
   const { contentLocalesArray } = storeToRefs(globalStore);
   const { findLocalesContentData, getContent } = useProjectMethods();
 
@@ -74,13 +85,15 @@
     period: string|undefined,
   }
 
-  const isAdvancedModeEnabled = ref<boolean>(true);
+  const isAdvancedModeEnabled = ref<boolean>(false);
 
   const state = reactive<{
     definition: number|undefined,
-    editProps: EditPropsInterface
+    editProps: EditPropsInterface,
+    period: undefined|string,
   }>({
     definition: undefined,
+    period: undefined,
     editProps: {
       limitId: undefined,
       definition: undefined,
@@ -92,6 +105,7 @@
 
   const addModalKey = ref(0);
   const editModalKey = ref(0);
+  const confirmModalKey = ref(0);
 
   const openLimitModal = (definition: number) => {
     state.definition = definition;
@@ -109,6 +123,12 @@
     state.editProps.definition = definition;
     editModalKey.value += 1;
     showModal('editLimit');
+  };
+
+  const openConfirmModal = (period: string) => {
+    state.period = period;
+    confirmModalKey.value += 1;
+    showModal('confirmLimitUpdate');
   };
 
   const clickToggle = () => {
