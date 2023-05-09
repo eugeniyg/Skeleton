@@ -53,15 +53,13 @@
   import { VueFinalModal } from 'vue-final-modal';
   import { storeToRefs } from 'pinia';
 
-  interface PropsInterface {
+  const props = defineProps<{
     limitId?: string|undefined,
     period?: string,
     definition?: number|undefined,
     amount?: number,
     currency? : string,
-  }
-
-  const props = defineProps<PropsInterface>();
+  }>();
 
   const limitsStore = useLimitsStore();
   const { closeModal, getLimits } = useLimitsStore();

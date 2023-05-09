@@ -6,7 +6,7 @@
 
     <atomic-limits-list
       v-if="coolingOffLimits.length && !state.isEditProcess"
-      :limits="coolingOffLimits"
+      :limits="sortedLimits"
       @edit="edit"
     />
 
@@ -45,19 +45,24 @@
   const state = reactive<{
     limitId: string | undefined,
     isEditProcess: boolean,
-    selectedPeriod: string | undefined,
+    selectedPeriod: string|undefined,
     definition: number,
+    prevPeriod: string|undefined,
   }>({
     limitId: undefined,
     isEditProcess: false,
     selectedPeriod: undefined,
+    prevPeriod: undefined,
     definition: 5,
   });
+
+  const sortedLimits = computed(() => coolingOffLimits.value.sort((a, b) => a.status - b.status));
 
   const edit = ({ limitId, period }: {limitId: string, period: string}) => {
     state.isEditProcess = true;
     state.limitId = limitId;
     state.selectedPeriod = period;
+    state.prevPeriod = period;
   };
 
   const save = async () => {
@@ -78,19 +83,6 @@
       });
       await getLimits();
       state.isEditProcess = false;
-
-      // if (isLargeAmount.value) {
-      //   showAlert({
-      //     title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditLargeAmount.title'),
-      //     description: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditLargeAmount.description'),
-      //     type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditLargeAmount.type'),
-      //   });
-      // } else {
-      //   showAlert({
-      //     title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditSmallerAmount.title'),
-      //     type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditSmallerAmount.type'),
-      //   });
-      // }
     }
   };
 

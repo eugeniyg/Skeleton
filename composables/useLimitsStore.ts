@@ -94,22 +94,27 @@ export const useLimitsStore = defineStore('limitsStore', {
 
     limitCashPeriod() {
       const { settingsConstants } = useGlobalStore();
-      console.log(settingsConstants?.player.limit.coolingOffPeriod)
       return settingsConstants?.player.limit.cashPeriod || [];
     },
 
     coolingOffPeriod() {
       const { settingsConstants } = useGlobalStore();
+      const { getContent } = useProjectMethods();
+      const content = getContent(this.limitsContent, this.defaultLimitsContent, 'periodOptions');
+
       return settingsConstants?.player.limit.coolingOffPeriod.map((period) => ({
-        value: period.name,
+        value: content[period.id],
         code: period.id,
       })) || [];
     },
 
     selfExclusionPeriod() {
       const { settingsConstants } = useGlobalStore();
+      const { getContent } = useProjectMethods();
+      const content = getContent(this.limitsContent, this.defaultLimitsContent, 'periodOptions');
+
       return settingsConstants?.player.limit.selfExclusionPeriod.map((period) => ({
-        value: period.name,
+        value: content[period.id],
         code: period.id,
       })) || [];
     },
