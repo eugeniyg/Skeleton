@@ -23,6 +23,11 @@
     "title": "Error",
     "description": "Sorry, but you can't deposit for now. Please, contact our support team for more information."
   },
+  "coolingOfLimitCancel": {
+    "title": "Limit update successfully",
+    "description": "The limit will be canceled after 24 hours",
+    "type": "warning"
+  },
   "depositSuccess": {
     "type": "done",
     "title": "Success",
