@@ -1437,7 +1437,7 @@ collections:
             label: Alert Type
             widget: select
             options: *alertTypes
-            default: success   
+            default: success         
       - name: cashLimitEditLargeAmount
         label: Cash Limit Edit Large Amount
         widget: object
@@ -1473,7 +1473,19 @@ collections:
             label: Alert Type
             widget: select
             options: *alertTypes
-            default: warning                
+            default: warning
+      - name: coolingOfLimitCancel
+        label: Cooling Of Limit Cancel
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: warning                      
 
   - name: staticPages
     label: Static Pages
