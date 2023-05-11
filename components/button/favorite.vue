@@ -31,8 +31,8 @@
   border-radius: 8px;
   background-color: var(--bgc, transparent);
   transition: all .2s ease-in-out;
-  width: var(--width, #{rem(24px)});
-  height: var(--height, #{rem(24px)});
+  width: rem(24px);
+  height: rem(24px);
   margin-left: auto;
   --icon-size: 20px;
   --color: var(--violet-100);

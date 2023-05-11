@@ -282,9 +282,9 @@
     }
 
     &-footer {
-      display: flex;
-      align-items: center;
-      align-self: flex-end;
+      display: grid;
+      grid-template-columns: 1fr repeat(2, auto);
+      align-items: flex-end;
     }
   }
 
@@ -298,10 +298,6 @@
         transform: scale(1);
         transition-delay: .2s;
       }
-
-      //.btn-try {
-      //  animation: delay-pointer-events .2s ease-in-out;
-      //}
     }
   }
 
