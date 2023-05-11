@@ -142,9 +142,7 @@ export const useLimitsStore = defineStore('limitsStore', {
     },
 
     getColumns(state) {
-      const columns = Object.entries(state.columns)
-        //.filter((entry) => entry.includes(0));
-
+      const columns = Object.entries(state.columns);
       return columns.map((entry) => {
         const [key, value] = entry;
         return `${mapKeys[key]}${value}`;
