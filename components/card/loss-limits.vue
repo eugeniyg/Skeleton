@@ -1,8 +1,7 @@
 <template>
   <client-only>
     <div
-      class="limits__card"
-      :class="{ 'is-full-width': lossPeriods.length > 1 }"
+      class="limits__card limits__card--loss"
     >
       <h4 class="limits__card-title" data-tooltip-parent>
         {{ getContent(limitsContent, defaultLimitsContent, 'loss.label') }}
@@ -67,6 +66,7 @@
   ]);
 
   const limitsStore = useLimitsStore();
+  const { setColumns } = limitsStore;
   const { lossPeriods, limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();
 
@@ -85,4 +85,16 @@
   };
 
   const isEditLocked = computed(() => lossPeriods.value.every((period) => period.items.filter((item) => item.status === 1).every((item) => item.cancelProcess)));
+
+  watch(() => lossPeriods.value, (newValue) => {
+    setColumns('loss', newValue.length);
+  });
+
+  onMounted(() => {
+    setColumns('loss', lossPeriods.value.length === 0 ? 1 : lossPeriods.value.length);
+  });
+
+  onUnmounted(() => {
+    setColumns('loss', 0);
+  });
 </script>

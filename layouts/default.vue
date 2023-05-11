@@ -10,7 +10,11 @@
       @toggle-open="toggleOpen"
     />
 
-    <main class="app-main" :class="{'is-overflow': isHomePage() || isProfileLimitsPage() }" :data-route="route.name">
+    <main
+      class="app-main"
+      :class="{'is-overflow': isHomePage(), 'is-overflow-initial': isProfileLimitsPage() }"
+      :data-route="route.name"
+    >
       <slot />
     </main>
 

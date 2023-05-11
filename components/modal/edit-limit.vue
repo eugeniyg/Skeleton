@@ -124,7 +124,7 @@
 
   const remove = async () => {
     closeModal('editLimit');
-    await deletePlayerLimit(props.limitId);
+    await deletePlayerLimit(props.limitId as string);
     await getLimits();
 
     showAlert({

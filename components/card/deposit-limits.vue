@@ -1,8 +1,7 @@
 <template>
   <client-only>
     <div
-      class="limits__card"
-      :class="{ 'is-full-width': depositPeriods.length > 1 }"
+      class="limits__card limits__card--deposit"
     >
       <h4 class="limits__card-title" data-tooltip-parent>
         {{ getContent(limitsContent, defaultLimitsContent, 'deposit.label') }}
@@ -66,6 +65,7 @@
 
   const limitsStore = useLimitsStore();
   const { getContent } = useProjectMethods();
+  const { setColumns } = limitsStore;
   const { depositPeriods, limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
 
   const state = reactive<{isShowEdit: boolean}>({
@@ -83,4 +83,16 @@
   };
 
   const isEditLocked = computed(() => depositPeriods.value.every((period) => period.items.filter((item) => item.status === 1).every((item) => item.cancelProcess)));
+
+  watch(() => depositPeriods.value, (newValue) => {
+    setColumns('deposit', newValue.length);
+  });
+
+  onMounted(() => {
+    setColumns('deposit', depositPeriods.value.length === 0 ? 1 : depositPeriods.value.length);
+  });
+
+  onUnmounted(() => {
+    setColumns('deposit', 0);
+  });
 </script>

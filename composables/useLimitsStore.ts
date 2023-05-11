@@ -11,12 +11,19 @@ interface LimitsModalInterface {
   confirmLimitUpdate: boolean,
 }
 
+interface ColumnsInterface {
+  deposit: number|null,
+  loss: number,
+  bet: number
+}
+
 interface LimitsStateInteface {
   activeLimits: PlayerLimitInterface[],
   isLoaded: boolean,
   limitsContent: Maybe<ProfileLimitsContentInterface>,
   defaultLimitsContent: Maybe<ProfileLimitsContentInterface>,
-  modals: LimitsModalInterface
+  modals: LimitsModalInterface,
+  columns: ColumnsInterface
 }
 
 const transformToPeriods = (limits: PlayerLimitInterface[]) => {
@@ -27,6 +34,12 @@ const transformToPeriods = (limits: PlayerLimitInterface[]) => {
     items: limits.filter((limit) => limit.period === period) || [],
   }))
     .filter((column) => column.items.length);
+};
+
+const mapKeys: Record<any, string> = {
+  deposit: 'D',
+  loss: 'L',
+  bet: 'B',
 };
 
 export const useLimitsStore = defineStore('limitsStore', {
@@ -40,6 +53,11 @@ export const useLimitsStore = defineStore('limitsStore', {
       editLimit: false,
       exceededLimitConfirm: false,
       confirmLimitUpdate: false,
+    },
+    columns: {
+      deposit: 0,
+      loss: 0,
+      bet: 0,
     },
   }),
 
@@ -65,6 +83,10 @@ export const useLimitsStore = defineStore('limitsStore', {
 
     closeModal(modalName: keyof LimitsModalInterface) {
       this.modals[modalName] = false;
+    },
+
+    setColumns(key: keyof ColumnsInterface, size: number) {
+      this.columns[key] = size;
     },
   },
 
@@ -119,5 +141,14 @@ export const useLimitsStore = defineStore('limitsStore', {
       })) || [];
     },
 
+    getColumns(state) {
+      const columns = Object.entries(state.columns)
+        //.filter((entry) => entry.includes(0));
+
+      return columns.map((entry) => {
+        const [key, value] = entry;
+        return `${mapKeys[key]}${value}`;
+      }).join('-');
+    },
   },
 });

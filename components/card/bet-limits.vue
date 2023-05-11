@@ -1,8 +1,7 @@
 <template>
   <client-only>
     <div
-      class="limits__card"
-      :class="{ 'is-full-width': betPeriods.length > 1 }"
+      class="limits__card limits__card--bet"
     >
       <h4 class="limits__card-title" data-tooltip-parent>
         {{ getContent(limitsContent, defaultLimitsContent, 'bet.label') }}
@@ -67,6 +66,7 @@
   ]);
 
   const limitsStore = useLimitsStore();
+  const { setColumns } = limitsStore;
   const { betPeriods, limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();
 
@@ -85,4 +85,16 @@
   };
 
   const isEditLocked = computed(() => betPeriods.value.every((period) => period.items.filter((item) => item.status === 1).every((item) => item.cancelProcess)));
+
+  watch(() => betPeriods.value, (newValue) => {
+    setColumns('bet', newValue.length);
+  });
+
+  onMounted(() => {
+    setColumns('bet', betPeriods.value.length);
+  });
+
+  onUnmounted(() => {
+    setColumns('bet', 0);
+  });
 </script>

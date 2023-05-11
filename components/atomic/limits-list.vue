@@ -30,7 +30,9 @@
         :class="`limits-list__status--${limit.status === 1 ? 'active': 'pending'}`"
       >
         <span class="limits-list__status-dot"></span>
-        <span class="limits-list__status-msg">{{ limit.expiredAt }}</span>
+        <span class="limits-list__status-msg">
+          <atomic-limit-countdown :status="limit.status" :expired-at="limit.expiredAt"/>
+        </span>
       </div>
 
     </div>
@@ -98,7 +100,7 @@
 
   &__status {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     grid-column-gap: 2px;
     margin-top: 4px;
 

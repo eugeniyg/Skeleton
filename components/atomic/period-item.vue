@@ -15,7 +15,6 @@
         <span class="time-span">{{ format(state.seconds) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerSecondsLabel') }}</span>
         {{ getContent(limitsContent, defaultLimitsContent, 'timerLabel') }}
       </template>
-
     </p>
 
     <button-base
@@ -36,11 +35,10 @@
     <div class="limits-periods-list__item-status">
       <span
         class="limits-periods-list__item-status-type"
-        :class="`limits-periods-list__item-status-type--${ limitsStatuses[status].toLowerCase()  }`"
-        :data-status="limitsStatuses[status]"
+        :class="`limits-periods-list__item-status-type--${ limitsStatuses[status] }`"
       />
       <span class="limits-periods-list__item-status-title">
-        {{ limitsStatuses[status] }} till {{ dayjs(expiredAt).format(DATE_FORMAT) }}
+        {{ formatStatus(status) }} {{ dayjs(expiredAt).format(DATE_FORMAT) }}
       </span>
     </div>
 
@@ -51,7 +49,7 @@
   import dayjs from 'dayjs';
   import { storeToRefs } from 'pinia';
 
-  interface PropsInterface {
+  const props = defineProps<{
     id: string,
     status: number,
     period: string|null,
@@ -64,22 +62,18 @@
     amount: number,
     title?: string,
     isShowEdit?: boolean,
-  }
-
-  const props = defineProps<PropsInterface>();
+  }>();
 
   const emit = defineEmits(['edit-limit']);
 
-  interface StateInterface {
+  const state = reactive<{
     isAlmostDone: boolean,
     diffInSeconds: number,
     days: string|number,
     hours: string|number,
     minutes: string|number,
     seconds: string|number,
-  }
-
-  const state = reactive<StateInterface>({
+  }>({
     isAlmostDone: false,
     diffInSeconds: 0,
     days: 0,
@@ -94,11 +88,16 @@
   const { getLimits } = limitsStore;
   const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
 
+  const formatStatus = (status: number) => {
+    const msg = status === 1
+      ? getContent(limitsContent.value, defaultLimitsContent.value, 'activeStatusLabel')
+      : getContent(limitsContent.value, defaultLimitsContent.value, 'pendingStatusLabel');
+    return msg.replace('{date}', '');
+  };
+
   const limitsStatuses: Record<number, string> = {
-    1: 'Active',
-    2: 'Pending',
-    3: 'Canceled',
-    4: 'Finished',
+    1: 'active',
+    2: 'pending',
   };
 
   const getPercentage = (currentAmount: number, amount: number) => ((amount === 0) ? 100 : ((currentAmount / amount) * 100));

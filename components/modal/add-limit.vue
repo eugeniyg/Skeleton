@@ -60,10 +60,10 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import { CreateLimitInterface, CurrencyInterface, StatusInterface } from '@platform/frontend-core/dist/module';
+  import { CurrencyInterface } from '@platform/frontend-core/dist/module';
   import { useGlobalStore } from '~/composables/useGlobalStore';
 
-  const props = defineProps<{ definition?: number|undefined }>();
+  const props = defineProps<{ definition: number }>();
 
   const limitsStore = useLimitsStore();
   const { getLimits, createLimit, closeModal } = limitsStore;
@@ -85,9 +85,15 @@
     3: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addDepositlabel'),
   }));
 
-  const formState = reactive<CreateLimitInterface>({
+  const formState = reactive<{
+    definition: number;
+    period: string|undefined;
+    currency: string;
+    amount: number;
+    showCurrenciesError: boolean
+  }>({
     definition: props.definition,
-    currency: undefined,
+    currency: '',
     amount: 0,
     period: undefined,
     showCurrenciesError: false,
@@ -127,9 +133,7 @@
       && limit.currency === currency.code,
   ));
 
-  const isCurrencyDisabled = (currency: {
-    code: string
-  }) => isCurrencySelectedInPeriod(currency) || isCurrencySelectedInAllPeriods(currency);
+  const isCurrencyDisabled = (currency: CurrencyInterface):boolean => isCurrencySelectedInPeriod(currency) || isCurrencySelectedInAllPeriods(currency);
 
   const currenciesOptions = computed(() => currencies.value?.map((currency) => {
     if (isCurrencyDisabled(currency)) {
@@ -142,9 +146,9 @@
 
   const formattedBalance = computed(() => formatBalance(formState.currency, formState.amount));
 
-  const selectedTab = ref<StatusInterface>(selectedPeriod?.value);
+  const selectedTab = ref<{id:any, name:string}>(selectedPeriod?.value);
 
-  const isAddButtonDisabled = computed(() => !formState.currency && !formState.period);
+  const isAddButtonDisabled = computed(() => !formState.currency);
 
   const changeTab = (period: { id: string; name: string }) => {
     selectedTab.value = period;
@@ -178,6 +182,10 @@
       type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitAdd.type'),
     });
   };
+
+  onMounted(() => {
+    changeTab(selectedTab.value);
+  });
 </script>
 
 <style lang="scss">
@@ -272,7 +280,7 @@
       }
 
       @include use-hover {
-        &:not(.is-active) {
+        &:not(.is-active):not([disabled]) {
           &:hover {
             cursor: pointer;
             --color: var(--yellow-500);

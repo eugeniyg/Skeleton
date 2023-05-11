@@ -1,5 +1,5 @@
 <template>
-  <div class="limits__card">
+  <div class="limits__card limits__card--self-exclusion">
     <h4 class="limits__card-title">
       {{ getContent(limitsContent, defaultLimitsContent, 'selfExclusion.label') }}
     </h4>

@@ -42,18 +42,15 @@
 
 <style lang="scss">
 .limits-periods-list {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   grid-gap: 49px;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
   margin-top: 24px;
 
-  .is-full-width & {
-    grid-auto-flow: row;
-
-    @include media(sm) {
-      grid-auto-flow: column;
-    }
+  @include media(l) {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
   }
 
   &__title {
@@ -193,7 +190,7 @@
             var(--gray-900) 8px
         );
 
-        @include media(sm) {
+        @include media(l) {
           height: auto;
           width: 1px;
           top: 0;

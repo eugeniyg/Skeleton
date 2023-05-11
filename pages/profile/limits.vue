@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <div class="limits__grid">
+    <div class="limits__grid" :class="getColumns">
       <card-deposit-limits
         v-if="isAdvancedModeEnabled"
         @open-limit-modal="openLimitModal"
@@ -29,7 +29,7 @@
         @open-edit-modal="openEditModal"
       />
 
-      <card-cooling-off-limits />
+      <card-cooling-off-limits/>
 
       <card-self-exclusion-limits
         v-if="isAdvancedModeEnabled"
@@ -64,7 +64,7 @@
   const limitsStore = useLimitsStore();
   const globalStore = useGlobalStore();
   const { getLimits, setLimitsContent, showModal } = limitsStore;
-  const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
+  const { limitsContent, defaultLimitsContent, getColumns } = storeToRefs(limitsStore);
   const { contentLocalesArray } = storeToRefs(globalStore);
   const { findLocalesContentData, getContent } = useProjectMethods();
 
@@ -78,19 +78,19 @@
   setLimitsContent(currenctLocaleLimitsContent, defaultLocaleLimitsContent);
 
   interface EditPropsInterface {
-    limitId: string|undefined,
-    definition: number|undefined,
-    amount: number|undefined,
-    currency: string|undefined,
-    period: string|undefined,
+    limitId: string | undefined,
+    definition: number | undefined,
+    amount: number | undefined,
+    currency: string | undefined,
+    period: string | undefined,
   }
 
   const isAdvancedModeEnabled = ref<boolean>(false);
 
   const state = reactive<{
-    definition: number|undefined,
+    definition: number | undefined,
     editProps: EditPropsInterface,
-    period: undefined|string,
+    period: undefined | string,
   }>({
     definition: undefined,
     period: undefined,
@@ -143,7 +143,6 @@
 <style lang="scss">
 .limits {
   width: 100%;
-  user-select: none;
 
   &__header {
     margin: rem(8px) 0 rem(24px);
@@ -175,8 +174,194 @@
 
   &__grid {
     display: flex;
-    flex-wrap: wrap;
     grid-gap: rem(16px);
+    flex-wrap: wrap;
+
+    @include media(l) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
+
+      &.D3-L1-B0 {
+        grid-template-areas: "D D" "L B" "C S";
+      }
+
+      &.D0-L2-B0 {
+        grid-template-areas: "D D" "L L" "B C" "S S";
+      }
+
+      &.D3-L1-B2 {
+        grid-template-areas: "D D" "L L" "B B" "C S";
+      }
+
+      &.D1-L2-B0 {
+        grid-template-areas: "D D" "L L" "B C" "S S";
+      }
+
+      &.D2-L3-B3 {
+        grid-template-areas: "D D" "L L" "B B" "C S";
+      }
+
+      &.D0-L0-B1 {
+        grid-template-areas: "D D" "L B" "C S";
+      }
+
+      &.D0-L2-B1 {
+        grid-template-areas: "D D" "L L" "B C" "S S";
+      }
+
+      &.D0-L0-B2 {
+        grid-template-areas: "D D" "L L" "B B" "C C";
+      }
+
+      &.D1-L1-B2 {
+        grid-template-areas: "D L" "B B" "C S";
+      }
+
+      &.D0-L2-B2 {
+        grid-template-areas: "D D" "L L" "B B" "C S";
+      }
+
+      &.D1-L2-B2 {
+        grid-template-areas: "D D" "L L" "B B" "C S";
+      }
+
+      &.D1-L3-B1 {
+        grid-template-areas: "D D" "L L" "B B" "C S";
+      }
+
+      &.D1-L3-B3 {
+        grid-template-areas: "D D" "L L" "B B" "C S";
+      }
+
+      &.D0-L3-B1 {
+        grid-template-areas: "D D" "L L" "B C" "S S";
+      }
+
+      &.D3-L3-B3 {
+        grid-template-areas: "D D" "L L" "B B" "C S";
+      }
+
+      &.D0-L1-B0 {
+        grid-template-areas: "D L" "B C" "S S";
+      }
+
+      &.D0-L0-B0,
+      &.D1-L1-B0,
+      &.D2-L1-B0,
+      &.D2-L2-B0,
+      &.D3-L2-B0,
+      &.D3-L3-B0,
+      &.D3-L3-B1 {
+        grid-template-areas:
+        "D D"
+        "L L"
+        "B C"
+        "S S";
+      }
+
+      &.D2-L0-B1,
+      &.D2-L1-B1,
+      &.D2-L2-B1,
+      &.D1-L3-B2 {
+        grid-template-areas:
+        "D D"
+        "L B"
+        "C S";
+      }
+
+      &.D1-L2-B1 {
+        grid-template-areas:
+        "D D"
+        "L L"
+        "B C"
+        "S S";
+      }
+
+      &.D1-L0-B1, &.D1-L1-B1 {
+        grid-template-areas:
+        "D L"
+        "B C"
+        "S S";
+      }
+
+      &.D0-L1-B1 {
+        grid-template-areas:
+        "D L"
+        "B C"
+        "S S";
+      }
+
+      &.D1-L0-B2 {
+        grid-template-areas:
+        "D L"
+        "B B"
+        "C S";
+      }
+
+      &.D2-L0-B2,
+      &.D2-L1-B2,
+      &.D2-L2-B2,
+      &.D1-L3-B2 {
+        grid-template-areas:
+        "D D"
+        "L L"
+        "B B"
+        "C S";
+      }
+
+      &.D0-L3-B2, &.D0-L1-B2 {
+        grid-template-areas:
+        "D D"
+        "L L"
+        "B B"
+        "C C";
+      }
+
+      &.D3-L3-B2, &.D3-L2-B2 {
+        grid-template-areas:
+        "D D"
+        "L L"
+        "B B"
+        "C S";
+      }
+
+      &.D3-L0-B0, &.D3-L1-B1, &.D3-L0-B1 {
+        grid-template-areas:
+        "D D"
+        "L B"
+        "C S";
+      }
+
+      &.D3-L2-B1, &.D3-L2-B2 {
+        grid-template-areas:
+        "D D"
+        "L L"
+        "B B"
+        "C S";
+      }
+
+      &.D1-L1-B3 {
+        grid-template-areas:
+        "D L"
+        "B B"
+        "C S";
+      }
+
+      &.D0-L1-B2, &.D0-L1-B3 {
+        grid-template-areas:
+        "L L"
+        "B B"
+        "C C";
+      }
+
+      &.D1-L0-B3 {
+        grid-template-areas:
+        "D L"
+        "B B"
+        "C S";
+      }
+    }
   }
 
   &__card {
@@ -184,13 +369,26 @@
     background-color: var(--gray-900);
     border-radius: 16px;
     width: var(--card-width, 100%);
+    user-select: none;
 
-    @include media(md) {
-      --card-width: calc(50% - 8px);
+    &--deposit {
+      grid-area: D;
     }
 
-    &.is-full-width {
-      --card-width: 100%;
+    &--loss {
+      grid-area: L;
+    }
+
+    &--bet {
+      grid-area: B;
+    }
+
+    &--cooling-off {
+      grid-area: C;
+    }
+
+    &--self-exclusion {
+      grid-area: S;
     }
 
     &-actions {
