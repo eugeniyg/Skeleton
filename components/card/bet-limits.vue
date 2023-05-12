@@ -77,6 +77,7 @@
   const definition = 1;
 
   const openEditModal = ({
+    // eslint-disable-next-line no-shadow
     limitId, amount, currency, period, definition,
   }: UpdateLimitInterface) => {
     emit('open-edit-modal', {
