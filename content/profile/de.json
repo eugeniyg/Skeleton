@@ -118,7 +118,7 @@
     "addButtonLabel": "Add new",
     "selfExclusion": {
       "label": "Self exclusion",
-      "hint": "You can set a self-exclusion limit for a definite or an indefinite period of time. The restriction takes effect instantly. During the set period you will not be able to log into your account. To be excluded from gambling on our site for an indefinite period of time, please, contact our support team via [live-chat](#)",
+      "hint": "You can set a self-exclusion limit for a definite or an indefinite period of time. The restriction takes effect instantly. During the set period you will not be able to log into your account. To be excluded from gambling on our site for an indefinite period of time, please, contact our support team via[ live-chat](#)",
       "chatLinkText": "live-chat",
       "selectLabel": "None"
     },
