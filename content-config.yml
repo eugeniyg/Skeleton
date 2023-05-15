@@ -2017,10 +2017,7 @@ collections:
                 widget: string  
               - name: hint
                 label: Hint
-                widget: text
-              - name: chatLinkText
-                label: Chat Link Text
-                widget: string
+                widget: markdown
   - name: historyTabs
     label: Profile History Tabs
     create: true
