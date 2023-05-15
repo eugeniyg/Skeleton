@@ -68,11 +68,7 @@
     await deletePlayerLimit(limitId);
     await getLimits();
 
-    showAlert({
-      title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'coolingOfLimitCancel.title'),
-      description: getContent(alertsData.value, defaultLocaleAlertsData.value, 'coolingOfLimitCancel.description'),
-      type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'coolingOfLimitCancel.type'),
-    });
+    showAlert(alertsData.value?.coolingOfLimitCancel || defaultLocaleAlertsData.value?.coolingOfLimitCancel);
   };
 </script>
 

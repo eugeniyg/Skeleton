@@ -14,7 +14,7 @@
       <form-input-dropdown
         name="coolingOffDropdown"
         v-model:value="state.selectedPeriod"
-        placeholder="none"
+        :placeholder="getContent(limitsContent, defaultLimitsContent, 'coolingOff.selectLabel')"
         :options="coolingOffPeriod"
       />
       <button-base type="primary" :is-disabled="!state.selectedPeriod" @click="save">
@@ -45,13 +45,13 @@
   const state = reactive<{
     limitId: string | undefined,
     isEditProcess: boolean,
-    selectedPeriod: string|undefined,
+    selectedPeriod: string,
     definition: number,
     prevPeriod: string|undefined,
   }>({
     limitId: undefined,
     isEditProcess: false,
-    selectedPeriod: undefined,
+    selectedPeriod: '',
     prevPeriod: undefined,
     definition: 5,
   });
@@ -72,10 +72,7 @@
         definition: state.definition,
       });
       await getLimits();
-      showAlert({
-        title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitAdd.title'),
-        type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitAdd.type'),
-      });
+      showAlert(alertsData.value?.cashLimitAdd || defaultLocaleAlertsData.value?.cashLimitAdd);
     } else {
       await updatePlayerLimit({
         limitId: state.limitId,
@@ -85,5 +82,4 @@
       state.isEditProcess = false;
     }
   };
-
 </script>

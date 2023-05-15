@@ -8,7 +8,7 @@
       <form-input-dropdown
         name="selfExclusionDropdown"
         v-model:value="selectedPeriod"
-        placeholder="none"
+        :placeholder="getContent(limitsContent, defaultLimitsContent, 'selfExclusion.selectLabel')"
         :options="selfExclusionPeriod"
       />
       <button-base
@@ -21,11 +21,7 @@
     </div>
 
     <div class="limits__card-info">
-      <p>
-        {{ getContent(limitsContent, defaultLimitsContent, 'selfExclusion.hint') }}
-        <a href="#">{{ getContent(limitsContent, defaultLimitsContent, 'selfExclusion.chatLinkText') }}</a>
-        <!-- todo: add link from content -->
-      </p>
+      <p v-html="getContent(limitsContent, defaultLimitsContent, 'selfExclusion.hint')"/>
     </div>
   </div>
 </template>
