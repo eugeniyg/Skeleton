@@ -20,7 +20,7 @@
           :key="period.id"
           @click="changeTab(period)"
         >
-          {{ limitsContent?.periodOptions[period.id] || defaultLimitsContent?.periodOptions[period.id] }}
+          {{ getContent(limitsContent, defaultLimitsContent, `periodOptions.${ period.id }`) }}
         </button>
       </div>
 

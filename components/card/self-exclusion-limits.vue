@@ -21,13 +21,14 @@
     </div>
 
     <div class="limits__card-info">
-      <p v-html="getContent(limitsContent, defaultLimitsContent, 'selfExclusion.hint')"/>
+      <p v-html="marked.parse(getContent(limitsContent, defaultLimitsContent, 'selfExclusion.hint'))"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { marked } from 'marked';
 
   const limitsStore = useLimitsStore();
   const { limitsContent, defaultLimitsContent, selfExclusionPeriod } = storeToRefs(limitsStore);

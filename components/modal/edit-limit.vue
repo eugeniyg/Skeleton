@@ -54,9 +54,9 @@
   import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
-    limitId?: string|undefined,
+    limitId?: string,
     period?: string,
-    definition?: number|undefined,
+    definition?: number,
     amount?: number,
     currency? : string,
   }>();
@@ -79,7 +79,7 @@
 
   const state = reactive<{
     prevAmount: number|undefined,
-    amount: string|number,
+    amount: number,
     currency: string,
   }>({
     prevAmount: formattedBalance.amount,
@@ -93,7 +93,7 @@
     return labels[`edit_${props.period}_${props.definition}`];
   });
 
-  const isDisableUpdate = computed(() => Number(state.prevAmount) === Number(state.amount) || state.amount === '');
+  const isDisableUpdate = computed(() => Number(state.prevAmount) === Number(state.amount) || Number(state.amount) === 0);
 
   const isLargeAmount = computed(() => Number(state.amount) > Number(state.prevAmount));
 
@@ -109,16 +109,9 @@
     await getLimits();
 
     if (isLargeAmount.value) {
-      showAlert({
-        title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditLargeAmount.title'),
-        description: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditLargeAmount.description'),
-        type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditLargeAmount.type'),
-      });
+      showAlert(alertsData.value?.cashLimitEditLargeAmount || defaultLocaleAlertsData.value?.cashLimitEditLargeAmount);
     } else {
-      showAlert({
-        title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditSmallerAmount.title'),
-        type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitEditSmallerAmount.type'),
-      });
+      showAlert(alertsData.value?.cashLimitEditSmallerAmount || defaultLocaleAlertsData.value?.cashLimitEditSmallerAmount);
     }
   };
 
@@ -127,11 +120,7 @@
     await deletePlayerLimit(props.limitId as string);
     await getLimits();
 
-    showAlert({
-      title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitCancel.title'),
-      description: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitCancel.description'),
-      type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitCancel.type'),
-    });
+    showAlert(alertsData.value?.cashLimitCancel || defaultLocaleAlertsData.value?.cashLimitCancel);
   };
 </script>
 

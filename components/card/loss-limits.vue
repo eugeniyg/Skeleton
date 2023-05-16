@@ -87,8 +87,4 @@
   onMounted(() => {
     setColumns('loss', lossPeriods.value.length === 0 ? 1 : lossPeriods.value.length);
   });
-
-  onUnmounted(() => {
-    setColumns('loss', 0);
-  });
 </script>

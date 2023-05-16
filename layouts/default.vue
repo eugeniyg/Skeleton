@@ -12,7 +12,7 @@
 
     <main
       class="app-main"
-      :class="{'is-overflow': isHomePage(), 'is-overflow-initial': isProfileLimitsPage() }"
+      :class="{'is-overflow': isHomePage(), 'is-overflow-initial': route.name === 'profile-limits' || route.name === 'locale-profile-limits' }"
       :data-route="route.name"
     >
       <slot />
@@ -51,7 +51,7 @@
 
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
-  const { isHomePage, isProfileLimitsPage, localizePath } = useProjectMethods();
+  const { isHomePage, localizePath } = useProjectMethods();
 
   const {
     showCookiePopup, isDrawerCompact,

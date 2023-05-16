@@ -86,8 +86,4 @@
   onMounted(() => {
     setColumns('bet', betPeriods.value.length);
   });
-
-  onUnmounted(() => {
-    setColumns('bet', 0);
-  });
 </script>
