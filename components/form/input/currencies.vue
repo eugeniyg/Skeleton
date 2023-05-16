@@ -113,7 +113,7 @@
   const close = (): void => {
     if (isOpen.value) {
       isOpen.value = false;
-      if (!selectedCurrency?.value?.name) emit('blur');
+      if (!selectedCurrency.value?.name) emit('blur');
     }
   };
 </script>

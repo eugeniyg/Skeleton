@@ -117,7 +117,7 @@
   };
 
   const openEditModal = (limitData: EditPropsInterface) => {
-    state.editProps = { ...limitData };
+    state.editProps = limitData;
     editModalKey.value += 1;
     showModal('editLimit');
   };
