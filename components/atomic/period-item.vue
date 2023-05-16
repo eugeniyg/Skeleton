@@ -2,7 +2,7 @@
   <div
     class="limits-periods-list__item"
   >
-    <h4 class="limits-periods-list__item-title">{{ formatPeriodStatus }}</h4>
+    <h4 class="limits-periods-list__item-title">{{ title }}</h4>
 
     <p class="limits-periods-list__item-sub-title" v-if="isShowContDown">
       <template v-if="state.isAlmostDone">
@@ -38,7 +38,7 @@
         :class="`limits-periods-list__item-status-type--${ limitsStatuses[status] }`"
       />
       <span class="limits-periods-list__item-status-title">
-        {{ formatStatus(status) }} {{ dayjs(expiredAt).format(DATE_FORMAT) }}
+        {{ formatStatus(status, dayjs(expiredAt).format(DATE_FORMAT)) }}
       </span>
     </div>
 
@@ -88,11 +88,11 @@
   const { getLimits } = limitsStore;
   const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
 
-  const formatStatus = (status: number) => {
+  const formatStatus = (status: number, date:string) => {
     const msg = status === 1
       ? getContent(limitsContent.value, defaultLimitsContent.value, 'activeStatusLabel')
       : getContent(limitsContent.value, defaultLimitsContent.value, 'pendingStatusLabel');
-    return msg.replace('{date}', '');
+    return msg.replace('{date}', date);
   };
 
   const limitsStatuses: Record<number, string> = {
@@ -104,7 +104,7 @@
 
   const format = (value: number): number|string => (value < 10 ? `0${value}` : value);
 
-  const formatPeriodStatus = computed(() => {
+  const title = computed(() => {
     const message = getContent(limitsContent.value, defaultLimitsContent.value, 'availableLimitSum');
     const { amount, currency } = formatBalance(props.currency, props.amount);
     const balance = amount < props.currentAmount ? 0 : amount - props.currentAmount;

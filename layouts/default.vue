@@ -12,7 +12,7 @@
 
     <main
       class="app-main"
-      :class="{'is-overflow': isHomePage(), 'is-overflow-initial': isProfileLimitsPage() }"
+      :class="{'is-overflow': isHomePage(), 'is-overflow-initial': isProfileLimitsPage }"
       :data-route="route.name"
     >
       <slot />
@@ -51,7 +51,7 @@
 
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
-  const { isHomePage, isProfileLimitsPage, localizePath } = useProjectMethods();
+  const { isHomePage, localizePath } = useProjectMethods();
 
   const {
     showCookiePopup, isDrawerCompact,
@@ -74,6 +74,11 @@
     && route.name !== 'games-id'
     && route.name !== 'locale-games-id'
     && route.path !== localizePath('/betting'));
+
+  const isProfileLimitsPage = computed(() => {
+    const routeName = route.name as string;
+    return routeName.includes('profile-limits');
+  });
 
   const timer = ref<any>();
   const disabledTransition = ref<boolean>(true);

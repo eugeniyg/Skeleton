@@ -20,7 +20,7 @@
           :key="period.id"
           @click="changeTab(period)"
         >
-          {{ limitsContent?.periodOptions[period.id] || defaultLimitsContent?.periodOptions[period.id] }}
+          {{ getContent(limitsContent, defaultLimitsContent, `periodOptions.${ period.id }`) }}
         </button>
       </div>
 
@@ -63,7 +63,7 @@
   import { CurrencyInterface } from '@platform/frontend-core/dist/module';
   import { useGlobalStore } from '~/composables/useGlobalStore';
 
-  const props = defineProps<{ definition: number }>();
+  const props = defineProps<{ definition?: number }>();
 
   const limitsStore = useLimitsStore();
   const { getLimits, createLimit, closeModal } = limitsStore;
@@ -86,7 +86,7 @@
   }));
 
   const formState = reactive<{
-    definition: number;
+    definition?: number;
     period: string|undefined;
     currency: string;
     amount: number;
@@ -170,17 +170,14 @@
 
     await createLimit({
       period: formState.period,
-      definition: formState.definition,
+      definition: formState.definition as number,
       amount: converted.amount,
       currency: converted.currency,
     });
 
     await getLimits();
 
-    showAlert({
-      title: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitAdd.title'),
-      type: getContent(alertsData.value, defaultLocaleAlertsData.value, 'cashLimitAdd.type'),
-    });
+    showAlert(alertsData.value?.cashLimitAdd || defaultLocaleAlertsData.value?.cashLimitAdd);
   };
 
   onMounted(() => {

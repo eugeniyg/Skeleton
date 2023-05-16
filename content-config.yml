@@ -1959,7 +1959,7 @@ collections:
             fields:
               - name: label
                 label: Label
-                widget: string
+                widget: string  
               - name: hint
                 label: Hint
                 widget: string 
@@ -1990,6 +1990,9 @@ collections:
               - name: label
                 label: Label
                 widget: string
+              - name: selectLabel
+                label: Select Label
+                widget: string    
               - name: hint
                 label: Hint
                 widget: text
@@ -2009,12 +2012,12 @@ collections:
               - name: label
                 label: Label
                 widget: string
+              - name: selectLabel
+                label: Select Label
+                widget: string  
               - name: hint
                 label: Hint
-                widget: text
-              - name: chatLinkText
-                label: Chat Link Text
-                widget: string
+                widget: markdown
   - name: historyTabs
     label: Profile History Tabs
     create: true

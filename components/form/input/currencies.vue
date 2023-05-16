@@ -5,19 +5,19 @@
     :class="{ 'is-open': isOpen, 'has-error': props.showError }"
   >
     <div class="input-currencies__selected" @click.stop="toggleOpen" :class="{'is-disabled': !selectedItems.length}">
-      <template v-if="!selectedCurrency.name">
+      <template v-if="!selectedCurrency?.name">
         <atomic-icon id="currency" class="input-currencies__selected-icon"/>
-        <span class="input-currencies__selected-label">Choose currency</span>
+        <span class="input-currencies__selected-label">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.addCashLimit.chooseCurrencyLabel') }}</span>
       </template>
       <template v-else>
         <img
           class="input-currencies__selected-icon"
-          :src="`/img/currency/${selectedCurrency.code}.svg`"
+          :src="`/img/currency/${selectedCurrency?.code}.svg`"
           width="24"
           height="24"
           alt=""
         />
-        <span class="input-currencies__selected-label">{{ selectedCurrency.name }}</span>
+        <span class="input-currencies__selected-label">{{ selectedCurrency?.name }}</span>
       </template>
       <atomic-icon id="arrow_expand-open" class="input-currencies__expand-icon"/>
     </div>
@@ -42,7 +42,7 @@
           v-for="currency in selectedItems"
           :key="currency.code"
           class="input-currencies__item"
-          :class="{'is-active': selectedCurrency.name === currency.name}"
+          :class="{'is-active': selectedCurrency?.name === currency.name}"
           @click="selectCurrency(currency)"
         >
           <img
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div class="input-currencies__error" v-if="props.showError">Please, select your currency for new deposit limit</div>
+    <div class="input-currencies__error" v-if="props.showError">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.addCashLimit.chooseCurrencyError') }}</div>
   </div>
 </template>
 
@@ -66,6 +66,7 @@
   import { storeToRefs } from 'pinia';
   import { CurrencyInterface } from '@platform/frontend-core/dist/module';
   import { useWalletStore } from '~/composables/useWalletStore';
+  import { useGlobalStore } from '~/composables/useGlobalStore';
 
   interface PropsInterface {
     showError: boolean,
@@ -78,10 +79,14 @@
 
   const walletStore = useWalletStore();
   const { currencyTabs } = storeToRefs(walletStore);
-  const { formatBalance } = useProjectMethods();
+  const { formatBalance, getContent } = useProjectMethods();
+  const globalStore = useGlobalStore();
+  const {
+    popupsData, defaultLocalePopupsData,
+  } = storeToRefs(globalStore);
 
   const selected = ref<string>('all');
-  const selectedCurrency = ref({});
+  const selectedCurrency = ref<CurrencyInterface|undefined>();
   const isOpen = ref<boolean>(false);
 
   const cryptoCurrencies = computed(() => props.items.filter((currency) => currency.type === 'crypto'));
@@ -108,7 +113,7 @@
   const close = (): void => {
     if (isOpen.value) {
       isOpen.value = false;
-      if (!selectedCurrency.value.name) emit('blur');
+      if (!selectedCurrency.value?.name) emit('blur');
     }
   };
 </script>

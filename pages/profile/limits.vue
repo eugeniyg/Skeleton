@@ -68,8 +68,11 @@
   const { contentLocalesArray } = storeToRefs(globalStore);
   const { findLocalesContentData, getContent } = useProjectMethods();
 
-  const limitsContentRequest = await useAsyncData('limitsContent', () => queryContent('profile')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'limits']).find());
+  const [limitsContentRequest] = await Promise.all([
+    useAsyncData('limitsContent', () => queryContent('profile')
+      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'limits']).find()),
+    useAsyncData('updateLimits', getLimits),
+  ]);
 
   const { currentLocaleData, defaultLocaleData } = findLocalesContentData(limitsContentRequest.data.value);
   const currenctLocaleLimitsContent: Maybe<ProfileLimitsContentInterface> = currentLocaleData?.limits;
@@ -113,14 +116,8 @@
     showModal('addLimit');
   };
 
-  const openEditModal = ({
-    limitId, amount, currency, period, definition,
-  }: EditPropsInterface) => {
-    state.editProps.limitId = limitId;
-    state.editProps.amount = amount;
-    state.editProps.currency = currency;
-    state.editProps.period = period;
-    state.editProps.definition = definition;
+  const openEditModal = (limitData: EditPropsInterface) => {
+    state.editProps = limitData;
     editModalKey.value += 1;
     showModal('editLimit');
   };
@@ -134,10 +131,6 @@
   const clickToggle = () => {
     isAdvancedModeEnabled.value = !isAdvancedModeEnabled.value;
   };
-
-  onMounted(async () => {
-    await getLimits();
-  });
 </script>
 
 <style lang="scss">
@@ -182,9 +175,25 @@
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
 
+      &.D0-L2-B3 {
+        grid-template-areas: "L L" "B B" "C C";
+      }
+
+      &.D0-L3-B3 {
+        grid-template-areas: "L L" "B B" "C C";
+      }
+
       &.D3-L1-B0 {
         grid-template-areas: "D D" "L B" "C S";
       }
+
+      &.D0-L0-B0 {
+        grid-template-areas: "D L" "B C" "S S";
+      }
+
+       &.D1-L0-B0 {
+         grid-template-areas: "D L" "B C" "S S";
+       }
 
       &.D0-L2-B0 {
         grid-template-areas: "D D" "L L" "B C" "S S";
@@ -219,7 +228,7 @@
       }
 
       &.D0-L2-B2 {
-        grid-template-areas: "D D" "L L" "B B" "C S";
+        grid-template-areas:  "L L" "B B" "C C";
       }
 
       &.D1-L2-B2 {
@@ -243,12 +252,25 @@
       }
 
       &.D0-L1-B0 {
+        grid-template-areas: "L B" "C C";
+      }
+
+      &.D0-L1-B2 {
+        grid-template-areas: "L L" "B B" "C C";
+      }
+
+      &.D1-L1-B0 {
         grid-template-areas: "D L" "B C" "S S";
       }
 
-      &.D0-L0-B0,
-      &.D1-L1-B0,
-      &.D2-L1-B0,
+      &.D2-L2-B3, &.D3-L2-B3 {
+        grid-template-areas: "D D" "L L" "B B" "C S";
+      }
+
+      &.D3-L1-B3 {
+        grid-template-areas: "D D" "L L" "B B" "C S";
+      }
+
       &.D2-L2-B0,
       &.D3-L2-B0,
       &.D3-L3-B0,
@@ -260,14 +282,42 @@
         "S S";
       }
 
-      &.D2-L0-B1,
-      &.D2-L1-B1,
-      &.D2-L2-B1,
-      &.D1-L3-B2 {
+      &.D2-L1-B0 {
         grid-template-areas:
         "D D"
         "L B"
+        "C S"
+      }
+
+      &.D1-L3-B2 {
+        grid-template-areas:
+        "D D"
+        "L L"
+        "B B"
         "C S";
+      }
+
+      &.D2-L1-B1, &.D2-L0-B1 {
+        grid-template-areas:
+          "D D"
+          "L B"
+          "C S";
+      }
+
+      &.D2-L2-B1 {
+        grid-template-areas:
+        "D D"
+        "L L"
+        "B C"
+        "S S";
+      }
+
+      &.D2-L3-B1 {
+        grid-template-areas:
+        "D D"
+        "L L"
+        "B C"
+        "S S";
       }
 
       &.D1-L2-B1 {
@@ -278,7 +328,8 @@
         "S S";
       }
 
-      &.D1-L0-B1, &.D1-L1-B1 {
+      &.D1-L0-B1,
+      &.D1-L1-B1 {
         grid-template-areas:
         "D L"
         "B C"
@@ -287,9 +338,8 @@
 
       &.D0-L1-B1 {
         grid-template-areas:
-        "D L"
-        "B C"
-        "S S";
+        "L B"
+        "C C"
       }
 
       &.D1-L0-B2 {
@@ -310,15 +360,16 @@
         "C S";
       }
 
-      &.D0-L3-B2, &.D0-L1-B2 {
+      &.D0-L3-B2 {
         grid-template-areas:
         "D D"
         "L L"
         "B B"
-        "C C";
+        "C S"
       }
 
-      &.D3-L3-B2, &.D3-L2-B2 {
+      &.D3-L3-B2,
+      &.D3-L2-B2 {
         grid-template-areas:
         "D D"
         "L L"
@@ -348,7 +399,7 @@
         "C S";
       }
 
-      &.D0-L1-B2, &.D0-L1-B3 {
+       &.D0-L1-B3 {
         grid-template-areas:
         "L L"
         "B B"

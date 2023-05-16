@@ -8,7 +8,7 @@
       <form-input-dropdown
         name="selfExclusionDropdown"
         v-model:value="selectedPeriod"
-        placeholder="none"
+        :placeholder="getContent(limitsContent, defaultLimitsContent, 'selfExclusion.selectLabel')"
         :options="selfExclusionPeriod"
       />
       <button-base
@@ -21,17 +21,14 @@
     </div>
 
     <div class="limits__card-info">
-      <p>
-        {{ getContent(limitsContent, defaultLimitsContent, 'selfExclusion.hint') }}
-        <a href="#">{{ getContent(limitsContent, defaultLimitsContent, 'selfExclusion.chatLinkText') }}</a>
-        <!-- todo: add link from content -->
-      </p>
+      <p v-html="marked.parse(getContent(limitsContent, defaultLimitsContent, 'selfExclusion.hint'))"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { marked } from 'marked';
 
   const limitsStore = useLimitsStore();
   const { limitsContent, defaultLimitsContent, selfExclusionPeriod } = storeToRefs(limitsStore);

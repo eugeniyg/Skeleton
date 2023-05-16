@@ -1,6 +1,6 @@
 <template>
   <span class="limit-countdown">
-    {{ formatStatus(status) }} {{ dayjs(props.expiredAt).format(DATE_FORMAT) }}
+    {{ formatStatus(status, dayjs(props.expiredAt).format(DATE_FORMAT)) }}
   </span>
 </template>
 
@@ -20,11 +20,11 @@
 
   const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
-  const formatStatus = (status: number) => {
+  const formatStatus = (status: number, date:string) => {
     const msg = status === 1
       ? getContent(limitsContent.value, defaultLimitsContent.value, 'activeStatusLabel')
       : getContent(limitsContent.value, defaultLimitsContent.value, 'pendingStatusLabel');
-    return msg.replace('{date}', '');
+    return msg.replace('{date}', date);
   };
 
   const state = reactive<{
