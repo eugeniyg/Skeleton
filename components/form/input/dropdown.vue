@@ -127,8 +127,10 @@
   };
 
   onMounted(() => {
-    if (props.isFitContent && drop.value) {
-      drop.value.style.width = `${dropItems.value?.offsetWidth}px`;
+    if (props.isFitContent && drop.value && dropItems.value) {
+      const width = dropItems.value?.offsetWidth;
+      drop.value.style.width = `${width}px`;
+      dropItems.value.style.width = `${width}px`;
     }
   });
 </script>
@@ -163,7 +165,7 @@
     color: var(--color, var(--white));
     cursor: pointer;
     user-select: none;
-    padding: var(--select-padding-y, rem(8px) rem(36px) rem(8px) rem(16px));
+    padding: var(--select-padding-y, #{rem(8px)} #{rem(36px)} #{rem(8px)} #{rem(16px)});
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: auto 1fr;
@@ -261,9 +263,11 @@
       --icon-color: var(--white);
     }
 
-    &:hover {
-      border-radius: 4px;
-      --bg: var(--gray-700);
+    @include use-hover {
+      &:hover {
+        border-radius: 4px;
+        --bg: var(--gray-700);
+      }
     }
   }
 
