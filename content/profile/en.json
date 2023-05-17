@@ -146,7 +146,7 @@
     "coolingOff": {
       "label": "Cooling off",
       "hint": "The restriction takes effect instantly. You won’t be able to make deposits and play during the specified period, also you will be excluded from all advertising offers.",
-      "pendingStatusLabel": "Pending till",
+      "pendingStatusLabel": "Pending. Will be activated on",
       "deleteConfirmTitle": "Limit update successfully",
       "deleteConfirmDescription": "The limit will be canceled after 24 hours",
       "selectLabel": "None"
