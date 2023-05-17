@@ -169,7 +169,7 @@
     },
     "selfExlusionConfirm": {
       "updateTitle": "Confirm limit update",
-      "updateDescription": "Are you sure you want to set self exclusion limit to 6 Months",
+      "updateDescription": "Are you sure you want to set Self Exclusion limit? During the set period you will not be able to log into your account.",
       "okButtonLabel": "Yes",
       "cancelButtonLabel": "No"
     },
