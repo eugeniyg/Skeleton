@@ -188,7 +188,7 @@
       }
 
       &.D0-L0-B0 {
-        grid-template-areas: "D L" "B C" "S S";
+        grid-template-areas: "L B" "C C";
       }
 
        &.D1-L0-B0 {
@@ -212,7 +212,7 @@
       }
 
       &.D0-L0-B1 {
-        grid-template-areas: "D D" "L B" "C S";
+        grid-template-areas: "D D" "L B" "C C";
       }
 
       &.D0-L2-B1 {
@@ -411,6 +411,13 @@
         "D L"
         "B B"
         "C S";
+      }
+
+      &.D0-L0-B3 {
+        grid-template-areas:
+        "L L"
+        "B B"
+        "C C";
       }
     }
   }
