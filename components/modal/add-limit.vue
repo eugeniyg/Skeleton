@@ -183,8 +183,6 @@
 
   onMounted(() => {
     changeTab(selectedTab.value);
-
-    console.log(limitCashPeriod.value);
   });
 </script>
 
