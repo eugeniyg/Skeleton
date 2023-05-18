@@ -60,7 +60,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import { CurrencyInterface } from '@platform/frontend-core/dist/module';
+  import { CurrencyInterface, PlayerLimitInterface } from '@platform/frontend-core/dist/module';
   import { useGlobalStore } from '~/composables/useGlobalStore';
 
   const props = defineProps<{ definition?: number }>();
@@ -99,14 +99,15 @@
     showCurrenciesError: false,
   });
 
-  const isPeriodDisabled = (period: { id: string|number }) => {
-    const limits = activeLimits?.value.filter((limit) => limit.definition === formState.definition
+  const isPeriodDisabled = (period: { id: string|number, name: string }) => {
+    const limits = activeLimits?.value.filter((limit: PlayerLimitInterface) => limit.definition === formState.definition
       && limit.period === period.id);
     return (
-      limits?.length && currencies.value.every((currency) => limits?.find((limit) => (
+      limits?.length && currencies.value.every((currency) => limits?.find((limit: PlayerLimitInterface) => (
         limit.definition === formState.definition
         && limit.period === period.id
-        && limit.currency === (!formState.currency ? currency.code : formState.currency))))
+        && limit.currency === currency.code
+      )))
     );
   };
 
@@ -122,13 +123,13 @@
 
   const isCurrencySelectedInPeriod = (currency: {
     code: string
-  }) => activeLimits?.value.some((limit) => (
+  }) => activeLimits?.value.some((limit: PlayerLimitInterface) => (
     limit.definition === formState.definition
     && limit.period === formState.period
     && limit.currency === currency.code));
 
-  const isCurrencySelectedInAllPeriods = (currency: { code: string }) => limitCashPeriod.value?.every((period) => activeLimits?.value.some(
-    (limit) => limit.definition === formState.definition
+  const isCurrencySelectedInAllPeriods = (currency: { code: string }) => limitCashPeriod.value?.every((period: { id: string; name: string }) => activeLimits?.value.some(
+    (limit: PlayerLimitInterface) => limit.definition === formState.definition
       && limit.period === period.id
       && limit.currency === currency.code,
   ));
@@ -182,6 +183,8 @@
 
   onMounted(() => {
     changeTab(selectedTab.value);
+
+    console.log(limitCashPeriod.value);
   });
 </script>
 
