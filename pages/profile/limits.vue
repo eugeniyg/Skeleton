@@ -191,9 +191,13 @@
         grid-template-areas: "L B" "C C";
       }
 
-       &.D1-L0-B0 {
-         grid-template-areas: "D L" "B C" "S S";
-       }
+      &.D2-L0-B0 {
+        grid-template-areas: "D D" "L B" "C S";
+      }
+
+      &.D1-L0-B0 {
+        grid-template-areas: "D L" "B C" "S S";
+      }
 
       &.D0-L2-B0 {
         grid-template-areas: "D D" "L L" "B C" "S S";
@@ -248,6 +252,10 @@
       }
 
       &.D3-L3-B3 {
+        grid-template-areas: "D D" "L L" "B B" "C S";
+      }
+
+      &.D2-L0-B3 {
         grid-template-areas: "D D" "L L" "B B" "C S";
       }
 
@@ -399,7 +407,7 @@
         "C S";
       }
 
-       &.D0-L1-B3 {
+      &.D0-L1-B3 {
         grid-template-areas:
         "L L"
         "B B"
