@@ -93,7 +93,7 @@
     return labels[`edit_${props.period}_${props.definition}`];
   });
 
-  const isDisableUpdate = computed(() => Number(state.prevAmount) === Number(state.amount) || Number(state.amount) === 0);
+  const isDisableUpdate = computed(() => Number(state.prevAmount) === Number(state.amount) || !state.amount);
 
   const isLargeAmount = computed(() => Number(state.amount) > Number(state.prevAmount));
 
