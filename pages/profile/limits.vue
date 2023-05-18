@@ -188,7 +188,7 @@
       }
 
       &.D0-L0-B0 {
-        grid-template-areas: "L B" "C C";
+        grid-template-areas: "L B" "C S";
       }
 
       &.D2-L0-B0 {
