@@ -1996,6 +1996,9 @@ collections:
               - name: hint
                 label: Hint
                 widget: text
+              - name: activeStatusLabel
+                label: Active Status Label
+                widget: string  
               - name: pendingStatusLabel
                 label: Pending Status Label
                 widget: string
