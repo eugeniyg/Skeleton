@@ -1,8 +1,22 @@
+import { createResolver } from '@nuxt/kit'
+
+console.log(import.meta.url)
+
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+const currentDir = dirname(fileURLToPath(import.meta.url))
+
+const { resolve } = createResolver(dirname(fileURLToPath(import.meta.url)));
+
+
+console.log(currentDir);
+console.log(join(currentDir, './modules/sitemap.ts'));
+
 const viteConfig: any = {
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@use "@/scss/ds/_shared.scss" as *;',
+        additionalData: '@use "@skeleton/scss/ds/_shared.scss" as *;',
       },
     },
   },
@@ -12,11 +26,14 @@ const viteConfig: any = {
 };
 
 export default defineNuxtConfig({
+  alias: {
+      '@skeleton': resolve('./')
+  },
   modules: [
     '@pinia/nuxt',
     '@platform/frontend-core',
     '@nuxt/content',
-    '@/modules/sitemap',
+    '@skeleton/modules/sitemap',
   ],
   content: {
     api: { baseURL: '/_content' },
@@ -25,15 +42,15 @@ export default defineNuxtConfig({
     dirs: [
       {
         global: true,
-        path: '~/components/form/input',
+        path: '@skeleton/components/form/input',
         prefix: 'FormInput',
       },
       {
         global: true,
-        path: '~/components/tab/history',
+        path: '@skeleton/components/tab/history',
         prefix: 'TabHistory',
       },
-      '~/components',
+      '@skeleton/components',
     ],
   },
   app: {
@@ -63,15 +80,16 @@ export default defineNuxtConfig({
       ],
       script: [
         { src: 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js' },
-        { src: '/scripts/sw-register.js' },
+        // { src: '/scripts/sw-register.js' },
       ],
     },
     pageTransition: true,
     layoutTransition: true,
   },
   css: [
-    '@/scss/style.scss',
-    'vue-final-modal/style.css',
+    '@skeleton/scss/style.scss',
+    // 'vue-final-modal/style.css',
+    '@skeleton/node_modules/vue-final-modal/dist/style.css',
   ],
   vite: viteConfig,
   nitro: {

@@ -37,5 +37,5 @@
 </script>
 
 <style lang="scss">
-@import "scss/error";
+@import "@skeleton/scss/error";
 </style>
