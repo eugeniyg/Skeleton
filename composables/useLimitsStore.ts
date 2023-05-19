@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-import { CreateLimitInterface, PlayerLimitInterface } from '@platform/frontend-core/dist/module';
+import { CreateLimitInterface, CurrencyInterface, PlayerLimitInterface } from '@platform/frontend-core/dist/module';
 import { ProfileLimitsContentInterface } from '~/types';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 
@@ -62,12 +62,12 @@ export const useLimitsStore = defineStore('limitsStore', {
   }),
 
   actions: {
-    async getLimits():Promise<void> {
+    async getLimits(): Promise<void> {
       const { getPlayerLimits } = useCoreProfileApi();
       this.activeLimits = await getPlayerLimits();
     },
 
-    async createLimit(payload: CreateLimitInterface) :Promise<void> {
+    async createLimit(payload: CreateLimitInterface): Promise<void> {
       const { createPlayerLimit } = useCoreProfileApi();
       await createPlayerLimit(payload);
     },
@@ -87,6 +87,14 @@ export const useLimitsStore = defineStore('limitsStore', {
 
     setColumns(key: keyof ColumnsInterface, size: number) {
       this.columns[key] = size;
+    },
+    checkCurrencies(periods: { title: string, items: PlayerLimitInterface[] }[], currencies: CurrencyInterface[]) {
+      const currencyCodes = currencies.map((currency) => currency.code);
+
+      return periods.length > 2 && periods.every((period) => {
+        const periodCurrencyCodes = period.items.map((item) => item.currency);
+        return currencyCodes.every((code) => periodCurrencyCodes.includes(code));
+      });
     },
   },
 
