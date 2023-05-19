@@ -26,7 +26,7 @@
       <button-base
         type="primary"
         @click="emit('open-limit-modal', definition)"
-        :is-disabled="isAllCurrenciesUsed"
+        :is-disabled="isAllCurrenciesUsed || state.isShowEdit"
       >
         {{ getContent(limitsContent, defaultLimitsContent, 'addButtonLabel') }}
       </button-base>
