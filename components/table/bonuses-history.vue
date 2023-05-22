@@ -35,7 +35,7 @@
 <script setup lang="ts">
   import { PaginationMetaInterface, PlayerBonusInterface } from '@platform/frontend-core/dist/module';
   import { storeToRefs } from 'pinia';
-  import { HistoryBonusesInterface } from '~/types';
+  import { HistoryBonusesInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: HistoryBonusesInterface,

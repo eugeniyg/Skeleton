@@ -6,8 +6,6 @@ import {
   GameProviderInterface,
   FieldInterface,
 } from '@platform/frontend-core/dist/module';
-import { useGlobalStore } from '~/composables/useGlobalStore';
-import { useGamesStore } from '~/composables/useGamesStore';
 
 interface FieldsStoreStateInterface {
   profileFields: FieldInterface[],

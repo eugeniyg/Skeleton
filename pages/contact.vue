@@ -52,7 +52,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ContactPageInterface } from '~/types';
+  import { ContactPageInterface } from '@skeleton/types';
 
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();

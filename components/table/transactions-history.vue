@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
   import { PropType } from '@vue/runtime-core';
-  import { HistoryTransactionsInterface } from '~/types';
+  import { HistoryTransactionsInterface } from '@skeleton/types';
 
   const props = defineProps({
     invoices: {

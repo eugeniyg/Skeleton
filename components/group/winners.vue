@@ -32,7 +32,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useGamesStore } from '~/composables/useGamesStore';
 
   const props = defineProps({
     showArrows: {

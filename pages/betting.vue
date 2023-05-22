@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { BettingContentInterface } from '~/types';
+  import { BettingContentInterface } from '@skeleton/types';
 
   definePageMeta({
     middleware: ['status-limited'],

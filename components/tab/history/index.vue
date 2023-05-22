@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-  import { HistoryTabInterface } from '~/types';
+  import { HistoryTabInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: HistoryTabInterface

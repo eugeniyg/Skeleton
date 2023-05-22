@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
   import { PaginationMetaInterface, SpinHistoryInterface } from '@platform/frontend-core/dist/module';
-  import { HistoryTabInterface } from '~/types';
+  import { HistoryTabInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: HistoryTabInterface,

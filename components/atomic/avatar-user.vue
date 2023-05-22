@@ -2,7 +2,7 @@
   <div class="avatar-user">
     <div class="row">
       <span class="thumb">
-        <img class="img" src="~/assets/img/avatar-bg.png" alt="">
+        <img class="img" src="@skeleton/assets/img/avatar-bg.png" alt="">
       </span>
     </div>
 
@@ -44,7 +44,7 @@
     margin: 0 auto;
     z-index: 0;
     background-color: var(--gray-800);
-    background-image: url(~/assets/img/avatar-bg.png);
+    background-image: url(@skeleton/assets/img/avatar-bg.png);
     background-position: center;
     background-size: contain;
 

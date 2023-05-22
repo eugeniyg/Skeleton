@@ -64,7 +64,7 @@
     InvoicesRequestOptionsInterface,
     PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
-  import { HistoryTransactionsInterface, HistoryTabInterface } from '~/types';
+  import { HistoryTransactionsInterface, HistoryTabInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: HistoryTabInterface

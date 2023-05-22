@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useNotification } from '@kyvg/vue3-notification';
-import { useWalletStore } from '~/composables/useWalletStore';
-import { useProfileStore } from '~/composables/useProfileStore';
-import { AlertInterface } from '~/types';
+import { AlertInterface } from '@skeleton/types';
 
 interface ModalsInterface extends Record<string, any> {
   register: boolean,

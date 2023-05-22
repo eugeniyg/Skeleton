@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { MenuItemInterface } from '~/types';
+  import { MenuItemInterface } from '@skeleton/types';
 
   const { sidebarContent, defaultLocaleSidebarContent } = useGlobalStore();
   const { getContent } = useProjectMethods();

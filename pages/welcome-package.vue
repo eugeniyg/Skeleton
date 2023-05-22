@@ -107,7 +107,7 @@
 
 <script setup lang='ts'>
   import { storeToRefs } from 'pinia';
-  import { WelcomePageInterface } from '~/types';
+  import { WelcomePageInterface } from '@skeleton/types';
 
   const {
     setPageSeo,

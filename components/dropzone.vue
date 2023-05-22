@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
   import { SecurityFileInterface } from '@platform/frontend-core/dist/module';
-  import { ProfileDocumentsInterface } from '~/types';
+  import { ProfileDocumentsInterface } from '@skeleton/types';
 
   const props = defineProps<{
     fileName?: string,

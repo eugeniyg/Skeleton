@@ -62,7 +62,7 @@
 
 <script setup lang="ts">
   import { PlayerBonusInterface } from '@platform/frontend-core/dist/module';
-  import { CashBonusesInterface } from '~/types';
+  import { CashBonusesInterface } from '@skeleton/types';
 
   const props = defineProps<{
     bonus: PlayerBonusInterface,

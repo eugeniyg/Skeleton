@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-  import { BonusCodeBlockInterface } from '~/types';
+  import { BonusCodeBlockInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content?: BonusCodeBlockInterface

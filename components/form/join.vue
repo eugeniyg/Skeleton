@@ -71,7 +71,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { FieldInterface } from '@platform/frontend-core/dist/module';
-  import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
+  import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
   const props = defineProps<{
     registrationFields: FieldInterface[]

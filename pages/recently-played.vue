@@ -30,7 +30,7 @@
   import { storeToRefs } from 'pinia';
   import { onMounted } from '@vue/runtime-core';
   import { GameInterface } from '@platform/frontend-core/dist/module';
-  import { RecentlyPageInterface } from '~/types';
+  import { RecentlyPageInterface } from '@skeleton/types';
 
   const globalStore = useGlobalStore();
   const { isMobile, headerCountry, contentLocalesArray } = storeToRefs(globalStore);

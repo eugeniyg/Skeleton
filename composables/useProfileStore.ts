@@ -3,12 +3,6 @@ import {
   ProfileInterface,
   AuthorizationResponseInterface,
 } from '@platform/frontend-core/dist/module';
-import { useWalletStore } from '~/composables/useWalletStore';
-import { useLayoutStore } from '~/composables/useLayoutStore';
-import { useGamesStore } from '~/composables/useGamesStore';
-import { useProjectMethods } from '~/composables/useProjectMethods';
-import { useGlobalStore } from '~/composables/useGlobalStore';
-import { useBonusStore } from '~/composables/useBonusStore';
 
 interface ProfileStoreStateInterface {
   isLoggedIn: boolean,

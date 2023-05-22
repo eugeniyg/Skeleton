@@ -56,7 +56,7 @@
 </script>
 
 <style lang="scss" scoped>
-@import "scss/error";
+@import "@skeleton/scss/error.scss";
 
 .not-found {
   display: flex;

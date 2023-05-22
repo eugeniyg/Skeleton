@@ -46,7 +46,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { CurrencyInterface } from '@platform/frontend-core/dist/module';
-  import { useWalletStore } from '~/composables/useWalletStore';
 
   const props = defineProps({
     tabs: Array,

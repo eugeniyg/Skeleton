@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 
-  import { SortOptionInterface } from '~/types';
+  import { SortOptionInterface } from '@skeleton/types';
 
   const props = defineProps<{
     sortByValue: string,

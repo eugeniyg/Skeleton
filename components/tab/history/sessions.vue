@@ -64,7 +64,7 @@
   import {
     PaginationMetaInterface, SessionInterface,
   } from '@platform/frontend-core/dist/module';
-  import { HistorySessionsInterface, HistoryTabInterface } from '~/types';
+  import { HistorySessionsInterface, HistoryTabInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: HistoryTabInterface,

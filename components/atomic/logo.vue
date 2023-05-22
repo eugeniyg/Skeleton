@@ -2,7 +2,7 @@
   <nuxt-link class="logo" :to="localizePath('/')">
     <picture>
       <source srcset="/svg/logo-light.svg" media="(min-width: 33rem)" />
-      <img class="img" src="~/assets/svg/logo-short.svg" />
+      <img class="img" src="@skeleton/assets/svg/logo-short.svg" />
     </picture>
   </nuxt-link>
 </template>

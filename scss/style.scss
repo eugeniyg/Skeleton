@@ -35,7 +35,7 @@ input, button, ::placeholder, textarea {
   border-radius: $size;
 }
 
-$font-path: '~/assets/fonts/';
+$font-path: '@skeleton/assets/fonts/';
 
 @font-face {
   font-family: 'Rubik';

@@ -62,7 +62,7 @@
   } from '@platform/frontend-core/dist/module';
   import { storeToRefs } from 'pinia';
   import debounce from 'lodash/debounce';
-  import { CategoryGamesInterface } from '~/types';
+  import { CategoryGamesInterface } from '@skeleton/types';
 
   definePageMeta({
     middleware: 'games-collection',

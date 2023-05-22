@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
   import { BetHistoryInterface, PaginationMetaInterface } from '@platform/frontend-core/dist/module';
-  import { HistoryBetsInterface, HistoryTabInterface } from '~/types';
+  import { HistoryBetsInterface, HistoryTabInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: HistoryTabInterface,

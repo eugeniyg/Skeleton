@@ -14,7 +14,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { GameInterface } from '@platform/frontend-core/dist/module';
-  import { GamePageInterface } from '~/types';
+  import { GamePageInterface } from '@skeleton/types';
 
   const route = useRoute();
   const showPlug = ref<boolean>(false);

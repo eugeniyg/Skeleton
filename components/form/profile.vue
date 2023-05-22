@@ -54,7 +54,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
+  import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
   const props = defineProps<{
     saveButton?: string,

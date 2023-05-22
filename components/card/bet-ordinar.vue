@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
   import { BetItemInterface } from '@platform/frontend-core/dist/module';
-  import { BetCardInterface, BetStatusesInterface } from '~/types';
+  import { BetCardInterface, BetStatusesInterface } from '@skeleton/types';
 
   const props = defineProps<{
     id: string,

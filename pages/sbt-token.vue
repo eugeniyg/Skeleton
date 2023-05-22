@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { TokenContentInterface } from '~/types';
+  import { TokenContentInterface } from '@skeleton/types';
 
   const globalStore = useGlobalStore();
   const { contentLocalesArray } = storeToRefs(globalStore);

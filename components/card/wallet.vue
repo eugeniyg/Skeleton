@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ProfileWalletInterface } from '~/types';
+  import { ProfileWalletInterface } from '@skeleton/types';
 
   const props = defineProps<{
     id: string,

@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { HomeContentInterface } from '~/types';
+  import { HomeContentInterface } from '@skeleton/types';
 
   const globalStore = useGlobalStore();
   const gameStore = useGamesStore();

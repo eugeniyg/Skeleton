@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-  import { GamePageInterface } from '~/types';
+  import { GamePageInterface } from '@skeleton/types';
 
   const props = defineProps<{
     gameContent: GamePageInterface

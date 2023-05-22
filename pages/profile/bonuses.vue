@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ProfileBonusesInterface } from '~/types';
+  import { ProfileBonusesInterface } from '@skeleton/types';
 
   const globalStore = useGlobalStore();
   const { contentLocalesArray } = storeToRefs(globalStore);

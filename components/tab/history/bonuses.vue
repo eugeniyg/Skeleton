@@ -35,7 +35,7 @@
     PlayerBonusInterface,
     PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
-  import { HistoryBonusesInterface, HistoryTabInterface } from '~/types';
+  import { HistoryBonusesInterface, HistoryTabInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: HistoryTabInterface,

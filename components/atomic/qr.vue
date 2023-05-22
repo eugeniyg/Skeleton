@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-  import { DepositInterface } from '~/types';
+  import { DepositInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: Maybe<DepositInterface>,

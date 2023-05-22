@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { BonusPageInterface } from '~/types';
+  import { BonusPageInterface } from '@skeleton/types';
 
   const pageContent = ref<BonusPageInterface|undefined>(undefined);
   const defaultLocalePageContent = ref<BonusPageInterface|undefined>(undefined);

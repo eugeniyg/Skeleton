@@ -45,14 +45,14 @@
   height: 100%;
   width: 100%;
   grid-area: promo;
-  background-image: url(~/assets/img/promo-sm.png);
+  background-image: url(@skeleton/assets/img/promo-sm.png);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   user-select: none;
 
   @include media(md) {
-    background-image: url(~/assets/img/promo-lg.png);
+    background-image: url(@skeleton/assets/img/promo-lg.png);
     --padding: #{rem(88px)} #{rem(32px)} #{rem(38px)} #{rem(32px)};
   }
 

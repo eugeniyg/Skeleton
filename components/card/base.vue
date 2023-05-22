@@ -52,7 +52,7 @@
   import { storeToRefs } from 'pinia';
   import { PropType } from '@vue/runtime-core';
   import { GameImagesInterface, GameProviderInterface } from '@platform/frontend-core/dist/module';
-  import { GameTagInterface } from '~/types';
+  import { GameTagInterface } from '@skeleton/types';
 
   const props = defineProps({
     images: {

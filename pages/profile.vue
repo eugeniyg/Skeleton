@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ProfileContentInterface, SeoContentInterface } from '~/types';
+  import { ProfileContentInterface, SeoContentInterface } from '@skeleton/types';
 
   definePageMeta({
     middleware: 'auth',

@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { QuestionPageInterface, QuestionPagesInterface } from '~/types';
+  import { QuestionPageInterface, QuestionPagesInterface } from '@skeleton/types';
 
   const { localizePath } = useProjectMethods();
   const route = useRoute();
