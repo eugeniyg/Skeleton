@@ -368,6 +368,14 @@
         "C S"
       }
 
+      &.D0-L3-B0 {
+        grid-template-areas: "L L" "B C";
+      }
+
+      &.D1-L3-B0 {
+        grid-template-areas: "D D" "L L" "B C" "S S";
+      }
+
       &.D3-L3-B2,
       &.D3-L2-B2 {
         grid-template-areas:

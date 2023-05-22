@@ -2,7 +2,7 @@
   <div
     class="limits-periods-list__item"
   >
-    <h4 class="limits-periods-list__item-title">{{ title }}</h4>
+    <h4 class="limits-periods-list__item-title">{{ status === 1 ? statusActiveTitle : statusPendingTitle }}</h4>
 
     <p class="limits-periods-list__item-sub-title" v-if="isShowContDown">
       <template v-if="state.isAlmostDone">
@@ -13,7 +13,7 @@
         <span class="time-span">{{ format(state.hours) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerHoursLabel') }}</span>
         <span class="time-span">{{ format(state.minutes) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerMinutesLabel') }}</span>
         <span class="time-span">{{ format(state.seconds) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerSecondsLabel') }}</span>
-        {{ getContent(limitsContent, defaultLimitsContent, 'timerLabel') }}
+        {{ getContent(limitsContent, defaultLimitsContent, 'timerLabel') }} {{ status }}
       </template>
     </p>
 
@@ -104,7 +104,7 @@
 
   const format = (value: number): number|string => (value < 10 ? `0${value}` : value);
 
-  const title = computed(() => {
+  const statusActiveTitle = computed(() => {
     const message = getContent(limitsContent.value, defaultLimitsContent.value, 'availableLimitSum');
     const { amount, currency } = formatBalance(props.currency, props.amount);
     const balance = amount < props.currentAmount ? 0 : amount - props.currentAmount;
@@ -116,6 +116,11 @@
     };
 
     return Object.keys(correction).reduce((acc, key) => acc.replace(key, correction[key]), message);
+  });
+
+  const statusPendingTitle = computed(() => {
+    const { amount, currency } = formatBalance(props.currency, props.amount);
+    return `${amount} ${currency}`;
   });
 
   const countdown = () => {
