@@ -191,9 +191,13 @@
         grid-template-areas: "L B" "C C";
       }
 
-       &.D1-L0-B0 {
-         grid-template-areas: "D L" "B C" "S S";
-       }
+     &.D1-L0-B0 {
+       grid-template-areas: "D L" "B C" "S S";
+     }
+
+     &.D2-L3-B0 {
+       grid-template-areas: "D D" "L L" "B C" "S S";
+     }
 
       &.D0-L2-B0 {
         grid-template-areas: "D D" "L L" "B C" "S S";
