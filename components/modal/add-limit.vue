@@ -29,6 +29,7 @@
         @blur="blurCurrencySelect"
         :show-error="formState.showCurrenciesError"
         :items="currenciesOptions"
+        :key="currencyKey"
       />
 
       <form-input-number
@@ -82,6 +83,8 @@
   const {
     formatBalance, getMainBalanceFormat, getContent,
   } = useProjectMethods();
+
+  const currencyKey = ref(0);
 
   const titleMapping = computed(() => ({
     1: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addBetlabel'),
@@ -172,6 +175,7 @@
   const changeTab = (period: { id: string; name: string }) => {
     selectedTab.value = period;
     formState.period = period.id;
+    currencyKey.value += 1;
   };
 
   const selectCurrency = (currency: CurrencyInterface) => {
@@ -206,7 +210,7 @@
     } catch (error: any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
-        amountError.value = true
+        amountError.value = true;
       }
     }
   };

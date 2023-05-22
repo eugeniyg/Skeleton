@@ -116,6 +116,10 @@
       if (!selectedCurrency.value?.name) emit('blur');
     }
   };
+
+  onMounted(() => {
+    selectedCurrency.value = undefined;
+  });
 </script>
 
 <style lang="scss">
