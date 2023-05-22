@@ -160,7 +160,7 @@
     "title": "Limits",
     "editButtonLabel": "Edit limits",
     "timerDaysLabel": "d",
-    "availableLimitSum": "{amount} of {balance} {currency} left",
+    "availableLimitSum": "{balance} of {amount} {currency} left",
     "timerMinutesLabel": "m",
     "timerSecondsLabel": "s",
     "timerDays": "d",
