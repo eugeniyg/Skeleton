@@ -13,7 +13,7 @@
         <span class="time-span">{{ format(state.hours) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerHoursLabel') }}</span>
         <span class="time-span">{{ format(state.minutes) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerMinutesLabel') }}</span>
         <span class="time-span">{{ format(state.seconds) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerSecondsLabel') }}</span>
-        {{ getContent(limitsContent, defaultLimitsContent, 'timerLabel') }} {{ status }}
+        {{ timerLabel }}
       </template>
     </p>
 
@@ -122,6 +122,11 @@
     const { amount, currency } = formatBalance(props.currency, props.amount);
     return `${amount} ${currency}`;
   });
+
+  const timerLabel = computed(() => (props.status === 1
+    ? getContent(limitsContent.value, defaultLimitsContent.value, 'statusActiveTimerLabel')
+    : getContent(limitsContent.value, defaultLimitsContent.value, 'statusPendingTimerLabel')
+  ));
 
   const countdown = () => {
     const tick = async () => {
