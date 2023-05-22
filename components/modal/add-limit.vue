@@ -40,8 +40,10 @@
         name="amount"
         v-model:value="formState.amount"
         placeholder="0"
-        :hint="setError('amount')"
+        :hint="amountError ? setError('amount'): ''"
+        @blur="amountError = false"
         @focus="focusField('amount')"
+        @input="focusField('amount')"
       />
 
       <p class="modal-deposit-limit__description">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.addCashLimit.hint') }}</p>
@@ -102,11 +104,11 @@
   });
 
   const { getFormRules } = useProjectMethods();
-  const amountRules = {};
-  const authorizationFormRules = getFormRules(amountRules);
+  const limitAmountRules = {};
+  const limitAmountFormRules = getFormRules(limitAmountRules);
   const {
     serverFormErrors, v$, onFocus, setError,
-  } = useFormValidation(authorizationFormRules, formState.amount);
+  } = useFormValidation(limitAmountFormRules, formState.amount);
 
   const amountError = ref<boolean>(false);
 
@@ -204,6 +206,7 @@
     } catch (error: any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
+        amountError.value = true
       }
     }
   };
