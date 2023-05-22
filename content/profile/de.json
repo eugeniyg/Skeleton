@@ -126,6 +126,7 @@
       "hint": "This setting limits the amount you can deposit per day, week or month",
       "label": "Loss limits"
     },
+    "statusActiveTimerLabel": "until reset",
     "timerHoursLabel": "h",
     "timerHours": "h",
     "pendingStatusLabel": "Pending till {date}",
@@ -144,6 +145,7 @@
       "selfExclusion": "Self exclusion",
       "coolingOff": "Cooling off"
     },
+    "statusPendingTimerLabel": "until activate",
     "timerAlmostDone": "Almost done",
     "coolingOff": {
       "label": "Cooling off",
