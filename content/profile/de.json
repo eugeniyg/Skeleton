@@ -126,6 +126,7 @@
       "hint": "This setting limits the amount you can deposit per day, week or month",
       "label": "Loss limits"
     },
+    "statusActiveTimerLabel": "until reset",
     "timerHoursLabel": "h",
     "timerHours": "h",
     "pendingStatusLabel": "Pending till {date}",
@@ -144,6 +145,7 @@
       "selfExclusion": "Self exclusion",
       "coolingOff": "Cooling off"
     },
+    "statusPendingTimerLabel": "until activate",
     "timerAlmostDone": "Almost done",
     "coolingOff": {
       "label": "Cooling off",
@@ -158,7 +160,7 @@
     "title": "Limits",
     "editButtonLabel": "Edit limits",
     "timerDaysLabel": "d",
-    "availableLimitSum": "{amount} of {balance} {currency} left",
+    "availableLimitSum": "{balance} of {amount} {currency} left",
     "timerMinutesLabel": "m",
     "timerSecondsLabel": "s",
     "timerDays": "d",
