@@ -37,9 +37,13 @@
         :min="0"
         :defaultValue="0"
         label=""
-        name="limit-currency"
+        name="amount"
         v-model:value="formState.amount"
         placeholder="0"
+        :hint="amountError ? setError('amount'): ''"
+        @blur="amountError = false"
+        @focus="focusField('amount')"
+        @input="focusField('amount')"
       />
 
       <p class="modal-deposit-limit__description">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.addCashLimit.hint') }}</p>
@@ -98,6 +102,20 @@
     period: undefined,
     showCurrenciesError: false,
   });
+
+  const { getFormRules } = useProjectMethods();
+  const limitAmountRules = {};
+  const limitAmountFormRules = getFormRules(limitAmountRules);
+  const {
+    serverFormErrors, v$, onFocus, setError,
+  } = useFormValidation(limitAmountFormRules, formState.amount);
+
+  const amountError = ref<boolean>(false);
+
+  const focusField = (fieldName:string):void => {
+    amountError.value = false;
+    onFocus(fieldName);
+  };
 
   const isPeriodDisabled = (period: { id: string|number, name: string }) => {
     const limits = activeLimits?.value.filter((limit: PlayerLimitInterface) => limit.definition === formState.definition
@@ -166,19 +184,31 @@
   };
 
   const addLimit = async () => {
-    closeModal('addLimit');
-    const converted = getMainBalanceFormat(formState.currency, formState.amount);
+    if (v$.value.$invalid) return;
 
-    await createLimit({
-      period: formState.period,
-      definition: formState.definition as number,
-      amount: converted.amount,
-      currency: converted.currency,
-    });
+    v$.value.$reset();
+    const validFormData = await v$.value.$validate();
+    if (!validFormData) return;
 
-    await getLimits();
+    try {
+      const converted = getMainBalanceFormat(formState.currency, formState.amount);
 
-    showAlert(alertsData.value?.cashLimitAdd || defaultLocaleAlertsData.value?.cashLimitAdd);
+      await createLimit({
+        period: formState.period,
+        definition: formState.definition as number,
+        amount: converted.amount,
+        currency: converted.currency,
+      });
+
+      await getLimits();
+      closeModal('addLimit');
+      showAlert(alertsData.value?.cashLimitAdd || defaultLocaleAlertsData.value?.cashLimitAdd);
+    } catch (error: any) {
+      if (error.response?.status === 422) {
+        serverFormErrors.value = error.data?.error?.fields;
+        amountError.value = true
+      }
+    }
   };
 
   onMounted(() => {
