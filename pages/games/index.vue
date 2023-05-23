@@ -18,11 +18,13 @@
         />
 
         <form-input-dropdown
+          class="game-filter__dropdown"
           :value="currentProvider.id"
           name="providers"
           placeholder="Providers"
           :options="providerDropdownOptions"
           @input="changeProvider"
+          is-fit-content
         />
       </div>
       <atomic-game-sort
@@ -253,6 +255,7 @@
 
       .field {
         border-radius: 12px 0 0 12px;
+        text-overflow: ellipsis;
       }
     }
   }
@@ -266,11 +269,6 @@
       min-height: auto;
       border-left-color: var(--gray-700);
       padding: 8px 8px 8px 16px;
-
-      //span {
-      //  max-width: none;
-      //  overflow: unset;
-      //}
 
       .icon {
         position: relative;
@@ -299,6 +297,33 @@
     &.is-open {
       .selected {
         border-left-color: var(--white);
+      }
+    }
+
+    &.game-filter__dropdown {
+      --select-width: fit-content;
+
+      .items {
+        width: fit-content;
+        max-width: none;
+        left: auto
+      }
+
+      .selected {
+        grid-template-columns: 1fr auto;
+        padding-right: 10px;
+      }
+
+      .item {
+        padding: rem(8px) rem(24px) rem(8px) rem(8px);
+
+        .icon {
+          position: absolute;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          margin: auto;
+        }
       }
     }
   }
