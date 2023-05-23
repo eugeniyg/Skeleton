@@ -1874,9 +1874,12 @@ collections:
           - name: pendingStatusLabel
             label: Pending Status Label
             widget: string
-          - name: timerLabel
-            label: Timer Label
+          - name: statusPendingTimerLabel
+            label: Status Pending Timer Label
             widget: string
+          - name: statusActiveTimerLabel
+            label: Status Active Timer Label
+            widget: string  
           - name: timerDaysLabel
             label: Timer Days Label
             widget: string
@@ -1996,6 +1999,9 @@ collections:
               - name: hint
                 label: Hint
                 widget: text
+              - name: activeStatusLabel
+                label: Active Status Label
+                widget: string  
               - name: pendingStatusLabel
                 label: Pending Status Label
                 widget: string

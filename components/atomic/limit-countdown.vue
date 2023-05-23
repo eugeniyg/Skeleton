@@ -22,8 +22,8 @@
 
   const formatStatus = (status: number, date:string) => {
     const msg = status === 1
-      ? getContent(limitsContent.value, defaultLimitsContent.value, 'activeStatusLabel')
-      : getContent(limitsContent.value, defaultLimitsContent.value, 'pendingStatusLabel');
+      ? getContent(limitsContent.value, defaultLimitsContent.value, 'coolingOff.activeStatusLabel')
+      : getContent(limitsContent.value, defaultLimitsContent.value, 'coolingOff.pendingStatusLabel');
     return msg.replace('{date}', date);
   };
 

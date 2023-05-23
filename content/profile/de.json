@@ -126,6 +126,7 @@
       "hint": "This setting limits the amount you can deposit per day, week or month",
       "label": "Loss limits"
     },
+    "statusActiveTimerLabel": "until reset",
     "timerHoursLabel": "h",
     "timerHours": "h",
     "pendingStatusLabel": "Pending till {date}",
@@ -144,20 +145,22 @@
       "selfExclusion": "Self exclusion",
       "coolingOff": "Cooling off"
     },
+    "statusPendingTimerLabel": "until activate",
     "timerAlmostDone": "Almost done",
     "coolingOff": {
       "label": "Cooling off",
       "hint": "The restriction takes effect instantly. You won’t be able to make deposits and play during the specified period, also you will be excluded from all advertising offers.",
-      "pendingStatusLabel": "Pending till",
+      "pendingStatusLabel": "Pending. Will be activated on {date}",
       "deleteConfirmTitle": "Limit update successfully",
       "deleteConfirmDescription": "The limit will be canceled after 24 hours",
-      "selectLabel": "None"
+      "selectLabel": "None",
+      "activeStatusLabel": "Active till {date}"
     },
     "modeToggle": "Advanced mode",
     "title": "Limits",
     "editButtonLabel": "Edit limits",
     "timerDaysLabel": "d",
-    "availableLimitSum": "{amount} of {balance} {currency} left",
+    "availableLimitSum": "{balance} of {amount} {currency} left",
     "timerMinutesLabel": "m",
     "timerSecondsLabel": "s",
     "timerDays": "d",

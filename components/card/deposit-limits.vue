@@ -26,6 +26,7 @@
       <button-base
         type="primary"
         @click="emit('open-limit-modal', definition)"
+        :is-disabled="isAllCurrenciesUsed || state.isShowEdit"
       >
         {{ getContent(limitsContent, defaultLimitsContent, 'addButtonLabel') }}
       </button-base>
@@ -54,6 +55,7 @@
   import { UpdateLimitInterface } from '@platform/frontend-core/dist/module';
 
   import { storeToRefs } from 'pinia';
+  import { useGlobalStore } from '~/composables/useGlobalStore';
 
   const emit = defineEmits([
     'open-limit-modal',
@@ -62,8 +64,10 @@
 
   const limitsStore = useLimitsStore();
   const { getContent } = useProjectMethods();
-  const { setColumns } = limitsStore;
+  const { setColumns, checkCurrencies } = limitsStore;
   const { depositPeriods, limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
+  const globalStore = useGlobalStore();
+  const { currencies } = storeToRefs(globalStore);
 
   const state = reactive<{ isShowEdit: boolean }>({
     isShowEdit: false,
@@ -76,6 +80,8 @@
   };
 
   const isEditLocked = computed(() => depositPeriods.value.every((period) => period.items.filter((item) => item.status === 1).every((item) => item.cancelProcess)));
+
+  const isAllCurrenciesUsed = computed(() => checkCurrencies(depositPeriods.value, currencies.value));
 
   watch(() => depositPeriods.value, (newValue) => {
     setColumns('deposit', newValue.length);

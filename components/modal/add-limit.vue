@@ -29,6 +29,7 @@
         @blur="blurCurrencySelect"
         :show-error="formState.showCurrenciesError"
         :items="currenciesOptions"
+        :key="currencyKey"
       />
 
       <form-input-number
@@ -37,9 +38,13 @@
         :min="0"
         :defaultValue="0"
         label=""
-        name="limit-currency"
+        name="amount"
         v-model:value="formState.amount"
         placeholder="0"
+        :hint="amountError ? setError('amount'): ''"
+        @blur="amountError = false"
+        @focus="focusField('amount')"
+        @input="focusField('amount')"
       />
 
       <p class="modal-deposit-limit__description">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.addCashLimit.hint') }}</p>
@@ -60,7 +65,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import { CurrencyInterface } from '@platform/frontend-core/dist/module';
+  import { CurrencyInterface, PlayerLimitInterface } from '@platform/frontend-core/dist/module';
   import { useGlobalStore } from '~/composables/useGlobalStore';
 
   const props = defineProps<{ definition?: number }>();
@@ -78,6 +83,8 @@
   const {
     formatBalance, getMainBalanceFormat, getContent,
   } = useProjectMethods();
+
+  const currencyKey = ref(0);
 
   const titleMapping = computed(() => ({
     1: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addBetlabel'),
@@ -99,14 +106,29 @@
     showCurrenciesError: false,
   });
 
-  const isPeriodDisabled = (period: { id: string|number }) => {
-    const limits = activeLimits?.value.filter((limit) => limit.definition === formState.definition
+  const { getFormRules } = useProjectMethods();
+  const limitAmountRules = {};
+  const limitAmountFormRules = getFormRules(limitAmountRules);
+  const {
+    serverFormErrors, v$, onFocus, setError,
+  } = useFormValidation(limitAmountFormRules, formState.amount);
+
+  const amountError = ref<boolean>(false);
+
+  const focusField = (fieldName:string):void => {
+    amountError.value = false;
+    onFocus(fieldName);
+  };
+
+  const isPeriodDisabled = (period: { id: string|number, name: string }) => {
+    const limits = activeLimits?.value.filter((limit: PlayerLimitInterface) => limit.definition === formState.definition
       && limit.period === period.id);
     return (
-      limits?.length && currencies.value.every((currency) => limits?.find((limit) => (
+      limits?.length && currencies.value.every((currency) => limits?.find((limit: PlayerLimitInterface) => (
         limit.definition === formState.definition
         && limit.period === period.id
-        && limit.currency === (!formState.currency ? currency.code : formState.currency))))
+        && limit.currency === currency.code
+      )))
     );
   };
 
@@ -122,13 +144,13 @@
 
   const isCurrencySelectedInPeriod = (currency: {
     code: string
-  }) => activeLimits?.value.some((limit) => (
+  }) => activeLimits?.value.some((limit: PlayerLimitInterface) => (
     limit.definition === formState.definition
     && limit.period === formState.period
     && limit.currency === currency.code));
 
-  const isCurrencySelectedInAllPeriods = (currency: { code: string }) => limitCashPeriod.value?.every((period) => activeLimits?.value.some(
-    (limit) => limit.definition === formState.definition
+  const isCurrencySelectedInAllPeriods = (currency: { code: string }) => limitCashPeriod.value?.every((period: { id: string; name: string }) => activeLimits?.value.some(
+    (limit: PlayerLimitInterface) => limit.definition === formState.definition
       && limit.period === period.id
       && limit.currency === currency.code,
   ));
@@ -153,6 +175,7 @@
   const changeTab = (period: { id: string; name: string }) => {
     selectedTab.value = period;
     formState.period = period.id;
+    currencyKey.value += 1;
   };
 
   const selectCurrency = (currency: CurrencyInterface) => {
@@ -165,19 +188,31 @@
   };
 
   const addLimit = async () => {
-    closeModal('addLimit');
-    const converted = getMainBalanceFormat(formState.currency, formState.amount);
+    if (v$.value.$invalid) return;
 
-    await createLimit({
-      period: formState.period,
-      definition: formState.definition as number,
-      amount: converted.amount,
-      currency: converted.currency,
-    });
+    v$.value.$reset();
+    const validFormData = await v$.value.$validate();
+    if (!validFormData) return;
 
-    await getLimits();
+    try {
+      const converted = getMainBalanceFormat(formState.currency, formState.amount);
 
-    showAlert(alertsData.value?.cashLimitAdd || defaultLocaleAlertsData.value?.cashLimitAdd);
+      await createLimit({
+        period: formState.period,
+        definition: formState.definition as number,
+        amount: converted.amount,
+        currency: converted.currency,
+      });
+
+      await getLimits();
+      closeModal('addLimit');
+      showAlert(alertsData.value?.cashLimitAdd || defaultLocaleAlertsData.value?.cashLimitAdd);
+    } catch (error: any) {
+      if (error.response?.status === 422) {
+        serverFormErrors.value = error.data?.error?.fields;
+        amountError.value = true;
+      }
+    }
   };
 
   onMounted(() => {

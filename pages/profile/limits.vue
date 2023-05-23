@@ -191,13 +191,13 @@
         grid-template-areas: "L B" "C S";
       }
 
-      &.D2-L0-B0 {
-        grid-template-areas: "D D" "L B" "C S";
-      }
+     &.D1-L0-B0 {
+       grid-template-areas: "D L" "B C" "S S";
+     }
 
-      &.D1-L0-B0 {
-        grid-template-areas: "D L" "B C" "S S";
-      }
+     &.D2-L3-B0 {
+       grid-template-areas: "D D" "L L" "B C" "S S";
+     }
 
       &.D0-L2-B0 {
         grid-template-areas: "D D" "L L" "B C" "S S";
@@ -374,6 +374,14 @@
         "L L"
         "B B"
         "C S"
+      }
+
+      &.D0-L3-B0 {
+        grid-template-areas: "L L" "B C";
+      }
+
+      &.D1-L3-B0 {
+        grid-template-areas: "D D" "L L" "B C" "S S";
       }
 
       &.D3-L3-B2,
