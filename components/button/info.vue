@@ -18,7 +18,8 @@
   justify-content: center;
   align-items: center;
   @extend %skip-btn;
-  @include box(24px);
+  width: rem(24px);
+  height: rem(24px);
   padding: 0;
   border-radius: 8px;
   background-color: var(--bgc, transparent);
