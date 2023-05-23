@@ -1,4 +1,8 @@
 .app-main {
+  &.is-overflow-off {
+    overflow: visible;
+  }
+
   .carousel {
     max-height: rem(308px);
     height: 100%;
