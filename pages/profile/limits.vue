@@ -173,11 +173,15 @@
     padding: rem(24px);
     background-color: var(--gray-900);
     border-radius: 16px;
-    width: var(--card-width, calc(50% - 8px));
+    width: var(--card-width, 100%);
     user-select: none;
 
-    &.is-full-width {
-      --card-width: 100%
+    @include media(l) {
+      --card-width: calc(50% - 8px);
+
+      &.is-full-width {
+        --card-width: 100%;
+      }
     }
 
     &-actions {
