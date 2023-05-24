@@ -1,6 +1,7 @@
 <template>
   <div
-    class="limits__card limits__card--deposit"
+    class="limits__card"
+    :class="{'is-full-width': isFullWidth}"
   >
     <h4 class="limits__card-title" data-tooltip-parent>
       {{ getContent(limitsContent, defaultLimitsContent, 'deposit.label') }}
@@ -65,7 +66,9 @@
   const limitsStore = useLimitsStore();
   const { getContent } = useProjectMethods();
   const { setColumns, checkCurrencies } = limitsStore;
-  const { depositPeriods, limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
+  const {
+    depositPeriods, limitsContent, defaultLimitsContent, isAdvancedModeEnabled, lossPeriods,
+  } = storeToRefs(limitsStore);
   const globalStore = useGlobalStore();
   const { currencies } = storeToRefs(globalStore);
 
@@ -82,6 +85,8 @@
   const isEditLocked = computed(() => depositPeriods.value.every((period) => period.items.filter((item) => item.status === 1).every((item) => item.cancelProcess)));
 
   const isAllCurrenciesUsed = computed(() => checkCurrencies(depositPeriods.value, currencies.value));
+
+  const isFullWidth = computed(() => (isAdvancedModeEnabled.value && lossPeriods.value?.length > 1) || (isAdvancedModeEnabled.value && depositPeriods.value.length > 1));
 
   watch(() => depositPeriods.value, (newValue) => {
     setColumns('deposit', newValue.length);

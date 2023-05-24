@@ -22,6 +22,7 @@ interface LimitsStateInteface {
   isLoaded: boolean,
   limitsContent: Maybe<ProfileLimitsContentInterface>,
   defaultLimitsContent: Maybe<ProfileLimitsContentInterface>,
+  isAdvancedModeEnabled: boolean,
   modals: LimitsModalInterface,
   columns: ColumnsInterface
 }
@@ -36,18 +37,13 @@ const transformToPeriods = (limits: PlayerLimitInterface[]) => {
     .filter((column) => column.items.length);
 };
 
-const mapKeys: Record<any, string> = {
-  deposit: 'D',
-  loss: 'L',
-  bet: 'B',
-};
-
 export const useLimitsStore = defineStore('limitsStore', {
   state: (): LimitsStateInteface => ({
     activeLimits: [],
     isLoaded: false,
     limitsContent: undefined,
     defaultLimitsContent: undefined,
+    isAdvancedModeEnabled: false,
     modals: {
       addLimit: false,
       editLimit: false,
@@ -95,6 +91,10 @@ export const useLimitsStore = defineStore('limitsStore', {
         const periodCurrencyCodes = period.items.map((item) => item.currency);
         return currencyCodes.every((code) => periodCurrencyCodes.includes(code));
       });
+    },
+
+    toogleAdvancedMode():void {
+      this.isAdvancedModeEnabled = !this.isAdvancedModeEnabled;
     },
   },
 
@@ -147,14 +147,6 @@ export const useLimitsStore = defineStore('limitsStore', {
         value: content[period.id],
         code: period.id,
       })) || [];
-    },
-
-    getColumns(state) {
-      const columns = Object.entries(state.columns);
-      return columns.map((entry) => {
-        const [key, value] = entry;
-        return `${mapKeys[key]}${value}`;
-      }).join('-');
     },
   },
 });

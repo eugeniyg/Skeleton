@@ -7,12 +7,12 @@
         <form-input-toggle
           v-model:value="isAdvancedModeEnabled"
           name="toggle"
-          @change="clickToggle"
+          @change="toogleAdvancedMode"
         />
       </div>
     </div>
 
-    <div class="limits__grid" :class="getColumns">
+    <div class="limits__grid">
       <card-deposit-limits
         v-if="isAdvancedModeEnabled"
         @open-limit-modal="openLimitModal"
@@ -63,8 +63,12 @@
 
   const limitsStore = useLimitsStore();
   const globalStore = useGlobalStore();
-  const { getLimits, setLimitsContent, showModal } = limitsStore;
-  const { limitsContent, defaultLimitsContent, getColumns } = storeToRefs(limitsStore);
+  const {
+    getLimits, setLimitsContent, showModal, toogleAdvancedMode,
+  } = limitsStore;
+  const {
+    limitsContent, defaultLimitsContent, isAdvancedModeEnabled,
+  } = storeToRefs(limitsStore);
   const { contentLocalesArray } = storeToRefs(globalStore);
   const { findLocalesContentData, getContent } = useProjectMethods();
 
@@ -87,8 +91,6 @@
     currency: string | undefined,
     period: string | undefined,
   }
-
-  const isAdvancedModeEnabled = ref<boolean>(false);
 
   const state = reactive<{
     definition: number | undefined,
@@ -126,10 +128,6 @@
     state.period = period;
     confirmModalKey.value += 1;
     showModal('confirmLimitUpdate');
-  };
-
-  const clickToggle = () => {
-    isAdvancedModeEnabled.value = !isAdvancedModeEnabled.value;
   };
 </script>
 
@@ -171,270 +169,272 @@
     flex-wrap: wrap;
 
     @include media(l) {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
-
-      &.D0-L2-B3 {
-        grid-template-areas: "L L" "B B" "C C";
-      }
-
-      &.D0-L3-B3 {
-        grid-template-areas: "L L" "B B" "C C";
-      }
-
-      &.D3-L1-B0 {
-        grid-template-areas: "D D" "L B" "C S";
-      }
-
-      &.D0-L0-B0 {
-        grid-template-areas: "L B" "C S";
-      }
-
-     &.D1-L0-B0 {
-       grid-template-areas: "D L" "B C" "S S";
-     }
-
-     &.D2-L3-B0 {
-       grid-template-areas: "D D" "L L" "B C" "S S";
-     }
-
-      &.D0-L2-B0 {
-        grid-template-areas: "D D" "L L" "B C" "S S";
-      }
-
-      &.D3-L1-B2 {
-        grid-template-areas: "D D" "L L" "B B" "C S";
-      }
-
-      &.D1-L2-B0 {
-        grid-template-areas: "D D" "L L" "B C" "S S";
-      }
-
-      &.D2-L3-B3 {
-        grid-template-areas: "D D" "L L" "B B" "C S";
-      }
-
-      &.D0-L0-B1 {
-        grid-template-areas: "D D" "L B" "C C";
-      }
-
-      &.D0-L2-B1 {
-        grid-template-areas: "D D" "L L" "B C" "S S";
-      }
-
-      &.D0-L0-B2 {
-        grid-template-areas: "D D" "L L" "B B" "C C";
-      }
-
-      &.D1-L1-B2 {
-        grid-template-areas: "D L" "B B" "C S";
-      }
-
-      &.D0-L2-B2 {
-        grid-template-areas:  "L L" "B B" "C C";
-      }
-
-      &.D1-L2-B2 {
-        grid-template-areas: "D D" "L L" "B B" "C S";
-      }
-
-      &.D1-L3-B1 {
-        grid-template-areas: "D D" "L L" "B B" "C S";
-      }
-
-      &.D1-L3-B3 {
-        grid-template-areas: "D D" "L L" "B B" "C S";
-      }
-
-      &.D0-L3-B1 {
-        grid-template-areas: "D D" "L L" "B C" "S S";
-      }
-
-      &.D3-L3-B3 {
-        grid-template-areas: "D D" "L L" "B B" "C S";
-      }
-
-      &.D2-L0-B3 {
-        grid-template-areas: "D D" "L L" "B B" "C S";
-      }
-
-      &.D0-L1-B0 {
-        grid-template-areas: "L B" "C C";
-      }
-
-      &.D0-L1-B2 {
-        grid-template-areas: "L L" "B B" "C C";
-      }
-
-      &.D1-L1-B0 {
-        grid-template-areas: "D L" "B C" "S S";
-      }
-
-      &.D2-L2-B3, &.D3-L2-B3 {
-        grid-template-areas: "D D" "L L" "B B" "C S";
-      }
-
-      &.D3-L1-B3 {
-        grid-template-areas: "D D" "L L" "B B" "C S";
-      }
-
-      &.D2-L2-B0,
-      &.D3-L2-B0,
-      &.D3-L3-B0,
-      &.D3-L3-B1 {
-        grid-template-areas:
-        "D D"
-        "L L"
-        "B C"
-        "S S";
-      }
-
-      &.D2-L1-B0 {
-        grid-template-areas:
-        "D D"
-        "L B"
-        "C S"
-      }
-
-      &.D1-L3-B2 {
-        grid-template-areas:
-        "D D"
-        "L L"
-        "B B"
-        "C S";
-      }
-
-      &.D2-L1-B1, &.D2-L0-B1 {
-        grid-template-areas:
-          "D D"
-          "L B"
-          "C S";
-      }
-
-      &.D2-L2-B1 {
-        grid-template-areas:
-        "D D"
-        "L L"
-        "B C"
-        "S S";
-      }
-
-      &.D2-L3-B1 {
-        grid-template-areas:
-        "D D"
-        "L L"
-        "B C"
-        "S S";
-      }
-
-      &.D1-L2-B1 {
-        grid-template-areas:
-        "D D"
-        "L L"
-        "B C"
-        "S S";
-      }
-
-      &.D1-L0-B1,
-      &.D1-L1-B1 {
-        grid-template-areas:
-        "D L"
-        "B C"
-        "S S";
-      }
-
-      &.D0-L1-B1 {
-        grid-template-areas:
-        "L B"
-        "C C"
-      }
-
-      &.D1-L0-B2 {
-        grid-template-areas:
-        "D L"
-        "B B"
-        "C S";
-      }
-
-      &.D2-L0-B2,
-      &.D2-L1-B2,
-      &.D2-L2-B2,
-      &.D1-L3-B2 {
-        grid-template-areas:
-        "D D"
-        "L L"
-        "B B"
-        "C S";
-      }
-
-      &.D0-L3-B2 {
-        grid-template-areas:
-        "D D"
-        "L L"
-        "B B"
-        "C S"
-      }
-
-      &.D0-L3-B0 {
-        grid-template-areas: "L L" "B C";
-      }
-
-      &.D1-L3-B0 {
-        grid-template-areas: "D D" "L L" "B C" "S S";
-      }
-
-      &.D3-L3-B2,
-      &.D3-L2-B2 {
-        grid-template-areas:
-        "D D"
-        "L L"
-        "B B"
-        "C S";
-      }
-
-      &.D3-L0-B0, &.D3-L1-B1, &.D3-L0-B1 {
-        grid-template-areas:
-        "D D"
-        "L B"
-        "C S";
-      }
-
-      &.D3-L2-B1, &.D3-L2-B2 {
-        grid-template-areas:
-        "D D"
-        "L L"
-        "B B"
-        "C S";
-      }
-
-      &.D1-L1-B3 {
-        grid-template-areas:
-        "D L"
-        "B B"
-        "C S";
-      }
-
-      &.D0-L1-B3 {
-        grid-template-areas:
-        "L L"
-        "B B"
-        "C C";
-      }
-
-      &.D1-L0-B3 {
-        grid-template-areas:
-        "D L"
-        "B B"
-        "C S";
-      }
-
-      &.D0-L0-B3 {
-        grid-template-areas:
-        "L L"
-        "B B"
-        "C C";
-      }
+      display: flex;
+     // display: grid;
+     // grid-template-columns: repeat(2, 1fr);
+     // grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
+     //
+     //
+     // &.D0-L2-B3 {
+     //   grid-template-areas: "L L" "B B" "C C";
+     // }
+     //
+     // &.D0-L3-B3 {
+     //   grid-template-areas: "L L" "B B" "C C";
+     // }
+     //
+     // &.D3-L1-B0 {
+     //   grid-template-areas: "D D" "L B" "C S";
+     // }
+     //
+     // &.D0-L0-B0 {
+     //   grid-template-areas: "L B" "C S";
+     // }
+     //
+     //&.D1-L0-B0 {
+     //  grid-template-areas: "D L" "B C" "S S";
+     //}
+     //
+     //&.D2-L3-B0 {
+     //  grid-template-areas: "D D" "L L" "B C" "S S";
+     //}
+     //
+     // &.D0-L2-B0 {
+     //   grid-template-areas: "D D" "L L" "B C" "S S";
+     // }
+     //
+     // &.D3-L1-B2 {
+     //   grid-template-areas: "D D" "L L" "B B" "C S";
+     // }
+     //
+     // &.D1-L2-B0 {
+     //   grid-template-areas: "D D" "L L" "B C" "S S";
+     // }
+     //
+     // &.D2-L3-B3 {
+     //   grid-template-areas: "D D" "L L" "B B" "C S";
+     // }
+     //
+     // &.D0-L0-B1 {
+     //   grid-template-areas: "D D" "L B" "C C";
+     // }
+     //
+     // &.D0-L2-B1 {
+     //   grid-template-areas: "D D" "L L" "B C" "S S";
+     // }
+     //
+     // &.D0-L0-B2 {
+     //   grid-template-areas: "D D" "L L" "B B" "C C";
+     // }
+     //
+     // &.D1-L1-B2 {
+     //   grid-template-areas: "D L" "B B" "C S";
+     // }
+     //
+     // &.D0-L2-B2 {
+     //   grid-template-areas:  "L L" "B B" "C C";
+     // }
+     //
+     // &.D1-L2-B2 {
+     //   grid-template-areas: "D D" "L L" "B B" "C S";
+     // }
+     //
+     // &.D1-L3-B1 {
+     //   grid-template-areas: "D D" "L L" "B B" "C S";
+     // }
+     //
+     // &.D1-L3-B3 {
+     //   grid-template-areas: "D D" "L L" "B B" "C S";
+     // }
+     //
+     // &.D0-L3-B1 {
+     //   grid-template-areas: "D D" "L L" "B C" "S S";
+     // }
+     //
+     // &.D3-L3-B3 {
+     //   grid-template-areas: "D D" "L L" "B B" "C S";
+     // }
+     //
+     // &.D2-L0-B3 {
+     //   grid-template-areas: "D D" "L L" "B B" "C S";
+     // }
+     //
+     // &.D0-L1-B0 {
+     //   grid-template-areas: "L B" "C C";
+     // }
+     //
+     // &.D0-L1-B2 {
+     //   grid-template-areas: "L L" "B B" "C C";
+     // }
+     //
+     // &.D1-L1-B0 {
+     //   grid-template-areas: "D L" "B C" "S S";
+     // }
+     //
+     // &.D2-L2-B3, &.D3-L2-B3 {
+     //   grid-template-areas: "D D" "L L" "B B" "C S";
+     // }
+     //
+     // &.D3-L1-B3 {
+     //   grid-template-areas: "D D" "L L" "B B" "C S";
+     // }
+     //
+     // &.D2-L2-B0,
+     // &.D3-L2-B0,
+     // &.D3-L3-B0,
+     // &.D3-L3-B1 {
+     //   grid-template-areas:
+     //   "D D"
+     //   "L L"
+     //   "B C"
+     //   "S S";
+     // }
+     //
+     // &.D2-L1-B0 {
+     //   grid-template-areas:
+     //   "D D"
+     //   "L B"
+     //   "C S"
+     // }
+     //
+     // &.D1-L3-B2 {
+     //   grid-template-areas:
+     //   "D D"
+     //   "L L"
+     //   "B B"
+     //   "C S";
+     // }
+     //
+     // &.D2-L1-B1, &.D2-L0-B1 {
+     //   grid-template-areas:
+     //     "D D"
+     //     "L B"
+     //     "C S";
+     // }
+     //
+     // &.D2-L2-B1 {
+     //   grid-template-areas:
+     //   "D D"
+     //   "L L"
+     //   "B C"
+     //   "S S";
+     // }
+     //
+     // &.D2-L3-B1 {
+     //   grid-template-areas:
+     //   "D D"
+     //   "L L"
+     //   "B C"
+     //   "S S";
+     // }
+     //
+     // &.D1-L2-B1 {
+     //   grid-template-areas:
+     //   "D D"
+     //   "L L"
+     //   "B C"
+     //   "S S";
+     // }
+     //
+     // &.D1-L0-B1,
+     // &.D1-L1-B1 {
+     //   grid-template-areas:
+     //   "D L"
+     //   "B C"
+     //   "S S";
+     // }
+     //
+     // &.D0-L1-B1 {
+     //   grid-template-areas:
+     //   "L B"
+     //   "C C"
+     // }
+     //
+     // &.D1-L0-B2 {
+     //   grid-template-areas:
+     //   "D L"
+     //   "B B"
+     //   "C S";
+     // }
+     //
+     // &.D2-L0-B2,
+     // &.D2-L1-B2,
+     // &.D2-L2-B2,
+     // &.D1-L3-B2 {
+     //   grid-template-areas:
+     //   "D D"
+     //   "L L"
+     //   "B B"
+     //   "C S";
+     // }
+     //
+     // &.D0-L3-B2 {
+     //   grid-template-areas:
+     //   "D D"
+     //   "L L"
+     //   "B B"
+     //   "C S"
+     // }
+     //
+     // &.D0-L3-B0 {
+     //   grid-template-areas: "L L" "B C";
+     // }
+     //
+     // &.D1-L3-B0 {
+     //   grid-template-areas: "D D" "L L" "B C" "S S";
+     // }
+     //
+     // &.D3-L3-B2,
+     // &.D3-L2-B2 {
+     //   grid-template-areas:
+     //   "D D"
+     //   "L L"
+     //   "B B"
+     //   "C S";
+     // }
+     //
+     // &.D3-L0-B0, &.D3-L1-B1, &.D3-L0-B1 {
+     //   grid-template-areas:
+     //   "D D"
+     //   "L B"
+     //   "C S";
+     // }
+     //
+     // &.D3-L2-B1, &.D3-L2-B2 {
+     //   grid-template-areas:
+     //   "D D"
+     //   "L L"
+     //   "B B"
+     //   "C S";
+     // }
+     //
+     // &.D1-L1-B3 {
+     //   grid-template-areas:
+     //   "D L"
+     //   "B B"
+     //   "C S";
+     // }
+     //
+     // &.D0-L1-B3 {
+     //   grid-template-areas:
+     //   "L L"
+     //   "B B"
+     //   "C C";
+     // }
+     //
+     // &.D1-L0-B3 {
+     //   grid-template-areas:
+     //   "D L"
+     //   "B B"
+     //   "C S";
+     // }
+     //
+     // &.D0-L0-B3 {
+     //   grid-template-areas:
+     //   "L L"
+     //   "B B"
+     //   "C C";
+     // }
     }
   }
 
@@ -442,27 +442,11 @@
     padding: rem(24px);
     background-color: var(--gray-900);
     border-radius: 16px;
-    width: var(--card-width, 100%);
+    width: var(--card-width, calc(50% - 8px));
     user-select: none;
 
-    &--deposit {
-      grid-area: D;
-    }
-
-    &--loss {
-      grid-area: L;
-    }
-
-    &--bet {
-      grid-area: B;
-    }
-
-    &--cooling-off {
-      grid-area: C;
-    }
-
-    &--self-exclusion {
-      grid-area: S;
+    &.is-full-width {
+      --card-width: 100%
     }
 
     &-actions {

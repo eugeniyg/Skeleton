@@ -1,6 +1,7 @@
 <template>
   <div
-    class="limits__card limits__card--bet"
+    class="limits__card"
+    :class="{'is-full-width': isFullWidth}"
   >
     <h4 class="limits__card-title" data-tooltip-parent>
       {{ getContent(limitsContent, defaultLimitsContent, 'bet.label') }}
@@ -66,7 +67,9 @@
 
   const limitsStore = useLimitsStore();
   const { setColumns, checkCurrencies } = limitsStore;
-  const { betPeriods, limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
+  const {
+    betPeriods, lossPeriods, limitsContent, defaultLimitsContent, isAdvancedModeEnabled
+  } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { currencies } = storeToRefs(globalStore);
@@ -84,6 +87,8 @@
   const isEditLocked = computed(() => betPeriods.value.every((period) => period.items.filter((item) => item.status === 1).every((item) => item.cancelProcess)));
 
   const isAllCurrenciesUsed = computed(() => checkCurrencies(betPeriods.value, currencies.value));
+
+  const isFullWidth = computed(() => (betPeriods.value?.length > 1));
 
   watch(() => betPeriods.value, (newValue) => {
     setColumns('bet', newValue.length);

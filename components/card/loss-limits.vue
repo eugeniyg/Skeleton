@@ -1,6 +1,7 @@
 <template>
   <div
-    class="limits__card limits__card--loss"
+    class="limits__card"
+    :class="{'is-full-width': isFullWidth}"
   >
     <h4 class="limits__card-title" data-tooltip-parent>
       {{ getContent(limitsContent, defaultLimitsContent, 'loss.label') }}
@@ -66,7 +67,9 @@
 
   const limitsStore = useLimitsStore();
   const { setColumns, checkCurrencies } = limitsStore;
-  const { lossPeriods, limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
+  const {
+    lossPeriods, betPeriods, depositPeriods, limitsContent, defaultLimitsContent, isAdvancedModeEnabled,
+  } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { currencies } = storeToRefs(globalStore);
@@ -84,6 +87,10 @@
   const isEditLocked = computed(() => lossPeriods.value.every((period) => period.items.filter((item) => item.status === 1).every((item) => item.cancelProcess)));
 
   const isAllCurrenciesUsed = computed(() => checkCurrencies(lossPeriods.value, currencies.value));
+
+  const isFullWidth = computed(() => lossPeriods.value?.length > 1
+    || (!isAdvancedModeEnabled.value && betPeriods.value?.length > 1)
+    || (isAdvancedModeEnabled.value && depositPeriods.value?.length > 1 && betPeriods.value?.length > 1));
 
   watch(() => lossPeriods.value, (newValue) => {
     setColumns('loss', newValue.length);

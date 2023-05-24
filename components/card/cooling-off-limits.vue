@@ -1,5 +1,8 @@
 <template>
-  <div class="limits__card limits__card--cooling-off">
+  <div
+    class="limits__card"
+    :class="{'is-full-width': isFullWidth}"
+  >
     <h4 class="limits__card-title">
       {{ getContent(limitsContent, defaultLimitsContent, 'coolingOff.label') }}
     </h4>
@@ -33,6 +36,7 @@
 
   const limitsStore = useLimitsStore();
   const { createLimit, getLimits } = limitsStore;
+  const { betPeriods, lossPeriods, isAdvancedModeEnabled } = storeToRefs(limitsStore);
   const { updatePlayerLimit } = useCoreProfileApi();
   const { getContent } = useProjectMethods();
   const { showAlert } = useLayoutStore();
@@ -57,6 +61,9 @@
   });
 
   const sortedLimits = computed(() => coolingOffLimits.value.sort((a, b) => a.status - b.status));
+
+  const isFullWidth = computed(() => (!isAdvancedModeEnabled.value && betPeriods.value?.length > 1)
+    || (!isAdvancedModeEnabled.value && lossPeriods.value?.length < 2));
 
   const edit = ({ limitId, period }: {limitId: string, period: string}) => {
     state.isEditProcess = true;

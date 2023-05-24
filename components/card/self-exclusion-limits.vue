@@ -1,5 +1,8 @@
 <template>
-  <div class="limits__card limits__card--self-exclusion">
+  <div
+    class="limits__card"
+    :class="{'is-full-width': isFullWidth}"
+  >
     <h4 class="limits__card-title">
       {{ getContent(limitsContent, defaultLimitsContent, 'selfExclusion.label') }}
     </h4>
@@ -31,11 +34,21 @@
   import { marked } from 'marked';
 
   const limitsStore = useLimitsStore();
-  const { limitsContent, defaultLimitsContent, selfExclusionPeriod } = storeToRefs(limitsStore);
+  const {
+    limitsContent, defaultLimitsContent, selfExclusionPeriod,
+    depositPeriods, betPeriods, lossPeriods, isAdvancedModeEnabled,
+  } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();
 
   const selectedPeriod = ref<string>('');
 
   const emit = defineEmits(['open-confirm-modal']);
+
+  const isFullWidth = computed(() => (
+    (isAdvancedModeEnabled.value && (depositPeriods.value.length < 2 && lossPeriods.value.length < 2 && betPeriods.value.length < 2))
+    || (isAdvancedModeEnabled.value && (depositPeriods.value.length > 1 && lossPeriods.value.length > 1 && betPeriods.value.length < 2))
+    || (isAdvancedModeEnabled.value && (depositPeriods.value.length > 2 && lossPeriods.value.length > 2 && betPeriods.value.length < 1)))
+    || (isAdvancedModeEnabled.value && (depositPeriods.value.length > 2 && lossPeriods.value.length > 1 && betPeriods.value.length < 2))
+    || (isAdvancedModeEnabled.value && (depositPeriods.value.length < 1 && lossPeriods.value.length > 1 && betPeriods.value.length < 2)));
 
 </script>
