@@ -41,7 +41,7 @@
         name="amount"
         v-model:value="formState.amount"
         placeholder="0"
-        :hint="amountError ? setError('amount'): ''"
+        :hint="amountError ? setError('amount'): {}"
         @blur="amountError = false"
         @focus="focusField('amount')"
         @input="focusField('amount')"
