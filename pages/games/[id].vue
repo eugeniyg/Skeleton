@@ -4,7 +4,7 @@
       :frameLink="gameStart"
       :gameInfo="gameInfo"
       @changeMode="changeGameMode"
-      :gameContent="gameContent"
+      :gameContent="gameContent || defaultLocaleGameContent"
       :showPlug="showPlug && !isLoggedIn && !gameInfo.isDemoMode"
     />
     <atomic-seo-text v-if="gameContent?.seo?.text" v-bind="gameContent?.seo?.text" />
@@ -18,23 +18,39 @@
 
   const route = useRoute();
   const showPlug = ref<boolean>(false);
-  const isDemo = ref<boolean>(route.query.demo === 'true');
+  const isDemo = ref<boolean>(route.query.real !== 'true');
   const gameInfo = ref<GameInterface>();
   const gameStart = ref<string>();
   const { getGamesInfo, getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
-  const { isLoggedIn, playerStatusName, profile } = storeToRefs(profileStore);
+  const { isLoggedIn, profile } = storeToRefs(profileStore);
   const { showModal, showAlert } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
   const {
-    isMobile, alertsData, currentLocale, headerCountry,
+    isMobile,
+    alertsData,
+    defaultLocaleAlertsData,
+    currentLocale,
+    headerCountry,
+    contentLocalesArray,
   } = storeToRefs(globalStore);
-  const infoResponse = await useAsyncData('gameInfo', () => getGamesInfo(route.params.id as string));
-  const gameContentRequest = await useAsyncData('gameContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['gamePage']).findOne());
-  const gameContent:GamePageInterface|undefined = gameContentRequest.data.value?.gamePage;
-  const { setPageSeo } = useProjectMethods();
+
+  const {
+    setPageSeo,
+    findLocalesContentData,
+  } = useProjectMethods();
+
+  const [infoResponse, gameContentRequest] = await Promise.all([
+    useAsyncData('gameInfo', () => getGamesInfo(route.params.id as string)),
+    useAsyncData('gameContent', () => queryContent('page-controls')
+      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'gamePage']).find()),
+  ]);
+
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(gameContentRequest.data.value);
+  const gameContent: Maybe<GamePageInterface> = currentLocaleData?.gamePage;
+  const defaultLocaleGameContent: Maybe<GamePageInterface> = defaultLocaleData?.gamePage;
   setPageSeo(gameContent?.seo);
   gameInfo.value = infoResponse.data?.value as GameInterface;
   const router = useRouter();
@@ -59,14 +75,14 @@
       return;
     }
 
-    if (isDemo.value && playerStatusName.value === 'Limited') {
-      showAlert(alertsData.value?.limitedRealGame);
+    if (isDemo.value && profile.value?.status === 2) {
+      showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
       return;
     }
 
     isDemo.value = !isDemo.value;
     await startGame();
-    router.replace({ query: { demo: `${isDemo.value}` } });
+    router.replace({ query: { real: `${!isDemo.value}` } });
   };
 
   const redirectLimitedPlayer = ():void => {
@@ -74,7 +90,7 @@
     else {
       const { localizePath } = useProjectMethods();
       router.push(localizePath('/'));
-      showAlert(alertsData.value?.limitedRealGame);
+      showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
     }
   };
 
@@ -82,13 +98,19 @@
     if (!newValue) return;
 
     showPlug.value = false;
-    if (!isDemo.value && playerStatusName.value === 'Limited') {
+    if (!isDemo.value && profile.value?.status === 2) {
       setTimeout(() => {
         redirectLimitedPlayer();
       });
+    } else if (isDemo.value) {
+      await changeGameMode();
     } else {
       await startGame();
     }
+  });
+
+  watch(() => activeAccount.value?.id, async (oldValue, newValue) => {
+    if (oldValue && newValue && oldValue !== newValue) await startGame();
   });
 
   onMounted(async () => {
@@ -98,7 +120,7 @@
     if (!isDemo.value && !isLoggedIn.value) {
       if (gameInfo.value?.isDemoMode) changeGameMode();
       else showPlug.value = true;
-    } else if (!isDemo.value && playerStatusName.value === 'Limited') {
+    } else if (!isDemo.value && profile.value?.status === 2) {
       redirectLimitedPlayer();
     } else {
       await startGame();

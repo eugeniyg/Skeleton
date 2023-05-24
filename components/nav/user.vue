@@ -1,6 +1,6 @@
 <template>
   <nav class="nav-user">
-    <atomic-avatar-user v-bind="props.avatarItems"/>
+    <atomic-avatar-user/>
 
     <div class="items">
       <div
@@ -21,17 +21,11 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    avatarItems: {
-      type: Object,
-      default: () => ({}),
-    },
-  });
   const emit = defineEmits(['logout']);
   const { localizePath } = useProjectMethods();
   const { closeUserNav } = useLayoutStore();
-  const { userNavigationContent } = useGlobalStore();
-  const profileLinks = userNavigationContent?.profileLinks || [];
+  const { userNavigationContent, defaultLocaleUserNavigationContent } = useGlobalStore();
+  const profileLinks = userNavigationContent?.profileLinks || defaultLocaleUserNavigationContent?.profileLinks || [];
 
   function clickItem(url: string):void {
     const router = useRouter();
@@ -47,24 +41,37 @@
   background-color: var(--gray-800);
   padding: rem(16px);
   width: var(--width, #{rem(288px)});
-
   z-index: 1;
   grid-gap: rem(8px);
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
 
-  //border-radius: 8px;
   top: rem(64px);
   right: 0;
   height: calc(var(--vh, 1vh) * 100);
-  position: fixed;
+  position: absolute;
   align-items: flex-start;
   visibility: var(--nav-user-visibility, hidden);
-  transform: translateX(var(--nav-user-translate-x, 100%));
-  transition: transform .2s ease-in-out;
+  transform: translateX(var(--nav-user-translate-x, 100%)) rotateY(var(--nav-user-rotate-y, 90deg));
+  transform-origin: right;
+  transition: all .4s  ease-in;
+
+  @include media(sm) {
+    transition: none;
+    height: auto;
+    border-radius: 8px;
+    right: rem(32px);
+    top: rem(56px);
+    max-width: 198px;
+    --nav-user-translate-x: 0;
+  }
 
   .items {
     display: grid;
-    grid-row-gap: rem(4px);
+    grid-row-gap: rem(8px);
+
+    @include media(sm) {
+      grid-row-gap: rem(2px);
+    }
   }
 
   .item {
@@ -73,7 +80,7 @@
     display: flex;
     align-items: center;
     padding: rem(6px) rem(8px);
-    grid-column-gap: rem(4px);
+    grid-column-gap: rem(8px);
     align-self: stretch;
     flex-grow: 0;
     border-radius: 4px;
@@ -82,6 +89,7 @@
 
     .icon {
       --color: var(--gray-400);
+      --icon-size: 20px;
     }
 
     &:hover {

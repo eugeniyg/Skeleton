@@ -92,7 +92,7 @@ interface LinkInterface {
   gameList?: string[]
 }
 
-interface MenuItemInterface {
+export interface MenuItemInterface {
   label: string,
   url?: string,
   items?: LinkInterface[]
@@ -123,7 +123,8 @@ export interface HeaderInterface {
     emptyText: string,
     tryLabel: string
   },
-  depositButton: string
+  depositButton: string,
+  fiatToggler: string,
 }
 
 export interface UserNavigationInterface {
@@ -227,6 +228,14 @@ export interface RegistrationInterface {
   }
 }
 
+export interface RegistrationCancelInterface {
+  title: string,
+  bonusImage: string,
+  bonusText: string,
+  backButton: string,
+  closeButton: string
+}
+
 export interface DepositInterface {
   title: string,
   balanceLabel: string,
@@ -236,8 +245,30 @@ export interface DepositInterface {
   addressInputLabel: string,
   minSum: string,
   togglerLabel: string,
+  addBonusButton: string,
+  cancelBonusButton: string,
   bonuses?: { image?: string, title: string, description?: string }[],
   depositButton: string
+}
+
+export interface ChangeActiveBonusInterface extends Record<string, any>{
+  title: string,
+  description: string,
+  confirmButton: string,
+  cancelButton: string
+}
+
+export interface CancelBonusInterface extends Record<string, any>{
+  title: string,
+  activeBonusDescription: string,
+  issuedBonusDescription: string,
+  confirmButton: string,
+  cancelButton: string
+}
+
+export interface DisplayInFiatInterface {
+  title: string,
+  description: string
 }
 
 export interface PopupsInterface {
@@ -249,7 +280,11 @@ export interface PopupsInterface {
   withdraw: WithdrawInterface,
   reset: ResetInterface,
   registration: RegistrationInterface,
-  deposit: DepositInterface
+  registrationCancel: RegistrationCancelInterface,
+  deposit: DepositInterface,
+  changeActiveBonus: ChangeActiveBonusInterface,
+  cancelBonus: CancelBonusInterface,
+  displayInFiat: DisplayInFiatInterface
 }
 
 interface SlideImageInterface {
@@ -279,7 +314,7 @@ export interface AlertInterface {
   description?: string
 }
 
-export interface AlertsListInterface {
+export interface AlertsListInterface extends Record<string, any>{
   limitedDeposit: AlertInterface,
   invalidResetCode: AlertInterface,
   limitedRealGame: AlertInterface,
@@ -296,4 +331,12 @@ export interface AlertsListInterface {
   depositError: AlertInterface,
   withdrawSuccess: AlertInterface,
   withdrawError: AlertInterface,
+  bonusCodeIncorrect: AlertInterface,
+  bonusCodeNotAvailable: AlertInterface,
+  bonusIssued: AlertInterface,
+  bonusActivated: AlertInterface,
+  bonusPlayed: AlertInterface,
+  bonusCanceled: AlertInterface,
+  bonusExpired: AlertInterface,
+  bonusLost: AlertInterface,
 }

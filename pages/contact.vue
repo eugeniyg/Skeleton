@@ -2,17 +2,17 @@
   <div>
     <div class="contact">
       <img
-        v-if="contactContent?.image"
+        v-if="contactContent?.image || defaultLocaleContactContent?.image"
         class="img"
-        :src="contactContent.image"
+        :src="contactContent?.image || defaultLocaleContactContent?.image"
         width="348"
         height="301"
         alt=""
       />
 
       <div class="header">
-        <div class="heading">{{ contactContent?.title }}</div>
-        <p class="info">{{ contactContent?.description }}</p>
+        <div class="heading">{{ contactContent?.title || defaultLocaleContactContent?.title }}</div>
+        <p class="info">{{ contactContent?.description || defaultLocaleContactContent?.description }}</p>
       </div>
 
       <div class="form">
@@ -20,8 +20,8 @@
           v-model:value="contactFormData.email"
           type="email"
           name="email"
-          :label="fieldsContent?.email?.label || ''"
-          :placeholder="fieldsContent?.email?.placeholder || ''"
+          :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.label') || ''"
+          :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.placeholder') || ''"
           :hint="setError('email')"
           @blur="v$.email?.$touch()"
         />
@@ -29,8 +29,8 @@
         <form-input-textarea
           v-model:value="contactFormData.message"
           name="message"
-          :label="fieldsContent?.message?.label || ''"
-          :placeholder="fieldsContent?.message?.placeholder || ''"
+          :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'message.label') || ''"
+          :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'message.placeholder') || ''"
           :hint="setError('message')"
           @blur="v$.message?.$touch()"
         />
@@ -38,10 +38,10 @@
         <button-base
           type="primary"
           size="lg"
-          :is-disabled="v$.$invalid"
+          :isDisabled="v$.$invalid || isLockedAsyncButton"
           @click="submitContactForm"
         >
-          {{ contactContent?.buttonLabel }} <atomic-icon id="arrow_next"/>
+          {{ contactContent?.buttonLabel || defaultLocaleContactContent?.buttonLabel }} <atomic-icon id="arrow_next"/>
         </button-base>
       </div>
     </div>
@@ -56,10 +56,25 @@
 
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();
-  const { fieldsContent, alertsData, currentLocale } = storeToRefs(globalStore);
-  const contactContentRequest = await useAsyncData('contactContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['contactPage']).findOne());
-  const contactContent:ContactPageInterface|undefined = contactContentRequest.data.value?.contactPage;
-  const { setPageSeo } = useProjectMethods();
+  const {
+    setPageSeo,
+    getContent,
+    findLocalesContentData,
+  } = useProjectMethods();
+
+  const {
+    fieldsContent,
+    defaultLocaleFieldsContent,
+    alertsData,
+    defaultLocaleAlertsData,
+    contentLocalesArray,
+  } = storeToRefs(globalStore);
+
+  const contactContentRequest = await useAsyncData('contactContent', () => queryContent('page-controls')
+    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'contactPage']).find());
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(contactContentRequest.data.value);
+  const contactContent: Maybe<ContactPageInterface> = currentLocaleData?.contactPage;
+  const defaultLocaleContactContent: Maybe<ContactPageInterface> = defaultLocaleData?.contactPage;
   setPageSeo(contactContent?.seo);
 
   const contactFormData = reactive({
@@ -72,10 +87,12 @@
     message: [{ rule: 'required' }],
   };
 
+  const isLockedAsyncButton = ref<boolean>(false);
   const { getFormRules } = useProjectMethods();
   const contactUsFormRules = getFormRules(contactUsRules);
-  const { v$, setError } = useFormValidation(contactUsFormRules, contactFormData);
+  const { serverFormErrors, v$, setError } = useFormValidation(contactUsFormRules, contactFormData);
 
+  const { sendContactMessage } = useCoreNotificationApi();
   const submitContactForm = async ():Promise<void> => {
     if (v$.value.$invalid) return;
 
@@ -83,11 +100,20 @@
     const validFormData = await v$.value.$validate();
     if (!validFormData) return;
 
-    layoutStore.showAlert(alertsData.value?.sentMessage);
-
-    contactFormData.email = '';
-    contactFormData.message = '';
-    v$.value.$reset();
+    try {
+      isLockedAsyncButton.value = true;
+      await sendContactMessage(contactFormData);
+      layoutStore.showAlert(alertsData.value?.sentMessage || defaultLocaleAlertsData.value?.sentMessage);
+      contactFormData.email = '';
+      contactFormData.message = '';
+      v$.value.$reset();
+    } catch (err:any) {
+      if (err.response?.status === 422) {
+        serverFormErrors.value = err.data?.error?.fields;
+      } else throw err;
+    } finally {
+      isLockedAsyncButton.value = false;
+    }
   };
 </script>
 

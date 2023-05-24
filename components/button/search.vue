@@ -51,23 +51,11 @@
     }
   }
 
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    min-height: rem(40px);
-    border-left: 1px solid var(--gray-800);
-    opacity: 1;
-    transition: opacity .2s ease-in-out;
-  }
-
-  @include media(xs) {
-    &:before {
-      display: none;
-    }
-  }
+  //@include media(xs) {
+  //  &:before {
+  //    display: none;
+  //  }
+  //}
 
   @include use-hover {
     &:hover {

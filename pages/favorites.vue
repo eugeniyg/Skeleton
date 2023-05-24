@@ -1,6 +1,6 @@
 <template>
   <div class="favorites">
-    <div class="favorites__title">{{ favoritesContent?.title }}</div>
+    <div class="favorites__title">{{ favoritesContent?.title || defaultLocaleFavoritesContent?.title }}</div>
 
     <list-grid
       v-if="showFavorites"
@@ -11,13 +11,13 @@
 
     <atomic-empty
       v-else
-      :title="favoritesContent?.empty.title"
-      :subTitle="favoritesContent?.empty.description"
-      :image="favoritesContent?.empty.image"
+      :title="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.title')"
+      :subTitle="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.description')"
+      :image="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.image')"
     />
 
     <group-games
-      v-if="!showFavorites"
+      v-if="!showFavorites && recommendedCategory"
       :category="recommendedCategory"
       showArrows
       subTitle
@@ -32,10 +32,18 @@
   import { FavoritesPageInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { currentLocale } = storeToRefs(globalStore);
-  const favoritesContentRequest = await useAsyncData('favoritesContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['favoritesPage']).findOne());
-  const favoritesContent:FavoritesPageInterface|undefined = favoritesContentRequest.data.value?.favoritesPage;
-  const { setPageSeo } = useProjectMethods();
+  const { contentLocalesArray } = storeToRefs(globalStore);
+  const {
+    setPageSeo,
+    findLocalesContentData,
+    getContent,
+  } = useProjectMethods();
+
+  const favoritesContentRequest = await useAsyncData('favoritesContent', () => queryContent('page-controls')
+    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'favoritesPage']).find());
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(favoritesContentRequest.data.value);
+  const favoritesContent: Maybe<FavoritesPageInterface> = currentLocaleData?.favoritesPage;
+  const defaultLocaleFavoritesContent: Maybe<FavoritesPageInterface> = defaultLocaleData?.favoritesPage;
   setPageSeo(favoritesContent?.seo);
 
   const gameStore = useGamesStore();
@@ -51,8 +59,8 @@
     totalPages: Math.ceil(favoriteGames.value.length / 18),
   }));
 
-  const { gameCollections } = useGamesStore();
-  const recommendedCategory = gameCollections.find((collection) => collection.identity === 'recommended');
+  const { currentLocaleCollections } = useGamesStore();
+  const recommendedCategory = currentLocaleCollections.find((collection) => collection.identity === 'recommended');
   const showFavorites = computed(() => favoriteGames.value?.length && isLoggedIn.value);
 </script>
 

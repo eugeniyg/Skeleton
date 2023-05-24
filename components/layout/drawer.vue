@@ -1,8 +1,12 @@
 <template>
-  <div class="drawer" :class="{'is-compact' : props.isCompact}">
+  <div class="drawer" :class="{ 'is-compact' : isDrawerCompact }">
     <div class="header">
-      <button-toggle-drawer @toggle-minimize="emit('compact')" @toggle-open="$emit('toggle-open')"/>
-      <button-toggler :items="sidebarContent?.gamesToggler"/>
+      <button-toggle-drawer
+        @toggle-minimize="compactDrawer(!isDrawerCompact)"
+        @toggle-open="emit('toggle-open')"
+      />
+
+      <button-toggler :items="sidebarContent?.gamesToggler || defaultLocaleSidebarContent?.gamesToggler"/>
     </div>
 
     <div class="content">
@@ -11,11 +15,11 @@
         <atomic-divider/>
       </template>
 
-      <nav-list :items="sidebarContent?.topMenu"/>
+      <nav-list :items="sidebarContent?.topMenu || defaultLocaleSidebarContent?.topMenu"/>
       <atomic-divider/>
-      <nav-list :items="sidebarContent?.tokenMenu"/>
+      <nav-list :items="sidebarContent?.tokenMenu || defaultLocaleSidebarContent?.tokenMenu"/>
       <atomic-divider/>
-      <nav-list :items="sidebarContent?.bonusesMenu"/>
+      <nav-list :items="sidebarContent?.bonusesMenu || defaultLocaleSidebarContent?.bonusesMenu"/>
       <atomic-divider/>
 
       <template v-if="isLoggedIn">
@@ -25,32 +29,31 @@
 
       <atomic-select-lang/>
       <atomic-divider/>
-      <nav-list :items="sidebarContent?.bottomMenu"/>
+      <nav-list :items="sidebarContent?.bottomMenu || defaultLocaleSidebarContent?.bottomMenu"/>
       <atomic-divider/>
-      <nav-static :items="sidebarContent?.sidebarFooterMenu"/>
+      <nav-static :items="sidebarContent?.sidebarFooterMenu || defaultLocaleSidebarContent?.sidebarFooterMenu"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { MenuItemInterface } from '~/types';
 
-  const props = defineProps({
-    isCompact: {
-      type: Boolean,
-      default: false,
-    },
-  });
+  const { sidebarContent, defaultLocaleSidebarContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
+  const emit = defineEmits(['toggle-open']);
 
-  const { sidebarContent } = useGlobalStore();
-  const emit = defineEmits(['compact', 'toggleOpen']);
+  const layoutStore = useLayoutStore();
+  const { compactDrawer } = layoutStore;
+  const { isDrawerCompact } = storeToRefs(layoutStore);
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 
   const gamesStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gamesStore);
-  const userMenuContent = computed(() => sidebarContent?.userMenu?.map((menuItem) => {
+  const userMenuContent = computed(() => getContent(sidebarContent, defaultLocaleSidebarContent, 'userMenu')?.map((menuItem: MenuItemInterface) => {
     if (menuItem.url === '/favorites') return { ...menuItem, counter: favoriteGames.value.length };
     return menuItem;
   }));

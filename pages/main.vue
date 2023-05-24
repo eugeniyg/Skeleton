@@ -1,8 +1,8 @@
 <template>
   <div>
     <client-only>
-      <carousel v-if="sliderItems?.length" v-bind="topSliderProps">
-        <slide v-for="(slide, index) in sliderItems" :key="index">
+      <carousel v-if="sliderItems?.length || defaultLocaleSliderItems?.length" v-bind="topSliderProps">
+        <slide v-for="(slide, index) in sliderItems?.length ? sliderItems : defaultLocaleSliderItems" :key="index">
           <card-promo v-if="slide.slideStatus === 'Published'" v-bind="slide" />
         </slide>
 
@@ -18,24 +18,24 @@
     <favorite-recently v-if="isLoggedIn" />
 
     <group-games
+      v-if="mainCategoriesData.hot"
       showAllBtn
       showArrows
-      :category="sortCategory[0]"
-      @initialLoad="gamesGroupLoaded++"
+      :category="mainCategoriesData.hot"
     />
 
     <group-games
+      v-if="mainCategoriesData.slots"
       showAllBtn
       showArrows
-      :category="sortCategory[1]"
-      @initialLoad="gamesGroupLoaded++"
+      :category="mainCategoriesData.slots"
     />
 
     <cards-group
       v-if="providerCards.games?.length"
       v-bind="providerCards"
-      :identity="groupContent?.providers.label"
-      :titleIcon="groupContent?.providers.icon"
+      :identity="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.label')"
+      :titleIcon="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.icon')"
       :showAllBtn="false"
     >
       <template v-slot:card="item">
@@ -44,33 +44,33 @@
     </cards-group>
 
     <group-games
+      v-if="mainCategoriesData.turbogames"
       showAllBtn
       showArrows
-      :category="sortCategory[2]"
-      @initialLoad="gamesGroupLoaded++"
+      :category="mainCategoriesData.turbogames"
     />
 
     <group-games
+      v-if="mainCategoriesData.new"
       showAllBtn
       showArrows
-      :category="sortCategory[3]"
-      @initialLoad="gamesGroupLoaded++"
+      :category="mainCategoriesData.new"
     />
 
     <group-winners showArrows />
 
     <group-games
+      v-if="mainCategoriesData.table"
       showAllBtn
       showArrows
-      :category="sortCategory[4]"
-      @initialLoad="gamesGroupLoaded++"
+      :category="mainCategoriesData.table"
     />
 
     <group-games
+      v-if="mainCategoriesData.live"
       showAllBtn
       showArrows
-      :category="sortCategory[5]"
-      @initialLoad="gamesGroupLoaded++"
+      :category="mainCategoriesData.live"
     />
 
     <group-promotions v-if="globalComponentsContent?.promotions" v-bind="globalComponentsContent.promotions" />
@@ -91,29 +91,46 @@
     Carousel, Slide, Pagination, Navigation,
   } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
-  import { CardsGroupInterface, MainContentInterface, SlideInterface } from '~/types';
+  import { MainContentInterface, SlideInterface } from '~/types';
   import FavoriteRecently from '~/components/favorite-recently.vue';
 
   const globalStore = useGlobalStore();
-  const { currentLocale, globalComponentsContent } = storeToRefs(globalStore);
-  const sliderResponse = await useAsyncData('sliderData', () => queryContent(`main-slider/${currentLocale.value?.code}`).findOne());
-  const mainContentResponse = await useAsyncData('mainContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['mainPage']).findOne());
-  const mainContent:MainContentInterface|undefined = mainContentResponse.data.value?.mainPage;
-  const sliderItems:SlideInterface[]|undefined = sliderResponse.data.value?.slider;
-  const groupContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, contentLocalesArray } = storeToRefs(globalStore);
+  const {
+    localizePath,
+    setPageSeo,
+    findLocalesContentData,
+    getContent,
+  } = useProjectMethods();
+
+  const [sliderResponse, mainContentResponse] = await Promise.all([
+    useAsyncData('sliderData', () => queryContent('main-slider')
+      .where({ locale: { $in: contentLocalesArray.value } }).find()),
+    useAsyncData('mainContent', () => queryContent('page-controls')
+      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'mainPage']).find()),
+  ]);
+
+  const mainContentData = findLocalesContentData(mainContentResponse.data.value);
+  const mainContent: Maybe<MainContentInterface> = mainContentData.currentLocaleData?.mainPage;
+
+  const sliderContentData = findLocalesContentData(sliderResponse.data.value);
+  const sliderItems: Maybe<SlideInterface[]> = sliderContentData.currentLocaleData?.slider;
+  const defaultLocaleSliderItems: Maybe<SlideInterface[]> = sliderContentData.defaultLocaleData?.slider;
 
   const fakeStore = useFakeStore();
   const router = useRouter();
   const gameStore = useGamesStore();
-  const { gameCollections } = storeToRefs(gameStore);
+  const { currentLocaleCollections } = storeToRefs(gameStore);
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 
   const providerCards = fakeStore.providerCards();
 
   const mainCategories = ['hot', 'slots', 'turbogames', 'new', 'table', 'live'];
-  const sortCategory = gameCollections.value.filter((item) => mainCategories.find((el) => el === item.identity))
-    .sort((a, b) => mainCategories.map((e) => e).indexOf(a.identity) - mainCategories.map((e) => e).indexOf(b.identity));
+  const mainCategoriesData = mainCategories.reduce((categoriesObj, currentCategoryIdentity) => {
+    const findCategory = currentLocaleCollections.value.find((collection) => collection.identity === currentCategoryIdentity);
+    return findCategory ? { ...categoriesObj, [currentCategoryIdentity]: findCategory } : categoriesObj;
+  }, {});
 
   const topSliderProps = {
     settings: {
@@ -126,20 +143,7 @@
     },
   };
 
-  const {
-    preloaderDone, preloaderStart, localizePath, setPageSeo,
-  } = useProjectMethods();
   setPageSeo(mainContent?.seo);
-  onBeforeMount(() => {
-    preloaderStart();
-  });
-
-  const gamesGroupLoaded = ref<number>(0);
-  watch(() => gamesGroupLoaded.value, (newValue:number) => {
-    if (newValue === mainCategories.length) {
-      preloaderDone();
-    }
-  });
 
   const changeCategory = (categoryId: string) => {
     router.push({ path: localizePath('/games'), query: { category: categoryId } });

@@ -1,17 +1,9 @@
 <template>
   <div class="betting">
-    <div class="container">
-      <iframe
-        v-if="frameLink"
-        :key="frameLink"
-        :src="frameLink"
-        height="100%"
-        width="100%"
-      />
-
+    <div id="betting-container" class="container">
       <not-auth-game
-        v-else-if="showPlug && bettingContent?.plug"
-        v-bind="bettingContent.plug"
+        v-if="showPlug && (bettingContent?.plug || defaultLocaleBettingContent?.plug)"
+        v-bind="bettingContent?.plug || defaultLocaleBettingContent?.plug"
         singleMode
       />
     </div>
@@ -31,20 +23,40 @@
   const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();
   const {
-    isMobile, alertsData, currentLocale, headerCountry,
+    isMobile,
+    alertsData,
+    defaultLocaleAlertsData,
+    currentLocale,
+    headerCountry,
+    contentLocalesArray,
   } = storeToRefs(globalStore);
-  const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['bettingPage']).findOne());
-  const bettingContent:BettingContentInterface|undefined = bettingContentRequest.data.value?.bettingPage;
-  const { setPageSeo } = useProjectMethods();
+
+  const {
+    setPageSeo,
+    findLocalesContentData,
+  } = useProjectMethods();
+  const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent('page-controls')
+    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'bettingPage']).find());
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(bettingContentRequest.data.value);
+  const bettingContent: Maybe<BettingContentInterface> = currentLocaleData?.bettingPage;
+  const defaultLocaleBettingContent: Maybe<BettingContentInterface> = defaultLocaleData?.bettingPage;
   setPageSeo(bettingContent?.seo);
 
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
-  const frameLink = ref<string>('');
 
   const { getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
-  const { isLoggedIn, playerStatusName, profile } = storeToRefs(profileStore);
+  const { isLoggedIn, profile } = storeToRefs(profileStore);
+
+  const sdkDefaultParams = {
+    containerId: 'betting-container',
+    width: '100%',
+    height: '100%',
+    parent: false,
+  };
+
+  const { betsyParams } = useGamesStore();
 
   const startGame = async ():Promise<void> => {
     const redirectUrl = window.location.origin;
@@ -57,17 +69,34 @@
       platform: isMobile.value ? 1 : 2,
     };
     const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
-    frameLink.value = startResponse.gameUrl;
+    const params = {
+      ...sdkDefaultParams,
+      ...betsyParams,
+      token: startResponse.token,
+      lang: currentLocale.value?.code || 'en',
+      theme: 'turbo_slotsbet',
+    };
+
+    if (window.BetSdk) window.BetSdk.init(params);
   };
 
-  const { showAlert } = useLayoutStore();
+  const layoutStore = useLayoutStore();
+  const { showAlert, compactDrawer } = layoutStore;
 
   const redirectLimitedPlayer = ():void => {
     const { localizePath } = useProjectMethods();
     const router = useRouter();
     router.replace(localizePath('/'));
-    showAlert(alertsData.value?.limitedRealGame);
+    showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
   };
+
+  watch(() => activeAccount.value?.id, async (oldValue, newValue) => {
+    if (oldValue && newValue && oldValue !== newValue) await startGame();
+  });
+
+  onBeforeMount(() => {
+    compactDrawer(true, false);
+  });
 
   onMounted(async () => {
     if (isMobile.value) {
@@ -79,7 +108,7 @@
 
     if (!isLoggedIn.value) {
       showPlug.value = true;
-    } else if (playerStatusName.value === 'Limited') {
+    } else if (profile.value?.status === 2) {
       redirectLimitedPlayer();
     } else {
       await startGame();
@@ -90,7 +119,7 @@
     if (!newValue) { return; }
 
     showPlug.value = false;
-    if (playerStatusName.value === 'Limited') {
+    if (profile.value?.status === 2) {
       setTimeout(() => {
         redirectLimitedPlayer();
       });
@@ -104,6 +133,9 @@
     if (footerEl) footerEl.style.display = null;
     const seoTextBlock:any = document.querySelector('.text-wrap');
     if (seoTextBlock) seoTextBlock.style.display = null;
+
+    const storageDrawerCompact = localStorage.getItem('IS_DRAWER_COMPACT') === 'true';
+    compactDrawer(storageDrawerCompact, false);
   });
 </script>
 
@@ -116,16 +148,17 @@
     "seo nav";
   align-items: var(--align-items, flex-end);
   grid-template-columns: 1fr auto;
-  margin: -24px -16px 0 -16px;
+  margin: rem(-24px) rem(-16px) 0 rem(-16px);
 
   @include media(sm) {
-    margin-right: -2rem;
-    margin-left: -2rem;
+    margin-right: rem(-32px);
+    margin-left: rem(-32px);
   }
 
-  @include media(l) {
-    width: 100%;
-    margin: 0;
+  @include media(md) {
+    margin-top: 0;
+    margin-left: rem(-10px);
+    margin-right: rem(-10px);
   }
 
   .container {

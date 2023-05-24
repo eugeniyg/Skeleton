@@ -1,7 +1,7 @@
 <template>
   <nuxt-link class="card-latest-winners" :to="gameUrl">
     <div class="img" :style="backgroundImage"></div>
-    <div class="title">{{ props.nickname }}</div>
+    <div class="title">{{ props.nickname || 'Unknown' }}</div>
     <div class="sub-title">{{ props.gameName }}</div>
     <div class="items">
       <span class="item">{{ formatedSum.amount }} {{ formatedSum.currency }}</span>
@@ -14,7 +14,7 @@
   import { GameImagesInterface } from '@platform/frontend-core/dist/module';
 
   const props = defineProps<{
-    nickname: string|null,
+    nickname: Maybe<string>,
     amount: number,
     currency: string,
     resultBalance: number,
@@ -31,8 +31,8 @@
   const { baseApiUrl } = storeToRefs(globalStore);
 
   const gameUrl = computed(() => {
-    if (!isLoggedIn.value && props.isDemoMode) return localizePath(`/games/${props.gameId}?demo=true`);
-    return localizePath(`/games/${props.gameId}`);
+    if (!isLoggedIn.value && props.isDemoMode) return localizePath(`/games/${props.gameId}`);
+    return localizePath(`/games/${props.gameId}?real=true`);
   });
 
   const formatedSum = computed(() => formatBalance(props.currency, props.resultBalance));
@@ -46,31 +46,45 @@
 
 <style lang="scss">
 .card-latest-winners {
-  width: var(--min-width, #{rem(230px)});
+  --col-count: 1.4;
+  --col-gap: 8px;
+
   height: var(--height, auto);
+  width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap)/var(--col-count))));
   padding: rem(8px);
   background-color: var(--bg, var(--gray-800));
   display: grid;
+  align-content: center;
   grid-template-areas:
     "img title"
     "img sub-title"
     "img items";
   grid-template-columns: rem(56px) 1fr;
-  grid-column-gap: rem(8px);
-  border-radius: rem(8px);
   flex-shrink: 0;
   align-self: stretch;
   align-items: flex-start;
   text-decoration: none;
-  @extend %cards-items;
+  border-radius: 8px;
+  grid-column-gap: rem(8px);
   scroll-snap-align: var(--scroll-snap-align, start);
+  min-width: var(--card-min-width, 224px);
+
+  @include media(xs) {
+    --col-count: 2.4;
+  }
+
+  @include media(xs) {
+    --col-count: 2.89;
+  }
 
   @include media(md) {
-    --min-width: #{column(5)};
+    --col-gap: 16px;
+    --col-count: 4;
+    --card-min-width: auto;
   }
 
   @include media(xxl) {
-    --min-width: #{column(6)};
+    --col-count: 6;
   }
 
   .img {

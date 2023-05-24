@@ -11,16 +11,17 @@
 <style lang="scss">
 .btn-modal-close {
   @extend %skip-btn;
-  width: rem(32px);
-  height: rem(32px);
-  position: var(--position, relative);
+  min-width: rem(32px);
+  min-height: rem(32px);
+  position: var(--position, absolute);
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  background-color: var(--bg, var(--gray-800));
+  background-color: var(--bg, var(--gray-900));
   top: var(--top, 0);
-  right: var(--right, 0);
+  right: var(--right, #{rem(-4px)});
   cursor: pointer;
+  transform: translate(0, -50%);
 
   .icon {
     visibility: var(--visibility, hidden);
@@ -31,41 +32,30 @@
     left: 0;
     display: flex;
     margin: auto;
-    --icon-size: 24px;
+    --color: var(--white);
+    --icon-size: 22px;
+
+    @include media(sm) {
+      --color: var(--gray-400);
+    }
 
     &:first-of-type {
-      --visibility: visible;
-      --color: var(--white);
+      --visibility: hidden;
     }
 
     &:last-of-type {
-      --visibility: hidden;
-      --color: var(--gray-400);
+      background: transparent;
+      --visibility: visible;
     }
   }
 
-  @include media(md) {
-    cursor: pointer;
-    --top: 0;
-    --right: 0;
-    --bg: transparent;
-    --position: absolute;
-
+  @include use-hover {
     &:hover {
-      --bg: var(--gray-800);
-      transition: background-color .2s ease-in-out;
+      background-color: var(--gray-800);
 
       .icon {
-        --color: var(--yellow-500);
+        --color: var(--yellow-400);
       }
-    }
-
-    .icon:first-of-type {
-      --visibility: hidden
-    }
-
-    .icon:last-of-type {
-      --visibility: visible
     }
   }
 }

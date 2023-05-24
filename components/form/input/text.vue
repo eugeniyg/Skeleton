@@ -105,7 +105,7 @@
     @include font($body-2);
     transition: border-color .2s ease-in-out;
     @extend %inputMask;
-    font-family: 'NeoSansPro', sans-serif;
+    font-family: 'Rubik', sans-serif;
 
     &::placeholder {
       color: var(--gray-400);

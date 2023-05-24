@@ -25,7 +25,6 @@
 </template>
 
 <script setup lang="ts">
-
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
 
@@ -125,17 +124,6 @@
       height: 50%;
       z-index: 4;
     }
-
-    &:after {
-      //content: '';
-      //position: absolute;
-      //top: 0;
-      //bottom: 0;
-      //background: linear-gradient(270deg, #0E091E 0%, rgba(14, 9, 30, 0) 96.21%);
-      //right: 0;
-      //width: 50%;
-      //z-index: 1;
-    }
   }
 
   .front-bg {
@@ -180,15 +168,19 @@
   .title {
     color: var(--white);
     text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
-    max-width: rem(240px);
+
+    max-width: var(--title-max-width, #{rem(190px)});
 
     @include media(xs) {
-      max-width: rem(270px);
+      --title-max-width: #{rem(300px)};
+    }
+
+    @include media(sm) {
+      --title-max-width: #{rem(400px)};
     }
 
     @include media(xxxl) {
-      max-width: 670px;
-      // border: 1px solid red
+      --title-max-width: #{rem(650px)};
     }
 
     h1, h2, h3, h4, h5, h6 {
@@ -197,20 +189,12 @@
       @include font($heading-4);
 
       @include media(xs) {
-        @include upd-font($heading-7);
+        @include upd-font($heading-6);
       }
 
-      //@include media(sm) {
-      //  @include upd-font($heading-7);
-      //}
-      //
-      //@include media(md) {
-      //  @include upd-font($heading-7);
-      //}
-      //
-      //@include media(xl) {
-      //  @include upd-font($heading-7);
-      //}
+      @include media(sm) {
+        @include upd-font($heading-7);
+      }
 
       @include media(xxxl) {
         @include upd-font($heading-9);
@@ -238,7 +222,7 @@
     z-index: 4;
 
     .home & {
-      --info-width: 50%;
+      --info-width: 60%;
     }
 
     @include media(xs) {
@@ -285,6 +269,7 @@
     --padding: #{rem(12px) rem(24px)};
 
     @include media(md) {
+      @include upd-font($heading-3);
       --padding: #{rem(12px) rem(32px)};
     }
   }
@@ -292,7 +277,6 @@
 }
 
 .promo-card-wrapper {
-  //margin-bottom: rem(40px);
   margin-top: rem(-24px);
   margin-left: var(--margin-left, #{rem(-16px)});
   margin-right: var(--margin-right, #{rem(-16px)});
@@ -306,9 +290,8 @@
 
   @include media(l) {
     --padding: #{rem(40px)} #{rem(40px)};
-    --gap: #{32px};
-    --margin-left: #{rem(-40px)};
-    --margin-right: #{rem(-40px)};
+    --margin-left: #{rem(-48px)};
+    --margin-right: #{rem(-48px)};
   }
 }
 </style>

@@ -7,12 +7,14 @@
     />
 
     <layout-drawer
-      :is-compact="IS_DRAWER_COMPACT"
-      @compact="compact"
       @toggle-open="toggleOpen"
     />
 
-    <main class="app-main" :class="{'is-overflow': isHomePage()}">
+    <main
+      class="app-main"
+      :class="{'is-overflow': isHomePage(), 'is-overflow-initial': isProfileLimitsPage }"
+      :data-route="route.name"
+    >
       <slot />
     </main>
 
@@ -29,6 +31,7 @@
     </transition>
 
     <modal-register />
+    <modal-register-cancel />
     <modal-sign-in />
     <modal-forgot-pass />
     <modal-reset-pass />
@@ -37,41 +40,29 @@
     <modal-success />
     <modal-error />
     <modal-confirm />
-    <modal-confirm-bonus/>
+    <modal-fiat/>
 
-    <atomic-alert
-      :isShow="isShowAlert"
-      v-bind="alertProps"
-    />
+    <atomic-alert />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const { getCommonData } = useGlobalStore();
-  useLazyAsyncData('commonData', getCommonData);
-
-  const IS_DRAWER_COMPACT = useCookie<boolean>('IS_DRAWER_COMPACT', { maxAge: 60 * 60 * 24 * 365 * 10 });
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isHomePage, localizePath } = useProjectMethods();
 
   const {
-    isShowAlert, alertProps, showCookiePopup,
+    showCookiePopup, isDrawerCompact,
   } = storeToRefs(layoutStore);
-  const { compactDrawer, checkModals } = layoutStore;
+  const { checkModals } = layoutStore;
   checkModals();
 
   const { logOutUser } = profileStore;
 
   function logout():void {
     logOutUser();
-  }
-
-  function compact():void {
-    IS_DRAWER_COMPACT.value = !IS_DRAWER_COMPACT.value;
-    compactDrawer();
   }
 
   function toggleOpen():void {
@@ -84,15 +75,26 @@
     && route.name !== 'locale-games-id'
     && route.path !== localizePath('/betting'));
 
+  const isProfileLimitsPage = computed(() => {
+    const routeName = route.name as string;
+    return routeName.includes('profile-limits');
+  });
+
   const timer = ref<any>();
   const disabledTransition = ref<boolean>(true);
   const layoutClasses = computed(() => [
     'main-layout',
-    { 'drawer-minimize': IS_DRAWER_COMPACT.value },
+    { 'drawer-minimize': isDrawerCompact.value },
     { 'stop-transition': disabledTransition.value },
   ]);
 
+  const checkDrawer = ():void => {
+    const clientCompactDrawer = localStorage.getItem('IS_DRAWER_COMPACT');
+    isDrawerCompact.value = clientCompactDrawer === 'true';
+  };
+
   onMounted(async () => {
+    checkDrawer();
     disabledTransition.value = false;
     const cookieValue = useCookie('accept-cookie');
     if (!cookieValue.value) {

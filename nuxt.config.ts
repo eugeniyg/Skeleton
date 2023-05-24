@@ -16,18 +16,17 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@platform/frontend-core',
     '@nuxt/content',
+    '@/modules/sitemap',
   ],
+  content: {
+    api: { baseURL: '/_content' },
+  },
   components: {
     dirs: [
       {
         global: true,
         path: '~/components/form/input',
         prefix: 'FormInput',
-      },
-      {
-        global: true,
-        path: '~/components/tab/bonuses',
-        prefix: 'TabBonuses',
       },
       {
         global: true,
@@ -62,12 +61,17 @@ export default defineNuxtConfig({
         { rel: 'mask-icon', href: '/favicon/safari-pinned-tab.svg', color: '#5bbad5' },
         { rel: 'stylesheet', href: '/preloader/preloader.css' },
       ],
+      script: [
+        { src: 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js' },
+        { src: '/scripts/sw-register.js' },
+      ],
     },
     pageTransition: true,
     layoutTransition: true,
   },
   css: [
     '@/scss/style.scss',
+    'vue-final-modal/style.css',
   ],
   vite: viteConfig,
   nitro: {

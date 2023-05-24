@@ -78,8 +78,9 @@
     return dateWithComma.replace(',', ' ');
   };
 
-  const { betStatuses } = useCoreStore();
-  const betStatusName = betStatuses.find((status) => status.id === props.status)?.name;
+  const globalStore = useGlobalStore();
+  const findStatus = globalStore.betStatuses.find((status) => status.id === props.status)?.name;
+  const betStatusName = findStatus ? findStatus.toLowerCase() : undefined;
 
   const { formatBalance } = useProjectMethods();
   const betSum = computed(() => {

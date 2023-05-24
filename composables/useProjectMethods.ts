@@ -1,6 +1,6 @@
 import { GameImagesInterface } from '@platform/frontend-core/dist/module';
+import get from 'lodash/get';
 import * as projectRules from './validationRules';
-import { useGlobalStore } from '~/composables/useGlobalStore';
 import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
 import { SeoContentInterface } from '~/types';
 
@@ -29,9 +29,10 @@ export const useProjectMethods = () => {
   };
 
   const getFormRules = (fieldsRules:any):any => {
-    const { validationMessages } = useGlobalStore();
+    const { validationMessages, defaultLocaleValidationMessages } = useGlobalStore();
+    const messages = { ...defaultLocaleValidationMessages, ...validationMessages };
     const { createFormRules } = useCoreMethods();
-    return createFormRules(fieldsRules, projectRules, validationMessages);
+    return createFormRules(fieldsRules, projectRules, messages);
   };
 
   const preloaderDone = ():void => {
@@ -121,7 +122,7 @@ export const useProjectMethods = () => {
     return { currency: currencyConfig.code, amount: amount / (subCurrencyConfig?.subunitToUnit || 1) };
   };
 
-  const setPageSeo = (seoData:SeoContentInterface|undefined):void => {
+  const setPageSeo = (seoData: Maybe<SeoContentInterface>):void => {
     const globalStore = useGlobalStore();
     useHead({
       title: seoData?.title || globalStore.globalSeo?.title,
@@ -132,6 +133,53 @@ export const useProjectMethods = () => {
         },
       ],
     });
+  };
+
+  const sortByAlphabet = (a:string, b:string):number => {
+    if (a > b) return 1;
+    if (a < b) return -1;
+    return 0;
+  };
+
+  const findLocalesContentData = (responseData?: any[]|null):any => {
+    if (!responseData) return {};
+
+    const globalStore = useGlobalStore();
+
+    const currentLocaleData = responseData.find((contentData) => contentData.locale === globalStore.currentLocale?.code);
+    if (globalStore.currentLocale?.code === globalStore.defaultLocale?.code) return { currentLocaleData };
+
+    const defaultLocaleData = responseData.find((contentData) => contentData.locale === globalStore.defaultLocale?.code);
+    return { currentLocaleData, defaultLocaleData };
+  };
+
+  const getContent = (
+      contentData: any,
+      defaultLocaleContentData: any,
+      path: string,
+  ): any => get(contentData, path) || get(defaultLocaleContentData, path);
+
+  const getEquivalentAccount = (targetBalance: number|undefined, targetCurrency: string|undefined): {
+    balance: number,
+    currency: string,
+    currencySymbol: string
+  } => {
+    const { baseCurrency, equivalentCurrency, currencies } = useGlobalStore();
+    if (!baseCurrency || !equivalentCurrency) return { balance: 0, currency: '', currencySymbol: '' };
+    const currentCurrency = currencies.find((currency) => currency.code === targetCurrency);
+    if (!currentCurrency) return { balance: 0, currency: '', currencySymbol: '' };
+
+    // here baseAmount will be in float
+    const balanceInBaseCurrency = (targetBalance || 0) * (currentCurrency.subunitToUnit / currentCurrency.rate.rate);
+
+    // convert to int + divide onto rate
+    const equivalentAmount = balanceInBaseCurrency * (baseCurrency.subunitToUnit / equivalentCurrency.rate.rate);
+
+    return {
+      balance: Number(equivalentAmount.toFixed(2)),
+      currency: equivalentCurrency.code,
+      currencySymbol: equivalentCurrency.symbol,
+    };
   };
 
   return {
@@ -147,5 +195,9 @@ export const useProjectMethods = () => {
     formatBalance,
     getMainBalanceFormat,
     setPageSeo,
+    sortByAlphabet,
+    getContent,
+    findLocalesContentData,
+    getEquivalentAccount,
   };
 };

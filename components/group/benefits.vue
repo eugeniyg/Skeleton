@@ -1,9 +1,9 @@
 <template>
-  <div v-if="benefitsContent" class="group-benefits">
+  <div v-if="globalComponentsContent?.benefits || defaultLocaleGlobalComponentsContent?.benefits" class="group-benefits">
     <div class="group-benefits__list">
       <div
         class="group-benefits__item"
-        v-for="(benefit, index) in benefitsContent.items"
+        v-for="(benefit, index) in benefitsList"
         :key="index"
       >
         <img class="icon" :src="benefit.image" alt=""/>
@@ -15,17 +15,21 @@
 </template>
 
 <script setup lang="ts">
-  import { BenefitsContentInterface } from '~/types';
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
 
-  const { globalComponentsContent } = useGlobalStore();
-  const benefitsContent: BenefitsContentInterface | undefined = globalComponentsContent?.benefits;
+  const benefitsList = computed(() => {
+    if (globalComponentsContent?.benefits?.items?.length) return globalComponentsContent.benefits.items;
+    return defaultLocaleGlobalComponentsContent?.benefits?.items || [];
+  });
 </script>
 
 <style lang="scss">
 .group-benefits {
+  display: none;
 
   @include media(xxxl) {
     max-width: rem(464px);
+    display: block;
   }
 
   &__list {
@@ -34,7 +38,11 @@
     align-items: normal;
     grid-template-columns: repeat(2, 1fr);
     height: 100%;
-    grid-gap: rem(16px);
+    grid-gap: rem(8px);
+
+    @include media(sm) {
+      grid-gap: rem(16px);
+    }
 
     @include media(md) {
       grid-template-columns: repeat(4, 1fr);

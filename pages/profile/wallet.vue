@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="header">
-      <h1 class="heading">{{ walletContent?.title }}</h1>
+      <h1 class="heading">{{ walletContent?.title || defaultLocaleWalletContent?.title }}</h1>
 
       <button-base
         id="open-currency-nav"
@@ -10,11 +10,11 @@
         :isDisabled="currencyNavEmpty"
         @click="openCurrNav"
       >
-        <atomic-icon id="plus"/>{{ walletContent?.addButton }}
+        <atomic-icon id="plus"/>{{ walletContent?.addButton || defaultLocaleWalletContent?.addButton }}
       </button-base>
     </div>
 
-    <nav-currency :tabs="navTabs" @toggleNavEmpty="currencyNavEmpty = $event"/>
+    <nav-currency :tabs="currencyTabs" @toggleNavEmpty="currencyNavEmpty = $event"/>
 
     <div class="cards-wallet">
       <TransitionGroup name="card">
@@ -22,7 +22,7 @@
           v-for="account in orderedAccounts"
           :key="account.id"
           v-bind="account"
-          :content="walletContent"
+          :content="walletContent || defaultLocaleWalletContent"
         />
       </TransitionGroup>
     </div>
@@ -35,27 +35,21 @@
   import { ProfileWalletInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { currentLocale } = storeToRefs(globalStore);
-  const walletContentRequest = await useAsyncData('walletContent', () => queryContent(`profile/${currentLocale.value?.code}`).only(['wallet']).findOne());
-  const walletContent:ProfileWalletInterface|undefined = walletContentRequest.data.value?.wallet;
-  const { setPageSeo } = useProjectMethods();
+  const { contentLocalesArray } = storeToRefs(globalStore);
+  const {
+    setPageSeo,
+    findLocalesContentData,
+  } = useProjectMethods();
+  const walletContentRequest = await useAsyncData('walletContent', () => queryContent('profile')
+    .where({ locale: { $in: contentLocalesArray.value } })
+    .only(['locale', 'wallet']).find());
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(walletContentRequest.data.value);
+  const walletContent: Maybe<ProfileWalletInterface> = currentLocaleData?.wallet;
+  const defaultLocaleWalletContent: Maybe<ProfileWalletInterface> = defaultLocaleData?.wallet;
   setPageSeo(walletContent?.seo);
 
-  const navTabs = ref<{id:string, title: string}[]>([]);
-  if (walletContent) {
-    navTabs.value = [
-      {
-        id: 'all',
-        title: walletContent.allTab,
-      },
-      {
-        id: 'crypto',
-        title: walletContent.cryptoTab,
-      },
-    ];
-  }
   const walletStore = useWalletStore();
-  const { accounts } = storeToRefs(walletStore);
+  const { accounts, currencyTabs } = storeToRefs(walletStore);
   const layoutStore = useLayoutStore();
   const { isCurrencyNavOpen } = storeToRefs(layoutStore);
   const { openCurrencyNav, closeCurrencyNav } = layoutStore;
@@ -65,12 +59,18 @@
     openCurrencyNav();
   };
 
+  const clickOutside = (e:any) => {
+    if (!e.target.closest('.nav-currency') && !e.target.closest('#open-currency-nav') && isCurrencyNavOpen.value) {
+      closeCurrencyNav();
+    }
+  };
+
   onMounted(() => {
-    document.body.addEventListener('click', (e:any) => {
-      if (!e.target.closest('.nav-currency') && !e.target.closest('#open-currency-nav') && isCurrencyNavOpen.value) {
-        closeCurrencyNav();
-      }
-    });
+    document.body.addEventListener('click', clickOutside);
+  });
+
+  onBeforeUnmount(() => {
+    document.body.removeEventListener('click', clickOutside);
   });
 
   const orderedAccounts = computed(() => accounts.value.reduce((acc, item) => {
@@ -78,9 +78,3 @@
     return acc;
   }, [] as AccountInterface[]));
 </script>
-
-<style lang="scss">
-.card-move {
-  transition: all .4s ease;
-}
-</style>

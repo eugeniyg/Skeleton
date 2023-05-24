@@ -3,7 +3,7 @@
     <button-base
       v-for="(button, index) in props.items"
       :key="index"
-      :isActive="$route.path === localizePath(button.url)"
+      :isActive="$route.path === localizePath(button.url) || ($route.query.category && index === 0)"
       @click="selectTab(button.url)"
     >
       <atomic-icon :id="button.icon" />

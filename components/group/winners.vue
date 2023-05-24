@@ -1,8 +1,13 @@
 <template>
   <div class="group-winners" v-if="latestWinners.length">
-    <atomic-icon v-if="winnersContent?.latestWinners?.icon" :id="winnersContent.latestWinners.icon"/>
+    <atomic-icon
+      v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.latestWinners.icon')"
+      :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.latestWinners.icon')"
+    />
 
-    <h2 class="title">{{ winnersContent?.latestWinners?.label }}</h2>
+    <h2 class="title">
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.latestWinners.label') }}
+    </h2>
 
     <button-arrows
       v-if="showArrowButtons"
@@ -27,7 +32,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { CardsGroupInterface } from '~/types';
   import { useGamesStore } from '~/composables/useGamesStore';
 
   const props = defineProps({
@@ -37,8 +41,13 @@
     },
   });
   const globalStore = useGlobalStore();
-  const { globalComponentsContent, isMobile, headerCountry } = storeToRefs(globalStore);
-  const winnersContent:CardsGroupInterface|undefined = globalComponentsContent.value?.cardsGroup;
+  const {
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+    isMobile,
+    headerCountry,
+  } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
   const gameStore = useGamesStore();
@@ -50,7 +59,7 @@
   const showArrowButtons = ref<boolean>(props.showArrows);
   const { getLatestWinners } = useCoreGamesApi();
 
-  const scrollHandler = ():void => {
+  const scrollHandler = (): void => {
     if (!scrollContainer.value) return;
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
@@ -58,7 +67,7 @@
     showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
   };
 
-  const clickAction = (direction: string):void => {
+  const clickAction = (direction: string): void => {
     const { offsetWidth } = scrollContainer.value;
     scrollContainer.value.scrollBy({
       left: direction === 'next' ? offsetWidth : -offsetWidth,
@@ -95,20 +104,26 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
-  padding: 0 rem(24px);
+  background-color: var(--gray-900);
+  border-radius: 16px;
+  padding: rem(16px) rem(16px) rem(8px) rem(16px);
+  position: relative;
 
   @include media(xs) {
     grid-template-areas:
     "icon heading btn-show-all arrows"
     "items items items items";
+    padding: rem(16px) rem(16px) rem(24px) rem(16px);
+  }
+
+  @include media(sm) {
+    padding: rem(24px);
   }
 
   @include media(md) {
+    padding: rem(24px);
 
-    > .items {
-      padding-right: 0;
-      margin: 0 rem(-24px)
-    }
+    @include scroll-overlay;
   }
 
   > [data-icon] {
@@ -118,7 +133,7 @@
 
   > .icon {
     grid-area: icon;
-    --iccon-size: #{rem(20px)};
+    --icon-size: #{rem(20px)};
     --color: var(--gray-400);
   }
 
@@ -146,10 +161,22 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    padding-right: 12px;
+    margin: 0 -32px 0;
+    padding: 0 32px;
+    scroll-padding: 32px;
+    grid-column-gap: 8px;
+
+    @include media(sm) {
+      grid-column-gap: 16px;
+      margin: 0 -56px 0;
+      padding: 0 56px;
+      scroll-padding: 56px;
+    }
 
     @include media(md) {
-      padding-right: 0;
+      scroll-padding: 0;
+      padding: 0;
+      margin:  0;
     }
 
     &::-webkit-scrollbar {

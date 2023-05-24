@@ -35,11 +35,11 @@
   }>();
 
   const route = useRoute();
-  const isRealMode = ref<boolean>(route.query.demo !== 'true');
+  const isRealMode = ref<boolean>(route.query.real === 'true');
   const emit = defineEmits(['changeMode']);
 
-  watch(() => route.query.demo, (newValue) => {
-    isRealMode.value = newValue !== 'true';
+  watch(() => route.query.real, (newValue) => {
+    isRealMode.value = newValue === 'true';
   });
 
   const { openDepositModal } = useLayoutStore();

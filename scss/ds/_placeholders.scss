@@ -44,7 +44,7 @@
   background: var(--bg, transparent);
   color: var(--color, var(--gray-400));
   border: var(--border, 0);
-  font-family: 'NeoSansPro', sans-serif;
+  font-family: 'Rubik', sans-serif;
 }
 
 %radius-50 {
@@ -145,16 +145,14 @@
 }
 
 %modal {
-  display: flex;
-  height: 100%;
-  align-items: center;
-  user-select: none;
-  max-width: rem(400px);
-  min-width: rem(320px);
+  .vfm__content {
+    max-width: rem(400px);
+    min-width: rem(320px);
 
-  @include media(md) {
-    width: auto;
-    max-width: unset;
+    @include media(md) {
+      width: auto;
+      max-width: unset;
+    }
   }
 
   .container {
@@ -207,13 +205,12 @@
   }
 
   .slot {
-    padding: var(--padding, #{rem(68px)} #{rem(16px)} #{rem(16px)} #{rem(16px)});
+    padding: var(--padding, #{rem(68px)} #{rem(8px)} #{rem(16px)} #{rem(8px)});
     justify-content: flex-start;
     position: relative;
     --height: auto;
 
     @include media(md) {
-      width: #{rem(160px)};
       padding: #{rem(32px)};
       background-color: var(--black-primary);
     }
@@ -271,12 +268,11 @@
 }
 
 %modal-info {
-  display: flex;
-  height: 100%;
-  align-items: center;
-  max-width: 400px;
-  width: 100%;
-  user-select: none;
+  .vfm__content {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 rem(16px);
+  }
 
   .scroll {
     display: flex;
@@ -291,10 +287,12 @@
     border-left: rem(8px) solid var(--gray-900);
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
     position: relative;
-    padding: 0 16px 20px 16px;
+    padding: rem(24px) rem(22px) rem(22px) rem(22px);
     grid-row-gap: rem(16px);
     width: 100%;
     @extend %scrollbar;
+
+    border-radius: 16px;
 
     @include media(xs) {
       border-radius: 12px;
@@ -305,19 +303,12 @@
     display: flex;
     align-items: center;
     position: relative;
-    padding-top: rem(20px);
-    grid-row-gap: rem(8px);
 
     .title {
       @include font($heading-6);
       color: var(--white);
       text-align: var(--text-align, center);
       flex-grow: 1;
-      margin-left: #{rem(-32px)};
-
-      @include media(xs) {
-        margin-left: 0;
-      }
     }
   }
 
@@ -332,16 +323,14 @@
   }
 
   .btn-modal-close {
-    --top: 0;
-    --right: 0;
-
-    @include media(xs) {
-      --right: #{rem(-8px)};
-    }
+    position: absolute;
+    --bg: var(--gray-900);
+    --right: #{rem(-16px)};
+    --top: #{rem(-8px)};
   }
 
   .img {
-    width: rem(104px);
+    width: rem(134px);
     height: auto;
     display: grid;
     margin: 0 auto;
@@ -356,12 +345,7 @@
 
   .btn-primary {
     --width: 100%;
-    //--padding: #{rem(16px)} #{rem(50px)};
     margin: rem(8px) auto 0;
-
-    //@include media(xs) {
-    //  --width: fit-content;
-    //}
   }
 }
 
@@ -434,15 +418,6 @@
   }
 }
 
-%cards-items {
-  border-radius: 12px;
-  border: 4px solid var(--black-primary);
-}
-
-%cards-items-negative {
-  margin-left: rem(-4px);
-  margin-right: rem(-4px);
-}
 
 %inputMask {
   box-shadow: inset 0 0 0 1000px var(--gray-800);

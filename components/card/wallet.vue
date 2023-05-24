@@ -28,11 +28,11 @@
       </button-base>
 
       <div v-if="isActive" class="actions">
-        <button-base type="primary" size="md" @click="openDepositModal">
+        <button-base type="primary" size="sm" @click="openDepositModal">
           {{ content?.depositButton }}
         </button-base>
 
-        <button-base type="secondary" size="md" @click="openWithdrawModal">
+        <button-base type="secondary" size="sm" @click="openWithdrawModal">
           {{  content?.withdrawButton }}
         </button-base>
       </div>
@@ -67,10 +67,7 @@
   const card = ref<HTMLElement>();
 
   const changeActive = async ():Promise<void> => {
-    await switchAccount({
-      accountId: props.id,
-      currency: currentCurrency?.code || '',
-    });
+    await switchAccount(props.id);
     isChecked.value = false;
   };
 
@@ -84,10 +81,7 @@
   };
 
   const hide = async ():Promise<void> => {
-    await hideAccount({
-      accountId: props.id,
-      currency: currentCurrency?.code || '',
-    });
+    await hideAccount(props.id);
   };
 </script>
 
@@ -97,8 +91,11 @@
   overflow: hidden;
   position: relative;
   flex-basis: rem(334px);
-  height: rem(199px);
   padding: rem(2px);
+
+  @include media(sm) {
+    min-height: rem(199px);
+  }
 
   &:before {
     content: '';
@@ -119,15 +116,19 @@
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: rem(3px);
   }
 
-  .label {
-    flex-direction: row-reverse;
-    @include font($body-1);
-    color: var(--white);
-    grid-area: label;
-    position: relative;
+  .input-toggle {
+    .label {
+      flex-direction: row-reverse;
+      @include upd-font($body-1);
+      color: var(--gray-300);
+      grid-area: label;
+      position: relative;
+      align-self: flex-start;
+    }
   }
 
   .amount {
@@ -136,9 +137,8 @@
     color: var(--white);
     grid-column-gap: rem(4px);
     display: flex;
-    align-items: baseline;
     position: relative;
-    margin: var(--margin, #{rem(48px)} 0 #{rem(8px)});
+    margin: var(--margin, #{rem(20px)} 0 #{rem(8px)});
 
     .amount {
       --margin: 0;
@@ -148,6 +148,7 @@
   .currency {
     @include font($body-3);
     position: relative;
+    padding-top: rem(11px);
   }
 
   .content {
@@ -158,6 +159,7 @@
     padding: rem(24px);
     display: grid;
     grid-template-columns: 1fr minmax(0, auto);
+    grid-template-rows: minmax(40px, auto) 1fr;
     grid-template-areas:
       "title label"
       "amount amount"
@@ -189,7 +191,7 @@
     }
 
     .content {
-      padding: rem(24px);
+      padding: rem(22px);
     }
   }
 
@@ -201,8 +203,16 @@
   }
 
   .hide-currency {
-    color: var(--gray-300);
-    transform: translateX(#{rem(-12px)});
+    --color: var(--gray-300);
+    --padding: #{rem(8px)} 0;
+    position: relative;
+
+    @include use-hover {
+      &:hover {
+        --color: var(--yellow-500);
+        --bg: transparent;
+      }
+    }
   }
 }
 

@@ -11,7 +11,7 @@
     <slot/>
     <atomic-icon :id="props.icon"/>
 
-    <Teleport to="[data-tooltip-parent]">
+    <Teleport to="body">
       <div
         ref="tooltipMsg"
         class="tooltip__message"
@@ -19,7 +19,7 @@
         :style="`top: ${coords.top}px; left: ${coords.left}px`"
       >
         <div class="title" v-if="props.title">{{ props.title }}</div>
-        <div class="text" v-if="props.text">{{ props.text }}</div>
+        <div class="text" v-if="props.text" v-html="props.text" />
       </div>
     </Teleport>
   </button>

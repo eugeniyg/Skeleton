@@ -188,13 +188,13 @@
     --padding: #{rem(12px) rem(24px)};
 
     @include media(md) {
+      @include upd-font($heading-3);
       --padding: #{rem(12px) rem(32px)};
     }
   }
 }
 
 .promo-card-wrapper {
-  margin-bottom: rem(40px);
   margin-top: rem(-24px);
   margin-left: var(--margin-left, #{rem(-16px)});
   margin-right: var(--margin-right, #{rem(-16px)});
@@ -206,9 +206,8 @@
 
   @include media(l) {
     --padding: #{rem(40px)} #{rem(40px)};
-    --gap: #{32px};
-    --margin-left: #{rem(-40px)};
-    --margin-right: #{rem(-40px)};
+    --margin-left: #{rem(-48px)};
+    --margin-right: #{rem(-48px)};
   }
 }
 </style>

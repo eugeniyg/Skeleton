@@ -42,7 +42,7 @@
 
   const router = useRouter();
   const openGame = ():void => {
-    router.push(localizePath(`/games/${props.identity}`));
+    router.push(localizePath(`/games/${props.identity}?real=true`));
   };
 </script>
 
@@ -68,6 +68,7 @@
   }
 
   .title {
+    display: none;
     @include font($heading-1);
     color: var(--white);
     margin-top: rem(8px);

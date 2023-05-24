@@ -11,7 +11,6 @@ import { useGamesStore } from '~/composables/useGamesStore';
 
 interface FieldsStoreStateInterface {
   profileFields: FieldInterface[],
-  registrationFields: FieldInterface[],
 }
 
 interface SelectOptionsInterface {
@@ -24,7 +23,6 @@ interface SelectOptionsInterface {
 export const useFieldsStore = defineStore('fieldsStore', {
   state: ():FieldsStoreStateInterface => ({
     profileFields: [],
-    registrationFields: [],
   }),
 
   getters: {
@@ -41,12 +39,6 @@ export const useFieldsStore = defineStore('fieldsStore', {
   },
 
   actions: {
-    async getRegistrationFields():Promise<void> {
-      const { getRegistrationFields } = useCoreAuthApi();
-      const data = await getRegistrationFields();
-      this.registrationFields = data;
-    },
-
     async getProfileFields():Promise<void> {
       const { getProfileFields } = useCoreProfileApi();
       const data = await getProfileFields();

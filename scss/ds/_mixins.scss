@@ -1,7 +1,6 @@
 @use "variables";
 @use "colors";
 @use "sass:math";
-//@use "font-icons";
 
 @function strip-unit($num) {
   @if type-of($num) == 'number' and not unitless($num) {
@@ -125,4 +124,33 @@
 @mixin text-page-max {
   max-width: rem(1024px);
   margin: 0 auto;
+}
+
+@mixin scroll-overlay {
+  overflow: hidden;
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 24px;
+    background-color: var(--layer-bg, var(--gray-900));
+    z-index: 2;
+  }
+
+  &:before {
+    left: 0;
+  }
+
+  &:after {
+    right: 0;
+  }
+}
+
+@mixin line-clamp($rows: 3) {
+  display: -webkit-box;
+  -webkit-line-clamp: $rows;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

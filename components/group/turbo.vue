@@ -1,15 +1,20 @@
 <template>
-  <div v-if="groupTurboContent?.items?.length" class="group-turbo">
-    <atomic-icon v-if="groupTurboContent?.icon" :id="groupTurboContent.icon"/>
+  <div v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.items')?.length" class="group-turbo">
+    <atomic-icon
+      v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.icon')"
+      :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.icon')"
+    />
 
-    <h2 class="title">{{ groupTurboContent?.label }}</h2>
+    <h2 class="title">
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.label') }}
+    </h2>
 
     <button-base
       class="btn-show-all"
       type="ghost"
-      :url="'/games?category=turbogames'"
+      :url="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.showAll.url')"
     >
-      {{ groupCardContent?.moreButton }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.showAll.label') }}
     </button-base>
 
     <button-arrows
@@ -19,31 +24,26 @@
       @clickAction="clickAction"
     />
 
-    <div class="items-wrapper">
-      <div
-        ref="scrollContainer"
-        class="items"
-        @scroll="scrollHandler"
-      >
-        <card-turbo
-          v-for="(item, itemIndex) in groupTurboContent.items"
-          :key="itemIndex"
-          v-bind="item"
-          :buttonLabel="groupTurboContent.buttonLabel"
-          :infoLabel="groupTurboContent.infoLabel"
-          :categoryLabel="groupTurboContent.categoryLabel"
-        />
-      </div>
+    <div
+      ref="scrollContainer"
+      class="items"
+      @scroll="scrollHandler"
+    >
+      <card-turbo
+        v-for="(item, itemIndex) in gamesList"
+        :key="itemIndex"
+        v-bind="item"
+        :buttonLabel="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.buttonLabel')"
+        :infoLabel="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.infoLabel')"
+        :categoryLabel="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.categoryLabel')"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { TurbogamesGroupInterface, CardsGroupInterface } from '~/types';
-
-  const { globalComponentsContent } = useGlobalStore();
-  const groupTurboContent: TurbogamesGroupInterface | undefined = globalComponentsContent?.turbogames;
-  const groupCardContent: CardsGroupInterface | undefined = globalComponentsContent?.cardsGroup;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
@@ -65,6 +65,11 @@
     });
   };
 
+  const gamesList = computed(() => {
+    if (globalComponentsContent?.turbogames?.items?.length) return globalComponentsContent.turbogames.items;
+    return defaultLocaleGlobalComponentsContent?.turbogames?.items || [];
+  });
+
   onMounted(() => {
     scrollHandler();
     showArrowButtons.value = !prevDisabled.value || !nextDisabled.value;
@@ -81,7 +86,7 @@
     "btn-show-all btn-show-all btn-show-all btn-show-all";
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
-  grid-row-gap: var(--row-gap, #{rem(8px)});
+  grid-row-gap: var(--row-gap, #{rem(16px)});
   position: relative;
   background-color: var(--gray-900);
   padding: rem(16px);
@@ -91,6 +96,16 @@
     grid-template-areas:
     "icon heading btn-show-all arrows"
     "items items items items";
+    padding: rem(16px) rem(16px) rem(24px);
+  }
+
+  @include media(sm) {
+    padding: rem(16px) rem(24px) rem(16px);
+  }
+
+  @include media(md) {
+    @include scroll-overlay;
+    padding: rem(24px);
   }
 
   > [data-icon] {
@@ -100,32 +115,42 @@
 
   > .icon {
     grid-area: icon;
-    --iccon-size: #{rem(20px)};
+
+    --icon-size: #{rem(20px)};
     --color: var(--gray-400);
   }
 
-  > .btn-show-all {
+  .btn-show-all {
     @include font($heading-1);
     grid-area: btn-show-all;
 
-    --font-size: #{rem(12px)};
     --color: var(--gray-500);
     --width: 100%;
 
     @include media(xs) {
       padding: 0;
-      --bg: transparent;
+      background: none;
 
       &:hover {
         --color: var(--white);
+      }
+    }
+
+    @include media(sm) {
+      @include upd-font($heading-2);
+
+      &:hover {
+        --color: var(--white);
+        --bg: transparent;
       }
     }
   }
 
   .arrows {
     grid-area: arrows;
+    margin-left: rem(16px);
 
-    @include media(xs) {
+    @include media(sm) {
       margin-left: rem(24px);
     }
   }
@@ -138,70 +163,27 @@
     margin: 0;
   }
 
-  .items-wrapper {
-    grid-area: items;
-    position: relative;
-    margin-left: -32px;
-    margin-right: -32px;
-
-    @include media(sm) {
-      margin-left: -48px;
-      margin-right: -48px;
-    }
-
-    @include media(md) {
-      margin-left: -10px;
-      margin-right: -10px;
-    }
-  }
-
   .items {
+    grid-area: items;
     display: var(--display, flex);
-    padding: rem(32px) 0 0 0;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
+    padding: rem(36px) rem(32px) 0 rem(32px);
+    margin: 0 rem(-32px) 0;
+    scroll-padding: rem(32px);
+    grid-column-gap: rem(8px);
 
-    &:before {
-      grid-area: start;
-      content: "";
-      min-width: 16px;
-      max-width: 38px;
-      min-height: rem(20px);
-      position: relative;
-      display: flex;
-      scroll-snap-align: start;
-      order: 1;
-
-      @include media(sm) {
-        min-width: 38px;
-      }
-    }
-
-    &:after {
-      grid-area: end;
-      content: "";
-      min-width: 16px;
-      max-width: 38px;
-      min-height: rem(20px);
-      position: relative;
-      display: flex;
-      scroll-snap-align: end;
-      order: 3;
-
-      @include media(sm) {
-        min-width: 38px;
-      }
+    @include media(sm) {
+      margin: 0;
+      padding: rem(36px) 0 rem(32px);
+      scroll-padding: 0;
+      grid-column-gap: rem(16px);
     }
 
     @include media(md) {
-      scroll-padding: 0;
-      margin-right: 0;
-      margin-left: 0;
-
-      &:before, &:after {
-        display: none;
-      }
+      padding: rem(36px) 0 0;
+      margin: 0;
     }
 
     &::-webkit-scrollbar {

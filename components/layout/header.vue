@@ -2,10 +2,18 @@
   <header class="app-header">
     <atomic-logo/>
 
+    <atomic-vertical-divider/>
+
     <button-search
       data-show="mobile"
       @show-search="toggle"
       :is-active="isShowSearch"
+    />
+
+    <atomic-gift-notification
+      v-if="isLoggedIn"
+      display="mobile"
+      :is-active="!!activePlayerBonuses.length"
     />
 
     <div class="items">
@@ -13,6 +21,7 @@
         :isShow="isShowSearch"
         @hideSearch="isShowSearch = false"
       />
+
       <button-search
         data-show="desktop"
         @show-search="toggle"
@@ -20,11 +29,24 @@
       />
 
       <template v-if="isLoggedIn">
+        <atomic-gift-notification
+          display="desktop"
+          :is-active="!!activePlayerBonuses.length"
+        />
+        <!--
         <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
         <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
+        -->
         <form-input-deposit/>
-        <atomic-avatar @toggle="toggleProfileNav" :is-button="true"/>
-        <nav-user :avatar-items="avatarItems" @logout="logout"/>
+
+        <div v-click-outside="closeUserNav">
+          <atomic-avatar
+            @toggle="toggleProfileNav"
+            :is-button="true"
+          />
+          <nav-user @logout="logout"/>
+        </div>
+
       </template>
 
       <template v-else>
@@ -33,7 +55,7 @@
           size="md"
           @click="showModal('register')"
         >
-          {{ headerContent?.registrationButton }}
+          {{ headerContent?.registrationButton || defaultLocaleHeaderContent?.registrationButton }}
         </button-base>
 
         <button-base
@@ -41,7 +63,7 @@
           size="md"
           @click="showModal('signIn')"
         >
-          {{ headerContent?.loginButton }}
+          {{ headerContent?.loginButton || defaultLocaleHeaderContent?.loginButton }}
         </button-base>
       </template>
     </div>
@@ -54,11 +76,12 @@
   const emit = defineEmits(['login', 'register', 'logout']);
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
-  const { headerContent } = useGlobalStore();
+  const bonusStore = useBonusStore();
+  const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal } = layoutStore;
-  const { avatarItems, isLoggedIn } = storeToRefs(profileStore);
-  const fakeStore = useFakeStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+  const { activePlayerBonuses } = storeToRefs(bonusStore);
 
   function toggleProfileNav():void {
     if (isUserNavOpen.value) closeUserNav();
@@ -106,7 +129,11 @@
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
   background-color: var(--black-primary);
   z-index: var(--header-z-index, 2);
-  grid-column-gap: rem(12px);
+  grid-column-gap: 2px;
+
+  max-width: var(--container-max-width);
+  width: 100%;
+  margin: 0 auto;
 
   .avatar {
     --padding: 0;
@@ -118,22 +145,23 @@
     justify-self: flex-end;
     margin-left: auto;
     grid-column-gap: rem(8px);
-
-    //@include media(xs) {
-    //  margin-left: 0;
-    //}
   }
-
-  //> .btn-search {
-  //  margin-right: rem(2px);
-  //}
 
   > .notification {
     margin-right: rem(16px);
   }
 
   @include media(sm) {
-    --padding: 0 #{rem(32px)}
+    --padding: 0 #{rem(32px)};
+  }
+
+  @include media(l) {
+    --padding: 0 #{rem(48px)};
+  }
+
+  .list-currencies {
+    min-width: rem(248px);
+    z-index: 0;
   }
 }
 </style>

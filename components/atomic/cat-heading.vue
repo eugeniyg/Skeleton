@@ -16,14 +16,15 @@
   @include font($heading-4);
   color: var(--white);
   grid-column-gap: rem(8px);
-  padding-top: var(--padding-top, #{rem(8px)});
-
-  @include media(l) {
-    --padding-top: #{rem(24px)};
-  }
+  padding-top: rem(8px);
 
   .icon {
+    margin-left: 16px;
     --color: var(--gray-400);
+
+    @include media(md) {
+      margin-left: 24px;
+    }
   }
 }
 </style>

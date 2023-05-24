@@ -2,8 +2,6 @@
   <div class="tab-history__tb">
     <div
       class="tb-sessions-history"
-      @scroll="scrollAction"
-      ref="tb"
       tabindex="0"
       data-tooltip-parent
     >
@@ -89,11 +87,11 @@
     loading.value = false;
   };
 
-  const { decodeToken } = useCoreMethods();
-  const token = useCookie('bearer');
+  const { getCurrentSession } = useCoreAuthStore();
+  const currentSession = getCurrentSession();
   const sessionStatus = (session: SessionInterface): string => {
     if (session.closedAt) return 'closed';
-    const sessionId = token.value ? decodeToken(token.value)?.sessionId : undefined;
+    const sessionId = currentSession ? currentSession.sessionId : undefined;
     if (session.sessionId === sessionId) return 'current';
     return 'active';
   };
@@ -111,37 +109,12 @@
 
   const changePage = (page: number):void => {
     if (loading.value) return;
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    window.scroll(0, 0);
     resolveSessionsRequest(page);
-  };
-
-  const tb = ref<HTMLElement>();
-  const state = reactive<any>({
-    isScrolling: false,
-    timeOut: null,
-  });
-
-  const scrollAction = () => {
-    clearTimeout(state.timeOut);
-    if (!state.isScrolling) {
-      tb.value?.focus();
-      state.isScrolling = true;
-    }
-    state.timeOut = setTimeout(() => {
-      state.isScrolling = false;
-    }, 200);
   };
 
   onMounted(() => {
     resolveSessionsRequest();
-    window.addEventListener('scroll', scrollAction, false);
-  });
-
-  onBeforeUnmount(() => {
-    window.removeEventListener('scroll', scrollAction);
   });
 
   const format = (str:string) => str.split(',').join('<br>');

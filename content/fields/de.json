@@ -34,7 +34,7 @@
     "placeholder": "Enter your message"
   },
   "agreements": {
-    "label": "I accept the <a href=\"/static/terms-and-conditions\"> Terms and Conditions</a> and <a href=\"/static/privacy-policy\">Privacy Policy</a>"
+    "label": "I accept the <a href=\"/static/terms-and-conditions\" target=\"_blank\" > Terms and Conditions</a> and <a href=\"/static/privacy-policy\" target=\"_blank\" >Privacy Policy</a>"
   },
   "city": {
     "label": "City",
@@ -110,7 +110,7 @@
     "placeholder": "Enter first name"
   },
   "password": {
-    "label": "Password",
+    "label": "Passwort",
     "placeholder": "Enter your password"
   },
   "profession": {
@@ -120,6 +120,9 @@
   "nationality": {
     "label": "Nationality",
     "placeholder": "Enter your nationality"
+  },
+  "receiveBonus": {
+    "label": "Receive bonuses"
   },
   "email": {
     "label": "Email Address",

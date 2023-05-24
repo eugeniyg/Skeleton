@@ -1,19 +1,47 @@
 <template>
   <div class="bonus-code-timer">
     <atomic-icon id="history"/>
+
     <div class="time">
-      <span class="value">2</span>
+      <span class="value">{{ Math.floor(currentTime / 60) }}</span>
       <span class="title">m</span>
-      <span class="sep"></span>
-      <span class="value">88</span>
+      &#160;
+      <span class="value">{{ String(currentTime % 60).padStart(2, 0) }}</span>
       <span class="title">s</span>
     </div>
-    <div class="message">until the next try</div>
+
+    <div class="message">{{ props.timerText }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
+  const props = defineProps<{
+    timerValue: number,
+    timerText?: string,
+  }>();
 
+  const timer = ref<any>(undefined);
+  const currentTime = ref<number>(props.timerValue);
+  const emit = defineEmits(['timeOut']);
+
+  const startTimer = ():void => {
+    timer.value = setInterval(() => {
+      if (currentTime.value === 0) {
+        clearInterval(timer.value);
+        emit('timeOut');
+        return;
+      }
+      currentTime.value -= 1;
+    }, 1000);
+  };
+
+  onMounted(() => {
+    startTimer();
+  });
+
+  onBeforeUnmount(() => {
+    clearInterval(timer.value);
+  });
 </script>
 
 <style lang="scss">
@@ -40,14 +68,13 @@
     @include font($body-2);
   }
 
-  .value, .title, .sep {
-    display: block;
-  }
+  .value {
+    text-align: center;
+    min-width: 22px;
 
-  .sep {
-    width: rem(4px);
-    background: red;
+    &:first-child {
+      min-width: 12px;
+    }
   }
-
 }
 </style>

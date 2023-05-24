@@ -1,14 +1,11 @@
 export default defineNuxtPlugin(async (nuxtApp) => {
   const { parseUserAgent } = useGlobalStore();
-  // const languages = parser.parse(nuxtApp.ssrContext.req.headers['accept-language']);
-  // setBrowserLanguage(languages);
   const { userAgent } = window.navigator;
   parseUserAgent(userAgent);
 
   nuxtApp.hook('page:finish', () => {
-    const route = useRoute();
     const { preloaderDone } = useProjectMethods();
-    if (route.name !== 'main' && route.name !== 'locale-main') preloaderDone();
+    preloaderDone();
   });
 
   const checkAffiliateTag = ():void => {
@@ -28,13 +25,14 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   nuxtApp.hook('app:mounted', async () => {
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
-    const bearer = useCookie('bearer');
+    const { getSessionToken } = useCoreAuthStore();
+    const sessionToken = getSessionToken();
 
-    if (bearer.value) {
-      const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
-      subscribeAccountSocket();
-      subscribeInvoicesSocket();
+    if (sessionToken) {
+      const { startProfileDependencies } = useProfileStore();
+      startProfileDependencies();
     }
+
     const { subscribeWinnersSocket } = useGamesStore();
     subscribeWinnersSocket();
     checkAffiliateTag();

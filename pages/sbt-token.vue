@@ -2,7 +2,7 @@
   <div class="sbt-token">
     <div class="container">
       <iframe
-        src="https://widget.true-play.io/?demo=true&operator=slotsbet&tokenName=SBT"
+        src="https://widget.trueplay.io/new/?demo=true&operator=slotsbet&tokenName=SBT"
         height="100%"
         width="100%"
       />
@@ -16,10 +16,12 @@
   import { TokenContentInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { currentLocale } = storeToRefs(globalStore);
-  const tokenContentRequest = await useAsyncData('tokenContent', () => queryContent(`page-controls/${currentLocale.value?.code}`).only(['tokenPage']).findOne());
-  const tokenContent:TokenContentInterface|undefined = tokenContentRequest.data.value?.tokenPage;
-  const { setPageSeo } = useProjectMethods();
+  const { contentLocalesArray } = storeToRefs(globalStore);
+  const { setPageSeo, findLocalesContentData } = useProjectMethods();
+  const tokenContentRequest = await useAsyncData('tokenContent', () => queryContent('page-controls')
+    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'tokenPage']).find());
+  const { currentLocaleData } = findLocalesContentData(tokenContentRequest.data.value);
+  const tokenContent: Maybe<TokenContentInterface> = currentLocaleData?.tokenPage;
   setPageSeo(tokenContent?.seo);
 </script>
 

@@ -45,7 +45,7 @@
   const loading = ref<boolean>(true);
   const bets = ref<BetHistoryInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
-  const betsContent:HistoryBetsInterface|undefined = props.content?.bets;
+  const betsContent: Maybe<HistoryBetsInterface> = props.content?.bets;
 
   const betsTab = [
     {
@@ -76,10 +76,7 @@
 
   const changePage = (page: number):void => {
     if (loading.value) return;
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    window.scroll(0, 0);
     betsRequest(page);
   };
 

@@ -65,8 +65,6 @@ export interface ProfileInfoInterface {
 export interface ProfileWalletInterface {
   title: string,
   addButton: string,
-  allTab: string,
-  cryptoTab: string,
   changeButton: string,
   hideButton: string,
   depositButton: string,
@@ -74,14 +72,91 @@ export interface ProfileWalletInterface {
   seo: SeoContentInterface
 }
 
+export interface BonusCodeBlockInterface {
+  title: string,
+  timerText: string,
+  buttonLabel: string,
+  tryError: string
+}
+
+export interface CashBonusesInterface {
+  title: string,
+  wagerHintLabel: string,
+  casinoWagerLabel: string,
+  sportsbookWagerLabel: string,
+  waitingResult: string,
+  empty: {
+    title: string,
+    description: string
+  }
+}
+
 export interface ProfileBonusesInterface {
   title: string,
+  historyLink: string,
+  bonusCode: BonusCodeBlockInterface,
+  cashBonuses: CashBonusesInterface,
   seo: SeoContentInterface
 }
 
 export interface ProfileNotificationsInterface {
   title: string,
   seo: SeoContentInterface
+}
+
+export interface ProfileLimitsContentInterface {
+  title: string,
+  setButtonLabel: string,
+  doneButtonLabel: string,
+  addButtonLabel : string,
+  selfExclusion: {
+    label: string,
+    hint: string,
+    chatLinkText: string,
+  },
+  loss: {
+    hint: string,
+    label: string,
+  },
+  pendingStatusLabel: string,
+  titleTooltip: string,
+  timerLabel: string,
+  bet: {
+    label: string,
+    hint: string,
+  },
+  definition: {
+    bet: string,
+    loss: string,
+    deposit: string,
+    selfExclusion: string,
+    coolingOff: string,
+  },
+  coolingOff: {
+    label: string,
+    hint: string,
+    pendingStatusLabel: string,
+    deleteConfirmTitle: string,
+    deleteConfirmDescription: string,
+  },
+  modeToggle: string,
+  editButtonLabel: string,
+  activeStatusLabel: string,
+  periodOptions: {
+    '1_day': string,
+    '3_days': string,
+    '1_week': string,
+    '1_month': string,
+    '3_months': string,
+    '6_months': string,
+    '9_months': string,
+    '1_year': string,
+    forever: string,
+  },
+  deposit: {
+    label: string,
+    hint: string,
+  }
 }
 
 export interface ProfileDocumentsInterface {
@@ -140,7 +215,16 @@ export interface HistoryBonusesInterface {
     title?: string,
     description?: string
   },
-  tabLabel: string
+  tabLabel: string,
+  tabPosition: number,
+  tableColumns: {
+    title: string,
+    status: string,
+    amount: string,
+    progress: string,
+    created: string,
+    expired: string
+  }
 }
 
 export interface HistorySpinsInterface {
@@ -478,6 +562,10 @@ export interface TurboItemInterface {
 export interface TurbogamesGroupInterface {
   label: string,
   icon: string,
+  showAll: {
+    label: string,
+    url: string
+  },
   buttonLabel: string,
   items: TurboItemInterface[]
 }
@@ -494,6 +582,16 @@ export interface LatestWinnersInterface {
   title: string
 }
 
+export interface CurrencyTabsInterface {
+  allTab: string,
+  cryptoTab: string
+}
+
+export interface CurrencyEmptyInterface {
+  title: string,
+  description: string
+}
+
 export interface GlobalComponentsInterface {
   benefits: BenefitsContentInterface,
   promotions: PromotionsContentInterface,
@@ -501,6 +599,10 @@ export interface GlobalComponentsInterface {
   categories: GameCategoryInterface[],
   turbogames: TurbogamesGroupInterface,
   gameTags: GameTagInterface[],
+  currency: {
+    tabs: CurrencyTabsInterface,
+    empty: CurrencyEmptyInterface
+  }
   globalSeo: SeoContentInterface,
 }
 

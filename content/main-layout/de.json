@@ -10,7 +10,8 @@
       "emptyText": "Try searching for something else",
       "tryLabel": "Or try these popular games:"
     },
-    "depositButton": "Deposit"
+    "depositButton": "Deposit",
+    "fiatToggler": "Display in Fiat"
   },
   "userNavigation": {
     "profileLinks": [
@@ -229,8 +230,8 @@
       ]
     },
     "responsibilityLabel": "Gambling with responsibility",
-    "copyright": "© 2022 Slotsbet.io | All Rights Reserved.",
-    "curacao": "Copyright © 2022 [Slotsbet.io](http://slotsbet.io/ \"http\\://slotsbet.io/\") is owned and operated by Geminilab N.V., a company registered and established under the laws of Curaçao, with registration number 161235, Geminilab N.V. is licensed and authorized by the Government of Curacao and operates under the Master License of Gaming Services Provider, N.V. #365/JAZ"
+    "copyright": "© 2023 Slotsbet.io | All Rights Reserved.",
+    "curacao": "Copyright © 2023 [Slotsbet.io](http://slotsbet.io/ \"http\\://slotsbet.io/\") is owned and operated by Geminilab N.V., a company registered and established under the laws of Curaçao, with registration number 161235, Geminilab N.V. is licensed and authorized by the Government of Curacao and operates under the Master License of Gaming Services Provider, N.V. #365/JAZ"
   },
   "mobileMenu": {
     "menuLabel": "Menu",

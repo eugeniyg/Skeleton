@@ -20,6 +20,7 @@
     <panel-mode v-if="!showPlug" :gameContent="gameContent" @changeMode="emit('changeMode')"/>
 
     <group-games
+      v-if="recommendedCategory"
       :category="recommendedCategory"
       showArrows
       subTitle
@@ -48,8 +49,8 @@
   });
   const emit = defineEmits(['changeMode']);
 
-  const { gameCollections } = useGamesStore();
-  const recommendedCategory = gameCollections.find((collection) => collection.identity === 'recommended');
+  const { currentLocaleCollections } = useGamesStore();
+  const recommendedCategory = currentLocaleCollections.find((collection) => collection.identity === 'recommended');
 </script>
 
 <style lang="scss">
@@ -68,7 +69,7 @@
     grid-area: container;
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
 
     @include media(md) {
       height: calc(100vh - 160px);

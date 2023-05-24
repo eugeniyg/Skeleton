@@ -3,7 +3,7 @@
     <form-input-search
       ref="inputElement"
       v-model:value="searchValue"
-      :placeholder="headerContent?.search?.placeholder"
+      :placeholder="getContent(headerContent, defaultLocaleHeaderContent, 'search.placeholder')"
       @input="searchInput"
     />
 
@@ -36,7 +36,8 @@
   });
 
   const emit = defineEmits(['hideSearch']);
-  const { headerContent } = useGlobalStore();
+  const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
   const searchValue = ref<string>('');
   const pendingGames = ref<boolean>(true);
   const loadPage = ref<number>(1);
@@ -85,18 +86,16 @@
 
   const defaultGames = ref<GameInterface[]>([]);
   const gameStore = useGamesStore();
-  const { gameCollections } = storeToRefs(gameStore);
-  const getTurbogamesId = gameCollections.value.find((collection) => collection.identity === 'turbogames')?.id;
+  const { currentLocaleCollections } = storeToRefs(gameStore);
+  const getTurbogamesId = currentLocaleCollections.value.find((collection) => collection.identity === 'turbogames')?.id;
 
   onMounted(async () => {
-    if (getTurbogamesId) {
-      const defaultGamesResponse = await getFilteredGames({
-        page: 1,
-        perPage: 4,
-        collectionId: getTurbogamesId,
-      });
-      defaultGames.value = defaultGamesResponse.data;
-    }
+    const defaultGamesResponse = await getFilteredGames({
+      page: 1,
+      perPage: 4,
+      collectionId: getTurbogamesId || currentLocaleCollections.value[0].id,
+    });
+    defaultGames.value = defaultGamesResponse.data;
   });
 </script>
 

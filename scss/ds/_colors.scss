@@ -13,6 +13,8 @@ $neutrals-colors: (
   gray-800: #282F3E,
   gray-900: #1C212B,
   black-primary: #11141C,
+  layer-01: #282F3E,
+  layer-02: #222834,
 );
 
 $blue-colors: (
@@ -99,7 +101,7 @@ $gradients: (
   gradient-new-focus: linear-gradient(224.62deg, #F6740A 26.06%, #AE042F 116.69%),
   gradient-radial: radial-gradient(85.04% 85% at 58.75% 28.13%, #FFC12E 36.46%, #FF4547 100%),
   gradient-radial-hover: radial-gradient(85.04% 85% at 58.75% 28.13%, #E6A409 36.46%, #FF124C 100%),
-  gradient-radisl-focus: radial-gradient(85.04% 85% at 58.75% 28.13%, #F6740A 36.46%, #AE042F 100%),
+  gradient-radial-focus: radial-gradient(85.04% 85% at 58.75% 28.13%, #F6740A 36.46%, #AE042F 100%),
   gradient-orange: linear-gradient(224.62deg, #FFC53A -11.04%, #FF124C 107.78%),
   gradient-dark: linear-gradient(187.95deg, #0D152B 44.73%, #262C3B 93.88%),
   gradient-dark-hover: linear-gradient(180deg, rgba(40, 38, 59, 0) 0%, #28263B 100%),
@@ -117,4 +119,3 @@ $colors: map-collect(
     $violet-colors,
     $gradients,
 );
-

@@ -1,29 +1,32 @@
 <template>
-  <div class="avatar" @click="emit('toggle')">
+  <div
+    class="avatar"
+    @click="emit('toggle')"
+  >
     <span v-if="props.isButton" class="close-decor">
-      <atomic-icon id="plus" />
+      <atomic-icon id="plus"/>
     </span>
 
     <span class="thumb">
       <img class="img" src="~/assets/img/avatar-bg.png" alt="">
-      <atomic-bulb v-if="props.showBulb" />
+      <atomic-bulb v-if="props.showBulb"/>
     </span>
 
-    <div v-if="props.label" class="label">
+    <span v-if="props.label" class="label">
       {{ props.label }}
-    </div>
+    </span>
 
-    <div v-if="props.nickname" class="nickname">
+    <span v-if="props.nickname" class="nickname">
       {{ props.nickname }}
-    </div>
+    </span>
 
-    <slot name="progress-bar" />
+    <slot name="progress-bar"/>
 
-    <div v-if="props.amount.length" class="amount">
+    <span v-if="props.amount.length" class="amount">
       <span v-for="(item, index) in props.amount" :key="index">
         {{ item }}
       </span>
-    </div>
+    </span>
   </div>
 </template>
 
@@ -64,18 +67,18 @@
   align-items: center;
   width: var(--width, auto);
   user-select: none;
+  border: 0;
 
   .close-decor {
     position: absolute;
     z-index: var(--close-decor-index, 1);
     background-color: var(--gray-700);
-    border-radius: 12px;
+    border-radius: 50%;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0 2px 0 #28263B;
     --color: var(--yellow-500);
     cursor: pointer;
     visibility: var(--close-btn-visibility, hidden);
@@ -87,7 +90,7 @@
 
   .thumb {
     position: relative;
-    @include radius(12px);
+    border-radius: 50%;
     @include box(40px);
     display: block;
     background-color: var(--gray-800);
@@ -110,12 +113,26 @@
 
     --icon-size: #{rem(18px)};
 
-    &:hover {
-      box-shadow: 0 0 0 3px var(--gray-900);
-      cursor: pointer;
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
 
-      .icon {
-        --color: var(--yellow-500);
+        &:after {
+          position: absolute;
+          content: '';
+          box-shadow: inset 0 0 0 3px var(--gray-900);
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          z-index: 2;
+          border-radius: 12px;
+          pointer-events: none;
+        }
+
+        .icon {
+          --color: var(--yellow-500);
+        }
       }
     }
   }

@@ -18,26 +18,38 @@
     middleware: 'auth',
   });
 
-  const { localizePath } = useProjectMethods();
+  const { localizePath, findLocalesContentData } = useProjectMethods();
   const route = useRoute();
 
-  const { getProfileFields } = useFieldsStore();
   const globalStore = useGlobalStore();
-  const profileMenu = ref<{title: string, url: string, seo: SeoContentInterface }[]>([]);
-  const { currentLocale } = storeToRefs(globalStore);
-  const contentRequest = await useAsyncData('profileContent', () => queryContent(`profile/${currentLocale.value?.code}`).findOne());
-  const profileContent:ProfileContentInterface|undefined = contentRequest.data.value as ProfileContentInterface;
-  await useAsyncData('profileFields', getProfileFields);
+  const { contentLocalesArray } = storeToRefs(globalStore);
 
-  if (profileContent) {
-    const filteredArray = Object.keys(profileContent).filter((key) => {
-      if (profileContent[key]?.title) return key;
+  const { getProfileFields } = useFieldsStore();
+  const profileMenu = ref<{ id: string, title: string, url: string, seo: SeoContentInterface }[]>([]);
+
+  const [contentRequest] = await Promise.all([
+    useAsyncData('profileContent', () => queryContent('profile')
+      .where({ locale: { $in: contentLocalesArray.value } }).find()),
+    useAsyncData('profileFields', getProfileFields),
+  ]);
+
+  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(contentRequest.data.value);
+  const profileContent: Maybe<ProfileContentInterface> = currentLocaleData as ProfileContentInterface;
+  const defaultLocaleProfileContent: Maybe<ProfileContentInterface> = defaultLocaleData as ProfileContentInterface;
+
+  const profileContentObj = profileContent || defaultLocaleProfileContent;
+  if (profileContentObj) {
+    const filteredArray = Object.keys(profileContentObj).filter((key) => {
+      if (profileContentObj[key]?.title) return key;
       return false;
-    });
+    })
+      .filter((item) => item !== 'notifications');
+
     profileMenu.value = filteredArray.map((key) => ({
-      title: profileContent[key].title,
+      id: key,
+      title: profileContentObj[key].title,
       url: `/profile/${key}`,
-      seo: profileContent[key].seo,
+      seo: profileContentObj[key].seo,
     }));
   }
 
@@ -91,11 +103,7 @@
     display: grid;
     grid-row-gap: rem(16px);
     align-items: center;
-
-    @include media(xs) {
-      grid-template-columns: 1fr minmax(0, auto);
-      grid-column-gap: rem(16px);
-    }
+    grid-template-columns: 1fr minmax(0, auto);
   }
 
   .heading {

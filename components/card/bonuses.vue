@@ -1,65 +1,108 @@
 <template>
-  <div class="card-bonuses" :class="{'is-active': isChecked}">
+  <div class="card-bonuses" :class="{'is-active': props.bonus.status === 2}">
     <div class="card-bonuses__body">
       <div class="card-bonuses__header">
-        <h4 class="card-bonuses__title">{{ props.title }}</h4>
+        <h4 class="card-bonuses__title">{{ props.bonus.name }}</h4>
 
         <form-input-toggle
           name="toggle"
-          :value="isChecked"
+          :value="props.bonus.status === 2"
           @change="clickToggle"
         />
 
         <div class="card-bonuses__info">
           <atomic-tooltip
+            v-if="props.mode === 'bonus'"
             align="bottom"
-            :text="props.tooltipText"
+            :text="tooltipContent"
           >
-            <span class="card-bonuses__info-title">Wager requirements</span>
+            <span class="card-bonuses__info-title">{{ props.content?.wagerHintLabel }}</span>
           </atomic-tooltip>
+
+          <span v-if="props.mode === 'free-spin'" class="card-bonuses__link">
+            <span class="label">Game:</span>
+            <a class="title" href="#" @click.prevent>Sweet Bonanza Xmas</a>
+          </span>
         </div>
       </div>
 
       <div class="card-bonuses__amount">
-        <div class="card-bonuses__value">{{ props.amountValue }}</div>
+        <div class="card-bonuses__value">{{ balanceFormat.amount }} {{ balanceFormat.currency }}</div>
         <div class="card-bonuses__msg">
-          <atomic-icon id="history"/>
-          {{ getFormatDate(props.expireDate) }}
+          <template v-if="expiredAtDate">
+            <atomic-icon id="history" />
+
+            <div class="card-bonuses__date">
+              {{ expiredAtDate }}
+            </div>
+          </template>
+
+          <span class="trash-icon">
+            <button @click="emit('removeBonus')">
+              <atomic-icon id="trash"/>
+            </button>
+          </span>
+
         </div>
       </div>
 
       <div class="card-bonuses__progress" :class="{'is-riched': isRiched, 'is-greater-zero': greaterZero}">
-        <div class="card-bonuses__progress-line" :style="{'--progress': `${props.progressValue}%`}"></div>
-        <span class="card-bonuses__progress-value">{{ props.progressValue }}%</span>
+        <div class="card-bonuses__progress-line" :style="{'--progress': `${props.bonus.currentWagerPercentage}%`}"></div>
+        <span class="card-bonuses__progress-value">{{ props.bonus.currentWagerPercentage }}%</span>
         <span class="card-bonuses__progress-value">100%</span>
       </div>
 
-      <div class="card-bonuses__achive" v-if="isRiched">
+      <div v-if="isRiched" class="card-bonuses__achive">
         <atomic-icon id="clock"/>
-        <span>Waiting for results of Sportsbook bets</span>
+        <span>{{ props.content?.waitingResult }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const { getFormatDate } = useProjectMethods();
+  import { PlayerBonusInterface } from '@platform/frontend-core/dist/module';
+  import { CashBonusesInterface } from '~/types';
+
   const props = defineProps<{
-    title: string,
-    tooltipText: string,
-    progressValue: number,
-    amountValue: string,
-    expireDate: string
+    bonus: PlayerBonusInterface,
+    content?: CashBonusesInterface,
+    mode: 'bonus'|'free-spin'
   }>();
 
-  const isChecked = ref<boolean>(false);
+  const { getFormatDate, formatBalance } = useProjectMethods();
+  const balanceFormat = computed(() => formatBalance(props.bonus.currency, props.bonus.amount));
+  const tooltipContent = computed(() => {
+    const bonusWagerText = props.content?.casinoWagerLabel.replace('{wager}', `${props.bonus.wagerCasino}`);
+    const sportsbookWagerText = props.content?.sportsbookWagerLabel.replace('{wager}', `${props.bonus.wagerSportsbook}`);
+    return `${bonusWagerText}</br>${sportsbookWagerText}`;
+  });
 
-  const clickToggle = () => {
-    isChecked.value = !isChecked.value;
+  const expiredAtDate = computed(() => {
+    if (props.bonus.status === 2) {
+      if (props.bonus.wageringExpiredAt) {
+        return getFormatDate(props.bonus.wageringExpiredAt);
+      } return undefined;
+    }
+
+    if (props.bonus.activationExpiredAt) {
+      return getFormatDate(props.bonus.activationExpiredAt);
+    }
+
+    if (props.bonus.wageringExpiredAt) {
+      return getFormatDate(props.bonus.wageringExpiredAt);
+    }
+
+    return undefined;
+  });
+
+  const emit = defineEmits(['switchBonus', 'removeBonus']);
+  const clickToggle = ():void => {
+    emit('switchBonus');
   };
 
-  const isRiched = computed(() => props.progressValue === 100);
-  const greaterZero = computed(() => props.progressValue > 0);
+  const isRiched = computed(() => props.bonus.currentWagerPercentage === 100);
+  const greaterZero = computed(() => (props.bonus.currentWagerPercentage || 0) > 0);
 </script>
 
 <style lang="scss">
@@ -80,7 +123,7 @@
     @include font($heading-5);
     color: var(--white);
     grid-column: 1/2;
-    margin: 24px 0 8px;
+    margin: rem(24px) 0 rem(8px);
   }
 
   @include media(sm) {
@@ -100,13 +143,11 @@
   }
 
   @include media(xxl) {
-    --columns: repeat(4, 1fr);
 
     &__title {
       grid-column: 1/5;
     }
   }
-
 }
 
 .card-bonuses {
@@ -135,27 +176,31 @@
   }
 
   &__body {
-    padding: rem(24px);
+    padding: rem(24px) rem(16px);
     background-image: linear-gradient(107.86deg, #28263B 1.67%, #3D3D51 87.33%), linear-gradient(107.86deg, #19192F 1.67%, #28263B 87.33%);
     border-radius: 14px;
     position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    @include media(md) {
+      padding: rem(24px);
+    }
   }
 
   &__header {
-    display: grid;
-    grid-template-areas:
-      "title toggle"
-      "info toggle";
-    grid-template-columns: 1fr auto;
-    align-items: flex-start;
-    margin-bottom: rem(8px);
-    grid-row-gap: rem(4px);
     grid-column-gap: rem(8px);
+    display: flex;
+    flex-wrap: wrap;
     position: relative;
+    margin-bottom: auto;
+    padding-bottom: rem(8px);
 
     .input-toggle {
-      height: 0;
-      transform: translateY(#{rem(12px)});
+      position: absolute;
+      top: 0;
+      right: 0;
     }
   }
 
@@ -163,21 +208,29 @@
     @include font($body-1);
     color: var(--white);
     margin: 0;
-    word-break: break-word;
+    word-break: break-all;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: rem(56px);
+    width: 100%;
   }
 
   &__info {
     display: flex;
-    grid-column-gap: rem(4px);
-    align-items: center;
+    align-items: flex-start;
+    margin-top: rem(4px);
 
-    .tooltip.is-show {
-      .icon {
-        --color: var(--yellow-500)
+    .tooltip {
+      padding-left: 0;
+      margin-top: rem(-4px);
+
+      &.is-show {
+        .icon {
+          --color: var(--yellow-500)
+        }
       }
     }
   }
@@ -185,13 +238,13 @@
   &__amount {
     @include font($heading-4);
     display: flex;
+    flex-wrap: wrap;
     margin-bottom: rem(16px);
     grid-column-gap: rem(8px);
   }
 
   &__value {
-    flex-grow: 1;
-    white-space: nowrap;
+    @include font($heading-3);
   }
 
   &__msg {
@@ -200,10 +253,32 @@
     display: flex;
     align-items: center;
     grid-column-gap: rem(2px);
-    white-space: nowrap;
+    margin-left: auto;
 
     .icon {
       --color: var(--gray-400);
+      --icon-size: 20px;
+    }
+
+    .trash-icon {
+      display: flex;
+      align-items: center;
+
+      button {
+        background: transparent;
+        padding: 0;
+        border: 0;
+
+        @include use-hover {
+          &:hover {
+            cursor: pointer;
+
+            .icon {
+              --color: var(--yellow-500)
+            }
+          }
+        }
+      }
     }
   }
 
@@ -293,6 +368,42 @@
     .icon {
       --color: var(--gray-400);
       --icon-size: 16px;
+    }
+  }
+
+  &__link {
+    display: flex;
+    @include font($body-0);
+    color: var(--yellow-500);
+    grid-column-gap: rem(4px);
+
+    .title {
+      color: inherit;
+      text-decoration: none;
+
+      @include use-hover {
+        &:hover {
+          cursor: pointer;
+          color: var(--yellow-600)
+        }
+      }
+    }
+  }
+
+  &__date {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    @include font($body-0);
+    color: var(--gray-400);
+    grid-column-gap: rem(8px);
+    margin-right: rem(4px);
+
+    &:after {
+      content: '';
+      display: inherit;
+      height: rem(19px);
+      border-right: 1px solid var(--gray-500);
     }
   }
 }

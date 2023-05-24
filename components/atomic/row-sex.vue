@@ -13,13 +13,14 @@
     },
   });
 
-  const { fieldsContent } = useGlobalStore();
+  const { fieldsContent, defaultLocaleFieldsContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
   const valueName = computed(() => {
     switch (props.value) {
     case 'male':
-      return fieldsContent?.gender.maleLabel;
+      return getContent(fieldsContent, defaultLocaleFieldsContent, 'gender.maleLabel');
     case 'female':
-      return fieldsContent?.gender.femaleLabel;
+      return getContent(fieldsContent, defaultLocaleFieldsContent, 'gender.femaleLabel');
     default:
       return '';
     }

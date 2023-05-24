@@ -1,12 +1,15 @@
 <template>
-  <div v-if="promotionsContent" class="group-promotions">
-    <atomic-icon :id="promotionsContent.icon"/>
-    <h2 class="title">{{ promotionsContent.label }}</h2>
+  <div v-if="globalComponentsContent?.promotions || defaultLocaleGlobalComponentsContent?.promotions" class="group-promotions">
+    <atomic-icon :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'promotions.icon')"/>
+
+    <h2 class="title">
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'promotions.label') }}
+    </h2>
 
     <div class="group-promotions__list">
       <div
         class="group-promotions__item"
-        v-for="(promotion, index) in promotionsContent.items"
+        v-for="(promotion, index) in promotionsList"
         :key="index"
         :class="{ 'hovered': hoverCard === index }"
         @click="clickCard(index)"
@@ -41,13 +44,11 @@
 
 <script  setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { PromotionsContentInterface } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent } = globalStore;
-  const promotionsContent:PromotionsContentInterface|undefined = globalComponentsContent?.promotions;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
 
-  const { localizePath } = useProjectMethods();
+  const { localizePath, getContent } = useProjectMethods();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal, openDepositModal } = useLayoutStore();
@@ -65,6 +66,11 @@
     if (e.target.closest('.group-promotions__item')) return;
     hoverCard.value = undefined;
   };
+
+  const promotionsList = computed(() => {
+    if (globalComponentsContent?.promotions?.items?.length) return globalComponentsContent.promotions.items;
+    return defaultLocaleGlobalComponentsContent?.promotions?.items || [];
+  });
 
   onMounted(() => {
     document.addEventListener('click', clickOutside);
@@ -86,7 +92,6 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
-  padding: 0 rem(24px);
 
   @include media(xs) {
     grid-template-areas:
@@ -101,8 +106,13 @@
 
   > .icon {
     grid-area: icon;
-    --iccon-size: #{rem(20px)};
+    margin-left: rem(16px);
+    --icon-size: #{rem(20px)};
     --color: var(--gray-400);
+
+    @include media(sm) {
+      margin-left: rem(24px);
+    }
   }
 
   > .title {
@@ -118,10 +128,8 @@
     display: var(--display, grid);
     align-items: normal;
     overflow-x: auto;
-    @extend %cards-items-negative;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: var(--items-column-gap, #{rem(8px)});
-    margin: 0 rem(-24px);
 
     &::-webkit-scrollbar {
       display: none;
@@ -129,6 +137,7 @@
 
     @include media(sm) {
       grid-template-columns: repeat(4, 1fr);
+      --items-column-gap: #{rem(16px)}
     }
   }
 
@@ -254,6 +263,10 @@
     .sub-title {
       @include font($body-1);
       color: var(--white);
+
+      @include media(md) {
+        @include upd-font($body-2);
+      }
     }
 
     .btn-primary {

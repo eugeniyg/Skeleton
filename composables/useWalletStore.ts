@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { AccountInterface, AccountRequestInterface, WebSocketResponseInterface } from '@platform/frontend-core/dist/module';
+import { AccountInterface, WebSocketResponseInterface } from '@platform/frontend-core/dist/module';
 import { useGlobalStore } from '~/composables/useGlobalStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 import { useProjectMethods } from '~/composables/useProjectMethods';
@@ -24,8 +24,13 @@ export const useWalletStore = defineStore('walletStore', {
   }),
 
   getters: {
-    activeAccount(state):AccountInterface|undefined {
+    activeAccount(state): Maybe<AccountInterface> {
       return state.accounts.find((acc) => acc.status === 1);
+    },
+
+    activeEquivalentAccount(): { balance: number, currency: string, currencySymbol: string } {
+      const { getEquivalentAccount } = useProjectMethods();
+      return getEquivalentAccount(this.activeAccount?.balance, this.activeAccount?.currency);
     },
 
     activeAccountType():string {
@@ -34,6 +39,23 @@ export const useWalletStore = defineStore('walletStore', {
 
       const activeCurrency = currencies.value.find((currency) => currency.code === this.activeAccount?.currency);
       return activeCurrency?.type || '';
+    },
+
+    currencyTabs():{ id: string, title: string }[] {
+      const globalStore = useGlobalStore();
+      const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+      const { getContent } = useProjectMethods();
+
+      return [
+        {
+          id: 'all',
+          title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'currency.tabs.allTab') || 'All',
+        },
+        {
+          id: 'crypto',
+          title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'currency.tabs.cryptoTab') || 'Crypto',
+        },
+      ];
     },
   },
 
@@ -50,15 +72,15 @@ export const useWalletStore = defineStore('walletStore', {
       this.accounts = data;
     },
 
-    async switchAccount(switchData: AccountRequestInterface):Promise<void> {
+    async switchAccount(accountId: string):Promise<void> {
       const { switchActiveAccount } = useCoreWalletApi();
-      const data = await switchActiveAccount(switchData);
+      const data = await switchActiveAccount(accountId);
       this.accounts = data;
     },
 
-    async hideAccount(hideData: AccountRequestInterface):Promise<void> {
+    async hideAccount(accountId: string):Promise<void> {
       const { hideWalletAccount } = useCoreWalletApi();
-      const data = await hideWalletAccount(hideData);
+      const data = await hideWalletAccount(accountId);
       this.accounts = data;
     },
 
@@ -90,7 +112,7 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     updateAccount(webSocketResponse:WebSocketResponseInterface):void {
-      const accountData:AccountInterface|undefined = webSocketResponse.data.account;
+      const accountData: Maybe<AccountInterface> = webSocketResponse.data.account;
       this.accounts = this.accounts.map((account) => {
         if (account.id === accountData?.id) return accountData;
         return account;
@@ -106,8 +128,8 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     showInvoiceStatus(webSocketResponse:WebSocketResponseInterface):void {
-      const { formatBalance } = useProjectMethods();
-      const { alertsData } = useGlobalStore();
+      const { formatBalance, getContent } = useProjectMethods();
+      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
       const { showAlert } = useLayoutStore();
       const invoiceUtcDate = new Date(webSocketResponse.data?.invoice?.createdAt || '');
       const invoiceDate = invoiceUtcDate.toLocaleString().slice(0, 10);
@@ -123,14 +145,29 @@ export const useWalletStore = defineStore('walletStore', {
       };
 
       if (webSocketResponse.data?.event === 'invoice.deposit.updated') {
-        const cmsMessage = invoiceSuccess ? alertsData?.depositSuccess?.description : alertsData?.depositError?.description;
-        const depositSuccessAlertData = alertsData?.depositSuccess ? { ...alertsData.depositSuccess, description: formattedDescription(cmsMessage) } : undefined;
-        const depositErrorAlertData = alertsData?.depositError ? { ...alertsData.depositError, description: formattedDescription(cmsMessage) } : undefined;
+        const { getDepositBonusCode } = useBonusStore();
+        getDepositBonusCode();
+
+        const cmsMessage = invoiceSuccess
+            ? getContent(alertsData, defaultLocaleAlertsData, 'depositSuccess.description')
+            : getContent(alertsData, defaultLocaleAlertsData, 'depositError.description');
+
+        const depositSuccessObj = alertsData?.depositSuccess || defaultLocaleAlertsData?.depositSuccess;
+        const depositErrorObj = alertsData?.depositError || defaultLocaleAlertsData?.depositError;
+
+        const depositSuccessAlertData = depositSuccessObj ? { ...depositSuccessObj, description: formattedDescription(cmsMessage) } : undefined;
+        const depositErrorAlertData = depositErrorObj ? { ...depositErrorObj, description: formattedDescription(cmsMessage) } : undefined;
         showAlert(invoiceSuccess ? depositSuccessAlertData : depositErrorAlertData);
       } else if (webSocketResponse.data?.event === 'invoice.withdrawal.updated') {
-        const cmsMessage = invoiceSuccess ? alertsData?.withdrawSuccess?.description : alertsData?.withdrawError?.description;
-        const withdrawSuccessAlertData = alertsData?.withdrawSuccess ? { ...alertsData.withdrawSuccess, description: formattedDescription(cmsMessage) } : undefined;
-        const withdrawErrorAlertData = alertsData?.withdrawError ? { ...alertsData.withdrawError, description: formattedDescription(cmsMessage) } : undefined;
+        const cmsMessage = invoiceSuccess
+            ? getContent(alertsData, defaultLocaleAlertsData, 'withdrawSuccess.description')
+            : getContent(alertsData, defaultLocaleAlertsData, 'withdrawError.description');
+
+        const withdrawSuccessObj = alertsData?.withdrawSuccess || defaultLocaleAlertsData?.withdrawSuccess;
+        const withdrawErrorObj = alertsData?.withdrawError || defaultLocaleAlertsData?.withdrawError;
+
+        const withdrawSuccessAlertData = withdrawSuccessObj ? { ...withdrawSuccessObj, description: formattedDescription(cmsMessage) } : undefined;
+        const withdrawErrorAlertData = withdrawErrorObj ? { ...withdrawErrorObj, description: formattedDescription(cmsMessage) } : undefined;
         showAlert(invoiceSuccess ? withdrawSuccessAlertData : withdrawErrorAlertData);
       }
     },

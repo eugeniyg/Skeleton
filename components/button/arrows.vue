@@ -34,7 +34,7 @@
     },
   });
   const emit = defineEmits(['clickAction']);
-  const clickNavigation = (direction:string):void => {
+  const clickNavigation = (direction: string): void => {
     if ((direction === 'next' && props.nextDisabled) || (direction === 'prev' && props.prevDisabled)) return;
     emit('clickAction', direction);
   };
@@ -43,9 +43,7 @@
 <style lang="scss">
 .arrows {
   @extend %flex-items-center;
-  grid-column-gap: 4px;
-  padding: rem(3px);
-  margin-left: rem(3px);
+  grid-column-gap: 8px;
 
   .btn-prev, .btn-next {
     @include box(32px);
@@ -69,6 +67,7 @@
     &[disabled] {
       --color: var(--gray-600);
       --bg: var(--gray-800);
+      cursor: default;
     }
   }
 

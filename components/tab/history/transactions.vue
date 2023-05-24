@@ -71,16 +71,16 @@
   }>();
 
   const transactionsContent:HistoryTransactionsInterface = props.content.transactions;
-  const coreStore = useCoreStore();
+  const globalStore = useGlobalStore();
   const optionsDefaultValue = { value: transactionsContent.allFilterOption, code: 'all' };
 
   const typeOptions = computed(() => {
-    const storeOptions = coreStore.invoiceTypes.map((item) => ({ value: transactionsContent.typeFilter.options[item.name], code: item.id }));
+    const storeOptions = globalStore.invoiceTypes.map((item) => ({ value: transactionsContent.typeFilter.options[item.name], code: item.id }));
     return [optionsDefaultValue, ...storeOptions];
   });
 
   const statusOptions = computed(() => {
-    const storeOptions = coreStore.invoiceStatuses.map((item) => ({ value: transactionsContent.statusFilter.options[item.name], code: item.id }));
+    const storeOptions = globalStore.invoiceStatuses.map((item) => ({ value: transactionsContent.statusFilter.options[item.name], code: item.id }));
     return [optionsDefaultValue, ...storeOptions];
   });
 
@@ -126,18 +126,15 @@
   const changePage = (page: number):void => {
     if (loading.value) return;
     filters.page = page;
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    window.scroll(0, 0);
     resolveInvoicesRequest();
   };
 
   const { showAlert } = useLayoutStore();
-  const { alertsData } = useGlobalStore();
+  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const cancelPayment = async (invoiceId: string):Promise<void> => {
     const response = await cancelInvoice(invoiceId);
-    showAlert(alertsData?.userCanceledWithdrawal);
+    showAlert(alertsData.value?.userCanceledWithdrawal || defaultLocaleAlertsData.value?.userCanceledWithdrawal);
 
     const closedIndex = invoices.value.findIndex((invoice) => invoice.id === invoiceId);
     invoices.value[closedIndex] = response;

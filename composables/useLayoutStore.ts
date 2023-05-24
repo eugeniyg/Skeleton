@@ -1,20 +1,22 @@
 import { defineStore } from 'pinia';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { useNotification } from '@kyvg/vue3-notification';
 import { useWalletStore } from '~/composables/useWalletStore';
 import { useProfileStore } from '~/composables/useProfileStore';
 import { AlertInterface } from '~/types';
 
 interface ModalsInterface extends Record<string, any> {
   register: boolean,
+  registerCancel: boolean,
   signIn: boolean,
   deposit: boolean,
   confirm: boolean,
-  confirmBonus: boolean,
   error: boolean,
   forgotPass: boolean,
   resetPass: boolean,
   success: boolean,
   withdraw: boolean,
+  fiat: boolean,
 }
 
 interface ModalsUrlsInterface extends Record<string, any> {
@@ -32,11 +34,10 @@ interface LayoutStoreStateInterface extends Record<string, any>{
   isDrawerOpen: boolean,
   isCurrencyNavOpen: boolean,
   isDrawerCompact: boolean,
-  isShowAlert: boolean,
   showCookiePopup: boolean,
-  alertProps: AlertInterface|undefined,
   modals: ModalsInterface,
   modalsUrl: ModalsUrlsInterface,
+  lastNotificationTime: number,
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -45,20 +46,19 @@ export const useLayoutStore = defineStore('layoutStore', {
       isDrawerOpen: false,
       isCurrencyNavOpen: false,
       isDrawerCompact: false,
-      isShowAlert: false,
       showCookiePopup: false,
-      alertProps: undefined,
       modals: {
         register: false,
         signIn: false,
         deposit: false,
         confirm: false,
-        confirmBonus: false,
         error: false,
         forgotPass: false,
         resetPass: false,
         success: false,
         withdraw: false,
+        registerCancel: false,
+        fiat: false,
       },
       modalsUrl: {
         register: 'sign-up',
@@ -69,24 +69,36 @@ export const useLayoutStore = defineStore('layoutStore', {
         forgotPass: 'forgot-pass',
         resetPass: 'reset-pass',
       },
+    lastNotificationTime: 0,
   }),
 
   actions: {
-    showAlert(props: AlertInterface|undefined): void {
-      if (this.isShowAlert) {
-        this.hideAlert();
-        this.showAlert(props);
-        return;
+    showAlert(props: Maybe<AlertInterface>): void {
+      const { notify } = useNotification();
+      const currentTime = Date.now();
+      const timeDiff = currentTime - this.lastNotificationTime;
+
+      if (timeDiff < 400) {
+        this.lastNotificationTime += 400;
+
+        setTimeout(() => {
+          notify({
+            id: Date.now(),
+            type: props?.type,
+            title: props?.title,
+            text: props?.description,
+          });
+        }, this.lastNotificationTime - currentTime);
+      } else {
+        this.lastNotificationTime = currentTime;
+
+        notify({
+          id: currentTime,
+          type: props?.type,
+          title: props?.title,
+          text: props?.description,
+        });
       }
-
-      setTimeout(() => {
-        this.alertProps = props;
-        this.isShowAlert = true;
-      }, 200);
-    },
-
-    hideAlert() {
-      this.isShowAlert = false;
     },
 
     openUserNav():void {
@@ -113,6 +125,13 @@ export const useLayoutStore = defineStore('layoutStore', {
       document.body.classList.remove('nav-currency-open');
     },
 
+    async compactDrawer(compact: boolean, writeStorage = true):Promise<void> {
+      if (writeStorage) localStorage.setItem('IS_DRAWER_COMPACT', `${compact}`);
+      this.isDrawerCompact = compact;
+      await nextTick();
+      window.dispatchEvent(new Event('resize'));
+    },
+
     toggleDrawer():void {
       this.isDrawerOpen = !this.isDrawerOpen;
       document.body.classList.toggle('drawer-open');
@@ -120,11 +139,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       if (drawerContentEl) this.isDrawerOpen ? disableBodyScroll(drawerContentEl) : enableBodyScroll(drawerContentEl);
     },
 
-    compactDrawer():void {
-      window.dispatchEvent(new Event('resize'));
-    },
-
-    addModalQuery(modalName:string, queryValue:string|undefined):void {
+    addModalQuery(modalName:string, queryValue: Maybe<string>):void {
       const router = useRouter();
       const { query } = useRoute();
       const modalsArr = Object.keys(this.modals);
@@ -176,8 +191,18 @@ export const useLayoutStore = defineStore('layoutStore', {
 
     async openDepositModal():Promise<void> {
       const { getDepositMethods } = useWalletStore();
-      await getDepositMethods();
-      this.showModal('deposit');
+      const { showModal } = useLimitsStore();
+      try {
+        await getDepositMethods();
+        this.showModal('deposit');
+      } catch (error: any) {
+        if (error.data?.error?.code === 13100) {
+          const router = useRouter();
+          const { localizePath } = useProjectMethods();
+          await router.push(localizePath('/profile/limits'));
+          showModal('exceededLimitConfirm');
+        } else throw error;
+      }
     },
 
     async openWithdrawModal():Promise<void> {

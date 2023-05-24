@@ -1,0 +1,247 @@
+<template>
+  <div class="list-currencies" :class="{'is-show': props.isOpen}">
+    <div class="header">
+      <button-base
+        v-for="{id, title} in currencyTabs"
+        :is-active="id === selected"
+        :key="id"
+        type="ghost"
+        size="xs"
+        @click.stop="switchTabNav(id)"
+      >
+        {{ title }}
+      </button-base>
+    </div>
+
+    <div class="items">
+      <div
+        v-for="item in selectedItems"
+        :key="item.nativeCurrency"
+        class="item"
+        :class="{'is-active': activeAccount.currency === item.nativeCurrency}"
+        @click="selectCurrency(item.nativeCurrency)"
+      >
+        <img class="img" :src="`/img/currency/${item.nativeCurrency}.svg`" alt=""/>
+        <span class="code-title">{{ item.currency }}</span>
+        <span v-if="!props.hideBalance" class="amount">{{ item.currencySymbol }} {{ item.amount }}</span>
+      </div>
+    </div>
+
+    <atomic-fiat-toggler v-if="showFiatToggler" />
+  </div>
+</template>
+
+<script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+  import { AccountInterface, CurrencyInterface } from '@platform/frontend-core/dist/module';
+
+  const props = defineProps({
+    isOpen: {
+      type: Boolean,
+      default: false,
+    },
+    hideBalance: {
+      type: Boolean,
+      default: false,
+    },
+    showFiatToggler: {
+      type: Boolean,
+      default: false,
+    },
+  });
+
+  const walletStore = useWalletStore();
+  const globalStore = useGlobalStore();
+  const {
+    accounts,
+    currencyTabs,
+    activeAccount,
+    activeAccountType,
+  } = storeToRefs(walletStore);
+  const { currencies, cryptoCurrencies, equivalentCurrency } = storeToRefs(globalStore);
+  const { switchAccount } = useWalletStore();
+  const { createAccount } = useWalletStore();
+  const { formatBalance, sortByAlphabet, getEquivalentAccount } = useProjectMethods();
+
+  const emit = defineEmits(['hide-currencies-list', 'changeActiveAccount']);
+
+  const selected = ref<string>('all');
+
+  const getAccountByCurrency = (currency: string): Maybe<AccountInterface> => accounts.value.find((account) => (account.currency === currency));
+
+  interface DisplayAccountInterface {
+    nativeCurrency: string,
+    currency: string,
+    amount: number,
+    currencySymbol?: string
+  }
+
+  const selectedItems = computed(() => {
+    let currenciesList:CurrencyInterface[];
+    if (selected.value === 'all' || !cryptoCurrencies.value.length) currenciesList = currencies.value;
+    else currenciesList = cryptoCurrencies.value;
+
+    const formatList:DisplayAccountInterface[] = currenciesList.map((currency) => {
+      const findAccount = getAccountByCurrency(currency.code);
+
+      if (equivalentCurrency.value && currency.type === 'crypto') {
+        const equivalentAccount = getEquivalentAccount(findAccount?.balance || 0, findAccount?.currency || currency.code);
+        return {
+          nativeCurrency: currency.code,
+          amount: equivalentAccount.balance,
+          currency: currency.code,
+          currencySymbol: equivalentAccount.currencySymbol,
+        };
+      }
+
+      const formattedAcc = formatBalance(findAccount?.currency || currency.code, findAccount?.balance || 0);
+      return { nativeCurrency: currency.code, ...formattedAcc, currencySymbol: equivalentCurrency.value ? currency.symbol : undefined };
+    });
+
+    const withBalanceList:DisplayAccountInterface[] = [];
+    const withoutBalanceList:DisplayAccountInterface[] = [];
+
+    formatList.forEach((formatItem) => {
+      if (formatItem.amount) withBalanceList.push(formatItem);
+      else withoutBalanceList.push(formatItem);
+    });
+
+    const withBalanceSortedList = withBalanceList.sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
+    const withoutBalanceSortedList = withoutBalanceList.sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
+
+    return [...withBalanceSortedList, ...withoutBalanceSortedList];
+  });
+
+  const selectCurrency = async (currency: string): Promise<void> => {
+    if (activeAccount.value?.currency === currency) return;
+
+    const findAccount = getAccountByCurrency(currency);
+
+    emit('hide-currencies-list');
+
+    if (findAccount) {
+      await switchAccount(findAccount.id);
+    } else {
+      await createAccount(currency);
+      const findNewAccount = getAccountByCurrency(currency);
+      if (findNewAccount) {
+        await switchAccount(findNewAccount.id);
+      }
+    }
+
+    emit('changeActiveAccount');
+  };
+
+  const switchTabNav = (id:string) => {
+    selected.value = id;
+  };
+</script>
+
+<style lang="scss">
+.list-currencies {
+  display: var(--display, none);
+  min-width: rem(200px);
+  max-height: rem(360px);
+  padding: rem(16px);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  right: 0;
+  background-color: var(--gray-800);
+  z-index: var(--z-index, 3);
+  transform: translateX(-50%) translateY(44px);
+  transition: all .2s ease-in-out;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+  border-radius: 8px;
+
+  &.is-show {
+    --display: block;
+  }
+
+  .header {
+    border-bottom: 1px solid var(--gray-700);
+    display: flex;
+    padding: 0 0 rem(8px) 0;
+    grid-column-gap: rem(4px);
+    margin-bottom: rem(8px);
+  }
+
+  .btn-ghost {
+    @include upd-font($body-2);
+    white-space: nowrap;
+    --padding: #{rem(4px)} #{rem(6px)} !important;
+    --color: var(--gray-300);
+    --width: 100%;
+
+    &.is-active {
+      --color: var(--white);
+    }
+
+    @include media(sm) {
+      @include upd-font($body-1);
+    }
+
+    @include use-hover {
+      &:hover {
+        --color: var(--yellow-500);
+      }
+    }
+  }
+
+  .items {
+    display: grid;
+    max-height: calc(calc(calc(#{rem(32px)} + #{rem(4px)}) * 6) - #{rem(4px)});
+    overflow-y: scroll;
+    @include scrollbar;
+    margin-right: -6px;
+    grid-row-gap: 4px;
+  }
+
+  .item {
+    height: rem(32px);
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    padding: 8px;
+    grid-column-gap: rem(4px);
+    transition: all .2s ease-in-out;
+
+    &.is-active {
+      cursor: text;
+      background-color: var(--gray-700);
+
+      .amount {
+        --color: var(--yellow-500);
+      }
+    }
+
+    @include use-hover {
+      &:hover {
+        &:not(.is-active) {
+          cursor: pointer;
+          background-color: var(--gray-700);
+        }
+      }
+    }
+
+    .img {
+      @include box(20px);
+    }
+
+    .code-title, .amount {
+      @include font($body-1);
+    }
+
+    .code-title {
+      color: var(--color, var(--gray-400));
+      flex-grow: 1;
+    }
+
+    .amount {
+      color: var(--color, var(--white));
+      justify-self: flex-end;
+      transition: all .2s ease-in-out;
+    }
+  }
+}
+</style>

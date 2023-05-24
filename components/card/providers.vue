@@ -1,6 +1,6 @@
 <template>
   <div class="card-providers" @click="routeToGames">
-    <img class="img" :src="`/img${props.src}`" />
+    <img class="img" :src="`/img${props.src}`"/>
   </div>
 </template>
 
@@ -25,39 +25,49 @@
 .cards-providers {
   border-radius: 16px;
   background-color: var(--gray-900);
-  padding: rem(16px) rem(16px) rem(14px) rem(16px);
+  padding: var(--card-padding, 16px 16px 8px);
+  position: relative;
+
+  @include media(xs) {
+    --card-padding: 16px 16px 24px;
+  }
 
   @include media(md) {
-    padding: rem(24px) rem(24px) rem(20px) rem(24px);
+    --card-padding: 24px;
+    @include scroll-overlay;
   }
 }
 
 .card-providers {
+  --col-count: 2.5;
+  --col-gap: 8px;
+
   background-color: var(--gray-800);
   position: relative;
   padding: rem(16px);
   flex-shrink: 0;
-  width: var(--width, #{column(3)});
   cursor: pointer;
-  border: 4px solid var(--gray-900);
-  border-radius: 12px;
+  border-radius: 8px;
+  width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap) / var(--col-count))));
+  scroll-snap-align: start;
+
+  @include media(xs) {
+    --col-count: 3.5;
+  }
+
+  @include media(sm) {
+    --col-gap: 16px;
+    --col-count: 5;
+  }
+
+  @include media(xl) {
+    --col-count: 9;
+  }
 
   .img {
     max-width: 100%;
     display: block;
     margin: 0 auto;
-  }
-
-  @include media(xs) {
-    --width: #{column(4)};
-  }
-
-  @include media(sm) {
-    --width: #{column(6)};
-  }
-
-  @include media(xl) {
-    --width: #{column(9)};
   }
 }
 </style>

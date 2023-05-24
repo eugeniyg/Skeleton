@@ -6,7 +6,9 @@
       <h2 class="title">
         {{ gameCategoriesObj[props.category.identity]?.label || props.category.name || props.category.identity }}
       </h2>
-      <h4 class="sub-title">{{ cardsGroupContent?.recommendedSubtitle }}</h4>
+      <h4 class="sub-title">
+        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.recommendedSubtitle') }}
+      </h4>
     </div>
 
     <h2 v-else class="title">
@@ -19,7 +21,7 @@
       type="ghost"
       @click="openGames"
     >
-      {{ cardsGroupContent?.moreButton }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
     <button-arrows
@@ -32,13 +34,20 @@
     <div
       ref="scrollContainer"
       class="items"
+      :class="{ 'disabled-scroll-block': !games.length }"
       @scroll="scrollHandler"
     >
-      <card-base
-        v-for="(game, gameIndex) in games"
-        :key="gameIndex"
-        v-bind="game"
-      />
+      <template v-if="games.length">
+        <card-base
+          v-for="(game, gameIndex) in games"
+          :key="gameIndex"
+          v-bind="game"
+        />
+      </template>
+
+      <template v-else>
+        <div v-for="n in 9" :key="n" class="card-base"/>
+      </template>
 
       <div class="load-more" ref="loadMore"/>
     </div>
@@ -49,7 +58,6 @@
   import {
     GameInterface, PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
-  import { CardsGroupInterface } from '~/types';
 
   const props = defineProps({
     category: {
@@ -70,19 +78,19 @@
     },
   });
 
-  const { globalComponentsContent, gameCategoriesObj } = useGlobalStore();
-  const cardsGroupContent:CardsGroupInterface|undefined = globalComponentsContent?.cardsGroup;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = useGlobalStore();
+  const { getContent } = useProjectMethods();
   const titleIcon = gameCategoriesObj[props.category.identity]?.icon;
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
-  const nextDisabled = ref<boolean>(false);
+  const nextDisabled = ref<boolean>(true);
   const showArrowButtons = ref<boolean>(props.showArrows);
   const games = ref<GameInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
   const { getFilteredGames } = useCoreGamesApi();
 
-  const scrollHandler = async ():Promise<void> => {
+  const scrollHandler = (): void => {
     if (!scrollContainer.value) return;
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
@@ -90,7 +98,7 @@
       && pageMeta.value?.page === pageMeta.value?.totalPages;
   };
 
-  const clickAction = (direction: string):void => {
+  const clickAction = (direction: string): void => {
     const { offsetWidth } = scrollContainer.value;
     scrollContainer.value.scrollBy({
       left: direction === 'next' ? offsetWidth : -offsetWidth,
@@ -98,7 +106,7 @@
     });
   };
 
-  const moreGames = async ():Promise<void> => {
+  const moreGames = async (): Promise<void> => {
     if (pageMeta.value?.page === pageMeta.value?.totalPages) return;
 
     const gamesResponse = await getFilteredGames({
@@ -133,7 +141,7 @@
   });
 
   const { localizePath } = useProjectMethods();
-  const openGames = ():void => {
+  const openGames = (): void => {
     const router = useRouter();
     router.push(localizePath(`/games?category=${props.category.identity}`));
   };
@@ -150,7 +158,6 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
-  padding: 0 rem(24px);
 
   @include media(xs) {
     grid-template-areas:
@@ -165,14 +172,18 @@
 
   > .icon {
     grid-area: icon;
-    --iccon-size: #{rem(20px)};
+    margin-left: rem(16px);
+    --icon-size: #{rem(20px)};
     --color: var(--gray-400);
+
+    @include media(sm) {
+      margin-left: rem(24px);
+    }
   }
 
-  > .btn-show-all {
+  .btn-show-all {
     grid-area: btn-show-all;
     @include font($heading-1);
-    margin: 0 rem(-24px);
 
     --font-size: #{rem(12px)};
     --color: var(--gray-500);
@@ -180,19 +191,26 @@
 
     @include media(xs) {
       padding: 0;
-      --bg: transparent;
+      background: none;
+    }
+
+    @include media(sm) {
+      @include upd-font($heading-2);
 
       &:hover {
         --color: var(--white);
+        --bg: transparent;
       }
     }
   }
 
   > .arrows {
     grid-area: arrows;
+    margin-right: rem(16px);
 
-    @include media(xs) {
+    @include media(sm) {
       margin-left: rem(24px);
+      margin-right: rem(24px);
     }
   }
 
@@ -209,10 +227,25 @@
     display: var(--display, flex);
     align-items: center;
     overflow-x: auto;
-    margin: 0  rem(-24px);
+    margin: rem(-16px) rem(-16px) 0;
+    padding: rem(16px) rem(16px) 0;
+    scroll-padding: rem(16px);
+    grid-column-gap: 8px;
+    scroll-snap-type: x mandatory;
+
+    @include media(sm) {
+      margin: rem(-16px) 0 0 0;
+      padding: rem(16px) 0 0 0;
+      grid-column-gap: 16px;
+      scroll-padding: 0;
+    }
 
     &::-webkit-scrollbar {
       display: none;
+    }
+
+    &.disabled-scroll-block {
+      pointer-events: none !important;
     }
   }
 

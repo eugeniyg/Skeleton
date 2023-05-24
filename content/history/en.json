@@ -6,7 +6,15 @@
       "description": "You have not received bonuses yet"
     },
     "tabLabel": "Bonuses",
-    "tabPosition": 2
+    "tabPosition": 2,
+    "tableColumns": {
+      "title": "Title",
+      "status": "Status",
+      "amount": "Amount",
+      "progress": "Progress",
+      "created": "Date",
+      "expired": "Valid until"
+    }
   },
   "spins": {
     "empty": {
@@ -45,7 +53,7 @@
       "date": "Date",
       "type": "Type",
       "method": "Payment Method",
-      "status": "Status:",
+      "status": "Status",
       "sum": "Sum"
     },
     "typeFilter": {

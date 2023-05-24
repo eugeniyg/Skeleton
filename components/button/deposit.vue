@@ -1,13 +1,32 @@
 <template>
-  <button class="btn-deposit" @click="openDepositModal">
+  <button
+    class="btn-deposit"
+    :class="{'is-active': isActive}"
+    @click="makeActive"
+    v-click-outside="makeInactive"
+  >
     <atomic-icon id="plus"/>
-    <span>{{ headerContent?.depositButton }}</span>
+
+    <span>
+      {{ getContent(headerContent, defaultLocaleHeaderContent, 'depositButton') }}
+    </span>
   </button>
 </template>
 
 <script setup lang="ts">
   const { openDepositModal } = useLayoutStore();
-  const { headerContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
+  const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
+  const isActive = ref<boolean>(false);
+
+  const makeActive = () => {
+    isActive.value = true;
+    openDepositModal();
+  };
+
+  const makeInactive = () => {
+    isActive.value = false;
+  };
 </script>
 
 <style lang="scss">
@@ -29,7 +48,7 @@
 
   @include media(md) {
     --width: auto;
-    --radius:  12px;
+    --radius: 12px;
     --btn-padding: #{rem(11px)} #{rem(24px)};
 
     span {
@@ -37,13 +56,15 @@
     }
   }
 
-  &:hover {
-    cursor: pointer;
-    --bg: var(--gradient-new-hover);
-    --color: var(--black-primary);
+  @include use-hover {
+    &:hover {
+      cursor: pointer;
+      --bg: var(--gradient-new-hover);
+      --color: var(--black-primary);
+    }
   }
 
-  &:focus {
+  &.is-active {
     --bg: var(--gradient-new-focus);
     --color: var(--black-primary);
   }

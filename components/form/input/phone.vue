@@ -17,7 +17,8 @@
     <client-only>
       <input
         inputmode="numeric"
-        v-maska="'##########'"
+        v-maska
+        data-maska="##########"
         class="field"
         type="text"
         name="phoneNumber"
@@ -37,6 +38,7 @@
 <script setup lang="ts">
   import parsePhoneNumber from 'libphonenumber-js';
   import { storeToRefs } from 'pinia';
+  import { vMaska } from 'maska';
   import { PhoneCodeInterface } from '~/types';
 
   const props = defineProps({
@@ -147,7 +149,7 @@
     @include font($body-2);
     transition: border-color .2s ease-in-out;
     @extend %inputMask;
-    font-family: 'NeoSansPro', sans-serif;
+    font-family: 'Rubik', sans-serif;
 
     &::placeholder {
       color: var(--gray-400);

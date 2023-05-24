@@ -27,6 +27,10 @@ input:-webkit-autofill-and-obscured {
   background-color: var(--gray-800) !important;
 }
 
+input, button, ::placeholder, textarea {
+  font-family: Rubik, sans-serif;
+}
+
 @mixin radius($size) {
   border-radius: $size;
 }
@@ -34,30 +38,30 @@ input:-webkit-autofill-and-obscured {
 $font-path: '~/assets/fonts/';
 
 @font-face {
-  font-family: 'NeoSansPro';
-  src: url('#{$font-path}/NeoSansPro-Regular.woff2') format('woff2'),
-  url('#{$font-path}NeoSansPro-Regular.woff') format('woff'),
-  url('#{$font-path}NeoSansPro-Regular.ttf') format('truetype');
+  font-family: 'Rubik';
+  src: url('#{$font-path}Rubik-Regular.woff2') format('woff2'),
+  url('#{$font-path}Rubik-Regular.woff') format('woff'),
+  url('#{$font-path}Rubik-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'NeoSansPro';
-  src: url('#{$font-path}NeoSansPro-Medium.woff2') format('woff2'),
-  url('#{$font-path}NeoSansPro-Medium.woff') format('woff'),
-  url('#{$font-path}NeoSansPro-Medium.ttf') format('truetype');
+  font-family: 'Rubik';
+  src: url('#{$font-path}Rubik-Medium.woff2') format('woff2'),
+  url('#{$font-path}Rubik-Medium.woff') format('woff'),
+  url('#{$font-path}Rubik-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'NeoSansPro';
-  src: url('#{$font-path}/NeoSansPro-Bold.woff2') format('woff2'),
-  url('#{$font-path}NeoSansPro-Bold.woff') format('woff'),
-  url('#{$font-path}NeoSansPro-Bold.ttf') format('truetype');
+  font-family: 'Rubik';
+  src: url('#{$font-path}Rubik-Bold.woff2') format('woff2'),
+  url('#{$font-path}Rubik-Bold.woff') format('woff'),
+  url('#{$font-path}Rubik-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -79,14 +83,18 @@ a {
 
 html {
   font-size: variables.$base-font-size;
+  scroll-behavior: smooth;
 }
 
+html, body {
+  overscroll-behavior: none;
+}
 
 //@import "ds/mixins";
 //@import "ds/placeholders";
 
 body {
-  font-family: 'NeoSansPro', sans-serif;
+  font-family: 'Rubik', sans-serif;
   margin: 0;
   background-color: var(--black-primary);
   @extend %scrollbar-hide;
@@ -94,11 +102,19 @@ body {
   &.nav-user-open {
     --nav-user-visibility: visible;
     --nav-user-translate-x: 0;
+    --nav-user-translate-y: 0deg;
+    --nav-user-rotate-y: 0;
     --opacity-layer-visibility: visible;
     --header-z-index: 3;
     --close-decor-index: 2;
     --close-btn-visibility: visible;
-    --drawer-transition: (transform .2s ease-in)
+    --drawer-transition: (transform .2s ease-in);
+
+    @include media(sm) {
+      --close-btn-visibility: hidden;
+      --drawer-transition: none;
+      --opacity-layer-visibility: hidden;
+    }
   }
 
   &.drawer-open {
@@ -152,17 +168,26 @@ body {
   pointer-events: var(--main-pointer-events, initial);
   position: relative;
   z-index: 0;
+  min-height: rem(375px);
   overflow: hidden;
 
   &.is-overflow {
     overflow: hidden;
   }
 
+  &.is-overflow-initial {
+    overflow: initial;
+  }
+
   @include media(sm) {
     --padding: #{rem(24px)} #{rem(32px)}
   }
 
-  .group-games, .group-winners, .favorite-recently, .cards-providers, .cards-wrap, .group-turbo {
+  @include media(l) {
+    --padding: #{rem(24px)} #{rem(48px)}
+  }
+
+  .group-games, .group-winners, .group-promotions, .favorite-recently, .cards-wrap, .group-turbo, .cards-providers {
     margin-bottom: rem(32px);
 
     @include media(l) {
@@ -188,7 +213,8 @@ body {
 }
 
 .vfm__overlay {
-  background-color: rgba(0, 0, 0, 0.72) !important;
+  background-color: rgba(0, 0, 0, 0.88) !important;
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
 }
@@ -240,5 +266,22 @@ body {
   &-enter-to,
   &-leave-from {
     opacity: 1;
+  }
+}
+
+.vue-notification-group {
+  bottom: #{rem(72px)} !important;
+
+  @include media(md) {
+    top: #{rem(72px)} !important;
+    right: #{rem(32px)} !important;
+    left: auto !important;
+    bottom: auto !important;
+  }
+}
+
+.card {
+  &-move {
+    transition: all .4s ease;
   }
 }

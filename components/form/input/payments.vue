@@ -2,6 +2,7 @@
   <div
     class="input-payments"
     :class="classes"
+    v-click-outside="close"
   >
     <div v-if="props.items.length" class="selected" @click="open">
       <img
@@ -56,6 +57,10 @@
 
   const open = ():void => {
     isOpen.value = !isOpen.value;
+  };
+
+  const close = ():void => {
+    if (isOpen.value) isOpen.value = false;
   };
 
   const walletStore = useWalletStore();

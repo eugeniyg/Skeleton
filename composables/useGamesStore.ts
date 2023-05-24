@@ -15,17 +15,25 @@ interface GamesStoreStateInterface {
   gameCollections: CollectionInterface[],
   favoriteGames: GameInterface[],
   winnersSubscription: any,
-  latestWinners: WinnerInterface[]
+  latestWinners: WinnerInterface[],
+  betsyParams: {
+    host: string,
+    cid: string
+  },
 }
 
 export const useGamesStore = defineStore('gamesStore', {
   state: ():GamesStoreStateInterface => ({
-      gameProviders: [],
-      gameCollections: [],
-      favoriteGames: [],
-      winnersSubscription: undefined,
-      latestWinners: [],
-    }),
+    gameProviders: [],
+    gameCollections: [],
+    favoriteGames: [],
+    winnersSubscription: undefined,
+    latestWinners: [],
+    betsyParams: {
+      host: 'https://turboplatform-dev.betsy.gg',
+      cid: 'turboplatform-dev',
+    },
+  }),
 
   getters: {
     providersSelectOptions(state):GameProviderInterface[] {
@@ -34,6 +42,12 @@ export const useGamesStore = defineStore('gamesStore', {
         code: provider.id,
         value: provider.name,
       }));
+    },
+    currentLocaleCollections(state):CollectionInterface[] {
+      const globalStore = useGlobalStore();
+      if (!globalStore.currentLocale) return [];
+
+      return state.gameCollections.filter((collection) => !collection.locale.length || collection.locale.includes(globalStore.currentLocale?.code as string));
     },
   },
 

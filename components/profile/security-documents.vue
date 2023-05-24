@@ -31,7 +31,7 @@
   import { SecurityFileInterface } from '@platform/frontend-core/dist/module';
 
   const globalStore = useGlobalStore();
-  const { alertsData } = storeToRefs(globalStore);
+  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
   const identityFormData = reactive<{[key:string]:SecurityFileInterface[]}>({
     identity_front: [],
@@ -81,7 +81,7 @@
     }
   };
 
-  const { getSecurityFiles, deleteSecurityFile, uploadSecurityFiles } = useCoreProfileApi();
+  const { getSecurityFiles, deleteSecurityFile, uploadSecurityFile } = useCoreProfileApi();
   const loadingFields = ref<string[]>([]);
   const { showAlert } = useLayoutStore();
 
@@ -96,7 +96,7 @@
         paymentFormData[fieldName] = paymentFormData[fieldName].filter((file) => file.id !== fileId);
       }
     } catch {
-      showAlert(alertsData.value?.somethingWrong);
+      showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
     }
   };
 
@@ -115,8 +115,8 @@
     addFileData(filesData.fieldName, fileObject);
 
     try {
-      const securityFiles = await uploadSecurityFiles({ [filesData.fieldName]: filesData.fileList[0] });
-      replaceFileData(filesData.fieldName, securityFiles[securityFiles.length - 1]);
+      const uploadedFile = await uploadSecurityFile({ file: filesData.fileList[0], type: filesData.fieldName });
+      replaceFileData(filesData.fieldName, uploadedFile);
     } catch (err:any) {
       if (err?.response?.status === 422) {
         addFileError(filesData.fieldName, err.data?.error?.fields);
