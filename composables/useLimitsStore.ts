@@ -11,19 +11,13 @@ interface LimitsModalInterface {
   confirmLimitUpdate: boolean,
 }
 
-interface ColumnsInterface {
-  deposit: number|null,
-  loss: number,
-  bet: number
-}
-
 interface LimitsStateInteface {
   activeLimits: PlayerLimitInterface[],
   isLoaded: boolean,
   limitsContent: Maybe<ProfileLimitsContentInterface>,
   defaultLimitsContent: Maybe<ProfileLimitsContentInterface>,
+  isAdvancedModeEnabled: boolean,
   modals: LimitsModalInterface,
-  columns: ColumnsInterface
 }
 
 const transformToPeriods = (limits: PlayerLimitInterface[]) => {
@@ -36,28 +30,18 @@ const transformToPeriods = (limits: PlayerLimitInterface[]) => {
     .filter((column) => column.items.length);
 };
 
-const mapKeys: Record<any, string> = {
-  deposit: 'D',
-  loss: 'L',
-  bet: 'B',
-};
-
 export const useLimitsStore = defineStore('limitsStore', {
   state: (): LimitsStateInteface => ({
     activeLimits: [],
     isLoaded: false,
     limitsContent: undefined,
     defaultLimitsContent: undefined,
+    isAdvancedModeEnabled: false,
     modals: {
       addLimit: false,
       editLimit: false,
       exceededLimitConfirm: false,
       confirmLimitUpdate: false,
-    },
-    columns: {
-      deposit: 0,
-      loss: 0,
-      bet: 0,
     },
   }),
 
@@ -85,9 +69,6 @@ export const useLimitsStore = defineStore('limitsStore', {
       this.modals[modalName] = false;
     },
 
-    setColumns(key: keyof ColumnsInterface, size: number) {
-      this.columns[key] = size;
-    },
     checkCurrencies(periods: { title: string, items: PlayerLimitInterface[] }[], currencies: CurrencyInterface[]) {
       const currencyCodes = currencies.map((currency) => currency.code);
 
@@ -95,6 +76,10 @@ export const useLimitsStore = defineStore('limitsStore', {
         const periodCurrencyCodes = period.items.map((item) => item.currency);
         return currencyCodes.every((code) => periodCurrencyCodes.includes(code));
       });
+    },
+
+    toogleAdvancedMode():void {
+      this.isAdvancedModeEnabled = !this.isAdvancedModeEnabled;
     },
   },
 
@@ -147,14 +132,6 @@ export const useLimitsStore = defineStore('limitsStore', {
         value: content[period.id],
         code: period.id,
       })) || [];
-    },
-
-    getColumns(state) {
-      const columns = Object.entries(state.columns);
-      return columns.map((entry) => {
-        const [key, value] = entry;
-        return `${mapKeys[key]}${value}`;
-      }).join('-');
     },
   },
 });
