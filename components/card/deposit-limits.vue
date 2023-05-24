@@ -65,7 +65,7 @@
 
   const limitsStore = useLimitsStore();
   const { getContent } = useProjectMethods();
-  const { setColumns, checkCurrencies } = limitsStore;
+  const { checkCurrencies } = limitsStore;
   const {
     depositPeriods, limitsContent, defaultLimitsContent, isAdvancedModeEnabled, lossPeriods,
   } = storeToRefs(limitsStore);
@@ -87,16 +87,4 @@
   const isAllCurrenciesUsed = computed(() => checkCurrencies(depositPeriods.value, currencies.value));
 
   const isFullWidth = computed(() => (isAdvancedModeEnabled.value && lossPeriods.value?.length > 1) || (isAdvancedModeEnabled.value && depositPeriods.value.length > 1));
-
-  watch(() => depositPeriods.value, (newValue) => {
-    setColumns('deposit', newValue.length);
-  });
-
-  onMounted(() => {
-    setColumns('deposit', depositPeriods.value.length === 0 ? 1 : depositPeriods.value.length);
-  });
-
-  onUnmounted(() => {
-    setColumns('deposit', 0);
-  });
 </script>

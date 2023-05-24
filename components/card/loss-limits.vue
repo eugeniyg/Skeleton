@@ -66,7 +66,7 @@
   ]);
 
   const limitsStore = useLimitsStore();
-  const { setColumns, checkCurrencies } = limitsStore;
+  const { checkCurrencies } = limitsStore;
   const {
     lossPeriods, betPeriods, depositPeriods, limitsContent, defaultLimitsContent, isAdvancedModeEnabled,
   } = storeToRefs(limitsStore);
@@ -91,12 +91,4 @@
   const isFullWidth = computed(() => lossPeriods.value?.length > 1
     || (!isAdvancedModeEnabled.value && betPeriods.value?.length > 1)
     || (isAdvancedModeEnabled.value && depositPeriods.value?.length > 1 && betPeriods.value?.length > 1));
-
-  watch(() => lossPeriods.value, (newValue) => {
-    setColumns('loss', newValue.length);
-  });
-
-  onMounted(() => {
-    setColumns('loss', lossPeriods.value.length === 0 ? 1 : lossPeriods.value.length);
-  });
 </script>

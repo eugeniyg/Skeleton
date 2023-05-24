@@ -11,12 +11,6 @@ interface LimitsModalInterface {
   confirmLimitUpdate: boolean,
 }
 
-interface ColumnsInterface {
-  deposit: number|null,
-  loss: number,
-  bet: number
-}
-
 interface LimitsStateInteface {
   activeLimits: PlayerLimitInterface[],
   isLoaded: boolean,
@@ -24,7 +18,6 @@ interface LimitsStateInteface {
   defaultLimitsContent: Maybe<ProfileLimitsContentInterface>,
   isAdvancedModeEnabled: boolean,
   modals: LimitsModalInterface,
-  columns: ColumnsInterface
 }
 
 const transformToPeriods = (limits: PlayerLimitInterface[]) => {
@@ -49,11 +42,6 @@ export const useLimitsStore = defineStore('limitsStore', {
       editLimit: false,
       exceededLimitConfirm: false,
       confirmLimitUpdate: false,
-    },
-    columns: {
-      deposit: 0,
-      loss: 0,
-      bet: 0,
     },
   }),
 
@@ -81,9 +69,6 @@ export const useLimitsStore = defineStore('limitsStore', {
       this.modals[modalName] = false;
     },
 
-    setColumns(key: keyof ColumnsInterface, size: number) {
-      this.columns[key] = size;
-    },
     checkCurrencies(periods: { title: string, items: PlayerLimitInterface[] }[], currencies: CurrencyInterface[]) {
       const currencyCodes = currencies.map((currency) => currency.code);
 

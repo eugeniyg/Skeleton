@@ -66,9 +66,9 @@
   ]);
 
   const limitsStore = useLimitsStore();
-  const { setColumns, checkCurrencies } = limitsStore;
+  const { checkCurrencies } = limitsStore;
   const {
-    betPeriods, lossPeriods, limitsContent, defaultLimitsContent, isAdvancedModeEnabled
+    betPeriods, limitsContent, defaultLimitsContent,
   } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
@@ -89,12 +89,4 @@
   const isAllCurrenciesUsed = computed(() => checkCurrencies(betPeriods.value, currencies.value));
 
   const isFullWidth = computed(() => (betPeriods.value?.length > 1));
-
-  watch(() => betPeriods.value, (newValue) => {
-    setColumns('bet', newValue.length);
-  });
-
-  onMounted(() => {
-    setColumns('bet', betPeriods.value.length);
-  });
 </script>
