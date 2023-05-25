@@ -104,6 +104,61 @@ export interface ProfileNotificationsInterface {
   seo: SeoContentInterface
 }
 
+export interface ProfileLimitsContentInterface {
+  title: string,
+  setButtonLabel: string,
+  doneButtonLabel: string,
+  addButtonLabel : string,
+  selfExclusion: {
+    label: string,
+    hint: string,
+    chatLinkText: string,
+  },
+  loss: {
+    hint: string,
+    label: string,
+  },
+  pendingStatusLabel: string,
+  titleTooltip: string,
+  timerLabel: string,
+  bet: {
+    label: string,
+    hint: string,
+  },
+  definition: {
+    bet: string,
+    loss: string,
+    deposit: string,
+    selfExclusion: string,
+    coolingOff: string,
+  },
+  coolingOff: {
+    label: string,
+    hint: string,
+    pendingStatusLabel: string,
+    deleteConfirmTitle: string,
+    deleteConfirmDescription: string,
+  },
+  modeToggle: string,
+  editButtonLabel: string,
+  activeStatusLabel: string,
+  periodOptions: {
+    '1_day': string,
+    '3_days': string,
+    '1_week': string,
+    '1_month': string,
+    '3_months': string,
+    '6_months': string,
+    '9_months': string,
+    '1_year': string,
+    forever: string,
+  },
+  deposit: {
+    label: string,
+    hint: string,
+  }
+}
+
 export interface ProfileDocumentsInterface {
   moreInfo: string,
   hideText: string,

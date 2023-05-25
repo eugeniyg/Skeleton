@@ -969,6 +969,9 @@ collections:
               - name: chooseCurrencyError
                 label: Choose Currency Error
                 widget: string
+              - name: addButton
+                label: Add Button Label
+                widget: string  
               - name: currencyTabs 
                 label: Currency Tabs
                 widget: object
@@ -984,22 +987,56 @@ collections:
                 label: Success Confirm Label
                 widget: string
           - name: editCashLimit
-            label: Edit Cash Limit Label
+            label: Edit Cash Limit
             widget: object
             collapsed: true
             fields:
-              - name: label
+              - name: popupLabel
                 label: Label
-                widget: string
+                widget: object
+                collapsed: true
+                fields:  
+                - name: edit_daily_3
+                  label: Edit Daily Deposit
+                  widget: string
+                - name: edit_weekly_3
+                  label: Edit Weekly Deposit
+                  widget: string
+                - name: edit_monthly_3
+                  label: Edit Monthly Deposit
+                  widget: string
+                - name: edit_daily_2
+                  label: Edit Daily Loss
+                  widget: string
+                - name: edit_weekly_2
+                  label: Edit Weekly Loss
+                  widget: string
+                - name: edit_monthly_2
+                  label: Edit Monthly Loss
+                  widget: string
+                - name: edit_daily_1
+                  label: Edit Daily Bet
+                  widget: string
+                - name: edit_weekly_1
+                  label: Edit Weekly Bet
+                  widget: string
+                - name: edit_monthly_1
+                  label: Edit Monthly Bet
+                  widget: string
               - name: hint
                 label: Hint
                 widget: string
-              - name: updateButtonLabel
-                label: Update Button Label
-                widget: string
-              - name: deleteButtonLabel
-                label: Delete Button Label
-                widget: string
+              - name: actions
+                label: Actions
+                widget: object
+                collapsed: true
+                fields:  
+                - name: updateButtonLabel
+                  label: Update Button Label
+                  widget: string
+                - name: deleteButtonLabel
+                  label: Delete Button Label
+                  widget: string
               - name: lessAmountTitle
                 label: Less Amount Confirm Title
                 widget: string
@@ -1389,6 +1426,66 @@ collections:
             widget: select
             options: *alertTypes
             default: error
+      - name: cashLimitAdd
+        label: Cash Limit Add
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: success         
+      - name: cashLimitEditLargeAmount
+        label: Cash Limit Edit Large Amount
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: warning
+      - name: cashLimitEditSmallerAmount
+        label: Cash Limit Edit Smaller Amount
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: success
+      - name: cashLimitCancel
+        label: Cash Limit Cancel
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: warning
+      - name: coolingOfLimitCancel
+        label: Cooling Of Limit Cancel
+        widget: object
+        collapsed: true
+        fields:
+          - *alertTitle
+          - *alertDescription
+          - name: type
+            label: Alert Type
+            widget: select
+            options: *alertTypes
+            default: warning                      
 
   - name: staticPages
     label: Static Pages
@@ -1768,15 +1865,36 @@ collections:
           - name: titleTooltip
             label: Title Tooltip
             widget: string
+          - name: availableLimitSum
+            label: Available Limit Sum Label
+            widget: string  
           - name: activeStatusLabel
             label: Active Status Label
             widget: string
           - name: pendingStatusLabel
             label: Pending Status Label
             widget: string
-          - name: timerLabel
-            label: Timer Label
-            widget: string     
+          - name: statusPendingTimerLabel
+            label: Status Pending Timer Label
+            widget: string
+          - name: statusActiveTimerLabel
+            label: Status Active Timer Label
+            widget: string  
+          - name: timerDaysLabel
+            label: Timer Days Label
+            widget: string
+          - name: timerHoursLabel  
+            label: Timer Hours Label
+            widget: string
+          - name: timerMinutesLabel
+            label: Timer Minutes 
+            widget: string
+          - name: timerSecondsLabel
+            label: Timer Seconds
+            widget: string
+          - name: timerAlmostDoneLabel
+            label: Timer Almost Done Label
+            widget: string    
           - name: periodOptions
             label: Period Options
             widget: object
@@ -1844,7 +1962,7 @@ collections:
             fields:
               - name: label
                 label: Label
-                widget: string
+                widget: string  
               - name: hint
                 label: Hint
                 widget: string 
@@ -1875,9 +1993,15 @@ collections:
               - name: label
                 label: Label
                 widget: string
+              - name: selectLabel
+                label: Select Label
+                widget: string    
               - name: hint
                 label: Hint
                 widget: text
+              - name: activeStatusLabel
+                label: Active Status Label
+                widget: string  
               - name: pendingStatusLabel
                 label: Pending Status Label
                 widget: string
@@ -1894,12 +2018,12 @@ collections:
               - name: label
                 label: Label
                 widget: string
+              - name: selectLabel
+                label: Select Label
+                widget: string  
               - name: hint
                 label: Hint
-                widget: text
-              - name: chatLinkText
-                label: Chat Link Text
-                widget: string
+                widget: markdown
   - name: historyTabs
     label: Profile History Tabs
     create: true

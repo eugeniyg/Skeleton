@@ -1,4 +1,14 @@
 {
+  "cashLimitEditLargeAmount": {
+    "title": "Limit update successfully",
+    "description": "Please, check your email and follow the received confirmation link to activate limit change.",
+    "type": "warning"
+  },
+  "cashLimitCancel": {
+    "title": "Limit canceled successfully",
+    "description": "You have successfully canceled the limit. The change will be applied in 24 hours.",
+    "type": "warning"
+  },
   "bonusCodeNotAvailable": {
     "title": "Sorry, but the bonus with the entered bonus code is not available for you.",
     "type": "warning"
@@ -12,6 +22,11 @@
     "type": "error",
     "title": "Error",
     "description": "Sorry, but you can't deposit for now. Please, contact our support team for more information."
+  },
+  "coolingOfLimitCancel": {
+    "title": "Limit update successfully",
+    "description": "The limit will be canceled after 24 hours",
+    "type": "warning"
   },
   "depositSuccess": {
     "type": "done",
@@ -96,10 +111,18 @@
     "title": "Sorry, but you entered the incorrect bonus code.",
     "type": "error"
   },
+  "cashLimitAdd": {
+    "title": "Limit set successfully",
+    "type": "done"
+  },
   "passwordChanged": {
     "type": "done",
     "title": "Success",
     "description": "You have successfully changed your password."
+  },
+  "cashLimitEditSmallerAmount": {
+    "title": "Limit update successfully",
+    "type": "done"
   },
   "locale": "en",
   "successRegistration": {

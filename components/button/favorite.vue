@@ -27,13 +27,20 @@
   justify-content: center;
   align-items: center;
   @extend %skip-btn;
-  @include box(24px);
   padding: 0;
   border-radius: 8px;
   background-color: var(--bgc, transparent);
   transition: all .2s ease-in-out;
+  width: rem(24px);
+  height: rem(24px);
+  margin-left: auto;
   --icon-size: 20px;
   --color: var(--violet-100);
+
+  &.active {
+    --bgc: var(--violet-900);
+    --color: var(--yellow-500);
+  }
 
   @include use-hover {
     &:hover {
