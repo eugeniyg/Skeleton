@@ -25,6 +25,29 @@
           v-if="currentMethod.type === 'form'"
           v-bind="currentMethod"
         />
+
+        <form-input-dropdown
+          class="dropdown-network"
+          v-bind="networkSelect"
+          v-model:value="selectedNetwork"
+          @input="selectNetwork"
+        />
+
+        <div class="dropdown-network__content">
+          <div v-if="!selectedNetwork" class="dropdown-network__info">
+            To continue,<br>
+            select network 👆👆👆
+          </div>
+
+          <template v-else>
+            <form-deposit-crypto
+              v-if="showForm && currentMethod.type === 'address'"
+              v-bind="currentMethod"
+              :key="currentMethod.method"
+            />
+          </template>
+        </div>
+
         <!--          <form-deposit-additional/>-->
         <form-deposit-crypto
           v-if="currentMethod.type === 'address'"
@@ -47,6 +70,7 @@
   const { closeModal } = layoutStore;
   const { depositMethods } = storeToRefs(walletStore);
   const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
+  const showForm = ref<boolean>(false);
 
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
@@ -56,6 +80,29 @@
     currentMethod.value = depositMethods.value[0] || {};
     methodKey.value += 1;
   });
+
+  const networkSelect = ref({
+    placeholder: 'Network',
+    name: 'networkSelect',
+    label: 'Select your network',
+    options: [
+      {
+        mask: '/img/currency/BTC.svg',
+        code: 'BTC',
+        value: 'BTC',
+      },
+      {
+        mask: '/img/currency/USD.svg',
+        code: 'USD',
+        value: 'USD',
+      }],
+  });
+
+  const selectedNetwork = ref('');
+
+  const selectNetwork = (value: string) => {
+    console.log(value);
+  };
 </script>
 
 <style lang="scss">
@@ -126,6 +173,20 @@
       grid-column-gap: rem(4px);
       margin-bottom: rem(8px);
       position: relative;
+    }
+  }
+
+  .dropdown-network {
+    margin-bottom: rem(24px);
+
+    &__content {
+      min-height: 200px;
+    }
+
+    &__info {
+      @include font($heading-4);
+      color: var(--white);
+      text-align: center;
     }
   }
 }
