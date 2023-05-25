@@ -1,6 +1,6 @@
 import { createResolver } from '@nuxt/kit'
 import { fileURLToPath } from 'url'
-import { dirname, join } from 'path'
+import { dirname } from 'path'
 
 const { resolve } = createResolver(dirname(fileURLToPath(import.meta.url)));
 
