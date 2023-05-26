@@ -23,7 +23,8 @@ export default defineNuxtConfig({
   },
   modules: [
     '@pinia/nuxt',
-    '@platform/frontend-core'
+    '@platform/frontend-core',
+    '@nuxt/content'
   ],
   components: {
     dirs: [
