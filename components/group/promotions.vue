@@ -123,7 +123,7 @@
     margin: 0;
   }
 
-  > &__list {
+  &__list {
     grid-area: items;
     display: var(--display, grid);
     align-items: normal;
