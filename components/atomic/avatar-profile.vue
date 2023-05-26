@@ -41,7 +41,7 @@
     position: relative;
     border-radius: 12px;
     background-color: var(--gray-900);
-    background-image: url(@skeleton/assets/img/avatar-bg.png);
+    background-image: url(/img/avatar-bg.png);
     background-position: center;
     background-size: contain;
     @include box(88px);

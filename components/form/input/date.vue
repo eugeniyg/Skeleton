@@ -135,5 +135,5 @@
   }
 }
 
-@import "@skeleton/scss/flatpickr-calendar.scss";
+@import "@skeleton/assets/styles/flatpickr-calendar.scss";
 </style>

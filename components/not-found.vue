@@ -1,6 +1,6 @@
 <template>
   <div class="not-found">
-    <img class="img" src="@/assets/img/404.png" />
+    <img class="img" src="/img/404.png" />
 
     <div class="title">
       {{ errorPageContent?.title || defaultLocaleErrorPageContent?.title || pageStaticContent.title }}
@@ -37,5 +37,5 @@
 </script>
 
 <style lang="scss">
-@import "@skeleton/scss/error";
+@import "@skeleton/assets/styles/error.scss";
 </style>

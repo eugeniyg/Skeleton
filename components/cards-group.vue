@@ -135,6 +135,4 @@
   };
 </script>
 
-<style lang="scss">
-@import "../scss/components/cards-group.scss";
-</style>
+<style src="~/assets/styles/components/cards-group.scss" lang="scss" />

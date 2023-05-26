@@ -1,7 +1,7 @@
 <template>
   <div class="locked">
-    <img class="locked__logo" src="@skeleton/assets/svg/logo-light.svg" alt="">
-    <img class="locked__media" src="@skeleton/assets/img/locked.png" alt=""/>
+    <img class="locked__logo" src="/img/logo-light.svg" alt="">
+    <img class="locked__media" src="/img/locked.png" alt=""/>
 
     <h2 class="locked__title">Country blocked</h2>
     <h4 class="locked__sub-title">Sorry, but players from your country are not allowed to visit Slotsbet.io.</h4>

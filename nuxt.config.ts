@@ -8,7 +8,7 @@ const viteConfig: any = {
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@use "@skeleton/scss/ds/_shared.scss" as *;',
+        additionalData: '@use "@skeleton/assets/styles/ds/_shared.scss" as *;',
       },
     },
   },
@@ -19,7 +19,7 @@ const viteConfig: any = {
 
 export default defineNuxtConfig({
   alias: {
-      '@skeleton': resolve('./')
+    '@skeleton': resolve('./'),
   },
   modules: [
     '@pinia/nuxt',
@@ -50,7 +50,7 @@ export default defineNuxtConfig({
     layoutTransition: true,
   },
   css: [
-    '@skeleton/scss/style.scss',
+    '@skeleton/assets/styles/style.scss',
     '@skeleton/node_modules/vue-final-modal/dist/style.css',
   ],
   vite: viteConfig,

@@ -49,7 +49,6 @@
 
     <div class="copy-info">
       <p>{{ footerContent?.copyright || defaultLocaleFooterContent?.copyright }}</p>
-      <!--      <img src="@skeleton/assets/img/copy-logo.svg" width="150" height="22" />-->
     </div>
   </footer>
 </template>

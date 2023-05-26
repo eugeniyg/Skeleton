@@ -30,7 +30,7 @@
         </div>
 
         <div class="nav-currency__plug" v-if="selected === 'crypto' && !cryptoCurrencies.length">
-          <img class="nav-currency__plug-img" src="@/assets/img/currency-plug.svg" alt="">
+          <img class="nav-currency__plug-img" src="/img/currency-plug.svg" alt="">
           <h4 class="nav-currency__plug-title">
             {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'currency.empty.title') }}
           </h4>

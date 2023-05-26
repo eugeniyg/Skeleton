@@ -8,7 +8,7 @@
     </span>
 
     <span class="thumb">
-      <img class="img" src="@skeleton/assets/img/avatar-bg.png" alt="">
+      <img class="img" src="/img/avatar-bg.png" alt="">
       <atomic-bulb v-if="props.showBulb"/>
     </span>
 
@@ -94,7 +94,7 @@
     @include box(40px);
     display: block;
     background-color: var(--gray-800);
-    background-image: url(/assets/img/avatar-bg.png);
+    background-image: url(/img/avatar-bg.png);
     background-position: center;
     background-size: contain;
 

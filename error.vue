@@ -1,6 +1,6 @@
 <template>
   <div class="not-found">
-    <img class="img" src="@/assets/img/404.png" />
+    <img class="img" src="/img/404.png" />
     <div class="title">
       {{ errorPageContent?.title || defaultLocaleErrorPageContent?.title || pageStaticContent.title }}
     </div>
@@ -56,7 +56,7 @@
 </script>
 
 <style lang="scss" scoped>
-@import "@skeleton/scss/error.scss";
+@import "@skeleton/assets/styles/error.scss";
 
 .not-found {
   display: flex;

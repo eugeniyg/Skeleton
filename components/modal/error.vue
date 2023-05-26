@@ -11,7 +11,7 @@
         <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'error.title') }}</div>
       </div>
 
-      <img class="img" src="@/assets/svg/colored/error.svg" />
+      <img class="img" src="/img/error.svg" />
       <client-only>
         <p class="text" v-html="marked.parse(getContent(popupsData, defaultLocalePopupsData, 'error.description') || '')" />
       </client-only>
