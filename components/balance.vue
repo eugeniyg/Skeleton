@@ -54,11 +54,11 @@
         class="value"
         v-if="showEquivalentBalance"
       >
-        {{ activeEquivalentAccount.balance }} {{ activeEquivalentAccount.currency }}
+        {{ withdrawalEquivalentBalanceFormat.balance }} {{ withdrawalEquivalentBalanceFormat.currency }}
       </div>
 
       <div :class="showEquivalentBalance ? 'converted-value' : 'value'">
-        {{ balanceFormat.amount }} {{ balanceFormat.currency }}
+        {{ withdrawalBalanceFormat.amount }} {{ withdrawalBalanceFormat.currency }}
       </div>
     </div>
     <atomic-divider/>
@@ -80,11 +80,13 @@
   const globalStore = useGlobalStore();
   const { activeAccount, activeAccountType, activeEquivalentAccount } = storeToRefs(walletStore);
   const { popupsData, defaultLocalePopupsData, equivalentCurrency } = storeToRefs(globalStore);
-  const { formatBalance, getContent } = useProjectMethods();
+  const { formatBalance, getContent, getEquivalentAccount } = useProjectMethods();
   const isSelectOpen = ref<boolean>(false);
 
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
   const showEquivalentBalance = computed(() => equivalentCurrency.value && activeAccountType.value === 'crypto');
+  const withdrawalBalanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance));
+  const withdrawalEquivalentBalanceFormat = computed(() => getEquivalentAccount(activeAccount.value?.withdrawalBalance, activeAccount.value?.currency));
 
   const toggleSelect = () => {
     isSelectOpen.value = !isSelectOpen.value;
