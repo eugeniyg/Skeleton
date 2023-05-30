@@ -44,6 +44,9 @@
     "label": "Code (optional)",
     "placeholder": "Enter code"
   },
+  "network_select": {
+    "label": "Network"
+  },
   "birthdate": {
     "label": "Date of Birth",
     "placeholderDay": "Day",
