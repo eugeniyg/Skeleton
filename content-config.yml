@@ -368,7 +368,7 @@ collections:
         widget: object
         fields:
           - name: label
-            label: Network
+            label: Network Select Label
             widget: string  
 
   - name: mainLayout
