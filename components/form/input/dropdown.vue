@@ -127,8 +127,10 @@
   };
 
   onMounted(() => {
-    if (props.isFitContent && drop.value) {
-      drop.value.style.width = `${dropItems.value?.offsetWidth}px`;
+    if (props.isFitContent && drop.value && dropItems.value) {
+      const width = dropItems.value?.offsetWidth;
+      drop.value.style.width = `${width}px`;
+      dropItems.value.style.width = `${width}px`;
     }
   });
 </script>

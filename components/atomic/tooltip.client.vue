@@ -11,7 +11,7 @@
     <slot/>
     <atomic-icon :id="props.icon"/>
 
-    <Teleport to="[data-tooltip-parent]">
+    <Teleport to="body">
       <div
         ref="tooltipMsg"
         class="tooltip__message"

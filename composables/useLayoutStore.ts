@@ -189,8 +189,18 @@ export const useLayoutStore = defineStore('layoutStore', {
 
     async openDepositModal():Promise<void> {
       const { getDepositMethods } = useWalletStore();
-      await getDepositMethods();
-      this.showModal('deposit');
+      const { showModal } = useLimitsStore();
+      try {
+        await getDepositMethods();
+        this.showModal('deposit');
+      } catch (error: any) {
+        if (error.data?.error?.code === 13100) {
+          const router = useRouter();
+          const { localizePath } = useProjectMethods();
+          await router.push(localizePath('/profile/limits'));
+          showModal('exceededLimitConfirm');
+        } else throw error;
+      }
     },
 
     async openWithdrawModal():Promise<void> {

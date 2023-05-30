@@ -18,11 +18,13 @@
         />
 
         <form-input-dropdown
+          class="game-filter__dropdown"
           :value="currentProvider.id"
           name="providers"
           placeholder="Providers"
           :options="providerDropdownOptions"
           @input="changeProvider"
+          is-fit-content
         />
       </div>
       <atomic-game-sort

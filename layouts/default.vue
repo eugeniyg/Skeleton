@@ -10,7 +10,11 @@
       @toggle-open="toggleOpen"
     />
 
-    <main class="app-main" :class="{'is-overflow': isHomePage()}">
+    <main
+      class="app-main"
+      :class="{'is-overflow': isHomePage(), 'is-overflow-initial': isProfileLimitsPage }"
+      :data-route="route.name"
+    >
       <slot />
     </main>
 
@@ -70,6 +74,11 @@
     && route.name !== 'games-id'
     && route.name !== 'locale-games-id'
     && route.path !== localizePath('/betting'));
+
+  const isProfileLimitsPage = computed(() => {
+    const routeName = route.name as string;
+    return routeName.includes('profile-limits');
+  });
 
   const timer = ref<any>();
   const disabledTransition = ref<boolean>(true);
