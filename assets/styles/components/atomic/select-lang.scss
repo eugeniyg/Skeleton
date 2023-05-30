@@ -1,0 +1,128 @@
+.select-lang {
+  position: relative;
+
+  .selected, .item {
+    display: flex;
+    align-items: center;
+    grid-column-gap: rem(8px);
+    text-decoration: none;
+    @include font($body-2);
+  }
+
+  .selected {
+    background-color: var(--bg, transparent);
+    transition: background-color .2s ease-in-out;
+    color: var(--gray-300);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: rem(8px) rem(8px) rem(8px) rem(16px);
+
+    .is-compact & {
+      @include media(l) {
+        padding-left: rem(8px);
+      }
+    }
+
+    .icon {
+      transform: var(--rotate, rotate(0deg));
+      transition: all .2s ease-in-out;
+      --color: var(--gray-400);
+    }
+
+    &:hover {
+      --color: var(--white);
+
+      .icon {
+        --color: var(--white);
+      }
+    }
+  }
+
+  &.is-open {
+    .selected {
+      --bg: var(--gray-700);
+      --rotate: rotate(180deg);
+    }
+
+    --items-visibility: visible;
+    --items-opacity: 1;
+  }
+
+  .item {
+    color: var(--color, var(--white));
+    background-color: var(--bg, transparent);
+    cursor: pointer;
+    padding: rem(8px) 0 rem(8px) rem(8px);
+    border-radius: 4px;
+
+    .icon {
+      --color: transparent;
+    }
+
+    &.is-selected {
+      .icon {
+        --color: var(--white);
+      }
+    }
+
+    &:hover {
+      &:not(.is-selected) {
+        --bg: var(--gray-600);
+
+        .title {
+          --color: var(--yellow-600);
+        }
+      }
+    }
+  }
+
+  .items {
+    position: absolute;
+    background-color: var(--gray-700);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    visibility: var(--items-visibility, hidden);
+    opacity: var(--items-opacity, 0);
+    transition: all .2s ease-in-out;
+    min-width: rem(40px);
+    padding: var(--padding, #{rem(8px)});
+    top: var(--top, #{rem(44px)});
+    right: 0;
+    left: 0;
+
+    .is-compact & {
+      @include media(l) {
+        z-index: 1;
+        --padding: 0;
+      }
+    }
+
+    .title {
+      --color: var(--white);
+    }
+  }
+
+  .title {
+    color: var(--color, var(--gray-300));
+    @include font($body-1);
+    flex-grow: 1;
+    transition: color .2s ease-in-out;
+    visibility: var(--title-visibility, visible);
+
+    .is-compact & {
+      @include media(l) {
+        --title-visibility: hidden;
+      }
+    }
+  }
+
+  .img {
+    display: block;
+    width: rem(24px);
+    height: rem(20px);
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    border-radius: 4px;
+  }
+}

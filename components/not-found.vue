@@ -36,6 +36,4 @@
   const { errorPageContent, defaultLocaleErrorPageContent } = storeToRefs(globalStore);
 </script>
 
-<style lang="scss">
-@import "@skeleton/assets/styles/error.scss";
-</style>
+<style src="~/assets/styles/error.scss" lang="scss" />

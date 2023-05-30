@@ -118,26 +118,5 @@
   };
 </script>
 
-<style lang="scss">
-.form-sign-in {
-  display: grid;
-  grid-row-gap: rem(16px);
+<style src="~/assets/styles/components/form/sign-in.scss" lang="scss" />
 
-  hr {
-    margin: 0;
-  }
-
-  .btn-primary {
-    --width: 100% !important;
-
-    &.size-md {
-      --padding: #{rem(11px) rem(24px)};
-      margin-top: 0;
-    }
-  }
-
-  .btn-forgot {
-    margin-top: rem(-8px);
-  }
-}
-</style>

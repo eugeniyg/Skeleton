@@ -21,27 +21,5 @@
   });
 </script>
 
-<style lang="scss">
-.paysis {
-  display: flex;
-  align-items: center;
-  grid-gap: rem(24px);
-  overflow-x: auto;
+<style src="~/assets/styles/components/list/paysis.scss" lang="scss" />
 
-  @include media(sm) {
-    overflow-x: hidden;
-    justify-content: center;
-  }
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  > .logo {
-    display: block;
-    height: rem(24px);
-    width: auto;
-    user-select: none;
-  }
-}
-</style>

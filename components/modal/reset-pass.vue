@@ -26,13 +26,5 @@
   const { getContent } = useProjectMethods();
 </script>
 
-<style lang="scss">
-.modal-reset-pass {
-  @extend %modal-info;
+<style src="~/assets/styles/components/modal/reset-pass.scss" lang="scss" />
 
-  .text {
-    @include font($body-2);
-    color: var(--gray-300);
-  }
-}
-</style>

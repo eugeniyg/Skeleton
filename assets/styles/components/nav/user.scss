@@ -1,0 +1,81 @@
+.nav-user {
+  display: grid;
+  grid-auto-rows: min-content;
+  background-color: var(--gray-800);
+  padding: rem(16px);
+  width: var(--width, #{rem(288px)});
+  z-index: 1;
+  grid-gap: rem(8px);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+
+  top: rem(64px);
+  right: 0;
+  height: calc(var(--vh, 1vh) * 100);
+  position: absolute;
+  align-items: flex-start;
+  visibility: var(--nav-user-visibility, hidden);
+  transform: translateX(var(--nav-user-translate-x, 100%)) rotateY(var(--nav-user-rotate-y, 90deg));
+  transform-origin: right;
+  transition: all .4s  ease-in;
+
+  @include media(sm) {
+    transition: none;
+    height: auto;
+    border-radius: 8px;
+    right: rem(32px);
+    top: rem(56px);
+    max-width: 198px;
+    --nav-user-translate-x: 0;
+  }
+
+  .items {
+    display: grid;
+    grid-row-gap: rem(8px);
+
+    @include media(sm) {
+      grid-row-gap: rem(2px);
+    }
+  }
+
+  .item {
+    @include font($body-1);
+    color: var(--color, var(--white));
+    display: flex;
+    align-items: center;
+    padding: rem(6px) rem(8px);
+    grid-column-gap: rem(8px);
+    align-self: stretch;
+    flex-grow: 0;
+    border-radius: 4px;
+    background-color: var(--bg, transparent);
+    transition: color .2s ease-in-out;
+
+    .icon {
+      --color: var(--gray-400);
+      --icon-size: 20px;
+    }
+
+    &:hover {
+      --bg: var(--gray-700);
+      --color: var(--white);
+      cursor: pointer;
+
+      .icon {
+        --color: var(--white);
+      }
+    }
+
+    &.is-active {
+      --color: var(--yellow-500);
+      --bg: var(--gray-700);
+
+      .icon {
+        color: inherit;
+      }
+    }
+  }
+
+  hr {
+    --margin: 0;
+  }
+}

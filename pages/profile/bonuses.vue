@@ -37,22 +37,4 @@
   setPageSeo(bonusesContent?.seo);
 </script>
 
-<style lang="scss">
-.profile-bonuses {
-  .link-bonus {
-    @include font($body-2);
-    color: var(--yellow-500);
-    text-decoration: none;
-    display: flex;
-    width: fit-content;
-    margin-top: -16px;
-    grid-column-gap: rem(4px);
-    align-items: center;
-    min-height: rem(22px);
-
-    .icon {
-      color: var(--yellow-500);
-    }
-  }
-}
-</style>
+<style src="~/assets/styles/pages/profile/bonuses.scss" lang="scss" />

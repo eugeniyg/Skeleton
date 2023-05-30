@@ -136,35 +136,4 @@
   };
 </script>
 
-<style lang="scss">
-.bonus-active {
-  margin-top: 16px;
-
-  &__title {
-    @include font($heading-5);
-    color: var(--white);
-    margin: 0 0 rem(24px);
-  }
-
-  &__list {
-    display: grid;
-    grid-gap: 16px;
-
-    @include media(sm) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @include media(xl) {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    @include media(xl) {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    @include media(xxxl) {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-}
-</style>
+<style src="~/assets/styles/components/bonus/active.scss" lang="scss" />

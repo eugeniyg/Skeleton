@@ -139,49 +139,5 @@
   });
 </script>
 
-<style lang="scss">
-.betting {
-  display: grid;
-  grid-template-areas:
-    "container nav"
-    "panel nav"
-    "seo nav";
-  align-items: var(--align-items, flex-end);
-  grid-template-columns: 1fr auto;
-  margin: rem(-24px) rem(-16px) 0 rem(-16px);
+<style src="~/assets/styles/pages/betting.scss" lang="scss" />
 
-  @include media(sm) {
-    margin-right: rem(-32px);
-    margin-left: rem(-32px);
-  }
-
-  @include media(md) {
-    margin-top: 0;
-    margin-left: rem(-10px);
-    margin-right: rem(-10px);
-  }
-
-  .container {
-    background-color: var(--black-primary);
-    grid-area: container;
-    position: relative;
-    width: 100%;
-    --safe-area-inset-bottom: env(safe-area-inset-bottom);
-    height: calc(var(--vh-static, 1vh) * 100 - 120px - var(--safe-area-inset-bottom));
-
-    @include media(l) {
-      height: calc(100vh - 88px);
-    }
-
-    iframe {
-      display: block;
-      max-width: 100%;
-      border: none !important;
-    }
-  }
-
-  .text-wrap {
-    grid-area: seo;
-  }
-}
-</style>

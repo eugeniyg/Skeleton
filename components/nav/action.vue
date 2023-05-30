@@ -69,10 +69,5 @@
   };
 </script>
 
-<style lang="scss">
-.nav-action {
-  display: grid;
-  background-color: var(--gray-700);
-  grid-gap: rem(1px);
-}
-</style>
+<style src="~/assets/styles/components/nav/action.scss" lang="scss" />
+

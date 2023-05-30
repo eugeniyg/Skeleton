@@ -1,0 +1,98 @@
+.input-number {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+
+  @extend %input-label;
+
+  .row {
+    position: relative;
+  }
+
+  .field {
+    background-color: var(--bg, var(--gray-800));
+    padding: var(--input-padding-y, #{rem(11px)}) rem(16px);
+    border: 1px solid var(--border-color, var(--gray-800));
+    color: var(--color, var(--white));
+    border-radius: 8px;
+    @include font($heading-2);
+    transition: border-color .2s ease-in-out;
+    width: 100%;
+    padding-right: rem(50px);
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    -moz-appearance: textfield;
+
+    &::placeholder {
+      color: var(--gray-400);
+    }
+
+    &:focus {
+      --border-color: var(--gray-300);
+    }
+  }
+
+  &.is-bigger {
+    .field {
+      @include upd-font($heading-7);
+    }
+  }
+
+  .mask {
+    position: absolute;
+    right: rem(16px);
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    @include font($body-2);
+    color: var(--color, var(--gray-400));
+    display: flex;
+    align-items: center;
+
+    .icon {
+      --color: var(--gray-400);
+    }
+  }
+
+  img.mask {
+    width: rem(20px);
+    height: rem(20px);
+  }
+
+  .hint, .pass-progress {
+    margin-top: rem(8px);
+  }
+
+  &.has-error {
+    --border-color: var(--red-800);
+  }
+
+  &.size-xs {
+    --input-padding-y: #{rem(4px)};
+    @include upd-font($body-1);
+  }
+
+  &.size-sm {
+    --input-padding-y: #{rem(8px)};
+    @include upd-font($body-1);
+  }
+
+  &.size-md {
+    --input-padding-y: #{rem(11px)};
+    @include upd-font($body-2);
+  }
+
+  &.has-error {
+    .icon {
+      --color: var(--gray-600);
+    }
+  }
+}

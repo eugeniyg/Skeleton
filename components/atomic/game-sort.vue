@@ -32,31 +32,4 @@
   };
 </script>
 
-<style lang="scss">
-.game-sort {
-  display: flex;
-  align-items: center;
-  grid-column-gap: rem(4px);
-
-  .label {
-    @include font($body-1);
-    color: var(--gray-500);
-    margin-right: rem(4px);
-  }
-
-  button {
-    @extend %skip-btn;
-    padding: rem(4px) rem(8px);
-    border-radius: 8px;
-    color: var(--color, var(--gray-300));
-    transition: all .2s ease-in-out;
-    cursor: pointer;
-    @include font($body-1);
-    font-family: 'Rubik', sans-serif;
-
-    &.is-selected {
-      --color: var(--yellow-500);
-    }
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/game-sort.scss" lang="scss" />

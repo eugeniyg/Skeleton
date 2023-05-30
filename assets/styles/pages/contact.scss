@@ -1,0 +1,57 @@
+.contact {
+  @include text-page-max;
+  display: grid;
+  grid-template-areas: var(--areas, "img" "header" "form");
+
+  @include media(l) {
+    --areas: "header img" "form img";
+    grid-template-columns: 1fr auto;
+    grid-column-gap: rem(56px);
+  }
+
+  .img {
+    display: block;
+    width: var(--width, #{rem(200px)});
+    height: var(--height, auto);
+    margin-bottom: var(--margin-bottom, #{rem(40px)});
+    grid-area: img;
+    justify-self: center;
+
+    @include media(l) {
+      --width: #{rem(348px)};
+      align-self: center;
+      --margin-bottom: 0;
+    }
+  }
+
+  .header {
+    display: grid;
+    grid-gap: rem(8px);
+    grid-area: header;
+  }
+
+  .info {
+    @include font($body-2-paragraph);
+    color: var(--gray-400);
+    margin: 0 0 rem(40px);
+  }
+
+  .heading {
+    @include font($heading-7);
+    color: var(--white);
+  }
+
+  .form {
+    grid-area: form;
+    grid-gap: rem(16px);
+  }
+
+  .btn-primary {
+    --width: 100%;
+    @include media(l) {
+      --width: fit-content;
+      @include upd-font($heading-2);
+      --padding: #{rem(9px)} #{rem(24px)};
+    }
+  }
+}

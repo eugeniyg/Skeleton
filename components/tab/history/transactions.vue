@@ -159,8 +159,5 @@
   onMounted(() => { resolveInvoicesRequest(); });
 </script>
 
-<style lang="scss">
-.filters-transactions-history {
-  margin-bottom: rem(24px);
-}
-</style>
+<style src="~/assets/styles/components/tab/history/transactions.scss" lang="scss" />
+

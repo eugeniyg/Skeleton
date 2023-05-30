@@ -1,0 +1,24 @@
+.input-gender {
+  width: 100%;
+  display: grid;
+  grid-template-areas:
+    "label label label"
+    ". . ."
+    "hint hint hint";
+  @extend %input-label;
+
+  .label {
+    grid-area: label;
+
+    &[for="other"] {
+      .icon {
+          --icon-size: 28px;
+      }
+    }
+  }
+
+  .hint {
+    grid-area: hint;
+    margin-top: rem(6px);
+  }
+}

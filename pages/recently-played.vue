@@ -75,14 +75,5 @@
   });
 </script>
 
-<style lang="scss">
-.recently-played {
-  display: grid;
-  grid-gap: rem(16px);
+<style src="~/assets/styles/pages/recently-played.scss" lang="scss" />
 
-  &__title {
-    @include font($heading-7);
-    color: white;
-  }
-}
-</style>

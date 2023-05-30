@@ -11,12 +11,4 @@
   const { localizePath } = useProjectMethods();
 </script>
 
-<style lang="scss">
-.logo {
-  display: flex;
-
-  .img {
-    display: inherit;
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/logo.scss" lang="scss" />

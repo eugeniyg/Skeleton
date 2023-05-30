@@ -100,47 +100,4 @@
   });
 </script>
 
-<style lang="scss">
-.bonus-code-block {
-  padding: rem(24px) rem(18px);
-  background-color: var(--gray-900);
-  border-radius: 16px;
-  user-select: none;
-
-  @include media(sm) {
-    width: calc((100% - 32px) / 2);
-  }
-
-  @include media(xl) {
-    width: calc((100% - 32px) / 3);
-  }
-
-  @include media(xxxl) {
-    width: calc((100% - 32px) / 4);
-  }
-
-  &__title {
-    @include font($heading-4);
-    color: var(--white);
-    margin: 0 0 rem(24px);
-    text-align: center;
-  }
-
-  &__form {
-    display: flex;
-    align-items: flex-start;
-    grid-column-gap: rem(8px);
-
-    .btn-primary {
-      width: fit-content;
-    }
-  }
-
-  &__error {
-    margin-top: 8px;
-    color: var(--red-300);
-
-    @include font($body-0);
-  }
-}
-</style>
+<style src="~/assets/styles/components/bonus/code.scss" lang="scss" />

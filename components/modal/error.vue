@@ -40,8 +40,5 @@
   };
 </script>
 
-<style lang="scss">
-.modal-error-deposit {
-  @extend %modal-info;
-}
-</style>
+<style src="~/assets/styles/components/modal/error.scss" lang="scss" />
+

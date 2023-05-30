@@ -93,31 +93,5 @@
   };
 </script>
 
-<style lang="scss">
-.tb-bonuses-history {
-  @extend %tb;
-  @extend %scrollbar;
-  overflow-x: auto;
-  overscroll-behavior: auto;
-  padding-bottom: rem(8px);
+<style src="~/assets/styles/components/table/bonuses-history.scss" lang="scss" />
 
-  .row {
-    grid-template-columns:
-      minmax(rem(156px), 1fr)
-      minmax(rem(105px), 1fr)
-      minmax(rem(158px), 1fr)
-      minmax(rem(75px), 1fr)
-      minmax(rem(100px), 1fr)
-      minmax(rem(100px), 1fr);
-
-    .bonus-name {
-      overflow: hidden;
-      display: -webkit-box;
-      overflow-wrap: anywhere;
-      -webkit-line-clamp: 2;
-      line-clamp: 2;
-      -webkit-box-orient: vertical;
-    }
-  }
-}
-</style>

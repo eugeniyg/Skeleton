@@ -64,14 +64,5 @@
   const showFavorites = computed(() => favoriteGames.value?.length && isLoggedIn.value);
 </script>
 
-<style lang="scss">
-.favorites {
-  display: grid;
-  grid-gap: rem(16px);
+<style src="~/assets/styles/pages/favorites.scss" lang="scss" />
 
-  &__title {
-    @include font($heading-7);
-    color: white;
-  }
-}
-</style>

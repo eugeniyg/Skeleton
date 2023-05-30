@@ -101,43 +101,5 @@
   };
 </script>
 
-<style lang="scss">
-.security-password {
-  .form-change {
-    grid-template-areas:
-      "old"
-      "new"
-      "reenter"
-      "save";
+<style src="~/assets/styles/components/profile/security-password.scss" lang="scss" />
 
-    @include media(xs) {
-      grid-template-areas:
-      "old ."
-      "new reenter"
-      "save save";
-    }
-  }
-
-  .row-currentPassword {
-    grid-area: old;
-  }
-
-  .row-newPassword {
-    grid-area: new;
-  }
-
-  .row-repeatNewPassword {
-    grid-area: reenter;
-  }
-
-  .btn-primary {
-    grid-area: save;
-  }
-
-  &__subtitle {
-    @include font($heading-5);
-    color: var(--white);
-    margin-bottom: 24px;
-  }
-}
-</style>

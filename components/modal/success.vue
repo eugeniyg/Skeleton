@@ -39,8 +39,5 @@
   const { getContent } = useProjectMethods();
 </script>
 
-<style lang="scss">
-.modal-success-deposit {
-  @extend %modal-info;
-}
-</style>
+<style src="~/assets/styles/components/modal/success.scss" lang="scss" />
+

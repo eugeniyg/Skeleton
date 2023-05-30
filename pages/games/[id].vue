@@ -133,49 +133,5 @@
   });
 </script>
 
-<style lang="scss">
-.is-game-page {
-  .app-footer, .app-header,  .nav-game, .panel-mode, .text-wrap {
-    display: none;
-  }
+<style src="~/assets/styles/pages/games/game.scss" lang="scss" />
 
-  .app-main {
-    --padding: 0;
-
-    .group-games {
-      display: none;
-      margin-top: rem(40px);
-    }
-
-    @include media(md) {
-      --padding: #{rem(24px)} #{rem(32px)};
-
-      .group-games {
-        display: grid;
-      }
-    }
-  }
-
-  @include media(md) {
-    .app-footer {
-      display: grid;
-    }
-
-    .app-header {
-      display: flex;
-    }
-
-    .nav-game {
-      display: grid;
-    }
-
-    .panel-mode {
-      display: flex;
-    }
-
-    .text-wrap {
-      display: block;
-    }
-  }
-}
-</style>

@@ -38,15 +38,4 @@
   });
 </script>
 
-<style lang="scss">
-.row-sex {
-  display: flex;
-  align-items: center;
-  grid-column-gap: rem(8px);
-  text-transform: capitalize;
-
-  svg {
-    color: white;
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/row-sex.scss" lang="scss" />
