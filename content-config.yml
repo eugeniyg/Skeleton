@@ -363,6 +363,13 @@ collections:
         label: Card Number
         widget: object
         fields: *fieldsArray
+      - name: network_select
+        label: Network Select
+        widget: object
+        fields:
+          - name: label
+            label: Network
+            widget: string  
 
   - name: mainLayout
     label: Main Layout
