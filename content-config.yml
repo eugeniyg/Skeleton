@@ -363,7 +363,7 @@ collections:
         label: Card Number
         widget: object
         fields: *fieldsArray
-      - name: network_select
+      - name: networkSelect
         label: Network Select
         widget: object
         fields:
