@@ -64,7 +64,7 @@
     InvoicesRequestOptionsInterface,
     PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
-  import { HistoryTransactionsInterface, HistoryTabInterface } from '~/types';
+  import { HistoryTransactionsInterface, HistoryTabInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: HistoryTabInterface
@@ -159,8 +159,5 @@
   onMounted(() => { resolveInvoicesRequest(); });
 </script>
 
-<style lang="scss">
-.filters-transactions-history {
-  margin-bottom: rem(24px);
-}
-</style>
+<style src="~/assets/styles/components/tab/history/transactions.scss" lang="scss" />
+

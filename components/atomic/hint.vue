@@ -34,28 +34,4 @@
   ]);
 </script>
 
-<style lang="scss">
-.hint {
-  @include font($body-1);
-  display: flex;
-  align-items: center;
-  grid-column-gap: rem(4px);
-  color: var(--color, var(--gray-400));
-
-  &.variant-error {
-    --color: var(--red-500);
-  }
-
-  &.variant-success, &.variant-verified {
-    --color: var(--green-500);
-  }
-
-  &.variant-unverified {
-    --color: var(--orange-500);
-  }
-
-  &.variant-verified {
-    --color: var(--green-500);
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/hint.scss" lang="scss" />

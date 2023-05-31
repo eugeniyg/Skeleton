@@ -38,32 +38,5 @@
   });
 </script>
 
-<style lang="scss">
-.input-card {
-  background-color: var(--bg, var(--gray-200));
-  padding: rem(16px);
-  border-radius: 8px;
-  grid-gap: rem(16px);
-  display: flex;
-  flex-direction: column;
-  --border-color: transparent;
+<style src="~/assets/styles/components/form/input/card.scss" lang="scss" />
 
-  .field {
-    --bg: var(--gray-000);
-    --color: var(--gray-500);
-
-    &:focus {
-      --border-color: var(--gray-300);
-    }
-  }
-
-  .row {
-    display: flex;
-    grid-gap: rem(16px);
-  }
-
-  .label {
-    --color: var(--black-primary);
-  }
-}
-</style>

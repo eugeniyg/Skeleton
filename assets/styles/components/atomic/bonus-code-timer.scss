@@ -1,0 +1,32 @@
+.bonus-code-timer {
+  display: flex;
+  align-items: center;
+  grid-column-gap: rem(4px);
+  color: var(--white);
+  margin: rem(24px) auto rem(16px);
+  justify-content: center;
+  user-select: none;
+
+  .icon {
+    --color: var(--gray-400);
+  }
+
+  .time {
+    @include font($heading-2);
+    display: flex;
+    align-items: center;
+  }
+
+  .message {
+    @include font($body-2);
+  }
+
+  .value {
+    text-align: center;
+    min-width: 22px;
+
+    &:first-child {
+      min-width: 12px;
+    }
+  }
+}

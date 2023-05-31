@@ -10,7 +10,7 @@
         <button-modal-close @close="closeModal('confirm')"/>
       </div>
 
-      <img class="img" src="@/assets/svg/colored/confirm.svg"/>
+      <img class="img" src="/img/confirm.svg"/>
       <p class="text">{{ getContent(popupsData, defaultLocalePopupsData, 'confirm.title') }}</p>
       <button-base type="primary" size="md" @click="closeModal('confirm')">
         {{ getContent(popupsData, defaultLocalePopupsData, 'confirm.button') }}
@@ -30,26 +30,5 @@
   const { getContent } = useProjectMethods();
 </script>
 
-<style lang="scss">
-.modal-confirm {
-  @extend %modal-info;
+<style src="~/assets/styles/components/modal/confirm.scss" lang="scss" />
 
-  .scroll {
-    img {
-      margin: rem(-22px) auto 0;
-    }
-  }
-
-  .text {
-    @include font($heading-5);
-    text-align: center;
-    color: var(--white);
-    margin: 0 0;
-  }
-
-  .btn-primary {
-    margin: rem(8px) auto 0;
-    --width: 100%;
-  }
-}
-</style>

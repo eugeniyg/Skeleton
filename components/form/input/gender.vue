@@ -82,29 +82,5 @@
   };
 </script>
 
-<style lang="scss">
-.input-gender {
-  width: 100%;
-  display: grid;
-  grid-template-areas:
-    "label label label"
-    ". . ."
-    "hint hint hint";
-  @extend %input-label;
+<style src="~/assets/styles/components/form/input/gender.scss" lang="scss" />
 
-  .label {
-    grid-area: label;
-
-    &[for="other"] {
-      .icon {
-          --icon-size: 28px;
-      }
-    }
-  }
-
-  .hint {
-    grid-area: hint;
-    margin-top: rem(6px);
-  }
-}
-</style>

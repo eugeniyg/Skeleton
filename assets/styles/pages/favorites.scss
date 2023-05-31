@@ -1,0 +1,9 @@
+.favorites {
+  display: grid;
+  grid-gap: rem(16px);
+
+  &__title {
+    @include font($heading-7);
+    color: white;
+  }
+}

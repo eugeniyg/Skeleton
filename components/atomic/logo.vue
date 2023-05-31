@@ -1,8 +1,8 @@
 <template>
   <nuxt-link class="logo" :to="localizePath('/')">
     <picture>
-      <source srcset="/svg/logo-light.svg" media="(min-width: 33rem)" />
-      <img class="img" src="~/assets/svg/logo-short.svg" />
+      <source srcset="/img/logo-light.svg" media="(min-width: 33rem)" />
+      <img class="img" src="/img/logo-short.svg" />
     </picture>
   </nuxt-link>
 </template>
@@ -11,12 +11,4 @@
   const { localizePath } = useProjectMethods();
 </script>
 
-<style lang="scss">
-.logo {
-  display: flex;
-
-  .img {
-    display: inherit;
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/logo.scss" lang="scss" />

@@ -32,27 +32,4 @@
   const showButton = computed(() => props.button && props.hidden && !showHidden.value);
 </script>
 
-<style lang="scss">
-.text-wrap {
-  color: var(--gray-500);
-  margin-bottom: -24px;
-
-  h1, h2 {
-    @include font($heading-4);
-  }
-
-  h3, h4, h5, h6 {
-    @include font($heading-2);
-  }
-
-  p {
-    @include font($body-1-paragraph);
-    margin: 0;
-  }
-
-  a {
-    color: var(--gray-500);
-    text-decoration: underline;
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/seo-text.scss" lang="scss" />

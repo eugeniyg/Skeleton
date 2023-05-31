@@ -1,6 +1,6 @@
 <template>
-  <div class="not-found">
-    <img class="img" src="@/assets/img/404.png" />
+  <div class="not-found error-page">
+    <img class="img" src="/img/404.png" />
     <div class="title">
       {{ errorPageContent?.title || defaultLocaleErrorPageContent?.title || pageStaticContent.title }}
     </div>
@@ -55,15 +55,4 @@
   });
 </script>
 
-<style lang="scss" scoped>
-@import "scss/error";
-
-.not-found {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
-}
-</style>
+<style src="~/assets/styles/error.scss" lang="scss" />

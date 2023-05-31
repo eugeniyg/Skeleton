@@ -4,8 +4,6 @@ import {
   BonusCodeInterface,
   WebSocketResponseInterface,
 } from '@platform/frontend-core/dist/module';
-import { useLayoutStore } from '~/composables/useLayoutStore';
-import { useGlobalStore } from '~/composables/useGlobalStore';
 
 interface BonusStateInterface {
   bonusCodeSubscription: any,

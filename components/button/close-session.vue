@@ -4,14 +4,5 @@
   </button>
 </template>
 
-<style lang="scss">
-.btn-close-session {
-  @extend %skip-btn;
-  @extend %icon-btn;
-  --icon-size: #{rem(20px)};
+<style src="~/assets/styles/components/button/close-session.scss" lang="scss" />
 
-  &:hover {
-    cursor: pointer;
-  }
-}
-</style>

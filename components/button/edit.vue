@@ -4,14 +4,5 @@
   </button>
 </template>
 
-<style lang="scss">
-.btn-edit {
-  @extend %skip-btn;
-  @extend %link;
-  @extend %icon-btn;
+<style src="~/assets/styles/components/button/edit.scss" lang="scss" />
 
-  &:hover {
-    cursor: pointer;
-  }
-}
-</style>

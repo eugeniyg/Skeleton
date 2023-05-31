@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
   import { BetHistoryInterface, PaginationMetaInterface } from '@platform/frontend-core/dist/module';
-  import { HistoryBetsInterface, HistoryTabInterface } from '~/types';
+  import { HistoryBetsInterface, HistoryTabInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: HistoryTabInterface,
@@ -83,44 +83,5 @@
   onMounted(() => { betsRequest(); });
 </script>
 
-<style lang="scss">
-.cards-bet-tab {
-  .nav-bets-history {
-    display: flex;
-    background-color: var(--gray-800);
-    border: 4px solid var(--gray-800);
-    border-radius: 12px;
-    margin-bottom: 16px;
+<style src="~/assets/styles/components/tab/history/bets.scss" lang="scss" />
 
-    .item {
-      flex-grow: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 32px;
-      @include font($body-1);
-      padding: rem(2px);
-      border-radius: 8px;
-      background-color: var(--bg, inherit);
-      color: var(--color, inherit);
-      transition: all .2s ease-in-out;
-      grid-column-gap: rem(4px);
-      --color: var(--gray-300);
-
-      &:hover {
-        cursor: pointer;
-      }
-
-      &.is-active {
-        --bg: var(--gray-700);
-        --color: var(--white) !important;
-      }
-    }
-  }
-
-  .card-bet-ordinar,
-  .card-bet-combo {
-    margin-top: 8px;
-  }
-}
-</style>

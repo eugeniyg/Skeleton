@@ -1,0 +1,73 @@
+.file {
+  min-height: rem(32px);
+  padding-bottom: rem(8px);
+
+  &__rm-btn {
+    @extend %skip-btn;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: color .2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+
+      .icon {
+        --color: var(--gray-200);
+      }
+    }
+
+    .icon {
+      --color: var(--white);
+    }
+  }
+
+  &__status-icon {
+    --icon-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.status-pending {
+      --color: var(--yellow-500);
+    }
+
+    &.status-approve {
+      --color: var(--green-500);
+    }
+
+    &.status-canceled {
+      --color: var(--red-500);
+    }
+  }
+
+  &__name {
+    @include font($body-1);
+    color: var(--name-color, var(--white));
+    transition: color .4s ease-in-out;
+    flex-grow: 1;
+    max-width: calc(100% - 54px);
+    margin-right: auto;
+    word-break: break-word;
+
+    .is-loading & {
+      --name-color: var(--gray-400)
+    }
+  }
+
+  &__progress {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    grid-column-gap: rem(4px);
+    position: relative;
+    width: 100%;
+  }
+
+  &__error {
+    @include font($body-1);
+    color: var(--red-300);
+    width: 100%;
+  }
+}

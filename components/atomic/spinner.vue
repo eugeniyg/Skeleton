@@ -37,12 +37,4 @@
   });
 </script>
 
-<style lang="scss">
-.btn-primary {
-  .spinner {
-    width: 18px;
-    height: 18px;
-    transform: scale(1.334) translateX(-2px);
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/spinner.scss" lang="scss" />

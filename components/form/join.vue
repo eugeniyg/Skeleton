@@ -71,7 +71,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { FieldInterface } from '@platform/frontend-core/dist/module';
-  import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
+  import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
   const props = defineProps<{
     registrationFields: FieldInterface[]
@@ -152,46 +152,5 @@
   };
 </script>
 
-<style lang="scss">
-.form-join {
-  display: grid;
-  grid-row-gap: rem(16px);
+<style src="~/assets/styles/components/form/join.scss" lang="scss" />
 
-  hr {
-    margin: 0;
-  }
-
-  .btn-primary {
-    --width: 100%;
-  }
-
-  //.dropdown {
-  //  .items {
-  //    max-width: 100%;
-  //  }
-  //
-  //  .item {
-  //    display: block;
-  //    overflow: hidden;
-  //    text-overflow: ellipsis;
-  //    position: relative;
-  //    padding-left: rem(38px);
-  //    padding-right: rem(30px);
-  //
-  //    .mask {
-  //      position: absolute;
-  //      left: rem(8px);
-  //      top: 50%;
-  //      transform: translateY(-50%);
-  //    }
-  //
-  //    svg {
-  //      position: absolute;
-  //      right: rem(8x);
-  //      top: 50%;
-  //      transform: translateY(-50%);
-  //    }
-  //  }
-  //}
-}
-</style>

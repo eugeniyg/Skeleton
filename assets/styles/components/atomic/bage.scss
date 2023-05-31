@@ -1,0 +1,61 @@
+.bages {
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: rem(4px);
+  position: absolute;
+  top: rem(12px);
+  left: rem(12px);
+  right: rem(12px);
+}
+
+.bage {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg, transparent);
+  padding: rem(2px) rem(8px) rem(2px) rem(4px);
+  color: var(--bage-color, var(--white));
+  text-transform: uppercase;
+  @include font($heading-1);
+  border-radius: 16px;
+  grid-column-gap: rem(2px);
+
+  .icon {
+    min-width: rem(16px);
+    max-width: rem(16px);
+    --icon-size: #{rem(16px)};
+  }
+
+  &.bg {
+    &--green {
+      --bg: var(--green-500);
+
+      .icon {
+        --color: var(--green-200);
+      }
+    }
+
+    &--red {
+      --bg: var(--red-500);
+
+      .icon {
+        --color: var(--red-200);
+      }
+    }
+
+    &--orange {
+      --bg: var(--orange-500);
+
+      .icon {
+        --color: var(--orange-200);
+      }
+    }
+
+    &--blue {
+      --bg: var(--blue-500);
+
+      .icon {
+        --color: var(--blue-200);
+      }
+    }
+  }
+}

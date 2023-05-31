@@ -32,7 +32,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { useGamesStore } from '~/composables/useGamesStore';
 
   const props = defineProps({
     showArrows: {
@@ -93,95 +92,5 @@
   watch(() => latestWinners.value, () => scrollHandler());
 </script>
 
-<style lang="scss">
-.group-winners {
-  display: grid;
-  align-items: center;
-  grid-template-areas:
-    "icon heading heading arrows"
-    "items items items items"
-    "btn-show-all btn-show-all btn-show-all btn-show-all";
-  grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
-  grid-column-gap: var(--column-gap, #{rem(8px)});
-  grid-row-gap: var(--row-gap, #{rem(16px)});
-  background-color: var(--gray-900);
-  border-radius: 16px;
-  padding: rem(16px) rem(16px) rem(8px) rem(16px);
-  position: relative;
+<style src="~/assets/styles/components/group/winners.scss" lang="scss" />
 
-  @include media(xs) {
-    grid-template-areas:
-    "icon heading btn-show-all arrows"
-    "items items items items";
-    padding: rem(16px) rem(16px) rem(24px) rem(16px);
-  }
-
-  @include media(sm) {
-    padding: rem(24px);
-  }
-
-  @include media(md) {
-    padding: rem(24px);
-
-    @include scroll-overlay;
-  }
-
-  > [data-icon] {
-    font-size: rem(20px);
-    grid-area: icon;
-  }
-
-  > .icon {
-    grid-area: icon;
-    --icon-size: #{rem(20px)};
-    --color: var(--gray-400);
-  }
-
-  > .arrows {
-    display: var(--arrows-display, none);
-    grid-area: arrows;
-
-    @include media(md) {
-      --arrows-display: flex
-    }
-  }
-
-  > .title {
-    flex-grow: 1;
-    grid-area: heading;
-    @include font($heading-4);
-    color: var(--white);
-    margin: 0;
-  }
-
-  > .items {
-    grid-area: items;
-    display: var(--display, flex);
-    align-items: center;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    margin: 0 -32px 0;
-    padding: 0 32px;
-    scroll-padding: 32px;
-    grid-column-gap: 8px;
-
-    @include media(sm) {
-      grid-column-gap: 16px;
-      margin: 0 -56px 0;
-      padding: 0 56px;
-      scroll-padding: 56px;
-    }
-
-    @include media(md) {
-      scroll-padding: 0;
-      padding: 0;
-      margin:  0;
-    }
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-}
-</style>

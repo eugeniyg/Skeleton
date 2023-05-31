@@ -24,19 +24,4 @@
   });
 </script>
 
-<style lang="scss">
-.row-phone {
-  display: flex;
-  align-items: center;
-  grid-column-gap: rem(8px);
-
-  .img {
-    height: rem(20px);
-    width: rem(24px);
-  }
-
-  .item {
-    @include font($body-2);
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/row-phone.scss" lang="scss" />

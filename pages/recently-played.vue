@@ -30,7 +30,7 @@
   import { storeToRefs } from 'pinia';
   import { onMounted } from '@vue/runtime-core';
   import { GameInterface } from '@platform/frontend-core/dist/module';
-  import { RecentlyPageInterface } from '~/types';
+  import { RecentlyPageInterface } from '@skeleton/types';
 
   const globalStore = useGlobalStore();
   const { isMobile, headerCountry, contentLocalesArray } = storeToRefs(globalStore);
@@ -75,14 +75,5 @@
   });
 </script>
 
-<style lang="scss">
-.recently-played {
-  display: grid;
-  grid-gap: rem(16px);
+<style src="~/assets/styles/pages/recently-played.scss" lang="scss" />
 
-  &__title {
-    @include font($heading-7);
-    color: white;
-  }
-}
-</style>

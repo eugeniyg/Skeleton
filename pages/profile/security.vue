@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ProfileSecurityInterface } from '~/types';
+  import { ProfileSecurityInterface } from '@skeleton/types';
 
   const { setPageSeo, findLocalesContentData } = useProjectMethods();
   const globalStore = useGlobalStore();

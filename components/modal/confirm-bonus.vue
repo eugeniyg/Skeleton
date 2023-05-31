@@ -43,30 +43,5 @@
   const emit = defineEmits(['closeModal', 'confirm']);
 </script>
 
-<style lang="scss">
-.modal-confirm-bonus {
-  @extend %modal-info;
+<style src="~/assets/styles/components/modal/confirm-bonus.scss" lang="scss" />
 
-  .vfm__content {
-    --content-gap: #{rem(24px)};
-  }
-
-  .btn-primary {
-    --width: 100%;
-  }
-
-  .btn-secondary {
-    --width: 100%;
-  }
-
-  .text {
-    color: var(--gray-300);
-    @include upd-font($body-2);
-  }
-
-  .actions {
-    display: grid;
-    grid-gap: rem(8px);
-  }
-}
-</style>

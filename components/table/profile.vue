@@ -39,29 +39,5 @@
   const profileViewFields = profileFields.value.filter((field) => !hideFields.includes(field.name));
 </script>
 
-<style lang="scss">
-.tb-profile {
-  color: var(--white);
+<style src="~/assets/styles/components/table/profile.scss" lang="scss" />
 
-  .row {
-    padding: rem(16px);
-    background-color: var(--bg, var(--black-primary));
-
-    display: grid;
-    grid-template-columns: repeat(2, 50%);
-    @include font($body-2);
-
-    &:nth-of-type(even) {
-      --bg: var(--gray-900);
-    }
-  }
-
-  .th {
-    color: var(--gray-400);
-  }
-
-  .td {
-    color: var(--white);
-  }
-}
-</style>

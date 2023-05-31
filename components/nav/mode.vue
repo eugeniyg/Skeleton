@@ -28,10 +28,5 @@
   };
 </script>
 
-<style lang="scss">
-.nav-mode {
-  display: grid;
-  background-color: var(--gray-700);
-  grid-gap: rem(1px);
-}
-</style>
+<style src="~/assets/styles/components/nav/mode.scss" lang="scss" />
+

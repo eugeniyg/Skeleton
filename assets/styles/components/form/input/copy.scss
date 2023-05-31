@@ -1,0 +1,76 @@
+.input-copy {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+
+  @extend %input-label;
+
+  .row {
+    position: relative;
+    display: flex;
+  }
+
+  .field {
+    background-color: var(--bg, var(--gray-800));
+    padding: var(--input-padding-y, #{rem(11px)}) rem(16px);
+    border: 1px solid var(--border-color, var(--gray-800));
+    color: var(--color, var(--white));
+    border-radius: 8px 0 0 8px;
+    @include font($body-2);
+    transition: border-color .2s ease-in-out;
+    flex-grow: 1;
+    text-overflow: ellipsis;
+
+    &::placeholder {
+      color: var(--gray-400);
+    }
+
+    &:focus {
+      --border-color: var(--gray-300);
+    }
+  }
+
+  .hint {
+    margin-top: rem(8px);
+  }
+
+  &.has-error {
+    --border-color: var(--red-800);
+  }
+
+  .btn-copy {
+    @extend %skip-btn;
+    background: var(--bg, var(--gradient-radial));
+    border-radius: 0 8px 8px 0;
+    padding: rem(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: none;
+
+    .icon {
+      --color: var(--white);
+    }
+
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
+        --bg: var(--gradient-radial-hover);
+
+        .icon {
+          --color: var(--white);
+        }
+      }
+    }
+
+    &:active, &:focus {
+      --bg: var(--gradient-radial-focus);
+    }
+  }
+
+  .icon {
+    --color: var(--white);
+  }
+}

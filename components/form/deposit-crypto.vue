@@ -89,11 +89,5 @@
   });
 </script>
 
-<style lang="scss">
-.form-deposit-crypto {
-  .row {
-    display: flex;
-    min-height: rem(44px);
-  }
-}
-</style>
+<style src="~/assets/styles/components/form/deposit-crypto.scss" lang="scss" />
+

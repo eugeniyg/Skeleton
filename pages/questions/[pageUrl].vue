@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { QuestionPageInterface } from '~/types';
+  import { QuestionPageInterface } from '@skeleton/types';
 
   const pageContent = ref<QuestionPageInterface|undefined>(undefined);
   const defaultLocalePageContent = ref<QuestionPageInterface|undefined>(undefined);

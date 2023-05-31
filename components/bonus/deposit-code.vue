@@ -124,25 +124,4 @@
   });
 </script>
 
-<style lang="scss">
-.deposit-bonus-code {
-  display: grid;
-  grid-gap: rem(16px);
-
-  .input-toggle {
-    width: 100%;
-    --slider-bg: var(--black-primary);
-  }
-
-  &__code {
-    display: flex;
-    align-items: flex-start;
-    grid-column-gap: rem(8px);
-
-    .btn-primary {
-      min-width: 96px;
-      width: fit-content;
-    }
-  }
-}
-</style>
+<style src="~/assets/styles/components/bonus/deposit-code.scss" lang="scss" />

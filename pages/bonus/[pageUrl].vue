@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { BonusPageInterface } from '~/types';
+  import { BonusPageInterface } from '@skeleton/types';
 
   const pageContent = ref<BonusPageInterface|undefined>(undefined);
   const defaultLocalePageContent = ref<BonusPageInterface|undefined>(undefined);
@@ -77,126 +77,5 @@
   };
 </script>
 
-<style lang="scss">
-.bonus-page {
-  margin-top: rem(-24px);
-  > .header {
-    background: var(--bg, var(--gray-900));
-    height: var(--height, #{rem(200px)});
-    padding-top: rem(40px);
-    margin: var(--margin, 0 #{rem(-16px)});
-    position: relative;
+<style src="~/assets/styles/pages/bonus/index.scss" lang="scss" />
 
-    &:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background-image: linear-gradient(187.95deg, rgba(17, 20, 28, 0) 44.73%, rgba(17, 20, 28, 0.8) 93.88%)
-    }
-
-    @include media(sm) {
-      --margin: 0 #{rem(-32px)}
-    }
-
-    &[data-bg="gray"] {
-      --bg: var(--gray-900);
-    }
-
-    &[data-bg="red"] {
-      --bg: var(--red-900);
-    }
-
-    &[data-bg="yellow"] {
-      --bg: var(--orange-900);
-    }
-
-    &[data-bg="green"] {
-      --bg: var(--green-900);
-    }
-
-    &[data-bg="blue"] {
-      --bg: var(--blue-900);
-    }
-
-    .img {
-      width: var(--width, #{rem(160px)});
-      height: auto;
-      display: block;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    @include media(xs) {
-      --height: #{rem(280px)};
-
-      .img {
-        --width: #{rem(240px)};
-      }
-    }
-  }
-
-  .content {
-    @include text-page-max;
-    padding-top: rem(40px);
-
-    > .title {
-      @include font($heading-1);
-      color: var(--yellow-500);
-      margin: 0 0 rem(8px);
-      padding: 0;
-    }
-
-    > .sub-title {
-      @include font($heading-7);
-      color: var(--white);
-      margin: 0 0 rem(16px);
-      padding: 0;
-    }
-
-    > .description {
-      @include font($body-3-paragraph);
-      color: var(--gray-400);
-      margin: 0 0 rem(16px);
-      padding: 0;
-    }
-
-    > .list-title {
-      @include font($heading-3);
-      color: var(--white);
-      margin: 0 0 rem(16px);
-      padding: 0;
-    }
-
-    > ol {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      @include font($body-3-paragraph);
-      color: var(--gray-400);
-
-      li {
-        margin: rem(12px) 0;
-      }
-
-      > ul {
-        margin: 0;
-        padding: 0;
-        list-style: disc inside;
-        @include font($body-3-paragraph);
-
-        li {
-          margin: rem(12px) 0;
-          padding: 0 0 0 rem(20px);
-        }
-      }
-    }
-  }
-
-  .detail {
-    margin-top: rem(40px);
-  }
-}
-</style>

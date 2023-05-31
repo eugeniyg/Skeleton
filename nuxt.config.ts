@@ -1,8 +1,14 @@
+import { createResolver } from '@nuxt/kit'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+const { resolve } = createResolver(dirname(fileURLToPath(import.meta.url)));
+
 const viteConfig: any = {
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@use "@/scss/ds/_shared.scss" as *;',
+        additionalData: '@use "@skeleton/assets/styles/ds/_shared.scss" as *;',
       },
     },
   },
@@ -12,66 +18,41 @@ const viteConfig: any = {
 };
 
 export default defineNuxtConfig({
+  alias: {
+    '@skeleton': resolve('./'),
+  },
   modules: [
     '@pinia/nuxt',
     '@platform/frontend-core',
-    '@nuxt/content',
-    '@/modules/sitemap',
+    '@nuxt/content'
   ],
-  content: {
-    api: { baseURL: '/_content' },
-  },
   components: {
     dirs: [
       {
         global: true,
-        path: '~/components/form/input',
+        path: '@skeleton/components/form/input',
         prefix: 'FormInput',
       },
       {
         global: true,
-        path: '~/components/tab/history',
+        path: '@skeleton/components/tab/history',
         prefix: 'TabHistory',
       },
-      '~/components',
+      '@skeleton/components',
     ],
   },
   app: {
     head: {
-      meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no, user-scalable=0' },
-        { name: 'msapplication-TileColor', content: '#da532c' },
-        { name: 'theme-color', content: '#ffffff' },
-      ],
-      link: [
-        { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon/apple-touch-icon.png' },
-        {
-          rel: 'icon',
-          type: 'image/png',
-          sizes: '32x32',
-          href: '/favicon/favicon-32x32.png',
-        },
-        {
-          rel: 'icon',
-          type: 'image/png',
-          sizes: '16x16',
-          href: '/favicon/favicon-16x16.png',
-        },
-        { rel: 'manifest', href: '/favicon/site.webmanifest' },
-        { rel: 'mask-icon', href: '/favicon/safari-pinned-tab.svg', color: '#5bbad5' },
-        { rel: 'stylesheet', href: '/preloader/preloader.css' },
-      ],
       script: [
         { src: 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js' },
-        { src: '/scripts/sw-register.js' },
       ],
     },
     pageTransition: true,
     layoutTransition: true,
   },
   css: [
-    '@/scss/style.scss',
-    'vue-final-modal/style.css',
+    '@skeleton/assets/styles/style.scss',
+    '@skeleton/node_modules/vue-final-modal/dist/style.css',
   ],
   vite: viteConfig,
   nitro: {

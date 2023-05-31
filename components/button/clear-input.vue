@@ -4,29 +4,5 @@
   </button>
 </template>
 
-<style lang="scss">
-.btn-clear-input {
-  @include box(16px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-  margin-left: auto;
+<style src="~/assets/styles/components/button/clear-input.scss" lang="scss" />
 
-  @extend %skip-btn;
-  --color: var(--gray-400);
-
-  .icon {
-    --icon-size: 16px;
-    --color: #718792;
-  }
-
-  &:hover {
-    cursor: pointer;
-
-    .icon {
-      --color: var(--white);
-    }
-  }
-}
-</style>

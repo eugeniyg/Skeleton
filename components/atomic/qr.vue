@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-  import { DepositInterface } from '~/types';
+  import { DepositInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: Maybe<DepositInterface>,
@@ -21,36 +21,4 @@
   }>();
 </script>
 
-<style lang="scss">
-.qr {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas:
-    "title box"
-    "description box";
-  grid-row-gap: rem(8px);
-  grid-column-gap: rem(16px);
-
-  .title {
-    @include font($heading-2);
-    color: var(--white);
-    grid-area: title;
-  }
-
-  .description {
-    @include font($body-2);
-    color: var(--gray-400);
-    grid-area: description;
-  }
-
-  .box {
-    grid-area: box;
-    width: 116px;
-    height: 116px;
-    background-color: var(--white);
-    border-radius: 8px;
-    align-self: flex-start;
-    overflow: hidden;
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/qr.scss" lang="scss" />

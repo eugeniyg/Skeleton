@@ -18,32 +18,4 @@
   }>();
 </script>
 
-<style lang="scss">
-.bonus {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-areas: "img title" "img sub-title";
-  grid-template-rows: minmax(0, auto) minmax(0, auto);
-  grid-row-gap: rem(4px);
-  grid-column-gap: rem(8px);
-  align-items: center;
-
-  .img {
-    width: rem(40px);
-    height: rem(40px);
-    grid-area: img;
-  }
-
-  .title {
-    grid-area: title;
-    @include font($heading-2);
-    color: var(--white);
-  }
-
-  .sub-title {
-    grid-area: sub-title;
-    @include font($heading-2);
-    color: var(--yellow-500);
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/bonus.scss" lang="scss" />

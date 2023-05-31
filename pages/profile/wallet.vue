@@ -32,7 +32,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { AccountInterface } from '@platform/frontend-core/dist/module';
-  import { ProfileWalletInterface } from '~/types';
+  import { ProfileWalletInterface } from '@skeleton/types';
 
   const globalStore = useGlobalStore();
   const { contentLocalesArray } = storeToRefs(globalStore);
