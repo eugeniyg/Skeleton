@@ -42,9 +42,6 @@
         />
       </template>
 
-
-
-
       <button-base
         type="primary"
         size="md"
@@ -62,25 +59,15 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import useVuelidate from "@vuelidate/core";
+  import {PaymentFieldInterface} from "@platform/frontend-core";
 
-  const props = defineProps({
-    amountMax: {
-      type: Number,
-      required: false,
-    },
-    amountMin: {
-      type: Number,
-      required: false,
-    },
-    fields: {
-      type: Array,
-      default: () => [],
-    },
-    method: {
-      type: String,
-      default: '',
-    },
-  });
+  const props = defineProps<{
+    amountMax: number,
+    amountMin: number,
+    fields: PaymentFieldInterface[],
+    method: string
+  }>();
 
   const globalStore = useGlobalStore();
   const {
@@ -120,44 +107,53 @@
   const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : Number(defaultInputSum.amount));
   const amountValue = ref<number>(amountDefaultValue.value);
   const withdrawFormData = reactive<{ [key: string]: string }>({});
-  const withdrawRules = ref<any>({});
-
-  props.fields?.forEach((field: any) => {
-    withdrawFormData[field.key] = '';
-    withdrawRules.value[field.key] = [];
-    if (field.isRequired) withdrawRules.value[field.key].push({ rule: 'required' });
-    if (field.regexp) {
-      withdrawRules.value[field.key].push({
+  const startRules = props.fields?.reduce((currentRulesObj, currentField) => {
+    const rulesArr = [];
+    if (currentField.isRequired) rulesArr.push({ rule: 'required' });
+    if (currentField.regexp) {
+      rulesArr.push({
         rule: 'regex',
-        arguments: field.regexp
+        arguments: currentField.regexp
       });
     }
-    if (field.key === 'wallet_id') {
+    if (currentField.key === 'wallet_id') {
       const regex = getNetworkParams('null')?.regex;
-      console.log(regex);
       if (regex) {
-        withdrawRules.value[field.key].push({
+        rulesArr.push({
           rule: 'regex',
           arguments: regex
         });
       }
     }
-  });
+    return { ...currentRulesObj, [currentField.key]: rulesArr }
+  }, {})
+
+  const withdrawRules = ref<any>(startRules);
 
   const { getFormRules } = useProjectMethods();
-  const withdrawFormRules = ref(getFormRules(withdrawRules.value));
+  const withdrawFormRules = computed(() => getFormRules(withdrawRules.value));
 
   const state = reactive({
     selectedNetwork: null,
   });
 
-  let {
-    serverFormErrors,
-    v$,
-    onFocus,
-    setError,
-  } = useFormValidation(withdrawFormRules.value, withdrawFormData);
+  const serverFormErrors = ref<{ [key: string]: Maybe<string> }>({});
+  const v$ = useVuelidate(withdrawFormRules, withdrawFormData);
 
+  const onFocus = (fieldName:string):void => {
+    if (serverFormErrors.value[fieldName]) {
+      serverFormErrors.value[fieldName] = undefined;
+    }
+  };
+
+  const setError = (fieldName:string):undefined|{ variant: string, message: any } => {
+    if (v$.value[fieldName]?.$error) {
+      return { variant: 'error', message: v$.value[fieldName].$errors[0].$message };
+    } if (serverFormErrors.value[fieldName]) {
+      return { variant: 'error', message: serverFormErrors.value[fieldName]?.[0] };
+    }
+    return undefined;
+  };
 
   const buttonAmount = computed(() => {
     if (amountValue.value > formatAmountMax.amount) return formatAmountMax.amount;
@@ -182,21 +178,16 @@
   const onInputNetwork = () => {
     const regex = getNetworkParams(state.selectedNetwork).regex;
 
-    console.log('==>', state.selectedNetwork, regex);
-
-    withdrawRules.value['wallet_id'] = [
-      { rule: 'required' },
-      {
-        rule: 'regex',
-        arguments: regex,
-      }
-    ];
-
-    withdrawFormRules.value = getFormRules(withdrawRules.value);
-
-    const  formValidation = useFormValidation(withdrawFormRules.value, withdrawFormData);
-      serverFormErrors = formValidation.serverFormErrors;
-      v$ = formValidation.v$;
+    withdrawRules.value = {
+      ...withdrawRules.value,
+      'wallet_id': [
+        { rule: 'required' },
+        {
+          rule: 'regex',
+          arguments: regex,
+        }
+      ]
+    }
   };
 
   function getNetworkParams(networkId: string) {
@@ -235,7 +226,7 @@
       showAlert(alertsData.value?.withdrawalProcessed || defaultLocaleAlertsData.value?.withdrawalProcessed);
     } catch (err: any) {
       if (err.response?.status === 422) {
-        serverFormErrors = err.data?.error?.fields;
+        serverFormErrors.value = err.data?.error?.fields;
       } else {
         showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
       }
