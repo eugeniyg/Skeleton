@@ -36,11 +36,13 @@
           type="text"
           :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.key}.placeholder`) || ''"
           v-model:value="withdrawFormData[field.key]"
-          @focus="validation.onFocus(field.key)"
-          @blur="validation.v$[field.key]?.$touch()"
-          :hint="validation.setError(field.key)"
+          @focus="onFocus(field.key)"
+          @blur="v$[field.key]?.$touch()"
+          :hint="setError(field.key)"
         />
       </template>
+
+
 
 
       <button-base
@@ -118,22 +120,23 @@
   const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : Number(defaultInputSum.amount));
   const amountValue = ref<number>(amountDefaultValue.value);
   const withdrawFormData = reactive<{ [key: string]: string }>({});
-  const withdrawRules: any = {};
+  const withdrawRules = ref<any>({});
 
   props.fields?.forEach((field: any) => {
     withdrawFormData[field.key] = '';
-    withdrawRules[field.key] = [];
-    if (field.isRequired) withdrawRules[field.key].push({ rule: 'required' });
+    withdrawRules.value[field.key] = [];
+    if (field.isRequired) withdrawRules.value[field.key].push({ rule: 'required' });
     if (field.regexp) {
-      withdrawRules[field.key].push({
+      withdrawRules.value[field.key].push({
         rule: 'regex',
         arguments: field.regexp
       });
     }
     if (field.key === 'wallet_id') {
       const regex = getNetworkParams('null')?.regex;
+      console.log(regex);
       if (regex) {
-        withdrawRules[field.key].push({
+        withdrawRules.value[field.key].push({
           rule: 'regex',
           arguments: regex
         });
@@ -142,15 +145,19 @@
   });
 
   const { getFormRules } = useProjectMethods();
-  const withdrawFormRules = getFormRules(withdrawRules);
+  const withdrawFormRules = ref(getFormRules(withdrawRules.value));
 
   const state = reactive({
     selectedNetwork: null,
   });
 
-  const validation = reactive({
-    ...useFormValidation(withdrawFormRules, withdrawFormData)
-  });
+  let {
+    serverFormErrors,
+    v$,
+    onFocus,
+    setError,
+  } = useFormValidation(withdrawFormRules.value, withdrawFormData);
+
 
   const buttonAmount = computed(() => {
     if (amountValue.value > formatAmountMax.amount) return formatAmountMax.amount;
@@ -169,11 +176,27 @@
     return [];
   });
 
-  const buttonDisabled = computed(() => validation.v$.$error || amountValue.value > activeAccountFormat.amount
+  const buttonDisabled = computed(() => v$.value.$invalid || amountValue.value > activeAccountFormat.amount
     || amountValue.value < formatAmountMin.amount || amountValue.value > formatAmountMax.amount || isSending.value);
 
   const onInputNetwork = () => {
-    //
+    const regex = getNetworkParams(state.selectedNetwork).regex;
+
+    console.log('==>', state.selectedNetwork, regex);
+
+    withdrawRules.value['wallet_id'] = [
+      { rule: 'required' },
+      {
+        rule: 'regex',
+        arguments: regex,
+      }
+    ];
+
+    withdrawFormRules.value = getFormRules(withdrawRules.value);
+
+    const  formValidation = useFormValidation(withdrawFormRules.value, withdrawFormData);
+      serverFormErrors = formValidation.serverFormErrors;
+      v$ = formValidation.v$;
   };
 
   function getNetworkParams(networkId: string) {
@@ -188,7 +211,6 @@
           .find((option) => option.id === networkId);
       }
     }
-    // TFMJH9Vb75oSSVmTBC9woN5hPvrY8kiX5U
   }
 
   const getWithdraw = async (): Promise<void> => {
@@ -207,12 +229,13 @@
     const { withdrawAccount } = useCoreWalletApi();
 
     try {
+      console.log('send ==>', params);
       // await withdrawAccount(params);
-      closeModal('withdraw');
+      // closeModal('withdraw');
       showAlert(alertsData.value?.withdrawalProcessed || defaultLocaleAlertsData.value?.withdrawalProcessed);
     } catch (err: any) {
       if (err.response?.status === 422) {
-        validation.serverFormErrors = err.data?.error?.fields;
+        serverFormErrors = err.data?.error?.fields;
       } else {
         showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
       }
