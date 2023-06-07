@@ -287,26 +287,17 @@ export const regex = (param:any) => validationRules.helpers.withParams(
     (value:any) => {
       if (!validationRules.helpers.req(value)) return true;
 
-      if (Array.isArray(param)) {
-        return param.some((item) => {
-          const mod = /[g|i|m]{1,3}$/;
-          let flag = item.match(mod);
-          flag = flag ? flag[0] : '';
-
-          const regexMain = item.replace(mod, '');
-          const paramRegexp = new RegExp(regexMain, flag);
-          console.log(paramRegexp, value, paramRegexp.test(value));
-          return paramRegexp.test(value);
-        })
-      } else {
+      const testRegexp = (reg: string) => {
         const mod = /[g|i|m]{1,3}$/;
-        let flag = param.match(mod);
-        flag = flag ? flag[0] : '';
+        const matchFlags:string[]|null = reg.match(mod);
+        const flag:string = matchFlags ? matchFlags[0] : '';
 
-        const regexMain = param.replace(mod, '');
+        const regexMain = reg.replace(mod, '').slice(1, -1);
         const paramRegexp = new RegExp(regexMain, flag);
         return paramRegexp.test(value);
       }
+
+      return Array.isArray(param) ? param.some((item) => testRegexp(item)) : testRegexp(param);
     },
   );
 
