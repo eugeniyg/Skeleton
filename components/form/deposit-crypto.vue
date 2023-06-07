@@ -1,37 +1,78 @@
 <template>
   <form class="form-deposit-crypto">
-    <atomic-qr :content="popupsData?.deposit || defaultLocalePopupsData?.deposit" :qrLink="qrLink"/>
 
-    <form-input-copy
-      name="walletNumber"
-      :label="getContent(popupsData, defaultLocalePopupsData, 'deposit.addressInputLabel') || ''"
-      :hint="fieldHint"
-      :value="walletNumber"
+    <form-input-dropdown
+      v-if="props.fields?.length"
+      label="Select your network"
+      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.label')"
+      v-model:value="state.selectedNetwork"
+      :options="networkSelectOptions"
+      class="dropdown-network"
+      name="networkSelect"
+      @input="onInputNetwork"
     />
 
-    <template v-if="bonusesList?.length">
-      <atomic-divider/>
+    <div class="dropdown-network__info" v-if="props.fields?.length && !state.selectedNetwork">
+      To continue,<br>
+      select network 👆👆👆
+    </div>
 
-      <template
-        v-for="(bonus, index) in bonusesList"
-        :key="index"
-      >
-        <atomic-bonus v-bind="bonus"/>
+    <div class="form-deposit-crypto__content" :class="{'is-blured': props.fields?.length && !state.selectedNetwork }">
+
+      <atomic-qr :content="popupsData?.deposit || defaultLocalePopupsData?.deposit" :qrLink="qrLink"/>
+
+      <form-input-copy
+        name="walletNumber"
+        :label="getContent(popupsData, defaultLocalePopupsData, 'deposit.addressInputLabel') || ''"
+        :hint="fieldHint"
+        :value="walletNumber"
+      />
+
+      <template v-if="bonusesList?.length">
         <atomic-divider/>
-      </template>
-    </template>
 
-    <bonus-deposit-code />
+        <template
+          v-for="(bonus, index) in bonusesList"
+          :key="index"
+        >
+          <atomic-bonus v-bind="bonus"/>
+          <atomic-divider/>
+        </template>
+      </template>
+
+      <bonus-deposit-code/>
+    </div>
+
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
+  interface NetworkFieldInterface {
+    key: string,
+    fieldType: string,
+    type: string,
+    labels: {
+      [key: string]: string,
+    }[],
+    hints: {
+      [key: string]: string,
+    }[],
+    isRequired: boolean,
+    position: number,
+    options?: {
+      id: null | string,
+      name: string,
+      regex: string,
+    }
+  }
+
   const props = defineProps<{
     amountMax?: number,
     amountMin?: number,
-    method?: string
+    method?: string,
+    fields?: NetworkFieldInterface[],
   }>();
 
   const walletNumber = ref<string>('');
@@ -46,6 +87,8 @@
     defaultLocalePopupsData,
     alertsData,
     defaultLocaleAlertsData,
+    fieldsContent,
+    defaultLocaleFieldsContent,
   } = useGlobalStore();
 
   const { formatBalance, getContent } = useProjectMethods();
@@ -57,9 +100,50 @@
   });
 
   const bonusesList = computed(() => {
-    if (popupsData?.deposit?.bonuses?.length) return popupsData.deposit.bonuses;
+    if (popupsData?.deposit?.bonuses?.length) return popupsData?.deposit.bonuses;
     return defaultLocalePopupsData?.deposit?.bonuses || [];
   });
+
+  const networkSelectOptions = computed(() => {
+    const select = props?.fields && props?.fields?.find((item) => item.fieldType === 'select');
+    if (select?.options) {
+      return select?.options.map((option) => ({
+        value: option.name,
+        code: String(option.id),
+      }));
+    }
+    return [];
+  });
+
+  const state = reactive({
+    selectedNetwork: null,
+    params: {
+      method: props.method || '',
+      currency: activeAccount.value?.currency || '',
+      amount: props.amountMin || 0,
+      accountId: activeAccount.value?.id || '',
+      redirectSuccessUrl: window.location.href,
+      redirectErrorUrl: window.location.href,
+    },
+  });
+
+  const onInputNetwork = async () => {
+    const { depositAccount } = useCoreWalletApi();
+
+    if (state.selectedNetwork && state.selectedNetwork !== 'null') {
+      state.params = { ...state.params, fields: { crypto_network: state.selectedNetwork } };
+    } else {
+      state.params.fields = null;
+    }
+
+    try {
+      const depositResponse = await depositAccount(state.params);
+      walletNumber.value = depositResponse.address;
+      qrLink.value = depositResponse.qrAddress;
+    } catch {
+      showModal('error');
+    }
+  };
 
   onMounted(async () => {
     const profileStore = useProfileStore();
@@ -69,18 +153,10 @@
       return;
     }
 
-    const params = {
-      method: props.method || '',
-      currency: activeAccount.value?.currency || '',
-      amount: props.amountMin || 0,
-      accountId: activeAccount.value?.id || '',
-      redirectSuccessUrl: window.location.href,
-      redirectErrorUrl: window.location.href,
-    };
-
     const { depositAccount } = useCoreWalletApi();
     try {
-      const depositResponse = await depositAccount(params);
+      const depositResponse = await depositAccount(state.params);
+
       walletNumber.value = depositResponse.address;
       qrLink.value = depositResponse.qrAddress;
     } catch {
@@ -90,4 +166,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/deposit-crypto.scss" lang="scss" />
-
