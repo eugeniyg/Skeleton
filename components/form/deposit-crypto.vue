@@ -1,6 +1,5 @@
 <template>
   <form class="form-deposit-crypto">
-
     <form-input-dropdown
       v-if="props.fields?.length"
       :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.label')"
@@ -49,31 +48,13 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
-
-  interface NetworkFieldInterface {
-    key: string,
-    fieldType: string,
-    type: string,
-    labels: {
-      [key: string]: string,
-    }[],
-    hints: {
-      [key: string]: string,
-    }[],
-    isRequired: boolean,
-    position: number,
-    options?: {
-      id: null | string,
-      name: string,
-      regex: string,
-    }
-  }
+  import { PaymentFieldInterface, RequestDepositInterface } from '@platform/frontend-core';
 
   const props = defineProps<{
     amountMax?: number,
     amountMin?: number,
     method?: string,
-    fields?: NetworkFieldInterface[],
+    fields?: PaymentFieldInterface[],
   }>();
 
   const walletNumber = ref<string>('');
@@ -122,8 +103,11 @@
     return [];
   });
 
-  const state = reactive({
-    selectedNetwork: null,
+  const state = reactive<{
+    selectedNetwork: string,
+    params: RequestDepositInterface
+  }>({
+    selectedNetwork: '',
     params: {
       method: props.method || '',
       currency: activeAccount.value?.currency || '',
@@ -143,7 +127,7 @@
         fields: { crypto_network: state.selectedNetwork }
       };
     } else {
-      state.params.fields = null;
+      state.params.fields = undefined;
     }
 
     try {

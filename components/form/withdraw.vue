@@ -1,12 +1,5 @@
 <template>
   <form class="form-withdraw">
-    <pre style="color:white">
-      {{ v$.$invalid }},
-      {{ amountValue > activeAccountFormat.amount }},
-      {{ amountValue < formatAmountMin.amount }},
-      {{ amountValue < formatAmountMin.amount }},
-      {{ isSending }}
-    </pre>
     <form-input-dropdown
       v-if="networkSelectOptions?.length"
       :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.label')"
@@ -46,6 +39,7 @@
           v-model:value="withdrawFormData[field.key]"
           @focus="onFocus(field.key)"
           @blur="v$[field.key]?.$touch()"
+          @input="v$[field.key]?.$touch()"
           :hint="setError(field.key) "
         />
       </template>
@@ -66,8 +60,8 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import useVuelidate from "@vuelidate/core";
-  import {PaymentFieldInterface} from "@platform/frontend-core";
+  import useVuelidate from '@vuelidate/core';
+  import { PaymentFieldInterface } from '@platform/frontend-core';
   import { marked } from 'marked';
 
   const props = defineProps<{
@@ -114,8 +108,17 @@
   const defaultInputSum = formatBalance(activeAccount.value?.currency, 0.01);
   const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : Number(defaultInputSum.amount));
   const amountValue = ref<number>(amountDefaultValue.value);
-  const withdrawFormData = reactive<{ [key: string]: string }>({});
+
+  const startFormData: Record<string, any> = {};
+
+  props.fields.forEach((field: any) => {
+    if (field.key !== 'crypto_network') startFormData[field.key] = '';
+  });
+
+  const withdrawFormData = reactive<{ [key: string]: string }>(startFormData);
   const startRules = props.fields?.reduce((currentRulesObj, currentField) => {
+    if (currentField.key === 'crypto_network') return currentRulesObj;
+
     const rulesArr = [];
     if (currentField.isRequired) rulesArr.push({ rule: 'required' });
     if (currentField.regexp) {
@@ -133,32 +136,42 @@
         });
       }
     }
-    return { ...currentRulesObj, [currentField.key]: rulesArr }
-  }, {})
+    return {
+      ...currentRulesObj,
+      [currentField.key]: rulesArr
+    };
+  }, {});
 
   const withdrawRules = ref<any>(startRules);
 
   const { getFormRules } = useProjectMethods();
   const withdrawFormRules = computed(() => getFormRules(withdrawRules.value));
 
-  const state = reactive({
-    selectedNetwork: null,
+  const state = reactive<{selectedNetwork: string}>({
+    selectedNetwork: '',
   });
 
   const serverFormErrors = ref<{ [key: string]: Maybe<string> }>({});
   const v$ = useVuelidate(withdrawFormRules, withdrawFormData);
 
-  const onFocus = (fieldName:string):void => {
+  const onFocus = (fieldName: string): void => {
     if (serverFormErrors.value[fieldName]) {
       serverFormErrors.value[fieldName] = undefined;
     }
   };
 
-  const setError = (fieldName:string):undefined|{ variant: string, message: any } => {
+  const setError = (fieldName: string): undefined | { variant: string, message: any } => {
     if (v$.value[fieldName]?.$error) {
-      return { variant: 'error', message: v$.value[fieldName].$errors[0].$message };
-    } if (serverFormErrors.value[fieldName]) {
-      return { variant: 'error', message: serverFormErrors.value[fieldName]?.[0] };
+      return {
+        variant: 'error',
+        message: v$.value[fieldName].$errors[0].$message
+      };
+    }
+    if (serverFormErrors.value[fieldName]) {
+      return {
+        variant: 'error',
+        message: serverFormErrors.value[fieldName]?.[0]
+      };
     }
     return undefined;
   };
@@ -180,8 +193,6 @@
     return [];
   });
 
-
-
   const buttonDisabled = computed(() => v$.value.$invalid || amountValue.value > activeAccountFormat.amount
     || amountValue.value < formatAmountMin.amount || amountValue.value > formatAmountMax.amount || isSending.value);
 
@@ -197,19 +208,25 @@
           arguments: regex,
         }
       ]
-    }
+    };
   };
+
+  interface PaymentFieldOptionsInterface {
+    id: string,
+    name: string,
+    regex?: string|string[]
+  }
 
   function getNetworkParams(networkId: string) {
     const { fields } = withdrawMethods.value.find((method) => method?.fields?.length && method?.fields?.length > 1);
     if (fields) {
-      const select = fields.find((item) => item.fieldType === 'select');
+      const select = fields.find((item: PaymentFieldInterface) => item.fieldType === 'select');
       if (select && select?.options) {
-        return select.options.map((option) => ({
+        return select.options.map((option: PaymentFieldOptionsInterface) => ({
           ...option,
           id: String(option.id)
         }))
-          .find((option) => option.id === networkId);
+          .find((option: PaymentFieldOptionsInterface) => option.id === networkId);
       }
     }
   }
@@ -217,24 +234,26 @@
   const getWithdraw = async (): Promise<void> => {
     if (buttonDisabled.value) return;
 
+    const fields = state.selectedNetwork && state.selectedNetwork !== 'null' ? {
+      ...withdrawFormData,
+      crypto_network: state.selectedNetwork
+    } : withdrawFormData;
+
     isSending.value = true;
     const mainCurrencyAmount = getMainBalanceFormat(activeAccountFormat.currency, Number(amountValue.value));
     const params = {
       method: props.method,
-      fields: withdrawFormData,
       currency: activeAccount.value?.currency || '',
       amount: mainCurrencyAmount.amount,
       accountId: activeAccount.value?.id || '',
+      fields,
     };
 
     const { withdrawAccount } = useCoreWalletApi();
 
     try {
-      console.log('send ==>', params, state.selectedNetwork);
-
-
-      // await withdrawAccount(params);
-      // closeModal('withdraw');
+      await withdrawAccount(params);
+      closeModal('withdraw');
       showAlert(alertsData.value?.withdrawalProcessed || defaultLocaleAlertsData.value?.withdrawalProcessed);
     } catch (err: any) {
       if (err.response?.status === 422) {
