@@ -93,7 +93,7 @@
   });
 
   const networkSelectOptions = computed(() => {
-    const select = props?.fields && props?.fields?.find((item) => item.fieldType === 'select');
+    const select = props.fields && props.fields.find((item) => item.fieldType === 'select');
     if (select?.options) {
       return select?.options.map((option) => ({
         value: option.name,

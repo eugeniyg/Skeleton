@@ -38,7 +38,6 @@
           :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.key}.placeholder`) || ''"
           v-model:value="withdrawFormData[field.key]"
           @focus="onFocus(field.key)"
-          @blur="v$[field.key]?.$touch()"
           @input="v$[field.key]?.$touch()"
           :hint="setError(field.key) "
         />
@@ -183,7 +182,7 @@
   });
 
   const networkSelectOptions = computed(() => {
-    const select = props?.fields?.find((field) => field.fieldType === 'select');
+    const select = props.fields.find((field) => field.fieldType === 'select');
     if (select) {
       return select?.options?.map(((option) => ({
         value: option.name,
@@ -218,7 +217,7 @@
   }
 
   function getNetworkParams(networkId: string) {
-    const { fields } = withdrawMethods.value.find((method) => method?.fields?.length && method?.fields?.length > 1);
+    const { fields } = withdrawMethods.value.find((method) => method?.fields?.length > 1);
     if (fields) {
       const select = fields.find((item: PaymentFieldInterface) => item.fieldType === 'select');
       if (select && select?.options) {
