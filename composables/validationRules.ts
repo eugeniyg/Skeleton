@@ -294,7 +294,7 @@ export const regex = (param:any) => validationRules.helpers.withParams(
 
         const regexMain = reg.replace(mod, '').slice(1, -1);
         const paramRegexp = new RegExp(regexMain, flag);
-        console.log(param, value);
+        console.log(param, value, paramRegexp.test(value));
         return paramRegexp.test(value);
       }
 

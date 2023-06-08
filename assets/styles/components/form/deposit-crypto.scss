@@ -44,6 +44,10 @@
       height: 0;
       z-index: 3;
       user-select: none;
+
+      > p {
+        margin: 0;
+      }
     }
   }
 }

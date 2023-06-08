@@ -1,5 +1,12 @@
 <template>
   <form class="form-withdraw">
+    <pre style="color:white">
+      {{ v$.$invalid }},
+      {{ amountValue > activeAccountFormat.amount }},
+      {{ amountValue < formatAmountMin.amount }},
+      {{ amountValue < formatAmountMin.amount }},
+      {{ isSending }}
+    </pre>
     <form-input-dropdown
       v-if="networkSelectOptions?.length"
       :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.label')"
@@ -39,7 +46,7 @@
           v-model:value="withdrawFormData[field.key]"
           @focus="onFocus(field.key)"
           @blur="v$[field.key]?.$touch()"
-          :hint="setError(field.key)"
+          :hint="setError(field.key) "
         />
       </template>
 
@@ -173,6 +180,8 @@
     return [];
   });
 
+
+
   const buttonDisabled = computed(() => v$.value.$invalid || amountValue.value > activeAccountFormat.amount
     || amountValue.value < formatAmountMin.amount || amountValue.value > formatAmountMax.amount || isSending.value);
 
@@ -221,7 +230,9 @@
     const { withdrawAccount } = useCoreWalletApi();
 
     try {
-      console.log('send ==>', params);
+      console.log('send ==>', params, state.selectedNetwork);
+
+
       // await withdrawAccount(params);
       // closeModal('withdraw');
       showAlert(alertsData.value?.withdrawalProcessed || defaultLocaleAlertsData.value?.withdrawalProcessed);

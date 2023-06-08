@@ -1,5 +1,6 @@
 .form-withdraw {
-  margin-bottom: rem(8px) !important;
+  position: relative;
+  grid-gap: 0 !important;
 
   &__content {
     display: flex;
@@ -37,6 +38,10 @@
       height: 0;
       z-index: 3;
       user-select: none;
+
+      > p {
+        margin: 0;
+      }
     }
   }
 }
