@@ -3,8 +3,8 @@
 
     <form-input-dropdown
       v-if="props.fields?.length"
-      label="Select your network"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.label')"
+      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.label')"
+      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.placeholder')"
       v-model:value="state.selectedNetwork"
       :options="networkSelectOptions"
       class="dropdown-network"
@@ -12,10 +12,10 @@
       @input="onInputNetwork"
     />
 
-    <div class="dropdown-network__info" v-if="props.fields?.length && !state.selectedNetwork">
-      To continue,<br>
-      select network 👆👆👆
-    </div>
+    <div class="dropdown-network__info"
+         v-if="props.fields?.length && !state.selectedNetwork"
+         v-html="marked.parse(getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.info'))"
+    />
 
     <div class="form-deposit-crypto__content" :class="{'is-blured': props.fields?.length && !state.selectedNetwork }">
 
@@ -48,6 +48,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { marked } from 'marked';
 
   interface NetworkFieldInterface {
     key: string,
@@ -80,7 +81,10 @@
 
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
-  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
+  const {
+    activeAccount,
+    activeAccountType
+  } = storeToRefs(walletStore);
 
   const {
     popupsData,
@@ -91,7 +95,10 @@
     defaultLocaleFieldsContent,
   } = useGlobalStore();
 
-  const { formatBalance, getContent } = useProjectMethods();
+  const {
+    formatBalance,
+    getContent
+  } = useProjectMethods();
   const fieldHint = computed(() => {
     const formatSum = formatBalance(activeAccount.value?.currency, props.amountMin);
     return {
@@ -131,7 +138,10 @@
     const { depositAccount } = useCoreWalletApi();
 
     if (state.selectedNetwork && state.selectedNetwork !== 'null') {
-      state.params = { ...state.params, fields: { crypto_network: state.selectedNetwork } };
+      state.params = {
+        ...state.params,
+        fields: { crypto_network: state.selectedNetwork }
+      };
     } else {
       state.params.fields = null;
     }
@@ -165,4 +175,4 @@
   });
 </script>
 
-<style src="~/assets/styles/components/form/deposit-crypto.scss" lang="scss" />
+<style src="~/assets/styles/components/form/deposit-crypto.scss" lang="scss"/>

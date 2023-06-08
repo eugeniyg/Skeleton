@@ -1,9 +1,9 @@
 <template>
   <form class="form-withdraw">
     <form-input-dropdown
-      v-if="networkSelectOptions.length"
-      label="Select your network"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.label')"
+      v-if="networkSelectOptions?.length"
+      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.label')"
+      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.placeholder')"
       v-model:value="state.selectedNetwork"
       :options="networkSelectOptions"
       class="dropdown-network"
@@ -11,11 +11,12 @@
       @input="onInputNetwork"
     />
 
-    <div class="dropdown-network__info" v-if="networkSelectOptions.length && !state.selectedNetwork">
-      To continue,<br>
-      select network 👆👆👆
-    </div>
-    <div class="form-withdraw__content" :class="{'is-blured': networkSelectOptions.length && !state.selectedNetwork }">
+    <div class="dropdown-network__info"
+         v-if="networkSelectOptions?.length && !state.selectedNetwork"
+         v-html="marked.parse(getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.info'))"
+    />
+
+    <div class="form-withdraw__content" :class="{'is-blured': networkSelectOptions?.length && !state.selectedNetwork }">
       <form-input-number
         :label="getContent(popupsData, defaultLocalePopupsData, 'withdraw.sumLabel') || ''"
         name="withdrawSum"
@@ -52,7 +53,6 @@
         {{ defaultInputSum.currency }}
       </button-base>
 
-      <!--      <pre style="color:white">{{ forExample }}</pre>-->
     </div>
   </form>
 </template>
@@ -61,6 +61,7 @@
   import { storeToRefs } from 'pinia';
   import useVuelidate from "@vuelidate/core";
   import {PaymentFieldInterface} from "@platform/frontend-core";
+  import { marked } from 'marked';
 
   const props = defineProps<{
     amountMax: number,
@@ -164,7 +165,7 @@
   const networkSelectOptions = computed(() => {
     const select = props?.fields?.find((field) => field.fieldType === 'select');
     if (select) {
-      return select?.options.map(((option) => ({
+      return select?.options?.map(((option) => ({
         value: option.name,
         code: String(option.id),
       })));
