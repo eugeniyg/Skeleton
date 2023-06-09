@@ -56,18 +56,29 @@
   const router = useRouter();
 
   const startGame = async ():Promise<void> => {
-    const redirectUrl = window.location.origin + (window.history.state.back || '');
-    const startParams = {
-      accountId: isDemo.value ? undefined : activeAccount.value?.id,
-      lobbyUrl: redirectUrl,
-      locale: currentLocale.value?.code || 'en',
-      countryCode: profile.value?.country || headerCountry.value || 'UA',
-      demoMode: isDemo.value,
-      platform: isMobile.value ? 1 : 2,
-    };
+  const { showModal } = useLimitsStore();
+  const redirectUrl = window.location.origin + (window.history.state.back || '');
+  const startParams = {
+    accountId: isDemo.value ? undefined : activeAccount.value?.id,
+    lobbyUrl: redirectUrl,
+    locale: currentLocale.value?.code || 'en',
+    countryCode: profile.value?.country || headerCountry.value || 'UA',
+    demoMode: isDemo.value,
+    platform: isMobile.value ? 1 : 2,
+  };
+  try {
     const startResponse = await getStartGame(route.params.id as string, startParams);
     gameStart.value = startResponse.gameUrl;
-  };
+  } catch (error: any) {
+    if ([14100, 14101, 14103].includes(error.data?.error?.code)) {
+        const router = useRouter();
+        const { localizePath } = useProjectMethods();
+        await router.push({ path: localizePath('/profile/limits'), query: {}});
+        showModal('exceededLimitConfirm');
+    } else throw error;
+  }
+};
+
 
   const changeGameMode = async ():Promise<void> => {
     if (isDemo.value && !isLoggedIn.value) {
@@ -134,4 +145,3 @@
 </script>
 
 <style src="~/assets/styles/pages/games/game.scss" lang="scss" />
-
