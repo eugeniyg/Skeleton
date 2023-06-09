@@ -34,7 +34,7 @@
   .dropdown-network {
     margin-bottom: rem(24px);
     position: relative;
-    z-index: 4;
+    z-index: 4 !important;
 
     &__info {
       @include font($heading-4);
