@@ -78,7 +78,7 @@
       if ([14100, 14101, 14103].includes(err.data?.error?.code)) {
         const { localizePath } = useProjectMethods();
         await router.push({ path: localizePath('/profile/limits'), query: {} });
-        showModal('exceededLimitConfirm');
+        showModal('playerLimitedConfirm');
         return { error: { ...err, fatal: false }}
       }
       return { error: { ...err, fatal: true } }

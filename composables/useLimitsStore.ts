@@ -8,6 +8,7 @@ interface LimitsModalInterface {
   addLimit: boolean,
   editLimit: boolean,
   exceededLimitConfirm: boolean,
+  playerLimitedConfirm: boolean,
   confirmLimitUpdate: boolean,
 }
 
@@ -41,6 +42,7 @@ export const useLimitsStore = defineStore('limitsStore', {
       addLimit: false,
       editLimit: false,
       exceededLimitConfirm: false,
+      playerLimitedConfirm: false,
       confirmLimitUpdate: false,
     },
   }),

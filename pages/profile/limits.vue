@@ -49,6 +49,8 @@
 
     <modal-exceeded-limit-confirm/>
 
+    <modal-player-limited-confirm/>
+
     <modal-confirm-limit-update
       :period="state.period"
       :key="confirmModalKey"
