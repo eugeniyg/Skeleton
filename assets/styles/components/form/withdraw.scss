@@ -1,11 +1,6 @@
-.form-deposit-crypto {
+.form-withdraw {
   position: relative;
   grid-gap: 0 !important;
-
-  .row {
-    display: flex;
-    min-height: rem(44px);
-  }
 
   &__content {
     display: flex;
@@ -23,14 +18,13 @@
         top: 0;
         left: 0;
         right: 0;
-        bottom: 0;
+        bottom: -10px;
         background: rgba(28, 33, 43, 0.88);
         backdrop-filter: blur(2px);
         z-index: 2;
       }
     }
   }
-
   .dropdown-network {
     margin-bottom: rem(24px);
     position: relative;
