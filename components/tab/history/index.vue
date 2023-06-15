@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-  import { HistoryTabInterface } from '~/types';
+  import { HistoryTabInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: HistoryTabInterface
@@ -59,54 +59,5 @@
   };
 </script>
 
-<style lang="scss">
-.tabs-history {
-  overflow: hidden;
+<style src="~/assets/styles/components/tab/history/index.scss" lang="scss" />
 
-  > .nav {
-    display: flex;
-    align-items: center;
-    grid-column-gap: rem(24px);
-    border-bottom: 1px solid var(--gray-700);
-    @extend %scrollbar-hide;
-    overflow-x: auto;
-    margin-bottom: 24px;
-
-    > .item {
-      color: var(--color, var(--gray-400));
-      @include font($heading-2);
-      position: relative;
-      padding: rem(10px) 0;
-      transition: color .2s ease-in-out;
-      user-select: none;
-      cursor: var(--cursor, pointer);
-      white-space: nowrap;
-
-      &:after {
-        content: '';
-        display: block;
-        height: 2px;
-        border-radius: 1px;
-        position: absolute;
-        background-color: var(--border-color, transparent);
-        left: var(--left, 50%);
-        right: var(--right, 50%);
-        bottom: 0;
-        transition: all .2s ease-in-out;
-      }
-
-      &.is-selected {
-        --color: var(--white);
-        --border-color: var(--yellow-500);
-        --left: 0;
-        --right: 0;
-        --cursor: text;
-      }
-    }
-  }
-
-  .pagination {
-    margin-top: rem(24px);
-  }
-}
-</style>

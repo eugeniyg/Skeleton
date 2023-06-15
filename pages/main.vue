@@ -91,8 +91,7 @@
     Carousel, Slide, Pagination, Navigation,
   } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
-  import { MainContentInterface, SlideInterface } from '~/types';
-  import FavoriteRecently from '~/components/favorite-recently.vue';
+  import { MainContentInterface, SlideInterface } from '@skeleton/types';
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, contentLocalesArray } = storeToRefs(globalStore);

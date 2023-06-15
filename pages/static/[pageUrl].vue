@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { StaticPageInterface } from '~/types';
+  import { StaticPageInterface } from '@skeleton/types';
 
   const pageContent = ref<StaticPageInterface|undefined>(undefined);
   const defaultLocalePageContent = ref<StaticPageInterface|undefined>(undefined);

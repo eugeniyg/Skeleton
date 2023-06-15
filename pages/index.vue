@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { HomeContentInterface } from '~/types';
+  import { HomeContentInterface } from '@skeleton/types';
 
   const globalStore = useGlobalStore();
   const gameStore = useGamesStore();
@@ -106,14 +106,5 @@
   });
 </script>
 
-<style lang="scss">
-.home {
-  #sports-container {
-    margin-bottom: rem(32px);
+<style src="~/assets/styles/pages/index.scss" lang="scss" />
 
-    @include media(l) {
-      margin-bottom: rem(40px);
-    }
-  }
-}
-</style>

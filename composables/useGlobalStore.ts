@@ -23,7 +23,7 @@ import {
   SiteSidebarInterface,
   UserNavigationInterface,
   ValidationMessageInterface,
-} from '~/types';
+} from '@skeleton/types';
 
 interface GlobalStoreStateInterface {
   currencies: CurrencyInterface[],

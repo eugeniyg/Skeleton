@@ -1,0 +1,38 @@
+.arrows {
+  @extend %flex-items-center;
+  grid-column-gap: 8px;
+
+  .btn-prev, .btn-next {
+    @include box(32px);
+    @extend %flex-all-center;
+    @extend %skip-btn;
+    border-radius: 8px;
+    box-shadow: var(--shadow, none);
+
+    --bg: var(--gray-800);
+    --color: var(--white);
+
+    @include media(l) {
+      &:hover {
+        cursor: pointer;
+        --bg: var(--gray-800);
+        --color: var(--yellow-500);
+        --shadow: 0 0 0 #{rem(3px)} var(--gray-900);
+      }
+    }
+
+    &[disabled] {
+      --color: var(--gray-600);
+      --bg: var(--gray-800);
+      cursor: default;
+    }
+  }
+
+  .btn-prev {
+    transform: rotate(90deg);
+  }
+
+  .btn-next {
+    transform: rotate(-90deg);
+  }
+}

@@ -1,0 +1,34 @@
+.search {
+  background-color: var(--bg, var(--gray-800));
+  box-shadow: var(--box--shadow, 0 0 12px rgba(0, 0, 0, 0.16));
+  padding: var(--padding-search, #{rem(4px)} #{rem(16px)});
+  position: var(--position, absolute);
+  width: var(--width, 100%);
+  top: var(--top, #{rem(64px)});
+  left: var(--left, 0);
+  right: 0;
+  margin-left: auto;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility .2s, opacity .2s ease-in-out;
+
+  .app-header & {
+    &.is-show {
+      visibility: visible;
+      opacity: 1;
+
+      ~ .btn-search {
+        visibility: hidden;
+      }
+    }
+
+    @include media(l) {
+      --position: relative;
+      --left: #{rem(48px)};
+      --top: 0;
+      --width: #{rem(320px)};
+      --padding-search: 0;
+      --bg: transparent;
+    }
+  }
+}

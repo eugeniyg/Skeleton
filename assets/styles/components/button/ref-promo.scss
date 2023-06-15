@@ -1,0 +1,15 @@
+.btn-ref-promo {
+  grid-column-gap: rem(4px);
+  margin: 0 auto;
+  @include font($body-2);
+  color: var(--color, var(--gray-300));
+  transition: color .2s ease-in-out;
+
+  &:hover {
+    --color: var(--yellow-500);
+  }
+
+  .icon {
+    --color: var(--gray-400);
+  }
+}

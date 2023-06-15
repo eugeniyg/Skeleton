@@ -1,0 +1,86 @@
+.tooltip {
+  position: relative;
+  z-index: 0;
+  min-width: rem(20px);
+  min-height: rem(20px);
+  display: flex;
+  align-items: center;
+  grid-column-gap: rem(4px);
+  @extend %skip-btn;
+
+  .icon {
+    transition: color .2s ease-in-out;
+    cursor: pointer;
+    --icon-size: #{rem(20px)};
+    --color: var(--gray-500);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      --tooltip-visibility: visible;
+
+      .icon {
+        --color: var(--white);
+      }
+    }
+  }
+
+  &.is-show {
+    --visibility: visible;
+    --opacity: 1;
+
+    .icon {
+      --color: var(--white);
+    }
+  }
+
+  &__message {
+    @include font($body-1);
+    position: fixed;
+    display: grid;
+    background-color: var(--gray-700);
+    grid-gap: rem(4px);
+    padding: rem(8px);
+    margin: 0;
+    text-decoration: none;
+    color: var(--white);
+    min-width: min-content;
+    max-width: #{rem(240px)};
+    left: 0;
+    top: 0;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+    border-radius: 2px;
+    visibility: var(--visibility, hidden);
+    opacity: var(--opacity, 0);
+    transform: translateY(calc(-100% - 4px));
+    transition: opacity .2s ease-in;
+    pointer-events: none;
+    z-index: 7;
+
+    &.is-active {
+      --visibility: visible;
+      --opacity: 1;
+
+      [data-tooltip-parent] & {
+        --visibility: visible;
+        --opacity: 1;
+      }
+    }
+  }
+
+  .title {
+    @include font($heading-1);
+    margin: 0;
+    padding: 0;
+    text-decoration: inherit;
+    color: inherit;
+  }
+
+  .text {
+    @include font($body-1);
+    margin: 0;
+    padding: 0;
+    text-decoration: inherit;
+    color: inherit;
+  }
+}

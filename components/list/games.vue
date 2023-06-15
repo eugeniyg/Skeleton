@@ -46,43 +46,5 @@
   });
 </script>
 
-<style lang="scss">
-.list-games {
-  background-color: var(--gray-900);
-  @extend %flex-items-center;
-  grid-column-gap: rem(8px);
-  padding: var(--padding, #{rem(8px)});
-  border-radius: 8px;
-  max-width: rem(200px);
-  margin: 0 auto;
+<style src="~/assets/styles/components/list/games.scss" lang="scss" />
 
-  .item {
-    overflow: hidden;
-    display: block;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
-    border-radius: 8px;
-  }
-
-  .img {
-    display: block;
-    max-width: 100%;
-    transition: max-width .2s ease-in-out;
-    width: var(--img-width, #{rem(40px)});
-    min-width: var(--img-width, #{rem(40px)});
-    height: var(--img-height, #{rem(40px)});
-  }
-
-  .is-compact & {
-    @include media(l) {
-      .item:not(:first-child) {
-        display: none;
-      }
-
-      --img-width: #{rem(40px)};
-      --img-height: #{rem(40px)};
-
-      padding: 0;
-    }
-  }
-}
-</style>

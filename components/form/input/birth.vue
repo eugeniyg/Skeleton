@@ -134,27 +134,5 @@
   };
 </script>
 
-<style lang="scss">
-.input-birth {
-  display: grid;
-  grid-column-gap: rem(8px);
-  grid-template-areas:
-    "label label label"
-    ". . ."
-    "hint hint hint";
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  width: 100%;
+<style src="~/assets/styles/components/form/input/birth.scss" lang="scss" />
 
-  @extend %input-label;
-
-  .dropdown {
-    //min-width: rem(120px);
-    flex-grow: 1;
-  }
-
-  .hint {
-    grid-area: hint;
-    margin-top: rem(6px);
-  }
-}
-</style>

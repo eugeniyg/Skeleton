@@ -23,10 +23,4 @@
   });
 </script>
 
-<style lang="scss">
-.row-device {
-  .icon {
-    --color: var(--white);
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/row-device.scss" lang="scss" />

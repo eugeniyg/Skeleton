@@ -84,52 +84,5 @@
   const showBlock = computed(() => !loadingRecently.value && (recentlyGames.value.length || favoriteGames.value.length));
 </script>
 
-<style lang="scss">
-.favorite-recently {
-  @include radius(16px);
-  padding: rem(16px) rem(16px) rem(8px);
-  background-color: var(--gray-900);
+<style src="~/assets/styles/components/favorite-recently.scss" lang="scss" />
 
-  @include media(sm) {
-    padding: rem(16px) rem(24px);
-  }
-
-  .header {
-    @extend %flex-items-center;
-    grid-column-gap: 4px;
-    margin-bottom: 16px;
-
-    @include media(sm) {
-      display: none;
-    }
-
-    .btn {
-      @include font($body-1);
-      --width: 100%;
-      --color: var(--gray-400);
-
-      &.is-active {
-        --bg: var(--gray-800);
-        --color: var(--white);
-      }
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
-
-  @include media(sm) {
-    .content {
-      display: grid;
-      grid-auto-flow: column;
-      grid-column-gap: rem(24px);
-      grid-auto-columns: minmax(0, 1fr);
-    }
-
-    .tab {
-      display: block;
-    }
-  }
-}
-</style>

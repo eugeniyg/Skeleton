@@ -1,8 +1,8 @@
 import { GameImagesInterface } from '@platform/frontend-core/dist/module';
 import get from 'lodash/get';
 import * as projectRules from './validationRules';
-import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
-import { SeoContentInterface } from '~/types';
+import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
+import { SeoContentInterface } from '@skeleton/types';
 
 export const useProjectMethods = () => {
   const createValidationRules = (fields:any[], includeContext?:boolean):any => {

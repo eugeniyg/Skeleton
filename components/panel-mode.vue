@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-  import { GamePageInterface } from '~/types';
+  import { GamePageInterface } from '@skeleton/types';
 
   const props = defineProps<{
     gameContent: GamePageInterface
@@ -52,33 +52,5 @@
   };
 </script>
 
-<style lang="scss">
-.panel-mode {
-  display: flex;
-  background-color: var(--gray-900);
-  padding: rem(8px) rem(16px);
-  align-items: center;
-  grid-column-gap: rem(8px);
-  user-select: none;
+<style src="~/assets/styles/components/panel-mode.scss" lang="scss" />
 
-  .title {
-    @include font($body-2);
-    color: var(--gray-300);
-  }
-
-  .btn-primary {
-    margin-right: auto;
-  }
-
-  .switch {
-    display: flex;
-    align-items: center;
-    grid-column-gap: rem(8px);
-  }
-
-  .switch-label {
-    @include font($heading-2);
-    color: var(--gray-300);
-  }
-}
-</style>

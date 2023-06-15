@@ -26,8 +26,5 @@
   const { getContent } = useProjectMethods();
 </script>
 
-<style lang="scss">
-.modal-sign-in {
-  @extend %modal-info;
-}
-</style>
+<style src="~/assets/styles/components/modal/sign-in.scss" lang="scss" />
+

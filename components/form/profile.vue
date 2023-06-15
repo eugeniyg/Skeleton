@@ -54,7 +54,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import fieldsTypeMap from '~/maps/fieldsTypeMap.json';
+  import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
   const props = defineProps<{
     saveButton?: string,
@@ -124,30 +124,5 @@
   };
 </script>
 
-<style lang="scss">
-.form-profile {
-  display: grid;
-  grid-gap: rem(16px);
+<style src="~/assets/styles/components/form/profile.scss" lang="scss" />
 
-  .row {
-    display: flex;
-    grid-gap: rem(24px);
-    flex-direction: var(--flex-direction, column);
-
-    &:first-child {
-      display: flex;
-    }
-
-    @include media(l) {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      --flex-direction: row;
-    }
-  }
-
-  .actions {
-    display: flex;
-    grid-gap: rem(8px);
-  }
-}
-</style>

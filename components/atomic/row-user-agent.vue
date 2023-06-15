@@ -9,17 +9,4 @@
   const props = defineProps<{tooltip: string}>();
 </script>
 
-<style lang="scss">
-.row-user-agent {
-  color: var(--color, var(--white));
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  grid-column-gap: rem(4px);
-  @include font($body-2);
-
-  .tooltip {
-    margin-left: auto;
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/row-user-agent.scss" lang="scss" />

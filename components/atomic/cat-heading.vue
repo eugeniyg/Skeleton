@@ -9,22 +9,4 @@
   const props = defineProps<{icon: string}>();
 </script>
 
-<style lang="scss">
-.cat-heading {
-  display: flex;
-  align-items: center;
-  @include font($heading-4);
-  color: var(--white);
-  grid-column-gap: rem(8px);
-  padding-top: rem(8px);
-
-  .icon {
-    margin-left: 16px;
-    --color: var(--gray-400);
-
-    @include media(md) {
-      margin-left: 24px;
-    }
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/cat-heading.scss" lang="scss" />

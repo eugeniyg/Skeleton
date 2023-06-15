@@ -1,6 +1,6 @@
 <template>
   <div class="not-found">
-    <img class="img" src="@/assets/img/404.png" />
+    <img class="img" src="/img/404.png" />
 
     <div class="title">
       {{ errorPageContent?.title || defaultLocaleErrorPageContent?.title || pageStaticContent.title }}
@@ -36,6 +36,4 @@
   const { errorPageContent, defaultLocaleErrorPageContent } = storeToRefs(globalStore);
 </script>
 
-<style lang="scss">
-@import "scss/error";
-</style>
+<style src="~/assets/styles/error.scss" lang="scss" />

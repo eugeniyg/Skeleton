@@ -1,0 +1,68 @@
+.filters {
+  .label {
+    --color: var(--gray-500);
+  }
+}
+
+.filters-bonuses-history {
+  display: grid;
+  align-items: center;
+  grid-gap: rem(16px);
+  grid-template-areas: "col1 col2" "col3 col3";
+  grid-template-columns: repeat(2, 1fr);
+
+  .dropdown {
+    width: 100%;
+
+    &:nth-child(1) {
+      grid-area: col1;
+    }
+
+    &:nth-child(2) {
+      grid-area: col2;
+    }
+  }
+
+  .input-date {
+    grid-area: col3;
+    width: 100%;
+  }
+
+  @include media(md) {
+    grid-template-areas: "col1 col2 col3";
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.filters-transactions-history {
+  display: grid;
+  align-items: center;
+  grid-gap: rem(16px);
+  grid-template-columns: repeat(2, 1fr);
+
+  .dropdown {
+    width: 100%;
+
+    &:last-of-type {
+      grid-column: 1/3;
+
+      @include media(md) {
+        grid-column: auto;
+        width: 2fr;
+      }
+    }
+  }
+
+  .input-date {
+    width: 100%;
+    grid-column: 1/3;
+
+    @include media(md) {
+      grid-column: auto;
+    }
+  }
+
+  @include media(md) {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+  }
+}

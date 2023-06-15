@@ -1,0 +1,123 @@
+.group-games {
+  display: grid;
+  align-items: center;
+  grid-template-areas:
+    "icon heading heading arrows"
+    "items items items items"
+    "btn-show-all btn-show-all btn-show-all btn-show-all";
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
+  grid-column-gap: var(--column-gap, #{rem(8px)});
+  grid-row-gap: var(--row-gap, #{rem(16px)});
+  position: relative;
+
+  @include media(xs) {
+    grid-template-areas:
+    "icon heading btn-show-all arrows"
+    "items items items items";
+  }
+
+  > [data-icon] {
+    font-size: rem(20px);
+    grid-area: icon;
+  }
+
+  > .icon {
+    grid-area: icon;
+    margin-left: rem(16px);
+    --icon-size: #{rem(20px)};
+    --color: var(--gray-400);
+
+    @include media(sm) {
+      margin-left: rem(24px);
+    }
+  }
+
+  .btn-show-all {
+    grid-area: btn-show-all;
+    @include font($heading-1);
+
+    --font-size: #{rem(12px)};
+    --color: var(--gray-500);
+    --width: auto;
+
+    @include media(xs) {
+      padding: 0;
+      background: none;
+    }
+
+    @include media(sm) {
+      @include upd-font($heading-2);
+
+      &:hover {
+        --color: var(--white);
+        --bg: transparent;
+      }
+    }
+  }
+
+  > .arrows {
+    grid-area: arrows;
+    margin-right: rem(16px);
+
+    @include media(sm) {
+      margin-left: rem(24px);
+      margin-right: rem(24px);
+    }
+  }
+
+  > .title {
+    flex-grow: 1;
+    grid-area: heading;
+    @include font($heading-4);
+    color: var(--white);
+    margin: 0;
+  }
+
+  > .items {
+    grid-area: items;
+    display: var(--display, flex);
+    align-items: center;
+    overflow-x: auto;
+    margin: rem(-16px) rem(-16px) 0;
+    padding: rem(16px) rem(16px) 0;
+    scroll-padding: rem(16px);
+    grid-column-gap: 8px;
+    scroll-snap-type: x mandatory;
+
+    @include media(sm) {
+      margin: rem(-16px) 0 0 0;
+      padding: rem(16px) 0 0 0;
+      grid-column-gap: 16px;
+      scroll-padding: 0;
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &.disabled-scroll-block {
+      pointer-events: none !important;
+    }
+  }
+
+  .load-more {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+    margin-left: rem(-8px);
+  }
+
+  .titles {
+    .title {
+      @include font($heading-4);
+      color: var(--white);
+      margin: 0;
+    }
+
+    .sub-title {
+      @include font($body-2);
+      color: var(--gray-400);
+      margin: 0;
+    }
+  }
+}

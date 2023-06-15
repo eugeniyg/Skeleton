@@ -7,8 +7,6 @@ import {
   WinnerInterface,
 } from '@platform/frontend-core/dist/module';
 import throttle from 'lodash/throttle';
-import { useGlobalStore } from '~/composables/useGlobalStore';
-import { useProfileStore } from '~/composables/useProfileStore';
 
 interface GamesStoreStateInterface {
   gameProviders: GameProviderInterface[],

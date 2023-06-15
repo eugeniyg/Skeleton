@@ -80,19 +80,5 @@
   };
 </script>
 
-<style lang="scss">
-.form-join {
-  display: grid;
-  grid-row-gap: rem(16px);
+<style src="~/assets/styles/components/form/forgot-pass.scss" lang="scss" />
 
-  hr {
-    margin: 0;
-  }
-
-  .btn-primary {
-    --width: 100%;
-    //--bg: var(--yellow-600);
-    //--shadow: inset 0 3px 0 #B07B00;
-  }
-}
-</style>
