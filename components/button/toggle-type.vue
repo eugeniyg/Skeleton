@@ -20,31 +20,5 @@
   };
 </script>
 
-<style lang="scss">
-.btn-toggle-type {
-  @extend %skip-btn;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  right: 16px;
-  padding: 0;
-  top: 0;
-  bottom: 0;
-  width: rem(28px);
+<style src="~/assets/styles/components/button/toggle-type.scss" lang="scss" />
 
-  .icon {
-    width: rem(20px);
-    height: rem(20px);
-    --color: var(--gray-400);
-  }
-
-  &:hover {
-    cursor: pointer;
-
-    .icon {
-      --color: var(--white);
-    }
-  }
-}
-</style>

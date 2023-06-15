@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
   import { PaginationMetaInterface, SpinHistoryInterface } from '@platform/frontend-core/dist/module';
-  import { HistoryTabInterface } from '~/types';
+  import { HistoryTabInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: HistoryTabInterface,
@@ -75,28 +75,5 @@
   onMounted(() => { spinsRequest(); });
 </script>
 
-<style lang="scss">
-.tb-spins-history {
-  @extend %tb;
-  @extend %scrollbar;
-  overflow-x: auto;
-  overscroll-behavior: auto;
-  padding-bottom: rem(8px);
+<style src="~/assets/styles/components/tab/history/spins.scss" lang="scss" />
 
-  .row {
-    grid-template-columns:
-      minmax(rem(152px), 1fr)
-      minmax(rem(158px), 1fr)
-      minmax(rem(158px), 1fr)
-      minmax(rem(100px), 1fr);
-
-    @include media(md) {
-      grid-template-columns:
-      minmax(rem(278px), 1fr)
-      minmax(rem(158px), 1fr)
-      minmax(rem(158px), 1fr)
-      minmax(rem(100px), 1fr)
-    }
-  }
-}
-</style>

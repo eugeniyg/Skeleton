@@ -35,7 +35,7 @@
     PlayerBonusInterface,
     PaginationMetaInterface,
   } from '@platform/frontend-core/dist/module';
-  import { HistoryBonusesInterface, HistoryTabInterface } from '~/types';
+  import { HistoryBonusesInterface, HistoryTabInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: HistoryTabInterface,
@@ -104,55 +104,5 @@
   });
 </script>
 
-<style lang="scss">
-.nav-tabs {
-  display: flex;
-  background-color: var(--gray-800);
-  border: 4px solid var(--gray-800);
-  border-radius: 12px;
-  margin-bottom: 16px;
+<style src="~/assets/styles/components/tab/history/bonuses.scss" lang="scss" />
 
-  &__item {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 32px;
-    @include font($body-1);
-    padding: rem(2px);
-    border-radius: 8px;
-    background-color: var(--bg, inherit);
-    color: var(--color, inherit);
-    transition: all .2s ease-in-out;
-    grid-column-gap: rem(4px);
-    --color: var(--gray-300);
-
-    &:hover {
-      cursor: pointer;
-    }
-
-    &.is-active {
-      --bg: var(--gray-700);
-      --color: var(--white) !important;
-    }
-  }
-}
-
-.tb-bonuses-history {
-  @extend %tb;
-  @extend %scrollbar;
-  overflow-x: auto;
-  overscroll-behavior: auto;
-  padding-bottom: rem(8px);
-
-  .row {
-    grid-template-columns:
-      minmax(rem(156px), 1fr)
-      minmax(rem(105px), 1fr)
-      minmax(rem(158px), 1fr)
-      minmax(rem(75px), 1fr)
-      minmax(rem(100px), 1fr)
-      minmax(rem(100px), 1fr);
-  }
-}
-</style>

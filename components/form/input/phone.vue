@@ -39,7 +39,7 @@
   import parsePhoneNumber from 'libphonenumber-js';
   import { storeToRefs } from 'pinia';
   import { vMaska } from 'maska';
-  import { PhoneCodeInterface } from '~/types';
+  import { PhoneCodeInterface } from '@skeleton/types';
 
   const props = defineProps({
     label: {
@@ -119,51 +119,5 @@
   };
 </script>
 
-<style lang="scss">
-.input-phone {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: minmax(0, auto) auto;
-  grid-template-areas: "label label";
-  grid-column-gap: 8px;
-  width: 100%;
+<style src="~/assets/styles/components/form/input/phone.scss" lang="scss" />
 
-  .hint {
-    margin-top: rem(6px);
-    grid-column: 1/3;
-  }
-
-  @extend %input-label;
-
-  .dropdown {
-    min-width: rem(150px);
-  }
-
-  .field {
-    width: 100%;
-    background-color: var(--bg, var(--gray-800));
-    padding: var(--input-padding-y, #{rem(11px)}) rem(16px);
-    border: 1px solid var(--border-color, var(--gray-800));
-    color: var(--color, var(--white));
-    border-radius: 8px;
-    @include font($body-2);
-    transition: border-color .2s ease-in-out;
-    @extend %inputMask;
-    font-family: 'Rubik', sans-serif;
-
-    &::placeholder {
-      color: var(--gray-400);
-    }
-
-    &:focus {
-      --border-color: var(--gray-300);
-    }
-  }
-
-  &.has-error {
-    .field {
-      --border-color: var(--red-800);
-    }
-  }
-}
-</style>

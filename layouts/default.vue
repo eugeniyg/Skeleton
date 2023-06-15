@@ -40,7 +40,7 @@
     <modal-success />
     <modal-error />
     <modal-confirm />
-    <modal-fiat/>
+    <modal-fiat />
 
     <atomic-alert />
   </div>

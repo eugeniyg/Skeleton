@@ -11,23 +11,4 @@
   const props = defineProps<{title?: string, subTitle?: string}>();
 </script>
 
-<style lang="scss">
-.titles {
-  display: grid;
-  grid-row-gap: rem(4px);
-
-  .title {
-    @include font($heading-2);
-    color: var(--color, var(--gray-400));
-    margin: 0;
-    padding: 0;
-  }
-
-  .sub-title {
-    @include font($body-2);
-    color: var(--color, var(--gray-400));
-    margin: 0;
-    padding: 0;
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/titles.scss" lang="scss" />

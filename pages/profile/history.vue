@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { HistoryTabInterface, ProfileHistoryInterface } from '~/types';
+  import { HistoryTabInterface, ProfileHistoryInterface } from '@skeleton/types';
 
   const globalStore = useGlobalStore();
   const { contentLocalesArray } = storeToRefs(globalStore);

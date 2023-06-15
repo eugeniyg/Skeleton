@@ -24,33 +24,5 @@
   });
 </script>
 
-<style lang="scss">
-.list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  flex-shrink: 0;
+<style src="~/assets/styles/components/list/base.scss" lang="scss" />
 
-  .header {
-    @include font($heading-2);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--padding, 0 0 #{rem(8px)} 0);
-    color: var(--gray-300);
-    margin: 0;
-    width: 100%;
-
-    * {
-      padding: 0;
-      margin: 0;
-    }
-  }
-
-  .items {
-    display: var(--display, flex);
-    flex-wrap: wrap;
-    grid-gap: rem(8px);
-  }
-}
-</style>

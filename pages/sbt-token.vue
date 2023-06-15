@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { TokenContentInterface } from '~/types';
+  import { TokenContentInterface } from '@skeleton/types';
 
   const globalStore = useGlobalStore();
   const { contentLocalesArray } = storeToRefs(globalStore);
@@ -25,44 +25,5 @@
   setPageSeo(tokenContent?.seo);
 </script>
 
-<style lang="scss">
-.sbt-token {
-  display: grid;
-  grid-template-areas:
-    "container"
-    "seo";
-  align-items: var(--align-items, flex-end);
-  grid-template-columns: 1fr auto;
-  width: 100%;
-  height: 100%;
+<style src="~/assets/styles/pages/sbt-token.scss" lang="scss" />
 
-  .container {
-    background-color: var(--black-primary);
-    grid-area: container;
-    position: relative;
-    width: 100%;
-    height: calc(100vh - 56px);
-    transform: translateY(#{rem(-16px)});
-    @media (orientation: landscape) {
-      height: 100vh;
-    }
-
-    @include media(md) {
-      height: 100vh;
-    }
-
-    iframe {
-      display: block;
-      border: none !important;
-
-      @include media(l) {
-        position: relative;
-      }
-    }
-  }
-
-  .text-wrap {
-    grid-area: seo;
-  }
-}
-</style>

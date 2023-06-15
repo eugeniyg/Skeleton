@@ -143,37 +143,5 @@
   });
 </script>
 
-<style lang="scss">
-.security-documents {
-  display: grid;
-  width: 100%;
-  grid-template-areas:
-  "identity identity"
-  "address address"
-  "payment payment";
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: rem(16px);
+<style src="~/assets/styles/components/profile/security-documents.scss" lang="scss" />
 
-  @include media(sm) {
-    grid-template-areas:
-    "identity identity"
-    "address payment";
-  }
-
-  @include media(md) {
-    grid-gap: rem(24px);
-  }
-
-  .identity {
-    grid-area: identity;
-  }
-
-  .address {
-    grid-area: address;
-  }
-
-  .payment {
-    grid-area: payment;
-  }
-}
-</style>

@@ -64,7 +64,7 @@
   } from '@platform/frontend-core/dist/module';
   import { storeToRefs } from 'pinia';
   import debounce from 'lodash/debounce';
-  import { CategoryGamesInterface } from '~/types';
+  import { CategoryGamesInterface } from '@skeleton/types';
 
   definePageMeta({
     middleware: 'games-collection',
@@ -224,108 +224,5 @@
   });
 </script>
 
-<style lang="scss">
-.category {
-  display: grid;
-  grid-gap: rem(16px);
+<style src="~/assets/styles/pages/games/index.scss" lang="scss" />
 
-  .nav-cat-wrap {
-    --margin-top: 0;
-    --margin-bottom: 0;
-  }
-}
-
-.game-filter {
-  display: flex;
-  justify-content: space-between;
-  grid-column-gap: 40px;
-  grid-row-gap: 16px;
-  flex-wrap: wrap;
-
-  .icon {
-    --icon-size: 20px;
-  }
-
-  &__search {
-    display: flex;
-    flex-grow: 1;
-
-    .input-search {
-      flex-grow: 1;
-
-      .field {
-        border-radius: 12px 0 0 12px;
-        text-overflow: ellipsis;
-      }
-    }
-  }
-
-  .dropdown {
-    --select-width: auto;
-
-    .selected {
-      border-radius: 0 16px 16px 0;
-      height: 100%;
-      min-height: auto;
-      border-left-color: var(--gray-700);
-      padding: 8px 8px 8px 16px;
-
-      .icon {
-        position: relative;
-        right: 0;
-      }
-    }
-
-    .items {
-      border-radius: 8px;
-      right: 0;
-      width: auto;
-      left: auto;
-    }
-
-    .item {
-      span {
-        max-width: none;
-        overflow: unset;
-      }
-
-      .icon {
-        --icon-transform: rotate(0) translatex(0);
-      }
-    }
-
-    &.is-open {
-      .selected {
-        border-left-color: var(--white);
-      }
-    }
-
-    &.game-filter__dropdown {
-      --select-width: fit-content;
-
-      .items {
-        width: fit-content;
-        max-width: none;
-        left: auto
-      }
-
-      .selected {
-        grid-template-columns: 1fr auto;
-        padding-right: 10px;
-      }
-
-      .item {
-        padding: rem(8px) rem(24px) rem(8px) rem(8px);
-
-        .icon {
-          position: absolute;
-          right: 0;
-          top: 0;
-          bottom: 0;
-          margin: auto;
-        }
-      }
-    }
-  }
-}
-</style>

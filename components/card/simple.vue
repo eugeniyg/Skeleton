@@ -46,45 +46,5 @@
   };
 </script>
 
-<style lang="scss">
-.card {
-  flex-shrink: 0;
-  width: var(--width, 25%);
-  height: var(--height, auto);
-  align-items: flex-start;
-  cursor: pointer;
-  padding: 0 4px;
+<style src="~/assets/styles/components/card/simple.scss" lang="scss" />
 
-  @include media(md) {
-    padding: 0 8px;
-  }
-
-  .img {
-    @include ratio(66px, 66px);
-    border-radius: 8px;
-    background-repeat: var(--bg-repeat, no-repeat);
-    background-size: var(--bg-size, cover);
-    background-position: var(--bg-position, top center);
-  }
-
-  .title {
-    display: none;
-    @include font($heading-1);
-    color: var(--white);
-    margin-top: rem(8px);
-  }
-
-  @include media(xs) {
-    max-width: rem(66px);
-  }
-
-  @include media(md) {
-    max-width: rem(96px);
-
-    .title {
-      display: block;
-      @include upd-font($body-1);
-    }
-  }
-}
-</style>

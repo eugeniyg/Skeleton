@@ -53,44 +53,5 @@
   const recommendedCategory = currentLocaleCollections.find((collection) => collection.identity === 'recommended');
 </script>
 
-<style lang="scss">
-.box-game {
-  display: grid;
-  grid-template-areas:
-    "container nav"
-    "panel nav";
-  align-items: var(--align-items, flex-end);
-  grid-template-columns: 1fr auto;
-  width: 100%;
-  height: 100%;
+<style src="~/assets/styles/components/box-game.scss" lang="scss" />
 
-  .container {
-    background-color: var(--black-primary);
-    grid-area: container;
-    position: relative;
-    width: 100%;
-    height: calc(var(--vh, 1vh) * 100);
-
-    @include media(md) {
-      height: calc(100vh - 160px);
-    }
-
-    iframe {
-      display: block;
-      border: none !important;
-
-      @include media(l) {
-        position: relative;
-      }
-    }
-  }
-
-  .nav-game {
-    grid-area: nav;
-  }
-
-  .panel-mode {
-    grid-area: panel;
-  }
-}
-</style>

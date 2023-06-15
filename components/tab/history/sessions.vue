@@ -64,7 +64,7 @@
   import {
     PaginationMetaInterface, SessionInterface,
   } from '@platform/frontend-core/dist/module';
-  import { HistorySessionsInterface, HistoryTabInterface } from '~/types';
+  import { HistorySessionsInterface, HistoryTabInterface } from '@skeleton/types';
 
   const props = defineProps<{
     content: HistoryTabInterface,
@@ -120,39 +120,5 @@
   const format = (str:string) => str.split(',').join('<br>');
 </script>
 
-<style lang="scss">
-.tb-sessions-history {
-  @extend %tb;
-  @extend %scrollbar;
-  overflow-x: auto;
-  overscroll-behavior: auto;
-  position: relative;
-  padding-bottom: rem(8px);
+<style src="~/assets/styles/components/tab/history/sessions.scss" lang="scss" />
 
-  .td-date {
-    span {
-      @include font($body-1);
-    }
-  }
-
-  .row {
-    grid-template-columns:
-      minmax(rem(52px), 1fr)
-      minmax(rem(85px), 1fr)
-      minmax(rem(190px), 1fr)
-      minmax(rem(102px), 1fr)
-      minmax(rem(106px), 1fr)
-      minmax(rem(64px), 1fr);
-
-    @include media(sm) {
-      grid-template-columns:
-      minmax(rem(52px), 1fr)
-      minmax(rem(85px), 1fr)
-      minmax(rem(285px), 1fr)
-      minmax(rem(102px), 1fr)
-      minmax(rem(106px), 1fr)
-      minmax(rem(64px), 1fr);
-    }
-  }
-}
-</style>

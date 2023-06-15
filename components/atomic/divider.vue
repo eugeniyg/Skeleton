@@ -2,20 +2,4 @@
   <hr/>
 </template>
 
-<style lang="scss">
-hr {
-  display: block;
-  height: 1px;
-  background-color: var(--gray-700);
-  margin: var(--margin, 24px 0);
-  border: 0;
-
-  .app-footer & {
-    --margin: 24px 0;
-  }
-
-  .drawer & {
-    --margin:  16px -20px;
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/divider.scss" lang="scss" />

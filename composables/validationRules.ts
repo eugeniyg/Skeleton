@@ -287,13 +287,18 @@ export const regex = (param:any) => validationRules.helpers.withParams(
     (value:any) => {
       if (!validationRules.helpers.req(value)) return true;
 
-      const mod = /[g|i|m]{1,3}$/;
-      let flag = param.match(mod);
-      flag = flag ? flag[0] : '';
+      const testRegexp = (reg: string) => {
+        const mod = /[g|i|m]{1,3}$/;
+        const matchFlags:string[]|null = reg.match(mod);
+        const flag:string = matchFlags ? matchFlags[0] : '';
 
-      const regexMain = param.replace(mod, '');
-      const paramRegexp = new RegExp(regexMain, flag);
-      return paramRegexp.test(value);
+        const regexMain = reg.replace(mod, '').slice(1, -1);
+        const paramRegexp = new RegExp(regexMain, flag);
+
+        return paramRegexp.test(value);
+      }
+
+      return Array.isArray(param) ? param.some((item) => testRegexp(item)) : testRegexp(param);
     },
   );
 

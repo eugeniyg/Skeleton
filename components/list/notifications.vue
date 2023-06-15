@@ -50,31 +50,5 @@
   const emit = defineEmits(['read-all']);
 </script>
 
-<style lang="scss">
-.notifications {
-  display: grid;
-  grid-gap: rem(8px);
+<style src="~/assets/styles/components/list/notification.scss" lang="scss" />
 
-  .header {
-    @include font($body-1);
-    color: var(--gray-400);
-    justify-content: space-between;
-    align-items: center;
-    display: flex;
-    margin-bottom: rem(16px);
-  }
-
-  hr {
-    --margin: 0;
-  }
-
-  .items {
-    display: grid;
-    grid-gap: rem(8px);
-  }
-
-  > .btn-ghost {
-    --width: 100%;
-  }
-}
-</style>

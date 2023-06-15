@@ -1,8 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { AccountInterface, WebSocketResponseInterface } from '@platform/frontend-core/dist/module';
-import { useGlobalStore } from '~/composables/useGlobalStore';
-import { useProfileStore } from '~/composables/useProfileStore';
-import { useProjectMethods } from '~/composables/useProjectMethods';
 
 interface WalletStateInterface {
   accounts: AccountInterface[],
