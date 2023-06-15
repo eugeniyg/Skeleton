@@ -98,7 +98,7 @@
   } = useProjectMethods();
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
   const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
-  const activeAccountFormat = formatBalance(activeAccount.value?.currency, activeAccount.value?.balance);
+  const activeAccountWithdrawalFormat = formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance);
   const fieldHint = computed(() => ({
     message: `${getContent(popupsData, defaultLocalePopupsData, 'withdraw.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
   }));
@@ -192,8 +192,11 @@
     return [];
   });
 
-  const buttonDisabled = computed(() => v$.value.$invalid || amountValue.value > activeAccountFormat.amount
-    || amountValue.value < formatAmountMin.amount || amountValue.value > formatAmountMax.amount || isSending.value);
+  const buttonDisabled = computed(() => v$.value.$invalid
+    || amountValue.value > activeAccountWithdrawalFormat.amount
+    || amountValue.value < formatAmountMin.amount
+    || amountValue.value > formatAmountMax.amount
+    || isSending.value);
 
   const onInputNetwork = () => {
     const regex = getNetworkParams(state.selectedNetwork).regex;
@@ -239,7 +242,7 @@
     } : withdrawFormData;
 
     isSending.value = true;
-    const mainCurrencyAmount = getMainBalanceFormat(activeAccountFormat.currency, Number(amountValue.value));
+    const mainCurrencyAmount = getMainBalanceFormat(activeAccountWithdrawalFormat.currency, Number(amountValue.value));
     const params = {
       method: props.method,
       currency: activeAccount.value?.currency || '',
