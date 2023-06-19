@@ -220,9 +220,9 @@
   }
 
   function getNetworkParams(networkId: string) {
-    const { fields } = withdrawMethods.value.find((method) => method?.fields?.length > 1);
-    if (fields) {
-      const select = fields.find((item: PaymentFieldInterface) => item.fieldType === 'select');
+    const networkMethod = withdrawMethods.value.find((method) => method?.fields?.length > 1);
+    if (networkMethod) {
+      const select = networkMethod.fields.find((item: PaymentFieldInterface) => item.fieldType === 'select');
       if (select && select?.options) {
         return select.options.map((option: PaymentFieldOptionsInterface) => ({
           ...option,
