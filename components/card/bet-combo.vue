@@ -13,7 +13,7 @@
     <div class="content">
       <div class="row">
         <button class="btn-toggle-expand" @click="isOpen = !isOpen">
-          <atomic-icon id="ui-arrow_expand-close"/>
+          <atomic-icon id="arrow_expand-close"/>
         </button>
 
         <div class="row-title">{{ betCard.comboLabel }}</div>
