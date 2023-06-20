@@ -27,7 +27,7 @@ export const useBonusStore = defineStore('bonusStore', {
     },
 
     activePlayerCashBonuses():PlayerBonusInterface[] {
-      return this.activePlayerBonuses.filter((playerBonus) => playerBonus.bonusType === 1);
+      return this.activePlayerBonuses.filter((playerBonus) => [1,2].includes(playerBonus.bonusType));
     },
   },
 
