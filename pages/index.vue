@@ -86,16 +86,18 @@
   const hotCategory = currentLocaleCollections.value.find((collection) => collection.identity === 'hot');
   const newCategory = currentLocaleCollections.value.find((collection) => collection.identity === 'new');
 
-  const { betsyParams } = useGamesStore();
   const startBetsyWidget = ():void => {
+    const runtimeConfig = useRuntimeConfig();
     const mainHost = window.location.origin;
     const params = {
-      ...betsyParams,
+      host: runtimeConfig.public.betsyParams?.clientHost,
+      cid: runtimeConfig.public.betsyParams?.clientId,
+      theme: runtimeConfig.public.betsyParams?.widgetTheme,
+      customStyles: runtimeConfig.public.betsyParams?.widgetStyles ? `${mainHost}${runtimeConfig.public.betsyParams.widgetStyles}` : undefined,
       mainFrameUrl: mainHost + localizePath('/betting'),
       lang: currentLocale.value?.code || 'en',
       containerId: 'sports-container',
       height: '372px',
-      theme: 'slotsbet'
     };
 
     if (window.BetSdk) window.BetSdk.initTopEventsWidget(params);
