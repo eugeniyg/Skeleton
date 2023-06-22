@@ -46,7 +46,6 @@
     background-repeat: no-repeat;
     overflow: hidden;
     margin: rem(-46px) auto rem(16px);
-    //box-shadow: 0 0 29px 4px rgba(0, 0, 0, 0.38);
 
     &:after {
       width: 100%;
@@ -91,23 +90,4 @@
       cursor: pointer;
     }
   }
-
-  //&:first-of-type {
-  //  .btn-secondary {
-  //    background: var(--gradient-orange-line);
-  //    --color: var(--gray-900);
-  //
-  //    @media (hover: hover) {
-  //      &:hover {
-  //        background: var(--gradient-orange-line-hover);
-  //        --color: var(--black-primary);
-  //      }
-  //    }
-  //
-  //    &:focus {
-  //      background: var(--gradient-orange-line-focus);
-  //      --color: var(--black-primary);
-  //    }
-  //  }
-  //}
 }
