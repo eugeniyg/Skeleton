@@ -56,9 +56,8 @@
     parent: false,
   };
 
-  const { betsyParams } = useGamesStore();
-
   const startGame = async ():Promise<void> => {
+    const runtimeConfig = useRuntimeConfig();
     const mainHost = window.location.origin;
     const startParams = {
       accountId: activeAccount.value?.id,
@@ -71,10 +70,12 @@
     const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
     const params = {
       ...sdkDefaultParams,
-      ...betsyParams,
+      host: runtimeConfig.public.betsyParams?.clientHost,
+      cid: runtimeConfig.public.betsyParams?.clientId,
+      theme: runtimeConfig.public.betsyParams?.sportsBookTheme,
+      customStyles: runtimeConfig.public.betsyParams?.sportsBookStyles ? `${mainHost}${runtimeConfig.public.betsyParams.sportsBookStyles}` : undefined,
       token: startResponse.token,
       lang: currentLocale.value?.code || 'en',
-      theme: 'turbo_slotsbet'
     };
 
     if (window.BetSdk) window.BetSdk.init(params);
