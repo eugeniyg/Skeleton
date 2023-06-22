@@ -59,10 +59,10 @@
   const { betsyParams } = useGamesStore();
 
   const startGame = async ():Promise<void> => {
-    const redirectUrl = window.location.origin;
+    const mainHost = window.location.origin;
     const startParams = {
       accountId: activeAccount.value?.id,
-      lobbyUrl: redirectUrl,
+      lobbyUrl: mainHost,
       locale: currentLocale.value?.code || 'en',
       countryCode: profile.value?.country || headerCountry.value || 'UA',
       demoMode: false,
@@ -74,7 +74,7 @@
       ...betsyParams,
       token: startResponse.token,
       lang: currentLocale.value?.code || 'en',
-      theme: 'turbo_slotsbet',
+      customStyles: `${mainHost}/sportsbook/sportsbook-styles.css`
     };
 
     if (window.BetSdk) window.BetSdk.init(params);
