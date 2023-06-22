@@ -74,7 +74,7 @@
       ...betsyParams,
       token: startResponse.token,
       lang: currentLocale.value?.code || 'en',
-      customStyles: `${mainHost}/sportsbook/sportsbook-styles.css`
+      theme: 'turbo_slotsbet'
     };
 
     if (window.BetSdk) window.BetSdk.init(params);

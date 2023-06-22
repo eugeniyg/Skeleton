@@ -89,14 +89,13 @@
   const { betsyParams } = useGamesStore();
   const startBetsyWidget = ():void => {
     const mainHost = window.location.origin;
-    console.log(mainHost);
     const params = {
       ...betsyParams,
       mainFrameUrl: mainHost + localizePath('/betting'),
       lang: currentLocale.value?.code || 'en',
       containerId: 'sports-container',
       height: '372px',
-      customStyles: `${mainHost}/sportsbook/sportsbook-styles.css`
+      theme: 'slotsbet'
     };
 
     if (window.BetSdk) window.BetSdk.initTopEventsWidget(params);
