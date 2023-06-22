@@ -30,19 +30,4 @@
   const { getContent } = useProjectMethods();
 </script>
 
-<style lang="scss">
-.modal-exceeded-limit-confirm {
-  @extend %modal-info;
-  user-select: none;
-
-  &__text {
-    @include font($body-2);
-    color: var(--gray-300)
-  }
-
-  .scroll {
-    grid-row-gap: 24px;
-  }
-}
-
-</style>
+<style src="~/assets/styles/components/modal/exceeded-limit-confirm.scss" lang="scss" />

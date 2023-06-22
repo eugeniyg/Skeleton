@@ -1,6 +1,6 @@
 .expander {
   padding: rem(40px) 0 rem(24px) 0;
-  border-top: 1px solid var(--gray-700);
+  border-top: 1px solid var(--border-00);
 
   .header {
     display: flex;
@@ -12,17 +12,17 @@
     user-select: none;
 
     &.is-open {
-      --title-color: var(--yellow-500);
+      --title-color: var(--text-accent);
       --btn-rotate: rotate(0);
 
       .icon {
-        --color: var(--yellow-500);
+        --color: var(--button-icn-ghost-click);
       }
     }
 
     > .title {
       @include font($heading-4);
-      color: var(--title-color, var(--white));
+      color: var(--title-color, var(--text-primary));
       flex-grow: 1;
       transition: color .2s ease-in-out;
     }
@@ -30,20 +30,19 @@
     .btn {
       transform: var(--btn-rotate, rotate(180deg));
       transition: transform .2s ease-in-out;
-      --color: var(--white);
-      --bg: transparent;
       --padding: 0;
       --width: #{rem(32px)};
       --height: #{rem(32px)};
+      @extend %btn-ghost
     }
   }
 
   .icon {
-    --color: var(--gray-400);
+    --color: var(--text-tertiary);
   }
 
   &:last-of-type {
-    border-bottom: 1px solid var(--gray-700);
+    border-bottom: 1px solid var(--border-00);
   }
 
   &__content {
@@ -52,17 +51,17 @@
     max-height: var(--max-height, 0);
     transition: max-height .2s ease-in-out;
     @include font($body-3-paragraph);
-    color: var(--gray-400);
+    color: var(--text-tertiary);
 
     p {
       @include font($body-3-paragraph);
-      color: var(--gray-400);
+      color: var(--text-tertiary);
       margin: rem(8px) 0;
     }
 
     a {
       @include font($body-3-paragraph);
-      color: var(--yellow-500);
+      color: var(--text-link);
     }
   }
 

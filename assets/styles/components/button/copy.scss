@@ -6,9 +6,9 @@
   display: flex;
   align-items: center;
   grid-column-gap: rem(4px);
-  color: var(--color, var(--gray-400));
+  color: var(--color, var(--text-tertiary));
   cursor: pointer;
-  border-radius: 999px;
+  border-radius: 8px;
   flex: none;
   order: 1;
   flex-grow: 0;
@@ -29,28 +29,28 @@
 
     &:focus {
       ~ .btn-copy {
-        --copy-btn-bg: var(--gray-700);
-        --color: var(--yellow-500);
+        --copy-btn-bg: var(--button-bg-secondary-click);
+        --color: var(--button-text-ghost-click);
 
         .icon {
-          --color: var(--yellow-500);
+          --color: var(--icon-accent);
         }
       }
     }
   }
 
   .icon {
-    --color: var(--gray-400);
+    --color: var(--icon-primary);
     --icon-size: 20px;
   }
 
   @media (hover: hover) {
     &:hover {
-      --color: var(--yellow-500);
+      --color: var(--button-text-ghost-hover);
       transition: color .2s ease-in-out;
 
       .icon {
-        --color: var(--yellow-500);
+        --color: var(--icon-accent);
       }
     }
   }
@@ -61,7 +61,7 @@
     right: -24px;
     padding: 2px 8px;
     background-color: var(--green-700);
-    color: var(--white);
+    color: var(--text-primary);
     white-space: nowrap;
 
     @include font($body-1);

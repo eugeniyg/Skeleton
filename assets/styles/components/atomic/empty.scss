@@ -6,13 +6,13 @@
 
   .title {
     @include font($heading-4);
-    color: var(--color, var(--gray-500));
+    color: var(--color, var(--text-helper));
     margin-bottom: var(--margin-bottom, #{rem(8px)});
   }
 
   .sub-title {
     @include font($body-2);
-    color: var(--color, var(--gray-500));
+    color: var(--color, var(--text-helper));
   }
 
   .icon-colored {

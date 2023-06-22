@@ -1,7 +1,7 @@
 .detail {
-  background-color: var(--gray-900);
+  background-color: var(--layer-01);
   border-radius: 16px;
-  color: var(--gray-400);
+  color: var(--text-tertiary);
   padding: rem(16px) rem(24px);
 
   .header {
@@ -9,11 +9,17 @@
     align-items: center;
     grid-gap: rem(8px);
     cursor: pointer;
+
+    .icon {
+      @include box(24px);
+      border-radius: 8px;
+      background-color: var(--bg, transparent);
+    }
   }
 
   .title {
     flex-grow: 1;
-    color: var(--color, var(--white));
+    color: var(--color, var(--text-accent));
     @include font($heading-3);
     transition: color 0.2s ease-in-out;
   }
@@ -27,11 +33,12 @@
 
   &.is-open {
     .title {
-      --color: var(--yellow-500);
+      --color: var(--text-accent);
     }
 
     .icon {
-      --color: var(--yellow-500);
+      --bg: var(--side-bar-expand-active);
+      --color: var(--button-icn-ghost-click);
       --transform: rotate(-180deg);
     }
 
@@ -43,7 +50,7 @@
   .icon {
     transform: var(--transform, rotate(0deg));
     transition: all 0.2s ease-in-out;
-    --color: var(--gray-500);
+    --color: var(--button-icn-ghost-low-contrast);
   }
 
   ol {

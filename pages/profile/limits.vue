@@ -147,7 +147,7 @@
 
   &__heading {
     @include font($heading-6);
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0;
   }
 
@@ -171,7 +171,7 @@
 
   &__card {
     padding: rem(24px);
-    background-color: var(--gray-900);
+    background-color: var(--layer-01);
     border-radius: 16px;
     width: var(--card-width, 100%);
     user-select: none;
@@ -198,7 +198,7 @@
 
     &-title {
       @include font($heading-4);
-      color: var(--white);
+      color: var(--text-primary);
       margin: 0;
       text-align: center;
       display: flex;
@@ -212,14 +212,14 @@
 
     &-sub-title {
       @include font($body-1-paragraph);
-      color: var(--gray-400);
+      color: var(--text-tertiary);
       margin: rem(4px) 0 0;
       text-align: center;
     }
 
     &-info {
       @include font($body-1);
-      color: var(--gray-400);
+      color: var(--text-tertiary);
       margin: 16px 0 0;
 
       * {
@@ -227,7 +227,7 @@
       }
 
       a {
-        color: var(--yellow-500);
+        color: var(--text-link);
         text-decoration: none;
       }
 

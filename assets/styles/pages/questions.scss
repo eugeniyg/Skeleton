@@ -12,17 +12,17 @@
     grid-area: header;
 
     > .title {
-      color: var(--color, var(--white));
+      color: var(--color, var(--text-primary));
       @include font($heading-7);
     }
 
     > .sub-title {
-      color: var(--gray-400);
+      color: var(--text-tertiary);
       @include font($body-2-paragraph);
     }
 
     a {
-      color: var(--yellow-500);
+      color: var(--text-link);
     }
   }
 
@@ -36,7 +36,7 @@
       display: block;
       height: 100%;
       width: 1px;
-      background-color: var(--gray-700);
+      background-color: transparent;
       grid-area: vr;
     }
   }
@@ -59,7 +59,7 @@
   }
 
   .heading {
-    color: var(--white);
+    color: var(--text-primary);
     padding: 0;
     margin: 0;
     @include font($heading-5);

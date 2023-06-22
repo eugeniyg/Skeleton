@@ -5,18 +5,18 @@
   align-items: center;
   @include font($body-1);
   grid-column-gap: rem(8px);
-  color: var(--color, var(--white));
+  color: var(--color, var(--text-primary));
   background-color: var(--bg, transparent);
   transition: color .2s ease-in-out;
+  border-radius: 8px;
 
   .icon {
-    --color: var(--gray-400);
+    --color: var(--icon-primary);
   }
 
   &:hover {
-    --bg: var(--gray-800);
-    --color: var(--yellow-500);
-    --shadow: unset;
+    --bg: var(--button-bg-secondary-click);
+    --color: var(--text-primary);
     cursor: pointer;
 
     .icon {
@@ -25,18 +25,21 @@
   }
 
   &:focus {
-    --bg: var(--gray-700);
-    --color: var(--yellow-500);
-    --shadow: inset 0 2px 0 var(--gray-800);
+    --bg: var(--button-bg-secondary-click);
+    --color: var(--text-accent);
 
     .icon {
-      --color: inherit;
+      --color: var(--icon-accent);
     }
   }
 
   &[disabled] {
     pointer-events: none;
     --bg: transparent;
-    --color: var(--gray-600);
+    --color: var(--text-helper);
+
+    .icon {
+      --color: var(--icon-secondary);
+    }
   }
 }

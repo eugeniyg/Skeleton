@@ -7,11 +7,11 @@
   top: 0;
   left: 50%;
   right: 0;
-  background-color: var(--gray-800);
+  background-color: var(--layer-02);
   z-index: var(--z-index, 3);
   transform: translateX(-50%) translateY(44px);
   transition: all .2s ease-in-out;
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+  box-shadow: var(--shadow-modal);
   border-radius: 8px;
 
   &.is-show {
@@ -19,7 +19,7 @@
   }
 
   .header {
-    border-bottom: 1px solid var(--gray-700);
+    border-bottom: 1px solid var(--border-00);
     display: flex;
     padding: 0 0 rem(8px) 0;
     grid-column-gap: rem(4px);
@@ -30,11 +30,11 @@
     @include upd-font($body-2);
     white-space: nowrap;
     --padding: #{rem(4px)} #{rem(6px)} !important;
-    --color: var(--gray-300);
+    --color: var(--text-secondary);
     --width: 100%;
 
     &.is-active {
-      --color: var(--white);
+      --color: var(--text-primary);
     }
 
     @include media(sm) {
@@ -42,8 +42,8 @@
     }
 
     @include use-hover {
-      &:hover {
-        --color: var(--yellow-500);
+      &:hover:not(.is-active) {
+        --color: var(--text-accent);
       }
     }
   }
@@ -68,10 +68,10 @@
 
     &.is-active {
       cursor: text;
-      background-color: var(--gray-700);
+      background-color: var(--button-bg-secondary-click);
 
       .amount {
-        --color: var(--yellow-500);
+        --color: var(--text-accent);
       }
     }
 
@@ -79,7 +79,7 @@
       &:hover {
         &:not(.is-active) {
           cursor: pointer;
-          background-color: var(--gray-700);
+          background-color: var(--button-bg-secondary-click);
         }
       }
     }
@@ -93,12 +93,12 @@
     }
 
     .code-title {
-      color: var(--color, var(--gray-400));
+      color: var(--color, var(--text-tertiary));
       flex-grow: 1;
     }
 
     .amount {
-      color: var(--color, var(--white));
+      color: var(--color, var(--text-primary));
       justify-self: flex-end;
       transition: all .2s ease-in-out;
     }

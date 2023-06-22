@@ -13,10 +13,10 @@
   }
 
   .field {
-    background-color: var(--bg, var(--gray-800));
+    background-color: var(--bg, var(--field-00));
     padding: var(--input-padding-y, #{rem(11px)}) rem(16px);
-    border: 1px solid var(--border-color, var(--gray-800));
-    color: var(--color, var(--white));
+    border: 1px solid var(--border-color, var(--field-00));
+    color: var(--color, var(--text-tertiary));
     border-radius: 8px 0 0 8px;
     @include font($body-2);
     transition: border-color .2s ease-in-out;
@@ -24,11 +24,12 @@
     text-overflow: ellipsis;
 
     &::placeholder {
-      color: var(--gray-400);
+      color: var(--text-tertiary);
     }
 
     &:focus {
-      --border-color: var(--gray-300);
+      --border-color: var(--border-click);
+      --bg: var(--field-00);
     }
   }
 
@@ -37,12 +38,12 @@
   }
 
   &.has-error {
-    --border-color: var(--red-800);
+    --border-color: var(--border-alert);
   }
 
   .btn-copy {
     @extend %skip-btn;
-    background: var(--bg, var(--gradient-radial));
+    //background: var(--bg, var(--gradient-orange-radial));
     border-radius: 0 8px 8px 0;
     padding: rem(8px);
     display: flex;
@@ -50,27 +51,29 @@
     justify-content: center;
     transform: none;
 
-    .icon {
-      --color: var(--white);
-    }
+    //.icon {
+    //  --color: var(--white);
+    //}
 
-    @include use-hover {
-      &:hover {
-        cursor: pointer;
-        --bg: var(--gradient-radial-hover);
+    //@include use-hover {
+    //  &:hover {
+    //    cursor: pointer;
+    //    --bg: var(--gradient-orange-radial-hover);
+    //
+    //    .icon {
+    //      --color: var(--white);
+    //    }
+    //  }
+    //}
+    //
+    //&:active, &:focus {
+    //  --bg: var(--gradient-orange-radial-focus);
+    //}
 
-        .icon {
-          --color: var(--white);
-        }
-      }
-    }
-
-    &:active, &:focus {
-      --bg: var(--gradient-radial-focus);
-    }
+    @extend %btn-primary;
   }
 
-  .icon {
-    --color: var(--white);
-  }
+  //.icon {
+  //  --color: var(--white);
+  //}
 }

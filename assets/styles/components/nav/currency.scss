@@ -6,12 +6,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--gray-800);
+  background-color: var(--layer-02);
   z-index: var(--z-index, 3);
   visibility: var(--nav-currency-visibility, hidden);
   transform: translateY(var(--nav-currency-translate-y, 100%));
   transition: all .2s ease-in-out;
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+  box-shadow: var(--shadow-modal);
 
   @include media(sm) {
     border-radius: 8px;
@@ -36,7 +36,7 @@
     display: flex;
     align-items: center;
     padding-bottom: rem(16px);
-    border-bottom: 1px solid var(--gray-700);
+    border-bottom: 1px solid var(--border-02);
     grid-column-gap: rem(4px);
   }
 
@@ -44,10 +44,6 @@
     --width: 100%;
     white-space: nowrap;
     @include upd-font($body-2);
-
-    &.is-active {
-      --color: var(--white);
-    }
 
     @include media(sm) {
       @include upd-font($body-1);
@@ -81,23 +77,29 @@
     background-color: var(--bg, transparent);
     transition: background-color .1s ease-in-out, color .1s ease-in-out;
 
-    &:hover, &:focus {
+    &:hover {
       cursor: pointer;
       border-radius: 8px;
-      --bg: var(--gray-900);
-      --color: var(--yellow-500);
+      box-shadow: var(--shadow-layer);
+      --bg: var(--button-bg-secondary-click);
+      --text-color: var(--text-accent);
+    }
+
+    &:active {
+      --bg: var(--button-bg-secondary-click);
+      --text-color: var(--button-icn-secondary-click);
     }
   }
 
   .title {
     margin-right: rem(4px);
     @include font($heading-1);
-    color: var(--color, var(--white));
+    color: var(--text-color, var(--text-primary));
   }
 
   .label {
     @include font($heading-1);
-    color: var(--gray-400);
+    color: var(--label-color, var(--text-tertiary));
     text-transform: uppercase;
   }
 
@@ -119,13 +121,13 @@
 
     &-title {
       @include font($heading-4);
-      color: var(--gray-500);
+      color: var(--text-helper);
       margin: 16px 0 0;
     }
 
     &-text {
       @include font($body-2);
-      color: var(--gray-600);
+      color: var(--text-helper);
       margin: 8px 0 0;
     }
   }

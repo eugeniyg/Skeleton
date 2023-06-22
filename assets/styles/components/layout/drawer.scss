@@ -17,7 +17,7 @@
   }
 
   .header {
-    background-color: var(--drawer-header-bg, var(--gray-800));
+    background-color: var(--drawer-header-bg, var(--layer-01));
     padding: var(--drawer-header-padding, 0);
     position: relative;
     display: grid;
@@ -27,7 +27,7 @@
     min-height: rem(64px);
 
     .drawer-minimize &, .drawer-open & {
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+      box-shadow: var(--shadow-layer);
     }
 
     .drawer-open & {

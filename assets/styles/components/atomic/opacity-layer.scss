@@ -1,5 +1,5 @@
 .opacity-layer {
-  background-color: var(--opacity-layer-bg, rgba(0, 0, 0, 0.88));
+  background-color: var(--opacity-layer-bg, var(--alpha-modal));
   backdrop-filter: blur(8px);
   position: fixed;
   top: 0;

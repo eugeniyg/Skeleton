@@ -11,18 +11,18 @@
   height: rem(24px);
   margin-left: auto;
   --icon-size: 20px;
-  --color: var(--violet-100);
+  --color: var(--base-card-btn-color);
 
   &.active {
-    --bgc: var(--violet-900);
-    --color: var(--yellow-500);
+    --color: var(--base-card-btn-color);
+    --bgc: var(--base-card-btn-hover-bg);
   }
 
   @include use-hover {
     &:hover {
       cursor: pointer;
-      --bgc: var(--violet-900);
-      --color: var(--yellow-500);
+      --color: var(--base-card-btn-hover-color);
+      --bgc: var(--base-card-btn-hover-bg);
     }
   }
 }

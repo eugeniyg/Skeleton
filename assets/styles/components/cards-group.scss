@@ -31,7 +31,7 @@
     @include font($heading-1);
 
     --font-size: #{rem(12px)};
-    --color: var(--gray-500);
+    --color: var(--button-text-ghost-high-contrast);
     --width: 100%;
 
     @include media(xs) {
@@ -39,7 +39,7 @@
       --bg: transparent;
 
       &:hover {
-        --color: var(--white);
+        --color: var(--button-text-ghost-hover);
       }
     }
   }
@@ -52,7 +52,7 @@
     flex-grow: 1;
     grid-area: heading;
     @include font($heading-4);
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0;
   }
 
@@ -82,12 +82,12 @@
   .titles {
     .title {
       @include font($heading-4);
-      color: var(--white);
+      color: var(--text-primary);
     }
 
     .sub-title {
       @include font($body-2);
-      color: var(--gray-400);
+      color: var(--text-tertiary);
     }
   }
 }

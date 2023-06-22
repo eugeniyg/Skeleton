@@ -14,7 +14,7 @@
       --bg: var(--gray-800);
 
       @include media(md) {
-        --bg: var(--gray-900);
+        --bg: transparent;
         --top: -16px;
         --right: -8px;
         transform: none;
@@ -22,7 +22,7 @@
 
       .icon {
         &:first-of-type {
-          color: var(--color, var(--white));
+          //color: var(--color, var(--white));
           --visibility: visible;
         }
 
@@ -33,7 +33,7 @@
         @include media(md) {
           &:first-of-type {
             --visibility: hidden;
-            color: var(--color, var(--gray-400));
+            //color: var(--color, var(--gray-400));
           }
 
           &:last-of-type {
@@ -53,6 +53,10 @@
         padding-top: rem(20px);
         padding-left: rem(16px);
         padding-right: rem(16px);
+      }
+
+      hr {
+        --bg: var(--border-01)
       }
     }
   }

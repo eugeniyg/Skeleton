@@ -62,9 +62,4 @@
   });
 </script>
 
-<style lang="scss">
-.limit-countdown {
-  @include font($body-0);
-  color: var(--white);
-}
-</style>
+<style src="~/assets/styles/components/atomic/limit-countdown.scss" lang="scss" />

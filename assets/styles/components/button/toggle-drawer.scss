@@ -12,9 +12,10 @@
     transform: var(--translate, translate(50%, 50%));
     transition: unset;
     right: var(--right, 0);
+    box-shadow: var(--shadow-layer);
 
-    --bg: var(--gray-800);
-    --color: var(--white);
+    --bg: var(--button-bg-secondary);
+    --color: var(--button-icn-secondary);
     --icon-size: #{rem(24px)};
 
     .icon {
@@ -23,11 +24,13 @@
 
     &:hover {
       cursor: pointer;
+      --bg: var(--button-bg-secondary-hover);
+      --color: var(--button-icn-secondary-hover);
     }
 
     &.is-compact {
       @include media(l) {
-        --bg: var(--gray-800);
+        --bg: var(--button-bg-secondary);
       }
     }
 

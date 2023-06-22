@@ -33,7 +33,7 @@
   .title {
     @include font($heading-4);
     width: 100%;
-    color: var(--white);
+    color: var(--text-primary);
   }
 
   .sub-title {
@@ -41,7 +41,7 @@
     display: flex;
     flex-wrap: wrap;
     grid-gap: rem(4px);
-    color: var(--color, var(--yellow-500));
+    color: var(--color, var(--text-accent));
     justify-content: center;
     align-items: center;
 
@@ -54,7 +54,7 @@
 
     &:last-of-type {
       @include upd-font($heading-4);
-      --color: var(--white);
+      --color: var(--text-primary);
 
       @include media(md) {
         width: 100%;
@@ -64,7 +64,7 @@
   }
 
   .icon {
-    --color: var(--yellow-500);
+    --color: var(--icon-accent);
   }
 
   .items {
@@ -79,13 +79,13 @@
   }
 
   .item {
-    background-color: var(--gray-900);
+    background-color: var(--layer-01);
     padding: rem(8px) rem(16px);
     display: flex;
     align-items: center;
     grid-gap: rem(8px);
     border-radius: 8px;
     justify-self: center;
-    color: var(--white);
+    color: var(--text-primary);
   }
 }

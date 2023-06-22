@@ -32,34 +32,21 @@
 
     &:after {
       --vc-pgn-border-radius: 50%;
-      --vc-pgn-background-color: var(--gray-600);
+      --vc-pgn-background-color: var(--icon-secondary);
     }
 
     @include use-hover {
       &:hover {
         &:after {
-          background-image: var(--gradient-radial);
-          --vc-pgn-active-color: var(--gray-600);
+          background-image: var(--gradient-orange-radial);
         }
       }
     }
   }
 
   .carousel__pagination-button--active {
-    --vc-pgn-active-color: var(--yellow-500);
-
     &:after {
-      background-image: var(--gradient-radial);
-      --bg: var(--yellow-500);
-    }
-
-    @include use-hover {
-      &:hover {
-        &:after {
-          background-image: var(--gradient-radial);
-          --vc-pgn-active-color: var(--yellow-500);
-        }
-      }
+      background-image: var(--gradient-orange-radial);
     }
   }
 
@@ -68,28 +55,37 @@
     height: #{rem(18px)};
   }
 
-  .carousel__prev, .carousel__next {
-    color: var(--white);
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+  .carousel__track {
     margin: 0;
-    --vc-nav-background: var(--gray-800);
+  }
+
+  .carousel__prev, .carousel__next {
+    margin: 0;
+    transition: all .2s ease-in-out;
+    color: var(--color);
+    box-shadow: var(--shadow-layer);
+    --vc-nav-background: var(--bg);
     --vc-nav-border-radius: 8px;
     --vc-nav-width: #{rem(32px)};
     --vc-nav-height: #{rem(32px)};
-    transition: all .2s ease-in-out;
 
-    &:hover {
-      color: var(--white);
-    }
+    --bg: var(--button-bg-secondary);
+    --color: var(--button-text-secondary);
 
-    &:active {
-      color: var(--yellow-500);
-    }
+    &--disabled {
+      opacity: 1;
+      --bg: var(--button-bg-secondary-disabled);
+      --color: var(--button-icn-secondary-disabled);
 
-    @include use-hover {
-      &:hover {
-        color: var(--yellow-500);
+      &:hover,  {
+        background-color: var(--button-bg-secondary-disabled);
+        color: var(--button-icn-secondary-disabled);
       }
+    }
+
+    &:hover:not(.carousel__prev--disabled, .carousel__next--disabled) {
+      background-color: var(--button-bg-secondary-hover);
+      color: var(--button-text-secondary-hover);
     }
   }
 

@@ -3,56 +3,56 @@
 
   .date {
     @include font($body-1);
-    color: var(--color, var(--gray-400));
+    color: var(--color, var(--text-tertiary));
   }
 
   .time {
     @include font($body-1);
-    color: var(--color, var(--gray-400));
+    color: var(--color, var(--text-tertiary));
   }
 
   .num {
     @include font($heading-2);
-    color: var(--color, var(--gray-400));
+    color: var(--color, var(--text-tertiary));
   }
 
   .head {
     display: flex;
     grid-column-gap: rem(8px);
-    background-color: var(--gray-800);
+    background-color: var(--layer-02);
     padding: rem(11px) rem(24px);
     align-items: center;
-    border-bottom: 1px solid var(--gray-700);
+    border-bottom: 1px solid var(--border-01);
     border-radius: 16px 16px 0 0;
   }
 
   .content {
     padding: rem(8px) rem(24px) rem(18px);
-    background-color: var(--gray-900);
+    background-color: var(--layer-01);
     border-radius: 0 0 16px 16px;
 
     .date {
-      --color: var(--gray-500);
+      --color: var(--text-helper);
     }
 
     .time {
-      --color: var(--gray-500);
+      --color: var(--text-helper);
     }
 
     .sep {
       height: rem(16px);
-      border-left: 1px solid var(--gray-800);
+      border-left: 1px solid var(--border-01);
     }
   }
 
   .type {
     @include font($heading-1);
-    color: var(--white);
+    color: var(--text-primary);
   }
 
   .desc {
     @include font($body-1);
-    color: var(--gray-500);
+    color: var(--text-helper);
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
@@ -89,18 +89,18 @@
 
     .label {
       @include font($body-2);
-      color: var(--gray-500);
+      color: var(--text-tertiary);
       align-self: flex-end;
     }
 
     .value {
       @include font($body-2);
-      color: var(--white);
+      color: var(--text-primary);
       align-self: flex-end;
     }
 
     .sep {
-      border-left: 1px solid var(--gray-700);
+      border-left: 1px solid var(--border-01);
       height: 18px;
       align-self: flex-end;
       margin: 0 rem(8px);
@@ -110,7 +110,6 @@
   .amount {
     display: flex;
     grid-column-gap: rem(4px);
-    //grid-area: amount;
     width: 100%;
 
     @include media(md) {
@@ -120,20 +119,20 @@
 
     .label {
       @include font($body-2);
-      color: var(--gray-500);
+      color: var(--text-helper);
       align-self: flex-end;
       padding-bottom: 2px;
     }
 
     .value {
       @include font($heading-5);
-      color: var(--white);
+      color: var(--text-primary);
     }
   }
 
   .title {
     @include font($heading-3);
     margin: rem(12px) 0 rem(8px);
-    color: var(--white);
+    color: var(--text-primary);
   }
 }

@@ -10,7 +10,7 @@
   -moz-osx-font-smoothing: grayscale;
   font-size: var(--icon-size, #{rem(18px)});
   line-height: 1;
-  color: var(--icon-color, var(--gray-400))
+  color: var(--icon-color, var(--icon-primary))
 }
 
 %flex-items-center {
@@ -42,7 +42,7 @@
 
 %skip-btn {
   background: var(--bg, transparent);
-  color: var(--color, var(--gray-400));
+  color: var(--color, var(--button-text-ghost-high-contrast));
   border: var(--border, 0);
   font-family: 'Rubik', sans-serif;
 }
@@ -66,7 +66,7 @@
 }
 
 %scrollbar {
-  scrollbar-color: var(--gray-700);
+  scrollbar-color: var(--layer-02);
   scrollbar-width: thin;
 
   &::-webkit-scrollbar {
@@ -76,13 +76,13 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(--gray-700);
+    background: var(--layer-02);
     border-radius: 8px;
   }
 }
 
 %container {
-  max-width: var(--container-max-width);
+  max-width: rem(2264px);
   width: 100%;
   margin: 0 auto;
 }
@@ -90,7 +90,7 @@
 %input-label {
   > .label {
     @include font($body-2);
-    color: var(--color, var(--white));
+    color: var(--color, var(--text-primary));
     margin-bottom: rem(8px);
     grid-area: label;
     display: flex;
@@ -101,46 +101,39 @@
 %icon-btn {
   @extend %flex-all-center;
   @include box(32px);
-  border-radius: 50%;
-  --color: var(--gray-900);
+  border-radius: 8px;
+  --color: var(--text-primary);
   --icon-size: 18px;
-  background: var(--btn-bg, var(--gradient-new));
 
-  &:hover {
-    --btn-bg: var(--gradient-new-hover);
-  }
-
-  &:focus {
-    --btn-bg: var(--gradient-new-focus);
-  }
-
-  [disabled] {
-    pointer-events: none;
-    --bg: var(--yellow-900);
-  }
+  @extend %btn-primary;
 }
 
 %icon-btn-ghost {
   @extend %flex-all-center;
   @include box(32px);
   border-radius: 50%;
-  --color: var(--gray-400);
-  --icon-size: 22px;
   background-color: var(--bg, transparent);
   box-shadow: var(--shadow, none);
+  --color: var(--button-text-ghost-highContrast);
+  --icon-size: 22px;
 
-  &:hover {
-    --shadow: 0 0 0 3px var(--yellow-900);
+  @include use-hover {
+    cursor: pointer;
+    &:hover {
+      --bg: var(--button-bg-secondary-hover);
+      --color: var(--button-icn-ghost-hover);
+    }
   }
 
-  &:focus {
-    --shadow: inset 0px 2px 0px #B07B00;
-    --bg: var(--yellow-600);
+  &:active {
+    --bg: var(--button-bg-secondary-click);
+    --color: var(--button-icn-ghost-click);
   }
 
   [disabled] {
     pointer-events: none;
-    --bg: var(--yellow-900);
+    --bg: transparent;
+    --color: var(--button-icn-ghost-disabled);
   }
 }
 
@@ -158,12 +151,12 @@
   .container {
     overflow-y: auto;
     max-height: 100%;
-    background: var(--gray-900);
-    border-top: rem(12px) solid var(--gray-900);
-    border-right: rem(8px) solid var(--gray-900);
-    border-bottom: rem(12px) solid var(--gray-900);
-    border-left: rem(8px) solid var(--gray-900);
-    box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+    background: var(--layer-01);
+    border-top: rem(12px) solid var(--layer-01);
+    border-right: rem(8px) solid var(--layer-01);
+    border-bottom: rem(12px) solid var(--layer-01);
+    border-left: rem(8px) solid var(--layer-01);
+    box-shadow: var(--shadow-modal);
     position: relative;
     width: 100%;
     @extend %scrollbar;
@@ -198,7 +191,7 @@
 
     .title {
       @include font($heading-6);
-      color: var(--white);
+      color: var(--text-primary);
       text-align: var(--text-align, center);
       flex-grow: 1;
     }
@@ -212,7 +205,7 @@
 
     @include media(md) {
       padding: #{rem(32px)};
-      background-color: var(--black-primary);
+      background-color: var(--layer-bg);
     }
   }
 
@@ -220,16 +213,16 @@
     overflow: hidden;
     @extend %scrollbar;
     padding: rem(16px);
-    border: rem(12px) solid var(--gray-900);
+    border: rem(12px) solid var(--layer-01);
 
     hr {
       margin: 0;
     }
 
     @include media(md) {
-      border-top: rem(12px) solid var(--gray-900);
-      border-right: rem(8px) solid var(--gray-900);
-      border-bottom: rem(12px) solid var(--gray-900);
+      border-top: rem(12px) solid var(--layer-01);
+      border-right: rem(8px) solid var(--layer-01);
+      border-bottom: rem(12px) solid var(--layer-01);
       width: rem(400px);
       padding: rem(24px);
       overflow-y: auto;
@@ -280,12 +273,12 @@
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 100%;
-    background: var(--gray-900);
-    border-top: rem(12px) solid var(--gray-900);
-    border-right: rem(8px) solid var(--gray-900);
-    border-bottom: rem(12px) solid var(--gray-900);
-    border-left: rem(8px) solid var(--gray-900);
-    box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+    background: var(--layer-01);
+    border-top: rem(12px) solid var(--layer-01);
+    border-right: rem(8px) solid var(--layer-01);
+    border-bottom: rem(12px) solid var(--layer-01);
+    border-left: rem(8px) solid var(--layer-01);
+    box-shadow: var(--shadow-modal);
     position: relative;
     padding: rem(24px) rem(22px) rem(22px) rem(22px);
     grid-row-gap: rem(16px);
@@ -306,7 +299,7 @@
 
     .title {
       @include font($heading-6);
-      color: var(--white);
+      color: var(--text-primary);
       text-align: var(--text-align, center);
       flex-grow: 1;
     }
@@ -324,7 +317,7 @@
 
   .btn-modal-close {
     position: absolute;
-    --bg: var(--gray-900);
+    --bg: transparent;
     --right: #{rem(-16px)};
     --top: #{rem(-8px)};
   }
@@ -339,8 +332,12 @@
   .text {
     @include font($body-3);
     text-align: center;
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0 0;
+
+    p {
+      margin: 0;
+    }
   }
 
   .btn-primary {
@@ -368,7 +365,7 @@
       top: 0;
       bottom: 0;
       right: 0;
-      border-right: 1px solid var(--gray-400);
+      border-right: 1px solid var(--border-00);
     }
 
     @include media(xs) {
@@ -385,29 +382,30 @@
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
     align-items: center;
-    background-color: var(--bg, var(--black-primary));
+    background-color: var(--bg, var(--layer-bg));
 
     &:first-of-type {
-      border-bottom: 1px solid var(--gray-700);
+      border-bottom: 1px solid var(--border-00);
     }
 
     &:nth-child(2n + 3) {
-      --bg: var(--gray-900);
+      --bg: var(--layer-01);
     }
   }
 
   .th {
     padding: rem(16px);
-    color: var(--gray-500);
+    color: var(--text-tertiary);
     @include font($heading-2);
     position: relative;
     background-color: inherit;
+    white-space: nowrap;
   }
 
   .td {
     padding: rem(10px) rem(16px);
     @include font($body-2);
-    color: var(--white);
+    color: var(--text-primary);
     position: relative;
     background-color: inherit;
 
@@ -420,11 +418,116 @@
 
 
 %inputMask {
-  box-shadow: inset 0 0 0 1000px var(--gray-800);
-  -webkit-text-fill-color: var(--gray-400);
+  box-shadow: inset 0 0 0 1000px var(--field-01);
+  -webkit-text-fill-color: var(--text-tertiary);
   -webkit-background-clip: text;
 
     &:focus {
-      -webkit-text-fill-color: var(--white);
+      -webkit-text-fill-color: var(--text-primary);
     }
+}
+
+%btn {
+  @extend %skip-btn;
+  @extend %link;
+  @extend %flex-all-center;
+  padding: var(--padding, #{rem(4px)} #{rem(16px)});
+  border-radius: var(--btn-border-radius, 8px);
+  width: var(--width, fit-content);
+  height: var(--height, auto);
+  grid-column-gap: rem(4px);
+  transition: background-color .1s, color .1s ease-in-out;
+  user-select: none;
+
+  &.size-xs {
+    @include font($heading-1);
+    --padding: #{rem(4px) rem(16px)};
+    --btn-border-radius: 8px;
+  }
+
+  &.size-sm {
+    @include font($heading-2);
+    --padding: #{rem(7px) rem(20px)};
+    --btn-border-radius: 8px;
+  }
+
+  &.size-md {
+    @include font($heading-2);
+    --padding: #{rem(11px) rem(24px)};
+    --btn-border-radius: 12px;
+  }
+
+  &.size-lg {
+    @include font($heading-3);
+    --padding: #{rem(16px) rem(40px)};
+    --btn-border-radius: 12px;
+  }
+}
+
+%btn-primary {
+  @extend %btn;
+  --bg: var(--button-bg-primary);
+  --color: var(--button-text-primary);
+
+  &:hover {
+    cursor: pointer;
+    --bg: var(--button-bg-primary-hover);
+    --color: var(--button-text-primary-hover);
+  }
+
+  &:active, &.is-active {
+    --bg: var(--button-bg-primary-click);
+    --color: var(--button-text-primary-click);
+  }
+
+  &[disabled] {
+    pointer-events: none;
+
+    --bg: var(--button-bg-primary-disabled);
+    --color: var(--button-text-primary-disabled);
+  }
+}
+
+%btn-secondary {
+  --bg: var(--button-bg-secondary);
+  --color: var(--button-text-secondary);
+
+  &:hover {
+    cursor: pointer;
+    --bg: var(--button-bg-secondary-hover);
+    --color: var(--button-text-secondary-hover);
+  }
+
+  &:active, &.is-active {
+    --bg: var(--button-bg-secondary-click);
+    --color: var(--button-text-secondary-click);
+  }
+
+  &[disabled] {
+    pointer-events: none;
+    --bg: var(--button-bg-secondary-disabled);
+    --color: var(--button-text-secondary-disabled);
+  }
+}
+
+%btn-ghost {
+  --bg: transparent;
+  --color: var(--button-text-ghost-high-contrast);
+
+  &:hover {
+    cursor: pointer;
+    --bg: var(--button-bg-secondary-hover);
+    --color: var(--button-text-ghost-hover);
+  }
+
+  &:active, &.is-active {
+    --bg: var(--button-bg-secondary-click);
+    --color: var(--button-text-ghost-click);
+  }
+
+  &[disabled] {
+    pointer-events: none;
+    --bg: transparent;
+    --color: var(--button-text-ghost-disabled);
+  }
 }

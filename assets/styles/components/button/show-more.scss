@@ -10,10 +10,10 @@
   cursor: pointer;
   transition: color .2s ease-in-out;
 
-  --color: var(--gray-400);
+  --color: var(--button-text-ghost-low-contrast);
   --icon-size: #{rem(20px)};
 
   &:hover {
-    --color: var(--white);
+    --color: var(--button-text-ghost-hover);
   }
 }

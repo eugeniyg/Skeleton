@@ -32,13 +32,13 @@
 
   .info {
     @include font($body-2-paragraph);
-    color: var(--gray-400);
+    color: var(--text-tertiary);
     margin: 0 0 rem(40px);
   }
 
   .heading {
     @include font($heading-7);
-    color: var(--white);
+    color: var(--text-primary);
   }
 
   .form {

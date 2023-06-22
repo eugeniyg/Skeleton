@@ -38,14 +38,14 @@
     grid-area: icon;
 
     --icon-size: #{rem(20px)};
-    --color: var(--gray-400);
+    --color: var(--icon-primary);
   }
 
   .btn-show-all {
     @include font($heading-1);
     grid-area: btn-show-all;
 
-    --color: var(--gray-500);
+    --color: var(--button-text-ghost-high-contrast);
     --width: 100%;
 
     @include media(xs) {
@@ -53,7 +53,7 @@
       background: none;
 
       &:hover {
-        --color: var(--white);
+        --color: var(--button-bg-secondary-hover);
       }
     }
 
@@ -61,7 +61,7 @@
       @include upd-font($heading-2);
 
       &:hover {
-        --color: var(--white);
+        --color: var(--button-bg-ghost-hover);
         --bg: transparent;
       }
     }
@@ -79,7 +79,7 @@
   > .title {
     @include font($heading-4);
     grid-area: heading;
-    color: var(--white);
+    color: var(--text-primary);
     flex-grow: 1;
     margin: 0;
   }

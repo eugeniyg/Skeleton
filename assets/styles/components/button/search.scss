@@ -5,12 +5,9 @@
   @extend %skip-btn;
   @extend %flex-all-center;
   position: relative;
-  box-shadow: var(--shadow, unset);
+  background-color: var(--bgc, transparent);
   right: 0;
-
-  --icon-size: #{rem(20px)};
   --padding: 0 0;
-  --color: var(--gray-400);
 
   &[data-show="mobile"] {
     --display: block;
@@ -27,30 +24,40 @@
     }
   }
 
-  //@include media(xs) {
-  //  &:before {
-  //    display: none;
-  //  }
-  //}
+  .icon {
+    --color: var(--button-icn-ghost-low-contrast);
+    --icon-size: 22px;
+  }
+
+  &.is-active {
+    --bgc: transparent;
+
+    --bulb-color: var(--support-success-default);
+    --bulb-border-color: var(--button-bg-secondary-hover);
+
+    &:hover {
+      --bgc: var(--button-bg-secondary-hover);
+    }
+
+    .icon {
+      --color: var(--button-icn-ghost-high-contrast);
+    }
+
+  }
 
   @include use-hover {
+    cursor: pointer;
+
     &:hover {
-      cursor: pointer;
+      --bgc: var(--button-bg-secondary-hover);
 
-      --color: var(--yellow-500);
-
-      @include media(l) {
-        --bg: var(--gray-800);
-      }
-
-      &:before {
-        opacity: 0;
+      .icon {
+        --color: var(--button-icn-ghost-hover);
       }
     }
   }
 
-  &.is-active {
-    --color: var(--yellow-500);
+  &:active {
+    --bgc: var(--button-bg-secondary-click);
   }
-
 }
