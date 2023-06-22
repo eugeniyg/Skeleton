@@ -9,7 +9,7 @@
     "svg-icons-optimize": "svgo -r -f ./assets/svg/sprite -o ./assets/svg/sprite/optimized --config ./assets/js/helpers/svgo.config.js",
     "svg-icons-sprite": "svg-sprite-generate -d ./assets/svg/sprite/optimized -o ./public/sprite.svg",
     "svg-icons": "npm run svg-icons-optimize && npm run svg-icons-sprite && rm -rf ./assets/svg/sprite/optimized",
-    "svg-sprite": "svg-sprite-generate -d ./assets/svg/icons-colored -o ./public/svg-sprite.svg"
+    "svg-sprite": "svg-sprite-generate -d ./assets/svg/sprite-colored -o ./public/sprite-colored.svg"
   },
   "devDependencies": {
     "@nuxt/content": "^2.6.0",
