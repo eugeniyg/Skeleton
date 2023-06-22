@@ -14,12 +14,12 @@
       cursor: pointer;
 
       .icon {
-        --color: var(--gray-200);
+        --color: var(--button-icn-ghost-hover);
       }
     }
 
     .icon {
-      --color: var(--white);
+      --color: var(--button-icn-ghost-high-contrast);
     }
   }
 
@@ -30,21 +30,21 @@
     justify-content: center;
 
     &.status-pending {
-      --color: var(--yellow-500);
+      --color: var(--icon-accent);
     }
 
     &.status-approve {
-      --color: var(--green-500);
+      --color: var(--icon-success);
     }
 
     &.status-canceled {
-      --color: var(--red-500);
+      --color: var(--icon-alert);
     }
   }
 
   &__name {
     @include font($body-1);
-    color: var(--name-color, var(--white));
+    color: var(--name-color, var(--text-primary));
     transition: color .4s ease-in-out;
     flex-grow: 1;
     max-width: calc(100% - 54px);
@@ -52,7 +52,7 @@
     word-break: break-word;
 
     .is-loading & {
-      --name-color: var(--gray-400)
+      --name-color: var(--text-primary)
     }
   }
 
@@ -67,7 +67,7 @@
 
   &__error {
     @include font($body-1);
-    color: var(--red-300);
+    color: var(--text-alert);
     width: 100%;
   }
 }

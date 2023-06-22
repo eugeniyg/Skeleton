@@ -13,7 +13,6 @@
   background-repeat: var(--bg-repeat, no-repeat);
   background-size: var(--bg-size, 100%);
   background-position: var(--bg-position, center);
-  filter: drop-shadow(0px 0px 12px rgba(0, 0, 0, 0.16));
   border-radius: 8px;
   width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap) / var(--col-count))));
   scroll-snap-align: start;
@@ -29,7 +28,7 @@
 
   &__info {
     padding: var(--card-info-padding, 8px);
-    background-color: var(--bg-info, rgba(50, 6, 71, 0.8));
+    background-color: var(--bg-info, var(--base-card-info-bg));
     display: var(--display, grid);
     position: var(--position-info, absolute);
     top: 0;
@@ -59,7 +58,7 @@
 
     &-title {
       @include font($heading-0);
-      color: var(--color-info-title, var(--white));
+      color: var(--color-info-title, var(--base-card-title));
       @include line-clamp(2);
 
       [data-size="min"] & {
@@ -78,7 +77,7 @@
     &-provider {
       @include font($body-0);
       @extend %text-elipsis;
-      color: var(--gray-300);
+      color: var(--base-card-provider-color);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -154,7 +153,7 @@
     margin-right: auto;
     background-color: var(--bgc, transparent);
     --padding: 4px 8px;
-    --color: var(--violet-100);
+    --color: var(--base-card-btn-color);
 
     [data-size="max"] & {
       @include upd-font($heading-2);
@@ -163,8 +162,9 @@
     @include use-hover {
       &:hover {
         transition: all .2s ease-in-out;
-        --color: var(--yellow-500);
-        --bgc: var(--violet-900);
+        cursor: pointer;
+        --color: var(--base-card-btn-hover-color);
+        --bgc: var(--base-card-btn-hover-bg);
       }
     }
   }

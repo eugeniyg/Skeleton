@@ -3,16 +3,21 @@
   max-height: rem(360px);
   overflow: hidden;
   padding: rem(8px);
-  background-color: var(--gray-800);
+  background-color: var(--layer-02);
   transform: translateY(rem(4px));
   position: absolute;
-  left: 0;
-  right: 0;
+  left: var(--left, #{rem(16px)});
+  right: var(--right, #{rem(16px)});
   display: none;
+  box-shadow: var(--shadow-layer);
+
+  @include media(l) {
+    --left: 0;
+    --right: 0;
+  }
 
   .box {
     max-height: calc(#{rem(360px)} - #{rem(16px)});
-    background-color: var(--gray-800);
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -36,7 +41,7 @@
     padding: rem(4px);
     grid-column-gap: rem(8px);
     background-color: var(--bg, transparent);
-    color: var(--color, var(--white));
+    color: var(--color, var(--text-primary));
     @include font($heading-1);
     min-height: rem(48px);
     white-space: nowrap;
@@ -45,8 +50,8 @@
 
     &:hover {
       cursor: pointer;
-      --bg: var(--gray-900);
-      --color: var(--yellow-500);
+      --bg: var(--layer-01);
+      --color: var(--text-accent);
     }
 
     span {
@@ -65,32 +70,32 @@
     display: grid;
     grid-gap: rem(8px);
     padding: rem(8px) rem(16px);
-    border-bottom: 1px solid var(--gray-700);
+    border-bottom: 1px solid var(--border-02);
   }
 
   .heading {
     @include font($heading-2);
-    color: var(--white);
+    color: var(--text-primary);
     padding: 0;
     margin: 0;
   }
 
   .label {
     @include font($body-2);
-    color: var(--white);
+    color: var(--text-primary);
     padding: rem(8px) rem(16px) rem(8px) 0;
   }
 
   .text {
     @include font($body-1);
-    color: var(--gray-400);
+    color: var(--text-tertiary);
     padding: 0;
     margin: 0;
   }
 
   .footer {
     margin-top: rem(8px);
-    border-top: 1px solid var(--gray-700);
+    border-top: 1px solid var(--border-02);
     padding: rem(8px) 0 0 0;
   }
 

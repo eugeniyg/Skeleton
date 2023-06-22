@@ -25,7 +25,7 @@
     grid-area: icon;
     margin-left: rem(16px);
     --icon-size: #{rem(20px)};
-    --color: var(--gray-400);
+    --color: var(--icon-primary);
 
     @include media(sm) {
       margin-left: rem(24px);
@@ -37,7 +37,7 @@
     @include font($heading-1);
 
     --font-size: #{rem(12px)};
-    --color: var(--gray-500);
+    --color: var(--button-text-ghost-low-contrast);
     --width: auto;
 
     @include media(xs) {
@@ -49,7 +49,7 @@
       @include upd-font($heading-2);
 
       &:hover {
-        --color: var(--white);
+        --color: var(--text-primary);
         --bg: transparent;
       }
     }
@@ -69,7 +69,7 @@
     flex-grow: 1;
     grid-area: heading;
     @include font($heading-4);
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0;
   }
 
@@ -110,13 +110,13 @@
   .titles {
     .title {
       @include font($heading-4);
-      color: var(--white);
+      color: var(--text-primary);
       margin: 0;
     }
 
     .sub-title {
       @include font($body-2);
-      color: var(--gray-400);
+      color: var(--text-tertiary);
       margin: 0;
     }
   }

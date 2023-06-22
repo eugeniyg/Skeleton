@@ -1,0 +1,75 @@
+.limits-list {
+  display: grid;
+  grid-row-gap: 16px;
+
+  &__item {
+    display: grid;
+  }
+
+  &__input {
+    display: flex;
+    align-items: center;
+    grid-column-gap: 8px;
+    min-height: 21px;
+  }
+
+  &__value {
+    @include font($heading-3);
+    color: var(--text-primary);
+    flex-grow: 1;
+  }
+
+  &__status {
+    display: flex;
+    align-items: center;
+    grid-column-gap: 2px;
+    margin-top: 4px;
+
+    &--pending {
+      --dot-bg: var(--yellow-500);
+    }
+
+    &--active {
+      --dot-bg: var(--icon-success);
+    }
+
+    &-dot {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:before {
+        content: '';
+        display: block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: var(--dot-bg, var(--yellow-500));
+      }
+    }
+
+    &-msg {
+      @include font($body-0);
+      color: var(--text-primary);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    grid-column-gap: 4px;
+
+    .btn-primary {
+      width: 32px;
+      height: 32px;
+      --padding: 0;
+    }
+
+    .btn-ghost {
+      width: 32px;
+      height: 32px;
+      --padding: 0;
+    }
+  }
+}

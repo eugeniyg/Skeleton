@@ -173,4 +173,3 @@
 </script>
 
 <style src="~/assets/styles/components/card/base.scss" lang="scss" />
-

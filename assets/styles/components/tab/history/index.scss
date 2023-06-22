@@ -5,13 +5,13 @@
     display: flex;
     align-items: center;
     grid-column-gap: rem(24px);
-    border-bottom: 1px solid var(--gray-700);
+    border-bottom: 1px solid var(--border-00);
     @extend %scrollbar-hide;
     overflow-x: auto;
     margin-bottom: 24px;
 
     > .item {
-      color: var(--color, var(--gray-400));
+      color: var(--color, var(--text-helper));
       @include font($heading-2);
       position: relative;
       padding: rem(10px) 0;
@@ -34,11 +34,20 @@
       }
 
       &.is-selected {
-        --color: var(--white);
-        --border-color: var(--yellow-500);
+        --color: var(--text-primary);
+        --border-color: var(--border-accent);
         --left: 0;
         --right: 0;
         --cursor: text;
+      }
+
+      @include use-hover {
+        &:hover {
+          cursor: pointer;
+          --border-color: var(--text-primary);
+          --left: 0;
+          --right: 0;
+        }
       }
     }
   }

@@ -21,7 +21,7 @@
   .title {
     display: none;
     @include font($heading-1);
-    color: var(--white);
+    color: var(--text-primary);
     margin-top: rem(8px);
   }
 

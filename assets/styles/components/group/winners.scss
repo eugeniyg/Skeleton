@@ -8,7 +8,7 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
-  background-color: var(--gray-900);
+  background-color: var(--layer-01);
   border-radius: 16px;
   padding: rem(16px) rem(16px) rem(8px) rem(16px);
   position: relative;
@@ -38,7 +38,7 @@
   > .icon {
     grid-area: icon;
     --icon-size: #{rem(20px)};
-    --color: var(--gray-400);
+    --color: var(--icon-primary);
   }
 
   > .arrows {
@@ -54,7 +54,7 @@
     flex-grow: 1;
     grid-area: heading;
     @include font($heading-4);
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0;
   }
 

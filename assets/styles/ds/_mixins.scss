@@ -1,5 +1,4 @@
 @use "variables";
-@use "colors";
 @use "sass:math";
 
 @function strip-unit($num) {
@@ -31,10 +30,6 @@
       --#{$prop}: #{$val};
     }
   }
-}
-
-@function get($type) {
-  @return map-get(colors.$colors, $type);
 }
 
 @mixin box($size) {
@@ -91,7 +86,7 @@
 
 
 @mixin scrollbar {
-  scrollbar-color: var(--gray-700);
+  scrollbar-color: var(--field-00-click);
   scrollbar-width: thin;
 
   &::-webkit-scrollbar {
@@ -101,7 +96,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(--gray-700);
+    background: var(--field-00-click);
     border-radius: 8px;
   }
 }
@@ -135,7 +130,7 @@
     top: 0;
     bottom: 0;
     width: 24px;
-    background-color: var(--layer-bg, var(--gray-900));
+    background-color: var(--layer-01);
     z-index: 2;
   }
 

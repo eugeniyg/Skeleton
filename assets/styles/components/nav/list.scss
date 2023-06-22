@@ -34,22 +34,24 @@
     @extend %link;
     @extend %flex-items-center;
     grid-column-gap: #{rem(8px)};
-    padding: var(--padding, #{rem(8px)} 0 #{rem(8px)} #{rem(16px)});
-    transition: color .2s ease-in-out;
+    padding: var(--padding, #{rem(8px)} #{rem(16px)} #{rem(8px)} #{rem(16px)});
     min-height: rem(40px);
-    --color: var(--gray-300);
+    border-radius: 8px;
+    background-color: var(--bg, transparent);
+    transition: all .2s ease-in-out;
+    --color: var(--text-secondary);
 
     .icon {
-      --color: var(--gray-400);
+      --color: var(--icon-primary);
     }
 
     &.is-open {
       .icon {
-        --color: var(--yellow-500);
+        --color: var(--icon-accent);
       }
 
       .text {
-        --color: var(--yellow-500);
+        --color: var(--text-accent);
       }
     }
 
@@ -57,41 +59,57 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 22px;
       height: 22px;
       flex-shrink: 0;
       @include font($body-1);
       margin-left: auto;
-      color: var(--gray-500);
+      color: var(--color, var(--text-helper));
       transition: color .2s ease-in-out;
     }
 
-    &:not(.is-open):not(.is-active):hover {
-      cursor: pointer;
+    @include use-hover {
+       &:hover {
+         cursor: pointer;
+        --bg: var(--side-bar-link-hover);
 
-      .text {
-        --color: var(--white);
-      }
+        .icon {
+          --color: var(--icon-contrast);
+        }
 
-      .icon {
-        --color: var(--white);
-      }
+        .text  {
+          --color: var(--text-primary);
+        }
 
-      .counter {
-        color: var(--gray-300);;
+        .btn-toggle {
+          --bg: var(--side-bar-expand-hover);
+
+          .icon {
+             --color: var(--button-icn-ghost-hover);
+          }
+        }
+
+        .counter {
+          --color: var(--text-secondary);
+        }
+
+        // background: red;
       }
     }
 
     &:active, &.is-active {
-      --color: var(--yellow-500);
+      --color: var(--text-accent);
 
       .icon {
-        --color: var(--yellow-500);
+        --color: var(--icon-accent);
       }
 
       .text {
-        --color: var(--yellow-500);
+        --color: var(--text-accent);
       }
+    }
+
+    &:active {
+      --bg: var(--side-bar-link-click);
     }
 
     &.is-open {
@@ -101,10 +119,10 @@
     }
 
     &.router-link-active {
-      --color: var(--yellow-500);
+      --color: var(--text-accent);
 
       &:hover {
-        --color: var(--yellow-500);
+        --color: var(--text-accent);
       }
     }
   }
@@ -112,13 +130,12 @@
   .text {
     @include font($heading-2);
     @extend %text-elipsis;
-    color: var(--color, var(--gray-300));
+    color: var(--color, var(--text-secondary));
     transition: color .2s ease-in-out;
   }
 
   .btn-toggle {
     --margin-left: auto;
-    margin-right: rem(8px);
   }
 
   .is-compact & {

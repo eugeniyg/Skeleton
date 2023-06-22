@@ -2,13 +2,13 @@
   display: flex;
   align-items: center;
   @include font($heading-4);
-  color: var(--white);
+  color: var(--text-primary);
   grid-column-gap: rem(8px);
   padding-top: rem(8px);
 
   .icon {
     margin-left: 16px;
-    --color: var(--gray-400);
+    --color: var(--icon-primary);
 
     @include media(md) {
       margin-left: 24px;

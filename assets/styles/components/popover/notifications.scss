@@ -1,7 +1,7 @@
 .popover-notifications {
   padding: 16px;
   background-color: var(--gray-800);
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+  box-shadow: var(--shadow-layer);
   border-radius: 8px;
   position: absolute;
   top: 0;

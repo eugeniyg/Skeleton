@@ -12,10 +12,10 @@
   }
 
   .field {
-    background-color: var(--bg, var(--gray-800));
+    background-color: var(--bg, var(--field-00));
     padding: var(--input-padding-y, #{rem(11px)}) rem(16px);
-    border: 1px solid var(--border-color, var(--gray-800));
-    color: var(--color, var(--white));
+    border: 1px solid var(--border-color, var(--field-00));
+    color: var(--color, var(--text-tertiary));
     border-radius: 8px;
     @include font($body-2);
     transition: border-color .2s ease-in-out;
@@ -24,12 +24,13 @@
     font-family: inherit;
 
     &::placeholder {
-      color: var(--gray-400);
+      color: var(--text-tertiary);
       @include font($body-2);
     }
 
     &:focus {
-      --border-color: var(--gray-300);
+      --border-color: var(--text-tertiary);
+      --color: var(--text-primary);
     }
   }
 
@@ -38,6 +39,6 @@
   }
 
   &.has-error {
-    --border-color: var(--red-800);
+    --border-color: var(--border-alert);
   }
 }

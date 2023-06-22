@@ -49,4 +49,3 @@
 </script>
 
 <style src="~/assets/styles/components/button/copy.scss" lang="scss" />
-

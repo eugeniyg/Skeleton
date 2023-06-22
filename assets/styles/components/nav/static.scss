@@ -11,22 +11,26 @@
 
   > a {
     @include font($heading-1);
-    color: var(--color, var(--gray-300));
+    color: var(--color, var(--text-secondary));
     padding: rem(4px) rem(20px);
     text-decoration: none;
     display: flex;
     transition: color .2s .2s ease-in-out;
 
     &.router-link-active {
-      color: var(--yellow-500);
+      --color: var(--text-accent);
     }
 
     @include use-hover {
       &:not(.router-link-active) {
         &:hover {
-          --color: var(--white);
+          --color: var(--text-primary);
         }
       }
+    }
+
+    &:active {
+      --color: var(--text-accent);
     }
 
   }

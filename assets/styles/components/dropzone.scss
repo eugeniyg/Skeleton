@@ -1,7 +1,7 @@
 .dropzone {
   padding: var(--dropzone-padding, #{rem(16px)} #{rem(24px)});
   min-height: rem(154px);
-  border: 1px dashed var(--gray-700);
+  border: 1px dashed var(--border-01);
   border-radius: 8px;
   display: grid;
   grid-template-columns: auto 1fr;
@@ -18,18 +18,18 @@
   }
 
   &.is-active {
-    --dropzone-bg: var(--gray-700);
+    --dropzone-bg: var(--border-01);
   }
 
   &.is-error {
-    border-color: var(--red-700);
+    border-color: var(--border-alert);
   }
 
   .hint {
     @include upd-font($body-0);
     justify-content: center;
     text-align: center;
-    color: var(--red-300);
+    color: var(--text-alert);
   }
 
   &__content {
@@ -37,7 +37,7 @@
   }
 
   .icon.dropzone__icon {
-    color: var(--gray-400);
+    color: var(--icon-primary);
     grid-area: icon;
     align-self: center;
     --icon-size: 24px;
@@ -56,7 +56,7 @@
     @include font($heading-1);
     margin: 0 0 rem(4px);
     padding: 0;
-    color: var(--white);
+    color: var(--text-primary);
 
     @include media(sm) {
       text-align: center;

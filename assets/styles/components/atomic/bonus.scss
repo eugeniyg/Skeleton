@@ -16,12 +16,12 @@
   .title {
     grid-area: title;
     @include font($heading-2);
-    color: var(--white);
+    color: var(--text-primary);
   }
 
   .sub-title {
     grid-area: sub-title;
     @include font($heading-2);
-    color: var(--yellow-500);
+    color: var(--text-accent);
   }
 }

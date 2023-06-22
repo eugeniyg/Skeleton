@@ -9,13 +9,13 @@
   border-radius: 8px;
   background-color: var(--bgc, transparent);
   --icon-size: 20px;
-  --color: var(--violet-100);
+  --color: var(--base-card-btn-color);
 
   @include use-hover {
     &:hover {
       cursor: pointer;
-      --bgc: var(--violet-900);
-      --color: var(--yellow-500);
+      --color: var(--base-card-btn-hover-color);
+      --bgc: var(--base-card-btn-hover-bg);
     }
   }
 }

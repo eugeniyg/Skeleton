@@ -1,14 +1,14 @@
 .nav-profile {
   .selected {
     border-radius: 8px;
-    border: 1px solid var(--border-color, var(--gray-800));
-    color: var(--color, var(--white));
+    border: 1px solid var(--border-color, var(--field-00));
+    color: var(--color, var(--text-primary));
     cursor: pointer;
     user-select: none;
     padding: rem(19px) rem(44px) rem(19px) rem(16px);
     display: flex;
     align-items: center;
-    background-color: var(--bg, var(--gray-800));
+    background-color: var(--bg, var(--field-00));
     position: relative;
     transition: border-color .2s ease-in-out;
     min-height: rem(42px);
@@ -32,7 +32,7 @@
     transform: var(--icon-transform, rotate(0));
     transition: transform .2s ease-in-out;
 
-    --color: var(--gray-400);
+    --color: var(--icon-primary);
   }
 
   .items {
@@ -41,9 +41,8 @@
     left: 0;
     right: 0;
     padding: var(--items-padding, #{rem(8px)});
-    background-color: var(--bg, var(--gray-800));
+    background-color: var(--bg, var(--layer-02));
     transform: translateY(#{rem(8px)});
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
 
     @include media(l) {
@@ -60,12 +59,12 @@
 
   .count {
     @include font($heading-1);
-    color: var(--yellow-500)
+    color: var(--text-accent)
   }
 
   .item {
     @include font($body-2);
-    color: var(--color, var(--white));
+    color: var(--color, var(--text-secondary));
     padding: var(--item-padding, #{rem(8px)});
     cursor: pointer;
     user-select: none;
@@ -78,13 +77,13 @@
 
     @include media(l) {
       --item-padding: #{7px} #{16px};
-      --color: var(--gray-300);
+      --color: var(--text-primary);
       justify-content: space-between;
       border-radius: 8px;
 
       &.is-active {
-        --bg: var(--gray-800);
-        --color: var(--yellow-500);
+        --bg: var(--layer-02);
+        --color: var(--text-primary);
       }
 
       .icon {
@@ -99,16 +98,17 @@
       transform: var(--icon-transform, rotate(0));
       transition: transform .2s ease-in-out;
 
-      --icon-color: var(--white);
+      --icon-color: var(--icon-contrast);
     }
 
-    &:hover {
-      cursor: pointer;
-      border-radius: 8px;
-      --bg: var(--gray-700);
+    @include use-hover {
+      &:hover:not(.is-active) {
+        cursor: pointer;
+        border-radius: 8px;
 
-      @include media(l) {
-        --bg: var(--gray-800);
+        @include media(l) {
+          --bg: var(--side-bar-link-hover);
+        }
       }
     }
   }
@@ -117,13 +117,13 @@
     z-index: 2;
 
     .selected {
-      --border-color: var(--gray-300);
-      --color: var(--white);
-      --bg: var(--gray-700);
+      --border-color: var(--border-click);
+      --color: var(--text-primary);
+      --bg: var(--field-00-click);
       --icon-transform: rotate(180deg);
 
       .icon {
-        --color: var(--white);
+        --color: var(--icon-primary);
       }
     }
 

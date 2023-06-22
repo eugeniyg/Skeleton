@@ -1,0 +1,8 @@
+.time-span {
+  min-width: 22px;
+  display: inline-flex;
+
+  &:not(:first-of-type) {
+    margin-left: 4px;
+  }
+}

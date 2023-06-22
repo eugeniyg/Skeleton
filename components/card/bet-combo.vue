@@ -126,4 +126,3 @@
 </script>
 
 <style src="~/assets/styles/components/card/bet-combo.scss" lang="scss" />
-

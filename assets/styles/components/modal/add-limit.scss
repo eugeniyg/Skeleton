@@ -1,0 +1,121 @@
+.modal-deposit-limit {
+  @extend %modal-info;
+
+  .vfm__content {
+    margin: 0;
+  }
+
+  .scroll {
+    grid-row-gap: 0;
+  }
+
+  .header {
+    .title {
+      @include upd-font($heading-6);
+      margin-bottom: 24px;
+      margin-left: 40px;
+
+      @include media(xs) {
+        margin-left: 0;
+      }
+    }
+
+    .btn-modal-close {
+      transform: translate(0, 0);
+      left: 0;
+      --right: auto;
+      --top: 0;
+      --bg: var(--layer-02);
+
+      .icon {
+        &:first-of-type {
+          --visibility: visible;
+        }
+
+        &:last-of-type {
+          --visibility: hidden;
+        }
+
+        @include media(xs) {
+          &:first-of-type {
+            --visibility: hidden;
+          }
+
+          &:last-of-type {
+            --visibility: visible;
+          }
+        }
+      }
+
+      @include media(xs) {
+        --top: #{rem(-4px)};
+        --right: #{rem(-14px)};
+        --bg: transparent;
+        left: auto;
+        transform: translateY(-50%);
+      }
+
+      @include media(md) {
+        --top: #{rem(-6px)};
+        --right: #{rem(-14px)};
+      }
+    }
+  }
+
+  &__tabs {
+    border-radius: 8px;
+    padding: 4px;
+    background-color: var(--layer-02);
+    display: flex;
+    align-items: center;
+    grid-gap: 4px;
+    margin-bottom: 24px;
+
+    &-item {
+      @include font($body-1);
+      color: var(--color, var(--text-secondary));
+      width: 100%;
+      text-align: center;
+      padding: 4px;
+      border-radius: 8px;
+      transition: all .2s ease-in-out;
+      user-select: none;
+      background-color: var(--bg, transparent);
+      border: none;
+
+      &.is-active {
+        background-color: var(--bg, var(--button-bg-secondary-click));
+        --color: var(--text-primary);
+      }
+
+      @include use-hover {
+        &:not(.is-active):not([disabled]) {
+          &:hover {
+            cursor: pointer;
+            --bg: var(--button-bg-secondary-hover);
+            --color: var(--button-text-ghost-hover);
+          }
+        }
+      }
+
+      &[disabled] {
+        --color: var(--text-helper);
+        --bg: transparent;
+      }
+    }
+  }
+
+  &__description {
+    @include font($body-1);
+    color: var(--text-tertiary);
+    margin: 24px 0 0 0;
+  }
+
+  .btn-primary {
+    margin: 24px 0 0;
+  }
+
+  .input-number {
+    margin-top: 16px;
+  }
+}

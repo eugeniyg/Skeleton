@@ -9,10 +9,10 @@
 
   .form-control {
     background: none;
-    background-color: var(--bg, var(--gray-800));
+    background-color: var(--bg, var(--field-00));
     padding: var(--input-padding-y, #{rem(7px)}) rem(44px);
-    border: 1px solid var(--border-color, var(--gray-800));
-    color: var(--color, var(--white));
+    border: 1px solid var(--border-color, var(--field-00));
+    color: var(--color, var(--text-primary));
     border-radius: 8px;
     @include font($heading-2);
     transition: border-color .2s ease-in-out;
@@ -20,12 +20,13 @@
     cursor: pointer;
 
     &::placeholder {
-      color: var(--gray-400);
+      color: var(--text-tertiary);
       @include font($body-1);
     }
 
     &:focus {
-      --border-color: var(--gray-300);
+      --border-color: var(--text-primary);
+      --bg: var(--field-00-click);
     }
 
     &.active {
@@ -41,7 +42,7 @@
     top: 0;
     bottom: 0;
     margin: auto;
-    --color: var(--white);
+    --color: var(--icon-primary);
     pointer-events: none;
   }
 
@@ -51,7 +52,7 @@
     top: 0;
     bottom: 0;
     margin: auto;
-    color: var(--icon-color, var(--gray-400));
+    color: var(--icon-color, var(--icon-primary));
     transform: var(--icon-transform, rotate(0));
     transition: transform .2s ease-in-out;
     pointer-events: none;

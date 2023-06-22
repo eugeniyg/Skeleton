@@ -10,7 +10,7 @@
   .text {
     @include font($heading-5);
     text-align: center;
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0 0;
   }
 

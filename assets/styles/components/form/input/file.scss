@@ -4,7 +4,7 @@
 
   hr {
     display: none;
-    border-top: 1px solid var(--gray-700);
+    border-top: 1px solid var(--border-01);
     margin: 16px 0 rem(16px);
   }
 
@@ -33,7 +33,7 @@
 
   &__sub-title {
     @include font($body-0);
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0;
     padding: 0;
 
@@ -44,7 +44,7 @@
 
   &__desc {
     @include font($body-0);
-    color: var(--gray-400);
+    color: var(--text-tertiary);
     margin: 0;
     padding: 0;
 

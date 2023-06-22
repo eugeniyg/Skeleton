@@ -1,0 +1,23 @@
+.modal-confirm-limit-update {
+  @extend %modal-info;
+  user-select: none;
+
+  &__text {
+    @include font($body-2);
+    color: var(--gray-300)
+  }
+
+  .scroll {
+    grid-row-gap: 24px;
+  }
+
+  &__actions {
+    display: grid;
+    grid-row-gap: rem(8px);
+
+    .btn-primary, .btn-secondary {
+      --width: 100%;
+      margin: 0;
+    }
+  }
+}
