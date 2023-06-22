@@ -14,7 +14,7 @@
 
     <button class="btn-copy" @click="actionClick">
       {{ props.copyButton }}
-      <atomic-icon id="ui-copy"/>
+      <atomic-icon id="copy"/>
     </button>
   </div>
 </template>
