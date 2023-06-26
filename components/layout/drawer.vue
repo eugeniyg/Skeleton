@@ -17,8 +17,6 @@
 
       <nav-list :items="sidebarContent?.topMenu || defaultLocaleSidebarContent?.topMenu"/>
       <atomic-divider/>
-      <nav-list :items="sidebarContent?.tokenMenu || defaultLocaleSidebarContent?.tokenMenu"/>
-      <atomic-divider/>
       <nav-list :items="sidebarContent?.bonusesMenu || defaultLocaleSidebarContent?.bonusesMenu"/>
       <atomic-divider/>
 
