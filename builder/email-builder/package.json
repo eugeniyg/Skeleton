@@ -1,0 +1,20 @@
+{
+  "name": "email-inliner",
+  "version": "1.0.0",
+  "main": "Gulpfile.js",
+  "scripts": {
+    "dev": "live-server ./src",
+    "build": "gulp",
+    "serve": "live-server ./build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {},
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-inline-css": "^4.0.0",
+    "live-server": "^1.2.2"
+  }
+}
