@@ -20,7 +20,14 @@
           <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'withdraw.title') }}</div>
         </div>
 
-        <form-withdraw :key="currentMethod.method" v-bind="currentMethod" />
+        <form-withdraw
+          v-if="withdrawMethods?.length"
+          :key="currentMethod.method"
+          v-bind="currentMethod"
+        />
+        <div v-else class="modal-withdraw__empty-methods">
+          {{ getContent(popupsData, defaultLocalePopupsData, 'withdraw.emptyWithdrawMethods') }}
+        </div>
       </div>
     </div>
   </vue-final-modal>

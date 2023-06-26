@@ -20,17 +20,22 @@
           <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'deposit.title') }}</div>
         </div>
 
-        <form-deposit
-          :key="methodKey"
-          v-if="currentMethod.type === 'form'"
-          v-bind="currentMethod"
-        />
-        <!--          <form-deposit-additional/>-->
-        <form-deposit-crypto
-          v-if="currentMethod.type === 'address'"
-          v-bind="currentMethod"
-          :key="`${currentMethod.method}-${methodKey}`"
-        />
+        <template v-if="depositMethods?.length">
+          <form-deposit
+            :key="methodKey"
+            v-if="currentMethod.type === 'form'"
+            v-bind="currentMethod"
+          />
+          <!--          <form-deposit-additional/>-->
+          <form-deposit-crypto
+            v-if="currentMethod.type === 'address'"
+            v-bind="currentMethod"
+            :key="`${currentMethod.method}-${methodKey}`"
+          />
+        </template>
+        <div v-else class="modal-deposit__empty-methods">
+          {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.emptyDepositMethods') }}
+        </div>
       </div>
     </div>
   </vue-final-modal>
