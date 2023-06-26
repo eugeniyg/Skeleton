@@ -1,0 +1,125 @@
+body {
+  margin: 0;
+  padding: 0;
+  word-spacing: normal;
+  background-color: #0E091E;
+}
+
+table[class="tb-body"] {
+  background-color: #0E091E;
+  border: none;
+  font-family: Arial, sans-serif;
+  margin: 0 auto;
+}
+
+.tb-content {
+  padding: 1.250em;
+  width: 100%;
+  max-width: 37.500em;
+  margin: 0 auto;
+  border: none;
+  font-family: Arial, sans-serif;
+}
+
+
+.header {
+  padding: 1.500em 0;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.content {
+  padding: 2.500em;
+  text-align: left;
+  background-color: #19192F;
+  border-radius: 16px;
+  font-family: Arial, sans-serif;
+}
+
+.footer {
+  padding: 1.500em 0;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.logo {
+  display: inline-block;
+}
+
+.h1 {
+  color: #FFFFFF;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 2em;
+  margin: 0 0 0 0;
+  padding: 0 0 1em 0;
+  font-family: Arial, sans-serif;
+}
+
+.h4 {
+  color: #FFFFFF;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1em;
+  margin: 0 0 0 0;
+  padding: 0 0 1em 0;
+  font-family: Arial, sans-serif;
+}
+
+.paragraph {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1em;
+  line-height: 1.500em;
+  color: #8E909F;
+  margin: 0 0 0 0;
+  padding: 0 0 1em 0;
+  font-family: Arial, sans-serif;
+}
+
+.action {
+  display: block;
+  text-align: center;
+  padding: 0.688em 1.500em;
+  width: 100%;
+  background-color: #FFC12E;
+  border-radius: 999px;
+  color: #0E091E;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.875em;
+  line-height: 1.125em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+}
+
+.hint {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.750em;
+  line-height: 1em;
+  text-align: center;
+  color: #8E909F;
+  padding: 0.500em 0 1em;
+  font-family: Arial, sans-serif;
+}
+
+.link-accent {
+  color: #FFC12E;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1em;
+  line-height: 1.500em;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+}
+
+.link {
+  color: #8E909F;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.875em;
+  line-height: 1.125em;
+  font-family: Arial, sans-serif;
+}
