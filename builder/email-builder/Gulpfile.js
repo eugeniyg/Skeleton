@@ -9,5 +9,5 @@ gulp.task('default', function () {
       removeStyleTags: true,
       removeLinkTags: true
     }))
-    .pipe(gulp.dest('build/'));
+    .pipe(gulp.dest('../../../assets/email-templates'));
 });
