@@ -79,7 +79,11 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    --padding: 7px 16px;
+    --padding: #{rem(7px)} #{rem(16px)};
+
+    @include media(l) {
+      --padding: #{rem(10px)} #{rem(24px)};
+    }
   }
 
   @include media(l) {
