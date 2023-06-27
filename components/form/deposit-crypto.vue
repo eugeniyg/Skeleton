@@ -149,7 +149,10 @@
 
     const { depositAccount } = useCoreWalletApi();
     try {
-      const depositResponse = await depositAccount(state.params);
+      const depositResponse = await depositAccount({
+        ...state.params,
+        fields: networkSelectOptions.value?.length ? { crypto_network: networkSelectOptions.value[0].code } : undefined
+      });
 
       walletNumber.value = depositResponse.address;
       qrLink.value = depositResponse.qrAddress;
