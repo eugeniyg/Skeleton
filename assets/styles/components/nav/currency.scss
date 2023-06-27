@@ -77,12 +77,14 @@
     background-color: var(--bg, transparent);
     transition: background-color .1s ease-in-out, color .1s ease-in-out;
 
-    &:hover {
-      cursor: pointer;
-      border-radius: 8px;
-      box-shadow: var(--shadow-layer);
-      --bg: var(--button-bg-secondary-click);
-      --text-color: var(--text-accent);
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: var(--shadow-layer);
+        --bg: var(--button-bg-secondary-click);
+        --text-color: var(--text-primary);
+      }
     }
 
     &:active {

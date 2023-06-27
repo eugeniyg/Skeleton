@@ -112,15 +112,19 @@
   }
 
   .hide-currency {
-    --color: var(--text-secondary);
+    --color: var(--button-text-ghost-highContrast);
     --padding: #{rem(8px)} 0;
     position: relative;
 
     @include use-hover {
       &:hover {
-        --color: var(-button-text-ghost-click);
+        --color: var(--button-text-ghost-hover);
         --bg: transparent;
       }
+    }
+
+    &:active {
+      --color: var(--button-text-ghost-click);
     }
   }
 }

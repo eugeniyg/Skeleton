@@ -63,7 +63,7 @@
       flex-shrink: 0;
       @include font($body-1);
       margin-left: auto;
-      color: var(--color, var(--text-helper));
+      color: var(--counter-color, var(--text-helper));
       transition: color .2s ease-in-out;
     }
 
@@ -88,11 +88,8 @@
           }
         }
 
-        .counter {
-          --color: var(--text-secondary);
-        }
+        --counter-color: var(--text-secondary);
 
-        // background: red;
       }
     }
 
@@ -106,6 +103,8 @@
       .text {
         --color: var(--text-accent);
       }
+
+      --counter-color: var(--text-secondary);
     }
 
     &:active {
