@@ -5,9 +5,43 @@
   .btn-prev, .btn-next {
     @include box(32px);
     @extend %flex-all-center;
-    @extend %skip-btn;
-    @extend %btn-secondary;
     border-radius: 8px;
+    border: var(--border, 0);
+    background-color: var(--bg, var(--button-bg-secondary));
+    font-family: 'Rubik', sans-serif;
+
+    .icon {
+      --color: var(--button-icon-secondary);
+    }
+
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
+        --bg: var(--button-bg-secondary-hover);
+
+        .icon {
+          --color: var(--button-icn-secondary-hover);
+        }
+      }
+    }
+
+
+    &:active, &.is-active {
+      --bg: var(--button-bg-secondary-click);
+
+      .icon {
+        --color: var(--button-icn-secondary-click);
+      }
+    }
+
+    &[disabled] {
+      pointer-events: none;
+      --bg: var(--button-bg-secondary-disabled);
+
+      .icon {
+        --color: var(--button-icn-secondary-disabled);
+      }
+    }
   }
 
   .btn-prev {

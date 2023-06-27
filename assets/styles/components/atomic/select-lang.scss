@@ -45,6 +45,7 @@
     .selected {
       --bg: var(--field-00-click);
       --rotate: rotate(180deg);
+      --selected-border-color: var(--border-click);
     }
 
     --items-visibility: visible;
@@ -83,7 +84,7 @@
 
   .items {
     position: absolute;
-    background-color: var(--layer-02);
+    background-color: var(--layer-01);
     box-shadow: var(--shadow-group);
     border-radius: 8px;
     visibility: var(--items-visibility, hidden);
@@ -108,7 +109,7 @@
   }
 
   .title {
-    color: var(--color, var(--text-accent));
+    color: var(--color, var(--text-secondary));
     @include font($body-1);
     flex-grow: 1;
     transition: color .2s ease-in-out;
