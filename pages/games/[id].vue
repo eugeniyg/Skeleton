@@ -75,27 +75,27 @@
       gameStart.value = startResponse.gameUrl;
       return { data: startResponse }
     } catch (err: any) {
-      if ([14100, 14101, 14103].includes(err.data?.error?.code)) {
+      if ([14100, 14101, 14105].includes(err.data?.error?.code)) {
         const { localizePath } = useProjectMethods();
         await router.push({ path: localizePath('/profile/limits'), query: {} });
-        showModal('playerLimitedConfirm');
+        showModal('depositLimitReached');
         return { error: { ...err, fatal: false }}
       }
+
+      if(err.data?.error?.code === 14103) {
+        showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
+        return { error: { ...err, fatal: false }}
+      }
+
       return { error: { ...err, fatal: true } }
     }
   };
-
 
   const changeGameMode = async ():Promise<void> => {
     if (isDemo.value && !isLoggedIn.value) {
       showModal('register');
       return;
     }
-
-    // if (isDemo.value && profile.value?.status === 2) {
-    //   showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
-    //   return;
-    // }
 
     isDemo.value = !isDemo.value;
 

@@ -1,18 +1,18 @@
 import { defineStore } from 'pinia';
 
 import { CreateLimitInterface, CurrencyInterface, PlayerLimitInterface } from '@platform/frontend-core/dist/module';
-import { ProfileLimitsContentInterface } from '~/types';
-import { useGlobalStore } from '~/composables/useGlobalStore';
+import { ProfileLimitsContentInterface } from '@skeleton/types';
+import { useGlobalStore } from '@skeleton/composables/useGlobalStore';
 
 interface LimitsModalInterface {
   addLimit: boolean,
   editLimit: boolean,
-  exceededLimitConfirm: boolean,
-  playerLimitedConfirm: boolean,
+  depositLimitReached: boolean,
+  gameLimitReached: boolean,
   confirmLimitUpdate: boolean,
 }
 
-interface LimitsStateInteface {
+interface LimitsStateInterface {
   activeLimits: PlayerLimitInterface[],
   isLoaded: boolean,
   limitsContent: Maybe<ProfileLimitsContentInterface>,
@@ -32,7 +32,7 @@ const transformToPeriods = (limits: PlayerLimitInterface[]) => {
 };
 
 export const useLimitsStore = defineStore('limitsStore', {
-  state: (): LimitsStateInteface => ({
+  state: (): LimitsStateInterface => ({
     activeLimits: [],
     isLoaded: false,
     limitsContent: undefined,
@@ -41,8 +41,8 @@ export const useLimitsStore = defineStore('limitsStore', {
     modals: {
       addLimit: false,
       editLimit: false,
-      exceededLimitConfirm: false,
-      playerLimitedConfirm: false,
+      depositLimitReached: false,
+      gameLimitReached: false,
       confirmLimitUpdate: false,
     },
   }),

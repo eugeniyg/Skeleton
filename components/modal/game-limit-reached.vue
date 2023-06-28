@@ -1,17 +1,17 @@
 <template>
   <vue-final-modal
-    v-model="modals.playerLimitedConfirm"
-    class="modal-exceeded-limit-confirm"
+    v-model="modals.gameLimitReached"
+    class="game-limit-reached"
     :clickToClose="false"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('playerLimitedConfirm')"/>
-        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.playerLimitedConfirm.label') }}</div>
+        <button-modal-close @close="closeModal('gameLimitReached')"/>
+        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.gameLimitReached.label') }}</div>
       </div>
 
-      <div class="modal-exceeded-limit-confirm__text">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.playerLimitedConfirm.description') }}
+      <div class="game-limit-reached__text">
+        {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.gameLimitReached.description') }}
       </div>
 
     </div>
@@ -31,7 +31,7 @@
 </script>
 
 <style lang="scss">
-.modal-exceeded-limit-confirm {
+.game-limit-reached {
   @extend %modal-info;
   user-select: none;
 

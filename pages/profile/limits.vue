@@ -47,9 +47,9 @@
       />
     </div>
 
-    <modal-exceeded-limit-confirm/>
+    <modal-deposit-limit-reached/>
 
-    <modal-player-limited-confirm/>
+    <modal-game-limit-reached/>
 
     <modal-confirm-limit-update
       :period="state.period"
@@ -61,7 +61,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ProfileLimitsContentInterface } from '~/types';
+  import { ProfileLimitsContentInterface } from '@skeleton/types';
 
   const limitsStore = useLimitsStore();
   const globalStore = useGlobalStore();
