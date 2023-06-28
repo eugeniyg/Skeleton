@@ -44,27 +44,17 @@
   .btn-show-all {
     @include font($heading-1);
     grid-area: btn-show-all;
-
-    --color: var(--button-text-ghost-high-contrast);
     --width: 100%;
 
     @include media(xs) {
       padding: 0;
-      background: none;
-
-      &:hover {
-        --color: var(--button-bg-secondary-hover);
-      }
     }
 
     @include media(sm) {
       @include upd-font($heading-2);
-
-      &:hover {
-        --color: var(--button-bg-ghost-hover);
-        --bg: transparent;
-      }
     }
+
+    @extend  %btn-ghost-low-contrast;
   }
 
   .arrows {
