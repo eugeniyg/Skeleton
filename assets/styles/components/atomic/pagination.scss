@@ -12,12 +12,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--color, var(--white));
 
     &:hover {
       cursor: pointer;
-      --bg: var(--gray-800);
-      --color: var(--yellow-500);
+      --bg: var(--button-bg-secondary-hover);
+      --color: var(--text-accent);
     }
   }
 
@@ -30,6 +29,7 @@
     align-items: center;
     justify-content: center;
     pointer-events: none !important;
+    color: var(--text-tertiary);
   }
 
   .total {
@@ -41,31 +41,34 @@
 
   .page {
     @include font($heading-1);
+    color: var(--color, var(--text-primary));
 
     &.is-selected {
-      --bg: var(--gray-800);
-      --color: var(--yellow-500);
+      --bg: var(--button-bg-secondary-hover);
+      --color: var(--text-accent);
     }
   }
 
   .icon {
-    --color: var(--white);
+    --color: var(--icon-contrast);
   }
 
   .prev, .next {
+    --color: var(--icon-contrast);
+
     &[disabled] {
       pointer-events: none;
 
       .icon {
-        --color: var(--gray-600);
+        --color: var(--icon-secondary);
       }
     }
 
-    &:focus {
-      --bg: var(--gray-800);
+    &:active {
+      --bg: var(--button-bg-secondary-hover);
 
       .icon {
-        --color: var(--yellow-500);
+        --color: var(--text-accent);
       }
     }
   }

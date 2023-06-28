@@ -1,20 +1,21 @@
 .text-editor {
   @include text-page-max;
-  color: var(--white);
+  color: var(--text-tertiary);
 
   i, em {
     @include font($body-1);
-    color: var(--gray-400);
+    color: var(--text-teriary);
     display: block;
   }
 
   h1 {
     @include font($heading-7);
+    color: var(--text-primary);
     margin: 0 0 rem(8px);
   }
 
   h2, h3, h4, h5, h6 {
-    color: var(--color, var(--white));
+    color: var(--color, var(--text-primary));
     @include font($heading-5);
   }
 
@@ -23,7 +24,7 @@
   }
 
   a {
-    color: var(--yellow-500);
+    color: var(--text-link);
   }
 
   dl {
@@ -33,7 +34,7 @@
     margin: 0;
     @include font($body-1);
     grid-column-gap: rem(8px);
-    color: var(--gray-400);
+    color: var(--text-teriary);
 
     dt {
       grid-column: 1;
@@ -55,7 +56,7 @@
     }
 
     li {
-      color: var(--gray-400);
+      color: var(--text-teriary);
       margin: rem(12px) 0;
     }
   }
@@ -71,7 +72,7 @@
     }
 
     li {
-      color: var(--gray-400);
+      color: var(--text-teriary);
       margin: rem(12px) 0;
     }
   }
@@ -90,7 +91,7 @@
 
   p {
     @include font($body-3-paragraph);
-    color: var(--color, var(--gray-400));
+    color: var(--color, var(--text-teriary));
     margin: rem(12px) 0;
   }
 
@@ -123,7 +124,7 @@
 
   th {
     @include font($heading-2);
-    color: var(--gray-400);
+    color: var(--text-teriary);
     border-bottom: 1px solid var(--gray-700);
     padding: rem(16px);
   }

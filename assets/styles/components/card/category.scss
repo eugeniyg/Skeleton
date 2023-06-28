@@ -3,7 +3,6 @@
   position: relative;
   flex-direction: column;
   grid-gap: rem(8px);
-  background: linear-gradient(360deg, #11141C 0%, rgba(17, 20, 28, 0) 100%);
 
   @include media(sm) {
     grid-gap: rem(16px);
@@ -30,7 +29,6 @@
   display: flex;
   flex-direction: column;
   padding: var(--card-padding, #{rem(16px)});
-  background: var(--orange-700);
   border-radius: 8px;
   align-content: flex-start;
   flex-grow: 1;
@@ -43,7 +41,7 @@
 
   .title {
     @include font($heading-5);
-    color: var(--white);
+    color: var(--text-primary);
     position: relative;
     z-index: 1;
     margin-bottom: rem(4px);
@@ -60,7 +58,7 @@
 
   .sub-title {
     @include font($body-1);
-    color: var(--white);
+    color: var(--text-primary);
     position: relative;
     z-index: 1;
     margin-bottom: rem(24px);
@@ -81,7 +79,11 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    --padding: 7px 16px;
+    --padding: #{rem(7px)} #{rem(16px)};
+
+    @include media(l) {
+      --padding: #{rem(10px)} #{rem(24px)};
+    }
   }
 
   @include media(l) {
@@ -111,24 +113,13 @@
 }
 
 .card-cat-casino {
-  background-color: #d16004;
-  background-image: linear-gradient(
-      -94.47deg,
-      rgba(96, 12, 135, 0) 1.41%,
-      rgba(95, 12, 135, 0.44) 97.61%
-  ),
-  linear-gradient(
-      240.53deg,
-      rgba(17, 20, 28, 0) 56.15%,
-      rgba(17, 20, 28, 0.24) 87.99%
-  );
-
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+  background-color: var(--data-banner-casino-bg);
+  background-image: var(--card-category-casino-gradient);
+  box-shadow: var(--shadow-modal);
 }
 
 .card-cat-betting {
-  background-color: #640B8E;
-  background-image: linear-gradient(94.47deg, rgba(230, 164, 9, 0) 1.41%, rgba(230, 164, 9, 0.44) 97.61%),
-  linear-gradient(240.53deg, rgba(17, 20, 28, 0) 56.15%, rgba(17, 20, 28, 0.24) 87.99%);
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+  background-color: var(--data-banner-betting-bg);
+  background-image: var(--card-category-betting-gradient);
+  box-shadow: var(--shadow-modal);
 }

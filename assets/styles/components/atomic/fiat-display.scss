@@ -28,7 +28,7 @@
   }
 
   &__amount {
-    color: var(--white);
+    color: var(--text-primary);
     grid-area: amount;
     @include font($heading-1);
 
@@ -38,7 +38,7 @@
   }
 
   &__currency {
-    color: var(--gray-500);
+    color: var(--text-helper);
     grid-area: currency;
     @include font($heading-1);
 

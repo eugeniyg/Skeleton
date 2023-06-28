@@ -162,13 +162,4 @@
   });
 </script>
 
-<style lang="scss">
-.time-span {
-  min-width: 22px;
-  display: inline-flex;
-
-  &:not(:first-of-type) {
-    margin-left: 4px;
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/period-item.scss" lang="scss" />

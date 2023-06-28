@@ -4,14 +4,14 @@
 
   .title {
     @include font($heading-2);
-    color: var(--color, var(--gray-400));
+    color: var(--color, var(--text-primary));
     margin: 0;
     padding: 0;
   }
 
   .sub-title {
     @include font($body-2);
-    color: var(--color, var(--gray-400));
+    color: var(--color, var(--text-tertiary));
     margin: 0;
     padding: 0;
   }

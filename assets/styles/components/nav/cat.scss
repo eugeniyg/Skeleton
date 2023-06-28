@@ -61,7 +61,7 @@
   }
 
   &:before {
-    background: var(--gray-800);
+    background: var(--layer-02);
     position: absolute;
     content: '';
     top: 0;
@@ -97,8 +97,8 @@
   padding: var(--item-padding, 0 #{rem(12px)} 0 #{rem(8px)});
   height: var(--item-height, #{rem(24px)});
   cursor: pointer;
-  background-color: var(--bg, var(--gray-800));
-  color: var(--color, var(--gray-300));
+  background-color: var(--bg, transparent);
+  color: var(--color, var(--text-secondary));
   text-decoration: none;
   white-space: nowrap;
   transition: color .2s ease-in-out;
@@ -108,10 +108,10 @@
 
   @include use-hover {
     &:hover {
-      --color: var(--white);
+      --color: var(--text-primary);
 
       .icon {
-        --color: var(--white);
+        --color: var(--text-primary);
       }
     }
   }
@@ -138,17 +138,16 @@
   }
 
   .icon {
-    --color: var(--gray-400);
+    --color: var(--icon-primary);
     --icon-size: 20px;
   }
 
   &.is-active {
-    --bg: var(--gray-700);
-    --border-color: var(--gray-700);
-    --color: var(--white);
+    --bg: var(--button-bg-secondary-click);
+    --color: var(--text-primary);
 
     .icon {
-      --color: var(--white);
+      --color: var(--text-primary);
     }
   }
 }
@@ -159,7 +158,9 @@
   @extend %flex-items-center;
   padding: #{rem(8px)} #{rem(14px)} #{rem(8px)} #{rem(18px)};
   height: var(--height, #{rem(24px)});
-  background-color: var(--gray-800);
+  border: 1px solid var(--border-color, var(--field-00));
+  background-color: var(--bg, var(--field-00));
+  color: var(--color, var(--text-primary));
   text-decoration: none;
   white-space: nowrap;
   transition: color .2s ease-in-out;
@@ -170,7 +171,6 @@
   border-radius: 8px;
   cursor: pointer;
   margin-left: rem(-4px);
-  color: var(--color, var(--gray-300));
   position: var(--position, absolute);
   visibility: var(--visibility, hidden);
 
@@ -178,7 +178,7 @@
     position: relative;
     transition: transform .2s ease-in-out;
     transform: var(--icon-transform, rotate(0));
-    --color: var(--gray-400);
+    --color: var(--icon-primary);
     --icon-size: 20px;
   }
 
@@ -204,25 +204,27 @@
     }
 
     > .icon {
-      --color: var(--white);
+      --color: var(--icon-primary);
     }
 
-    --color: var(--white);
+    --border-color: var(--border-click);
+    --bg: var(--field-00-click);
+    --color: var(--text-primary);
   }
 
   @include use-hover {
     &:hover {
-      --color: var(--white);
+      --border-color: var(--border-hover);
+      --color: var(--text-primary);
 
       > .icon {
-        --color: var(--white);
+        --color: var(--icon-primary);
       }
     }
   }
 }
 
 .nav-cat-select-items {
-  color: var(--gray-300);
   display: none;
   position: absolute;
   right: rem(-4px);
@@ -231,9 +233,9 @@
   max-height: calc((#{rem(38px)} * 4) + #{16px});
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: var(--gray-800);
+  background-color: var(--items-bg, var(--layer-02));
   transform: translateY(#{rem(8px)});
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-group);
   border-radius: 12px;
   top: rem(30px);
 
@@ -242,11 +244,11 @@
 
 .nav-cat-select-item {
   @include font($body-1);
-  color: var(--gray-300);
+  background-color: var(--item-bg, transparent);
+  color: var(--text-primary);
   padding: rem(8px) rem(6px);
   cursor: pointer;
   user-select: none;
-  background-color: var(--bg, transparent);
   transition: background-color .2s ease-in-out;
   position: relative;
   align-items: center;
@@ -260,9 +262,9 @@
   border-radius: 8px;
 
   @include use-hover {
-    &:hover {
-      --bg: var(--gray-700);
-      color: var(--white);
+    &:hover:not(.is-active) {
+      --item-bg: var(--button-bg-secondary-click);
+      color: var(--text-primary);
     }
   }
 
@@ -277,16 +279,15 @@
     position: relative;
     transition: transform .2s ease-in-out;
     --icon-size: 20px;
-    --color: var(--gray-400);
+    --color: var(--icon-contrast);
     justify-self: flex-end;
   }
 
   &.is-active {
-    --border-color: var(--gray-700);
-    color: var(--white);
+    color: var(--text-primary);
 
     .icon {
-      --color: var(--white);
+      --color: var(--text-primary);
     }
   }
 

@@ -30,7 +30,7 @@
 
   &__title {
     @include font($heading-5);
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0 0 rem(8px);
 
     @include media(md) {
@@ -40,14 +40,14 @@
 
   &__sub-title {
     @include font($body-2);
-    color: var(--gray-400);
+    color: var(--text-tertiary);
     margin: 0 0 rem(24px);
   }
 
   &__support {
     padding: rem(16px);
-    background-color: var(--gray-900);
-    box-shadow: 0 0 12px 0 #00000029;
+    background-color: var(--layer-01);
+    box-shadow: var(--shadow-layer);
     display: flex;
     justify-items: center;
     flex-wrap: wrap;
@@ -56,7 +56,7 @@
 
     &-title {
       @include font($heading-2);
-      color: var(--gray-400);
+      color: var(--text-tertiary);
       margin: 0 0 rem(4px);
       width: 100%;
       text-align: center;
@@ -64,7 +64,7 @@
 
     &-sub-title {
       @include font($body-1);
-      color: var(--gray-400);
+      color: var(--text-tertiary);
       margin: 0;
       width: var(--width, 100%);
       text-align: center;
@@ -76,7 +76,7 @@
 
     &-mail-to {
       @include font($body-1);
-      color: var(--yellow-500);
+      color: var(--text-link);
       margin: 0;
     }
   }

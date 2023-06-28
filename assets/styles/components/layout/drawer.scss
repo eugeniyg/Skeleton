@@ -1,5 +1,5 @@
 .drawer {
-  background-color: var(--gray-800);
+  background-color: var(--layer-02);
   grid-area: drawer;
   transition: var(--drawer-transition, (transform .2s ease-out));
   width: var(--drawer-width, #{rem(240px)});
@@ -17,7 +17,7 @@
   }
 
   .header {
-    background-color: var(--drawer-header-bg, var(--gray-800));
+    background-color: var(--drawer-header-bg, var(--layer-01));
     padding: var(--drawer-header-padding, 0);
     position: relative;
     display: grid;
@@ -27,16 +27,16 @@
     min-height: rem(64px);
 
     .drawer-minimize &, .drawer-open & {
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+      box-shadow: var(--shadow-layer);
     }
 
     .drawer-open & {
-      --drawer-header-bg: var(--gray-900);
+      --drawer-header-bg: var(--layer-01);
     }
 
     .drawer-minimize & {
       @include media(l) {
-        --drawer-header-bg: var(--gray-800);
+        --drawer-header-bg: var(--layer-02);
         --drawer-header-padding: 0 0 16px 0;
 
         &:after {
@@ -46,7 +46,7 @@
           left: 16px;
           right: 16px;
           bottom: 0;
-          border-bottom: 1px solid var(--gray-700);
+          border-bottom: 1px solid var(--border-01);
         }
       }
     }
@@ -79,7 +79,6 @@
     }
 
     .drawer-open & {
-      //--drawer-content-padding: #{rem(16px)};
       --drawer-content-height: calc(var(--vh, 1vh) * 100 - #{rem(62px)} - #{rem(24px)});
     }
 

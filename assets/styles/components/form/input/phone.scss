@@ -40,7 +40,7 @@
 
   &.has-error {
     .field {
-      --border-color: var(--red-800);
+      --border-color: var(--border-alert);
     }
   }
 }

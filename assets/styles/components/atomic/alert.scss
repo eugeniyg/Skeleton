@@ -1,16 +1,20 @@
+.vue-notification-wrapper {
+  overflow: unset !important;
+}
+
 .alert {
   margin-top: 12px;
-  background-color: var(--gray-900);
+  background-color: var(--layer-01);
   padding: rem(16px);
   display: flex;
   grid-column-gap: rem(8px);
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+  box-shadow: var(--shadow-layer);
   border-radius: 8px;
   align-items: center;
 
   .title {
     @include font($heading-2);
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0;
     padding: 0;
   }
@@ -21,7 +25,7 @@
 
   .text {
     @include font($body-1);
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0;
     padding: 0;
   }
@@ -38,40 +42,40 @@
 
     .icon {
       --icon-size: 22px;
-      --color: var(--gray-400);
+      --color: var(--button-icn-ghost-low-contrast);
     }
 
     &:hover {
       cursor: pointer;
 
       .icon {
-        --color: var(--white);
+        --color: var(--button-icn-ghost-hover);
       }
     }
   }
 
   &.variant-info {
     > .icon {
-      --color: var(--gray-400);
+      --color: var(--icon-primary);
     }
   }
 
   &.variant-error {
     > .icon {
-      --color: var(--red-500);
+      --color: var(--icon-alert);
     }
   }
 
   &.variant-done {
     > .icon {
-      --color: var(--green-500);
+      --color: var(--icon-success);
     }
   }
 
   &.variant-warning,
   &.variant-pending {
     > .icon {
-      --color: var(--yellow-500);
+      --color: var(--icon-warning);
     }
   }
 }

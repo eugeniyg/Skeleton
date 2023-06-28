@@ -24,7 +24,7 @@
     grid-area: icon;
     margin-left: rem(16px);
     --icon-size: #{rem(20px)};
-    --color: var(--gray-400);
+    --color: var(--icon-primary);
 
     @include media(sm) {
       margin-left: rem(24px);
@@ -35,7 +35,7 @@
     flex-grow: 1;
     grid-area: heading;
     @include font($heading-4);
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0;
   }
 
@@ -43,7 +43,7 @@
     grid-area: items;
     display: var(--display, grid);
     align-items: normal;
-    overflow-x: auto;
+    // overflow-x: auto;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: var(--items-column-gap, #{rem(8px)});
 
@@ -64,7 +64,7 @@
     border-radius: 8px;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+    box-shadow: var(--shadow-layer);
     text-align: center;
 
     &:before {
@@ -76,8 +76,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: var(--gray-900);
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+      background-color: var(--layer-01);
+      box-shadow: var(--shadow-group);
       z-index: 0;
     }
 
@@ -91,7 +91,7 @@
       z-index: 3;
       opacity: 0;
       transition: opacity .2s ease-in-out;
-      background-image: linear-gradient(180deg, rgba(17, 20, 28, 0) 0%, var(--black-primary) 100%);
+      background-image: var(--gradient-tint-dark-b2t-whole);
       filter: blur(2px)
     }
 
@@ -167,7 +167,7 @@
 
     .title {
       @include font($heading-3);
-      color: var(--white);
+      color: var(--text-primary);
       margin-bottom: rem(4px);
       text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
 
@@ -178,7 +178,7 @@
 
     .sub-title {
       @include font($body-1);
-      color: var(--white);
+      color: var(--text-primary);
 
       @include media(md) {
         @include upd-font($body-2);
@@ -192,7 +192,7 @@
     .link-more {
       @include font($heading-1);
       background-color: var(--bgc, transparent);
-      color: var(--color, var(--gray-300));
+      color: var(--color, var(--button-text-ghost-high-contrast));
       text-decoration: none;
       padding: rem(4px) rem(16px);
       display: flex;
@@ -203,8 +203,8 @@
 
       @include use-hover {
         &:hover {
-          --bgc: var(--gray-800);
-          --color: var(--yellow-500);
+          --bgc: var(--button-bg-secondary-hover);
+          --color: var(--button-text-ghost-hover);
         }
       }
 

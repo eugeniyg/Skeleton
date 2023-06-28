@@ -9,7 +9,7 @@
     "svg-icons-optimize": "svgo -r -f ./assets/svg/sprite -o ./assets/svg/sprite/optimized --config ./assets/js/helpers/svgo.config.js",
     "svg-icons-sprite": "svg-sprite-generate -d ./assets/svg/sprite/optimized -o ./public/sprite.svg",
     "svg-icons": "npm run svg-icons-optimize && npm run svg-icons-sprite && rm -rf ./assets/svg/sprite/optimized",
-    "svg-sprite": "svg-sprite-generate -d ./assets/svg/icons-colored -o ./public/svg-sprite.svg"
+    "svg-sprite": "svg-sprite-generate -d ./assets/svg/sprite-colored -o ./public/sprite-colored.svg"
   },
   "devDependencies": {
     "@nuxt/content": "^2.6.0",
@@ -28,7 +28,7 @@
   "dependencies": {
     "@kyvg/vue3-notification": "^2.9.1",
     "@pinia/nuxt": "^0.4.11",
-    "@platform/frontend-core": "1.1.7",
+    "@platform/frontend-core": "1.1.8",
     "@types/lodash": "^4.14.195",
     "@types/ua-parser-js": "^0.7.36",
     "@vuelidate/core": "^2.0.2",

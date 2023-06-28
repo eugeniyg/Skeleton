@@ -93,7 +93,7 @@
     const defaultGamesResponse = await getFilteredGames({
       page: 1,
       perPage: 4,
-      collectionId: getTurbogamesId || currentLocaleCollections.value[0].id,
+      collectionId: getTurbogamesId || currentLocaleCollections.value[0]?.id,
     });
     defaultGames.value = defaultGamesResponse.data;
   });

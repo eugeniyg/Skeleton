@@ -9,13 +9,13 @@
 
   .title {
     @include font($heading-2);
-    color: var(--white);
+    color: var(--text-primary);
     grid-area: title;
   }
 
   .description {
     @include font($body-2);
-    color: var(--gray-400);
+    color: var(--text-tertiary);
     grid-area: description;
   }
 

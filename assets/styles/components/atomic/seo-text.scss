@@ -1,5 +1,5 @@
 .text-wrap {
-  color: var(--gray-500);
+  color: var(--text-helper);
   margin-bottom: -24px;
 
   h1, h2 {
@@ -16,7 +16,7 @@
   }
 
   a {
-    color: var(--gray-500);
+    color: var(--text-helper);
     text-decoration: underline;
   }
 }

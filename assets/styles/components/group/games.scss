@@ -8,6 +8,7 @@
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
   grid-column-gap: var(--column-gap, #{rem(8px)});
   grid-row-gap: var(--row-gap, #{rem(16px)});
+  position: relative;
 
   @include media(xs) {
     grid-template-areas:
@@ -24,7 +25,7 @@
     grid-area: icon;
     margin-left: rem(16px);
     --icon-size: #{rem(20px)};
-    --color: var(--gray-400);
+    --color: var(--icon-primary);
 
     @include media(sm) {
       margin-left: rem(24px);
@@ -36,7 +37,7 @@
     @include font($heading-1);
 
     --font-size: #{rem(12px)};
-    --color: var(--gray-500);
+    --color: var(--button-text-ghost-high-contrast);
     --width: auto;
 
     @include media(xs) {
@@ -48,9 +49,21 @@
       @include upd-font($heading-2);
 
       &:hover {
-        --color: var(--white);
         --bg: transparent;
+        --color: var(--text-primary);
       }
+    }
+
+    @include use-hover {
+      &:hover {
+        --bg: var(--button-bg-secondary-hover);
+        --color: var(--button-text-ghost-hover);
+      }
+    }
+
+    &:active {
+      --bg: var(--button-bg-secondary-click);
+      --color: var(--button-text-ghost-click);
     }
   }
 
@@ -68,7 +81,7 @@
     flex-grow: 1;
     grid-area: heading;
     @include font($heading-4);
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0;
   }
 
@@ -109,13 +122,13 @@
   .titles {
     .title {
       @include font($heading-4);
-      color: var(--white);
+      color: var(--text-primary);
       margin: 0;
     }
 
     .sub-title {
       @include font($body-2);
-      color: var(--gray-400);
+      color: var(--text-tertiary);
       margin: 0;
     }
   }

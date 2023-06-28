@@ -13,14 +13,14 @@
   .icon {
     width: rem(20px);
     height: rem(20px);
-    --color: var(--gray-400);
+    --color: var(--icon-primary);
   }
 
   &:hover {
     cursor: pointer;
 
     .icon {
-      --color: var(--white);
+      --color: var(--icon-contrast);
     }
   }
 }

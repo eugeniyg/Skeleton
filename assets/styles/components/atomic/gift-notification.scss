@@ -36,31 +36,37 @@
   }
 
   .icon {
-    --color: var(--gray-400);
+    --color: var(--button-icn-ghost-low-contrast);
     --icon-size: 22px;
   }
 
   &.is-active {
     --bgc: transparent;
 
-    --bulb-color: var(--green-500);
-    --bulb-border-color: var(--black-primary);
+    --bulb-color: var(--support-success-default);
+    --bulb-border-color: var(--button-bg-secondary-hover);
 
     &:hover {
-      --bgc: var(--gray-700);
+      --bgc: var(--button-bg-secondary-hover);
     }
 
     .icon {
-      --color: var(--white);
+      --color: var(--button-icn-ghost-high-contrast);
     }
   }
 
-  &:hover {
-    --bgc: var(--gray-800);
+  @include use-hover {
+    &:hover {
+      --bgc: var(--button-bg-secondary-hover);
 
-    .icon {
-      --color: var(--yellow-500);
+      .icon {
+        --color: var(--button-icn-ghost-hover);
+      }
     }
+  }
+
+  &:active {
+    --bgc: var(--button-bg-secondary-click);
   }
 
 }

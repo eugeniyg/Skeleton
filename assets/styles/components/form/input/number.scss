@@ -12,10 +12,10 @@
   }
 
   .field {
-    background-color: var(--bg, var(--gray-800));
+    background-color: var(--bg, var(--field-01));
     padding: var(--input-padding-y, #{rem(11px)}) rem(16px);
-    border: 1px solid var(--border-color, var(--gray-800));
-    color: var(--color, var(--white));
+    border: 1px solid var(--border-color, var(--field-01));
+    color: var(--color, var(--text-primary));
     border-radius: 12px;
     @include font($heading-2);
     transition: border-color .2s ease-in-out;
@@ -31,11 +31,11 @@
     -moz-appearance: textfield;
 
     &::placeholder {
-      color: var(--gray-400);
+      color: var(--text-tertiary);
     }
 
     &:focus {
-      --border-color: var(--gray-300);
+      --border-color: var(--border-click);
     }
   }
 
@@ -53,12 +53,12 @@
     margin-top: auto;
     margin-bottom: auto;
     @include font($body-2);
-    color: var(--color, var(--gray-400));
+    color: var(--color, var(--text-tertiary));
     display: flex;
     align-items: center;
 
     .icon {
-      --color: var(--gray-400);
+      --color: var(--text-tertiary);
     }
   }
 
@@ -72,7 +72,7 @@
   }
 
   &.has-error {
-    --border-color: var(--red-800);
+    --border-color: var(--border-alert);
   }
 
   &.size-xs {

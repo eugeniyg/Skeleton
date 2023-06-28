@@ -1,7 +1,7 @@
 .bonus-page {
   margin-top: rem(-24px);
   > .header {
-    background: var(--bg, var(--gray-900));
+    background: var(--bg, var(--layer-01));
     height: var(--height, #{rem(200px)});
     padding-top: rem(40px);
     margin: var(--margin, 0 #{rem(-16px)});
@@ -14,15 +14,15 @@
       right: 0;
       bottom: 0;
       left: 0;
-      background-image: linear-gradient(187.95deg, rgba(17, 20, 28, 0) 44.73%, rgba(17, 20, 28, 0.8) 93.88%)
+      background-image: var(--gradient-tint-dark-b2t-half);
     }
 
     @include media(sm) {
-      --margin: 0 #{rem(-32px)}
+      --margin: 0 #{rem(-48px)}
     }
 
     &[data-bg="gray"] {
-      --bg: var(--gray-900);
+      --bg: var(--layer-01);
     }
 
     &[data-bg="red"] {
@@ -47,6 +47,7 @@
       display: block;
       margin: 0 auto;
       position: relative;
+      z-index: 1;
     }
 
     @include media(xs) {
@@ -64,28 +65,28 @@
 
     > .title {
       @include font($heading-1);
-      color: var(--yellow-500);
+      color: var(--text-accent);
       margin: 0 0 rem(8px);
       padding: 0;
     }
 
     > .sub-title {
       @include font($heading-7);
-      color: var(--white);
+      color: var(--text-primary);
       margin: 0 0 rem(16px);
       padding: 0;
     }
 
     > .description {
       @include font($body-3-paragraph);
-      color: var(--gray-400);
+      color: var(--text-tertiary);
       margin: 0 0 rem(16px);
       padding: 0;
     }
 
     > .list-title {
       @include font($heading-3);
-      color: var(--white);
+      color: var(--text-primary);
       margin: 0 0 rem(16px);
       padding: 0;
     }
@@ -95,7 +96,7 @@
       padding: 0;
       list-style: none;
       @include font($body-3-paragraph);
-      color: var(--gray-400);
+      color: var(--text-tertiary);
 
       li {
         margin: rem(12px) 0;

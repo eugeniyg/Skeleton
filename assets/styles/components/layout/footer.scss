@@ -1,6 +1,6 @@
 .app-footer {
   grid-area: app-footer;
-  color: var(--gray-500);
+  color: var(--text-helper);
   display: grid;
   padding: var(--padding, #{rem(16px)} #{rem(16px)} #{rem(110px)} #{rem(16px)});
   @extend %container;
@@ -34,7 +34,7 @@
 
     &__text {
       a {
-        color: var(--gray-500);
+        color: var(--text-helper);
         text-decoration: underline;
       }
     }

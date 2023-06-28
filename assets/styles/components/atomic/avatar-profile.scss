@@ -12,7 +12,7 @@
   .thumb {
     position: relative;
     border-radius: 12px;
-    background-color: var(--gray-900);
+    background-color: var(--layer-bg);
     background-image: url(/img/avatar-bg.png);
     background-position: center;
     background-size: contain;
@@ -25,7 +25,7 @@
       position: absolute;
       width: rem(44px);
       height: rem(44px);
-      --color: #718792;
+      --color: var(--icon-primary);
     }
 
     &:hover {

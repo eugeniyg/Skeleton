@@ -1,10 +1,12 @@
 .balance {
-  background-color: var(--black-primary);
+  background-color: var(--layer-bg);
   border-radius: 8px;
   padding: var(--items-padding, #{rem(16px)});
   margin: var(--margin, 0);
   align-items: flex-start;
   width: 100%;
+  position: relative;
+  z-index: 5;
 
   @include media(md) {
     min-width: 144px;
@@ -31,7 +33,6 @@
     grid-template-areas: "label value" "label sub-value";
 
     @include media(md) {
-      align-items: center;
       grid-row-gap: rem(2px);
       display: flex;
       flex-direction: column;
@@ -42,12 +43,12 @@
       margin-bottom: rem(16px);
 
       .label {
-        --color: var(--gray-400);
+        --color: var(--text-tertiary);
       }
 
       .value {
         @include upd-font($body-2);
-        --color: var(--gray-400);
+        --color: var(--text-tertiary);
         text-align: right;
 
         @include media(md) {
@@ -65,7 +66,7 @@
 
       .value {
         text-align: right;
-        --color: var(--white);
+        --color: var(--text-primary);
 
         @include media(md) {
           text-align: left;
@@ -76,7 +77,7 @@
     .amount {
       display: flex;
       align-items: center;
-      color: var(--white);
+      color: var(--text-primary);
       @include font($body-1);
       grid-column-gap: rem(4px);
       margin-right: 8px;
@@ -91,26 +92,23 @@
       @include font($body-1);
       border-radius: 8px;
       transition: all 0.2s;
+      border: 1px solid var(--border-color, transparent);
 
       @include media(md) {
         width: 100%;
         justify-content: space-between;
-        background-color: var(--gray-800);
-        border: 1px solid var(--gray-800);
+        background-color: var(--field-00-click);
         margin-top: 4px;
       }
 
       .icon-expand {
         --icon-size: 20px;
-        --color: var(--gray-400);
+        --color: var(--icon-primary);
       }
 
       &.is-open {
-        background-color: var(--gray-700);
-
-        @include media(md) {
-          border: 1px solid var(--gray-300);
-        }
+        background-color: var(--field-00-click);
+        --border-color: var(--border-click);
       }
 
       @include use-hover {
@@ -122,7 +120,7 @@
       &.is-open {
         .icon-expand {
           --icon-transform: rotate(-180deg);
-          --color: var(--white);
+          --color: var(--icon-contrast);
         }
       }
 
@@ -153,10 +151,12 @@
 
   .label {
     @include font($body-2);
-    color: var(--gray-400);
+    color: var(--text-tertiary);
     flex-grow: 1;
     margin: 0;
     grid-area: label;
+    display: flex;
+    align-items: center;
   }
 
   .value {

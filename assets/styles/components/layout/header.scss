@@ -5,14 +5,11 @@
   padding: var(--padding, 0 #{rem(16px)});
   position: sticky;
   top: 0;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
-  background-color: var(--black-primary);
+  box-shadow: var(--shadow-layer);
+  background-color: var(--layer-bg);
   z-index: var(--header-z-index, 2);
   grid-column-gap: 2px;
-
-  max-width: var(--container-max-width);
-  width: 100%;
-  margin: 0 auto;
+  @extend %container;
 
   .avatar {
     --padding: 0;

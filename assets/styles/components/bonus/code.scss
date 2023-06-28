@@ -1,6 +1,6 @@
 .bonus-code-block {
   padding: rem(24px) rem(18px);
-  background-color: var(--gray-900);
+  background-color: var(--layer-01);
   border-radius: 16px;
   user-select: none;
 
@@ -18,7 +18,7 @@
 
   &__title {
     @include font($heading-4);
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0 0 rem(24px);
     text-align: center;
   }
@@ -35,7 +35,7 @@
 
   &__error {
     margin-top: 8px;
-    color: var(--red-300);
+    color: var(--text-alert);
 
     @include font($body-0);
   }

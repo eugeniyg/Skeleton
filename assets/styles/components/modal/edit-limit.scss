@@ -1,0 +1,44 @@
+.modal-edit-limit {
+  @extend %modal-info;
+
+  &__actions {
+    display: grid;
+    grid-row-gap: 8px;
+
+    .btn-primary, .btn-secondary {
+      width: 100%;
+      margin: 0;
+    }
+  }
+
+  .scroll {
+    grid-row-gap: 24px;
+  }
+
+  &__info {
+    display: grid;
+    grid-row-gap: 4px;
+
+    &-title {
+      @include font($heading-1);
+      color: var(--text-primary);
+      display: flex;
+      grid-column-gap: 8px;
+
+      div {
+        display: flex;
+        align-items: center;
+      }
+
+      .icon {
+        --color: var(--icon-accent);
+        --icon-size: 20px;
+      }
+    }
+
+    &-text {
+      @include font($body-1);
+      color: var(--text-tertiary);
+    }
+  }
+}

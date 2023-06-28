@@ -11,9 +11,6 @@
     display: var(--display, none);
   }
 
-  --bg: var(--gradient-new);
-  --color: var(--gray-900);
-
   @include media(md) {
     --width: auto;
     --radius: 12px;
@@ -24,16 +21,5 @@
     }
   }
 
-  @include use-hover {
-    &:hover {
-      cursor: pointer;
-      --bg: var(--gradient-new-hover);
-      --color: var(--black-primary);
-    }
-  }
-
-  &.is-active {
-    --bg: var(--gradient-new-focus);
-    --color: var(--black-primary);
-  }
+  @extend %btn-primary
 }

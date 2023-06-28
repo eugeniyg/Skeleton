@@ -13,11 +13,7 @@ interface GamesStoreStateInterface {
   gameCollections: CollectionInterface[],
   favoriteGames: GameInterface[],
   winnersSubscription: any,
-  latestWinners: WinnerInterface[],
-  betsyParams: {
-    host: string,
-    cid: string
-  },
+  latestWinners: WinnerInterface[]
 }
 
 export const useGamesStore = defineStore('gamesStore', {
@@ -26,11 +22,7 @@ export const useGamesStore = defineStore('gamesStore', {
     gameCollections: [],
     favoriteGames: [],
     winnersSubscription: undefined,
-    latestWinners: [],
-    betsyParams: {
-      host: 'https://turboplatform-dev.betsy.gg',
-      cid: 'turboplatform-dev',
-    },
+    latestWinners: []
   }),
 
   getters: {

@@ -1,7 +1,7 @@
 .btn-verify {
   @extend %skip-btn;
   @extend %flex-all-center;
-  background: var(--bg, var(--gradient-new));
+  background: var(--bg, var(--button-bg-primary));
   position: absolute;
   top: 1px;
   bottom: 1px;
@@ -9,15 +9,21 @@
   @include font($heading-2);
   border-radius: 0 8px 8px 0;
   padding: 0 #{rem(24px)};
-  --color: var(--gray-900);
+  --color: var(--button-text-primary);
 
   &:hover {
     cursor: pointer;
-    --bg: var(--gradient-radial-hover);
+    --bg: var(--button-bg-primary-hover);
+    --color: var(--button-text-primary-hover);
   }
 
   &:active, &.is-active {
-    --bg: var(--gradient-radial-focus);
-    --color: var(--gray-900);
+    --bg: var(--button-bg-primary-click);
+    --color: var(--button-text-primary-click);
+  }
+
+  &.disabled {
+    --bg: var(--button-bg-primary-disabled);
+    --color: var(--button-text-primary-disabled);
   }
 }
