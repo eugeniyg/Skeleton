@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 
 import { CreateLimitInterface, CurrencyInterface, PlayerLimitInterface } from '@platform/frontend-core/dist/module';
 import { ProfileLimitsContentInterface } from '@skeleton/types';
-import { useGlobalStore } from '@skeleton/composables/useGlobalStore';
 
 interface LimitsModalInterface {
   addLimit: boolean,
