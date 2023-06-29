@@ -16,8 +16,8 @@
         {{ item.title }}
 
         <client-only>
-          <span v-if="item.id === 'bonuses' && activePlayerBonuses.length" class="count">
-            {{ activePlayerBonuses.length }}
+          <span v-if="item.id === 'bonuses' && activeBonusesAndFreeSpins" class="count">
+            {{ activeBonusesAndFreeSpins }}
           </span>
         </client-only>
 
@@ -45,7 +45,7 @@
   const selected = computed(() => props.items.find((item:any) => localizePath(item.url) === route.path));
 
   const bonusStore = useBonusStore();
-  const { activePlayerBonuses } = storeToRefs(bonusStore);
+  const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
 
   const toggle = ():void => {
     isOpen.value = !isOpen.value;
@@ -54,6 +54,10 @@
   const close = ():void => {
     if (isOpen.value) isOpen.value = false;
   };
+
+  const activeBonusesAndFreeSpins = computed(() => {
+    return (activePlayerBonuses.value?.length || 0) + (activePlayerFreeSpins.value?.length || 0)
+  })
 </script>
 
 <style src="~/assets/styles/components/nav/profile.scss" lang="scss" />

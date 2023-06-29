@@ -4,11 +4,13 @@ import {
   BonusCodeInterface,
   WebSocketResponseInterface,
 } from '@platform/frontend-core/dist/module';
+import {PlayerFreeSpinInterface} from "@platform/frontend-core";
 
 interface BonusStateInterface {
   bonusCodeSubscription: any,
   bonusSubscription: any,
   playerBonuses: PlayerBonusInterface[],
+  playerFreeSpins: PlayerFreeSpinInterface[],
   depositBonusCode: Maybe<BonusCodeInterface>
 }
 
@@ -17,6 +19,7 @@ export const useBonusStore = defineStore('bonusStore', {
     bonusCodeSubscription: undefined,
     bonusSubscription: undefined,
     playerBonuses: [],
+    playerFreeSpins: [],
     depositBonusCode: undefined,
   }),
 
@@ -29,6 +32,11 @@ export const useBonusStore = defineStore('bonusStore', {
     activePlayerCashBonuses():PlayerBonusInterface[] {
       return this.activePlayerBonuses.filter((playerBonus) => [1,2].includes(playerBonus.bonusType));
     },
+
+    activePlayerFreeSpins(state):PlayerFreeSpinInterface[] {
+      const walletStore = useWalletStore();
+      return state.playerFreeSpins.filter((playerFreeSpin) => walletStore.activeAccount?.currency === playerFreeSpin.currency);
+    }
   },
 
   actions: {
@@ -36,6 +44,12 @@ export const useBonusStore = defineStore('bonusStore', {
       const { getPlayerBonuses } = useCoreBonusApi();
       const { data } = await getPlayerBonuses({ status: [1, 2] });
       this.playerBonuses = data;
+    },
+
+    async getPlayerFreeSpins():Promise<void> {
+      const { getPlayerFreeSpins } = useCoreBonusApi();
+      const { data } = await getPlayerFreeSpins({ status: [1, 2] });
+      this.playerFreeSpins = data;
     },
 
     async getDepositBonusCode():Promise<void> {

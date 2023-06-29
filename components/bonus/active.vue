@@ -2,13 +2,13 @@
   <div class="bonus-active" data-tooltip-parent>
     <h4 class="bonus-active__title">{{ props.content?.title }}</h4>
 
-    <div v-if="activePlayerCashBonuses.length" class="bonus-active__list">
+    <div v-if="showBonusesList" class="bonus-active__list">
       <transition-group name="card">
         <CardBonuses
           v-for="bonus in orderedBonuses"
           :key="bonus.id"
           :bonus="bonus"
-          mode="bonus"
+          :mode="props.bonusType"
           :content="props.content"
           @switchBonus="changeBonuses(bonus, 'activate')"
           @removeBonus="changeBonuses(bonus, 'cancel')"
@@ -36,10 +36,12 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { PlayerBonusInterface } from '@platform/frontend-core/dist/module';
-  import { CashBonusesInterface } from '@skeleton/types';
+  import { CashBonusesInterface, FreeSpinsInterface } from '@skeleton/types';
+  import { PlayerFreeSpinInterface } from "@platform/frontend-core";
 
   const props = defineProps<{
-    content?: CashBonusesInterface
+    content?: CashBonusesInterface|FreeSpinsInterface,
+    bonusType: 'bonus'|'free-spin'
   }>();
 
   interface ModalStateInterface extends Record<string, any>{
@@ -47,7 +49,7 @@
     description?: string,
     confirmButton?: string,
     cancelButton?: string,
-    bonusInfo: PlayerBonusInterface|undefined,
+    bonusInfo: PlayerBonusInterface|PlayerFreeSpinInterface|undefined,
     mode: 'activate'|'cancel'
   }
 
@@ -62,8 +64,22 @@
 
   const showModal = ref<boolean>(false);
   const bonusStore = useBonusStore();
-  const { activePlayerCashBonuses } = storeToRefs(bonusStore);
-  const orderedBonuses = computed(() => (activePlayerCashBonuses.value.reduce((acc: PlayerBonusInterface[], currentBonus) => (currentBonus.status === 2 ? [currentBonus, ...acc] : [...acc, currentBonus]), [])));
+  const { activePlayerCashBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
+  const showBonusesList = computed(() => {
+    return (props.bonusType === 'bonus' && activePlayerCashBonuses.value.length) ||
+      (props.bonusType === 'free-spin' && activePlayerFreeSpins.value.length)
+  })
+  const orderedBonuses = computed(() => {
+    if (props.bonusType === 'bonus') {
+      return activePlayerCashBonuses.value.reduce((acc: PlayerBonusInterface[], currentBonus) => {
+        return currentBonus.status === 2 ? [currentBonus, ...acc] : [...acc, currentBonus];
+      }, [])
+    }
+
+    return activePlayerFreeSpins.value.reduce((acc: PlayerFreeSpinInterface[], currentFreeSpin) => {
+      return currentFreeSpin.status === 2 ? [currentFreeSpin, ...acc] : [...acc, currentFreeSpin];
+    }, [])
+  });
 
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();
@@ -101,13 +117,21 @@
   };
 
   const bonusesUpdating = ref<boolean>(false);
-  const { activatePlayerBonus, cancelPlayerBonus } = useCoreBonusApi();
+  const {
+    activatePlayerBonus,
+    cancelPlayerBonus,
+    activatePlayerFreeSpin,
+    cancelPlayerFreeSpin
+  } = useCoreBonusApi();
   const activateBonus = async ():Promise<void> => {
     if (bonusesUpdating.value || !modalState.bonusInfo?.id) return;
     bonusesUpdating.value = true;
 
     try {
-      await activatePlayerBonus(modalState.bonusInfo.id);
+      props.bonusType === 'bonus'
+        ? await activatePlayerBonus(modalState.bonusInfo.id)
+        : await activatePlayerFreeSpin(modalState.bonusInfo.id);
+
       showModal.value = false;
     } catch {
       showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
@@ -121,7 +145,10 @@
     bonusesUpdating.value = true;
 
     try {
-      await cancelPlayerBonus(modalState.bonusInfo.id);
+      props.bonusType === 'bonus'
+        ? await cancelPlayerBonus(modalState.bonusInfo.id)
+        : await cancelPlayerFreeSpin(modalState.bonusInfo.id);
+
       showModal.value = false;
     } catch {
       showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);

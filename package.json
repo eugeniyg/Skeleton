@@ -28,7 +28,7 @@
   "dependencies": {
     "@kyvg/vue3-notification": "^2.9.1",
     "@pinia/nuxt": "^0.4.11",
-    "@platform/frontend-core": "1.1.8",
+    "@platform/frontend-core": "1.2.0-rc.1",
     "@types/lodash": "^4.14.195",
     "@types/ua-parser-js": "^0.7.36",
     "@vuelidate/core": "^2.0.2",

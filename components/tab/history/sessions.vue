@@ -29,13 +29,13 @@
           </div>
 
           <div class="td td-date">
-            <span v-html="format(getFormatDate(session.createdAt))"></span>
+            <span v-html="formatDateStr(dayjs(session.createdAt).format(dateFormat))"></span>
           </div>
 
           <div class="td">
             <atomic-row-status
               :variant="sessionStatus(session)"
-              :tooltip="session.closedAt ? `${getFormatDate(session.closedAt)}`: ''"
+              :tooltip="session.closedAt ? `${dayjs(session.closedAt).format(dateFormat)}`: ''"
             >
               {{ sessionsContent.sessionsStatuses[sessionStatus(session)] }}
             </atomic-row-status>
@@ -65,6 +65,7 @@
     PaginationMetaInterface, SessionInterface,
   } from '@platform/frontend-core/dist/module';
   import { HistorySessionsInterface, HistoryTabInterface } from '@skeleton/types';
+  import dayjs from "dayjs";
 
   const props = defineProps<{
     content: HistoryTabInterface,
@@ -72,11 +73,11 @@
 
   const sessionsContent:HistorySessionsInterface = props.content.sessions;
   const headTitles = ['', ...Object.values(sessionsContent.tableColumns || {})];
+  const dateFormat = 'DD.MM.YYYY, HH:mm';
 
   const { getUserSessions, closeActiveSession } = useCoreProfileApi();
   const sessions = ref<SessionInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
-  const { getFormatDate } = useProjectMethods();
 
   const loading = ref<boolean>(true);
   const resolveSessionsRequest = async (page: number = 1):Promise<void> => {
@@ -117,7 +118,7 @@
     resolveSessionsRequest();
   });
 
-  const format = (str:string) => str.split(',').join('<br>');
+  const formatDateStr = (str:string) => str.split(',').join('<br>');
 </script>
 
 <style src="~/assets/styles/components/tab/history/sessions.scss" lang="scss" />

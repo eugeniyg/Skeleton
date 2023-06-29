@@ -13,7 +13,7 @@
     <atomic-gift-notification
       v-if="isLoggedIn"
       display="mobile"
-      :is-active="!!activePlayerBonuses.length"
+      :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
     />
 
     <div class="items">
@@ -31,7 +31,7 @@
       <template v-if="isLoggedIn">
         <atomic-gift-notification
           display="desktop"
-          :is-active="!!activePlayerBonuses.length"
+          :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
         />
         <!--
         <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
@@ -81,7 +81,7 @@
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal } = layoutStore;
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { activePlayerBonuses } = storeToRefs(bonusStore);
+  const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
 
   function toggleProfileNav():void {
     if (isUserNavOpen.value) closeUserNav();

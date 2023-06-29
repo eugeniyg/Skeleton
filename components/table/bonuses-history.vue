@@ -19,7 +19,7 @@
           {{ formatBalance(bonus.currency, bonus.amount).currency }}
         </div>
         <div class="td">{{ bonus.currentWagerPercentage || 0 }}%</div>
-        <div class="td" v-html="format(getFormatDate(bonus.createdAt))"/>
+        <div class="td" v-html="formatDateStr(dayjs(bonus.createdAt).format(dateFormat))"/>
         <div class="td" v-html="expiredAtDate(bonus) || '-'"/>
       </div>
     </div>
@@ -36,6 +36,7 @@
   import { PaginationMetaInterface, PlayerBonusInterface } from '@platform/frontend-core/dist/module';
   import { storeToRefs } from 'pinia';
   import { HistoryBonusesInterface } from '@skeleton/types';
+  import dayjs from "dayjs";
 
   const props = defineProps<{
     content: HistoryBonusesInterface,
@@ -70,23 +71,24 @@
     return bonusResultsObj.value[bonusInfo.result];
   };
 
-  const { getFormatDate, formatBalance } = useProjectMethods();
-  const format = (str:string) => str.replace(',', ',</br>');
+  const { formatBalance } = useProjectMethods();
+  const dateFormat = 'DD.MM.YYYY, HH:mm';
+  const formatDateStr = (str:string) => str.replace(',', ',</br>');
 
   const expiredAtDate = (bonusInfo: PlayerBonusInterface) => {
     if (bonusInfo.status === 2) {
       if (bonusInfo.wageringExpiredAt) {
-        return format(getFormatDate(bonusInfo.wageringExpiredAt));
+        return formatDateStr(dayjs(bonusInfo.wageringExpiredAt).format(dateFormat));
       }
       return undefined;
     }
 
     if (bonusInfo.activationExpiredAt) {
-      return format(getFormatDate(bonusInfo.activationExpiredAt));
+      return formatDateStr(dayjs(bonusInfo.activationExpiredAt).format(dateFormat));
     }
 
     if (bonusInfo.wageringExpiredAt) {
-      return format(getFormatDate(bonusInfo.wageringExpiredAt));
+      return formatDateStr(dayjs(bonusInfo.wageringExpiredAt).format(dateFormat));
     }
 
     return undefined;

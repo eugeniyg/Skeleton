@@ -91,11 +91,20 @@ export interface CashBonusesInterface {
   }
 }
 
+export interface FreeSpinsInterface {
+  title: string,
+  empty: {
+    title: string,
+    description: string
+  }
+}
+
 export interface ProfileBonusesInterface {
   title: string,
   historyLink: string,
   bonusCode: BonusCodeBlockInterface,
   cashBonuses: CashBonusesInterface,
+  freeSpins: FreeSpinsInterface,
   seo: SeoContentInterface
 }
 
