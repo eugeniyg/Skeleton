@@ -4,7 +4,7 @@
 
   &__text {
     @include font($body-2);
-    color: var(--gray-300)
+    color: var(--text-tertiary)
   }
 
   .scroll {
