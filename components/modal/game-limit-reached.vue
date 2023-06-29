@@ -30,19 +30,4 @@
   const { getContent } = useProjectMethods();
 </script>
 
-<style lang="scss">
-.game-limit-reached {
-  @extend %modal-info;
-  user-select: none;
-
-  &__text {
-    @include font($body-2);
-    color: var(--gray-300)
-  }
-
-  .scroll {
-    grid-row-gap: 24px;
-  }
-}
-
-</style>
+<style src="~/assets/styles/components/modal/game-limit-reached.scss" lang="scss" />
