@@ -55,7 +55,11 @@
   gameInfo.value = infoResponse.data?.value as GameInterface;
   const router = useRouter();
 
-  const startGame = async ():Promise<void> => {
+  const startGame = async ():Promise<{
+    data?: { gameUrl: string; token: string; },
+    error?: any
+  }> => {
+    const { showModal } = useLimitsStore();
     const redirectUrl = window.location.origin + (window.history.state.back || '');
     const startParams = {
       accountId: isDemo.value ? undefined : activeAccount.value?.id,
@@ -65,8 +69,26 @@
       demoMode: isDemo.value,
       platform: isMobile.value ? 1 : 2,
     };
-    const startResponse = await getStartGame(route.params.id as string, startParams);
-    gameStart.value = startResponse.gameUrl;
+
+    try {
+      const startResponse = await getStartGame(route.params.id as string, startParams);
+      gameStart.value = startResponse.gameUrl;
+      return { data: startResponse }
+    } catch (err: any) {
+      if ([14100, 14101, 14105].includes(err.data?.error?.code)) {
+        const { localizePath } = useProjectMethods();
+        await router.push({ path: localizePath('/profile/limits'), query: {} });
+        showModal('depositLimitReached');
+        return { error: { ...err, fatal: false }}
+      }
+
+      if(err.data?.error?.code === 14103) {
+        showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
+        return { error: { ...err, fatal: false }}
+      }
+
+      return { error: { ...err, fatal: true } }
+    }
   };
 
   const changeGameMode = async ():Promise<void> => {
@@ -75,14 +97,11 @@
       return;
     }
 
-    if (isDemo.value && profile.value?.status === 2) {
-      showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
-      return;
-    }
-
     isDemo.value = !isDemo.value;
-    await startGame();
-    router.replace({ query: { real: `${!isDemo.value}` } });
+
+    const { data, error } = await startGame();
+    if (data) router.replace({ query: { real: `${!isDemo.value}` } });
+    else if (error.fatal) throw createError(error);
   };
 
   const redirectLimitedPlayer = ():void => {
@@ -105,12 +124,16 @@
     } else if (isDemo.value) {
       await changeGameMode();
     } else {
-      await startGame();
+      const { error } = await startGame();
+      if (error?.fatal) throw createError(error);
     }
   });
 
   watch(() => activeAccount.value?.id, async (oldValue, newValue) => {
-    if (oldValue && newValue && oldValue !== newValue) await startGame();
+    if (oldValue && newValue && oldValue !== newValue) {
+      const { error } = await startGame();
+      if (error?.fatal) throw createError(error);
+    }
   });
 
   onMounted(async () => {
@@ -123,7 +146,8 @@
     } else if (!isDemo.value && profile.value?.status === 2) {
       redirectLimitedPlayer();
     } else {
-      await startGame();
+      const { error } = await startGame();
+      if (error?.fatal) throw createError(error);
     }
   });
 
@@ -134,4 +158,3 @@
 </script>
 
 <style src="~/assets/styles/pages/games/game.scss" lang="scss" />
-
