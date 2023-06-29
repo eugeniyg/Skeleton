@@ -29,19 +29,13 @@
   > .btn-show-all {
     grid-area: btn-show-all;
     @include font($heading-1);
-
-    --font-size: #{rem(12px)};
-    --color: var(--button-text-ghost-high-contrast);
     --width: 100%;
 
     @include media(xs) {
       padding: 0;
-      --bg: transparent;
-
-      &:hover {
-        --color: var(--button-text-ghost-hover);
-      }
     }
+
+    @extend %btn-ghost-low-contrast;
   }
 
   > .arrows {

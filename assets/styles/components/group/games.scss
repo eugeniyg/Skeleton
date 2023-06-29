@@ -35,36 +35,17 @@
   .btn-show-all {
     grid-area: btn-show-all;
     @include font($heading-1);
-
-    --font-size: #{rem(12px)};
-    --color: var(--button-text-ghost-high-contrast);
     --width: auto;
 
     @include media(xs) {
       padding: 0;
-      background: none;
     }
 
     @include media(sm) {
       @include upd-font($heading-2);
-
-      &:hover {
-        --bg: transparent;
-        --color: var(--text-primary);
-      }
     }
 
-    @include use-hover {
-      &:hover {
-        --bg: var(--button-bg-secondary-hover);
-        --color: var(--button-text-ghost-hover);
-      }
-    }
-
-    &:active {
-      --bg: var(--button-bg-secondary-click);
-      --color: var(--button-text-ghost-click);
-    }
+    @extend %btn-ghost-low-contrast;
   }
 
   > .arrows {

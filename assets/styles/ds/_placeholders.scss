@@ -531,3 +531,25 @@
     --color: var(--button-text-ghost-disabled);
   }
 }
+
+%btn-ghost-low-contrast {
+  --bg: transparent;
+  --color: var(--button-text-ghost-low-contrast);
+
+  &:hover {
+    cursor: pointer;
+    --bg: var(--button-bg-secondary-hover);
+    --color: var(--button-text-ghost-hover);
+  }
+
+  &:active, &.is-active {
+    --bg: var(--button-bg-secondary-click);
+    --color: var(--button-text-ghost-click);
+  }
+
+  &[disabled] {
+    pointer-events: none;
+    --bg: transparent;
+    --color: var(--button-text-ghost-disabled);
+  }
+}
