@@ -78,7 +78,7 @@
       if ([14100, 14101, 14105].includes(err.data?.error?.code)) {
         const { localizePath } = useProjectMethods();
         await router.push({ path: localizePath('/profile/limits'), query: {} });
-        showModal('depositLimitReached');
+        showModal('gameLimitReached');
         return { error: { ...err, fatal: false }}
       }
 
