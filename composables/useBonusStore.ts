@@ -4,11 +4,12 @@ import {
   BonusCodeInterface,
   WebSocketResponseInterface,
 } from '@platform/frontend-core/dist/module';
-import {PlayerFreeSpinInterface} from "@platform/frontend-core";
+import {GameInterface, PlayerFreeSpinInterface} from "@platform/frontend-core";
 
 interface BonusStateInterface {
   bonusCodeSubscription: any,
   bonusSubscription: any,
+  freeSpinsSubscription: any,
   playerBonuses: PlayerBonusInterface[],
   playerFreeSpins: PlayerFreeSpinInterface[],
   depositBonusCode: Maybe<BonusCodeInterface>
@@ -18,6 +19,7 @@ export const useBonusStore = defineStore('bonusStore', {
   state: (): BonusStateInterface => ({
     bonusCodeSubscription: undefined,
     bonusSubscription: undefined,
+    freeSpinsSubscription: undefined,
     playerBonuses: [],
     playerFreeSpins: [],
     depositBonusCode: undefined,
@@ -82,7 +84,15 @@ export const useBonusStore = defineStore('bonusStore', {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
         const { createSubscription } = useWebSocket();
-        this.bonusCodeSubscription = createSubscription(`bonus:player-bonuses#${profileStore.profile.id}`, this.bonusesSocketTrigger);
+        this.bonusSubscription = createSubscription(`bonus:player-bonuses#${profileStore.profile.id}`, this.bonusesSocketTrigger);
+      }
+    },
+
+    subscribeFreeSpinsSocket():void {
+      const profileStore = useProfileStore();
+      if (profileStore.profile?.id) {
+        const { createSubscription } = useWebSocket();
+        this.freeSpinsSubscription = createSubscription(`bonus:player-freespins#${profileStore.profile.id}`, this.freeSpinsSocketTrigger);
       }
     },
 
@@ -100,6 +110,18 @@ export const useBonusStore = defineStore('bonusStore', {
         });
       } else {
         this.playerBonuses = this.playerBonuses.filter((bonus) => bonus.id !== bonusData.id);
+      }
+    },
+
+    updatePlayerFreeSpinsList(freeSpinData: PlayerFreeSpinInterface):void {
+      if (freeSpinData.status === 1) this.playerFreeSpins = [...this.playerFreeSpins, freeSpinData];
+      else if (freeSpinData.status === 2) {
+        this.playerFreeSpins = this.playerFreeSpins.map((freeSpin) => {
+          if (freeSpin.id === freeSpinData.id) return freeSpinData;
+          return freeSpin;
+        });
+      } else {
+        this.playerFreeSpins = this.playerFreeSpins.filter((freeSpin) => freeSpin.id !== freeSpinData.id);
       }
     },
 
@@ -135,6 +157,55 @@ export const useBonusStore = defineStore('bonusStore', {
       if (alertData) showAlert({ ...alertData, description: transformMessage(alertData?.description) });
     },
 
+    async freeSpinsSocketTrigger(webSocketResponse: WebSocketResponseInterface):Promise<void> {
+      const freeSpinData: Maybe<PlayerFreeSpinInterface> = webSocketResponse.data.playerFreespin;
+      if (!freeSpinData) return;
+
+      const { showAlert } = useLayoutStore();
+      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+      const {
+        count,
+        currency,
+        gameId,
+        status,
+        result
+      } = freeSpinData;
+
+      const alertsKey: { [key: string]: string } = {
+        // key - '{status}-{result}'
+        '1-1': 'freeSpinIssued',
+        '2-1': 'freeSpinActivated',
+        '3-2': 'freeSpinPlayed',
+        '3-3': 'freeSpinCanceled',
+        '3-4': 'freeSpinExpired'
+      };
+
+      const { getGamesInfo } = useCoreGamesApi();
+      const { localizePath } = useProjectMethods();
+      let gameInfo: GameInterface
+      try {
+        gameInfo = await getGamesInfo(gameId);
+      } catch {
+        console.error('Something went wrong with game info fetching!');
+      }
+
+      const transformMessage = (message?: string):string => {
+        if (!message) return '';
+
+        let editedMessage = message.replace('{count}', `<b>${count} free spins</b>`);
+        editedMessage = editedMessage.replace('{currency}', `<b>${currency}</b>`);
+        const gameLink = gameInfo ? localizePath(`/games/${gameInfo.identity}`) : undefined;
+        editedMessage = editedMessage.replace('{game}', gameLink ? `<a href="${gameLink}">${gameInfo.name}</a>` : '');
+        return editedMessage;
+      };
+
+      const alertData = alertsData?.[alertsKey[`${status}-${result}`]]
+        || defaultLocaleAlertsData?.[alertsKey[`${status}-${result}`]];
+
+      this.updatePlayerFreeSpinsList(freeSpinData);
+      if (alertData) showAlert({ ...alertData, description: transformMessage(alertData?.description) });
+    },
+
     unsubscribeBonusCodeSocket():void {
       if (this.bonusCodeSubscription) {
         this.bonusCodeSubscription.unsubscribe();
@@ -146,6 +217,13 @@ export const useBonusStore = defineStore('bonusStore', {
       if (this.bonusSubscription) {
         this.bonusSubscription.unsubscribe();
         this.bonusSubscription.removeAllListeners();
+      }
+    },
+
+    unsubscribeFreeSpinsSocket():void {
+      if (this.freeSpinsSubscription) {
+        this.freeSpinsSubscription.unsubscribe();
+        this.freeSpinsSubscription.removeAllListeners();
       }
     },
   },
