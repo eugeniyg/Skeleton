@@ -80,7 +80,7 @@
       default: '',
     },
     labels: {
-      type: Array,
+      type: Array as PropType<{ name: string }[]>,
       default: () => [],
     },
     provider: {
@@ -104,7 +104,8 @@
 
   const gameTagsContent: Maybe<GameTagInterface[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags');
 
-  const gameBages = gameTagsContent?.filter((bage) => props.labels.includes(bage.identity));
+  const labelNames = props.labels?.map((label) => label.name)
+  const gameBages = gameTagsContent?.filter((bage) => labelNames.includes(bage.identity));
 
   const openGame = (isReal: boolean): void => {
     if (!isReal) {
