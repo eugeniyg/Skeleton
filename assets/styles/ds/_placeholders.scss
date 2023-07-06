@@ -422,9 +422,9 @@
   -webkit-text-fill-color: var(--text-tertiary);
   -webkit-background-clip: text;
 
-    &:focus {
-      -webkit-text-fill-color: var(--text-primary);
-    }
+  &:focus {
+    -webkit-text-fill-color: var(--text-primary);
+  }
 }
 
 %btn {
@@ -551,5 +551,41 @@
     pointer-events: none;
     --bg: transparent;
     --color: var(--button-text-ghost-disabled);
+  }
+}
+
+%btn-icon-secondary {
+  --bg: var(--button-bg-secondary);
+
+  .icon {
+    --color: var(--button-icon-secondary);
+  }
+
+  @include use-hover {
+    &:hover {
+      cursor: pointer;
+      --bg: var(--button-bg-secondary-hover);
+
+      .icon {
+        --color: var(--button-icn-secondary-hover);
+      }
+    }
+  }
+
+  &:active, &.is-active {
+    --bg: var(--button-bg-secondary-click);
+
+    .icon {
+      --color: var(--icon-contrast);
+    }
+  }
+
+  &[disabled] {
+    pointer-events: none;
+    --bg: var(--button-bg-secondary-disabled);
+
+    .icon {
+      --color: var(--button-icn-secondary-disabled);
+    }
   }
 }

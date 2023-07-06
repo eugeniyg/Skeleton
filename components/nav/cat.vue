@@ -81,7 +81,7 @@
   };
 
   const getItemsData = () => {
-    const offset = 4;
+    const offset = 8;
     return [...document.querySelectorAll('.nav-cat-item')]
       .map((item) => item.offsetWidth + offset)
       .reduce((acc, curr) => {
@@ -121,4 +121,3 @@
 </script>
 
 <style src="~/assets/styles/components/nav/cat.scss" lang="scss" />
-
