@@ -206,7 +206,8 @@ export interface WithdrawInterface {
   withdrawLabel: string,
   sumLabel: string,
   minSum: string,
-  withdrawButton: string
+  withdrawButton: string,
+  emptyWithdrawMethods: string
 }
 
 export interface ResetInterface {
@@ -248,7 +249,8 @@ export interface DepositInterface {
   addBonusButton: string,
   cancelBonusButton: string,
   bonuses?: { image?: string, title: string, description?: string }[],
-  depositButton: string
+  depositButton: string,
+  emptyDepositMethods: string
 }
 
 export interface ChangeActiveBonusInterface extends Record<string, any>{
