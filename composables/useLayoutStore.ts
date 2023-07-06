@@ -198,7 +198,7 @@ export const useLayoutStore = defineStore('layoutStore', {
           const router = useRouter();
           const { localizePath } = useProjectMethods();
           await router.push(localizePath('/profile/limits'));
-          showModal('exceededLimitConfirm');
+          showModal('depositLimitReached');
         } else throw error;
       }
     },

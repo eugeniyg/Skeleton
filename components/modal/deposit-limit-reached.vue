@@ -1,17 +1,17 @@
 <template>
   <vue-final-modal
-    v-model="modals.exceededLimitConfirm"
-    class="modal-exceeded-limit-confirm"
+    v-model="modals.depositLimitReached"
+    class="deposit-limit-reached"
     :clickToClose="false"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('exceededLimitConfirm')"/>
-        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.exceededLimitConfirm.label') }}</div>
+        <button-modal-close @close="closeModal('depositLimitReached')"/>
+        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.depositLimitReached.label') }}</div>
       </div>
 
-      <div class="modal-exceeded-limit-confirm__text">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.exceededLimitConfirm.description') }}
+      <div class="deposit-limit-reached__text">
+        {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.depositLimitReached.description') }}
       </div>
 
     </div>
@@ -30,4 +30,4 @@
   const { getContent } = useProjectMethods();
 </script>
 
-<style src="~/assets/styles/components/modal/exceeded-limit-confirm.scss" lang="scss" />
+<style src="~/assets/styles/components/modal/deposit-limit-reached.scss" lang="scss" />

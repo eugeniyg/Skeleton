@@ -9,25 +9,34 @@
       {{ gameCategoriesObj[activeCollection?.identity].label || activeCollection?.name }}
     </atomic-cat-heading>
 
-    <div class="game-filter">
-      <div class="game-filter__search">
-        <form-input-search
-          v-model:value="searchValue"
-          :placeholder="getContent(headerContent, defaultLocaleHeaderContent, 'search.placeholder')"
-          @input="searchInput"
-        />
+    <div class="game-filter" v-click-outside="skipActionsState">
+      <form-input-dropdown
+        class="game-filter__dropdown"
+        :value="currentProvider.id"
+        name="providers"
+        placeholder="Providers"
+        :options="providerDropdownOptions"
+        @input="changeProvider"
+        is-fit-content
+      />
 
-        <form-input-dropdown
-          class="game-filter__dropdown"
-          :value="currentProvider.id"
-          name="providers"
-          placeholder="Providers"
-          :options="providerDropdownOptions"
-          @input="changeProvider"
-          is-fit-content
-        />
+      <div class="game-filter__actions">
+        <button-toggle-search :is-active="isShowSearch" @toggle="toggleSearch"/>
+        <button-toggle-filter :is-active="isShowFilter" @toggle="toggleFilter"/>
       </div>
+
+      <form-input-search
+        class="game-filter__search"
+        v-show="isShowSearch"
+        v-model:value="searchValue"
+        :placeholder="getContent(headerContent, defaultLocaleHeaderContent, 'search.placeholder')"
+        @input="searchInput"
+        @submit="isShowSearch = false"
+      />
+
       <atomic-game-sort
+        class="game-filter__sort"
+        v-show="isShowFilter"
         v-if="getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions')?.length"
         :sortOrderValue="sortOrder"
         :sortByValue="sortBy"
@@ -126,6 +135,8 @@
   const gameItems = ref<GameInterface[]>([]);
   const pageMeta = ref<PaginationMetaInterface>();
   const loadingGames = ref<boolean>(true);
+  const isShowFilter = ref<boolean>(false);
+  const isShowSearch = ref<boolean>(false);
 
   const { getFilteredGames } = useCoreGamesApi();
 
@@ -222,7 +233,21 @@
     const itemsResponse = await getItems();
     setItems(itemsResponse);
   });
+
+  const toggleFilter = () => {
+    isShowFilter.value = !isShowFilter.value;
+    isShowSearch.value = false;
+  };
+
+  const toggleSearch = () => {
+    isShowSearch.value = !isShowSearch.value;
+    isShowFilter.value = false;
+  };
+
+  const skipActionsState = () => {
+    isShowSearch.value = false;
+    isShowFilter.value = false;
+  }
 </script>
 
-<style src="~/assets/styles/pages/games/index.scss" lang="scss" />
-
+<style src="~/assets/styles/pages/games/index.scss" lang="scss"/>

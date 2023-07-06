@@ -10,7 +10,7 @@
   margin-bottom: var(--margin-bottom, #{rem(24px)});
   margin-left: var(--margin-left, #{rem(-16px)});
   position: relative;
-  z-index: 1;
+  z-index: 2;
 
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -48,20 +48,19 @@
   display: inline-flex;
   border-radius: 8px;
   user-select: none;
-  grid-column-gap: 4px;
+  grid-column-gap: 8px;
   position: relative;
 
   @include media(sm) {
-    padding: rem(4px) rem(36px);
+    padding: 0 rem(32px);
   }
 
   @include media(l) {
-    padding: rem(4px);
+    padding: rem(4px) 0;
     overflow-x: visible;
   }
 
   &:before {
-    background: var(--layer-02);
     position: absolute;
     content: '';
     top: 0;
@@ -95,29 +94,29 @@
   position: relative;
   grid-column-gap: rem(4px);
   padding: var(--item-padding, 0 #{rem(12px)} 0 #{rem(8px)});
-  height: var(--item-height, #{rem(24px)});
+  height: var(--item-height, #{rem(40px)});
   cursor: pointer;
-  background-color: var(--bg, transparent);
+  background-color: var(--bg, var(--layer-01));
   color: var(--color, var(--text-secondary));
   text-decoration: none;
   white-space: nowrap;
   transition: color .2s ease-in-out;
-  border-radius: 8px;
+  border-radius: 12px;
   @include font($heading-1);
   @extend %flex-items-center;
 
   @include use-hover {
     &:hover {
-      --color: var(--text-primary);
+      --color: var(--text-accent);
+      --bg: var(--layer-01);
 
       .icon {
-        --color: var(--text-primary);
+        --color: var(--icon-accent);
       }
     }
   }
 
   @include media(l) {
-    --item-height: #{rem(32px)};
     --item-padding: 0 #{rem(16px)};
     @include upd-font($heading-2);
   }
@@ -143,11 +142,11 @@
   }
 
   &.is-active {
-    --bg: var(--button-bg-secondary-click);
     --color: var(--text-primary);
+    --bg: var(--button-bg-secondary-click);
 
     .icon {
-      --color: var(--text-primary);
+      --color: var(--icon-contrast);
     }
   }
 }
@@ -156,11 +155,11 @@
   @include font($heading-1);
   display: flex;
   @extend %flex-items-center;
-  padding: #{rem(8px)} #{rem(14px)} #{rem(8px)} #{rem(18px)};
-  height: var(--height, #{rem(24px)});
-  border: 1px solid var(--border-color, var(--field-00));
-  background-color: var(--bg, var(--field-00));
-  color: var(--color, var(--text-primary));
+  padding: #{rem(8px)} #{rem(16px)} #{rem(8px)} #{rem(16px)};
+  min-height: var(--height, #{rem(40px)});
+  border: 1px solid var(--border-color, var(--layer-01));
+  background-color: var(--bg, var(--layer-01));
+  color: var(--color, var(--text-secondary));
   text-decoration: none;
   white-space: nowrap;
   transition: color .2s ease-in-out;
@@ -168,9 +167,8 @@
   grid-auto-flow: column;
   grid-template-columns: auto 1fr;
   grid-column-gap: rem(8px);
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  margin-left: rem(-4px);
   position: var(--position, absolute);
   visibility: var(--visibility, hidden);
 
@@ -184,7 +182,7 @@
 
   @include media(l) {
     @include upd-font($heading-2);
-    --height: #{rem(32px)};
+    //--height: #{rem(32px)};
     --position: relative;
     --visibility: visible;
   }
@@ -230,14 +228,14 @@
   right: rem(-4px);
   width: 100%;
   padding: rem(8px);
-  max-height: calc((#{rem(38px)} * 4) + #{16px});
+  max-height: calc((#{rem(40px)} * 4) + #{16px});
   overflow-x: hidden;
   overflow-y: auto;
   background-color: var(--items-bg, var(--layer-02));
   transform: translateY(#{rem(8px)});
   box-shadow: var(--shadow-group);
   border-radius: 12px;
-  top: rem(30px);
+  top: rem(40px);
 
   @extend %scrollbar;
 }
@@ -246,7 +244,7 @@
   @include font($body-1);
   background-color: var(--item-bg, transparent);
   color: var(--text-primary);
-  padding: rem(8px) rem(6px);
+  padding: rem(8px) rem(8px);
   cursor: pointer;
   user-select: none;
   transition: background-color .2s ease-in-out;
@@ -254,7 +252,7 @@
   align-items: center;
   text-overflow: ellipsis;
   white-space: nowrap;
-  min-height: rem(38px);
+  min-height: rem(40px);
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: auto 1fr;

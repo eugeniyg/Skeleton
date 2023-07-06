@@ -4,30 +4,18 @@
   display: grid;
   width: 100%;
   position: relative;
-  max-height: 309px;
+
+  --indent-visible-height: 204px;
+  --indent-max-height: 325px;
+  --front-bg-height: 325px;
+  --front-bg-right-offset: -49px;
+  --back-bg-right-offset: -100px;
+  --bottom-gradient-height: 0;
+  --top-gradient-height: 80px;
 
   &:before {
-    width: 50%;
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    z-index: 2;
-    background: linear-gradient(270deg, #11141C 0%, rgba(14, 9, 30, 0) 96.21%, rgba(17, 20, 28, 0) 96.21%);
-  }
-
-  &:after {
     content: '';
-    padding-top: 52%;
-  }
-
-  @include media(sm) {
-    max-height: 309px;
-  }
-
-  @include media(xxxl) {
-    max-height: 390px;
+    height: var(--indent-visible-height);
   }
 
   .back-bg {
@@ -35,71 +23,96 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: var(--indent-max-height);
     background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: top center;
-    mix-blend-mode: multiply;
-    opacity: 0.6;
-    max-height: 912px;
-
-    @include media(l) {
-      max-height: 508px;
-    }
-
-    @include media(xl) {
-      max-height: 620px;
-    }
+    background-size: auto var(--indent-max-height);
+    background-position: top right var(--back-bg-right-offset);
 
     &:before {
       content: '';
       position: absolute;
-      bottom: 0;
-      background: linear-gradient(360deg, #11141C 0%, rgba(17, 20, 28, 0.0468566) 95.31%, rgba(14, 9, 30, 0) 100%);
+      display: block;
+      height: 100%;
+      width: 100%;
+      right: 0;
+      top: 0;
+      background-image: linear-gradient(270deg, #11141C 0%, rgba(17, 20, 28, 0.00) 100%);
+      z-index: 1;
+
+      @include media(sm) {
+        display: none;
+      }
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
       left: 0;
       right: 0;
-      height: 50%;
+      bottom: 0;
+      height: var(--top-gradient-height);
+      background: linear-gradient(360deg, #11141C 0%, rgba(17, 20, 28, 0.00) 100%), linear-gradient(0deg, #11141C 0%, rgba(17, 20, 28, 0.0) 100%);
       z-index: 4;
     }
   }
 
   .front-bg {
     position: absolute;
-    top: 30px;
-    right: 12px;
+    top: 0;
+    right: 0;
     background-repeat: no-repeat;
-    background-size: contain;
-    background-position: top right;
+    background-size: auto var(--front-bg-height);
+    background-position: top right var(--front-bg-right-offset);
     z-index: 3;
-    width: 52%;
-    height: 100%;
-    background-image: linear-gradient(270deg, #0E091E 0%, rgba(14, 9, 30, 0) 96.21%);
+    width: 100%;
+    height: var(--front-bg-height);
+  }
 
-    @include media(xs) {
-      right: rem(32px);
-    }
+  @include media(sm) {
+    --indent-visible-height: 244px;
+    --front-bg-height: 325px;
+    --indent-max-height: 325px;
+    --front-bg-right-offset: 54px;
+    --bottom-gradient-height: 0;
+    --back-bg-right-offset: 0px;
+  }
 
-    @include media(sm) {
-      right: rem(39px);
-    }
+  @include media(md) {
+    --indent-visible-height: 324px;
+    --front-bg-height: 425px;
+    --indent-max-height: 428px;
+    --front-bg-right-offset: 42px;
+    --bottom-gradient-height: 302px;
+    --back-bg-right-offset: -30px;
+  }
 
-    @include media(md) {
-      right: rem(65px);
-    }
+  @include media(l) {
+    --indent-visible-height: 308px;
+    --front-bg-height: 466px;
+    --indent-max-height: 430px;
+    --front-bg-right-offset: 47px;
+    --bottom-gradient-height: 301px;
+    --back-bg-right-offset: 0px;
+  }
 
-    @include media(l) {
-      right: 155px;
-      height: 110%;
-    }
+  @include media(xl) {
+    --indent-visible-height: 308px;
+    --front-bg-height: 514px;
+    --front-bg-right-offset: 165px;
+    --indent-max-height: 569px;
+    --bottom-gradient-height: 438px;
+    --back-bg-right-offset: 0px;
+    --top-gradient-height: 160px;
+  }
 
-    @include media(xl) {
-      height: 162%;
-    }
-
-    @include media(xxl) {
-      padding-top: 24%;
-      right: 308px
-    }
+  @include media(xxxl) {
+    --indent-visible-height: 436px;
+    --front-bg-height: 600px;
+    --front-bg-right-offset: 394px;
+    --indent-max-height: 836px;
+    --bottom-gradient-height: 643px;
+    --back-bg-right-offset: -32px;
+    --top-gradient-height: 360px;
   }
 
   .title {

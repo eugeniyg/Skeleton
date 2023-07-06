@@ -48,19 +48,13 @@
     transform: translateX(8px);
     margin-top: 4px;
     --padding: 4px 16px;
-
-    --font-size: #{rem(12px)};
-    --color: var(--button-icn-ghost-low-contrast);
     --width: 100%;
 
     @include media(sm) {
       margin-top: 0;
-      background: none;
-
-      &:hover {
-        --color: var(--text-primary);
-      }
     }
+
+    @extend %btn-ghost-low-contrast;
   }
 
   > .title {
