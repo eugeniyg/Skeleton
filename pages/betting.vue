@@ -8,17 +8,13 @@
       />
     </div>
 
-    <atomic-seo-text v-if="bettingContent?.seo?.text" v-bind="bettingContent?.seo?.text" />
+    <atomic-seo-text v-if="bettingContent?.seo?.text" v-bind="bettingContent?.seo?.text"/>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { BettingContentInterface } from '@skeleton/types';
-
-  definePageMeta({
-    middleware: ['status-limited'],
-  });
 
   const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();
@@ -36,8 +32,13 @@
     findLocalesContentData,
   } = useProjectMethods();
   const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent('page-controls')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'bettingPage']).find());
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(bettingContentRequest.data.value);
+    .where({ locale: { $in: contentLocalesArray.value } })
+    .only(['locale', 'bettingPage'])
+    .find());
+  const {
+    currentLocaleData,
+    defaultLocaleData
+  } = findLocalesContentData(bettingContentRequest.data.value);
   const bettingContent: Maybe<BettingContentInterface> = currentLocaleData?.bettingPage;
   const defaultLocaleBettingContent: Maybe<BettingContentInterface> = defaultLocaleData?.bettingPage;
   setPageSeo(bettingContent?.seo);
@@ -47,7 +48,10 @@
 
   const { getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
-  const { isLoggedIn, profile } = storeToRefs(profileStore);
+  const {
+    isLoggedIn,
+    profile
+  } = storeToRefs(profileStore);
 
   const sdkDefaultParams = {
     containerId: 'betting-container',
@@ -56,7 +60,7 @@
     parent: false,
   };
 
-  const startGame = async ():Promise<void> => {
+  const startGame = async (): Promise<void> => {
     const runtimeConfig = useRuntimeConfig();
     const mainHost = window.location.origin;
     const startParams = {
@@ -82,11 +86,16 @@
   };
 
   const layoutStore = useLayoutStore();
-  const { showAlert, compactDrawer } = layoutStore;
+  const {
+    showAlert,
+    compactDrawer
+  } = layoutStore;
 
-  const redirectLimitedPlayer = ():void => {
-    const { localizePath } = useProjectMethods();
-    const router = useRouter();
+  const router = useRouter();
+  const { localizePath } = useProjectMethods();
+  const { showModal } = useLimitsStore();
+
+  const redirectLimitedPlayer = (): void => {
     router.replace(localizePath('/'));
     showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
   };
@@ -101,38 +110,62 @@
 
   onMounted(async () => {
     if (isMobile.value) {
-      const footerEl:HTMLElement|null = document.querySelector('footer');
+      const footerEl: HTMLElement | null = document.querySelector('footer');
       if (footerEl) footerEl.style.display = 'none';
-      const seoTextBlock:HTMLElement|null = document.querySelector('.text-wrap');
+      const seoTextBlock: HTMLElement | null = document.querySelector('.text-wrap');
       if (seoTextBlock) seoTextBlock.style.display = 'none';
     }
 
     if (!isLoggedIn.value) {
       showPlug.value = true;
-    } else if (profile.value?.status === 2) {
-      redirectLimitedPlayer();
     } else {
-      await startGame();
+      try {
+        await startGame();
+      } catch (error: any) {
+        if ([14100, 14101, 14105].includes(error.data?.error?.code)) {
+          await router.push({
+            path: localizePath('/profile/limits'),
+            query: {}
+          });
+          showModal('gameLimitReached');
+        } else if (error.data?.error?.code === 14103) {
+          redirectLimitedPlayer();
+        } else {
+          throw error;
+        }
+      }
     }
   });
 
-  watch(() => isLoggedIn.value, async (newValue:boolean) => {
-    if (!newValue) { return; }
-
-    showPlug.value = false;
-    if (profile.value?.status === 2) {
-      setTimeout(() => {
-        redirectLimitedPlayer();
-      });
-    } else {
-      await startGame();
+  watch(() => isLoggedIn.value, async (newValue: boolean) => {
+    if (!newValue) {
+      return;
     }
+
+    try {
+      await startGame();
+    } catch (error: any) {
+      if ([14100, 14101, 14105].includes(error.data?.error?.code)) {
+        await router.push({
+          path: localizePath('/profile/limits'),
+          query: {}
+        });
+        showModal('gameLimitReached');
+      } else if (error.data?.error?.code === 14103) {
+        redirectLimitedPlayer();
+      } else {
+        throw error;
+      }
+    } finally {
+      showPlug.value = false;
+    }
+
   });
 
   onBeforeUnmount(() => {
-    const footerEl:any = document.querySelector('footer');
+    const footerEl: any = document.querySelector('footer');
     if (footerEl) footerEl.style.display = null;
-    const seoTextBlock:any = document.querySelector('.text-wrap');
+    const seoTextBlock: any = document.querySelector('.text-wrap');
     if (seoTextBlock) seoTextBlock.style.display = null;
 
     const storageDrawerCompact = localStorage.getItem('IS_DRAWER_COMPACT') === 'true';
@@ -140,5 +173,4 @@
   });
 </script>
 
-<style src="~/assets/styles/pages/betting.scss" lang="scss" />
-
+<style src="~/assets/styles/pages/betting.scss" lang="scss"/>
