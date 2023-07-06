@@ -237,7 +237,7 @@
   border-radius: 12px;
   top: rem(40px);
 
-  @include scrollbar-hide;
+  @extend %scrollbar;
 }
 
 .nav-cat-select-item {

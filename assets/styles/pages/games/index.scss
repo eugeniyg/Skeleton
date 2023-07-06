@@ -42,7 +42,6 @@
       border-radius: 8px;
       right: 0;
       width: auto;
-      @include scrollbar-hide;
 
       @media (max-width: 1024px) {
         width: 100% !important;

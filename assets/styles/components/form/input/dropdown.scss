@@ -88,7 +88,7 @@
     left: 0;
     max-width: 100%;
     width: 100%;
-    padding: rem(8px);
+    padding: 0;
     visibility: var(--items-visibility, hidden);
     max-height: calc((#{rem(38px)} * 4) + #{4px});
     overflow-x: hidden;
@@ -97,6 +97,7 @@
     transform: translateY(#{rem(8px)});
     box-shadow: var(--shadow-group);
     border-radius: 12px;
+    border: 8px solid var(--layer-02);
 
     @extend %scrollbar;
   }
