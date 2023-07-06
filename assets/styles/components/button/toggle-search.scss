@@ -1,0 +1,6 @@
+.btn-toggle-search {
+  @extend %skip-btn;
+  @extend %btn-icon-secondary;
+  @include box(40px);
+  border-radius: 12px;
+}

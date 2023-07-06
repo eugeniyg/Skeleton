@@ -19,6 +19,13 @@
     @include font($body-1);
     font-family: 'Rubik', sans-serif;
 
+    @include use-hover {
+      &:hover:not(.is-selected) {
+        --bg: var(--button-bg-secondary-click);
+        --color: var(--text-accent);
+      }
+    }
+
     &.is-selected {
       --color: var(--text-accent);
     }

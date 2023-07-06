@@ -8,6 +8,7 @@
       <div v-if="equivalentCurrency" class="fiat-toggler__selected" @click="showModal('fiat')">
         <img class="fiat-toggler__selected-logo" :src="`/img/currency/${equivalentCurrency.code}.svg`" alt=""/>
         <span class="fiat-toggler__selected-currency">{{ equivalentCurrency.code }}</span>
+        <atomic-icon id="arrow_expand-close"/>
       </div>
     </transition>
 
