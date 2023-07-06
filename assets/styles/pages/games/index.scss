@@ -28,7 +28,7 @@
   &__dropdown {
     grid-area: dropdown;
 
-    @media (max-width: 1280px) {
+    @media (max-width: 1024px) {
       width: 100% !important;
     }
 
@@ -42,8 +42,9 @@
       border-radius: 8px;
       right: 0;
       width: auto;
+      @include scrollbar-hide;
 
-      @media (max-width: 1280px) {
+      @media (max-width: 1024px) {
         width: 100% !important;
       }
 
@@ -56,6 +57,11 @@
       grid-template-columns: 1fr auto;
       padding-right: rem(10px);
       min-height: rem(40px);
+
+      .icon {
+        position: relative;
+        right: 0;
+      }
     }
 
     .item {
