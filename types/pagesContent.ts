@@ -226,6 +226,8 @@ export interface HistoryBonusesInterface {
   },
   tabLabel: string,
   tabPosition: number,
+  cashBonusTab: string,
+  freeSpinsTab: string,
   tableColumns: {
     title: string,
     status: string,
