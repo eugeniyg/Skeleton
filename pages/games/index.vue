@@ -235,12 +235,12 @@
   });
 
   const toggleFilter = () => {
-    isShowFilter.value = true;
+    isShowFilter.value = !isShowFilter.value;
     isShowSearch.value = false;
   };
 
   const toggleSearch = () => {
-    isShowSearch.value = true;
+    isShowSearch.value = !isShowSearch.value;
     isShowFilter.value = false;
   };
 
