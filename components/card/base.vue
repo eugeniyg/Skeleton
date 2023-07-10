@@ -112,8 +112,6 @@
       router.push(localizePath(`/games/${props.identity}`));
     } else if (!isLoggedIn.value) {
       showModal('register');
-    } else if (profile.value?.status === 2) {
-      showAlert(alertsData?.limitedRealGame || defaultLocaleAlertsData?.limitedRealGame);
     } else {
       router.push(localizePath(`/games/${props.identity}?real=true`));
     }
