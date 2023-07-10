@@ -225,6 +225,15 @@ export interface RegistrationInterface {
     title: string,
     secondTitle: string,
     additionalTitle: string,
+    displayAdvantages: boolean,
+    images: {
+      mobile: {
+        backgroundImage: string
+      },
+      desktop: {
+        backgroundImage: string
+      },
+    },
     advantages?: { icon: string, label: string }[]
   }
 }

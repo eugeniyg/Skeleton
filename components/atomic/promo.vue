@@ -1,5 +1,10 @@
 <template>
-  <div class="promo">
+  <div class="promo" :class="{'promo--without-advantages': !isShowAdvantages}">
+    <picture class="promo__picture">
+      <source :srcset="desktopImage" media="(min-width: 64rem)" />
+      <img :src="mobileImage" class="promo__picture-img" alt=""/>
+    </picture>
+
     <div class="header">
       <div class="title">
         {{ getContent(popupsData, defaultLocalePopupsData, 'registration.promo.title') }}
@@ -14,7 +19,7 @@
       </span>
     </div>
 
-    <div v-if="advantagesList?.length" class="items">
+    <div v-if="advantagesList?.length && isShowAdvantages" class="items">
       <div
         v-for="(advantage, index) in advantagesList"
         :key="index"
@@ -34,6 +39,13 @@
     if (popupsData?.registration?.promo?.advantages?.length) return popupsData.registration.promo.advantages;
     return defaultLocalePopupsData?.registration?.promo?.advantages || [];
   });
+
+  const isShowAdvantages = computed(() => popupsData?.registration?.promo?.displayAdvantages);
+
+  const desktopImage = computed(() => popupsData?.registration?.promo?.images?.desktop?.backgroundImage);
+
+  const mobileImage = computed(() => popupsData?.registration?.promo?.images?.mobile?.backgroundImage);
+
 </script>
 
 <style src="~/assets/styles/components/atomic/promo.scss" lang="scss" />
