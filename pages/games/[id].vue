@@ -83,7 +83,7 @@
       }
 
       if(err.data?.error?.code === 14103) {
-        showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
+        redirectLimitedPlayer();
         return { error: { ...err, fatal: false }}
       }
 
@@ -101,38 +101,31 @@
 
     const { data, error } = await startGame();
     if (data) router.replace({ query: { real: `${!isDemo.value}` } });
-    else if (error.fatal) throw createError(error);
+    else if (error.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
   };
 
-  const redirectLimitedPlayer = ():void => {
-    if (gameInfo.value?.isDemoMode) changeGameMode();
-    else {
-      const { localizePath } = useProjectMethods();
-      router.push(localizePath('/'));
-      showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
-    }
+  const redirectLimitedPlayer = () :void => {
+    const { localizePath } = useProjectMethods();
+    router.push(localizePath('/'));
+    showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
   };
 
   watch(() => isLoggedIn.value, async (newValue:boolean) => {
     if (!newValue) return;
 
     showPlug.value = false;
-    if (!isDemo.value && profile.value?.status === 2) {
-      setTimeout(() => {
-        redirectLimitedPlayer();
-      });
-    } else if (isDemo.value) {
+    if (isDemo.value) {
       await changeGameMode();
     } else {
       const { error } = await startGame();
-      if (error?.fatal) throw createError(error);
+      if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
     }
   });
 
   watch(() => activeAccount.value?.id, async (oldValue, newValue) => {
     if (oldValue && newValue && oldValue !== newValue) {
       const { error } = await startGame();
-      if (error?.fatal) throw createError(error);
+      if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
     }
   });
 
@@ -141,13 +134,11 @@
     document.body.classList.add('is-game-page');
 
     if (!isDemo.value && !isLoggedIn.value) {
-      if (gameInfo.value?.isDemoMode) changeGameMode();
+      if (gameInfo.value?.isDemoMode) await changeGameMode();
       else showPlug.value = true;
-    } else if (!isDemo.value && profile.value?.status === 2) {
-      redirectLimitedPlayer();
     } else {
       const { error } = await startGame();
-      if (error?.fatal) throw createError(error);
+      if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
     }
   });
 
