@@ -60,9 +60,9 @@
 
 <script setup lang="ts">
   const emit = defineEmits(['clickCategory']);
-  const { currentLocaleCollections } = useGamesStore();
+  const { currentLocationCollections } = useGamesStore();
   const { gameCategoriesObj } = useGlobalStore();
-  const filteredCategories = currentLocaleCollections.filter((collection) => !collection.isHidden);
+  const filteredCategories = currentLocationCollections.filter((collection) => !collection.isHidden);
 
   const viewport = ref<HTMLElement>();
   const select = ref<HTMLElement>();
