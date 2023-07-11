@@ -12,7 +12,8 @@
     </nuxt-link>
 
     <bonus-code :content="bonusesContent?.bonusCode || defaultLocaleBonusesContent?.bonusCode" />
-    <bonus-active :content="bonusesContent?.cashBonuses || defaultLocaleBonusesContent?.cashBonuses" />
+    <bonus-active bonusType="bonus" :content="bonusesContent?.cashBonuses || defaultLocaleBonusesContent?.cashBonuses" />
+    <bonus-active bonusType="free-spin" :content="bonusesContent?.freeSpins || defaultLocaleBonusesContent?.freeSpins" />
   </div>
 </template>
 
@@ -23,12 +24,13 @@
   const globalStore = useGlobalStore();
   const { contentLocalesArray } = storeToRefs(globalStore);
   const { setPageSeo, findLocalesContentData, localizePath } = useProjectMethods();
-  const { getPlayerBonuses } = useBonusStore();
+  const { getPlayerBonuses, getPlayerFreeSpins } = useBonusStore();
 
   const [bonusesContentRequest] = await Promise.all([
     useAsyncData('bonusesContent', () => queryContent('profile')
       .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'bonuses']).find()),
     useAsyncData('updatePlayerBonuses', getPlayerBonuses),
+    useAsyncData('updatePlayerFreeSpins', getPlayerFreeSpins),
   ]);
 
   const { currentLocaleData, defaultLocaleData } = findLocalesContentData(bonusesContentRequest.data.value);

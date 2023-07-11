@@ -274,18 +274,7 @@
     @include font($body-0);
     color: var(--text-link);
     grid-column-gap: rem(4px);
-
-    .title {
-      color: inherit;
-      text-decoration: none;
-
-      @include use-hover {
-        &:hover {
-          cursor: pointer;
-          color: var(--text-link)
-        }
-      }
-    }
+    text-decoration: none;
   }
 
   &__date {

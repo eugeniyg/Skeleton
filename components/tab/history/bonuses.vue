@@ -1,18 +1,22 @@
 <template>
   <div>
-    <!--
     <div class="nav-tabs">
       <div
         class="nav-tabs__item"
-        v-for="{ title, id } in tabs"
-        :key="id"
-        :class="{'is-active': id === selectedTab}"
-        @click="changeTab(id)"
+        :class="{'is-active':  selectedTab === 'cashBonuses'}"
+        @click="changeTab('cashBonuses')"
       >
-        {{ title }}
+        {{ bonusesContent.cashBonusTab }}
+      </div>
+
+      <div
+        class="nav-tabs__item"
+        :class="{'is-active': selectedTab === 'freeSpins'}"
+        @click="changeTab('freeSpins')"
+      >
+        {{ bonusesContent.freeSpinsTab }}
       </div>
     </div>
-        -->
 
     <table-bonuses-history
       v-if="state.bonusesData.length"
@@ -22,7 +26,7 @@
     />
 
     <atomic-empty
-      v-else-if="!state.loading"
+      v-else-if="!state.bonusesData.length && !state.loading"
       variant="bonuses"
       :title="bonusesContent.empty.title"
       :subTitle="bonusesContent.empty.description"
@@ -45,26 +49,34 @@
 
   interface StateInterface {
     loading: boolean,
+    tableType: 'cashBonuses'|'freeSpins',
     bonusesData: PlayerBonusInterface[],
     bonusesMeta: Maybe<PaginationMetaInterface>
   }
 
   const state = reactive<StateInterface>({
     loading: true,
+    tableType: 'cashBonuses',
     bonusesData: [],
     bonusesMeta: undefined,
   });
 
-  const { getPlayerBonuses } = useCoreBonusApi();
+  const selectedTab = ref<'cashBonuses'|'freeSpins'>('cashBonuses');
+
+  const { getPlayerBonuses, getPlayerFreeSpins } = useCoreBonusApi();
   const getBonusesData = async (page = 1):Promise<void> => {
     state.loading = true;
+    const requestParams = {
+      page,
+      perPage: 10,
+      sortOrder: 'desc',
+    }
 
     try {
-      const { data, meta } = await getPlayerBonuses({
-        page,
-        perPage: 10,
-        sortOrder: 'desc',
-      });
+      const { data, meta } = selectedTab.value === 'cashBonuses'
+        ? await getPlayerBonuses(requestParams)
+        : await getPlayerFreeSpins(requestParams);
+
       state.bonusesData = data;
       state.bonusesMeta = meta;
     } catch {
@@ -81,23 +93,12 @@
     await getBonusesData(page);
   };
 
-  // const tabs = [
-  //   {
-  //     title: 'Cash Bonuses',
-  //     id: 'cash-bonuses',
-  //   },
-  //   {
-  //     title: 'Free spins',
-  //     id: 'free-spins',
-  //   },
-  // ];
-
-  // const selectedTab = ref<string>(tabs[0].id);
-  //
-  // const changeTab = (tabId: string): void => {
-  //   if (selectedTab.value === tabId) return;
-  //   selectedTab.value = tabId;
-  // };
+  const changeTab = async (tabId: 'cashBonuses'|'freeSpins'): Promise<void> => {
+    if (selectedTab.value === tabId) return;
+    selectedTab.value = tabId;
+    await getBonusesData();
+    state.tableType = tabId;
+  };
 
   onMounted(async () => {
     await getBonusesData();
