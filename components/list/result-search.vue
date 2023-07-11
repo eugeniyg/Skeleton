@@ -17,8 +17,8 @@
           class="item"
           @click="clickGame(game)"
         >
-          <img v-if="game.images['200x200']" :src="gameImageSrc(game.images)" />
-          <img v-else src="/img/default-game-tumb.png" />
+          <nuxt-img v-if="game.images['200x200']" :src="gameImageSrc(game.images)" />
+          <nuxt-img v-else src="/img/default-game-tumb.png" />
           <span>{{ game.name }}</span>
         </div>
 
@@ -77,4 +77,3 @@
 </script>
 
 <style src="~/assets/styles/components/list/result-search.scss" lang="scss" />
-

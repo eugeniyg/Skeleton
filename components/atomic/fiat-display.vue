@@ -5,7 +5,7 @@
     @mouseenter="showFiatTooltip"
     @mouseleave="hideFiatTooltip"
   >
-    <img
+    <nuxt-img
       class="fiat-display__logo"
       :src="`/img/currency/${ activeAccount?.currency }.svg`"
       alt=""
@@ -14,7 +14,7 @@
     <span class="fiat-display__currency">{{ equivalentBalanceFormat.currency }}</span>
 
     <div class="fiat-display__tooltip">
-      <img class="fiat-display__logo" :src="`/img/currency/${ activeAccount?.currency }.svg`" alt=""/>
+      <nuxt-img class="fiat-display__logo" :src="`/img/currency/${ activeAccount?.currency }.svg`" alt=""/>
       <span class="fiat-display__amount">{{ activeBalanceFormat.amount }}</span>
       <span class="fiat-display__currency">{{ activeBalanceFormat.currency }}</span>
     </div>

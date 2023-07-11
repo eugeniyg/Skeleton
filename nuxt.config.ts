@@ -24,7 +24,8 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@platform/frontend-core',
-    '@nuxt/content'
+    '@nuxt/content',
+    '@nuxt/image',
   ],
   components: {
     dirs: [

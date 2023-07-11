@@ -5,7 +5,7 @@
   >
     <div class="select-lang__wrap" v-click-outside="closeSelect">
       <div class="selected" @click="toggleOpen">
-        <img
+        <nuxt-img
           class="img"
           :src="`/img/flags/${languageFlagsMap[currentLocale.code.toLowerCase()]}.svg`"
           alt=""
@@ -24,7 +24,7 @@
           :href="linkToLocale(locale)"
           @click="setCookie(locale)"
         >
-          <img class="img" :src="`/img/flags/${languageFlagsMap[locale.code.toLowerCase()]}.svg`" alt="" />
+          <nuxt-img class="img" :src="`/img/flags/${languageFlagsMap[locale.code.toLowerCase()]}.svg`" alt="" />
           <span class="title">{{ locale.nativeName || locale.name }}</span>
           <atomic-icon id="check" />
         </component>

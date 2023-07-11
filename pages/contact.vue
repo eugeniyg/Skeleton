@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="contact">
-      <img
+      <nuxt-img
         v-if="contactContent?.image || defaultLocaleContactContent?.image"
         class="img"
         :src="contactContent?.image || defaultLocaleContactContent?.image"
@@ -118,4 +118,3 @@
 </script>
 
 <style src="~/assets/styles/pages/contact.scss" lang="scss" />
-

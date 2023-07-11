@@ -6,7 +6,7 @@
         v-for="(benefit, index) in benefitsList"
         :key="index"
       >
-        <img class="icon" :src="benefit.image" alt=""/>
+        <nuxt-img class="icon" :src="benefit.image" alt=""/>
         <h2 class="title">{{ benefit.title }}</h2>
         <div class="text">{{ benefit.text }}</div>
       </div>
@@ -24,4 +24,3 @@
 </script>
 
 <style src="~/assets/styles/components/group/benefits.scss" lang="scss" />
-

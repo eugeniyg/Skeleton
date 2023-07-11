@@ -18,7 +18,7 @@
           </div>
         </div>
 
-        <img
+        <nuxt-img
           v-if="getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.image')"
           class="img"
           :src="getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.image')"
@@ -38,7 +38,7 @@
           >
             <div class="title">{{ card.title }}</div>
             <div class="sub-title">{{ card.topLabel }}</div>
-            <img class="img" :src="card.image" />
+            <nuxt-img class="img" :src="card.image" />
 
             <div class="actions">
               <button-base
@@ -78,7 +78,7 @@
           >
             <div class="title">{{ card.subtitle }}</div>
             <div class="sub-title">{{ card.title }}</div>
-            <img class="img" :src="card.image" />
+            <nuxt-img class="img" :src="card.image" />
 
             <div class="actions">
               <button-base
@@ -139,4 +139,3 @@
 </script>
 
 <style src="~/assets/styles/pages/welcome-package.scss" lang="scss" />
-

@@ -10,7 +10,7 @@
         <span class="input-currencies__selected-label">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.addCashLimit.chooseCurrencyLabel') }}</span>
       </template>
       <template v-else>
-        <img
+        <nuxt-img
           class="input-currencies__selected-icon"
           :src="`/img/currency/${selectedCurrency?.code}.svg`"
           width="24"
@@ -45,7 +45,7 @@
           :class="{'is-active': selectedCurrency?.name === currency.name}"
           @click="selectCurrency(currency)"
         >
-          <img
+          <nuxt-img
             class="input-currencies__item-img"
             :src="`/img/currency/${currency.code}.svg`"
             width="24"

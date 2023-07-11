@@ -12,7 +12,7 @@
       </div>
 
       <div class="bonus">
-        <img :src="getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.bonusImage')" alt="">
+        <nuxt-img :src="getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.bonusImage')" alt=""/>
         <div class="bonus-text" v-html="bonusContent" />
       </div>
 
@@ -53,4 +53,3 @@
 </script>
 
 <style src="~/assets/styles/components/modal/register-cancel.scss" lang="scss" />
-

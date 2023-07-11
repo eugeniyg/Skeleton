@@ -2,7 +2,7 @@
   <div class="not-auth-game" :class="modeClassName">
     <div class="title" v-if="props.title">{{ props.title }}</div>
 
-    <img
+    <nuxt-img
       class="img"
       :src="props.image"
       width="104"
@@ -63,4 +63,3 @@
 </script>
 
 <style src="~/assets/styles/components/not-auth-game.scss" lang="scss" />
-

@@ -9,7 +9,7 @@
     <span v-if="props.label" class="label">{{ props.label }}<sup v-if="props.isRequired">*</sup></span>
 
     <div class="selected" @click="open">
-      <img v-if="valueObject.mask" class="mask" :src="valueObject.mask" />
+      <nuxt-img v-if="valueObject.mask" class="mask" :src="valueObject.mask" />
       <span v-if="valueObject.value">{{ valueObject.value }}</span>
       <span v-else-if="props.placeholder" class="placeholder">{{ props.placeholder }}</span>
       <atomic-icon id="arrow_expand-close"/>
@@ -23,7 +23,7 @@
         :class="{'is-selected': option.code === valueObject.code }"
         @click="select(option)"
       >
-        <img v-if="option.mask" class="mask" :src="option.mask"/>
+        <nuxt-img v-if="option.mask" class="mask" :src="option.mask"/>
         <span>{{ option.value }}</span>
         <atomic-icon v-if="option.code === valueObject.code" id="check"/>
       </div>
@@ -136,4 +136,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/dropdown.scss" lang="scss" />
-

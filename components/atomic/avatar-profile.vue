@@ -1,12 +1,12 @@
 <template>
   <div class="avatar-profile">
     <span class="thumb">
-      <img
+      <nuxt-img
         v-if="profile.avatar"
         class="img"
         :src="profile.avatar"
         alt=""
-      >
+      />
       <button-edit v-if="props.isEdit" />
     </span>
   </div>

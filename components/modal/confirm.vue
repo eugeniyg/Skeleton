@@ -10,7 +10,7 @@
         <button-modal-close @close="closeModal('confirm')"/>
       </div>
 
-      <img class="img" src="/img/confirm.svg"/>
+      <nuxt-img class="img" src="/img/confirm.svg"/>
       <p class="text">{{ getContent(popupsData, defaultLocalePopupsData, 'confirm.title') }}</p>
       <button-base type="primary" size="md" @click="closeModal('confirm')">
         {{ getContent(popupsData, defaultLocalePopupsData, 'confirm.button') }}
@@ -31,4 +31,3 @@
 </script>
 
 <style src="~/assets/styles/components/modal/confirm.scss" lang="scss" />
-

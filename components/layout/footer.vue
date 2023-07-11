@@ -80,4 +80,3 @@
 </script>
 
 <style src="~/assets/styles/components/layout/footer.scss" lang="scss" />
-

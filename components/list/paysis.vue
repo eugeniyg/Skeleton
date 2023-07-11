@@ -22,4 +22,3 @@
 </script>
 
 <style src="~/assets/styles/components/list/paysis.scss" lang="scss" />
-

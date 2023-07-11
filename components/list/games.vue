@@ -6,7 +6,7 @@
       class="item"
       :to="localizePath(`/games/${game.identity}${!isLoggedIn ? '' : '?real=true' }`)"
     >
-      <img class="img" v-if="game.images['200x200']" :src="gameImageSrc(game.images)" />
+      <nuxt-img class="img" v-if="game.images['200x200']" :src="gameImageSrc(game.images)" />
     </nuxt-link>
   </div>
 </template>
@@ -47,4 +47,3 @@
 </script>
 
 <style src="~/assets/styles/components/list/games.scss" lang="scss" />
-

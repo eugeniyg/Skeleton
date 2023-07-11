@@ -1,6 +1,6 @@
 <template>
   <div class="row-phone">
-    <img
+    <nuxt-img
       class="img"
       :src="`/img${props.src}`"
       width="24"

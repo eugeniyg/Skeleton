@@ -22,7 +22,7 @@
         </div>
         <div v-for="provider in gameProviders" :key="provider.id" class="input-providers__item">
           <label class="input-providers__label">
-            <img class="input-providers__logo" src="/img/provider-empty-placeholder.svg" alt="">
+            <nuxt-img class="input-providers__logo" src="/img/provider-empty-placeholder.svg" alt=""/>
             <span class="input-providers__title">{{ provider.name }}</span>
             <input
               type="checkbox"
@@ -109,4 +109,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/providers.scss" lang="scss" />
-

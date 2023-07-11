@@ -2,7 +2,7 @@
   <div class="avatar-user">
     <div class="row">
       <span class="thumb">
-        <img class="img" src="/img/avatar-bg.png" alt="">
+        <nuxt-img class="img" src="/img/avatar-bg.png" alt=""/>
       </span>
     </div>
 

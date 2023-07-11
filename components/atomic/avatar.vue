@@ -8,7 +8,7 @@
     </span>
 
     <span class="thumb">
-      <img class="img" src="/img/avatar-bg.png" alt="">
+      <nuxt-img class="img" src="/img/avatar-bg.png" alt=""/>
       <atomic-bulb v-if="props.showBulb"/>
     </span>
 

@@ -6,7 +6,7 @@
 
     <div class="sub-title">{{ props.description }}</div>
 
-    <img class="icon" :src="props.image" alt="">
+    <nuxt-img class="icon" :src="props.image" alt=""/>
 
     <button-base
       type="secondary"
@@ -46,4 +46,3 @@
 </script>
 
 <style src="~/assets/styles/components/card/category.scss" lang="scss" />
-

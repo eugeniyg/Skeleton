@@ -1,7 +1,7 @@
 <template>
   <div class="bonus-page">
     <div class="header" :data-bg="getContent(pageContent, defaultLocalePageContent, 'backgroundColor') || 'gray'">
-      <img
+      <nuxt-img
         v-if="getContent(pageContent, defaultLocalePageContent, 'image')"
         class="img"
         :src="getContent(pageContent, defaultLocalePageContent, 'image')"
@@ -78,4 +78,3 @@
 </script>
 
 <style src="~/assets/styles/pages/bonus/index.scss" lang="scss" />
-

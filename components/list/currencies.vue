@@ -21,7 +21,7 @@
         :class="{'is-active': activeAccount.currency === item.nativeCurrency}"
         @click="selectCurrency(item.nativeCurrency)"
       >
-        <img class="img" :src="`/img/currency/${item.nativeCurrency}.svg`" alt=""/>
+        <nuxt-img class="img" :src="`/img/currency/${item.nativeCurrency}.svg`" alt=""/>
         <span class="code-title">{{ item.currency }}</span>
         <span v-if="!props.hideBalance" class="amount">{{ item.currencySymbol }} {{ item.amount }}</span>
       </div>
@@ -138,4 +138,3 @@
 </script>
 
 <style src="~/assets/styles/components/list/currencies.scss" lang="scss" />
-

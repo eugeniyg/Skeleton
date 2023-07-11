@@ -2,7 +2,7 @@
   <div class="promo" :class="{'promo--without-advantages': !isShowAdvantages}">
     <picture class="promo__picture">
       <source :srcset="desktopImage" media="(min-width: 64rem)" />
-      <img :src="mobileImage" class="promo__picture-img" alt=""/>
+      <nuxt-img :src="mobileImage" class="promo__picture-img" alt=""/>
     </picture>
 
     <div class="header">

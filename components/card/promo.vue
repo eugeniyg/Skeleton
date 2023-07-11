@@ -3,13 +3,13 @@
     <picture>
       <source :media="'(max-width: 1279px)'" :srcset="props.images.mobile.backgroundImage" />
       <source :media="'(max-width: 2264px)'" :srcset="props.images.desktop.backgroundImage" />
-      <img class="back" :src="props.images.mobile.backgroundImage" alt=""/>
+      <nuxt-img class="back" :src="props.images.mobile.backgroundImage" alt=""/>
     </picture>
 
     <picture>
       <source :media="'(max-width: 1279px)'" :srcset="props.images.mobile.faceImage" />
       <source :media="'(max-width: 2264px)'" :srcset="props.images.desktop.faceImage" />
-      <img class="front" :src="props.images.mobile.faceImage" alt=""/>
+      <nuxt-img class="front" :src="props.images.mobile.faceImage" alt=""/>
     </picture>
 
     <div class="info">
@@ -66,4 +66,3 @@
 </script>
 
 <style src="~/assets/styles/components/card/promo.scss" lang="scss" />
-

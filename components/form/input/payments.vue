@@ -5,7 +5,7 @@
     v-click-outside="close"
   >
     <div v-if="props.items.length" class="selected" @click="open">
-      <img
+      <nuxt-img
         v-if="defaultLogoUrl() || props.activeMethod.logo"
         class="mask"
         :src="defaultLogoUrl() || props.activeMethod.logo"
@@ -21,7 +21,7 @@
         :class="{'is-selected': item.method === props.activeMethod.method }"
         @click="select(item)"
       >
-        <img v-if="defaultLogoUrl() || item.logo" class="mask" :src="defaultLogoUrl() || item.logo" />
+        <nuxt-img v-if="defaultLogoUrl() || item.logo" class="mask" :src="defaultLogoUrl() || item.logo" />
       </div>
     </div>
     <input type="hidden" name="payments" :value="props.activeMethod.method" />
@@ -73,4 +73,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/payments.scss" lang="scss" />
-

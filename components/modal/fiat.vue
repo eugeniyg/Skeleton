@@ -24,7 +24,7 @@
             :key="item.code"
             @click="selectFiat(item.code)"
           >
-            <img class="modal-fiat__item-logo" :src="`/img/currency/${item.code}.svg`" alt=""/>
+            <nuxt-img class="modal-fiat__item-logo" :src="`/img/currency/${item.code}.svg`" alt=""/>
             <span class="modal-fiat__item-currency">{{ item.code }}</span>
           </div>
         </div>
@@ -58,4 +58,3 @@
 </script>
 
 <style src="~/assets/styles/components/modal/fiat.scss" lang="scss" />
-

@@ -1,6 +1,6 @@
 <template>
   <div class="card-providers" @click="routeToGames">
-    <img class="img" :src="`/img${props.src}`"/>
+    <img class="img" :src="`/img${props.src}`" lazy/>
   </div>
 </template>
 
@@ -22,4 +22,3 @@
 </script>
 
 <style src="~/assets/styles/components/card/providers.scss" lang="scss" />
-
