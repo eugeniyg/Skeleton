@@ -119,7 +119,7 @@
   const fakeStore = useFakeStore();
   const router = useRouter();
   const gameStore = useGamesStore();
-  const { currentLocaleCollections } = storeToRefs(gameStore);
+  const { currentLocationCollections } = storeToRefs(gameStore);
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 
@@ -127,7 +127,7 @@
 
   const mainCategories = ['hot', 'slots', 'turbogames', 'new', 'table', 'live'];
   const mainCategoriesData = mainCategories.reduce((categoriesObj, currentCategoryIdentity) => {
-    const findCategory = currentLocaleCollections.value.find((collection) => collection.identity === currentCategoryIdentity);
+    const findCategory = currentLocationCollections.value.find((collection) => collection.identity === currentCategoryIdentity);
     return findCategory ? { ...categoriesObj, [currentCategoryIdentity]: findCategory } : categoriesObj;
   }, {});
 

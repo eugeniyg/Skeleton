@@ -86,14 +86,14 @@
 
   const defaultGames = ref<GameInterface[]>([]);
   const gameStore = useGamesStore();
-  const { currentLocaleCollections } = storeToRefs(gameStore);
-  const getTurbogamesId = currentLocaleCollections.value.find((collection) => collection.identity === 'turbogames')?.id;
+  const { currentLocationCollections } = storeToRefs(gameStore);
+  const getTurbogamesId = currentLocationCollections.value.find((collection) => collection.identity === 'turbogames')?.id;
 
   onMounted(async () => {
     const defaultGamesResponse = await getFilteredGames({
       page: 1,
       perPage: 4,
-      collectionId: getTurbogamesId || currentLocaleCollections.value[0]?.id,
+      collectionId: getTurbogamesId || currentLocationCollections.value[0]?.id,
     });
     defaultGames.value = defaultGamesResponse.data;
   });

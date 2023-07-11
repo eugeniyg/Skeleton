@@ -49,8 +49,8 @@
   });
   const emit = defineEmits(['changeMode']);
 
-  const { currentLocaleCollections } = useGamesStore();
-  const recommendedCategory = currentLocaleCollections.find((collection) => collection.identity === 'recommended');
+  const { currentLocationCollections } = useGamesStore();
+  const recommendedCategory = currentLocationCollections.find((collection) => collection.identity === 'recommended');
 </script>
 
 <style src="~/assets/styles/components/box-game.scss" lang="scss" />

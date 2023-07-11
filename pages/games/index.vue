@@ -101,7 +101,7 @@
   setPageSeo(gamesContent?.seo);
 
   const gamesStore = useGamesStore();
-  const { currentLocaleCollections } = storeToRefs(gamesStore);
+  const { currentLocationCollections } = storeToRefs(gamesStore);
   const { selectOptions } = useFieldsStore();
   const providerDropdownOptions: GameProviderInterface[] = [
     {
@@ -117,7 +117,7 @@
   const router = useRouter();
 
   const activeCollection = ref<CollectionInterface | undefined>(
-    currentLocaleCollections.value.find((collection) => collection.identity === route.query.category),
+    currentLocationCollections.value.find((collection) => collection.identity === route.query.category),
   );
 
   const currentProvider = ref<GameProviderInterface | undefined>(
@@ -190,7 +190,7 @@
 
   const changeCategory = async (categoryId: string): Promise<void> => {
     loadPage.value = 1;
-    activeCollection.value = currentLocaleCollections.value.find(
+    activeCollection.value = currentLocationCollections.value.find(
       (collection) => collection.identity === categoryId,
     );
     router.replace({ query: { ...route.query, category: categoryId } });
