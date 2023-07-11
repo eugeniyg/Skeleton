@@ -204,6 +204,12 @@ export const useGlobalStore = defineStore('globalStore', {
     bonusesResults(state):StatusInterface[] {
       return state.settingsConstants?.game.playerBonus.result || [];
     },
+    freeSpinsStatuses(state):StatusInterface[] {
+      return state.settingsConstants?.game.playerFreespin.status || [];
+    },
+    freeSpinsResults(state):StatusInterface[] {
+      return state.settingsConstants?.game.playerFreespin.result || [];
+    },
     isIOSPlatform():boolean|null {
       if (!window?.navigator?.platform && !window?.navigator?.userAgent) return null;
 

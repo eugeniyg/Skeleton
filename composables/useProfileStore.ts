@@ -34,9 +34,10 @@ export const useProfileStore = defineStore('profileStore', {
 
     startProfileDependencies():void {
       const { getFavoriteGames } = useGamesStore();
-      const { getPlayerBonuses, getDepositBonusCode } = useBonusStore();
+      const { getPlayerBonuses, getDepositBonusCode, getPlayerFreeSpins } = useBonusStore();
       getFavoriteGames();
       getDepositBonusCode();
+      getPlayerFreeSpins();
 
       const route = useRoute();
       const routeName = route.name as string;
@@ -45,11 +46,12 @@ export const useProfileStore = defineStore('profileStore', {
       }
 
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
-      const { subscribeBonusCodeSocket, subscribeBonusSocket } = useBonusStore();
+      const { subscribeBonusCodeSocket, subscribeBonusSocket, subscribeFreeSpinsSocket } = useBonusStore();
       subscribeAccountSocket();
       subscribeInvoicesSocket();
       subscribeBonusCodeSocket();
       subscribeBonusSocket();
+      subscribeFreeSpinsSocket();
 
       const { setEquivalentCurrency } = useGlobalStore();
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
@@ -61,11 +63,12 @@ export const useProfileStore = defineStore('profileStore', {
       bonusStore.$reset();
 
       const { unsubscribeAccountSocket, unsubscribeInvoiceSocket } = useWalletStore();
-      const { unsubscribeBonusCodeSocket, unsubscribeBonusSocket } = useBonusStore();
+      const { unsubscribeBonusCodeSocket, unsubscribeBonusSocket, unsubscribeFreeSpinsSocket } = useBonusStore();
       unsubscribeAccountSocket();
       unsubscribeInvoiceSocket();
       unsubscribeBonusCodeSocket();
       unsubscribeBonusSocket();
+      unsubscribeFreeSpinsSocket();
     },
 
     async logIn(loginData:any):Promise<void> {

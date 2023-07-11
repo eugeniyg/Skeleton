@@ -16,7 +16,7 @@
           <div class="td">{{ spin.game}}</div>
           <div class="td">{{ formatSum(spin.currency, spin.betAmount) }}</div>
           <div class="td">{{ formatSum(spin.currency, spin.resultBalance) }}</div>
-          <div class="td">{{ getFormatDate(spin.createdAt) }}</div>
+          <div class="td">{{ dayjs(spin.createdAt).format('DD.MM.YYYY, HH:mm') }}</div>
         </div>
       </template>
     </div>
@@ -39,6 +39,7 @@
 <script setup lang="ts">
   import { PaginationMetaInterface, SpinHistoryInterface } from '@platform/frontend-core/dist/module';
   import { HistoryTabInterface } from '@skeleton/types';
+  import dayjs from "dayjs";
 
   const props = defineProps<{
     content: HistoryTabInterface,
@@ -57,8 +58,6 @@
     pageMeta.value = response.meta;
     loading.value = false;
   };
-
-  const { getFormatDate } = useProjectMethods();
 
   const changePage = (page: number):void => {
     if (loading.value) return;

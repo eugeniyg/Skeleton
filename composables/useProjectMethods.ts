@@ -70,11 +70,6 @@ export const useProjectMethods = () => {
     return imageData['200x200']['3x'] || imageData['200x200']['2x'] || imageData['200x200']['1x'];
   };
 
-  const getFormatDate = (dateUtcIsoString: string):string => {
-    const date = new Date(dateUtcIsoString);
-    return date.toLocaleString().slice(0, -3);
-  };
-
   const getNicknameFromEmail = (email: string):string => {
     const getFirstPath = email.split('@')[0];
     if (getFirstPath.length < 4) return `${getFirstPath.slice(0, 1)}***`;
@@ -190,7 +185,6 @@ export const useProjectMethods = () => {
     preloaderStart,
     localizePath,
     isHomePage,
-    getFormatDate,
     getNicknameFromEmail,
     formatBalance,
     getMainBalanceFormat,

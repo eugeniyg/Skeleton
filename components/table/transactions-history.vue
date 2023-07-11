@@ -8,7 +8,7 @@
     </div>
 
     <div v-for="invoice in props.invoices" :key="invoice.id" class="row">
-      <div class="td">{{ getFormatDate(invoice.createdAt) }}</div>
+      <div class="td">{{ dayjs(invoice.createdAt).format('DD.MM.YYYY, HH:mm') }}</div>
       <div class="td">{{ getInvoiceTypeLabel(invoice.invoiceType) }}</div>
       <div class="td">{{ invoice.paymentMethod }}</div>
 
@@ -38,6 +38,7 @@
 <script setup lang="ts">
   import { PropType } from '@vue/runtime-core';
   import { HistoryTransactionsInterface } from '@skeleton/types';
+  import dayjs from "dayjs";
 
   const props = defineProps({
     invoices: {
@@ -53,7 +54,6 @@
   const emit = defineEmits(['cancelPayment']);
   const headTitles = Object.values(props.transactionsContent.tableColumns);
   const globalStore = useGlobalStore();
-  const { getFormatDate } = useProjectMethods();
 
   const getInvoiceType = (type: number):string => {
     const findInvoiceType = globalStore.invoiceTypes.find((storeType) => storeType.id === type);
