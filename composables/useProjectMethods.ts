@@ -168,7 +168,7 @@ export const useProjectMethods = () => {
     const balanceInBaseCurrency = (targetBalance || 0) * (currentCurrency.subunitToUnit / currentCurrency.rate.rate);
 
     // convert to int + divide onto rate
-    const equivalentAmount = balanceInBaseCurrency * (baseCurrency.subunitToUnit / equivalentCurrency.rate.rate);
+    const equivalentAmount = balanceInBaseCurrency * (equivalentCurrency.rate.rate / baseCurrency.subunitToUnit);
 
     return {
       balance: Number(equivalentAmount.toFixed(2)),
