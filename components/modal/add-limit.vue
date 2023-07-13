@@ -36,7 +36,7 @@
         :is-required="false"
         :currency="formattedBalance.currency"
         :min="0"
-        :max="100000"
+        :max="1000000"
         :defaultValue="0"
         label=""
         name="amount"
