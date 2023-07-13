@@ -56,7 +56,6 @@
     accounts,
     currencyTabs,
     activeAccount,
-    activeAccountType,
   } = storeToRefs(walletStore);
   const { currencies, cryptoCurrencies, equivalentCurrency } = storeToRefs(globalStore);
   const { switchAccount } = useWalletStore();
@@ -74,6 +73,11 @@
     currency: string,
     amount: number,
     currencySymbol?: string
+  }
+
+  const formatCurrenciesList = (list:DisplayAccountInterface[]) => {
+    return list.filter((item) => accounts.value.find((account) => account.currency === item.nativeCurrency))
+      .sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()))
   }
 
   const selectedItems = computed(() => {
@@ -106,8 +110,8 @@
       else withoutBalanceList.push(formatItem);
     });
 
-    const withBalanceSortedList = withBalanceList.sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
-    const withoutBalanceSortedList = withoutBalanceList.sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
+    const withBalanceSortedList = formatCurrenciesList(withBalanceList);
+    const withoutBalanceSortedList = formatCurrenciesList(withoutBalanceList);
 
     return [...withBalanceSortedList, ...withoutBalanceSortedList];
   });
@@ -138,4 +142,3 @@
 </script>
 
 <style src="~/assets/styles/components/list/currencies.scss" lang="scss" />
-
