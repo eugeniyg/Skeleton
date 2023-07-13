@@ -56,7 +56,6 @@
     accounts,
     currencyTabs,
     activeAccount,
-    activeAccountType,
   } = storeToRefs(walletStore);
   const { currencies, cryptoCurrencies, equivalentCurrency } = storeToRefs(globalStore);
   const { switchAccount } = useWalletStore();
