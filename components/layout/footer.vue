@@ -36,12 +36,6 @@
     <atomic-divider/>
 
     <div v-if="footerContent?.curacao || defaultLocaleFooterContent?.curacao" class="info">
-      <iframe
-        src="https://licensing.gaming-curacao.com/validator/?lh=95426453d291d7c01ec3a7e5aaf8b499&template=tseal"
-        width="132px"
-        height="62px"
-      />
-
       <div class="info__text" v-html="marked.parse(footerContent?.curacao || defaultLocaleFooterContent?.curacao || '')" />
     </div>
 
@@ -80,4 +74,3 @@
 </script>
 
 <style src="~/assets/styles/components/layout/footer.scss" lang="scss" />
-
