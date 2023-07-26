@@ -102,11 +102,6 @@
     margin: auto 0;
     visibility: var(--icon-visibility, hidden);
 
-    img {
-      width: 100%;
-      height: 100%;
-    }
-
     @include media(md) {
       --icon-visibility: visible;
       transform: translateX(#{rem(16px)});

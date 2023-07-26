@@ -1,6 +1,6 @@
 <template>
   <div class="not-found error-page">
-    <nuxt-picture class="img" src="/img/404.png" />
+    <img class="img" src="/img/404.png" />
     <div class="title">
       {{ errorPageContent?.title || defaultLocaleErrorPageContent?.title || pageStaticContent.title }}
     </div>

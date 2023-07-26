@@ -24,23 +24,8 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@platform/frontend-core',
-    '@nuxt/content',
-    '@nuxt/image'
+    '@nuxt/content'
   ],
-  image: {
-    format: ['webp'],
-    quality: 80,
-    screens: {
-      xxs: 360,
-      xs: 528,
-      sm: 768,
-      md: 1024,
-      l: 1280,
-      xl: 1617,
-      xxl: 1833,
-      xxxl: 2264,
-    },
-  },
   components: {
     dirs: [
       {
