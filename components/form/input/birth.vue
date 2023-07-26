@@ -66,9 +66,14 @@
     },
   });
 
-  const { fieldsContent, defaultLocaleFieldsContent } = useGlobalStore();
+  const {
+    fieldsContent,
+    defaultLocaleFieldsContent,
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent
+  } = useGlobalStore();
   const { getContent } = useProjectMethods();
-  const selected = reactive({
+  const selected = reactive<{ year: number, month: number, day: number }>({
     year: 0,
     month: 0,
     day: 0,
@@ -89,8 +94,30 @@
     return items;
   };
 
+  const defaultMonths: Record<number, any> = {
+    1: 'January',
+    2: 'February',
+    3: 'March',
+    4: 'April',
+    5: 'May',
+    6: 'June',
+    7: 'July',
+    8: 'August',
+    9: 'September',
+    10: 'October',
+    11: 'November',
+    12: 'December',
+  }
+  const contentMonths = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'dateMonths');
+  const monthsObj = contentMonths || defaultMonths;
+
+
   const years = createItems(1920, maxYear.value, false).reverse();
-  const months = createItems(1, 12, true);
+  const months = Object.keys(monthsObj).map((key) => ({
+    title: monthsObj[key],
+    value: monthsObj[key],
+    code: Number(key),
+  }));
   const days = createItems(1, 31, true);
 
   if (props.value) {
@@ -114,8 +141,8 @@
     changeInputValue();
   };
 
-  const onInputMonth = (month:number):void => {
-    selected.month = month;
+  const onInputMonth = (month:string):void => {
+    selected.month = Number(month);
     changeInputValue();
   };
 

@@ -6,7 +6,7 @@
 
     <div class="sub-title">{{ props.description }}</div>
 
-    <img class="icon" :src="props.image" alt="">
+    <nuxt-picture class="icon" :src="props.image" />
 
     <button-base
       type="secondary"
