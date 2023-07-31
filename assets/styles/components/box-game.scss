@@ -13,7 +13,12 @@
     grid-area: container;
     position: relative;
     width: 100%;
-    height: calc(var(--vh, 1vh) * 100);
+    height: calc(100vh - 128px); // calc(var(--vh, 1vh) * 100);
+
+    @media (orientation: landscape) and (max-width: 1024px) {
+      padding-left: 64px;
+      height: calc(100vh - 64px);
+    }
 
     @include media(md) {
       height: calc(100vh - 160px);
