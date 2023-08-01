@@ -64,14 +64,14 @@
 
   const showModal = ref<boolean>(false);
   const bonusStore = useBonusStore();
-  const { activePlayerCashBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
+  const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
   const showBonusesList = computed(() => {
-    return (props.bonusType === 'bonus' && activePlayerCashBonuses.value.length) ||
+    return (props.bonusType === 'bonus' && activePlayerBonuses.value.length) ||
       (props.bonusType === 'free-spin' && activePlayerFreeSpins.value.length)
   })
   const orderedBonuses = computed(() => {
     if (props.bonusType === 'bonus') {
-      return activePlayerCashBonuses.value.reduce((acc: PlayerBonusInterface[], currentBonus) => {
+      return activePlayerBonuses.value.reduce((acc: PlayerBonusInterface[], currentBonus) => {
         return currentBonus.status === 2 ? [currentBonus, ...acc] : [...acc, currentBonus];
       }, [])
     }

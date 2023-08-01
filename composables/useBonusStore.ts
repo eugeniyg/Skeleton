@@ -31,10 +31,6 @@ export const useBonusStore = defineStore('bonusStore', {
       return state.playerBonuses.filter((playerBonus) => walletStore.activeAccount?.currency === playerBonus.currency);
     },
 
-    activePlayerCashBonuses():PlayerBonusInterface[] {
-      return this.activePlayerBonuses.filter((playerBonus) => [1,2].includes(playerBonus.bonusType));
-    },
-
     activePlayerFreeSpins(state):PlayerFreeSpinInterface[] {
       const walletStore = useWalletStore();
       return state.playerFreeSpins.filter((playerFreeSpin) => walletStore.activeAccount?.currency === playerFreeSpin.currency);
