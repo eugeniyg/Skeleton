@@ -13,13 +13,6 @@
 
       <cta-menu v-if="sidebarContent?.ctaMenu.isShow" :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'ctaMenu.items')" />
 
-      <!--
-      <template v-if="isLoggedIn">
-        <card-profile/>
-        <atomic-divider/>
-      </template>
-      -->
-
       <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'topMenu')"/>
       <atomic-divider/>
 
