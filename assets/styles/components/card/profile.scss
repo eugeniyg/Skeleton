@@ -1,11 +1,10 @@
 .card-profile {
   @extend %flex-column;
   grid-row-gap: rem(16px);
-  padding: 0 rem(4px);
+  padding: 0;
 
   .is-compact & {
     grid-row-gap: rem(8px);
-    padding: 0;
   }
 
   .avatar {

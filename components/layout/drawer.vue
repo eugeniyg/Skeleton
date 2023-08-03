@@ -6,18 +6,27 @@
         @toggle-open="emit('toggle-open')"
       />
 
-      <button-toggler :items="sidebarContent?.gamesToggler || defaultLocaleSidebarContent?.gamesToggler"/>
+      <button-toggler :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'gamesToggler')"/>
     </div>
 
     <div class="content">
+
+      <cta-menu v-if="sidebarContent?.ctaMenu.isShow" :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'ctaMenu.items')" />
+
       <template v-if="isLoggedIn">
         <card-profile/>
         <atomic-divider/>
       </template>
 
-      <nav-list :items="sidebarContent?.topMenu || defaultLocaleSidebarContent?.topMenu"/>
+      <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'topMenu')"/>
       <atomic-divider/>
-      <nav-list :items="sidebarContent?.bonusesMenu || defaultLocaleSidebarContent?.bonusesMenu"/>
+
+      <!-- OPTIONAL MENU -->
+      <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'tokenMenu')"/>
+      <atomic-divider/>
+      <!-- OPTIONAL MENU -->
+
+      <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'bonusesMenu')"/>
       <atomic-divider/>
 
       <template v-if="isLoggedIn">
@@ -27,9 +36,9 @@
 
       <atomic-select-lang/>
       <atomic-divider/>
-      <nav-list :items="sidebarContent?.bottomMenu || defaultLocaleSidebarContent?.bottomMenu"/>
+      <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'bottomMenu')"/>
       <atomic-divider/>
-      <nav-static :items="sidebarContent?.sidebarFooterMenu || defaultLocaleSidebarContent?.sidebarFooterMenu"/>
+      <nav-static :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'sidebarFooterMenu')"/>
     </div>
   </div>
 </template>
@@ -58,4 +67,3 @@
 </script>
 
 <style src="~/assets/styles/components/layout/drawer.scss" lang="scss" />
-
