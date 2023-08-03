@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-list">
+  <div class="nav-list" :class="{'nav-list--items-accent': props.accentItems}">
     <div v-for="(listItem, index) in props.items" :key="index" class="item">
       <atomic-cta-menu-item
         v-if="getContent(sidebarContent, defaultLocaleSidebarContent, 'ctaMenuItem.isShow') &&
@@ -42,6 +42,10 @@
       type: Boolean,
       default: false,
     },
+    accentItems: {
+      type: Boolean,
+      default: false,
+    }
   });
 
   const router = useRouter();
