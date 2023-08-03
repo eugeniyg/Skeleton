@@ -1,0 +1,40 @@
+.cta-menu-item {
+  height: 40px;
+  background-size: rem(208px) rem(40px);
+  background-position-x: left;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: var(--item-padding, #{rem(8px)} #{rem(16px)} #{rem(8px)} #{rem(48px)});
+  align-self: stretch;
+  border-radius: 8px;
+  margin-bottom: rem(4px);
+
+  @include use-hover {
+    &:hover {
+      --text-color: var(--text-primary)
+    }
+  }
+
+  &:active {
+    --text-color: var(--text-accent)
+  }
+
+  .drawer-minimize & {
+    --item-padding: none;
+  }
+
+  &__text {
+    @include font($subheading-2);
+    color: var(--text-color, var(--text-primary));
+    display: var(--item-display, block);
+    transition: color .2s ease-in-out;
+    @extend %text-elipsis;
+
+    .drawer-minimize & {
+      --item-display: none;
+    }
+  }
+}

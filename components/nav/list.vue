@@ -1,9 +1,13 @@
 <template>
   <div class="nav-list" :class="{'nav-list--items-accent': props.accentItems}">
     <div v-for="(listItem, index) in props.items" :key="index" class="item">
-      <pre style="color:white">{{ listItem }}</pre>
-      <atomic-menu-category v-if="listItem?.items?.length" v-bind="listItem"/>
+      <atomic-cta-menu-item
+        v-if="getContent(sidebarContent, defaultLocaleSidebarContent, 'ctaMenuItem.isShow') &&
+        Number(getContent(sidebarContent, defaultLocaleSidebarContent, 'ctaMenuItem.order')) === index"
+        v-bind="getContent(sidebarContent, defaultLocaleSidebarContent, 'ctaMenuItem')"
+      />
 
+      <atomic-menu-category v-if="listItem?.items?.length" v-bind="listItem"/>
       <div
         v-else
         class="link"
@@ -27,6 +31,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { getContent } from '@nuxt/content/dist/runtime/server/storage';
 
   const props = defineProps({
     items: {
@@ -49,6 +54,11 @@
   const { showModal } = useLayoutStore();
 
   const { localizePath } = useProjectMethods();
+  const {
+    sidebarContent,
+    defaultLocaleSidebarContent
+  } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 
   const defineCurrentAction = (href: string): void => {
     if (!href) return;
