@@ -1,6 +1,7 @@
 <template>
-  <div class="nav-list">
+  <div class="nav-list" :class="{'nav-list--items-accent': props.accentItems}">
     <div v-for="(listItem, index) in props.items" :key="index" class="item">
+      <pre style="color:white">{{ listItem }}</pre>
       <atomic-menu-category v-if="listItem?.items?.length" v-bind="listItem"/>
 
       <div
@@ -36,6 +37,10 @@
       type: Boolean,
       default: false,
     },
+    accentItems: {
+      type: Boolean,
+      default: false,
+    }
   });
 
   const router = useRouter();
@@ -57,5 +62,4 @@
   };
 </script>
 
-<style src="~/assets/styles/components/nav/list.scss" lang="scss" />
-
+<style src="~/assets/styles/components/nav/list.scss" lang="scss"/>

@@ -9,6 +9,13 @@
     @extend %flex-column;
   }
 
+  &.nav-list--items-accent {
+    > .item {
+      background: var(--layer-03-low-contrast);
+      border-radius: 8px;
+    }
+  }
+
   .items {
     @extend %flex-column;
     padding-left: rem(32px);

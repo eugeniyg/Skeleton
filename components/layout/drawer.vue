@@ -27,7 +27,7 @@
 
       <atomic-select-lang/>
       <atomic-divider/>
-      <nav-list :items="sidebarContent?.bottomMenu || defaultLocaleSidebarContent?.bottomMenu"/>
+      <nav-list :items="sidebarContent?.bottomMenu || defaultLocaleSidebarContent?.bottomMenu" accent-items/>
       <atomic-divider/>
       <nav-static :items="sidebarContent?.sidebarFooterMenu || defaultLocaleSidebarContent?.sidebarFooterMenu"/>
     </div>
@@ -58,4 +58,3 @@
 </script>
 
 <style src="~/assets/styles/components/layout/drawer.scss" lang="scss" />
-

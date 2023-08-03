@@ -10,7 +10,7 @@
   }
 
   .selected {
-    background-color: var(--bg, transparent);
+    background-color: var(--bg, var(--layer-03-low-contrast));
     transition: background-color .2s ease-in-out;
     color: var(--text-primary);
     border: 1px solid var(--selected-border-color, transparent);
