@@ -9,7 +9,7 @@
   align-items: center;
   padding: var(--item-padding, #{rem(8px)} #{rem(16px)} #{rem(8px)} #{rem(48px)});
   align-self: stretch;
-  border-radius: 8px;
+  border-radius: 12px;
   margin-bottom: rem(4px);
 
   @include use-hover {

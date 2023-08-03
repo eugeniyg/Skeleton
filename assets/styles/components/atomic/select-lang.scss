@@ -1,5 +1,6 @@
 .select-lang {
   position: relative;
+  margin-bottom: rem(4px);
 
   .selected, .item {
     display: flex;
@@ -14,7 +15,7 @@
     transition: background-color .2s ease-in-out;
     color: var(--text-primary);
     border: 1px solid var(--selected-border-color, transparent);
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
     padding: rem(8px) rem(8px) rem(8px) rem(16px);
 
