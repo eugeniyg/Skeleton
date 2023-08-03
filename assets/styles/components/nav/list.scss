@@ -5,6 +5,10 @@
   display: grid;
   user-select: none;
 
+  .item {
+    overflow: hidden;
+  }
+
   > .item {
     @extend %flex-column;
   }
@@ -127,7 +131,7 @@
   }
 
   .text {
-    @include font($heading-2);
+    @include font($subheading-2);
     @extend %text-elipsis;
     color: var(--color, var(--text-secondary));
     transition: color .2s ease-in-out;
