@@ -30,7 +30,7 @@
       </template>
 
       <atomic-select-lang/>
-      <atomic-divider/>
+
       <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'bottomMenu')"/>
       <atomic-divider/>
       <nav-static :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'sidebarFooterMenu')"/>
