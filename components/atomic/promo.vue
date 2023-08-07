@@ -1,8 +1,15 @@
 <template>
   <div class="promo" :class="{'promo--without-advantages': !isShowAdvantages}">
     <picture class="promo__picture">
-      <source :srcset="desktopImage" media="(min-width: 64rem)" />
-      <img :src="mobileImage" class="promo__picture-img" alt=""/>
+      <source
+        :srcset="getContent(popupsData, defaultLocalePopupsData, 'registration.promo.images.desktop.backgroundImage')"
+        media="(min-width: 64rem)"
+      />
+      <img
+        :src="getContent(popupsData, defaultLocalePopupsData, 'registration.promo.images.mobile.backgroundImage')"
+        class="promo__picture-img"
+        alt=""
+      />
     </picture>
 
     <div class="header">
@@ -25,14 +32,18 @@
         :key="index"
         class="item"
       >
-        <atomic-icon :id="advantage.icon"/>{{ advantage.label }}
+        <atomic-icon :id="advantage.icon"/>
+        {{ advantage.label }}
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const {
+    popupsData,
+    defaultLocalePopupsData
+  } = useGlobalStore();
   const { getContent } = useProjectMethods();
 
   const advantagesList = computed(() => {
@@ -42,10 +53,6 @@
 
   const isShowAdvantages = computed(() => popupsData?.registration?.promo?.displayAdvantages);
 
-  const desktopImage = computed(() => popupsData?.registration?.promo?.images?.desktop?.backgroundImage);
-
-  const mobileImage = computed(() => popupsData?.registration?.promo?.images?.mobile?.backgroundImage);
-
 </script>
 
-<style src="~/assets/styles/components/atomic/promo.scss" lang="scss" />
+<style src="~/assets/styles/components/atomic/promo.scss" lang="scss"/>
