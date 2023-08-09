@@ -623,3 +623,8 @@ export interface DropZoneInterface {
   desc: string,
   hint: string,
 }
+
+export interface SocialItemInterface {
+  url: string,
+  icon: string,
+}
