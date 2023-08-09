@@ -6,19 +6,23 @@
       :key="limit.id"
     >
       <div class="limits-list__input">
-        <span class="limits-list__value">{{ formatPeriod(limit.period) }}</span>
+        <span class="limits-list__value">
+          {{ formatPeriod(limit.period) }}
+        </span>
+
         <div class="limits-list__actions" v-if="limit.status === 1">
           <button-base
             type="primary"
-            @click="emit('edit', { limitId: limit.id, period: limit.period })"
-            :is-disabled="limit.status === 1 && limit.cancelProcess"
+            @click="emit('edit', limit)"
+            :is-disabled="limit.status === 1 && limit.cancelProcess && !limit.pendingExist"
           >
             <atomic-icon id="edit"/>
           </button-base>
+
           <button-base
             type="ghost"
             @click="remove(limit.id)"
-            :is-disabled="limit.status === 1 && limit.cancelProcess"
+            :is-disabled="limit.status === 1 && (limit.cancelProcess || periodLessDay(limit)) && !limit.pendingExist"
           >
             <atomic-icon id="trash"/>
           </button-base>
@@ -42,6 +46,7 @@
 <script setup lang="ts">
   import { PlayerLimitInterface } from '@platform/frontend-core/dist/module';
   import { storeToRefs } from 'pinia';
+  import dayjs from "dayjs";
 
   const props = defineProps<{
     limits: PlayerLimitInterface[]
@@ -70,6 +75,11 @@
 
     showAlert(alertsData.value?.coolingOfLimitCancel || defaultLocaleAlertsData.value?.coolingOfLimitCancel);
   };
+
+  const periodLessDay = (limitData: PlayerLimitInterface) => {
+    const diffDays = dayjs(limitData.expiredAt).diff(dayjs(), 'day');
+    return diffDays < 1;
+  }
 </script>
 
 <style src="~/assets/styles/components/atomic/limits-list.scss" lang="scss" />
