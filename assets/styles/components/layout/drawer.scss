@@ -95,4 +95,8 @@
   .avatar {
     border-radius: 16px;
   }
+
+  hr {
+    --bg: var(--border-01)
+  }
 }

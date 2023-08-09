@@ -5,8 +5,19 @@
   display: grid;
   user-select: none;
 
+  .item {
+    overflow: hidden;
+  }
+
   > .item {
     @extend %flex-column;
+  }
+
+  &.nav-list--items-accent {
+    > .item {
+      background: var(--layer-03-low-contrast);
+      border-radius: 12px;
+    }
   }
 
   .items {
@@ -36,7 +47,7 @@
     grid-column-gap: #{rem(8px)};
     padding: var(--padding, #{rem(8px)} #{rem(16px)} #{rem(8px)} #{rem(16px)});
     min-height: rem(40px);
-    border-radius: 8px;
+    border-radius: 12px;
     background-color: var(--bg, transparent);
     transition: all .2s ease-in-out;
     --color: var(--text-secondary);
@@ -127,7 +138,7 @@
   }
 
   .text {
-    @include font($heading-2);
+    @include font($subheading-2);
     @extend %text-elipsis;
     color: var(--color, var(--text-secondary));
     transition: color .2s ease-in-out;

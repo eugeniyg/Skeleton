@@ -98,8 +98,19 @@ export interface MenuItemInterface {
   items?: LinkInterface[]
 }
 
+export interface CtaLinkInterface {
+  title: string,
+  subTitle: string,
+  image: string
+  url: string
+}
+
 export interface SiteSidebarInterface {
   gamesToggler: LinkInterface[],
+  ctaMenu: {
+    isShow: boolean,
+    items: CtaLinkInterface[]
+  },
   topMenu : LinkInterface[],
   profileMenu: {
     levelLabel: string,
