@@ -598,6 +598,19 @@ export interface CurrencyTabsInterface {
   cryptoTab: string
 }
 
+export interface BalanceTabsInterface {
+  id: string,
+  title: string
+}
+
+export interface BalanceItemsInterface {
+  real: string,
+  bonus: string,
+  withdrawal: string,
+  cashback: string,
+  cashbackLinkLabel: string
+}
+
 export interface CurrencyEmptyInterface {
   title: string,
   description: string
@@ -614,6 +627,10 @@ export interface GlobalComponentsInterface {
     tabs: CurrencyTabsInterface,
     empty: CurrencyEmptyInterface
   }
+  balance: {
+    tabs: BalanceTabsInterface[],
+    items: BalanceItemsInterface
+  },
   globalSeo: SeoContentInterface,
 }
 
