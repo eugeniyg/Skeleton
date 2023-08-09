@@ -1,5 +1,6 @@
 .select-lang {
   position: relative;
+  margin-bottom: rem(4px);
 
   .selected, .item {
     display: flex;
@@ -10,11 +11,11 @@
   }
 
   .selected {
-    background-color: var(--bg, transparent);
+    background-color: var(--bg, var(--layer-03-low-contrast));
     transition: background-color .2s ease-in-out;
     color: var(--text-primary);
     border: 1px solid var(--selected-border-color, transparent);
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
     padding: rem(8px) rem(8px) rem(8px) rem(16px);
 
@@ -50,6 +51,7 @@
 
     --items-visibility: visible;
     --items-opacity: 1;
+    --pointer-events: all;
   }
 
   .item {
@@ -95,6 +97,7 @@
     top: var(--top, #{rem(44px)});
     right: 0;
     left: 0;
+    pointer-events: var(--pointer-events, none);
 
     .is-compact & {
       @include media(l) {
