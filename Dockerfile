@@ -1,5 +1,5 @@
 FROM node:16-alpine as builder
-
+ENV NODE_OPTIONS='--max-old-space-size=4096'
 ARG NPM_TOKEN
 
 WORKDIR /app
