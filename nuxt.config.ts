@@ -61,9 +61,6 @@ export default defineNuxtConfig({
         target: 'https://test.dev.getplatform.tech/api',
         changeOrigin: true,
       },
-    },
-    prerender: {
-      concurrency: 1
     }
   },
 });
