@@ -62,5 +62,8 @@ export default defineNuxtConfig({
         changeOrigin: true,
       },
     },
+    prerender: {
+      concurrency: 1
+    }
   },
 });
