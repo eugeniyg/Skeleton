@@ -12,8 +12,16 @@ const viteConfig: any = {
       },
     },
   },
-  build: {
-    sourcemap: false,
+  rollupOptions: {
+    maxParallelFileOps: 2,
+    output: {
+      sourcemap: true,
+      manualChunks: (id: any) => {
+        if (id.includes('node_modules')) {
+          return 'vendor';
+        }
+      },
+    },
   },
   optimizeDeps: {
     include: ['centrifuge'],
