@@ -18,6 +18,10 @@ const viteConfig: any = {
 };
 
 export default defineNuxtConfig({
+  sourcemap: {
+    server: false,
+    client: false
+  },
   alias: {
     '@skeleton': resolve('./'),
   },
@@ -62,6 +66,5 @@ export default defineNuxtConfig({
         changeOrigin: true,
       },
     }
-  },
-  sourcemap: false
+  }
 });
