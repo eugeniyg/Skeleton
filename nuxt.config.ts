@@ -12,6 +12,9 @@ const viteConfig: any = {
       },
     },
   },
+  build: {
+    sourcemap: false,
+  },
   optimizeDeps: {
     include: ['centrifuge'],
   },
