@@ -27,8 +27,8 @@
     />
 
     <div class="sports-container">
-      <div class="sports-container__item" id="top-events-widget" />
-      <div class="sports-container__item" id="live-events-widget" />
+      <div id="top-events-widget" />
+      <div id="live-events-widget" />
     </div>
 
     <group-games
