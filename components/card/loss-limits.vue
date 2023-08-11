@@ -73,6 +73,7 @@
     defaultLimitsContent,
     isAdvancedModeEnabled
   } = storeToRefs(limitsStore);
+
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { currencies } = storeToRefs(globalStore);
