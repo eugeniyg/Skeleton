@@ -100,4 +100,8 @@
   const isFullWidth = computed(() => lossPeriods.value?.length > 1
     || (!isAdvancedModeEnabled.value && betPeriods.value?.length > 1)
     || (isAdvancedModeEnabled.value && depositPeriods.value?.length > 1 && betPeriods.value?.length > 1));
+
+  onMounted(() => {
+    console.log('hello from loss limits');
+  })
 </script>
