@@ -84,19 +84,11 @@ export interface CashBonusesInterface {
   wagerHintLabel: string,
   casinoWagerLabel: string,
   sportsbookWagerLabel: string,
-  waitingResult: string,
-  empty: {
-    title: string,
-    description: string
-  }
+  waitingResult: string
 }
 
 export interface FreeSpinsInterface {
-  title: string,
-  empty: {
-    title: string,
-    description: string
-  }
+  title: string
 }
 
 export interface ProfileBonusesInterface {

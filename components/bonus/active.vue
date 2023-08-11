@@ -2,7 +2,7 @@
   <div class="bonus-active" data-tooltip-parent>
     <h4 class="bonus-active__title">{{ props.content?.title }}</h4>
 
-    <div v-if="showBonusesList" class="bonus-active__list">
+    <div class="bonus-active__list">
       <transition-group name="card">
         <CardBonuses
           v-for="bonus in orderedBonuses"
@@ -15,13 +15,6 @@
         />
       </transition-group>
     </div>
-
-    <AtomicEmpty
-      v-else
-      variant="bonuses"
-      :title="props.content?.empty.title"
-      :subTitle="props.content?.empty.description"
-    />
 
     <ModalConfirmBonus
       v-bind="modalState"
@@ -65,10 +58,6 @@
   const showModal = ref<boolean>(false);
   const bonusStore = useBonusStore();
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
-  const showBonusesList = computed(() => {
-    return (props.bonusType === 'bonus' && activePlayerBonuses.value.length) ||
-      (props.bonusType === 'free-spin' && activePlayerFreeSpins.value.length)
-  })
   const orderedBonuses = computed(() => {
     if (props.bonusType === 'bonus') {
       return activePlayerBonuses.value.reduce((acc: PlayerBonusInterface[], currentBonus) => {
