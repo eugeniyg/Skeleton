@@ -61,8 +61,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { AccountInterface, CurrencyInterface } from '@platform/frontend-core/dist/module';
-  import { BalanceItemsInterface, BalanceTabsInterface } from '@skeleton/types';
-  import balance from '@skeleton/components/list/balance.vue';
 
   const props = defineProps({
     isOpen: {
@@ -80,7 +78,8 @@
   const {
     currencies,
     cryptoCurrencies,
-    equivalentCurrency
+    equivalentCurrency,
+    balanceContent,
   } = storeToRefs(globalStore);
   const { switchAccount } = useWalletStore();
   const { createAccount } = useWalletStore();
@@ -108,27 +107,6 @@
     return list.filter((item) => accounts.value.find((account) => account.currency === item.nativeCurrency))
       .sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
   };
-
-  const balanceContent = computed(() => {
-    const globalStore = useGlobalStore();
-    const {
-      globalComponentsContent,
-      defaultLocaleGlobalComponentsContent
-    } = storeToRefs(globalStore);
-    const { getContent } = useProjectMethods();
-
-    const tabs: BalanceTabsInterface[] = ['balance', 'currency'].map((id) => ({
-      title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, `balance.tabs.${id}Tab`),
-      id,
-    }));
-
-    const items: BalanceItemsInterface = getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'balance.items');
-
-    return {
-      tabs,
-      items,
-    };
-  });
 
   const selectedItems = computed(() => {
     let currenciesList: CurrencyInterface[];
