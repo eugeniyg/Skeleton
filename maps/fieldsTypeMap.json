@@ -54,7 +54,7 @@
   },
   "nickname": {
     "component": "form-input-text",
-    "type": "hidden"
+    "type": "text"
   },
   "gender": {
     "component": "form-input-gender",
@@ -159,6 +159,6 @@
   },
   "locale": {
     "component": "form-input-text",
-    "type": "hidden"
+    "type": "text"
   }
 }
