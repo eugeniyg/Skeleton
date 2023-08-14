@@ -20,7 +20,7 @@
           v-for="locale in locales"
           :key="locale.code"
           :class="{ 'is-selected': currentLocale?.code.toLowerCase() === locale.code.toLowerCase() }"
-          @click="setCookie(locale)"
+          @click="changeLanguage(locale)"
         >
           <img class="img" :src="`/img/flags/${languageFlagsMap[locale.code.toLowerCase()]}.svg`" alt="" />
           <span class="title">{{ locale.nativeName || locale.name }}</span>
@@ -43,7 +43,6 @@
   };
 
   const route = useRoute();
-  const router = useRouter();
   const globalStore = useGlobalStore();
   const { locales, currentLocale } = storeToRefs(globalStore);
   const isOpen = ref<boolean>(false);
@@ -52,16 +51,17 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 
-  const setCookie = async (locale: LocaleInterface): Promise<void> => {
+  const changeLanguage = async (locale: LocaleInterface): Promise<void> => {
+    if (currentLocale.value?.code === locale.code) return;
+
     if (locale.isDefault) cookieLanguage.value = undefined;
     else cookieLanguage.value = locale.code.toLowerCase();
 
-    if (currentLocale.value?.code !== locale.code) {
-      if (isLoggedIn.value) {
-        await changeProfileData({ locale: locale.code })
-      }
-      window.location.href = linkToLocale(locale);
+    if (isLoggedIn.value) {
+      await changeProfileData({ locale: locale.code })
     }
+
+    window.location.href = linkToLocale(locale);
   };
 
   const linkToLocale = (locale: LocaleInterface):string => {
