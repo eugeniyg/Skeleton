@@ -82,7 +82,10 @@
     emit('open-edit-modal', payload);
   };
 
-  const isEditLocked = computed(() => depositPeriods.value.every((period) => period.items.filter((item) => item.status === 1).every((item) => item.cancelProcess)));
+  const isEditLocked = computed(() => depositPeriods.value.every((period) => {
+    const filteredPeriods = period.items.filter((item) => item.status === 1)
+    return filteredPeriods.every((item) => item.cancelProcess && !item.pendingExist)
+  }));
 
   const isAllCurrenciesUsed = computed(() => checkCurrencies(depositPeriods.value, currencies.value));
 
