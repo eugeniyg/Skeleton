@@ -26,7 +26,7 @@
         @focus="onFocus(field.name)"
         :is="fieldsTypeMap[field.name].component || 'form-input-text'"
         v-model:value="registrationFormData[field.name]"
-        :type="field.name === 'nickname' ? 'hidden' : fieldsTypeMap[field.name].type || 'text'"
+        :type="hiddenFields.includes(field.name) ? 'hidden' : fieldsTypeMap[field.name].type || 'text'"
         :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) || ''"
         :name="field.name"
         :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.placeholder`) || ''"
@@ -77,6 +77,7 @@
     registrationFields: FieldInterface[]
   }>();
 
+  const hiddenFields = ['nickname', 'locale'];
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
   const { setFormData } = useCoreMethods();
@@ -91,6 +92,7 @@
     popupsData,
     defaultLocalePopupsData,
     headerCountry,
+    currentLocale
   } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
@@ -99,6 +101,7 @@
   const registrationFormData = reactive(setFormData(props.registrationFields));
   if (registrationFormData.hasOwnProperty('nickname')) registrationFormData.nickname = 'undefined';
   if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
+  if (registrationFormData.hasOwnProperty('locale')) registrationFormData.locale = currentLocale.value?.code;
   if (registrationFormData.hasOwnProperty('country') && !registrationFormData.country) {
     if (countries.value.find((country) => country.code === headerCountry.value)) {
       registrationFormData.country = headerCountry.value;
