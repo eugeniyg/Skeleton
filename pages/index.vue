@@ -26,7 +26,10 @@
       :category="hotCategory"
     />
 
-    <div id="sports-container" />
+    <div class="sports-container">
+      <div id="top-events-widget" />
+      <div id="live-events-widget" />
+    </div>
 
     <group-games
       v-if="newCategory"
@@ -86,25 +89,27 @@
   const hotCategory = currentLocationCollections.value.find((collection) => collection.identity === 'hot');
   const newCategory = currentLocationCollections.value.find((collection) => collection.identity === 'new');
 
-  const startBetsyWidget = ():void => {
+  const startBetsyWidgets = ():void => {
     const runtimeConfig = useRuntimeConfig();
     const mainHost = window.location.origin;
-    const params = {
+    const widgetsParams = {
       host: runtimeConfig.public.betsyParams?.clientHost,
       cid: runtimeConfig.public.betsyParams?.clientId,
       theme: runtimeConfig.public.betsyParams?.widgetTheme,
       customStyles: runtimeConfig.public.betsyParams?.widgetStyles ? `${mainHost}${runtimeConfig.public.betsyParams.widgetStyles}` : undefined,
       mainFrameUrl: mainHost + localizePath('/betting'),
       lang: currentLocale.value?.code || 'en',
-      containerId: 'sports-container',
       height: '372px',
-    };
+    }
 
-    if (window.BetSdk) window.BetSdk.initTopEventsWidget(params);
+    if (window.BetSdk) {
+      window.BetSdk.initTopEventsWidget({ ...widgetsParams, containerId: 'top-events-widget' });
+      window.BetSdk.initLiveEventsWidget({ ...widgetsParams, containerId: 'live-events-widget' });
+    }
   };
 
   onMounted(() => {
-    startBetsyWidget();
+    startBetsyWidgets();
   });
 </script>
 
