@@ -24,7 +24,6 @@
     <group-turbo/>
 
     <group-originals
-      showAllBtn
       showArrows
     />
 
@@ -120,13 +119,6 @@
   onMounted(() => {
     startBetsyWidget();
   });
-
-
-  // onMounted(async () => {
-  //   const { getFilteredGames, getGamesInfo } = useCoreGamesApi();
-  //   const gamesResponse = await getFilteredGames({ identity: ['towers-turbo-games', 'ball-ball-turbo-games'] });
-  //   console.log(123, gamesResponse.data)
-  // })
 </script>
 
 <style src="~/assets/styles/pages/index.scss" lang="scss" />

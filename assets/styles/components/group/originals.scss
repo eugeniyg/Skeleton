@@ -69,7 +69,6 @@
   > .items {
     grid-area: items;
     display: var(--display, flex);
-    //align-items: center;
     overflow-x: auto;
     margin: rem(-16px) rem(-16px) 0;
     padding: rem(16px) rem(16px) 0;
