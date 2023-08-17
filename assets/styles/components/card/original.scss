@@ -1,9 +1,8 @@
-.card-base {
-  --col-count: 3.1;
-  --col-gap: 8px;
+.card-original {
+  --cc: 3.1;
+  --cg: 8px;
 
   height: var(--height, auto);
-  @include ratio(104px, 156px);
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
@@ -14,16 +13,37 @@
   background-size: var(--bg-size, 100%);
   background-position: var(--bg-position, center);
   border-radius: 8px;
-  width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap) / var(--col-count))));
   scroll-snap-align: start;
 
-  @include media(sm) {
-    --col-count: 6;
-    --col-gap: 16px;
+
+  &:not(.card-original--wide) {
+    width: calc(calc(100% / var(--cc)) - calc(var(--cg) - calc(var(--cg) / var(--cc))));
+
+    @include ratio(104px, 156px);
+
+    @include media(sm) {
+      --cc: 6;
+      --cg: 16px;
+    }
+
+    @include media(xl) {
+      --cc: 9;
+    }
   }
 
-  @include media(xl) {
-    --col-count: 9;
+
+  &.card-original--wide {
+    width: calc(((calc(100% / var(--cc)) - calc(var(--cg) - calc(var(--cg) / var(--cc)))) * 2) + var(--cg)) ;
+
+    @include media(sm) {
+      --cc: 6;
+      --cg: 16px;
+    }
+
+    @include media(xl) {
+      @include ratio(4.2, 3);
+      --cc: 9;
+    }
   }
 
   &__info {
@@ -36,7 +56,7 @@
     right: 0;
     bottom: 0;
     opacity: var(--opacity-info, 0);
-    transition: var(--transition-info, (all .4s));
+    transition: var(--transition-info, (opacity .6s ease, padding .4s ease));
     pointer-events: var(--pointer-events, none);
     will-change: opacity;
 
@@ -112,25 +132,11 @@
     }
   }
 
-  //@include media(md) {
-  //  &:hover {
-  //    --pointer-events: auto;
-  //    --opacity-info: 1;
-  //    --transition-info: (opacity .6s ease);
-  //
-  //    .btn-play {
-  //      transform: scale(1);
-  //      transition-delay: .2s;
-  //    }
-  //  }
-  //}
-
-  @include use-hover {
+  @include media(md) {
     &:hover {
       --pointer-events: auto;
-      --transition-info: (all 2s ease-in-out);
-      --play-btn-opacity: 1;
       --opacity-info: 1;
+      --transition-info: (opacity .6s ease);
 
       .btn-play {
         transform: scale(1);
@@ -139,13 +145,17 @@
     }
   }
 
+  transition: transform .4s ease-in-out;
+
+
   &.hovered {
     --pointer-events: auto;
     --opacity-info: 1;
-    --transition-info: opacity .6s ease;
+    --transition-info: (opacity .6s ease);
+    --y-offset: translateY(-16px);
 
     .btn-try {
-      animation: all .2s ease-in-out;
+      animation: delay-pointer-events .2s ease-in-out;
     }
   }
 
@@ -178,4 +188,12 @@
       }
     }
   }
+
+  @include use-hover {
+    &:hover {
+      --transition-info: (opacity .6s ease);
+      --play-btn-opacity: 1;
+    }
+  }
 }
+
