@@ -20,7 +20,7 @@
         class="item"
         v-for="(option, i) in props.options"
         :key="i"
-        :class="{'is-selected': option.code === valueObject.code }"
+        :class="[{ 'is-selected': option.code === valueObject.code }, { 'disabled-option': option.disabled }]"
         @click="select(option)"
       >
         <img v-if="option.mask" class="mask" :src="option.mask"/>

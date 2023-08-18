@@ -55,9 +55,7 @@
 
 <script setup lang="ts">
   import { UpdateLimitInterface } from '@platform/frontend-core/dist/module';
-
   import { storeToRefs } from 'pinia';
-  import { useGlobalStore } from '~/composables/useGlobalStore';
 
   const emit = defineEmits([
     'open-limit-modal',
@@ -68,8 +66,14 @@
   const limitsStore = useLimitsStore();
   const { checkCurrencies } = limitsStore;
   const {
-    lossPeriods, betPeriods, depositPeriods, limitsContent, defaultLimitsContent, isAdvancedModeEnabled,
+    lossPeriods,
+    betPeriods,
+    depositPeriods,
+    limitsContent,
+    defaultLimitsContent,
+    isAdvancedModeEnabled
   } = storeToRefs(limitsStore);
+
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { currencies } = storeToRefs(globalStore);
@@ -84,7 +88,12 @@
     emit('open-edit-modal', payload);
   };
 
-  const isEditLocked = computed(() => lossPeriods.value.every((period) => period.items.filter((item) => item.status === 1).every((item) => item.cancelProcess)));
+  const isEditLocked = computed(() => {
+    return lossPeriods.value.every((period) => {
+      const filteredPeriods = period.items.filter((item) => item.status === 1)
+      return filteredPeriods.every((item) => item.cancelProcess && !item.pendingExist)
+    })
+  });
 
   const isAllCurrenciesUsed = computed(() => checkCurrencies(lossPeriods.value, currencies.value));
 

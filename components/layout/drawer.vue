@@ -32,7 +32,13 @@
       <atomic-select-lang/>
 
       <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'bottomMenu')"/>
+
+      <template v-if="getContent(sidebarContent, defaultLocaleSidebarContent, 'socials.isShow')">
+        <list-socials :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'socials.items')"/>
+      </template>
+
       <atomic-divider/>
+
       <nav-static :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'sidebarFooterMenu')"/>
     </div>
   </div>
