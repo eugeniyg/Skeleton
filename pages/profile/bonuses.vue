@@ -12,8 +12,22 @@
     </nuxt-link>
 
     <bonus-code :content="bonusesContent?.bonusCode || defaultLocaleBonusesContent?.bonusCode" />
-    <bonus-active bonusType="bonus" :content="bonusesContent?.cashBonuses || defaultLocaleBonusesContent?.cashBonuses" />
-    <bonus-active bonusType="free-spin" :content="bonusesContent?.freeSpins || defaultLocaleBonusesContent?.freeSpins" />
+
+    <transition name="fade" mode="out-in">
+      <bonus-active
+        v-if="activePlayerBonuses.length"
+        bonusType="bonus"
+        :content="bonusesContent?.cashBonuses || defaultLocaleBonusesContent?.cashBonuses"
+      />
+    </transition>
+
+    <transition name="fade" mode="out-in">
+      <bonus-active
+        v-if="activePlayerFreeSpins.length"
+        bonusType="free-spin"
+        :content="bonusesContent?.freeSpins || defaultLocaleBonusesContent?.freeSpins"
+      />
+    </transition>
   </div>
 </template>
 
@@ -22,9 +36,11 @@
   import { ProfileBonusesInterface } from '@skeleton/types';
 
   const globalStore = useGlobalStore();
+  const bonusStore = useBonusStore();
   const { contentLocalesArray } = storeToRefs(globalStore);
   const { setPageSeo, findLocalesContentData, localizePath } = useProjectMethods();
-  const { getPlayerBonuses, getPlayerFreeSpins } = useBonusStore();
+  const { getPlayerBonuses, getPlayerFreeSpins } = bonusStore;
+  const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
 
   const [bonusesContentRequest] = await Promise.all([
     useAsyncData('bonusesContent', () => queryContent('profile')

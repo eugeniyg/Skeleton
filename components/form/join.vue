@@ -26,7 +26,7 @@
         @focus="onFocus(field.name)"
         :is="fieldsTypeMap[field.name].component || 'form-input-text'"
         v-model:value="registrationFormData[field.name]"
-        :type="fieldsTypeMap[field.name].type || 'text'"
+        :type="hiddenFields.includes(field.name) ? 'hidden' : fieldsTypeMap[field.name].type || 'text'"
         :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) || ''"
         :name="field.name"
         :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.placeholder`) || ''"
@@ -77,6 +77,7 @@
     registrationFields: FieldInterface[]
   }>();
 
+  const hiddenFields = ['nickname', 'locale'];
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
   const { setFormData } = useCoreMethods();
