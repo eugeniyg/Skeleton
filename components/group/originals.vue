@@ -6,15 +6,6 @@
       {{ cardContent?.label }}
     </h2>
 
-    <button-base
-      v-if="props.showAllBtn"
-      class="btn-show-all"
-      type="ghost"
-      @click="openGames"
-    >
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
-    </button-base>
-
     <button-arrows
       v-if="showArrowButtons"
       :prevDisabled="prevDisabled"
@@ -52,21 +43,13 @@
   } from '@platform/frontend-core/dist/module';
 
   const props = defineProps({
-    category: {
-      type: Object,
-      required: true,
-    },
-    showAllBtn: {
-      type: Boolean,
-      default: false,
-    },
     showArrows: {
       type: Boolean,
       default: true,
     },
   });
 
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const { getContent } = useProjectMethods();
 
   const scrollContainer = ref();
@@ -97,7 +80,7 @@
     if (pageMeta.value?.page === pageMeta.value?.totalPages) return;
 
     const gamesResponse = await getFilteredGames({
-      //collectionId: props.category.id,
+      identity: formatIdentity(cardContent.value.items),
       page: pageMeta.value ? pageMeta.value.page + 1 : 1,
       perPage: 18,
     });
@@ -112,7 +95,7 @@
 
   const cardContent = computed(() => getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'originals'))
 
-  const formatIdentity = (list: { label: string }[]) => list?.map((item: { label: string }):string => item.label);
+  const formatIdentity = (list: { identity: string }[]) => list?.map((item: { identity: string }):string => item.identity);
 
   onMounted(async () => {
     initObserver(loadMore.value, {
@@ -134,12 +117,6 @@
       showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
     }
   });
-
-  const { localizePath } = useProjectMethods();
-  const openGames = (): void => {
-    const router = useRouter();
-    router.push(localizePath(`/games?category=${props.category.identity}`));
-  };
 </script>
 
 <style src="~/assets/styles/components/group/originals.scss" lang="scss" />
