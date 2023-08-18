@@ -32,26 +32,41 @@
       <div class="list-balance__item">
         <atomic-icon id="wallet" class="list-balance__icon"/>
         <div class="list-balance__title">{{ balanceContent?.items.real }}</div>
-        <span class="list-balance__value">value</span>
+        <span class="list-balance__value">{{ activeAccountBalances.real }}</span>
+        <img
+          class="currency-icon"
+          v-if="activeAccountBalances.currencyIcon"
+          :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`" alt=""
+        />
       </div>
 
       <div class="list-balance__item">
         <atomic-icon id="bonus" class="list-balance__icon"/>
         <span class="list-balance__title">{{ balanceContent?.items.bonus }}</span>
-        <span class="list-balance__value">value</span>
+        <span class="list-balance__value">{{ activeAccountBalances.bonus }}</span>
+        <img
+          class="currency-icon"
+          v-if="activeAccountBalances.currencyIcon"
+          :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`" alt=""
+        />
       </div>
 
       <div class="list-balance__item">
         <atomic-icon id="withdraw" class="list-balance__icon"/>
         <span class="list-balance__title">{{ balanceContent?.items.withdrawal }}</span>
-        <span class="list-balance__value">value</span>
+        <span class="list-balance__value">{{ activeAccountBalances.withdrawal }}</span>
+        <img
+          class="currency-icon"
+          v-if="activeAccountBalances.currencyIcon"
+          :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`" alt=""
+        />
       </div>
 
-      <div class="list-balance__item">
-        <atomic-icon id="cashback" class="list-balance__icon"/>
-        <span class="list-balance__title">{{ balanceContent?.items.cashback }}</span>
-        <div class="list-balance__link">{{ balanceContent?.items.cashbackLinkLabel }}</div>
-      </div>
+      <!--      <div class="list-balance__item">-->
+      <!--        <atomic-icon id="cashback" class="list-balance__icon"/>-->
+      <!--        <span class="list-balance__title">{{ balanceContent?.items.cashback }}</span>-->
+      <!--        <div class="list-balance__link">{{ balanceContent?.items.cashbackLinkLabel }}</div>-->
+      <!--      </div>-->
     </div>
 
     <atomic-fiat-toggler/>
@@ -74,13 +89,17 @@
   const {
     accounts,
     activeAccount,
+    activeAccountType
   } = storeToRefs(walletStore);
+  console.log(activeAccount.value)
+
   const {
     currencies,
     cryptoCurrencies,
     equivalentCurrency,
     balanceContent,
   } = storeToRefs(globalStore);
+
   const { switchAccount } = useWalletStore();
   const { createAccount } = useWalletStore();
   const {
@@ -152,6 +171,36 @@
 
     return [...withBalanceSortedList, ...withoutBalanceSortedList];
   });
+
+  const activeAccountBalances = computed(() => {
+    let real;
+    let bonus;
+    let withdrawal;
+    let currencyIcon;
+
+    if (equivalentCurrency.value && activeAccountType.value === 'crypto') {
+      currencyIcon = activeAccount.value?.currency;
+      const realBalance = getEquivalentAccount((activeAccount.value?.realBalance || 0) + (activeAccount.value?.lockedBalance || 0), activeAccount.value?.currency);
+      real = `${realBalance.currencySymbol} ${realBalance.balance}`
+
+      const bonusBalance = getEquivalentAccount(activeAccount.value?.bonusBalance || 0, activeAccount.value?.currency);
+      bonus = `${bonusBalance.currencySymbol} ${bonusBalance.balance}`
+
+      const withdrawalBalance = getEquivalentAccount(activeAccount.value?.withdrawalBalance || 0, activeAccount.value?.currency);
+      withdrawal = `${withdrawalBalance.currencySymbol} ${withdrawalBalance.balance}`
+    } else {
+      const realBalance = formatBalance(activeAccount.value?.currency, (activeAccount.value?.realBalance || 0) + (activeAccount.value?.lockedBalance || 0));
+      real = realBalance.amount
+
+      const bonusBalance = formatBalance(activeAccount.value?.currency, activeAccount.value?.bonusBalance);
+      bonus = bonusBalance.amount
+
+      const withdrawalBalance = formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance);
+      withdrawal = withdrawalBalance.amount
+    }
+
+    return { real, bonus, withdrawal, currencyIcon }
+  })
 
   const selectCurrency = async (currency: string): Promise<void> => {
     if (activeAccount.value?.currency === currency) return;
