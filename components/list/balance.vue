@@ -91,7 +91,6 @@
     activeAccount,
     activeAccountType
   } = storeToRefs(walletStore);
-  console.log(activeAccount.value)
 
   const {
     currencies,
