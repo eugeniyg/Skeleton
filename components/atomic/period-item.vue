@@ -18,7 +18,7 @@
     </p>
 
     <button-base
-      v-if="props.isShowEdit && (status === 1) && !cancelProcess"
+      v-if="props.isShowEdit && (status === 1) && (!props.cancelProcess || props.pendingExist)"
       class="limits-periods-list__item-edit"
       type="ghost"
       @click="emit('edit-limit')"
@@ -59,6 +59,7 @@
     startedAt: string,
     expiredAt: string,
     cancelProcess: boolean,
+    pendingExist: boolean,
     amount: number,
     title?: string,
     isShowEdit?: boolean,

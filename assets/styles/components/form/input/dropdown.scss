@@ -214,4 +214,9 @@
     --select-padding-y: #{rem(19px)};
     @include upd-font($body-2);
   }
+
+  .disabled-option {
+    pointer-events: none;
+    --color: var(--text-helper);
+  }
 }
