@@ -113,7 +113,12 @@
     padding: rem(8px);
     transition: all .2s ease-in-out;
     background: var(--layer-03-low-contrast);
-    grid-template-columns: auto auto 1fr;
+    grid-template-columns: auto auto 1fr auto;
+
+    .currency-icon {
+      margin-left: rem(4px);
+      @include box(14px);
+    }
   }
 
   &__icon {

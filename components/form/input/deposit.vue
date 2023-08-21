@@ -23,7 +23,6 @@
           @close="isShow = false"
           @click.stop
         />
-
       </div>
       <button-deposit/>
     </div>
