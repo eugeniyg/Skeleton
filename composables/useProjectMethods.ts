@@ -70,9 +70,9 @@ export const useProjectMethods = () => {
       (imageData['200x300']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x']) :
       (imageData['200x200']['3x'] || imageData['200x200']['2x'] || imageData['200x200']['1x'])
 
-    const { public } = useRuntimeConfig();
+    const { public: config } = useRuntimeConfig();
 
-    return `${public.gamehubCdn}${imagePath}`;
+    return `${config.gamehubCdn}${imagePath}`;
   };
 
   const getNicknameFromEmail = (email: string):string => {
