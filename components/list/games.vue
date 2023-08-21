@@ -6,7 +6,7 @@
       class="item"
       :to="localizePath(`/games/${game.identity}${!isLoggedIn ? '' : '?real=true' }`)"
     >
-      <img class="img" v-if="game.images['200x200']" :src="gameImageSrc(game.images)" />
+      <img class="img" v-if="game.images['200x200']" :src="getImageUrl(game.images, 'square')" />
     </nuxt-link>
   </div>
 </template>
@@ -33,7 +33,6 @@
 
   const { baseApiUrl } = useGlobalStore();
   const { getImageUrl } = useProjectMethods();
-  const gameImageSrc = (imagesData: GameImagesInterface):string => `${baseApiUrl}/img/gcdn${getImageUrl(imagesData, 'square')}`;
 
   onMounted(async () => {
     const { getFilteredGames } = useCoreGamesApi();
