@@ -11,7 +11,7 @@
 
     <div class="content">
 
-      <cta-menu v-if="sidebarContent?.ctaMenu.isShow" :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'ctaMenu.items')" />
+      <cta-menu v-if="sidebarContent?.ctaMenu?.isShow" :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'ctaMenu.items')" />
 
       <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'topMenu')"/>
       <atomic-divider/>
