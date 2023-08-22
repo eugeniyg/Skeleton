@@ -79,11 +79,10 @@
     findLocalesContentData,
   } = useProjectMethods();
 
-  const homeContentRequest = await useAsyncData('homeContent', () => queryContent('page-controls')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'homePage']).find());
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(homeContentRequest.data.value);
-  const homeContent: Maybe<HomeContentInterface> = currentLocaleData?.homePage;
-  const defaultLocaleHomeContent: Maybe<HomeContentInterface> = defaultLocaleData?.homePage;
+  const homeContentRequest = await useAsyncData('homeContent', () => queryContent(currentLocale.value?.code || '', 'pages', 'home').findOne());
+  // const { currentLocaleData, defaultLocaleData } = findLocalesContentData(homeContentRequest.data.value);
+  const homeContent: Maybe<HomeContentInterface> = homeContentRequest.data.value;
+  const defaultLocaleHomeContent: Maybe<HomeContentInterface> = homeContentRequest.data.value;
   setPageSeo(homeContent?.seo);
 
   const hotCategory = currentLocationCollections.value.find((collection) => collection.identity === 'hot');

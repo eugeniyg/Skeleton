@@ -29,22 +29,18 @@
     findLocalesContentData,
   } = useProjectMethods();
 
-  const [currentLocaleListRequest, defaultLocaleListRequest, controlsRequest] = await Promise.all([
-    useAsyncData('currentLocalePageList', () => queryContent('question')
-      .where({ locale: currentLocale.value?.code || '' }).sort({ position: 1 }).find()),
-    useAsyncData('defaultLocalePageList', () => queryContent('question')
-      .where({ locale: defaultLocale.value?.code || '' }).sort({ position: 1 }).find()),
-    useAsyncData('pageControls', () => queryContent('page-controls')
-      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'questionPage']).find()),
+  const [currentLocaleListRequest, defaultLocaleListRequest] = await Promise.all([
+    useAsyncData('currentLocalePageList', () => queryContent(currentLocale.value?.code || '', 'question-pages').find()),
+    useAsyncData('defaultLocalePageList', () => queryContent(currentLocale.value?.code || '', 'question-pages').find())
   ]);
 
   listContent.value = (currentLocaleListRequest.data.value as unknown) as QuestionPageInterface[];
   defaultLocaleListContent.value = (defaultLocaleListRequest.data.value as unknown) as QuestionPageInterface[];
 
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(controlsRequest.data.value);
-  const questionPageContent: Maybe<QuestionPagesInterface> = currentLocaleData?.questionPage;
-  const defaultLocaleQuestionsPageContent: Maybe<QuestionPagesInterface> = defaultLocaleData?.questionPage;
-  setPageSeo(questionPageContent?.seo);
+  // const { currentLocaleData, defaultLocaleData } = findLocalesContentData(controlsRequest.data.value);
+  // const questionPageContent: Maybe<QuestionPagesInterface> = currentLocaleData?.questionPage;
+  // const defaultLocaleQuestionsPageContent: Maybe<QuestionPagesInterface> = defaultLocaleData?.questionPage;
+  // setPageSeo(questionPageContent?.seo);
 
   if (route.name === 'questions' || route.name === 'locale-questions') {
     navigateTo(localizePath(`/questions/${listContent.value[0]?.pageUrl

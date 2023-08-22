@@ -23,18 +23,17 @@
   const { pageUrl } = route.params;
 
   const globalStore = useGlobalStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
+  const { contentLocalesArray, currentLocale } = storeToRefs(globalStore);
 
   const { findLocalesContentData, getContent } = useProjectMethods();
-  const contentRequest = await useAsyncData('questionsPageContent', () => queryContent('question')
-    .where({ locale: { $in: contentLocalesArray.value }, pageUrl }).find());
+  const contentRequest = await useAsyncData('questionsPageContent', () => queryContent(currentLocale.value?.code || '', 'question-pages', pageUrl as string).findOne());
 
-  if (contentRequest.error.value || !contentRequest.data.value?.length) {
+  if (contentRequest.error.value) {
     throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
   } else {
-    const { currentLocaleData, defaultLocaleData } = findLocalesContentData(contentRequest.data.value);
-    pageContent.value = currentLocaleData as QuestionPageInterface;
-    defaultLocalePageContent.value = defaultLocaleData as QuestionPageInterface;
+    // const { currentLocaleData, defaultLocaleData } = findLocalesContentData(contentRequest.data.value);
+    pageContent.value = contentRequest.data.value;
+    defaultLocalePageContent.value = contentRequest.data.value;
   }
 
   const questionsList = computed(() => {
