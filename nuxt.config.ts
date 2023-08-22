@@ -63,4 +63,9 @@ export default defineNuxtConfig({
       },
     },
   },
+  runtimeConfig: {
+    public: {
+      gamehubCdn: 'https://dev.gcdn.tech',
+    }
+  }
 });

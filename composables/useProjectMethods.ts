@@ -66,8 +66,13 @@ export const useProjectMethods = () => {
   };
 
   const getImageUrl = (imageData: GameImagesInterface, orientation: string):string => {
-    if (orientation === 'vertical') return imageData['200x300']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
-    return imageData['200x200']['3x'] || imageData['200x200']['2x'] || imageData['200x200']['1x'];
+    const imagePath = (orientation === 'vertical') ?
+      (imageData['200x300']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x']) :
+      (imageData['200x200']['3x'] || imageData['200x200']['2x'] || imageData['200x200']['1x'])
+
+    const { public: config } = useRuntimeConfig();
+
+    return `${config.gamehubCdn}${imagePath}`;
   };
 
   const getNicknameFromEmail = (email: string):string => {
