@@ -8,6 +8,8 @@ import {
 } from '@platform/frontend-core/dist/module';
 import {
   AlertsListInterface,
+  BalanceItemsInterface,
+  BalanceTabsInterface,
   BrowserLanguageInterface,
   CookiePopupInterface,
   ErrorPageInterface,
@@ -166,6 +168,21 @@ export const useGlobalStore = defineStore('globalStore', {
     },
     defaultLocaleMobileMenuContent(state): Maybe<MobileMenuInterface> {
       return state.defaultLocaleLayoutData?.mobileMenu;
+    },
+    balanceContent(state) {
+      const { getContent } = useProjectMethods();
+
+      const tabs: BalanceTabsInterface[] = ['balance', 'currency'].map((id) => ({
+        title: getContent(state.globalComponentsContent, state.defaultLocaleGlobalComponentsContent, `balance.tabs.${id}Tab`),
+        id,
+      }));
+
+      const items: BalanceItemsInterface = getContent(state.globalComponentsContent, state.defaultLocaleGlobalComponentsContent, 'balance.items');
+
+      return {
+        tabs,
+        items,
+      }
     },
     gameCategoriesObj(state):{ [key: string]: GameCategoryInterface } {
       const categoriesObj:any = {};
