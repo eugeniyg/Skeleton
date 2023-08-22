@@ -39,7 +39,7 @@
 
   const backgroundImage = computed(() => {
     if (props.gameImages.hasOwnProperty('200x200')) {
-      return `background-image:url(${baseApiUrl.value}/img/gcdn${getImageUrl(props.gameImages, 'square')})`;
+      return `background-image:url(${getImageUrl(props.gameImages, 'square')})`;
     } return 'background-image: none';
   });
 </script>

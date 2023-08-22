@@ -18,13 +18,11 @@
 
         <atomic-icon class="icon-expand" id="arrow_expand-close"/>
 
-        <list-currencies
+        <list-balance
           :is-open="isShow"
-          show-fiat-toggler
-          @hide-currencies-list="isShow = false"
+          @close="isShow = false"
           @click.stop
         />
-
       </div>
       <button-deposit/>
     </div>

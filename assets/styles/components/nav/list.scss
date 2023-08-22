@@ -7,6 +7,13 @@
 
   .item {
     overflow: hidden;
+
+    > .link {
+      .text {
+        @include font($subheading-2);
+        --line-height: auto;
+      }
+    }
   }
 
   > .item {
@@ -30,9 +37,11 @@
 
     .link {
       max-width: rem(176px);
+    }
 
+    > .link {
       .text {
-        @include upd-font($body-2);
+        @include font($body-2);
       }
     }
 
@@ -138,7 +147,6 @@
   }
 
   .text {
-    @include font($subheading-2);
     @extend %text-elipsis;
     color: var(--color, var(--text-secondary));
     transition: color .2s ease-in-out;

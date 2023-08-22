@@ -69,6 +69,15 @@
   }
 }
 
+@mixin calc-ratio($a, $b) {
+  &:before {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-top: calc($a / $b  * 100%);
+  }
+}
+
 @mixin ratio($w, $h) {
   &:before {
     content: '';

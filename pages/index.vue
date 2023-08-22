@@ -5,7 +5,11 @@
     </div>
 
     <div class="cards-wrap">
-      <div class="cards-cat" v-if="homeContent?.categories || defaultLocaleHomeContent?.categories">
+      <div
+        class="cards-cat"
+        :class="cardsModifier"
+        v-if="getContent(homeContent, defaultLocaleHomeContent, 'categories')"
+      >
         <card-category
           v-for="(item, itemIndex) in Object.keys(homeContent?.categories || defaultLocaleHomeContent?.categories)"
           :key="itemIndex"
@@ -18,6 +22,10 @@
     </div>
 
     <group-turbo/>
+
+    <group-originals
+      showArrows
+    />
 
     <group-games
       v-if="hotCategory"
@@ -88,6 +96,11 @@
 
   const hotCategory = currentLocationCollections.value.find((collection) => collection.identity === 'hot');
   const newCategory = currentLocationCollections.value.find((collection) => collection.identity === 'new');
+
+  const cardsModifier = computed(() => {
+    const length = Object.keys(getContent(homeContent, defaultLocaleHomeContent, 'categories'))?.length || 0
+    return length > 2 ? `cards-cat--${length}` : ''
+  });
 
   const startBetsyWidgets = ():void => {
     const runtimeConfig = useRuntimeConfig();

@@ -22,6 +22,20 @@
   @include media(sm) {
     grid-gap: rem(16px);
   }
+
+  &--3 {
+    display: grid;
+    grid-template-areas:
+      "casino betting"
+      "esports esports";
+    grid-template-columns: repeat(2, 1fr);
+
+    @include media(sm) {
+      grid-template-areas:
+      "casino betting esports";
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
 }
 
 .card-cat {
@@ -33,39 +47,40 @@
   align-content: flex-start;
   flex-grow: 1;
   width: 100%;
+  min-height: 90px;
 
-  @include media(md) {
-    min-height: 188px;
-    --card-padding: #{rem(24px)} #{rem(24px)};
+  @include media(xxxl) {
+     min-height: 200px;
   }
 
-  .title {
-    @include font($heading-5);
+  &__title {
+    @include font($heading-4);
     color: var(--text-primary);
     position: relative;
     z-index: 1;
-    margin-bottom: rem(4px);
-    width: 57%;
+
+    @include media(sm) {
+      @include upd-font($heading-5);
+    }
 
     @include media(md) {
-      @include upd-font($heading-6)
+      @include upd-font($heading-6);
     }
 
     @include media(xxxl) {
-      @include upd-font($heading-7)
+      @include upd-font($heading-7);
     }
   }
 
-  .sub-title {
-    @include font($body-1);
+  &__sub-title {
+    @include font($body-0);
     color: var(--text-primary);
     position: relative;
     z-index: 1;
-    margin-bottom: rem(24px);
 
     @include media(md) {
-      @include upd-font($body-2);
-      width: 54%;
+      @include upd-font($body-1);
+      margin-bottom: 16px;
     }
 
     @include media(xxxl) {
@@ -79,10 +94,29 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    --padding: #{rem(7px)} #{rem(16px)};
+    --padding: #{rem(7px)} #{rem(20px)};
 
     @include media(l) {
+      --padding: #{rem(6px)} #{rem(20px)};
+    }
+
+    @include media(xxxl) {
       --padding: #{rem(10px)} #{rem(24px)};
+    }
+
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    @include media(md) {
+      opacity: 1;
+      position: relative;
+      width: fit-content;
+      height: auto;
     }
   }
 
@@ -90,25 +124,17 @@
     --card-min-height: #{rem(188px)};
   }
 
-  .icon {
+  &__img {
     grid-area: icon;
-    width: rem(160px);
-    height: rem(136px);
+    width: var(--img-width, #{rem(160px)});
+    height: var(--img-height, #{rem(136px)});
     z-index: 1;
     position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto 0;
-    visibility: var(--icon-visibility, hidden);
-
-    @include media(md) {
-      --icon-visibility: visible;
-      transform: translateX(#{rem(16px)});
-      width: rem(260px);
-      height: rem(220px);
-      top: auto;
-    }
+    top: var(--img-top, 0);
+    right: var(--img-right, 0);
+    bottom: var(--img-bottom, 0);
+    left: var(--img-left, 0);
+    margin: var(--img-margin, 0);
   }
 }
 
@@ -116,10 +142,205 @@
   background-color: var(--data-banner-casino-bg);
   background-image: var(--card-category-casino-gradient);
   box-shadow: var(--shadow-modal);
+  grid-area: casino;
+  --card-padding: 70px 16px 16px 16px;
+
+  @include media(sm) {
+    --card-padding: 16px 86px 20px 24px;
+  }
+
+  @include media(md) {
+    --card-padding: 16px 140px 20px 24px;
+  }
+
+  @include media(l) {
+    --card-padding: 24px 160px 24px 24px;
+  }
+
+  @include media(xl) {
+    --card-padding: 24px 190px 24px 24px;
+  }
+
+  @include media(xxxl) {
+    --card-padding: 24px 240px 24px 24px;
+  }
+
+
+  .card-cat__img {
+    --card-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
+    --img-top: -16px;
+    --img-width: 104px;
+    --img-height: 88px;
+    --img-margin: 0 auto;
+    --img-left: 0;
+    --img-right: 0;
+
+    @include media(sm) {
+      --card-padding: #{rem(16px)} #{rem(24px)};
+      --img-left: auto;
+      --img-margin: 0;
+      --img-width: 112px;
+      --img-height: 96px;
+      --img-right: -8px;
+      --img-top: -8px;
+    }
+
+    @include media(md) {
+      --img-width: 164px;
+      --img-height: 140px;
+      --img-top: -16px;
+    }
+
+    @include media(l) {
+      --img-width: 190px;
+      --img-height: 160px;
+    }
+
+    @include media(xl) {
+      --img-width: 216px;
+      --img-height: 184px;
+    }
+
+    @include media(xxxl) {
+      --img-width: 260px;
+      --img-height: 220px;
+    }
+  }
 }
 
 .card-cat-betting {
   background-color: var(--data-banner-betting-bg);
   background-image: var(--card-category-betting-gradient);
   box-shadow: var(--shadow-modal);
+  grid-area: betting;
+  --card-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
+
+  @include media(sm) {
+    --card-padding: 16px 86px 20px 24px;
+  }
+
+  @include media(md) {
+    --card-padding: 16px 140px 20px 24px;
+  }
+
+  @include media(l) {
+    --card-padding: 24px 160px 24px 24px;
+  }
+
+  @include media(xl) {
+    --card-padding: 24px 190px 24px 24px;
+  }
+
+  @include media(xxxl) {
+    --card-padding: 24px 240px 24px 24px;
+  }
+
+  .card-cat__img {
+    --img-top: -16px;
+    --img-width: 104px;
+    --img-height: 88px;
+    --img-margin: 0 auto;
+    --img-left: 0;
+    --img-right: 0;
+
+    @include media(sm) {
+      --card-padding: #{rem(16px)} #{rem(24px)};
+      --img-margin: 0;
+      --img-left: auto;
+      --img-width: 112px;
+      --img-height: 96px;
+      --img-right: -8px;
+      --img-top: -8px;
+    }
+
+    @include media(md) {
+      --img-width: 164px;
+      --img-height: 140px;
+      --img-top: -16px;
+    }
+
+    @include media(l) {
+      --img-width: 190px;
+      --img-height: 160px;
+    }
+
+    @include media(xl) {
+      --img-width: 216px;
+      --img-height: 184px;
+    }
+
+    @include media(xxxl) {
+      --img-width: 260px;
+      --img-height: 220px;
+    }
+  }
+}
+
+.card-cat-esports {
+  background-color: var(--data-banner-esports-bg);
+  background-image: var(--card-category-betting-gradient);
+  box-shadow: var(--shadow-modal);
+  grid-area: esports;
+
+  --card-padding: 16px calc(50% + 8px) 16px 16px;
+
+  @include media(sm) {
+    --card-padding: 16px 86px 20px 24px;
+  }
+
+  @include media(md) {
+    --card-padding: 16px 140px 20px 24px;
+  }
+
+  @include media(l) {
+    --card-padding: 24px 160px 24px 24px;
+  }
+
+  @include media(xl) {
+    --card-padding: 24px 190px 24px 24px;
+  }
+
+  @include media(xxxl) {
+    --card-padding: 24px 240px 24px 24px;
+  }
+
+  .card-cat__img {
+    --card-padding: #{rem(16px)} #{rem(130px)} #{rem(16px)} #{rem(16px)};
+    --img-top: 0;
+    --img-width: 104px;
+    --img-height: 88px;
+    --img-margin: auto;
+    --img-left: auto;
+    --img-right: 24px;
+
+    @include media(sm) {
+      --img-margin: 0;
+      --img-left: auto;
+      --img-width: 112px;
+      --img-height: 96px;
+      --img-right: -8px;
+      --img-top: -8px;
+    }
+
+    @include media(md) {
+      --img-width: 164px;
+      --img-height: 140px;
+      --img-top: -16px;
+    }
+
+    @include media(l) {
+      --img-width: 190px;
+      --img-height: 160px;
+    }
+
+    @include media(xl) {
+      --img-width: 216px;
+      --img-height: 184px;
+    }
+
+    @include media(xxxl) {
+      --img-width: 260px;
+      --img-height: 220px;
+    }
+  }
 }
