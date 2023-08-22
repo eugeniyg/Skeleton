@@ -1,9 +1,8 @@
-.card-base {
-  --col-count: 3.1;
-  --col-gap: 8px;
+.card-original {
+  --cc: 3.1;
+  --cg: 8px;
 
   height: var(--height, auto);
-  @include ratio(104px, 156px);
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
@@ -14,16 +13,109 @@
   background-size: var(--bg-size, 100%);
   background-position: var(--bg-position, center);
   border-radius: 8px;
-  width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap) / var(--col-count))));
   scroll-snap-align: start;
 
-  @include media(sm) {
-    --col-count: 6;
-    --col-gap: 16px;
+
+  &:not(.card-original--wide) {
+    width: calc(calc(100% / var(--cc)) - calc(var(--cg) - calc(var(--cg) / var(--cc))));
+
+    @include ratio(104px, 156px);
+
+    @include media(sm) {
+      --cc: 6;
+      --cg: 16px;
+    }
+
+    @include media(xl) {
+      --cc: 9;
+    }
   }
 
-  @include media(xl) {
-    --col-count: 9;
+
+  &.card-original--wide {
+    width: calc(((calc(100% / var(--cc)) - calc(var(--cg) - calc(var(--cg) / var(--cc)))) * 2) + var(--cg)) ;
+
+    @include media(sm) {
+      --cc: 6;
+      --cg: 16px;
+    }
+
+    @include media(xl) {
+      @include ratio(4.2, 3);
+      --cc: 9;
+    }
+  }
+
+  &[data-size=max] {
+    .btn-play {
+      .icon-box {
+        --icon-box-size: 48px;
+      }
+
+      .icon {
+        --icon-size: 24px;
+      }
+    }
+
+    @media (min-width: 446px) and (max-width: 768px) {
+      .btn-play {
+        .icon-box {
+          --icon-box-size: 64px;
+        }
+
+        .icon {
+          --icon-size: 32px;
+        }
+      }
+    }
+
+    @media (min-width: 528px) and (max-width: 800px) {
+      .btn-play {
+        .icon-box {
+          --icon-box-size: 64px;
+        }
+
+        .icon {
+          --icon-size: 32px;
+        }
+      }
+    }
+
+    @media (min-width: 913px) {
+      .btn-play {
+        .icon-box {
+          --icon-box-size: 64px;
+        }
+
+        .icon {
+          --icon-size: 32px;
+        }
+      }
+    }
+  }
+
+  @media (min-width: 446px) and (max-width: 566px) {
+    .btn-play {
+      .icon-box {
+        --icon-box-size: 64px;
+      }
+
+      .icon {
+        --icon-size: 32px;
+      }
+    }
+  }
+
+  @media (min-width: 921px) and (max-width: 1146px) {
+    .btn-play {
+      .icon-box {
+        --icon-box-size: 64px;
+      }
+
+      .icon {
+        --icon-size: 32px;
+      }
+    }
   }
 
   &__info {
@@ -49,7 +141,17 @@
     }
 
     [data-size="max"] & {
-      --card-info-padding: 24px;
+      @media (max-width: 1024px) {
+        --card-info-padding: 8px;
+      }
+
+      @include media(md) {
+        --card-info-padding: 16px;
+      }
+
+      @media (min-width: 913px) and (max-width: 1024px) {
+        --card-info-padding: 16px;
+      }
     }
 
     &-titles {
@@ -70,7 +172,15 @@
       }
 
       [data-size="max"] & {
-        @include upd-font($heading-3);
+        @include upd-font($heading-1);
+
+        @media (min-width: 443px) and (max-width: 906px) {
+          @include upd-font($heading-1);
+        }
+
+        @media (min-width: 907px) {
+          @include upd-font($heading-2);
+        }
       }
     }
 
@@ -96,7 +206,7 @@
       }
 
       [data-size="max"] & {
-        @include upd-font($body-1);
+        @include upd-font($body-0);
       }
     }
 
@@ -126,13 +236,14 @@
     }
   }
 
+
   &.hovered {
     --pointer-events: auto;
-    --transition-info: (all .4s ease-in-out);
-    --play-btn-opacity: 1;
     --opacity-info: 1;
+    --transition-info: (opacity .4s ease);
+    --y-offset: translateY(-16px);
 
-    .btn-play {
+    .btn-try {
       transform: scale(1);
       transition-delay: .2s;
     }
@@ -167,4 +278,12 @@
       }
     }
   }
+
+  @include use-hover {
+    &:hover {
+      --transition-info: (opacity .6s ease);
+      --play-btn-opacity: 1;
+    }
+  }
 }
+
