@@ -126,7 +126,7 @@
 
   const backgroundImage = computed(() => {
     if (props.images?.hasOwnProperty('200x300')) {
-      return `background-image:url(${baseApiUrl}/img/gcdn${getImageUrl(props.images, 'vertical')})`;
+      return `background-image:url(${getImageUrl(props.images, 'vertical')})`;
     }
     return 'background-image: none';
   });
