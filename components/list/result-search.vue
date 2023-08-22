@@ -17,7 +17,7 @@
           class="item"
           @click="clickGame(game)"
         >
-          <img v-if="game.images['200x200']" :src="gameImageSrc(game.images)" />
+          <img v-if="game.images['200x200']" :src="getImageUrl(game.images, 'square')" />
           <img v-else src="/img/default-game-tumb.png" />
           <span>{{ game.name }}</span>
         </div>
@@ -73,7 +73,6 @@
 
   const { baseApiUrl, headerContent, defaultLocaleHeaderContent } = useGlobalStore();
   const { getImageUrl, getContent } = useProjectMethods();
-  const gameImageSrc = (imagesData: GameImagesInterface):string => `${baseApiUrl}/img/gcdn${getImageUrl(imagesData, 'square')}`;
 </script>
 
 <style src="~/assets/styles/components/list/result-search.scss" lang="scss" />
