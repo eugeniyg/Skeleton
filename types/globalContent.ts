@@ -153,11 +153,8 @@ export interface FooterInterface {
   infoMenu: FooterBlockInterface,
   helpMenu: FooterBlockInterface,
   responsibilityLabel: string,
-  curacao: {
-    image: string,
-    url: string,
-    text: string
-  }
+  curacao: string,
+  curacaoLink: string,
   copyright: string
 }
 

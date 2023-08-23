@@ -35,8 +35,19 @@
 
     <atomic-divider/>
 
-    <div v-if="footerContent?.curacao || defaultLocaleFooterContent?.curacao" class="info">
-      <div class="info__text" v-html="marked.parse(footerContent?.curacao || defaultLocaleFooterContent?.curacao || '')" />
+    <div v-if="showCuracaoBlock" class="info">
+      <iframe
+        v-if="footerContent?.curacaoLink || defaultLocaleFooterContent?.curacaoLink"
+        :src="footerContent?.curacaoLink || defaultLocaleFooterContent?.curacaoLink"
+        width="132px"
+        height="62px"
+      />
+
+      <div
+        v-if="footerContent?.curacao || defaultLocaleFooterContent?.curacao"
+        class="info__text"
+        v-html="marked.parse(footerContent?.curacao || defaultLocaleFooterContent?.curacao || '')"
+      />
     </div>
 
     <atomic-divider/>
@@ -71,6 +82,13 @@
     '/payments-icons/3.svg',
     '/payments-icons/4.svg',
   ];
+
+  const showCuracaoBlock = computed(() => {
+    return footerContent?.curacao ||
+      defaultLocaleFooterContent?.curacao ||
+      footerContent?.curacaoLink ||
+      defaultLocaleFooterContent?.curacaoLink
+  })
 </script>
 
 <style src="~/assets/styles/components/layout/footer.scss" lang="scss" />
