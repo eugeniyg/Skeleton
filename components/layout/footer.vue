@@ -35,22 +35,24 @@
 
     <atomic-divider/>
 
-    <div v-if="showCuracaoBlock" class="info">
-      <iframe
-        v-if="footerContent?.curacaoLink || defaultLocaleFooterContent?.curacaoLink"
-        :src="footerContent?.curacaoLink || defaultLocaleFooterContent?.curacaoLink"
-        width="132px"
-        height="62px"
-      />
+    <template v-if="showCuracaoBlock">
+      <div class="info">
+        <iframe
+          v-if="footerContent?.curacaoLink || defaultLocaleFooterContent?.curacaoLink"
+          :src="footerContent?.curacaoLink || defaultLocaleFooterContent?.curacaoLink"
+          width="132px"
+          height="62px"
+        />
 
-      <div
-        v-if="footerContent?.curacao || defaultLocaleFooterContent?.curacao"
-        class="info__text"
-        v-html="marked.parse(footerContent?.curacao || defaultLocaleFooterContent?.curacao || '')"
-      />
-    </div>
+        <div
+          v-if="footerContent?.curacao || defaultLocaleFooterContent?.curacao"
+          class="info__text"
+          v-html="marked.parse(footerContent?.curacao || defaultLocaleFooterContent?.curacao || '')"
+        />
+      </div>
 
-    <atomic-divider/>
+      <atomic-divider/>
+    </template>
 
     <div class="copy-info">
       <p>{{ footerContent?.copyright || defaultLocaleFooterContent?.copyright }}</p>
