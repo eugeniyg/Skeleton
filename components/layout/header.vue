@@ -1,20 +1,26 @@
 <template>
-  <header class="app-header">
-    <atomic-logo/>
+  <header class="app-header" :class="headerClassModifiers">
+    <button class="app-header__back-btn" @click="backToHomePage" v-if="isGamePage && isLoggedIn">
+      <atomic-icon id="arrow_previous"/>
+    </button>
 
-    <atomic-vertical-divider/>
+    <atomic-logo />
 
-    <button-search
-      data-show="mobile"
-      @show-search="toggle"
-      :is-active="isShowSearch"
-    />
+    <!--<template v-if="!isGamePage">-->
+      <atomic-vertical-divider/>
 
-    <atomic-gift-notification
-      v-if="isLoggedIn"
-      display="mobile"
-      :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
-    />
+      <button-search
+        data-show="mobile"
+        @show-search="toggle"
+        :is-active="isShowSearch"
+      />
+
+      <atomic-gift-notification
+        v-if="isLoggedIn"
+        display="mobile"
+        :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
+      />
+    <!--</template>-->
 
     <div class="items">
       <search
@@ -39,7 +45,7 @@
         -->
         <form-input-deposit/>
 
-        <div v-click-outside="closeUserNav">
+        <div v-click-outside="closeUserNav" class="nav-user__wrap">
           <atomic-avatar
             @toggle="toggleProfileNav"
             :is-button="true"
@@ -55,7 +61,8 @@
           size="md"
           @click="showModal('register')"
         >
-          {{ headerContent?.registrationButton || defaultLocaleHeaderContent?.registrationButton }}
+          <atomic-icon id="user-new" class="btn-primary__icon"/>
+          <span class="btn-primary__text">{{ getContent(headerContent, defaultLocaleHeaderContent, 'registrationButton') }}</span>
         </button-base>
 
         <button-base
@@ -63,7 +70,8 @@
           size="md"
           @click="showModal('signIn')"
         >
-          {{ headerContent?.loginButton || defaultLocaleHeaderContent?.loginButton }}
+          <atomic-icon id="user" class="btn-secondary__icon"/>
+          <span class="btn-secondary__text">{{ getContent(headerContent, defaultLocaleHeaderContent, 'loginButton') }}</span>
         </button-base>
       </template>
     </div>
@@ -78,10 +86,20 @@
   const profileStore = useProfileStore();
   const bonusStore = useBonusStore();
   const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal } = layoutStore;
   const { isLoggedIn } = storeToRefs(profileStore);
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
+  const { isGamePage } = storeToRefs(layoutStore);
+
+  const headerClassModifiers = computed(() => {
+    if (isGamePage.value && isLoggedIn.value) {
+      return 'app-header--is-game-page-login'
+    } else if(isGamePage && !isLoggedIn.value) {
+      return 'app-header--is-game-page-logout'
+    } else return ''
+  })
 
   function toggleProfileNav():void {
     if (isUserNavOpen.value) closeUserNav();
@@ -108,6 +126,12 @@
       isShowSearch.value = false;
     }
   };
+
+  const backToHomePage = () => {
+    const router = useRouter();
+    const { localizePath } = useProjectMethods();
+    router.push(localizePath('/'));
+  }
 
   onMounted(() => {
     document.addEventListener('click', checkSearch);

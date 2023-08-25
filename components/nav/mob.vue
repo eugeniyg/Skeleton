@@ -1,38 +1,43 @@
 <template>
-  <div class="nav-mob">
-    <button-base class="item" @click.prevent="layoutStore.toggleDrawer()">
-      <atomic-icon :id="'menu'" /><span>
+  <div class="nav-mob" v-if="!isGamePage || isGamePage && !isLoggedIn">
+    <button-base class="nav-mob__item" @click.prevent="layoutStore.toggleDrawer()">
+      <atomic-icon id="menu"/>
+      <span class="nav-mob__text">
         {{ getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'menuLabel') }}
       </span>
     </button-base>
 
     <button-base
       v-if="getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0')"
-      class="item"
+      class="nav-mob__item"
       :class="{ active: $route.path === localizePath(getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.url')) || $route.query.category}"
       @click="clickItem(getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.url'))"
     >
       <atomic-icon
         :id="getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.icon')"
-      /><span>{{ getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.label') }}</span>
+      />
+      <span class="nav-mob__text">
+        {{ getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.label') }}
+      </span>
     </button-base>
 
-    <button-base class="item is-accent" @click.prevent="clickMainButton">
-      <atomic-icon :id="isLoggedIn ? 'wallet' : 'user'" />
-      <span>
-        {{ isLoggedIn ? headerContent?.depositButton || defaultLocaleHeaderContent?.depositButton
-          : headerContent?.loginButton || defaultLocaleHeaderContent?.loginButton }}
+    <button-base class="nav-mob__item is-accent" @click.prevent="clickMainButton">
+      <atomic-icon :id="isLoggedIn ? 'wallet' : 'plus-fill'"/>
+      <span class="nav-mob__text">
+        {{ isLoggedIn ? getContent(headerContent, defaultLocaleHeaderContent, 'depositButton')
+        : getContent(headerContent, defaultLocaleHeaderContent, 'registrationButton') }}
       </span>
     </button-base>
 
     <button-base
       v-for="link in linksList?.slice(1)"
       :key="link.url"
-      class="item"
+      class="nav-mob__item"
       :class="{ active: $route.path === localizePath(link.url) }"
       @click="clickItem(link.url)"
     >
-      <atomic-icon :id="link.icon" /><span>{{ link.label }}</span>
+      <atomic-icon :id="link.icon" />
+      <span class="nav-mob__text">{{ link.label }}</span>
     </button-base>
   </div>
 </template>
@@ -45,6 +50,7 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal, openDepositModal } = useLayoutStore();
+  const { isGamePage } = storeToRefs(layoutStore);
   const {
     mobileMenuContent,
     defaultLocaleMobileMenuContent,
@@ -59,7 +65,7 @@
   };
 
   const clickMainButton = ():void => {
-    isLoggedIn.value ? openDepositModal() : showModal('signIn');
+    isLoggedIn.value ? openDepositModal() : showModal('register');
   };
 
   const linksList = computed(() => {
