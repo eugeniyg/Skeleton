@@ -22,7 +22,7 @@
     </button-base>
 
     <button-base class="nav-mob__item is-accent" @click.prevent="clickMainButton">
-      <atomic-icon :id="isLoggedIn ? 'wallet' : 'plus-fill'"/>
+      <atomic-icon :id="isLoggedIn ? 'wallet' : 'user-new'"/>
       <span class="nav-mob__text">
         {{ isLoggedIn ? getContent(headerContent, defaultLocaleHeaderContent, 'depositButton')
         : getContent(headerContent, defaultLocaleHeaderContent, 'registrationButton') }}
