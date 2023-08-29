@@ -573,10 +573,10 @@ export interface TurbogamesGroupInterface {
     url: string
   },
   buttonLabel: string,
-  items: TurboItemInterface[]
+  items: ITurboItem[]
 }
 
-export interface TurboItemInterface {
+export interface ITurboItem {
   url: string,
   image: string,
   title: string,
