@@ -1,3 +1,5 @@
+import cardsGroup from '@skeleton/components/cards-group.vue';
+
 export interface SeoContentInterface {
   title?: string,
   description?: string,
@@ -574,6 +576,28 @@ export interface TurbogamesGroupInterface {
   items: TurboItemInterface[]
 }
 
+export interface TurboItemInterface {
+  url: string,
+  image: string,
+  title: string,
+  categoryValue: string
+}
+
+export interface IOriginalsItem {
+  url: string,
+  image: string,
+  title: string,
+  categoryValue: string
+}
+
+export interface IOriginalsGroup {
+  display: boolean,
+  label: string,
+  icon: string,
+  buttonLabel: string,
+  items: IOriginalsItem[]
+}
+
 export interface GameTagInterface {
   identity: string,
   label: string,
@@ -612,6 +636,7 @@ export interface CurrencyEmptyInterface {
 export interface GlobalComponentsInterface {
   benefits: BenefitsContentInterface,
   promotions: PromotionsContentInterface,
+  originals: IOriginalsGroup,
   cardsGroup: CardsGroupInterface,
   categories: GameCategoryInterface[],
   turbogames: TurbogamesGroupInterface,
@@ -632,9 +657,4 @@ export interface DropZoneInterface {
   subTitle: string,
   desc: string,
   hint: string,
-}
-
-export interface SocialItemInterface {
-  url: string,
-  icon: string,
 }

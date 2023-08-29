@@ -1,5 +1,5 @@
 <template>
-  <div class="group-originals">
+  <div class="group-originals" v-if="isShow">
     <atomic-icon v-if="cardContent?.icon" :id="cardContent?.icon"/>
 
     <h2 class="title">
@@ -97,24 +97,30 @@
 
   const formatIdentity = (list: { identity: string }[]) => list?.map((item: { identity: string }):string => item.identity);
 
+  const isShow = computed(() => {
+    return globalComponentsContent?.originals?.items?.length && globalComponentsContent?.originals?.display
+  })
+
   onMounted(async () => {
-    initObserver(loadMore.value, {
-      onInView: moreGames,
-      settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
-    });
+    if (isShow.value) {
+      initObserver(loadMore.value, {
+        onInView: moreGames,
+        settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
+      });
 
-    const gamesResponse = await getFilteredGames({
-      identity: formatIdentity(cardContent.value.items),
-      perPage: 18
-    });
-    games.value = gamesResponse.data;
-    pageMeta.value = gamesResponse.meta;
-    await nextTick();
-    emit('initialLoad');
+      const gamesResponse = await getFilteredGames({
+        identity: formatIdentity(cardContent.value.items),
+        perPage: 18
+      });
+      games.value = gamesResponse.data;
+      pageMeta.value = gamesResponse.meta;
+      await nextTick();
+      emit('initialLoad');
 
-    if (props.showArrows) {
-      scrollHandler();
-      showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
+      if (props.showArrows) {
+        scrollHandler();
+        showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
+      }
     }
   });
 </script>
