@@ -11,6 +11,55 @@
   grid-column-gap: 2px;
   @extend %container;
 
+  &--is-game-page-logout {
+    .is-game-page & {
+      .logo {
+        @media (orientation: landscape) and (max-width: 1023px) {
+          align-self: flex-start;
+          justify-self: center;
+        }
+      }
+    }
+  }
+
+  .is-game-page & {
+    @media (orientation: landscape) and (max-width: 1023px) {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      height: auto;
+      display: grid;
+      width: rem(64px);
+      padding: rem(20px) rem(12px);
+
+      .vertical-divider {
+        border-left: 0;
+        height: 100%;
+      }
+
+      .gift-notification, .vertical-divider, .btn-search, .nav-user__wrap {
+        display: none;
+      }
+    }
+
+    @media (orientation: portrait) and (max-width: 1023px) {
+      .nav-user__wrap, .gift-notification, .btn-search, .vertical-divider {
+        @media (max-width: 1023px) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &--is-game-page-login {
+    @media (orientation: landscape) and (max-width: 1023px) {
+      .is-game-page & {
+        left: 0;
+        right: auto;
+      }
+    }
+  }
+
   .avatar {
     --padding: 0;
     --bg: transparent;
@@ -21,6 +70,36 @@
     justify-self: flex-end;
     margin-left: auto;
     grid-column-gap: rem(8px);
+
+    .btn-primary__icon, .btn-secondary__icon {
+      display: none;
+    }
+
+    .is-game-page & {
+      @media (orientation: landscape) and (max-width: 1023px) {
+        display: flex;
+        flex-direction: column;
+        grid-row-gap: rem(8px);
+        margin: auto auto 0;
+
+        .btn-primary__text, .btn-secondary__text {
+          display: none;
+        }
+
+        .btn-primary__icon, .btn-secondary__icon {
+          display: block;
+        }
+
+        .btn-primary, .btn-secondary {
+          @include box(40px);
+          --padding: 0;
+        }
+
+        .btn-primary {
+          order: 1;
+        }
+      }
+    }
   }
 
   > .notification {
@@ -38,5 +117,53 @@
   .list-balance {
     min-width: rem(248px);
     z-index: 0;
+  }
+
+  &__back-btn {
+    @extend %skip-btn;
+    @include box(40px);
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    display: none;
+
+    &-icon {
+      --icon-size: 22px;
+    }
+  }
+
+  &--is-game-page-login {
+    @media (orientation: portrait) and (max-width: 1023px) {
+      .btn-deposit {
+        width: auto;
+        padding: 6px 20px;
+
+        span {
+          display: block;
+        }
+      }
+    }
+
+    .logo {
+      @media (orientation: landscape) and (max-width: 1023px) {
+        display: none;
+      }
+
+      @media (orientation: portrait) and (max-width: 1023px) {
+        display: none;
+      }
+    }
+
+    .app-header__back-btn {
+      @media (orientation: portrait) and (max-width: 1023px) {
+        align-self: center;
+        display: flex;
+      }
+
+      @media (orientation: landscape) and (max-width: 1023px) {
+        align-self: flex-start;
+        display: flex;
+      }
+    }
   }
 }

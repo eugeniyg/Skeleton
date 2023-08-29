@@ -5,7 +5,7 @@
   color: var(--text-helper);
   user-select: none;
   position: relative;
-  margin-left: -8px;
+  margin-left: rem(-8px);
   width: fit-content;
 
   @include media(xs) {
@@ -28,6 +28,12 @@
     align-items: center;
     padding: 0 8px 0 16px;
     grid-column-gap: 4px;
+
+    .app-header--is-game-page-login & {
+      @media (max-width: 1023px) and (orientation: landscape) {
+        display: none;
+      }
+    }
 
     @include media(l) {
       padding: 0 16px;
@@ -58,6 +64,18 @@
           order: 0;
         }
       }
+
+      .app-header--is-game-page-login & {
+        @media (max-width: 1023px) and (orientation: portrait) {
+          display: flex;
+          grid-column-gap: 4px;
+
+          .label {
+            @include font($heading-1);
+            order: 1;
+          }
+        }
+      }
     }
 
     @include use-hover {
@@ -72,6 +90,14 @@
         --color: var(--icon-contrast);
       }
     }
+
+    .app-header--is-game-page-login & {
+      pointer-events: none;
+
+      @include media(md) {
+        pointer-events: initial;
+      }
+    }
   }
 
   .icon-expand {
@@ -79,5 +105,15 @@
     transition: transform 0.2s ease-in-out;
     --color: var(--icon-primary);
     --icon-size: 20px;
+
+    .app-header--is-game-page-login & {
+      @media (orientation: landscape) and (max-width: 1023px) {
+        display: none;
+      }
+
+      @media (orientation: portrait) and (max-width: 1023px) {
+        display: none;
+      }
+    }
   }
 }
