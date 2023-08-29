@@ -33,7 +33,7 @@
 
       <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'bottomMenu')"/>
 
-      <template v-if="getContent(sidebarContent, defaultLocaleSidebarContent, 'socials.isShow')">
+      <template v-if="sidebarContent?.socials?.items?.length && sidebarContent?.socials?.isShow">
         <list-socials :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'socials.items')"/>
       </template>
 
@@ -47,6 +47,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { MenuItemInterface } from '@skeleton/types';
+  import { v } from 'unimport/dist/vue-template-70c5972e';
 
   const { sidebarContent, defaultLocaleSidebarContent } = useGlobalStore();
   const { getContent } = useProjectMethods();
