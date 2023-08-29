@@ -1,5 +1,3 @@
-import cardsGroup from '@skeleton/components/cards-group.vue';
-
 export interface SeoContentInterface {
   title?: string,
   description?: string,
