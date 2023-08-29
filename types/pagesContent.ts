@@ -563,6 +563,7 @@ export interface TurboItemInterface {
 }
 
 export interface TurbogamesGroupInterface {
+  isShow: boolean,
   label: string,
   icon: string,
   showAll: {

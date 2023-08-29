@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.items')?.length &&
-    getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.isShow')"
-    class="group-turbo">
+  <div v-if="globalComponentsContent?.turbogames.isShow" class="group-turbo">
     <atomic-icon
       v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.icon')"
       :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.icon')"
