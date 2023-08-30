@@ -216,13 +216,19 @@ export const useGlobalStore = defineStore('globalStore', {
       const globalContentFolders = ['alerts', 'fields-settings', 'global-components', 'layout', 'modals'];
 
       const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-        queryContent(this.currentLocale?.code as string).where({ _dir: { $in: globalContentFolders } }).find(),
-        this.currentLocale?.isDefault ? Promise.reject('Current locale is default locale!')
-          : queryContent(this.defaultLocale?.code as string).where({ _dir: { $in: globalContentFolders } }).find()
+        useAsyncData('currentLocaleGlobalContent', () => queryContent(this.currentLocale?.code as string)
+          .where({ _dir: { $in: globalContentFolders } }).find()),
+        this.currentLocale?.isDefault
+          ? Promise.reject('Current locale is default locale!')
+          : useAsyncData('defaultLocaleGlobalContent', () => queryContent(this.defaultLocale?.code as string)
+            .where({ _dir: { $in: globalContentFolders } }).find())
       ]);
 
-      if (currentLocaleContentResponse.status !== 'rejected') {
-        const formattedCurrentLocaleContent: IGlobalContent = currentLocaleContentResponse.value.reduce((finalContentObj:any, currentContent) => {
+      const { getLocalesContentData } = useProjectMethods();
+      const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+
+      if (currentLocaleData) {
+        const formattedCurrentLocaleContent: IGlobalContent = currentLocaleData.reduce((finalContentObj:any, currentContent:any) => {
           const splitPath = currentContent._path?.split('/');
           if (!splitPath) return finalContentObj;
 
@@ -238,8 +244,8 @@ export const useGlobalStore = defineStore('globalStore', {
         this.globalComponentsContent = formattedCurrentLocaleContent.globalComponents;
       }
 
-      if (defaultLocaleContentResponse.status !== 'rejected') {
-        const formattedDefaultLocaleContent: IGlobalContent = defaultLocaleContentResponse.value.reduce((finalContentObj:any, currentContent) => {
+      if (defaultLocaleData) {
+        const formattedCurrentLocaleContent: IGlobalContent = defaultLocaleData.reduce((finalContentObj:any, currentContent:any) => {
           const splitPath = currentContent._path?.split('/');
           if (!splitPath) return finalContentObj;
 
@@ -248,11 +254,11 @@ export const useGlobalStore = defineStore('globalStore', {
           return { ...finalContentObj, [collection]: { ...finalContentObj[collection], [contentName]: currentContent } }
         }, {})
 
-        this.defaultLocaleFieldsSettings = formattedDefaultLocaleContent.fieldsSettings;
-        this.defaultLocaleLayoutData = formattedDefaultLocaleContent.layout;
-        this.defaultLocalePopupsData = formattedDefaultLocaleContent.modals;
-        this.defaultLocaleAlertsData = formattedDefaultLocaleContent.alerts;
-        this.defaultLocaleGlobalComponentsContent = formattedDefaultLocaleContent.globalComponents;
+        this.fieldsSettings = formattedCurrentLocaleContent.fieldsSettings;
+        this.layoutData = formattedCurrentLocaleContent.layout;
+        this.popupsData = formattedCurrentLocaleContent.modals;
+        this.alertsData = formattedCurrentLocaleContent.alerts;
+        this.globalComponentsContent = formattedCurrentLocaleContent.globalComponents;
       }
     },
 

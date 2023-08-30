@@ -165,6 +165,24 @@ export const useProjectMethods = () => {
     };
   };
 
+  const getLocalesContentData = (currentLocaleContentResponse: any, defaultLocaleContentResponse: any): {
+    currentLocaleData: any,
+    defaultLocaleData: any
+  } => {
+    let currentLocaleData;
+    let defaultLocaleData;
+
+    if (currentLocaleContentResponse.status !== 'rejected') {
+      currentLocaleData = currentLocaleContentResponse.value.data?.value || currentLocaleContentResponse.value;
+    }
+
+    if (defaultLocaleContentResponse.status !== 'rejected') {
+      defaultLocaleData = defaultLocaleContentResponse.value.data?.value || defaultLocaleContentResponse.value;
+    }
+
+    return { currentLocaleData, defaultLocaleData };
+  }
+
   return {
     createValidationRules,
     getFormRules,
@@ -180,5 +198,6 @@ export const useProjectMethods = () => {
     sortByAlphabet,
     getContent,
     getEquivalentAccount,
+    getLocalesContentData
   };
 };
