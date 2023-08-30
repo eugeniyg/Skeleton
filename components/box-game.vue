@@ -1,5 +1,5 @@
 <template>
-  <div class="box-game">
+  <div class="box-game" :class="boxGameClassModifiers">
     <div class="container">
       <iframe
         v-if="props.frameLink"
@@ -29,6 +29,8 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+
   const props = defineProps({
     frameLink: {
       type: String,
@@ -47,10 +49,17 @@
       required: false,
     },
   });
+
   const emit = defineEmits(['changeMode']);
 
   const { currentLocationCollections } = useGamesStore();
   const recommendedCategory = currentLocationCollections.find((collection) => collection.identity === 'recommended');
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+
+  const boxGameClassModifiers = computed(() => {
+    return isLoggedIn.value ? 'box-game--login' : 'box-game--logout'
+  });
 </script>
 
 <style src="~/assets/styles/components/box-game.scss" lang="scss" />
