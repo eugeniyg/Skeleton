@@ -105,6 +105,11 @@ export interface CtaLinkInterface {
   url: string
 }
 
+export interface ISocialItem {
+  url: string,
+  icon: string,
+}
+
 export interface SiteSidebarInterface {
   gamesToggler: LinkInterface[],
   ctaMenu: {
@@ -121,6 +126,10 @@ export interface SiteSidebarInterface {
   bonusesMenu: MenuItemInterface[],
   userMenu: MenuItemInterface[],
   bottomMenu: MenuItemInterface[],
+  socials: {
+    isShow: boolean,
+    items: ISocialItem[]
+  }
   sidebarFooterMenu: LinkInterface[]
 }
 

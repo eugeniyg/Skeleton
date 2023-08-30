@@ -571,7 +571,29 @@ export interface TurbogamesGroupInterface {
     url: string
   },
   buttonLabel: string,
-  items: TurboItemInterface[]
+  items: ITurboItem[]
+}
+
+export interface ITurboItem {
+  url: string,
+  image: string,
+  title: string,
+  categoryValue: string
+}
+
+export interface IOriginalsItem {
+  url: string,
+  image: string,
+  title: string,
+  categoryValue: string
+}
+
+export interface IOriginalsGroup {
+  display: boolean,
+  label: string,
+  icon: string,
+  buttonLabel: string,
+  items: IOriginalsItem[]
 }
 
 export interface GameTagInterface {
@@ -612,6 +634,7 @@ export interface CurrencyEmptyInterface {
 export interface GlobalComponentsInterface {
   benefits: BenefitsContentInterface,
   promotions: PromotionsContentInterface,
+  originals: IOriginalsGroup,
   cardsGroup: CardsGroupInterface,
   categories: GameCategoryInterface[],
   turbogames: TurbogamesGroupInterface,
@@ -632,9 +655,4 @@ export interface DropZoneInterface {
   subTitle: string,
   desc: string,
   hint: string,
-}
-
-export interface SocialItemInterface {
-  url: string,
-  icon: string,
 }
