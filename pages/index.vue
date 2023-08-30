@@ -8,7 +8,7 @@
       <div
         class="cards-cat"
         :class="cardsModifier"
-        v-if="getContent(homeContent, defaultLocaleHomeContent, 'categories')"
+        v-if="homeContent?.categories || defaultLocaleHomeContent?.categories"
       >
         <card-category
           v-for="(item, itemIndex) in Object.keys(homeContent?.categories || defaultLocaleHomeContent?.categories)"

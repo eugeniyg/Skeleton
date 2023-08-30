@@ -33,8 +33,8 @@
 
       <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'bottomMenu')"/>
 
-      <template v-if="getContent(sidebarContent, defaultLocaleSidebarContent, 'socials.isShow')">
-        <list-socials :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'socials.items')"/>
+      <template v-if="sidebarContent?.socials?.items?.length && sidebarContent?.socials?.isShow">
+        <list-socials :items="sidebarContent.socials.items"/>
       </template>
 
       <atomic-divider/>
