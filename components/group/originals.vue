@@ -109,7 +109,7 @@
       });
 
       const gamesResponse = await getFilteredGames({
-        identity: formatIdentity(cardContent.value.items),
+        identity: formatIdentity(cardContent.value?.items),
         perPage: 18
       });
       games.value = gamesResponse.data;

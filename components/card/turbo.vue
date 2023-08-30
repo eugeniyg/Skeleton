@@ -4,7 +4,7 @@
       <nuxt-link class="thumb" :to="localizePath(props.url)" :style="backgroundImage"/>
       <div class="title">{{ props.title }}</div>
 
-      <div class="sub-title">{{ props.categoryValue }}</div>
+      <div class="sub-title">{{ props?.categoryValue }}</div>
 
       <button-base
         type="primary"
