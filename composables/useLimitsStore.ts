@@ -1,9 +1,12 @@
 import { defineStore } from 'pinia';
+import {
+  ICreateLimit,
+  ICurrency,
+  IPlayerLimit
+} from '@platform/frontend-core';
+import { IProfileLimits } from "~/types";
 
-import { CreateLimitInterface, CurrencyInterface, PlayerLimitInterface } from '@platform/frontend-core/dist/module';
-import { ProfileLimitsContentInterface } from '@skeleton/types';
-
-interface LimitsModalInterface {
+interface ILimitsModal {
   addLimit: boolean,
   editLimit: boolean,
   depositLimitReached: boolean,
@@ -11,16 +14,16 @@ interface LimitsModalInterface {
   confirmLimitUpdate: boolean,
 }
 
-interface LimitsStateInterface {
-  activeLimits: PlayerLimitInterface[],
+interface ILimitsState {
+  activeLimits: IPlayerLimit[],
   isLoaded: boolean,
-  limitsContent: Maybe<ProfileLimitsContentInterface>,
-  defaultLimitsContent: Maybe<ProfileLimitsContentInterface>,
+  limitsContent: Maybe<IProfileLimits>,
+  defaultLimitsContent: Maybe<IProfileLimits>,
   isAdvancedModeEnabled: boolean,
-  modals: LimitsModalInterface,
+  modals: ILimitsModal,
 }
 
-const transformToPeriods = (limits: PlayerLimitInterface[]) => {
+const transformToPeriods = (limits: IPlayerLimit[]) => {
   const periods = ['daily', 'weekly', 'monthly'];
 
   return periods.map((period) => ({
@@ -31,7 +34,7 @@ const transformToPeriods = (limits: PlayerLimitInterface[]) => {
 };
 
 export const useLimitsStore = defineStore('limitsStore', {
-  state: (): LimitsStateInterface => ({
+  state: (): ILimitsState => ({
     activeLimits: [],
     isLoaded: false,
     limitsContent: undefined,
@@ -52,25 +55,25 @@ export const useLimitsStore = defineStore('limitsStore', {
       this.activeLimits = await getPlayerLimits();
     },
 
-    async createLimit(payload: CreateLimitInterface): Promise<void> {
+    async createLimit(payload: ICreateLimit): Promise<void> {
       const { createPlayerLimit } = useCoreProfileApi();
       await createPlayerLimit(payload);
     },
 
-    setLimitsContent(content: Maybe<ProfileLimitsContentInterface>, defaultContent: Maybe<ProfileLimitsContentInterface>) {
+    setLimitsContent(content: Maybe<IProfileLimits>, defaultContent: Maybe<IProfileLimits>) {
       this.limitsContent = content;
       this.defaultLimitsContent = defaultContent;
     },
 
-    showModal(modalName: keyof LimitsModalInterface) {
+    showModal(modalName: keyof ILimitsModal) {
       this.modals[modalName] = true;
     },
 
-    closeModal(modalName: keyof LimitsModalInterface) {
+    closeModal(modalName: keyof ILimitsModal) {
       this.modals[modalName] = false;
     },
 
-    checkCurrencies(periods: { title: string, items: PlayerLimitInterface[] }[], currencies: CurrencyInterface[]) {
+    checkCurrencies(periods: { title: string, items: IPlayerLimit[] }[], currencies: ICurrency[]) {
       const currencyCodes = currencies.map((currency) => currency.code);
 
       return periods.length > 2 && periods.every((period) => {

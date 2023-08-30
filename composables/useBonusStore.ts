@@ -1,22 +1,23 @@
 import { defineStore } from 'pinia';
 import {
-  PlayerBonusInterface,
-  BonusCodeInterface,
-  WebSocketResponseInterface,
-} from '@platform/frontend-core/dist/module';
-import {GameInterface, PlayerFreeSpinInterface} from "@platform/frontend-core";
+  IPlayerBonus,
+  IBonusCode,
+  IWebSocketResponse,
+  IGame,
+  IPlayerFreeSpin
+} from '@platform/frontend-core';
 
-interface BonusStateInterface {
+interface IBonusState {
   bonusCodeSubscription: any,
   bonusSubscription: any,
   freeSpinsSubscription: any,
-  playerBonuses: PlayerBonusInterface[],
-  playerFreeSpins: PlayerFreeSpinInterface[],
-  depositBonusCode: Maybe<BonusCodeInterface>
+  playerBonuses: IPlayerBonus[],
+  playerFreeSpins: IPlayerFreeSpin[],
+  depositBonusCode: Maybe<IBonusCode>
 }
 
 export const useBonusStore = defineStore('bonusStore', {
-  state: (): BonusStateInterface => ({
+  state: (): IBonusState => ({
     bonusCodeSubscription: undefined,
     bonusSubscription: undefined,
     freeSpinsSubscription: undefined,
@@ -26,12 +27,12 @@ export const useBonusStore = defineStore('bonusStore', {
   }),
 
   getters: {
-    activePlayerBonuses(state):PlayerBonusInterface[] {
+    activePlayerBonuses(state):IPlayerBonus[] {
       const walletStore = useWalletStore();
       return state.playerBonuses.filter((playerBonus) => walletStore.activeAccount?.currency === playerBonus.currency);
     },
 
-    activePlayerFreeSpins(state):PlayerFreeSpinInterface[] {
+    activePlayerFreeSpins(state):IPlayerFreeSpin[] {
       const walletStore = useWalletStore();
       return state.playerFreeSpins.filter((playerFreeSpin) => walletStore.activeAccount?.currency === playerFreeSpin.currency);
     }
@@ -62,9 +63,9 @@ export const useBonusStore = defineStore('bonusStore', {
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
 
       if (status === 3) {
-        showAlert(alertsData?.bonusCodeIncorrect || defaultLocaleAlertsData?.bonusCodeIncorrect);
+        showAlert(alertsData?.bonus?.bonusCodeIncorrect || defaultLocaleAlertsData?.bonus?.bonusCodeIncorrect);
       } else if (status === 4) {
-        showAlert(alertsData?.bonusCodeNotAvailable || defaultLocaleAlertsData?.bonusCodeNotAvailable);
+        showAlert(alertsData?.bonus?.bonusCodeNotAvailable || defaultLocaleAlertsData?.bonus?.bonusCodeNotAvailable);
       }
     },
 
@@ -92,12 +93,12 @@ export const useBonusStore = defineStore('bonusStore', {
       }
     },
 
-    bonusCodeSocketTrigger(webSocketResponse:WebSocketResponseInterface):void {
-      const bonusCodeData: Maybe<BonusCodeInterface> = webSocketResponse.data.playerBonusCode;
+    bonusCodeSocketTrigger(webSocketResponse:IWebSocketResponse):void {
+      const bonusCodeData: Maybe<IBonusCode> = webSocketResponse.data.playerBonusCode;
       this.showBonusCodeNotification(bonusCodeData?.status);
     },
 
-    updatePlayerBonusList(bonusData: PlayerBonusInterface):void {
+    updatePlayerBonusList(bonusData: IPlayerBonus):void {
       if (bonusData.status === 1) this.playerBonuses = [...this.playerBonuses, bonusData];
       else if (bonusData.status === 2) {
         this.playerBonuses = this.playerBonuses.map((bonus) => {
@@ -109,7 +110,7 @@ export const useBonusStore = defineStore('bonusStore', {
       }
     },
 
-    updatePlayerFreeSpinsList(freeSpinData: PlayerFreeSpinInterface):void {
+    updatePlayerFreeSpinsList(freeSpinData: IPlayerFreeSpin):void {
       if (freeSpinData.status === 1) this.playerFreeSpins = [...this.playerFreeSpins, freeSpinData];
       else if (freeSpinData.status === 2) {
         this.playerFreeSpins = this.playerFreeSpins.map((freeSpin) => {
@@ -121,8 +122,8 @@ export const useBonusStore = defineStore('bonusStore', {
       }
     },
 
-    bonusesSocketTrigger(webSocketResponse:WebSocketResponseInterface):void {
-      const bonusData: Maybe<PlayerBonusInterface> = webSocketResponse.data.playerBonus;
+    bonusesSocketTrigger(webSocketResponse:IWebSocketResponse):void {
+      const bonusData: Maybe<IPlayerBonus> = webSocketResponse.data.playerBonus;
       if (!bonusData) return;
 
       const { showAlert } = useLayoutStore();
@@ -146,15 +147,15 @@ export const useBonusStore = defineStore('bonusStore', {
         return message.replace('{amount}', `<b>${formattedAmount.amount} ${formattedAmount.currency}</b>`);
       };
 
-      const alertData = alertsData?.[alertsKey[`${status}-${result}`]]
-        || defaultLocaleAlertsData?.[alertsKey[`${status}-${result}`]];
+      const alertData = alertsData?.bonus?.[alertsKey[`${status}-${result}`]]
+        || defaultLocaleAlertsData?.bonus?.[alertsKey[`${status}-${result}`]];
 
       this.updatePlayerBonusList(bonusData);
       if (alertData) showAlert({ ...alertData, description: transformMessage(alertData?.description) });
     },
 
-    async freeSpinsSocketTrigger(webSocketResponse: WebSocketResponseInterface):Promise<void> {
-      const freeSpinData: Maybe<PlayerFreeSpinInterface> = webSocketResponse.data.playerFreespin;
+    async freeSpinsSocketTrigger(webSocketResponse: IWebSocketResponse):Promise<void> {
+      const freeSpinData: Maybe<IPlayerFreeSpin> = webSocketResponse.data.playerFreespin;
       if (!freeSpinData) return;
 
       const { showAlert } = useLayoutStore();
@@ -178,7 +179,7 @@ export const useBonusStore = defineStore('bonusStore', {
 
       const { getGamesInfo } = useCoreGamesApi();
       const { localizePath } = useProjectMethods();
-      let gameInfo: GameInterface
+      let gameInfo: IGame
       try {
         gameInfo = await getGamesInfo(gameId);
       } catch {
@@ -195,8 +196,8 @@ export const useBonusStore = defineStore('bonusStore', {
         return editedMessage;
       };
 
-      const alertData = alertsData?.[alertsKey[`${status}-${result}`]]
-        || defaultLocaleAlertsData?.[alertsKey[`${status}-${result}`]];
+      const alertData = alertsData?.freeSpin?.[alertsKey[`${status}-${result}`]]
+        || defaultLocaleAlertsData?.freeSpin?.[alertsKey[`${status}-${result}`]];
 
       this.updatePlayerFreeSpinsList(freeSpinData);
       if (alertData) showAlert({ ...alertData, description: transformMessage(alertData?.description) });

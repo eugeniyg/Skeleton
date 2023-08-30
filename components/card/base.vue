@@ -35,7 +35,6 @@
           tag-name="span"
           @click="openGame(false)"
         >
-          <!--{{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.demoButton') }}-->
           Demo
         </button-base>
 

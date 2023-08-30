@@ -46,7 +46,20 @@
   };
 
   const globalStore = useGlobalStore();
-  const { errorPageContent, defaultLocaleErrorPageContent } = storeToRefs(globalStore);
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
+
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    queryContent(currentLocale.value?.code as string, 'pages', 'error').findOne(),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : queryContent(defaultLocale.value?.code as string, 'pages', 'error').findOne()
+  ]);
+
+
+  const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent('page-controls')
+    .where({ locale: { $in: contentLocalesArray.value } })
+    .only(['locale', 'bettingPage'])
+    .find());
+
 
   const { localizePath, getContent } = useProjectMethods();
   const goHome = () => clearError({

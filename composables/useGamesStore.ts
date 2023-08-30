@@ -1,23 +1,23 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import {
-  CollectionInterface,
-  GameInterface,
-  GameProviderInterface,
-  WebSocketResponseInterface,
-  WinnerInterface,
+  ICollection,
+  IGame,
+  IGameProvider,
+  IWinner,
+  IWebSocketResponse
 } from '@platform/frontend-core/dist/module';
 import throttle from 'lodash/throttle';
 
-interface GamesStoreStateInterface {
-  gameProviders: GameProviderInterface[],
-  gameCollections: CollectionInterface[],
-  favoriteGames: GameInterface[],
+interface IGamesStoreState {
+  gameProviders: IGameProvider[],
+  gameCollections: ICollection[],
+  favoriteGames: IGame[],
   winnersSubscription: any,
-  latestWinners: WinnerInterface[]
+  latestWinners: IWinner[]
 }
 
 export const useGamesStore = defineStore('gamesStore', {
-  state: ():GamesStoreStateInterface => ({
+  state: ():IGamesStoreState => ({
     gameProviders: [],
     gameCollections: [],
     favoriteGames: [],
@@ -26,14 +26,14 @@ export const useGamesStore = defineStore('gamesStore', {
   }),
 
   getters: {
-    providersSelectOptions(state):GameProviderInterface[] {
+    providersSelectOptions(state):IGameProvider[] {
       return state.gameProviders.map((provider) => ({
         ...provider,
         code: provider.id,
         value: provider.name,
       }));
     },
-    currentLocationCollections(state):CollectionInterface[] {
+    currentLocationCollections(state):ICollection[] {
       const globalStore = useGlobalStore();
 
       if (!globalStore.headerCountry) return state.gameCollections;
@@ -48,13 +48,12 @@ export const useGamesStore = defineStore('gamesStore', {
     async getGameProviders(): Promise<void> {
       const { getGameProviders } = useCoreGamesApi();
       const data = await getGameProviders();
-      this.gameProviders = data.filter((provider: GameProviderInterface) => provider.identity !== 'betsy');
+      this.gameProviders = data.filter((provider: IGameProvider) => provider.identity !== 'betsy');
     },
 
     async getGameCollections(): Promise<void> {
       const { getGameCollections } = useCoreGamesApi();
-      const data = await getGameCollections();
-      this.gameCollections = data;
+      this.gameCollections = await getGameCollections();
     },
 
     async getFavoriteGames(): Promise<void> {
@@ -79,11 +78,11 @@ export const useGamesStore = defineStore('gamesStore', {
       this.winnersSubscription = createSubscription(`game:winners:${globalStore.isMobile ? 'mobile' : 'desktop'}:${profileStore.profile?.country || globalStore.headerCountry || 'UA'}`, this.updateWinners);
     },
 
-    setWinners(winners: WinnerInterface[]):void {
+    setWinners(winners: IWinner[]):void {
       this.latestWinners = winners.slice(0, 12);
     },
 
-    updateWinners(winnerData:WebSocketResponseInterface):void {
+    updateWinners(winnerData:IWebSocketResponse):void {
       const that = this;
       throttle(() => {
         const { winner } = winnerData.data;

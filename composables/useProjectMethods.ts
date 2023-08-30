@@ -1,8 +1,8 @@
-import { GameImagesInterface } from '@platform/frontend-core/dist/module';
+import { IGameImages } from '@platform/frontend-core';
 import get from 'lodash/get';
 import * as projectRules from './validationRules';
 import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
-import { SeoContentInterface } from '@skeleton/types';
+import { ISeoBlock } from "~/types";
 
 export const useProjectMethods = () => {
   const createValidationRules = (fields:any[], includeContext?:boolean):any => {
@@ -29,8 +29,8 @@ export const useProjectMethods = () => {
   };
 
   const getFormRules = (fieldsRules:any):any => {
-    const { validationMessages, defaultLocaleValidationMessages } = useGlobalStore();
-    const messages = { ...defaultLocaleValidationMessages, ...validationMessages };
+    const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
+    const messages = { ...fieldsSettings?.validationMessages, ...defaultLocaleFieldsSettings?.validationMessages };
     const { createFormRules } = useCoreMethods();
     return createFormRules(fieldsRules, projectRules, messages);
   };
@@ -65,7 +65,7 @@ export const useProjectMethods = () => {
     if (preloaderEl) preloaderEl.classList.value = 'preloader';
   };
 
-  const getImageUrl = (imageData: GameImagesInterface, orientation: string):string => {
+  const getImageUrl = (imageData: IGameImages, orientation: string):string => {
     if (orientation === 'vertical') return imageData['200x300']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
     return imageData['200x200']['3x'] || imageData['200x200']['2x'] || imageData['200x200']['1x'];
   };
@@ -117,7 +117,7 @@ export const useProjectMethods = () => {
     return { currency: currencyConfig.code, amount: amount / (subCurrencyConfig?.subunitToUnit || 1) };
   };
 
-  const setPageSeo = (seoData: Maybe<SeoContentInterface>):void => {
+  const setPageSeo = (seoData: Maybe<ISeoBlock>):void => {
     const globalStore = useGlobalStore();
     useHead({
       title: seoData?.title || globalStore.globalSeo?.title,
@@ -134,18 +134,6 @@ export const useProjectMethods = () => {
     if (a > b) return 1;
     if (a < b) return -1;
     return 0;
-  };
-
-  const findLocalesContentData = (responseData?: any[]|null):any => {
-    if (!responseData) return {};
-
-    const globalStore = useGlobalStore();
-
-    const currentLocaleData = responseData.find((contentData) => contentData.locale === globalStore.currentLocale?.code);
-    if (globalStore.currentLocale?.code === globalStore.defaultLocale?.code) return { currentLocaleData };
-
-    const defaultLocaleData = responseData.find((contentData) => contentData.locale === globalStore.defaultLocale?.code);
-    return { currentLocaleData, defaultLocaleData };
   };
 
   const getContent = (
@@ -191,7 +179,6 @@ export const useProjectMethods = () => {
     setPageSeo,
     sortByAlphabet,
     getContent,
-    findLocalesContentData,
     getEquivalentAccount,
   };
 };

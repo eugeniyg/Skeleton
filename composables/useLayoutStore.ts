@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useNotification } from '@kyvg/vue3-notification';
-import { AlertInterface } from '@skeleton/types';
+import { IAlert } from "~/types";
 
-interface ModalsInterface extends Record<string, any> {
+interface IModals extends Record<string, any> {
   register: boolean,
   registerCancel: boolean,
   signIn: boolean,
@@ -17,7 +17,7 @@ interface ModalsInterface extends Record<string, any> {
   fiat: boolean,
 }
 
-interface ModalsUrlsInterface extends Record<string, any> {
+interface IModalsUrls extends Record<string, any> {
   register: string,
   signIn: string,
   success: string,
@@ -27,19 +27,19 @@ interface ModalsUrlsInterface extends Record<string, any> {
   resetPass: string,
 }
 
-interface LayoutStoreStateInterface extends Record<string, any>{
+interface ILayoutStoreState extends Record<string, any>{
   isUserNavOpen: boolean,
   isDrawerOpen: boolean,
   isCurrencyNavOpen: boolean,
   isDrawerCompact: boolean,
   showCookiePopup: boolean,
-  modals: ModalsInterface,
-  modalsUrl: ModalsUrlsInterface,
+  modals: IModals,
+  modalsUrl: IModalsUrls,
   lastNotificationTime: number,
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
-  state: (): LayoutStoreStateInterface => ({
+  state: (): ILayoutStoreState => ({
       isUserNavOpen: false,
       isDrawerOpen: false,
       isCurrencyNavOpen: false,
@@ -71,7 +71,7 @@ export const useLayoutStore = defineStore('layoutStore', {
   }),
 
   actions: {
-    showAlert(props: Maybe<AlertInterface>): void {
+    showAlert(props: Maybe<IAlert>): void {
       const { notify } = useNotification();
       const currentTime = Date.now();
       const timeDiff = currentTime - this.lastNotificationTime;

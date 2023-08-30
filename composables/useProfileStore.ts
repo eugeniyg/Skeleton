@@ -1,18 +1,18 @@
 import { defineStore } from 'pinia';
 import {
-  ProfileInterface,
-  AuthorizationResponseInterface,
-} from '@platform/frontend-core/dist/module';
+  IProfile,
+  IAuthorizationResponse,
+} from '@platform/frontend-core';
 
-interface ProfileStoreStateInterface {
+interface IProfileStoreState {
   isLoggedIn: boolean,
   sessionId: string,
   resentVerifyEmail: boolean,
-  profile: Maybe<ProfileInterface>,
+  profile: Maybe<IProfile>,
 }
 
 export const useProfileStore = defineStore('profileStore', {
-  state: (): ProfileStoreStateInterface => ({
+  state: (): IProfileStoreState => ({
     isLoggedIn: false,
     sessionId: '',
     resentVerifyEmail: false,
@@ -26,7 +26,7 @@ export const useProfileStore = defineStore('profileStore', {
   },
 
   actions: {
-    startSession(authData: AuthorizationResponseInterface):void {
+    startSession(authData: IAuthorizationResponse):void {
       this.profile = authData.profile;
       const { reconnectSocket } = useWebSocket();
       reconnectSocket();
@@ -93,7 +93,7 @@ export const useProfileStore = defineStore('profileStore', {
       this.startProfileDependencies();
       const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
-      showAlert(alertsData?.successRegistration || defaultLocaleAlertsData?.successRegistration);
+      showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
     },
 
     async getProfileData():Promise<void> {
@@ -103,7 +103,7 @@ export const useProfileStore = defineStore('profileStore', {
       this.isLoggedIn = true;
     },
 
-    setProfileData(data: ProfileInterface):void {
+    setProfileData(data: IProfile):void {
       this.profile = data;
     },
 
@@ -126,9 +126,9 @@ export const useProfileStore = defineStore('profileStore', {
       const { resendVerifyEmail } = useCoreProfileApi();
       try {
         await resendVerifyEmail();
-        showAlert(alertsData?.resentVerification || defaultLocaleAlertsData?.resentVerification);
+        showAlert(alertsData?.profile?.resentVerification || defaultLocaleAlertsData?.profile?.resentVerification);
       } catch {
-        showAlert(alertsData?.somethingWrong || defaultLocaleAlertsData?.somethingWrong);
+        showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
       } finally {
         this.resentVerifyEmail = true;
       }
