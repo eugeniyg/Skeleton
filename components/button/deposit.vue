@@ -5,8 +5,7 @@
     @click="makeActive"
     v-click-outside="makeInactive"
   >
-    <atomic-icon id="plus"/>
-
+    <atomic-icon id="wallet"/>
     <span>
       {{ getContent(headerContent, defaultLocaleHeaderContent, 'depositButton') }}
     </span>
