@@ -7,7 +7,7 @@
   >
     <atomic-icon id="wallet"/>
     <span>
-      {{ getContent(headerContent, defaultLocaleHeaderContent, 'depositButton') }}
+      {{ getContent(layoutData, defaultLocaleLayoutData, 'header.depositButton') }}
     </span>
   </button>
 </template>
@@ -15,7 +15,7 @@
 <script setup lang="ts">
   const { openDepositModal } = useLayoutStore();
   const { getContent } = useProjectMethods();
-  const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
+  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const isActive = ref<boolean>(false);
 
   const makeActive = () => {

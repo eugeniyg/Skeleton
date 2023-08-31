@@ -3,29 +3,29 @@
     <button-base class="nav-mob__item" @click.prevent="layoutStore.toggleDrawer()">
       <atomic-icon id="menu"/>
       <span class="nav-mob__text">
-        {{ getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'menuLabel') }}
+        {{ getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.menuLabel') }}
       </span>
     </button-base>
 
     <button-base
-      v-if="getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0')"
+      v-if="getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem')"
       class="nav-mob__item"
-      :class="{ active: $route.path === localizePath(getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.url')) || $route.query.category}"
-      @click="clickItem(getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.url'))"
+      :class="{ active: $route.path === localizePath(getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem.url')) || $route.query.category }"
+      @click="clickItem(getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem.url'))"
     >
       <atomic-icon
-        :id="getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.icon')"
+        :id="getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem.icon')"
       />
       <span class="nav-mob__text">
-        {{ getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.label') }}
+        {{ getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem.label') }}
       </span>
     </button-base>
 
     <button-base class="nav-mob__item is-accent" @click.prevent="clickMainButton">
       <atomic-icon :id="isLoggedIn ? 'wallet' : 'user-new'"/>
       <span class="nav-mob__text">
-        {{ isLoggedIn ? getContent(headerContent, defaultLocaleHeaderContent, 'depositButton')
-        : getContent(headerContent, defaultLocaleHeaderContent, 'registrationButton') }}
+        {{ isLoggedIn ? getContent(layoutData, defaultLocaleLayoutData, 'header.depositButton')
+        : getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton') }}
       </span>
     </button-base>
 
@@ -52,10 +52,8 @@
   const { showModal, openDepositModal } = useLayoutStore();
   const { isGamePage } = storeToRefs(layoutStore);
   const {
-    mobileMenuContent,
-    defaultLocaleMobileMenuContent,
-    headerContent,
-    defaultLocaleHeaderContent,
+    layoutData,
+    defaultLocaleLayoutData
   } = useGlobalStore();
   const { localizePath, getContent } = useProjectMethods();
   const clickItem = (url: string):void => {
@@ -69,8 +67,10 @@
   };
 
   const linksList = computed(() => {
-    if (mobileMenuContent?.items?.length) return mobileMenuContent.items;
-    return defaultLocaleMobileMenuContent?.items || [];
+    const currentLocaleItems = Object.values(layoutData?.mobileMenu?.items || {});
+    const defaultLocaleItems = Object.values(defaultLocaleLayoutData?.mobileMenu?.items || {});
+    if (currentLocaleItems.length) return currentLocaleItems;
+    return defaultLocaleItems;
   });
 </script>
 

@@ -36,18 +36,18 @@
 </template>
 
 <script setup lang="ts">
-  import { SecurityFileInterface } from '@platform/frontend-core/dist/module';
-  import { ProfileDocumentsInterface } from '@skeleton/types';
+  import { ISecurityFile } from '@platform/frontend-core';
+  import { IProfileSecurity } from '~/types';
 
   const props = defineProps<{
     type: 'identity'|'address'|'payment',
     loadingFields: string[],
     formData: {
-      identity_front?: SecurityFileInterface[],
-      identity_back?: SecurityFileInterface[],
-      identity_selfie_id?: SecurityFileInterface[],
-      address?: SecurityFileInterface[],
-      payment?: SecurityFileInterface[],
+      identity_front?: ISecurityFile[],
+      identity_back?: ISecurityFile[],
+      identity_selfie_id?: ISecurityFile[],
+      address?: ISecurityFile[],
+      payment?: ISecurityFile[],
     },
   }>();
 
@@ -56,8 +56,8 @@
   const excerpt = ref<HTMLElement>();
   const isShowMoreBtn = ref<boolean>(false);
   const isTextExpanded = ref<boolean>(false);
-  const documentsContent: Maybe<ProfileDocumentsInterface> = inject('documentsContent');
-  const defaultLocaleDocumentsContent: Maybe<ProfileDocumentsInterface> = inject('defaultLocaleDocumentsContent');
+  const documentsContent: Maybe<IProfileSecurity['documents']> = inject('documentsContent');
+  const defaultLocaleDocumentsContent: Maybe<IProfileSecurity['documents']> = inject('defaultLocaleDocumentsContent');
   const { getContent } = useProjectMethods();
 
   const textHasDots = (el: HTMLElement): boolean => el.scrollHeight > el.offsetHeight;

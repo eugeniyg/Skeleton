@@ -28,30 +28,30 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { SecurityFileInterface } from '@platform/frontend-core/dist/module';
+  import { ISecurityFile } from '@platform/frontend-core';
 
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
-  const identityFormData = reactive<{[key:string]:SecurityFileInterface[]}>({
+  const identityFormData = reactive<{[key:string]:ISecurityFile[]}>({
     identity_front: [],
     identity_back: [],
     identity_selfie_id: [],
   });
-  const addressFormData = reactive<{[key:string]:SecurityFileInterface[]}>({
+  const addressFormData = reactive<{[key:string]:ISecurityFile[]}>({
     address: [],
   });
-  const paymentFormData = reactive<{[key:string]:SecurityFileInterface[]}>({
+  const paymentFormData = reactive<{[key:string]:ISecurityFile[]}>({
     payment: [],
   });
 
-  const addFileData = (field: string, file:SecurityFileInterface):void => {
+  const addFileData = (field: string, file:ISecurityFile):void => {
     if (identityFormData.hasOwnProperty(field)) identityFormData[field].push(file);
     else if (addressFormData.hasOwnProperty(field)) addressFormData[field].push(file);
     else if (paymentFormData.hasOwnProperty(field)) paymentFormData[field].push(file);
   };
 
-  const replaceFileData = (field: string, file:SecurityFileInterface):void => {
+  const replaceFileData = (field: string, file:ISecurityFile):void => {
     if (identityFormData.hasOwnProperty(field)) {
       const lastElIndex = identityFormData[field].length - 1;
       identityFormData[field][lastElIndex] = file;
@@ -96,7 +96,7 @@
         paymentFormData[fieldName] = paymentFormData[fieldName].filter((file) => file.id !== fileId);
       }
     } catch {
-      showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
+      showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
   };
 

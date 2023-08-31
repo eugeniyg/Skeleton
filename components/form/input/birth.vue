@@ -7,7 +7,7 @@
 
     <form-input-dropdown
       name="birth-day"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'birthdate.placeholderDay') || ''"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderDay') || ''"
       :is-disabled="props.isDisabled"
       v-model:value="selected.day"
       :options="days"
@@ -18,7 +18,7 @@
 
     <form-input-dropdown
       name="birth-month"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'birthdate.placeholderMonth') || ''"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderMonth') || ''"
       :is-disabled="props.isDisabled"
       :options="months"
       v-model:value="selected.month"
@@ -29,7 +29,7 @@
 
     <form-input-dropdown
       name="birth-year"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'birthdate.placeholderYear') || ''"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderYear') || ''"
       :is-disabled="props.isDisabled"
       :options="years"
       v-model:value="selected.year"
@@ -67,8 +67,8 @@
   });
 
   const {
-    fieldsContent,
-    defaultLocaleFieldsContent,
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent
   } = useGlobalStore();

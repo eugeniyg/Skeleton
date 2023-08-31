@@ -23,13 +23,13 @@
 </template>
 
 <script setup lang="ts">
-  import { PlayerLimitInterface } from '@platform/frontend-core/dist/module';
+  import { IPlayerLimit } from '@platform/frontend-core';
   import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
     periods: {
       title: string,
-      items: PlayerLimitInterface[]
+      items: IPlayerLimit[]
     }[],
     isShowEdit: boolean,
   }>();

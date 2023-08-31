@@ -84,7 +84,7 @@
     const profileStore = useProfileStore();
     if (profileStore.profile?.status === 2 && activeAccountType.value === 'fiat') {
       const { showAlert } = useLayoutStore();
-      showAlert(alertsData?.limitedDeposit || defaultLocaleAlertsData?.limitedDeposit);
+      showAlert(alertsData?.limit?.limitedDeposit || defaultLocaleAlertsData?.limit?.limitedDeposit);
       return;
     }
 

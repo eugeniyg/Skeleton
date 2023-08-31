@@ -1,34 +1,34 @@
 <template>
   <div class="bonus-page">
-    <div class="header" :data-bg="getContent(pageContent, defaultLocalePageContent, 'backgroundColor') || 'gray'">
+    <div class="header" :data-bg="pageContent?.backgroundColor">
       <img
-        v-if="getContent(pageContent, defaultLocalePageContent, 'image')"
+        v-if="pageContent?.image"
         class="img"
-        :src="getContent(pageContent, defaultLocalePageContent, 'image')"
+        :src="pageContent.image"
         alt=""
       />
     </div>
 
     <div class="content">
-      <h1 class="title">{{ getContent(pageContent, defaultLocalePageContent, 'title') }}</h1>
-      <h3 class="sub-title">{{ getContent(pageContent, defaultLocalePageContent, 'subtitle') }}</h3>
+      <h1 class="title">{{ pageContent?.title }}</h1>
+      <h3 class="sub-title">{{ pageContent?.subtitle }}</h3>
       <atomic-text-editor
         class="description"
-        :content="getContent(pageContent, defaultLocalePageContent, 'description') || ''"
+        :content="pageContent?.description || ''"
       />
 
       <button-base
         type="primary"
         size="lg"
-        @click="clickButton(getContent(pageContent, defaultLocalePageContent, 'button.url'))"
+        @click="clickButton(pageContent?.button?.url)"
       >
-        {{ getContent(pageContent, defaultLocalePageContent, 'button.label') }}
+        {{ pageContent?.button?.label }}
       </button-base>
 
       <atomic-detail
-        v-if="getContent(pageContent, defaultLocalePageContent, 'termsLabel') && getContent(pageContent, defaultLocalePageContent, 'termsContent')"
-        :title="getContent(pageContent, defaultLocalePageContent, 'termsLabel')"
-        :content="getContent(pageContent, defaultLocalePageContent, 'termsContent')"
+        v-if="pageContent?.termsLabel && pageContent?.termsContent"
+        :title="pageContent.termsLabel"
+        :content="pageContent.termsContent"
       />
     </div>
 
@@ -38,30 +38,26 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { BonusPageInterface } from '@skeleton/types';
+  import { IBonusPage } from "~/types";
 
-  const pageContent = ref<BonusPageInterface|undefined>(undefined);
-  const defaultLocalePageContent = ref<BonusPageInterface|undefined>(undefined);
+  const pageContent = ref<IBonusPage|undefined>(undefined);
   const route = useRoute();
   const { pageUrl } = route.params;
   const globalStore = useGlobalStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
+  const { currentLocale } = storeToRefs(globalStore);
 
   const {
     localizePath,
-    setPageSeo,
-    findLocalesContentData,
-    getContent,
+    setPageSeo
   } = useProjectMethods();
-  const contentRequest = await useAsyncData('bonusesPageContent', () => queryContent('bonus')
-    .where({ locale: { $in: contentLocalesArray.value }, pageUrl }).find());
 
-  if (contentRequest.error.value || !contentRequest.data.value?.length) {
-    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  const { data: { value: bonusPageContent } }: { data: { value: IBonusPage }} = await useAsyncData('bonusesPageContent',
+    () => queryContent(currentLocale.value?.code as string, 'bonus', pageUrl as string).findOne());
+
+  if (bonusPageContent) {
+    pageContent.value = bonusPageContent;
   } else {
-    const { currentLocaleData, defaultLocaleData } = findLocalesContentData(contentRequest.data.value);
-    pageContent.value = currentLocaleData as BonusPageInterface;
-    defaultLocalePageContent.value = defaultLocaleData as BonusPageInterface;
+    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
   }
 
   setPageSeo(pageContent.value?.seo);

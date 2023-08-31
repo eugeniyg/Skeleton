@@ -31,24 +31,24 @@
   <atomic-empty
     v-else-if="!loading"
     variant="bets-history"
-    :title="props.content.spins.empty.title"
-    :subTitle="props.content.spins.empty.description"
+    :title="props.content?.empty?.title"
+    :subTitle="props.content?.empty?.description"
   />
 </template>
 
 <script setup lang="ts">
-  import { PaginationMetaInterface, SpinHistoryInterface } from '@platform/frontend-core/dist/module';
-  import { HistoryTabInterface } from '@skeleton/types';
+  import { IPaginationMeta, ISpinHistory } from '@platform/frontend-core';
   import dayjs from "dayjs";
+  import { ISpinsHistory } from '~/types';
 
   const props = defineProps<{
-    content: HistoryTabInterface,
+    content: ISpinsHistory,
   }>();
 
-  const headTitles = Object.values(props.content.spins.tableColumns || {});
+  const headTitles = Object.values(props.content?.tableColumns || {});
   const loading = ref<boolean>(true);
-  const spins = ref<SpinHistoryInterface[]>([]);
-  const pageMeta = ref<PaginationMetaInterface>();
+  const spins = ref<ISpinHistory[]>([]);
+  const pageMeta = ref<IPaginationMeta>();
 
   const { getSpinsHistory } = useCoreGamesApi();
   const spinsRequest = async (page: number = 1):Promise<void> => {

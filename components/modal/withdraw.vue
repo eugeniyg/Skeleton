@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { PaymentMethodInterface } from '@platform/frontend-core/dist/module';
+  import { IPaymentMethod } from '@platform/frontend-core';
   import { VueFinalModal } from 'vue-final-modal';
 
   const layoutStore = useLayoutStore();
@@ -43,7 +43,7 @@
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
   const { withdrawMethods } = storeToRefs(walletStore);
-  const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
+  const currentMethod = ref<IPaymentMethod>({} as IPaymentMethod);
 
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();

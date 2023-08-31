@@ -2,8 +2,8 @@
   <form class="form-withdraw">
     <form-input-dropdown
       v-if="networkSelectOptions?.length"
-      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.label')"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.placeholder')"
+      :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.label')"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.placeholder')"
       v-model:value="state.selectedNetwork"
       :options="networkSelectOptions"
       class="dropdown-network"
@@ -13,7 +13,7 @@
 
     <div class="dropdown-network__info"
          v-if="networkSelectOptions?.length && !state.selectedNetwork"
-         v-html="marked.parse(getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.info'))"
+         v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
     />
 
     <div class="form-withdraw__content" :class="{'is-blured': networkSelectOptions?.length && !state.selectedNetwork }">
@@ -33,9 +33,9 @@
           v-if="field.fieldType === 'input'"
           :key="field.key"
           :name="field.key"
-          :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.key}.label`) || ''"
+          :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.label`) || ''"
           type="text"
-          :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.key}.placeholder`) || ''"
+          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.placeholder`) || ''"
           v-model:value="withdrawFormData[field.key]"
           @focus="onFocus(field.key)"
           @input="v$[field.key]?.$touch()"
@@ -60,13 +60,13 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
-  import { PaymentFieldInterface } from '@platform/frontend-core';
+  import { IPaymentField } from '@platform/frontend-core';
   import { marked } from 'marked';
 
   const props = defineProps<{
     amountMax: number,
     amountMin: number,
-    fields: PaymentFieldInterface[],
+    fields: IPaymentField[],
     method: string
   }>();
 
@@ -76,8 +76,8 @@
     defaultLocalePopupsData,
     alertsData,
     defaultLocaleAlertsData,
-    fieldsContent,
-    defaultLocaleFieldsContent,
+    fieldsSettings,
+    defaultLocaleFieldsSettings
   } = storeToRefs(globalStore);
 
   const walletStore = useWalletStore();
@@ -222,7 +222,7 @@
   function getNetworkParams(networkId: string) {
     const networkMethod = withdrawMethods.value.find((method) => method?.fields?.length > 1);
     if (networkMethod) {
-      const select = networkMethod.fields.find((item: PaymentFieldInterface) => item.fieldType === 'select');
+      const select = networkMethod.fields.find((item: IPaymentField) => item.fieldType === 'select');
       if (select && select?.options) {
         return select.options.map((option: PaymentFieldOptionsInterface) => ({
           ...option,
@@ -256,12 +256,12 @@
     try {
       await withdrawAccount(params);
       closeModal('withdraw');
-      showAlert(alertsData.value?.withdrawalProcessed || defaultLocaleAlertsData.value?.withdrawalProcessed);
+      showAlert(alertsData.value?.wallet?.withdrawalProcessed || defaultLocaleAlertsData.value?.wallet?.withdrawalProcessed);
     } catch (err: any) {
       if (err.response?.status === 422) {
         serverFormErrors.value = err.data?.error?.fields;
       } else {
-        showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
+        showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
       }
       isSending.value = false;
     }

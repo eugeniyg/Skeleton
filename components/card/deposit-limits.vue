@@ -53,10 +53,8 @@
 </template>
 
 <script setup lang="ts">
-  import { UpdateLimitInterface } from '@platform/frontend-core/dist/module';
-
+  import { IUpdateLimit } from '@platform/frontend-core';
   import { storeToRefs } from 'pinia';
-  import { useGlobalStore } from '~/composables/useGlobalStore';
 
   const emit = defineEmits([
     'open-limit-modal',
@@ -78,7 +76,7 @@
 
   const definition = 3;
 
-  const openEditModal = (payload: UpdateLimitInterface) => {
+  const openEditModal = (payload: IUpdateLimit) => {
     emit('open-edit-modal', payload);
   };
 

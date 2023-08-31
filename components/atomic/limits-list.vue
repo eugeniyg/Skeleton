@@ -44,12 +44,12 @@
 </template>
 
 <script setup lang="ts">
-  import { PlayerLimitInterface } from '@platform/frontend-core/dist/module';
+  import { IPlayerLimit } from '@platform/frontend-core';
   import { storeToRefs } from 'pinia';
   import dayjs from "dayjs";
 
   const props = defineProps<{
-    limits: PlayerLimitInterface[]
+    limits: IPlayerLimit[]
   }>();
 
   const limitsStore = useLimitsStore();
@@ -73,10 +73,10 @@
     await deletePlayerLimit(limitId);
     await getLimits();
 
-    showAlert(alertsData.value?.coolingOfLimitCancel || defaultLocaleAlertsData.value?.coolingOfLimitCancel);
+    showAlert(alertsData.value?.limit?.coolingOfLimitCancel || defaultLocaleAlertsData.value?.limit?.coolingOfLimitCancel);
   };
 
-  const periodLessDay = (limitData: PlayerLimitInterface) => {
+  const periodLessDay = (limitData: IPlayerLimit) => {
     const diffDays = dayjs(limitData.expiredAt).diff(dayjs(), 'day');
     return diffDays < 1;
   }

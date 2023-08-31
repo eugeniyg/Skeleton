@@ -1,5 +1,8 @@
 <template>
-  <div v-if="globalComponentsContent?.turbogames?.items?.length && globalComponentsContent?.turbogames?.isShow" class="group-turbo">
+  <div
+    v-if="globalComponentsContent?.turbogames?.items?.length && globalComponentsContent?.turbogames?.isShow"
+    class="group-turbo"
+  >
     <atomic-icon
       v-if="globalComponentsContent?.turbogames?.icon"
       :id="globalComponentsContent?.turbogames?.icon || ''"

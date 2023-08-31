@@ -38,9 +38,7 @@
 </template>
 
 <script setup lang="ts">
-  import {
-    GameInterface, PaginationMetaInterface,
-  } from '@platform/frontend-core/dist/module';
+  import { IGame, IPaginationMeta } from '@platform/frontend-core';
 
   const props = defineProps({
     showArrows: {
@@ -56,8 +54,8 @@
   const prevDisabled = ref<boolean>(true);
   const nextDisabled = ref<boolean>(true);
   const showArrowButtons = ref<boolean>(props.showArrows);
-  const games = ref<GameInterface[]>([]);
-  const pageMeta = ref<PaginationMetaInterface>();
+  const games = ref<IGame[]>([]);
+  const pageMeta = ref<IPaginationMeta>();
   const { getFilteredGames } = useCoreGamesApi();
 
   const scrollHandler = (): void => {

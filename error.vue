@@ -38,12 +38,12 @@
   });
 
   const pageStaticContent = {
-    // title: 'Something went wrong',
-    // description: 'The page you are trying to access does not exist or has been moved. Try going back to our homepage.',
-    // button: {
-    //   label: 'Homepage',
-    //   url: '/',
-    // },
+    title: 'Something went wrong',
+    description: 'The page you are trying to access does not exist or has been moved. Try going back to our homepage.',
+    button: {
+      label: 'Homepage',
+      url: '/',
+    },
   };
 
   const globalStore = useGlobalStore();

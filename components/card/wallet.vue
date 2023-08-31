@@ -41,14 +41,14 @@
 </template>
 
 <script setup lang="ts">
-  import { ProfileWalletInterface } from '@skeleton/types';
+  import { IProfileWallet } from '~/types';
 
   const props = defineProps<{
     id: string,
     balance: number,
     currency: string,
     status: number,
-    content: ProfileWalletInterface
+    content: IProfileWallet
   }>();
 
   const isChecked = ref<boolean>(false);

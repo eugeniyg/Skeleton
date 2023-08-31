@@ -5,7 +5,8 @@ import {
   IAlertsContent,
   ICategory,
   IErrorPage,
-  IFieldControls, IFieldsSettingsContent,
+  IFieldControls,
+  IFieldsSettingsContent,
   IGlobalComponentsContent,
   IGlobalSeo,
   ILayoutContent,
@@ -120,8 +121,8 @@ export const useGlobalStore = defineStore('globalStore', {
     gameCategoriesObj(state):{ [key: string]: ICategory } {
       const categoriesObj:any = {};
 
-      const categoriesContent = state.globalComponentsContent?.categories
-          || state.defaultLocaleGlobalComponentsContent?.categories;
+      const categoriesContent = state.globalComponentsContent?.categories?.categoriesList
+          || state.defaultLocaleGlobalComponentsContent?.categories?.categoriesList;
 
       if (categoriesContent) {
         categoriesContent.forEach((category) => {

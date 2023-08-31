@@ -83,7 +83,7 @@
   const getItemsData = () => {
     const offset = 8;
     return [...document.querySelectorAll('.nav-cat-item')]
-      .map((item) => item.offsetWidth + offset)
+      .map((item:any) => item.offsetWidth + offset)
       .reduce((acc, curr) => {
         acc.totalWidth += curr;
         acc.width.push(acc.totalWidth);

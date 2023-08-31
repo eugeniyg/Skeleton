@@ -6,7 +6,7 @@
         :class="{'is-active':  selectedTab === 'cashBonuses'}"
         @click="changeTab('cashBonuses')"
       >
-        {{ bonusesContent.cashBonusTab }}
+        {{ props.content?.cashBonusTab }}
       </div>
 
       <div
@@ -14,44 +14,40 @@
         :class="{'is-active': selectedTab === 'freeSpins'}"
         @click="changeTab('freeSpins')"
       >
-        {{ bonusesContent.freeSpinsTab }}
+        {{ props.content?.freeSpinsTab }}
       </div>
     </div>
 
     <table-bonuses-history
       v-if="state.bonusesData.length"
       v-bind="state"
-      :content="bonusesContent"
+      :content="props.content"
       @changePage="changePage"
     />
 
     <atomic-empty
       v-else-if="!state.bonusesData.length && !state.loading"
       variant="bonuses"
-      :title="bonusesContent.empty.title"
-      :subTitle="bonusesContent.empty.description"
+      :title="props.content?.empty.title"
+      :subTitle="props.content?.empty.description"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-  import {
-    PlayerBonusInterface,
-    PaginationMetaInterface,
-  } from '@platform/frontend-core/dist/module';
-  import { HistoryBonusesInterface, HistoryTabInterface } from '@skeleton/types';
+import {IPlayerBonus, IPaginationMeta, IPlayerFreeSpin} from '@platform/frontend-core';
+  import { IBonusesHistory } from '~/types';
+  import { IPlayerBonusesRequest } from "@platform/frontend-core/dist/runtime/types/bonusTypes";
 
   const props = defineProps<{
-    content: HistoryTabInterface,
+    content: IBonusesHistory,
   }>();
-
-  const bonusesContent:HistoryBonusesInterface = props.content.bonuses;
 
   interface StateInterface {
     loading: boolean,
     tableType: 'cashBonuses'|'freeSpins',
-    bonusesData: PlayerBonusInterface[],
-    bonusesMeta: Maybe<PaginationMetaInterface>
+    bonusesData: IPlayerBonus[]|IPlayerFreeSpin[],
+    bonusesMeta: Maybe<IPaginationMeta>
   }
 
   const state = reactive<StateInterface>({
@@ -66,7 +62,7 @@
   const { getPlayerBonuses, getPlayerFreeSpins } = useCoreBonusApi();
   const getBonusesData = async (page = 1):Promise<void> => {
     state.loading = true;
-    const requestParams = {
+    const requestParams: IPlayerBonusesRequest  = {
       page,
       perPage: 10,
       sortOrder: 'desc',

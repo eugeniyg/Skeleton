@@ -13,10 +13,10 @@
 </template>
 
 <script setup lang="ts">
-  import { CtaLinkInterface } from '@skeleton/types';
+  import { ISiteSidebar } from '~/types';
 
   const props = defineProps<{
-    items: CtaLinkInterface[]
+    items: ISiteSidebar['ctaMenu']['items']
   }>();
 
   const { localizePath } = useProjectMethods();

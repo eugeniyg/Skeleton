@@ -10,9 +10,9 @@
           :key="field.name"
           type="text"
           :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
-          :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) || ''"
+          :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
           :name="field.name"
-          :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.placeholder`) || ''"
+          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
           @blur="v$[field.name]?.$touch()"
           @focus="onFocus(field.name)"
           :hint="setError(field.name)"
@@ -27,9 +27,9 @@
         :is="fieldsTypeMap[field.name].component || 'form-input-text'"
         v-model:value="registrationFormData[field.name]"
         :type="hiddenFields.includes(field.name) ? 'hidden' : fieldsTypeMap[field.name].type || 'text'"
-        :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) || ''"
+        :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
         :name="field.name"
-        :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.placeholder`) || ''"
+        :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
         :options="selectOptions[field.name]"
         :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
         :hint="setError(field.name)"
@@ -70,11 +70,11 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { FieldInterface } from '@platform/frontend-core/dist/module';
+  import { IField } from '@platform/frontend-core';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
   const props = defineProps<{
-    registrationFields: FieldInterface[]
+    registrationFields: IField[]
   }>();
 
   const hiddenFields = ['nickname', 'locale'];
@@ -87,8 +87,8 @@
   const globalStore = useGlobalStore();
   const {
     countries,
-    fieldsContent,
-    defaultLocaleFieldsContent,
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
     popupsData,
     defaultLocalePopupsData,
     headerCountry,
@@ -111,7 +111,7 @@
   const getCheckboxLabel = (fieldName: string):string|undefined => {
     if (fieldName === 'receiveEmailPromo') return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.agreeEmailLabel');
     if (fieldName === 'receiveSmsPromo') return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.agreeSmsLabel');
-    return getContent(fieldsContent.value, defaultLocaleFieldsContent.value, `${fieldName}.label`) || '';
+    return getContent(fieldsSettings.value, defaultLocaleFieldsSettings.value, `fieldsControls.${fieldName}.label`) || '';
   };
 
   const { getFormRules, createValidationRules } = useProjectMethods();

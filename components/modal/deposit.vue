@@ -26,7 +26,7 @@
             v-if="currentMethod.type === 'form'"
             v-bind="currentMethod"
           />
-          <!--          <form-deposit-additional/>-->
+
           <form-deposit-crypto
             v-if="currentMethod.type === 'address'"
             v-bind="currentMethod"
@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { PaymentMethodInterface } from '@platform/frontend-core/dist/module';
+  import { IPaymentMethod } from '@platform/frontend-core';
   import { VueFinalModal } from 'vue-final-modal';
 
   const layoutStore = useLayoutStore();
@@ -51,7 +51,7 @@
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
   const { depositMethods } = storeToRefs(walletStore);
-  const currentMethod = ref<PaymentMethodInterface>({} as PaymentMethodInterface);
+  const currentMethod = ref<IPaymentMethod>({} as IPaymentMethod);
 
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();

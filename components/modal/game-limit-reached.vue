@@ -7,11 +7,11 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('gameLimitReached')"/>
-        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.gameLimitReached.label') }}</div>
+        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'gameLimitReached.label') }}</div>
       </div>
 
       <div class="game-limit-reached__text">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.gameLimitReached.description') }}
+        {{ getContent(popupsData, defaultLocalePopupsData, 'gameLimitReached.description') }}
       </div>
 
     </div>

@@ -37,7 +37,7 @@
               :variant="sessionStatus(session)"
               :tooltip="session.closedAt ? `${dayjs(session.closedAt).format(dateFormat)}`: ''"
             >
-              {{ sessionsContent.sessionsStatuses[sessionStatus(session)] }}
+              {{ props.content?.sessionsStatuses[sessionStatus(session)] }}
             </atomic-row-status>
           </div>
 
@@ -61,23 +61,20 @@
 
 <script setup lang="ts">
   import parser from 'ua-parser-js';
-  import {
-    PaginationMetaInterface, SessionInterface,
-  } from '@platform/frontend-core/dist/module';
-  import { HistorySessionsInterface, HistoryTabInterface } from '@skeleton/types';
+  import { IPaginationMeta, ISession } from '@platform/frontend-core';
   import dayjs from "dayjs";
+  import { ISessionsHistory } from '~/types';
 
   const props = defineProps<{
-    content: HistoryTabInterface,
+    content: ISessionsHistory,
   }>();
 
-  const sessionsContent:HistorySessionsInterface = props.content.sessions;
-  const headTitles = ['', ...Object.values(sessionsContent.tableColumns || {})];
+  const headTitles = ['', ...Object.values(props.content?.tableColumns || {})];
   const dateFormat = 'DD.MM.YYYY, HH:mm';
 
   const { getUserSessions, closeActiveSession } = useCoreProfileApi();
-  const sessions = ref<SessionInterface[]>([]);
-  const pageMeta = ref<PaginationMetaInterface>();
+  const sessions = ref<ISession[]>([]);
+  const pageMeta = ref<IPaginationMeta>();
 
   const loading = ref<boolean>(true);
   const resolveSessionsRequest = async (page: number = 1):Promise<void> => {
@@ -90,7 +87,7 @@
 
   const { getCurrentSession } = useCoreAuthStore();
   const currentSession = getCurrentSession();
-  const sessionStatus = (session: SessionInterface): string => {
+  const sessionStatus = (session: ISession): string => {
     if (session.closedAt) return 'closed';
     const sessionId = currentSession ? currentSession.sessionId : undefined;
     if (session.sessionId === sessionId) return 'current';

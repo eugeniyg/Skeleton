@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { AccountInterface, CurrencyInterface } from '@platform/frontend-core/dist/module';
+  import { IAccount, ICurrency } from '@platform/frontend-core';
 
   const props = defineProps({
     isOpen: {
@@ -66,7 +66,7 @@
 
   const selected = ref<string>('all');
 
-  const getAccountByCurrency = (currency: string): Maybe<AccountInterface> => accounts.value.find((account) => (account.currency === currency));
+  const getAccountByCurrency = (currency: string): Maybe<IAccount> => accounts.value.find((account) => (account.currency === currency));
 
   interface DisplayAccountInterface {
     nativeCurrency: string,
@@ -81,7 +81,7 @@
   }
 
   const selectedItems = computed(() => {
-    let currenciesList:CurrencyInterface[];
+    let currenciesList:ICurrency[];
     if (selected.value === 'all' || !cryptoCurrencies.value.length) currenciesList = currencies.value;
     else currenciesList = cryptoCurrencies.value;
 

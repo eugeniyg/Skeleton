@@ -1,7 +1,7 @@
 <template>
   <div class="tb-profile">
     <div v-for="field in profileViewFields" :key="field.name" class="row">
-      <div class="th">{{ getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) || '' }}</div>
+      <div class="th">{{ getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || '' }}</div>
 
       <div class="td">
         <!--        <atomic-row-phone v-if="field.name === 'phone'" v-bind="td.props"/>-->
@@ -32,7 +32,7 @@
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
-  const { fieldsContent, defaultLocaleFieldsContent } = storeToRefs(globalStore);
+  const { fieldsSettings, defaultLocaleFieldsSettings } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const fieldsStore = useFieldsStore();
   const { profileFields } = storeToRefs(fieldsStore);

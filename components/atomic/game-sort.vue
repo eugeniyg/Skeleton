@@ -14,14 +14,13 @@
 </template>
 
 <script setup lang="ts">
-
-  import { SortOptionInterface } from '@skeleton/types';
+  import {IGamesPage} from '~/types';
 
   const props = defineProps<{
     sortByValue: string,
     sortOrderValue: string,
     sortLabel: string,
-    sortOptions: SortOptionInterface[]
+    sortOptions: IGamesPage['sortOptions']
   }>();
 
   const emit = defineEmits(['change']);

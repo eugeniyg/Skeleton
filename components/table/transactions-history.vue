@@ -28,7 +28,7 @@
           @click.once="emit('cancelPayment', invoice.id)"
         >
           <atomic-icon id="trash"/>
-          <span>{{ transactionsContent.cancelPaymentButton }}</span>
+          <span>{{ props.transactionsContent.cancelPaymentButton }}</span>
         </button-base>
       </div>
     </div>
@@ -37,8 +37,8 @@
 
 <script setup lang="ts">
   import { PropType } from '@vue/runtime-core';
-  import { HistoryTransactionsInterface } from '@skeleton/types';
   import dayjs from "dayjs";
+  import { ITransactionsHistory } from '~/types';
 
   const props = defineProps({
     invoices: {
@@ -46,7 +46,7 @@
       default: () => [],
     },
     transactionsContent: {
-      type: Object as PropType<HistoryTransactionsInterface>,
+      type: Object as PropType<ITransactionsHistory>,
       required: true,
     },
   });

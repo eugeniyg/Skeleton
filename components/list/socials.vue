@@ -7,10 +7,10 @@
 </template>
 
 <script setup lang="ts">
-  import { ISocialItem } from '@skeleton/types';
+  import {ISiteSidebar} from '~/types';
 
   const props = defineProps<{
-    items: ISocialItem[]
+    items: ISiteSidebar['socials']['items']
   }>()
 </script>
 

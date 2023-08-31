@@ -47,12 +47,10 @@
   const { getContent } = useProjectMethods();
 
   const advantagesList = computed(() => {
-    if (popupsData?.registration?.promo?.advantages?.length) return popupsData.registration.promo.advantages;
-    return defaultLocalePopupsData?.registration?.promo?.advantages || [];
+    return popupsData?.registration?.promo?.advantages || [];
   });
 
   const isShowAdvantages = computed(() => popupsData?.registration?.promo?.displayAdvantages);
-
 </script>
 
 <style src="~/assets/styles/components/atomic/promo.scss" lang="scss"/>
