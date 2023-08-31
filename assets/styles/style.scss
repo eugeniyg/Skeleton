@@ -88,6 +88,7 @@ body {
   margin: 0;
   background-color: var(--layer-bg);
   @extend %scrollbar-hide;
+  width: 100%;
 
   &.nav-user-open {
     --nav-user-visibility: visible;
@@ -177,7 +178,7 @@ body {
     --padding: #{rem(24px)} #{rem(48px)}
   }
 
-  .group-games, .group-winners, .group-promotions, .favorite-recently, .cards-wrap, .group-turbo, .cards-providers {
+  .group-games, .group-winners, .group-promotions, .favorite-recently, .cards-wrap, .group-turbo, .cards-providers, .group-originals {
     margin-bottom: rem(32px);
 
     @include media(l) {

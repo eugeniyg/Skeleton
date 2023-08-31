@@ -1,9 +1,12 @@
 <template>
   <div
     ref="cardBase"
-    class="card-base"
+    class="card-original"
     :style="backgroundImage"
-    :class="{ 'hovered': gameHovered }"
+    :class="{
+      'hovered': gameHovered,
+      'card-original--wide': props.isWide
+    }"
     :data-size="cardSize"
     @click="clickGame"
     v-click-outside="hideHover"
@@ -16,25 +19,26 @@
       />
     </div>
 
-    <div class="card-base__info">
-      <div class="card-base__info-titles">
-        <div v-if="props.name" class="card-base__info-title">{{ props.name }}</div>
-        <div class="card-base__info-provider">{{ props.provider.name }}</div>
+    <div class="card-original__info">
+      <div class="card-original__info-titles">
+        <div v-if="props.name" class="card-original__info-title">{{ props.name }}</div>
+        <div class="card-original__info-provider">{{ props.provider.name }}</div>
       </div>
 
       <div v-if="props.subTitle" class="sub-title">{{ props.subTitle }}</div>
 
-      <div class="card-base__info-actions">
+      <div class="card-original__info-actions">
         <button-play @click="openGame(true)"/>
       </div>
 
-      <div class="card-base__info-footer">
+      <div class="card-original__info-footer">
         <button-base
           v-if="props.isDemoMode"
           class="btn-try"
           tag-name="span"
           @click="openGame(false)"
         >
+          <!--{{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.demoButton') }}-->
           Demo
         </button-base>
 
@@ -86,6 +90,10 @@
       type: Object as PropType<GameProviderInterface>,
       required: true,
     },
+    isWide: {
+      type:Boolean,
+      default: false
+    }
   });
 
   const router = useRouter();
@@ -170,4 +178,4 @@
   });
 </script>
 
-<style src="~/assets/styles/components/card/base.scss" lang="scss" />
+<style src="~/assets/styles/components/card/original.scss" lang="scss" />

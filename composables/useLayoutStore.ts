@@ -209,4 +209,12 @@ export const useLayoutStore = defineStore('layoutStore', {
       this.showModal('withdraw');
     },
   },
+
+  getters: {
+    isGamePage() {
+      const route = useRoute();
+      const routeName = route.name as string;
+      return routeName.includes('games-id');
+    }
+  }
 });

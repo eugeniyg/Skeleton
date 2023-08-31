@@ -13,15 +13,13 @@
     grid-area: container;
     position: relative;
     width: 100%;
-    height: calc(100vh - 128px); // calc(var(--vh, 1vh) * 100);
-
-    @media (orientation: landscape) and (max-width: 1024px) {
-      padding-left: 64px;
-      height: calc(100vh - 64px);
-    }
 
     @include media(md) {
       height: calc(100vh - 160px);
+    }
+
+    @media (min-width: 64rem) and (max-width: 1279px) {
+      height: calc(100vh - 196px);
     }
 
     iframe {
@@ -30,6 +28,34 @@
 
       @include media(l) {
         position: relative;
+      }
+    }
+  }
+
+  &--login {
+    .container {
+      @media (orientation: landscape) and (max-width: 1023px) {
+        height: 100vh;
+        padding: 0 0 0 64px;
+      }
+
+      @media (orientation: portrait) and (max-width: 1023px) {
+        height: calc(100vh - 64px);
+        padding: 0 0 0 0;
+      }
+    }
+  }
+
+  &--logout {
+    .container {
+      @media (orientation: landscape) and (max-width: 1023px) {
+        height: 100vh;
+        padding: 0 64px 0 48px;
+      }
+
+      @media (orientation: portrait) and (max-width: 1023px) {
+        height: calc(100vh - 56px);
+        padding: 0 0 56px 0;
       }
     }
   }

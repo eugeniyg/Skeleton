@@ -1,12 +1,12 @@
 <template>
   <div class="card-cat" :class="`card-cat-${props.mod}`">
-    <div class="title">
+    <div class="card-cat__title">
       {{ props.title }}
     </div>
 
-    <div class="sub-title">{{ props.description }}</div>
+    <div class="card-cat__sub-title">{{ props.description }}</div>
 
-    <img class="icon" :src="props.image" alt="">
+    <img class="card-cat__img" :src="props.image" alt="">
 
     <button-base
       type="secondary"
