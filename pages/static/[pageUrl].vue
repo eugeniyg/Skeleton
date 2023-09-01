@@ -1,34 +1,28 @@
 <template>
   <div>
-    <atomic-text-editor :content="pageContent?.content || defaultLocalePageContent?.content" />
+    <atomic-text-editor :content="pageContent?.content" />
     <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent?.seo?.text" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { StaticPageInterface } from '@skeleton/types';
+  import { IStaticPage } from '~/types';
 
-  const pageContent = ref<StaticPageInterface|undefined>(undefined);
-  const defaultLocalePageContent = ref<StaticPageInterface|undefined>(undefined);
+  const pageContent = ref<IStaticPage|undefined>(undefined);
   const route = useRoute();
   const { pageUrl } = route.params;
   const globalStore = useGlobalStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
-  const {
-    setPageSeo,
-    findLocalesContentData,
-  } = useProjectMethods();
-  const pageContentRequest = await useAsyncData('staticPageContent', () => queryContent('static')
-    .where({ locale: { $in: contentLocalesArray.value }, pageUrl }).find());
+  const { currentLocale } = storeToRefs(globalStore);
+  const { setPageSeo } = useProjectMethods();
 
-  if (pageContentRequest.error.value || !pageContentRequest.data.value?.length) {
-    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  const { data: { value: staticPageContent } }: { data: { value: IStaticPage }} = await useAsyncData(`${pageUrl}-static`,
+    () => queryContent(currentLocale.value?.code as string, 'static', pageUrl as string).findOne());
+
+  if (staticPageContent) {
+    pageContent.value = staticPageContent;
   } else {
-    const { currentLocaleData, defaultLocaleData } = findLocalesContentData(pageContentRequest.data.value);
-    pageContent.value = currentLocaleData as StaticPageInterface;
-    defaultLocalePageContent.value = defaultLocaleData as StaticPageInterface;
+    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
   }
-
   setPageSeo(pageContent.value?.seo);
 </script>

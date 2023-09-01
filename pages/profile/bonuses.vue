@@ -33,25 +33,26 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ProfileBonusesInterface } from '@skeleton/types';
+  import { IProfileBonuses } from '~/types';
 
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
-  const { setPageSeo, findLocalesContentData, localizePath } = useProjectMethods();
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
+  const { setPageSeo, getLocalesContentData, localizePath } = useProjectMethods();
   const { getPlayerBonuses, getPlayerFreeSpins } = bonusStore;
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
 
-  const [bonusesContentRequest] = await Promise.all([
-    useAsyncData('bonusesContent', () => queryContent('profile')
-      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'bonuses']).find()),
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleProfileBonusesContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'bonuses').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleProfileBonusesContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'bonuses').findOne()),
     useAsyncData('updatePlayerBonuses', getPlayerBonuses),
     useAsyncData('updatePlayerFreeSpins', getPlayerFreeSpins),
   ]);
 
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(bonusesContentRequest.data.value);
-  const bonusesContent: Maybe<ProfileBonusesInterface> = currentLocaleData?.bonuses;
-  const defaultLocaleBonusesContent: Maybe<ProfileBonusesInterface> = defaultLocaleData?.bonuses;
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const bonusesContent: Maybe<IProfileBonuses> = currentLocaleData;
+  const defaultLocaleBonusesContent: Maybe<IProfileBonuses> = defaultLocaleData;
   setPageSeo(bonusesContent?.seo);
 </script>
 

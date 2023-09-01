@@ -1,8 +1,8 @@
 <template>
   <div>
     <client-only>
-      <carousel v-if="sliderItems?.length || defaultLocaleSliderItems?.length" v-bind="topSliderProps">
-        <slide v-for="(slide, index) in sliderItems?.length ? sliderItems : defaultLocaleSliderItems" :key="index">
+      <carousel v-if="sliderItems?.length" v-bind="topSliderProps">
+        <slide v-for="(slide, index) in sliderItems" :key="index">
           <card-promo v-if="slide.slideStatus === 'Published'" v-bind="slide" />
         </slide>
 
@@ -81,7 +81,7 @@
       </template>
     </cards-group> -->
 
-    <atomic-seo-text v-if="mainContent?.seo?.text" v-bind="mainContent.seo.text" />
+    <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent.seo.text" />
   </div>
 </template>
 
@@ -91,30 +91,33 @@
     Carousel, Slide, Pagination, Navigation,
   } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
-  import { MainContentInterface, SlideInterface } from '@skeleton/types';
+  import { ICasinoPage } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, contentLocalesArray } = storeToRefs(globalStore);
+  const {
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+    currentLocale
+  } = storeToRefs(globalStore);
   const {
     localizePath,
     setPageSeo,
-    findLocalesContentData,
+    getLocalesContentData,
     getContent,
   } = useProjectMethods();
 
-  const [sliderResponse, mainContentResponse] = await Promise.all([
-    useAsyncData('sliderData', () => queryContent('main-slider')
-      .where({ locale: { $in: contentLocalesArray.value } }).find()),
-    useAsyncData('mainContent', () => queryContent('page-controls')
-      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'mainPage']).find()),
-  ]);
+  const pageContent = ref<ICasinoPage|undefined>(undefined);
 
-  const mainContentData = findLocalesContentData(mainContentResponse.data.value);
-  const mainContent: Maybe<MainContentInterface> = mainContentData.currentLocaleData?.mainPage;
+  const { data: { value: casinoPageContent } }: { data: { value: ICasinoPage }} = await useAsyncData('casinoPageContent',
+    () => queryContent(currentLocale.value?.code as string, 'pages', 'casino').findOne());
 
-  const sliderContentData = findLocalesContentData(sliderResponse.data.value);
-  const sliderItems: Maybe<SlideInterface[]> = sliderContentData.currentLocaleData?.slider;
-  const defaultLocaleSliderItems: Maybe<SlideInterface[]> = sliderContentData.defaultLocaleData?.slider;
+  if (casinoPageContent) {
+    pageContent.value = casinoPageContent;
+  } else {
+    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  }
+
+  const sliderItems: Maybe<ICasinoPage['slider']> = pageContent?.value.slider;
 
   const fakeStore = useFakeStore();
   const router = useRouter();
@@ -142,7 +145,7 @@
     },
   };
 
-  setPageSeo(mainContent?.seo);
+  setPageSeo(pageContent.value?.seo);
 
   const changeCategory = (categoryId: string) => {
     router.push({ path: localizePath('/games'), query: { category: categoryId } });

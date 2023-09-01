@@ -31,21 +31,25 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { AccountInterface } from '@platform/frontend-core/dist/module';
-  import { ProfileWalletInterface } from '@skeleton/types';
+  import { IAccount } from '@platform/frontend-core';
+  import { IProfileWallet } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
   const {
     setPageSeo,
-    findLocalesContentData,
+    getLocalesContentData,
   } = useProjectMethods();
-  const walletContentRequest = await useAsyncData('walletContent', () => queryContent('profile')
-    .where({ locale: { $in: contentLocalesArray.value } })
-    .only(['locale', 'wallet']).find());
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(walletContentRequest.data.value);
-  const walletContent: Maybe<ProfileWalletInterface> = currentLocaleData?.wallet;
-  const defaultLocaleWalletContent: Maybe<ProfileWalletInterface> = defaultLocaleData?.wallet;
+
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleProfileWalletContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'wallet').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleProfileWalletContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'wallet').findOne())
+  ]);
+
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const walletContent: Maybe<IProfileWallet> = currentLocaleData;
+  const defaultLocaleWalletContent: Maybe<IProfileWallet> = defaultLocaleData;
   setPageSeo(walletContent?.seo);
 
   const walletStore = useWalletStore();
@@ -76,5 +80,5 @@
   const orderedAccounts = computed(() => accounts.value.reduce((acc, item) => {
     item.status === 1 ? acc.unshift(item) : acc.push(item);
     return acc;
-  }, [] as AccountInterface[]));
+  }, [] as IAccount[]));
 </script>

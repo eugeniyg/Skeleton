@@ -109,7 +109,7 @@
   const { showModal, showAlert } = useLayoutStore();
   const { localizePath, getImageUrl, getContent } = useProjectMethods();
 
-  const gameTagsContent: Maybe<GameTagInterface[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags');
+  const gameTagsContent: Maybe<GameTagInterface[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags.gameTagsList');
 
   const labelNames = props.labels?.map((label) => label.name)
   const gameBages = gameTagsContent?.filter((bage) => labelNames.includes(bage.identity));

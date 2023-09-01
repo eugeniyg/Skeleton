@@ -19,10 +19,10 @@
 </template>
 
 <script setup lang="ts">
-  import { IProfileHistory } from '~/types';
+  import { IHistory } from '~/types';
 
   const props = defineProps<{
-    content: IProfileHistory
+    content: IHistory
   }>();
 
   const filterContent = Object.keys(props.content).filter((key) => {

@@ -29,21 +29,25 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { FavoritesPageInterface } from '@skeleton/types';
+  import {IFavoritesPage} from '~/types';
 
   const globalStore = useGlobalStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
   const {
     setPageSeo,
-    findLocalesContentData,
+    getLocalesContentData,
     getContent,
   } = useProjectMethods();
 
-  const favoritesContentRequest = await useAsyncData('favoritesContent', () => queryContent('page-controls')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'favoritesPage']).find());
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(favoritesContentRequest.data.value);
-  const favoritesContent: Maybe<FavoritesPageInterface> = currentLocaleData?.favoritesPage;
-  const defaultLocaleFavoritesContent: Maybe<FavoritesPageInterface> = defaultLocaleData?.favoritesPage;
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleFavoritesPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'favorites').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleFavoritesPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'favorites').findOne())
+  ]);
+
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const favoritesContent: Maybe<IFavoritesPage> = currentLocaleData;
+  const defaultLocaleFavoritesContent: Maybe<IFavoritesPage> = defaultLocaleData;
   setPageSeo(favoritesContent?.seo);
 
   const gameStore = useGamesStore();

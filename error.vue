@@ -2,11 +2,11 @@
   <div class="not-found error-page">
     <img class="img" src="/img/404.png" />
     <div class="title">
-      {{ errorPageContent?.title || defaultLocaleErrorPageContent?.title || pageStaticContent.title }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.title') || pageStaticContent.title }}
     </div>
 
     <p class="text">
-      {{ errorPageContent?.description || defaultLocaleErrorPageContent?.description || pageStaticContent.description }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.description') || pageStaticContent.description }}
     </p>
 
     <button-base
@@ -14,7 +14,7 @@
       size="md"
       @click="goHome"
     >
-      {{ getContent(errorPageContent, defaultLocaleErrorPageContent, 'button.label') || pageStaticContent.button.label }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.button.label') || pageStaticContent.button.label }}
     </button-base>
 
     <dev-only>
@@ -28,7 +28,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IErrorPage } from "~/types";
 
   const props = defineProps({
     error: {
@@ -47,21 +46,14 @@
   };
 
   const globalStore = useGlobalStore();
-  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
+  const {
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent
+  } = storeToRefs(globalStore);
   const { localizePath, getContent, getLocalesContentData } = useProjectMethods();
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleErrorPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'error').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleErrorPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'error').findOne())
-  ]);
-
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const errorPageContent = currentLocaleData as IErrorPage;
-  const defaultLocaleErrorPageContent = defaultLocaleData as IErrorPage;
-
   const goHome = () => clearError({
-    redirect: localizePath(getContent(errorPageContent, defaultLocaleErrorPageContent, 'button.url')
+    redirect: localizePath(getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.button.url')
       || pageStaticContent.button.url),
   });
 </script>

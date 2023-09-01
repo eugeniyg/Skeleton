@@ -1,5 +1,11 @@
 import {defineStore} from 'pinia';
-import {ICountry, ICurrency, IField, IGameProvider, ITimeZone,} from '@platform/frontend-core';
+import {
+  ICountry,
+  ICurrency,
+  IField,
+  IGameProvider,
+  ITimeZone
+} from '@platform/frontend-core';
 
 interface IFieldsStoreState {
   profileFields: IField[],

@@ -51,7 +51,7 @@
     setPageSeo
   } = useProjectMethods();
 
-  const { data: { value: bonusPageContent } }: { data: { value: IBonusPage }} = await useAsyncData('bonusesPageContent',
+  const { data: { value: bonusPageContent } }: { data: { value: IBonusPage }} = await useAsyncData(`${pageUrl}-content`,
     () => queryContent(currentLocale.value?.code as string, 'bonus', pageUrl as string).findOne());
 
   if (bonusPageContent) {

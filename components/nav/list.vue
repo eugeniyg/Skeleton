@@ -23,7 +23,7 @@
 
       <list-games
         v-if="listItem.gameList?.length"
-        :items="listItem.gameList.slice(0, 4)"
+        :items="listItem.gameList.map((game) => game.gameIdentity).slice(0, 4)"
       />
     </div>
   </div>

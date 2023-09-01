@@ -76,7 +76,7 @@
         :value="profile[field.name]"
         @change="changeSubscription(field.name)"
       >
-        {{ getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) }}
+        {{ getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) }}
       </form-input-toggle>
 
       <atomic-divider/>
@@ -85,36 +85,42 @@
     <h4 class="heading">{{ infoContent?.manageTitle || defaultLocaleInfoContent?.manageTitle }}</h4>
 
     <button-base type="ghost" size="md" @click="profileStore.logOutUser">
-      <atomic-icon id="log-out"/>{{ userNavigationContent?.logoutButton || defaultLocaleUserNavigationContent?.logoutButton }}
+      <atomic-icon id="log-out"/>{{ layoutData?.profileSidebar?.logoutButton || defaultLocaleLayoutData?.profileSidebar?.logoutButton }}
     </button-base>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { CountryInterface } from '@platform/frontend-core/dist/module';
-  import { ProfileInfoInterface } from '@skeleton/types';
+  import { ICountry } from '@platform/frontend-core';
+  import { IProfileInfo } from '~/types';
 
   const globalStore = useGlobalStore();
   const {
     countries,
-    fieldsContent,
-    defaultLocaleFieldsContent,
-    userNavigationContent,
-    defaultLocaleUserNavigationContent,
-    contentLocalesArray,
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
+    layoutData,
+    defaultLocaleLayoutData,
+    currentLocale,
+    defaultLocale
   } = storeToRefs(globalStore);
 
   const {
     setPageSeo,
-    findLocalesContentData,
+    getLocalesContentData,
     getContent,
   } = useProjectMethods();
-  const infoContentRequest = await useAsyncData('infoContent', () => queryContent('profile')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'info']).find());
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(infoContentRequest.data.value);
-  const infoContent: Maybe<ProfileInfoInterface> = currentLocaleData?.info;
-  const defaultLocaleInfoContent: Maybe<ProfileInfoInterface> = defaultLocaleData?.info;
+
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleProfileInfoContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'info').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleProfileInfoContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'info').findOne())
+  ]);
+
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const infoContent: Maybe<IProfileInfo> = currentLocaleData;
+  const defaultLocaleInfoContent: Maybe<IProfileInfo> = defaultLocaleData;
   setPageSeo(infoContent?.seo);
 
   const { changeProfileData } = useCoreProfileApi();
@@ -127,7 +133,7 @@
 
   const isProfileEdit = computed(() => route.query.edit === 'true');
   const userCountryName = computed(() => {
-    const countryObject: Maybe<CountryInterface> = countries.value.find((country) => country.code === profile.value?.country);
+    const countryObject: Maybe<ICountry> = countries.value.find((country) => country.code === profile.value?.country);
     return countryObject?.nativeName || '';
   });
 

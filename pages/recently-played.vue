@@ -27,24 +27,28 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import { onMounted } from '@vue/runtime-core';
-  import { GameInterface } from '@platform/frontend-core/dist/module';
-  import { RecentlyPageInterface } from '@skeleton/types';
+import {storeToRefs} from 'pinia';
+import {onMounted} from '@vue/runtime-core';
+import {IGame} from '@platform/frontend-core';
+import { IRecentlyPage } from '~/types';
 
-  const globalStore = useGlobalStore();
-  const { isMobile, headerCountry, contentLocalesArray } = storeToRefs(globalStore);
+const globalStore = useGlobalStore();
+  const { isMobile, headerCountry, currentLocale, defaultLocale } = storeToRefs(globalStore);
   const {
     setPageSeo,
-    findLocalesContentData,
+    getLocalesContentData,
     getContent,
   } = useProjectMethods();
-  const recentlyContentRequest = await useAsyncData('recentlyContent', () => queryContent('page-controls')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'recentlyPage']).find());
 
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(recentlyContentRequest.data.value);
-  const recentlyContent: Maybe<RecentlyPageInterface> = currentLocaleData?.recentlyPage;
-  const defaultLocaleRecentlyContent: Maybe<RecentlyPageInterface> = defaultLocaleData?.recentlyPage;
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleRecentlyPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'recently').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleRecentlyContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'recently').findOne())
+  ]);
+
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const recentlyContent: Maybe<IRecentlyPage> = currentLocaleData;
+  const defaultLocaleRecentlyContent: Maybe<IRecentlyPage> = defaultLocaleData;
   setPageSeo(recentlyContent?.seo);
 
   const { currentLocationCollections } = useGamesStore();
@@ -55,7 +59,7 @@
     totalPages: 1,
   }));
 
-  const recentlyGames = ref<GameInterface[]>([]);
+  const recentlyGames = ref<IGame[]>([]);
 
   const { getRecentlyPlayed } = useCoreGamesApi();
   const profileStore = useProfileStore();
@@ -63,12 +67,11 @@
   const loadingData = ref<boolean>(true);
   onMounted(async () => {
     try {
-      const recentlyResponse = await getRecentlyPlayed({
+      recentlyGames.value = await getRecentlyPlayed({
         perPage: 18,
         platform: isMobile.value ? 1 : 2,
         countryCode: profile.value?.country || headerCountry.value || 'UA',
       });
-      recentlyGames.value = recentlyResponse;
     } finally {
       loadingData.value = false;
     }

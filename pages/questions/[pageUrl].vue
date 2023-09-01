@@ -1,8 +1,8 @@
 <template>
   <div class="content">
-    <h1 class="heading">{{ pageContent?.title || defaultLocalePageContent?.title }}</h1>
+    <h1 class="heading">{{ pageContent?.title }}</h1>
 
-    <div v-if="getContent(pageContent, defaultLocalePageContent, 'questionList')?.length">
+    <div v-if="pageContent?.questionList?.length">
       <expander
         v-for="(item, itemIndex) in questionsList"
         :key="itemIndex"
@@ -15,29 +15,26 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { QuestionPageInterface } from '@skeleton/types';
+  import { IQuestionCategory } from '~/types';
 
-  const pageContent = ref<QuestionPageInterface|undefined>(undefined);
-  const defaultLocalePageContent = ref<QuestionPageInterface|undefined>(undefined);
+  const pageContent = ref<IQuestionCategory|undefined>(undefined);
   const route = useRoute();
   const { pageUrl } = route.params;
 
   const globalStore = useGlobalStore();
-  const { contentLocalesArray, currentLocale } = storeToRefs(globalStore);
+  const { currentLocale } = storeToRefs(globalStore);
 
-  const { findLocalesContentData, getContent } = useProjectMethods();
-  const contentRequest = await useAsyncData('questionsPageContent', () => queryContent(currentLocale.value?.code || '', 'question-pages', pageUrl as string).findOne());
+  const { getContent } = useProjectMethods();
+  const { data: { value: questionPageContent } }: { data: { value: IQuestionCategory }} = await useAsyncData(`${pageUrl}-question`,
+    () => queryContent(currentLocale.value?.code as string, 'question-pages', pageUrl as string).findOne());
 
-  if (contentRequest.error.value) {
-    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  if (questionPageContent) {
+    pageContent.value = questionPageContent;
   } else {
-    // const { currentLocaleData, defaultLocaleData } = findLocalesContentData(contentRequest.data.value);
-    pageContent.value = contentRequest.data.value;
-    defaultLocalePageContent.value = contentRequest.data.value;
+    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
   }
 
   const questionsList = computed(() => {
-    if (pageContent.value?.questionList?.length) return pageContent.value.questionList;
-    return defaultLocalePageContent.value?.questionList || [];
+    return pageContent.value?.questionList || [];
   });
 </script>

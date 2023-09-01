@@ -13,24 +13,55 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { HistoryTabInterface, ProfileHistoryInterface } from '@skeleton/types';
+  import { IHistory } from '~/types';
+  import {camelCase} from "lodash";
 
   const globalStore = useGlobalStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
-  const { setPageSeo, findLocalesContentData } = useProjectMethods();
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
+  const { setPageSeo, getLocalesContentData } = useProjectMethods();
 
-  const [historyContentRequest, historyTabContentRequest] = await Promise.all([
-    useAsyncData('historyContent', () => queryContent('profile')
-      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'history']).find()),
-    useAsyncData('historyTabContent', () => queryContent('history').find()),
+  const [
+    currentLocaleContentResponse,
+    defaultLocaleContentResponse,
+    currentLocaleTabsContentResponse,
+    defaultLocaleTabsContentResponse
+  ] = await Promise.allSettled([
+    useAsyncData('currentLocaleProfileHistoryContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'history').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleProfileHistoryContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'history').findOne()),
+    useAsyncData('currentLocaleHistoryContent', () => queryContent(currentLocale.value?.code as string, 'history').find()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleHistoryContent', () => queryContent(defaultLocale.value?.code as string, 'history').find())
   ]);
 
-  const historyContentData = findLocalesContentData(historyContentRequest.data.value);
-  const historyContent: Maybe<ProfileHistoryInterface> = historyContentData.currentLocaleData?.history;
-  const defaultLocaleHistoryContent: Maybe<ProfileHistoryInterface> = historyContentData.defaultLocaleData?.history;
+  const { currentLocaleData: historyContent, defaultLocaleData: defaultLocaleHistoryContent } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
 
-  const historyTabContentData = findLocalesContentData(historyTabContentRequest.data.value);
-  const historyTabContent: Maybe<HistoryTabInterface> = historyTabContentData.currentLocaleData as HistoryTabInterface;
-  const defaultLocaleHistoryTabContent: Maybe<HistoryTabInterface> = historyTabContentData.defaultLocaleData as HistoryTabInterface;
+  let historyTabContent: IHistory;
+  let defaultLocaleHistoryTabContent: IHistory;
+
+  const { currentLocaleData: currentLocaleTabsContent, defaultLocaleData: defaultLocaleTabsContent } = getLocalesContentData(currentLocaleTabsContentResponse, defaultLocaleTabsContentResponse);
+
+  if (currentLocaleTabsContent) {
+    historyTabContent  = currentLocaleTabsContent.reduce((finalContentObj:any, currentContent:any) => {
+      const splitPath = currentContent._path?.split('/');
+      if (!splitPath) return finalContentObj;
+
+      const collection = camelCase(splitPath[2]);
+      const contentName = camelCase(splitPath[3]);
+      return { ...finalContentObj, [collection]: { ...finalContentObj[collection], [contentName]: currentContent } }
+    }, {})
+  }
+
+  if (defaultLocaleTabsContent) {
+    defaultLocaleHistoryTabContent  = defaultLocaleTabsContent.reduce((finalContentObj:any, currentContent:any) => {
+      const splitPath = currentContent._path?.split('/');
+      if (!splitPath) return finalContentObj;
+
+      const collection = camelCase(splitPath[2]);
+      const contentName = camelCase(splitPath[3]);
+      return { ...finalContentObj, [collection]: { ...finalContentObj[collection], [contentName]: currentContent } }
+    }, {})
+  }
+
   setPageSeo(historyContent?.seo);
 </script>

@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { HomeContentInterface } from '@skeleton/types';
+  import {IHomePage} from '~/types';
 
   const globalStore = useGlobalStore();
   const gameStore = useGamesStore();
@@ -75,22 +75,27 @@
   const { currentLocationCollections } = storeToRefs(gameStore);
   const {
     currentLocale,
+    defaultLocale,
     globalComponentsContent,
-    defaultLocaleGlobalComponentsContent,
-    contentLocalesArray,
+    defaultLocaleGlobalComponentsContent
   } = storeToRefs(globalStore);
 
   const {
     setPageSeo,
     localizePath,
     getContent,
-    findLocalesContentData,
+    getLocalesContentData
   } = useProjectMethods();
 
-  const homeContentRequest = await useAsyncData('homeContent', () => queryContent(currentLocale.value?.code || '', 'pages', 'home').findOne());
-  // const { currentLocaleData, defaultLocaleData } = findLocalesContentData(homeContentRequest.data.value);
-  const homeContent: Maybe<HomeContentInterface> = homeContentRequest.data.value;
-  const defaultLocaleHomeContent: Maybe<HomeContentInterface> = homeContentRequest.data.value;
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleHomePageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'home').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleHomePageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'home').findOne())
+  ]);
+
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const homeContent: Maybe<IHomePage> = currentLocaleData;
+  const defaultLocaleHomeContent: Maybe<IHomePage> = defaultLocaleData
   setPageSeo(homeContent?.seo);
 
   const hotCategory = currentLocationCollections.value.find((collection) => collection.identity === 'hot');

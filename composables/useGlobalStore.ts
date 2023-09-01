@@ -4,16 +4,13 @@ import {ICoreConstants, ICountry, ICurrency, ILocale, IStatus, ITimeZone,} from 
 import {
   IAlertsContent,
   ICategory,
-  IErrorPage,
-  IFieldControls,
   IFieldsSettingsContent,
   IGlobalComponentsContent,
   IGlobalSeo,
   ILayoutContent,
-  IModalsContent,
-  IValidationMessages
+  IModalsContent
 } from "~/types";
-import {IBrowserLanguage} from "@skeleton/types";
+import { IBrowserLanguage } from "@skeleton/types";
 
 interface IGlobalContent {
   alerts: IAlertsContent;

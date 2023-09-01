@@ -20,8 +20,8 @@
           v-model:value="contactFormData.email"
           type="email"
           name="email"
-          :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.label') || ''"
-          :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.placeholder') || ''"
+          :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
+          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
           :hint="setError('email')"
           @blur="v$.email?.$touch()"
         />
@@ -29,8 +29,8 @@
         <form-input-textarea
           v-model:value="contactFormData.message"
           name="message"
-          :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'message.label') || ''"
-          :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'message.placeholder') || ''"
+          :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.message.label') || ''"
+          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.message.placeholder') || ''"
           :hint="setError('message')"
           @blur="v$.message?.$touch()"
         />
@@ -52,29 +52,34 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ContactPageInterface } from '@skeleton/types';
+  import { IContactsPage } from '~/types';
 
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();
   const {
     setPageSeo,
     getContent,
-    findLocalesContentData,
+    getLocalesContentData
   } = useProjectMethods();
 
   const {
-    fieldsContent,
-    defaultLocaleFieldsContent,
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
     alertsData,
     defaultLocaleAlertsData,
-    contentLocalesArray,
+    currentLocale,
+    defaultLocale
   } = storeToRefs(globalStore);
 
-  const contactContentRequest = await useAsyncData('contactContent', () => queryContent('page-controls')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'contactPage']).find());
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(contactContentRequest.data.value);
-  const contactContent: Maybe<ContactPageInterface> = currentLocaleData?.contactPage;
-  const defaultLocaleContactContent: Maybe<ContactPageInterface> = defaultLocaleData?.contactPage;
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleContactPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'contacts').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleContactPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'contacts').findOne()),
+  ]);
+
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const contactContent: Maybe<IContactsPage> = currentLocaleData;
+  const defaultLocaleContactContent: Maybe<IContactsPage> = defaultLocaleData;
   setPageSeo(contactContent?.seo);
 
   const contactFormData = reactive({
@@ -103,7 +108,7 @@
     try {
       isLockedAsyncButton.value = true;
       await sendContactMessage(contactFormData);
-      layoutStore.showAlert(alertsData.value?.sentMessage || defaultLocaleAlertsData.value?.sentMessage);
+      layoutStore.showAlert(alertsData.value?.global?.sentMessage || defaultLocaleAlertsData.value?.global?.sentMessage);
       contactFormData.email = '';
       contactFormData.message = '';
       v$.value.$reset();

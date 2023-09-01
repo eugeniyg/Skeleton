@@ -12,30 +12,54 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ProfileContentInterface, SeoContentInterface } from '@skeleton/types';
+  import { IProfilePages, ISeoBlock } from '~/types';
+  import {camelCase} from "lodash";
 
   definePageMeta({
     middleware: 'auth',
   });
 
-  const { localizePath, findLocalesContentData } = useProjectMethods();
+  const { localizePath, getLocalesContentData } = useProjectMethods();
   const route = useRoute();
 
   const globalStore = useGlobalStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
   const { getProfileFields } = useFieldsStore();
-  const profileMenu = ref<{ id: string, title: string, url: string, seo: SeoContentInterface }[]>([]);
+  const profileMenu = ref<{ id: string, title: string, url: string, seo: ISeoBlock }[]>([]);
 
-  const [contentRequest] = await Promise.all([
-    useAsyncData('profileContent', () => queryContent('profile')
-      .where({ locale: { $in: contentLocalesArray.value } }).find()),
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleProfilePages', () => queryContent(currentLocale.value?.code as string, 'profile').find()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleProfilePages', () => queryContent(defaultLocale.value?.code as string, 'profile').find()),
     useAsyncData('profileFields', getProfileFields),
   ]);
 
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(contentRequest.data.value);
-  const profileContent: Maybe<ProfileContentInterface> = currentLocaleData as ProfileContentInterface;
-  const defaultLocaleProfileContent: Maybe<ProfileContentInterface> = defaultLocaleData as ProfileContentInterface;
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  let profileContent: Maybe<IProfilePages>;
+  let defaultLocaleProfileContent: Maybe<IProfilePages>;
+
+  if (currentLocaleData) {
+    profileContent  = currentLocaleData.reduce((finalContentObj:any, currentContent:any) => {
+      const splitPath = currentContent._path?.split('/');
+      if (!splitPath) return finalContentObj;
+
+      const collection = camelCase(splitPath[2]);
+      const contentName = camelCase(splitPath[3]);
+      return { ...finalContentObj, [collection]: { ...finalContentObj[collection], [contentName]: currentContent } }
+    }, {})
+  }
+
+  if (defaultLocaleData) {
+    defaultLocaleProfileContent  = defaultLocaleData.reduce((finalContentObj:any, currentContent:any) => {
+      const splitPath = currentContent._path?.split('/');
+      if (!splitPath) return finalContentObj;
+
+      const collection = camelCase(splitPath[2]);
+      const contentName = camelCase(splitPath[3]);
+      return { ...finalContentObj, [collection]: { ...finalContentObj[collection], [contentName]: currentContent } }
+    }, {})
+  }
 
   const profileContentObj = profileContent || defaultLocaleProfileContent;
   if (profileContentObj) {
@@ -43,7 +67,6 @@
       if (profileContentObj[key]?.title) return key;
       return false;
     })
-      .filter((item) => item !== 'notifications');
 
     profileMenu.value = filteredArray.map((key) => ({
       id: key,
