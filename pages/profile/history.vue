@@ -41,25 +41,23 @@
 
   const { currentLocaleData: currentLocaleTabsContent, defaultLocaleData: defaultLocaleTabsContent } = getLocalesContentData(currentLocaleTabsContentResponse, defaultLocaleTabsContentResponse);
 
-  if (currentLocaleTabsContent) {
+  if (currentLocaleTabsContent?.length) {
     historyTabContent  = currentLocaleTabsContent.reduce((finalContentObj:any, currentContent:any) => {
       const splitPath = currentContent._path?.split('/');
       if (!splitPath) return finalContentObj;
 
-      const collection = camelCase(splitPath[2]);
       const contentName = camelCase(splitPath[3]);
-      return { ...finalContentObj, [collection]: { ...finalContentObj[collection], [contentName]: currentContent } }
+      return { ...finalContentObj, [contentName]: currentContent }
     }, {})
   }
 
-  if (defaultLocaleTabsContent) {
+  if (defaultLocaleTabsContent?.length) {
     defaultLocaleHistoryTabContent  = defaultLocaleTabsContent.reduce((finalContentObj:any, currentContent:any) => {
       const splitPath = currentContent._path?.split('/');
       if (!splitPath) return finalContentObj;
 
-      const collection = camelCase(splitPath[2]);
       const contentName = camelCase(splitPath[3]);
-      return { ...finalContentObj, [collection]: { ...finalContentObj[collection], [contentName]: currentContent } }
+      return { ...finalContentObj, [contentName]: currentContent }
     }, {})
   }
 

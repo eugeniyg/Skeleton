@@ -66,12 +66,12 @@
   import { storeToRefs } from 'pinia';
   import { ICurrency } from '@platform/frontend-core';
 
-  interface PropsInterface {
+  interface IProps {
     showError: boolean,
     items: ICurrency[]
   }
 
-  const props = defineProps<PropsInterface>();
+  const props = defineProps<IProps>();
 
   const emit = defineEmits(['blur', 'select']);
 

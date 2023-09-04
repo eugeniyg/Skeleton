@@ -35,29 +35,28 @@
     useAsyncData('profileFields', getProfileFields),
   ]);
 
+
   const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   let profileContent: Maybe<IProfilePages>;
   let defaultLocaleProfileContent: Maybe<IProfilePages>;
 
-  if (currentLocaleData) {
+  if (currentLocaleData?.length) {
     profileContent  = currentLocaleData.reduce((finalContentObj:any, currentContent:any) => {
       const splitPath = currentContent._path?.split('/');
       if (!splitPath) return finalContentObj;
 
-      const collection = camelCase(splitPath[2]);
       const contentName = camelCase(splitPath[3]);
-      return { ...finalContentObj, [collection]: { ...finalContentObj[collection], [contentName]: currentContent } }
+      return { ...finalContentObj, [contentName]: currentContent }
     }, {})
   }
 
-  if (defaultLocaleData) {
+  if (defaultLocaleData?.length) {
     defaultLocaleProfileContent  = defaultLocaleData.reduce((finalContentObj:any, currentContent:any) => {
       const splitPath = currentContent._path?.split('/');
       if (!splitPath) return finalContentObj;
 
-      const collection = camelCase(splitPath[2]);
       const contentName = camelCase(splitPath[3]);
-      return { ...finalContentObj, [collection]: { ...finalContentObj[collection], [contentName]: currentContent } }
+      return { ...finalContentObj, [contentName]: currentContent }
     }, {})
   }
 

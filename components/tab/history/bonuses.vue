@@ -43,14 +43,14 @@ import {IPlayerBonus, IPaginationMeta, IPlayerFreeSpin} from '@platform/frontend
     content: IBonusesHistory,
   }>();
 
-  interface StateInterface {
+  interface IState {
     loading: boolean,
     tableType: 'cashBonuses'|'freeSpins',
     bonusesData: IPlayerBonus[]|IPlayerFreeSpin[],
     bonusesMeta: Maybe<IPaginationMeta>
   }
 
-  const state = reactive<StateInterface>({
+  const state = reactive<IState>({
     loading: true,
     tableType: 'cashBonuses',
     bonusesData: [],

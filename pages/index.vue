@@ -14,7 +14,7 @@
           v-for="(item, itemIndex) in Object.keys(homeContent?.categories || defaultLocaleHomeContent?.categories)"
           :key="itemIndex"
           :mod="item"
-          v-bind="homeContent?.categories[item] || defaultLocaleHomeContent?.categories[item]"
+          v-bind="homeContent?.categories?.[item] || defaultLocaleHomeContent?.categories?.[item]"
         />
       </div>
 

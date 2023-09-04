@@ -2,14 +2,23 @@
   <div class="list-balance" :class="{'is-show': props.isOpen}">
     <div class="header">
       <button-base
-        v-for="{id, title} in getContent(layoutData, defaultLocaleLayoutData, 'header.balance.tabs')"
-        :is-active="id === selected"
-        :key="id"
+        :is-active="selected === 'balance'"
+        key="balance"
         type="ghost"
         size="xs"
-        @click.stop="switchTabNav(id)"
+        @click.stop="switchTabNav('balance')"
       >
-        {{ title }}
+        {{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.tabs.balanceTab') }}
+      </button-base>
+
+      <button-base
+        :is-active="selected === 'currency'"
+        key="currency"
+        type="ghost"
+        size="xs"
+        @click.stop="switchTabNav('currency')"
+      >
+        {{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.tabs.currencyTab') }}
       </button-base>
     </div>
 
@@ -116,14 +125,14 @@
 
   const getAccountByCurrency = (currency: string): Maybe<IAccount> => accounts.value.find((account) => (account.currency === currency));
 
-  interface DisplayAccountInterface {
+  interface IDisplayAccount {
     nativeCurrency: string,
     currency: string,
     amount: number,
     currencySymbol?: string
   }
 
-  const formatCurrenciesList = (list: DisplayAccountInterface[]) => {
+  const formatCurrenciesList = (list: IDisplayAccount[]) => {
     return list.filter((item) => accounts.value.find((account) => account.currency === item.nativeCurrency))
       .sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
   };
@@ -136,7 +145,7 @@
       currenciesList = cryptoCurrencies.value;
     }
 
-    const formatList: DisplayAccountInterface[] = currenciesList.map((currency) => {
+    const formatList: IDisplayAccount[] = currenciesList.map((currency) => {
       const findAccount = getAccountByCurrency(currency.code);
 
       if (equivalentCurrency.value && currency.type === 'crypto') {
@@ -156,8 +165,8 @@
       };
     });
 
-    const withBalanceList: DisplayAccountInterface[] = [];
-    const withoutBalanceList: DisplayAccountInterface[] = [];
+    const withBalanceList: IDisplayAccount[] = [];
+    const withoutBalanceList: IDisplayAccount[] = [];
 
     formatList.forEach((formatItem) => {
       if (formatItem.amount) {

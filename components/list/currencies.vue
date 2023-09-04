@@ -68,14 +68,14 @@
 
   const getAccountByCurrency = (currency: string): Maybe<IAccount> => accounts.value.find((account) => (account.currency === currency));
 
-  interface DisplayAccountInterface {
+  interface IDisplayAccount {
     nativeCurrency: string,
     currency: string,
     amount: number,
     currencySymbol?: string
   }
 
-  const formatCurrenciesList = (list:DisplayAccountInterface[]) => {
+  const formatCurrenciesList = (list:IDisplayAccount[]) => {
     return list.filter((item) => accounts.value.find((account) => account.currency === item.nativeCurrency))
       .sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()))
   }
@@ -85,7 +85,7 @@
     if (selected.value === 'all' || !cryptoCurrencies.value.length) currenciesList = currencies.value;
     else currenciesList = cryptoCurrencies.value;
 
-    const formatList:DisplayAccountInterface[] = currenciesList.map((currency) => {
+    const formatList:IDisplayAccount[] = currenciesList.map((currency) => {
       const findAccount = getAccountByCurrency(currency.code);
 
       if (equivalentCurrency.value && currency.type === 'crypto') {
@@ -102,8 +102,8 @@
       return { nativeCurrency: currency.code, ...formattedAcc, currencySymbol: equivalentCurrency.value ? currency.symbol : undefined };
     });
 
-    const withBalanceList:DisplayAccountInterface[] = [];
-    const withoutBalanceList:DisplayAccountInterface[] = [];
+    const withBalanceList:IDisplayAccount[] = [];
+    const withoutBalanceList:IDisplayAccount[] = [];
 
     formatList.forEach((formatItem) => {
       if (formatItem.amount) withBalanceList.push(formatItem);

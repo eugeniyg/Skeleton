@@ -39,7 +39,7 @@
   const listContent = questionsContent.status === 'fulfilled'
     ? questionsContent.value.data?.value || [] : [];
 
-  if (route.name === 'questions' || route.name === 'locale-questions') {
+  if ((route.name === 'questions' || route.name === 'locale-questions') && listContent?.length) {
     navigateTo(localizePath(`/questions/${listContent[0]?.pageUrl || 'most-popular'}`), { replace: true });
   }
 </script>

@@ -178,11 +178,13 @@ export const useProjectMethods = () => {
     let defaultLocaleData;
 
     if (currentLocaleContentResponse.status !== 'rejected') {
-      currentLocaleData = currentLocaleContentResponse.value.data?.value || currentLocaleContentResponse.value;
+      const { data } = currentLocaleContentResponse.value;
+      if (data) currentLocaleData = data.value;
     }
 
     if (defaultLocaleContentResponse.status !== 'rejected') {
-      defaultLocaleData = defaultLocaleContentResponse.value.data?.value || defaultLocaleContentResponse.value;
+      const { data } = defaultLocaleContentResponse.value;
+      if (data) defaultLocaleData = data.value;
     }
 
     return { currentLocaleData, defaultLocaleData };

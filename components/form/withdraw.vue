@@ -213,7 +213,7 @@
     };
   };
 
-  interface PaymentFieldOptionsInterface {
+  interface IPaymentFieldOptions {
     id: string,
     name: string,
     regex?: string|string[]
@@ -224,11 +224,11 @@
     if (networkMethod) {
       const select = networkMethod.fields.find((item: IPaymentField) => item.fieldType === 'select');
       if (select && select?.options) {
-        return select.options.map((option: PaymentFieldOptionsInterface) => ({
+        return select.options.map((option: IPaymentFieldOptions) => ({
           ...option,
           id: String(option.id)
         }))
-          .find((option: PaymentFieldOptionsInterface) => option.id === networkId);
+          .find((option: IPaymentFieldOptions) => option.id === networkId);
       }
     }
   }

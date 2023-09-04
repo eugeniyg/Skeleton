@@ -87,7 +87,7 @@
 
   setLimitsContent(currentLocaleLimitsContent, defaultLocaleLimitsContent);
 
-  interface EditPropsInterface {
+  interface IEditProps {
     limitId: string | undefined,
     definition: number | undefined,
     amount: number | undefined,
@@ -97,7 +97,7 @@
 
   const state = reactive<{
     definition: number | undefined,
-    editProps: EditPropsInterface,
+    editProps: IEditProps,
     period: undefined | string,
   }>({
     definition: undefined,
@@ -121,7 +121,7 @@
     showModal('addLimit');
   };
 
-  const openEditModal = (limitData: EditPropsInterface) => {
+  const openEditModal = (limitData: IEditProps) => {
     state.editProps = limitData;
     editModalKey.value += 1;
     showModal('editLimit');

@@ -97,7 +97,8 @@
   const {
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent,
-    currentLocale
+    currentLocale,
+    defaultLocale
   } = storeToRefs(globalStore);
   const {
     localizePath,
@@ -106,18 +107,17 @@
     getContent,
   } = useProjectMethods();
 
-  const pageContent = ref<ICasinoPage|undefined>(undefined);
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleCasinoPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'casino').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleCasinoPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'casino').findOne())
+  ]);
 
-  const { data: { value: casinoPageContent } }: { data: { value: ICasinoPage }} = await useAsyncData('casinoPageContent',
-    () => queryContent(currentLocale.value?.code as string, 'pages', 'casino').findOne());
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const pageContent: Maybe<ICasinoPage> = currentLocaleData;
+  const defaultLocalePageContent: Maybe<ICasinoPage> = defaultLocaleData;
 
-  if (casinoPageContent) {
-    pageContent.value = casinoPageContent;
-  } else {
-    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
-  }
-
-  const sliderItems: Maybe<ICasinoPage['slider']> = pageContent?.value.slider;
+  const sliderItems: Maybe<ICasinoPage['slider']> = pageContent?.slider || defaultLocalePageContent?.slider;
 
   const fakeStore = useFakeStore();
   const router = useRouter();
@@ -145,7 +145,7 @@
     },
   };
 
-  setPageSeo(pageContent.value?.seo);
+  setPageSeo(pageContent?.seo);
 
   const changeCategory = (categoryId: string) => {
     router.push({ path: localizePath('/games'), query: { category: categoryId } });

@@ -9,7 +9,7 @@
         :value="isChecked"
         @change="clickToggle"
       >
-        {{ content?.changeButton }}
+        {{ props.content?.changeButton }}
       </form-input-toggle>
 
       <div class="amount">
@@ -24,16 +24,16 @@
         size="xs"
         @click="hide"
       >
-        {{ content?.hideButton }}
+        {{ props.content?.hideButton }}
       </button-base>
 
       <div v-if="isActive" class="actions">
         <button-base type="primary" size="sm" @click="openDepositModal">
-          {{ content?.depositButton }}
+          {{ props.content?.depositButton }}
         </button-base>
 
         <button-base type="secondary" size="sm" @click="openWithdrawModal">
-          {{  content?.withdrawButton }}
+          {{  props.content?.withdrawButton }}
         </button-base>
       </div>
     </div>

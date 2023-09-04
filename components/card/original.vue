@@ -54,12 +54,12 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { PropType } from '@vue/runtime-core';
-  import { GameImagesInterface, GameProviderInterface } from '@platform/frontend-core/dist/module';
-  import { GameTagInterface } from '@skeleton/types';
+  import { IGameImages, IGameProvider } from '@platform/frontend-core';
+  import { IGameTag } from '~/types';
 
   const props = defineProps({
     images: {
-      type: Object as PropType<GameImagesInterface>,
+      type: Object as PropType<IGameImages>,
       required: false,
     },
     name: {
@@ -87,7 +87,7 @@
       default: () => [],
     },
     provider: {
-      type: Object as PropType<GameProviderInterface>,
+      type: Object as PropType<IGameProvider>,
       required: true,
     },
     isWide: {
@@ -109,7 +109,7 @@
   const { showModal, showAlert } = useLayoutStore();
   const { localizePath, getImageUrl, getContent } = useProjectMethods();
 
-  const gameTagsContent: Maybe<GameTagInterface[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags.gameTagsList');
+  const gameTagsContent: Maybe<IGameTag[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags.gameTagsList');
 
   const labelNames = props.labels?.map((label) => label.name)
   const gameBages = gameTagsContent?.filter((bage) => labelNames.includes(bage.identity));

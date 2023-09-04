@@ -1,7 +1,7 @@
 <template>
   <div class="fiat-toggler">
     <div class="fiat-toggler__label" @click="toggle">
-      {{ getContent(layoutData, defaultLocaleLayoutData, 'header.fiatToggler') }}
+      {{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.fiatToggler') }}
     </div>
 
     <transition name="fade">

@@ -56,7 +56,7 @@
 
   const gamesStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gamesStore);
-  const userMenuContent = computed(() => getContent(layoutData, defaultLocaleLayoutData, 'sitSidebar.userMenu')?.map((menuItem: IIconLink) => {
+  const userMenuContent = computed(() => getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.userMenu')?.map((menuItem: IIconLink) => {
     if (menuItem.url === '/favorites') return { ...menuItem, counter: favoriteGames.value.length };
     return menuItem;
   }));

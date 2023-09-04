@@ -45,13 +45,13 @@
   const passwordContent: Maybe<{label: string, saveButton:string}> = inject('passwordContent');
   const defaultLocalePasswordContent: Maybe<{label: string, saveButton:string}> = inject('defaultLocalePasswordContent');
 
-  interface ChangeFormDataInterface extends Record<string, any>{
+  interface IChangeFormData extends Record<string, any>{
     currentPassword: string,
     newPassword: string,
     repeatNewPassword: string,
   }
 
-  const changeFormData = reactive<ChangeFormDataInterface>({
+  const changeFormData = reactive<IChangeFormData>({
     currentPassword: '',
     newPassword: '',
     repeatNewPassword: '',
