@@ -140,7 +140,7 @@
 
 .card-cat-casino {
   background-color: var(--data-banner-casino-bg);
-  background-image: var(--card-category-casino-gradient);
+  background-image: var(--data-banner-casino-gradient);
   box-shadow: var(--shadow-modal);
   grid-area: casino;
   --card-padding: 70px 16px 16px 16px;
@@ -210,7 +210,7 @@
 
 .card-cat-betting {
   background-color: var(--data-banner-betting-bg);
-  background-image: var(--card-category-betting-gradient);
+  background-image: var(--data-banner-betting-gradient);
   box-shadow: var(--shadow-modal);
   grid-area: betting;
   --card-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
@@ -277,8 +277,8 @@
 }
 
 .card-cat-esports {
-  background-color: var(--data-banner-esports-bg);
-  background-image: var(--card-category-betting-gradient);
+  background-color: var(--data-banner-esport-bg);
+  background-image: var(--data-banner-betting-gradient);
   box-shadow: var(--shadow-modal);
   grid-area: esports;
 

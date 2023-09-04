@@ -34,37 +34,37 @@
 
 
     &:nth-child(1) {
-      --bgc: var(--orange-600);
+      --bgc: var(--side-bar-cta-small-1-bg);
 
       &.is-active, &:active {
-        --bgc: var(--orange-700);
-        --title-color: var(--text-accent);
-        --sub-title-color: var(--text-accent);
+        --bgc: var(--side-bar-cta-small-1-bg-click);
+        --title-color: var(--side-bar-cta-small-1-title-click);
+        --sub-title-color: var(--side-bar-cta-small-1-title-click);
       }
 
       @include use-hover {
         &:hover:not(.is-active) {
-          --bgc: var(--orange-700);
-          --title-color: var(--text-primary);
-          --sub-title-color: var(--text-primary);
+          --bgc: var(--side-bar-cta-small-1-bg-hover);
+          --title-color: var(--side-bar-cta-small-1-title-hover);
+          --sub-title-color: var(--side-bar-cta-small-1-title-hover);
         }
       }
     }
 
     &:nth-child(2) {
-      --bgc: var(--violet-600);
+      --bgc: var(--side-bar-cta-small-2-bg);
 
       &.is-active, &:active {
-        --bgc: var(--violet-700);
-        --title-color: var(--text-accent);
-        --sub-title-color: var(--text-accent);
+        --bgc: var(--side-bar-cta-small-2-bg-click);
+        --title-color: var(--side-bar-cta-small-2-title-click);
+        --sub-title-color: var(--side-bar-cta-small-2-title-click);
       }
 
       @include use-hover {
         &:hover:not(.is-active) {
-          --bgc: var(--violet-700);
-          --title-color: var(--text-primary);
-          --sub-title-color: var(--text-primary);
+          --bgc: var(--side-bar-cta-small-2-bg-hover);
+          --title-color: var(--side-bar-cta-small-2-title-hover);
+          --sub-title-color: var(--side-bar-cta-small-2-title-hover);
         }
       }
     }
@@ -73,7 +73,7 @@
   &__title {
     display: var(--title-display, block);
     @include font($heading-0);
-    color: var(--title-color, var(--text-secondary));
+    color: var(--title-color, var(--side-bar-cta-small-1-title-small));
     position: relative;
     z-index: 1;
     @extend %text-elipsis;
@@ -87,7 +87,7 @@
   &__sub-title {
     display: var(--sub-title-display, block);
     @include font($heading-3);
-    color: var(--sub-title-color, var(--text-primary));
+    color: var(--sub-title-color, var(--side-bar-cta-small-1-title-big));
     position: relative;
     z-index: 1;
     margin-top: rem(-4px);

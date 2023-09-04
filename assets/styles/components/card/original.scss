@@ -120,7 +120,7 @@
 
   &__info {
     padding: var(--card-info-padding, 8px);
-    background-color: var(--bg-info, var(--base-card-info-bg));
+    background-color: var(--bg-info, var(--game-tumb-overlay-hover));
     display: var(--display, grid);
     position: var(--position-info, absolute);
     top: 0;
@@ -160,7 +160,7 @@
 
     &-title {
       @include font($heading-0);
-      color: var(--color-info-title, var(--base-card-title));
+      color: var(--color-info-title, var(--game-tumb-text-title));
       @include line-clamp(2);
 
       [data-size="min"] & {
@@ -187,7 +187,7 @@
     &-provider {
       @include font($body-0);
       @extend %text-elipsis;
-      color: var(--base-card-provider-color);
+      color: var(--game-tumb-text-provider);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -263,7 +263,7 @@
     margin-right: auto;
     background-color: var(--bgc, transparent);
     --padding: 4px 8px;
-    --color: var(--base-card-btn-color);
+    --color: var(--game-tumb-btn-content);
 
     [data-size="max"] & {
       @include upd-font($heading-2);
@@ -273,8 +273,8 @@
       &:hover {
         transition: all .2s ease-in-out;
         cursor: pointer;
-        --color: var(--base-card-btn-hover-color);
-        --bgc: var(--base-card-btn-hover-bg);
+        --color: var(--game-tumb-btn-content-hover);
+        --bgc: var(--game-tumb-btn-bg-hover);
       }
     }
   }
