@@ -9,13 +9,13 @@
   border-radius: 8px;
   background-color: var(--bgc, transparent);
   --icon-size: 20px;
-  --color: var(--base-card-btn-color);
+  --color: var(--game-tumb-btn-content);
 
   @include use-hover {
     &:hover {
       cursor: pointer;
-      --color: var(--base-card-btn-hover-color);
-      --bgc: var(--base-card-btn-hover-bg);
+      --color: var(--game-tumb-btn-content-hover);
+      --bgc: var(--game-tumb-btn-bg-hover);
     }
   }
 }

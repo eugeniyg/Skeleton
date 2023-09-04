@@ -11,18 +11,18 @@
   height: rem(24px);
   margin-left: auto;
   --icon-size: 20px;
-  --color: var(--base-card-btn-color);
+  --color: var(--game-tumb-btn-content);
 
   &.active {
-    --color: var(--base-card-btn-color);
-    --bgc: var(--base-card-btn-hover-bg);
+    --color: var(--game-tumb-btn-content);
+    --bgc: var(--game-tumb-btn-bg-hover);
   }
 
   @include use-hover {
     &:hover {
       cursor: pointer;
-      --color: var(--base-card-btn-hover-color);
-      --bgc: var(--base-card-btn-hover-bg);
+      --color: var(--game-tumb-btn-content-hover);
+      --bgc: var(--game-tumb-btn-bg-hover);
     }
   }
 }
