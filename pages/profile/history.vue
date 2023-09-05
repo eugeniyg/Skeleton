@@ -14,7 +14,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { IHistory } from '~/types';
-  import {camelCase} from "lodash";
+  import camelCase from "lodash/camelCase";
 
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);

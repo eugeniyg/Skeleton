@@ -1,4 +1,4 @@
-import {camelCase} from 'lodash';
+import camelCase from 'lodash/camelCase';
 import {defineStore} from 'pinia';
 import {ICoreConstants, ICountry, ICurrency, ILocale, IStatus, ITimeZone,} from '@platform/frontend-core/dist/module';
 import {
