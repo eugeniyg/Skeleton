@@ -10,9 +10,12 @@
     </div>
 
     <div class="content">
-      <cta-menu v-if="layoutData?.siteSidebar?.ctaMenu?.isShow" :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.ctaMenu.items')" />
+      <cta-menu
+        v-if="layoutData?.siteSidebar?.ctaMenu?.isShow"
+        :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.ctaMenu.items')"
+      />
 
-      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.topMenu')"/>
+      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.topMenu.items')"/>
       <atomic-divider/>
 
 
