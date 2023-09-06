@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { GameImagesInterface, GameInterface } from '@platform/frontend-core/dist/module';
+  import { IGame } from '@platform/frontend-core';
 
   const props = defineProps({
     items: {
@@ -29,15 +29,13 @@
   const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const gamesArray = ref<GameInterface[]>([]);
-
-  const { baseApiUrl } = useGlobalStore();
+  const gamesArray = ref<IGame[]>([]);
   const { getImageUrl } = useProjectMethods();
 
   onMounted(async () => {
     const { getFilteredGames } = useCoreGamesApi();
     const { data } = await getFilteredGames({ identity: props.items });
-    gamesArray.value = data.reduce((acc: GameInterface[], item: GameInterface) => {
+    gamesArray.value = data.reduce((acc: IGame[], item: IGame) => {
       const getGameIndex = props.items?.findIndex((gameIdentity) => gameIdentity === item.identity);
       if (getGameIndex > -1) acc[getGameIndex] = item;
       return acc;

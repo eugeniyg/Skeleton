@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { BettingContentInterface } from '@skeleton/types';
+  import { ISportsbookPage } from '~/types';
 
   const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();
@@ -23,24 +23,24 @@
     alertsData,
     defaultLocaleAlertsData,
     currentLocale,
-    headerCountry,
-    contentLocalesArray,
+    defaultLocale,
+    headerCountry
   } = storeToRefs(globalStore);
 
   const {
     setPageSeo,
-    findLocalesContentData,
+    getLocalesContentData,
   } = useProjectMethods();
-  const bettingContentRequest = await useAsyncData('bettingContent', () => queryContent('page-controls')
-    .where({ locale: { $in: contentLocalesArray.value } })
-    .only(['locale', 'bettingPage'])
-    .find());
-  const {
-    currentLocaleData,
-    defaultLocaleData
-  } = findLocalesContentData(bettingContentRequest.data.value);
-  const bettingContent: Maybe<BettingContentInterface> = currentLocaleData?.bettingPage;
-  const defaultLocaleBettingContent: Maybe<BettingContentInterface> = defaultLocaleData?.bettingPage;
+
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleBettingPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'betting').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleBettingPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'betting').findOne())
+  ]);
+
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const bettingContent: Maybe<ISportsbookPage> = currentLocaleData;
+  const defaultLocaleBettingContent: Maybe<ISportsbookPage> = defaultLocaleData;
   setPageSeo(bettingContent?.seo);
 
   const walletStore = useWalletStore();
@@ -97,7 +97,7 @@
 
   const redirectLimitedPlayer = (): void => {
     router.replace(localizePath('/'));
-    showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
+    showAlert(alertsData.value?.limit?.limitedRealGame || defaultLocaleAlertsData.value?.limit?.limitedRealGame);
   };
 
   watch(() => activeAccount.value?.id, async (oldValue, newValue) => {

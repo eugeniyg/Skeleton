@@ -78,20 +78,20 @@
 </template>
 
 <script setup lang="ts">
-  import { BetItemInterface } from '@platform/frontend-core/dist/module';
-  import { BetCardInterface, BetStatusesInterface } from '@skeleton/types';
+import {IBetItem} from '@platform/frontend-core';
+import {IBetsHistory} from '~/types';
 
-  const props = defineProps<{
+const props = defineProps<{
     id: string,
     betAmount: number,
     currency: string,
     createdAt: string,
     resultBalance: number,
-    items: BetItemInterface[],
+    items: IBetItem[],
     status: number,
     coefficient: number,
-    statuses: BetStatusesInterface,
-    betCard: BetCardInterface,
+    statuses: IBetsHistory['statuses'],
+    betCard: IBetsHistory['betCard'],
   }>();
 
   const isOpen = ref<boolean>(false);
@@ -105,8 +105,7 @@
   };
 
   const comboDisciplines = computed(() => {
-    const disciplinesArr = props.items.map((betItem) => betItem.discipline).filter((discipline) => discipline !== props.items[0].discipline);
-    return disciplinesArr;
+    return props.items.map((betItem) => betItem.discipline).filter((discipline) => discipline !== props.items[0].discipline);
   });
 
   const globalStore = useGlobalStore();

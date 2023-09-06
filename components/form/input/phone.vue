@@ -39,7 +39,7 @@
   import parsePhoneNumber from 'libphonenumber-js';
   import { storeToRefs } from 'pinia';
   import { vMaska } from 'maska';
-  import { PhoneCodeInterface } from '@skeleton/types';
+  import { IPhoneCode } from '@skeleton/types';
 
   const props = defineProps({
     label: {
@@ -66,7 +66,7 @@
 
   const globalStore = useGlobalStore();
   const { countries, headerCountry } = storeToRefs(globalStore);
-  const selectItems:PhoneCodeInterface[] = countries.value.map((country) => ({
+  const selectItems:IPhoneCode[] = countries.value.map((country) => ({
     countryCode: country.code,
     code: country.phonePrefix,
     mask: `/img/flags/${country.code.toLowerCase()}.svg`,

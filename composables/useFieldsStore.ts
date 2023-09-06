@@ -1,30 +1,30 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import {
-  CountryInterface,
-  CurrencyInterface,
-  TimeZoneInterface,
-  GameProviderInterface,
-  FieldInterface,
-} from '@platform/frontend-core/dist/module';
+  ICountry,
+  ICurrency,
+  IField,
+  IGameProvider,
+  ITimeZone
+} from '@platform/frontend-core';
 
-interface FieldsStoreStateInterface {
-  profileFields: FieldInterface[],
+interface IFieldsStoreState {
+  profileFields: IField[],
 }
 
-interface SelectOptionsInterface {
-  currency: CurrencyInterface[],
-  country: CountryInterface[],
-  timeZone: TimeZoneInterface[],
-  providers: GameProviderInterface[],
+interface ISelectOptions {
+  currency: ICurrency[],
+  country: ICountry[],
+  timeZone: ITimeZone[],
+  providers: IGameProvider[],
 }
 
 export const useFieldsStore = defineStore('fieldsStore', {
-  state: ():FieldsStoreStateInterface => ({
+  state: ():IFieldsStoreState => ({
     profileFields: [],
   }),
 
   getters: {
-    selectOptions():SelectOptionsInterface {
+    selectOptions():ISelectOptions {
       const globalStore = useGlobalStore();
       const gameStore = useGamesStore();
       return {
@@ -39,8 +39,7 @@ export const useFieldsStore = defineStore('fieldsStore', {
   actions: {
     async getProfileFields():Promise<void> {
       const { getProfileFields } = useCoreProfileApi();
-      const data = await getProfileFields();
-      this.profileFields = data;
+      this.profileFields = await getProfileFields();
     },
   },
 });

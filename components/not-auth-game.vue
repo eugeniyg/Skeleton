@@ -18,7 +18,7 @@
         :size="modeBtnSize"
         @click="showModal('register')"
       >
-        {{ headerContent?.registrationButton || defaultLocaleHeaderContent?.registrationButton }}
+        {{ layoutData?.header?.registrationButton || defaultLocaleLayoutData?.header?.registrationButton }}
       </button-base>
 
       <button-base
@@ -26,7 +26,7 @@
         :size="modeBtnSize"
         @click="showModal('signIn')"
       >
-        {{ headerContent?.loginButton || defaultLocaleHeaderContent?.loginButton }}
+        {{ layoutData?.header?.loginButton || defaultLocaleLayoutData?.header?.loginButton }}
       </button-base>
     </div>
 
@@ -59,7 +59,7 @@
   const modeClassName = computed(() => ({ 'is-single-mode': props.singleMode }));
   const modeBtnSize = computed(() => (props.singleMode ? 'md' : 'lg'));
   const { showModal } = useLayoutStore();
-  const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
+  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
 </script>
 
 <style src="~/assets/styles/components/not-auth-game.scss" lang="scss" />

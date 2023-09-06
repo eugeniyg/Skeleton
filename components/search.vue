@@ -3,7 +3,7 @@
     <form-input-search
       ref="inputElement"
       v-model:value="searchValue"
-      :placeholder="getContent(headerContent, defaultLocaleHeaderContent, 'search.placeholder')"
+      :placeholder="getContent(layoutData, defaultLocaleLayoutData, 'header.search.placeholder')"
       @input="searchInput"
     />
 
@@ -19,13 +19,11 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import {
-    GameInterface, GamesResponseInterface, PaginationMetaInterface,
-  } from '@platform/frontend-core/dist/module';
-  import debounce from 'lodash/debounce';
+import {storeToRefs} from 'pinia';
+import {IGame, IGamesResponse, IPaginationMeta} from '@platform/frontend-core';
+import debounce from 'lodash/debounce';
 
-  const props = defineProps({
+const props = defineProps({
     isShow: {
       type: Boolean,
       default: false,
@@ -36,25 +34,24 @@
   });
 
   const emit = defineEmits(['hideSearch']);
-  const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
+  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const { getContent } = useProjectMethods();
   const searchValue = ref<string>('');
   const pendingGames = ref<boolean>(true);
   const loadPage = ref<number>(1);
-  const pageMeta = ref<PaginationMetaInterface>();
-  const gameItems = ref<GameInterface[]>([]);
+  const pageMeta = ref<IPaginationMeta>();
+  const gameItems = ref<IGame[]>([]);
   const isShowSearchResult = computed(() => searchValue.value.length > 1 && !pendingGames.value);
   const showLoadMore = computed(() => !!gameItems.value.length && ((pageMeta.value?.totalPages || 1) > (pageMeta.value?.page || 1)));
 
   const { getFilteredGames } = useCoreGamesApi();
-  const getItems = async (): Promise<GamesResponseInterface> => {
+  const getItems = async (): Promise<IGamesResponse> => {
     const params: any = { page: loadPage.value, perPage: 5, name: searchValue.value };
 
-    const response = await getFilteredGames(params);
-    return response;
+    return await getFilteredGames(params);
   };
 
-  const setItems = (response: GamesResponseInterface, more?: boolean): void => {
+  const setItems = (response: IGamesResponse, more?: boolean): void => {
     gameItems.value = more
       ? gameItems.value.concat(response.data)
       : response.data;
@@ -84,7 +81,7 @@
     }, 50);
   });
 
-  const defaultGames = ref<GameInterface[]>([]);
+  const defaultGames = ref<IGame[]>([]);
   const gameStore = useGamesStore();
   const { currentLocationCollections } = storeToRefs(gameStore);
   const getTurbogamesId = currentLocationCollections.value.find((collection) => collection.identity === 'turbogames')?.id;

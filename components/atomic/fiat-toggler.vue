@@ -1,7 +1,7 @@
 <template>
   <div class="fiat-toggler">
     <div class="fiat-toggler__label" @click="toggle">
-      {{ headerContent?.fiatToggler || defaultLocaleHeaderContent?.fiatToggler }}
+      {{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.fiatToggler') }}
     </div>
 
     <transition name="fade">
@@ -27,7 +27,8 @@
   const { showModal } = layoutStore;
 
   const globalStore = useGlobalStore();
-  const { equivalentCurrency, headerContent, defaultLocaleHeaderContent } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
+  const { equivalentCurrency, layoutData, defaultLocaleLayoutData } = storeToRefs(globalStore);
   const { setEquivalentCurrency, removeEquivalentCurrency } = globalStore;
 
   const toggle = () => {

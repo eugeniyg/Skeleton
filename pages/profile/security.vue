@@ -14,19 +14,21 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ProfileSecurityInterface } from '@skeleton/types';
+  import { IProfileSecurity } from '~/types';
 
-  const { setPageSeo, findLocalesContentData } = useProjectMethods();
+  const { setPageSeo, getLocalesContentData } = useProjectMethods();
   const globalStore = useGlobalStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
-  const securityContentRequest = await useAsyncData('securityContent', () => queryContent('profile')
-    .where({ locale: { $in: contentLocalesArray.value } })
-    .only(['security', 'locale']).find());
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleProfileSecurityContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'security').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleProfileSecurityContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'security').findOne())
+  ]);
 
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(securityContentRequest.data.value);
-  const securityContent: Maybe<ProfileSecurityInterface> = currentLocaleData?.security;
-  const defaultLocaleSecurityContent: Maybe<ProfileSecurityInterface> = defaultLocaleData?.security;
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const securityContent: Maybe<IProfileSecurity> = currentLocaleData;
+  const defaultLocaleSecurityContent: Maybe<IProfileSecurity> = defaultLocaleData;
 
   setPageSeo(securityContent?.seo);
 

@@ -5,7 +5,7 @@
         <div class="title">{{ questionPageContent?.title || defaultLocaleQuestionsPageContent?.title || '' }}</div>
         <!--<div class="sub-title">Didn’t find an answer? Conact to or <a hef="#">Contact Support</a></div>-->
       </div>
-      <nav-faq :items="listContent?.length ? listContent : defaultLocaleListContent"/>
+      <nav-faq :items="listContent"/>
       <NuxtPage />
     </div>
 
@@ -15,41 +15,32 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { QuestionPageInterface, QuestionPagesInterface } from '@skeleton/types';
+  import { IQuestionPage } from '~/types';
 
   const { localizePath } = useProjectMethods();
   const route = useRoute();
 
-  const listContent = ref<QuestionPageInterface[]>([]);
-  const defaultLocaleListContent = ref<QuestionPageInterface[]>([]);
   const globalStore = useGlobalStore();
-  const { currentLocale, defaultLocale, contentLocalesArray } = storeToRefs(globalStore);
-  const {
-    setPageSeo,
-    findLocalesContentData,
-  } = useProjectMethods();
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
+  const { setPageSeo, getLocalesContentData } = useProjectMethods();
 
-  const [currentLocaleListRequest, defaultLocaleListRequest, controlsRequest] = await Promise.all([
-    useAsyncData('currentLocalePageList', () => queryContent('question')
-      .where({ locale: currentLocale.value?.code || '' }).sort({ position: 1 }).find()),
-    useAsyncData('defaultLocalePageList', () => queryContent('question')
-      .where({ locale: defaultLocale.value?.code || '' }).sort({ position: 1 }).find()),
-    useAsyncData('pageControls', () => queryContent('page-controls')
-      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'questionPage']).find()),
+  const [currentLocaleQuestionPageContent, defaultLocaleQuestionPageContent, questionsContent] = await Promise.allSettled([
+    useAsyncData('currentLocaleQuestionPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'question').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleQuestionPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'question').findOne()),
+    useAsyncData('questionsContent', () => queryContent(currentLocale.value?.code as string, 'question-pages').find()),
   ]);
 
-  listContent.value = (currentLocaleListRequest.data.value as unknown) as QuestionPageInterface[];
-  defaultLocaleListContent.value = (defaultLocaleListRequest.data.value as unknown) as QuestionPageInterface[];
-
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(controlsRequest.data.value);
-  const questionPageContent: Maybe<QuestionPagesInterface> = currentLocaleData?.questionPage;
-  const defaultLocaleQuestionsPageContent: Maybe<QuestionPagesInterface> = defaultLocaleData?.questionPage;
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleQuestionPageContent, defaultLocaleQuestionPageContent);
+  const questionPageContent: Maybe<IQuestionPage> = currentLocaleData;
+  const defaultLocaleQuestionsPageContent: Maybe<IQuestionPage> = defaultLocaleData;
   setPageSeo(questionPageContent?.seo);
 
-  if (route.name === 'questions' || route.name === 'locale-questions') {
-    navigateTo(localizePath(`/questions/${listContent.value[0]?.pageUrl
-      || defaultLocaleListContent.value[0]?.pageUrl
-      || 'most-popular'}`), { replace: true });
+  const listContent = questionsContent.status === 'fulfilled'
+    ? questionsContent.value.data?.value || [] : [];
+
+  if ((route.name === 'questions' || route.name === 'locale-questions') && listContent?.length) {
+    navigateTo(localizePath(`/questions/${listContent[0]?.pageUrl || 'most-popular'}`), { replace: true });
   }
 </script>
 

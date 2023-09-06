@@ -7,11 +7,11 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('depositLimitReached')"/>
-        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.depositLimitReached.label') }}</div>
+        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'depositLimitReached.label') }}</div>
       </div>
 
       <div class="deposit-limit-reached__text">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.depositLimitReached.description') }}
+        {{ getContent(popupsData, defaultLocalePopupsData, 'depositLimitReached.description') }}
       </div>
 
     </div>

@@ -32,10 +32,10 @@
         <div class="nav-currency__plug" v-if="selected === 'crypto' && !cryptoCurrencies.length">
           <img class="nav-currency__plug-img" src="/img/currency-plug.svg" alt="">
           <h4 class="nav-currency__plug-title">
-            {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'currency.empty.title') }}
+            {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'currencyPopup.empty.title') }}
           </h4>
           <p class="nav-currency__plug-text">
-            {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'currency.empty.description') }}
+            {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'currencyPopup.empty.description') }}
           </p>
         </div>
       </div>
@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { CurrencyInterface } from '@platform/frontend-core/dist/module';
+  import { ICurrency } from '@platform/frontend-core';
 
   const props = defineProps({
     tabs: Array,
@@ -89,7 +89,7 @@
   };
 
   const { createAccount } = useWalletStore();
-  const addCurrency = async (currency:CurrencyInterface):Promise<void> => {
+  const addCurrency = async (currency:ICurrency):Promise<void> => {
     await createAccount(currency.code);
     close();
   };

@@ -20,7 +20,7 @@
 
       <list-base :items="trustIcons">
         <template #header>
-          <h4>{{ footerContent?.responsibilityLabel || defaultLocaleFooterContent?.responsibilityLabel }}</h4>
+          <h4>{{ layoutData?.footer?.responsibilityLabel || defaultLocaleLayoutData?.footer?.responsibilityLabel }}</h4>
         </template>
 
         <template v-slot:item="{ item }">
@@ -38,16 +38,16 @@
     <template v-if="showCuracaoBlock">
       <div class="info">
         <iframe
-          v-if="footerContent?.curacaoLink || defaultLocaleFooterContent?.curacaoLink"
-          :src="footerContent?.curacaoLink || defaultLocaleFooterContent?.curacaoLink"
+          v-if="layoutData?.footer?.curacao?.frameLink || defaultLocaleLayoutData?.footer?.curacao?.frameLink"
+          :src="layoutData?.footer?.curacao?.frameLink || defaultLocaleLayoutData?.footer?.curacao?.frameLink"
           width="132px"
           height="62px"
         />
 
         <div
-          v-if="footerContent?.curacao || defaultLocaleFooterContent?.curacao"
+          v-if="layoutData?.footer?.curacao?.description || defaultLocaleLayoutData?.footer?.curacao?.description"
           class="info__text"
-          v-html="marked.parse(footerContent?.curacao || defaultLocaleFooterContent?.curacao || '')"
+          v-html="marked.parse(layoutData?.footer?.curacao?.description || defaultLocaleLayoutData?.footer?.curacao?.description || '')"
         />
       </div>
 
@@ -55,7 +55,7 @@
     </template>
 
     <div class="copy-info">
-      <p>{{ footerContent?.copyright || defaultLocaleFooterContent?.copyright }}</p>
+      <p>{{ layoutData?.footer?.copyright || defaultLocaleLayoutData?.footer?.copyright }}</p>
     </div>
   </footer>
 </template>
@@ -65,11 +65,11 @@
 
   const { localizePath } = useProjectMethods();
 
-  const { footerContent, defaultLocaleFooterContent } = useGlobalStore();
+  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const accordeonItems = [
-    footerContent?.promoMenu || defaultLocaleFooterContent?.promoMenu,
-    footerContent?.infoMenu || defaultLocaleFooterContent?.infoMenu,
-    footerContent?.helpMenu || defaultLocaleFooterContent?.helpMenu,
+    layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
+    layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
+    layoutData?.footer?.helpMenu || defaultLocaleLayoutData?.footer?.helpMenu,
   ];
   const trustIcons = [
     '/trust-icons/1.svg',
@@ -86,10 +86,10 @@
   ];
 
   const showCuracaoBlock = computed(() => {
-    return footerContent?.curacao ||
-      defaultLocaleFooterContent?.curacao ||
-      footerContent?.curacaoLink ||
-      defaultLocaleFooterContent?.curacaoLink
+    return layoutData?.footer?.curacao?.description ||
+      defaultLocaleLayoutData?.footer?.curacao?.description ||
+      layoutData?.footer?.curacao?.frameLink ||
+      defaultLocaleLayoutData?.footer?.curacao?.frameLink
   })
 </script>
 

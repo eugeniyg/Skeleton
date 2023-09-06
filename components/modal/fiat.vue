@@ -8,12 +8,12 @@
     >
       <div class="scroll">
         <div class="header">
-          <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'displayInFiat.title') }}</div>
+          <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'balanceInFiat.title') }}</div>
           <button-modal-close @close="closeModal('fiat')"/>
         </div>
 
         <p class="modal-fiat__text">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'displayInFiat.description') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'balanceInFiat.description') }}
         </p>
 
         <div class="modal-fiat__list">

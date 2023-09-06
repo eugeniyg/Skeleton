@@ -62,7 +62,7 @@
           @click="showModal('register')"
         >
           <atomic-icon id="user-new" class="btn-primary__icon"/>
-          <span class="btn-primary__text">{{ getContent(headerContent, defaultLocaleHeaderContent, 'registrationButton') }}</span>
+          <span class="btn-primary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton') }}</span>
         </button-base>
 
         <button-base
@@ -71,7 +71,7 @@
           @click="showModal('signIn')"
         >
           <atomic-icon id="user" class="btn-secondary__icon"/>
-          <span class="btn-secondary__text">{{ getContent(headerContent, defaultLocaleHeaderContent, 'loginButton') }}</span>
+          <span class="btn-secondary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.loginButton') }}</span>
         </button-base>
       </template>
     </div>
@@ -85,7 +85,7 @@
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const bonusStore = useBonusStore();
-  const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
+  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const { getContent } = useProjectMethods();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal } = layoutStore;

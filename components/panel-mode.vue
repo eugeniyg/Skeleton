@@ -28,10 +28,10 @@
 </template>
 
 <script setup lang="ts">
-  import { GamePageInterface } from '@skeleton/types';
+  import { IGamePage } from '~/types';
 
   const props = defineProps<{
-    gameContent: GamePageInterface
+    gameContent: IGamePage
   }>();
 
   const route = useRoute();

@@ -28,10 +28,10 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { GameInterface } from '@platform/frontend-core/dist/module';
+  import { IGame } from '@platform/frontend-core';
 
   const props = defineProps<{
-    gameInfo: GameInterface,
+    gameInfo: IGame,
     showPlug: boolean,
   }>();
 

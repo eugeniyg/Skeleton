@@ -8,8 +8,8 @@
           v-model:value="changeFormData[field]"
           type="password"
           :name="field"
-          :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field}.label`) || ''"
-          :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field}.placeholder`) || ''"
+          :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field}.label`) || ''"
+          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field}.placeholder`) || ''"
           :is-required="true"
           :hint="setError(field)"
           @blur="v$[field]?.$touch()"
@@ -36,8 +36,8 @@
 
   const globalStore = useGlobalStore();
   const {
-    fieldsContent,
-    defaultLocaleFieldsContent,
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
     alertsData,
     defaultLocaleAlertsData,
   } = storeToRefs(globalStore);
@@ -45,13 +45,13 @@
   const passwordContent: Maybe<{label: string, saveButton:string}> = inject('passwordContent');
   const defaultLocalePasswordContent: Maybe<{label: string, saveButton:string}> = inject('defaultLocalePasswordContent');
 
-  interface ChangeFormDataInterface extends Record<string, any>{
+  interface IChangeFormData extends Record<string, any>{
     currentPassword: string,
     newPassword: string,
     repeatNewPassword: string,
   }
 
-  const changeFormData = reactive<ChangeFormDataInterface>({
+  const changeFormData = reactive<IChangeFormData>({
     currentPassword: '',
     newPassword: '',
     repeatNewPassword: '',
@@ -89,7 +89,7 @@
     try {
       isLockedAsyncButton.value = true;
       await changeProfilePassword(changeFormData);
-      showAlert(alertsData.value?.passwordChanged || defaultLocaleAlertsData.value?.passwordChanged);
+      showAlert(alertsData.value?.profile?.passwordChanged || defaultLocaleAlertsData.value?.profile?.passwordChanged);
       clearForm();
     } catch (error:any) {
       if (error.response?.status === 422) {

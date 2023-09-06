@@ -61,7 +61,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ProfileLimitsContentInterface } from '@skeleton/types';
+  import { IProfileLimits } from '~/types';
 
   const limitsStore = useLimitsStore();
   const globalStore = useGlobalStore();
@@ -71,22 +71,23 @@
   const {
     limitsContent, defaultLimitsContent, isAdvancedModeEnabled,
   } = storeToRefs(limitsStore);
-  const { contentLocalesArray } = storeToRefs(globalStore);
-  const { findLocalesContentData, getContent } = useProjectMethods();
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
+  const { getLocalesContentData, getContent } = useProjectMethods();
 
-  const [limitsContentRequest] = await Promise.all([
-    useAsyncData('limitsContent', () => queryContent('profile')
-      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'limits']).find()),
-    useAsyncData('updateLimits', getLimits),
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleProfileLimitsContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'limits').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleProfileLimitsContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'limits').findOne()),
+    useAsyncData('updateLimits', getLimits)
   ]);
 
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(limitsContentRequest.data.value);
-  const currenctLocaleLimitsContent: Maybe<ProfileLimitsContentInterface> = currentLocaleData?.limits;
-  const defaultLocaleLimitsContent: Maybe<ProfileLimitsContentInterface> = defaultLocaleData?.limits;
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const currentLocaleLimitsContent: Maybe<IProfileLimits> = currentLocaleData;
+  const defaultLocaleLimitsContent: Maybe<IProfileLimits> = defaultLocaleData;
 
-  setLimitsContent(currenctLocaleLimitsContent, defaultLocaleLimitsContent);
+  setLimitsContent(currentLocaleLimitsContent, defaultLocaleLimitsContent);
 
-  interface EditPropsInterface {
+  interface IEditProps {
     limitId: string | undefined,
     definition: number | undefined,
     amount: number | undefined,
@@ -96,7 +97,7 @@
 
   const state = reactive<{
     definition: number | undefined,
-    editProps: EditPropsInterface,
+    editProps: IEditProps,
     period: undefined | string,
   }>({
     definition: undefined,
@@ -120,7 +121,7 @@
     showModal('addLimit');
   };
 
-  const openEditModal = (limitData: EditPropsInterface) => {
+  const openEditModal = (limitData: IEditProps) => {
     state.editProps = limitData;
     editModalKey.value += 1;
     showModal('editLimit');

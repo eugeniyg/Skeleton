@@ -2,13 +2,13 @@
   <div class="result-search" :class="{'is-show': props.isShow}">
     <div class="box">
       <div class="header" v-if="!props.items.length">
-        <div class="heading">{{ getContent(headerContent, defaultLocaleHeaderContent, 'search.emptyLabel') }}</div>
-        <div class="text">{{ getContent(headerContent, defaultLocaleHeaderContent, 'search.emptyText') }}</div>
+        <div class="heading">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.search.emptyLabel') }}</div>
+        <div class="text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.search.emptyText') }}</div>
       </div>
 
       <div class="items">
         <div class="label" v-if="!props.items.length">
-          {{ getContent(headerContent, defaultLocaleHeaderContent, 'search.tryLabel') }}
+          {{ getContent(layoutData, defaultLocaleLayoutData, 'header.search.tryLabel') }}
         </div>
 
         <div
@@ -24,7 +24,7 @@
 
         <div class="footer" v-if="isShowLoadMore">
           <button-base type="ghost" size="xs" @click="emit('loadMore')">
-            {{ getContent(headerContent, defaultLocaleHeaderContent, 'search.moreButton') }}
+            {{ getContent(layoutData, defaultLocaleLayoutData, 'header.search.moreButton') }}
           </button-base>
         </div>
       </div>
@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { GameImagesInterface, GameInterface } from '@platform/frontend-core/dist/module';
+  import { IGame } from '@platform/frontend-core';
 
   const props = defineProps({
     isShow: {
@@ -64,14 +64,14 @@
   const router = useRouter();
 
   const { localizePath } = useProjectMethods();
-  const clickGame = (gameData: GameInterface):void => {
+  const clickGame = (gameData: IGame):void => {
     if (!isLoggedIn.value) {
       router.push(localizePath(`/games/${gameData.identity}${gameData.isDemoMode ? '' : '?real=true'}`));
     } else router.push(localizePath(`/games/${gameData.identity}?real=true`));
     emit('hideSearch');
   };
 
-  const { baseApiUrl, headerContent, defaultLocaleHeaderContent } = useGlobalStore();
+  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const { getImageUrl, getContent } = useProjectMethods();
 </script>
 

@@ -1,70 +1,67 @@
 <template>
   <div class="bonus-page">
-    <div class="header" :data-bg="getContent(pageContent, defaultLocalePageContent, 'backgroundColor') || 'gray'">
+    <div class="header" :data-bg="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'backgroundColor')">
       <img
-        v-if="getContent(pageContent, defaultLocalePageContent, 'image')"
+        v-if="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'image')"
         class="img"
-        :src="getContent(pageContent, defaultLocalePageContent, 'image')"
+        :src="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'image')"
         alt=""
       />
     </div>
 
     <div class="content">
-      <h1 class="title">{{ getContent(pageContent, defaultLocalePageContent, 'title') }}</h1>
-      <h3 class="sub-title">{{ getContent(pageContent, defaultLocalePageContent, 'subtitle') }}</h3>
+      <h1 class="title">{{ getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'title') }}</h1>
+      <h3 class="sub-title">{{ getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'subtitle') }}</h3>
       <atomic-text-editor
         class="description"
-        :content="getContent(pageContent, defaultLocalePageContent, 'description') || ''"
+        :content="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'description') || ''"
       />
 
       <button-base
         type="primary"
         size="lg"
-        @click="clickButton(getContent(pageContent, defaultLocalePageContent, 'button.url'))"
+        @click="clickButton(getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'button.url'))"
       >
-        {{ getContent(pageContent, defaultLocalePageContent, 'button.label') }}
+        {{ getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'button.label') }}
       </button-base>
 
       <atomic-detail
-        v-if="getContent(pageContent, defaultLocalePageContent, 'termsLabel') && getContent(pageContent, defaultLocalePageContent, 'termsContent')"
-        :title="getContent(pageContent, defaultLocalePageContent, 'termsLabel')"
-        :content="getContent(pageContent, defaultLocalePageContent, 'termsContent')"
+        v-if="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'termsLabel') && getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'termsContent')"
+        :title="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'termsLabel')"
+        :content="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'termsContent')"
       />
     </div>
 
-    <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent?.seo?.text" />
+    <atomic-seo-text v-if="currentLocaleBonusContent?.seo?.text" v-bind="currentLocaleBonusContent?.seo?.text" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { BonusPageInterface } from '@skeleton/types';
+  import { IBonusPage } from "~/types";
 
-  const pageContent = ref<BonusPageInterface|undefined>(undefined);
-  const defaultLocalePageContent = ref<BonusPageInterface|undefined>(undefined);
   const route = useRoute();
   const { pageUrl } = route.params;
   const globalStore = useGlobalStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
   const {
     localizePath,
     setPageSeo,
-    findLocalesContentData,
-    getContent,
+    getLocalesContentData,
+    getContent
   } = useProjectMethods();
-  const contentRequest = await useAsyncData('bonusesPageContent', () => queryContent('bonus')
-    .where({ locale: { $in: contentLocalesArray.value }, pageUrl }).find());
 
-  if (contentRequest.error.value || !contentRequest.data.value?.length) {
-    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
-  } else {
-    const { currentLocaleData, defaultLocaleData } = findLocalesContentData(contentRequest.data.value);
-    pageContent.value = currentLocaleData as BonusPageInterface;
-    defaultLocalePageContent.value = defaultLocaleData as BonusPageInterface;
-  }
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData(`${pageUrl}-current-content`, () => queryContent(currentLocale.value?.code as string, 'bonus', pageUrl as string).findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData(`${pageUrl}-default-content`, () => queryContent(defaultLocale.value?.code as string, 'bonus', pageUrl as string).findOne())
+  ]);
 
-  setPageSeo(pageContent.value?.seo);
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const currentLocaleBonusContent: Maybe<IBonusPage> = currentLocaleData;
+  const defaultLocaleBonusContent: Maybe<IBonusPage> = defaultLocaleData;
+  setPageSeo(currentLocaleBonusContent?.seo);
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);

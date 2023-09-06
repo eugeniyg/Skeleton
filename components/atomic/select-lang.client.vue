@@ -33,8 +33,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { LocaleInterface } from '@platform/frontend-core/dist/module';
-  import { CookieRef } from '#app';
+  import { ILocale } from '@platform/frontend-core';
 
   const languageFlagsMap = {
     en: 'us',
@@ -46,12 +45,12 @@
   const globalStore = useGlobalStore();
   const { locales, currentLocale } = storeToRefs(globalStore);
   const isOpen = ref<boolean>(false);
-  const cookieLanguage:CookieRef<string|undefined> = useCookie('user-language', { maxAge: 60 * 60 * 24 * 365 * 10 });
+  const cookieLanguage = useCookie('user-language', { maxAge: 60 * 60 * 24 * 365 * 10 });
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 
-  const changeLanguage = async (locale: LocaleInterface): Promise<void> => {
+  const changeLanguage = async (locale: ILocale): Promise<void> => {
     if (currentLocale.value?.code === locale.code) return;
 
     if (locale.isDefault) cookieLanguage.value = undefined;
@@ -64,7 +63,7 @@
     window.location.href = linkToLocale(locale);
   };
 
-  const linkToLocale = (locale: LocaleInterface):string => {
+  const linkToLocale = (locale: ILocale):string => {
     const routerLocale:any = route.params.locale;
 
     if (locale.isDefault) {

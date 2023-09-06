@@ -9,8 +9,8 @@
         isDisabled
         :verifyButton="props.verifyButton"
         :hint="emailHint"
-        :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.label') || ''"
-        :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.placeholder') || ''"
+        :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
+        :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
         name="email"
       />
     </div>
@@ -25,9 +25,9 @@
         v-for="field in rowsFields.slice(2 * (n - 1), 2 * (n - 1) + 2)"
         :key="field.name"
         :type="fieldsTypeMap[field.name].type || 'text'"
-        :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) || ''"
+        :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
         :name="field.name"
-        :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.placeholder`) || ''"
+        :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
         :isRequired="profileFormRules[field.name]?.hasOwnProperty('required')"
         :options="selectOptions[field.name]"
         :hint="setError(field.name)"
@@ -80,7 +80,7 @@
   const globalStore = useGlobalStore();
 
   const { selectOptions, profileFields } = storeToRefs(fieldsStore);
-  const { fieldsContent, defaultLocaleFieldsContent } = storeToRefs(globalStore);
+  const { fieldsSettings, defaultLocaleFieldsSettings } = storeToRefs(globalStore);
 
   const fieldsWithValue = profileFields.value.map((field) => ({ ...field, value: profile.value?.[field.name] }));
   const cleanFields = fieldsWithValue.filter((field) => !hideFields.includes(field.name));

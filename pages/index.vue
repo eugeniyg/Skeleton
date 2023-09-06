@@ -14,7 +14,7 @@
           v-for="(item, itemIndex) in Object.keys(homeContent?.categories || defaultLocaleHomeContent?.categories)"
           :key="itemIndex"
           :mod="item"
-          v-bind="homeContent?.categories[item] || defaultLocaleHomeContent?.categories[item]"
+          v-bind="homeContent?.categories?.[item] || defaultLocaleHomeContent?.categories?.[item]"
         />
       </div>
 
@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { HomeContentInterface } from '@skeleton/types';
+  import {IHomePage} from '~/types';
 
   const globalStore = useGlobalStore();
   const gameStore = useGamesStore();
@@ -75,23 +75,27 @@
   const { currentLocationCollections } = storeToRefs(gameStore);
   const {
     currentLocale,
+    defaultLocale,
     globalComponentsContent,
-    defaultLocaleGlobalComponentsContent,
-    contentLocalesArray,
+    defaultLocaleGlobalComponentsContent
   } = storeToRefs(globalStore);
 
   const {
     setPageSeo,
     localizePath,
     getContent,
-    findLocalesContentData,
+    getLocalesContentData
   } = useProjectMethods();
 
-  const homeContentRequest = await useAsyncData('homeContent', () => queryContent('page-controls')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'homePage']).find());
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(homeContentRequest.data.value);
-  const homeContent: Maybe<HomeContentInterface> = currentLocaleData?.homePage;
-  const defaultLocaleHomeContent: Maybe<HomeContentInterface> = defaultLocaleData?.homePage;
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleHomePageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'home').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleHomePageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'home').findOne())
+  ]);
+
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const homeContent: Maybe<IHomePage> = currentLocaleData;
+  const defaultLocaleHomeContent: Maybe<IHomePage> = defaultLocaleData
   setPageSeo(homeContent?.seo);
 
   const hotCategory = currentLocationCollections.value.find((collection) => collection.identity === 'hot');

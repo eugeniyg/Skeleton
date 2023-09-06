@@ -48,7 +48,7 @@
         @input="focusField('amount')"
       />
 
-      <p class="modal-deposit-limit__description">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.addCashLimit.hint') }}</p>
+      <p class="modal-deposit-limit__description">{{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.hint') }}</p>
 
       <button-base
         type="primary"
@@ -56,7 +56,7 @@
         @click="addLimit"
         :is-disabled="isAddButtonDisabled"
       >
-        {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.addCashLimit.addButton') }}
+        {{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.addButton') }}
       </button-base>
 
     </div>
@@ -66,8 +66,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import { CurrencyInterface, PlayerLimitInterface } from '@platform/frontend-core/dist/module';
-  import { useGlobalStore } from '~/composables/useGlobalStore';
+  import { ICurrency, IPlayerLimit } from '@platform/frontend-core';
 
   const props = defineProps<{ definition?: number }>();
 
@@ -88,9 +87,9 @@
   const currencyKey = ref(0);
 
   const titleMapping = computed(() => ({
-    1: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addBetlabel'),
-    2: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addLosslabel'),
-    3: getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.addCashLimit.addDepositlabel'),
+    1: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addBetlabel'),
+    2: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addLosslabel'),
+    3: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addDepositlabel'),
   }));
 
   const formState = reactive<{
@@ -122,10 +121,10 @@
   };
 
   const isPeriodDisabled = (period: { id: string|number, name: string }) => {
-    const limits = activeLimits?.value.filter((limit: PlayerLimitInterface) => limit.definition === formState.definition
+    const limits = activeLimits?.value.filter((limit: IPlayerLimit) => limit.definition === formState.definition
       && limit.period === period.id);
     return (
-      limits?.length && currencies.value.every((currency) => limits?.find((limit: PlayerLimitInterface) => (
+      limits?.length && currencies.value.every((currency) => limits?.find((limit: IPlayerLimit) => (
         limit.definition === formState.definition
         && limit.period === period.id
         && limit.currency === currency.code
@@ -145,18 +144,18 @@
 
   const isCurrencySelectedInPeriod = (currency: {
     code: string
-  }) => activeLimits?.value.some((limit: PlayerLimitInterface) => (
+  }) => activeLimits?.value.some((limit: IPlayerLimit) => (
     limit.definition === formState.definition
     && limit.period === formState.period
     && limit.currency === currency.code));
 
-  const isCurrencySelectedInAllPeriods = (currency: { code: string }) => limitCashPeriod.value?.every((period: { id: string; name: string }) => activeLimits?.value.some(
-    (limit: PlayerLimitInterface) => limit.definition === formState.definition
+  const isCurrencySelectedInAllPeriods = (currency: { code: string }) => limitCashPeriod.value?.every((period) => activeLimits?.value.some(
+    (limit: IPlayerLimit) => limit.definition === formState.definition
       && limit.period === period.id
       && limit.currency === currency.code,
   ));
 
-  const isCurrencyDisabled = (currency: CurrencyInterface):boolean => isCurrencySelectedInPeriod(currency) || isCurrencySelectedInAllPeriods(currency);
+  const isCurrencyDisabled = (currency: ICurrency):boolean => isCurrencySelectedInPeriod(currency) || isCurrencySelectedInAllPeriods(currency);
 
   const currenciesOptions = computed(() => currencies.value?.map((currency) => {
     if (isCurrencyDisabled(currency)) {
@@ -179,7 +178,7 @@
     currencyKey.value += 1;
   };
 
-  const selectCurrency = (currency: CurrencyInterface) => {
+  const selectCurrency = (currency: ICurrency) => {
     formState.currency = formatBalance(currency.code, 0).currency;
     formState.showCurrenciesError = false;
   };
@@ -207,7 +206,7 @@
 
       await getLimits();
       closeModal('addLimit');
-      showAlert(alertsData.value?.cashLimitAdd || defaultLocaleAlertsData.value?.cashLimitAdd);
+      showAlert(alertsData.value?.limit?.cashLimitAdd || defaultLocaleAlertsData.value?.limit?.cashLimitAdd);
     } catch (error: any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;

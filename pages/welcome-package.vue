@@ -101,29 +101,35 @@
         </div>
       </div>
     </div>
+
     <atomic-seo-text v-if="welcomeContent?.seo?.text" v-bind="welcomeContent?.seo?.text" />
   </div>
 </template>
 
 <script setup lang='ts'>
   import { storeToRefs } from 'pinia';
-  import { WelcomePageInterface } from '@skeleton/types';
+  import {IWelcomeBonusesPage} from '~/types';
 
   const {
     setPageSeo,
-    findLocalesContentData,
-    getContent,
+    getLocalesContentData,
+    getContent
   } = useProjectMethods();
 
   const globalStore = useGlobalStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
-  const welcomeContentRequest = await useAsyncData('welcomeContent', () => queryContent('welcome-bonuses')
-    .where({ locale: { $in: contentLocalesArray.value } }).find());
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(welcomeContentRequest.data.value);
-  const welcomeContent: Maybe<WelcomePageInterface> = currentLocaleData as WelcomePageInterface;
-  const defaultLocaleWelcomeContent: Maybe<WelcomePageInterface> = defaultLocaleData as WelcomePageInterface;
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleWelcomePageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'welcome-bonuses').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleWelcomePageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'welcome-bonuses').findOne())
+  ]);
+
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const welcomeContent: Maybe<IWelcomeBonusesPage> = currentLocaleData;
+  const defaultLocaleWelcomeContent: Maybe<IWelcomeBonusesPage> = defaultLocaleData;
   setPageSeo(welcomeContent?.seo);
+
   let howGetItems = [];
   if (getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet')) {
     howGetItems = [

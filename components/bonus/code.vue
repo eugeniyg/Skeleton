@@ -13,7 +13,7 @@
       <form-input-text
         v-model:value="bonusValue"
         label=""
-        :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'bonusCode.placeholder') || ''"
+        :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.bonusCode.placeholder') || ''"
         name="bonus-code"
         autocomplete="off"
         :isDisabled="bonusBlocked"
@@ -35,10 +35,10 @@
 </template>
 
 <script setup lang="ts">
-  import { BonusCodeBlockInterface } from '@skeleton/types';
+  import { IProfileBonuses } from '~/types';
 
   const props = defineProps<{
-    content?: BonusCodeBlockInterface
+    content?: IProfileBonuses['bonusCode']
   }>();
 
   const bonusValue = ref<string>('');
@@ -47,7 +47,7 @@
   const bonusBlocked = ref<boolean>(false);
   const showErrorMessage = ref<boolean>(false);
 
-  const { fieldsContent, defaultLocaleFieldsContent } = useGlobalStore();
+  const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
   const { getContent } = useProjectMethods();
 
   const checkStorageTimer = ():void => {

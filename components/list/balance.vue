@@ -2,14 +2,23 @@
   <div class="list-balance" :class="{'is-show': props.isOpen}">
     <div class="header">
       <button-base
-        v-for="{id, title} in balanceContent.tabs"
-        :is-active="id === selected"
-        :key="id"
+        :is-active="selected === 'balance'"
+        key="balance"
         type="ghost"
         size="xs"
-        @click.stop="switchTabNav(id)"
+        @click.stop="switchTabNav('balance')"
       >
-        {{ title }}
+        {{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.tabs.balanceTab') }}
+      </button-base>
+
+      <button-base
+        :is-active="selected === 'currency'"
+        key="currency"
+        type="ghost"
+        size="xs"
+        @click.stop="switchTabNav('currency')"
+      >
+        {{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.tabs.currencyTab') }}
       </button-base>
     </div>
 
@@ -31,7 +40,7 @@
 
       <div class="list-balance__item">
         <atomic-icon id="wallet" class="list-balance__icon"/>
-        <div class="list-balance__title">{{ balanceContent?.items.real }}</div>
+        <div class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.real') }}</div>
         <span class="list-balance__value">{{ activeAccountBalances.real }}</span>
         <img
           class="currency-icon"
@@ -42,7 +51,7 @@
 
       <div class="list-balance__item">
         <atomic-icon id="bonus" class="list-balance__icon"/>
-        <span class="list-balance__title">{{ balanceContent?.items.bonus }}</span>
+        <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.bonus') }}</span>
         <span class="list-balance__value">{{ activeAccountBalances.bonus }}</span>
         <img
           class="currency-icon"
@@ -53,7 +62,7 @@
 
       <div class="list-balance__item">
         <atomic-icon id="withdraw" class="list-balance__icon"/>
-        <span class="list-balance__title">{{ balanceContent?.items.withdrawal }}</span>
+        <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.withdrawal') }}</span>
         <span class="list-balance__value">{{ activeAccountBalances.withdrawal }}</span>
         <img
           class="currency-icon"
@@ -64,8 +73,8 @@
 
       <!--      <div class="list-balance__item">-->
       <!--        <atomic-icon id="cashback" class="list-balance__icon"/>-->
-      <!--        <span class="list-balance__title">{{ balanceContent?.items.cashback }}</span>-->
-      <!--        <div class="list-balance__link">{{ balanceContent?.items.cashbackLinkLabel }}</div>-->
+      <!--        <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.cashback') }}</span>-->
+      <!--        <div class="list-balance__link">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.cashbackLinkLabel') }}</div>-->
       <!--      </div>-->
     </div>
 
@@ -75,7 +84,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { AccountInterface, CurrencyInterface } from '@platform/frontend-core/dist/module';
+  import { IAccount, ICurrency } from '@platform/frontend-core';
 
   const props = defineProps({
     isOpen: {
@@ -96,7 +105,8 @@
     currencies,
     cryptoCurrencies,
     equivalentCurrency,
-    balanceContent,
+    layoutData,
+    defaultLocaleLayoutData
   } = storeToRefs(globalStore);
 
   const { switchAccount } = useWalletStore();
@@ -104,7 +114,8 @@
   const {
     formatBalance,
     sortByAlphabet,
-    getEquivalentAccount
+    getEquivalentAccount,
+    getContent
   } = useProjectMethods();
 
   const emit = defineEmits(['close', 'changeActiveAccount']);
@@ -112,29 +123,29 @@
   const selected = ref<string>('balance');
   const selectedCurrency = ref<string>('all');
 
-  const getAccountByCurrency = (currency: string): Maybe<AccountInterface> => accounts.value.find((account) => (account.currency === currency));
+  const getAccountByCurrency = (currency: string): Maybe<IAccount> => accounts.value.find((account) => (account.currency === currency));
 
-  interface DisplayAccountInterface {
+  interface IDisplayAccount {
     nativeCurrency: string,
     currency: string,
     amount: number,
     currencySymbol?: string
   }
 
-  const formatCurrenciesList = (list: DisplayAccountInterface[]) => {
+  const formatCurrenciesList = (list: IDisplayAccount[]) => {
     return list.filter((item) => accounts.value.find((account) => account.currency === item.nativeCurrency))
       .sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
   };
 
   const selectedItems = computed(() => {
-    let currenciesList: CurrencyInterface[];
+    let currenciesList: ICurrency[];
     if (selectedCurrency.value === 'all' || !cryptoCurrencies.value.length) {
       currenciesList = currencies.value;
     } else {
       currenciesList = cryptoCurrencies.value;
     }
 
-    const formatList: DisplayAccountInterface[] = currenciesList.map((currency) => {
+    const formatList: IDisplayAccount[] = currenciesList.map((currency) => {
       const findAccount = getAccountByCurrency(currency.code);
 
       if (equivalentCurrency.value && currency.type === 'crypto') {
@@ -154,8 +165,8 @@
       };
     });
 
-    const withBalanceList: DisplayAccountInterface[] = [];
-    const withoutBalanceList: DisplayAccountInterface[] = [];
+    const withBalanceList: IDisplayAccount[] = [];
+    const withoutBalanceList: IDisplayAccount[] = [];
 
     formatList.forEach((formatItem) => {
       if (formatItem.amount) {

@@ -2,8 +2,8 @@
   <form class="form-deposit-crypto">
     <form-input-dropdown
       v-if="props.fields?.length"
-      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.label')"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.placeholder')"
+      :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.label')"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.placeholder')"
       v-model:value="state.selectedNetwork"
       :options="networkSelectOptions"
       class="dropdown-network"
@@ -13,7 +13,7 @@
 
     <div class="dropdown-network__info"
          v-if="props.fields?.length && !state.selectedNetwork"
-         v-html="marked.parse(getContent(fieldsContent, defaultLocaleFieldsContent, 'networkSelect.info'))"
+         v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
     />
 
     <div class="form-deposit-crypto__content" :class="{'is-blured': props.fields?.length && !state.selectedNetwork }">
@@ -48,13 +48,13 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
-  import { PaymentFieldInterface, RequestDepositInterface } from '@platform/frontend-core';
+  import { IPaymentField, IRequestDeposit } from '@platform/frontend-core';
 
   const props = defineProps<{
     amountMax?: number,
     amountMin?: number,
     method?: string,
-    fields?: PaymentFieldInterface[],
+    fields?: IPaymentField[],
   }>();
 
   const walletNumber = ref<string>('');
@@ -72,8 +72,8 @@
     defaultLocalePopupsData,
     alertsData,
     defaultLocaleAlertsData,
-    fieldsContent,
-    defaultLocaleFieldsContent,
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
   } = useGlobalStore();
 
   const {
@@ -88,8 +88,7 @@
   });
 
   const bonusesList = computed(() => {
-    if (popupsData?.deposit?.bonuses?.length) return popupsData?.deposit.bonuses;
-    return defaultLocalePopupsData?.deposit?.bonuses || [];
+    return popupsData?.deposit?.bonuses || [];
   });
 
   const networkSelectOptions = computed(() => {
@@ -105,7 +104,7 @@
 
   const state = reactive<{
     selectedNetwork: string,
-    params: RequestDepositInterface
+    params: IRequestDeposit
   }>({
     selectedNetwork: '',
     params: {
@@ -143,7 +142,7 @@
     const profileStore = useProfileStore();
     if (profileStore.profile?.status === 2 && activeAccountType.value === 'fiat') {
       const { showAlert } = useLayoutStore();
-      showAlert(alertsData?.limitedDeposit || defaultLocaleAlertsData?.limitedDeposit);
+      showAlert(alertsData?.limit?.limitedDeposit || defaultLocaleAlertsData?.limit?.limitedDeposit);
       return;
     }
 

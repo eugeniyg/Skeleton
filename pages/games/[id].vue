@@ -13,13 +13,13 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { GameInterface } from '@platform/frontend-core/dist/module';
-  import { GamePageInterface } from '@skeleton/types';
+  import { IGame } from '@platform/frontend-core';
+  import { IGamePage } from '~/types';
 
   const route = useRoute();
   const showPlug = ref<boolean>(false);
   const isDemo = ref<boolean>(route.query.real !== 'true');
-  const gameInfo = ref<GameInterface>();
+  const gameInfo = ref<IGame>();
   const gameStart = ref<string>();
   const { getGamesInfo, getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
@@ -33,26 +33,28 @@
     alertsData,
     defaultLocaleAlertsData,
     currentLocale,
-    headerCountry,
-    contentLocalesArray,
+    defaultLocale,
+    headerCountry
   } = storeToRefs(globalStore);
 
-  const {
-    setPageSeo,
-    findLocalesContentData,
-  } = useProjectMethods();
+  const { setPageSeo, getLocalesContentData } = useProjectMethods();
 
-  const [infoResponse, gameContentRequest] = await Promise.all([
+  const [infoResponse, currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
     useAsyncData('gameInfo', () => getGamesInfo(route.params.id as string)),
-    useAsyncData('gameContent', () => queryContent('page-controls')
-      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'gamePage']).find()),
+    useAsyncData('currentLocaleGameContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'game').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleGameContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'game').findOne())
   ]);
 
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(gameContentRequest.data.value);
-  const gameContent: Maybe<GamePageInterface> = currentLocaleData?.gamePage;
-  const defaultLocaleGameContent: Maybe<GamePageInterface> = defaultLocaleData?.gamePage;
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const gameContent: Maybe<IGamePage> = currentLocaleData;
+  const defaultLocaleGameContent: Maybe<IGamePage> = defaultLocaleData;
   setPageSeo(gameContent?.seo);
-  gameInfo.value = infoResponse.data?.value as GameInterface;
+
+  if (infoResponse.status !== 'rejected') {
+    gameInfo.value = infoResponse.value.data?.value as IGame;
+  }
+
   const router = useRouter();
 
   const startGame = async ():Promise<{
@@ -107,7 +109,7 @@
   const redirectLimitedPlayer = () :void => {
     const { localizePath } = useProjectMethods();
     router.push(localizePath('/'));
-    showAlert(alertsData.value?.limitedRealGame || defaultLocaleAlertsData.value?.limitedRealGame);
+    showAlert(alertsData.value?.limit?.limitedRealGame || defaultLocaleAlertsData.value?.limit?.limitedRealGame);
   };
 
   watch(() => isLoggedIn.value, async (newValue:boolean) => {

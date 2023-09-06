@@ -6,22 +6,17 @@
         @toggle-open="emit('toggle-open')"
       />
 
-      <button-toggler :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'gamesToggler')"/>
+      <button-toggler :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler')"/>
     </div>
 
     <div class="content">
+      <cta-menu v-if="layoutData?.siteSidebar?.ctaMenu?.isShow" :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.ctaMenu.items')" />
 
-      <cta-menu v-if="sidebarContent?.ctaMenu?.isShow" :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'ctaMenu.items')" />
-
-      <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'topMenu')"/>
+      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.topMenu')"/>
       <atomic-divider/>
 
-      <!-- OPTIONAL MENU -->
-      <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'tokenMenu')"/>
-      <atomic-divider/>
-      <!-- OPTIONAL MENU -->
 
-      <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'bonusesMenu')"/>
+      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.bonusesMenu')"/>
       <atomic-divider/>
 
       <template v-if="isLoggedIn">
@@ -31,24 +26,24 @@
 
       <atomic-select-lang/>
 
-      <nav-list :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'bottomMenu')"/>
+      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.bottomMenu')"/>
 
-      <template v-if="sidebarContent?.socials?.items?.length && sidebarContent?.socials?.isShow">
-        <list-socials :items="sidebarContent.socials.items"/>
+      <template v-if="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.socials.isShow')">
+        <list-socials :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.socials.items')"/>
       </template>
 
       <atomic-divider/>
 
-      <nav-static :items="getContent(sidebarContent, defaultLocaleSidebarContent, 'sidebarFooterMenu')"/>
+      <nav-static :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.sidebarFooterMenu')"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { MenuItemInterface } from '@skeleton/types';
+  import { IIconLink } from '~/types';
 
-  const { sidebarContent, defaultLocaleSidebarContent } = useGlobalStore();
+  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const { getContent } = useProjectMethods();
   const emit = defineEmits(['toggle-open']);
 
@@ -61,7 +56,7 @@
 
   const gamesStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gamesStore);
-  const userMenuContent = computed(() => getContent(sidebarContent, defaultLocaleSidebarContent, 'userMenu')?.map((menuItem: MenuItemInterface) => {
+  const userMenuContent = computed(() => getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.userMenu')?.map((menuItem: IIconLink) => {
     if (menuItem.url === '/favorites') return { ...menuItem, counter: favoriteGames.value.length };
     return menuItem;
   }));

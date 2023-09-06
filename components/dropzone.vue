@@ -36,20 +36,20 @@
 </template>
 
 <script setup lang="ts">
-  import { SecurityFileInterface } from '@platform/frontend-core/dist/module';
-  import { ProfileDocumentsInterface } from '@skeleton/types';
+  import { ISecurityFile } from '@platform/frontend-core';
+  import {IProfileSecurity} from '~/types';
 
   const props = defineProps<{
     fileName?: string,
     loading: boolean,
-    fileList: SecurityFileInterface[]
+    fileList: ISecurityFile[]
   }>();
 
   const emit = defineEmits(['remove', 'change']);
 
   const isActive = ref(false);
-  const documentsContent: Maybe<ProfileDocumentsInterface> = inject('documentsContent');
-  const defaultLocaleDocumentsContent: Maybe<ProfileDocumentsInterface> = inject('defaultLocaleDocumentsContent');
+  const documentsContent: Maybe<IProfileSecurity['documents']> = inject('documentsContent');
+  const defaultLocaleDocumentsContent: Maybe<IProfileSecurity['documents']> = inject('defaultLocaleDocumentsContent');
   const errorFiles = computed(() => props.fileList.filter((file) => file.error));
 
   const dropzoneClasses = computed(() => ({

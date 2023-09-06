@@ -2,9 +2,9 @@
   <div class="nav-list" :class="{'nav-list--items-accent': props.accentItems}">
     <div v-for="(listItem, index) in props.items" :key="index" class="item">
       <atomic-cta-menu-item
-        v-if="getContent(sidebarContent, defaultLocaleSidebarContent, 'ctaMenuItem.isShow') &&
-        Number(getContent(sidebarContent, defaultLocaleSidebarContent, 'ctaMenuItem.order')) === index"
-        v-bind="getContent(sidebarContent, defaultLocaleSidebarContent, 'ctaMenuItem')"
+        v-if="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.topMenu.integratedElement.isShow') &&
+        Number(getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.topMenu.integratedElement.order')) === index"
+        v-bind="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.topMenu.integratedElement')"
       />
 
       <atomic-menu-category v-if="listItem?.items?.length" v-bind="listItem"/>
@@ -23,7 +23,7 @@
 
       <list-games
         v-if="listItem.gameList?.length"
-        :items="listItem.gameList.slice(0, 4)"
+        :items="listItem.gameList.map((game) => game.gameIdentity).slice(0, 4)"
       />
     </div>
   </div>
@@ -31,7 +31,6 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { getContent } from '@nuxt/content/dist/runtime/server/storage';
 
   const props = defineProps({
     items: {
@@ -55,8 +54,8 @@
 
   const { localizePath } = useProjectMethods();
   const {
-    sidebarContent,
-    defaultLocaleSidebarContent
+    layoutData,
+    defaultLocaleLayoutData
   } = useGlobalStore();
   const { getContent } = useProjectMethods();
 

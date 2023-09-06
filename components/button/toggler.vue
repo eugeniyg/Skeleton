@@ -1,7 +1,7 @@
 <template>
   <div class="toggler-btn">
     <button-base
-      v-for="(button, index) in props.items"
+      v-for="(button, index) in Object.values(props.items)"
       :key="index"
       :isActive="$route.path === localizePath(button.url) || ($route.query.category && index === 0)"
       @click="selectTab(button.url)"
@@ -15,12 +15,17 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
+  interface IToggleButton {
+    label: string;
+    url: string;
+    icon: string;
+  }
+  const props = defineProps<{
     items: {
-      type: Array,
-      default: () => [],
-    },
-  });
+      buttonFirst: IToggleButton;
+      buttonSecond: IToggleButton;
+    };
+  }>();
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);

@@ -9,10 +9,10 @@
         {{ getContent(limitsContent, defaultLimitsContent, 'timerAlmostDone') }}
       </template>
       <template v-else>
-        <span class="time-span" v-if="state.days">{{ format(state.days) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerDaysLabel') }}</span>
-        <span class="time-span">{{ format(state.hours) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerHoursLabel') }}</span>
-        <span class="time-span">{{ format(state.minutes) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerMinutesLabel') }}</span>
-        <span class="time-span">{{ format(state.seconds) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerSecondsLabel') }}</span>
+        <span class="time-span" v-if="state.days">{{ format(state.days) }}d</span>
+        <span class="time-span">{{ format(state.hours) }}h</span>
+        <span class="time-span">{{ format(state.minutes) }}m</span>
+        <span class="time-span">{{ format(state.seconds) }}s</span>
         {{ timerLabel }}
       </template>
     </p>

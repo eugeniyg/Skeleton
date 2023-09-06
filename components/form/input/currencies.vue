@@ -7,7 +7,7 @@
     <div class="input-currencies__selected" @click.stop="toggleOpen" :class="{'is-disabled': !selectedItems.length}">
       <template v-if="!selectedCurrency?.name">
         <atomic-icon id="currency" class="input-currencies__selected-icon"/>
-        <span class="input-currencies__selected-label">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.addCashLimit.chooseCurrencyLabel') }}</span>
+        <span class="input-currencies__selected-label">{{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.chooseCurrencyLabel') }}</span>
       </template>
       <template v-else>
         <img
@@ -58,22 +58,20 @@
       </div>
     </div>
 
-    <div class="input-currencies__error" v-if="props.showError">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.addCashLimit.chooseCurrencyError') }}</div>
+    <div class="input-currencies__error" v-if="props.showError">{{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.chooseCurrencyError') }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { CurrencyInterface } from '@platform/frontend-core/dist/module';
-  import { useWalletStore } from '~/composables/useWalletStore';
-  import { useGlobalStore } from '~/composables/useGlobalStore';
+  import { ICurrency } from '@platform/frontend-core';
 
-  interface PropsInterface {
+  interface IProps {
     showError: boolean,
-    items: CurrencyInterface[]
+    items: ICurrency[]
   }
 
-  const props = defineProps<PropsInterface>();
+  const props = defineProps<IProps>();
 
   const emit = defineEmits(['blur', 'select']);
 
@@ -86,7 +84,7 @@
   } = storeToRefs(globalStore);
 
   const selected = ref<string>('all');
-  const selectedCurrency = ref<CurrencyInterface|undefined>();
+  const selectedCurrency = ref<ICurrency|undefined>();
   const isOpen = ref<boolean>(false);
 
   const cryptoCurrencies = computed(() => props.items.filter((currency) => currency.type === 'crypto'));
@@ -100,7 +98,7 @@
     selected.value = id;
   };
 
-  const selectCurrency = (currency: CurrencyInterface): void => {
+  const selectCurrency = (currency: ICurrency): void => {
     selectedCurrency.value = currency;
     isOpen.value = false;
     emit('select', currency);

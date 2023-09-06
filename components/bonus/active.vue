@@ -28,25 +28,24 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { PlayerBonusInterface } from '@platform/frontend-core/dist/module';
-  import { CashBonusesInterface, FreeSpinsInterface } from '@skeleton/types';
-  import { PlayerFreeSpinInterface } from "@platform/frontend-core";
+  import { IPlayerBonus, IPlayerFreeSpin } from "@platform/frontend-core";
+  import { IProfileBonuses } from '~/types';
 
   const props = defineProps<{
-    content?: CashBonusesInterface|FreeSpinsInterface,
+    content?: IProfileBonuses['cashBonuses']|IProfileBonuses['freeSpins'],
     bonusType: 'bonus'|'free-spin'
   }>();
 
-  interface ModalStateInterface extends Record<string, any>{
+  interface IModalState extends Record<string, any>{
     title?: string,
     description?: string,
     confirmButton?: string,
     cancelButton?: string,
-    bonusInfo: PlayerBonusInterface|PlayerFreeSpinInterface|undefined,
+    bonusInfo: IPlayerBonus|IPlayerFreeSpin|undefined,
     mode: 'activate'|'cancel'
   }
 
-  const modalState = reactive<ModalStateInterface>({
+  const modalState = reactive<IModalState>({
     title: undefined,
     description: undefined,
     confirmButton: undefined,
@@ -60,12 +59,12 @@
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
   const orderedBonuses = computed(() => {
     if (props.bonusType === 'bonus') {
-      return activePlayerBonuses.value.reduce((acc: PlayerBonusInterface[], currentBonus) => {
+      return activePlayerBonuses.value.reduce((acc: IPlayerBonus[], currentBonus) => {
         return currentBonus.status === 2 ? [currentBonus, ...acc] : [...acc, currentBonus];
       }, [])
     }
 
-    return activePlayerFreeSpins.value.reduce((acc: PlayerFreeSpinInterface[], currentFreeSpin) => {
+    return activePlayerFreeSpins.value.reduce((acc: IPlayerFreeSpin[], currentFreeSpin) => {
       return currentFreeSpin.status === 2 ? [currentFreeSpin, ...acc] : [...acc, currentFreeSpin];
     }, [])
   });
@@ -79,7 +78,7 @@
     defaultLocalePopupsData,
   } = storeToRefs(globalStore);
 
-  const changeBonuses = (processBonus: PlayerBonusInterface, processMode: 'activate'|'cancel'):void => {
+  const changeBonuses = (processBonus: IPlayerBonus, processMode: 'activate'|'cancel'):void => {
     modalState.bonusInfo = processBonus;
     modalState.mode = processMode;
 
@@ -123,7 +122,7 @@
 
       showModal.value = false;
     } catch {
-      showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
+      showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
 
     bonusesUpdating.value = false;
@@ -140,7 +139,7 @@
 
       showModal.value = false;
     } catch {
-      showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
+      showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
 
     bonusesUpdating.value = false;

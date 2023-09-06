@@ -53,17 +53,16 @@
 </template>
 
 <script setup lang="ts">
-  import { PaginationMetaInterface, PlayerBonusInterface } from '@platform/frontend-core/dist/module';
+  import { IPaginationMeta, IPlayerBonus, IPlayerFreeSpin } from '@platform/frontend-core';
   import { storeToRefs } from 'pinia';
-  import { HistoryBonusesInterface } from '@skeleton/types';
   import dayjs from "dayjs";
-  import {PlayerFreeSpinInterface} from "@platform/frontend-core";
+  import { IBonusesHistory } from '~/types';
 
   const props = defineProps<{
-    content: HistoryBonusesInterface,
+    content: IBonusesHistory,
     tableType: 'cashBonuses'|'freeSpins',
-    bonusesData: PlayerBonusInterface[]|PlayerFreeSpinInterface[],
-    bonusesMeta: Maybe<PaginationMetaInterface>,
+    bonusesData: IPlayerBonus[]|IPlayerFreeSpin[],
+    bonusesMeta: Maybe<IPaginationMeta>,
   }>();
 
   const emit = defineEmits(['changePage']);
@@ -108,12 +107,12 @@
     return resultsObj;
   });
 
-  const getBonusFinallyStatus = (bonusInfo: PlayerBonusInterface):string => {
+  const getBonusFinallyStatus = (bonusInfo: IPlayerBonus):string => {
     if ([1, 2].includes(bonusInfo.status)) return bonusStatusesObj.value[bonusInfo.status];
     return bonusResultsObj.value[bonusInfo.result];
   };
 
-  const getFreeSpinFinallyStatus = (freeSpinInfo: PlayerFreeSpinInterface|PlayerBonusInterface):string => {
+  const getFreeSpinFinallyStatus = (freeSpinInfo: IPlayerFreeSpin|IPlayerBonus):string => {
     if ([1, 2].includes(freeSpinInfo.status)) return freeSpinsStatusesObj.value[freeSpinInfo.status];
     return freeSpinsResultsObj.value[freeSpinInfo.result];
   };
@@ -122,7 +121,7 @@
   const dateFormat = 'DD.MM.YYYY, HH:mm';
   const formatDateStr = (str:string) => str.replace(',', ',</br>');
 
-  const expiredAtDate = (bonusInfo: PlayerBonusInterface|PlayerFreeSpinInterface) => {
+  const expiredAtDate = (bonusInfo: IPlayerFreeSpin|IPlayerBonus) => {
     if (bonusInfo.expiredAt) return formatDateStr(dayjs(bonusInfo.expiredAt).format(dateFormat));
 
     if (bonusInfo.status === 2) {

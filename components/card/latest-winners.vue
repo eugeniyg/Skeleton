@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { GameImagesInterface } from '@platform/frontend-core/dist/module';
+  import { IGameImages } from '@platform/frontend-core';
 
   const props = defineProps<{
     nickname: Maybe<string>,
@@ -21,7 +21,7 @@
     gameId: string,
     gameName: string,
     isDemoMode: boolean,
-    gameImages: GameImagesInterface
+    gameImages: IGameImages
   }>();
 
   const profileStore = useProfileStore();

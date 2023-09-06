@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { AccountInterface, CurrencyInterface } from '@platform/frontend-core/dist/module';
+  import { IAccount, ICurrency } from '@platform/frontend-core';
 
   const props = defineProps({
     isOpen: {
@@ -66,26 +66,26 @@
 
   const selected = ref<string>('all');
 
-  const getAccountByCurrency = (currency: string): Maybe<AccountInterface> => accounts.value.find((account) => (account.currency === currency));
+  const getAccountByCurrency = (currency: string): Maybe<IAccount> => accounts.value.find((account) => (account.currency === currency));
 
-  interface DisplayAccountInterface {
+  interface IDisplayAccount {
     nativeCurrency: string,
     currency: string,
     amount: number,
     currencySymbol?: string
   }
 
-  const formatCurrenciesList = (list:DisplayAccountInterface[]) => {
+  const formatCurrenciesList = (list:IDisplayAccount[]) => {
     return list.filter((item) => accounts.value.find((account) => account.currency === item.nativeCurrency))
       .sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()))
   }
 
   const selectedItems = computed(() => {
-    let currenciesList:CurrencyInterface[];
+    let currenciesList:ICurrency[];
     if (selected.value === 'all' || !cryptoCurrencies.value.length) currenciesList = currencies.value;
     else currenciesList = cryptoCurrencies.value;
 
-    const formatList:DisplayAccountInterface[] = currenciesList.map((currency) => {
+    const formatList:IDisplayAccount[] = currenciesList.map((currency) => {
       const findAccount = getAccountByCurrency(currency.code);
 
       if (equivalentCurrency.value && currency.type === 'crypto') {
@@ -102,8 +102,8 @@
       return { nativeCurrency: currency.code, ...formattedAcc, currencySymbol: equivalentCurrency.value ? currency.symbol : undefined };
     });
 
-    const withBalanceList:DisplayAccountInterface[] = [];
-    const withoutBalanceList:DisplayAccountInterface[] = [];
+    const withBalanceList:IDisplayAccount[] = [];
+    const withoutBalanceList:IDisplayAccount[] = [];
 
     formatList.forEach((formatItem) => {
       if (formatItem.amount) withBalanceList.push(formatItem);

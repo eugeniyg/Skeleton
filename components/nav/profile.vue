@@ -6,7 +6,7 @@
 
     <div class="items">
       <router-link
-        v-for="(item, index) in props.items"
+        v-for="(item, index) in sortedMenu"
         @click="close"
         :key="index"
         class="item"
@@ -31,12 +31,27 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { ISeoBlock } from '~/types';
 
-  const props = defineProps({
-    items: {
-      type: Array,
-      default: () => [],
-    },
+  const props = defineProps<{
+    items: { id: string, title: string, url: string, seo: ISeoBlock }[]
+  }>();
+
+  const sortOrder = [
+    'info',
+    'wallet',
+    'bonuses',
+    'security',
+    'history',
+    'limits'
+  ];
+
+  const sortedMenu = computed(() => {
+    return [...props.items].sort((prev, next) => {
+      const prevIndex = sortOrder.indexOf(prev.id);
+      const nextIndex = sortOrder.indexOf(next.id);
+      return prevIndex - nextIndex;
+    })
   });
 
   const { localizePath } = useProjectMethods();

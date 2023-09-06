@@ -29,7 +29,7 @@
         class="game-filter__search"
         v-show="isShowSearch"
         v-model:value="searchValue"
-        :placeholder="getContent(headerContent, defaultLocaleHeaderContent, 'search.placeholder')"
+        :placeholder="getContent(layoutData, defaultLocaleLayoutData, 'header.search.placeholder')"
         @input="searchInput"
         @submit="isShowSearch = false"
       />
@@ -64,46 +64,52 @@
 </template>
 
 <script setup lang="ts">
-  import {
-    CollectionInterface,
-    GameProviderInterface,
-    GameInterface,
-    GamesResponseInterface,
-    PaginationMetaInterface,
-  } from '@platform/frontend-core/dist/module';
-  import { storeToRefs } from 'pinia';
-  import debounce from 'lodash/debounce';
-  import { CategoryGamesInterface } from '@skeleton/types';
+import {
+  ICollection,
+  IGame,
+  IGameProvider,
+  IGamesResponse,
+  IPaginationMeta
+} from '@platform/frontend-core';
+import {storeToRefs} from 'pinia';
+import debounce from 'lodash/debounce';
+import { IGamesPage } from '~/types';
 
-  definePageMeta({
+definePageMeta({
     middleware: 'games-collection',
   });
 
   const globalStore = useGlobalStore();
   const {
     gameCategoriesObj,
-    headerContent,
-    defaultLocaleHeaderContent,
-    contentLocalesArray,
+    layoutData,
+    currentLocale,
+    defaultLocale,
+    defaultLocaleLayoutData
   } = storeToRefs(globalStore);
 
   const {
     setPageSeo,
     getContent,
-    findLocalesContentData,
+    getLocalesContentData,
   } = useProjectMethods();
-  const gamesContentRequest = await useAsyncData('gamesContent', () => queryContent('page-controls')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'gamesPage']).find());
 
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(gamesContentRequest.data.value);
-  const gamesContent: Maybe<CategoryGamesInterface> = currentLocaleData?.gamesPage;
-  const defaultLocaleGamesContent: Maybe<CategoryGamesInterface> = defaultLocaleData?.gamesPage;
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData('currentLocaleGamesPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'games').findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData('defaultLocaleGamesPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'games').findOne())
+  ]);
+
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+
+  const gamesContent: Maybe<IGamesPage> = currentLocaleData;
+  const defaultLocaleGamesContent: Maybe<IGamesPage> = defaultLocaleData;
   setPageSeo(gamesContent?.seo);
 
   const gamesStore = useGamesStore();
   const { currentLocationCollections } = storeToRefs(gamesStore);
   const { selectOptions } = useFieldsStore();
-  const providerDropdownOptions: GameProviderInterface[] = [
+  const providerDropdownOptions: IGameProvider[] = [
     {
       id: 'all',
       name: gamesContent?.providersLabel || defaultLocaleGamesContent?.providersLabel || 'All Providers',
@@ -116,13 +122,13 @@
   const route = useRoute();
   const router = useRouter();
 
-  const activeCollection = ref<CollectionInterface | undefined>(
+  const activeCollection = ref<ICollection | undefined>(
     currentLocationCollections.value.find((collection) => collection.identity === route.query.category),
   );
 
-  const currentProvider = ref<GameProviderInterface | undefined>(
+  const currentProvider = ref<IGameProvider | undefined>(
     providerDropdownOptions.find(
-      (provider: GameProviderInterface) => provider.identity === route.query.provider,
+      (provider: IGameProvider) => provider.identity === route.query.provider,
     ) || providerDropdownOptions[0],
   );
 
@@ -132,15 +138,15 @@
     || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortOrder') || 'asc');
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
-  const gameItems = ref<GameInterface[]>([]);
-  const pageMeta = ref<PaginationMetaInterface>();
+  const gameItems = ref<IGame[]>([]);
+  const pageMeta = ref<IPaginationMeta>();
   const loadingGames = ref<boolean>(true);
   const isShowFilter = ref<boolean>(false);
   const isShowSearch = ref<boolean>(false);
 
   const { getFilteredGames } = useCoreGamesApi();
 
-  const getItems = async (): Promise<GamesResponseInterface> => {
+  const getItems = async (): Promise<IGamesResponse> => {
     const params: any = {
       page: loadPage.value,
       perPage: 36,
@@ -156,11 +162,10 @@
     if (searchValue.value) params.name = searchValue.value;
 
     loadingGames.value = true;
-    const response = await getFilteredGames(params);
-    return response;
+    return await getFilteredGames(params);
   };
 
-  const setItems = (response: GamesResponseInterface, more?: boolean): void => {
+  const setItems = (response: IGamesResponse, more?: boolean): void => {
     gameItems.value = more
       ? gameItems.value.concat(response.data)
       : response.data;
@@ -172,7 +177,7 @@
     loadPage.value = 1;
 
     currentProvider.value = providerDropdownOptions.find(
-      (provider: GameProviderInterface) => provider.id === providerId,
+      (provider: IGameProvider) => provider.id === providerId,
     );
 
     router.replace({

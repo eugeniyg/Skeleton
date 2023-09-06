@@ -1,34 +1,28 @@
 <template>
   <div>
-    <atomic-text-editor :content="pageContent?.content || defaultLocalePageContent?.content" />
-    <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent?.seo?.text" />
+    <atomic-text-editor :content="currentLocaleStaticContent?.content || defaultLocaleStaticContent?.content" />
+    <atomic-seo-text v-if="currentLocaleStaticContent?.seo?.text" v-bind="currentLocaleStaticContent?.seo?.text" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { StaticPageInterface } from '@skeleton/types';
+  import { IStaticPage } from '~/types';
 
-  const pageContent = ref<StaticPageInterface|undefined>(undefined);
-  const defaultLocalePageContent = ref<StaticPageInterface|undefined>(undefined);
   const route = useRoute();
   const { pageUrl } = route.params;
   const globalStore = useGlobalStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
-  const {
-    setPageSeo,
-    findLocalesContentData,
-  } = useProjectMethods();
-  const pageContentRequest = await useAsyncData('staticPageContent', () => queryContent('static')
-    .where({ locale: { $in: contentLocalesArray.value }, pageUrl }).find());
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
+  const { setPageSeo, getLocalesContentData } = useProjectMethods();
 
-  if (pageContentRequest.error.value || !pageContentRequest.data.value?.length) {
-    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
-  } else {
-    const { currentLocaleData, defaultLocaleData } = findLocalesContentData(pageContentRequest.data.value);
-    pageContent.value = currentLocaleData as StaticPageInterface;
-    defaultLocalePageContent.value = defaultLocaleData as StaticPageInterface;
-  }
+  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+    useAsyncData(`${pageUrl}-static-current`, () => queryContent(currentLocale.value?.code as string, 'static', pageUrl as string).findOne()),
+    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+      : useAsyncData(`${pageUrl}-static-default`, () => queryContent(defaultLocale.value?.code as string, 'static', pageUrl as string).findOne())
+  ]);
 
-  setPageSeo(pageContent.value?.seo);
+  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const currentLocaleStaticContent: IStaticPage = currentLocaleData;
+  const defaultLocaleStaticContent: IStaticPage = defaultLocaleData;
+  setPageSeo(currentLocaleStaticContent?.seo);
 </script>

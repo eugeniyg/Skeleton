@@ -26,10 +26,10 @@
       <div class="modal-edit-limit__info" v-if="isLargeAmount">
         <div class="modal-edit-limit__info-title">
           <atomic-icon id="warning"/>
-          <div>{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.greaterAmountTitle') }}</div>
+          <div>{{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.greaterAmountTitle') }}</div>
         </div>
         <div class="modal-edit-limit__info-text">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.hint') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.hint') }}
         </div>
       </div>
 
@@ -40,10 +40,10 @@
           @click="update"
           :is-disabled="isDisableUpdate"
         >
-          {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.updateButtonLabel') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.updateButtonLabel') }}
         </button-base>
         <button-base type="secondary" size="md" @click="remove">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.deleteButtonLabel') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.deleteButtonLabel') }}
         </button-base>
       </div>
     </div>
@@ -89,7 +89,7 @@
   });
 
   const label = computed(() => {
-    const labels = getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.editCashLimit.popupLabel');
+    const labels = getContent(popupsData.value, defaultLocalePopupsData.value, 'editCashLimit.popupLabel');
     if (!labels) return '';
     return labels[`edit_${props.period}_${props.definition}`];
   });
@@ -104,15 +104,15 @@
     const formattedMainBalance = getMainBalanceFormat(state.currency, state.amount);
 
     await updatePlayerLimit({
-      limitId: props.limitId,
+      limitId: props.limitId as string,
       amount: formattedMainBalance.amount,
     });
     await getLimits();
 
     if (isLargeAmount.value) {
-      showAlert(alertsData.value?.cashLimitEditLargeAmount || defaultLocaleAlertsData.value?.cashLimitEditLargeAmount);
+      showAlert(alertsData.value?.limit?.cashLimitEditLargeAmount || defaultLocaleAlertsData.value?.limit?.cashLimitEditLargeAmount);
     } else {
-      showAlert(alertsData.value?.cashLimitEditSmallerAmount || defaultLocaleAlertsData.value?.cashLimitEditSmallerAmount);
+      showAlert(alertsData.value?.limit?.cashLimitEditSmallerAmount || defaultLocaleAlertsData.value?.limit?.cashLimitEditSmallerAmount);
     }
   };
 
@@ -121,7 +121,7 @@
     await deletePlayerLimit(props.limitId as string);
     await getLimits();
 
-    showAlert(alertsData.value?.cashLimitCancel || defaultLocaleAlertsData.value?.cashLimitCancel);
+    showAlert(alertsData.value?.limit?.cashLimitCancel || defaultLocaleAlertsData.value?.limit?.cashLimitCancel);
   };
 </script>
 

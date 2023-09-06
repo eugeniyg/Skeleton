@@ -13,7 +13,7 @@
         v-model:value="bonusValue"
         ref="bonusField"
         label=""
-        :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'bonusCode.placeholder') || ''"
+        :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.bonusCode.placeholder') || ''"
         name="bonus-code"
         autocomplete="off"
         :isDisabled="!!depositBonusCode"
@@ -42,8 +42,8 @@
   const {
     popupsData,
     defaultLocalePopupsData,
-    fieldsContent,
-    defaultLocaleFieldsContent,
+    fieldsSettings,
+    defaultLocaleFieldsSettings
   } = globalStore;
 
   const { getContent } = useProjectMethods();

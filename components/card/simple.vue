@@ -7,11 +7,11 @@
 
 <script setup lang="ts">
   import { PropType } from '@vue/runtime-core';
-  import { GameImagesInterface } from '@platform/frontend-core/dist/module';
+  import { IGameImages } from '@platform/frontend-core';
 
   const props = defineProps({
     images: {
-      type: Object as PropType<GameImagesInterface>,
+      type: Object as PropType<IGameImages>,
       required: false,
     },
     name: {

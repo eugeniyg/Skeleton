@@ -84,13 +84,13 @@
 </template>
 
 <script setup lang="ts">
-  import { CashBonusesInterface } from '@skeleton/types';
-  import { PlayerFreeSpinInterface, GameInterface, PlayerBonusInterface } from "@platform/frontend-core";
+  import { IPlayerFreeSpin, IGame, IPlayerBonus } from "@platform/frontend-core";
   import dayjs from 'dayjs';
+  import {IProfileBonuses} from '~/types';
 
   const props = defineProps<{
-    bonus: PlayerBonusInterface|PlayerFreeSpinInterface,
-    content?: CashBonusesInterface,
+    bonus: IPlayerBonus|IPlayerFreeSpin,
+    content?: IProfileBonuses['cashBonuses'],
     mode: 'bonus'|'free-spin'
   }>();
 
@@ -136,7 +136,7 @@
     return (props.bonus.progress || 0) > 0;
   });
 
-  const gameInfo = ref<GameInterface|undefined>();
+  const gameInfo = ref<IGame|undefined>();
   const getGameData = async ():Promise<void> => {
     const { getGamesInfo } = useCoreGamesApi();
     gameInfo.value = await getGamesInfo(props.bonus.gameId);

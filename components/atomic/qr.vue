@@ -13,10 +13,10 @@
 </template>
 
 <script setup lang="ts">
-  import { DepositInterface } from '@skeleton/types';
+  import { IDepositModal } from '~/types';
 
   const props = defineProps<{
-    content: Maybe<DepositInterface>,
+    content: Maybe<IDepositModal>,
     qrLink: string
   }>();
 </script>

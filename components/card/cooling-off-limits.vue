@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import {PlayerLimitInterface} from "@platform/frontend-core/dist/module";
+  import { IPlayerLimit } from "@platform/frontend-core";
   import dayjs from 'dayjs';
 
   const limitsStore = useLimitsStore();
@@ -49,7 +49,7 @@
   } = storeToRefs(limitsStore);
 
   const state = reactive<{
-    limitData?: PlayerLimitInterface,
+    limitData?: IPlayerLimit,
     limitId: string | undefined,
     isEditProcess: boolean,
     selectedPeriod: string,
@@ -69,7 +69,7 @@
   const isFullWidth = computed(() => (!isAdvancedModeEnabled.value && betPeriods.value?.length > 1)
     || (!isAdvancedModeEnabled.value && lossPeriods.value?.length < 2));
 
-  const edit = (limit: PlayerLimitInterface) => {
+  const edit = (limit: IPlayerLimit) => {
     state.isEditProcess = true;
     state.limitData = limit;
     state.limitId = limit.id;
@@ -84,10 +84,10 @@
         definition: state.definition,
       });
       await getLimits();
-      showAlert(alertsData.value?.cashLimitAdd || defaultLocaleAlertsData.value?.cashLimitAdd);
+      showAlert(alertsData.value?.limit?.cashLimitAdd || defaultLocaleAlertsData.value?.limit?.cashLimitAdd);
     } else {
       await updatePlayerLimit({
-        limitId: state.limitId,
+        limitId: state.limitId as string,
         period: state.selectedPeriod,
       });
       await getLimits();
