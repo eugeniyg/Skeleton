@@ -1,6 +1,6 @@
-import { createResolver } from '@nuxt/kit'
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
+import { createResolver } from '@nuxt/kit';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const { resolve } = createResolver(dirname(fileURLToPath(import.meta.url)));
 
@@ -18,6 +18,9 @@ const viteConfig: any = {
 };
 
 export default defineNuxtConfig({
+  image: {
+    inject: true
+  },
   alias: {
     '@skeleton': resolve('./'),
   },
