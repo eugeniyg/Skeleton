@@ -1,6 +1,6 @@
 <template>
   <div class="card-providers" @click="routeToGames">\
-    <nuxt-img preload format="webp" class="img" :src="`/img${props.src}`"/>
+    <nuxt-img preload class="img" :src="`/img${props.src}`"/>
   </div>
 </template>
 
