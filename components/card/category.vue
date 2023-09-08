@@ -7,6 +7,7 @@
     <div class="card-cat__sub-title">{{ props.description }}</div>
 
     <nuxt-img class="card-cat__img" :src="props.image" alt=""/>
+    <img class="card-cat__img" :src="props.image" alt=""/>
 
     <button-base
       type="secondary"

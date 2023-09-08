@@ -1,6 +1,7 @@
 <template>
   <div class="card-providers" @click="routeToGames">\
     <nuxt-img class="img" :src="`/img${props.src}`"/>
+    <img class="img" :src="`/img${props.src}`"/>
   </div>
 </template>
 
