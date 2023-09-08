@@ -1,16 +1,22 @@
 <template>
   <div>
     <client-only>
-      <carousel v-if="sliderItems?.length" v-bind="topSliderProps">
-        <slide v-for="(slide, index) in sliderItems" :key="index">
-          <card-promo v-if="slide.slideStatus === 'Published'" v-bind="slide" />
-        </slide>
+      <transition name="fade" mode="out-in">
+        <carousel
+          v-if="filteredSlider?.length"
+          :key="filteredSlider"
+          v-bind="topSliderProps"
+        >
+          <slide v-for="(slide, index) in filteredSlider" :key="index">
+            <card-promo v-bind="slide" />
+          </slide>
 
-        <template v-slot:addons>
-          <navigation />
-          <pagination />
-        </template>
-      </carousel>
+          <template v-slot:addons>
+            <navigation />
+            <pagination />
+          </template>
+        </carousel>
+      </transition>
     </client-only>
 
     <nav-cat @clickCategory="changeCategory" />
@@ -92,8 +98,19 @@
   } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
   import { ICasinoPage } from '~/types';
+  import dayjs from 'dayjs';
+  import utc from 'dayjs/plugin/utc';
+  import isBetween from 'dayjs/plugin/isBetween';
+  import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+  import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+
+  dayjs.extend(utc);
+  dayjs.extend(isBetween);
+  dayjs.extend(isSameOrAfter);
+  dayjs.extend(isSameOrBefore);
 
   const globalStore = useGlobalStore();
+  const profileStore = useProfileStore();
   const {
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent,
@@ -106,6 +123,7 @@
     getLocalesContentData,
     getContent,
   } = useProjectMethods();
+  const { isLoggedIn, profile } = storeToRefs(profileStore);
 
   const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
     useAsyncData('currentLocaleCasinoPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'casino').findOne()),
@@ -113,18 +131,41 @@
       : useAsyncData('defaultLocaleCasinoPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'casino').findOne())
   ]);
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const { currentLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   const pageContent: Maybe<ICasinoPage> = currentLocaleData;
-  const defaultLocalePageContent: Maybe<ICasinoPage> = defaultLocaleData;
 
-  const sliderItems: Maybe<ICasinoPage['slider']> = pageContent?.slider || defaultLocalePageContent?.slider;
+  const sliderFilterTime = ref(dayjs.utc());
+  const filteredSlider = computed(() => {
+    return pageContent?.slider.reduce((filteredSliderArr: ICasinoPage['slider'], currentSlide) => {
+      const loggedFilter: boolean = (isLoggedIn.value && currentSlide.loggedHide) || (!isLoggedIn.value && currentSlide.unloggedHide);
+      let includesSegmentsFilter: boolean = !!currentSlide.showSegments?.length;
+      let excludeSegmentsFilter: boolean = !!currentSlide.hideSegments?.length;
+      let timeFilter: boolean = false;
+
+      if (isLoggedIn.value && profile.value) {
+        const showSegmentsArr = currentSlide.showSegments?.map(item => item.segmentName) || [];
+        const hideSegmentsArr = currentSlide.hideSegments?.map(item => item.segmentName) || [];
+        includesSegmentsFilter = showSegmentsArr.length ? !profile.value.segments.some((segment) => showSegmentsArr.includes(segment.name)) : false;
+        excludeSegmentsFilter = hideSegmentsArr.length ? profile.value.segments.some((segment) => hideSegmentsArr.includes(segment.name)) : false;
+      }
+
+      if (currentSlide.showFrom && currentSlide.showTo) {
+        timeFilter = !dayjs(sliderFilterTime.value).isBetween(dayjs(currentSlide.showFrom), dayjs(currentSlide.showTo), 'second');
+      } else if (currentSlide.showFrom) {
+        timeFilter = !dayjs(sliderFilterTime.value).isSameOrAfter(dayjs(currentSlide.showFrom), 'second');
+      } else if (currentSlide.showTo) {
+        timeFilter = !dayjs(sliderFilterTime.value).isSameOrBefore(dayjs(currentSlide.showTo), 'second');
+      }
+
+      if (loggedFilter || includesSegmentsFilter || excludeSegmentsFilter || timeFilter) return filteredSliderArr;
+      return [...filteredSliderArr, currentSlide];
+    }, []);
+  })
 
   const fakeStore = useFakeStore();
   const router = useRouter();
   const gameStore = useGamesStore();
   const { currentLocationCollections } = storeToRefs(gameStore);
-  const profileStore = useProfileStore();
-  const { isLoggedIn } = storeToRefs(profileStore);
 
   const providerCards = fakeStore.providerCards();
 
@@ -150,4 +191,15 @@
   const changeCategory = (categoryId: string) => {
     router.push({ path: localizePath('/games'), query: { category: categoryId } });
   };
+
+  let sliderTimer: any;
+  onMounted(() => {
+    sliderTimer = setInterval(() => {
+      sliderFilterTime.value = dayjs.utc();
+    }, 600000)
+  })
+
+  onBeforeUnmount(() => {
+    clearInterval(sliderTimer);
+  })
 </script>
