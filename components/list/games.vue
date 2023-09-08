@@ -28,13 +28,15 @@
 
   const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();
+  const globalStore = useGlobalStore();
   const { isLoggedIn } = storeToRefs(profileStore);
+  const { headerCountry } = storeToRefs(globalStore);
   const gamesArray = ref<IGame[]>([]);
   const { getImageUrl } = useProjectMethods();
 
   onMounted(async () => {
     const { getFilteredGames } = useCoreGamesApi();
-    const { data } = await getFilteredGames({ identity: props.items });
+    const { data } = await getFilteredGames({ identity: props.items, countries: headerCountry.value ? [headerCountry.value] : undefined });
     gamesArray.value = data.reduce((acc: IGame[], item: IGame) => {
       const getGameIndex = props.items?.findIndex((gameIdentity) => gameIdentity === item.identity);
       if (getGameIndex > -1) acc[getGameIndex] = item;

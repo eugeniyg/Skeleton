@@ -85,7 +85,8 @@ definePageMeta({
     layoutData,
     currentLocale,
     defaultLocale,
-    defaultLocaleLayoutData
+    defaultLocaleLayoutData,
+    headerCountry
   } = storeToRefs(globalStore);
 
   const {
@@ -153,6 +154,7 @@ definePageMeta({
       collectionId: activeCollection.value?.id,
       sortBy: sortBy.value,
       sortOrder: sortOrder.value,
+      countries: headerCountry.value ? [headerCountry.value] : undefined
     };
 
     if (currentProvider.value?.id !== 'all') {
