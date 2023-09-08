@@ -39,6 +39,7 @@
 
 <script setup lang="ts">
   import { IGame, IPaginationMeta } from '@platform/frontend-core';
+  import { storeToRefs } from "pinia";
 
   const props = defineProps({
     showArrows: {
@@ -47,7 +48,9 @@
     },
   });
 
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
+  const { headerCountry } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   const scrollContainer = ref();
@@ -81,6 +84,7 @@
       identity: formatIdentity(cardContent.value.items),
       page: pageMeta.value ? pageMeta.value.page + 1 : 1,
       perPage: 18,
+      countries: headerCountry.value ? [headerCountry.value] : undefined
     });
     games.value = games.value.concat(gamesResponse.data);
     pageMeta.value = gamesResponse.meta;
@@ -108,7 +112,8 @@
 
       const gamesResponse = await getFilteredGames({
         identity: formatIdentity(cardContent.value?.items),
-        perPage: 18
+        perPage: 18,
+        countries: headerCountry.value ? [headerCountry.value] : undefined
       });
       games.value = gamesResponse.data;
       pageMeta.value = gamesResponse.meta;

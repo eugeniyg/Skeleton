@@ -56,6 +56,7 @@
 
 <script setup lang="ts">
   import { IGame, IPaginationMeta } from '@platform/frontend-core';
+  import { storeToRefs } from "pinia";
 
   const props = defineProps({
     category: {
@@ -76,7 +77,9 @@
     },
   });
 
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = globalStore;
+  const { headerCountry } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const titleIcon = gameCategoriesObj[props.category.identity]?.icon;
 
@@ -111,6 +114,7 @@
       collectionId: props.category.id,
       page: pageMeta.value ? pageMeta.value.page + 1 : 1,
       perPage: 18,
+      countries: headerCountry.value ? [headerCountry.value] : undefined,
     });
     games.value = games.value.concat(gamesResponse.data);
     pageMeta.value = gamesResponse.meta;
@@ -126,7 +130,11 @@
       settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
     });
 
-    const gamesResponse = await getFilteredGames({ collectionId: props.category.id, perPage: 18 });
+    const gamesResponse = await getFilteredGames({
+      collectionId: props.category.id,
+      perPage: 18,
+      countries: headerCountry.value ? [headerCountry.value] : undefined
+    });
     games.value = gamesResponse.data;
     pageMeta.value = gamesResponse.meta;
     await nextTick();

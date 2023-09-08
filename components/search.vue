@@ -34,7 +34,9 @@ const props = defineProps({
   });
 
   const emit = defineEmits(['hideSearch']);
-  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { layoutData, defaultLocaleLayoutData } = globalStore;
+  const { headerCountry } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const searchValue = ref<string>('');
   const pendingGames = ref<boolean>(true);
@@ -46,7 +48,12 @@ const props = defineProps({
 
   const { getFilteredGames } = useCoreGamesApi();
   const getItems = async (): Promise<IGamesResponse> => {
-    const params: any = { page: loadPage.value, perPage: 5, name: searchValue.value };
+    const params: any = {
+      page: loadPage.value,
+      perPage: 5,
+      name: searchValue.value,
+      countries: headerCountry.value ? [headerCountry.value] : undefined
+    };
 
     return await getFilteredGames(params);
   };
@@ -91,6 +98,7 @@ const props = defineProps({
       page: 1,
       perPage: 4,
       collectionId: getTurbogamesId || currentLocationCollections.value[0]?.id,
+      countries: headerCountry.value ? [headerCountry.value] : undefined
     });
     defaultGames.value = defaultGamesResponse.data;
   });
