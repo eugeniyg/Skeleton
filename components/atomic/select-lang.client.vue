@@ -7,7 +7,7 @@
       <div class="selected" @click="toggleOpen">
         <img
           class="img"
-          :src="`/img/flags/${languageFlagsMap[currentLocale.code.toLowerCase()]}.svg`"
+          :src="`${gamehubCdn}/locales/${currentLocale.code.toLowerCase()}.svg`"
           alt=""
         />
         <span class="title">{{ currentLocale.nativeName || currentLocale.name }}</span>
@@ -22,7 +22,7 @@
           :class="{ 'is-selected': currentLocale?.code.toLowerCase() === locale.code.toLowerCase() }"
           @click="changeLanguage(locale)"
         >
-          <img class="img" :src="`/img/flags/${languageFlagsMap[locale.code.toLowerCase()] || locale.code.toLowerCase()}.svg`" alt="" />
+          <img class="img" :src="`${gamehubCdn}/locales/${locale.code.toLowerCase()}.svg`" alt="" />
           <span class="title">{{ locale.nativeName || locale.name }}</span>
           <atomic-icon id="check" />
         </div>
@@ -48,6 +48,7 @@
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
+  const { public: { gamehubCdn } } = useRuntimeConfig();
 
   const changeLanguage = async (locale: ILocale): Promise<void> => {
     if (currentLocale.value?.code === locale.code) return;
