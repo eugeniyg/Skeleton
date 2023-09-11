@@ -34,7 +34,7 @@
           <div
             class="item"
             :key="itemIndex"
-            v-for="(card, itemIndex) in welcomeContent?.welcome.items.length ? welcomeContent.welcome.items : defaultLocaleWelcomeContent?.welcome.items"
+            v-for="(card, itemIndex) in getContent(welcomeContent, defaultLocaleWelcomeContent, 'welcome.items')"
           >
             <div class="title">{{ card.title }}</div>
             <div class="sub-title">{{ card.topLabel }}</div>
@@ -74,7 +74,7 @@
           <div
             class="item"
             :key="itemIndex"
-            v-for="(card, itemIndex) in welcomeContent?.bonuses.items.length ? welcomeContent.bonuses.items : defaultLocaleWelcomeContent?.bonuses.items"
+            v-for="(card, itemIndex) in getContent(welcomeContent, defaultLocaleWelcomeContent, 'bonuses.items')"
           >
             <div class="title">{{ card.subtitle }}</div>
             <div class="sub-title">{{ card.title }}</div>

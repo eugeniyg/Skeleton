@@ -13,7 +13,7 @@
         :class="{'is-active': $route.path === localizePath(`/questions/${item.pageUrl}`) }"
         @click.prevent="select(`/questions/${item.pageUrl}`)"
       >
-        <atomic-icon :id="item.icon" />{{ item.title }}
+        <atomic-icon v-if="item.icon" :id="item.icon" />{{ item.title }}
         <atomic-icon v-show="$route.path === localizePath(`/questions/${item.pageUrl}`)" id="check"/>
       </div>
     </div>

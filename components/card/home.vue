@@ -1,8 +1,8 @@
 <template>
   <div class="card-home">
     <div class="content">
-      <div class="back-bg" :style="{backgroundImage: `url(${props.images.backgroundImage})`}"></div>
-      <div class="front-bg" :style="{backgroundImage: `url(${props.images.faceImage})`}"></div>
+      <div v-if="props.images?.backgroundImage" class="back-bg" :style="{backgroundImage: `url(${props.images.backgroundImage})`}"></div>
+      <div v-if="props.images?.faceImage" class="front-bg" :style="{backgroundImage: `url(${props.images.faceImage})`}"></div>
     </div>
 
     <div class="info">
@@ -30,8 +30,7 @@
 
   const props = defineProps({
     images: {
-      type: Object,
-      required: true,
+      type: Object
     },
     title: {
       type: String,

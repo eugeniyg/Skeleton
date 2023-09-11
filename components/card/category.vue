@@ -6,7 +6,7 @@
 
     <div class="card-cat__sub-title">{{ props.description }}</div>
 
-    <img class="card-cat__img" :src="props.image" alt="">
+    <img v-if="props.image" class="card-cat__img" :src="props.image" alt="">
 
     <button-base
       type="secondary"
@@ -23,7 +23,7 @@
   import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
-    image: string,
+    image?: string,
     mod: string,
     title: string,
     description: string,
