@@ -40,10 +40,10 @@
           @click="update"
           :is-disabled="isDisableUpdate"
         >
-          {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.updateButtonLabel') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.actions.updateButtonLabel') }}
         </button-base>
         <button-base type="secondary" size="md" @click="remove">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.deleteButtonLabel') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.actions.deleteButtonLabel') }}
         </button-base>
       </div>
     </div>
