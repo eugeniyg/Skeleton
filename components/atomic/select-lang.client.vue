@@ -35,11 +35,6 @@
   import { storeToRefs } from 'pinia';
   import { ILocale } from '@platform/frontend-core';
 
-  const languageFlagsMap = {
-    en: 'us',
-    uk: 'ua'
-  };
-
   const route = useRoute();
   const globalStore = useGlobalStore();
   const { locales, currentLocale } = storeToRefs(globalStore);
