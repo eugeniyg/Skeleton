@@ -36,7 +36,6 @@
     "@vuelidate/validators": "^2.0.3",
     "accept-language-parser": "^1.5.0",
     "body-scroll-lock": "^4.0.0-beta.0",
-    "dayjs": "^1.11.9",
     "libphonenumber-js": "^1.10.43",
     "lodash": "^4.17.21",
     "marked": "^7.0.5",
