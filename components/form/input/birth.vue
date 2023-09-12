@@ -103,14 +103,11 @@
   const dayjsMonths = dayjs.months();
 
   const years = createItems(1920, maxYear.value, false).reverse();
-  const months = dayjsMonths.map((monthName, index) => {
-    const capitalizeName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-    return {
-      title: capitalizeName,
-      value: capitalizeName,
-      code: index + 1,
-    }
-  });
+  const months = dayjsMonths.map((monthName, index) => ({
+    title: monthName,
+    value: monthName,
+    code: index + 1,
+  }));
   const days = createItems(1, 31, true);
 
   if (props.value) {
