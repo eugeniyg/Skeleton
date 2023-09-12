@@ -62,13 +62,13 @@
 <script setup lang="ts">
   import parser from 'ua-parser-js';
   import { IPaginationMeta, ISession } from '@platform/frontend-core';
-  import dayjs from "dayjs";
   import { ISessionsHistory } from '~/types';
 
   const props = defineProps<{
     content: ISessionsHistory,
   }>();
 
+  const dayjs = useDayjs();
   const headTitles = ['', ...Object.values(props.content?.tableColumns || {})];
   const dateFormat = 'DD.MM.YYYY, HH:mm';
 

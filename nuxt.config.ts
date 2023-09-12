@@ -24,8 +24,15 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@platform/frontend-core',
-    '@nuxt/content'
+    '@nuxt/content',
+    'dayjs-nuxt'
   ],
+  dayjs: {
+    locales: ['en-ca', 'de', 'fr', 'es', 'pt', 'pt-br', 'ru', 'tr', 'hi', 'fa', 'uz', 'kk', 'es-mx', 'it', 'et', 'fi',
+      'el', 'id', 'nb', 'pl', 'ro', 'se', 'cs', 'da', 'nl'],
+    plugins: ['localeData', 'isBetween', 'isSameOrAfter', 'isSameOrBefore'],
+    defaultLocale: 'en',
+  },
   components: {
     dirs: [
       {
@@ -44,7 +51,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       script: [
-        { src: 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js' },
+        { src: 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js' }
       ],
     },
     pageTransition: true,

@@ -37,7 +37,6 @@
 
 <script setup lang="ts">
   import { PropType } from '@vue/runtime-core';
-  import dayjs from "dayjs";
   import { ITransactionsHistory } from '~/types';
 
   const props = defineProps({
@@ -54,6 +53,7 @@
   const emit = defineEmits(['cancelPayment']);
   const headTitles = Object.values(props.transactionsContent.tableColumns);
   const globalStore = useGlobalStore();
+  const dayjs = useDayjs();
 
   const getInvoiceType = (type: number):string => {
     const findInvoiceType = globalStore.invoiceTypes.find((storeType) => storeType.id === type);

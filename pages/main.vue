@@ -98,16 +98,6 @@
   } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
   import { ICasinoPage } from '~/types';
-  import dayjs from 'dayjs';
-  import utc from 'dayjs/plugin/utc';
-  import isBetween from 'dayjs/plugin/isBetween';
-  import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-  import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-
-  dayjs.extend(utc);
-  dayjs.extend(isBetween);
-  dayjs.extend(isSameOrAfter);
-  dayjs.extend(isSameOrBefore);
 
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();
@@ -134,6 +124,7 @@
   const { currentLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   const pageContent: Maybe<ICasinoPage> = currentLocaleData;
 
+  const dayjs = useDayjs();
   const sliderFilterTime = ref(dayjs.utc());
   const filteredSlider = computed(() => {
     return pageContent?.slider.reduce((filteredSliderArr: ICasinoPage['slider'], currentSlide) => {

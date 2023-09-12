@@ -38,13 +38,13 @@
 
 <script setup lang="ts">
   import { IPaginationMeta, ISpinHistory } from '@platform/frontend-core';
-  import dayjs from "dayjs";
   import { ISpinsHistory } from '~/types';
 
   const props = defineProps<{
     content: ISpinsHistory,
   }>();
 
+  const dayjs = useDayjs();
   const headTitles = Object.values(props.content?.tableColumns || {});
   const loading = ref<boolean>(true);
   const spins = ref<ISpinHistory[]>([]);

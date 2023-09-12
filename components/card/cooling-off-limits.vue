@@ -34,8 +34,8 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { IPlayerLimit } from "@platform/frontend-core";
-  import dayjs from 'dayjs';
 
+  const dayjs = useDayjs();
   const limitsStore = useLimitsStore();
   const { createLimit, getLimits } = limitsStore;
   const { betPeriods, lossPeriods, isAdvancedModeEnabled } = storeToRefs(limitsStore);

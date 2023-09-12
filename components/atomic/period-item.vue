@@ -46,7 +46,6 @@
 </template>
 
 <script setup lang="ts">
-  import dayjs from 'dayjs';
   import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
@@ -83,6 +82,7 @@
     seconds: 0,
   });
 
+  const dayjs = useDayjs();
   const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
   const limitsStore = useLimitsStore();
   const { formatBalance, getContent } = useProjectMethods();
