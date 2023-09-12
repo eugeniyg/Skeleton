@@ -33,9 +33,9 @@
   } = useProjectMethods();
 
   const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleBettingPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'betting').findOne()),
+    useAsyncData('currentLocaleSportsbookPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'sportsbook').findOne()),
     currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleBettingPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'betting').findOne())
+      : useAsyncData('defaultLocaleSportsbookPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'sportsbook').findOne())
   ]);
 
   const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);

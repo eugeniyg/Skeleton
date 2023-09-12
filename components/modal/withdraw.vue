@@ -17,7 +17,7 @@
       <div class="scroll">
         <div class="header">
           <button-modal-close @close="closeModal('withdraw')"/>
-          <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'withdraw.title') }}</div>
+          <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'withdrawal.title') }}</div>
         </div>
 
         <form-withdraw
@@ -26,7 +26,7 @@
           v-bind="currentMethod"
         />
         <div v-else class="modal-withdraw__empty-methods">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'withdraw.emptyWithdrawMethods') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'withdrawal.emptyWithdrawMethods') }}
         </div>
       </div>
     </div>

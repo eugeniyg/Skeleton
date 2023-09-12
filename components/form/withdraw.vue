@@ -18,7 +18,7 @@
 
     <div class="form-withdraw__content" :class="{'is-blured': networkSelectOptions?.length && !state.selectedNetwork }">
       <form-input-number
-        :label="getContent(popupsData, defaultLocalePopupsData, 'withdraw.sumLabel') || ''"
+        :label="getContent(popupsData, defaultLocalePopupsData, 'withdrawal.sumLabel') || ''"
         name="withdrawSum"
         :min="formatAmountMin.amount"
         :max="formatAmountMax.amount"
@@ -49,7 +49,7 @@
         :isDisabled="buttonDisabled"
         @click="getWithdraw"
       >
-        {{ getContent(popupsData, defaultLocalePopupsData, 'withdraw.withdrawButton') }} {{ buttonAmount }}
+        {{ getContent(popupsData, defaultLocalePopupsData, 'withdrawal.withdrawButton') }} {{ buttonAmount }}
         {{ defaultInputSum.currency }}
       </button-base>
 
@@ -100,7 +100,7 @@
   const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
   const activeAccountWithdrawalFormat = formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance);
   const fieldHint = computed(() => ({
-    message: `${getContent(popupsData, defaultLocalePopupsData, 'withdraw.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
+    message: `${getContent(popupsData, defaultLocalePopupsData, 'withdrawal.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
