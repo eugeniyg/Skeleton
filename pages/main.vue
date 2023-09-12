@@ -136,7 +136,7 @@
 
   const sliderFilterTime = ref(dayjs.utc());
   const filteredSlider = computed(() => {
-    return pageContent?.slider.reduce((filteredSliderArr: ICasinoPage['slider'], currentSlide) => {
+    return pageContent?.slider?.reduce((filteredSliderArr: ICasinoPage['slider'], currentSlide) => {
       const loggedFilter: boolean = (isLoggedIn.value && currentSlide.loggedHide) || (!isLoggedIn.value && currentSlide.unloggedHide);
       let includesSegmentsFilter: boolean = !!currentSlide.showSegments?.length;
       let excludeSegmentsFilter: boolean = !!currentSlide.hideSegments?.length;
