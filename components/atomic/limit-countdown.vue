@@ -6,13 +6,13 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import dayjs from 'dayjs';
 
   const props = defineProps<{
     expiredAt: string|undefined,
     status: number|undefined,
   }>();
 
+  const dayjs = useDayjs();
   const limitsStore = useLimitsStore();
   const { getContent } = useProjectMethods();
   const { getLimits } = limitsStore;

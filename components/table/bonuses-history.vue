@@ -55,7 +55,6 @@
 <script setup lang="ts">
   import { IPaginationMeta, IPlayerBonus, IPlayerFreeSpin } from '@platform/frontend-core';
   import { storeToRefs } from 'pinia';
-  import dayjs from "dayjs";
   import { IBonusesHistory } from '~/types';
 
   const props = defineProps<{
@@ -67,6 +66,7 @@
 
   const emit = defineEmits(['changePage']);
   const tableColumns = Object.values(props.content.tableColumns);
+  const dayjs = useDayjs();
 
   const globalStore = useGlobalStore();
   const {

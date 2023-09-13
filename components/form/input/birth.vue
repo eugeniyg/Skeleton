@@ -43,6 +43,8 @@
 </template>
 
 <script setup lang="ts">
+  import {storeToRefs} from "pinia";
+
   const props = defineProps({
     label: {
       type: String,
@@ -66,12 +68,14 @@
     },
   });
 
+  const globalStore = useGlobalStore();
   const {
     fieldsSettings,
     defaultLocaleFieldsSettings,
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent
-  } = useGlobalStore();
+  } = globalStore;
+  const { currentLocale } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const selected = reactive<{ year: number, month: number, day: number }>({
     year: 0,
@@ -94,29 +98,15 @@
     return items;
   };
 
-  const defaultMonths: Record<number, any> = {
-    1: 'January',
-    2: 'February',
-    3: 'March',
-    4: 'April',
-    5: 'May',
-    6: 'June',
-    7: 'July',
-    8: 'August',
-    9: 'September',
-    10: 'October',
-    11: 'November',
-    12: 'December',
-  }
-  const contentMonths = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'dateMonths');
-  const monthsObj = contentMonths || defaultMonths;
-
+  const dayjs = useDayjs();
+  dayjs.locale(currentLocale.value?.code);
+  const dayjsMonths = dayjs.months();
 
   const years = createItems(1920, maxYear.value, false).reverse();
-  const months = Object.keys(monthsObj).map((key) => ({
-    title: monthsObj[key],
-    value: monthsObj[key],
-    code: Number(key),
+  const months = dayjsMonths.map((monthName, index) => ({
+    title: monthName,
+    value: monthName,
+    code: index + 1,
   }));
   const days = createItems(1, 31, true);
 

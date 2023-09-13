@@ -46,12 +46,12 @@
 <script setup lang="ts">
   import { IPlayerLimit } from '@platform/frontend-core';
   import { storeToRefs } from 'pinia';
-  import dayjs from "dayjs";
 
   const props = defineProps<{
     limits: IPlayerLimit[]
   }>();
 
+  const dayjs = useDayjs();
   const limitsStore = useLimitsStore();
   const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();

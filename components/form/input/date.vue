@@ -21,7 +21,9 @@
 
 <script setup lang="ts">
   import flatPickr from 'vue-flatpickr-component';
-  import { German } from 'flatpickr/dist/l10n/de';
+  import { default as pickrLocales } from 'flatpickr/dist/l10n';
+  import {storeToRefs} from "pinia";
+  import { key } from "flatpickr/dist/types/locale";
 
   const props = defineProps({
     label: {
@@ -44,9 +46,11 @@
     locale: {},
   };
 
-  const { currentLocale } = useGlobalStore();
-  let localeOption:any;
-  if (currentLocale?.code === 'de') localeOption = German;
+  const globalStore = useGlobalStore();
+  const { currentLocale } = storeToRefs(globalStore);
+  let localeOption: any;
+  const mainLocale = currentLocale.value?.code?.split('-')?.[0] || '';
+  localeOption = pickrLocales[mainLocale as key];
 
   if (localeOption) defaultSettings.locale = { ...localeOption, rangeSeparator: ' - ' };
   else defaultSettings.locale = { rangeSeparator: ' - ' };

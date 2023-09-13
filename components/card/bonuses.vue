@@ -85,7 +85,6 @@
 
 <script setup lang="ts">
   import { IPlayerFreeSpin, IGame, IPlayerBonus } from "@platform/frontend-core";
-  import dayjs from 'dayjs';
   import {IProfileBonuses} from '~/types';
 
   const props = defineProps<{
@@ -94,6 +93,7 @@
     mode: 'bonus'|'free-spin'
   }>();
 
+  const dayjs = useDayjs();
   const { formatBalance, localizePath } = useProjectMethods();
   const balanceFormat = computed(() => formatBalance(props.bonus.currency, props.bonus.amount));
   const tooltipContent = computed(() => {
