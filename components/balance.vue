@@ -7,7 +7,7 @@
       <div class="label">
         {{
           props.withdraw ? getContent(popupsData, defaultLocalePopupsData, 'deposit.balanceLabel')
-          : getContent(popupsData, defaultLocalePopupsData, 'withdraw.balanceLabel')
+          : getContent(popupsData, defaultLocalePopupsData, 'withdrawal.balanceLabel')
         }}
       </div>
 
@@ -48,7 +48,7 @@
     </div>
 
     <div class="row" v-if="props.withdraw">
-      <div class="label">{{ getContent(popupsData, defaultLocalePopupsData, 'withdraw.withdrawLabel') }}</div>
+      <div class="label">{{ getContent(popupsData, defaultLocalePopupsData, 'withdrawal.withdrawLabel') }}</div>
 
       <div
         class="value"
