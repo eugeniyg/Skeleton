@@ -94,9 +94,9 @@
   const networkSelectOptions = computed(() => {
     const select = props.fields && props.fields.find((item) => item.fieldType === 'select');
     if (select?.options) {
-      return select?.options.map((option) => ({
+      return select?.options.map((option: { id: string|null, name: string }) => ({
         value: option.name,
-        code: String(option.id),
+        code: option.id || `empty-network-${option.name}`,
       }));
     }
     return [];
@@ -120,7 +120,7 @@
   const onInputNetwork = async () => {
     const { depositAccount } = useCoreWalletApi();
 
-    if (state.selectedNetwork && state.selectedNetwork !== 'null') {
+    if (state.selectedNetwork && !state.selectedNetwork.includes('empty-network')) {
       state.params = {
         ...state.params,
         fields: { crypto_network: state.selectedNetwork }
@@ -139,18 +139,12 @@
   };
 
   onMounted(async () => {
-    const profileStore = useProfileStore();
-    if (profileStore.profile?.status === 2 && activeAccountType.value === 'fiat') {
-      const { showAlert } = useLayoutStore();
-      showAlert(alertsData?.limit?.limitedDeposit || defaultLocaleAlertsData?.limit?.limitedDeposit);
-      return;
-    }
-
     const { depositAccount } = useCoreWalletApi();
     try {
+      const fieldsOptions =  networkSelectOptions.value?.length && !networkSelectOptions.value[0].code.includes('empty-network');
       const depositResponse = await depositAccount({
         ...state.params,
-        fields: networkSelectOptions.value?.length ? { crypto_network: networkSelectOptions.value[0].code } : undefined
+        fields: fieldsOptions ? { crypto_network: networkSelectOptions.value[0].code } : undefined
       });
 
       walletNumber.value = depositResponse.address;
