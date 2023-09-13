@@ -52,7 +52,6 @@
         {{ getContent(popupsData, defaultLocalePopupsData, 'withdrawal.withdrawButton') }} {{ buttonAmount }}
         {{ defaultInputSum.currency }}
       </button-base>
-
     </div>
   </form>
 </template>
@@ -87,8 +86,7 @@
   } = useLayoutStore();
   const {
     activeAccount,
-    activeAccountType,
-    withdrawMethods
+    activeAccountType
   } = storeToRefs(walletStore);
 
   const {
@@ -127,11 +125,13 @@
       });
     }
     if (currentField.key === 'wallet_id') {
-      const regex = getNetworkParams('null')?.regex;
-      if (regex) {
+      const findNetworkField = props.fields.find((field) => field.key === 'crypto_network');
+      const firstNetworkRegex = findNetworkField ? findNetworkField.options?.[0]?.regex : undefined;
+
+      if (firstNetworkRegex) {
         rulesArr.push({
           rule: 'regex',
-          arguments: regex
+          arguments: firstNetworkRegex
         });
       }
     }
@@ -184,10 +184,10 @@
   const networkSelectOptions = computed(() => {
     const select = props.fields.find((field) => field.fieldType === 'select');
     if (select) {
-      return select?.options?.map(((option) => ({
+      return select?.options?.map((option) => ({
         value: option.name,
-        code: String(option.id),
-      })));
+        code: option.id || `empty-network-${option.name}`,
+      }));
     }
     return [];
   });
@@ -199,44 +199,34 @@
     || isSending.value);
 
   const onInputNetwork = () => {
-    const regex = getNetworkParams(state.selectedNetwork).regex;
+    let networkRegex;
+
+    const findNetworkField = props.fields.find((field) => field.key === 'crypto_network');
+    if (findNetworkField) {
+      const findNetworkOption = findNetworkField?.options?.find((option) => {
+        if (option.id) return option.id === state.selectedNetwork;
+        return state.selectedNetwork === `empty-network-${option.name}`;
+      })
+
+      networkRegex = findNetworkOption?.regex;
+    }
 
     withdrawRules.value = {
       ...withdrawRules.value,
-      'wallet_id': [
+      'wallet_id': networkRegex ? [
         { rule: 'required' },
         {
           rule: 'regex',
-          arguments: regex,
+          arguments: networkRegex,
         }
-      ]
+      ] : [{ rule: 'required' }]
     };
   };
-
-  interface IPaymentFieldOptions {
-    id: string,
-    name: string,
-    regex?: string|string[]
-  }
-
-  function getNetworkParams(networkId: string) {
-    const networkMethod = withdrawMethods.value.find((method) => method?.fields?.length > 1);
-    if (networkMethod) {
-      const select = networkMethod.fields.find((item: IPaymentField) => item.fieldType === 'select');
-      if (select && select?.options) {
-        return select.options.map((option: IPaymentFieldOptions) => ({
-          ...option,
-          id: String(option.id)
-        }))
-          .find((option: IPaymentFieldOptions) => option.id === networkId);
-      }
-    }
-  }
 
   const getWithdraw = async (): Promise<void> => {
     if (buttonDisabled.value) return;
 
-    const fields = state.selectedNetwork && state.selectedNetwork !== 'null' ? {
+    const fields = state.selectedNetwork && !state.selectedNetwork.includes('empty-network') ? {
       ...withdrawFormData,
       crypto_network: state.selectedNetwork
     } : withdrawFormData;
