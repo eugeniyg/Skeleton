@@ -43,7 +43,6 @@
     grid-area: items;
     display: var(--display, grid);
     align-items: normal;
-    // overflow-x: auto;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: var(--items-column-gap, #{rem(8px)});
 
@@ -95,7 +94,7 @@
       filter: blur(2px)
     }
 
-    .img {
+    &-img {
       position: relative;
       background-size: contain;
       background-position: center;

@@ -1,7 +1,9 @@
 <template>
   <div class="card-turbo">
     <div class="content">
-      <nuxt-link class="thumb" :to="localizePath(props.url)" :style="backgroundImage"/>
+      <nuxt-link class="thumb" :to="localizePath(props.url)">
+        <img class="card-turbo__img" :src="props.image" alt="">
+      </nuxt-link>
       <div class="title">{{ props.title }}</div>
 
       <div class="sub-title">{{ props.categoryValue }}</div>
@@ -26,7 +28,7 @@
     categoryValue: string
   }>();
 
-  const backgroundImage = computed(() => `background-image:url(${props.image})`);
+  //const backgroundImage = computed(() => `background-image:url(${props.image})`);
   const { localizePath } = useProjectMethods();
 </script>
 

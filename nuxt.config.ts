@@ -17,6 +17,7 @@ const viteConfig: any = {
   },
 };
 
+// @ts-ignore
 export default defineNuxtConfig({
   alias: {
     '@skeleton': resolve('./'),
@@ -25,7 +26,8 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@platform/frontend-core',
     '@nuxt/content',
-    'dayjs-nuxt'
+    'dayjs-nuxt',
+    'nuxt-lazy-load'
   ],
   dayjs: {
     locales: ['en-ca', 'de', 'fr', 'es', 'pt', 'pt-br', 'ru', 'tr', 'hi', 'fa', 'uz', 'kk', 'es-mx', 'it', 'et', 'fi',
@@ -51,7 +53,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       script: [
-        { src: 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js' }
+        { src: 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js', defer: true }
       ],
     },
     pageTransition: true,
