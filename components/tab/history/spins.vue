@@ -14,8 +14,8 @@
       <template v-if="spins.length">
         <div v-for="(spin, itemIndex) in spins" :key="itemIndex" class="row">
           <div class="td">{{ spin.game}}</div>
-          <div class="td">{{ formatSum(spin.currency, spin.betAmount) }}</div>
-          <div class="td">{{ formatSum(spin.currency, spin.resultBalance) }}</div>
+          <div class="td">{{ formatSum(spin.currency, spin.amount) }}</div>
+          <div class="td">{{ formatSum(spin.currency, spin.payout) }}</div>
           <div class="td">{{ dayjs(spin.createdAt).format('DD.MM.YYYY, HH:mm') }}</div>
         </div>
       </template>

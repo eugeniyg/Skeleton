@@ -17,7 +17,7 @@
     nickname: Maybe<string>,
     amount: number,
     currency: string,
-    resultBalance: number,
+    payout: number,
     gameId: string,
     gameName: string,
     isDemoMode: boolean,
@@ -35,7 +35,7 @@
     return localizePath(`/games/${props.gameId}?real=true`);
   });
 
-  const formatedSum = computed(() => formatBalance(props.currency, props.resultBalance));
+  const formatedSum = computed(() => formatBalance(props.currency, props.payout));
 
   const backgroundImage = computed(() => {
     if (props.gameImages.hasOwnProperty('200x200')) {
