@@ -28,7 +28,6 @@
     categoryValue: string
   }>();
 
-  //const backgroundImage = computed(() => `background-image:url(${props.image})`);
   const { localizePath } = useProjectMethods();
 </script>
 
