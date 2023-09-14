@@ -138,10 +138,12 @@
     }
   }
 
-  img {
-    width: var(--width, auto);
-    height: var(--height, auto);
-    display: var(--display, block);
+  &__img {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: none;
   }
 
   .btn-try {

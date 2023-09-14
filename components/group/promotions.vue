@@ -14,7 +14,7 @@
         :class="{ 'hovered': hoverCard === index }"
         @click="clickCard(index)"
       >
-        <div class="img" :style="backgroundImage(promotion.image)"/>
+        <img class="group-promotions__item-img" :src="promotion.image" alt="">
 
         <div class="content">
           <div class="title">{{ promotion.title }}</div>

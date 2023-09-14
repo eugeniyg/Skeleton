@@ -40,7 +40,7 @@
     --col-count: 6;
   }
 
-  .img {
+  &__img {
     grid-area: img;
     width: rem(56px);
     height: rem(56px);
@@ -50,6 +50,8 @@
     border-radius: 8px;
     overflow: hidden;
     align-self: center;
+    display: block;
+    border: none;
   }
 
   .title {
