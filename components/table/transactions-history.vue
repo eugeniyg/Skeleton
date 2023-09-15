@@ -20,8 +20,20 @@
 
       <div class="td">{{ invoice.amount }} {{ invoice.currency }}</div>
 
-      <div class="actions" v-if="getInvoiceStatus(invoice.status) === 'pending' && getInvoiceType(invoice.invoiceType) === 'withdrawal'">
+      <div class="actions">
         <button-base
+          v-if="invoice.publicData?.securityCode && !showCodes.includes(invoice.publicData.securityCode)"
+          class="btn-get-code"
+          type="primary"
+          size="sm"
+          @click="showCodes.push(invoice.publicData.securityCode)"
+        >
+          <atomic-icon id="security-code"/>
+          <span>{{ props.transactionsContent.securityCode.getCodeButton }}</span>
+        </button-base>
+
+        <button-base
+          v-if="getInvoiceStatus(invoice.status) === 'pending' && getInvoiceType(invoice.invoiceType) === 'withdrawal'"
           class="btn-cancel-payment"
           type="secondary"
           size="sm"
@@ -31,24 +43,35 @@
           <span>{{ props.transactionsContent.cancelPaymentButton }}</span>
         </button-base>
       </div>
+
+      <div
+        v-if="invoice.publicData?.securityCode && showCodes.includes(invoice.publicData.securityCode)"
+        class="security-code"
+      >
+        <atomic-copy-field
+          :label="props.transactionsContent.securityCode.codeLabel"
+          :value="invoice.publicData.securityCode"
+          :tooltip="props.transactionsContent.securityCode.codeTooltip"
+        />
+
+        <atomic-copy-field
+          :label="props.transactionsContent.securityCode.clientLabel"
+          :value="invoice.publicData.clientId"
+          :tooltip="props.transactionsContent.securityCode.clientTooltip"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { PropType } from '@vue/runtime-core';
   import { ITransactionsHistory } from '~/types';
+  import { IInvoice } from "@platform/frontend-core";
 
-  const props = defineProps({
-    invoices: {
-      type: Array,
-      default: () => [],
-    },
-    transactionsContent: {
-      type: Object as PropType<ITransactionsHistory>,
-      required: true,
-    },
-  });
+  const props = defineProps<{
+    invoices: IInvoice[];
+    transactionsContent: ITransactionsHistory
+  }>();
 
   const emit = defineEmits(['cancelPayment']);
   const headTitles = Object.values(props.transactionsContent.tableColumns);
@@ -74,6 +97,9 @@
     const statusName = getInvoiceStatus(status);
     return props.transactionsContent.statusFilter.options[statusName] || '';
   };
+
+  // Get code
+  const showCodes = ref<string[]>([]);
 </script>
 
 <style src="~/assets/styles/components/table/transactions-history.scss" lang="scss" />
