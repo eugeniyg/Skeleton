@@ -19,7 +19,7 @@
     width: 100%;
     @include font($body-2);
     color: var(--text-primary);
-    padding: 8px 16px;
+    padding: rem(8px) rem(16px);
     background-color: var(--bg, var(--field-01));
     border-top-left-radius: 100px;
     border-bottom-left-radius: 100px;
@@ -31,20 +31,20 @@
   }
 
   &__label {
-    padding-right: 4px;
+    padding-right: rem(4px);
     color: var(--text-tertiary);
   }
 
   .btn-primary {
     flex-shrink: 0;
-    padding: 6px;
+    padding: rem(6px);
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
   }
 
   &__tooltip {
     position: absolute;
-    bottom: calc(100% + 4px);
+    bottom: calc(100% + #{rem(4px)});
     right: 0;
     padding: 2px 8px;
     background-color: var(--green-700);
