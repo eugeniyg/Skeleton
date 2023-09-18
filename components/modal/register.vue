@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import {storeToRefs} from 'pinia';
-import {IField} from '@platform/frontend-core';
+import {IField} from '@skeleton/core/types';
 import {VueFinalModal} from 'vue-final-modal';
 
 const formKey = ref<number>(0);

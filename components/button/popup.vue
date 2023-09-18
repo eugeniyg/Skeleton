@@ -20,7 +20,7 @@
       required: true,
     },
   });
-  const { replaceContent } = useCoreMethods();
+  const { replaceContent } = useProjectMethods();
   const buttonHtml = replaceContent(props.buttonLabel, '*');
   const { showModal } = useLayoutStore();
 </script>

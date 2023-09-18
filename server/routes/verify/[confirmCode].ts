@@ -1,10 +1,13 @@
-import { useCoreConfirmApi } from '@platform/frontend-core';
-
 export default defineEventHandler(async (event) => {
     if (event.context.params?.confirmCode) {
-        const { confirmProfile } = useCoreConfirmApi();
+        const baseURL = process.env.API_BASE_URL || '';
+
         try {
-            await confirmProfile(event.context.params?.confirmCode);
+            await $fetch('/api/player/register/confirm', {
+                baseURL,
+                method: 'POST',
+                body: { code: event.context.params?.confirmCode }
+            })
             return sendRedirect(event, '/?confirm=true', 302);
         } catch (err) {
             return sendRedirect(event, '/', 302);

@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import {storeToRefs} from 'pinia';
 import {onMounted} from '@vue/runtime-core';
-import {IGame} from '@platform/frontend-core';
+import {IGame} from '@skeleton/core/types';
 import { IRecentlyPage } from '~/types';
 
 const globalStore = useGlobalStore();

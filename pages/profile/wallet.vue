@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IAccount } from '@platform/frontend-core';
+  import { IAccount } from '@skeleton/core/types';
   import { IProfileWallet } from '~/types';
 
   const globalStore = useGlobalStore();

@@ -1,5 +1,5 @@
 import {defineStore, storeToRefs} from 'pinia';
-import { IAccount,IWebSocketResponse } from '@platform/frontend-core';
+import { IAccount,IWebSocketResponse } from '@skeleton/core/types';
 
 interface IWalletState {
   accounts: IAccount[],

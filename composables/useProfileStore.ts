@@ -2,17 +2,23 @@ import { defineStore } from 'pinia';
 import {
   IProfile,
   IAuthorizationResponse,
-} from '@platform/frontend-core';
+  IParsedToken
+} from '@skeleton/core/types';
+import jwt_decode from "jwt-decode";
 
 interface IProfileStoreState {
-  isLoggedIn: boolean,
-  sessionId: string,
-  resentVerifyEmail: boolean,
-  profile: Maybe<IProfile>,
+  refreshPromise: Promise<{data: IAuthorizationResponse}>|null;
+  currentSessionToken: string|null;
+  isLoggedIn: boolean;
+  sessionId: string;
+  resentVerifyEmail: boolean;
+  profile: Maybe<IProfile>;
 }
 
 export const useProfileStore = defineStore('profileStore', {
   state: (): IProfileStoreState => ({
+    refreshPromise: null,
+    currentSessionToken: null,
     isLoggedIn: false,
     sessionId: '',
     resentVerifyEmail: false,
@@ -26,6 +32,40 @@ export const useProfileStore = defineStore('profileStore', {
   },
 
   actions: {
+    setSessionToken (tokenValue:string):void {
+      const cookieToken = useCookie('access_token', { maxAge: 60 * 60 * 24 * 30 });
+      cookieToken.value = tokenValue;
+      this.currentSessionToken = tokenValue;
+    },
+
+    getSessionToken ():string|null|undefined {
+      const cookieToken = useCookie('access_token');
+      return this.currentSessionToken || cookieToken.value;
+    },
+
+    isTokenExpired ():boolean {
+      const token = this.getSessionToken();
+      if (token) {
+        const currentSession:IParsedToken = jwt_decode(token);
+        return currentSession.exp ? currentSession.exp <= Date.now() / 1000 : false;
+      }
+      return true;
+    },
+
+    getCurrentSession ():IParsedToken|null {
+      const token = this.getSessionToken();
+      if (token) {
+        return jwt_decode(token);
+      }
+      return null;
+    },
+
+    removeSession ():void {
+      const cookieToken = useCookie('access_token')
+      cookieToken.value = null
+      this.currentSessionToken = null
+    },
+
     startSession(authData: IAuthorizationResponse):void {
       this.profile = authData.profile;
       const { reconnectSocket } = useWebSocket();

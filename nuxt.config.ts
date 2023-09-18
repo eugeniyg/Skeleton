@@ -11,10 +11,7 @@ const viteConfig: any = {
         additionalData: '@use "@skeleton/assets/styles/ds/_shared.scss" as *;',
       },
     },
-  },
-  optimizeDeps: {
-    include: ['centrifuge'],
-  },
+  }
 };
 
 export default defineNuxtConfig({
@@ -23,7 +20,6 @@ export default defineNuxtConfig({
   },
   modules: [
     '@pinia/nuxt',
-    '@platform/frontend-core',
     '@nuxt/content',
     'dayjs-nuxt'
   ],
@@ -47,6 +43,11 @@ export default defineNuxtConfig({
       },
       '@skeleton/components',
     ],
+  },
+  imports: {
+    dirs: [
+      'core/composables'
+    ]
   },
   app: {
     head: {

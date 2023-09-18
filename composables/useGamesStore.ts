@@ -5,7 +5,7 @@ import {
   IGameProvider,
   IWinner,
   IWebSocketResponse
-} from '@platform/frontend-core/dist/module';
+} from '@skeleton/core/types';
 import throttle from 'lodash/throttle';
 
 interface IGamesStoreState {
