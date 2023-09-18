@@ -59,6 +59,7 @@
 
       @media (orientation: portrait) and (max-width: 1023px) {
         padding: 0;
+        --top: 64px;
         --bottom: 0;
       }
     }
