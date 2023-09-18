@@ -55,6 +55,11 @@ export const useProjectMethods = () => {
     return `/${globalStore.currentLocale?.code.toLowerCase()}${!path || path === '/' ? '' : path}`;
   };
 
+  const isWebPSupported = (path: string) :boolean => {
+    const video = document.createElement('video');
+    return video.canPlayType('video/webm; codecs="vp8, vorbis"') === 'probably';
+  }
+
   const isHomePage = ():boolean => {
     const route = useRoute();
     return route.name === 'index' || route.name === 'locale-index';

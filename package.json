@@ -24,7 +24,10 @@
     "eslint-plugin-vue": "^9.17.0",
     "node-sass": "^9.0.0",
     "nuxt": "^3.7.1",
-    "sass": "^1.66.1"
+    "sass": "^1.66.1",
+    "imagemin": "^8.0.1",
+    "imagemin-pngquant": "^9.0.2",
+    "imagemin-webp": "^8.0.0"
   },
   "dependencies": {
     "@kyvg/vue3-notification": "^3.0.1",
