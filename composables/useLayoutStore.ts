@@ -4,38 +4,38 @@ import { useNotification } from '@kyvg/vue3-notification';
 import { IAlert } from "~/types";
 
 interface IModals extends Record<string, any> {
-  register: boolean,
-  registerCancel: boolean,
-  signIn: boolean,
-  deposit: boolean,
-  confirm: boolean,
-  error: boolean,
-  forgotPass: boolean,
-  resetPass: boolean,
-  success: boolean,
-  withdraw: boolean,
-  fiat: boolean,
+  register: boolean;
+  registerCancel: boolean;
+  signIn: boolean;
+  deposit: boolean;
+  confirm: boolean;
+  error: boolean;
+  forgotPass: boolean;
+  resetPass: boolean;
+  success: boolean;
+  withdraw: boolean;
+  fiat: boolean;
 }
 
 interface IModalsUrls extends Record<string, any> {
-  register: string,
-  signIn: string,
-  success: string,
-  error: string,
-  confirm: string,
-  forgotPass: string,
-  resetPass: string,
+  register: string;
+  signIn: string;
+  success: string;
+  error: string;
+  confirm: string;
+  forgotPass: string;
+  resetPass: string;
 }
 
 interface ILayoutStoreState extends Record<string, any>{
-  isUserNavOpen: boolean,
-  isDrawerOpen: boolean,
-  isCurrencyNavOpen: boolean,
-  isDrawerCompact: boolean,
-  showCookiePopup: boolean,
-  modals: IModals,
-  modalsUrl: IModalsUrls,
-  lastNotificationTime: number,
+  isUserNavOpen: boolean;
+  isDrawerOpen: boolean;
+  isCurrencyNavOpen: boolean;
+  isDrawerCompact: boolean;
+  showCookiePopup: boolean;
+  modals: IModals;
+  modalsUrl: IModalsUrls;
+  lastNotificationTime: number;
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -67,7 +67,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         forgotPass: 'forgot-pass',
         resetPass: 'reset-pass',
       },
-    lastNotificationTime: 0,
+    lastNotificationTime: 0
   }),
 
   actions: {
