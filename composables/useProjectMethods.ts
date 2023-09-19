@@ -55,11 +55,6 @@ export const useProjectMethods = () => {
     return `/${globalStore.currentLocale?.code.toLowerCase()}${!path || path === '/' ? '' : path}`;
   };
 
-  const isWebPSupported = () :boolean => {
-    const video = document.createElement('video');
-    return video.canPlayType('video/webm; codecs="vp8, vorbis"') === 'probably';
-  }
-
   const createSrcSet = (src: string) => {
     const webpSrc = src.replace(/\.\w+$/, '.webp');
     return `${webpSrc}, ${src}`;
