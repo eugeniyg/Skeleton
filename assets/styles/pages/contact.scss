@@ -9,18 +9,22 @@
     grid-column-gap: rem(56px);
   }
 
-  .img {
+  .picture {
     display: block;
-    width: var(--width, #{rem(200px)});
-    height: var(--height, auto);
-    margin-bottom: var(--margin-bottom, #{rem(40px)});
     grid-area: img;
     justify-self: center;
 
-    @include media(l) {
-      --width: #{rem(348px)};
-      align-self: center;
-      --margin-bottom: 0;
+    img {
+      width: var(--width, #{rem(200px)});
+      height: var(--height, auto);
+      margin-bottom: var(--margin-bottom, #{rem(40px)});
+
+
+      @include media(l) {
+        align-self: center;
+        --width: #{rem(348px)};
+        --margin-bottom: 0;
+      }
     }
   }
 

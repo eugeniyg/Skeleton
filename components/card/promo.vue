@@ -1,14 +1,14 @@
 <template>
   <div class="promo-card">
     <picture>
-      <source :media="'(max-width: 1279px)'" :srcset="props.images.mobile.backgroundImage" />
-      <source :media="'(max-width: 2264px)'" :srcset="props.images.desktop.backgroundImage" />
+      <source :media="'(max-width: 1279px)'" :srcset="createSrcSet(props.images.mobile.backgroundImage)" />
+      <source :media="'(max-width: 2264px)'" :srcset="createSrcSet(props.images.desktop.backgroundImage)" />
       <img class="back" :src="props.images.mobile.backgroundImage" alt=""/>
     </picture>
 
     <picture>
-      <source :media="'(max-width: 1279px)'" :srcset="props.images.mobile.faceImage" />
-      <source :media="'(max-width: 2264px)'" :srcset="props.images.desktop.faceImage" />
+      <source :media="'(max-width: 1279px)'" :srcset="createSrcSet(props.images.mobile.faceImage)" />
+      <source :media="'(max-width: 2264px)'" :srcset="createSrcSet(props.images.desktop.faceImage)" />
       <img class="front" :src="props.images.mobile.faceImage" alt=""/>
     </picture>
 
@@ -55,6 +55,7 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal, openDepositModal } = useLayoutStore();
+  const { createSrcSet } = useProjectMethods()
 
   const clickButton = (url:string):void => {
     if (url) {

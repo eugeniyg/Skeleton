@@ -1,4 +1,5 @@
 .cta-menu-item {
+  position: relative;
   height: 40px;
   background-size: rem(208px) rem(40px);
   background-position-x: left;
@@ -9,8 +10,28 @@
   align-items: center;
   padding: var(--item-padding, #{rem(8px)} #{rem(16px)} #{rem(8px)} #{rem(48px)});
   align-self: stretch;
-  border-radius: 12px;
+  border-radius: 8px;
   margin-bottom: rem(4px);
+  overflow: hidden;
+
+  .picture {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+
+
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top left;
+    }
+  }
 
   @include use-hover {
     &:hover {

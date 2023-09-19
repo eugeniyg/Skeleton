@@ -94,17 +94,19 @@
       filter: blur(2px)
     }
 
-    &-img {
-      position: relative;
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
-      transition: all .2s ease-in-out;
-      z-index: 1;
-      height: var(--img-height, #{rem(128px)});
+    .picture {
+      img {
+        position: relative;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        transition: all .2s ease-in-out;
+        z-index: 1;
+        height: var(--img-height, #{rem(128px)});
 
-      @include media(md) {
-        --img-height: #{rem(192px)}
+        @include media(md) {
+          --img-height: #{rem(192px)}
+        }
       }
     }
 
