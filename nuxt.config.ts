@@ -27,7 +27,8 @@ export default defineNuxtConfig({
     '@platform/frontend-core',
     '@nuxt/content',
     'dayjs-nuxt',
-    'nuxt-lazy-load'
+    'nuxt-lazy-load',
+    '@skeleton/modules/optimize-images'
   ],
   dayjs: {
     locales: ['en-ca', 'de', 'fr', 'es', 'pt', 'pt-br', 'ru', 'tr', 'hi', 'fa', 'uz', 'kk', 'es-mx', 'it', 'et', 'fi',
