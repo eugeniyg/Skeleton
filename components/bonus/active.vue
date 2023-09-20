@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IPlayerBonus, IPlayerFreeSpin } from "@platform/frontend-core";
+  import { IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
   import { IProfileBonuses } from '~/types';
 
   const props = defineProps<{

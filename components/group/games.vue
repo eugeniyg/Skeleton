@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IGame, IPaginationMeta } from '@platform/frontend-core';
+  import { IGame, IPaginationMeta } from '@skeleton/core/types';
   import { storeToRefs } from "pinia";
 
   const props = defineProps({
@@ -121,7 +121,7 @@
   };
 
   const loadMore = ref();
-  const { initObserver } = useCoreMethods();
+  const { initObserver } = useProjectMethods();
 
   const emit = defineEmits(['initialLoad']);
   onMounted(async () => {

@@ -72,7 +72,7 @@
     limitsContent, defaultLimitsContent, isAdvancedModeEnabled,
   } = storeToRefs(limitsStore);
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const { getLocalesContentData, getContent } = useProjectMethods();
+  const { getLocalesContentData, getContent, setPageSeo } = useProjectMethods();
 
   const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
     useAsyncData('currentLocaleProfileLimitsContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'limits').findOne()),
@@ -86,6 +86,7 @@
   const defaultLocaleLimitsContent: Maybe<IProfileLimits> = defaultLocaleData;
 
   setLimitsContent(currentLocaleLimitsContent, defaultLocaleLimitsContent);
+  setPageSeo(currentLocaleLimitsContent?.seo);
 
   interface IEditProps {
     limitId: string | undefined,

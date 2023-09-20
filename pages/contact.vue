@@ -96,7 +96,7 @@
   const contactUsFormRules = getFormRules(contactUsRules);
   const { serverFormErrors, v$, setError } = useFormValidation(contactUsFormRules, contactFormData);
 
-  const { sendContactMessage } = useCoreNotificationApi();
+  const { sendContactMessage } = useCoreGlobalApi();
   const submitContactForm = async ():Promise<void> => {
     if (v$.value.$invalid) return;
 

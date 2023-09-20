@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IGame } from '@platform/frontend-core';
+  import { IGame } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
 
   const props = defineProps<{

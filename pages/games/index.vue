@@ -64,18 +64,18 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ICollection,
-  IGame,
-  IGameProvider,
-  IGamesResponse,
-  IPaginationMeta
-} from '@platform/frontend-core';
-import {storeToRefs} from 'pinia';
-import debounce from 'lodash/debounce';
-import { IGamesPage } from '~/types';
+  import {
+    ICollection,
+    IGame,
+    IGameProvider,
+    IGamesResponse,
+    IPaginationMeta
+  } from '@skeleton/core/types';
+  import {storeToRefs} from 'pinia';
+  import debounce from 'lodash/debounce';
+  import { IGamesPage } from '~/types';
 
-definePageMeta({
+  definePageMeta({
     middleware: 'games-collection',
   });
 
