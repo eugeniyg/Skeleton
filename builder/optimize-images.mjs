@@ -1,12 +1,14 @@
 import imagemin from 'imagemin';
-import imageminJpegtran from 'imagemin-jpegtran';
 import imageminWebp from 'imagemin-webp';
 
 (async () => {
-  await imagemin(['../public/img/uploads/*.{jpg,png}'], {
-    destination: '../public/img/uploads',
+  const destination = (process.env.NODE_ENV === 'development') ?
+      '../public/img/uploads/' :
+      '../.output/public/img/uploads/';
+
+  await imagemin(['../public/img/uploads/*.png'], {
+    destination,
     plugins: [
-      imageminJpegtran(),
       imageminWebp({ quality: 60 })
     ],
   })
