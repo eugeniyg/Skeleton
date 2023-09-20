@@ -55,6 +55,11 @@ export const useProjectMethods = () => {
     return `/${globalStore.currentLocale?.code.toLowerCase()}${!path || path === '/' ? '' : path}`;
   };
 
+  const createSrcSet = (src: string):string => {
+    const webpSrc = src.replace(/\.\w+$/, '.webp');
+    return `${webpSrc}, ${src}`;
+  };
+
   const isHomePage = ():boolean => {
     const route = useRoute();
     return route.name === 'index' || route.name === 'locale-index';
@@ -205,6 +210,7 @@ export const useProjectMethods = () => {
     sortByAlphabet,
     getContent,
     getEquivalentAccount,
-    getLocalesContentData
+    getLocalesContentData,
+    createSrcSet,
   };
 };

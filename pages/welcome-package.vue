@@ -18,11 +18,11 @@
           </div>
         </div>
 
-        <img
+        <atomic-image
           v-if="getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.image')"
-          class="img"
           :src="getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.image')"
         />
+
       </div>
 
       <atomic-divider />
@@ -38,7 +38,8 @@
           >
             <div class="title">{{ card.title }}</div>
             <div class="sub-title">{{ card.topLabel }}</div>
-            <img class="img" :src="card.image" />
+
+            <atomic-image :src="card.image"/>
 
             <div class="actions">
               <button-base
@@ -78,7 +79,8 @@
           >
             <div class="title">{{ card.subtitle }}</div>
             <div class="sub-title">{{ card.title }}</div>
-            <img class="img" :src="card.image" />
+
+            <atomic-image :src="card.image" alt=""/>
 
             <div class="actions">
               <button-base
