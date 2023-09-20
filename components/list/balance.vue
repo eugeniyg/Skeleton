@@ -37,7 +37,6 @@
     </div>
 
     <div class="list-balance__items" v-else-if="selected === 'balance'">
-
       <div class="list-balance__item">
         <atomic-icon id="wallet" class="list-balance__icon"/>
         <div class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.real') }}</div>
@@ -52,12 +51,42 @@
       <div class="list-balance__item">
         <atomic-icon id="bonus" class="list-balance__icon"/>
         <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.bonus') }}</span>
-        <span class="list-balance__value">{{ activeAccountBalances.bonus }}</span>
-        <img
-          class="currency-icon"
-          v-if="activeAccountBalances.currencyIcon"
-          :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`" alt=""
-        />
+
+        <template v-if="currentActiveBonus">
+          <div class="list-balance__bonus-wager">
+            <span v-if="currentActiveBonus.wagerCasino">
+              <atomic-icon id="cherry" /> x{{ currentActiveBonus.wagerCasino }}
+            </span>
+
+            <span v-if="currentActiveBonus.wagerSportsbook">
+              <atomic-icon id="sport" /> x{{ currentActiveBonus.wagerSportsbook }}
+            </span>
+          </div>
+
+          <div class="list-balance__bonus-progress">
+            <div class="list-balance__bonus-progress-bar">
+              <div
+                class="list-balance__bonus-progress-filled"
+                :data-progress="`${currentActiveBonus.currentWagerPercentage}%`"
+                :style="{'--progress': `${currentActiveBonus.currentWagerPercentage}%`}"
+              />
+            </div>
+
+            <div class="list-balance__bonus-progress-info">
+              <span>Wagering Bonuses:</span>
+              <span>{{ activeAccountBalances.bonus }} {{}}</span>
+            </div>
+          </div>
+        </template>
+
+        <template v-else>
+          <span class="list-balance__value">{{ activeAccountBalances.bonus }}</span>
+          <img
+            class="currency-icon"
+            v-if="activeAccountBalances.currencyIcon"
+            :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`" alt=""
+          />
+        </template>
       </div>
 
       <div class="list-balance__item">
@@ -117,6 +146,9 @@
     getEquivalentAccount,
     getContent
   } = useProjectMethods();
+
+  const bonusStore = useBonusStore();
+  const { currentActiveBonus } = storeToRefs(bonusStore);
 
   const emit = defineEmits(['close', 'changeActiveAccount']);
 
@@ -194,7 +226,8 @@
       real = `${realBalance.currencySymbol} ${realBalance.balance}`
 
       const bonusBalance = getEquivalentAccount(activeAccount.value?.bonusBalance || 0, activeAccount.value?.currency);
-      bonus = `${bonusBalance.currencySymbol} ${bonusBalance.balance}`
+      const wageredBalance = getEquivalentAccount(currentActiveBonus.value.currentWagerAmount || 0, activeAccount.value?.currency);
+      bonus = `${bonusBalance.balance}`
 
       const withdrawalBalance = getEquivalentAccount(activeAccount.value?.withdrawalBalance || 0, activeAccount.value?.currency);
       withdrawal = `${withdrawalBalance.currencySymbol} ${withdrawalBalance.balance}`

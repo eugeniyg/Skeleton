@@ -35,6 +35,10 @@ export const useBonusStore = defineStore('bonusStore', {
     activePlayerFreeSpins(state):IPlayerFreeSpin[] {
       const walletStore = useWalletStore();
       return state.playerFreeSpins.filter((playerFreeSpin) => walletStore.activeAccount?.currency === playerFreeSpin.currency);
+    },
+
+    currentActiveBonus(): Maybe<IPlayerBonus> {
+      return this.activePlayerBonuses.find((bonus) => bonus.status === 2);
     }
   },
 
