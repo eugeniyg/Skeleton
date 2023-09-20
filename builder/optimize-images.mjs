@@ -13,5 +13,5 @@ import imageminWebp from 'imagemin-webp';
     ],
   })
 
-  console.log('Done!');
+  console.log('webp images are created!');
 })();
