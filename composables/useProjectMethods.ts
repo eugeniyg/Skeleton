@@ -55,7 +55,7 @@ export const useProjectMethods = () => {
     return `/${globalStore.currentLocale?.code.toLowerCase()}${!path || path === '/' ? '' : path}`;
   };
 
-  const createSrcSet = (src: string) => {
+  const createSrcSet = (src: string):string => {
     const webpSrc = src.replace(/\.\w+$/, '.webp');
     return `${webpSrc}, ${src}`;
   };
