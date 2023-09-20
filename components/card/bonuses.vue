@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IPlayerFreeSpin, IGame, IPlayerBonus } from "@platform/frontend-core";
+  import { IPlayerFreeSpin, IGame, IPlayerBonus } from "@skeleton/core/types";
   import {IProfileBonuses} from '~/types';
 
   const props = defineProps<{

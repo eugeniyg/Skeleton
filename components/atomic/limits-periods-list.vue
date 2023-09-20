@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IPlayerLimit } from '@platform/frontend-core';
+  import { IPlayerLimit } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
 
   const props = defineProps<{

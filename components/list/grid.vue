@@ -22,7 +22,7 @@
   const emit = defineEmits(['loadMore']);
 
   const loadMore = ref();
-  const { initObserver } = useCoreMethods();
+  const { initObserver } = useProjectMethods();
 
   const observerLoadMore = ():void => {
     if (props.meta.totalPages > props.meta.page) emit('loadMore');

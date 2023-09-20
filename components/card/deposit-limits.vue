@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IUpdateLimit } from '@platform/frontend-core';
+  import { IUpdateLimit } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
 
   const emit = defineEmits([

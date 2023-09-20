@@ -50,7 +50,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { PropType } from '@vue/runtime-core';
-  import { IGameImages, IGameProvider } from '@platform/frontend-core';
+  import { IGameImages, IGameProvider } from '@skeleton/core/types';
   import { IGameTag } from '~/types';
 
   const props = defineProps({

@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IPaginationMeta, ISpinHistory } from '@platform/frontend-core';
+  import { IPaginationMeta, ISpinHistory } from '@skeleton/core/types';
   import { ISpinsHistory } from '~/types';
 
   const props = defineProps<{
