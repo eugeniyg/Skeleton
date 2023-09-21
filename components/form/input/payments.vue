@@ -21,7 +21,8 @@
         :class="{'is-selected': item.method === props.activeMethod.method }"
         @click="select(item)"
       >
-        <img v-if="defaultLogoUrl() || item.logo" class="mask" :src="defaultLogoUrl() || item.logo" />
+        <img v-if="item.method === cashAgentMethodKey" src="/img/methods-icons/cash-agent.svg" alt=""/>
+        <img v-else-if="defaultLogoUrl() || item.logo" class="mask" :src="defaultLogoUrl() || item.logo" alt=""/>
       </div>
     </div>
     <input type="hidden" name="payments" :value="props.activeMethod.method" />
@@ -45,6 +46,7 @@
 
   const emit = defineEmits(['update:activeMethod']);
   const isOpen = ref<boolean>(false);
+  const cashAgentMethodKey:string = '0x.withdrawal.cash_agent';
 
   const classes = computed(() => [
     { 'is-open': isOpen.value },
