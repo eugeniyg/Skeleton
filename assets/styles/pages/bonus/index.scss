@@ -41,13 +41,18 @@
       --bg: var(--blue-900);
     }
 
-    .img {
+    .picture {
       width: var(--width, #{rem(160px)});
       height: auto;
       display: block;
       margin: 0 auto;
       position: relative;
       z-index: 1;
+
+      img {
+        width: 100%;
+        height: auto;
+      }
     }
 
     @include media(xs) {
