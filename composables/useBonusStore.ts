@@ -5,7 +5,7 @@ import {
   IWebSocketResponse,
   IGame,
   IPlayerFreeSpin
-} from '@platform/frontend-core';
+} from '@skeleton/core/types';
 
 interface IBonusState {
   bonusCodeSubscription: any,

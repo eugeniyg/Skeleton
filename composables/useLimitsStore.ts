@@ -3,7 +3,7 @@ import {
   ICreateLimit,
   ICurrency,
   IPlayerLimit
-} from '@platform/frontend-core';
+} from '@skeleton/core/types';
 import { IProfileLimits } from "~/types";
 
 interface ILimitsModal {

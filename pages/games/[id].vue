@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IGame } from '@platform/frontend-core';
+  import { IGame } from '@skeleton/core/types';
   import { IGamePage } from '~/types';
 
   const route = useRoute();

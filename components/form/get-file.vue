@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ISecurityFile } from '@platform/frontend-core';
+  import { ISecurityFile } from '@skeleton/core/types';
   import { IProfileSecurity } from '~/types';
 
   const props = defineProps<{

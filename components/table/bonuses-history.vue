@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IPaginationMeta, IPlayerBonus, IPlayerFreeSpin } from '@platform/frontend-core';
+  import { IPaginationMeta, IPlayerBonus, IPlayerFreeSpin } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
   import { IBonusesHistory } from '~/types';
 

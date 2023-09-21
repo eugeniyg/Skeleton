@@ -61,7 +61,7 @@
 
 <script setup lang="ts">
   import parser from 'ua-parser-js';
-  import { IPaginationMeta, ISession } from '@platform/frontend-core';
+  import { IPaginationMeta, ISession } from '@skeleton/core/types';
   import { ISessionsHistory } from '~/types';
 
   const props = defineProps<{
@@ -85,7 +85,7 @@
     loading.value = false;
   };
 
-  const { getCurrentSession } = useCoreAuthStore();
+  const { getCurrentSession } = useProfileStore();
   const currentSession = getCurrentSession();
   const sessionStatus = (session: ISession): string => {
     if (session.closedAt) return 'closed';
