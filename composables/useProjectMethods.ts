@@ -79,7 +79,7 @@ export const useProjectMethods = () => {
   const getFormRules = (fieldsRules:any):any => {
     const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
     const messages = { ...fieldsSettings?.validationMessages, ...defaultLocaleFieldsSettings?.validationMessages };
-    const { createFormRules } = useCoreMethods();
+    const { createFormRules } = useProjectMethods();
     return createFormRules(fieldsRules, projectRules, messages);
   };
 
