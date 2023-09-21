@@ -9,6 +9,9 @@ export interface IPlayerBonus extends Record<string, any>{
   bonusType: number;
   currency: string;
   currentWagerPercentage: number;
+  currentWagerCasinoAmount: number;
+  currentWagerSportsbookAmount: number;
+  currentWagerAmount: number;
   wagerCasino: number;
   wagerSportsbook: number;
   wageringExpiredAt: string|null;
