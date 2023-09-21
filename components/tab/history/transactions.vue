@@ -63,7 +63,7 @@
     IInvoice,
     IInvoicesRequestOptions,
     IPaginationMeta,
-  } from '@platform/frontend-core';
+  } from '@skeleton/core/types';
   import { ITransactionsHistory } from '~/types';
 
   const props = defineProps<{

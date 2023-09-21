@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IGameImages } from '@platform/frontend-core';
+  import { IGameImages } from '@skeleton/core/types';
 
   const props = defineProps<{
     nickname: Maybe<string>,

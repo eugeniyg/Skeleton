@@ -25,7 +25,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   nuxtApp.hook('app:mounted', async () => {
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
-    const { getSessionToken } = useCoreAuthStore();
+    const { getSessionToken } = useProfileStore();
     const sessionToken = getSessionToken();
 
     if (sessionToken) {

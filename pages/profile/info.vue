@@ -92,7 +92,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ICountry } from '@platform/frontend-core';
+  import { ICountry } from '@skeleton/core/types';
   import { IProfileInfo } from '~/types';
 
   const globalStore = useGlobalStore();

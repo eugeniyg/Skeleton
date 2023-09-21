@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IGame } from '@platform/frontend-core';
+  import { IGame } from '@skeleton/core/types';
 
   const props = defineProps<{
     gameInfo: IGame,
