@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
   import { ITransactionsHistory } from '~/types';
-  import { IInvoice } from "@platform/frontend-core";
+  import { IInvoice } from '@skeleton/core/types';
 
   const props = defineProps<{
     invoices: IInvoice[];
