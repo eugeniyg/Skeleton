@@ -1,8 +1,18 @@
 <template>
   <div class="card-home">
     <div class="content">
-      <div v-if="props.images?.backgroundImage" class="back-bg" :style="{backgroundImage: `url(${props.images.backgroundImage})`}"></div>
-      <div v-if="props.images?.faceImage" class="front-bg" :style="{backgroundImage: `url(${props.images.faceImage})`}"></div>
+      <div
+        v-if="props.images?.backgroundImage"
+        class="back-bg"
+      >
+        <atomic-image :src="props.images.backgroundImage"/>
+      </div>
+      <div
+        v-if="props.images?.faceImage"
+        class="front-bg"
+      >
+        <atomic-image :src="props.images.faceImage"/>
+      </div>
     </div>
 
     <div class="info">

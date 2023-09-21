@@ -83,6 +83,8 @@ html, body {
   overscroll-behavior: none;
 }
 
+img:not([src]){ visibility:hidden; }
+
 body {
   font-family: 'Rubik', sans-serif;
   margin: 0;
