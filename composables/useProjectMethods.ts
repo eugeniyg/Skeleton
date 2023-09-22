@@ -78,7 +78,7 @@ export const useProjectMethods = () => {
 
   const getFormRules = (fieldsRules:any):any => {
     const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
-    const messages = { ...fieldsSettings?.validationMessages, ...defaultLocaleFieldsSettings?.validationMessages };
+    const messages = { ...defaultLocaleFieldsSettings?.validationMessages, ...fieldsSettings?.validationMessages,  };
     const { createFormRules } = useProjectMethods();
     return createFormRules(fieldsRules, projectRules, messages);
   };
@@ -103,7 +103,9 @@ export const useProjectMethods = () => {
     return `/${globalStore.currentLocale?.code.toLowerCase()}${!path || path === '/' ? '' : path}`;
   };
 
-  const createSrcSet = (src: string):string => {
+  const createSrcSet = (src?: string):string => {
+    if (!src) return '';
+
     const webpSrc = src.replace(/\.\w+$/, '.webp');
     return `${webpSrc}, ${src}`;
   };

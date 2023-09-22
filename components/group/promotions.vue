@@ -1,9 +1,9 @@
 <template>
-  <div v-if="globalComponentsContent?.promotions || defaultLocaleGlobalComponentsContent?.promotions" class="group-promotions">
-    <atomic-icon :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'promotions.icon')"/>
+  <div v-if="promotionsList.length" class="group-promotions">
+    <atomic-icon :id="globalComponentsContent?.promotions?.icon"/>
 
     <h2 class="title">
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'promotions.label') }}
+      {{ globalComponentsContent?.promotions?.label }}
     </h2>
 
     <div class="group-promotions__list">
@@ -46,9 +46,9 @@
   import { storeToRefs } from 'pinia';
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
+  const { globalComponentsContent } = globalStore;
 
-  const { localizePath, getContent } = useProjectMethods();
+  const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal, openDepositModal } = useLayoutStore();
@@ -68,8 +68,7 @@
   };
 
   const promotionsList = computed(() => {
-    if (globalComponentsContent?.promotions?.items?.length) return globalComponentsContent.promotions.items;
-    return defaultLocaleGlobalComponentsContent?.promotions?.items || [];
+    return globalComponentsContent?.promotions?.items?.length ? globalComponentsContent.promotions.items : [];
   });
 
   onMounted(() => {

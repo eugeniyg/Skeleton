@@ -9,7 +9,7 @@
   const props = defineProps<{
     url: string,
     label: string,
-    backgroundImage: string,
+    backgroundImage?: string,
   }>()
 </script>
 

@@ -15,7 +15,7 @@
           @click="emit('clickCategory', identity)"
           :key="id"
         >
-          <atomic-icon v-if="gameCategoriesObj[identity]?.icon" :id="gameCategoriesObj[identity].icon"/>
+          <atomic-icon :id="gameCategoriesObj[identity]?.icon"/>
           <span>{{ gameCategoriesObj[identity]?.label || name }}</span>
         </span>
 
@@ -46,7 +46,7 @@
               }"
               @click="emit('clickCategory', identity)"
             >
-              <atomic-icon v-if="gameCategoriesObj[identity]?.icon" :id="gameCategoriesObj[identity].icon"/>
+              <atomic-icon :id="gameCategoriesObj[identity]?.icon"/>
               <span>{{ gameCategoriesObj[identity]?.label || name }}</span>
               <atomic-icon v-if="$route.query.category === identity" id="check"/>
             </span>

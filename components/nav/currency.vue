@@ -47,10 +47,9 @@
   import { storeToRefs } from 'pinia';
   import { ICurrency } from '@skeleton/core/types';
 
-  const props = defineProps({
-    tabs: Array,
-    default: () => [],
-  });
+  const props = defineProps<{
+    tabs: { id: string; title: string; }[];
+  }>();
 
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();

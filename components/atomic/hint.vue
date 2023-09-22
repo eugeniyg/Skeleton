@@ -1,6 +1,6 @@
 <template>
   <div class="hint" :class="classes" v-show="props.message">
-    <atomic-icon v-if="emailIcon" :id="emailIcon"/>
+    <atomic-icon :id="emailIcon"/>
     {{ props.message }}
   </div>
 </template>

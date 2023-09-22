@@ -43,8 +43,7 @@
 </template>
 
 <script setup lang="ts">
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const { getContent } = useProjectMethods();
+  const { globalComponentsContent } = useGlobalStore();
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
@@ -67,8 +66,7 @@
   };
 
   const gamesList = computed(() => {
-    if (globalComponentsContent?.turbogames?.items?.length) return globalComponentsContent.turbogames.items;
-    return defaultLocaleGlobalComponentsContent?.turbogames?.items || [];
+    return globalComponentsContent?.turbogames?.items?.length ? globalComponentsContent.turbogames.items : [];
   });
 
   onMounted(() => {
