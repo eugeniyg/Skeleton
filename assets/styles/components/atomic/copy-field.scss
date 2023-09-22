@@ -3,6 +3,7 @@
   display: flex;
   align-items: center;
   width: 100%;
+  height: rem(32px);
 
   @include media(sm) {
     width: auto;
@@ -20,9 +21,9 @@
     @include font($body-2);
     color: var(--text-primary);
     padding: rem(8px) rem(16px);
-    background-color: var(--bg, var(--field-01));
-    border-top-left-radius: 100px;
-    border-bottom-left-radius: 100px;
+    background-color: var(--field-bg);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
     @extend %text-elipsis;
 
     @include media(sm) {

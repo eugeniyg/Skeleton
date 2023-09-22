@@ -7,7 +7,7 @@
       <div v-for="(th, thIndex) in headTitles" :key="thIndex" class="th">{{ th }}</div>
     </div>
 
-    <div v-for="invoice in props.invoices" :key="invoice.id" class="row">
+    <div v-for="invoice in props.invoices" :key="invoice.id" class="row td-row">
       <div class="td">{{ dayjs(invoice.createdAt).format('DD.MM.YYYY, HH:mm') }}</div>
       <div class="td">{{ getInvoiceTypeLabel(invoice.invoiceType) }}</div>
       <div class="td">{{ invoice.paymentMethod }}</div>
