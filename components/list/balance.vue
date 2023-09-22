@@ -73,8 +73,8 @@
             </div>
 
             <div class="list-balance__bonus-progress-info">
-              <span>Wagering Bonuses:</span>
-              <span>{{ activeAccountBalances.bonus }} dsfhfghfghg</span>
+              <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.wageringLabel') }}</span>
+              <span>{{ activeAccountBalances.bonus }}</span>
             </div>
           </div>
         </template>
@@ -225,9 +225,14 @@
       const realBalance = getEquivalentAccount((activeAccount.value?.realBalance || 0) + (activeAccount.value?.lockedBalance || 0), activeAccount.value?.currency);
       real = `${realBalance.currencySymbol} ${realBalance.balance}`
 
-      const bonusBalance = getEquivalentAccount(currentActiveBonus.value?.amount || 0, currentActiveBonus.value?.currency);
-      const wageredBalance = getEquivalentAccount(currentActiveBonus.value?.currentWagerAmount || 0, currentActiveBonus.value?.currency);
-      bonus = `${wageredBalance.balance} ${wageredBalance.currency} of ${bonusBalance.balance} ${bonusBalance.currency}`
+      if (currentActiveBonus.value) {
+        const bonusBalance = getEquivalentAccount(currentActiveBonus.value?.amount || 0, currentActiveBonus.value?.currency);
+        const wageredBalance = getEquivalentAccount(currentActiveBonus.value?.currentWagerAmount || 0, currentActiveBonus.value?.currency);
+        bonus = `${wageredBalance.balance} ${wageredBalance.currency} of ${bonusBalance.balance} ${bonusBalance.currency}`
+      } else {
+        const bonusBalance = getEquivalentAccount((activeAccount.value?.bonusBalance || 0), activeAccount.value?.currency);
+        bonus = `${bonusBalance.currencySymbol} ${bonusBalance.balance}`
+      }
 
       const withdrawalBalance = getEquivalentAccount(activeAccount.value?.withdrawalBalance || 0, activeAccount.value?.currency);
       withdrawal = `${withdrawalBalance.currencySymbol} ${withdrawalBalance.balance}`
@@ -235,9 +240,14 @@
       const realBalance = formatBalance(activeAccount.value?.currency, (activeAccount.value?.realBalance || 0) + (activeAccount.value?.lockedBalance || 0));
       real = realBalance.amount
 
-      const bonusBalance = formatBalance(currentActiveBonus.value?.currency, currentActiveBonus.value?.amount);
-      const wageredBalance = formatBalance(currentActiveBonus.value?.currency, currentActiveBonus.value?.currentWagerAmount);
-      bonus = `${wageredBalance.amount} ${wageredBalance.currency} of ${bonusBalance.amount} ${bonusBalance.currency}`
+      if (currentActiveBonus.value) {
+        const bonusBalance = formatBalance(currentActiveBonus.value?.currency, currentActiveBonus.value?.amount);
+        const wageredBalance = formatBalance(currentActiveBonus.value?.currency, currentActiveBonus.value?.currentWagerAmount);
+        bonus = `${wageredBalance.amount} ${wageredBalance.currency} of ${bonusBalance.amount} ${bonusBalance.currency}`
+      } else {
+        const bonusBalance = formatBalance(activeAccount.value?.currency, activeAccount.value?.bonusBalance);
+        bonus = bonusBalance.amount
+      }
 
       const withdrawalBalance = formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance);
       withdrawal = withdrawalBalance.amount

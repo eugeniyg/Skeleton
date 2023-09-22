@@ -35,6 +35,7 @@
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
   const { formatBalance } = useProjectMethods();
+  const { getPlayerBonuses } = useBonusStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
   const { equivalentCurrency } = storeToRefs(globalStore);
 
@@ -43,6 +44,10 @@
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
 
   const toggleSelect = () => {
+    if (!isShow.value) {
+      getPlayerBonuses();
+    }
+
     isShow.value = !isShow.value;
   };
 
