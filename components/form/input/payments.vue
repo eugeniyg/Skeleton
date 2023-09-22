@@ -6,9 +6,16 @@
   >
     <div v-if="props.items.length" class="selected" @click="open">
       <img
-        v-if="defaultLogoUrl() || props.activeMethod.logo"
+        v-if="props.activeMethod.method === cashAgentMethodKey"
+        src="/img/methods-icons/cash-agent.svg"
         class="mask"
+        alt=""
+      />
+      <img v-else
+        v-if="defaultLogoUrl() || props.activeMethod.logo"
         :src="defaultLogoUrl() || props.activeMethod.logo"
+        class="mask"
+        alt=""
       />
       <atomic-icon id="arrow_expand-close"/>
     </div>
