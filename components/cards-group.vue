@@ -1,6 +1,6 @@
 <template>
   <div :class="classes">
-    <atomic-icon v-if="props.titleIcon" :id="props.titleIcon"/>
+    <atomic-icon :id="props.titleIcon"/>
 
     <div v-if="props.name && props.subTitle" class="titles">
       <h2 class="title">{{ props.name }}</h2>
