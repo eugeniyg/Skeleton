@@ -1,5 +1,4 @@
 <template>
-
   <div class="nav-cat-scroll">
     <div class="nav-cat-wrap" ref="viewport">
       <div class="nav-cat">
@@ -110,7 +109,7 @@
   };
 
   onMounted(() => {
-    setTimeout(update, 250);
+    update();
     window.addEventListener('resize', onResize);
   });
 

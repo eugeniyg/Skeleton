@@ -1,19 +1,5 @@
-import { nextTick } from 'vue';
 import { RouterConfig } from '@nuxt/schema';
-import { RouteLocationNormalized, RouteRecordRaw } from 'vue-router';
-import { useNuxtApp } from '#app';
-
-function isDifferentRoute(a:RouteLocationNormalized, b:RouteLocationNormalized) {
-  const samePageComponent = a.matched[0] === b.matched[0];
-  if (!samePageComponent) {
-    return true;
-  }
-
-  if (samePageComponent && JSON.stringify(a.params) !== JSON.stringify(b.params)) {
-    return true;
-  }
-  return false;
-}
+import { RouteRecordRaw } from 'vue-router';
 
 function changeRoute(pagesArray: RouteRecordRaw[]):RouteRecordRaw[] {
   return pagesArray.map((item) => ({
@@ -24,21 +10,6 @@ function changeRoute(pagesArray: RouteRecordRaw[]):RouteRecordRaw[] {
 }
 
 export default <RouterConfig> {
-  scrollBehavior(to, from, savedPosition) {
-    const nuxtApp = useNuxtApp();
-    let position:any = savedPosition || undefined;
-    if (!position && from && to && to.meta.scrollToTop !== false && isDifferentRoute(from, to)) {
-      position = { left: 0, top: 0 };
-    }
-
-    return new Promise((resolve) => {
-      nuxtApp.hooks.hookOnce('page:transition:finish', async () => {
-        await nextTick();
-        resolve(position);
-      });
-    });
-  },
-
   routes: (routes) => {
     const localeRoutes = routes.map((page) => ({
       ...page,
