@@ -6,7 +6,11 @@
 
     <div class="card-cat__sub-title">{{ props.description }}</div>
 
-    <img v-if="props.image" class="card-cat__img" :src="props.image" alt="">
+    <atomic-image
+      v-if="props.image"
+      class="card-cat__img"
+      :src="props.image"
+    />
 
     <button-base
       type="secondary"

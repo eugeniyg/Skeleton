@@ -2,12 +2,13 @@
   <div
     ref="cardBase"
     class="card-base"
-    :style="backgroundImage"
     :class="{ 'hovered': gameHovered }"
     :data-size="cardSize"
     @click="clickGame"
     v-click-outside="hideHover"
   >
+    <img class="card-base__img" :src="src" alt="">
+
     <div v-if="gameBages?.length" class="bages">
       <atomic-bage
         v-for="(bage, bageIndex) in gameBages"
@@ -113,11 +114,11 @@
     }
   };
 
-  const backgroundImage = computed(() => {
+  const src = computed(() => {
     if (props.images?.hasOwnProperty('200x300')) {
-      return `background-image:url(${getImageUrl(props.images, 'vertical')})`;
+      return getImageUrl(props.images, 'vertical');
     }
-    return 'background-image: none';
+    return '';
   });
 
   const gameHovered = ref<boolean>(false);

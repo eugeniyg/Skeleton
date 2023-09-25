@@ -1,6 +1,6 @@
 <template>
   <nuxt-link class="card-latest-winners" :to="gameUrl">
-    <div class="img" :style="backgroundImage"></div>
+    <img class="card-latest-winners__img" :src="src" alt="">
     <div class="title">{{ props.nickname || 'Unknown' }}</div>
     <div class="sub-title">{{ props.gameName }}</div>
     <div class="items">
@@ -37,10 +37,10 @@
 
   const formatedSum = computed(() => formatBalance(props.currency, props.resultBalance));
 
-  const backgroundImage = computed(() => {
+  const src = computed(() => {
     if (props.gameImages.hasOwnProperty('200x200')) {
-      return `background-image:url(${getImageUrl(props.gameImages, 'square')})`;
-    } return 'background-image: none';
+      return getImageUrl(props.gameImages, 'square');
+    } return '';
   });
 </script>
 
