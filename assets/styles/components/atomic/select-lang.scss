@@ -52,6 +52,7 @@
     --items-visibility: visible;
     --items-opacity: 1;
     --pointer-events: all;
+    --items-display: block;
   }
 
   .item {
@@ -98,6 +99,7 @@
     right: 0;
     left: 0;
     pointer-events: var(--pointer-events, none);
+    display: var(--items-display, none);
 
     .is-compact & {
       @include media(l) {
