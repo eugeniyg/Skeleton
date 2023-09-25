@@ -65,8 +65,8 @@
 
   .security-code {
     position: sticky;
-    left: rem(8px);
-    right: rem(8px);
+    left: 0;
+    right: 0;
     display: flex;
     flex-wrap: wrap;
     width: calc(100vw - #{rem(32px)});
