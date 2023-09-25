@@ -252,7 +252,7 @@ export const useGlobalStore = defineStore('globalStore', {
       }
 
       if (defaultLocaleData) {
-        const formattedCurrentLocaleContent: IGlobalContent = defaultLocaleData.reduce((finalContentObj:any, currentContent:any) => {
+        const formattedDefaultLocaleContent: IGlobalContent = defaultLocaleData.reduce((finalContentObj:any, currentContent:any) => {
           const splitPath = currentContent._path?.split('/');
           if (!splitPath) return finalContentObj;
 
@@ -261,11 +261,11 @@ export const useGlobalStore = defineStore('globalStore', {
           return { ...finalContentObj, [collection]: { ...finalContentObj[collection], [contentName]: currentContent } }
         }, {})
 
-        this.fieldsSettings = formattedCurrentLocaleContent.fieldsSettings;
-        this.layoutData = formattedCurrentLocaleContent.layout;
-        this.popupsData = formattedCurrentLocaleContent.modals;
-        this.alertsData = formattedCurrentLocaleContent.alerts;
-        this.globalComponentsContent = formattedCurrentLocaleContent.globalComponents;
+        this.defaultLocaleFieldsSettings = formattedDefaultLocaleContent.fieldsSettings;
+        this.defaultLocaleLayoutData = formattedDefaultLocaleContent.layout;
+        this.defaultLocalePopupsData = formattedDefaultLocaleContent.modals;
+        this.defaultLocaleAlertsData = formattedDefaultLocaleContent.alerts;
+        this.defaultLocaleGlobalComponentsContent = formattedDefaultLocaleContent.globalComponents;
       }
     },
 

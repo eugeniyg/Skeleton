@@ -46,11 +46,11 @@ export const useWalletStore = defineStore('walletStore', {
       return [
         {
           id: 'all',
-          title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'currency.tabs.allTab') || 'All',
+          title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'currencyPopup.tabs.allTab') || 'All',
         },
         {
           id: 'crypto',
-          title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'currency.tabs.cryptoTab') || 'Crypto',
+          title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'currencyPopup.tabs.cryptoTab') || 'Crypto',
         },
       ];
     },

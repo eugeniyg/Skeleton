@@ -1,9 +1,9 @@
 <template>
   <div class="group-originals" v-if="isShow">
-    <atomic-icon v-if="cardContent?.icon" :id="cardContent?.icon"/>
+    <atomic-icon :id="globalComponentsContent?.originals?.icon"/>
 
     <h2 class="title">
-      {{ cardContent?.label }}
+      {{ globalComponentsContent?.originals?.label }}
     </h2>
 
     <button-arrows
@@ -49,9 +49,8 @@
   });
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
+  const { globalComponentsContent } = globalStore;
   const { headerCountry } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
@@ -81,7 +80,7 @@
     if (pageMeta.value?.page === pageMeta.value?.totalPages) return;
 
     const gamesResponse = await getFilteredGames({
-      identity: formatIdentity(cardContent.value.items),
+      identity: formatIdentity(globalComponentsContent?.originals?.items || []),
       page: pageMeta.value ? pageMeta.value.page + 1 : 1,
       perPage: 18,
       countries: headerCountry.value ? [headerCountry.value] : undefined
@@ -94,8 +93,6 @@
   const { initObserver } = useProjectMethods();
 
   const emit = defineEmits(['initialLoad']);
-
-  const cardContent = computed(() => getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'originals'))
 
   const formatIdentity = (list: { identity: string }[]) => list?.map((item: { identity: string }):string => item.identity);
 
@@ -110,13 +107,19 @@
         settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
       });
 
-      const gamesResponse = await getFilteredGames({
-        identity: formatIdentity(cardContent.value?.items),
-        perPage: 18,
-        countries: headerCountry.value ? [headerCountry.value] : undefined
-      });
-      games.value = gamesResponse.data;
-      pageMeta.value = gamesResponse.meta;
+      try {
+        const gamesResponse = await getFilteredGames({
+          identity: formatIdentity(globalComponentsContent?.originals?.items || []),
+          perPage: 18,
+          countries: headerCountry.value ? [headerCountry.value] : undefined
+        });
+        games.value = gamesResponse.data;
+        pageMeta.value = gamesResponse.meta;
+      } catch {
+        games.value = [];
+        pageMeta.value = undefined;
+      }
+
       await nextTick();
       emit('initialLoad');
 

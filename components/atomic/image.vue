@@ -1,5 +1,5 @@
 <template>
-  <picture class="picture">
+  <picture v-if="props.src" class="picture">
     <source :srcset="createSrcSet(props.src)">
     <img :src="props.src" alt="">
   </picture>
@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
   const props = defineProps<{
-    src: string,
+    src?: string,
   }>();
 
   const { createSrcSet } = useProjectMethods();

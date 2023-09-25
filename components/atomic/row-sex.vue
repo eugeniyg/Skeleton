@@ -1,6 +1,6 @@
 <template>
   <div class="row-sex">
-    {{ valueName }}<atomic-icon v-if="iconName" :id="iconName"/>
+    {{ valueName }}<atomic-icon :id="iconName"/>
   </div>
 </template>
 
