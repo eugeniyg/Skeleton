@@ -117,7 +117,7 @@
       </div>
     </div>
 
-    <atomic-fiat-toggler/>
+    <atomic-fiat-toggler v-if="activeAccountType === 'crypto'" />
   </div>
 </template>
 
