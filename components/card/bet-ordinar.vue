@@ -57,10 +57,10 @@
 
   const props = defineProps<{
     id: string,
-    betAmount: number,
+    amount: number,
     currency: string,
     createdAt: string,
-    resultBalance: number,
+    payout: number,
     items: IBetItem[],
     status: number,
     coefficient: number,
@@ -84,12 +84,12 @@
 
   const { formatBalance } = useProjectMethods();
   const betSum = computed(() => {
-    const balanceFormat = formatBalance(props.currency, props.betAmount);
+    const balanceFormat = formatBalance(props.currency, props.amount);
     return `${balanceFormat.amount} ${balanceFormat.currency}`;
   });
 
   const resultSum = computed(() => {
-    const balanceFormat = formatBalance(props.currency, props.resultBalance);
+    const balanceFormat = formatBalance(props.currency, props.payout);
     return `${balanceFormat.amount} ${balanceFormat.currency}`;
   });
 </script>
