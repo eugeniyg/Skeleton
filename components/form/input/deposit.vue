@@ -8,7 +8,7 @@
         v-click-outside="closeDropdown"
       >
         <atomic-fiat-display
-          v-if="activeAccountType === 'crypto' && equivalentCurrency"
+          v-if="showEquivalentBalance"
           :showCurrencyPopup="isShow"
         />
         <div class="select__content" v-else>
@@ -36,8 +36,7 @@
   const globalStore = useGlobalStore();
   const { formatBalance } = useProjectMethods();
   const { getPlayerBonuses } = useBonusStore();
-  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
-  const { equivalentCurrency } = storeToRefs(globalStore);
+  const { activeAccount, showEquivalentBalance } = storeToRefs(walletStore);
 
   const isShow = ref<boolean>(false);
 

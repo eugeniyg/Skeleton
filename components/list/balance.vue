@@ -138,13 +138,13 @@
   const {
     accounts,
     activeAccount,
-    activeAccountType
+    activeAccountType,
+    showEquivalentBalance
   } = storeToRefs(walletStore);
 
   const {
     currencies,
     cryptoCurrencies,
-    equivalentCurrency,
     layoutData,
     defaultLocaleLayoutData
   } = storeToRefs(globalStore);
@@ -191,7 +191,7 @@
     const formatList: IDisplayAccount[] = currenciesList.map((currency) => {
       const findAccount = getAccountByCurrency(currency.code);
 
-      if (equivalentCurrency.value && currency.type === 'crypto') {
+      if (showEquivalentBalance.value) {
         const equivalentAccount = getEquivalentAccount(findAccount?.balance || 0, findAccount?.currency || currency.code);
         return {
           nativeCurrency: currency.code,
@@ -202,10 +202,7 @@
       }
 
       const formattedAcc = formatBalance(findAccount?.currency || currency.code, findAccount?.balance || 0);
-      return {
-        nativeCurrency: currency.code, ...formattedAcc,
-        currencySymbol: equivalentCurrency.value ? currency.symbol : undefined
-      };
+      return { nativeCurrency: currency.code, ...formattedAcc };
     });
 
     const withBalanceList: IDisplayAccount[] = [];
@@ -226,7 +223,7 @@
   });
 
   const getCashbackBalance = (amount: number): string => {
-    if (equivalentCurrency.value && activeAccountType.value === 'crypto') {
+    if (showEquivalentBalance.value) {
       const cashbackBalance = getEquivalentAccount(amount, activeAccount.value?.currency);
       return`${cashbackBalance.currencySymbol} ${cashbackBalance.balance}`;
     } else {
@@ -236,7 +233,7 @@
   };
 
   const cashbackBalance = computed<{ balance: string, date?: string, currencyIcon?: string }[]>(() => {
-    const currencyIcon = equivalentCurrency.value ? activeAccount.value?.currency : undefined;
+    const currencyIcon = showEquivalentBalance.value ? activeAccount.value?.currency : undefined;
 
     if (playerCashback.value.length) {
       return playerCashback.value.map((cashback) => {
@@ -255,7 +252,7 @@
     let withdrawal;
     let currencyIcon;
 
-    if (equivalentCurrency.value && activeAccountType.value === 'crypto') {
+    if (showEquivalentBalance.value) {
       currencyIcon = activeAccount.value?.currency;
       const realBalance = getEquivalentAccount((activeAccount.value?.realBalance || 0) + (activeAccount.value?.lockedBalance || 0), activeAccount.value?.currency);
       real = `${realBalance.currencySymbol} ${realBalance.balance}`
