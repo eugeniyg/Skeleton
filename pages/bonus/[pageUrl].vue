@@ -1,7 +1,7 @@
 <template>
   <div class="bonus-page">
     <div class="header" :data-bg="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'backgroundColor')">
-      <img
+      <atomic-image
         v-if="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'image')"
         class="img"
         :src="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'image')"

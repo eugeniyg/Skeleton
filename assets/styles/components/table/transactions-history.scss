@@ -13,20 +13,54 @@
       minmax(rem(128px), 1fr)
       minmax(rem(158px), 1fr)
       minmax(rem(52px), 1fr);
+
+    &:nth-child(2n + 3) {
+      .copy-field__content {
+        background: var(--layer-02);
+      }
+    }
   }
 
   .actions {
     grid-column: 1/7;
     grid-row: 2;
-    padding-bottom: rem(16px);
     width: calc(100vw - #{rem(32px)});
     display: flex;
     justify-content: center;
     position: sticky;
+    gap: 8px;
     left: 0;
     right: 0;
 
     @include media(sm) {
+      width: auto;
+    }
+
+    .btn-get-code,
+    .btn-cancel-payment {
+      margin: rem(8px) 0 rem(16px);
+    }
+  }
+
+  .security-code {
+    position: sticky;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-wrap: wrap;
+    width: calc(100vw - #{rem(32px)});
+    grid-column: 1/7;
+    grid-row: 3;
+    gap: 8px;
+    padding: rem(16px);
+    margin: rem(8px) 0 rem(16px);
+    border: 1px dashed var(--border-03);
+    border-radius: 16px;
+    background-color: var(--bg, var(--layer-03-main));
+
+    @include media(sm) {
+      align-items: center;
+      justify-content: center;
       width: auto;
     }
   }

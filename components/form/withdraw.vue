@@ -59,7 +59,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
-  import { IPaymentField } from '@platform/frontend-core';
+  import { IPaymentField } from '@skeleton/core/types';
   import { marked } from 'marked';
 
   const props = defineProps<{

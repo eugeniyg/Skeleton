@@ -70,7 +70,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IField } from '@platform/frontend-core';
+  import { IField } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
   const props = defineProps<{
@@ -80,7 +80,7 @@
   const hiddenFields = ['nickname', 'locale'];
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
-  const { setFormData } = useCoreMethods();
+  const { setFormData } = useProjectMethods();
   const { closeModal } = useLayoutStore();
   const fieldsStore = useFieldsStore();
   const { selectOptions } = storeToRefs(fieldsStore);

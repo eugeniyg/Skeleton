@@ -1,0 +1,56 @@
+.copy-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  @include media(sm) {
+    width: auto;
+  }
+
+  &__input {
+    position: absolute;
+    z-index: -100;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  &__content {
+    width: 100%;
+    @include font($body-2);
+    color: var(--text-primary);
+    padding: rem(8px) rem(16px);
+    background-color: var(--bg, var(--field-01));
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+    @extend %text-elipsis;
+
+    @include media(sm) {
+      width: auto;
+    }
+  }
+
+  &__label {
+    padding-right: rem(4px);
+    color: var(--text-tertiary);
+  }
+
+  .btn-primary {
+    flex-shrink: 0;
+    padding: rem(6px);
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
+
+  &__tooltip {
+    position: absolute;
+    bottom: calc(100% + #{rem(4px)});
+    right: 0;
+    padding: 2px 8px;
+    background-color: var(--green-700);
+    color: var(--text-primary);
+    white-space: nowrap;
+
+    @include font($body-1);
+  }
+}

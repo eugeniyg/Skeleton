@@ -90,4 +90,17 @@
       cursor: pointer;
     }
   }
+
+  &__img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: none;
+
+    img {
+      position: inherit;
+      width: inherit;
+      height: inherit;
+    }
+  }
 }

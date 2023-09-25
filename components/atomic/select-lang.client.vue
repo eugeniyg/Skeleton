@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ILocale } from '@platform/frontend-core';
+  import { ILocale } from '@skeleton/core/types';
 
   const route = useRoute();
   const globalStore = useGlobalStore();

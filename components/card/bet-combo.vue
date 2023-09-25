@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import {IBetItem} from '@platform/frontend-core';
+import {IBetItem} from '@skeleton/core/types';
 import {IBetsHistory} from '~/types';
 
 const props = defineProps<{

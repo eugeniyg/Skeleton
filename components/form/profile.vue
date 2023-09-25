@@ -75,7 +75,7 @@
   const { profile } = storeToRefs(profileStore);
   const { setProfileData } = profileStore;
   const fieldsStore = useFieldsStore();
-  const { setFormData } = useCoreMethods();
+  const { setFormData } = useProjectMethods();
   const { changeProfileData } = useCoreProfileApi();
   const globalStore = useGlobalStore();
 

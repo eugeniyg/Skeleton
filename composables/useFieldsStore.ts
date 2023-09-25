@@ -5,7 +5,7 @@ import {
   IField,
   IGameProvider,
   ITimeZone
-} from '@platform/frontend-core';
+} from '@skeleton/core/types';
 
 interface IFieldsStoreState {
   profileFields: IField[],

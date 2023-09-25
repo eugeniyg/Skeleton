@@ -1,10 +1,11 @@
 const AUTH_USERNAME = 'demo';
 const AUTH_PASSWORD = 'perunplay';
+const HOST_PATH = 'slotsbet.io';
 
 export default defineEventHandler((event) => {
     const host = event.req.headers?.host;
 
-    if (host !== 'slotsbet.io') {
+    if (host !== HOST_PATH) {
         return;
     }
 

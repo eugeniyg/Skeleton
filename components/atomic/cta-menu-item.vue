@@ -1,5 +1,6 @@
 <template>
-  <a class="cta-menu-item" :href="props.url" :style="`background-image:url(${props.backgroundImage})`">
+  <a class="cta-menu-item" :href="props.url">
+    <atomic-image :src="props.backgroundImage" alt=""/>
     <span class="cta-menu-item__text">{{ props.label }}</span>
   </a>
 </template>

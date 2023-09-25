@@ -33,7 +33,7 @@ export default defineNuxtPlugin(async ():Promise<any> => {
 
   getRequestCountry();
 
-  const { getSessionToken } = useCoreAuthStore();
+  const { getSessionToken } = useProfileStore();
   const sessionToken = getSessionToken();
 
   const { getProfileData } = useProfileStore();

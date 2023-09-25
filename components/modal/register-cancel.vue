@@ -47,7 +47,7 @@
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
 
-  const { replaceContent } = useCoreMethods();
+  const { replaceContent } = useProjectMethods();
   const bonusContent = getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.bonusText')
     ? replaceContent(getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.bonusText'), '*') : '';
 </script>

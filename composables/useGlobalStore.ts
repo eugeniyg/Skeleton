@@ -1,6 +1,13 @@
 import camelCase from 'lodash/camelCase';
 import {defineStore} from 'pinia';
-import {ICoreConstants, ICountry, ICurrency, ILocale, IStatus, ITimeZone,} from '@platform/frontend-core/dist/module';
+import {
+  ICoreConstants,
+  ICountry,
+  ICurrency,
+  ILocale,
+  IStatus,
+  ITimeZone
+} from '@skeleton/core/types';
 import {
   IAlertsContent,
   ICategory,
@@ -41,6 +48,7 @@ interface IGlobalStoreState {
   defaultLocaleAlertsData: Maybe<IAlertsContent>,
   globalComponentsContent: Maybe<IGlobalComponentsContent>,
   defaultLocaleGlobalComponentsContent: Maybe<IGlobalComponentsContent>,
+  countryHeaderName: string,
   headerCountry: Maybe<string>,
   pagesWithoutLocale: string[]
 }
@@ -67,6 +75,7 @@ export const useGlobalStore = defineStore('globalStore', {
     defaultLocaleAlertsData: undefined,
     globalComponentsContent: undefined,
     defaultLocaleGlobalComponentsContent: undefined,
+    countryHeaderName: 'cf-ipcountry',
     headerCountry: undefined,
     pagesWithoutLocale: [
       'verify-confirmCode',
@@ -261,9 +270,8 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     getRequestCountry():void {
-      const { countryHeaderName } = useCoreStore();
-      const headersCountry:Record<string, any> = useRequestHeaders([countryHeaderName]);
-      if (headersCountry[countryHeaderName]) this.headerCountry = headersCountry[countryHeaderName]?.toUpperCase();
+      const headersCountry:Record<string, any> = useRequestHeaders([this.countryHeaderName]);
+      if (headersCountry[this.countryHeaderName]) this.headerCountry = headersCountry[this.countryHeaderName]?.toUpperCase();
     },
 
     setEquivalentCurrency(currencyCode: string):void {

@@ -11,21 +11,20 @@ const viteConfig: any = {
         additionalData: '@use "@skeleton/assets/styles/ds/_shared.scss" as *;',
       },
     },
-  },
-  optimizeDeps: {
-    include: ['centrifuge'],
-  },
+  }
 };
 
+// @ts-ignore
 export default defineNuxtConfig({
   alias: {
     '@skeleton': resolve('./'),
   },
   modules: [
     '@pinia/nuxt',
-    '@platform/frontend-core',
     '@nuxt/content',
-    'dayjs-nuxt'
+    'dayjs-nuxt',
+    'nuxt-lazy-load',
+    '@skeleton/modules/optimize-images'
   ],
   dayjs: {
     locales: ['en-ca', 'de', 'fr', 'es', 'pt', 'pt-br', 'ru', 'tr', 'hi', 'fa', 'uz', 'kk', 'es-mx', 'it', 'et', 'fi',
@@ -48,10 +47,15 @@ export default defineNuxtConfig({
       '@skeleton/components',
     ],
   },
+  imports: {
+    dirs: [
+      'core/composables'
+    ]
+  },
   app: {
     head: {
       script: [
-        { src: 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js' }
+        { src: 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js', defer: true }
       ],
     },
     pageTransition: true,

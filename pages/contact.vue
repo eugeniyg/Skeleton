@@ -1,9 +1,8 @@
 <template>
   <div>
     <div class="contact">
-      <img
+      <atomic-image
         v-if="contactContent?.image || defaultLocaleContactContent?.image"
-        class="img"
         :src="contactContent?.image || defaultLocaleContactContent?.image"
         width="348"
         height="301"
@@ -97,7 +96,7 @@
   const contactUsFormRules = getFormRules(contactUsRules);
   const { serverFormErrors, v$, setError } = useFormValidation(contactUsFormRules, contactFormData);
 
-  const { sendContactMessage } = useCoreNotificationApi();
+  const { sendContactMessage } = useCoreGlobalApi();
   const submitContactForm = async ():Promise<void> => {
     if (v$.value.$invalid) return;
 
