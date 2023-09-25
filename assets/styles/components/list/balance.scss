@@ -2,7 +2,6 @@
   display: var(--display, none);
   width: max-content;
   min-width: rem(200px);
-  max-height: rem(360px);
   padding: rem(16px);
   position: absolute;
   top: 0;
@@ -51,9 +50,6 @@
 
   .items, &__items {
     display: grid;
-    max-height: calc(calc(calc(#{rem(32px)} + #{rem(4px)}) * 6) - #{rem(4px)});
-    //overflow-y: scroll;
-    //@include scrollbar;
     margin-right: -6px;
     grid-row-gap: 4px;
   }
@@ -226,6 +222,31 @@
           &:first-child {
             color: var(--text-tertiary);
           }
+        }
+      }
+    }
+  }
+
+  &__cashback {
+    &-date {
+      grid-column: 1/5;
+      grid-row: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 4px;
+      margin-top: 8px;
+      @include font($body-0);
+      color: var(--text-primary);
+      background-color: var(--layer-04);
+      border-radius: 4px;
+
+      span {
+        flex-shrink: 0;
+
+        &:first-child {
+          color: var(--text-tertiary);
         }
       }
     }
