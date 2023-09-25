@@ -6,7 +6,8 @@ import {
   IPlayerBonus,
   IPlayerFreeSpin,
   IPlayerFreeSpinsRequest,
-  IPlayerFreeSpinsResponse
+  IPlayerFreeSpinsResponse,
+  IPlayerCashback
 } from '../types';
 
 export const useCoreBonusApi = () => {
@@ -53,6 +54,10 @@ export const useCoreBonusApi = () => {
     return data;
   };
 
+  const getPlayerCashback = async (currency?: string):Promise<{ data: IPlayerCashback[] }> => {
+    return await useFetchInstance('/api/game/bonuses/cashback', { params: { currency } });
+  };
+
   return {
     getPlayerBonuses,
     getPlayerFreeSpins,
@@ -62,6 +67,7 @@ export const useCoreBonusApi = () => {
     cancelPlayerFreeSpin,
     getBonusCodes,
     addBonusCode,
-    deleteBonusCode
+    deleteBonusCode,
+    getPlayerCashback
   };
 }

@@ -70,3 +70,10 @@ export interface IPlayerFreeSpinsResponse {
   data: IPlayerFreeSpin[];
   meta: IPaginationMeta;
 }
+
+export interface IPlayerCashback {
+  bonusId: string;
+  bonusName: string;
+  amount: number;
+  date: string;
+}

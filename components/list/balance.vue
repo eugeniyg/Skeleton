@@ -100,11 +100,21 @@
         />
       </div>
 
-      <!--      <div class="list-balance__item">-->
-      <!--        <atomic-icon id="cashback" class="list-balance__icon"/>-->
-      <!--        <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.cashback') }}</span>-->
-      <!--        <div class="list-balance__link">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.cashbackLinkLabel') }}</div>-->
-      <!--      </div>-->
+      <div v-for="cashback in cashbackBalance" class="list-balance__item">
+        <atomic-icon id="cashback" class="list-balance__icon"/>
+        <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.cashback') }}</span>
+        <span class="list-balance__value">{{ cashback.balance }}</span>
+        <img
+          class="currency-icon"
+          v-if="cashback.currencyIcon"
+          :src="`/img/currency/${cashback.currencyIcon}.svg`" alt=""
+        />
+
+        <div v-if="cashback.date" class="list-balance__cashback-date">
+          <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.cashbackDateLabel') }}</span>
+          <span>{{ dayjs(cashback.date).format('DD.MM.YYYY') }}</span>
+        </div>
+      </div>
     </div>
 
     <atomic-fiat-toggler/>
@@ -122,6 +132,7 @@
     },
   });
 
+  const dayjs = useDayjs();
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
   const {
@@ -148,7 +159,7 @@
   } = useProjectMethods();
 
   const bonusStore = useBonusStore();
-  const { currentActiveBonus } = storeToRefs(bonusStore);
+  const { currentActiveBonus, playerCashback } = storeToRefs(bonusStore);
 
   const emit = defineEmits(['close', 'changeActiveAccount']);
 
@@ -213,6 +224,30 @@
 
     return [...withBalanceSortedList, ...withoutBalanceSortedList];
   });
+
+  const getCashbackBalance = (amount: number): string => {
+    if (equivalentCurrency.value && activeAccountType.value === 'crypto') {
+      const cashbackBalance = getEquivalentAccount(amount, activeAccount.value?.currency);
+      return`${cashbackBalance.currencySymbol} ${cashbackBalance.balance}`;
+    } else {
+      const cashbackBalance = formatBalance(activeAccount.value?.currency, amount);
+      return`${cashbackBalance.amount}`;
+    }
+  };
+
+  const cashbackBalance = computed<{ balance: string, date?: string, currencyIcon?: string }[]>(() => {
+    const currencyIcon = equivalentCurrency.value ? activeAccount.value?.currency : undefined;
+
+    if (playerCashback.value.length) {
+      return playerCashback.value.map((cashback) => {
+        const balance = getCashbackBalance(cashback.amount);
+        return { balance, currencyIcon, date: cashback.date }
+      })
+    } else {
+      const balance = getCashbackBalance(0);
+      return [{ balance, currencyIcon }]
+    }
+  })
 
   const activeAccountBalances = computed(() => {
     let real;
