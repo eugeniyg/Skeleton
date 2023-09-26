@@ -40,29 +40,25 @@
       <div class="list-balance__item">
         <atomic-icon id="wallet" class="list-balance__icon"/>
         <div class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.real') }}</div>
-        <span class="list-balance__value">{{ activeAccountBalances.real }}</span>
+        <span class="list-balance__value">{{ activeAccountBalances.real.currencySymbol }} {{ activeAccountBalances.real.balance }}</span>
         <img
           class="currency-icon"
-          v-if="activeAccountBalances.currencyIcon"
-          :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`" alt=""
+          v-if="activeAccountBalances.real.currencyIcon"
+          :src="`/img/currency/${activeAccountBalances.real.currencyIcon}.svg`" alt=""
         />
       </div>
 
       <div class="list-balance__item">
         <atomic-icon id="bonus" class="list-balance__icon"/>
         <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.bonus') }}</span>
+        <span class="list-balance__value">{{ activeAccountBalances.bonus.currencySymbol }} {{ activeAccountBalances.bonus.balance }}</span>
+        <img
+          class="currency-icon"
+          v-if="activeAccountBalances.bonus.currencyIcon"
+          :src="`/img/currency/${activeAccountBalances.bonus.currencyIcon}.svg`" alt=""
+        />
 
         <template v-if="currentActiveBonus">
-          <div class="list-balance__bonus-wager">
-            <span v-if="currentActiveBonus.wagerCasino">
-              <atomic-icon id="cherry" /> x{{ currentActiveBonus.wagerCasino }}
-            </span>
-
-            <span v-if="currentActiveBonus.wagerSportsbook">
-              <atomic-icon id="sport" /> x{{ currentActiveBonus.wagerSportsbook }}
-            </span>
-          </div>
-
           <div class="list-balance__bonus-progress">
             <div class="list-balance__bonus-progress-bar">
               <div
@@ -74,43 +70,44 @@
 
             <div class="list-balance__bonus-progress-info">
               <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.wageringLabel') }}</span>
-              <span>{{ activeAccountBalances.bonus }}</span>
+              <span>{{ bonusWageringBalance.balance }} {{ bonusWageringBalance.currency }}</span>
+
+              <div class="list-balance__bonus-wager">
+                <span v-if="currentActiveBonus.wagerCasino">
+                  <atomic-icon id="cherry" /> x{{ currentActiveBonus.wagerCasino }}
+                </span>
+
+                <span v-if="currentActiveBonus.wagerSportsbook">
+                  <atomic-icon id="sport" /> x{{ currentActiveBonus.wagerSportsbook }}
+                </span>
+              </div>
             </div>
           </div>
-        </template>
-
-        <template v-else>
-          <span class="list-balance__value">{{ activeAccountBalances.bonus }}</span>
-          <img
-            class="currency-icon"
-            v-if="activeAccountBalances.currencyIcon"
-            :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`" alt=""
-          />
         </template>
       </div>
 
       <div class="list-balance__item">
         <atomic-icon id="withdraw" class="list-balance__icon"/>
         <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.withdrawal') }}</span>
-        <span class="list-balance__value">{{ activeAccountBalances.withdrawal }}</span>
+        <span class="list-balance__value">{{ activeAccountBalances.withdrawal.currencySymbol }} {{ activeAccountBalances.withdrawal.balance }}</span>
         <img
           class="currency-icon"
-          v-if="activeAccountBalances.currencyIcon"
-          :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`" alt=""
+          v-if="activeAccountBalances.withdrawal.currencyIcon"
+          :src="`/img/currency/${activeAccountBalances.withdrawal.currencyIcon}.svg`" alt=""
         />
       </div>
 
       <div v-for="cashback in cashbackBalance" class="list-balance__item">
         <atomic-icon id="cashback" class="list-balance__icon"/>
         <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.cashback') }}</span>
-        <span class="list-balance__value">{{ cashback.balance }}</span>
+        <span class="list-balance__value">{{ cashback.currencySymbol }} {{ cashback.balance }}</span>
         <img
           class="currency-icon"
           v-if="cashback.currencyIcon"
           :src="`/img/currency/${cashback.currencyIcon}.svg`" alt=""
         />
 
-        <div v-if="cashback.date" class="list-balance__cashback-date">
+        <div class="list-balance__cashback-date">
           <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.cashbackDateLabel') }}</span>
           <span>{{ dayjs(cashback.date).format('DD.MM.YYYY') }}</span>
         </div>
@@ -222,70 +219,45 @@
     return [...withBalanceSortedList, ...withoutBalanceSortedList];
   });
 
-  const getCashbackBalance = (amount: number): string => {
+  interface IBalance {
+    balance: number,
+    currency: string,
+    currencySymbol?: string,
+    currencyIcon?: string,
+    date?: string
+  }
+  const getBalanceFormat = (amount: number): IBalance => {
     if (showEquivalentBalance.value) {
-      const cashbackBalance = getEquivalentAccount(amount, activeAccount.value?.currency);
-      return`${cashbackBalance.currencySymbol} ${cashbackBalance.balance}`;
+      const bundle = getEquivalentAccount(amount, activeAccount.value?.currency);
+      return { ...bundle, currencyIcon: activeAccount.value?.currency };
     } else {
-      const cashbackBalance = formatBalance(activeAccount.value?.currency, amount);
-      return`${cashbackBalance.amount}`;
+      const bundle = formatBalance(activeAccount.value?.currency, amount);
+      return { balance: bundle.amount, currency: bundle.currency };
     }
-  };
+  }
 
-  const cashbackBalance = computed<{ balance: string, date?: string, currencyIcon?: string }[]>(() => {
-    const currencyIcon = showEquivalentBalance.value ? activeAccount.value?.currency : undefined;
+  const bonusWageringBalance = computed<IBalance>(() => {
+    return getBalanceFormat(currentActiveBonus.value?.currentWagerAmount || 0);
+  })
 
+  const cashbackBalance = computed<IBalance[]>(() => {
     if (playerCashback.value.length) {
       return playerCashback.value.map((cashback) => {
-        const balance = getCashbackBalance(cashback.amount);
-        return { balance, currencyIcon, date: cashback.date }
+        const bundle = getBalanceFormat(cashback.amount);
+        return { ...bundle, date: cashback.date };
       })
     } else {
-      const balance = getCashbackBalance(0);
-      return [{ balance, currencyIcon }]
+      const balance = getBalanceFormat(0);
+      return [balance]
     }
   })
 
-  const activeAccountBalances = computed(() => {
-    let real;
-    let bonus;
-    let withdrawal;
-    let currencyIcon;
+  const activeAccountBalances = computed<{ real: IBalance, bonus: IBalance, withdrawal: IBalance }>(() => {
+    const real = getBalanceFormat((activeAccount.value?.realBalance || 0) + (activeAccount.value?.lockedBalance || 0));
+    const bonus = getBalanceFormat(activeAccount.value?.bonusBalance || 0);
+    const withdrawal = getBalanceFormat(activeAccount.value?.withdrawalBalance || 0);
 
-    if (showEquivalentBalance.value) {
-      currencyIcon = activeAccount.value?.currency;
-      const realBalance = getEquivalentAccount((activeAccount.value?.realBalance || 0) + (activeAccount.value?.lockedBalance || 0), activeAccount.value?.currency);
-      real = `${realBalance.currencySymbol} ${realBalance.balance}`
-
-      if (currentActiveBonus.value) {
-        const bonusBalance = getEquivalentAccount(currentActiveBonus.value?.amount || 0, currentActiveBonus.value?.currency);
-        const wageredBalance = getEquivalentAccount(currentActiveBonus.value?.currentWagerAmount || 0, currentActiveBonus.value?.currency);
-        bonus = `${wageredBalance.balance} ${wageredBalance.currency} of ${bonusBalance.balance} ${bonusBalance.currency}`
-      } else {
-        const bonusBalance = getEquivalentAccount((activeAccount.value?.bonusBalance || 0), activeAccount.value?.currency);
-        bonus = `${bonusBalance.currencySymbol} ${bonusBalance.balance}`
-      }
-
-      const withdrawalBalance = getEquivalentAccount(activeAccount.value?.withdrawalBalance || 0, activeAccount.value?.currency);
-      withdrawal = `${withdrawalBalance.currencySymbol} ${withdrawalBalance.balance}`
-    } else {
-      const realBalance = formatBalance(activeAccount.value?.currency, (activeAccount.value?.realBalance || 0) + (activeAccount.value?.lockedBalance || 0));
-      real = realBalance.amount
-
-      if (currentActiveBonus.value) {
-        const bonusBalance = formatBalance(currentActiveBonus.value?.currency, currentActiveBonus.value?.amount);
-        const wageredBalance = formatBalance(currentActiveBonus.value?.currency, currentActiveBonus.value?.currentWagerAmount);
-        bonus = `${wageredBalance.amount} ${wageredBalance.currency} of ${bonusBalance.amount} ${bonusBalance.currency}`
-      } else {
-        const bonusBalance = formatBalance(activeAccount.value?.currency, activeAccount.value?.bonusBalance);
-        bonus = bonusBalance.amount
-      }
-
-      const withdrawalBalance = formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance);
-      withdrawal = withdrawalBalance.amount
-    }
-
-    return { real, bonus, withdrawal, currencyIcon }
+    return { real, bonus, withdrawal };
   })
 
   const selectCurrency = async (currency: string): Promise<void> => {
