@@ -57,7 +57,7 @@ export const useWalletStore = defineStore('walletStore', {
 
     showEquivalentBalance(): boolean {
       const globalStore = useGlobalStore();
-      return !!globalStore.equivalentCurrency && this.activeAccountType === 'crypto'
+      return !!globalStore.equivalentCurrency && this.activeAccountType === 'crypto';
     }
   },
 
