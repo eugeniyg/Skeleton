@@ -5,17 +5,15 @@
     v-click-outside="close"
   >
     <div v-if="props.items.length" class="selected" @click="open">
-      <img
+      <atomic-image
         v-if="props.activeMethod.method === cashAgentMethodKey"
         src="/img/methods-icons/cash-agent.svg"
         class="mask"
-        alt=""
       />
-      <img v-else
+      <atomic-image v-else
         v-if="defaultLogoUrl() || props.activeMethod.logo"
         :src="defaultLogoUrl() || props.activeMethod.logo"
         class="mask"
-        alt=""
       />
       <atomic-icon id="arrow_expand-close"/>
     </div>
@@ -28,8 +26,8 @@
         :class="{'is-selected': item.method === props.activeMethod.method }"
         @click="select(item)"
       >
-        <img v-if="item.method === cashAgentMethodKey" src="/img/methods-icons/cash-agent.svg" alt=""/>
-        <img v-else-if="defaultLogoUrl() || item.logo" class="mask" :src="defaultLogoUrl() || item.logo" alt=""/>
+        <atomic-image v-if="item.method === cashAgentMethodKey" src="/img/methods-icons/cash-agent.svg" />
+        <atomic-image v-else-if="defaultLogoUrl() || item.logo" class="mask" :src="defaultLogoUrl() || item.logo" />
       </div>
     </div>
     <input type="hidden" name="payments" :value="props.activeMethod.method" />

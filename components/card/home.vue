@@ -5,13 +5,13 @@
         v-if="props.images?.backgroundImage"
         class="back-bg"
       >
-        <atomic-image :src="props.images.backgroundImage"/>
+        <atomic-picture :src="props.images.backgroundImage"/>
       </div>
       <div
         v-if="props.images?.faceImage"
         class="front-bg"
       >
-        <atomic-image :src="props.images.faceImage"/>
+        <atomic-picture :src="props.images.faceImage"/>
       </div>
     </div>
 

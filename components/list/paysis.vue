@@ -1,11 +1,10 @@
 <template>
   <div class="paysis">
-    <img
+    <atomic-image
       v-for="(src, index) in props.items"
       :key="index"
       class="logo"
       :src="`/img${src}`"
-      alt=""
       width="114"
       height="24"
     />

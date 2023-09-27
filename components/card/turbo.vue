@@ -2,7 +2,7 @@
   <div class="card-turbo">
     <div class="content">
       <nuxt-link class="thumb" :to="localizePath(props.url)">
-        <atomic-image :src="props.image" class="card-turbo__img"/>
+        <atomic-picture :src="props.image" class="card-turbo__img"/>
       </nuxt-link>
       <div class="title">{{ props.title }}</div>
 

@@ -18,7 +18,7 @@
           </div>
         </div>
 
-        <atomic-image
+        <atomic-picture
           v-if="getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.image')"
           :src="getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.image')"
         />
@@ -39,7 +39,7 @@
             <div class="title">{{ card.title }}</div>
             <div class="sub-title">{{ card.topLabel }}</div>
 
-            <atomic-image :src="card.image"/>
+            <atomic-picture :src="card.image"/>
 
             <div class="actions">
               <button-base
@@ -80,7 +80,7 @@
             <div class="title">{{ card.subtitle }}</div>
             <div class="sub-title">{{ card.title }}</div>
 
-            <atomic-image :src="card.image" alt=""/>
+            <atomic-picture :src="card.image" alt=""/>
 
             <div class="actions">
               <button-base

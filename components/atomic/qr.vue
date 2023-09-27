@@ -4,7 +4,7 @@
     <div class="description">{{ props.content?.addressDescription }}</div>
 
     <div class="box">
-      <img
+      <atomic-image
         v-if="props.qrLink"
         :src="`https://chart.googleapis.com/chart?chs=116x116&cht=qr&chl=${props.qrLink}&choe=UTF-8`"
       />

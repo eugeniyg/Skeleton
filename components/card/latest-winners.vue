@@ -1,6 +1,6 @@
 <template>
   <nuxt-link class="card-latest-winners" :to="gameUrl">
-    <img class="card-latest-winners__img" :src="src" alt="">
+    <atomic-image class="card-latest-winners__img" :src="src" />
     <div class="title">{{ props.nickname || 'Unknown' }}</div>
     <div class="sub-title">{{ props.gameName }}</div>
     <div class="items">

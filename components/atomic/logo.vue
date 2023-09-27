@@ -5,7 +5,7 @@
         srcset="/img/logo-light.svg"
         :media="`(min-width: ${media})`"
       />
-      <img class="img" src="/img/logo-short.svg" />
+      <atomic-image class="img" src="/img/logo-short.svg" />
     </picture>
   </nuxt-link>
 </template>

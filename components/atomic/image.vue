@@ -1,14 +1,11 @@
 <template>
-  <picture v-if="props.src" class="picture">
-    <source :srcset="createSrcSet(props.src)">
-    <img :src="props.src" alt="">
-  </picture>
+  <img v-if="props.notLazy" :src="props.src" alt="" data-not-lazy />
+  <img v-else :key="props.src" :src="props.src" alt="" />
 </template>
 
 <script setup lang="ts">
   const props = defineProps<{
     src?: string,
+    notLazy?: boolean
   }>();
-
-  const { createSrcSet } = useProjectMethods();
 </script>

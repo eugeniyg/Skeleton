@@ -30,7 +30,7 @@
         :class="{'is-active': activeAccount.currency === item.nativeCurrency}"
         @click="selectCurrency(item.nativeCurrency)"
       >
-        <img class="img" :src="`/img/currency/${item.nativeCurrency}.svg`" alt=""/>
+        <atomic-image class="img" :src="`/img/currency/${item.nativeCurrency}.svg`" />
         <span class="code-title">{{ item.currency }}</span>
         <span class="amount">{{ item.currencySymbol }} {{ item.amount }}</span>
       </div>
@@ -42,10 +42,10 @@
         <atomic-icon id="wallet" class="list-balance__icon"/>
         <div class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.real') }}</div>
         <span class="list-balance__value">{{ activeAccountBalances.real }}</span>
-        <img
+        <atomic-image
           class="currency-icon"
           v-if="activeAccountBalances.currencyIcon"
-          :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`" alt=""
+          :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`"
         />
       </div>
 
@@ -53,10 +53,10 @@
         <atomic-icon id="bonus" class="list-balance__icon"/>
         <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.bonus') }}</span>
         <span class="list-balance__value">{{ activeAccountBalances.bonus }}</span>
-        <img
+        <atomic-image
           class="currency-icon"
           v-if="activeAccountBalances.currencyIcon"
-          :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`" alt=""
+          :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`"
         />
       </div>
 
@@ -64,10 +64,10 @@
         <atomic-icon id="withdraw" class="list-balance__icon"/>
         <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.withdrawal') }}</span>
         <span class="list-balance__value">{{ activeAccountBalances.withdrawal }}</span>
-        <img
+        <atomic-image
           class="currency-icon"
           v-if="activeAccountBalances.currencyIcon"
-          :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`" alt=""
+          :src="`/img/currency/${activeAccountBalances.currencyIcon}.svg`"
         />
       </div>
 

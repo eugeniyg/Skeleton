@@ -7,7 +7,7 @@
     @click="clickGame"
     v-click-outside="hideHover"
   >
-    <img class="card-base__img" :src="src" alt="">
+    <atomic-image class="card-base__img" :src="src" />
 
     <div v-if="gameBages?.length" class="bages">
       <atomic-bage

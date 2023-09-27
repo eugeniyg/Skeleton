@@ -12,7 +12,7 @@
       </div>
 
       <div class="bonus">
-        <img :src="getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.bonusImage')" alt="">
+        <atomic-image :src="getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.bonusImage')" />
         <div class="bonus-text" v-html="bonusContent" />
       </div>
 

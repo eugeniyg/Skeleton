@@ -24,7 +24,7 @@
         </template>
 
         <template v-slot:item="{ item }">
-          <img :src="`/img${item}`" />
+          <atomic-image :src="`/img${item}`" />
         </template>
       </list-base>
     </div>

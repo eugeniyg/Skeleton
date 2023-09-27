@@ -6,7 +6,7 @@
       class="item"
       :to="localizePath(`/games/${game.identity}${!isLoggedIn ? '' : '?real=true' }`)"
     >
-      <img class="img" v-if="game.images['200x200']" :src="getImageUrl(game.images, 'square')" />
+      <atomic-image class="img" v-if="game.images['200x200']" :src="getImageUrl(game.images, 'square')" />
     </nuxt-link>
   </div>
 </template>

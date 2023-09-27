@@ -7,7 +7,7 @@
     >
       <span class="cta-menu__title">{{ item.title }}</span>
       <span class="cta-menu__sub-title">{{ item.subTitle }}</span>
-      <img class="cta-menu__img" :src="item.image" alt="">
+      <atomic-image class="cta-menu__img" :src="item.image" />
     </a>
   </div>
 </template>

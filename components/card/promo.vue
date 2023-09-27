@@ -3,13 +3,13 @@
     <picture>
       <source :media="'(max-width: 1279px)'" :srcset="createSrcSet(props.images.mobile.backgroundImage)" />
       <source :media="'(max-width: 2264px)'" :srcset="createSrcSet(props.images.desktop.backgroundImage)" />
-      <img class="back" :src="props.images.mobile.backgroundImage" alt=""/>
+      <atomic-image class="back" :src="props.images.mobile.backgroundImage" />
     </picture>
 
     <picture>
       <source :media="'(max-width: 1279px)'" :srcset="createSrcSet(props.images.mobile.faceImage)" />
       <source :media="'(max-width: 2264px)'" :srcset="createSrcSet(props.images.desktop.faceImage)" />
-      <img class="front" :src="props.images.mobile.faceImage" alt=""/>
+      <atomic-image class="front" :src="props.images.mobile.faceImage" />
     </picture>
 
     <div class="info">

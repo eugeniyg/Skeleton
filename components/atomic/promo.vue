@@ -5,10 +5,9 @@
         :srcset="getContent(popupsData, defaultLocalePopupsData, 'registration.promo.images.desktop.backgroundImage')"
         media="(min-width: 64rem)"
       />
-      <img
+      <atomic-image
         :src="getContent(popupsData, defaultLocalePopupsData, 'registration.promo.images.mobile.backgroundImage')"
         class="promo__picture-img"
-        alt=""
       />
     </picture>
 

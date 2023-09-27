@@ -2,12 +2,11 @@
   <div class="not-auth-game" :class="modeClassName">
     <div class="title" v-if="props.title">{{ props.title }}</div>
 
-    <img
+    <atomic-image
       class="img"
       :src="props.image"
       width="104"
       height="104"
-      alt=""
     />
 
     <p class="text">{{ props.description }}</p>
