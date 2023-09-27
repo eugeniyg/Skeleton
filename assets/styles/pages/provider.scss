@@ -1,0 +1,132 @@
+.page-provider {
+  &__promo {
+    background-color: var(--gray-900);
+    margin: -24px -16px 40px;
+
+    @include media(sm) {
+      margin: 0 -32px 40px;
+      padding: 0 32px 24px;
+    }
+
+    @include media(l) {
+      margin: 0 -48px 40px;
+      padding: 0 48px 24px;
+    }
+
+    &-container {
+      display: flex;
+      min-height: 267px;
+      padding: 40px 16px 24px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      position: relative;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: repeat(3, auto);
+      margin: 0 auto;
+      max-width: 1024px;
+    }
+
+    &-title {
+      color: var(--text-primary);
+      @include font($heading-7);
+      margin: 0;
+      position: relative;
+      z-index: 1;
+      max-width: 65%;
+
+      @include media(l) {
+        @include upd-font($heading-8);
+      }
+    }
+
+    &-text {
+      color: var(--text-secondary);
+      @include font($subheading-3);
+      margin: 0;
+      position: relative;
+      z-index: 1;
+      max-width: 65%;
+    }
+
+    &-img {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: var(--transform, translateX(30%));
+      height: 100%;
+      z-index: 0;
+
+      @include media(sm) {
+        --transform: translateX(0);
+        --img-right: 0;
+      }
+    }
+
+    .btn-primary {
+      grid-area: btn;
+      border-radius: 12px;
+      @include font($heading-2);
+      --padding: 10px 24px;
+      margin-top: 32px;
+      position: relative;
+      z-index: 1;
+
+      @include media(sm) {
+        --padding: 11px 24px;
+      }
+    }
+  }
+
+  &__content {
+    max-width: 1024px;
+    margin: 0 auto;
+    color: var(--text-tertiary);
+    margin-bottom: 32px;
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 24px 0 0 0;
+      padding: 0;
+      @include font($heading-4);
+      color: var(--text-primary);
+    }
+
+    p {
+      @include font($body-3-paragraph);
+      color: var(--text-tertiary);
+      margin-top: 16px;
+    }
+
+    img {
+      height: 160px;
+      width: 100%;
+      max-height: 240px;
+      object-fit: cover;
+      border-radius: 16px;
+
+      @include media(l) {
+        height: 240px;
+      }
+    }
+
+    ul li, ol li {
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+
+    ul, ol {
+      margin: 0;
+      padding: 0 0 0 24px;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--color, var(--text-link));
+
+      &:hover {
+        --color: var(--text-link-hover)
+      }
+    }
+  }
+}

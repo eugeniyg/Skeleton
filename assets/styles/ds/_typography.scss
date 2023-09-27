@@ -87,6 +87,11 @@ $subheading-2: (
   letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
 );
 
+$subheading-3: (
+  font-size: map-get(font-sizes.$font-sizes, 100),
+  font-weight: map-get(font-weights.$font-weights, medium),
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
 
 $body-0: (
   font-size: map-get(font-sizes.$font-sizes, 25),
