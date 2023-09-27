@@ -230,10 +230,10 @@
     if (showEquivalentBalance.value) {
       const bundle = getEquivalentAccount(amount, activeAccount.value?.currency);
       return { ...bundle, currencyIcon: activeAccount.value?.currency };
-    } else {
-      const bundle = formatBalance(activeAccount.value?.currency, amount);
-      return { balance: bundle.amount, currency: bundle.currency };
     }
+
+    const bundle = formatBalance(activeAccount.value?.currency, amount);
+    return { balance: bundle.amount, currency: bundle.currency };
   }
 
   const bonusWageringBalance = computed<IBalance>(() => {
@@ -246,10 +246,10 @@
         const bundle = getBalanceFormat(cashback.amount);
         return { ...bundle, date: cashback.date };
       })
-    } else {
-      const balance = getBalanceFormat(0);
-      return [balance]
     }
+
+    const balance = getBalanceFormat(0);
+    return [balance]
   })
 
   const activeAccountBalances = computed<{ real: IBalance, bonus: IBalance, withdrawal: IBalance }>(() => {
