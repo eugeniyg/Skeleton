@@ -23,14 +23,14 @@
             class="item"
             @click="addCurrency(currency)"
           >
-            <img class="img" :src="`/img/currency/${currency.code}.svg`" alt=""/>
+            <atomic-image class="img" :src="`/img/currency/${currency.code}.svg`" />
             <span class="title">{{ currency.name }}</span>
             <span class="label">{{ currency.code }}</span>
           </div>
         </div>
 
         <div class="nav-currency__plug" v-if="selected === 'crypto' && !cryptoCurrencies.length">
-          <img class="nav-currency__plug-img" src="/img/currency-plug.svg" alt="">
+          <atomic-image class="nav-currency__plug-img" src="/img/currency-plug.svg" />
           <h4 class="nav-currency__plug-title">
             {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'currencyPopup.empty.title') }}
           </h4>

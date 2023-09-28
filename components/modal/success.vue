@@ -11,7 +11,7 @@
         <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'success.title') }}</div>
       </div>
 
-      <img class="img" src="/img/success.svg" />
+      <atomic-image class="img" src="/img/success.svg" />
       <client-only>
         <p class="text" v-html="marked.parse(getContent(popupsData, defaultLocalePopupsData, 'success.description') || '')" />
       </client-only>

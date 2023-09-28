@@ -5,16 +5,15 @@
     @mouseenter="showFiatTooltip"
     @mouseleave="hideFiatTooltip"
   >
-    <img
+    <atomic-image
       class="fiat-display__logo"
       :src="`/img/currency/${ activeAccount?.currency }.svg`"
-      alt=""
     />
     <span class="fiat-display__amount">{{ equivalentBalanceFormat.amount }}</span>
     <span class="fiat-display__currency">{{ equivalentBalanceFormat.currency }}</span>
 
     <div class="fiat-display__tooltip">
-      <img class="fiat-display__logo" :src="`/img/currency/${ activeAccount?.currency }.svg`" alt=""/>
+      <atomic-image class="fiat-display__logo" :src="`/img/currency/${ activeAccount?.currency }.svg`" />
       <span class="fiat-display__amount">{{ activeBalanceFormat.amount }}</span>
       <span class="fiat-display__currency">{{ activeBalanceFormat.currency }}</span>
     </div>

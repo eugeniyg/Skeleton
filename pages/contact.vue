@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="contact">
-      <atomic-image
+      <atomic-picture
         v-if="contactContent?.image || defaultLocaleContactContent?.image"
         :src="contactContent?.image || defaultLocaleContactContent?.image"
         width="348"

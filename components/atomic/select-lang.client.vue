@@ -5,10 +5,9 @@
   >
     <div class="select-lang__wrap" v-click-outside="closeSelect">
       <div class="selected" @click="toggleOpen">
-        <img
+        <atomic-image
           class="img"
           :src="`${gamehubCdn}/locales/${currentLocale.code.toLowerCase()}.svg`"
-          alt=""
         />
         <span class="title">{{ currentLocale.nativeName || currentLocale.name }}</span>
         <atomic-icon id="arrow_expand-close" />
@@ -22,7 +21,7 @@
           :class="{ 'is-selected': currentLocale?.code.toLowerCase() === locale.code.toLowerCase() }"
           @click="changeLanguage(locale)"
         >
-          <img class="img" :src="`${gamehubCdn}/locales/${locale.code.toLowerCase()}.svg`" alt="" />
+          <atomic-image class="img" :src="`${gamehubCdn}/locales/${locale.code.toLowerCase()}.svg`" />
           <span class="title">{{ locale.nativeName || locale.name }}</span>
           <atomic-icon id="check" />
         </div>

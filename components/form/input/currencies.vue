@@ -10,12 +10,11 @@
         <span class="input-currencies__selected-label">{{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.chooseCurrencyLabel') }}</span>
       </template>
       <template v-else>
-        <img
+        <atomic-image
           class="input-currencies__selected-icon"
           :src="`/img/currency/${selectedCurrency?.code}.svg`"
           width="24"
           height="24"
-          alt=""
         />
         <span class="input-currencies__selected-label">{{ selectedCurrency?.name }}</span>
       </template>
@@ -45,12 +44,11 @@
           :class="{'is-active': selectedCurrency?.name === currency.name}"
           @click="selectCurrency(currency)"
         >
-          <img
+          <atomic-image
             class="input-currencies__item-img"
             :src="`/img/currency/${currency.code}.svg`"
             width="24"
             height="24"
-            alt=""
           />
           <span class="input-currencies__item-title">{{ currency.name }}</span>
           <span class="input-currencies__item-code">{{ formatBalance(currency.code, 0).currency }}</span>
