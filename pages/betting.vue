@@ -39,7 +39,7 @@
     defaultLocaleData
   } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   const bettingContent: Maybe<ISportsbookPage> = currentLocaleData;
-  const defaultLocaleBettingContent: Maybe<ISportsbookPage> = defaultLocaleData;
+
   setPageSeo(bettingContent?.seo);
 
   const walletStore = useWalletStore();
@@ -71,6 +71,9 @@
       platform: isMobile.value ? 1 : 2,
     };
     const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
+
+    const loggedOutClientId = 'turbodemo';
+
     const params = {
       ...sdkDefaultParams,
       host: runtimeConfig.public.betsyParams?.clientHost,
@@ -93,8 +96,6 @@
   const router = useRouter();
   const { localizePath } = useProjectMethods();
   const { showModal } = useLimitsStore();
-
-  const loggedOutClientId = 'turbodemo';
 
   const redirectLimitedPlayer = (): void => {
     router.replace(localizePath('/'));
