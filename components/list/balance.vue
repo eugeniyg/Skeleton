@@ -107,7 +107,7 @@
           :src="`/img/currency/${cashback.currencyIcon}.svg`" alt=""
         />
 
-        <div class="list-balance__cashback-date">
+        <div v-if="cashback.date" class="list-balance__cashback-date">
           <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.cashbackDateLabel') }}</span>
           <span>{{ dayjs(cashback.date).format('DD.MM.YYYY') }}</span>
         </div>
