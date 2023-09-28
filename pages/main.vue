@@ -21,20 +21,11 @@
 
     <nav-cat @clickCategory="changeCategory" />
 
-    <favorite-recently v-if="isLoggedIn" />
-
     <group-games
-      v-if="mainCategoriesData.hot"
+      v-for="category in mainCategoriesList.slice(0, 3)"
       showAllBtn
       showArrows
-      :category="mainCategoriesData.hot"
-    />
-
-    <group-games
-      v-if="mainCategoriesData.slots"
-      showAllBtn
-      showArrows
-      :category="mainCategoriesData.slots"
+      :category="category"
     />
 
     <cards-group
@@ -50,36 +41,22 @@
     </cards-group>
 
     <group-games
-      v-if="mainCategoriesData.turbogames"
+      v-for="category in mainCategoriesList.slice(3, 4)"
       showAllBtn
       showArrows
-      :category="mainCategoriesData.turbogames"
-    />
-
-    <group-games
-      v-if="mainCategoriesData.new"
-      showAllBtn
-      showArrows
-      :category="mainCategoriesData.new"
+      :category="category"
     />
 
     <group-winners showArrows />
 
     <group-games
-      v-if="mainCategoriesData.table"
+      v-for="category in mainCategoriesList.slice(4)"
       showAllBtn
       showArrows
-      :category="mainCategoriesData.table"
+      :category="category"
     />
 
-    <group-games
-      v-if="mainCategoriesData.live"
-      showAllBtn
-      showArrows
-      :category="mainCategoriesData.live"
-    />
-
-    <group-promotions v-if="globalComponentsContent?.promotions" v-bind="globalComponentsContent.promotions" />
+    <favorite-recently v-if="isLoggedIn" />
 
     <!-- <cards-group v-bind="fakeStore.newRelisesCards">
       <template v-slot:card="item">
@@ -97,7 +74,8 @@
     Carousel, Slide, Pagination, Navigation,
   } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
-  import { ICasinoPage } from '~/types';
+  import {ICasinoPage} from '~/types';
+  import {ICollection} from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();
@@ -160,11 +138,9 @@
 
   const providerCards = fakeStore.providerCards();
 
-  const mainCategories = ['hot', 'slots', 'turbogames', 'new', 'table', 'live'];
-  const mainCategoriesData = mainCategories.reduce((categoriesObj, currentCategoryIdentity) => {
-    const findCategory = currentLocationCollections.value.find((collection) => collection.identity === currentCategoryIdentity);
-    return findCategory ? { ...categoriesObj, [currentCategoryIdentity]: findCategory } : categoriesObj;
-  }, {});
+  const mainCategoriesList = currentLocationCollections.value.reduce((categoriesArr: ICollection[], currentCategory) => {
+    return currentCategory.isHidden ? categoriesArr : [...categoriesArr, currentCategory];
+  }, []);
 
   const topSliderProps = {
     settings: {
