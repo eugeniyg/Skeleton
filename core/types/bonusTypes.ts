@@ -9,6 +9,9 @@ export interface IPlayerBonus extends Record<string, any>{
   bonusType: number;
   currency: string;
   currentWagerPercentage: number;
+  currentWagerCasinoAmount: number;
+  currentWagerSportsbookAmount: number;
+  currentWagerAmount: number;
   wagerCasino: number;
   wagerSportsbook: number;
   wageringExpiredAt: string|null;
@@ -66,4 +69,11 @@ export interface IPlayerBonusesResponse {
 export interface IPlayerFreeSpinsResponse {
   data: IPlayerFreeSpin[];
   meta: IPaginationMeta;
+}
+
+export interface IPlayerCashback {
+  bonusId: string;
+  bonusName: string;
+  amount: number;
+  date: string;
 }

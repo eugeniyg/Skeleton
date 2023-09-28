@@ -74,15 +74,23 @@ export const useProfileStore = defineStore('profileStore', {
 
     startProfileDependencies():void {
       const { getFavoriteGames } = useGamesStore();
-      const { getPlayerBonuses, getDepositBonusCode, getPlayerFreeSpins } = useBonusStore();
+      const {
+        getPlayerBonuses,
+        getDepositBonusCode,
+        getPlayerFreeSpins,
+        getPlayerCashback
+      } = useBonusStore();
       getFavoriteGames();
       getDepositBonusCode();
-      getPlayerFreeSpins();
+
+      const { activeAccount } = useWalletStore();
+      getPlayerCashback(activeAccount?.currency);
 
       const route = useRoute();
       const routeName = route.name as string;
       if (!routeName.includes('profile-bonuses')) {
         getPlayerBonuses();
+        getPlayerFreeSpins();
       }
 
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();

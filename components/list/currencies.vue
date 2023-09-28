@@ -56,8 +56,9 @@
     accounts,
     currencyTabs,
     activeAccount,
+    showEquivalentBalance
   } = storeToRefs(walletStore);
-  const { currencies, cryptoCurrencies, equivalentCurrency } = storeToRefs(globalStore);
+  const { currencies, cryptoCurrencies } = storeToRefs(globalStore);
   const { switchAccount } = useWalletStore();
   const { createAccount } = useWalletStore();
   const { formatBalance, sortByAlphabet, getEquivalentAccount } = useProjectMethods();
@@ -88,7 +89,7 @@
     const formatList:IDisplayAccount[] = currenciesList.map((currency) => {
       const findAccount = getAccountByCurrency(currency.code);
 
-      if (equivalentCurrency.value && currency.type === 'crypto') {
+      if (showEquivalentBalance.value) {
         const equivalentAccount = getEquivalentAccount(findAccount?.balance || 0, findAccount?.currency || currency.code);
         return {
           nativeCurrency: currency.code,
@@ -99,7 +100,7 @@
       }
 
       const formattedAcc = formatBalance(findAccount?.currency || currency.code, findAccount?.balance || 0);
-      return { nativeCurrency: currency.code, ...formattedAcc, currencySymbol: equivalentCurrency.value ? currency.symbol : undefined };
+      return { nativeCurrency: currency.code, ...formattedAcc };
     });
 
     const withBalanceList:IDisplayAccount[] = [];

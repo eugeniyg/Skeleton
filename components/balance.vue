@@ -78,13 +78,12 @@
 
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
-  const { activeAccount, activeAccountType, activeEquivalentAccount } = storeToRefs(walletStore);
-  const { popupsData, defaultLocalePopupsData, equivalentCurrency } = storeToRefs(globalStore);
+  const { activeAccount, activeEquivalentAccount, showEquivalentBalance } = storeToRefs(walletStore);
+  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
   const { formatBalance, getContent, getEquivalentAccount } = useProjectMethods();
   const isSelectOpen = ref<boolean>(false);
 
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
-  const showEquivalentBalance = computed(() => equivalentCurrency.value && activeAccountType.value === 'crypto');
   const withdrawalBalanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance));
   const withdrawalEquivalentBalanceFormat = computed(() => getEquivalentAccount(activeAccount.value?.withdrawalBalance, activeAccount.value?.currency));
 
