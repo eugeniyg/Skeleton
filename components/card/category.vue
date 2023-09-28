@@ -6,7 +6,7 @@
 
     <div class="card-cat__sub-title">{{ props.description }}</div>
 
-    <atomic-image
+    <atomic-picture
       v-if="props.image"
       class="card-cat__img"
       :src="props.image"

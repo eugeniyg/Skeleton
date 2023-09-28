@@ -14,7 +14,7 @@
         :class="{ 'hovered': hoverCard === index }"
         @click="clickCard(index)"
       >
-        <atomic-image :src="promotion.image" alt=""/>
+        <atomic-picture :src="promotion.image" alt=""/>
 
         <div class="content">
           <div class="title">{{ promotion.title }}</div>

@@ -17,8 +17,8 @@
           class="item"
           @click="clickGame(game)"
         >
-          <img v-if="game.images['200x200']" :src="getImageUrl(game.images, 'square')" />
-          <img v-else src="/img/default-game-tumb.png" />
+          <atomic-image v-if="game.images['200x200']" :src="getImageUrl(game.images, 'square')" />
+          <atomic-image v-else src="/img/default-game-tumb.png" />
           <span>{{ game.name }}</span>
         </div>
 

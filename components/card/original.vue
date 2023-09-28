@@ -10,7 +10,7 @@
     @click="clickGame"
     v-click-outside="hideHover"
   >
-    <img class="card-original__img" :src="src" alt="">
+    <atomic-image class="card-original__img" :src="src" />
     <div v-if="gameBages?.length" class="bages">
       <atomic-bage
         v-for="(bage, bageIndex) in gameBages"

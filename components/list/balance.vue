@@ -30,7 +30,7 @@
         :class="{'is-active': activeAccount.currency === item.nativeCurrency}"
         @click="selectCurrency(item.nativeCurrency)"
       >
-        <img class="img" :src="`/img/currency/${item.nativeCurrency}.svg`" alt=""/>
+        <atomic-image class="img" :src="`/img/currency/${item.nativeCurrency}.svg`" />
         <span class="code-title">{{ item.currency }}</span>
         <span class="amount">{{ item.currencySymbol }} {{ item.amount }}</span>
       </div>
@@ -41,7 +41,7 @@
         <atomic-icon id="wallet" class="list-balance__icon"/>
         <div class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.real') }}</div>
         <span class="list-balance__value">{{ activeAccountBalances.real.currencySymbol }} {{ activeAccountBalances.real.balance }}</span>
-        <img
+        <atomic-image
           class="currency-icon"
           v-if="activeAccountBalances.real.currencyIcon"
           :src="`/img/currency/${activeAccountBalances.real.currencyIcon}.svg`" alt=""
@@ -52,7 +52,7 @@
         <atomic-icon id="bonus" class="list-balance__icon"/>
         <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.bonus') }}</span>
         <span class="list-balance__value">{{ activeAccountBalances.bonus.currencySymbol }} {{ activeAccountBalances.bonus.balance }}</span>
-        <img
+        <atomic-image
           class="currency-icon"
           v-if="activeAccountBalances.bonus.currencyIcon"
           :src="`/img/currency/${activeAccountBalances.bonus.currencyIcon}.svg`" alt=""
@@ -90,7 +90,7 @@
         <atomic-icon id="withdraw" class="list-balance__icon"/>
         <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.withdrawal') }}</span>
         <span class="list-balance__value">{{ activeAccountBalances.withdrawal.currencySymbol }} {{ activeAccountBalances.withdrawal.balance }}</span>
-        <img
+        <atomic-image
           class="currency-icon"
           v-if="activeAccountBalances.withdrawal.currencyIcon"
           :src="`/img/currency/${activeAccountBalances.withdrawal.currencyIcon}.svg`" alt=""
@@ -101,7 +101,7 @@
         <atomic-icon id="cashback" class="list-balance__icon"/>
         <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.cashback') }}</span>
         <span class="list-balance__value">{{ cashback.currencySymbol }} {{ cashback.balance }}</span>
-        <img
+        <atomic-image
           class="currency-icon"
           v-if="cashback.currencyIcon"
           :src="`/img/currency/${cashback.currencyIcon}.svg`" alt=""

@@ -1,6 +1,6 @@
 <template>
   <div class="bonus">
-    <img v-if="props.image" class="img" :src="props.image">
+    <atomic-image v-if="props.image" class="img" :src="props.image" />
     <div class="title">
       {{ props.title }}
     </div>
