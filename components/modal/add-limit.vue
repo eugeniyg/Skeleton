@@ -87,9 +87,9 @@
   const currencyKey = ref(0);
 
   const titleMapping = computed(() => ({
-    1: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addBetlabel'),
-    2: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addLosslabel'),
-    3: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addDepositlabel'),
+    1: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addBetLabel'),
+    2: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addLossLabel'),
+    3: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addDepositLabel'),
   }));
 
   const formState = reactive<{
