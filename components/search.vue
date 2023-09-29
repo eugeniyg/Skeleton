@@ -53,7 +53,7 @@ const props = defineProps({
       perPage: 5,
       name: searchValue.value,
       countries: headerCountry.value ? [headerCountry.value] : undefined,
-      sortBy: 'default',
+      sortBy: 'name',
       sortOrder: 'asc'
     };
 
