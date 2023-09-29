@@ -62,12 +62,9 @@
   const defineCurrentAction = (href: string): void => {
     if (!href) return;
     // specific actions like open modal etc
-    if (!isLoggedIn.value && href === '/betting') {
-      showModal('register');
-    } else {
-      // instead of <nuxt-link :to="href"
-      router.push(localizePath(href));
-    }
+    if (!isLoggedIn.value && href === '/betting') showModal('register');
+    // instead of <nuxt-link :to="href"
+    router.push(localizePath(href));
   };
 </script>
 

@@ -1,12 +1,6 @@
 <template>
   <div class="betting">
-    <div id="betting-container" class="container">
-      <not-auth-game
-        v-if="showPlug && (bettingContent?.plug || defaultLocaleBettingContent?.plug)"
-        v-bind="bettingContent?.plug || defaultLocaleBettingContent?.plug"
-        singleMode
-      />
-    </div>
+    <div id="betting-container" class="container"/>
 
     <atomic-seo-text v-if="bettingContent?.seo?.text" v-bind="bettingContent?.seo?.text"/>
   </div>
@@ -33,14 +27,19 @@
   } = useProjectMethods();
 
   const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleSportsbookPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'sportsbook').findOne()),
+    useAsyncData('currentLocaleSportsbookPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'sportsbook')
+      .findOne()),
     currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleSportsbookPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'sportsbook').findOne())
+      : useAsyncData('defaultLocaleSportsbookPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'sportsbook')
+        .findOne())
   ]);
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  const {
+    currentLocaleData,
+    defaultLocaleData
+  } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   const bettingContent: Maybe<ISportsbookPage> = currentLocaleData;
-  const defaultLocaleBettingContent: Maybe<ISportsbookPage> = defaultLocaleData;
+
   setPageSeo(bettingContent?.seo);
 
   const walletStore = useWalletStore();
@@ -72,13 +71,16 @@
       platform: isMobile.value ? 1 : 2,
     };
     const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
+
+    const loggedOutClientId = 'turbodemo';
+
     const params = {
       ...sdkDefaultParams,
       host: runtimeConfig.public.betsyParams?.clientHost,
-      cid: runtimeConfig.public.betsyParams?.clientId,
+      cid: isLoggedIn.value ? runtimeConfig.public.betsyParams?.clientId : loggedOutClientId,
       theme: runtimeConfig.public.betsyParams?.sportsBookTheme,
       customStyles: runtimeConfig.public.betsyParams?.sportsBookStyles ? `${mainHost}${runtimeConfig.public.betsyParams.sportsBookStyles}` : undefined,
-      token: startResponse.token,
+      token: isLoggedIn.value ? startResponse.token : null,
       lang: currentLocale.value?.code || 'en',
     };
 
@@ -88,7 +90,7 @@
   const layoutStore = useLayoutStore();
   const {
     showAlert,
-    compactDrawer
+    compactDrawer,
   } = layoutStore;
 
   const router = useRouter();
@@ -116,23 +118,19 @@
       if (seoTextBlock) seoTextBlock.style.display = 'none';
     }
 
-    if (!isLoggedIn.value) {
-      showPlug.value = true;
-    } else {
-      try {
-        await startGame();
-      } catch (error: any) {
-        if ([14100, 14101, 14105].includes(error.data?.error?.code)) {
-          await router.push({
-            path: localizePath('/profile/limits'),
-            query: {}
-          });
-          showModal('gameLimitReached');
-        } else if (error.data?.error?.code === 14103) {
-          redirectLimitedPlayer();
-        } else {
-          throw error;
-        }
+    try {
+      await startGame();
+    } catch (error: any) {
+      if ([14100, 14101, 14105].includes(error.data?.error?.code)) {
+        await router.push({
+          path: localizePath('/profile/limits'),
+          query: {}
+        });
+        showModal('gameLimitReached');
+      } else if (error.data?.error?.code === 14103) {
+        redirectLimitedPlayer();
+      } else {
+        throw error;
       }
     }
   });
