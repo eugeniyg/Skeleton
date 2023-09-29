@@ -107,14 +107,20 @@
     });
   };
 
+  const defaultRequestParams = {
+    collectionId: props.category.id,
+    perPage: 18,
+    countries: headerCountry.value ? [headerCountry.value] : undefined,
+    sortBy: 'default',
+    sortOrder: 'asc'
+  }
+
   const moreGames = async (): Promise<void> => {
     if (pageMeta.value?.page === pageMeta.value?.totalPages) return;
 
     const gamesResponse = await getFilteredGames({
-      collectionId: props.category.id,
+      ...defaultRequestParams,
       page: pageMeta.value ? pageMeta.value.page + 1 : 1,
-      perPage: 18,
-      countries: headerCountry.value ? [headerCountry.value] : undefined,
     });
     games.value = games.value.concat(gamesResponse.data);
     pageMeta.value = gamesResponse.meta;
@@ -130,11 +136,7 @@
       settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
     });
 
-    const gamesResponse = await getFilteredGames({
-      collectionId: props.category.id,
-      perPage: 18,
-      countries: headerCountry.value ? [headerCountry.value] : undefined
-    });
+    const gamesResponse = await getFilteredGames(defaultRequestParams);
     games.value = gamesResponse.data;
     pageMeta.value = gamesResponse.meta;
     await nextTick();

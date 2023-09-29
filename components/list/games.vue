@@ -15,16 +15,10 @@
   import { storeToRefs } from 'pinia';
   import { IGame } from '@skeleton/core/types';
 
-  const props = defineProps({
-    items: {
-      type: Array,
-      default: () => [],
-    },
-    isCompact: {
-      type: Boolean,
-      default: false,
-    },
-  });
+  const props = defineProps<{
+    items: string[],
+    isCompact?: boolean
+  }>();
 
   const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();
