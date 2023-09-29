@@ -52,7 +52,9 @@ const props = defineProps({
       page: loadPage.value,
       perPage: 5,
       name: searchValue.value,
-      countries: headerCountry.value ? [headerCountry.value] : undefined
+      countries: headerCountry.value ? [headerCountry.value] : undefined,
+      sortBy: 'default',
+      sortOrder: 'asc'
     };
 
     return await getFilteredGames(params);
@@ -97,8 +99,10 @@ const props = defineProps({
     const defaultGamesResponse = await getFilteredGames({
       page: 1,
       perPage: 4,
-      collectionId: getTurbogamesId || currentLocationCollections.value[0]?.id,
-      countries: headerCountry.value ? [headerCountry.value] : undefined
+      collectionId: getTurbogamesId ? [getTurbogamesId] : [currentLocationCollections.value[0]?.id],
+      countries: headerCountry.value ? [headerCountry.value] : undefined,
+      sortBy: 'default',
+      sortOrder: 'asc'
     });
     defaultGames.value = defaultGamesResponse.data;
   });

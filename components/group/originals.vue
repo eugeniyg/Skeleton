@@ -76,14 +76,20 @@
     });
   };
 
+  const formatIdentity = (list: { identity: string }[]) => list?.map((item: { identity: string }):string => item.identity);
+  const defaultRequestParams = {
+    identity: formatIdentity(globalComponentsContent?.originals?.items || []),
+    perPage: 18,
+    countries: headerCountry.value ? [headerCountry.value] : undefined,
+    sortBy: 'default',
+    sortOrder: 'asc'
+  }
   const moreGames = async (): Promise<void> => {
     if (pageMeta.value?.page === pageMeta.value?.totalPages) return;
 
     const gamesResponse = await getFilteredGames({
-      identity: formatIdentity(globalComponentsContent?.originals?.items || []),
+      ...defaultRequestParams,
       page: pageMeta.value ? pageMeta.value.page + 1 : 1,
-      perPage: 18,
-      countries: headerCountry.value ? [headerCountry.value] : undefined
     });
     games.value = games.value.concat(gamesResponse.data);
     pageMeta.value = gamesResponse.meta;
@@ -93,8 +99,6 @@
   const { initObserver } = useProjectMethods();
 
   const emit = defineEmits(['initialLoad']);
-
-  const formatIdentity = (list: { identity: string }[]) => list?.map((item: { identity: string }):string => item.identity);
 
   const isShow = computed(() => {
     return globalComponentsContent?.originals?.items?.length && globalComponentsContent?.originals?.display
@@ -108,11 +112,7 @@
       });
 
       try {
-        const gamesResponse = await getFilteredGames({
-          identity: formatIdentity(globalComponentsContent?.originals?.items || []),
-          perPage: 18,
-          countries: headerCountry.value ? [headerCountry.value] : undefined
-        });
+        const gamesResponse = await getFilteredGames(defaultRequestParams);
         games.value = gamesResponse.data;
         pageMeta.value = gamesResponse.meta;
       } catch {
