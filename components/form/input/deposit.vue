@@ -7,10 +7,7 @@
         @click="toggleSelect"
         v-click-outside="closeDropdown"
       >
-        <atomic-fiat-display
-          v-if="showEquivalentBalance"
-          :showCurrencyPopup="isShow"
-        />
+        <atomic-fiat-display v-if="showEquivalentBalance" />
         <div class="select__content" v-else>
           <div class="amount">{{ balanceFormat.amount }}</div>
           <div class="label">{{ balanceFormat.currency }}</div>
