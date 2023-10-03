@@ -7,7 +7,7 @@
     <button-base
       type="primary"
       size="sm"
-      @click.once="clickButton"
+      @click="clickButton"
     >
       {{ props.gameContent?.demoButton }}
     </button-base>

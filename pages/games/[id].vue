@@ -100,7 +100,7 @@
       return;
     }
 
-    isDemo.value = !isDemo.value;
+    isDemo.value = false;
 
     const { data, error } = await startGame();
     if (data) router.replace({ query: { real: `${!isDemo.value}` } });
