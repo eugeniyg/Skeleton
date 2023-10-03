@@ -27,6 +27,13 @@
       showArrows
     />
 
+    <group-aero
+      v-if="globalComponentsContent?.aeroGroup?.display && aeroCategory"
+      showAllBtn
+      showArrows
+      :category="aeroCategory"
+    />
+
     <group-games
       v-if="hotCategory"
       showAllBtn
@@ -100,6 +107,7 @@
 
   const hotCategory = currentLocationCollections.value.find((collection) => collection.identity === 'hot');
   const newCategory = currentLocationCollections.value.find((collection) => collection.identity === 'new');
+  const aeroCategory = currentLocationCollections.value.find((collection) => collection.identity === globalComponentsContent?.value?.aeroGroup?.collectionIdentity);
 
   const cardsModifier = computed(() => {
     const length = Object.keys(getContent(homeContent, defaultLocaleHomeContent, 'categories'))?.length || 0
