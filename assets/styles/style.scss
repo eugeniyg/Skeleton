@@ -136,7 +136,7 @@ body {
 .main-layout {
   display: grid;
   grid-template-areas:
-    "drawer app-header"
+    "drawer app-header-root"
     "drawer app-main"
     "drawer app-footer";
   grid-template-columns: var(--body-template-columns, 0 1fr);
