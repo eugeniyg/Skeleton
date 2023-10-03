@@ -6,6 +6,7 @@
       @changeMode="changeGameMode"
       :gameContent="gameContent || defaultLocaleGameContent"
       :showPlug="showPlug && !isLoggedIn && !gameInfo.isDemoMode"
+      :isDemo="isDemo"
     />
     <atomic-seo-text v-if="gameContent?.seo?.text" v-bind="gameContent?.seo?.text" />
   </div>
@@ -25,7 +26,7 @@
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
-  const { showModal, showAlert } = useLayoutStore();
+  const { showModal, showAlert, compactDrawer } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
   const {
@@ -131,6 +132,10 @@
     }
   });
 
+  onBeforeMount(() => {
+    compactDrawer(true, false);
+  });
+
   onMounted(async () => {
     document.body.classList.add('is-mob-nav-vertical');
     document.body.classList.add('is-game-page');
@@ -147,6 +152,9 @@
   onBeforeUnmount(() => {
     document.body.classList.remove('is-mob-nav-vertical');
     document.body.classList.remove('is-game-page');
+
+    const storageDrawerCompact = localStorage.getItem('IS_DRAWER_COMPACT') === 'true';
+    compactDrawer(storageDrawerCompact, false);
   });
 </script>
 

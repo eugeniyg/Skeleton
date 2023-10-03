@@ -14,15 +14,4 @@
   .btn-primary {
     margin-right: auto;
   }
-
-  .switch {
-    display: flex;
-    align-items: center;
-    grid-column-gap: rem(8px);
-  }
-
-  .switch-label {
-    @include font($heading-2);
-    color: var(--text-secondary);
-  }
 }
