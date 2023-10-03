@@ -1,13 +1,17 @@
+.app-header-root {
+  grid-area: app-header-root;
+  position: sticky;
+  top: 0;
+  z-index: var(--header-z-index, 2);
+}
+
 .app-header {
   grid-area: app-header;
   height: rem(64px);
   @extend %flex-items-center;
   padding: var(--padding, 0 #{rem(16px)});
-  position: sticky;
-  top: 0;
   box-shadow: var(--shadow-layer);
   background-color: var(--layer-bg);
-  z-index: var(--header-z-index, 2);
   grid-column-gap: 2px;
   @extend %container;
 

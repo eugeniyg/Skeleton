@@ -1,79 +1,85 @@
 <template>
-  <header class="app-header" :class="headerClassModifiers">
-    <button class="app-header__back-btn" @click="backToHomePage" v-if="isGamePage && isLoggedIn">
-      <atomic-icon id="arrow_previous"/>
-    </button>
+  <header class="app-header-root">
+    <pwa v-if="isLoggedIn" display="mobile" />
+    <div class="app-header" :class="headerClassModifiers">
+      <button class="app-header__back-btn" @click="backToHomePage" v-if="isGamePage && isLoggedIn">
+        <atomic-icon id="arrow_previous"/>
+      </button>
 
-    <atomic-logo />
+      <atomic-logo />
 
-    <!--<template v-if="!isGamePage">-->
+      <!--<template v-if="!isGamePage">-->
       <atomic-vertical-divider/>
 
       <button-search
-        data-show="mobile"
-        @show-search="toggle"
-        :is-active="isShowSearch"
+          data-show="mobile"
+          @show-search="toggle"
+          :is-active="isShowSearch"
       />
 
       <atomic-gift-notification
-        v-if="isLoggedIn"
-        display="mobile"
-        :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
-      />
-    <!--</template>-->
-
-    <div class="items">
-      <search
-        :isShow="isShowSearch"
-        @hideSearch="isShowSearch = false"
-      />
-
-      <button-search
-        data-show="desktop"
-        @show-search="toggle"
-        :is-active="isShowSearch"
-      />
-
-      <template v-if="isLoggedIn">
-        <atomic-gift-notification
-          display="desktop"
+          v-if="isLoggedIn"
+          display="mobile"
           :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
+      />
+      <!--</template>-->
+
+      <div class="items">
+        <search
+            :isShow="isShowSearch"
+            @hideSearch="isShowSearch = false"
         />
-        <!--
-        <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
-        <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
-        -->
-        <form-input-deposit/>
 
-        <div v-click-outside="closeUserNav" class="nav-user__wrap">
-          <atomic-avatar
-            @toggle="toggleProfileNav"
-            :is-button="true"
+        <button-search
+            data-show="desktop"
+            @show-search="toggle"
+            :is-active="isShowSearch"
+        />
+
+        <template v-if="isLoggedIn">
+          <atomic-gift-notification
+              display="desktop"
+              :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
           />
-          <nav-user @logout="logout"/>
-        </div>
 
-      </template>
+          <pwa display="desktop" />
 
-      <template v-else>
-        <button-base
-          type="primary"
-          size="md"
-          @click="showModal('register')"
-        >
-          <atomic-icon id="user-new" class="btn-primary__icon"/>
-          <span class="btn-primary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton') }}</span>
-        </button-base>
+          <!--
+          <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
+          <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
+          -->
+          <form-input-deposit/>
 
-        <button-base
-          type="secondary"
-          size="md"
-          @click="showModal('signIn')"
-        >
-          <atomic-icon id="user" class="btn-secondary__icon"/>
-          <span class="btn-secondary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.loginButton') }}</span>
-        </button-base>
-      </template>
+          <div v-click-outside="closeUserNav" class="nav-user__wrap">
+            <atomic-avatar
+                @toggle="toggleProfileNav"
+                :is-button="true"
+            />
+            <nav-user @logout="logout"/>
+          </div>
+
+        </template>
+
+        <template v-else>
+          <button-base
+              type="primary"
+              size="md"
+              @click="showModal('register')"
+          >
+            <atomic-icon id="user-new" class="btn-primary__icon"/>
+            <span class="btn-primary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton') }}</span>
+          </button-base>
+
+          <button-base
+              type="secondary"
+              size="md"
+              @click="showModal('signIn')"
+          >
+            <atomic-icon id="user" class="btn-secondary__icon"/>
+            <span class="btn-secondary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.loginButton') }}</span>
+          </button-base>
+        </template>
+      </div>
     </div>
   </header>
 </template>

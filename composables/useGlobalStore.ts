@@ -184,6 +184,29 @@ export const useGlobalStore = defineStore('globalStore', {
       return /iPad|iPhone|iPod/.test(window.navigator.platform)
         || /iPad|iPhone|iPod/.test(window.navigator.userAgent);
     },
+
+    osPlatform():string|null {
+      const userAgent = window.navigator.userAgent;
+      const platform = window.navigator?.userAgentData?.platform || window.navigator.platform;
+      const macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K', 'macOS'];
+      const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+      const iosPlatforms = ['iPhone', 'iPad', 'iPod'];
+
+      let os = null;
+      if (macosPlatforms.indexOf(platform) !== -1) {
+        os = 'Mac OS';
+      } else if (iosPlatforms.indexOf(platform) !== -1) {
+        os = 'iOS';
+      } else if (windowsPlatforms.indexOf(platform) !== -1) {
+        os = 'Windows';
+      } else if (/Android/.test(userAgent)) {
+        os = 'Android';
+      } else if (/Linux/.test(platform)) {
+        os = 'Linux';
+      }
+
+      return os;
+    }
   },
 
   actions: {
