@@ -4,7 +4,7 @@
     <atomic-icon v-if="titleIcon" :id="titleIcon"/>
 
     <h2 class="group-aero__title">
-      {{ globalComponentsContent?.aeroGroup?.label }}
+      {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'label') }}
     </h2>
 
     <button-base
@@ -25,39 +25,40 @@
 
     <div class="group-aero__wrapper">
       <picture class="group-aero__bg">
-        <source :media="'(max-width: 768px)'" :srcset="createSrcSet(globalComponentsContent?.aeroGroup?.images.mobile.backgroundImage)" />
-        <source :media="'(min-width: 769px)'" :srcset="createSrcSet(globalComponentsContent?.aeroGroup?.images.desktop.backgroundImage)" />
-        <atomic-image class="group-aero__bg-img" :src="globalComponentsContent?.aeroGroup?.images.mobile.backgroundImage" />
+        <source :media="'(max-width: 768px)'" :srcset="createSrcSet(mobileLayoutBackground)" />
+        <source :media="'(min-width: 769px)'" :srcset="createSrcSet(desktopLayoutBackground)" />
+        <atomic-image class="group-aero__bg-img" :src="mobileLayoutBackground" />
       </picture>
 
 
       <div class="group-aero__game">
-        <atomic-picture :src="globalComponentsContent?.aeroGroup?.game?.image"/>
+        <atomic-picture :src="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.image')"/>
 
         <div class="group-aero__game-title">
-          <span>{{ globalComponentsContent?.aeroGroup?.game?.title }}</span>
+          <span>{{ gameInfo?.name }}</span>
           <button-favorite
-            v-if="isLoggedIn && globalComponentsContent?.aeroGroup?.game?.identity"
-            :gameId="globalComponentsContent?.aeroGroup?.game?.identity"
+            v-if="isLoggedIn"
+            :gameId="gameInfo?.id"
           />
         </div>
-        <div class="group-aero__game-provider">{{ globalComponentsContent?.aeroGroup?.game?.provider }}</div>
+        <div class="group-aero__game-provider">{{ gameInfo?.provider?.name }}</div>
 
         <div class="group-aero__game-actions">
           <button-base
             type="primary"
             size="sm"
-            :url="playButtonUrl"
+            @click="openGame(true)"
           >
-            {{ globalComponentsContent?.aeroGroup?.game?.playButton?.label }}
+            {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.playButtonLabel') }}
           </button-base>
 
           <button-base
             type="secondary"
             size="sm"
-            :url="demoButtonUrl"
+            @click="openGame(false)"
+            v-if="gameInfo?.isDemoMode"
           >
-            {{ globalComponentsContent?.aeroGroup?.game?.demoButton?.label }}
+            {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.demoButtonLabel') }}
           </button-base>
         </div>
       </div>
@@ -93,6 +94,14 @@
   import { storeToRefs } from "pinia";
 
   const props = defineProps({
+    currentLocaleContent: {
+      type: Object,
+      required: false
+    },
+    defaultLocaleContent: {
+      type: Object,
+      required: false
+    },
     category: {
       type: Object,
       required: true,
@@ -109,11 +118,13 @@
 
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();
+  const { showModal } = useLayoutStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = globalStore;
   const { headerCountry } = storeToRefs(globalStore);
   const { getContent, createSrcSet } = useProjectMethods();
   const titleIcon = gameCategoriesObj[props.category.identity]?.icon;
+  const router = useRouter();
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
@@ -123,14 +134,37 @@
   const pageMeta = ref<IPaginationMeta>();
   const { getFilteredGames } = useCoreGamesApi();
   const { localizePath } = useProjectMethods();
+  const { getGamesInfo } = useCoreGamesApi();
 
-  const playButtonUrl = computed(() => {
-    return localizePath(globalComponentsContent?.aeroGroup?.game?.playButton?.url || '');
+  const gameInfo = ref<IGame>();
+
+  const mobileLayoutBackground = computed(() => {
+    return getContent(props.currentLocaleContent, props.defaultLocaleContent, 'images.mobile.backgroundImage')
   });
 
-  const demoButtonUrl = computed(() => {
-    return localizePath(globalComponentsContent?.aeroGroup?.game?.demoButton?.url || '');
+  const desktopLayoutBackground = computed(() => {
+    return getContent(props.currentLocaleContent, props.defaultLocaleContent, 'images.desktop.backgroundImage')
+  });
+
+  const gameIdentity = computed(() => {
+    return getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.identity')
   })
+
+  try {
+    gameInfo.value = await getGamesInfo(gameIdentity.value);
+  } catch {
+    console.error('Something went wrong with game info fetching!');
+  }
+
+  const openGame = (isReal: boolean): void => {
+    if (!isReal) {
+      router.push(localizePath(`/games/${gameIdentity.value}`));
+    } else if (!isLoggedIn.value) {
+      showModal('register');
+    } else {
+      router.push(localizePath(`/games/${gameIdentity.value}?real=true`));
+    }
+  };
 
   const scrollHandler = (): void => {
     if (!scrollContainer.value) return;
