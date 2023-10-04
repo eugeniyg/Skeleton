@@ -50,7 +50,6 @@
   const router = useRouter();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal } = useLayoutStore();
 
   const { localizePath } = useProjectMethods();
   const {
@@ -61,9 +60,6 @@
 
   const defineCurrentAction = (href: string): void => {
     if (!href) return;
-    // specific actions like open modal etc
-    if (!isLoggedIn.value && href === '/betting') showModal('register');
-    // instead of <nuxt-link :to="href"
     router.push(localizePath(href));
   };
 </script>

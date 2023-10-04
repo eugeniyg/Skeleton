@@ -11,7 +11,7 @@
       v-if="getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem')"
       class="nav-mob__item"
       :class="{ active: $route.path === localizePath(getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem.url')) || $route.query.category }"
-      @click="clickItem(getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem.url'))"
+      :url="getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem.url')"
     >
       <atomic-icon
         :id="getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem.icon')"
@@ -34,7 +34,7 @@
       :key="link.url"
       class="nav-mob__item"
       :class="{ active: $route.path === localizePath(link.url) }"
-      @click="clickItem(link.url)"
+      :url="link.url"
     >
       <atomic-icon :id="link.icon" />
       <span class="nav-mob__text">{{ link.label }}</span>
@@ -45,7 +45,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const router = useRouter();
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
@@ -56,11 +55,6 @@
     defaultLocaleLayoutData
   } = useGlobalStore();
   const { localizePath, getContent } = useProjectMethods();
-  const clickItem = (url: string):void => {
-    if (url === '/betting') {
-      isLoggedIn.value ? router.push(localizePath(url)) : showModal('register');
-    } else router.push(localizePath(url));
-  };
 
   const clickMainButton = ():void => {
     isLoggedIn.value ? openDepositModal() : showModal('register');
