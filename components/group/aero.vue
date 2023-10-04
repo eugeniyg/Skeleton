@@ -146,23 +146,21 @@
     return getContent(props.currentLocaleContent, props.defaultLocaleContent, 'images.desktop.backgroundImage')
   });
 
-  const gameIdentity = computed(() => {
-    return getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.identity')
-  })
+  const gameIdentity = getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.identity');
 
   try {
-    gameInfo.value = await getGamesInfo(gameIdentity.value);
+    gameInfo.value = await getGamesInfo(gameIdentity);
   } catch {
     console.error('Something went wrong with game info fetching!');
   }
 
   const openGame = (isReal: boolean): void => {
     if (!isReal) {
-      router.push(localizePath(`/games/${gameIdentity.value}`));
+      router.push(localizePath(`/games/${gameIdentity}`));
     } else if (!isLoggedIn.value) {
       showModal('register');
     } else {
-      router.push(localizePath(`/games/${gameIdentity.value}?real=true`));
+      router.push(localizePath(`/games/${gameIdentity}?real=true`));
     }
   };
 
