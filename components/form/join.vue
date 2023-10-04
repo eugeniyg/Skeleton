@@ -81,7 +81,7 @@
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
   const { setFormData } = useProjectMethods();
-  const { closeModal } = useLayoutStore();
+  const { closeModal, openDepositModal } = useLayoutStore();
   const fieldsStore = useFieldsStore();
   const { selectOptions } = storeToRefs(fieldsStore);
   const globalStore = useGlobalStore();
@@ -144,6 +144,7 @@
       isLockedAsyncButton.value = true;
       await registration(registrationFormData);
       if (affiliateTag) localStorage.removeItem('affiliateTag');
+      await openDepositModal()
       closeModal('register');
     } catch (error:any) {
       if (error.response?.status === 422) {
