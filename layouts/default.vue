@@ -93,8 +93,11 @@
     isDrawerCompact.value = clientCompactDrawer === 'true';
   };
 
-  onMounted(async () => {
+  onBeforeMount(() => {
     checkDrawer();
+  })
+
+  onMounted(async () => {
     disabledTransition.value = false;
     const cookieValue = useCookie('accept-cookie');
     if (!cookieValue.value) {

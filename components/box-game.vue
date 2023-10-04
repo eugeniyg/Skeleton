@@ -1,5 +1,7 @@
 <template>
   <div class="box-game" :class="boxGameClassModifiers">
+    <h1 class="box-game__title">{{ props.gameInfo?.name }}</h1>
+
     <div class="container">
       <iframe
         v-if="props.frameLink"
@@ -17,7 +19,13 @@
 
     <nav-game :showPlug="showPlug" :gameInfo="gameInfo"/>
 
-    <panel-mode v-if="!showPlug" :gameContent="gameContent" @changeMode="emit('changeMode')"/>
+    <transition name="fade" mode="out-in">
+      <panel-mode
+        v-if="!showPlug && props.isDemo"
+        :gameContent="gameContent"
+        @changeMode="emit('changeMode')"
+      />
+    </transition>
 
     <group-games
       v-if="recommendedCategory"
@@ -30,25 +38,16 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { IGame } from "@skeleton/core/types";
+  import { IGamePage } from "~/types";
 
-  const props = defineProps({
-    frameLink: {
-      type: String,
-      required: false,
-    },
-    showPlug: {
-      type: Boolean,
-      default: true,
-    },
-    gameInfo: {
-      type: Object,
-      required: false,
-    },
-    gameContent: {
-      type: Object,
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    frameLink?: string;
+    showPlug: boolean;
+    gameInfo?: IGame;
+    gameContent?: IGamePage;
+    isDemo: boolean;
+  }>();
 
   const emit = defineEmits(['changeMode']);
 
@@ -58,7 +57,10 @@
   const { isLoggedIn } = storeToRefs(profileStore);
 
   const boxGameClassModifiers = computed(() => {
-    return isLoggedIn.value ? 'box-game--login' : 'box-game--logout'
+    return [
+      isLoggedIn.value ? 'box-game--login' : 'box-game--logout',
+      { 'box-game--demo': props.isDemo }
+    ]
   });
 </script>
 
