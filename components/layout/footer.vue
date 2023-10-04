@@ -42,6 +42,7 @@
           :src="layoutData?.footer?.curacao?.frameLink || defaultLocaleLayoutData?.footer?.curacao?.frameLink"
           width="132px"
           height="62px"
+          data-not-lazy
         />
 
         <div
