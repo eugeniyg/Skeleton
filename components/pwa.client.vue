@@ -78,6 +78,14 @@
     return (osPlatform.value as string).replaceAll(' ', '').toLowerCase();
   });
 
+  onMounted(() => {
+    if (window.pwa) {
+      window.pwa.onInit(() => {
+        allowInstall.value = !!window.pwa?.allowInstall;
+      });
+    }
+  });
+
   const installPWA = () => {
     window.pwa?.install().then((res) => {
       if (res.outcome === 'accepted') {
