@@ -180,7 +180,7 @@ body {
     --padding: #{rem(24px)} #{rem(48px)}
   }
 
-  .group-games, .group-winners, .group-promotions, .favorite-recently, .cards-wrap, .group-turbo, .cards-providers, .group-originals {
+  .group-games, .group-winners, .group-promotions, .favorite-recently, .cards-wrap, .group-turbo, .cards-providers, .group-originals, .group-aero {
     margin-bottom: rem(32px);
 
     @include media(l) {
