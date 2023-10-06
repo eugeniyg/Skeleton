@@ -1,0 +1,65 @@
+.game-return {
+  position: fixed;
+  overflow: hidden;
+  bottom: rem(56px);
+  left: 0;
+  right: 0;
+
+  &__background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+  }
+
+  &__container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: rem(8px) rem(16px);
+    background: var(--alpha-fade-layer-01);
+    backdrop-filter: blur(12px);
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+  }
+
+  &__game-image {
+    width: rem(40px);
+    height: rem(40px);
+    border-radius: rem(8px);
+  }
+
+  &__content {
+    margin-left: rem(8px);
+    margin-right: auto;
+    @include font($subheading-1);
+    color: var(--text-primary);
+
+    div:first-child {
+      @include font($body-1);
+      color: var(--text-secondary);
+    }
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: rem(12px);
+
+    a .icon {
+      --icon-size: 24px;
+      color: var(--icon-contrast);
+    }
+
+    .icon {
+      --icon-size: 20px;
+      color: var(--button-icn-ghost-low-contrast);
+    }
+  }
+}

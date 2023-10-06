@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useNotification } from '@kyvg/vue3-notification';
 import { IAlert } from "~/types";
+import {IGame} from "@skeleton/core/types";
 
 interface IModals extends Record<string, any> {
   register: boolean;
@@ -36,6 +37,7 @@ interface ILayoutStoreState extends Record<string, any>{
   modals: IModals;
   modalsUrl: IModalsUrls;
   lastNotificationTime: number;
+  returnGame: Maybe<string|IGame>;
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -67,7 +69,8 @@ export const useLayoutStore = defineStore('layoutStore', {
         forgotPass: 'forgot-pass',
         resetPass: 'reset-pass',
       },
-    lastNotificationTime: 0
+    lastNotificationTime: 0,
+    returnGame: undefined
   }),
 
   actions: {
@@ -208,13 +211,34 @@ export const useLayoutStore = defineStore('layoutStore', {
       await getWithdrawMethods();
       this.showModal('withdraw');
     },
+
+    setReturnGame(gameData: Maybe<IGame|string>): void {
+      if (gameData && this.returnGame !== 'disabled') {
+        sessionStorage.setItem('returnGame', JSON.stringify(gameData));
+        this.returnGame = gameData
+      }
+    },
+
+    deleteReturnGame(): void {
+      sessionStorage.removeItem('returnGame');
+      this.returnGame = undefined
+    }
   },
 
   getters: {
     isGamePage() {
       const route = useRoute();
-      const routeName = route.name as string;
-      return routeName.includes('games-id');
+      return route.name === 'games-id' || route.name === 'locale-games-id';
+    },
+
+    isHomePage() {
+      const route = useRoute();
+      return route.name === 'index' || route.name === 'locale-index';
+    },
+
+    isSportsbookPage() {
+      const route = useRoute();
+      return route.name === 'betting' || route.name === 'locale-betting';
     }
   }
 });
