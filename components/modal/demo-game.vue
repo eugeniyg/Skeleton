@@ -3,7 +3,6 @@
     v-model="openModal"
     class="modal-demo-game"
     :clickToClose="false"
-    @clickOutside="openModal = false"
   >
     <div class="scroll">
       <div class="header">
@@ -44,30 +43,25 @@
     isDemo: boolean;
   }>()
 
+  const emit = defineEmits(['playReal']);
+
   const openModal = ref<boolean>(false);
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { activeAccount } = storeToRefs(walletStore);
+
   const modalType = computed<'real'|'deposit'|'registration'>(() => {
     if (!isLoggedIn.value) return 'registration';
     if (activeAccount.value?.realBalance ?? 0 > 0) return 'real';
     return 'deposit';
   });
-  const emit = defineEmits(['closeModal', 'playReal']);
-  const { getContent } = useProjectMethods();
 
   const { openDepositModal, showModal } = useLayoutStore();
   const confirm = async (): Promise<void> => {
     if (modalType.value === 'real') emit('playReal');
-
-    if (modalType.value === 'deposit') {
-      await openDepositModal();
-    }
-
-    if (modalType.value === 'registration') {
-      showModal('register');
-    }
+    else if (modalType.value === 'deposit') await openDepositModal();
+    else if (modalType.value === 'registration') showModal('register');
 
     openModal.value = false
   }
