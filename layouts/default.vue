@@ -12,7 +12,7 @@
 
     <main
       class="app-main"
-      :class="{'is-overflow': isHomePage(), 'is-overflow-initial': isProfileLimitsPage }"
+      :class="{'is-overflow': isHomePage, 'is-overflow-initial': isProfileLimitsPage }"
       :data-route="route.name"
     >
       <slot />
@@ -21,6 +21,15 @@
     <layout-footer />
 
     <atomic-opacity-layer />
+
+    <client-only>
+      <transition name="fade" mode="out-in">
+        <layout-game-return
+          v-if="showReturnGame"
+          :game="returnGame"
+        />
+      </transition>
+    </client-only>
 
     <transition name="fade" mode="out-in">
       <nav-mob/>
@@ -49,12 +58,20 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
+  const globalStore = useGlobalStore();
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
-  const { isHomePage, localizePath } = useProjectMethods();
+  const { localizePath } = useProjectMethods();
+
+  const { isMobile } = storeToRefs(globalStore);
 
   const {
-    showCookiePopup, isDrawerCompact,
+    showCookiePopup,
+    isDrawerCompact,
+    returnGame,
+    isHomePage,
+    isGamePage,
+    isSportsbookPage
   } = storeToRefs(layoutStore);
   const { checkModals } = layoutStore;
   checkModals();
@@ -93,9 +110,20 @@
     isDrawerCompact.value = clientCompactDrawer === 'true';
   };
 
+  const showReturnGame = computed(() => {
+    return returnGame.value
+      && returnGame.value !== 'disabled'
+      && isMobile.value
+      && !isGamePage.value
+      && !isSportsbookPage.value;
+  });
+
   onBeforeMount(() => {
     checkDrawer();
-  })
+
+    const storageReturnGame = sessionStorage.getItem('returnGame');
+    if (storageReturnGame) returnGame.value = JSON.parse(storageReturnGame);
+  });
 
   onMounted(async () => {
     disabledTransition.value = false;
