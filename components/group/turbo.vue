@@ -15,6 +15,7 @@
     <button-base
       class="btn-show-all"
       type="ghost"
+      size="sm"
       :url="globalComponentsContent?.turbogames?.showAll?.url"
     >
       {{ globalComponentsContent?.turbogames?.showAll?.label }}

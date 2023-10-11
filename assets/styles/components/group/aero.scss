@@ -37,10 +37,6 @@
     @include font($heading-1);
     --width: auto;
 
-    @include media(xs) {
-      padding: 0;
-    }
-
     @include media(sm) {
       @include upd-font($heading-2);
     }
