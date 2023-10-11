@@ -198,12 +198,10 @@ body {
   }
 }
 
-form {
-  .label {
-    .required {
-      display: inline-block;
-      transform: translate(2px, -2px) scale(0.8);
-    }
+.label {
+  .required {
+    display: inline-block;
+    transform: translate(2px, -2px) scale(0.8);
   }
 }
 
