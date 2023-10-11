@@ -1,6 +1,6 @@
 <template>
   <label :class="classes">
-    <span v-if="props.label" class="label">{{ props.label }}<sup v-if="props.isRequired">*</sup></span>
+    <span v-if="props.label" class="label">{{ props.label }}<span class="required" v-if="props.isRequired">*</span></span>
 
     <input
       class="field"

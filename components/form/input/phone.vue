@@ -1,7 +1,7 @@
 <template>
   <div class="input-phone" :class="{ 'has-error': props.hint?.variant === 'error' }">
     <span v-if="props.label" class="label">
-      {{ props.label }}<sup v-if="props.isRequired">*</sup>
+      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
     </span>
 
     <form-input-dropdown

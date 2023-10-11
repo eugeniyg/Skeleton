@@ -13,7 +13,7 @@
       <atomic-icon id="check"/>
       <p>
         <span v-html="label"/>
-        <sup v-if="isRequired">*</sup>
+        <sup v-if="isRequired"> *</sup>
       </p>
     </label>
   </div>

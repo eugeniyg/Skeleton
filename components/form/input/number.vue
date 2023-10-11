@@ -1,7 +1,7 @@
 <template>
   <label :class="classes">
     <span v-if="label" class="label">
-      {{ label }}<sup v-if="isRequired">*</sup>
+      {{ label }}<span class="required" v-if="isRequired">*</span>
     </span>
 
     <slot name="pills"/>
