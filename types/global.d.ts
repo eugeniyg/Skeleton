@@ -7,7 +7,8 @@ declare global {
         pwa?: {
             allowInstall: boolean;
             originalEvent: any;
-            install: () => Promise<any>
+            install: () => Promise<any>;
+            onInit: (cb: () => void) => void
         }
     }
 }

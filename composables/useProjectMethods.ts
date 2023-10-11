@@ -110,11 +110,6 @@ export const useProjectMethods = () => {
     return `${webpSrc}, ${src}`;
   };
 
-  const isHomePage = ():boolean => {
-    const route = useRoute();
-    return route.name === 'index' || route.name === 'locale-index';
-  };
-
   const preloaderStart = ():void => {
     const preloaderEl = document.querySelector('.preloader');
     if (preloaderEl) preloaderEl.classList.value = 'preloader';
@@ -305,7 +300,6 @@ export const useProjectMethods = () => {
     getImageUrl,
     preloaderStart,
     localizePath,
-    isHomePage,
     getNicknameFromEmail,
     formatBalance,
     getMainBalanceFormat,

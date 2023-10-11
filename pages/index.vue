@@ -21,17 +21,20 @@
       <!--<group-benefits/>-->
     </div>
 
-    <group-turbo/>
-
-    <group-originals
+    <group-aero
+      v-if="homeContent?.aeroGroup?.display && aeroCategory"
+      showAllBtn
       showArrows
+      :category="aeroCategory"
+      :currentLocaleContent="homeContent?.aeroGroup"
+      :defaultLocaleContent="defaultLocaleHomeContent?.aeroGroup"
     />
 
     <group-games
-      v-if="hotCategory"
+      v-if="topSlotsCategory"
       showAllBtn
       showArrows
-      :category="hotCategory"
+      :category="topSlotsCategory"
     />
 
     <div class="sports-container">
@@ -40,10 +43,10 @@
     </div>
 
     <group-games
-      v-if="newCategory"
+      v-if="liveCasinoCategory"
       showAllBtn
       showArrows
-      :category="newCategory"
+      :category="liveCasinoCategory"
     />
 
     <cards-group
@@ -58,7 +61,7 @@
       </template>
     </cards-group>
 
-    <group-promotions/>
+    <group-promotions />
 
     <atomic-seo-text v-if="homeContent?.seo?.text" v-bind="homeContent.seo.text"/>
   </div>
@@ -98,8 +101,9 @@
   const defaultLocaleHomeContent: Maybe<IHomePage> = defaultLocaleData
   setPageSeo(homeContent?.seo);
 
-  const hotCategory = currentLocationCollections.value.find((collection) => collection.identity === 'hot');
-  const newCategory = currentLocationCollections.value.find((collection) => collection.identity === 'new');
+  const topSlotsCategory = currentLocationCollections.value.find((collection) => collection.identity === 'top-slots');
+  const liveCasinoCategory = currentLocationCollections.value.find((collection) => collection.identity === 'liveshow');
+  const aeroCategory = currentLocationCollections.value.find((collection) => collection.identity === homeContent?.aeroGroup?.collectionIdentity);
 
   const cardsModifier = computed(() => {
     const length = Object.keys(getContent(homeContent, defaultLocaleHomeContent, 'categories'))?.length || 0

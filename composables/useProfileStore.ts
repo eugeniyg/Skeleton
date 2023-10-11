@@ -162,6 +162,8 @@ export const useProfileStore = defineStore('profileStore', {
       } finally {
         this.isLoggedIn = false;
         this.finishProfileDependencies();
+        const { deleteReturnGame } = useLayoutStore();
+        deleteReturnGame();
         const router = useRouter();
         const { localizePath } = useProjectMethods();
         router.push(localizePath('/'));

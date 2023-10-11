@@ -8,6 +8,13 @@
       :showPlug="showPlug && !isLoggedIn && !gameInfo.isDemoMode"
       :isDemo="isDemo"
     />
+
+    <modal-demo-game
+      :content="gameContent?.demoModal || defaultLocaleGameContent?.demoModal"
+      :isDemo="isDemo"
+      @playReal="changeGameMode"
+    />
+
     <atomic-seo-text v-if="gameContent?.seo?.text" v-bind="gameContent?.seo?.text" />
   </div>
 </template>
@@ -26,7 +33,7 @@
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
-  const { showModal, showAlert, compactDrawer } = useLayoutStore();
+  const { showModal, showAlert, compactDrawer, setReturnGame } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
   const {
@@ -153,6 +160,7 @@
     document.body.classList.remove('is-mob-nav-vertical');
     document.body.classList.remove('is-game-page');
 
+    if (isLoggedIn.value && !isDemo.value) setReturnGame(gameInfo.value);
     const storageDrawerCompact = localStorage.getItem('IS_DRAWER_COMPACT') === 'true';
     compactDrawer(storageDrawerCompact, false);
   });
