@@ -71,17 +71,61 @@
     display: var(--display, flex);
     align-items: center;
     overflow-x: auto;
-    margin: rem(-16px) rem(-16px) 0;
-    padding: rem(16px) rem(16px) 0;
-    scroll-padding: rem(16px);
-    grid-column-gap: 8px;
+    margin: var(--items-margin, (-16px -16px 0));
+    padding: var(--items-padding, (16px 16px 0));
+    scroll-padding: var(--scroll-padding, 16px);
+    grid-column-gap: var(--column-gap);
+
     scroll-snap-type: x mandatory;
 
+    --column-count: 3.25;
+    --column-gap: 8px;
+    --shadow-width: 16px;
+    --shadow-inset: -16px;
+
+    &:before, &:after {
+      content: '';
+      top: 0;
+      bottom: 0;
+      width: var(--shadow-width);
+      position: absolute;
+      background: linear-gradient(270deg, #11141C 0%, rgba(17, 20, 28, 0) 100%);
+      z-index: 1;
+    }
+
+    &:before {
+      transform: rotate(180deg);
+      left: var(--shadow-inset);
+    }
+
+    &:after {
+      right: var(--shadow-inset);
+    }
+
+    @include media(xs) {
+      --items-margin: -16px -32px 0;
+      --items-padding: 16px 32px 0;
+      --scroll-padding: 32px;
+    }
+
+    @include media(xs) {
+      --shadow-width: 32px;
+      --shadow-inset: -32px;
+    }
+
     @include media(sm) {
-      margin: rem(-16px) 0 0 0;
-      padding: rem(16px) 0 0 0;
-      grid-column-gap: 16px;
-      scroll-padding: 0;
+      --column-count: 6;
+      --column-gap: 16px;
+      --items-margin: -16px -32px 0;
+      --items-padding: 16px 32px 0;
+    }
+
+    @include media(xl) {
+      --column-count: 8;
+    }
+
+    @include media(xxl) {
+      --column-count: 9;
     }
 
     &::-webkit-scrollbar {
@@ -97,7 +141,11 @@
     width: 0;
     height: 0;
     visibility: hidden;
-    margin-left: rem(-8px);
+    margin-left: -8px;
+
+    @include media(sm) {
+      margin-left: -16px;
+    }
   }
 
   .titles {
