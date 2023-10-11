@@ -53,7 +53,7 @@
 
   const modalType = computed<'real'|'deposit'|'registration'>(() => {
     if (!isLoggedIn.value) return 'registration';
-    if (activeAccount.value?.realBalance ?? 0 > 0) return 'real';
+    if (activeAccount.value?.balance ?? 0 > 0) return 'real';
     return 'deposit';
   });
 
