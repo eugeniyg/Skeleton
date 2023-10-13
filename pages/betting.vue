@@ -118,10 +118,6 @@
   onBeforeMount(() => {
     addBetsyScript();
     compactDrawer(true, false);
-
-    if (!isLoggedIn.value) {
-      layoutStore.showModal('register');
-    }
   });
 
   onMounted(async () => {
