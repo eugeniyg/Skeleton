@@ -24,6 +24,11 @@
       />
       <!--</template>-->
 
+      <button-base v-if="isGameDemo" type="secondary" size="sm" class="app-header__play-real">
+        <atomic-icon id="unlocked" />
+        <span>Real mode</span>
+      </button-base>
+
       <div class="items">
         <search
             :isShow="isShowSearch"
@@ -138,6 +143,11 @@
     const { localizePath } = useProjectMethods();
     router.push(localizePath('/'));
   }
+
+  const route = useRoute();
+  const isGameDemo = computed(() => {
+    return isGamePage.value && route.query?.real !== 'true';
+  })
 
   onMounted(() => {
     document.addEventListener('click', checkSearch);

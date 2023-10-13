@@ -54,6 +54,10 @@
       height: calc(100vh - 196px);
     }
 
+    @media (orientation: landscape) and (max-width: 1023px) {
+      width: calc(100% - 64px);
+    }
+
     iframe {
       display: block;
       border: none !important;
@@ -77,6 +81,7 @@
         padding: 0;
         --top: 0;
         --bottom: 0;
+        left: auto;
       }
 
       @media (orientation: portrait) and (max-width: 1023px) {
