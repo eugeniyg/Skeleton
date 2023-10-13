@@ -58,25 +58,20 @@
   });
 
   const { openDepositModal, showModal } = useLayoutStore();
+  let timer: any;
   const confirm = async (): Promise<void> => {
     if (modalType.value === 'real') emit('playReal');
     else if (modalType.value === 'deposit') await openDepositModal();
     else if (modalType.value === 'registration') showModal('register');
 
     openModal.value = false
+    clearTimeout(timer);
   }
 
-  let timer: any;
   const startTimer = (): void => {
-    if (['registration', 'deposit'].includes(modalType.value)) {
-      timer = setTimeout(() => {
-        openModal.value = true
-      }, 20000);
-    } else {
-      timer = setTimeout(() => {
-        openModal.value = true
-      }, 60000);
-    }
+    timer = setTimeout(() => {
+      openModal.value = true
+    }, 60000);
   }
 
   watch(() => props.isDemo, (newValue: boolean) => {
@@ -84,7 +79,11 @@
   })
 
   onBeforeMount(() => {
-    if (props.isDemo) startTimer();
+    if (props.isDemo) {
+      const { mobileGameModalInfo } = useGamesStore();
+      if (!isLoggedIn.value && !mobileGameModalInfo) openModal.value = true;
+      startTimer();
+    }
   })
 
   onBeforeUnmount(() => {

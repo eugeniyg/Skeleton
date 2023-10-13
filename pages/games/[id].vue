@@ -33,7 +33,13 @@
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
-  const { showModal, showAlert, compactDrawer, setReturnGame } = useLayoutStore();
+  const {
+    showModal,
+    showAlert,
+    compactDrawer,
+    setReturnGame,
+    openDepositModal
+  } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
   const {
@@ -69,7 +75,7 @@
     data?: { gameUrl: string; token: string; },
     error?: any
   }> => {
-    const { showModal } = useLimitsStore();
+    const limitsStore = useLimitsStore();
     const redirectUrl = window.location.origin + (window.history.state.back || '');
     const startParams = {
       accountId: isDemo.value ? undefined : activeAccount.value?.id,
@@ -88,7 +94,7 @@
       if ([14100, 14101, 14105].includes(err.data?.error?.code)) {
         const { localizePath } = useProjectMethods();
         await router.push({ path: localizePath('/profile/limits'), query: {} });
-        showModal('gameLimitReached');
+        limitsStore.showModal('gameLimitReached');
         return { error: { ...err, fatal: false }}
       }
 
@@ -119,6 +125,13 @@
     router.push(localizePath('/'));
     showAlert(alertsData.value?.limit?.limitedRealGame || defaultLocaleAlertsData.value?.limit?.limitedRealGame);
   };
+
+  const checkDepositModal = (): void => {
+    const { mobileGameModalInfo } = useGamesStore();
+    if (isLoggedIn.value && !isDemo.value && !activeAccount.value?.balance && !mobileGameModalInfo) {
+      openDepositModal();
+    }
+  }
 
   watch(() => isLoggedIn.value, async (newValue:boolean) => {
     if (!newValue) return;
@@ -153,6 +166,8 @@
     } else {
       const { error } = await startGame();
       if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+
+      checkDepositModal()
     }
   });
 
