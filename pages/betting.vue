@@ -106,7 +106,17 @@
     if (oldValue && newValue && oldValue !== newValue) await startGame();
   });
 
+  const addBetsyScript = ():void => {
+    if (!window.BetSdk) {
+      const script = document.createElement('script');
+      script.setAttribute('src', 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js');
+      script.setAttribute('defer', 'defer');
+      document.head.append(script);
+    }
+  }
+
   onBeforeMount(() => {
+    addBetsyScript();
     compactDrawer(true, false);
 
     if (!isLoggedIn.value) {
