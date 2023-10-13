@@ -31,10 +31,6 @@
     @include font($heading-1);
     --width: 100%;
 
-    @include media(xs) {
-      padding: 0;
-    }
-
     @extend %btn-ghost-low-contrast;
   }
 
