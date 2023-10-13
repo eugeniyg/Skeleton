@@ -1,7 +1,7 @@
 <template>
   <label :class="classes">
     <span class="label" v-if="props.label">
-      {{ props.label }}<sup v-if="props.isRequired">*</sup>
+      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
     </span>
 
     <textarea
