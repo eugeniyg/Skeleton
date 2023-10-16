@@ -46,10 +46,6 @@
     grid-area: btn-show-all;
     --width: 100%;
 
-    @include media(xs) {
-      padding: 0;
-    }
-
     @include media(sm) {
       @include upd-font($heading-2);
     }

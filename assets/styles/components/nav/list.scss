@@ -8,7 +8,7 @@
   .item {
     overflow: hidden;
 
-    > .link {
+    .link {
       .text {
         @include font($subheading-2);
         --line-height: auto;
@@ -37,16 +37,14 @@
 
     .link {
       max-width: rem(176px);
-    }
 
-    > .link {
       .text {
         @include font($body-2);
       }
-    }
 
-    .link:first-of-type {
-      margin-top: rem(4px);
+      &:first-of-type {
+        margin-top: rem(4px);
+      }
     }
   }
 

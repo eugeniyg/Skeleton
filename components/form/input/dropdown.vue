@@ -6,7 +6,7 @@
     :tabindex="props.tabindex"
     @blur="onBlur"
   >
-    <span v-if="props.label" class="label">{{ props.label }}<sup v-if="props.isRequired">*</sup></span>
+    <span v-if="props.label" class="label">{{ props.label }}<span class="required" v-if="props.isRequired">*</span></span>
 
     <div class="selected" @click="open">
       <atomic-image v-if="valueObject.mask" class="mask" :src="valueObject.mask" />

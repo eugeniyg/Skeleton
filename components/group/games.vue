@@ -19,6 +19,7 @@
       v-if="props.showAllBtn"
       class="btn-show-all"
       type="ghost"
+      size="sm"
       @click="openGames"
     >
       {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}

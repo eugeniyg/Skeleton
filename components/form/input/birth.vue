@@ -1,7 +1,7 @@
 <template>
   <div class="input-birth">
     <span v-if="props.label" class="label">
-      {{ props.label }}<sup v-if="props.isRequired">*</sup>
+      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
       <button-clear-input v-if="!props.isDisabled" @click="clearInput"/>
     </span>
 
