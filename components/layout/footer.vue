@@ -31,10 +31,12 @@
 
     <atomic-divider/>
 
-    <list-paysis :items="paymentItems"/>
+    <list-paysis
+      v-if="paymentItems?.length"
+      :items="paymentItems"/>
 
     <atomic-divider/>
-
+    
     <template v-if="showCuracaoBlock">
       <div class="info">
         <iframe
@@ -79,18 +81,23 @@
     '/trust-icons/4.svg',
   ];
 
-  const paymentItems = [
-    '/payments-icons/1.svg',
-    '/payments-icons/2.svg',
-    '/payments-icons/3.svg',
-    '/payments-icons/4.svg',
-  ];
+  // const paymentItems = [
+  //   '/payments-icons/1.svg',
+  //   '/payments-icons/2.svg',
+  //   '/payments-icons/3.svg',
+  //   '/payments-icons/4.svg',
+  // ];
 
   const showCuracaoBlock = computed(() => {
     return layoutData?.footer?.curacao?.description ||
       defaultLocaleLayoutData?.footer?.curacao?.description ||
       layoutData?.footer?.curacao?.frameLink ||
       defaultLocaleLayoutData?.footer?.curacao?.frameLink
+  })
+  
+  const paymentItems = computed(() => {
+    return layoutData?.footer?.paymentsList
+      //|| defaultLocaleLayoutData?.footer?.paymentsList
   })
 </script>
 
