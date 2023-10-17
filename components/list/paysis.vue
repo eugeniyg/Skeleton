@@ -26,7 +26,6 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { openDepositModal } = useLayoutStore();
-  const { getContent } = useProjectMethods();
   
   const autoplayOptions = {
     delay: 3500,
