@@ -68,7 +68,7 @@
 <script setup lang="ts">
   import { marked } from 'marked';
 
-  const { localizePath, getContent } = useProjectMethods();
+  const { localizePath } = useProjectMethods();
 
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const accordeonItems = [
