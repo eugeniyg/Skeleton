@@ -129,9 +129,9 @@
     }
   };
 
-  onMounted(() => {
-    startBetsyWidgets();
-  });
+  // onMounted(() => {
+  //   startBetsyWidgets();
+  // });
 </script>
 
 <style src="~/assets/styles/pages/index.scss" lang="scss" />

@@ -1,33 +1,17 @@
 <template>
   <div>
-    <client-only>
-      <transition name="fade" mode="out-in">
-        <carousel
-          v-if="filteredSlider?.length"
-          :key="filteredSlider"
-          v-bind="topSliderProps"
-        >
-          <slide v-for="(slide, index) in filteredSlider" :key="index">
-            <card-promo v-bind="slide" />
-          </slide>
-
-          <template v-slot:addons>
-            <navigation />
-            <pagination />
-          </template>
-        </carousel>
-      </transition>
-    </client-only>
-
-    <nav-cat @clickCategory="changeCategory" />
-
+    
+    <main-slider v-if="filteredSlider?.length" :slides="filteredSlider"/>
+    
+    <nav-cat @clickCategory="changeCategory"/>
+    
     <group-games
       v-for="category in mainCategoriesList.slice(0, 3)"
       showAllBtn
       showArrows
       :category="category"
     />
-
+    
     <cards-group
       v-if="providerCards.games?.length"
       v-bind="providerCards"
@@ -36,47 +20,43 @@
       :showAllBtn="false"
     >
       <template v-slot:card="item">
-        <card-providers v-bind="item" />
+        <card-providers v-bind="item"/>
       </template>
     </cards-group>
-
+    
     <group-games
       v-for="category in mainCategoriesList.slice(3, 4)"
       showAllBtn
       showArrows
       :category="category"
     />
-
-    <group-winners showArrows />
-
+    
+    <group-winners showArrows/>
+    
     <group-games
       v-for="category in mainCategoriesList.slice(4)"
       showAllBtn
       showArrows
       :category="category"
     />
-
-    <favorite-recently v-if="isLoggedIn" />
-
+    
+    <favorite-recently v-if="isLoggedIn"/>
+    
     <!-- <cards-group v-bind="fakeStore.newRelisesCards">
       <template v-slot:card="item">
         <card-base v-bind="item" />
       </template>
     </cards-group> -->
-
-    <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent.seo.text" />
+    
+    <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent.seo.text"/>
   </div>
 </template>
 
 <script setup lang="ts">
-  import 'vue3-carousel/dist/carousel.css';
-  import {
-    Carousel, Slide, Pagination, Navigation,
-  } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
-  import {ICasinoPage} from '~/types';
-  import {ICollection} from '@skeleton/core/types';
-
+  import { ICasinoPage } from '~/types';
+  import { ICollection } from '@skeleton/core/types';
+  
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();
   const {
@@ -141,24 +121,13 @@
   const mainCategoriesList = currentLocationCollections.value.reduce((categoriesArr: ICollection[], currentCategory) => {
     return currentCategory.isHidden ? categoriesArr : [...categoriesArr, currentCategory];
   }, []);
-
-  const topSliderProps = {
-    settings: {
-      itemsToShow: 1,
-      pauseAutoplayOnHover: true,
-      itemsToScroll: 1,
-      autoplay: 3000,
-      transition: 500,
-      wrapAround: true,
-    },
-  };
-
+  
   setPageSeo(pageContent?.seo);
-
+  
   const changeCategory = (categoryId: string) => {
     router.push({ path: localizePath('/games'), query: { category: categoryId } });
   };
-
+  
   let sliderTimer: any;
   onMounted(() => {
     sliderTimer = setInterval(() => {

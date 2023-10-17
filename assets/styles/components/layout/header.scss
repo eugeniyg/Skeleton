@@ -15,6 +15,10 @@
   grid-column-gap: 2px;
   @extend %container;
 
+  @include media(xs) {
+    --padding: 0 #{rem(32px)}
+  }
+
   &--is-game-page-logout {
     .is-game-page & {
       .logo {

@@ -1,0 +1,133 @@
+.card-slide {
+  display: grid;
+  position: relative;
+  overflow: clip;
+  height: 100%;
+  width: 100%;
+  border-radius: 16px;
+
+  --info-padding: #{rem(24px)} #{rem(88px)} #{rem(24px)} #{rem(32px)};
+
+  @include media(xs) {
+    --info-padding: #{rem(24px)} #{rem(120px)} #{rem(24px)} #{rem(32px)};
+  }
+
+  @include media(md) {
+    --info-padding: #{rem(32px)} #{rem(120px)} #{rem(32px)} #{rem(40px)};
+  }
+
+  &__picture {
+    grid-column: 1;
+    grid-row: 1;
+    position: absolute;
+    height: 100%;
+    max-width: 100%;
+
+    &--front {
+      right: 0;
+    }
+
+    &--back {
+      left: 0;
+    }
+  }
+
+  &__img {
+    &--front {
+      aspect-ratio: 213/168;
+      object-fit: cover;
+      height: 100%;
+      right: 0;
+    }
+
+    &--back {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__info {
+    grid-column: 1;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex-shrink: 0;
+    padding: var(--info-padding, 0);
+  }
+
+  &__title {
+    color: var(--text-primary);
+    text-shadow: var(--shadow-layer);
+    align-self: start;
+    margin-bottom: rem(4px);
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      padding: 0;
+
+      @include font($heading-uppercase-5);
+
+      @include media(xs) {
+        @include upd-font($heading-uppercase-6);
+      }
+
+      @include media(md) {
+        @include upd-font($heading-uppercase-7);
+      }
+    }
+  }
+
+  &__content {
+    @include font($body-0);
+    color: var(--text-primary);
+    padding-right: rem(56px);
+
+    @include media(xs) {
+      @include upd-font($body-1);
+    }
+
+    @include media(md) {
+      @include upd-font($body-2);
+    }
+
+    @include media(xxl) {
+      @include upd-font($body-3);
+    }
+
+    p {
+      margin: 0;
+      font: inherit;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0 0 0 rem(20px);
+
+      li {
+        font: inherit;
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    grid-column-gap: rem(4px);
+    margin-top: rem(16px);
+
+    .btn-primary, .btn-secondary {
+      @include font($heading-2);
+      --padding: #{rem(6px)} #{rem(20px)};
+
+      @include media(md) {
+        @include upd-font($heading-3);
+        --padding: #{rem(12px)} #{rem(32px)};
+        --btn-border-radius: 12px;
+      }
+    }
+  }
+}
+

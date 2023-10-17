@@ -1,9 +1,5 @@
 .card-base {
-  --col-count: 3.1;
-  --col-gap: 8px;
-
-  height: var(--height, auto);
-  @include ratio(104px, 156px);
+  aspect-ratio: 104/156;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
@@ -14,17 +10,9 @@
   background-size: var(--bg-size, 100%);
   background-position: var(--bg-position, center);
   border-radius: 8px;
-  width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap) / var(--col-count))));
+
+  flex-basis: calc((100% - (var(--column-count) - 1) * var(--column-gap)) / var(--column-count));
   scroll-snap-align: start;
-
-  @include media(sm) {
-    --col-count: 6;
-    --col-gap: 16px;
-  }
-
-  @include media(xl) {
-    --col-count: 9;
-  }
 
   &__info {
     padding: var(--card-info-padding, 8px);

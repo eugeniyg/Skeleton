@@ -41,6 +41,8 @@
     "accept-language-parser": "^1.5.0",
     "body-scroll-lock": "^4.0.0-beta.0",
     "centrifuge": "^3.1.2",
+    "embla-carousel-autoplay": "^8.0.0-rc14",
+    "embla-carousel-vue": "^8.0.0-rc14",
     "jwt-decode": "^3.1.2",
     "libphonenumber-js": "^1.10.43",
     "lodash": "^4.17.21",
@@ -56,7 +58,6 @@
     "ua-parser-js": "^1.0.35",
     "vue": "^3.3.4",
     "vue-final-modal": "^4.4.5",
-    "vue-flatpickr-component": "^11.0.3",
-    "vue3-carousel": "^0.3.1"
+    "vue-flatpickr-component": "^11.0.3"
   }
 }

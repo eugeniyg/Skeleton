@@ -37,10 +37,6 @@
     @include font($heading-1);
     --width: auto;
 
-    @include media(xs) {
-      padding: 0;
-    }
-
     @include media(sm) {
       @include upd-font($heading-2);
     }
@@ -67,18 +63,19 @@
   }
 
   .card-base {
-    --col-count: 3;
+    --column-count: 3;
+    --column-gap: 16px;
 
     @include media(md) {
-      --col-count: 4;
+      --column-count: 4;
     }
 
     @include media(xl) {
-      --col-count: 6;
+      --column-count: 6;
     }
 
     @include media(xxxl) {
-      --col-count: 7;
+      --column-count: 7;
     }
   }
 
@@ -146,6 +143,7 @@
     position: relative;
     flex-direction: column;
     padding: #{rem(16px)};
+    z-index: 1;
 
     @include media(sm) {
       flex-direction: row;

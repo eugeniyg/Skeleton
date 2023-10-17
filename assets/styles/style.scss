@@ -157,7 +157,7 @@ body {
 .app-main {
   grid-area: app-main;
   @extend %container;
-  padding: var(--padding, #{24px} #{16px});
+  padding: var(--main-padding, #{24px} #{16px});
   pointer-events: var(--main-pointer-events, initial);
   position: relative;
   z-index: 0;
@@ -172,12 +172,16 @@ body {
     overflow: initial;
   }
 
+  @include media(xs) {
+    --main-padding: #{rem(24px)} #{rem(32px)}
+  }
+
   @include media(sm) {
-    --padding: #{rem(24px)} #{rem(32px)}
+    --main-padding: #{rem(24px)} #{rem(32px)}
   }
 
   @include media(l) {
-    --padding: #{rem(24px)} #{rem(48px)}
+    --main-padding: #{rem(24px)} #{rem(48px)}
   }
 
   .group-games, .group-winners, .group-promotions, .favorite-recently, .cards-wrap, .group-turbo, .cards-providers, .group-originals, .group-aero {
@@ -195,6 +199,13 @@ body {
 
   .group {
     display: flex;
+  }
+}
+
+.label {
+  .required {
+    display: inline-block;
+    transform: translate(2px, -2px) scale(0.8);
   }
 }
 
