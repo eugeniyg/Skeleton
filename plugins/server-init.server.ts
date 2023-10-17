@@ -11,8 +11,11 @@ export default defineNuxtPlugin(async ():Promise<any> => {
   } = useGlobalStore();
   const { getGameProviders, getGameCollections } = useGamesStore();
 
+  getRequestCountry();
+
   const checkLanguage = ():string|undefined => {
     const cookieLanguage = useCookie('user-language');
+    console.log(cookieLanguage.value);
     const route = useRoute();
     const needChangeLanguage = route.name && !route.params.locale && !!cookieLanguage.value;
 
@@ -30,8 +33,6 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     const globalStore = useGlobalStore();
     globalStore.baseApiUrl = process.env.API_BASE_URL || '';
   }
-
-  getRequestCountry();
 
   const { getSessionToken } = useProfileStore();
   const sessionToken = getSessionToken();

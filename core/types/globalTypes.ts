@@ -34,6 +34,9 @@ export interface ICountry extends Record<string, any>{
   nativeName: string;
   code: string;
   phonePrefix: string;
+  currency: string;
+  locale: string;
+  additionalCurrency: string[];
   value?:string;
 }
 
