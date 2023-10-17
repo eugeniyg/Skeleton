@@ -6,12 +6,8 @@
     v-if="paymentsItems?.length"
   >
     <div class="paysis__container">
-      <div class="paysis__item"
-        v-for="({ image, display, name }) in paymentsItems"
-        :key="name"
-      >
+      <div class="paysis__item" v-for="{ image } in paymentsItems">
         <atomic-image
-          v-if="display"
           class="logo"
           :src="image"
           @click="paymentsItemClick"
