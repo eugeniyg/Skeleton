@@ -32,8 +32,10 @@
     <atomic-divider/>
 
     <list-paysis
-      v-if="paymentItems?.length"
-      :items="paymentItems"/>
+      v-if="layoutData?.footer?.paymentsList"
+      :currentLocaleContent="layoutData?.footer?.paymentsList"
+      :defaultLocaleContent="defaultLocaleLayoutData?.footer?.paymentsList"
+    />
 
     <atomic-divider/>
     
@@ -66,7 +68,7 @@
 <script setup lang="ts">
   import { marked } from 'marked';
 
-  const { localizePath } = useProjectMethods();
+  const { localizePath, getContent } = useProjectMethods();
 
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const accordeonItems = [
@@ -80,14 +82,7 @@
     '/trust-icons/3.svg',
     '/trust-icons/4.svg',
   ];
-
-  // const paymentItems = [
-  //   '/payments-icons/1.svg',
-  //   '/payments-icons/2.svg',
-  //   '/payments-icons/3.svg',
-  //   '/payments-icons/4.svg',
-  // ];
-
+  
   const showCuracaoBlock = computed(() => {
     return layoutData?.footer?.curacao?.description ||
       defaultLocaleLayoutData?.footer?.curacao?.description ||
@@ -95,10 +90,6 @@
       defaultLocaleLayoutData?.footer?.curacao?.frameLink
   })
   
-  const paymentItems = computed(() => {
-    return layoutData?.footer?.paymentsList
-      //|| defaultLocaleLayoutData?.footer?.paymentsList
-  })
 </script>
 
 <style src="~/assets/styles/components/layout/footer.scss" lang="scss" />
