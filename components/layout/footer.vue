@@ -31,11 +31,7 @@
 
     <atomic-divider/>
 
-    <list-paysis
-      v-if="layoutData?.footer?.paymentsList"
-      :currentLocaleContent="layoutData?.footer?.paymentsList"
-      :defaultLocaleContent="defaultLocaleLayoutData?.footer?.paymentsList"
-    />
+    <list-paysis/>
 
     <atomic-divider/>
     
