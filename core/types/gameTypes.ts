@@ -29,6 +29,13 @@ export interface ICollection extends Record<string, any>{
   isHidden: boolean;
 }
 
+export interface IGameLabel extends Record<string, any> {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string|null;
+}
+
 export interface IGame extends Record<string, any>{
   id: string;
   identity: string;
@@ -43,7 +50,7 @@ export interface IGame extends Record<string, any>{
   images: IGameImages;
   provider: IGameProvider;
   collections: ICollection[];
-  labels: string[];
+  labels: IGameLabel[];
 }
 
 export interface IGamesResponse extends Record<string, any>{
