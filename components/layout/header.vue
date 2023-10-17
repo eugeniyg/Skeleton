@@ -24,9 +24,15 @@
       />
       <!--</template>-->
 
-      <button-base v-if="isGameDemo" type="secondary" size="sm" class="app-header__play-real">
-        <atomic-icon id="unlocked" />
-        <span>Real mode</span>
+      <button-base
+        v-if="isGameDemo"
+        type="secondary"
+        size="sm"
+        class="app-header__play-real"
+        @click="changeGameMode"
+      >
+        <atomic-icon id="casino-real-money" />
+        <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.playRealButton') }}</span>
       </button-base>
 
       <div class="items">
@@ -148,6 +154,11 @@
   const isGameDemo = computed(() => {
     return isGamePage.value && route.query?.real !== 'true';
   })
+
+
+  const changeGameMode = () => {
+    useEvent('changeMobileGameMode');
+  }
 
   onMounted(() => {
     document.addEventListener('click', checkSearch);

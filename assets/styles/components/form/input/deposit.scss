@@ -5,12 +5,7 @@
   color: var(--text-helper);
   user-select: none;
   position: relative;
-  margin-left: rem(-8px);
   width: fit-content;
-
-  @include media(xs) {
-    margin-left: 0;
-  }
 
   .amount {
     @extend %flex-items-center;

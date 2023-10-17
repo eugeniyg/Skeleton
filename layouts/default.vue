@@ -32,7 +32,7 @@
     </client-only>
 
     <transition name="fade" mode="out-in">
-      <nav-mob/>
+      <nav-mob v-if="!isGamePage" />
     </transition>
 
     <transition name="fade-down">

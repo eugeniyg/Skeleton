@@ -48,6 +48,11 @@
   align-items: center;
   gap: 8px;
   background: linear-gradient(90deg, #1C212B 0%, rgba(28, 33, 43, 0.00) 100%), #045618;
+
+  @media (orientation: landscape) and (max-width: 1023px) {
+    width: calc(100% - 64px);
+    margin-left: auto;
+  }
 }
 
 .mobile-content {
