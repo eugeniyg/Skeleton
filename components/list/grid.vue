@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
     <div class="items">
-      <card-base v-for="item in props.items" :key="item.id" v-bind="item"/>
+      <card-base v-for="item in props.items" :key="item.id" :gameInfo="item"/>
     </div>
 
     <button-load-more v-show="props.meta.totalPages > props.meta.page" ref="loadMore" />

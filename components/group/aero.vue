@@ -74,7 +74,7 @@
           <card-base
             v-for="(game, gameIndex) in games"
             :key="gameIndex"
-            v-bind="game"
+            :gameInfo="game"
           />
         </template>
 

@@ -5,7 +5,6 @@
     :class="{ 'hovered': gameHovered }"
     :data-size="cardSize"
     @click="clickGame"
-    v-click-outside="hideHover"
   >
     <atomic-image class="card-base__img" :src="src" />
 
@@ -17,13 +16,13 @@
       />
     </div>
 
-    <div class="card-base__info">
+    <div v-if="!isMobile" class="card-base__info" @click.stop>
       <div class="card-base__info-titles">
-        <div v-if="props.name" class="card-base__info-title">{{ props.name }}</div>
-        <div class="card-base__info-provider">{{ props.provider.name }}</div>
+        <div v-if="props.gameInfo?.name" class="card-base__info-title">{{ props.gameInfo.name }}</div>
+        <div class="card-base__info-provider">{{ props.gameInfo?.provider.name }}</div>
       </div>
 
-      <div v-if="props.subTitle" class="sub-title">{{ props.subTitle }}</div>
+      <div v-if="props.gameInfo?.subTitle" class="sub-title">{{ props.gameInfo.subTitle }}</div>
 
       <div class="card-base__info-actions">
         <button-play @click="openGame(true)"/>
@@ -31,7 +30,7 @@
 
       <div class="card-base__info-footer">
         <button-base
-          v-if="props.isDemoMode"
+          v-if="props.gameInfo?.isDemoMode"
           class="btn-try"
           tag-name="span"
           @click="openGame(false)"
@@ -41,53 +40,20 @@
 
         <!--<button-info/>-->
 
-        <button-favorite v-if="isLoggedIn" :gameId="id"/>
+        <button-favorite v-if="isLoggedIn" :gameId="props.gameInfo?.id"/>
       </div>
-
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { PropType } from '@vue/runtime-core';
-  import { IGameImages, IGameProvider } from '@skeleton/core/types';
+  import { IGame } from '@skeleton/core/types';
   import { IGameTag } from '~/types';
 
-  const props = defineProps({
-    images: {
-      type: Object as PropType<IGameImages>,
-      required: false,
-    },
-    name: {
-      type: String,
-      default: '',
-    },
-    id: {
-      type: String,
-      required: true,
-    },
-    identity: {
-      type: String,
-      required: true,
-    },
-    isDemoMode: {
-      type: Boolean,
-      default: true,
-    },
-    subTitle: {
-      type: String,
-      default: '',
-    },
-    labels: {
-      type: Array as PropType<{ name: string }[]>,
-      default: () => [],
-    },
-    provider: {
-      type: Object as PropType<IGameProvider>,
-      required: true,
-    },
-  });
+  const props = defineProps<{
+    gameInfo?: IGame;
+  }>();
 
   const router = useRouter();
   const profileStore = useProfileStore();
@@ -101,22 +67,22 @@
 
   const gameTagsContent: Maybe<IGameTag[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags.gameTagsList');
 
-  const labelNames = props.labels?.map((label) => label.name)
-  const gameBages = gameTagsContent?.filter((bage) => labelNames.includes(bage.identity));
+  const labelNames = props.gameInfo?.labels?.map((label) => label.name)
+  const gameBages = gameTagsContent?.filter((bage) => labelNames?.includes(bage.identity));
 
   const openGame = (isReal: boolean): void => {
     if (!isReal) {
-      router.push(localizePath(`/games/${props.identity}`));
+      router.push(localizePath(`/games/${props.gameInfo?.identity}`));
     } else if (!isLoggedIn.value) {
       showModal('register');
     } else {
-      router.push(localizePath(`/games/${props.identity}?real=true`));
+      router.push(localizePath(`/games/${props.gameInfo?.identity}?real=true`));
     }
   };
 
   const src = computed(() => {
-    if (props.images?.hasOwnProperty('200x300')) {
-      return getImageUrl(props.images, 'vertical');
+    if (props.gameInfo?.images?.hasOwnProperty('200x300')) {
+      return getImageUrl(props.gameInfo.images, 'vertical');
     }
     return '';
   });
@@ -125,13 +91,9 @@
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
   const clickGame = (): void => {
-    if (isMobile.value) {
-      gameHovered.value = !gameHovered.value;
-    }
-  };
-
-  const hideHover = () => {
-    if (gameHovered.value) gameHovered.value = false;
+    if (!props.gameInfo) return;
+    const { openGame } = useMobileGameLogic(props.gameInfo);
+    openGame();
   };
 
   const cardBase = ref<HTMLElement>();
