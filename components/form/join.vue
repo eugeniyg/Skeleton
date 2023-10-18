@@ -99,13 +99,12 @@
   const mainFields = props.registrationFields.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = props.registrationFields.filter((field) => groupFooterFields.includes(field.name));
   const registrationFormData = reactive(setFormData(props.registrationFields));
+  const geoCountry = countries.value.find(country => country.code === headerCountry.value);
   if (registrationFormData.hasOwnProperty('nickname')) registrationFormData.nickname = 'undefined';
-  if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
+  if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = geoCountry?.currency || 'BTC';
   if (registrationFormData.hasOwnProperty('locale')) registrationFormData.locale = currentLocale.value?.code;
-  if (registrationFormData.hasOwnProperty('country') && !registrationFormData.country) {
-    if (countries.value.find((country) => country.code === headerCountry.value)) {
-      registrationFormData.country = headerCountry.value;
-    }
+  if (registrationFormData.hasOwnProperty('country') && !registrationFormData.country && geoCountry) {
+    registrationFormData.country = geoCountry.code;
   }
 
   const getCheckboxLabel = (fieldName: string):string|undefined => {

@@ -13,14 +13,40 @@ export default defineNuxtPlugin(async ():Promise<any> => {
 
   getRequestCountry();
 
+  await Promise.all([
+    getCurrencies(),
+    getLocales(),
+    getCountries(),
+    getSettingsConstants()
+  ]);
+
   const checkLanguage = ():string|undefined => {
     const cookieLanguage = useCookie('user-language');
-    console.log(cookieLanguage.value);
+    const globalStore = useGlobalStore();
+    const defaultLocale = globalStore.locales.find(locale => locale.isDefault);
     const route = useRoute();
-    const needChangeLanguage = route.name && !route.params.locale && !!cookieLanguage.value;
+    const routeLocale = route.params.locale as string;
+
+    console.log('header country: ', globalStore.headerCountry);
+    if (!cookieLanguage.value) {
+      const geoCountry = globalStore.countries.find(country => country.code.toUpperCase() === globalStore.headerCountry?.toUpperCase());
+      if (geoCountry) cookieLanguage.value = geoCountry.locale;
+      else cookieLanguage.value = routeLocale || defaultLocale?.code;
+    }
+
+    console.log('cookie language: ', cookieLanguage.value);
+    let needChangeLanguage = false;
+    if (route.name && routeLocale) {
+      needChangeLanguage = routeLocale !== cookieLanguage.value;
+    } else if (route.name && !routeLocale) {
+      needChangeLanguage = defaultLocale?.code !== cookieLanguage.value;
+    }
 
     if (needChangeLanguage && !pagesWithoutLocale.includes(route.name as string)) {
-      return `/${cookieLanguage.value}${route.fullPath === '/' ? '' : route.fullPath}`;
+      const fullPathWithoutLocale = routeLocale ? route.fullPath.substring(routeLocale.length + 1) : route.fullPath;
+      const routePath = `${fullPathWithoutLocale === '/' ? '' : fullPathWithoutLocale}`;
+      if (cookieLanguage.value === defaultLocale?.code) return routePath;
+      return `/${cookieLanguage.value}${routePath}`;
     } return undefined;
   };
 
@@ -40,13 +66,10 @@ export default defineNuxtPlugin(async ():Promise<any> => {
   const { getProfileData } = useProfileStore();
   const { getUserAccounts } = useWalletStore();
 
-  const settingsRequest = Promise.all([
-    getCurrencies(),
-    getLocales(),
-    getCountries(),
-    getSettingsConstants(),
+  const globalRequests = Promise.all([
     getGameProviders(),
     getGameCollections(),
+    getGlobalContent()
   ]);
 
   if (sessionToken) {
@@ -56,11 +79,10 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     ]);
 
     await Promise.allSettled([
-      settingsRequest,
+      globalRequests,
       profileRequests,
     ]);
   } else {
-    await settingsRequest;
+    await globalRequests;
   }
-  await getGlobalContent();
 });
