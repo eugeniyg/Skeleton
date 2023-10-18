@@ -27,14 +27,12 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     const route = useRoute();
     const routeLocale = route.params.locale as string;
 
-    console.log('header country: ', globalStore.headerCountry);
     if (!cookieLanguage.value) {
       const geoCountry = globalStore.countries.find(country => country.code.toUpperCase() === globalStore.headerCountry?.toUpperCase());
       if (geoCountry) cookieLanguage.value = geoCountry.locale;
       else cookieLanguage.value = routeLocale || defaultLocale?.code;
     }
 
-    console.log('cookie language: ', cookieLanguage.value);
     let needChangeLanguage = false;
     if (route.name && routeLocale) {
       needChangeLanguage = routeLocale !== cookieLanguage.value;
