@@ -1,6 +1,6 @@
 <template>
-  <img v-if="props.notLazy" :src="props.src" alt="" data-not-lazy />
-  <img v-else :key="props.src" :src="props.src" alt="" />
+  <img class="image" v-if="props.notLazy" :src="props.src" alt="" data-not-lazy />
+  <img class="image" v-else :key="props.src" :src="props.src" alt="" />
 </template>
 
 <script setup lang="ts">
