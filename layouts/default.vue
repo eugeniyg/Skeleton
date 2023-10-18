@@ -50,6 +50,7 @@
     <modal-error />
     <modal-confirm />
     <modal-fiat />
+    <modal-mobile-game />
 
     <atomic-alert />
   </div>

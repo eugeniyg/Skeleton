@@ -8,12 +8,16 @@ import {
 } from '@skeleton/core/types';
 import throttle from 'lodash/throttle';
 
+type MobileModalType = 'depositOrDemo'|'deposit'|'registerOrDemo'|'registerOrLogin';
 interface IGamesStoreState {
-  gameProviders: IGameProvider[],
-  gameCollections: ICollection[],
-  favoriteGames: IGame[],
-  winnersSubscription: any,
-  latestWinners: IWinner[]
+  gameProviders: IGameProvider[];
+  gameCollections: ICollection[];
+  favoriteGames: IGame[];
+  winnersSubscription: any;
+  latestWinners: IWinner[];
+  showMobileGameModal: boolean;
+  mobileGameModalType: Maybe<MobileModalType>;
+  mobileGameModalInfo: Maybe<IGame>;
 }
 
 export const useGamesStore = defineStore('gamesStore', {
@@ -22,7 +26,10 @@ export const useGamesStore = defineStore('gamesStore', {
     gameCollections: [],
     favoriteGames: [],
     winnersSubscription: undefined,
-    latestWinners: []
+    latestWinners: [],
+    showMobileGameModal: false,
+    mobileGameModalType: undefined,
+    mobileGameModalInfo: undefined
   }),
 
   getters: {
@@ -90,5 +97,11 @@ export const useGamesStore = defineStore('gamesStore', {
         if (winner) that.latestWinners = [winner, ...filteredWinners].slice(0, 12);
       }, 3000, { leading: false })();
     },
+
+    openMobileGameModal(modalType: MobileModalType, gameInfo: IGame):void {
+      this.mobileGameModalType = modalType;
+      this.mobileGameModalInfo = gameInfo;
+      this.showMobileGameModal = true;
+    }
   },
 });

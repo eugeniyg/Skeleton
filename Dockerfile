@@ -1,4 +1,4 @@
-FROM node:16-alpine as builder
+FROM public.ecr.aws/docker/library/node:16-alpine as builder
 
 ARG NPM_TOKEN
 
@@ -9,7 +9,7 @@ RUN npm config set -- '//gitlab.sportlab.me/api/v4/packages/npm/:_authToken' ${N
 RUN npm ci
 RUN npm run build && npm prune --production
 
-FROM node:lts-alpine
+FROM public.ecr.aws/docker/library/node:lts-alpine
 
 WORKDIR /app
 
