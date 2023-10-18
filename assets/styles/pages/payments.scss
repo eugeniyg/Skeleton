@@ -13,12 +13,22 @@
     &__description {
       color: var(--text-tertiary);
       @include font($body-2-paragraph);
-    }
+      display: grid;
+      gap: 8px;
 
-    &__tabs {
-    }
+      @include line-clamp(2);
 
-    &__description {
+      * {
+        margin: 0;
+      }
+
+      @include media(l) {
+        @include skip-line-clamp();
+      }
+
+      &.is-expanded {
+        @include skip-line-clamp();
+      }
     }
 
     &__tabs {
@@ -27,6 +37,7 @@
       border-radius: 12px;
       display: flex;
       margin-bottom: 16px;
+      margin-top: 24px;
       align-items: center;
 
       &-item {
@@ -56,5 +67,35 @@
     }
   }
 
+  .btn-expand {
+    font-family: 'Rubik', sans-serif;
+    @include font($heading-1);
+    @extend %flex-all-center;
+    @extend %skip-btn;
+    width: 100%;
+    padding: rem(2px) rem(16px);
+    margin-top: rem(8px);
+    grid-gap: rem(4px);
+    cursor: pointer;
+    transition: color .2s ease-in-out;
 
+    @include media(l) {
+      display: none;
+    }
+
+    --color: var(--button-text-ghost-high-contrast);
+    --icon-size: 20px;
+
+    .icon {
+      --color: var(--button-icn-ghost-high-contrast);
+    }
+
+    &:hover {
+      --color: var(--button-text-ghost-hover);
+
+      .icon {
+        --color: var(--button-icn-ghost-hover);
+      }
+    }
+  }
 }

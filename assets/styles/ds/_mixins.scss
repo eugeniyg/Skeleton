@@ -158,3 +158,10 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+@mixin skip-line-clamp {
+  display: initial;
+  -webkit-line-clamp: none;
+  -webkit-box-orient: initial;
+  overflow: auto;
+}
