@@ -39,7 +39,7 @@ export interface IPaymentMethod extends Record<string, any>{
 
 export interface IRequestDeposit extends Record<string, any>{
   method: string;
-  fields?: { [key:string]: string };
+  fields?: { [key:string]: string|undefined|null };
   currency: string;
   amount: number;
   accountId: string;

@@ -42,8 +42,7 @@
       default: () => ([]),
     },
     value: {
-      type: [String, Object, Number],
-      required: true,
+      type: [String, Object, Number]
     },
     isRequired: {
       type: Boolean,

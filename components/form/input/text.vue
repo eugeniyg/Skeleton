@@ -32,16 +32,13 @@
       required: true,
     },
     value: {
-      type: String,
-      default: ' ',
+      type: String
     },
     label: {
-      type: String,
-      default: '',
+      type: String
     },
     placeholder: {
-      type: String,
-      default: '',
+      type: String
     },
     isRequired: {
       type: Boolean,

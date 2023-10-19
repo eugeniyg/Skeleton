@@ -29,17 +29,21 @@
       />
 
       <template v-for="field in props.fields">
-        <form-input-text
-          v-if="field.fieldType === 'input'"
+        <component
+          v-if="field.key !== 'crypto_network'"
           :key="field.key"
-          :name="field.key"
-          :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.label`) || ''"
-          type="text"
-          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.placeholder`) || ''"
-          v-model:value="withdrawFormData[field.key]"
-          @focus="onFocus(field.key)"
           @input="v$[field.key]?.$touch()"
-          :hint="setError(field.key) "
+          @blur="v$[field.key]?.$touch()"
+          @focus="onFocus(field.key)"
+          :is="fieldsType[field.key]?.component || 'form-input-text'"
+          v-model:value="withdrawFormData[field.key]"
+          :type="fieldsType[field.key]?.type || 'text'"
+          :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.label`) || field.labels.en"
+          :name="field.key"
+          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.placeholder`) || field.hints.en"
+          :options="getFieldOptions(field.key)"
+          :isRequired="withdrawFormRules[field.key]?.hasOwnProperty('required')"
+          :hint="setError(field.key)"
         />
       </template>
 
@@ -61,6 +65,7 @@
   import useVuelidate from '@vuelidate/core';
   import { IPaymentField } from '@skeleton/core/types';
   import { marked } from 'marked';
+  import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
   const props = defineProps<{
     amountMax: number,
@@ -106,17 +111,18 @@
   const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : Number(defaultInputSum.amount));
   const amountValue = ref<number>(amountDefaultValue.value);
 
-  const startFormData: Record<string, any> = {};
-
+  const profileStore = useProfileStore();
+  const withdrawFormData = reactive<{ [key: string]: string }>({});
   props.fields.forEach((field: any) => {
-    if (field.key !== 'crypto_network') startFormData[field.key] = '';
+    if (field.key !== 'crypto_network') {
+      withdrawFormData[field.key] = profileStore.profile?.[field.key];
+    }
   });
-
-  const withdrawFormData = reactive<{ [key: string]: string }>(startFormData);
+  const fieldsType:any = fieldsTypeMap;
   const startRules = props.fields?.reduce((currentRulesObj, currentField) => {
     if (currentField.key === 'crypto_network') return currentRulesObj;
 
-    const rulesArr = [];
+    let rulesArr = [];
     if (currentField.isRequired) rulesArr.push({ rule: 'required' });
     if (currentField.regexp) {
       rulesArr.push({
@@ -135,6 +141,11 @@
         });
       }
     }
+
+    if (fieldsType[currentField.key]?.validation?.length) {
+      rulesArr = rulesArr.concat(fieldsType[currentField.key].validation);
+    }
+
     return {
       ...currentRulesObj,
       [currentField.key]: rulesArr
@@ -174,6 +185,11 @@
     }
     return undefined;
   };
+
+  const fieldsStore = useFieldsStore();
+  const getFieldOptions = (fieldName: string): any => {
+    return fieldsStore.selectOptions[fieldName] || [];
+  }
 
   const buttonAmount = computed(() => {
     if (amountValue.value > formatAmountMax.amount) return formatAmountMax.amount;

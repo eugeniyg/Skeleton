@@ -22,7 +22,7 @@
 
         <template v-if="depositMethods?.length">
           <form-deposit
-            :key="methodKey"
+            :key="`${currentMethod.method}-${methodKey}`"
             v-if="currentMethod.type === 'form'"
             v-bind="currentMethod"
           />

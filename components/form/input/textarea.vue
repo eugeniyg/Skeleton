@@ -28,20 +28,17 @@
       default: false,
     },
     value: {
-      type: String,
-      default: ' ',
+      type: String
     },
     name: {
       type: String,
-      default: '',
+      required: true
     },
     label: {
-      type: String,
-      default: '',
+      type: String
     },
     placeholder: {
-      type: String,
-      default: '',
+      type: String
     },
     hint: {
       type: Object,
