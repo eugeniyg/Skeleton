@@ -79,6 +79,7 @@
   });
 
   onMounted(() => {
+    console.log(window.pwa);
     if (window.pwa) {
       window.pwa.onInit(() => {
         allowInstall.value = !!window.pwa?.allowInstall;
