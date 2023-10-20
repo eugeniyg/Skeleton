@@ -138,6 +138,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       document.body.classList.toggle('drawer-open');
       const drawerContentEl:HTMLElement|null = document.querySelector('.drawer .content');
       if (drawerContentEl) this.isDrawerOpen ? disableBodyScroll(drawerContentEl) : enableBodyScroll(drawerContentEl);
+      if (this.isDrawerCompact) this.isDrawerCompact = false;
     },
 
     addModalQuery(modalName:string, queryValue: Maybe<string>):void {
