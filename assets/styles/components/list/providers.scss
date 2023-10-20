@@ -1,0 +1,160 @@
+.list-providers {
+  display: grid;
+  grid-template-columns: var(--grid-columns, repeat(2, 1fr));
+  grid-gap: var(--gap, 8px);
+
+  @include media(xs) {
+    --grid-columns: repeat(3, 1fr);
+    --accented-column: 1/3;
+  }
+
+  @include media(sm) {
+    --grid-columns: repeat(4, 1fr);
+  }
+
+  @include media(l) {
+    --grid-columns: repeat(5, 1fr);
+    --gap: 16px;
+  }
+
+  @include media(xxl) {
+    --grid-columns: repeat(6, 1fr);
+  }
+
+  &__item {
+    background-color: var(--layer-02);
+    min-height: 158px;
+    order: 2;
+    position: relative;
+    border-radius: 8px;
+    padding: var(--item-padding, (24px 24px 66px));
+    overflow: hidden;
+
+    &.is-accented {
+      display: grid;
+      grid-column: var(--accented-column, 1/3);
+      order: 1;
+      --item-padding: 24px;
+
+      .btn-primary {
+        @include font($heading-2);
+        grid-column: 1/3;
+        --padding: 7px 20px;
+      }
+    }
+
+    &-info {
+      display: flex;
+      height: 66px;
+      background-color: var(--bgc, var(--layer-01));
+      position: var(--info-position, absolute);
+      width: var(--width, 100%);
+      padding: var(--info-padding, 16px);
+      flex-direction: column;
+      align-items: center;
+      z-index: 1;
+      left: 0;
+      bottom: 0;
+      transform: var(--info-transform, translateY(0));
+      transition: transform .2s ease-in-out;
+
+      .is-accented & {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        grid-row-gap: rem(12px);
+        --info-position: relative;
+        --bgc: transparent;
+        --info-padding: 0;
+      }
+    }
+
+    &-label {
+      @include font($body-2);
+      color: var(--text-secondary);
+    }
+
+    &-count {
+      @include font($body-1);
+      color: var(--text-tertiary);
+      display: flex;
+      align-items: center;
+
+      .is-accented & {
+        &:before {
+          content: '';
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          display: block;
+          background-color: var(--icon-secondary);
+          margin: var(--count-margin, (0 8px));
+        }
+      }
+    }
+
+    &-logo {
+      &.picture {
+        width: 166px;
+        height: 40px;
+        position: relative;
+        display: block;
+        margin: var(--logo-margin, (0px auto));
+        transform: var(--logo-transform, translateY(0));
+        transition: transform .2s ease-in-out;
+
+        img {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          object-position: center;
+        }
+      }
+
+      .is-accented & {
+        --logo-margin: 0 0 4px;
+
+        img {
+          object-position: left;
+        }
+      }
+    }
+
+    &-bg {
+      position: absolute;
+      width: 50%;
+      top: 0;
+      bottom: 0;
+      right: 0;
+
+      picture {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+
+        img {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          object-position: center;
+        }
+      }
+    }
+
+    @include use-hover {
+      &:hover {
+        &:not(.is-accented) {
+          --info-transform: translateY(66px);
+          --logo-transform: translateY(calc(57px - 24px));
+        }
+      }
+    }
+  }
+}

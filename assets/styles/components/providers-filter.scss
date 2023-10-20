@@ -1,0 +1,38 @@
+.providers-filter {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "search toggle-sort";
+  margin-bottom: 16px;
+  align-items: center;
+  grid-column-gap: 8px;
+
+  &__search {
+    grid-area: search;
+
+    .icon {
+      --color: var(--icon-primary);
+    }
+
+    @include media(l) {
+      width: 280px;
+    }
+  }
+
+  &__toggle-sort {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-area: toggle-sort;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background-color: var(--bgc, var(--button-bg-secondary));
+    cursor: pointer;
+    --color: var(--button-icn-ghost-low-contrast);
+
+    &.is-active {
+      --bgc: var(--button-bg-secondary-click);
+      --color: var(--icon-accent);
+    }
+  }
+}
