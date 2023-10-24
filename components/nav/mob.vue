@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-mob" v-if="!isGamePage || isGamePage && !isLoggedIn">
+  <div class="nav-mob" v-if="!isGamePage">
     <button-base class="nav-mob__item" @click.prevent="layoutStore.toggleDrawer()">
       <atomic-icon id="menu"/>
       <span class="nav-mob__text">

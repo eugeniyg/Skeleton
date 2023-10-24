@@ -11,15 +11,6 @@
   visibility: var(--mob-nav-visibility, visible);
   border-top: 1px solid var(--layer-03-main);
 
-  .is-game-page & {
-    @media (orientation: landscape) and (max-width: 1023px) {
-      width: rem(48px);
-      height: auto;
-      border-top: 1px solid var(--layer-03-main);
-      --right-nav-mob: auto;
-    }
-  }
-
   @include media(l) {
     visibility: hidden;
   }
@@ -100,12 +91,6 @@
       color: var(--color, var(--text-tertiary));
       @include font($heading-1);
       transition: color .1s ease-in-out;
-
-      .is-game-page & {
-        @media (orientation: landscape) {
-          display: none;
-        }
-      }
     }
 
     &:not(.is-accent) {

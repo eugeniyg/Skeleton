@@ -19,24 +19,15 @@
     --padding: 0 #{rem(32px)}
   }
 
-  &--is-game-page-logout {
-    .is-game-page & {
-      .logo {
-        @media (orientation: landscape) and (max-width: 1023px) {
-          align-self: flex-start;
-          justify-self: center;
-        }
-      }
-    }
-  }
-
   .is-game-page & {
     @media (orientation: landscape) and (max-width: 1023px) {
       position: fixed;
-      right: 0;
+      right: auto;
       bottom: 0;
-      height: auto;
-      display: grid;
+      left: auto;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
       width: rem(64px);
       padding: rem(20px) rem(12px);
 
@@ -45,25 +36,26 @@
         height: 100%;
       }
 
-      .gift-notification, .vertical-divider, .btn-search, .nav-user__wrap {
+      .gift-notification,
+      .vertical-divider,
+      .btn-search,
+      .nav-user__wrap,
+      .input-deposit .select,
+      .input-deposit .btn-deposit span {
         display: none;
       }
     }
 
     @media (orientation: portrait) and (max-width: 1023px) {
-      .nav-user__wrap, .gift-notification, .btn-search, .vertical-divider {
+      .nav-user__wrap,
+      .gift-notification,
+      .btn-search,
+      .vertical-divider,
+      .input-deposit .select,
+      .input-deposit .btn-deposit span {
         @media (max-width: 1023px) {
           display: none;
         }
-      }
-    }
-  }
-
-  &--is-game-page-login {
-    @media (orientation: landscape) and (max-width: 1023px) {
-      .is-game-page & {
-        left: 0;
-        right: auto;
       }
     }
   }
@@ -77,19 +69,27 @@
     @extend %flex-items-center;
     justify-self: flex-end;
     margin-left: auto;
-    grid-column-gap: rem(8px);
+    gap: rem(8px);
 
     .btn-primary__icon, .btn-secondary__icon {
       display: none;
     }
 
     .is-game-page & {
-      @media (orientation: landscape) and (max-width: 1023px) {
-        display: flex;
-        flex-direction: column;
-        grid-row-gap: rem(8px);
-        margin: auto auto 0;
+      &::before {
+        content: '';
+        display: block;
+        height: 40px;
+        margin-right: rem(8px);
+        border-right: 1px solid var(--border-00-low-contrast);
 
+        @include media(md) {
+          display: none !important;
+        }
+      }
+
+      @media (orientation: landscape) and (max-width: 1023px),
+      (orientation: portrait) and (max-width: 1023px) {
         .btn-primary__text, .btn-secondary__text {
           display: none;
         }
@@ -102,9 +102,20 @@
           @include box(40px);
           --padding: 0;
         }
+      }
 
-        .btn-primary {
-          order: 1;
+      @media (orientation: landscape) and (max-width: 1023px) {
+        display: flex;
+        flex-direction: column;
+        margin: auto auto 0;
+
+        &::before {
+          height: auto;
+          width: 40px;
+          border: 0;
+          border-bottom: 1px solid var(--border-00-low-contrast);
+          margin-right: 0;
+          margin-bottom: rem(8px);
         }
       }
     }
@@ -135,23 +146,50 @@
     align-self: center;
     display: none;
 
-    &-icon {
+    .icon {
       --icon-size: 22px;
+      color: var(--button-icn-ghost-low-contrast);
+    }
+  }
+
+  &__play-real {
+    height: rem(40px);
+    flex-shrink: 0;
+    margin-left: auto;
+
+    @include media(md) {
+      display: none !important;
+    }
+
+    & + .items {
+      margin-left: rem(16px);
+
+      @include media(md) {
+        margin-left: auto;
+      }
+    }
+
+    @media (orientation: landscape) and (max-width: 1023px) {
+      width: 40px;
+      height: 40px;
+      margin: auto auto 0;
+      position: relative;
+
+      & + .items {
+        margin: 16px auto 0 !important;
+      }
+
+      span {
+        position: absolute;
+        text-align: center;
+        bottom: calc(100% + #{rem(4px)});
+        @include font($subheading-1);
+        color: var(--text-secondary);
+      }
     }
   }
 
   &--is-game-page-login {
-    @media (orientation: portrait) and (max-width: 1023px) {
-      .btn-deposit {
-        width: auto;
-        padding: 6px 20px;
-
-        span {
-          display: block;
-        }
-      }
-    }
-
     .logo {
       @media (orientation: landscape) and (max-width: 1023px) {
         display: none;

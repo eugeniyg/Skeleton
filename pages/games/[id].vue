@@ -71,10 +71,12 @@
 
   const router = useRouter();
 
+  const gameLoading = ref<boolean>(false);
   const startGame = async ():Promise<{
     data?: { gameUrl: string; token: string; },
     error?: any
   }> => {
+    gameLoading.value = true;
     const limitsStore = useLimitsStore();
     const redirectUrl = window.location.origin + (window.history.state.back || '');
     const startParams = {
@@ -104,10 +106,14 @@
       }
 
       return { error: { ...err, fatal: true } }
+    } finally {
+      gameLoading.value = false;
     }
   };
 
   const changeGameMode = async ():Promise<void> => {
+    if (gameLoading.value) return;
+
     if (isDemo.value && !isLoggedIn.value) {
       showModal('register');
       return;
@@ -125,6 +131,8 @@
     router.push(localizePath('/'));
     showAlert(alertsData.value?.limit?.limitedRealGame || defaultLocaleAlertsData.value?.limit?.limitedRealGame);
   };
+
+  useListen('changeMobileGameMode', changeGameMode);
 
   const checkDepositModal = (): void => {
     const { mobileGameModalInfo } = useGamesStore();

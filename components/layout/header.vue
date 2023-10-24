@@ -24,6 +24,17 @@
       />
       <!--</template>-->
 
+      <button-base
+        v-if="isGameDemo"
+        type="secondary"
+        size="sm"
+        class="app-header__play-real"
+        @click="changeGameMode"
+      >
+        <atomic-icon id="casino-real-money" />
+        <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.playRealButton') }}</span>
+      </button-base>
+
       <div class="items">
         <search
             :isShow="isShowSearch"
@@ -137,6 +148,16 @@
     const router = useRouter();
     const { localizePath } = useProjectMethods();
     router.push(localizePath('/'));
+  }
+
+  const route = useRoute();
+  const isGameDemo = computed(() => {
+    return isGamePage.value && route.query?.real !== 'true';
+  })
+
+
+  const changeGameMode = () => {
+    useEvent('changeMobileGameMode');
   }
 
   onMounted(() => {
