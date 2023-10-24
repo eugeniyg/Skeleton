@@ -11,7 +11,7 @@ interface IFieldsStoreState {
   profileFields: IField[],
 }
 
-interface ISelectOptions {
+interface ISelectOptions extends Record<string, any>{
   currency: ICurrency[],
   country: ICountry[],
   timeZone: ITimeZone[],

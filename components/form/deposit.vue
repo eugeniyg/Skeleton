@@ -12,6 +12,25 @@
       :is-bigger="true"
     />
 
+    <template v-if="props.fields?.length">
+      <component
+        v-for="field in props.fields"
+        :key="field.key"
+        @input="v$[field.key]?.$touch()"
+        @blur="v$[field.key]?.$touch()"
+        @focus="onFocus(field.key)"
+        :is="fieldsTypeMap[field.key]?.component || 'form-input-text'"
+        v-model:value="depositFormData[field.key]"
+        :type="fieldsTypeMap[field.key]?.type || 'text'"
+        :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.label`) || field.labels.en"
+        :name="field.key"
+        :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.placeholder`) || field.hints.en"
+        :options="getFieldOptions(field.key)"
+        :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
+        :hint="setError(field.key)"
+      />
+    </template>
+
     <template v-if="bonusesList?.length">
       <atomic-divider/>
       <template v-for="(bonus, index) in bonusesList" :key="index">
@@ -36,11 +55,14 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { IPaymentField } from '@skeleton/core/types';
+  import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
   const props = defineProps<{
     amountMax?: number,
     amountMin?: number,
-    method?: string
+    method?: string,
+    fields: IPaymentField[]
   }>();
 
   const {
@@ -48,7 +70,29 @@
     defaultLocalePopupsData,
     alertsData,
     defaultLocaleAlertsData,
+    fieldsSettings,
+    defaultLocaleFieldsSettings
   } = useGlobalStore();
+  const profileStore = useProfileStore();
+
+  const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
+  if (props.fields.length) {
+    props.fields.forEach((field) => {
+      depositFormData[field.key] = profileStore.profile?.[field.key];
+    })
+  }
+
+  const { getFormRules, createValidationRules } = useProjectMethods();
+  const depositRules = createValidationRules(props.fields.map(field => ({ ...field, name: field.key })), true);
+  const depositFormRules = getFormRules(depositRules);
+  const {
+    serverFormErrors, v$, onFocus, setError,
+  } = useFormValidation(depositFormRules, depositFormData);
+
+  const fieldsStore = useFieldsStore();
+  const getFieldOptions = (fieldName: string): any => {
+    return fieldsStore.selectOptions[fieldName] || [];
+  }
 
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
@@ -70,8 +114,10 @@
     if (amountValue.value < formatAmountMin.amount) return formatAmountMin.amount;
     return amountValue.value;
   });
-  const buttonDisabled = computed(() => amountValue.value < formatAmountMin.amount
-    || amountValue.value > formatAmountMax.amount || isSending.value);
+  const buttonDisabled = computed(() => v$.value.$invalid
+    || (amountValue.value < formatAmountMin.amount)
+    || (amountValue.value > formatAmountMax.amount)
+    || isSending.value);
 
   const bonusesList = computed(() => {
     if (popupsData?.deposit?.bonuses?.length) return popupsData.deposit.bonuses;
@@ -81,7 +127,10 @@
   const getDeposit = async ():Promise<void> => {
     if (buttonDisabled.value) return;
 
-    const profileStore = useProfileStore();
+    v$.value.$reset();
+    const validFormData = await v$.value.$validate();
+    if (!validFormData) return;
+
     if (profileStore.profile?.status === 2 && activeAccountType.value === 'fiat') {
       const { showAlert } = useLayoutStore();
       showAlert(alertsData?.limit?.limitedDeposit || defaultLocaleAlertsData?.limit?.limitedDeposit);
@@ -100,6 +149,7 @@
       accountId: activeAccount.value?.id || '',
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
+      fields: props.fields.length ? depositFormData : undefined
     };
     const { depositAccount } = useCoreWalletApi();
     const windowReference:any = window.open();
