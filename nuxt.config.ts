@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 
 const { resolve } = createResolver(dirname(fileURLToPath(import.meta.url)));
+const buildDate = Date.now();
 
 const viteConfig: any = {
   css: {
@@ -55,7 +56,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       script: [
-        { src: '/pwa/init.js' }
+        { src: `/pwa/init.js?v=${buildDate}` }
       ],
     },
     pageTransition: true,
