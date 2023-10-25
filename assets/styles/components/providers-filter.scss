@@ -35,4 +35,17 @@
       --color: var(--icon-accent);
     }
   }
+
+  .providers-sort {
+    overflow: hidden;
+    height: 0;
+    opacity: 0;
+    transition: all 0.3s;
+
+    &.show-sort {
+      padding-top: 8px;
+      height: 32px;
+      opacity: 1;
+    }
+  }
 }

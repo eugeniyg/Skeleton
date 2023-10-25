@@ -1,12 +1,9 @@
 <template>
-  <div
-    class="providers-filter"
-    v-click-outside="clickOutside"
-  >
+  <div class="providers-filter">
     <form-input-search
       v-model:value="searchValue"
       class="providers-filter__search"
-      placeholder="Search provider"
+      :placeholder="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'searchPlaceholder')"
       @input="searchInput"
     />
 
@@ -19,63 +16,47 @@
     </div>
 
     <atomic-providers-sort
-      v-show="isShowSort"
+      :class="{ 'show-sort': isShowSort }"
       @change="changeSort"
-      v-bind="sortProps"
+      :sortBy="props.filters.sortBy || 'order'"
+      :sortOrder="props.filters.sortOrder || 'asc'"
+      :sortOptions="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'sortOptions')"
+      :label="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'sortLabel')"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import debounce from 'lodash/debounce';
+  import debounce from 'lodash/debounce';
+  import { IProvidersRequest } from "@skeleton/core/types";
+  import {IProvidersPage} from "~/types";
 
-const searchValue = ref<string>('');
-const isShowSort = ref<boolean>(false);
+  const props = defineProps<{
+    currentLocaleContent: Maybe<IProvidersPage>;
+    defaultLocaleContent: Maybe<IProvidersPage>;
+    filters: IProvidersRequest;
+  }>();
 
-const sortProps = {
-  sortOptions: [
-    {
-      'label': 'Most popular',
-      'sortBy': 'default',
-      'sortOrder': 'asc'
-    },
-    {
-      'label': 'Recent',
-      'sortBy': 'recent',
-      'sortOrder': 'recent'
-    },
-    {
-      'label': 'A-Z',
-      'sortBy': 'name',
-      'sortOrder': 'asc'
-    },
-    {
-      'label': 'Z-A',
-      'sortBy': 'name',
-      'sortOrder': 'desc'
+  const { getContent } = useProjectMethods();
+
+  const searchValue = ref<string>(props.filters.name || '');
+  const isShowSort = ref<boolean>(!!props.filters.sortBy || !!props.filters.sortOrder);
+
+  const emit = defineEmits(['onSearch', 'changeSort']);
+
+  const searchInput = debounce((): void => {
+    if (searchValue.value.length > 1 || !searchValue.value) {
+      emit("onSearch", searchValue.value || undefined);
     }
-  ],
+  }, 500, { leading: false });
 
-  sortLabel: 'Sort by',
-  sortOrderValue: 'asc',
-  sortByValue: 'default',
-};
+  const toggleSort = () => {
+    isShowSort.value = !isShowSort.value;
+  };
 
-const searchInput = debounce(async (): Promise<void> => {
-  if (searchValue.value.length > 1 || !searchValue.value) {
-    //
-  }
-}, 500, { leading: false });
-
-const toggleSort = () => {
-  isShowSort.value = !isShowSort.value;
-};
-
-const clickOutside = () => isShowSort.value = false;
-
-const changeSort = () => {
-  //
-};
+  const changeSort = (newSortData: { sortBy: string, sortOrder: string }) => {
+    emit('changeSort', newSortData);
+  };
 </script>
 
 <style src="~/assets/styles/components/providers-filter.scss" lang="scss"/>
