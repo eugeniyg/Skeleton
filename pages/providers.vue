@@ -29,7 +29,7 @@
     />
 
     <atomic-empty
-      v-else-if="requestParams.name"
+      v-else-if="requestParams.name && !loadingProviders"
       :title="getContent(providersContent, defaultLocaleProvidersContent, 'empty.title')"
       :subTitle="getContent(providersContent, defaultLocaleProvidersContent, 'empty.description')"
       :image="getContent(providersContent, defaultLocaleProvidersContent, 'empty.image')"
@@ -101,6 +101,7 @@
   const providersList = ref<IGameProvider[]>([]);
 
   const { getGameProviders } = useCoreGamesApi();
+  const loadingProviders = ref<boolean>(true);
   const getProviders = async (): Promise<void> => {
     try {
       const responseProviders = await getGameProviders(requestParams);
@@ -130,8 +131,9 @@
     updateQuery();
   }
 
-  onMounted(() => {
-    getProviders();
+  onMounted(async () => {
+    await getProviders();
+    loadingProviders.value = false;
   })
 </script>
 
