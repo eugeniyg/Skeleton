@@ -1,0 +1,60 @@
+.cash-choose-region {
+  display: grid;
+  border-radius: 8px;
+  align-items: center;
+  grid-column-gap: rem(4px);
+  align-self: stretch;
+  grid-template-columns: repeat(2, auto) 1fr;
+  grid-template-rows: repeat(2, auto);
+  grid-template-areas: "logo label label" "logo title link";
+  justify-content: flex-start;
+  margin-bottom: rem(24px);
+
+  @include media(sm) {
+    border: 1px dashed var(--border-00-low-contrast);
+    padding: rem(8px);
+  }
+
+  img {
+    width: rem(20px);
+    height: rem(20px);
+    overflow: hidden;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--button-bg-secondary);
+    grid-area: logo;
+    margin: 0 rem(2px);
+  }
+
+  &__label {
+    @include font($body-0);
+    color: var(--text-helper);
+    grid-area: label;
+  }
+
+  &__title {
+    @include font($subheading-0);
+    color: var(--text-tertiary);
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    grid-area: title;
+  }
+
+  &__change {
+    color: var(--text-link);
+    @include font($link-0);
+    grid-area: link;
+
+    @include use-hover {
+      &:hover {
+        color: var(--text-link-hover);
+        cursor: pointer;
+      }
+
+      &:active {
+        color: var(--text-link);
+      }
+    }
+  }
+}

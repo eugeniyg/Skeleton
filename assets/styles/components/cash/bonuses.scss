@@ -1,0 +1,14 @@
+.cash-bonuses {
+  &__title {
+    margin: rem(16px) 0 rem(8px);
+    color: var(--text-primary);
+    @include font($heading-3);
+  }
+  .cash-bonus:not(:first-of-type) {
+    margin-top: rem(8px);
+  }
+
+  .cash-bonus:last-of-type {
+    margin-bottom: rem(24px);
+  }
+}

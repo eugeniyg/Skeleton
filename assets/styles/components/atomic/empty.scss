@@ -13,6 +13,10 @@
   .sub-title {
     @include font($body-2);
     color: var(--color, var(--text-helper));
+
+    p {
+      margin: 0;
+    }
   }
 
   .icon-colored {

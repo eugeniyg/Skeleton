@@ -283,7 +283,6 @@
     grid-row-gap: rem(16px);
     width: 100%;
     @extend %scrollbar;
-
     border-radius: 16px;
 
     @include media(xs) {

@@ -1,12 +1,21 @@
 .balance {
-  background-color: var(--layer-bg);
-  border-radius: 8px;
-  padding: var(--items-padding, #{rem(16px)});
+  border-radius: 12px;
   margin: var(--margin, 0);
   align-items: flex-start;
   width: 100%;
   position: relative;
   z-index: 5;
+
+  &__rows {
+    background-color: var(--layer-03-low-contrast);
+    padding: var(--items-padding, #{rem(8px)} #{rem(8px)} #{rem(8px)} #{rem(16px)});
+    border-radius: 12px;
+
+    @include media(sm) {
+      background-color: transparent;
+      --items-padding: 0;
+    }
+  }
 
   @include media(md) {
     min-width: 144px;
@@ -14,12 +23,7 @@
   }
 
   hr {
-    display: var(--hr-display, none);
     margin: rem(16px) 0;
-
-    @include media(md) {
-      --hr-display: block;
-    }
   }
 
   @include media(md) {
@@ -33,14 +37,14 @@
     grid-template-areas: "label value" "label sub-value";
 
     @include media(md) {
-      grid-row-gap: rem(2px);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+      //grid-row-gap: rem(2px);
+      //display: flex;
+      //flex-direction: column;
+      //align-items: flex-start;
     }
 
     &:nth-of-type(even) {
-      margin-bottom: rem(16px);
+      //margin-bottom: rem(16px);
 
       .label {
         --color: var(--text-tertiary);
@@ -52,16 +56,16 @@
         text-align: right;
 
         @include media(md) {
-          text-align: left;
+          //text-align: left;
         }
       }
     }
 
     &:nth-of-type(odd) {
-      margin-bottom: rem(16px);
+      //margin-bottom: rem(16px);
 
       &.row--compact {
-        margin-bottom: 8px;
+        //margin-bottom: 8px;
       }
 
       .value {
@@ -69,7 +73,7 @@
         --color: var(--text-primary);
 
         @include media(md) {
-          text-align: left;
+          //text-align: left;
         }
       }
     }
@@ -97,8 +101,8 @@
       @include media(md) {
         width: 100%;
         justify-content: space-between;
-        background-color: var(--field-00-click);
-        margin-top: 4px;
+        //background-color: var(--field-00-click);
+        //margin-top: 4px;
       }
 
       .icon-expand {
@@ -192,6 +196,5 @@
     grid-area: sub-value;
     display: flex;
     justify-content: flex-end;
-    margin-top: rem(2px);
   }
 }

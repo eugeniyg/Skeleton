@@ -51,6 +51,9 @@
     <modal-confirm />
     <modal-fiat />
     <modal-mobile-game />
+    <modal-choose-region />
+    <modal-exit-cash />
+    <modal-bonus-details />
 
     <atomic-alert />
   </div>

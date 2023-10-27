@@ -16,6 +16,9 @@ interface IModals extends Record<string, any> {
   success: boolean;
   withdraw: boolean;
   fiat: boolean;
+  chooseRegion: boolean;
+  exitCash: boolean;
+  bonusDetails: boolean,
 }
 
 interface IModalsUrls extends Record<string, any> {
@@ -59,6 +62,9 @@ export const useLayoutStore = defineStore('layoutStore', {
         withdraw: false,
         registerCancel: false,
         fiat: false,
+        chooseRegion: false,
+        exitCash: false,
+        bonusDetails: false,
       },
       modalsUrl: {
         register: 'sign-up',
