@@ -23,7 +23,13 @@
             class="item"
             @click="addCurrency(currency)"
           >
-            <atomic-image class="img" :src="`/img/currency/${currency.code}.svg`" />
+            <atomic-image
+              class="img"
+              :src="`/img/currency/${currency.code}.svg`"
+              notLazy
+              defaultImage="/img/currency/placeholder.svg"
+            />
+
             <span class="title">{{ currency.name }}</span>
             <span class="label">{{ currency.code }}</span>
           </div>
