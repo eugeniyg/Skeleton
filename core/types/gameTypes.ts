@@ -17,6 +17,7 @@ export interface IGameProvider extends Record<string, any>{
   id: string;
   identity: string;
   name: string;
+  gameEnabledCount: number;
   code?: string;
   value?: string;
 }

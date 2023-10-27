@@ -33,13 +33,6 @@ export const useGamesStore = defineStore('gamesStore', {
   }),
 
   getters: {
-    providersSelectOptions(state):IGameProvider[] {
-      return state.gameProviders.map((provider) => ({
-        ...provider,
-        code: provider.id,
-        value: provider.name,
-      }));
-    },
     currentLocationCollections(state):ICollection[] {
       const globalStore = useGlobalStore();
 

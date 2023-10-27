@@ -3,7 +3,6 @@ import {
   ICountry,
   ICurrency,
   IField,
-  IGameProvider,
   ITimeZone
 } from '@skeleton/core/types';
 
@@ -14,8 +13,7 @@ interface IFieldsStoreState {
 interface ISelectOptions extends Record<string, any>{
   currency: ICurrency[],
   country: ICountry[],
-  timeZone: ITimeZone[],
-  providers: IGameProvider[],
+  timeZone: ITimeZone[]
 }
 
 export const useFieldsStore = defineStore('fieldsStore', {
@@ -26,12 +24,10 @@ export const useFieldsStore = defineStore('fieldsStore', {
   getters: {
     selectOptions():ISelectOptions {
       const globalStore = useGlobalStore();
-      const gameStore = useGamesStore();
       return {
         currency: globalStore.currenciesSelectOptions,
         country: globalStore.countriesSelectOptions,
-        timeZone: globalStore.timeZonesSelectOptions,
-        providers: gameStore.providersSelectOptions,
+        timeZone: globalStore.timeZonesSelectOptions
       };
     },
   },

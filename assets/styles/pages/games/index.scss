@@ -6,6 +6,14 @@
     --margin-top: 0;
     --margin-bottom: 0;
   }
+
+  .grid, .empty {
+    min-height: 40vh;
+
+    @include media(md) {
+      min-height: 50vh;
+    }
+  }
 }
 
 .game-filter {
@@ -25,60 +33,13 @@
     --color: var(--icon-primary);
   }
 
-  &__dropdown {
+  .input-providers {
     grid-area: dropdown;
 
-    @media (max-width: 1024px) {
-      width: 100% !important;
-    }
+    width: 100%;
 
     @include media(l) {
       width: fit-content;
-    }
-
-    .items {
-      max-width: none;
-      left: auto;
-      border-radius: 8px;
-      right: 0;
-      width: auto;
-
-      @media (max-width: 1024px) {
-        width: 100% !important;
-      }
-
-      @include media(l) {
-        width: fit-content;
-      }
-    }
-
-    .selected {
-      grid-template-columns: 1fr auto;
-      padding-right: rem(10px);
-      min-height: rem(40px);
-
-      .icon {
-        position: relative;
-        right: 0;
-      }
-    }
-
-    .item {
-      padding: rem(8px) rem(24px) rem(8px) rem(8px);
-
-      span {
-        max-width: none;
-        overflow: unset;
-      }
-
-      .icon {
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-        --icon-transform: rotate(0) translatex(0);
-      }
     }
   }
 
