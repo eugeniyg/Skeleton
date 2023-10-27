@@ -21,7 +21,11 @@
         :class="{'is-active': activeAccount.currency === item.nativeCurrency}"
         @click="selectCurrency(item.nativeCurrency)"
       >
-        <atomic-image class="img" :src="`/img/currency/${item.nativeCurrency}.svg`" />
+        <atomic-image
+          class="img"
+          :src="`/img/currency/${item.nativeCurrency}.svg`"
+          defaultImage="/img/currency/placeholder.svg"
+        />
         <span class="code-title">{{ item.currency }}</span>
         <span v-if="!props.hideBalance" class="amount">{{ item.currencySymbol }} {{ item.amount }}</span>
       </div>

@@ -26,7 +26,6 @@
             <atomic-image
               class="img"
               :src="`/img/currency/${currency.code}.svg`"
-              notLazy
               defaultImage="/img/currency/placeholder.svg"
             />
 

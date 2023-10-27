@@ -24,7 +24,11 @@
             :key="item.code"
             @click="selectFiat(item.code)"
           >
-            <atomic-image class="modal-fiat__item-logo" :src="`/img/currency/${item.code}.svg`" />
+            <atomic-image
+              class="modal-fiat__item-logo"
+              :src="`/img/currency/${item.code}.svg`"
+              defaultImage="/img/currency/placeholder.svg"
+            />
             <span class="modal-fiat__item-currency">{{ item.code }}</span>
           </div>
         </div>

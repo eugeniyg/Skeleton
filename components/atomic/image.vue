@@ -6,11 +6,11 @@
     :src="imageSrc"
     alt=""
     data-not-lazy
+    @error="checkDefaultImage"
   />
 
   <img
     v-else
-    ref="targetImage"
     :key="imageSrc"
     :src="imageSrc"
     alt=""
@@ -31,12 +31,15 @@
   })
 
   const checkDefaultImage = (): void => {
-    console.log('error event');
     if (props.defaultImage) useDefaultImg.value = true;
   }
 
-  const targetImage = ref();
+  const targetImage = ref<HTMLImageElement>();
   onMounted(() => {
-    console.dir(targetImage.value)
+    if (props.notLazy
+      && props.defaultImage
+      && targetImage.value?.complete
+      && !targetImage.value?.naturalWidth
+    ) useDefaultImg.value = true;
   })
 </script>
