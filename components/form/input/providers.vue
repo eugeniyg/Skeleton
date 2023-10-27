@@ -38,7 +38,10 @@
           class="input-providers__item"
         >
           <label class="input-providers__label">
-            <atomic-image class="input-providers__logo" src="/img/provider-empty-placeholder.svg" />
+            <atomic-picture
+              class="input-providers__logo"
+              :src="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'providerPlaceholder')"
+            />
 
             <span class="input-providers__item-label">{{ provider.name }}</span>
 
