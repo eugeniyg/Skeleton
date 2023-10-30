@@ -18,7 +18,7 @@
 
         <!--        <wallet-region v-bind="chooseRegionProps">-->
         <!--          <div class="identity">-->
-        <!--            ID {{ cashIdProps.id }}-->
+        <!--            ID {{ playerIdentity }}-->
         <!--          </div>-->
         <!--        </wallet-region>-->
 
@@ -45,34 +45,47 @@
 
           <button-modal-close @close="closeModal('wallet')"/>
           <wallet-header v-bind="cashHeaderProps"/>
-          <div class="identity">ID {{ cashIdProps.id }}</div>
+          <div class="identity">ID {{ playerIdentity }}</div>
         </div>
 
         <div class="wallet-modal__slot-right__header-secondary">
           <div class="wallet-modal__slot-right__header-secondary__title">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.title') }}
+            {{ modalTitle }}
           </div>
 
-          <div class="identity">ID {{ cashIdProps.id }}</div>
+          <div class="identity">ID {{ playerIdentity }}</div>
         </div>
 
-        <template v-if="depositMethods?.length">
-          <form-deposit
-            :key="`${currentMethod.method}-${methodKey}`"
-            v-if="currentMethod.type === 'form'"
-            v-bind="currentMethod"
-          />
+        <template v-if="selectedTab === 'deposit'">
+          <template v-if="depositMethods?.length">
+            <form-deposit
+              :key="`${currentMethod.method}-${methodKey}`"
+              v-if="currentMethod.type === 'form'"
+              v-bind="currentMethod"
+            />
 
-          <form-deposit-crypto
-            v-if="currentMethod.type === 'address'"
-            v-bind="currentMethod"
-            :key="`${currentMethod.method}-${methodKey}`"
-          />
+            <form-deposit-crypto
+              v-if="currentMethod.type === 'address'"
+              v-bind="currentMethod"
+              :key="`${currentMethod.method}-${methodKey}`"
+            />
+          </template>
+
+          <div v-else class="wallet-modal__empty-methods">
+            {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.emptyDepositMethods') }}
+          </div>
         </template>
 
-        <div v-else class="wallet-modal__empty-methods">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.emptyDepositMethods') }}
-        </div>
+        <template v-else>
+          <form-withdraw
+            v-if="withdrawMethods?.length"
+            :key="currentMethod.method"
+            v-bind="currentMethod"
+          />
+          <div v-else class="modal-withdraw__empty-methods">
+            {{ getContent(popupsData, defaultLocalePopupsData, 'withdrawal.emptyWithdrawMethods') }}
+          </div>
+        </template>
 
         <wallet-dots
           :itemsCount="2"
@@ -90,9 +103,11 @@
 
   const layoutStore = useLayoutStore();
   const walletStore = useWalletStore();
+  const profileStore = useProfileStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-  const { depositMethods } = storeToRefs(walletStore);
+  const { depositMethods, withdrawMethods } = storeToRefs(walletStore);
+  const { profile } = storeToRefs(profileStore);
   const currentMethod = ref<IPaymentMethod>({} as IPaymentMethod);
 
   const {
@@ -106,6 +121,10 @@
   watch(() => depositMethods.value, () => {
     currentMethod.value = depositMethods.value[0] || {};
     methodKey.value += 1;
+  });
+
+  watch(() => withdrawMethods.value, () => {
+    currentMethod.value = withdrawMethods.value[0] || {};
   });
 
   const selectedTab = ref('deposit');
@@ -135,6 +154,17 @@
   const changeTab = (id: string) => {
     selectedTab.value = id;
   };
+
+  const modalTitle = computed(() => {
+    return selectedTab.value === 'deposit'
+      ? getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.title')
+      : getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.title')
+  })
+
+  const playerIdentity = computed(() => {
+    if (!profile.value?.id) return '';
+    return profile.value.id.split('-')[0].toUpperCase();
+  })
 </script>
 
 <style src="~/assets/styles/components/modal/wallet.scss" lang="scss"/>
