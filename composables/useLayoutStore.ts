@@ -9,6 +9,7 @@ interface IModals extends Record<string, any> {
   registerCancel: boolean;
   signIn: boolean;
   deposit: boolean;
+  wallet: boolean;
   confirm: boolean;
   error: boolean;
   forgotPass: boolean;
@@ -51,6 +52,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         register: false,
         signIn: false,
         deposit: false,
+        wallet: false,
         confirm: false,
         error: false,
         forgotPass: false,
@@ -211,6 +213,17 @@ export const useLayoutStore = defineStore('layoutStore', {
       const { getWithdrawMethods } = useWalletStore();
       await getWithdrawMethods();
       this.showModal('withdraw');
+    },
+
+    async openWalletModal(): Promise<void> {
+      const { getDepositMethods, getWithdrawMethods } = useWalletStore();
+      const [depositSettled, withdrawSettled] = await Promise.allSettled([
+        getDepositMethods(),
+        getWithdrawMethods()
+      ]);
+      console.log(depositSettled);
+      console.log(withdrawSettled);
+      this.showModal('wallet');
     },
 
     setReturnGame(gameData: Maybe<IGame|string>): void {

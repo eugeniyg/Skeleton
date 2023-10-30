@@ -12,6 +12,8 @@
       :is-bigger="true"
     />
 
+    <!--    <wallet-pills />-->
+
     <template v-if="props.fields?.length">
       <component
         v-for="field in props.fields"
@@ -32,24 +34,31 @@
     </template>
 
     <template v-if="bonusesList?.length">
-      <atomic-divider/>
-      <template v-for="(bonus, index) in bonusesList" :key="index">
-        <atomic-bonus v-bind="bonus" />
-        <atomic-divider />
-      </template>
+      <!--      <template v-for="(bonus, index) in bonusesList" :key="index">-->
+      <!--        <atomic-bonus v-bind="bonus" />-->
+      <!--      </template>-->
+
+      <wallet-bonuses />
     </template>
 
     <bonus-deposit-code />
 
-    <button-base
-      type="primary"
-      size="md"
-      :isDisabled="buttonDisabled"
-      @click="getDeposit"
-    >
-      <atomic-spinner :is-shown="isSending"/>
-      {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.depositButton') }} {{ buttonAmount }} {{ defaultInputSum.currency }}
-    </button-base>
+    <div class="form-deposit__button-holder">
+      <button-base
+        type="primary"
+        size="md"
+        :isDisabled="buttonDisabled"
+        @click="getDeposit"
+      >
+        <atomic-spinner :is-shown="isSending"/>
+        <span class="btn-primary__content">
+        <span>{{ getContent(popupsData, defaultLocalePopupsData, 'deposit.depositButton') }} {{ buttonAmount }} {{ defaultInputSum.currency }}</span>
+        <span>+ 250$ & 500FS</span>
+      </span>
+
+      </button-base>
+    </div>
+
   </form>
 </template>
 

@@ -44,13 +44,17 @@
     <modal-sign-in />
     <modal-forgot-pass />
     <modal-reset-pass />
-    <modal-deposit />
+    <!--    <modal-deposit />-->
     <modal-withdraw />
     <modal-success />
     <modal-error />
     <modal-confirm />
     <modal-fiat />
     <modal-mobile-game />
+    <modal-wallet />
+    <!--    <modal-wallet-choose-region />-->
+    <modal-close-wallet />
+    <modal-wallet-bonus-details />
 
     <atomic-alert />
   </div>

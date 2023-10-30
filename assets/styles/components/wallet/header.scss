@@ -1,0 +1,56 @@
+.wallet-header {
+  padding: 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: repeat(2, auto);
+  grid-template-areas: "logo title id" "logo subTitle id";
+  align-items: center;
+  width: 100%;
+
+  @include media(sm) {
+    display: none;
+  }
+
+  &__logo {
+    display: flex;
+    padding: rem(4px);
+    flex-direction: column;
+    align-items: center;
+    gap: rem(10px);
+    border-radius: 4px;
+    background: var(--layer-03-low-contrast);
+    margin-right: rem(8px);
+    grid-area: logo;
+
+    img {
+      display: block;
+      height: rem(20px);
+      width: auto;
+    }
+  }
+
+  &__title {
+    color: var(--text-helper);
+    @include font($body-0);
+    align-self: stretch;
+    grid-area: title;
+  }
+
+  &__sub-title {
+    color: var(--text-tertiary);
+    @include font($subheading-0);
+    grid-area: subTitle;
+  }
+
+  &__id {
+    @include font($body-1);
+    display: flex;
+    grid-column-gap: rem(4px);
+    color: var(--text-helper);
+    grid-area: id;
+
+    span {
+      text-transform: uppercase;
+    }
+  }
+}

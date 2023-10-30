@@ -1,0 +1,50 @@
+.modal-close-wallet {
+  @extend %modal-info;
+
+  &__content {
+    @include font($body-3-paragraph);
+    color: var(--text-secondary);
+    padding: rem(16px);
+    border: 1px dashed var(--border-01);
+    border-radius: 8px;
+
+    ul {
+      margin: 0;
+      padding: 0 0 0 rem(20px);
+    }
+
+    p {
+      margin: 0;
+      padding: 0;
+
+      &:not(:first-of-type) {
+        margin-top: rem(8px);
+      }
+    }
+
+    li, p {
+      color: inherit;
+      &:not(:first-of-type) {
+        margin-top: rem(8px);
+      }
+    }
+  }
+
+  &__actions {
+    display: grid;
+    grid-row-gap: rem(8px);
+  }
+
+  .btn-secondary, .btn-ghost {
+    --width: 100%;
+  }
+
+  .btn-ghost {
+    --height: #{rem(24px)};
+    --color: var(--button-text-ghost-low-contrast);
+
+    &:hover {
+      --color: var(--button-text-ghost-hover);
+    }
+  }
+}

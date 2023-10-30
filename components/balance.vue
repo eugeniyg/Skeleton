@@ -1,64 +1,67 @@
 <template>
   <div class="balance">
-    <div
-      class="row"
-      :class="{ 'row--compact': showEquivalentBalance }"
-    >
-      <div class="label">
-        {{
-          props.withdraw ? getContent(popupsData, defaultLocalePopupsData, 'deposit.balanceLabel')
-          : getContent(popupsData, defaultLocalePopupsData, 'withdrawal.balanceLabel')
-        }}
+    <div class="balance__rows">
+      <div
+        class="row"
+        :class="{ 'row--compact': showEquivalentBalance }"
+      >
+        <div class="label">
+          {{
+            props.withdraw ? getContent(popupsData, defaultLocalePopupsData, 'deposit.balanceLabel')
+              : getContent(popupsData, defaultLocalePopupsData, 'withdrawal.balanceLabel')
+          }}
+        </div>
+
+        <template v-if="props.withdraw">
+          <div
+            v-if="showEquivalentBalance"
+            class="value"
+          >
+            {{ activeEquivalentAccount.balance }} {{ activeEquivalentAccount.currency }}
+          </div>
+
+          <div :class="showEquivalentBalance ? 'converted-value' : 'value'">
+            {{ balanceFormat.amount }} {{ balanceFormat.currency }}
+          </div>
+        </template>
+
+        <div
+          v-else
+          v-click-outside="closeSelect"
+          class="select"
+          :class="{'is-open': isSelectOpen}"
+          @click="toggleSelect"
+        >
+          <span class="amount">
+            <span>{{ balanceFormat.amount }}</span>
+            <span>{{ balanceFormat.currency }}</span>
+          </span>
+
+          <atomic-icon class="icon-expand" id="arrow_expand-close"/>
+
+          <list-currencies
+            :is-open="isSelectOpen"
+            hideBalance
+            @hide-currencies-list="isSelectOpen = false"
+            @click.stop.prevent
+            @changeActiveAccount="walletStore.getDepositMethods"
+          />
+        </div>
       </div>
 
-      <template v-if="props.withdraw">
+      <div class="row" v-if="props.withdraw">
+        <div class="label">{{ getContent(popupsData, defaultLocalePopupsData, 'withdrawal.withdrawLabel') }}</div>
+
         <div
-          v-if="showEquivalentBalance"
           class="value"
+          v-if="showEquivalentBalance"
         >
-          {{ activeEquivalentAccount.balance }} {{ activeEquivalentAccount.currency }}
+          {{ withdrawalEquivalentBalanceFormat.balance }} {{ withdrawalEquivalentBalanceFormat.currency }}
         </div>
 
         <div :class="showEquivalentBalance ? 'converted-value' : 'value'">
-          {{ balanceFormat.amount }} {{ balanceFormat.currency }}
+          {{ withdrawalBalanceFormat.amount }} {{ withdrawalBalanceFormat.currency }}
         </div>
-      </template>
-
-      <div
-        v-else
-        v-click-outside="closeSelect"
-        class="select"
-        :class="{'is-open': isSelectOpen}"
-        @click="toggleSelect"
-      >
-        <span class="amount">
-          <span>{{ balanceFormat.amount }}</span>
-          <span>{{ balanceFormat.currency }}</span>
-        </span>
-        <atomic-icon class="icon-expand" id="arrow_expand-close"/>
-
-        <list-currencies
-          :is-open="isSelectOpen"
-          hideBalance
-          @hide-currencies-list="isSelectOpen = false"
-          @click.stop.prevent
-          @changeActiveAccount="walletStore.getDepositMethods"
-        />
-      </div>
-    </div>
-
-    <div class="row" v-if="props.withdraw">
-      <div class="label">{{ getContent(popupsData, defaultLocalePopupsData, 'withdrawal.withdrawLabel') }}</div>
-
-      <div
-        class="value"
-        v-if="showEquivalentBalance"
-      >
-        {{ withdrawalEquivalentBalanceFormat.balance }} {{ withdrawalEquivalentBalanceFormat.currency }}
-      </div>
-
-      <div :class="showEquivalentBalance ? 'converted-value' : 'value'">
-        {{ withdrawalBalanceFormat.amount }} {{ withdrawalBalanceFormat.currency }}
       </div>
     </div>
     <atomic-divider/>
@@ -78,9 +81,20 @@
 
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
-  const { activeAccount, activeEquivalentAccount, showEquivalentBalance } = storeToRefs(walletStore);
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
-  const { formatBalance, getContent, getEquivalentAccount } = useProjectMethods();
+  const {
+    activeAccount,
+    activeEquivalentAccount,
+    showEquivalentBalance
+  } = storeToRefs(walletStore);
+  const {
+    popupsData,
+    defaultLocalePopupsData
+  } = storeToRefs(globalStore);
+  const {
+    formatBalance,
+    getContent,
+    getEquivalentAccount
+  } = useProjectMethods();
   const isSelectOpen = ref<boolean>(false);
 
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
@@ -96,5 +110,5 @@
   };
 </script>
 
-<style src="~/assets/styles/components/balance.scss" lang="scss" />
+<style src="~/assets/styles/components/balance.scss" lang="scss"/>
 

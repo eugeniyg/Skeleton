@@ -13,14 +13,15 @@
 </template>
 
 <script setup lang="ts">
-  const { openDepositModal } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
   const { getContent } = useProjectMethods();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const isActive = ref<boolean>(false);
 
   const makeActive = () => {
     isActive.value = true;
-    openDepositModal();
+    openWalletModal();
+    //openDepositModal();
   };
 
   const makeInactive = () => {

@@ -21,7 +21,8 @@
           @click.stop
         />
       </div>
-      <button-deposit/>
+
+      <button-deposit />
     </div>
   </client-only>
 </template>

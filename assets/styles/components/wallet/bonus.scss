@@ -1,0 +1,210 @@
+.wallet-bonus {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  border-radius: rem(8px);
+  height: rem(88px);
+  overflow: hidden;
+  padding: rem(2px);
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--bonus-border-color, var(--layer-02));
+  }
+
+
+  &.is-selected {
+    --bonus-border-color: var(--border-accent);
+
+    &:after {
+      top: rem(2px);
+      right: rem(2px);
+      bottom: rem(2px);
+      left: rem(2px);
+      border-radius: 6px;
+    }
+  }
+
+  &__content {
+    position: relative;
+    padding: rem(12px) rem(24px) rem(12px) rem(16px);
+    z-index: 1;
+    background-color: var(--bonus-bg, var(--layer-02));
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    border-radius: 6px;
+
+    .is-selected & {
+      border-radius: 6px;
+    }
+
+    * {
+      margin: 0;
+    }
+  }
+
+  .input-checkbox {
+    position: absolute;
+    width: rem(20px);
+    height: rem(20px);
+    top: rem(8px);
+    right: rem(8px);
+
+    .icon {
+      --bg: var(--checkbox-bg, transparent);
+      --icon-size: rem(14px);
+    }
+
+    &.input-checkbox--checked {
+      .label {
+        --checkbox-border: var(--border-accent);
+
+        .icon {
+          --bg: var(--border-accent);
+          --color: var(--icon-contrast);
+        }
+      }
+    }
+
+    @include use-hover {
+      &:hover {
+        .icon {
+          --bg: var(--checkbox-bg, transparent);
+        }
+      }
+    }
+
+    .label {
+      --shadow: 0 0 0 2px var(--checkbox-border, var(--border-02));
+
+      @include use-hover {
+        &:hover {
+          --shadow: 0 0 0 2px var(--border-accent);
+          --bg: transparent;
+        }
+      }
+    }
+  }
+
+  &--bg-red {
+    --bonus-bg: var(--red-900);
+    --min-icon-color: var(--red-300);
+    --min-title-color: var(--red-200);
+    --more-icon-color: var(--red-300);
+    --more-title-color: var(--red-200);
+    --checkbox-border: var(--red-400);
+    --bonus-border-color: var(--red-900);
+  }
+
+  &--bg-orange {
+    --bonus-bg: var(--orange-900);
+    --min-icon-color: var(--orange-300);
+    --min-title-color: var(--orange-200);
+    --more-icon-color: var(--orange-300);
+    --more-title-color: var(--orange-200);
+    --checkbox-border: var(--orange-500);
+    --bonus-border-color: var(--orange-900);
+  }
+
+  &--bg-green {
+    --bonus-bg: var(--green-900);
+    --min-icon-color: var(--green-300);
+    --min-title-color: var(--green-200);
+    --more-icon-color: var(--green-300);
+    --more-title-color: var(--green-200);
+    --checkbox-border: var(--green-600);
+    --bonus-border-color: var(--green-900);
+  }
+
+  &--bg-violet {
+    --bonus-bg: var(--violet-900);
+    --min-icon-color: var(--violet-300);
+    --min-title-color: var(--violet-200);
+    --more-icon-color: var(--violet-300);
+    --more-title-color: var(--violet-200);
+    --checkbox-border: var(--violet-400);
+    --bonus-border-color: var(--violet-900);
+  }
+
+  &__title {
+    color: var(--text-primary);
+    @include font($heading-1);
+    @include line-clamp(2);
+  }
+
+  &__more {
+    display: flex;
+    grid-column-gap: rem(2px);
+    align-items: center;
+
+    &-title {
+      @include font($body-0);
+      color: var(--more-title-color, var(--text-secondary));
+      --line-height: auto;
+    }
+
+    .icon {
+      --color: var(--more-icon-color, var(--icon-primary));
+      --icon-size: 14px;
+    }
+
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__min {
+    display: flex;
+    grid-column-gap: rem(2px);
+    align-items: center;
+
+    .icon {
+      --color: var(--min-icon-color, var(--icon-primary));
+      --icon-size: 14px;
+    }
+
+    &-title {
+      @include font($body-0);
+      color: var(--min-title-color, var(--text-secondary));
+      --line-height: auto;
+    }
+
+    &-value {
+      @include font($body-0);
+      color: var(--text-primary);
+      --line-height: auto;
+    }
+
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: var(--gradient-tint-dark-b2t-half);
+    pointer-events: none;
+    z-index: 1;
+  }
+}
