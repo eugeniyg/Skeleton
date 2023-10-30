@@ -5,7 +5,7 @@ import {
   IGameProvider,
   IGamesRequest,
   IGamesResponse,
-  IGameStart,
+  IGameStart, IProvidersRequest,
   IRecentlyRequest,
   ISpinsResponse,
   IWinner,
@@ -26,16 +26,21 @@ export const useCoreGamesApi = () => {
     return data;
   };
 
-  const getGameProviders = async ():Promise<IGameProvider[]> => {
+  const getGameProviders = async (params?: IProvidersRequest):Promise<IGameProvider[]> => {
     const cacheGameProviders = getCacheData('providers');
-    if (cacheGameProviders) {
+    if (!params && cacheGameProviders) {
       return cacheGameProviders;
     }
 
-    const { data } = await useFetchInstance('/api/game/providers');
-    setCacheData('providers', data);
+    const { data } = await useFetchInstance('/api/game/providers', { params });
+    if (!params) setCacheData('providers', data);
     return data;
   };
+
+  const getProviderInfo = async (combineProviderId: string): Promise<IGameProvider> => {
+    const { data } = await useFetchInstance(`/api/game/providers/${combineProviderId}`);
+    return data;
+  }
 
   const getFilteredGames = async (filterParams: IGamesRequest):Promise<IGamesResponse> => {
     return await useFetchInstance('/api/game/games', {params: filterParams});
@@ -89,6 +94,7 @@ export const useCoreGamesApi = () => {
   return {
     getGameCollections,
     getGameProviders,
+    getProviderInfo,
     getFilteredGames,
     getGamesInfo,
     getStartGame,
