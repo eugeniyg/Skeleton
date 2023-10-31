@@ -65,6 +65,12 @@
 
   .dropdown.country {
     max-width: calc(100% - #{rem(16px)} - #{rem(98px)});
+
+    &.has-error {
+      ~ .currency {
+        margin-top: rem(-107px);
+      }
+    }
   }
 
   .btn-modal-close {
