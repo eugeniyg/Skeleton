@@ -60,11 +60,11 @@
   .dropdown.currency {
     max-width: rem(98px);
     margin-left: auto;
+    margin-top: rem(-84px);
   }
 
   .dropdown.country {
     max-width: calc(100% - #{rem(16px)} - #{rem(98px)});
-    margin-top: rem(-84px);
   }
 
   .btn-modal-close {
