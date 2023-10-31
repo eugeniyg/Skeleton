@@ -48,7 +48,7 @@
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal, openDepositModal } = useLayoutStore();
+  const { showModal, openWalletModal } = useLayoutStore();
   const { isGamePage } = storeToRefs(layoutStore);
   const {
     layoutData,
@@ -57,7 +57,7 @@
   const { localizePath, getContent } = useProjectMethods();
 
   const clickMainButton = ():void => {
-    isLoggedIn.value ? openDepositModal() : showModal('register');
+    isLoggedIn.value ? openWalletModal() : showModal('register');
   };
 
   const linksList = computed(() => {

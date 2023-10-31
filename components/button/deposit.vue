@@ -21,7 +21,6 @@
   const makeActive = () => {
     isActive.value = true;
     openWalletModal();
-    //openDepositModal();
   };
 
   const makeInactive = () => {

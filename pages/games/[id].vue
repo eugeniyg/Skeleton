@@ -38,7 +38,7 @@
     showAlert,
     compactDrawer,
     setReturnGame,
-    openDepositModal
+    openWalletModal
   } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
@@ -137,7 +137,7 @@
   const checkDepositModal = (): void => {
     const { mobileGameModalInfo } = useGamesStore();
     if (isLoggedIn.value && !isDemo.value && !activeAccount.value?.balance && !mobileGameModalInfo) {
-      openDepositModal();
+      openWalletModal('deposit');
     }
   }
 

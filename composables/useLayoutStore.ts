@@ -4,12 +4,14 @@ import { useNotification } from '@kyvg/vue3-notification';
 import { IAlert } from "~/types";
 import {IGame} from "@skeleton/core/types";
 
+type WalletModalTypes = 'deposit'|'withdraw'|undefined;
 interface IModals extends Record<string, any> {
   register: boolean;
   registerCancel: boolean;
   signIn: boolean;
   deposit: boolean;
   wallet: boolean;
+  cancelDeposit: boolean;
   confirm: boolean;
   error: boolean;
   forgotPass: boolean;
@@ -27,6 +29,7 @@ interface IModalsUrls extends Record<string, any> {
   confirm: string;
   forgotPass: string;
   resetPass: string;
+  wallet: string;
 }
 
 interface ILayoutStoreState extends Record<string, any>{
@@ -39,6 +42,7 @@ interface ILayoutStoreState extends Record<string, any>{
   modalsUrl: IModalsUrls;
   lastNotificationTime: number;
   returnGame: Maybe<string|IGame>;
+  walletModalType: WalletModalTypes;
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -53,6 +57,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         signIn: false,
         deposit: false,
         wallet: false,
+        cancelDeposit: false,
         confirm: false,
         error: false,
         forgotPass: false,
@@ -70,9 +75,11 @@ export const useLayoutStore = defineStore('layoutStore', {
         confirm: 'confirm',
         forgotPass: 'forgot-pass',
         resetPass: 'reset-pass',
+        wallet: 'wallet'
       },
     lastNotificationTime: 0,
-    returnGame: undefined
+    returnGame: undefined,
+    walletModalType: undefined
   }),
 
   actions: {
@@ -166,8 +173,8 @@ export const useLayoutStore = defineStore('layoutStore', {
     },
 
     showModal(modalName: string, queryValue?:string):void {
-      this.modals[modalName] = true;
       if (this.modalsUrl[modalName]) this.addModalQuery(modalName, queryValue);
+      this.modals[modalName] = true;
     },
 
     closeModal(modalName: string):void {
@@ -184,9 +191,20 @@ export const useLayoutStore = defineStore('layoutStore', {
         const modalKey = Object.keys(this.modalsUrl).find((key) => this.modalsUrl[key] === query);
         if (!modalKey) return;
 
-        const authModals = ['register', 'signIn', 'forgotPass', 'resetPass'];
-        if (authModals.includes(modalKey)) {
+        const guestModals = ['register', 'signIn', 'forgotPass', 'resetPass'];
+        const authModals = ['wallet'];
+        if (guestModals.includes(modalKey)) {
           isLoggedIn ? this.closeModal(modalKey) : this.showModal(modalKey);
+        } else if (authModals.includes(modalKey)) {
+          if (!isLoggedIn) {
+            this.closeModal(modalKey);
+          } else if (modalKey === 'wallet') {
+            const queryValue = route.query[query] as string;
+            const modalType = ['deposit', 'withdraw'].includes(queryValue) ? queryValue as WalletModalTypes : undefined;
+            this.openWalletModal(modalType);
+          } else {
+            this.showModal(modalKey);
+          }
         } else {
           this.showModal(modalKey, route.query?.[query] as string);
         }
@@ -215,15 +233,34 @@ export const useLayoutStore = defineStore('layoutStore', {
       this.showModal('withdraw');
     },
 
-    async openWalletModal(): Promise<void> {
+    async openWalletModal(modalType?: WalletModalTypes): Promise<void> {
+      this.walletModalType = modalType;
       const { getDepositMethods, getWithdrawMethods } = useWalletStore();
       const [depositSettled, withdrawSettled] = await Promise.allSettled([
         getDepositMethods(),
         getWithdrawMethods()
       ]);
-      console.log(depositSettled);
-      console.log(withdrawSettled);
-      this.showModal('wallet');
+
+      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+
+      if (withdrawSettled.status === 'rejected') {
+        this.showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
+        return;
+      } else if (depositSettled.status === 'rejected' && this.walletModalType !== 'withdraw') {
+        if (depositSettled.reason.data?.error?.code === 13100) {
+          const router = useRouter();
+          const { localizePath } = useProjectMethods();
+          await router.push(localizePath('/profile/limits'));
+          const { showModal } = useLimitsStore();
+          showModal('depositLimitReached');
+        } else {
+          this.showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
+        }
+
+        return;
+      }
+
+      this.showModal('wallet', modalType);
     },
 
     setReturnGame(gameData: Maybe<IGame|string>): void {

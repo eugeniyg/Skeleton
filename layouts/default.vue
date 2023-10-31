@@ -53,7 +53,7 @@
     <modal-mobile-game />
     <modal-wallet />
     <!--    <modal-wallet-choose-region />-->
-    <modal-close-wallet />
+    <modal-cancel-deposit />
     <modal-wallet-bonus-details />
 
     <atomic-alert />
@@ -79,7 +79,6 @@
     isSportsbookPage
   } = storeToRefs(layoutStore);
   const { checkModals } = layoutStore;
-  checkModals();
 
   const { logOutUser } = profileStore;
 
@@ -125,6 +124,7 @@
 
   onBeforeMount(() => {
     checkDrawer();
+    checkModals();
 
     const storageReturnGame = sessionStorage.getItem('returnGame');
     if (storageReturnGame) returnGame.value = JSON.parse(storageReturnGame);

@@ -28,20 +28,15 @@
       />
 
       <template v-if="bonusesList?.length">
-        <atomic-divider/>
+        <!--      <template v-for="(bonus, index) in bonusesList" :key="index">-->
+        <!--        <atomic-bonus v-bind="bonus" />-->
+        <!--      </template>-->
 
-        <template
-          v-for="(bonus, index) in bonusesList"
-          :key="index"
-        >
-          <atomic-bonus v-bind="bonus"/>
-          <atomic-divider/>
-        </template>
+        <wallet-bonuses />
       </template>
 
       <bonus-deposit-code/>
     </div>
-
   </form>
 </template>
 

@@ -25,7 +25,7 @@
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { openDepositModal } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
   
   const autoplayOptions = {
     delay: 3500,
@@ -39,7 +39,7 @@
   }, [Autoplay(autoplayOptions)]);
   
   const paymentsItemClick = () => {
-    if (isLoggedIn.value) openDepositModal();
+    if (isLoggedIn.value) openWalletModal('deposit');
   };
   
   const paymentsItems = computed(() => {

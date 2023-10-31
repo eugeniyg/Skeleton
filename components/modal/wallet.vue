@@ -7,12 +7,13 @@
     <div class="wallet-modal__container">
       <div class="wallet-modal__slot-left">
         <div class="wallet-modal__slot-left__header">
-          <button-modal-close @close="closeModal('wallet')" />
+          <button-modal-close @close="closeWallet" />
 
           <wallet-tabs
-            :items="cashTabsItems"
+            v-if="showTabs"
+            :items="tabItems"
             :selected="selectedTab"
-            @change-tab="changeTab"
+            @changeTab="changeTab"
           />
         </div>
 
@@ -22,10 +23,17 @@
         <!--          </div>-->
         <!--        </wallet-region>-->
 
-        <balance>
+        <balance :withdraw="selectedTab === 'withdraw'">
           <form-input-payments
+            v-if="selectedTab === 'deposit'"
             :items="depositMethods"
-            v-model:activeMethod="currentMethod"
+            v-model:activeMethod="currentDepositMethod"
+          />
+
+          <form-input-payments
+            v-if="selectedTab === 'withdraw'"
+            :items="withdrawMethods"
+            v-model:activeMethod="currentWithdrawMethod"
           />
         </balance>
 
@@ -38,12 +46,13 @@
       <div class="wallet-modal__slot-right">
         <div class="wallet-modal__slot-right__header">
           <wallet-tabs
-            :items="cashTabsItems"
+            v-if="showTabs"
+            :items="tabItems"
             :selected="selectedTab"
-            @change-tab="changeTab"
+            @changeTab="changeTab"
           />
 
-          <button-modal-close @close="closeModal('wallet')"/>
+          <button-modal-close @close="closeWallet" />
           <wallet-header v-bind="cashHeaderProps"/>
           <div class="identity">ID {{ playerIdentity }}</div>
         </div>
@@ -59,31 +68,31 @@
         <template v-if="selectedTab === 'deposit'">
           <template v-if="depositMethods?.length">
             <form-deposit
-              :key="`${currentMethod.method}-${methodKey}`"
-              v-if="currentMethod.type === 'form'"
-              v-bind="currentMethod"
+              :key="`${currentDepositMethod.method}-${depositMethodKey}`"
+              v-if="currentDepositMethod.type === 'form'"
+              v-bind="currentDepositMethod"
             />
 
             <form-deposit-crypto
-              v-if="currentMethod.type === 'address'"
-              v-bind="currentMethod"
-              :key="`${currentMethod.method}-${methodKey}`"
+              v-if="currentDepositMethod.type === 'address'"
+              v-bind="currentDepositMethod"
+              :key="`${currentDepositMethod.method}-${depositMethodKey}`"
             />
           </template>
 
           <div v-else class="wallet-modal__empty-methods">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.emptyDepositMethods') }}
+            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.emptyDepositMethods') }}
           </div>
         </template>
 
-        <template v-else>
+        <template v-else-if="selectedTab === 'withdraw'">
           <form-withdraw
             v-if="withdrawMethods?.length"
-            :key="currentMethod.method"
-            v-bind="currentMethod"
+            :key="currentWithdrawMethod.method"
+            v-bind="currentWithdrawMethod"
           />
           <div v-else class="modal-withdraw__empty-methods">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'withdrawal.emptyWithdrawMethods') }}
+            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.emptyWithdrawMethods') }}
           </div>
         </template>
 
@@ -104,11 +113,12 @@
   const layoutStore = useLayoutStore();
   const walletStore = useWalletStore();
   const profileStore = useProfileStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
+  const { modals, walletModalType } = storeToRefs(layoutStore);
+  const { showModal, closeModal } = layoutStore;
   const { depositMethods, withdrawMethods } = storeToRefs(walletStore);
   const { profile } = storeToRefs(profileStore);
-  const currentMethod = ref<IPaymentMethod>({} as IPaymentMethod);
+  const currentDepositMethod = ref<IPaymentMethod>({} as IPaymentMethod);
+  const currentWithdrawMethod = ref<IPaymentMethod>({} as IPaymentMethod);
 
   const {
     popupsData,
@@ -116,43 +126,35 @@
   } = useGlobalStore();
   const { getContent } = useProjectMethods();
 
-  const methodKey = ref<number>(0);
+  const depositMethodKey = ref<number>(0);
+
+  const selectedTab = ref<string>(walletModalType?.value || 'deposit');
 
   watch(() => depositMethods.value, () => {
-    currentMethod.value = depositMethods.value[0] || {};
-    methodKey.value += 1;
+    currentDepositMethod.value = depositMethods.value[0] || {};
+    depositMethodKey.value += 1;
   });
 
   watch(() => withdrawMethods.value, () => {
-    currentMethod.value = withdrawMethods.value[0] || {};
+    currentWithdrawMethod.value = withdrawMethods.value[0] || {};
   });
 
-  const selectedTab = ref('deposit');
+  const changeTab = (tabId: 'deposit'|'withdraw'): void => {
+    walletModalType.value = tabId === 'withdraw' ? tabId : undefined;
+  };
 
-  const cashTabsItems = [
-    {
-      id: 'deposit',
-      label: 'Deposit'
-    },
-    {
-      id: 'withdraw',
-      label: 'Withdraw'
-    }
-  ];
+  watch(() => walletModalType?.value, () => {
+    selectedTab.value = walletModalType?.value || 'deposit';
+  })
+
+  const showTabs = computed(() => {
+    return walletModalType?.value !== 'deposit';
+  });
 
   const cashHeaderProps = {
     src: '/img/cash/cards.svg',
     title: 'Deposit',
     subTitle: 'Bank card',
-  };
-
-  const cashIdProps = {
-    label: 'ID',
-    id: 18265490,
-  };
-
-  const changeTab = (id: string) => {
-    selectedTab.value = id;
   };
 
   const modalTitle = computed(() => {
@@ -165,6 +167,19 @@
     if (!profile.value?.id) return '';
     return profile.value.id.split('-')[0].toUpperCase();
   })
+
+  const tabItems = computed(() => {
+    const contentTabs = getContent(popupsData, defaultLocalePopupsData, 'wallet.tabs') || {};
+    return Object.keys(contentTabs).map(key => ({ id: key, label: contentTabs[key] }));
+  })
+
+  const closeWallet = (): void => {
+    if (walletModalType?.value === 'deposit') {
+      showModal('cancelDeposit');
+    } else {
+      closeModal('wallet');
+    }
+  }
 </script>
 
 <style src="~/assets/styles/components/modal/wallet.scss" lang="scss"/>
