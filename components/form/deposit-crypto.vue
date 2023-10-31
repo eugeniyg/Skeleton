@@ -10,6 +10,8 @@
       name="networkSelect"
       @input="onInputNetwork"
     />
+    
+    <cash-info/>
 
     <div class="dropdown-network__info"
          v-if="props.fields?.length && !state.selectedNetwork"
