@@ -66,7 +66,13 @@
         </div>
 
         <template v-if="selectedTab === 'deposit'">
-          <template v-if="depositMethods?.length">
+          <wallet-limit
+            v-if="depositLimitError"
+            :currentLocaleLimitsContent="currentLocaleLimitsContent"
+            :defaultLocaleLimitsContent="defaultLocaleLimitsContent"
+          />
+
+          <template v-else-if="depositMethods?.length">
             <form-deposit
               :key="`${currentDepositMethod.method}-${depositMethodKey}`"
               v-if="currentDepositMethod.type === 'form'"
@@ -108,22 +114,26 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { IPaymentMethod } from '@skeleton/core/types';
+  import { IProfileLimits } from '~/types';
   import { VueFinalModal } from 'vue-final-modal';
 
   const layoutStore = useLayoutStore();
   const walletStore = useWalletStore();
   const profileStore = useProfileStore();
-  const { modals, walletModalType } = storeToRefs(layoutStore);
+  const { modals, walletModalType, depositLimitError } = storeToRefs(layoutStore);
   const { showModal, closeModal } = layoutStore;
   const { depositMethods, withdrawMethods } = storeToRefs(walletStore);
   const { profile } = storeToRefs(profileStore);
   const currentDepositMethod = ref<IPaymentMethod>({} as IPaymentMethod);
   const currentWithdrawMethod = ref<IPaymentMethod>({} as IPaymentMethod);
 
+  const globalStore = useGlobalStore();
   const {
+    currentLocale,
+    defaultLocale,
     popupsData,
     defaultLocalePopupsData
-  } = useGlobalStore();
+  } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   const depositMethodKey = ref<number>(0);
@@ -159,8 +169,8 @@
 
   const modalTitle = computed(() => {
     return selectedTab.value === 'deposit'
-      ? getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.title')
-      : getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.title')
+      ? getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.title')
+      : getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.title')
   })
 
   const playerIdentity = computed(() => {
@@ -169,7 +179,7 @@
   })
 
   const tabItems = computed(() => {
-    const contentTabs = getContent(popupsData, defaultLocalePopupsData, 'wallet.tabs') || {};
+    const contentTabs = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.tabs') || {};
     return Object.keys(contentTabs).map(key => ({ id: key, label: contentTabs[key] }));
   })
 
@@ -180,6 +190,36 @@
       closeModal('wallet');
     }
   }
+
+  // << GET CONTENT FOR DEPOSIT LIMIT
+  interface ILimitContent {
+    definition: IProfileLimits['definition'],
+    periodOptions: IProfileLimits['periodOptions']
+  }
+
+  const currentLocaleLimitsContent = ref<Maybe<ILimitContent>>();
+  const defaultLocaleLimitsContent = ref<Maybe<ILimitContent>>();
+
+  const getLimitContent = async ():Promise<void> => {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'profile', 'limits').only(['definition', 'periodOptions']).findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').only(['definition', 'periodOptions']).findOne()
+    ]);
+
+    if (currentLocaleContentResponse.status !== 'rejected') {
+      currentLocaleLimitsContent.value = currentLocaleContentResponse.value as ILimitContent;
+    }
+
+    if (defaultLocaleContentResponse.status !== 'rejected') {
+      defaultLocaleLimitsContent.value = defaultLocaleContentResponse.value as ILimitContent;
+    }
+  }
+
+  onMounted(() => {
+    getLimitContent();
+  })
+  // >>
 </script>
 
 <style src="~/assets/styles/components/modal/wallet.scss" lang="scss"/>

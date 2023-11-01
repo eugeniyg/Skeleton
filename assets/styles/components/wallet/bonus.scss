@@ -9,6 +9,10 @@
   overflow: hidden;
   padding: rem(2px);
 
+  .icon {
+    transition: none;
+  }
+
   &:before {
     content: '';
     position: absolute;
@@ -17,6 +21,7 @@
     bottom: 0;
     left: 0;
     background-color: var(--bonus-border-color, var(--layer-02));
+    transition: background-color 0.3s;
   }
 
 

@@ -32,7 +32,7 @@
         <!--        <atomic-bonus v-bind="bonus" />-->
         <!--      </template>-->
 
-        <wallet-bonuses />
+        <wallet-bonuses crypto />
       </template>
 
       <bonus-deposit-code/>

@@ -12,6 +12,7 @@ interface IModals extends Record<string, any> {
   deposit: boolean;
   wallet: boolean;
   cancelDeposit: boolean;
+  walletBonusDetails: boolean;
   confirm: boolean;
   error: boolean;
   forgotPass: boolean;
@@ -43,6 +44,7 @@ interface ILayoutStoreState extends Record<string, any>{
   lastNotificationTime: number;
   returnGame: Maybe<string|IGame>;
   walletModalType: WalletModalTypes;
+  depositLimitError: boolean;
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -58,6 +60,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         deposit: false,
         wallet: false,
         cancelDeposit: false,
+        walletBonusDetails: false,
         confirm: false,
         error: false,
         forgotPass: false,
@@ -79,7 +82,8 @@ export const useLayoutStore = defineStore('layoutStore', {
       },
     lastNotificationTime: 0,
     returnGame: undefined,
-    walletModalType: undefined
+    walletModalType: undefined,
+    depositLimitError: false
   }),
 
   actions: {
@@ -222,7 +226,7 @@ export const useLayoutStore = defineStore('layoutStore', {
           const router = useRouter();
           const { localizePath } = useProjectMethods();
           await router.push(localizePath('/profile/limits'));
-          showModal('depositLimitReached');
+          //showModal('depositLimitReached');
         } else throw error;
       }
     },
@@ -235,29 +239,19 @@ export const useLayoutStore = defineStore('layoutStore', {
 
     async openWalletModal(modalType?: WalletModalTypes): Promise<void> {
       this.walletModalType = modalType;
+      this.depositLimitError = false;
+
       const { getDepositMethods, getWithdrawMethods } = useWalletStore();
-      const [depositSettled, withdrawSettled] = await Promise.allSettled([
+      const [depositSettled] = await Promise.allSettled([
         getDepositMethods(),
         getWithdrawMethods()
       ]);
 
-      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
 
-      if (withdrawSettled.status === 'rejected') {
-        this.showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
-        return;
-      } else if (depositSettled.status === 'rejected' && this.walletModalType !== 'withdraw') {
-        if (depositSettled.reason.data?.error?.code === 13100) {
-          const router = useRouter();
-          const { localizePath } = useProjectMethods();
-          await router.push(localizePath('/profile/limits'));
-          const { showModal } = useLimitsStore();
-          showModal('depositLimitReached');
-        } else {
-          this.showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
-        }
-
-        return;
+      if (depositSettled.status === 'rejected' && depositSettled.reason.data?.error?.code === 13100) {
+        this.depositLimitError = true;
+        const { getLimits } = useLimitsStore();
+        await getLimits();
       }
 
       this.showModal('wallet', modalType);

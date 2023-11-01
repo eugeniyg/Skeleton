@@ -13,7 +13,7 @@
         @click="select(item)"
       >
         <atomic-image v-if="item.method === cashAgentMethodKey" src="/img/methods-icons/cash-agent.svg" />
-        <atomic-image v-else-if="defaultLogoUrl() || item.logo" class="mask" :src="defaultLogoUrl() || item.logo" />
+        <atomic-image v-else-if="defaultLogoUrl" class="mask" :src="defaultLogoUrl" />
         <div class="input-payments__min">min $200</div>
       </div>
     </div>
@@ -59,11 +59,13 @@
 
   const walletStore = useWalletStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
-  const defaultLogoUrl = ():string => {
+
+  const defaultLogoUrl = computed(() => {
     if (activeAccountType.value === 'fiat') return '/img/methods-icons/cards.svg';
     if (activeAccount.value?.currency) return `/img/methods-icons/${activeAccount.value?.currency}.svg`;
-    return '';
-  };
+    return undefined;
+  });
+
 </script>
 
 <style src="~/assets/styles/components/form/input/payments.scss" lang="scss" />

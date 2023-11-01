@@ -87,18 +87,6 @@
     }
   }
 
-  &__footnote {
-    margin-top: rem(8px);
-    color: var(--text-secondary);
-    @include font($body-1);
-    text-align: center;
-
-    p {
-      margin: 0;
-      padding: 0;
-    }
-  }
-
   .btn-ghost {
     @include font($heading-1);
     display: flex;
