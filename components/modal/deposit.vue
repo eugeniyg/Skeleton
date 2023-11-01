@@ -51,6 +51,8 @@
           <cash-id v-bind="cashIdProps"/>
         </div>
         
+        <cash-reached-limit/>
+        
         <template v-if="depositMethods?.length">
           <form-deposit
             :key="methodKey"
