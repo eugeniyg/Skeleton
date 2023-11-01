@@ -17,6 +17,7 @@ export interface IGameProvider extends Record<string, any>{
   id: string;
   identity: string;
   name: string;
+  gameEnabledCount: number;
   code?: string;
   value?: string;
 }
@@ -58,6 +59,14 @@ export interface IGame extends Record<string, any>{
 export interface IGamesResponse extends Record<string, any>{
   data: IGame[];
   meta: IPaginationMeta;
+}
+
+export interface IProvidersRequest extends Record<string, any> {
+  name?: string;
+  sortBy?: string;
+  sortOrder?: string;
+  page?: number;
+  perPage?: number;
 }
 
 export interface IGameStart extends Record<string, any>{

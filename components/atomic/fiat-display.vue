@@ -3,6 +3,7 @@
     <atomic-image
       class="fiat-display__logo"
       :src="`/img/currency/${ activeAccount?.currency }.svg`"
+      defaultImage="/img/currency/placeholder.svg"
     />
     <span class="fiat-display__amount">{{ equivalentBalanceFormat.amount }}</span>
     <span class="fiat-display__currency">{{ equivalentBalanceFormat.currency }}</span>

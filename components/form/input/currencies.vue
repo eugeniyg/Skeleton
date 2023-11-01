@@ -13,6 +13,7 @@
         <atomic-image
           class="input-currencies__selected-icon"
           :src="`/img/currency/${selectedCurrency?.code}.svg`"
+          defaultImage="/img/currency/placeholder.svg"
           width="24"
           height="24"
         />
@@ -47,6 +48,7 @@
           <atomic-image
             class="input-currencies__item-img"
             :src="`/img/currency/${currency.code}.svg`"
+            defaultImage="/img/currency/placeholder.svg"
             width="24"
             height="24"
           />

@@ -47,8 +47,7 @@
   const changeLanguage = async (locale: ILocale): Promise<void> => {
     if (currentLocale.value?.code === locale.code) return;
 
-    if (locale.isDefault) cookieLanguage.value = undefined;
-    else cookieLanguage.value = locale.code.toLowerCase();
+    cookieLanguage.value = locale.code.toLowerCase();
 
     if (isLoggedIn.value) {
       await changeProfileData({ locale: locale.code })

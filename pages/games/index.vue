@@ -116,6 +116,7 @@
       name: gamesContent?.providersLabel || defaultLocaleGamesContent?.providersLabel || 'All Providers',
       identity: 'all',
       code: 'all',
+      gameEnabledCount: 0,
       value: gamesContent?.providersLabel || defaultLocaleGamesContent?.providersLabel || 'All Providers',
     },
     ...selectOptions.providers,
