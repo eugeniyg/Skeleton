@@ -18,6 +18,8 @@ interface IGamesStoreState {
   showMobileGameModal: boolean;
   mobileGameModalType: Maybe<MobileModalType>;
   mobileGameModalInfo: Maybe<IGame>;
+  isBonusWagering: boolean;
+  minimumBonusWagerMultiplier: number;
 }
 
 export const useGamesStore = defineStore('gamesStore', {
@@ -29,7 +31,9 @@ export const useGamesStore = defineStore('gamesStore', {
     latestWinners: [],
     showMobileGameModal: false,
     mobileGameModalType: undefined,
-    mobileGameModalInfo: undefined
+    mobileGameModalInfo: undefined,
+    isBonusWagering: false,
+    minimumBonusWagerMultiplier: 1
   }),
 
   getters: {
@@ -102,6 +106,11 @@ export const useGamesStore = defineStore('gamesStore', {
       this.mobileGameModalType = modalType;
       this.mobileGameModalInfo = gameInfo;
       this.showMobileGameModal = true;
-    }
+    },
+
+    defineBonusWagerInfo(isBonusWagering:boolean, minimumBonusWagerMultiplier:number):void {
+      this.isBonusWagering = isBonusWagering;
+      this.minimumBonusWagerMultiplier = minimumBonusWagerMultiplier;
+    },
   },
 });

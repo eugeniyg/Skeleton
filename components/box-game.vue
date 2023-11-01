@@ -1,7 +1,14 @@
 <template>
   <div class="box-game" :class="boxGameClassModifiers">
-    <h1 class="box-game__title">{{ props.gameInfo?.name }}</h1>
-
+    <div class="box-game__header">
+      <h1 class="box-game__title">{{ props.gameInfo?.name }}</h1>
+      
+      <template v-if="!props.isDemo">
+        <atomic-divider/>
+        <wager-tooltip is-inline/>
+      </template>
+    </div>
+    
     <div class="container">
       <iframe
         v-if="props.frameLink"
@@ -23,7 +30,7 @@
       <panel-mode
         v-if="!showPlug && props.isDemo"
         :gameContent="gameContent"
-        @changeMode="emit('changeMode')"
+        @changeMode="changeGameMode"
       />
     </transition>
 
@@ -51,7 +58,7 @@
 
   const emit = defineEmits(['changeMode']);
 
-  const { currentLocationCollections } = useGamesStore();
+  const { currentLocationCollections, defineBonusWagerInfo } = useGamesStore();
   const recommendedCategory = currentLocationCollections.find((collection) => collection.identity === 'recommended');
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
@@ -62,6 +69,24 @@
       { 'box-game--demo': props.isDemo }
     ]
   });
+  
+  const changeGameMode = () => {
+    emit('changeMode');
+    if (props.gameInfo?.isBonusWagering && props.gameInfo?.minimumBonusWagerMultiplier) {
+      defineBonusWagerInfo(props.gameInfo.isBonusWagering, props.gameInfo.minimumBonusWagerMultiplier);
+    }
+  }
+  
+  onMounted(() => {
+    if (props.gameInfo?.isBonusWagering && props.gameInfo?.minimumBonusWagerMultiplier) {
+      defineBonusWagerInfo(props.gameInfo.isBonusWagering, props.gameInfo.minimumBonusWagerMultiplier);
+    }
+  });
+  
+  onUnmounted(() => {
+    defineBonusWagerInfo(false, 1);
+  });
+  
 </script>
 
 <style src="~/assets/styles/components/box-game.scss" lang="scss" />
