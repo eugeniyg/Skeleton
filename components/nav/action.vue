@@ -21,7 +21,7 @@
       @click="toggleFavorite"
       :class="{ 'is-active': isFavorite }"
     >
-      <atomic-icon id="heart-outline"/>
+      <atomic-icon :id="isFavorite ? 'heart': 'heart-outline'"/>
     </button>
   </div>
 </template>
