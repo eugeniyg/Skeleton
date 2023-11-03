@@ -16,6 +16,7 @@
           @blur="v$[field.name]?.$touch()"
           @focus="onFocus(field.name)"
           :hint="setError(field.name)"
+          :class="field.name"
         />
       </template>
 
