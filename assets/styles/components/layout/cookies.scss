@@ -2,16 +2,21 @@
   box-shadow: var(--shadow-layer);
   background-color: var(--layer-02);
   grid-column-gap: rem(16px);
-  max-width: rem(680px);
   padding: rem(16px);
   border-radius: 8px;
   display: flex;
   position: fixed;
   bottom: rem(24px);
   left: rem(16px);
-  right: 16px;
+  right: rem(16px);
   z-index: 7;
   margin: 0 auto;
+  width: fit-content;
+  max-width: calc(100% - #{rem(32px)});
+
+  @include media(xs) {
+    max-width: rem(680px);
+  }
 
   .text {
     display: flex;
