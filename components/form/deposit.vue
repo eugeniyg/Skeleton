@@ -2,7 +2,7 @@
   <form class="form-deposit">
     <form-input-number
       :hint="fieldHint"
-      :label="getContent(popupsData, defaultLocalePopupsData, 'deposit.sumLabel') || ''"
+      :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.sumLabel') || ''"
       name="depositSum"
       :min="formatAmountMin.amount"
       :max="formatAmountMax.amount"
@@ -33,12 +33,8 @@
       />
     </template>
 
-    <template v-if="bonusesList?.length">
-      <!--      <template v-for="(bonus, index) in bonusesList" :key="index">-->
-      <!--        <atomic-bonus v-bind="bonus" />-->
-      <!--      </template>-->
-
-      <wallet-bonuses />
+    <template v-if="depositBonuses?.length">
+      <wallet-bonuses :amount="amountValue" />
     </template>
 
     <bonus-deposit-code />
@@ -52,13 +48,17 @@
       >
         <atomic-spinner :is-shown="isSending"/>
         <span class="btn-primary__content">
-        <span>{{ getContent(popupsData, defaultLocalePopupsData, 'deposit.depositButton') }} {{ buttonAmount }} {{ defaultInputSum.currency }}</span>
-        <span>+ 250$ & 500FS</span>
+        <span>
+          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.depositButton') }}
+          {{ buttonAmount }}
+          {{ defaultInputSum.currency }}
+        </span>
+        <span v-if="selectedDepositBonus && bonusSummary">
+          + {{ bonusSummary }}
+        </span>
       </span>
-
       </button-base>
     </div>
-
   </form>
 </template>
 
@@ -84,6 +84,9 @@
   } = useGlobalStore();
   const profileStore = useProfileStore();
 
+  const bonusStore = useBonusStore();
+  const { depositBonuses, selectedDepositBonus } = storeToRefs(bonusStore);
+
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
   if (props.fields.length) {
     props.fields.forEach((field) => {
@@ -91,7 +94,7 @@
     })
   }
 
-  const { getFormRules, createValidationRules } = useProjectMethods();
+  const { getFormRules, createValidationRules, getSumFromAmountItems } = useProjectMethods();
   const depositRules = createValidationRules(props.fields.map(field => ({ ...field, name: field.key })), true);
   const depositFormRules = getFormRules(depositRules);
   const {
@@ -111,7 +114,7 @@
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
   const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
   const fieldHint = computed(() => ({
-    message: `${getContent(popupsData, defaultLocalePopupsData, 'deposit.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
+    message: `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
   }));
 
   const isSending = ref<boolean>(false);
@@ -127,11 +130,6 @@
     || (amountValue.value < formatAmountMin.amount)
     || (amountValue.value > formatAmountMax.amount)
     || isSending.value);
-
-  const bonusesList = computed(() => {
-    if (popupsData?.deposit?.bonuses?.length) return popupsData.deposit.bonuses;
-    return defaultLocalePopupsData?.deposit?.bonuses || [];
-  });
 
   const getDeposit = async ():Promise<void> => {
     if (buttonDisabled.value) return;
@@ -173,4 +171,34 @@
       showModal('error');
     }
   };
+
+  const bonusSummary = computed(() => {
+    if (!selectedDepositBonus.value) return undefined;
+
+    if (selectedDepositBonus.value.type === 1) {
+      const amountItems = selectedDepositBonus.value?.assignConditions?.amountItems;
+      const mountBase = selectedDepositBonus.value?.assignConditions?.baseCurrencyAmount;
+      return getSumFromAmountItems(amountItems, mountBase);
+    } else if (selectedDepositBonus.value.type === 2) {
+      const maxAmountItems = selectedDepositBonus.value?.assignConditions?.maxAmountItems;
+      const maxAmountBase = selectedDepositBonus.value?.assignConditions?.baseCurrencyMaxAmount;
+      const maxSum = getSumFromAmountItems(maxAmountItems, maxAmountBase);
+
+      const bonusPercentage = selectedDepositBonus.value?.assignConditions?.depositPercentage;
+      if (!bonusPercentage) return undefined;
+      const percentageSum = amountValue.value * bonusPercentage / 100;
+
+      if (maxSum && parseFloat(maxSum) > percentageSum) {
+        return `${percentageSum} ${activeAccount.value?.currency}, max ${maxSum}`;
+      } else if (maxSum && parseFloat(maxSum) <= percentageSum) {
+        return `${maxSum}, ${getContent(popupsData, defaultLocalePopupsData, 'wallet.percentageMax')} ${maxSum}`;
+      } else {
+        return `${percentageSum} ${activeAccount.value?.currency}`;
+      }
+    } else if (selectedDepositBonus.value.type === 3) {
+      return `${selectedDepositBonus.value.assignConditions?.countFreespins} FS`;
+    }
+
+    return undefined;
+  })
 </script>

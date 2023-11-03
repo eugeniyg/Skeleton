@@ -6,10 +6,7 @@
         :class="{ 'row--compact': showEquivalentBalance }"
       >
         <div class="label">
-          {{
-            props.withdraw ? getContent(popupsData, defaultLocalePopupsData, 'deposit.balanceLabel')
-              : getContent(popupsData, defaultLocalePopupsData, 'withdrawal.balanceLabel')
-          }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.balanceLabel') }}
         </div>
 
         <template v-if="props.withdraw">
@@ -44,13 +41,13 @@
             hideBalance
             @hide-currencies-list="isSelectOpen = false"
             @click.stop.prevent
-            @changeActiveAccount="walletStore.getDepositMethods"
+            @changeActiveAccount="onChangeAccount"
           />
         </div>
       </div>
 
       <div class="row" v-if="props.withdraw">
-        <div class="label">{{ getContent(popupsData, defaultLocalePopupsData, 'withdrawal.withdrawLabel') }}</div>
+        <div class="label">{{ getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.withdrawLabel') }}</div>
 
         <div
           class="value"
@@ -108,6 +105,13 @@
   const closeSelect = () => {
     if (isSelectOpen.value) isSelectOpen.value = false;
   };
+
+  const onChangeAccount = (): void => {
+    const { getDepositBonuses } = useBonusStore();
+    walletStore.getDepositMethods();
+    walletStore.getWithdrawMethods();
+    getDepositBonuses(activeAccount.value?.currency as string)
+  }
 </script>
 
 <style src="~/assets/styles/components/balance.scss" lang="scss"/>

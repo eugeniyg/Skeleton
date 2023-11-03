@@ -9,7 +9,6 @@ interface IModals extends Record<string, any> {
   register: boolean;
   registerCancel: boolean;
   signIn: boolean;
-  deposit: boolean;
   wallet: boolean;
   cancelDeposit: boolean;
   walletBonusDetails: boolean;
@@ -18,7 +17,6 @@ interface IModals extends Record<string, any> {
   forgotPass: boolean;
   resetPass: boolean;
   success: boolean;
-  withdraw: boolean;
   fiat: boolean;
 }
 
@@ -44,7 +42,6 @@ interface ILayoutStoreState extends Record<string, any>{
   lastNotificationTime: number;
   returnGame: Maybe<string|IGame>;
   walletModalType: WalletModalTypes;
-  depositLimitError: boolean;
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -57,7 +54,6 @@ export const useLayoutStore = defineStore('layoutStore', {
       modals: {
         register: false,
         signIn: false,
-        deposit: false,
         wallet: false,
         cancelDeposit: false,
         walletBonusDetails: false,
@@ -66,7 +62,6 @@ export const useLayoutStore = defineStore('layoutStore', {
         forgotPass: false,
         resetPass: false,
         success: false,
-        withdraw: false,
         registerCancel: false,
         fiat: false,
       },
@@ -82,8 +77,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       },
     lastNotificationTime: 0,
     returnGame: undefined,
-    walletModalType: undefined,
-    depositLimitError: false
+    walletModalType: undefined
   }),
 
   actions: {
@@ -215,44 +209,15 @@ export const useLayoutStore = defineStore('layoutStore', {
       });
     },
 
-    async openDepositModal():Promise<void> {
-      const { getDepositMethods } = useWalletStore();
-      const { showModal } = useLimitsStore();
-      try {
-        await getDepositMethods();
-        this.showModal('deposit');
-      } catch (error: any) {
-        if (error.data?.error?.code === 13100) {
-          const router = useRouter();
-          const { localizePath } = useProjectMethods();
-          await router.push(localizePath('/profile/limits'));
-          //showModal('depositLimitReached');
-        } else throw error;
-      }
-    },
-
-    async openWithdrawModal():Promise<void> {
-      const { getWithdrawMethods } = useWalletStore();
-      await getWithdrawMethods();
-      this.showModal('withdraw');
-    },
-
     async openWalletModal(modalType?: WalletModalTypes): Promise<void> {
       this.walletModalType = modalType;
-      this.depositLimitError = false;
-
-      const { getDepositMethods, getWithdrawMethods } = useWalletStore();
-      const [depositSettled] = await Promise.allSettled([
+      const { getDepositMethods, getWithdrawMethods, activeAccount } = useWalletStore();
+      const { getDepositBonuses } = useBonusStore();
+      await Promise.allSettled([
         getDepositMethods(),
-        getWithdrawMethods()
+        getWithdrawMethods(),
+        getDepositBonuses(activeAccount?.currency as string)
       ]);
-
-
-      if (depositSettled.status === 'rejected' && depositSettled.reason.data?.error?.code === 13100) {
-        this.depositLimitError = true;
-        const { getLimits } = useLimitsStore();
-        await getLimits();
-      }
 
       this.showModal('wallet', modalType);
     },

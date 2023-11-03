@@ -9,15 +9,18 @@
         class="item"
         v-for="(item, i) in props.items"
         :key="i"
-        :class="{'is-selected': item.method === props.activeMethod.method }"
+        :class="{'is-selected': item.method === props.activeMethod?.method }"
         @click="select(item)"
       >
         <atomic-image v-if="item.method === cashAgentMethodKey" src="/img/methods-icons/cash-agent.svg" />
-        <atomic-image v-else-if="defaultLogoUrl" class="mask" :src="defaultLogoUrl" />
-        <div class="input-payments__min">min $200</div>
+        <atomic-image v-else-if="logoUrl" class="mask" :src="logoUrl" />
+        <div class="input-payments__min">
+          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.methodMin') }}
+          {{ methodsMinSum[i] }}
+        </div>
       </div>
     </div>
-    <input type="hidden" name="payments" :value="props.activeMethod.method" />
+    <input type="hidden" name="payments" :value="props.activeMethod?.method" />
   </div>
 </template>
 
@@ -32,9 +35,12 @@
     },
     activeMethod: {
       type: Object,
-      required: true,
+      required: false,
     },
   });
+
+  const { getContent, formatBalance } = useProjectMethods();
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
 
   const emit = defineEmits(['update:activeMethod']);
   const isOpen = ref<boolean>(false);
@@ -57,15 +63,37 @@
     if (isOpen.value) isOpen.value = false;
   };
 
+  const logoUrl = ref<string>('');
+  const methodsMinSum = ref<string[]>([]);
+
   const walletStore = useWalletStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
 
-  const defaultLogoUrl = computed(() => {
-    if (activeAccountType.value === 'fiat') return '/img/methods-icons/cards.svg';
-    if (activeAccount.value?.currency) return `/img/methods-icons/${activeAccount.value?.currency}.svg`;
-    return undefined;
-  });
+  const checkLogoUrl = (): void => {
+    if (activeAccountType.value === 'fiat') logoUrl.value = '/img/methods-icons/cards.svg';
+    else if (activeAccount.value?.currency) logoUrl.value = `/img/methods-icons/${activeAccount.value?.currency}.svg`;
+  }
 
+  const getMinMethodSum = (minAmount: number): string => {
+    const { amount, currency } = formatBalance(activeAccount.value?.currency, minAmount);
+    return `${amount} ${currency}`;
+  }
+
+  const setMethodsMinSum = (): void => {
+    methodsMinSum.value = props.items.map((method: any) => {
+      return getMinMethodSum(method.amountMin);
+    })
+  }
+
+  // FOR STATIC LOGO URL AND MIN DEPOSIT SUM
+  // WITH REACTIVITY, THIS PARAMS UPDATE ASYNC BECAUSE OF REACTIVE activeAccount
+  checkLogoUrl();
+  setMethodsMinSum();
+
+  watch(() => props.items, () => {
+    checkLogoUrl();
+    setMethodsMinSum();
+  })
 </script>
 
 <style src="~/assets/styles/components/form/input/payments.scss" lang="scss" />

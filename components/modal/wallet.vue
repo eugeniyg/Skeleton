@@ -4,7 +4,7 @@
     class="wallet-modal"
     :clickToClose="false"
   >
-    <div class="wallet-modal__container">
+    <div class="wallet-modal__container" :class="{ 'show-form': showMobileForm }">
       <div class="wallet-modal__slot-left">
         <div class="wallet-modal__slot-left__header">
           <button-modal-close @close="closeWallet" />
@@ -15,6 +15,10 @@
             :selected="selectedTab"
             @changeTab="changeTab"
           />
+
+          <div v-else class="wallet-modal__slot-left__header-title">
+            {{ modalTitle }}
+          </div>
         </div>
 
         <!--        <wallet-region v-bind="chooseRegionProps">-->
@@ -28,12 +32,14 @@
             v-if="selectedTab === 'deposit'"
             :items="depositMethods"
             v-model:activeMethod="currentDepositMethod"
+            @update:activeMethod="showMobileForm = true"
           />
 
           <form-input-payments
             v-if="selectedTab === 'withdraw'"
             :items="withdrawMethods"
             v-model:activeMethod="currentWithdrawMethod"
+            @update:activeMethod="showMobileForm = true"
           />
         </balance>
 
@@ -44,7 +50,10 @@
       </div>
 
       <div class="wallet-modal__slot-right">
-        <div class="wallet-modal__slot-right__header">
+        <div
+          class="wallet-modal__slot-right__header"
+          :class="{ 'wallet-modal__slot-right__header--without-tabs': !showTabs }"
+        >
           <wallet-tabs
             v-if="showTabs"
             :items="tabItems"
@@ -52,8 +61,8 @@
             @changeTab="changeTab"
           />
 
-          <button-modal-close @close="closeWallet" />
-          <wallet-header v-bind="cashHeaderProps"/>
+          <button-modal-close @close="handleClose" />
+          <wallet-header v-bind="walletHeaderProps"/>
           <div class="identity">ID {{ playerIdentity }}</div>
         </div>
 
@@ -72,7 +81,7 @@
             :defaultLocaleLimitsContent="defaultLocaleLimitsContent"
           />
 
-          <template v-else-if="depositMethods?.length">
+          <template v-else-if="depositMethods?.length && currentDepositMethod">
             <form-deposit
               :key="`${currentDepositMethod.method}-${depositMethodKey}`"
               v-if="currentDepositMethod.type === 'form'"
@@ -93,10 +102,11 @@
 
         <template v-else-if="selectedTab === 'withdraw'">
           <form-withdraw
-            v-if="withdrawMethods?.length"
+            v-if="withdrawMethods?.length && currentWithdrawMethod"
             :key="currentWithdrawMethod.method"
             v-bind="currentWithdrawMethod"
           />
+
           <div v-else class="modal-withdraw__empty-methods">
             {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.emptyWithdrawMethods') }}
           </div>
@@ -120,52 +130,46 @@
   const layoutStore = useLayoutStore();
   const walletStore = useWalletStore();
   const profileStore = useProfileStore();
-  const { modals, walletModalType, depositLimitError } = storeToRefs(layoutStore);
-  const { showModal, closeModal } = layoutStore;
-  const { depositMethods, withdrawMethods } = storeToRefs(walletStore);
-  const { profile } = storeToRefs(profileStore);
-  const currentDepositMethod = ref<IPaymentMethod>({} as IPaymentMethod);
-  const currentWithdrawMethod = ref<IPaymentMethod>({} as IPaymentMethod);
-
   const globalStore = useGlobalStore();
+  const { getContent } = useProjectMethods();
+
+  const { modals, walletModalType } = storeToRefs(layoutStore);
+  const { showModal, closeModal } = layoutStore;
+
+  const {
+    depositMethods,
+    withdrawMethods,
+    activeAccount,
+    activeAccountType,
+    depositLimitError
+  } = storeToRefs(walletStore);
+
   const {
     currentLocale,
     defaultLocale,
     popupsData,
     defaultLocalePopupsData
   } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
+  const { profile } = storeToRefs(profileStore);
+
+  const currentDepositMethod = ref<IPaymentMethod|undefined>();
+  const currentWithdrawMethod = ref<IPaymentMethod|undefined>();
   const depositMethodKey = ref<number>(0);
-
   const selectedTab = ref<string>(walletModalType?.value || 'deposit');
 
-  watch(() => depositMethods.value, () => {
-    currentDepositMethod.value = depositMethods.value[0] || {};
-    depositMethodKey.value += 1;
-  });
-
-  watch(() => withdrawMethods.value, () => {
-    currentWithdrawMethod.value = withdrawMethods.value[0] || {};
-  });
+  const tabItems = computed(() => {
+    const contentTabs = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.tabs') || {};
+    return Object.keys(contentTabs).map(key => ({ id: key, label: contentTabs[key] }));
+  })
 
   const changeTab = (tabId: 'deposit'|'withdraw'): void => {
     walletModalType.value = tabId === 'withdraw' ? tabId : undefined;
   };
 
-  watch(() => walletModalType?.value, () => {
-    selectedTab.value = walletModalType?.value || 'deposit';
-  })
-
   const showTabs = computed(() => {
     return walletModalType?.value !== 'deposit';
   });
-
-  const cashHeaderProps = {
-    src: '/img/cash/cards.svg',
-    title: 'Deposit',
-    subTitle: 'Bank card',
-  };
 
   const modalTitle = computed(() => {
     return selectedTab.value === 'deposit'
@@ -178,10 +182,42 @@
     return profile.value.id.split('-')[0].toUpperCase();
   })
 
-  const tabItems = computed(() => {
-    const contentTabs = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.tabs') || {};
-    return Object.keys(contentTabs).map(key => ({ id: key, label: contentTabs[key] }));
+  const mobileWidth = ():boolean => {
+    return window.innerWidth < 768;
+  }
+
+  watch(() => depositMethods.value, () => {
+    if (mobileWidth()) {
+      currentDepositMethod.value = undefined;
+    } else {
+      currentDepositMethod.value = depositMethods.value[0];
+    }
+    depositMethodKey.value += 1;
+  });
+
+  watch(() => withdrawMethods.value, () => {
+    if (mobileWidth()) {
+      currentWithdrawMethod.value = undefined;
+    } else {
+      currentWithdrawMethod.value = withdrawMethods.value[0];
+    }
+  });
+
+  watch(() => walletModalType?.value, () => {
+    selectedTab.value = walletModalType?.value || 'deposit';
   })
+
+  const methodLogoUrl = computed(() => {
+    if (activeAccountType.value === 'fiat') return '/img/methods-icons/cards.svg';
+    if (activeAccount.value?.currency) return `/img/methods-icons/${activeAccount.value?.currency}.svg`;
+    return undefined;
+  });
+
+  const walletHeaderProps = computed(() => ({
+    src: methodLogoUrl.value,
+    title: getContent(popupsData.value, defaultLocalePopupsData.value, `wallet.tabs.${selectedTab.value}`),
+    subTitle: activeAccount.value?.currency,
+  }))
 
   const closeWallet = (): void => {
     if (walletModalType?.value === 'deposit') {
@@ -189,6 +225,13 @@
     } else {
       closeModal('wallet');
     }
+  }
+
+  const showMobileForm = ref<boolean>(false);
+
+  const handleClose = ():void => {
+    if (mobileWidth()) showMobileForm.value = false;
+    else closeWallet();
   }
 
   // << GET CONTENT FOR DEPOSIT LIMIT

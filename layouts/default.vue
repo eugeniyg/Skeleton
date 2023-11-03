@@ -44,8 +44,6 @@
     <modal-sign-in />
     <modal-forgot-pass />
     <modal-reset-pass />
-    <!--    <modal-deposit />-->
-    <modal-withdraw />
     <modal-success />
     <modal-error />
     <modal-confirm />

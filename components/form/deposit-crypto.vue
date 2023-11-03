@@ -18,20 +18,16 @@
 
     <div class="form-deposit-crypto__content" :class="{'is-blured': props.fields?.length && !state.selectedNetwork }">
 
-      <atomic-qr :content="popupsData?.deposit || defaultLocalePopupsData?.deposit" :qrLink="qrLink"/>
+      <atomic-qr :content="popupsData?.wallet?.deposit || defaultLocalePopupsData?.wallet?.deposit" :qrLink="qrLink"/>
 
       <form-input-copy
         name="walletNumber"
-        :label="getContent(popupsData, defaultLocalePopupsData, 'deposit.addressInputLabel') || ''"
+        :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addressInputLabel') || ''"
         :hint="fieldHint"
         :value="walletNumber"
       />
 
-      <template v-if="bonusesList?.length">
-        <!--      <template v-for="(bonus, index) in bonusesList" :key="index">-->
-        <!--        <atomic-bonus v-bind="bonus" />-->
-        <!--      </template>-->
-
+      <template v-if="depositBonuses?.length">
         <wallet-bonuses crypto />
       </template>
 
@@ -57,10 +53,10 @@
 
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
-  const {
-    activeAccount,
-    activeAccountType
-  } = storeToRefs(walletStore);
+  const { activeAccount } = storeToRefs(walletStore);
+
+  const bonusStore = useBonusStore();
+  const { depositBonuses } = storeToRefs(bonusStore);
 
   const {
     popupsData,
@@ -78,12 +74,8 @@
   const fieldHint = computed(() => {
     const formatSum = formatBalance(activeAccount.value?.currency, props.amountMin);
     return {
-      message: `${getContent(popupsData, defaultLocalePopupsData, 'deposit.minSum') || ''} ${formatSum.amount} ${formatSum.currency}`,
+      message: `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.minSum') || ''} ${formatSum.amount} ${formatSum.currency}`,
     };
-  });
-
-  const bonusesList = computed(() => {
-    return popupsData?.deposit?.bonuses || [];
   });
 
   const networkSelectOptions = computed(() => {

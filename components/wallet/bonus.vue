@@ -2,17 +2,20 @@
   <div
     class="wallet-bonus"
     :class="{
-      [`wallet-bonus--bg-${mappingBonusColor[props.id]}`]: props.selected,
-      'is-selected': props.selected
+      [`wallet-bonus--bg-${mappingBonusColor[props.bonusInfo.type]}`]: props.selected,
+      'is-selected': props.selected,
+      'wallet-bonus--disabled': props.disabled
     }"
   >
     <div class="wallet-bonus__content">
-      <div class="wallet-bonus__title" v-html="marked.parse(props.title)"/>
+      <div class="wallet-bonus__title">
+        {{ props.bonusInfo.name }}
+      </div>
 
       <div
-        v-if="props.min"
+        v-if="props.bonusInfo.minDeposit"
         class="wallet-bonus__min"
-        @click="showModal('walletBonusDetails')"
+        @click="openBonusDetails"
       >
         <atomic-icon id="info" />
 
@@ -20,72 +23,62 @@
           {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.minAmount') }}
         </div>
 
-        <div class="wallet-bonus__min-value">{{ props.min }}</div>
+        <div class="wallet-bonus__min-value">
+          {{ props.bonusInfo.minDeposit.amount }} {{ props.bonusInfo.minDeposit.currency }}
+        </div>
       </div>
 
       <div
         v-else
         class="wallet-bonus__more"
-        @click="showModal('walletBonusDetails')"
+        @click="openBonusDetails"
       >
         <div class="wallet-bonus__more-title">
           {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.moreInfo') }}
         </div>
 
-        <atomic-icon id="info"/>
+        <atomic-icon id="info" />
       </div>
 
       <form-input-checkbox
-        :name="`${props.id}`"
+        :name="`${props.bonusInfo.id}`"
         :value="props.selected"
-        @change="emit('bonusChange', props.id)"
+        @change="emit('bonusChange', props.bonusInfo.id)"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { marked } from 'marked';
+  import { IBonus } from "@skeleton/core/types";
+  import { storeToRefs } from "pinia";
 
-  const { showModal } = useLayoutStore();
-
-  const props = defineProps({
-    background: {
-      type: String,
-      required: false,
-      validator: (val: string) => ['red', 'orange', 'green', 'violet'].includes(val)
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    id: {
-      type: Number,
-      required: true
-    },
-    min: {
-      type: String,
-      required: false,
-    },
-    info: {
-      type: String,
-      required: false,
-    },
-    selected: {
-      type: Boolean
-    },
-  });
+  const props = defineProps<{
+    bonusInfo: IBonus;
+    selected: boolean;
+    disabled: boolean;
+  }>();
 
   const emit = defineEmits(['bonusChange']);
 
+  const { showModal } = useLayoutStore();
   const { getContent } = useProjectMethods();
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
+  const walletStore = useWalletStore();
+  const { activeAccount } = storeToRefs(walletStore);
+  const bonusStore = useBonusStore();
+  const { depositMoreInfoBonus } = storeToRefs(bonusStore);
 
   const mappingBonusColor = {
-    1: 'green',
-    2: 'red',
-    3: 'orange',
-    4: 'violet'
+    1: 'cash',
+    2: 'percentage',
+    3: 'freespin'
+  }
+
+  const openBonusDetails = (): void => {
+    depositMoreInfoBonus.value = props.bonusInfo;
+    showModal('walletBonusDetails')
   }
 </script>
 

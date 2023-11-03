@@ -10,18 +10,24 @@
   }
 
   &__container {
-    overflow-x: auto;
+    overflow-x: visible;
     max-height: 100%;
     height: 100%;
     background: var(--layer-01);
     box-shadow: var(--shadow-modal);
-    scroll-snap-type: x mandatory;
     border: none;
     display: flex;
     width: 100%;
     position: relative;
+    transition: transform 0.4s ease-out;
+
+    &.show-form {
+      transform: translateX(-100%);
+    }
 
     @include media(sm) {
+      transform: none !important;
+      overflow-x: hidden;
       border-radius: 16px;
       width: rem(664px);
       height: auto;
@@ -46,6 +52,7 @@
     --height: auto;
 
     &__header {
+      position: relative;
       display: flex;
       align-items: center;
       grid-column-gap: rem(16px);
@@ -54,12 +61,16 @@
       @include media(sm) {
         display: none;
       }
-    }
 
-    &__title {
-      @include font($heading-6);
-      color: var(--text-primary);
-      width: 100%;
+      &-title {
+        @include font($heading-6);
+        color: var(--text-primary);
+        width: 100%;
+
+        @include media(sm) {
+          display: none;
+        }
+      }
     }
 
     @include media(sm) {
@@ -69,13 +80,20 @@
     }
 
     .btn-modal-close {
-      --position: relative;
+      position: absolute;
+      --right: 0;
+      --top: 0;
       --bg: var(--button-bg-secondary);
-
-      @include media(sm) {
-        display: none;
-      }
     }
+
+    //.btn-modal-close {
+    //  --position: relative;
+    //  --bg: var(--button-bg-secondary);
+    //
+    //  @include media(sm) {
+    //    display: none;
+    //  }
+    //}
 
     &__hr {
       --margin: 16px 0;
@@ -118,10 +136,34 @@
       grid-column-gap: rem(16px);
       margin-bottom: rem(24px);
 
+      &--without-tabs {
+        margin-bottom: 0;
+      }
+
       .btn-modal-close {
+        .icon {
+          &:first-of-type {
+            --visibility: visible;
+          }
+
+          &:last-of-type {
+            --visibility: hidden;
+          }
+        }
+
         @include media(sm) {
           position: absolute;
           right: 0;
+
+          .icon {
+            &:first-of-type {
+              --visibility: hidden;
+            }
+
+            &:last-of-type {
+              --visibility: visible;
+            }
+          }
         }
       }
 
@@ -134,7 +176,9 @@
       }
 
       .identity {
-        display: none;
+        @include media(sm) {
+          display: none;
+        }
       }
     }
 
@@ -162,7 +206,7 @@
 
     @include media(sm) {
       width: rem(400px);
-      padding: rem(16px) rem(24px) rem(16px) rem(32px);
+      padding: rem(24px) rem(24px) rem(16px) rem(32px);
       border-top: rem(16px) solid var(--layer-01);
       border-right: rem(8px) solid var(--layer-01);
       border-bottom: rem(16px) solid var(--layer-01);
@@ -213,26 +257,6 @@
 
       @include media(sm) {
         --color: var(--button-icn-ghost-low-contrast);
-      }
-    }
-
-    .icon {
-      &:first-of-type {
-        --visibility: visible;
-      }
-
-      &:last-of-type {
-        --visibility: hidden;
-      }
-
-      @include media(sm) {
-        &:first-of-type {
-          --visibility: hidden;
-        }
-
-        &:last-of-type {
-          --visibility: visible;
-        }
       }
     }
   }
