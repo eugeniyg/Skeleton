@@ -10,7 +10,7 @@
   height: rem(64px);
   @extend %flex-items-center;
   padding: var(--padding, 0 #{rem(16px)});
-  box-shadow: var(--shadow-layer);
+  box-shadow: var(--shadow-group);
   background-color: var(--layer-bg);
   grid-column-gap: 2px;
   @extend %container;
@@ -36,6 +36,7 @@
         height: 100%;
       }
 
+      .toggler-btn,
       .gift-notification,
       .vertical-divider,
       .btn-search,
@@ -47,6 +48,7 @@
     }
 
     @media (orientation: portrait) and (max-width: 1023px) {
+      .toggler-btn,
       .nav-user__wrap,
       .gift-notification,
       .btn-search,
@@ -71,11 +73,18 @@
     margin-left: auto;
     gap: rem(8px);
 
+    @include media(l) {
+      margin-left: 0;
+    }
+
     .btn-primary__icon, .btn-secondary__icon {
       display: none;
     }
 
     .is-game-page & {
+      margin-left: auto;
+
+
       &::before {
         content: '';
         display: block;
@@ -125,12 +134,9 @@
     margin-right: rem(16px);
   }
 
-  @include media(sm) {
-    --padding: 0 #{rem(32px)};
-  }
-
   @include media(l) {
-    --padding: 0 #{rem(48px)};
+    margin-left: auto;
+    --padding: 0 #{rem(48px)} 0 16px;
   }
 
   .list-balance {
@@ -163,10 +169,6 @@
 
     & + .items {
       margin-left: rem(16px);
-
-      @include media(md) {
-        margin-left: auto;
-      }
     }
 
     @media (orientation: landscape) and (max-width: 1023px) {
@@ -210,6 +212,16 @@
         align-self: flex-start;
         display: flex;
       }
+    }
+  }
+
+  .toggler-btn {
+    display: none;
+
+    @include media(l) {
+      display: block;
+      margin-right: auto;
+      padding-right: 0;
     }
   }
 }
