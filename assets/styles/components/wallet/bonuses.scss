@@ -8,14 +8,6 @@
     margin-top: rem(8px);
   }
 
-  & > hr {
-    margin: rem(24px) 0 0;
-
-    &:first-child {
-      margin: 0 0 rem(16px);
-    }
-  }
-
   &__info {
     display: flex;
     width: 100%;

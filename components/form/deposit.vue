@@ -34,8 +34,11 @@
     </template>
 
     <template v-if="depositBonuses?.length">
+      <atomic-divider />
       <wallet-bonuses :amount="amountValue" />
     </template>
+
+    <atomic-divider />
 
     <bonus-deposit-code />
 
@@ -64,7 +67,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IPaymentField } from '@skeleton/core/types';
+  import {IBonus, IPaymentField} from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
   const props = defineProps<{
@@ -117,9 +120,22 @@
     message: `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
   }));
 
+  const getStorageBonusAmount = (): number|undefined => {
+    const storageDepositDataString = sessionStorage.getItem('depositBonusData');
+    const storageDepositData = storageDepositDataString ? JSON.parse(storageDepositDataString) : undefined;
+
+    if (storageDepositData && storageDepositData.currency === activeAccount.value?.currency && storageDepositData.amount) {
+      return Number(storageDepositData.amount);
+    }
+
+    return undefined;
+  }
+
   const isSending = ref<boolean>(false);
   const defaultInputSum = formatBalance(activeAccount.value?.currency, 0.01);
-  const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : Number(defaultInputSum.amount));
+  const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat'
+    ? (getStorageBonusAmount() || 20)
+    : Number(defaultInputSum.amount));
   const amountValue = ref<number>(amountDefaultValue.value);
   const buttonAmount = computed(() => {
     if (amountValue.value > formatAmountMax.amount) return formatAmountMax.amount;
@@ -156,12 +172,14 @@
       accountId: activeAccount.value?.id || '',
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
+      bonusId: selectedDepositBonus.value?.id,
       fields: props.fields.length ? depositFormData : undefined
     };
     const { depositAccount } = useCoreWalletApi();
     const windowReference:any = window.open();
     try {
       const depositResponse = await depositAccount(params);
+      sessionStorage.removeItem('depositBonusData');
       const redirectUrl = depositResponse?.action;
       windowReference.location = redirectUrl;
       setTimeout(() => { isSending.value = false; }, 1000);

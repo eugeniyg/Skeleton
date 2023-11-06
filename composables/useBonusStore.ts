@@ -18,7 +18,7 @@ interface IBonusState {
   playerCashback: IPlayerCashback[];
   depositBonusCode: Maybe<IBonusCode>;
   depositBonuses: IBonus[];
-  selectedDepositBonus: Maybe<IBonus>;
+  selectedDepositBonus: IBonus|undefined;
   depositMoreInfoBonus: Maybe<IBonus>;
 }
 

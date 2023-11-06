@@ -1,7 +1,5 @@
 <template>
   <div class="wallet-bonuses">
-    <atomic-divider/>
-
     <div class="wallet-bonuses__title">
       {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.title') }}
     </div>
@@ -10,7 +8,7 @@
       <wallet-bonus
         :bonusInfo="bonus"
         :selected="selectedDepositBonus?.id === bonus.id"
-        :disabled="!!props.amount && !!bonus.minDeposit && props.amount < bonus.minDeposit.amount"
+        :disabled="!props.crypto && !!bonus.minDeposit && props.amount < bonus.minDeposit.amount"
         @bonusChange="onBonusChange(bonus)"
       />
     </template>
@@ -24,8 +22,6 @@
         {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.infoDescription') }}
       </div>
     </div>
-
-    <atomic-divider />
   </div>
 </template>
 
@@ -66,15 +62,37 @@
     })
   })
 
-  if (props.amount || props.amount === 0) {
-    selectedDepositBonus.value = bonusesList.value.find(bonus => !bonus.minDeposit || (bonus.minDeposit.amount <= Number(props.amount)));
+  const getStorageBonus = (): IBonus|undefined => {
+    const storageDepositDataString = sessionStorage.getItem('depositBonusData');
+    const storageDepositData = storageDepositDataString ? JSON.parse(storageDepositDataString) : undefined;
+
+    if (storageDepositData && storageDepositData.currency === activeAccount.value?.currency) {
+      return bonusesList.value.find(bonus => bonus.id === storageDepositData.bonusId);
+    }
+
+    return undefined;
+  }
+
+  const storageBonus = getStorageBonus();
+  if (!props.crypto) {
+    selectedDepositBonus.value = storageBonus
+      || bonusesList.value.find(bonus => !bonus.minDeposit || (bonus.minDeposit.amount <= Number(props.amount)));
   } else {
-    selectedDepositBonus.value = bonusesList.value[0];
+    selectedDepositBonus.value = storageBonus || bonusesList.value[0];
   }
 
   const onBonusChange = (bonus: IBonus): void => {
-    if (selectedDepositBonus.value?.id === bonus.id) selectedDepositBonus.value = undefined;
-    else selectedDepositBonus.value = bonus;
+    if (selectedDepositBonus.value?.id === bonus.id) {
+      selectedDepositBonus.value = undefined;
+      sessionStorage.removeItem('depositBonus');
+    } else {
+      selectedDepositBonus.value = bonus;
+      sessionStorage.setItem('depositBonusData', JSON.stringify({
+        bonusId: bonus.id,
+        amount: props.amount,
+        currency: activeAccount.value?.currency
+      }));
+    }
   }
 
   watch(() => props.amount, () => {
