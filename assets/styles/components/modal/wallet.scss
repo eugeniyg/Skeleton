@@ -128,7 +128,9 @@
       margin-bottom: rem(24px);
 
       &--without-tabs {
-        margin-bottom: 0;
+        @include media(md) {
+          margin-bottom: 0;
+        }
       }
 
       .btn-modal-close {
@@ -224,6 +226,10 @@
         position: absolute;
       }
     }
+
+    hr {
+      --margin: #{rem(8px)} 0;
+    }
   }
 
   .btn-modal-close {
@@ -291,7 +297,7 @@
     }
   }
 
-  &__empty-methods {
+  .modal-withdraw__empty-methods, .wallet-modal__empty-methods {
     color: var(--white);
     min-height: rem(375px);
   }
