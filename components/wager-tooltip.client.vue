@@ -5,7 +5,6 @@
     ref="tooltip"
     :class="tooltipClasses"
     @mouseover="showTooltip"
-    :key="orientationType"
   >
     <atomic-icon id="flash" class="wager-tooltip__icon" v-if="!props.isInline"/>
     
@@ -58,7 +57,6 @@
   const tooltipContentContainer = ref<HTMLElement>();
   
   const isTooltipVisible = ref<boolean>(props.isInline);
-  const orientationType = ref<string>('');
   
   let iconColor: string = '';
   let text: string = '';
@@ -98,15 +96,14 @@
     const tooltipRect = tooltip.value?.getBoundingClientRect();
     const tooltipContentRect = tooltipContentContainer.value?.getBoundingClientRect();
     const headerRect = props.container?.getBoundingClientRect();
-    const screenOrientationType = screen?.orientation?.type;
     
-    if (tooltipContentRect && headerRect && tooltipRect && screenOrientationType) {
-      if (screenOrientationType === 'portrait-primary' || screenOrientationType === 'portrait-secondary') {
+    if (tooltipContentRect && headerRect && tooltipRect) {
+      if(window.innerHeight > window.innerWidth) {
         coords.left = (headerRect.width - tooltipContentRect.width) / 2;
         coords.top = (headerRect.height - padding);
-      } else if (screenOrientationType === 'landscape-primary' || screenOrientationType === 'landscape-secondary') {
+      } else {
         coords.left = (headerRect.width - padding);
-        coords.top = tooltipRect.top - (tooltipContentRect.height - tooltipRect.height) / 2;
+        coords.top = tooltipRect.top - (tooltipContentRect?.height - tooltipRect.height) / 2;
       }
     }
   };
@@ -120,13 +117,8 @@
     isTooltipVisible.value = false;
   };
   
-  const onResize = () => {
-    orientationType.value = screen?.orientation?.type;
-    hideTooltip();
-  }
-  
   onMounted(() => {
-    window.addEventListener('resize', onResize);
+    window.addEventListener('resize', hideTooltip);
   });
 
   onUnmounted(() => {
