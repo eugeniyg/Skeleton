@@ -98,9 +98,9 @@
     const tooltipRect = tooltip.value?.getBoundingClientRect();
     const tooltipContentRect = tooltipContentContainer.value?.getBoundingClientRect();
     const headerRect = props.container?.getBoundingClientRect();
-    const screenOrientationType = screen.orientation.type;
+    const screenOrientationType = screen?.orientation?.type;
     
-    if (tooltipContentRect && headerRect && tooltipRect) {
+    if (tooltipContentRect && headerRect && tooltipRect && screenOrientationType) {
       if (screenOrientationType === 'portrait-primary' || screenOrientationType === 'portrait-secondary') {
         coords.left = (headerRect.width - tooltipContentRect.width) / 2;
         coords.top = (headerRect.height - padding);
@@ -121,7 +121,7 @@
   };
   
   const onResize = () => {
-    orientationType.value = screen.orientation.type;
+    orientationType.value = screen?.orientation?.type;
     hideTooltip();
   }
   
