@@ -46,24 +46,9 @@
   }
 
   .items {
-    //position: absolute;
-    //left: 0;
-    //right: 0;
-    //padding: var(--items-padding, #{rem(16px)});
-    //visibility: var(--items-visibility, hidden);
-    //overflow-x: hidden;
-    //overflow-y: auto;
-    //background-color: var(--items-bg, var(--layer-02));
-    //transform: translateY(#{rem(8px)});
-    //border-radius: 8px;
-    //@extend %scrollbar;
     display: grid;
     grid-gap: rem(8px);
     grid-template-columns: repeat(2, 1fr);
-
-    //@include media(md) {
-    //  transform: none;
-    //}
   }
 
   .item {
