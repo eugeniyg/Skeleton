@@ -5,8 +5,9 @@
     ref="tooltip"
     :class="tooltipClasses"
     @mouseover="showTooltip"
+    :key="orientationType"
   >
-    <atomic-icon id="flash" class="wager-tooltip__icon" v-if="!props.isInline" />
+    <atomic-icon id="flash" class="wager-tooltip__icon" v-if="!props.isInline"/>
     
     <div
       class="wager-tooltip__content"
@@ -43,17 +44,25 @@
   });
   
   const gamesStore = useGamesStore();
-  const { isBonusWagering, minimumBonusWagerMultiplier } = storeToRefs(gamesStore);
-  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
+  const {
+    isBonusWagering,
+    minimumBonusWagerMultiplier
+  } = storeToRefs(gamesStore);
+  const {
+    layoutData,
+    defaultLocaleLayoutData
+  } = useGlobalStore();
   const { getContent } = useProjectMethods();
   
   const tooltip = ref<HTMLElement>();
   const tooltipContentContainer = ref<HTMLElement>();
   
   const isTooltipVisible = ref<boolean>(props.isInline);
+  const orientationType = ref<string>('');
   
-  let iconColor:string = '';
-  let text:string = '';
+  let iconColor: string = '';
+  let text: string = '';
+  const padding: number = 8;
   
   const tooltipContent = computed(() => {
     if (!isBonusWagering.value) {
@@ -68,7 +77,7 @@
     
     if (isBonusWagering.value && minimumBonusWagerMultiplier.value > 1) {
       iconColor = 'green';
-      text = getContent(layoutData, defaultLocaleLayoutData, 'header.wagerTooltip.wagerMultiplierMoreThan')
+      text = getContent(layoutData, defaultLocaleLayoutData, 'header.wagerTooltip.wagerMultiplierMoreThan');
     }
     
     return {
@@ -82,46 +91,46 @@
       [`--icon-${tooltipContent.value?.iconColor}`]: tooltipContent.value?.iconColor,
       '--is-show': isTooltipVisible.value,
       '--is-inline': props.isInline
-    }
+    };
   });
   
   const setCords = () => {
     const tooltipRect = tooltip.value?.getBoundingClientRect();
     const tooltipContentRect = tooltipContentContainer.value?.getBoundingClientRect();
     const headerRect = props.container?.getBoundingClientRect();
-    const gap = 8;
-
-    if(tooltipContentRect && headerRect && tooltipRect && screen.orientation) {
-      if  (screen.orientation.type === 'portrait-primary') {
+    const screenOrientationType = screen.orientation.type;
+    
+    if (tooltipContentRect && headerRect && tooltipRect) {
+      if (screenOrientationType === 'portrait-primary' || screenOrientationType === 'portrait-secondary') {
         coords.left = (headerRect.width - tooltipContentRect.width) / 2;
-        coords.top = (headerRect.height - gap);
-      } else if (screen.orientation.type === 'landscape-primary') {
-        coords.left = (headerRect.width - gap);
+        coords.top = (headerRect.height - padding);
+      } else if (screenOrientationType === 'landscape-primary' || screenOrientationType === 'landscape-secondary') {
+        coords.left = (headerRect.width - padding);
         coords.top = tooltipRect.top - (tooltipContentRect.height - tooltipRect.height) / 2;
       }
     }
-  }
+  };
   
   const showTooltip = () => {
-    isTooltipVisible.value = true;
     setCords();
+    isTooltipVisible.value = true;
   };
   
   const hideTooltip = () => {
     isTooltipVisible.value = false;
   };
   
-  onMounted(() => {
-    window.addEventListener('resize', hideTooltip);
-    
-    if (screen.orientation) {
-      screen.orientation.addEventListener('change', hideTooltip);
-    }
-  });
+  const onResize = () => {
+    orientationType.value = screen.orientation.type;
+    hideTooltip();
+  }
   
+  onMounted(() => {
+    window.addEventListener('resize', onResize);
+  });
+
   onUnmounted(() => {
     window.removeEventListener('resize', hideTooltip);
-    screen.orientation.removeEventListener('change', hideTooltip);
   });
   
 </script>
