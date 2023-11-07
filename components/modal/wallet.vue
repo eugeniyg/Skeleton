@@ -35,12 +35,6 @@
             @update:activeMethod="showMobileForm = true"
           />
           
-          <div
-            v-if="selectedTab === 'deposit' && !depositMethods?.length"
-            class="wallet-modal__empty-methods wallet-modal__empty-methods--mobile">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.emptyDepositMethods') }}
-          </div>
-          
           <form-input-payments
             v-if="selectedTab === 'withdraw'"
             :items="withdrawMethods"
@@ -49,10 +43,12 @@
           />
           
           <div
-            v-if="selectedTab === 'withdraw' && !withdrawMethods?.length"
-            class="wallet-modal__empty-methods wallet-modal__empty-methods--mobile">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.emptyWithdrawMethods') }}
+            v-if="!depositMethods?.length || !withdrawMethods?.length"
+            class="wallet-modal__empty-methods wallet-modal__empty-methods--mobile"
+          >
+            {{ emptyMethodsText }}
           </div>
+        
         </balance>
 
         <wallet-dots
@@ -169,6 +165,10 @@
   const currentWithdrawMethod = ref<IPaymentMethod|undefined>();
   const depositMethodKey = ref<number>(0);
   const selectedTab = ref<string>(walletModalType?.value || 'deposit');
+  
+  const emptyMethodsText = computed(() => {
+    return getContent(popupsData.value, defaultLocalePopupsData.value, `wallet.${selectedTab.value}.emptyDepositMethods`)
+  })
 
   const tabItems = computed(() => {
     const contentTabs = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.tabs') || {};
