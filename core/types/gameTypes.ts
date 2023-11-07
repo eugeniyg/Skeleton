@@ -1,4 +1,4 @@
-import { IPaginationMeta } from './globalTypes'
+import type { IPaginationMeta } from './globalTypes'
 
 export interface IGameImages extends Record<string, any>{
   '200x200': {

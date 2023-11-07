@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IPaymentMethod } from '@skeleton/core/types';
+  import type { IPaymentMethod } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
 
   const props = defineProps({

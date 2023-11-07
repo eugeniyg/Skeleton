@@ -53,9 +53,9 @@
 </template>
 
 <script setup lang="ts">
-  import { IPaginationMeta, IPlayerBonus, IPlayerFreeSpin } from '@skeleton/core/types';
+  import type { IPaginationMeta, IPlayerBonus, IPlayerFreeSpin } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
-  import { IBonusesHistory } from '~/types';
+  import type { IBonusesHistory } from '~/types';
 
   const props = defineProps<{
     content: IBonusesHistory,

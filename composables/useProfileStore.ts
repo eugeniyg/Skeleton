@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
-import {
+import type {
   IProfile,
   IAuthorizationResponse,
   IParsedToken
 } from '@skeleton/core/types';
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 interface IProfileStoreState {
   refreshPromise: Promise<{data: IAuthorizationResponse}>|null;
@@ -46,7 +46,7 @@ export const useProfileStore = defineStore('profileStore', {
     isTokenExpired ():boolean {
       const token = this.getSessionToken();
       if (token) {
-        const currentSession:IParsedToken = jwt_decode(token);
+        const currentSession:IParsedToken = jwtDecode(token);
         return currentSession.exp ? currentSession.exp <= Date.now() / 1000 : false;
       }
       return true;
@@ -55,7 +55,7 @@ export const useProfileStore = defineStore('profileStore', {
     getCurrentSession ():IParsedToken|null {
       const token = this.getSessionToken();
       if (token) {
-        return jwt_decode(token);
+        return jwtDecode(token);
       }
       return null;
     },

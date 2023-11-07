@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IPaymentMethod } from '@skeleton/core/types';
+  import type { IPaymentMethod } from '@skeleton/core/types';
   import { VueFinalModal } from 'vue-final-modal';
 
   const layoutStore = useLayoutStore();

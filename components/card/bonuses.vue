@@ -84,8 +84,8 @@
 </template>
 
 <script setup lang="ts">
-  import { IPlayerFreeSpin, IGame, IPlayerBonus } from "@skeleton/core/types";
-  import {IProfileBonuses} from '~/types';
+  import type { IPlayerFreeSpin, IGame, IPlayerBonus } from "@skeleton/core/types";
+  import type { IProfileBonuses } from '~/types';
 
   const props = defineProps<{
     bonus: IPlayerBonus|IPlayerFreeSpin,

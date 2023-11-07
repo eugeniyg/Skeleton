@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IUpdateLimit } from '@skeleton/core/types';
+  import type { IUpdateLimit } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
 
   const emit = defineEmits([

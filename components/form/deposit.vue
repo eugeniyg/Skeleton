@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IPaymentField } from '@skeleton/core/types';
+  import type { IPaymentField } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
   const props = defineProps<{

@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import {IFavoritesPage} from '~/types';
+  import type { IFavoritesPage } from '~/types';
 
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);

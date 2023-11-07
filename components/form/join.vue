@@ -72,7 +72,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IField } from '@skeleton/core/types';
+  import type { IField } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
   const props = defineProps<{

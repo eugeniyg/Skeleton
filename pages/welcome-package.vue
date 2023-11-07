@@ -110,7 +110,7 @@
 
 <script setup lang='ts'>
   import { storeToRefs } from 'pinia';
-  import {IWelcomeBonusesPage} from '~/types';
+  import type { IWelcomeBonusesPage } from '~/types';
 
   const {
     setPageSeo,

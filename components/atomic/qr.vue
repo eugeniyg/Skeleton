@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IDepositModal } from '~/types';
+  import type { IDepositModal } from '~/types';
 
   const props = defineProps<{
     content: Maybe<IDepositModal>,

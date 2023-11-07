@@ -61,7 +61,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IProfileLimits } from '~/types';
+  import type { IProfileLimits } from '~/types';
 
   const limitsStore = useLimitsStore();
   const globalStore = useGlobalStore();

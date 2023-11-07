@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useNotification } from '@kyvg/vue3-notification';
-import { IAlert } from "~/types";
-import {IGame} from "@skeleton/core/types";
+import type { IAlert } from "~/types";
+import type { IGame } from "@skeleton/core/types";
 
 interface IModals extends Record<string, any> {
   register: boolean;

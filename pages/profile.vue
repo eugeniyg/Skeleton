@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IProfilePages, ISeoBlock } from '~/types';
+  import type { IProfilePages, ISeoBlock } from '~/types';
   import camelCase from "lodash/camelCase";
 
   definePageMeta({

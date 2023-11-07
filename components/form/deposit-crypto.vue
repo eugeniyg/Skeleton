@@ -48,7 +48,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
-  import { IPaymentField, IRequestDeposit } from '@skeleton/core/types';
+  import type { IPaymentField, IRequestDeposit } from '@skeleton/core/types';
 
   const props = defineProps<{
     amountMax?: number,

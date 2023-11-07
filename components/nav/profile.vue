@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ISeoBlock } from '~/types';
+  import type { ISeoBlock } from '~/types';
 
   const props = defineProps<{
     items: { id: string, title: string, url: string, seo: ISeoBlock }[]

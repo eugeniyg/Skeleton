@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IProfileWallet } from '~/types';
+  import type { IProfileWallet } from '~/types';
 
   const props = defineProps<{
     id: string,

@@ -63,7 +63,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
-  import { IPaymentField } from '@skeleton/core/types';
+  import type { IPaymentField } from '@skeleton/core/types';
   import { marked } from 'marked';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 

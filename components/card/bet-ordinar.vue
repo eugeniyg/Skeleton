@@ -52,8 +52,8 @@
 </template>
 
 <script setup lang="ts">
-  import { IBetItem } from '@skeleton/core/types';
-  import {IBetsHistory} from '~/types';
+  import type { IBetItem } from '@skeleton/core/types';
+  import type { IBetsHistory } from '~/types';
 
   const props = defineProps<{
     id: string,

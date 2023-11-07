@@ -25,8 +25,9 @@
 </template>
 
 <script setup lang="ts">
-  import { ISliderItem } from '~/types';
-  import emblaCarouselVue, { EmblaCarouselType } from 'embla-carousel-vue';
+  import type { ISliderItem } from '~/types';
+  import type { EmblaCarouselType } from 'embla-carousel-vue';
+  import emblaCarouselVue from 'embla-carousel-vue';
   import Autoplay from 'embla-carousel-autoplay';
   
   const props = defineProps<{

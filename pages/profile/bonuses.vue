@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IProfileBonuses } from '~/types';
+  import type { IProfileBonuses } from '~/types';
 
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();

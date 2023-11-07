@@ -69,7 +69,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import {IHomePage} from '~/types';
+  import type { IHomePage } from '~/types';
 
   const globalStore = useGlobalStore();
   const gameStore = useGamesStore();
