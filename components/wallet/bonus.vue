@@ -96,10 +96,6 @@
     return { label, value };
   })
 
-  const bonusDepositValue = computed(() => {
-
-  })
-
   const openBonusDetails = (): void => {
     depositMoreInfoBonus.value = props.bonusInfo;
     showModal('walletBonusDetails')
