@@ -52,6 +52,8 @@ export interface IGame extends Record<string, any>{
   provider: IGameProvider;
   collections: ICollection[];
   labels: IGameLabel[];
+  isBonusWagering: boolean;
+  minimumBonusWagerMultiplier: number;
 }
 
 export interface IGamesResponse extends Record<string, any>{

@@ -1,7 +1,7 @@
 <template>
   <header class="app-header-root">
     <pwa v-if="isLoggedIn" display="mobile" />
-    <div class="app-header" :class="headerClassModifiers">
+    <div class="app-header" :class="headerClassModifiers" ref="appHeader">
       <button class="app-header__back-btn" @click="backToHomePage" v-if="isGamePage && isLoggedIn">
         <atomic-icon id="arrow_previous"/>
       </button>
@@ -23,19 +23,23 @@
           :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
       />
       <!--</template>-->
-
-      <button-base
-        v-if="isGameDemo"
-        type="secondary"
-        size="sm"
-        class="app-header__play-real"
-        @click="changeGameMode"
-      >
-        <atomic-icon id="casino-real-money" />
-        <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.playRealButton') }}</span>
-      </button-base>
-
+      
       <div class="items">
+        <button-base
+          v-if="isGameDemo"
+          type="secondary"
+          size="sm"
+          class="app-header__play-real"
+          @click="changeGameMode"
+        >
+          <atomic-icon id="casino-real-money" />
+          <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.playRealButton') }}</span>
+        </button-base>
+        
+        <template v-if="isGamePage && !isGameDemo">
+          <wager-tooltip :container="appHeader"/>
+        </template>
+        
         <search
             :isShow="isShowSearch"
             @hideSearch="isShowSearch = false"
@@ -46,6 +50,8 @@
             @show-search="toggle"
             :is-active="isShowSearch"
         />
+        
+        <atomic-divider v-if="isGamePage" />
 
         <template v-if="isLoggedIn">
           <atomic-gift-notification
@@ -109,6 +115,8 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
   const { isGamePage } = storeToRefs(layoutStore);
+  
+  const appHeader = ref<HTMLElement>();
 
   const headerClassModifiers = computed(() => {
     if (isGamePage.value && isLoggedIn.value) {

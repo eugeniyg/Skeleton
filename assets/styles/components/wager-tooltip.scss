@@ -1,0 +1,95 @@
+.wager-tooltip {
+  width: var(--tooltip-width, 40px);
+  height: var(--tooltip-height, 40px);
+  display: var(--tooltip-display, none);
+  margin: var(--tooltip-margin, auto);
+  cursor: var(--tooltip-cursor, pointer);
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+
+  &.--is-show {
+    @media (orientation: portrait) and (max-width: 1023px), (orientation: landscape) and (max-width: 1023px) {
+      --tooltip-content-visibility: visible;
+    }
+  }
+
+  &.--is-inline {
+    --tooltip-content-position: relative;
+    --tooltip-width: auto;
+    --tooltip-height: auto;
+    --tooltip-content-top: 0;
+    --tooltip-content-left: 0;
+    --tooltip-margin: 0;
+    --tooltip-content-bg: transparent;
+    --tooltip-content-padding: 0;
+    --tooltip-cursor: text;
+    --tooltip-content-visibility: visible;
+    --tooltip-display: flex;
+  }
+
+  @media (orientation: portrait) and (max-width: 1023px) {
+    --tooltip-display: flex;
+    --tooltip-margin: 0 -12px 0 0;
+  }
+
+  @media (orientation: landscape) and (max-width: 1023px) {
+    --tooltip-display: flex;
+    --tooltip-content-left: 50px;
+    --tooltip-margin: 0 0 -12px 0;
+  }
+
+  &__content {
+    @include font($body-1);
+    color: var(--text-primary);
+    background: var(--tooltip-content-bg, var(--layer-03-low-contrast));
+    display: var(--tooltip-content-display, flex);
+    position: var(--tooltip-content-position, fixed);
+    top: var(--tooltip-content-top, 52px);
+    left: var(--tooltip-content-left, 0);
+    visibility: var(--tooltip-content-visibility, hidden);
+    padding: var(--tooltip-content-padding, 4px 8px);
+    align-items: center;
+    border-radius: 8px;
+    gap: 8px;
+
+    .icon {
+      --icon-size: 20px;
+    }
+  }
+
+  &__msg {
+    p {
+      margin: 0;
+    }
+  }
+
+  &__close {
+    .icon {
+      --color: var(--button-icn-ghost-low-contrast);
+      --icon-size: 24px;
+    }
+
+    @include use-hover {
+      cursor: pointer;
+      &:hover {
+        .icon {
+          --color: var(--button-icn-ghost-hover);
+        }
+      }
+    }
+  }
+
+  &.--icon-orange {
+    .wager-tooltip__icon {
+      --color: var(--icon-warning);
+    }
+  }
+
+  &.--icon-green {
+    .wager-tooltip__icon {
+      --color: var(--icon-success);
+    }
+  }
+}
