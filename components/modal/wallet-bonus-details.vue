@@ -68,6 +68,9 @@
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
 
+  const gamesStore = useGamesStore();
+  const { gameProviders } = storeToRefs(gamesStore);
+
   const titleImage = computed(() => {
     return getContent(popupsData, defaultLocalePopupsData, 'walletBonusDetails.titleImage')
   })
@@ -153,34 +156,43 @@
     const providersExcluded = depositMoreInfoBonus.value?.wagerCasinoConditions?.providerIdsExcluded;
 
     if (bonusProviderList?.length) {
-      const { gameProviders } = useGamesStore();
-
-      const providersNames = gameProviders
+      const providersNames = gameProviders.value
         .filter(provider => bonusProviderList.includes(provider.id))
         .map(provider => provider.name);
 
-      return `${providersExcluded ? paramsLabels?.excluded :paramsLabels?.included} ${providersNames.join(', ')}`
+      return `${providersExcluded ? paramsLabels?.excluded : ''} ${providersNames.join(', ')}`
     }
 
     return undefined;
   }
 
+  const getFreeSpinProvider = (): string|undefined => {
+    const freeSpinProviderId = depositMoreInfoBonus.value?.assignConditions?.providerId;
+
+    if (freeSpinProviderId) {
+      return gameProviders.value.find(provider => provider.id === freeSpinProviderId)?.name;
+    }
+
+    return undefined;
+  }
+
+
   const bonusGames = ref<string|undefined>();
-  const getBonusGames = async (): Promise<void> => {
-    const bonusGamesList = depositMoreInfoBonus.value?.wagerCasinoConditions?.gameIds;
+  const getBonusGames = async (gamesList: string[]): Promise<void> => {
     const gamesExcluded = depositMoreInfoBonus.value?.wagerCasinoConditions?.gameIdsExcluded;
 
-    if (bonusGamesList?.length) {
-      const { getFilteredGames } = useCoreGamesApi();
+    const { getFilteredGames } = useCoreGamesApi();
+    try {
+      const { data } = await getFilteredGames({ gameId: gamesList });
+      const gamesNames = data.map(game => game.name);
 
-      try {
-        const { data } = await getFilteredGames({ gameId: bonusGamesList });
-        const gamesNames = data.map(game => game.name);
-
-        bonusGames.value = `${gamesExcluded ? paramsLabels?.excluded :paramsLabels?.included} ${gamesNames.join(', ')}`;
-      } catch {
-        console.error('Something went wrong with games loading!')
+      if (depositMoreInfoBonus.value?.type === 3) {
+        bonusGames.value = `${gamesNames.join(', ')}`;
+      } else {
+        bonusGames.value = `${gamesExcluded ? paramsLabels?.excluded : ''} ${gamesNames.join(', ')}`;
       }
+    } catch {
+      console.error('Something went wrong with games loading!')
     }
   }
 
@@ -189,6 +201,7 @@
   const setParamsList = async (): Promise<void> => {
     if (!depositMoreInfoBonus.value) return;
     bonusGames.value = undefined;
+    const bonusType = depositMoreInfoBonus.value?.type;
 
     const params:IParams = {
       deposit: undefined,
@@ -197,9 +210,10 @@
         value: getContent(
           globalComponentsContent,
           defaultLocaleGlobalComponentsContent,
-          `constants.bonusTypes.${depositMoreInfoBonus.value?.type}`
+          `constants.bonusTypes.${bonusType}`
         )
       },
+      freeSpins: undefined,
       casinoWager: undefined,
       sportsbookWager: undefined,
       maxWin: undefined,
@@ -212,29 +226,40 @@
     const depositSum = getDepositAmount();
     if (depositSum) params.deposit = { label: paramsLabels?.depositAmount, value: depositSum };
 
-    if (depositMoreInfoBonus.value?.wagerCasino) {
+    if (bonusType === 3) {
+      const freeSpinsValue = `${depositMoreInfoBonus.value?.assignConditions?.countFreespins} FS`;
+      params.freeSpins = { label: paramsLabels?.freeSpins, value: freeSpinsValue };
+    }
+
+    if (depositMoreInfoBonus.value?.wagerCasino && bonusType !== 3) {
       params.casinoWager = { label: paramsLabels?.casinoWager, value: `x${depositMoreInfoBonus.value?.wagerCasino}` };
     }
 
-    if (depositMoreInfoBonus.value?.wagerSportsbook) {
+    if (depositMoreInfoBonus.value?.wagerSportsbook && bonusType !== 3) {
       params.sportsbookWager = { label: paramsLabels?.sportsbookWager, value: `x${depositMoreInfoBonus.value?.wagerSportsbook}` };
     }
 
     const maxWinSum = getMaxWinAmount();
-    if (maxWinSum) params.maxWin = { label: paramsLabels?.maxWin, value: maxWinSum };
+    if (maxWinSum && bonusType !== 3) params.maxWin = { label: paramsLabels?.maxWin, value: maxWinSum };
 
     const casinoBetSum = getCasinoBetAmount();
-    if (casinoBetSum) params.casinoBet = { label: paramsLabels?.casinoBetSum, value: casinoBetSum };
+    if (casinoBetSum && bonusType !== 3) params.casinoBet = { label: paramsLabels?.casinoBetSum, value: casinoBetSum };
 
     const sportsbookBetSum = getSportsbookBetAmount();
-    if (sportsbookBetSum) params.sportsbookBet = { label: paramsLabels?.sportsbookBetSum, value: sportsbookBetSum };
+    if (sportsbookBetSum && bonusType !== 3) params.sportsbookBet = { label: paramsLabels?.sportsbookBetSum, value: sportsbookBetSum };
 
-    const bonusProviders = getBonusProvider();
-    if (bonusProviders) params.providers = { label: paramsLabels?.providers, value: bonusProviders };
+    if (bonusType === 3) {
+      const freeSpinProvider = getFreeSpinProvider();
+      if (freeSpinProvider) params.providers = { label: paramsLabels?.providers, value: freeSpinProvider };
+    } else {
+      const bonusProviders = getBonusProvider();
+      if (bonusProviders) params.providers = { label: paramsLabels?.providers, value: bonusProviders };
+    }
 
+    const freeSpinGame = depositMoreInfoBonus.value?.assignConditions?.gameId;
     const bonusGamesList = depositMoreInfoBonus.value?.wagerCasinoConditions?.gameIds;
-    if (bonusGamesList?.length) {
-      getBonusGames();
+    if (freeSpinGame || bonusGamesList?.length) {
+      getBonusGames(freeSpinGame ? [freeSpinGame] : bonusGamesList);
       params.games = { label: paramsLabels?.games, value: 'games' };
     }
 
