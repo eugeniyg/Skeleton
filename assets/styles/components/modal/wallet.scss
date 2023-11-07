@@ -300,5 +300,11 @@
   .modal-withdraw__empty-methods, .wallet-modal__empty-methods {
     color: var(--white);
     min-height: rem(375px);
+
+    &--mobile {
+      @include media(sm) {
+        display: none;
+      }
+    }
   }
 }

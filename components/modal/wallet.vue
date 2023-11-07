@@ -26,7 +26,7 @@
         <!--            ID {{ playerIdentity }}-->
         <!--          </div>-->
         <!--        </wallet-region>-->
-
+        
         <balance :withdraw="selectedTab === 'withdraw'">
           <form-input-payments
             v-if="selectedTab === 'deposit'"
@@ -34,13 +34,25 @@
             v-model:activeMethod="currentDepositMethod"
             @update:activeMethod="showMobileForm = true"
           />
-
+          
+          <div
+            v-if="selectedTab === 'deposit' && !depositMethods?.length"
+            class="wallet-modal__empty-methods wallet-modal__empty-methods--mobile">
+            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.emptyDepositMethods') }}
+          </div>
+          
           <form-input-payments
             v-if="selectedTab === 'withdraw'"
             :items="withdrawMethods"
             v-model:activeMethod="currentWithdrawMethod"
             @update:activeMethod="showMobileForm = true"
           />
+          
+          <div
+            v-if="selectedTab === 'withdraw' && !withdrawMethods?.length"
+            class="wallet-modal__empty-methods wallet-modal__empty-methods--mobile">
+            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.emptyWithdrawMethods') }}
+          </div>
         </balance>
 
         <wallet-dots
