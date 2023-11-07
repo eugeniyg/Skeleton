@@ -52,11 +52,21 @@ export interface IGame extends Record<string, any>{
   provider: IGameProvider;
   collections: ICollection[];
   labels: IGameLabel[];
+  isBonusWagering: boolean;
+  minimumBonusWagerMultiplier: number;
 }
 
 export interface IGamesResponse extends Record<string, any>{
   data: IGame[];
   meta: IPaginationMeta;
+}
+
+export interface IProvidersRequest extends Record<string, any> {
+  name?: string;
+  sortBy?: string;
+  sortOrder?: string;
+  page?: number;
+  perPage?: number;
 }
 
 export interface IGameStart extends Record<string, any>{

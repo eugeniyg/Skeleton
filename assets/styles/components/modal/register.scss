@@ -57,14 +57,20 @@
     }
   }
 
-  .dropdown:nth-of-type(1) {
+  .dropdown.currency {
     max-width: rem(98px);
     margin-left: auto;
+    margin-top: rem(-84px);
   }
 
-  .dropdown:nth-of-type(2) {
+  .dropdown.country {
     max-width: calc(100% - #{rem(16px)} - #{rem(98px)});
-    margin-top: rem(-84px);
+
+    &.has-error {
+      ~ .currency {
+        margin-top: rem(-107px);
+      }
+    }
   }
 
   .btn-modal-close {

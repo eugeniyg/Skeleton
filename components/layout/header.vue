@@ -1,12 +1,21 @@
 <template>
   <header class="app-header-root">
     <pwa v-if="isLoggedIn" display="mobile" />
-    <div class="app-header" :class="headerClassModifiers">
+    <div class="app-header" :class="headerClassModifiers" ref="appHeader">
       <button class="app-header__back-btn" @click="backToHomePage" v-if="isGamePage && isLoggedIn">
         <atomic-icon id="arrow_previous"/>
       </button>
+      
+      <button-toggle-drawer
+        @toggle-minimize="compactDrawer(!isDrawerCompact)"
+        @toggle-open="emit('toggle-open')"
+      />
 
       <atomic-logo />
+      
+      <button-toggler
+        :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler')"
+      />
 
       <!--<template v-if="!isGamePage">-->
       <atomic-vertical-divider/>
@@ -23,19 +32,23 @@
           :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
       />
       <!--</template>-->
-
-      <button-base
-        v-if="isGameDemo"
-        type="secondary"
-        size="sm"
-        class="app-header__play-real"
-        @click="changeGameMode"
-      >
-        <atomic-icon id="casino-real-money" />
-        <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.playRealButton') }}</span>
-      </button-base>
-
+      
       <div class="items">
+        <button-base
+          v-if="isGameDemo"
+          type="secondary"
+          size="sm"
+          class="app-header__play-real"
+          @click="changeGameMode"
+        >
+          <atomic-icon id="casino-real-money" />
+          <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.playRealButton') }}</span>
+        </button-base>
+        
+        <template v-if="isGamePage && !isGameDemo">
+          <wager-tooltip :container="appHeader"/>
+        </template>
+        
         <search
             :isShow="isShowSearch"
             @hideSearch="isShowSearch = false"
@@ -46,6 +59,8 @@
             @show-search="toggle"
             :is-active="isShowSearch"
         />
+        
+        <atomic-divider v-if="isGamePage" />
 
         <template v-if="isLoggedIn">
           <atomic-gift-notification
@@ -98,17 +113,19 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const emit = defineEmits(['login', 'register', 'logout']);
+  const emit = defineEmits(['login', 'register', 'logout', 'toggle-open']);
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const bonusStore = useBonusStore();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const { getContent } = useProjectMethods();
   const { isUserNavOpen } = storeToRefs(layoutStore);
-  const { closeUserNav, openUserNav, showModal } = layoutStore;
+  const { closeUserNav, openUserNav, showModal, compactDrawer } = layoutStore;
   const { isLoggedIn } = storeToRefs(profileStore);
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
-  const { isGamePage } = storeToRefs(layoutStore);
+  const { isGamePage, isDrawerCompact } = storeToRefs(layoutStore);
+  
+  const appHeader = ref<HTMLElement>();
 
   const headerClassModifiers = computed(() => {
     if (isGamePage.value && isLoggedIn.value) {

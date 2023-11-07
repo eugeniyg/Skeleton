@@ -16,6 +16,7 @@
           @blur="v$[field.name]?.$touch()"
           @focus="onFocus(field.name)"
           :hint="setError(field.name)"
+          :class="field.name"
         />
       </template>
 
@@ -33,6 +34,7 @@
         :options="selectOptions[field.name]"
         :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
         :hint="setError(field.name)"
+        :class="field.name"
       />
     </template>
 

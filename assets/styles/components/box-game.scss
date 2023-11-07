@@ -17,18 +17,41 @@
     height: auto;
   }
 
-  &__title {
+  &__header {
     display: none;
-    margin: 0;
+    width: 100%;
     padding: rem(8px) rem(16px);
     background: var(--layer-01);
+    position: relative;
+    z-index: 1;
+    align-items: center;
+
+    &:has(.wager-tooltip) {
+      hr {
+        --display: flex;
+      }
+    }
+
+    hr {
+      display: var(--display, none);
+      width: 1px;
+      flex-shrink: 0;
+      align-self: stretch;
+      height: 20px;
+      margin: auto #{rem(12px)};
+      --bg: var(--border-01);
+    }
+
+    @include media(md) {
+      display: flex;
+    }
+  }
+
+  &__title {
+    margin: 0;
     @include font($subheading-1);
     color: var(--text-helper);
     border-right: 1px solid var(--layer-bg);
-
-    @include media(md) {
-      display: block;
-    }
   }
 
   .container {

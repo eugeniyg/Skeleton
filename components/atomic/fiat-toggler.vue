@@ -6,7 +6,11 @@
 
     <transition name="fade">
       <div v-if="equivalentCurrency" class="fiat-toggler__selected" @click="showModal('fiat')">
-        <atomic-image class="fiat-toggler__selected-logo" :src="`/img/currency/${equivalentCurrency.code}.svg`" />
+        <atomic-image
+          class="fiat-toggler__selected-logo"
+          :src="`/img/currency/${equivalentCurrency.code}.svg`"
+          defaultImage="/img/currency/placeholder.svg"
+        />
         <span class="fiat-toggler__selected-currency">{{ equivalentCurrency.code }}</span>
         <atomic-icon id="arrow_expand-close"/>
       </div>

@@ -30,7 +30,11 @@
         :class="{'is-active': activeAccount.currency === item.nativeCurrency}"
         @click="selectCurrency(item.nativeCurrency)"
       >
-        <atomic-image class="img" :src="`/img/currency/${item.nativeCurrency}.svg`" />
+        <atomic-image
+          class="img"
+          :src="`/img/currency/${item.nativeCurrency}.svg`"
+          defaultImage="/img/currency/placeholder.svg"
+        />
         <span class="code-title">{{ item.currency }}</span>
         <span class="amount">{{ item.currencySymbol }} {{ item.amount }}</span>
       </div>
@@ -44,7 +48,8 @@
         <atomic-image
           class="currency-icon"
           v-if="activeAccountBalances.real.currencyIcon"
-          :src="`/img/currency/${activeAccountBalances.real.currencyIcon}.svg`" alt=""
+          :src="`/img/currency/${activeAccountBalances.real.currencyIcon}.svg`"
+          defaultImage="/img/currency/placeholder.svg"
         />
       </div>
 
@@ -55,7 +60,8 @@
         <atomic-image
           class="currency-icon"
           v-if="activeAccountBalances.bonus.currencyIcon"
-          :src="`/img/currency/${activeAccountBalances.bonus.currencyIcon}.svg`" alt=""
+          :src="`/img/currency/${activeAccountBalances.bonus.currencyIcon}.svg`"
+          defaultImage="/img/currency/placeholder.svg"
         />
 
         <template v-if="currentActiveBonus">
@@ -93,7 +99,8 @@
         <atomic-image
           class="currency-icon"
           v-if="activeAccountBalances.withdrawal.currencyIcon"
-          :src="`/img/currency/${activeAccountBalances.withdrawal.currencyIcon}.svg`" alt=""
+          :src="`/img/currency/${activeAccountBalances.withdrawal.currencyIcon}.svg`"
+          defaultImage="/img/currency/placeholder.svg"
         />
       </div>
 
@@ -105,6 +112,7 @@
           class="currency-icon"
           v-if="cashback.currencyIcon"
           :src="`/img/currency/${cashback.currencyIcon}.svg`" alt=""
+          defaultImage="/img/currency/placeholder.svg"
         />
 
         <div v-if="cashback.date" class="list-balance__cashback-date">

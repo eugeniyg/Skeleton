@@ -145,6 +145,10 @@ body {
   align-items: flex-start;
 
   @include media(l) {
+    grid-template-areas:
+    "app-header-root app-header-root"
+    "drawer app-main"
+    "drawer app-footer";
     --body-template-columns: #{rem(240px)} 1fr;
     --drawer-translate-x: translateX(0);
 
