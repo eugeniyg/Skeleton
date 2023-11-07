@@ -140,5 +140,9 @@ export interface IBonus {
   minDeposit?: {
     amount: number;
     currency: string;
-  }
+  };
+  maxDeposit?: {
+    amount: number;
+    currency: string;
+  };
 }

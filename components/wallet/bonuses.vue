@@ -8,7 +8,7 @@
       <wallet-bonus
         :bonusInfo="bonus"
         :selected="selectedDepositBonus?.id === bonus.id"
-        :disabled="!props.crypto && !!bonus.minDeposit && props.amount < bonus.minDeposit.amount"
+        :disabled="!props.crypto && isBonusDisabled(bonus)"
         @bonusChange="onBonusChange(bonus)"
       />
     </template>
@@ -44,13 +44,18 @@
   const bonusesList = computed(() => {
     return depositBonuses.value.map(bonus => {
       let minDeposit: { amount: number, currency: string }|undefined;
+      let maxDeposit: { amount: number, currency: string }|undefined;
       const invoiceItems = bonus.triggerConditions?.invoiceAmountItems;
       const baseCurrencyInvoiceFrom = bonus.triggerConditions?.baseCurrencyInvoiceAmountFrom;
+      const baseCurrencyInvoiceTo = bonus.triggerConditions?.baseCurrencyInvoiceAmountTo;
 
       if (invoiceItems?.length) {
         const currentCurrencyInvoiceItem = invoiceItems.find(invoiceItem => invoiceItem.currency === activeAccount.value?.currency);
         if (currentCurrencyInvoiceItem && currentCurrencyInvoiceItem.amountFrom) {
           minDeposit = formatBalance(currentCurrencyInvoiceItem.currency, currentCurrencyInvoiceItem.amountFrom);
+        }
+        if (currentCurrencyInvoiceItem && currentCurrencyInvoiceItem.amountTo) {
+          maxDeposit = formatBalance(currentCurrencyInvoiceItem.currency, currentCurrencyInvoiceItem.amountTo);
         }
       }
 
@@ -58,7 +63,11 @@
         minDeposit = getEquivalentFromBase(baseCurrencyInvoiceFrom, activeAccount.value?.currency);
       }
 
-      return { ...bonus, minDeposit };
+      if (!maxDeposit && baseCurrencyInvoiceTo) {
+        maxDeposit = getEquivalentFromBase(baseCurrencyInvoiceTo, activeAccount.value?.currency);
+      }
+
+      return { ...bonus, minDeposit, maxDeposit };
     })
   })
 
@@ -73,10 +82,22 @@
     return undefined;
   }
 
+  const isBonusDisabled = (bonusData: IBonus): boolean => {
+    if (bonusData.minDeposit && bonusData.maxDeposit) {
+      return Number(props.amount) < bonusData.minDeposit.amount || Number(props.amount) > bonusData.maxDeposit.amount;
+    } else if (bonusData.minDeposit) {
+      return Number(props.amount) < bonusData.minDeposit.amount;
+    } else if (bonusData.maxDeposit) {
+      return Number(props.amount) > bonusData.maxDeposit.amount;
+    }
+
+    return false;
+  }
+
   const storageBonus = getStorageBonus();
   if (!props.crypto) {
-    selectedDepositBonus.value = storageBonus
-      || bonusesList.value.find(bonus => !bonus.minDeposit || (bonus.minDeposit.amount <= Number(props.amount)));
+    const bonusByDeposit = bonusesList.value.find(bonus => !isBonusDisabled(bonus));
+    selectedDepositBonus.value = storageBonus || bonusByDeposit;
   } else {
     selectedDepositBonus.value = storageBonus || bonusesList.value[0];
   }
@@ -96,11 +117,7 @@
   }
 
   watch(() => props.amount, () => {
-    if (
-      (props.amount || props.amount === 0)
-      && selectedDepositBonus.value?.minDeposit
-      && Number(props.amount) < selectedDepositBonus.value.minDeposit.amount
-    ) {
+    if (selectedDepositBonus.value && isBonusDisabled(selectedDepositBonus.value)) {
       selectedDepositBonus.value = undefined;
     }
   })
