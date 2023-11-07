@@ -84,19 +84,6 @@
     .is-game-page & {
       margin-left: auto;
 
-
-      &::before {
-        content: '';
-        display: block;
-        height: 40px;
-        margin-right: rem(8px);
-        border-right: 1px solid var(--border-00-low-contrast);
-
-        @include media(md) {
-          display: none !important;
-        }
-      }
-
       @media (orientation: landscape) and (max-width: 1023px), (orientation: portrait) and (max-width: 1023px) {
         .btn-primary__text, .btn-secondary__text {
           display: none;
