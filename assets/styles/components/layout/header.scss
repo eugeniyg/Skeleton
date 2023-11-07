@@ -97,8 +97,7 @@
         }
       }
 
-      @media (orientation: landscape) and (max-width: 1023px),
-      (orientation: portrait) and (max-width: 1023px) {
+      @media (orientation: landscape) and (max-width: 1023px), (orientation: portrait) and (max-width: 1023px) {
         .btn-primary__text, .btn-secondary__text {
           display: none;
         }
@@ -106,7 +105,6 @@
         .btn-primary__icon, .btn-secondary__icon {
           display: block;
         }
-      }
 
         .btn-primary, .btn-secondary {
           @include box(40px);
@@ -128,7 +126,6 @@
         margin: auto auto 0;
         gap: rem(16px);
 
-
         hr {
           height: 0;
           width: 40px;
@@ -144,6 +141,7 @@
         }
       }
     }
+  }
 
   > .notification {
     margin-right: rem(16px);
