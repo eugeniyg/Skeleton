@@ -13,18 +13,18 @@
       </div>
 
       <div
-        v-if="props.bonusInfo.minDeposit"
+        v-if="props.bonusInfo.minDeposit || props.bonusInfo.maxDeposit"
         class="wallet-bonus__min"
         @click="openBonusDetails"
       >
         <atomic-icon id="info" />
 
         <div class="wallet-bonus__min-title">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.minAmount') }}
+          {{ bonusDepositContent.label }}
         </div>
 
         <div class="wallet-bonus__min-value">
-          {{ props.bonusInfo.minDeposit.amount }} {{ props.bonusInfo.minDeposit.currency }}
+          {{ bonusDepositContent.value }}
         </div>
       </div>
 
@@ -75,6 +75,30 @@
     2: 'percentage',
     3: 'freespin'
   }
+
+  const bonusDepositContent = computed(() => {
+    const minDepositData = props.bonusInfo.minDeposit;
+    const maxDepositData = props.bonusInfo.maxDeposit;
+    let label;
+    let value;
+
+    if (minDepositData && maxDepositData) {
+      label = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.bonuses.deposit');
+      value = `${minDepositData.amount} ${minDepositData.currency} - ${maxDepositData.amount} ${maxDepositData.currency}`;
+    } else if (minDepositData) {
+      label = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.bonuses.minDeposit');
+      value = `${minDepositData.amount} ${minDepositData.currency}`;
+    } else if (maxDepositData) {
+      label = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.bonuses.maxDeposit');
+      value = `${maxDepositData.amount} ${maxDepositData.currency}`;
+    }
+
+    return { label, value };
+  })
+
+  const bonusDepositValue = computed(() => {
+
+  })
 
   const openBonusDetails = (): void => {
     depositMoreInfoBonus.value = props.bonusInfo;
