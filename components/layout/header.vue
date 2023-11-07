@@ -5,8 +5,17 @@
       <button class="app-header__back-btn" @click="backToHomePage" v-if="isGamePage && isLoggedIn">
         <atomic-icon id="arrow_previous"/>
       </button>
+      
+      <button-toggle-drawer
+        @toggle-minimize="compactDrawer(!isDrawerCompact)"
+        @toggle-open="emit('toggle-open')"
+      />
 
       <atomic-logo />
+      
+      <button-toggler
+        :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler')"
+      />
 
       <!--<template v-if="!isGamePage">-->
       <atomic-vertical-divider/>
@@ -104,17 +113,17 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const emit = defineEmits(['login', 'register', 'logout']);
+  const emit = defineEmits(['login', 'register', 'logout', 'toggle-open']);
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const bonusStore = useBonusStore();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const { getContent } = useProjectMethods();
   const { isUserNavOpen } = storeToRefs(layoutStore);
-  const { closeUserNav, openUserNav, showModal } = layoutStore;
+  const { closeUserNav, openUserNav, showModal, compactDrawer } = layoutStore;
   const { isLoggedIn } = storeToRefs(profileStore);
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
-  const { isGamePage } = storeToRefs(layoutStore);
+  const { isGamePage, isDrawerCompact } = storeToRefs(layoutStore);
   
   const appHeader = ref<HTMLElement>();
 
