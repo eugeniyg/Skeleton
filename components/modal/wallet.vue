@@ -167,7 +167,9 @@
   const selectedTab = ref<string>(walletModalType?.value || 'deposit');
   
   const emptyMethodsText = computed(() => {
-    return getContent(popupsData.value, defaultLocalePopupsData.value, `wallet.${selectedTab.value}.emptyDepositMethods`)
+    return selectedTab.value === 'deposit' ?
+      getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.emptyDepositMethods'):
+      getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.emptyWithdrawMethods');
   })
 
   const tabItems = computed(() => {
