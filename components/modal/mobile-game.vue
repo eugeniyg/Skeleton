@@ -70,7 +70,7 @@
   } = storeToRefs(gameStore);
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getImageUrl, getContent, localizePath } = useProjectMethods();
-  const { openDepositModal, showModal } = useLayoutStore();
+  const { openWalletModal, showModal } = useLayoutStore();
   const router = useRouter();
 
   const gameImage = computed(() => {
@@ -105,7 +105,7 @@
 
   const handlePrimaryClick = async ():Promise<void> => {
     if (['depositOrDemo', 'deposit'].includes(mobileGameModalType.value as string)) {
-      await openDepositModal();
+      await openWalletModal('deposit');
     } else {
       showModal('register');
     }

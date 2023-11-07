@@ -226,6 +226,19 @@ export const useProjectMethods = () => {
     };
   };
 
+  const getEquivalentFromBase = (baseAmount: number|undefined, targetCurrencyCode: string|undefined): {
+    amount: number,
+    currency: string,
+  } => {
+    const { currencies } = useGlobalStore();
+    const targetCurrency = currencies.find((currency) => currency.code === targetCurrencyCode);
+
+    if (!targetCurrency || !baseAmount) return { amount: 0, currency: '' };
+
+    const balance = baseAmount * targetCurrency.rate.rate / targetCurrency.subunitToUnit;
+    return formatBalance(targetCurrency.code, balance);
+  };
+
   const getLocalesContentData = (currentLocaleContentResponse: any, defaultLocaleContentResponse: any): {
     currentLocaleData: any,
     defaultLocaleData: any
@@ -293,6 +306,29 @@ export const useProjectMethods = () => {
     return newString;
   };
 
+  const getSumFromAmountItems = (
+    exclusionItems?: { amount: number, currency: string }[],
+    baseAmount?: number|null,
+  ): string|undefined => {
+    let sum: string|undefined;
+    const { activeAccount } = useWalletStore();
+
+    const exclusionItem = exclusionItems?.find(item => item.currency === activeAccount?.currency);
+
+    if (exclusionItem) {
+      const { amount, currency } = formatBalance(exclusionItem.currency, exclusionItem.amount);
+      sum = `${amount} ${currency}`;
+    }
+
+    if (!sum && baseAmount) {
+      const { amount, currency } = getEquivalentFromBase(baseAmount, activeAccount?.currency);
+      sum = `${amount} ${currency}`;
+    }
+
+    return sum;
+  };
+
+
   return {
     createValidationRules,
     getFormRules,
@@ -314,5 +350,7 @@ export const useProjectMethods = () => {
     initObserver,
     replaceContent,
     createSrcSet,
+    getEquivalentFromBase,
+    getSumFromAmountItems
   };
 };

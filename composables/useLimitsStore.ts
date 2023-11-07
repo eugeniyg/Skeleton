@@ -9,7 +9,6 @@ import { IProfileLimits } from "~/types";
 interface ILimitsModal {
   addLimit: boolean,
   editLimit: boolean,
-  depositLimitReached: boolean,
   gameLimitReached: boolean,
   confirmLimitUpdate: boolean,
 }
@@ -43,7 +42,6 @@ export const useLimitsStore = defineStore('limitsStore', {
     modals: {
       addLimit: false,
       editLimit: false,
-      depositLimitReached: false,
       gameLimitReached: false,
       confirmLimitUpdate: false,
     },

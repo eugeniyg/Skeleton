@@ -164,6 +164,7 @@ export const useProfileStore = defineStore('profileStore', {
         this.finishProfileDependencies();
         const { deleteReturnGame } = useLayoutStore();
         deleteReturnGame();
+        sessionStorage.removeItem('depositBonusData');
         const router = useRouter();
         const { localizePath } = useProjectMethods();
         router.push(localizePath('/'));

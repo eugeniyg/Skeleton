@@ -18,37 +18,31 @@
 
     <div class="form-deposit-crypto__content" :class="{'is-blured': props.fields?.length && !state.selectedNetwork }">
 
-      <atomic-qr :content="popupsData?.deposit || defaultLocalePopupsData?.deposit" :qrLink="qrLink"/>
+      <atomic-qr :content="popupsData?.wallet?.deposit || defaultLocalePopupsData?.wallet?.deposit" :qrLink="qrLink"/>
 
       <form-input-copy
         name="walletNumber"
-        :label="getContent(popupsData, defaultLocalePopupsData, 'deposit.addressInputLabel') || ''"
+        :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addressInputLabel') || ''"
         :hint="fieldHint"
         :value="walletNumber"
       />
 
-      <template v-if="bonusesList?.length">
-        <atomic-divider/>
-
-        <template
-          v-for="(bonus, index) in bonusesList"
-          :key="index"
-        >
-          <atomic-bonus v-bind="bonus"/>
-          <atomic-divider/>
-        </template>
+      <template v-if="depositBonuses?.length">
+        <atomic-divider />
+        <wallet-bonuses crypto />
       </template>
 
+      <atomic-divider />
       <bonus-deposit-code/>
     </div>
-
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
-  import { IPaymentField, IRequestDeposit } from '@skeleton/core/types';
+  import { IPaymentField, IRequestDeposit, IBonus } from '@skeleton/core/types';
+  import debounce from 'lodash/debounce';
 
   const props = defineProps<{
     amountMax?: number,
@@ -62,10 +56,10 @@
 
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
-  const {
-    activeAccount,
-    activeAccountType
-  } = storeToRefs(walletStore);
+  const { activeAccount } = storeToRefs(walletStore);
+
+  const bonusStore = useBonusStore();
+  const { depositBonuses, selectedDepositBonus } = storeToRefs(bonusStore);
 
   const {
     popupsData,
@@ -83,12 +77,8 @@
   const fieldHint = computed(() => {
     const formatSum = formatBalance(activeAccount.value?.currency, props.amountMin);
     return {
-      message: `${getContent(popupsData, defaultLocalePopupsData, 'deposit.minSum') || ''} ${formatSum.amount} ${formatSum.currency}`,
+      message: `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.minSum') || ''} ${formatSum.amount} ${formatSum.currency}`,
     };
-  });
-
-  const bonusesList = computed(() => {
-    return popupsData?.deposit?.bonuses || [];
   });
 
   const networkSelectOptions = computed(() => {
@@ -114,20 +104,14 @@
       accountId: activeAccount.value?.id || '',
       redirectSuccessUrl: window.location.href,
       redirectErrorUrl: window.location.href,
+      fields: undefined,
+      bonusId: selectedDepositBonus.value?.id
     },
   });
 
-  const onInputNetwork = async () => {
-    const { depositAccount } = useCoreWalletApi();
-
-    if (state.selectedNetwork && !state.selectedNetwork.includes('empty-network')) {
-      state.params = {
-        ...state.params,
-        fields: { crypto_network: state.selectedNetwork }
-      };
-    } else {
-      state.params.fields = undefined;
-    }
+  const { depositAccount } = useCoreWalletApi();
+  const sendDepositData = async ():Promise<void> => {
+    state.params.bonusId = selectedDepositBonus.value?.id;
 
     try {
       const depositResponse = await depositAccount(state.params);
@@ -136,23 +120,29 @@
     } catch {
       showModal('error');
     }
-  };
+  }
+
+  const onInputNetwork = async ():Promise<void> => {
+    state.params.fields = state.selectedNetwork && !state.selectedNetwork.includes('empty-network')
+      ? { crypto_network: state.selectedNetwork } : undefined;
+    await sendDepositData();
+  }
+
+  const debounceDeposit = debounce(async (newBonusValue: IBonus|undefined): Promise<void> => {
+    if (newBonusValue?.id === state.params.bonusId) return;
+    await sendDepositData();
+  }, 1000, { leading: false });
+
+  watch(() => selectedDepositBonus.value, (newValue: IBonus|undefined) => {
+    debounceDeposit(newValue);
+  });
 
   onMounted(async () => {
-    const { depositAccount } = useCoreWalletApi();
-    try {
-      const fieldsOptions =  networkSelectOptions.value?.length && !networkSelectOptions.value[0].code.includes('empty-network');
-      const depositResponse = await depositAccount({
-        ...state.params,
-        fields: fieldsOptions ? { crypto_network: networkSelectOptions.value[0].code } : undefined
-      });
+    const fieldsOptions =  networkSelectOptions.value?.length && !networkSelectOptions.value[0].code.includes('empty-network');
+    if (fieldsOptions) state.params.fields = { crypto_network: networkSelectOptions.value[0].code };
 
-      walletNumber.value = depositResponse.address;
-      qrLink.value = depositResponse.qrAddress;
-    } catch {
-      showModal('error');
-    }
-  });
+    await sendDepositData();
+  })
 </script>
 
 <style src="~/assets/styles/components/form/deposit-crypto.scss" lang="scss"/>

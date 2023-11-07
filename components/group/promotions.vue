@@ -24,7 +24,7 @@
             <button-base
               type="primary"
               size="md"
-              @click="isLoggedIn ? openDepositModal() : showModal('register')"
+              @click="isLoggedIn ? openWalletModal('deposit') : showModal('register')"
             >
               {{ promotion.buttonLabel }}
             </button-base>
@@ -51,7 +51,7 @@
   const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal, openDepositModal } = useLayoutStore();
+  const { showModal, openWalletModal } = useLayoutStore();
 
   const backgroundImage = (img:string):string => `background-image:url(${img})`;
   const hoverCard = ref<number|undefined>(undefined);
