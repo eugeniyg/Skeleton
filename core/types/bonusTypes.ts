@@ -91,6 +91,8 @@ export interface IBonusAssignConditions {
   }[];
   baseCurrencyAmount?: number;
   countFreespins?: number;
+  gameId?: string;
+  providerId?: string;
   depositPercentage?: number;
   baseCurrencyMaxAmount?: number;
   maxAmountItems?: {
