@@ -19,8 +19,8 @@
 </template>
 
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
-import {IGame, IGamesResponse, IPaginationMeta} from '@skeleton/core/types';
+import { storeToRefs } from 'pinia';
+import type { IGame, IGamesResponse, IPaginationMeta } from '@skeleton/core/types';
 import debounce from 'lodash/debounce';
 
 const props = defineProps({

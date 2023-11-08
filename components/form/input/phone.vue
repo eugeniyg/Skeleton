@@ -39,7 +39,7 @@
   import parsePhoneNumber from 'libphonenumber-js';
   import { storeToRefs } from 'pinia';
   import { vMaska } from 'maska';
-  import { IPhoneCode } from '@skeleton/types';
+  import type { IPhoneCode } from '@skeleton/types';
 
   const props = defineProps({
     label: {

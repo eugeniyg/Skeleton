@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ILocale } from '@skeleton/core/types';
+  import type { ILocale } from '@skeleton/core/types';
 
   const route = useRoute();
   const globalStore = useGlobalStore();

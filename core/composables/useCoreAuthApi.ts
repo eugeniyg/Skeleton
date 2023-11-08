@@ -1,4 +1,4 @@
-import { IAuthorizationResponse, IField } from '../types';
+import type { IAuthorizationResponse, IField } from '../types';
 import { useFetchInstance } from '../assets/apiInstance';
 
 export const useCoreAuthApi = () => {

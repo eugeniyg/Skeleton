@@ -66,7 +66,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import { ICurrency, IPlayerLimit } from '@skeleton/core/types';
+  import type { ICurrency, IPlayerLimit } from '@skeleton/core/types';
 
   const props = defineProps<{ definition?: number }>();
 

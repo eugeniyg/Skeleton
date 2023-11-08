@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IBonus } from "@skeleton/core/types";
+  import type { IBonus } from "@skeleton/core/types";
   import { storeToRefs } from "pinia";
 
   const props = defineProps<{

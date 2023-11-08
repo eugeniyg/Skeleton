@@ -1,4 +1,4 @@
-import {
+import type {
   IChangePasswordRequest,
   ICreateLimit,
   IField,
@@ -11,7 +11,7 @@ import {
   IUpdateLimit,
   IUploadFile
 } from '../types';
-import {useFetchInstance} from '../assets/apiInstance';
+import { useFetchInstance } from '../assets/apiInstance';
 
 export const useCoreProfileApi = () => {
   const getProfile = async ():Promise<IProfile> => {

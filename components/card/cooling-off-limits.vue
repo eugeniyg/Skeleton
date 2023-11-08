@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IPlayerLimit } from "@skeleton/core/types";
+  import type { IPlayerLimit } from "@skeleton/core/types";
 
   const dayjs = useDayjs();
   const limitsStore = useLimitsStore();

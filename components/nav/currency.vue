@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ICurrency } from '@skeleton/core/types';
+  import type { ICurrency } from '@skeleton/core/types';
 
   const props = defineProps<{
     tabs: { id: string; title: string; }[];

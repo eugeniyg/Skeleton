@@ -40,9 +40,9 @@
 </template>
 
 <script setup lang="ts">
-  import { IProvidersPage } from "~/types";
+  import type { IProvidersPage } from "~/types";
   import { storeToRefs } from "pinia";
-  import { IGameProvider, IProvidersRequest } from "@skeleton/core/types";
+  import type { IGameProvider, IProvidersRequest } from "@skeleton/core/types";
 
   const globalStore = useGlobalStore();
   const gamesStore = useGamesStore();

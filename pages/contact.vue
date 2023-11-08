@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IContactsPage } from '~/types';
+  import type { IContactsPage } from '~/types';
 
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();

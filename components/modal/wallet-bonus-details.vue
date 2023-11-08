@@ -42,7 +42,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import {IAmountRangeItem} from "@skeleton/core/types";
+  import type { IAmountRangeItem } from "@skeleton/core/types";
 
   const {
     getContent,

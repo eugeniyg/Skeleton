@@ -131,8 +131,8 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IPaymentMethod } from '@skeleton/core/types';
-  import { IProfileLimits } from '~/types';
+  import type { IPaymentMethod } from '@skeleton/core/types';
+  import type { IProfileLimits } from '~/types';
   import { VueFinalModal } from 'vue-final-modal';
 
   const layoutStore = useLayoutStore();

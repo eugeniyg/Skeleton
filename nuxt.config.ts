@@ -53,6 +53,13 @@ export default defineNuxtConfig({
       'core/composables'
     ]
   },
+  experimental: {
+    defaults: {
+      useAsyncData: {
+        deep: false
+      }
+    }
+  },
   app: {
     head: {
       script: [

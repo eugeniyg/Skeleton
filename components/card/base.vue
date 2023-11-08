@@ -48,8 +48,8 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IGame } from '@skeleton/core/types';
-  import { IGameTag } from '~/types';
+  import type { IGame } from '@skeleton/core/types';
+  import type { IGameTag } from '~/types';
 
   const props = defineProps<{
     gameInfo?: IGame;

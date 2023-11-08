@@ -1,6 +1,6 @@
 import camelCase from 'lodash/camelCase';
 import {defineStore} from 'pinia';
-import {
+import type {
   ICoreConstants,
   ICountry,
   ICurrency,
@@ -8,7 +8,7 @@ import {
   IStatus,
   ITimeZone
 } from '@skeleton/core/types';
-import {
+import type {
   IAlertsContent,
   ICategory,
   IFieldsSettingsContent,
@@ -17,7 +17,7 @@ import {
   ILayoutContent,
   IModalsContent
 } from "~/types";
-import { IBrowserLanguage } from "@skeleton/types";
+import type { IBrowserLanguage } from "@skeleton/types";
 
 interface IGlobalContent {
   alerts: IAlertsContent;

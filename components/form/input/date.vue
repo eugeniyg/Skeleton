@@ -22,8 +22,8 @@
 <script setup lang="ts">
   import flatPickr from 'vue-flatpickr-component';
   import { default as pickrLocales } from 'flatpickr/dist/l10n';
-  import {storeToRefs} from "pinia";
-  import { key } from "flatpickr/dist/types/locale";
+  import { storeToRefs } from "pinia";
+  import type { key } from "flatpickr/dist/types/locale";
 
   const props = defineProps({
     label: {

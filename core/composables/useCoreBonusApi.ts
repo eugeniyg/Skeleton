@@ -1,5 +1,5 @@
 import { useFetchInstance } from '../assets/apiInstance';
-import {
+import type {
   IBonusCode,
   IPlayerBonusesRequest,
   IPlayerBonusesResponse,

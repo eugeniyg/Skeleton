@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IProfileSecurity } from '~/types';
+  import type { IProfileSecurity } from '~/types';
 
   const { setPageSeo, getLocalesContentData } = useProjectMethods();
   const globalStore = useGlobalStore();

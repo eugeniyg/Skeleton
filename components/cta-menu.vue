@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ISiteSidebar } from '~/types';
+  import type { ISiteSidebar } from '~/types';
 
   const props = defineProps<{
     items: ISiteSidebar['ctaMenu']['items']

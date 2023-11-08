@@ -1,4 +1,4 @@
-import { IPaginationMeta } from './globalTypes'
+import type { IPaginationMeta } from './globalTypes'
 
 export interface IAccount extends Record<string, any>{
   id: string;

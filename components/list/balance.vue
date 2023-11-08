@@ -128,7 +128,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IAccount, ICurrency } from '@skeleton/core/types';
+  import type { IAccount, ICurrency } from '@skeleton/core/types';
 
   const props = defineProps({
     isOpen: {

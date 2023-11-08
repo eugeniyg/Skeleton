@@ -92,8 +92,8 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ICountry } from '@skeleton/core/types';
-  import { IProfileInfo } from '~/types';
+  import type { ICountry } from '@skeleton/core/types';
+  import type { IProfileInfo } from '~/types';
 
   const globalStore = useGlobalStore();
   const {
