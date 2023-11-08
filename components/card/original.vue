@@ -53,48 +53,20 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { PropType } from '@vue/runtime-core';
-  import type { IGameImages, IGameProvider } from '@skeleton/core/types';
+  import type { IGameImages, IGameProvider, IGameLabel } from '@skeleton/core/types';
   import type { IGameTag } from '~/types';
 
-  const props = defineProps({
-    images: {
-      type: Object as PropType<IGameImages>,
-      required: false,
-    },
-    name: {
-      type: String,
-      default: '',
-    },
-    id: {
-      type: String,
-      required: true,
-    },
-    identity: {
-      type: String,
-      required: true,
-    },
-    isDemoMode: {
-      type: Boolean,
-      default: true,
-    },
-    subTitle: {
-      type: String,
-      default: '',
-    },
-    labels: {
-      type: Array as PropType<{ name: string }[]>,
-      default: () => [],
-    },
-    provider: {
-      type: Object as PropType<IGameProvider>,
-      required: true,
-    },
-    isWide: {
-      type:Boolean,
-      default: false
-    }
-  });
+  const props = defineProps<{
+    images?: IGameImages;
+    name?: string;
+    id: string;
+    identity: string;
+    isDemoMode: boolean;
+    subTitle?: string;
+    labels: IGameLabel[];
+    provider: IGameProvider;
+    isWide: boolean;
+  }>();
 
   const router = useRouter();
   const profileStore = useProfileStore();
