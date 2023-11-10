@@ -61,8 +61,31 @@
     parent: false,
   };
 
-  const startGame = async (): Promise<void> => {
+  const startBetsyFrame = (host: string, token: string): void => {
     const runtimeConfig = useRuntimeConfig();
+    const loggedOutClientId = 'turbodemo';
+
+    const params = {
+      ...sdkDefaultParams,
+      host: runtimeConfig.public.betsyParams?.clientHost,
+      cid: isLoggedIn.value ? runtimeConfig.public.betsyParams?.clientId : loggedOutClientId,
+      theme: runtimeConfig.public.betsyParams?.sportsBookTheme,
+      customStyles: runtimeConfig.public.betsyParams?.sportsBookStyles ? `${host}${runtimeConfig.public.betsyParams.sportsBookStyles}` : undefined,
+      token: isLoggedIn.value ? token : null,
+      lang: currentLocale.value?.code || 'en',
+    };
+
+    if (window.BetSdk) {
+      window.BetSdk.init(params);
+    } else {
+      const betsyScript = addBetsyScript();
+      betsyScript.onload = () => {
+        window.BetSdk.init(params);
+      };
+    }
+  }
+
+  const startGame = async (): Promise<void> => {
     const mainHost = window.location.origin;
     const startParams = {
       accountId: activeAccount.value?.id,
@@ -73,20 +96,7 @@
       platform: isMobile.value ? 1 : 2,
     };
     const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
-
-    const loggedOutClientId = 'turbodemo';
-
-    const params = {
-      ...sdkDefaultParams,
-      host: runtimeConfig.public.betsyParams?.clientHost,
-      cid: isLoggedIn.value ? runtimeConfig.public.betsyParams?.clientId : loggedOutClientId,
-      theme: runtimeConfig.public.betsyParams?.sportsBookTheme,
-      customStyles: runtimeConfig.public.betsyParams?.sportsBookStyles ? `${mainHost}${runtimeConfig.public.betsyParams.sportsBookStyles}` : undefined,
-      token: isLoggedIn.value ? startResponse.token : null,
-      lang: currentLocale.value?.code || 'en',
-    };
-
-    if (window.BetSdk) window.BetSdk.init(params);
+    startBetsyFrame(mainHost, startResponse.token);
   };
 
   const layoutStore = useLayoutStore();
@@ -108,7 +118,6 @@
   });
 
   onBeforeMount(() => {
-    addBetsyScript();
     compactDrawer(true, false);
   });
 
@@ -159,7 +168,6 @@
     } finally {
       showPlug.value = false;
     }
-
   });
 
   onBeforeUnmount(() => {

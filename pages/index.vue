@@ -37,7 +37,7 @@
       :category="topSlotsCategory"
     />
 
-    <div class="sports-container">
+    <div ref="sportsContainer" class="sports-container">
       <div id="top-events-widget" />
       <div id="live-events-widget" />
     </div>
@@ -127,16 +127,27 @@
     if (window.BetSdk) {
       window.BetSdk.initTopEventsWidget({ ...widgetsParams, containerId: 'top-events-widget' });
       window.BetSdk.initLiveEventsWidget({ ...widgetsParams, containerId: 'live-events-widget' });
+    } else {
+      const betsyScript = addBetsyScript();
+      betsyScript.onload = () => {
+        console.log('hello');
+        window.BetSdk.initTopEventsWidget({ ...widgetsParams, containerId: 'top-events-widget' });
+        window.BetSdk.initLiveEventsWidget({ ...widgetsParams, containerId: 'live-events-widget' });
+      };
     }
   };
 
-  onBeforeMount(() => {
-    addBetsyScript();
-  })
-
+  let betsyScriptTimer:any;
   onMounted(() => {
-    startBetsyWidgets();
+    // startBetsyWidgets();
+    betsyScriptTimer = setTimeout(() => {
+      startBetsyWidgets();
+    }, 1000);
   });
+
+  onBeforeUnmount(() => {
+    clearTimeout(betsyScriptTimer);
+  })
 </script>
 
 <style src="~/assets/styles/pages/index.scss" lang="scss" />

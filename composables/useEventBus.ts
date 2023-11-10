@@ -2,7 +2,6 @@ import mitt from 'mitt';
 
 type ApplicationEvents = {
   'changeMobileGameMode': undefined;
-  'betsyScriptLoaded': undefined;
 };
 
 const emitter = mitt<ApplicationEvents>();
