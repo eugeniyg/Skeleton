@@ -45,7 +45,7 @@
               <button-base
                 type="primary"
                 size="md"
-                @click="isLoggedIn ? openDepositModal() : showModal('register')"
+                @click="isLoggedIn ? openWalletModal('deposit') : showModal('register')"
               >
                 {{ card.buttonLabel }}
               </button-base>
@@ -86,7 +86,7 @@
               <button-base
                 type="primary"
                 size="md"
-                @click="isLoggedIn ? openDepositModal() : showModal('register')"
+                @click="isLoggedIn ? openWalletModal('deposit') : showModal('register')"
               >
                 {{ card.buttonLabel }}
               </button-base>
@@ -142,7 +142,7 @@
   }
 
   const profileStore = useProfileStore();
-  const { openDepositModal, showModal } = useLayoutStore();
+  const { openWalletModal, showModal } = useLayoutStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 </script>
 

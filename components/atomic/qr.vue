@@ -13,10 +13,10 @@
 </template>
 
 <script setup lang="ts">
-  import { IDepositModal } from '~/types';
+import { IWalletDeposit } from '~/types';
 
   const props = defineProps<{
-    content: Maybe<IDepositModal>,
+    content: Maybe<IWalletDeposit>,
     qrLink: string
   }>();
 </script>

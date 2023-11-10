@@ -74,7 +74,7 @@
           <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
           <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
           -->
-          <form-input-deposit/>
+          <form-input-deposit />
 
           <div v-click-outside="closeUserNav" class="nav-user__wrap">
             <atomic-avatar

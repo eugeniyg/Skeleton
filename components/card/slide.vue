@@ -53,7 +53,7 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal, openDepositModal } = useLayoutStore();
+  const { showModal, openWalletModal } = useLayoutStore();
   const { createSrcSet } = useProjectMethods()
 
   const clickButton = (url:string):void => {
@@ -61,7 +61,7 @@
       const router = useRouter();
       const { localizePath } = useProjectMethods();
       router.push(localizePath(url));
-    } else isLoggedIn.value ? openDepositModal() : showModal('register');
+    } else isLoggedIn.value ? openWalletModal('deposit') : showModal('register');
   };
 </script>
 

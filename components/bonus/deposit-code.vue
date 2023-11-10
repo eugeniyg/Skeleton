@@ -5,7 +5,7 @@
       v-model:value="hasBonusCode"
       @change="toggleBonusField"
     >
-      {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.togglerLabel') || '' }}
+      {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.togglerLabel') || '' }}
     </form-input-toggle>
 
     <div v-if="hasBonusCode" class="deposit-bonus-code__code">
@@ -28,8 +28,8 @@
         :isDisabled="bonusChecking"
       >
         <atomic-spinner :is-shown="bonusChecking"/>
-        {{ depositBonusCode ? getContent(popupsData, defaultLocalePopupsData, 'deposit.cancelBonusButton')
-          : getContent(popupsData, defaultLocalePopupsData, 'deposit.addBonusButton') }}
+        {{ depositBonusCode ? getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.cancelBonusCode')
+          : getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addBonusCode') }}
       </button-base>
     </div>
   </div>

@@ -5,7 +5,8 @@ import {
   IWebSocketResponse,
   IGame,
   IPlayerFreeSpin,
-  IPlayerCashback
+  IPlayerCashback,
+  IBonus
 } from '@skeleton/core/types';
 
 interface IBonusState {
@@ -16,6 +17,9 @@ interface IBonusState {
   playerFreeSpins: IPlayerFreeSpin[];
   playerCashback: IPlayerCashback[];
   depositBonusCode: Maybe<IBonusCode>;
+  depositBonuses: IBonus[];
+  selectedDepositBonus: IBonus|undefined;
+  depositMoreInfoBonus: Maybe<IBonus>;
 }
 
 export const useBonusStore = defineStore('bonusStore', {
@@ -27,6 +31,9 @@ export const useBonusStore = defineStore('bonusStore', {
     playerFreeSpins: [],
     playerCashback: [],
     depositBonusCode: undefined,
+    depositBonuses: [],
+    selectedDepositBonus: undefined,
+    depositMoreInfoBonus: undefined
   }),
 
   getters: {
@@ -62,6 +69,11 @@ export const useBonusStore = defineStore('bonusStore', {
       const { getPlayerCashback } = useCoreBonusApi();
       const { data } = await getPlayerCashback(currency);
       this.playerCashback = data;
+    },
+
+    async getDepositBonuses(currency: string, amount?: number):Promise<void> {
+      const { getDepositBonuses } = useCoreBonusApi();
+      this.depositBonuses = await getDepositBonuses(currency, amount);
     },
 
     async getDepositBonusCode():Promise<void> {

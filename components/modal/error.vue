@@ -30,12 +30,12 @@
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
-  const { closeModal, openDepositModal } = layoutStore;
+  const { closeModal, openWalletModal } = layoutStore;
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
 
   const tryAgain = async ():Promise<void> => {
-    await openDepositModal();
+    await openWalletModal('deposit');
     closeModal('error');
   };
 </script>

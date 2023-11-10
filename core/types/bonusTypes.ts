@@ -77,3 +77,74 @@ export interface IPlayerCashback {
   amount: number;
   date: string;
 }
+
+export interface IAmountRangeItem {
+  amountFrom?: number;
+  amountTo?: number;
+  currency: string;
+}
+
+export interface IBonusAssignConditions {
+  amountItems?: {
+    amount: number;
+    currency: string;
+  }[];
+  baseCurrencyAmount?: number;
+  countFreespins?: number;
+  gameId?: string;
+  providerId?: string;
+  depositPercentage?: number;
+  baseCurrencyMaxAmount?: number;
+  maxAmountItems?: {
+    amount: number;
+    currency: string;
+  }[];
+}
+
+export interface IBonusTriggerConditions {
+  baseCurrencyInvoiceAmountFrom: number|null;
+  baseCurrencyInvoiceAmountTo: number|null;
+  invoiceAmountItems: IAmountRangeItem[];
+}
+
+export interface IBonusWagerCasinoConditions {
+  baseCurrencyAmountFrom: number|null;
+  baseCurrencyAmountTo: number|null;
+  amountItems: IAmountRangeItem[];
+  gameIds: string[];
+  gameIdsExcluded: boolean;
+  providerIds: string[];
+  providerIdsExcluded: boolean;
+}
+
+export interface IBonusWagerSportsbookConditions {
+  baseCurrencyAmountFrom: number|null;
+  baseCurrencyAmountTo: number|null;
+  amountItems: IAmountRangeItem[];
+}
+
+export interface IBonus {
+  id: string;
+  name: string;
+  status: number;
+  type: number;
+  wagerCasino: number;
+  wagerSportsbook: number;
+  baseCurrencyMaxWinAmount: number|null;
+  maxWinAmountItems: {
+    amount: number;
+    currency: string;
+  }[];
+  assignConditions: IBonusAssignConditions;
+  triggerConditions: IBonusTriggerConditions;
+  wagerCasinoConditions: IBonusWagerCasinoConditions;
+  wagerSportsbookConditions: IBonusWagerSportsbookConditions;
+  minDeposit?: {
+    amount: number;
+    currency: string;
+  };
+  maxDeposit?: {
+    amount: number;
+    currency: string;
+  };
+}
