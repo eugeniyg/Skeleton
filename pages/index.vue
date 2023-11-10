@@ -145,11 +145,10 @@
       initObserver(sportsContainer.value, {
         once: true,
         onInView: startBetsyWidgets,
-        settings: { root: null, rootMargin: '0px 0px 200px 0px', threshold: 0 },
+        settings: { root: null, rootMargin: '0px', threshold: 0 },
       });
     }
   });
-
 </script>
 
 <style src="~/assets/styles/pages/index.scss" lang="scss" />
