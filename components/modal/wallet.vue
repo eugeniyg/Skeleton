@@ -132,7 +132,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { IPaymentMethod } from '@skeleton/core/types';
-  import { IProfileLimits } from '~/types';
+  import {IConstants, IProfileLimits} from '~/types';
   import { VueFinalModal } from 'vue-final-modal';
 
   const layoutStore = useLayoutStore();
@@ -249,27 +249,22 @@
   }
 
   // << GET CONTENT FOR DEPOSIT LIMIT
-  interface ILimitContent {
-    definition: IProfileLimits['definition'],
-    periodOptions: IProfileLimits['periodOptions']
-  }
-
-  const currentLocaleLimitsContent = ref<Maybe<ILimitContent>>();
-  const defaultLocaleLimitsContent = ref<Maybe<ILimitContent>>();
+  const currentLocaleLimitsContent = ref<Maybe<IProfileLimits['coolingOff']>>();
+  const defaultLocaleLimitsContent = ref<Maybe<IProfileLimits['coolingOff']>>();
 
   const getLimitContent = async ():Promise<void> => {
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'profile', 'limits').only(['definition', 'periodOptions']).findOne(),
+      queryContent(currentLocale.value?.code as string, 'profile', 'limits').only(['coolingOff']).findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').only(['definition', 'periodOptions']).findOne()
+        : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').only(['coolingOff']).findOne()
     ]);
 
     if (currentLocaleContentResponse.status !== 'rejected') {
-      currentLocaleLimitsContent.value = currentLocaleContentResponse.value as ILimitContent;
+      currentLocaleLimitsContent.value = currentLocaleContentResponse.value as IProfileLimits['coolingOff'];
     }
 
     if (defaultLocaleContentResponse.status !== 'rejected') {
-      defaultLocaleLimitsContent.value = defaultLocaleContentResponse.value as ILimitContent;
+      defaultLocaleLimitsContent.value = defaultLocaleContentResponse.value as IProfileLimits['coolingOff'];
     }
   }
 
