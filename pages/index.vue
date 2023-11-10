@@ -87,8 +87,7 @@
     setPageSeo,
     localizePath,
     getContent,
-    getLocalesContentData,
-    addBetsyScript
+    getLocalesContentData
   } = useProjectMethods();
 
   const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
@@ -129,10 +128,6 @@
       window.BetSdk.initLiveEventsWidget({ ...widgetsParams, containerId: 'live-events-widget' });
     }
   };
-
-  onBeforeMount(() => {
-    addBetsyScript();
-  })
 
   onMounted(() => {
     startBetsyWidgets();

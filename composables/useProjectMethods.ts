@@ -328,15 +328,6 @@ export const useProjectMethods = () => {
     return sum;
   };
 
-  const addBetsyScript = ():void => {
-    // if (!window.BetSdk) {
-    //   const script = document.createElement('script');
-    //   script.setAttribute('src', 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js');
-    //   script.setAttribute('defer', 'defer');
-    //   document.head.append(script);
-    // }
-  }
-
   return {
     createValidationRules,
     getFormRules,
@@ -359,7 +350,6 @@ export const useProjectMethods = () => {
     replaceContent,
     createSrcSet,
     getEquivalentFromBase,
-    getSumFromAmountItems,
-    addBetsyScript
+    getSumFromAmountItems
   };
 };
