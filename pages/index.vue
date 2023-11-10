@@ -112,6 +112,7 @@
   });
 
   const startBetsyWidgets = ():void => {
+    console.log('hello');
     const runtimeConfig = useRuntimeConfig();
     const mainHost = window.location.origin;
     const widgetsParams = {
@@ -130,24 +131,25 @@
     } else {
       const betsyScript = addBetsyScript();
       betsyScript.onload = () => {
-        console.log('hello');
         window.BetSdk.initTopEventsWidget({ ...widgetsParams, containerId: 'top-events-widget' });
         window.BetSdk.initLiveEventsWidget({ ...widgetsParams, containerId: 'live-events-widget' });
       };
     }
   };
 
-  let betsyScriptTimer:any;
+  const sportsContainer = ref();
   onMounted(() => {
-    // startBetsyWidgets();
-    betsyScriptTimer = setTimeout(() => {
-      startBetsyWidgets();
-    }, 1000);
+    if (window.BetSdk) startBetsyWidgets();
+    else {
+      const { initObserver } = useProjectMethods();
+      initObserver(sportsContainer.value, {
+        once: true,
+        onInView: startBetsyWidgets,
+        settings: { root: null, rootMargin: '0px 0px 200px 0px', threshold: 0 },
+      });
+    }
   });
 
-  onBeforeUnmount(() => {
-    clearTimeout(betsyScriptTimer);
-  })
 </script>
 
 <style src="~/assets/styles/pages/index.scss" lang="scss" />

@@ -3,6 +3,7 @@
     display: grid;
     grid-gap: rem(32px);
     margin-bottom: rem(32px);
+    min-height: 372px;
 
     @include media(l) {
       grid-template-columns: repeat(2, 1fr);
