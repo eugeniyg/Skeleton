@@ -24,6 +24,8 @@
   const {
     setPageSeo,
     getLocalesContentData,
+    localizePath,
+    addBetsyScript
   } = useProjectMethods();
 
   const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
@@ -94,7 +96,6 @@
   } = layoutStore;
 
   const router = useRouter();
-  const { localizePath } = useProjectMethods();
   const { showModal } = useLimitsStore();
 
   const redirectLimitedPlayer = (): void => {
@@ -105,15 +106,6 @@
   watch(() => activeAccount.value?.id, async (oldValue, newValue) => {
     if (oldValue && newValue && oldValue !== newValue) await startGame();
   });
-
-  const addBetsyScript = ():void => {
-    if (!window.BetSdk) {
-      const script = document.createElement('script');
-      script.setAttribute('src', 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js');
-      script.setAttribute('defer', 'defer');
-      document.head.append(script);
-    }
-  }
 
   onBeforeMount(() => {
     addBetsyScript();

@@ -87,7 +87,8 @@
     setPageSeo,
     localizePath,
     getContent,
-    getLocalesContentData
+    getLocalesContentData,
+    addBetsyScript
   } = useProjectMethods();
 
   const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
@@ -129,9 +130,13 @@
     }
   };
 
-  // onMounted(() => {
-  //   startBetsyWidgets();
-  // });
+  onBeforeMount(() => {
+    addBetsyScript();
+  })
+
+  onMounted(() => {
+    startBetsyWidgets();
+  });
 </script>
 
 <style src="~/assets/styles/pages/index.scss" lang="scss" />
