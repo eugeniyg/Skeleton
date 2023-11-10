@@ -56,7 +56,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       script: [
-        { src: `/pwa/init.js?v=${buildDate}` }
+        { src: `/pwa/init.js?v=${buildDate}` },
+        { src: 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js', defer: true }
       ],
     },
     pageTransition: true,
