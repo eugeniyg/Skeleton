@@ -24,7 +24,8 @@
   const {
     setPageSeo,
     getLocalesContentData,
-    localizePath
+    localizePath,
+    addBetsyScript
   } = useProjectMethods();
 
   const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
@@ -107,6 +108,7 @@
   });
 
   onBeforeMount(() => {
+    addBetsyScript();
     compactDrawer(true, false);
   });
 

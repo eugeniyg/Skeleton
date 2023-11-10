@@ -22,13 +22,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     }
   };
 
-  nuxtApp.hook('app:beforeMount', () => {
-    const script = document.createElement('script');
-    script.setAttribute('src', 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js');
-    script.setAttribute('defer', 'defer');
-    document.head.append(script);
-  })
-
   nuxtApp.hook('app:mounted', async () => {
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
