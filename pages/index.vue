@@ -112,7 +112,6 @@
   });
 
   const startBetsyWidgets = ():void => {
-    console.log('hello');
     const runtimeConfig = useRuntimeConfig();
     const mainHost = window.location.origin;
     const widgetsParams = {
