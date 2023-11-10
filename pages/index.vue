@@ -37,17 +37,17 @@
       :category="topSlotsCategory"
     />
 
-    <div ref="sportsContainer" class="sports-container">
-      <div id="top-events-widget" />
-      <div id="live-events-widget" />
-    </div>
-
     <group-games
       v-if="liveCasinoCategory"
       showAllBtn
       showArrows
       :category="liveCasinoCategory"
     />
+
+    <div ref="sportsContainer" class="sports-container">
+      <div id="top-events-widget" />
+      <div id="live-events-widget" />
+    </div>
 
     <cards-group
       v-if="providerCards.games?.length"
@@ -145,7 +145,7 @@
       initObserver(sportsContainer.value, {
         once: true,
         onInView: startBetsyWidgets,
-        settings: { root: null, rootMargin: '0px', threshold: 0 },
+        settings: { root: null, rootMargin: '400px', threshold: 0 },
       });
     }
   });
