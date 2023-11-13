@@ -10,6 +10,7 @@
   justify-self: center;
   transition: opacity .4s ease-in-out;
   opacity: var(--play-btn-opacity, 1);
+  width: 63%;
   --glow-offset: 0;
 
   &:before {
@@ -27,8 +28,6 @@
   }
 
   .icon-box {
-    width: var(--icon-box-size);
-    height: var(--icon-box-size);
     display: flex;
     position: relative;
     justify-content: center;
@@ -37,39 +36,14 @@
     background-image: var(--bgi, var(--button-bg-primary-icn-only));
     border-radius: 50%;
     transition: all .2s ease;
-    --icon-box-size: 48px;
-
-    [data-size="min"] & {
-      --icon-box-size: 48px;
-    }
-
-    [data-size="def"] & {
-      --icon-box-size: 64px;
-    }
-
-    [data-size="max"] & {
-      --icon-box-size: 96px;
-    }
+    aspect-ratio: 48/48;
+    width: 100%;
   }
 
   .icon {
     transform: translateX(1px);
-    width: var(--icon-size);
-    height: var(--icon-size);
-    --icon-size: 24px;
+    --icon-size: 50%;
     --color: var(--button-icn-primary);
-
-    [data-size="min"] & {
-      --icon-size: 24px;
-    }
-
-    [data-size="def"] & {
-      --icon-size: 32px;
-    }
-
-    [data-size="max"] & {
-      --icon-size: 48px;
-    }
   }
 
   @include use-hover {

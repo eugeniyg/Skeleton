@@ -61,7 +61,6 @@
 
   .text {
     @include font($subheading-2);
-    @extend %text-elipsis;
     display: var(--text-display, block);
     color: var(--text-color);
     transition: color .2s ease-in-out;
