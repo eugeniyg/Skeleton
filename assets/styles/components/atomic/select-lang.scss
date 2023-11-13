@@ -103,6 +103,7 @@
     max-height: calc((#{rem(38px)} * 5) + #{16px});
     overflow-x: hidden;
     overflow-y: auto;
+    overscroll-behavior: contain;
     @extend %scrollbar;
 
     .is-compact & {
