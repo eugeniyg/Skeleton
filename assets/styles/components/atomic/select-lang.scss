@@ -100,7 +100,7 @@
     left: 0;
     pointer-events: var(--pointer-events, none);
     display: var(--items-display, none);
-    max-height: calc((#{rem(38px)} * 4) + #{16px});
+    max-height: calc((#{rem(38px)} * 5) + #{16px});
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
