@@ -108,6 +108,7 @@
   ]);
 
   const checkDrawer = ():void => {
+    if (isGamePage.value) return;
     const clientCompactDrawer = localStorage.getItem('IS_DRAWER_COMPACT');
     isDrawerCompact.value = clientCompactDrawer === 'true';
   };
@@ -121,7 +122,6 @@
   });
 
   onBeforeMount(() => {
-    checkDrawer();
     checkModals();
 
     const storageReturnGame = sessionStorage.getItem('returnGame');
@@ -129,6 +129,7 @@
   });
 
   onMounted(async () => {
+    checkDrawer();
     disabledTransition.value = false;
     const cookieValue = useCookie('accept-cookie');
     if (!cookieValue.value) {
