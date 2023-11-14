@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <main-slider v-if="filteredSlider?.length" :slides="filteredSlider"/>
     
     <nav-cat @clickCategory="changeCategory"/>
