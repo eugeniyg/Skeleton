@@ -9,7 +9,6 @@ import type { IProfileLimits } from "~/types";
 interface ILimitsModal {
   addLimit: boolean,
   editLimit: boolean,
-  depositLimitReached: boolean,
   gameLimitReached: boolean,
   confirmLimitUpdate: boolean,
 }
@@ -43,7 +42,6 @@ export const useLimitsStore = defineStore('limitsStore', {
     modals: {
       addLimit: false,
       editLimit: false,
-      depositLimitReached: false,
       gameLimitReached: false,
       confirmLimitUpdate: false,
     },
@@ -117,9 +115,9 @@ export const useLimitsStore = defineStore('limitsStore', {
     },
 
     coolingOffPeriod() {
-      const { settingsConstants } = useGlobalStore();
+      const { settingsConstants, globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
       const { getContent } = useProjectMethods();
-      const content = getContent(this.limitsContent, this.defaultLimitsContent, 'periodOptions');
+      const content = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'constants.limitPeriods');
 
       return settingsConstants?.player.limit.coolingOffPeriod.map((period) => ({
         value: content[period.id],
@@ -128,9 +126,9 @@ export const useLimitsStore = defineStore('limitsStore', {
     },
 
     selfExclusionPeriod() {
-      const { settingsConstants } = useGlobalStore();
+      const { settingsConstants, globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
       const { getContent } = useProjectMethods();
-      const content = getContent(this.limitsContent, this.defaultLimitsContent, 'periodOptions');
+      const content = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'constants.limitPeriods');
 
       return settingsConstants?.player.limit.selfExclusionPeriod.map((period) => ({
         value: content[period.id],

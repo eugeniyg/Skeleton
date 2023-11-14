@@ -47,8 +47,6 @@
       />
     </div>
 
-    <modal-deposit-limit-reached/>
-
     <modal-game-limit-reached/>
 
     <modal-confirm-limit-update

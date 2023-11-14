@@ -7,7 +7,7 @@ import type {
   IPlayerFreeSpin,
   IPlayerFreeSpinsRequest,
   IPlayerFreeSpinsResponse,
-  IPlayerCashback
+  IPlayerCashback, IBonus
 } from '../types';
 
 export const useCoreBonusApi = () => {
@@ -58,6 +58,11 @@ export const useCoreBonusApi = () => {
     return await useFetchInstance('/api/game/bonuses/cashback', { params: { currency } });
   };
 
+  const getDepositBonuses = async (currency: string, amount?: number): Promise<IBonus[]> => {
+    const { data } = await useFetchInstance('/api/game/bonuses', { params: { currency, amount } });
+    return data;
+  };
+
   return {
     getPlayerBonuses,
     getPlayerFreeSpins,
@@ -68,6 +73,7 @@ export const useCoreBonusApi = () => {
     getBonusCodes,
     addBonusCode,
     deleteBonusCode,
-    getPlayerCashback
+    getPlayerCashback,
+    getDepositBonuses
   };
 }

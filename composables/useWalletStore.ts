@@ -2,12 +2,13 @@ import { defineStore, storeToRefs } from 'pinia';
 import type { IAccount,IWebSocketResponse } from '@skeleton/core/types';
 
 interface IWalletState {
-  accounts: IAccount[],
-  depositMethods: any[],
-  withdrawMethods: any[],
-  requestTimer: any,
-  accountSubscription: any,
-  invoicesSubscription: any,
+  accounts: IAccount[];
+  depositMethods: any[];
+  withdrawMethods: any[];
+  requestTimer: any;
+  accountSubscription: any;
+  invoicesSubscription: any;
+  depositLimitError: boolean;
 }
 
 export const useWalletStore = defineStore('walletStore', {
@@ -18,6 +19,7 @@ export const useWalletStore = defineStore('walletStore', {
     requestTimer: '',
     accountSubscription: undefined,
     invoicesSubscription: undefined,
+    depositLimitError: false
   }),
 
   getters: {
@@ -83,8 +85,20 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     async getDepositMethods():Promise<void> {
+      this.depositLimitError = false;
       const { getDepositMethods } = useCoreWalletApi();
-      this.depositMethods = await getDepositMethods(this.activeAccount?.currency || '');
+
+      try {
+        this.depositMethods = await getDepositMethods(this.activeAccount?.currency || '');
+      } catch (err: any) {
+        this.depositMethods = [];
+
+        if (err.data?.error?.code === 13100) {
+          this.depositLimitError = true;
+          const { getLimits } = useLimitsStore();
+          await getLimits();
+        }
+      }
     },
 
     async getWithdrawMethods():Promise<void> {

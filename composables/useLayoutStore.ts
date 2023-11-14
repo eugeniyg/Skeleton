@@ -4,17 +4,19 @@ import { useNotification } from '@kyvg/vue3-notification';
 import type { IAlert } from "~/types";
 import type { IGame } from "@skeleton/core/types";
 
+type WalletModalTypes = 'deposit'|'withdraw'|undefined;
 interface IModals extends Record<string, any> {
   register: boolean;
   registerCancel: boolean;
   signIn: boolean;
-  deposit: boolean;
+  wallet: boolean;
+  cancelDeposit: boolean;
+  walletBonusDetails: boolean;
   confirm: boolean;
   error: boolean;
   forgotPass: boolean;
   resetPass: boolean;
   success: boolean;
-  withdraw: boolean;
   fiat: boolean;
 }
 
@@ -26,6 +28,7 @@ interface IModalsUrls extends Record<string, any> {
   confirm: string;
   forgotPass: string;
   resetPass: string;
+  wallet: string;
 }
 
 interface ILayoutStoreState extends Record<string, any>{
@@ -38,6 +41,7 @@ interface ILayoutStoreState extends Record<string, any>{
   modalsUrl: IModalsUrls;
   lastNotificationTime: number;
   returnGame: Maybe<string|IGame>;
+  walletModalType: WalletModalTypes;
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -50,13 +54,14 @@ export const useLayoutStore = defineStore('layoutStore', {
       modals: {
         register: false,
         signIn: false,
-        deposit: false,
+        wallet: false,
+        cancelDeposit: false,
+        walletBonusDetails: false,
         confirm: false,
         error: false,
         forgotPass: false,
         resetPass: false,
         success: false,
-        withdraw: false,
         registerCancel: false,
         fiat: false,
       },
@@ -68,9 +73,11 @@ export const useLayoutStore = defineStore('layoutStore', {
         confirm: 'confirm',
         forgotPass: 'forgot-pass',
         resetPass: 'reset-pass',
+        wallet: 'wallet'
       },
     lastNotificationTime: 0,
-    returnGame: undefined
+    returnGame: undefined,
+    walletModalType: undefined
   }),
 
   actions: {
@@ -164,8 +171,8 @@ export const useLayoutStore = defineStore('layoutStore', {
     },
 
     showModal(modalName: string, queryValue?:string):void {
-      this.modals[modalName] = true;
       if (this.modalsUrl[modalName]) this.addModalQuery(modalName, queryValue);
+      this.modals[modalName] = true;
     },
 
     closeModal(modalName: string):void {
@@ -182,35 +189,37 @@ export const useLayoutStore = defineStore('layoutStore', {
         const modalKey = Object.keys(this.modalsUrl).find((key) => this.modalsUrl[key] === query);
         if (!modalKey) return;
 
-        const authModals = ['register', 'signIn', 'forgotPass', 'resetPass'];
-        if (authModals.includes(modalKey)) {
+        const guestModals = ['register', 'signIn', 'forgotPass', 'resetPass'];
+        const authModals = ['wallet'];
+        if (guestModals.includes(modalKey)) {
           isLoggedIn ? this.closeModal(modalKey) : this.showModal(modalKey);
+        } else if (authModals.includes(modalKey)) {
+          if (!isLoggedIn) {
+            this.closeModal(modalKey);
+          } else if (modalKey === 'wallet') {
+            const queryValue = route.query[query] as string;
+            const modalType = ['deposit', 'withdraw'].includes(queryValue) ? queryValue as WalletModalTypes : undefined;
+            this.openWalletModal(modalType);
+          } else {
+            this.showModal(modalKey);
+          }
         } else {
           this.showModal(modalKey, route.query?.[query] as string);
         }
       });
     },
 
-    async openDepositModal():Promise<void> {
-      const { getDepositMethods } = useWalletStore();
-      const { showModal } = useLimitsStore();
-      try {
-        await getDepositMethods();
-        this.showModal('deposit');
-      } catch (error: any) {
-        if (error.data?.error?.code === 13100) {
-          const router = useRouter();
-          const { localizePath } = useProjectMethods();
-          await router.push(localizePath('/profile/limits'));
-          showModal('depositLimitReached');
-        } else throw error;
-      }
-    },
+    async openWalletModal(modalType?: WalletModalTypes): Promise<void> {
+      this.walletModalType = modalType;
+      const { getDepositMethods, getWithdrawMethods, activeAccount } = useWalletStore();
+      const { getDepositBonuses } = useBonusStore();
+      await Promise.allSettled([
+        getDepositMethods(),
+        getWithdrawMethods(),
+        getDepositBonuses(activeAccount?.currency as string)
+      ]);
 
-    async openWithdrawModal():Promise<void> {
-      const { getWithdrawMethods } = useWalletStore();
-      await getWithdrawMethods();
-      this.showModal('withdraw');
+      this.showModal('wallet', modalType);
     },
 
     setReturnGame(gameData: Maybe<IGame|string>): void {

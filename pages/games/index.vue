@@ -10,14 +10,11 @@
     </atomic-cat-heading>
 
     <div class="game-filter" v-click-outside="skipActionsState">
-      <form-input-dropdown
-        class="game-filter__dropdown"
-        :value="currentProvider.id"
-        name="providers"
-        placeholder="Providers"
-        :options="providerDropdownOptions"
-        @input="changeProvider"
-        is-fit-content
+      <form-input-providers
+        :currentLocaleContent="gamesContent"
+        :defaultLocaleContent="defaultLocaleGamesContent"
+        :selected="selectedProviders"
+        @select="changeProvider"
       />
 
       <div class="game-filter__actions">
@@ -109,18 +106,6 @@
 
   const gamesStore = useGamesStore();
   const { currentLocationCollections } = storeToRefs(gamesStore);
-  const { selectOptions } = useFieldsStore();
-  const providerDropdownOptions: IGameProvider[] = [
-    {
-      id: 'all',
-      name: gamesContent?.providersLabel || defaultLocaleGamesContent?.providersLabel || 'All Providers',
-      identity: 'all',
-      code: 'all',
-      gameEnabledCount: 0,
-      value: gamesContent?.providersLabel || defaultLocaleGamesContent?.providersLabel || 'All Providers',
-    },
-    ...selectOptions.providers,
-  ];
   const route = useRoute();
   const router = useRouter();
 
@@ -128,11 +113,12 @@
     currentLocationCollections.value.find((collection) => collection.identity === route.query.category),
   );
 
-  const currentProvider = ref<IGameProvider | undefined>(
-    providerDropdownOptions.find(
-      (provider: IGameProvider) => provider.identity === route.query.provider,
-    ) || providerDropdownOptions[0],
-  );
+  const selectedProviders = ref<string[]>([]);
+  const routeProvider = route.query.provider;
+  if (routeProvider) {
+    if (Array.isArray(routeProvider)) selectedProviders.value = routeProvider as string[];
+    else selectedProviders.value = [routeProvider];
+  }
 
   const sortBy = ref<string | undefined>(route.query.sortBy as string
     || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortBy') || 'default');
@@ -158,13 +144,9 @@
       countries: headerCountry.value ? [headerCountry.value] : undefined
     };
 
-    if (currentProvider.value?.id !== 'all') {
-      params.providerId = currentProvider.value?.id;
-    }
-
     if (searchValue.value) params.name = searchValue.value;
+    if (selectedProviders.value.length) params.providerId = selectedProviders.value;
 
-    loadingGames.value = true;
     return await getFilteredGames(params);
   };
 
@@ -173,25 +155,20 @@
       ? gameItems.value.concat(response.data)
       : response.data;
     pageMeta.value = response.meta;
-    loadingGames.value = false;
   };
 
-  const changeProvider = async (providerId: string): Promise<void> => {
-    loadPage.value = 1;
+  const changeProvider = async (newSelectedProviders: string[]): Promise<void> => {
+    selectedProviders.value = newSelectedProviders;
 
-    currentProvider.value = providerDropdownOptions.find(
-      (provider: IGameProvider) => provider.id === providerId,
-    );
+    loadPage.value = 1;
 
     router.replace({
       query: {
         ...route.query,
-        provider:
-          currentProvider.value?.id !== 'all'
-            ? currentProvider.value?.identity
-            : undefined,
+        provider: selectedProviders.value
       },
     });
+
     const response = await getItems();
     setItems(response);
   };
@@ -238,7 +215,9 @@
   });
 
   onMounted(async () => {
+    loadingGames.value = true;
     const itemsResponse = await getItems();
+    loadingGames.value = false;
     setItems(itemsResponse);
   });
 

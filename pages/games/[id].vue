@@ -38,7 +38,7 @@
     showAlert,
     compactDrawer,
     setReturnGame,
-    openDepositModal
+    openWalletModal
   } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
@@ -132,12 +132,10 @@
     showAlert(alertsData.value?.limit?.limitedRealGame || defaultLocaleAlertsData.value?.limit?.limitedRealGame);
   };
 
-  useListen('changeMobileGameMode', changeGameMode);
-
   const checkDepositModal = (): void => {
     const { mobileGameModalInfo } = useGamesStore();
     if (isLoggedIn.value && !isDemo.value && !activeAccount.value?.balance && !mobileGameModalInfo) {
-      openDepositModal();
+      openWalletModal('deposit');
     }
   }
 
@@ -160,13 +158,11 @@
     }
   });
 
-  onBeforeMount(() => {
-    compactDrawer(true, false);
-  });
-
   onMounted(async () => {
     document.body.classList.add('is-mob-nav-vertical');
     document.body.classList.add('is-game-page');
+    useListen('changeMobileGameMode', changeGameMode);
+    compactDrawer(true, false);
 
     if (!isDemo.value && !isLoggedIn.value) {
       if (gameInfo.value?.isDemoMode) await changeGameMode();
@@ -186,6 +182,7 @@
     if (isLoggedIn.value && !isDemo.value) setReturnGame(gameInfo.value);
     const storageDrawerCompact = localStorage.getItem('IS_DRAWER_COMPACT') === 'true';
     compactDrawer(storageDrawerCompact, false);
+    useUnlisten('changeMobileGameMode', changeGameMode);
   });
 </script>
 

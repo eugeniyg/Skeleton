@@ -1,23 +1,48 @@
 .toggler-btn {
-  padding: var(--padding, #{rem(16px)} #{rem(31px)} #{rem(16px)} #{rem(16px)});
-  grid-gap: 3px;
-  display: flex;
-  flex-direction: var(--direction, row);
-  justify-self: center;
-  background-color: var(--layer-01);
-  flex-grow: 1;
-  width: 100%;
+  padding: rem(16px);
+
+  @include media(l) {
+    padding: rem(16px) rem(48px);
+  }
+
+  &__wrap {
+    padding: rem(4px);
+    grid-gap: rem(4px);
+    display: flex;
+    align-items: center;
+    background-color: var(--layer-01);
+    border: 1px solid var(--border-00-low-contrast);
+    grid-column-gap: rem(4px);
+    border-radius: 12px;
+    box-shadow: var(--dark-shadow-inner-m);
+
+    &:after {
+      content: '';
+      display: block;
+      width: 0;
+      height: rem(24px);
+      border-left: 1px solid var(--border-00-low-contrast);
+      order: 1;
+    }
+  }
 
   .btn {
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: rem(4px);
     flex-grow: 1;
 
-    --padding: #{rem(4px) rem(12px)};
+    &:last-of-type {
+      order: 2;
+    }
+
+    --padding: #{rem(4px)} #{rem(12px)} #{rem(4px)} #{rem(8px)};
     --btn-border-radius: 8px;
     --bg: transparent;
     --color: var(--icon-contrast);
     --text-color: var(--text-primary);
-
 
     @include use-hover {
       &:hover {
@@ -26,16 +51,16 @@
       }
     }
 
-    &:active, &.is-active {
-      --bg: var(--button-bg-secondary-click);
+    &.is-active {
+      --bg: var(--layer-02);
       --color: var(--icon-accent);
       --text-color: var(--text-accent);
+      box-shadow: var(--shadow-group);
     }
   }
 
   .text {
-    @include font($body-2);
-    @extend %text-elipsis;
+    @include font($subheading-2);
     display: var(--text-display, block);
     color: var(--text-color);
     transition: color .2s ease-in-out;
@@ -47,10 +72,8 @@
       width: fit-content;
       align-items: center;
 
-      --direction: column;
       --padding: #{rem(4px)};
       --margin: 0;
-      --text-display: none;
 
       .btn {
         @include box(32px);

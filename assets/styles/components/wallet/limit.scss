@@ -1,0 +1,50 @@
+.wallet-limit {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100%;
+
+
+  &__card {
+    border-radius: 16px;
+    background: var(--layer-03-low-contrast);
+    display: flex;
+    padding: 24px 16px;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    align-self: center;
+    margin-bottom: rem(24px);
+
+    &-title {
+      color: var(--text-primary);
+      @include font($heading-4);
+      text-align: center;
+    }
+
+    &-sub-title {
+      color: var(--text-tertiary);
+      @include font($body-1);
+      text-align: center;
+    }
+
+    &-limit {
+      display: flex;
+      text-align: center;
+      padding: 12px 16px;
+      align-items: flex-start;
+      border-radius: 8px;
+      border: 1px dashed var(--border-01);
+      background-color: var(--layer-04);
+      justify-content: center;
+      color: var(--text-secondary);
+      @include font($heading-4);
+    }
+  }
+
+  &__actions {
+    .btn-primary {
+      padding: 16px 32px;
+      @include font($heading-3);
+    }
+  }
+}

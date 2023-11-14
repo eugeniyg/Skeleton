@@ -28,11 +28,11 @@
       </button-base>
 
       <div v-if="isActive" class="actions">
-        <button-base type="primary" size="sm" @click="openDepositModal">
+        <button-base type="primary" size="sm" @click="openWalletModal('deposit')">
           {{ props.content?.depositButton }}
         </button-base>
 
-        <button-base type="secondary" size="sm" @click="openWithdrawModal">
+        <button-base type="secondary" size="sm" @click="openWalletModal('withdraw')">
           {{  props.content?.withdrawButton }}
         </button-base>
       </div>
@@ -53,7 +53,7 @@
 
   const isChecked = ref<boolean>(false);
   const { currencies } = useGlobalStore();
-  const { openWithdrawModal, openDepositModal } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
   const { formatBalance } = useProjectMethods();
   const balanceFormat = computed(() => formatBalance(props.currency, props.balance));
 

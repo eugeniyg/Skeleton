@@ -8,7 +8,9 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @click="closeModal('addLimit')"/>
-        <div class="title">{{ titleMapping[props.definition] }}</div>
+        <div class="title">
+          {{ titleMapping[props.definition] }}
+        </div>
       </div>
 
       <div class="modal-deposit-limit__tabs">
@@ -20,7 +22,7 @@
           :key="period.id"
           @click="changeTab(period)"
         >
-          {{ getContent(limitsContent, defaultLimitsContent, `periodOptions.${ period.id }`) }}
+          {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.limitPeriods.${period.id}`) }}
         </button>
       </div>
 
@@ -78,7 +80,13 @@
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();
   const {
-    currencies, alertsData, defaultLocaleAlertsData, popupsData, defaultLocalePopupsData,
+    currencies,
+    alertsData,
+    defaultLocaleAlertsData,
+    popupsData,
+    defaultLocalePopupsData,
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent
   } = storeToRefs(globalStore);
   const {
     formatBalance, getMainBalanceFormat, getContent,

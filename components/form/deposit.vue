@@ -2,7 +2,7 @@
   <form class="form-deposit">
     <form-input-number
       :hint="fieldHint"
-      :label="getContent(popupsData, defaultLocalePopupsData, 'deposit.sumLabel') || ''"
+      :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.sumLabel') || ''"
       name="depositSum"
       :min="formatAmountMin.amount"
       :max="formatAmountMax.amount"
@@ -11,6 +11,8 @@
       :currency="defaultInputSum.currency"
       :is-bigger="true"
     />
+
+    <!--    <wallet-pills />-->
 
     <template v-if="props.fields?.length">
       <component
@@ -31,31 +33,41 @@
       />
     </template>
 
-    <template v-if="bonusesList?.length">
-      <atomic-divider/>
-      <template v-for="(bonus, index) in bonusesList" :key="index">
-        <atomic-bonus v-bind="bonus" />
-        <atomic-divider />
-      </template>
+    <template v-if="depositBonuses?.length">
+      <atomic-divider />
+      <wallet-bonuses :amount="amountValue" />
     </template>
+
+    <atomic-divider />
 
     <bonus-deposit-code />
 
-    <button-base
-      type="primary"
-      size="md"
-      :isDisabled="buttonDisabled"
-      @click="getDeposit"
-    >
-      <atomic-spinner :is-shown="isSending"/>
-      {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.depositButton') }} {{ buttonAmount }} {{ defaultInputSum.currency }}
-    </button-base>
+    <div class="form-deposit__button-holder">
+      <button-base
+        type="primary"
+        size="md"
+        :isDisabled="buttonDisabled"
+        @click="getDeposit"
+      >
+        <atomic-spinner :is-shown="isSending"/>
+        <span class="btn-primary__content">
+        <span>
+          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.depositButton') }}
+          {{ buttonAmount }}
+          {{ defaultInputSum.currency }}
+        </span>
+        <span v-if="selectedDepositBonus && bonusSummary">
+          + {{ bonusSummary }}
+        </span>
+      </span>
+      </button-base>
+    </div>
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IPaymentField } from '@skeleton/core/types';
+  import type { IBonus, IPaymentField } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
   const props = defineProps<{
@@ -75,6 +87,9 @@
   } = useGlobalStore();
   const profileStore = useProfileStore();
 
+  const bonusStore = useBonusStore();
+  const { depositBonuses, selectedDepositBonus } = storeToRefs(bonusStore);
+
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
   if (props.fields.length) {
     props.fields.forEach((field) => {
@@ -82,7 +97,7 @@
     })
   }
 
-  const { getFormRules, createValidationRules } = useProjectMethods();
+  const { getFormRules, createValidationRules, getSumFromAmountItems } = useProjectMethods();
   const depositRules = createValidationRules(props.fields.map(field => ({ ...field, name: field.key })), true);
   const depositFormRules = getFormRules(depositRules);
   const {
@@ -102,12 +117,25 @@
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
   const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
   const fieldHint = computed(() => ({
-    message: `${getContent(popupsData, defaultLocalePopupsData, 'deposit.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
+    message: `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
   }));
+
+  const getStorageBonusAmount = (): number|undefined => {
+    const storageDepositDataString = sessionStorage.getItem('depositBonusData');
+    const storageDepositData = storageDepositDataString ? JSON.parse(storageDepositDataString) : undefined;
+
+    if (storageDepositData && storageDepositData.currency === activeAccount.value?.currency && storageDepositData.amount) {
+      return Number(storageDepositData.amount);
+    }
+
+    return undefined;
+  }
 
   const isSending = ref<boolean>(false);
   const defaultInputSum = formatBalance(activeAccount.value?.currency, 0.01);
-  const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : Number(defaultInputSum.amount));
+  const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat'
+    ? (getStorageBonusAmount() || 20)
+    : Number(defaultInputSum.amount));
   const amountValue = ref<number>(amountDefaultValue.value);
   const buttonAmount = computed(() => {
     if (amountValue.value > formatAmountMax.amount) return formatAmountMax.amount;
@@ -118,11 +146,6 @@
     || (amountValue.value < formatAmountMin.amount)
     || (amountValue.value > formatAmountMax.amount)
     || isSending.value);
-
-  const bonusesList = computed(() => {
-    if (popupsData?.deposit?.bonuses?.length) return popupsData.deposit.bonuses;
-    return defaultLocalePopupsData?.deposit?.bonuses || [];
-  });
 
   const getDeposit = async ():Promise<void> => {
     if (buttonDisabled.value) return;
@@ -149,12 +172,14 @@
       accountId: activeAccount.value?.id || '',
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
+      bonusId: selectedDepositBonus.value?.id,
       fields: props.fields.length ? depositFormData : undefined
     };
     const { depositAccount } = useCoreWalletApi();
     const windowReference:any = window.open();
     try {
       const depositResponse = await depositAccount(params);
+      sessionStorage.removeItem('depositBonusData');
       const redirectUrl = depositResponse?.action;
       windowReference.location = redirectUrl;
       setTimeout(() => { isSending.value = false; }, 1000);
@@ -164,4 +189,34 @@
       showModal('error');
     }
   };
+
+  const bonusSummary = computed(() => {
+    if (!selectedDepositBonus.value) return undefined;
+
+    if (selectedDepositBonus.value.type === 1) {
+      const amountItems = selectedDepositBonus.value?.assignConditions?.amountItems;
+      const mountBase = selectedDepositBonus.value?.assignConditions?.baseCurrencyAmount;
+      return getSumFromAmountItems(amountItems, mountBase);
+    } else if (selectedDepositBonus.value.type === 2) {
+      const maxAmountItems = selectedDepositBonus.value?.assignConditions?.maxAmountItems;
+      const maxAmountBase = selectedDepositBonus.value?.assignConditions?.baseCurrencyMaxAmount;
+      const maxSum = getSumFromAmountItems(maxAmountItems, maxAmountBase);
+
+      const bonusPercentage = selectedDepositBonus.value?.assignConditions?.depositPercentage;
+      if (!bonusPercentage) return undefined;
+      const percentageSum = amountValue.value * bonusPercentage / 100;
+
+      if (maxSum && parseFloat(maxSum) > percentageSum) {
+        return `${percentageSum} ${activeAccount.value?.currency}, max ${maxSum}`;
+      } else if (maxSum && parseFloat(maxSum) <= percentageSum) {
+        return `${maxSum}, ${getContent(popupsData, defaultLocalePopupsData, 'wallet.percentageMax')} ${maxSum}`;
+      } else {
+        return `${percentageSum} ${activeAccount.value?.currency}`;
+      }
+    } else if (selectedDepositBonus.value.type === 3) {
+      return `${selectedDepositBonus.value.assignConditions?.countFreespins} FS`;
+    }
+
+    return undefined;
+  })
 </script>

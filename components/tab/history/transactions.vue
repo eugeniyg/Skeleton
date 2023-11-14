@@ -8,7 +8,7 @@
       />
 
       <form-input-dropdown
-        :label="props.content?.typeFilter.label"
+        :label="props.content?.typeFilterLabel"
         v-model:value="filters.type"
         name="invoiceType"
         placeholder=""
@@ -26,7 +26,7 @@
       />
 
       <form-input-dropdown
-        :label="props.content?.statusFilter.label"
+        :label="props.content?.statusFilterLabel"
         v-model:value="filters.status"
         name="invoiceStatus"
         placeholder=""
@@ -71,15 +71,36 @@
   }>();
 
   const globalStore = useGlobalStore();
+  const {
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+    alertsData,
+    defaultLocaleAlertsData
+  } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
   const optionsDefaultValue = { value: props.content?.allFilterOption, code: 'all' };
 
   const typeOptions = computed(() => {
-    const storeOptions = globalStore.invoiceTypes.map((item) => ({ value: props.content?.typeFilter.options[item.name], code: item.id }));
+    const storeOptions = globalStore.invoiceTypes.map((item) => {
+      const typeLabel = getContent(
+        globalComponentsContent.value,
+        defaultLocaleGlobalComponentsContent.value,
+        `constants.invoiceTypes.${item.id}`
+      );
+      return { value: typeLabel, code: item.id };
+    });
     return [optionsDefaultValue, ...storeOptions];
   });
 
   const statusOptions = computed(() => {
-    const storeOptions = globalStore.invoiceStatuses.map((item) => ({ value: props.content?.statusFilter.options[item.name], code: item.id }));
+    const storeOptions = globalStore.invoiceStatuses.map((item) => {
+      const statusLabel = getContent(
+        globalComponentsContent.value,
+        defaultLocaleGlobalComponentsContent.value,
+        `constants.invoiceStatuses.${item.id}`
+      );
+      return { value: statusLabel, code: item.id };
+    });
     return [optionsDefaultValue, ...storeOptions];
   });
 
@@ -130,7 +151,6 @@
   };
 
   const { showAlert } = useLayoutStore();
-  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const cancelPayment = async (invoiceId: string):Promise<void> => {
     const response = await cancelInvoice(invoiceId);
     showAlert(alertsData.value?.wallet?.userCanceledWithdrawal || defaultLocaleAlertsData.value?.wallet?.userCanceledWithdrawal);

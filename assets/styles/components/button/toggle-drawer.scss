@@ -1,51 +1,47 @@
 .toggle-drawer {
+  position: relative;
+  @include box(40px);
+  display: none;
+  margin-right: 12px;
+
+  @include media(l) {
+    display: block;
+  }
+
   .btn {
-    @include box(32px);
+    @include box(40px);
     @extend %flex-all-center;
-    display: var(--btn-display, none);
+    display: flex;
     justify-content: center;
     align-items: center;
     @extend %skip-btn;
     border-radius: 8px;
     padding: 0;
     position: var(--position, absolute);
-    transform: var(--translate, translate(50%, 50%));
     transition: unset;
-    right: var(--right, 0);
-    box-shadow: var(--shadow-layer);
+    flex-shrink: 0;
+    top: 0;
+    left: 0;
 
-    --bg: var(--button-bg-secondary);
+    --bg: transparent;
     --color: var(--button-icn-secondary);
     --icon-size: #{rem(24px)};
 
     .icon {
-      transform: rotate(90deg) scaleY(var(--scaleY, 1));
-    }
+      transform: rotate(180deg);
 
-    &:hover {
-      cursor: pointer;
-      --bg: var(--button-bg-secondary-hover);
-      --color: var(--button-icn-secondary-hover);
-    }
-
-    &.is-compact {
-      @include media(l) {
-        --bg: var(--button-bg-secondary);
+      .main-layout.drawer-minimize & {
+        transform: rotate(0deg);
       }
     }
 
-    &[data-action="minimize"] {
-      @include media(l) {
-        --btn-display: flex;
-      }
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
 
-    }
-
-    &[data-action="open"] {
-      --btn-display: flex;
-
-      @include media(l) {
-        --btn-display: none;
+        .icon {
+          --color: var(--icon-accent);
+        }
       }
     }
   }
@@ -55,7 +51,6 @@
       padding: rem(16px) rem(20px);
       background-color: var(--layer-01);
 
-      --scaleY: -1;
       --position: relative;
       --translate: 0 0;
       --right: auto

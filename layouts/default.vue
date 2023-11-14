@@ -39,18 +39,22 @@
       <layout-cookies v-if="showCookiesMessage" />
     </transition>
 
-    <modal-register />
-    <modal-register-cancel />
-    <modal-sign-in />
-    <modal-forgot-pass />
-    <modal-reset-pass />
-    <modal-deposit />
-    <modal-withdraw />
-    <modal-success />
-    <modal-error />
-    <modal-confirm />
-    <modal-fiat />
-    <modal-mobile-game />
+    <client-only>
+      <modal-register />
+      <modal-register-cancel />
+      <modal-sign-in />
+      <modal-forgot-pass />
+      <modal-reset-pass />
+      <modal-success />
+      <modal-error />
+      <modal-confirm />
+      <modal-fiat />
+      <modal-mobile-game />
+      <modal-wallet />
+      <!--    <modal-wallet-choose-region />-->
+      <modal-cancel-deposit />
+      <modal-wallet-bonus-details />
+    </client-only>
 
     <atomic-alert />
   </div>
@@ -75,7 +79,6 @@
     isSportsbookPage
   } = storeToRefs(layoutStore);
   const { checkModals } = layoutStore;
-  checkModals();
 
   const { logOutUser } = profileStore;
 
@@ -107,6 +110,7 @@
   ]);
 
   const checkDrawer = ():void => {
+    if (isGamePage.value) return;
     const clientCompactDrawer = localStorage.getItem('IS_DRAWER_COMPACT');
     isDrawerCompact.value = clientCompactDrawer === 'true';
   };
@@ -120,13 +124,14 @@
   });
 
   onBeforeMount(() => {
-    checkDrawer();
+    checkModals();
 
     const storageReturnGame = sessionStorage.getItem('returnGame');
     if (storageReturnGame) returnGame.value = JSON.parse(storageReturnGame);
   });
 
   onMounted(async () => {
+    checkDrawer();
     disabledTransition.value = false;
     const cookieValue = useCookie('accept-cookie');
     if (!cookieValue.value) {
