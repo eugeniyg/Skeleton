@@ -43,12 +43,15 @@
           />
           
           <div
-            v-if="!depositMethods?.length || !withdrawMethods?.length"
-            class="wallet-modal__empty-methods wallet-modal__empty-methods--mobile"
+            v-if="showNotAvailableText"
+            class="wallet-modal__empty-methods"
           >
-            {{ emptyMethodsText }}
+            <atomic-icon id="info" />
+
+            <span>
+              {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+            </span>
           </div>
-        
         </balance>
 
         <wallet-dots
@@ -104,7 +107,11 @@
           </template>
 
           <div v-else class="wallet-modal__empty-methods">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.emptyDepositMethods') }}
+            <atomic-icon id="info" />
+
+            <span>
+              {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+            </span>
           </div>
         </template>
 
@@ -115,8 +122,12 @@
             v-bind="currentWithdrawMethod"
           />
 
-          <div v-else class="modal-withdraw__empty-methods">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.emptyWithdrawMethods') }}
+          <div v-else class="wallet-modal__empty-methods">
+            <atomic-icon id="info" />
+
+            <span>
+              {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+            </span>
           </div>
         </template>
 
@@ -165,12 +176,6 @@
   const currentWithdrawMethod = ref<IPaymentMethod|undefined>();
   const depositMethodKey = ref<number>(0);
   const selectedTab = ref<string>(walletModalType?.value || 'deposit');
-  
-  const emptyMethodsText = computed(() => {
-    return selectedTab.value === 'deposit' ?
-      getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.emptyDepositMethods'):
-      getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.emptyWithdrawMethods');
-  })
 
   const tabItems = computed(() => {
     const contentTabs = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.tabs') || {};
@@ -247,6 +252,11 @@
     if (mobileWidth()) showMobileForm.value = false;
     else closeWallet();
   }
+
+  const showNotAvailableText = computed(() => {
+    return (!depositMethods.value?.length && selectedTab.value === 'deposit')
+      || (!withdrawMethods.value?.length && selectedTab.value === 'withdraw');
+  })
 
   // << GET CONTENT FOR DEPOSIT LIMIT
   interface ILimitContent {

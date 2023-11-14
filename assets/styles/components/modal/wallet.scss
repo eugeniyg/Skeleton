@@ -89,6 +89,15 @@
     &__hr {
       --margin: 16px 0;
     }
+
+    .wallet-modal__empty-methods {
+      align-items: center;
+      margin-top: rem(16px);
+
+      @include media(sm) {
+        display: none !important;
+      }
+    }
   }
 
   .identity {
@@ -230,6 +239,11 @@
     hr {
       --margin: #{rem(8px)} 0;
     }
+
+    .wallet-modal__empty-methods {
+      max-width: 200px;
+      margin: 0 auto 236px;
+    }
   }
 
   .btn-modal-close {
@@ -297,14 +311,18 @@
     }
   }
 
-  .modal-withdraw__empty-methods, .wallet-modal__empty-methods {
-    color: var(--white);
-    min-height: rem(375px);
+  .wallet-modal__empty-methods {
+    display: flex;
+    gap: rem(4px);
+    @include font($body-0);
+    color: var(--text-primary);
+    padding: rem(12px);
+    border: 1px solid var(--support-warning-default);
+    border-radius: rem(8px);
 
-    &--mobile {
-      @include media(sm) {
-        display: none;
-      }
+    .icon {
+      --icon-size: 20px;
+      --color: var(--icon-warning);
     }
   }
 }
