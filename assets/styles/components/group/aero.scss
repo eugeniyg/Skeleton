@@ -244,7 +244,7 @@
 
       &:not(.has-demo-mode) {
         .btn-primary {
-            max-width: 160px;
+            max-width: rem(160px);
         }
       }
 
