@@ -217,6 +217,7 @@
       color: var(--text-primary);
       margin-top: #{rem(-16px)};
       position: relative;
+      min-height: rem(26px);
 
       .btn-favorite {
         @include box(32px);
@@ -231,6 +232,7 @@
       color: var(--text-secondary);
       margin-bottom: #{rem(16px)};
       position: relative;
+      min-height: rem(16px);
     }
 
     &-actions {
@@ -240,7 +242,14 @@
       justify-content: center;
       position: relative;
 
+      &:not(.has-demo-mode) {
+        .btn-primary {
+            max-width: rem(160px);
+        }
+      }
+
       .btn-primary, .btn-secondary {
+        white-space: nowrap;
         --width: 100%;
 
         @include media(sm) {
