@@ -24,6 +24,8 @@
   const {
     setPageSeo,
     getLocalesContentData,
+    localizePath,
+    addBetsyScript
   } = useProjectMethods();
 
   const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
@@ -59,8 +61,31 @@
     parent: false,
   };
 
-  const startGame = async (): Promise<void> => {
+  const startBetsyFrame = (host: string, token: string): void => {
     const runtimeConfig = useRuntimeConfig();
+    const loggedOutClientId = 'turbodemo';
+
+    const params = {
+      ...sdkDefaultParams,
+      host: runtimeConfig.public.betsyParams?.clientHost,
+      cid: isLoggedIn.value ? runtimeConfig.public.betsyParams?.clientId : loggedOutClientId,
+      theme: runtimeConfig.public.betsyParams?.sportsBookTheme,
+      customStyles: runtimeConfig.public.betsyParams?.sportsBookStyles ? `${host}${runtimeConfig.public.betsyParams.sportsBookStyles}` : undefined,
+      token: isLoggedIn.value ? token : null,
+      lang: currentLocale.value?.code || 'en',
+    };
+
+    if (window.BetSdk) {
+      window.BetSdk.init(params);
+    } else {
+      const betsyScript = addBetsyScript();
+      betsyScript.onload = () => {
+        window.BetSdk.init(params);
+      };
+    }
+  }
+
+  const startGame = async (): Promise<void> => {
     const mainHost = window.location.origin;
     const startParams = {
       accountId: activeAccount.value?.id,
@@ -71,20 +96,7 @@
       platform: isMobile.value ? 1 : 2,
     };
     const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
-
-    const loggedOutClientId = 'turbodemo';
-
-    const params = {
-      ...sdkDefaultParams,
-      host: runtimeConfig.public.betsyParams?.clientHost,
-      cid: isLoggedIn.value ? runtimeConfig.public.betsyParams?.clientId : loggedOutClientId,
-      theme: runtimeConfig.public.betsyParams?.sportsBookTheme,
-      customStyles: runtimeConfig.public.betsyParams?.sportsBookStyles ? `${mainHost}${runtimeConfig.public.betsyParams.sportsBookStyles}` : undefined,
-      token: isLoggedIn.value ? startResponse.token : null,
-      lang: currentLocale.value?.code || 'en',
-    };
-
-    if (window.BetSdk) window.BetSdk.init(params);
+    startBetsyFrame(mainHost, startResponse.token);
   };
 
   const layoutStore = useLayoutStore();
@@ -94,7 +106,6 @@
   } = layoutStore;
 
   const router = useRouter();
-  const { localizePath } = useProjectMethods();
   const { showModal } = useLimitsStore();
 
   const redirectLimitedPlayer = (): void => {
@@ -106,17 +117,7 @@
     if (oldValue && newValue && oldValue !== newValue) await startGame();
   });
 
-  const addBetsyScript = ():void => {
-    if (!window.BetSdk) {
-      const script = document.createElement('script');
-      script.setAttribute('src', 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js');
-      script.setAttribute('defer', 'defer');
-      document.head.append(script);
-    }
-  }
-
   onBeforeMount(() => {
-    addBetsyScript();
     compactDrawer(true, false);
   });
 
@@ -167,7 +168,6 @@
     } finally {
       showPlug.value = false;
     }
-
   });
 
   onBeforeUnmount(() => {
