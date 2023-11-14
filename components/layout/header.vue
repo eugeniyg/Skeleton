@@ -1,6 +1,9 @@
 <template>
   <header class="app-header-root">
-    <pwa v-if="isLoggedIn" display="mobile" />
+    <client-only>
+      <pwa v-if="isLoggedIn" display="mobile" />
+    </client-only>
+
     <div class="app-header" :class="headerClassModifiers" ref="appHeader">
       <button class="app-header__back-btn" @click="backToHomePage" v-if="isGamePage && isLoggedIn">
         <atomic-icon id="arrow_previous"/>
@@ -68,7 +71,9 @@
               :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
           />
 
-          <pwa display="desktop" />
+          <client-only>
+            <pwa display="desktop" />
+          </client-only>
 
           <!--
           <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
@@ -83,7 +88,6 @@
             />
             <nav-user @logout="logout"/>
           </div>
-
         </template>
 
         <template v-else>

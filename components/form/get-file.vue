@@ -36,8 +36,8 @@
 </template>
 
 <script setup lang="ts">
-  import { ISecurityFile } from '@skeleton/core/types';
-  import { IProfileSecurity } from '~/types';
+  import type { ISecurityFile } from '@skeleton/core/types';
+  import type { IProfileSecurity } from '~/types';
 
   const props = defineProps<{
     type: 'identity'|'address'|'payment',

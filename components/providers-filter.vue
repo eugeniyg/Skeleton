@@ -28,8 +28,8 @@
 
 <script setup lang="ts">
   import debounce from 'lodash/debounce';
-  import { IProvidersRequest } from "@skeleton/core/types";
-  import {IProvidersPage} from "~/types";
+  import type { IProvidersRequest } from "@skeleton/core/types";
+  import type { IProvidersPage } from "~/types";
 
   const props = defineProps<{
     currentLocaleContent: Maybe<IProvidersPage>;

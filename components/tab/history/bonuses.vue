@@ -35,13 +35,13 @@
 </template>
 
 <script setup lang="ts">
-  import {
+  import type {
     IPlayerBonus,
     IPaginationMeta,
     IPlayerFreeSpin,
     IPlayerBonusesRequest
   } from '@skeleton/core/types';
-  import { IBonusesHistory } from '~/types';
+  import type { IBonusesHistory } from '~/types';
 
   const props = defineProps<{
     content: IBonusesHistory,

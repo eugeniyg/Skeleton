@@ -1,4 +1,4 @@
-import {
+import type {
   IAccount,
   IInvoice,
   IInvoicesRequestOptions,
@@ -9,7 +9,7 @@ import {
   IResponseInvoices,
   IResponseWithdraw
 } from '../types';
-import {useFetchInstance} from '../assets/apiInstance';
+import { useFetchInstance } from '../assets/apiInstance';
 
 export const useCoreWalletApi = () => {
   const getAccounts = async ():Promise<IAccount[]> => {

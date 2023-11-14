@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ISecurityFile } from '@skeleton/core/types';
+  import type { ISecurityFile } from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);

@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-  import {IGamesPage} from '~/types';
+  import type { IGamesPage } from '~/types';
 
   const props = defineProps<{
     sortByValue: string,

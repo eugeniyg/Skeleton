@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IGame, IPaginationMeta } from '@skeleton/core/types';
+  import type { IGame, IPaginationMeta } from '@skeleton/core/types';
   import { storeToRefs } from "pinia";
 
   const props = defineProps({

@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ISportsbookPage } from '~/types';
+  import type { ISportsbookPage } from '~/types';
 
   const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();

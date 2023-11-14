@@ -21,8 +21,8 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IGame } from '@skeleton/core/types';
-  import { IGamePage } from '~/types';
+  import type { IGame } from '@skeleton/core/types';
+  import type { IGamePage } from '~/types';
 
   const route = useRoute();
   const showPlug = ref<boolean>(false);

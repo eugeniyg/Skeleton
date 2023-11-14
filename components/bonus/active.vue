@@ -28,8 +28,8 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
-  import { IProfileBonuses } from '~/types';
+  import type { IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
+  import type { IProfileBonuses } from '~/types';
 
   const props = defineProps<{
     content?: IProfileBonuses['cashBonuses']|IProfileBonuses['freeSpins'],

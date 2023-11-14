@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IGamePage } from '~/types';
+  import type { IGamePage } from '~/types';
 
   const props = defineProps<{
     gameContent: IGamePage;

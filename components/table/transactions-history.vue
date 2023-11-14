@@ -69,8 +69,8 @@
 </template>
 
 <script setup lang="ts">
-  import { ITransactionsHistory } from '~/types';
-  import { IInvoice } from '@skeleton/core/types';
+  import type { ITransactionsHistory } from '~/types';
+  import type { IInvoice } from '@skeleton/core/types';
 
   const props = defineProps<{
     invoices: IInvoice[];

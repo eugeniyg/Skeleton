@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { IWalletDeposit } from '~/types';
+import type { IWalletDeposit } from '~/types';
 
   const props = defineProps<{
     content: Maybe<IWalletDeposit>,

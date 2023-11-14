@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IStaticPage } from '~/types';
+  import type { IStaticPage } from '~/types';
 
   const route = useRoute();
   const { pageUrl } = route.params;

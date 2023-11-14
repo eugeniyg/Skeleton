@@ -41,7 +41,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
-  import { IPaymentField, IRequestDeposit, IBonus } from '@skeleton/core/types';
+  import type { IPaymentField, IRequestDeposit, IBonus } from '@skeleton/core/types';
   import debounce from 'lodash/debounce';
 
   const props = defineProps<{

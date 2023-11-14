@@ -6,33 +6,15 @@
 </template>
 
 <script setup lang="ts">
-  import { PropType } from '@vue/runtime-core';
-  import { IGameImages } from '@skeleton/core/types';
+  import type { IGameImages } from '@skeleton/core/types';
 
-  const props = defineProps({
-    images: {
-      type: Object as PropType<IGameImages>,
-      required: false,
-    },
-    name: {
-      type: String,
-      default: '',
-    },
-    id: {
-      type: String,
-      required: true,
-    },
-    identity: {
-      type: String,
-      required: true,
-    },
-    isDemoMode: {
-      type: Boolean,
-      default: true,
-    },
-  });
+  const props = defineProps<{
+    images?: IGameImages;
+    name?: string;
+    id: string;
+    identity: string;
+  }>();
 
-  const { baseApiUrl } = useGlobalStore();
   const { getImageUrl, localizePath } = useProjectMethods();
   const backgroundImage = computed(() => {
     if (props.images?.hasOwnProperty('200x200')) {

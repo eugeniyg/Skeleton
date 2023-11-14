@@ -44,8 +44,8 @@
 </template>
 
 <script setup lang="ts">
-  import { IProvidersPage } from "~/types";
-  import { IGameProvider } from "@skeleton/core/types";
+  import type { IProvidersPage } from "~/types";
+  import type { IGameProvider } from "@skeleton/core/types";
 
   const props = defineProps<{
     staticProvider?: IGameProvider,

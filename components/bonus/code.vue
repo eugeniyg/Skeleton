@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IProfileBonuses } from '~/types';
+  import type { IProfileBonuses } from '~/types';
 
   const props = defineProps<{
     content?: IProfileBonuses['bonusCode']

@@ -59,12 +59,12 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import {
+  import type {
     IInvoice,
     IInvoicesRequestOptions,
     IPaginationMeta,
   } from '@skeleton/core/types';
-  import { ITransactionsHistory } from '~/types';
+  import type { ITransactionsHistory } from '~/types';
 
   const props = defineProps<{
     content: ITransactionsHistory

@@ -1,6 +1,6 @@
-import { IAccount, ISocketInvoice } from './walletTypes'
-import { IWinner } from './gameTypes'
-import { IBonusCode, IPlayerBonus, IPlayerFreeSpin } from './bonusTypes'
+import type { IAccount, ISocketInvoice } from './walletTypes'
+import type { IWinner } from './gameTypes'
+import type { IBonusCode, IPlayerBonus, IPlayerFreeSpin } from './bonusTypes'
 
 export interface IRate extends Record<string, any> {
   rate: number;

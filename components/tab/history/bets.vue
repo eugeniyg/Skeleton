@@ -35,8 +35,8 @@
 </template>
 
 <script setup lang="ts">
-  import { IBetHistory, IPaginationMeta } from '@skeleton/core/types';
-  import { IBetsHistory } from '~/types';
+  import type { IBetHistory, IPaginationMeta } from '@skeleton/core/types';
+  import type { IBetsHistory } from '~/types';
 
   const props = defineProps<{
     content: IBetsHistory,

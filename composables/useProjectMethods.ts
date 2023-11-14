@@ -1,9 +1,8 @@
-import { IGameImages } from '@skeleton/core/types';
+import type { IGameImages, IObserverOptions } from '@skeleton/core/types';
 import get from 'lodash/get';
 import * as projectRules from './validationRules';
 import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
-import { ISeoBlock } from "~/types";
-import {IObserverOptions} from "../core/types";
+import type { ISeoBlock } from "~/types";
 
 export const useProjectMethods = () => {
   const setFormData = (fields: any[]):any => {

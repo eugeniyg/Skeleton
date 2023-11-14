@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IHistory } from '~/types';
+  import type { IHistory } from '~/types';
 
   const props = defineProps<{
     content: IHistory

@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
   import {storeToRefs} from "pinia";
-  import { IBonus } from "@skeleton/core/types";
+  import type { IBonus } from "@skeleton/core/types";
 
   const props = defineProps<{
     crypto?: boolean;

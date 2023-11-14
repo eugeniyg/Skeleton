@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IQuestionCategory } from '~/types';
+  import type { IQuestionCategory } from '~/types';
 
   const pageContent = ref<IQuestionCategory|undefined>(undefined);
   const route = useRoute();

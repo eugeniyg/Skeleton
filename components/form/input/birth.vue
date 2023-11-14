@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-  import {storeToRefs} from "pinia";
+  import { storeToRefs } from "pinia";
 
   const props = defineProps({
     label: {

@@ -31,8 +31,8 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IAccount } from '@skeleton/core/types';
-  import { IProfileWallet } from '~/types';
+  import type { IAccount } from '@skeleton/core/types';
+  import type { IProfileWallet } from '~/types';
 
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
