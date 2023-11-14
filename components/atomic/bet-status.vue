@@ -5,18 +5,9 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    variant: {
-      type: String,
-      validator: (val:string) => [
-        'pending',
-        'won',
-        'lost',
-        'refund',
-        'cashout',
-      ].includes(val),
-    },
-  });
+  const props = defineProps<{
+    variant: number;
+  }>();
   const statusClassName = computed(() => `variant-${props.variant}`);
 </script>
 
