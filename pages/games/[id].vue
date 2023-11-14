@@ -158,14 +158,11 @@
     }
   });
 
-  onBeforeMount(() => {
-    compactDrawer(true, false);
-  });
-
   onMounted(async () => {
     document.body.classList.add('is-mob-nav-vertical');
     document.body.classList.add('is-game-page');
     useListen('changeMobileGameMode', changeGameMode);
+    compactDrawer(true, false);
 
     if (!isDemo.value && !isLoggedIn.value) {
       if (gameInfo.value?.isDemoMode) await changeGameMode();
