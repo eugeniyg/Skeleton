@@ -260,6 +260,7 @@ export const useProjectMethods = () => {
 
   const initObserver = (el:any, options:IObserverOptions):void => {
     const optionsThing = {
+      once: options?.once || false,
       onInView: options?.onInView,
       onOutView: options?.onOutView,
       settings: options?.settings || { root: null, rootMargin: '0px', threshold: 0.05 }
@@ -268,16 +269,15 @@ export const useProjectMethods = () => {
     const inviewEvent = new Event('inview', { bubbles: false, cancelable: true });
     const outviewEvent = new Event('outview', { bubbles: false, cancelable: true });
 
-    const callback = (entries:any) => {
-      for (let i = 0; i < entries.length; i++) {
-        const entry = entries[i];
-
+    const callback = (entries:any, observer: any) => {
+      entries.forEach((entry:any) => {
         if (entry.isIntersecting) {
           entry.target.dispatchEvent(inviewEvent);
+          if (optionsThing.once) observer.unobserve(entry.target);
         } else {
           entry.target.dispatchEvent(outviewEvent);
         }
-      }
+      })
     }
 
     const observer = new IntersectionObserver(callback, optionsThing.settings);
@@ -327,6 +327,13 @@ export const useProjectMethods = () => {
     return sum;
   };
 
+  const addBetsyScript = ():HTMLElement => {
+    const script = document.createElement('script');
+    script.setAttribute('src', 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js');
+    script.setAttribute('defer', 'defer');
+    document.head.append(script);
+    return script;
+  }
 
   return {
     createValidationRules,
@@ -350,6 +357,7 @@ export const useProjectMethods = () => {
     replaceContent,
     createSrcSet,
     getEquivalentFromBase,
-    getSumFromAmountItems
+    getSumFromAmountItems,
+    addBetsyScript
   };
 };

@@ -4,7 +4,7 @@
       <button-base
         v-for="(button, index) in Object.values(props.items)"
         :key="index"
-        :isActive="$route.path === localizePath(button.url) || ($route.query.category && index === 0)"
+        :isActive="route.path === localizePath(button.url) || (!index && additionalCasinoActive)"
         :url="button.url"
       >
         <atomic-icon :id="button.icon" />
@@ -28,6 +28,12 @@
   }>();
 
   const { localizePath } = useProjectMethods();
+
+  const route = useRoute();
+  const additionalCasinoActive = computed(() => {
+    const routeName = route.name as string;
+    return !!route.query.category || routeName.includes('games-id');
+  })
 </script>
 
 <style src="~/assets/styles/components/button/toggler.scss" lang="scss" />

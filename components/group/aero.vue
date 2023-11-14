@@ -44,7 +44,7 @@
         </div>
         <div class="group-aero__game-provider">{{ gameInfo?.provider?.name }}</div>
 
-        <div class="group-aero__game-actions">
+        <div class="group-aero__game-actions" :class="{'has-demo-mode' : gameInfo?.isDemoMode}">
           <button-base
             type="primary"
             size="sm"
@@ -52,7 +52,7 @@
           >
             {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.playButtonLabel') }}
           </button-base>
-
+          
           <button-base
             type="secondary"
             size="sm"

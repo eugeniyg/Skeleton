@@ -25,7 +25,7 @@
 
     <nuxt-link
       v-for="provider in props.providersList"
-      :to="localizePath(`/games?provider=${provider.identity}`)"
+      :to="localizePath(`/games?provider=${provider.id}`)"
       class="list-providers__item"
     >
       <atomic-picture

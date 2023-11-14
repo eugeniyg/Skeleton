@@ -26,14 +26,9 @@
   import { storeToRefs } from "pinia";
   import type { IProfileLimits } from "~/types";
 
-  interface ILimitContent {
-    definition: IProfileLimits['definition'],
-    periodOptions: IProfileLimits['periodOptions']
-  }
-
   const props = defineProps<{
-    currentLocaleLimitsContent: Maybe<ILimitContent>;
-    defaultLocaleLimitsContent: Maybe<ILimitContent>;
+    currentLocaleLimitsContent: Maybe<IProfileLimits['coolingOff']>;
+    defaultLocaleLimitsContent: Maybe<IProfileLimits['coolingOff']>;
   }>();
 
   const { closeModal } = useLayoutStore();
@@ -44,7 +39,9 @@
     currentLocale,
     defaultLocale,
     popupsData,
-    defaultLocalePopupsData
+    defaultLocalePopupsData,
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent
   } = storeToRefs(globalStore);
   const { activeAccount } = storeToRefs(walletStore);
 
@@ -60,11 +57,11 @@
   })
 
   const limitValueText = computed(() => {
-    const periodOptions = getContent(props.currentLocaleLimitsContent, props.defaultLocaleLimitsContent, 'periodOptions');
+    const periodOptions = getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent, 'constants.limitPeriods');
     if (!periodOptions) return undefined;
 
     if (coolingOffLimits.value?.length) {
-      const limitValue = getContent(props.currentLocaleLimitsContent, props.defaultLocaleLimitsContent, 'definition.coolingOff');
+      const limitValue = getContent(props.currentLocaleLimitsContent, props.defaultLocaleLimitsContent, 'coolingOff.label');
       const limitPeriod = periodOptions[coolingOffLimits.value[0].period as string];
       return `${limitValue} - ${limitPeriod}`;
     }

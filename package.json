@@ -56,7 +56,7 @@
     "typescript": "^4.9.5",
     "ua-parser-js": "^1.0.37",
     "vue": "^3.3.8",
-    "vue-final-modal": "^4.4.5",
+    "vue-final-modal": "^4.4.6",
     "vue-flatpickr-component": "^11.0.3"
   }
 }
