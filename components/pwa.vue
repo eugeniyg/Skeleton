@@ -2,17 +2,21 @@
   <div v-if="isVisible" class="pwa" :class="{ '--mobile': isMobile }">
     <div v-if="isMobile" class="mobile-container">
       <atomic-icon :id="platformKey" />
+
       <div class="mobile-content">
         <div class="mobile-title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.mobile.title') }}</div>
         <div class="mobile-description">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.mobile.description') }}</div>
       </div>
+
       <button class="mobile-btn-install" @click="installPWA">
         {{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.mobile.install') }}
       </button>
+
       <div class="mobile-btn-close" @click="hideBanner">
         <atomic-icon id="close" />
       </div>
     </div>
+
     <div v-else
          class="desktop-container"
          ref="desktopContainer"
@@ -21,12 +25,14 @@
          @mouseleave="hideTooltip"
     >
       <atomic-icon :id="platformKey" />
+
       <div class="desktop-content">
         <div class="desktop-title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.desktop.application') }}</div>
         <div class="desktop-description">
           {{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.desktop.forOs')?.replace('{os}', osPlatform) }}
         </div>
       </div>
+
       <Teleport v-if="isTooltipVisible" to="body">
         <div ref="tooltipContainer" class="desktop-tooltip-container" :style="`top: ${coords.top}px; left: ${coords.left}px`">
           <div class="desktop-tooltip-bg">
@@ -47,6 +53,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import parser from 'ua-parser-js';
 
   const props = defineProps<{
     display: 'desktop'|'mobile';
@@ -68,10 +75,15 @@
     left: 0,
   });
 
-  const allowInstall = ref<boolean>(!!window.pwa?.allowInstall);
 
+  const userAgent = window.navigator.userAgent;
+  const parsedUserAgent = userAgent ? parser(userAgent) : undefined;
+  const appleNotCompatible = parsedUserAgent?.browser?.name === 'Safari' || parsedUserAgent?.os?.name === 'iOS';
+  const allowInstall = ref<boolean>(!!window.pwa?.allowInstall || appleNotCompatible);
   const isVisible = computed(() => {
-    return allowInstall.value && !isHidden.value && ((props.display === 'desktop' && !isMobile.value) || (props.display === 'mobile' && isMobile.value));
+    return allowInstall.value
+      && !isHidden.value
+      && ((props.display === 'desktop' && !isMobile.value) || (props.display === 'mobile' && isMobile.value));
   });
 
   const platformKey = computed(() => {
@@ -87,11 +99,19 @@
   });
 
   const installPWA = () => {
-    window.pwa?.install().then((res) => {
-      if (res.outcome === 'accepted') {
-        allowInstall.value = false;
-      }
-    });
+    if (appleNotCompatible) {
+      const router = useRouter();
+      const { localizePath } = useProjectMethods();
+      hideBanner();
+      const pageLink = getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.instructionLink');
+      router.push(localizePath(pageLink));
+    } else {
+      window.pwa?.install().then((res) => {
+        if (res.outcome === 'accepted') {
+          allowInstall.value = false;
+        }
+      });
+    }
   };
 
   const hideBanner = () => {
