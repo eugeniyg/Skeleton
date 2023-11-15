@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-  import {IGamesPage} from "~/types";
+  import type { IGamesPage } from "~/types";
 
   const { gameProviders } = useGamesStore();
   const { getContent } = useProjectMethods();

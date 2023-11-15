@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IIconLink } from '~/types';
+  import type { IIconLink } from '~/types';
 
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const { getContent } = useProjectMethods();

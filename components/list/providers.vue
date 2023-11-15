@@ -25,7 +25,7 @@
 
     <nuxt-link
       v-for="provider in props.providersList"
-      :to="localizePath(`/games?provider=${provider.identity}`)"
+      :to="localizePath(`/games?provider=${provider.id}`)"
       class="list-providers__item"
     >
       <atomic-picture
@@ -44,8 +44,8 @@
 </template>
 
 <script setup lang="ts">
-  import { IProvidersPage } from "~/types";
-  import { IGameProvider } from "@skeleton/core/types";
+  import type { IProvidersPage } from "~/types";
+  import type { IGameProvider } from "@skeleton/core/types";
 
   const props = defineProps<{
     staticProvider?: IGameProvider,

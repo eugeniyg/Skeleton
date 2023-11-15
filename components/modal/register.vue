@@ -28,9 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
-import {IField} from '@skeleton/core/types';
-import {VueFinalModal} from 'vue-final-modal';
+import { storeToRefs } from 'pinia';
+import type { IField } from '@skeleton/core/types';
+import { VueFinalModal } from 'vue-final-modal';
 
 const formKey = ref<number>(0);
   const layoutStore = useLayoutStore();

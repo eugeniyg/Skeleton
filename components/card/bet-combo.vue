@@ -39,10 +39,10 @@
       </div>
 
       <atomic-bet-status
-        v-if="props.status !== 1 && betStatusName"
-        :variant="betStatusName"
+        v-if="props.status !== 1"
+        :variant="props.status"
       >
-        {{ props.statuses[betStatusName] }}
+        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.betStatuses.${props.status}`) }}
       </atomic-bet-status>
 
       <div v-if="props.status !== 1" class="amount">
@@ -78,8 +78,8 @@
 </template>
 
 <script setup lang="ts">
-import {IBetItem} from '@skeleton/core/types';
-import {IBetsHistory} from '~/types';
+import type { IBetItem } from '@skeleton/core/types';
+import type { IBetsHistory } from '~/types';
 
 const props = defineProps<{
     id: string,
@@ -90,11 +90,12 @@ const props = defineProps<{
     items: IBetItem[],
     status: number,
     coefficient: number,
-    statuses: IBetsHistory['statuses'],
     betCard: IBetsHistory['betCard'],
   }>();
 
   const isOpen = ref<boolean>(false);
+
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
 
   const formatDate = (dateUtcIsoString: string, needYear: boolean = true):string => {
     const date = new Date(dateUtcIsoString);
@@ -108,11 +109,7 @@ const props = defineProps<{
     return props.items.map((betItem) => betItem.discipline).filter((discipline) => discipline !== props.items[0].discipline);
   });
 
-  const globalStore = useGlobalStore();
-  const findStatus = globalStore.betStatuses.find((status) => status.id === props.status)?.name;
-  const betStatusName = findStatus ? findStatus.toLowerCase() : undefined;
-
-  const { formatBalance } = useProjectMethods();
+  const { formatBalance, getContent } = useProjectMethods();
   const betSum = computed(() => {
     const balanceFormat = formatBalance(props.currency, props.amount);
     return `${balanceFormat.amount} ${balanceFormat.currency}`;

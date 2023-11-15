@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <main-slider v-if="filteredSlider?.length" :slides="filteredSlider"/>
     
     <nav-cat @clickCategory="changeCategory"/>
@@ -54,8 +53,8 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ICasinoPage } from '~/types';
-  import { ICollection } from '@skeleton/core/types';
+  import type { ICasinoPage } from '~/types';
+  import type { ICollection } from '@skeleton/core/types';
   
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();

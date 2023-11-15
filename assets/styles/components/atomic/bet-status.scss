@@ -14,17 +14,17 @@
     align-self: center;
   }
 
-  &.variant-pending,
-  &.variant-refund,
-  &.variant-cashout {
+  &.variant-1,
+  &.variant-4,
+  &.variant-5 {
     --dot-bg: var(--icon-accent);
   }
 
-  &.variant-won {
+  &.variant-2 {
     --dot-bg: var(--icon-success);
   }
 
-  &.variant-lost {
+  &.variant-3 {
     --dot-bg: var(--icon-alert);
   }
 }

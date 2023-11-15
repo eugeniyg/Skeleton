@@ -43,12 +43,15 @@
           />
           
           <div
-            v-if="!depositMethods?.length || !withdrawMethods?.length"
-            class="wallet-modal__empty-methods wallet-modal__empty-methods--mobile"
+            v-if="showNotAvailableText"
+            class="wallet-modal__empty-methods"
           >
-            {{ emptyMethodsText }}
+            <atomic-icon id="info" />
+
+            <span>
+              {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+            </span>
           </div>
-        
         </balance>
 
         <wallet-dots
@@ -104,7 +107,11 @@
           </template>
 
           <div v-else class="wallet-modal__empty-methods">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.emptyDepositMethods') }}
+            <atomic-icon id="info" />
+
+            <span>
+              {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+            </span>
           </div>
         </template>
 
@@ -115,8 +122,12 @@
             v-bind="currentWithdrawMethod"
           />
 
-          <div v-else class="modal-withdraw__empty-methods">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.emptyWithdrawMethods') }}
+          <div v-else class="wallet-modal__empty-methods">
+            <atomic-icon id="info" />
+
+            <span>
+              {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+            </span>
           </div>
         </template>
 
@@ -131,8 +142,8 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IPaymentMethod } from '@skeleton/core/types';
-  import { IProfileLimits } from '~/types';
+  import type { IPaymentMethod } from '@skeleton/core/types';
+  import type { IConstants, IProfileLimits } from '~/types';
   import { VueFinalModal } from 'vue-final-modal';
 
   const layoutStore = useLayoutStore();
@@ -165,12 +176,6 @@
   const currentWithdrawMethod = ref<IPaymentMethod|undefined>();
   const depositMethodKey = ref<number>(0);
   const selectedTab = ref<string>(walletModalType?.value || 'deposit');
-  
-  const emptyMethodsText = computed(() => {
-    return selectedTab.value === 'deposit' ?
-      getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.emptyDepositMethods'):
-      getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.emptyWithdrawMethods');
-  })
 
   const tabItems = computed(() => {
     const contentTabs = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.tabs') || {};
@@ -248,28 +253,28 @@
     else closeWallet();
   }
 
-  // << GET CONTENT FOR DEPOSIT LIMIT
-  interface ILimitContent {
-    definition: IProfileLimits['definition'],
-    periodOptions: IProfileLimits['periodOptions']
-  }
+  const showNotAvailableText = computed(() => {
+    return (!depositMethods.value?.length && selectedTab.value === 'deposit')
+      || (!withdrawMethods.value?.length && selectedTab.value === 'withdraw');
+  })
 
-  const currentLocaleLimitsContent = ref<Maybe<ILimitContent>>();
-  const defaultLocaleLimitsContent = ref<Maybe<ILimitContent>>();
+  // << GET CONTENT FOR DEPOSIT LIMIT
+  const currentLocaleLimitsContent = ref<Maybe<IProfileLimits['coolingOff']>>();
+  const defaultLocaleLimitsContent = ref<Maybe<IProfileLimits['coolingOff']>>();
 
   const getLimitContent = async ():Promise<void> => {
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'profile', 'limits').only(['definition', 'periodOptions']).findOne(),
+      queryContent(currentLocale.value?.code as string, 'profile', 'limits').only(['coolingOff']).findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').only(['definition', 'periodOptions']).findOne()
+        : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').only(['coolingOff']).findOne()
     ]);
 
     if (currentLocaleContentResponse.status !== 'rejected') {
-      currentLocaleLimitsContent.value = currentLocaleContentResponse.value as ILimitContent;
+      currentLocaleLimitsContent.value = currentLocaleContentResponse.value as IProfileLimits['coolingOff'];
     }
 
     if (defaultLocaleContentResponse.status !== 'rejected') {
-      defaultLocaleLimitsContent.value = defaultLocaleContentResponse.value as ILimitContent;
+      defaultLocaleLimitsContent.value = defaultLocaleContentResponse.value as IProfileLimits['coolingOff'];
     }
   }
 

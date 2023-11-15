@@ -1,6 +1,6 @@
-import { IAccount, ISocketInvoice } from './walletTypes'
-import { IWinner } from './gameTypes'
-import { IBonusCode, IPlayerBonus, IPlayerFreeSpin } from './bonusTypes'
+import type { IAccount, ISocketInvoice } from './walletTypes'
+import type { IWinner } from './gameTypes'
+import type { IBonusCode, IPlayerBonus, IPlayerFreeSpin } from './bonusTypes'
 
 export interface IRate extends Record<string, any> {
   rate: number;
@@ -101,6 +101,7 @@ export interface ICoreConstants extends Record<string, any>{
 }
 
 export interface IObserverOptions extends Record<string, any>{
+  once?: boolean;
   onInView?: Function;
   onOutView?: Function;
   settings: { root: null|HTMLElement; rootMargin: string; threshold: number; };

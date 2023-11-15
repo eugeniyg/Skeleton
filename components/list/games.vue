@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/core/types';
 
   const props = defineProps<{
     items: string[],

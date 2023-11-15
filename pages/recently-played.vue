@@ -27,10 +27,9 @@
 </template>
 
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
-import {onMounted} from '@vue/runtime-core';
-import {IGame} from '@skeleton/core/types';
-import { IRecentlyPage } from '~/types';
+import { storeToRefs } from 'pinia';
+import type { IGame } from '@skeleton/core/types';
+import type { IRecentlyPage } from '~/types';
 
 const globalStore = useGlobalStore();
   const { isMobile, headerCountry, currentLocale, defaultLocale } = storeToRefs(globalStore);

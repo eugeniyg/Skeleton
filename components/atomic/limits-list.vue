@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IPlayerLimit} from "@skeleton/core/types";
+  import type { IPlayerLimit} from "@skeleton/core/types";
   import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
@@ -65,7 +65,8 @@
   const { getLimits } = useLimitsStore();
 
   const formatPeriod = (periodKey: string) => {
-    const content = getContent(limitsContent.value, defaultLimitsContent.value, 'periodOptions');
+    const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
+    const content = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'constants.limitPeriods');
     return content[periodKey];
   };
 

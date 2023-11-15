@@ -35,8 +35,8 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import {IGamePage} from "~/types";
-  import {storeToRefs} from "pinia";
+  import type { IGamePage } from "~/types";
+  import { storeToRefs } from "pinia";
 
   const props = defineProps<{
     content: IGamePage['demoModal'];

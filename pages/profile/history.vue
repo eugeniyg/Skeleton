@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IHistory } from '~/types';
+  import type { IHistory } from '~/types';
   import camelCase from "lodash/camelCase";
 
   const globalStore = useGlobalStore();

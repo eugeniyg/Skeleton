@@ -37,17 +37,17 @@
       :category="topSlotsCategory"
     />
 
-    <div class="sports-container">
-      <div id="top-events-widget" />
-      <div id="live-events-widget" />
-    </div>
-
     <group-games
       v-if="liveCasinoCategory"
       showAllBtn
       showArrows
       :category="liveCasinoCategory"
     />
+
+    <div ref="sportsContainer" class="sports-container">
+      <div id="top-events-widget" />
+      <div id="live-events-widget" />
+    </div>
 
     <cards-group
       v-if="providerCards.games?.length"
@@ -69,7 +69,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import {IHomePage} from '~/types';
+  import type { IHomePage } from '~/types';
 
   const globalStore = useGlobalStore();
   const gameStore = useGamesStore();
@@ -87,7 +87,8 @@
     setPageSeo,
     localizePath,
     getContent,
-    getLocalesContentData
+    getLocalesContentData,
+    addBetsyScript
   } = useProjectMethods();
 
   const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
@@ -126,12 +127,27 @@
     if (window.BetSdk) {
       window.BetSdk.initTopEventsWidget({ ...widgetsParams, containerId: 'top-events-widget' });
       window.BetSdk.initLiveEventsWidget({ ...widgetsParams, containerId: 'live-events-widget' });
+    } else {
+      const betsyScript = addBetsyScript();
+      betsyScript.onload = () => {
+        window.BetSdk.initTopEventsWidget({ ...widgetsParams, containerId: 'top-events-widget' });
+        window.BetSdk.initLiveEventsWidget({ ...widgetsParams, containerId: 'live-events-widget' });
+      };
     }
   };
 
-  // onMounted(() => {
-  //   startBetsyWidgets();
-  // });
+  const sportsContainer = ref();
+  onMounted(() => {
+    if (window.BetSdk) startBetsyWidgets();
+    else {
+      const { initObserver } = useProjectMethods();
+      initObserver(sportsContainer.value, {
+        once: true,
+        onInView: startBetsyWidgets,
+        settings: { root: null, rootMargin: '400px', threshold: 0 },
+      });
+    }
+  });
 </script>
 
 <style src="~/assets/styles/pages/index.scss" lang="scss" />

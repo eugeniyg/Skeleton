@@ -61,8 +61,8 @@
 
 <script setup lang="ts">
   import parser from 'ua-parser-js';
-  import { IPaginationMeta, ISession } from '@skeleton/core/types';
-  import { ISessionsHistory } from '~/types';
+  import type { IPaginationMeta, ISession } from '@skeleton/core/types';
+  import type { ISessionsHistory } from '~/types';
 
   const props = defineProps<{
     content: ISessionsHistory,

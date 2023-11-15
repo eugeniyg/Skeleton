@@ -6,7 +6,7 @@
       v-for="period in props.periods"
     >
       <h4 class="limits-periods-list__title">
-        {{ limitsContent?.periodOptions[period.title] ||  defaultLimitsContent?.periodOptions[period.title] }}
+        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.limitPeriods.${period.title}`) }}
       </h4>
 
       <div class="limits-periods-list__items">
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-  import { IPlayerLimit } from '@skeleton/core/types';
+  import type { IPlayerLimit } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
@@ -35,9 +35,8 @@
   }>();
 
   const emit = defineEmits(['open-edit-modal']);
-
-  const limitsStore = useLimitsStore();
-  const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
+  const { getContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/atomic/limits-periods-list.scss" lang="scss" />

@@ -63,7 +63,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
-  import { IPaymentField } from '@skeleton/core/types';
+  import type { IPaymentField } from '@skeleton/core/types';
   import { marked } from 'marked';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
@@ -103,7 +103,7 @@
   const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
   const activeAccountWithdrawalFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance));
   const fieldHint = computed(() => ({
-    message: `${getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
+    message: `${getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
   }));
 
   const isSending = ref<boolean>(false);

@@ -24,8 +24,8 @@
 </template>
 
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
-import {IGame} from '@skeleton/core/types';
+import { storeToRefs } from 'pinia';
+import type { IGame } from '@skeleton/core/types';
 
 const globalStore = useGlobalStore();
   const {

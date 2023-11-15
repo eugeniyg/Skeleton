@@ -21,8 +21,8 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { IGame } from '@skeleton/core/types';
-  import { IGamePage } from '~/types';
+  import type { IGame } from '@skeleton/core/types';
+  import type { IGamePage } from '~/types';
 
   const route = useRoute();
   const showPlug = ref<boolean>(false);
@@ -132,8 +132,6 @@
     showAlert(alertsData.value?.limit?.limitedRealGame || defaultLocaleAlertsData.value?.limit?.limitedRealGame);
   };
 
-  useListen('changeMobileGameMode', changeGameMode);
-
   const checkDepositModal = (): void => {
     const { mobileGameModalInfo } = useGamesStore();
     if (isLoggedIn.value && !isDemo.value && !activeAccount.value?.balance && !mobileGameModalInfo) {
@@ -160,13 +158,11 @@
     }
   });
 
-  onBeforeMount(() => {
-    compactDrawer(true, false);
-  });
-
   onMounted(async () => {
     document.body.classList.add('is-mob-nav-vertical');
     document.body.classList.add('is-game-page');
+    useListen('changeMobileGameMode', changeGameMode);
+    compactDrawer(true, false);
 
     if (!isDemo.value && !isLoggedIn.value) {
       if (gameInfo.value?.isDemoMode) await changeGameMode();
@@ -186,6 +182,7 @@
     if (isLoggedIn.value && !isDemo.value) setReturnGame(gameInfo.value);
     const storageDrawerCompact = localStorage.getItem('IS_DRAWER_COMPACT') === 'true';
     compactDrawer(storageDrawerCompact, false);
+    useUnlisten('changeMobileGameMode', changeGameMode);
   });
 </script>
 

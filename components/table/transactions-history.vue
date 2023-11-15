@@ -9,13 +9,17 @@
 
     <div v-for="invoice in props.invoices" :key="invoice.id" class="row td-row">
       <div class="td">{{ dayjs(invoice.createdAt).format('DD.MM.YYYY, HH:mm') }}</div>
-      <div class="td">{{ getInvoiceTypeLabel(invoice.invoiceType) }}</div>
+
+      <div class="td">
+        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.invoiceTypes.${invoice.invoiceType}`) }}
+      </div>
+
       <div class="td">{{ invoice.paymentMethod }}</div>
 
       <div class="td">
-        <atomic-row-status :variant="getInvoiceStatus(invoice.status)">
-          {{ getInvoiceStatusLabel(invoice.status) }}
-        </atomic-row-status>
+        <atomic-invoice-status :variant="invoice.status">
+          {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.invoiceStatuses.${invoice.status}`) }}
+        </atomic-invoice-status>
       </div>
 
       <div class="td">{{ invoice.amount }} {{ invoice.currency }}</div>
@@ -33,7 +37,7 @@
         </button-base>
 
         <button-base
-          v-if="getInvoiceStatus(invoice.status) === 'pending' && getInvoiceType(invoice.invoiceType) === 'withdrawal'"
+          v-if="invoice.status === 1 && invoice.invoiceType === 2"
           class="btn-cancel-payment"
           type="secondary"
           size="sm"
@@ -65,8 +69,8 @@
 </template>
 
 <script setup lang="ts">
-  import { ITransactionsHistory } from '~/types';
-  import { IInvoice } from '@skeleton/core/types';
+  import type { ITransactionsHistory } from '~/types';
+  import type { IInvoice } from '@skeleton/core/types';
 
   const props = defineProps<{
     invoices: IInvoice[];
@@ -76,29 +80,9 @@
   const emit = defineEmits(['cancelPayment']);
   const headTitles = Object.values(props.transactionsContent.tableColumns);
   const globalStore = useGlobalStore();
+  const {globalComponentsContent, defaultLocaleGlobalComponentsContent} = globalStore;
   const dayjs = useDayjs();
-
-  const getInvoiceType = (type: number):string => {
-    const findInvoiceType = globalStore.invoiceTypes.find((storeType) => storeType.id === type);
-    return findInvoiceType?.name || '';
-  };
-
-  const getInvoiceTypeLabel = (type: number):string => {
-    const typeName = getInvoiceType(type);
-    return props.transactionsContent.typeFilter.options[typeName] || '';
-  };
-
-  const getInvoiceStatus = (status: number):string => {
-    const findInvoiceStatus = globalStore.invoiceStatuses.find((storeStatus) => storeStatus.id === status);
-    return findInvoiceStatus?.name || '';
-  };
-
-  const getInvoiceStatusLabel = (status: number):string => {
-    const statusName = getInvoiceStatus(status);
-    return props.transactionsContent.statusFilter.options[statusName] || '';
-  };
-
-  // Get code
+  const { getContent } = useProjectMethods();
   const showCodes = ref<string[]>([]);
 </script>
 

@@ -93,7 +93,7 @@
           display: block;
         }
 
-        .btn-primary, .btn-secondary {
+        .btn-primary, .btn-secondary:not(.app-header__play-real)  {
           @include box(40px);
           --padding: 0;
           --btn-border-radius: 8px;
@@ -159,7 +159,7 @@
   }
 
   &__play-real {
-    height: rem(32px);
+    height: rem(40px);
     flex-shrink: 0;
     margin-left: auto;
 
