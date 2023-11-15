@@ -144,7 +144,17 @@ export const useLayoutStore = defineStore('layoutStore', {
       this.isDrawerOpen = !this.isDrawerOpen;
       document.body.classList.toggle('drawer-open');
       const drawerContentEl:HTMLElement|null = document.querySelector('.drawer .content');
-      if (drawerContentEl) this.isDrawerOpen ? disableBodyScroll(drawerContentEl) : enableBodyScroll(drawerContentEl);
+      const bodyScrollOptions = {
+        allowTouchMove: (el:HTMLElement|null) => {
+          while (el && el !== document.body) {
+            if (el.getAttribute('body-scroll-lock-ignore') !== null) {
+              return true;
+            }
+            el = el.parentElement;
+          }
+        }
+      }
+      if (drawerContentEl) this.isDrawerOpen ? disableBodyScroll(drawerContentEl, bodyScrollOptions) : enableBodyScroll(drawerContentEl);
       if (this.isDrawerCompact) this.isDrawerCompact = false;
     },
 
