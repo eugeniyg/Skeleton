@@ -13,7 +13,10 @@
         <atomic-icon id="arrow_expand-close" />
       </div>
 
-      <div class="items">
+      <div
+        class="items"
+        body-scroll-lock-ignore
+      >
         <div
           class="item"
           v-for="locale in locales"

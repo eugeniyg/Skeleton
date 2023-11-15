@@ -31,13 +31,15 @@
       --color: var(--icon-primary);
     }
 
-    &:hover {
-      --selected-border-color: var(--border-hover);
-      --bg: var(--field-00);
-      --color: var(--text-primary);
+    @include use-hover {
+      &:hover {
+        --selected-border-color: var(--border-hover);
+        --bg: var(--field-00);
+        --color: var(--text-primary);
 
-      .icon {
-        --color: var(--icon-primary);
+        .icon {
+          --color: var(--icon-primary);
+        }
       }
     }
   }
@@ -51,7 +53,6 @@
 
     --items-visibility: visible;
     --items-opacity: 1;
-    --pointer-events: all;
     --items-display: block;
   }
 
@@ -98,7 +99,6 @@
     top: var(--top, #{rem(44px)});
     right: 0;
     left: 0;
-    pointer-events: var(--pointer-events, none);
     display: var(--items-display, none);
     max-height: calc((#{rem(38px)} * 5) + #{16px});
     overflow-x: hidden;
