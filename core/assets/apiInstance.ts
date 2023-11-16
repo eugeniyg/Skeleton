@@ -37,7 +37,8 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
       ...serverRequestHeaders,
       ...options?.headers
     },
-    credentials: 'omit'
+    credentials: 'omit',
+    retry: 0
   };
 
   // if (token) { newOptions.headers.Authorization = `Bearer ${token}` };
