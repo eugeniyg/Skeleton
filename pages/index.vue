@@ -36,6 +36,8 @@
       showArrows
       :category="topSlotsCategory"
     />
+    
+    <activity-board/>
 
     <group-games
       v-if="liveCasinoCategory"
