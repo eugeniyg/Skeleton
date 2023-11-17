@@ -1,5 +1,5 @@
 <template>
-  <div class="deposit-bonus-code">
+  <div ref="root" class="deposit-bonus-code">
     <form-input-toggle
       name="bonus-toggle"
       v-model:value="hasBonusCode"
@@ -85,9 +85,14 @@
     bonusChecking.value = false;
   };
 
-  const toggleBonusField = ():void => {
-    if (!hasBonusCode.value) hasBonusCode.value = true;
-    else if (depositBonusCode.value) {
+  const root = ref();
+  const toggleBonusField = async ():Promise<void> => {
+    if (!hasBonusCode.value) {
+      hasBonusCode.value = true;
+
+      await nextTick();
+      root.value.scrollIntoView({ behavior: 'smooth' });
+    } else if (depositBonusCode.value) {
       hasBonusCode.value = false;
       toggleBonusCode();
     } else {
