@@ -36,3 +36,6 @@
     </div>
   </div>
 </template>
+
+<style src="~/assets/styles/components/atomic/preloader.scss" lang="scss" />
+
