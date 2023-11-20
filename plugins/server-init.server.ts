@@ -58,11 +58,11 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     globalStore.baseApiUrl = process.env.API_BASE_URL || '';
   }
 
-  // const { getSessionToken } = useProfileStore();
-  // const sessionToken = getSessionToken();
+  const { getSessionToken } = useProfileStore();
+  const sessionToken = getSessionToken();
 
-  // const { getProfileData } = useProfileStore();
-  // const { getUserAccounts } = useWalletStore();
+  const { getProfileData } = useProfileStore();
+  const { getUserAccounts } = useWalletStore();
 
   const globalRequests = Promise.all([
     getGameProviders(),
@@ -70,19 +70,17 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     getGlobalContent()
   ]);
 
-  await globalRequests;
+  if (sessionToken) {
+    const profileRequests = Promise.all([
+      getProfileData(),
+      getUserAccounts(),
+    ]);
 
-  // if (sessionToken) {
-  //   const profileRequests = Promise.all([
-  //     getProfileData(),
-  //     getUserAccounts(),
-  //   ]);
-  //
-  //   await Promise.allSettled([
-  //     globalRequests,
-  //     profileRequests,
-  //   ]);
-  // } else {
-  //   await globalRequests;
-  // }
+    await Promise.allSettled([
+      globalRequests,
+      profileRequests,
+    ]);
+  } else {
+    await globalRequests;
+  }
 });
