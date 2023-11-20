@@ -63,12 +63,11 @@
 
   const startBetsyFrame = (host: string, token: string): void => {
     const runtimeConfig = useRuntimeConfig();
-    const loggedOutClientId = 'turbodemo';
 
     const params = {
       ...sdkDefaultParams,
       host: runtimeConfig.public.betsyParams?.clientHost,
-      cid: isLoggedIn.value ? runtimeConfig.public.betsyParams?.clientId : loggedOutClientId,
+      cid: runtimeConfig.public.betsyParams?.clientId,
       theme: runtimeConfig.public.betsyParams?.sportsBookTheme,
       customStyles: runtimeConfig.public.betsyParams?.sportsBookStyles ? `${host}${runtimeConfig.public.betsyParams.sportsBookStyles}` : undefined,
       token: isLoggedIn.value ? token : null,
