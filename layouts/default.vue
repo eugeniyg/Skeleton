@@ -39,22 +39,22 @@
       <layout-cookies v-if="showCookiesMessage" />
     </transition>
 
-    <client-only>
-      <modal-register />
-      <modal-register-cancel />
-      <modal-sign-in />
-      <modal-forgot-pass />
-      <modal-reset-pass />
-      <modal-success />
-      <modal-error />
-      <modal-confirm />
-      <modal-fiat />
-      <modal-mobile-game />
-      <modal-wallet />
-      <!--    <modal-wallet-choose-region />-->
-      <modal-cancel-deposit />
-      <modal-wallet-bonus-details />
-    </client-only>
+<!--    <client-only>-->
+<!--      <modal-register />-->
+<!--      <modal-register-cancel />-->
+<!--      <modal-sign-in />-->
+<!--      <modal-forgot-pass />-->
+<!--      <modal-reset-pass />-->
+<!--      <modal-success />-->
+<!--      <modal-error />-->
+<!--      <modal-confirm />-->
+<!--      <modal-fiat />-->
+<!--      <modal-mobile-game />-->
+<!--      <modal-wallet />-->
+<!--      &lt;!&ndash;    <modal-wallet-choose-region />&ndash;&gt;-->
+<!--      <modal-cancel-deposit />-->
+<!--      <modal-wallet-bonus-details />-->
+<!--    </client-only>-->
 
     <atomic-alert />
   </div>

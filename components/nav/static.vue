@@ -4,7 +4,6 @@
       v-for="(item, itemIndex) in props.items"
       :key="itemIndex"
       :to="localizePath(item.url)"
-      noPrefetch
     >
       {{ item.label }}
     </nuxt-link>

@@ -63,7 +63,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       script: [
-        { src: `/pwa/init.js?v=${buildDate}` }
+        { src: `/pwa/init.js?v=${buildDate}`, defer: true }
       ],
     },
     pageTransition: true,

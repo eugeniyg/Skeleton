@@ -1,5 +1,5 @@
 <template>
-  <picture v-if="props.src" :key="props.src" class="picture">
+  <picture v-if="props.src" :key="props.src" class="picture" data-not-lazy>
     <source :srcset="createSrcSet(props.src)">
     <img :src="props.src" alt="">
   </picture>

@@ -9,7 +9,6 @@
         v-if="isDrawerCompact"
         :to="localizePath(props.items[0].url)"
         @click.stop
-        noPrefetch
       >
         <atomic-icon :id="props.icon"/>
       </nuxt-link>
@@ -25,7 +24,6 @@
         :key="itemIndex"
         class="link"
         :to="localizePath(link.url)"
-        noPrefetch
       >
         <span class="text">{{ link.label }}</span>
       </nuxt-link>
