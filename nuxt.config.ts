@@ -86,5 +86,12 @@ export default defineNuxtConfig({
     public: {
       gamehubCdn: 'https://dev.gcdn.tech',
     }
+  },
+  hooks: {
+    'build:manifest': (manifest) => {
+      for (const key in manifest) {
+        manifest[key].dynamicImports = []
+      }
+    }
   }
 });
