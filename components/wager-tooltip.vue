@@ -66,16 +66,15 @@
     if (!isBonusWagering.value) {
       iconColor = 'orange';
       text = getContent(layoutData, defaultLocaleLayoutData, 'header.wagerTooltip.notInWagering');
-    }
-    
-    if (isBonusWagering.value && minimumBonusWagerMultiplier.value < 1) {
+    } else if  (isBonusWagering.value && minimumBonusWagerMultiplier.value < 1) {
       iconColor = 'orange';
       text = getContent(layoutData, defaultLocaleLayoutData, 'header.wagerTooltip.wagerMultiplierLessThan');
-    }
-    
-    if (isBonusWagering.value && minimumBonusWagerMultiplier.value > 1) {
+    } else if (isBonusWagering.value && minimumBonusWagerMultiplier.value > 1) {
       iconColor = 'green';
       text = getContent(layoutData, defaultLocaleLayoutData, 'header.wagerTooltip.wagerMultiplierMoreThan');
+    } else {
+      iconColor = '';
+      text = '';
     }
     
     return {
