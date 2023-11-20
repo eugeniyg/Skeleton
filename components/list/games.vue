@@ -5,6 +5,7 @@
       :key="index"
       class="item"
       :to="localizePath(`/games/${game.identity}${!isLoggedIn ? '' : '?real=true' }`)"
+      noPrefetch
     >
       <atomic-image class="img" v-if="game.images['200x200']" :src="getImageUrl(game.images, 'square')" />
     </nuxt-link>

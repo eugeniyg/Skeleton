@@ -4,6 +4,7 @@
     :class="componentClasses"
     :disabled="props.isDisabled || null"
     :to="localizePath(url)"
+    noPrefetch
   >
     <slot/>
   </component>

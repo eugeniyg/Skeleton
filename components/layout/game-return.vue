@@ -3,7 +3,7 @@
     <atomic-image class="game-return__background" :src="gameImage" />
 
     <div class="game-return__container">
-      <nuxt-link :to="localizePath(`/games/${game.identity}?real=true`)">
+      <nuxt-link :to="localizePath(`/games/${game.identity}?real=true`)" noPrefetch>
         <atomic-image class="game-return__game-image" :src="gameImage" />
       </nuxt-link>
 
@@ -13,7 +13,7 @@
       </div>
 
       <div class="game-return__controls">
-        <nuxt-link :to="localizePath(`/games/${game.identity}?real=true`)">
+        <nuxt-link :to="localizePath(`/games/${game.identity}?real=true`)" noPrefetch>
           <atomic-icon id="play" />
         </nuxt-link>
 
