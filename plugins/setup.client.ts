@@ -1,13 +1,4 @@
-export default defineNuxtPlugin(async (nuxtApp) => {
-  const { parseUserAgent } = useGlobalStore();
-  const { userAgent } = window.navigator;
-  parseUserAgent(userAgent);
-
-  nuxtApp.hook('page:finish', () => {
-    const { preloaderDone } = useProjectMethods();
-    preloaderDone();
-  });
-
+export default defineNuxtPlugin((nuxtApp) => {
   const checkAffiliateTag = ():void => {
     const historyBack = window.history.state.back;
     const profileStore = useProfileStore();
@@ -22,7 +13,24 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     }
   };
 
+  const setWindowStaticHeight = ():void => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh-static', `${vh}px`);
+  };
+
+  const setWindowHeight = ():void => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  };
+
   nuxtApp.hook('app:mounted', async () => {
+    const { parseUserAgent } = useGlobalStore();
+    const { userAgent } = window.navigator;
+    parseUserAgent(userAgent);
+
+    const { checkModals } = useLayoutStore();
+    checkModals();
+
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
     const { getSessionToken } = useProfileStore();
@@ -36,18 +44,14 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     const { subscribeWinnersSocket } = useGamesStore();
     subscribeWinnersSocket();
     checkAffiliateTag();
+
+    setWindowStaticHeight();
+    setWindowHeight();
+    window.addEventListener('resize', setWindowHeight);
   });
 
-  const setWindowStaticHeight = ():void => {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh-static', `${vh}px`);
-  };
-
-  const setWindowHeight = ():void => {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-  };
-  setWindowStaticHeight();
-  setWindowHeight();
-  window.addEventListener('resize', setWindowHeight);
+  nuxtApp.hook('page:finish', () => {
+    const { preloaderDone } = useProjectMethods();
+    preloaderDone();
+  });
 });
