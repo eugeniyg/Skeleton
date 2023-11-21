@@ -90,7 +90,9 @@ export default defineNuxtConfig({
   hooks: {
     'build:manifest': (manifest) => {
       for (const key in manifest) {
-        manifest[key].dynamicImports = []
+        const file = manifest[key];
+        file.prefetch = false;
+        file.preload = false;
       }
     }
   }
