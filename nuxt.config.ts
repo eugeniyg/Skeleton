@@ -15,7 +15,7 @@ const viteConfig: any = {
   }
 };
 
-console.log(process.env.NUXT_PUBLIC_GAMEHUB_CDN);
+const gamehubCdnUrl = process.env.NUXT_PUBLIC_GAMEHUB_CDN || 'https://dev.gcdn.tech';
 
 // @ts-ignore
 export default defineNuxtConfig({
@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   image: {
     quality: 20,
     format: ['webp'],
-    domains: [process.env.NUXT_PUBLIC_GAMEHUB_CDN]
+    domains: [gamehubCdnUrl]
   },
   dayjs: {
     locales: ['en-ca', 'de', 'fr', 'es', 'pt', 'pt-br', 'ru', 'tr', 'hi', 'fa', 'uz', 'kk', 'es-mx', 'it', 'et', 'fi',
@@ -91,7 +91,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      gamehubCdn: process.env.NUXT_PUBLIC_GAMEHUB_CDN || 'https://dev.gcdn.tech'
+      gamehubCdn: gamehubCdnUrl
     }
   }
 });
