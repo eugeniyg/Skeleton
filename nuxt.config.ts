@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   image: {
     quality: 20,
     format: ['webp'],
-    domains: [gamehubCdnUrl]
+    domains: ['dev.gcdn.tech']
   },
   dayjs: {
     locales: ['en-ca', 'de', 'fr', 'es', 'pt', 'pt-br', 'ru', 'tr', 'hi', 'fa', 'uz', 'kk', 'es-mx', 'it', 'et', 'fi',
