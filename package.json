@@ -26,7 +26,8 @@
     "eslint-plugin-vue": "^9.18.1",
     "node-sass": "^9.0.0",
     "nuxt": "3.8.0",
-    "sass": "^1.69.5"
+    "sass": "^1.69.5",
+    "sharp": "^0.32.6"
   },
   "dependencies": {
     "@kyvg/vue3-notification": "^3.0.2",
