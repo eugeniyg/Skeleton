@@ -5,13 +5,21 @@
         v-if="props.images?.backgroundImage"
         class="back-bg"
       >
-        <atomic-picture :src="props.images.backgroundImage" notLazy />
+        <nuxt-picture
+          v-if="props.images.backgroundImage"
+          :src="props.images.backgroundImage"
+        />
       </div>
+
       <div
         v-if="props.images?.faceImage"
         class="front-bg"
       >
-        <atomic-picture :src="props.images.faceImage" notLazy />
+        <nuxt-picture
+          v-if="props.images.faceImage"
+          :src="props.images.faceImage"
+          :quality="60"
+        />
       </div>
     </div>
 
