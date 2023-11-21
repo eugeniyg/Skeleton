@@ -86,14 +86,5 @@ export default defineNuxtConfig({
     public: {
       gamehubCdn: 'https://dev.gcdn.tech',
     }
-  },
-  hooks: {
-    'build:manifest': (manifest) => {
-      for (const key in manifest) {
-        const file = manifest[key];
-        file.prefetch = false;
-        file.preload = false;
-      }
-    }
   }
 });
