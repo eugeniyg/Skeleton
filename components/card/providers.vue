@@ -1,24 +1,25 @@
 <template>
-  <div class="card-providers" @click="routeToGames">
-    <atomic-image class="img" :src="`/img${props.src}`" />
-  </div>
+  <nuxt-link
+    class="card-providers"
+    :to="localizePath(`/games?provider=${props.providerData.id}`)"
+  >
+    <atomic-image
+      class="img"
+      :src="`/img/providers/${props.providerData.identity}.svg`"
+    />
+  </nuxt-link>
 </template>
 
 <script setup lang="ts">
+  import type { IGameProvider } from "@skeleton/core/types";
+
   const props = defineProps<{
-    src: string,
-    providerId: string
+    providerData: IGameProvider;
   }>();
 
   const router = useRouter();
 
   const { localizePath } = useProjectMethods();
-  const routeToGames = (): void => {
-    router.push({
-      path: localizePath('/games'),
-      query: { category: 'all', provider: props.providerId },
-    });
-  };
 </script>
 
 <style src="~/assets/styles/components/card/providers.scss" lang="scss" />
