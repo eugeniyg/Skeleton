@@ -69,7 +69,8 @@
 
     if (routerLocale) {
       return route.fullPath.replace(routerLocale, locale.code.toLowerCase());
-    } return `/${locale.code.toLowerCase()}${route.fullPath === '/' ? '' : route.fullPath}`;
+    }
+    return `/${locale.code.toLowerCase()}${route.fullPath === '/' ? '' : route.fullPath}`;
   };
 
   const toggleOpen = (): void => {

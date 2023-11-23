@@ -125,7 +125,9 @@
     if (storageReturnGame) returnGame.value = JSON.parse(storageReturnGame);
   });
 
+  const { checkModals } = useLayoutStore();
   onMounted(async () => {
+    checkModals();
     checkDrawer();
     disabledTransition.value = false;
     const cookieValue = useCookie('accept-cookie');

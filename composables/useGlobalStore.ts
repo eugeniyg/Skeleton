@@ -32,6 +32,7 @@ interface IGlobalStoreState {
   baseCurrency: Maybe<ICurrency>,
   equivalentCurrency: Maybe<ICurrency>,
   locales: ILocale[],
+  currentLocale: Maybe<ILocale>,
   countries: ICountry[],
   settingsConstants: Maybe<ICoreConstants>,
   defaultLocale: Maybe<ILocale>,
@@ -59,6 +60,7 @@ export const useGlobalStore = defineStore('globalStore', {
     baseCurrency: undefined,
     equivalentCurrency: undefined,
     locales: [],
+    currentLocale: undefined,
     countries: [],
     settingsConstants: undefined,
     defaultLocale: undefined,
@@ -88,13 +90,6 @@ export const useGlobalStore = defineStore('globalStore', {
   }),
 
   getters: {
-    currentLocale(state): Maybe<ILocale> {
-      const route = useRoute();
-      const findLocale = state.locales.find((locale) => locale.code === route.params.locale);
-      if (route.params.locale && findLocale) return findLocale;
-      return state.defaultLocale;
-    },
-
     fiatCurrencies(state):ICurrency[] {
       return state.currencies.filter((currency) => currency.type === 'fiat');
     },

@@ -6,12 +6,7 @@
     :data-size="cardSize"
     @click="clickGame"
   >
-    <nuxt-picture
-      v-if="src"
-      class="card-base__img"
-      :src="src"
-      loading="lazy"
-    />
+    <atomic-image class="card-base__img" :src="src" />
 
     <div v-if="gameBages?.length" class="bages">
       <atomic-bage

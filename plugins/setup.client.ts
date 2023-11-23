@@ -28,9 +28,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     const { userAgent } = window.navigator;
     parseUserAgent(userAgent);
 
-    const { checkModals } = useLayoutStore();
-    checkModals();
-
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
     const { getSessionToken } = useProfileStore();

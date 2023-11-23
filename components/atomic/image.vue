@@ -1,6 +1,16 @@
 <template>
   <img
+    v-if="props.notLazy"
     ref="targetImage"
+    :key="imageSrc"
+    :src="imageSrc"
+    alt=""
+    data-not-lazy
+    @error="checkDefaultImage"
+  />
+
+  <img
+    v-else
     :key="imageSrc"
     :src="imageSrc"
     alt=""
@@ -11,6 +21,7 @@
 <script setup lang="ts">
   const props = defineProps<{
     src?: string;
+    notLazy?: boolean;
     defaultImage?: string;
   }>();
 
@@ -25,7 +36,8 @@
 
   const targetImage = ref<HTMLImageElement>();
   onMounted(() => {
-    if (props.defaultImage
+    if (props.notLazy
+      && props.defaultImage
       && targetImage.value?.complete
       && !targetImage.value?.naturalWidth
     ) useDefaultImg.value = true;

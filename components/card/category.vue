@@ -6,11 +6,10 @@
 
     <div class="card-cat__sub-title">{{ props.description }}</div>
 
-    <nuxt-picture
+    <atomic-picture
       v-if="props.image"
       class="card-cat__img"
       :src="props.image"
-      loading="lazy"
     />
 
     <button-base
