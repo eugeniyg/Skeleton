@@ -39,22 +39,20 @@
       <layout-cookies v-if="showCookiesMessage" />
     </transition>
 
-    <client-only>
-      <modal-register />
-      <modal-register-cancel />
-      <modal-sign-in />
-      <modal-forgot-pass />
-      <modal-reset-pass />
-      <modal-success />
-      <modal-error />
-      <modal-confirm />
-      <modal-fiat />
-      <modal-mobile-game />
-      <modal-wallet />
-      <!--    <modal-wallet-choose-region />-->
-      <modal-cancel-deposit />
-      <modal-wallet-bonus-details />
-    </client-only>
+    <modal-register />
+    <modal-register-cancel />
+    <modal-sign-in />
+    <modal-forgot-pass />
+    <modal-reset-pass />
+    <modal-success />
+    <modal-error />
+    <modal-confirm />
+    <modal-fiat />
+    <modal-mobile-game />
+    <modal-wallet />
+    <!--    <modal-wallet-choose-region />-->
+    <modal-cancel-deposit />
+    <modal-wallet-bonus-details />
 
     <atomic-alert />
   </div>
@@ -78,7 +76,6 @@
     isGamePage,
     isSportsbookPage
   } = storeToRefs(layoutStore);
-  const { checkModals } = layoutStore;
 
   const { logOutUser } = profileStore;
 
@@ -124,13 +121,13 @@
   });
 
   onBeforeMount(() => {
-    checkModals();
-
     const storageReturnGame = sessionStorage.getItem('returnGame');
     if (storageReturnGame) returnGame.value = JSON.parse(storageReturnGame);
   });
 
+  const { checkModals } = useLayoutStore();
   onMounted(async () => {
+    checkModals();
     checkDrawer();
     disabledTransition.value = false;
     const cookieValue = useCookie('accept-cookie');

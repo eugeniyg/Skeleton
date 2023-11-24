@@ -95,10 +95,12 @@ export const useProjectMethods = () => {
     }, 1000);
   };
 
-  const localizePath = (path:string):string => {
+  const localizePath = (path:string|undefined):string => {
     const globalStore = useGlobalStore();
-
-    if (globalStore.currentLocale?.code.toLowerCase() === globalStore.defaultLocale?.code.toLowerCase()) return path;
+    if (globalStore.currentLocale?.code.toLowerCase() === globalStore.defaultLocale?.code.toLowerCase()) {
+      if (!path) return '';
+      return path.startsWith('/') ? path : `/${path}`;
+    }
     return `/${globalStore.currentLocale?.code.toLowerCase()}${!path || path === '/' ? '' : path}`;
   };
 

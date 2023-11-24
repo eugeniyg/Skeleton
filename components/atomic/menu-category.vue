@@ -5,9 +5,13 @@
       @click="toggleOpen"
       :class="{'is-open': open }"
     >
-      <router-link v-if="isDrawerCompact" :to="localizePath(props.items[0].url)" @click.stop>
+      <nuxt-link
+        v-if="isDrawerCompact"
+        :to="localizePath(props.items[0].url)"
+        @click.stop
+      >
         <atomic-icon :id="props.icon"/>
-      </router-link>
+      </nuxt-link>
 
       <atomic-icon v-else :id="props.icon"/>
       <div class="text">{{ props.label }}</div>

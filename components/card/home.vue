@@ -5,13 +5,14 @@
         v-if="props.images?.backgroundImage"
         class="back-bg"
       >
-        <atomic-picture :src="props.images.backgroundImage"/>
+        <atomic-picture :src="props.images.backgroundImage" notLazy/>
       </div>
+
       <div
         v-if="props.images?.faceImage"
         class="front-bg"
       >
-        <atomic-picture :src="props.images.faceImage"/>
+        <atomic-picture :src="props.images.faceImage" notLazy />
       </div>
     </div>
 
