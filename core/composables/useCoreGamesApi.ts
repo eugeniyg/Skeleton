@@ -12,28 +12,15 @@ import type {
   IWinnersRequest
 } from '../types';
 import {useFetchInstance} from '../assets/apiInstance';
-import {getCacheData, setCacheData} from '../assets/coreCache';
 
 export const useCoreGamesApi = () => {
   const getGameCollections = async ():Promise<ICollection[]> => {
-    const cacheGameCollections = getCacheData('collections');
-    if (cacheGameCollections) {
-      return cacheGameCollections;
-    }
-
     const { data } = await useFetchInstance('/api/game/collections');
-    setCacheData('collections', data);
     return data;
   };
 
   const getGameProviders = async (params?: IProvidersRequest):Promise<IGameProvider[]> => {
-    const cacheGameProviders = getCacheData('providers');
-    if (!params && cacheGameProviders) {
-      return cacheGameProviders;
-    }
-
     const { data } = await useFetchInstance('/api/game/providers', { params });
-    if (!params) setCacheData('providers', data);
     return data;
   };
 
