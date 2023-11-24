@@ -10,19 +10,9 @@
       showArrows
       :category="category"
     />
-    
-    <cards-group
-      v-if="providerCards.games?.length"
-      v-bind="providerCards"
-      :identity="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.label')"
-      :titleIcon="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.icon')"
-      :showAllBtn="false"
-    >
-      <template v-slot:card="item">
-        <card-providers v-bind="item"/>
-      </template>
-    </cards-group>
-    
+
+    <group-providers showArrows />
+
     <group-games
       v-for="category in mainCategoriesList.slice(3, 4)"
       showAllBtn
@@ -40,13 +30,7 @@
     />
     
     <favorite-recently v-if="isLoggedIn"/>
-    
-    <!-- <cards-group v-bind="fakeStore.newRelisesCards">
-      <template v-slot:card="item">
-        <card-base v-bind="item" />
-      </template>
-    </cards-group> -->
-    
+
     <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent.seo.text"/>
   </div>
 </template>
@@ -59,16 +43,13 @@
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();
   const {
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent,
     currentLocale,
     defaultLocale
   } = storeToRefs(globalStore);
   const {
     localizePath,
     setPageSeo,
-    getLocalesContentData,
-    getContent,
+    getLocalesContentData
   } = useProjectMethods();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
 
@@ -110,12 +91,9 @@
     }, []);
   })
 
-  const fakeStore = useFakeStore();
   const router = useRouter();
   const gameStore = useGamesStore();
   const { currentLocationCollections } = storeToRefs(gameStore);
-
-  const providerCards = fakeStore.providerCards();
 
   const mainCategoriesList = currentLocationCollections.value.reduce((categoriesArr: ICollection[], currentCategory) => {
     return currentCategory.isHidden ? categoriesArr : [...categoriesArr, currentCategory];

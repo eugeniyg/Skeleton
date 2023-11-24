@@ -1,0 +1,81 @@
+.group-providers {
+  position: relative;
+  display: grid;
+  align-items: center;
+  grid-template-areas:
+    "icon heading heading arrows"
+    "items items items items"
+    "btn-show-all btn-show-all btn-show-all btn-show-all";
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
+  grid-column-gap: var(--column-gap, #{rem(8px)});
+  grid-row-gap: var(--row-gap, #{rem(16px)});
+  border-radius: 16px;
+  background-color: var(--gray-900);
+  padding: var(--card-padding, 16px 16px 8px);
+
+  @include media(xs) {
+    grid-template-areas:
+    "icon heading btn-show-all arrows"
+    "items items items items";
+    --card-padding: 16px 16px 24px;
+  }
+
+  @include media(md) {
+    --card-padding: 24px;
+    @include scroll-overlay;
+  }
+
+  > [data-icon] {
+    font-size: rem(20px);
+    grid-area: icon;
+  }
+
+  > .icon {
+    grid-area: icon;
+    --icon-size: #{rem(20px)};
+    --color: var(--icon-primary);
+  }
+
+  > .btn-show-all {
+    grid-area: btn-show-all;
+    @include font($heading-1);
+    --width: 100%;
+
+    @extend %btn-ghost-low-contrast;
+  }
+
+  > .arrows {
+    grid-area: arrows;
+  }
+
+  > .title {
+    flex-grow: 1;
+    grid-area: heading;
+    @include font($heading-4);
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  > .items {
+    grid-area: items;
+    display: var(--display, flex);
+    align-items: stretch;
+    overflow-x: auto;
+    margin: 0 -32px 0;
+    padding: 0 32px;
+    scroll-padding: 32px;
+    grid-column-gap: 8px;
+    scroll-snap-type: x mandatory;
+
+    @include media(sm) {
+      grid-column-gap: 16px;
+      margin:  0;
+      padding: 0;
+      scroll-padding: 0;
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

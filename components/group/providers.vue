@@ -1,0 +1,106 @@
+<template>
+  <div class="group-providers">
+    <atomic-icon
+      :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.icon')"
+    />
+
+    <h2 class="title">
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.label') }}
+    </h2>
+
+    <button-base
+      v-if="props.showAllBtn"
+      class="btn-show-all"
+      type="ghost"
+      size="sm"
+      url="/providers"
+    >
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
+    </button-base>
+
+    <button-arrows
+      v-if="showArrowButtons"
+      :prevDisabled="prevDisabled"
+      :nextDisabled="nextDisabled"
+      @clickAction="clickAction"
+    />
+
+    <div
+      v-if="providersList.length"
+      ref="scrollContainer"
+      class="items"
+      @scroll="scrollHandler"
+    >
+      <card-providers
+        v-for="provider in providersList"
+        :key="provider.id"
+        :providerData="provider"
+      />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { IGameProvider } from "@skeleton/core/types";
+
+const props = defineProps<{
+  showAllBtn?: boolean;
+  showArrows?: boolean;
+}>();
+
+const providersIdentity = [
+  'turbo-games',
+  'one-touch',
+  'blueprint-gaming',
+  'betsoft',
+  'wazdan',
+  'microgaming',
+  'habanero',
+  'hacksaw-gaming',
+  'swintt',
+  'nolimit-city',
+  'push-gaming',
+  'play-n-go',
+  'game-art',
+  'pragmatic-play'
+];
+const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
+const { getContent } = useProjectMethods();
+const gamesStore = useGamesStore();
+const { gameProviders } = storeToRefs(gamesStore);
+const providersList = computed(() => {
+  return providersIdentity.reduce((providersArr: IGameProvider[], currentProviderIdentity) => {
+    const providerData = gameProviders.value.find(provider => provider.identity === currentProviderIdentity);
+    if (providerData) return [...providersArr, providerData];
+    return providersArr;
+  }, []);
+})
+
+const scrollContainer = ref();
+const prevDisabled = ref<boolean>(true);
+const nextDisabled = ref<boolean>(false);
+const showArrowButtons = ref<boolean>(props.showArrows);
+
+const scrollHandler = (): void => {
+  const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
+  prevDisabled.value = scrollLeft === 0;
+  nextDisabled.value = scrollWidth < (scrollLeft + offsetWidth + 20) && scrollWidth > (scrollLeft + offsetWidth - 20);
+};
+
+const clickAction = (direction: string): void => {
+  const { offsetWidth } = scrollContainer.value;
+  scrollContainer.value.scrollBy({
+    left: direction === 'next' ? offsetWidth : -offsetWidth,
+    behavior: 'smooth',
+  });
+};
+
+onMounted(() => {
+  if (props.showArrows) {
+    scrollHandler();
+    showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
+  }
+});
+</script>
+
+<style src="~/assets/styles/components/group/providers.scss" lang="scss" />
