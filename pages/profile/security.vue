@@ -20,15 +20,27 @@
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleProfileSecurityContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'security').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleProfileSecurityContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'security').findOne())
-  ]);
+  let securityContent: Maybe<IProfileSecurity>;
+  let defaultLocaleSecurityContent: Maybe<IProfileSecurity>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleProfileSecurityContent'),
+    useNuxtData('defaultLocaleProfileSecurityContent')
+  ]
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const securityContent: Maybe<IProfileSecurity> = currentLocaleData;
-  const defaultLocaleSecurityContent: Maybe<IProfileSecurity> = defaultLocaleData;
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    securityContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleSecurityContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleProfileSecurityContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'security').findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleProfileSecurityContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'security').findOne())
+    ]);
+
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    securityContent = currentLocaleData;
+    defaultLocaleSecurityContent = defaultLocaleData;
+  }
 
   setPageSeo(securityContent?.seo);
 

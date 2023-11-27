@@ -39,15 +39,28 @@ const globalStore = useGlobalStore();
     getContent,
   } = useProjectMethods();
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleRecentlyPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'recently').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleRecentlyContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'recently').findOne())
-  ]);
+  let recentlyContent: Maybe<IRecentlyPage>;
+  let defaultLocaleRecentlyContent: Maybe<IRecentlyPage>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleRecentlyPageContent'),
+    useNuxtData('defaultLocaleRecentlyContent')
+  ]
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const recentlyContent: Maybe<IRecentlyPage> = currentLocaleData;
-  const defaultLocaleRecentlyContent: Maybe<IRecentlyPage> = defaultLocaleData;
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    recentlyContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleRecentlyContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleRecentlyPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'recently').findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleRecentlyContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'recently').findOne())
+    ]);
+
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    recentlyContent = currentLocaleData;
+    defaultLocaleRecentlyContent = defaultLocaleData;
+  }
+
   setPageSeo(recentlyContent?.seo);
 
   const { currentLocationCollections } = useGamesStore();

@@ -92,16 +92,28 @@
     getLocalesContentData,
   } = useProjectMethods();
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleGamesPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'games').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleGamesPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'games').findOne())
-  ]);
+  let gamesContent: Maybe<IGamesPage>;
+  let defaultLocaleGamesContent: Maybe<IGamesPage>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleGamesPageContent'),
+    useNuxtData('defaultLocaleGamesPageContent')
+  ]
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    gamesContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleGamesContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleGamesPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'games').findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleGamesPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'games').findOne())
+    ]);
 
-  const gamesContent: Maybe<IGamesPage> = currentLocaleData;
-  const defaultLocaleGamesContent: Maybe<IGamesPage> = defaultLocaleData;
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    gamesContent = currentLocaleData;
+    defaultLocaleGamesContent = defaultLocaleData;
+  }
+
   setPageSeo(gamesContent?.seo);
 
   const gamesStore = useGamesStore();

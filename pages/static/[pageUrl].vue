@@ -15,14 +15,26 @@
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
   const { setPageSeo, getLocalesContentData } = useProjectMethods();
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData(`${pageUrl}-static-current`, () => queryContent(currentLocale.value?.code as string, 'static', pageUrl as string).findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData(`${pageUrl}-static-default`, () => queryContent(defaultLocale.value?.code as string, 'static', pageUrl as string).findOne())
-  ]);
+  let currentLocaleStaticContent: Maybe<IStaticPage>;
+  let defaultLocaleStaticContent: Maybe<IStaticPage>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData(`${pageUrl}-static-current`),
+    useNuxtData(`${pageUrl}-static-default`)
+  ]
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const currentLocaleStaticContent: IStaticPage = currentLocaleData;
-  const defaultLocaleStaticContent: IStaticPage = defaultLocaleData;
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    currentLocaleStaticContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleStaticContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData(`${pageUrl}-static-current`, () => queryContent(currentLocale.value?.code as string, 'static', pageUrl as string).findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData(`${pageUrl}-static-default`, () => queryContent(defaultLocale.value?.code as string, 'static', pageUrl as string).findOne())
+    ]);
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    currentLocaleStaticContent = currentLocaleData;
+    defaultLocaleStaticContent = defaultLocaleData;
+  }
+
   setPageSeo(currentLocaleStaticContent?.seo);
 </script>

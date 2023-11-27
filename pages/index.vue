@@ -77,15 +77,27 @@
     addBetsyScript
   } = useProjectMethods();
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleHomePageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'home').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleHomePageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'home').findOne())
-  ]);
+  let homeContent: Maybe<IHomePage>;
+  let defaultLocaleHomeContent: Maybe<IHomePage>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleHomePageContent'),
+    useNuxtData('defaultLocaleHomePageContent')
+  ]
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const homeContent: Maybe<IHomePage> = currentLocaleData;
-  const defaultLocaleHomeContent: Maybe<IHomePage> = defaultLocaleData
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    homeContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleHomeContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleHomePageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'home').findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleHomePageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'home').findOne())
+    ]);
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    homeContent = currentLocaleData;
+    defaultLocaleHomeContent = defaultLocaleData;
+  }
+
   setPageSeo(homeContent?.seo);
 
   const topSlotsCategory = currentLocationCollections.value.find((collection) => collection.identity === 'top-slots');

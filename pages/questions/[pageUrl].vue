@@ -24,12 +24,20 @@
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
 
-  const { getContent } = useProjectMethods();
-  const { data: { value: questionPageContent } }: { data: { value: IQuestionCategory }} = await useAsyncData(`${pageUrl}-question`,
-    () => queryContent(currentLocale.value?.code as string, 'question-pages', pageUrl as string).findOne());
+  let currentLocaleContent: Maybe<IQuestionCategory>;
+  const nuxtQuestionData = useNuxtData(`${pageUrl}-question`);
+  if (nuxtQuestionData.data.value) {
+    currentLocaleContent = nuxtQuestionData.data.value;
+  } else {
+    const { data: { value: questionPageContent } }: { data: { value: IQuestionCategory }} = await useAsyncData(`${pageUrl}-question`,
+      () => queryContent(currentLocale.value?.code as string, 'question-pages', pageUrl as string).findOne());
+    currentLocaleContent = questionPageContent;
+  }
 
-  if (questionPageContent) {
-    pageContent.value = questionPageContent;
+  const { getContent } = useProjectMethods();
+
+  if (currentLocaleContent) {
+    pageContent.value = currentLocaleContent;
   } else {
     throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
   }

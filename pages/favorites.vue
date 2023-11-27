@@ -39,15 +39,28 @@
     getContent,
   } = useProjectMethods();
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleFavoritesPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'favorites').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleFavoritesPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'favorites').findOne())
-  ]);
+  let favoritesContent: Maybe<IFavoritesPage>;
+  let defaultLocaleFavoritesContent: Maybe<IFavoritesPage>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleFavoritesPageContent'),
+    useNuxtData('defaultLocaleFavoritesPageContent')
+  ]
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const favoritesContent: Maybe<IFavoritesPage> = currentLocaleData;
-  const defaultLocaleFavoritesContent: Maybe<IFavoritesPage> = defaultLocaleData;
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    favoritesContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleFavoritesContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleFavoritesPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'favorites').findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleFavoritesPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'favorites').findOne())
+    ]);
+
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    favoritesContent = currentLocaleData;
+    defaultLocaleFavoritesContent = defaultLocaleData;
+  }
+
   setPageSeo(favoritesContent?.seo);
 
   const gameStore = useGamesStore();
