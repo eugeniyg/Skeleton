@@ -13,7 +13,7 @@
           {{ props.staticProvider?.gameEnabledCount || 0 }} {{ getContent(currentLocaleContent, defaultLocaleContent, 'gamesLabel') }}
         </div>
 
-        <button-base type="primary" :url="`/games?provider=${props.staticProvider.identity}`">
+        <button-base type="primary" :url="`/games?provider=${props.staticProvider.id}`">
           {{ getContent(currentLocaleContent, defaultLocaleContent, 'staticProvider.button') }}
         </button-base>
       </div>
