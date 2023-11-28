@@ -67,8 +67,9 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IBonus, IPaymentField } from '@skeleton/core/types';
+  import type { IPaymentField } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
+  import queryString from 'query-string';
 
   const props = defineProps<{
     amountMax?: number,
@@ -161,9 +162,19 @@
     }
 
     isSending.value = true;
-    const locationQuery = window.location.search;
-    const successRedirect = `${window.location.href}${locationQuery ? '&' : '?'}success=deposit`;
-    const errorRedirect = `${window.location.href}${locationQuery ? '&' : '?'}error=deposit`;
+    const { query, path } = useRoute();
+    const { origin } = window.location;
+    const successQueryString = queryString.stringify(
+      { ...query, success: 'deposit', wallet: undefined },
+      { arrayFormat: "bracket" }
+    );
+    const errorQueryString = queryString.stringify(
+      { ...query, error: 'deposit', wallet: undefined },
+      { arrayFormat: "bracket" }
+    );
+    const successRedirect = `${origin}${path}?${successQueryString}`;
+    const errorRedirect = `${origin}${path}?${errorQueryString}`;
+
     const mainCurrencyAmount = getMainBalanceFormat(defaultInputSum.currency, Number(amountValue.value));
     const params = {
       method: props.method || '',
