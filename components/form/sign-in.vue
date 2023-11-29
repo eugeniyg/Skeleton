@@ -43,6 +43,15 @@
       {{ getContent(popupsData, defaultLocalePopupsData, 'login.loginButton') }}
     </button-base>
 
+    <button-base
+      type="primary"
+      size="md"
+      @click="loginSocial"
+    >
+      Login With Google
+    </button-base>
+
+
     <button-popup
       class="btn-forgot"
       :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.forgotButton')"
@@ -58,6 +67,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import queryString from 'query-string';
 
   const globalStore = useGlobalStore();
   const {
@@ -114,6 +124,21 @@
       isLockedAsyncButton.value = false;
     }
   };
+
+  const loginSocial = () => {
+    const { query, path } = useRoute();
+    const formedQuery = queryString.stringify({ ...query, 'sign-in': undefined });
+
+    const { $auth0 } = useNuxtApp();
+    $auth0.loginWithRedirect({
+      appState: {
+        targetUrl: formedQuery ? `${path}?${formedQuery}` : path
+      },
+      authorizationParams: {
+        connection: 'google-oauth2',
+      }
+    });
+  }
 </script>
 
 <style src="~/assets/styles/components/form/sign-in.scss" lang="scss" />

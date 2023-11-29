@@ -85,7 +85,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      gamehubCdn: 'https://dev.gcdn.tech'
+      gamehubCdn: 'https://dev.gcdn.tech',
+      auth0Domain: 'dev-m73wjw0k1bzlcqkr.us.auth0.com',
+      auth0ClientId: 'cLHhSLhZE0JcSGpiBRZktreJ25W4G8OC'
     }
   }
 });

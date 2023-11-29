@@ -48,6 +48,10 @@ export default defineNuxtPlugin((nuxtApp) => {
   });
 
   nuxtApp.hook('page:finish', () => {
+    const { name, query } = useRoute();
+    const isAuthCallback = (name as string).includes('auth-callback') && !!query.code && !!query.state;
+    if (isAuthCallback) return;
+
     const { preloaderDone } = useProjectMethods();
     preloaderDone();
   });

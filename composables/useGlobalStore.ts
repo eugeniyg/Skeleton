@@ -80,12 +80,10 @@ export const useGlobalStore = defineStore('globalStore', {
     countryHeaderName: 'cf-ipcountry',
     headerCountry: undefined,
     pagesWithoutLocale: [
-      'verify-confirmCode',
-      'locale-verify-confirmCode',
-      'password-reset-resetCode',
-      'locale-password-reset-resetCode',
       'questions',
       'locale-questions',
+      'auth-callback',
+      'locale-auth-callback'
     ]
   }),
 

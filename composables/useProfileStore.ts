@@ -119,26 +119,34 @@ export const useProfileStore = defineStore('profileStore', {
       unsubscribeFreeSpinsSocket();
     },
 
-    async logIn(loginData:any):Promise<void> {
-      const { submitLoginData } = useCoreAuthApi();
-      const { getUserAccounts } = useWalletStore();
-      const submitResult = await submitLoginData(loginData);
-      this.startSession(submitResult);
+    async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {
+      this.startSession(authResponse);
       await nextTick();
+
+      const { getUserAccounts } = useWalletStore();
       await getUserAccounts();
+
       this.isLoggedIn = true;
       this.startProfileDependencies();
     },
 
+    async logIn(loginData:any):Promise<void> {
+      const { submitLoginData } = useCoreAuthApi();
+      const submitResult = await submitLoginData(loginData);
+      await this.handleLogin(submitResult);
+    },
+
+    async loginSocial(socialData:any):Promise<void> {
+      const { submitLoginData } = useCoreAuthApi();
+      const submitResult = await submitLoginData(socialData);
+      await this.handleLogin(submitResult);
+    },
+
     async registration(registrationData:any):Promise<void> {
       const { submitRegistrationData } = useCoreAuthApi();
-      const { getUserAccounts } = useWalletStore();
       const submitResult = await submitRegistrationData(registrationData);
-      this.startSession(submitResult);
-      await nextTick();
-      await getUserAccounts();
-      this.isLoggedIn = true;
-      this.startProfileDependencies();
+      await this.handleLogin(submitResult);
+
       const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
       showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
@@ -146,8 +154,7 @@ export const useProfileStore = defineStore('profileStore', {
 
     async getProfileData():Promise<void> {
       const { getProfile } = useCoreProfileApi();
-      const profileInfo = await getProfile();
-      this.profile = profileInfo;
+      this.profile = await getProfile();
       this.isLoggedIn = true;
     },
 

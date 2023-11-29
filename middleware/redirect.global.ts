@@ -1,5 +1,6 @@
 export default defineNuxtRouteMiddleware((to) => {
-  if (process.server) return;
+  const { pagesWithoutLocale } = useGlobalStore();
+  if (process.server || pagesWithoutLocale.includes(to.name as string)) return;
 
   const nuxtApp = useNuxtApp()
   const routeLocaleCode = to.params.locale;
