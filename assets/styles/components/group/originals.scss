@@ -74,6 +74,7 @@
     padding: rem(16px) rem(16px) 0;
     scroll-padding: rem(16px);
     grid-column-gap: 8px;
+    overscroll-behavior: none;
     scroll-snap-type: x mandatory;
 
     @include media(sm) {
