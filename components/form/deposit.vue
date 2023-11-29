@@ -164,14 +164,8 @@
     isSending.value = true;
     const { query, path } = useRoute();
     const { origin } = window.location;
-    const successQueryString = queryString.stringify(
-      { ...query, success: 'deposit', wallet: undefined },
-      { arrayFormat: "bracket" }
-    );
-    const errorQueryString = queryString.stringify(
-      { ...query, error: 'deposit', wallet: undefined },
-      { arrayFormat: "bracket" }
-    );
+    const successQueryString = queryString.stringify({ ...query, success: 'deposit', wallet: undefined });
+    const errorQueryString = queryString.stringify({ ...query, error: 'deposit', wallet: undefined });
     const successRedirect = `${origin}${path}?${successQueryString}`;
     const errorRedirect = `${origin}${path}?${errorQueryString}`;
 
