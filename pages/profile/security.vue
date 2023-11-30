@@ -3,11 +3,7 @@
     <div class="header">
       <h1 class="heading">{{ securityContent?.title || defaultLocaleSecurityContent?.title }}</h1>
     </div>
-
-    <profile-security-documents />
-
-    <hr/>
-
+    
     <profile-security-password />
   </div>
 </template>
@@ -31,10 +27,7 @@
   const defaultLocaleSecurityContent: Maybe<IProfileSecurity> = defaultLocaleData;
 
   setPageSeo(securityContent?.seo);
-
-  provide('documentsContent', securityContent?.documents);
-  provide('defaultLocaleDocumentsContent', defaultLocaleSecurityContent?.documents);
-
+  
   provide('passwordContent', securityContent?.password);
   provide('defaultLocalePasswordContent', defaultLocaleSecurityContent?.password);
 </script>

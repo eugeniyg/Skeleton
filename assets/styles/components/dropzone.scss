@@ -7,7 +7,7 @@
   grid-template-columns: auto 1fr;
   grid-template-areas: "icon content";
   grid-column-gap: rem(16px);
-  background-color: var(--dropzone-bg, transparent);
+  background-color: var(--dropzone-bg, var(--layer-01));
   transition: background-color .4s ease-in-out;
   align-content: center;
 

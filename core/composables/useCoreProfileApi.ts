@@ -5,7 +5,7 @@ import type {
   IPlayerLimit,
   IProfile,
   IResetPassword,
-  ISecurityFile,
+  IVerificationFile,
   ISession,
   ISessionsResponse,
   IUpdateLimit,
@@ -60,12 +60,12 @@ export const useCoreProfileApi = () => {
     return data;
   };
 
-  const getSecurityFiles = async ():Promise<ISecurityFile[]> => {
+  const getVerificationFiles = async ():Promise<IVerificationFile[]> => {
     const { data } = await useFetchInstance('/api/player/documents');
     return data;
   };
 
-  const uploadSecurityFile = async (fileData: IUploadFile):Promise<ISecurityFile[]> => {
+  const uploadVerificationFile = async (fileData: IUploadFile):Promise<IVerificationFile[]> => {
     const body = new FormData();
     Object.keys(fileData).forEach((key) => {
       body.append(key, fileData[key])
@@ -74,7 +74,7 @@ export const useCoreProfileApi = () => {
     return data;
   };
 
-  const deleteSecurityFile = async (id: string):Promise<ISecurityFile[]> => {
+  const deleteVerificationFile = async (id: string):Promise<IVerificationFile[]> => {
     const { data } = await useFetchInstance(`/api/player/documents/${id}`, { method: 'DELETE' });
     return data;
   };
@@ -112,9 +112,9 @@ export const useCoreProfileApi = () => {
     forgotProfilePassword,
     resetProfilePassword,
     resendVerifyEmail,
-    getSecurityFiles,
-    uploadSecurityFile,
-    deleteSecurityFile,
+    getVerificationFiles,
+    uploadVerificationFile,
+    deleteVerificationFile,
     getPlayerLimits,
     createPlayerLimit,
     updatePlayerLimit,

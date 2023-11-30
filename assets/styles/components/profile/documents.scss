@@ -1,0 +1,95 @@
+.documents {
+  &__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: rem(16px);
+
+    &-title {
+      @include font($heading-3);
+      color: var(--text-primary);
+    }
+  }
+
+  &__step-back {
+    @extend %skip-btn;
+    width: rem(32px);
+    height: rem(32px);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      --icon-size: 20px;
+      --color: var(--button-icn-ghost-low-contrast);
+    }
+  }
+
+  &__samples {
+    display: flex;
+    gap: rem(8px);
+
+    @include media(md) {
+      gap: rem(16px);
+    }
+
+    &-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 8px;
+      align-self: stretch;
+      background: var(--layer-01);
+      overflow: hidden;
+      text-align: center;
+      padding: rem(8px) rem(8px) rem(12px) rem(8px);
+
+      @include media(md) {
+        padding: rem(4px) rem(8px) rem(12px) rem(8px);
+      }
+
+      &-title {
+        color: var(--text-primary);
+        @include font($body-0);
+        @extend %text-elipsis;
+        width: 100%;
+      }
+
+      &-img {
+        display: block;
+        padding: 0;
+
+        @include media(md) {
+          padding: rem(8px);
+        }
+      }
+
+      img {
+        width: 100%;
+        max-width: rem(76px);
+        aspect-ratio: 76/48;
+        object-fit: contain;
+        position: relative;
+        display: block;
+      }
+    }
+
+    .icon {
+      margin: rem(-12px) 0 rem(4px);
+      position: relative;
+      --icon-size: 24px;
+
+      @include media(md) {
+        margin: rem(-16px) 0 rem(4px);
+      }
+
+      &:has(use[href*="#done"]) {
+        --color: var(--icon-success);
+      }
+
+      &:has(use[href*="#warning"]) {
+        --color: var(--icon-alert);
+      }
+    }
+  }
+}

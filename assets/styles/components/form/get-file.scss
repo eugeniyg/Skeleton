@@ -1,6 +1,4 @@
 .get-file {
-  padding: rem(24px);
-  background-color: var(--layer-01);
   border-radius: 16px;
   align-self: flex-start;
 
@@ -9,42 +7,107 @@
     margin: 0 0 rem(4px);
     padding: 0;
     color: var(--text-primary);
-    text-align: center;
   }
 
   &__description {
     @include font($heading-1);
-    margin: 0 0 rem(24px);
     padding: 0;
-    color: var(--text-tertiary);
-    text-align: center;
+    color: var(--text-secondary);
+    margin: rem(16px) 0 rem(40px) 0;
 
-    p {
-      padding: 0;
-      margin: 0;
-
-      + p {
-        margin-top: rem(8px);
+    &:has(li:nth-child(3)) {
+      + .show-more-btn {
+        @include media(md) {
+          display: none;
+        }
       }
     }
 
-    &[data-exerpt] {
-      @include line-clamp(2);
-      &.is-expanded {
-       display: block;
+    &:has(li:nth-child(3)):not(.is-expanded) {
+      li:nth-of-type(1n + 2) {
+        @extend %text-elipsis;
+      }
+
+      li:nth-of-type(1n + 3) {
+        display: none;
+
+        @include media(md) {
+          display: flex;
+        }
+      }
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+    }
+
+    li {
+      @include font($body-1);
+      position: relative;
+      display: block;
+      grid-column-gap: 8px;
+      padding-left: 20px;
+
+      &::before {
+        position: absolute;
+        display: block;
+        content: '';
+        background-color: var(--icon-primary);
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        left: 6px;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+      }
+
+      &:has(p) {
+        margin: 0;
+      }
+
+      &:not(&:has(p)) {
+        + li {
+          margin-top: rem(12px);
+        }
+      }
+    }
+
+    p {
+      @include font($body-1);
+
+      + p {
+        margin-top: rem(12px);
+      }
+    }
+
+    &.is-expanded {
+      + .show-more-btn {
+        .icon {
+          transform: rotate(180deg);
+        }
       }
     }
   }
 
   .show-more-btn {
     @extend %skip-btn;
-    display: block;
+    display: flex;
+    grid-column-gap: rem(4px);
+    align-items: center;
     text-decoration: none;
-    @include font($body-1-paragraph);
+    @include font($heading-1);
     font-family: inherit;
     color: var(--text/primary);
     transform: translateY(calc(-100% - #{rem(4px)}));
     margin: 0 auto;
+
+    .icon {
+      --icon-size: 20px;
+    }
 
     @include use-hover {
       cursor: pointer;

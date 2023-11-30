@@ -36,20 +36,20 @@
 </template>
 
 <script setup lang="ts">
-  import type { ISecurityFile } from '@skeleton/core/types';
-  import type { IProfileSecurity } from '~/types';
+  import type { IVerificationFile } from '@skeleton/core/types';
+  import type { IProfileVerification } from '~/types';
 
   const props = defineProps<{
     fileName?: string,
     loading: boolean,
-    fileList: ISecurityFile[]
+    fileList: IVerificationFile[]
   }>();
 
   const emit = defineEmits(['remove', 'change']);
 
   const isActive = ref(false);
-  const documentsContent: Maybe<IProfileSecurity['documents']> = inject('documentsContent');
-  const defaultLocaleDocumentsContent: Maybe<IProfileSecurity['documents']> = inject('defaultLocaleDocumentsContent');
+  const documentsContent: Maybe<IProfileVerification['documents']> = inject('documentsContent');
+  const defaultLocaleDocumentsContent: Maybe<IProfileVerification['documents']> = inject('defaultLocaleDocumentsContent');
   const errorFiles = computed(() => props.fileList.filter((file) => file.error));
 
   const dropzoneClasses = computed(() => ({

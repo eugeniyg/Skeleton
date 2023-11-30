@@ -1,0 +1,18 @@
+.verification {
+  &__title {}
+
+  &__documents {
+    //border: 1px solid red;
+  }
+
+  &__dropdown {
+    margin: 24px 0;
+    max-width: 336px;
+
+    .selected {
+
+        --color: var(--text-tertiary);
+
+    }
+  }
+}

@@ -85,7 +85,7 @@ export interface IUploadFile extends Record<string, any>{
   type: string;
 }
 
-export interface ISecurityFile extends Record<string, any>{
+export interface IVerificationFile extends Record<string, any>{
   id: string;
   fileName: string;
   status: number;

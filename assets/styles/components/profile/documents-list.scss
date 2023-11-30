@@ -1,0 +1,86 @@
+.documents-list {
+  margin-bottom: rem(16px);
+
+  &__items {
+    display: grid;
+    gap: rem(8px);
+    margin-bottom: rem(24px);
+
+    @include media(md) {
+      gap: rem(10px);
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__item {
+    padding: rem(14px) rem(16px);
+    background-color: var(--layer-01);
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "icon title" "icon info";
+    grid-column-gap: rem(8px);
+    align-items: center;
+
+    @include use-hover {
+      cursor: pointer;
+    }
+
+    &-icon {
+      grid-area: icon;
+      flex-shrink: 0;
+      width: rem(32px);
+      height: rem(32px);
+      --icon-size: #{rem(32px)};
+      --color: var(--selected-icon-color, var(--icon-primary));
+    }
+
+    &-title {
+      grid-area: title;
+      display: flex;
+      gap: rem(2px);
+
+      .icon {
+        --icon-size: #{rem(16px)};
+
+        &:has(use[href*="#done"]) {
+          --color: var(--icon-success);
+        }
+
+        &:has(use[href*="#warning"]) {
+          --color: var(--icon-alert);
+        }
+
+        &:has(use[href*="#eye-visibility"]) {
+          --color: var(--icon-accent);
+        }
+
+        &:has(use[href*="#clock"]) {
+          --color: var(--icon-accent);
+        }
+
+      }
+
+      &-text {
+        color: var(--text-primary);
+        @include font($heading-2);
+      }
+    }
+
+    &-info {
+      color: var(--text-secondary);
+      @include font($body-1);
+    }
+
+    &.is-selected {
+      box-shadow: 0 0 0 1px var(--border-click);
+      --selected-icon-color: var(--icon-accent);
+    }
+  }
+
+  .btn-primary {
+    @include font($heading-2);
+    --padding: #{rem(10px)} #{rem(60px)};
+    --btn-border-radius: 12px;
+  }
+}
