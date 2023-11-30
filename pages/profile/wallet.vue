@@ -41,15 +41,28 @@
     getLocalesContentData,
   } = useProjectMethods();
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleProfileWalletContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'wallet').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleProfileWalletContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'wallet').findOne())
-  ]);
+  let walletContent: Maybe<IProfileWallet>;
+  let defaultLocaleWalletContent: Maybe<IProfileWallet>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleProfileWalletContent'),
+    useNuxtData('defaultLocaleProfileWalletContent')
+  ]
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const walletContent: Maybe<IProfileWallet> = currentLocaleData;
-  const defaultLocaleWalletContent: Maybe<IProfileWallet> = defaultLocaleData;
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    walletContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleWalletContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleProfileWalletContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'wallet').findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleProfileWalletContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'wallet').findOne())
+    ]);
+
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    walletContent = currentLocaleData;
+    defaultLocaleWalletContent = defaultLocaleData;
+  }
+
   setPageSeo(walletContent?.seo);
 
   const walletStore = useWalletStore();

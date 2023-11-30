@@ -13,33 +13,63 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IHistory } from '~/types';
+  import type { IHistory, IProfileHistory } from '~/types';
   import camelCase from "lodash/camelCase";
 
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
   const { setPageSeo, getLocalesContentData } = useProjectMethods();
 
+  let historyContent: Maybe<IProfileHistory>;
+  let defaultLocaleHistoryContent: Maybe<IProfileHistory>;
+  let currentLocaleTabsContent;
+  let defaultLocaleTabsContent;
+  let historyTabContent: Maybe<IHistory>;
+  let defaultLocaleHistoryTabContent: Maybe<IHistory>;
   const [
-    currentLocaleContentResponse,
-    defaultLocaleContentResponse,
-    currentLocaleTabsContentResponse,
-    defaultLocaleTabsContentResponse
-  ] = await Promise.allSettled([
-    useAsyncData('currentLocaleProfileHistoryContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'history').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleProfileHistoryContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'history').findOne()),
-    useAsyncData('currentLocaleHistoryContent', () => queryContent(currentLocale.value?.code as string, 'history').find()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleHistoryContent', () => queryContent(defaultLocale.value?.code as string, 'history').find())
-  ]);
+    nuxtCurrentLocaleHistoryData,
+    nuxtDefaultLocaleHistoryData,
+    nuxtCurrentLocaleTabData,
+    nuxtDefaultLocaleTabData
+  ] = [
+    useNuxtData('currentLocaleProfileHistoryContent'),
+    useNuxtData('defaultLocaleProfileHistoryContent'),
+    useNuxtData('currentLocaleHistoryContent'),
+    useNuxtData('defaultLocaleHistoryContent')
+  ]
 
-  const { currentLocaleData: historyContent, defaultLocaleData: defaultLocaleHistoryContent } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  if (nuxtCurrentLocaleHistoryData.data.value
+    || nuxtDefaultLocaleHistoryData.data.value
+    || nuxtCurrentLocaleTabData.data.value
+    || nuxtDefaultLocaleTabData.data.value
+  ) {
+    historyContent = nuxtCurrentLocaleHistoryData.data.value;
+    defaultLocaleHistoryContent = nuxtDefaultLocaleHistoryData.data.value;
+    currentLocaleTabsContent = nuxtCurrentLocaleTabData.data.value;
+    defaultLocaleTabsContent = nuxtDefaultLocaleTabData.data.value;
+  } else {
+    const [
+      currentLocaleContentResponse,
+      defaultLocaleContentResponse,
+      currentLocaleTabsContentResponse,
+      defaultLocaleTabsContentResponse
+    ] = await Promise.allSettled([
+      useAsyncData('currentLocaleProfileHistoryContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'history').findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleProfileHistoryContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'history').findOne()),
+      useAsyncData('currentLocaleHistoryContent', () => queryContent(currentLocale.value?.code as string, 'history').find()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleHistoryContent', () => queryContent(defaultLocale.value?.code as string, 'history').find())
+    ]);
 
-  let historyTabContent: IHistory;
-  let defaultLocaleHistoryTabContent: IHistory;
+    const responseHistoryContent = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    historyContent = responseHistoryContent.currentLocaleData;
+    defaultLocaleHistoryContent = responseHistoryContent.defaultLocaleData;
 
-  const { currentLocaleData: currentLocaleTabsContent, defaultLocaleData: defaultLocaleTabsContent } = getLocalesContentData(currentLocaleTabsContentResponse, defaultLocaleTabsContentResponse);
+    const responseHistoryTabContent = getLocalesContentData(currentLocaleTabsContentResponse, defaultLocaleTabsContentResponse);
+    currentLocaleTabsContent = responseHistoryTabContent.currentLocaleData;
+    defaultLocaleTabsContent = responseHistoryTabContent.defaultLocaleData;
+  }
 
   if (currentLocaleTabsContent?.length) {
     historyTabContent  = currentLocaleTabsContent.reduce((finalContentObj:any, currentContent:any) => {

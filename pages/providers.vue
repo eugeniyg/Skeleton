@@ -64,16 +64,28 @@
 
   const { gameProviders } = storeToRefs(gamesStore);
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleProvidersPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'providers').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleProvidersPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'providers').findOne())
-  ]);
+  let providersContent: Maybe<IProvidersPage>;
+  let defaultLocaleProvidersContent: Maybe<IProvidersPage>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleProvidersPageContent'),
+    useNuxtData('defaultLocaleProvidersPageContent')
+  ]
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    providersContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleProvidersContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleProvidersPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'providers').findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleProvidersPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'providers').findOne())
+    ]);
 
-  const providersContent: Maybe<IProvidersPage> = currentLocaleData;
-  const defaultLocaleProvidersContent: Maybe<IProvidersPage> = defaultLocaleData;
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    providersContent = currentLocaleData;
+    defaultLocaleProvidersContent = defaultLocaleData;
+  }
+
   setPageSeo(providersContent?.seo);
 
   const staticProviderIdentity = getContent(providersContent, defaultLocaleProvidersContent, 'staticProvider.identity');

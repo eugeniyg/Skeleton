@@ -121,15 +121,28 @@
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleWelcomePageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'welcome-bonuses').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleWelcomePageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'welcome-bonuses').findOne())
-  ]);
+  let welcomeContent: Maybe<IWelcomeBonusesPage>;
+  let defaultLocaleWelcomeContent: Maybe<IWelcomeBonusesPage>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleWelcomePageContent'),
+    useNuxtData('defaultLocaleWelcomePageContent')
+  ]
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const welcomeContent: Maybe<IWelcomeBonusesPage> = currentLocaleData;
-  const defaultLocaleWelcomeContent: Maybe<IWelcomeBonusesPage> = defaultLocaleData;
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    welcomeContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleWelcomeContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleWelcomePageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'welcome-bonuses').findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleWelcomePageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'welcome-bonuses').findOne())
+    ]);
+
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    welcomeContent = currentLocaleData;
+    defaultLocaleWelcomeContent = defaultLocaleData;
+  }
+
   setPageSeo(welcomeContent?.seo);
 
   let howGetItems = [];

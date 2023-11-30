@@ -28,19 +28,29 @@
     addBetsyScript
   } = useProjectMethods();
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleSportsbookPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'sportsbook')
-      .findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleSportsbookPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'sportsbook')
-        .findOne())
-  ]);
+  let bettingContent: Maybe<ISportsbookPage>;
+  let defaultLocaleBettingContent: Maybe<ISportsbookPage>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleSportsbookPageContent'),
+    useNuxtData('defaultLocaleSportsbookPageContent')
+  ]
 
-  const {
-    currentLocaleData,
-    defaultLocaleData
-  } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const bettingContent: Maybe<ISportsbookPage> = currentLocaleData;
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    bettingContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleBettingContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleSportsbookPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'sportsbook')
+        .findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleSportsbookPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'sportsbook')
+          .findOne())
+    ]);
+
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    bettingContent = currentLocaleData;
+    defaultLocaleBettingContent = defaultLocaleData;
+  }
 
   setPageSeo(bettingContent?.seo);
 

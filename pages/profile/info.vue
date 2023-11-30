@@ -112,15 +112,28 @@
     getContent,
   } = useProjectMethods();
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleProfileInfoContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'info').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleProfileInfoContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'info').findOne())
-  ]);
+  let infoContent: Maybe<IProfileInfo>;
+  let defaultLocaleInfoContent: Maybe<IProfileInfo>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleProfileInfoContent'),
+    useNuxtData('defaultLocaleProfileInfoContent')
+  ]
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const infoContent: Maybe<IProfileInfo> = currentLocaleData;
-  const defaultLocaleInfoContent: Maybe<IProfileInfo> = defaultLocaleData;
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    infoContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleInfoContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleProfileInfoContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'info').findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleProfileInfoContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'info').findOne())
+    ]);
+
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    infoContent = currentLocaleData;
+    defaultLocaleInfoContent = defaultLocaleData;
+  }
+
   setPageSeo(infoContent?.seo);
 
   const { changeProfileData } = useCoreProfileApi();

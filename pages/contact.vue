@@ -70,15 +70,28 @@
     defaultLocale
   } = storeToRefs(globalStore);
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleContactPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'contacts').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleContactPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'contacts').findOne()),
-  ]);
+  let contactContent: Maybe<IContactsPage>;
+  let defaultLocaleContactContent: Maybe<IContactsPage>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleContactPageContent'),
+    useNuxtData('defaultLocaleContactPageContent')
+  ]
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const contactContent: Maybe<IContactsPage> = currentLocaleData;
-  const defaultLocaleContactContent: Maybe<IContactsPage> = defaultLocaleData;
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    contactContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleContactContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleContactPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'contacts').findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleContactPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'contacts').findOne()),
+    ]);
+
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    contactContent = currentLocaleData;
+    defaultLocaleContactContent = defaultLocaleData;
+  }
+
   setPageSeo(contactContent?.seo);
 
   const contactFormData = reactive({

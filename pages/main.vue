@@ -53,14 +53,27 @@
   } = useProjectMethods();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleCasinoPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'casino').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleCasinoPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'casino').findOne())
-  ]);
+  let pageContent: Maybe<ICasinoPage>;
+  let defaultLocalePageContent: Maybe<ICasinoPage>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleCasinoPageContent'),
+    useNuxtData('defaultLocaleCasinoPageContent')
+  ]
 
-  const { currentLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const pageContent: Maybe<ICasinoPage> = currentLocaleData;
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    pageContent = nuxtCurrentLocaleData.data.value;
+    defaultLocalePageContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleCasinoPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'casino').findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleCasinoPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'casino').findOne())
+    ]);
+
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    pageContent = currentLocaleData;
+    defaultLocalePageContent = defaultLocaleData;
+  }
 
   const dayjs = useDayjs();
   const sliderFilterTime = ref(dayjs.utc());

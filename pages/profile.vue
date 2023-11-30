@@ -28,17 +28,31 @@
   const { getProfileFields } = useFieldsStore();
   const profileMenu = ref<{ id: string, title: string, url: string, seo: ISeoBlock }[]>([]);
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleProfilePages', () => queryContent(currentLocale.value?.code as string, 'profile').find()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleProfilePages', () => queryContent(defaultLocale.value?.code as string, 'profile').find()),
-    useAsyncData('profileFields', getProfileFields),
-  ]);
-
-
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  let currentLocaleData: Maybe<IProfilePages>;
+  let defaultLocaleData: Maybe<IProfilePages>;
   let profileContent: Maybe<IProfilePages>;
   let defaultLocaleProfileContent: Maybe<IProfilePages>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleProfilePages'),
+    useNuxtData('defaultLocaleProfilePages')
+  ]
+
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    currentLocaleData = nuxtCurrentLocaleData.data.value;
+    defaultLocaleData = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleProfilePages', () => queryContent(currentLocale.value?.code as string, 'profile').find()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleProfilePages', () => queryContent(defaultLocale.value?.code as string, 'profile').find()),
+      useAsyncData('profileFields', getProfileFields),
+    ]);
+
+
+    const responseContentData = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    currentLocaleData = responseContentData.currentLocaleData;
+    defaultLocaleData = responseContentData.defaultLocaleData;
+  }
 
   if (currentLocaleData?.length) {
     profileContent  = currentLocaleData.reduce((finalContentObj:any, currentContent:any) => {

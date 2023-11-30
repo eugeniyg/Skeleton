@@ -64,7 +64,10 @@
   const limitsStore = useLimitsStore();
   const globalStore = useGlobalStore();
   const {
-    getLimits, setLimitsContent, showModal, toogleAdvancedMode,
+    getLimits,
+    setLimitsContent,
+    showModal,
+    toogleAdvancedMode
   } = limitsStore;
   const {
     limitsContent, defaultLimitsContent, isAdvancedModeEnabled,
@@ -72,16 +75,27 @@
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
   const { getLocalesContentData, getContent, setPageSeo } = useProjectMethods();
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData('currentLocaleProfileLimitsContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'limits').findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData('defaultLocaleProfileLimitsContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'limits').findOne()),
-    useAsyncData('updateLimits', getLimits)
-  ]);
+  let currentLocaleLimitsContent: Maybe<IProfileLimits>;
+  let defaultLocaleLimitsContent: Maybe<IProfileLimits>;
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData('currentLocaleProfileLimitsContent'),
+    useNuxtData('defaultLocaleProfileLimitsContent')
+  ]
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const currentLocaleLimitsContent: Maybe<IProfileLimits> = currentLocaleData;
-  const defaultLocaleLimitsContent: Maybe<IProfileLimits> = defaultLocaleData;
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    currentLocaleLimitsContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleLimitsContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData('currentLocaleProfileLimitsContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'limits').findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData('defaultLocaleProfileLimitsContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'limits').findOne()),
+    ]);
+
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    currentLocaleLimitsContent = currentLocaleData;
+    defaultLocaleLimitsContent = defaultLocaleData;
+  }
 
   setLimitsContent(currentLocaleLimitsContent, defaultLocaleLimitsContent);
   setPageSeo(currentLocaleLimitsContent?.seo);
@@ -131,6 +145,10 @@
     confirmModalKey.value += 1;
     showModal('confirmLimitUpdate');
   };
+
+  onMounted(() => {
+    getLimits();
+  })
 </script>
 
 <style src="~/assets/styles/pages/profile/limits.scss" lang="scss" />

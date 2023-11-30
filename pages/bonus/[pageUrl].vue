@@ -52,15 +52,27 @@
     getContent
   } = useProjectMethods();
 
-  const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-    useAsyncData(`${pageUrl}-current-content`, () => queryContent(currentLocale.value?.code as string, 'bonus', pageUrl as string).findOne()),
-    currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : useAsyncData(`${pageUrl}-default-content`, () => queryContent(defaultLocale.value?.code as string, 'bonus', pageUrl as string).findOne())
-  ]);
+  let currentLocaleBonusContent: Maybe<IBonusPage>
+  let defaultLocaleBonusContent: Maybe<IBonusPage>
+  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
+    useNuxtData(`${pageUrl}-current-content`),
+    useNuxtData(`${pageUrl}-default-content`)
+  ]
 
-  const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  const currentLocaleBonusContent: Maybe<IBonusPage> = currentLocaleData;
-  const defaultLocaleBonusContent: Maybe<IBonusPage> = defaultLocaleData;
+  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
+    currentLocaleBonusContent = nuxtCurrentLocaleData.data.value;
+    defaultLocaleBonusContent = nuxtDefaultLocaleData.data.value;
+  } else {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      useAsyncData(`${pageUrl}-current-content`, () => queryContent(currentLocale.value?.code as string, 'bonus', pageUrl as string).findOne()),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : useAsyncData(`${pageUrl}-default-content`, () => queryContent(defaultLocale.value?.code as string, 'bonus', pageUrl as string).findOne())
+    ]);
+    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    currentLocaleBonusContent = currentLocaleData;
+    defaultLocaleBonusContent = defaultLocaleData;
+  }
+
   setPageSeo(currentLocaleBonusContent?.seo);
 
   const profileStore = useProfileStore();
