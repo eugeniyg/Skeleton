@@ -203,6 +203,10 @@ body {
       margin-bottom: rem(40px);
     }
   }
+
+  &[data-route="games"] {
+    overflow: initial;
+  }
 }
 
 .form {
