@@ -9,7 +9,7 @@
       />
     </div>
 
-    <div class="content">
+    <div class="content" v-show="currentLocaleBonusContent || defaultLocaleBonusContent">
       <h1 class="title">{{ getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'title') }}</h1>
       <h3 class="sub-title">{{ getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'subtitle') }}</h3>
       <atomic-text-editor
@@ -52,28 +52,38 @@
     getContent
   } = useProjectMethods();
 
-  let currentLocaleBonusContent: Maybe<IBonusPage>
-  let defaultLocaleBonusContent: Maybe<IBonusPage>
-  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData(`${pageUrl}-current-content`),
-    useNuxtData(`${pageUrl}-default-content`)
-  ]
-
-  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
-    currentLocaleBonusContent = nuxtCurrentLocaleData.data.value;
-    defaultLocaleBonusContent = nuxtDefaultLocaleData.data.value;
-  } else {
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData(`${pageUrl}-current-content`, () => queryContent(currentLocale.value?.code as string, 'bonus', pageUrl as string).findOne()),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData(`${pageUrl}-default-content`, () => queryContent(defaultLocale.value?.code as string, 'bonus', pageUrl as string).findOne())
-    ]);
-    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    currentLocaleBonusContent = currentLocaleData;
-    defaultLocaleBonusContent = defaultLocaleData;
+  interface IPageContent {
+    currentLocaleData: Maybe<IBonusPage>;
+    defaultLocaleData: Maybe<IBonusPage>;
   }
 
-  setPageSeo(currentLocaleBonusContent?.seo);
+  const currentLocaleBonusContent = ref<Maybe<IBonusPage>>();
+  const defaultLocaleBonusContent = ref<Maybe<IBonusPage>>();
+
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    currentLocaleBonusContent.value = contentData?.currentLocaleData;
+    defaultLocaleBonusContent.value = contentData?.defaultLocaleData;
+    setPageSeo(currentLocaleBonusContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData(`${pageUrl}-bonus-content`);
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'bonus', pageUrl as string).findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'bonus', pageUrl as string).findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData(`${pageUrl}-bonus-content`, () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);

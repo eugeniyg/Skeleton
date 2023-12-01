@@ -28,71 +28,86 @@
   const { getProfileFields } = useFieldsStore();
   const profileMenu = ref<{ id: string, title: string, url: string, seo: ISeoBlock }[]>([]);
 
-  let currentLocaleData: Maybe<IProfilePages>;
-  let defaultLocaleData: Maybe<IProfilePages>;
-  let profileContent: Maybe<IProfilePages>;
-  let defaultLocaleProfileContent: Maybe<IProfilePages>;
-  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData('currentLocaleProfilePages'),
-    useNuxtData('defaultLocaleProfilePages')
-  ]
+  const currentLocaleData = ref<Maybe<IProfilePages>>();
+  const defaultLocaleData = ref<Maybe<IProfilePages>>();
+  const profileContent = ref<Maybe<IProfilePages>>();
+  const defaultLocaleProfileContent = ref<Maybe<IProfilePages>>();
 
-  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
-    currentLocaleData = nuxtCurrentLocaleData.data.value;
-    defaultLocaleData = nuxtDefaultLocaleData.data.value;
-  } else {
+  interface IPageContent {
+    currentLocaleData: Maybe<IProfilePages>;
+    defaultLocaleData: Maybe<IProfilePages>;
+  }
+
+  const setPageContent = ():void => {
+    if (currentLocaleData.value?.length) {
+      profileContent.value  = currentLocaleData.value.reduce((finalContentObj:any, currentContent:any) => {
+        const splitPath = currentContent._path?.split('/');
+        if (!splitPath) return finalContentObj;
+
+        const contentName = camelCase(splitPath[3]);
+        return { ...finalContentObj, [contentName]: currentContent }
+      }, {})
+    }
+
+    if (defaultLocaleData.value?.length) {
+      defaultLocaleProfileContent.value  = defaultLocaleData.value.reduce((finalContentObj:any, currentContent:any) => {
+        const splitPath = currentContent._path?.split('/');
+        if (!splitPath) return finalContentObj;
+
+        const contentName = camelCase(splitPath[3]);
+        return { ...finalContentObj, [contentName]: currentContent }
+      }, {})
+    }
+
+    const profileContentObj = profileContent.value || defaultLocaleProfileContent.value;
+    if (profileContentObj) {
+      const filteredArray = Object.keys(profileContentObj).filter((key) => {
+        if (profileContentObj[key]?.title) return key;
+        return false;
+      })
+
+      profileMenu.value = filteredArray.map((key) => ({
+        id: key,
+        title: profileContentObj[key].title,
+        url: `/profile/${key}`,
+        seo: profileContentObj[key].seo,
+      }));
+    }
+  }
+
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    currentLocaleData.value = contentData?.currentLocaleData;
+    defaultLocaleData.value = contentData?.defaultLocaleData;
+    setPageContent();
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('profilePages');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData('currentLocaleProfilePages', () => queryContent(currentLocale.value?.code as string, 'profile').find()),
+      queryContent(currentLocale.value?.code as string, 'profile').find(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleProfilePages', () => queryContent(defaultLocale.value?.code as string, 'profile').find()),
-      useAsyncData('profileFields', getProfileFields),
+        : queryContent(defaultLocale.value?.code as string, 'profile').find()
     ]);
-
-
-    const responseContentData = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    currentLocaleData = responseContentData.currentLocaleData;
-    defaultLocaleData = responseContentData.defaultLocaleData;
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  if (currentLocaleData?.length) {
-    profileContent  = currentLocaleData.reduce((finalContentObj:any, currentContent:any) => {
-      const splitPath = currentContent._path?.split('/');
-      if (!splitPath) return finalContentObj;
+  const { pending, data } = await useLazyAsyncData('profilePages', () => getPageContent());
+  if (data.value) setContentData(data.value);
 
-      const contentName = camelCase(splitPath[3]);
-      return { ...finalContentObj, [contentName]: currentContent }
-    }, {})
-  }
-
-  if (defaultLocaleData?.length) {
-    defaultLocaleProfileContent  = defaultLocaleData.reduce((finalContentObj:any, currentContent:any) => {
-      const splitPath = currentContent._path?.split('/');
-      if (!splitPath) return finalContentObj;
-
-      const contentName = camelCase(splitPath[3]);
-      return { ...finalContentObj, [contentName]: currentContent }
-    }, {})
-  }
-
-  const profileContentObj = profileContent || defaultLocaleProfileContent;
-  if (profileContentObj) {
-    const filteredArray = Object.keys(profileContentObj).filter((key) => {
-      if (profileContentObj[key]?.title) return key;
-      return false;
-    })
-
-    profileMenu.value = filteredArray.map((key) => ({
-      id: key,
-      title: profileContentObj[key].title,
-      url: `/profile/${key}`,
-      seo: profileContentObj[key].seo,
-    }));
-  }
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   const activePageSeo = computed(() => {
     const activePageData = profileMenu.value.find((item) => localizePath(item.url) === route.path);
     return activePageData?.seo;
   });
+
+  onBeforeMount(() => {
+    getProfileFields();
+  })
 </script>
 
 <style src="~/assets/styles/pages/profile.scss" lang="scss" />

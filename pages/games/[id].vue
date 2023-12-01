@@ -1,6 +1,7 @@
 <template>
   <div>
     <box-game
+      v-if="gameInfo"
       :frameLink="gameStart"
       :gameInfo="gameInfo"
       @changeMode="changeGameMode"
@@ -52,35 +53,45 @@
 
   const { setPageSeo, getLocalesContentData } = useProjectMethods();
 
-  let gameInfo: Maybe<IGame>;
-  let gameContent: Maybe<IGamePage>;
-  let defaultLocaleGameContent: Maybe<IGamePage>;
-  const [nuxtGameInfoData, nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData(`game${route.params.id}Info`),
-    useNuxtData('currentLocaleGameContent'),
-    useNuxtData('defaultLocaleGameContent')
-  ]
+  const gameInfo = ref<Maybe<IGame>>();
+  const gameContent = ref<Maybe<IGamePage>>();
+  const defaultLocaleGameContent = ref<Maybe<IGamePage>>();
 
-  if (nuxtGameInfoData.data.value) {
-    gameInfo = nuxtGameInfoData.data.value;
-    gameContent = nuxtCurrentLocaleData.data.value;
-    defaultLocaleGameContent = nuxtDefaultLocaleData.data.value;
-  } else {
-    const [infoResponse, currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData(`game${route.params.id}Info`, () => getGamesInfo(route.params.id as string)),
-      useAsyncData('currentLocaleGameContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'game').findOne()),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleGameContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'game').findOne())
-    ]);
-
-    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    gameContent = currentLocaleData;
-    defaultLocaleGameContent = defaultLocaleData;
-
-    if (infoResponse.status !== 'rejected') gameInfo = infoResponse.value.data?.value as IGame;
+  interface IPageData {
+    gameInfo: Maybe<IGame>;
+    currentLocaleData: Maybe<IGamePage>;
+    defaultLocaleData: Maybe<IGamePage>;
   }
 
-  setPageSeo(gameContent?.seo);
+  const setContentData = (contentData: Maybe<IPageData>): void => {
+    gameInfo.value = contentData?.gameInfo;
+    gameContent.value = contentData?.currentLocaleData;
+    defaultLocaleGameContent.value = contentData?.defaultLocaleData;
+    setPageSeo(gameContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageData> => {
+    const nuxtPageData = useNuxtData(`game${route.params.id}Info`);
+    if (nuxtPageData.data.value) return nuxtPageData.data.value;
+
+    const [infoResponse, currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      getGamesInfo(route.params.id as string),
+      queryContent(currentLocale.value?.code as string, 'pages', 'game').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'game').findOne()
+    ]);
+    const contentResponseData = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    const gameInfo = infoResponse.status !== 'rejected' ? infoResponse.value : undefined;
+    return reactive({ gameInfo, ...contentResponseData });
+  }
+
+  const { pending, data } = await useLazyAsyncData(`game${route.params.id}Info`, () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+    if (pageMounted.value) checkGame();
+  })
 
   const router = useRouter();
 
@@ -171,14 +182,9 @@
     }
   });
 
-  onMounted(async () => {
-    document.body.classList.add('is-mob-nav-vertical');
-    document.body.classList.add('is-game-page');
-    useListen('changeMobileGameMode', changeGameMode);
-    compactDrawer(true, false);
-
+  const checkGame = async (): Promise<void> => {
     if (!isDemo.value && !isLoggedIn.value) {
-      if (gameInfo?.isDemoMode) await changeGameMode();
+      if (gameInfo.value?.isDemoMode) await changeGameMode();
       else showPlug.value = true;
     } else {
       const { error } = await startGame();
@@ -186,13 +192,24 @@
 
       checkDepositModal()
     }
+  }
+
+  const pageMounted = ref<boolean>(false);
+  onMounted(async () => {
+    document.body.classList.add('is-mob-nav-vertical');
+    document.body.classList.add('is-game-page');
+    useListen('changeMobileGameMode', changeGameMode);
+    compactDrawer(true, false);
+
+    if (gameInfo.value) await checkGame();
+    pageMounted.value = true;
   });
 
   onBeforeUnmount(() => {
     document.body.classList.remove('is-mob-nav-vertical');
     document.body.classList.remove('is-game-page');
 
-    if (isLoggedIn.value && !isDemo.value) setReturnGame(gameInfo);
+    if (isLoggedIn.value && !isDemo.value) setReturnGame(gameInfo.value);
     const storageDrawerCompact = localStorage.getItem('IS_DRAWER_COMPACT') === 'true';
     compactDrawer(storageDrawerCompact, false);
     useUnlisten('changeMobileGameMode', changeGameMode);

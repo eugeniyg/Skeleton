@@ -112,29 +112,38 @@
     getContent,
   } = useProjectMethods();
 
-  let infoContent: Maybe<IProfileInfo>;
-  let defaultLocaleInfoContent: Maybe<IProfileInfo>;
-  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData('currentLocaleProfileInfoContent'),
-    useNuxtData('defaultLocaleProfileInfoContent')
-  ]
+  const infoContent = ref<Maybe<IProfileInfo>>();
+  const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>();
 
-  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
-    infoContent = nuxtCurrentLocaleData.data.value;
-    defaultLocaleInfoContent = nuxtDefaultLocaleData.data.value;
-  } else {
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData('currentLocaleProfileInfoContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'info').findOne()),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleProfileInfoContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'info').findOne())
-    ]);
-
-    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    infoContent = currentLocaleData;
-    defaultLocaleInfoContent = defaultLocaleData;
+  interface IPageContent {
+    currentLocaleData: Maybe<IProfileInfo>;
+    defaultLocaleData: Maybe<IProfileInfo>;
   }
 
-  setPageSeo(infoContent?.seo);
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    infoContent.value = contentData?.currentLocaleData;
+    defaultLocaleInfoContent.value = contentData?.defaultLocaleData;
+    setPageSeo(infoContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('profileInfoContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'profile', 'info').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'profile', 'info').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('profileInfoContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();

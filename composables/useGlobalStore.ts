@@ -241,12 +241,10 @@ export const useGlobalStore = defineStore('globalStore', {
       const globalContentFolders = ['alerts', 'fields-settings', 'global-components', 'layout', 'modals'];
 
       const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-        useAsyncData('currentLocaleGlobalContent', () => queryContent(this.currentLocale?.code as string)
-          .where({ _dir: { $in: globalContentFolders } }).find()),
+        queryContent(this.currentLocale?.code as string).where({ _dir: { $in: globalContentFolders } }).find(),
         this.currentLocale?.isDefault
           ? Promise.reject('Current locale is default locale!')
-          : useAsyncData('defaultLocaleGlobalContent', () => queryContent(this.defaultLocale?.code as string)
-            .where({ _dir: { $in: globalContentFolders } }).find())
+          : queryContent(this.defaultLocale?.code as string).where({ _dir: { $in: globalContentFolders } }).find()
       ]);
 
       const { getLocalesContentData } = useProjectMethods();

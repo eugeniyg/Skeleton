@@ -53,7 +53,6 @@
       :period="state.period"
       :key="confirmModalKey"
     />
-
   </div>
 </template>
 
@@ -75,30 +74,39 @@
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
   const { getLocalesContentData, getContent, setPageSeo } = useProjectMethods();
 
-  let currentLocaleLimitsContent: Maybe<IProfileLimits>;
-  let defaultLocaleLimitsContent: Maybe<IProfileLimits>;
-  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData('currentLocaleProfileLimitsContent'),
-    useNuxtData('defaultLocaleProfileLimitsContent')
-  ]
+  const currentLocaleLimitsContent = ref<Maybe<IProfileLimits>>();
+  const defaultLocaleLimitsContent = ref<Maybe<IProfileLimits>>();
 
-  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
-    currentLocaleLimitsContent = nuxtCurrentLocaleData.data.value;
-    defaultLocaleLimitsContent = nuxtDefaultLocaleData.data.value;
-  } else {
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData('currentLocaleProfileLimitsContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'limits').findOne()),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleProfileLimitsContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'limits').findOne()),
-    ]);
-
-    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    currentLocaleLimitsContent = currentLocaleData;
-    defaultLocaleLimitsContent = defaultLocaleData;
+  interface IPageContent {
+    currentLocaleData: Maybe<IProfileLimits>;
+    defaultLocaleData: Maybe<IProfileLimits>;
   }
 
-  setLimitsContent(currentLocaleLimitsContent, defaultLocaleLimitsContent);
-  setPageSeo(currentLocaleLimitsContent?.seo);
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    currentLocaleLimitsContent.value = contentData?.currentLocaleData;
+    defaultLocaleLimitsContent.value = contentData?.defaultLocaleData;
+    setLimitsContent(currentLocaleLimitsContent.value, defaultLocaleLimitsContent.value);
+    setPageSeo(currentLocaleLimitsContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('profileLimitsContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'profile', 'limits').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').findOne(),
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('profileLimitsContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   interface IEditProps {
     limitId: string | undefined,

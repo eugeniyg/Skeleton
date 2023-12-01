@@ -244,20 +244,21 @@ export const useProjectMethods = () => {
     currentLocaleData: any,
     defaultLocaleData: any
   } => {
-    let currentLocaleData;
-    let defaultLocaleData;
+    // I NEED PROXY IN RETURN
+    const contentData = reactive({
+      currentLocaleData: undefined,
+      defaultLocaleData: undefined
+    })
 
     if (currentLocaleContentResponse.status !== 'rejected') {
-      const { data } = currentLocaleContentResponse.value;
-      if (data) currentLocaleData = data.value;
+      contentData.currentLocaleData = currentLocaleContentResponse.value;
     }
 
     if (defaultLocaleContentResponse.status !== 'rejected') {
-      const { data } = defaultLocaleContentResponse.value;
-      if (data) defaultLocaleData = data.value;
+      contentData.defaultLocaleData = defaultLocaleContentResponse.value;
     }
 
-    return { currentLocaleData, defaultLocaleData };
+    return contentData;
   };
 
   const initObserver = (el:any, options:IObserverOptions):void => {

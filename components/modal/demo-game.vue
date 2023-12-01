@@ -7,10 +7,10 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="openModal = false"/>
-        <div class="title">{{ props.content.label }}</div>
+        <div class="title">{{ props.content?.label }}</div>
       </div>
 
-      <p class="text">{{ props.content.description }}</p>
+      <p class="text">{{ props.content?.description }}</p>
 
       <div class="actions">
         <button-base
@@ -18,7 +18,7 @@
           size="md"
           @click.once="confirm"
         >
-          {{ props.content[modalType] }}
+          {{ props.content?.[modalType] }}
         </button-base>
 
         <button-base
@@ -26,7 +26,7 @@
           size="md"
           @click="openModal = false"
         >
-          {{ props.content.demo }}
+          {{ props.content?.demo }}
         </button-base>
       </div>
     </div>
@@ -39,7 +39,7 @@
   import { storeToRefs } from "pinia";
 
   const props = defineProps<{
-    content: IGamePage['demoModal'];
+    content?: IGamePage['demoModal'];
     isDemo: boolean;
   }>()
 

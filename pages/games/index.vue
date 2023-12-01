@@ -64,7 +64,6 @@
   import type {
     ICollection,
     IGame,
-    IGameProvider,
     IGamesResponse,
     IPaginationMeta
   } from '@skeleton/core/types';
@@ -92,34 +91,55 @@
     getLocalesContentData,
   } = useProjectMethods();
 
-  let gamesContent: Maybe<IGamesPage>;
-  let defaultLocaleGamesContent: Maybe<IGamesPage>;
-  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData('currentLocaleGamesPageContent'),
-    useNuxtData('defaultLocaleGamesPageContent')
-  ]
+  const route = useRoute();
+  const router = useRouter();
 
-  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
-    gamesContent = nuxtCurrentLocaleData.data.value;
-    defaultLocaleGamesContent = nuxtDefaultLocaleData.data.value;
-  } else {
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData('currentLocaleGamesPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'games').findOne()),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleGamesPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'games').findOne())
-    ]);
+  const sortBy = ref<string | undefined>();
+  const sortOrder = ref<string | undefined>();
 
-    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    gamesContent = currentLocaleData;
-    defaultLocaleGamesContent = defaultLocaleData;
+  const setDefaultSortOptions = (): void => {
+    sortBy.value = route.query.sortBy as string
+      || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortBy') || 'default';
+    sortOrder.value = route.query.sortOrder as string
+      || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortOrder') || 'asc';
   }
 
-  setPageSeo(gamesContent?.seo);
+  interface IPageContent {
+    currentLocaleData: Maybe<IGamesPage>;
+    defaultLocaleData: Maybe<IGamesPage>;
+  }
+
+  const gamesContent = ref<Maybe<IGamesPage>>();
+  const defaultLocaleGamesContent = ref<Maybe<IGamesPage>>();
+
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    gamesContent.value = contentData?.currentLocaleData;
+    defaultLocaleGamesContent.value = contentData?.defaultLocaleData;
+    setPageSeo(gamesContent.value?.seo);
+    setDefaultSortOptions();
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('gamesPageContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'pages', 'games').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'games').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('gamesPageContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   const gamesStore = useGamesStore();
   const { currentLocationCollections } = storeToRefs(gamesStore);
-  const route = useRoute();
-  const router = useRouter();
 
   const activeCollection = ref<ICollection | undefined>(
     currentLocationCollections.value.find((collection) => collection.identity === route.query.category),
@@ -132,10 +152,6 @@
     else selectedProviders.value = [routeProvider];
   }
 
-  const sortBy = ref<string | undefined>(route.query.sortBy as string
-    || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortBy') || 'default');
-  const sortOrder = ref<string | undefined>(route.query.sortOrder as string
-    || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortOrder') || 'asc');
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
   const gameItems = ref<IGame[]>([]);
