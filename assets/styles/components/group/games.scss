@@ -71,7 +71,7 @@
     padding: var(--items-padding, (16px 16px 0));
     scroll-padding: var(--scroll-padding, 16px);
     grid-column-gap: var(--column-gap);
-
+    overscroll-behavior: none;
     scroll-snap-type: x mandatory;
 
     --column-count: 3.25;

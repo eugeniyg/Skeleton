@@ -101,9 +101,12 @@
   };
 
   const clickAction = (direction: string): void => {
-    const { offsetWidth } = scrollContainer.value;
+    const { offsetWidth, scrollWidth, scrollLeft } = scrollContainer.value;
+    const widthToEnd = scrollWidth - (scrollLeft + offsetWidth);
+    const scrollLeftValue = widthToEnd < offsetWidth ? widthToEnd : offsetWidth;
+    const scrollRightValue = scrollLeft < offsetWidth ? scrollLeft : offsetWidth;
     scrollContainer.value.scrollBy({
-      left: direction === 'next' ? offsetWidth : -offsetWidth,
+      left: direction === 'next' ? scrollLeftValue : -scrollRightValue,
       behavior: 'smooth',
     });
   };
