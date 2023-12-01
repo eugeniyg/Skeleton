@@ -48,6 +48,8 @@
       :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.forgotButton')"
       openModal="forgotPass"
     />
+    
+    <atomic-socials/>
 
     <button-popup
       :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.registrationButton')"
