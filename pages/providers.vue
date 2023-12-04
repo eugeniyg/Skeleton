@@ -9,7 +9,7 @@
         {{ gameProviders?.length || 0 }} {{ getContent(providersContent, defaultLocaleProvidersContent, 'providersLabel') }}
       </div>
 
-      <div class="page-providers__filter">
+      <div v-if="providersContent || defaultLocaleProvidersContent" class="page-providers__filter">
         <providers-filter
           :currentLocaleContent="providersContent"
           :defaultLocaleContent="defaultLocaleProvidersContent"
@@ -64,31 +64,40 @@
 
   const { gameProviders } = storeToRefs(gamesStore);
 
-  let providersContent: Maybe<IProvidersPage>;
-  let defaultLocaleProvidersContent: Maybe<IProvidersPage>;
-  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData('currentLocaleProvidersPageContent'),
-    useNuxtData('defaultLocaleProvidersPageContent')
-  ]
+  const providersContent = ref<Maybe<IProvidersPage>>();
+  const defaultLocaleProvidersContent = ref<Maybe<IProvidersPage>>();
 
-  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
-    providersContent = nuxtCurrentLocaleData.data.value;
-    defaultLocaleProvidersContent = nuxtDefaultLocaleData.data.value;
-  } else {
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData('currentLocaleProvidersPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'providers').findOne()),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleProvidersPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'providers').findOne())
-    ]);
-
-    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    providersContent = currentLocaleData;
-    defaultLocaleProvidersContent = defaultLocaleData;
+  interface IPageContent {
+    currentLocaleData: Maybe<IProvidersPage>;
+    defaultLocaleData: Maybe<IProvidersPage>;
   }
 
-  setPageSeo(providersContent?.seo);
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    providersContent.value = contentData?.currentLocaleData;
+    defaultLocaleProvidersContent.value = contentData?.defaultLocaleData;
+    setPageSeo(providersContent.value?.seo);
+  }
 
-  const staticProviderIdentity = getContent(providersContent, defaultLocaleProvidersContent, 'staticProvider.identity');
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('providersPageContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'pages', 'providers').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'providers').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('providersPageContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
+
+  const staticProviderIdentity = computed(() => getContent(providersContent.value, defaultLocaleProvidersContent.value, 'staticProvider.identity'));
   const staticProviderInfo = ref<IGameProvider|undefined>();
 
   const requestParams = reactive<IProvidersRequest>({
@@ -107,8 +116,8 @@
   }
 
   const filterProviders = (providers: IGameProvider[]): void => {
-    providersList.value = providers.filter(provider => provider.identity !== staticProviderIdentity);
-    staticProviderInfo.value = providers.find(provider => provider.identity === staticProviderIdentity);
+    providersList.value = providers.filter(provider => provider.identity !== staticProviderIdentity.value);
+    staticProviderInfo.value = providers.find(provider => provider.identity === staticProviderIdentity.value);
   }
   const providersList = ref<IGameProvider[]>([]);
 

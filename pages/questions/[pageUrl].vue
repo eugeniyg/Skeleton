@@ -17,30 +17,38 @@
   import { storeToRefs } from 'pinia';
   import type { IQuestionCategory } from '~/types';
 
-  const pageContent = ref<IQuestionCategory|undefined>(undefined);
   const route = useRoute();
   const { pageUrl } = route.params;
 
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
-
-  let currentLocaleContent: Maybe<IQuestionCategory>;
-  const nuxtQuestionData = useNuxtData(`${pageUrl}-question`);
-  if (nuxtQuestionData.data.value) {
-    currentLocaleContent = nuxtQuestionData.data.value;
-  } else {
-    const { data: { value: questionPageContent } }: { data: { value: IQuestionCategory }} = await useAsyncData(`${pageUrl}-question`,
-      () => queryContent(currentLocale.value?.code as string, 'question-pages', pageUrl as string).findOne());
-    currentLocaleContent = questionPageContent;
-  }
-
   const { getContent } = useProjectMethods();
 
-  if (currentLocaleContent) {
-    pageContent.value = currentLocaleContent;
-  } else {
-    throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  const pageContent = ref<Maybe<IQuestionCategory>>();
+
+  const setContentData = (contentData: Maybe<IQuestionCategory>): void => {
+    if (contentData) {
+      pageContent.value = contentData;
+    } else {
+      throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+    }
   }
+
+  const getPageContent = async (): Promise<IQuestionCategory> => {
+    const nuxtContentData = useNuxtData(`${pageUrl}-question`);
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const pageContent: object = await queryContent(currentLocale.value?.code as string, 'question-pages', pageUrl as string).findOne();
+    return reactive({ ...pageContent } as IQuestionCategory);
+  }
+
+  const { pending, data, error } = await useLazyAsyncData(`${pageUrl}-question`, () => getPageContent());
+  if (error.value) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  else if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   const questionsList = computed(() => {
     return pageContent.value?.questionList || [];

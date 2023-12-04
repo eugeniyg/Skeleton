@@ -1,6 +1,8 @@
 <template>
   <div class="security-password">
-    <div class="security-password__subtitle">{{ passwordContent?.label || defaultLocalePasswordContent?.label }}</div>
+    <div class="security-password__subtitle">
+      {{ securityContent?.password?.label || defaultLocaleSecurityContent?.password?.label }}
+    </div>
 
     <form class="form form-change">
       <div v-for="field in Object.keys(changeFormData)" :key="field" :class="`row row-${field}`">
@@ -19,13 +21,14 @@
       </div>
 
       <button-base
+        v-if="securityContent || defaultLocaleSecurityContent"
         type="primary"
         size="md"
         tagName="div"
         @click="onSubmit"
         :isDisabled="v$.$invalid || isLockedAsyncButton"
       >
-        {{ passwordContent?.saveButton || defaultLocalePasswordContent?.saveButton }}
+        {{ securityContent?.password?.saveButton || defaultLocaleSecurityContent?.password?.saveButton }}
       </button-base>
     </form>
   </div>
@@ -33,6 +36,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import type { IProfileSecurity } from "~/types";
 
   const globalStore = useGlobalStore();
   const {
@@ -42,8 +46,8 @@
     defaultLocaleAlertsData,
   } = storeToRefs(globalStore);
 
-  const passwordContent: Maybe<{label: string, saveButton:string}> = inject('passwordContent');
-  const defaultLocalePasswordContent: Maybe<{label: string, saveButton:string}> = inject('defaultLocalePasswordContent');
+  const securityContent = ref<Maybe<IProfileSecurity>>(inject('securityContent'));
+  const defaultLocaleSecurityContent = ref<Maybe<IProfileSecurity>>(inject('defaultLocaleSecurityContent'));
 
   interface IChangeFormData extends Record<string, any>{
     currentPassword: string,

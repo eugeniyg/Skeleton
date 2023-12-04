@@ -22,7 +22,7 @@
     </div>
 
     <form-profile
-      v-if="isProfileEdit"
+      v-if="isProfileEdit && profileFields?.length"
       @toggle-profile-edit="toggleProfileEdit"
       v-bind="infoContent || defaultLocaleInfoContent"
     />

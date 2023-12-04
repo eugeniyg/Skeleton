@@ -77,35 +77,45 @@
     addBetsyScript
   } = useProjectMethods();
 
-  let homeContent: Maybe<IHomePage>;
-  let defaultLocaleHomeContent: Maybe<IHomePage>;
-  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData('currentLocaleHomePageContent'),
-    useNuxtData('defaultLocaleHomePageContent')
-  ]
+  const homeContent = ref<Maybe<IHomePage>>();
+  const defaultLocaleHomeContent = ref<Maybe<IHomePage>>();
 
-  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
-    homeContent = nuxtCurrentLocaleData.data.value;
-    defaultLocaleHomeContent = nuxtDefaultLocaleData.data.value;
-  } else {
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData('currentLocaleHomePageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'home').findOne()),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleHomePageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'home').findOne())
-    ]);
-    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    homeContent = currentLocaleData;
-    defaultLocaleHomeContent = defaultLocaleData;
+  interface IPageContent {
+    currentLocaleData: Maybe<IHomePage>;
+    defaultLocaleData: Maybe<IHomePage>;
   }
 
-  setPageSeo(homeContent?.seo);
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    homeContent.value = contentData?.currentLocaleData;
+    defaultLocaleHomeContent.value = contentData?.defaultLocaleData;
+    setPageSeo(homeContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('homePageContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'pages', 'home').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'home').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('homePageContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   const topSlotsCategory = currentLocationCollections.value.find((collection) => collection.identity === 'top-slots');
   const liveCasinoCategory = currentLocationCollections.value.find((collection) => collection.identity === 'liveshow');
-  const aeroCategory = currentLocationCollections.value.find((collection) => collection.identity === homeContent?.aeroGroup?.collectionIdentity);
+  const aeroCategory = computed(() => currentLocationCollections.value.find((collection) => collection.identity === homeContent.value?.aeroGroup?.collectionIdentity));
 
   const cardsModifier = computed(() => {
-    const length = Object.keys(getContent(homeContent, defaultLocaleHomeContent, 'categories'))?.length || 0
+    const length = Object.keys(getContent(homeContent.value, defaultLocaleHomeContent.value, 'categories'))?.length || 0
     return length > 2 ? `cards-cat--${length}` : ''
   });
 

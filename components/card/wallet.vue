@@ -48,7 +48,7 @@
     balance: number,
     currency: string,
     status: number,
-    content: IProfileWallet
+    content: Maybe<IProfileWallet>
   }>();
 
   const isChecked = ref<boolean>(false);

@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <div class="limits__grid">
+    <div v-show="!pending" class="limits__grid">
       <card-deposit-limits
         v-if="isAdvancedModeEnabled"
         @open-limit-modal="openLimitModal"

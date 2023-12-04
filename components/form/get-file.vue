@@ -1,7 +1,7 @@
 <template>
   <form class="get-file" :class="props.type">
     <div class="get-file__title">
-      {{ getContent(documentsContent, defaultLocaleDocumentsContent, `${props.type}.label`) }}
+      {{ getContent(securityContent, defaultLocaleSecurityContent, `documents.${props.type}.label`) }}
     </div>
 
     <div
@@ -9,7 +9,7 @@
       data-exerpt
       :class="['get-file__description', {'is-expanded': isTextExpanded}]"
     >
-      {{ getContent(documentsContent, defaultLocaleDocumentsContent, `${props.type}.description`) }}
+      {{ getContent(securityContent, defaultLocaleSecurityContent, `documents.${props.type}.description`) }}
     </div>
 
     <button
@@ -17,14 +17,14 @@
       class="show-more-btn"
       @click.prevent="clickAction"
     >
-      {{ isTextExpanded ? getContent(documentsContent, defaultLocaleDocumentsContent, 'hideText')
-        : getContent(documentsContent, defaultLocaleDocumentsContent, 'moreInfo') }}
+      {{ isTextExpanded ? getContent(securityContent, defaultLocaleSecurityContent, 'documents.hideText')
+        : getContent(securityContent, defaultLocaleSecurityContent, 'documents.moreInfo') }}
     </button>
 
     <div class="dropzones-list">
       <dropzone
         v-for="item in Object.keys(props.formData)"
-        :fileName="getContent(documentsContent, defaultLocaleDocumentsContent, `${props.type}.${item}`)"
+        :fileName="getContent(securityContent, defaultLocaleSecurityContent, `documents.${props.type}.${item}`)"
         :fileList="props.formData[item]"
         :key="item"
         :loading="props.loadingFields.includes(item)"
@@ -56,8 +56,8 @@
   const excerpt = ref<HTMLElement>();
   const isShowMoreBtn = ref<boolean>(false);
   const isTextExpanded = ref<boolean>(false);
-  const documentsContent: Maybe<IProfileSecurity['documents']> = inject('documentsContent');
-  const defaultLocaleDocumentsContent: Maybe<IProfileSecurity['documents']> = inject('defaultLocaleDocumentsContent');
+  const securityContent = ref<Maybe<IProfileSecurity>>(inject('securityContent'));
+  const defaultLocaleSecurityContent = ref<Maybe<IProfileSecurity>>(inject('defaultLocaleSecurityContent'));
   const { getContent } = useProjectMethods();
 
   const textHasDots = (el: HTMLElement): boolean => el.scrollHeight > el.offsetHeight;

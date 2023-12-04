@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="contact">
+    <div v-show="contactContent || defaultLocaleContactContent" class="contact">
       <atomic-picture
         v-if="contactContent?.image || defaultLocaleContactContent?.image"
         :src="contactContent?.image || defaultLocaleContactContent?.image"
@@ -70,29 +70,38 @@
     defaultLocale
   } = storeToRefs(globalStore);
 
-  let contactContent: Maybe<IContactsPage>;
-  let defaultLocaleContactContent: Maybe<IContactsPage>;
-  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData('currentLocaleContactPageContent'),
-    useNuxtData('defaultLocaleContactPageContent')
-  ]
+  const contactContent = ref<Maybe<IContactsPage>>();
+  const defaultLocaleContactContent = ref<Maybe<IContactsPage>>();
 
-  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
-    contactContent = nuxtCurrentLocaleData.data.value;
-    defaultLocaleContactContent = nuxtDefaultLocaleData.data.value;
-  } else {
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData('currentLocaleContactPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'contacts').findOne()),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleContactPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'contacts').findOne()),
-    ]);
-
-    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    contactContent = currentLocaleData;
-    defaultLocaleContactContent = defaultLocaleData;
+  interface IPageContent {
+    currentLocaleData: Maybe<IContactsPage>;
+    defaultLocaleData: Maybe<IContactsPage>;
   }
 
-  setPageSeo(contactContent?.seo);
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    contactContent.value = contentData?.currentLocaleData;
+    defaultLocaleContactContent.value = contentData?.defaultLocaleData;
+    setPageSeo(contactContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('contactPageContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'pages', 'contacts').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'contacts').findOne(),
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('contactPageContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   const contactFormData = reactive({
     email: '',
