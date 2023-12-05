@@ -25,10 +25,10 @@
       <atomic-select-lang/>
 
       <div class="nav-list">
-        <div class="item">
+        <div class="item" :class="{ 'chat-indicator': newMessages }">
           <div class="link" @click="openChat">
-            <atomic-icon id="live-support"/>
-            <div class="text" :class="{ 'chat-indicator': newMessages }">Live Chat</div>
+            <atomic-icon id="live-support" />
+            <div class="text">{{ getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.chatLabel') }}</div>
           </div>
         </div>
       </div>
@@ -69,7 +69,7 @@
   const { newMessages } = storeToRefs(freshchatStore);
 
   const openChat = () => {
-    window.fcWidget.open();
+    window.fcWidget?.open();
   }
 </script>
 

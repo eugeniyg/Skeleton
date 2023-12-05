@@ -136,7 +136,6 @@
         showCookiePopup.value = true;
       }, 1500);
     }
-    console.log('app mounted');
   });
 
   onBeforeUnmount(() => {
