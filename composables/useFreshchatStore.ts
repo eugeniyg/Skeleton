@@ -74,13 +74,8 @@ export const useFreshchatStore = defineStore('freshchatStore', {
         ...this.getUserIdentity(),
       });
 
-      window.fcWidget.on('widget:loaded', () => {
-        this.setUserChatData();
-      })
-
-      window.fcWidget.on('widget:destroyed', () => {
-        this.initChat();
-      });
+      window.fcWidget.on('widget:loaded', this.setUserChatData);
+      window.fcWidget.on('widget:destroyed', this.initChat);
 
       window.fcWidget.on('user:created', ({ data }: any) => {
         const { isLoggedIn } = useProfileStore();
