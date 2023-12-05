@@ -46,7 +46,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     setWindowHeight();
     window.addEventListener('resize', setWindowHeight);
 
-    const { initChat } = useFreshchat();
+    const { initChat } = useFreshchatStore();
     initChat();
   });
 

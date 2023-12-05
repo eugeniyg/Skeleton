@@ -127,7 +127,7 @@ export const useProfileStore = defineStore('profileStore', {
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
-      const { updateChat } = useFreshchat();
+      const { updateChat } = useFreshchatStore();
       updateChat();
       this.startProfileDependencies();
     },
@@ -140,7 +140,7 @@ export const useProfileStore = defineStore('profileStore', {
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
-      const { updateChat } = useFreshchat();
+      const { updateChat } = useFreshchatStore();
       updateChat();
       this.startProfileDependencies();
       const { showAlert } = useLayoutStore();
@@ -165,7 +165,7 @@ export const useProfileStore = defineStore('profileStore', {
         await logOut();
       } finally {
         this.isLoggedIn = false;
-        const { updateChat } = useFreshchat();
+        const { updateChat } = useFreshchatStore();
         updateChat();
         this.finishProfileDependencies();
 

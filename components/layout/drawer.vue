@@ -24,6 +24,14 @@
 
       <atomic-select-lang/>
 
+      <div class="nav-list">
+        <div class="item">
+          <div class="link" @click="openChat">
+            <atomic-icon id="live-support"/>
+            <div class="text" :class="{ 'chat-indicator': newMessages }">Live Chat</div>
+          </div>
+        </div>
+      </div>
       <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.bottomMenu')"/>
 
       <template v-if="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.socials.isShow')">
@@ -45,7 +53,6 @@
   const { getContent } = useProjectMethods();
 
   const layoutStore = useLayoutStore();
-  const { compactDrawer } = layoutStore;
   const { isDrawerCompact } = storeToRefs(layoutStore);
 
   const profileStore = useProfileStore();
@@ -57,6 +64,13 @@
     if (menuItem.url === '/favorites') return { ...menuItem, counter: favoriteGames.value.length };
     return menuItem;
   }));
+
+  const freshchatStore = useFreshchatStore();
+  const { newMessages } = storeToRefs(freshchatStore);
+
+  const openChat = () => {
+    window.fcWidget.open();
+  }
 </script>
 
 <style src="~/assets/styles/components/layout/drawer.scss" lang="scss" />

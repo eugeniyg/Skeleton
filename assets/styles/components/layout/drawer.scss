@@ -68,4 +68,21 @@
   hr {
     --bg: var(--border-01)
   }
+
+  .chat-indicator {
+    position: relative;
+    overflow: visible !important;
+
+    &:after {
+      display: block;
+      content: '';
+      @include box(8px);
+      position: absolute;
+      z-index: 2;
+      background-color: var(--red-800);
+      right: -12px;
+      top: -4px;
+      border-radius: 50%;
+    }
+  }
 }
