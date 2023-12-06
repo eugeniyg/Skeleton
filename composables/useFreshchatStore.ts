@@ -12,11 +12,47 @@ export const useFreshchatStore = defineStore('freshchatStore', {
   }),
 
   actions: {
+    getProfileData(isUpdate = false) {
+      const { profile } = useProfileStore();
+      const segmentsArr = profile?.segments.map(segment => segment.name);
+      const profileSegments = segmentsArr?.length ? segmentsArr.join(', ') : '';
+      const { activePlayerBonuses, activePlayerFreeSpins } = useBonusStore();
+
+      const { cf_segments, cf_active_bonuses, ...mainParams } = {
+        firstName: profile?.firstName ?? '',
+        lastName: profile?.lastName ?? '',
+        email: profile?.email ?? '',
+        cf_segments: profileSegments,
+        cf_active_bonuses: `${!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)}`,
+      }
+
+      return isUpdate
+        ? { ...mainParams, meta: { cf_segments, cf_active_bonuses } }
+        : { ...mainParams, cf_segments, cf_active_bonuses };
+    },
+
     getChatRestoreId(): Maybe<string> {
       const { profile } = useProfileStore();
       const storeData = localStorage.getItem('fc_restore');
       const storeRestoreList: { externalId: string, restoreId: string }[] = storeData ? JSON.parse(storeData) : [];
       return storeRestoreList.find(storageData => storageData.externalId === profile?.id)?.restoreId || null;
+    },
+
+    async updateFreshchatUser(): Promise<void> {
+      if (!window.fcWidget) return;
+      const restoreId = this.getChatRestoreId();
+
+      if (restoreId) {
+        try {
+          const profileData = this.getProfileData(true);
+          await window.fcWidget.user.update(profileData);
+        } catch {
+          console.error('Freshchat user not updated!');
+        }
+      } else {
+        const profileData = this.getProfileData();
+        window.fcWidget.user.setProperties(profileData);
+      }
     },
 
     setChatRestoreId(restoreId: string) {
@@ -40,20 +76,15 @@ export const useFreshchatStore = defineStore('freshchatStore', {
     },
 
     setUserChatData(): void {
-      const { profile, isLoggedIn } = useProfileStore();
+      const { isLoggedIn } = useProfileStore();
 
       if (isLoggedIn) {
-        const segmentsArr = profile?.segments.map(segment => segment.name);
-        const profileSegments = segmentsArr?.length ? segmentsArr.join(', ') : null;
-        const { activePlayerBonuses, activePlayerFreeSpins } = useBonusStore();
+        this.updateFreshchatUser();
 
-        window.fcWidget.user.setProperties({
-          firstName: profile?.firstName,
-          lastName: profile?.lastName,
-          email: profile?.email,
-          cf_segments: profileSegments,
-          cf_active_bonuses: `${!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)}`,
-        });
+        useListen('profileUpdated', this.updateFreshchatUser);
+        useListen('freeSpinsUpdated', this.updateFreshchatUser);
+        useListen('bonusesUpdated', this.updateFreshchatUser);
+        useListen('accountChanged', this.updateFreshchatUser);
       }
     },
 
@@ -99,6 +130,10 @@ export const useFreshchatStore = defineStore('freshchatStore', {
         console.log('Chat not cleared, chat empty!');
       }
 
+      useUnlisten('profileUpdated');
+      useUnlisten('freeSpinsUpdated');
+      useUnlisten('bonusesUpdated');
+      useUnlisten('accountChanged');
       window.fcWidget.destroy();
     },
   }

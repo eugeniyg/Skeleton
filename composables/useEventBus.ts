@@ -2,6 +2,10 @@ import mitt from 'mitt';
 
 type ApplicationEvents = {
   'changeMobileGameMode': undefined;
+  'profileUpdated': undefined;
+  'freeSpinsUpdated': undefined;
+  'bonusesUpdated': undefined;
+  'accountChanged': undefined;
 };
 
 const emitter = mitt<ApplicationEvents>();
