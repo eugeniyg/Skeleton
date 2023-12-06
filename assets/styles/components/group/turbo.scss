@@ -75,7 +75,6 @@
     display: var(--display, flex);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    overscroll-behavior: none;
     scroll-behavior: smooth;
     padding: rem(36px) rem(32px) 0 rem(32px);
     margin: 0 rem(-32px) 0;
