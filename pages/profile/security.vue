@@ -20,33 +20,38 @@
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
-  let securityContent: Maybe<IProfileSecurity>;
-  let defaultLocaleSecurityContent: Maybe<IProfileSecurity>;
-  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData('currentLocaleProfileSecurityContent'),
-    useNuxtData('defaultLocaleProfileSecurityContent')
-  ]
+  const securityContent = ref<Maybe<IProfileSecurity>>();
+  const defaultLocaleSecurityContent = ref<Maybe<IProfileSecurity>>();
+  provide('securityContent', securityContent);
+  provide('defaultLocaleSecurityContent', defaultLocaleSecurityContent);
 
-  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
-    securityContent = nuxtCurrentLocaleData.data.value;
-    defaultLocaleSecurityContent = nuxtDefaultLocaleData.data.value;
-  } else {
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData('currentLocaleProfileSecurityContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'security').findOne()),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleProfileSecurityContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'security').findOne())
-    ]);
-
-    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    securityContent = currentLocaleData;
-    defaultLocaleSecurityContent = defaultLocaleData;
+  interface IPageContent {
+    currentLocaleData: Maybe<IProfileSecurity>;
+    defaultLocaleData: Maybe<IProfileSecurity>;
   }
 
-  setPageSeo(securityContent?.seo);
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    securityContent.value = contentData?.currentLocaleData;
+    defaultLocaleSecurityContent.value = contentData?.defaultLocaleData;
+    setPageSeo(securityContent.value?.seo);
+  }
 
-  provide('documentsContent', securityContent?.documents);
-  provide('defaultLocaleDocumentsContent', defaultLocaleSecurityContent?.documents);
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('profileSecurityContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
 
-  provide('passwordContent', securityContent?.password);
-  provide('defaultLocalePasswordContent', defaultLocaleSecurityContent?.password);
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'profile', 'security').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'profile', 'security').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('profileSecurityContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 </script>

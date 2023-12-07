@@ -22,10 +22,11 @@
       </div>
 
       <form-input-file
-        :placeholder="documentsContent?.uploadPlaceholder || defaultLocaleDocumentsContent?.uploadPlaceholder"
-        :hint="documentsContent?.uploadHint || defaultLocaleDocumentsContent?.uploadHint"
-        :uploadButton="documentsContent?.uploadButton || defaultLocaleDocumentsContent?.uploadButton"
-        :uploadMore="documentsContent?.uploadMore || defaultLocaleDocumentsContent?.uploadMore"
+        v-if="securityContent || defaultLocaleSecurityContent"
+        :placeholder="securityContent?.documents?.uploadPlaceholder || defaultLocaleSecurityContent?.documents?.uploadPlaceholder"
+        :hint="securityContent?.documents?.uploadHint || defaultLocaleSecurityContent?.documents?.uploadHint"
+        :uploadButton="securityContent?.documents?.uploadButton || defaultLocaleSecurityContent?.documents?.uploadButton"
+        :uploadMore="securityContent?.documents?.uploadMore || defaultLocaleSecurityContent?.documents?.uploadMore"
         :showMoreButton="!!props.fileList?.length"
         :loading="props.loading"
         @change="addFiles"
@@ -48,8 +49,8 @@
   const emit = defineEmits(['remove', 'change']);
 
   const isActive = ref(false);
-  const documentsContent: Maybe<IProfileSecurity['documents']> = inject('documentsContent');
-  const defaultLocaleDocumentsContent: Maybe<IProfileSecurity['documents']> = inject('defaultLocaleDocumentsContent');
+  const securityContent = ref<Maybe<IProfileSecurity>>(inject('securityContent'));
+  const defaultLocaleSecurityContent = ref<Maybe<IProfileSecurity>>(inject('defaultLocaleSecurityContent'));
   const errorFiles = computed(() => props.fileList.filter((file) => file.error));
 
   const dropzoneClasses = computed(() => ({

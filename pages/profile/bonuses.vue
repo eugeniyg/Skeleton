@@ -42,29 +42,38 @@
   const { getPlayerBonuses, getPlayerFreeSpins } = bonusStore;
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
 
-  let bonusesContent: Maybe<IProfileBonuses>;
-  let defaultLocaleBonusesContent: Maybe<IProfileBonuses>;
-  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData('currentLocaleProfileBonusesContent'),
-    useNuxtData('defaultLocaleProfileBonusesContent')
-  ]
+  const bonusesContent = ref<Maybe<IProfileBonuses>>();
+  const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>();
 
-  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
-    bonusesContent = nuxtCurrentLocaleData.data.value;
-    defaultLocaleBonusesContent = nuxtDefaultLocaleData.data.value;
-  } else {
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData('currentLocaleProfileBonusesContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'bonuses').findOne()),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleProfileBonusesContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'bonuses').findOne())
-    ]);
-
-    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    bonusesContent = currentLocaleData;
-    defaultLocaleBonusesContent = defaultLocaleData;
+  interface IPageContent {
+    currentLocaleData: Maybe<IProfileBonuses>;
+    defaultLocaleData: Maybe<IProfileBonuses>;
   }
 
-  setPageSeo(bonusesContent?.seo);
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    bonusesContent.value = contentData?.currentLocaleData;
+    defaultLocaleBonusesContent.value = contentData?.defaultLocaleData;
+    setPageSeo(bonusesContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('profileBonusesContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'profile', 'bonuses').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'profile', 'bonuses').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('profileBonusesContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   onMounted(() => {
     getPlayerBonuses();

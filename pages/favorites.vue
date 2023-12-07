@@ -1,6 +1,8 @@
 <template>
   <div class="favorites">
-    <div class="favorites__title">{{ favoritesContent?.title || defaultLocaleFavoritesContent?.title }}</div>
+    <div class="favorites__title">
+      {{ favoritesContent?.title || defaultLocaleFavoritesContent?.title }}
+    </div>
 
     <list-grid
       v-if="showFavorites"
@@ -39,29 +41,38 @@
     getContent,
   } = useProjectMethods();
 
-  let favoritesContent: Maybe<IFavoritesPage>;
-  let defaultLocaleFavoritesContent: Maybe<IFavoritesPage>;
-  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData('currentLocaleFavoritesPageContent'),
-    useNuxtData('defaultLocaleFavoritesPageContent')
-  ]
+  const favoritesContent = ref<Maybe<IFavoritesPage>>();
+  const defaultLocaleFavoritesContent = ref<Maybe<IFavoritesPage>>();
 
-  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
-    favoritesContent = nuxtCurrentLocaleData.data.value;
-    defaultLocaleFavoritesContent = nuxtDefaultLocaleData.data.value;
-  } else {
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData('currentLocaleFavoritesPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'favorites').findOne()),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleFavoritesPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'favorites').findOne())
-    ]);
-
-    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    favoritesContent = currentLocaleData;
-    defaultLocaleFavoritesContent = defaultLocaleData;
+  interface IPageContent {
+    currentLocaleData: Maybe<IFavoritesPage>;
+    defaultLocaleData: Maybe<IFavoritesPage>;
   }
 
-  setPageSeo(favoritesContent?.seo);
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    favoritesContent.value = contentData?.currentLocaleData;
+    defaultLocaleFavoritesContent.value = contentData?.defaultLocaleData;
+    setPageSeo(favoritesContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('favoritesPageContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'pages', 'favorites').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'favorites').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('favoritesPageContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   const gameStore = useGamesStore();
   const profileStore = useProfileStore();

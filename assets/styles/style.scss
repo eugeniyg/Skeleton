@@ -165,7 +165,7 @@ body {
   pointer-events: var(--main-pointer-events, initial);
   position: relative;
   z-index: 0;
-  min-height: rem(375px);
+  min-height: calc(100vh - 3rem);
   overflow: hidden;
 
   &.is-overflow {

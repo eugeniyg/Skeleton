@@ -1,6 +1,8 @@
 <template>
   <div class="recently-played">
-    <div class="recently-played__title">{{ recentlyContent?.title || defaultLocaleRecentlyContent?.title }}</div>
+    <div class="recently-played__title">
+      {{ recentlyContent?.title || defaultLocaleRecentlyContent?.title }}
+    </div>
 
     <atomic-empty
       v-if="!recentlyGames.length && !loadingData"
@@ -27,11 +29,11 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import type { IGame } from '@skeleton/core/types';
-import type { IRecentlyPage } from '~/types';
+  import { storeToRefs } from 'pinia';
+  import type { IGame } from '@skeleton/core/types';
+  import type { IRecentlyPage } from '~/types';
 
-const globalStore = useGlobalStore();
+  const globalStore = useGlobalStore();
   const { isMobile, headerCountry, currentLocale, defaultLocale } = storeToRefs(globalStore);
   const {
     setPageSeo,
@@ -39,29 +41,38 @@ const globalStore = useGlobalStore();
     getContent,
   } = useProjectMethods();
 
-  let recentlyContent: Maybe<IRecentlyPage>;
-  let defaultLocaleRecentlyContent: Maybe<IRecentlyPage>;
-  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData('currentLocaleRecentlyPageContent'),
-    useNuxtData('defaultLocaleRecentlyContent')
-  ]
+  const recentlyContent = ref<Maybe<IRecentlyPage>>();
+  const defaultLocaleRecentlyContent = ref<Maybe<IRecentlyPage>>();
 
-  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
-    recentlyContent = nuxtCurrentLocaleData.data.value;
-    defaultLocaleRecentlyContent = nuxtDefaultLocaleData.data.value;
-  } else {
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData('currentLocaleRecentlyPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'recently').findOne()),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleRecentlyContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'recently').findOne())
-    ]);
-
-    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    recentlyContent = currentLocaleData;
-    defaultLocaleRecentlyContent = defaultLocaleData;
+  interface IPageContent {
+    currentLocaleData: Maybe<IRecentlyPage>;
+    defaultLocaleData: Maybe<IRecentlyPage>;
   }
 
-  setPageSeo(recentlyContent?.seo);
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    recentlyContent.value = contentData?.currentLocaleData;
+    defaultLocaleRecentlyContent.value = contentData?.defaultLocaleData;
+    setPageSeo(recentlyContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('recentlyPageContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'pages', 'recently').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'recently').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('recentlyPageContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   const { currentLocationCollections } = useGamesStore();
   const recommendedCategory = currentLocationCollections.find((collection) => collection.identity === 'recommended');

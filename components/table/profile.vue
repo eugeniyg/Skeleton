@@ -36,7 +36,7 @@
   const { getContent } = useProjectMethods();
   const fieldsStore = useFieldsStore();
   const { profileFields } = storeToRefs(fieldsStore);
-  const profileViewFields = profileFields.value.filter((field) => !hideFields.includes(field.name));
+  const profileViewFields = computed(() => profileFields.value.filter((field) => !hideFields.includes(field.name)));
 </script>
 
 <style src="~/assets/styles/components/table/profile.scss" lang="scss" />

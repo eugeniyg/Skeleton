@@ -20,76 +20,83 @@
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
   const { setPageSeo, getLocalesContentData } = useProjectMethods();
 
-  let historyContent: Maybe<IProfileHistory>;
-  let defaultLocaleHistoryContent: Maybe<IProfileHistory>;
-  let currentLocaleTabsContent;
-  let defaultLocaleTabsContent;
-  let historyTabContent: Maybe<IHistory>;
-  let defaultLocaleHistoryTabContent: Maybe<IHistory>;
-  const [
-    nuxtCurrentLocaleHistoryData,
-    nuxtDefaultLocaleHistoryData,
-    nuxtCurrentLocaleTabData,
-    nuxtDefaultLocaleTabData
-  ] = [
-    useNuxtData('currentLocaleProfileHistoryContent'),
-    useNuxtData('defaultLocaleProfileHistoryContent'),
-    useNuxtData('currentLocaleHistoryContent'),
-    useNuxtData('defaultLocaleHistoryContent')
-  ]
+  const historyContent = ref<Maybe<IProfileHistory>>();
+  const defaultLocaleHistoryContent = ref<Maybe<IProfileHistory>>();
+  const currentLocaleTabsContent = ref();
+  const defaultLocaleTabsContent = ref();
+  const historyTabContent = ref<Maybe<IHistory>>();
+  const defaultLocaleHistoryTabContent = ref<Maybe<IHistory>>();
 
-  if (nuxtCurrentLocaleHistoryData.data.value
-    || nuxtDefaultLocaleHistoryData.data.value
-    || nuxtCurrentLocaleTabData.data.value
-    || nuxtDefaultLocaleTabData.data.value
-  ) {
-    historyContent = nuxtCurrentLocaleHistoryData.data.value;
-    defaultLocaleHistoryContent = nuxtDefaultLocaleHistoryData.data.value;
-    currentLocaleTabsContent = nuxtCurrentLocaleTabData.data.value;
-    defaultLocaleTabsContent = nuxtDefaultLocaleTabData.data.value;
-  } else {
+  interface IPageContent {
+    currentLocalePageData: Maybe<IProfileHistory>;
+    defaultLocalePageData: Maybe<IProfileHistory>;
+    currentLocaleTabData: any;
+    defaultLocaleTabData: any;
+  }
+
+  const setPageContent = ():void => {
+    if (currentLocaleTabsContent.value?.length) {
+      historyTabContent.value  = currentLocaleTabsContent.value.reduce((finalContentObj:any, currentContent:any) => {
+        const splitPath = currentContent._path?.split('/');
+        if (!splitPath) return finalContentObj;
+
+        const contentName = camelCase(splitPath[3]);
+        return { ...finalContentObj, [contentName]: currentContent }
+      }, {})
+    }
+
+    if (defaultLocaleTabsContent.value?.length) {
+      defaultLocaleHistoryTabContent.value  = defaultLocaleTabsContent.value.reduce((finalContentObj:any, currentContent:any) => {
+        const splitPath = currentContent._path?.split('/');
+        if (!splitPath) return finalContentObj;
+
+        const contentName = camelCase(splitPath[3]);
+        return { ...finalContentObj, [contentName]: currentContent }
+      }, {})
+    }
+  }
+
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    historyContent.value = contentData?.currentLocalePageData;
+    defaultLocaleHistoryContent.value = contentData?.defaultLocalePageData;
+    currentLocaleTabsContent.value = contentData?.currentLocaleTabData;
+    defaultLocaleTabsContent.value = contentData?.defaultLocaleTabData;
+    setPageContent();
+    setPageSeo(historyContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('profileHistoryContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
     const [
       currentLocaleContentResponse,
       defaultLocaleContentResponse,
       currentLocaleTabsContentResponse,
       defaultLocaleTabsContentResponse
     ] = await Promise.allSettled([
-      useAsyncData('currentLocaleProfileHistoryContent', () => queryContent(currentLocale.value?.code as string, 'profile', 'history').findOne()),
+      queryContent(currentLocale.value?.code as string, 'profile', 'history').findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleProfileHistoryContent', () => queryContent(defaultLocale.value?.code as string, 'profile', 'history').findOne()),
-      useAsyncData('currentLocaleHistoryContent', () => queryContent(currentLocale.value?.code as string, 'history').find()),
+        : queryContent(defaultLocale.value?.code as string, 'profile', 'history').findOne(),
+      queryContent(currentLocale.value?.code as string, 'history').find(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleHistoryContent', () => queryContent(defaultLocale.value?.code as string, 'history').find())
+        : queryContent(defaultLocale.value?.code as string, 'history').find()
     ]);
 
-    const responseHistoryContent = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    historyContent = responseHistoryContent.currentLocaleData;
-    defaultLocaleHistoryContent = responseHistoryContent.defaultLocaleData;
-
+    const responseHistoryContent =  getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
     const responseHistoryTabContent = getLocalesContentData(currentLocaleTabsContentResponse, defaultLocaleTabsContentResponse);
-    currentLocaleTabsContent = responseHistoryTabContent.currentLocaleData;
-    defaultLocaleTabsContent = responseHistoryTabContent.defaultLocaleData;
+    return reactive({
+      currentLocalePageData: responseHistoryContent.currentLocaleData,
+      defaultLocalePageData: responseHistoryContent.defaultLocaleData,
+      currentLocaleTabData: responseHistoryTabContent.currentLocaleData,
+      defaultLocaleTabData: responseHistoryTabContent.defaultLocaleData
+    });
   }
 
-  if (currentLocaleTabsContent?.length) {
-    historyTabContent  = currentLocaleTabsContent.reduce((finalContentObj:any, currentContent:any) => {
-      const splitPath = currentContent._path?.split('/');
-      if (!splitPath) return finalContentObj;
+  const { pending, data } = await useLazyAsyncData('profileHistoryContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
 
-      const contentName = camelCase(splitPath[3]);
-      return { ...finalContentObj, [contentName]: currentContent }
-    }, {})
-  }
-
-  if (defaultLocaleTabsContent?.length) {
-    defaultLocaleHistoryTabContent  = defaultLocaleTabsContent.reduce((finalContentObj:any, currentContent:any) => {
-      const splitPath = currentContent._path?.split('/');
-      if (!splitPath) return finalContentObj;
-
-      const contentName = camelCase(splitPath[3]);
-      return { ...finalContentObj, [contentName]: currentContent }
-    }, {})
-  }
-
-  setPageSeo(historyContent?.seo);
+  watch(data, () => {
+    setContentData(data.value);
+  })
 </script>

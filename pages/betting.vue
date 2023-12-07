@@ -28,31 +28,38 @@
     addBetsyScript
   } = useProjectMethods();
 
-  let bettingContent: Maybe<ISportsbookPage>;
-  let defaultLocaleBettingContent: Maybe<ISportsbookPage>;
-  const [nuxtCurrentLocaleData, nuxtDefaultLocaleData] = [
-    useNuxtData('currentLocaleSportsbookPageContent'),
-    useNuxtData('defaultLocaleSportsbookPageContent')
-  ]
+  const bettingContent = ref<Maybe<ISportsbookPage>>();
+  const  defaultLocaleBettingContent = ref<Maybe<ISportsbookPage>>();
 
-  if (nuxtCurrentLocaleData.data.value || nuxtDefaultLocaleData.data.value) {
-    bettingContent = nuxtCurrentLocaleData.data.value;
-    defaultLocaleBettingContent = nuxtDefaultLocaleData.data.value;
-  } else {
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      useAsyncData('currentLocaleSportsbookPageContent', () => queryContent(currentLocale.value?.code as string, 'pages', 'sportsbook')
-        .findOne()),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : useAsyncData('defaultLocaleSportsbookPageContent', () => queryContent(defaultLocale.value?.code as string, 'pages', 'sportsbook')
-          .findOne())
-    ]);
-
-    const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    bettingContent = currentLocaleData;
-    defaultLocaleBettingContent = defaultLocaleData;
+  interface IPageContent {
+    currentLocaleData: Maybe<ISportsbookPage>;
+    defaultLocaleData: Maybe<ISportsbookPage>;
   }
 
-  setPageSeo(bettingContent?.seo);
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    bettingContent.value = contentData?.currentLocaleData;
+    defaultLocaleBettingContent.value = contentData?.defaultLocaleData;
+    setPageSeo(bettingContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('sportsbookPageContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'pages', 'sportsbook').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'sportsbook').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('sportsbookPageContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
