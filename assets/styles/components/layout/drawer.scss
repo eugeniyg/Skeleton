@@ -59,6 +59,16 @@
       --drawer-width: #{rem(72px)};
       --drawer-header-row-gap: #{rem(16px)};
     }
+
+    .chat-indicator {
+      .text:after {
+        display: none;
+      }
+
+      .link:after {
+        display: block;
+      }
+    }
   }
 
   .avatar {
@@ -67,5 +77,48 @@
 
   hr {
     --bg: var(--border-01)
+  }
+
+  .chat-indicator {
+    .text {
+      position: relative;
+      overflow: visible;
+
+      &:after {
+        display: block;
+        content: '';
+        @include box(8px);
+        position: absolute;
+        z-index: 2;
+        background-color: var(--support-alert-default);
+        right: -12px;
+        top: -2px;
+        border-radius: 50%;
+      }
+    }
+
+    .link {
+      position: relative;
+
+      &:after {
+        display: none;
+        content: '';
+        @include box(14px);
+        position: absolute;
+        z-index: 2;
+        background-color: var(--support-alert-default);
+        border: 2px solid var(--layer-02);
+        right: 6px;
+        top: 6px;
+        border-radius: 50%;
+        transition: border 0.2s;
+      }
+
+      &:hover {
+        &:after {
+          border: 2px solid var(--side-bar-link-hover);
+        }
+      }
+    }
   }
 }

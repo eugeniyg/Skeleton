@@ -77,6 +77,7 @@ export const useWalletStore = defineStore('walletStore', {
     async switchAccount(accountId: string):Promise<void> {
       const { switchActiveAccount } = useCoreWalletApi();
       this.accounts = await switchActiveAccount(accountId);
+      useEvent('accountChanged');
     },
 
     async hideAccount(accountId: string):Promise<void> {

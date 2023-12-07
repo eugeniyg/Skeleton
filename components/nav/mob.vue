@@ -8,16 +8,13 @@
     </button-base>
 
     <button-base
-      v-if="getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem')"
       class="nav-mob__item"
-      :class="{ active: $route.path === localizePath(getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem.url')) || $route.query.category }"
-      :url="getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem.url')"
+      :class="{ active: $route.path === localizePath(gamesButtons?.buttonFirst.url) || $route.query.category }"
+      :url="gamesButtons?.buttonFirst.url"
     >
-      <atomic-icon
-        :id="getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem.icon')"
-      />
+      <atomic-icon :id="gamesButtons?.buttonFirst.icon" />
       <span class="nav-mob__text">
-        {{ getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.items.firstItem.label') }}
+        {{ gamesButtons?.buttonFirst.label }}
       </span>
     </button-base>
 
@@ -30,14 +27,23 @@
     </button-base>
 
     <button-base
-      v-for="link in linksList?.slice(1)"
-      :key="link.url"
       class="nav-mob__item"
-      :class="{ active: $route.path === localizePath(link.url) }"
-      :url="link.url"
+      :class="{ active: $route.path === localizePath(gamesButtons?.buttonSecond.url) }"
+      :url="gamesButtons?.buttonSecond.url"
     >
-      <atomic-icon :id="link.icon" />
-      <span class="nav-mob__text">{{ link.label }}</span>
+      <atomic-icon :id="gamesButtons?.buttonSecond.icon" />
+      <span class="nav-mob__text">{{ gamesButtons?.buttonSecond.label }}</span>
+    </button-base>
+
+    <button-base
+      class="nav-mob__item"
+      :class="{ 'chat-indicator': newMessages }"
+      @click="openChat"
+    >
+      <atomic-icon id="live-support" />
+      <span class="nav-mob__text">
+        {{ getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.chatLabel') }}
+      </span>
     </button-base>
   </div>
 </template>
@@ -60,12 +66,16 @@
     isLoggedIn.value ? openWalletModal() : showModal('register');
   };
 
-  const linksList = computed(() => {
-    const currentLocaleItems = Object.values(layoutData?.mobileMenu?.items || {});
-    const defaultLocaleItems = Object.values(defaultLocaleLayoutData?.mobileMenu?.items || {});
-    if (currentLocaleItems.length) return currentLocaleItems;
-    return defaultLocaleItems;
-  });
+  const gamesButtons = computed(() => {
+    return getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler');
+  })
+
+  const freshchatStore = useFreshchatStore();
+  const { newMessages } = storeToRefs(freshchatStore);
+
+  const openChat = () => {
+    window.fcWidget?.open();
+  }
 </script>
 
 <style src="~/assets/styles/components/nav/mob.scss" lang="scss" />

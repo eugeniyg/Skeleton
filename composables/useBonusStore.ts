@@ -133,6 +133,8 @@ export const useBonusStore = defineStore('bonusStore', {
       } else {
         this.playerBonuses = this.playerBonuses.filter((bonus) => bonus.id !== bonusData.id);
       }
+
+      useEvent('bonusesUpdated');
     },
 
     updatePlayerFreeSpinsList(freeSpinData: IPlayerFreeSpin):void {
@@ -145,6 +147,8 @@ export const useBonusStore = defineStore('bonusStore', {
       } else {
         this.playerFreeSpins = this.playerFreeSpins.filter((freeSpin) => freeSpin.id !== freeSpinData.id);
       }
+
+      useEvent('freeSpinsUpdated');
     },
 
     bonusesSocketTrigger(webSocketResponse:IWebSocketResponse):void {

@@ -127,6 +127,8 @@ export const useProfileStore = defineStore('profileStore', {
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
+      const { updateChat } = useFreshchatStore();
+      updateChat();
       this.startProfileDependencies();
     },
 
@@ -138,6 +140,8 @@ export const useProfileStore = defineStore('profileStore', {
       await nextTick();
       await getUserAccounts();
       this.isLoggedIn = true;
+      const { updateChat } = useFreshchatStore();
+      updateChat();
       this.startProfileDependencies();
       const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
@@ -161,9 +165,13 @@ export const useProfileStore = defineStore('profileStore', {
         await logOut();
       } finally {
         this.isLoggedIn = false;
+        const { updateChat } = useFreshchatStore();
+        updateChat();
         this.finishProfileDependencies();
+
         const { deleteReturnGame } = useLayoutStore();
         deleteReturnGame();
+
         sessionStorage.removeItem('depositBonusData');
         const router = useRouter();
         const { localizePath } = useProjectMethods();

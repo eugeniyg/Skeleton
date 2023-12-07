@@ -116,6 +116,7 @@
       const submitResult = await changeProfileData(profileFormData);
       setProfileData(submitResult);
       emit('toggle-profile-edit');
+      useEvent('profileUpdated');
     } catch (error:any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;

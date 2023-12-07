@@ -182,6 +182,7 @@ export const useGlobalStore = defineStore('globalStore', {
 
     osPlatform():string|null {
       const userAgent = window.navigator.userAgent;
+      // @ts-ignore
       const platform = window.navigator?.userAgentData?.platform || window.navigator.platform;
       const macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K', 'macOS'];
       const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];

@@ -112,6 +112,25 @@
         --color: var(--icon-contrast);
       }
     }
+
+    &.chat-indicator {
+      position: relative;
+
+      &:after {
+        display: block;
+        content: '';
+        @include box(14px);
+        position: absolute;
+        z-index: 2;
+        background-color: var(--support-alert-default);
+        border: 2px solid var(--layer-bg);
+        right: 50%;
+        transform: translateX(15px);
+        top: 3px;
+        border-radius: 50%;
+        transition: border 0.2s;
+      }
+    }
   }
 
   .is-mob-nav-vertical & {
