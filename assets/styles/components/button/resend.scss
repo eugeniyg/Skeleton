@@ -1,0 +1,13 @@
+.button-resend {
+  @include font($heading-2);
+  color: var(--button-text-secondary);
+  --width: 100%;
+
+  &[disabled] {
+    color: var(--button-text-secondary-disabled);
+  }
+
+  &__timer {
+    display: flex;
+  }
+}
