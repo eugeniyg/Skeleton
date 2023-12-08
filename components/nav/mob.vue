@@ -35,16 +35,29 @@
       <span class="nav-mob__text">{{ gamesButtons?.buttonSecond.label }}</span>
     </button-base>
 
-    <button-base
-      class="nav-mob__item"
-      :class="{ 'chat-indicator': newMessages }"
-      @click="openChat"
-    >
-      <atomic-icon id="live-support" />
-      <span class="nav-mob__text">
+    <client-only>
+      <button-base
+        v-if="projectHasFreshchat"
+        class="nav-mob__item"
+        :class="{ 'chat-indicator': newMessages }"
+        @click="openChat"
+      >
+        <atomic-icon id="live-support" />
+        <span class="nav-mob__text">
         {{ getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.chatLabel') }}
       </span>
-    </button-base>
+      </button-base>
+
+      <button-base
+        v-else-if="contactButton"
+        class="nav-mob__item"
+        :class="{ active: $route.path === localizePath(contactButton.url) }"
+        :url="contactButton.url"
+      >
+        <atomic-icon :id="contactButton.icon" />
+        <span class="nav-mob__text">{{ contactButton.label }}</span>
+      </button-base>
+    </client-only>
   </div>
 </template>
 
@@ -69,9 +82,12 @@
   const gamesButtons = computed(() => {
     return getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler');
   })
+  const contactButton = computed(() => {
+    return getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.contactButton');
+  })
 
   const freshchatStore = useFreshchatStore();
-  const { newMessages } = storeToRefs(freshchatStore);
+  const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
 
   const openChat = () => {
     window.fcWidget?.open();

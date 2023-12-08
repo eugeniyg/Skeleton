@@ -11,6 +11,14 @@ export const useFreshchatStore = defineStore('freshchatStore', {
     initialize: true,
   }),
 
+  getters: {
+    projectHasFreshchat() {
+      if (!window) return undefined;
+      const { public: { freshchatHost, freshchatToken }} = useRuntimeConfig();
+      return !!(freshchatHost && freshchatToken && window.fcWidget);
+    }
+  },
+
   actions: {
     getProfileData(isUpdate = false) {
       const { profile } = useProfileStore();
@@ -31,18 +39,11 @@ export const useFreshchatStore = defineStore('freshchatStore', {
         : { ...mainParams, cf_segments, cf_active_bonuses };
     },
 
-    getChatRestoreId(): Maybe<string> {
-      const { profile } = useProfileStore();
-      const storeData = localStorage.getItem('fc_restore');
-      const storeRestoreList: { externalId: string, restoreId: string }[] = storeData ? JSON.parse(storeData) : [];
-      return storeRestoreList.find(storageData => storageData.externalId === profile?.id)?.restoreId || null;
-    },
-
     async updateFreshchatUser(): Promise<void> {
       if (!window.fcWidget) return;
-      const restoreId = this.getChatRestoreId();
+      const { profile } = useProfileStore();
 
-      if (restoreId) {
+      if (profile?.freshchatRestoreId) {
         try {
           const profileData = this.getProfileData(true);
           await window.fcWidget.user.update(profileData);
@@ -55,14 +56,17 @@ export const useFreshchatStore = defineStore('freshchatStore', {
       }
     },
 
-    setChatRestoreId(restoreId: string) {
-      if (this.getChatRestoreId()) return;
+    async setChatRestoreId(restoreId: string): Promise<void> {
+      const { profile, setProfileData } = useProfileStore();
+      if (profile?.freshchatRestoreId) return;
 
-      const { profile } = useProfileStore();
-      const storeData = localStorage.getItem('fc_restore');
-      const storeRestoreList: { externalId: string, restoreId: string }[] = storeData ? JSON.parse(storeData) : [];
-      const stringifyData = JSON.stringify([...storeRestoreList, { externalId: profile?.id, restoreId }]);
-      localStorage.setItem('fc_restore', stringifyData);
+      const { changeProfileData } = useCoreProfileApi();
+      try {
+        const submitResult = await changeProfileData({ freshchatRestoreId: restoreId });
+        setProfileData(submitResult);
+      } catch {
+        console.error('Restore ID not updated!');
+      }
     },
 
     getUserIdentity() {
@@ -71,7 +75,7 @@ export const useFreshchatStore = defineStore('freshchatStore', {
 
       return {
         externalId: profile?.id,
-        restoreId: this.getChatRestoreId(),
+        restoreId: profile?.freshchatRestoreId || null,
       }
     },
 

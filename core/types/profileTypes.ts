@@ -41,6 +41,7 @@ export interface IProfile extends Record<string, any>{
   securityQuestion: string|null;
   securityAnswer: string|null;
   locale: string|null;
+  freshchatRestoreId: string|null;
   segments: IPlayerSegment[];
 }
 

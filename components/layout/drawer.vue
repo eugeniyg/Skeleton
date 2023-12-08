@@ -22,16 +22,18 @@
         <atomic-divider/>
       </template>
 
-      <atomic-select-lang/>
+      <atomic-select-lang />
 
-      <div class="nav-list">
-        <div class="item" :class="{ 'chat-indicator': newMessages }">
-          <div class="link" @click="openChat">
-            <atomic-icon id="live-support" />
-            <div class="text">{{ getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.chatLabel') }}</div>
+      <client-only>
+        <div v-if="projectHasFreshchat" class="nav-list">
+          <div class="item" :class="{ 'chat-indicator': newMessages }">
+            <div class="link" @click="openChat">
+              <atomic-icon id="live-support" />
+              <div class="text">{{ getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.chatLabel') }}</div>
+            </div>
           </div>
         </div>
-      </div>
+      </client-only>
       <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.bottomMenu')"/>
 
       <template v-if="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.socials.isShow')">
@@ -66,7 +68,7 @@
   }));
 
   const freshchatStore = useFreshchatStore();
-  const { newMessages } = storeToRefs(freshchatStore);
+  const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
 
   const openChat = () => {
     window.fcWidget?.open();
