@@ -14,7 +14,7 @@
         </template>
 
         <template v-slot:content="{ item }">
-          <nuxt-link :to="!item.isExternal ? localizePath(item.url) : item.url">{{ item.label }}</nuxt-link>
+          <nuxt-link :to="!item.external ? localizePath(item.url) : item.url">{{ item.label }}</nuxt-link>
         </template>
       </accordeon>
 
