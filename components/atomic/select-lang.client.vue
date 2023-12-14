@@ -56,6 +56,7 @@
       await changeProfileData({ locale: locale.code })
     }
 
+    console.log(linkToLocale(locale));
     window.location.href = linkToLocale(locale);
   };
 

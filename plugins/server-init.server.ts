@@ -49,14 +49,19 @@ export default defineNuxtPlugin(async ():Promise<any> => {
   const cookieLanguage = useCookie('user-language');
   const globalStore = useGlobalStore();
 
+  console.log('cookieLanguage.value: ', cookieLanguage.value)
   if (cookieLanguage.value) {
     const cookieLanguageData = globalStore.locales.find(locale => locale.code === cookieLanguage.value);
+    console.log('cookieLanguageData: ', cookieLanguageData);
     globalStore.currentLocale = cookieLanguageData ?? globalStore.defaultLocale;
   } else {
     const geoCountry = globalStore.countries.find(country => country.code.toUpperCase() === globalStore.headerCountry?.toUpperCase());
+    console.log('geoCountry: ', geoCountry);
     const geoLocaleData = globalStore.locales.find(locale => locale.code === geoCountry?.locale);
+    console.log('geoLocaleData: ', geoLocaleData);
     globalStore.currentLocale = geoLocaleData ?? globalStore.defaultLocale;
   }
+  console.log('globalStore.currentLocale: ', globalStore.currentLocale);
 
   await getGlobalContent();
 });
