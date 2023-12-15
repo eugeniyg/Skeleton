@@ -82,7 +82,8 @@
     currentLocale,
     defaultLocale,
     defaultLocaleLayoutData,
-    headerCountry
+    headerCountry,
+    isMobile
   } = storeToRefs(globalStore);
 
   const {
@@ -165,7 +166,7 @@
   const getItems = async (): Promise<IGamesResponse> => {
     const params: any = {
       page: loadPage.value,
-      perPage: 36,
+      perPage: (window.innerHeight > 1000 || !isMobile.value) ? 72 : 24,
       collectionId: activeCollection.value?.id,
       sortBy: sortBy.value,
       sortOrder: sortOrder.value,

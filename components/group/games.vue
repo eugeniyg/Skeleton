@@ -132,13 +132,14 @@
 
   const loadMore = ref();
   const { initObserver } = useProjectMethods();
+  const observerLoadMore = ref();
 
   const emit = defineEmits(['initialLoad']);
   onMounted(async () => {
-    initObserver(loadMore.value, {
-      onInView: moreGames,
+    observerLoadMore.value = initObserver({
       settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
     });
+    observerLoadMore.value.observe(loadMore.value);
 
     const gamesResponse = await getFilteredGames(defaultRequestParams);
     games.value = gamesResponse.data;
@@ -151,6 +152,12 @@
       showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
     }
   });
+
+  onBeforeUnmount(() => {
+    if (loadMore.value && observerLoadMore.value) {
+      observerLoadMore.value.unobserve(loadMore.value);
+    }
+  })
 
   const { localizePath } = useProjectMethods();
   const openGames = (): void => {

@@ -82,11 +82,9 @@
           <div v-for="n in 9" :key="n" class="card-base"/>
         </template>
 
-        <div class="load-more" ref="loadMore"/>
+        <div class="load-more" ref="loadMore" @inview="moreGames" />
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -205,13 +203,14 @@
 
   const loadMore = ref(null);
   const { initObserver } = useProjectMethods();
+  const loadMoreObserver = ref();
 
   const emit = defineEmits(['initialLoad']);
   onMounted(async () => {
-    initObserver(loadMore.value, {
-      onInView: moreGames,
+    loadMoreObserver.value = initObserver({
       settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
     });
+    loadMoreObserver.value.observe(loadMore.value);
 
     const gamesResponse = await getFilteredGames(defaultRequestParams);
     games.value = gamesResponse.data;
@@ -229,6 +228,12 @@
     const router = useRouter();
     router.push(localizePath(`/games?category=${props.category.identity}`));
   };
+
+  onBeforeUnmount(() => {
+    if (loadMore.value && loadMoreObserver.value) {
+      loadMoreObserver.value.unobserve(loadMore.value);
+    }
+  })
 </script>
 
 
