@@ -6,7 +6,8 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     getCountries,
     getGlobalContent,
     getRequestCountry,
-    getSettingsConstants
+    getSettingsConstants,
+    setCurrentLocale
   } = useGlobalStore();
   const { getGameProviders, getGameCollections } = useGamesStore();
 
@@ -46,18 +47,19 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     await globalRequests;
   }
 
-  const cookieLanguage = useCookie('user-language');
-  const globalStore = useGlobalStore();
+  // const cookieLanguage = useCookie('user-language');
+  // const globalStore = useGlobalStore();
+  //
+  // if (cookieLanguage.value) {
+  //   const cookieLanguageData = globalStore.locales.find(locale => locale.code === cookieLanguage.value);
+  //   globalStore.currentLocale = cookieLanguageData ?? globalStore.defaultLocale;
+  // } else {
+  //   const geoCountry = globalStore.countries.find(country => country.code.toUpperCase() === globalStore.headerCountry?.toUpperCase());
+  //   const geoLocaleData = globalStore.locales.find(locale => locale.code === geoCountry?.locale);
+  //   globalStore.currentLocale = geoLocaleData ?? globalStore.defaultLocale;
+  // }
+  // console.log('server-current-locale: ', globalStore.currentLocale?.code || 'empty');
 
-  if (cookieLanguage.value) {
-    const cookieLanguageData = globalStore.locales.find(locale => locale.code === cookieLanguage.value);
-    globalStore.currentLocale = cookieLanguageData ?? globalStore.defaultLocale;
-  } else {
-    const geoCountry = globalStore.countries.find(country => country.code.toUpperCase() === globalStore.headerCountry?.toUpperCase());
-    const geoLocaleData = globalStore.locales.find(locale => locale.code === geoCountry?.locale);
-    globalStore.currentLocale = geoLocaleData ?? globalStore.defaultLocale;
-  }
-  console.log('server-current-locale: ', globalStore.currentLocale?.code || 'empty');
-
+  setCurrentLocale();
   await getGlobalContent();
 });
