@@ -57,6 +57,7 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     const geoLocaleData = globalStore.locales.find(locale => locale.code === geoCountry?.locale);
     globalStore.currentLocale = geoLocaleData ?? globalStore.defaultLocale;
   }
+  console.log('server-current-locale: ', globalStore.currentLocale?.code || 'empty');
 
   await getGlobalContent();
 });

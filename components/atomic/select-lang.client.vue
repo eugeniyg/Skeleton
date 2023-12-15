@@ -7,7 +7,7 @@
       <div class="selected" @click="toggleOpen">
         <atomic-image
           class="img"
-          :src="`${gamehubCdn}/locales/${currentLocale.code.toLowerCase()}.svg`"
+          :src="`${gamehubCdn}/locales/${currentLocale?.code.toLowerCase()}.svg`"
         />
         <span class="title">{{ currentLocale.nativeName || currentLocale.name }}</span>
         <atomic-icon id="arrow_expand-close" />
@@ -84,6 +84,10 @@
   const closeSelect = ():void => {
     if (isOpen.value) isOpen.value = false;
   };
+
+  onMounted(() => {
+    console.log('select-current-locale: ', currentLocale.value?.code || 'empty');
+  })
 </script>
 
 <style src="~/assets/styles/components/atomic/select-lang.scss" lang="scss" />

@@ -8,6 +8,7 @@ export default defineNuxtRouteMiddleware((to) => {
   const { localizePath } = useProjectMethods();
 
   if (nuxtApp.isHydrating && currentLocaleCode) {
+    console.log('middleware-current-locale: ', globalStore.currentLocale?.code || 'empty');
     if (routeLocaleCode && currentLocaleCode !== routeLocaleCode) {
       const pathWithoutLocale = to.fullPath.slice(routeLocaleCode.length + 1);
       return navigateTo(localizePath(pathWithoutLocale));
