@@ -84,10 +84,6 @@
   const closeSelect = ():void => {
     if (isOpen.value) isOpen.value = false;
   };
-
-  onMounted(() => {
-    console.log('select-current-locale: ', currentLocale.value?.code || 'empty');
-  })
 </script>
 
 <style src="~/assets/styles/components/atomic/select-lang.scss" lang="scss" />
