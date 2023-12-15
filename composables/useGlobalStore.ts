@@ -240,7 +240,6 @@ export const useGlobalStore = defineStore('globalStore', {
 
     setCurrentLocale() {
       const cookieLanguage = useCookie('user-language');
-      console.log('cookieLanguage: ', cookieLanguage.value);
 
       if (cookieLanguage.value) {
         const cookieLanguageData = this.locales.find(locale => locale.code === cookieLanguage.value);
@@ -250,7 +249,6 @@ export const useGlobalStore = defineStore('globalStore', {
         const geoLocaleData = this.locales.find(locale => locale.code === geoCountry?.locale);
         this.currentLocale = geoLocaleData ?? this.defaultLocale;
       }
-      console.log('server-current-locale: ', this.currentLocale?.code || 'empty');
     },
 
     async getGlobalContent():Promise<void> {

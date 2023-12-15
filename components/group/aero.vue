@@ -150,6 +150,8 @@
   const gameIdentity = getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.identity');
 
   const getGameInfo = async ():Promise<void> => {
+    if (!gameIdentity) return;
+
     try {
       gameInfo.value = await getGamesInfo(gameIdentity);
     } catch {
