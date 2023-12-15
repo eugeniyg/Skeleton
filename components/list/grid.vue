@@ -58,7 +58,7 @@
 
   onMounted(() => {
     loadMoreObserver.value = initObserver({
-      settings: { root: null, rootMargin: '50% 0% 100% 0%', threshold: 0 },
+      settings: { root: null, rootMargin: '100% 0% 100% 0%', threshold: 0 },
     });
     observeLastItem();
   });

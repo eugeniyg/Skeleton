@@ -166,7 +166,7 @@
   const getItems = async (): Promise<IGamesResponse> => {
     const params: any = {
       page: loadPage.value,
-      perPage: (window.innerHeight > 1000 || !isMobile.value) ? 72 : 24,
+      perPage: (isMobile.value && window.innerHeight < 1000) ? 24 : 72,
       collectionId: activeCollection.value?.id,
       sortBy: sortBy.value,
       sortOrder: sortOrder.value,
