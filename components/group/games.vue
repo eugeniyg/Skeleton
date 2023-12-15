@@ -50,7 +50,7 @@
         <div v-for="n in 9" :key="n" class="card-base"/>
       </template>
 
-      <div class="load-more" ref="loadMore"/>
+      <div class="load-more" ref="loadMore" @inview="moreGames"/>
     </div>
   </div>
 </template>
