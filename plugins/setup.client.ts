@@ -51,6 +51,10 @@ export default defineNuxtPlugin((nuxtApp) => {
   });
 
   nuxtApp.hook('page:finish', () => {
+    const { name, query } = useRoute();
+    const isAuthAutologin = (name as string).includes('auth-autologin') && !!query.state;
+    if (isAuthAutologin) return;
+
     const { preloaderDone } = useProjectMethods();
     preloaderDone();
   });
