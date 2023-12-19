@@ -7,14 +7,12 @@ onBeforeMount(async () => {
   const { query } = useRoute();
   if (!query.state) return;
 
-  const profileStore = useProfileStore();
-  const { autoLogin, logOutUser } = profileStore;
-  const { isLoggedIn } = storeToRefs(profileStore);
+  const { isLoggedIn, autoLogin, logOutUser } = useProfileStore();
   const { localizePath } = useProjectMethods();
   const { openWalletModal, showModal} = useLayoutStore();
   const router = useRouter();
 
-  if (isLoggedIn.value) {
+  if (isLoggedIn) {
     await logOutUser();
   }
 
