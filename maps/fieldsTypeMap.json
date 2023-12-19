@@ -168,9 +168,6 @@
     "validation": [
       {
         "rule": "integer"
-      },
-      {
-        "rule": "numeric"
       }
     ]
   }
