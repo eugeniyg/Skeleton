@@ -119,30 +119,36 @@ export const useProfileStore = defineStore('profileStore', {
       unsubscribeFreeSpinsSocket();
     },
 
-    async logIn(loginData:any):Promise<void> {
-      const { submitLoginData } = useCoreAuthApi();
-      const { getUserAccounts } = useWalletStore();
-      const submitResult = await submitLoginData(loginData);
-      this.startSession(submitResult);
+    async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {
+      this.startSession(authResponse);
       await nextTick();
+
+      const { getUserAccounts } = useWalletStore();
       await getUserAccounts();
+
       this.isLoggedIn = true;
       const { updateChat } = useFreshchatStore();
       updateChat();
       this.startProfileDependencies();
     },
 
+    async logIn(loginData:any):Promise<void> {
+      const { submitLoginData } = useCoreAuthApi();
+      const submitResult = await submitLoginData(loginData);
+      await this.handleLogin(submitResult);
+    },
+
+    async autoLogin(token: string):Promise<void> {
+      const { submitAutologinData } = useCoreAuthApi();
+      const submitResult = await submitAutologinData(token);
+      await this.handleLogin(submitResult);
+    },
+
     async registration(registrationData:any):Promise<void> {
       const { submitRegistrationData } = useCoreAuthApi();
-      const { getUserAccounts } = useWalletStore();
       const submitResult = await submitRegistrationData(registrationData);
-      this.startSession(submitResult);
-      await nextTick();
-      await getUserAccounts();
-      this.isLoggedIn = true;
-      const { updateChat } = useFreshchatStore();
-      updateChat();
-      this.startProfileDependencies();
+      await this.handleLogin(submitResult);
+
       const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
       showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);

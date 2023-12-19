@@ -85,7 +85,7 @@ export const useGlobalStore = defineStore('globalStore', {
       'password-reset-resetCode',
       'locale-password-reset-resetCode',
       'questions',
-      'locale-questions',
+      'locale-questions'
     ]
   }),
 

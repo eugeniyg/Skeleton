@@ -33,6 +33,18 @@ export const useCoreAuthApi = () => {
     return data;
   };
 
+  const submitAutologinData = async (token: string):Promise<IAuthorizationResponse> => {
+    const { data } = await useFetchInstance('/api/player/sessions/token', {
+      method: 'POST',
+      body: { token }
+    });
+
+    const { setSessionToken } = useProfileStore();
+    setSessionToken(data.accessToken);
+
+    return data;
+  };
+
   const refreshToken = async (options:any):Promise<{data: IAuthorizationResponse}> => {
     const coreAuthStore = useProfileStore();
     if (coreAuthStore.refreshPromise) {
@@ -69,6 +81,7 @@ export const useCoreAuthApi = () => {
     getRegistrationFields,
     submitRegistrationData,
     submitLoginData,
+    submitAutologinData,
     refreshToken,
     logOut
   };
