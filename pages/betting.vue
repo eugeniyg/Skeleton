@@ -88,6 +88,7 @@
       customStyles: runtimeConfig.public.betsyParams?.sportsBookStyles ? `${host}${runtimeConfig.public.betsyParams.sportsBookStyles}` : undefined,
       token: isLoggedIn.value ? token : null,
       lang: currentLocale.value?.code || 'en',
+      allowParentUrlUpdate: runtimeConfig.public.betsyParams?.allowParentUrlUpdate ? `${host}${runtimeConfig.public.betsyParams.allowParentUrlUpdate}` : false
     };
 
     if (window.BetSdk) {
