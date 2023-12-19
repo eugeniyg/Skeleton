@@ -160,5 +160,18 @@
   "locale": {
     "component": "form-input-text",
     "type": "text"
+  },
+  "age": {
+    "component": "form-input-text",
+    "type": "text",
+    "inputmode": "numeric",
+    "validation": [
+      {
+        "rule": "integer"
+      },
+      {
+        "rule": "numeric"
+      }
+    ]
   }
 }

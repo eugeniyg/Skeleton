@@ -4,6 +4,7 @@
 
     <input
       class="field"
+      :inputmode="props.inputmode"
       :type="props.type"
       :name="props.name"
       :value="props.value"
@@ -56,6 +57,10 @@
       type: String,
       default: 'on',
     },
+    inputmode: {
+      type: String,
+      default: 'text'
+    }
   });
   const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);
 

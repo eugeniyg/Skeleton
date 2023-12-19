@@ -59,7 +59,7 @@ export const useProjectMethods = () => {
     if (includeContext) {
       fields.forEach((field) => {
         if (field.isRequired) validationRules[field.name] = [{ rule: 'required' }];
-        if (fieldsType[field.name].validation?.length) {
+        if (fieldsType[field.name]?.validation?.length) {
           if (validationRules[field.name]) {
             validationRules[field.name] = [...validationRules[field.name], ...fieldsType[field.name].validation];
           } else validationRules[field.name] = fieldsType[field.name].validation;
@@ -67,7 +67,7 @@ export const useProjectMethods = () => {
       });
     } else {
       fields.forEach((field) => {
-        if (fieldsType[field.name].validation?.length) {
+        if (fieldsType[field.name]?.validation?.length) {
           validationRules[field.name] = fieldsType[field.name].validation;
         }
       });

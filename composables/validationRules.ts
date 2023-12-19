@@ -245,6 +245,10 @@ export const digits_between = (param: string) => {
 
 export const ip = validationRules.ipAddress;
 
+export const numeric = validationRules.numeric;
+
+export const integer = validationRules.integer;
+
 // eslint-disable-next-line
 export const mac_address = validationRules.macAddress;
 
