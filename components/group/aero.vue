@@ -147,10 +147,14 @@
 
   const gameIdentity = getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.identity');
 
-  try {
-    gameInfo.value = await getGamesInfo(gameIdentity);
-  } catch {
-    console.error('Something went wrong with game info fetching!');
+  const getGameInfo = async ():Promise<void> => {
+    if (!gameIdentity) return;
+
+    try {
+      gameInfo.value = await getGamesInfo(gameIdentity);
+    } catch {
+      console.error('Something went wrong with game info fetching!');
+    }
   }
 
   const openGame = (isReal: boolean): void => {
@@ -207,6 +211,8 @@
 
   const emit = defineEmits(['initialLoad']);
   onMounted(async () => {
+    getGameInfo();
+
     loadMoreObserver.value = initObserver({
       settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
     });

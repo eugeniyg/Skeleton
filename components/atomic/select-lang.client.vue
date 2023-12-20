@@ -7,7 +7,7 @@
       <div class="selected" @click="toggleOpen">
         <atomic-image
           class="img"
-          :src="`${gamehubCdn}/locales/${currentLocale.code.toLowerCase()}.svg`"
+          :src="`${gamehubCdn}/locales/${currentLocale?.code.toLowerCase()}.svg`"
         />
         <span class="title">{{ currentLocale.nativeName || currentLocale.name }}</span>
         <atomic-icon id="arrow_expand-close" />
@@ -41,6 +41,7 @@
   const globalStore = useGlobalStore();
   const { locales, currentLocale } = storeToRefs(globalStore);
   const isOpen = ref<boolean>(false);
+  const isProcess = ref<boolean>(false);
   const cookieLanguage = useCookie('user-language', { maxAge: 60 * 60 * 24 * 365 * 10 });
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
@@ -48,7 +49,9 @@
   const { public: { gamehubCdn } } = useRuntimeConfig();
 
   const changeLanguage = async (locale: ILocale): Promise<void> => {
-    if (currentLocale.value?.code === locale.code) return;
+    if (currentLocale.value?.code === locale.code || isProcess.value) return;
+    isOpen.value = false;
+    isProcess.value = true;
 
     cookieLanguage.value = locale.code.toLowerCase();
 
@@ -74,6 +77,7 @@
   };
 
   const toggleOpen = (): void => {
+    if (isProcess.value) return;
     isOpen.value = !isOpen.value;
   };
 

@@ -238,6 +238,19 @@ export const useGlobalStore = defineStore('globalStore', {
       this.settingsConstants = await getCoreConstants();
     },
 
+    setCurrentLocale() {
+      const cookieLanguage = useCookie('user-language');
+
+      if (cookieLanguage.value) {
+        const cookieLanguageData = this.locales.find(locale => locale.code === cookieLanguage.value);
+        this.currentLocale = cookieLanguageData ?? this.defaultLocale;
+      } else {
+        const geoCountry = this.countries.find(country => country.code.toUpperCase() === this.headerCountry?.toUpperCase());
+        const geoLocaleData = this.locales.find(locale => locale.code === geoCountry?.locale);
+        this.currentLocale = geoLocaleData ?? this.defaultLocale;
+      }
+    },
+
     async getGlobalContent():Promise<void> {
       const globalContentFolders = ['alerts', 'fields-settings', 'global-components', 'layout', 'modals'];
 
