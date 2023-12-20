@@ -31,11 +31,11 @@
   onMounted(async () => {
     const { getFilteredGames } = useCoreGamesApi();
     const { data } = await getFilteredGames({ identity: props.items, countries: headerCountry.value ? [headerCountry.value] : undefined });
-    gamesArray.value = data.reduce((acc: IGame[], item: IGame) => {
-      const getGameIndex = props.items?.findIndex((gameIdentity) => gameIdentity === item.identity);
-      if (getGameIndex > -1) acc[getGameIndex] = item;
-      return acc;
-    }, []);
+    gamesArray.value = data.sort((prevGame, nextGame) => {
+      const prevIndex = props.items?.indexOf(prevGame.identity) || -1;
+      const nextIndex = props.items?.indexOf(nextGame.identity) || -1;
+      return prevIndex - nextIndex;
+    })
   });
 </script>
 
