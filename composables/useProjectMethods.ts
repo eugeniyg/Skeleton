@@ -261,11 +261,9 @@ export const useProjectMethods = () => {
     return contentData;
   };
 
-  const initObserver = (el:any, options:IObserverOptions):void => {
+  const initObserver = (options:IObserverOptions):any => {
     const optionsThing = {
       once: options?.once || false,
-      onInView: options?.onInView,
-      onOutView: options?.onOutView,
       settings: options?.settings || { root: null, rootMargin: '0px', threshold: 0.05 }
     };
 
@@ -283,16 +281,7 @@ export const useProjectMethods = () => {
       })
     }
 
-    const observer = new IntersectionObserver(callback, optionsThing.settings);
-    observer.observe(el);
-    el.addEventListener('inview', optionsThing.onInView);
-    el.addEventListener('outview', optionsThing.onOutView);
-
-    onBeforeUnmount(() => {
-      observer.unobserve(el);
-      el.removeEventListener('inview', optionsThing.onInView);
-      el.removeEventListener('outview', optionsThing.onOutView);
-    })
+    return new IntersectionObserver(callback, optionsThing.settings);
   };
 
   const replaceContent = (content:string, separator: string):string => {

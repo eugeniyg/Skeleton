@@ -44,7 +44,11 @@
       :category="liveCasinoCategory"
     />
 
-    <div ref="sportsContainer" class="sports-container">
+    <div
+      ref="sportsContainer"
+      class="sports-container"
+      @inview="startBetsyWidgets"
+    >
       <div id="top-events-widget" />
       <div id="live-events-widget" />
     </div>
@@ -145,17 +149,25 @@
   };
 
   const sportsContainer = ref();
+  const { initObserver } = useProjectMethods();
+  const widgetsObserver = ref();
+
   onMounted(() => {
     if (window.BetSdk) startBetsyWidgets();
     else {
-      const { initObserver } = useProjectMethods();
-      initObserver(sportsContainer.value, {
+      widgetsObserver.value = initObserver({
         once: true,
-        onInView: startBetsyWidgets,
         settings: { root: null, rootMargin: '400px', threshold: 0 },
       });
+      widgetsObserver.value.observe(sportsContainer.value);
     }
   });
+
+  onBeforeUnmount(() => {
+    if (sportsContainer.value && widgetsObserver.value) {
+      widgetsObserver.value.unobserve(sportsContainer.value);
+    }
+  })
 </script>
 
 <style src="~/assets/styles/pages/index.scss" lang="scss" />

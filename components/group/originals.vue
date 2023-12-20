@@ -32,7 +32,7 @@
         <div v-for="n in 9" :key="n" class="card-base"/>
       </template>
 
-      <div class="load-more" ref="loadMore"/>
+      <div class="load-more" ref="loadMore" @inview="moreGames" />
     </div>
   </div>
 </template>
@@ -100,6 +100,7 @@
 
   const loadMore = ref();
   const { initObserver } = useProjectMethods();
+  const loadMoreObserver = ref();
 
   const emit = defineEmits(['initialLoad']);
 
@@ -109,10 +110,10 @@
 
   onMounted(async () => {
     if (isShow.value) {
-      initObserver(loadMore.value, {
-        onInView: moreGames,
+      loadMoreObserver.value = initObserver({
         settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
       });
+      loadMoreObserver.value.observe(loadMore.value);
 
       try {
         const gamesResponse = await getFilteredGames(defaultRequestParams);
@@ -132,6 +133,12 @@
       }
     }
   });
+
+  onBeforeUnmount(() => {
+    if (loadMore.value && loadMoreObserver.value) {
+      loadMoreObserver.value.unobserve(loadMore.value);
+    }
+  })
 </script>
 
 <style src="~/assets/styles/components/group/originals.scss" lang="scss" />
