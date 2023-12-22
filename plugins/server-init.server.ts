@@ -1,5 +1,12 @@
 // eslint-disable-next-line consistent-return
-export default defineNuxtPlugin(async ():Promise<any> => {
+export default defineNuxtPlugin(async (ctx):Promise<any> => {
+  const { payload } = ctx;
+
+  if(payload.serverRendered && payload.path.startsWith('/_content')) {
+    console.log('YEAH, lets do some shit on content request');
+    return;
+  }
+
   const {
     getCurrencies,
     getLocales,
