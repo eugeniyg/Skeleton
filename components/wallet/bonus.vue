@@ -1,15 +1,11 @@
 <template>
   <div
     class="wallet-bonus"
-    :class="{
-      [`wallet-bonus--bg-${mappingBonusColor[props.bonusInfo.type]}`]: props.selected,
-      'is-selected': props.selected,
-      'wallet-bonus--disabled': props.disabled
-    }"
+    :class="classes"
   >
     <div class="wallet-bonus__content">
       <div class="wallet-bonus__title">
-        {{ props.bonusInfo.name }}
+        {{ props.bonusInfo.package?.name || props.bonusInfo.name }}
       </div>
 
       <div
@@ -70,11 +66,22 @@
   const bonusStore = useBonusStore();
   const { depositMoreInfoBonus } = storeToRefs(bonusStore);
 
-  const mappingBonusColor = {
+  const mappingBonusColor: { [key: number]: string } = {
+    0: 'package',
     1: 'cash',
     2: 'percentage',
     3: 'freespin'
   }
+
+  const classes = computed(() => {
+    const bonusColorType = mappingBonusColor[props.bonusInfo.packageItems?.length ? 0 : props.bonusInfo.type];
+
+    return {
+      [`wallet-bonus--bg-${bonusColorType}`]: props.selected,
+      'is-selected': props.selected,
+      'wallet-bonus--disabled': props.disabled
+    }
+  })
 
   const bonusDepositContent = computed(() => {
     const minDepositData = props.bonusInfo.minDeposit;

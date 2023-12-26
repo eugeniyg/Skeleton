@@ -103,7 +103,7 @@
     }
   }
 
-  &--bg-percentage {
+  &--bg-package {
     --bonus-bg: var(--red-900);
     --min-icon-color: var(--red-300);
     --min-title-color: var(--red-200);
@@ -113,7 +113,7 @@
     --bonus-border-color: var(--red-900);
   }
 
-  &--bg-freespin {
+  &--bg-percentage {
     --bonus-bg: var(--orange-900);
     --min-icon-color: var(--orange-300);
     --min-title-color: var(--orange-200);
@@ -131,6 +131,16 @@
     --more-title-color: var(--green-200);
     --checkbox-border: var(--green-600);
     --bonus-border-color: var(--green-900);
+  }
+
+  &--bg-freespin {
+    --bonus-bg: var(--violet-900);
+    --min-icon-color: var(--violet-300);
+    --min-title-color: var(--violet-200);
+    --more-icon-color: var(--violet-300);
+    --more-title-color: var(--violet-200);
+    --checkbox-border: var(--violet-600);
+    --bonus-border-color: var(--violet-900);
   }
 
   &__title {
