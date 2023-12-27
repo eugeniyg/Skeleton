@@ -123,6 +123,11 @@ export interface IBonusWagerSportsbookConditions {
   amountItems: IAmountRangeItem[];
 }
 
+export interface IBonusPackage {
+  id: string;
+  name: string;
+}
+
 export interface IBonus {
   id: string;
   name: string;
@@ -139,6 +144,8 @@ export interface IBonus {
   triggerConditions: IBonusTriggerConditions;
   wagerCasinoConditions: IBonusWagerCasinoConditions;
   wagerSportsbookConditions: IBonusWagerSportsbookConditions;
+  package: IBonusPackage|null;
+  packageItems?: IBonus[];
   minDeposit?: {
     amount: number;
     currency: string;
