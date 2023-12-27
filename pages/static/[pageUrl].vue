@@ -1,7 +1,11 @@
 <template>
   <div class="static-page">
-    <atomic-text-editor :content="currentLocaleStaticContent?.content || defaultLocaleStaticContent?.content" />
-    <atomic-seo-text v-if="currentLocaleStaticContent?.seo?.text" v-bind="currentLocaleStaticContent?.seo?.text" />
+    <template v-if="currentLocaleStaticContent || defaultLocaleStaticContent">
+      <atomic-text-editor :content="currentLocaleStaticContent?.content || defaultLocaleStaticContent?.content" />
+      <atomic-seo-text v-if="currentLocaleStaticContent?.seo?.text" v-bind="currentLocaleStaticContent?.seo?.text" />
+    </template>
+
+    <not-found v-else-if="!pending" />
   </div>
 </template>
 
