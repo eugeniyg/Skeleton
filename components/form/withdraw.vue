@@ -218,8 +218,13 @@
 
   const activeAccountWithdrawalFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance));
   const fieldHint = computed(() => {
+    const minContent = getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.minSum') || '';
+    const maxContent = getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.maxSum') || '';
+    const minAmountContent = `${minContent} ${formatAmountMin.value.amount} ${formatAmountMin.value.currency}`;
+    const maxAmountContent = `${maxContent} ${formatAmountMax.value.amount} ${formatAmountMax.value.currency}`;
+
     return {
-      message: `${getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.minSum') || ''} ${formatAmountMin.value.amount} ${formatAmountMin.value.currency}`,
+      message: `${minAmountContent}, ${maxAmountContent}`,
     };
   });
 

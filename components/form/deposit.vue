@@ -118,9 +118,9 @@
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
   const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
-  const fieldHint = computed(() => ({
-    message: `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
-  }));
+  const minAmountContent = `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`;
+  const maxAmountContent = `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.maxSum') || ''} ${formatAmountMax.amount} ${formatAmountMax.currency}`;
+  const fieldHint = { message: `${minAmountContent}, ${maxAmountContent}` };
 
   const getStorageBonusAmount = (): number|undefined => {
     const storageDepositDataString = sessionStorage.getItem('depositBonusData');
