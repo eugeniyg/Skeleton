@@ -34,6 +34,7 @@
     @include font($subheading-2);
     color: var(--text-secondary);
     padding: rem(8px) 0;
+    text-align: center;
     
     .is-compact & {
       display: none;
@@ -41,8 +42,10 @@
   }
   
   &__items {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     margin-bottom: rem(16px);
     grid-gap: rem(4px);
     
@@ -74,7 +77,7 @@
   &__logo {
     display: block;
     max-width: 100%;
-    width: 100%;
+    width: 48px;
     
     .is-compact & {
       width: 32px;
