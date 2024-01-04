@@ -126,6 +126,9 @@ export const useFreshchatStore = defineStore('freshchatStore', {
     },
 
     async updateChat():Promise<void> {
+      const { public: { freshchatHost }} = useRuntimeConfig();
+      if (!freshchatHost || !window.fcWidget) return;
+
       this.initialize = true;
 
       try {
