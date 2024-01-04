@@ -9,7 +9,13 @@
         v-if="layoutData?.siteSidebar?.ctaMenu?.isShow"
         :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.ctaMenu.items')"
       />
-
+      
+      <partners
+        v-if="layoutData?.siteSidebar?.partners?.isShow"
+        :label="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.partners.label')"
+        :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.partners.items')"
+      />
+      
       <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.topMenu.items')"/>
       <atomic-divider/>
 

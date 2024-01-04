@@ -7,6 +7,10 @@
   .drawer-minimize & {
     --menu-gap: #{rem(4px)};
     --menu-direction: column;
+
+    ~ .partners {
+      margin-top: rem(-4px);
+    }
   }
 
   &__item {
