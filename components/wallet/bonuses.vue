@@ -122,7 +122,7 @@
     const storageDepositDataString = sessionStorage.getItem('depositBonusData');
     const storageDepositData = storageDepositDataString ? JSON.parse(storageDepositDataString) : undefined;
 
-    if (storageDepositData && storageDepositData.currency === activeAccount.value?.currency) {
+    if (storageDepositData) {
       return bonusesList.value.find(bonus => bonus.id === storageDepositData.bonusId);
     }
 

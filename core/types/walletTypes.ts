@@ -11,6 +11,13 @@ export interface IAccount extends Record<string, any>{
   withdrawalBalance: number;
 }
 
+export interface IPaymentFieldOption extends Record<string, any> {
+  id: string;
+  name: string;
+  maxAmount: number;
+  minAmount: number;
+  regex?: string;
+}
 export interface IPaymentField extends Record<string, any> {
   key: string;
   fieldType: string;
@@ -20,11 +27,7 @@ export interface IPaymentField extends Record<string, any> {
   hints: any[];
   isRequired: boolean;
   position: number;
-  options?: {
-    id: string;
-    name: string;
-    regex?: string;
-  }[];
+  options?: IPaymentFieldOption[];
 }
 
 export interface IPaymentMethod extends Record<string, any>{

@@ -99,15 +99,9 @@
     getMainBalanceFormat,
     getContent
   } = useProjectMethods();
-  const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
-  const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
-  const activeAccountWithdrawalFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance));
-  const fieldHint = computed(() => ({
-    message: `${getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`,
-  }));
 
   const isSending = ref<boolean>(false);
-  const defaultInputSum = formatBalance(activeAccount.value?.currency, 0.01);
+  const defaultInputSum = formatBalance(activeAccount.value?.currency, 0);
   const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : Number(defaultInputSum.amount));
   const amountValue = ref<number>(amountDefaultValue.value);
 
@@ -192,26 +186,47 @@
   }
 
   const buttonAmount = computed(() => {
-    if (amountValue.value > formatAmountMax.amount) return formatAmountMax.amount;
-    if (amountValue.value < formatAmountMin.amount) return formatAmountMin.amount;
+    if (amountValue.value > formatAmountMax.value.amount) return formatAmountMax.value.amount;
+    if (amountValue.value < formatAmountMin.value.amount) return formatAmountMin.value.amount;
     return amountValue.value;
   });
 
   const networkSelectOptions = computed(() => {
     const select = props.fields.find((field) => field.fieldType === 'select');
-    if (select) {
+    if (select?.options) {
       return select?.options?.map((option) => ({
         value: option.name,
+        minAmount: option.minAmount,
+        maxAmount: option.maxAmount,
         code: option.id || `empty-network-${option.name}`,
       }));
     }
     return [];
   });
 
+  const selectedNetworkData = computed(() => {
+    return networkSelectOptions.value.find(option => option.code === state.selectedNetwork);
+  })
+
+  const formatAmountMax = computed(() => {
+    return formatBalance(activeAccount.value?.currency, selectedNetworkData.value?.maxAmount ?? props.amountMax);
+  })
+
+  const formatAmountMin = computed(() => {
+    return formatBalance(activeAccount.value?.currency, selectedNetworkData.value?.minAmount ?? props.amountMin);
+  })
+
+  const activeAccountWithdrawalFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance));
+  const fieldHint = computed(() => {
+    return {
+      message: `${getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.minSum') || ''} ${formatAmountMin.value.amount} ${formatAmountMin.value.currency}`,
+    };
+  });
+
   const buttonDisabled = computed(() => v$.value.$invalid
     || amountValue.value > activeAccountWithdrawalFormat.value.amount
-    || amountValue.value < formatAmountMin.amount
-    || amountValue.value > formatAmountMax.amount
+    || amountValue.value < formatAmountMin.value.amount
+    || amountValue.value > formatAmountMax.value.amount
     || isSending.value);
 
   const onInputNetwork = () => {
