@@ -64,7 +64,7 @@
       {{ getContent(popupsData, defaultLocalePopupsData, 'registration.registrationButton') }}
     </button-base>
     
-    <atomic-socials/>
+    <atomic-socials type="registration" />
 
     <button-popup
       :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'registration.loginButton')"

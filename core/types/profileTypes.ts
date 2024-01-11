@@ -43,6 +43,7 @@ export interface IProfile extends Record<string, any>{
   locale: string|null;
   freshchatRestoreId: string|null;
   segments: IPlayerSegment[];
+  isNewlyRegistered: boolean;
 }
 
 export interface IAuthorizationResponse extends Record<string, any>{
@@ -51,6 +52,11 @@ export interface IAuthorizationResponse extends Record<string, any>{
   expiresAfter: string;
   sessionId: string;
   profile: IProfile;
+}
+
+export interface IAuthState {
+  type: 'login'|'registration';
+  targetUrl: string;
 }
 
 export interface IChangePasswordRequest extends Record<string, any>{

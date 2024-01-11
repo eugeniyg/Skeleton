@@ -77,12 +77,25 @@ export const useCoreAuthApi = () => {
     }
   };
 
+  const submitSocialLoginData = async (socialAuthData: any):Promise<IAuthorizationResponse> => {
+    const { data } = await useFetchInstance('/api/player/sessions/social', {
+      method: 'POST',
+      body: socialAuthData
+    });
+
+    const { setSessionToken } = useProfileStore();
+    setSessionToken(data.accessToken);
+
+    return data;
+  };
+
   return {
     getRegistrationFields,
     submitRegistrationData,
     submitLoginData,
     submitAutologinData,
     refreshToken,
-    logOut
+    logOut,
+    submitSocialLoginData
   };
 }
