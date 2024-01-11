@@ -118,7 +118,7 @@
       walletNumber.value = depositResponse.address;
       qrLink.value = depositResponse.qrAddress;
     } catch {
-      showModal('error');
+      showModal('failing');
     }
   }
 
