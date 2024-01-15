@@ -9,7 +9,7 @@
     <span v-if="props.label" class="label">{{ props.label }}<span class="required" v-if="props.isRequired">*</span></span>
 
     <div class="selected" @click="open">
-      <atomic-image v-if="valueObject.mask" class="mask" :src="valueObject.mask" />
+      <atomic-image v-if="valueObject.mask" class="mask" :src="valueObject.mask" :defaultImage="valueObject.defaultMask" />
       <span v-if="valueObject.value">{{ valueObject.value }}</span>
       <span v-else-if="props.placeholder" class="placeholder">{{ props.placeholder }}</span>
       <atomic-icon id="arrow_expand-close"/>
