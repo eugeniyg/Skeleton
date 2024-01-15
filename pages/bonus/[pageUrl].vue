@@ -26,9 +26,9 @@
       </button-base>
 
       <atomic-detail
-        v-if="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'termsLabel') && getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'termsContent')"
-        :title="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'termsLabel')"
-        :content="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'termsContent')"
+        v-if="!pending && detailLabel && detailContent"
+        :title="detailLabel"
+        :content="detailContent"
       />
     </div>
 
@@ -84,6 +84,9 @@
   watch(data, () => {
     setContentData(data.value);
   })
+
+  const detailLabel = computed(() => getContent(currentLocaleBonusContent.value, defaultLocaleBonusContent.value, 'termsLabel'));
+  const detailContent = computed(() => getContent(currentLocaleBonusContent.value, defaultLocaleBonusContent.value, 'termsContent'));
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
