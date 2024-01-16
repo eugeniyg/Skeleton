@@ -106,7 +106,9 @@
   const format = (value: number): number|string => (value < 10 ? `0${value}` : value);
 
   const statusActiveTitle = computed(() => {
-    const message = getContent(limitsContent.value, defaultLimitsContent.value, 'availableLimitSum') || '';
+    const message = getContent(limitsContent.value, defaultLimitsContent.value, 'availableLimitSum');
+    if (!message) return '';
+
     const { amount, currency } = formatBalance(props.currency, props.amount);
     const balance = amount < props.currentAmount ? 0 : amount - props.currentAmount;
 
