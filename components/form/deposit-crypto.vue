@@ -41,7 +41,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
-  import type { IPaymentField, IRequestDeposit, IBonus } from '@skeleton/core/types';
+  import type { IPaymentField, IRequestDeposit, IBonus, IPaymentFieldOption } from '@skeleton/core/types';
   import debounce from 'lodash/debounce';
 
   const props = defineProps<{
@@ -74,22 +74,32 @@
     formatBalance,
     getContent
   } = useProjectMethods();
-  const fieldHint = computed(() => {
-    const formatSum = formatBalance(activeAccount.value?.currency, props.amountMin);
-    return {
-      message: `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.minSum') || ''} ${formatSum.amount} ${formatSum.currency}`,
-    };
-  });
 
   const networkSelectOptions = computed(() => {
     const select = props.fields && props.fields.find((item) => item.fieldType === 'select');
     if (select?.options) {
-      return select?.options.map((option: { id: string|null, name: string }) => ({
+      return select?.options.map((option: IPaymentFieldOption) => ({
         value: option.name,
+        minAmount: option.minAmount,
+        maxAmount: option.maxAmount,
         code: option.id || `empty-network-${option.name}`,
       }));
     }
     return [];
+  });
+
+  const fieldHint = computed(() => {
+    const selectedNetworkData = networkSelectOptions.value.find(option => option.code === state.selectedNetwork);
+
+    const minSumFormat = formatBalance(activeAccount.value?.currency, selectedNetworkData?.minAmount ?? props.amountMin);
+    const maxSumFormat = formatBalance(activeAccount.value?.currency, selectedNetworkData?.maxAmount ?? props.amountMax);
+
+    const minContent = `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.minSum') || ''} ${minSumFormat.amount} ${minSumFormat.currency}`;
+    const maxContent = `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.maxSum') || ''} ${maxSumFormat.amount} ${maxSumFormat.currency}`;
+
+    return {
+      message: `${minContent}, ${maxContent}`,
+    };
   });
 
   const state = reactive<{

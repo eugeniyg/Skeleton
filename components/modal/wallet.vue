@@ -183,7 +183,13 @@
   })
 
   const changeTab = (tabId: 'deposit'|'withdraw'): void => {
-    walletModalType.value = tabId === 'withdraw' ? tabId : undefined;
+    if (tabId === 'withdraw') {
+      walletModalType.value = tabId;
+      if (mobileWidth()) currentWithdrawMethod.value = undefined;
+    } else {
+      walletModalType.value = undefined;
+      if (mobileWidth()) currentDepositMethod.value = undefined;
+    }
   };
 
   const showTabs = computed(() => {
