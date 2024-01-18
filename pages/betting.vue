@@ -170,7 +170,6 @@
   });
 
   onMounted(async () => {
-    console.log(bettingContent.value?.slider?.items);
     if (isMobile.value) {
       const footerEl: HTMLElement | null = document.querySelector('footer');
       if (footerEl) footerEl.style.display = 'none';
