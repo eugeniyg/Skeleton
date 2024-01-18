@@ -1,0 +1,91 @@
+.card-betting-slide {
+  display: grid;
+  position: relative;
+  overflow: clip;
+  height: 100%;
+  width: 100%;
+  border-radius: 16px;
+
+  --info-padding: #{rem(8px)} #{rem(120px)} #{rem(8px)} #{rem(40px)};
+
+  &__picture {
+    grid-column: 1;
+    grid-row: 1;
+    position: absolute;
+    height: 100%;
+    max-width: 100%;
+
+    &--front {
+      right: 0;
+    }
+
+    &--back {
+      left: 0;
+    }
+  }
+
+  &__img {
+    &--front {
+      aspect-ratio: 213/168;
+      object-fit: cover;
+      height: 100%;
+      right: 0;
+    }
+
+    &--back {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__info {
+    grid-column: 1;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex-shrink: 0;
+    padding: var(--info-padding, 0);
+  }
+
+  &__title {
+    color: var(--text-primary);
+    align-self: start;
+    line-height: 1;
+    font-weight: 500;
+    font-size: rem(14px);
+
+    p {
+      margin: 0;
+      font-weight: inherit;
+      text-shadow: var(--shadow-layer);
+      @include line-clamp(2)
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      padding: 0;
+      font-weight: 700;
+      font-size: clamp(20px, 1.25vw, 20px);
+      text-shadow: var(--shadow-layer);
+      @include line-clamp(2)
+    }
+  }
+
+  &__actions {
+    display: flex;
+    grid-column-gap: rem(4px);
+    margin-top: rem(12px);
+
+    .btn-primary, .btn-secondary {
+      font-size: clamp(14px, 0.875vw, 14px);
+      font-weight: 700;
+      --padding: #{rem(6px)} #{rem(20px)};
+      --btn-border-radius: 8px;
+    }
+  }
+}
+
