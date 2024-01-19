@@ -1,8 +1,11 @@
 <template>
-  <div class="betting">
-    <div id="betting-container" class="container"/>
-
-    <atomic-seo-text v-if="bettingContent?.seo?.text" v-bind="bettingContent?.seo?.text"/>
+  <div>
+    <betting-slider v-if="!isMobile && bettingContent?.slider?.display && filteredSlider?.length" :slides="filteredSlider"/>
+    <div class="betting">
+      <div id="betting-container" class="container"/>
+      
+      <atomic-seo-text v-if="bettingContent?.seo?.text" v-bind="bettingContent?.seo?.text"/>
+    </div>
   </div>
 </template>
 
@@ -59,6 +62,35 @@
 
   watch(data, () => {
     setContentData(data.value);
+  })
+  
+  const dayjs = useDayjs();
+  const sliderFilterTime = ref(dayjs.utc());
+  const filteredSlider = computed(() => {
+    return bettingContent.value?.slider?.items?.reduce((filteredSliderArr: ISportsbookPage['slider']['items'], currentSlide) => {
+      const loggedFilter: boolean = (isLoggedIn.value && currentSlide.loggedHide) || (!isLoggedIn.value && currentSlide.unloggedHide);
+      let includesSegmentsFilter: boolean = !!currentSlide.showSegments?.length;
+      let excludeSegmentsFilter: boolean = !!currentSlide.hideSegments?.length;
+      let timeFilter: boolean = false;
+      
+      if (isLoggedIn.value && profile.value) {
+        const showSegmentsArr = currentSlide.showSegments?.map(item => item.segmentName) || [];
+        const hideSegmentsArr = currentSlide.hideSegments?.map(item => item.segmentName) || [];
+        includesSegmentsFilter = showSegmentsArr.length ? !profile.value.segments.some((segment) => showSegmentsArr.includes(segment.name)) : false;
+        excludeSegmentsFilter = hideSegmentsArr.length ? profile.value.segments.some((segment) => hideSegmentsArr.includes(segment.name)) : false;
+      }
+      
+      if (currentSlide.showFrom && currentSlide.showTo) {
+        timeFilter = !dayjs(sliderFilterTime.value).isBetween(dayjs(currentSlide.showFrom), dayjs(currentSlide.showTo), 'second');
+      } else if (currentSlide.showFrom) {
+        timeFilter = !dayjs(sliderFilterTime.value).isSameOrAfter(dayjs(currentSlide.showFrom), 'second');
+      } else if (currentSlide.showTo) {
+        timeFilter = !dayjs(sliderFilterTime.value).isSameOrBefore(dayjs(currentSlide.showTo), 'second');
+      }
+      
+      if (loggedFilter || includesSegmentsFilter || excludeSegmentsFilter || timeFilter) return filteredSliderArr;
+      return [...filteredSliderArr, currentSlide];
+    }, []);
   })
 
   const walletStore = useWalletStore();
