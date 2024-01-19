@@ -7,6 +7,19 @@
       "arguments": "6"
     }]
   },
+  "password_confirmation": {
+    "component": "form-input-password",
+    "type": "password",
+    "validation": [
+      {
+        "rule": "required"
+      },
+      {
+        "rule": "confirmed",
+        "arguments": "password"
+      }
+    ]
+  },
   "currentPassword": {
     "component": "form-input-password",
     "type": "password",
