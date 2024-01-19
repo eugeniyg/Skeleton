@@ -59,6 +59,11 @@
     font-weight: 500;
     font-size: rem(14px);
 
+    ul, ol {
+      margin: 0;
+      padding-left: 16px;
+    }
+
     p {
       margin: 0;
       font-weight: inherit;
