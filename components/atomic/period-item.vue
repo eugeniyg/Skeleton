@@ -38,7 +38,7 @@
         :class="`limits-periods-list__item-status-type--${ limitsStatuses[status] }`"
       />
       <span class="limits-periods-list__item-status-title">
-        {{ formatStatus(status, dayjs(expiredAt).format(DATE_FORMAT)) }}
+        {{ formatStatus }}
       </span>
     </div>
 
@@ -88,13 +88,15 @@
   const { formatBalance, getContent } = useProjectMethods();
   const { getLimits } = limitsStore;
   const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
-
-  const formatStatus = (status: number, date:string) => {
-    const msg = status === 1
+  const formatStatus = computed(() => {
+    const msg = props.status === 1
       ? getContent(limitsContent.value, defaultLimitsContent.value, 'activeStatusLabel')
       : getContent(limitsContent.value, defaultLimitsContent.value, 'pendingStatusLabel');
-    return msg.replace('{date}', date);
-  };
+
+    const dateValue = dayjs(props.expiredAt).format(DATE_FORMAT);
+
+    return msg ? msg.replace('{date}', dateValue) : '';
+  });
 
   const limitsStatuses: Record<number, string> = {
     1: 'active',
@@ -107,6 +109,8 @@
 
   const statusActiveTitle = computed(() => {
     const message = getContent(limitsContent.value, defaultLimitsContent.value, 'availableLimitSum');
+    if (!message) return '';
+
     const { amount, currency } = formatBalance(props.currency, props.amount);
     const balance = amount < props.currentAmount ? 0 : amount - props.currentAmount;
 
