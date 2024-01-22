@@ -36,6 +36,7 @@
         :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
         :hint="setError(field.name)"
         :class="field.name"
+        @input="handleInput(field.name)"
       />
     </template>
 
@@ -127,6 +128,14 @@
 
   const { registration } = useProfileStore();
   const isLockedAsyncButton = ref<boolean>(false);
+
+  const handleInput = (fieldName:string):void => {
+    if (fieldName === 'password' && v$.value.password_confirmation?.$dirty) {
+      const oldValue = registrationFormData.password_confirmation;
+      registrationFormData.password_confirmation = '';
+      registrationFormData.password_confirmation = oldValue;
+    }
+  };
 
   const { getNicknameFromEmail } = useProjectMethods();
   const signUp = async ():Promise<void> => {
