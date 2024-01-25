@@ -94,17 +94,17 @@
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
   const formFields = props.fields.filter(field => field.isRequired);
-  if (formFields.length) {
-    formFields.forEach((field) => {
-      depositFormData[field.key] = profileStore.profile?.[field.key];
-    })
-  }
+  formFields.forEach((field) => {
+    depositFormData[field.key] = profileStore.profile?.[field.key];
+  })
 
   const { getFormRules, createValidationRules, getSumFromAmountItems } = useProjectMethods();
   const depositRules = formFields.reduce((finalRules, currentField) => {
+    const rulesArr: { rule: string, arguments?: string }[] = [{ rule: 'required' }];
     if (currentField.regexp) {
-      return { ...finalRules, [currentField.key]: [{ rule: 'regex', arguments: currentField.regexp }] };
-    } return finalRules;
+      rulesArr.push({ rule: 'regex', arguments: currentField.regexp });
+    }
+    return { ...finalRules, [currentField.key]: rulesArr };
   }, {});
   const depositFormRules = getFormRules(depositRules);
   const {
