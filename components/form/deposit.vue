@@ -14,9 +14,9 @@
 
     <!--    <wallet-pills />-->
 
-    <template v-if="props.fields?.length">
+    <template v-if="formFields?.length">
       <component
-        v-for="field in props.fields"
+        v-for="field in formFields"
         :key="field.key"
         @input="v$[field.key]?.$touch()"
         @blur="v$[field.key]?.$touch()"
@@ -93,14 +93,19 @@
   const { depositBonuses, selectedDepositBonus } = storeToRefs(bonusStore);
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
-  if (props.fields.length) {
-    props.fields.forEach((field) => {
+  const formFields = props.fields.filter(field => field.isRequired);
+  if (formFields.length) {
+    formFields.forEach((field) => {
       depositFormData[field.key] = profileStore.profile?.[field.key];
     })
   }
 
   const { getFormRules, createValidationRules, getSumFromAmountItems } = useProjectMethods();
-  const depositRules = createValidationRules(props.fields.map(field => ({ ...field, name: field.key })), true);
+  const depositRules = formFields.reduce((finalRules, currentField) => {
+    if (currentField.regexp) {
+      return { ...finalRules, [currentField.key]: [{ rule: 'regex', arguments: currentField.regexp }] };
+    } return finalRules;
+  }, {});
   const depositFormRules = getFormRules(depositRules);
   const {
     serverFormErrors, v$, onFocus, setError,
@@ -179,7 +184,7 @@
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
       bonusId: selectedDepositBonus.value?.id,
-      fields: props.fields.length ? depositFormData : undefined
+      fields: formFields.length ? depositFormData : undefined
     };
     const { depositAccount } = useCoreWalletApi();
     const windowReference:any = window.open();
