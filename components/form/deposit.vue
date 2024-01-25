@@ -13,25 +13,22 @@
     />
 
     <!--    <wallet-pills />-->
-
-    <template v-if="formFields?.length">
-      <component
-        v-for="field in formFields"
-        :key="field.key"
-        @input="v$[field.key]?.$touch()"
-        @blur="v$[field.key]?.$touch()"
-        @focus="onFocus(field.key)"
-        :is="fieldsTypeMap[field.key]?.component || 'form-input-text'"
-        v-model:value="depositFormData[field.key]"
-        :type="fieldsTypeMap[field.key]?.type || 'text'"
-        :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.label`) || field.labels.en"
-        :name="field.key"
-        :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.placeholder`) || field.hints.en"
-        :options="getFieldOptions(field.key)"
-        :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
-        :hint="setError(field.key)"
-      />
-    </template>
+    <component
+      v-for="field in formFields"
+      :key="field.key"
+      @input="v$[field.key]?.$touch()"
+      @blur="v$[field.key]?.$touch()"
+      @focus="onFocus(field.key)"
+      :is="fieldsTypeMap[field.key]?.component || 'form-input-text'"
+      v-model:value="depositFormData[field.key]"
+      :type="fieldsTypeMap[field.key]?.type || 'text'"
+      :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.label`) || field.labels.en"
+      :name="field.key"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.placeholder`) || field.hints.en"
+      :options="getFieldOptions(field.key)"
+      :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
+      :hint="setError(field.key)"
+    />
 
     <template v-if="depositBonuses?.length">
       <atomic-divider />
