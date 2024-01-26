@@ -4,26 +4,28 @@
       {{ favoritesContent?.title || defaultLocaleFavoritesContent?.title }}
     </div>
 
-    <list-grid
-      v-if="showFavorites"
-      :items="currentFavoriteList"
-      :meta="pageMeta"
-      @loadMore="currentPage++"
-    />
+    <client-only>
+      <list-grid
+        v-if="showFavorites"
+        :items="currentFavoriteList"
+        :meta="pageMeta"
+        @loadMore="currentPage++"
+      />
 
-    <atomic-empty
-      v-else
-      :title="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.title')"
-      :subTitle="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.description')"
-      :image="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.image')"
-    />
+      <atomic-empty
+        v-else
+        :title="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.title')"
+        :subTitle="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.description')"
+        :image="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.image')"
+      />
 
-    <group-games
-      v-if="!showFavorites && recommendedCategory"
-      :category="recommendedCategory"
-      showArrows
-      subTitle
-    />
+      <group-games
+        v-if="!showFavorites && recommendedCategory"
+        :category="recommendedCategory"
+        showArrows
+        subTitle
+      />
+    </client-only>
 
     <atomic-seo-text v-if="favoritesContent?.seo?.text" v-bind="favoritesContent?.seo?.text" />
   </div>
