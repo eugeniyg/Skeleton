@@ -28,7 +28,7 @@
         :hint="fieldHint"
       />
 
-      <template v-for="field in props.fields">
+      <template v-for="field in formFields">
         <component
           v-if="field.key !== 'crypto_network'"
           :key="field.key"
@@ -107,25 +107,26 @@
 
   const profileStore = useProfileStore();
   const withdrawFormData = reactive<{ [key: string]: string }>({});
-  props.fields.forEach((field: any) => {
+  const formFields = props.fields.filter(field => field.isRequired);
+  formFields.forEach((field: any) => {
     if (field.key !== 'crypto_network') {
       withdrawFormData[field.key] = profileStore.profile?.[field.key];
     }
   });
   const fieldsType:any = fieldsTypeMap;
-  const startRules = props.fields?.reduce((currentRulesObj, currentField) => {
+  const startRules = formFields.reduce((currentRulesObj, currentField) => {
     if (currentField.key === 'crypto_network') return currentRulesObj;
 
-    let rulesArr = [];
-    if (currentField.isRequired) rulesArr.push({ rule: 'required' });
+    const rulesArr: { rule: string, arguments?: string }[] = [{ rule: 'required' }];
     if (currentField.regexp) {
       rulesArr.push({
         rule: 'regex',
         arguments: currentField.regexp
       });
     }
+
     if (currentField.key === 'wallet_id') {
-      const findNetworkField = props.fields.find((field) => field.key === 'crypto_network');
+      const findNetworkField = formFields.find((field) => field.key === 'crypto_network');
       const firstNetworkRegex = findNetworkField ? findNetworkField.options?.[0]?.regex : undefined;
 
       if (firstNetworkRegex) {
@@ -136,14 +137,7 @@
       }
     }
 
-    if (fieldsType[currentField.key]?.validation?.length) {
-      rulesArr = rulesArr.concat(fieldsType[currentField.key].validation);
-    }
-
-    return {
-      ...currentRulesObj,
-      [currentField.key]: rulesArr
-    };
+    return { ...currentRulesObj, [currentField.key]: rulesArr };
   }, {});
 
   const withdrawRules = ref<any>(startRules);
@@ -192,7 +186,7 @@
   });
 
   const networkSelectOptions = computed(() => {
-    const select = props.fields.find((field) => field.fieldType === 'select');
+    const select = formFields.find((field) => field.fieldType === 'select');
     if (select?.options) {
       return select?.options?.map((option) => ({
         value: option.name,
@@ -237,7 +231,7 @@
   const onInputNetwork = () => {
     let networkRegex;
 
-    const findNetworkField = props.fields.find((field) => field.key === 'crypto_network');
+    const findNetworkField = formFields.find((field) => field.key === 'crypto_network');
     if (findNetworkField) {
       const findNetworkOption = findNetworkField?.options?.find((option) => {
         if (option.id) return option.id === state.selectedNetwork;
