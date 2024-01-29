@@ -1,0 +1,80 @@
+.notification-bar {
+  display: grid;
+  grid-template-areas: "icon-info text-content vertical-line btn-close";
+  grid-template-columns: auto 1fr;
+  background-color: var(--violet-800);
+  padding: 8px 16px;
+
+  &:after {
+    content: '';
+    border-left: 1px solid var(--border-02-low-contrast);
+    grid-area: vertical-line;
+    margin: 0 16px;
+  }
+
+  &__icon {
+    grid-area: icon-info;
+    align-self: center;
+  }
+
+  @include media(l) {
+    padding: 8px 24px;
+  }
+
+  &__content {
+    align-self: center;
+    margin-left: 8px;
+
+    * {
+      margin: 0;
+      color: var(--text-primary);
+      @include font($subheading-1);
+    }
+  }
+
+  &__close {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+
+    .icon {
+      --icon-size: 20px;
+      --color: var(--button-icn-ghost-low-contrast);
+    }
+
+    &:hover {
+      .icon {
+        --color: var(--button-icn-ghost-high-contrast);
+      }
+    }
+  }
+}
+
+.app-header-root {
+  &.is-notification-bar-hide {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    animation-name: scale-down;
+    animation-duration: .3s;
+
+    ~ .drawer {
+      @include media(l) {
+        top: var(--header-height, 64px);
+        transition: top .3s;
+      }
+    }
+  }
+}
+
+@keyframes scale-down {
+  0% {
+    min-height: var(--header-total-height);
+  }
+  100% {
+    min-height: 64px;
+  }
+}

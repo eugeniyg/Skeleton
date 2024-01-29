@@ -68,13 +68,13 @@
 
     @include media(md) {
       position: relative;
-      height: calc(100vh - 142px);
+      height: calc(100vh - 142px - var(--bar-height, 0px));
       --top: 0;
       --bottom: 0;
     }
 
     @media (min-width: 64rem) and (max-width: 1279px) {
-      height: calc(100vh - 196px);
+      height: calc(100vh - 196px - var(--bar-height, 0px));
     }
 
     @media (orientation: landscape) and (max-width: 1023px) {
@@ -94,21 +94,21 @@
 
   &.box-game--demo .container {
     @include media(md) {
-      height: calc(100vh - 190px);
+      height: calc(100vh - 190px - var(--bar-height, 0px));
     }
   }
 
   .container {
     @media (orientation: landscape) and (max-width: 1023px) {
       padding: 0;
-      --top: 0;
+      --top: var(--header-total-height, 0px);
       --bottom: 0;
       left: auto;
     }
 
     @media (orientation: portrait) and (max-width: 1023px) {
       padding: 0;
-      --top: 64px;
+      --top: var(--header-total-height, 0px);
       --bottom: 0;
     }
   }
