@@ -69,8 +69,8 @@
   const deactivateBar = () => {
     bar.value?.offsetParent?.classList.add('is-notification-bar-hide');
     isShowBar.value = false;
-    // hideBarCookie.value = 'true';
-    updateCssVars()
+    updateCssVars();
+    hideBarCookie.value = 'true';
   };
   
   onMounted(() => {
