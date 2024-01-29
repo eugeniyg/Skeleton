@@ -13,25 +13,22 @@
     />
 
     <!--    <wallet-pills />-->
-
-    <template v-if="props.fields?.length">
-      <component
-        v-for="field in props.fields"
-        :key="field.key"
-        @input="v$[field.key]?.$touch()"
-        @blur="v$[field.key]?.$touch()"
-        @focus="onFocus(field.key)"
-        :is="fieldsTypeMap[field.key]?.component || 'form-input-text'"
-        v-model:value="depositFormData[field.key]"
-        :type="fieldsTypeMap[field.key]?.type || 'text'"
-        :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.label`) || field.labels.en"
-        :name="field.key"
-        :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.placeholder`) || field.hints.en"
-        :options="getFieldOptions(field.key)"
-        :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
-        :hint="setError(field.key)"
-      />
-    </template>
+    <component
+      v-for="field in formFields"
+      :key="field.key"
+      @input="v$[field.key]?.$touch()"
+      @blur="v$[field.key]?.$touch()"
+      @focus="onFocus(field.key)"
+      :is="fieldsTypeMap[field.key]?.component || 'form-input-text'"
+      v-model:value="depositFormData[field.key]"
+      :type="fieldsTypeMap[field.key]?.type || 'text'"
+      :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.label`) || field.labels.en"
+      :name="field.key"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.placeholder`) || field.hints.en"
+      :options="getFieldOptions(field.key)"
+      :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
+      :hint="setError(field.key)"
+    />
 
     <template v-if="depositBonuses?.length">
       <atomic-divider />
@@ -93,14 +90,19 @@
   const { depositBonuses, selectedDepositBonus } = storeToRefs(bonusStore);
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
-  if (props.fields.length) {
-    props.fields.forEach((field) => {
-      depositFormData[field.key] = profileStore.profile?.[field.key];
-    })
-  }
+  const formFields = props.fields.filter(field => field.isRequired);
+  formFields.forEach((field) => {
+    depositFormData[field.key] = profileStore.profile?.[field.key];
+  })
 
   const { getFormRules, createValidationRules, getSumFromAmountItems } = useProjectMethods();
-  const depositRules = createValidationRules(props.fields.map(field => ({ ...field, name: field.key })), true);
+  const depositRules = formFields.reduce((finalRules, currentField) => {
+    const rulesArr: { rule: string, arguments?: string }[] = [{ rule: 'required' }];
+    if (currentField.regexp) {
+      rulesArr.push({ rule: 'regex', arguments: currentField.regexp });
+    }
+    return { ...finalRules, [currentField.key]: rulesArr };
+  }, {});
   const depositFormRules = getFormRules(depositRules);
   const {
     serverFormErrors, v$, onFocus, setError,
@@ -179,7 +181,7 @@
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
       bonusId: selectedDepositBonus.value?.id,
-      fields: props.fields.length ? depositFormData : undefined
+      fields: formFields.length ? depositFormData : undefined
     };
     const { depositAccount } = useCoreWalletApi();
     const windowReference:any = window.open();

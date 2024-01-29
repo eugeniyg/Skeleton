@@ -20,8 +20,8 @@
   definePageMeta({
     middleware: [
       function (to, from) {
-        if ((from.name === 'questions-pageUrl' && to.name === 'questions')
-          || (from.name === 'locale-questions-pageUrl' && to.name === 'locale-questions')) {
+        if ((from.name === 'questions-pageIdentity' && to.name === 'questions')
+          || (from.name === 'locale-questions-pageIdentity' && to.name === 'locale-questions')) {
           return abortNavigation();
         }
       },
@@ -44,7 +44,7 @@
 
     const router = useRouter();
     if (needRedirect) {
-      router.replace(localizePath(`/questions/${questionsCategoryData.value[0]?.pageUrl || 'most-popular'}`));
+      router.replace(localizePath(`/questions/${questionsCategoryData.value[0]?.pageIdentity || 'most-popular'}`));
     }
   }
 

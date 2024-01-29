@@ -18,7 +18,7 @@
   import type { IQuestionCategory } from '~/types';
 
   const route = useRoute();
-  const { pageUrl } = route.params;
+  const { pageIdentity } = route.params;
 
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
@@ -35,14 +35,14 @@
   }
 
   const getPageContent = async (): Promise<IQuestionCategory> => {
-    const nuxtContentData = useNuxtData(`${pageUrl}-question`);
+    const nuxtContentData = useNuxtData(`${pageIdentity}-question`);
     if (nuxtContentData.data.value) return nuxtContentData.data.value;
 
-    const pageContent: object = await queryContent(currentLocale.value?.code as string, 'question-pages', pageUrl as string).findOne();
+    const pageContent: object = await queryContent(currentLocale.value?.code as string, 'question-pages').where({ pageIdentity }).findOne();
     return reactive({ ...pageContent } as IQuestionCategory);
   }
 
-  const { pending, data, error } = await useLazyAsyncData(`${pageUrl}-question`, () => getPageContent());
+  const { pending, data, error } = await useLazyAsyncData(`${pageIdentity}-question`, () => getPageContent());
   if (error.value) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
   else if (data.value) setContentData(data.value);
 
