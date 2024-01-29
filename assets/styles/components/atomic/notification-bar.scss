@@ -1,7 +1,5 @@
 .notification-bar {
-  display: grid;
-  grid-template-areas: "icon-info text-content vertical-line btn-close";
-  grid-template-columns: auto 1fr;
+  display: flex;
   background-color: var(--violet-800);
   padding: 8px 16px;
 
@@ -10,6 +8,15 @@
     border-left: 1px solid var(--border-02-low-contrast);
     grid-area: vertical-line;
     margin: 0 16px;
+  }
+
+  &__img {
+    grid-area: img;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-self: center;
+    margin-left: 8px;
   }
 
   &__icon {
@@ -24,6 +31,7 @@
   &__content {
     align-self: center;
     margin-left: 8px;
+    width: 100%;
 
     * {
       margin: 0;

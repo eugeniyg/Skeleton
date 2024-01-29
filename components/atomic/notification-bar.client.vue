@@ -1,7 +1,7 @@
 <template>
   <div class="notification-bar" ref="bar" v-if="displayBar">
     <atomic-icon id="warning" class="notification-bar__icon"/>
-    
+    <img v-if="barContentImg" :src="barContentImg" alt="" class="notification-bar__img">
     <div class="notification-bar__content" v-html="marked.parse(barContent)"/>
     
     <div class="notification-bar__close" @click="deactivateBar">
@@ -32,7 +32,10 @@
     return showFrom && showTo ? dayjs(currentTime.value).isBetween(showFrom, dayjs(showTo)) : true
   });
   
+  const barContentImg = computed(() => getContent(layoutData, defaultLocaleLayoutData, 'header.notificationBar.image'));
+  
   const barContent = computed(() => getContent(layoutData, defaultLocaleLayoutData, 'header.notificationBar.content'));
+  
   
   const displayBar = computed(() => {
     return (
