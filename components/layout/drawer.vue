@@ -61,6 +61,7 @@
   const { getContent } = useProjectMethods();
 
   const layoutStore = useLayoutStore();
+  const { showModal } = layoutStore;
   const { isDrawerCompact } = storeToRefs(layoutStore);
 
   const profileStore = useProfileStore();
@@ -77,7 +78,9 @@
   const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
 
   const openChat = () => {
-    window.fcWidget?.open();
+    const { public: { freshchatForGuest }} = useRuntimeConfig();
+    if (!freshchatForGuest && !isLoggedIn.value) showModal('register');
+    else window.fcWidget?.open();
   }
 </script>
 
