@@ -22,13 +22,13 @@
         </template>
       </accordeon>
 
-      <list-base :items="trustIcons">
+      <list-base :items="responsibilityIcons">
         <template #header>
           <h4>{{ layoutData?.footer?.responsibilityLabel || defaultLocaleLayoutData?.footer?.responsibilityLabel }}</h4>
         </template>
 
         <template v-slot:item="{ item }">
-          <atomic-image :src="`/img${item}`" />
+          <atomic-image :src="`${item.image}`" />
         </template>
       </list-base>
     </div>
@@ -76,18 +76,16 @@
     layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
     layoutData?.footer?.helpMenu || defaultLocaleLayoutData?.footer?.helpMenu,
   ];
-  const trustIcons = [
-    '/trust-icons/1.svg',
-    '/trust-icons/2.svg',
-    '/trust-icons/3.svg',
-    '/trust-icons/4.svg',
-  ];
   
   const showCuracaoBlock = computed(() => {
     return layoutData?.footer?.curacao?.description ||
       defaultLocaleLayoutData?.footer?.curacao?.description ||
       layoutData?.footer?.curacao?.frameLink ||
       defaultLocaleLayoutData?.footer?.curacao?.frameLink
+  })
+  
+  const responsibilityIcons = computed(() => {
+    return layoutData?.footer?.responsibilityIcons || defaultLocaleLayoutData?.footer?.responsibilityIcons
   })
   
 </script>
