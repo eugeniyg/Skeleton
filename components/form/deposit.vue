@@ -14,7 +14,7 @@
 
     <!--    <wallet-pills />-->
     <component
-      v-for="field in formFields"
+      v-for="field in props.fields"
       :key="field.key"
       @input="v$[field.key]?.$touch()"
       @blur="v$[field.key]?.$touch()"
@@ -90,15 +90,16 @@
   const { depositBonuses, selectedDepositBonus } = storeToRefs(bonusStore);
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
-  const formFields = props.fields.filter(field => field.isRequired);
-  formFields.forEach((field) => {
+  props.fields.forEach((field) => {
     depositFormData[field.key] = profileStore.profile?.[field.key];
   })
 
   const { getFormRules, createValidationRules, getSumFromAmountItems } = useProjectMethods();
-  const depositRules = formFields.reduce((finalRules, currentField) => {
+  const depositRules = props.fields.reduce((finalRules, currentField) => {
     const rulesArr: { rule: string, arguments?: string }[] = [{ rule: 'required' }];
-    if (currentField.regexp) {
+    if (currentField.key === 'phone') {
+      rulesArr.push({ rule: 'phone' }); // skeleton phone rule without "+"
+    } else if (currentField.regexp) {
       rulesArr.push({ rule: 'regex', arguments: currentField.regexp });
     }
     return { ...finalRules, [currentField.key]: rulesArr };
@@ -172,6 +173,9 @@
     const successRedirect = `${origin}${path}?${successQueryString}`;
     const errorRedirect = `${origin}${path}?${errorQueryString}`;
 
+    if (depositFormData.phone) {
+      depositFormData.phone = `+${depositFormData.phone}`;
+    }
     const mainCurrencyAmount = getMainBalanceFormat(defaultInputSum.currency, Number(amountValue.value));
     const params = {
       method: props.method || '',
@@ -181,7 +185,7 @@
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
       bonusId: selectedDepositBonus.value?.id,
-      fields: formFields.length ? depositFormData : undefined
+      fields: props.fields.length ? depositFormData : undefined
     };
     const { depositAccount } = useCoreWalletApi();
     const windowReference:any = window.open();

@@ -28,7 +28,7 @@
         :hint="fieldHint"
       />
 
-      <template v-for="field in formFields">
+      <template v-for="field in props.fields">
         <component
           v-if="field.key !== 'crypto_network'"
           :key="field.key"
@@ -107,18 +107,19 @@
 
   const profileStore = useProfileStore();
   const withdrawFormData = reactive<{ [key: string]: string }>({});
-  const formFields = props.fields.filter(field => field.isRequired);
-  formFields.forEach((field: any) => {
+  props.fields.forEach((field: any) => {
     if (field.key !== 'crypto_network') {
       withdrawFormData[field.key] = profileStore.profile?.[field.key];
     }
   });
   const fieldsType:any = fieldsTypeMap;
-  const startRules = formFields.reduce((currentRulesObj, currentField) => {
+  const startRules = props.fields.reduce((currentRulesObj, currentField) => {
     if (currentField.key === 'crypto_network') return currentRulesObj;
 
     const rulesArr: { rule: string, arguments?: string }[] = [{ rule: 'required' }];
-    if (currentField.regexp) {
+    if (currentField.key === 'phone') {
+      rulesArr.push({ rule: 'phone' });
+    } else if (currentField.regexp) {
       rulesArr.push({
         rule: 'regex',
         arguments: currentField.regexp
@@ -126,7 +127,7 @@
     }
 
     if (currentField.key === 'wallet_id') {
-      const findNetworkField = formFields.find((field) => field.key === 'crypto_network');
+      const findNetworkField = props.fields.find((field) => field.key === 'crypto_network');
       const firstNetworkRegex = findNetworkField ? findNetworkField.options?.[0]?.regex : undefined;
 
       if (firstNetworkRegex) {
@@ -186,7 +187,7 @@
   });
 
   const networkSelectOptions = computed(() => {
-    const select = formFields.find((field) => field.fieldType === 'select');
+    const select = props.fields.find((field) => field.fieldType === 'select');
     if (select?.options) {
       return select?.options?.map((option) => ({
         value: option.name,
@@ -231,7 +232,7 @@
   const onInputNetwork = () => {
     let networkRegex;
 
-    const findNetworkField = formFields.find((field) => field.key === 'crypto_network');
+    const findNetworkField = props.fields.find((field) => field.key === 'crypto_network');
     if (findNetworkField) {
       const findNetworkOption = findNetworkField?.options?.find((option) => {
         if (option.id) return option.id === state.selectedNetwork;
@@ -255,6 +256,10 @@
 
   const getWithdraw = async (): Promise<void> => {
     if (buttonDisabled.value) return;
+
+    if (withdrawFormData.phone) {
+      withdrawFormData.phone = `+${withdrawFormData.phone}`;
+    }
 
     const fields = state.selectedNetwork && !state.selectedNetwork.includes('empty-network') ? {
       ...withdrawFormData,
