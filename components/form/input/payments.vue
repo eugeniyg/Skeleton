@@ -13,7 +13,15 @@
         @click="select(item)"
       >
         <atomic-image v-if="item.method === cashAgentMethodKey" src="/img/methods-icons/cash-agent.svg" />
-        <atomic-image v-else-if="logoUrl" class="mask" :src="logoUrl" />
+        <atomic-image
+          v-else
+          class="mask"
+          :src="item.logo || logoUrl"
+          :defaultImage="activeAccountType === 'fiat'
+            ? '/img/methods-icons/cards.svg'
+            : '/img/methods-icons/crypto-placeholder.svg'"
+        />
+
         <div class="input-payments__min">
           {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.methodMin') }}
           {{ methodsMinSum[i] }}
