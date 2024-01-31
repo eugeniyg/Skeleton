@@ -292,19 +292,17 @@ export const regex = (param:any) => validationRules.helpers.withParams(
       if (!validationRules.helpers.req(value)) return true;
 
       const testRegexp = (reg: string) => {
-        let flags = reg.replace(/.*\/([gimuyvsd]*)$/, '$1');
+        let flags = reg.replace(/.*\/([gimuyvsd]{1,8})$/, '$1');
         if (flags === reg) flags = '';
 
         let pattern;
-
-        if(flags) {
+        if (flags) {
           pattern = reg.replace(new RegExp('^/?(.*?)/' + flags + '$'), '$1');
         } else {
-          pattern = reg;
+          pattern = reg.replace(new RegExp('^/?(.*?)/?$'), '$1');
         }
 
         const paramRegexp = new RegExp(pattern, flags);
-
         return paramRegexp.test(value);
       }
 
