@@ -127,8 +127,12 @@ export const useProfileStore = defineStore('profileStore', {
       await getUserAccounts();
 
       this.isLoggedIn = true;
-      const { updateChat } = useFreshchatStore();
-      updateChat();
+
+      const { public: { freshchatForGuest }} = useRuntimeConfig();
+      const { updateChat, addFreshChatScript } = useFreshchatStore();
+      if (freshchatForGuest) updateChat();
+      else addFreshChatScript();
+
       this.startProfileDependencies();
     },
 
