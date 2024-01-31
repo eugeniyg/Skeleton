@@ -1,9 +1,11 @@
 <template>
-  <header class="app-header-root">
+  <header class="app-header-root" @animationend="bar.updateCssVars">
+    <atomic-notification-bar ref="bar"/>
+    
     <client-only>
       <pwa v-if="isLoggedIn" display="mobile" />
     </client-only>
-
+    
     <div class="app-header" :class="headerClassModifiers" ref="appHeader">
       <button class="app-header__back-btn" @click="backToHomePage" v-if="isGamePage && isLoggedIn">
         <atomic-icon id="arrow_previous"/>
@@ -116,7 +118,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-
+  
   const emit = defineEmits(['login', 'register', 'logout', 'toggle-open']);
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
@@ -130,6 +132,7 @@
   const { isGamePage, isDrawerCompact } = storeToRefs(layoutStore);
   
   const appHeader = ref<HTMLElement>();
+  const bar = ref();
 
   const headerClassModifiers = computed(() => {
     if (isGamePage.value && isLoggedIn.value) {
