@@ -11,10 +11,10 @@
         v-if="homeContent?.categories || defaultLocaleHomeContent?.categories"
       >
         <card-category
-          v-for="(item, itemIndex) in Object.keys(homeContent?.categories || defaultLocaleHomeContent?.categories)"
+          v-for="(item, itemIndex) in (homeContent?.categories || defaultLocaleHomeContent?.categories)"
           :key="itemIndex"
-          :mod="item"
-          v-bind="homeContent?.categories?.[item] || defaultLocaleHomeContent?.categories?.[item]"
+          :mod="itemIndex + 1"
+          v-bind="item"
         />
       </div>
 
