@@ -58,13 +58,17 @@
   }
 
   .dropdown.currency {
-    max-width: rem(98px);
+    max-width: rem(120px);
     margin-left: auto;
     margin-top: rem(-84px);
+
+    .selected {
+      grid-template-columns: 1fr auto;
+    }
   }
 
   .dropdown.country {
-    max-width: calc(100% - #{rem(16px)} - #{rem(98px)});
+    max-width: calc(100% - #{rem(8px)} - #{rem(120px)});
 
     &.has-error {
       ~ .currency {
@@ -77,7 +81,6 @@
     transform: translate(0, 0);
     --right: auto;
     --top: 4px;
-    //--bg: var(--gray-800);
 
     .icon {
       &:first-of-type {
