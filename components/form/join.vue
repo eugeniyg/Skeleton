@@ -135,6 +135,10 @@
       registrationFormData.password_confirmation = '';
       registrationFormData.password_confirmation = oldValue;
     }
+    
+    if (fieldName === 'currency') {
+      document.querySelector('.dropdown.currency')
+    }
   };
 
   const { getNicknameFromEmail } = useProjectMethods();

@@ -49,7 +49,6 @@
   
   
   const updateCssVars = () => {
-    console.log('update header vars');
     const header = document.querySelector('.app-header') as HTMLElement;
     const headerRoot = document.querySelector('.app-header-root') as HTMLElement;
     
