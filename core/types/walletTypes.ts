@@ -62,7 +62,7 @@ export interface IRequestWithdraw extends Record<string, any>{
 export interface IResponseDeposit extends Record<string, any>{
   action: string;
   method: string;
-  fields: any[];
+  fields: { [key: string]: string };
 }
 
 export interface IResponseWithdraw extends Record<string, any>{

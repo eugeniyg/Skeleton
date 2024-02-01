@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IBonus, IPaymentField} from '@skeleton/core/types';
+  import type {IBonus, IPaymentField, IResponseDeposit} from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import queryString from 'query-string';
 
@@ -152,6 +152,17 @@
     || (amountValue.value > formatAmountMax.amount)
     || isSending.value);
 
+  const getPaymentPageUrl = (depositResponse: IResponseDeposit): string => {
+    const responseHasParams = Object.keys(depositResponse.fields).length;
+    if (!responseHasParams) return depositResponse.action;
+
+    const paramsArr = Object.keys(depositResponse.fields).map(fieldKey => `${fieldKey}=${depositResponse.fields[fieldKey]}`);
+    const urlHasParams = depositResponse.action.includes('?');
+    const paramsString = `${urlHasParams ? '&' : '?'}${paramsArr.join('&')}`;
+
+    return `${depositResponse.action}${paramsString}`;
+  }
+
   const getDeposit = async ():Promise<void> => {
     if (buttonDisabled.value) return;
 
@@ -192,7 +203,7 @@
     try {
       const depositResponse = await depositAccount(params);
       sessionStorage.removeItem('depositBonusData');
-      const redirectUrl = depositResponse?.action;
+      const redirectUrl = getPaymentPageUrl(depositResponse);
       windowReference.location = redirectUrl;
       setTimeout(() => { isSending.value = false; }, 1000);
     } catch {
