@@ -15,41 +15,41 @@
 
 .cards-cat {
   position: relative;
-  display: flex;
-  flex-grow: 1;
+  display: grid;
+
   grid-gap: rem(8px);
 
   @include media(sm) {
     grid-gap: rem(16px);
   }
 
-  &--3 {
-    display: grid;
-    grid-template-areas:
-      "casino betting"
-      "esports esports";
-    grid-template-columns: repeat(2, 1fr);
-
-    @include media(sm) {
-      grid-template-areas:
-      "casino betting esports";
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  &--4 {
-    display: grid;
-    grid-template-areas:
-      "casino betting"
-      "esports other";
-    grid-template-columns: repeat(2, 1fr);
-
-    @include media(md) {
-      grid-template-areas:
-      "casino betting esports other";
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
+  //&--3 {
+  //  display: grid;
+  //  grid-template-areas:
+  //    "casino betting"
+  //    "esports esports";
+  //  grid-template-columns: repeat(2, 1fr);
+  //
+  //  @include media(sm) {
+  //    grid-template-areas:
+  //    "casino betting esports";
+  //    grid-template-columns: repeat(3, 1fr);
+  //  }
+  //}
+  //
+  //&--4 {
+  //  display: grid;
+  //  grid-template-areas:
+  //    "casino betting"
+  //    "esports other";
+  //  grid-template-columns: repeat(2, 1fr);
+  //
+  //  @include media(md) {
+  //    grid-template-areas:
+  //    "casino betting esports other";
+  //    grid-template-columns: repeat(4, 1fr);
+  //  }
+  //}
 }
 
 .card-cat {
@@ -162,7 +162,7 @@
   background-color: var(--data-banner-casino-bg);
   background-image: var(--data-banner-casino-gradient);
   box-shadow: var(--shadow-modal);
-  grid-area: casino;
+  //grid-area: casino;
   --card-padding: 70px 16px 16px 16px;
 
   @include media(sm) {
@@ -232,7 +232,7 @@
   background-color: var(--data-banner-betting-bg);
   background-image: var(--data-banner-betting-gradient);
   box-shadow: var(--shadow-modal);
-  grid-area: betting;
+  //grid-area: betting;
   --card-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
 
   @include media(sm) {
@@ -300,7 +300,7 @@
   background-color: var(--data-banner-esport-bg);
   background-image: var(--data-banner-betting-gradient);
   box-shadow: var(--shadow-modal);
-  grid-area: esports;
+  // grid-area: esports;
 
   --card-padding: 16px calc(50% + 8px) 16px 16px;
 
@@ -364,11 +364,12 @@
     }
   }
 }
+
 .card-cat-4 {
   background-color: var(--data-banner-esport-bg);
   background-image: var(--data-banner-betting-gradient);
   box-shadow: var(--shadow-modal);
-  grid-area: other;
+  // grid-area: other;
 
   --card-padding: 16px calc(50% + 8px) 16px 16px;
 
