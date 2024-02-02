@@ -18,7 +18,7 @@
       <input
         inputmode="numeric"
         v-maska
-        data-maska="##########"
+        data-maska="############"
         class="field"
         type="text"
         name="phoneNumber"
