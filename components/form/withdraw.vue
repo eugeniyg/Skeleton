@@ -257,14 +257,15 @@
   const getWithdraw = async (): Promise<void> => {
     if (buttonDisabled.value) return;
 
-    if (withdrawFormData.phone) {
-      withdrawFormData.phone = `+${withdrawFormData.phone}`;
+    const requestFormData = {
+      ...withdrawFormData,
+      phone: withdrawFormData.phone ? `+${withdrawFormData.phone}` : undefined
     }
 
     const fields = state.selectedNetwork && !state.selectedNetwork.includes('empty-network') ? {
-      ...withdrawFormData,
+      ...requestFormData,
       crypto_network: state.selectedNetwork
-    } : withdrawFormData;
+    } : requestFormData;
 
     isSending.value = true;
     const mainCurrencyAmount = getMainBalanceFormat(activeAccountWithdrawalFormat.value.currency, Number(amountValue.value));

@@ -173,9 +173,6 @@
     const successRedirect = `${origin}${path}?${successQueryString}`;
     const errorRedirect = `${origin}${path}?${errorQueryString}`;
 
-    if (depositFormData.phone) {
-      depositFormData.phone = `+${depositFormData.phone}`;
-    }
     const mainCurrencyAmount = getMainBalanceFormat(defaultInputSum.currency, Number(amountValue.value));
     const params = {
       method: props.method || '',
@@ -185,7 +182,9 @@
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
       bonusId: selectedDepositBonus.value?.id,
-      fields: props.fields.length ? depositFormData : undefined
+      fields: props.fields.length
+        ? { ...depositFormData, phone: depositFormData.phone ? `+${depositFormData.phone}` : undefined }
+        : undefined
     };
     const { depositAccount } = useCoreWalletApi();
     const windowReference:any = window.open();
