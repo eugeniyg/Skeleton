@@ -71,7 +71,11 @@
     code: country.phonePrefix,
     mask: `/img/flags/${country.code.toLowerCase()}.svg`,
     value: `+${country.phonePrefix}`,
-  }));
+  })).sort((prevItem, nextItem) => {
+    if (prevItem.code > nextItem.code) return 1;
+    if (prevItem.code < nextItem.code) return -1;
+    return 0;
+  });
   const codeValue = ref<string>('');
   const numberValue = ref<string>('');
   const profileStore = useProfileStore();
