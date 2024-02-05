@@ -5,8 +5,8 @@
 
     <div class="box">
       <atomic-image
-        v-if="props.qrLink"
-        :src="`https://chart.googleapis.com/chart?chs=116x116&cht=qr&chl=${props.qrLink}&choe=UTF-8`"
+        v-if="props.qrAddress"
+        :src="`https://chart.googleapis.com/chart?chs=116x116&cht=qr&chl=${props.qrAddress}&choe=UTF-8`"
       />
     </div>
   </div>
@@ -17,7 +17,7 @@ import type { IWalletDeposit } from '~/types';
 
   const props = defineProps<{
     content: Maybe<IWalletDeposit>,
-    qrLink: string
+    qrAddress: string
   }>();
 </script>
 
