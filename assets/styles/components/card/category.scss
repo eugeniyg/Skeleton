@@ -8,6 +8,50 @@
       grid-gap: rem(16px);
     }
 
+    &.has-1-cards {
+      grid-template-columns: 1fr;
+
+      --card-category-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
+      --card-category-img-width: #{rem(104px)};
+      --card-category-img-right: 0;
+      --card-category-img-top: #{rem(-16px)};
+
+      @include media(sm) {
+        --card-category-padding: #{rem(24px)} #{rem(170px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(200px)};
+        --card-category-img-right: #{rem(-8px)};
+        --card-category-img-left: auto;
+        --card-category-img-top: 0;
+        --card-category-img-bottom: 0;
+      }
+
+      @include media(md) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: #{rem(-12px)};
+      }
+
+      @include media(l) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: 0;
+      }
+
+      @include media(xl) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(240px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-21px)};
+      }
+
+      @include media(xxxl) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-21px)};
+      }
+    }
+
     &.has-2-cards {
       grid-template-columns: repeat(2, 1fr);
 
@@ -217,7 +261,7 @@
     @include font($heading-4);
     margin-bottom: rem(2px);
 
-    .has-2-cards & {
+    .has-1-cards &, .has-2-cards &  {
       @include media(sm) {
         @include upd-font($heading-5);
       }
@@ -277,7 +321,7 @@
     word-break: break-word;
     @include font($body-1);
 
-    .has-2-cards & {
+    .has-1-cards &, .has-2-cards & {
       @include font($body-0);
 
       @include media(sm) {
@@ -343,7 +387,7 @@
     @include upd-font($heading-2);
 
     @include media(sm) {
-      .has-2-cards & {
+      .has-1-cards &, .has-2-cards & {
         opacity: 1;
         position: relative;
         width: fit-content;
