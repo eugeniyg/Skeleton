@@ -39,7 +39,6 @@
         :currency="formattedBalance.currency"
         :min="0"
         :max="1000000"
-        :defaultValue="0"
         label=""
         name="amount"
         v-model:value="formState.amount"

@@ -53,7 +53,7 @@ export interface IRequestDeposit extends Record<string, any>{
 
 export interface IRequestWithdraw extends Record<string, any>{
   method: string;
-  fields?: { [key:string]: string; };
+  fields?: { [key:string]: string|undefined; };
   currency: string;
   amount: number;
   accountId: string;

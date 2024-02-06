@@ -23,8 +23,7 @@
         :min="formatAmountMin.amount"
         :max="formatAmountMax.amount"
         v-model:value="amountValue"
-        :defaultValue="amountDefaultValue"
-        :currency="defaultInputSum.currency"
+        :currency="formatAmountMin.currency"
         :hint="fieldHint"
       />
 
@@ -54,7 +53,7 @@
         @click="getWithdraw"
       >
         {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.withdrawButton') }} {{ buttonAmount }}
-        {{ defaultInputSum.currency }}
+        {{ formatAmountMin.currency }}
       </button-base>
     </div>
   </form>
@@ -100,10 +99,37 @@
     getContent
   } = useProjectMethods();
 
+  const state = reactive<{selectedNetwork: string}>({
+    selectedNetwork: '',
+  });
+
+  const networkSelectOptions = computed(() => {
+    const select = props.fields.find((field) => field.fieldType === 'select');
+    if (select?.options) {
+      return select?.options?.map((option) => ({
+        value: option.name,
+        minAmount: option.minAmount,
+        maxAmount: option.maxAmount,
+        code: option.id || `empty-network-${option.name}`,
+      }));
+    }
+    return [];
+  });
+
+  const selectedNetworkData = computed(() => {
+    return networkSelectOptions.value.find(option => option.code === state.selectedNetwork);
+  })
+
+  const formatAmountMax = computed(() => {
+    return formatBalance(activeAccount.value?.currency, selectedNetworkData.value?.maxAmount ?? props.amountMax);
+  })
+
+  const formatAmountMin = computed(() => {
+    return formatBalance(activeAccount.value?.currency, selectedNetworkData.value?.minAmount ?? props.amountMin);
+  })
+
   const isSending = ref<boolean>(false);
-  const defaultInputSum = formatBalance(activeAccount.value?.currency, 0);
-  const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat' ? 20 : Number(defaultInputSum.amount));
-  const amountValue = ref<number>(amountDefaultValue.value);
+  const amountValue = ref<number>(formatAmountMin.value.amount);
 
   const profileStore = useProfileStore();
   const withdrawFormData = reactive<{ [key: string]: string }>({});
@@ -142,14 +168,8 @@
   }, {});
 
   const withdrawRules = ref<any>(startRules);
-
   const { getFormRules } = useProjectMethods();
   const withdrawFormRules = computed(() => getFormRules(withdrawRules.value));
-
-  const state = reactive<{selectedNetwork: string}>({
-    selectedNetwork: '',
-  });
-
   const serverFormErrors = ref<{ [key: string]: Maybe<string> }>({});
   const v$ = useVuelidate(withdrawFormRules, withdrawFormData);
 
@@ -185,31 +205,6 @@
     if (amountValue.value < formatAmountMin.value.amount) return formatAmountMin.value.amount;
     return amountValue.value;
   });
-
-  const networkSelectOptions = computed(() => {
-    const select = props.fields.find((field) => field.fieldType === 'select');
-    if (select?.options) {
-      return select?.options?.map((option) => ({
-        value: option.name,
-        minAmount: option.minAmount,
-        maxAmount: option.maxAmount,
-        code: option.id || `empty-network-${option.name}`,
-      }));
-    }
-    return [];
-  });
-
-  const selectedNetworkData = computed(() => {
-    return networkSelectOptions.value.find(option => option.code === state.selectedNetwork);
-  })
-
-  const formatAmountMax = computed(() => {
-    return formatBalance(activeAccount.value?.currency, selectedNetworkData.value?.maxAmount ?? props.amountMax);
-  })
-
-  const formatAmountMin = computed(() => {
-    return formatBalance(activeAccount.value?.currency, selectedNetworkData.value?.minAmount ?? props.amountMin);
-  })
 
   const activeAccountWithdrawalFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance));
   const fieldHint = computed(() => {
@@ -252,6 +247,8 @@
         }
       ] : [{ rule: 'required' }]
     };
+
+    amountValue.value = formatAmountMin.value.amount;
   };
 
   const getWithdraw = async (): Promise<void> => {
