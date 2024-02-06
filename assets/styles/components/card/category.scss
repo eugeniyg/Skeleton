@@ -1,104 +1,327 @@
-.cards-wrap {
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  grid-gap: rem(8px);
+.card-category {
+  &__container {
+    display: grid;
+    grid-gap: rem(8px);
+    margin-bottom: rem(56px);
 
-  @include media(sm) {
-    grid-gap: rem(16px);
+    @include media(sm) {
+      grid-gap: rem(16px);
+    }
+
+    &.has-2-cards {
+      grid-template-columns: repeat(2, 1fr);
+
+      --card-category-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
+      --card-category-img-width: #{rem(104px)};
+      --card-category-img-right: 0;
+      --card-category-img-top: #{rem(-16px)};
+
+      @include media(sm) {
+        --card-category-padding: #{rem(24px)} #{rem(170px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(200px)};
+        --card-category-img-right: #{rem(-8px)};
+        --card-category-img-left: auto;
+        --card-category-img-top: 0;
+        --card-category-img-bottom: 0;
+      }
+
+      @include media(md) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: #{rem(-12px)};
+      }
+
+      @include media(l) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: 0;
+      }
+
+      @include media(xl) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(240px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-21px)};
+      }
+
+      @include media(xxxl) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-21px)};
+      }
+    }
+
+    &.has-3-cards {
+      grid-template-columns: repeat(2, 1fr);
+
+      --card-category-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
+      --card-category-img-width: #{rem(104px)};
+
+      .card-category--3 {
+         grid-column: 1/3;
+        --card-category-padding: #{rem(16px)} #{rem(186px)} #{rem(20px)} #{rem(16px)};
+        --card-category-img-width: #{rem(114px)};
+        --card-category-img-right: 10%;
+        --card-category-img-left: auto;
+
+        @include media(xs) {
+          --card-category-img-right: 13%;
+        }
+      }
+
+      @include media(sm) {
+        grid-template-columns: repeat(3, 1fr);
+        --card-category-padding: #{rem(16px)} #{rem(90px)} #{rem(20px)} #{rem(24px)};
+        --card-category-img-width: #{rem(114px)};
+        --card-category-img-top: #{rem(-8px)};
+        --card-category-img-bottom: auto;
+
+        --card-category-img-right: #{rem(-8px)};
+        --card-category-img-left: auto;
+
+        .card-category--3 {
+          grid-column: unset;
+          --card-category-padding: #{rem(16px)} #{rem(90px)} #{rem(20px)} #{rem(24px)};
+          --card-category-img-width: #{rem(114px)};
+          --card-category-img-right: #{rem(-8px)};
+          --card-category-img-left: auto;
+        }
+      }
+
+      @include media(md) {
+        --card-category-padding: #{rem(16px)} #{rem(127px)} #{rem(20px)} #{rem(24px)};
+        --card-category-img-width: #{rem(165px)};
+        --card-category-img-right: #{rem(-8px)};
+        --card-category-img-top: #{rem(-16px)};
+
+        .card-category--3 {
+          --card-category-padding: #{rem(16px)} #{rem(127px)} #{rem(20px)} #{rem(24px)};
+          --card-category-img-width: #{rem(165px)};
+          --card-category-img-right: #{rem(-8px)};
+          --card-category-img-top: #{rem(-16px)};
+        }
+      }
+
+      @include media(l) {
+        --card-category-padding: #{rem(24px)} #{rem(152px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(189px)};
+        --card-category-img-right: #{rem(-8px)};
+        --card-category-img-top: #{rem(-16px)};
+
+        .card-category--3 {
+          --card-category-padding: #{rem(24px)} #{rem(152px)} #{rem(24px)} #{rem(24px)};
+          --card-category-img-width: #{rem(189px)};
+          --card-category-img-right: #{rem(-8px)};
+          --card-category-img-top: #{rem(-16px)};
+        }
+      }
+
+      @include media(xl) {
+        --card-category-padding: #{rem(24px)} #{rem(220px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(217px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-16px)};
+
+        .card-category--3 {
+          --card-category-padding: #{rem(24px)} #{rem(220px)} #{rem(24px)} #{rem(24px)};
+          --card-category-img-width: #{rem(217px)};
+          --card-category-img-right: 0;
+          --card-category-img-top: #{rem(-16px)};
+        }
+      }
+
+      @include media(xxxl) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-20px)};
+
+        .card-category--3 {
+          --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+          --card-category-img-width: #{rem(260px)};
+          --card-category-img-right: 0;
+          --card-category-img-top: #{rem(-20px)};
+        }
+      }
+    }
+
+    &.has-4-cards {
+      grid-template-columns: repeat(2, 1fr);
+
+      --card-category-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
+
+      @include media(sm) {
+        grid-template-columns: repeat(4, 1fr);
+
+        --card-category-padding: #{rem(16px)} #{rem(48px)} #{rem(20px)} #{rem(24px)};
+        --card-category-img-width: #{rem(76px)};
+        --card-category-img-right: #{rem(-8px)};
+        --card-category-img-left: auto;
+      }
+
+      @include media(md) {
+        --card-category-padding: #{rem(16px)} #{rem(74px)} #{rem(16px)} #{rem(20px)};
+        --card-category-img-width: #{rem(104px)};
+        --card-category-img-right: #{rem(-12px)};
+      }
+
+      @include media(xl) {
+        --card-category-padding: #{rem(24px)} #{rem(140px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(170px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-21px)};
+      }
+    }
   }
 
-  @include media(xxl) {
-    flex-direction: row;
+  &--1 {
+    --category-banner-bg: var(--data-category-1-banner-bg);
+    --category-banner-bg-image: var(--data-banner-casino-gradient);
+  }
+
+  &--2 {
+    --category-banner-bg: var(--data-category-2-banner-bg);
+    --category-banner-bg-image: var(--data-banner-betting-gradient);
+  }
+
+  &--3 {
+    --category-banner-bg: var(--data-category-3-banner-bg);
+    --category-banner-bg-image: var(--data-banner-betting-gradient);
+  }
+
+  &--4 {
+    --category-banner-bg: var(--data-category-4-banner-bg);
+    --category-banner-bg-image: var(--data-banner-betting-gradient);
   }
 }
 
-.cards-cat {
-  position: relative;
-  display: grid;
-
-  grid-gap: rem(8px);
-
-  @include media(sm) {
-    grid-gap: rem(16px);
-  }
-
-  //&--3 {
-  //  display: grid;
-  //  grid-template-areas:
-  //    "casino betting"
-  //    "esports esports";
-  //  grid-template-columns: repeat(2, 1fr);
-  //
-  //  @include media(sm) {
-  //    grid-template-areas:
-  //    "casino betting esports";
-  //    grid-template-columns: repeat(3, 1fr);
-  //  }
-  //}
-  //
-  //&--4 {
-  //  display: grid;
-  //  grid-template-areas:
-  //    "casino betting"
-  //    "esports other";
-  //  grid-template-columns: repeat(2, 1fr);
-  //
-  //  @include media(md) {
-  //    grid-template-areas:
-  //    "casino betting esports other";
-  //    grid-template-columns: repeat(4, 1fr);
-  //  }
-  //}
-}
-
-.card-cat {
+.card-category {
+  background: var(--category-banner-bg, var(--data-banner-casino-bg));
+  background-image: var(--category-banner-bg-image, none);
+  box-shadow: var(--shadow-modal);
+  padding: var(--card-category-padding, #{rem(16px)});
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: var(--card-padding, #{rem(16px)});
   border-radius: 8px;
   align-content: flex-start;
   flex-grow: 1;
   width: 100%;
-  min-height: 90px;
-
-  @include media(xxxl) {
-     min-height: 200px;
-  }
 
   &__title {
-    @include font($heading-4);
     color: var(--text-primary);
     position: relative;
     z-index: 1;
+    word-break: break-word;
+    @include font($heading-4);
+    margin-bottom: rem(2px);
 
-    @include media(sm) {
-      @include upd-font($heading-5);
+    .has-2-cards & {
+      @include media(sm) {
+        @include upd-font($heading-5);
+      }
+
+      @include media(md) {
+        @include upd-font($heading-6);
+      }
+
+      @include media(xxxl) {
+        @include upd-font($heading-7);
+      }
     }
 
-    @include media(md) {
-      @include upd-font($heading-6);
+    .has-3-cards & {
+      @include upd-font($heading-4);
+
+      @include media(sm) {
+        @include upd-font($heading-5);
+      }
+
+      @include media(md) {
+        @include upd-font($heading-6);
+      }
+
+      @include media(xl) {
+        @include upd-font($heading-5);
+      }
+
+      @include media(xxxl) {
+        @include upd-font($heading-7);
+      }
     }
 
-    @include media(xxxl) {
-      @include upd-font($heading-7);
+    .has-4-cards & {
+      @include media(sm) {
+        @include upd-font($heading-3);
+      }
+
+      @include media(md) {
+        @include upd-font($heading-4);
+      }
+
+      @include media(xl) {
+        @include upd-font($heading-5);
+      }
+
+      @include media(xxxl) {
+        @include upd-font($heading-7);
+      }
     }
   }
 
   &__sub-title {
-    @include font($body-0);
     color: var(--text-primary);
     position: relative;
     z-index: 1;
+    word-break: break-word;
+    @include font($body-1);
 
-    @include media(md) {
-      @include upd-font($body-1);
-      margin-bottom: 16px;
+    .has-2-cards & {
+      @include font($body-0);
+
+      @include media(sm) {
+        margin-bottom: rem(24px);
+        @include font($body-1);
+      }
+
+      @include media(md) {
+        @include upd-font($body-2);
+      }
+
+      @include media(xxxl) {
+        @include upd-font($body-3);
+      }
     }
 
-    @include media(xxxl) {
-      @include upd-font($body-3);
+    .has-3-cards & {
+      @include media(md) {
+        margin-bottom: rem(24px);
+      }
+
+      @include media(md) {
+        @include upd-font($body-2);
+      }
+
+      @include media(xxxl) {
+        @include upd-font($body-3);
+      }
+    }
+
+    .has-4-cards & {
+      @include font($body-0);
+
+      @include media(md) {
+        margin-bottom: rem(12px);
+      }
+
+      @include media(l) {
+        @include upd-font($body-1);
+      }
+
+      @include media(xxxl) {
+        @include upd-font($body-3);
+      }
     }
   }
 
@@ -108,16 +331,6 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    --padding: #{rem(7px)} #{rem(20px)};
-
-    @include media(l) {
-      --padding: #{rem(6px)} #{rem(20px)};
-    }
-
-    @include media(xxxl) {
-      --padding: #{rem(10px)} #{rem(24px)};
-    }
-
     opacity: 0;
     position: absolute;
     top: 0;
@@ -125,311 +338,55 @@
     width: 100%;
     height: 100%;
     display: block;
+    --padding: #{rem(7px)} #{rem(20px)};
+
+    @include upd-font($heading-2);
+
+    @include media(sm) {
+      .has-2-cards & {
+        opacity: 1;
+        position: relative;
+        width: fit-content;
+        height: auto;
+      }
+    }
 
     @include media(md) {
-      opacity: 1;
-      position: relative;
-      width: fit-content;
-      height: auto;
+      .has-3-cards &, .has-4-cards & {
+        opacity: 1;
+        position: relative;
+        width: fit-content;
+        height: auto;
+      }
+    }
+
+
+    @include media(l) {
+      --padding: #{rem(10px)} #{rem(24px)};
+    }
+
+    @include media(xxxl) {
+      --padding: #{rem(10px)} #{rem(24px)};
+      @include upd-font($heading-2);
     }
   }
 
-  @include media(l) {
-    --card-min-height: #{rem(188px)};
-  }
-
-  &__img {
+  &__picture {
     grid-area: icon;
-    width: var(--img-width, #{rem(160px)});
-    height: var(--img-height, #{rem(136px)});
+    aspect-ratio: 104/88;
+    width: var(--card-category-img-width, #{rem(104px)});
     z-index: 1;
     position: absolute;
-    top: var(--img-top, 0);
-    right: var(--img-right, 0);
-    bottom: var(--img-bottom, 0);
-    left: var(--img-left, 0);
-    margin: var(--img-margin, 0);
+    top: var(--card-category-img-top, -16px);
+    right: var(--card-category-img-right, 0);
+    bottom: var(--card-category-img-bottom, auto);
+    left: var(--card-category-img-left, 0);
+    margin: var(--card-category-img-margin, auto);
 
     img {
-      position: absolute;
       width: 100%;
       height: 100%;
-    }
-  }
-}
-
-.card-cat-1 {
-  background-color: var(--data-banner-casino-bg);
-  background-image: var(--data-banner-casino-gradient);
-  box-shadow: var(--shadow-modal);
-  //grid-area: casino;
-  --card-padding: 70px 16px 16px 16px;
-
-  @include media(sm) {
-    --card-padding: 16px 86px 20px 24px;
-  }
-
-  @include media(md) {
-    --card-padding: 16px 140px 20px 24px;
-  }
-
-  @include media(l) {
-    --card-padding: 24px 160px 24px 24px;
-  }
-
-  @include media(xl) {
-    --card-padding: 24px 190px 24px 24px;
-  }
-
-  @include media(xxxl) {
-    --card-padding: 24px 240px 24px 24px;
-  }
-
-
-  .card-cat__img {
-    --card-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
-    --img-top: -16px;
-    --img-width: 104px;
-    --img-height: 88px;
-    --img-margin: 0 auto;
-    --img-left: 0;
-    --img-right: 0;
-
-    @include media(sm) {
-      --card-padding: #{rem(16px)} #{rem(24px)};
-      --img-left: auto;
-      --img-margin: 0;
-      --img-width: 112px;
-      --img-height: 96px;
-      --img-right: -8px;
-      --img-top: -8px;
-    }
-
-    @include media(md) {
-      --img-width: 164px;
-      --img-height: 140px;
-      --img-top: -16px;
-    }
-
-    @include media(l) {
-      --img-width: 190px;
-      --img-height: 160px;
-    }
-
-    @include media(xl) {
-      --img-width: 216px;
-      --img-height: 184px;
-    }
-
-    @include media(xxxl) {
-      --img-width: 260px;
-      --img-height: 220px;
-    }
-  }
-}
-
-.card-cat-2 {
-  background-color: var(--data-banner-betting-bg);
-  background-image: var(--data-banner-betting-gradient);
-  box-shadow: var(--shadow-modal);
-  //grid-area: betting;
-  --card-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
-
-  @include media(sm) {
-    --card-padding: 16px 86px 20px 24px;
-  }
-
-  @include media(md) {
-    --card-padding: 16px 140px 20px 24px;
-  }
-
-  @include media(l) {
-    --card-padding: 24px 160px 24px 24px;
-  }
-
-  @include media(xl) {
-    --card-padding: 24px 190px 24px 24px;
-  }
-
-  @include media(xxxl) {
-    --card-padding: 24px 240px 24px 24px;
-  }
-
-  .card-cat__img {
-    --img-top: -16px;
-    --img-width: 104px;
-    --img-height: 88px;
-    --img-margin: 0 auto;
-    --img-left: 0;
-    --img-right: 0;
-
-    @include media(sm) {
-      --card-padding: #{rem(16px)} #{rem(24px)};
-      --img-margin: 0;
-      --img-left: auto;
-      --img-width: 112px;
-      --img-height: 96px;
-      --img-right: -8px;
-      --img-top: -8px;
-    }
-
-    @include media(md) {
-      --img-width: 164px;
-      --img-height: 140px;
-      --img-top: -16px;
-    }
-
-    @include media(l) {
-      --img-width: 190px;
-      --img-height: 160px;
-    }
-
-    @include media(xl) {
-      --img-width: 216px;
-      --img-height: 184px;
-    }
-
-    @include media(xxxl) {
-      --img-width: 260px;
-      --img-height: 220px;
-    }
-  }
-}
-
-.card-cat-3 {
-  background-color: var(--data-banner-esport-bg);
-  background-image: var(--data-banner-betting-gradient);
-  box-shadow: var(--shadow-modal);
-  // grid-area: esports;
-
-  --card-padding: 16px calc(50% + 8px) 16px 16px;
-
-  @include media(sm) {
-    --card-padding: 16px 86px 20px 24px;
-  }
-
-  @include media(md) {
-    --card-padding: 16px 140px 20px 24px;
-  }
-
-  @include media(l) {
-    --card-padding: 24px 160px 24px 24px;
-  }
-
-  @include media(xl) {
-    --card-padding: 24px 190px 24px 24px;
-  }
-
-  @include media(xxxl) {
-    --card-padding: 24px 240px 24px 24px;
-  }
-
-  .card-cat__img {
-    --card-padding: #{rem(16px)} #{rem(130px)} #{rem(16px)} #{rem(16px)};
-    --img-top: 0;
-    --img-width: 104px;
-    --img-height: 88px;
-    --img-margin: auto;
-    --img-left: auto;
-    --img-right: 24px;
-
-    @include media(sm) {
-      --img-margin: 0;
-      --img-left: auto;
-      --img-width: 112px;
-      --img-height: 96px;
-      --img-right: -8px;
-      --img-top: -8px;
-    }
-
-    @include media(md) {
-      --img-width: 164px;
-      --img-height: 140px;
-      --img-top: -16px;
-    }
-
-    @include media(l) {
-      --img-width: 190px;
-      --img-height: 160px;
-    }
-
-    @include media(xl) {
-      --img-width: 216px;
-      --img-height: 184px;
-    }
-
-    @include media(xxxl) {
-      --img-width: 260px;
-      --img-height: 220px;
-    }
-  }
-}
-
-.card-cat-4 {
-  background-color: var(--data-banner-esport-bg);
-  background-image: var(--data-banner-betting-gradient);
-  box-shadow: var(--shadow-modal);
-  // grid-area: other;
-
-  --card-padding: 16px calc(50% + 8px) 16px 16px;
-
-  @include media(sm) {
-    --card-padding: 16px 86px 20px 24px;
-  }
-
-  @include media(md) {
-    --card-padding: 16px 140px 20px 24px;
-  }
-
-  @include media(l) {
-    --card-padding: 24px 160px 24px 24px;
-  }
-
-  @include media(xl) {
-    --card-padding: 24px 190px 24px 24px;
-  }
-
-  @include media(xxxl) {
-    --card-padding: 24px 240px 24px 24px;
-  }
-
-  .card-cat__img {
-    --card-padding: #{rem(16px)} #{rem(130px)} #{rem(16px)} #{rem(16px)};
-    --img-top: 0;
-    --img-width: 104px;
-    --img-height: 88px;
-    --img-margin: auto;
-    --img-left: auto;
-    --img-right: 24px;
-
-    @include media(sm) {
-      --img-margin: 0;
-      --img-left: auto;
-      --img-width: 112px;
-      --img-height: 96px;
-      --img-right: -8px;
-      --img-top: -8px;
-    }
-
-    @include media(md) {
-      --img-width: 164px;
-      --img-height: 140px;
-      --img-top: -16px;
-    }
-
-    @include media(l) {
-      --img-width: 190px;
-      --img-height: 160px;
-    }
-
-    @include media(xl) {
-      --img-width: 216px;
-      --img-height: 184px;
-    }
-
-    @include media(xxxl) {
-      --img-width: 260px;
-      --img-height: 220px;
+      display: block;
     }
   }
 }

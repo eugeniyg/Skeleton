@@ -1,14 +1,14 @@
 <template>
-  <div class="card-cat" :class="`card-cat-${props.mod}`">
-    <div class="card-cat__title">
+  <div class="card-category" :class="`card-category--${props.mod}`">
+    <div class="card-category__title">
       {{ props.title }}
     </div>
 
-    <div class="card-cat__sub-title">{{ props.description }}</div>
+    <div class="card-category__sub-title">{{ props.description }}</div>
 
     <atomic-picture
       v-if="props.image"
-      class="card-cat__img"
+      class="card-category__picture"
       :src="props.image"
     />
 
@@ -25,7 +25,7 @@
 <script setup lang="ts">
   const props = defineProps<{
     image?: string,
-    mod: string,
+    mod: number,
     title: string,
     description: string,
     button: {

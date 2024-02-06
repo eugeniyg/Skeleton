@@ -16,6 +16,7 @@
   &:before {
     content: '';
     height: var(--indent-visible-height);
+    pointer-events: none;
   }
 
   .back-bg {
@@ -47,6 +48,7 @@
       top: 0;
       background-image: linear-gradient(270deg, #11141C 0%, rgba(17, 20, 28, 0.00) 100%);
       z-index: 1;
+      pointer-events: none;
 
       @include media(sm) {
         display: none;
@@ -62,6 +64,7 @@
       height: var(--top-gradient-height);
       background: linear-gradient(360deg, #11141C 0%, rgba(17, 20, 28, 0.00) 100%), linear-gradient(0deg, #11141C 0%, rgba(17, 20, 28, 0.0) 100%);
       z-index: 4;
+      pointer-events: none;
     }
   }
 
@@ -85,6 +88,7 @@
       height: var(--front-bg-height);
       object-fit: contain;
       object-position: right;
+      pointer-events: none;
     }
   }
 

@@ -3,24 +3,21 @@
     <div v-if="homeContent?.banner || defaultLocaleHomeContent?.banner" class="promo-card-wrapper">
       <card-home v-bind="homeContent?.banner || defaultLocaleHomeContent?.banner"/>
     </div>
-
-    <div class="cards-wrap">
-      <div
-        class="cards-cat"
-        :class="cardsModifier"
-        v-if="homeContent?.categories || defaultLocaleHomeContent?.categories"
-      >
-        <card-category
-          v-for="(item, itemIndex) in (homeContent?.categories || defaultLocaleHomeContent?.categories)"
-          :key="itemIndex"
-          :mod="itemIndex + 1"
-          v-bind="item"
-        />
-      </div>
-
-      <!--<group-benefits/>-->
+    
+    <div
+      v-if="homeContent?.categories || defaultLocaleHomeContent?.categories"
+      class="card-category__container"
+      :class="cardsModifier">
+      <card-category
+        v-for="(item, itemIndex) in (homeContent?.categories || defaultLocaleHomeContent?.categories)"
+        :key="itemIndex"
+        :mod="itemIndex + 1"
+        v-bind="item"
+      />
     </div>
 
+      <!--<group-benefits/>-->
+    
     <group-aero
       v-if="homeContent?.aeroGroup?.display && aeroCategory"
       showAllBtn
@@ -120,7 +117,7 @@
 
   const cardsModifier = computed(() => {
     const length = Object.keys(getContent(homeContent.value, defaultLocaleHomeContent.value, 'categories'))?.length || 0
-    return length > 2 ? `cards-cat--${length}` : ''
+    return length  ? `has-${length}-cards` : ''
   });
 
   const startBetsyWidgets = ():void => {
