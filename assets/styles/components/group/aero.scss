@@ -119,7 +119,10 @@
     height: 0;
     visibility: hidden;
     margin-left: rem(-8px);
-    position: absolute;
+
+    @include media(sm) {
+      margin-left: rem(-16px);
+    }
   }
 
   .titles {
