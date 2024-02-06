@@ -211,10 +211,17 @@
       }
 
       @include media(xl) {
-        --card-category-padding: #{rem(24px)} #{rem(140px)} #{rem(24px)} #{rem(24px)};
+        --card-category-padding: #{rem(24px)} #{rem(150px)} #{rem(24px)} #{rem(24px)};
         --card-category-img-width: #{rem(170px)};
         --card-category-img-right: 0;
         --card-category-img-top: #{rem(-21px)};
+      }
+
+      @include media(xxxl) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-20px)};
       }
     }
   }
@@ -365,6 +372,7 @@
 
       @include media(xxxl) {
         @include upd-font($body-3);
+        margin-bottom: rem(16px);
       }
     }
   }
