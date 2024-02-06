@@ -233,13 +233,30 @@
   })
 
   const methodLogoUrl = computed(() => {
+    if (selectedTab.value === 'deposit' && currentDepositMethod.value?.logo) {
+      return currentDepositMethod.value?.logo;
+    }
+
+    if (selectedTab.value === 'withdraw' && currentWithdrawMethod.value?.method === '0x.withdrawal.cash_agent') {
+      return '/img/methods-icons/cash-agent.svg'
+    }
+
+    if (selectedTab.value === 'withdraw' && currentWithdrawMethod.value?.logo) {
+      return currentWithdrawMethod.value.logo;
+    }
+
     if (activeAccountType.value === 'fiat') return '/img/methods-icons/cards.svg';
-    if (activeAccount.value?.currency) return `/img/methods-icons/${activeAccount.value?.currency}.svg`;
+
+    if (activeAccount.value?.currency) return `/img/methods-icons/${activeAccount.value.currency}.svg`;
+
     return undefined;
   });
 
   const walletHeaderProps = computed(() => ({
     src: methodLogoUrl.value,
+    defaultImage: activeAccountType.value === 'fiat'
+      ? '/img/methods-icons/cards.svg'
+      : '/img/methods-icons/crypto-placeholder.svg',
     title: getContent(popupsData.value, defaultLocalePopupsData.value, `wallet.tabs.${selectedTab.value}`),
     subTitle: activeAccount.value?.currency,
   }))

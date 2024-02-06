@@ -18,7 +18,10 @@
 
     <div class="form-deposit-crypto__content" :class="{'is-blured': props.fields?.length && !state.selectedNetwork }">
 
-      <atomic-qr :content="popupsData?.wallet?.deposit || defaultLocalePopupsData?.wallet?.deposit" :qrLink="qrLink"/>
+      <atomic-qr
+        :content="popupsData?.wallet?.deposit || defaultLocalePopupsData?.wallet?.deposit"
+        :qrAddress="walletNumber"
+      />
 
       <form-input-copy
         name="walletNumber"
@@ -52,8 +55,6 @@
   }>();
 
   const walletNumber = ref<string>('');
-  const qrLink = ref<string>('');
-
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
   const { activeAccount } = storeToRefs(walletStore);
@@ -126,7 +127,6 @@
     try {
       const depositResponse = await depositAccount(state.params);
       walletNumber.value = depositResponse.address;
-      qrLink.value = depositResponse.qrAddress;
     } catch {
       showModal('error');
     }

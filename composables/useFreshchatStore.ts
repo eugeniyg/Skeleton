@@ -3,23 +3,40 @@ import { defineStore } from "pinia";
 interface IFreshchatState {
   newMessages: number;
   initialize: boolean;
+  scriptAdded: boolean;
 }
 
 export const useFreshchatStore = defineStore('freshchatStore', {
   state: (): IFreshchatState => ({
     newMessages: 0,
     initialize: true,
+    scriptAdded: false
   }),
 
   getters: {
     projectHasFreshchat() {
       if (!window) return undefined;
       const { public: { freshchatHost, freshchatToken }} = useRuntimeConfig();
-      return !!(freshchatHost && freshchatToken && window.fcWidget);
+      return !!(freshchatHost && freshchatToken);
     }
   },
 
   actions: {
+    addFreshChatScript() {
+      if (!this.projectHasFreshchat) return;
+      if (this.scriptAdded) {
+        this.initChat();
+        return;
+      }
+
+      this.scriptAdded = true;
+      const { public: { freshchatHost }} = useRuntimeConfig();
+      const scriptElement = document.createElement('script');
+      scriptElement.setAttribute('src', `${freshchatHost}/js/widget.js`);
+      document.body.appendChild(scriptElement);
+      scriptElement.onload = this.initChat;
+    },
+
     getProfileData(isUpdate = false) {
       const { profile } = useProfileStore();
       const segmentsArr = profile?.segments.map(segment => segment.name);
@@ -93,7 +110,7 @@ export const useFreshchatStore = defineStore('freshchatStore', {
     },
 
     initChat() {
-      const { public: { freshchatHost, freshchatToken }} = useRuntimeConfig();
+      const { public: { freshchatForGuest, freshchatHost, freshchatToken }} = useRuntimeConfig();
 
       if (!this.initialize || !freshchatHost) return;
       this.initialize = false;
@@ -110,7 +127,8 @@ export const useFreshchatStore = defineStore('freshchatStore', {
       });
 
       window.fcWidget.on('widget:loaded', this.setUserChatData);
-      window.fcWidget.on('widget:destroyed', this.initChat);
+
+      if (freshchatForGuest) window.fcWidget.on('widget:destroyed', this.initChat);
 
       window.fcWidget.on('user:created', ({ data }: any) => {
         const { isLoggedIn } = useProfileStore();

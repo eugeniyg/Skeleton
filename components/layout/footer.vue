@@ -22,7 +22,7 @@
         </template>
       </accordeon>
 
-      <list-base :items="responsibilityIcons">
+      <list-base :items="layoutData?.footer?.responsibilityIcons || defaultLocaleLayoutData?.footer?.responsibilityIcons">
         <template #header>
           <h4>{{ layoutData?.footer?.responsibilityLabel || defaultLocaleLayoutData?.footer?.responsibilityLabel }}</h4>
         </template>
@@ -82,10 +82,6 @@
       defaultLocaleLayoutData?.footer?.curacao?.description ||
       layoutData?.footer?.curacao?.frameLink ||
       defaultLocaleLayoutData?.footer?.curacao?.frameLink
-  })
-  
-  const responsibilityIcons = computed(() => {
-    return layoutData?.footer?.responsibilityIcons || defaultLocaleLayoutData?.footer?.responsibilityIcons
   })
   
 </script>

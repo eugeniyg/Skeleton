@@ -14,7 +14,7 @@
 
     <!--    <wallet-pills />-->
     <component
-      v-for="field in formFields"
+      v-for="field in props.fields"
       :key="field.key"
       @input="v$[field.key]?.$touch()"
       @blur="v$[field.key]?.$touch()"
@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IBonus, IPaymentField} from '@skeleton/core/types';
+  import type {IBonus, IPaymentField, IResponseDeposit} from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import queryString from 'query-string';
 
@@ -90,15 +90,16 @@
   const { depositBonuses, selectedDepositBonus } = storeToRefs(bonusStore);
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
-  const formFields = props.fields.filter(field => field.isRequired);
-  formFields.forEach((field) => {
+  props.fields.forEach((field) => {
     depositFormData[field.key] = profileStore.profile?.[field.key];
   })
 
   const { getFormRules, createValidationRules, getSumFromAmountItems } = useProjectMethods();
-  const depositRules = formFields.reduce((finalRules, currentField) => {
+  const depositRules = props.fields.reduce((finalRules, currentField) => {
     const rulesArr: { rule: string, arguments?: string }[] = [{ rule: 'required' }];
-    if (currentField.regexp) {
+    if (currentField.key === 'phone') {
+      rulesArr.push({ rule: 'phone' }); // skeleton phone rule without "+"
+    } else if (currentField.regexp) {
       rulesArr.push({ rule: 'regex', arguments: currentField.regexp });
     }
     return { ...finalRules, [currentField.key]: rulesArr };
@@ -151,6 +152,17 @@
     || (amountValue.value > formatAmountMax.amount)
     || isSending.value);
 
+  const getPaymentPageUrl = (depositResponse: IResponseDeposit): string => {
+    const responseHasParams = Object.keys(depositResponse.fields).length;
+    if (!responseHasParams) return depositResponse.action;
+
+    const paramsArr = Object.keys(depositResponse.fields).map(fieldKey => `${fieldKey}=${depositResponse.fields[fieldKey]}`);
+    const urlHasParams = depositResponse.action.includes('?');
+    const paramsString = `${urlHasParams ? '&' : '?'}${paramsArr.join('&')}`;
+
+    return `${depositResponse.action}${paramsString}`;
+  }
+
   const getDeposit = async ():Promise<void> => {
     if (buttonDisabled.value) return;
 
@@ -181,14 +193,16 @@
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
       bonusId: selectedDepositBonus.value?.id,
-      fields: formFields.length ? depositFormData : undefined
+      fields: props.fields.length
+        ? { ...depositFormData, phone: depositFormData.phone ? `+${depositFormData.phone}` : undefined }
+        : undefined
     };
     const { depositAccount } = useCoreWalletApi();
     const windowReference:any = window.open();
     try {
       const depositResponse = await depositAccount(params);
       sessionStorage.removeItem('depositBonusData');
-      const redirectUrl = depositResponse?.action;
+      const redirectUrl = getPaymentPageUrl(depositResponse);
       windowReference.location = redirectUrl;
       setTimeout(() => { isSending.value = false; }, 1000);
     } catch {
