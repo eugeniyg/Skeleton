@@ -37,9 +37,9 @@
           :is="fieldsType[field.key]?.component || 'form-input-text'"
           v-model:value="withdrawFormData[field.key]"
           :type="fieldsType[field.key]?.type || 'text'"
-          :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.label`) || field.labels.en"
+          :label="field.labels[currentLocale?.code] || field.labels.en"
           :name="field.key"
-          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.placeholder`) || field.hints.en"
+          :placeholder="field.hints[currentLocale?.code] || field.hints.en"
           :options="getFieldOptions(field.key)"
           :isRequired="withdrawFormRules[field.key]?.hasOwnProperty('required')"
           :hint="setError(field.key)"
@@ -80,7 +80,8 @@
     alertsData,
     defaultLocaleAlertsData,
     fieldsSettings,
-    defaultLocaleFieldsSettings
+    defaultLocaleFieldsSettings,
+    currentLocale
   } = storeToRefs(globalStore);
 
   const walletStore = useWalletStore();
