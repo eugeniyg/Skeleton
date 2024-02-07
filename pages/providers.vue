@@ -116,8 +116,8 @@
   }
 
   const filterProviders = (providers: IGameProvider[]): void => {
-    providersList.value = providers.filter(provider => provider.identity !== staticProviderIdentity.value);
-    staticProviderInfo.value = providers.find(provider => provider.identity === staticProviderIdentity.value);
+    providersList.value = providers.filter(provider => !!provider.gameEnabledCount && provider.identity !== staticProviderIdentity.value);
+    staticProviderInfo.value = providers.find(provider => provider.identity === staticProviderIdentity.value && !!provider.gameEnabledCount);
   }
   const providersList = ref<IGameProvider[]>([]);
 
