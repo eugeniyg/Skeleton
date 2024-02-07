@@ -7,8 +7,7 @@
       :min="formatAmountMin.amount"
       :max="formatAmountMax.amount"
       v-model:value="amountValue"
-      :defaultValue="amountDefaultValue"
-      :currency="defaultInputSum.currency"
+      :currency="formatAmountMin.currency"
       :is-bigger="true"
     />
 
@@ -51,7 +50,7 @@
           <span>
             {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.depositButton') }}
             {{ buttonAmount }}
-            {{ defaultInputSum.currency }}
+            {{ formatAmountMin.currency }}
           </span>
 
           <span v-if="selectedDepositBonus && bonusSummary">
@@ -137,11 +136,7 @@
   }
 
   const isSending = ref<boolean>(false);
-  const defaultInputSum = formatBalance(activeAccount.value?.currency, 0.01);
-  const amountDefaultValue = ref<number>(activeAccountType.value === 'fiat'
-    ? (getStorageBonusAmount() || 20)
-    : Number(defaultInputSum.amount));
-  const amountValue = ref<number>(amountDefaultValue.value);
+  const amountValue = ref<number>(getStorageBonusAmount() || formatAmountMin.amount);
   const buttonAmount = computed(() => {
     if (amountValue.value > formatAmountMax.amount) return formatAmountMax.amount;
     if (amountValue.value < formatAmountMin.amount) return formatAmountMin.amount;
@@ -184,7 +179,7 @@
     const successRedirect = `${origin}${path}?${successQueryString}`;
     const errorRedirect = `${origin}${path}?${errorQueryString}`;
 
-    const mainCurrencyAmount = getMainBalanceFormat(defaultInputSum.currency, Number(amountValue.value));
+    const mainCurrencyAmount = getMainBalanceFormat(formatAmountMin.currency, Number(amountValue.value));
     const params = {
       method: props.method || '',
       currency: activeAccount.value?.currency || '',
