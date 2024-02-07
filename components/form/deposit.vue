@@ -22,9 +22,9 @@
       :is="fieldsTypeMap[field.key]?.component || 'form-input-text'"
       v-model:value="depositFormData[field.key]"
       :type="fieldsTypeMap[field.key]?.type || 'text'"
-      :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.label`) || field.labels.en"
+      :label="field.labels[currentLocale?.code] || field.labels.en"
       :name="field.key"
-      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.key}.placeholder`) || field.hints.en"
+      :placeholder="field.hints[currentLocale?.code] || field.hints.en"
       :options="getFieldOptions(field.key)"
       :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
       :hint="setError(field.key)"
@@ -76,6 +76,7 @@
     fields: IPaymentField[]
   }>();
 
+  const globalStore = useGlobalStore();
   const {
     popupsData,
     defaultLocalePopupsData,
@@ -83,7 +84,8 @@
     defaultLocaleAlertsData,
     fieldsSettings,
     defaultLocaleFieldsSettings
-  } = useGlobalStore();
+  } = globalStore;
+  const { currentLocale } = storeToRefs(globalStore);
   const profileStore = useProfileStore();
 
   const bonusStore = useBonusStore();
