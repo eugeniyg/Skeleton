@@ -1,6 +1,9 @@
 .select-lang {
   position: relative;
-  margin-bottom: rem(4px);
+
+  ~ .nav-list {
+    margin-top: rem(4px);
+  }
 
   .selected, .item {
     display: flex;

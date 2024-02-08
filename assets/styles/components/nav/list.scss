@@ -5,6 +5,14 @@
   display: grid;
   user-select: none;
 
+  &:not(:has(.item)) {
+    display: none;
+
+    + hr {
+      display: none;
+    }
+  }
+
   .item {
     overflow: hidden;
 
