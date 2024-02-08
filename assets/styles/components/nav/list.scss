@@ -8,7 +8,7 @@
   &:not(:has(.item)) {
     display: none;
 
-    + hr {
+    + hr:not(:last-of-type) {
       display: none;
     }
   }
