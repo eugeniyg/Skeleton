@@ -110,6 +110,7 @@ export interface IBetHistory extends Record<string, any>{
   coefficient: number;
   ticketType: number;
   gameId: string;
+  roundId: string;
 }
 
 export interface IBetsResponse extends Record<string, any>{
