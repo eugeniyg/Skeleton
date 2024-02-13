@@ -1,5 +1,6 @@
 .main-slider {
   position: relative;
+  margin-bottom: 24px;
 
   --slides-gap: 8px;
   --shadow-width: 16px;
@@ -16,6 +17,7 @@
   }
 
   @include media(md) {
+    margin-bottom: 32px;
     --viewport-height: 240px;
     --slides-gap: 16px;
   }
