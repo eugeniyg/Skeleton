@@ -9,7 +9,7 @@
       :value="props.value"
       :name="props.name"
       :placeholder="props.placeholder"
-      :required="props.isRequired ? 'required': false"
+      :required="props.isRequired"
       @focus="onFocus"
       @blur="onBlur"
       @input="onInput"

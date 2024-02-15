@@ -6,7 +6,7 @@
       <span class="value">{{ Math.floor(currentTime / 60) }}</span>
       <span class="title">m</span>
       &#160;
-      <span class="value">{{ String(currentTime % 60).padStart(2, 0) }}</span>
+      <span class="value">{{ String(currentTime % 60).padStart(2, '0') }}</span>
       <span class="title">s</span>
     </div>
 

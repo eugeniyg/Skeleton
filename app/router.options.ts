@@ -1,5 +1,5 @@
-import { RouterConfig } from '@nuxt/schema';
-import { RouteRecordRaw } from 'vue-router';
+import type { RouterConfig } from '@nuxt/schema';
+import type { RouteRecordRaw } from 'vue-router';
 
 function changeRoute(pagesArray: RouteRecordRaw[]):RouteRecordRaw[] {
   return pagesArray.map((item) => ({

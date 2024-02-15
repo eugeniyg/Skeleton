@@ -34,20 +34,11 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
-    label: {
-      type: String,
-      required: true,
-    },
-    icon: {
-      type: String,
-      required: true,
-    },
-    items: {
-      type: Array,
-      required: true,
-    },
-  });
+  const props = defineProps<{
+    label: string,
+    icon: string,
+    items: any[]
+  }>();
 
   const layoutStore = useLayoutStore();
   const { isDrawerCompact } = storeToRefs(layoutStore);

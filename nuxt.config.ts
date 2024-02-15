@@ -59,7 +59,8 @@ export default defineNuxtConfig({
       useAsyncData: {
         deep: false
       }
-    }
+    },
+    cookieStore: true
   },
   app: {
     head: {

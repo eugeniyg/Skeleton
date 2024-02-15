@@ -23,8 +23,8 @@ export interface IPaymentField extends Record<string, any> {
   fieldType: string;
   type: string;
   regexp: string
-  labels: any[];
-  hints: any[];
+  labels: any;
+  hints: any;
   isRequired: boolean;
   position: number;
   options?: IPaymentFieldOption[];

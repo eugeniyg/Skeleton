@@ -78,7 +78,7 @@
     defaultLocalePopupsData,
   } = storeToRefs(globalStore);
 
-  const changeBonuses = (processBonus: IPlayerBonus, processMode: 'activate'|'cancel'):void => {
+  const changeBonuses = (processBonus: IPlayerBonus|IPlayerFreeSpin, processMode: 'activate'|'cancel'):void => {
     modalState.bonusInfo = processBonus;
     modalState.mode = processMode;
 

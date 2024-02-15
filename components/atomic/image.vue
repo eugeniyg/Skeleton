@@ -11,7 +11,7 @@
 
   <img
     v-else
-    :key="imageSrc"
+    :key="`lazy-${imageSrc}`"
     :src="imageSrc"
     alt=""
     @error="checkDefaultImage"
