@@ -51,7 +51,7 @@
     size?: 'xs'|'sm'|'md'|'lg',
     isDisabled?: boolean,
     hint?: any,
-    isFitContent: boolean
+    isFitContent?: boolean
   }>();
 
   const valueObject = ref<any>('');

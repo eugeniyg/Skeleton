@@ -81,10 +81,12 @@ export interface IInvoicePublicData extends Record<string, any> {
 export interface IInvoice extends Record<string, any>{
   id: string;
   amount: number;
+  transactionAmount: number;
   currency: string;
+  transactionCurrency: string;
   status: number;
   statusResult: string;
-  paymentProvider: string;
+  paymentMethod: string;
   invoiceType: number;
   createdAt: string;
   updatedAt: string|null;

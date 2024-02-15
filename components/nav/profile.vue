@@ -10,7 +10,7 @@
         @click="close"
         :key="index"
         class="item"
-        :class="{'is-active': $route.path === localizePath(item.url)}"
+        :class="{'is-active': route.path === localizePath(item.url)}"
         :to="localizePath(item.url)"
       >
         {{ item.title }}
@@ -21,7 +21,7 @@
           </span>
         </client-only>
 
-        <template v-if="$route.path === localizePath(item.url)">
+        <template v-if="route.path === localizePath(item.url)">
           <atomic-icon id="check"/>
         </template>
       </router-link>

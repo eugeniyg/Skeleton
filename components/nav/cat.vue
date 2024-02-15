@@ -7,7 +7,7 @@
           class="nav-cat-item"
           :data-index="index"
           :class="{
-            'is-active': $route.query.category === identity,
+            'is-active': route.query.category === identity,
             'is-hidden': index >= visibleIndex.length,
             'is-no-icon': !gameCategoriesObj[identity]?.icon
           }"
@@ -40,14 +40,14 @@
               :key="id"
               class="nav-cat-select-item"
               :class="{
-                'is-active': $route.query.category === identity,
+                'is-active': route.query.category === identity,
                 'is-hidden':  index < visibleIndex.length,
               }"
               @click="emit('clickCategory', identity)"
             >
               <atomic-icon :id="gameCategoriesObj[identity]?.icon"/>
               <span>{{ gameCategoriesObj[identity]?.label || name }}</span>
-              <atomic-icon v-if="$route.query.category === identity" id="check"/>
+              <atomic-icon v-if="route.query.category === identity" id="check"/>
             </span>
           </span>
         </span>
@@ -70,6 +70,7 @@
   const isSelectHidden = ref<boolean>(false);
   const visibleIndex = ref<any[]>([]);
   const timeoutId = ref<any>();
+  const route = useRoute();
 
   const toggle = () => {
     isOpen.value = !isOpen.value;

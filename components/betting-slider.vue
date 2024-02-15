@@ -15,7 +15,7 @@
     
     <div class="betting-slider__bullets">
       <div
-        v-for="(item, index) in props.slides.length"
+        v-for="index in props.slides.length"
         class="betting-slider__bullet"
         :class="{'is-selected': index === selectedIndex}"
         @click="scrollTo(index)"
@@ -27,7 +27,6 @@
 <script setup lang="ts">
   import type { ISliderItem } from '~/types';
   import emblaCarouselVue from 'embla-carousel-vue';
-  import type { EmblaCarouselType } from 'embla-carousel-vue';
   import Autoplay from 'embla-carousel-autoplay';
   
   const props = defineProps<{
@@ -48,7 +47,7 @@
     Autoplay(autoplayOptions)
   ]);
   
-  const onSelectSlide = (emblaApi: EmblaCarouselType) => {
+  const onSelectSlide = (emblaApi: any) => {
     selectedIndex.value = emblaApi.selectedScrollSnap();
   };
   

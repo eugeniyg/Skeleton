@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-static">
+  <div v-if="props.items?.length" class="nav-static">
     <nuxt-link
       v-for="(item, itemIndex) in props.items"
       :key="itemIndex"
@@ -11,12 +11,11 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    items: {
-      type: Array,
-      default: () => [],
-    },
-  });
+  import type { ILink } from "~/types";
+
+  const props = defineProps<{
+    items?: ILink[]
+  }>();
 
   const { localizePath } = useProjectMethods();
 </script>

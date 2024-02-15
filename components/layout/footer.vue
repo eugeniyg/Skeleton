@@ -79,10 +79,10 @@
 
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const accordeonItems = [
-    layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
-    layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
-    layoutData?.footer?.helpMenu || defaultLocaleLayoutData?.footer?.helpMenu,
-  ];
+      layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
+      layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
+      layoutData?.footer?.helpMenu || defaultLocaleLayoutData?.footer?.helpMenu,
+    ].filter(menu => menu?.title && menu?.items?.length);
   
   const showCuracaoBlock = computed(() => {
     return layoutData?.footer?.curacao?.description ||

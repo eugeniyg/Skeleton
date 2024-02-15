@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IQuestionPage } from '~/types';
+  import type { IQuestionCategory, IQuestionPage } from '~/types';
 
   definePageMeta({
     middleware: [
@@ -36,7 +36,7 @@
 
   const questionPageContent = ref<Maybe<IQuestionPage>>();
   const defaultLocaleQuestionsPageContent = ref<Maybe<IQuestionPage>>();
-  const questionsCategoryData = ref();
+  const questionsCategoryData = ref<IQuestionCategory[]>([]);
 
   const checkRedirect = ():void => {
     const needRedirect = (route.name === 'questions' || route.name === 'locale-questions')
@@ -51,13 +51,13 @@
   interface IPageContent {
     currentLocaleData: Maybe<IQuestionPage>;
     defaultLocaleData: Maybe<IQuestionPage>;
-    questionsCategoryData: any;
+    questionsCategoryData: Maybe<IQuestionCategory[]>;
   }
 
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     questionPageContent.value = contentData?.currentLocaleData;
     defaultLocaleQuestionsPageContent.value = contentData?.defaultLocaleData;
-    questionsCategoryData.value = contentData?.questionsCategoryData;
+    questionsCategoryData.value = contentData?.questionsCategoryData || [];
     setPageSeo(questionPageContent.value?.seo);
   }
 
