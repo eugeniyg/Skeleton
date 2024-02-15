@@ -25,8 +25,8 @@
       
       <partners
         v-if="layoutData?.footer?.partners?.isShow"
-        :label="getContent(layoutData, defaultLocaleLayoutData, 'footer.partners.label')"
-        :items="getContent(layoutData, defaultLocaleLayoutData, 'footer.partners.items')"
+        :label="layoutData?.footer?.partners?.label || defaultLocaleLayoutData?.footer?.partners?.label"
+        :items="layoutData?.footer?.partners?.items || defaultLocaleLayoutData?.footer?.partners?.items"
       />
       
       <list-base
@@ -78,14 +78,14 @@
   import { marked } from 'marked';
   
   const {
-    localizePath,
-    getContent
+    localizePath
   } = useProjectMethods();
   
   const {
     layoutData,
     defaultLocaleLayoutData
   } = useGlobalStore();
+  
   const accordeonItems = [
     layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
     layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
