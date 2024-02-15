@@ -5,9 +5,7 @@
 .nav-cat-scroll {
   @extend %scrollbar-hide;
   overflow: auto;
-  margin-top: var(--margin-top, #{rem(24px)});
   margin-right: var(--margin-right, #{rem(-16px)});
-  margin-bottom: var(--margin-bottom, #{rem(24px)});
   margin-left: var(--margin-left, #{rem(-16px)});
   position: relative;
   z-index: 2;
@@ -18,18 +16,25 @@
     display: none;
   }
 
+  [data-route="main"] & {
+    margin-bottom: 24px;
+
+    @include media(md) {
+      margin-bottom: 40px;
+    }
+  }
+
   .category & {
-    --margin-top: 0;
-    --margin-bottom: 0;
+    margin-bottom: 8px;
+
+    @include media(md) {
+      margin-bottom: 24px;
+    }
   }
 
   @include media(sm) {
     --margin-left: #{rem(-32px)};
     --margin-right: #{rem(-32px)};
-  }
-
-  @include media(md) {
-    --margin-bottom: #{rem(40px)};
   }
 
   @include media(l) {

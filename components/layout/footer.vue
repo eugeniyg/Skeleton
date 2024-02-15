@@ -22,13 +22,19 @@
         </template>
       </accordeon>
 
+      <partners
+        v-if="layoutData?.footer?.partners?.isShow"
+        :label="layoutData?.footer?.partners?.label || defaultLocaleLayoutData?.footer?.partners?.label"
+        :items="layoutData?.footer?.partners?.items || defaultLocaleLayoutData?.footer?.partners?.items"
+      />
+
       <list-base :items="layoutData?.footer?.responsibilityIcons || defaultLocaleLayoutData?.footer?.responsibilityIcons">
         <template #header>
           <h4>{{ layoutData?.footer?.responsibilityLabel || defaultLocaleLayoutData?.footer?.responsibilityLabel }}</h4>
         </template>
 
         <template v-slot:item="{ item }">
-          <atomic-image :src="`${item.image}`" />
+          <atomic-image :src="`${item.image}`"/>
         </template>
       </list-base>
     </div>
@@ -82,9 +88,9 @@
     return layoutData?.footer?.curacao?.description ||
       defaultLocaleLayoutData?.footer?.curacao?.description ||
       layoutData?.footer?.curacao?.frameLink ||
-      defaultLocaleLayoutData?.footer?.curacao?.frameLink
-  })
-  
+      defaultLocaleLayoutData?.footer?.curacao?.frameLink;
+  });
+
 </script>
 
-<style src="~/assets/styles/components/layout/footer.scss" lang="scss" />
+<style src="~/assets/styles/components/layout/footer.scss" lang="scss"/>
