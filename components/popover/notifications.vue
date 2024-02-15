@@ -11,16 +11,10 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    maxCount: {
-      type: Number,
-      default: 5,
-    },
-    items: {
-      type: Array,
-      default: () => [],
-    },
-  });
+  const props = defineProps<{
+    maxCount: number,
+    items: any[] // should be replaced
+  }>();
 </script>
 
 <style src="~/assets/styles/components/popover/notifications.scss" lang="scss" />

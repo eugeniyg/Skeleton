@@ -36,24 +36,12 @@
   import { storeToRefs } from 'pinia';
   import type { IGame } from '@skeleton/core/types';
 
-  const props = defineProps({
-    isShow: {
-      type: Boolean,
-      default: false,
-    },
-    items: {
-      type: Array,
-      default: () => [],
-    },
-    defaultItems: {
-      type: Array,
-      default: () => [],
-    },
-    isShowLoadMore: {
-      type: Boolean,
-      default: false,
-    },
-  });
+  const props = defineProps<{
+    isShow?: boolean,
+    items: IGame[],
+    defaultItems: IGame[],
+    isShowLoadMore?: boolean
+  }>();
 
   const emit = defineEmits(['loadMore', 'hideSearch']);
 

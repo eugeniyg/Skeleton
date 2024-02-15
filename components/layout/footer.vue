@@ -13,7 +13,7 @@
           <h4>{{ heading }}</h4>
         </template>
 
-        <template v-slot:content="{ item }">
+        <template v-slot:content="{ item }: { item: ILink }">
           <nuxt-link
             :to="item.url.startsWith('http') ? item.url : localizePath(item.url)"
           >
@@ -67,6 +67,7 @@
 
 <script setup lang="ts">
   import { marked } from 'marked';
+  import type { ILink } from "~/types";
 
   const { localizePath } = useProjectMethods();
 
