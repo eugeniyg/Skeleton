@@ -94,11 +94,47 @@
     }
 
     @include media(sm) {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
   }
 
   @include media(sm) {
     --padding: #{rem(16px)} #{rem(32px)} #{rem(110px)} #{rem(32px)}
+  }
+
+  .partners {
+    justify-content: flex-start;
+    margin-bottom: 0;
+
+    &:after {
+      display: none;
+    }
+
+    &__title {
+      padding: 8px 0;
+      display: flex;
+      min-height: 32px;
+
+      @include media(sm) {
+        padding: 0 0 16px 0;
+      }
+    }
+
+    &__items {
+      margin-bottom: 0;
+      display: flex;
+      justify-content: flex-start;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 8px;
+
+      @include media(sm) {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+      }
+    }
+
+    .partners__logo {
+      width: 40px;
+    }
   }
 }

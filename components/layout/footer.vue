@@ -1,42 +1,51 @@
 <template>
   <footer class="app-footer">
     <div class="group">
-      <accordeon
-        v-for="(menu, index) in accordeonItems"
-        :key="index"
-        :heading="menu?.title"
-        :items="menu?.items"
-        :isOpen="true"
-        mode="toggle"
+      <template v-for="(menu, index) in accordeonItems" :key="index">
+        <accordeon
+          v-if="menu?.title && menu?.items?.length"
+          :heading="menu?.title"
+          :items="menu?.items"
+          :isOpen="true"
+          mode="toggle"
+        >
+          <template v-slot:header="{ heading }">
+            <h4>{{ heading }}</h4>
+          </template>
+          
+          <template v-slot:content="{ item }">
+            <nuxt-link
+              :to="item.url.startsWith('http') ? item.url : localizePath(item.url)"
+            >
+              {{ item.label }}
+            </nuxt-link>
+          </template>
+        </accordeon>
+      </template>
+      
+      <partners
+        v-if="layoutData?.footer?.partners?.isShow"
+        :label="getContent(layoutData, defaultLocaleLayoutData, 'footer.partners.label')"
+        :items="getContent(layoutData, defaultLocaleLayoutData, 'footer.partners.items')"
+      />
+      
+      <list-base
+        :items="layoutData?.footer?.responsibilityIcons || defaultLocaleLayoutData?.footer?.responsibilityIcons"
       >
-        <template v-slot:header="{ heading }">
-          <h4>{{ heading }}</h4>
-        </template>
-
-        <template v-slot:content="{ item }">
-          <nuxt-link
-            :to="item.url.startsWith('http') ? item.url : localizePath(item.url)"
-          >
-            {{ item.label }}
-          </nuxt-link>
-        </template>
-      </accordeon>
-
-      <list-base :items="layoutData?.footer?.responsibilityIcons || defaultLocaleLayoutData?.footer?.responsibilityIcons">
         <template #header>
           <h4>{{ layoutData?.footer?.responsibilityLabel || defaultLocaleLayoutData?.footer?.responsibilityLabel }}</h4>
         </template>
-
+        
         <template v-slot:item="{ item }">
-          <atomic-image :src="`${item.image}`" />
+          <atomic-image :src="`${item.image}`"/>
         </template>
       </list-base>
     </div>
-
+    
     <atomic-divider/>
-
+    
     <list-paysis/>
-
+    
     <atomic-divider/>
     
     <template v-if="showCuracaoBlock">
@@ -48,17 +57,17 @@
           height="62px"
           data-not-lazy
         />
-
+        
         <div
           v-if="layoutData?.footer?.curacao?.description || defaultLocaleLayoutData?.footer?.curacao?.description"
           class="info__text"
           v-html="marked.parse(layoutData?.footer?.curacao?.description || defaultLocaleLayoutData?.footer?.curacao?.description || '')"
         />
       </div>
-
+      
       <atomic-divider/>
     </template>
-
+    
     <div class="copy-info">
       <p>{{ layoutData?.footer?.copyright || defaultLocaleLayoutData?.footer?.copyright }}</p>
     </div>
@@ -67,10 +76,16 @@
 
 <script setup lang="ts">
   import { marked } from 'marked';
-
-  const { localizePath } = useProjectMethods();
-
-  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
+  
+  const {
+    localizePath,
+    getContent
+  } = useProjectMethods();
+  
+  const {
+    layoutData,
+    defaultLocaleLayoutData
+  } = useGlobalStore();
   const accordeonItems = [
     layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
     layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
@@ -81,9 +96,9 @@
     return layoutData?.footer?.curacao?.description ||
       defaultLocaleLayoutData?.footer?.curacao?.description ||
       layoutData?.footer?.curacao?.frameLink ||
-      defaultLocaleLayoutData?.footer?.curacao?.frameLink
-  })
-  
+      defaultLocaleLayoutData?.footer?.curacao?.frameLink;
+  });
+
 </script>
 
-<style src="~/assets/styles/components/layout/footer.scss" lang="scss" />
+<style src="~/assets/styles/components/layout/footer.scss" lang="scss"/>
