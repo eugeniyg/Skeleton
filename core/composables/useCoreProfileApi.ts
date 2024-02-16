@@ -65,7 +65,7 @@ export const useCoreProfileApi = () => {
     return data;
   };
 
-  const uploadSecurityFile = async (fileData: IUploadFile):Promise<ISecurityFile[]> => {
+  const uploadSecurityFile = async (fileData: IUploadFile):Promise<ISecurityFile> => {
     const body = new FormData();
     Object.keys(fileData).forEach((key) => {
       body.append(key, fileData[key])

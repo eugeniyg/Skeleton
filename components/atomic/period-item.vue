@@ -105,7 +105,7 @@
 
   const getPercentage = (currentAmount: number, amount: number) => ((amount === 0) ? 100 : ((currentAmount / amount) * 100));
 
-  const format = (value: number): number|string => (value < 10 ? `0${value}` : value);
+  const format = (value: string|number): number|string => (Number(value) < 10 ? `0${value}` : value);
 
   const statusActiveTitle = computed(() => {
     const message = getContent(limitsContent.value, defaultLimitsContent.value, 'availableLimitSum');
@@ -153,7 +153,7 @@
     tick();
   };
 
-  const isShowContDown = (() => props.period === 'weekly' || props.period === 'monthly');
+  const isShowContDown = computed(() => props.period === 'weekly' || props.period === 'monthly');
 
   onMounted(() => {
     if (props.expiredAt) {

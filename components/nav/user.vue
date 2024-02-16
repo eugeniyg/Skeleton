@@ -7,7 +7,7 @@
         v-for="(item, index) in profileLinks"
         :key="index"
         class="item"
-        :class="{ 'is-active': $route.path === localizePath(item.url) }"
+        :class="{ 'is-active': route.path === localizePath(item.url) }"
         @click="clickItem(item.url)"
       >
         <atomic-icon :id="item.icon" />
@@ -26,6 +26,7 @@
   const { closeUserNav } = useLayoutStore();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const profileLinks = layoutData?.profileSidebar?.profileLinks || defaultLocaleLayoutData?.profileSidebar?.profileLinks || [];
+  const route = useRoute();
 
   function clickItem(url: string):void {
     const router = useRouter();

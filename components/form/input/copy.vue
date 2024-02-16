@@ -7,12 +7,12 @@
     <div class="row">
       <input
         class="field"
-        readonly=""
+        readonly
         ref="copyInput"
         :value="props.value"
         :id="props.name"
         :name="props.name"
-        :required="props.isRequired ? 'required': false"
+        :required="props.isRequired"
         :placeholder="props.placeholder"
         @blur="emit('blur')"
         @input="emit('input')"

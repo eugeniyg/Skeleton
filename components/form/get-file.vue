@@ -39,16 +39,18 @@
   import type { ISecurityFile } from '@skeleton/core/types';
   import type { IProfileSecurity } from '~/types';
 
+  interface IFormData extends Record<string, any> {
+    identity_front?: ISecurityFile[];
+    identity_back?: ISecurityFile[];
+    identity_selfie_id?: ISecurityFile[];
+    address?: ISecurityFile[];
+    payment?: ISecurityFile[];
+  }
+
   const props = defineProps<{
     type: 'identity'|'address'|'payment',
     loadingFields: string[],
-    formData: {
-      identity_front?: ISecurityFile[],
-      identity_back?: ISecurityFile[],
-      identity_selfie_id?: ISecurityFile[],
-      address?: ISecurityFile[],
-      payment?: ISecurityFile[],
-    },
+    formData: IFormData,
   }>();
 
   const emit = defineEmits(['removeFile', 'addFiles']);

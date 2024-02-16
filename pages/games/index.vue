@@ -3,10 +3,10 @@
     <nav-cat @clickCategory="changeCategory"/>
 
     <atomic-cat-heading
-      v-if="gameCategoriesObj[activeCollection?.identity]"
-      :icon="gameCategoriesObj[activeCollection?.identity].icon"
+      v-if="gameCategoriesObj[activeCollection?.identity || '']"
+      :icon="gameCategoriesObj[activeCollection?.identity || '']?.icon"
     >
-      {{ gameCategoriesObj[activeCollection?.identity].label || activeCollection?.name }}
+      {{ gameCategoriesObj[activeCollection?.identity || '']?.label || activeCollection?.name }}
     </atomic-cat-heading>
 
     <div class="game-filter" v-click-outside="skipActionsState">

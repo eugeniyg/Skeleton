@@ -128,9 +128,9 @@ export const useProfileStore = defineStore('profileStore', {
 
       this.isLoggedIn = true;
 
-      const { public: { freshchatForGuest }} = useRuntimeConfig();
+      const { public: { freshchatParams }} = useRuntimeConfig();
       const { updateChat, addFreshChatScript } = useFreshchatStore();
-      if (freshchatForGuest) updateChat();
+      if (freshchatParams?.guestAvailable) updateChat();
       else addFreshChatScript();
 
       this.startProfileDependencies();

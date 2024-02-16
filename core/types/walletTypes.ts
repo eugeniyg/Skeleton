@@ -23,8 +23,8 @@ export interface IPaymentField extends Record<string, any> {
   fieldType: string;
   type: string;
   regexp: string
-  labels: any[];
-  hints: any[];
+  labels: any;
+  hints: any;
   isRequired: boolean;
   position: number;
   options?: IPaymentFieldOption[];
@@ -81,10 +81,12 @@ export interface IInvoicePublicData extends Record<string, any> {
 export interface IInvoice extends Record<string, any>{
   id: string;
   amount: number;
+  transactionAmount: number;
   currency: string;
+  transactionCurrency: string;
   status: number;
   statusResult: string;
-  paymentProvider: string;
+  paymentMethod: string;
   invoiceType: number;
   createdAt: string;
   updatedAt: string|null;

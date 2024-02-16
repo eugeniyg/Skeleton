@@ -8,11 +8,12 @@
       />
 
       <atomic-menu-category v-if="listItem?.items?.length" v-bind="listItem"/>
+
       <div
         v-else
         class="link"
         @click="defineCurrentAction(listItem.url)"
-        :class="{'is-active': $route.fullPath === localizePath(listItem.url)}"
+        :class="{'is-active': route.fullPath === localizePath(listItem.url)}"
       >
         <atomic-icon :id="listItem.icon"/>
         <div class="text">{{ listItem.label }}</div>
@@ -23,7 +24,7 @@
 
       <list-games
         v-if="listItem.gameList?.length"
-        :items="listItem.gameList.map((game) => game.gameIdentity).slice(0, 4)"
+        :items="listItem.gameList.map((game: any) => game.gameIdentity).slice(0, 4)"
       />
     </div>
   </div>
@@ -32,22 +33,14 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
-    items: {
-      type: Array,
-      default: () => [],
-    },
-    isOpen: {
-      type: Boolean,
-      default: false,
-    },
-    accentItems: {
-      type: Boolean,
-      default: false,
-    }
-  });
+  const props = defineProps<{
+    items: any;
+    isOpen?: boolean;
+    accentItems?: boolean;
+  }>();
 
   const router = useRouter();
+  const route = useRoute();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 

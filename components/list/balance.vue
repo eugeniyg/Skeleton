@@ -27,7 +27,7 @@
         v-for="item in selectedItems"
         :key="item.nativeCurrency"
         class="item"
-        :class="{'is-active': activeAccount.currency === item.nativeCurrency}"
+        :class="{'is-active': activeAccount?.currency === item.nativeCurrency}"
         @click="selectCurrency(item.nativeCurrency)"
       >
         <atomic-image

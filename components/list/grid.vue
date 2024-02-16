@@ -12,16 +12,12 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    items: {
-      type: Array,
-      default: () => [],
-    },
-    meta: {
-      type: Object,
-      required: true,
-    },
-  });
+import type { IGame, IPaginationMeta } from "@skeleton/core/types";
+
+  const props = defineProps<{
+    items: IGame[],
+    meta: IPaginationMeta
+  }>();
   const emit = defineEmits(['loadMore']);
   const { initObserver } = useProjectMethods();
 

@@ -17,15 +17,15 @@
 
     <div v-for="n in Math.ceil(rowsFields.length / 2)" :key="`row-${n}`" class="row">
       <component
-        :is="fieldsTypeMap[field.name]?.component || 'form-input-text'"
+        :is="fieldsMap[field.name]?.component || 'form-input-text'"
         @blur="v$[field.name]?.$touch()"
         @focus="focusField(field.name)"
-        :isDisabled="!!profile[field.name] && !field.editable"
+        :isDisabled="!!profile?.[field.name] && !field.editable"
         v-model:value="profileFormData[field.name]"
         v-for="field in rowsFields.slice(2 * (n - 1), 2 * (n - 1) + 2)"
         :key="field.name"
-        :type="fieldsTypeMap[field.name]?.type || 'text'"
-        :inputmode="fieldsTypeMap[field.name]?.inputmode"
+        :type="fieldsMap[field.name]?.type || 'text'"
+        :inputmode="fieldsMap[field.name]?.inputmode"
         :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
         :name="field.name"
         :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
@@ -56,6 +56,8 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
+
+  const fieldsMap: Record<string, any> = fieldsTypeMap;
 
   const props = defineProps<{
     saveButton?: string,

@@ -10,7 +10,7 @@
         :type="type"
         :readonly="props.isDisabled"
         :name="props.name"
-        :required="props.isRequired ? 'required': false"
+        :required="props.isRequired"
         :placeholder="props.placeholder"
         :value="props.value"
         @focus="onFocus"

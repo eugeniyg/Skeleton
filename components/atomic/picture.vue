@@ -1,7 +1,7 @@
 <template>
   <picture
     v-if="props.src && props.notLazy"
-    :key="props.src"
+    key="static"
     class="picture"
     data-not-lazy
   >
@@ -9,7 +9,7 @@
     <img :src="props.src" alt="" />
   </picture>
 
-  <picture v-else-if="props.src" :key="props.src" class="picture">
+  <picture v-else-if="props.src" key="lazy" class="picture">
     <source :srcset="createSrcSet(props.src)" />
     <img :src="props.src" alt="" />
   </picture>

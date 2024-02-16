@@ -45,7 +45,7 @@
     </div>
 
     <atomic-pagination
-      v-if="props.bonusesMeta?.totalPages > 1"
+      v-if="props.bonusesMeta?.totalPages && props.bonusesMeta.totalPages > 1"
       v-bind="props.bonusesMeta"
       @selectPage="emit('changePage', $event)"
     />
@@ -107,7 +107,7 @@
     return resultsObj;
   });
 
-  const getBonusFinallyStatus = (bonusInfo: IPlayerBonus):string => {
+  const getBonusFinallyStatus = (bonusInfo: IPlayerBonus|IPlayerFreeSpin):string => {
     if ([1, 2].includes(bonusInfo.status)) return bonusStatusesObj.value[bonusInfo.status];
     return bonusResultsObj.value[bonusInfo.result];
   };

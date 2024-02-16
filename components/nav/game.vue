@@ -1,7 +1,6 @@
 <template>
   <div class="nav-game">
     <nav-action :showPlug="showPlug" :gameInfo="props.gameInfo" />
-    <!--    <nav-mode :items="modeItems"/>-->
   </div>
 </template>
 

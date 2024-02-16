@@ -44,6 +44,7 @@
 
 <script  setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import type {IPromotion} from "~/types";
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent } = globalStore;
@@ -67,7 +68,7 @@
     hoverCard.value = undefined;
   };
 
-  const promotionsList = computed(() => {
+  const promotionsList = computed<IPromotion[]>(() => {
     return globalComponentsContent?.promotions?.items?.length ? globalComponentsContent.promotions.items : [];
   });
 

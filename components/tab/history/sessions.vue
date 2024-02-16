@@ -37,7 +37,7 @@
               :variant="sessionStatus(session)"
               :tooltip="session.closedAt ? `${dayjs(session.closedAt).format(dateFormat)}`: ''"
             >
-              {{ props.content?.sessionsStatuses[sessionStatus(session)] }}
+              {{ props.content?.sessionsStatuses[sessionStatus(session) as keyof ISessionsHistory['sessionsStatuses']] }}
             </atomic-row-status>
           </div>
 
@@ -52,7 +52,7 @@
     </div>
 
     <atomic-pagination
-      v-if="pageMeta?.totalPages > 1"
+      v-if="pageMeta?.totalPages && pageMeta.totalPages > 1"
       v-bind="pageMeta"
       @selectPage="changePage"
     />

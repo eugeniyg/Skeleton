@@ -25,10 +25,10 @@
         :key="field.name"
         @blur="v$[field.name]?.$touch()"
         @focus="onFocus(field.name)"
-        :is="fieldsTypeMap[field.name]?.component || 'form-input-text'"
+        :is="fieldsMap[field.name]?.component || 'form-input-text'"
         v-model:value="registrationFormData[field.name]"
-        :type="hiddenFields.includes(field.name) ? 'hidden' : fieldsTypeMap[field.name]?.type || 'text'"
-        :inputmode="fieldsTypeMap[field.name]?.inputmode"
+        :type="hiddenFields.includes(field.name) ? 'hidden' : fieldsMap[field.name]?.type || 'text'"
+        :inputmode="fieldsMap[field.name]?.inputmode"
         :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
         :name="field.name"
         :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
@@ -76,6 +76,8 @@
   import { storeToRefs } from 'pinia';
   import type { IField } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
+
+  const fieldsMap: Record<string, any> = fieldsTypeMap;
 
   const props = defineProps<{
     registrationFields: IField[]

@@ -9,7 +9,7 @@
       :name="props.name"
       :value="props.value"
       :readonly="props.isDisabled"
-      :required="props.isRequired ? 'required': false"
+      :required="props.isRequired"
       :placeholder="props.placeholder"
       :autocomplete="props.autocomplete"
       @focus="onFocus"
