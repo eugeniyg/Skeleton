@@ -1,8 +1,9 @@
 <template>
   <div class="home">
-    <div v-if="homeContent?.banner || defaultLocaleHomeContent?.banner" class="promo-card-wrapper">
-      <card-home v-bind="homeContent?.banner || defaultLocaleHomeContent?.banner"/>
-    </div>
+    <banners
+      v-if="homeContent?.banners || defaultLocaleHomeContent?.banners"
+      :items="homeContent?.banners || defaultLocaleHomeContent?.banners"
+    />
     
     <div
       v-if="homeContent?.categories || defaultLocaleHomeContent?.categories"
