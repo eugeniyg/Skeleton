@@ -20,7 +20,7 @@
   .item {
     display: flex;
     grid-column-gap: rem(4px);
-    color: var(--white);
+    color: var(--text-primary);
 
     .btn-primary {
       margin-left: var(--margin-left-btn, auto);
@@ -39,7 +39,7 @@
 
   .nickname {
     @include font($heading-4);
-    color: var(--white);
+    color: var(--text-primary);
     margin-bottom: rem(4px);
   }
 

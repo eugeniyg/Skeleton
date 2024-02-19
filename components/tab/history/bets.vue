@@ -16,18 +16,25 @@
       <atomic-empty
         v-if="!loading && !bets.length"
         variant="bets-history"
-        :title="props.content.bets.empty.title"
-        :subTitle="props.content.bets.empty.description"
+        :title="props.content?.empty?.title"
+        :subTitle="props.content?.empty?.description"
       />
 
       <template v-for="betItem in bets" :key="betItem.id">
-        <card-bet-combo v-if="betItem.items?.length > 1" v-bind="{ ...betItem, ...betsContent }" />
-        <card-bet-ordinar v-else v-bind="{ ...betItem, ...betsContent }" />
+        <card-bet-combo
+          v-if="betItem.items?.length > 1"
+          v-bind="{ ...betItem, ...props.content }"
+        />
+
+        <card-bet-ordinar
+          v-else
+          v-bind="{ ...betItem, ...props.content }"
+        />
       </template>
     </div>
 
     <atomic-pagination
-      v-if="pageMeta?.totalPages > 1"
+      v-if="pageMeta?.totalPages && pageMeta.totalPages > 1"
       v-bind="pageMeta"
       @selectPage="changePage"
     />
@@ -35,25 +42,24 @@
 </template>
 
 <script setup lang="ts">
-  import { BetHistoryInterface, PaginationMetaInterface } from '@platform/frontend-core/dist/module';
-  import { HistoryBetsInterface, HistoryTabInterface } from '@skeleton/types';
+  import type { IBetHistory, IPaginationMeta } from '@skeleton/core/types';
+  import type { IBetsHistory } from '~/types';
 
   const props = defineProps<{
-    content: HistoryTabInterface,
+    content: IBetsHistory,
   }>();
 
   const loading = ref<boolean>(true);
-  const bets = ref<BetHistoryInterface[]>([]);
-  const pageMeta = ref<PaginationMetaInterface>();
-  const betsContent: Maybe<HistoryBetsInterface> = props.content?.bets;
+  const bets = ref<IBetHistory[]>([]);
+  const pageMeta = ref<IPaginationMeta>();
 
   const betsTab = [
     {
-      title: betsContent?.settledTab || 'Settled',
+      title: props.content?.settledTab || 'Settled',
       id: 'settled',
     },
     {
-      title: betsContent?.unsettledTab || 'Unsettled',
+      title: props.content?.unsettledTab || 'Unsettled',
       id: 'unsettled',
     },
   ];

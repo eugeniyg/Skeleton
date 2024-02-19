@@ -1,6 +1,6 @@
 <template>
   <nuxt-link class="card-latest-winners" :to="gameUrl">
-    <div class="img" :style="backgroundImage"></div>
+    <atomic-image class="card-latest-winners__img" :src="src" />
     <div class="title">{{ props.nickname || 'Unknown' }}</div>
     <div class="sub-title">{{ props.gameName }}</div>
     <div class="items">
@@ -11,17 +11,17 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { GameImagesInterface } from '@platform/frontend-core/dist/module';
+  import type { IGameImages } from '@skeleton/core/types';
 
   const props = defineProps<{
     nickname: Maybe<string>,
     amount: number,
     currency: string,
-    resultBalance: number,
+    payout: number,
     gameId: string,
     gameName: string,
     isDemoMode: boolean,
-    gameImages: GameImagesInterface
+    gameImages: IGameImages
   }>();
 
   const profileStore = useProfileStore();
@@ -35,12 +35,12 @@
     return localizePath(`/games/${props.gameId}?real=true`);
   });
 
-  const formatedSum = computed(() => formatBalance(props.currency, props.resultBalance));
+  const formatedSum = computed(() => formatBalance(props.currency, props.payout));
 
-  const backgroundImage = computed(() => {
+  const src = computed(() => {
     if (props.gameImages.hasOwnProperty('200x200')) {
-      return `background-image:url(${baseApiUrl.value}/img/gcdn${getImageUrl(props.gameImages, 'square')})`;
-    } return 'background-image: none';
+      return getImageUrl(props.gameImages, 'square');
+    } return '';
   });
 </script>
 

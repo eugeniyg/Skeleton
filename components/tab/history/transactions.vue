@@ -2,13 +2,13 @@
   <div class="tab-history__tb">
     <atomic-filters class="filters-transactions-history">
       <form-input-date
-        :label="transactionsContent.dateLabel"
+        :label="props.content?.dateLabel"
         :settings="dateConfig"
         @change="changeDate"
       />
 
       <form-input-dropdown
-        :label="transactionsContent.typeFilter.label"
+        :label="props.content?.typeFilterLabel"
         v-model:value="filters.type"
         name="invoiceType"
         placeholder=""
@@ -17,7 +17,7 @@
       />
 
       <form-input-dropdown
-        :label="transactionsContent.currencyLabel"
+        :label="props.content?.currencyLabel"
         v-model:value="filters.currency"
         name="invoiceCurrency"
         placeholder=""
@@ -26,7 +26,7 @@
       />
 
       <form-input-dropdown
-        :label="transactionsContent.statusFilter.label"
+        :label="props.content?.statusFilterLabel"
         v-model:value="filters.status"
         name="invoiceStatus"
         placeholder=""
@@ -39,11 +39,11 @@
       v-if="invoices.length"
       :invoices="invoices"
       @cancelPayment="cancelPayment"
-      :transactionsContent="transactionsContent"
+      :transactionsContent="props.content"
     />
 
     <atomic-pagination
-      v-if="pageMeta?.totalPages > 1"
+      v-if="pageMeta?.totalPages && pageMeta.totalPages > 1"
       @selectPage="changePage"
       v-bind="pageMeta"
     />
@@ -51,36 +51,56 @@
     <atomic-empty
       v-if="!invoices.length && !loading"
       variant="transactions"
-      :title="transactionsContent.empty.title"
-      :subTitle="transactionsContent.empty.description"
+      :title="props.content?.empty.title"
+      :subTitle="props.content?.empty.description"
     />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import {
-    InvoiceInterface,
-    InvoicesRequestOptionsInterface,
-    PaginationMetaInterface,
-  } from '@platform/frontend-core/dist/module';
-  import { HistoryTransactionsInterface, HistoryTabInterface } from '@skeleton/types';
+  import type {
+    IInvoice,
+    IInvoicesRequestOptions,
+    IPaginationMeta,
+  } from '@skeleton/core/types';
+  import type { ITransactionsHistory } from '~/types';
 
   const props = defineProps<{
-    content: HistoryTabInterface
+    content: ITransactionsHistory
   }>();
 
-  const transactionsContent:HistoryTransactionsInterface = props.content.transactions;
   const globalStore = useGlobalStore();
-  const optionsDefaultValue = { value: transactionsContent.allFilterOption, code: 'all' };
+  const {
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+    alertsData,
+    defaultLocaleAlertsData
+  } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
+  const optionsDefaultValue = { value: props.content?.allFilterOption, code: 'all' };
 
   const typeOptions = computed(() => {
-    const storeOptions = globalStore.invoiceTypes.map((item) => ({ value: transactionsContent.typeFilter.options[item.name], code: item.id }));
+    const storeOptions = globalStore.invoiceTypes.map((item) => {
+      const typeLabel = getContent(
+        globalComponentsContent.value,
+        defaultLocaleGlobalComponentsContent.value,
+        `constants.invoiceTypes.${item.id}`
+      );
+      return { value: typeLabel, code: item.id };
+    });
     return [optionsDefaultValue, ...storeOptions];
   });
 
   const statusOptions = computed(() => {
-    const storeOptions = globalStore.invoiceStatuses.map((item) => ({ value: transactionsContent.statusFilter.options[item.name], code: item.id }));
+    const storeOptions = globalStore.invoiceStatuses.map((item) => {
+      const statusLabel = getContent(
+        globalComponentsContent.value,
+        defaultLocaleGlobalComponentsContent.value,
+        `constants.invoiceStatuses.${item.id}`
+      );
+      return { value: statusLabel, code: item.id };
+    });
     return [optionsDefaultValue, ...storeOptions];
   });
 
@@ -107,13 +127,13 @@
     ],
   };
 
-  const invoices = ref<InvoiceInterface[]>([]);
-  const pageMeta = ref<PaginationMetaInterface>();
+  const invoices = ref<IInvoice[]>([]);
+  const pageMeta = ref<IPaginationMeta>();
   const { getPlayerInvoices, cancelInvoice } = useCoreWalletApi();
   const loading = ref<boolean>(true);
   const resolveInvoicesRequest = async ():Promise<void> => {
     loading.value = true;
-    const requestOptions: InvoicesRequestOptionsInterface = {} as InvoicesRequestOptionsInterface;
+    const requestOptions: IInvoicesRequestOptions = {} as IInvoicesRequestOptions;
     Object.keys(filters).forEach((param) => {
       if (filters[param] && filters[param] !== 'all') requestOptions[param] = filters[param];
     });
@@ -131,10 +151,9 @@
   };
 
   const { showAlert } = useLayoutStore();
-  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const cancelPayment = async (invoiceId: string):Promise<void> => {
     const response = await cancelInvoice(invoiceId);
-    showAlert(alertsData.value?.userCanceledWithdrawal || defaultLocaleAlertsData.value?.userCanceledWithdrawal);
+    showAlert(alertsData.value?.wallet?.userCanceledWithdrawal || defaultLocaleAlertsData.value?.wallet?.userCanceledWithdrawal);
 
     const closedIndex = invoices.value.findIndex((invoice) => invoice.id === invoiceId);
     invoices.value[closedIndex] = response;

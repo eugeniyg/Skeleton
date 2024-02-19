@@ -1,45 +1,51 @@
 import { defineStore } from 'pinia';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useNotification } from '@kyvg/vue3-notification';
-import { AlertInterface } from '@skeleton/types';
+import type { IAlert } from "~/types";
+import type { IGame } from "@skeleton/core/types";
 
-interface ModalsInterface extends Record<string, any> {
-  register: boolean,
-  registerCancel: boolean,
-  signIn: boolean,
-  deposit: boolean,
-  confirm: boolean,
-  error: boolean,
-  forgotPass: boolean,
-  resetPass: boolean,
-  success: boolean,
-  withdraw: boolean,
-  fiat: boolean,
+type WalletModalTypes = 'deposit'|'withdraw'|undefined;
+interface IModals extends Record<string, any> {
+  register: boolean;
+  registerCancel: boolean;
+  signIn: boolean;
+  wallet: boolean;
+  cancelDeposit: boolean;
+  walletBonusDetails: boolean;
+  confirm: boolean;
+  error: boolean;
+  forgotPass: boolean;
+  resetPass: boolean;
+  success: boolean;
+  fiat: boolean;
 }
 
-interface ModalsUrlsInterface extends Record<string, any> {
-  register: string,
-  signIn: string,
-  success: string,
-  error: string,
-  confirm: string,
-  forgotPass: string,
-  resetPass: string,
+interface IModalsUrls extends Record<string, any> {
+  register: string;
+  signIn: string;
+  success: string;
+  error: string;
+  confirm: string;
+  forgotPass: string;
+  resetPass: string;
+  wallet: string;
 }
 
-interface LayoutStoreStateInterface extends Record<string, any>{
-  isUserNavOpen: boolean,
-  isDrawerOpen: boolean,
-  isCurrencyNavOpen: boolean,
-  isDrawerCompact: boolean,
-  showCookiePopup: boolean,
-  modals: ModalsInterface,
-  modalsUrl: ModalsUrlsInterface,
-  lastNotificationTime: number,
+interface ILayoutStoreState extends Record<string, any>{
+  isUserNavOpen: boolean;
+  isDrawerOpen: boolean;
+  isCurrencyNavOpen: boolean;
+  isDrawerCompact: boolean;
+  showCookiePopup: boolean;
+  modals: IModals;
+  modalsUrl: IModalsUrls;
+  lastNotificationTime: number;
+  returnGame: Maybe<string|IGame>;
+  walletModalType: WalletModalTypes;
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
-  state: (): LayoutStoreStateInterface => ({
+  state: (): ILayoutStoreState => ({
       isUserNavOpen: false,
       isDrawerOpen: false,
       isCurrencyNavOpen: false,
@@ -48,13 +54,14 @@ export const useLayoutStore = defineStore('layoutStore', {
       modals: {
         register: false,
         signIn: false,
-        deposit: false,
+        wallet: false,
+        cancelDeposit: false,
+        walletBonusDetails: false,
         confirm: false,
         error: false,
         forgotPass: false,
         resetPass: false,
         success: false,
-        withdraw: false,
         registerCancel: false,
         fiat: false,
       },
@@ -66,12 +73,15 @@ export const useLayoutStore = defineStore('layoutStore', {
         confirm: 'confirm',
         forgotPass: 'forgot-pass',
         resetPass: 'reset-pass',
+        wallet: 'wallet'
       },
     lastNotificationTime: 0,
+    returnGame: undefined,
+    walletModalType: undefined
   }),
 
   actions: {
-    showAlert(props: Maybe<AlertInterface>): void {
+    showAlert(props: Maybe<IAlert>): void {
       const { notify } = useNotification();
       const currentTime = Date.now();
       const timeDiff = currentTime - this.lastNotificationTime;
@@ -134,7 +144,19 @@ export const useLayoutStore = defineStore('layoutStore', {
       this.isDrawerOpen = !this.isDrawerOpen;
       document.body.classList.toggle('drawer-open');
       const drawerContentEl:HTMLElement|null = document.querySelector('.drawer .content');
-      if (drawerContentEl) this.isDrawerOpen ? disableBodyScroll(drawerContentEl) : enableBodyScroll(drawerContentEl);
+      const bodyScrollOptions = {
+        allowTouchMove: (el:HTMLElement|Element) => {
+          while (el && el !== document.body) {
+            if (el.getAttribute('body-scroll-lock-ignore') !== null) {
+              return true;
+            }
+            el = el.parentElement || document.body;
+          }
+          return false;
+        }
+      }
+      if (drawerContentEl) this.isDrawerOpen ? disableBodyScroll(drawerContentEl, bodyScrollOptions) : enableBodyScroll(drawerContentEl);
+      if (this.isDrawerCompact) this.isDrawerCompact = false;
     },
 
     addModalQuery(modalName:string, queryValue: Maybe<string>):void {
@@ -160,8 +182,8 @@ export const useLayoutStore = defineStore('layoutStore', {
     },
 
     showModal(modalName: string, queryValue?:string):void {
-      this.modals[modalName] = true;
       if (this.modalsUrl[modalName]) this.addModalQuery(modalName, queryValue);
+      this.modals[modalName] = true;
     },
 
     closeModal(modalName: string):void {
@@ -178,35 +200,66 @@ export const useLayoutStore = defineStore('layoutStore', {
         const modalKey = Object.keys(this.modalsUrl).find((key) => this.modalsUrl[key] === query);
         if (!modalKey) return;
 
-        const authModals = ['register', 'signIn', 'forgotPass', 'resetPass'];
-        if (authModals.includes(modalKey)) {
+        const guestModals = ['register', 'signIn', 'forgotPass', 'resetPass'];
+        const authModals = ['wallet'];
+        if (guestModals.includes(modalKey)) {
           isLoggedIn ? this.closeModal(modalKey) : this.showModal(modalKey);
+        } else if (authModals.includes(modalKey)) {
+          if (!isLoggedIn) {
+            this.closeModal(modalKey);
+          } else if (modalKey === 'wallet') {
+            const queryValue = route.query[query] as string;
+            const modalType = ['deposit', 'withdraw'].includes(queryValue) ? queryValue as WalletModalTypes : undefined;
+            this.openWalletModal(modalType);
+          } else {
+            this.showModal(modalKey);
+          }
         } else {
           this.showModal(modalKey, route.query?.[query] as string);
         }
       });
     },
 
-    async openDepositModal():Promise<void> {
-      const { getDepositMethods } = useWalletStore();
-      const { showModal } = useLimitsStore();
-      try {
-        await getDepositMethods();
-        this.showModal('deposit');
-      } catch (error: any) {
-        if (error.data?.error?.code === 13100) {
-          const router = useRouter();
-          const { localizePath } = useProjectMethods();
-          await router.push(localizePath('/profile/limits'));
-          showModal('exceededLimitConfirm');
-        } else throw error;
+    async openWalletModal(modalType?: WalletModalTypes): Promise<void> {
+      this.walletModalType = modalType;
+      const { getDepositMethods, getWithdrawMethods, activeAccount } = useWalletStore();
+      const { getDepositBonuses } = useBonusStore();
+      await Promise.allSettled([
+        getDepositMethods(),
+        getWithdrawMethods(),
+        getDepositBonuses(activeAccount?.currency as string)
+      ]);
+
+      this.showModal('wallet', modalType);
+    },
+
+    setReturnGame(gameData: Maybe<IGame|string>): void {
+      if (gameData && this.returnGame !== 'disabled') {
+        sessionStorage.setItem('returnGame', JSON.stringify(gameData));
+        this.returnGame = gameData
       }
     },
 
-    async openWithdrawModal():Promise<void> {
-      const { getWithdrawMethods } = useWalletStore();
-      await getWithdrawMethods();
-      this.showModal('withdraw');
-    },
+    deleteReturnGame(): void {
+      sessionStorage.removeItem('returnGame');
+      this.returnGame = undefined
+    }
   },
+
+  getters: {
+    isGamePage() {
+      const route = useRoute();
+      return route.name === 'games-id' || route.name === 'locale-games-id';
+    },
+
+    isHomePage() {
+      const route = useRoute();
+      return route.name === 'index' || route.name === 'locale-index';
+    },
+
+    isSportsbookPage() {
+      const route = useRoute();
+      return route.name === 'betting' || route.name === 'locale-betting';
+    }
+  }
 });

@@ -1,7 +1,7 @@
 <template>
   <label :class="classes">
     <span class="label" v-if="props.label">
-      {{ props.label }}<sup v-if="props.isRequired">*</sup>
+      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
     </span>
 
     <textarea
@@ -9,7 +9,7 @@
       :value="props.value"
       :name="props.name"
       :placeholder="props.placeholder"
-      :required="props.isRequired ? 'required': false"
+      :required="props.isRequired"
       @focus="onFocus"
       @blur="onBlur"
       @input="onInput"
@@ -28,20 +28,17 @@
       default: false,
     },
     value: {
-      type: String,
-      default: ' ',
+      type: String
     },
     name: {
       type: String,
-      default: '',
+      required: true
     },
     label: {
-      type: String,
-      default: '',
+      type: String
     },
     placeholder: {
-      type: String,
-      default: '',
+      type: String
     },
     hint: {
       type: Object,

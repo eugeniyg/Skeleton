@@ -1,9 +1,9 @@
 <template>
-  <div v-if="globalComponentsContent?.promotions || defaultLocaleGlobalComponentsContent?.promotions" class="group-promotions">
-    <atomic-icon :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'promotions.icon')"/>
+  <div v-if="promotionsList.length" class="group-promotions">
+    <atomic-icon :id="globalComponentsContent?.promotions?.icon"/>
 
     <h2 class="title">
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'promotions.label') }}
+      {{ globalComponentsContent?.promotions?.label }}
     </h2>
 
     <div class="group-promotions__list">
@@ -14,7 +14,7 @@
         :class="{ 'hovered': hoverCard === index }"
         @click="clickCard(index)"
       >
-        <div class="img" :style="backgroundImage(promotion.image)"/>
+        <atomic-picture :src="promotion.image" alt=""/>
 
         <div class="content">
           <div class="title">{{ promotion.title }}</div>
@@ -24,7 +24,7 @@
             <button-base
               type="primary"
               size="md"
-              @click="isLoggedIn ? openDepositModal() : showModal('register')"
+              @click="isLoggedIn ? openWalletModal('deposit') : showModal('register')"
             >
               {{ promotion.buttonLabel }}
             </button-base>
@@ -44,14 +44,15 @@
 
 <script  setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import type {IPromotion} from "~/types";
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
+  const { globalComponentsContent } = globalStore;
 
-  const { localizePath, getContent } = useProjectMethods();
+  const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal, openDepositModal } = useLayoutStore();
+  const { showModal, openWalletModal } = useLayoutStore();
 
   const backgroundImage = (img:string):string => `background-image:url(${img})`;
   const hoverCard = ref<number|undefined>(undefined);
@@ -67,9 +68,8 @@
     hoverCard.value = undefined;
   };
 
-  const promotionsList = computed(() => {
-    if (globalComponentsContent?.promotions?.items?.length) return globalComponentsContent.promotions.items;
-    return defaultLocaleGlobalComponentsContent?.promotions?.items || [];
+  const promotionsList = computed<IPromotion[]>(() => {
+    return globalComponentsContent?.promotions?.items?.length ? globalComponentsContent.promotions.items : [];
   });
 
   onMounted(() => {

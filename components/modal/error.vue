@@ -11,7 +11,7 @@
         <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'error.title') }}</div>
       </div>
 
-      <img class="img" src="/img/error.svg" />
+      <atomic-image class="img" src="/img/error.svg" />
       <client-only>
         <p class="text" v-html="marked.parse(getContent(popupsData, defaultLocalePopupsData, 'error.description') || '')" />
       </client-only>
@@ -30,12 +30,12 @@
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
-  const { closeModal, openDepositModal } = layoutStore;
+  const { closeModal, openWalletModal } = layoutStore;
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
 
   const tryAgain = async ():Promise<void> => {
-    await openDepositModal();
+    await openWalletModal('deposit');
     closeModal('error');
   };
 </script>

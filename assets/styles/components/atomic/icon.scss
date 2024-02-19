@@ -2,6 +2,6 @@
   flex-shrink: 0;
   width: var(--icon-size, 22px);
   height: var(--icon-size, 22px);
-  color: var(--color, var(--gray-900));
+  color: var(--color, var(--icon-contrast));
   transition: color .2s ease-in-out;
 }

@@ -4,8 +4,8 @@
       v-model:value="resetFormData.newPassword"
       type="password"
       name="newPassword"
-      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'newPassword.label') || ''"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'newPassword.placeholder') || ''"
+      :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.newPassword.label') || ''"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.newPassword.placeholder') || ''"
       :is-required="true"
       :hint="setError('newPassword')"
       @blur="v$.newPassword?.$touch()"
@@ -17,8 +17,8 @@
       v-model:value="resetFormData.repeatNewPassword"
       type="password"
       name="repeatNewPassword"
-      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'repeatNewPassword.label') || ''"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'repeatNewPassword.placeholder') || ''"
+      :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.repeatNewPassword.label') || ''"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.repeatNewPassword.placeholder') || ''"
       :is-required="true"
       :hint="setError('repeatNewPassword')"
       @blur="v$.repeatNewPassword?.$touch()"
@@ -43,8 +43,8 @@
 
   const globalStore = useGlobalStore();
   const {
-    fieldsContent,
-    defaultLocaleFieldsContent,
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
     popupsData,
     defaultLocalePopupsData,
     alertsData,
@@ -73,7 +73,7 @@
 
   const { closeModal, showAlert } = useLayoutStore();
   const showErrorAlert = ():void => {
-    showAlert(alertsData.value?.invalidResetCode || defaultLocaleAlertsData.value?.invalidResetCode);
+    showAlert(alertsData.value?.profile?.invalidResetCode || defaultLocaleAlertsData.value?.profile?.invalidResetCode);
   };
 
   const isLockedAsyncButton = ref<boolean>(false);
@@ -88,7 +88,7 @@
       isLockedAsyncButton.value = true;
       const route = useRoute();
       await resetProfilePassword({ ...resetFormData, code: route.query.resetCode as string });
-      showAlert(alertsData.value?.passwordChanged || defaultLocaleAlertsData.value?.passwordChanged);
+      showAlert(alertsData.value?.profile?.passwordChanged || defaultLocaleAlertsData.value?.profile?.passwordChanged);
       closeModal('resetPass');
     } catch (error:any) {
       if (error.response?.status === 422) {

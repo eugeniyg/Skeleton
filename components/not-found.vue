@@ -1,13 +1,13 @@
 <template>
   <div class="not-found">
-    <img class="img" src="/img/404.png" />
+    <atomic-image class="img" src="/img/404.png" />
 
     <div class="title">
-      {{ errorPageContent?.title || defaultLocaleErrorPageContent?.title || pageStaticContent.title }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.title') || pageStaticContent.title }}
     </div>
 
     <p class="text">
-      {{ errorPageContent?.description || defaultLocaleErrorPageContent?.description || pageStaticContent.description }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.description') || pageStaticContent.description }}
     </p>
 
     <button-base
@@ -15,7 +15,7 @@
       size="md"
       :url="'/'"
     >
-      {{ errorPageContent?.button?.label || defaultLocaleErrorPageContent?.button?.label || pageStaticContent.button.label }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.button.label') || pageStaticContent.button.label }}
     </button-base>
   </div>
 </template>
@@ -33,7 +33,8 @@
   };
 
   const globalStore = useGlobalStore();
-  const { errorPageContent, defaultLocaleErrorPageContent } = storeToRefs(globalStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/error.scss" lang="scss" />

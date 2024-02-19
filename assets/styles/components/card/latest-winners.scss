@@ -5,7 +5,7 @@
   height: var(--height, auto);
   width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap)/var(--col-count))));
   padding: rem(8px);
-  background-color: var(--bg, var(--gray-800));
+  background-color: var(--bg, var(--layer-02));
   display: grid;
   align-content: center;
   grid-template-areas:
@@ -40,7 +40,7 @@
     --col-count: 6;
   }
 
-  .img {
+  &__img {
     grid-area: img;
     width: rem(56px);
     height: rem(56px);
@@ -50,19 +50,21 @@
     border-radius: 8px;
     overflow: hidden;
     align-self: center;
+    display: block;
+    border: none;
   }
 
   .title {
     grid-area: title;
     @include font($body-1);
-    color: var(--gray-300);
+    color: var(--text-secondary);
     min-height: 16px;
   }
 
   .sub-title {
     grid-area: sub-title;
     @include font($heading-1);
-    color: var(--white);
+    color: var(--text-primary);
   }
 
   .items {
@@ -70,7 +72,7 @@
     @include font($heading-2);
     @extend %flex-items-center;
     grid-column-gap: 8px;
-    color: var(--yellow-500);
+    color: var(--text-accent);
     margin-top: rem(4px);
   }
 }

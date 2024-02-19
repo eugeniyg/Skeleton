@@ -1,11 +1,11 @@
 .btn-popup {
   margin: 0 auto;
-  color: var(--white);
+  color: var(--button-text-ghost-high-contrast);
   text-decoration: none;
   cursor: pointer;
   @include font($heading-1);
 
   span {
-    color: var(--yellow-500);
+    color: var(--text-accent);
   }
 }

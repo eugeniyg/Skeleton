@@ -8,23 +8,27 @@
     >
       <div class="scroll">
         <div class="header">
-          <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'displayInFiat.title') }}</div>
+          <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'balanceInFiat.title') }}</div>
           <button-modal-close @close="closeModal('fiat')"/>
         </div>
 
         <p class="modal-fiat__text">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'displayInFiat.description') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'balanceInFiat.description') }}
         </p>
 
         <div class="modal-fiat__list">
           <div
             v-for="item in fiatCurrencies"
             class="modal-fiat__item"
-            :class="{ 'is-active': equivalentCurrency.code === item.code }"
+            :class="{ 'is-active': equivalentCurrency?.code === item.code }"
             :key="item.code"
             @click="selectFiat(item.code)"
           >
-            <img class="modal-fiat__item-logo" :src="`/img/currency/${item.code}.svg`" alt=""/>
+            <atomic-image
+              class="modal-fiat__item-logo"
+              :src="`/img/currency/${item.code}.svg`"
+              defaultImage="/img/currency/placeholder.svg"
+            />
             <span class="modal-fiat__item-currency">{{ item.code }}</span>
           </div>
         </div>

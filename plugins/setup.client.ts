@@ -1,13 +1,4 @@
-export default defineNuxtPlugin(async (nuxtApp) => {
-  const { parseUserAgent } = useGlobalStore();
-  const { userAgent } = window.navigator;
-  parseUserAgent(userAgent);
-
-  nuxtApp.hook('page:finish', () => {
-    const { preloaderDone } = useProjectMethods();
-    preloaderDone();
-  });
-
+export default defineNuxtPlugin((nuxtApp) => {
   const checkAffiliateTag = ():void => {
     const historyBack = window.history.state.back;
     const profileStore = useProfileStore();
@@ -22,10 +13,24 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     }
   };
 
+  const setWindowStaticHeight = ():void => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh-static', `${vh}px`);
+  };
+
+  const setWindowHeight = ():void => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  };
+
   nuxtApp.hook('app:mounted', async () => {
+    const { parseUserAgent } = useGlobalStore();
+    const { userAgent } = window.navigator;
+    parseUserAgent(userAgent);
+
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
-    const { getSessionToken } = useCoreAuthStore();
+    const { getSessionToken } = useProfileStore();
     const sessionToken = getSessionToken();
 
     if (sessionToken) {
@@ -36,18 +41,23 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     const { subscribeWinnersSocket } = useGamesStore();
     subscribeWinnersSocket();
     checkAffiliateTag();
+
+    setWindowStaticHeight();
+    setWindowHeight();
+    window.addEventListener('resize', setWindowHeight);
+
+    const { public: { freshchatParams } } = useRuntimeConfig();
+    const { addFreshChatScript, initChat } = useFreshchatStore();
+    if (freshchatParams?.guestAvailable) initChat();
+    else if (sessionToken) addFreshChatScript();
   });
 
-  const setWindowStaticHeight = ():void => {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh-static', `${vh}px`);
-  };
+  nuxtApp.hook('page:finish', () => {
+    const { name, query } = useRoute();
+    const isAuthAutologin = (name as string).includes('auth-autologin') && !!query.state;
+    if (isAuthAutologin) return;
 
-  const setWindowHeight = ():void => {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-  };
-  setWindowStaticHeight();
-  setWindowHeight();
-  window.addEventListener('resize', setWindowHeight);
+    const { preloaderDone } = useProjectMethods();
+    preloaderDone();
+  });
 });

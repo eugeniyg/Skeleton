@@ -1,7 +1,7 @@
 <template>
   <form class="get-file" :class="props.type">
     <div class="get-file__title">
-      {{ getContent(documentsContent, defaultLocaleDocumentsContent, `${props.type}.label`) }}
+      {{ getContent(securityContent, defaultLocaleSecurityContent, `documents.${props.type}.label`) }}
     </div>
 
     <div
@@ -9,7 +9,7 @@
       data-exerpt
       :class="['get-file__description', {'is-expanded': isTextExpanded}]"
     >
-      {{ getContent(documentsContent, defaultLocaleDocumentsContent, `${props.type}.description`) }}
+      {{ getContent(securityContent, defaultLocaleSecurityContent, `documents.${props.type}.description`) }}
     </div>
 
     <button
@@ -17,14 +17,14 @@
       class="show-more-btn"
       @click.prevent="clickAction"
     >
-      {{ isTextExpanded ? getContent(documentsContent, defaultLocaleDocumentsContent, 'hideText')
-        : getContent(documentsContent, defaultLocaleDocumentsContent, 'moreInfo') }}
+      {{ isTextExpanded ? getContent(securityContent, defaultLocaleSecurityContent, 'documents.hideText')
+        : getContent(securityContent, defaultLocaleSecurityContent, 'documents.moreInfo') }}
     </button>
 
     <div class="dropzones-list">
       <dropzone
         v-for="item in Object.keys(props.formData)"
-        :fileName="getContent(documentsContent, defaultLocaleDocumentsContent, `${props.type}.${item}`)"
+        :fileName="getContent(securityContent, defaultLocaleSecurityContent, `documents.${props.type}.${item}`)"
         :fileList="props.formData[item]"
         :key="item"
         :loading="props.loadingFields.includes(item)"
@@ -36,19 +36,21 @@
 </template>
 
 <script setup lang="ts">
-  import { SecurityFileInterface } from '@platform/frontend-core/dist/module';
-  import { ProfileDocumentsInterface } from '@skeleton/types';
+  import type { ISecurityFile } from '@skeleton/core/types';
+  import type { IProfileSecurity } from '~/types';
+
+  interface IFormData extends Record<string, any> {
+    identity_front?: ISecurityFile[];
+    identity_back?: ISecurityFile[];
+    identity_selfie_id?: ISecurityFile[];
+    address?: ISecurityFile[];
+    payment?: ISecurityFile[];
+  }
 
   const props = defineProps<{
     type: 'identity'|'address'|'payment',
     loadingFields: string[],
-    formData: {
-      identity_front?: SecurityFileInterface[],
-      identity_back?: SecurityFileInterface[],
-      identity_selfie_id?: SecurityFileInterface[],
-      address?: SecurityFileInterface[],
-      payment?: SecurityFileInterface[],
-    },
+    formData: IFormData,
   }>();
 
   const emit = defineEmits(['removeFile', 'addFiles']);
@@ -56,8 +58,8 @@
   const excerpt = ref<HTMLElement>();
   const isShowMoreBtn = ref<boolean>(false);
   const isTextExpanded = ref<boolean>(false);
-  const documentsContent: Maybe<ProfileDocumentsInterface> = inject('documentsContent');
-  const defaultLocaleDocumentsContent: Maybe<ProfileDocumentsInterface> = inject('defaultLocaleDocumentsContent');
+  const securityContent = ref<Maybe<IProfileSecurity>>(inject('securityContent'));
+  const defaultLocaleSecurityContent = ref<Maybe<IProfileSecurity>>(inject('defaultLocaleSecurityContent'));
   const { getContent } = useProjectMethods();
 
   const textHasDots = (el: HTMLElement): boolean => el.scrollHeight > el.offsetHeight;

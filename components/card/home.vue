@@ -1,8 +1,19 @@
 <template>
   <div class="card-home">
     <div class="content">
-      <div class="back-bg" :style="{backgroundImage: `url(${props.images.backgroundImage})`}"></div>
-      <div class="front-bg" :style="{backgroundImage: `url(${props.images.faceImage})`}"></div>
+      <div
+        v-if="props.images?.backgroundImage"
+        class="back-bg"
+      >
+        <atomic-picture :src="props.images.backgroundImage" notLazy/>
+      </div>
+
+      <div
+        v-if="props.images?.faceImage"
+        class="front-bg"
+      >
+        <atomic-picture :src="props.images.faceImage" notLazy />
+      </div>
     </div>
 
     <div class="info">
@@ -15,7 +26,7 @@
           size="md"
           @click="clickButton(props.button.url)"
         >
-          <atomic-icon v-if="props.button.icon" :id="props.button.icon" />
+          <atomic-icon :id="props.button.icon" />
           {{ props.button.label }}
         </button-base>
       </div>
@@ -30,8 +41,7 @@
 
   const props = defineProps({
     images: {
-      type: Object,
-      required: true,
+      type: Object
     },
     title: {
       type: String,
@@ -49,16 +59,15 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal, openDepositModal } = useLayoutStore();
+  const { showModal, openWalletModal } = useLayoutStore();
 
   const clickButton = (url: string): void => {
     if (url) {
       const router = useRouter();
       const { localizePath } = useProjectMethods();
       router.push(localizePath(url));
-    } else isLoggedIn.value ? openDepositModal() : showModal('register');
+    } else isLoggedIn.value ? openWalletModal('deposit') : showModal('register');
   };
 </script>
 
 <style src="~/assets/styles/components/card/home.scss" lang="scss" />
-

@@ -53,10 +53,8 @@
 </template>
 
 <script setup lang="ts">
-  import { UpdateLimitInterface } from '@platform/frontend-core/dist/module';
-
+  import type { IUpdateLimit } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
-  import { useGlobalStore } from '~/composables/useGlobalStore';
 
   const emit = defineEmits([
     'open-limit-modal',
@@ -78,11 +76,14 @@
 
   const definition = 3;
 
-  const openEditModal = (payload: UpdateLimitInterface) => {
+  const openEditModal = (payload: IUpdateLimit) => {
     emit('open-edit-modal', payload);
   };
 
-  const isEditLocked = computed(() => depositPeriods.value.every((period) => period.items.filter((item) => item.status === 1).every((item) => item.cancelProcess)));
+  const isEditLocked = computed(() => depositPeriods.value.every((period) => {
+    const filteredPeriods = period.items.filter((item) => item.status === 1)
+    return filteredPeriods.every((item) => item.cancelProcess && !item.pendingExist)
+  }));
 
   const isAllCurrenciesUsed = computed(() => checkCurrencies(depositPeriods.value, currencies.value));
 

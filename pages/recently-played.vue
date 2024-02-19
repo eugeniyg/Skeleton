@@ -1,6 +1,8 @@
 <template>
   <div class="recently-played">
-    <div class="recently-played__title">{{ recentlyContent?.title || defaultLocaleRecentlyContent?.title }}</div>
+    <div class="recently-played__title">
+      {{ recentlyContent?.title || defaultLocaleRecentlyContent?.title }}
+    </div>
 
     <atomic-empty
       v-if="!recentlyGames.length && !loadingData"
@@ -28,34 +30,59 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { onMounted } from '@vue/runtime-core';
-  import { GameInterface } from '@platform/frontend-core/dist/module';
-  import { RecentlyPageInterface } from '@skeleton/types';
+  import type { IGame } from '@skeleton/core/types';
+  import type { IRecentlyPage } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { isMobile, headerCountry, contentLocalesArray } = storeToRefs(globalStore);
+  const { isMobile, headerCountry, currentLocale, defaultLocale } = storeToRefs(globalStore);
   const {
     setPageSeo,
-    findLocalesContentData,
+    getLocalesContentData,
     getContent,
   } = useProjectMethods();
-  const recentlyContentRequest = await useAsyncData('recentlyContent', () => queryContent('page-controls')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'recentlyPage']).find());
 
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(recentlyContentRequest.data.value);
-  const recentlyContent: Maybe<RecentlyPageInterface> = currentLocaleData?.recentlyPage;
-  const defaultLocaleRecentlyContent: Maybe<RecentlyPageInterface> = defaultLocaleData?.recentlyPage;
-  setPageSeo(recentlyContent?.seo);
+  const recentlyContent = ref<Maybe<IRecentlyPage>>();
+  const defaultLocaleRecentlyContent = ref<Maybe<IRecentlyPage>>();
 
-  const { currentLocaleCollections } = useGamesStore();
-  const recommendedCategory = currentLocaleCollections.find((collection) => collection.identity === 'recommended');
+  interface IPageContent {
+    currentLocaleData: Maybe<IRecentlyPage>;
+    defaultLocaleData: Maybe<IRecentlyPage>;
+  }
+
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    recentlyContent.value = contentData?.currentLocaleData;
+    defaultLocaleRecentlyContent.value = contentData?.defaultLocaleData;
+    setPageSeo(recentlyContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('recentlyPageContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'pages', 'recently').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'recently').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('recentlyPageContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
+
+  const { currentLocationCollections } = useGamesStore();
+  const recommendedCategory = currentLocationCollections.find((collection) => collection.identity === 'recommended');
   const pageMeta = computed(() => ({
     page: 1,
     perPage: 18,
     totalPages: 1,
   }));
 
-  const recentlyGames = ref<GameInterface[]>([]);
+  const recentlyGames = ref<IGame[]>([]);
 
   const { getRecentlyPlayed } = useCoreGamesApi();
   const profileStore = useProfileStore();
@@ -63,12 +90,11 @@
   const loadingData = ref<boolean>(true);
   onMounted(async () => {
     try {
-      const recentlyResponse = await getRecentlyPlayed({
+      recentlyGames.value = await getRecentlyPlayed({
         perPage: 18,
         platform: isMobile.value ? 1 : 2,
         countryCode: profile.value?.country || headerCountry.value || 'UA',
       });
-      recentlyGames.value = recentlyResponse;
     } finally {
       loadingData.value = false;
     }

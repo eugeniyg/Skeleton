@@ -1,14 +1,15 @@
 <template>
   <label :class="classes">
-    <span v-if="props.label" class="label">{{ props.label }}<sup v-if="props.isRequired">*</sup></span>
+    <span v-if="props.label" class="label">{{ props.label }}<span class="required" v-if="props.isRequired">*</span></span>
 
     <input
       class="field"
+      :inputmode="props.inputmode"
       :type="props.type"
       :name="props.name"
       :value="props.value"
       :readonly="props.isDisabled"
-      :required="props.isRequired ? 'required': false"
+      :required="props.isRequired"
       :placeholder="props.placeholder"
       :autocomplete="props.autocomplete"
       @focus="onFocus"
@@ -32,16 +33,13 @@
       required: true,
     },
     value: {
-      type: String,
-      default: ' ',
+      type: String
     },
     label: {
-      type: String,
-      default: '',
+      type: String
     },
     placeholder: {
-      type: String,
-      default: '',
+      type: String
     },
     isRequired: {
       type: Boolean,
@@ -59,6 +57,10 @@
       type: String,
       default: 'on',
     },
+    inputmode: {
+      type: String,
+      default: 'text'
+    }
   });
   const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);
 

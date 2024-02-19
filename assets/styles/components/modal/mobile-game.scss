@@ -1,0 +1,106 @@
+.modal-mobile-game {
+  .vfm__content {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 rem(16px);
+  }
+
+  .scroll {
+    position: relative;
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  &__background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+  }
+
+  &__container {
+    width: 100%;
+    padding: rem(32px);
+    background: var(--alpha-fade-layer-01);
+    backdrop-filter: blur(12px);
+  }
+
+  &__content {
+    display: flex;
+    margin-bottom: rem(24px);
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    @include font($heading-4);
+    color: var(--text-primary);
+    margin-bottom: rem(4px);
+  }
+
+  &__subtitle {
+    @include font($body-2);
+    color: var(--text-secondary);
+    margin-bottom: rem(16px);
+  }
+
+  &__description {
+    @include font($body-2);
+    color: var(--text-warning);
+  }
+
+  .btn-favorite {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-top: auto;
+    margin-left: 0;
+    --icon-size: 24px;
+    background: none !important;
+    --color: var(--button-icn-ghost-low-contrast);
+  }
+
+  &__controls {
+    display: flex;
+    gap: rem(8px);
+
+    div {
+      width: 100%;
+      white-space: nowrap;
+    }
+  }
+
+  .btn-modal-close {
+    position: absolute;
+    --bg: transparent;
+    --right: #{rem(8px)};
+    --top: #{rem(8px)};
+    transform: none;
+    z-index: 2;
+  }
+
+  &__thumb {
+    flex-shrink: 0;
+    position: relative;
+    @include ratio(104px, 156px);
+    width: 38%;
+    margin-right: rem(16px);
+
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: rem(8px);
+    }
+  }
+}

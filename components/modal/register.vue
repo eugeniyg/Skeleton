@@ -28,11 +28,11 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import { FieldInterface } from '@platform/frontend-core/dist/module';
-  import { VueFinalModal } from 'vue-final-modal';
+import { storeToRefs } from 'pinia';
+import type { IField } from '@skeleton/core/types';
+import { VueFinalModal } from 'vue-final-modal';
 
-  const formKey = ref<number>(0);
+const formKey = ref<number>(0);
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal, showModal } = layoutStore;
@@ -52,11 +52,10 @@
     if (!newValue && !modals.value.register) formKey.value += 1;
   });
 
-  const registrationFields = ref<FieldInterface[]>([]);
+  const registrationFields = ref<IField[]>([]);
   const { getRegistrationFields } = useCoreAuthApi();
   onMounted(async () => {
-    const fieldsResponse = await getRegistrationFields();
-    registrationFields.value = fieldsResponse;
+    registrationFields.value = await getRegistrationFields();
   });
 </script>
 

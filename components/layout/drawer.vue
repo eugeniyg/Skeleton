@@ -1,25 +1,26 @@
 <template>
   <div class="drawer" :class="{ 'is-compact' : isDrawerCompact }">
     <div class="header">
-      <button-toggle-drawer
-        @toggle-minimize="compactDrawer(!isDrawerCompact)"
-        @toggle-open="emit('toggle-open')"
-      />
-
-      <button-toggler :items="sidebarContent?.gamesToggler || defaultLocaleSidebarContent?.gamesToggler"/>
+      <button-toggler :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler')"/>
     </div>
 
     <div class="content">
-      <template v-if="isLoggedIn">
-        <card-profile/>
-        <atomic-divider/>
-      </template>
+      <cta-menu
+        v-if="layoutData?.siteSidebar?.ctaMenu?.isShow"
+        :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.ctaMenu.items')"
+      />
+      
+      <partners
+        v-if="layoutData?.siteSidebar?.partners?.isShow"
+        :label="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.partners.label')"
+        :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.partners.items')"
+      />
+      
+      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.topMenu.items')"/>
+      <atomic-divider/>
 
-      <nav-list :items="sidebarContent?.topMenu || defaultLocaleSidebarContent?.topMenu"/>
-      <atomic-divider/>
-      <nav-list :items="sidebarContent?.tokenMenu || defaultLocaleSidebarContent?.tokenMenu"/>
-      <atomic-divider/>
-      <nav-list :items="sidebarContent?.bonusesMenu || defaultLocaleSidebarContent?.bonusesMenu"/>
+
+      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.bonusesMenu')"/>
       <atomic-divider/>
 
       <template v-if="isLoggedIn">
@@ -27,25 +28,40 @@
         <atomic-divider/>
       </template>
 
-      <atomic-select-lang/>
+      <atomic-select-lang />
+
+      <client-only>
+        <div v-if="projectHasFreshchat" class="nav-list">
+          <div class="item" :class="{ 'chat-indicator': newMessages }">
+            <div class="link" @click="openChat">
+              <atomic-icon id="live-support" />
+              <div class="text">{{ getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.chatLabel') }}</div>
+            </div>
+          </div>
+        </div>
+      </client-only>
+      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.bottomMenu')"/>
+
+      <template v-if="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.socials.isShow')">
+        <list-socials :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.socials.items')"/>
+      </template>
+
       <atomic-divider/>
-      <nav-list :items="sidebarContent?.bottomMenu || defaultLocaleSidebarContent?.bottomMenu"/>
-      <atomic-divider/>
-      <nav-static :items="sidebarContent?.sidebarFooterMenu || defaultLocaleSidebarContent?.sidebarFooterMenu"/>
+
+      <nav-static :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.sidebarFooterMenu')"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { MenuItemInterface } from '@skeleton/types';
+  import type { IIconLink } from '~/types';
 
-  const { sidebarContent, defaultLocaleSidebarContent } = useGlobalStore();
+  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const { getContent } = useProjectMethods();
-  const emit = defineEmits(['toggle-open']);
 
   const layoutStore = useLayoutStore();
-  const { compactDrawer } = layoutStore;
+  const { showModal } = layoutStore;
   const { isDrawerCompact } = storeToRefs(layoutStore);
 
   const profileStore = useProfileStore();
@@ -53,11 +69,19 @@
 
   const gamesStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gamesStore);
-  const userMenuContent = computed(() => getContent(sidebarContent, defaultLocaleSidebarContent, 'userMenu')?.map((menuItem: MenuItemInterface) => {
+  const userMenuContent = computed(() => getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.userMenu')?.map((menuItem: IIconLink) => {
     if (menuItem.url === '/favorites') return { ...menuItem, counter: favoriteGames.value.length };
     return menuItem;
   }));
+
+  const freshchatStore = useFreshchatStore();
+  const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
+
+  const openChat = () => {
+    const { public: { freshchatParams } } = useRuntimeConfig();
+    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) showModal('register');
+    else window.fcWidget?.open();
+  }
 </script>
 
 <style src="~/assets/styles/components/layout/drawer.scss" lang="scss" />
-

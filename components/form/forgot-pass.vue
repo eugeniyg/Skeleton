@@ -6,9 +6,9 @@
       @focus="onFocus('email')"
       type="email"
       :is-required="true"
-      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.label') || ''"
+      :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
       name="email"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.placeholder') || ''"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
       :hint="setError('email')"
       @submit="sendEmail"
     />
@@ -36,8 +36,8 @@
 
   const globalStore = useGlobalStore();
   const {
-    fieldsContent,
-    defaultLocaleFieldsContent,
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
     popupsData,
     defaultLocalePopupsData,
     alertsData,
@@ -68,7 +68,7 @@
       isLockedAsyncButton.value = true;
       await forgotProfilePassword(forgotFormData);
       const { closeModal, showAlert } = useLayoutStore();
-      showAlert(alertsData.value?.sentResetLink || defaultLocaleAlertsData.value?.sentResetLink);
+      showAlert(alertsData.value?.profile?.sentResetLink || defaultLocaleAlertsData.value?.profile?.sentResetLink);
       closeModal('forgotPass');
     } catch (error:any) {
       if (error.response?.status === 422) {

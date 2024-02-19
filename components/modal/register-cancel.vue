@@ -8,11 +8,11 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('registerCancel')"/>
-        <h4 class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.title') }}</h4>
+        <h4 class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.title') }}</h4>
       </div>
 
       <div class="bonus">
-        <img :src="getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.bonusImage')" alt="">
+        <atomic-image :src="getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.bonusImage')" />
         <div class="bonus-text" v-html="bonusContent" />
       </div>
 
@@ -22,7 +22,7 @@
           size="md"
           @click="showModal('register')"
         >
-          {{ getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.backButton') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.backButton') }}
         </button-base>
 
         <button-base
@@ -30,7 +30,7 @@
           size="xs"
           @click="closeModal('registerCancel')"
         >
-          {{ getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.closeButton') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.closeButton') }}
         </button-base>
       </div>
     </div>
@@ -47,9 +47,9 @@
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
 
-  const { replaceContent } = useCoreMethods();
-  const bonusContent = getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.bonusText')
-    ? replaceContent(getContent(popupsData, defaultLocalePopupsData, 'registrationCancel.bonusText'), '*') : '';
+  const { replaceContent } = useProjectMethods();
+  const bonusContent = getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.bonusText')
+    ? replaceContent(getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.bonusText'), '*') : '';
 </script>
 
 <style src="~/assets/styles/components/modal/register-cancel.scss" lang="scss" />

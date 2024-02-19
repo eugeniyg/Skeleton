@@ -19,6 +19,7 @@
       v-if="props.showAllBtn"
       class="btn-show-all"
       type="ghost"
+      size="sm"
       @click="openGames"
     >
       {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
@@ -41,7 +42,7 @@
         <card-base
           v-for="(game, gameIndex) in games"
           :key="gameIndex"
-          v-bind="game"
+          :gameInfo="game"
         />
       </template>
 
@@ -49,15 +50,14 @@
         <div v-for="n in 9" :key="n" class="card-base"/>
       </template>
 
-      <div class="load-more" ref="loadMore"/>
+      <div class="load-more" ref="loadMore" @inview="moreGames"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import {
-    GameInterface, PaginationMetaInterface,
-  } from '@platform/frontend-core/dist/module';
+  import type { IGame, IPaginationMeta } from '@skeleton/core/types';
+  import { storeToRefs } from "pinia";
 
   const props = defineProps({
     category: {
@@ -78,7 +78,9 @@
     },
   });
 
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = globalStore;
+  const { headerCountry } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const titleIcon = gameCategoriesObj[props.category.identity]?.icon;
 
@@ -86,8 +88,8 @@
   const prevDisabled = ref<boolean>(true);
   const nextDisabled = ref<boolean>(true);
   const showArrowButtons = ref<boolean>(props.showArrows);
-  const games = ref<GameInterface[]>([]);
-  const pageMeta = ref<PaginationMetaInterface>();
+  const games = ref<IGame[]>([]);
+  const pageMeta = ref<IPaginationMeta>();
   const { getFilteredGames } = useCoreGamesApi();
 
   const scrollHandler = (): void => {
@@ -99,36 +101,47 @@
   };
 
   const clickAction = (direction: string): void => {
-    const { offsetWidth } = scrollContainer.value;
+    const { offsetWidth, scrollWidth, scrollLeft } = scrollContainer.value;
+    const widthToEnd = scrollWidth - (scrollLeft + offsetWidth);
+    const scrollLeftValue = widthToEnd < offsetWidth ? widthToEnd : offsetWidth;
+    const scrollRightValue = scrollLeft < offsetWidth ? scrollLeft : offsetWidth;
     scrollContainer.value.scrollBy({
-      left: direction === 'next' ? offsetWidth : -offsetWidth,
+      left: direction === 'next' ? scrollLeftValue : -scrollRightValue,
       behavior: 'smooth',
     });
   };
+
+  const defaultRequestParams = {
+    collectionId: props.category.id,
+    perPage: 18,
+    countries: headerCountry.value ? [headerCountry.value] : undefined,
+    sortBy: 'default',
+    sortOrder: 'asc'
+  }
 
   const moreGames = async (): Promise<void> => {
     if (pageMeta.value?.page === pageMeta.value?.totalPages) return;
 
     const gamesResponse = await getFilteredGames({
-      collectionId: props.category.id,
+      ...defaultRequestParams,
       page: pageMeta.value ? pageMeta.value.page + 1 : 1,
-      perPage: 18,
     });
     games.value = games.value.concat(gamesResponse.data);
     pageMeta.value = gamesResponse.meta;
   };
 
   const loadMore = ref();
-  const { initObserver } = useCoreMethods();
+  const { initObserver } = useProjectMethods();
+  const observerLoadMore = ref();
 
   const emit = defineEmits(['initialLoad']);
   onMounted(async () => {
-    initObserver(loadMore.value, {
-      onInView: moreGames,
+    observerLoadMore.value = initObserver({
       settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
     });
+    observerLoadMore.value.observe(loadMore.value);
 
-    const gamesResponse = await getFilteredGames({ collectionId: props.category.id, perPage: 18 });
+    const gamesResponse = await getFilteredGames(defaultRequestParams);
     games.value = gamesResponse.data;
     pageMeta.value = gamesResponse.meta;
     await nextTick();
@@ -139,6 +152,12 @@
       showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
     }
   });
+
+  onBeforeUnmount(() => {
+    if (loadMore.value && observerLoadMore.value) {
+      observerLoadMore.value.unobserve(loadMore.value);
+    }
+  })
 
   const { localizePath } = useProjectMethods();
   const openGames = (): void => {

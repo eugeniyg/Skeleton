@@ -3,51 +3,56 @@
     <div v-if="homeContent?.banner || defaultLocaleHomeContent?.banner" class="promo-card-wrapper">
       <card-home v-bind="homeContent?.banner || defaultLocaleHomeContent?.banner"/>
     </div>
-
-    <div class="cards-wrap">
-      <div class="cards-cat" v-if="homeContent?.categories || defaultLocaleHomeContent?.categories">
-        <card-category
-          v-for="(item, itemIndex) in Object.keys(homeContent?.categories || defaultLocaleHomeContent?.categories)"
-          :key="itemIndex"
-          :mod="item"
-          v-bind="homeContent?.categories[item] || defaultLocaleHomeContent?.categories[item]"
-        />
-      </div>
-
-      <!--<group-benefits/>-->
+    
+    <div
+      v-if="homeContent?.categories || defaultLocaleHomeContent?.categories"
+      class="card-category__container"
+      :class="cardsModifier">
+      <card-category
+        v-for="(item, itemIndex) in (homeContent?.categories || defaultLocaleHomeContent?.categories)"
+        :key="itemIndex"
+        :mod="itemIndex + 1"
+        v-bind="item"
+      />
     </div>
 
-    <group-turbo/>
-
-    <group-games
-      v-if="hotCategory"
+      <!--<group-benefits/>-->
+    
+    <group-aero
+      v-if="homeContent?.aeroGroup?.display && aeroCategory"
       showAllBtn
       showArrows
-      :category="hotCategory"
+      :category="aeroCategory"
+      :currentLocaleContent="homeContent?.aeroGroup"
+      :defaultLocaleContent="defaultLocaleHomeContent?.aeroGroup"
     />
-
-    <div id="sports-container" />
 
     <group-games
-      v-if="newCategory"
+      v-if="topSlotsCategory"
       showAllBtn
       showArrows
-      :category="newCategory"
+      :category="topSlotsCategory"
     />
 
-    <cards-group
-      v-if="providerCards.games?.length"
-      v-bind="providerCards"
-      :identity="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.label')"
-      :titleIcon="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.icon')"
-      :showAllBtn="false"
+    <group-games
+      v-if="liveCasinoCategory"
+      showAllBtn
+      showArrows
+      :category="liveCasinoCategory"
+    />
+
+    <div
+      ref="sportsContainer"
+      class="sports-container"
+      @inview="startBetsyWidgets"
     >
-      <template v-slot:card="item">
-        <card-providers v-bind="item" />
-      </template>
-    </cards-group>
+      <div id="top-events-widget" />
+      <div id="live-events-widget" />
+    </div>
 
-    <group-promotions/>
+    <group-providers showArrows />
+
+    <group-promotions />
 
     <atomic-seo-text v-if="homeContent?.seo?.text" v-bind="homeContent.seo.text"/>
   </div>
@@ -55,55 +60,111 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { HomeContentInterface } from '@skeleton/types';
+  import type { IHomePage } from '~/types';
 
   const globalStore = useGlobalStore();
   const gameStore = useGamesStore();
-  const fakeStore = useFakeStore();
-  const providerCards = fakeStore.providerCards();
-  const { currentLocaleCollections } = storeToRefs(gameStore);
+  const { currentLocationCollections } = storeToRefs(gameStore);
   const {
     currentLocale,
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent,
-    contentLocalesArray,
+    defaultLocale
   } = storeToRefs(globalStore);
 
   const {
     setPageSeo,
     localizePath,
     getContent,
-    findLocalesContentData,
+    getLocalesContentData,
+    addBetsyScript
   } = useProjectMethods();
 
-  const homeContentRequest = await useAsyncData('homeContent', () => queryContent('page-controls')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'homePage']).find());
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(homeContentRequest.data.value);
-  const homeContent: Maybe<HomeContentInterface> = currentLocaleData?.homePage;
-  const defaultLocaleHomeContent: Maybe<HomeContentInterface> = defaultLocaleData?.homePage;
-  setPageSeo(homeContent?.seo);
+  const homeContent = ref<Maybe<IHomePage>>();
+  const defaultLocaleHomeContent = ref<Maybe<IHomePage>>();
 
-  const hotCategory = currentLocaleCollections.value.find((collection) => collection.identity === 'hot');
-  const newCategory = currentLocaleCollections.value.find((collection) => collection.identity === 'new');
+  interface IPageContent {
+    currentLocaleData: Maybe<IHomePage>;
+    defaultLocaleData: Maybe<IHomePage>;
+  }
 
-  const { betsyParams } = useGamesStore();
-  const startBetsyWidget = ():void => {
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    homeContent.value = contentData?.currentLocaleData;
+    defaultLocaleHomeContent.value = contentData?.defaultLocaleData;
+    setPageSeo(homeContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('homePageContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'pages', 'home').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'home').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('homePageContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
+
+  const topSlotsCategory = currentLocationCollections.value.find((collection) => collection.identity === 'top-slots');
+  const liveCasinoCategory = currentLocationCollections.value.find((collection) => collection.identity === 'liveshow');
+  const aeroCategory = computed(() => currentLocationCollections.value.find((collection) => collection.identity === homeContent.value?.aeroGroup?.collectionIdentity));
+
+  const cardsModifier = computed(() => {
+    const length = Object.keys(getContent(homeContent.value, defaultLocaleHomeContent.value, 'categories'))?.length || 0
+    return length  ? `has-${length}-cards` : ''
+  });
+
+  const startBetsyWidgets = ():void => {
+    const runtimeConfig = useRuntimeConfig();
     const mainHost = window.location.origin;
-    const params = {
-      ...betsyParams,
+    const widgetsParams = {
+      host: runtimeConfig.public.betsyParams?.clientHost,
+      cid: runtimeConfig.public.betsyParams?.clientId,
+      theme: runtimeConfig.public.betsyParams?.widgetTheme,
+      customStyles: runtimeConfig.public.betsyParams?.widgetStyles ? `${mainHost}${runtimeConfig.public.betsyParams.widgetStyles}` : undefined,
       mainFrameUrl: mainHost + localizePath('/betting'),
       lang: currentLocale.value?.code || 'en',
-      containerId: 'sports-container',
       height: '372px',
-      theme: 'slotsbet',
-    };
+    }
 
-    if (window.BetSdk) window.BetSdk.initTopEventsWidget(params);
+    if (window.BetSdk) {
+      window.BetSdk.initTopEventsWidget({ ...widgetsParams, containerId: 'top-events-widget' });
+      window.BetSdk.initLiveEventsWidget({ ...widgetsParams, containerId: 'live-events-widget' });
+    } else {
+      const betsyScript = addBetsyScript();
+      betsyScript.onload = () => {
+        window.BetSdk.initTopEventsWidget({ ...widgetsParams, containerId: 'top-events-widget' });
+        window.BetSdk.initLiveEventsWidget({ ...widgetsParams, containerId: 'live-events-widget' });
+      };
+    }
   };
 
+  const sportsContainer = ref();
+  const { initObserver } = useProjectMethods();
+  const widgetsObserver = ref();
+
   onMounted(() => {
-    startBetsyWidget();
+    if (window.BetSdk) startBetsyWidgets();
+    else {
+      widgetsObserver.value = initObserver({
+        once: true,
+        settings: { root: null, rootMargin: '400px', threshold: 0 },
+      });
+      widgetsObserver.value.observe(sportsContainer.value);
+    }
   });
+
+  onBeforeUnmount(() => {
+    if (sportsContainer.value && widgetsObserver.value) {
+      widgetsObserver.value.unobserve(sportsContainer.value);
+    }
+  })
 </script>
 
 <style src="~/assets/styles/pages/index.scss" lang="scss" />

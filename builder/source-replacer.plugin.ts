@@ -3,7 +3,7 @@ import { access } from 'node:fs/promises';
 // copypasted const from vite
 const FS_PREFIX = `/@fs/`
 
-export const sourceReplacerPlugin = (sourcePath, replacePath) => {
+export const sourceReplacerPlugin = (sourcePath: string, replacePath: string) => {
   return {
     name: 'rollup-plugin-plt-source-replacer',
     enforce: 'pre',
@@ -13,12 +13,12 @@ export const sourceReplacerPlugin = (sourcePath, replacePath) => {
       sequential: true,
       async handler(source: string, importer: string, options: object): Promise<string|null> {
         if (!source.includes(sourcePath)) {
-          return;
+          return null;
         }
 
         // looks like its some virtual path
         if(!source.includes(process.cwd())) {
-          return;
+          return null;
         }
 
         if(source.startsWith(FS_PREFIX)) {
@@ -31,7 +31,7 @@ export const sourceReplacerPlugin = (sourcePath, replacePath) => {
         try {
           await access(source);
         } catch (e) {
-          return;
+          return null;
         }
 
         const replacedSource = source.replace(sourcePath, replacePath);
@@ -40,9 +40,10 @@ export const sourceReplacerPlugin = (sourcePath, replacePath) => {
         try {
           await access(replacedSource);
         } catch (e) {
-          return;
+          return null;
         }
 
+        // @ts-ignore
         return this.resolve(replacedSource, importer, { skipSelf: true, ...options });
       },
     },

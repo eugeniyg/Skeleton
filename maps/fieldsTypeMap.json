@@ -7,6 +7,19 @@
       "arguments": "6"
     }]
   },
+  "password_confirmation": {
+    "component": "form-input-password",
+    "type": "password",
+    "validation": [
+      {
+        "rule": "required"
+      },
+      {
+        "rule": "confirmed",
+        "arguments": "password"
+      }
+    ]
+  },
   "currentPassword": {
     "component": "form-input-password",
     "type": "password",
@@ -74,7 +87,7 @@
   },
   "postalCode": {
     "component": "form-input-text",
-    "type": "text"
+    "type": "number"
   },
   "timeZone": {
     "component": "form-input-dropdown",
@@ -156,5 +169,19 @@
   "message": {
     "component": "form-input-textarea",
     "type": "text"
+  },
+  "locale": {
+    "component": "form-input-text",
+    "type": "text"
+  },
+  "age": {
+    "component": "form-input-text",
+    "type": "text",
+    "inputmode": "numeric",
+    "validation": [
+      {
+        "rule": "integer"
+      }
+    ]
   }
 }

@@ -2,26 +2,19 @@
   <div class="bonus-active" data-tooltip-parent>
     <h4 class="bonus-active__title">{{ props.content?.title }}</h4>
 
-    <div v-if="activePlayerCashBonuses.length" class="bonus-active__list">
+    <div class="bonus-active__list">
       <transition-group name="card">
         <CardBonuses
           v-for="bonus in orderedBonuses"
           :key="bonus.id"
           :bonus="bonus"
-          mode="bonus"
+          :mode="props.bonusType"
           :content="props.content"
           @switchBonus="changeBonuses(bonus, 'activate')"
           @removeBonus="changeBonuses(bonus, 'cancel')"
         />
       </transition-group>
     </div>
-
-    <AtomicEmpty
-      v-else
-      variant="bonuses"
-      :title="props.content?.empty.title"
-      :subTitle="props.content?.empty.description"
-    />
 
     <ModalConfirmBonus
       v-bind="modalState"
@@ -35,23 +28,24 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { PlayerBonusInterface } from '@platform/frontend-core/dist/module';
-  import { CashBonusesInterface } from '@skeleton/types';
+  import type { IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
+  import type { IProfileBonuses } from '~/types';
 
   const props = defineProps<{
-    content?: CashBonusesInterface
+    content?: IProfileBonuses['cashBonuses']|IProfileBonuses['freeSpins'],
+    bonusType: 'bonus'|'free-spin'
   }>();
 
-  interface ModalStateInterface extends Record<string, any>{
+  interface IModalState extends Record<string, any>{
     title?: string,
     description?: string,
     confirmButton?: string,
     cancelButton?: string,
-    bonusInfo: PlayerBonusInterface|undefined,
+    bonusInfo: IPlayerBonus|IPlayerFreeSpin|undefined,
     mode: 'activate'|'cancel'
   }
 
-  const modalState = reactive<ModalStateInterface>({
+  const modalState = reactive<IModalState>({
     title: undefined,
     description: undefined,
     confirmButton: undefined,
@@ -62,8 +56,18 @@
 
   const showModal = ref<boolean>(false);
   const bonusStore = useBonusStore();
-  const { activePlayerCashBonuses } = storeToRefs(bonusStore);
-  const orderedBonuses = computed(() => (activePlayerCashBonuses.value.reduce((acc: PlayerBonusInterface[], currentBonus) => (currentBonus.status === 2 ? [currentBonus, ...acc] : [...acc, currentBonus]), [])));
+  const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
+  const orderedBonuses = computed(() => {
+    if (props.bonusType === 'bonus') {
+      return activePlayerBonuses.value.reduce((acc: IPlayerBonus[], currentBonus) => {
+        return currentBonus.status === 2 ? [currentBonus, ...acc] : [...acc, currentBonus];
+      }, [])
+    }
+
+    return activePlayerFreeSpins.value.reduce((acc: IPlayerFreeSpin[], currentFreeSpin) => {
+      return currentFreeSpin.status === 2 ? [currentFreeSpin, ...acc] : [...acc, currentFreeSpin];
+    }, [])
+  });
 
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();
@@ -74,7 +78,7 @@
     defaultLocalePopupsData,
   } = storeToRefs(globalStore);
 
-  const changeBonuses = (processBonus: PlayerBonusInterface, processMode: 'activate'|'cancel'):void => {
+  const changeBonuses = (processBonus: IPlayerBonus|IPlayerFreeSpin, processMode: 'activate'|'cancel'):void => {
     modalState.bonusInfo = processBonus;
     modalState.mode = processMode;
 
@@ -101,16 +105,24 @@
   };
 
   const bonusesUpdating = ref<boolean>(false);
-  const { activatePlayerBonus, cancelPlayerBonus } = useCoreBonusApi();
+  const {
+    activatePlayerBonus,
+    cancelPlayerBonus,
+    activatePlayerFreeSpin,
+    cancelPlayerFreeSpin
+  } = useCoreBonusApi();
   const activateBonus = async ():Promise<void> => {
     if (bonusesUpdating.value || !modalState.bonusInfo?.id) return;
     bonusesUpdating.value = true;
 
     try {
-      await activatePlayerBonus(modalState.bonusInfo.id);
+      props.bonusType === 'bonus'
+        ? await activatePlayerBonus(modalState.bonusInfo.id)
+        : await activatePlayerFreeSpin(modalState.bonusInfo.id);
+
       showModal.value = false;
     } catch {
-      showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
+      showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
 
     bonusesUpdating.value = false;
@@ -121,10 +133,13 @@
     bonusesUpdating.value = true;
 
     try {
-      await cancelPlayerBonus(modalState.bonusInfo.id);
+      props.bonusType === 'bonus'
+        ? await cancelPlayerBonus(modalState.bonusInfo.id)
+        : await cancelPlayerFreeSpin(modalState.bonusInfo.id);
+
       showModal.value = false;
     } catch {
-      showAlert(alertsData.value?.somethingWrong || defaultLocaleAlertsData.value?.somethingWrong);
+      showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
 
     bonusesUpdating.value = false;

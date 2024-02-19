@@ -22,7 +22,7 @@
     </div>
 
     <form-profile
-      v-if="isProfileEdit"
+      v-if="isProfileEdit && profileFields?.length"
       @toggle-profile-edit="toggleProfileEdit"
       v-bind="infoContent || defaultLocaleInfoContent"
     />
@@ -34,23 +34,23 @@
         <div class="items">
           <div class="nickname">{{ userNickname }}</div>
 
-          <div class="item" v-show="profile.firstName || profile.lastName">
+          <div class="item" v-show="profile?.firstName || profile?.lastName">
             <atomic-icon id="user"/>
-            {{ profile.firstName }} {{ profile.lastName }}
+            {{ profile?.firstName }} {{ profile?.lastName }}
           </div>
 
-          <div class="item" v-show="profile.country || profile.city">
+          <div class="item" v-show="profile?.country || profile?.city">
             <atomic-icon id="location"/>
-            {{ userCountryName }}{{ profile.city ? `, ${profile.city}` : '' }}
+            {{ userCountryName }}{{ profile?.city ? `, ${profile?.city}` : '' }}
           </div>
 
-          <div class="item" v-show="profile.email">
-            <atomic-icon v-if="profile.confirmedAt" class="is-success" id="done"/>
+          <div class="item" v-show="profile?.email">
+            <atomic-icon v-if="profile?.confirmedAt" class="is-success" id="done"/>
             <atomic-icon v-else class="is-warning" id="warning"/>
-            {{ profile.email }}
+            {{ profile?.email }}
 
             <span
-              v-if="!profile.confirmedAt"
+              v-if="!profile?.confirmedAt"
               class="btn-primary size-xs"
               @click.once="profileStore.resendVerifyEmail"
               :class="{ disabled: resentVerifyEmail }"
@@ -73,10 +73,10 @@
         v-for="field in subscriptionFields"
         :key="field.name"
         :name="field.name"
-        :value="profile[field.name]"
+        :value="profile?.[field.name]"
         @change="changeSubscription(field.name)"
       >
-        {{ getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) }}
+        {{ getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) }}
       </form-input-toggle>
 
       <atomic-divider/>
@@ -85,37 +85,65 @@
     <h4 class="heading">{{ infoContent?.manageTitle || defaultLocaleInfoContent?.manageTitle }}</h4>
 
     <button-base type="ghost" size="md" @click="profileStore.logOutUser">
-      <atomic-icon id="log-out"/>{{ userNavigationContent?.logoutButton || defaultLocaleUserNavigationContent?.logoutButton }}
+      <atomic-icon id="log-out"/>{{ layoutData?.profileSidebar?.logoutButton || defaultLocaleLayoutData?.profileSidebar?.logoutButton }}
     </button-base>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { CountryInterface } from '@platform/frontend-core/dist/module';
-  import { ProfileInfoInterface } from '@skeleton/types';
+  import type { ICountry } from '@skeleton/core/types';
+  import type { IProfileInfo } from '~/types';
 
   const globalStore = useGlobalStore();
   const {
     countries,
-    fieldsContent,
-    defaultLocaleFieldsContent,
-    userNavigationContent,
-    defaultLocaleUserNavigationContent,
-    contentLocalesArray,
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
+    layoutData,
+    defaultLocaleLayoutData,
+    currentLocale,
+    defaultLocale
   } = storeToRefs(globalStore);
 
   const {
     setPageSeo,
-    findLocalesContentData,
+    getLocalesContentData,
     getContent,
   } = useProjectMethods();
-  const infoContentRequest = await useAsyncData('infoContent', () => queryContent('profile')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'info']).find());
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(infoContentRequest.data.value);
-  const infoContent: Maybe<ProfileInfoInterface> = currentLocaleData?.info;
-  const defaultLocaleInfoContent: Maybe<ProfileInfoInterface> = defaultLocaleData?.info;
-  setPageSeo(infoContent?.seo);
+
+  const infoContent = ref<Maybe<IProfileInfo>>();
+  const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>();
+
+  interface IPageContent {
+    currentLocaleData: Maybe<IProfileInfo>;
+    defaultLocaleData: Maybe<IProfileInfo>;
+  }
+
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    infoContent.value = contentData?.currentLocaleData;
+    defaultLocaleInfoContent.value = contentData?.defaultLocaleData;
+    setPageSeo(infoContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('profileInfoContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'profile', 'info').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'profile', 'info').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('profileInfoContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
@@ -127,7 +155,7 @@
 
   const isProfileEdit = computed(() => route.query.edit === 'true');
   const userCountryName = computed(() => {
-    const countryObject: Maybe<CountryInterface> = countries.value.find((country) => country.code === profile.value?.country);
+    const countryObject: Maybe<ICountry> = countries.value.find((country) => country.code === profile.value?.country);
     return countryObject?.nativeName || '';
   });
 

@@ -1,51 +1,50 @@
-import { defineStore } from 'pinia';
-import {
-  CollectionInterface,
-  GameInterface,
-  GameProviderInterface,
-  WebSocketResponseInterface,
-  WinnerInterface,
-} from '@platform/frontend-core/dist/module';
+import {defineStore} from 'pinia';
+import type {
+  ICollection,
+  IGame,
+  IGameProvider,
+  IWinner,
+  IWebSocketResponse
+} from '@skeleton/core/types';
 import throttle from 'lodash/throttle';
 
-interface GamesStoreStateInterface {
-  gameProviders: GameProviderInterface[],
-  gameCollections: CollectionInterface[],
-  favoriteGames: GameInterface[],
-  winnersSubscription: any,
-  latestWinners: WinnerInterface[],
-  betsyParams: {
-    host: string,
-    cid: string
-  },
+type MobileModalType = 'depositOrDemo'|'deposit'|'registerOrDemo'|'registerOrLogin';
+interface IGamesStoreState {
+  gameProviders: IGameProvider[];
+  gameCollections: ICollection[];
+  favoriteGames: IGame[];
+  winnersSubscription: any;
+  latestWinners: IWinner[];
+  showMobileGameModal: boolean;
+  mobileGameModalType: Maybe<MobileModalType>;
+  mobileGameModalInfo: Maybe<IGame>;
+  isBonusWagering: boolean;
+  minimumBonusWagerMultiplier: number;
 }
 
 export const useGamesStore = defineStore('gamesStore', {
-  state: ():GamesStoreStateInterface => ({
+  state: ():IGamesStoreState => ({
     gameProviders: [],
     gameCollections: [],
     favoriteGames: [],
     winnersSubscription: undefined,
     latestWinners: [],
-    betsyParams: {
-      host: 'https://turboplatform-dev.betsy.gg',
-      cid: 'turboplatform-dev',
-    },
+    showMobileGameModal: false,
+    mobileGameModalType: undefined,
+    mobileGameModalInfo: undefined,
+    isBonusWagering: false,
+    minimumBonusWagerMultiplier: 1
   }),
 
   getters: {
-    providersSelectOptions(state):GameProviderInterface[] {
-      return state.gameProviders.map((provider) => ({
-        ...provider,
-        code: provider.id,
-        value: provider.name,
-      }));
-    },
-    currentLocaleCollections(state):CollectionInterface[] {
+    currentLocationCollections(state):ICollection[] {
       const globalStore = useGlobalStore();
-      if (!globalStore.currentLocale) return [];
 
-      return state.gameCollections.filter((collection) => !collection.locale.length || collection.locale.includes(globalStore.currentLocale?.code as string));
+      if (!globalStore.headerCountry) return state.gameCollections;
+
+      return state.gameCollections.filter((collection) => {
+        return !collection.countries.length || collection.countries.includes(globalStore.headerCountry as string);
+      })
     },
   },
 
@@ -53,13 +52,12 @@ export const useGamesStore = defineStore('gamesStore', {
     async getGameProviders(): Promise<void> {
       const { getGameProviders } = useCoreGamesApi();
       const data = await getGameProviders();
-      this.gameProviders = data.filter((provider: GameProviderInterface) => provider.identity !== 'betsy');
+      this.gameProviders = data.filter((provider: IGameProvider) => provider.identity !== 'betsy');
     },
 
     async getGameCollections(): Promise<void> {
       const { getGameCollections } = useCoreGamesApi();
-      const data = await getGameCollections();
-      this.gameCollections = data;
+      this.gameCollections = await getGameCollections();
     },
 
     async getFavoriteGames(): Promise<void> {
@@ -84,17 +82,28 @@ export const useGamesStore = defineStore('gamesStore', {
       this.winnersSubscription = createSubscription(`game:winners:${globalStore.isMobile ? 'mobile' : 'desktop'}:${profileStore.profile?.country || globalStore.headerCountry || 'UA'}`, this.updateWinners);
     },
 
-    setWinners(winners: WinnerInterface[]):void {
+    setWinners(winners: IWinner[]):void {
       this.latestWinners = winners.slice(0, 12);
     },
 
-    updateWinners(winnerData:WebSocketResponseInterface):void {
+    updateWinners(winnerData:IWebSocketResponse):void {
       const that = this;
       throttle(() => {
         const { winner } = winnerData.data;
         const filteredWinners = that.latestWinners.filter((item) => item.gameId !== winner?.gameId);
         if (winner) that.latestWinners = [winner, ...filteredWinners].slice(0, 12);
       }, 3000, { leading: false })();
+    },
+
+    openMobileGameModal(modalType: MobileModalType, gameInfo: IGame):void {
+      this.mobileGameModalType = modalType;
+      this.mobileGameModalInfo = gameInfo;
+      this.showMobileGameModal = true;
+    },
+
+    defineBonusWagerInfo(isBonusWagering:boolean, minimumBonusWagerMultiplier:number):void {
+      this.isBonusWagering = isBonusWagering;
+      this.minimumBonusWagerMultiplier = minimumBonusWagerMultiplier;
     },
   },
 });

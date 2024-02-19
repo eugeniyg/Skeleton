@@ -6,9 +6,9 @@
       @focus="focusField('login')"
       type="email"
       :is-required="true"
-      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.label') || ''"
+      :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
       name="login"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.placeholder') || ''"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
       :hint="setError('login')"
       @submit="login"
     />
@@ -19,9 +19,9 @@
       @focus="focusField('password')"
       type="password"
       :is-required="true"
-      :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'password.label') || ''"
+      :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.password.label') || ''"
       name="password"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'password.placeholder') || ''"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.password.placeholder') || ''"
       :hint="setError('password')"
       @submit="login"
     />
@@ -29,7 +29,7 @@
     <atomic-hint
       v-if="loginError"
       variant="error"
-      :message="getContent(validationMessages, defaultLocaleValidationMessages, 'login') || ''"
+      :message="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'validationMessages.login') || ''"
     />
 
     <button-base
@@ -61,10 +61,8 @@
 
   const globalStore = useGlobalStore();
   const {
-    validationMessages,
-    defaultLocaleValidationMessages,
-    fieldsContent,
-    defaultLocaleFieldsContent,
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
     popupsData,
     defaultLocalePopupsData,
     alertsData,
@@ -110,7 +108,7 @@
         serverFormErrors.value = error.data?.error?.fields;
       } else if (error.response?.status === 403) {
         const { showAlert } = useLayoutStore();
-        showAlert(alertsData.value?.accountBlocked || defaultLocaleAlertsData.value?.accountBlocked);
+        showAlert(alertsData.value?.profile?.accountBlocked || defaultLocaleAlertsData.value?.profile?.accountBlocked);
       } else throw error;
     } finally {
       isLockedAsyncButton.value = false;

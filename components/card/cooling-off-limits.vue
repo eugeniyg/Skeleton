@@ -18,7 +18,7 @@
         name="coolingOffDropdown"
         v-model:value="state.selectedPeriod"
         :placeholder="getContent(limitsContent, defaultLimitsContent, 'coolingOff.selectLabel')"
-        :options="coolingOffPeriod"
+        :options="periodsOptions"
       />
       <button-base type="primary" :is-disabled="!state.selectedPeriod" @click="save">
         {{ getContent(limitsContent, defaultLimitsContent, 'setButtonLabel') }}
@@ -33,7 +33,9 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import type { IPlayerLimit } from "@skeleton/core/types";
 
+  const dayjs = useDayjs();
   const limitsStore = useLimitsStore();
   const { createLimit, getLimits } = limitsStore;
   const { betPeriods, lossPeriods, isAdvancedModeEnabled } = storeToRefs(limitsStore);
@@ -47,12 +49,14 @@
   } = storeToRefs(limitsStore);
 
   const state = reactive<{
+    limitData?: IPlayerLimit,
     limitId: string | undefined,
     isEditProcess: boolean,
     selectedPeriod: string,
     definition: number,
     prevPeriod: string|undefined,
   }>({
+    limitData: undefined,
     limitId: undefined,
     isEditProcess: false,
     selectedPeriod: '',
@@ -65,11 +69,12 @@
   const isFullWidth = computed(() => (!isAdvancedModeEnabled.value && betPeriods.value?.length > 1)
     || (!isAdvancedModeEnabled.value && lossPeriods.value?.length < 2));
 
-  const edit = ({ limitId, period }: {limitId: string, period: string}) => {
+  const edit = (limit: IPlayerLimit) => {
     state.isEditProcess = true;
-    state.limitId = limitId;
-    state.selectedPeriod = period;
-    state.prevPeriod = period;
+    state.limitData = limit;
+    state.limitId = limit.id;
+    state.selectedPeriod = periodLessDay.value && !limit.pendingExist ? '' : limit.period as string;
+    state.prevPeriod = limit.period as string;
   };
 
   const save = async () => {
@@ -79,14 +84,26 @@
         definition: state.definition,
       });
       await getLimits();
-      showAlert(alertsData.value?.cashLimitAdd || defaultLocaleAlertsData.value?.cashLimitAdd);
+      showAlert(alertsData.value?.limit?.cashLimitAdd || defaultLocaleAlertsData.value?.limit?.cashLimitAdd);
     } else {
       await updatePlayerLimit({
-        limitId: state.limitId,
+        limitId: state.limitId as string,
         period: state.selectedPeriod,
       });
       await getLimits();
       state.isEditProcess = false;
     }
   };
+
+  const periodLessDay = computed(() => {
+    const diffDays = dayjs(state.limitData?.expiredAt).diff(dayjs(), 'day');
+    return diffDays < 1;
+  })
+
+  const periodsOptions = computed(() => {
+    if (!state.isEditProcess || state.limitData?.pendingExist || !periodLessDay.value) return coolingOffPeriod.value
+
+    const toPeriodIndex = coolingOffPeriod.value.findIndex((period) => period.code === state.limitData?.period)
+    return coolingOffPeriod.value.map((period, index) => ({ ...period, disabled: index <= toPeriodIndex }))
+  })
 </script>

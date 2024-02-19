@@ -1,18 +1,80 @@
+.app-header-root {
+  grid-area: app-header-root;
+  position: sticky;
+  top: 0;
+  z-index: var(--header-z-index, 2);
+
+  .is-game-page & {
+    @media (orientation: landscape) and (max-width: 1023px) {
+      .notification-bar {
+        margin-left: 64px;
+      }
+    }
+
+    @media (orientation: portrait) and (max-width: 1023px) {
+      .notification-bar {
+        margin-left: 0
+      }
+    }
+  }
+}
+
 .app-header {
   grid-area: app-header;
   height: rem(64px);
   @extend %flex-items-center;
   padding: var(--padding, 0 #{rem(16px)});
-  position: sticky;
-  top: 0;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
-  background-color: var(--black-primary);
-  z-index: var(--header-z-index, 2);
+  box-shadow: var(--shadow-group);
+  background-color: var(--layer-bg);
   grid-column-gap: 2px;
+  @extend %container;
 
-  max-width: var(--container-max-width);
-  width: 100%;
-  margin: 0 auto;
+  @include media(xs) {
+    --padding: 0 #{rem(32px)}
+  }
+
+  .is-game-page & {
+    @media (orientation: landscape) and (max-width: 1023px) {
+      position: fixed;
+      right: auto;
+      bottom: 0;
+      left: auto;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      width: rem(64px);
+      padding: rem(20px) rem(12px);
+
+      .vertical-divider {
+        border-left: 0;
+        height: 100%;
+      }
+
+      .toggler-btn,
+      .gift-notification,
+      .vertical-divider,
+      .btn-search,
+      .nav-user__wrap,
+      .input-deposit .select,
+      .input-deposit .btn-deposit span {
+        display: none;
+      }
+    }
+
+    @media (orientation: portrait) and (max-width: 1023px) {
+      .toggler-btn,
+      .nav-user__wrap,
+      .gift-notification,
+      .btn-search,
+      .vertical-divider,
+      .input-deposit .select,
+      .input-deposit .btn-deposit span {
+        @media (max-width: 1023px) {
+          display: none;
+        }
+      }
+    }
+  }
 
   .avatar {
     --padding: 0;
@@ -23,23 +85,161 @@
     @extend %flex-items-center;
     justify-self: flex-end;
     margin-left: auto;
-    grid-column-gap: rem(8px);
+    gap: rem(8px);
+
+    @include media(l) {
+      margin-left: 0;
+    }
+
+    .btn-primary__icon, .btn-secondary__icon {
+      display: none;
+    }
+
+    .is-game-page & {
+      margin-left: auto;
+
+      @media (orientation: landscape) and (max-width: 1023px), (orientation: portrait) and (max-width: 1023px) {
+        .btn-primary__text, .btn-secondary__text {
+          display: none;
+        }
+
+        .btn-primary__icon, .btn-secondary__icon {
+          display: block;
+        }
+
+        .btn-primary, .btn-secondary:not(.app-header__play-real)  {
+          @include box(40px);
+          --padding: 0;
+          --btn-border-radius: 8px;
+        }
+
+        hr {
+          height: 32px;
+          width: 0;
+          border-left: 1px solid var(--border-00-low-contrast);
+          --margin: 0 8px;
+        }
+      }
+
+      @media (orientation: landscape) and (max-width: 1023px) {
+        display: flex;
+        flex-direction: column;
+        margin: auto auto 0;
+        gap: rem(16px);
+
+        hr {
+          height: 0;
+          width: 40px;
+          border-bottom: 1px solid var(--border-00-low-contrast);
+          --margin: 0;
+        }
+
+        .btn-primary, .btn-secondary:not(.app-header__play-real), .size-sm.btn-secondary {
+          @include box(40px);
+          --icon-size: 20px;
+          --padding: 0;
+          --btn-border-radius: 8px;
+        }
+      }
+    }
   }
 
   > .notification {
     margin-right: rem(16px);
   }
 
-  @include media(sm) {
-    --padding: 0 #{rem(32px)};
-  }
-
   @include media(l) {
-    --padding: 0 #{rem(48px)};
+    margin-left: auto;
+    --padding: 0 #{rem(48px)} 0 16px;
   }
 
-  .list-currencies {
+  .list-balance {
     min-width: rem(248px);
     z-index: 0;
+  }
+
+  &__back-btn {
+    @extend %skip-btn;
+    @include box(40px);
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    display: none;
+
+    .icon {
+      --icon-size: 22px;
+      color: var(--button-icn-ghost-low-contrast);
+    }
+  }
+
+  &__play-real {
+    height: rem(40px);
+    flex-shrink: 0;
+    margin-left: auto;
+
+    .icon {
+      --icon-size: 20px;
+    }
+
+    @include media(md) {
+      display: none !important;
+    }
+
+    & + .items {
+      margin-left: rem(16px);
+    }
+
+    @media (orientation: landscape) and (max-width: 1023px) {
+      width: 40px;
+      height: 40px;
+      margin: auto auto 0;
+      position: relative;
+
+      & + .items {
+        margin: 16px auto 0 !important;
+      }
+
+      span {
+        position: absolute;
+        text-align: center;
+        bottom: calc(100% + #{rem(4px)});
+        @include font($subheading-1);
+        color: var(--text-secondary);
+      }
+    }
+  }
+
+  &--is-game-page-login {
+    .logo {
+      @media (orientation: landscape) and (max-width: 1023px) {
+        display: none;
+      }
+
+      @media (orientation: portrait) and (max-width: 1023px) {
+        display: none;
+      }
+    }
+
+    .app-header__back-btn {
+      @media (orientation: portrait) and (max-width: 1023px) {
+        align-self: center;
+        display: flex;
+      }
+
+      @media (orientation: landscape) and (max-width: 1023px) {
+        align-self: flex-start;
+        display: flex;
+      }
+    }
+  }
+
+  .toggler-btn {
+    display: none;
+
+    @include media(l) {
+      display: block;
+      margin-right: auto;
+      padding-right: 0;
+    }
   }
 }

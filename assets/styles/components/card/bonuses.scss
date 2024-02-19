@@ -13,7 +13,7 @@
 
   &__title {
     @include font($heading-5);
-    color: var(--white);
+    color: var(--text-primary);
     grid-column: 1/2;
     margin: rem(24px) 0 rem(8px);
   }
@@ -43,7 +43,7 @@
 }
 
 .card-bonuses {
-  color: var(--white);
+  color: var(--text-primary);
   position: relative;
   border: 2px solid transparent;
   border-radius: 16px;
@@ -58,18 +58,18 @@
     right: rem(-2px);
     bottom: rem(-2px);
     border-radius: 16px;
-    background-image: linear-gradient(107.86deg, #28263B 1.67%, #3D3D51 87.33%), linear-gradient(107.86deg, #19192F 1.67%, #28263B 87.33%);
+    background-color: var(--layer-02);
   }
 
   &.is-active {
     &:before {
-      background-image: linear-gradient(89.73deg, #FFDC8A 1.37%, #FFC12E 49.58%, #E6A409 98.17%);
+      background: var(--border-cta);
     }
   }
 
   &__body {
     padding: rem(24px) rem(16px);
-    background-image: linear-gradient(107.86deg, #28263B 1.67%, #3D3D51 87.33%), linear-gradient(107.86deg, #19192F 1.67%, #28263B 87.33%);
+    background-color: var(--layer-02);
     border-radius: 14px;
     position: relative;
     height: 100%;
@@ -98,7 +98,7 @@
 
   &__title {
     @include font($body-1);
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0;
     word-break: break-all;
     display: -webkit-box;
@@ -121,7 +121,7 @@
 
       &.is-show {
         .icon {
-          --color: var(--yellow-500)
+          --color: var(--text-link)
         }
       }
     }
@@ -140,7 +140,7 @@
   }
 
   &__msg {
-    color: var(--gray-400);
+    color: var(--text-link);
     @include font($body-0);
     display: flex;
     align-items: center;
@@ -148,7 +148,7 @@
     margin-left: auto;
 
     .icon {
-      --color: var(--gray-400);
+      --color: var(--icon-secondary);
       --icon-size: 20px;
     }
 
@@ -157,16 +157,22 @@
       align-items: center;
 
       button {
-        background: transparent;
+        background: var(--bg, transparent);
         padding: 0;
         border: 0;
+
+        .icon {
+          --color: var(--button-icn-ghost-low-contrast)
+        }
 
         @include use-hover {
           &:hover {
             cursor: pointer;
 
+            --bg: var(--button-bg-secondary-hover);
+
             .icon {
-              --color: var(--yellow-500)
+              --color: var(--button-icn-ghost-hover)
             }
           }
         }
@@ -177,7 +183,7 @@
   &__info-title {
     display: block;
     @include font($body-0);
-    color: var(--yellow-500);
+    color: var(--text-link);
     cursor: pointer;
     position: relative;
     white-space: nowrap;
@@ -185,7 +191,7 @@
     &:after {
       position: absolute;
       content: '';
-      border-bottom: 1px dashed var(--border-color, var(--yellow-500));
+      border-bottom: 1px dashed var(--border-color, var(--text-link));
       bottom: 0;
       left: 0;
       right: 0;
@@ -203,18 +209,18 @@
     grid-row-gap: rem(4px);
 
     &.is-riched {
-      --line-bg: var(--green-600);
+      --line-bg: var(--support-info-default);
     }
 
     &.is-greater-zero {
-      --start-value-color: var(--white);
+      --start-value-color: var(--text-primary);
     }
 
     &-line {
       width: 100%;
       border-radius: 2px;
       height: rem(4px);
-      background-color: var(--gray-500);
+      background-color: var(--support-system-low-contrast);
       position: relative;
       overflow: hidden;
       transition: width .2s ease-in-out;
@@ -227,7 +233,7 @@
         left: 0;
         top: 0;
         bottom: 0;
-        background-color: var(--line-bg, var(--blue-500));
+        background-color: var(--line-bg, var(--support-info-default));
       }
     }
 
@@ -238,13 +244,13 @@
 
       &:nth-of-type(1) {
         grid-area: start;
-        color: var(--start-value-color, var(--gray-400));
+        color: var(--start-value-color, var(--text-tertiary));
       }
 
       &:nth-of-type(2) {
         grid-area: end;
         justify-content: flex-end;
-        color: var(--end-value-color, var(--gray-400));
+        color: var(--end-value-color, var(--text-tertiary));
       }
     }
   }
@@ -255,10 +261,10 @@
     display: flex;
     grid-column-gap: rem(4px);
     align-items: center;
-    color: var(--gray-400);
+    color: var(--text-tertiary);
 
     .icon {
-      --color: var(--gray-400);
+      --color: var(--text-tertiary);
       --icon-size: 16px;
     }
   }
@@ -266,20 +272,9 @@
   &__link {
     display: flex;
     @include font($body-0);
-    color: var(--yellow-500);
+    color: var(--text-link);
     grid-column-gap: rem(4px);
-
-    .title {
-      color: inherit;
-      text-decoration: none;
-
-      @include use-hover {
-        &:hover {
-          cursor: pointer;
-          color: var(--yellow-600)
-        }
-      }
-    }
+    text-decoration: none;
   }
 
   &__date {
@@ -287,7 +282,7 @@
     align-items: center;
     flex-wrap: wrap;
     @include font($body-0);
-    color: var(--gray-400);
+    color: var(--text-tertiary);
     grid-column-gap: rem(8px);
     margin-right: rem(4px);
 
@@ -295,7 +290,7 @@
       content: '';
       display: inherit;
       height: rem(19px);
-      border-right: 1px solid var(--gray-500);
+      border-right: 1px solid var(--border-02);
     }
   }
 }

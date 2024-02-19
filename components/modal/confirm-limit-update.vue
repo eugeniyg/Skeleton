@@ -7,19 +7,19 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('confirmLimitUpdate')"/>
-        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.selfExlusionConfirm.updateTitle') }}</div>
+        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'selfExclusionConfirm.updateTitle') }}</div>
       </div>
 
       <div class="modal-confirm-limit-update__text">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.selfExlusionConfirm.updateDescription') }}
+        {{ getContent(popupsData, defaultLocalePopupsData, 'selfExclusionConfirm.updateDescription') }}
       </div>
 
       <div class="modal-confirm-limit-update__actions">
         <button-base type="primary" size="md" @click="save">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.selfExlusionConfirm.okButtonLabel') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'selfExclusionConfirm.okButtonLabel') }}
         </button-base>
         <button-base type="secondary" size="md" @click="cancel">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.selfExlusionConfirm.cancelButtonLabel') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'selfExclusionConfirm.cancelButtonLabel') }}
         </button-base>
       </div>
     </div>
@@ -56,29 +56,4 @@
   };
 </script>
 
-<style lang="scss">
-.modal-confirm-limit-update {
-  @extend %modal-info;
-  user-select: none;
-
-  &__text {
-    @include font($body-2);
-    color: var(--gray-300)
-  }
-
-  .scroll {
-    grid-row-gap: 24px;
-  }
-
-  &__actions {
-    display: grid;
-    grid-row-gap: rem(8px);
-
-    .btn-primary, .btn-secondary {
-      --width: 100%;
-      margin: 0;
-    }
-  }
-}
-
-</style>
+<style src="~/assets/styles/components/modal/confirm-limit-update.scss" lang="scss" />

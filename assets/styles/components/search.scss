@@ -1,6 +1,5 @@
 .search {
-  background-color: var(--bg, var(--gray-800));
-  box-shadow: var(--box--shadow, 0 0 12px rgba(0, 0, 0, 0.16));
+  background-color: var(--bg, var(--layer-02));
   padding: var(--padding-search, #{rem(4px)} #{rem(16px)});
   position: var(--position, absolute);
   width: var(--width, 100%);

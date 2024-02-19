@@ -10,20 +10,20 @@
     padding: 0;
     margin: 0 0 rem(8px) 0;
     @include font($heading-7);
-    color: var(--white);
+    color: var(--text-primary);
   }
 
   > .sub-title {
     padding: 0;
     margin: 0 0 rem(24px) 0;
     @include font($body-2-paragraph);
-    color: var(--gray-400);
+    color: var(--text-tertiary);
   }
 }
 
 .steps {
-  background: var(--gradient-dark);
-  border-radius: 8px;
+  background: var(--gradient-gray-dark-line);
+  border-radius: 16px;
   display: flex;
   position: relative;
   flex-direction: var(--direction, column);
@@ -32,7 +32,8 @@
 
   .title {
     @include font($heading-3);
-    color: var(--white);
+    color: var(--text-primary);
+
   }
 
   @include media(sm) {
@@ -66,12 +67,13 @@
 
   .text {
     @include font($body-1);
-    color: var(--white);
+    color: var(--text-primary);
     margin: 0;
   }
 
   .item {
-    background-color: var(--gray-800);
+    position: relative;
+    background-color: var(--layer-02);
     display: flex;
     align-items: center;
     grid-gap: rem(12px);
@@ -83,18 +85,18 @@
   .number {
     display: block;
     @include font($heading-7);
-    background: var(--gradient-new);
+    background: var(--button-bg-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-fill-color: transparent;
   }
 
-  .img {
+  .picture {
     display: block;
     position: var(--position, absolute);
     width: var(--width, #{rem(88px)});
-    height: auto;
+    height: 100%;
     top: var(--top, 0);
     right: 0;
     transform: var(--transform, translateY(#{rem(-4px)}));
@@ -102,6 +104,15 @@
     @include media(sm) {
       --top: 50%;
       --transform: translateY(-50%) translateX(#{rem(-10px)});
+      --object-position: right;
+    }
+
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: var(--object-position, top);
     }
   }
 }
@@ -111,14 +122,18 @@
 
   .title {
     @include font($heading-5);
-    color: var(--white);
+    color: var(--text-primary);
     margin: var(--margin, 0 0 #{rem(24px)} 0);
+    position: relative;
+    z-index: 1;
   }
 
   .items {
     display: flex;
     flex-direction: column;
     grid-gap: rem(8px);
+    position: relative;
+    z-index: 1;
 
     @include media(sm) {
       flex-direction: row;
@@ -133,15 +148,13 @@
     .sub-title {
       grid-area: sub-title;
       @include font($heading-1);
-      color: var(--yellow-500);
+      color: var(--text-accent);
       padding-top: rem(6px);
     }
   }
 
   .item {
     border-radius: 16px;
-    background-color: var(--bgc, transparent);
-    background-image: var(--bgi);
     padding: var(--padding, #{rem(16px)});
     display: grid;
     grid-template-areas:
@@ -153,6 +166,19 @@
     position: relative;
     width: 100%;
 
+    &:before {
+      background: var(--bgc, transparent);
+      background-image: var(--gradient-tint-dark-b2t-half);
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      border-radius: 16px;
+    }
+
     @include media(sm) {
       grid-template-areas:
         "sub-title"
@@ -163,9 +189,7 @@
     }
 
     &:nth-of-type(1) {
-      --bgc: var(--red-900);
-      --bgi: linear-gradient(187.95deg, #950428 44.73%, #28263b 93.88%);
-
+      --bgc: var(--data-cta-bonus-1);
       .arrow {
         display: none;
       }
@@ -178,18 +202,15 @@
     }
 
     &:nth-of-type(2) {
-      --bgc: var(--orange-900);
-      --bgi: linear-gradient(187.95deg, rgba(17, 20, 28, 0) 44.73%, rgba(17, 20, 28, 0.8) 93.88%);
+      --bgc: var(--data-cta-bonus-2);
     }
 
     &:nth-of-type(3) {
-      --bgc: var(--green-900);
-      --bgi: linear-gradient(187.95deg, rgba(17, 20, 28, 0) 44.73%, rgba(17, 20, 28, 0.8) 93.88%);
+      --bgc: var(--data-cta-bonus-3);
     }
 
     &:nth-of-type(4) {
-      --bgc: var(--violet-900);
-      --bgi: linear-gradient(187.95deg, rgba(17, 20, 28, 0) 44.73%, rgba(17, 20, 28, 0.8) 93.88%);
+      --bgc: var(--data-cta-bonus-4);
 
       @include media(sm) {
         .arrow {
@@ -215,12 +236,12 @@
     justify-content: center;
     align-items: center;
     border-radius: 8px;
-    background-color: var(--gray-800);
-    box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
-    z-index: 1;
+    background-color: var(--button-bg-secondary);
+    box-shadow: var(--shadow-modal); // project var
+    z-index: 2;
     width: rem(40px);
     height: rem(40px);
-    --color: var(--white);
+    --color: var(--button-icn-secondary);
 
     @include media(sm) {
       top: 50%;
@@ -230,7 +251,7 @@
     }
   }
 
-  .img {
+  .picture {
     grid-area: img;
     display: block;
     width: var(--width, #{rem(80px)});
@@ -243,6 +264,12 @@
 
     @include media(md) {
       --width: #{rem(104px)};
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
   }
 
@@ -261,6 +288,8 @@
     align-items: center;
     grid-area: actions;
     margin-top: var(--margin-top, #{rem(8px)});
+    position: relative;
+    z-index: 1;
 
     .btn-primary {
       @include upd-font($heading-2);
@@ -287,7 +316,7 @@
 
   .title {
     @include font($heading-5);
-    color: var(--white);
+    color: var(--text-primary);
     margin: var(--margin, 0 0 #{rem(24px)} 0);
   }
 
@@ -309,13 +338,13 @@
     .sub-title {
       @include font($heading-1);
       order: 1;
-      color: var(--yellow-500);
+      color: var(--text-accent);
     }
   }
 
   .item {
     border-radius: 16px;
-    background: var(--bg, var(--gray-800));
+    background: var(--bg, var(--layer-02));
     padding: rem(24px) rem(136px) rem(24px) rem(24px);
     display: flex;
     flex-direction: column;
@@ -329,17 +358,25 @@
     }
   }
 
-  .img {
+  .picture {
     display: block;
-    width: var(--width, rem(176px));
-    height: auto;
+    width: var(--width, rem(136px));
     position: absolute;
     top: 0;
     right: 0;
+    bottom: 0;
     pointer-events: none;
+    z-index: 2;
 
     @include media(md) {
       --width: #{rem(232px)};
+    }
+
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
   }
 

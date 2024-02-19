@@ -12,7 +12,7 @@
 
     <main
       class="app-main"
-      :class="{'is-overflow': isHomePage(), 'is-overflow-initial': isProfileLimitsPage }"
+      :class="{'is-overflow': isHomePage, 'is-overflow-initial': isProfileLimitsPage }"
       :data-route="route.name"
     >
       <slot />
@@ -22,8 +22,17 @@
 
     <atomic-opacity-layer />
 
+    <client-only>
+      <transition name="fade" mode="out-in">
+        <layout-game-return
+          v-if="showReturnGame"
+          :game="returnGame"
+        />
+      </transition>
+    </client-only>
+
     <transition name="fade" mode="out-in">
-      <nav-mob v-if="!$route.name?.includes('games-id')" />
+      <nav-mob v-if="!isGamePage" />
     </transition>
 
     <transition name="fade-down">
@@ -35,12 +44,15 @@
     <modal-sign-in />
     <modal-forgot-pass />
     <modal-reset-pass />
-    <modal-deposit />
-    <modal-withdraw />
     <modal-success />
     <modal-error />
     <modal-confirm />
     <modal-fiat />
+    <modal-mobile-game />
+    <modal-wallet />
+    <!--    <modal-wallet-choose-region />-->
+    <modal-cancel-deposit />
+    <modal-wallet-bonus-details />
 
     <atomic-alert />
   </div>
@@ -49,15 +61,21 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
+  const globalStore = useGlobalStore();
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
-  const { isHomePage, localizePath } = useProjectMethods();
+  const { localizePath } = useProjectMethods();
+
+  const { isMobile } = storeToRefs(globalStore);
 
   const {
-    showCookiePopup, isDrawerCompact,
+    showCookiePopup,
+    isDrawerCompact,
+    returnGame,
+    isHomePage,
+    isGamePage,
+    isSportsbookPage
   } = storeToRefs(layoutStore);
-  const { checkModals } = layoutStore;
-  checkModals();
 
   const { logOutUser } = profileStore;
 
@@ -89,11 +107,27 @@
   ]);
 
   const checkDrawer = ():void => {
+    if (isGamePage.value) return;
     const clientCompactDrawer = localStorage.getItem('IS_DRAWER_COMPACT');
     isDrawerCompact.value = clientCompactDrawer === 'true';
   };
 
+  const showReturnGame = computed(() => {
+    return returnGame.value
+      && returnGame.value !== 'disabled'
+      && isMobile.value
+      && !isGamePage.value
+      && !isSportsbookPage.value;
+  });
+
+  onBeforeMount(() => {
+    const storageReturnGame = sessionStorage.getItem('returnGame');
+    if (storageReturnGame) returnGame.value = JSON.parse(storageReturnGame);
+  });
+
+  const { checkModals } = useLayoutStore();
   onMounted(async () => {
+    checkModals();
     checkDrawer();
     disabledTransition.value = false;
     const cookieValue = useCookie('accept-cookie');

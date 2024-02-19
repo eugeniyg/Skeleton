@@ -3,31 +3,37 @@
     <nav-cat @clickCategory="changeCategory"/>
 
     <atomic-cat-heading
-      v-if="gameCategoriesObj[activeCollection?.identity]"
-      :icon="gameCategoriesObj[activeCollection?.identity].icon"
+      v-if="gameCategoriesObj[activeCollection?.identity || '']"
+      :icon="gameCategoriesObj[activeCollection?.identity || '']?.icon"
     >
-      {{ gameCategoriesObj[activeCollection?.identity].label || activeCollection?.name }}
+      {{ gameCategoriesObj[activeCollection?.identity || '']?.label || activeCollection?.name }}
     </atomic-cat-heading>
 
-    <div class="game-filter">
-      <div class="game-filter__search">
-        <form-input-search
-          v-model:value="searchValue"
-          :placeholder="getContent(headerContent, defaultLocaleHeaderContent, 'search.placeholder')"
-          @input="searchInput"
-        />
+    <div class="game-filter" v-click-outside="skipActionsState">
+      <form-input-providers
+        :currentLocaleContent="gamesContent"
+        :defaultLocaleContent="defaultLocaleGamesContent"
+        :selected="selectedProviders"
+        @select="changeProvider"
+      />
 
-        <form-input-dropdown
-          class="game-filter__dropdown"
-          :value="currentProvider.id"
-          name="providers"
-          placeholder="Providers"
-          :options="providerDropdownOptions"
-          @input="changeProvider"
-          is-fit-content
-        />
+      <div class="game-filter__actions">
+        <button-toggle-search :is-active="isShowSearch" @toggle="toggleSearch"/>
+        <button-toggle-filter :is-active="isShowFilter" @toggle="toggleFilter"/>
       </div>
+
+      <form-input-search
+        class="game-filter__search"
+        v-show="isShowSearch"
+        v-model:value="searchValue"
+        :placeholder="getContent(layoutData, defaultLocaleLayoutData, 'header.search.placeholder')"
+        @input="searchInput"
+        @submit="isShowSearch = false"
+      />
+
       <atomic-game-sort
+        class="game-filter__sort"
+        v-show="isShowFilter"
         v-if="getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions')?.length"
         :sortOrderValue="sortOrder"
         :sortByValue="sortBy"
@@ -55,16 +61,15 @@
 </template>
 
 <script setup lang="ts">
-  import {
-    CollectionInterface,
-    GameProviderInterface,
-    GameInterface,
-    GamesResponseInterface,
-    PaginationMetaInterface,
-  } from '@platform/frontend-core/dist/module';
+  import type {
+    ICollection,
+    IGame,
+    IGamesResponse,
+    IPaginationMeta
+  } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
   import debounce from 'lodash/debounce';
-  import { CategoryGamesInterface } from '@skeleton/types';
+  import type { IGamesPage } from '~/types';
 
   definePageMeta({
     middleware: 'games-collection',
@@ -73,113 +78,137 @@
   const globalStore = useGlobalStore();
   const {
     gameCategoriesObj,
-    headerContent,
-    defaultLocaleHeaderContent,
-    contentLocalesArray,
+    layoutData,
+    currentLocale,
+    defaultLocale,
+    defaultLocaleLayoutData,
+    headerCountry,
+    isMobile
   } = storeToRefs(globalStore);
 
   const {
     setPageSeo,
     getContent,
-    findLocalesContentData,
+    getLocalesContentData,
   } = useProjectMethods();
-  const gamesContentRequest = await useAsyncData('gamesContent', () => queryContent('page-controls')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'gamesPage']).find());
 
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(gamesContentRequest.data.value);
-  const gamesContent: Maybe<CategoryGamesInterface> = currentLocaleData?.gamesPage;
-  const defaultLocaleGamesContent: Maybe<CategoryGamesInterface> = defaultLocaleData?.gamesPage;
-  setPageSeo(gamesContent?.seo);
-
-  const gamesStore = useGamesStore();
-  const { currentLocaleCollections } = storeToRefs(gamesStore);
-  const { selectOptions } = useFieldsStore();
-  const providerDropdownOptions: GameProviderInterface[] = [
-    {
-      id: 'all',
-      name: gamesContent?.providersLabel || defaultLocaleGamesContent?.providersLabel || 'All Providers',
-      identity: 'all',
-      code: 'all',
-      value: gamesContent?.providersLabel || defaultLocaleGamesContent?.providersLabel || 'All Providers',
-    },
-    ...selectOptions.providers,
-  ];
   const route = useRoute();
   const router = useRouter();
 
-  const activeCollection = ref<CollectionInterface | undefined>(
-    currentLocaleCollections.value.find((collection) => collection.identity === route.query.category),
+  const sortBy = ref<string | undefined>();
+  const sortOrder = ref<string | undefined>();
+
+  const setDefaultSortOptions = (): void => {
+    sortBy.value = route.query.sortBy as string
+      || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortBy') || 'default';
+    sortOrder.value = route.query.sortOrder as string
+      || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortOrder') || 'asc';
+  }
+
+  interface IPageContent {
+    currentLocaleData: Maybe<IGamesPage>;
+    defaultLocaleData: Maybe<IGamesPage>;
+  }
+
+  const gamesContent = ref<Maybe<IGamesPage>>();
+  const defaultLocaleGamesContent = ref<Maybe<IGamesPage>>();
+
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    gamesContent.value = contentData?.currentLocaleData;
+    defaultLocaleGamesContent.value = contentData?.defaultLocaleData;
+    setPageSeo(gamesContent.value?.seo);
+    setDefaultSortOptions();
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('gamesPageContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'pages', 'games').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'games').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('gamesPageContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
+
+  const gamesStore = useGamesStore();
+  const { currentLocationCollections } = storeToRefs(gamesStore);
+
+  const activeCollection = ref<ICollection | undefined>(
+    currentLocationCollections.value.find((collection) => collection.identity === route.query.category),
   );
 
-  const currentProvider = ref<GameProviderInterface | undefined>(
-    providerDropdownOptions.find(
-      (provider: GameProviderInterface) => provider.identity === route.query.provider,
-    ) || providerDropdownOptions[0],
-  );
+  const selectedProviders = ref<string[]>([]);
+  const routeProvider = route.query.provider as string|string[];
+  const { gameProviders } = useGamesStore();
+  if (routeProvider) {
+    const providersArr = Array.isArray(routeProvider) ? routeProvider : [routeProvider];
+    selectedProviders.value = providersArr.filter(providerId => {
+      const providerData = gameProviders.find(provider => provider.id === providerId);
+      return providerData && !!providerData.gameEnabledCount;
+    })
+  }
 
-  const sortBy = ref<string | undefined>(route.query.sortBy as string
-    || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortBy') || 'default');
-  const sortOrder = ref<string | undefined>(route.query.sortOrder as string
-    || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortOrder') || 'asc');
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
-  const gameItems = ref<GameInterface[]>([]);
-  const pageMeta = ref<PaginationMetaInterface>();
+  const gameItems = ref<IGame[]>([]);
+  const pageMeta = ref<IPaginationMeta>();
   const loadingGames = ref<boolean>(true);
+  const isShowFilter = ref<boolean>(false);
+  const isShowSearch = ref<boolean>(false);
 
   const { getFilteredGames } = useCoreGamesApi();
 
-  const getItems = async (): Promise<GamesResponseInterface> => {
+  const getItems = async (): Promise<IGamesResponse> => {
     const params: any = {
       page: loadPage.value,
-      perPage: 36,
+      perPage: (isMobile.value && window.innerHeight < 1000) ? 24 : 72,
       collectionId: activeCollection.value?.id,
       sortBy: sortBy.value,
       sortOrder: sortOrder.value,
+      countries: headerCountry.value ? [headerCountry.value] : undefined
     };
 
-    if (currentProvider.value?.id !== 'all') {
-      params.providerId = currentProvider.value?.id;
-    }
-
     if (searchValue.value) params.name = searchValue.value;
+    if (selectedProviders.value.length) params.providerId = selectedProviders.value;
 
-    loadingGames.value = true;
-    const response = await getFilteredGames(params);
-    return response;
+    return await getFilteredGames(params);
   };
 
-  const setItems = (response: GamesResponseInterface, more?: boolean): void => {
+  const setItems = (response: IGamesResponse, more?: boolean): void => {
     gameItems.value = more
       ? gameItems.value.concat(response.data)
       : response.data;
     pageMeta.value = response.meta;
-    loadingGames.value = false;
   };
 
-  const changeProvider = async (providerId: string): Promise<void> => {
-    loadPage.value = 1;
+  const changeProvider = async (newSelectedProviders: string[]): Promise<void> => {
+    selectedProviders.value = newSelectedProviders;
 
-    currentProvider.value = providerDropdownOptions.find(
-      (provider: GameProviderInterface) => provider.id === providerId,
-    );
+    loadPage.value = 1;
 
     router.replace({
       query: {
         ...route.query,
-        provider:
-          currentProvider.value?.id !== 'all'
-            ? currentProvider.value?.identity
-            : undefined,
+        provider: selectedProviders.value
       },
     });
+
     const response = await getItems();
     setItems(response);
   };
 
   const changeCategory = async (categoryId: string): Promise<void> => {
     loadPage.value = 1;
-    activeCollection.value = currentLocaleCollections.value.find(
+    activeCollection.value = currentLocationCollections.value.find(
       (collection) => collection.identity === categoryId,
     );
     router.replace({ query: { ...route.query, category: categoryId } });
@@ -219,10 +248,26 @@
   });
 
   onMounted(async () => {
+    loadingGames.value = true;
     const itemsResponse = await getItems();
+    loadingGames.value = false;
     setItems(itemsResponse);
   });
+
+  const toggleFilter = () => {
+    isShowFilter.value = !isShowFilter.value;
+    isShowSearch.value = false;
+  };
+
+  const toggleSearch = () => {
+    isShowSearch.value = !isShowSearch.value;
+    isShowFilter.value = false;
+  };
+
+  const skipActionsState = () => {
+    isShowSearch.value = false;
+    isShowFilter.value = false;
+  }
 </script>
 
-<style src="~/assets/styles/pages/games/index.scss" lang="scss" />
-
+<style src="~/assets/styles/pages/games/index.scss" lang="scss"/>

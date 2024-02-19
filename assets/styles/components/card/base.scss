@@ -1,9 +1,5 @@
 .card-base {
-  --col-count: 3.1;
-  --col-gap: 8px;
-
-  height: var(--height, auto);
-  @include ratio(104px, 156px);
+  aspect-ratio: 104/156;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
@@ -13,23 +9,14 @@
   background-repeat: var(--bg-repeat, no-repeat);
   background-size: var(--bg-size, 100%);
   background-position: var(--bg-position, center);
-  filter: drop-shadow(0px 0px 12px rgba(0, 0, 0, 0.16));
   border-radius: 8px;
-  width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap) / var(--col-count))));
+
+  flex-basis: calc((100% - (var(--column-count) - 1) * var(--column-gap)) / var(--column-count));
   scroll-snap-align: start;
-
-  @include media(sm) {
-    --col-count: 6;
-    --col-gap: 16px;
-  }
-
-  @include media(xl) {
-    --col-count: 9;
-  }
 
   &__info {
     padding: var(--card-info-padding, 8px);
-    background-color: var(--bg-info, rgba(50, 6, 71, 0.8));
+    background-color: var(--bg-info, var(--game-tumb-overlay-hover));
     display: var(--display, grid);
     position: var(--position-info, absolute);
     top: 0;
@@ -37,7 +24,7 @@
     right: 0;
     bottom: 0;
     opacity: var(--opacity-info, 0);
-    transition: var(--transition-info, (opacity .6s ease, padding .4s ease));
+    transition: var(--transition-info, (all .4s));
     pointer-events: var(--pointer-events, none);
     will-change: opacity;
 
@@ -59,7 +46,7 @@
 
     &-title {
       @include font($heading-0);
-      color: var(--color-info-title, var(--white));
+      color: var(--color-info-title, var(--game-tumb-text-title));
       @include line-clamp(2);
 
       [data-size="min"] & {
@@ -78,7 +65,7 @@
     &-provider {
       @include font($body-0);
       @extend %text-elipsis;
-      color: var(--gray-300);
+      color: var(--game-tumb-text-provider);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -104,6 +91,7 @@
     &-actions {
       display: grid;
       align-self: center;
+      width: 100%;
     }
 
     &-footer {
@@ -113,11 +101,12 @@
     }
   }
 
-  @include media(md) {
+  @include use-hover {
     &:hover {
       --pointer-events: auto;
+      --transition-info: (all .4s ease-in-out);
+      --play-btn-opacity: 1;
       --opacity-info: 1;
-      --transition-info: (opacity .6s ease);
 
       .btn-play {
         transform: scale(1);
@@ -126,24 +115,24 @@
     }
   }
 
-  transition: transform .4s ease-in-out;
-  transform: var(--y-offset, translateY(0));
-
   &.hovered {
     --pointer-events: auto;
+    --transition-info: (all .4s ease-in-out);
+    --play-btn-opacity: 1;
     --opacity-info: 1;
-    --transition-info: (opacity .6s ease);
-    --y-offset: translateY(-16px);
 
-    .btn-try {
-      animation: delay-pointer-events .2s ease-in-out;
+    .btn-play {
+      transform: scale(1);
+      transition-delay: .2s;
     }
   }
 
-  img {
-    width: var(--width, auto);
-    height: var(--height, auto);
-    display: var(--display, block);
+  &__img {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: none;
   }
 
   .btn-try {
@@ -154,7 +143,7 @@
     margin-right: auto;
     background-color: var(--bgc, transparent);
     --padding: 4px 8px;
-    --color: var(--violet-100);
+    --color: var(--game-tumb-btn-content);
 
     [data-size="max"] & {
       @include upd-font($heading-2);
@@ -163,17 +152,10 @@
     @include use-hover {
       &:hover {
         transition: all .2s ease-in-out;
-        --color: var(--yellow-500);
-        --bgc: var(--violet-900);
+        cursor: pointer;
+        --color: var(--game-tumb-btn-content-hover);
+        --bgc: var(--game-tumb-btn-bg-hover);
       }
-    }
-  }
-
-  @include use-hover {
-    &:hover {
-      --transition-info: (opacity .6s ease);
-      --y-offset: translateY(-16px);
-      --play-btn-opacity: 1;
     }
   }
 }

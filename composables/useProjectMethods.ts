@@ -1,10 +1,57 @@
-import { GameImagesInterface } from '@platform/frontend-core/dist/module';
+import type { IGameImages, IObserverOptions } from '@skeleton/core/types';
 import get from 'lodash/get';
 import * as projectRules from './validationRules';
 import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
-import { SeoContentInterface } from '@skeleton/types';
+import type { ISeoBlock } from "~/types";
 
 export const useProjectMethods = () => {
+  const setFormData = (fields: any[]):any => {
+    const formData:any = {};
+    fields.forEach((field) => {
+      formData[field.name || field.key] = field.value || '';
+    })
+    return formData;
+  };
+
+  const createCustomMessage = (params:any, message: string):string => {
+    let newMessage = message;
+    if (Object.prototype.hasOwnProperty.call(params, 'min')) {
+      newMessage = newMessage.replace(/\{min}/g, params.min);
+    }
+    if (Object.prototype.hasOwnProperty.call(params, 'max')) {
+      newMessage = newMessage.replace(/\{max}/g, params.max);
+    }
+
+    if (Object.prototype.hasOwnProperty.call(params, 'param')) {
+      newMessage = newMessage.replace(/\{param}/g, params.param);
+    }
+
+    return newMessage;
+  };
+
+  const createFormRules = (fieldsRules: any, projectRules:any, validationMessages:any):any => {
+    const formRules:any = {};
+
+    Object.keys(fieldsRules).forEach((field) => {
+      const rules:any = {};
+
+      fieldsRules[field].forEach((item:any) => {
+        if (!projectRules[item.rule]) { return };
+
+        if (item.arguments) {
+          // @ts-ignore
+          rules[item.rule] = projectRules.helpers.withMessage(({ $params }) =>
+            createCustomMessage($params, validationMessages[item.rule] || ''),
+            projectRules[item.rule](item.arguments));
+        } else {
+          rules[item.rule] = projectRules.helpers.withMessage(validationMessages[item.rule] || '', projectRules[item.rule]);
+        }
+      })
+      formRules[field] = rules;
+    })
+    return formRules;
+  };
+
   const createValidationRules = (fields:any[], includeContext?:boolean):any => {
     const validationRules:any = {};
     const fieldsType:any = fieldsTypeMap;
@@ -12,7 +59,7 @@ export const useProjectMethods = () => {
     if (includeContext) {
       fields.forEach((field) => {
         if (field.isRequired) validationRules[field.name] = [{ rule: 'required' }];
-        if (fieldsType[field.name].validation?.length) {
+        if (fieldsType[field.name]?.validation?.length) {
           if (validationRules[field.name]) {
             validationRules[field.name] = [...validationRules[field.name], ...fieldsType[field.name].validation];
           } else validationRules[field.name] = fieldsType[field.name].validation;
@@ -20,7 +67,7 @@ export const useProjectMethods = () => {
       });
     } else {
       fields.forEach((field) => {
-        if (fieldsType[field.name].validation?.length) {
+        if (fieldsType[field.name]?.validation?.length) {
           validationRules[field.name] = fieldsType[field.name].validation;
         }
       });
@@ -29,9 +76,9 @@ export const useProjectMethods = () => {
   };
 
   const getFormRules = (fieldsRules:any):any => {
-    const { validationMessages, defaultLocaleValidationMessages } = useGlobalStore();
-    const messages = { ...defaultLocaleValidationMessages, ...validationMessages };
-    const { createFormRules } = useCoreMethods();
+    const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
+    const messages = { ...defaultLocaleFieldsSettings?.validationMessages, ...fieldsSettings?.validationMessages,  };
+    const { createFormRules } = useProjectMethods();
     return createFormRules(fieldsRules, projectRules, messages);
   };
 
@@ -48,16 +95,20 @@ export const useProjectMethods = () => {
     }, 1000);
   };
 
-  const localizePath = (path:string):string => {
+  const localizePath = (path:string|undefined):string => {
     const globalStore = useGlobalStore();
-
-    if (globalStore.currentLocale?.code.toLowerCase() === globalStore.defaultLocale?.code.toLowerCase()) return path;
+    if (globalStore.currentLocale?.code.toLowerCase() === globalStore.defaultLocale?.code.toLowerCase()) {
+      if (!path) return '';
+      return path.startsWith('/') ? path : `/${path}`;
+    }
     return `/${globalStore.currentLocale?.code.toLowerCase()}${!path || path === '/' ? '' : path}`;
   };
 
-  const isHomePage = ():boolean => {
-    const route = useRoute();
-    return route.name === 'index' || route.name === 'locale-index';
+  const createSrcSet = (src?: string):string => {
+    if (!src) return '';
+
+    const webpSrc = src.replace(/\.\w+$/, '.webp');
+    return `${webpSrc}, ${src}`;
   };
 
   const preloaderStart = ():void => {
@@ -65,14 +116,14 @@ export const useProjectMethods = () => {
     if (preloaderEl) preloaderEl.classList.value = 'preloader';
   };
 
-  const getImageUrl = (imageData: GameImagesInterface, orientation: string):string => {
-    if (orientation === 'vertical') return imageData['200x300']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x'];
-    return imageData['200x200']['3x'] || imageData['200x200']['2x'] || imageData['200x200']['1x'];
-  };
+  const getImageUrl = (imageData: IGameImages, orientation: string):string => {
+    const imagePath = (orientation === 'vertical') ?
+      (imageData['200x300']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x']) :
+      (imageData['200x200']['3x'] || imageData['200x200']['2x'] || imageData['200x200']['1x'])
 
-  const getFormatDate = (dateUtcIsoString: string):string => {
-    const date = new Date(dateUtcIsoString);
-    return date.toLocaleString().slice(0, -3);
+    const { public: config } = useRuntimeConfig();
+
+    return `${config.gamehubCdn}${imagePath}`;
   };
 
   const getNicknameFromEmail = (email: string):string => {
@@ -122,7 +173,7 @@ export const useProjectMethods = () => {
     return { currency: currencyConfig.code, amount: amount / (subCurrencyConfig?.subunitToUnit || 1) };
   };
 
-  const setPageSeo = (seoData: Maybe<SeoContentInterface>):void => {
+  const setPageSeo = (seoData: Maybe<ISeoBlock>):void => {
     const globalStore = useGlobalStore();
     useHead({
       title: seoData?.title || globalStore.globalSeo?.title,
@@ -141,16 +192,10 @@ export const useProjectMethods = () => {
     return 0;
   };
 
-  const findLocalesContentData = (responseData?: any[]|null):any => {
-    if (!responseData) return {};
-
-    const globalStore = useGlobalStore();
-
-    const currentLocaleData = responseData.find((contentData) => contentData.locale === globalStore.currentLocale?.code);
-    if (globalStore.currentLocale?.code === globalStore.defaultLocale?.code) return { currentLocaleData };
-
-    const defaultLocaleData = responseData.find((contentData) => contentData.locale === globalStore.defaultLocale?.code);
-    return { currentLocaleData, defaultLocaleData };
+  const getRandomInt = (min:number, max:number):number => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
   };
 
   const getContent = (
@@ -173,7 +218,7 @@ export const useProjectMethods = () => {
     const balanceInBaseCurrency = (targetBalance || 0) * (currentCurrency.subunitToUnit / currentCurrency.rate.rate);
 
     // convert to int + divide onto rate
-    const equivalentAmount = balanceInBaseCurrency * (baseCurrency.subunitToUnit / equivalentCurrency.rate.rate);
+    const equivalentAmount = balanceInBaseCurrency * (equivalentCurrency.rate.rate / baseCurrency.subunitToUnit);
 
     return {
       balance: Number(equivalentAmount.toFixed(2)),
@@ -182,6 +227,106 @@ export const useProjectMethods = () => {
     };
   };
 
+  const getEquivalentFromBase = (baseAmount: number|undefined, targetCurrencyCode: string|undefined): {
+    amount: number,
+    currency: string,
+  } => {
+    const { currencies } = useGlobalStore();
+    const targetCurrency = currencies.find((currency) => currency.code === targetCurrencyCode);
+
+    if (!targetCurrency || !baseAmount) return { amount: 0, currency: '' };
+
+    const balance = baseAmount * targetCurrency.rate.rate / targetCurrency.subunitToUnit;
+    return formatBalance(targetCurrency.code, balance);
+  };
+
+  const getLocalesContentData = (currentLocaleContentResponse: any, defaultLocaleContentResponse: any): {
+    currentLocaleData: any,
+    defaultLocaleData: any
+  } => {
+    // I NEED PROXY IN RETURN
+    const contentData = reactive({
+      currentLocaleData: undefined,
+      defaultLocaleData: undefined
+    })
+
+    if (currentLocaleContentResponse.status !== 'rejected') {
+      contentData.currentLocaleData = currentLocaleContentResponse.value;
+    }
+
+    if (defaultLocaleContentResponse.status !== 'rejected') {
+      contentData.defaultLocaleData = defaultLocaleContentResponse.value;
+    }
+
+    return contentData;
+  };
+
+  const initObserver = (options:IObserverOptions):any => {
+    const optionsThing = {
+      once: options?.once || false,
+      settings: options?.settings || { root: null, rootMargin: '0px', threshold: 0.05 }
+    };
+
+    const inviewEvent = new Event('inview', { bubbles: false, cancelable: true });
+    const outviewEvent = new Event('outview', { bubbles: false, cancelable: true });
+
+    const callback = (entries:any, observer: any) => {
+      entries.forEach((entry:any) => {
+        if (entry.isIntersecting) {
+          entry.target.dispatchEvent(inviewEvent);
+          if (optionsThing.once) observer.unobserve(entry.target);
+        } else {
+          entry.target.dispatchEvent(outviewEvent);
+        }
+      })
+    }
+
+    return new IntersectionObserver(callback, optionsThing.settings);
+  };
+
+  const replaceContent = (content:string, separator: string):string => {
+    const pathArr = content.split(separator);
+    let newString = '';
+    pathArr.forEach((path, index) => {
+      if (index % 2) {
+        newString += `<span>${path}</span>`;
+      } else {
+        newString += `${path}`;
+      }
+    })
+    return newString;
+  };
+
+  const getSumFromAmountItems = (
+    exclusionItems?: { amount: number, currency: string }[],
+    baseAmount?: number|null,
+  ): string|undefined => {
+    let sum: string|undefined;
+    const { activeAccount } = useWalletStore();
+
+    const exclusionItem = exclusionItems?.find(item => item.currency === activeAccount?.currency);
+
+    if (exclusionItem) {
+      const { amount, currency } = formatBalance(exclusionItem.currency, exclusionItem.amount);
+      sum = `${amount} ${currency}`;
+    }
+
+    if (!sum && baseAmount) {
+      const { amount, currency } = getEquivalentFromBase(baseAmount, activeAccount?.currency);
+      sum = `${amount} ${currency}`;
+    }
+
+    return sum;
+  };
+
+  const addBetsyScript = ():HTMLElement => {
+    const script = document.createElement('script');
+    script.setAttribute('src', 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js');
+    script.setAttribute('defer', 'defer');
+    document.head.append(script);
+    return script;
+  }
+
   return {
     createValidationRules,
     getFormRules,
@@ -189,15 +334,22 @@ export const useProjectMethods = () => {
     getImageUrl,
     preloaderStart,
     localizePath,
-    isHomePage,
-    getFormatDate,
     getNicknameFromEmail,
     formatBalance,
     getMainBalanceFormat,
     setPageSeo,
     sortByAlphabet,
     getContent,
-    findLocalesContentData,
     getEquivalentAccount,
+    getLocalesContentData,
+    setFormData,
+    createFormRules,
+    getRandomInt,
+    initObserver,
+    replaceContent,
+    createSrcSet,
+    getEquivalentFromBase,
+    getSumFromAmountItems,
+    addBetsyScript
   };
 };

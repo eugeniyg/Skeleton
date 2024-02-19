@@ -1,18 +1,18 @@
 <template>
   <span class="limit-countdown">
-    {{ formatStatus(status, dayjs(props.expiredAt).format(DATE_FORMAT)) }}
+    {{ formatStatus }}
   </span>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import dayjs from 'dayjs';
 
   const props = defineProps<{
     expiredAt: string|undefined,
     status: number|undefined,
   }>();
 
+  const dayjs = useDayjs();
   const limitsStore = useLimitsStore();
   const { getContent } = useProjectMethods();
   const { getLimits } = limitsStore;
@@ -20,12 +20,15 @@
 
   const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
-  const formatStatus = (status: number, date:string) => {
-    const msg = status === 1
+  const formatStatus = computed(() => {
+    const msg = props.status === 1
       ? getContent(limitsContent.value, defaultLimitsContent.value, 'coolingOff.activeStatusLabel')
       : getContent(limitsContent.value, defaultLimitsContent.value, 'coolingOff.pendingStatusLabel');
-    return msg.replace('{date}', date);
-  };
+
+    const dateValue = dayjs(props.expiredAt).format(DATE_FORMAT);
+
+    return msg ? msg.replace('{date}', dateValue) : '';
+  });
 
   const state = reactive<{
     isAlmostDone: boolean,
@@ -62,9 +65,4 @@
   });
 </script>
 
-<style lang="scss">
-.limit-countdown {
-  @include font($body-0);
-  color: var(--white);
-}
-</style>
+<style src="~/assets/styles/components/atomic/limit-countdown.scss" lang="scss" />

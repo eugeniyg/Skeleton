@@ -1,24 +1,8 @@
-.cards-providers {
-  border-radius: 16px;
-  background-color: var(--gray-900);
-  padding: var(--card-padding, 16px 16px 8px);
-  position: relative;
-
-  @include media(xs) {
-    --card-padding: 16px 16px 24px;
-  }
-
-  @include media(md) {
-    --card-padding: 24px;
-    @include scroll-overlay;
-  }
-}
-
 .card-providers {
   --col-count: 2.5;
   --col-gap: 8px;
 
-  background-color: var(--gray-800);
+  background-color: var(--layer-02);
   position: relative;
   padding: rem(16px);
   flex-shrink: 0;

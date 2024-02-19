@@ -10,10 +10,10 @@
         <button-modal-close @close="closeModal('confirm')"/>
       </div>
 
-      <img class="img" src="/img/confirm.svg"/>
-      <p class="text">{{ getContent(popupsData, defaultLocalePopupsData, 'confirm.title') }}</p>
+      <atomic-image class="img" src="/img/confirm.svg" />
+      <p class="text">{{ getContent(popupsData, defaultLocalePopupsData, 'profileConfirmed.title') }}</p>
       <button-base type="primary" size="md" @click="closeModal('confirm')">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'confirm.button') }}
+        {{ getContent(popupsData, defaultLocalePopupsData, 'profileConfirmed.button') }}
       </button-base>
     </div>
   </vue-final-modal>

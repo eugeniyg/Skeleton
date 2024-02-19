@@ -1,99 +1,125 @@
 .drawer {
-  background-color: var(--gray-800);
+  background-color: var(--layer-02);
   grid-area: drawer;
-  transition: var(--drawer-transition, (transform .2s ease-out));
-  width: var(--drawer-width, #{rem(240px)});
+
+  width: var(--drawer-width, #{rem(288px)});
   position: var(--drawer-position, fixed);
-  top: 0;
+  top: var(--drawer-top, 0);
   left: 0;
   height: calc(var(--vh, 1vh) * 100);
   visibility: var(--drawer-visibility, visible);
-  transform: var(--drawer-translate-x, translateX(calc(-100% - #{rem(32px)})));
   z-index: 3;
   will-change: transform;
+  transform: var(--drawer-translate-x, translateX(-100%));
+  transition: transform .2s ease-out;
+
+  @include media(xs) {
+    --drawer-width: 340px;
+  }
 
   @include media(l) {
+    --drawer-top: var(--header-total-height, #{rem(64px)});
+    --drawer-width: 240px;
     --drawer-visibility: visible;
   }
 
   .header {
-    background-color: var(--drawer-header-bg, var(--gray-800));
+    background-color: var(--drawer-header-bg, var(--layer-01));
     padding: var(--drawer-header-padding, 0);
-    position: relative;
+    position: sticky;
     display: grid;
     top: 0;
     z-index: 1;
     grid-row-gap: var(--drawer-header-row-gap, 0);
-    min-height: rem(64px);
+    height: 72px;
 
-    .drawer-minimize &, .drawer-open & {
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
-    }
-
-    .drawer-open & {
-      --drawer-header-bg: var(--gray-900);
-    }
-
-    .drawer-minimize & {
-      @include media(l) {
-        --drawer-header-bg: var(--gray-800);
-        --drawer-header-padding: 0 0 16px 0;
-
-        &:after {
-          content: '';
-          position: absolute;
-          display: block;
-          left: 16px;
-          right: 16px;
-          bottom: 0;
-          border-bottom: 1px solid var(--gray-700);
-        }
-      }
+    @include media(l) {
+      display: none;
     }
   }
 
   .content {
     @include scrollbar-hide;
-    height: var(--drawer-content-height, calc(var(--vh, 1vh) * 100 - #{rem(62px)} - #{rem(24px)}));
     position: relative;
     z-index: 0;
     padding: var(--drawer-content-padding, (#{rem(16px)} #{rem(16px)} #{rem(40px)} #{rem(16px)}));
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior: contain;
-    margin: var(--margin-content, #{rem(8px)} 0 #{rem(8px)} 0);
-
-    .drawer-minimize & {
-      --margin-content: #{rem(16px)} 0 #{rem(8px)} 0
-    }
+    height: calc(var(--vh, 1vh) * 100 - var(--header-total-height));
 
     @include media(l) {
       .drawer-minimize & {
         @include scrollbar-hide;
-        --drawer-content-padding: 0 #{rem(16px)} #{rem(16px)};
-      }
-
-      .drawer-open.drawer-minimize & {
-        --drawer-content-height: calc(var(--vh, 1vh) * 100 - #{rem(160px)});
       }
     }
-
-    .drawer-open & {
-      //--drawer-content-padding: #{rem(16px)};
-      --drawer-content-height: calc(var(--vh, 1vh) * 100 - #{rem(62px)} - #{rem(24px)});
-    }
-
   }
 
   &.is-compact {
     @include media(l) {
       --drawer-width: #{rem(72px)};
       --drawer-header-row-gap: #{rem(16px)};
-      --drawer-content-height: calc(var(--vh, 1vh) * 100 - #{rem(200px)})
+    }
+
+    .chat-indicator {
+      .text:after {
+        display: none;
+      }
+
+      .link:after {
+        display: block;
+      }
     }
   }
 
   .avatar {
     border-radius: 16px;
+  }
+
+  hr {
+    --bg: var(--border-01)
+  }
+
+  .chat-indicator {
+    .text {
+      position: relative;
+      overflow: visible;
+
+      &:after {
+        display: block;
+        content: '';
+        @include box(8px);
+        position: absolute;
+        z-index: 2;
+        background-color: var(--support-alert-default);
+        right: -12px;
+        top: -2px;
+        border-radius: 50%;
+      }
+    }
+
+    .link {
+      position: relative;
+
+      &:after {
+        display: none;
+        content: '';
+        @include box(14px);
+        position: absolute;
+        z-index: 2;
+        background-color: var(--support-alert-default);
+        border: 2px solid var(--layer-02);
+        right: 6px;
+        top: 6px;
+        border-radius: 50%;
+        transition: border 0.2s;
+      }
+
+      &:hover {
+        &:after {
+          border: 2px solid var(--side-bar-link-hover);
+        }
+      }
+    }
   }
 }

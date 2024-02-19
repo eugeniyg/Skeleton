@@ -3,7 +3,7 @@
 
   .text {
     @include font($body-2);
-    color: var(--gray-300);
+    color: var(--text-tertiary);
   }
 
   &__close,
@@ -12,35 +12,15 @@
     width: rem(32px);
     height: rem(32px);
     position: var(--position, absolute);
+    display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    background-color: var(--bg, var(--gray-800));
     cursor: pointer;
+    @extend %btn-ghost;
+
     --bg: transparent;
-
-    @include use-hover {
-      &:hover {
-        transition: background-color .2s ease-in-out;
-        --bg: var(--gray-800);
-
-        .icon {
-          --color: var(--yellow-500);
-        }
-      }
-    }
-
-    .icon {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      display: flex;
-      margin: auto;
-      --icon-size: 24px;
-      --color: var(--gray-400);
-    }
+    --color: var(--icon-primary);
   }
 
   &__previous {

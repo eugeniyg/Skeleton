@@ -3,7 +3,7 @@
     <form-input-search
       ref="inputElement"
       v-model:value="searchValue"
-      :placeholder="getContent(headerContent, defaultLocaleHeaderContent, 'search.placeholder')"
+      :placeholder="getContent(layoutData, defaultLocaleLayoutData, 'header.search.placeholder')"
       @input="searchInput"
     />
 
@@ -19,13 +19,11 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import {
-    GameInterface, GamesResponseInterface, PaginationMetaInterface,
-  } from '@platform/frontend-core/dist/module';
-  import debounce from 'lodash/debounce';
+import { storeToRefs } from 'pinia';
+import type { IGame, IGamesResponse, IPaginationMeta } from '@skeleton/core/types';
+import debounce from 'lodash/debounce';
 
-  const props = defineProps({
+const props = defineProps({
     isShow: {
       type: Boolean,
       default: false,
@@ -36,25 +34,33 @@
   });
 
   const emit = defineEmits(['hideSearch']);
-  const { headerContent, defaultLocaleHeaderContent } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { layoutData, defaultLocaleLayoutData } = globalStore;
+  const { headerCountry } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const searchValue = ref<string>('');
   const pendingGames = ref<boolean>(true);
   const loadPage = ref<number>(1);
-  const pageMeta = ref<PaginationMetaInterface>();
-  const gameItems = ref<GameInterface[]>([]);
+  const pageMeta = ref<IPaginationMeta>();
+  const gameItems = ref<IGame[]>([]);
   const isShowSearchResult = computed(() => searchValue.value.length > 1 && !pendingGames.value);
   const showLoadMore = computed(() => !!gameItems.value.length && ((pageMeta.value?.totalPages || 1) > (pageMeta.value?.page || 1)));
 
   const { getFilteredGames } = useCoreGamesApi();
-  const getItems = async (): Promise<GamesResponseInterface> => {
-    const params: any = { page: loadPage.value, perPage: 5, name: searchValue.value };
+  const getItems = async (): Promise<IGamesResponse> => {
+    const params: any = {
+      page: loadPage.value,
+      perPage: 5,
+      name: searchValue.value,
+      countries: headerCountry.value ? [headerCountry.value] : undefined,
+      sortBy: 'name',
+      sortOrder: 'asc'
+    };
 
-    const response = await getFilteredGames(params);
-    return response;
+    return await getFilteredGames(params);
   };
 
-  const setItems = (response: GamesResponseInterface, more?: boolean): void => {
+  const setItems = (response: IGamesResponse, more?: boolean): void => {
     gameItems.value = more
       ? gameItems.value.concat(response.data)
       : response.data;
@@ -84,16 +90,19 @@
     }, 50);
   });
 
-  const defaultGames = ref<GameInterface[]>([]);
+  const defaultGames = ref<IGame[]>([]);
   const gameStore = useGamesStore();
-  const { currentLocaleCollections } = storeToRefs(gameStore);
-  const getTurbogamesId = currentLocaleCollections.value.find((collection) => collection.identity === 'turbogames')?.id;
+  const { currentLocationCollections } = storeToRefs(gameStore);
+  const getTurbogamesId = currentLocationCollections.value.find((collection) => collection.identity === 'turbogames')?.id;
 
   onMounted(async () => {
     const defaultGamesResponse = await getFilteredGames({
       page: 1,
       perPage: 4,
-      collectionId: getTurbogamesId || currentLocaleCollections.value[0].id,
+      collectionId: getTurbogamesId ? [getTurbogamesId] : [currentLocationCollections.value[0]?.id],
+      countries: headerCountry.value ? [headerCountry.value] : undefined,
+      sortBy: 'default',
+      sortOrder: 'asc'
     });
     defaultGames.value = defaultGamesResponse.data;
   });

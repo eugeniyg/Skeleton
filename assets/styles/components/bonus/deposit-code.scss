@@ -1,10 +1,11 @@
 .deposit-bonus-code {
   display: grid;
   grid-gap: rem(16px);
+  margin-bottom: rem(8px);
 
   .input-toggle {
     width: 100%;
-    --slider-bg: var(--black-primary);
+    --slider-bg: var(--layer-bg);
   }
 
   &__code {
@@ -13,8 +14,10 @@
     grid-column-gap: rem(8px);
 
     .btn-primary {
-      min-width: 96px;
+      height: rem(40px) !important;
+      min-width: rem(96px);
       width: fit-content;
+      --padding: #{rem(10px)} #{rem(20px)};
     }
   }
 }

@@ -11,7 +11,7 @@
     display: flex;
     margin: 0 auto;
     z-index: 0;
-    background-color: var(--gray-800);
+    background-color: var(--layer-bg);
     background-image: url(/img/avatar-bg.png);
     background-position: center;
     background-size: contain;
@@ -24,17 +24,17 @@
       bottom: 0;
       display: flex;
       @include box(24px);
-      color: var(--color, var(--gray-400));
+      color: var(--color, var(--icon-contrast));
       transition: color .2s ease-in-out;
       z-index: 0;
     }
 
     &:hover {
       .icon  {
-        --color: var(--yellow-500);
+        --color: var(--icon-accent);
       }
 
-      box-shadow: 0 0 0 3px var(--gray-900);
+      //box-shadow: 0 0 0 3px var(--gray-900);
     }
   }
 
@@ -64,13 +64,13 @@
 
   .nickname {
     @include font($body-1);
-    color: var(--color, var(--gray-300));
+    color: var(--color, var(--text-secondary));
     word-break: break-word;
   }
 
   .amount {
     @include font($heading-2);
-    color: var(--white);
+    color: var(--text-primary);
     word-break: break-word;
   }
 }

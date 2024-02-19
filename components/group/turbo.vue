@@ -1,20 +1,24 @@
 <template>
-  <div v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.items')?.length" class="group-turbo">
+  <div
+    v-if="globalComponentsContent?.turbogames?.items?.length && globalComponentsContent?.turbogames?.isShow"
+    class="group-turbo"
+  >
     <atomic-icon
-      v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.icon')"
-      :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.icon')"
+      v-if="globalComponentsContent?.turbogames?.icon"
+      :id="globalComponentsContent?.turbogames?.icon || ''"
     />
 
     <h2 class="title">
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.label') }}
+      {{ globalComponentsContent?.turbogames?.label }}
     </h2>
 
     <button-base
       class="btn-show-all"
       type="ghost"
-      :url="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.showAll.url')"
+      size="sm"
+      :url="globalComponentsContent?.turbogames?.showAll?.url"
     >
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.showAll.label') }}
+      {{ globalComponentsContent?.turbogames?.showAll?.label }}
     </button-base>
 
     <button-arrows
@@ -33,17 +37,14 @@
         v-for="(item, itemIndex) in gamesList"
         :key="itemIndex"
         v-bind="item"
-        :buttonLabel="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.buttonLabel')"
-        :infoLabel="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.infoLabel')"
-        :categoryLabel="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'turbogames.categoryLabel')"
+        :buttonLabel="globalComponentsContent?.turbogames?.buttonLabel || ''"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const { getContent } = useProjectMethods();
+  const { globalComponentsContent } = useGlobalStore();
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
@@ -58,16 +59,18 @@
   };
 
   const clickAction = (direction: string): void => {
-    const { offsetWidth } = scrollContainer.value;
+    const { offsetWidth, scrollWidth, scrollLeft } = scrollContainer.value;
+    const widthToEnd = scrollWidth - (scrollLeft + offsetWidth);
+    const scrollLeftValue = widthToEnd < (offsetWidth / 1.4) ? widthToEnd : (offsetWidth / 1.4);
+    const scrollRightValue = scrollLeft < (offsetWidth / 1.4) ? scrollLeft : (offsetWidth / 1.4);
     scrollContainer.value.scrollBy({
-      left: direction === 'next' ? offsetWidth / 1.4 : -offsetWidth / 1.4,
+      left: direction === 'next' ? scrollLeftValue : -scrollRightValue,
       behavior: 'smooth',
     });
   };
 
   const gamesList = computed(() => {
-    if (globalComponentsContent?.turbogames?.items?.length) return globalComponentsContent.turbogames.items;
-    return defaultLocaleGlobalComponentsContent?.turbogames?.items || [];
+    return globalComponentsContent?.turbogames?.items?.length ? globalComponentsContent.turbogames.items : [];
   });
 
   onMounted(() => {

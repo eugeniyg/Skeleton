@@ -6,43 +6,36 @@
       class="item"
       :to="localizePath(`/games/${game.identity}${!isLoggedIn ? '' : '?real=true' }`)"
     >
-      <img class="img" v-if="game.images['200x200']" :src="gameImageSrc(game.images)" />
+      <atomic-image class="img" v-if="game.images['200x200']" :src="getImageUrl(game.images, 'square')" />
     </nuxt-link>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { GameImagesInterface, GameInterface } from '@platform/frontend-core/dist/module';
+  import type { IGame } from '@skeleton/core/types';
 
-  const props = defineProps({
-    items: {
-      type: Array,
-      default: () => [],
-    },
-    isCompact: {
-      type: Boolean,
-      default: false,
-    },
-  });
+  const props = defineProps<{
+    items: string[],
+    isCompact?: boolean
+  }>();
 
   const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();
+  const globalStore = useGlobalStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const gamesArray = ref<GameInterface[]>([]);
-
-  const { baseApiUrl } = useGlobalStore();
+  const { headerCountry } = storeToRefs(globalStore);
+  const gamesArray = ref<IGame[]>([]);
   const { getImageUrl } = useProjectMethods();
-  const gameImageSrc = (imagesData: GameImagesInterface):string => `${baseApiUrl}/img/gcdn${getImageUrl(imagesData, 'square')}`;
 
   onMounted(async () => {
     const { getFilteredGames } = useCoreGamesApi();
-    const { data } = await getFilteredGames({ identity: props.items });
-    gamesArray.value = data.reduce((acc: GameInterface[], item: GameInterface) => {
-      const getGameIndex = props.items?.findIndex((gameIdentity) => gameIdentity === item.identity);
-      if (getGameIndex > -1) acc[getGameIndex] = item;
-      return acc;
-    }, []);
+    const { data } = await getFilteredGames({ identity: props.items, countries: headerCountry.value ? [headerCountry.value] : undefined });
+    gamesArray.value = data.sort((prevGame, nextGame) => {
+      const prevIndex = props.items?.indexOf(prevGame.identity) || -1;
+      const nextIndex = props.items?.indexOf(nextGame.identity) || -1;
+      return prevIndex - nextIndex;
+    })
   });
 </script>
 

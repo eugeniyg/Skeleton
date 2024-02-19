@@ -13,39 +13,21 @@
       <atomic-icon id="check"/>
       <p>
         <span v-html="label"/>
-        <sup v-if="isRequired">*</sup>
+        <sup v-if="isRequired"> *</sup>
       </p>
     </label>
   </div>
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    isDisabled: {
-      type: Boolean,
-      default: false,
-    },
-    isRequired: {
-      type: Boolean,
-      default: false,
-    },
-    isError: {
-      type: [Boolean, Object],
-      default: false,
-    },
-    label: {
-      type: String,
-      required: false,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    value: {
-      type: [String, Number],
-      default: '',
-    },
-  });
+  const props = defineProps<{
+    isDisabled?: boolean,
+    isRequired?: boolean,
+    isError?: any,
+    label?: string,
+    name: string,
+    value: any
+  }>();
 
   const emit = defineEmits(['change', 'update:value']);
   const onChange = (e:any):void => {

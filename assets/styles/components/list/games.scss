@@ -5,12 +5,12 @@
   padding: var(--padding, #{rem(8px)});
   border-radius: 8px;
   max-width: rem(200px);
-  margin: 0 auto;
+  margin: rem(4px) auto;
 
   .item {
     overflow: hidden;
     display: block;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+    box-shadow: var(--shadow-layer);
     border-radius: 8px;
   }
 

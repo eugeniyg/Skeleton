@@ -1,7 +1,7 @@
 .profile-bonuses {
   .link-bonus {
     @include font($body-2);
-    color: var(--yellow-500);
+    color: var(--text-link);
     text-decoration: none;
     display: flex;
     width: fit-content;
@@ -11,7 +11,7 @@
     min-height: rem(22px);
 
     .icon {
-      color: var(--yellow-500);
+      color: var(--icon-accent);
     }
   }
 }

@@ -1,42 +1,69 @@
 .toggler-btn {
-  padding: var(--padding, #{rem(16px)} #{rem(31px)} #{rem(16px)} #{rem(16px)});
-  grid-gap: 3px;
-  display: flex;
-  flex-direction: var(--direction, row);
-  justify-self: center;
-  background-color: var(--gray-900);
-  flex-grow: 1;
-  width: 100%;
+  padding: rem(16px);
+
+  @include media(l) {
+    padding: rem(16px) rem(48px);
+  }
+
+  &__wrap {
+    padding: rem(4px);
+    grid-gap: rem(4px);
+    display: flex;
+    align-items: center;
+    background-color: var(--layer-01);
+    border: 1px solid var(--border-00-low-contrast);
+    grid-column-gap: rem(4px);
+    border-radius: 12px;
+    box-shadow: var(--dark-shadow-inner-m);
+
+    &:after {
+      content: '';
+      display: block;
+      width: 0;
+      height: rem(24px);
+      border-left: 1px solid var(--border-00-low-contrast);
+      order: 1;
+    }
+  }
 
   .btn {
-    box-shadow: var(--shadow, none);
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: rem(4px);
     flex-grow: 1;
 
-    --color: var(--white);
-    --padding: #{rem(4px) rem(12px)};
+    &:last-of-type {
+      order: 2;
+    }
+
+    --padding: #{rem(4px)} #{rem(12px)} #{rem(4px)} #{rem(8px)};
     --btn-border-radius: 8px;
+    --bg: transparent;
+    --color: var(--icon-contrast);
+    --text-color: var(--text-primary);
 
     @include use-hover {
       &:hover {
-        --bg: var(--gray-700);
+        cursor: pointer;
+        --bg: var(--button-bg-secondary-click);
       }
     }
 
-    &:active, &.is-active {
-      --bg: var(--gray-700);
-      --color: var(--yellow-500);
-      --text-color: var(--yellow-500);
-      --icon-color: var(--yellow-500);
+    &.is-active {
+      --bg: var(--layer-02);
+      --color: var(--icon-accent);
+      --text-color: var(--text-accent);
+      box-shadow: var(--shadow-group);
     }
   }
 
   .text {
-    @include font($body-2);
-    @extend %text-elipsis;
+    @include font($subheading-2);
     display: var(--text-display, block);
-    color: var(--color, var(--white));
-    transition: color .4s ease-in-out;
+    color: var(--text-color);
+    transition: color .2s ease-in-out;
   }
 
   .is-compact & {
@@ -45,10 +72,8 @@
       width: fit-content;
       align-items: center;
 
-      --direction: column;
       --padding: #{rem(4px)};
       --margin: 0;
-      --text-display: none;
 
       .btn {
         @include box(32px);

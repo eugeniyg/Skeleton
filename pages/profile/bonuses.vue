@@ -12,29 +12,73 @@
     </nuxt-link>
 
     <bonus-code :content="bonusesContent?.bonusCode || defaultLocaleBonusesContent?.bonusCode" />
-    <bonus-active :content="bonusesContent?.cashBonuses || defaultLocaleBonusesContent?.cashBonuses" />
+
+    <transition name="fade" mode="out-in">
+      <bonus-active
+        v-if="activePlayerBonuses.length"
+        bonusType="bonus"
+        :content="bonusesContent?.cashBonuses || defaultLocaleBonusesContent?.cashBonuses"
+      />
+    </transition>
+
+    <transition name="fade" mode="out-in">
+      <bonus-active
+        v-if="activePlayerFreeSpins.length"
+        bonusType="free-spin"
+        :content="bonusesContent?.freeSpins || defaultLocaleBonusesContent?.freeSpins"
+      />
+    </transition>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ProfileBonusesInterface } from '@skeleton/types';
+  import type { IProfileBonuses } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
-  const { setPageSeo, findLocalesContentData, localizePath } = useProjectMethods();
-  const { getPlayerBonuses } = useBonusStore();
+  const bonusStore = useBonusStore();
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
+  const { setPageSeo, getLocalesContentData, localizePath } = useProjectMethods();
+  const { getPlayerBonuses, getPlayerFreeSpins } = bonusStore;
+  const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
 
-  const [bonusesContentRequest] = await Promise.all([
-    useAsyncData('bonusesContent', () => queryContent('profile')
-      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'bonuses']).find()),
-    useAsyncData('updatePlayerBonuses', getPlayerBonuses),
-  ]);
+  const bonusesContent = ref<Maybe<IProfileBonuses>>();
+  const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>();
 
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(bonusesContentRequest.data.value);
-  const bonusesContent: Maybe<ProfileBonusesInterface> = currentLocaleData?.bonuses;
-  const defaultLocaleBonusesContent: Maybe<ProfileBonusesInterface> = defaultLocaleData?.bonuses;
-  setPageSeo(bonusesContent?.seo);
+  interface IPageContent {
+    currentLocaleData: Maybe<IProfileBonuses>;
+    defaultLocaleData: Maybe<IProfileBonuses>;
+  }
+
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    bonusesContent.value = contentData?.currentLocaleData;
+    defaultLocaleBonusesContent.value = contentData?.defaultLocaleData;
+    setPageSeo(bonusesContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('profileBonusesContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'profile', 'bonuses').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'profile', 'bonuses').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('profileBonusesContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
+
+  onMounted(() => {
+    getPlayerBonuses();
+    getPlayerFreeSpins();
+  })
 </script>
 
 <style src="~/assets/styles/pages/profile/bonuses.scss" lang="scss" />

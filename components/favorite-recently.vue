@@ -24,10 +24,10 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import { GameInterface } from '@platform/frontend-core/dist/module';
+import { storeToRefs } from 'pinia';
+import type { IGame } from '@skeleton/core/types';
 
-  const globalStore = useGlobalStore();
+const globalStore = useGlobalStore();
   const {
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent,
@@ -38,7 +38,7 @@
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
-  const recentlyGames = ref<GameInterface[]>([]);
+  const recentlyGames = ref<IGame[]>([]);
   const selectedTabs = ref<string[]>([]);
 
   const favoritesItem = {
@@ -72,12 +72,11 @@
   const { profile } = storeToRefs(profileStore);
   const loadingRecently = ref<boolean>(true);
   onMounted(async () => {
-    const recentlyResponse = await getRecentlyPlayed({
+    recentlyGames.value = await getRecentlyPlayed({
       perPage: 18,
       platform: isMobile.value ? 1 : 2,
       countryCode: profile.value?.country || headerCountry.value || 'UA',
     });
-    recentlyGames.value = recentlyResponse;
     loadingRecently.value = false;
   });
 

@@ -29,11 +29,11 @@
 </template>
 
 <script setup lang="ts">
-  import { GameInterface } from '@platform/frontend-core/dist/module';
+  import type { IGame } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
-    gamesList: GameInterface[]
+    gamesList: IGame[]
   }>();
 
   const globalStore = useGlobalStore();
@@ -59,7 +59,7 @@
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
-  watch(() => favoriteGames.value, async (newValue:GameInterface[], oldValue:GameInterface[]) => {
+  watch(() => favoriteGames.value, async (newValue:IGame[], oldValue:IGame[]) => {
     if ((newValue.length === 0 || oldValue.length === 0) && props.gamesList.length) {
       await nextTick();
       calcItems();

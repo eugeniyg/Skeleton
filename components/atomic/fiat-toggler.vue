@@ -1,13 +1,18 @@
 <template>
   <div class="fiat-toggler">
     <div class="fiat-toggler__label" @click="toggle">
-      {{ headerContent?.fiatToggler || defaultLocaleHeaderContent?.fiatToggler }}
+      {{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.fiatToggler') }}
     </div>
 
     <transition name="fade">
       <div v-if="equivalentCurrency" class="fiat-toggler__selected" @click="showModal('fiat')">
-        <img class="fiat-toggler__selected-logo" :src="`/img/currency/${equivalentCurrency.code}.svg`" alt=""/>
+        <atomic-image
+          class="fiat-toggler__selected-logo"
+          :src="`/img/currency/${equivalentCurrency.code}.svg`"
+          defaultImage="/img/currency/placeholder.svg"
+        />
         <span class="fiat-toggler__selected-currency">{{ equivalentCurrency.code }}</span>
+        <atomic-icon id="arrow_expand-close"/>
       </div>
     </transition>
 
@@ -26,7 +31,8 @@
   const { showModal } = layoutStore;
 
   const globalStore = useGlobalStore();
-  const { equivalentCurrency, headerContent, defaultLocaleHeaderContent } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
+  const { equivalentCurrency, layoutData, defaultLocaleLayoutData } = storeToRefs(globalStore);
   const { setEquivalentCurrency, removeEquivalentCurrency } = globalStore;
 
   const toggle = () => {

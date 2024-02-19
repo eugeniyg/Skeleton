@@ -1,27 +1,29 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { AccountInterface, WebSocketResponseInterface } from '@platform/frontend-core/dist/module';
+import type { IAccount,IWebSocketResponse } from '@skeleton/core/types';
 
-interface WalletStateInterface {
-  accounts: AccountInterface[],
-  depositMethods: any[],
-  withdrawMethods: any[],
-  requestTimer: any,
-  accountSubscription: any,
-  invoicesSubscription: any,
+interface IWalletState {
+  accounts: IAccount[];
+  depositMethods: any[];
+  withdrawMethods: any[];
+  requestTimer: any;
+  accountSubscription: any;
+  invoicesSubscription: any;
+  depositLimitError: boolean;
 }
 
 export const useWalletStore = defineStore('walletStore', {
-  state: (): WalletStateInterface => ({
+  state: (): IWalletState => ({
     accounts: [],
     depositMethods: [],
     withdrawMethods: [],
     requestTimer: '',
     accountSubscription: undefined,
     invoicesSubscription: undefined,
+    depositLimitError: false
   }),
 
   getters: {
-    activeAccount(state): Maybe<AccountInterface> {
+    activeAccount(state): Maybe<IAccount> {
       return state.accounts.find((acc) => acc.status === 1);
     },
 
@@ -46,51 +48,63 @@ export const useWalletStore = defineStore('walletStore', {
       return [
         {
           id: 'all',
-          title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'currency.tabs.allTab') || 'All',
+          title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'currencyPopup.tabs.allTab') || 'All',
         },
         {
           id: 'crypto',
-          title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'currency.tabs.cryptoTab') || 'Crypto',
+          title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'currencyPopup.tabs.cryptoTab') || 'Crypto',
         },
       ];
     },
+
+    showEquivalentBalance(): boolean {
+      const globalStore = useGlobalStore();
+      return !!globalStore.equivalentCurrency && this.activeAccountType === 'crypto';
+    }
   },
 
   actions: {
     async getUserAccounts():Promise<void> {
       const { getAccounts } = useCoreWalletApi();
-      const data = await getAccounts();
-      this.accounts = data;
+      this.accounts = await getAccounts();
     },
 
     async createAccount(currency: string):Promise<void> {
       const { addAccount } = useCoreWalletApi();
-      const data = await addAccount(currency);
-      this.accounts = data;
+      this.accounts = await addAccount(currency);
     },
 
     async switchAccount(accountId: string):Promise<void> {
       const { switchActiveAccount } = useCoreWalletApi();
-      const data = await switchActiveAccount(accountId);
-      this.accounts = data;
+      this.accounts = await switchActiveAccount(accountId);
+      useEvent('accountChanged');
     },
 
     async hideAccount(accountId: string):Promise<void> {
       const { hideWalletAccount } = useCoreWalletApi();
-      const data = await hideWalletAccount(accountId);
-      this.accounts = data;
+      this.accounts = await hideWalletAccount(accountId);
     },
 
     async getDepositMethods():Promise<void> {
+      this.depositLimitError = false;
       const { getDepositMethods } = useCoreWalletApi();
-      const data = await getDepositMethods(this.activeAccount?.currency || '');
-      this.depositMethods = data;
+
+      try {
+        this.depositMethods = await getDepositMethods(this.activeAccount?.currency || '');
+      } catch (err: any) {
+        this.depositMethods = [];
+
+        if (err.data?.error?.code === 13100) {
+          this.depositLimitError = true;
+          const { getLimits } = useLimitsStore();
+          await getLimits();
+        }
+      }
     },
 
     async getWithdrawMethods():Promise<void> {
       const { getWithdrawMethods } = useCoreWalletApi();
-      const data = await getWithdrawMethods(this.activeAccount?.currency || '');
-      this.withdrawMethods = data;
+      this.withdrawMethods = await getWithdrawMethods(this.activeAccount?.currency || '');
     },
 
     subscribeAccountSocket():void {
@@ -108,8 +122,8 @@ export const useWalletStore = defineStore('walletStore', {
       }
     },
 
-    updateAccount(webSocketResponse:WebSocketResponseInterface):void {
-      const accountData: Maybe<AccountInterface> = webSocketResponse.data.account;
+    updateAccount(webSocketResponse:IWebSocketResponse):void {
+      const accountData: Maybe<IAccount> = webSocketResponse.data.account;
       this.accounts = this.accounts.map((account) => {
         if (account.id === accountData?.id) return accountData;
         return account;
@@ -124,7 +138,7 @@ export const useWalletStore = defineStore('walletStore', {
       }
     },
 
-    showInvoiceStatus(webSocketResponse:WebSocketResponseInterface):void {
+    showInvoiceStatus(webSocketResponse:IWebSocketResponse):void {
       const { formatBalance, getContent } = useProjectMethods();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
       const { showAlert } = useLayoutStore();
@@ -146,22 +160,22 @@ export const useWalletStore = defineStore('walletStore', {
         getDepositBonusCode();
 
         const cmsMessage = invoiceSuccess
-            ? getContent(alertsData, defaultLocaleAlertsData, 'depositSuccess.description')
-            : getContent(alertsData, defaultLocaleAlertsData, 'depositError.description');
+            ? getContent(alertsData, defaultLocaleAlertsData, 'wallet.depositSuccess.description')
+            : getContent(alertsData, defaultLocaleAlertsData, 'wallet.depositError.description');
 
-        const depositSuccessObj = alertsData?.depositSuccess || defaultLocaleAlertsData?.depositSuccess;
-        const depositErrorObj = alertsData?.depositError || defaultLocaleAlertsData?.depositError;
+        const depositSuccessObj = alertsData?.wallet?.depositSuccess || defaultLocaleAlertsData?.wallet?.depositSuccess;
+        const depositErrorObj = alertsData?.wallet?.depositError || defaultLocaleAlertsData?.wallet?.depositError;
 
         const depositSuccessAlertData = depositSuccessObj ? { ...depositSuccessObj, description: formattedDescription(cmsMessage) } : undefined;
         const depositErrorAlertData = depositErrorObj ? { ...depositErrorObj, description: formattedDescription(cmsMessage) } : undefined;
         showAlert(invoiceSuccess ? depositSuccessAlertData : depositErrorAlertData);
       } else if (webSocketResponse.data?.event === 'invoice.withdrawal.updated') {
         const cmsMessage = invoiceSuccess
-            ? getContent(alertsData, defaultLocaleAlertsData, 'withdrawSuccess.description')
-            : getContent(alertsData, defaultLocaleAlertsData, 'withdrawError.description');
+            ? getContent(alertsData, defaultLocaleAlertsData, 'wallet.withdrawSuccess.description')
+            : getContent(alertsData, defaultLocaleAlertsData, 'wallet.withdrawError.description');
 
-        const withdrawSuccessObj = alertsData?.withdrawSuccess || defaultLocaleAlertsData?.withdrawSuccess;
-        const withdrawErrorObj = alertsData?.withdrawError || defaultLocaleAlertsData?.withdrawError;
+        const withdrawSuccessObj = alertsData?.wallet?.withdrawSuccess || defaultLocaleAlertsData?.wallet?.withdrawSuccess;
+        const withdrawErrorObj = alertsData?.wallet?.withdrawError || defaultLocaleAlertsData?.wallet?.withdrawError;
 
         const withdrawSuccessAlertData = withdrawSuccessObj ? { ...withdrawSuccessObj, description: formattedDescription(cmsMessage) } : undefined;
         const withdrawErrorAlertData = withdrawErrorObj ? { ...withdrawErrorObj, description: formattedDescription(cmsMessage) } : undefined;

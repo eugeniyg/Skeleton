@@ -1,17 +1,18 @@
 .nav-game {
-  background-color: var(--black-primary);
+  background-color: var(--layer-01);
   width: rem(40px);
   display: grid;
   grid-gap: rem(8px);
   align-self: flex-start;
+  transition: all .2s ease-in-out;
 
   .icon {
-    --color: var(--gray-400);
+    --color: var(--icon-tertiary);
   }
 
   .item {
     @extend %skip-btn;
-    background-color: var(--bg, var(--gray-900));
+    background-color: var(--bg, var(--layer-01));
     width: rem(40px);
     height: rem(40px);
 
@@ -19,17 +20,18 @@
       cursor: pointer;
 
       &:not(.is-active) {
+        --bg: var(--button-bg-secondary-hover);
         .icon {
-          --color: var(--white);
+          --color: var(--button-icn-ghost-hover);
         }
       }
     }
 
     &.is-active {
-      --bg: var(--gray-700);
+      --bg: var(--button-bg-secondary-click);
 
       .icon {
-        --color: var(--yellow-500);
+        --color: var(--button-icn-ghost-click);
       }
     }
   }

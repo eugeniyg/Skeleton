@@ -1,29 +1,29 @@
 .row-status {
-  color: var(--color, var(--green-500));
+  color: var(--color, var(--icon-success));
   display: flex;
   align-items: center;
   grid-column-gap: rem(4px);
   @include font($body-2);
 
   > .icon {
-    --color: var(--green-500);
+    --color: var(--icon-success);
     --icon-size: #{rem(15px)};
     min-width: #{rem(15px)};
   }
 
   &.is-current, &.is-active {
-    --color: var(--green-500);
+    --color: var(--icon-success);
 
     > .icon {
-      --color: var(--green-500);
+      --color: var(--icon-success);
     }
   }
 
   &.is-closed {
-    --color: var(--gray-400);
+    --color: var(--icon-primary);
 
     > .icon {
-      --color: var(--gray-400);
+      --color: var(--icon-primary);
     }
   }
 
@@ -34,7 +34,7 @@
     justify-content: flex-end;
     align-self: flex-start;
 
-    --color: var(--white);
+    --color: var(--text-primary);
 
     > .icon {
       --color: var(--yellow-500);
@@ -46,10 +46,10 @@
     flex-direction: row-reverse;
     justify-content: flex-end;
     align-self: flex-start;
-    --color: var(--white);
+    --color: var(--text-primary);
 
     > .icon {
-      --color: var(--green-500);
+      --color: var(--icon-success);
     }
   }
 
@@ -59,10 +59,10 @@
     flex-direction: row-reverse;
     justify-content: flex-end;
     align-self: flex-start;
-    --color: var(--white);
+    --color: var(--text-primary);
 
     > .icon {
-      --color: var(--orange-500);
+      --color: var(--support-warning-default);
     }
   }
 
@@ -71,10 +71,10 @@
     flex-direction: row-reverse;
     justify-content: flex-end;
     align-self: flex-start;
-    --color: var(--white);
+    --color: var(--text-primary);
 
     > .icon {
-      --color: var(--red-500);
+      --color: var(--icon-alert);
     }
   }
 }

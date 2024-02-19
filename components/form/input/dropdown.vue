@@ -3,13 +3,18 @@
     ref="drop"
     class="dropdown"
     :class="classes"
-    :tabindex="props.tabindex"
+    :tabindex="props.tabIndex ?? 0"
     @blur="onBlur"
   >
-    <span v-if="props.label" class="label">{{ props.label }}<sup v-if="props.isRequired">*</sup></span>
+    <span
+      v-if="props.label"
+      class="label"
+    >
+      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
+    </span>
 
     <div class="selected" @click="open">
-      <img v-if="valueObject.mask" class="mask" :src="valueObject.mask" />
+      <atomic-image v-if="valueObject.mask" class="mask" :src="valueObject.mask" :defaultImage="valueObject.defaultMask" />
       <span v-if="valueObject.value">{{ valueObject.value }}</span>
       <span v-else-if="props.placeholder" class="placeholder">{{ props.placeholder }}</span>
       <atomic-icon id="arrow_expand-close"/>
@@ -20,10 +25,10 @@
         class="item"
         v-for="(option, i) in props.options"
         :key="i"
-        :class="{'is-selected': option.code === valueObject.code }"
+        :class="[{ 'is-selected': option.code === valueObject.code }, { 'disabled-option': option.disabled }]"
         @click="select(option)"
       >
-        <img v-if="option.mask" class="mask" :src="option.mask"/>
+        <atomic-image v-if="option.mask" class="mask" :src="option.mask" :defaultImage="option.defaultMask" />
         <span>{{ option.value }}</span>
         <atomic-icon v-if="option.code === valueObject.code" id="check"/>
       </div>
@@ -35,54 +40,19 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    options: {
-      type: Array,
-      required: true,
-      default: () => ([]),
-    },
-    value: {
-      type: [String, Object, Number],
-      required: true,
-    },
-    isRequired: {
-      type: Boolean,
-      default: false,
-    },
-    label: {
-      type: String,
-      default: '',
-    },
-    placeholder: {
-      type: String,
-      default: 'Dropdown placeholder',
-    },
-    tabindex: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    size: {
-      type: String,
-      validator: (val: string) => ['xs', 'sm', 'md', 'lg', ''].includes(val),
-      default: '',
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false,
-    },
-    hint: {
-      type: Object,
-      required: false,
-    },
-    isFitContent: {
-      type: Boolean,
-    },
-  });
+  const props = defineProps<{
+    options: any[],
+    value: any,
+    isRequired?: boolean,
+    label?: string,
+    placeholder?: string,
+    tabIndex?: number,
+    name: string,
+    size?: 'xs'|'sm'|'md'|'lg',
+    isDisabled?: boolean,
+    hint?: any,
+    isFitContent?: boolean
+  }>();
 
   const valueObject = ref<any>('');
 

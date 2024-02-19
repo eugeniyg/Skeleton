@@ -9,16 +9,16 @@
         {{ getContent(limitsContent, defaultLimitsContent, 'timerAlmostDone') }}
       </template>
       <template v-else>
-        <span class="time-span" v-if="state.days">{{ format(state.days) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerDaysLabel') }}</span>
-        <span class="time-span">{{ format(state.hours) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerHoursLabel') }}</span>
-        <span class="time-span">{{ format(state.minutes) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerMinutesLabel') }}</span>
-        <span class="time-span">{{ format(state.seconds) }}{{ getContent(limitsContent, defaultLimitsContent, 'timerSecondsLabel') }}</span>
+        <span class="time-span" v-if="state.days">{{ format(state.days) }}d</span>
+        <span class="time-span">{{ format(state.hours) }}h</span>
+        <span class="time-span">{{ format(state.minutes) }}m</span>
+        <span class="time-span">{{ format(state.seconds) }}s</span>
         {{ timerLabel }}
       </template>
     </p>
 
     <button-base
-      v-if="props.isShowEdit && (status === 1) && !cancelProcess"
+      v-if="props.isShowEdit && (status === 1) && (!props.cancelProcess || props.pendingExist)"
       class="limits-periods-list__item-edit"
       type="ghost"
       @click="emit('edit-limit')"
@@ -38,7 +38,7 @@
         :class="`limits-periods-list__item-status-type--${ limitsStatuses[status] }`"
       />
       <span class="limits-periods-list__item-status-title">
-        {{ formatStatus(status, dayjs(expiredAt).format(DATE_FORMAT)) }}
+        {{ formatStatus }}
       </span>
     </div>
 
@@ -46,7 +46,6 @@
 </template>
 
 <script setup lang="ts">
-  import dayjs from 'dayjs';
   import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
@@ -59,6 +58,7 @@
     startedAt: string,
     expiredAt: string,
     cancelProcess: boolean,
+    pendingExist: boolean,
     amount: number,
     title?: string,
     isShowEdit?: boolean,
@@ -82,18 +82,21 @@
     seconds: 0,
   });
 
+  const dayjs = useDayjs();
   const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
   const limitsStore = useLimitsStore();
   const { formatBalance, getContent } = useProjectMethods();
   const { getLimits } = limitsStore;
   const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
-
-  const formatStatus = (status: number, date:string) => {
-    const msg = status === 1
+  const formatStatus = computed(() => {
+    const msg = props.status === 1
       ? getContent(limitsContent.value, defaultLimitsContent.value, 'activeStatusLabel')
       : getContent(limitsContent.value, defaultLimitsContent.value, 'pendingStatusLabel');
-    return msg.replace('{date}', date);
-  };
+
+    const dateValue = dayjs(props.expiredAt).format(DATE_FORMAT);
+
+    return msg ? msg.replace('{date}', dateValue) : '';
+  });
 
   const limitsStatuses: Record<number, string> = {
     1: 'active',
@@ -102,10 +105,12 @@
 
   const getPercentage = (currentAmount: number, amount: number) => ((amount === 0) ? 100 : ((currentAmount / amount) * 100));
 
-  const format = (value: number): number|string => (value < 10 ? `0${value}` : value);
+  const format = (value: string|number): number|string => (Number(value) < 10 ? `0${value}` : value);
 
   const statusActiveTitle = computed(() => {
     const message = getContent(limitsContent.value, defaultLimitsContent.value, 'availableLimitSum');
+    if (!message) return '';
+
     const { amount, currency } = formatBalance(props.currency, props.amount);
     const balance = amount < props.currentAmount ? 0 : amount - props.currentAmount;
 
@@ -148,7 +153,7 @@
     tick();
   };
 
-  const isShowContDown = (() => props.period === 'weekly' || props.period === 'monthly');
+  const isShowContDown = computed(() => props.period === 'weekly' || props.period === 'monthly');
 
   onMounted(() => {
     if (props.expiredAt) {
@@ -162,13 +167,4 @@
   });
 </script>
 
-<style lang="scss">
-.time-span {
-  min-width: 22px;
-  display: inline-flex;
-
-  &:not(:first-of-type) {
-    margin-left: 4px;
-  }
-}
-</style>
+<style src="~/assets/styles/components/atomic/period-item.scss" lang="scss" />

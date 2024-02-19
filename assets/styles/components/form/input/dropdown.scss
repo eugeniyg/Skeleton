@@ -16,15 +16,15 @@
   }
 
   .icon {
-    color: var(--icon-color, var(--gray-400));
+    color: var(--icon-color, var(--icon-primary));
     transform: var(--icon-transform, rotate(0));
     transition: transform .2s ease-in-out;
   }
 
   .selected {
     border-radius: 12px;
-    border: 1px solid var(--border-color, var(--gray-800));
-    color: var(--color, var(--white));
+    border: 1px solid var(--border-color, var(--field-00));
+    color: var(--color, var(--text-primary));
     cursor: pointer;
     user-select: none;
     padding: var(--select-padding-y, #{rem(8px)} #{rem(36px)} #{rem(8px)} #{rem(16px)});
@@ -32,7 +32,7 @@
     grid-auto-flow: column;
     grid-template-columns: auto 1fr;
     align-items: center;
-    background-color: var(--bg, var(--gray-800));
+    background-color: var(--bg, var(--field-00));
     position: relative;
     transition: border-color .2s ease-in-out;
     min-height: rem(42px);
@@ -59,14 +59,26 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-  }
 
-  .placeholder {
-    color: var(--color, var(--gray-400));
+    @include use-hover {
+      &:hover {
+        --border-color: var(--border-hover);
+        --bg: var(--field-00);
+
+        .placeholder {
+          --color: var(--text-primary);
+        }
+
+        .icon {
+          --color: var(--icon-primary);
+        }
+      }
+
+    }
   }
 
   .label {
-    color: var(--white);
+    color: var(--text-primary);
     margin-bottom: rem(8px);
     display: block;
   }
@@ -76,21 +88,22 @@
     left: 0;
     max-width: 100%;
     width: 100%;
-    padding: rem(8px);
+    padding: 0;
     visibility: var(--items-visibility, hidden);
     max-height: calc((#{rem(38px)} * 4) + #{4px});
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: var(--gray-800);
+    background-color: var(--layer-02);
     transform: translateY(#{rem(8px)});
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-group);
     border-radius: 12px;
+    border: 8px solid var(--layer-02);
 
     @extend %scrollbar;
   }
 
   .item {
-    color: var(--color, var(--white));
+    color: var(--color, var(--text-primary));
     padding: rem(8px);
     cursor: pointer;
     user-select: none;
@@ -122,13 +135,13 @@
       position: relative;
       transform: var(--icon-transform, (rotate(0) translateX(#{rem(8px)})));
       transition: transform .2s ease-in-out;
-      --icon-color: var(--white);
+      --icon-color: var(--icon-contrast);
     }
 
     @include use-hover {
       &:hover {
         border-radius: 4px;
-        --bg: var(--gray-700);
+        --bg: var(--button-bg-secondary-click);
       }
     }
   }
@@ -146,9 +159,9 @@
     z-index: 2;
 
     .selected {
-      --border-color: var(--gray-300);
-      --color: var(--white);
-      --bg: var(--gray-700);
+      --border-color: var(--border-click);
+      --color: var(--text-primary);
+      --bg: var(--field-00-click);
       --icon-transform: rotate(180deg);
     }
 
@@ -156,12 +169,12 @@
   }
 
   &.has-error {
-    --border-color: var(--red-800);
+    --border-color: var(--border-alert);
 
     .selected {
-      --color: var(--white);
-      --icon-color: var(--red-500);
-      --border-color: var(--red-800) !important;
+      --color: var(--text-primary);
+      --icon-color: var(--icon-alert);
+      --border-color: var(--border-alert) !important;
     }
   }
 
@@ -169,17 +182,17 @@
     pointer-events: none;
 
     .selected {
-      --border-color: var(--gray-800);
-      --color: var(--gray-500);
-      --bg: var(--gray-800);
+      --border-color: var(--field-00);
+      --color: var(--text-helper);
+      --bg: var(--field-00);
       --icon-transform: rotate(0deg);
     }
 
     .placeholder {
-      --color: var(--gray-500);
+      --color: var(--text-helper);
     }
 
-    --icon-color: var(--gray-500);
+    --icon-color: var(--icon-secondary);
   }
 
   &.size-xs {
@@ -200,5 +213,10 @@
   &.size-lg {
     --select-padding-y: #{rem(19px)};
     @include upd-font($body-2);
+  }
+
+  .disabled-option {
+    pointer-events: none;
+    --color: var(--text-helper);
   }
 }

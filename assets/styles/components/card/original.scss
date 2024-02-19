@@ -1,0 +1,292 @@
+.card-original {
+  --cc: 3.1;
+  --cg: 8px;
+
+  height: var(--height, auto);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  background-color: var(--bg, rgba(black, 0.2));
+  background-repeat: var(--bg-repeat, no-repeat);
+  background-size: var(--bg-size, 100%);
+  background-position: var(--bg-position, center);
+  border-radius: 8px;
+  scroll-snap-align: start;
+
+
+  &:not(.card-original--wide) {
+    width: calc(calc(100% / var(--cc)) - calc(var(--cg) - calc(var(--cg) / var(--cc))));
+
+    @include ratio(104px, 156px);
+
+    @include media(sm) {
+      --cc: 6;
+      --cg: 16px;
+    }
+
+    @include media(xl) {
+      --cc: 9;
+    }
+  }
+
+
+  &.card-original--wide {
+    width: calc(((calc(100% / var(--cc)) - calc(var(--cg) - calc(var(--cg) / var(--cc)))) * 2) + var(--cg)) ;
+
+    @include media(sm) {
+      --cc: 6;
+      --cg: 16px;
+    }
+
+    @include media(xl) {
+      @include ratio(4.2, 3);
+      --cc: 9;
+    }
+  }
+
+  &[data-size=max] {
+    .btn-play {
+      .icon-box {
+        --icon-box-size: 48px;
+      }
+
+      .icon {
+        --icon-size: 24px;
+      }
+    }
+
+    @media (min-width: 446px) and (max-width: 768px) {
+      .btn-play {
+        .icon-box {
+          --icon-box-size: 64px;
+        }
+
+        .icon {
+          --icon-size: 32px;
+        }
+      }
+    }
+
+    @media (min-width: 528px) and (max-width: 800px) {
+      .btn-play {
+        .icon-box {
+          --icon-box-size: 64px;
+        }
+
+        .icon {
+          --icon-size: 32px;
+        }
+      }
+    }
+
+    @media (min-width: 913px) {
+      .btn-play {
+        .icon-box {
+          --icon-box-size: 64px;
+        }
+
+        .icon {
+          --icon-size: 32px;
+        }
+      }
+    }
+  }
+
+  @media (min-width: 446px) and (max-width: 566px) {
+    .btn-play {
+      .icon-box {
+        --icon-box-size: 64px;
+      }
+
+      .icon {
+        --icon-size: 32px;
+      }
+    }
+  }
+
+  @media (min-width: 921px) and (max-width: 1146px) {
+    .btn-play {
+      .icon-box {
+        --icon-box-size: 64px;
+      }
+
+      .icon {
+        --icon-size: 32px;
+      }
+    }
+  }
+
+  &__info {
+    padding: var(--card-info-padding, 8px);
+    background-color: var(--bg-info, var(--game-tumb-overlay-hover));
+    display: var(--display, grid);
+    position: var(--position-info, absolute);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: var(--opacity-info, 0);
+    transition: var(--transition-info, (all .4s));
+    pointer-events: var(--pointer-events, none);
+    will-change: opacity;
+
+    [data-size="min"] & {
+      --card-info-padding: 8px;
+    }
+
+    [data-size="def"] & {
+      --card-info-padding: 16px;
+    }
+
+    [data-size="max"] & {
+      @media (max-width: 1024px) {
+        --card-info-padding: 8px;
+      }
+
+      @include media(md) {
+        --card-info-padding: 16px;
+      }
+
+      @media (min-width: 913px) and (max-width: 1024px) {
+        --card-info-padding: 16px;
+      }
+    }
+
+    &-titles {
+      max-height: 41px;
+    }
+
+    &-title {
+      @include font($heading-0);
+      color: var(--color-info-title, var(--game-tumb-text-title));
+      @include line-clamp(2);
+
+      [data-size="min"] & {
+        @include upd-font($heading-0);
+      }
+
+      [data-size="def"] & {
+        @include upd-font($heading-2);
+      }
+
+      [data-size="max"] & {
+        @include upd-font($heading-1);
+
+        @media (min-width: 443px) and (max-width: 906px) {
+          @include upd-font($heading-1);
+        }
+
+        @media (min-width: 907px) {
+          @include upd-font($heading-2);
+        }
+      }
+    }
+
+    &-provider {
+      @include font($body-0);
+      @extend %text-elipsis;
+      color: var(--game-tumb-text-provider);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: none;
+
+      @include media(xs) {
+        display: flex;
+      }
+
+      [data-size="min"] & {
+        @include upd-font($body-0);
+      }
+
+      [data-size="def"] & {
+        @include upd-font($body-0);
+      }
+
+      [data-size="max"] & {
+        @include upd-font($body-0);
+      }
+    }
+
+    &-actions {
+      display: grid;
+      align-self: center;
+    }
+
+    &-footer {
+      display: grid;
+      grid-template-columns: 1fr repeat(2, auto);
+      align-items: flex-end;
+    }
+  }
+
+  @include use-hover {
+    &:hover {
+      --pointer-events: auto;
+      --transition-info: (all .4s ease-in-out);
+      --play-btn-opacity: 1;
+      --opacity-info: 1;
+
+      .btn-play {
+        transform: scale(1);
+        transition-delay: .2s;
+      }
+    }
+  }
+
+
+  &.hovered {
+    --pointer-events: auto;
+    --opacity-info: 1;
+    --transition-info: (opacity .4s ease);
+    --y-offset: translateY(-16px);
+
+    .btn-try {
+      transform: scale(1);
+      transition-delay: .2s;
+    }
+  }
+
+  &__img {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: none;
+    object-fit: cover;
+  }
+
+  .btn-try {
+    display: flex;
+    align-items: center;
+    @include font($body-1);
+    margin-left: -8px;
+    margin-right: auto;
+    background-color: var(--bgc, transparent);
+    --padding: 4px 8px;
+    --color: var(--game-tumb-btn-content);
+
+    [data-size="max"] & {
+      @include upd-font($heading-2);
+    }
+
+    @include use-hover {
+      &:hover {
+        transition: all .2s ease-in-out;
+        cursor: pointer;
+        --color: var(--game-tumb-btn-content-hover);
+        --bgc: var(--game-tumb-btn-bg-hover);
+      }
+    }
+  }
+
+  @include use-hover {
+    &:hover {
+      --transition-info: (opacity .6s ease);
+      --play-btn-opacity: 1;
+    }
+  }
+}
+

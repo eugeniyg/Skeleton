@@ -2,102 +2,76 @@
   display: grid;
   grid-gap: rem(16px);
 
-  .nav-cat-wrap {
-    --margin-top: 0;
-    --margin-bottom: 0;
+  .grid, .empty {
+    min-height: 40vh;
+
+    @include media(md) {
+      min-height: 50vh;
+    }
   }
 }
 
 .game-filter {
-  display: flex;
-  justify-content: space-between;
-  grid-column-gap: 40px;
-  grid-row-gap: 16px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-areas: "dropdown actions" "search search";
+  grid-template-columns: 1fr auto;
+  grid-column-gap: rem(8px);
+  position: relative;
+  align-items: center;
+
+  @include media(l) {
+    grid-template-areas: "search dropdown filter";
+  }
 
   .icon {
     --icon-size: 20px;
+    --color: var(--icon-primary);
+  }
+
+  .input-providers {
+    grid-area: dropdown;
+
+    width: 100%;
+
+    @include media(l) {
+      width: fit-content;
+    }
+  }
+
+  &__actions {
+    grid-area: actions;
+    display: flex;
+    grid-column-gap: rem(8px);
+
+    @include media(l) {
+      display: none;
+    }
   }
 
   &__search {
-    display: flex;
-    flex-grow: 1;
+    grid-area: search;
+    margin-top: rem(16px);
 
-    .input-search {
+    .row {
       flex-grow: 1;
+    }
 
-      .field {
-        border-radius: 12px 0 0 12px;
-        text-overflow: ellipsis;
-      }
+    @include media(l) {
+      display: flex !important;
+      margin-top: 0;
     }
   }
 
-  .dropdown {
-    --select-width: auto;
+  &__sort {
+    height: rem(40px);
+    margin-top: rem(16px);
+    z-index: 1;
 
-    .selected {
-      border-radius: 0 16px 16px 0;
-      height: 100%;
-      min-height: auto;
-      border-left-color: var(--gray-700);
-      padding: 8px 8px 8px 16px;
-
-      .icon {
-        position: relative;
-        right: 0;
-      }
-    }
-
-    .items {
-      border-radius: 8px;
-      right: 0;
-      width: auto;
-      left: auto;
-    }
-
-    .item {
-      span {
-        max-width: none;
-        overflow: unset;
-      }
-
-      .icon {
-        --icon-transform: rotate(0) translatex(0);
-      }
-    }
-
-    &.is-open {
-      .selected {
-        border-left-color: var(--white);
-      }
-    }
-
-    &.game-filter__dropdown {
-      --select-width: fit-content;
-
-      .items {
-        width: fit-content;
-        max-width: none;
-        left: auto
-      }
-
-      .selected {
-        grid-template-columns: 1fr auto;
-        padding-right: 10px;
-      }
-
-      .item {
-        padding: rem(8px) rem(24px) rem(8px) rem(8px);
-
-        .icon {
-          position: absolute;
-          right: 0;
-          top: 0;
-          bottom: 0;
-          margin: auto;
-        }
-      }
+    @include media(l) {
+      display: flex !important;
+      height: auto;
+      margin-top: 0;
+      margin-left: rem(32px);
     }
   }
 }

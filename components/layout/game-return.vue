@@ -1,0 +1,47 @@
+<template>
+  <div class="game-return">
+    <atomic-image class="game-return__background" :src="gameImage" />
+
+    <div class="game-return__container">
+      <nuxt-link :to="localizePath(`/games/${game.identity}?real=true`)">
+        <atomic-image class="game-return__game-image" :src="gameImage" />
+      </nuxt-link>
+
+      <div class="game-return__content">
+        <div>{{ getContent(layoutData, defaultLocaleLayoutData, 'returnGame.playLabel') }}</div>
+        <div>{{ game?.name }}</div>
+      </div>
+
+      <div class="game-return__controls">
+        <nuxt-link :to="localizePath(`/games/${game.identity}?real=true`)">
+          <atomic-icon id="play" />
+        </nuxt-link>
+
+        <atomic-icon id="close" @click="setReturnGame('disabled')" />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+  import type { IGame } from "@skeleton/core/types";
+  import { storeToRefs } from "pinia";
+
+  const props = defineProps<{
+    game: IGame;
+  }>()
+
+  const globalStore = useGlobalStore();
+  const { setReturnGame } = useLayoutStore();
+  const { getImageUrl, getContent, localizePath } = useProjectMethods();
+  const { layoutData, defaultLocaleLayoutData } = storeToRefs(globalStore);
+
+  const gameImage = computed(() => {
+    return props.game.images['200x200']
+      ? getImageUrl(props.game.images, 'square')
+      : '/img/default-game-tumb.png'
+  })
+</script>
+
+<style src="~/assets/styles/components/layout/game-return.scss" lang="scss" />
+

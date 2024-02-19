@@ -1,0 +1,101 @@
+.main-slider {
+  position: relative;
+  margin-bottom: 24px;
+
+  --slides-gap: 8px;
+  --shadow-width: 16px;
+  --shadow-inset: -16px;
+
+  @include media(xs) {
+    --viewport-height: 190px;
+    --shadow-width: 32px;
+    --shadow-inset: -32px;
+  }
+
+  @include media(sm) {
+    --viewport-height: 190px;
+  }
+
+  @include media(md) {
+    margin-bottom: 32px;
+    --viewport-height: 240px;
+    --slides-gap: 16px;
+  }
+
+  @include media(l) {
+    --viewport-height: 256px;
+  }
+
+  @include media(xl) {
+    --viewport-height: 230px;
+  }
+
+  @include media(xxl) {
+    --viewport-height: 270px;
+  }
+
+  &__viewport {
+    display: flex;
+    position: relative;
+    z-index: 0;
+    grid-column-gap: var(--slides-gap);
+    height: var(--viewport-height, 168px);
+  }
+
+  &__slide {
+    flex-grow: 0;
+    flex-shrink: 0;
+    aspect-ratio: 344/190;
+  }
+
+  &__bullets {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__bullet {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --bullet-bg: var(--icon-secondary);
+
+    &:after {
+      content: '';
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--bullet-bg);
+    }
+
+    &.is-selected {
+      --bullet-bg: var(--gradient-orange-radial);
+    }
+  }
+
+  &:before, &:after {
+    content: '';
+    top: -1px;
+    bottom: -1px;
+    width: var(--shadow-width);
+    position: absolute;
+    background: linear-gradient(270deg, var(--layer-bg) 0%, rgba(17, 20, 28, 0) 100%);
+    z-index: 1;
+    box-shadow: 16px 0 0 var(--layer-bg);
+  }
+
+  &:before {
+    transform: rotate(180deg);
+    left: var(--shadow-inset);
+  }
+
+  &:after {
+    right: var(--shadow-inset);
+  }
+}

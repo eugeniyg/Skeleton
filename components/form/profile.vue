@@ -9,25 +9,26 @@
         isDisabled
         :verifyButton="props.verifyButton"
         :hint="emailHint"
-        :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.label') || ''"
-        :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.placeholder') || ''"
+        :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
+        :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
         name="email"
       />
     </div>
 
     <div v-for="n in Math.ceil(rowsFields.length / 2)" :key="`row-${n}`" class="row">
       <component
-        :is="fieldsTypeMap[field.name].component || 'form-input-text'"
+        :is="fieldsMap[field.name]?.component || 'form-input-text'"
         @blur="v$[field.name]?.$touch()"
         @focus="focusField(field.name)"
-        :isDisabled="!!profile[field.name] && !field.editable"
+        :isDisabled="!!profile?.[field.name] && !field.editable"
         v-model:value="profileFormData[field.name]"
         v-for="field in rowsFields.slice(2 * (n - 1), 2 * (n - 1) + 2)"
         :key="field.name"
-        :type="fieldsTypeMap[field.name].type || 'text'"
-        :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) || ''"
+        :type="fieldsMap[field.name]?.type || 'text'"
+        :inputmode="fieldsMap[field.name]?.inputmode"
+        :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
         :name="field.name"
-        :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.placeholder`) || ''"
+        :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
         :isRequired="profileFormRules[field.name]?.hasOwnProperty('required')"
         :options="selectOptions[field.name]"
         :hint="setError(field.name)"
@@ -56,6 +57,8 @@
   import { storeToRefs } from 'pinia';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
+  const fieldsMap: Record<string, any> = fieldsTypeMap;
+
   const props = defineProps<{
     saveButton?: string,
     cancelButton?: string,
@@ -75,12 +78,12 @@
   const { profile } = storeToRefs(profileStore);
   const { setProfileData } = profileStore;
   const fieldsStore = useFieldsStore();
-  const { setFormData } = useCoreMethods();
+  const { setFormData } = useProjectMethods();
   const { changeProfileData } = useCoreProfileApi();
   const globalStore = useGlobalStore();
 
   const { selectOptions, profileFields } = storeToRefs(fieldsStore);
-  const { fieldsContent, defaultLocaleFieldsContent } = storeToRefs(globalStore);
+  const { fieldsSettings, defaultLocaleFieldsSettings } = storeToRefs(globalStore);
 
   const fieldsWithValue = profileFields.value.map((field) => ({ ...field, value: profile.value?.[field.name] }));
   const cleanFields = fieldsWithValue.filter((field) => !hideFields.includes(field.name));
@@ -116,6 +119,7 @@
       const submitResult = await changeProfileData(profileFormData);
       setProfileData(submitResult);
       emit('toggle-profile-edit');
+      useEvent('profileUpdated');
     } catch (error:any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;

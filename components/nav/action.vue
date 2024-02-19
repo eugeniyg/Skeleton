@@ -21,17 +21,17 @@
       @click="toggleFavorite"
       :class="{ 'is-active': isFavorite }"
     >
-      <atomic-icon id="heart-outline"/>
+      <atomic-icon :id="isFavorite ? 'heart': 'heart-outline'"/>
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { GameInterface } from '@platform/frontend-core/dist/module';
+  import type { IGame } from '@skeleton/core/types';
 
   const props = defineProps<{
-    gameInfo: GameInterface,
+    gameInfo: IGame,
     showPlug: boolean,
   }>();
 

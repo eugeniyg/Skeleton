@@ -1,150 +1,140 @@
 <template>
   <div>
-    <client-only>
-      <carousel v-if="sliderItems?.length || defaultLocaleSliderItems?.length" v-bind="topSliderProps">
-        <slide v-for="(slide, index) in sliderItems?.length ? sliderItems : defaultLocaleSliderItems" :key="index">
-          <card-promo v-if="slide.slideStatus === 'Published'" v-bind="slide" />
-        </slide>
-
-        <template v-slot:addons>
-          <navigation />
-          <pagination />
-        </template>
-      </carousel>
-    </client-only>
-
-    <nav-cat @clickCategory="changeCategory" />
-
-    <favorite-recently v-if="isLoggedIn" />
-
+    <main-slider v-if="filteredSlider?.length" :slides="filteredSlider"/>
+    
+    <nav-cat @clickCategory="changeCategory"/>
+    
     <group-games
-      v-if="mainCategoriesData.hot"
+      v-for="category in mainCategoriesList.slice(0, 3)"
       showAllBtn
       showArrows
-      :category="mainCategoriesData.hot"
+      :category="category"
     />
+
+    <group-providers showArrows />
 
     <group-games
-      v-if="mainCategoriesData.slots"
+      v-for="category in mainCategoriesList.slice(3, 4)"
       showAllBtn
       showArrows
-      :category="mainCategoriesData.slots"
+      :category="category"
     />
-
-    <cards-group
-      v-if="providerCards.games?.length"
-      v-bind="providerCards"
-      :identity="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.label')"
-      :titleIcon="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.icon')"
-      :showAllBtn="false"
-    >
-      <template v-slot:card="item">
-        <card-providers v-bind="item" />
-      </template>
-    </cards-group>
-
+    
+    <group-winners showArrows/>
+    
     <group-games
-      v-if="mainCategoriesData.turbogames"
+      v-for="category in mainCategoriesList.slice(4)"
       showAllBtn
       showArrows
-      :category="mainCategoriesData.turbogames"
+      :category="category"
     />
+    
+    <favorite-recently v-if="isLoggedIn"/>
 
-    <group-games
-      v-if="mainCategoriesData.new"
-      showAllBtn
-      showArrows
-      :category="mainCategoriesData.new"
-    />
-
-    <group-winners showArrows />
-
-    <group-games
-      v-if="mainCategoriesData.table"
-      showAllBtn
-      showArrows
-      :category="mainCategoriesData.table"
-    />
-
-    <group-games
-      v-if="mainCategoriesData.live"
-      showAllBtn
-      showArrows
-      :category="mainCategoriesData.live"
-    />
-
-    <group-promotions v-if="globalComponentsContent?.promotions" v-bind="globalComponentsContent.promotions" />
-
-    <!-- <cards-group v-bind="fakeStore.newRelisesCards">
-      <template v-slot:card="item">
-        <card-base v-bind="item" />
-      </template>
-    </cards-group> -->
-
-    <atomic-seo-text v-if="mainContent?.seo?.text" v-bind="mainContent.seo.text" />
+    <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent.seo.text"/>
   </div>
 </template>
 
 <script setup lang="ts">
-  import 'vue3-carousel/dist/carousel.css';
-  import {
-    Carousel, Slide, Pagination, Navigation,
-  } from 'vue3-carousel';
   import { storeToRefs } from 'pinia';
-  import { MainContentInterface, SlideInterface } from '@skeleton/types';
+  import type { ICasinoPage } from '~/types';
+  import type { ICollection } from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, contentLocalesArray } = storeToRefs(globalStore);
+  const profileStore = useProfileStore();
+  const {
+    currentLocale,
+    defaultLocale
+  } = storeToRefs(globalStore);
   const {
     localizePath,
     setPageSeo,
-    findLocalesContentData,
-    getContent,
+    getLocalesContentData
   } = useProjectMethods();
+  const { isLoggedIn, profile } = storeToRefs(profileStore);
 
-  const [sliderResponse, mainContentResponse] = await Promise.all([
-    useAsyncData('sliderData', () => queryContent('main-slider')
-      .where({ locale: { $in: contentLocalesArray.value } }).find()),
-    useAsyncData('mainContent', () => queryContent('page-controls')
-      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'mainPage']).find()),
-  ]);
+  const pageContent = ref<Maybe<ICasinoPage>>();
+  const defaultLocalePageContent = ref<Maybe<ICasinoPage>>();
 
-  const mainContentData = findLocalesContentData(mainContentResponse.data.value);
-  const mainContent: Maybe<MainContentInterface> = mainContentData.currentLocaleData?.mainPage;
+  interface IPageContent {
+    currentLocaleData: Maybe<ICasinoPage>;
+    defaultLocaleData: Maybe<ICasinoPage>;
+  }
 
-  const sliderContentData = findLocalesContentData(sliderResponse.data.value);
-  const sliderItems: Maybe<SlideInterface[]> = sliderContentData.currentLocaleData?.slider;
-  const defaultLocaleSliderItems: Maybe<SlideInterface[]> = sliderContentData.defaultLocaleData?.slider;
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    pageContent.value = contentData?.currentLocaleData;
+    defaultLocalePageContent.value = contentData?.defaultLocaleData;
+    setPageSeo(pageContent.value?.seo);
+  }
 
-  const fakeStore = useFakeStore();
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('casinoPageContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'pages', 'casino').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'casino').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('casinoPageContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
+
+  const dayjs = useDayjs();
+  const sliderFilterTime = ref(dayjs.utc());
+  const filteredSlider = computed(() => {
+    return pageContent.value?.slider?.reduce((filteredSliderArr: ICasinoPage['slider'], currentSlide) => {
+      const loggedFilter: boolean = (isLoggedIn.value && currentSlide.loggedHide) || (!isLoggedIn.value && currentSlide.unloggedHide);
+      let includesSegmentsFilter: boolean = !!currentSlide.showSegments?.length;
+      let excludeSegmentsFilter: boolean = !!currentSlide.hideSegments?.length;
+      let timeFilter: boolean = false;
+
+      if (isLoggedIn.value && profile.value) {
+        const showSegmentsArr = currentSlide.showSegments?.map(item => item.segmentName) || [];
+        const hideSegmentsArr = currentSlide.hideSegments?.map(item => item.segmentName) || [];
+        includesSegmentsFilter = showSegmentsArr.length ? !profile.value.segments.some((segment) => showSegmentsArr.includes(segment.name)) : false;
+        excludeSegmentsFilter = hideSegmentsArr.length ? profile.value.segments.some((segment) => hideSegmentsArr.includes(segment.name)) : false;
+      }
+
+      if (currentSlide.showFrom && currentSlide.showTo) {
+        timeFilter = !dayjs(sliderFilterTime.value).isBetween(dayjs(currentSlide.showFrom), dayjs(currentSlide.showTo), 'second');
+      } else if (currentSlide.showFrom) {
+        timeFilter = !dayjs(sliderFilterTime.value).isSameOrAfter(dayjs(currentSlide.showFrom), 'second');
+      } else if (currentSlide.showTo) {
+        timeFilter = !dayjs(sliderFilterTime.value).isSameOrBefore(dayjs(currentSlide.showTo), 'second');
+      }
+
+      if (loggedFilter || includesSegmentsFilter || excludeSegmentsFilter || timeFilter) return filteredSliderArr;
+      return [...filteredSliderArr, currentSlide];
+    }, []);
+  })
+
   const router = useRouter();
   const gameStore = useGamesStore();
-  const { currentLocaleCollections } = storeToRefs(gameStore);
-  const profileStore = useProfileStore();
-  const { isLoggedIn } = storeToRefs(profileStore);
+  const { currentLocationCollections } = storeToRefs(gameStore);
 
-  const providerCards = fakeStore.providerCards();
-
-  const mainCategories = ['hot', 'slots', 'turbogames', 'new', 'table', 'live'];
-  const mainCategoriesData = mainCategories.reduce((categoriesObj, currentCategoryIdentity) => {
-    const findCategory = currentLocaleCollections.value.find((collection) => collection.identity === currentCategoryIdentity);
-    return findCategory ? { ...categoriesObj, [currentCategoryIdentity]: findCategory } : categoriesObj;
-  }, {});
-
-  const topSliderProps = {
-    settings: {
-      itemsToShow: 1,
-      pauseAutoplayOnHover: true,
-      itemsToScroll: 1,
-      autoplay: 3000,
-      transition: 500,
-      wrapAround: true,
-    },
-  };
-
-  setPageSeo(mainContent?.seo);
+  const mainCategoriesList = currentLocationCollections.value.reduce((categoriesArr: ICollection[], currentCategory) => {
+    return currentCategory.isHidden ? categoriesArr : [...categoriesArr, currentCategory];
+  }, []);
 
   const changeCategory = (categoryId: string) => {
     router.push({ path: localizePath('/games'), query: { category: categoryId } });
   };
+  
+  let sliderTimer: any;
+  onMounted(() => {
+    sliderTimer = setInterval(() => {
+      sliderFilterTime.value = dayjs.utc();
+    }, 600000)
+  })
+
+  onBeforeUnmount(() => {
+    clearInterval(sliderTimer);
+  })
 </script>

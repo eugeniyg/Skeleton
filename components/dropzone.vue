@@ -6,7 +6,7 @@
     @dragover.prevent
     @drop.prevent="onDrop"
   >
-    <atomic-icon class="dropzone__icon" :id="!fileList?.length ? 'ui-upload': 'ui-file'"/>
+    <atomic-icon class="dropzone__icon" :id="!fileList?.length ? 'upload': 'file'"/>
 
     <div class="dropzone__content">
       <h4 class="dropzone__title">{{ props.fileName }}</h4>
@@ -22,10 +22,11 @@
       </div>
 
       <form-input-file
-        :placeholder="documentsContent?.uploadPlaceholder || defaultLocaleDocumentsContent?.uploadPlaceholder"
-        :hint="documentsContent?.uploadHint || defaultLocaleDocumentsContent?.uploadHint"
-        :uploadButton="documentsContent?.uploadButton || defaultLocaleDocumentsContent?.uploadButton"
-        :uploadMore="documentsContent?.uploadMore || defaultLocaleDocumentsContent?.uploadMore"
+        v-if="securityContent || defaultLocaleSecurityContent"
+        :placeholder="securityContent?.documents?.uploadPlaceholder || defaultLocaleSecurityContent?.documents?.uploadPlaceholder"
+        :hint="securityContent?.documents?.uploadHint || defaultLocaleSecurityContent?.documents?.uploadHint"
+        :uploadButton="securityContent?.documents?.uploadButton || defaultLocaleSecurityContent?.documents?.uploadButton"
+        :uploadMore="securityContent?.documents?.uploadMore || defaultLocaleSecurityContent?.documents?.uploadMore"
         :showMoreButton="!!props.fileList?.length"
         :loading="props.loading"
         @change="addFiles"
@@ -36,20 +37,20 @@
 </template>
 
 <script setup lang="ts">
-  import { SecurityFileInterface } from '@platform/frontend-core/dist/module';
-  import { ProfileDocumentsInterface } from '@skeleton/types';
+  import type { ISecurityFile } from '@skeleton/core/types';
+  import type { IProfileSecurity } from '~/types';
 
   const props = defineProps<{
     fileName?: string,
     loading: boolean,
-    fileList: SecurityFileInterface[]
+    fileList: ISecurityFile[]
   }>();
 
   const emit = defineEmits(['remove', 'change']);
 
   const isActive = ref(false);
-  const documentsContent: Maybe<ProfileDocumentsInterface> = inject('documentsContent');
-  const defaultLocaleDocumentsContent: Maybe<ProfileDocumentsInterface> = inject('defaultLocaleDocumentsContent');
+  const securityContent = ref<Maybe<IProfileSecurity>>(inject('securityContent'));
+  const defaultLocaleSecurityContent = ref<Maybe<IProfileSecurity>>(inject('defaultLocaleSecurityContent'));
   const errorFiles = computed(() => props.fileList.filter((file) => file.error));
 
   const dropzoneClasses = computed(() => ({

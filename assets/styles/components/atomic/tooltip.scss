@@ -12,7 +12,7 @@
     transition: color .2s ease-in-out;
     cursor: pointer;
     --icon-size: #{rem(20px)};
-    --color: var(--gray-500);
+    --color: var(--icon-secondary);
   }
 
   @media (hover: hover) {
@@ -20,7 +20,7 @@
       --tooltip-visibility: visible;
 
       .icon {
-        --color: var(--white);
+        --color: var(--icon-contrast);
       }
     }
   }
@@ -30,7 +30,7 @@
     --opacity: 1;
 
     .icon {
-      --color: var(--white);
+      --color: var(--icon-contrast);
     }
   }
 
@@ -43,12 +43,12 @@
     padding: rem(8px);
     margin: 0;
     text-decoration: none;
-    color: var(--white);
+    color: var(--text-primary);
     min-width: min-content;
     max-width: #{rem(240px)};
     left: 0;
     top: 0;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+    box-shadow: var(--shadow-layer);
     border-radius: 2px;
     visibility: var(--visibility, hidden);
     opacity: var(--opacity, 0);

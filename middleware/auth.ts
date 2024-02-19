@@ -1,13 +1,15 @@
 // eslint-disable-next-line consistent-return
 export default defineNuxtRouteMiddleware((to, from) => {
-  const cookieLanguage = useCookie('user-language');
-  const { getSessionToken } = useCoreAuthStore();
-  const token = getSessionToken();
-  const needChangeLanguage = to.name && !to.params.locale && !!cookieLanguage.value;
+  const { isLoggedIn } = useProfileStore();
   const { localizePath } = useProjectMethods();
+  const { showModal } = useLayoutStore();
 
-  if (!needChangeLanguage && !token) {
-    if (from.name && from.path !== to.path) return abortNavigation();
-    return navigateTo({ path: localizePath('/') });
+  if (!isLoggedIn) {
+    if (from?.path && to?.path && from.path !== to.path) {
+      showModal('signIn');
+      return abortNavigation();
+    } else {
+      return navigateTo({ path: localizePath('/'), query: { 'sign-in': 'true' } });
+    }
   }
 });

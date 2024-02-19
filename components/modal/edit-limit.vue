@@ -15,6 +15,7 @@
         :is-required="false"
         :currency="state.currency"
         :min="0"
+        :max="1000000"
         :default-value="0"
         label=""
         name="edit-limit-currency"
@@ -25,10 +26,10 @@
       <div class="modal-edit-limit__info" v-if="isLargeAmount">
         <div class="modal-edit-limit__info-title">
           <atomic-icon id="warning"/>
-          <div>{{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.greaterAmountTitle') }}</div>
+          <div>{{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.greaterAmountTitle') }}</div>
         </div>
         <div class="modal-edit-limit__info-text">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.hint') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.hint') }}
         </div>
       </div>
 
@@ -39,10 +40,10 @@
           @click="update"
           :is-disabled="isDisableUpdate"
         >
-          {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.updateButtonLabel') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.actions.updateButtonLabel') }}
         </button-base>
         <button-base type="secondary" size="md" @click="remove">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'limitsPopups.editCashLimit.deleteButtonLabel') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.actions.deleteButtonLabel') }}
         </button-base>
       </div>
     </div>
@@ -88,7 +89,7 @@
   });
 
   const label = computed(() => {
-    const labels = getContent(popupsData.value, defaultLocalePopupsData.value, 'limitsPopups.editCashLimit.popupLabel');
+    const labels = getContent(popupsData.value, defaultLocalePopupsData.value, 'editCashLimit.popupLabel');
     if (!labels) return '';
     return labels[`edit_${props.period}_${props.definition}`];
   });
@@ -103,15 +104,15 @@
     const formattedMainBalance = getMainBalanceFormat(state.currency, state.amount);
 
     await updatePlayerLimit({
-      limitId: props.limitId,
+      limitId: props.limitId as string,
       amount: formattedMainBalance.amount,
     });
     await getLimits();
 
     if (isLargeAmount.value) {
-      showAlert(alertsData.value?.cashLimitEditLargeAmount || defaultLocaleAlertsData.value?.cashLimitEditLargeAmount);
+      showAlert(alertsData.value?.limit?.cashLimitEditLargeAmount || defaultLocaleAlertsData.value?.limit?.cashLimitEditLargeAmount);
     } else {
-      showAlert(alertsData.value?.cashLimitEditSmallerAmount || defaultLocaleAlertsData.value?.cashLimitEditSmallerAmount);
+      showAlert(alertsData.value?.limit?.cashLimitEditSmallerAmount || defaultLocaleAlertsData.value?.limit?.cashLimitEditSmallerAmount);
     }
   };
 
@@ -120,53 +121,8 @@
     await deletePlayerLimit(props.limitId as string);
     await getLimits();
 
-    showAlert(alertsData.value?.cashLimitCancel || defaultLocaleAlertsData.value?.cashLimitCancel);
+    showAlert(alertsData.value?.limit?.cashLimitCancel || defaultLocaleAlertsData.value?.limit?.cashLimitCancel);
   };
 </script>
 
-<style lang="scss">
-.modal-edit-limit {
-  @extend %modal-info;
-
-  &__actions {
-    display: grid;
-    grid-row-gap: 8px;
-
-    .btn-primary, .btn-secondary {
-      width: 100%;
-      margin: 0;
-    }
-  }
-
-  .scroll {
-    grid-row-gap: 24px;
-  }
-
-  &__info {
-    display: grid;
-    grid-row-gap: 4px;
-
-    &-title {
-      @include font($heading-1);
-      color: var(--white);
-      display: flex;
-      grid-column-gap: 8px;
-
-      div {
-        display: flex;
-        align-items: center;
-      }
-
-      .icon {
-        --color: var(--yellow-500);
-        --icon-size: 20px;
-      }
-    }
-
-    &-text {
-      @include font($body-1);
-      color: var(--gray-400);
-    }
-  }
-}
-</style>
+<style src="~/assets/styles/components/modal/edit-limit.scss" lang="scss" />

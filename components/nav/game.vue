@@ -1,15 +1,14 @@
 <template>
   <div class="nav-game">
     <nav-action :showPlug="showPlug" :gameInfo="props.gameInfo" />
-    <!--    <nav-mode :items="modeItems"/>-->
   </div>
 </template>
 
 <script setup lang="ts">
-  import { GameInterface } from '@platform/frontend-core/dist/module';
+  import type { IGame } from '@skeleton/core/types';
 
   const props = defineProps<{
-    gameInfo: GameInterface,
+    gameInfo: IGame,
     showPlug: boolean,
   }>();
 </script>

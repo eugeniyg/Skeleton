@@ -1,0 +1,31 @@
+.list-socials {
+  margin-top: rem(12px);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 2px;
+
+  .drawer-minimize & {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__item {
+    @include box(40px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      @include box(24px);
+      --color: var(--icon-primary);
+    }
+
+    @include use-hover {
+      &:hover {
+        .icon {
+          --color: var(--icon-accent);
+        }
+      }
+    }
+  }
+}

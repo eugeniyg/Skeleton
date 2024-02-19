@@ -29,15 +29,15 @@
           </div>
 
           <div class="td td-date">
-            <span v-html="format(getFormatDate(session.createdAt))"></span>
+            <span v-html="formatDateStr(dayjs(session.createdAt).format(dateFormat))"></span>
           </div>
 
           <div class="td">
             <atomic-row-status
               :variant="sessionStatus(session)"
-              :tooltip="session.closedAt ? `${getFormatDate(session.closedAt)}`: ''"
+              :tooltip="session.closedAt ? `${dayjs(session.closedAt).format(dateFormat)}`: ''"
             >
-              {{ sessionsContent.sessionsStatuses[sessionStatus(session)] }}
+              {{ props.content?.sessionsStatuses[sessionStatus(session) as keyof ISessionsHistory['sessionsStatuses']] }}
             </atomic-row-status>
           </div>
 
@@ -52,7 +52,7 @@
     </div>
 
     <atomic-pagination
-      v-if="pageMeta?.totalPages > 1"
+      v-if="pageMeta?.totalPages && pageMeta.totalPages > 1"
       v-bind="pageMeta"
       @selectPage="changePage"
     />
@@ -61,22 +61,20 @@
 
 <script setup lang="ts">
   import parser from 'ua-parser-js';
-  import {
-    PaginationMetaInterface, SessionInterface,
-  } from '@platform/frontend-core/dist/module';
-  import { HistorySessionsInterface, HistoryTabInterface } from '@skeleton/types';
+  import type { IPaginationMeta, ISession } from '@skeleton/core/types';
+  import type { ISessionsHistory } from '~/types';
 
   const props = defineProps<{
-    content: HistoryTabInterface,
+    content: ISessionsHistory,
   }>();
 
-  const sessionsContent:HistorySessionsInterface = props.content.sessions;
-  const headTitles = ['', ...Object.values(sessionsContent.tableColumns || {})];
+  const dayjs = useDayjs();
+  const headTitles = ['', ...Object.values(props.content?.tableColumns || {})];
+  const dateFormat = 'DD.MM.YYYY, HH:mm';
 
   const { getUserSessions, closeActiveSession } = useCoreProfileApi();
-  const sessions = ref<SessionInterface[]>([]);
-  const pageMeta = ref<PaginationMetaInterface>();
-  const { getFormatDate } = useProjectMethods();
+  const sessions = ref<ISession[]>([]);
+  const pageMeta = ref<IPaginationMeta>();
 
   const loading = ref<boolean>(true);
   const resolveSessionsRequest = async (page: number = 1):Promise<void> => {
@@ -87,9 +85,9 @@
     loading.value = false;
   };
 
-  const { getCurrentSession } = useCoreAuthStore();
+  const { getCurrentSession } = useProfileStore();
   const currentSession = getCurrentSession();
-  const sessionStatus = (session: SessionInterface): string => {
+  const sessionStatus = (session: ISession): string => {
     if (session.closedAt) return 'closed';
     const sessionId = currentSession ? currentSession.sessionId : undefined;
     if (session.sessionId === sessionId) return 'current';
@@ -117,7 +115,7 @@
     resolveSessionsRequest();
   });
 
-  const format = (str:string) => str.split(',').join('<br>');
+  const formatDateStr = (str:string) => str.split(',').join('<br>');
 </script>
 
 <style src="~/assets/styles/components/tab/history/sessions.scss" lang="scss" />

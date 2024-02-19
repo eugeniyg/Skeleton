@@ -4,6 +4,6 @@
 
   &__title {
     @include font($heading-7);
-    color: white;
+    color: var(--text-primary);
   }
 }

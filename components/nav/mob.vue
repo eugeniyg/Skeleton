@@ -1,71 +1,100 @@
 <template>
-  <div class="nav-mob">
-    <button-base class="item" @click.prevent="layoutStore.toggleDrawer()">
-      <atomic-icon :id="'menu'" /><span>
-        {{ getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'menuLabel') }}
+  <div class="nav-mob" v-if="!isGamePage">
+    <button-base class="nav-mob__item" @click.prevent="layoutStore.toggleDrawer()">
+      <atomic-icon id="menu"/>
+      <span class="nav-mob__text">
+        {{ getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.menuLabel') }}
       </span>
     </button-base>
 
     <button-base
-      v-if="getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0')"
-      class="item"
-      :class="{ active: $route.path === localizePath(getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.url')) || $route.query.category}"
-      @click="clickItem(getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.url'))"
+      class="nav-mob__item"
+      :class="{ active: route.path === localizePath(gamesButtons?.buttonFirst.url) || route.query.category }"
+      :url="gamesButtons?.buttonFirst.url"
     >
-      <atomic-icon
-        :id="getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.icon')"
-      /><span>{{ getContent(mobileMenuContent, defaultLocaleMobileMenuContent, 'items.0.label') }}</span>
+      <atomic-icon :id="gamesButtons?.buttonFirst.icon" />
+      <span class="nav-mob__text">
+        {{ gamesButtons?.buttonFirst.label }}
+      </span>
     </button-base>
 
-    <button-base class="item is-accent" @click.prevent="clickMainButton">
-      <atomic-icon :id="isLoggedIn ? 'wallet' : 'user'" />
-      <span>
-        {{ isLoggedIn ? headerContent?.depositButton || defaultLocaleHeaderContent?.depositButton
-          : headerContent?.loginButton || defaultLocaleHeaderContent?.loginButton }}
+    <button-base class="nav-mob__item is-accent" @click.prevent="clickMainButton">
+      <atomic-icon :id="isLoggedIn ? 'wallet' : 'user-new'"/>
+      <span class="nav-mob__text">
+        {{ isLoggedIn ? getContent(layoutData, defaultLocaleLayoutData, 'header.depositButton')
+        : getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton') }}
       </span>
     </button-base>
 
     <button-base
-      v-for="link in linksList?.slice(1)"
-      :key="link.url"
-      class="item"
-      :class="{ active: $route.path === localizePath(link.url) }"
-      @click="clickItem(link.url)"
+      class="nav-mob__item"
+      :class="{ active: route.path === localizePath(gamesButtons?.buttonSecond.url) }"
+      :url="gamesButtons?.buttonSecond.url"
     >
-      <atomic-icon :id="link.icon" /><span>{{ link.label }}</span>
+      <atomic-icon :id="gamesButtons?.buttonSecond.icon" />
+      <span class="nav-mob__text">{{ gamesButtons?.buttonSecond.label }}</span>
     </button-base>
+
+    <client-only>
+      <button-base
+        v-if="projectHasFreshchat"
+        class="nav-mob__item"
+        :class="{ 'chat-indicator': newMessages }"
+        @click="openChat"
+      >
+        <atomic-icon id="live-support" />
+        <span class="nav-mob__text">
+        {{ getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.chatLabel') }}
+      </span>
+      </button-base>
+
+      <button-base
+        v-else-if="contactButton"
+        class="nav-mob__item"
+        :class="{ active: route.path === localizePath(contactButton.url) }"
+        :url="contactButton.url"
+      >
+        <atomic-icon :id="contactButton.icon" />
+        <span class="nav-mob__text">{{ contactButton.label }}</span>
+      </button-base>
+    </client-only>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const router = useRouter();
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal, openDepositModal } = useLayoutStore();
+  const { showModal, openWalletModal } = useLayoutStore();
+  const { isGamePage } = storeToRefs(layoutStore);
   const {
-    mobileMenuContent,
-    defaultLocaleMobileMenuContent,
-    headerContent,
-    defaultLocaleHeaderContent,
+    layoutData,
+    defaultLocaleLayoutData
   } = useGlobalStore();
   const { localizePath, getContent } = useProjectMethods();
-  const clickItem = (url: string):void => {
-    if (url === '/betting') {
-      isLoggedIn.value ? router.push(localizePath(url)) : showModal('register');
-    } else router.push(localizePath(url));
-  };
+  const route = useRoute();
 
   const clickMainButton = ():void => {
-    isLoggedIn.value ? openDepositModal() : showModal('signIn');
+    isLoggedIn.value ? openWalletModal() : showModal('register');
   };
 
-  const linksList = computed(() => {
-    if (mobileMenuContent?.items?.length) return mobileMenuContent.items;
-    return defaultLocaleMobileMenuContent?.items || [];
-  });
+  const gamesButtons = computed(() => {
+    return getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler');
+  })
+  const contactButton = computed(() => {
+    return getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.contactButton');
+  })
+
+  const freshchatStore = useFreshchatStore();
+  const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
+
+  const openChat = () => {
+    const { public: { freshchatParams } } = useRuntimeConfig();
+    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) showModal('register');
+    else window.fcWidget?.open();
+  }
 </script>
 
 <style src="~/assets/styles/components/nav/mob.scss" lang="scss" />

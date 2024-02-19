@@ -1,5 +1,5 @@
 .input-checkbox {
-  color: var(--white);
+  color: var(--text-primary);
   @include font($body-2);
 
   .label {
@@ -20,12 +20,12 @@
 
   span {
     margin: 0;
-    color: var(--white);
+    color: var(--text-primary);
 
     @include font($body-2);
 
     a {
-      color: var(--yellow-500);
+      color: var(--text-link);
       text-decoration: none;
 
       &:hover {
@@ -35,68 +35,78 @@
   }
 
   .icon {
-    background-color: var(--bg, var(--gray-700));
+    background-color: var(--bg, var(--field-00));
     border-radius: 4px;
-    min-width: rem(20px);
-    min-height: rem(20px);
-    max-width: rem(20px);
-    max-height: rem(20px);
+    @include box(18px);
     box-shadow: var(--shadow, none);
     --color: transparent;
   }
 
   .label {
+    --shadow: 0 0 0 2px var(--border-02);
+
+
     @media (hover: hover) {
       &:hover {
-        --shadow: 0 0 0 3px #2F363D;
+        --shadow: 0 0 0 2px var(--border-hover);
+        .icon {
+          --bg: var(--field-00)
+        }
       }
     }
   }
 
   &.input-checkbox--checked .label {
+    --shadow: 0 0 0 2px var(--support-success-default);
+
     .icon {
-      --bg: var(--green-500);
-      --color: var(--white);
+      --bg: var(--support-success-default);
+      --color: var(--icon-contrast);
     }
 
     @media (hover: hover) {
       &:hover {
         .icon {
-          --bg: var(--green-700);
-          --shadow: 0 0 0 3px #045518;
+          --shadow: 0 0 0 2px var(support-success-default);
+          --bg: var(--support-success-low-contrast);
         }
       }
     }
   }
 
   .checkbox[disabled] ~ .label {
+    --shadow: 0 0 0 2px var(--field-00);
+
     .icon {
-      --bg: var(--gray-800);
+      --bg: var(--field-00);
       --color: transparent;
     }
     pointer-events: none;
   }
 
   .checkbox[disabled]:checked ~ .label {
+    --shadow: 0 0 0 2px var(--field-00);
+
     .icon {
-      --color: var(--gray-600);
-      --shadow: none;
+      --bg: var(--field-00);
+      --color: var(--icon-secondary);
     }
   }
 
   &.has-error {
     .label {
+      --shadow: 0 0 0 2px var(--support-alert-default);
+
       .icon {
         --bg: transparent;
         --color: transparent;
-        box-shadow: inset 0 0 0 2px var(--red-500);
       }
     }
 
     &.input-checkbox--checked .label {
       .icon {
-        --color: var(--white);
-        --bg: var(--red-500);
+        --color: var(--icon-contrast);
+        --bg: var(--support-alert-default);
       }
     }
   }

@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 
 const { resolve } = createResolver(dirname(fileURLToPath(import.meta.url)));
+const buildDate = Date.now();
 
 const viteConfig: any = {
   css: {
@@ -11,21 +12,28 @@ const viteConfig: any = {
         additionalData: '@use "@skeleton/assets/styles/ds/_shared.scss" as *;',
       },
     },
-  },
-  optimizeDeps: {
-    include: ['centrifuge'],
-  },
+  }
 };
 
+// @ts-ignore
 export default defineNuxtConfig({
   alias: {
     '@skeleton': resolve('./'),
   },
   modules: [
     '@pinia/nuxt',
-    '@platform/frontend-core',
-    '@nuxt/content'
+    '@nuxt/content',
+    'dayjs-nuxt',
+    'nuxt-lazy-load',
+    '@skeleton/modules/optimize-images',
+    '@nuxtjs/fontaine'
   ],
+  dayjs: {
+    locales: ['en-ca', 'de', 'fr', 'es', 'pt', 'pt-br', 'ru', 'tr', 'hi', 'fa', 'uz', 'kk', 'es-mx', 'it', 'et', 'fi',
+      'el', 'id', 'nb', 'pl', 'ro', 'se', 'cs', 'da', 'nl'],
+    plugins: ['localeData', 'isBetween', 'isSameOrAfter', 'isSameOrBefore'],
+    defaultLocale: 'en',
+  },
   components: {
     dirs: [
       {
@@ -41,10 +49,23 @@ export default defineNuxtConfig({
       '@skeleton/components',
     ],
   },
+  imports: {
+    dirs: [
+      'core/composables'
+    ]
+  },
+  experimental: {
+    defaults: {
+      useAsyncData: {
+        deep: false
+      }
+    },
+    cookieStore: true
+  },
   app: {
     head: {
       script: [
-        { src: 'https://turboplatform-dev.betsy.gg/assets/sdk/init.js' },
+        { src: `/pwa/init.js?v=${buildDate}`, defer: true }
       ],
     },
     pageTransition: true,
@@ -63,4 +84,9 @@ export default defineNuxtConfig({
       },
     },
   },
+  runtimeConfig: {
+    public: {
+      gamehubCdn: 'https://dev.gcdn.tech'
+    }
+  }
 });

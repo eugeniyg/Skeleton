@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <div class="limits__grid">
+    <div v-show="!pending" class="limits__grid">
       <card-deposit-limits
         v-if="isAdvancedModeEnabled"
         @open-limit-modal="openLimitModal"
@@ -47,44 +47,68 @@
       />
     </div>
 
-    <modal-exceeded-limit-confirm/>
+    <modal-game-limit-reached/>
 
     <modal-confirm-limit-update
       :period="state.period"
       :key="confirmModalKey"
     />
-
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ProfileLimitsContentInterface } from '~/types';
+  import type { IProfileLimits } from '~/types';
 
   const limitsStore = useLimitsStore();
   const globalStore = useGlobalStore();
   const {
-    getLimits, setLimitsContent, showModal, toogleAdvancedMode,
+    getLimits,
+    setLimitsContent,
+    showModal,
+    toogleAdvancedMode
   } = limitsStore;
   const {
     limitsContent, defaultLimitsContent, isAdvancedModeEnabled,
   } = storeToRefs(limitsStore);
-  const { contentLocalesArray } = storeToRefs(globalStore);
-  const { findLocalesContentData, getContent } = useProjectMethods();
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
+  const { getLocalesContentData, getContent, setPageSeo } = useProjectMethods();
 
-  const [limitsContentRequest] = await Promise.all([
-    useAsyncData('limitsContent', () => queryContent('profile')
-      .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'limits']).find()),
-    useAsyncData('updateLimits', getLimits),
-  ]);
+  const currentLocaleLimitsContent = ref<Maybe<IProfileLimits>>();
+  const defaultLocaleLimitsContent = ref<Maybe<IProfileLimits>>();
 
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(limitsContentRequest.data.value);
-  const currenctLocaleLimitsContent: Maybe<ProfileLimitsContentInterface> = currentLocaleData?.limits;
-  const defaultLocaleLimitsContent: Maybe<ProfileLimitsContentInterface> = defaultLocaleData?.limits;
+  interface IPageContent {
+    currentLocaleData: Maybe<IProfileLimits>;
+    defaultLocaleData: Maybe<IProfileLimits>;
+  }
 
-  setLimitsContent(currenctLocaleLimitsContent, defaultLocaleLimitsContent);
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    currentLocaleLimitsContent.value = contentData?.currentLocaleData;
+    defaultLocaleLimitsContent.value = contentData?.defaultLocaleData;
+    setLimitsContent(currentLocaleLimitsContent.value, defaultLocaleLimitsContent.value);
+    setPageSeo(currentLocaleLimitsContent.value?.seo);
+  }
 
-  interface EditPropsInterface {
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('profileLimitsContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'profile', 'limits').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').findOne(),
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('profileLimitsContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
+
+  interface IEditProps {
     limitId: string | undefined,
     definition: number | undefined,
     amount: number | undefined,
@@ -94,7 +118,7 @@
 
   const state = reactive<{
     definition: number | undefined,
-    editProps: EditPropsInterface,
+    editProps: IEditProps,
     period: undefined | string,
   }>({
     definition: undefined,
@@ -118,7 +142,7 @@
     showModal('addLimit');
   };
 
-  const openEditModal = (limitData: EditPropsInterface) => {
+  const openEditModal = (limitData: IEditProps) => {
     state.editProps = limitData;
     editModalKey.value += 1;
     showModal('editLimit');
@@ -129,128 +153,10 @@
     confirmModalKey.value += 1;
     showModal('confirmLimitUpdate');
   };
+
+  onMounted(() => {
+    getLimits();
+  })
 </script>
 
-<style lang="scss">
-.limits {
-  width: 100%;
-
-  &__header {
-    margin: rem(8px) 0 rem(24px);
-
-    @include media(sm) {
-      display: flex;
-      justify-content: space-between;
-      grid-column-gap: rem(8px);
-    }
-  }
-
-  &__heading {
-    @include font($heading-6);
-    color: var(--white);
-    margin: 0;
-  }
-
-  &__mode {
-    display: flex;
-    align-items: center;
-    grid-column-gap: rem(8px);
-    justify-content: space-between;
-
-    &-label {
-      @include font($body-2);
-      color: var(--gray-400);
-    }
-  }
-
-  &__grid {
-    display: flex;
-    grid-gap: rem(16px);
-    flex-wrap: wrap;
-  }
-
-  &__card {
-    padding: rem(24px);
-    background-color: var(--gray-900);
-    border-radius: 16px;
-    width: var(--card-width, 100%);
-    user-select: none;
-
-    @include media(l) {
-      --card-width: calc(50% - 8px);
-
-      &.is-full-width {
-        --card-width: 100%;
-      }
-    }
-
-    &-actions {
-      display: flex;
-      grid-column-gap: 8px;
-      justify-content: center;
-
-      .btn-primary, .btn-secondary {
-        @include font($heading-2);
-        margin: rem(24px) 0 0;
-        --padding: 7px 20px;
-      }
-    }
-
-    &-title {
-      @include font($heading-4);
-      color: var(--white);
-      margin: 0;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      grid-column-gap: 8px;
-
-      .tooltip__message {
-        transform: translateY(calc(-100% - 14px));
-      }
-    }
-
-    &-sub-title {
-      @include font($body-1-paragraph);
-      color: var(--gray-400);
-      margin: rem(4px) 0 0;
-      text-align: center;
-    }
-
-    &-info {
-      @include font($body-1);
-      color: var(--gray-400);
-      margin: 16px 0 0;
-
-      * {
-        margin: 0;
-      }
-
-      a {
-        color: var(--yellow-500);
-        text-decoration: none;
-      }
-
-      &.is-text-center {
-        text-align: center;
-      }
-    }
-
-    &-dropdown {
-      display: flex;
-      align-items: center;
-      grid-column-gap: 8px;
-      margin-top: 24px;
-
-      .selected {
-        min-height: 32px;
-      }
-
-      .btn-primary {
-        @include font($heading-2);
-        --padding: 7px 20px;
-      }
-    }
-  }
-}
-</style>
+<style src="~/assets/styles/pages/profile/limits.scss" lang="scss" />

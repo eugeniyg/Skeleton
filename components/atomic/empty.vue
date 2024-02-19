@@ -1,18 +1,19 @@
 <template>
   <div class="empty" :class="currentClass">
-    <img
+    <atomic-image
       class="empty__image"
       v-if="props.image"
       :src="props.image"
-      alt=""
-    >
+    />
     <atomic-icon-colored v-else-if="currentIcon" :id="currentIcon"/>
     <div class="title">{{ props.title }}</div>
-    <div class="sub-title">{{ props.subTitle }}</div>
+    <div class="sub-title" v-html="marked.parse(props.subTitle)"/>
   </div>
 </template>
 
 <script setup lang="ts">
+  import { marked } from 'marked';
+
   const props = defineProps({
     variant: {
       type: String,

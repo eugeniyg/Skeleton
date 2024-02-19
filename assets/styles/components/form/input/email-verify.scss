@@ -35,7 +35,7 @@
   }
 
   &.has-error {
-    --border-color: var(--red-800);
+    --border-color: var(--border-alert);
   }
 
   &.is-disabled {
@@ -69,11 +69,5 @@
   &.size-md {
     --input-padding-y: #{rem(11px)};
     @include upd-font($body-2);
-  }
-
-  .btn-verify.disabled {
-    pointer-events: none;
-    --bg: var(--yellow-900);
-    --color: var(--black-primary);
   }
 }

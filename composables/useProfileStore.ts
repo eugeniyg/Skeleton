@@ -1,18 +1,24 @@
 import { defineStore } from 'pinia';
-import {
-  ProfileInterface,
-  AuthorizationResponseInterface,
-} from '@platform/frontend-core/dist/module';
+import type {
+  IProfile,
+  IAuthorizationResponse,
+  IParsedToken
+} from '@skeleton/core/types';
+import { jwtDecode } from "jwt-decode";
 
-interface ProfileStoreStateInterface {
-  isLoggedIn: boolean,
-  sessionId: string,
-  resentVerifyEmail: boolean,
-  profile: Maybe<ProfileInterface>,
+interface IProfileStoreState {
+  refreshPromise: Promise<{data: IAuthorizationResponse}>|null;
+  currentSessionToken: string|null;
+  isLoggedIn: boolean;
+  sessionId: string;
+  resentVerifyEmail: boolean;
+  profile: Maybe<IProfile>;
 }
 
 export const useProfileStore = defineStore('profileStore', {
-  state: (): ProfileStoreStateInterface => ({
+  state: (): IProfileStoreState => ({
+    refreshPromise: null,
+    currentSessionToken: null,
     isLoggedIn: false,
     sessionId: '',
     resentVerifyEmail: false,
@@ -26,7 +32,41 @@ export const useProfileStore = defineStore('profileStore', {
   },
 
   actions: {
-    startSession(authData: AuthorizationResponseInterface):void {
+    setSessionToken (tokenValue:string):void {
+      const cookieToken = useCookie('access_token', { maxAge: 60 * 60 * 24 * 30 });
+      cookieToken.value = tokenValue;
+      this.currentSessionToken = tokenValue;
+    },
+
+    getSessionToken ():string|null|undefined {
+      const cookieToken = useCookie('access_token');
+      return this.currentSessionToken || cookieToken.value;
+    },
+
+    isTokenExpired ():boolean {
+      const token = this.getSessionToken();
+      if (token) {
+        const currentSession:IParsedToken = jwtDecode(token);
+        return currentSession.exp ? currentSession.exp <= Date.now() / 1000 : false;
+      }
+      return true;
+    },
+
+    getCurrentSession ():IParsedToken|null {
+      const token = this.getSessionToken();
+      if (token) {
+        return jwtDecode(token);
+      }
+      return null;
+    },
+
+    removeSession ():void {
+      const cookieToken = useCookie('access_token')
+      cookieToken.value = null
+      this.currentSessionToken = null
+    },
+
+    startSession(authData: IAuthorizationResponse):void {
       this.profile = authData.profile;
       const { reconnectSocket } = useWebSocket();
       reconnectSocket();
@@ -34,22 +74,32 @@ export const useProfileStore = defineStore('profileStore', {
 
     startProfileDependencies():void {
       const { getFavoriteGames } = useGamesStore();
-      const { getPlayerBonuses, getDepositBonusCode } = useBonusStore();
+      const {
+        getPlayerBonuses,
+        getDepositBonusCode,
+        getPlayerFreeSpins,
+        getPlayerCashback
+      } = useBonusStore();
       getFavoriteGames();
       getDepositBonusCode();
+
+      const { activeAccount } = useWalletStore();
+      getPlayerCashback(activeAccount?.currency);
 
       const route = useRoute();
       const routeName = route.name as string;
       if (!routeName.includes('profile-bonuses')) {
         getPlayerBonuses();
+        getPlayerFreeSpins();
       }
 
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
-      const { subscribeBonusCodeSocket, subscribeBonusSocket } = useBonusStore();
+      const { subscribeBonusCodeSocket, subscribeBonusSocket, subscribeFreeSpinsSocket } = useBonusStore();
       subscribeAccountSocket();
       subscribeInvoicesSocket();
       subscribeBonusCodeSocket();
       subscribeBonusSocket();
+      subscribeFreeSpinsSocket();
 
       const { setEquivalentCurrency } = useGlobalStore();
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
@@ -61,36 +111,51 @@ export const useProfileStore = defineStore('profileStore', {
       bonusStore.$reset();
 
       const { unsubscribeAccountSocket, unsubscribeInvoiceSocket } = useWalletStore();
-      const { unsubscribeBonusCodeSocket, unsubscribeBonusSocket } = useBonusStore();
+      const { unsubscribeBonusCodeSocket, unsubscribeBonusSocket, unsubscribeFreeSpinsSocket } = useBonusStore();
       unsubscribeAccountSocket();
       unsubscribeInvoiceSocket();
       unsubscribeBonusCodeSocket();
       unsubscribeBonusSocket();
+      unsubscribeFreeSpinsSocket();
+    },
+
+    async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {
+      this.startSession(authResponse);
+      await nextTick();
+
+      const { getUserAccounts } = useWalletStore();
+      await getUserAccounts();
+
+      this.isLoggedIn = true;
+
+      const { public: { freshchatParams }} = useRuntimeConfig();
+      const { updateChat, addFreshChatScript } = useFreshchatStore();
+      if (freshchatParams?.guestAvailable) updateChat();
+      else addFreshChatScript();
+
+      this.startProfileDependencies();
     },
 
     async logIn(loginData:any):Promise<void> {
       const { submitLoginData } = useCoreAuthApi();
-      const { getUserAccounts } = useWalletStore();
       const submitResult = await submitLoginData(loginData);
-      this.startSession(submitResult);
-      await nextTick();
-      await getUserAccounts();
-      this.isLoggedIn = true;
-      this.startProfileDependencies();
+      await this.handleLogin(submitResult);
+    },
+
+    async autoLogin(token: string):Promise<void> {
+      const { submitAutologinData } = useCoreAuthApi();
+      const submitResult = await submitAutologinData(token);
+      await this.handleLogin(submitResult);
     },
 
     async registration(registrationData:any):Promise<void> {
       const { submitRegistrationData } = useCoreAuthApi();
-      const { getUserAccounts } = useWalletStore();
       const submitResult = await submitRegistrationData(registrationData);
-      this.startSession(submitResult);
-      await nextTick();
-      await getUserAccounts();
-      this.isLoggedIn = true;
-      this.startProfileDependencies();
+      await this.handleLogin(submitResult);
+
       const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
-      showAlert(alertsData?.successRegistration || defaultLocaleAlertsData?.successRegistration);
+      showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
     },
 
     async getProfileData():Promise<void> {
@@ -100,7 +165,7 @@ export const useProfileStore = defineStore('profileStore', {
       this.isLoggedIn = true;
     },
 
-    setProfileData(data: ProfileInterface):void {
+    setProfileData(data: IProfile):void {
       this.profile = data;
     },
 
@@ -110,7 +175,14 @@ export const useProfileStore = defineStore('profileStore', {
         await logOut();
       } finally {
         this.isLoggedIn = false;
+        const { updateChat } = useFreshchatStore();
+        updateChat();
         this.finishProfileDependencies();
+
+        const { deleteReturnGame } = useLayoutStore();
+        deleteReturnGame();
+
+        sessionStorage.removeItem('depositBonusData');
         const router = useRouter();
         const { localizePath } = useProjectMethods();
         router.push(localizePath('/'));
@@ -123,9 +195,9 @@ export const useProfileStore = defineStore('profileStore', {
       const { resendVerifyEmail } = useCoreProfileApi();
       try {
         await resendVerifyEmail();
-        showAlert(alertsData?.resentVerification || defaultLocaleAlertsData?.resentVerification);
+        showAlert(alertsData?.profile?.resentVerification || defaultLocaleAlertsData?.profile?.resentVerification);
       } catch {
-        showAlert(alertsData?.somethingWrong || defaultLocaleAlertsData?.somethingWrong);
+        showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
       } finally {
         this.resentVerifyEmail = true;
       }

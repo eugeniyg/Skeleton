@@ -1,7 +1,7 @@
 <template>
   <div class="msg" :class="{'is-unread': props.isUnread}">
     <div class="content">
-      <img class="img" :src="props.src" />
+      <atomic-image class="img" :src="props.src" />
       <div class="title">{{ props.title }}</div>
       <div class="date">{{ props.date }}</div>
     </div>

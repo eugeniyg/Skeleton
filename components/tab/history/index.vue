@@ -13,16 +13,16 @@
     </div>
 
     <div class="tab-history">
-      <component :content="props.content" :is="loadTab(selected)"/>
+      <component :content="props.content[selected]" :is="loadTab(selected)"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { HistoryTabInterface } from '@skeleton/types';
+  import type { IHistory } from '~/types';
 
   const props = defineProps<{
-    content: HistoryTabInterface
+    content: IHistory
   }>();
 
   const filterContent = Object.keys(props.content).filter((key) => {

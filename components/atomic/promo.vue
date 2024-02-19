@@ -1,5 +1,16 @@
 <template>
-  <div class="promo">
+  <div class="promo" :class="{'promo--without-advantages': !isShowAdvantages}">
+    <picture class="promo__picture">
+      <source
+        :srcset="getContent(popupsData, defaultLocalePopupsData, 'registration.promo.images.desktop.backgroundImage')"
+        media="(min-width: 64rem)"
+      />
+      <atomic-image
+        :src="getContent(popupsData, defaultLocalePopupsData, 'registration.promo.images.mobile.backgroundImage')"
+        class="promo__picture-img"
+      />
+    </picture>
+
     <div class="header">
       <div class="title">
         {{ getContent(popupsData, defaultLocalePopupsData, 'registration.promo.title') }}
@@ -14,26 +25,31 @@
       </span>
     </div>
 
-    <div v-if="advantagesList?.length" class="items">
+    <div v-if="advantagesList?.length && isShowAdvantages" class="items">
       <div
         v-for="(advantage, index) in advantagesList"
         :key="index"
         class="item"
       >
-        <atomic-icon :id="advantage.icon"/>{{ advantage.label }}
+        <atomic-icon :id="advantage.icon"/>
+        {{ advantage.label }}
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const {
+    popupsData,
+    defaultLocalePopupsData
+  } = useGlobalStore();
   const { getContent } = useProjectMethods();
 
   const advantagesList = computed(() => {
-    if (popupsData?.registration?.promo?.advantages?.length) return popupsData.registration.promo.advantages;
-    return defaultLocalePopupsData?.registration?.promo?.advantages || [];
+    return popupsData?.registration?.promo?.advantages || [];
   });
+
+  const isShowAdvantages = computed(() => popupsData?.registration?.promo?.displayAdvantages);
 </script>
 
-<style src="~/assets/styles/components/atomic/promo.scss" lang="scss" />
+<style src="~/assets/styles/components/atomic/promo.scss" lang="scss"/>

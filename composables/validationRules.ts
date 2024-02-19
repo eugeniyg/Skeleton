@@ -245,6 +245,10 @@ export const digits_between = (param: string) => {
 
 export const ip = validationRules.ipAddress;
 
+export const numeric = validationRules.numeric;
+
+export const integer = validationRules.integer;
+
 // eslint-disable-next-line
 export const mac_address = validationRules.macAddress;
 
@@ -288,13 +292,17 @@ export const regex = (param:any) => validationRules.helpers.withParams(
       if (!validationRules.helpers.req(value)) return true;
 
       const testRegexp = (reg: string) => {
-        const mod = /[g|i|m]{1,3}$/;
-        const matchFlags:string[]|null = reg.match(mod);
-        const flag:string = matchFlags ? matchFlags[0] : '';
+        let flags = reg.replace(/.*\/([gimuyvsd]{1,8})$/, '$1');
+        if (flags === reg) flags = '';
 
-        const regexMain = reg.replace(mod, '').slice(1, -1);
-        const paramRegexp = new RegExp(regexMain, flag);
+        let pattern;
+        if (flags) {
+          pattern = reg.replace(new RegExp('^/?(.*?)/' + flags + '$'), '$1');
+        } else {
+          pattern = reg.replace(new RegExp('^/?(.*?)/?$'), '$1');
+        }
 
+        const paramRegexp = new RegExp(pattern, flags);
         return paramRegexp.test(value);
       }
 

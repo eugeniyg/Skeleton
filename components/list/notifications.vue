@@ -28,24 +28,12 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    isShowMarkReadBtn: {
-      type: Boolean,
-      default: true,
-    },
-    isShowReadAllBtn: {
-      type: Boolean,
-      default: false,
-    },
-    max: {
-      type: Number,
-      default: 5,
-    },
-    items: {
-      type: Array,
-      default: () => [],
-    },
-  });
+  const props = defineProps<{
+    isShowMarkReadBtn: boolean,
+    isShowReadAllBtn?: boolean,
+    max: number,
+    items: any[] // should be replaced
+  }>();
   const filteredItems = computed(() => (props.max ? props.items.slice(0, props.max) : props.items));
   const emit = defineEmits(['read-all']);
 </script>

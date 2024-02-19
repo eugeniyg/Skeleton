@@ -3,21 +3,21 @@
   display: flex;
   align-items: center;
   grid-column-gap: rem(4px);
-  color: var(--color, var(--gray-400));
+  color: var(--color, var(--text-tertiary));
 
   &.variant-error {
-    --color: var(--red-500);
+    --color: var(--icon-alert);
   }
 
   &.variant-success, &.variant-verified {
-    --color: var(--green-500);
+    --color: var(--icon-success);
   }
 
   &.variant-unverified {
-    --color: var(--orange-500);
+    --color: var(--icon-warning);
   }
 
   &.variant-verified {
-    --color: var(--green-500);
+    --color: var(--icon-success);
   }
 }

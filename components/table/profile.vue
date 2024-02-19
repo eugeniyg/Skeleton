@@ -1,14 +1,14 @@
 <template>
   <div class="tb-profile">
     <div v-for="field in profileViewFields" :key="field.name" class="row">
-      <div class="th">{{ getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) || '' }}</div>
+      <div class="th">{{ getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || '' }}</div>
 
       <div class="td">
         <!--        <atomic-row-phone v-if="field.name === 'phone'" v-bind="td.props"/>-->
-        <atomic-row-sex v-if="field.name === 'gender' && profile.gender" :value="profile.gender"/>
-        <template v-else-if="field.name === 'birthdate'">{{ profile[field.name]?.split(' ')[0] || '-' }}</template>
-        <template v-else-if="field.name === 'phone'">{{ profile[field.name] ? `+${profile[field.name]}`: '-' }}</template>
-        <template v-else>{{ profile[field.name] || '-' }}</template>
+        <atomic-row-sex v-if="field.name === 'gender' && profile?.gender" :value="profile?.gender"/>
+        <template v-else-if="field.name === 'birthdate'">{{ profile?.[field.name]?.split(' ')[0] || '-' }}</template>
+        <template v-else-if="field.name === 'phone'">{{ profile?.[field.name] ? `+${profile?.[field.name]}`: '-' }}</template>
+        <template v-else>{{ profile?.[field.name] || '-' }}</template>
       </div>
     </div>
   </div>
@@ -32,11 +32,11 @@
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
-  const { fieldsContent, defaultLocaleFieldsContent } = storeToRefs(globalStore);
+  const { fieldsSettings, defaultLocaleFieldsSettings } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const fieldsStore = useFieldsStore();
   const { profileFields } = storeToRefs(fieldsStore);
-  const profileViewFields = profileFields.value.filter((field) => !hideFields.includes(field.name));
+  const profileViewFields = computed(() => profileFields.value.filter((field) => !hideFields.includes(field.name)));
 </script>
 
 <style src="~/assets/styles/components/table/profile.scss" lang="scss" />

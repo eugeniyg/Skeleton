@@ -13,71 +13,84 @@
           <h4>{{ heading }}</h4>
         </template>
 
-        <template v-slot:content="{ item }">
-          <nuxt-link :to="localizePath(item.url)">{{ item.label }}</nuxt-link>
+        <template v-slot:content="{ item }: { item: ILink }">
+          <nuxt-link
+            :to="item.url.startsWith('http') ? item.url : localizePath(item.url)"
+          >
+            {{ item.label }}
+          </nuxt-link>
         </template>
       </accordeon>
 
-      <list-base :items="trustIcons">
+      <partners
+        v-if="layoutData?.footer?.partners?.isShow"
+        :label="layoutData?.footer?.partners?.label || defaultLocaleLayoutData?.footer?.partners?.label"
+        :items="layoutData?.footer?.partners?.items || defaultLocaleLayoutData?.footer?.partners?.items"
+      />
+
+      <list-base :items="layoutData?.footer?.responsibilityIcons || defaultLocaleLayoutData?.footer?.responsibilityIcons">
         <template #header>
-          <h4>{{ footerContent?.responsibilityLabel || defaultLocaleFooterContent?.responsibilityLabel }}</h4>
+          <h4>{{ layoutData?.footer?.responsibilityLabel || defaultLocaleLayoutData?.footer?.responsibilityLabel }}</h4>
         </template>
 
         <template v-slot:item="{ item }">
-          <img :src="`/img${item}`" />
+          <atomic-image :src="`${item.image}`"/>
         </template>
       </list-base>
     </div>
 
     <atomic-divider/>
 
-    <list-paysis :items="paymentItems"/>
+    <list-paysis/>
 
     <atomic-divider/>
+    
+    <template v-if="showCuracaoBlock">
+      <div class="info">
+        <iframe
+          v-if="layoutData?.footer?.curacao?.frameLink || defaultLocaleLayoutData?.footer?.curacao?.frameLink"
+          :src="layoutData?.footer?.curacao?.frameLink || defaultLocaleLayoutData?.footer?.curacao?.frameLink"
+          width="132px"
+          height="62px"
+          data-not-lazy
+        />
 
-    <div v-if="footerContent?.curacao || defaultLocaleFooterContent?.curacao" class="info">
-      <iframe
-        src="https://licensing.gaming-curacao.com/validator/?lh=95426453d291d7c01ec3a7e5aaf8b499&template=tseal"
-        width="132px"
-        height="62px"
-      />
+        <div
+          v-if="layoutData?.footer?.curacao?.description || defaultLocaleLayoutData?.footer?.curacao?.description"
+          class="info__text"
+          v-html="marked.parse(layoutData?.footer?.curacao?.description || defaultLocaleLayoutData?.footer?.curacao?.description || '')"
+        />
+      </div>
 
-      <div class="info__text" v-html="marked.parse(footerContent?.curacao || defaultLocaleFooterContent?.curacao || '')" />
-    </div>
-
-    <atomic-divider/>
+      <atomic-divider/>
+    </template>
 
     <div class="copy-info">
-      <p>{{ footerContent?.copyright || defaultLocaleFooterContent?.copyright }}</p>
+      <p>{{ layoutData?.footer?.copyright || defaultLocaleLayoutData?.footer?.copyright }}</p>
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
   import { marked } from 'marked';
+  import type { ILink } from "~/types";
 
   const { localizePath } = useProjectMethods();
 
-  const { footerContent, defaultLocaleFooterContent } = useGlobalStore();
+  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const accordeonItems = [
-    footerContent?.promoMenu || defaultLocaleFooterContent?.promoMenu,
-    footerContent?.infoMenu || defaultLocaleFooterContent?.infoMenu,
-    footerContent?.helpMenu || defaultLocaleFooterContent?.helpMenu,
-  ];
-  const trustIcons = [
-    '/trust-icons/1.svg',
-    '/trust-icons/2.svg',
-    '/trust-icons/3.svg',
-    '/trust-icons/4.svg',
-  ];
+      layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
+      layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
+      layoutData?.footer?.helpMenu || defaultLocaleLayoutData?.footer?.helpMenu,
+    ].filter(menu => menu?.title && menu?.items?.length);
+  
+  const showCuracaoBlock = computed(() => {
+    return layoutData?.footer?.curacao?.description ||
+      defaultLocaleLayoutData?.footer?.curacao?.description ||
+      layoutData?.footer?.curacao?.frameLink ||
+      defaultLocaleLayoutData?.footer?.curacao?.frameLink;
+  });
 
-  const paymentItems = [
-    '/payments-icons/1.svg',
-    '/payments-icons/2.svg',
-    '/payments-icons/3.svg',
-    '/payments-icons/4.svg',
-  ];
 </script>
 
-<style src="~/assets/styles/components/layout/footer.scss" lang="scss" />
-
+<style src="~/assets/styles/components/layout/footer.scss" lang="scss"/>

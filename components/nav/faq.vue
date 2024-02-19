@@ -10,27 +10,26 @@
         v-for="(item, itemIndex) in props.items"
         :key="itemIndex"
         class="item"
-        :class="{'is-active': $route.path === localizePath(`/questions/${item.pageUrl}`) }"
-        @click.prevent="select(`/questions/${item.pageUrl}`)"
+        :class="{'is-active': route.path === localizePath(`/questions/${item.pageIdentity}`) }"
+        @click.prevent="select(`/questions/${item.pageIdentity}`)"
       >
         <atomic-icon :id="item.icon" />{{ item.title }}
-        <atomic-icon v-show="$route.path === localizePath(`/questions/${item.pageUrl}`)" id="check"/>
+        <atomic-icon v-show="route.path === localizePath(`/questions/${item.pageIdentity}`)" id="check"/>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    items: {
-      type: Array,
-      default: () => [],
-    },
-  });
+  import type { IQuestionCategory } from "~/types";
+
+  const props = defineProps<{
+    items: IQuestionCategory[]
+  }>();
   const { localizePath } = useProjectMethods();
   const isOpen = ref<boolean>(false);
   const route = useRoute();
-  const selected = computed(() => props.items.find((item:any) => localizePath(`/questions/${item.pageUrl}`) === route.path));
+  const selected = computed(() => props.items.find((item:any) => localizePath(`/questions/${item.pageIdentity}`) === route.path));
 
   const toggle = ():void => {
     isOpen.value = !isOpen.value;

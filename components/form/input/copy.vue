@@ -1,18 +1,18 @@
 <template>
   <label :class="classes" :for="props.name">
     <span v-if="props.label" class="label">
-      {{ label }}<sup v-if="props.isRequired">*</sup>
+      {{ label }}<span class="required" v-if="props.isRequired">*</span>
     </span>
 
     <div class="row">
       <input
         class="field"
-        readonly=""
+        readonly
         ref="copyInput"
         :value="props.value"
         :id="props.name"
         :name="props.name"
-        :required="props.isRequired ? 'required': false"
+        :required="props.isRequired"
         :placeholder="props.placeholder"
         @blur="emit('blur')"
         @input="emit('input')"

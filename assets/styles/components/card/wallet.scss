@@ -16,14 +16,14 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-image: linear-gradient(89.73deg, #FFDC8A 1.37%, #FFC12E 49.58%, #E6A409 98.17%);
+    background: var(--border-cta);
     opacity: 0;
     transition: opacity .4s ease-in-out ;
   }
 
   .title {
     @include font($body-2);
-    color: var(--white);
+    color: var(--text-primary);
     grid-area: title;
     position: relative;
     display: flex;
@@ -36,7 +36,7 @@
     .label {
       flex-direction: row-reverse;
       @include upd-font($body-1);
-      color: var(--gray-300);
+      color: var(--text-secondary);
       grid-area: label;
       position: relative;
       align-self: flex-start;
@@ -46,7 +46,7 @@
   .amount {
     grid-area: amount;
     @include font($heading-7);
-    color: var(--white);
+    color: var(--text-primary);
     grid-column-gap: rem(4px);
     display: flex;
     position: relative;
@@ -61,14 +61,15 @@
     @include font($body-3);
     position: relative;
     padding-top: rem(11px);
+    color: var(--text-primary);
   }
 
   .content {
     position: relative;
     height: 100%;
-    background: linear-gradient(107.86deg, #1C212B 1.67%, #3D4451 87.33%);
+    background-color: var(--layer-02);
     border-radius: inherit;
-    padding: rem(24px);
+    padding: rem(22px);
     display: grid;
     grid-template-columns: 1fr minmax(0, auto);
     grid-template-rows: minmax(40px, auto) 1fr;
@@ -101,10 +102,6 @@
     &:before {
       opacity: 1;
     }
-
-    .content {
-      padding: rem(22px);
-    }
   }
 
   .actions {
@@ -115,15 +112,19 @@
   }
 
   .hide-currency {
-    --color: var(--gray-300);
+    --color: var(--button-text-ghost-highContrast);
     --padding: #{rem(8px)} 0;
     position: relative;
 
     @include use-hover {
       &:hover {
-        --color: var(--yellow-500);
+        --color: var(--button-text-ghost-hover);
         --bg: transparent;
       }
+    }
+
+    &:active {
+      --color: var(--button-text-ghost-click);
     }
   }
 }

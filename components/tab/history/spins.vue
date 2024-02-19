@@ -14,15 +14,15 @@
       <template v-if="spins.length">
         <div v-for="(spin, itemIndex) in spins" :key="itemIndex" class="row">
           <div class="td">{{ spin.game}}</div>
-          <div class="td">{{ formatSum(spin.currency, spin.betAmount) }}</div>
-          <div class="td">{{ formatSum(spin.currency, spin.resultBalance) }}</div>
-          <div class="td">{{ getFormatDate(spin.createdAt) }}</div>
+          <div class="td">{{ formatSum(spin.currency, spin.amount) }}</div>
+          <div class="td">{{ formatSum(spin.currency, spin.payout) }}</div>
+          <div class="td">{{ dayjs(spin.createdAt).format('DD.MM.YYYY, HH:mm') }}</div>
         </div>
       </template>
     </div>
 
     <atomic-pagination
-      v-if="pageMeta?.totalPages > 1"
+      v-if="pageMeta?.totalPages && pageMeta.totalPages > 1"
       v-bind="pageMeta"
       @selectPage="changePage"
     />
@@ -31,23 +31,24 @@
   <atomic-empty
     v-else-if="!loading"
     variant="bets-history"
-    :title="props.content.spins.empty.title"
-    :subTitle="props.content.spins.empty.description"
+    :title="props.content?.empty?.title"
+    :subTitle="props.content?.empty?.description"
   />
 </template>
 
 <script setup lang="ts">
-  import { PaginationMetaInterface, SpinHistoryInterface } from '@platform/frontend-core/dist/module';
-  import { HistoryTabInterface } from '@skeleton/types';
+  import type { IPaginationMeta, ISpinHistory } from '@skeleton/core/types';
+  import type { ISpinsHistory } from '~/types';
 
   const props = defineProps<{
-    content: HistoryTabInterface,
+    content: ISpinsHistory,
   }>();
 
-  const headTitles = Object.values(props.content.spins.tableColumns || {});
+  const dayjs = useDayjs();
+  const headTitles = Object.values(props.content?.tableColumns || {});
   const loading = ref<boolean>(true);
-  const spins = ref<SpinHistoryInterface[]>([]);
-  const pageMeta = ref<PaginationMetaInterface>();
+  const spins = ref<ISpinHistory[]>([]);
+  const pageMeta = ref<IPaginationMeta>();
 
   const { getSpinsHistory } = useCoreGamesApi();
   const spinsRequest = async (page: number = 1):Promise<void> => {
@@ -57,8 +58,6 @@
     pageMeta.value = response.meta;
     loading.value = false;
   };
-
-  const { getFormatDate } = useProjectMethods();
 
   const changePage = (page: number):void => {
     if (loading.value) return;

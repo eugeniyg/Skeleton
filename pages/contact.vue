@@ -1,9 +1,8 @@
 <template>
   <div>
-    <div class="contact">
-      <img
+    <div v-show="contactContent || defaultLocaleContactContent" class="contact">
+      <atomic-picture
         v-if="contactContent?.image || defaultLocaleContactContent?.image"
-        class="img"
         :src="contactContent?.image || defaultLocaleContactContent?.image"
         width="348"
         height="301"
@@ -20,8 +19,8 @@
           v-model:value="contactFormData.email"
           type="email"
           name="email"
-          :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.label') || ''"
-          :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'email.placeholder') || ''"
+          :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
+          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
           :hint="setError('email')"
           @blur="v$.email?.$touch()"
         />
@@ -29,8 +28,8 @@
         <form-input-textarea
           v-model:value="contactFormData.message"
           name="message"
-          :label="getContent(fieldsContent, defaultLocaleFieldsContent, 'message.label') || ''"
-          :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'message.placeholder') || ''"
+          :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.message.label') || ''"
+          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.message.placeholder') || ''"
           :hint="setError('message')"
           @blur="v$.message?.$touch()"
         />
@@ -52,30 +51,57 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { ContactPageInterface } from '@skeleton/types';
+  import type { IContactsPage } from '~/types';
 
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();
   const {
     setPageSeo,
     getContent,
-    findLocalesContentData,
+    getLocalesContentData
   } = useProjectMethods();
 
   const {
-    fieldsContent,
-    defaultLocaleFieldsContent,
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
     alertsData,
     defaultLocaleAlertsData,
-    contentLocalesArray,
+    currentLocale,
+    defaultLocale
   } = storeToRefs(globalStore);
 
-  const contactContentRequest = await useAsyncData('contactContent', () => queryContent('page-controls')
-    .where({ locale: { $in: contentLocalesArray.value } }).only(['locale', 'contactPage']).find());
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(contactContentRequest.data.value);
-  const contactContent: Maybe<ContactPageInterface> = currentLocaleData?.contactPage;
-  const defaultLocaleContactContent: Maybe<ContactPageInterface> = defaultLocaleData?.contactPage;
-  setPageSeo(contactContent?.seo);
+  const contactContent = ref<Maybe<IContactsPage>>();
+  const defaultLocaleContactContent = ref<Maybe<IContactsPage>>();
+
+  interface IPageContent {
+    currentLocaleData: Maybe<IContactsPage>;
+    defaultLocaleData: Maybe<IContactsPage>;
+  }
+
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    contactContent.value = contentData?.currentLocaleData;
+    defaultLocaleContactContent.value = contentData?.defaultLocaleData;
+    setPageSeo(contactContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('contactPageContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'pages', 'contacts').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'contacts').findOne(),
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('contactPageContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   const contactFormData = reactive({
     email: '',
@@ -92,7 +118,7 @@
   const contactUsFormRules = getFormRules(contactUsRules);
   const { serverFormErrors, v$, setError } = useFormValidation(contactUsFormRules, contactFormData);
 
-  const { sendContactMessage } = useCoreNotificationApi();
+  const { sendContactMessage } = useCoreGlobalApi();
   const submitContactForm = async ():Promise<void> => {
     if (v$.value.$invalid) return;
 
@@ -103,7 +129,7 @@
     try {
       isLockedAsyncButton.value = true;
       await sendContactMessage(contactFormData);
-      layoutStore.showAlert(alertsData.value?.sentMessage || defaultLocaleAlertsData.value?.sentMessage);
+      layoutStore.showAlert(alertsData.value?.global?.sentMessage || defaultLocaleAlertsData.value?.global?.sentMessage);
       contactFormData.email = '';
       contactFormData.message = '';
       v$.value.$reset();

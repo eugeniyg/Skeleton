@@ -1,11 +1,7 @@
-import { storeToRefs } from 'pinia';
-
-export default defineNuxtRouteMiddleware((from, to) => {
+export default defineNuxtRouteMiddleware((to, from) => {
   const layoutStore = useLayoutStore();
 
-  const { isShowAlert } = storeToRefs(layoutStore);
-
-  if (to.path !== from.path && isShowAlert) {
+  if (to.path !== from.path && layoutStore.isShowAlert) {
     layoutStore.hideAlert();
   }
 

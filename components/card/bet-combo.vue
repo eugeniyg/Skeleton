@@ -6,14 +6,14 @@
       <button-copy
         :copyButton="betCard.copyButton"
         :copyTooltip="betCard.copyTooltip"
-        :text="props.id"
+        :text="props.roundId"
       />
     </div>
 
     <div class="content">
       <div class="row">
         <button class="btn-toggle-expand" @click="isOpen = !isOpen">
-          <atomic-icon id="ui-arrow_expand-close"/>
+          <atomic-icon id="arrow_expand-close"/>
         </button>
 
         <div class="row-title">{{ betCard.comboLabel }}</div>
@@ -39,10 +39,10 @@
       </div>
 
       <atomic-bet-status
-        v-if="props.status !== 1 && betStatusName"
-        :variant="betStatusName"
+        v-if="props.status !== 1"
+        :variant="props.status"
       >
-        {{ props.statuses[betStatusName] }}
+        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.betStatuses.${props.status}`) }}
       </atomic-bet-status>
 
       <div v-if="props.status !== 1" class="amount">
@@ -78,23 +78,25 @@
 </template>
 
 <script setup lang="ts">
-  import { BetItemInterface } from '@platform/frontend-core/dist/module';
-  import { BetCardInterface, BetStatusesInterface } from '@skeleton/types';
+import type { IBetItem } from '@skeleton/core/types';
+import type { IBetsHistory } from '~/types';
 
-  const props = defineProps<{
+const props = defineProps<{
     id: string,
-    betAmount: number,
+    roundId: string,
+    amount: number,
     currency: string,
     createdAt: string,
-    resultBalance: number,
-    items: BetItemInterface[],
+    payout: number,
+    items: IBetItem[],
     status: number,
     coefficient: number,
-    statuses: BetStatusesInterface,
-    betCard: BetCardInterface,
+    betCard: IBetsHistory['betCard'],
   }>();
 
   const isOpen = ref<boolean>(false);
+
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
 
   const formatDate = (dateUtcIsoString: string, needYear: boolean = true):string => {
     const date = new Date(dateUtcIsoString);
@@ -105,25 +107,19 @@
   };
 
   const comboDisciplines = computed(() => {
-    const disciplinesArr = props.items.map((betItem) => betItem.discipline).filter((discipline) => discipline !== props.items[0].discipline);
-    return disciplinesArr;
+    return props.items.map((betItem) => betItem.discipline).filter((discipline) => discipline !== props.items[0].discipline);
   });
 
-  const globalStore = useGlobalStore();
-  const findStatus = globalStore.betStatuses.find((status) => status.id === props.status)?.name;
-  const betStatusName = findStatus ? findStatus.toLowerCase() : undefined;
-
-  const { formatBalance } = useProjectMethods();
+  const { formatBalance, getContent } = useProjectMethods();
   const betSum = computed(() => {
-    const balanceFormat = formatBalance(props.currency, props.betAmount);
+    const balanceFormat = formatBalance(props.currency, props.amount);
     return `${balanceFormat.amount} ${balanceFormat.currency}`;
   });
 
   const resultSum = computed(() => {
-    const balanceFormat = formatBalance(props.currency, props.resultBalance);
+    const balanceFormat = formatBalance(props.currency, props.payout);
     return `${balanceFormat.amount} ${balanceFormat.currency}`;
   });
 </script>
 
 <style src="~/assets/styles/components/card/bet-combo.scss" lang="scss" />
-

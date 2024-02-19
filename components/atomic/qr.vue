@@ -4,20 +4,20 @@
     <div class="description">{{ props.content?.addressDescription }}</div>
 
     <div class="box">
-      <img
-        v-if="props.qrLink"
-        :src="`https://chart.googleapis.com/chart?chs=116x116&cht=qr&chl=${props.qrLink}&choe=UTF-8`"
+      <atomic-image
+        v-if="props.qrAddress"
+        :src="`https://chart.googleapis.com/chart?chs=116x116&cht=qr&chl=${props.qrAddress}&choe=UTF-8`"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { DepositInterface } from '@skeleton/types';
+import type { IWalletDeposit } from '~/types';
 
   const props = defineProps<{
-    content: Maybe<DepositInterface>,
-    qrLink: string
+    content: Maybe<IWalletDeposit>,
+    qrAddress: string
   }>();
 </script>
 

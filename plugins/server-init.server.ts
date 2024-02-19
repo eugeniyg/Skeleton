@@ -7,45 +7,30 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     getGlobalContent,
     getRequestCountry,
     getSettingsConstants,
-    pagesWithoutLocale,
+    setCurrentLocale
   } = useGlobalStore();
   const { getGameProviders, getGameCollections } = useGamesStore();
 
-  const checkLanguage = ():string|undefined => {
-    const cookieLanguage = useCookie('user-language');
-    const route = useRoute();
-    const needChangeLanguage = route.name && !route.params.locale && !!cookieLanguage.value;
-
-    if (needChangeLanguage && !pagesWithoutLocale.includes(route.name as string)) {
-      return `/${cookieLanguage.value}${route.fullPath === '/' ? '' : route.fullPath}`;
-    } return undefined;
-  };
-
-  const redirectUrl = checkLanguage();
-  if (redirectUrl !== undefined) {
-    return navigateTo(redirectUrl, { replace: true });
-  }
+  getRequestCountry();
 
   if (process.env.NODE_ENV === 'development') {
     const globalStore = useGlobalStore();
     globalStore.baseApiUrl = process.env.API_BASE_URL || '';
   }
 
-  getRequestCountry();
-
-  const { getSessionToken } = useCoreAuthStore();
+  const { getSessionToken } = useProfileStore();
   const sessionToken = getSessionToken();
 
   const { getProfileData } = useProfileStore();
   const { getUserAccounts } = useWalletStore();
 
-  const settingsRequest = Promise.all([
-    getCurrencies(),
+  const globalRequests = Promise.all([
     getLocales(),
     getCountries(),
+    getCurrencies(),
     getSettingsConstants(),
     getGameProviders(),
-    getGameCollections(),
+    getGameCollections()
   ]);
 
   if (sessionToken) {
@@ -55,11 +40,13 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     ]);
 
     await Promise.allSettled([
-      settingsRequest,
+      globalRequests,
       profileRequests,
     ]);
   } else {
-    await settingsRequest;
+    await globalRequests;
   }
+
+  setCurrentLocale();
   await getGlobalContent();
 });

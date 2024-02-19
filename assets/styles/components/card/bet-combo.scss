@@ -1,7 +1,7 @@
 .card-bet-combo {
   border-radius: 16px;
   padding: var(--card-bet-combo-padding, 0 #{rem(24px)} 0);
-  background-color: var(--gray-900);
+  background-color: var(--layer-01);
 
   @include media(md) {
     --card-bet-combo-padding: 0 #{rem(24px)} 0;
@@ -9,54 +9,54 @@
 
   .label {
     @include font($body-2);
-    color: var(--color, var(--gray-400));
+    color: var(--color, var(--text-helper));
   }
 
   .value {
     @include font($body-2);
-    color: var(--color, var(--white));
+    color: var(--color, var(--text-primary));
   }
 
   .date {
     @include font($body-1);
-    color: var(--color, var(--gray-400));
+    color: var(--color, var(--text-helper));
   }
 
   .time {
     @include font($body-1);
-    color: var(--color, var(--gray-400));
+    color: var(--color, var(--text-helper));
   }
 
   .num {
     @include font($heading-2);
-    color: var(--color, var(--gray-400));
+    color: var(--color, var(--text-helper));
   }
 
   .head {
     display: flex;
     grid-column-gap: rem(8px);
-    background-color: var(--gray-800);
+    background-color: var(--layer-02);
     padding: rem(11px) rem(24px);
     margin: 0 rem(-24px);
     align-items: center;
-    border-bottom: 1px solid var(--gray-700);
+    border-bottom: 1px solid var(--border-01);
     border-radius: 16px 16px 0 0;
   }
 
   .sep {
     height: rem(16px);
-    border-left: 1px solid var(--sep-color, var(--gray-800));
+    border-left: 1px solid var(--sep-color, var(--border-01));
   }
 
   .row-title {
     @include font($heading-3);
-    color: var(--white);
+    color: var(--text-primary);
   }
 
   .content {
-    --color-type: var(--gray-400);
+    --color-type: var(--text-helper);
     padding: rem(8px) rem(24px) rem(18px);
-    background-color: var(--gray-900);
+    background-color: var(--layer-01);
     margin: 0 rem(-24px);
     display: grid;
     grid-row-gap: rem(8px);
@@ -75,22 +75,22 @@
     }
 
     .date {
-      --color: var(--gray-500);
+      --color: var(--text-helper);
     }
 
     .time {
-      --color: var(--gray-500);
+      --color: var(--text-helper);
     }
   }
 
   .type {
     @include font($heading-1);
-    color: var(--color-type, var(--white));
+    color: var(--color-type, var(--text-primary));
   }
 
   .desc {
     @include font($body-1);
-    color: var(--gray-500);
+    color: var(--text-helper);
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
@@ -129,18 +129,18 @@
 
     .label {
       @include font($body-2);
-      color: var(--gray-500);
+      color: var(--text-helper);
       align-self: flex-end;
     }
 
     .value {
       @include font($body-2);
-      color: var(--white);
+      color: var(--text-primary);
       align-self: flex-end;
     }
 
     .sep {
-      border-left: 1px solid var(--gray-700);
+      border-left: 1px solid var(--border-01);
       height: rem(18px);
       align-self: flex-end;
       margin: 0 rem(8px);
@@ -158,13 +158,13 @@
 
     .label {
       @include font($body-2);
-      color: var(--gray-500);
+      color: var(--text-helper);
       align-self: flex-end;
     }
 
     .value {
       @include font($heading-5);
-      color: var(--white);
+      color: var(--text-primary);
       transform: translateY(#{rem(2px)});
     }
   }
@@ -172,7 +172,7 @@
   .expand-content {
     border-top: var(--expand-content-top-border, none);
     border-bottom: var(--expand-content-bottom-border, none);
-    background-color: var(--gray-800);
+    background-color: var(--layer-02);
     padding: var(--expand-padding-y, 0) rem(24px);
     border-radius: var(--expand-content-radius, 0 0 #{rem(16px)} #{16px});
     display: grid;
@@ -200,7 +200,7 @@
       }
 
       + .item {
-        border-top: 1px solid var(--gray-700);
+        border-top: 1px solid var(--border-01);
       }
 
       .row .sep {
@@ -218,7 +218,7 @@
     margin-left: var(--margin-left-group, 0);
     grid-column-gap: rem(4px);
 
-    --sep-color: var(--gray-700);
+    --sep-color: var(--border-01);
 
     .sep {
       margin: 0 rem(4px);
@@ -243,7 +243,7 @@
   .title {
     @include font($heading-3);
     margin-top: rem(12px);
-    color: var(--white);
+    color: var(--text-primary);
   }
 
   .btn-toggle-expand {
@@ -257,7 +257,11 @@
     z-index: 1;
 
     .icon {
-      --color: var(--gray-600)
+      --color: var(--icon-secondary)
+    }
+
+    &:hover {
+      cursor: pointer;
     }
   }
 
@@ -276,7 +280,7 @@
       transform: rotateX(0deg) translateX(-100%);
 
       .icon {
-        --color: var(--yellow-500)
+        --color: var(--icon-accent)
       }
     }
   }
@@ -288,8 +292,8 @@
 
     .more {
       @include font($body-0);
-      color: var(--more-color, var(--gray-400));
-      border-bottom: 1px dashed var(--more-border-color, var(--gray-500));
+      color: var(--more-color, var(--text-tertiary));
+      border-bottom: 1px dashed var(--more-border-color, var(--text-tertiary));
       transition: all .2s ease-in-out;
     }
 

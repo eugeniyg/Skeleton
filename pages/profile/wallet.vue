@@ -16,7 +16,7 @@
 
     <nav-currency :tabs="currencyTabs" @toggleNavEmpty="currencyNavEmpty = $event"/>
 
-    <div class="cards-wallet">
+    <div v-if="walletContent || defaultLocaleWalletContent" class="cards-wallet">
       <TransitionGroup name="card">
         <card-wallet
           v-for="account in orderedAccounts"
@@ -31,22 +31,48 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { AccountInterface } from '@platform/frontend-core/dist/module';
-  import { ProfileWalletInterface } from '@skeleton/types';
+  import type { IAccount } from '@skeleton/core/types';
+  import type { IProfileWallet } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { contentLocalesArray } = storeToRefs(globalStore);
+  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
   const {
     setPageSeo,
-    findLocalesContentData,
+    getLocalesContentData,
   } = useProjectMethods();
-  const walletContentRequest = await useAsyncData('walletContent', () => queryContent('profile')
-    .where({ locale: { $in: contentLocalesArray.value } })
-    .only(['locale', 'wallet']).find());
-  const { currentLocaleData, defaultLocaleData } = findLocalesContentData(walletContentRequest.data.value);
-  const walletContent: Maybe<ProfileWalletInterface> = currentLocaleData?.wallet;
-  const defaultLocaleWalletContent: Maybe<ProfileWalletInterface> = defaultLocaleData?.wallet;
-  setPageSeo(walletContent?.seo);
+
+  const walletContent = ref<Maybe<IProfileWallet>>();
+  const defaultLocaleWalletContent = ref<Maybe<IProfileWallet>>();
+
+  interface IPageContent {
+    currentLocaleData: Maybe<IProfileWallet>;
+    defaultLocaleData: Maybe<IProfileWallet>;
+  }
+
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    walletContent.value = contentData?.currentLocaleData;
+    defaultLocaleWalletContent.value = contentData?.defaultLocaleData;
+    setPageSeo(walletContent.value?.seo);
+  }
+
+  const getPageContent = async (): Promise<IPageContent> => {
+    const nuxtContentData = useNuxtData('profileWalletContent');
+    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'profile', 'wallet').findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'profile', 'wallet').findOne()
+    ]);
+    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+  }
+
+  const { pending, data } = await useLazyAsyncData('profileWalletContent', () => getPageContent());
+  if (data.value) setContentData(data.value);
+
+  watch(data, () => {
+    setContentData(data.value);
+  })
 
   const walletStore = useWalletStore();
   const { accounts, currencyTabs } = storeToRefs(walletStore);
@@ -76,5 +102,5 @@
   const orderedAccounts = computed(() => accounts.value.reduce((acc, item) => {
     item.status === 1 ? acc.unshift(item) : acc.push(item);
     return acc;
-  }, [] as AccountInterface[]));
+  }, [] as IAccount[]));
 </script>

@@ -1,31 +1,115 @@
 .box-game {
   display: grid;
   grid-template-areas:
+    "title nav"
     "container nav"
     "panel nav";
   align-items: var(--align-items, flex-end);
   grid-template-columns: 1fr auto;
+  height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   width: 100%;
-  height: 100%;
 
-  .container {
-    background-color: var(--black-primary);
-    grid-area: container;
-    position: relative;
+  @media (orientation: landscape) and (max-width: 1023px) {
+    height: calc(100vh + 1px);
+  }
+
+  @include media(md) {
+    height: auto;
+  }
+
+  &__header {
+    display: none;
     width: 100%;
-    height: calc(var(--vh, 1vh) * 100);
+    padding: rem(8px) rem(16px);
+    background: var(--layer-01);
+    position: relative;
+    z-index: 1;
+    align-items: center;
+
+    &:has(.wager-tooltip) {
+      hr {
+        --display: flex;
+      }
+    }
+
+    hr {
+      display: var(--display, none);
+      width: 1px;
+      flex-shrink: 0;
+      align-self: stretch;
+      height: 20px;
+      margin: auto #{rem(12px)};
+      --bg: var(--border-01);
+    }
 
     @include media(md) {
-      height: calc(100vh - 160px);
+      display: flex;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    @include font($subheading-1);
+    color: var(--text-helper);
+    border-right: 1px solid var(--layer-bg);
+  }
+
+  .container {
+    background-color: var(--layer-bg);
+    grid-area: container;
+    width: 100%;
+    overflow-y: auto;
+    position: fixed;
+    top: var(--top, 0);
+    bottom: var(--bottom, 0);
+    right: 0;
+    left: 0;
+    transition: height 0.5s;
+
+    @include media(md) {
+      position: relative;
+      height: calc(100vh - 142px - var(--bar-height, 0px));
+      --top: 0;
+      --bottom: 0;
+    }
+
+    @media (min-width: 64rem) and (max-width: 1279px) {
+      height: calc(100vh - 196px - var(--bar-height, 0px));
+    }
+
+    @media (orientation: landscape) and (max-width: 1023px) {
+      width: calc(100% - 64px);
     }
 
     iframe {
       display: block;
       border: none !important;
+      height: 100%;
 
       @include media(l) {
         position: relative;
       }
+    }
+  }
+
+  &.box-game--demo .container {
+    @include media(md) {
+      height: calc(100vh - 190px - var(--bar-height, 0px));
+    }
+  }
+
+  .container {
+    @media (orientation: landscape) and (max-width: 1023px) {
+      padding: 0;
+      --top: var(--header-total-height, 0px);
+      --bottom: 0;
+      left: auto;
+    }
+
+    @media (orientation: portrait) and (max-width: 1023px) {
+      padding: 0;
+      --top: var(--header-total-height, 0px);
+      --bottom: 0;
     }
   }
 

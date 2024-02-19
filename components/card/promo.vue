@@ -1,15 +1,15 @@
 <template>
   <div class="promo-card">
     <picture>
-      <source :media="'(max-width: 1279px)'" :srcset="props.images.mobile.backgroundImage" />
-      <source :media="'(max-width: 2264px)'" :srcset="props.images.desktop.backgroundImage" />
-      <img class="back" :src="props.images.mobile.backgroundImage" alt=""/>
+      <source :media="'(max-width: 1279px)'" :srcset="createSrcSet(props.images.mobile.backgroundImage)" />
+      <source :media="'(max-width: 2264px)'" :srcset="createSrcSet(props.images.desktop.backgroundImage)" />
+      <atomic-image class="back" :src="props.images.mobile.backgroundImage" />
     </picture>
 
     <picture>
-      <source :media="'(max-width: 1279px)'" :srcset="props.images.mobile.faceImage" />
-      <source :media="'(max-width: 2264px)'" :srcset="props.images.desktop.faceImage" />
-      <img class="front" :src="props.images.mobile.faceImage" alt=""/>
+      <source :media="'(max-width: 1279px)'" :srcset="createSrcSet(props.images.mobile.faceImage)" />
+      <source :media="'(max-width: 2264px)'" :srcset="createSrcSet(props.images.desktop.faceImage)" />
+      <atomic-image class="front" :src="props.images.mobile.faceImage" />
     </picture>
 
     <div class="info">
@@ -54,14 +54,15 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal, openDepositModal } = useLayoutStore();
+  const { showModal, openWalletModal } = useLayoutStore();
+  const { createSrcSet } = useProjectMethods()
 
   const clickButton = (url:string):void => {
     if (url) {
       const router = useRouter();
       const { localizePath } = useProjectMethods();
       router.push(localizePath(url));
-    } else isLoggedIn.value ? openDepositModal() : showModal('register');
+    } else isLoggedIn.value ? openWalletModal('deposit') : showModal('register');
   };
 </script>
 

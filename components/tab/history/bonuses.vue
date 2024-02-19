@@ -1,70 +1,82 @@
 <template>
   <div>
-    <!--
     <div class="nav-tabs">
       <div
         class="nav-tabs__item"
-        v-for="{ title, id } in tabs"
-        :key="id"
-        :class="{'is-active': id === selectedTab}"
-        @click="changeTab(id)"
+        :class="{'is-active':  selectedTab === 'cashBonuses'}"
+        @click="changeTab('cashBonuses')"
       >
-        {{ title }}
+        {{ props.content?.cashBonusTab }}
+      </div>
+
+      <div
+        class="nav-tabs__item"
+        :class="{'is-active': selectedTab === 'freeSpins'}"
+        @click="changeTab('freeSpins')"
+      >
+        {{ props.content?.freeSpinsTab }}
       </div>
     </div>
-        -->
 
     <table-bonuses-history
       v-if="state.bonusesData.length"
       v-bind="state"
-      :content="bonusesContent"
+      :content="props.content"
       @changePage="changePage"
     />
 
     <atomic-empty
-      v-else-if="!state.loading"
+      v-else-if="!state.bonusesData.length && !state.loading"
       variant="bonuses"
-      :title="bonusesContent.empty.title"
-      :subTitle="bonusesContent.empty.description"
+      :title="props.content?.empty.title"
+      :subTitle="props.content?.empty.description"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-  import {
-    PlayerBonusInterface,
-    PaginationMetaInterface,
-  } from '@platform/frontend-core/dist/module';
-  import { HistoryBonusesInterface, HistoryTabInterface } from '@skeleton/types';
+  import type {
+    IPlayerBonus,
+    IPaginationMeta,
+    IPlayerFreeSpin,
+    IPlayerBonusesRequest
+  } from '@skeleton/core/types';
+  import type { IBonusesHistory } from '~/types';
 
   const props = defineProps<{
-    content: HistoryTabInterface,
+    content: IBonusesHistory,
   }>();
 
-  const bonusesContent:HistoryBonusesInterface = props.content.bonuses;
-
-  interface StateInterface {
+  interface IState {
     loading: boolean,
-    bonusesData: PlayerBonusInterface[],
-    bonusesMeta: Maybe<PaginationMetaInterface>
+    tableType: 'cashBonuses'|'freeSpins',
+    bonusesData: IPlayerBonus[]|IPlayerFreeSpin[],
+    bonusesMeta: Maybe<IPaginationMeta>
   }
 
-  const state = reactive<StateInterface>({
+  const state = reactive<IState>({
     loading: true,
+    tableType: 'cashBonuses',
     bonusesData: [],
     bonusesMeta: undefined,
   });
 
-  const { getPlayerBonuses } = useCoreBonusApi();
+  const selectedTab = ref<'cashBonuses'|'freeSpins'>('cashBonuses');
+
+  const { getPlayerBonuses, getPlayerFreeSpins } = useCoreBonusApi();
   const getBonusesData = async (page = 1):Promise<void> => {
     state.loading = true;
+    const requestParams: IPlayerBonusesRequest  = {
+      page,
+      perPage: 10,
+      sortOrder: 'desc',
+    }
 
     try {
-      const { data, meta } = await getPlayerBonuses({
-        page,
-        perPage: 10,
-        sortOrder: 'desc',
-      });
+      const { data, meta } = selectedTab.value === 'cashBonuses'
+        ? await getPlayerBonuses(requestParams)
+        : await getPlayerFreeSpins(requestParams);
+
       state.bonusesData = data;
       state.bonusesMeta = meta;
     } catch {
@@ -81,23 +93,12 @@
     await getBonusesData(page);
   };
 
-  // const tabs = [
-  //   {
-  //     title: 'Cash Bonuses',
-  //     id: 'cash-bonuses',
-  //   },
-  //   {
-  //     title: 'Free spins',
-  //     id: 'free-spins',
-  //   },
-  // ];
-
-  // const selectedTab = ref<string>(tabs[0].id);
-  //
-  // const changeTab = (tabId: string): void => {
-  //   if (selectedTab.value === tabId) return;
-  //   selectedTab.value = tabId;
-  // };
+  const changeTab = async (tabId: 'cashBonuses'|'freeSpins'): Promise<void> => {
+    if (selectedTab.value === tabId) return;
+    selectedTab.value = tabId;
+    await getBonusesData();
+    state.tableType = tabId;
+  };
 
   onMounted(async () => {
     await getBonusesData();

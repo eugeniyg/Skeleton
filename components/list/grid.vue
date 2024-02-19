@@ -1,39 +1,67 @@
 <template>
   <div class="grid">
     <div class="items">
-      <card-base v-for="item in props.items" :key="item.id" v-bind="item"/>
+      <card-base
+        v-for="item in props.items"
+        :key="item.id"
+        ref="cards"
+        :gameInfo="item"
+      />
     </div>
-
-    <button-load-more v-show="props.meta.totalPages > props.meta.page" ref="loadMore" />
   </div>
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    items: {
-      type: Array,
-      default: () => [],
-    },
-    meta: {
-      type: Object,
-      required: true,
-    },
-  });
-  const emit = defineEmits(['loadMore']);
+import type { IGame, IPaginationMeta } from "@skeleton/core/types";
 
-  const loadMore = ref();
-  const { initObserver } = useCoreMethods();
+  const props = defineProps<{
+    items: IGame[],
+    meta: IPaginationMeta
+  }>();
+  const emit = defineEmits(['loadMore']);
+  const { initObserver } = useProjectMethods();
 
   const observerLoadMore = ():void => {
     if (props.meta.totalPages > props.meta.page) emit('loadMore');
   };
 
-  onMounted(async () => {
-    initObserver(loadMore.value.$el, {
-      onInView: observerLoadMore,
-      settings: { root: null, rootMargin: '0px 0px 400px 0px', threshold: 0 },
-    });
+
+  const loadMoreObserver = ref();
+  const cards = ref([]);
+  const lastItem = ref();
+
+  const unobserveLastItem = ():void => {
+    if (lastItem.value) {
+      loadMoreObserver.value.unobserve(lastItem.value.$el);
+      lastItem.value.$el.removeEventListener('inview', observerLoadMore);
+    }
+  }
+
+  const observeLastItem = ():void => {
+    unobserveLastItem();
+
+    lastItem.value = cards.value[cards.value?.length - 1];
+    if (lastItem.value) {
+      loadMoreObserver.value.observe(lastItem.value.$el);
+      lastItem.value.$el.addEventListener('inview', observerLoadMore);
+    }
+  }
+
+  watch(() => props.items, async () => {
+    await nextTick();
+    observeLastItem();
   });
+
+  onMounted(() => {
+    loadMoreObserver.value = initObserver({
+      settings: { root: null, rootMargin: '100% 0% 100% 0%', threshold: 0 },
+    });
+    observeLastItem();
+  });
+
+  onBeforeUnmount(() => {
+    unobserveLastItem();
+  })
 </script>
 
 <style src="~/assets/styles/components/list/grid.scss" lang="scss" />

@@ -1,6 +1,6 @@
 <template>
   <button class="btn-favorite" :class="{ active: isActive }" @click="toggleFavorite">
-    <atomic-icon id="heart-outline"/>
+    <atomic-icon :id="isActive ? 'heart' : 'heart-outline'"/>
   </button>
 </template>
 
@@ -22,4 +22,3 @@
 </script>
 
 <style src="~/assets/styles/components/button/favorite.scss" lang="scss" />
-

@@ -1,6 +1,6 @@
 <template>
   <label :class="classes">
-    <span v-if="props.label" class="label">{{ props.label }}<sup v-if="props.isRequired">*</sup></span>
+    <span v-if="props.label" class="label">{{ props.label }}<span class="required" v-if="props.isRequired">*</span></span>
     <div class="row">
       <input
         class="field"
@@ -8,7 +8,7 @@
         :name="props.name"
         :value="props.value"
         :readonly="props.isDisabled"
-        :required="props.isRequired ? 'required': false"
+        :required="props.isRequired"
         :placeholder="props.placeholder"
         @focus="onFocus"
         @blur="onBlur"
@@ -17,7 +17,7 @@
       />
 
       <button-verify
-        :is-shown="!profile.confirmedAt"
+        :is-shown="!profile?.confirmedAt"
         :class="{ disabled: resentVerifyEmail }"
         @click.once="profileStore.resendVerifyEmail"
       >

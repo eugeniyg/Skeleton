@@ -1,26 +1,28 @@
 import { defineStore } from 'pinia';
+import type {
+  ICreateLimit,
+  ICurrency,
+  IPlayerLimit
+} from '@skeleton/core/types';
+import type { IProfileLimits } from "~/types";
 
-import { CreateLimitInterface, CurrencyInterface, PlayerLimitInterface } from '@platform/frontend-core/dist/module';
-import { ProfileLimitsContentInterface } from '~/types';
-import { useGlobalStore } from '~/composables/useGlobalStore';
-
-interface LimitsModalInterface {
+interface ILimitsModal {
   addLimit: boolean,
   editLimit: boolean,
-  exceededLimitConfirm: boolean,
+  gameLimitReached: boolean,
   confirmLimitUpdate: boolean,
 }
 
-interface LimitsStateInteface {
-  activeLimits: PlayerLimitInterface[],
+interface ILimitsState {
+  activeLimits: IPlayerLimit[],
   isLoaded: boolean,
-  limitsContent: Maybe<ProfileLimitsContentInterface>,
-  defaultLimitsContent: Maybe<ProfileLimitsContentInterface>,
+  limitsContent: Maybe<IProfileLimits>,
+  defaultLimitsContent: Maybe<IProfileLimits>,
   isAdvancedModeEnabled: boolean,
-  modals: LimitsModalInterface,
+  modals: ILimitsModal,
 }
 
-const transformToPeriods = (limits: PlayerLimitInterface[]) => {
+const transformToPeriods = (limits: IPlayerLimit[]) => {
   const periods = ['daily', 'weekly', 'monthly'];
 
   return periods.map((period) => ({
@@ -31,7 +33,7 @@ const transformToPeriods = (limits: PlayerLimitInterface[]) => {
 };
 
 export const useLimitsStore = defineStore('limitsStore', {
-  state: (): LimitsStateInteface => ({
+  state: (): ILimitsState => ({
     activeLimits: [],
     isLoaded: false,
     limitsContent: undefined,
@@ -40,7 +42,7 @@ export const useLimitsStore = defineStore('limitsStore', {
     modals: {
       addLimit: false,
       editLimit: false,
-      exceededLimitConfirm: false,
+      gameLimitReached: false,
       confirmLimitUpdate: false,
     },
   }),
@@ -51,25 +53,25 @@ export const useLimitsStore = defineStore('limitsStore', {
       this.activeLimits = await getPlayerLimits();
     },
 
-    async createLimit(payload: CreateLimitInterface): Promise<void> {
+    async createLimit(payload: ICreateLimit): Promise<void> {
       const { createPlayerLimit } = useCoreProfileApi();
       await createPlayerLimit(payload);
     },
 
-    setLimitsContent(content: Maybe<ProfileLimitsContentInterface>, defaultContent: Maybe<ProfileLimitsContentInterface>) {
+    setLimitsContent(content: Maybe<IProfileLimits>, defaultContent: Maybe<IProfileLimits>) {
       this.limitsContent = content;
       this.defaultLimitsContent = defaultContent;
     },
 
-    showModal(modalName: keyof LimitsModalInterface) {
+    showModal(modalName: keyof ILimitsModal) {
       this.modals[modalName] = true;
     },
 
-    closeModal(modalName: keyof LimitsModalInterface) {
+    closeModal(modalName: keyof ILimitsModal) {
       this.modals[modalName] = false;
     },
 
-    checkCurrencies(periods: { title: string, items: PlayerLimitInterface[] }[], currencies: CurrencyInterface[]) {
+    checkCurrencies(periods: { title: string, items: IPlayerLimit[] }[], currencies: ICurrency[]) {
       const currencyCodes = currencies.map((currency) => currency.code);
 
       return periods.length > 2 && periods.every((period) => {
@@ -113,23 +115,23 @@ export const useLimitsStore = defineStore('limitsStore', {
     },
 
     coolingOffPeriod() {
-      const { settingsConstants } = useGlobalStore();
+      const { settingsConstants, globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
       const { getContent } = useProjectMethods();
-      const content = getContent(this.limitsContent, this.defaultLimitsContent, 'periodOptions');
+      const content = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'constants.limitPeriods');
 
       return settingsConstants?.player.limit.coolingOffPeriod.map((period) => ({
-        value: content[period.id],
+        value: content?.[period.id] || '',
         code: period.id,
       })) || [];
     },
 
     selfExclusionPeriod() {
-      const { settingsConstants } = useGlobalStore();
+      const { settingsConstants, globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
       const { getContent } = useProjectMethods();
-      const content = getContent(this.limitsContent, this.defaultLimitsContent, 'periodOptions');
+      const content = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'constants.limitPeriods');
 
       return settingsConstants?.player.limit.selfExclusionPeriod.map((period) => ({
-        value: content[period.id],
+        value: content?.[period.id] || '',
         code: period.id,
       })) || [];
     },

@@ -1,77 +1,379 @@
-.cards-wrap {
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  grid-gap: rem(8px);
-  background: linear-gradient(360deg, #11141C 0%, rgba(17, 20, 28, 0) 100%);
+.card-category {
+  &__container {
+    display: grid;
+    grid-gap: rem(8px);
+    margin-bottom: rem(56px);
 
-  @include media(sm) {
-    grid-gap: rem(16px);
+    @include media(sm) {
+      grid-gap: rem(16px);
+    }
+
+    &.has-1-cards {
+      grid-template-columns: 1fr;
+
+      --card-category-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
+      --card-category-img-width: #{rem(104px)};
+      --card-category-img-right: 0;
+      --card-category-img-top: #{rem(-16px)};
+
+      @include media(sm) {
+        --card-category-padding: #{rem(24px)} #{rem(170px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(200px)};
+        --card-category-img-right: #{rem(-8px)};
+        --card-category-img-left: auto;
+        --card-category-img-top: 0;
+        --card-category-img-bottom: 0;
+      }
+
+      @include media(md) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: #{rem(-12px)};
+      }
+
+      @include media(l) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: 0;
+      }
+
+      @include media(xl) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(240px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-21px)};
+      }
+
+      @include media(xxxl) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-21px)};
+      }
+    }
+
+    &.has-2-cards {
+      grid-template-columns: repeat(2, 1fr);
+
+      --card-category-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
+      --card-category-img-width: #{rem(104px)};
+      --card-category-img-right: 0;
+      --card-category-img-top: #{rem(-16px)};
+
+      @include media(sm) {
+        --card-category-padding: #{rem(24px)} #{rem(170px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(200px)};
+        --card-category-img-right: #{rem(-8px)};
+        --card-category-img-left: auto;
+        --card-category-img-top: 0;
+        --card-category-img-bottom: 0;
+      }
+
+      @include media(md) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: #{rem(-12px)};
+      }
+
+      @include media(l) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: 0;
+      }
+
+      @include media(xl) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(240px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-21px)};
+      }
+
+      @include media(xxxl) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-21px)};
+      }
+    }
+
+    &.has-3-cards {
+      grid-template-columns: repeat(2, 1fr);
+
+      --card-category-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
+      --card-category-img-width: #{rem(104px)};
+
+      .card-category--3 {
+         grid-column: 1/3;
+        --card-category-padding: #{rem(16px)} #{rem(186px)} #{rem(20px)} #{rem(16px)};
+        --card-category-img-width: #{rem(114px)};
+        --card-category-img-right: 10%;
+        --card-category-img-left: auto;
+
+        @include media(xs) {
+          --card-category-img-right: 13%;
+        }
+      }
+
+      @include media(sm) {
+        grid-template-columns: repeat(3, 1fr);
+        --card-category-padding: #{rem(16px)} #{rem(90px)} #{rem(20px)} #{rem(24px)};
+        --card-category-img-width: #{rem(114px)};
+        --card-category-img-top: #{rem(-8px)};
+        --card-category-img-bottom: auto;
+
+        --card-category-img-right: #{rem(-8px)};
+        --card-category-img-left: auto;
+
+        .card-category--3 {
+          grid-column: unset;
+          --card-category-padding: #{rem(16px)} #{rem(90px)} #{rem(20px)} #{rem(24px)};
+          --card-category-img-width: #{rem(114px)};
+          --card-category-img-right: #{rem(-8px)};
+          --card-category-img-left: auto;
+        }
+      }
+
+      @include media(md) {
+        --card-category-padding: #{rem(16px)} #{rem(127px)} #{rem(20px)} #{rem(24px)};
+        --card-category-img-width: #{rem(165px)};
+        --card-category-img-right: #{rem(-8px)};
+        --card-category-img-top: #{rem(-16px)};
+
+        .card-category--3 {
+          --card-category-padding: #{rem(16px)} #{rem(127px)} #{rem(20px)} #{rem(24px)};
+          --card-category-img-width: #{rem(165px)};
+          --card-category-img-right: #{rem(-8px)};
+          --card-category-img-top: #{rem(-16px)};
+        }
+      }
+
+      @include media(l) {
+        --card-category-padding: #{rem(24px)} #{rem(152px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(189px)};
+        --card-category-img-right: #{rem(-8px)};
+        --card-category-img-top: #{rem(-16px)};
+
+        .card-category--3 {
+          --card-category-padding: #{rem(24px)} #{rem(152px)} #{rem(24px)} #{rem(24px)};
+          --card-category-img-width: #{rem(189px)};
+          --card-category-img-right: #{rem(-8px)};
+          --card-category-img-top: #{rem(-16px)};
+        }
+      }
+
+      @include media(xl) {
+        --card-category-padding: #{rem(24px)} #{rem(220px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(217px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-16px)};
+
+        .card-category--3 {
+          --card-category-padding: #{rem(24px)} #{rem(220px)} #{rem(24px)} #{rem(24px)};
+          --card-category-img-width: #{rem(217px)};
+          --card-category-img-right: 0;
+          --card-category-img-top: #{rem(-16px)};
+        }
+      }
+
+      @include media(xxxl) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-20px)};
+
+        .card-category--3 {
+          --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+          --card-category-img-width: #{rem(260px)};
+          --card-category-img-right: 0;
+          --card-category-img-top: #{rem(-20px)};
+        }
+      }
+    }
+
+    &.has-4-cards {
+      grid-template-columns: repeat(2, 1fr);
+
+      --card-category-padding: #{rem(72px)} #{rem(16px)} #{rem(16px)} #{rem(16px)};
+
+      @include media(sm) {
+        grid-template-columns: repeat(4, 1fr);
+
+        --card-category-padding: #{rem(16px)} #{rem(48px)} #{rem(20px)} #{rem(24px)};
+        --card-category-img-width: #{rem(76px)};
+        --card-category-img-right: #{rem(-8px)};
+        --card-category-img-left: auto;
+      }
+
+      @include media(md) {
+        --card-category-padding: #{rem(16px)} #{rem(74px)} #{rem(16px)} #{rem(20px)};
+        --card-category-img-width: #{rem(104px)};
+        --card-category-img-right: #{rem(-12px)};
+      }
+
+      @include media(xl) {
+        --card-category-padding: #{rem(24px)} #{rem(150px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(170px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-21px)};
+      }
+
+      @include media(xxxl) {
+        --card-category-padding: #{rem(24px)} #{rem(240px)} #{rem(24px)} #{rem(24px)};
+        --card-category-img-width: #{rem(260px)};
+        --card-category-img-right: 0;
+        --card-category-img-top: #{rem(-20px)};
+      }
+    }
   }
 
-  @include media(xxl) {
-    flex-direction: row;
+  &--1 {
+    --category-banner-bg: var(--data-category-1-banner-bg);
+    --category-banner-bg-image: var(--data-banner-casino-gradient);
+  }
+
+  &--2 {
+    --category-banner-bg: var(--data-category-2-banner-bg);
+    --category-banner-bg-image: var(--data-banner-betting-gradient);
+  }
+
+  &--3 {
+    --category-banner-bg: var(--data-category-3-banner-bg);
+    --category-banner-bg-image: var(--data-banner-betting-gradient);
+  }
+
+  &--4 {
+    --category-banner-bg: var(--data-category-4-banner-bg);
+    --category-banner-bg-image: var(--data-banner-betting-gradient);
   }
 }
 
-.cards-cat {
-  position: relative;
-  display: flex;
-  flex-grow: 1;
-  grid-gap: rem(8px);
-
-  @include media(sm) {
-    grid-gap: rem(16px);
-  }
-}
-
-.card-cat {
+.card-category {
+  background: var(--category-banner-bg, var(--data-banner-casino-bg));
+  background-image: var(--category-banner-bg-image, none);
+  box-shadow: var(--shadow-modal);
+  padding: var(--card-category-padding, #{rem(16px)});
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: var(--card-padding, #{rem(16px)});
-  background: var(--orange-700);
   border-radius: 8px;
   align-content: flex-start;
   flex-grow: 1;
   width: 100%;
 
-  @include media(md) {
-    min-height: 188px;
-    --card-padding: #{rem(24px)} #{rem(24px)};
-  }
-
-  .title {
-    @include font($heading-5);
-    color: var(--white);
+  &__title {
+    color: var(--text-primary);
     position: relative;
     z-index: 1;
-    margin-bottom: rem(4px);
-    width: 57%;
+    word-break: break-word;
+    @include font($heading-4);
+    margin-bottom: rem(2px);
 
-    @include media(md) {
-      @include upd-font($heading-6)
+    .has-1-cards &, .has-2-cards &  {
+      @include media(sm) {
+        @include upd-font($heading-5);
+      }
+
+      @include media(md) {
+        @include upd-font($heading-6);
+      }
+
+      @include media(xxxl) {
+        @include upd-font($heading-7);
+      }
     }
 
-    @include media(xxxl) {
-      @include upd-font($heading-7)
+    .has-3-cards & {
+      @include upd-font($heading-4);
+
+      @include media(sm) {
+        @include upd-font($heading-5);
+      }
+
+      @include media(md) {
+        @include upd-font($heading-6);
+      }
+
+      @include media(xl) {
+        @include upd-font($heading-5);
+      }
+
+      @include media(xxxl) {
+        @include upd-font($heading-7);
+      }
+    }
+
+    .has-4-cards & {
+      @include media(sm) {
+        @include upd-font($heading-3);
+      }
+
+      @include media(md) {
+        @include upd-font($heading-4);
+      }
+
+      @include media(xl) {
+        @include upd-font($heading-5);
+      }
+
+      @include media(xxxl) {
+        @include upd-font($heading-7);
+      }
     }
   }
 
-  .sub-title {
+  &__sub-title {
+    color: var(--text-primary);
+    position: relative;
+    z-index: 1;
+    word-break: break-word;
     @include font($body-1);
-    color: var(--white);
-    position: relative;
-    z-index: 1;
-    margin-bottom: rem(24px);
 
-    @include media(md) {
-      @include upd-font($body-2);
-      width: 54%;
+    .has-1-cards &, .has-2-cards & {
+      @include font($body-0);
+
+      @include media(sm) {
+        margin-bottom: rem(24px);
+        @include font($body-1);
+      }
+
+      @include media(md) {
+        @include upd-font($body-2);
+      }
+
+      @include media(xxxl) {
+        @include upd-font($body-3);
+      }
     }
 
-    @include media(xxxl) {
-      @include upd-font($body-3);
+    .has-3-cards & {
+      @include media(md) {
+        margin-bottom: rem(24px);
+      }
+
+      @include media(md) {
+        @include upd-font($body-2);
+      }
+
+      @include media(xxxl) {
+        @include upd-font($body-3);
+      }
+    }
+
+    .has-4-cards & {
+      @include font($body-0);
+
+      @include media(md) {
+        margin-bottom: rem(12px);
+      }
+
+      @include media(l) {
+        @include upd-font($body-1);
+      }
+
+      @include media(xxxl) {
+        @include upd-font($body-3);
+        margin-bottom: rem(16px);
+      }
     }
   }
 
@@ -81,54 +383,62 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    --padding: 7px 16px;
-  }
-
-  @include media(l) {
-    --card-min-height: #{rem(188px)};
-  }
-
-  .icon {
-    grid-area: icon;
-    width: rem(160px);
-    height: rem(136px);
-    z-index: 1;
+    opacity: 0;
     position: absolute;
     top: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto 0;
-    visibility: var(--icon-visibility, hidden);
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    --padding: #{rem(7px)} #{rem(20px)};
+
+    @include upd-font($heading-2);
+
+    @include media(sm) {
+      .has-1-cards &, .has-2-cards & {
+        opacity: 1;
+        position: relative;
+        width: fit-content;
+        height: auto;
+      }
+    }
 
     @include media(md) {
-      --icon-visibility: visible;
-      transform: translateX(#{rem(16px)});
-      width: rem(260px);
-      height: rem(220px);
-      top: auto;
+      .has-3-cards &, .has-4-cards & {
+        opacity: 1;
+        position: relative;
+        width: fit-content;
+        height: auto;
+      }
+    }
+
+
+    @include media(l) {
+      --padding: #{rem(10px)} #{rem(24px)};
+    }
+
+    @include media(xxxl) {
+      --padding: #{rem(10px)} #{rem(24px)};
+      @include upd-font($heading-2);
     }
   }
-}
 
-.card-cat-casino {
-  background-color: #d16004;
-  background-image: linear-gradient(
-      -94.47deg,
-      rgba(96, 12, 135, 0) 1.41%,
-      rgba(95, 12, 135, 0.44) 97.61%
-  ),
-  linear-gradient(
-      240.53deg,
-      rgba(17, 20, 28, 0) 56.15%,
-      rgba(17, 20, 28, 0.24) 87.99%
-  );
+  &__picture {
+    grid-area: icon;
+    aspect-ratio: 104/88;
+    width: var(--card-category-img-width, #{rem(104px)});
+    z-index: 1;
+    position: absolute;
+    top: var(--card-category-img-top, -16px);
+    right: var(--card-category-img-right, 0);
+    bottom: var(--card-category-img-bottom, auto);
+    left: var(--card-category-img-left, 0);
+    margin: var(--card-category-img-margin, auto);
 
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
-}
-
-.card-cat-betting {
-  background-color: #640B8E;
-  background-image: linear-gradient(94.47deg, rgba(230, 164, 9, 0) 1.41%, rgba(230, 164, 9, 0.44) 97.61%),
-  linear-gradient(240.53deg, rgba(17, 20, 28, 0) 56.15%, rgba(17, 20, 28, 0.24) 87.99%);
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.24);
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
 }

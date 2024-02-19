@@ -1,11 +1,11 @@
 <template>
-  <div class="deposit-bonus-code">
+  <div ref="root" class="deposit-bonus-code">
     <form-input-toggle
       name="bonus-toggle"
       v-model:value="hasBonusCode"
       @change="toggleBonusField"
     >
-      {{ getContent(popupsData, defaultLocalePopupsData, 'deposit.togglerLabel') || '' }}
+      {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.togglerLabel') || '' }}
     </form-input-toggle>
 
     <div v-if="hasBonusCode" class="deposit-bonus-code__code">
@@ -13,7 +13,7 @@
         v-model:value="bonusValue"
         ref="bonusField"
         label=""
-        :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'bonusCode.placeholder') || ''"
+        :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.bonusCode.placeholder') || ''"
         name="bonus-code"
         autocomplete="off"
         :isDisabled="!!depositBonusCode"
@@ -28,8 +28,8 @@
         :isDisabled="bonusChecking"
       >
         <atomic-spinner :is-shown="bonusChecking"/>
-        {{ depositBonusCode ? getContent(popupsData, defaultLocalePopupsData, 'deposit.cancelBonusButton')
-          : getContent(popupsData, defaultLocalePopupsData, 'deposit.addBonusButton') }}
+        {{ depositBonusCode ? getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.cancelBonusCode')
+          : getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addBonusCode') }}
       </button-base>
     </div>
   </div>
@@ -42,8 +42,8 @@
   const {
     popupsData,
     defaultLocalePopupsData,
-    fieldsContent,
-    defaultLocaleFieldsContent,
+    fieldsSettings,
+    defaultLocaleFieldsSettings
   } = globalStore;
 
   const { getContent } = useProjectMethods();
@@ -85,9 +85,14 @@
     bonusChecking.value = false;
   };
 
-  const toggleBonusField = ():void => {
-    if (!hasBonusCode.value) hasBonusCode.value = true;
-    else if (depositBonusCode.value) {
+  const root = ref();
+  const toggleBonusField = async ():Promise<void> => {
+    if (!hasBonusCode.value) {
+      hasBonusCode.value = true;
+
+      await nextTick();
+      root.value.scrollIntoView({ behavior: 'smooth' });
+    } else if (depositBonusCode.value) {
       hasBonusCode.value = false;
       toggleBonusCode();
     } else {

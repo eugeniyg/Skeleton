@@ -2,13 +2,14 @@
   display: flex;
   align-items: center;
   padding-top: rem(16px);
-  border-top: 1px solid var(--gray-700);
+  border-top: 1px solid var(--border-00);
   margin-top: rem(8px);
+  min-height: 42px;
 
   &__label {
     @include font($heading-1);
     @extend %text-elipsis;
-    color: var(--white);
+    color: var(--text-primary);
     flex-grow: 1;
   }
 
@@ -16,22 +17,54 @@
     height: rem(24px);
     display: flex;
     align-items: center;
-    column-gap: rem(4px);
-    padding: 0 rem(8px);
-    background-color: var(--layer-02);
+    padding: 0 rem(4px) 0 rem(8px);
+    background-color: var(--layer-03-main);
     border-radius: 8px;
-    margin-right: rem(4px);
+    margin-right: rem(8px);
+
+    .icon {
+      --icon-size: 16px;
+      --color: var(--icon-accent);
+    }
 
     &-logo {
       display: block;
       @include box(16px);
-
+      margin-right: rem(4px);
     }
 
     &-currency {
       @include font($heading-1);
-      color: var(--yellow-500);
+      color: var(--text-accent);
+      transform: translateY(2px);
     }
+  }
+
+
+  .input-toggle {
+    .label {
+      height: rem(20px);
+    }
+
+    .icon {
+      width: rem(16px);
+      height: rem(16px);
+    }
+
+    .slider {
+      width: rem(38px);
+      height: auto;
+
+      &:after {
+        width: rem(16px);
+        height: rem(16px);
+      }
+    }
+
+    &.input-toggle--checked .label {
+      --thumb-transform: translateX(#{rem(18px)});
+    }
+
   }
 }
 

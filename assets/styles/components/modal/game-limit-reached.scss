@@ -1,0 +1,13 @@
+.game-limit-reached {
+  @extend %modal-info;
+  user-select: none;
+
+  &__text {
+    @include font($body-2);
+    color: var(--text-tertiary)
+  }
+
+  .scroll {
+    grid-row-gap: 24px;
+  }
+}

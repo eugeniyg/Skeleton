@@ -1,4 +1,5 @@
 .promo {
+  position: relative;
   padding: var(--padding, #{rem(8px)});
   text-align: center;
   display: grid;
@@ -6,14 +7,37 @@
   height: 100%;
   width: 100%;
   grid-area: promo;
-  background-image: url(/img/promo-sm.png);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   user-select: none;
 
+  &.promo--without-advantages {
+    --header-align-self: end;
+
+    .sub-title:last-of-type {
+      --color: var(--text-accent);
+    }
+  }
+
+  &__picture-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--img-height, #{rem(78px)});
+    bottom: var(--img-bottom, auto);
+    width: var(--img-width, 100%);
+    object-fit: cover;
+
+    @include media(md) {
+      --img-width: 100%;
+      --img-height: 100%;
+      --img-bottom: 0;
+    }
+  }
+
   @include media(md) {
-    background-image: url(/img/promo-lg.png);
     --padding: #{rem(88px)} #{rem(32px)} #{rem(38px)} #{rem(32px)};
   }
 
@@ -24,16 +48,17 @@
     justify-content: center;
     grid-column-gap: rem(4px);
     position: relative;
+    min-height: rem(64px);
 
     @include media(md) {
-      align-self: start;
+      align-self: var(--header-align-self, start);
     }
   }
 
   .title {
     @include font($heading-4);
     width: 100%;
-    color: var(--white);
+    color: var(--text-primary);
   }
 
   .sub-title {
@@ -41,7 +66,7 @@
     display: flex;
     flex-wrap: wrap;
     grid-gap: rem(4px);
-    color: var(--color, var(--yellow-500));
+    color: var(--color, var(--text-accent));
     justify-content: center;
     align-items: center;
 
@@ -54,7 +79,7 @@
 
     &:last-of-type {
       @include upd-font($heading-4);
-      --color: var(--white);
+      --color: var(--text-primary);
 
       @include media(md) {
         width: 100%;
@@ -64,7 +89,7 @@
   }
 
   .icon {
-    --color: var(--yellow-500);
+    --color: var(--icon-accent);
   }
 
   .items {
@@ -79,13 +104,13 @@
   }
 
   .item {
-    background-color: var(--gray-900);
+    background-color: var(--layer-01);
     padding: rem(8px) rem(16px);
     display: flex;
     align-items: center;
     grid-gap: rem(8px);
     border-radius: 8px;
     justify-self: center;
-    color: var(--white);
+    color: var(--text-primary);
   }
 }

@@ -1,0 +1,39 @@
+.providers-sort {
+  display: flex;
+  align-items: center;
+  grid-column-gap: rem(8px);
+  grid-column: 1/3;
+  justify-content: flex-end;
+
+  &__label {
+    @include font($body-1);
+    color: var(--text-helper);
+  }
+
+  &__options {
+    display: flex;
+    align-items: center;
+    grid-column-gap: rem(4px);
+  }
+
+  &__option {
+    @extend %skip-btn;
+    padding: rem(4px) rem(8px);
+    border-radius: 8px;
+    color: var(--color, var(--text-secondary));
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+    @include font($body-1);
+
+    @include use-hover {
+      &:hover:not(.is-selected) {
+        --bg: var(--button-bg-secondary-click);
+        --color: var(--text-accent);
+      }
+    }
+
+    &.is-selected {
+      --color: var(--text-accent);
+    }
+  }
+}

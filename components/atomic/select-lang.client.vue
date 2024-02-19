@@ -5,29 +5,29 @@
   >
     <div class="select-lang__wrap" v-click-outside="closeSelect">
       <div class="selected" @click="toggleOpen">
-        <img
+        <atomic-image
           class="img"
-          :src="`/img/flags/${languageFlagsMap[currentLocale.code.toLowerCase()]}.svg`"
-          alt=""
+          :src="`${gamehubCdn}/locales/${currentLocale?.code.toLowerCase()}.svg`"
         />
-        <span class="title">{{ currentLocale.nativeName || currentLocale.name }}</span>
+        <span class="title">{{ currentLocale?.nativeName || currentLocale?.name }}</span>
         <atomic-icon id="arrow_expand-close" />
       </div>
 
-      <div class="items">
-        <component
-          :is="currentLocale.code.toLowerCase() === locale.code.toLowerCase() ? 'div' : 'a'"
+      <div
+        class="items"
+        body-scroll-lock-ignore
+      >
+        <div
           class="item"
           v-for="locale in locales"
           :key="locale.code"
-          :class="{ 'is-selected': currentLocale.code.toLowerCase() === locale.code.toLowerCase() }"
-          :href="linkToLocale(locale)"
-          @click="setCookie(locale)"
+          :class="{ 'is-selected': currentLocale?.code.toLowerCase() === locale.code.toLowerCase() }"
+          @click="changeLanguage(locale)"
         >
-          <img class="img" :src="`/img/flags/${languageFlagsMap[locale.code.toLowerCase()]}.svg`" alt="" />
+          <atomic-image class="img" :src="`${gamehubCdn}/locales/${locale.code.toLowerCase()}.svg`" />
           <span class="title">{{ locale.nativeName || locale.name }}</span>
           <atomic-icon id="check" />
-        </component>
+        </div>
       </div>
     </div>
   </div>
@@ -35,27 +35,34 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { LocaleInterface } from '@platform/frontend-core/dist/module';
-  import { CookieRef } from '#app';
-
-  const languageFlagsMap = {
-    en: 'us',
-    de: 'de',
-    uk: 'ua',
-  };
+  import type { ILocale } from '@skeleton/core/types';
 
   const route = useRoute();
   const globalStore = useGlobalStore();
   const { locales, currentLocale } = storeToRefs(globalStore);
   const isOpen = ref<boolean>(false);
-  const cookieLanguage:CookieRef<string|undefined> = useCookie('user-language', { maxAge: 60 * 60 * 24 * 365 * 10 });
+  const isProcess = ref<boolean>(false);
+  const cookieLanguage = useCookie('user-language', { maxAge: 60 * 60 * 24 * 365 * 10 });
+  const { changeProfileData } = useCoreProfileApi();
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+  const { public: { gamehubCdn } } = useRuntimeConfig();
 
-  const setCookie = (locale: LocaleInterface):void => {
-    if (locale.isDefault) cookieLanguage.value = undefined;
-    else cookieLanguage.value = locale.code.toLowerCase();
+  const changeLanguage = async (locale: ILocale): Promise<void> => {
+    if (currentLocale.value?.code === locale.code || isProcess.value) return;
+    isOpen.value = false;
+    isProcess.value = true;
+
+    cookieLanguage.value = locale.code.toLowerCase();
+
+    if (isLoggedIn.value) {
+      await changeProfileData({ locale: locale.code })
+    }
+
+    window.location.href = linkToLocale(locale);
   };
 
-  const linkToLocale = (locale: LocaleInterface):string => {
+  const linkToLocale = (locale: ILocale):string => {
     const routerLocale:any = route.params.locale;
 
     if (locale.isDefault) {
@@ -65,10 +72,12 @@
 
     if (routerLocale) {
       return route.fullPath.replace(routerLocale, locale.code.toLowerCase());
-    } return `/${locale.code.toLowerCase()}${route.fullPath === '/' ? '' : route.fullPath}`;
+    }
+    return `/${locale.code.toLowerCase()}${route.fullPath === '/' ? '' : route.fullPath}`;
   };
 
   const toggleOpen = (): void => {
+    if (isProcess.value) return;
     isOpen.value = !isOpen.value;
   };
 

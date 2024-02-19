@@ -24,7 +24,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(28, 33, 43, 0.88);
+        background: var(--alpha-fade-layer-01);
         backdrop-filter: blur(2px);
         z-index: 2;
       }
@@ -38,7 +38,7 @@
 
     &__info {
       @include font($heading-4);
-      color: var(--white);
+      color: var(--text-primary);
       text-align: center;
       position: relative;
       height: 0;
@@ -49,5 +49,9 @@
         margin: 0;
       }
     }
+  }
+
+  hr {
+    margin: 0;
   }
 }

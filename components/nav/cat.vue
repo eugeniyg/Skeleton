@@ -1,5 +1,4 @@
 <template>
-
   <div class="nav-cat-scroll">
     <div class="nav-cat-wrap" ref="viewport">
       <div class="nav-cat">
@@ -8,14 +7,14 @@
           class="nav-cat-item"
           :data-index="index"
           :class="{
-            'is-active': $route.query.category === identity,
+            'is-active': route.query.category === identity,
             'is-hidden': index >= visibleIndex.length,
             'is-no-icon': !gameCategoriesObj[identity]?.icon
           }"
           @click="emit('clickCategory', identity)"
           :key="id"
         >
-          <atomic-icon v-if="gameCategoriesObj[identity]?.icon" :id="gameCategoriesObj[identity].icon"/>
+          <atomic-icon :id="gameCategoriesObj[identity]?.icon"/>
           <span>{{ gameCategoriesObj[identity]?.label || name }}</span>
         </span>
 
@@ -41,14 +40,14 @@
               :key="id"
               class="nav-cat-select-item"
               :class="{
-                'is-active': $route.query.category === identity,
+                'is-active': route.query.category === identity,
                 'is-hidden':  index < visibleIndex.length,
               }"
               @click="emit('clickCategory', identity)"
             >
-              <atomic-icon v-if="gameCategoriesObj[identity]?.icon" :id="gameCategoriesObj[identity].icon"/>
+              <atomic-icon :id="gameCategoriesObj[identity]?.icon"/>
               <span>{{ gameCategoriesObj[identity]?.label || name }}</span>
-              <atomic-icon v-if="$route.query.category === identity" id="check"/>
+              <atomic-icon v-if="route.query.category === identity" id="check"/>
             </span>
           </span>
         </span>
@@ -60,9 +59,9 @@
 
 <script setup lang="ts">
   const emit = defineEmits(['clickCategory']);
-  const { currentLocaleCollections } = useGamesStore();
+  const { currentLocationCollections } = useGamesStore();
   const { gameCategoriesObj } = useGlobalStore();
-  const filteredCategories = currentLocaleCollections.filter((collection) => !collection.isHidden);
+  const filteredCategories = currentLocationCollections.filter((collection) => !collection.isHidden);
 
   const viewport = ref<HTMLElement>();
   const select = ref<HTMLElement>();
@@ -71,6 +70,7 @@
   const isSelectHidden = ref<boolean>(false);
   const visibleIndex = ref<any[]>([]);
   const timeoutId = ref<any>();
+  const route = useRoute();
 
   const toggle = () => {
     isOpen.value = !isOpen.value;
@@ -81,9 +81,9 @@
   };
 
   const getItemsData = () => {
-    const offset = 4;
+    const offset = 8;
     return [...document.querySelectorAll('.nav-cat-item')]
-      .map((item) => item.offsetWidth + offset)
+      .map((item:any) => item.offsetWidth + offset)
       .reduce((acc, curr) => {
         acc.totalWidth += curr;
         acc.width.push(acc.totalWidth);
@@ -110,7 +110,7 @@
   };
 
   onMounted(() => {
-    setTimeout(update, 250);
+    update();
     window.addEventListener('resize', onResize);
   });
 
@@ -121,4 +121,3 @@
 </script>
 
 <style src="~/assets/styles/components/nav/cat.scss" lang="scss" />
-

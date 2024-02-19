@@ -1,0 +1,123 @@
+.cta-menu {
+  display: flex;
+  flex-direction: var(--menu-direction, row);
+  gap: var(--menu-gap, rem(8px));
+  margin-bottom: rem(8px);
+
+  .drawer-minimize & {
+    --menu-gap: #{rem(4px)};
+    --menu-direction: column;
+
+    ~ .partners {
+      margin-top: rem(-4px);
+    }
+  }
+
+  &__item {
+    border-radius: 12px;
+    background-color: var(--bgc);
+    overflow: hidden;
+    position: relative;
+    height: var(--item-height, rem(48px));
+    display: grid;
+    align-items: center;
+    text-decoration: none;
+    padding: rem(8px);
+    width: 100%;
+    transition: background-color .2s ease-in-out;
+
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .drawer-minimize & {
+      --item-height: #{rem(40px)}
+    }
+
+
+    &:nth-child(1) {
+      --bgc: var(--side-bar-cta-small-1-bg);
+
+      &.is-active, &:active {
+        --bgc: var(--side-bar-cta-small-1-bg-click);
+        --title-color: var(--side-bar-cta-small-1-title-click);
+        --sub-title-color: var(--side-bar-cta-small-1-title-click);
+      }
+
+      @include use-hover {
+        &:hover:not(.is-active) {
+          --bgc: var(--side-bar-cta-small-1-bg-hover);
+          --title-color: var(--side-bar-cta-small-1-title-hover);
+          --sub-title-color: var(--side-bar-cta-small-1-title-hover);
+        }
+      }
+    }
+
+    &:nth-child(2) {
+      --bgc: var(--side-bar-cta-small-2-bg);
+
+      &.is-active, &:active {
+        --bgc: var(--side-bar-cta-small-2-bg-click);
+        --title-color: var(--side-bar-cta-small-2-title-click);
+        --sub-title-color: var(--side-bar-cta-small-2-title-click);
+      }
+
+      @include use-hover {
+        &:hover:not(.is-active) {
+          --bgc: var(--side-bar-cta-small-2-bg-hover);
+          --title-color: var(--side-bar-cta-small-2-title-hover);
+          --sub-title-color: var(--side-bar-cta-small-2-title-hover);
+        }
+      }
+    }
+  }
+
+  &__title {
+    display: var(--title-display, block);
+    @include font($heading-0);
+    color: var(--title-color, var(--side-bar-cta-small-1-title-small));
+    position: relative;
+    z-index: 1;
+    @extend %text-elipsis;
+    max-width: 80%;
+
+    .drawer-minimize & {
+      --title-display: none;
+    }
+  }
+
+  &__sub-title {
+    display: var(--sub-title-display, block);
+    @include font($heading-3);
+    color: var(--sub-title-color, var(--side-bar-cta-small-1-title-big));
+    position: relative;
+    z-index: 1;
+    margin-top: rem(-4px);
+    @extend %text-elipsis;
+    max-width: 99%;
+
+    .drawer-minimize & {
+      --sub-title-display: none;
+    }
+  }
+
+  &__img {
+    display: block;
+    width: var(--img-size, rem(48px));
+    height: var(--img-size, rem(48px));
+    position: absolute;
+    top: 0;
+    left: unset;
+    right: 0;
+    object-position: var(--img-x-position, 0) center;
+
+    .drawer-minimize & {
+      top: 0;
+      left: 0;
+      --img-size: #{rem(40px)};
+      --img-x-position: #{rem(-2px)};
+    }
+  }
+}

@@ -4,53 +4,55 @@
     :class="classes"
     v-click-outside="close"
   >
-    <div v-if="props.items.length" class="selected" @click="open">
-      <img
-        v-if="defaultLogoUrl() || props.activeMethod.logo"
-        class="mask"
-        :src="defaultLogoUrl() || props.activeMethod.logo"
-      />
-      <atomic-icon id="arrow_expand-close"/>
-    </div>
-
-    <div class="items" v-if="props.items.length">
+    <div class="items" v-if="props.items?.length">
       <div
         class="item"
         v-for="(item, i) in props.items"
         :key="i"
-        :class="{'is-selected': item.method === props.activeMethod.method }"
+        :class="{'is-selected': item.method === props.activeMethod?.method }"
         @click="select(item)"
       >
-        <img v-if="defaultLogoUrl() || item.logo" class="mask" :src="defaultLogoUrl() || item.logo" />
+        <atomic-image v-if="item.method === cashAgentMethodKey" src="/img/methods-icons/cash-agent.svg" />
+        <atomic-image
+          v-else
+          class="mask"
+          :src="item.logo || logoUrl"
+          :defaultImage="activeAccountType === 'fiat'
+            ? '/img/methods-icons/cards.svg'
+            : '/img/methods-icons/crypto-placeholder.svg'"
+        />
+
+        <div class="input-payments__min">
+          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.methodMin') }}
+          {{ methodsMinSum[i] }}
+        </div>
       </div>
     </div>
-    <input type="hidden" name="payments" :value="props.activeMethod.method" />
+    <input type="hidden" name="payments" :value="props.activeMethod?.method" />
   </div>
 </template>
 
 <script setup lang="ts">
-  import { PaymentMethodInterface } from '@platform/frontend-core/dist/module';
+  import type { IPaymentMethod } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
-    items: {
-      type: Array,
-      default: () => [],
-    },
-    activeMethod: {
-      type: Object,
-      required: true,
-    },
-  });
+  const props = defineProps<{
+    items?: IPaymentMethod[],
+    activeMethod?: IPaymentMethod
+  }>();
+
+  const { getContent, formatBalance } = useProjectMethods();
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
 
   const emit = defineEmits(['update:activeMethod']);
   const isOpen = ref<boolean>(false);
+  const cashAgentMethodKey:string = '0x.withdrawal.cash_agent';
 
   const classes = computed(() => [
     { 'is-open': isOpen.value },
   ]);
 
-  const select = (method: PaymentMethodInterface):void => {
+  const select = (method: IPaymentMethod):void => {
     emit('update:activeMethod', method);
     isOpen.value = false;
   };
@@ -63,13 +65,40 @@
     if (isOpen.value) isOpen.value = false;
   };
 
+  const logoUrl = ref<string>('');
+  const methodsMinSum = ref<string[]>([]);
+
   const walletStore = useWalletStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
-  const defaultLogoUrl = ():string => {
-    if (activeAccountType.value === 'fiat') return '/img/methods-icons/cards.svg';
-    if (activeAccount.value?.currency) return `/img/methods-icons/${activeAccount.value?.currency}.svg`;
-    return '';
-  };
+
+  const checkLogoUrl = (): void => {
+    if (activeAccountType.value === 'fiat') logoUrl.value = '/img/methods-icons/cards.svg';
+    else if (activeAccount.value?.currency) logoUrl.value = `/img/methods-icons/${activeAccount.value?.currency}.svg`;
+  }
+
+  const getMinMethodSum = (minAmount: number): string => {
+    const { amount, currency } = formatBalance(activeAccount.value?.currency, minAmount);
+    return `${amount} ${currency}`;
+  }
+
+  const setMethodsMinSum = (): void => {
+    if (!props.items) methodsMinSum.value = [];
+    else {
+      methodsMinSum.value = props.items?.map((method: any) => {
+        return getMinMethodSum(method.amountMin);
+      })
+    }
+  }
+
+  // FOR STATIC LOGO URL AND MIN DEPOSIT SUM
+  // WITH REACTIVITY, THIS PARAMS UPDATE ASYNC BECAUSE OF REACTIVE activeAccount
+  checkLogoUrl();
+  setMethodsMinSum();
+
+  watch(() => props.items, () => {
+    checkLogoUrl();
+    setMethodsMinSum();
+  })
 </script>
 
 <style src="~/assets/styles/components/form/input/payments.scss" lang="scss" />

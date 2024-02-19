@@ -3,7 +3,7 @@
   align-items: center;
   grid-column-gap: rem(8px);
   @include font($body-0);
-  color: var(--white);
+  color: var(--text-primary);
 
   &:before {
     content: '';
@@ -14,17 +14,17 @@
     align-self: center;
   }
 
-  &.variant-pending,
-  &.variant-refund,
-  &.variant-cashout {
-    --dot-bg: var(--yellow-500);
+  &.variant-1,
+  &.variant-4,
+  &.variant-5 {
+    --dot-bg: var(--icon-accent);
   }
 
-  &.variant-won {
-    --dot-bg: var(--green-500);
+  &.variant-2 {
+    --dot-bg: var(--icon-success);
   }
 
-  &.variant-lost {
-    --dot-bg: var(--red-500);
+  &.variant-3 {
+    --dot-bg: var(--icon-alert);
   }
 }

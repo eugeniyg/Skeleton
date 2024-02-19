@@ -18,10 +18,14 @@
         v-for="item in selectedItems"
         :key="item.nativeCurrency"
         class="item"
-        :class="{'is-active': activeAccount.currency === item.nativeCurrency}"
+        :class="{'is-active': activeAccount?.currency === item.nativeCurrency}"
         @click="selectCurrency(item.nativeCurrency)"
       >
-        <img class="img" :src="`/img/currency/${item.nativeCurrency}.svg`" alt=""/>
+        <atomic-image
+          class="img"
+          :src="`/img/currency/${item.nativeCurrency}.svg`"
+          defaultImage="/img/currency/placeholder.svg"
+        />
         <span class="code-title">{{ item.currency }}</span>
         <span v-if="!props.hideBalance" class="amount">{{ item.currencySymbol }} {{ item.amount }}</span>
       </div>
@@ -33,7 +37,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { AccountInterface, CurrencyInterface } from '@platform/frontend-core/dist/module';
+  import type { IAccount, ICurrency } from '@skeleton/core/types';
 
   const props = defineProps({
     isOpen: {
@@ -56,9 +60,9 @@
     accounts,
     currencyTabs,
     activeAccount,
-    activeAccountType,
+    showEquivalentBalance
   } = storeToRefs(walletStore);
-  const { currencies, cryptoCurrencies, equivalentCurrency } = storeToRefs(globalStore);
+  const { currencies, cryptoCurrencies } = storeToRefs(globalStore);
   const { switchAccount } = useWalletStore();
   const { createAccount } = useWalletStore();
   const { formatBalance, sortByAlphabet, getEquivalentAccount } = useProjectMethods();
@@ -67,24 +71,29 @@
 
   const selected = ref<string>('all');
 
-  const getAccountByCurrency = (currency: string): Maybe<AccountInterface> => accounts.value.find((account) => (account.currency === currency));
+  const getAccountByCurrency = (currency: string): Maybe<IAccount> => accounts.value.find((account) => (account.currency === currency));
 
-  interface DisplayAccountInterface {
+  interface IDisplayAccount {
     nativeCurrency: string,
     currency: string,
     amount: number,
     currencySymbol?: string
   }
 
+  const formatCurrenciesList = (list:IDisplayAccount[]) => {
+    return list.filter((item) => accounts.value.find((account) => account.currency === item.nativeCurrency))
+      .sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()))
+  }
+
   const selectedItems = computed(() => {
-    let currenciesList:CurrencyInterface[];
+    let currenciesList:ICurrency[];
     if (selected.value === 'all' || !cryptoCurrencies.value.length) currenciesList = currencies.value;
     else currenciesList = cryptoCurrencies.value;
 
-    const formatList:DisplayAccountInterface[] = currenciesList.map((currency) => {
+    const formatList:IDisplayAccount[] = currenciesList.map((currency) => {
       const findAccount = getAccountByCurrency(currency.code);
 
-      if (equivalentCurrency.value && currency.type === 'crypto') {
+      if (showEquivalentBalance.value) {
         const equivalentAccount = getEquivalentAccount(findAccount?.balance || 0, findAccount?.currency || currency.code);
         return {
           nativeCurrency: currency.code,
@@ -95,19 +104,19 @@
       }
 
       const formattedAcc = formatBalance(findAccount?.currency || currency.code, findAccount?.balance || 0);
-      return { nativeCurrency: currency.code, ...formattedAcc, currencySymbol: equivalentCurrency.value ? currency.symbol : undefined };
+      return { nativeCurrency: currency.code, ...formattedAcc };
     });
 
-    const withBalanceList:DisplayAccountInterface[] = [];
-    const withoutBalanceList:DisplayAccountInterface[] = [];
+    const withBalanceList:IDisplayAccount[] = [];
+    const withoutBalanceList:IDisplayAccount[] = [];
 
     formatList.forEach((formatItem) => {
       if (formatItem.amount) withBalanceList.push(formatItem);
       else withoutBalanceList.push(formatItem);
     });
 
-    const withBalanceSortedList = withBalanceList.sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
-    const withoutBalanceSortedList = withoutBalanceList.sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
+    const withBalanceSortedList = formatCurrenciesList(withBalanceList);
+    const withoutBalanceSortedList = formatCurrenciesList(withoutBalanceList);
 
     return [...withBalanceSortedList, ...withoutBalanceSortedList];
   });
@@ -138,4 +147,3 @@
 </script>
 
 <style src="~/assets/styles/components/list/currencies.scss" lang="scss" />
-

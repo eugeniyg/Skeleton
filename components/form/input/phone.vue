@@ -1,7 +1,7 @@
 <template>
   <div class="input-phone" :class="{ 'has-error': props.hint?.variant === 'error' }">
     <span v-if="props.label" class="label">
-      {{ props.label }}<sup v-if="props.isRequired">*</sup>
+      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
     </span>
 
     <form-input-dropdown
@@ -18,12 +18,11 @@
       <input
         inputmode="numeric"
         v-maska
-        data-maska="##########"
+        data-maska="############"
         class="field"
         type="text"
         name="phoneNumber"
         v-model="numberValue"
-        :readonly="props.isDisabled"
         :placeholder="props.placeholder"
         @focus="onFocus"
         @blur="onBlur"
@@ -39,7 +38,7 @@
   import parsePhoneNumber from 'libphonenumber-js';
   import { storeToRefs } from 'pinia';
   import { vMaska } from 'maska';
-  import { PhoneCodeInterface } from '@skeleton/types';
+  import type { IPhoneCode } from '@skeleton/types';
 
   const props = defineProps({
     label: {
@@ -66,12 +65,16 @@
 
   const globalStore = useGlobalStore();
   const { countries, headerCountry } = storeToRefs(globalStore);
-  const selectItems:PhoneCodeInterface[] = countries.value.map((country) => ({
+  const selectItems:IPhoneCode[] = countries.value.map((country) => ({
     countryCode: country.code,
     code: country.phonePrefix,
     mask: `/img/flags/${country.code.toLowerCase()}.svg`,
     value: `+${country.phonePrefix}`,
-  }));
+  })).sort((prevItem, nextItem) => {
+    if (prevItem.code > nextItem.code) return 1;
+    if (prevItem.code < nextItem.code) return -1;
+    return 0;
+  });
   const codeValue = ref<string>('');
   const numberValue = ref<string>('');
   const profileStore = useProfileStore();

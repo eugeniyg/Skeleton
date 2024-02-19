@@ -1,6 +1,6 @@
 .app-footer {
   grid-area: app-footer;
-  color: var(--gray-500);
+  color: var(--text-helper);
   display: grid;
   padding: var(--padding, #{rem(16px)} #{rem(16px)} #{rem(110px)} #{rem(16px)});
   @extend %container;
@@ -34,7 +34,7 @@
 
     &__text {
       a {
-        color: var(--gray-500);
+        color: var(--text-helper);
         text-decoration: underline;
       }
     }
@@ -94,11 +94,47 @@
     }
 
     @include media(sm) {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
   }
 
   @include media(sm) {
     --padding: #{rem(16px)} #{rem(32px)} #{rem(110px)} #{rem(32px)}
+  }
+
+  .partners {
+    justify-content: flex-start;
+    margin-bottom: 0;
+
+    &:after {
+      display: none;
+    }
+
+    &__title {
+      padding: 8px 0;
+      display: flex;
+      min-height: 32px;
+
+      @include media(sm) {
+        padding: 0 0 16px 0;
+      }
+    }
+
+    &__items {
+      margin-bottom: 0;
+      display: flex;
+      justify-content: flex-start;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 8px;
+
+      @include media(sm) {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+      }
+    }
+
+    .partners__logo {
+      width: 40px;
+    }
   }
 }

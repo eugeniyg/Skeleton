@@ -9,22 +9,22 @@
     width: 100%;
     height: rem(40px);
     @include font($body-2);
-    color: var(--gray-300);
-    background-color: var(--bg, var(--gray-800));
+    border: 1px solid var(--border-color, var(--field-00));
+    background-color: var(--bg, var(--field-00));
+    color: var(--text-primary);
     border-radius: 12px;
-    border: 1px solid var(--border-color, var(--gray-800));
     padding: rem(10px) rem(16px) rem(10px) rem(44px);
     transition: all .2s ease-in-out;
 
     &::placeholder {
-      color: var(--gray-300);
+      color: var(--text-tertiary);
     }
 
     &:focus {
-      --border-color: var(--gray-300);
+      --border-color: var(--border-click);
 
       ~ .icon {
-        --color: var(--white);
+        --color: var(--icon-contrast);
       }
     }
   }
@@ -38,6 +38,6 @@
     height: rem(20px);
     left: rem(16px);
 
-    --color: var(--gray-400);
+    --color: var(--icon-contrast);
   }
 }

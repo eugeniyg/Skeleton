@@ -21,7 +21,7 @@
 
   .title {
     @include font($heading-5);
-    color: var(--white);
+    color: var(--text-primary);
     text-align: center;
 
     @include media(l) {
@@ -31,7 +31,7 @@
 
   .text {
     @include font($body-2);
-    color: var(--gray-500);
+    color: var(--text-tertiary);
     text-align: center;
     max-width: rem(480px);
     justify-self: center;

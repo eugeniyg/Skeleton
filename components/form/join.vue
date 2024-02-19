@@ -10,12 +10,13 @@
           :key="field.name"
           type="text"
           :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
-          :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) || ''"
+          :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
           :name="field.name"
-          :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.placeholder`) || ''"
+          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
           @blur="v$[field.name]?.$touch()"
           @focus="onFocus(field.name)"
           :hint="setError(field.name)"
+          :class="field.name"
         />
       </template>
 
@@ -24,15 +25,18 @@
         :key="field.name"
         @blur="v$[field.name]?.$touch()"
         @focus="onFocus(field.name)"
-        :is="fieldsTypeMap[field.name].component || 'form-input-text'"
+        :is="fieldsMap[field.name]?.component || 'form-input-text'"
         v-model:value="registrationFormData[field.name]"
-        :type="field.name === 'nickname' ? 'hidden' : fieldsTypeMap[field.name].type || 'text'"
-        :label="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.label`) || ''"
+        :type="hiddenFields.includes(field.name) ? 'hidden' : fieldsMap[field.name]?.type || 'text'"
+        :inputmode="fieldsMap[field.name]?.inputmode"
+        :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
         :name="field.name"
-        :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, `${field.name}.placeholder`) || ''"
+        :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
         :options="selectOptions[field.name]"
         :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
         :hint="setError(field.name)"
+        :class="field.name"
+        @input="handleInput(field.name)"
       />
     </template>
 
@@ -70,45 +74,49 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { FieldInterface } from '@platform/frontend-core/dist/module';
+  import type { IField } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
+  const fieldsMap: Record<string, any> = fieldsTypeMap;
+
   const props = defineProps<{
-    registrationFields: FieldInterface[]
+    registrationFields: IField[]
   }>();
 
+  const hiddenFields = ['nickname', 'locale'];
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
-  const { setFormData } = useCoreMethods();
-  const { closeModal } = useLayoutStore();
+  const { setFormData } = useProjectMethods();
+  const { closeModal, openWalletModal } = useLayoutStore();
   const fieldsStore = useFieldsStore();
   const { selectOptions } = storeToRefs(fieldsStore);
   const globalStore = useGlobalStore();
   const {
     countries,
-    fieldsContent,
-    defaultLocaleFieldsContent,
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
     popupsData,
     defaultLocalePopupsData,
     headerCountry,
+    currentLocale
   } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   const mainFields = props.registrationFields.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = props.registrationFields.filter((field) => groupFooterFields.includes(field.name));
   const registrationFormData = reactive(setFormData(props.registrationFields));
+  const geoCountry = countries.value.find(country => country.code === headerCountry.value);
   if (registrationFormData.hasOwnProperty('nickname')) registrationFormData.nickname = 'undefined';
-  if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = 'BTC';
-  if (registrationFormData.hasOwnProperty('country') && !registrationFormData.country) {
-    if (countries.value.find((country) => country.code === headerCountry.value)) {
-      registrationFormData.country = headerCountry.value;
-    }
+  if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = geoCountry?.currency || 'BTC';
+  if (registrationFormData.hasOwnProperty('locale')) registrationFormData.locale = currentLocale.value?.code;
+  if (registrationFormData.hasOwnProperty('country') && !registrationFormData.country && geoCountry) {
+    registrationFormData.country = geoCountry.code;
   }
 
   const getCheckboxLabel = (fieldName: string):string|undefined => {
     if (fieldName === 'receiveEmailPromo') return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.agreeEmailLabel');
     if (fieldName === 'receiveSmsPromo') return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.agreeSmsLabel');
-    return getContent(fieldsContent.value, defaultLocaleFieldsContent.value, `${fieldName}.label`) || '';
+    return getContent(fieldsSettings.value, defaultLocaleFieldsSettings.value, `fieldsControls.${fieldName}.label`) || '';
   };
 
   const { getFormRules, createValidationRules } = useProjectMethods();
@@ -122,6 +130,18 @@
 
   const { registration } = useProfileStore();
   const isLockedAsyncButton = ref<boolean>(false);
+
+  const handleInput = (fieldName:string):void => {
+    if (fieldName === 'password' && v$.value.password_confirmation?.$dirty) {
+      const oldValue = registrationFormData.password_confirmation;
+      registrationFormData.password_confirmation = '';
+      registrationFormData.password_confirmation = oldValue;
+    }
+    
+    if (fieldName === 'currency') {
+      document.querySelector('.dropdown.currency')
+    }
+  };
 
   const { getNicknameFromEmail } = useProjectMethods();
   const signUp = async ():Promise<void> => {
@@ -141,6 +161,7 @@
       isLockedAsyncButton.value = true;
       await registration(registrationFormData);
       if (affiliateTag) localStorage.removeItem('affiliateTag');
+      await openWalletModal('deposit')
       closeModal('register');
     } catch (error:any) {
       if (error.response?.status === 422) {

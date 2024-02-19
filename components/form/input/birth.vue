@@ -1,13 +1,13 @@
 <template>
   <div class="input-birth">
     <span v-if="props.label" class="label">
-      {{ props.label }}<sup v-if="props.isRequired">*</sup>
+      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
       <button-clear-input v-if="!props.isDisabled" @click="clearInput"/>
     </span>
 
     <form-input-dropdown
       name="birth-day"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'birthdate.placeholderDay') || ''"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderDay') || ''"
       :is-disabled="props.isDisabled"
       v-model:value="selected.day"
       :options="days"
@@ -18,7 +18,7 @@
 
     <form-input-dropdown
       name="birth-month"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'birthdate.placeholderMonth') || ''"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderMonth') || ''"
       :is-disabled="props.isDisabled"
       :options="months"
       v-model:value="selected.month"
@@ -29,7 +29,7 @@
 
     <form-input-dropdown
       name="birth-year"
-      :placeholder="getContent(fieldsContent, defaultLocaleFieldsContent, 'birthdate.placeholderYear') || ''"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderYear') || ''"
       :is-disabled="props.isDisabled"
       :options="years"
       v-model:value="selected.year"
@@ -43,6 +43,8 @@
 </template>
 
 <script setup lang="ts">
+  import { storeToRefs } from "pinia";
+
   const props = defineProps({
     label: {
       type: String,
@@ -66,9 +68,16 @@
     },
   });
 
-  const { fieldsContent, defaultLocaleFieldsContent } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const {
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent
+  } = globalStore;
+  const { currentLocale } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
-  const selected = reactive({
+  const selected = reactive<{ year: number, month: number, day: number }>({
     year: 0,
     month: 0,
     day: 0,
@@ -89,8 +98,16 @@
     return items;
   };
 
+  const dayjs = useDayjs();
+  dayjs.locale(currentLocale.value?.code);
+  const dayjsMonths = dayjs.months();
+
   const years = createItems(1920, maxYear.value, false).reverse();
-  const months = createItems(1, 12, true);
+  const months = dayjsMonths.map((monthName, index) => ({
+    title: monthName,
+    value: monthName,
+    code: index + 1,
+  }));
   const days = createItems(1, 31, true);
 
   if (props.value) {
@@ -114,8 +131,8 @@
     changeInputValue();
   };
 
-  const onInputMonth = (month:number):void => {
-    selected.month = month;
+  const onInputMonth = (month:string):void => {
+    selected.month = Number(month);
     changeInputValue();
   };
 
