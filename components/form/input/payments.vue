@@ -4,7 +4,7 @@
     :class="classes"
     v-click-outside="close"
   >
-    <div class="items" v-if="props.items.length">
+    <div class="items" v-if="props.items?.length">
       <div
         class="item"
         v-for="(item, i) in props.items"
@@ -36,16 +36,10 @@
   import type { IPaymentMethod } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
-    items: {
-      type: Array,
-      default: () => [],
-    },
-    activeMethod: {
-      type: Object,
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    items?: IPaymentMethod[],
+    activeMethod?: IPaymentMethod
+  }>();
 
   const { getContent, formatBalance } = useProjectMethods();
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
@@ -88,9 +82,12 @@
   }
 
   const setMethodsMinSum = (): void => {
-    methodsMinSum.value = props.items.map((method: any) => {
-      return getMinMethodSum(method.amountMin);
-    })
+    if (!props.items) methodsMinSum.value = [];
+    else {
+      methodsMinSum.value = props.items?.map((method: any) => {
+        return getMinMethodSum(method.amountMin);
+      })
+    }
   }
 
   // FOR STATIC LOGO URL AND MIN DEPOSIT SUM

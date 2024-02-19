@@ -9,7 +9,7 @@
           class="img"
           :src="`${gamehubCdn}/locales/${currentLocale?.code.toLowerCase()}.svg`"
         />
-        <span class="title">{{ currentLocale.nativeName || currentLocale.name }}</span>
+        <span class="title">{{ currentLocale?.nativeName || currentLocale?.name }}</span>
         <atomic-icon id="arrow_expand-close" />
       </div>
 

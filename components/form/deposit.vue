@@ -18,12 +18,12 @@
       @input="v$[field.key]?.$touch()"
       @blur="v$[field.key]?.$touch()"
       @focus="onFocus(field.key)"
-      :is="fieldsTypeMap[field.key]?.component || 'form-input-text'"
+      :is="fieldsMap[field.key]?.component || 'form-input-text'"
       v-model:value="depositFormData[field.key]"
-      :type="fieldsTypeMap[field.key]?.type || 'text'"
-      :label="field.labels[currentLocale?.code] || field.labels.en"
+      :type="fieldsMap[field.key]?.type || 'text'"
+      :label="field.labels[currentLocale?.code || ''] || field.labels.en"
       :name="field.key"
-      :placeholder="field.hints[currentLocale?.code] || field.hints.en"
+      :placeholder="field.hints[currentLocale?.code || ''] || field.hints.en"
       :options="getFieldOptions(field.key)"
       :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
       :hint="setError(field.key)"
@@ -67,6 +67,8 @@
   import type {IBonus, IPaymentField, IResponseDeposit} from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import queryString from 'query-string';
+
+  const fieldsMap: Record<string, any> = fieldsTypeMap;
 
   const props = defineProps<{
     amountMax?: number,

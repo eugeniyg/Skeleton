@@ -43,7 +43,7 @@
     />
 
     <atomic-pagination
-      v-if="pageMeta?.totalPages > 1"
+      v-if="pageMeta?.totalPages && pageMeta.totalPages > 1"
       @selectPage="changePage"
       v-bind="pageMeta"
     />

@@ -20,7 +20,7 @@
           <div
             v-for="item in fiatCurrencies"
             class="modal-fiat__item"
-            :class="{ 'is-active': equivalentCurrency.code === item.code }"
+            :class="{ 'is-active': equivalentCurrency?.code === item.code }"
             :key="item.code"
             @click="selectFiat(item.code)"
           >

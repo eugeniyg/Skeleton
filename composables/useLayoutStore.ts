@@ -145,13 +145,14 @@ export const useLayoutStore = defineStore('layoutStore', {
       document.body.classList.toggle('drawer-open');
       const drawerContentEl:HTMLElement|null = document.querySelector('.drawer .content');
       const bodyScrollOptions = {
-        allowTouchMove: (el:HTMLElement|null) => {
+        allowTouchMove: (el:HTMLElement|Element) => {
           while (el && el !== document.body) {
             if (el.getAttribute('body-scroll-lock-ignore') !== null) {
               return true;
             }
-            el = el.parentElement;
+            el = el.parentElement || document.body;
           }
+          return false;
         }
       }
       if (drawerContentEl) this.isDrawerOpen ? disableBodyScroll(drawerContentEl, bodyScrollOptions) : enableBodyScroll(drawerContentEl);

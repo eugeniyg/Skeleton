@@ -78,8 +78,8 @@
   const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
 
   const openChat = () => {
-    const { public: { freshchatForGuest }} = useRuntimeConfig();
-    if (!freshchatForGuest && !isLoggedIn.value) showModal('register');
+    const { public: { freshchatParams } } = useRuntimeConfig();
+    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) showModal('register');
     else window.fcWidget?.open();
   }
 </script>

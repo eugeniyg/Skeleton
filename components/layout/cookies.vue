@@ -7,7 +7,7 @@
     <div
       v-if="layoutData?.cookie?.text || defaultLocaleLayoutData?.cookie?.text"
       class="text"
-      v-html="marked.parse(layoutData?.cookie?.text || defaultLocaleLayoutData?.cookie?.text)"
+      v-html="marked.parse(layoutData?.cookie?.text || defaultLocaleLayoutData?.cookie?.text || '')"
     />
 
     <button-base type="primary" size="md" @click="acceptCookie">

@@ -23,7 +23,6 @@
         type="text"
         name="phoneNumber"
         v-model="numberValue"
-        :readonly="props.isDisabled"
         :placeholder="props.placeholder"
         @focus="onFocus"
         @blur="onBlur"

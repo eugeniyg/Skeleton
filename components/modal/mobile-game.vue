@@ -24,7 +24,7 @@
             </div>
 
             <button-favorite
-              v-if="['depositOrDemo', 'deposit'].includes(mobileGameModalType)"
+              v-if="['depositOrDemo', 'deposit'].includes(mobileGameModalType || '')"
               :gameId="mobileGameModalInfo?.id"
             />
           </div>
@@ -37,20 +37,20 @@
             @click.once="handlePrimaryClick"
           >
             <atomic-icon
-              v-if="['depositOrDemo', 'deposit'].includes(mobileGameModalType)"
+              v-if="['depositOrDemo', 'deposit'].includes(mobileGameModalType || '')"
               id="play"
             />
             <atomic-icon v-else id="user-new" />
-            {{ modalContent[mobileGameModalType].primary }}
+            {{ modalContent[mobileGameModalType || '']?.primary }}
           </button-base>
 
           <button-base
-            v-if="modalContent[mobileGameModalType].secondary"
+            v-if="modalContent[mobileGameModalType || '']?.secondary"
             type="secondary"
             size="lg"
             @click.once="handleSecondaryClick"
           >
-            {{ modalContent[mobileGameModalType].secondary }}
+            {{ modalContent[mobileGameModalType || '']?.secondary }}
           </button-base>
         </div>
       </div>
@@ -84,7 +84,7 @@
   const playDemoButtonLabel = getContent(popupsData, defaultLocalePopupsData, 'mobileGame.demo');
   const registrationButtonLabel = getContent(popupsData, defaultLocalePopupsData, 'mobileGame.registration');
 
-  const modalContent = {
+  const modalContent: Record<string, any> = {
     depositOrDemo: {
       primary: depositButtonLabel,
       secondary: playDemoButtonLabel
