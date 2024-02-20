@@ -51,7 +51,8 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
       profileStore.currentSessionToken = data.accessToken;
       cookieToken.value = data.accessToken;
       newOptions.headers.Authorization = `Bearer ${data.accessToken}`;
-    } catch {
+    } catch (err: any) {
+      console.log('api-instance-error:', err);
       profileStore.currentSessionToken = null;
       cookieToken.value = null;
       newOptions.headers.Authorization = undefined;

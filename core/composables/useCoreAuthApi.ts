@@ -60,6 +60,8 @@ export const useCoreAuthApi = () => {
       coreAuthStore.refreshPromise = refreshPromise;
 
       return await refreshPromise;
+    } catch (err: any) {
+      console.log('refresh-error:', err)
     } finally {
       coreAuthStore.refreshPromise = null;
     }
