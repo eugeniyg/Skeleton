@@ -11,6 +11,7 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
 
   if (process.server) {
     const requestHeaders = useRequestHeaders();
+    console.log(requestHeaders);
 
     serverRequestHeaders = {
       'User-Agent': requestHeaders['user-agent'],
