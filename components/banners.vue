@@ -25,7 +25,6 @@
       <div
         class="banners__btn banners__btn--prev"
         @click="scrollPrev"
-        :class="{'is-disabled': state.prevBtnDisabled}"
       >
         <atomic-icon id="arrow_expand-close"/>
       </div>
@@ -34,7 +33,7 @@
         <div
           v-for="(item, index) in props.items.length"
           class="banners__bullet"
-          :class="{'is-active': index === state.activeIndex}"
+          :class="{'is-active': index === activeIndex}"
           @click="scrollTo(index)"
         />
       </div>
@@ -42,7 +41,6 @@
       <div
         class="banners__btn banners__btn--next"
         @click="scrollNext"
-        :class="{'is-disabled': state.nextBtnDisabled}"
       >
         <atomic-icon id="arrow_expand-close"/>
       </div>
@@ -54,18 +52,13 @@
   import type { IHomePage } from '~/types';
   
   import emblaCarouselVue from 'embla-carousel-vue';
-  import type { EmblaCarouselType } from 'embla-carousel-vue';
   import Autoplay from 'embla-carousel-autoplay';
   
   const props = defineProps<{
     items: IHomePage['banners']
   }>();
   
-  const state = reactive({
-    activeIndex: 0,
-    prevBtnDisabled: false,
-    nextBtnDisabled: false,
-  });
+  const activeIndex = ref<number>(0);
   
   const autoplayOptions = {
     delay: 4000,
@@ -77,61 +70,48 @@
   const [sliderNode, emblaApi] = emblaCarouselVue({
     loop: false,
     align: 'start'
-  }, [
-    Autoplay(autoplayOptions)
-  ]);
+  }, [Autoplay(autoplayOptions)]);
   
-  const onSelectSlide = (emblaApi: EmblaCarouselType) => {
-    state.activeIndex = emblaApi.selectedScrollSnap();
-    togglePrevNextButtons(emblaApi);
+  const onSelectSlide = () => {
+    activeIndex.value = emblaApi.value?.selectedScrollSnap() || 0;
   };
   
   const scrollTo = (index: number) => {
-    if (!emblaApi.value) return;
-    emblaApi.value.scrollTo(index);
-  };
-  
-  const onButtonClick = (emblaApi: EmblaCarouselType) => {
-    const { autoplay } = emblaApi?.plugins();
-    if (!autoplay) return;
-    if (autoplay.options?.stopOnInteraction !== false) autoplay.stop();
+    emblaApi.value?.scrollTo(index);
   };
   
   const scrollPrev = () => {
-    if (!emblaApi.value) return;
-    emblaApi.value.scrollPrev();
-    if (onButtonClick) onButtonClick(emblaApi.value);
+    if (!emblaApi.value?.canScrollPrev()) {
+      emblaApi.value?.scrollTo(emblaApi.value?.slideNodes()?.length);
+      onSelectSlide();
+    } else {
+      emblaApi.value?.scrollPrev();
+    }
   };
   
   const scrollNext = () => {
-    if (!emblaApi.value) return;
-    emblaApi.value.scrollNext();
-    if (onButtonClick) onButtonClick(emblaApi.value);
+    if (!emblaApi.value?.canScrollNext()) {
+      emblaApi.value?.scrollTo(0);
+      onSelectSlide();
+    } else {
+      emblaApi.value?.scrollNext();
+    }
   };
   
   const onMouseOver = () => {
-    if (!emblaApi.value) return;
-    const { autoplay } = emblaApi.value.plugins();
+    const autoplay = emblaApi.value?.plugins()?.autoplay as any;
     autoplay?.stop();
   };
   
   const onMouseLeave = () => {
     if (!emblaApi.value) return;
-    const { autoplay } = emblaApi.value.plugins();
+    const autoplay = emblaApi.value?.plugins()?.autoplay as any;
     autoplay?.play();
-  };
-  
-  const togglePrevNextButtons = (emblaApi: EmblaCarouselType) => {
-    state.prevBtnDisabled = !emblaApi.canScrollPrev();
-    state.nextBtnDisabled = !emblaApi.canScrollNext();
   };
   
   watchEffect(() => {
     if (emblaApi.value) {
-      emblaApi.value
-        .on('select', onSelectSlide)
-        .on('init', togglePrevNextButtons)
-        .on('reInit', togglePrevNextButtons);
+      emblaApi.value?.on('select', onSelectSlide)
     }
   });
 </script>
