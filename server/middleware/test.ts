@@ -1,3 +1,3 @@
-export default defineEventHandler((event) => {
-  console.log('New request: ', event.node.res)
+export default defineEventHandler(async (event) => {
+  console.log(JSON.stringify(event.node.res.getHeaders()));
 })

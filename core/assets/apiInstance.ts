@@ -11,14 +11,14 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
 
   if (process.server) {
     const requestHeaders = useRequestHeaders();
-    console.log(requestHeaders);
 
     serverRequestHeaders = {
       'User-Agent': requestHeaders['user-agent'],
       'Accept-Language': requestHeaders['accept-language'],
       'Accept-Encoding': requestHeaders['accept-encoding'],
       [globalStore.countryHeaderName]: requestHeaders[globalStore.countryHeaderName],
-      Referer: requestHeaders.referer
+      Referer: requestHeaders.referer,
+      'cf-connecting-ip': requestHeaders['cf-connecting-ip']
     };
   }
 
@@ -52,7 +52,6 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
       cookieToken.value = data.accessToken;
       newOptions.headers.Authorization = `Bearer ${data.accessToken}`;
     } catch (err: any) {
-      console.log('api-instance-error:', err);
       profileStore.currentSessionToken = null;
       cookieToken.value = null;
       newOptions.headers.Authorization = undefined;
