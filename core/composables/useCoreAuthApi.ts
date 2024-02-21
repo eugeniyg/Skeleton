@@ -15,9 +15,6 @@ export const useCoreAuthApi = () => {
       body: registrationFormData
     });
 
-    const { setSessionToken } = useProfileStore();
-    setSessionToken(data.accessToken);
-
     return data;
   };
 
@@ -26,9 +23,6 @@ export const useCoreAuthApi = () => {
       method: 'POST',
       body: authorizationFormData
     });
-
-    const { setSessionToken } = useProfileStore();
-    setSessionToken(data.accessToken);
 
     return data;
   };
@@ -39,30 +33,16 @@ export const useCoreAuthApi = () => {
       body: { token }
     });
 
-    const { setSessionToken } = useProfileStore();
-    setSessionToken(data.accessToken);
-
     return data;
   };
 
-  const refreshToken = async (options:any):Promise<{data: IAuthorizationResponse}> => {
-    const coreAuthStore = useProfileStore();
-    if (coreAuthStore.refreshPromise) {
-      return coreAuthStore.refreshPromise;
-    }
+  const refreshToken = async (options:any):Promise<IAuthorizationResponse> => {
+    const { data } = await $fetch('/api/player/sessions/refresh', {
+      ...options,
+      method: 'POST'
+    });
 
-    try {
-      const refreshPromise:Promise<{data: IAuthorizationResponse}> = $fetch('/api/player/sessions/refresh', {
-        ...options,
-        method: 'POST'
-      });
-
-      coreAuthStore.refreshPromise = refreshPromise;
-
-      return await refreshPromise;
-    } finally {
-      coreAuthStore.refreshPromise = null;
-    }
+    return data;
   };
 
   const logOut = async ():Promise<{message: string}> => {

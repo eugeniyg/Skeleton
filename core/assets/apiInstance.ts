@@ -3,10 +3,8 @@ import queryString from 'query-string';
 export const useFetchInstance = async (url:string, options?:any):Promise<any> => {
   const profileStore = useProfileStore();
   const globalStore = useGlobalStore();
-  const { isTokenExpired } = profileStore;
-  const cookieToken = useCookie('access_token', { maxAge: 60 * 60 * 24 * 30 });
-  const storeToken = profileStore.currentSessionToken;
-  const token = storeToken || cookieToken.value;
+
+  let token = profileStore.getSessionToken();
   let serverRequestHeaders = {};
 
   if (process.server) {
@@ -43,16 +41,12 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
 
   if (token) { newOptions.headers.Authorization = `Bearer ${token}` };
 
-  if (token && isTokenExpired()) {
-    const { refreshToken } = useCoreAuthApi();
+  if (token && profileStore.isTokenExpired()) {
     try {
-      const { data } = await refreshToken(newOptions);
-      profileStore.currentSessionToken = data.accessToken;
-      cookieToken.value = data.accessToken;
-      newOptions.headers.Authorization = `Bearer ${data.accessToken}`;
-    } catch {
-      profileStore.currentSessionToken = null;
-      cookieToken.value = null;
+      token = await profileStore.refreshToken(newOptions);
+      newOptions.headers.Authorization = `Bearer ${token}`;
+    } catch (e) {
+      profileStore.removeSession();
       newOptions.headers.Authorization = undefined;
     }
   }

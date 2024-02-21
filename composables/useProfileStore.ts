@@ -15,6 +15,8 @@ interface IProfileStoreState {
   profile: Maybe<IProfile>;
 }
 
+const COOKIE_KEY = 'access_token';
+
 export const useProfileStore = defineStore('profileStore', {
   state: (): IProfileStoreState => ({
     refreshPromise: null,
@@ -33,23 +35,33 @@ export const useProfileStore = defineStore('profileStore', {
 
   actions: {
     setSessionToken (tokenValue:string):void {
-      const cookieToken = useCookie('access_token', { maxAge: 60 * 60 * 24 * 30 });
+      if(this.currentSessionToken === tokenValue) {
+        return this.currentSessionToken;
+      }
+
+      const cookieToken = useCookie(COOKIE_KEY, { maxAge: 60 * 60 * 24 * 30 });
       cookieToken.value = tokenValue;
-      this.currentSessionToken = tokenValue;
+      return this.currentSessionToken = tokenValue;
     },
 
     getSessionToken ():string|null|undefined {
-      const cookieToken = useCookie('access_token');
-      return this.currentSessionToken || cookieToken.value;
+      if(this.currentSessionToken) {
+        return this.currentSessionToken;
+      }
+
+      const cookieToken = useCookie(COOKIE_KEY);
+      return this.currentSessionToken = cookieToken.value;
     },
 
     isTokenExpired ():boolean {
       const token = this.getSessionToken();
-      if (token) {
-        const currentSession:IParsedToken = jwtDecode(token);
-        return currentSession.exp ? currentSession.exp <= Date.now() / 1000 : false;
+
+      if(!token) {
+        return false;
       }
-      return true;
+
+      const currentSession:IParsedToken = jwtDecode(token);
+      return currentSession.exp ? currentSession.exp <= Date.now() / 1000 : false;
     },
 
     getCurrentSession ():IParsedToken|null {
@@ -61,9 +73,28 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     removeSession ():void {
-      const cookieToken = useCookie('access_token')
+      const cookieToken = useCookie(COOKIE_KEY)
       cookieToken.value = null
       this.currentSessionToken = null
+    },
+
+    refreshToken(options) {
+      if(this.refreshPromise) {
+        return this.refreshPromise;
+      }
+
+      return this.refreshPromise = this._doRefreshToken(options);
+    },
+
+    async _doRefreshToken(options) {
+      const { refreshToken: callRefresh } = useCoreAuthApi();
+
+      try {
+        const data = await callRefresh(options);
+        return this.setSessionToken(data.accessToken);
+      } finally {
+        this.refreshPromise = undefined;
+      }
     },
 
     startSession(authData: IAuthorizationResponse):void {
@@ -120,6 +151,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {
+      this.setSessionToken(authResponse.accessToken);
       this.startSession(authResponse);
       await nextTick();
 
