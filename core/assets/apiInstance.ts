@@ -18,7 +18,7 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
       'Accept-Encoding': requestHeaders['accept-encoding'],
       [globalStore.countryHeaderName]: requestHeaders[globalStore.countryHeaderName],
       Referer: requestHeaders.referer,
-      'cf-connecting-ip': requestHeaders['cf-connecting-ip']
+      'x-forwarded-for': requestHeaders['cf-connecting-ip']
     };
   }
 
@@ -57,6 +57,8 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
       newOptions.headers.Authorization = undefined;
     }
   }
+
+  console.log('new-headers: ', newOptions.headers);
 
   return await $fetch(newUrl, newOptions);
 }
