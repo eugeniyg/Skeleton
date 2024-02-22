@@ -15,9 +15,6 @@ export const useCoreAuthApi = () => {
       body: registrationFormData
     });
 
-    const { setSessionToken } = useProfileStore();
-    setSessionToken(data.accessToken);
-
     return data;
   };
 
@@ -26,9 +23,6 @@ export const useCoreAuthApi = () => {
       method: 'POST',
       body: authorizationFormData
     });
-
-    const { setSessionToken } = useProfileStore();
-    setSessionToken(data.accessToken);
 
     return data;
   };
@@ -39,42 +33,24 @@ export const useCoreAuthApi = () => {
       body: { token }
     });
 
-    const { setSessionToken } = useProfileStore();
-    setSessionToken(data.accessToken);
+    return data;
+  };
+
+  const refreshToken = async (options:any):Promise<IAuthorizationResponse> => {
+    const { data }: { data: IAuthorizationResponse } = await $fetch('/api/player/sessions/refresh', {
+      ...options,
+      method: 'POST'
+    });
 
     return data;
   };
 
-  const refreshToken = async (options:any):Promise<{data: IAuthorizationResponse}> => {
-    const coreAuthStore = useProfileStore();
-    if (coreAuthStore.refreshPromise) {
-      return coreAuthStore.refreshPromise;
-    }
-
-    try {
-      const refreshPromise:Promise<{data: IAuthorizationResponse}> = $fetch('/api/player/sessions/refresh', {
-        ...options,
-        method: 'POST'
-      });
-
-      coreAuthStore.refreshPromise = refreshPromise;
-
-      return await refreshPromise;
-    } finally {
-      coreAuthStore.refreshPromise = null;
-    }
-  };
-
   const logOut = async ():Promise<{message: string}> => {
-    try {
-      const { data } = await useFetchInstance('/api/player/sessions/logout', {
-        method: 'POST'
-      });
-      return data;
-    } finally {
-      const { removeSession } = useProfileStore();
-      removeSession();
-    }
+    const { data } = await useFetchInstance('/api/player/sessions/logout', {
+      method: 'POST'
+    });
+
+    return data;
   };
 
   return {

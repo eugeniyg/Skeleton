@@ -55,6 +55,7 @@ export default defineNuxtConfig({
     ]
   },
   experimental: {
+    asyncContext: true,
     defaults: {
       useAsyncData: {
         deep: false
