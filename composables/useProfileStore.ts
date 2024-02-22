@@ -7,12 +7,13 @@ import type {
 import { jwtDecode } from "jwt-decode";
 
 interface IProfileStoreState {
-  refreshPromise: Promise<{data: IAuthorizationResponse}>|null;
-  currentSessionToken: string|null;
+  refreshPromise: Promise<string>|null;
+  currentSessionToken: Maybe<string>;
   isLoggedIn: boolean;
   sessionId: string;
   resentVerifyEmail: boolean;
   profile: Maybe<IProfile>;
+  tokenCookieKey: string;
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -23,6 +24,7 @@ export const useProfileStore = defineStore('profileStore', {
     sessionId: '',
     resentVerifyEmail: false,
     profile: undefined,
+    tokenCookieKey: 'access_token'
   }),
 
   getters: {
@@ -33,23 +35,25 @@ export const useProfileStore = defineStore('profileStore', {
 
   actions: {
     setSessionToken (tokenValue:string):void {
-      const cookieToken = useCookie('access_token', { maxAge: 60 * 60 * 24 * 30 });
+      if (this.currentSessionToken === tokenValue) return;
+      const cookieToken = useCookie(this.tokenCookieKey, { maxAge: 60 * 60 * 24 * 30 });
       cookieToken.value = tokenValue;
       this.currentSessionToken = tokenValue;
     },
 
-    getSessionToken ():string|null|undefined {
-      const cookieToken = useCookie('access_token');
-      return this.currentSessionToken || cookieToken.value;
+    getSessionToken ():Maybe<string> {
+      if (this.currentSessionToken) return this.currentSessionToken;
+      const cookieToken = useCookie(this.tokenCookieKey);
+      this.currentSessionToken = cookieToken.value;
+      return this.currentSessionToken;
     },
 
     isTokenExpired ():boolean {
       const token = this.getSessionToken();
-      if (token) {
-        const currentSession:IParsedToken = jwtDecode(token);
-        return currentSession.exp ? currentSession.exp <= Date.now() / 1000 : false;
-      }
-      return true;
+      if (!token) return false;
+
+      const currentSession:IParsedToken = jwtDecode(token);
+      return currentSession.exp ? currentSession.exp <= Date.now() / 1000 : false;
     },
 
     getCurrentSession ():IParsedToken|null {
@@ -61,9 +65,27 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     removeSession ():void {
-      const cookieToken = useCookie('access_token')
-      cookieToken.value = null
-      this.currentSessionToken = null
+      const cookieToken = useCookie(this.tokenCookieKey);
+      cookieToken.value = null;
+      this.currentSessionToken = null;
+    },
+
+    async getRefreshRequest (options:any): Promise<string> {
+      const { refreshToken } = useCoreAuthApi();
+
+      try {
+        const data = await refreshToken(options);
+        this.setSessionToken(data.accessToken);
+        return data.accessToken;
+      } finally {
+        this.refreshPromise = null;
+      }
+    },
+
+    refreshToken(options:any): string|Promise<string> {
+      if (this.refreshPromise) return this.refreshPromise;
+      this.refreshPromise = this.getRefreshRequest(options);
+      return this.refreshPromise;
     },
 
     startSession(authData: IAuthorizationResponse):void {
@@ -120,6 +142,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {
+      this.setSessionToken(authResponse.accessToken);
       this.startSession(authResponse);
       await nextTick();
 
@@ -175,6 +198,7 @@ export const useProfileStore = defineStore('profileStore', {
         await logOut();
       } finally {
         this.isLoggedIn = false;
+        this.removeSession();
         const { updateChat } = useFreshchatStore();
         updateChat();
         this.finishProfileDependencies();
