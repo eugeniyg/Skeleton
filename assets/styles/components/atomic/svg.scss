@@ -1,0 +1,12 @@
+.inline-svg {
+  display: flex;
+  flex: 22px 0 0;
+  min-width: 22px;
+  min-height: 22px;
+  transition: color 0.2s ease-in-out;
+  color: inherit;
+
+  path {
+    fill: currentColor !important;
+  }
+}
