@@ -71,6 +71,10 @@
       --color: var(--icon-primary);
     }
 
+    .inline-svg {
+      color: var(--icon-primary);
+    }
+
     &.is-open {
       .icon {
         --color: var(--icon-accent);
@@ -94,12 +98,16 @@
     }
 
     @include use-hover {
-       &:hover {
-         cursor: pointer;
+      &:hover {
+        cursor: pointer;
         --bg: var(--side-bar-link-hover);
 
         .icon {
           --color: var(--icon-contrast);
+        }
+
+        .inline-svg {
+          color: var(--icon-contrast);
         }
 
         .text  {
@@ -110,7 +118,7 @@
           --bg: var(--side-bar-expand-hover);
 
           .icon {
-             --color: var(--button-icn-ghost-hover);
+            --color: var(--button-icn-ghost-hover);
           }
         }
 
@@ -124,6 +132,10 @@
 
       .icon {
         --color: var(--icon-accent);
+      }
+
+      .inline-svg {
+        color: var(--icon-accent);
       }
 
       .text {
