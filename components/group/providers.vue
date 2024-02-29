@@ -62,7 +62,11 @@ const providersIdentity = [
   'push-gaming',
   'play-n-go',
   'game-art',
-  'pragmatic-play'
+  'pragmatic-play',
+  'pg-soft',
+  'spadegaming',
+  'spribe',
+  'evolution-gaming'
 ];
 const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
 const { getContent } = useProjectMethods();
