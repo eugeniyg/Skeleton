@@ -1,6 +1,6 @@
 <template>
   <div class="list-socials">
-    <a class="list-socials__item" v-for="item in props.items" :href="item.url">
+    <a class="list-socials__item" v-for="item in props.items" :href="item.url" target="_blank">
       <atomic-icon :id="item.icon"/>
     </a>
   </div>
