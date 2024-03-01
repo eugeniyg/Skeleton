@@ -55,11 +55,19 @@
   },
   "firstName": {
     "component": "form-input-text",
-    "type": "text"
+    "type": "text",
+    "validation": [{
+      "rule": "min",
+      "arguments": "2"
+    }]
   },
   "lastName": {
     "component": "form-input-text",
-    "type": "text"
+    "type": "text",
+    "validation": [{
+      "rule": "min",
+      "arguments": "2"
+    }]
   },
   "nationality": {
     "component": "form-input-text",
@@ -164,7 +172,11 @@
   },
   "personalIdNumber": {
     "component": "form-input-text",
-    "type": "text"
+    "type": "text",
+    "validation": [{
+      "rule": "min",
+      "arguments": "2"
+    }]
   },
   "message": {
     "component": "form-input-textarea",
