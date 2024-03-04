@@ -108,7 +108,7 @@
   }
 
   &__slot-right {
-    overflow-y: auto;
+    //overflow-y: auto;
     padding: rem(16px);
     width: 100%;
     flex-shrink: 0;
@@ -118,10 +118,6 @@
     position: relative;
     display: flex;
     flex-direction: column;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
 
     @include media(sm) {
       @include scrollbar;
@@ -203,6 +199,14 @@
         @include media(sm) {
           display: block;
         }
+      }
+    }
+
+    &-content {
+      overflow-y: auto;
+
+      &::-webkit-scrollbar {
+        display: none;
       }
     }
 
