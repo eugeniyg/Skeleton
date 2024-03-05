@@ -110,8 +110,8 @@
             <atomic-icon id="info" />
 
             <span>
-            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
-          </span>
+              {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+            </span>
           </div>
         </template>
 
@@ -126,8 +126,8 @@
             <atomic-icon id="info" />
 
             <span>
-            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
-          </span>
+              {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+            </span>
           </div>
         </template>
 
