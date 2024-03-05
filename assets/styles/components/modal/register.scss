@@ -2,6 +2,7 @@
   .container {
     display: flex;
     overflow: hidden;
+    position: relative;
     flex-direction: column;
     max-height: 100%;
     background-color: var(--layer-01);
@@ -78,9 +79,16 @@
   }
 
   .btn-modal-close {
-    transform: translate(0, 0);
+    transform: none;
     --right: auto;
-    --top: 4px;
+    left: 24px;
+    --top: 98px;
+    --bg: transparent;
+
+    &.close-secondary {
+      --bg: var(--button-bg-secondary);
+      box-shadow: var(--shadow-layer);
+    }
 
     .icon {
       &:first-of-type {
@@ -103,14 +111,14 @@
     }
 
     @include media(xs) {
+      left: auto;
       --top: #{rem(-4px)};
       --right: #{rem(-14px)};
-      --bg: transparent;
     }
 
     @include media(md) {
-      --top: #{rem(-16px)};
-      --right: #{rem(-14px)};
+      --top: #{rem(16px)};
+      --right: #{rem(10px)};
     }
   }
 }
