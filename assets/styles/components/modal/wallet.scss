@@ -108,16 +108,19 @@
   }
 
   &__slot-right {
-    //overflow-y: auto;
+    overflow-y: auto;
     padding: rem(16px);
     width: 100%;
     flex-shrink: 0;
     scroll-snap-align: center;
     background-color: var(--layer-01);
     z-index: 1;
-    position: relative;
     display: flex;
     flex-direction: column;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
     @include media(sm) {
       @include scrollbar;
@@ -202,14 +205,6 @@
       }
     }
 
-    &-content {
-      overflow-y: auto;
-
-      &::-webkit-scrollbar {
-        display: none;
-      }
-    }
-
     @include media(sm) {
       width: rem(400px);
       padding: rem(24px) rem(24px) rem(16px) rem(32px);
@@ -252,9 +247,11 @@
 
   .btn-modal-close {
     transform: none;
+    top: 20px;
+    right: 20px;
 
     @include media(sm) {
-      --bg: transparent;
+      --bg: var(--layer-01);
 
       @include use-hover {
         &:hover {

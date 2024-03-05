@@ -85,53 +85,51 @@
           <div class="identity">ID {{ playerIdentity }}</div>
         </div>
 
-        <div class="wallet-modal__slot-right-content">
-          <template v-if="selectedTab === 'deposit'">
-            <wallet-limit
-              v-if="depositLimitError"
-              :currentLocaleLimitsContent="currentLocaleLimitsContent"
-              :defaultLocaleLimitsContent="defaultLocaleLimitsContent"
+        <template v-if="selectedTab === 'deposit'">
+          <wallet-limit
+            v-if="depositLimitError"
+            :currentLocaleLimitsContent="currentLocaleLimitsContent"
+            :defaultLocaleLimitsContent="defaultLocaleLimitsContent"
+          />
+
+          <template v-else-if="depositMethods?.length && currentDepositMethod">
+            <form-deposit
+              :key="`${currentDepositMethod.method}-${depositMethodKey}`"
+              v-if="currentDepositMethod.type === 'form'"
+              v-bind="currentDepositMethod"
             />
 
-            <template v-else-if="depositMethods?.length && currentDepositMethod">
-              <form-deposit
-                :key="`${currentDepositMethod.method}-${depositMethodKey}`"
-                v-if="currentDepositMethod.type === 'form'"
-                v-bind="currentDepositMethod"
-              />
-
-              <form-deposit-crypto
-                v-if="currentDepositMethod.type === 'address'"
-                v-bind="currentDepositMethod"
-                :key="`${currentDepositMethod.method}-${depositMethodKey}`"
-              />
-            </template>
-
-            <div v-else class="wallet-modal__empty-methods">
-              <atomic-icon id="info" />
-
-              <span>
-              {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
-            </span>
-            </div>
-          </template>
-
-          <template v-else-if="selectedTab === 'withdraw'">
-            <form-withdraw
-              v-if="withdrawMethods?.length && currentWithdrawMethod"
-              :key="currentWithdrawMethod.method"
-              v-bind="currentWithdrawMethod"
+            <form-deposit-crypto
+              v-if="currentDepositMethod.type === 'address'"
+              v-bind="currentDepositMethod"
+              :key="`${currentDepositMethod.method}-${depositMethodKey}`"
             />
-
-            <div v-else class="wallet-modal__empty-methods">
-              <atomic-icon id="info" />
-
-              <span>
-              {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
-            </span>
-            </div>
           </template>
-        </div>
+
+          <div v-else class="wallet-modal__empty-methods">
+            <atomic-icon id="info" />
+
+            <span>
+            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+          </span>
+          </div>
+        </template>
+
+        <template v-else-if="selectedTab === 'withdraw'">
+          <form-withdraw
+            v-if="withdrawMethods?.length && currentWithdrawMethod"
+            :key="currentWithdrawMethod.method"
+            v-bind="currentWithdrawMethod"
+          />
+
+          <div v-else class="wallet-modal__empty-methods">
+            <atomic-icon id="info" />
+
+            <span>
+            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+          </span>
+          </div>
+        </template>
 
         <wallet-dots
           :itemsCount="2"

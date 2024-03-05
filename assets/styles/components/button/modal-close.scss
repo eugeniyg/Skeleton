@@ -3,6 +3,7 @@
   min-width: rem(32px);
   min-height: rem(32px);
   position: var(--position, absolute);
+  z-index: 2;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
