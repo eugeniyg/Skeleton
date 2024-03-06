@@ -20,7 +20,7 @@
       :category="category"
     />
     
-    <group-winners showArrows v-if="defaultLocaleGlobalComponentsContent?.cardsGroup?.latestWinners?.display || globalComponentsContent?.cardsGroup?.latestWinners?.display"/>
+    <group-winners showArrows v-if="globalComponentsContent?.cardsGroup?.latestWinners?.display"/>
     
     <group-games
       v-for="category in mainCategoriesList.slice(4)"
