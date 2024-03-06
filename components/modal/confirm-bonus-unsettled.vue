@@ -20,12 +20,12 @@
           <div class="progress__info-data">
             <span class="progress__info-label">
               <span>{{ props.wageringLabel }}</span>
-              (<span>x</span>{{ props.bonusInfo.wagerSportsbook }}):
+              (<span>x</span>{{ props?.bonusInfo?.wagerSportsbook }}):
             </span>
             
             <span class="progress__info-value">
-              {{ props.bonusInfo.currentWagerAmount }}
-              {{ props.bonusInfo.currency }}
+              {{ props.bonusInfo?.currentWagerAmount }}
+              {{ props.bonusInfo?.currency }}
             </span>
           </div>
         </div>
@@ -33,8 +33,8 @@
         <div class="progress__bar">
           <div
             class="progress__bar-filled"
-            :data-progress="`${props.bonusInfo.currentWagerPercentage}%`"
-            :style="`--progress: ${props.bonusInfo.currentWagerPercentage}%`"
+            :data-progress="`${props.bonusInfo?.currentWagerPercentage}%`"
+            :style="`--progress: ${props.bonusInfo?.currentWagerPercentage}%`"
           />
         </div>
       </div>
@@ -70,8 +70,8 @@
     confirmButton?: string,
     cancelButton?: string,
     bonusesUpdating?: boolean
-    bonusInfo: IPlayerBonus,
-    wageringLabel: string
+    bonusInfo?: IPlayerBonus,
+    wageringLabel?: string
   }>();
 
   const emit = defineEmits(['closeModal', 'confirm']);
