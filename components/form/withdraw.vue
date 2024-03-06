@@ -27,7 +27,7 @@
         :hint="fieldHint"
       />
 
-      <template v-for="field in props.fields">
+      <template v-for="field in visibleFields">
         <component
           v-if="field.key !== 'crypto_network'"
           :key="field.key"
@@ -89,10 +89,7 @@
     closeModal,
     showAlert
   } = useLayoutStore();
-  const {
-    activeAccount,
-    activeAccountType
-  } = storeToRefs(walletStore);
+  const { activeAccount } = storeToRefs(walletStore);
 
   const {
     formatBalance,
@@ -132,18 +129,25 @@
   const isSending = ref<boolean>(false);
   const amountValue = ref<number>(formatAmountMin.value.amount);
 
-  const profileStore = useProfileStore();
+  const visibleFields = computed(() => {
+    const { public: { showWalletFilledFields } } = useRuntimeConfig();
+    if (showWalletFilledFields) return props.fields;
+    return props.fields.filter(field => field.value === null);
+  })
+
   const withdrawFormData = reactive<{ [key: string]: string }>({});
   props.fields.forEach((field: any) => {
     if (field.key !== 'crypto_network') {
-      withdrawFormData[field.key] = profileStore.profile?.[field.key];
+      withdrawFormData[field.key] = field.value ?? undefined;
     }
   });
   const fieldsType:any = fieldsTypeMap;
   const startRules = props.fields.reduce((currentRulesObj, currentField) => {
     if (currentField.key === 'crypto_network') return currentRulesObj;
 
-    const rulesArr: { rule: string, arguments?: string }[] = [{ rule: 'required' }];
+    const rulesArr: { rule: string, arguments?: string }[] = [];
+    if (currentField.isRequired) rulesArr.push({ rule: 'required' });
+
     if (currentField.key === 'phone') {
       rulesArr.push({ rule: 'phone' });
     } else if (currentField.regexp) {
@@ -151,9 +155,7 @@
         rule: 'regex',
         arguments: currentField.regexp
       });
-    }
-
-    if (currentField.key === 'wallet_id') {
+    } else if (currentField.key === 'wallet_id') {
       const findNetworkField = props.fields.find((field) => field.key === 'crypto_network');
       const firstNetworkRegex = findNetworkField ? findNetworkField.options?.[0]?.regex : undefined;
 
@@ -165,7 +167,8 @@
       }
     }
 
-    return { ...currentRulesObj, [currentField.key]: rulesArr };
+    if (rulesArr.length) return { ...currentRulesObj, [currentField.key]: rulesArr };
+    return currentRulesObj;
   }, {});
 
   const withdrawRules = ref<any>(startRules);
