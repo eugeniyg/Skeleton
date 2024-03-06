@@ -89,11 +89,6 @@
 
   const bonusStore = useBonusStore();
   const { depositBonuses, selectedDepositBonus } = storeToRefs(bonusStore);
-  const visibleFields = computed(() => {
-    const { public: { showWalletFilledFields } } = useRuntimeConfig();
-    if (showWalletFilledFields) return props.fields;
-    return props.fields.filter(field => field.value === null);
-  })
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
   props.fields.forEach((field) => {
@@ -116,6 +111,21 @@
   }, {});
   const depositFormRules = getFormRules(depositRules);
   const { v$, onFocus, setError } = useFormValidation(depositFormRules, depositFormData);
+
+  const getVisibleFields = (): IPaymentField[] => {
+    const { public: { showWalletFilledFields } } = useRuntimeConfig();
+
+    props.fields.forEach(field => {
+      if (field.value !== null && v$.value[field.key].$invalid) v$.value[field.key].$touch();
+    })
+
+    if (showWalletFilledFields) {
+      return props.fields;
+    }
+
+    return props.fields.filter(field => field.value === null || v$.value[field.key].$invalid);
+  }
+  const visibleFields = getVisibleFields(); // remove reactivity
 
   const fieldsStore = useFieldsStore();
   const getFieldOptions = (fieldName: string): any => {

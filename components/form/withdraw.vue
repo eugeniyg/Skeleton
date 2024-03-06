@@ -129,12 +129,6 @@
   const isSending = ref<boolean>(false);
   const amountValue = ref<number>(formatAmountMin.value.amount);
 
-  const visibleFields = computed(() => {
-    const { public: { showWalletFilledFields } } = useRuntimeConfig();
-    if (showWalletFilledFields) return props.fields;
-    return props.fields.filter(field => field.value === null);
-  })
-
   const withdrawFormData = reactive<{ [key: string]: string }>({});
   props.fields.forEach((field: any) => {
     if (field.key !== 'crypto_network') {
@@ -176,6 +170,21 @@
   const withdrawFormRules = computed(() => getFormRules(withdrawRules.value));
   const serverFormErrors = ref<{ [key: string]: Maybe<string> }>({});
   const v$ = useVuelidate(withdrawFormRules, withdrawFormData);
+
+  const getVisibleFields = (): IPaymentField[] => {
+    const { public: { showWalletFilledFields } } = useRuntimeConfig();
+
+    props.fields.forEach(field => {
+      if (field.value !== null && v$.value[field.key].$invalid) v$.value[field.key].$touch();
+    })
+
+    if (showWalletFilledFields) {
+      return props.fields;
+    }
+
+    return props.fields.filter(field => field.value === null || v$.value[field.key].$invalid);
+  }
+  const visibleFields = getVisibleFields(); // remove reactivity
 
   const onFocus = (fieldName: string): void => {
     if (serverFormErrors.value[fieldName]) {
