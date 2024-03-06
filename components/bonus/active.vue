@@ -18,11 +18,20 @@
 
     <ModalConfirmBonus
       v-bind="modalState"
-      :showModal="showModal"
+      :showModal="showModalConfirmBonus"
       :bonusesUpdating="bonusesUpdating"
-      @closeModal="showModal = false"
+      @closeModal="showModalConfirmBonus = false"
       @confirm="confirmAction"
     />
+    
+    <ModalConfirmBonusUnsettled
+      v-bind="modalState"
+      :showModal="showConfirmBonusUnsettledModal"
+      :bonusesUpdating="bonusesUpdating"
+      @closeModal="showConfirmBonusUnsettledModal = false"
+      @confirm="confirmAction"
+    />
+    
   </div>
 </template>
 
@@ -37,24 +46,31 @@
   }>();
 
   interface IModalState extends Record<string, any>{
+    image?:string,
     title?: string,
     description?: string,
+    wageringLabel?: string,
     confirmButton?: string,
     cancelButton?: string,
     bonusInfo: IPlayerBonus|IPlayerFreeSpin|undefined,
     mode: 'activate'|'cancel'
+    bonusData?: IPlayerBonus
   }
 
   const modalState = reactive<IModalState>({
+    image: undefined,
     title: undefined,
     description: undefined,
+    wageringLabel: undefined,
     confirmButton: undefined,
     cancelButton: undefined,
     bonusInfo: undefined,
     mode: 'activate',
   });
 
-  const showModal = ref<boolean>(false);
+  const showModalConfirmBonus = ref<boolean>(false);
+  const showConfirmBonusUnsettledModal = ref<boolean>(false);
+  
   const bonusStore = useBonusStore();
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
   const orderedBonuses = computed(() => {
@@ -94,14 +110,24 @@
         modalState.confirmButton = popupsData.value?.cancelBonus.confirmButton || defaultLocalePopupsData?.value?.cancelBonus.confirmButton;
         modalState.cancelButton = popupsData.value?.cancelBonus.cancelButton || defaultLocalePopupsData?.value?.cancelBonus.cancelButton;
       }
+      showModalConfirmBonus.value = true;
     } else {
-      modalState.title = popupsData.value?.cancelBonus.title || defaultLocalePopupsData?.value?.cancelBonus.title;
-      modalState.description = popupsData.value?.cancelBonus.activeBonusDescription || defaultLocalePopupsData?.value?.cancelBonus.activeBonusDescription;
-      modalState.confirmButton = popupsData.value?.cancelBonus.confirmButton || defaultLocalePopupsData?.value?.cancelBonus.confirmButton;
-      modalState.cancelButton = popupsData.value?.cancelBonus.cancelButton || defaultLocalePopupsData?.value?.cancelBonus.cancelButton;
+      if(processBonus.currentWagerPercentage === 100) {
+        modalState.image = popupsData.value?.cancelBonusUnsettled.image || defaultLocalePopupsData?.value?.cancelBonusUnsettled.image;
+        modalState.title = popupsData.value?.cancelBonusUnsettled.title || defaultLocalePopupsData?.value?.cancelBonusUnsettled.title;
+        modalState.description = popupsData.value?.cancelBonusUnsettled.description || defaultLocalePopupsData?.value?.cancelBonusUnsettled.description;
+        modalState.wageringLabel = popupsData.value?.cancelBonusUnsettled.wageringLabel || defaultLocalePopupsData?.value?.cancelBonusUnsettled.wageringLabel;
+        modalState.confirmButton = popupsData.value?.cancelBonusUnsettled.confirmButton || defaultLocalePopupsData?.value?.cancelBonusUnsettled.confirmButton;
+        modalState.cancelButton = popupsData.value?.cancelBonusUnsettled.cancelButton || defaultLocalePopupsData?.value?.cancelBonusUnsettled.cancelButton;
+        showConfirmBonusUnsettledModal.value = true
+      } else {
+        modalState.title = popupsData.value?.cancelBonus.title || defaultLocalePopupsData?.value?.cancelBonus.title;
+        modalState.description = popupsData.value?.cancelBonus.activeBonusDescription || defaultLocalePopupsData?.value?.cancelBonus.activeBonusDescription;
+        modalState.confirmButton = popupsData.value?.cancelBonus.confirmButton || defaultLocalePopupsData?.value?.cancelBonus.confirmButton;
+        modalState.cancelButton = popupsData.value?.cancelBonus.cancelButton || defaultLocalePopupsData?.value?.cancelBonus.cancelButton;
+        showModalConfirmBonus.value = true;
+      }
     }
-
-    showModal.value = true;
   };
 
   const bonusesUpdating = ref<boolean>(false);
@@ -111,6 +137,7 @@
     activatePlayerFreeSpin,
     cancelPlayerFreeSpin
   } = useCoreBonusApi();
+  
   const activateBonus = async ():Promise<void> => {
     if (bonusesUpdating.value || !modalState.bonusInfo?.id) return;
     bonusesUpdating.value = true;
@@ -120,7 +147,8 @@
         ? await activatePlayerBonus(modalState.bonusInfo.id)
         : await activatePlayerFreeSpin(modalState.bonusInfo.id);
 
-      showModal.value = false;
+      showModalConfirmBonus.value = false;
+      showConfirmBonusUnsettledModal.value = false;
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
@@ -137,7 +165,8 @@
         ? await cancelPlayerBonus(modalState.bonusInfo.id)
         : await cancelPlayerFreeSpin(modalState.bonusInfo.id);
 
-      showModal.value = false;
+      showModalConfirmBonus.value = false;
+      showConfirmBonusUnsettledModal.value = false;
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
