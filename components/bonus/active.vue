@@ -112,7 +112,7 @@
       }
       showModalConfirmBonus.value = true;
     } else {
-      if(processBonus.currentWagerPercentage === 100) {
+      if(processBonus.openedTransactionsCount > 0) {
         modalState.image = popupsData.value?.cancelBonusUnsettled.image || defaultLocalePopupsData?.value?.cancelBonusUnsettled.image;
         modalState.title = popupsData.value?.cancelBonusUnsettled.title || defaultLocalePopupsData?.value?.cancelBonusUnsettled.title;
         modalState.description = popupsData.value?.cancelBonusUnsettled.description || defaultLocalePopupsData?.value?.cancelBonusUnsettled.description;
