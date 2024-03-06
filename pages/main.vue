@@ -20,7 +20,7 @@
       :category="category"
     />
     
-    <group-winners showArrows/>
+    <group-winners showArrows v-if="defaultLocaleGlobalComponentsContent?.cardsGroup?.latestWinners?.display || globalComponentsContent?.cardsGroup?.latestWinners?.display"/>
     
     <group-games
       v-for="category in mainCategoriesList.slice(4)"
@@ -52,6 +52,7 @@
     getLocalesContentData
   } = useProjectMethods();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
 
   const pageContent = ref<Maybe<ICasinoPage>>();
   const defaultLocalePageContent = ref<Maybe<ICasinoPage>>();
