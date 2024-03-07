@@ -151,9 +151,8 @@
     if (networkSelectOptions.value?.length) {
       const networkValue = networkSelectOptions.value[0].code.includes('empty-network') ? null : networkSelectOptions.value[0].code;
       state.params.fields = { crypto_network: networkValue };
+      await sendDepositData();
     }
-
-    await sendDepositData();
   })
 </script>
 
