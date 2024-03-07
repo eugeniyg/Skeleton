@@ -121,8 +121,9 @@
   const changeInputValue = ():void => {
     const { year, month, day } = selected;
     if (year && month && day) {
-      emit('update:value', `${year}-${month}-${day}`);
-      emit('blur', `${year}-${month}-${day}`);
+      const valueString = `${addZero(year)}-${addZero(month)}-${addZero(day)}`;
+      emit('update:value', valueString);
+      emit('blur', valueString);
     }
   };
 

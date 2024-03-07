@@ -27,6 +27,7 @@ export interface IPaymentField extends Record<string, any> {
   hints: any;
   isRequired: boolean;
   position: number;
+  value: string|null;
   options?: IPaymentFieldOption[];
 }
 

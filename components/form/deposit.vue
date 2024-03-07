@@ -13,7 +13,7 @@
 
     <!--    <wallet-pills />-->
     <component
-      v-for="field in props.fields"
+      v-for="field in visibleFields"
       :key="field.key"
       @input="v$[field.key]?.$touch()"
       @blur="v$[field.key]?.$touch()"
@@ -82,9 +82,7 @@
     popupsData,
     defaultLocalePopupsData,
     alertsData,
-    defaultLocaleAlertsData,
-    fieldsSettings,
-    defaultLocaleFieldsSettings
+    defaultLocaleAlertsData
   } = globalStore;
   const { currentLocale } = storeToRefs(globalStore);
   const profileStore = useProfileStore();
@@ -94,23 +92,40 @@
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
   props.fields.forEach((field) => {
-    depositFormData[field.key] = profileStore.profile?.[field.key];
+    depositFormData[field.key] = field.value ?? undefined;
   })
 
-  const { getFormRules, createValidationRules, getSumFromAmountItems } = useProjectMethods();
+  const { getFormRules, getSumFromAmountItems } = useProjectMethods();
   const depositRules = props.fields.reduce((finalRules, currentField) => {
-    const rulesArr: { rule: string, arguments?: string }[] = [{ rule: 'required' }];
+    const rulesArr: { rule: string, arguments?: string }[] = [];
+    if (currentField.isRequired) rulesArr.push({ rule: 'required' });
+
     if (currentField.key === 'phone') {
       rulesArr.push({ rule: 'phone' }); // skeleton phone rule without "+"
     } else if (currentField.regexp) {
       rulesArr.push({ rule: 'regex', arguments: currentField.regexp });
     }
-    return { ...finalRules, [currentField.key]: rulesArr };
+
+    if (rulesArr.length) return { ...finalRules, [currentField.key]: rulesArr };
+    return finalRules;
   }, {});
   const depositFormRules = getFormRules(depositRules);
-  const {
-    serverFormErrors, v$, onFocus, setError,
-  } = useFormValidation(depositFormRules, depositFormData);
+  const { v$, onFocus, setError } = useFormValidation(depositFormRules, depositFormData);
+
+  const getVisibleFields = (): IPaymentField[] => {
+    const { public: { showWalletFilledFields } } = useRuntimeConfig();
+
+    props.fields.forEach(field => {
+      if (field.value !== null && v$.value[field.key].$invalid) v$.value[field.key].$touch();
+    })
+
+    if (showWalletFilledFields) {
+      return props.fields;
+    }
+
+    return props.fields.filter(field => field.value === null || v$.value[field.key].$invalid);
+  }
+  const visibleFields = getVisibleFields(); // remove reactivity
 
   const fieldsStore = useFieldsStore();
   const getFieldOptions = (fieldName: string): any => {
