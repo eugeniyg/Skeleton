@@ -90,8 +90,8 @@ export const useProfileStore = defineStore('profileStore', {
 
     startSession(authData: IAuthorizationResponse):void {
       this.profile = authData.profile;
-      const { reconnectSocket } = useWebSocket();
-      reconnectSocket();
+      const { connectSocket } = useWebSocket();
+      connectSocket();
     },
 
     startProfileDependencies():void {
@@ -201,6 +201,8 @@ export const useProfileStore = defineStore('profileStore', {
         this.removeSession();
         const { updateChat } = useFreshchatStore();
         updateChat();
+        const { disconnectSocket } = useWebSocket();
+        disconnectSocket();
         this.finishProfileDependencies();
 
         const { deleteReturnGame } = useLayoutStore();

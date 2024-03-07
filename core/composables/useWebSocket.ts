@@ -11,20 +11,21 @@ export const useWebSocket = defineStore('useWebSocket', {
   }),
 
   actions: {
-    async initWebSocket ():Promise<void> {
+    initWebSocket ():void {
       const socketUrl = process.dev ? 'test.dev.getplatform.tech' : window.location.hostname;
       const protocol = window.location.protocol.replace('http', 'ws');
-      const { getSessionToken } = useProfileStore();
-      const sessionToken = getSessionToken();
-      this.webSocket = new Centrifuge(`${protocol}//${socketUrl}/api/connection/websocket`, {
-        token: sessionToken || ''
-      });
-      await this.webSocket.connect();
+      this.webSocket = new Centrifuge(`${protocol}//${socketUrl}/api/connection/websocket`);
     },
 
-    async reconnectSocket ():Promise<void> {
-      await this.webSocket.disconnect();
-      await this.initWebSocket();
+    connectSocket ():void {
+      const { getSessionToken } = useProfileStore();
+      const sessionToken = getSessionToken();
+      this.webSocket.setToken(sessionToken || '');
+      this.webSocket.connect();
+    },
+
+    disconnectSocket ():void {
+      if (this.webSocket) this.webSocket.disconnect();
     },
 
     createSubscription (channel:string, callback:Function) {

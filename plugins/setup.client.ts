@@ -29,7 +29,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     parseUserAgent(userAgent);
 
     const { initWebSocket } = useWebSocket();
-    await initWebSocket();
+    initWebSocket();
     const { getSessionToken } = useProfileStore();
     const sessionToken = getSessionToken();
 
