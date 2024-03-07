@@ -11,29 +11,31 @@ export const useWebSocket = defineStore('useWebSocket', {
   }),
 
   actions: {
-    async getToken() {
+    async getFreshToken() {
+      console.log('getFreshToken');
       const profileStore = useProfileStore();
       if (!profileStore.isLoggedIn) {
         throw new UnauthorizedError('Unauthorized!');
       }
 
-      const res = await fetch('/centrifuge/connection_token');
-      if (!res.ok) {
-        if (res.status === 403) {
-          // Return special error to not proceed with token refreshes, client will be disconnected.
-          throw new UnauthorizedError();
-        }
-        // Any other error thrown will result into token refresh re-attempts.
-        throw new Error(`Unexpected status code ${res.status}`);
+      try {
+        const token = profileStore.getSessionToken();
+        return await profileStore.refreshToken({
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+      } catch {
+        throw new UnauthorizedError('Unauthorized!');
       }
-      const data = await res.json();
-      return data.token;
     },
 
     initWebSocket ():void {
       const socketUrl = process.dev ? 'test.dev.getplatform.tech' : window.location.hostname;
       const protocol = window.location.protocol.replace('http', 'ws');
-      this.webSocket = new Centrifuge(`${protocol}//${socketUrl}/api/connection/websocket`);
+      this.webSocket = new Centrifuge(`${protocol}//${socketUrl}/api/connection/websocket`, {
+        getToken: this.getFreshToken
+      });
     },
 
     connectSocket ():void {
