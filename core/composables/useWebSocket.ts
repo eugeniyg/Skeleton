@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { Centrifuge } from 'centrifuge';
+import { Centrifuge, UnauthorizedError } from 'centrifuge';
 
 export type ISocketState = {
   webSocket: any,
@@ -11,6 +11,25 @@ export const useWebSocket = defineStore('useWebSocket', {
   }),
 
   actions: {
+    async getToken() {
+      const profileStore = useProfileStore();
+      if (!profileStore.isLoggedIn) {
+        throw new UnauthorizedError('Unauthorized!');
+      }
+
+      const res = await fetch('/centrifuge/connection_token');
+      if (!res.ok) {
+        if (res.status === 403) {
+          // Return special error to not proceed with token refreshes, client will be disconnected.
+          throw new UnauthorizedError();
+        }
+        // Any other error thrown will result into token refresh re-attempts.
+        throw new Error(`Unexpected status code ${res.status}`);
+      }
+      const data = await res.json();
+      return data.token;
+    },
+
     initWebSocket ():void {
       const socketUrl = process.dev ? 'test.dev.getplatform.tech' : window.location.hostname;
       const protocol = window.location.protocol.replace('http', 'ws');

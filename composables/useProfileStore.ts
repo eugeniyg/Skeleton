@@ -88,12 +88,6 @@ export const useProfileStore = defineStore('profileStore', {
       return this.refreshPromise;
     },
 
-    startSession(authData: IAuthorizationResponse):void {
-      this.profile = authData.profile;
-      const { connectSocket } = useWebSocket();
-      connectSocket();
-    },
-
     startProfileDependencies():void {
       const { getFavoriteGames } = useGamesStore();
       const {
@@ -115,6 +109,8 @@ export const useProfileStore = defineStore('profileStore', {
         getPlayerFreeSpins();
       }
 
+      const { connectSocket } = useWebSocket();
+      connectSocket();
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       const { subscribeBonusCodeSocket, subscribeBonusSocket, subscribeFreeSpinsSocket } = useBonusStore();
       subscribeAccountSocket();
@@ -139,11 +135,13 @@ export const useProfileStore = defineStore('profileStore', {
       unsubscribeBonusCodeSocket();
       unsubscribeBonusSocket();
       unsubscribeFreeSpinsSocket();
+      const { disconnectSocket } = useWebSocket();
+      disconnectSocket();
     },
 
     async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {
       this.setSessionToken(authResponse.accessToken);
-      this.startSession(authResponse);
+      this.profile = authResponse.profile;
       await nextTick();
 
       const { getUserAccounts } = useWalletStore();
@@ -201,8 +199,6 @@ export const useProfileStore = defineStore('profileStore', {
         this.removeSession();
         const { updateChat } = useFreshchatStore();
         updateChat();
-        const { disconnectSocket } = useWebSocket();
-        disconnectSocket();
         this.finishProfileDependencies();
 
         const { deleteReturnGame } = useLayoutStore();

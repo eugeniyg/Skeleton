@@ -38,7 +38,7 @@
     "@vuelidate/validators": "^2.0.3",
     "accept-language-parser": "^1.5.0",
     "body-scroll-lock": "^4.0.0-beta.0",
-    "centrifuge": "^3.1.2",
+    "centrifuge": "^5.0.2",
     "embla-carousel-autoplay": "^8.0.0-rc22",
     "embla-carousel-vue": "^8.0.0-rc22",
     "jwt-decode": "^4.0.0",
