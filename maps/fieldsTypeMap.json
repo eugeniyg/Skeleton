@@ -94,8 +94,8 @@
     "type": "text"
   },
   "postalCode": {
-    "component": "form-input-text",
-    "type": "number"
+    "component": "form-input-postal",
+    "type": "text"
   },
   "timeZone": {
     "component": "form-input-dropdown",

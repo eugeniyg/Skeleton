@@ -5,9 +5,10 @@
     :clickToClose="false"
   >
     <div class="wallet-modal__container" :class="{ 'show-form': showMobileForm }">
+      <button-modal-close @close="handleClose" :class="{ 'close-secondary': hasOffset }" />
+
       <div class="wallet-modal__slot-left">
         <div class="wallet-modal__slot-left__header">
-          <button-modal-close @close="closeWallet" />
 
           <wallet-tabs
             v-if="showTabs"
@@ -60,7 +61,7 @@
         />
       </div>
 
-      <div class="wallet-modal__slot-right">
+      <div ref="scrollBlock" class="wallet-modal__slot-right" @scroll="handleScroll">
         <div
           class="wallet-modal__slot-right__header"
           :class="{ 'wallet-modal__slot-right__header--without-tabs': !showTabs }"
@@ -72,7 +73,6 @@
             @changeTab="changeTab"
           />
 
-          <button-modal-close @close="handleClose" />
           <wallet-header v-bind="walletHeaderProps"/>
           <div class="identity">ID {{ playerIdentity }}</div>
         </div>
@@ -151,6 +151,7 @@
   const profileStore = useProfileStore();
   const globalStore = useGlobalStore();
   const { getContent } = useProjectMethods();
+  const hasOffset = ref<boolean>(false);
 
   const { modals, walletModalType } = storeToRefs(layoutStore);
   const { showModal, closeModal } = layoutStore;
@@ -181,6 +182,11 @@
     const contentTabs = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.tabs') || {};
     return Object.keys(contentTabs).map(key => ({ id: key, label: contentTabs[key] }));
   })
+
+  const scrollBlock = ref();
+  const handleScroll = (): void => {
+    hasOffset.value = scrollBlock.value.scrollTop !== 0;
+  }
 
   const changeTab = (tabId: 'deposit'|'withdraw'): void => {
     if (tabId === 'withdraw') {
@@ -272,7 +278,7 @@
   const showMobileForm = ref<boolean>(false);
 
   const handleClose = ():void => {
-    if (mobileWidth()) showMobileForm.value = false;
+    if (mobileWidth() && showMobileForm.value) showMobileForm.value = false;
     else closeWallet();
   }
 

@@ -124,7 +124,7 @@
   const profileStore = useProfileStore();
   const bonusStore = useBonusStore();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { getContent } = useProjectMethods();
+  const { getContent, localizePath } = useProjectMethods();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal, compactDrawer } = layoutStore;
   const { isLoggedIn } = storeToRefs(profileStore);
@@ -170,8 +170,11 @@
 
   const backToHomePage = () => {
     const router = useRouter();
-    const { localizePath } = useProjectMethods();
-    router.push(localizePath('/'));
+    if (window.history.state.back) {
+      router.back();
+    } else {
+      router.push(localizePath('/'));
+    }
   }
 
   const route = useRoute();

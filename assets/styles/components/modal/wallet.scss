@@ -23,6 +23,20 @@
 
     &.show-form {
       transform: translateX(-100%);
+
+      .btn-modal-close {
+        transform: translateX(calc(100% + 32px));
+
+        .icon {
+          &:first-of-type {
+            --visibility: visible;
+          }
+
+          &:last-of-type {
+            --visibility: hidden;
+          }
+        }
+      }
     }
 
     @include media(sm) {
@@ -79,13 +93,6 @@
       background-color: var(--layer-bg);
     }
 
-    .btn-modal-close {
-      position: absolute;
-      --right: 0;
-      --top: 0;
-      --bg: var(--button-bg-secondary);
-    }
-
     &__hr {
       --margin: 16px 0;
     }
@@ -133,39 +140,17 @@
     &__header {
       display: flex;
       align-items: center;
+      padding: 2px 0 2px rem(48px);
       grid-column-gap: rem(16px);
       margin-bottom: rem(24px);
+
+      @include media(sm) {
+        padding: 0;
+      }
 
       &--without-tabs {
         @include media(md) {
           margin-bottom: 0;
-        }
-      }
-
-      .btn-modal-close {
-        .icon {
-          &:first-of-type {
-            --visibility: visible;
-          }
-
-          &:last-of-type {
-            --visibility: hidden;
-          }
-        }
-
-        @include media(sm) {
-          position: absolute;
-          right: 0;
-
-          .icon {
-            &:first-of-type {
-              --visibility: hidden;
-            }
-
-            &:last-of-type {
-              --visibility: visible;
-            }
-          }
         }
       }
 
@@ -225,17 +210,6 @@
       }
     }
 
-    .btn-modal-close {
-      --position: relative;
-      --top: 0;
-      --right: auto;
-      --bg: var(--button-bg-secondary);
-
-      @include media(sm) {
-        position: absolute;
-      }
-    }
-
     hr {
       --margin: #{rem(8px)} 0;
     }
@@ -248,9 +222,14 @@
 
   .btn-modal-close {
     transform: none;
+    top: 16px;
+    right: 16px;
+    --bg: var(--button-bg-secondary);
+    box-shadow: var(--shadow-layer);
 
     @include media(sm) {
       --bg: transparent;
+      box-shadow: none;
 
       @include use-hover {
         &:hover {
@@ -260,6 +239,11 @@
             --color: var(--button-icn-ghost-hover);
           }
         }
+      }
+
+      &.close-secondary {
+        --bg: var(--button-bg-secondary);
+        box-shadow: var(--shadow-layer);
       }
     }
 

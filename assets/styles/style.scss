@@ -230,6 +230,8 @@ body {
 .vfm {
   display: flex;
   justify-content: center;
+  animation-name: opacityFadeIn;
+  animation-duration: .2s;
 }
 
 .vfm__overlay {
@@ -303,3 +305,13 @@ body {
     transition: all .4s ease;
   }
 }
+
+@keyframes opacityFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+

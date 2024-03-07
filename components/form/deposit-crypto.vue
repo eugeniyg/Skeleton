@@ -104,10 +104,10 @@
   });
 
   const state = reactive<{
-    selectedNetwork: string,
+    selectedNetwork: string|undefined,
     params: IRequestDeposit
   }>({
-    selectedNetwork: '',
+    selectedNetwork: networkSelectOptions.value?.length === 1 ? networkSelectOptions.value[0].code : undefined,
     params: {
       method: props.method || '',
       currency: activeAccount.value?.currency || '',
@@ -133,8 +133,8 @@
   }
 
   const onInputNetwork = async ():Promise<void> => {
-    state.params.fields = state.selectedNetwork && !state.selectedNetwork.includes('empty-network')
-      ? { crypto_network: state.selectedNetwork } : undefined;
+    const networkValue = state.selectedNetwork?.includes('empty-network') ? null : state.selectedNetwork;
+    state.params.fields = { crypto_network: networkValue }
     await sendDepositData();
   }
 
@@ -148,10 +148,11 @@
   });
 
   onMounted(async () => {
-    const fieldsOptions =  networkSelectOptions.value?.length && !networkSelectOptions.value[0].code.includes('empty-network');
-    if (fieldsOptions) state.params.fields = { crypto_network: networkSelectOptions.value[0].code };
-
-    await sendDepositData();
+    if (networkSelectOptions.value?.length) {
+      const networkValue = networkSelectOptions.value[0].code.includes('empty-network') ? null : networkSelectOptions.value[0].code;
+      state.params.fields = { crypto_network: networkValue };
+      await sendDepositData();
+    }
   })
 </script>
 

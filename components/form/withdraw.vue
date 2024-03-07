@@ -27,7 +27,7 @@
         :hint="fieldHint"
       />
 
-      <template v-for="field in props.fields">
+      <template v-for="field in visibleFields">
         <component
           v-if="field.key !== 'crypto_network'"
           :key="field.key"
@@ -89,20 +89,13 @@
     closeModal,
     showAlert
   } = useLayoutStore();
-  const {
-    activeAccount,
-    activeAccountType
-  } = storeToRefs(walletStore);
+  const { activeAccount } = storeToRefs(walletStore);
 
   const {
     formatBalance,
     getMainBalanceFormat,
     getContent
   } = useProjectMethods();
-
-  const state = reactive<{selectedNetwork: string}>({
-    selectedNetwork: '',
-  });
 
   const networkSelectOptions = computed(() => {
     const select = props.fields.find((field) => field.fieldType === 'select');
@@ -115,6 +108,10 @@
       }));
     }
     return [];
+  });
+
+  const state = reactive<{ selectedNetwork: string|undefined }>({
+    selectedNetwork: networkSelectOptions.value?.length === 1 ? networkSelectOptions.value[0].code : undefined,
   });
 
   const selectedNetworkData = computed(() => {
@@ -132,18 +129,19 @@
   const isSending = ref<boolean>(false);
   const amountValue = ref<number>(formatAmountMin.value.amount);
 
-  const profileStore = useProfileStore();
   const withdrawFormData = reactive<{ [key: string]: string }>({});
   props.fields.forEach((field: any) => {
     if (field.key !== 'crypto_network') {
-      withdrawFormData[field.key] = profileStore.profile?.[field.key];
+      withdrawFormData[field.key] = field.value ?? undefined;
     }
   });
   const fieldsType:any = fieldsTypeMap;
   const startRules = props.fields.reduce((currentRulesObj, currentField) => {
     if (currentField.key === 'crypto_network') return currentRulesObj;
 
-    const rulesArr: { rule: string, arguments?: string }[] = [{ rule: 'required' }];
+    const rulesArr: { rule: string, arguments?: string }[] = [];
+    if (currentField.isRequired) rulesArr.push({ rule: 'required' });
+
     if (currentField.key === 'phone') {
       rulesArr.push({ rule: 'phone' });
     } else if (currentField.regexp) {
@@ -151,9 +149,7 @@
         rule: 'regex',
         arguments: currentField.regexp
       });
-    }
-
-    if (currentField.key === 'wallet_id') {
+    } else if (currentField.key === 'wallet_id') {
       const findNetworkField = props.fields.find((field) => field.key === 'crypto_network');
       const firstNetworkRegex = findNetworkField ? findNetworkField.options?.[0]?.regex : undefined;
 
@@ -165,7 +161,8 @@
       }
     }
 
-    return { ...currentRulesObj, [currentField.key]: rulesArr };
+    if (rulesArr.length) return { ...currentRulesObj, [currentField.key]: rulesArr };
+    return currentRulesObj;
   }, {});
 
   const withdrawRules = ref<any>(startRules);
@@ -173,6 +170,21 @@
   const withdrawFormRules = computed(() => getFormRules(withdrawRules.value));
   const serverFormErrors = ref<{ [key: string]: Maybe<string> }>({});
   const v$ = useVuelidate(withdrawFormRules, withdrawFormData);
+
+  const getVisibleFields = (): IPaymentField[] => {
+    const { public: { showWalletFilledFields } } = useRuntimeConfig();
+
+    props.fields.forEach(field => {
+      if (field.value !== null && v$.value[field.key].$invalid) v$.value[field.key].$touch();
+    })
+
+    if (showWalletFilledFields) {
+      return props.fields;
+    }
+
+    return props.fields.filter(field => field.value === null || v$.value[field.key].$invalid);
+  }
+  const visibleFields = getVisibleFields(); // remove reactivity
 
   const onFocus = (fieldName: string): void => {
     if (serverFormErrors.value[fieldName]) {
@@ -260,10 +272,8 @@
       phone: withdrawFormData.phone ? `+${withdrawFormData.phone}` : undefined
     }
 
-    const fields = state.selectedNetwork && !state.selectedNetwork.includes('empty-network') ? {
-      ...requestFormData,
-      crypto_network: state.selectedNetwork
-    } : requestFormData;
+    const networkValue = state.selectedNetwork?.includes('empty-network') ? null : state.selectedNetwork;
+    const fields = { ...requestFormData, crypto_network: networkValue }
 
     isSending.value = true;
     const mainCurrencyAmount = getMainBalanceFormat(activeAccountWithdrawalFormat.value.currency, Number(amountValue.value));
@@ -279,7 +289,7 @@
 
     try {
       await withdrawAccount(params);
-      closeModal('withdraw');
+      closeModal('wallet');
       showAlert(alertsData.value?.wallet?.withdrawalProcessed || defaultLocaleAlertsData.value?.wallet?.withdrawalProcessed);
     } catch (err: any) {
       if (err.response?.status === 422) {

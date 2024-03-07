@@ -27,6 +27,7 @@ export interface IPaymentField extends Record<string, any> {
   hints: any;
   isRequired: boolean;
   position: number;
+  value: string|null;
   options?: IPaymentFieldOption[];
 }
 
@@ -53,7 +54,7 @@ export interface IRequestDeposit extends Record<string, any>{
 
 export interface IRequestWithdraw extends Record<string, any>{
   method: string;
-  fields?: { [key:string]: string|undefined; };
+  fields?: { [key:string]: string|null|undefined; };
   currency: string;
   amount: number;
   accountId: string;
