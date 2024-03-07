@@ -21,19 +21,21 @@
     position: relative;
     transition: transform 0.4s ease-out;
 
-    &.show-form {
-      transform: translateX(-100%);
+    @media (max-width: 767px) {
+      &.show-form {
+        transform: translateX(-100%);
 
-      .btn-modal-close {
-        transform: translateX(calc(100% + 32px));
+        .btn-modal-close {
+          transform: translateX(calc(100% + 32px));
 
-        .icon {
-          &:first-of-type {
-            --visibility: visible;
-          }
+          .icon {
+            &:first-of-type {
+              --visibility: visible;
+            }
 
-          &:last-of-type {
-            --visibility: hidden;
+            &:last-of-type {
+              --visibility: hidden;
+            }
           }
         }
       }
