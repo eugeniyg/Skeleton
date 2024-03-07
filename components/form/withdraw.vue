@@ -100,10 +100,6 @@
     getContent
   } = useProjectMethods();
 
-  const state = reactive<{selectedNetwork: string}>({
-    selectedNetwork: '',
-  });
-
   const networkSelectOptions = computed(() => {
     const select = props.fields.find((field) => field.fieldType === 'select');
     if (select?.options) {
@@ -115,6 +111,10 @@
       }));
     }
     return [];
+  });
+
+  const state = reactive<{ selectedNetwork: string|undefined }>({
+    selectedNetwork: networkSelectOptions.value?.length === 1 ? networkSelectOptions.value[0].code : undefined,
   });
 
   const selectedNetworkData = computed(() => {
@@ -260,10 +260,8 @@
       phone: withdrawFormData.phone ? `+${withdrawFormData.phone}` : undefined
     }
 
-    const fields = state.selectedNetwork && !state.selectedNetwork.includes('empty-network') ? {
-      ...requestFormData,
-      crypto_network: state.selectedNetwork
-    } : requestFormData;
+    const networkValue = state.selectedNetwork?.includes('empty-network') ? null : state.selectedNetwork;
+    const fields = { ...requestFormData, crypto_network: networkValue }
 
     isSending.value = true;
     const mainCurrencyAmount = getMainBalanceFormat(activeAccountWithdrawalFormat.value.currency, Number(amountValue.value));
@@ -279,7 +277,7 @@
 
     try {
       await withdrawAccount(params);
-      closeModal('withdraw');
+      closeModal('wallet');
       showAlert(alertsData.value?.wallet?.withdrawalProcessed || defaultLocaleAlertsData.value?.wallet?.withdrawalProcessed);
     } catch (err: any) {
       if (err.response?.status === 422) {
