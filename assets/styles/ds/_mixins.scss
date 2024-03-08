@@ -95,27 +95,47 @@
 
 
 @mixin scrollbar {
-  scrollbar-color: var(--field-00-click);
-  scrollbar-width: thin;
+  --scrollbar-color-thumb: var(--field-00-click);
+  --scrollbar-color-track: transparent;
+  --scrollbar-width: thin;
+  --scrollbar-width-legacy: 4px;
 
-  &::-webkit-scrollbar {
-    width: rem(6px);
-    height: rem(6px);
-    background-color: transparent;
+  @supports (scrollbar-width: auto) {
+    scrollbar-color: var(--scrollbar-color-thumb) var(--scrollbar-color-track);
+    scrollbar-width: var(--scrollbar-width);
   }
 
-  &::-webkit-scrollbar-thumb {
-    background: var(--field-00-click);
-    border-radius: 8px;
+  @supports selector(::-webkit-scrollbar) {
+    &::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-color-thumb);
+      border-radius: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: var(--scrollbar-color-track);
+    }
+
+    &::-webkit-scrollbar {
+      max-width: var(--scrollbar-width-legacy);
+      max-height: var(--scrollbar-width-legacy);
+    }
+  }
+
+  &:hover {
+    --fix: ; /* This custom property invalidates styles on hover, thereby enforcing a style recomputation. This is needed to work around a bug in Safari. */
   }
 }
 
 @mixin scrollbar-hide {
-  scrollbar-width: none;
+  @supports (scrollbar-width: auto) {
+    scrollbar-width: unset;
+  }
 
-  &::-webkit-scrollbar {
-    display: none;
-    -ms-overflow-style: none;
+  @supports selector(::-webkit-scrollbar) {
+    &::-webkit-scrollbar {
+      display: none;
+      -ms-overflow-style: none;
+    }
   }
 }
 
