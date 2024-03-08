@@ -76,6 +76,11 @@ export const useProfileStore = defineStore('profileStore', {
       try {
         const data = await refreshToken(options);
         this.setSessionToken(data.accessToken);
+        if (process.client) {
+          console.log('updateSocketToken');
+          const { updateSocketToken } = useWebSocket();
+          updateSocketToken();
+        }
         return data.accessToken;
       } finally {
         this.refreshPromise = null;

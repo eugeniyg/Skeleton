@@ -30,7 +30,14 @@ export const useWebSocket = defineStore('useWebSocket', {
       }
     },
 
+    updateSocketToken (): void {
+      const { getSessionToken } = useProfileStore();
+      const sessionToken = getSessionToken();
+      this.webSocket.setToken(sessionToken || '');
+    },
+
     initWebSocket ():void {
+      console.log('init websocket');
       const socketUrl = process.dev ? 'test.dev.getplatform.tech' : window.location.hostname;
       const protocol = window.location.protocol.replace('http', 'ws');
       this.webSocket = new Centrifuge(`${protocol}//${socketUrl}/api/connection/websocket`, {
@@ -39,13 +46,13 @@ export const useWebSocket = defineStore('useWebSocket', {
     },
 
     connectSocket ():void {
-      const { getSessionToken } = useProfileStore();
-      const sessionToken = getSessionToken();
-      this.webSocket.setToken(sessionToken || '');
+      console.log('connect websocket');
+      this.updateSocketToken();
       this.webSocket.connect();
     },
 
     disconnectSocket ():void {
+      console.log('disconnect socket');
       if (this.webSocket) this.webSocket.disconnect();
     },
 
