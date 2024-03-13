@@ -110,8 +110,10 @@
     parent: false,
   };
 
+  const frame = ref<Promise<any>>();
+  const runtimeConfig = useRuntimeConfig();
+  const updateUrlParam = runtimeConfig.public?.betsyParams?.allowParentUrlUpdate;
   const startBetsyFrame = (host: string, token: string): void => {
-    const runtimeConfig = useRuntimeConfig();
     const params = {
       ...sdkDefaultParams,
       host: runtimeConfig.public.betsyParams?.clientHost,
@@ -120,15 +122,15 @@
       customStyles: runtimeConfig.public.betsyParams?.sportsBookStyles ? `${host}${runtimeConfig.public.betsyParams.sportsBookStyles}` : undefined,
       token: isLoggedIn.value ? token : null,
       lang: currentLocale.value?.code || 'en',
-      allowParentUrlUpdate: runtimeConfig.public.betsyParams?.allowParentUrlUpdate ?? false
+      allowParentUrlUpdate: updateUrlParam ?? false
     };
 
     if (window.BetSdk) {
-      window.BetSdk.init(params);
+      frame.value = window.BetSdk.init(params);
     } else {
       const betsyScript = addBetsyScript();
       betsyScript.onload = () => {
-        window.BetSdk.init(params);
+        frame.value = window.BetSdk.init(params);
       };
     }
   }
@@ -169,7 +171,41 @@
     compactDrawer(true, false);
   });
 
+  const route = useRoute();
+  const routerIframePath = ref<string|undefined>(route.query.setIframePath as string|undefined);
+  const changeFramePath = async (setIframePath: string|undefined): Promise<void> => {
+    const betsyFrame = await frame.value;
+    betsyFrame.sendMessage({
+      type: 'routeChange',
+      data: {
+        route: setIframePath || '/',
+      },
+    });
+  }
+
+  watch(() => route.query.setIframePath, async (newValue) => {
+    if (!updateUrlParam || (routerIframePath.value === newValue)) return;
+    await changeFramePath(route.query.setIframePath as string|undefined);
+  })
+
+  const updateRouterIframePath = ({ data }: { data: any }) => {
+    if (typeof data === 'string') {
+      const messageData = JSON.parse(data);
+
+      if (messageData.type === 'route') {
+        const currentIframePath = route.query.setIframePath as string|undefined;
+        routerIframePath.value = messageData.location === '/' ? undefined : messageData.location;
+
+        if (currentIframePath !== routerIframePath.value) {
+          router.push({ query: { ...route.query, setIframePath: routerIframePath.value } });
+        }
+      }
+    }
+  }
+
   onMounted(async () => {
+    if (updateUrlParam) window.addEventListener('message', updateRouterIframePath);
+
     if (isMobile.value) {
       const footerEl: HTMLElement | null = document.querySelector('footer');
       if (footerEl) footerEl.style.display = 'none';
@@ -219,6 +255,8 @@
   });
 
   onBeforeUnmount(() => {
+    if (updateUrlParam) window.removeEventListener('message', updateRouterIframePath);
+
     const footerEl: any = document.querySelector('footer');
     if (footerEl) footerEl.style.display = null;
     const seoTextBlock: any = document.querySelector('.text-wrap');
