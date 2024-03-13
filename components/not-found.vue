@@ -15,7 +15,7 @@
       size="md"
       :url="'/'"
     >
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.button.label') || pageStaticContent.button.label }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.buttonLabel') || pageStaticContent.buttonLabel }}
     </button-base>
   </div>
 </template>
@@ -26,10 +26,7 @@
   const pageStaticContent = {
     title: 'Something went wrong',
     description: 'The page you are trying to access does not exist or has been moved. Try going back to our homepage.',
-    button: {
-      label: 'Homepage',
-      url: '/',
-    },
+    buttonLabel: 'Homepage'
   };
 
   const globalStore = useGlobalStore();
