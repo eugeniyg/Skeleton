@@ -1,5 +1,5 @@
 <template>
-  <div class="group-games">
+  <div v-if="showBlock" class="group-games" :class="{ 'group-games--hidden': loadingBlock }">
     <atomic-icon v-if="titleIcon && !props.subTitle" :id="titleIcon"/>
 
     <div v-if="props.subTitle" class="titles">
@@ -135,6 +135,8 @@
   const observerLoadMore = ref();
 
   const emit = defineEmits(['initialLoad']);
+  const showBlock = ref<boolean>(true);
+  const loadingBlock = ref<boolean>(true);
   onMounted(async () => {
     observerLoadMore.value = initObserver({
       settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
@@ -142,9 +144,12 @@
     observerLoadMore.value.observe(loadMore.value);
 
     const gamesResponse = await getFilteredGames(defaultRequestParams);
+    if (!gamesResponse.data.length) return showBlock.value = false;
     games.value = gamesResponse.data;
     pageMeta.value = gamesResponse.meta;
+    loadingBlock.value = false;
     await nextTick();
+
     emit('initialLoad');
 
     if (props.showArrows) {
