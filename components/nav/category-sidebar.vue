@@ -1,10 +1,12 @@
 <template>
-  <div class="nav-list">
+  <div class="nav-category-sidebar">
     <div v-for="(listItem, index) in props.items" :key="index" class="item">
-      <atomic-menu-category v-if="listItem?.items?.length" v-bind="listItem" />
-      
+      <atomic-cta-menu-item
+        v-if="props.integratedElement?.isShow && Number(props.integratedElement.order) === index + 1"
+        v-bind="props.integratedElement"
+      />
+
       <div
-        v-else
         class="link"
         @click="defineCurrentAction(listItem.url)"
         :class="{'is-active': route.fullPath === localizePath(listItem.url)}"
@@ -13,32 +15,35 @@
           v-if="listItem?.displayCustomIcon && listItem?.customIcon"
           :src="listItem?.customIcon"
         />
-        <atomic-icon v-else :id="listItem?.icon ? listItem?.icon : 'dot-md'"/>
+        <atomic-icon v-else :id="listItem?.icon ? listItem?.icon : 'dot-md'" />
         
         <div class="text">{{ listItem.label }}</div>
-
-        <client-only>
-          <div v-if="listItem.counter" class="counter">{{ listItem.counter }}</div>
-        </client-only>
       </div>
+      
+      <list-games
+        v-if="listItem.gameList?.length"
+        :items="listItem.gameList.map((game: any) => game.gameIdentity).slice(0, 4)"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+  import type {ISiteSidebar} from "~/types";
+  
   const props = defineProps<{
-    items: any;
+    items: ISiteSidebar['topMenu']['items'];
+    integratedElement?: ISiteSidebar['topMenu']['integratedElement'];
   }>();
   
   const router = useRouter();
   const route = useRoute();
 
   const { localizePath } = useProjectMethods();
-
   const defineCurrentAction = (href: string): void => {
     if (!href) return;
     router.push(localizePath(href));
   };
 </script>
 
-<style src="~/assets/styles/components/nav/list.scss" lang="scss"/>
+<style src="~/assets/styles/components/nav/category-sidebar.scss" lang="scss"/>

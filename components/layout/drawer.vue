@@ -16,7 +16,7 @@
         :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.partners.items')"
       />
       
-      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.topMenu.items')"/>
+      <nav-category-sidebar v-bind="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.topMenu')" />
       <atomic-divider/>
 
 

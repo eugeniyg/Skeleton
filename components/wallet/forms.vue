@@ -1,0 +1,186 @@
+<template>
+  <div ref="scrollBlock" class="wallet-forms" @scroll="handleScroll">
+    <div
+      class="wallet-forms__header"
+      :class="{ 'wallet-forms__header--without-tabs': !props.showTabs }"
+    >
+      <wallet-tabs
+        v-if="props.showTabs"
+        :selected="props.selectedTab"
+        @changeTab="emit('changeTab', $event)"
+      />
+
+      <wallet-header v-bind="walletHeaderProps"/>
+      <div class="identity">ID {{ playerIdentity }}</div>
+    </div>
+
+    <div class="wallet-forms__header-secondary">
+      <div class="wallet-forms__header-secondary-title">
+        {{ props.modalTitle }}
+      </div>
+
+      <div class="identity">ID {{ playerIdentity }}</div>
+    </div>
+
+    <template v-if="props.selectedTab === 'deposit'">
+      <wallet-limit
+        v-if="depositLimitError"
+        :currentLocaleLimitsContent="currentLocaleLimitsContent"
+        :defaultLocaleLimitsContent="defaultLocaleLimitsContent"
+      />
+
+      <template v-else-if="depositMethods?.length && props.currentDepositMethod">
+        <form-deposit
+          :key="`${props.currentDepositMethod.method}-${depositMethodKey}`"
+          v-if="props.currentDepositMethod.type === 'form'"
+          v-bind="props.currentDepositMethod"
+        />
+
+        <form-deposit-crypto
+          v-if="props.currentDepositMethod.type === 'address'"
+          v-bind="props.currentDepositMethod"
+          :key="`${props.currentDepositMethod.method}-${depositMethodKey}`"
+        />
+      </template>
+
+      <div v-else class="wallet-modal__empty-methods">
+        <atomic-icon id="info" />
+
+        <span>
+              {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+            </span>
+      </div>
+    </template>
+
+    <template v-else-if="props.selectedTab === 'withdraw'">
+      <form-withdraw
+        v-if="withdrawMethods?.length && props.currentWithdrawMethod"
+        :key="props.currentWithdrawMethod.method"
+        v-bind="props.currentWithdrawMethod"
+      />
+
+      <div v-else class="wallet-modal__empty-methods">
+        <atomic-icon id="info" />
+
+        <span>
+          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+        </span>
+      </div>
+    </template>
+
+    <wallet-dots
+      :itemsCount="2"
+      :activeIndex="1"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+  import type { IPaymentMethod } from "@skeleton/core/types";
+  import { storeToRefs } from "pinia";
+  import type { IProfileLimits } from "~/types";
+
+  const props = defineProps<{
+    showTabs: boolean;
+    selectedTab: string;
+    modalTitle: string;
+    currentDepositMethod?: IPaymentMethod;
+    currentWithdrawMethod?: IPaymentMethod;
+  }>()
+
+  const emit = defineEmits(['changeTab']);
+
+  const hasOffset = ref<boolean>(false);
+  const scrollBlock = ref();
+  const { getContent } = useProjectMethods();
+  const depositMethodKey = ref<number>(0);
+
+  const walletStore = useWalletStore();
+  const {
+    depositMethods,
+    withdrawMethods,
+    activeAccount,
+    activeAccountType,
+    depositLimitError
+  } = storeToRefs(walletStore);
+
+  const globalStore = useGlobalStore();
+  const {
+    currentLocale,
+    defaultLocale,
+    popupsData,
+    defaultLocalePopupsData
+  } = storeToRefs(globalStore);
+
+  const profileStore = useProfileStore();
+  const { profile } = storeToRefs(profileStore);
+
+  const handleScroll = (): void => {
+    hasOffset.value = scrollBlock.value.scrollTop !== 0;
+  }
+
+  const methodLogoUrl = computed(() => {
+    if (props.selectedTab === 'deposit' && props.currentDepositMethod?.logo) {
+      return props.currentDepositMethod.logo;
+    }
+
+    if (props.selectedTab === 'withdraw' && props.currentWithdrawMethod?.method === '0x.withdrawal.cash_agent') {
+      return '/img/methods-icons/cash-agent.svg'
+    }
+
+    if (props.selectedTab === 'withdraw' && props.currentWithdrawMethod?.logo) {
+      return props.currentWithdrawMethod.logo;
+    }
+
+    if (activeAccountType.value === 'fiat') return '/img/methods-icons/cards.svg';
+
+    if (activeAccount.value?.currency) return `/img/methods-icons/${activeAccount.value.currency}.svg`;
+
+    return undefined;
+  });
+
+  const walletHeaderProps = computed(() => ({
+    src: methodLogoUrl.value,
+    defaultImage: activeAccountType.value === 'fiat'
+      ? '/img/methods-icons/cards.svg'
+      : '/img/methods-icons/crypto-placeholder.svg',
+    title: getContent(popupsData.value, defaultLocalePopupsData.value, `wallet.tabs.${props.selectedTab}`),
+    subTitle: activeAccount.value?.currency,
+  }))
+
+  const playerIdentity = computed(() => {
+    if (!profile.value?.id) return '';
+    return profile.value.id.split('-')[0].toUpperCase();
+  })
+
+  // << GET CONTENT FOR DEPOSIT LIMIT
+  const currentLocaleLimitsContent = ref<Maybe<IProfileLimits['coolingOff']>>();
+  const defaultLocaleLimitsContent = ref<Maybe<IProfileLimits['coolingOff']>>();
+
+  const getLimitContent = async ():Promise<void> => {
+    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
+      queryContent(currentLocale.value?.code as string, 'profile', 'limits').only(['coolingOff']).findOne(),
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
+        : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').only(['coolingOff']).findOne()
+    ]);
+
+    if (currentLocaleContentResponse.status !== 'rejected') {
+      currentLocaleLimitsContent.value = currentLocaleContentResponse.value as IProfileLimits['coolingOff'];
+    }
+
+    if (defaultLocaleContentResponse.status !== 'rejected') {
+      defaultLocaleLimitsContent.value = defaultLocaleContentResponse.value as IProfileLimits['coolingOff'];
+    }
+  }
+
+  watch(() => depositMethods.value, () => {
+    depositMethodKey.value += 1;
+  });
+
+  onMounted(() => {
+    getLimitContent();
+  })
+  // >>
+</script>
+
+<style src="~/assets/styles/components/wallet/forms.scss" lang="scss"/>
