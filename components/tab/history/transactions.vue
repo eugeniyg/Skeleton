@@ -16,7 +16,7 @@
         @input="changeFilters"
       />
 
-      <form-input-dropdown
+      <form-input-dropdown-search
         :label="props.content?.currencyLabel"
         v-model:value="filters.currency"
         name="invoiceCurrency"

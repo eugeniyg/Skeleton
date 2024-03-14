@@ -58,30 +58,20 @@
     }
   }
 
-  .dropdown.currency {
-    max-width: rem(120px);
-    margin-left: auto;
-    margin-top: rem(-84px);
-
-    .selected {
-      grid-template-columns: 1fr auto;
+  .dropdown-search {
+    &.country {
+      grid-column: 1;
     }
-  }
 
-  .dropdown.country {
-    max-width: calc(100% - #{rem(8px)} - #{rem(120px)});
-
-    &.has-error {
-      ~ .currency {
-        margin-top: rem(-107px);
-      }
+    &.currency {
+      grid-column: 2;
     }
   }
 
   .btn-modal-close {
     transform: none;
-    --right: auto;
     left: 24px;
+    --right: auto;
     --top: 98px;
     --bg: transparent;
 

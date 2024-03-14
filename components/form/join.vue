@@ -29,9 +29,13 @@
         v-model:value="registrationFormData[field.name]"
         :type="hiddenFields.includes(field.name) ? 'hidden' : fieldsMap[field.name]?.type || 'text'"
         :inputmode="fieldsMap[field.name]?.inputmode"
+        :is-fit-content="fieldsMap[field.name]?.isFitContent"
+        :enable-sort="fieldsMap[field.name]?.enableSort"
+        :search-by="fieldsMap[field.name]?.searchBy"
         :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
         :name="field.name"
         :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
+        :emptySearchTitle="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.emptySearchTitle`) || ''"
         :options="selectOptions[field.name]"
         :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
         :hint="setError(field.name)"
@@ -136,10 +140,6 @@
       const oldValue = registrationFormData.password_confirmation;
       registrationFormData.password_confirmation = '';
       registrationFormData.password_confirmation = oldValue;
-    }
-    
-    if (fieldName === 'currency') {
-      document.querySelector('.dropdown.currency')
     }
   };
 
