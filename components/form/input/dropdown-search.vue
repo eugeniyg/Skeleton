@@ -40,28 +40,26 @@
       class="items"
       ref="dropdownItems"
     >
-      <div
-        class="item"
-        v-if="filteredOptions?.length"
-        v-for="(option, i) in filteredOptions"
-        :key="i"
-        :class="[
+      <template v-if="filteredOptions?.length">
+        <div
+          class="item"
+          v-for="(option, i) in filteredOptions"
+          :key="i"
+          :class="[
           {'is-selected': option.code === valueObject.code },
           { 'disabled-option': option.disabled },
           {'is-active': selectedIndex === i}
           ]"
-        :data-code="option.code"
-        :data-name="option.name"
-        :data-index="i"
-        @click="select(option)"
-      >
-        <atomic-image v-if="option.mask" class="mask" :src="option.mask" :defaultImage="option.defaultMask"/>
-        <span class="item-text">{{ option.value }}</span>
-        <atomic-icon v-if="option.code === valueObject.code" id="check"/>
-      </div>
+          @click="select(option)"
+        >
+          <atomic-image v-if="option.mask" class="mask" :src="option.mask" :defaultImage="option.defaultMask"/>
+          <span class="item-text">{{ option.value }}</span>
+          <atomic-icon v-if="option.code === valueObject.code" id="check"/>
+        </div>
+      </template>
       <div v-else class="search-plug">
         <atomic-image class="search-plug__image" src="/img/search-plug.svg"/>
-        <div class="search-plug__title">{{ props.emptySearchTitle }}</div>
+        <div class="search-plug__title">{{ getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${props.name}.emptySearchTitle`) || '' }}</div>
       </div>
     </div>
     
@@ -85,16 +83,24 @@
     isFitContent?: boolean,
     enableSort?: boolean,
     searchBy?: 'name' | 'code',
-    emptySearchTitle?: string,
   }>();
   
-  const { sortByAlphabet } = useProjectMethods();
+  const globalStore = useGlobalStore();
+  
+  const {
+    fieldsSettings,
+    defaultLocaleFieldsSettings,
+  } = storeToRefs(globalStore);
+  
+  const { sortByAlphabet, getContent } = useProjectMethods();
   
   const valueObject = ref<any>('');
   const searchQuery = ref<string>('');
   const selectedIndex = ref<number>(0);
   const isOpen = ref<boolean>(false);
   const dropdownItems = ref<HTMLElement>();
+  
+  let resizeObserver: ResizeObserver|null = null;
   
   if (props.value) {
     valueObject.value = props.options.find((option: any) => option.code === props.value) || {};
@@ -120,10 +126,10 @@
   
   const filteredOptions = computed(() => {
     let options = props.options || [];
+    const key = props.searchBy || 'name';
     
     if (props.enableSort) {
-      options = options.slice()
-        .sort((prev, next) => sortByAlphabet(prev[props.searchBy || 'name']?.toLowerCase(), next[props.searchBy || 'name']?.toLowerCase()));
+      options = options.toSorted((prev, next) => sortByAlphabet(prev[key]?.toLowerCase(), next[key]?.toLowerCase()));
     }
     return searchQuery.value ? filterOptions(options) : options;
   });
@@ -200,7 +206,7 @@
   };
   
   watch(() => props.value, (newValue: any) => {
-    valueObject.value = filteredOptions.value?.find((option: any) => option.code === newValue) || '';
+    valueObject.value = filteredOptions.value?.find((option: any) => option.code === newValue) || {};
     selectedIndex.value = getActiveIndex() || 0;
   });
   
@@ -221,7 +227,7 @@
       const offset = 24;
       let textMaxWidth = 0;
       
-      const observer = new ResizeObserver((entries) => {
+      resizeObserver = new ResizeObserver((entries) => {
         for (let entry of entries) {
           const textItems = entry.target.querySelectorAll('.item-text');
           
@@ -239,7 +245,14 @@
         }
       });
       
-      observer.observe(dropdownItems.value);
+      resizeObserver.observe(dropdownItems.value);
+    }
+  });
+  
+  onBeforeUnmount(() => {
+    if (resizeObserver) {
+      resizeObserver.disconnect();
+      resizeObserver = null;
     }
   });
 
