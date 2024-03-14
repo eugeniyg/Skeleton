@@ -52,5 +52,7 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
     }
   }
 
+  console.log(newUrl);
+
   return await $fetch(newUrl, newOptions);
 }

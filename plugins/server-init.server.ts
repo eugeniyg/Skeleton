@@ -9,6 +9,7 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     getSettingsConstants,
     setCurrentLocale
   } = useGlobalStore();
+
   const { getGameProviders, getGameCollections } = useGamesStore();
 
   getRequestCountry();
@@ -24,14 +25,14 @@ export default defineNuxtPlugin(async ():Promise<any> => {
   const { getProfileData } = useProfileStore();
   const { getUserAccounts } = useWalletStore();
 
-  const globalRequests = Promise.all([
-    getLocales(),
-    getCountries(),
-    getCurrencies(),
-    getSettingsConstants(),
-    getGameProviders(),
-    getGameCollections()
-  ]);
+  const globalRequests = Promise.all([]);
+  //   getLocales(),
+  //   getCountries(),
+  //   getCurrencies(),
+  //   getSettingsConstants(),
+  //   getGameProviders(),
+  //   getGameCollections()
+  // ]);
 
   if (sessionToken) {
     const profileRequests = Promise.all([

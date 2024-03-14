@@ -51,7 +51,7 @@
       <div id="live-events-widget" />
     </div>
 
-    <group-providers showArrows />
+    <!-- <group-providers showArrows /> -->
 
     <group-promotions />
 
