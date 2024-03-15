@@ -1,6 +1,9 @@
 <template>
   <div>
-    <betting-slider v-if="!isMobile && bettingContent?.slider?.display && filteredSlider?.length" :slides="filteredSlider"/>
+    <client-only>
+      <main-slider v-if="!isMobile && bettingContent?.sliderDisplay" sliderType="low" />
+    </client-only>
+
     <div class="betting">
       <div id="betting-container" class="container"/>
       
