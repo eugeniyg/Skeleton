@@ -5,6 +5,7 @@
     :class="classes"
     :tabindex="props.tabIndex ?? 0"
     v-click-outside="onBlur"
+    @inview="setMaxWidth"
   >
     <span
       v-if="props.label"
@@ -53,13 +54,15 @@
           @click="select(option)"
         >
           <atomic-image v-if="option.mask" class="mask" :src="option.mask" :defaultImage="option.defaultMask"/>
-          <span class="item-text">{{ option.value }}</span>
+          <span class="item-text" ref="itemText">{{ option.value }}</span>
           <atomic-icon v-if="option.code === valueObject.code" id="check"/>
         </div>
       </template>
       <div v-else class="search-plug">
         <atomic-image class="search-plug__image" src="/img/search-plug.svg"/>
-        <div class="search-plug__title">{{ getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${props.name}.emptySearchTitle`) || '' }}</div>
+        <div class="search-plug__title">
+          {{ emptySearchTitle }}
+        </div>
       </div>
     </div>
     
@@ -83,24 +86,32 @@
     isFitContent?: boolean,
     enableSort?: boolean,
     searchBy?: 'name' | 'code',
+    emptySearchTitle?: string,
   }>();
   
   const globalStore = useGlobalStore();
+  
+  const { initObserver } = useProjectMethods();
   
   const {
     fieldsSettings,
     defaultLocaleFieldsSettings,
   } = storeToRefs(globalStore);
   
-  const { sortByAlphabet, getContent } = useProjectMethods();
+  const {
+    sortByAlphabet,
+    getContent
+  } = useProjectMethods();
   
   const valueObject = ref<any>('');
   const searchQuery = ref<string>('');
   const selectedIndex = ref<number>(0);
   const isOpen = ref<boolean>(false);
   const dropdownItems = ref<HTMLElement>();
-  
-  let resizeObserver: ResizeObserver|null = null;
+  const drop = ref<HTMLElement>();
+  const itemText = ref([]);
+  const textMaxWidth = ref(0);
+  const observer = ref();
   
   if (props.value) {
     valueObject.value = props.options.find((option: any) => option.code === props.value) || {};
@@ -123,6 +134,10 @@
         ?.includes(searchQuery.value.toLowerCase())
     );
   };
+  
+  const emptySearchTitle = computed(() => {
+    return props.emptySearchTitle || getContent(fieldsSettings.value, defaultLocaleFieldsSettings.value, `fieldsControls.${props.name}.emptySearchTitle`) || ''
+  });
   
   const filteredOptions = computed(() => {
     let options = props.options || [];
@@ -153,8 +168,15 @@
   };
   
   const getActiveIndex = () => {
-    return filteredOptions.value.findIndex((option: any) => option.code === valueObject.value?.code);
+    const key = props.searchBy || 'name';
+    return filteredOptions.value.findIndex((option: any) => option?.[key] === valueObject.value?.[key]);
   };
+  
+  const resetIndex = () => {
+    if(selectedIndex.value > filteredOptions.value?.length - 1) {
+      selectedIndex.value = 0;
+    }
+  }
   
   const selectByEnter = (index: number) => {
     const selected = filteredOptions.value?.[index];
@@ -170,6 +192,7 @@
     if (!isOpen.value) {
       isOpen.value = true;
     } else {
+      resetIndex();
       if (selectedIndex.value === 0) {
         selectedIndex.value = filteredOptions.value.length - 1;
       } else if (selectedIndex.value < filteredOptions.value.length) {
@@ -184,6 +207,7 @@
     if (!isOpen.value) {
       isOpen.value = true;
     } else {
+      resetIndex()
       if (selectedIndex.value === filteredOptions.value.length - 1) {
         selectedIndex.value = 0;
       } else if (selectedIndex.value < filteredOptions.value.length) {
@@ -221,42 +245,36 @@
     emit('blur');
   };
   
-  onMounted(() => {
-    if (props.isFitContent && dropdownItems?.value) {
+  const setMaxWidth = () => {
+    if (props.isFitContent && drop.value && dropdownItems?.value) {
       const iconWidth = 20;
       const offset = 24;
-      let textMaxWidth = 0;
       
-      resizeObserver = new ResizeObserver((entries) => {
-        for (let entry of entries) {
-          const textItems = entry.target.querySelectorAll('.item-text');
-          
-          textItems.forEach((textItem) => {
-            const textWidth = (textItem as HTMLElement).offsetWidth;
-            if (textWidth > textMaxWidth) {
-              textMaxWidth = textWidth;
-            }
-          });
-          
-          const parent = (entry.target.parentElement?.parentElement as HTMLElement);
-          if (parent) {
-            parent.style.setProperty('--dropdown-item-min-width', `${textMaxWidth + iconWidth + offset}px`);
-          }
+      itemText.value.forEach((textItem) => {
+        const textWidth = (textItem as HTMLElement).offsetWidth;
+        if (textWidth > textMaxWidth.value) {
+          textMaxWidth.value = textWidth;
         }
       });
       
-      resizeObserver.observe(dropdownItems.value);
+      drop.value?.style.setProperty('--dropdown-item-min-width', `${textMaxWidth.value + iconWidth + offset}px`);
     }
+  };
+  
+  onMounted(() => {
+    observer.value = initObserver({
+      settings: {
+        root: null,
+        rootMargin: '0%',
+        threshold: 0
+      },
+    });
+    observer.value.observe(drop.value);
   });
   
   onBeforeUnmount(() => {
-    if (resizeObserver) {
-      resizeObserver.disconnect();
-      resizeObserver = null;
-    }
+    observer.value?.unobserve(drop.value);
   });
-
-
 </script>
 
 <style src="~/assets/styles/components/form/input/dropdown-search.scss" lang="scss"/>

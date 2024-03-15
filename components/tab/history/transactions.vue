@@ -18,6 +18,7 @@
 
       <form-input-dropdown-search
         :label="props.content?.currencyLabel"
+        :emptySearchTitle="props.content?.emptyCurrencySearchTitle"
         v-model:value="filters.currency"
         name="invoiceCurrency"
         placeholder=""
