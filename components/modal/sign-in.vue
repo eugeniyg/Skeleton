@@ -3,6 +3,7 @@
     v-model="modals.signIn"
     class="modal-sign-in"
     :clickToClose="false"
+    @closed="selectedTab = 'email'"
   >
     <div class="scroll">
       <div class="header">
@@ -10,7 +11,24 @@
         <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'login.title') }}</div>
       </div>
 
-      <form-sign-in />
+      <template v-if="tabsList.length">
+        <div  class="modal-sign-in__tabs">
+          <button-base
+            v-for="tab in tabsList"
+            :key="tab.id"
+            :isActive="tab.id === selectedTab"
+            size="xs"
+            @click="changeTab(tab.id as 'email'|'phone')"
+          >
+            <atomic-icon :id="tab.icon" />
+            <span class="text">{{ tab.label }}</span>
+          </button-base>
+        </div>
+
+        <atomic-divider class="modal-sign-in__tabs-divider" />
+      </template>
+
+      <form-sign-in :key="selectedTab" :loginType="selectedTab" />
     </div>
   </vue-final-modal>
 </template>
@@ -24,6 +42,22 @@
   const { closeModal } = layoutStore;
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
+
+  const tabsList = computed(() => {
+    const tabsObj = getContent(popupsData, defaultLocalePopupsData, 'login.tabs');
+    if (!tabsObj) return [];
+
+    return Object.keys(tabsObj).map(key => {
+      if (key === 'email') return { id: 'email', icon: 'mail', label: tabsObj[key] };
+      return { id: 'phone', icon: 'mobile', label: tabsObj[key] };
+    })
+  });
+  const selectedTab = ref<'email'|'phone'>('email');
+
+  const changeTab = (newTabId: 'email'|'phone'): void => {
+    if (selectedTab.value === newTabId) return;
+    selectedTab.value = newTabId;
+  }
 </script>
 
 <style src="~/assets/styles/components/modal/sign-in.scss" lang="scss" />
