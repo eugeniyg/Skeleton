@@ -6,19 +6,39 @@
   width: 100%;
   border-radius: 16px;
 
-  --info-padding: #{rem(24px)} #{rem(88px)} #{rem(24px)} #{rem(32px)};
+  .main-slider--high & {
+    --info-padding: 24px 116px 17px 32px;
 
-  @include media(xs) {
-    --info-padding: #{rem(24px)} #{rem(120px)} #{rem(24px)} #{rem(32px)};
+    @include media(xs) {
+      --info-padding: 24px 140px 24px 32px;
+    }
+
+    @include media(md) {
+      --info-padding: 32px 180px 32px 40px;
+    }
+
+    @include media(md) {
+      --info-padding: 32px 180px 32px 40px;
+    }
+
+    @include media(xl) {
+      --info-padding: 32px 140px 32px 40px;
+    }
+
+    @include media(xl) {
+      --info-padding: 32px 188px 32px 40px;
+    }
   }
 
-  @include media(md) {
-    --info-padding: #{rem(32px)} #{rem(120px)} #{rem(32px)} #{rem(40px)};
+  .main-slider--low & {
+    --info-padding: 16px 116px 16px 32px;
+
+    @include media(xxl) {
+      --info-padding: 16px 120px 16px 40px;
+    }
   }
 
   &__picture {
-    grid-column: 1;
-    grid-row: 1;
     position: absolute;
     height: 100%;
     max-width: 100%;
@@ -26,7 +46,7 @@
   }
 
   &__img {
-    aspect-ratio: 213/168;
+    aspect-ratio: 168/256;
     object-fit: cover;
     height: 100%;
     right: 0;
@@ -38,31 +58,35 @@
     z-index: 1;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     flex-shrink: 0;
     padding: var(--info-padding, 0);
   }
 
   &__title {
-    margin: 0 0 rem(4px);
     padding: 0;
     color: var(--text-primary);
     text-shadow: var(--shadow-layer);
+    @include font($heading-4);
 
-    @include font($heading-uppercase-5);
-
-    @include media(xs) {
-      @include upd-font($heading-uppercase-6);
+    + .card-slide__content {
+      margin-top: 4px;
     }
 
-    @include media(md) {
-      @include upd-font($heading-uppercase-7);
+    .main-slider--high & {
+      @include media(md) {
+        @include font($heading-6);
+      }
     }
   }
 
   &__content {
+    .main-slider--low & {
+      display: none;
+    }
+
     @include font($body-0);
     color: var(--text-primary);
-    padding-right: rem(56px);
 
     @include media(xs) {
       @include upd-font($body-1);
@@ -83,7 +107,7 @@
 
     ul {
       margin: 0;
-      padding: 0 0 0 rem(20px);
+      padding: 0 0 0 20px;
 
       li {
         font: inherit;
@@ -93,17 +117,24 @@
 
   &__actions {
     display: flex;
-    grid-column-gap: rem(4px);
-    margin-top: rem(16px);
+    grid-column-gap: 4px;
 
     .btn-primary, .btn-secondary {
       @include font($heading-2);
-      --padding: #{rem(6px)} #{rem(20px)};
+      --padding: 6px 20px;
 
-      @include media(md) {
-        @include upd-font($heading-3);
-        --padding: #{rem(12px)} #{rem(32px)};
-        --btn-border-radius: 12px;
+      .main-slider--high & {
+        margin-top: 16px;
+
+        @include media(md) {
+          @include upd-font($heading-3);
+          --padding: 12px 32px;
+          --btn-border-radius: 12px;
+        }
+      }
+
+      .main-slider--low & {
+        margin-top: 12px;
       }
     }
   }
