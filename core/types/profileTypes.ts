@@ -45,6 +45,11 @@ export interface IProfile extends Record<string, any>{
   segments: IPlayerSegment[];
 }
 
+export interface IAuthorizationRequest extends Record<any, any> {
+  login: string;
+  password: string;
+}
+
 export interface IAuthorizationResponse extends Record<string, any>{
   accessToken: string;
   tokenType: string;
