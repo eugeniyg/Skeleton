@@ -16,5 +16,7 @@ export const useBaseFetchInstance = async (url:string, options?:any):Promise<any
     retry: 0
   };
 
+  console.log(newUrl);
+
   return await $fetch(newUrl, newOptions);
 }

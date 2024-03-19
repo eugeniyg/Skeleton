@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     'dayjs-nuxt',
     'nuxt-lazy-load',
+    '@skeleton/modules/startup',
     '@skeleton/modules/optimize-images',
     '@nuxtjs/fontaine'
   ],

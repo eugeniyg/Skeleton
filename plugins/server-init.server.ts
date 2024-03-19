@@ -1,31 +1,28 @@
 export default defineNuxtPlugin(async ():Promise<any> => {
-  const {
-    getCurrencies,
-    getLocales,
-    getCountries,
-    getGlobalContent,
-    getRequestCountry,
-    getSettingsConstants,
-    setCurrentLocale
-  } = useGlobalStore();
+  const globalStore = useGlobalStore();
+
   const { getGameProviders, getGameCollections } = useGamesStore();
 
-  getRequestCountry();
+  globalStore.getRequestCountry();
 
   if (process.env.NODE_ENV === 'development') {
-    const globalStore = useGlobalStore();
     globalStore.baseApiUrl = process.env.API_BASE_URL || '';
   }
 
+  if(!process.server) {
+    await Promise.all([
+      globalStore.getLocales(),
+      globalStore.getCountries(),
+      globalStore.getCurrencies(),
+      globalStore.getSettingsConstants(),
+    ]);
+  }
+
   await Promise.all([
-    getLocales(),
-    getCountries(),
-    getCurrencies(),
-    getSettingsConstants(),
     getGameProviders(),
     getGameCollections()
   ]);
 
-  setCurrentLocale();
-  await getGlobalContent();
+  globalStore.setCurrentLocale();
+  await globalStore.getGlobalContent();
 });

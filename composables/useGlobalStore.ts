@@ -206,11 +206,15 @@ export const useGlobalStore = defineStore('globalStore', {
   },
 
   actions: {
+    async setCurrencies(data: ICurrency[]):Promise<void> {
+      this.currencies = data.filter((currency) => currency.isEnabled);
+      this.baseCurrency = data.find((currency) => currency.isBase);
+    },
+
     async getCurrencies():Promise<void> {
       const { getCurrencies } = useCoreGlobalApi();
       const data = await getCurrencies(1);
-      this.currencies = data.filter((currency) => currency.isEnabled);
-      this.baseCurrency = data.find((currency) => currency.isBase);
+      this.setCurrencies(data);
     },
 
     parseUserAgent(agent: string):void {
@@ -221,25 +225,37 @@ export const useGlobalStore = defineStore('globalStore', {
       this.browserLanguage = languages[0].code;
     },
 
-    async getLocales():Promise<void> {
-      const { getLocales } = useCoreGlobalApi();
-      const data = await getLocales();
+    async setLocales(data: ILocale[]):Promise<void> {
       this.locales = data;
       this.defaultLocale = data.find((locale) => locale.isDefault);
     },
 
-    async getCountries():Promise<void> {
-      const { getCountries } = useCoreGlobalApi();
+    async getLocales():Promise<void> {
+      const { getLocales } = useCoreGlobalApi();
+      const data = await getLocales();
+      this.setLocales(data);
+    },
 
+    async setCountries(data: ICountry[]):Promise<void> {
       // TEMPORARY SOLUTION
       const disabledCountries = ['US', 'UM', 'GB', 'FR', 'NL', 'AW', 'CW', 'MF'];
-      const responseCountries = await getCountries();
-      this.countries = responseCountries.filter(country => !disabledCountries.includes(country.code));
+      this.countries = data.filter(country => !disabledCountries.includes(country.code));
+    },
+
+    async getCountries():Promise<void> {
+      const { getCountries } = useCoreGlobalApi();
+      const data = await getCountries();
+      this.setCountries(data);
+    },
+
+    async setSettingsConstants(data: ICoreConstants):Promise<void> {
+      this.settingsConstants = data;
     },
 
     async getSettingsConstants():Promise<void> {
       const { getCoreConstants } = useCoreGlobalApi();
-      this.settingsConstants = await getCoreConstants();
+      const data = await getCoreConstants();
+      this.setSettingsConstants(data);
     },
 
     setCurrentLocale() {
