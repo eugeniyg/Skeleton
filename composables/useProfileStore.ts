@@ -193,7 +193,6 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async logOutUser():Promise<void> {
-      console.log('logout')
       const { logOut } = useCoreAuthApi();
       try {
         await logOut();

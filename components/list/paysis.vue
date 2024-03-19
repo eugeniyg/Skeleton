@@ -1,6 +1,7 @@
 <template>
   <div
     class="paysis"
+    :class="{'is-logged': isLoggedIn}"
     ref="sliderNode"
     v-if="paymentsItems?.length"
   >

@@ -166,7 +166,6 @@
   }
 
   watch(() => isLoggedIn.value, async (newValue:boolean) => {
-    console.log('watch logged');
     if (!newValue) return;
 
     showPlug.value = false;
@@ -179,7 +178,6 @@
   });
 
   watch(() => activeAccount.value?.id, async (oldValue, newValue) => {
-    console.log('wotch account');
     if (oldValue && newValue && oldValue !== newValue) {
       const { error } = await startGame();
       if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });

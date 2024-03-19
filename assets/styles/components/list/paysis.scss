@@ -22,6 +22,10 @@
     right: var(--shadow-inset);
   }
 
+  &.is-logged {
+    --cursor: pointer;
+  }
+
   &::-webkit-scrollbar {
     display: none;
   }
