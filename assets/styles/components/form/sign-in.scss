@@ -20,16 +20,15 @@
   }
 
   .input-phone {
-    grid-template-columns: 40% 60%;
-
     .dropdown {
       min-width: unset;
     }
 
     .field {
       text-overflow: ellipsis;
-      min-width: 87px;
-      max-width: 153px;
+      min-width: 140px;
+      max-width: 100%;
+      width: 100%;
     }
   }
 }
