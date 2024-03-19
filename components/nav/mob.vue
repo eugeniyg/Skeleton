@@ -21,15 +21,13 @@
     <client-only>
       <button-base class="nav-mob__item is-accent" @click.prevent="clickMainButton">
         <atomic-icon :id="isLoggedIn ? 'wallet' : 'user-new'"/>
-        <client-only>
-          <span class="nav-mob__text">
-            {{
-              isLoggedIn
-                ? getContent(layoutData, defaultLocaleLayoutData, 'header.depositButton')
-                : getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton')
-            }}
-          </span>
-        </client-only>
+        <span class="nav-mob__text">
+          {{
+            isLoggedIn
+              ? getContent(layoutData, defaultLocaleLayoutData, 'header.depositButton')
+              : getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton')
+          }}
+        </span>
       </button-base>
     </client-only>
 
