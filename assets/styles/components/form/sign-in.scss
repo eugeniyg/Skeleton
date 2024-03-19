@@ -18,4 +18,17 @@
   .btn-forgot {
     margin-top: rem(-8px);
   }
+
+  .input-phone {
+    .dropdown {
+      min-width: unset;
+    }
+
+    .field {
+      text-overflow: ellipsis;
+      min-width: 140px;
+      max-width: 100%;
+      width: 100%;
+    }
+  }
 }

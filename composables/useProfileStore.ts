@@ -65,6 +65,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     removeSession ():void {
+      this.profile = undefined;
       const cookieToken = useCookie(this.tokenCookieKey);
       cookieToken.value = null;
       this.currentSessionToken = null;

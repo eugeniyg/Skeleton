@@ -98,7 +98,7 @@ export const useBonusStore = defineStore('bonusStore', {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
         const { createSubscription } = useWebSocket();
-        this.bonusCodeSubscription = createSubscription(`bonus:player-bonus-codes#${profileStore.profile.id}`, this.bonusCodeSocketTrigger);
+        this.bonusCodeSubscription = createSubscription(`bonus:player-bonus-codes#${profileStore.profile?.id}`, this.bonusCodeSocketTrigger);
       }
     },
 
@@ -106,7 +106,7 @@ export const useBonusStore = defineStore('bonusStore', {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
         const { createSubscription } = useWebSocket();
-        this.bonusSubscription = createSubscription(`bonus:player-bonuses#${profileStore.profile.id}`, this.bonusesSocketTrigger);
+        this.bonusSubscription = createSubscription(`bonus:player-bonuses#${profileStore.profile?.id}`, this.bonusesSocketTrigger);
       }
     },
 
@@ -114,7 +114,7 @@ export const useBonusStore = defineStore('bonusStore', {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
         const { createSubscription } = useWebSocket();
-        this.freeSpinsSubscription = createSubscription(`bonus:player-freespins#${profileStore.profile.id}`, this.freeSpinsSocketTrigger);
+        this.freeSpinsSubscription = createSubscription(`bonus:player-freespins#${profileStore.profile?.id}`, this.freeSpinsSocketTrigger);
       }
     },
 

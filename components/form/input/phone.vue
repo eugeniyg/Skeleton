@@ -123,4 +123,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/phone.scss" lang="scss" />
-
