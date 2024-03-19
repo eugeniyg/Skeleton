@@ -36,7 +36,7 @@ export const useProfileStore = defineStore('profileStore', {
   actions: {
     setSessionToken (tokenValue:string):void {
       if (this.currentSessionToken === tokenValue) return;
-      const cookieToken = useCookie(this.tokenCookieKey, { maxAge: 60 * 60 * 24 * 30 });
+      const cookieToken = useCookie(this.tokenCookieKey, { maxAge: 60 * 60 * 24 * 365 });
       cookieToken.value = tokenValue;
       this.currentSessionToken = tokenValue;
     },
@@ -68,6 +68,17 @@ export const useProfileStore = defineStore('profileStore', {
       const cookieToken = useCookie(this.tokenCookieKey);
       cookieToken.value = null;
       this.currentSessionToken = null;
+      this.isLoggedIn = false;
+
+      const { updateChat } = useFreshchatStore();
+      updateChat();
+
+      this.finishProfileDependencies();
+
+      const { deleteReturnGame } = useLayoutStore();
+      deleteReturnGame();
+
+      sessionStorage.removeItem('depositBonusData');
     },
 
     async getRefreshRequest (): Promise<string> {
@@ -77,6 +88,12 @@ export const useProfileStore = defineStore('profileStore', {
         const data = await refreshToken();
         this.setSessionToken(data.accessToken);
         return data.accessToken;
+      } catch (err:any) {
+        if ([403, 401].includes(err.response?.status)) {
+          this.removeSession();
+          return '';
+        }
+        throw err;
       } finally {
         this.refreshPromise = null;
       }
@@ -197,19 +214,11 @@ export const useProfileStore = defineStore('profileStore', {
       try {
         await logOut();
       } finally {
-        this.isLoggedIn = false;
         this.removeSession();
-        const { updateChat } = useFreshchatStore();
-        updateChat();
-        this.finishProfileDependencies();
 
-        const { deleteReturnGame } = useLayoutStore();
-        deleteReturnGame();
-
-        sessionStorage.removeItem('depositBonusData');
         const router = useRouter();
         const { localizePath } = useProjectMethods();
-        router.push(localizePath('/'));
+        await router.push(localizePath('/'));
       }
     },
 

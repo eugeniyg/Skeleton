@@ -25,15 +25,14 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
     console.log('API INSTANCE REQUEST URL: ', newUrl);
   }
 
-  if (token) { newOptions.headers.Authorization = `Bearer ${token}` };
+  if (token) { newOptions.headers.Authorization = `Bearer ${token}` }
 
   if (token && profileStore.isTokenExpired()) {
-    try {
-      token = await profileStore.refreshToken();
+    token = await profileStore.refreshToken();
+    if (token) {
       newOptions.headers.Authorization = `Bearer ${token}`;
-    } catch {
-      profileStore.removeSession();
-      newOptions.headers.Authorization = undefined;
+    } else {
+      delete newOptions.headers.Authorization;
     }
   }
 
