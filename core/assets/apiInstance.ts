@@ -2,25 +2,8 @@ import queryString from 'query-string';
 
 export const useFetchInstance = async (url:string, options?:any):Promise<any> => {
   const profileStore = useProfileStore();
-  const globalStore = useGlobalStore();
-
   let token = profileStore.getSessionToken();
-  let serverRequestHeaders = {};
 
-  if (process.server) {
-    const requestHeaders = useRequestHeaders();
-
-    serverRequestHeaders = {
-      'User-Agent': requestHeaders['user-agent'],
-      'Accept-Language': requestHeaders['accept-language'],
-      'Accept-Encoding': requestHeaders['accept-encoding'],
-      [globalStore.countryHeaderName]: requestHeaders[globalStore.countryHeaderName],
-      Referer: requestHeaders.referer,
-      'x-forwarded-for': requestHeaders['cf-connecting-ip']
-    };
-  }
-
-  const baseURL = process.server && process.env.API_BASE_URL ? process.env.API_BASE_URL : '';
   let newUrl = url;
 
   if (options?.params) {
@@ -30,12 +13,8 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
 
   const newOptions = {
     ...options,
-    baseURL,
     params: undefined,
-    headers: {
-      ...serverRequestHeaders,
-      ...options?.headers
-    },
+    headers: { ...options?.headers },
     credentials: 'omit',
     retry: 0
   };
@@ -44,7 +23,7 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
 
   if (token && profileStore.isTokenExpired()) {
     try {
-      token = await profileStore.refreshToken(newOptions);
+      token = await profileStore.refreshToken();
       newOptions.headers.Authorization = `Bearer ${token}`;
     } catch {
       profileStore.removeSession();

@@ -1,5 +1,5 @@
 <template>
-  <div class="box-game" :class="boxGameClassModifiers">
+  <div class="box-game" :class="boxGameClasses">
     <div class="box-game__header">
       <h1 class="box-game__title">{{ props.gameInfo?.name }}</h1>
       
@@ -69,6 +69,11 @@
       { 'box-game--demo': props.isDemo }
     ]
   });
+  const boxGameClasses = ref<any[]>([]);
+
+  watch(() => boxGameClassModifiers.value, (newValue) => {
+    boxGameClasses.value = newValue;
+  })
   
   const changeGameMode = () => {
     emit('changeMode');
@@ -78,6 +83,7 @@
   }
   
   onMounted(() => {
+    boxGameClasses.value = boxGameClassModifiers.value;
     if (props.gameInfo?.isBonusWagering && props.gameInfo?.minimumBonusWagerMultiplier) {
       defineBonusWagerInfo(props.gameInfo.isBonusWagering, props.gameInfo.minimumBonusWagerMultiplier);
     }

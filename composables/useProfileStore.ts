@@ -70,11 +70,11 @@ export const useProfileStore = defineStore('profileStore', {
       this.currentSessionToken = null;
     },
 
-    async getRefreshRequest (options:any): Promise<string> {
+    async getRefreshRequest (): Promise<string> {
       const { refreshToken } = useCoreAuthApi();
 
       try {
-        const data = await refreshToken(options);
+        const data = await refreshToken();
         this.setSessionToken(data.accessToken);
         return data.accessToken;
       } finally {
@@ -82,9 +82,9 @@ export const useProfileStore = defineStore('profileStore', {
       }
     },
 
-    refreshToken(options:any): string|Promise<string> {
+    refreshToken(): string|Promise<string> {
       if (this.refreshPromise) return this.refreshPromise;
-      this.refreshPromise = this.getRefreshRequest(options);
+      this.refreshPromise = this.getRefreshRequest();
       return this.refreshPromise;
     },
 
@@ -193,6 +193,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async logOutUser():Promise<void> {
+      console.log('logout')
       const { logOut } = useCoreAuthApi();
       try {
         await logOut();

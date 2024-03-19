@@ -23,10 +23,12 @@
       <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.bonusesMenu')"/>
       <atomic-divider/>
 
-      <template v-if="isLoggedIn">
-        <nav-list :items="userMenuContent"/>
-        <atomic-divider/>
-      </template>
+      <client-only>
+        <template v-if="isLoggedIn">
+          <nav-list :items="userMenuContent"/>
+          <atomic-divider/>
+        </template>
+      </client-only>
 
       <atomic-select-lang />
 

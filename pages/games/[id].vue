@@ -10,11 +10,13 @@
       :isDemo="isDemo"
     />
 
-    <modal-demo-game
-      :content="gameContent?.demoModal || defaultLocaleGameContent?.demoModal"
-      :isDemo="isDemo"
-      @playReal="changeGameMode"
-    />
+    <client-only>
+      <modal-demo-game
+        :content="gameContent?.demoModal || defaultLocaleGameContent?.demoModal"
+        :isDemo="isDemo"
+        @playReal="changeGameMode"
+      />
+    </client-only>
 
     <atomic-seo-text v-if="gameContent?.seo?.text" v-bind="gameContent?.seo?.text" />
   </div>
@@ -164,6 +166,7 @@
   }
 
   watch(() => isLoggedIn.value, async (newValue:boolean) => {
+    console.log('watch logged');
     if (!newValue) return;
 
     showPlug.value = false;
@@ -176,6 +179,7 @@
   });
 
   watch(() => activeAccount.value?.id, async (oldValue, newValue) => {
+    console.log('wotch account');
     if (oldValue && newValue && oldValue !== newValue) {
       const { error } = await startGame();
       if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });

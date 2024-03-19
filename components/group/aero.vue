@@ -36,10 +36,12 @@
 
         <div class="group-aero__game-title">
           <span>{{ gameInfo?.name }}</span>
-          <button-favorite
-            v-if="isLoggedIn"
-            :gameId="gameInfo?.id"
-          />
+          <client-only>
+            <button-favorite
+              v-if="isLoggedIn"
+              :gameId="gameInfo?.id"
+            />
+          </client-only>
         </div>
         <div class="group-aero__game-provider">{{ gameInfo?.provider?.name }}</div>
 

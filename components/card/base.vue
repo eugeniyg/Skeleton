@@ -38,7 +38,9 @@
 
         <!--<button-info/>-->
 
-        <button-favorite v-if="isLoggedIn" :gameId="props.gameInfo?.id"/>
+        <client-only>
+          <button-favorite v-if="isLoggedIn" :gameId="props.gameInfo?.id"/>
+        </client-only>
       </div>
     </div>
   </div>
