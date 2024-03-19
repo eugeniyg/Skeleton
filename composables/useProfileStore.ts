@@ -53,7 +53,6 @@ export const useProfileStore = defineStore('profileStore', {
       if (!token) return false;
 
       const currentSession:IParsedToken = jwtDecode(token);
-      console.log(currentSession.exp);
       return currentSession.exp ? (currentSession.exp - 10) < (Date.now() / 1000) : false;
     },
 
