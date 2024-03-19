@@ -19,6 +19,12 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
     retry: 0
   };
 
+  if (process.server) {
+    console.log('API INSTANCE TOKEN: ', token);
+    console.log('API INSTANCE OPTIONS: ', newOptions);
+    console.log('API INSTANCE REQUEST URL: ', newUrl);
+  }
+
   if (token) { newOptions.headers.Authorization = `Bearer ${token}` };
 
   if (token && profileStore.isTokenExpired()) {
