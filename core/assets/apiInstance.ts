@@ -16,7 +16,14 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
     params: undefined,
     headers: { ...options?.headers },
     credentials: 'omit',
-    retry: 0
+    retry: 0,
+    async onResponseError({ response }: any) {
+      if (response.status === 401 || response.status === 403) {
+        const { localizePath } = useProjectMethods();
+        const router = useRouter();
+        await router.push(localizePath('/'));
+      }
+    },
   };
 
   if (process.server) {
