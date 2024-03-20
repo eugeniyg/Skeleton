@@ -36,9 +36,13 @@ export const useCoreAuthApi = () => {
     return data;
   };
 
-  const refreshToken = async (options:any):Promise<IAuthorizationResponse> => {
+  const refreshToken = async ():Promise<IAuthorizationResponse> => {
+    const { getSessionToken } = useProfileStore();
+    const token = getSessionToken();
     const { data }: { data: IAuthorizationResponse } = await $fetch('/api/player/sessions/refresh', {
-      ...options,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
       method: 'POST'
     });
 

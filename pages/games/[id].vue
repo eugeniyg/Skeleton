@@ -10,11 +10,13 @@
       :isDemo="isDemo"
     />
 
-    <modal-demo-game
-      :content="gameContent?.demoModal || defaultLocaleGameContent?.demoModal"
-      :isDemo="isDemo"
-      @playReal="changeGameMode"
-    />
+    <client-only>
+      <modal-demo-game
+        :content="gameContent?.demoModal || defaultLocaleGameContent?.demoModal"
+        :isDemo="isDemo"
+        @playReal="changeGameMode"
+      />
+    </client-only>
 
     <atomic-seo-text v-if="gameContent?.seo?.text" v-bind="gameContent?.seo?.text" />
   </div>
