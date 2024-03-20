@@ -12,15 +12,16 @@ import type {
   IWinnersRequest
 } from '../types';
 import {useFetchInstance} from '../assets/apiInstance';
+import { useBaseFetchInstance } from '../assets/apiBaseInstance';
 
 export const useCoreGamesApi = () => {
   const getGameCollections = async ():Promise<ICollection[]> => {
-    const { data } = await useFetchInstance('/api/game/collections');
+    const { data } = await useBaseFetchInstance('/api/game/collections');
     return data;
   };
 
   const getGameProviders = async (params?: IProvidersRequest):Promise<IGameProvider[]> => {
-    const { data } = await useFetchInstance('/api/game/providers', { params });
+    const { data } = await useBaseFetchInstance('/api/game/providers', { params });
     return data;
   };
 
@@ -34,7 +35,7 @@ export const useCoreGamesApi = () => {
   };
 
   const getGamesInfo = async (gameId: string):Promise<IGame> => {
-    const { data } = await useFetchInstance(`/api/game/games/${gameId}`);
+    const { data } = await useBaseFetchInstance(`/api/game/games/${gameId}`);
     return data;
   };
 

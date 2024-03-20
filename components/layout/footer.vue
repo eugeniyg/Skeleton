@@ -41,7 +41,9 @@
 
     <atomic-divider/>
 
-    <list-paysis/>
+    <client-only>
+      <list-paysis />
+    </client-only>
 
     <atomic-divider/>
     

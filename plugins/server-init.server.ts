@@ -1,4 +1,3 @@
-// eslint-disable-next-line consistent-return
 export default defineNuxtPlugin(async ():Promise<any> => {
   const {
     getCurrencies,
@@ -18,13 +17,7 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     globalStore.baseApiUrl = process.env.API_BASE_URL || '';
   }
 
-  const { getSessionToken } = useProfileStore();
-  const sessionToken = getSessionToken();
-
-  const { getProfileData } = useProfileStore();
-  const { getUserAccounts } = useWalletStore();
-
-  const globalRequests = Promise.all([
+  await Promise.all([
     getLocales(),
     getCountries(),
     getCurrencies(),
@@ -32,20 +25,6 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     getGameProviders(),
     getGameCollections()
   ]);
-
-  if (sessionToken) {
-    const profileRequests = Promise.all([
-      getProfileData(),
-      getUserAccounts(),
-    ]);
-
-    await Promise.allSettled([
-      globalRequests,
-      profileRequests,
-    ]);
-  } else {
-    await globalRequests;
-  }
 
   setCurrentLocale();
   await getGlobalContent();

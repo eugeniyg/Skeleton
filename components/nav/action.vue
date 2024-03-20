@@ -15,14 +15,16 @@
       <atomic-icon id="video-expand"/>
     </button>
 
-    <button
-      v-if="isLoggedIn"
-      class="item"
-      @click="toggleFavorite"
-      :class="{ 'is-active': isFavorite }"
-    >
-      <atomic-icon :id="isFavorite ? 'heart': 'heart-outline'"/>
-    </button>
+    <client-only>
+      <button
+        v-if="isLoggedIn"
+        class="item"
+        @click="toggleFavorite"
+        :class="{ 'is-active': isFavorite }"
+      >
+        <atomic-icon :id="isFavorite ? 'heart': 'heart-outline'"/>
+      </button>
+    </client-only>
   </div>
 </template>
 
