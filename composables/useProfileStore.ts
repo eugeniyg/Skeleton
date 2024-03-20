@@ -8,7 +8,6 @@ import { jwtDecode } from "jwt-decode";
 
 interface IProfileStoreState {
   refreshPromise: Promise<string>|null;
-  currentSessionToken: Maybe<string>;
   isLoggedIn: boolean;
   sessionId: string;
   resentVerifyEmail: boolean;
@@ -19,7 +18,6 @@ interface IProfileStoreState {
 export const useProfileStore = defineStore('profileStore', {
   state: (): IProfileStoreState => ({
     refreshPromise: null,
-    currentSessionToken: null,
     isLoggedIn: false,
     sessionId: '',
     resentVerifyEmail: false,
@@ -35,17 +33,13 @@ export const useProfileStore = defineStore('profileStore', {
 
   actions: {
     setSessionToken (tokenValue:string):void {
-      if (this.currentSessionToken === tokenValue) return;
       const cookieToken = useCookie(this.tokenCookieKey, { maxAge: 60 * 60 * 24 * 365 });
       cookieToken.value = tokenValue;
-      this.currentSessionToken = tokenValue;
     },
 
     getSessionToken ():Maybe<string> {
-      if (this.currentSessionToken) return this.currentSessionToken;
       const cookieToken = useCookie(this.tokenCookieKey);
-      this.currentSessionToken = cookieToken.value;
-      return this.currentSessionToken;
+      return cookieToken.value;
     },
 
     isTokenExpired ():boolean {
@@ -67,7 +61,6 @@ export const useProfileStore = defineStore('profileStore', {
     removeSession ():void {
       const cookieToken = useCookie(this.tokenCookieKey);
       cookieToken.value = null;
-      this.currentSessionToken = null;
       this.isLoggedIn = false;
 
       const { updateChat } = useFreshchatStore();
