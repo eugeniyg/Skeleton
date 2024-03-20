@@ -1,4 +1,4 @@
-import type { IAuthorizationResponse, IField } from '../types';
+import type {IAuthorizationRequest, IAuthorizationResponse, IField} from '../types';
 import { useFetchInstance } from '../assets/apiInstance';
 
 export const useCoreAuthApi = () => {
@@ -18,7 +18,7 @@ export const useCoreAuthApi = () => {
     return data;
   };
 
-  const submitLoginData = async (authorizationFormData: any):Promise<IAuthorizationResponse> => {
+  const submitLoginData = async (authorizationFormData: IAuthorizationRequest):Promise<IAuthorizationResponse> => {
     const { data } = await useFetchInstance('/api/player/sessions', {
       method: 'POST',
       body: authorizationFormData

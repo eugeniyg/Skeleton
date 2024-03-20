@@ -131,12 +131,16 @@
     "validation": [{ "rule": "email" }]
   },
   "country": {
-    "component": "form-input-dropdown",
-    "type": "dropdown"
+    "component": "form-input-dropdown-search",
+    "type": "dropdown",
+    "enableSort": true,
+    "searchBy": "name"
   },
   "currency": {
-    "component": "form-input-dropdown",
-    "type": "dropdown"
+    "component": "form-input-dropdown-search",
+    "type": "dropdown",
+    "isFitContent": true,
+    "searchBy": "code"
   },
   "agreements": {
     "component": "form-input-checkbox",
