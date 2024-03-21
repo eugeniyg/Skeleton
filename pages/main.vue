@@ -28,8 +28,10 @@
       showArrows
       :category="category"
     />
-    
-    <favorite-recently v-if="isLoggedIn"/>
+
+    <client-only>
+      <favorite-recently v-if="isLoggedIn"/>
+    </client-only>
 
     <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent.seo.text"/>
   </div>

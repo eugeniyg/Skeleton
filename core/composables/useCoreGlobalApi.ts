@@ -7,25 +7,26 @@ import type {
   ILocale
 } from '../types';
 import { useFetchInstance } from '../assets/apiInstance';
+import { useBaseFetchInstance } from '../assets/apiBaseInstance';
 
 export const useCoreGlobalApi = () => {
   const getCurrencies = async (visible?: number):Promise<ICurrency[]> => {
-    const { data } = await useFetchInstance('/api/settings/currencies', { params: { visible } });
+    const { data } = await useBaseFetchInstance('/api/settings/currencies', { params: { visible } });
     return data;
   };
 
   const getLocales = async ():Promise<ILocale[]> => {
-    const { data } = await useFetchInstance('/api/settings/locales');
+    const { data } = await useBaseFetchInstance('/api/settings/locales');
     return data;
   };
 
   const getCountries = async ():Promise<ICountry[]> => {
-    const { data } = await useFetchInstance('/api/settings/countries');
+    const { data } = await useBaseFetchInstance('/api/settings/countries');
     return data;
   };
 
   const getCoreConstants = async ():Promise<ICoreConstants> => {
-    const { data } = await useFetchInstance('/api/settings/constants');
+    const { data } = await useBaseFetchInstance('/api/settings/constants');
     return data;
   };
 

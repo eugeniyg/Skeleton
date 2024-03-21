@@ -5,12 +5,14 @@
     <client-only>
       <pwa v-if="isLoggedIn" display="mobile" />
     </client-only>
-    
-    <div class="app-header" :class="headerClassModifiers" ref="appHeader">
-      <button class="app-header__back-btn" @click="backToHomePage" v-if="isGamePage && isLoggedIn">
-        <atomic-icon id="arrow_previous"/>
-      </button>
-      
+
+    <div class="app-header" :class="headerClassValue" ref="appHeader">
+      <client-only>
+        <button class="app-header__back-btn" @click="backToHomePage" v-if="isGamePage && isLoggedIn">
+          <atomic-icon id="arrow_previous"/>
+        </button>
+      </client-only>
+
       <button-toggle-drawer
         @toggle-minimize="compactDrawer(!isDrawerCompact)"
         @toggle-open="emit('toggle-open')"
@@ -31,11 +33,13 @@
           :is-active="isShowSearch"
       />
 
-      <atomic-gift-notification
+      <client-only>
+        <atomic-gift-notification
           v-if="isLoggedIn"
           display="mobile"
           :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
-      />
+        />
+      </client-only>
       <!--</template>-->
       
       <div class="items">
@@ -67,50 +71,50 @@
         
         <atomic-divider v-if="isGamePage" />
 
-        <template v-if="isLoggedIn">
-          <atomic-gift-notification
+        <client-only>
+          <template v-if="isLoggedIn">
+            <atomic-gift-notification
               display="desktop"
               :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
-          />
+            />
 
-          <client-only>
             <pwa display="desktop" />
-          </client-only>
 
-          <!--
-          <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
-          <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
-          -->
-          <form-input-deposit />
+            <!--
+            <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
+            <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
+            -->
+            <form-input-deposit />
 
-          <div v-click-outside="closeUserNav" class="nav-user__wrap">
-            <atomic-avatar
+            <div v-click-outside="closeUserNav" class="nav-user__wrap">
+              <atomic-avatar
                 @toggle="toggleProfileNav"
                 :is-button="true"
-            />
-            <nav-user @logout="logout"/>
-          </div>
-        </template>
+              />
+              <nav-user @logout="logout"/>
+            </div>
+          </template>
 
-        <template v-else>
-          <button-base
+          <template v-else>
+            <button-base
               type="primary"
               size="md"
               @click="showModal('register')"
-          >
-            <atomic-icon id="user-new" class="btn-primary__icon"/>
-            <span class="btn-primary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton') }}</span>
-          </button-base>
+            >
+              <atomic-icon id="user-new" class="btn-primary__icon"/>
+              <span class="btn-primary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton') }}</span>
+            </button-base>
 
-          <button-base
+            <button-base
               type="secondary"
               size="md"
               @click="showModal('signIn')"
-          >
-            <atomic-icon id="user" class="btn-secondary__icon"/>
-            <span class="btn-secondary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.loginButton') }}</span>
-          </button-base>
-        </template>
+            >
+              <atomic-icon id="user" class="btn-secondary__icon"/>
+              <span class="btn-secondary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.loginButton') }}</span>
+            </button-base>
+          </template>
+        </client-only>
       </div>
     </div>
   </header>
@@ -137,9 +141,14 @@
   const headerClassModifiers = computed(() => {
     if (isGamePage.value && isLoggedIn.value) {
       return 'app-header--is-game-page-login'
-    } else if(isGamePage && !isLoggedIn.value) {
+    } else if (isGamePage.value && !isLoggedIn.value) {
       return 'app-header--is-game-page-logout'
     } else return ''
+  })
+
+  const headerClassValue = ref<string>('');
+  watch(() => headerClassModifiers.value, (newValue) => {
+    headerClassValue.value = newValue;
   })
 
   function toggleProfileNav():void {
@@ -188,6 +197,7 @@
   }
 
   onMounted(() => {
+    headerClassValue.value = headerClassModifiers.value;
     document.addEventListener('click', checkSearch);
   });
 
