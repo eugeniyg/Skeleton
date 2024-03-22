@@ -24,7 +24,7 @@
     left: 0;
 
     --bg: transparent;
-    --color: var(--button-icn-secondary);
+    --color: var(--icon-primary);
     --icon-size: #{rem(24px)};
 
     .icon {
@@ -32,6 +32,7 @@
 
       .main-layout.drawer-minimize & {
         transform: rotate(0deg);
+        --color: var(--icon-accent);
       }
     }
 
