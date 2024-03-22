@@ -1,27 +1,21 @@
 <template>
-  <div class="card-slide">
-    <picture class="card-slide__picture card-slide__picture--back">
-      <source :media="'(max-width: 1279px)'" :srcset="createSrcSet(props.images.mobile.backgroundImage)" />
-      <source :media="'(max-width: 2264px)'" :srcset="createSrcSet(props.images.desktop.backgroundImage)" />
-      <atomic-image class="card-slide__img card-slide__img--back" :src="props.images.mobile.backgroundImage" />
-    </picture>
-
-    <picture class="card-slide__picture card-slide__picture--front">
-      <source :media="'(max-width: 1279px)'" :srcset="createSrcSet(props.images.mobile.faceImage)" />
-      <source :media="'(max-width: 2264px)'" :srcset="createSrcSet(props.images.desktop.faceImage)" />
-      <atomic-image class="card-slide__img card-slide__img--front" :src="props.images.mobile.faceImage" />
+  <div class="card-slide" :style="backgroundGradientStyle">
+    <picture class="card-slide__picture card-slide__picture">
+      <source :media="'(max-width: 1279px)'" :srcset="createSrcSet(props.slideData.mobileImage)" />
+      <source :media="'(max-width: 2264px)'" :srcset="createSrcSet(props.slideData.desktopImage)" />
+      <atomic-image class="card-slide__img card-slide__img" :src="props.slideData.mobileImage" />
     </picture>
 
     <div class="card-slide__info">
-      <div class="card-slide__title" v-if="props.title" v-html="marked.parse(props.title)" />
-      <div class="card-slide__content" v-if="props.content" v-html="marked.parse(props.content)" />
+      <div class="card-slide__title">{{ props.slideData.title }}</div>
+      <div class="card-slide__content" v-if="props.slideData.content" v-html="marked.parse(props.slideData.content)" />
       
-      <div class="card-slide__actions" v-if="props.button">
+      <div class="card-slide__actions" v-if="showButton">
         <button-base
           type="primary"
-          @click="clickButton(props.button.url)"
+          @click="clickButton(props.slideData.button?.url as string)"
         >
-          {{ props.button.label }}
+          {{ props.slideData.button?.label }}
         </button-base>
       </div>
     </div>
@@ -29,39 +23,21 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
+  import type { ISliderItem } from "~/types";
 
-  const props = defineProps({
-    images: {
-      type: Object,
-      required: true,
-    },
-    title: {
-      type: String,
-      default: '',
-    },
-    content: {
-      type: String,
-      required: false,
-    },
-    button: {
-      type: Object,
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    slideData: ISliderItem;
+  }>();
 
-  const profileStore = useProfileStore();
-  const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal, openWalletModal } = useLayoutStore();
-  const { createSrcSet } = useProjectMethods()
+  const { createSrcSet } = useProjectMethods();
+  const showButton = computed(() => !!props.slideData.button?.label && !!props.slideData.button?.url);
+  const backgroundGradientStyle = computed(() => `background: linear-gradient(to right, ${props.slideData.colorLeft}, ${props.slideData.colorRight})`);
 
   const clickButton = (url:string):void => {
-    if (url) {
-      const router = useRouter();
-      const { localizePath } = useProjectMethods();
-      router.push(localizePath(url));
-    } else isLoggedIn.value ? openWalletModal('deposit') : showModal('register');
+    const router = useRouter();
+    const { localizePath } = useProjectMethods();
+    router.push(localizePath(url));
   };
 </script>
 
