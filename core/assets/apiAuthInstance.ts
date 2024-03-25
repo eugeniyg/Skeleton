@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-export const useFetchInstance = async (url:string, options?:any):Promise<any> => {
+export const useApiAuthInstance = async (url:string, options?:any):Promise<any> => {
   const profileStore = useProfileStore();
   let token = profileStore.getSessionToken();
 
