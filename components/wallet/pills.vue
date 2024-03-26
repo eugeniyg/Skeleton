@@ -1,7 +1,7 @@
 <template>
   <div class="wallet-pills">
     <div
-      v-for="item in filteredItems"
+      v-for="item in props.items"
       :key="item.amount"
       class="wallet-pills__item"
       :class="{ 'is-selected': String(item.amount) === props.value }"
@@ -18,13 +18,8 @@
   const props = defineProps<{
     value: string;
     items: IPaymentPreset[];
-    amountMax: number;
-    amountMin: number;
   }>();
 
-  const filteredItems = props.items.filter(item => {
-    return item.amount >= props.amountMin && item.amount <= props.amountMax;
-  });
   const emit = defineEmits(['update:value']);
 
   const selectItem = (amount: string):void => {

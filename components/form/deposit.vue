@@ -12,11 +12,9 @@
     />
 
     <wallet-pills
-      v-if="props.presets.length"
+      v-if="filteredPresets.length"
       v-model:value="amountValue"
-      :items="props.presets"
-      :amountMax="props.amountMax"
-      :amountMin="props.amountMin"
+      :items="filteredPresets"
     />
 
     <component
@@ -163,7 +161,10 @@
   }
 
   const isSending = ref<boolean>(false);
-  const defaultPreset = props.presets.find(preset => preset.default);
+  const filteredPresets = props.presets.filter(preset => {
+    return preset.amount >= formatAmountMin.amount && preset.amount <= formatAmountMax.amount;
+  });
+  const defaultPreset = filteredPresets.find(preset => preset.default);
   const amountValue = ref<string>(String(getStorageBonusAmount() || defaultPreset?.amount || formatAmountMin.amount));
   const buttonAmount = computed(() => {
     if (Number(amountValue.value) > formatAmountMax.amount) return formatAmountMax.amount;
