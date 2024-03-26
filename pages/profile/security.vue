@@ -16,7 +16,7 @@
   import { storeToRefs } from 'pinia';
   import type { IProfileSecurity } from '~/types';
 
-  const { setPageSeo, getLocalesContentData } = useProjectMethods();
+  const { setPageMeta, getLocalesContentData } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
@@ -33,7 +33,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     securityContent.value = contentData?.currentLocaleData;
     defaultLocaleSecurityContent.value = contentData?.defaultLocaleData;
-    setPageSeo(securityContent.value?.seo);
+    setPageMeta(securityContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {

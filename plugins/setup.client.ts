@@ -23,12 +23,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     document.documentElement.style.setProperty('--vh', `${vh}px`);
   };
 
-  const getInitialData = ():void => {
-    const { getGameProviders, getGameCollections } = useGamesStore();
-    getGameProviders();
-    getGameCollections();
-  }
-
   const startWebSocket = async (): Promise<void> => {
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
@@ -56,14 +50,13 @@ export default defineNuxtPlugin((nuxtApp) => {
     else if (sessionToken) addFreshChatScript();
   }
 
-  nuxtApp.hook('app:created', async () => {
-    getInitialData();
-    await startWebSocket();
-    startProfileLogic();
-
+  nuxtApp.hook('app:mounted', async () => {
     const { parseUserAgent } = useGlobalStore();
     const { userAgent } = window.navigator;
     parseUserAgent(userAgent);
+
+    await startWebSocket();
+    startProfileLogic();
 
     checkAffiliateTag();
     setWindowStaticHeight();

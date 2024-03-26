@@ -18,7 +18,7 @@
 
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const { setPageSeo, getLocalesContentData } = useProjectMethods();
+  const { setPageMeta, getLocalesContentData } = useProjectMethods();
 
   const historyContent = ref<Maybe<IProfileHistory>>();
   const defaultLocaleHistoryContent = ref<Maybe<IProfileHistory>>();
@@ -62,7 +62,7 @@
     currentLocaleTabsContent.value = contentData?.currentLocaleTabData;
     defaultLocaleTabsContent.value = contentData?.defaultLocaleTabData;
     setPageContent();
-    setPageSeo(historyContent.value?.seo);
+    setPageMeta(historyContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
