@@ -80,11 +80,11 @@
 
   const state = reactive<{
     prevAmount: number|undefined,
-    amount: number,
+    amount: string,
     currency: string,
   }>({
     prevAmount: formattedBalance.amount,
-    amount: formattedBalance.amount,
+    amount: String(formattedBalance.amount),
     currency: formattedBalance.currency,
   });
 
@@ -94,14 +94,14 @@
     return labels[`edit_${props.period}_${props.definition}`];
   });
 
-  const isDisableUpdate = computed(() => Number(state.prevAmount) === Number(state.amount) || !state.amount);
+  const isDisableUpdate = computed(() => Number(state.prevAmount) === Number(state.amount) || !Number(state.amount));
 
   const isLargeAmount = computed(() => Number(state.amount) > Number(state.prevAmount));
 
   const update = async () => {
     closeModal('editLimit');
 
-    const formattedMainBalance = getMainBalanceFormat(state.currency, state.amount);
+    const formattedMainBalance = getMainBalanceFormat(state.currency, Number(state.amount));
 
     await updatePlayerLimit({
       limitId: props.limitId as string,
