@@ -15,39 +15,22 @@
   z-index: 1;
   min-height: rem(24px);
   transform: translateX(16px);
+  transition: color .2s, background-color .2s;
 
   &__wrap {
     position: relative;
   }
 
-  &__input {
-    position: absolute;
-    right: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0;
-
-    &:focus {
-      ~ .btn-copy {
-        --copy-btn-bg: var(--button-bg-secondary-click);
-        --color: var(--button-text-ghost-click);
-
-        .icon {
-          --color: var(--icon-accent);
-        }
-      }
-    }
-  }
-
   .icon {
     --color: var(--icon-primary);
     --icon-size: 20px;
+    transition: inherit;
   }
 
   @media (hover: hover) {
     &:hover {
       --color: var(--button-text-ghost-hover);
-      transition: color .2s ease-in-out;
+      --copy-btn-bg: var(--button-bg-secondary-click);
 
       .icon {
         --color: var(--icon-accent);

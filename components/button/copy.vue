@@ -1,13 +1,5 @@
 <template>
   <div class="btn-copy__wrap">
-    <input
-      class="btn-copy__input"
-      ref="input"
-      type="text"
-      :value="props.text"
-      readonly
-    >
-
     <transition name="fade" mode="out-in">
       <div v-if="tooltipVisible" class="btn-copy__tooltip">{{ props.copyTooltip}}</div>
     </transition>
@@ -20,7 +12,8 @@
 </template>
 
 <script setup lang="ts">
-  const input = ref<HTMLInputElement>();
+  import copy from "copy-to-clipboard";
+
   const props = defineProps<{
     text: string,
     copyButton: string,
@@ -39,12 +32,8 @@
   };
 
   const actionClick = () => {
-    if (input.value) {
-      input.value.focus();
-      input.value.select();
-      document.execCommand('copy');
-      showTooltip();
-    }
+    copy(props.text || '');
+    showTooltip();
   };
 </script>
 
