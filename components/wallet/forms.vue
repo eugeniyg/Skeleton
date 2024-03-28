@@ -79,7 +79,6 @@
   import type { IPaymentMethod } from "@skeleton/core/types";
   import { storeToRefs } from "pinia";
   import type { IProfileLimits } from "~/types";
-  import QrPayment from "@skeleton/components/wallet/qr-payment.vue";
 
   const props = defineProps<{
     showTabs: boolean;
