@@ -22,16 +22,16 @@ const sendSocialData = async (socialData: any, authState?: IAuthState): Promise<
     const errorCode = err.data?.error?.code;
 
     if (errorCode === 11002) {
-      router.replace(localizePath('/'));
+      await router.replace(localizePath('/'));
       showAlert(alertsData.value?.profile?.accountBlocked || defaultLocaleAlertsData.value?.profile?.accountBlocked);
     } else if (errorCode === 11001) {
       const profileStore = useProfileStore();
       profileStore.socialAuthEmailError = true;
       showModal('signIn');
-      router.replace(localizePath('/?sign-in=true'));
+      await router.replace(localizePath('/?sign-in=true'));
     } else {
       showModal('register');
-      router.replace(localizePath('/?sign-up=true'));
+      await router.replace(localizePath('/?sign-up=true'));
     }
   }
 }
@@ -49,7 +49,7 @@ onBeforeMount(async () => {
     if (auth0TokenData) await sendSocialData(auth0TokenData, appState);
   } catch {
     showModal('register');
-    router.replace(localizePath('/?sign-up=true'));
+    await router.replace(localizePath('/?sign-up=true'));
   }
 })
 </script>

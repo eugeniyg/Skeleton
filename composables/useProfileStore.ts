@@ -186,7 +186,7 @@ export const useProfileStore = defineStore('profileStore', {
 
       const router = useRouter();
       const { localizePath } = useProjectMethods();
-      router.replace(authState?.targetUrl || localizePath('/'));
+      await router.replace(authState?.targetUrl || localizePath('/'));
 
       if (submitResult.profile?.isNewlyRegistered) {
         const { openWalletModal, showAlert } = useLayoutStore();

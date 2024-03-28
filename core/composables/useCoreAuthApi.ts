@@ -63,9 +63,6 @@ export const useCoreAuthApi = () => {
       body: socialAuthData
     });
 
-    const { setSessionToken } = useProfileStore();
-    setSessionToken(data.accessToken);
-
     return data;
   };
 
