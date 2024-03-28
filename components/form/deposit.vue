@@ -104,6 +104,8 @@
 
     if (currentField.key === 'phone') {
       rulesArr.push({ rule: 'phone' }); // skeleton phone rule without "+"
+    } else if (currentField.key === 'cpf_number') {
+      rulesArr.push({ rule: 'cpf_number' }); // skeleton cfp_number rule harder
     } else if (currentField.regexp) {
       rulesArr.push({ rule: 'regex', arguments: currentField.regexp });
     }
