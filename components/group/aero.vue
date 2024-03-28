@@ -1,6 +1,5 @@
 <template>
-  <div class="group-aero">
-
+  <div v-if="showBlock" class="group-aero" :class="{ 'group-aero--hidden': loadingBlock }">
     <atomic-icon v-if="titleIcon" :id="titleIcon"/>
 
     <h2 class="group-aero__title">
@@ -32,15 +31,17 @@
       </picture>
 
 
-      <div class="group-aero__game">
+      <div v-if="gameInfo" class="group-aero__game">
         <atomic-picture :src="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.image')"/>
 
         <div class="group-aero__game-title">
           <span>{{ gameInfo?.name }}</span>
-          <button-favorite
-            v-if="isLoggedIn"
-            :gameId="gameInfo?.id"
-          />
+          <client-only>
+            <button-favorite
+              v-if="isLoggedIn"
+              :gameId="gameInfo?.id"
+            />
+          </client-only>
         </div>
         <div class="group-aero__game-provider">{{ gameInfo?.provider?.name }}</div>
 
@@ -210,17 +211,23 @@
   const loadMoreObserver = ref();
 
   const emit = defineEmits(['initialLoad']);
+  const showBlock = ref<boolean>(true);
+  const loadingBlock = ref<boolean>(true);
   onMounted(async () => {
-    getGameInfo();
-
     loadMoreObserver.value = initObserver({
       settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
     });
     loadMoreObserver.value.observe(loadMore.value);
 
-    const gamesResponse = await getFilteredGames(defaultRequestParams);
+    const [gamesResponse] = await Promise.all([
+      getFilteredGames(defaultRequestParams),
+      getGameInfo()
+    ]);
+    if (!gamesResponse.data.length || !gameInfo.value) return showBlock.value = false;
     games.value = gamesResponse.data;
     pageMeta.value = gamesResponse.meta;
+    loadingBlock.value = false;
+
     await nextTick();
     emit('initialLoad');
 

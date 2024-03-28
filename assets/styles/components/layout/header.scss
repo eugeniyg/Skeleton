@@ -3,6 +3,20 @@
   position: sticky;
   top: 0;
   z-index: var(--header-z-index, 2);
+
+  .is-game-page & {
+    @media (orientation: landscape) and (max-width: 1023px) {
+      .notification-bar {
+        margin-left: 64px;
+      }
+    }
+
+    @media (orientation: portrait) and (max-width: 1023px) {
+      .notification-bar {
+        margin-left: 0
+      }
+    }
+  }
 }
 
 .app-header {
@@ -13,7 +27,6 @@
   box-shadow: var(--shadow-group);
   background-color: var(--layer-bg);
   grid-column-gap: 2px;
-  @extend %container;
 
   @include media(xs) {
     --padding: 0 #{rem(32px)}

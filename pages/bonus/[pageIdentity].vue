@@ -26,9 +26,9 @@
       </button-base>
 
       <atomic-detail
-        v-if="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'termsLabel') && getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'termsContent')"
-        :title="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'termsLabel')"
-        :content="getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'termsContent')"
+        v-if="!pending && detailLabel && detailContent"
+        :title="detailLabel"
+        :content="detailContent"
       />
     </div>
 
@@ -41,7 +41,7 @@
   import type { IBonusPage } from "~/types";
 
   const route = useRoute();
-  const { pageUrl } = route.params;
+  const { pageIdentity } = route.params;
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
@@ -67,23 +67,26 @@
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
-    const nuxtContentData = useNuxtData(`${pageUrl}-bonus-content`);
+    const nuxtContentData = useNuxtData(`${pageIdentity}-bonus-content`);
     if (nuxtContentData.data.value) return nuxtContentData.data.value;
 
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'bonus', pageUrl as string).findOne(),
+      queryContent(currentLocale.value?.code as string, 'bonus').where({ pageIdentity }).findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'bonus', pageUrl as string).findOne()
+        : queryContent(defaultLocale.value?.code as string, 'bonus').where({ pageIdentity }).findOne()
     ]);
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { pending, data } = await useLazyAsyncData(`${pageUrl}-bonus-content`, () => getPageContent());
+  const { pending, data } = await useLazyAsyncData(`${pageIdentity}-bonus-content`, () => getPageContent());
   if (data.value) setContentData(data.value);
 
   watch(data, () => {
     setContentData(data.value);
   })
+
+  const detailLabel = computed(() => getContent(currentLocaleBonusContent.value, defaultLocaleBonusContent.value, 'termsLabel'));
+  const detailContent = computed(() => getContent(currentLocaleBonusContent.value, defaultLocaleBonusContent.value, 'termsContent'));
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);

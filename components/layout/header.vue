@@ -1,14 +1,18 @@
 <template>
-  <header class="app-header-root">
+  <header class="app-header-root" @animationend="bar.updateCssVars">
+    <atomic-notification-bar ref="bar"/>
+    
     <client-only>
       <pwa v-if="isLoggedIn" display="mobile" />
     </client-only>
 
-    <div class="app-header" :class="headerClassModifiers" ref="appHeader">
-      <button class="app-header__back-btn" @click="backToHomePage" v-if="isGamePage && isLoggedIn">
-        <atomic-icon id="arrow_previous"/>
-      </button>
-      
+    <div class="app-header" :class="headerClassValue" ref="appHeader">
+      <client-only>
+        <button class="app-header__back-btn" @click="backToHomePage" v-if="isGamePage && isLoggedIn">
+          <atomic-icon id="arrow_previous"/>
+        </button>
+      </client-only>
+
       <button-toggle-drawer
         @toggle-minimize="compactDrawer(!isDrawerCompact)"
         @toggle-open="emit('toggle-open')"
@@ -29,11 +33,13 @@
           :is-active="isShowSearch"
       />
 
-      <atomic-gift-notification
+      <client-only>
+        <atomic-gift-notification
           v-if="isLoggedIn"
           display="mobile"
           :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
-      />
+        />
+      </client-only>
       <!--</template>-->
       
       <div class="items">
@@ -65,50 +71,50 @@
         
         <atomic-divider v-if="isGamePage" />
 
-        <template v-if="isLoggedIn">
-          <atomic-gift-notification
+        <client-only>
+          <template v-if="isLoggedIn">
+            <atomic-gift-notification
               display="desktop"
               :is-active="!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)"
-          />
+            />
 
-          <client-only>
             <pwa display="desktop" />
-          </client-only>
 
-          <!--
-          <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
-          <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
-          -->
-          <form-input-deposit />
+            <!--
+            <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
+            <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
+            -->
+            <form-input-deposit />
 
-          <div v-click-outside="closeUserNav" class="nav-user__wrap">
-            <atomic-avatar
+            <div v-click-outside="closeUserNav" class="nav-user__wrap">
+              <atomic-avatar
                 @toggle="toggleProfileNav"
                 :is-button="true"
-            />
-            <nav-user @logout="logout"/>
-          </div>
-        </template>
+              />
+              <nav-user @logout="logout"/>
+            </div>
+          </template>
 
-        <template v-else>
-          <button-base
+          <template v-else>
+            <button-base
               type="primary"
               size="md"
               @click="showModal('register')"
-          >
-            <atomic-icon id="user-new" class="btn-primary__icon"/>
-            <span class="btn-primary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton') }}</span>
-          </button-base>
+            >
+              <atomic-icon id="user-new" class="btn-primary__icon"/>
+              <span class="btn-primary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton') }}</span>
+            </button-base>
 
-          <button-base
+            <button-base
               type="secondary"
               size="md"
               @click="showModal('signIn')"
-          >
-            <atomic-icon id="user" class="btn-secondary__icon"/>
-            <span class="btn-secondary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.loginButton') }}</span>
-          </button-base>
-        </template>
+            >
+              <atomic-icon id="user" class="btn-secondary__icon"/>
+              <span class="btn-secondary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.loginButton') }}</span>
+            </button-base>
+          </template>
+        </client-only>
       </div>
     </div>
   </header>
@@ -116,13 +122,13 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-
+  
   const emit = defineEmits(['login', 'register', 'logout', 'toggle-open']);
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const bonusStore = useBonusStore();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { getContent } = useProjectMethods();
+  const { getContent, localizePath } = useProjectMethods();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal, compactDrawer } = layoutStore;
   const { isLoggedIn } = storeToRefs(profileStore);
@@ -130,13 +136,19 @@
   const { isGamePage, isDrawerCompact } = storeToRefs(layoutStore);
   
   const appHeader = ref<HTMLElement>();
+  const bar = ref();
 
   const headerClassModifiers = computed(() => {
     if (isGamePage.value && isLoggedIn.value) {
       return 'app-header--is-game-page-login'
-    } else if(isGamePage && !isLoggedIn.value) {
+    } else if (isGamePage.value && !isLoggedIn.value) {
       return 'app-header--is-game-page-logout'
     } else return ''
+  })
+
+  const headerClassValue = ref<string>('');
+  watch(() => headerClassModifiers.value, (newValue) => {
+    headerClassValue.value = newValue;
   })
 
   function toggleProfileNav():void {
@@ -167,8 +179,11 @@
 
   const backToHomePage = () => {
     const router = useRouter();
-    const { localizePath } = useProjectMethods();
-    router.push(localizePath('/'));
+    if (window.history.state.back) {
+      router.back();
+    } else {
+      router.push(localizePath('/'));
+    }
   }
 
   const route = useRoute();
@@ -182,6 +197,7 @@
   }
 
   onMounted(() => {
+    headerClassValue.value = headerClassModifiers.value;
     document.addEventListener('click', checkSearch);
   });
 

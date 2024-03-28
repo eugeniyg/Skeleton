@@ -3,23 +3,40 @@ import { defineStore } from "pinia";
 interface IFreshchatState {
   newMessages: number;
   initialize: boolean;
+  scriptAdded: boolean;
 }
 
 export const useFreshchatStore = defineStore('freshchatStore', {
   state: (): IFreshchatState => ({
     newMessages: 0,
     initialize: true,
+    scriptAdded: false
   }),
 
   getters: {
     projectHasFreshchat() {
       if (!window) return undefined;
-      const { public: { freshchatHost, freshchatToken }} = useRuntimeConfig();
-      return !!(freshchatHost && freshchatToken && window.fcWidget);
+      const { public: { freshchatParams } } = useRuntimeConfig();
+      return !!(freshchatParams?.host && freshchatParams?.token);
     }
   },
 
   actions: {
+    addFreshChatScript() {
+      if (!this.projectHasFreshchat) return;
+      if (this.scriptAdded) {
+        this.initChat();
+        return;
+      }
+
+      this.scriptAdded = true;
+      const { public: { freshchatParams }} = useRuntimeConfig();
+      const scriptElement = document.createElement('script');
+      scriptElement.setAttribute('src', `${freshchatParams?.host}/js/widget.js`);
+      document.body.appendChild(scriptElement);
+      scriptElement.onload = this.initChat;
+    },
+
     getProfileData(isUpdate = false) {
       const { profile } = useProfileStore();
       const segmentsArr = profile?.segments.map(segment => segment.name);
@@ -93,9 +110,9 @@ export const useFreshchatStore = defineStore('freshchatStore', {
     },
 
     initChat() {
-      const { public: { freshchatHost, freshchatToken }} = useRuntimeConfig();
+      const { public: { freshchatParams } } = useRuntimeConfig();
 
-      if (!this.initialize || !freshchatHost) return;
+      if (!this.initialize || !freshchatParams?.host) return;
       this.initialize = false;
 
       window.fcWidget.init({
@@ -104,13 +121,14 @@ export const useFreshchatStore = defineStore('freshchatStore', {
             hideChatButton: true
           }
         },
-        token: freshchatToken,
-        host: freshchatHost,
+        token: freshchatParams?.token,
+        host: freshchatParams?.host,
         ...this.getUserIdentity(),
       });
 
       window.fcWidget.on('widget:loaded', this.setUserChatData);
-      window.fcWidget.on('widget:destroyed', this.initChat);
+
+      if (freshchatParams?.guestAvailable) window.fcWidget.on('widget:destroyed', this.initChat);
 
       window.fcWidget.on('user:created', ({ data }: any) => {
         const { isLoggedIn } = useProfileStore();
@@ -126,8 +144,8 @@ export const useFreshchatStore = defineStore('freshchatStore', {
     },
 
     async updateChat():Promise<void> {
-      const { public: { freshchatHost }} = useRuntimeConfig();
-      if (!freshchatHost || !window.fcWidget) return;
+      const { public: { freshchatParams }} = useRuntimeConfig();
+      if (!freshchatParams?.host || !window.fcWidget) return;
 
       this.initialize = true;
 

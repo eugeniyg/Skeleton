@@ -2,6 +2,7 @@
   .container {
     display: flex;
     overflow: hidden;
+    position: relative;
     flex-direction: column;
     max-height: 100%;
     background-color: var(--layer-01);
@@ -57,27 +58,27 @@
     }
   }
 
-  .dropdown.currency {
-    max-width: rem(98px);
-    margin-left: auto;
-    margin-top: rem(-84px);
-  }
+  .dropdown-search {
+    &.country {
+      grid-column: 1;
+    }
 
-  .dropdown.country {
-    max-width: calc(100% - #{rem(16px)} - #{rem(98px)});
-
-    &.has-error {
-      ~ .currency {
-        margin-top: rem(-107px);
-      }
+    &.currency {
+      grid-column: 2;
     }
   }
 
   .btn-modal-close {
-    transform: translate(0, 0);
+    transform: none;
+    left: 24px;
     --right: auto;
-    --top: 4px;
-    //--bg: var(--gray-800);
+    --top: 98px;
+    --bg: transparent;
+
+    &.close-secondary {
+      --bg: var(--button-bg-secondary);
+      box-shadow: var(--shadow-layer);
+    }
 
     .icon {
       &:first-of-type {
@@ -100,14 +101,14 @@
     }
 
     @include media(xs) {
+      left: auto;
       --top: #{rem(-4px)};
       --right: #{rem(-14px)};
-      --bg: transparent;
     }
 
     @include media(md) {
-      --top: #{rem(-16px)};
-      --right: #{rem(-14px)};
+      --top: #{rem(16px)};
+      --right: #{rem(10px)};
     }
   }
 }

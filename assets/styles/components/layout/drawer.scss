@@ -1,23 +1,24 @@
 .drawer {
   background-color: var(--layer-02);
   grid-area: drawer;
-  transition: var(--drawer-transition, (transform .2s ease-out));
+
   width: var(--drawer-width, #{rem(288px)});
   position: var(--drawer-position, fixed);
-  top: 0;
+  top: var(--drawer-top, 0);
   left: 0;
   height: calc(var(--vh, 1vh) * 100);
   visibility: var(--drawer-visibility, visible);
-  transform: var(--drawer-translate-x, translateX(calc(-100% - #{rem(32px)})));
   z-index: 3;
   will-change: transform;
+  transform: var(--drawer-translate-x, translateX(-100%));
+  transition: transform .2s ease-out;
 
   @include media(xs) {
     --drawer-width: 340px;
   }
 
   @include media(l) {
-    top: rem(64px);
+    --drawer-top: var(--header-total-height, #{rem(64px)});
     --drawer-width: 240px;
     --drawer-visibility: visible;
   }
@@ -45,7 +46,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior: contain;
-    height: calc(var(--vh, 1vh) * 100 - #{rem(72px)});
+    height: calc(var(--vh, 1vh) * 100 - var(--header-total-height));
 
     @include media(l) {
       .drawer-minimize & {

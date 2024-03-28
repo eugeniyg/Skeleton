@@ -15,7 +15,7 @@
       size="md"
       @click="goHome"
     >
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.button.label') || pageStaticContent.button.label }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.buttonLabel') || pageStaticContent.buttonLabel }}
     </button-base>
 
     <dev-only>
@@ -40,10 +40,7 @@
   const pageStaticContent = {
     title: 'Something went wrong',
     description: 'The page you are trying to access does not exist or has been moved. Try going back to our homepage.',
-    button: {
-      label: 'Homepage',
-      url: '/',
-    },
+    buttonLabel: 'Homepage'
   };
 
   const globalStore = useGlobalStore();
@@ -51,12 +48,14 @@
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent
   } = storeToRefs(globalStore);
-  const { localizePath, getContent, getLocalesContentData } = useProjectMethods();
+  const { getContent } = useProjectMethods();
 
-  const goHome = () => clearError({
-    redirect: localizePath(getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.button.url')
-      || pageStaticContent.button.url),
-  });
+  const route = useRoute();
+  const goHome = () => {
+    const urlLocale = route.params?.locale;
+    const siteOrigin = window.location.origin;
+    window.location.href = urlLocale ? `${siteOrigin}/${urlLocale}` : siteOrigin;
+  };
 </script>
 
 <style src="~/assets/styles/error.scss" lang="scss" />

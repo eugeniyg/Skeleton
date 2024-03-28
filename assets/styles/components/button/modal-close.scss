@@ -3,6 +3,7 @@
   min-width: rem(32px);
   min-height: rem(32px);
   position: var(--position, absolute);
+  z-index: 2;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
@@ -11,6 +12,7 @@
   right: var(--right, #{rem(-4px)});
   cursor: pointer;
   transform: translate(0, -50%);
+  transition: background-color 0.2s, box-shadow 0.2s;
 
   .icon {
     visibility: var(--visibility, hidden);

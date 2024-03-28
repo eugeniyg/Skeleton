@@ -9,7 +9,7 @@
       <div class="header">
         <button-modal-close @click="closeModal('addLimit')"/>
         <div class="title">
-          {{ titleMapping[props.definition] }}
+          {{ props.definition ? titleMapping[props.definition] : '' }}
         </div>
       </div>
 
@@ -39,7 +39,6 @@
         :currency="formattedBalance.currency"
         :min="0"
         :max="1000000"
-        :defaultValue="0"
         label=""
         name="amount"
         v-model:value="formState.amount"
@@ -94,7 +93,7 @@
 
   const currencyKey = ref(0);
 
-  const titleMapping = computed(() => ({
+  const titleMapping = computed<Record<number, string>>(() => ({
     1: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addBetLabel'),
     2: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addLossLabel'),
     3: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addDepositLabel'),
@@ -180,9 +179,9 @@
 
   const isAddButtonDisabled = computed(() => !formState.currency);
 
-  const changeTab = (period: { id: string; name: string }) => {
+  const changeTab = (period: { id: string|number; name: string }) => {
     selectedTab.value = period;
-    formState.period = period.id;
+    formState.period = period.id as string;
     currencyKey.value += 1;
   };
 

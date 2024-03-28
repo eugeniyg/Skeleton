@@ -16,8 +16,9 @@
         @input="changeFilters"
       />
 
-      <form-input-dropdown
+      <form-input-dropdown-search
         :label="props.content?.currencyLabel"
+        :emptySearchTitle="props.content?.emptyCurrencySearchTitle"
         v-model:value="filters.currency"
         name="invoiceCurrency"
         placeholder=""
@@ -43,7 +44,7 @@
     />
 
     <atomic-pagination
-      v-if="pageMeta?.totalPages > 1"
+      v-if="pageMeta?.totalPages && pageMeta.totalPages > 1"
       @selectPage="changePage"
       v-bind="pageMeta"
     />

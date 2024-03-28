@@ -41,21 +41,23 @@
     --padding: #{rem(4px)} #{rem(12px)} #{rem(4px)} #{rem(8px)};
     --btn-border-radius: 8px;
     --bg: transparent;
-    --color: var(--icon-contrast);
-    --text-color: var(--text-primary);
+    --color: var(--icon-primary);
+    --text-color: var(--text-secondary);
 
     @include use-hover {
       &:hover {
         cursor: pointer;
         --bg: var(--button-bg-secondary-click);
+        --color: var(--icon-contrast);
+        --text-color: var(--text-primary);
       }
     }
 
     &.is-active {
+      box-shadow: var(--shadow-group);
       --bg: var(--layer-02);
       --color: var(--icon-accent);
       --text-color: var(--text-accent);
-      box-shadow: var(--shadow-group);
     }
   }
 

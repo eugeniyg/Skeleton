@@ -8,24 +8,24 @@ import type {
 import { jwtDecode } from "jwt-decode";
 
 interface IProfileStoreState {
-  refreshPromise: Promise<{data: IAuthorizationResponse}>|null;
-  currentSessionToken: string|null;
+  refreshPromise: Promise<string>|null;
   isLoggedIn: boolean;
   sessionId: string;
   resentVerifyEmail: boolean;
   profile: Maybe<IProfile>;
   socialAuthEmailError: boolean;
+  tokenCookieKey: string;
 }
 
 export const useProfileStore = defineStore('profileStore', {
   state: (): IProfileStoreState => ({
     refreshPromise: null,
-    currentSessionToken: null,
     isLoggedIn: false,
     sessionId: '',
     resentVerifyEmail: false,
     profile: undefined,
-    socialAuthEmailError: false
+    socialAuthEmailError: false,
+    tokenCookieKey: 'access_token'
   }),
 
   getters: {
@@ -36,23 +36,21 @@ export const useProfileStore = defineStore('profileStore', {
 
   actions: {
     setSessionToken (tokenValue:string):void {
-      const cookieToken = useCookie('access_token', { maxAge: 60 * 60 * 24 * 30 });
+      const cookieToken = useCookie(this.tokenCookieKey, { maxAge: 60 * 60 * 24 * 365 });
       cookieToken.value = tokenValue;
-      this.currentSessionToken = tokenValue;
     },
 
-    getSessionToken ():string|null|undefined {
-      const cookieToken = useCookie('access_token');
-      return this.currentSessionToken || cookieToken.value;
+    getSessionToken ():Maybe<string> {
+      const cookieToken = useCookie(this.tokenCookieKey);
+      return cookieToken.value;
     },
 
     isTokenExpired ():boolean {
       const token = this.getSessionToken();
-      if (token) {
-        const currentSession:IParsedToken = jwtDecode(token);
-        return currentSession.exp ? currentSession.exp <= Date.now() / 1000 : false;
-      }
-      return true;
+      if (!token) return false;
+
+      const currentSession:IParsedToken = jwtDecode(token);
+      return currentSession.exp ? (currentSession.exp - 10) < (Date.now() / 1000) : false;
     },
 
     getCurrentSession ():IParsedToken|null {
@@ -64,9 +62,44 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     removeSession ():void {
-      const cookieToken = useCookie('access_token')
-      cookieToken.value = null
-      this.currentSessionToken = null
+      this.profile = undefined;
+      const cookieToken = useCookie(this.tokenCookieKey);
+      cookieToken.value = null;
+      this.isLoggedIn = false;
+
+      const { updateChat } = useFreshchatStore();
+      updateChat();
+
+      this.finishProfileDependencies();
+
+      const { deleteReturnGame } = useLayoutStore();
+      deleteReturnGame();
+
+      sessionStorage.removeItem('depositBonusData');
+    },
+
+    async getRefreshRequest (): Promise<string> {
+      const { refreshToken } = useCoreAuthApi();
+
+      try {
+        const data = await refreshToken();
+        this.setSessionToken(data.accessToken);
+        return data.accessToken;
+      } catch (err:any) {
+        if ([403, 401].includes(err.response?.status)) {
+          this.removeSession();
+          return '';
+        }
+        throw err;
+      } finally {
+        this.refreshPromise = null;
+      }
+    },
+
+    refreshToken(): string|Promise<string> {
+      if (this.refreshPromise) return this.refreshPromise;
+      this.refreshPromise = this.getRefreshRequest();
+      return this.refreshPromise;
     },
 
     startSession(authData: IAuthorizationResponse):void {
@@ -123,6 +156,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {
+      this.setSessionToken(authResponse.accessToken);
       this.startSession(authResponse);
       await nextTick();
 
@@ -130,8 +164,12 @@ export const useProfileStore = defineStore('profileStore', {
       await getUserAccounts();
 
       this.isLoggedIn = true;
-      const { updateChat } = useFreshchatStore();
-      updateChat();
+
+      const { public: { freshchatParams }} = useRuntimeConfig();
+      const { updateChat, addFreshChatScript } = useFreshchatStore();
+      if (freshchatParams?.guestAvailable) updateChat();
+      else addFreshChatScript();
+
       this.startProfileDependencies();
     },
 
@@ -189,18 +227,11 @@ export const useProfileStore = defineStore('profileStore', {
       try {
         await logOut();
       } finally {
-        this.isLoggedIn = false;
-        const { updateChat } = useFreshchatStore();
-        updateChat();
-        this.finishProfileDependencies();
+        this.removeSession();
 
-        const { deleteReturnGame } = useLayoutStore();
-        deleteReturnGame();
-
-        sessionStorage.removeItem('depositBonusData');
         const router = useRouter();
         const { localizePath } = useProjectMethods();
-        router.push(localizePath('/'));
+        await router.push(localizePath('/'));
       }
     },
 

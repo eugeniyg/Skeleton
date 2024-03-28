@@ -9,7 +9,7 @@
 
     <button-base
       class="nav-mob__item"
-      :class="{ active: $route.path === localizePath(gamesButtons?.buttonFirst.url) || $route.query.category }"
+      :class="{ active: route.path === localizePath(gamesButtons?.buttonFirst.url) || route.query.category }"
       :url="gamesButtons?.buttonFirst.url"
     >
       <atomic-icon :id="gamesButtons?.buttonFirst.icon" />
@@ -18,17 +18,22 @@
       </span>
     </button-base>
 
-    <button-base class="nav-mob__item is-accent" @click.prevent="clickMainButton">
-      <atomic-icon :id="isLoggedIn ? 'wallet' : 'user-new'"/>
-      <span class="nav-mob__text">
-        {{ isLoggedIn ? getContent(layoutData, defaultLocaleLayoutData, 'header.depositButton')
-        : getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton') }}
-      </span>
-    </button-base>
+    <client-only>
+      <button-base class="nav-mob__item is-accent" @click.prevent="clickMainButton">
+        <atomic-icon :id="isLoggedIn ? 'wallet' : 'user-new'"/>
+        <span class="nav-mob__text">
+          {{
+            isLoggedIn
+              ? getContent(layoutData, defaultLocaleLayoutData, 'header.depositButton')
+              : getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton')
+          }}
+        </span>
+      </button-base>
+    </client-only>
 
     <button-base
       class="nav-mob__item"
-      :class="{ active: $route.path === localizePath(gamesButtons?.buttonSecond.url) }"
+      :class="{ active: route.path === localizePath(gamesButtons?.buttonSecond.url) }"
       :url="gamesButtons?.buttonSecond.url"
     >
       <atomic-icon :id="gamesButtons?.buttonSecond.icon" />
@@ -51,7 +56,7 @@
       <button-base
         v-else-if="contactButton"
         class="nav-mob__item"
-        :class="{ active: $route.path === localizePath(contactButton.url) }"
+        :class="{ active: route.path === localizePath(contactButton.url) }"
         :url="contactButton.url"
       >
         <atomic-icon :id="contactButton.icon" />
@@ -74,6 +79,7 @@
     defaultLocaleLayoutData
   } = useGlobalStore();
   const { localizePath, getContent } = useProjectMethods();
+  const route = useRoute();
 
   const clickMainButton = ():void => {
     isLoggedIn.value ? openWalletModal() : showModal('register');
@@ -90,7 +96,9 @@
   const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
 
   const openChat = () => {
-    window.fcWidget?.open();
+    const { public: { freshchatParams } } = useRuntimeConfig();
+    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) showModal('register');
+    else window.fcWidget?.open();
   }
 </script>
 

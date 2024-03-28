@@ -1,5 +1,9 @@
-<template v-if="gamesArray.length">
-  <div class="list-games" :class="{'is-compact' : props.isCompact}">
+<template>
+  <div
+    v-if="gamesArray.length"
+    class="list-games"
+    :class="{'is-compact' : props.isCompact}"
+  >
     <nuxt-link
       v-for="(game, index) in gamesArray"
       :key="index"

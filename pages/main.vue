@@ -1,6 +1,6 @@
 <template>
   <div>
-    <main-slider v-if="filteredSlider?.length" :slides="filteredSlider"/>
+    <main-slider />
     
     <nav-cat @clickCategory="changeCategory"/>
     
@@ -20,7 +20,7 @@
       :category="category"
     />
     
-    <group-winners showArrows/>
+    <group-winners showArrows v-if="globalComponentsContent?.cardsGroup?.latestWinners?.display"/>
     
     <group-games
       v-for="category in mainCategoriesList.slice(4)"
@@ -28,8 +28,10 @@
       showArrows
       :category="category"
     />
-    
-    <favorite-recently v-if="isLoggedIn"/>
+
+    <client-only>
+      <favorite-recently v-if="isLoggedIn"/>
+    </client-only>
 
     <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent.seo.text"/>
   </div>
@@ -51,7 +53,8 @@
     setPageSeo,
     getLocalesContentData
   } = useProjectMethods();
-  const { isLoggedIn, profile } = storeToRefs(profileStore);
+  const { isLoggedIn } = storeToRefs(profileStore);
+  const { globalComponentsContent } = globalStore;
 
   const pageContent = ref<Maybe<ICasinoPage>>();
   const defaultLocalePageContent = ref<Maybe<ICasinoPage>>();
@@ -79,41 +82,13 @@
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { pending, data } = await useLazyAsyncData('casinoPageContent', () => getPageContent());
+  const { data } = await useLazyAsyncData('casinoPageContent', () => getPageContent());
   if (data.value) setContentData(data.value);
 
   watch(data, () => {
     setContentData(data.value);
   })
 
-  const dayjs = useDayjs();
-  const sliderFilterTime = ref(dayjs.utc());
-  const filteredSlider = computed(() => {
-    return pageContent.value?.slider?.reduce((filteredSliderArr: ICasinoPage['slider'], currentSlide) => {
-      const loggedFilter: boolean = (isLoggedIn.value && currentSlide.loggedHide) || (!isLoggedIn.value && currentSlide.unloggedHide);
-      let includesSegmentsFilter: boolean = !!currentSlide.showSegments?.length;
-      let excludeSegmentsFilter: boolean = !!currentSlide.hideSegments?.length;
-      let timeFilter: boolean = false;
-
-      if (isLoggedIn.value && profile.value) {
-        const showSegmentsArr = currentSlide.showSegments?.map(item => item.segmentName) || [];
-        const hideSegmentsArr = currentSlide.hideSegments?.map(item => item.segmentName) || [];
-        includesSegmentsFilter = showSegmentsArr.length ? !profile.value.segments.some((segment) => showSegmentsArr.includes(segment.name)) : false;
-        excludeSegmentsFilter = hideSegmentsArr.length ? profile.value.segments.some((segment) => hideSegmentsArr.includes(segment.name)) : false;
-      }
-
-      if (currentSlide.showFrom && currentSlide.showTo) {
-        timeFilter = !dayjs(sliderFilterTime.value).isBetween(dayjs(currentSlide.showFrom), dayjs(currentSlide.showTo), 'second');
-      } else if (currentSlide.showFrom) {
-        timeFilter = !dayjs(sliderFilterTime.value).isSameOrAfter(dayjs(currentSlide.showFrom), 'second');
-      } else if (currentSlide.showTo) {
-        timeFilter = !dayjs(sliderFilterTime.value).isSameOrBefore(dayjs(currentSlide.showTo), 'second');
-      }
-
-      if (loggedFilter || includesSegmentsFilter || excludeSegmentsFilter || timeFilter) return filteredSliderArr;
-      return [...filteredSliderArr, currentSlide];
-    }, []);
-  })
 
   const router = useRouter();
   const gameStore = useGamesStore();
@@ -126,15 +101,4 @@
   const changeCategory = (categoryId: string) => {
     router.push({ path: localizePath('/games'), query: { category: categoryId } });
   };
-  
-  let sliderTimer: any;
-  onMounted(() => {
-    sliderTimer = setInterval(() => {
-      sliderFilterTime.value = dayjs.utc();
-    }, 600000)
-  })
-
-  onBeforeUnmount(() => {
-    clearInterval(sliderTimer);
-  })
 </script>

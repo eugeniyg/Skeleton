@@ -7,6 +7,19 @@
       "arguments": "6"
     }]
   },
+  "password_confirmation": {
+    "component": "form-input-password",
+    "type": "password",
+    "validation": [
+      {
+        "rule": "required"
+      },
+      {
+        "rule": "confirmed",
+        "arguments": "password"
+      }
+    ]
+  },
   "currentPassword": {
     "component": "form-input-password",
     "type": "password",
@@ -42,11 +55,19 @@
   },
   "firstName": {
     "component": "form-input-text",
-    "type": "text"
+    "type": "text",
+    "validation": [{
+      "rule": "min",
+      "arguments": "2"
+    }]
   },
   "lastName": {
     "component": "form-input-text",
-    "type": "text"
+    "type": "text",
+    "validation": [{
+      "rule": "min",
+      "arguments": "2"
+    }]
   },
   "nationality": {
     "component": "form-input-text",
@@ -73,8 +94,8 @@
     "type": "text"
   },
   "postalCode": {
-    "component": "form-input-text",
-    "type": "number"
+    "component": "form-input-postal",
+    "type": "text"
   },
   "timeZone": {
     "component": "form-input-dropdown",
@@ -110,12 +131,16 @@
     "validation": [{ "rule": "email" }]
   },
   "country": {
-    "component": "form-input-dropdown",
-    "type": "dropdown"
+    "component": "form-input-dropdown-search",
+    "type": "dropdown",
+    "enableSort": true,
+    "searchBy": "name"
   },
   "currency": {
-    "component": "form-input-dropdown",
-    "type": "dropdown"
+    "component": "form-input-dropdown-search",
+    "type": "dropdown",
+    "isFitContent": true,
+    "searchBy": "code"
   },
   "agreements": {
     "component": "form-input-checkbox",
@@ -151,7 +176,11 @@
   },
   "personalIdNumber": {
     "component": "form-input-text",
-    "type": "text"
+    "type": "text",
+    "validation": [{
+      "rule": "min",
+      "arguments": "2"
+    }]
   },
   "message": {
     "component": "form-input-textarea",

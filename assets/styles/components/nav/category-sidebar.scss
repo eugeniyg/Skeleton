@@ -1,0 +1,123 @@
+.nav-category-sidebar {
+  margin: 0;
+  padding: 0;
+  grid-gap: rem(4px);
+  display: grid;
+  user-select: none;
+
+  &:not(:has(.item)) {
+    display: none;
+
+    + hr:not(:last-of-type) {
+      display: none;
+    }
+  }
+
+  .item {
+    overflow: hidden;
+
+    .link {
+      .text {
+        @include font($subheading-2);
+        --line-height: auto;
+      }
+    }
+  }
+
+  > .item {
+    @extend %flex-column;
+  }
+
+  .link {
+    @extend %link;
+    @extend %flex-items-center;
+    grid-column-gap: #{rem(8px)};
+    padding: var(--padding, #{rem(8px)} #{rem(16px)} #{rem(8px)} #{rem(16px)});
+    min-height: rem(40px);
+    border-radius: 12px;
+    background-color: var(--bg, transparent);
+    transition: all .2s ease-in-out;
+    --color: var(--text-secondary);
+
+    .icon {
+      --color: var(--icon-primary);
+    }
+
+    .inline-svg {
+      color: var(--icon-primary);
+    }
+
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
+        --bg: var(--side-bar-link-hover);
+
+        .icon {
+          --color: var(--icon-contrast);
+        }
+
+        .inline-svg {
+          color: var(--icon-contrast);
+        }
+
+        .text  {
+          --color: var(--text-primary);
+        }
+      }
+    }
+
+    &:active, &.is-active {
+      --color: var(--text-accent);
+
+      .icon {
+        --color: var(--icon-accent);
+      }
+
+      .inline-svg {
+        color: var(--icon-accent);
+      }
+
+      .text {
+        --color: var(--text-accent);
+      }
+
+      --counter-color: var(--text-secondary);
+    }
+
+    &:active {
+      --bg: var(--side-bar-link-click);
+    }
+
+    &.router-link-active {
+      --color: var(--text-accent);
+
+      &:hover {
+        --color: var(--text-accent);
+      }
+    }
+  }
+
+  .text {
+    @extend %text-elipsis;
+    color: var(--color, var(--text-secondary));
+    transition: color .2s ease-in-out;
+  }
+
+  .is-compact & {
+    @include media(l) {
+      .text, .items, .bage {
+        display: none;
+      }
+
+      .icon {
+        --icon-size: #{rem(24px)};
+      }
+
+      .link {
+        --padding: 0;
+        justify-content: center;
+        @include box(40px);
+      }
+    }
+  }
+}

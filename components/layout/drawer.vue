@@ -16,17 +16,19 @@
         :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.partners.items')"
       />
       
-      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.topMenu.items')"/>
+      <nav-category-sidebar v-bind="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.topMenu')" />
       <atomic-divider/>
 
 
       <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.bonusesMenu')"/>
       <atomic-divider/>
 
-      <template v-if="isLoggedIn">
-        <nav-list :items="userMenuContent"/>
-        <atomic-divider/>
-      </template>
+      <client-only>
+        <template v-if="isLoggedIn">
+          <nav-list :items="userMenuContent"/>
+          <atomic-divider/>
+        </template>
+      </client-only>
 
       <atomic-select-lang />
 
@@ -61,6 +63,7 @@
   const { getContent } = useProjectMethods();
 
   const layoutStore = useLayoutStore();
+  const { showModal } = layoutStore;
   const { isDrawerCompact } = storeToRefs(layoutStore);
 
   const profileStore = useProfileStore();
@@ -77,7 +80,9 @@
   const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
 
   const openChat = () => {
-    window.fcWidget?.open();
+    const { public: { freshchatParams } } = useRuntimeConfig();
+    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) showModal('register');
+    else window.fcWidget?.open();
   }
 </script>
 

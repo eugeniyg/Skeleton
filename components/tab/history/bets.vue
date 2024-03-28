@@ -21,13 +21,20 @@
       />
 
       <template v-for="betItem in bets" :key="betItem.id">
-        <card-bet-combo v-if="betItem.items?.length > 1" v-bind="{ ...betItem, ...props.content }" />
-        <card-bet-ordinar v-else v-bind="{ ...betItem, ...props.content }" />
+        <card-bet-combo
+          v-if="betItem.items?.length > 1"
+          v-bind="{ ...betItem, ...props.content }"
+        />
+
+        <card-bet-ordinar
+          v-else
+          v-bind="{ ...betItem, ...props.content }"
+        />
       </template>
     </div>
 
     <atomic-pagination
-      v-if="pageMeta?.totalPages > 1"
+      v-if="pageMeta?.totalPages && pageMeta.totalPages > 1"
       v-bind="pageMeta"
       @selectPage="changePage"
     />

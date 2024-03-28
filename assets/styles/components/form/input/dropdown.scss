@@ -35,12 +35,11 @@
     background-color: var(--bg, var(--field-00));
     position: relative;
     transition: border-color .2s ease-in-out;
-    min-height: rem(42px);
+    min-height: 40px;
     grid-column-gap: rem(8px);
 
     .filters & {
       @include font($body-1);
-      min-height: unset;
     }
 
     .icon {
@@ -90,7 +89,7 @@
     width: 100%;
     padding: 0;
     visibility: var(--items-visibility, hidden);
-    max-height: calc((#{rem(38px)} * 4) + #{4px});
+    max-height: calc(40px * 4 + 16px);
     overflow-x: hidden;
     overflow-y: auto;
     background-color: var(--layer-02);
@@ -114,6 +113,8 @@
     grid-column-gap: rem(8px);
     text-overflow: ellipsis;
     white-space: nowrap;
+    min-height: 40px;
+    border-radius: 8px;
 
     display: grid;
     grid-auto-flow: column;
@@ -136,23 +137,23 @@
       transform: var(--icon-transform, (rotate(0) translateX(#{rem(8px)})));
       transition: transform .2s ease-in-out;
       --icon-color: var(--icon-contrast);
+      --icon-size: 20px;
     }
 
     @include use-hover {
       &:hover {
-        border-radius: 4px;
         --bg: var(--button-bg-secondary-click);
       }
     }
   }
 
   .mask {
-    width: rem(22px);
-    height: rem(18px);
+    width: 22px;
+    height: 18px;
   }
 
   .hint {
-    margin-top: rem(6px);
+    margin-top: 6px;
   }
 
   &.is-open {

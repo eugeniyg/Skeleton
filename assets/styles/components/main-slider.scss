@@ -1,35 +1,60 @@
 .main-slider {
   position: relative;
-
   --slides-gap: 8px;
   --shadow-width: 16px;
   --shadow-inset: -16px;
 
   @include media(xs) {
-    --viewport-height: 190px;
     --shadow-width: 32px;
     --shadow-inset: -32px;
   }
 
   @include media(sm) {
-    --viewport-height: 190px;
+    --shadow-width: 48px;
+    --shadow-inset: -48px;
   }
 
-  @include media(md) {
-    --viewport-height: 240px;
+  @include media(xxxl) {
     --slides-gap: 16px;
+    --shadow-width: 64px;
+    --shadow-inset: -66px;
   }
 
-  @include media(l) {
-    --viewport-height: 256px;
+  &--high {
+    margin-bottom: 24px;
+
+    @include media(xs) {
+      --viewport-height: 190px;
+    }
+
+    @include media(sm) {
+      --viewport-height: 190px;
+    }
+
+    @include media(md) {
+      margin-bottom: 32px;
+      --viewport-height: 240px;
+      --slides-gap: 16px;
+    }
+
+    @include media(l) {
+      --viewport-height: 256px;
+    }
+
+    @include media(xl) {
+      --viewport-height: 230px;
+    }
+
+    @include media(xxl) {
+      --viewport-height: 270px;
+    }
   }
 
-  @include media(xl) {
-    --viewport-height: 230px;
-  }
+  &--low {
+    display: var(--display, none);
+    @media (min-width: 1280px) { --display: block }
 
-  @include media(xxl) {
-    --viewport-height: 270px;
+    --viewport-height: 128px;
   }
 
   &__viewport {
@@ -43,7 +68,39 @@
   &__slide {
     flex-grow: 0;
     flex-shrink: 0;
-    aspect-ratio: 344/190;
+
+    .main-slider--high & {
+      width: 304px;
+
+      @include media(xs) {
+        width: 344px;
+      }
+
+      @include media(md) {
+        width: 436px;
+      }
+
+      @include media(l) {
+        width: 464px;
+      }
+
+      @include media(xxl) {
+        width: calc(100% / 3.8);
+      }
+    }
+
+
+    .main-slider--low & {
+      width: 416px;
+
+      @include media(xl) {
+        width: 30%;
+      }
+
+      @include media(xxl) {
+        width: calc(100% / 3.8);
+      }
+    }
   }
 
   &__bullets {
@@ -79,8 +136,8 @@
 
   &:before, &:after {
     content: '';
-    top: -1px;
-    bottom: -1px;
+    top: -2px;
+    bottom: -2px;
     width: var(--shadow-width);
     position: absolute;
     background: linear-gradient(270deg, var(--layer-bg) 0%, rgba(17, 20, 28, 0) 100%);

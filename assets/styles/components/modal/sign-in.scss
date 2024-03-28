@@ -1,3 +1,41 @@
 .modal-sign-in {
   @extend %modal-info;
+
+  &__tabs {
+    padding: rem(4px);
+    grid-gap: rem(4px);
+    display: flex;
+    align-items: center;
+    background-color: var(--layer-02);
+    grid-column-gap: rem(4px);
+    border-radius: 12px;
+
+    .btn {
+      cursor: pointer;
+      flex-grow: 1;
+
+      @include use-hover {
+        &:hover {
+          --bg: var(--button-bg-secondary-click);
+        }
+      }
+
+      &.is-active {
+        --bg: var(--button-bg-secondary-click);
+        --color: var(--icon-accent);
+        --text-color: var(--text-accent);
+      }
+    }
+
+    .text {
+      @include font($body-1);
+      display: var(--text-display, block);
+      color: var(--text-color);
+      transition: color .2s ease-in-out;
+    }
+
+    &-divider {
+      margin: rem(8px) 0;
+    }
+  }
 }

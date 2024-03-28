@@ -44,7 +44,9 @@
 
         <!--<button-info/>-->
 
-        <button-favorite v-if="isLoggedIn" :gameId="id"/>
+        <client-only>
+          <button-favorite v-if="isLoggedIn" :gameId="id"/>
+        </client-only>
       </div>
 
     </div>

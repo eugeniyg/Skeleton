@@ -23,10 +23,11 @@ export interface IPaymentField extends Record<string, any> {
   fieldType: string;
   type: string;
   regexp: string
-  labels: any[];
-  hints: any[];
+  labels: any;
+  hints: any;
   isRequired: boolean;
   position: number;
+  value: string|null;
   options?: IPaymentFieldOption[];
 }
 
@@ -53,7 +54,7 @@ export interface IRequestDeposit extends Record<string, any>{
 
 export interface IRequestWithdraw extends Record<string, any>{
   method: string;
-  fields?: { [key:string]: string; };
+  fields?: { [key:string]: string|null|undefined; };
   currency: string;
   amount: number;
   accountId: string;
@@ -62,7 +63,7 @@ export interface IRequestWithdraw extends Record<string, any>{
 export interface IResponseDeposit extends Record<string, any>{
   action: string;
   method: string;
-  fields: any[];
+  fields: { [key: string]: string };
 }
 
 export interface IResponseWithdraw extends Record<string, any>{
@@ -81,10 +82,12 @@ export interface IInvoicePublicData extends Record<string, any> {
 export interface IInvoice extends Record<string, any>{
   id: string;
   amount: number;
+  transactionAmount: number;
   currency: string;
+  transactionCurrency: string;
   status: number;
   statusResult: string;
-  paymentProvider: string;
+  paymentMethod: string;
   invoiceType: number;
   createdAt: string;
   updatedAt: string|null;

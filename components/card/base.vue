@@ -22,8 +22,6 @@
         <div class="card-base__info-provider">{{ props.gameInfo?.provider.name }}</div>
       </div>
 
-      <div v-if="props.gameInfo?.subTitle" class="sub-title">{{ props.gameInfo.subTitle }}</div>
-
       <div class="card-base__info-actions">
         <button-play @click="openGame(true)"/>
       </div>
@@ -40,7 +38,9 @@
 
         <!--<button-info/>-->
 
-        <button-favorite v-if="isLoggedIn" :gameId="props.gameInfo?.id"/>
+        <client-only>
+          <button-favorite v-if="isLoggedIn" :gameId="props.gameInfo?.id"/>
+        </client-only>
       </div>
     </div>
   </div>

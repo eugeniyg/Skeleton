@@ -8,7 +8,7 @@
         :name="props.name"
         :value="props.value"
         :readonly="props.isDisabled"
-        :required="props.isRequired ? 'required': false"
+        :required="props.isRequired"
         :placeholder="props.placeholder"
         @focus="onFocus"
         @blur="onBlur"
@@ -17,7 +17,7 @@
       />
 
       <button-verify
-        :is-shown="!profile.confirmedAt"
+        :is-shown="!profile?.confirmedAt"
         :class="{ disabled: resentVerifyEmail }"
         @click.once="profileStore.resendVerifyEmail"
       >

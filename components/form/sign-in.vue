@@ -1,6 +1,8 @@
 <template>
   <form class="form-sign-in">
     <form-input-text
+      v-if="props.loginType === 'email'"
+      key="email"
       v-model:value="authorizationFormData.login"
       @blur="v$.login?.$touch()"
       @focus="focusField('login')"
@@ -9,6 +11,20 @@
       :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
       name="login"
       :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
+      :hint="setError('login')"
+      @submit="login"
+    />
+
+    <form-input-phone
+      v-else
+      key="phone"
+      v-model:value="authorizationFormData.login"
+      @blur="v$.login?.$touch()"
+      @focus="focusField('login')"
+      :is-required="true"
+      :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.phone.label') || ''"
+      name="login"
+      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.phone.placeholder') || ''"
       :hint="setError('login')"
       @submit="login"
     />
@@ -48,7 +64,7 @@
       :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.forgotButton')"
       openModal="forgotPass"
     />
-    
+
     <atomic-socials type="login" />
 
     <button-popup
@@ -60,6 +76,10 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+
+  const props = defineProps<{
+    loginType: 'email'|'phone';
+  }>();
 
   const globalStore = useGlobalStore();
   const {
@@ -89,9 +109,9 @@
   const authorizationFormData = reactive({ login: '', password: '' });
   const { getFormRules, getContent } = useProjectMethods();
   const authorizationRules = {
-    login: [{ rule: 'required' }, { rule: 'email' }],
     password: [{ rule: 'required' }],
-  };
+    login: [{ rule: 'required' }, { rule: props.loginType || 'email' }]
+  }
   const authorizationFormRules = getFormRules(authorizationRules);
   const {
     serverFormErrors, v$, onFocus, setError,

@@ -3,10 +3,10 @@
     <nav-cat @clickCategory="changeCategory"/>
 
     <atomic-cat-heading
-      v-if="gameCategoriesObj[activeCollection?.identity]"
-      :icon="gameCategoriesObj[activeCollection?.identity].icon"
+      v-if="gameCategoriesObj[activeCollection?.identity || '']"
+      :icon="gameCategoriesObj[activeCollection?.identity || '']?.icon"
     >
-      {{ gameCategoriesObj[activeCollection?.identity].label || activeCollection?.name }}
+      {{ gameCategoriesObj[activeCollection?.identity || '']?.label || activeCollection?.name }}
     </atomic-cat-heading>
 
     <div class="game-filter" v-click-outside="skipActionsState">
@@ -147,10 +147,14 @@
   );
 
   const selectedProviders = ref<string[]>([]);
-  const routeProvider = route.query.provider;
+  const routeProvider = route.query.provider as string|string[];
+  const { gameProviders } = useGamesStore();
   if (routeProvider) {
-    if (Array.isArray(routeProvider)) selectedProviders.value = routeProvider as string[];
-    else selectedProviders.value = [routeProvider];
+    const providersArr = Array.isArray(routeProvider) ? routeProvider : [routeProvider];
+    selectedProviders.value = providersArr.filter(providerId => {
+      const providerData = gameProviders.find(provider => provider.id === providerId);
+      return providerData && !!providerData.gameEnabledCount;
+    })
   }
 
   const searchValue = ref<string>('');

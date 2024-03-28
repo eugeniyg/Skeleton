@@ -74,7 +74,7 @@
         <span class="card-bonuses__progress-value">{{ props.bonus.usedCount }} FS</span>
         <span class="card-bonuses__progress-value">{{ props.bonus.count }} FS</span>
       </div>
-
+      
       <div v-if="isRiched" class="card-bonuses__achive">
         <atomic-icon id="clock"/>
         <span>{{ props.content?.waitingResult }}</span>
@@ -127,7 +127,7 @@
   };
 
   const isRiched = computed(() => {
-    if (props.mode === 'bonus') return props.bonus.currentWagerPercentage === 100;
+    if (props.mode === 'bonus') return props.bonus.openedTransactionsCount > 0;
     return props.bonus.progress === 100;
   });
 

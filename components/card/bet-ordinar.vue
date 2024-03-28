@@ -6,7 +6,7 @@
       <button-copy
         :copyButton="betCard.copyButton"
         :copyTooltip="betCard.copyTooltip"
-        :text="props.id"
+        :text="props.roundId"
       />
     </div>
 
@@ -57,6 +57,7 @@
 
   const props = defineProps<{
     id: string,
+    roundId: string,
     amount: number,
     currency: string,
     createdAt: string,

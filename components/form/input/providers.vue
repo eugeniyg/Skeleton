@@ -33,7 +33,7 @@
         </div>
 
         <div
-          v-for="provider in gameProviders"
+          v-for="provider in providersList"
           :key="provider.id"
           class="input-providers__item"
         >
@@ -78,16 +78,18 @@
 <script setup lang="ts">
   import type { IGamesPage } from "~/types";
 
-  const { gameProviders } = useGamesStore();
-  const { getContent } = useProjectMethods();
-
   const props = defineProps<{
     currentLocaleContent: Maybe<IGamesPage>;
     defaultLocaleContent: Maybe<IGamesPage>;
     selected: string[];
   }>();
 
-  const allProviderGames = gameProviders.reduce((gamesCount, currentProvider) => {
+  const { gameProviders } = useGamesStore();
+  const { getContent } = useProjectMethods();
+
+  const providersList = computed(() => gameProviders.filter(provider => !!provider.gameEnabledCount));
+
+  const allProviderGames = providersList.value.reduce((gamesCount, currentProvider) => {
     return gamesCount + currentProvider.gameEnabledCount;
   }, 0)
 
@@ -95,7 +97,7 @@
   const isOpen = ref<boolean>(false);
 
   const selectedCount = computed(() => {
-    if (selectedAll.value) return gameProviders.length;
+    if (selectedAll.value) return providersList.value.length;
     return props.selected.length;
   });
 
@@ -110,12 +112,12 @@
   }
 
   const checkSelectedAll = (newProvidersArr: string[]): void => {
-    selectedAll.value = newProvidersArr.length === gameProviders.length;
+    selectedAll.value = newProvidersArr.length === providersList.value.length;
   }
 
   const change = (providerId: string):void => {
     if (selectedAll.value) {
-      const newProvidersArr = gameProviders.reduce((finalArr: string[], currentProvider) => {
+      const newProvidersArr = providersList.value.reduce((finalArr: string[], currentProvider) => {
         return providerId === currentProvider.id ? finalArr : [...finalArr, currentProvider.id];
       }, []);
 

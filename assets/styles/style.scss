@@ -165,7 +165,7 @@ body {
   pointer-events: var(--main-pointer-events, initial);
   position: relative;
   z-index: 0;
-  min-height: calc(100vh - 3rem);
+  min-height: calc(var(--vh-static)*100 - var(--header-height) - env(safe-area-inset-bottom) - env(safe-area-inset-top));
   overflow: hidden;
 
   &.is-overflow {
@@ -195,7 +195,6 @@ body {
   .cards-wrap,
   .group-turbo,
   .group-providers,
-  .group-originals,
   .group-aero {
     margin-bottom: rem(32px);
 
@@ -230,6 +229,8 @@ body {
 .vfm {
   display: flex;
   justify-content: center;
+  animation-name: opacityFadeIn;
+  animation-duration: .2s;
 }
 
 .vfm__overlay {
@@ -303,3 +304,13 @@ body {
     transition: all .4s ease;
   }
 }
+
+@keyframes opacityFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+

@@ -204,6 +204,7 @@
           @include font($body-0);
           color: var(--text-inverse);
           border-radius: rem(6px);
+          line-height: 12px;
         }
       }
 

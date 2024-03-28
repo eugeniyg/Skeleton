@@ -43,15 +43,15 @@
     },
     value: {
       type: [Number, String],
-      default: 20,
+      required: true
     },
     min: {
       type: Number,
-      default: 20,
+      required: true
     },
     max: {
       type: Number,
-      default: 5000,
+      required: true
     },
     label: {
       type: String,
@@ -72,11 +72,7 @@
     isBigger: {
       type: Boolean,
       default: false,
-    },
-    defaultValue: {
-      type: Number,
-      required: true,
-    },
+    }
   });
 
   const emit = defineEmits(['blur', 'update:value', 'input']);
@@ -87,11 +83,16 @@
   };
 
   const onBlur = (e:any):void => {
-    if (!e.target.value || e.target.value < props.min || e.target.value > props.max) {
-      e.target.value = props.defaultValue;
+    if (!e.target.value || e.target.value < props.min) {
+      e.target.value = props.min;
       emit('input', e.target.value);
       emit('update:value', e.target.value);
-      emit('blur', props.defaultValue);
+      emit('blur', props.min);
+    } else if (e.target.value > props.max) {
+      e.target.value = props.max;
+      emit('input', e.target.value);
+      emit('update:value', e.target.value);
+      emit('blur', props.max);
     } else emit('blur', e.target.value);
   };
 

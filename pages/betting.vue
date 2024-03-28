@@ -1,8 +1,14 @@
 <template>
-  <div class="betting">
-    <div id="betting-container" class="container"/>
+  <div>
+    <client-only>
+      <main-slider v-if="!isMobile && bettingContent?.sliderDisplay" sliderType="low" />
+    </client-only>
 
-    <atomic-seo-text v-if="bettingContent?.seo?.text" v-bind="bettingContent?.seo?.text"/>
+    <div class="betting">
+      <div id="betting-container" class="container"/>
+      
+      <atomic-seo-text v-if="bettingContent?.seo?.text" v-bind="bettingContent?.seo?.text"/>
+    </div>
   </div>
 </template>
 
@@ -60,6 +66,35 @@
   watch(data, () => {
     setContentData(data.value);
   })
+  
+  const dayjs = useDayjs();
+  const sliderFilterTime = ref(dayjs.utc());
+  const filteredSlider = computed(() => {
+    return bettingContent.value?.slider?.items?.reduce((filteredSliderArr: ISportsbookPage['slider']['items'], currentSlide) => {
+      const loggedFilter: boolean = (isLoggedIn.value && currentSlide.loggedHide) || (!isLoggedIn.value && currentSlide.unloggedHide);
+      let includesSegmentsFilter: boolean = !!currentSlide.showSegments?.length;
+      let excludeSegmentsFilter: boolean = !!currentSlide.hideSegments?.length;
+      let timeFilter: boolean = false;
+      
+      if (isLoggedIn.value && profile.value) {
+        const showSegmentsArr = currentSlide.showSegments?.map(item => item.segmentName) || [];
+        const hideSegmentsArr = currentSlide.hideSegments?.map(item => item.segmentName) || [];
+        includesSegmentsFilter = showSegmentsArr.length ? !profile.value.segments.some((segment) => showSegmentsArr.includes(segment.name)) : false;
+        excludeSegmentsFilter = hideSegmentsArr.length ? profile.value.segments.some((segment) => hideSegmentsArr.includes(segment.name)) : false;
+      }
+      
+      if (currentSlide.showFrom && currentSlide.showTo) {
+        timeFilter = !dayjs(sliderFilterTime.value).isBetween(dayjs(currentSlide.showFrom), dayjs(currentSlide.showTo), 'second');
+      } else if (currentSlide.showFrom) {
+        timeFilter = !dayjs(sliderFilterTime.value).isSameOrAfter(dayjs(currentSlide.showFrom), 'second');
+      } else if (currentSlide.showTo) {
+        timeFilter = !dayjs(sliderFilterTime.value).isSameOrBefore(dayjs(currentSlide.showTo), 'second');
+      }
+      
+      if (loggedFilter || includesSegmentsFilter || excludeSegmentsFilter || timeFilter) return filteredSliderArr;
+      return [...filteredSliderArr, currentSlide];
+    }, []);
+  })
 
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
@@ -78,8 +113,10 @@
     parent: false,
   };
 
+  const frame = ref<Promise<any>>();
+  const runtimeConfig = useRuntimeConfig();
+  const updateUrlParam = runtimeConfig.public?.betsyParams?.allowParentUrlUpdate;
   const startBetsyFrame = (host: string, token: string): void => {
-    const runtimeConfig = useRuntimeConfig();
     const params = {
       ...sdkDefaultParams,
       host: runtimeConfig.public.betsyParams?.clientHost,
@@ -88,15 +125,15 @@
       customStyles: runtimeConfig.public.betsyParams?.sportsBookStyles ? `${host}${runtimeConfig.public.betsyParams.sportsBookStyles}` : undefined,
       token: isLoggedIn.value ? token : null,
       lang: currentLocale.value?.code || 'en',
-      allowParentUrlUpdate: runtimeConfig.public.betsyParams?.allowParentUrlUpdate ?? false
+      allowParentUrlUpdate: updateUrlParam ?? false
     };
 
     if (window.BetSdk) {
-      window.BetSdk.init(params);
+      frame.value = window.BetSdk.init(params);
     } else {
       const betsyScript = addBetsyScript();
       betsyScript.onload = () => {
-        window.BetSdk.init(params);
+        frame.value = window.BetSdk.init(params);
       };
     }
   }
@@ -137,7 +174,41 @@
     compactDrawer(true, false);
   });
 
+  const route = useRoute();
+  const routerIframePath = ref<string|undefined>(route.query.setIframePath as string|undefined);
+  const changeFramePath = async (setIframePath: string|undefined): Promise<void> => {
+    const betsyFrame = await frame.value;
+    betsyFrame.sendMessage({
+      type: 'routeChange',
+      data: {
+        route: setIframePath || '/',
+      },
+    });
+  }
+
+  watch(() => route.query.setIframePath, async (newValue) => {
+    if (!updateUrlParam || (routerIframePath.value === newValue)) return;
+    await changeFramePath(route.query.setIframePath as string|undefined);
+  })
+
+  const updateRouterIframePath = ({ data }: { data: any }) => {
+    if (typeof data === 'string') {
+      const messageData = JSON.parse(data);
+
+      if (messageData.type === 'route') {
+        const currentIframePath = route.query.setIframePath as string|undefined;
+        routerIframePath.value = messageData.location === '/' ? undefined : messageData.location;
+
+        if (currentIframePath !== routerIframePath.value) {
+          router.push({ query: { ...route.query, setIframePath: routerIframePath.value } });
+        }
+      }
+    }
+  }
+
   onMounted(async () => {
+    if (updateUrlParam) window.addEventListener('message', updateRouterIframePath);
+
     if (isMobile.value) {
       const footerEl: HTMLElement | null = document.querySelector('footer');
       if (footerEl) footerEl.style.display = 'none';
@@ -187,6 +258,8 @@
   });
 
   onBeforeUnmount(() => {
+    if (updateUrlParam) window.removeEventListener('message', updateRouterIframePath);
+
     const footerEl: any = document.querySelector('footer');
     if (footerEl) footerEl.style.display = null;
     const seoTextBlock: any = document.querySelector('.text-wrap');

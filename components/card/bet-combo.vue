@@ -6,7 +6,7 @@
       <button-copy
         :copyButton="betCard.copyButton"
         :copyTooltip="betCard.copyTooltip"
-        :text="props.id"
+        :text="props.roundId"
       />
     </div>
 
@@ -83,6 +83,7 @@ import type { IBetsHistory } from '~/types';
 
 const props = defineProps<{
     id: string,
+    roundId: string,
     amount: number,
     currency: string,
     createdAt: string,

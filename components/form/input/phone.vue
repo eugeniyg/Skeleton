@@ -18,12 +18,11 @@
       <input
         inputmode="numeric"
         v-maska
-        data-maska="##########"
+        data-maska="############"
         class="field"
         type="text"
         name="phoneNumber"
         v-model="numberValue"
-        :readonly="props.isDisabled"
         :placeholder="props.placeholder"
         @focus="onFocus"
         @blur="onBlur"
@@ -71,7 +70,11 @@
     code: country.phonePrefix,
     mask: `/img/flags/${country.code.toLowerCase()}.svg`,
     value: `+${country.phonePrefix}`,
-  }));
+  })).sort((prevItem, nextItem) => {
+    if (prevItem.code > nextItem.code) return 1;
+    if (prevItem.code < nextItem.code) return -1;
+    return 0;
+  });
   const codeValue = ref<string>('');
   const numberValue = ref<string>('');
   const profileStore = useProfileStore();
@@ -120,4 +123,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/phone.scss" lang="scss" />
-

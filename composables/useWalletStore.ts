@@ -111,7 +111,7 @@ export const useWalletStore = defineStore('walletStore', {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
         const { createSubscription } = useWebSocket();
-        this.accountSubscription = createSubscription(`wallet:accounts#${profileStore.profile.id}`, this.updateAccount);
+        this.accountSubscription = createSubscription(`wallet:accounts#${profileStore.profile?.id}`, this.updateAccount);
       }
     },
 
@@ -134,7 +134,7 @@ export const useWalletStore = defineStore('walletStore', {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
         const { createSubscription } = useWebSocket();
-        this.invoicesSubscription = createSubscription(`payment:invoices#${profileStore.profile.id}`, this.showInvoiceStatus);
+        this.invoicesSubscription = createSubscription(`payment:invoices#${profileStore.profile?.id}`, this.showInvoiceStatus);
       }
     },
 

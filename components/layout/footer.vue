@@ -13,7 +13,7 @@
           <h4>{{ heading }}</h4>
         </template>
 
-        <template v-slot:content="{ item }">
+        <template v-slot:content="{ item }: { item: ILink }">
           <nuxt-link
             :to="item.url.startsWith('http') ? item.url : localizePath(item.url)"
           >
@@ -22,20 +22,28 @@
         </template>
       </accordeon>
 
-      <list-base :items="trustIcons">
+      <partners
+        v-if="layoutData?.footer?.partners?.isShow"
+        :label="layoutData?.footer?.partners?.label || defaultLocaleLayoutData?.footer?.partners?.label"
+        :items="layoutData?.footer?.partners?.items || defaultLocaleLayoutData?.footer?.partners?.items"
+      />
+
+      <list-base :items="layoutData?.footer?.responsibilityIcons || defaultLocaleLayoutData?.footer?.responsibilityIcons">
         <template #header>
           <h4>{{ layoutData?.footer?.responsibilityLabel || defaultLocaleLayoutData?.footer?.responsibilityLabel }}</h4>
         </template>
 
         <template v-slot:item="{ item }">
-          <atomic-image :src="`/img${item}`" />
+          <atomic-image :src="`${item.image}`"/>
         </template>
       </list-base>
     </div>
 
     <atomic-divider/>
 
-    <list-paysis/>
+    <client-only>
+      <list-paysis />
+    </client-only>
 
     <atomic-divider/>
     
@@ -67,29 +75,24 @@
 
 <script setup lang="ts">
   import { marked } from 'marked';
+  import type { ILink } from "~/types";
 
   const { localizePath } = useProjectMethods();
 
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const accordeonItems = [
-    layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
-    layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
-    layoutData?.footer?.helpMenu || defaultLocaleLayoutData?.footer?.helpMenu,
-  ];
-  const trustIcons = [
-    '/trust-icons/1.svg',
-    '/trust-icons/2.svg',
-    '/trust-icons/3.svg',
-    '/trust-icons/4.svg',
-  ];
+      layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
+      layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
+      layoutData?.footer?.helpMenu || defaultLocaleLayoutData?.footer?.helpMenu,
+    ].filter(menu => menu?.title && menu?.items?.length);
   
   const showCuracaoBlock = computed(() => {
     return layoutData?.footer?.curacao?.description ||
       defaultLocaleLayoutData?.footer?.curacao?.description ||
       layoutData?.footer?.curacao?.frameLink ||
-      defaultLocaleLayoutData?.footer?.curacao?.frameLink
-  })
-  
+      defaultLocaleLayoutData?.footer?.curacao?.frameLink;
+  });
+
 </script>
 
-<style src="~/assets/styles/components/layout/footer.scss" lang="scss" />
+<style src="~/assets/styles/components/layout/footer.scss" lang="scss"/>

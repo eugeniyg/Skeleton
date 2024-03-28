@@ -120,7 +120,7 @@ export const useLimitsStore = defineStore('limitsStore', {
       const content = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'constants.limitPeriods');
 
       return settingsConstants?.player.limit.coolingOffPeriod.map((period) => ({
-        value: content[period.id],
+        value: content?.[period.id] || '',
         code: period.id,
       })) || [];
     },
@@ -131,7 +131,7 @@ export const useLimitsStore = defineStore('limitsStore', {
       const content = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'constants.limitPeriods');
 
       return settingsConstants?.player.limit.selfExclusionPeriod.map((period) => ({
-        value: content[period.id],
+        value: content?.[period.id] || '',
         code: period.id,
       })) || [];
     },

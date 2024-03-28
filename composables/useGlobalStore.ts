@@ -230,7 +230,11 @@ export const useGlobalStore = defineStore('globalStore', {
 
     async getCountries():Promise<void> {
       const { getCountries } = useCoreGlobalApi();
-      this.countries = await getCountries();
+
+      // TEMPORARY SOLUTION
+      const disabledCountries = ['US', 'UM', 'GB', 'FR', 'NL', 'AW', 'CW', 'MF'];
+      const responseCountries = await getCountries();
+      this.countries = responseCountries.filter(country => !disabledCountries.includes(country.code));
     },
 
     async getSettingsConstants():Promise<void> {

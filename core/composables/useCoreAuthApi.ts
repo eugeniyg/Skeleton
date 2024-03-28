@@ -1,4 +1,4 @@
-import type { IAuthorizationResponse, IField } from '../types';
+import type {IAuthorizationRequest, IAuthorizationResponse, IField} from '../types';
 import { useFetchInstance } from '../assets/apiInstance';
 
 export const useCoreAuthApi = () => {
@@ -15,20 +15,14 @@ export const useCoreAuthApi = () => {
       body: registrationFormData
     });
 
-    const { setSessionToken } = useProfileStore();
-    setSessionToken(data.accessToken);
-
     return data;
   };
 
-  const submitLoginData = async (authorizationFormData: any):Promise<IAuthorizationResponse> => {
+  const submitLoginData = async (authorizationFormData: IAuthorizationRequest):Promise<IAuthorizationResponse> => {
     const { data } = await useFetchInstance('/api/player/sessions', {
       method: 'POST',
       body: authorizationFormData
     });
-
-    const { setSessionToken } = useProfileStore();
-    setSessionToken(data.accessToken);
 
     return data;
   };
@@ -39,42 +33,28 @@ export const useCoreAuthApi = () => {
       body: { token }
     });
 
-    const { setSessionToken } = useProfileStore();
-    setSessionToken(data.accessToken);
+    return data;
+  };
+
+  const refreshToken = async ():Promise<IAuthorizationResponse> => {
+    const { getSessionToken } = useProfileStore();
+    const token = getSessionToken();
+    const { data }: { data: IAuthorizationResponse } = await $fetch('/api/player/sessions/refresh', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      method: 'POST'
+    });
 
     return data;
   };
 
-  const refreshToken = async (options:any):Promise<{data: IAuthorizationResponse}> => {
-    const coreAuthStore = useProfileStore();
-    if (coreAuthStore.refreshPromise) {
-      return coreAuthStore.refreshPromise;
-    }
-
-    try {
-      const refreshPromise:Promise<{data: IAuthorizationResponse}> = $fetch('/api/player/sessions/refresh', {
-        ...options,
-        method: 'POST'
-      });
-
-      coreAuthStore.refreshPromise = refreshPromise;
-
-      return await refreshPromise;
-    } finally {
-      coreAuthStore.refreshPromise = null;
-    }
-  };
-
   const logOut = async ():Promise<{message: string}> => {
-    try {
-      const { data } = await useFetchInstance('/api/player/sessions/logout', {
-        method: 'POST'
-      });
-      return data;
-    } finally {
-      const { removeSession } = useProfileStore();
-      removeSession();
-    }
+    const { data } = await useFetchInstance('/api/player/sessions/logout', {
+      method: 'POST'
+    });
+
+    return data;
   };
 
   const submitSocialLoginData = async (socialAuthData: any):Promise<IAuthorizationResponse> => {
