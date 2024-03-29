@@ -13,6 +13,7 @@ interface IProfileStoreState {
   resentVerifyEmail: boolean;
   profile: Maybe<IProfile>;
   tokenCookieKey: string;
+  sessionConfirmed: boolean;
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -22,7 +23,8 @@ export const useProfileStore = defineStore('profileStore', {
     sessionId: '',
     resentVerifyEmail: false,
     profile: undefined,
-    tokenCookieKey: 'access_token'
+    tokenCookieKey: 'access_token',
+    sessionConfirmed: false
   }),
 
   getters: {
@@ -33,6 +35,7 @@ export const useProfileStore = defineStore('profileStore', {
 
   actions: {
     setSessionToken (tokenValue:string):void {
+      this.sessionConfirmed = true;
       const cookieToken = useCookie(this.tokenCookieKey, { maxAge: 60 * 60 * 24 * 365 });
       cookieToken.value = tokenValue;
     },
@@ -60,6 +63,7 @@ export const useProfileStore = defineStore('profileStore', {
 
     removeSession ():void {
       this.profile = undefined;
+      this.sessionConfirmed = false;
       const cookieToken = useCookie(this.tokenCookieKey);
       cookieToken.value = null;
       this.isLoggedIn = false;
@@ -196,6 +200,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { getProfile } = useCoreProfileApi();
       const profileInfo = await getProfile();
       this.profile = profileInfo;
+      this.sessionConfirmed = true;
       this.isLoggedIn = true;
     },
 
