@@ -1,0 +1,49 @@
+.list-sportsbook {
+  background-color: var(--gray-900);
+  @extend %flex-items-center;
+  grid-column-gap: 8px;
+  padding: var(--padding, 8px);
+  border-radius: 8px;
+  max-width: 200px;
+  margin: 4px auto;
+
+  .item {
+    overflow: hidden;
+    @extend %flex-all-center;
+    border-radius: 8px;
+    background-color: var(--item-bg);
+    box-shadow: var(--shadow-layer);
+    @include box(40px);
+
+    .icon {
+      --icon-color: var(--white);
+      --icon-size: 32px;
+    }
+
+    &:nth-child(1) {
+      --item-bg: var(--blue-700)
+    }
+
+    &:nth-child(2) {
+      --item-bg: var(--red-800);
+    }
+
+    &:nth-child(3) {
+      --item-bg: var(--green-800);
+    }
+
+    &:nth-child(4) {
+      --item-bg: var(--violet-800);
+    }
+  }
+
+  .is-compact & {
+    @include media(l) {
+      .item:not(:first-child) {
+        display: none;
+      }
+
+      padding: 0;
+    }
+  }
+}
