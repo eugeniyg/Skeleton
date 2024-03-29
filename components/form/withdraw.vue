@@ -127,7 +127,7 @@
   })
 
   const isSending = ref<boolean>(false);
-  const amountValue = ref<number>(formatAmountMin.value.amount);
+  const amountValue = ref<string>(String(formatAmountMin.value.amount));
 
   const withdrawFormData = reactive<{ [key: string]: string }>({});
   props.fields.forEach((field: any) => {
@@ -214,8 +214,8 @@
   }
 
   const buttonAmount = computed(() => {
-    if (amountValue.value > formatAmountMax.value.amount) return formatAmountMax.value.amount;
-    if (amountValue.value < formatAmountMin.value.amount) return formatAmountMin.value.amount;
+    if (Number(amountValue.value) > formatAmountMax.value.amount) return formatAmountMax.value.amount;
+    if (Number(amountValue.value) < formatAmountMin.value.amount) return formatAmountMin.value.amount;
     return amountValue.value;
   });
 
@@ -232,9 +232,9 @@
   });
 
   const buttonDisabled = computed(() => v$.value.$invalid
-    || amountValue.value > activeAccountWithdrawalFormat.value.amount
-    || amountValue.value < formatAmountMin.value.amount
-    || amountValue.value > formatAmountMax.value.amount
+    || Number(amountValue.value) > activeAccountWithdrawalFormat.value.amount
+    || Number(amountValue.value) < formatAmountMin.value.amount
+    || Number(amountValue.value) > formatAmountMax.value.amount
     || isSending.value);
 
   const onInputNetwork = () => {
@@ -261,7 +261,7 @@
       ] : [{ rule: 'required' }]
     };
 
-    amountValue.value = formatAmountMin.value.amount;
+    amountValue.value = String(formatAmountMin.value.amount);
   };
 
   const getWithdraw = async (): Promise<void> => {

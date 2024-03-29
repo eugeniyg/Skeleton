@@ -11,7 +11,12 @@
       :is-bigger="true"
     />
 
-    <!--    <wallet-pills />-->
+    <wallet-pills
+      v-if="filteredPresets.length"
+      v-model:value="amountValue"
+      :items="filteredPresets"
+    />
+
     <component
       v-for="field in visibleFields"
       :key="field.key"
@@ -64,17 +69,18 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IBonus, IPaymentField, IResponseDeposit} from '@skeleton/core/types';
+  import type {IBonus, IPaymentField, IPaymentPreset, IResponseDeposit} from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import queryString from 'query-string';
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
 
   const props = defineProps<{
-    amountMax?: number,
-    amountMin?: number,
-    method?: string,
-    fields: IPaymentField[]
+    amountMax?: number;
+    amountMin?: number;
+    method?: string;
+    presets: IPaymentPreset[];
+    fields: IPaymentField[];
   }>();
 
   const globalStore = useGlobalStore();
@@ -155,15 +161,19 @@
   }
 
   const isSending = ref<boolean>(false);
-  const amountValue = ref<number>(getStorageBonusAmount() || formatAmountMin.amount);
+  const filteredPresets = props.presets.filter(preset => {
+    return preset.amount >= formatAmountMin.amount && preset.amount <= formatAmountMax.amount;
+  });
+  const defaultPreset = filteredPresets.find(preset => preset.default);
+  const amountValue = ref<string>(String(getStorageBonusAmount() || defaultPreset?.amount || formatAmountMin.amount));
   const buttonAmount = computed(() => {
-    if (amountValue.value > formatAmountMax.amount) return formatAmountMax.amount;
-    if (amountValue.value < formatAmountMin.amount) return formatAmountMin.amount;
+    if (Number(amountValue.value) > formatAmountMax.amount) return formatAmountMax.amount;
+    if (Number(amountValue.value) < formatAmountMin.amount) return formatAmountMin.amount;
     return amountValue.value;
   });
   const buttonDisabled = computed(() => v$.value.$invalid
-    || (amountValue.value < formatAmountMin.amount)
-    || (amountValue.value > formatAmountMax.amount)
+    || (Number(amountValue.value) < formatAmountMin.amount)
+    || (Number(amountValue.value) > formatAmountMax.amount)
     || isSending.value);
 
   const getPaymentPageUrl = (depositResponse: IResponseDeposit): string => {
@@ -259,7 +269,7 @@
     const bonusPercentage = bonusInfo.assignConditions?.depositPercentage;
     if (!bonusPercentage) return '';
 
-    const percentageSum = amountValue.value * bonusPercentage / 100;
+    const percentageSum = Number(amountValue.value) * bonusPercentage / 100;
     let bonusSumString: string = '';
 
     if (maxSum && parseFloat(maxSum) > percentageSum) {
