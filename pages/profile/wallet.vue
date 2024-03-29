@@ -37,7 +37,7 @@
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
   const {
-    setPageSeo,
+    setPageMeta,
     getLocalesContentData,
   } = useProjectMethods();
 
@@ -52,7 +52,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     walletContent.value = contentData?.currentLocaleData;
     defaultLocaleWalletContent.value = contentData?.defaultLocaleData;
-    setPageSeo(walletContent.value?.seo);
+    setPageMeta(walletContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {

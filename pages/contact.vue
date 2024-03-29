@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <atomic-seo-text v-if="contactContent?.seo?.text" v-bind="contactContent?.seo?.text" />
+    <atomic-seo-text v-if="contactContent?.pageMeta?.seoText" v-bind="contactContent?.pageMeta?.seoText" />
   </div>
 </template>
 
@@ -56,7 +56,7 @@
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();
   const {
-    setPageSeo,
+    setPageMeta,
     getContent,
     getLocalesContentData
   } = useProjectMethods();
@@ -81,7 +81,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     contactContent.value = contentData?.currentLocaleData;
     defaultLocaleContactContent.value = contentData?.defaultLocaleData;
-    setPageSeo(contactContent.value?.seo);
+    setPageMeta(contactContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {

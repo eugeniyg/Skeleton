@@ -23,8 +23,6 @@
       showArrows
       subTitle
     />
-
-    <atomic-seo-text v-if="recentlyContent?.seo?.text" v-bind="recentlyContent?.seo?.text" />
   </div>
 </template>
 
@@ -36,7 +34,7 @@
   const globalStore = useGlobalStore();
   const { isMobile, headerCountry, currentLocale, defaultLocale } = storeToRefs(globalStore);
   const {
-    setPageSeo,
+    setPageMeta,
     getLocalesContentData,
     getContent,
   } = useProjectMethods();
@@ -52,7 +50,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     recentlyContent.value = contentData?.currentLocaleData;
     defaultLocaleRecentlyContent.value = contentData?.defaultLocaleData;
-    setPageSeo(recentlyContent.value?.seo);
+    setPageMeta(recentlyContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
@@ -67,7 +65,7 @@
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { pending, data } = await useLazyAsyncData('recentlyPageContent', () => getPageContent());
+  const { data } = await useLazyAsyncData('recentlyPageContent', () => getPageContent());
   if (data.value) setContentData(data.value);
 
   watch(data, () => {

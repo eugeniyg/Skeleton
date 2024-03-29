@@ -38,7 +38,7 @@
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const { setPageSeo, getLocalesContentData, localizePath } = useProjectMethods();
+  const { setPageMeta, getLocalesContentData, localizePath } = useProjectMethods();
   const { getPlayerBonuses, getPlayerFreeSpins } = bonusStore;
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
 
@@ -53,7 +53,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     bonusesContent.value = contentData?.currentLocaleData;
     defaultLocaleBonusesContent.value = contentData?.defaultLocaleData;
-    setPageSeo(bonusesContent.value?.seo);
+    setPageMeta(bonusesContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {

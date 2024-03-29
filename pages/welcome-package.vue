@@ -112,7 +112,7 @@
       </div>
     </div>
 
-    <atomic-seo-text v-if="welcomeContent?.seo?.text" v-bind="welcomeContent?.seo?.text" />
+    <atomic-seo-text v-if="welcomeContent?.pageMeta?.seoText" v-bind="welcomeContent?.pageMeta?.seoText" />
   </div>
 </template>
 
@@ -121,7 +121,7 @@
   import type { IWelcomeBonusesPage } from '~/types';
 
   const {
-    setPageSeo,
+    setPageMeta,
     getLocalesContentData,
     getContent
   } = useProjectMethods();
@@ -140,7 +140,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     welcomeContent.value = contentData?.currentLocaleData;
     defaultLocaleWelcomeContent.value = contentData?.defaultLocaleData;
-    setPageSeo(welcomeContent.value?.seo);
+    setPageMeta(welcomeContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {

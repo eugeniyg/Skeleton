@@ -7,7 +7,7 @@
     <div class="betting">
       <div id="betting-container" class="container"/>
       
-      <atomic-seo-text v-if="bettingContent?.seo?.text" v-bind="bettingContent?.seo?.text"/>
+      <atomic-seo-text v-if="bettingContent?.pageMeta?.seoText" v-bind="bettingContent?.pageMeta?.seoText"/>
     </div>
   </div>
 </template>
@@ -28,7 +28,7 @@
   } = storeToRefs(globalStore);
 
   const {
-    setPageSeo,
+    setPageMeta,
     getLocalesContentData,
     localizePath,
     addBetsyScript
@@ -45,7 +45,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     bettingContent.value = contentData?.currentLocaleData;
     defaultLocaleBettingContent.value = contentData?.defaultLocaleData;
-    setPageSeo(bettingContent.value?.seo);
+    setPageMeta(bettingContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
