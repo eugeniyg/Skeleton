@@ -6,37 +6,36 @@ import type {
   IInitUserInfo,
   ILocale
 } from '../types';
-import { useFetchInstance } from '../assets/apiInstance';
-import { useBaseFetchInstance } from '../assets/apiBaseInstance';
+import { useApiGuestInstance } from "@skeleton/core/assets/apiGuestInstance";
 
 export const useCoreGlobalApi = () => {
   const getCurrencies = async (visible?: number):Promise<ICurrency[]> => {
-    const { data } = await useBaseFetchInstance('/api/settings/currencies', { params: { visible } });
+    const { data } = await useApiGuestInstance('/api/settings/currencies', { params: { visible } });
     return data;
   };
 
   const getLocales = async ():Promise<ILocale[]> => {
-    const { data } = await useBaseFetchInstance('/api/settings/locales');
+    const { data } = await useApiGuestInstance('/api/settings/locales');
     return data;
   };
 
   const getCountries = async ():Promise<ICountry[]> => {
-    const { data } = await useBaseFetchInstance('/api/settings/countries');
+    const { data } = await useApiGuestInstance('/api/settings/countries');
     return data;
   };
 
   const getCoreConstants = async ():Promise<ICoreConstants> => {
-    const { data } = await useBaseFetchInstance('/api/settings/constants');
+    const { data } = await useApiGuestInstance('/api/settings/constants');
     return data;
   };
 
   const getInitUserInfo = async ():Promise<IInitUserInfo> => {
-    const { data } = await useFetchInstance('/api/player/init');
+    const { data } = await useApiGuestInstance('/api/player/init');
     return data;
   };
 
   const sendContactMessage = async (requestData: IContactMessageRequest):Promise<{ message: string }> => {
-    const { data } = await useFetchInstance('/api/notification/communications', { method: 'POST', body: requestData });
+    const { data } = await useApiGuestInstance('/api/notification/communications', { method: 'POST', body: requestData });
     return data;
   }
 

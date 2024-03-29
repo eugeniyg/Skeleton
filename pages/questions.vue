@@ -9,7 +9,7 @@
       <NuxtPage />
     </div>
 
-    <atomic-seo-text v-if="questionPageContent?.seo?.text" v-bind="questionPageContent.seo.text" />
+    <atomic-seo-text v-if="questionPageContent?.pageMeta?.seoText" v-bind="questionPageContent.pageMeta.seoText" />
   </div>
 </template>
 
@@ -32,7 +32,7 @@
   const { localizePath } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const { setPageSeo, getLocalesContentData } = useProjectMethods();
+  const { setPageMeta, getLocalesContentData } = useProjectMethods();
 
   const questionPageContent = ref<Maybe<IQuestionPage>>();
   const defaultLocaleQuestionsPageContent = ref<Maybe<IQuestionPage>>();
@@ -58,7 +58,7 @@
     questionPageContent.value = contentData?.currentLocaleData;
     defaultLocaleQuestionsPageContent.value = contentData?.defaultLocaleData;
     questionsCategoryData.value = contentData?.questionsCategoryData || [];
-    setPageSeo(questionPageContent.value?.seo);
+    setPageMeta(questionPageContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {

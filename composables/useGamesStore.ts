@@ -46,6 +46,10 @@ export const useGamesStore = defineStore('gamesStore', {
         return !collection.countries.length || collection.countries.includes(globalStore.headerCountry as string);
       })
     },
+
+    recommendedCategory():ICollection|undefined {
+      return this.currentLocationCollections.find((collection) => collection.identity === 'recommended');
+    }
   },
 
   actions: {

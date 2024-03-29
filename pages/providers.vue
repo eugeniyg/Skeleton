@@ -35,7 +35,7 @@
       :image="getContent(providersContent, defaultLocaleProvidersContent, 'empty.image')"
     />
 
-    <atomic-seo-text v-if="providersContent?.seo?.text" v-bind="providersContent.seo.text"/>
+    <atomic-seo-text v-if="providersContent?.pageMeta?.seoText" v-bind="providersContent.pageMeta.seoText"/>
   </div>
 </template>
 
@@ -57,7 +57,7 @@
   const { showAlert } = useLayoutStore();
 
   const {
-    setPageSeo,
+    setPageMeta,
     getContent,
     getLocalesContentData,
   } = useProjectMethods();
@@ -75,7 +75,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     providersContent.value = contentData?.currentLocaleData;
     defaultLocaleProvidersContent.value = contentData?.defaultLocaleData;
-    setPageSeo(providersContent.value?.seo);
+    setPageMeta(providersContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
