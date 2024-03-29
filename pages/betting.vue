@@ -60,42 +60,13 @@
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { pending, data } = await useLazyAsyncData('sportsbookPageContent', () => getPageContent());
+  const { data } = await useLazyAsyncData('sportsbookPageContent', () => getPageContent());
   if (data.value) setContentData(data.value);
 
   watch(data, () => {
     setContentData(data.value);
   })
   
-  const dayjs = useDayjs();
-  const sliderFilterTime = ref(dayjs.utc());
-  const filteredSlider = computed(() => {
-    return bettingContent.value?.slider?.items?.reduce((filteredSliderArr: ISportsbookPage['slider']['items'], currentSlide) => {
-      const loggedFilter: boolean = (isLoggedIn.value && currentSlide.loggedHide) || (!isLoggedIn.value && currentSlide.unloggedHide);
-      let includesSegmentsFilter: boolean = !!currentSlide.showSegments?.length;
-      let excludeSegmentsFilter: boolean = !!currentSlide.hideSegments?.length;
-      let timeFilter: boolean = false;
-      
-      if (isLoggedIn.value && profile.value) {
-        const showSegmentsArr = currentSlide.showSegments?.map(item => item.segmentName) || [];
-        const hideSegmentsArr = currentSlide.hideSegments?.map(item => item.segmentName) || [];
-        includesSegmentsFilter = showSegmentsArr.length ? !profile.value.segments.some((segment) => showSegmentsArr.includes(segment.name)) : false;
-        excludeSegmentsFilter = hideSegmentsArr.length ? profile.value.segments.some((segment) => hideSegmentsArr.includes(segment.name)) : false;
-      }
-      
-      if (currentSlide.showFrom && currentSlide.showTo) {
-        timeFilter = !dayjs(sliderFilterTime.value).isBetween(dayjs(currentSlide.showFrom), dayjs(currentSlide.showTo), 'second');
-      } else if (currentSlide.showFrom) {
-        timeFilter = !dayjs(sliderFilterTime.value).isSameOrAfter(dayjs(currentSlide.showFrom), 'second');
-      } else if (currentSlide.showTo) {
-        timeFilter = !dayjs(sliderFilterTime.value).isSameOrBefore(dayjs(currentSlide.showTo), 'second');
-      }
-      
-      if (loggedFilter || includesSegmentsFilter || excludeSegmentsFilter || timeFilter) return filteredSliderArr;
-      return [...filteredSliderArr, currentSlide];
-    }, []);
-  })
-
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
 
@@ -111,6 +82,7 @@
     width: '100%',
     height: '100%',
     parent: false,
+    loginUrl: 'sendPostMessage'
   };
 
   const frame = ref<Promise<any>>();
@@ -159,7 +131,7 @@
   } = layoutStore;
 
   const router = useRouter();
-  const { showModal } = useLimitsStore();
+  const limitStore = useLimitsStore();
 
   const redirectLimitedPlayer = (): void => {
     router.replace(localizePath('/'));
@@ -191,23 +163,29 @@
     await changeFramePath(route.query.setIframePath as string|undefined);
   })
 
-  const updateRouterIframePath = ({ data }: { data: any }) => {
+  const updateRouterIframePath = (eventData: { type: string, location: string }) => {
+    const currentIframePath = route.query.setIframePath as string|undefined;
+    routerIframePath.value = eventData.location === '/' ? undefined : eventData.location;
+
+    if (currentIframePath !== routerIframePath.value) {
+      router.push({ query: { ...route.query, setIframePath: routerIframePath.value } });
+    }
+  }
+
+  const resolveFrameEvent = ({ data }: { data: any }) => {
     if (typeof data === 'string') {
-      const messageData = JSON.parse(data);
+      const eventData = JSON.parse(data);
 
-      if (messageData.type === 'route') {
-        const currentIframePath = route.query.setIframePath as string|undefined;
-        routerIframePath.value = messageData.location === '/' ? undefined : messageData.location;
+      if (updateUrlParam && eventData.type === 'route') updateRouterIframePath(eventData);
 
-        if (currentIframePath !== routerIframePath.value) {
-          router.push({ query: { ...route.query, setIframePath: routerIframePath.value } });
-        }
-      }
+      const { isLoggedIn } = useProfileStore();
+      const showLoginModal =  eventData.type === 'click' && eventData.target === 'loginButton' && !isLoggedIn;
+      if (showLoginModal) layoutStore.showModal('signIn');
     }
   }
 
   onMounted(async () => {
-    if (updateUrlParam) window.addEventListener('message', updateRouterIframePath);
+    window.addEventListener('message', resolveFrameEvent);
 
     if (isMobile.value) {
       const footerEl: HTMLElement | null = document.querySelector('footer');
@@ -224,7 +202,7 @@
           path: localizePath('/profile/limits'),
           query: {}
         });
-        showModal('gameLimitReached');
+        limitStore.showModal('gameLimitReached');
       } else if (error.data?.error?.code === 14103) {
         redirectLimitedPlayer();
       } else {
@@ -246,7 +224,7 @@
           path: localizePath('/profile/limits'),
           query: {}
         });
-        showModal('gameLimitReached');
+        limitStore.showModal('gameLimitReached');
       } else if (error.data?.error?.code === 14103) {
         redirectLimitedPlayer();
       } else {
@@ -258,7 +236,7 @@
   });
 
   onBeforeUnmount(() => {
-    if (updateUrlParam) window.removeEventListener('message', updateRouterIframePath);
+    window.removeEventListener('message', resolveFrameEvent);
 
     const footerEl: any = document.querySelector('footer');
     if (footerEl) footerEl.style.display = null;
