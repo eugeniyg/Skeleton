@@ -33,7 +33,7 @@
       <favorite-recently v-if="isLoggedIn"/>
     </client-only>
 
-    <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent.seo.text"/>
+    <atomic-seo-text v-if="pageContent?.pageMeta?.seoText" v-bind="pageContent.pageMeta.seoText"/>
   </div>
 </template>
 
@@ -50,7 +50,7 @@
   } = storeToRefs(globalStore);
   const {
     localizePath,
-    setPageSeo,
+    setPageMeta,
     getLocalesContentData
   } = useProjectMethods();
   const { isLoggedIn } = storeToRefs(profileStore);
@@ -67,7 +67,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     pageContent.value = contentData?.currentLocaleData;
     defaultLocalePageContent.value = contentData?.defaultLocaleData;
-    setPageSeo(pageContent.value?.seo);
+    setPageMeta(pageContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {

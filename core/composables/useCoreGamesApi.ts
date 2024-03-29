@@ -11,71 +11,71 @@ import type {
   IWinner,
   IWinnersRequest
 } from '../types';
-import {useFetchInstance} from '../assets/apiInstance';
-import { useBaseFetchInstance } from '../assets/apiBaseInstance';
+import { useApiGuestInstance } from "@skeleton/core/assets/apiGuestInstance";
+import { useApiAuthInstance } from "@skeleton/core/assets/apiAuthInstance";
 
 export const useCoreGamesApi = () => {
   const getGameCollections = async ():Promise<ICollection[]> => {
-    const { data } = await useBaseFetchInstance('/api/game/collections');
+    const { data } = await useApiGuestInstance('/api/game/collections');
     return data;
   };
 
   const getGameProviders = async (params?: IProvidersRequest):Promise<IGameProvider[]> => {
-    const { data } = await useBaseFetchInstance('/api/game/providers', { params });
+    const { data } = await useApiGuestInstance('/api/game/providers', { params });
     return data;
   };
 
   const getProviderInfo = async (combineProviderId: string): Promise<IGameProvider> => {
-    const { data } = await useFetchInstance(`/api/game/providers/${combineProviderId}`);
+    const { data } = await useApiGuestInstance(`/api/game/providers/${combineProviderId}`);
     return data;
   }
 
   const getFilteredGames = async (filterParams: IGamesRequest):Promise<IGamesResponse> => {
-    return await useFetchInstance('/api/game/games', {params: filterParams});
+    return await useApiGuestInstance('/api/game/games', {params: filterParams});
   };
 
   const getGamesInfo = async (gameId: string):Promise<IGame> => {
-    const { data } = await useBaseFetchInstance(`/api/game/games/${gameId}`);
+    const { data } = await useApiGuestInstance(`/api/game/games/${gameId}`);
     return data;
   };
 
   const getStartGame = async (gameId: string, requestData: IGameStart):Promise<{gameUrl: string, token: string }> => {
-    const { data } = await useFetchInstance(`/api/game/games/${gameId}/play`, { method: 'POST', body: requestData });
+    const { data } = await useApiAuthInstance(`/api/game/games/${gameId}/play`, { method: 'POST', body: requestData });
     return data;
   };
 
   const getFavorite = async ():Promise<IGame[]> => {
-    const { data } = await useFetchInstance('/api/game/games/favorites');
+    const { data } = await useApiAuthInstance('/api/game/games/favorites');
     return data;
   };
 
   const setFavorite = async (gameId: string):Promise<IGame[]> => {
-    const { data } = await useFetchInstance(`/api/game/games/${gameId}/favorite`, { method: 'POST' });
+    const { data } = await useApiAuthInstance(`/api/game/games/${gameId}/favorite`, { method: 'POST' });
     return data;
   };
 
   const deleteFavorite = async (gameId: string):Promise<IGame[]> => {
-    const { data } = await useFetchInstance(`/api/game/games/${gameId}/favorite`, { method: 'DELETE' });
+    const { data } = await useApiAuthInstance(`/api/game/games/${gameId}/favorite`, { method: 'DELETE' });
     return data;
   };
 
   const getSpinsHistory = async (page?: number, perPage?: number):Promise<ISpinsResponse> => {
-    return await useFetchInstance('/api/game/spins', {params: {page, perPage}});
+    return await useApiAuthInstance('/api/game/spins', {params: {page, perPage}});
   };
 
   const getBetsHistory = async (page?: number, perPage?: number, isSettled = true):Promise<IBetsResponse> => {
-    return await useFetchInstance('/api/game/bets', {
+    return await useApiAuthInstance('/api/game/bets', {
       params: {page, perPage, isSettled}
     });
   };
 
   const getLatestWinners = async (requestData: IWinnersRequest):Promise<IWinner[]> => {
-    const { data } = await useFetchInstance('/api/game/spins/winners', { params: requestData });
+    const { data } = await useApiGuestInstance('/api/game/spins/winners', { params: requestData });
     return data;
   };
 
   const getRecentlyPlayed = async (requestData: IRecentlyRequest):Promise<IGame[]> => {
-    const { data } = await useFetchInstance('/api/game/games/played', { params: requestData });
+    const { data } = await useApiAuthInstance('/api/game/games/played', { params: requestData });
     return data;
   };
 

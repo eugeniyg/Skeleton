@@ -72,7 +72,7 @@
     limitsContent, defaultLimitsContent, isAdvancedModeEnabled,
   } = storeToRefs(limitsStore);
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const { getLocalesContentData, getContent, setPageSeo } = useProjectMethods();
+  const { getLocalesContentData, getContent, setPageMeta } = useProjectMethods();
 
   const currentLocaleLimitsContent = ref<Maybe<IProfileLimits>>();
   const defaultLocaleLimitsContent = ref<Maybe<IProfileLimits>>();
@@ -86,7 +86,7 @@
     currentLocaleLimitsContent.value = contentData?.currentLocaleData;
     defaultLocaleLimitsContent.value = contentData?.defaultLocaleData;
     setLimitsContent(currentLocaleLimitsContent.value, defaultLocaleLimitsContent.value);
-    setPageSeo(currentLocaleLimitsContent.value?.seo);
+    setPageMeta(currentLocaleLimitsContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {

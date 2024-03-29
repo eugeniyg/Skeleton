@@ -107,7 +107,7 @@
   } = storeToRefs(globalStore);
 
   const {
-    setPageSeo,
+    setPageMeta,
     getLocalesContentData,
     getContent,
   } = useProjectMethods();
@@ -123,7 +123,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     infoContent.value = contentData?.currentLocaleData;
     defaultLocaleInfoContent.value = contentData?.defaultLocaleData;
-    setPageSeo(infoContent.value?.seo);
+    setPageMeta(infoContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {

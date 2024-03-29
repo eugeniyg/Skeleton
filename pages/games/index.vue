@@ -56,7 +56,7 @@
       :image="getContent(gamesContent, defaultLocaleGamesContent, 'empty.image')"
     />
 
-    <atomic-seo-text v-if="gamesContent?.seo?.text" v-bind="gamesContent?.seo?.text"/>
+    <atomic-seo-text v-if="gamesContent?.pageMeta?.seoText" v-bind="gamesContent?.pageMeta?.seoText"/>
   </div>
 </template>
 
@@ -87,7 +87,7 @@
   } = storeToRefs(globalStore);
 
   const {
-    setPageSeo,
+    setPageMeta,
     getContent,
     getLocalesContentData,
   } = useProjectMethods();
@@ -116,7 +116,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     gamesContent.value = contentData?.currentLocaleData;
     defaultLocaleGamesContent.value = contentData?.defaultLocaleData;
-    setPageSeo(gamesContent.value?.seo);
+    setPageMeta(gamesContent.value?.pageMeta);
     setDefaultSortOptions();
   }
 

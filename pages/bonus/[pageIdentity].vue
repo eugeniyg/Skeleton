@@ -32,7 +32,7 @@
       />
     </div>
 
-    <atomic-seo-text v-if="currentLocaleBonusContent?.seo?.text" v-bind="currentLocaleBonusContent?.seo?.text" />
+    <atomic-seo-text v-if="currentLocaleBonusContent?.pageMeta?.seoText" v-bind="currentLocaleBonusContent?.pageMeta?.seoText" />
   </div>
 </template>
 
@@ -47,7 +47,7 @@
 
   const {
     localizePath,
-    setPageSeo,
+    setPageMeta,
     getLocalesContentData,
     getContent
   } = useProjectMethods();
@@ -63,7 +63,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     currentLocaleBonusContent.value = contentData?.currentLocaleData;
     defaultLocaleBonusContent.value = contentData?.defaultLocaleData;
-    setPageSeo(currentLocaleBonusContent.value?.seo);
+    setPageMeta(currentLocaleBonusContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
