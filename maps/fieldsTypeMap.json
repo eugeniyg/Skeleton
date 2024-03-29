@@ -199,5 +199,12 @@
         "rule": "integer"
       }
     ]
+  },
+  "cpf_number": {
+    "component": "form-input-cpf-number",
+    "type": "text",
+    "validation": [{
+      "rule": "cpf_number"
+    }]
   }
 }

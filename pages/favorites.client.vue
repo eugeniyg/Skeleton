@@ -4,30 +4,26 @@
       {{ favoritesContent?.title || defaultLocaleFavoritesContent?.title }}
     </div>
 
-    <client-only>
-      <list-grid
-        v-if="showFavorites"
-        :items="currentFavoriteList"
-        :meta="pageMeta"
-        @loadMore="currentPage++"
-      />
+    <list-grid
+      v-if="favoriteGames?.length"
+      :items="currentFavoriteList"
+      :meta="pageMeta"
+      @loadMore="currentPage++"
+    />
 
-      <atomic-empty
-        v-else
-        :title="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.title')"
-        :subTitle="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.description')"
-        :image="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.image')"
-      />
+    <atomic-empty
+      v-else
+      :title="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.title')"
+      :subTitle="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.description')"
+      :image="getContent(favoritesContent, defaultLocaleFavoritesContent, 'empty.image')"
+    />
 
-      <group-games
-        v-if="!showFavorites && recommendedCategory"
-        :category="recommendedCategory"
-        showArrows
-        subTitle
-      />
-    </client-only>
-
-    <atomic-seo-text v-if="favoritesContent?.seo?.text" v-bind="favoritesContent?.seo?.text" />
+    <group-games
+      v-if="!favoriteGames?.length && recommendedCategory"
+      :category="recommendedCategory"
+      showArrows
+      subTitle
+    />
   </div>
 </template>
 
@@ -38,7 +34,7 @@
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
   const {
-    setPageSeo,
+    setPageMeta,
     getLocalesContentData,
     getContent,
   } = useProjectMethods();
@@ -54,7 +50,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     favoritesContent.value = contentData?.currentLocaleData;
     defaultLocaleFavoritesContent.value = contentData?.defaultLocaleData;
-    setPageSeo(favoritesContent.value?.seo);
+    setPageMeta(favoritesContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
@@ -69,7 +65,7 @@
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { pending, data } = await useLazyAsyncData('favoritesPageContent', () => getPageContent());
+  const { data } = await useLazyAsyncData('favoritesPageContent', () => getPageContent());
   if (data.value) setContentData(data.value);
 
   watch(data, () => {
@@ -77,9 +73,7 @@
   })
 
   const gameStore = useGamesStore();
-  const profileStore = useProfileStore();
   const { favoriteGames } = storeToRefs(gameStore);
-  const { isLoggedIn } = storeToRefs(profileStore);
   const currentPage = ref<number>(1);
   const currentFavoriteList = computed(() => favoriteGames.value.slice(0, currentPage.value * 18));
 
@@ -91,7 +85,6 @@
 
   const { currentLocationCollections } = useGamesStore();
   const recommendedCategory = currentLocationCollections.find((collection) => collection.identity === 'recommended');
-  const showFavorites = computed(() => favoriteGames.value?.length && isLoggedIn.value);
 </script>
 
 <style src="~/assets/styles/pages/favorites.scss" lang="scss" />

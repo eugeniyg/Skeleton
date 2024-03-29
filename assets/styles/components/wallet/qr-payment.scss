@@ -1,0 +1,47 @@
+.qr-payment {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: var(--text-tertiary);
+
+  @include media(sm) {
+    height: auto;
+  }
+
+  &__title {
+    @include font($heading-4);
+    color: var(--text-primary);
+    margin-bottom: rem(4px);
+  }
+
+  &__description {
+    @include font($body-1);
+  }
+
+  &__qr-code {
+    display: block;
+    width: rem(176px);
+    height: rem(176px);
+    border-radius: rem(8px);
+    overflow: hidden;
+    margin: auto;
+
+    @include media(sm) {
+      margin: rem(34px) auto rem(40px) auto;
+    }
+  }
+
+  &__divider {
+    margin: 0 0 auto;
+
+    @include media(sm) {
+      margin: 0 0 rem(40px);
+    }
+  }
+
+  &__instruction {
+    @include font($body-1);
+    margin-bottom: rem(24px);
+
+  }
+}

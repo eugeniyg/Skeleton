@@ -31,7 +31,7 @@
 
   const props = defineProps<{
     crypto?: boolean;
-    amount?: number|string;
+    amount?: string;
   }>();
 
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();

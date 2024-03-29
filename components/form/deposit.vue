@@ -1,5 +1,7 @@
 <template>
-  <form class="form-deposit">
+  <wallet-qr-payment v-if="qrAddress" :qrAddress="qrAddress"  />
+
+  <form v-else class="form-deposit">
     <form-input-number
       :hint="fieldHint"
       :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.sumLabel') || ''"
@@ -11,7 +13,12 @@
       :is-bigger="true"
     />
 
-    <!--    <wallet-pills />-->
+    <wallet-pills
+      v-if="filteredPresets.length"
+      v-model:value="amountValue"
+      :items="filteredPresets"
+    />
+
     <component
       v-for="field in visibleFields"
       :key="field.key"
@@ -47,16 +54,16 @@
       >
         <atomic-spinner :is-shown="isSending"/>
         <span class="btn-primary__content">
-          <span>
-            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.depositButton') }}
-            {{ buttonAmount }}
-            {{ formatAmountMin.currency }}
-          </span>
-
-          <span v-if="selectedDepositBonus && bonusSummary">
-            {{ bonusSummary }}
-          </span>
+        <span>
+          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.depositButton') }}
+          {{ buttonAmount }}
+          {{ formatAmountMin.currency }}
         </span>
+
+        <span v-if="selectedDepositBonus && bonusSummary">
+          {{ bonusSummary }}
+        </span>
+      </span>
       </button-base>
     </div>
   </form>
@@ -64,17 +71,24 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IBonus, IPaymentField, IResponseDeposit} from '@skeleton/core/types';
+  import type {
+    IBonus,
+    IPaymentField,
+    IRequestDeposit,
+    IPaymentPreset,
+    IResponseDeposit
+  } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import queryString from 'query-string';
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
 
   const props = defineProps<{
-    amountMax?: number,
-    amountMin?: number,
-    method?: string,
-    fields: IPaymentField[]
+    amountMax?: number;
+    amountMin?: number;
+    method?: string;
+    presets: IPaymentPreset[];
+    fields: IPaymentField[];
   }>();
 
   const globalStore = useGlobalStore();
@@ -102,6 +116,8 @@
 
     if (currentField.key === 'phone') {
       rulesArr.push({ rule: 'phone' }); // skeleton phone rule without "+"
+    } else if (currentField.key === 'cpf_number') {
+      rulesArr.push({ rule: 'cpf_number' }); // skeleton cfp_number rule harder
     } else if (currentField.regexp) {
       rulesArr.push({ rule: 'regex', arguments: currentField.regexp });
     }
@@ -155,15 +171,19 @@
   }
 
   const isSending = ref<boolean>(false);
-  const amountValue = ref<number>(getStorageBonusAmount() || formatAmountMin.amount);
+  const filteredPresets = props.presets.filter(preset => {
+    return preset.amount >= formatAmountMin.amount && preset.amount <= formatAmountMax.amount;
+  });
+  const defaultPreset = filteredPresets.find(preset => preset.default);
+  const amountValue = ref<string>(String(getStorageBonusAmount() || defaultPreset?.amount || formatAmountMin.amount));
   const buttonAmount = computed(() => {
-    if (amountValue.value > formatAmountMax.amount) return formatAmountMax.amount;
-    if (amountValue.value < formatAmountMin.amount) return formatAmountMin.amount;
+    if (Number(amountValue.value) > formatAmountMax.amount) return formatAmountMax.amount;
+    if (Number(amountValue.value) < formatAmountMin.amount) return formatAmountMin.amount;
     return amountValue.value;
   });
   const buttonDisabled = computed(() => v$.value.$invalid
-    || (amountValue.value < formatAmountMin.amount)
-    || (amountValue.value > formatAmountMax.amount)
+    || (Number(amountValue.value) < formatAmountMin.amount)
+    || (Number(amountValue.value) > formatAmountMax.amount)
     || isSending.value);
 
   const getPaymentPageUrl = (depositResponse: IResponseDeposit): string => {
@@ -177,29 +197,16 @@
     return `${depositResponse.action}${paramsString}`;
   }
 
-  const getDeposit = async ():Promise<void> => {
-    if (buttonDisabled.value) return;
-
-    v$.value.$reset();
-    const validFormData = await v$.value.$validate();
-    if (!validFormData) return;
-
-    if (profileStore.profile?.status === 2 && activeAccountType.value === 'fiat') {
-      const { showAlert } = useLayoutStore();
-      showAlert(alertsData?.limit?.limitedDeposit || defaultLocaleAlertsData?.limit?.limitedDeposit);
-      return;
-    }
-
-    isSending.value = true;
+  const getRequestParams = (): IRequestDeposit => {
     const { query, path } = useRoute();
     const { origin } = window.location;
     const successQueryString = queryString.stringify({ ...query, success: 'deposit', wallet: undefined });
     const errorQueryString = queryString.stringify({ ...query, error: 'deposit', wallet: undefined });
     const successRedirect = `${origin}${path}?${successQueryString}`;
     const errorRedirect = `${origin}${path}?${errorQueryString}`;
-
     const mainCurrencyAmount = getMainBalanceFormat(formatAmountMin.currency, Number(amountValue.value));
-    const params = {
+
+    return {
       method: props.method || '',
       currency: activeAccount.value?.currency || '',
       amount: mainCurrencyAmount.amount,
@@ -211,19 +218,52 @@
         ? { ...depositFormData, phone: depositFormData.phone ? `+${depositFormData.phone}` : undefined }
         : undefined
     };
+  }
+
+  const qrAddress = ref<string | undefined>();
+  const windowReference = ref<Window | null>(null);
+  const depositRequest = async (): Promise<void> => {
+    isSending.value = true;
+
     const { depositAccount } = useCoreWalletApi();
-    const windowReference:any = window.open();
+    const params = getRequestParams();
+    windowReference.value = null;
+
+    if (!methodsWithoutNewWindow.includes(props.method || '')) {
+      windowReference.value = window.open();
+    }
+
     try {
       const depositResponse = await depositAccount(params);
       sessionStorage.removeItem('depositBonusData');
-      const redirectUrl = getPaymentPageUrl(depositResponse);
-      windowReference.location = redirectUrl;
-      setTimeout(() => { isSending.value = false; }, 1000);
+
+      if (depositResponse.type === 'form' && windowReference.value) {
+        windowReference.value.location = getPaymentPageUrl(depositResponse);
+      } else if (depositResponse.type === 'qr' && depositResponse.qr) {
+        qrAddress.value = depositResponse.qr;
+      }
     } catch {
-      windowReference.close();
-      isSending.value = false;
+      if (windowReference.value) windowReference.value.close();
       showModal('error');
+    } finally {
+      isSending.value = false;
     }
+  }
+
+  const getDeposit = async ():Promise<void> => {
+    if (buttonDisabled.value) return;
+
+    v$.value.$reset();
+    const validFormData = await v$.value.$validate();
+    if (!validFormData) return;
+
+    if (profileStore.profile?.status === 2) {
+      const { showAlert } = useLayoutStore();
+      showAlert(alertsData?.limit?.limitedDeposit || defaultLocaleAlertsData?.limit?.limitedDeposit);
+      return;
+    }
+
+    await depositRequest();
   };
 
   const getPackageBonusesFreeSpins = (bonusInfo: IBonus): number => {
@@ -250,6 +290,7 @@
       : `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${bonusSum}`;
   }
 
+  const methodsWithoutNewWindow = ['pix_qr_brl_invoice:pix_qr'];
   const getPercentageBonusValue = (bonusInfo: IBonus): string => {
     const maxAmountItems = bonusInfo.assignConditions?.maxAmountItems;
     const maxAmountBase = bonusInfo.assignConditions?.baseCurrencyMaxAmount;
@@ -259,7 +300,7 @@
     const bonusPercentage = bonusInfo.assignConditions?.depositPercentage;
     if (!bonusPercentage) return '';
 
-    const percentageSum = amountValue.value * bonusPercentage / 100;
+    const percentageSum = Number(amountValue.value) * bonusPercentage / 100;
     let bonusSumString: string = '';
 
     if (maxSum && parseFloat(maxSum) > percentageSum) {

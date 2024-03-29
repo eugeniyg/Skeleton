@@ -1,34 +1,23 @@
 <template>
-  <div>
-    <div class="user-profile">
-      <nav-profile v-if="profileMenu.length" :items="profileMenu"/>
+  <div class="user-profile">
+    <nav-profile v-if="profileMenu.length" :items="profileMenu"/>
 
-      <client-only>
-        <NuxtPage />
-      </client-only>
-    </div>
-
-    <atomic-seo-text v-if="activePageSeo?.text" v-bind="activePageSeo?.text" />
+    <NuxtPage />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IProfilePages, ISeoBlock } from '~/types';
+  import type { IProfilePages } from '~/types';
   import camelCase from "lodash/camelCase";
 
-  definePageMeta({
-    middleware: 'auth',
-  });
-
-  const { localizePath, getLocalesContentData } = useProjectMethods();
-  const route = useRoute();
+  const { getLocalesContentData } = useProjectMethods();
 
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
   const { getProfileFields } = useFieldsStore();
-  const profileMenu = ref<{ id: string, title: string, url: string, seo: ISeoBlock }[]>([]);
+  const profileMenu = ref<{ id: string, title: string, url: string }[]>([]);
 
   const currentLocaleData = ref<Maybe<IProfilePages>>();
   const defaultLocaleData = ref<Maybe<IProfilePages>>();
@@ -71,8 +60,7 @@
       profileMenu.value = filteredArray.map((key) => ({
         id: key,
         title: profileContentObj[key].title,
-        url: `/profile/${key}`,
-        seo: profileContentObj[key].seo,
+        url: `/profile/${key}`
       }));
     }
   }
@@ -95,17 +83,12 @@
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { pending, data } = await useLazyAsyncData('profilePages', () => getPageContent());
+  const { data } = await useLazyAsyncData('profilePages', () => getPageContent());
   if (data.value) setContentData(data.value);
 
   watch(data, () => {
     setContentData(data.value);
   })
-
-  const activePageSeo = computed(() => {
-    const activePageData = profileMenu.value.find((item) => localizePath(item.url) === route.path);
-    return activePageData?.seo;
-  });
 
   onBeforeMount(() => {
     getProfileFields();
