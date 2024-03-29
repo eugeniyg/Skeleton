@@ -31,7 +31,7 @@
 
       <template v-else-if="depositMethods?.length && props.currentDepositMethod">
         <form-deposit
-          :key="`${props.currentDepositMethod.method}-${depositMethodKey}`"
+          :key="`${props.currentDepositMethod.method}-${depositMethodKey}-${showMobileFormKey}`"
           v-if="props.currentDepositMethod.type === 'form'"
           v-bind="props.currentDepositMethod"
         />
@@ -39,7 +39,7 @@
         <form-deposit-crypto
           v-if="props.currentDepositMethod.type === 'address'"
           v-bind="props.currentDepositMethod"
-          :key="`${props.currentDepositMethod.method}-${depositMethodKey}`"
+          :key="`${props.currentDepositMethod.method}-${depositMethodKey}-${showMobileFormKey}`"
         />
       </template>
 
@@ -55,7 +55,7 @@
     <template v-else-if="props.selectedTab === 'withdraw'">
       <form-withdraw
         v-if="withdrawMethods?.length && props.currentWithdrawMethod"
-        :key="props.currentWithdrawMethod.method"
+        :key="`${props.currentWithdrawMethod.method}-${showMobileFormKey}`"
         v-bind="props.currentWithdrawMethod"
       />
 
@@ -86,6 +86,7 @@
     modalTitle: string;
     currentDepositMethod?: IPaymentMethod;
     currentWithdrawMethod?: IPaymentMethod;
+    showMobileForm: boolean;
   }>()
 
   const emit = defineEmits(['changeTab']);
@@ -172,6 +173,13 @@
       defaultLocaleLimitsContent.value = defaultLocaleContentResponse.value as IProfileLimits['coolingOff'];
     }
   }
+
+  const showMobileFormKey = ref<number>(0);
+  watch(() => props.showMobileForm, (newValue) => {
+    if (!newValue) {
+      setTimeout(() => { showMobileFormKey.value += 1 }, 400);
+    }
+  })
 
   watch(() => depositMethods.value, () => {
     depositMethodKey.value += 1;

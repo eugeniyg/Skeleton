@@ -19,6 +19,7 @@
       />
 
       <wallet-forms
+        :showMobileForm="showMobileForm"
         :currentDepositMethod="currentDepositMethod"
         :currentWithdrawMethod="currentWithdrawMethod"
         :showTabs="showTabs"

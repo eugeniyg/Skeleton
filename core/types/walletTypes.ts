@@ -70,6 +70,8 @@ export interface IResponseDeposit extends Record<string, any>{
   action: string;
   method: string;
   fields: { [key: string]: string };
+  type: string;
+  qr?: string;
 }
 
 export interface IResponseWithdraw extends Record<string, any>{
