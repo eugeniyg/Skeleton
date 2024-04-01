@@ -1,5 +1,7 @@
 <template>
-  <wallet-qr-payment v-if="qrAddress" :qrAddress="qrAddress"  />
+  <iframe v-if="iframeUrl" :src="iframeUrl" />
+
+  <wallet-qr-payment v-else-if="qrAddress" :qrAddress="qrAddress" />
 
   <form v-else class="form-deposit">
     <form-input-number
@@ -220,6 +222,7 @@
     };
   }
 
+  const iframeUrl = ref<string | undefined>();
   const qrAddress = ref<string | undefined>();
   const windowReference = ref<Window | null>(null);
   const depositRequest = async (): Promise<void> => {
@@ -239,8 +242,9 @@
 
       if (depositResponse.type === 'form' && windowReference.value) {
         windowReference.value.location = getPaymentPageUrl(depositResponse);
-      } else if (depositResponse.type === 'qr' && depositResponse.qr) {
-        qrAddress.value = depositResponse.qr;
+      } else if (depositResponse.type === 'qr') {
+        if (depositResponse.qr) qrAddress.value = depositResponse.qr;
+        else if (depositResponse.action) iframeUrl.value = depositResponse.action;
       }
     } catch {
       if (windowReference.value) windowReference.value.close();
