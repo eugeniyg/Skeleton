@@ -13,6 +13,7 @@
 
   const router = useRouter();
   watch(() => sessionToken.value, (newToken) => {
+    console.log('newToken: ', newToken);
     const needReload = (!newToken && sessionConfirmed.value) || (newToken && !sessionConfirmed.value);
     if (needReload) router.go(0);
   })
