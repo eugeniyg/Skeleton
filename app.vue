@@ -16,4 +16,8 @@
     const needReload = (!newToken && sessionConfirmed.value) || (newToken && !sessionConfirmed.value);
     if (needReload) router.go(0);
   })
+
+  onMounted(() => {
+    console.log('app mounted');
+  })
 </script>
