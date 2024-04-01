@@ -239,12 +239,14 @@
     try {
       const depositResponse = await depositAccount(params);
       sessionStorage.removeItem('depositBonusData');
+      const paymentPageUrl = getPaymentPageUrl(depositResponse);
 
-      if (depositResponse.type === 'form' && windowReference.value) {
-        windowReference.value.location = getPaymentPageUrl(depositResponse);
-      } else if (depositResponse.type === 'qr') {
-        if (depositResponse.qr) qrAddress.value = depositResponse.qr;
-        else if (depositResponse.action) iframeUrl.value = depositResponse.action;
+      if (windowReference.value && depositResponse.type === 'form') {
+        windowReference.value.location = paymentPageUrl;
+      } else if (depositResponse.type === 'qr' && depositResponse.qr) {
+        qrAddress.value = depositResponse.qr;
+      } else if (depositResponse.type === 'iframe') {
+        iframeUrl.value = paymentPageUrl;
       }
     } catch {
       if (windowReference.value) windowReference.value.close();
