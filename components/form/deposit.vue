@@ -187,6 +187,7 @@
     || (Number(amountValue.value) < formatAmountMin.amount)
     || (Number(amountValue.value) > formatAmountMax.amount)
     || isSending.value);
+  const processedInModalMethods = ['pix_qr_brl_invoice:pix_qr'];
 
   const getPaymentPageUrl = (depositResponse: IResponseDeposit): string => {
     const responseHasParams = Object.keys(depositResponse.fields).length;
@@ -200,12 +201,18 @@
   }
 
   const getRequestParams = (): IRequestDeposit => {
-    const { query, path } = useRoute();
-    const { origin } = window.location;
-    const successQueryString = queryString.stringify({ ...query, success: 'deposit', wallet: undefined });
-    const errorQueryString = queryString.stringify({ ...query, error: 'deposit', wallet: undefined });
-    const successRedirect = `${origin}${path}?${successQueryString}`;
-    const errorRedirect = `${origin}${path}?${errorQueryString}`;
+    let successRedirect;
+    let errorRedirect;
+
+    if (!processedInModalMethods.includes(props.method || '')) {
+      const { query, path } = useRoute();
+      const { origin } = window.location;
+      const successQueryString = queryString.stringify({ ...query, success: 'deposit', wallet: undefined });
+      const errorQueryString = queryString.stringify({ ...query, error: 'deposit', wallet: undefined });
+      successRedirect = `${origin}${path}?${successQueryString}`;
+      errorRedirect = `${origin}${path}?${errorQueryString}`;
+    }
+
     const mainCurrencyAmount = getMainBalanceFormat(formatAmountMin.currency, Number(amountValue.value));
 
     return {
@@ -232,7 +239,7 @@
     const params = getRequestParams();
     windowReference.value = null;
 
-    if (!methodsWithoutNewWindow.includes(props.method || '')) {
+    if (!processedInModalMethods.includes(props.method || '')) {
       windowReference.value = window.open();
     }
 
@@ -296,7 +303,6 @@
       : `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${bonusSum}`;
   }
 
-  const methodsWithoutNewWindow = ['pix_qr_brl_invoice:pix_qr'];
   const getPercentageBonusValue = (bonusInfo: IBonus): string => {
     const maxAmountItems = bonusInfo.assignConditions?.maxAmountItems;
     const maxAmountBase = bonusInfo.assignConditions?.baseCurrencyMaxAmount;
