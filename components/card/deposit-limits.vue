@@ -3,11 +3,12 @@
     class="limits__card"
     :class="{'is-full-width': isFullWidth}"
   >
+    <pre style="color:white">{{ getContent(limitsContent, defaultLimitsContent, 'deposit.hint') }}</pre>
     <h4 class="limits__card-title" data-tooltip-parent>
       {{ getContent(limitsContent, defaultLimitsContent, 'deposit.label') }}
       <atomic-tooltip
         v-if="depositPeriods.length"
-        :text="getContent(limitsContent, defaultLimitsContent, 'titleTooltip')"
+        :text="getContent(limitsContent, defaultLimitsContent, 'deposit.hint')"
         align="bottom"
       />
     </h4>

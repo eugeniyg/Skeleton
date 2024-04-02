@@ -7,7 +7,7 @@
       {{ getContent(limitsContent, defaultLimitsContent, 'loss.label') }}
       <atomic-tooltip
         v-if="lossPeriods.length"
-        :text="getContent(limitsContent, defaultLimitsContent, 'titleTooltip')"
+        :text="getContent(limitsContent, defaultLimitsContent, 'loss.hint')"
         align="bottom"
       />
     </h4>

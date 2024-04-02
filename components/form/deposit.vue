@@ -89,7 +89,7 @@
     amountMax?: number;
     amountMin?: number;
     method?: string;
-    presets: IPaymentPreset[];
+    presets?: IPaymentPreset[];
     fields: IPaymentField[];
   }>();
 
@@ -173,9 +173,9 @@
   }
 
   const isSending = ref<boolean>(false);
-  const filteredPresets = props.presets.filter(preset => {
+  const filteredPresets = props.presets?.filter(preset => {
     return preset.amount >= formatAmountMin.amount && preset.amount <= formatAmountMax.amount;
-  });
+  }) || [];
   const defaultPreset = filteredPresets.find(preset => preset.default);
   const amountValue = ref<string>(String(getStorageBonusAmount() || defaultPreset?.amount || formatAmountMin.amount));
   const buttonAmount = computed(() => {
