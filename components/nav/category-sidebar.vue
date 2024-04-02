@@ -39,10 +39,6 @@
   const route = useRoute();
   
   const { localizePath } = useProjectMethods();
-  // const defineCurrentAction = (href: string): void => {
-  //   if (!href) return;
-  //   router.push(localizePath(href));
-  // };
 </script>
 
 <style src="~/assets/styles/components/nav/category-sidebar.scss" lang="scss"/>
