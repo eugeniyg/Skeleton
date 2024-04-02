@@ -3,7 +3,6 @@
     class="limits__card"
     :class="{'is-full-width': isFullWidth}"
   >
-    <pre style="color:white">{{ getContent(limitsContent, defaultLimitsContent, 'deposit.hint') }}</pre>
     <h4 class="limits__card-title" data-tooltip-parent>
       {{ getContent(limitsContent, defaultLimitsContent, 'deposit.label') }}
       <atomic-tooltip
