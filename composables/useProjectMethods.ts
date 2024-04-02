@@ -327,6 +327,12 @@ export const useProjectMethods = () => {
     return script;
   }
 
+  const handleExternalLink = (url: string):void => {
+    const router = useRouter();
+    const { localizePath } = useProjectMethods();
+    url.includes('http') ? window.open(url, '_blank') : router.push(localizePath(url));
+  }
+
   return {
     createValidationRules,
     getFormRules,
@@ -350,6 +356,7 @@ export const useProjectMethods = () => {
     createSrcSet,
     getEquivalentFromBase,
     getSumFromAmountItems,
-    addBetsyScript
+    addBetsyScript,
+    handleExternalLink
   };
 };

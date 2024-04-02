@@ -1,14 +1,16 @@
 <template>
   <div class="cta-menu">
-    <a
-      v-for="item in props.items" :href="item.url"
-      class="cta-menu__item"
-      :class="{'is-active': route.path === localizePath(item.url)}"
+    <atomic-link
+        v-for="item in props.items"
+        :href="item.url"
+        :key="item.title"
+        class="cta-menu__item"
+        :class="{'is-active': route.path === localizePath(item.url)}"
     >
       <span class="cta-menu__title">{{ item.title }}</span>
       <span class="cta-menu__sub-title">{{ item.subTitle }}</span>
       <atomic-image class="cta-menu__img" :src="item.image" />
-    </a>
+    </atomic-link>
   </div>
 </template>
 

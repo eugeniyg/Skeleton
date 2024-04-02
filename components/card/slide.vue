@@ -25,6 +25,7 @@
 <script setup lang="ts">
   import { marked } from 'marked';
   import type { ISliderItem } from "~/types";
+  const { handleExternalLink } = useProjectMethods();
 
   const props = defineProps<{
     slideData: ISliderItem;
@@ -35,9 +36,7 @@
   const backgroundGradientStyle = computed(() => `background: linear-gradient(to right, ${props.slideData.colorLeft}, ${props.slideData.colorRight})`);
 
   const clickButton = (url:string):void => {
-    const router = useRouter();
-    const { localizePath } = useProjectMethods();
-    router.push(localizePath(url));
+    if (url) handleExternalLink(url)
   };
 </script>
 
