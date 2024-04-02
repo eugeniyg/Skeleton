@@ -18,7 +18,7 @@
       />
     </client-only>
 
-    <atomic-seo-text v-if="gameContent?.seo?.text" v-bind="gameContent?.seo?.text" />
+    <atomic-seo-text v-if="gameContent?.pageMeta?.seoText" v-bind="gameContent?.pageMeta?.seoText" />
   </div>
 </template>
 
@@ -53,7 +53,7 @@
     headerCountry
   } = storeToRefs(globalStore);
 
-  const { setPageSeo, getLocalesContentData } = useProjectMethods();
+  const { setPageMeta, getLocalesContentData } = useProjectMethods();
 
   const gameInfo = ref<Maybe<IGame>>();
   const gameContent = ref<Maybe<IGamePage>>();
@@ -69,7 +69,7 @@
     gameInfo.value = contentData?.gameInfo;
     gameContent.value = contentData?.currentLocaleData;
     defaultLocaleGameContent.value = contentData?.defaultLocaleData;
-    setPageSeo(gameContent.value?.seo);
+    setPageMeta(gameContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageData> => {

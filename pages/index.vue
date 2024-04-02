@@ -55,7 +55,7 @@
 
     <group-promotions />
 
-    <atomic-seo-text v-if="homeContent?.seo?.text" v-bind="homeContent.seo.text"/>
+    <atomic-seo-text v-if="homeContent?.pageMeta?.seoText" v-bind="homeContent.pageMeta.seoText"/>
   </div>
 </template>
 
@@ -72,7 +72,7 @@
   } = storeToRefs(globalStore);
 
   const {
-    setPageSeo,
+    setPageMeta,
     localizePath,
     getContent,
     getLocalesContentData,
@@ -90,7 +90,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     homeContent.value = contentData?.currentLocaleData;
     defaultLocaleHomeContent.value = contentData?.defaultLocaleData;
-    setPageSeo(homeContent.value?.seo);
+    setPageMeta(homeContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {

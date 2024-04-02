@@ -4,10 +4,7 @@
     <div class="description">{{ props.content?.addressDescription }}</div>
 
     <div class="box">
-      <atomic-image
-        v-if="props.qrAddress"
-        :src="`https://chart.googleapis.com/chart?chs=116x116&cht=qr&chl=${props.qrAddress}&choe=UTF-8`"
-      />
+      <atomic-qr-code :width="116" :qrAddress="props.qrAddress" />
     </div>
   </div>
 </template>
@@ -21,4 +18,4 @@ import type { IWalletDeposit } from '~/types';
   }>();
 </script>
 
-<style src="~/assets/styles/components/atomic/qr.scss" lang="scss" />
+<style src="~/assets/styles/components/wallet/crypto-qr.scss" lang="scss" />

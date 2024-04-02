@@ -18,7 +18,7 @@
         @input="emit('input')"
       />
 
-      <button class="btn-copy" @click.prevent="copy">
+      <button class="btn-copy" @click.prevent="copyValue">
         <atomic-icon id="copy"/>
       </button>
     </div>
@@ -28,6 +28,8 @@
 </template>
 
 <script setup lang="ts">
+  import copy from "copy-to-clipboard";
+
   const props = defineProps({
     name: {
       type: String,
@@ -63,9 +65,9 @@
   const emit = defineEmits(['blur', 'input']);
   const copyInput = ref();
 
-  const copy = (): void => {
+  const copyValue = (): void => {
     copyInput.value.select();
-    document.execCommand('copy');
+    copy(props.value || '');
   };
 
 </script>
