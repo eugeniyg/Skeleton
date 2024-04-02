@@ -107,4 +107,14 @@
     grid-row: 1/3;
     @include font($body-1);
   }
+
+  iframe {
+    border: none;
+    border-radius: rem(12px);
+    height: 80vh;
+
+    @include media(sm) {
+      height: 500px;
+    }
+  }
 }
