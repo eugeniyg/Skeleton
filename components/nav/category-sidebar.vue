@@ -35,7 +35,6 @@
     integratedElement?: ISiteSidebar['topMenu']['integratedElement'];
   }>();
   
-  const router = useRouter();
   const route = useRoute();
   
   const { localizePath } = useProjectMethods();

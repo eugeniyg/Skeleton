@@ -1,6 +1,6 @@
 <template>
   <nuxt-link
-    :target="targetBlank ? '_blank' : null"
+    :target="props.targetBlank ? '_blank' : null"
     :to="props.href?.startsWith('http') ? props.href : localizePath(props.href)"
   >
     <slot/>
