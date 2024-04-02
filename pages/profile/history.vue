@@ -66,8 +66,8 @@
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
-    const nuxtContentData = useNuxtData('profileHistoryContent');
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+    const { data } = useNuxtData('profileHistoryContent');
+    if (data.value) return data.value;
 
     const [
       currentLocaleContentResponse,
@@ -93,10 +93,9 @@
     });
   }
 
-  const { pending, data } = await useLazyAsyncData('profileHistoryContent', () => getPageContent());
-  if (data.value) setContentData(data.value);
+  const { data } = await useLazyAsyncData('profileHistoryContent', () => getPageContent());
 
   watch(data, () => {
-    setContentData(data.value);
-  })
+    if (data.value) setContentData(data.value);
+  }, { immediate: true });
 </script>
