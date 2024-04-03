@@ -53,8 +53,8 @@ export interface IRequestDeposit extends Record<string, any>{
   currency: string;
   amount: number;
   accountId: string;
-  redirectSuccessUrl: string;
-  redirectErrorUrl: string;
+  redirectSuccessUrl?: string;
+  redirectErrorUrl?: string;
   bonusId?: string;
 }
 
