@@ -69,9 +69,12 @@ export default defineNuxtPlugin((nuxtApp) => {
     const loginParallel = !isLoggedIn && changeType === 'login';
     const logoutParallel = isLoggedIn && changeType === 'logout';
 
-    if (loginParallel || logoutParallel) {
+    if (loginParallel) {
       const router = useRouter();
       router.go(0);
+    } else if (logoutParallel) {
+      const { localizePath } = useProjectMethods();
+      window.location.href = window.location.origin + localizePath('/');
     }
   }
 
