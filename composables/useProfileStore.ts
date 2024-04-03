@@ -13,7 +13,6 @@ interface IProfileStoreState {
   resentVerifyEmail: boolean;
   profile: Maybe<IProfile>;
   tokenCookieKey: string;
-  sessionConfirmed: boolean;
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -23,8 +22,7 @@ export const useProfileStore = defineStore('profileStore', {
     sessionId: '',
     resentVerifyEmail: false,
     profile: undefined,
-    tokenCookieKey: 'access_token',
-    sessionConfirmed: false
+    tokenCookieKey: 'access_token'
   }),
 
   getters: {
@@ -35,7 +33,6 @@ export const useProfileStore = defineStore('profileStore', {
 
   actions: {
     setSessionToken (tokenValue:string):void {
-      this.sessionConfirmed = true;
       const cookieToken = useCookie(this.tokenCookieKey, { maxAge: 60 * 60 * 24 * 365 });
       cookieToken.value = tokenValue;
     },
@@ -61,12 +58,17 @@ export const useProfileStore = defineStore('profileStore', {
       return null;
     },
 
+    encodeSessionChange (key: 'login'|'logout'): string {
+      const time = Date.now();
+      return window.btoa(`${time}-${key}`);
+    },
+
     removeSession ():void {
       this.profile = undefined;
-      this.sessionConfirmed = false;
       const cookieToken = useCookie(this.tokenCookieKey);
       cookieToken.value = null;
       this.isLoggedIn = false;
+      localStorage.setItem('changeSession', this.encodeSessionChange('logout'));
 
       const { updateChat } = useFreshchatStore();
       updateChat();
@@ -165,6 +167,7 @@ export const useProfileStore = defineStore('profileStore', {
       await getUserAccounts();
 
       this.isLoggedIn = true;
+      localStorage.setItem('changeSession', this.encodeSessionChange('login'));
 
       const { public: { freshchatParams }} = useRuntimeConfig();
       const { updateChat, addFreshChatScript } = useFreshchatStore();
@@ -200,7 +203,6 @@ export const useProfileStore = defineStore('profileStore', {
       const { getProfile } = useCoreProfileApi();
       const profileInfo = await getProfile();
       this.profile = profileInfo;
-      this.sessionConfirmed = true;
       this.isLoggedIn = true;
     },
 
