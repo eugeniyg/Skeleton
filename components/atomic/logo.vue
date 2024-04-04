@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link class="logo" :to="localizePath('/')">
+  <atomic-link class="logo" href="/">
     <picture>
       <source
         srcset="/img/logo-light.svg"
@@ -7,7 +7,7 @@
       />
       <atomic-image class="img" src="/img/logo-short.svg" />
     </picture>
-  </nuxt-link>
+  </atomic-link>
 </template>
 
 <script setup lang="ts">

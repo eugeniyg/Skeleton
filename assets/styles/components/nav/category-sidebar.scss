@@ -87,14 +87,6 @@
     &:active {
       --bg: var(--side-bar-link-click);
     }
-
-    &.router-link-active {
-      --color: var(--text-accent);
-
-      &:hover {
-        --color: var(--text-accent);
-      }
-    }
   }
 
   .text {
