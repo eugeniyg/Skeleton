@@ -4,7 +4,6 @@
     :href="props.url"
     :targetBlank="props.targetBlank"
   >
-    <pre>{{ props }}</pre>
     <atomic-picture :src="props.backgroundImage" alt=""/>
     <span class="cta-menu-item__text">{{ props.label }}</span>
   </atomic-link>
