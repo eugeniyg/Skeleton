@@ -84,10 +84,12 @@
     selected: string[];
   }>();
 
-  const { gameProviders } = useGamesStore();
   const { getContent } = useProjectMethods();
+  const { getProviderList } = useGamesStore();
 
-  const providersList = computed(() => gameProviders.filter(provider => !!provider.gameEnabledCount));
+  const { data: gameProviders } = await useLazyAsyncData(() => getProviderList(), { server: false });
+
+  const providersList = computed(() => gameProviders.value?.filter(provider => !!provider.gameEnabledCount) || []);
 
   const allProviderGames = providersList.value.reduce((gamesCount, currentProvider) => {
     return gamesCount + currentProvider.gameEnabledCount;

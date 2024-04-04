@@ -50,7 +50,13 @@ export default defineNuxtPlugin((nuxtApp) => {
     else if (sessionToken) addFreshChatScript();
   }
 
-  nuxtApp.hook('app:mounted', async () => {
+  nuxtApp.hook('app:created', async () => {
+    const { getProviderList, getGameCollections } = useGamesStore();
+    getProviderList();
+  });
+
+
+    nuxtApp.hook('app:mounted', async () => {
     const { parseUserAgent } = useGlobalStore();
     const { userAgent } = window.navigator;
     parseUserAgent(userAgent);

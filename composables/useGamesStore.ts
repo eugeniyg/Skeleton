@@ -10,7 +10,7 @@ import throttle from 'lodash/throttle';
 
 type MobileModalType = 'depositOrDemo'|'deposit'|'registerOrDemo'|'registerOrLogin';
 interface IGamesStoreState {
-  gameProviders: IGameProvider[];
+  gameProvidersPromise: Promise<IGameProvider[]>|null;
   gameCollections: ICollection[];
   favoriteGames: IGame[];
   winnersSubscription: any;
@@ -24,7 +24,7 @@ interface IGamesStoreState {
 
 export const useGamesStore = defineStore('gamesStore', {
   state: ():IGamesStoreState => ({
-    gameProviders: [],
+    gameProvidersPromise: null,
     gameCollections: [],
     favoriteGames: [],
     winnersSubscription: undefined,
@@ -53,10 +53,21 @@ export const useGamesStore = defineStore('gamesStore', {
   },
 
   actions: {
-    async getGameProviders(): Promise<void> {
+    async getProvidersRequest(): Promise<IGameProvider[]> {
       const { getGameProviders } = useCoreGamesApi();
-      const data = await getGameProviders();
-      this.gameProviders = data.filter((provider: IGameProvider) => provider.identity !== 'betsy');
+
+      try {
+        return await getGameProviders();
+      } catch {
+        return []
+      }
+    },
+
+    async getProviderList(): Promise<IGameProvider[]> {
+      if (!this.gameProvidersPromise) {
+        this.gameProvidersPromise = this.getProvidersRequest();
+      }
+      return this.gameProvidersPromise;
     },
 
     async getGameCollections(): Promise<void> {

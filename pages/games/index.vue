@@ -148,14 +148,6 @@
 
   const selectedProviders = ref<string[]>([]);
   const routeProvider = route.query.provider as string|string[];
-  const { gameProviders } = useGamesStore();
-  if (routeProvider) {
-    const providersArr = Array.isArray(routeProvider) ? routeProvider : [routeProvider];
-    selectedProviders.value = providersArr.filter(providerId => {
-      const providerData = gameProviders.find(provider => provider.id === providerId);
-      return providerData && !!providerData.gameEnabledCount;
-    })
-  }
 
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
@@ -247,8 +239,19 @@
     }
   });
 
+  const setSelectedProviders = async (): Promise<void> => {
+    const { getProviderList } = useGamesStore();
+    const gameProviders = await getProviderList();
+    const providersArr = Array.isArray(routeProvider) ? routeProvider : [routeProvider];
+    selectedProviders.value = providersArr.filter(providerId => {
+      const providerData = gameProviders.find(provider => provider.id === providerId);
+      return providerData && !!providerData.gameEnabledCount;
+    })
+  }
+
   onMounted(async () => {
     loadingGames.value = true;
+    if (routeProvider) await setSelectedProviders();
     const itemsResponse = await getItems();
     loadingGames.value = false;
     setItems(itemsResponse);
