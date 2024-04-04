@@ -6,6 +6,7 @@
         :key="index"
         :isActive="route.path === localizePath(button.url) || (!index && additionalCasinoActive)"
         :url="button.url"
+        :targetBlank="button?.targetBlank"
       >
         <atomic-icon :id="button.icon" />
         <span class="text">{{ button.label }}</span>
@@ -19,6 +20,7 @@
     label: string;
     url: string;
     icon: string;
+    targetBlank?: boolean;
   }
   const props = defineProps<{
     items: {

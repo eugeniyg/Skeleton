@@ -22,16 +22,15 @@
 
 <script setup lang="ts">
   const emit = defineEmits(['logout']);
-  const { localizePath } = useProjectMethods();
+  const { localizePath, handleExternalLink } = useProjectMethods();
   const { closeUserNav } = useLayoutStore();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const profileLinks = layoutData?.profileSidebar?.profileLinks || defaultLocaleLayoutData?.profileSidebar?.profileLinks || [];
   const route = useRoute();
 
-  function clickItem(url: string):void {
-    const router = useRouter();
-    router.push(localizePath(url));
+  const clickItem = (url: string):void => {
     closeUserNav();
+    handleExternalLink(url)
   }
 </script>
 

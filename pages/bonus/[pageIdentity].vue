@@ -46,7 +46,6 @@
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
   const {
-    localizePath,
     setPageMeta,
     getLocalesContentData,
     getContent
@@ -91,10 +90,10 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { openWalletModal, showModal } = useLayoutStore();
-
-  const router = useRouter();
+  
   const clickButton = (url: string|undefined):void => {
-    if (url) router.push(localizePath(url));
+    const { handleExternalLink } = useProjectMethods();
+    if (url) handleExternalLink(url)
     else isLoggedIn.value ? openWalletModal('deposit') : showModal('register');
   };
 </script>
