@@ -104,6 +104,7 @@
                 type="ghost"
                 size="md"
                 :url="card.link.url"
+                :targetBlank="card.link.targetBlank"
               >
                 {{ card.link.label }}
               </button-base>
