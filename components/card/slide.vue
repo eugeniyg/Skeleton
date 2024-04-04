@@ -11,12 +11,13 @@
       <div class="card-slide__content" v-if="props.slideData.content" v-html="marked.parse(props.slideData.content)" />
       
       <div class="card-slide__actions" v-if="showButton">
-        <button-base
-          type="primary"
-          @click="clickButton(props.slideData.button?.url as string)"
+        <atomic-link
+          class="btn-primary"
+          :targetBlank="props.slideData?.button?.targetBlank"
+          :href="props.slideData.button?.url"
         >
           {{ props.slideData.button?.label }}
-        </button-base>
+        </atomic-link>
       </div>
     </div>
   </div>
@@ -34,10 +35,7 @@
   const { createSrcSet } = useProjectMethods();
   const showButton = computed(() => !!props.slideData.button?.label && !!props.slideData.button?.url);
   const backgroundGradientStyle = computed(() => `background: linear-gradient(to right, ${props.slideData.colorLeft}, ${props.slideData.colorRight})`);
-
-  const clickButton = (url:string):void => {
-    if (url) handleExternalLink(url)
-  };
+  
 </script>
 
 <style src="~/assets/styles/components/card/slide.scss" lang="scss" />

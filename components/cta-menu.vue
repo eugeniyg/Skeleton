@@ -4,6 +4,7 @@
         v-for="item in props.items"
         :href="item.url"
         :key="item.title"
+        :targetBlank="item.targetBlank"
         class="cta-menu__item"
         :class="{'is-active': route.path === localizePath(item.url)}"
     >

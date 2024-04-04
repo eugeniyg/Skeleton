@@ -8,6 +8,7 @@
       <atomic-link
         class="link"
         :href="listItem.url"
+        :targetBlank="listItem.targetBlank"
         :class="{'is-active': route.fullPath === localizePath(listItem.url)}"
       >
         <atomic-svg
