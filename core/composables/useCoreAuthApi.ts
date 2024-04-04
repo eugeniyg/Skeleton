@@ -15,7 +15,7 @@ export const useCoreAuthApi = () => {
   };
 
   const submitRegistrationData = async (registrationFormData:any):Promise<IAuthorizationResponse> => {
-    const { data } = await useApiAuthInstance('/api/player/register', {
+    const { data } = await useApiGuestInstance('/api/player/register', {
       method: 'POST',
       body: registrationFormData
     });
@@ -24,7 +24,7 @@ export const useCoreAuthApi = () => {
   };
 
   const submitLoginData = async (authorizationFormData: IAuthorizationRequest):Promise<IAuthorizationResponse> => {
-    const { data } = await useApiAuthInstance('/api/player/sessions', {
+    const { data } = await useApiGuestInstance('/api/player/sessions', {
       method: 'POST',
       body: authorizationFormData
     });
@@ -33,7 +33,7 @@ export const useCoreAuthApi = () => {
   };
 
   const submitAutologinData = async (token: string):Promise<IAuthorizationResponse> => {
-    const { data } = await useApiAuthInstance('/api/player/sessions/token', {
+    const { data } = await useApiGuestInstance('/api/player/sessions/token', {
       method: 'POST',
       body: { token }
     });
