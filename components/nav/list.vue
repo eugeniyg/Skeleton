@@ -3,10 +3,11 @@
     <div v-for="(listItem, index) in props.items" :key="index" class="item">
       <atomic-menu-category v-if="listItem?.items?.length" v-bind="listItem" />
       
-      <div
+      <atomic-link
         v-else
         class="link"
-        @click="defineCurrentAction(listItem.url)"
+        :href="listItem.url"
+        :targetBlank="listItem?.targetBlank"
         :class="{'is-active': route.fullPath === localizePath(listItem.url)}"
       >
         <atomic-svg
@@ -20,7 +21,7 @@
         <client-only>
           <div v-if="listItem.counter" class="counter">{{ listItem.counter }}</div>
         </client-only>
-      </div>
+      </atomic-link>
     </div>
   </div>
 </template>
@@ -30,15 +31,9 @@
     items: any;
   }>();
   
-  const router = useRouter();
   const route = useRoute();
 
   const { localizePath } = useProjectMethods();
-
-  const defineCurrentAction = (href: string): void => {
-    if (!href) return;
-    router.push(localizePath(href));
-  };
 </script>
 
 <style src="~/assets/styles/components/nav/list.scss" lang="scss"/>

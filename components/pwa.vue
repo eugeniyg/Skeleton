@@ -100,11 +100,10 @@
 
   const installPWA = () => {
     if (appleNotCompatible) {
-      const router = useRouter();
-      const { localizePath } = useProjectMethods();
+      const { handleExternalLink } = useProjectMethods();
       hideBanner();
       const pageLink = getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.instructionLink');
-      router.push(localizePath(pageLink));
+      handleExternalLink(pageLink);
     } else {
       window.pwa?.install().then((res) => {
         if (res.outcome === 'accepted') {
