@@ -1,8 +1,13 @@
 <template>
-  <a class="cta-menu-item" :href="props.url">
+  <atomic-link
+    class="cta-menu-item"
+    :href="props.url"
+    :targetBlank="props.targetBlank"
+  >
+    <pre>{{ props }}</pre>
     <atomic-picture :src="props.backgroundImage" alt=""/>
     <span class="cta-menu-item__text">{{ props.label }}</span>
-  </a>
+  </atomic-link>
 </template>
 
 <script setup lang="ts">
@@ -10,7 +15,8 @@
     url: string,
     label: string,
     backgroundImage?: string,
-  }>()
+    targetBlank?: boolean
+  }>();
 </script>
 
-<style src="~/assets/styles/components/atomic/cta-menu-item.scss" lang="scss" />
+<style src="~/assets/styles/components/atomic/cta-menu-item.scss" lang="scss"/>
