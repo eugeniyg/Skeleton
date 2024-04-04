@@ -1,5 +1,7 @@
 <template>
-  <wallet-qr-payment v-if="qrAddress" :qrAddress="qrAddress"  />
+  <iframe v-if="iframeUrl" :src="iframeUrl" />
+
+  <wallet-qr-payment v-else-if="qrAddress" :qrAddress="qrAddress" />
 
   <form v-else class="form-deposit">
     <form-input-number
@@ -87,7 +89,7 @@
     amountMax?: number;
     amountMin?: number;
     method?: string;
-    presets: IPaymentPreset[];
+    presets?: IPaymentPreset[];
     fields: IPaymentField[];
   }>();
 
@@ -171,9 +173,9 @@
   }
 
   const isSending = ref<boolean>(false);
-  const filteredPresets = props.presets.filter(preset => {
+  const filteredPresets = props.presets?.filter(preset => {
     return preset.amount >= formatAmountMin.amount && preset.amount <= formatAmountMax.amount;
-  });
+  }) || [];
   const defaultPreset = filteredPresets.find(preset => preset.default);
   const amountValue = ref<string>(String(getStorageBonusAmount() || defaultPreset?.amount || formatAmountMin.amount));
   const buttonAmount = computed(() => {
@@ -185,6 +187,7 @@
     || (Number(amountValue.value) < formatAmountMin.amount)
     || (Number(amountValue.value) > formatAmountMax.amount)
     || isSending.value);
+  const processedInModalMethods = ['pix_qr_brl_invoice:pix_qr'];
 
   const getPaymentPageUrl = (depositResponse: IResponseDeposit): string => {
     const responseHasParams = Object.keys(depositResponse.fields).length;
@@ -198,12 +201,18 @@
   }
 
   const getRequestParams = (): IRequestDeposit => {
-    const { query, path } = useRoute();
-    const { origin } = window.location;
-    const successQueryString = queryString.stringify({ ...query, success: 'deposit', wallet: undefined });
-    const errorQueryString = queryString.stringify({ ...query, error: 'deposit', wallet: undefined });
-    const successRedirect = `${origin}${path}?${successQueryString}`;
-    const errorRedirect = `${origin}${path}?${errorQueryString}`;
+    let successRedirect;
+    let errorRedirect;
+
+    if (!processedInModalMethods.includes(props.method || '')) {
+      const { query, path } = useRoute();
+      const { origin } = window.location;
+      const successQueryString = queryString.stringify({ ...query, success: 'deposit', wallet: undefined });
+      const errorQueryString = queryString.stringify({ ...query, error: 'deposit', wallet: undefined });
+      successRedirect = `${origin}${path}?${successQueryString}`;
+      errorRedirect = `${origin}${path}?${errorQueryString}`;
+    }
+
     const mainCurrencyAmount = getMainBalanceFormat(formatAmountMin.currency, Number(amountValue.value));
 
     return {
@@ -220,6 +229,7 @@
     };
   }
 
+  const iframeUrl = ref<string | undefined>();
   const qrAddress = ref<string | undefined>();
   const windowReference = ref<Window | null>(null);
   const depositRequest = async (): Promise<void> => {
@@ -229,18 +239,21 @@
     const params = getRequestParams();
     windowReference.value = null;
 
-    if (!methodsWithoutNewWindow.includes(props.method || '')) {
+    if (!processedInModalMethods.includes(props.method || '')) {
       windowReference.value = window.open();
     }
 
     try {
       const depositResponse = await depositAccount(params);
       sessionStorage.removeItem('depositBonusData');
+      const paymentPageUrl = getPaymentPageUrl(depositResponse);
 
-      if (depositResponse.type === 'form' && windowReference.value) {
-        windowReference.value.location = getPaymentPageUrl(depositResponse);
+      if (windowReference.value && depositResponse.type === 'form') {
+        windowReference.value.location = paymentPageUrl;
       } else if (depositResponse.type === 'qr' && depositResponse.qr) {
         qrAddress.value = depositResponse.qr;
+      } else if (depositResponse.type === 'iframe') {
+        iframeUrl.value = paymentPageUrl;
       }
     } catch {
       if (windowReference.value) windowReference.value.close();
@@ -290,7 +303,6 @@
       : `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${bonusSum}`;
   }
 
-  const methodsWithoutNewWindow = ['pix_qr_brl_invoice:pix_qr'];
   const getPercentageBonusValue = (bonusInfo: IBonus): string => {
     const maxAmountItems = bonusInfo.assignConditions?.maxAmountItems;
     const maxAmountBase = bonusInfo.assignConditions?.baseCurrencyMaxAmount;
