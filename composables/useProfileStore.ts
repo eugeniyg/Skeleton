@@ -58,11 +58,17 @@ export const useProfileStore = defineStore('profileStore', {
       return null;
     },
 
+    encodeSessionChange (key: 'login'|'logout'): string {
+      const time = Date.now();
+      return window.btoa(`${time}-${key}`);
+    },
+
     removeSession ():void {
       this.profile = undefined;
       const cookieToken = useCookie(this.tokenCookieKey);
       cookieToken.value = null;
       this.isLoggedIn = false;
+      localStorage.setItem('changeSession', this.encodeSessionChange('logout'));
 
       const { updateChat } = useFreshchatStore();
       updateChat();
@@ -161,6 +167,7 @@ export const useProfileStore = defineStore('profileStore', {
       await getUserAccounts();
 
       this.isLoggedIn = true;
+      localStorage.setItem('changeSession', this.encodeSessionChange('login'));
 
       const { public: { freshchatParams }} = useRuntimeConfig();
       const { updateChat, addFreshChatScript } = useFreshchatStore();
