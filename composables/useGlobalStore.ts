@@ -10,7 +10,7 @@ import type {
 } from '@skeleton/core/types';
 import type {
   IAlertsContent,
-  ICategory,
+  ICategory, IConstants,
   IFieldsSettingsContent,
   IGlobalComponentsContent,
   IGlobalSeo,
@@ -206,9 +206,7 @@ export const useGlobalStore = defineStore('globalStore', {
   },
 
   actions: {
-    async getCurrencies():Promise<void> {
-      const { getCurrencies } = useCoreGlobalApi();
-      const data = await getCurrencies(1);
+    setCurrencies(data: ICurrency[]):void {
       this.currencies = data.filter((currency) => currency.isEnabled);
       this.baseCurrency = data.find((currency) => currency.isBase);
     },
@@ -221,25 +219,19 @@ export const useGlobalStore = defineStore('globalStore', {
       this.browserLanguage = languages[0].code;
     },
 
-    async getLocales():Promise<void> {
-      const { getLocales } = useCoreGlobalApi();
-      const data = await getLocales();
+    setLocales(data: ILocale[]):void {
       this.locales = data;
       this.defaultLocale = data.find((locale) => locale.isDefault);
     },
 
-    async getCountries():Promise<void> {
-      const { getCountries } = useCoreGlobalApi();
-
+    setCountries(data: ICountry[]):void {
       // TEMPORARY SOLUTION
       const disabledCountries = ['US', 'UM', 'GB', 'FR', 'NL', 'AW', 'CW', 'MF'];
-      const responseCountries = await getCountries();
-      this.countries = responseCountries.filter(country => !disabledCountries.includes(country.code));
+      this.countries = data.filter(country => !disabledCountries.includes(country.code));
     },
 
-    async getSettingsConstants():Promise<void> {
-      const { getCoreConstants } = useCoreGlobalApi();
-      this.settingsConstants = await getCoreConstants();
+    setSettingsConstants(data: ICoreConstants):void {
+      this.settingsConstants = data;
     },
 
     setCurrentLocale() {
