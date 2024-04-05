@@ -1,7 +1,6 @@
 import { createResolver } from '@nuxt/kit'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
-import lruCacheDriver from 'unstorage/drivers/lru-cache'
 
 const { resolve } = createResolver(dirname(fileURLToPath(import.meta.url)));
 const buildDate = Date.now();
@@ -99,16 +98,6 @@ export default defineNuxtConfig({
   ],
   vite: viteConfig,
   nitro: {
-    storage: {
-      cache: {
-        driver: '@skeleton/modules/cache-driver',
-      },
-    },
-    devStorage: {
-      cache: {
-        driver: resolve('./modules/cache-driver.mjs'),
-      },
-    },
     devProxy: {
       '/api': {
         target: 'https://test.dev.getplatform.tech/api',
