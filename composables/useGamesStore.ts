@@ -36,22 +36,6 @@ export const useGamesStore = defineStore('gamesStore', {
     minimumBonusWagerMultiplier: 1
   }),
 
-  // getters: {
-  //   currentLocationCollections(state):ICollection[] {
-  //     const globalStore = useGlobalStore();
-  //
-  //     if (!globalStore.headerCountry) return state.gameCollections;
-  //
-  //     return state.gameCollections.filter((collection) => {
-  //       return !collection.countries.length || collection.countries.includes(globalStore.headerCountry as string);
-  //     })
-  //   },
-  //
-  //   recommendedCategory():ICollection|undefined {
-  //     return this.currentLocationCollections.find((collection) => collection.identity === 'recommended');
-  //   }
-  // },
-
   actions: {
     async getProvidersRequest(): Promise<IGameProvider[]> {
       const { getGameProviders } = useCoreGamesApi();
