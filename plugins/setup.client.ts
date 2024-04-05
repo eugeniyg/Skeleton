@@ -51,8 +51,9 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   nuxtApp.hook('app:created', async () => {
-    const { getProviderList, getGameCollections } = useGamesStore();
+    const { getProviderList, getCollectionsList } = useGamesStore();
     getProviderList();
+    getCollectionsList();
   });
 
 

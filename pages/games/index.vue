@@ -71,10 +71,6 @@
   import debounce from 'lodash/debounce';
   import type { IGamesPage } from '~/types';
 
-  definePageMeta({
-    middleware: 'games-collection',
-  });
-
   const globalStore = useGlobalStore();
   const {
     gameCategoriesObj,
@@ -139,14 +135,8 @@
     setContentData(data.value);
   })
 
-  const gamesStore = useGamesStore();
-  const { currentLocationCollections } = storeToRefs(gamesStore);
-
-  const activeCollection = ref<ICollection | undefined>(
-    currentLocationCollections.value.find((collection) => collection.identity === route.query.category),
-  );
-
   const selectedProviders = ref<string[]>([]);
+  const activeCollection = ref<ICollection | undefined>();
   const routeProvider = route.query.provider as string|string[];
 
   const searchValue = ref<string>('');
@@ -172,7 +162,10 @@
     if (searchValue.value) params.name = searchValue.value;
     if (selectedProviders.value.length) params.providerId = selectedProviders.value;
 
-    return await getFilteredGames(params);
+    const response = await getFilteredGames(params);
+    loadingGames.value = false;
+
+    return response;
   };
 
   const setItems = (response: IGamesResponse, more?: boolean): void => {
@@ -200,10 +193,9 @@
 
   const changeCategory = async (categoryId: string): Promise<void> => {
     loadPage.value = 1;
-    activeCollection.value = currentLocationCollections.value.find(
-      (collection) => collection.identity === categoryId,
-    );
-    router.replace({ query: { ...route.query, category: categoryId } });
+    const gameCollections = await getCollectionsList();
+    activeCollection.value = gameCollections.find(collection => collection.identity === categoryId);
+    if (route.query.category !== categoryId) await router.replace({ query: { ...route.query, category: categoryId } });
     window.scroll(0, 0);
     const response = await getItems();
     setItems(response);
@@ -239,8 +231,8 @@
     }
   });
 
+  const { getProviderList, getCollectionsList } = useGamesStore();
   const setSelectedProviders = async (): Promise<void> => {
-    const { getProviderList } = useGamesStore();
     const gameProviders = await getProviderList();
     const providersArr = Array.isArray(routeProvider) ? routeProvider : [routeProvider];
     selectedProviders.value = providersArr.filter(providerId => {
@@ -250,10 +242,18 @@
   }
 
   onMounted(async () => {
-    loadingGames.value = true;
     if (routeProvider) await setSelectedProviders();
+    const gameCollections = await getCollectionsList();
+
+    activeCollection.value = gameCollections.find(
+      (collection) => collection.identity === route.query.category,
+    );
+
+    if (!route.query.category || !activeCollection.value) {
+      return router.replace({ query: { ...route.query, category: gameCollections[0].identity } });
+    }
+
     const itemsResponse = await getItems();
-    loadingGames.value = false;
     setItems(itemsResponse);
   });
 

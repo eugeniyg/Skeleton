@@ -72,8 +72,10 @@
     setContentData(data.value);
   })
 
-  const { currentLocationCollections } = useGamesStore();
-  const recommendedCategory = currentLocationCollections.find((collection) => collection.identity === 'recommended');
+  const { getCollectionsList } = useGamesStore();
+  const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
+  const recommendedCategory = computed(() => gameCollections.value?.find((collection) => collection.identity === 'recommended'));
+
   const pageMeta = computed(() => ({
     page: 1,
     perPage: 18,

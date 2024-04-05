@@ -83,8 +83,9 @@
     totalPages: Math.ceil(favoriteGames.value.length / 18),
   }));
 
-  const { currentLocationCollections } = useGamesStore();
-  const recommendedCategory = currentLocationCollections.find((collection) => collection.identity === 'recommended');
+  const { getCollectionsList } = gameStore;
+  const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
+  const recommendedCategory = computed(() => gameCollections.value?.find((collection) => collection.identity === 'recommended'));
 </script>
 
 <style src="~/assets/styles/pages/favorites.scss" lang="scss" />

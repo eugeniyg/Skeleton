@@ -8,7 +8,6 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     getSettingsConstants,
     setCurrentLocale
   } = useGlobalStore();
-  const { getGameCollections } = useGamesStore();
 
   getRequestCountry();
 
@@ -21,8 +20,7 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     getLocales(),
     getCountries(),
     getCurrencies(),
-    getSettingsConstants(),
-    getGameCollections()
+    getSettingsConstants()
   ]);
 
   setCurrentLocale();
