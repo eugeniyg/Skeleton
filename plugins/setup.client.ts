@@ -50,17 +50,45 @@ export default defineNuxtPlugin((nuxtApp) => {
     else if (sessionToken) addFreshChatScript();
   }
 
+  const decodeBase64 = (value: string): string|undefined => {
+    try {
+      return window.atob(value);
+    } catch {
+      return undefined
+    }
+  }
+
+  const listeningChangeSession = async (event: StorageEvent): Promise<void> => {
+    if (event.key !== 'changeSession' || !event.newValue) return;
+
+    const decodeValue = decodeBase64(event.newValue);
+    if (!decodeValue) return;
+
+    const changeType = decodeValue.split('-')[1];
+    const { isLoggedIn } = useProfileStore();
+    const loginParallel = !isLoggedIn && changeType === 'login';
+    const logoutParallel = isLoggedIn && changeType === 'logout';
+
+    if (loginParallel) {
+      const router = useRouter();
+      router.go(0);
+    } else if (logoutParallel) {
+      const { localizePath } = useProjectMethods();
+      window.location.href = window.location.origin + localizePath('/');
+    }
+  }
+
   nuxtApp.hook('app:created', async () => {
     const { getProviderList, getCollectionsList } = useGamesStore();
     getProviderList();
     getCollectionsList();
   });
 
-
-    nuxtApp.hook('app:mounted', async () => {
+  nuxtApp.hook('app:mounted', async () => {
     const { parseUserAgent } = useGlobalStore();
     const { userAgent } = window.navigator;
     parseUserAgent(userAgent);
+    window.addEventListener('storage', listeningChangeSession);
 
     await startWebSocket();
     startProfileLogic();

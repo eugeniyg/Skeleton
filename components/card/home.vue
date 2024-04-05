@@ -60,13 +60,11 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal, openWalletModal } = useLayoutStore();
+  const { handleExternalLink } = useProjectMethods();
 
   const clickButton = (url: string): void => {
-    if (url) {
-      const router = useRouter();
-      const { localizePath } = useProjectMethods();
-      router.push(localizePath(url));
-    } else isLoggedIn.value ? openWalletModal('deposit') : showModal('register');
+    if (url) handleExternalLink(url)
+    else isLoggedIn.value ? openWalletModal('deposit') : showModal('register');
   };
 </script>
 

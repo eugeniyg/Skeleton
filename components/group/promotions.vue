@@ -28,13 +28,14 @@
             >
               {{ promotion.buttonLabel }}
             </button-base>
-
-            <nuxt-link
+            
+            <atomic-link
               class="link-more"
-              :to="localizePath(promotion.link.url)"
+              :href="promotion.link.url"
+              :targetBlank="promotion.link.targetBlank"
             >
               {{ promotion.link.label }}
-            </nuxt-link>
+            </atomic-link>
           </div>
         </div>
       </div>
@@ -49,12 +50,10 @@
   const globalStore = useGlobalStore();
   const { globalComponentsContent } = globalStore;
 
-  const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal, openWalletModal } = useLayoutStore();
 
-  const backgroundImage = (img:string):string => `background-image:url(${img})`;
   const hoverCard = ref<number|undefined>(undefined);
   const { isMobile } = storeToRefs(globalStore);
   const clickCard = (index: number):void => {

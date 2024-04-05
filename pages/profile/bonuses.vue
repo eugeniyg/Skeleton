@@ -1,23 +1,25 @@
 <template>
   <div class="content profile-bonuses">
     <div class="header">
-      <h1 class="heading">{{ bonusesContent?.title || defaultLocaleBonusesContent?.title }}</h1>
+      <h1 class="heading">
+        {{ content?.currentLocaleData?.title || content?.defaultLocaleData?.title }}
+      </h1>
     </div>
 
     <nuxt-link
       class="link-bonus"
       :to="localizePath('/profile/history?tab=bonuses')"
     >
-      {{ bonusesContent?.historyLink || defaultLocaleBonusesContent?.historyLink }}
+      {{ content?.currentLocaleData?.historyLink || content?.defaultLocaleData?.historyLink }}
     </nuxt-link>
 
-    <bonus-code :content="bonusesContent?.bonusCode || defaultLocaleBonusesContent?.bonusCode" />
+    <bonus-code :content="content?.currentLocaleData?.bonusCode || content?.defaultLocaleData?.bonusCode" />
 
     <transition name="fade" mode="out-in">
       <bonus-active
         v-if="activePlayerBonuses.length"
         bonusType="bonus"
-        :content="bonusesContent?.cashBonuses || defaultLocaleBonusesContent?.cashBonuses"
+        :content="content?.currentLocaleData?.cashBonuses || content?.defaultLocaleData?.cashBonuses"
       />
     </transition>
 
@@ -25,7 +27,7 @@
       <bonus-active
         v-if="activePlayerFreeSpins.length"
         bonusType="free-spin"
-        :content="bonusesContent?.freeSpins || defaultLocaleBonusesContent?.freeSpins"
+        :content="content?.currentLocaleData?.freeSpins || content?.defaultLocaleData?.freeSpins"
       />
     </transition>
   </div>
@@ -42,23 +44,14 @@
   const { getPlayerBonuses, getPlayerFreeSpins } = bonusStore;
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
 
-  const bonusesContent = ref<Maybe<IProfileBonuses>>();
-  const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>();
-
   interface IPageContent {
     currentLocaleData: Maybe<IProfileBonuses>;
     defaultLocaleData: Maybe<IProfileBonuses>;
   }
 
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    bonusesContent.value = contentData?.currentLocaleData;
-    defaultLocaleBonusesContent.value = contentData?.defaultLocaleData;
-    setPageMeta(bonusesContent.value?.pageMeta);
-  }
-
   const getPageContent = async (): Promise<IPageContent> => {
-    const nuxtContentData = useNuxtData('profileBonusesContent');
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+    const { data } = useNuxtData('profileBonusesContent');
+    if (data.value) return data.value;
 
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'profile', 'bonuses').findOne(),
@@ -68,12 +61,11 @@
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { pending, data } = await useLazyAsyncData('profileBonusesContent', () => getPageContent());
-  if (data.value) setContentData(data.value);
+  const { data: content } = await useLazyAsyncData('profileBonusesContent', () => getPageContent());
 
-  watch(data, () => {
-    setContentData(data.value);
-  })
+  watch(content, () => {
+    if (content.value) setPageMeta(content.value?.currentLocaleData?.pageMeta);
+  }, { immediate: true });
 
   onMounted(() => {
     getPlayerBonuses();

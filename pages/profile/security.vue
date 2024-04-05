@@ -37,8 +37,8 @@
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
-    const nuxtContentData = useNuxtData('profileSecurityContent');
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+    const { data } = useNuxtData('profileSecurityContent');
+    if (data.value) return data.value;
 
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'profile', 'security').findOne(),
@@ -48,10 +48,9 @@
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { pending, data } = await useLazyAsyncData('profileSecurityContent', () => getPageContent());
-  if (data.value) setContentData(data.value);
+  const { data: content } = await useLazyAsyncData('profileSecurityContent', () => getPageContent());
 
-  watch(data, () => {
-    setContentData(data.value);
-  })
+  watch(content, () => {
+    if (content.value) setContentData(content.value);
+  }, { immediate: true });
 </script>

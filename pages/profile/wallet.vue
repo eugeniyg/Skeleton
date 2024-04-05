@@ -1,7 +1,9 @@
 <template>
   <div class="content">
     <div class="header">
-      <h1 class="heading">{{ walletContent?.title || defaultLocaleWalletContent?.title }}</h1>
+      <h1 class="heading">
+        {{ content?.currentLocaleData?.title || content?.defaultLocaleData?.title }}
+      </h1>
 
       <button-base
         id="open-currency-nav"
@@ -10,19 +12,19 @@
         :isDisabled="currencyNavEmpty"
         @click="openCurrNav"
       >
-        <atomic-icon id="plus"/>{{ walletContent?.addButton || defaultLocaleWalletContent?.addButton }}
+        <atomic-icon id="plus"/>{{ content?.currentLocaleData?.addButton || content?.defaultLocaleData?.addButton }}
       </button-base>
     </div>
 
     <nav-currency :tabs="currencyTabs" @toggleNavEmpty="currencyNavEmpty = $event"/>
 
-    <div v-if="walletContent || defaultLocaleWalletContent" class="cards-wallet">
+    <div v-if="content?.currentLocaleData || content?.defaultLocaleData" class="cards-wallet">
       <TransitionGroup name="card">
         <card-wallet
           v-for="account in orderedAccounts"
           :key="account.id"
           v-bind="account"
-          :content="walletContent || defaultLocaleWalletContent"
+          :content="content?.currentLocaleData || content?.defaultLocaleData"
         />
       </TransitionGroup>
     </div>
@@ -41,38 +43,29 @@
     getLocalesContentData,
   } = useProjectMethods();
 
-  const walletContent = ref<Maybe<IProfileWallet>>();
-  const defaultLocaleWalletContent = ref<Maybe<IProfileWallet>>();
-
   interface IPageContent {
     currentLocaleData: Maybe<IProfileWallet>;
     defaultLocaleData: Maybe<IProfileWallet>;
   }
 
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    walletContent.value = contentData?.currentLocaleData;
-    defaultLocaleWalletContent.value = contentData?.defaultLocaleData;
-    setPageMeta(walletContent.value?.pageMeta);
-  }
-
   const getPageContent = async (): Promise<IPageContent> => {
-    const nuxtContentData = useNuxtData('profileWalletContent');
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+    const { data } = useNuxtData('profileWalletContent');
+    if (data.value) return data.value;
 
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'profile', 'wallet').findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
         : queryContent(defaultLocale.value?.code as string, 'profile', 'wallet').findOne()
     ]);
+
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { pending, data } = await useLazyAsyncData('profileWalletContent', () => getPageContent());
-  if (data.value) setContentData(data.value);
+  const { data: content } = await useLazyAsyncData('profileWalletContent', () => getPageContent());
 
-  watch(data, () => {
-    setContentData(data.value);
-  })
+  watch(content, () => {
+    if (content.value) setPageMeta(content.value?.currentLocaleData?.pageMeta);
+  }, { immediate: true })
 
   const walletStore = useWalletStore();
   const { accounts, currencyTabs } = storeToRefs(walletStore);

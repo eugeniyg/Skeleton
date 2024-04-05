@@ -83,12 +83,11 @@
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { data } = await useLazyAsyncData('profilePages', () => getPageContent());
-  if (data.value) setContentData(data.value);
+  const { data: content } = await useLazyAsyncData('profilePages', () => getPageContent());
 
-  watch(data, () => {
-    setContentData(data.value);
-  })
+  watch(content, () => {
+    if (content.value) setContentData(content.value);
+  }, { immediate: true });
 
   onBeforeMount(() => {
     getProfileFields();
