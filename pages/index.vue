@@ -64,8 +64,6 @@
   import type { IHomePage } from '~/types';
 
   const globalStore = useGlobalStore();
-  const gameStore = useGamesStore();
-  const { currentLocationCollections } = storeToRefs(gameStore);
   const {
     currentLocale,
     defaultLocale
@@ -112,9 +110,17 @@
     setContentData(data.value);
   })
 
-  const topSlotsCategory = currentLocationCollections.value.find((collection) => collection.identity === 'top-slots');
-  const liveCasinoCategory = currentLocationCollections.value.find((collection) => collection.identity === 'liveshow');
-  const aeroCategory = computed(() => currentLocationCollections.value.find((collection) => collection.identity === homeContent.value?.aeroGroup?.collectionIdentity));
+  const { getCollectionsList } = useGamesStore();
+  const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
+  const topSlotsCategory = computed(() => {
+    return gameCollections.value?.find((collection) => collection.identity === 'top-slots');
+  });
+  const liveCasinoCategory = computed(() => {
+    return gameCollections.value?.find((collection) => collection.identity === 'liveshow');
+  });
+  const aeroCategory = computed(() => {
+    return gameCollections.value?.find((collection) => collection.identity === homeContent.value?.aeroGroup?.collectionIdentity);
+  });
 
   const cardsModifier = computed(() => {
     const length = Object.keys(getContent(homeContent.value, defaultLocaleHomeContent.value, 'categories'))?.length || 0
@@ -150,7 +156,7 @@
   const { initObserver } = useProjectMethods();
   const widgetsObserver = ref();
 
-  onMounted(() => {
+  const initBetsy = (): void => {
     if (window.BetSdk) startBetsyWidgets();
     else {
       widgetsObserver.value = initObserver({
@@ -159,7 +165,12 @@
       });
       widgetsObserver.value.observe(sportsContainer.value);
     }
-  });
+  }
+
+  onMounted(async () => {
+    await getCollectionsList();
+    initBetsy();
+  })
 
   onBeforeUnmount(() => {
     if (sportsContainer.value && widgetsObserver.value) {

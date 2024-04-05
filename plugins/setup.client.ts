@@ -78,6 +78,12 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
   }
 
+  nuxtApp.hook('app:created', async () => {
+    const { getProviderList, getCollectionsList } = useGamesStore();
+    getProviderList();
+    getCollectionsList();
+  });
+
   nuxtApp.hook('app:mounted', async () => {
     const { parseUserAgent } = useGlobalStore();
     const { userAgent } = window.navigator;
