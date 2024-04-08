@@ -1,26 +1,30 @@
 <template>
   <div class="wallet-pills">
     <div
+      v-for="item in props.items"
+      :key="item.amount"
       class="wallet-pills__item"
-      :class="{ 'is-selected': item === selected }"
-      v-for="item in items"
-      @click="selectItem(item)"
+      :class="{ 'is-selected': String(item.amount) === props.value }"
+      @click="selectItem(String(item.amount))"
     >
-      {{ item }}
+      {{ item.amount }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const items = [ 50, 100, 500, 1000 ];
+  import type { IPaymentPreset } from "@skeleton/core/types";
 
-  const emit = defineEmits(['change']);
+  const props = defineProps<{
+    value: string;
+    items: IPaymentPreset[];
+  }>();
 
-  const selected = ref<number>(items[0]);
+  const emit = defineEmits(['update:value']);
 
-  const selectItem = (item: number):void => {
-    selected.value = item;
-    emit('change', item);
+  const selectItem = (amount: string):void => {
+    if (amount === props.value) return;
+    emit('update:value', amount);
   };
 </script>
 

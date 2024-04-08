@@ -1,9 +1,15 @@
 <template>
   <div class="limits">
     <div class="limits__header">
-      <h1 class="limits__heading">{{ getContent(limitsContent, defaultLimitsContent, 'title') }}</h1>
+      <h1 class="limits__heading">
+        {{ getContent(limitsContent, defaultLimitsContent, 'title') }}
+      </h1>
+
       <div class="limits__mode">
-        <span class="limits__mode-label">{{ getContent(limitsContent, defaultLimitsContent, 'modeToggle') }}</span>
+        <span class="limits__mode-label">
+          {{ getContent(limitsContent, defaultLimitsContent, 'modeToggle') }}
+        </span>
+
         <form-input-toggle
           v-model:value="isAdvancedModeEnabled"
           name="toggle"
@@ -72,41 +78,34 @@
     limitsContent, defaultLimitsContent, isAdvancedModeEnabled,
   } = storeToRefs(limitsStore);
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const { getLocalesContentData, getContent, setPageSeo } = useProjectMethods();
-
-  const currentLocaleLimitsContent = ref<Maybe<IProfileLimits>>();
-  const defaultLocaleLimitsContent = ref<Maybe<IProfileLimits>>();
+  const { getLocalesContentData, getContent, setPageMeta } = useProjectMethods();
 
   interface IPageContent {
     currentLocaleData: Maybe<IProfileLimits>;
     defaultLocaleData: Maybe<IProfileLimits>;
   }
 
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    currentLocaleLimitsContent.value = contentData?.currentLocaleData;
-    defaultLocaleLimitsContent.value = contentData?.defaultLocaleData;
-    setLimitsContent(currentLocaleLimitsContent.value, defaultLocaleLimitsContent.value);
-    setPageSeo(currentLocaleLimitsContent.value?.seo);
-  }
-
   const getPageContent = async (): Promise<IPageContent> => {
-    const nuxtContentData = useNuxtData('profileLimitsContent');
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+    const { data } = useNuxtData('profileLimitsContent');
+    if (data.value) return data.value;
 
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'profile', 'limits').findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
         : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').findOne(),
     ]);
+
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { pending, data } = await useLazyAsyncData('profileLimitsContent', () => getPageContent());
-  if (data.value) setContentData(data.value);
+  const { pending, data: content } = await useLazyAsyncData('profileLimitsContent', () => getPageContent());
 
-  watch(data, () => {
-    setContentData(data.value);
-  })
+  watch(content, () => {
+    if (content.value) {
+      setPageMeta(content.value?.currentLocaleData?.pageMeta);
+      setLimitsContent(content.value?.currentLocaleData, content.value?.defaultLocaleData);
+    }
+  }, { immediate: true });
 
   interface IEditProps {
     limitId: string | undefined,

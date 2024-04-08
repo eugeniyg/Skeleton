@@ -56,7 +56,7 @@
       :image="getContent(gamesContent, defaultLocaleGamesContent, 'empty.image')"
     />
 
-    <atomic-seo-text v-if="gamesContent?.seo?.text" v-bind="gamesContent?.seo?.text"/>
+    <atomic-seo-text v-if="gamesContent?.pageMeta?.seoText" v-bind="gamesContent?.pageMeta?.seoText"/>
   </div>
 </template>
 
@@ -71,10 +71,6 @@
   import debounce from 'lodash/debounce';
   import type { IGamesPage } from '~/types';
 
-  definePageMeta({
-    middleware: 'games-collection',
-  });
-
   const globalStore = useGlobalStore();
   const {
     gameCategoriesObj,
@@ -87,7 +83,7 @@
   } = storeToRefs(globalStore);
 
   const {
-    setPageSeo,
+    setPageMeta,
     getContent,
     getLocalesContentData,
   } = useProjectMethods();
@@ -116,7 +112,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     gamesContent.value = contentData?.currentLocaleData;
     defaultLocaleGamesContent.value = contentData?.defaultLocaleData;
-    setPageSeo(gamesContent.value?.seo);
+    setPageMeta(gamesContent.value?.pageMeta);
     setDefaultSortOptions();
   }
 
@@ -139,23 +135,9 @@
     setContentData(data.value);
   })
 
-  const gamesStore = useGamesStore();
-  const { currentLocationCollections } = storeToRefs(gamesStore);
-
-  const activeCollection = ref<ICollection | undefined>(
-    currentLocationCollections.value.find((collection) => collection.identity === route.query.category),
-  );
-
   const selectedProviders = ref<string[]>([]);
+  const activeCollection = ref<ICollection | undefined>();
   const routeProvider = route.query.provider as string|string[];
-  const { gameProviders } = useGamesStore();
-  if (routeProvider) {
-    const providersArr = Array.isArray(routeProvider) ? routeProvider : [routeProvider];
-    selectedProviders.value = providersArr.filter(providerId => {
-      const providerData = gameProviders.find(provider => provider.id === providerId);
-      return providerData && !!providerData.gameEnabledCount;
-    })
-  }
 
   const searchValue = ref<string>('');
   const loadPage = ref<number>(1);
@@ -180,7 +162,10 @@
     if (searchValue.value) params.name = searchValue.value;
     if (selectedProviders.value.length) params.providerId = selectedProviders.value;
 
-    return await getFilteredGames(params);
+    const response = await getFilteredGames(params);
+    loadingGames.value = false;
+
+    return response;
   };
 
   const setItems = (response: IGamesResponse, more?: boolean): void => {
@@ -208,10 +193,9 @@
 
   const changeCategory = async (categoryId: string): Promise<void> => {
     loadPage.value = 1;
-    activeCollection.value = currentLocationCollections.value.find(
-      (collection) => collection.identity === categoryId,
-    );
-    router.replace({ query: { ...route.query, category: categoryId } });
+    const gameCollections = await getCollectionsList();
+    activeCollection.value = gameCollections.find(collection => collection.identity === categoryId);
+    if (route.query.category !== categoryId) await router.replace({ query: { ...route.query, category: categoryId } });
     window.scroll(0, 0);
     const response = await getItems();
     setItems(response);
@@ -247,10 +231,29 @@
     }
   });
 
+  const { getProviderList, getCollectionsList } = useGamesStore();
+  const setSelectedProviders = async (): Promise<void> => {
+    const gameProviders = await getProviderList();
+    const providersArr = Array.isArray(routeProvider) ? routeProvider : [routeProvider];
+    selectedProviders.value = providersArr.filter(providerId => {
+      const providerData = gameProviders.find(provider => provider.id === providerId);
+      return providerData && !!providerData.gameEnabledCount;
+    })
+  }
+
   onMounted(async () => {
-    loadingGames.value = true;
+    if (routeProvider) await setSelectedProviders();
+    const gameCollections = await getCollectionsList();
+
+    activeCollection.value = gameCollections.find(
+      (collection) => collection.identity === route.query.category,
+    );
+
+    if (!route.query.category || !activeCollection.value) {
+      return router.replace({ query: { ...route.query, category: gameCollections[0].identity } });
+    }
+
     const itemsResponse = await getItems();
-    loadingGames.value = false;
     setItems(itemsResponse);
   });
 

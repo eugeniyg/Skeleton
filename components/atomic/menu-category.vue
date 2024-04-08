@@ -5,9 +5,10 @@
       @click="toggleOpen"
       :class="{'is-open': open }"
     >
-      <nuxt-link
+      <atomic-link
         v-if="isDrawerCompact"
-        :to="localizePath(props.items[0].url)"
+        :targetBlank="props.items[0]?.targetBlank"
+        :href="props.items[0].url"
         @click.stop
       >
         <atomic-svg
@@ -15,7 +16,7 @@
           :src="props?.customIcon"
         />
         <atomic-icon  v-else :id="props.icon ? props?.icon : 'dot-md'"/>
-      </nuxt-link>
+      </atomic-link>
       
       <template v-else>
         <atomic-svg
@@ -30,14 +31,15 @@
     </div>
     
     <div class="items">
-      <nuxt-link
+      <atomic-link
         v-for="(link, itemIndex) in props.items"
         :key="itemIndex"
         class="link"
-        :to="localizePath(link.url)"
+        :href="link.url"
+        :targetBlank="link?.targetBlank"
       >
         <span class="text">{{ link.label }}</span>
-      </nuxt-link>
+      </atomic-link>
     </div>
   </div>
 </template>

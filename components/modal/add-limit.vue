@@ -103,12 +103,12 @@
     definition?: number;
     period: string|undefined;
     currency: string;
-    amount: number;
+    amount: string;
     showCurrenciesError: boolean
   }>({
     definition: props.definition,
     currency: '',
-    amount: 0,
+    amount: '0',
     period: undefined,
     showCurrenciesError: false,
   });
@@ -173,7 +173,7 @@
 
   const selectedPeriod = computed(() => periodOptions.value?.filter((period) => !period.disabled)[0]);
 
-  const formattedBalance = computed(() => formatBalance(formState.currency, formState.amount));
+  const formattedBalance = computed(() => formatBalance(formState.currency, Number(formState.amount)));
 
   const selectedTab = ref<{id:any, name:string}>(selectedPeriod?.value);
 
@@ -202,7 +202,7 @@
     if (!validFormData) return;
 
     try {
-      const converted = getMainBalanceFormat(formState.currency, formState.amount);
+      const converted = getMainBalanceFormat(formState.currency, Number(formState.amount));
 
       await createLimit({
         period: formState.period,

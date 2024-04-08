@@ -2,7 +2,7 @@ import type { IGameImages, IObserverOptions } from '@skeleton/core/types';
 import get from 'lodash/get';
 import * as projectRules from './validationRules';
 import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
-import type { ISeoBlock } from "~/types";
+import type { IPageMeta } from "~/types";
 
 export const useProjectMethods = () => {
   const setFormData = (fields: any[]):any => {
@@ -173,14 +173,14 @@ export const useProjectMethods = () => {
     return { currency: currencyConfig.code, amount: amount / (subCurrencyConfig?.subunitToUnit || 1) };
   };
 
-  const setPageSeo = (seoData: Maybe<ISeoBlock>):void => {
+  const setPageMeta = (metaData: Maybe<IPageMeta>):void => {
     const globalStore = useGlobalStore();
     useHead({
-      title: seoData?.title || globalStore.globalSeo?.title,
+      title: metaData?.title || globalStore.globalSeo?.title,
       meta: [
         {
           name: 'description',
-          content: seoData?.description || globalStore.globalSeo?.description,
+          content: metaData?.description || globalStore.globalSeo?.description,
         },
       ],
     });
@@ -327,6 +327,12 @@ export const useProjectMethods = () => {
     return script;
   }
 
+  const handleExternalLink = (url: string):void => {
+    const router = useRouter();
+    const { localizePath } = useProjectMethods();
+    url.includes('http') ? window.open(url, '_blank') : router.push(localizePath(url));
+  }
+
   return {
     createValidationRules,
     getFormRules,
@@ -337,7 +343,7 @@ export const useProjectMethods = () => {
     getNicknameFromEmail,
     formatBalance,
     getMainBalanceFormat,
-    setPageSeo,
+    setPageMeta,
     sortByAlphabet,
     getContent,
     getEquivalentAccount,
@@ -350,6 +356,7 @@ export const useProjectMethods = () => {
     createSrcSet,
     getEquivalentFromBase,
     getSumFromAmountItems,
-    addBetsyScript
+    addBetsyScript,
+    handleExternalLink
   };
 };

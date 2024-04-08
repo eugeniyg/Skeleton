@@ -54,6 +54,26 @@ export default defineNuxtConfig({
       'core/composables'
     ]
   },
+  routeRules: {
+    '/profile/**': {
+      appMiddleware: ['auth']
+    },
+    '/*/profile/**': {
+      appMiddleware: ['auth']
+    },
+    '/favorites': {
+      appMiddleware: ['auth']
+    },
+    '/*/favorites': {
+      appMiddleware: ['auth']
+    },
+    '/recently-played': {
+      appMiddleware: ['auth']
+    },
+    '/*/recently-played': {
+      appMiddleware: ['auth']
+    }
+  },
   experimental: {
     asyncContext: true,
     defaults: {

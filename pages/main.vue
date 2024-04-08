@@ -33,7 +33,7 @@
       <favorite-recently v-if="isLoggedIn"/>
     </client-only>
 
-    <atomic-seo-text v-if="pageContent?.seo?.text" v-bind="pageContent.seo.text"/>
+    <atomic-seo-text v-if="pageContent?.pageMeta?.seoText" v-bind="pageContent.pageMeta.seoText"/>
   </div>
 </template>
 
@@ -50,7 +50,7 @@
   } = storeToRefs(globalStore);
   const {
     localizePath,
-    setPageSeo,
+    setPageMeta,
     getLocalesContentData
   } = useProjectMethods();
   const { isLoggedIn } = storeToRefs(profileStore);
@@ -67,7 +67,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     pageContent.value = contentData?.currentLocaleData;
     defaultLocalePageContent.value = contentData?.defaultLocaleData;
-    setPageSeo(pageContent.value?.seo);
+    setPageMeta(pageContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
@@ -89,15 +89,15 @@
     setContentData(data.value);
   })
 
+  const { getCollectionsList } = useGamesStore();
+  const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
+  const mainCategoriesList =  computed(() => {
+    return gameCollections.value?.reduce((categoriesArr: ICollection[], currentCategory) => {
+      return currentCategory.isHidden ? categoriesArr : [...categoriesArr, currentCategory];
+    }, []) || [];
+  });
 
   const router = useRouter();
-  const gameStore = useGamesStore();
-  const { currentLocationCollections } = storeToRefs(gameStore);
-
-  const mainCategoriesList = currentLocationCollections.value.reduce((categoriesArr: ICollection[], currentCategory) => {
-    return currentCategory.isHidden ? categoriesArr : [...categoriesArr, currentCategory];
-  }, []);
-
   const changeCategory = (categoryId: string) => {
     router.push({ path: localizePath('/games'), query: { category: categoryId } });
   };

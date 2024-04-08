@@ -7,7 +7,7 @@
       {{ getContent(limitsContent, defaultLimitsContent, 'deposit.label') }}
       <atomic-tooltip
         v-if="depositPeriods.length"
-        :text="getContent(limitsContent, defaultLimitsContent, 'titleTooltip')"
+        :text="getContent(limitsContent, defaultLimitsContent, 'deposit.hint')"
         align="bottom"
       />
     </h4>

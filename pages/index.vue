@@ -55,7 +55,7 @@
 
     <group-promotions />
 
-    <atomic-seo-text v-if="homeContent?.seo?.text" v-bind="homeContent.seo.text"/>
+    <atomic-seo-text v-if="homeContent?.pageMeta?.seoText" v-bind="homeContent.pageMeta.seoText"/>
   </div>
 </template>
 
@@ -64,15 +64,13 @@
   import type { IHomePage } from '~/types';
 
   const globalStore = useGlobalStore();
-  const gameStore = useGamesStore();
-  const { currentLocationCollections } = storeToRefs(gameStore);
   const {
     currentLocale,
     defaultLocale
   } = storeToRefs(globalStore);
 
   const {
-    setPageSeo,
+    setPageMeta,
     localizePath,
     getContent,
     getLocalesContentData,
@@ -90,7 +88,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     homeContent.value = contentData?.currentLocaleData;
     defaultLocaleHomeContent.value = contentData?.defaultLocaleData;
-    setPageSeo(homeContent.value?.seo);
+    setPageMeta(homeContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
@@ -112,9 +110,17 @@
     setContentData(data.value);
   })
 
-  const topSlotsCategory = currentLocationCollections.value.find((collection) => collection.identity === 'top-slots');
-  const liveCasinoCategory = currentLocationCollections.value.find((collection) => collection.identity === 'liveshow');
-  const aeroCategory = computed(() => currentLocationCollections.value.find((collection) => collection.identity === homeContent.value?.aeroGroup?.collectionIdentity));
+  const { getCollectionsList } = useGamesStore();
+  const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
+  const topSlotsCategory = computed(() => {
+    return gameCollections.value?.find((collection) => collection.identity === 'top-slots');
+  });
+  const liveCasinoCategory = computed(() => {
+    return gameCollections.value?.find((collection) => collection.identity === 'liveshow');
+  });
+  const aeroCategory = computed(() => {
+    return gameCollections.value?.find((collection) => collection.identity === homeContent.value?.aeroGroup?.collectionIdentity);
+  });
 
   const cardsModifier = computed(() => {
     const length = Object.keys(getContent(homeContent.value, defaultLocaleHomeContent.value, 'categories'))?.length || 0
@@ -150,7 +156,7 @@
   const { initObserver } = useProjectMethods();
   const widgetsObserver = ref();
 
-  onMounted(() => {
+  const initBetsy = (): void => {
     if (window.BetSdk) startBetsyWidgets();
     else {
       widgetsObserver.value = initObserver({
@@ -159,7 +165,12 @@
       });
       widgetsObserver.value.observe(sportsContainer.value);
     }
-  });
+  }
+
+  onMounted(async () => {
+    await getCollectionsList();
+    initBetsy();
+  })
 
   onBeforeUnmount(() => {
     if (sportsContainer.value && widgetsObserver.value) {

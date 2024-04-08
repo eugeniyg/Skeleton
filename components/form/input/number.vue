@@ -87,12 +87,12 @@
       e.target.value = props.min;
       emit('input', e.target.value);
       emit('update:value', e.target.value);
-      emit('blur', props.min);
+      emit('blur', e.target.value);
     } else if (e.target.value > props.max) {
       e.target.value = props.max;
       emit('input', e.target.value);
       emit('update:value', e.target.value);
-      emit('blur', props.max);
+      emit('blur', e.target.value);
     } else emit('blur', e.target.value);
   };
 

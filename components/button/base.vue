@@ -1,9 +1,10 @@
 <template>
   <component
-    :is="props.url ? NuxtLink : props.tagName"
+    :is="props.url ? AtomicLink : props.tagName"
     :class="componentClasses"
     :disabled="props.isDisabled || null"
-    :to="localizePath(url)"
+    :href="props.url"
+    :targetBlank="props.targetBlank || null"
   >
     <slot/>
   </component>
@@ -11,6 +12,10 @@
 
 <script setup lang="ts">
   const props = defineProps({
+    targetBlank: {
+      type: Boolean,
+      default: false,
+    },
     tagName: {
       type: String,
       validator: (val:string) => ['div', 'span', 'button'].includes(val),
@@ -41,7 +46,7 @@
   });
 
   const { localizePath } = useProjectMethods();
-  const NuxtLink = resolveComponent('nuxt-link');
+  const AtomicLink = resolveComponent('atomic-link');
 
   const componentClasses = computed(() => [
     props.type ? `btn-${props.type}` : 'btn',

@@ -32,7 +32,7 @@
       />
     </div>
 
-    <atomic-seo-text v-if="currentLocaleBonusContent?.seo?.text" v-bind="currentLocaleBonusContent?.seo?.text" />
+    <atomic-seo-text v-if="currentLocaleBonusContent?.pageMeta?.seoText" v-bind="currentLocaleBonusContent?.pageMeta?.seoText" />
   </div>
 </template>
 
@@ -46,8 +46,7 @@
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
   const {
-    localizePath,
-    setPageSeo,
+    setPageMeta,
     getLocalesContentData,
     getContent
   } = useProjectMethods();
@@ -63,7 +62,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     currentLocaleBonusContent.value = contentData?.currentLocaleData;
     defaultLocaleBonusContent.value = contentData?.defaultLocaleData;
-    setPageSeo(currentLocaleBonusContent.value?.seo);
+    setPageMeta(currentLocaleBonusContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
@@ -91,10 +90,10 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { openWalletModal, showModal } = useLayoutStore();
-
-  const router = useRouter();
+  
   const clickButton = (url: string|undefined):void => {
-    if (url) router.push(localizePath(url));
+    const { handleExternalLink } = useProjectMethods();
+    if (url) handleExternalLink(url)
     else isLoggedIn.value ? openWalletModal('deposit') : showModal('register');
   };
 </script>

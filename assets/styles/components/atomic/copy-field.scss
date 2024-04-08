@@ -9,13 +9,6 @@
     width: auto;
   }
 
-  &__input {
-    position: absolute;
-    z-index: -100;
-    pointer-events: none;
-    opacity: 0;
-  }
-
   &__content {
     width: 100%;
     @include font($body-2);
