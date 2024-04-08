@@ -9,14 +9,16 @@ const router = useRouter();
 const { localizePath } = useProjectMethods();
 const { showModal, showAlert } = useLayoutStore();
 const globalStore = useGlobalStore();
-const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
+const { alertsData, defaultLocaleAlertsData, currentLocale } = storeToRefs(globalStore);
 
 const sendSocialData = async (socialData: any, authState?: IAuthState): Promise<void> => {
   try {
     const { loginSocial } = useProfileStore();
     await loginSocial({
       ...socialData,
-      socialDataKey: 'id_token'
+      locale: currentLocale.value?.code,
+      affiliateTag: authState?.affiliateTag,
+      socialDataKey: 'id_token',
     }, authState);
   } catch (err:any) {
     const errorCode = err.data?.error?.code;

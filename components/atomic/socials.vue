@@ -56,11 +56,18 @@
   const authSocial = (connection: string) => {
     if (!$auth0) return;
     const { query, path } = useRoute();
-    const formedQuery = queryString.stringify({ ...query, 'sign-in': undefined, 'sign-up': undefined });
+    const formedQuery = queryString.stringify({
+      ...query,
+      'sign-in': undefined,
+      'sign-up': undefined,
+      'stag': undefined
+    });
+    const affiliateTag = localStorage.getItem('affiliateTag');
 
     $auth0.loginWithRedirect({
       appState: {
         type: props.type,
+        affiliateTag: affiliateTag,
         targetUrl: formedQuery ? `${path}?${formedQuery}` : path
       },
       authorizationParams: {

@@ -61,6 +61,7 @@ export interface IAuthorizationResponse extends Record<string, any>{
 
 export interface IAuthState {
   type: 'login'|'registration';
+  affiliateTag?: string;
   targetUrl: string;
 }
 
