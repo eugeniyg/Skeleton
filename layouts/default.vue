@@ -53,6 +53,7 @@
     <!--    <modal-wallet-choose-region />-->
     <modal-cancel-deposit />
     <modal-wallet-bonus-details />
+    <modal-restricted-bets />
 
     <atomic-alert />
   </div>
