@@ -124,6 +124,10 @@
         ...field,
         value: popupsData.value?.registration?.agreeSmsChecked ? 1 : 0
       };
+      else if (field.name === 'agreements') return {
+        ...field,
+        value: popupsData.value?.registration?.agreementsChecked ? 1 : 0
+      };
       else return field;
     });
   }
