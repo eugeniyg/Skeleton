@@ -1,6 +1,6 @@
 <template>
   <vue-final-modal
-    v-model="modals.confirm"
+    v-model="props.showModal"
     class="modal-restricted-bets"
     :clickToClose="false"
     @beforeOpen="getPlayerBonuses"
@@ -10,15 +10,14 @@
         <button-modal-close @close="emit('closeModal')" />
       </div>
       
-      <atomic-image class="img" :src="content.image" />
+      <atomic-image class="img" :src="props.content.image" />
       
-      <div class="title">{{ title }}</div>
+      <div class="title">{{ props.content.title }}</div>
 
-      <p class="text">{{ description }}</p>
+      <p class="text">{{ props.content.description }}</p>
 
       <atomic-bonus-progress
-        v-if="currentActiveBonus"
-        :wageringLabel="content.wageringLabel"
+        :wageringLabel="props.content.wageringLabel"
         :bonusInfo="currentActiveBonus"
       />
       
@@ -26,17 +25,17 @@
         <button-base
           type="primary"
           size="md"
-          @click="emit('confirm')"
+          @click="handleConfirm"
         >
-          {{ content.confirmButton }}
+          {{ props.content.confirmButton }}
         </button-base>
         
         <button-base
           type="ghost"
           size="xs"
-          @click="emit('cancel')"
+          @click="handleCancel"
         >
-          {{ content.cancelButton }}
+          {{ props.content.cancelButton }}
         </button-base>
       </div>
     </div>
@@ -48,23 +47,32 @@
   import  { storeToRefs } from "pinia";
   import type { IRestrictedBetsModal } from "~/types";
 
-  const emit = defineEmits(['cancel', 'confirm', 'closeModal']);
+  const props = defineProps<{
+    showModal: boolean;
+    currentPage: 'betting'|'game';
+    content: IRestrictedBetsModal;
+  }>();
 
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
-  const { getContent } = useProjectMethods();
-  const content: IRestrictedBetsModal = getContent(popupsData, defaultLocalePopupsData, 'restrictedBets');
-
-  const route = useRoute();
-  const routeName = route.name as string;
-  const title = computed(() => routeName.includes('sportsbook') ? content.titleSportsbook : content.titleCasino);
-  const description = computed(() => routeName.includes('sportsbook') ? content.descriptionSportsbook : content.descriptionCasino);
+  const emit = defineEmits(['closeModal']);
+  const { localizePath } = useProjectMethods();
+  const router = useRouter();
 
   const bonusStore = useBonusStore();
   const { getPlayerBonuses } = bonusStore;
   const { currentActiveBonus } = storeToRefs(bonusStore);
+
+  watch(currentActiveBonus, (newValue) => {
+    if (!newValue && props.showModal) emit('closeModal');
+  })
+
+  const handleConfirm = (): void => {
+    router.push(localizePath(props.currentPage === 'betting' ? '/main' : '/betting'));
+  }
+
+  const handleCancel = (): void => {
+    router.push(localizePath('/profile/bonuses'));
+  }
 </script>
 
-<style src="~/assets/styles/components/modal/confirm-bonus-unsettled.scss" lang="scss" />
+<style src="~/assets/styles/components/modal/restricted-bets.scss" lang="scss" />
 

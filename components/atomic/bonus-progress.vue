@@ -2,38 +2,41 @@
   <div class="bonus-progress">
     <div class="bonus-progress__info">
       <div class="bonus-progress__info-data">
-            <span class="bonus-progress__info-label">
-              <span>{{ props.wageringLabel }}</span>
-              (<span>x</span>{{ props.bonusInfo.wagerSportsbook }}):
-            </span>
+        <span class="bonus-progress__info-label">
+          <span>{{ props.wageringLabel }}</span>
+          (<span>x</span>{{ props.bonusInfo?.wagerSportsbook || props.bonusInfo?.wagerCasino }}):
+        </span>
 
         <span class="bonus-progress__info-value">
-              {{ props.bonusInfo.currentWagerAmount }}
-              {{ props.bonusInfo.currency }}
-            </span>
+          {{ wageredFormatSum.amount }}
+          {{ wageredFormatSum.currency }}
+        </span>
       </div>
     </div>
 
     <div class="bonus-progress__bar">
       <div
         class="bonus-progress__bar-filled"
-        :data-progress="`${props.bonusInfo.currentWagerPercentage}%`"
-        :style="`--progress: ${props.bonusInfo.currentWagerPercentage}%`"
+        :data-progress="`${props.bonusInfo?.currentWagerPercentage || 0}%`"
+        :style="`--progress: ${props.bonusInfo?.currentWagerPercentage || 0}%`"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+  import type { IPlayerBonus } from "@skeleton/core/types";
+
   const props = defineProps<{
-    wageringLabel: string,
-    bonusInfo: {
-      wagerSportsbook: number,
-      currentWagerAmount: number,
-      currency: string,
-      currentWagerPercentage: number
-    }
+    wageringLabel: string;
+    bonusInfo?: IPlayerBonus;
   }>();
+
+  const { formatBalance } = useProjectMethods();
+
+  const wageredFormatSum = computed(() => {
+    return formatBalance(props.bonusInfo?.currency, props.bonusInfo?.currentWagerAmount);
+  })
 </script>
 
 <style src="~/assets/styles/components/atomic/bonus-progress.scss" lang="scss" />

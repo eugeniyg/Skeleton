@@ -112,7 +112,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     startProfileDependencies():void {
-      const { getFavoriteGames } = useGamesStore();
+      const { getFavoriteGames, subscribeRestrictedBetsSocket } = useGamesStore();
       const {
         getPlayerBonuses,
         getDepositBonusCode,
@@ -134,11 +134,13 @@ export const useProfileStore = defineStore('profileStore', {
 
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       const { subscribeBonusCodeSocket, subscribeBonusSocket, subscribeFreeSpinsSocket } = useBonusStore();
+
       subscribeAccountSocket();
       subscribeInvoicesSocket();
       subscribeBonusCodeSocket();
       subscribeBonusSocket();
       subscribeFreeSpinsSocket();
+      subscribeRestrictedBetsSocket();
 
       const { setEquivalentCurrency } = useGlobalStore();
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
@@ -151,11 +153,13 @@ export const useProfileStore = defineStore('profileStore', {
 
       const { unsubscribeAccountSocket, unsubscribeInvoiceSocket } = useWalletStore();
       const { unsubscribeBonusCodeSocket, unsubscribeBonusSocket, unsubscribeFreeSpinsSocket } = useBonusStore();
+      const { unsubscribeRestrictedBetsSocket } = useGamesStore();
       unsubscribeAccountSocket();
       unsubscribeInvoiceSocket();
       unsubscribeBonusCodeSocket();
       unsubscribeBonusSocket();
       unsubscribeFreeSpinsSocket();
+      unsubscribeRestrictedBetsSocket();
     },
 
     async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {

@@ -10,6 +10,14 @@
       :isDemo="isDemo"
     />
 
+    <modal-restricted-bets
+      v-if="gameContent?.restrictedBets || defaultLocaleGameContent?.restrictedBets"
+      :content="gameContent?.restrictedBets || defaultLocaleGameContent?.restrictedBets"
+      currentPage="game"
+      :showModal="showRestrictedBetsModal"
+      @closeModal="showRestrictedBetsModal = false"
+    />
+
     <client-only>
       <modal-demo-game
         :content="gameContent?.demoModal || defaultLocaleGameContent?.demoModal"
@@ -58,6 +66,7 @@
   const gameInfo = ref<Maybe<IGame>>();
   const gameContent = ref<Maybe<IGamePage>>();
   const defaultLocaleGameContent = ref<Maybe<IGamePage>>();
+  const showRestrictedBetsModal = ref<boolean>(false);
 
   interface IPageData {
     gameInfo: Maybe<IGame>;
@@ -126,8 +135,13 @@
         return { error: { ...err, fatal: false }}
       }
 
-      if(err.data?.error?.code === 14103) {
+      if (err.data?.error?.code === 14103) {
         redirectLimitedPlayer();
+        return { error: { ...err, fatal: false }}
+      }
+
+      if (err.data?.error?.code === 14306) {
+        showRestrictedBetsModal.value = true;
         return { error: { ...err, fatal: false }}
       }
 
@@ -145,11 +159,14 @@
       return;
     }
 
-    isDemo.value = false;
+    isDemo.value = !isDemo.value;
 
     const { data, error } = await startGame();
     if (data) router.replace({ query: { real: `${!isDemo.value}` } });
-    else if (error.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+    else {
+      if (error.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+      isDemo.value = !isDemo.value;
+    }
   };
 
   const redirectLimitedPlayer = () :void => {
@@ -196,6 +213,12 @@
     }
   }
 
+  const handleRestrictedBets = (gameIdentity: string): void => {
+    if (gameIdentity && gameIdentity === route.params.id && !isDemo.value) {
+      showRestrictedBetsModal.value = true;
+    }
+  };
+
   const pageMounted = ref<boolean>(false);
   onMounted(async () => {
     document.body.classList.add('is-mob-nav-vertical');
@@ -204,6 +227,7 @@
     compactDrawer(true, false);
 
     if (gameInfo.value) await checkGame();
+    useListen('restrictedBets', handleRestrictedBets);
     pageMounted.value = true;
   });
 
@@ -215,6 +239,7 @@
     const storageDrawerCompact = localStorage.getItem('IS_DRAWER_COMPACT') === 'true';
     compactDrawer(storageDrawerCompact, false);
     useUnlisten('changeMobileGameMode', changeGameMode);
+    useUnlisten('restrictedBets', handleRestrictedBets);
   });
 </script>
 

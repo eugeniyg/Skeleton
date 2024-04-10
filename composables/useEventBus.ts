@@ -6,6 +6,7 @@ type ApplicationEvents = {
   'freeSpinsUpdated': undefined;
   'bonusesUpdated': undefined;
   'accountChanged': undefined;
+  'restrictedBets': string;
 };
 
 const emitter = mitt<ApplicationEvents>();

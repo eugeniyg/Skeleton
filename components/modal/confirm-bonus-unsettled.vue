@@ -15,11 +15,29 @@
 
       <p class="text">{{ props.description }}</p>
 
-      <atomic-bonus-progress
-        v-if="props.bonusInfo"
-        :bonusInfo="props.bonusInfo"
-        :wageringLabel="props.wageringLabel"
-      />
+      <div class="progress">
+        <div class="progress__info">
+          <div class="progress__info-data">
+            <span class="progress__info-label">
+              <span>{{ props.wageringLabel }}</span>
+              (<span>x</span>{{ props?.bonusInfo?.wagerSportsbook }}):
+            </span>
+
+            <span class="progress__info-value">
+              {{ props.bonusInfo?.currentWagerAmount }}
+              {{ props.bonusInfo?.currency }}
+            </span>
+          </div>
+        </div>
+
+        <div class="progress__bar">
+          <div
+            class="progress__bar-filled"
+            :data-progress="`${props.bonusInfo?.currentWagerPercentage}%`"
+            :style="`--progress: ${props.bonusInfo?.currentWagerPercentage}%`"
+          />
+        </div>
+      </div>
       
       <div class="actions">
         <button-base
