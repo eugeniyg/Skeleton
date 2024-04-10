@@ -125,8 +125,8 @@ export const useGamesStore = defineStore('gamesStore', {
       this.minimumBonusWagerMultiplier = minimumBonusWagerMultiplier;
     },
 
-    handleRestrictedBets(sockedData: IWebSocketResponse):void {
-      useEvent('restrictedBets', sockedData.data.gameIdentity as string);
+    handleRestrictedBets(socketData: IWebSocketResponse):void {
+      useEvent('restrictedBets', socketData.data.gameIdentity as string);
     },
 
     subscribeRestrictedBetsSocket():void {
