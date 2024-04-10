@@ -144,7 +144,7 @@
     const key = props.searchBy || 'name';
     
     if (props.enableSort) {
-      options = options.toSorted((prev, next) => sortByAlphabet(prev[key]?.toLowerCase(), next[key]?.toLowerCase()));
+      options.sort((prev, next) => sortByAlphabet(prev[key]?.toLowerCase(), next[key]?.toLowerCase()));
     }
     return searchQuery.value ? filterOptions(options) : options;
   });
