@@ -127,7 +127,7 @@
       const depositResponse = await depositAccount(state.params);
       walletNumber.value = depositResponse.address;
     } catch {
-      showModal('error');
+      showModal('failing');
     }
   }
 

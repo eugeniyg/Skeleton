@@ -67,6 +67,8 @@
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
       {{ getContent(popupsData, defaultLocalePopupsData, 'registration.registrationButton') }}
     </button-base>
+    
+    <atomic-socials type="registration" />
 
     <button-popup
       :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'registration.loginButton')"
