@@ -91,20 +91,25 @@ const props = defineProps({
   });
 
   const defaultGames = ref<IGame[]>([]);
-  const gameStore = useGamesStore();
-  const { currentLocationCollections } = storeToRefs(gameStore);
-  const getTurbogamesId = currentLocationCollections.value.find((collection) => collection.identity === 'turbogames')?.id;
-
-  onMounted(async () => {
-    const defaultGamesResponse = await getFilteredGames({
+  const getDefaultGames = async ():Promise<IGamesResponse> => {
+    const { getCollectionsList } = useGamesStore();
+    const gameCollections = await getCollectionsList();
+    const getTurbogamesId = gameCollections.find((collection) => collection.identity === 'turbogames')?.id;
+    const requestParams = {
       page: 1,
       perPage: 4,
-      collectionId: getTurbogamesId ? [getTurbogamesId] : [currentLocationCollections.value[0]?.id],
+      collectionId: getTurbogamesId ? [getTurbogamesId] : [gameCollections[0]?.id],
       countries: headerCountry.value ? [headerCountry.value] : undefined,
       sortBy: 'default',
       sortOrder: 'asc'
-    });
-    defaultGames.value = defaultGamesResponse.data;
+    }
+
+    return await getFilteredGames(requestParams);
+  }
+
+  onMounted(async () => {
+    const { data } = await getDefaultGames();
+    defaultGames.value = data;
   });
 </script>
 

@@ -89,15 +89,15 @@
     setContentData(data.value);
   })
 
+  const { getCollectionsList } = useGamesStore();
+  const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
+  const mainCategoriesList =  computed(() => {
+    return gameCollections.value?.reduce((categoriesArr: ICollection[], currentCategory) => {
+      return currentCategory.isHidden ? categoriesArr : [...categoriesArr, currentCategory];
+    }, []) || [];
+  });
 
   const router = useRouter();
-  const gameStore = useGamesStore();
-  const { currentLocationCollections } = storeToRefs(gameStore);
-
-  const mainCategoriesList = currentLocationCollections.value.reduce((categoriesArr: ICollection[], currentCategory) => {
-    return currentCategory.isHidden ? categoriesArr : [...categoriesArr, currentCategory];
-  }, []);
-
   const changeCategory = (categoryId: string) => {
     router.push({ path: localizePath('/games'), query: { category: categoryId } });
   };

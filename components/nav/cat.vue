@@ -58,10 +58,11 @@
 </template>
 
 <script setup lang="ts">
+  import type {ICollection} from "@skeleton/core/types";
+
   const emit = defineEmits(['clickCategory']);
-  const { currentLocationCollections } = useGamesStore();
   const { gameCategoriesObj } = useGlobalStore();
-  const filteredCategories = currentLocationCollections.filter((collection) => !collection.isHidden);
+  const filteredCategories = ref<ICollection[]>([]);
 
   const viewport = ref<HTMLElement>();
   const select = ref<HTMLElement>();
@@ -109,7 +110,11 @@
     timeoutId.value = setTimeout(update, 250);
   };
 
-  onMounted(() => {
+  onMounted(async () => {
+    const { getCollectionsList } = useGamesStore();
+    const gameCollections = await getCollectionsList();
+    filteredCategories.value = gameCollections.filter((collection) => !collection.isHidden);
+    await nextTick();
     update();
     window.addEventListener('resize', onResize);
   });

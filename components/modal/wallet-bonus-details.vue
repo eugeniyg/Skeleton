@@ -55,7 +55,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import type { IAmountRangeItem, IBonus } from "@skeleton/core/types";
+  import type {IAmountRangeItem, IBonus, IGameProvider} from "@skeleton/core/types";
 
   const {
     getContent,
@@ -80,9 +80,7 @@
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-
-  const gamesStore = useGamesStore();
-  const { gameProviders } = storeToRefs(gamesStore);
+  const { getProviderList } = useGamesStore();
 
   const titleImage = computed(() => {
     return getContent(popupsData, defaultLocalePopupsData, 'walletBonusDetails.titleImage')
@@ -164,12 +162,12 @@
     return getCurrentCurrencySumRange(sportsbookBetItems, sportsbookFromBase, sportsbookToBase);
   }
 
-  const getBonusProvider = (bonusInfo: IBonus): string|undefined => {
+  const getBonusProvider = (gameProviders: IGameProvider[], bonusInfo: IBonus): string|undefined => {
     const bonusProviderList = bonusInfo.wagerCasinoConditions?.providerIds;
     const providersExcluded = bonusInfo.wagerCasinoConditions?.providerIdsExcluded;
 
     if (bonusProviderList?.length) {
-      const providersNames = gameProviders.value
+      const providersNames = gameProviders
         .filter(provider => bonusProviderList.includes(provider.id))
         .map(provider => provider.name);
 
@@ -179,11 +177,11 @@
     return undefined;
   }
 
-  const getFreeSpinProvider = (bonusInfo: IBonus): string|undefined => {
+  const getFreeSpinProvider = (gameProviders: IGameProvider[], bonusInfo: IBonus): string|undefined => {
     const freeSpinProviderId = bonusInfo.assignConditions?.providerId;
 
     if (freeSpinProviderId) {
-      return gameProviders.value.find(provider => provider.id === freeSpinProviderId)?.name;
+      return gameProviders.find(provider => provider.id === freeSpinProviderId)?.name;
     }
 
     return undefined;
@@ -211,7 +209,7 @@
 
   interface IParams { [key: string]: IParam|undefined }
 
-  const getBonusParams = (bonusInfo: IBonus): IParam[] => {
+  const getBonusParams = (gameProviders: IGameProvider[], bonusInfo: IBonus): IParam[] => {
     const bonusType = bonusInfo.type;
 
     const params:IParams = {
@@ -260,10 +258,10 @@
     if (sportsbookBetSum && bonusType !== 3) params.sportsbookBet = { label: paramsLabels?.sportsbookBetSum, value: sportsbookBetSum };
 
     if (bonusType === 3) {
-      const freeSpinProvider = getFreeSpinProvider(bonusInfo);
+      const freeSpinProvider = getFreeSpinProvider(gameProviders, bonusInfo);
       if (freeSpinProvider) params.providers = { label: paramsLabels?.providers, value: freeSpinProvider };
     } else {
-      const bonusProviders = getBonusProvider(bonusInfo);
+      const bonusProviders = getBonusProvider(gameProviders, bonusInfo);
       if (bonusProviders) params.providers = { label: paramsLabels?.providers, value: bonusProviders };
     }
 
@@ -277,22 +275,24 @@
     return Object.values(params).filter(value => value) as IParam[];
   }
 
-  const setTableData = (): void => {
+  const setTableData = async (): Promise<void> => {
     Object.keys(bonusGames).forEach(key => {
       delete bonusGames[key];
     });
+
+    const gameProviders = await getProviderList();
 
     if (depositMoreInfoBonus.value?.packageItems?.length) {
       bonusesTables.value = depositMoreInfoBonus.value.packageItems.map(bonusInfo => ({
         id: bonusInfo.id,
         name: bonusInfo.name,
-        params: getBonusParams(bonusInfo)
+        params: getBonusParams(gameProviders, bonusInfo)
       }))
     } else if (depositMoreInfoBonus.value) {
       bonusesTables.value = [{
         id: depositMoreInfoBonus.value.id,
         name: depositMoreInfoBonus.value.name,
-        params: getBonusParams(depositMoreInfoBonus.value)
+        params: getBonusParams(gameProviders, depositMoreInfoBonus.value)
       }]
     }
   }
