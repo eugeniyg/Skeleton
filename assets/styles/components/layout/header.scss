@@ -17,6 +17,15 @@
       }
     }
   }
+
+  &:has(.pwa) {
+    background: red;
+    @media (max-width: 1281px) {
+      .search {
+        transform: translateY(64px);
+      }
+    }
+  }
 }
 
 .app-header {
@@ -27,6 +36,7 @@
   box-shadow: var(--shadow-group);
   background-color: var(--layer-bg);
   grid-column-gap: 2px;
+  border-bottom: 1px solid red !important;
 
   @include media(xs) {
     --padding: 0 #{rem(32px)}
