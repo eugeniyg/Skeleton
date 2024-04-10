@@ -107,14 +107,31 @@
 
   const mainFields = props.registrationFields.filter((field) => !groupFooterFields.includes(field.name));
   const footerFields = props.registrationFields.filter((field) => groupFooterFields.includes(field.name));
-  const registrationFormData = reactive(setFormData(props.registrationFields));
-  const geoCountry = countries.value.find(country => country.code === headerCountry.value);
-  if (registrationFormData.hasOwnProperty('nickname')) registrationFormData.nickname = 'undefined';
-  if (registrationFormData.hasOwnProperty('currency')) registrationFormData.currency = geoCountry?.currency || 'BTC';
-  if (registrationFormData.hasOwnProperty('locale')) registrationFormData.locale = currentLocale.value?.code;
-  if (registrationFormData.hasOwnProperty('country') && !registrationFormData.country && geoCountry) {
-    registrationFormData.country = geoCountry.code;
+
+  const getFields = (): IField[] => {
+    const geoCountry = countries.value.find(country => country.code === headerCountry.value);
+
+    return props.registrationFields.map((field) => {
+      if (field.name === 'nickname') return { ...field, value: 'undefined' };
+      else if (field.name === 'currency') return { ...field, value: geoCountry?.currency || 'BTC' };
+      else if (field.name === 'locale') return { ...field, value: currentLocale.value?.code };
+      else if (field.name === 'country' && !field.value && geoCountry) return { ...field, value: geoCountry.code };
+      else if (field.name === 'receiveEmailPromo') return {
+        ...field,
+        value: popupsData.value?.registration?.agreeEmailChecked ? 1 : 0
+      };
+      else if (field.name === 'receiveSmsPromo') return {
+        ...field,
+        value: popupsData.value?.registration?.agreeSmsChecked ? 1 : 0
+      };
+      else if (field.name === 'agreements') return {
+        ...field,
+        value: popupsData.value?.registration?.agreementsChecked ? 1 : 0
+      };
+      else return field;
+    });
   }
+  const registrationFormData = reactive(setFormData(getFields()));
 
   const getCheckboxLabel = (fieldName: string):string|undefined => {
     if (fieldName === 'receiveEmailPromo') return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.agreeEmailLabel');
