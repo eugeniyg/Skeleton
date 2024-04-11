@@ -14,6 +14,7 @@ interface IGamesStoreState {
   gameCollectionsPromise: Promise<ICollection[]>|null;
   favoriteGames: IGame[];
   winnersSubscription: any;
+  restrictedBetsSubscription: any;
   latestWinners: IWinner[];
   showMobileGameModal: boolean;
   mobileGameModalType: Maybe<MobileModalType>;
@@ -28,6 +29,7 @@ export const useGamesStore = defineStore('gamesStore', {
     gameCollectionsPromise: null,
     favoriteGames: [],
     winnersSubscription: undefined,
+    restrictedBetsSubscription: undefined,
     latestWinners: [],
     showMobileGameModal: false,
     mobileGameModalType: undefined,
@@ -122,5 +124,22 @@ export const useGamesStore = defineStore('gamesStore', {
       this.isBonusWagering = isBonusWagering;
       this.minimumBonusWagerMultiplier = minimumBonusWagerMultiplier;
     },
+
+    handleRestrictedBets(socketData: IWebSocketResponse):void {
+      useEvent('restrictedBets', socketData.data.gameIdentity as string);
+    },
+
+    subscribeRestrictedBetsSocket():void {
+      const { createSubscription } = useWebSocket();
+      const profileStore = useProfileStore();
+      this.restrictedBetsSubscription = createSubscription(`game:bets#${profileStore.profile?.id}`, this.handleRestrictedBets);
+    },
+
+    unsubscribeRestrictedBetsSocket():void {
+      if (this.restrictedBetsSubscription) {
+        this.restrictedBetsSubscription.unsubscribe();
+        this.restrictedBetsSubscription.removeAllListeners();
+      }
+    }
   },
 });
