@@ -6,7 +6,7 @@
   border-radius: 8px;
   display: flex;
   position: fixed;
-  bottom: rem(24px);
+  bottom: rem(64px);
   left: rem(16px);
   right: rem(16px);
   z-index: 7;
@@ -16,6 +16,10 @@
 
   @include media(xs) {
     max-width: rem(680px);
+  }
+
+  @include media(l) {
+    bottom: rem(24px);
   }
 
   .text {
