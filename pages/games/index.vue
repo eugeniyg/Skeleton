@@ -3,7 +3,6 @@
     <nav-cat @clickCategory="changeCategory"/>
 
     <atomic-cat-heading
-      v-if="gameCategoriesObj[activeCollection?.identity || '']"
       :icon="gameCategoriesObj[activeCollection?.identity || '']?.icon"
     >
       {{ gameCategoriesObj[activeCollection?.identity || '']?.label || activeCollection?.name }}

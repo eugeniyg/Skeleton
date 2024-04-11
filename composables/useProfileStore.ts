@@ -2,7 +2,8 @@ import { defineStore } from 'pinia';
 import type {
   IProfile,
   IAuthorizationResponse,
-  IParsedToken
+  IParsedToken,
+  IAuthState
 } from '@skeleton/core/types';
 import { jwtDecode } from "jwt-decode";
 
@@ -12,6 +13,7 @@ interface IProfileStoreState {
   sessionId: string;
   resentVerifyEmail: boolean;
   profile: Maybe<IProfile>;
+  socialAuthEmailError: boolean;
   tokenCookieKey: string;
 }
 
@@ -22,6 +24,7 @@ export const useProfileStore = defineStore('profileStore', {
     sessionId: '',
     resentVerifyEmail: false,
     profile: undefined,
+    socialAuthEmailError: false,
     tokenCookieKey: 'access_token'
   }),
 
@@ -187,6 +190,23 @@ export const useProfileStore = defineStore('profileStore', {
       await this.handleLogin(submitResult);
     },
 
+    async loginSocial(socialData:any, authState?: IAuthState):Promise<void> {
+      const { submitSocialLoginData } = useCoreAuthApi();
+      const submitResult = await submitSocialLoginData(socialData);
+      await this.handleLogin(submitResult);
+
+      const router = useRouter();
+      const { localizePath } = useProjectMethods();
+      await router.replace(authState?.targetUrl || localizePath('/'));
+
+      if (submitResult.profile?.isNewlyRegistered) {
+        const { openWalletModal, showAlert } = useLayoutStore();
+        const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+        showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
+        openWalletModal();
+      }
+    },
+
     async autoLogin(token: string):Promise<void> {
       const { submitAutologinData } = useCoreAuthApi();
       const submitResult = await submitAutologinData(token);
@@ -205,8 +225,7 @@ export const useProfileStore = defineStore('profileStore', {
 
     async getProfileData():Promise<void> {
       const { getProfile } = useCoreProfileApi();
-      const profileInfo = await getProfile();
-      this.profile = profileInfo;
+      this.profile = await getProfile();
       this.isLoggedIn = true;
     },
 
