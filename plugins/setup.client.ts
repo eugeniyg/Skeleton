@@ -78,6 +78,12 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
   }
 
+  nuxtApp.hook('app:created', async () => {
+    const { getProviderList, getCollectionsList } = useGamesStore();
+    getProviderList();
+    getCollectionsList();
+  });
+
   nuxtApp.hook('app:mounted', async () => {
     const { parseUserAgent } = useGlobalStore();
     const { userAgent } = window.navigator;
@@ -97,7 +103,9 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook('page:finish', () => {
     const { name, query } = useRoute();
     const isAuthAutologin = (name as string).includes('auth-autologin') && !!query.state;
-    if (isAuthAutologin) return;
+    const isAuthCallback = (name as string).includes('auth-callback') && !!query.code && !!query.state;
+
+    if (isAuthAutologin || isAuthCallback) return;
 
     const { preloaderDone } = useProjectMethods();
     preloaderDone();

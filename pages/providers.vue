@@ -6,7 +6,7 @@
       </div>
 
       <div class="page-providers__count">
-        {{ gameProviders?.length || 0 }} {{ getContent(providersContent, defaultLocaleProvidersContent, 'providersLabel') }}
+        {{ providersGeneralCount }} {{ getContent(providersContent, defaultLocaleProvidersContent, 'providersLabel') }}
       </div>
 
       <div v-if="providersContent || defaultLocaleProvidersContent" class="page-providers__filter">
@@ -45,8 +45,6 @@
   import type { IGameProvider, IProvidersRequest } from "@skeleton/core/types";
 
   const globalStore = useGlobalStore();
-  const gamesStore = useGamesStore();
-
   const {
     currentLocale,
     defaultLocale,
@@ -62,10 +60,11 @@
     getLocalesContentData,
   } = useProjectMethods();
 
-  const { gameProviders } = storeToRefs(gamesStore);
-
   const providersContent = ref<Maybe<IProvidersPage>>();
   const defaultLocaleProvidersContent = ref<Maybe<IProvidersPage>>();
+  const providersGeneralCount = computed(() => {
+    return providersList.value.length + (staticProviderInfo.value ? 1 : 0);
+  })
 
   interface IPageContent {
     currentLocaleData: Maybe<IProvidersPage>;

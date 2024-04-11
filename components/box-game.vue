@@ -58,8 +58,10 @@
 
   const emit = defineEmits(['changeMode']);
 
-  const { currentLocationCollections, defineBonusWagerInfo } = useGamesStore();
-  const recommendedCategory = currentLocationCollections.find((collection) => collection.identity === 'recommended');
+  const { getCollectionsList, defineBonusWagerInfo } = useGamesStore();
+  const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
+  const recommendedCategory = computed(() => gameCollections.value?.find((collection) => collection.identity === 'recommended'));
+
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
 

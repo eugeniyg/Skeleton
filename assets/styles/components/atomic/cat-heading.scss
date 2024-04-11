@@ -5,13 +5,13 @@
   color: var(--text-primary);
   grid-column-gap: rem(8px);
   padding-top: rem(8px);
+  padding-left: rem(16px);
+
+  @include media(md) {
+    padding-left: 24px;
+  }
 
   .icon {
-    margin-left: 16px;
     --color: var(--icon-primary);
-
-    @include media(md) {
-      margin-left: 24px;
-    }
   }
 }

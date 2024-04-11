@@ -70,11 +70,12 @@ const providersIdentity = [
 ];
 const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
 const { getContent } = useProjectMethods();
-const gamesStore = useGamesStore();
-const { gameProviders } = storeToRefs(gamesStore);
+const { getProviderList } = useGamesStore();
+const { data: gameProviders } = await useLazyAsyncData(() => getProviderList(), { server: false });
+
 const providersList = computed(() => {
   return providersIdentity.reduce((providersArr: IGameProvider[], currentProviderIdentity) => {
-    const providerData = gameProviders.value.find(provider => provider.identity === currentProviderIdentity);
+    const providerData = gameProviders.value?.find(provider => provider.identity === currentProviderIdentity);
     if (providerData) return [...providersArr, providerData];
     return providersArr;
   }, []);
@@ -86,10 +87,15 @@ const nextDisabled = ref<boolean>(false);
 const showArrowButtons = ref<boolean>(props.showArrows);
 
 const scrollHandler = (): void => {
+  if (!scrollContainer.value) return;
   const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
   prevDisabled.value = scrollLeft === 0;
   nextDisabled.value = scrollWidth < (scrollLeft + offsetWidth + 20) && scrollWidth > (scrollLeft + offsetWidth - 20);
 };
+
+watch(gameProviders, () => {
+  scrollHandler();
+});
 
 const clickAction = (direction: string): void => {
   const { offsetWidth, scrollWidth, scrollLeft } = scrollContainer.value;

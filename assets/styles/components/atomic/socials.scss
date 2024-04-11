@@ -1,0 +1,54 @@
+.socials {
+  display: grid;
+  grid-gap: 8px;
+
+  &__title {
+    @include font($body-1);
+    text-align: center;
+    color: var(--gray-500);
+  }
+
+  &__items {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+  }
+
+  &__item {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+
+    --color: var(--icon-main);
+
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
+        --color: var(--icon-accent);
+      }
+    }
+
+    &--twitter {
+      background-color: #1DA1F2;
+    }
+
+    &--facebook {
+      background-color: #4267B2;
+    }
+
+    &--google-oauth2 {
+      background-color: #DB4437;
+    }
+
+    &--twitch {
+      background-color: #6441A5;
+    }
+  }
+}
