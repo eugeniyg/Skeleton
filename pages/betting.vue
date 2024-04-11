@@ -4,6 +4,14 @@
       <main-slider v-if="!isMobile && bettingContent?.sliderDisplay" sliderType="low" />
     </client-only>
 
+    <modal-restricted-bets
+      v-if="bettingContent?.restrictedBets || defaultLocaleBettingContent?.restrictedBets"
+      :content="bettingContent?.restrictedBets || defaultLocaleBettingContent?.restrictedBets"
+      currentPage="betting"
+      :showModal="showRestrictedBetsModal"
+      @closeModal="showRestrictedBetsModal = false"
+    />
+
     <div class="betting">
       <div id="betting-container" class="container"/>
       
@@ -36,6 +44,7 @@
 
   const bettingContent = ref<Maybe<ISportsbookPage>>();
   const  defaultLocaleBettingContent = ref<Maybe<ISportsbookPage>>();
+  const showRestrictedBetsModal = ref<boolean>(false);
 
   interface IPageContent {
     currentLocaleData: Maybe<ISportsbookPage>;
@@ -120,8 +129,25 @@
       demoMode: false,
       platform: isMobile.value ? 1 : 2,
     };
-    const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
-    startBetsyFrame(mainHost, startResponse.token);
+
+    try {
+      const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
+      startBetsyFrame(mainHost, startResponse.token);
+    } catch (error: any) {
+      if ([14100, 14101, 14105].includes(error.data?.error?.code)) {
+        await router.push({
+          path: localizePath('/profile/limits'),
+          query: {}
+        });
+        limitStore.showModal('gameLimitReached');
+      } else if (error.data?.error?.code === 14103) {
+        redirectLimitedPlayer();
+      } else if (error.data?.error?.code === 14306) {
+        showRestrictedBetsModal.value = true;
+      } else {
+        throw error;
+      }
+    }
   };
 
   const layoutStore = useLayoutStore();
@@ -184,6 +210,12 @@
     }
   }
 
+  const handleRestrictedBets = (gameIdentity: string): void => {
+    if (gameIdentity && gameIdentity === 'betsy-sportsbook-betsy') {
+      showRestrictedBetsModal.value = true;
+    }
+  };
+
   onMounted(async () => {
     window.addEventListener('message', resolveFrameEvent);
 
@@ -194,21 +226,8 @@
       if (seoTextBlock) seoTextBlock.style.display = 'none';
     }
 
-    try {
-      await startGame();
-    } catch (error: any) {
-      if ([14100, 14101, 14105].includes(error.data?.error?.code)) {
-        await router.push({
-          path: localizePath('/profile/limits'),
-          query: {}
-        });
-        limitStore.showModal('gameLimitReached');
-      } else if (error.data?.error?.code === 14103) {
-        redirectLimitedPlayer();
-      } else {
-        throw error;
-      }
-    }
+    await startGame();
+    useListen('restrictedBets', handleRestrictedBets);
   });
 
   watch(() => isLoggedIn.value, async (newValue: boolean) => {
@@ -216,23 +235,8 @@
       return;
     }
 
-    try {
-      await startGame();
-    } catch (error: any) {
-      if ([14100, 14101, 14105].includes(error.data?.error?.code)) {
-        await router.push({
-          path: localizePath('/profile/limits'),
-          query: {}
-        });
-        limitStore.showModal('gameLimitReached');
-      } else if (error.data?.error?.code === 14103) {
-        redirectLimitedPlayer();
-      } else {
-        throw error;
-      }
-    } finally {
-      showPlug.value = false;
-    }
+    await startGame();
+    showPlug.value = false;
   });
 
   onBeforeUnmount(() => {
@@ -245,6 +249,7 @@
 
     const storageDrawerCompact = localStorage.getItem('IS_DRAWER_COMPACT') === 'true';
     compactDrawer(storageDrawerCompact, false);
+    useUnlisten('restrictedBets', handleRestrictedBets);
   });
 </script>
 

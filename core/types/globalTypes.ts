@@ -123,6 +123,8 @@ export interface IWebSocketResponse extends Record<string, any>{
     playerBonusCode?: IBonusCode;
     playerBonus?: IPlayerBonus;
     playerFreespin?: IPlayerFreeSpin;
+    gameId?: string;
+    gameIdentity?: string;
   };
   gen: undefined;
   offset: undefined;

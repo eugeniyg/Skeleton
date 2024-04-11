@@ -14,32 +14,12 @@
       <div class="title">{{ props.title }}</div>
 
       <p class="text">{{ props.description }}</p>
-      
-      <div class="bonus-progress">
-        <div class="bonus-progress__info">
-          <div class="bonus-progress__info-data">
-            <span class="bonus-progress__info-label">
-              <span>{{ props.wageringLabel }}</span>
-              (<span>x</span>{{ props?.bonusInfo?.wagerSportsbook }}):
-            </span>
-            
-            <span class="bonus-progress__info-value">
-              {{ props.bonusInfo?.currentWagerAmount }}
-              {{ props.bonusInfo?.currency }}
-            </span>
-          </div>
-        </div>
-       
-        <div class="bonus-progress__bar">
-          <div
-            class="bonus-progress__bar-filled"
-            :data-progress="`${props.bonusInfo?.currentWagerPercentage}%`"
-            :style="`--progress: ${props.bonusInfo?.currentWagerPercentage}%`"
-          />
-        </div>
-      </div>
-      
-      
+
+      <atomic-bonus-progress
+        :wageringLabel="props.wageringLabel"
+        :bonusInfo="props.bonusInfo"
+      />
+
       <div class="actions">
         <button-base
           type="primary"
@@ -75,7 +55,6 @@
   }>();
 
   const emit = defineEmits(['closeModal', 'confirm']);
-  
 </script>
 
 <style src="~/assets/styles/components/modal/confirm-bonus-unsettled.scss" lang="scss" />
