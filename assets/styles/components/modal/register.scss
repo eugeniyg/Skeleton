@@ -37,6 +37,7 @@
 
     .header {
       display: flex;
+      flex-direction: column;
       align-items: center;
       margin-bottom: rem(24px);
       grid-column-gap: rem(8px);
@@ -49,6 +50,46 @@
         text-align: var(--text-align, center);
         flex-grow: 1;
         margin-left: rem(32px);
+      }
+
+      &__back-btn {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: var(--text-tertiary);
+        transition: color .1s, color .1s ease-in-out;
+        @include font($body-2);
+
+        &-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: rem(4px);
+          border-radius: 8px;
+          transition: background-color .1s, color .1s ease-in-out;
+
+          .icon {
+            color: var(--text-tertiary);
+            transition: inherit;
+          }
+        }
+
+        &:hover {
+          color: var(--text-primary);
+
+          .header__back-btn-icon {
+            background-color: var(--button-bg-secondary-hover);
+            color: var(--button-text-ghost-hover);
+          }
+        }
+
+        &:active {
+          color: var(--button-text-ghost-click);
+
+          .icon {
+            color: var(--button-text-ghost-click);
+          }
+        }
       }
     }
 

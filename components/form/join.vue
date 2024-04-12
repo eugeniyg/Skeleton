@@ -64,7 +64,7 @@
       :isDisabled="v$.$invalid || isLockedAsyncButton"
       @click="signUp"
     >
-      <atomic-spinner :is-shown="isLockedAsyncButton"/>
+      <atomic-spinner :is-shown="isLockedAsyncButton" />
       {{ getContent(popupsData, defaultLocalePopupsData, 'registration.registrationButton') }}
     </button-base>
     
@@ -161,6 +161,7 @@
     }
   };
 
+  const emit = defineEmits(['showVerification']);
   const { getNicknameFromEmail } = useProjectMethods();
   const signUp = async ():Promise<void> => {
     if (v$.value.$invalid) return;
@@ -174,6 +175,11 @@
 
     const affiliateTag = localStorage.getItem('affiliateTag');
     if (affiliateTag) registrationFormData.affiliateTag = affiliateTag;
+
+    if (process.client) {
+      emit('showVerification', registrationFormData);
+      return;
+    }
 
     try {
       isLockedAsyncButton.value = true;

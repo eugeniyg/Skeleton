@@ -62,6 +62,7 @@
     "vue": "^3.4.21",
     "vue-final-modal": "^4.5.3",
     "vue-flatpickr-component": "^11.0.5",
-    "vue-inline-svg": "^3.1.2"
+    "vue-inline-svg": "^3.1.2",
+    "vue3-otp-input": "^0.4.4"
   }
 }
