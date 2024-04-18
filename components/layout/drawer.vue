@@ -1,7 +1,13 @@
 <template>
   <div class="drawer" :class="{ 'is-compact' : isDrawerCompact }">
     <div class="header">
+      <div class="drawer__logo">
+        <atomic-image class="img" src="/img/logo-short.svg" />
+      </div>
       <button-toggler :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler')"/>
+      <div class="drawer__close">
+        <atomic-icon id="close" />
+      </div>
     </div>
 
     <div class="content">
