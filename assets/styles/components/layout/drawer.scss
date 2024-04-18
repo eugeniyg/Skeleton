@@ -130,6 +130,13 @@
     height: 24px;
     position: relative;
 
+    img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
     &:after {
       position: absolute;
       content: '';
