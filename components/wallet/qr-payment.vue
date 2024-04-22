@@ -19,9 +19,16 @@
       {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.instruction') }}
     </div>
 
-    <button-base type="primary" size="lg" @click="copyQr">
-      <atomic-icon id="copy"/>
-      {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.buttonLabel') }}
+    <button-base :isDisabled="copied" type="primary" size="lg" @click="copyQr">
+      <template v-if="copied">
+        <atomic-icon id="double-check"/>
+        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.copiedLabel') }}
+      </template>
+
+      <template v-else>
+        <atomic-icon id="copy"/>
+        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.buttonLabel') }}
+      </template>
     </button-base>
   </div>
 </template>
@@ -34,9 +41,11 @@
 
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
+  const copied = ref<boolean>(false);
 
   const copyQr = ():void => {
     copy(props.qrAddress);
+    copied.value = true;
   }
 </script>
 
