@@ -151,8 +151,10 @@
   }
 
   const walletStore = useWalletStore();
-  const { showModal } = useLayoutStore();
-  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
+  const layoutStore = useLayoutStore();
+  const { successModalType } = storeToRefs(layoutStore);
+  const { showModal, showAlert } = layoutStore;
+  const { activeAccount } = storeToRefs(walletStore);
 
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
@@ -187,7 +189,13 @@
     || (Number(amountValue.value) < formatAmountMin.amount)
     || (Number(amountValue.value) > formatAmountMax.amount)
     || isSending.value);
-  const processedInModalMethods = ['pix_qr_brl_invoice:pix_qr'];
+  const processedInModalMethods = [
+    'pix_qr_brl_invoice:pix_qr',
+    'BKASH',
+    'NAGAD',
+    'ROCKET',
+    'UPAY'
+  ];
 
   const getPaymentPageUrl = (depositResponse: IResponseDeposit): string => {
     const responseHasParams = Object.keys(depositResponse.fields).length;
@@ -254,6 +262,9 @@
         qrAddress.value = depositResponse.qr;
       } else if (depositResponse.type === 'iframe') {
         iframeUrl.value = paymentPageUrl;
+      } else if (depositResponse.type === 'message') {
+        successModalType.value = 'deposit-pending';
+        showModal('success');
       }
     } catch {
       if (windowReference.value) windowReference.value.close();
@@ -271,7 +282,6 @@
     if (!validFormData) return;
 
     if (profileStore.profile?.status === 2) {
-      const { showAlert } = useLayoutStore();
       showAlert(alertsData?.limit?.limitedDeposit || defaultLocaleAlertsData?.limit?.limitedDeposit);
       return;
     }
