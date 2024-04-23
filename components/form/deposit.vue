@@ -192,7 +192,6 @@
   const processedInModalMethods = [
     'pix_qr_brl_invoice:pix_qr',
     'boleto_bancario_brl_hpp:boleto_bancario',
-    'picpay_brl_hpp:picpay',
     'pix_brl_hpp:pix',
     'bank_transfer_brl_hpp:bank_transfer',
     'loteria_brl_hpp:loteria',
