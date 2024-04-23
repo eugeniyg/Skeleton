@@ -42,6 +42,7 @@ interface ILayoutStoreState extends Record<string, any>{
   lastNotificationTime: number;
   returnGame: Maybe<string|IGame>;
   walletModalType: WalletModalTypes;
+  successModalType: 'deposit'|'deposit-pending';
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -77,7 +78,8 @@ export const useLayoutStore = defineStore('layoutStore', {
       },
     lastNotificationTime: 0,
     returnGame: undefined,
-    walletModalType: undefined
+    walletModalType: undefined,
+    successModalType: 'deposit'
   }),
 
   actions: {

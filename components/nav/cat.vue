@@ -1,6 +1,6 @@
 <template>
   <div class="nav-cat-scroll">
-    <div class="nav-cat-wrap" ref="viewport">
+    <div class="nav-cat-wrap" ref="navCatWrapRef">
       <div class="nav-cat">
         <span
           v-for="({ id, identity, name }, index) in filteredCategories"
@@ -13,6 +13,7 @@
           }"
           @click="emit('clickCategory', identity)"
           :key="id"
+          ref="navCatItemRef"
         >
           <atomic-icon :id="gameCategoriesObj[identity]?.icon"/>
           <span>{{ gameCategoriesObj[identity]?.label || name }}</span>
@@ -25,7 +26,7 @@
             'is-hidden' : isSelectHidden,
             'is-open': isOpen,
           }"
-          ref="select"
+          ref="selectRef"
           @click="toggle"
         >
           <atomic-icon id="more-menu"/>
@@ -64,8 +65,9 @@
   const { gameCategoriesObj } = useGlobalStore();
   const filteredCategories = ref<ICollection[]>([]);
 
-  const viewport = ref<HTMLElement>();
-  const select = ref<HTMLElement>();
+  const navCatWrapRef = ref<HTMLElement>();
+  const selectRef = ref<HTMLElement>();
+  const navCatItemRef = ref<HTMLElement[]>([]);
 
   const isOpen = ref<boolean>(false);
   const isSelectHidden = ref<boolean>(false);
@@ -83,7 +85,7 @@
 
   const getItemsData = () => {
     const offset = 8;
-    return [...document.querySelectorAll('.nav-cat-item')]
+    return navCatItemRef.value
       .map((item:any) => item.offsetWidth + offset)
       .reduce((acc, curr) => {
         acc.totalWidth += curr;
@@ -96,11 +98,11 @@
   };
 
   const update = () => {
-    const viewportWidth = viewport.value?.offsetWidth || 0;
-    const toggleWidth = select.value?.offsetWidth || 0;
+    const containerWidth = navCatWrapRef.value?.offsetWidth || 0;
+    const toggleWidth = selectRef.value?.offsetWidth || 0;
     const { width, totalWidth } = getItemsData();
 
-    visibleIndex.value = width.filter((item: any) => item < viewportWidth - toggleWidth || viewportWidth > totalWidth);
+    visibleIndex.value = width.filter((item: any) => item < containerWidth - toggleWidth || containerWidth > totalWidth);
 
     isSelectHidden.value = visibleIndex.value.length === width.length;
   };
@@ -115,8 +117,8 @@
     const gameCollections = await getCollectionsList();
     filteredCategories.value = gameCollections.filter((collection) => !collection.isHidden);
     await nextTick();
-    update();
     window.addEventListener('resize', onResize);
+    window.dispatchEvent(new Event('resize'));
   });
 
   onBeforeUnmount(() => {
