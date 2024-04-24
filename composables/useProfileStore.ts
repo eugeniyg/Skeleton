@@ -2,7 +2,8 @@ import { defineStore } from 'pinia';
 import type {
   IProfile,
   IAuthorizationResponse,
-  IParsedToken
+  IParsedToken,
+  IAuthState
 } from '@skeleton/core/types';
 import { jwtDecode } from "jwt-decode";
 
@@ -12,6 +13,7 @@ interface IProfileStoreState {
   sessionId: string;
   resentVerifyEmail: boolean;
   profile: Maybe<IProfile>;
+  socialAuthEmailError: boolean;
   tokenCookieKey: string;
 }
 
@@ -22,6 +24,7 @@ export const useProfileStore = defineStore('profileStore', {
     sessionId: '',
     resentVerifyEmail: false,
     profile: undefined,
+    socialAuthEmailError: false,
     tokenCookieKey: 'access_token'
   }),
 
@@ -58,11 +61,17 @@ export const useProfileStore = defineStore('profileStore', {
       return null;
     },
 
+    encodeSessionChange (key: 'login'|'logout'): string {
+      const time = Date.now();
+      return window.btoa(`${time}-${key}`);
+    },
+
     removeSession ():void {
       this.profile = undefined;
       const cookieToken = useCookie(this.tokenCookieKey);
       cookieToken.value = null;
       this.isLoggedIn = false;
+      localStorage.setItem('changeSession', this.encodeSessionChange('logout'));
 
       const { updateChat } = useFreshchatStore();
       updateChat();
@@ -106,7 +115,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     startProfileDependencies():void {
-      const { getFavoriteGames } = useGamesStore();
+      const { getFavoriteGames, subscribeRestrictedBetsSocket } = useGamesStore();
       const {
         getPlayerBonuses,
         getDepositBonusCode,
@@ -128,11 +137,13 @@ export const useProfileStore = defineStore('profileStore', {
 
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       const { subscribeBonusCodeSocket, subscribeBonusSocket, subscribeFreeSpinsSocket } = useBonusStore();
+
       subscribeAccountSocket();
       subscribeInvoicesSocket();
       subscribeBonusCodeSocket();
       subscribeBonusSocket();
       subscribeFreeSpinsSocket();
+      subscribeRestrictedBetsSocket();
 
       const { setEquivalentCurrency } = useGlobalStore();
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
@@ -145,11 +156,13 @@ export const useProfileStore = defineStore('profileStore', {
 
       const { unsubscribeAccountSocket, unsubscribeInvoiceSocket } = useWalletStore();
       const { unsubscribeBonusCodeSocket, unsubscribeBonusSocket, unsubscribeFreeSpinsSocket } = useBonusStore();
+      const { unsubscribeRestrictedBetsSocket } = useGamesStore();
       unsubscribeAccountSocket();
       unsubscribeInvoiceSocket();
       unsubscribeBonusCodeSocket();
       unsubscribeBonusSocket();
       unsubscribeFreeSpinsSocket();
+      unsubscribeRestrictedBetsSocket();
     },
 
     async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {
@@ -161,6 +174,7 @@ export const useProfileStore = defineStore('profileStore', {
       await getUserAccounts();
 
       this.isLoggedIn = true;
+      localStorage.setItem('changeSession', this.encodeSessionChange('login'));
 
       const { public: { freshchatParams }} = useRuntimeConfig();
       const { updateChat, addFreshChatScript } = useFreshchatStore();
@@ -174,6 +188,23 @@ export const useProfileStore = defineStore('profileStore', {
       const { submitLoginData } = useCoreAuthApi();
       const submitResult = await submitLoginData(loginData);
       await this.handleLogin(submitResult);
+    },
+
+    async loginSocial(socialData:any, authState?: IAuthState):Promise<void> {
+      const { submitSocialLoginData } = useCoreAuthApi();
+      const submitResult = await submitSocialLoginData(socialData);
+      await this.handleLogin(submitResult);
+
+      const router = useRouter();
+      const { localizePath } = useProjectMethods();
+      await router.replace(authState?.targetUrl || localizePath('/'));
+
+      if (submitResult.profile?.isNewlyRegistered) {
+        const { openWalletModal, showAlert } = useLayoutStore();
+        const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+        showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
+        openWalletModal();
+      }
     },
 
     async autoLogin(token: string):Promise<void> {
@@ -194,8 +225,7 @@ export const useProfileStore = defineStore('profileStore', {
 
     async getProfileData():Promise<void> {
       const { getProfile } = useCoreProfileApi();
-      const profileInfo = await getProfile();
-      this.profile = profileInfo;
+      this.profile = await getProfile();
       this.isLoggedIn = true;
     },
 

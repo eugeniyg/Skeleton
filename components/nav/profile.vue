@@ -5,13 +5,13 @@
     </button>
 
     <div class="items">
-      <router-link
+      <atomic-link
         v-for="(item, index) in sortedMenu"
         @click="close"
         :key="index"
         class="item"
         :class="{'is-active': route.path === localizePath(item.url)}"
-        :to="localizePath(item.url)"
+        :href="item.url"
       >
         {{ item.title }}
 
@@ -24,17 +24,17 @@
         <template v-if="route.path === localizePath(item.url)">
           <atomic-icon id="check"/>
         </template>
-      </router-link>
+      </atomic-link>
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { ISeoBlock } from '~/types';
+  import type { IPageMeta } from '~/types';
 
   const props = defineProps<{
-    items: { id: string, title: string, url: string, seo: ISeoBlock }[]
+    items: { id: string, title: string, url: string, pageMeta: IPageMeta }[]
   }>();
 
   const sortOrder = [

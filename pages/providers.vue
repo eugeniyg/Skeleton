@@ -6,7 +6,7 @@
       </div>
 
       <div class="page-providers__count">
-        {{ gameProviders?.length || 0 }} {{ getContent(providersContent, defaultLocaleProvidersContent, 'providersLabel') }}
+        {{ providersGeneralCount }} {{ getContent(providersContent, defaultLocaleProvidersContent, 'providersLabel') }}
       </div>
 
       <div v-if="providersContent || defaultLocaleProvidersContent" class="page-providers__filter">
@@ -35,7 +35,7 @@
       :image="getContent(providersContent, defaultLocaleProvidersContent, 'empty.image')"
     />
 
-    <atomic-seo-text v-if="providersContent?.seo?.text" v-bind="providersContent.seo.text"/>
+    <atomic-seo-text v-if="providersContent?.pageMeta?.seoText" v-bind="providersContent.pageMeta.seoText"/>
   </div>
 </template>
 
@@ -45,8 +45,6 @@
   import type { IGameProvider, IProvidersRequest } from "@skeleton/core/types";
 
   const globalStore = useGlobalStore();
-  const gamesStore = useGamesStore();
-
   const {
     currentLocale,
     defaultLocale,
@@ -57,15 +55,16 @@
   const { showAlert } = useLayoutStore();
 
   const {
-    setPageSeo,
+    setPageMeta,
     getContent,
     getLocalesContentData,
   } = useProjectMethods();
 
-  const { gameProviders } = storeToRefs(gamesStore);
-
   const providersContent = ref<Maybe<IProvidersPage>>();
   const defaultLocaleProvidersContent = ref<Maybe<IProvidersPage>>();
+  const providersGeneralCount = computed(() => {
+    return providersList.value.length + (staticProviderInfo.value ? 1 : 0);
+  })
 
   interface IPageContent {
     currentLocaleData: Maybe<IProvidersPage>;
@@ -75,7 +74,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     providersContent.value = contentData?.currentLocaleData;
     defaultLocaleProvidersContent.value = contentData?.defaultLocaleData;
-    setPageSeo(providersContent.value?.seo);
+    setPageMeta(providersContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {

@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-export const useFetchInstance = async (url:string, options?:any):Promise<any> => {
+export const useApiAuthInstance = async (url:string, options?:any):Promise<any> => {
   const profileStore = useProfileStore();
   let token = profileStore.getSessionToken();
 
@@ -19,6 +19,7 @@ export const useFetchInstance = async (url:string, options?:any):Promise<any> =>
     retry: 0,
     async onResponseError({ response }: any) {
       if (response.status === 401 || response.status === 403) {
+        if (profileStore.getSessionToken()) profileStore.removeSession();
         const { localizePath } = useProjectMethods();
         const router = useRouter();
         await router.push(localizePath('/'));

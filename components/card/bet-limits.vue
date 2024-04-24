@@ -7,7 +7,7 @@
       {{ getContent(limitsContent, defaultLimitsContent, 'bet.label') }}
       <atomic-tooltip
         v-if="betPeriods.length"
-        :text="getContent(limitsContent, defaultLimitsContent, 'titleTooltip')"
+        :text="getContent(limitsContent, defaultLimitsContent, 'bet.hint')"
         align="bottom"
       />
     </h4>

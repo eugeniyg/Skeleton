@@ -43,9 +43,9 @@
     />
 
     <atomic-hint
-      v-if="loginError"
+      v-if="loginError || socialAuthEmailError"
       variant="error"
-      :message="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'validationMessages.login') || ''"
+      :message="hintErrorMessage"
     />
 
     <button-base
@@ -64,6 +64,8 @@
       :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.forgotButton')"
       openModal="forgotPass"
     />
+
+    <atomic-socials type="login" />
 
     <button-popup
       :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.registrationButton')"
@@ -86,14 +88,25 @@
     popupsData,
     defaultLocalePopupsData,
     alertsData,
-    defaultLocaleAlertsData,
+    defaultLocaleAlertsData
   } = storeToRefs(globalStore);
   const { closeModal } = useLayoutStore();
 
-  const authorizationFormData = reactive({
-    login: '',
-    password: ''
-  });
+  const profileStore = useProfileStore();
+  const { socialAuthEmailError } = storeToRefs(profileStore);
+  const { logIn } = profileStore;
+  const isLockedAsyncButton = ref<boolean>(false);
+
+  const hintErrorMessage = computed(() => {
+    const emailVerificationError = getContent(popupsData.value, defaultLocalePopupsData.value, 'login.emailVerificationError');
+    const loginError = getContent(fieldsSettings.value, defaultLocaleFieldsSettings.value, 'validationMessages.login');
+
+    if (!emailVerificationError && !loginError) return '';
+    if (socialAuthEmailError.value) return emailVerificationError;
+    return loginError;
+  })
+
+  const authorizationFormData = reactive({ login: '', password: '' });
   const { getFormRules, getContent } = useProjectMethods();
   const authorizationRules = {
     password: [{ rule: 'required' }],
@@ -109,9 +122,6 @@
     loginError.value = false;
     onFocus(fieldName);
   };
-
-  const { logIn } = useProfileStore();
-  const isLockedAsyncButton = ref<boolean>(false);
 
   const login = async ():Promise<void> => {
     if (v$.value.$invalid) return;
@@ -137,6 +147,10 @@
       isLockedAsyncButton.value = false;
     }
   };
+
+  onBeforeUnmount(() => {
+    socialAuthEmailError.value = false;
+  })
 </script>
 
 <style src="~/assets/styles/components/form/sign-in.scss" lang="scss" />

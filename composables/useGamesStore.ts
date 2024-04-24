@@ -10,10 +10,11 @@ import throttle from 'lodash/throttle';
 
 type MobileModalType = 'depositOrDemo'|'deposit'|'registerOrDemo'|'registerOrLogin';
 interface IGamesStoreState {
-  gameProviders: IGameProvider[];
-  gameCollections: ICollection[];
+  gameProvidersPromise: Promise<IGameProvider[]>|null;
+  gameCollectionsPromise: Promise<ICollection[]>|null;
   favoriteGames: IGame[];
   winnersSubscription: any;
+  restrictedBetsSubscription: any;
   latestWinners: IWinner[];
   showMobileGameModal: boolean;
   mobileGameModalType: Maybe<MobileModalType>;
@@ -24,10 +25,11 @@ interface IGamesStoreState {
 
 export const useGamesStore = defineStore('gamesStore', {
   state: ():IGamesStoreState => ({
-    gameProviders: [],
-    gameCollections: [],
+    gameProvidersPromise: null,
+    gameCollectionsPromise: null,
     favoriteGames: [],
     winnersSubscription: undefined,
+    restrictedBetsSubscription: undefined,
     latestWinners: [],
     showMobileGameModal: false,
     mobileGameModalType: undefined,
@@ -36,28 +38,45 @@ export const useGamesStore = defineStore('gamesStore', {
     minimumBonusWagerMultiplier: 1
   }),
 
-  getters: {
-    currentLocationCollections(state):ICollection[] {
-      const globalStore = useGlobalStore();
-
-      if (!globalStore.headerCountry) return state.gameCollections;
-
-      return state.gameCollections.filter((collection) => {
-        return !collection.countries.length || collection.countries.includes(globalStore.headerCountry as string);
-      })
-    },
-  },
-
   actions: {
-    async getGameProviders(): Promise<void> {
+    async getProvidersRequest(): Promise<IGameProvider[]> {
       const { getGameProviders } = useCoreGamesApi();
-      const data = await getGameProviders();
-      this.gameProviders = data.filter((provider: IGameProvider) => provider.identity !== 'betsy');
+
+      try {
+        return await getGameProviders();
+      } catch {
+        return []
+      }
     },
 
-    async getGameCollections(): Promise<void> {
+    async getProviderList(): Promise<IGameProvider[]> {
+      if (!this.gameProvidersPromise) {
+        this.gameProvidersPromise = this.getProvidersRequest();
+      }
+      return this.gameProvidersPromise;
+    },
+
+    async getCollectionsRequest(): Promise<ICollection[]> {
       const { getGameCollections } = useCoreGamesApi();
-      this.gameCollections = await getGameCollections();
+
+      try {
+        const gameCollections = await getGameCollections();
+        const globalStore = useGlobalStore();
+        if (!globalStore.headerCountry) return gameCollections;
+
+        return gameCollections.filter((collection) => {
+          return !collection.countries.length || collection.countries.includes(globalStore.headerCountry as string);
+        })
+      } catch {
+        return []
+      }
+    },
+
+    async getCollectionsList(): Promise<ICollection[]> {
+      if (!this.gameCollectionsPromise) {
+        this.gameCollectionsPromise = this.getCollectionsRequest();
+      }
+      return this.gameCollectionsPromise;
     },
 
     async getFavoriteGames(): Promise<void> {
@@ -105,5 +124,22 @@ export const useGamesStore = defineStore('gamesStore', {
       this.isBonusWagering = isBonusWagering;
       this.minimumBonusWagerMultiplier = minimumBonusWagerMultiplier;
     },
+
+    handleRestrictedBets(socketData: IWebSocketResponse):void {
+      useEvent('restrictedBets', socketData.data.gameIdentity as string);
+    },
+
+    subscribeRestrictedBetsSocket():void {
+      const { createSubscription } = useWebSocket();
+      const profileStore = useProfileStore();
+      this.restrictedBetsSubscription = createSubscription(`game:bets#${profileStore.profile?.id}`, this.handleRestrictedBets);
+    },
+
+    unsubscribeRestrictedBetsSocket():void {
+      if (this.restrictedBetsSubscription) {
+        this.restrictedBetsSubscription.unsubscribe();
+        this.restrictedBetsSubscription.removeAllListeners();
+      }
+    }
   },
 });

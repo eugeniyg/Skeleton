@@ -1,12 +1,5 @@
 <template>
   <div class="copy-field">
-    <input
-      class="copy-field__input"
-      ref="input"
-      :value="props.value"
-      readonly
-    >
-
     <div class="copy-field__content">
       <span v-if="props.label" class="copy-field__label">{{ props.label }}</span>
       <span v-if="props.value" class="copy-field__value">{{ props.value }}</span>
@@ -23,6 +16,8 @@
 </template>
 
 <script setup lang="ts">
+  import copy from "copy-to-clipboard";
+
   const props = defineProps<{
     label?: string;
     value?: string;
@@ -31,7 +26,6 @@
 
   const tooltipVisible = ref<boolean>(false);
   const tooltipTimer = ref<any>(undefined);
-  const input = ref<HTMLInputElement>();
 
   const showTooltip = ():void => {
     tooltipVisible.value = true;
@@ -43,12 +37,8 @@
   };
 
   const actionClick = () => {
-    if (input.value) {
-      input.value.focus();
-      input.value.select();
-      document.execCommand('copy');
-      showTooltip();
-    }
+    copy(props.value || '');
+    showTooltip();
   };
 </script>
 

@@ -374,3 +374,25 @@ export const maxAge = (param:string) => validationRules.helpers.withParams(
       return ageInYear <= Number(param);
     },
   );
+
+const isValidCpf = (cpf:string):boolean => {
+  const cpfOnlyDigits = cpf.replace(/[^\d]+/g,'');
+  if (cpfOnlyDigits.length !== 11 || /^(\d)\1{10}$/.test(cpfOnlyDigits)) {
+    return false;
+  }
+
+  let sum = 0;
+  for (let i = 0; i < 9; i++) {
+    sum += parseInt(cpfOnlyDigits.charAt(i)) * (10 - i);
+  }
+  let rest = sum % 11;
+  const digit1 = (rest < 2) ? 0 : (11 - rest);
+  sum = 0;
+  for (let i = 0; i < 10; i++) {
+    sum += parseInt(cpfOnlyDigits.charAt(i)) * (11 - i);
+  }
+  rest = sum % 11;
+  const digit2 = (rest < 2) ? 0 : (11 - rest);
+  return (digit1 === parseInt(cpfOnlyDigits.charAt(9)) && digit2 === parseInt(cpfOnlyDigits.charAt(10)));
+}
+export const cpf_number = (value:string):boolean => !validationRules.helpers.req(value) || isValidCpf(value);

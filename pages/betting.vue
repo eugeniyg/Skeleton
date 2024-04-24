@@ -4,10 +4,18 @@
       <main-slider v-if="!isMobile && bettingContent?.sliderDisplay" sliderType="low" />
     </client-only>
 
+    <modal-restricted-bets
+      v-if="bettingContent?.restrictedBets || defaultLocaleBettingContent?.restrictedBets"
+      :content="bettingContent?.restrictedBets || defaultLocaleBettingContent?.restrictedBets"
+      currentPage="betting"
+      :showModal="showRestrictedBetsModal"
+      @closeModal="showRestrictedBetsModal = false"
+    />
+
     <div class="betting">
       <div id="betting-container" class="container"/>
       
-      <atomic-seo-text v-if="bettingContent?.seo?.text" v-bind="bettingContent?.seo?.text"/>
+      <atomic-seo-text v-if="bettingContent?.pageMeta?.seoText" v-bind="bettingContent?.pageMeta?.seoText"/>
     </div>
   </div>
 </template>
@@ -28,7 +36,7 @@
   } = storeToRefs(globalStore);
 
   const {
-    setPageSeo,
+    setPageMeta,
     getLocalesContentData,
     localizePath,
     addBetsyScript
@@ -36,6 +44,7 @@
 
   const bettingContent = ref<Maybe<ISportsbookPage>>();
   const  defaultLocaleBettingContent = ref<Maybe<ISportsbookPage>>();
+  const showRestrictedBetsModal = ref<boolean>(false);
 
   interface IPageContent {
     currentLocaleData: Maybe<ISportsbookPage>;
@@ -45,7 +54,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     bettingContent.value = contentData?.currentLocaleData;
     defaultLocaleBettingContent.value = contentData?.defaultLocaleData;
-    setPageSeo(bettingContent.value?.seo);
+    setPageMeta(bettingContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
@@ -60,42 +69,13 @@
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { pending, data } = await useLazyAsyncData('sportsbookPageContent', () => getPageContent());
+  const { data } = await useLazyAsyncData('sportsbookPageContent', () => getPageContent());
   if (data.value) setContentData(data.value);
 
   watch(data, () => {
     setContentData(data.value);
   })
   
-  const dayjs = useDayjs();
-  const sliderFilterTime = ref(dayjs.utc());
-  const filteredSlider = computed(() => {
-    return bettingContent.value?.slider?.items?.reduce((filteredSliderArr: ISportsbookPage['slider']['items'], currentSlide) => {
-      const loggedFilter: boolean = (isLoggedIn.value && currentSlide.loggedHide) || (!isLoggedIn.value && currentSlide.unloggedHide);
-      let includesSegmentsFilter: boolean = !!currentSlide.showSegments?.length;
-      let excludeSegmentsFilter: boolean = !!currentSlide.hideSegments?.length;
-      let timeFilter: boolean = false;
-      
-      if (isLoggedIn.value && profile.value) {
-        const showSegmentsArr = currentSlide.showSegments?.map(item => item.segmentName) || [];
-        const hideSegmentsArr = currentSlide.hideSegments?.map(item => item.segmentName) || [];
-        includesSegmentsFilter = showSegmentsArr.length ? !profile.value.segments.some((segment) => showSegmentsArr.includes(segment.name)) : false;
-        excludeSegmentsFilter = hideSegmentsArr.length ? profile.value.segments.some((segment) => hideSegmentsArr.includes(segment.name)) : false;
-      }
-      
-      if (currentSlide.showFrom && currentSlide.showTo) {
-        timeFilter = !dayjs(sliderFilterTime.value).isBetween(dayjs(currentSlide.showFrom), dayjs(currentSlide.showTo), 'second');
-      } else if (currentSlide.showFrom) {
-        timeFilter = !dayjs(sliderFilterTime.value).isSameOrAfter(dayjs(currentSlide.showFrom), 'second');
-      } else if (currentSlide.showTo) {
-        timeFilter = !dayjs(sliderFilterTime.value).isSameOrBefore(dayjs(currentSlide.showTo), 'second');
-      }
-      
-      if (loggedFilter || includesSegmentsFilter || excludeSegmentsFilter || timeFilter) return filteredSliderArr;
-      return [...filteredSliderArr, currentSlide];
-    }, []);
-  })
-
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
 
@@ -111,6 +91,7 @@
     width: '100%',
     height: '100%',
     parent: false,
+    loginUrl: 'sendPostMessage'
   };
 
   const frame = ref<Promise<any>>();
@@ -148,8 +129,25 @@
       demoMode: false,
       platform: isMobile.value ? 1 : 2,
     };
-    const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
-    startBetsyFrame(mainHost, startResponse.token);
+
+    try {
+      const startResponse = await getStartGame('betsy-sportsbook-betsy', startParams);
+      startBetsyFrame(mainHost, startResponse.token);
+    } catch (error: any) {
+      if ([14100, 14101, 14105].includes(error.data?.error?.code)) {
+        await router.push({
+          path: localizePath('/profile/limits'),
+          query: {}
+        });
+        limitStore.showModal('gameLimitReached');
+      } else if (error.data?.error?.code === 14103) {
+        redirectLimitedPlayer();
+      } else if (error.data?.error?.code === 14306) {
+        showRestrictedBetsModal.value = true;
+      } else {
+        throw error;
+      }
+    }
   };
 
   const layoutStore = useLayoutStore();
@@ -159,7 +157,7 @@
   } = layoutStore;
 
   const router = useRouter();
-  const { showModal } = useLimitsStore();
+  const limitStore = useLimitsStore();
 
   const redirectLimitedPlayer = (): void => {
     router.replace(localizePath('/'));
@@ -191,23 +189,35 @@
     await changeFramePath(route.query.setIframePath as string|undefined);
   })
 
-  const updateRouterIframePath = ({ data }: { data: any }) => {
-    if (typeof data === 'string') {
-      const messageData = JSON.parse(data);
+  const updateRouterIframePath = (eventData: { type: string, location: string }) => {
+    const currentIframePath = route.query.setIframePath as string|undefined;
+    routerIframePath.value = eventData.location === '/' ? undefined : eventData.location;
 
-      if (messageData.type === 'route') {
-        const currentIframePath = route.query.setIframePath as string|undefined;
-        routerIframePath.value = messageData.location === '/' ? undefined : messageData.location;
-
-        if (currentIframePath !== routerIframePath.value) {
-          router.push({ query: { ...route.query, setIframePath: routerIframePath.value } });
-        }
-      }
+    if (currentIframePath !== routerIframePath.value) {
+      router.push({ query: { ...route.query, setIframePath: routerIframePath.value } });
     }
   }
 
+  const resolveFrameEvent = ({ data }: { data: any }) => {
+    if (typeof data === 'string') {
+      const eventData = JSON.parse(data);
+
+      if (updateUrlParam && eventData.type === 'route') updateRouterIframePath(eventData);
+
+      const { isLoggedIn } = useProfileStore();
+      const showLoginModal =  eventData.type === 'click' && eventData.target === 'loginButton' && !isLoggedIn;
+      if (showLoginModal) layoutStore.showModal('signIn');
+    }
+  }
+
+  const handleRestrictedBets = (gameIdentity: string): void => {
+    if (gameIdentity && gameIdentity === 'betsy-sportsbook-betsy') {
+      showRestrictedBetsModal.value = true;
+    }
+  };
+
   onMounted(async () => {
-    if (updateUrlParam) window.addEventListener('message', updateRouterIframePath);
+    window.addEventListener('message', resolveFrameEvent);
 
     if (isMobile.value) {
       const footerEl: HTMLElement | null = document.querySelector('footer');
@@ -216,21 +226,8 @@
       if (seoTextBlock) seoTextBlock.style.display = 'none';
     }
 
-    try {
-      await startGame();
-    } catch (error: any) {
-      if ([14100, 14101, 14105].includes(error.data?.error?.code)) {
-        await router.push({
-          path: localizePath('/profile/limits'),
-          query: {}
-        });
-        showModal('gameLimitReached');
-      } else if (error.data?.error?.code === 14103) {
-        redirectLimitedPlayer();
-      } else {
-        throw error;
-      }
-    }
+    await startGame();
+    useListen('restrictedBets', handleRestrictedBets);
   });
 
   watch(() => isLoggedIn.value, async (newValue: boolean) => {
@@ -238,27 +235,12 @@
       return;
     }
 
-    try {
-      await startGame();
-    } catch (error: any) {
-      if ([14100, 14101, 14105].includes(error.data?.error?.code)) {
-        await router.push({
-          path: localizePath('/profile/limits'),
-          query: {}
-        });
-        showModal('gameLimitReached');
-      } else if (error.data?.error?.code === 14103) {
-        redirectLimitedPlayer();
-      } else {
-        throw error;
-      }
-    } finally {
-      showPlug.value = false;
-    }
+    await startGame();
+    showPlug.value = false;
   });
 
   onBeforeUnmount(() => {
-    if (updateUrlParam) window.removeEventListener('message', updateRouterIframePath);
+    window.removeEventListener('message', resolveFrameEvent);
 
     const footerEl: any = document.querySelector('footer');
     if (footerEl) footerEl.style.display = null;
@@ -267,6 +249,7 @@
 
     const storageDrawerCompact = localStorage.getItem('IS_DRAWER_COMPACT') === 'true';
     compactDrawer(storageDrawerCompact, false);
+    useUnlisten('restrictedBets', handleRestrictedBets);
   });
 </script>
 

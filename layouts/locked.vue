@@ -15,8 +15,8 @@
 </template>
 
 <script setup lang="ts">
-  const { setPageSeo } = useProjectMethods();
-  setPageSeo({});
+  const { setPageMeta } = useProjectMethods();
+  setPageMeta({});
 </script>
 
 <style src="~/assets/styles/layouts/locked.scss" lang="scss" />

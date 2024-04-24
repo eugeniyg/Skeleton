@@ -1,9 +1,9 @@
 <template>
   <div class="card-turbo">
     <div class="content">
-      <nuxt-link class="thumb" :to="localizePath(props.url)">
+      <atomic-link class="thumb" :href="props.url">
         <atomic-picture :src="props.image" class="card-turbo__img"/>
-      </nuxt-link>
+      </atomic-link>
       <div class="title">{{ props.title }}</div>
 
       <div class="sub-title">{{ props.categoryValue }}</div>

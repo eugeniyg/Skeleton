@@ -65,7 +65,7 @@ export const useFreshchatStore = defineStore('freshchatStore', {
           const profileData = this.getProfileData(true);
           await window.fcWidget.user.update(profileData);
         } catch {
-          console.error('Freshchat user not updated!');
+          console.log('Freshchat user not updated!');
         }
       } else {
         const profileData = this.getProfileData();
@@ -82,7 +82,7 @@ export const useFreshchatStore = defineStore('freshchatStore', {
         const submitResult = await changeProfileData({ freshchatRestoreId: restoreId });
         setProfileData(submitResult);
       } catch {
-        console.error('Restore ID not updated!');
+        console.log('Restore ID not updated!');
       }
     },
 

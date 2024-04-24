@@ -1,0 +1,87 @@
+.input-cpf-number {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+
+  @extend %input-label;
+
+  .row {
+    position: relative;
+  }
+
+  input {
+    width: 100%;
+    background-color: var(--bg, var(--field-00));
+    padding: var(--input-padding-y, #{rem(11px)}) rem(16px);
+    border: 1px solid var(--border-color, var(--field-00));
+    color: var(--color, var(--text-primary));
+    border-radius: 12px;
+    @include font($body-2);
+    transition: border-color .2s ease-in-out;
+    @extend %inputMask;
+    font-family: 'Rubik', sans-serif;
+
+    &::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    &:focus {
+      --border-color: var(--border-click);
+
+      & + .mask-group__fake {
+        color: var(--text-primary);
+      }
+
+      &::placeholder {
+        opacity: 0 !important;
+      }
+    }
+  }
+
+  .mask-group {
+    position: relative;
+
+    &__fake {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      padding: rem(11px) rem(16px);
+      border: 1px solid transparent;
+      color: var(--text-tertiary);
+      @include font($body-2);
+      font-family: 'Rubik', sans-serif;
+
+      &-hidden {
+        opacity: 0;
+      }
+    }
+  }
+
+  .hint {
+    margin-top: rem(6px);
+  }
+
+  &.has-error {
+    --border-color: var(--border-alert);
+  }
+
+  &.is-disabled {
+    pointer-events: none;
+
+    input {
+      --border-color: var(--field-00);
+      --color: var(--text-helper);
+      --bg: var(--field-00);
+      --icon-transform: rotate(0deg);
+    }
+  }
+
+  &.is-hidden {
+    display: none !important;
+  }
+}

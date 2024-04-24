@@ -1,7 +1,9 @@
 <template>
   <div class="content">
     <div class="header">
-      <h1 class="heading">{{ infoContent?.title || defaultLocaleInfoContent?.title }}</h1>
+      <h1 class="heading">
+        {{ content?.currentLocaleData?.title || content?.defaultLocaleData?.title }}
+      </h1>
 
       <button-base
         v-if="!isProfileEdit"
@@ -9,7 +11,7 @@
         size="md"
         @click="toggleProfileEdit"
       >
-        <atomic-icon id="edit"/>{{ infoContent?.editButton || defaultLocaleInfoContent?.editButton }}
+        <atomic-icon id="edit"/>{{ content?.currentLocaleData?.editButton || content?.defaultLocaleData?.editButton }}
 
         <!--        <template v-if="isProfileEdit">-->
         <!--          <atomic-icon id="done"/>Done editing-->
@@ -24,7 +26,7 @@
     <form-profile
       v-if="isProfileEdit && profileFields?.length"
       @toggle-profile-edit="toggleProfileEdit"
-      v-bind="infoContent || defaultLocaleInfoContent"
+      v-bind="content?.currentLocaleData || content?.defaultLocaleData"
     />
 
     <template v-else>
@@ -55,7 +57,7 @@
               @click.once="profileStore.resendVerifyEmail"
               :class="{ disabled: resentVerifyEmail }"
             >
-              {{ infoContent?.sendButton || defaultLocaleInfoContent?.sendButton }}
+              {{ content?.currentLocaleData?.sendButton || content?.defaultLocaleData?.sendButton }}
             </span>
           </div>
         </div>
@@ -66,7 +68,9 @@
       <atomic-divider/>
     </template>
 
-    <h4 class="heading">{{ infoContent?.subscriptionTitle || defaultLocaleInfoContent?.subscriptionTitle }}</h4>
+    <h4 class="heading">
+      {{ content?.currentLocaleData?.subscriptionTitle || content?.defaultLocaleData?.subscriptionTitle }}
+    </h4>
 
     <div class="group">
       <form-input-toggle
@@ -82,7 +86,9 @@
       <atomic-divider/>
     </div>
 
-    <h4 class="heading">{{ infoContent?.manageTitle || defaultLocaleInfoContent?.manageTitle }}</h4>
+    <h4 class="heading">
+      {{ content?.currentLocaleData?.manageTitle || content?.defaultLocaleData?.manageTitle }}
+    </h4>
 
     <button-base type="ghost" size="md" @click="profileStore.logOutUser">
       <atomic-icon id="log-out"/>{{ layoutData?.profileSidebar?.logoutButton || defaultLocaleLayoutData?.profileSidebar?.logoutButton }}
@@ -107,43 +113,34 @@
   } = storeToRefs(globalStore);
 
   const {
-    setPageSeo,
+    setPageMeta,
     getLocalesContentData,
     getContent,
   } = useProjectMethods();
-
-  const infoContent = ref<Maybe<IProfileInfo>>();
-  const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>();
 
   interface IPageContent {
     currentLocaleData: Maybe<IProfileInfo>;
     defaultLocaleData: Maybe<IProfileInfo>;
   }
 
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    infoContent.value = contentData?.currentLocaleData;
-    defaultLocaleInfoContent.value = contentData?.defaultLocaleData;
-    setPageSeo(infoContent.value?.seo);
-  }
-
   const getPageContent = async (): Promise<IPageContent> => {
-    const nuxtContentData = useNuxtData('profileInfoContent');
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
+    const { data } = useNuxtData('profileInfoContent');
+    if (data.value) return data.value;
 
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'profile', 'info').findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
         : queryContent(defaultLocale.value?.code as string, 'profile', 'info').findOne()
     ]);
+
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { pending, data } = await useLazyAsyncData('profileInfoContent', () => getPageContent());
-  if (data.value) setContentData(data.value);
+  const { data: content } = await useLazyAsyncData('profileInfoContent', () => getPageContent());
 
-  watch(data, () => {
-    setContentData(data.value);
-  })
+  watch(content, () => {
+    if (content.value) setPageMeta(content.value?.currentLocaleData?.pageMeta);
+  }, { immediate: true });
 
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();

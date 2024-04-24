@@ -33,7 +33,7 @@
     justify-content: center;
     align-items: center;
     z-index: 1;
-    background-image: var(--bgi, var(--button-bg-primary-icn-only));
+    background: var(--bg, var(--button-bg-primary-icn-only));
     border-radius: 50%;
     transition: all .2s ease;
     aspect-ratio: 48/48;
@@ -50,7 +50,7 @@
     &:hover {
       cursor: pointer;
       --glow-offset: 12px;
-      --bgi: var(--button-bg-primary-icn-only-hover);
+      --bg: var(--button-bg-primary-icn-only-hover);
 
       [data-size="min"] & {
         --glow-offset: 12px;
@@ -72,7 +72,7 @@
 
 
   &:active {
-    --bgi: var(--button-bg-primary-icn-only-click);
+    --bg: var(--button-bg-primary-icn-only-click);
   }
 }
 

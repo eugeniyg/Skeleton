@@ -13,7 +13,7 @@ interface IModals extends Record<string, any> {
   cancelDeposit: boolean;
   walletBonusDetails: boolean;
   confirm: boolean;
-  error: boolean;
+  failing: boolean;
   forgotPass: boolean;
   resetPass: boolean;
   success: boolean;
@@ -24,7 +24,7 @@ interface IModalsUrls extends Record<string, any> {
   register: string;
   signIn: string;
   success: string;
-  error: string;
+  failing: string;
   confirm: string;
   forgotPass: string;
   resetPass: string;
@@ -42,6 +42,7 @@ interface ILayoutStoreState extends Record<string, any>{
   lastNotificationTime: number;
   returnGame: Maybe<string|IGame>;
   walletModalType: WalletModalTypes;
+  successModalType: 'deposit'|'deposit-pending';
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -58,7 +59,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         cancelDeposit: false,
         walletBonusDetails: false,
         confirm: false,
-        error: false,
+        failing: false,
         forgotPass: false,
         resetPass: false,
         success: false,
@@ -69,7 +70,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         register: 'sign-up',
         signIn: 'sign-in',
         success: 'success',
-        error: 'error',
+        failing: 'failing',
         confirm: 'confirm',
         forgotPass: 'forgot-pass',
         resetPass: 'reset-pass',
@@ -77,7 +78,8 @@ export const useLayoutStore = defineStore('layoutStore', {
       },
     lastNotificationTime: 0,
     returnGame: undefined,
-    walletModalType: undefined
+    walletModalType: undefined,
+    successModalType: 'deposit'
   }),
 
   actions: {

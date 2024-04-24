@@ -31,6 +31,11 @@ export interface IPaymentField extends Record<string, any> {
   options?: IPaymentFieldOption[];
 }
 
+export interface IPaymentPreset extends Record<string, any> {
+  amount: number;
+  default: boolean;
+}
+
 export interface IPaymentMethod extends Record<string, any>{
   method: string;
   amountMin: number;
@@ -38,6 +43,7 @@ export interface IPaymentMethod extends Record<string, any>{
   names: any;
   logo: string;
   icon: string;
+  presets: IPaymentPreset[];
   fields: IPaymentField[];
 }
 
@@ -47,8 +53,8 @@ export interface IRequestDeposit extends Record<string, any>{
   currency: string;
   amount: number;
   accountId: string;
-  redirectSuccessUrl: string;
-  redirectErrorUrl: string;
+  redirectSuccessUrl?: string;
+  redirectErrorUrl?: string;
   bonusId?: string;
 }
 
@@ -64,6 +70,8 @@ export interface IResponseDeposit extends Record<string, any>{
   action: string;
   method: string;
   fields: { [key: string]: string };
+  type: string;
+  qr?: string;
 }
 
 export interface IResponseWithdraw extends Record<string, any>{

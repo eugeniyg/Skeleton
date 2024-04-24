@@ -17,8 +17,7 @@
     />
 
     <div class="form-deposit-crypto__content" :class="{'is-blured': props.fields?.length && !state.selectedNetwork }">
-
-      <atomic-qr
+      <wallet-crypto-qr
         :content="popupsData?.wallet?.deposit || defaultLocalePopupsData?.wallet?.deposit"
         :qrAddress="walletNumber"
       />
@@ -128,12 +127,14 @@
       const depositResponse = await depositAccount(state.params);
       walletNumber.value = depositResponse.address;
     } catch {
-      showModal('error');
+      showModal('failing');
     }
   }
 
   const onInputNetwork = async ():Promise<void> => {
     const networkValue = state.selectedNetwork?.includes('empty-network') ? null : state.selectedNetwork;
+    if (state.params.fields?.crypto_network === networkValue) return;
+
     state.params.fields = { crypto_network: networkValue }
     await sendDepositData();
   }

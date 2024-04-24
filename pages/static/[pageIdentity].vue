@@ -2,7 +2,7 @@
   <div class="static-page">
     <template v-if="currentLocaleStaticContent || defaultLocaleStaticContent">
       <atomic-text-editor :content="currentLocaleStaticContent?.content || defaultLocaleStaticContent?.content" />
-      <atomic-seo-text v-if="currentLocaleStaticContent?.seo?.text" v-bind="currentLocaleStaticContent?.seo?.text" />
+      <atomic-seo-text v-if="currentLocaleStaticContent?.pageMeta?.seoText" v-bind="currentLocaleStaticContent?.pageMeta?.seoText" />
     </template>
 
     <not-found v-else-if="!pending" />
@@ -17,7 +17,7 @@
   const { pageIdentity } = route.params;
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const { setPageSeo, getLocalesContentData } = useProjectMethods();
+  const { setPageMeta, getLocalesContentData } = useProjectMethods();
 
   interface IPageContent {
     currentLocaleData: Maybe<IStaticPage>;
@@ -30,7 +30,7 @@
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     currentLocaleStaticContent.value = contentData?.currentLocaleData;
     defaultLocaleStaticContent.value = contentData?.defaultLocaleData;
-    setPageSeo(currentLocaleStaticContent.value?.seo);
+    setPageMeta(currentLocaleStaticContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {

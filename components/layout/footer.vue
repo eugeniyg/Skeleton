@@ -14,11 +14,9 @@
         </template>
 
         <template v-slot:content="{ item }: { item: ILink }">
-          <nuxt-link
-            :to="item.url.startsWith('http') ? item.url : localizePath(item.url)"
-          >
+          <atomic-link :href="item.url" :targetBlank="item?.targetBlank">
             {{ item.label }}
-          </nuxt-link>
+          </atomic-link>
         </template>
       </accordeon>
 
