@@ -33,7 +33,7 @@
           @click="showCodes.push(invoice.publicData.securityCode)"
         >
           <atomic-icon id="security-code"/>
-          <span>{{ props.transactionsContent.securityCode.getCodeButton }}</span>
+          <span>{{ props.transactionsContent?.securityCode?.getCodeButton }}</span>
         </button-base>
 
         <button-base
@@ -44,7 +44,7 @@
           @click.once="emit('cancelPayment', invoice.id)"
         >
           <atomic-icon id="trash"/>
-          <span>{{ props.transactionsContent.cancelPaymentButton }}</span>
+          <span>{{ props.transactionsContent?.cancelPaymentButton }}</span>
         </button-base>
         
         <button-base
@@ -52,14 +52,14 @@
             invoice.publicData?.transactionId &&
             invoice.invoiceType === 1 &&
             dosafepayTargetMethods.includes(invoice.paymentMethod) &&
-            !showDosafepayDetails"
+            !showDetails.includes(invoice.publicData.transactionId)"
             class="btn-get-code"
             type="primary"
             size="sm"
-            @click="showDosafepayDetails = true"
+            @click="showDetails.push(invoice.publicData?.transactionId)"
         >
           <atomic-icon id="more-info"/>
-          <span>{{ props.transactionsContent.dosafepayData.showDetailsButton }}</span>
+          <span>{{ props.transactionsContent?.dosafepayData?.showDetailsButton }}</span>
         </button-base>
       </div>
 
@@ -68,15 +68,15 @@
         class="security-code"
       >
         <atomic-copy-field
-          :label="props.transactionsContent.securityCode.codeLabel"
+          :label="props.transactionsContent?.securityCode?.codeLabel"
           :value="invoice.publicData.securityCode"
-          :tooltip="props.transactionsContent.securityCode.codeTooltip"
+          :tooltip="props.transactionsContent?.securityCode?.codeTooltip"
         />
 
         <atomic-copy-field
-          :label="props.transactionsContent.securityCode.clientLabel"
+          :label="props.transactionsContent?.securityCode?.clientLabel"
           :value="invoice.publicData.clientId"
-          :tooltip="props.transactionsContent.securityCode.clientTooltip"
+          :tooltip="props.transactionsContent?.securityCode?.clientTooltip"
         />
       </div>
       
@@ -84,19 +84,19 @@
           v-if="invoice.publicData?.agentNumber &&
           invoice.publicData?.transactionId &&
           dosafepayTargetMethods.includes(invoice.paymentMethod) &&
-          showDosafepayDetails"
+          showDetails.includes(invoice.publicData?.transactionId)"
           class="security-code"
       >
         <atomic-copy-field
-            :label="props.transactionsContent.dosafepayData.numberLabel"
+            :label="props.transactionsContent?.dosafepayData?.numberLabel"
             :value="invoice.publicData.agentNumber"
-            :tooltip="props.transactionsContent.dosafepayData.numberTooltip"
+            :tooltip="props.transactionsContent?.dosafepayData?.numberTooltip"
         />
         
         <atomic-copy-field
-            :label="props.transactionsContent.dosafepayData.clientLabel"
+            :label="props.transactionsContent?.dosafepayData?.clientLabel"
             :value="invoice.publicData.transactionId"
-            :tooltip="props.transactionsContent.dosafepayData.clientTooltip"
+            :tooltip="props.transactionsContent?.dosafepayData?.clientTooltip"
         />
       </div>
     </div>
@@ -119,7 +119,7 @@
   const dayjs = useDayjs();
   const { getContent } = useProjectMethods();
   const showCodes = ref<string[]>([]);
-  const showDosafepayDetails = ref<boolean>(false);
+  const showDetails = ref<string[]>([]);
   const dosafepayTargetMethods: string[] = ['Rocket', 'Nagad', 'Bkash', 'Upay'];
 </script>
 
