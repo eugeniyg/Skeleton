@@ -85,6 +85,8 @@ export interface IResponseWithdraw extends Record<string, any>{
 export interface IInvoicePublicData extends Record<string, any> {
   clientId: string;
   securityCode: string;
+  agentNumber: string;
+  transactionId: string;
 }
 
 export interface IInvoice extends Record<string, any>{

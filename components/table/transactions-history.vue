@@ -46,6 +46,21 @@
           <atomic-icon id="trash"/>
           <span>{{ props.transactionsContent.cancelPaymentButton }}</span>
         </button-base>
+        
+        <button-base
+            v-if="invoice.publicData?.agentNumber &&
+            invoice.publicData?.transactionId &&
+            invoice.invoiceType === 1 &&
+            dosafepayTargetMethods.includes(invoice.paymentMethod) &&
+            !showDosafepayDetails"
+            class="btn-get-code"
+            type="primary"
+            size="sm"
+            @click="showDosafepayDetails = true"
+        >
+          <atomic-icon id="more-info"/>
+          <span>{{ props.transactionsContent.dosafepayData.showDetailsButton }}</span>
+        </button-base>
       </div>
 
       <div
@@ -62,6 +77,26 @@
           :label="props.transactionsContent.securityCode.clientLabel"
           :value="invoice.publicData.clientId"
           :tooltip="props.transactionsContent.securityCode.clientTooltip"
+        />
+      </div>
+      
+      <div
+          v-if="invoice.publicData?.agentNumber &&
+          invoice.publicData?.transactionId &&
+          dosafepayTargetMethods.includes(invoice.paymentMethod) &&
+          showDosafepayDetails"
+          class="security-code"
+      >
+        <atomic-copy-field
+            :label="props.transactionsContent.dosafepayData.numberLabel"
+            :value="invoice.publicData.agentNumber"
+            :tooltip="props.transactionsContent.dosafepayData.numberTooltip"
+        />
+        
+        <atomic-copy-field
+            :label="props.transactionsContent.dosafepayData.clientLabel"
+            :value="invoice.publicData.clientId"
+            :tooltip="props.transactionsContent.dosafepayData.clientTooltip"
         />
       </div>
     </div>
@@ -84,6 +119,8 @@
   const dayjs = useDayjs();
   const { getContent } = useProjectMethods();
   const showCodes = ref<string[]>([]);
+  const showDosafepayDetails = ref<boolean>(false);
+  const dosafepayTargetMethods: string[] = ['Rocket', 'Nagad', 'Bkash', 'Upay'];
 </script>
 
 <style src="~/assets/styles/components/table/transactions-history.scss" lang="scss" />
