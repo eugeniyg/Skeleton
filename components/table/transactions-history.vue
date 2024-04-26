@@ -95,7 +95,7 @@
         
         <atomic-copy-field
             :label="props.transactionsContent.dosafepayData.clientLabel"
-            :value="invoice.publicData.clientId"
+            :value="invoice.publicData.transactionId"
             :tooltip="props.transactionsContent.dosafepayData.clientTooltip"
         />
       </div>
