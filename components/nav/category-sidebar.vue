@@ -24,7 +24,13 @@
           v-if="listItem.gameList?.length"
           :items="listItem.gameList.map((game: any) => game.gameIdentity).slice(0, 4)"
       />
+      
+      <list-sportsbook
+          v-if="listItem.sportsbookList?.length"
+          :items="listItem.sportsbookList.map((item: any) => item).slice(0, 4)"
+      />
     </div>
+    
   </div>
 </template>
 
