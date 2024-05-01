@@ -36,6 +36,7 @@
       :options="getFieldOptions(field.key)"
       :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
       :hint="setError(field.key)"
+      :isDisabled="field.key === 'agentNumber'"
     />
 
     <template v-if="depositBonuses?.length">
@@ -141,7 +142,7 @@
       return props.fields;
     }
 
-    return props.fields.filter(field => field.value === null || v$.value[field.key].$invalid);
+    return props.fields.filter(field => field.value === null || v$.value[field.key].$invalid || field.key === 'agentNumber');
   }
   const visibleFields = getVisibleFields(); // remove reactivity
 
