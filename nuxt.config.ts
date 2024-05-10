@@ -100,7 +100,7 @@ export default defineNuxtConfig({
   nitro: {
     devProxy: {
       '/api': {
-        target: 'https://test.dev.getplatform.tech/api',
+        target: 'https://qa3.dev.getplatform.tech/api',
         changeOrigin: true,
       },
     },
