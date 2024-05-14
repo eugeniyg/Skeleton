@@ -103,14 +103,6 @@
       layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
       layoutData?.footer?.helpMenu || defaultLocaleLayoutData?.footer?.helpMenu,
     ].filter(menu => menu?.title && menu?.items?.length);
-  
-  const showCuracaoBlock = computed(() => {
-    return layoutData?.footer?.curacao?.description ||
-      defaultLocaleLayoutData?.footer?.curacao?.description ||
-      layoutData?.footer?.curacao?.frameLink ||
-      defaultLocaleLayoutData?.footer?.curacao?.frameLink;
-  });
-
 </script>
 
 <style src="~/assets/styles/components/layout/footer.scss" lang="scss"/>
