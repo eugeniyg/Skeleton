@@ -45,7 +45,7 @@
 
     <atomic-divider/>
     
-    <template v-if="showCuracaoBlock">
+    <template v-if="layoutData?.footer?.curacao?.show || defaultLocaleLayoutData?.footer?.curacao?.show">
       <div class="info">
         <iframe
           v-if="layoutData?.footer?.curacao?.frameLink || defaultLocaleLayoutData?.footer?.curacao?.frameLink"
@@ -62,6 +62,26 @@
         />
       </div>
 
+      <atomic-divider/>
+    </template>
+    
+    <template v-if="layoutData?.footer?.custom?.show || defaultLocaleLayoutData?.footer?.custom?.show">
+      <div class="info">
+        <atomic-image
+            v-if="layoutData?.footer?.custom?.image || defaultLocaleLayoutData?.footer?.custom?.image"
+            :src="layoutData?.footer?.custom?.image || defaultLocaleLayoutData?.footer?.custom?.image"
+            width="132px"
+            height="62px"
+            data-not-lazy
+        />
+        
+        <div
+            v-if="layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description"
+            class="info__text"
+            v-html="marked.parse(layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description || '')"
+        />
+      </div>
+      
       <atomic-divider/>
     </template>
 
