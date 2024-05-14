@@ -94,9 +94,7 @@
 <script setup lang="ts">
   import { marked } from 'marked';
   import type { ILink } from "~/types";
-
-  const { localizePath } = useProjectMethods();
-
+  
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const accordeonItems = [
       layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
