@@ -17,6 +17,14 @@
       }
     }
   }
+
+  &:has(.pwa) {
+    @media (max-width: 1281px) {
+      .search {
+        transform: translateY(64px);
+      }
+    }
+  }
 }
 
 .app-header {

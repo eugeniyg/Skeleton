@@ -36,6 +36,7 @@
       :options="getFieldOptions(field.key)"
       :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
       :hint="setError(field.key)"
+      :isDisabled="field.key === 'agentNumber'"
     />
 
     <template v-if="depositBonuses?.length">
@@ -141,7 +142,7 @@
       return props.fields;
     }
 
-    return props.fields.filter(field => field.value === null || v$.value[field.key].$invalid);
+    return props.fields.filter(field => field.value === null || v$.value[field.key].$invalid || field.key === 'agentNumber');
   }
   const visibleFields = getVisibleFields(); // remove reactivity
 
@@ -151,8 +152,10 @@
   }
 
   const walletStore = useWalletStore();
-  const { showModal } = useLayoutStore();
-  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
+  const layoutStore = useLayoutStore();
+  const { successModalType } = storeToRefs(layoutStore);
+  const { showModal, showAlert } = layoutStore;
+  const { activeAccount } = storeToRefs(walletStore);
 
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
@@ -187,7 +190,17 @@
     || (Number(amountValue.value) < formatAmountMin.amount)
     || (Number(amountValue.value) > formatAmountMax.amount)
     || isSending.value);
-  const processedInModalMethods = ['pix_qr_brl_invoice:pix_qr'];
+  const processedInModalMethods = [
+    'pix_qr_brl_invoice:pix_qr',
+    'boleto_bancario_brl_hpp:boleto_bancario',
+    'pix_brl_hpp:pix',
+    'bank_transfer_brl_hpp:bank_transfer',
+    'loteria_brl_hpp:loteria',
+    'BKASH',
+    'NAGAD',
+    'ROCKET',
+    'UPAY'
+  ];
 
   const getPaymentPageUrl = (depositResponse: IResponseDeposit): string => {
     const responseHasParams = Object.keys(depositResponse.fields).length;
@@ -254,6 +267,9 @@
         qrAddress.value = depositResponse.qr;
       } else if (depositResponse.type === 'iframe') {
         iframeUrl.value = paymentPageUrl;
+      } else if (depositResponse.type === 'message') {
+        successModalType.value = 'deposit-pending';
+        showModal('success');
       }
     } catch {
       if (windowReference.value) windowReference.value.close();
@@ -271,7 +287,6 @@
     if (!validFormData) return;
 
     if (profileStore.profile?.status === 2) {
-      const { showAlert } = useLayoutStore();
       showAlert(alertsData?.limit?.limitedDeposit || defaultLocaleAlertsData?.limit?.limitedDeposit);
       return;
     }

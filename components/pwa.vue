@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isVisible" class="pwa" :class="{ '--mobile': isMobile }">
+  <div v-if="isVisible && layoutData?.header?.pwa?.display" class="pwa" :class="{ '--mobile': isMobile }">
     <div v-if="isMobile" class="mobile-container">
       <atomic-icon :id="platformKey" />
 
