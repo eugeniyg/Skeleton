@@ -27,7 +27,10 @@ export const useFieldsStore = defineStore('fieldsStore', {
       return {
         currency: globalStore.currenciesSelectOptions,
         country: globalStore.countriesSelectOptions,
-        timeZone: globalStore.timeZonesSelectOptions
+        timeZone: globalStore.timeZonesSelectOptions,
+        language: [
+          { value: 'English', code: 'en' }
+        ]
       };
     },
   },
