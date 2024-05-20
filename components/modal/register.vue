@@ -31,12 +31,33 @@
         <form-phone-verify
           v-if="showPhoneVerification"
           :registrationData="registrationData"
+          @validationError="handlePhoneRegValidation"
         />
 
+        <template v-else-if="registrationType === 'emailOrPhone'">
+          <div class="modal-register__tabs">
+            <button-base
+              v-for="tab in registrationTypeTabs"
+              :key="tab.id"
+              :isActive="tab.id === selectedTab"
+              size="xs"
+              @click="selectedTab = tab.id"
+            >
+              <atomic-icon :id="tab.icon" />
+              <span class="text">{{ tab.label }}</span>
+            </button-base>
+          </div>
+
+          <atomic-divider class="modal-register__tabs-divider"  />
+        </template>
+
         <form-join
-          v-else-if="registrationFields.length"
+          v-if="registrationFields.length"
+          v-show="!showPhoneVerification"
+          ref="registrationForm"
           :registrationFields="registrationFields"
-          :key="formKey"
+          :key="`${formKey}-${selectedTab}`"
+          :registrationType="selectedTab"
           @showVerification="showVerification"
         />
       </div>
@@ -46,22 +67,45 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IField } from '@skeleton/core/types';
+  import type {IField, RegistrationType} from '@skeleton/core/types';
   import { VueFinalModal } from 'vue-final-modal';
 
   const formKey = ref<number>(0);
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
-  const { closeModal, showModal } = layoutStore;
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { closeModal, showModal, openWalletModal } = layoutStore;
+  const globalStore = useGlobalStore();
+  const { settingsConstants, popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
   const showPhoneVerification = ref<boolean>(false);
   const formTitle = computed(() => {
-    if (showPhoneVerification.value) return getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.title');
-    return getContent(popupsData, defaultLocalePopupsData, 'registration.title');
+    if (showPhoneVerification.value) return getContent(popupsData.value, defaultLocalePopupsData.value, 'phoneVerification.title');
+    return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.title');
   })
   const registrationData = ref<Record<string, any>|undefined>();
+  const registrationType = computed<RegistrationType>(() => {
+    if (settingsConstants.value?.player.registration.email && settingsConstants.value?.player.registration.phone) return 'emailOrPhone';
+    if (settingsConstants.value?.player.registration.email) return 'email';
+    if (settingsConstants.value?.player.registration.phone) return 'phone';
+    return 'default';
+  })
+  const registrationTypeTabs = computed<{ id: RegistrationType, label: string, icon: string }[]>(() => {
+    if (registrationType.value === 'emailOrPhone') return [
+      {
+        id: 'email',
+        label: getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.typeTabs.email'),
+        icon: 'mail'
+      },
+      {
+        id: 'phone',
+        label: getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.typeTabs.phone'),
+        icon: 'mobile'
+      }
+    ];
+    return [];
+  })
+  const selectedTab = ref<RegistrationType>(registrationType.value === 'emailOrPhone' ? 'email' : registrationType.value);
 
   const closedEvent = ():void => {
     showPhoneVerification.value = false;
@@ -79,6 +123,12 @@
   }
 
   const showRegistrationForm = ():void => {
+    showPhoneVerification.value = false;
+  }
+
+  const registrationForm = ref();
+  const handlePhoneRegValidation = (serverErrors: Record<string, any>): void => {
+    registrationForm.value.setServerErrors(serverErrors);
     showPhoneVerification.value = false;
   }
 

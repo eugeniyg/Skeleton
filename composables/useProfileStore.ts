@@ -190,6 +190,16 @@ export const useProfileStore = defineStore('profileStore', {
       await this.handleLogin(submitResult);
     },
 
+    registrationSucceeded():void {
+      const { showAlert, closeModal, openWalletModal } = useLayoutStore();
+      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+
+      localStorage.removeItem('affiliateTag');
+      showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
+      closeModal('register');
+      openWalletModal();
+    },
+
     async loginSocial(socialData:any, authState?: IAuthState):Promise<void> {
       const { submitSocialLoginData } = useCoreAuthApi();
       const submitResult = await submitSocialLoginData(socialData);
@@ -200,10 +210,7 @@ export const useProfileStore = defineStore('profileStore', {
       await router.replace(authState?.targetUrl || localizePath('/'));
 
       if (submitResult.profile?.isNewlyRegistered) {
-        const { openWalletModal, showAlert } = useLayoutStore();
-        const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
-        showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
-        openWalletModal();
+        this.registrationSucceeded();
       }
     },
 
@@ -217,10 +224,14 @@ export const useProfileStore = defineStore('profileStore', {
       const { submitRegistrationData } = useCoreAuthApi();
       const submitResult = await submitRegistrationData(registrationData);
       await this.handleLogin(submitResult);
+      this.registrationSucceeded();
+    },
 
-      const { showAlert } = useLayoutStore();
-      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
-      showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
+    async phoneRegistration(registrationData:any):Promise<void> {
+      const { registerByPhone } = useCoreAuthApi();
+      const submitResult = await registerByPhone(registrationData);
+      await this.handleLogin(submitResult);
+      this.registrationSucceeded();
     },
 
     async getProfileData():Promise<void> {
