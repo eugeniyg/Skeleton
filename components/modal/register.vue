@@ -48,7 +48,7 @@
             </button-base>
           </div>
 
-          <atomic-divider class="modal-register__tabs-divider"  />
+          <atomic-divider class="modal-register__tabs-divider" />
         </template>
 
         <form-join
