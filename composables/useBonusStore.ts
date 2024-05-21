@@ -19,6 +19,7 @@ interface IBonusState {
   depositBonusCode: Maybe<IBonusCode>;
   depositBonuses: IBonus[];
   selectedDepositBonus: IBonus|undefined;
+  bonusDeclined: boolean;
   depositMoreInfoBonus: Maybe<IBonus>;
 }
 
@@ -33,6 +34,7 @@ export const useBonusStore = defineStore('bonusStore', {
     depositBonusCode: undefined,
     depositBonuses: [],
     selectedDepositBonus: undefined,
+    bonusDeclined: false,
     depositMoreInfoBonus: undefined
   }),
 

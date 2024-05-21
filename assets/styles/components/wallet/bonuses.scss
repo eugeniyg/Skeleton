@@ -38,4 +38,29 @@
       color: var(--text-tertiary);
     }
   }
+
+  &__decline {
+    height: auto;
+
+    .wallet-bonus__content {
+      padding-right: rem(48px);
+
+      .input-checkbox {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
+    .wallet-bonus__title {
+      display: flex;
+      align-items: center;
+      column-gap: rem(4px);
+
+      .icon {
+        margin-bottom: 2px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
 }
