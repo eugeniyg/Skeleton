@@ -57,16 +57,16 @@
       >
         <atomic-spinner :is-shown="isSending"/>
         <span class="btn-primary__content">
-        <span>
-          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.depositButton') }}
-          {{ buttonAmount }}
-          {{ formatAmountMin.currency }}
-        </span>
+          <span>
+            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.depositButton') }}
+            {{ buttonAmount }}
+            {{ formatAmountMin.currency }}
+          </span>
 
-        <span v-if="selectedDepositBonus && bonusSummary">
-          {{ bonusSummary }}
+          <span v-if="selectedDepositBonus && bonusSummary">
+            {{ bonusSummary }}
+          </span>
         </span>
-      </span>
       </button-base>
     </div>
   </form>
@@ -105,7 +105,7 @@
   const profileStore = useProfileStore();
 
   const bonusStore = useBonusStore();
-  const { depositBonuses, selectedDepositBonus } = storeToRefs(bonusStore);
+  const { depositBonuses, selectedDepositBonus, bonusDeclined } = storeToRefs(bonusStore);
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
   props.fields.forEach((field) => {
@@ -236,6 +236,7 @@
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
       bonusId: selectedDepositBonus.value?.id,
+      isBonusDecline: bonusDeclined.value,
       fields: props.fields.length
         ? { ...depositFormData, phone: depositFormData.phone ? `+${depositFormData.phone}` : undefined }
         : undefined

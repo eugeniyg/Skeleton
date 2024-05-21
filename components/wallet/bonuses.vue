@@ -13,6 +13,24 @@
       />
     </template>
 
+    <div class="wallet-bonus wallet-bonuses__decline" :class="{ 'is-selected': bonusDeclined }">
+      <div class="wallet-bonus__content">
+        <div class="wallet-bonus__title">
+          <atomic-icon id="bonus-declined" />
+
+          <span>
+            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.declineLabel') }}
+          </span>
+        </div>
+
+        <form-input-checkbox
+          name="bonus-decline"
+          :value="bonusDeclined"
+          @change="declineBonuses"
+        />
+      </div>
+    </div>
+
     <div v-if="props.crypto" class="wallet-bonuses__info">
       <div class="wallet-bonuses__info-icon">
         <atomic-icon id="info" />
@@ -38,9 +56,8 @@
   const { getContent, formatBalance, getEquivalentFromBase } = useProjectMethods();
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
-
   const bonusStore = useBonusStore();
-  const { depositBonuses, selectedDepositBonus } = storeToRefs(bonusStore);
+  const { depositBonuses, selectedDepositBonus, bonusDeclined } = storeToRefs(bonusStore);
 
   const sortBonuses = (prevBonus: IBonus, nextBonus: IBonus): number => {
     if (prevBonus.type === 2 || (prevBonus.type === 1 && nextBonus.type === 3)) return -1;
@@ -142,19 +159,33 @@
   }
 
   const storageBonus = getStorageBonus();
-  if (!props.crypto) {
+  if (sessionStorage.getItem('bonusDeclined')) {
+    bonusDeclined.value = true;
+    selectedDepositBonus.value = undefined;
+  } else if (!props.crypto) {
     const bonusByDeposit = bonusesList.value.find(bonus => !isBonusDisabled(bonus));
     selectedDepositBonus.value = storageBonus || bonusByDeposit;
   } else {
     selectedDepositBonus.value = storageBonus || bonusesList.value[0];
   }
 
+  const declineBonuses = (): void => {
+    if (bonusDeclined.value) return;
+
+    bonusDeclined.value = true;
+    selectedDepositBonus.value = undefined;
+    sessionStorage.removeItem('depositBonusData');
+    sessionStorage.setItem('bonusDeclined', 'true');
+  }
+
   const onBonusChange = (bonus: IBonus): void => {
     if (selectedDepositBonus.value?.id === bonus.id) {
       selectedDepositBonus.value = undefined;
-      sessionStorage.removeItem('depositBonus');
+      sessionStorage.removeItem('depositBonusData');
     } else {
       selectedDepositBonus.value = bonus;
+      bonusDeclined.value = false;
+      sessionStorage.removeItem('bonusDeclined');
       sessionStorage.setItem('depositBonusData', JSON.stringify({
         bonusId: bonus.id,
         amount: props.amount,

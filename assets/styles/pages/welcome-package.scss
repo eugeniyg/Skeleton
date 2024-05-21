@@ -186,6 +186,12 @@
         "title"
         "actions";
       --padding: #{rem(24px)} #{rem(16px)};
+
+      &:last-child {
+        .arrow {
+          display: none !important;
+        }
+      }
     }
 
     &:nth-of-type(1) {
@@ -211,12 +217,6 @@
 
     &:nth-of-type(4) {
       --bgc: var(--data-cta-bonus-4);
-
-      @include media(sm) {
-        .arrow {
-          visibility: hidden;
-        }
-      }
     }
 
     .title,
