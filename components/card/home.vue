@@ -18,7 +18,7 @@
 
     <div class="info">
       <div class="title" v-if="props.title" v-html="marked.parse(props.title)"/>
-      <div class="content" v-if="props.content" v-html="marked.parse(props.content)"/>
+      <div class="card-home__content" v-if="props.content" v-html="marked.parse(props.content)"/>
 
       <div class="actions" v-if="props.button">
         <button-base
