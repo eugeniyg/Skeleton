@@ -168,8 +168,6 @@
   } = useFormValidation(registrationFormRules, registrationFormData);
 
   const showPromoInput = ref<boolean>(false);
-
-  const { registration } = useProfileStore();
   const isLockedAsyncButton = ref<boolean>(false);
 
   const handleInput = (fieldName:string):void => {
@@ -190,6 +188,32 @@
     return v$.value.$invalid || hasServerError || isLockedAsyncButton.value;
   })
 
+  const handlePhoneRegistration = async (): Promise<void> => {
+    try {
+      const { sendOtp } = useCoreAuthApi();
+      await sendOtp({ phone: registrationFormData.phone, reason: 'registration' });
+      emit('showVerification', registrationFormData);
+    } catch (error:any) {
+      if (error.data?.error?.code === 11005) {
+        const limitError = getContent(popupsData.value, defaultLocalePopupsData.value, 'phoneVerification.limitError');
+        serverFormErrors.value = { phone: [limitError] };
+      } else {
+        serverFormErrors.value = { phone: [error.data?.error?.message] };
+      }
+    }
+  }
+
+  const handleCommonRegistration = async (): Promise<void> => {
+    try {
+      const { registration } = useProfileStore();
+      await registration(registrationFormData);
+    } catch (error:any) {
+      if (error.response?.status === 422) {
+        serverFormErrors.value = error.data?.error?.fields;
+      } else throw error;
+    }
+  }
+
   const emit = defineEmits(['showVerification', 'registerSuccess']);
   const { getNicknameFromEmail } = useProjectMethods();
   const signUp = async ():Promise<void> => {
@@ -205,27 +229,13 @@
     const affiliateTag = localStorage.getItem('affiliateTag');
     if (affiliateTag) registrationFormData.affiliateTag = affiliateTag;
 
-    try {
-      isLockedAsyncButton.value = true;
-      if (props.registrationType === 'phone') {
-        const { sendOtp } = useCoreAuthApi();
-        await sendOtp({ phone: registrationFormData.phone, reason: 'registration' });
-        emit('showVerification', registrationFormData);
-      } else {
-        await registration(registrationFormData);
-      }
-    } catch (error:any) {
-      if (error.response?.status === 422) {
-        serverFormErrors.value = error.data?.error?.fields;
-      } else if (error.response?.status === 400 && error.data?.error?.code === 11005) {
-        const limitError = getContent(popupsData.value, defaultLocalePopupsData.value, 'phoneVerification.limitError');
-        serverFormErrors.value = { phone: [limitError] };
-      } else if (error.response?.status === 400 && error.data?.error?.code === 11006) {
-        serverFormErrors.value = { phone: [error.data?.error?.message] };
-      } else throw error;
-    } finally {
-      isLockedAsyncButton.value = false;
+    isLockedAsyncButton.value = true;
+    if (props.registrationType === 'phone') {
+      await handlePhoneRegistration();
+    } else {
+      await handleCommonRegistration();
     }
+    isLockedAsyncButton.value = false;
   };
 </script>
 
