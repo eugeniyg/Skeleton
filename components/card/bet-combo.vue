@@ -1,7 +1,7 @@
 <template>
   <div class="card-bet-combo" :class="{'is-open': isOpen}">
     <div class="head">
-      <span class="date">{{ formatDate(props.createdAt, false) }}</span>
+      <span class="date">{{ dayjs(props.createdAt).format('DD.MM HH:mm') }}</span>
 
       <button-copy
         :copyButton="betCard.copyButton"
@@ -58,7 +58,7 @@
           <span class="sep" />
           <span class="desc">{{ betItem.event }}</span>
           <span class="date">
-            <span>{{ formatDate(betItem.eventDate) }}</span>
+            <span>{{ dayjs(betItem.eventDate).format('DD.MM.YYYY HH:mm') }}</span>
           </span>
         </div>
 
@@ -95,16 +95,8 @@ const props = defineProps<{
   }>();
 
   const isOpen = ref<boolean>(false);
-
+  const dayjs = useDayjs();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-
-  const formatDate = (dateUtcIsoString: string, needYear: boolean = true):string => {
-    const date = new Date(dateUtcIsoString);
-    let dateWithComma;
-    if (needYear) dateWithComma = date.toLocaleString('UA').slice(0, -3);
-    else dateWithComma = `${date.toLocaleString('UA').slice(0, -15)}${date.toLocaleString('UA').slice(-10, -3)}`;
-    return dateWithComma.replace(',', ' ');
-  };
 
   const comboDisciplines = computed(() => {
     return props.items.map((betItem) => betItem.discipline).filter((discipline) => discipline !== props.items[0].discipline);
