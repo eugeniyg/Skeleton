@@ -176,6 +176,14 @@
     }
   }
 
+  &__content {
+    color: var(--text-primary);
+
+    p {
+      margin: 0;
+    }
+  }
+
   .content {
     position: absolute;
     height: 100%;
