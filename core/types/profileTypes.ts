@@ -155,3 +155,9 @@ export interface IOtpRequest {
   phone: string;
   reason: 'registration'|'phoneVerification'|'changingPass';
 }
+
+export interface IPhoneVerification {
+  phone: string;
+  code: string;
+  reason: string;
+}
