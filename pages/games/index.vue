@@ -90,15 +90,8 @@
   const route = useRoute();
   const router = useRouter();
 
-  const sortBy = ref<string | undefined>();
-  const sortOrder = ref<string | undefined>();
-
-  const setDefaultSortOptions = (): void => {
-    sortBy.value = route.query.sortBy as string
-      || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortBy') || 'default';
-    sortOrder.value = route.query.sortOrder as string
-      || getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions.0.sortOrder') || 'asc';
-  }
+  const sortBy = ref<string | undefined>(route.query.sortBy as string || 'default');
+  const sortOrder = ref<string | undefined>(route.query.sortOrder as string || 'asc');
 
   interface IPageContent {
     currentLocaleData: Maybe<IGamesPage>;
@@ -112,7 +105,6 @@
     gamesContent.value = contentData?.currentLocaleData;
     defaultLocaleGamesContent.value = contentData?.defaultLocaleData;
     setPageMeta(gamesContent.value?.pageMeta);
-    setDefaultSortOptions();
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
