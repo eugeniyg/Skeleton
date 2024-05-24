@@ -13,8 +13,8 @@
     >
       {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
     </span>
-    
-    
+
+
     <div class="selected" @click="open">
       <atomic-image
         v-if="valueObject.mask"
@@ -22,7 +22,7 @@
         :src="valueObject.mask" :defaultImage="valueObject.defaultMask"
         :class="{'has-search-query': searchQuery.length > 0}"
       />
-      
+
       <input
         class="dropdown-search__input"
         type="text"
@@ -35,7 +35,7 @@
       >
       <atomic-icon :id="iconType"/>
     </div>
-    
+
     <div
       v-if="props.options.length"
       class="items"
@@ -65,7 +65,7 @@
         </div>
       </div>
     </div>
-    
+
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
     <input type="hidden" :name="props.name" :value="props.value"/>
   </div>
@@ -107,6 +107,7 @@
   const searchQuery = ref<string>('');
   const selectedIndex = ref<number>(0);
   const isOpen = ref<boolean>(false);
+  const isVisible = ref<boolean>(false);
   const dropdownItems = ref<HTMLElement>();
   const drop = ref<HTMLElement>();
   const itemText = ref([]);
@@ -122,6 +123,7 @@
   const classes = computed(() => [
     props.size ? `size-${props.size}` : null,
     { 'is-open': isOpen.value },
+    { 'is-visible': isVisible.value },
     { 'has-error': props.hint?.variant === 'error' },
     { 'is-disabled': props.isDisabled },
     { 'is-fit-content': props.isFitContent },
@@ -259,8 +261,9 @@
       
       drop.value?.style.setProperty('--dropdown-item-min-width', `${textMaxWidth.value + iconWidth + offset}px`);
     }
+    isVisible.value = true;
   };
-  
+
   onMounted(() => {
     observer.value = initObserver({
       settings: {

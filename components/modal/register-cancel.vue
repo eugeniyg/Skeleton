@@ -2,12 +2,12 @@
   <vue-final-modal
     v-model="modals.registerCancel"
     :clickToClose="false"
-    @clickOutside="closeModal('registerCancel')"
+    @clickOutside="closeRegistration"
     class="modal-register-cancel"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('registerCancel')"/>
+        <button-modal-close @close="closeRegistration"/>
         <h4 class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.title') }}</h4>
       </div>
 
@@ -20,7 +20,7 @@
         <button-base
           type="primary"
           size="md"
-          @click="showModal('register')"
+          @click="closeModal('registerCancel')"
         >
           {{ getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.backButton') }}
         </button-base>
@@ -28,7 +28,7 @@
         <button-base
           type="ghost"
           size="xs"
-          @click="closeModal('registerCancel')"
+          @click="closeRegistration"
         >
           {{ getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.closeButton') }}
         </button-base>
@@ -43,13 +43,18 @@
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
-  const { showModal, closeModal } = layoutStore;
+  const { closeModal } = layoutStore;
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
 
   const { replaceContent } = useProjectMethods();
   const bonusContent = getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.bonusText')
     ? replaceContent(getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.bonusText'), '*') : '';
+
+  const closeRegistration = ():void => {
+    closeModal('register');
+    closeModal('registerCancel');
+  }
 </script>
 
 <style src="~/assets/styles/components/modal/register-cancel.scss" lang="scss" />
