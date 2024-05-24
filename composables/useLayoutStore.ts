@@ -232,6 +232,8 @@ export const useLayoutStore = defineStore('layoutStore', {
         getDepositBonuses(activeAccount?.currency as string)
       ]);
 
+      const { isLoggedIn } = useProfileStore();
+      if (!isLoggedIn) return;
       this.showModal('wallet', modalType);
     },
 
