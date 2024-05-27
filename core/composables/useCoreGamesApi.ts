@@ -31,7 +31,7 @@ export const useCoreGamesApi = () => {
   }
 
   const getFilteredGames = async (filterParams: IGamesRequest):Promise<IGamesResponse> => {
-    return await useApiGuestInstance('/api/game/games', {params: filterParams});
+    return await useApiAuthInstance('/api/game/games', {params: filterParams});
   };
 
   const getGamesInfo = async (gameId: string):Promise<IGame> => {

@@ -59,13 +59,11 @@
   const { activeAccount } = storeToRefs(walletStore);
 
   const bonusStore = useBonusStore();
-  const { depositBonuses, selectedDepositBonus } = storeToRefs(bonusStore);
+  const { depositBonuses, selectedDepositBonus, bonusDeclined } = storeToRefs(bonusStore);
 
   const {
     popupsData,
     defaultLocalePopupsData,
-    alertsData,
-    defaultLocaleAlertsData,
     fieldsSettings,
     defaultLocaleFieldsSettings,
   } = useGlobalStore();
@@ -115,13 +113,15 @@
       redirectSuccessUrl: window.location.href,
       redirectErrorUrl: window.location.href,
       fields: undefined,
-      bonusId: selectedDepositBonus.value?.id
+      bonusId: selectedDepositBonus.value?.id,
+      isBonusDecline: bonusDeclined.value
     },
   });
 
   const { depositAccount } = useCoreWalletApi();
   const sendDepositData = async ():Promise<void> => {
     state.params.bonusId = selectedDepositBonus.value?.id;
+    state.params.isBonusDecline = bonusDeclined.value;
 
     try {
       const depositResponse = await depositAccount(state.params);
@@ -140,12 +140,16 @@
   }
 
   const debounceDeposit = debounce(async (newBonusValue: IBonus|undefined): Promise<void> => {
-    if (newBonusValue?.id === state.params.bonusId) return;
+    if ((newBonusValue?.id === state.params.bonusId) && (bonusDeclined.value === state.params.isBonusDecline)) return;
     await sendDepositData();
   }, 1000, { leading: false });
 
   watch(() => selectedDepositBonus.value, (newValue: IBonus|undefined) => {
     debounceDeposit(newValue);
+  });
+
+  watch(() => bonusDeclined.value, (newValue: boolean) => {
+    if (newValue) debounceDeposit(undefined);
   });
 
   onMounted(async () => {

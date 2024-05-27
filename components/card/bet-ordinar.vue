@@ -1,7 +1,7 @@
 <template>
   <div class="card-bet-ordinar">
     <div class="head">
-      <span class="date">{{ formatDate(props.createdAt, false) }}</span>
+      <span class="date">{{ dayjs(props.createdAt).format('DD.MM HH:mm') }}</span>
 
       <button-copy
         :copyButton="betCard.copyButton"
@@ -17,7 +17,7 @@
         <span class="desc">{{ betItem.event }}</span>
 
         <div class="status">
-          <span class="date">{{ formatDate(betItem.eventDate) }}</span>
+          <span class="date">{{ dayjs(betItem.eventDate).format('DD.MM.YYYY HH:mm') }}</span>
 
           <template v-if="props.status !== 1">
             <span class="sep" />
@@ -69,17 +69,8 @@
   }>();
 
   const betItem = props.items[0];
-
+  const dayjs = useDayjs();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-
-  const formatDate = (dateUtcIsoString: string, needYear: boolean = true):string => {
-    const date = new Date(dateUtcIsoString);
-    let dateWithComma;
-    if (needYear) dateWithComma = date.toLocaleString('UA').slice(0, -3);
-    else dateWithComma = `${date.toLocaleString('UA').slice(0, -15)}${date.toLocaleString('UA').slice(-10, -3)}`;
-    return dateWithComma.replace(',', ' ');
-  };
-
   const { formatBalance, getContent } = useProjectMethods();
   const betSum = computed(() => {
     const balanceFormat = formatBalance(props.currency, props.amount);
