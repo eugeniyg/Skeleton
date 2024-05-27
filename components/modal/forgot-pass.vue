@@ -3,6 +3,7 @@
     v-model="modals.forgotPass"
     class="modal-forgot-pass"
     :clickToClose="false"
+    @closed="modalClosed"
   >
     <div class="scroll">
       <div class="header">
@@ -10,18 +11,26 @@
           <atomic-icon id="arrow_previous"/>
         </button>
 
-        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'forgot.title') }}</div>
+        <div class="title">
+          <template v-if="showPhoneVerification">
+            {{ getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.title') }}
+          </template>
+
+          <template v-else>
+            {{ getContent(popupsData, defaultLocalePopupsData, 'forgot.title') }}
+          </template>
+        </div>
 
         <button class="modal-forgot-pass__close" @click.prevent="closeModal('forgotPass')">
           <atomic-icon id="close"/>
         </button>
       </div>
 
-      <p class="text">
+      <p v-if="!showPhoneVerification" class="text">
         {{ getContent(popupsData, defaultLocalePopupsData, `forgot.${selectedTab === 'email' ? 'emailDescription' : 'phoneDescription'}`) }}
       </p>
 
-      <template v-if="tabsList.length">
+      <template v-if="tabsList.length && !showPhoneVerification">
         <div  class="modal-sign-in__tabs">
           <button-base
             v-for="tab in tabsList"
@@ -38,7 +47,7 @@
         <atomic-divider class="modal-sign-in__tabs-divider" />
       </template>
 
-      <transition name="fade" mode="out-in">
+      <transition name="fade" mode="out-in" :duration="100">
         <form-forgot-pass-email key="email" v-if="selectedTab === 'email'" />
 
         <div key="phone" v-else>
@@ -47,18 +56,21 @@
             @sendOtp="sendOtp"
           />
 
-          <phone-verify-2
+          <form-phone-verify
             v-if="showPhoneVerification"
             :phone="verificationPhone"
             reason="changingPass"
             :errorHint="verificationError"
             :loading="sendingData"
+            :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'forgot.forgotButton')"
             @verifyPhone="verifyPhone"
+            @removeErrorHint="verificationError = undefined"
           />
         </div>
       </transition>
 
       <button-popup
+        v-if="!showPhoneVerification"
         :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'forgot.registrationButton') || ''"
         openModal="register"
       />
@@ -69,7 +81,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import PhoneVerify2 from "@skeleton/components/form/phone-verify-2.vue";
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
@@ -80,7 +91,10 @@
   const showPhoneVerification = ref<boolean>(false);
 
   const returnLoginModal = () => {
-    showModal('signIn');
+    if (showPhoneVerification.value) {
+      showPhoneVerification.value = false;
+      verificationError.value = undefined;
+    } else showModal('signIn');
   };
 
   const tabsList = computed(() => {
@@ -99,6 +113,10 @@
     selectedTab.value = newTabId;
   }
 
+  const modalClosed = (): void => {
+    selectedTab.value = 'email';
+  }
+
   const verificationPhone = ref<string>('');
   const sendOtp = (completeData: { [key: string]: any }): void => {
     verificationPhone.value = completeData.phone;
@@ -108,8 +126,9 @@
   const showResetModal = async (code: string):Promise<void> => {
     const layoutStore = useLayoutStore();
     const router = useRouter();
+    const route = useRoute();
     layoutStore.closeModal('forgotPass');
-    await router.push({ query: { 'reset-pass': 'true', resetCode: code } });
+    await router.push({ query: { ...route.query, 'reset-pass': 'true', resetCode: code } });
     layoutStore.modals.resetPass = true;
   }
 
@@ -126,10 +145,8 @@
       });
       await showResetModal(code);
     } catch (error: any) {
-      if (error.response?.status === 422) {
-        emit('validationError', error.data.error.fields);
-      } else if (error.data?.error?.code === 11003) {
-        errorHint.value = {
+      if (error.data?.error?.code === 11003) {
+        verificationError.value = {
           variant: 'error',
           message: getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.invalidError')
         };

@@ -8,7 +8,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 96px;
     @include font($body-2);
     color: var(--text-tertiary);
 
@@ -47,7 +46,6 @@
   }
 
   &__verify-button {
-    margin-top: 120px;
     width: 100%;
   }
 }

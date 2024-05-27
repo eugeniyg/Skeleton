@@ -2,13 +2,13 @@
   <div class="phone-verify">
     <div class="phone-verify__description">
       {{ getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.description') }}
-      <span>+{{ props.registrationData?.phone }}</span>
+      <span>+{{ props.phone }}</span>
     </div>
 
     <form-input-code
       ref="codeInput"
       v-model:completeCode="completeCode"
-      :hint="errorHint"
+      :hint="props.errorHint"
     />
 
     <div class="phone-verify__resend">
@@ -49,32 +49,36 @@
       tagName="div"
       type="primary"
       size="md"
-      :isDisabled="!completeCode || errorHint || loading"
-      @click="registerUser"
+      :isDisabled="!completeCode || props.errorHint || props.loading"
+      @click="verifyPhone"
     >
-      <atomic-spinner :is-shown="loading"/>
-      {{ getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.verifyButton') }}
+      <atomic-spinner :is-shown="props.loading"/>
+      {{ props.buttonLabel }}
     </button-base>
   </div>
 </template>
 
 <script setup lang="ts">
   const props = defineProps<{
-    registrationData?: Record<string, any>;
+    phone: string;
+    reason: 'registration'|'phoneVerification'|'changingPass';
+    errorHint?: { variant: string, message: string };
+    loading: boolean;
+    buttonLabel: string;
   }>();
 
-  const emit = defineEmits(['registerSuccess', 'validationError']);
+  const emit = defineEmits(['verifyPhone', 'removeErrorHint']);
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
-  const errorHint = ref<{ variant: string, message: string }|undefined>();
   const completeCode = ref<string>('');
 
   watch(completeCode, () => {
-    if (errorHint.value) errorHint.value = undefined;
+    if (props.errorHint) emit('removeErrorHint');
   });
 
+  const TIMER_TIME = 60;
   const timer = ref<any>(undefined);
-  const currentTime = ref<number>(15);
+  const currentTime = ref<number>(TIMER_TIME);
 
   const startTimer = ():void => {
     timer.value = setInterval(() => {
@@ -96,8 +100,8 @@
 
     try {
       const { sendOtp } = useCoreAuthApi();
-      await sendOtp({ phone: props.registrationData?.phone, reason: 'registration' });
-      currentTime.value = 15;
+      await sendOtp({ phone: props.phone, reason: props.reason });
+      currentTime.value = TIMER_TIME;
       startTimer();
     } catch (error: any) {
       if (error.data?.error?.code === 11005) limitError.value = true;
@@ -107,26 +111,9 @@
     resendingCode.value = false;
   }
 
-  const loading = ref<boolean>(false);
-  const registerUser = async(): Promise<void> => {
-    try {
-      loading.value = true;
-      const { phoneRegistration } = useProfileStore();
-      await phoneRegistration({ ...props.registrationData, code: completeCode.value });
-    } catch (error: any) {
-      if (error.response?.status === 422) {
-        emit('validationError', error.data.error.fields);
-      } else if (error.data?.error?.code === 11003) {
-        errorHint.value = {
-          variant: 'error',
-          message: getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.invalidError')
-        };
-      } else {
-        throw error;
-      }
-    } finally {
-      loading.value = false;
-    }
+  const verifyPhone = async(): Promise<void> => {
+    if (props.loading) return;
+    emit('verifyPhone', completeCode.value);
   }
 
   const codeInput = ref();

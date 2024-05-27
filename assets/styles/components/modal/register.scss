@@ -192,4 +192,14 @@
     margin: rem(24px) 0;
     background-color: var(--border-00-low-contrast);
   }
+
+  .phone-verify {
+    &__description {
+      margin-top: 120px;
+    }
+
+    &__verify-button {
+      margin-top: 120px;
+    }
+  }
 }
