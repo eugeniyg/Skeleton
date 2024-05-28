@@ -114,6 +114,7 @@
   }
 
   const modalClosed = (): void => {
+    showPhoneVerification.value = false;
     selectedTab.value = 'email';
   }
 
