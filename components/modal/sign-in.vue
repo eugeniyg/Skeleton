@@ -3,6 +3,8 @@
     v-model="modals.signIn"
     class="modal-sign-in"
     :clickToClose="false"
+    :overlayTransition="{ mode: 'in-out', duration: 200 }"
+    :contentTransition="{ mode: 'in-out', duration: 200 }"
     @closed="selectedTab = 'email'"
   >
     <div class="scroll">
