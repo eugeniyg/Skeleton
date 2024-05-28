@@ -37,6 +37,10 @@
     @include font($heading-4);
     color: var(--text-primary);
     margin: 0;
+
+    * {
+      margin: inherit;
+    }
   }
 
   &__list {
