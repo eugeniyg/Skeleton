@@ -5,6 +5,7 @@
     </div>
 
     <profile-security-documents />
+    <profile-sumsub-verify />
 
     <hr/>
 
