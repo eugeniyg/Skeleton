@@ -20,6 +20,17 @@ export const useCoreProfileApi = () => {
     return data;
   };
 
+  const getSumsubToken = async ():Promise<IProfile> => {
+    const profileStore = useProfileStore();
+    let token = profileStore.getSessionToken();
+
+    return await $fetch('/sumsub/token', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  };
+
   const getProfileFields = async ():Promise<IField[]> => {
     const { data } = await useApiAuthInstance('/api/player/fields/validations', {
       params: { scenario: 'profile' }
@@ -119,6 +130,7 @@ export const useCoreProfileApi = () => {
     getPlayerLimits,
     createPlayerLimit,
     updatePlayerLimit,
-    deletePlayerLimit
+    deletePlayerLimit,
+    getSumsubToken,
   };
 }
