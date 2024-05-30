@@ -52,7 +52,10 @@
 
     const profileContentObj = profileContent.value || defaultLocaleProfileContent.value;
     if (profileContentObj) {
+      const runtimeConfig = useRuntimeConfig();
+      const hasSumsubIntegration = !!runtimeConfig.public.sumsub?.appToken;
       const filteredArray = Object.keys(profileContentObj).filter((key) => {
+        if (key === 'verification' && !hasSumsubIntegration) return false;
         if (profileContentObj[key]?.title) return key;
         return false;
       })

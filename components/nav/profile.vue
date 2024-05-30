@@ -41,6 +41,8 @@
     'info',
     'wallet',
     'bonuses',
+    'documents',
+    'verification',
     'security',
     'history',
     'limits'

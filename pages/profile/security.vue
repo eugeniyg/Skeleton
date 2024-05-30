@@ -1,15 +1,12 @@
 <template>
   <div class="security content">
     <div class="header">
-      <h1 class="heading">{{ securityContent?.title || defaultLocaleSecurityContent?.title }}</h1>
+      <h1 class="heading">
+        {{ securityContent?.title || defaultLocaleSecurityContent?.title }}
+      </h1>
     </div>
 
-    <profile-security-documents />
-    <profile-sumsub-verify v-if="sumsubIntegrated" />
-
-    <hr/>
-
-    <profile-security-password />
+    <profile-password />
   </div>
 </template>
 
@@ -54,7 +51,4 @@
   watch(content, () => {
     if (content.value) setContentData(content.value);
   }, { immediate: true });
-
-  const runtimeConfig = useRuntimeConfig();
-  const sumsubIntegrated = !!runtimeConfig.public.sumsub?.appToken;
 </script>

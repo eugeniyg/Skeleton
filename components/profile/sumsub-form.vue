@@ -1,7 +1,7 @@
 <template>
   <div class="sumsub-form">
     <h2 class="sumsub-form__title">
-      {{ getContent(securityContent, defaultLocaleSecurityContent, 'sumsub.title') }}
+      {{ getContent(verificationContent, defaultLocaleVerificationContent, 'sumsub.title') }}
     </h2>
 
     <div id="sumsub-websdk-container" class="sumsub-form__frame-container" />
@@ -10,10 +10,10 @@
 
 <script setup lang="ts">
   import snsWebSdk from '@sumsub/websdk';
-  import type {IProfileSecurity} from "~/types";
+  import type {IProfileVerification} from "~/types";
 
-  const securityContent = ref<Maybe<IProfileSecurity>>(inject('securityContent'));
-  const defaultLocaleSecurityContent = ref<Maybe<IProfileSecurity>>(inject('defaultLocaleSecurityContent'));
+  const verificationContent = ref<Maybe<IProfileVerification>>(inject('verificationContent'));
+  const defaultLocaleVerificationContent = ref<Maybe<IProfileVerification>>(inject('defaultLocaleVerificationContent'));
   const { getContent } = useProjectMethods();
 
   const getAccessToken = async () => {

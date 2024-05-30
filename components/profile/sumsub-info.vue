@@ -1,6 +1,6 @@
 <template>
   <div class="sumsub-info">
-    <sumsub-info-accordeon
+    <profile-info-accordeon
       v-for="item in infoList"
       :title="item.title"
       :description="item.description"
@@ -9,15 +9,14 @@
 </template>
 
 <script setup lang="ts">
-import type {IProfileSecurity} from "~/types";
-import SumsubInfoAccordeon from "@skeleton/components/profile/sumsub-info-accordeon.vue";
+import type {IProfileVerification} from "~/types";
 
-const securityContent = ref<Maybe<IProfileSecurity>>(inject('securityContent'));
-const defaultLocaleSecurityContent = ref<Maybe<IProfileSecurity>>(inject('defaultLocaleSecurityContent'));
+const verificationContent = ref<Maybe<IProfileVerification>>(inject('verificationContent'));
+const defaultLocaleVerificationContent = ref<Maybe<IProfileVerification>>(inject('defaultLocaleVerificationContent'));
 const { getContent } = useProjectMethods();
 
 const infoList = computed(() => {
-  return getContent(securityContent.value, defaultLocaleSecurityContent.value, 'sumsub.infoList') || [];
+  return getContent(verificationContent.value, defaultLocaleVerificationContent.value, 'sumsub.infoList') || [];
 })
 
 </script>
