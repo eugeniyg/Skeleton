@@ -12,7 +12,6 @@
   import camelCase from "lodash/camelCase";
 
   const { getLocalesContentData } = useProjectMethods();
-
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
