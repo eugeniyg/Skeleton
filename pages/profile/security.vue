@@ -5,7 +5,7 @@
     </div>
 
     <profile-security-documents />
-    <profile-sumsub-verify />
+    <profile-sumsub-verify v-if="sumsubIntegrated" />
 
     <hr/>
 
@@ -54,4 +54,7 @@
   watch(content, () => {
     if (content.value) setContentData(content.value);
   }, { immediate: true });
+
+  const runtimeConfig = useRuntimeConfig();
+  const sumsubIntegrated = !!runtimeConfig.public.sumsub?.appToken;
 </script>

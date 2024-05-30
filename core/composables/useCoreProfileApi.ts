@@ -20,7 +20,7 @@ export const useCoreProfileApi = () => {
     return data;
   };
 
-  const getSumsubToken = async ():Promise<IProfile> => {
+  const getSumsubToken = async ():Promise<{ token: string }> => {
     const profileStore = useProfileStore();
     let token = profileStore.getSessionToken();
 

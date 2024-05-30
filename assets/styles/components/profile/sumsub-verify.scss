@@ -1,7 +1,13 @@
 .sumsub-verify {
   display: flex;
-  column-gap: rem(16px);
+  flex-direction: column;
+  gap: rem(8px);
   padding: rem(24px);
   background: var(--layer-01);
   border-radius: 12px;
+
+  @include media(sm) {
+    flex-direction: row;
+    gap: rem(16px);
+  }
 }

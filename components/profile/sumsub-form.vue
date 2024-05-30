@@ -1,52 +1,48 @@
 <template>
   <div class="sumsub-form">
-    <div id="sumsub-websdk-container" />
+    <h2 class="sumsub-form__title">
+      {{ getContent(securityContent, defaultLocaleSecurityContent, 'sumsub.title') }}
+    </h2>
+
+    <div id="sumsub-websdk-container" class="sumsub-form__frame-container" />
   </div>
 </template>
 
 <script setup lang="ts">
   import snsWebSdk from '@sumsub/websdk';
+  import type {IProfileSecurity} from "~/types";
+
+  const securityContent = ref<Maybe<IProfileSecurity>>(inject('securityContent'));
+  const defaultLocaleSecurityContent = ref<Maybe<IProfileSecurity>>(inject('defaultLocaleSecurityContent'));
+  const { getContent } = useProjectMethods();
 
   const getAccessToken = async () => {
     const { getSumsubToken } = useCoreProfileApi();
-    const response = await getSumsubToken();
-    return response.token;
+    const { token } = await getSumsubToken();
+    return token;
   }
 
   const launchWebSdk = async () => {
     const accessToken = await getAccessToken();
 
-    let snsWebSdkInstance = snsWebSdk
+    const globalStore = useGlobalStore();
+    const { public: { sumsub } } = useRuntimeConfig();
+    const snsWebSdkInstance = snsWebSdk
       .init(
         accessToken,
-        // token update callback, must return Promise
-        // Access token expired
-        // get a new one and pass it to the callback to re-initiate the WebSDK
         () => getAccessToken()
       )
-      // .withConf({
-      //   lang: "en", //language of WebSDK texts and comments (ISO 639-1 format)
-      //   email: applicantEmail,
-      //   phone: applicantPhone,
-      //   theme: "dark" | "light",
-      // })
-      // .withOptions({ addViewportTag: false, adaptIframeHeight: true })
-      // // see below what kind of messages WebSDK generates
-      // .on("idCheck.onStepCompleted", (payload) => {
-      //   console.log("onStepCompleted", payload);
-      // })
-      // .on("idCheck.onError", (error) => {
-      //   console.log("onError", error);
-      // })
+      .withConf({
+        lang: globalStore.currentLocale?.code || 'en',
+        theme: sumsub?.theme || 'dark'
+      })
       .build();
 
-    // you are ready to go:
-    // just launch the WebSDK by providing the container element for it
     snsWebSdkInstance.launch("#sumsub-websdk-container");
   };
 
   onMounted(async () => {
-    launchWebSdk();
+    await launchWebSdk();
   })
 </script>
 
