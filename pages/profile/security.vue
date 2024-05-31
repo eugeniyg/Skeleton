@@ -1,14 +1,12 @@
 <template>
   <div class="security content">
     <div class="header">
-      <h1 class="heading">{{ securityContent?.title || defaultLocaleSecurityContent?.title }}</h1>
+      <h1 class="heading">
+        {{ securityContent?.title || defaultLocaleSecurityContent?.title }}
+      </h1>
     </div>
 
-    <profile-security-documents />
-
-    <hr/>
-
-    <profile-security-password />
+    <profile-password />
   </div>
 </template>
 

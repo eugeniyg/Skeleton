@@ -1,5 +1,5 @@
 <template>
-  <div class="security-documents">
+  <div class="documents-block">
     <form-get-file
       type="identity"
       :formData="identityFormData"
@@ -28,30 +28,30 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { ISecurityFile } from '@skeleton/core/types';
+  import type { IDocumentFile } from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
-  const identityFormData = reactive<{[key:string]:ISecurityFile[]}>({
+  const identityFormData = reactive<{[key:string]:IDocumentFile[]}>({
     identity_front: [],
     identity_back: [],
     identity_selfie_id: [],
   });
-  const addressFormData = reactive<{[key:string]:ISecurityFile[]}>({
+  const addressFormData = reactive<{[key:string]:IDocumentFile[]}>({
     address: [],
   });
-  const paymentFormData = reactive<{[key:string]:ISecurityFile[]}>({
+  const paymentFormData = reactive<{[key:string]:IDocumentFile[]}>({
     payment: [],
   });
 
-  const addFileData = (field: string, file:ISecurityFile):void => {
+  const addFileData = (field: string, file:IDocumentFile):void => {
     if (identityFormData.hasOwnProperty(field)) identityFormData[field].push(file);
     else if (addressFormData.hasOwnProperty(field)) addressFormData[field].push(file);
     else if (paymentFormData.hasOwnProperty(field)) paymentFormData[field].push(file);
   };
 
-  const replaceFileData = (field: string, file:ISecurityFile):void => {
+  const replaceFileData = (field: string, file:IDocumentFile):void => {
     if (identityFormData.hasOwnProperty(field)) {
       const lastElIndex = identityFormData[field].length - 1;
       identityFormData[field][lastElIndex] = file;
@@ -81,13 +81,13 @@
     }
   };
 
-  const { getSecurityFiles, deleteSecurityFile, uploadSecurityFile } = useCoreProfileApi();
+  const { getDocumentFiles, deleteDocumentFile, uploadDocumentFile } = useCoreProfileApi();
   const loadingFields = ref<string[]>([]);
   const { showAlert } = useLayoutStore();
 
   const removeFile = async ({ fieldName, fileId }:{fieldName: string, fileId:string}):Promise<void> => {
     try {
-      await deleteSecurityFile(fileId);
+      await deleteDocumentFile(fileId);
       if (identityFormData.hasOwnProperty(fieldName)) {
         identityFormData[fieldName] = identityFormData[fieldName].filter((file) => file.id !== fileId);
       } else if (addressFormData.hasOwnProperty(fieldName)) {
@@ -115,7 +115,7 @@
     addFileData(filesData.fieldName, fileObject);
 
     try {
-      const uploadedFile = await uploadSecurityFile({ file: filesData.fileList[0], type: filesData.fieldName });
+      const uploadedFile = await uploadDocumentFile({ file: filesData.fileList[0], type: filesData.fieldName });
       replaceFileData(filesData.fieldName, uploadedFile);
     } catch (err:any) {
       if (err?.response?.status === 422) {
@@ -129,19 +129,19 @@
   };
 
   onMounted(async () => {
-    const securityFiles = await getSecurityFiles();
+    const documentFiles = await getDocumentFiles();
 
     Object.keys(identityFormData).forEach((key) => {
-      identityFormData[key] = securityFiles.filter((file) => file.type === key);
+      identityFormData[key] = documentFiles.filter((file) => file.type === key);
     });
     Object.keys(addressFormData).forEach((key) => {
-      addressFormData[key] = securityFiles.filter((file) => file.type === key);
+      addressFormData[key] = documentFiles.filter((file) => file.type === key);
     });
     Object.keys(paymentFormData).forEach((key) => {
-      paymentFormData[key] = securityFiles.filter((file) => file.type === key);
+      paymentFormData[key] = documentFiles.filter((file) => file.type === key);
     });
   });
 </script>
 
-<style src="~/assets/styles/components/profile/security-documents.scss" lang="scss" />
+<style src="~/assets/styles/components/profile/documents.scss" lang="scss" />
 
