@@ -49,19 +49,19 @@
       }, {})
     }
 
-    const profileContentObj = profileContent.value || defaultLocaleProfileContent.value;
+    const profileContentObj = defaultLocaleProfileContent.value || profileContent.value;
     if (profileContentObj) {
       const runtimeConfig = useRuntimeConfig();
       const hasSumsubIntegration = !!runtimeConfig.public.sumsub?.appToken;
       const filteredArray = Object.keys(profileContentObj).filter((key) => {
-        if (key === 'verification' && !hasSumsubIntegration) return false;
-        if (profileContentObj[key]?.title) return key;
-        return false;
+        return key !== 'verification' || hasSumsubIntegration;
       })
 
       profileMenu.value = filteredArray.map((key) => ({
         id: key,
-        title: profileContentObj[key].title,
+        title: profileContent.value?.[key]?.title
+          ||  defaultLocaleProfileContent.value?.[key]?.title
+          || (key[0].toUpperCase() + key.slice(1)),
         url: `/profile/${key}`
       }));
     }
