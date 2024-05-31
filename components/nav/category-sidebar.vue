@@ -5,6 +5,12 @@
           v-if="props.integratedElement?.isShow && Number(props.integratedElement.order) === index + 1"
           v-bind="props.integratedElement"
       />
+      
+      <atomic-cta-menu-item
+          v-if="props.integratedElementSecond?.isShow && Number(props.integratedElementSecond.order) === index + 1"
+          v-bind="props.integratedElementSecond"
+      />
+      
       <atomic-link
         class="link"
         :href="listItem.url"
@@ -40,6 +46,7 @@
   const props = defineProps<{
     items: ISiteSidebar['topMenu']['items'];
     integratedElement?: ISiteSidebar['topMenu']['integratedElement'];
+    integratedElementSecond?: ISiteSidebar['topMenu']['integratedElementSecond'];
   }>();
   
   const route = useRoute();
