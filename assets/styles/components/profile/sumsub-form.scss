@@ -1,11 +1,14 @@
 .sumsub-form {
   width: 100%;
-  min-height: 400px;
   border-radius: 12px;
 
   &__frame-container {
-    border-radius: 12px;
-    overflow: hidden;
+    min-height: rem(275px);
+
+    iframe {
+      min-height: rem(275px);
+      border-radius: 12px;
+    }
   }
 
   &__title {
