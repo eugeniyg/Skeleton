@@ -4,6 +4,8 @@
     class="modal-deposit-limit"
     @clickOutside="closeModal('addLimit')"
     clickToClose
+    :overlayTransition="{ mode: 'in-out', duration: 200 }"
+    :contentTransition="{ mode: 'in-out', duration: 200 }"
   >
     <div class="scroll">
       <div class="header">

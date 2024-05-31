@@ -3,6 +3,8 @@
     v-model="modals.wallet"
     class="wallet-modal"
     :clickToClose="false"
+    :overlayTransition="{ mode: 'in-out', duration: 200 }"
+    :contentTransition="{ mode: 'in-out', duration: 200 }"
   >
     <div class="wallet-modal__container" :class="{ 'show-form': showMobileForm }">
       <button-modal-close @close="handleClose" :class="{ 'close-secondary': hasOffset }" />
