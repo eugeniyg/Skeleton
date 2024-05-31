@@ -5,7 +5,7 @@ import type {
   IPlayerLimit,
   IProfile,
   IResetPassword,
-  ISecurityFile,
+  IDocumentFile,
   ISession,
   ISessionsResponse,
   IUpdateLimit,
@@ -18,6 +18,17 @@ export const useCoreProfileApi = () => {
   const getProfile = async ():Promise<IProfile> => {
     const { data } = await useApiAuthInstance('/api/player/profile');
     return data;
+  };
+
+  const getSumsubToken = async ():Promise<{ token: string }> => {
+    const profileStore = useProfileStore();
+    let token = profileStore.getSessionToken();
+
+    return await $fetch('/sumsub/token', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   };
 
   const getProfileFields = async ():Promise<IField[]> => {
@@ -61,12 +72,12 @@ export const useCoreProfileApi = () => {
     return data;
   };
 
-  const getSecurityFiles = async ():Promise<ISecurityFile[]> => {
+  const getDocumentFiles = async ():Promise<IDocumentFile[]> => {
     const { data } = await useApiAuthInstance('/api/player/documents');
     return data;
   };
 
-  const uploadSecurityFile = async (fileData: IUploadFile):Promise<ISecurityFile> => {
+  const uploadDocumentFile = async (fileData: IUploadFile):Promise<IDocumentFile> => {
     const body = new FormData();
     Object.keys(fileData).forEach((key) => {
       body.append(key, fileData[key])
@@ -75,7 +86,7 @@ export const useCoreProfileApi = () => {
     return data;
   };
 
-  const deleteSecurityFile = async (id: string):Promise<ISecurityFile[]> => {
+  const deleteDocumentFile = async (id: string):Promise<IDocumentFile[]> => {
     const { data } = await useApiAuthInstance(`/api/player/documents/${id}`, { method: 'DELETE' });
     return data;
   };
@@ -113,12 +124,13 @@ export const useCoreProfileApi = () => {
     forgotProfilePassword,
     resetProfilePassword,
     resendVerifyEmail,
-    getSecurityFiles,
-    uploadSecurityFile,
-    deleteSecurityFile,
+    getDocumentFiles,
+    uploadDocumentFile,
+    deleteDocumentFile,
     getPlayerLimits,
     createPlayerLimit,
     updatePlayerLimit,
-    deletePlayerLimit
+    deletePlayerLimit,
+    getSumsubToken,
   };
 }

@@ -186,6 +186,7 @@
         "title"
         "actions";
       --padding: #{rem(24px)} #{rem(16px)};
+      grid-template-columns: 1fr;
 
       &:last-child {
         .arrow {
@@ -306,6 +307,7 @@
       .btn-primary,
       .btn-ghost {
         --width: 100%;
+        max-width: rem(320px);
       }
     }
   }

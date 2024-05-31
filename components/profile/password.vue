@@ -1,6 +1,6 @@
 <template>
-  <div class="security-password">
-    <div class="security-password__subtitle">
+  <div class="password-block">
+    <div class="password-block__subtitle">
       {{ securityContent?.password?.label || defaultLocaleSecurityContent?.password?.label }}
     </div>
 
@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IProfileSecurity } from "~/types";
+  import type {IProfileSecurity} from "~/types";
 
   const globalStore = useGlobalStore();
   const {
@@ -105,5 +105,5 @@
   };
 </script>
 
-<style src="~/assets/styles/components/profile/security-password.scss" lang="scss" />
+<style src="~/assets/styles/components/profile/password.scss" lang="scss" />
 

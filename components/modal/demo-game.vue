@@ -3,6 +3,8 @@
     v-model="openModal"
     class="modal-demo-game"
     :clickToClose="false"
+    :overlayTransition="{ mode: 'in-out', duration: 200 }"
+    :contentTransition="{ mode: 'in-out', duration: 200 }"
   >
     <div class="scroll">
       <div class="header">

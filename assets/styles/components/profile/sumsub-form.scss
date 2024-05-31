@@ -1,0 +1,25 @@
+.sumsub-form {
+  width: 100%;
+  border-radius: 12px;
+
+  &__frame-container {
+    min-height: rem(275px);
+
+    iframe {
+      min-height: rem(275px);
+      border-radius: 12px;
+    }
+  }
+
+  &__title {
+    text-align: center;
+    @include font($heading-4);
+    color: var(--white);
+    margin: 0 0 rem(12px);
+  }
+
+  @include media(sm) {
+    background: var(--layer-03-low-contrast);
+    padding: 16px 16px 20px;
+  }
+}

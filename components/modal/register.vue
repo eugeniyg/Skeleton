@@ -5,6 +5,8 @@
     displayDirective="show"
     @closed="closedEvent"
     :clickToClose="false"
+    :overlayTransition="{ mode: 'in-out', duration: 200 }"
+    :contentTransition="{ mode: 'in-out', duration: 200 }"
   >
     <div class="container">
       <button-modal-close :class="{ 'close-secondary': hasOffset }" @close="openCancelModal"/>
