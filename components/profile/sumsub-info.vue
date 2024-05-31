@@ -1,0 +1,24 @@
+<template>
+  <div class="sumsub-info">
+    <profile-info-accordeon
+      v-for="item in infoList"
+      :title="item.title"
+      :description="item.description"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import type {IProfileVerification} from "~/types";
+
+const verificationContent = ref<Maybe<IProfileVerification>>(inject('verificationContent'));
+const defaultLocaleVerificationContent = ref<Maybe<IProfileVerification>>(inject('defaultLocaleVerificationContent'));
+const { getContent } = useProjectMethods();
+
+const infoList = computed(() => {
+  return getContent(verificationContent.value, defaultLocaleVerificationContent.value, 'sumsub.infoList') || [];
+})
+
+</script>
+
+<style src="~/assets/styles/components/profile/sumsub-info.scss" lang="scss" />
