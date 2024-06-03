@@ -3,6 +3,7 @@
   width: var(--select-width, 100%);
   outline: none;
   @include font($body-2);
+  visibility: hidden;
 
   .icon {
     color: var(--icon-color, var(--icon-primary));
@@ -234,6 +235,10 @@
     }
 
     --items-visibility: visible;
+  }
+
+  &.is-visible {
+    visibility: visible;
   }
 
   &.has-error {

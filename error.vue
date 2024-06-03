@@ -19,10 +19,13 @@
     </button-base>
 
     <dev-only>
-      <div class="not-found" style="color: white">
-        <div style="font-size: 80px; font-weight: 700; text-align: center">{{ props.error.statusCode }}</div>
-        <div style="font-size: 32px; text-align: center">{{ props.error.statusMessage || props.error.message }}</div>
-      </div>
+      <client-only>
+        <div style="font-size: 18px; color: red;">
+          <p>Error code: {{ props.error.statusCode }}</p>
+          <p>{{ props.error.statusMessage || props.error.message }}</p>
+          <p v-if="props.error.stack" v-html="props.error.stack" />
+        </div>
+      </client-only>
     </dev-only>
   </div>
 </template>

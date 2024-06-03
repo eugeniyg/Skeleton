@@ -23,11 +23,6 @@
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
       {{ getContent(popupsData, defaultLocalePopupsData, 'forgot.forgotButton') }}
     </button-base>
-
-    <button-popup
-      :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'forgot.registrationButton') || ''"
-      openModal="register"
-    />
   </form>
 </template>
 
@@ -79,6 +74,3 @@
     }
   };
 </script>
-
-<style src="~/assets/styles/components/form/forgot-pass.scss" lang="scss" />
-

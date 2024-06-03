@@ -148,3 +148,16 @@ export interface IUpdateLimit extends Record<string, any> {
   period?: string;
   amount?: number;
 }
+
+export type RegistrationType = 'email'|'phone'|'emailOrPhone'|'default';
+
+export interface IOtpRequest {
+  phone: string;
+  reason: 'registration'|'phoneVerification'|'changingPass';
+}
+
+export interface IPhoneVerification {
+  phone: string;
+  code: string;
+  reason: string;
+}
