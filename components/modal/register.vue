@@ -64,6 +64,7 @@ import { VueFinalModal } from 'vue-final-modal';
   const registrationFields = ref<IField[]>([]);
   const { getRegistrationFields } = useCoreAuthApi();
   onMounted(async () => {
+    console.log('hello');
     registrationFields.value = await getRegistrationFields();
   });
 </script>
