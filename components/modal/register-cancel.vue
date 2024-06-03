@@ -6,8 +6,6 @@
     class="modal-register-cancel"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
-    @beforeOpen="beforeOpenHandle"
-    @opened="openedHandle"
   >
     <div class="scroll">
       <div class="header">
@@ -54,14 +52,6 @@
   const { replaceContent } = useProjectMethods();
   const bonusContent = getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.bonusText')
     ? replaceContent(getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.bonusText'), '*') : '';
-
-  const beforeOpenHandle = () => {
-    //
-  }
-
-  const openedHandle = () => {
-    //
-  }
 </script>
 
 <style src="~/assets/styles/components/modal/register-cancel.scss" lang="scss" />

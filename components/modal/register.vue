@@ -7,6 +7,8 @@
     :clickToClose="false"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @beforeOpen="beforeOpenHandle"
+    @opened="openedHandle"
   >
     <div class="container">
       <button-modal-close :class="{ 'close-secondary': hasOffset }" @close="openCancelModal"/>
@@ -34,6 +36,7 @@
 import { storeToRefs } from 'pinia';
 import type { IField } from '@skeleton/core/types';
 import { VueFinalModal } from 'vue-final-modal';
+import type {Dayjs} from "dayjs";
 
   const formKey = ref<number>(0);
   const layoutStore = useLayoutStore();
@@ -64,9 +67,24 @@ import { VueFinalModal } from 'vue-final-modal';
   const registrationFields = ref<IField[]>([]);
   const { getRegistrationFields } = useCoreAuthApi();
   onMounted(async () => {
-    console.log('hello');
     registrationFields.value = await getRegistrationFields();
   });
+
+  let startModalLoad: Dayjs;
+  const dayjs = useDayjs();
+  const gtm = useGtm();
+  const beforeOpenHandle = () => {
+    startModalLoad = dayjs();
+  }
+
+  const openedHandle = () => {
+    gtm?.trackEvent({
+      event: 'Action',
+      eventCategory: 'pageLoad',
+      userId: 'not set',
+      pageLoadTime: dayjs().diff(startModalLoad)
+    })
+  }
 </script>
 
 <style src="~/assets/styles/components/modal/register.scss" lang="scss" />
