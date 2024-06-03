@@ -31,4 +31,14 @@
     top: rem(-24px);
     right: rem(-16px);
   }
+
+  .phone-verify {
+    &__resend {
+      margin-bottom: 16px;
+    }
+  }
+
+  .scroll {
+    overflow: visible !important;
+  }
 }

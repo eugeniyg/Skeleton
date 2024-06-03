@@ -1,7 +1,7 @@
 import type {
   IAuthorizationRequest,
   IAuthorizationResponse,
-  IField, IOtpRequest
+  IField, IOtpRequest, IPhoneVerification
 } from '../types';
 import { useApiGuestInstance } from "@skeleton/core/assets/apiGuestInstance";
 import { useApiAuthInstance } from "@skeleton/core/assets/apiAuthInstance";
@@ -89,6 +89,15 @@ export const useCoreAuthApi = () => {
     return data;
   };
 
+  const phoneVerification = async (verificationData: IPhoneVerification):Promise<{ code: string }> => {
+    const { data } = await useApiAuthInstance('/api/player/otp/verify', {
+      method: 'POST',
+      body: verificationData
+    });
+
+    return data;
+  };
+
   return {
     getRegistrationFields,
     submitRegistrationData,
@@ -98,6 +107,7 @@ export const useCoreAuthApi = () => {
     logOut,
     submitSocialLoginData,
     sendOtp,
-    registerByPhone
+    registerByPhone,
+    phoneVerification
   };
 }

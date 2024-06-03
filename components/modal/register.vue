@@ -32,8 +32,13 @@
 
         <form-phone-verify
           v-if="showPhoneVerification"
-          :registrationData="registrationData"
-          @validationError="handlePhoneRegValidation"
+          :phone="registrationData?.phone"
+          reason="registration"
+          :errorHint="verificationError"
+          :loading="sendingData"
+          :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.verifyButton')"
+          @verifyPhone="phoneRegister"
+          @removeErrorHint="verificationError = undefined"
         />
 
         <template v-else-if="registrationType === 'emailOrPhone'">
@@ -75,9 +80,13 @@
   const formKey = ref<number>(0);
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
-  const { closeModal, showModal, openWalletModal } = layoutStore;
+  const { showModal } = layoutStore;
   const globalStore = useGlobalStore();
-  const { settingsConstants, popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
+  const {
+    settingsConstants,
+    popupsData,
+    defaultLocalePopupsData
+  } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
   const showPhoneVerification = ref<boolean>(false);
@@ -112,6 +121,7 @@
   const closedEvent = ():void => {
     showPhoneVerification.value = false;
     if (!modals.value.registerCancel) formKey.value += 1;
+    selectedTab.value = registrationType.value === 'emailOrPhone' ? 'email' : registrationType.value;
   };
 
   const scrollBlock = ref();
@@ -129,9 +139,28 @@
   }
 
   const registrationForm = ref();
-  const handlePhoneRegValidation = (serverErrors: Record<string, any>): void => {
-    registrationForm.value.setServerErrors(serverErrors);
-    showPhoneVerification.value = false;
+  const sendingData = ref<boolean>(false);
+  const verificationError = ref<{ variant: string, message: string }|undefined>();
+  const phoneRegister = async (verificationCode: string):Promise<void> => {
+    try {
+      sendingData.value = true;
+      const { phoneRegistration } = useProfileStore();
+      await phoneRegistration({ ...registrationData.value, code: verificationCode });
+    } catch (error: any) {
+      if (error.response?.status === 422) {
+        registrationForm.value.setServerErrors(error.data.error.fields);
+        showPhoneVerification.value = false;
+      } else if (error.data?.error?.code === 11003) {
+        verificationError.value = {
+          variant: 'error',
+          message: getContent(popupsData.value, defaultLocalePopupsData.value, 'phoneVerification.invalidError')
+        };
+      } else {
+        throw error;
+      }
+    } finally {
+      sendingData.value = false;
+    }
   }
 
   watch(() => modals.value.registerCancel, (newValue: boolean) => {
