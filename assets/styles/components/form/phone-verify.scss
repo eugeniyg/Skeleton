@@ -1,0 +1,53 @@
+.phone-verify {
+  .input-code {
+    margin: rem(24px) 0;
+  }
+
+  &__description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 96px;
+    @include font($body-2);
+    color: var(--text-tertiary);
+
+    span {
+      margin-top: rem(2px);
+      color: var(--text-primary);
+    }
+  }
+
+  &__resend {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    @include font($body-2);
+    color: var(--text-tertiary);
+
+    .btn-ghost {
+      height: rem(24px);
+      width: 100%;
+    }
+
+    &-timer {
+      display: flex;
+      align-items: center;
+      height: rem(24px);
+      column-gap: rem(4px);
+
+      .time {
+        text-align: left;
+        width: 34px;
+        overflow: visible;
+      }
+    }
+  }
+
+  &__verify-button {
+    margin-top: 120px;
+    width: 100%;
+  }
+}

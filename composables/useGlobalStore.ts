@@ -28,30 +28,30 @@ interface IGlobalContent {
 }
 
 interface IGlobalStoreState {
-  currencies: ICurrency[],
-  baseCurrency: Maybe<ICurrency>,
-  equivalentCurrency: Maybe<ICurrency>,
-  locales: ILocale[],
-  currentLocale: Maybe<ILocale>,
-  countries: ICountry[],
-  settingsConstants: Maybe<ICoreConstants>,
-  defaultLocale: Maybe<ILocale>,
-  isMobile: boolean,
-  browserLanguage: string,
-  baseApiUrl: string,
-  fieldsSettings: Maybe<IFieldsSettingsContent>,
-  defaultLocaleFieldsSettings: Maybe<IFieldsSettingsContent>,
-  layoutData: Maybe<ILayoutContent>,
-  defaultLocaleLayoutData: Maybe<ILayoutContent>,
-  popupsData: Maybe<IModalsContent>,
-  defaultLocalePopupsData: Maybe<IModalsContent>,
-  alertsData: Maybe<IAlertsContent>,
-  defaultLocaleAlertsData: Maybe<IAlertsContent>,
-  globalComponentsContent: Maybe<IGlobalComponentsContent>,
-  defaultLocaleGlobalComponentsContent: Maybe<IGlobalComponentsContent>,
-  countryHeaderName: string,
-  headerCountry: Maybe<string>,
-  pagesWithoutLocale: string[]
+  currencies: ICurrency[];
+  baseCurrency: Maybe<ICurrency>;
+  equivalentCurrency: Maybe<ICurrency>;
+  locales: ILocale[];
+  currentLocale: Maybe<ILocale>;
+  countries: ICountry[];
+  settingsConstants: Maybe<ICoreConstants>;
+  defaultLocale: Maybe<ILocale>;
+  isMobile: boolean;
+  browserLanguage: string;
+  baseApiUrl: string;
+  fieldsSettings: Maybe<IFieldsSettingsContent>;
+  defaultLocaleFieldsSettings: Maybe<IFieldsSettingsContent>;
+  layoutData: Maybe<ILayoutContent>;
+  defaultLocaleLayoutData: Maybe<ILayoutContent>;
+  popupsData: Maybe<IModalsContent>;
+  defaultLocalePopupsData: Maybe<IModalsContent>;
+  alertsData: Maybe<IAlertsContent>;
+  defaultLocaleAlertsData: Maybe<IAlertsContent>;
+  globalComponentsContent: Maybe<IGlobalComponentsContent>;
+  defaultLocaleGlobalComponentsContent: Maybe<IGlobalComponentsContent>;
+  countryHeaderName: string;
+  headerCountry: Maybe<string>;
+  pagesWithoutLocale: string[];
 }
 
 export const useGlobalStore = defineStore('globalStore', {
