@@ -49,21 +49,20 @@
       }, {})
     }
 
-    const profileContentObj = defaultLocaleProfileContent.value || profileContent.value;
-    if (profileContentObj) {
-      const runtimeConfig = useRuntimeConfig();
-      const hasSumsubIntegration = !!runtimeConfig.public.sumsub?.appToken;
-      const filteredArray = Object.keys(profileContentObj).filter((key) => {
-        return key !== 'verification' || hasSumsubIntegration;
+    const router = useRouter();
+    const { routes } = router.options;
+    const profilePages = routes.find(route => route.name === 'profile');
+    if (profilePages?.children?.length) {
+      profileMenu.value = profilePages.children.map(page => {
+        const pageId = page.path;
+        return {
+          id: pageId,
+          title: profileContent.value?.[pageId]?.title
+            ||  defaultLocaleProfileContent.value?.[pageId]?.title
+            || (pageId[0].toUpperCase() + pageId.slice(1)),
+          url: `/profile/${pageId}`
+        }
       })
-
-      profileMenu.value = filteredArray.map((key) => ({
-        id: key,
-        title: profileContent.value?.[key]?.title
-          ||  defaultLocaleProfileContent.value?.[key]?.title
-          || (key[0].toUpperCase() + key.slice(1)),
-        url: `/profile/${key}`
-      }));
     }
   }
 
