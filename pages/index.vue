@@ -43,6 +43,7 @@
     />
 
     <div
+      v-if="hasBetsyIntegration"
       ref="sportsContainer"
       class="sports-container"
       @inview="startBetsyWidgets"
@@ -152,11 +153,15 @@
     }
   };
 
+  const runtimeConfig = useRuntimeConfig();
+  const hasBetsyIntegration = runtimeConfig.public.betsyParams?.clientHost && runtimeConfig.public.betsyParams?.clientId;
   const sportsContainer = ref();
   const { initObserver } = useProjectMethods();
   const widgetsObserver = ref();
 
   const initBetsy = (): void => {
+    if (!hasBetsyIntegration) return;
+
     if (window.BetSdk) startBetsyWidgets();
     else {
       widgetsObserver.value = initObserver({

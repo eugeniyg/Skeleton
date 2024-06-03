@@ -4,6 +4,8 @@
     class="modal-success-deposit"
     :clickToClose="false"
     @clickOutside="closeModal('success')"
+    :overlayTransition="{ mode: 'in-out', duration: 200 }"
+    :contentTransition="{ mode: 'in-out', duration: 200 }"
   >
     <div class="scroll">
       <div class="header">

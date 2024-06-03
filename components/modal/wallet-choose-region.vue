@@ -4,6 +4,8 @@
     class="modal-choose-region"
     :clickToClose="false"
     @clickOutside="closeModal('chooseRegion')"
+    :overlayTransition="{ mode: 'in-out', duration: 200 }"
+    :contentTransition="{ mode: 'in-out', duration: 200 }"
   >
     <div class="scroll">
       <div class="header">

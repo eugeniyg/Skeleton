@@ -3,6 +3,8 @@
     v-model="modals.forgotPass"
     class="modal-forgot-pass"
     :clickToClose="false"
+    :overlayTransition="{ mode: 'in-out', duration: 200 }"
+    :contentTransition="{ mode: 'in-out', duration: 200 }"
     @closed="modalClosed"
   >
     <div class="scroll">

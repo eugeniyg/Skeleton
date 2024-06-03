@@ -11,13 +11,19 @@ function changeRoute(pagesArray: RouteRecordRaw[]):RouteRecordRaw[] {
 
 export default <RouterConfig> {
   routes: (routes) => {
-    const localeRoutes = routes.map((page) => ({
+    const runtimeConfig = useRuntimeConfig();
+    const hasBetsyIntegration = runtimeConfig.public?.betsyParams?.clientHost && runtimeConfig.public?.betsyParams?.clientId;
+    const defaultRoutes = routes.filter(page => {
+      return page.name !== 'betting' || hasBetsyIntegration;
+    })
+
+    const localeRoutes = defaultRoutes.map((page) => ({
       ...page,
       name: `locale-${page.name as string}`,
       path: `/:locale([a-z]{2}|[a-z]{2}-[a-z]{2})${page.path}`,
       children: changeRoute(page.children || []),
     }));
 
-    return [...routes, ...localeRoutes];
+    return [...defaultRoutes, ...localeRoutes];
   },
 };

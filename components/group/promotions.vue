@@ -1,10 +1,8 @@
 <template>
   <div v-if="promotionsList.length" class="group-promotions">
     <atomic-icon :id="globalComponentsContent?.promotions?.icon"/>
-
-    <h2 class="title">
-      {{ globalComponentsContent?.promotions?.label }}
-    </h2>
+    
+    <h2 class="title" v-html="marked.parse(globalComponentsContent?.promotions?.label || '')"/>
 
     <div class="group-promotions__list">
       <div
@@ -45,6 +43,7 @@
 
 <script  setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { marked } from 'marked';
   import type {IPromotion} from "~/types";
 
   const globalStore = useGlobalStore();

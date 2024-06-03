@@ -5,6 +5,8 @@
       class="modal-fiat"
       :clickToClose="false"
       @clickOutside="closeModal('fiat')"
+      :overlayTransition="{ mode: 'in-out', duration: 200 }"
+      :contentTransition="{ mode: 'in-out', duration: 200 }"
     >
       <div class="scroll">
         <div class="header">

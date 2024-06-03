@@ -22,11 +22,11 @@
       </div>
 
       <form-input-file
-        v-if="securityContent || defaultLocaleSecurityContent"
-        :placeholder="securityContent?.documents?.uploadPlaceholder || defaultLocaleSecurityContent?.documents?.uploadPlaceholder"
-        :hint="securityContent?.documents?.uploadHint || defaultLocaleSecurityContent?.documents?.uploadHint"
-        :uploadButton="securityContent?.documents?.uploadButton || defaultLocaleSecurityContent?.documents?.uploadButton"
-        :uploadMore="securityContent?.documents?.uploadMore || defaultLocaleSecurityContent?.documents?.uploadMore"
+        v-if="documentsContent || defaultLocaleDocumentsContent"
+        :placeholder="documentsContent?.documents?.uploadPlaceholder || defaultLocaleDocumentsContent?.documents?.uploadPlaceholder"
+        :hint="documentsContent?.documents?.uploadHint || defaultLocaleDocumentsContent?.documents?.uploadHint"
+        :uploadButton="documentsContent?.documents?.uploadButton || defaultLocaleDocumentsContent?.documents?.uploadButton"
+        :uploadMore="documentsContent?.documents?.uploadMore || defaultLocaleDocumentsContent?.documents?.uploadMore"
         :showMoreButton="!!props.fileList?.length"
         :loading="props.loading"
         @change="addFiles"
@@ -37,20 +37,20 @@
 </template>
 
 <script setup lang="ts">
-  import type { ISecurityFile } from '@skeleton/core/types';
-  import type { IProfileSecurity } from '~/types';
+  import type { IDocumentFile } from '@skeleton/core/types';
+  import type { IProfileDocuments } from '~/types';
 
   const props = defineProps<{
     fileName?: string,
     loading: boolean,
-    fileList: ISecurityFile[]
+    fileList: IDocumentFile[]
   }>();
 
   const emit = defineEmits(['remove', 'change']);
 
   const isActive = ref(false);
-  const securityContent = ref<Maybe<IProfileSecurity>>(inject('securityContent'));
-  const defaultLocaleSecurityContent = ref<Maybe<IProfileSecurity>>(inject('defaultLocaleSecurityContent'));
+  const documentsContent = ref<Maybe<IProfileDocuments>>(inject('documentsContent'));
+  const defaultLocaleDocumentsContent = ref<Maybe<IProfileDocuments>>(inject('defaultLocaleDocumentsContent'));
   const errorFiles = computed(() => props.fileList.filter((file) => file.error));
 
   const dropzoneClasses = computed(() => ({

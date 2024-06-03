@@ -4,6 +4,8 @@
     :clickToClose="false"
     @clickOutside="closeRegistration"
     class="modal-register-cancel"
+    :overlayTransition="{ mode: 'in-out', duration: 200 }"
+    :contentTransition="{ mode: 'in-out', duration: 200 }"
   >
     <div class="scroll">
       <div class="header">
