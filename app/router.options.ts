@@ -12,10 +12,22 @@ function changeRoute(pagesArray: RouteRecordRaw[]):RouteRecordRaw[] {
 export default <RouterConfig> {
   routes: (routes) => {
     const runtimeConfig = useRuntimeConfig();
-    const hasBetsyIntegration = runtimeConfig.public?.betsyParams?.clientHost && runtimeConfig.public?.betsyParams?.clientId;
-    const defaultRoutes = routes.filter(page => {
-      return page.name !== 'betting' || hasBetsyIntegration;
-    })
+    const hideBettingPage = !runtimeConfig.public?.betsyParams?.clientHost || !runtimeConfig.public?.betsyParams?.clientId;
+    const hideProfileDocumentsPage = runtimeConfig.public?.sumsub?.appToken && runtimeConfig.public?.sumsub?.hideDocumentsPage;
+    // TEMPORARY SOLUTION
+    const hideVerificationPage = !runtimeConfig.public?.sumsub?.appToken;
+
+    const defaultRoutes = [];
+    for (const page of routes) {
+      if (page.name === 'betting' && hideBettingPage) continue;
+      else if (page.name === 'profile' && hideProfileDocumentsPage) {
+        const filteredChildren = page.children?.filter(page => page.name !== 'profile-documents');
+        defaultRoutes.push({ ...page, children: filteredChildren });
+      } else if (page.name === 'profile' && hideVerificationPage) {
+        const filteredChildren = page.children?.filter(page => page.name !== 'profile-verification');
+        defaultRoutes.push({ ...page, children: filteredChildren });
+      } else defaultRoutes.push(page);
+    }
 
     const localeRoutes = defaultRoutes.map((page) => ({
       ...page,
