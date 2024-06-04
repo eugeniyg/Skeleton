@@ -75,15 +75,16 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import type { IField, RegistrationType } from '@skeleton/core/types';
-import { VueFinalModal } from 'vue-final-modal';
-import type {Dayjs} from "dayjs";
+  import { storeToRefs } from 'pinia';
+  import type { IField, RegistrationType } from '@skeleton/core/types';
+  import { VueFinalModal } from 'vue-final-modal';
+  import type {Dayjs} from "dayjs";
 
   const formKey = ref<number>(0);
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { showModal } = layoutStore;
+  const gtm = useGtm();
   const globalStore = useGlobalStore();
   const {
     settingsConstants,
@@ -166,6 +167,18 @@ import type {Dayjs} from "dayjs";
     }
   }
 
+  const changeTabHandle = (tabId: RegistrationType) => {
+    if (selectedTab.value === tabId) return;
+
+    selectedTab.value = tabId;
+    gtm?.trackEvent({
+      event: 'Action',
+      eventCategory: 'registrationFunnel',
+      userId: 'not set',
+      funnelStep: tabId
+    })
+  }
+
   watch(() => modals.value.registerCancel, (newValue: boolean) => {
     if (!newValue && !modals.value.register) formKey.value += 1;
   });
@@ -178,7 +191,6 @@ import type {Dayjs} from "dayjs";
 
   let startModalLoad: Dayjs;
   const dayjs = useDayjs();
-  const gtm = useGtm();
   const beforeOpenHandle = () => {
     startModalLoad = dayjs();
   }
