@@ -210,9 +210,10 @@
   const openedHandle = () => {
     gtm?.trackEvent({
       event: 'Action',
-      eventCategory: 'pageLoad',
+      eventCategory: 'registrationFunnel',
       userId: 'not set',
-      pageLoadTime: dayjs().diff(startModalLoad)
+      loadTime: dayjs().diff(startModalLoad),
+      funnelStep: 'open'
     })
   }
 </script>
