@@ -25,7 +25,10 @@
     content: IHistory
   }>();
 
+  const runtimeConfig = useRuntimeConfig();
+  const hasBetsyIntegration = runtimeConfig.public.betsyParams?.clientHost && runtimeConfig.public.betsyParams?.clientId;
   const filterContent = Object.keys(props.content).filter((key) => {
+    if (key === 'bets' && !hasBetsyIntegration) return false;
     if (props.content[key]?.tabLabel) return key;
     return false;
   });

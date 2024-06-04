@@ -75,6 +75,10 @@ export interface ICoreConstants extends Record<string, any>{
       coolingOffPeriod: IStatus[];
       selfExclusionPeriod: IStatus[];
     };
+    registration: {
+      phone: boolean;
+      email: boolean;
+    };
   };
   payment: {
     invoiceStatuses: IStatus[];
