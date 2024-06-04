@@ -50,7 +50,7 @@
               :key="tab.id"
               :isActive="tab.id === selectedTab"
               size="xs"
-              @click="selectedTab = tab.id"
+              @click="changeTabHandle(tab.id)"
             >
               <atomic-icon :id="tab.icon" />
               <span class="text">{{ tab.label }}</span>
@@ -136,6 +136,12 @@
   const showVerification = (formData: Record<string, any>):void => {
     registrationData.value = formData;
     showPhoneVerification.value = true;
+    gtm?.trackEvent({
+      event: 'Action',
+      eventCategory: 'registrationFunnel',
+      userId: 'not set',
+      funnelStep: 'otp'
+    })
   }
 
   const showRegistrationForm = ():void => {
@@ -148,6 +154,12 @@
   const phoneRegister = async (verificationCode: string):Promise<void> => {
     try {
       sendingData.value = true;
+      gtm?.trackEvent({
+        event: 'Action',
+        eventCategory: 'registrationFunnel',
+        userId: 'not set',
+        funnelStep: 'sent'
+      })
       const { phoneRegistration } = useProfileStore();
       await phoneRegistration({ ...registrationData.value, code: verificationCode });
     } catch (error: any) {

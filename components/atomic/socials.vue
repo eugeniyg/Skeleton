@@ -55,6 +55,15 @@
 
   const authSocial = (connection: string) => {
     if (!$auth0) return;
+
+    const gtm = useGtm();
+    gtm?.trackEvent({
+      event: 'Action',
+      eventCategory: 'registrationFunnel',
+      userId: 'not set',
+      funnelStep: 'social'
+    })
+
     const { query, path } = useRoute();
     const formedQuery = queryString.stringify({
       ...query,

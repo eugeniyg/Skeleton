@@ -224,6 +224,13 @@ export const useProfileStore = defineStore('profileStore', {
       const { submitRegistrationData } = useCoreAuthApi();
       const submitResult = await submitRegistrationData(registrationData);
       await this.handleLogin(submitResult);
+      const gtm = useGtm();
+      gtm?.trackEvent({
+        event: 'Action',
+        eventCategory: 'registration',
+        userId: 'not set',
+        regType: 'sent'
+      })
       this.registrationSucceeded();
     },
 

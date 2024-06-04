@@ -205,6 +205,13 @@
 
   const handleCommonRegistration = async (): Promise<void> => {
     try {
+      const gtm = useGtm();
+      gtm?.trackEvent({
+        event: 'Action',
+        eventCategory: 'registrationFunnel',
+        userId: 'not set',
+        funnelStep: 'sent'
+      })
       const { registration } = useProfileStore();
       await registration(registrationFormData);
     } catch (error:any) {
@@ -214,7 +221,7 @@
     }
   }
 
-  const emit = defineEmits(['showVerification', 'registerSuccess']);
+  const emit = defineEmits(['showVerification']);
   const { getNicknameFromEmail } = useProjectMethods();
   const signUp = async ():Promise<void> => {
     if (v$.value.$invalid) return;
