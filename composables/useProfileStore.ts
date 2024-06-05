@@ -200,16 +200,6 @@ export const useProfileStore = defineStore('profileStore', {
       openWalletModal();
     },
 
-    sendSuccessRegAnalytics(regType: string):void {
-      const gtm = useGtm();
-      gtm?.trackEvent({
-        event: 'Action',
-        eventCategory: 'registration',
-        userId: this.profile?.id,
-        regType
-      })
-    },
-
     async loginSocial(socialData:any, authState?: IAuthState):Promise<void> {
       const { submitSocialLoginData } = useCoreAuthApi();
       const submitResult = await submitSocialLoginData(socialData);
@@ -220,7 +210,8 @@ export const useProfileStore = defineStore('profileStore', {
       await router.replace(authState?.targetUrl || localizePath('/'));
 
       if (submitResult.profile?.isNewlyRegistered) {
-        this.sendSuccessRegAnalytics('social');
+        const { sendRegSuccessEvent } = useRegistrationAnalytics();
+        sendRegSuccessEvent('social');
         this.registrationSucceeded();
       }
     },
@@ -235,7 +226,8 @@ export const useProfileStore = defineStore('profileStore', {
       const { submitRegistrationData } = useCoreAuthApi();
       const submitResult = await submitRegistrationData(registrationData);
       await this.handleLogin(submitResult);
-      this.sendSuccessRegAnalytics('email');
+      const { sendRegSuccessEvent } = useRegistrationAnalytics();
+      sendRegSuccessEvent('email');
       this.registrationSucceeded();
     },
 
@@ -243,7 +235,8 @@ export const useProfileStore = defineStore('profileStore', {
       const { registerByPhone } = useCoreAuthApi();
       const submitResult = await registerByPhone(registrationData);
       await this.handleLogin(submitResult);
-      this.sendSuccessRegAnalytics('phone');
+      const { sendRegSuccessEvent } = useRegistrationAnalytics();
+      sendRegSuccessEvent('phone');
       this.registrationSucceeded();
     },
 

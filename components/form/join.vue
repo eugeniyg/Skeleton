@@ -205,13 +205,9 @@
 
   const handleCommonRegistration = async (): Promise<void> => {
     try {
-      const gtm = useGtm();
-      gtm?.trackEvent({
-        event: 'Action',
-        eventCategory: 'registrationFunnel',
-        userId: 'not set',
-        funnelStep: 'sent'
-      })
+      const { sendRegSubmitEvent } = useRegistrationAnalytics();
+      sendRegSubmitEvent();
+
       const { registration } = useProfileStore();
       await registration(registrationFormData);
     } catch (error:any) {

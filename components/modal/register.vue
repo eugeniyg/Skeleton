@@ -84,7 +84,6 @@
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { showModal } = layoutStore;
-  const gtm = useGtm();
   const globalStore = useGlobalStore();
   const {
     settingsConstants,
@@ -101,9 +100,8 @@
   const registrationData = ref<Record<string, any>|undefined>();
   const registrationType = computed<RegistrationType>(() => {
     if (settingsConstants.value?.player.registration.email && settingsConstants.value?.player.registration.phone) return 'emailOrPhone';
-    if (settingsConstants.value?.player.registration.email) return 'email';
     if (settingsConstants.value?.player.registration.phone) return 'phone';
-    return 'default';
+    return 'email';
   })
   const registrationTypeTabs = computed<{ id: RegistrationType, label: string, icon: string }[]>(() => {
     if (registrationType.value === 'emailOrPhone') return [
@@ -121,6 +119,12 @@
     return [];
   })
   const selectedTab = ref<RegistrationType>(registrationType.value === 'emailOrPhone' ? 'email' : registrationType.value);
+  const {
+    sendRegOpenEvent,
+    sendRegOtpEvent,
+    sendRegSubmitEvent,
+    sendChangeRegTypeEvent
+  } = useRegistrationAnalytics();
 
   const closedEvent = ():void => {
     showPhoneVerification.value = false;
@@ -136,12 +140,7 @@
   const showVerification = (formData: Record<string, any>):void => {
     registrationData.value = formData;
     showPhoneVerification.value = true;
-    gtm?.trackEvent({
-      event: 'Action',
-      eventCategory: 'registrationFunnel',
-      userId: 'not set',
-      funnelStep: 'otp'
-    })
+    sendRegOtpEvent();
   }
 
   const showRegistrationForm = ():void => {
@@ -154,12 +153,7 @@
   const phoneRegister = async (verificationCode: string):Promise<void> => {
     try {
       sendingData.value = true;
-      gtm?.trackEvent({
-        event: 'Action',
-        eventCategory: 'registrationFunnel',
-        userId: 'not set',
-        funnelStep: 'sent'
-      })
+      sendRegSubmitEvent();
       const { phoneRegistration } = useProfileStore();
       await phoneRegistration({ ...registrationData.value, code: verificationCode });
     } catch (error: any) {
@@ -183,12 +177,7 @@
     if (selectedTab.value === tabId) return;
 
     selectedTab.value = tabId;
-    gtm?.trackEvent({
-      event: 'Action',
-      eventCategory: 'registrationFunnel',
-      userId: 'not set',
-      funnelStep: tabId
-    })
+    sendChangeRegTypeEvent(tabId);
   }
 
   watch(() => modals.value.registerCancel, (newValue: boolean) => {
@@ -208,13 +197,7 @@
   }
 
   const openedHandle = () => {
-    gtm?.trackEvent({
-      event: 'Action',
-      eventCategory: 'registrationFunnel',
-      userId: 'not set',
-      loadTime: dayjs().diff(startModalLoad),
-      funnelStep: 'open'
-    })
+    sendRegOpenEvent(dayjs().diff(startModalLoad));
   }
 </script>
 

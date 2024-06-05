@@ -239,7 +239,11 @@
     || Number(amountValue.value) > formatAmountMax.value.amount
     || isSending.value);
 
+  const { sendWalletNetworkEvent, sendWalletSubmitEvent } = useWalletAnalytics();
+
   const onInputNetwork = () => {
+    sendWalletNetworkEvent('withdraw');
+
     let networkRegex;
 
     const findNetworkField = props.fields.find((field) => field.key === 'crypto_network');
@@ -288,6 +292,7 @@
     };
 
     const { withdrawAccount } = useCoreWalletApi();
+    sendWalletSubmitEvent('withdraw');
 
     try {
       await withdrawAccount(params);

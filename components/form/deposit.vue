@@ -292,6 +292,8 @@
       return;
     }
 
+    const { sendWalletSubmitEvent } = useWalletAnalytics();
+    sendWalletSubmitEvent('deposit');
     await depositRequest();
   };
 

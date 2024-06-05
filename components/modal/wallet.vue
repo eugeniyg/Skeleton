@@ -5,6 +5,7 @@
     :clickToClose="false"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @closed="closedHandler"
   >
     <div class="wallet-modal__container" :class="{ 'show-form': showMobileForm }">
       <button-modal-close @close="handleClose" :class="{ 'close-secondary': hasOffset }" />
@@ -59,8 +60,9 @@
 
   const currentDepositMethod = ref<IPaymentMethod|undefined>();
   const currentWithdrawMethod = ref<IPaymentMethod|undefined>();
-  const selectedTab = ref<string>(walletModalType?.value || 'deposit');
+  const selectedTab = ref<'deposit'|'withdraw'>(walletModalType?.value || 'deposit');
   const showMobileForm = ref<boolean>(false);
+  const { sendWalletChangeTypeEvent, sendWalletCloseEvent } = useWalletAnalytics();
 
   const changeTab = (tabId: 'deposit'|'withdraw'): void => {
     if (tabId === 'withdraw') {
@@ -70,6 +72,8 @@
       walletModalType.value = undefined;
       if (mobileWidth()) currentDepositMethod.value = undefined;
     }
+
+    sendWalletChangeTypeEvent(tabId);
   };
 
   const showTabs = computed(() => {
@@ -117,6 +121,10 @@
   const handleClose = ():void => {
     if (mobileWidth() && showMobileForm.value) showMobileForm.value = false;
     else closeWallet();
+  }
+
+  const closedHandler = (): void => {
+    sendWalletCloseEvent(selectedTab.value);
   }
 </script>
 

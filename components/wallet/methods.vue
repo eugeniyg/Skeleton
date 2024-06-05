@@ -24,12 +24,14 @@
         v-if="props.selectedTab === 'deposit'"
         :items="depositMethods"
         v-model:activeMethod="currentDepositMethod"
+        @update:activeMethod="sendWalletMethodEvent('deposit')"
       />
 
       <form-input-payments
         v-if="props.selectedTab === 'withdraw'"
         :items="withdrawMethods"
         v-model:activeMethod="currentWithdrawMethod"
+        @update:activeMethod="sendWalletMethodEvent('withdraw')"
       />
 
       <div
@@ -62,6 +64,7 @@
 
   const currentDepositMethod = defineModel('currentDepositMethod');
   const currentWithdrawMethod = defineModel('currentWithdrawMethod');
+  const { sendWalletMethodEvent } = useWalletAnalytics();
 
   const emit = defineEmits(['changeTab']);
   const { getContent } = useProjectMethods();
