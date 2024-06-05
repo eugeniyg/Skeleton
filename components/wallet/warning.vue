@@ -14,8 +14,6 @@
 </template>
 
 <script setup lang="ts">
-  import { marked } from 'marked';
-  
   const props = defineProps<{
     content: {
       icon?: string;
