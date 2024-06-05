@@ -15,7 +15,12 @@
          v-if="props.fields?.length && !state.selectedNetwork"
          v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
     />
-
+    
+    <wallet-warning
+        v-if="props.fields?.length && state.selectedNetwork"
+        :content="popupsData?.wallet?.deposit?.warning || defaultLocalePopupsData?.wallet?.deposit?.warning"
+    />
+    
     <div class="form-deposit-crypto__content" :class="{'is-blured': props.fields?.length && !state.selectedNetwork }">
       <wallet-crypto-qr
         :content="popupsData?.wallet?.deposit || defaultLocalePopupsData?.wallet?.deposit"
