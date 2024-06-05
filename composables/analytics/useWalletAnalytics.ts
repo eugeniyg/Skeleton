@@ -34,14 +34,16 @@ export const useWalletAnalytics = () => {
   const sendWalletSelectBonusEvent = (): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
-      funnelStep: 'selectBonus'
+      funnelStep: 'selectBonus',
+      operationType: 'deposit'
     })
   }
 
   const sendWalletDeclineBonusesEvent = (): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
-      funnelStep: 'declineBonuses'
+      funnelStep: 'declineBonuses',
+      operationType: 'deposit'
     })
   }
 
@@ -92,14 +94,16 @@ export const useWalletAnalytics = () => {
   const sendWalletPromoOpenEvent = (): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
-      funnelStep: 'promoOpen'
+      funnelStep: 'promoOpen',
+      operationType: 'deposit'
     })
   }
 
   const sendWalletPromoSubmitEvent = (): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
-      funnelStep: 'promoSent'
+      funnelStep: 'promoSent',
+      operationType: 'deposit'
     })
   }
 
