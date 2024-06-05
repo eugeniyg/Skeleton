@@ -61,10 +61,10 @@
       tagName="div"
       type="primary"
       size="md"
-      :isDisabled="v$.$invalid || isLockedAsyncButton"
+      :isDisabled="sendButtonDisabled"
       @click="signUp"
     >
-      <atomic-spinner :is-shown="isLockedAsyncButton"/>
+      <atomic-spinner :is-shown="isLockedAsyncButton" />
       {{ getContent(popupsData, defaultLocalePopupsData, 'registration.registrationButton') }}
     </button-base>
     
@@ -79,13 +79,14 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IField } from '@skeleton/core/types';
+  import type {IField, RegistrationType} from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
 
   const props = defineProps<{
-    registrationFields: IField[]
+    registrationFields: IField[];
+    registrationType: RegistrationType;
   }>();
 
   const hiddenFields = ['nickname', 'locale'];
@@ -107,13 +108,31 @@
   } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
-  const mainFields = props.registrationFields.filter((field) => !groupFooterFields.includes(field.name));
-  const footerFields = props.registrationFields.filter((field) => groupFooterFields.includes(field.name));
+  const fieldsListByRegistrationType = computed(() => {
+    if (['email', 'phone'].includes(props.registrationType)) {
+      const clearFields = props.registrationFields.filter(field => field.name !== props.registrationType);
+      return [
+        {
+          id: -1,
+          name: props.registrationType,
+          description: props.registrationType,
+          editable: true,
+          isRequired: true,
+          position: 0
+        },
+        ...clearFields
+      ]
+    }
+    return props.registrationFields;
+  })
+
+  const mainFields = fieldsListByRegistrationType.value.filter((field) => !groupFooterFields.includes(field.name));
+  const footerFields = fieldsListByRegistrationType.value.filter((field) => groupFooterFields.includes(field.name));
 
   const getFields = (): IField[] => {
     const geoCountry = countries.value.find(country => country.code === headerCountry.value);
 
-    return props.registrationFields.map((field) => {
+    return fieldsListByRegistrationType.value.map((field) => {
       if (field.name === 'nickname') return { ...field, value: 'undefined' };
       else if (field.name === 'currency') return { ...field, value: geoCountry?.currency || 'BTC' };
       else if (field.name === 'locale') return { ...field, value: currentLocale.value?.code };
@@ -142,15 +161,13 @@
   };
 
   const { getFormRules, createValidationRules } = useProjectMethods();
-  const registrationRules = createValidationRules(props.registrationFields, true);
+  const registrationRules = createValidationRules(fieldsListByRegistrationType.value, true);
   const registrationFormRules = getFormRules(registrationRules);
   const {
     serverFormErrors, v$, onFocus, setError,
   } = useFormValidation(registrationFormRules, registrationFormData);
 
   const showPromoInput = ref<boolean>(false);
-
-  const { registration } = useProfileStore();
   const isLockedAsyncButton = ref<boolean>(false);
 
   const handleInput = (fieldName:string):void => {
@@ -161,6 +178,43 @@
     }
   };
 
+  const setServerErrors = (serverErrors: Record<string, any>):void => {
+    serverFormErrors.value = serverErrors;
+  };
+  defineExpose({ setServerErrors });
+
+  const sendButtonDisabled = computed(() => {
+    const hasServerError = Object.values(serverFormErrors.value).some(errorValue => errorValue);
+    return v$.value.$invalid || hasServerError || isLockedAsyncButton.value;
+  })
+
+  const handlePhoneRegistration = async (): Promise<void> => {
+    try {
+      const { sendOtp } = useCoreAuthApi();
+      await sendOtp({ phone: registrationFormData.phone, reason: 'registration' });
+      emit('showVerification', registrationFormData);
+    } catch (error:any) {
+      if (error.data?.error?.code === 11005) {
+        const limitError = getContent(popupsData.value, defaultLocalePopupsData.value, 'phoneVerification.limitError');
+        serverFormErrors.value = { phone: [limitError] };
+      } else {
+        serverFormErrors.value = { phone: [error.data?.error?.message] };
+      }
+    }
+  }
+
+  const handleCommonRegistration = async (): Promise<void> => {
+    try {
+      const { registration } = useProfileStore();
+      await registration(registrationFormData);
+    } catch (error:any) {
+      if (error.response?.status === 422) {
+        serverFormErrors.value = error.data?.error?.fields;
+      } else throw error;
+    }
+  }
+
+  const emit = defineEmits(['showVerification', 'registerSuccess']);
   const { getNicknameFromEmail } = useProjectMethods();
   const signUp = async ():Promise<void> => {
     if (v$.value.$invalid) return;
@@ -175,19 +229,13 @@
     const affiliateTag = localStorage.getItem('affiliateTag');
     if (affiliateTag) registrationFormData.affiliateTag = affiliateTag;
 
-    try {
-      isLockedAsyncButton.value = true;
-      await registration(registrationFormData);
-      if (affiliateTag) localStorage.removeItem('affiliateTag');
-      await openWalletModal('deposit')
-      closeModal('register');
-    } catch (error:any) {
-      if (error.response?.status === 422) {
-        serverFormErrors.value = error.data?.error?.fields;
-      } else throw error;
-    } finally {
-      isLockedAsyncButton.value = false;
+    isLockedAsyncButton.value = true;
+    if (props.registrationType === 'phone') {
+      await handlePhoneRegistration();
+    } else {
+      await handleCommonRegistration();
     }
+    isLockedAsyncButton.value = false;
   };
 </script>
 
