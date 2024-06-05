@@ -7,10 +7,9 @@
       />
     </div>
     
-    <div
-      class="wallet-warning__description"
-      v-html="marked.parse(props.content.description || '')"
-    />
+    <div class="wallet-warning__description">
+      {{ props.content.description }}
+    </div>
   </div>
 </template>
 
