@@ -225,31 +225,9 @@
       }
     }
   }
-
-  &--1 {
-    --category-banner-bg: var(--data-category-1-banner-bg);
-    --category-banner-bg-image: var(--data-banner-casino-gradient);
-  }
-
-  &--2 {
-    --category-banner-bg: var(--data-category-2-banner-bg);
-    --category-banner-bg-image: var(--data-banner-betting-gradient);
-  }
-
-  &--3 {
-    --category-banner-bg: var(--data-category-3-banner-bg);
-    --category-banner-bg-image: var(--data-banner-betting-gradient);
-  }
-
-  &--4 {
-    --category-banner-bg: var(--data-category-4-banner-bg);
-    --category-banner-bg-image: var(--data-banner-betting-gradient);
-  }
 }
 
 .card-category {
-  background: var(--category-banner-bg, var(--data-banner-casino-bg));
-  background-image: var(--category-banner-bg-image, none);
   box-shadow: var(--shadow-modal);
   padding: var(--card-category-padding, #{rem(16px)});
   position: relative;
