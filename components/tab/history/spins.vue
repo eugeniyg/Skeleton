@@ -69,7 +69,7 @@
     spinsRequest(page);
   };
 
-  const { formatBalance, localizePath } = useProjectMethods();
+  const { formatBalance } = useProjectMethods();
   const formatSum = (currency: string, amount: number):string => {
     const balanceFormat = formatBalance(currency, amount);
     return `${balanceFormat.amount} ${balanceFormat.currency}`;
