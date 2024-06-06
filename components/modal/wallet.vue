@@ -17,8 +17,7 @@
         :selectedTab="selectedTab"
         :modalTitle="modalTitle"
         @changeTab="changeTab"
-        @update:currentDepositMethod="showMobileForm = true"
-        @update:currentWithdrawMethod="showMobileForm = true"
+        @methodClick="showMobileForm = true"
       />
 
       <wallet-forms

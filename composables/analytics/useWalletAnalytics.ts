@@ -83,6 +83,26 @@ export const useWalletAnalytics = () => {
     })
   }
 
+  const sendWalletDepFailEvent = (depositAmount: number, walletType: string): void => {
+    gtm?.trackEvent({
+      event: 'Action',
+      eventCategory: 'failDeposit',
+      userId: profileStore.profile?.id,
+      depositAmount,
+      walletType
+    })
+  }
+
+  const sendWalletWithdrawFailEvent = (withdrawAmount: number, walletType: string): void => {
+    gtm?.trackEvent({
+      event: 'Action',
+      eventCategory: 'failWithdraw',
+      userId: profileStore.profile?.id,
+      withdrawAmount,
+      walletType
+    })
+  }
+
   const sendWalletCloseEvent = (operationType: 'deposit'| 'withdraw'): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
@@ -117,6 +137,8 @@ export const useWalletAnalytics = () => {
     sendWalletSubmitEvent,
     sendWalletDepSuccessEvent,
     sendWalletWithdrawSuccessEvent,
+    sendWalletDepFailEvent,
+    sendWalletWithdrawFailEvent,
     sendWalletCloseEvent,
     sendWalletPromoOpenEvent,
     sendWalletPromoSubmitEvent

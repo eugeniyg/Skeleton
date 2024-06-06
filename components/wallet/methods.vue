@@ -25,6 +25,7 @@
         :items="depositMethods"
         v-model:activeMethod="currentDepositMethod"
         @update:activeMethod="sendWalletMethodEvent('deposit')"
+        @methodClick="emit('methodClick')"
       />
 
       <form-input-payments
@@ -32,6 +33,7 @@
         :items="withdrawMethods"
         v-model:activeMethod="currentWithdrawMethod"
         @update:activeMethod="sendWalletMethodEvent('withdraw')"
+        @methodClick="emit('methodClick')"
       />
 
       <div
@@ -66,7 +68,7 @@
   const currentWithdrawMethod = defineModel('currentWithdrawMethod');
   const { sendWalletMethodEvent } = useWalletAnalytics();
 
-  const emit = defineEmits(['changeTab']);
+  const emit = defineEmits(['changeTab', 'methodClick']);
   const { getContent } = useProjectMethods();
   const walletStore = useWalletStore();
   const {
