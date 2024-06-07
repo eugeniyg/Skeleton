@@ -50,6 +50,14 @@
         text-align: var(--text-align, center);
         flex-grow: 1;
         margin-left: rem(32px);
+
+        > * {
+          margin: 0;
+        }
+
+        @include media(md) {
+          margin-left: 0;
+        }
       }
 
       &__back-btn {
@@ -111,7 +119,7 @@
 
   .btn-modal-close {
     transform: none;
-    left: 24px;
+    left: var(--left, 24px);
     --right: auto;
     --top: 98px;
     --bg: transparent;
@@ -130,7 +138,7 @@
         --visibility: hidden;
       }
 
-      @include media(xs) {
+      @include media(md) {
         &:first-of-type {
           --visibility: hidden;
         }
@@ -141,15 +149,10 @@
       }
     }
 
-    @include media(xs) {
-      left: auto;
-      --top: #{rem(-4px)};
-      --right: #{rem(-14px)};
-    }
-
     @include media(md) {
       --top: #{rem(16px)};
       --right: #{rem(10px)};
+      --left: auto;
     }
   }
 
