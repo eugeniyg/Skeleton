@@ -1,146 +1,160 @@
+import type {IWalletEvent} from "@skeleton/types/analytics";
+
 export const useWalletAnalytics = () => {
   const gtm = useGtm();
   const profileStore = useProfileStore();
 
+  //-- METHOD NAMES MUST BE THE SAME AS EVENT NAMES --//
+  //-- skeleton/types/analytics.ts --//
+
   const baseWalletFunnelObj = {
     event: 'Action',
-    eventCategory: 'walletFunnel',
-    userId: profileStore.profile?.id
+    eventCategory: 'walletFunnel'
   }
 
-  const sendWalletOpenEvent = (loadTime: number): void => {
+  const walletOpen = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
       funnelStep: 'open',
-      loadTime
+      userId: profileStore.profile?.id,
+      loadTime: eventData.loadTime || 0
     })
   }
 
-  const sendWalletNetworkEvent = (operationType: 'deposit'| 'withdraw'): void => {
+  const walletChangeNetwork = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
       funnelStep: 'network',
-      operationType
+      userId: profileStore.profile?.id,
+      operationType: eventData.operationType || 'not set'
     })
   }
 
-  const sendWalletChangeTypeEvent = (operationType: 'deposit'| 'withdraw'): void => {
+  const walletChangeType = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
-      funnelStep: operationType
+      userId: profileStore.profile?.id,
+      funnelStep: eventData.operationType || 'not set'
     })
   }
 
-  const sendWalletSelectBonusEvent = (): void => {
+  const walletSelectBonus = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
+      userId: profileStore.profile?.id,
       funnelStep: 'selectBonus',
       operationType: 'deposit'
     })
   }
 
-  const sendWalletDeclineBonusesEvent = (): void => {
+  const walletDeclineBonuses = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
+      userId: profileStore.profile?.id,
       funnelStep: 'declineBonuses',
       operationType: 'deposit'
     })
   }
 
-  const sendWalletMethodEvent = (operationType: 'deposit'| 'withdraw'): void => {
+  const walletChangeMethod = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
+      userId: profileStore.profile?.id,
       funnelStep: 'method',
-      operationType
+      operationType: eventData.operationType || 'not set'
     })
   }
 
-  const sendWalletSubmitEvent = (operationType: 'deposit'| 'withdraw'): void => {
+  const walletSubmitForm = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
+      userId: profileStore.profile?.id,
       funnelStep: 'sent',
-      operationType
+      operationType: eventData.operationType || 'not set'
     })
   }
 
-  const sendWalletDepSuccessEvent = (depositAmount: number, walletType: string): void => {
+  const walletDepositSuccess = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       event: 'Action',
       eventCategory: 'deposit',
       userId: profileStore.profile?.id,
-      depositAmount,
-      walletType
+      depositAmount: eventData.depositAmount || 0,
+      walletType: eventData.walletType || 'not set'
     })
   }
 
-  const sendWalletWithdrawSuccessEvent = (withdrawAmount: number, walletType: string): void => {
+  const walletWithdrawSuccess = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       event: 'Action',
       eventCategory: 'withdraw',
       userId: profileStore.profile?.id,
-      withdrawAmount,
-      walletType
+      withdrawAmount: eventData.withdrawAmount || 0,
+      walletType: eventData.walletType || 'not set'
     })
   }
 
-  const sendWalletDepFailEvent = (depositAmount: number, walletType: string): void => {
+  const walletDepositFail = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       event: 'Action',
       eventCategory: 'failDeposit',
       userId: profileStore.profile?.id,
-      depositAmount,
-      walletType
+      depositAmount: eventData.depositAmount || 0,
+      walletType: eventData.walletType || 'not set'
     })
   }
 
-  const sendWalletWithdrawFailEvent = (withdrawAmount: number, walletType: string): void => {
+  const walletWithdrawFail = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       event: 'Action',
       eventCategory: 'failWithdraw',
       userId: profileStore.profile?.id,
-      withdrawAmount,
-      walletType
+      withdrawAmount: eventData.withdrawAmount || 0,
+      walletType: eventData.walletType || 'not set'
     })
   }
 
-  const sendWalletCloseEvent = (operationType: 'deposit'| 'withdraw'): void => {
+  const walletClose = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
+      userId: profileStore.profile?.id,
       funnelStep: 'close',
-      operationType
+      operationType: eventData.operationType || 'not set'
     })
   }
 
-  const sendWalletPromoOpenEvent = (): void => {
+  const walletPromoOpen = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
+      userId: profileStore.profile?.id,
       funnelStep: 'promoOpen',
       operationType: 'deposit'
     })
   }
 
-  const sendWalletPromoSubmitEvent = (): void => {
+  const walletPromoSubmit = (eventData: IWalletEvent): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
+      userId: profileStore.profile?.id,
       funnelStep: 'promoSent',
       operationType: 'deposit'
     })
   }
 
   return {
-    sendWalletOpenEvent,
-    sendWalletNetworkEvent,
-    sendWalletChangeTypeEvent,
-    sendWalletSelectBonusEvent,
-    sendWalletDeclineBonusesEvent,
-    sendWalletMethodEvent,
-    sendWalletSubmitEvent,
-    sendWalletDepSuccessEvent,
-    sendWalletWithdrawSuccessEvent,
-    sendWalletDepFailEvent,
-    sendWalletWithdrawFailEvent,
-    sendWalletCloseEvent,
-    sendWalletPromoOpenEvent,
-    sendWalletPromoSubmitEvent
+    walletOpen,
+    walletChangeNetwork,
+    walletChangeType,
+    walletSelectBonus,
+    walletDeclineBonuses,
+    walletChangeMethod,
+    walletSubmitForm,
+    walletDepositSuccess,
+    walletWithdrawSuccess,
+    walletDepositFail,
+    walletWithdrawFail,
+    walletClose,
+    walletPromoOpen,
+    walletPromoSubmit
   }
 }

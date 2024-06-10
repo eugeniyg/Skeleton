@@ -149,12 +149,6 @@ export const useWalletStore = defineStore('walletStore', {
       const formattedSum = formatBalance(eventCurrency, eventAmount);
       const invoiceSuccess = webSocketResponse.data?.invoice?.status === 2;
       const eventCurrencyObject = currencies.find(currency => currency.code === eventCurrency);
-      const {
-        sendWalletDepSuccessEvent,
-        sendWalletWithdrawSuccessEvent,
-        sendWalletDepFailEvent,
-        sendWalletWithdrawFailEvent
-      } = useWalletAnalytics();
 
       const formattedDescription = (cmsMessage: string|undefined):string => {
         if (!cmsMessage) return '';
@@ -179,9 +173,17 @@ export const useWalletStore = defineStore('walletStore', {
         showAlert(invoiceSuccess ? depositSuccessAlertData : depositErrorAlertData);
 
         if (invoiceSuccess) {
-          sendWalletDepSuccessEvent(eventAmount || 0, eventCurrencyObject?.type || 'not set');
+          useAnalyticsEvent('wallet', {
+            event: 'walletDepositSuccess',
+            depositAmount: eventAmount,
+            walletType: eventCurrencyObject?.type
+          });
         } else {
-          sendWalletDepFailEvent(eventAmount || 0, eventCurrencyObject?.type || 'not set');
+          useAnalyticsEvent('wallet', {
+            event: 'walletDepositFail',
+            depositAmount: eventAmount,
+            walletType: eventCurrencyObject?.type
+          });
         }
       } else if (webSocketResponse.data?.event === 'invoice.withdrawal.updated') {
         const cmsMessage = invoiceSuccess
@@ -197,9 +199,17 @@ export const useWalletStore = defineStore('walletStore', {
         showAlert(invoiceSuccess ? withdrawSuccessAlertData : withdrawErrorAlertData);
 
         if (invoiceSuccess) {
-          sendWalletWithdrawSuccessEvent(eventAmount || 0, eventCurrencyObject?.type || 'not set');
+          useAnalyticsEvent('wallet', {
+            event: 'walletWithdrawSuccess',
+            withdrawAmount: eventAmount,
+            walletType: eventCurrencyObject?.type
+          });
         } else {
-          sendWalletWithdrawFailEvent(eventAmount || 0, eventCurrencyObject?.type || 'not set');
+          useAnalyticsEvent('wallet', {
+            event: 'walletWithdrawFail',
+            withdrawAmount: eventAmount,
+            walletType: eventCurrencyObject?.type
+          });
         }
       }
     },

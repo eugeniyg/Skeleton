@@ -55,7 +55,6 @@
   const { addBonusCode, deleteBonusCode } = useCoreBonusApi();
   const bonusStore = useBonusStore();
   const { depositBonusCode } = storeToRefs(bonusStore);
-  const { sendWalletPromoSubmitEvent, sendWalletPromoOpenEvent } = useWalletAnalytics();
 
   const sendManualBonus = async ():Promise<boolean> => {
     try {
@@ -76,7 +75,7 @@
       bonusValue.value = '';
       depositBonusCode.value = undefined;
     } else if (bonusValue.value) {
-      sendWalletPromoSubmitEvent();
+      useAnalyticsEvent('wallet', { event: 'walletPromoSubmit' });
 
       const bonusActivated = await sendManualBonus();
 
@@ -92,7 +91,7 @@
   const toggleBonusField = async ():Promise<void> => {
     if (!hasBonusCode.value) {
       hasBonusCode.value = true;
-      sendWalletPromoOpenEvent();
+      useAnalyticsEvent('wallet', { event: 'walletPromoOpen' });
 
       await nextTick();
       root.value.scrollIntoView({ behavior: 'smooth' });

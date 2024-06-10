@@ -239,10 +239,11 @@
     || Number(amountValue.value) > formatAmountMax.value.amount
     || isSending.value);
 
-  const { sendWalletNetworkEvent, sendWalletSubmitEvent } = useWalletAnalytics();
-
   const onInputNetwork = () => {
-    sendWalletNetworkEvent('withdraw');
+    useAnalyticsEvent('wallet', {
+      event: 'walletChangeNetwork',
+      operationType: 'withdraw'
+    });
 
     let networkRegex;
 
@@ -292,7 +293,10 @@
     };
 
     const { withdrawAccount } = useCoreWalletApi();
-    sendWalletSubmitEvent('withdraw');
+    useAnalyticsEvent('wallet', {
+      event: 'walletSubmitForm',
+      operationType: 'withdraw'
+    });
 
     try {
       await withdrawAccount(params);

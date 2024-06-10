@@ -239,9 +239,10 @@ export const useLayoutStore = defineStore('layoutStore', {
       const { isLoggedIn } = useProfileStore();
       if (!isLoggedIn) return;
       this.showModal('wallet', modalType);
-
-      const { sendWalletOpenEvent } = useWalletAnalytics();
-      sendWalletOpenEvent(dayjs().diff(startModalLoad));
+      useAnalyticsEvent('wallet', {
+        event: 'walletOpen',
+        loadTime: dayjs().diff(startModalLoad)
+      });
     },
 
     setReturnGame(gameData: Maybe<IGame|string>): void {

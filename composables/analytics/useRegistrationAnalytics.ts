@@ -1,40 +1,43 @@
-import type { RegistrationType } from "@skeleton/core/types";
+import type { IRegistrationEvent } from "@skeleton/types/analytics";
 
 export const useRegistrationAnalytics = () => {
   const gtm = useGtm();
   const profileStore = useProfileStore();
+
+  //-- METHOD NAMES MUST BE THE SAME AS EVENT NAMES --//
+  //-- skeleton/types/analytics.ts --//
 
   const baseRegFunnelObj = {
     event: 'Action',
     eventCategory: 'registrationFunnel',
   }
 
-  const sendRegOpenEvent = (loadTime: number): void => {
+  const registrationOpen = (eventData: IRegistrationEvent): void => {
     gtm?.trackEvent({
       ...baseRegFunnelObj,
       userId: 'not set',
       funnelStep: 'open',
-      loadTime
+      loadTime: eventData.loadTime || 0
     })
   }
 
-  const sendChangeRegTypeEvent = (regType: RegistrationType): void => {
+  const registrationChangeType = (eventData: IRegistrationEvent): void => {
     gtm?.trackEvent({
       ...baseRegFunnelObj,
       userId: 'not set',
-      funnelStep: regType
+      funnelStep: eventData.regType || 'not set'
     })
   }
 
-  const sendRegSuccessEvent = (regType: RegistrationType): void => {
+  const registrationSuccess = (eventData: IRegistrationEvent): void => {
     gtm?.trackEvent({
       ...baseRegFunnelObj,
       userId: profileStore.profile?.id,
-      regType
+      regType: eventData.regType || 'not set',
     })
   }
 
-  const sendRegSubmitEvent = (): void => {
+  const registrationSubmit = (eventData: IRegistrationEvent): void => {
     gtm?.trackEvent({
       ...baseRegFunnelObj,
       userId: 'not set',
@@ -42,7 +45,7 @@ export const useRegistrationAnalytics = () => {
     })
   }
 
-  const sendRegOtpEvent = (): void => {
+  const registrationOtp = (eventData: IRegistrationEvent): void => {
     gtm?.trackEvent({
       ...baseRegFunnelObj,
       userId: 'not set',
@@ -51,10 +54,10 @@ export const useRegistrationAnalytics = () => {
   }
 
   return {
-    sendRegOpenEvent,
-    sendChangeRegTypeEvent,
-    sendRegSuccessEvent,
-    sendRegSubmitEvent,
-    sendRegOtpEvent
+    registrationOpen,
+    registrationChangeType,
+    registrationSuccess,
+    registrationSubmit,
+    registrationOtp
   }
 }

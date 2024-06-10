@@ -61,7 +61,6 @@
   const currentWithdrawMethod = ref<IPaymentMethod|undefined>();
   const selectedTab = ref<'deposit'|'withdraw'>(walletModalType?.value || 'deposit');
   const showMobileForm = ref<boolean>(false);
-  const { sendWalletChangeTypeEvent, sendWalletCloseEvent } = useWalletAnalytics();
 
   const changeTab = (tabId: 'deposit'|'withdraw'): void => {
     if (tabId === 'withdraw') {
@@ -72,7 +71,10 @@
       if (mobileWidth()) currentDepositMethod.value = undefined;
     }
 
-    sendWalletChangeTypeEvent(tabId);
+    useAnalyticsEvent('wallet', {
+      event: 'walletChangeType',
+      operationType: tabId
+    });
   };
 
   const showTabs = computed(() => {
@@ -123,7 +125,10 @@
   }
 
   const closedHandler = (): void => {
-    sendWalletCloseEvent(selectedTab.value);
+    useAnalyticsEvent('wallet', {
+      event: 'walletClose',
+      operationType: selectedTab.value
+    });
   }
 </script>
 

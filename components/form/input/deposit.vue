@@ -40,10 +40,9 @@
 
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
 
-  const { sendBalanceOpenEvent } = useBalanceAnalytics();
   const toggleSelect = () => {
     if (!isShow.value) {
-      sendBalanceOpenEvent();
+      useAnalyticsEvent('balance', { event: 'openBalancePopup' });
       getPlayerBonuses();
     }
 

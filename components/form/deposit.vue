@@ -292,8 +292,10 @@
       return;
     }
 
-    const { sendWalletSubmitEvent } = useWalletAnalytics();
-    sendWalletSubmitEvent('deposit');
+    useAnalyticsEvent('wallet', {
+      event: 'walletSubmitForm',
+      operationType: 'deposit'
+    });
     await depositRequest();
   };
 

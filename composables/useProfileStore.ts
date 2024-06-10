@@ -210,8 +210,10 @@ export const useProfileStore = defineStore('profileStore', {
       await router.replace(authState?.targetUrl || localizePath('/'));
 
       if (submitResult.profile?.isNewlyRegistered) {
-        const { sendRegSuccessEvent } = useRegistrationAnalytics();
-        sendRegSuccessEvent('social');
+        useAnalyticsEvent('registration', {
+          event: 'registrationSuccess',
+          regType: 'social'
+        });
         this.registrationSucceeded();
       }
     },
@@ -226,8 +228,10 @@ export const useProfileStore = defineStore('profileStore', {
       const { submitRegistrationData } = useCoreAuthApi();
       const submitResult = await submitRegistrationData(registrationData);
       await this.handleLogin(submitResult);
-      const { sendRegSuccessEvent } = useRegistrationAnalytics();
-      sendRegSuccessEvent('email');
+      useAnalyticsEvent('registration', {
+        event: 'registrationSuccess',
+        regType: 'email'
+      });
       this.registrationSucceeded();
     },
 
@@ -235,8 +239,10 @@ export const useProfileStore = defineStore('profileStore', {
       const { registerByPhone } = useCoreAuthApi();
       const submitResult = await registerByPhone(registrationData);
       await this.handleLogin(submitResult);
-      const { sendRegSuccessEvent } = useRegistrationAnalytics();
-      sendRegSuccessEvent('phone');
+      useAnalyticsEvent('registration', {
+        event: 'registrationSuccess',
+        regType: 'phone'
+      });
       this.registrationSucceeded();
     },
 

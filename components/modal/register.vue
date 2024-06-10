@@ -119,12 +119,6 @@
     return [];
   })
   const selectedTab = ref<RegistrationType>(registrationType.value === 'emailOrPhone' ? 'email' : registrationType.value);
-  const {
-    sendRegOpenEvent,
-    sendRegOtpEvent,
-    sendRegSubmitEvent,
-    sendChangeRegTypeEvent
-  } = useRegistrationAnalytics();
 
   const closedEvent = ():void => {
     showPhoneVerification.value = false;
@@ -140,7 +134,7 @@
   const showVerification = (formData: Record<string, any>):void => {
     registrationData.value = formData;
     showPhoneVerification.value = true;
-    sendRegOtpEvent();
+    useAnalyticsEvent('registration', { event: 'registrationOtp' });
   }
 
   const showRegistrationForm = ():void => {
@@ -153,7 +147,7 @@
   const phoneRegister = async (verificationCode: string):Promise<void> => {
     try {
       sendingData.value = true;
-      sendRegSubmitEvent();
+      useAnalyticsEvent('registration', { event: 'registrationSubmit' });
       const { phoneRegistration } = useProfileStore();
       await phoneRegistration({ ...registrationData.value, code: verificationCode });
     } catch (error: any) {
@@ -177,7 +171,10 @@
     if (selectedTab.value === tabId) return;
 
     selectedTab.value = tabId;
-    sendChangeRegTypeEvent(tabId);
+    useAnalyticsEvent('registration', {
+      event: 'registrationChangeType',
+      regType: tabId
+    });
   }
 
   watch(() => modals.value.registerCancel, (newValue: boolean) => {
@@ -197,7 +194,10 @@
   }
 
   const openedHandle = () => {
-    sendRegOpenEvent(dayjs().diff(startModalLoad));
+    useAnalyticsEvent('registration', {
+      event: 'registrationOpen',
+      loadTime: dayjs().diff(startModalLoad)
+    })
   }
 </script>
 

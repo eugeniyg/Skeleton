@@ -56,8 +56,10 @@
   const authSocial = (connection: string) => {
     if (!$auth0) return;
 
-    const { sendChangeRegTypeEvent } = useRegistrationAnalytics();
-    sendChangeRegTypeEvent('social');
+    useAnalyticsEvent('registration', {
+      event: 'registrationChangeType',
+      regType: 'social'
+    })
 
     const { query, path } = useRoute();
     const formedQuery = queryString.stringify({
