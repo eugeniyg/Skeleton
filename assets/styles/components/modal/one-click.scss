@@ -12,6 +12,11 @@
 
   .scroll {
     grid-row-gap: 0;
+    padding: 24px 16px;
+
+    @include media(xs) {
+      padding: 24px 22px 22px 22px;
+    }
   }
 
   &__hint {
@@ -45,22 +50,31 @@
 
   &__actions {
     display: grid;
-    grid-template-areas: "save-to-file save-to-file" "save-as-picture send-to-email";
     grid-gap: 8px;
     margin-top: 40px;
 
-    .save-to-file-btn {
-      grid-area: save-to-file;
-    }
-
-    .save-as-picture-btn {
-      grid-area: save-as-picture;
+    .save-as-picture-btn, .send-email-btn {
       --width: 100%;
     }
 
-    .send-email-btn {
-      grid-area: send-to-email;
-      --width: 100%;
+    @include media(xs) {
+      grid-template-areas: "save-to-file save-to-file" "save-as-picture send-to-email";
     }
+
+    @include media(xs) {
+      .save-to-file-btn {
+        grid-area: save-to-file;
+      }
+
+      .save-as-picture-btn {
+        grid-area: save-as-picture;
+      }
+
+      .send-email-btn {
+        grid-area: send-to-email;
+      }
+    }
+
+
   }
 }
