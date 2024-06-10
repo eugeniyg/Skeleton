@@ -56,8 +56,7 @@ export default defineNuxtConfig({
   },
   imports: {
     dirs: [
-      'core/composables',
-      'composables/**'
+      'core/composables'
     ]
   },
   routeRules: {
