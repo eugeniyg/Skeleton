@@ -205,7 +205,7 @@
 
   const handleCommonRegistration = async (): Promise<void> => {
     try {
-      useAnalyticsEvent('registration', { event: 'registrationSubmit' });
+      useEvent('analyticsEvent', { event: 'registrationSubmit' });
       const { registration } = useProfileStore();
       await registration(registrationFormData);
     } catch (error:any) {

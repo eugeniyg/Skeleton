@@ -292,9 +292,9 @@
       return;
     }
 
-    useAnalyticsEvent('wallet', {
+    useEvent('analyticsEvent', {
       event: 'walletSubmitForm',
-      operationType: 'deposit'
+      walletOperationType: 'deposit'
     });
     await depositRequest();
   };

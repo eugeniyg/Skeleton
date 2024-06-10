@@ -71,9 +71,9 @@
       if (mobileWidth()) currentDepositMethod.value = undefined;
     }
 
-    useAnalyticsEvent('wallet', {
+    useEvent('analyticsEvent', {
       event: 'walletChangeType',
-      operationType: tabId
+      walletOperationType: tabId
     });
   };
 
@@ -125,9 +125,9 @@
   }
 
   const closedHandler = (): void => {
-    useAnalyticsEvent('wallet', {
+    useEvent('analyticsEvent', {
       event: 'walletClose',
-      operationType: selectedTab.value
+      walletOperationType: selectedTab.value
     });
   }
 </script>

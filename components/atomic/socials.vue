@@ -56,7 +56,7 @@
   const authSocial = (connection: string) => {
     if (!$auth0) return;
 
-    useAnalyticsEvent('registration', {
+    useEvent('analyticsEvent', {
       event: 'registrationChangeType',
       regType: 'social'
     })

@@ -172,19 +172,11 @@ export const useWalletStore = defineStore('walletStore', {
         const depositErrorAlertData = depositErrorObj ? { ...depositErrorObj, description } : undefined;
         showAlert(invoiceSuccess ? depositSuccessAlertData : depositErrorAlertData);
 
-        if (invoiceSuccess) {
-          useAnalyticsEvent('wallet', {
-            event: 'walletDepositSuccess',
-            depositAmount: eventAmount,
-            walletType: eventCurrencyObject?.type
-          });
-        } else {
-          useAnalyticsEvent('wallet', {
-            event: 'walletDepositFail',
-            depositAmount: eventAmount,
-            walletType: eventCurrencyObject?.type
-          });
-        }
+        useEvent('analyticsEvent', {
+          event: invoiceSuccess ? 'walletDepositSuccess' : 'walletDepositFail',
+          depositAmount: eventAmount,
+          walletType: eventCurrencyObject?.type
+        });
       } else if (webSocketResponse.data?.event === 'invoice.withdrawal.updated') {
         const cmsMessage = invoiceSuccess
             ? getContent(alertsData, defaultLocaleAlertsData, 'wallet.withdrawSuccess.description')
@@ -198,19 +190,11 @@ export const useWalletStore = defineStore('walletStore', {
         const withdrawErrorAlertData = withdrawErrorObj ? { ...withdrawErrorObj, description } : undefined;
         showAlert(invoiceSuccess ? withdrawSuccessAlertData : withdrawErrorAlertData);
 
-        if (invoiceSuccess) {
-          useAnalyticsEvent('wallet', {
-            event: 'walletWithdrawSuccess',
-            withdrawAmount: eventAmount,
-            walletType: eventCurrencyObject?.type
-          });
-        } else {
-          useAnalyticsEvent('wallet', {
-            event: 'walletWithdrawFail',
-            withdrawAmount: eventAmount,
-            walletType: eventCurrencyObject?.type
-          });
-        }
+        useEvent('analyticsEvent', {
+          event: invoiceSuccess ? 'walletWithdrawSuccess' : 'walletWithdrawFail',
+          withdrawAmount: eventAmount,
+          walletType: eventCurrencyObject?.type
+        });
       }
     },
 

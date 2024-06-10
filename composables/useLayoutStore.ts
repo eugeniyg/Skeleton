@@ -239,7 +239,7 @@ export const useLayoutStore = defineStore('layoutStore', {
       const { isLoggedIn } = useProfileStore();
       if (!isLoggedIn) return;
       this.showModal('wallet', modalType);
-      useAnalyticsEvent('wallet', {
+      useEvent('analyticsEvent', {
         event: 'walletOpen',
         loadTime: dayjs().diff(startModalLoad)
       });

@@ -176,7 +176,7 @@
     selectedDepositBonus.value = undefined;
     sessionStorage.removeItem('depositBonusData');
     sessionStorage.setItem('bonusDeclined', 'true');
-    useAnalyticsEvent('wallet', { event: 'walletDeclineBonuses' });
+    useEvent('analyticsEvent', { event: 'walletDeclineBonuses' });
   }
 
   const onBonusChange = (bonus: IBonus): void => {
@@ -192,7 +192,7 @@
         amount: props.amount,
         currency: activeAccount.value?.currency
       }));
-      useAnalyticsEvent('wallet', { event: 'walletSelectBonus'});
+      useEvent('analyticsEvent', { event: 'walletSelectBonus'});
     }
   }
 

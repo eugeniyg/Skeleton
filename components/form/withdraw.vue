@@ -240,9 +240,9 @@
     || isSending.value);
 
   const onInputNetwork = () => {
-    useAnalyticsEvent('wallet', {
+    useEvent('analyticsEvent', {
       event: 'walletChangeNetwork',
-      operationType: 'withdraw'
+      walletOperationType: 'withdraw'
     });
 
     let networkRegex;
@@ -293,9 +293,9 @@
     };
 
     const { withdrawAccount } = useCoreWalletApi();
-    useAnalyticsEvent('wallet', {
+    useEvent('analyticsEvent', {
       event: 'walletSubmitForm',
-      operationType: 'withdraw'
+      walletOperationType: 'withdraw'
     });
 
     try {

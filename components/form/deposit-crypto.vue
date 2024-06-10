@@ -132,9 +132,9 @@
   }
 
   const onInputNetwork = async ():Promise<void> => {
-    useAnalyticsEvent('wallet', {
+    useEvent('analyticsEvent', {
       event: 'walletChangeNetwork',
-      operationType: 'deposit'
+      walletOperationType: 'deposit'
     });
 
     const networkValue = state.selectedNetwork?.includes('empty-network') ? null : state.selectedNetwork;

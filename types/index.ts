@@ -1,3 +1,5 @@
+import type { RegistrationType } from "@skeleton/core/types";
+
 export interface IBrowserLanguage {
   code: string,
   script: null|string,
@@ -10,5 +12,42 @@ export interface IPhoneCode {
   code: string,
   mask?: string,
   value?: string,
+}
+
+const analyticsEventsArr = [
+  //-- REGISTRATION EVENTS --//
+  'registrationOpen',
+  'registrationChangeType',
+  'registrationSuccess',
+  'registrationSubmit',
+  'registrationOtp',
+  //-- WALLET EVENTS --//
+  'walletOpen',
+  'walletChangeNetwork',
+  'walletChangeType',
+  'walletSelectBonus',
+  'walletDeclineBonuses',
+  'walletChangeMethod',
+  'walletSubmitForm',
+  'walletDepositSuccess',
+  'walletWithdrawSuccess',
+  'walletDepositFail',
+  'walletWithdrawFail',
+  'walletClose',
+  'walletPromoOpen',
+  'walletPromoSubmit',
+  //-- BALANCE EVENTS --//
+  'openBalancePopup'
+] as const;
+type AnalyticEvent = typeof analyticsEventsArr[number];
+
+export interface IAnalyticsEvent {
+  event: AnalyticEvent;
+  loadTime?: number;
+  regType?: RegistrationType;
+  walletOperationType?: 'deposit'| 'withdraw';
+  depositAmount?: number;
+  withdrawAmount?: number;
+  walletType?: string;
 }
 

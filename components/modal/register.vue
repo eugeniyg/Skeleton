@@ -134,7 +134,7 @@
   const showVerification = (formData: Record<string, any>):void => {
     registrationData.value = formData;
     showPhoneVerification.value = true;
-    useAnalyticsEvent('registration', { event: 'registrationOtp' });
+    useEvent('analyticsEvent', { event: 'registrationOtp' });
   }
 
   const showRegistrationForm = ():void => {
@@ -147,7 +147,7 @@
   const phoneRegister = async (verificationCode: string):Promise<void> => {
     try {
       sendingData.value = true;
-      useAnalyticsEvent('registration', { event: 'registrationSubmit' });
+      useEvent('analyticsEvent', { event: 'registrationSubmit' });
       const { phoneRegistration } = useProfileStore();
       await phoneRegistration({ ...registrationData.value, code: verificationCode });
     } catch (error: any) {
@@ -171,7 +171,7 @@
     if (selectedTab.value === tabId) return;
 
     selectedTab.value = tabId;
-    useAnalyticsEvent('registration', {
+    useEvent('analyticsEvent', {
       event: 'registrationChangeType',
       regType: tabId
     });
@@ -194,7 +194,7 @@
   }
 
   const openedHandle = () => {
-    useAnalyticsEvent('registration', {
+    useEvent('analyticsEvent', {
       event: 'registrationOpen',
       loadTime: dayjs().diff(startModalLoad)
     })

@@ -86,10 +86,10 @@
       || (!withdrawMethods.value?.length && props.selectedTab === 'withdraw');
   })
 
-  const handleMethodChanged = (operationType: 'deposit'|'withdraw'): void => {
-    useAnalyticsEvent('wallet', {
+  const handleMethodChanged = (walletOperationType: 'deposit'|'withdraw'): void => {
+    useEvent('analyticsEvent', {
       event: 'walletChangeMethod',
-      operationType
+      walletOperationType
     });
   }
 </script>
