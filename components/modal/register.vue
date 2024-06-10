@@ -99,6 +99,7 @@
     if (settingsConstants.value?.player.registration.email && settingsConstants.value?.player.registration.phone) return 'emailOrPhone';
     if (settingsConstants.value?.player.registration.email) return 'email';
     if (settingsConstants.value?.player.registration.phone) return 'phone';
+    if (settingsConstants.value?.player.registration.oneClick) return 'oneClick';
     return 'default';
   })
   const registrationTypeTabs = computed<{ id: RegistrationType, label: string, icon: string }[]>(() => {
@@ -112,6 +113,11 @@
         id: 'phone',
         label: getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.typeTabs.phone'),
         icon: 'mobile'
+      },
+      {
+        id: 'oneClick',
+        label: getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.typeTabs.oneClick'),
+        icon: 'flash'
       }
     ];
     return [];

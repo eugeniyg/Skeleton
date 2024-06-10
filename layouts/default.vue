@@ -41,6 +41,7 @@
 
     <modal-register />
     <modal-register-cancel />
+    <modal-one-click />
     <modal-sign-in />
     <modal-forgot-pass />
     <modal-reset-pass />

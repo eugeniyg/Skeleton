@@ -1,0 +1,66 @@
+.modal-one-click {
+  @extend %modal-info;
+
+  &__fields {
+    display: grid;
+    grid-row-gap: 8px;
+  }
+
+  .title {
+    margin-bottom: 40px;
+  }
+
+  .scroll {
+    grid-row-gap: 0;
+  }
+
+  &__hint {
+    display: flex;
+    grid-column-gap: 4px;
+    align-items: center;
+    justify-content: center;
+    @include font($body-1);
+    color: var(--text-secondary);
+    margin-top: 4px;
+
+    &-icon {
+      --color: var(--icon-warning);
+    }
+
+    p {
+      margin: 0;
+    }
+
+    span, a {
+      color: var(--text-link);
+    }
+
+    a {
+      text-decoration: none;
+      &:hover {
+        color: var(--text-link-hover);
+      }
+    }
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-areas: "save-to-file save-to-file" "save-as-picture send-to-email";
+    grid-gap: 8px;
+    margin-top: 40px;
+
+    .save-to-file-btn {
+      grid-area: save-to-file;
+    }
+
+    .save-as-picture-btn {
+      grid-area: save-as-picture;
+      --width: 100%;
+    }
+
+    .send-email-btn {
+      grid-area: send-to-email;
+      --width: 100%;
+    }
+  }
+}

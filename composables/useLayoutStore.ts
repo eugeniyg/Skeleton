@@ -18,6 +18,7 @@ interface IModals extends Record<string, any> {
   resetPass: boolean;
   success: boolean;
   fiat: boolean;
+  oneClick: boolean;
 }
 
 interface IModalsUrls extends Record<string, any> {
@@ -65,6 +66,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         success: false,
         registerCancel: false,
         fiat: false,
+        oneClick: true
       },
       modalsUrl: {
         register: 'sign-up',

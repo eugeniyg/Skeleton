@@ -78,6 +78,7 @@ export interface ICoreConstants extends Record<string, any>{
     registration: {
       phone: boolean;
       email: boolean;
+      oneClick: boolean;
     };
   };
   payment: {

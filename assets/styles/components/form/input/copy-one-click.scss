@@ -1,0 +1,53 @@
+.input-copy-one-click {
+  display: flex;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+
+  &__label {
+    @include font($body-2);
+    color: var(--text-primary);
+    display: inline-flex;
+    position: absolute;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    padding: 0 2px 0 16px;
+  }
+
+  &__field {
+    background-color: var(--bg, var(--field-00));
+    padding: var(--input-padding-y, #{rem(11px)}) rem(16px);
+    border: 1px solid var(--border-color, var(--field-00));
+    color: var(--color, var(--text-accent));
+    border-radius: 12px 0 0 12px;
+    @include font($body-2);
+    transition: border-color .2s ease-in-out;
+    flex-grow: 1;
+    text-overflow: ellipsis;
+    --line-height: auto;
+
+    &::placeholder {
+      color: var(--text-accent);
+    }
+
+    &:focus {
+      --border-color: var(--border-click);
+      --bg: var(--field-00);
+    }
+  }
+
+  .btn-copy {
+    @extend %skip-btn;
+    border-radius: 0 12px 12px 0;
+    padding: rem(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: none;
+    flex: 40px 0 0;
+    --icon-size: 24px;
+
+    @extend %btn-primary;
+  }
+}
