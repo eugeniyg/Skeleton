@@ -110,7 +110,14 @@
 
   const fieldsListByRegistrationType = computed(() => {
     if (['email', 'phone'].includes(props.registrationType)) {
-      const clearFields = props.registrationFields.filter(field => field.name !== props.registrationType);
+      const hideNickname = props.registrationType === 'phone'
+        && !props.registrationFields.some(field => field.name === 'email');
+
+      const clearFields = props.registrationFields.filter(field => {
+        if (field.name === 'nickname' && hideNickname) return false;
+        return field.name !== props.registrationType;
+      });
+
       return [
         {
           id: -1,
