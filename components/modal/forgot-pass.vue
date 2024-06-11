@@ -155,7 +155,10 @@
           message: getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.invalidError')
         };
       } else {
-        throw error;
+        verificationError.value = {
+          variant: 'error',
+          message: error.data?.error?.message || 'Cannot verify phone number'
+        };
       }
     } finally {
       sendingData.value = false;
