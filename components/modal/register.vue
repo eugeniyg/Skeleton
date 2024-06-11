@@ -19,7 +19,7 @@
 
       <div ref="scrollBlock" class="scroll" @scroll="handleScroll">
         <div class="header">
-          <div class="title">{{ formTitle }}</div>
+          <div class="title" v-html="marked.parse(formTitle || '')"/>
 
           <div v-if="showPhoneVerification" class="header__back-btn" @click="showRegistrationForm">
             <span class="header__back-btn-icon">
@@ -79,6 +79,7 @@
   import type { IField, RegistrationType } from '@skeleton/core/types';
   import { VueFinalModal } from 'vue-final-modal';
   import type {Dayjs} from "dayjs";
+  import { marked } from 'marked';
 
   const formKey = ref<number>(0);
   const layoutStore = useLayoutStore();

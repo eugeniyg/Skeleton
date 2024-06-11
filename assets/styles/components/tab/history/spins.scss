@@ -20,4 +20,14 @@
       minmax(rem(100px), 1fr)
     }
   }
+
+  &__game-link {
+    transition: color 0.3s;
+    color: var(--text-link);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--text-link-hover);
+    }
+  }
 }

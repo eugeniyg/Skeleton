@@ -1,13 +1,14 @@
 <template>
   <inline-svg v-if="!isShowPlaceHolder" class="inline-svg" :src="props.src" @error="svgLoadError"/>
-  <atomic-icon v-else id="dot-md"/>
+  <atomic-icon v-else :id="props.defaultIcon || 'dot-md'"/>
 </template>
 
 <script setup lang="ts">
   import inlineSvg from 'vue-inline-svg';
   
   const props = defineProps<{
-    src: string
+    src: string,
+    defaultIcon?: string,
   }>();
   
   const isShowPlaceHolder = ref<boolean>(false);

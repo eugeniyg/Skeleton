@@ -13,7 +13,11 @@
 
       <template v-if="spins.length">
         <div v-for="(spin, itemIndex) in spins" :key="itemIndex" class="row">
-          <div class="td">{{ spin.game}}</div>
+          <div class="td">
+            <atomic-link class="tb-spins-history__game-link" :href="`/games/${spin.gameIdentity}?real=true`">
+              {{ spin.game }}
+            </atomic-link>
+          </div>
           <div class="td">{{ formatSum(spin.currency, spin.amount) }}</div>
           <div class="td">{{ formatSum(spin.currency, spin.payout) }}</div>
           <div class="td">{{ dayjs(spin.createdAt).format('DD.MM.YYYY, HH:mm') }}</div>

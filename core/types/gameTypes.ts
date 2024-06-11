@@ -83,6 +83,7 @@ export interface ISpinHistory extends Record<string, any>{
   createdAt: string;
   currency: string;
   game: string;
+  gameIdentity: string;
   id: string;
   payout: number;
 }

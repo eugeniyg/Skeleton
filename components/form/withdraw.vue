@@ -15,6 +15,11 @@
          v-if="networkSelectOptions?.length && !state.selectedNetwork"
          v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
     />
+    
+    <wallet-warning
+        v-if="props.fields?.length && state.selectedNetwork"
+        :content="popupsData?.wallet?.withdraw?.warning || defaultLocalePopupsData?.wallet?.withdraw?.warning"
+    />
 
     <div class="form-withdraw__content" :class="{'is-blured': networkSelectOptions?.length && !state.selectedNetwork }">
       <form-input-number
