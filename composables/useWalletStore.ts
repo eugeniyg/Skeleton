@@ -140,7 +140,7 @@ export const useWalletStore = defineStore('walletStore', {
 
     showInvoiceStatus(webSocketResponse:IWebSocketResponse):void {
       const { formatBalance, getContent } = useProjectMethods();
-      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+      const { alertsData, defaultLocaleAlertsData, currencies } = useGlobalStore();
       const { showAlert } = useLayoutStore();
       const invoiceUtcDate = new Date(webSocketResponse.data?.invoice?.createdAt || '');
       const invoiceDate = invoiceUtcDate.toLocaleString().slice(0, 10);
@@ -148,6 +148,7 @@ export const useWalletStore = defineStore('walletStore', {
       const eventCurrency = webSocketResponse.data?.invoice?.currency;
       const formattedSum = formatBalance(eventCurrency, eventAmount);
       const invoiceSuccess = webSocketResponse.data?.invoice?.status === 2;
+      const eventCurrencyObject = currencies.find(currency => currency.code === eventCurrency);
 
       const formattedDescription = (cmsMessage: string|undefined):string => {
         if (!cmsMessage) return '';
@@ -165,10 +166,17 @@ export const useWalletStore = defineStore('walletStore', {
 
         const depositSuccessObj = alertsData?.wallet?.depositSuccess || defaultLocaleAlertsData?.wallet?.depositSuccess;
         const depositErrorObj = alertsData?.wallet?.depositError || defaultLocaleAlertsData?.wallet?.depositError;
+        const description = formattedDescription(cmsMessage);
 
-        const depositSuccessAlertData = depositSuccessObj ? { ...depositSuccessObj, description: formattedDescription(cmsMessage) } : undefined;
-        const depositErrorAlertData = depositErrorObj ? { ...depositErrorObj, description: formattedDescription(cmsMessage) } : undefined;
+        const depositSuccessAlertData = depositSuccessObj ? { ...depositSuccessObj, description } : undefined;
+        const depositErrorAlertData = depositErrorObj ? { ...depositErrorObj, description } : undefined;
         showAlert(invoiceSuccess ? depositSuccessAlertData : depositErrorAlertData);
+
+        useEvent('analyticsEvent', {
+          event: invoiceSuccess ? 'walletDepositSuccess' : 'walletDepositFail',
+          depositAmount: eventAmount,
+          walletType: eventCurrencyObject?.type
+        });
       } else if (webSocketResponse.data?.event === 'invoice.withdrawal.updated') {
         const cmsMessage = invoiceSuccess
             ? getContent(alertsData, defaultLocaleAlertsData, 'wallet.withdrawSuccess.description')
@@ -176,10 +184,17 @@ export const useWalletStore = defineStore('walletStore', {
 
         const withdrawSuccessObj = alertsData?.wallet?.withdrawSuccess || defaultLocaleAlertsData?.wallet?.withdrawSuccess;
         const withdrawErrorObj = alertsData?.wallet?.withdrawError || defaultLocaleAlertsData?.wallet?.withdrawError;
+        const description = formattedDescription(cmsMessage);
 
-        const withdrawSuccessAlertData = withdrawSuccessObj ? { ...withdrawSuccessObj, description: formattedDescription(cmsMessage) } : undefined;
-        const withdrawErrorAlertData = withdrawErrorObj ? { ...withdrawErrorObj, description: formattedDescription(cmsMessage) } : undefined;
+        const withdrawSuccessAlertData = withdrawSuccessObj ? { ...withdrawSuccessObj, description } : undefined;
+        const withdrawErrorAlertData = withdrawErrorObj ? { ...withdrawErrorObj, description } : undefined;
         showAlert(invoiceSuccess ? withdrawSuccessAlertData : withdrawErrorAlertData);
+
+        useEvent('analyticsEvent', {
+          event: invoiceSuccess ? 'walletWithdrawSuccess' : 'walletWithdrawFail',
+          withdrawAmount: eventAmount,
+          walletType: eventCurrencyObject?.type
+        });
       }
     },
 

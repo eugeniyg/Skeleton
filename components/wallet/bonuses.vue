@@ -164,6 +164,7 @@
 
     bonusDeclined.value = true;
     selectedDepositBonus.value = undefined;
+    useEvent('analyticsEvent', { event: 'walletDeclineBonuses' });
   }
 
   const onBonusChange = (bonus: IBonus): void => {
@@ -172,6 +173,7 @@
     } else {
       selectedDepositBonus.value = bonus;
       bonusDeclined.value = false;
+      useEvent('analyticsEvent', { event: 'walletSelectBonus'});
     }
   }
 

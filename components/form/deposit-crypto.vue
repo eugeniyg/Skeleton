@@ -15,7 +15,12 @@
          v-if="props.fields?.length && !state.selectedNetwork"
          v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
     />
-
+    
+    <wallet-warning
+        v-if="props.fields?.length && state.selectedNetwork"
+        :content="popupsData?.wallet?.deposit?.warning || defaultLocalePopupsData?.wallet?.deposit?.warning"
+    />
+    
     <div class="form-deposit-crypto__content" :class="{'is-blured': props.fields?.length && !state.selectedNetwork }">
       <wallet-crypto-qr
         :content="popupsData?.wallet?.deposit || defaultLocalePopupsData?.wallet?.deposit"
@@ -132,6 +137,11 @@
   }
 
   const onInputNetwork = async ():Promise<void> => {
+    useEvent('analyticsEvent', {
+      event: 'walletChangeNetwork',
+      walletOperationType: 'deposit'
+    });
+
     const networkValue = state.selectedNetwork?.includes('empty-network') ? null : state.selectedNetwork;
     if (state.params.fields?.crypto_network === networkValue) return;
 
