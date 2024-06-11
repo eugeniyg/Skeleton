@@ -245,6 +245,11 @@
     || isSending.value);
 
   const onInputNetwork = () => {
+    useEvent('analyticsEvent', {
+      event: 'walletChangeNetwork',
+      walletOperationType: 'withdraw'
+    });
+
     let networkRegex;
 
     const findNetworkField = props.fields.find((field) => field.key === 'crypto_network');
@@ -293,6 +298,10 @@
     };
 
     const { withdrawAccount } = useCoreWalletApi();
+    useEvent('analyticsEvent', {
+      event: 'walletSubmitForm',
+      walletOperationType: 'withdraw'
+    });
 
     try {
       await withdrawAccount(params);

@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="input-payments"
-    :class="classes"
-    v-click-outside="close"
-  >
+  <div class="input-payments">
     <div class="items" v-if="props.items?.length">
       <div
         class="item"
@@ -44,25 +40,14 @@
   const { getContent, formatBalance } = useProjectMethods();
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
 
-  const emit = defineEmits(['update:activeMethod']);
-  const isOpen = ref<boolean>(false);
+  const emit = defineEmits(['update:activeMethod', 'methodClick']);
   const cashAgentMethodKey:string = '0x.withdrawal.cash_agent';
 
-  const classes = computed(() => [
-    { 'is-open': isOpen.value },
-  ]);
-
   const select = (method: IPaymentMethod):void => {
+    emit('methodClick');
+
+    if (props.activeMethod?.method === method.method) return;
     emit('update:activeMethod', method);
-    isOpen.value = false;
-  };
-
-  const open = ():void => {
-    isOpen.value = !isOpen.value;
-  };
-
-  const close = ():void => {
-    if (isOpen.value) isOpen.value = false;
   };
 
   const logoUrl = ref<string>('');

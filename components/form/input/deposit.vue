@@ -42,6 +42,7 @@
 
   const toggleSelect = () => {
     if (!isShow.value) {
+      useEvent('analyticsEvent', { event: 'openBalancePopup' });
       getPlayerBonuses();
     }
 

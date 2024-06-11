@@ -205,6 +205,7 @@
 
   const handleCommonRegistration = async (): Promise<void> => {
     try {
+      useEvent('analyticsEvent', { event: 'registrationSubmit' });
       const { registration } = useProfileStore();
       await registration(registrationFormData);
     } catch (error:any) {
@@ -214,7 +215,7 @@
     }
   }
 
-  const emit = defineEmits(['showVerification', 'registerSuccess']);
+  const emit = defineEmits(['showVerification']);
   const { getNicknameFromEmail } = useProjectMethods();
   const signUp = async ():Promise<void> => {
     if (v$.value.$invalid) return;
