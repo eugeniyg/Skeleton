@@ -292,6 +292,10 @@
       return;
     }
 
+    useEvent('analyticsEvent', {
+      event: 'walletSubmitForm',
+      walletOperationType: 'deposit'
+    });
     await depositRequest();
   };
 

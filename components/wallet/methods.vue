@@ -24,12 +24,16 @@
         v-if="props.selectedTab === 'deposit'"
         :items="depositMethods"
         v-model:activeMethod="currentDepositMethod"
+        @update:activeMethod="handleMethodChanged('deposit')"
+        @methodClick="emit('methodClick')"
       />
 
       <form-input-payments
         v-if="props.selectedTab === 'withdraw'"
         :items="withdrawMethods"
         v-model:activeMethod="currentWithdrawMethod"
+        @update:activeMethod="handleMethodChanged('withdraw')"
+        @methodClick="emit('methodClick')"
       />
 
       <div
@@ -63,7 +67,7 @@
   const currentDepositMethod = defineModel('currentDepositMethod');
   const currentWithdrawMethod = defineModel('currentWithdrawMethod');
 
-  const emit = defineEmits(['changeTab']);
+  const emit = defineEmits(['changeTab', 'methodClick']);
   const { getContent } = useProjectMethods();
   const walletStore = useWalletStore();
   const {
@@ -81,6 +85,13 @@
     return (!depositMethods.value?.length && props.selectedTab === 'deposit')
       || (!withdrawMethods.value?.length && props.selectedTab === 'withdraw');
   })
+
+  const handleMethodChanged = (walletOperationType: 'deposit'|'withdraw'): void => {
+    useEvent('analyticsEvent', {
+      event: 'walletChangeMethod',
+      walletOperationType
+    });
+  }
 </script>
 
 <style src="~/assets/styles/components/wallet/methods.scss" lang="scss"/>

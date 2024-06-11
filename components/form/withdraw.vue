@@ -15,6 +15,11 @@
          v-if="networkSelectOptions?.length && !state.selectedNetwork"
          v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
     />
+    
+    <wallet-warning
+        v-if="props.fields?.length && state.selectedNetwork"
+        :content="popupsData?.wallet?.withdraw?.warning || defaultLocalePopupsData?.wallet?.withdraw?.warning"
+    />
 
     <div class="form-withdraw__content" :class="{'is-blured': networkSelectOptions?.length && !state.selectedNetwork }">
       <form-input-number
@@ -240,6 +245,11 @@
     || isSending.value);
 
   const onInputNetwork = () => {
+    useEvent('analyticsEvent', {
+      event: 'walletChangeNetwork',
+      walletOperationType: 'withdraw'
+    });
+
     let networkRegex;
 
     const findNetworkField = props.fields.find((field) => field.key === 'crypto_network');
@@ -288,6 +298,10 @@
     };
 
     const { withdrawAccount } = useCoreWalletApi();
+    useEvent('analyticsEvent', {
+      event: 'walletSubmitForm',
+      walletOperationType: 'withdraw'
+    });
 
     try {
       await withdrawAccount(params);

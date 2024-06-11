@@ -1,4 +1,5 @@
 import mitt from 'mitt';
+import type { IAnalyticsEvent } from "@skeleton/types";
 
 type ApplicationEvents = {
   'changeMobileGameMode': undefined;
@@ -7,6 +8,7 @@ type ApplicationEvents = {
   'bonusesUpdated': undefined;
   'accountChanged': undefined;
   'restrictedBets': string;
+  'analyticsEvent': IAnalyticsEvent;
 };
 
 const emitter = mitt<ApplicationEvents>();
