@@ -80,9 +80,7 @@ export const useProfileStore = defineStore('profileStore', {
 
       const { deleteReturnGame } = useLayoutStore();
       deleteReturnGame();
-
-      sessionStorage.removeItem('depositBonusData');
-    },
+      },
 
     async getRefreshRequest (): Promise<string> {
       const { refreshToken } = useCoreAuthApi();
