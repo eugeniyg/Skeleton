@@ -126,7 +126,8 @@ export const useProjectMethods = () => {
     return `${config.gamehubCdn}${imagePath}`;
   };
 
-  const getNicknameFromEmail = (email: string):string => {
+  const getNicknameFromEmail = (email?: string):string => {
+    if (!email) return 'unknown';
     const getFirstPath = email.split('@')[0];
     if (getFirstPath.length < 4) return `${getFirstPath.slice(0, 1)}***`;
     return `${getFirstPath.slice(0, -3)}***`;
