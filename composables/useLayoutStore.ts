@@ -3,6 +3,7 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useNotification } from '@kyvg/vue3-notification';
 import type { IAlert } from "~/types";
 import type { IGame } from "@skeleton/core/types";
+import type {Dayjs} from "dayjs";
 
 type WalletModalTypes = 'deposit'|'withdraw'|undefined;
 interface IModals extends Record<string, any> {
@@ -223,6 +224,9 @@ export const useLayoutStore = defineStore('layoutStore', {
     },
 
     async openWalletModal(modalType?: WalletModalTypes): Promise<void> {
+      const dayjs = useDayjs();
+      const startModalLoad: Dayjs = dayjs();
+
       this.walletModalType = modalType;
       const { getDepositMethods, getWithdrawMethods, activeAccount } = useWalletStore();
       const { getDepositBonuses } = useBonusStore();
@@ -235,6 +239,10 @@ export const useLayoutStore = defineStore('layoutStore', {
       const { isLoggedIn } = useProfileStore();
       if (!isLoggedIn) return;
       this.showModal('wallet', modalType);
+      useEvent('analyticsEvent', {
+        event: 'walletOpen',
+        loadTime: dayjs().diff(startModalLoad)
+      });
     },
 
     setReturnGame(gameData: Maybe<IGame|string>): void {

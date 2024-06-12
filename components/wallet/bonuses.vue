@@ -135,17 +135,6 @@
     return [...packageBonuses, ...simpleBonuses];
   })
 
-  const getStorageBonus = (): IBonus|undefined => {
-    const storageDepositDataString = sessionStorage.getItem('depositBonusData');
-    const storageDepositData = storageDepositDataString ? JSON.parse(storageDepositDataString) : undefined;
-
-    if (storageDepositData) {
-      return bonusesList.value.find(bonus => bonus.id === storageDepositData.bonusId);
-    }
-
-    return undefined;
-  }
-
   const isBonusDisabled = (bonusData: IBonus): boolean => {
     if (bonusData.minDeposit && bonusData.maxDeposit) {
       return Number(props.amount) < bonusData.minDeposit.amount || Number(props.amount) > bonusData.maxDeposit.amount;
@@ -158,15 +147,16 @@
     return false;
   }
 
-  const storageBonus = getStorageBonus();
-  if (sessionStorage.getItem('bonusDeclined')) {
-    bonusDeclined.value = true;
+  const runtimeConfig = useRuntimeConfig();
+  const configDeclineBonuses = runtimeConfig.public?.declineDepositBonuses;
+  if (configDeclineBonuses) {
     selectedDepositBonus.value = undefined;
-  } else if (!props.crypto) {
-    const bonusByDeposit = bonusesList.value.find(bonus => !isBonusDisabled(bonus));
-    selectedDepositBonus.value = storageBonus || bonusByDeposit;
+    bonusDeclined.value = true;
   } else {
-    selectedDepositBonus.value = storageBonus || bonusesList.value[0];
+    selectedDepositBonus.value = !props.crypto
+      ? bonusesList.value.find(bonus => !isBonusDisabled(bonus))
+      : bonusesList.value[0];
+    bonusDeclined.value = false;
   }
 
   const declineBonuses = (): void => {
@@ -174,23 +164,16 @@
 
     bonusDeclined.value = true;
     selectedDepositBonus.value = undefined;
-    sessionStorage.removeItem('depositBonusData');
-    sessionStorage.setItem('bonusDeclined', 'true');
+    useEvent('analyticsEvent', { event: 'walletDeclineBonuses' });
   }
 
   const onBonusChange = (bonus: IBonus): void => {
     if (selectedDepositBonus.value?.id === bonus.id) {
       selectedDepositBonus.value = undefined;
-      sessionStorage.removeItem('depositBonusData');
     } else {
       selectedDepositBonus.value = bonus;
       bonusDeclined.value = false;
-      sessionStorage.removeItem('bonusDeclined');
-      sessionStorage.setItem('depositBonusData', JSON.stringify({
-        bonusId: bonus.id,
-        amount: props.amount,
-        currency: activeAccount.value?.currency
-      }));
+      useEvent('analyticsEvent', { event: 'walletSelectBonus'});
     }
   }
 

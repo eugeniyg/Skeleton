@@ -7,6 +7,8 @@
     :clickToClose="false"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @beforeOpen="beforeOpenHandle"
+    @opened="openedHandle"
   >
     <div class="container">
       <button-modal-close :class="{ 'close-secondary': hasOffset }" @close="showModal('registerCancel');"/>
@@ -17,7 +19,7 @@
 
       <div ref="scrollBlock" class="scroll" @scroll="handleScroll">
         <div class="header">
-          <div class="title">{{ formTitle }}</div>
+          <div class="title" v-html="marked.parse(formTitle || '')"/>
 
           <div v-if="showPhoneVerification" class="header__back-btn" @click="showRegistrationForm">
             <span class="header__back-btn-icon">
@@ -48,7 +50,7 @@
               :key="tab.id"
               :isActive="tab.id === selectedTab"
               size="xs"
-              @click="selectedTab = tab.id"
+              @click="changeTabHandle(tab.id)"
             >
               <atomic-icon :id="tab.icon" />
               <span class="text">{{ tab.label }}</span>
@@ -74,8 +76,10 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IField, RegistrationType} from '@skeleton/core/types';
+  import type { IField, RegistrationType } from '@skeleton/core/types';
   import { VueFinalModal } from 'vue-final-modal';
+  import type {Dayjs} from "dayjs";
+  import { marked } from 'marked';
 
   const formKey = ref<number>(0);
   const layoutStore = useLayoutStore();
@@ -97,9 +101,8 @@
   const registrationData = ref<Record<string, any>|undefined>();
   const registrationType = computed<RegistrationType>(() => {
     if (settingsConstants.value?.player.registration.email && settingsConstants.value?.player.registration.phone) return 'emailOrPhone';
-    if (settingsConstants.value?.player.registration.email) return 'email';
     if (settingsConstants.value?.player.registration.phone) return 'phone';
-    return 'default';
+    return 'email';
   })
   const registrationTypeTabs = computed<{ id: RegistrationType, label: string, icon: string }[]>(() => {
     if (registrationType.value === 'emailOrPhone') return [
@@ -132,6 +135,7 @@
   const showVerification = (formData: Record<string, any>):void => {
     registrationData.value = formData;
     showPhoneVerification.value = true;
+    useEvent('analyticsEvent', { event: 'registrationOtp' });
   }
 
   const showRegistrationForm = ():void => {
@@ -144,6 +148,7 @@
   const phoneRegister = async (verificationCode: string):Promise<void> => {
     try {
       sendingData.value = true;
+      useEvent('analyticsEvent', { event: 'registrationSubmit' });
       const { phoneRegistration } = useProfileStore();
       await phoneRegistration({ ...registrationData.value, code: verificationCode });
     } catch (error: any) {
@@ -156,11 +161,24 @@
           message: getContent(popupsData.value, defaultLocalePopupsData.value, 'phoneVerification.invalidError')
         };
       } else {
-        throw error;
+        verificationError.value = {
+          variant: 'error',
+          message: error.data?.error?.message || 'Cannot verify phone number'
+        };
       }
     } finally {
       sendingData.value = false;
     }
+  }
+
+  const changeTabHandle = (tabId: RegistrationType) => {
+    if (selectedTab.value === tabId) return;
+
+    selectedTab.value = tabId;
+    useEvent('analyticsEvent', {
+      event: 'registrationChangeType',
+      regType: tabId
+    });
   }
 
   watch(() => modals.value.registerCancel, (newValue: boolean) => {
@@ -172,6 +190,19 @@
   onMounted(async () => {
     registrationFields.value = await getRegistrationFields();
   });
+
+  let startModalLoad: Dayjs;
+  const dayjs = useDayjs();
+  const beforeOpenHandle = () => {
+    startModalLoad = dayjs();
+  }
+
+  const openedHandle = () => {
+    useEvent('analyticsEvent', {
+      event: 'registrationOpen',
+      loadTime: dayjs().diff(startModalLoad)
+    })
+  }
 </script>
 
 <style src="~/assets/styles/components/modal/register.scss" lang="scss" />

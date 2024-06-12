@@ -88,7 +88,7 @@
   const { modals } = storeToRefs(layoutStore);
   const { closeModal, showModal } = layoutStore;
 
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { popupsData, defaultLocalePopupsData, settingsConstants } = useGlobalStore();
   const { getContent } = useProjectMethods();
   const showPhoneVerification = ref<boolean>(false);
 
@@ -99,9 +99,10 @@
     } else showModal('signIn');
   };
 
+  const hasPhoneRegistration = settingsConstants?.player?.registration?.phone;
   const tabsList = computed(() => {
     const tabsObj = getContent(popupsData, defaultLocalePopupsData, 'login.tabs');
-    if (!tabsObj) return [];
+    if (!tabsObj || !hasPhoneRegistration) return [];
 
     return Object.keys(tabsObj).map(key => {
       if (key === 'email') return { id: 'email', icon: 'mail', label: tabsObj[key] };
@@ -154,7 +155,10 @@
           message: getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.invalidError')
         };
       } else {
-        throw error;
+        verificationError.value = {
+          variant: 'error',
+          message: error.data?.error?.message || 'Cannot verify phone number'
+        };
       }
     } finally {
       sendingData.value = false;

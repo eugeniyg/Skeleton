@@ -1,5 +1,9 @@
 <template>
-  <div class="card-category" :class="`card-category--${props.mod}`">
+  <div
+      class="card-category"
+      :class="`card-category--${props.mod}`"
+      :style="backgroundGradientStyle"
+  >
     <div class="card-category__title">
       {{ props.title }}
     </div>
@@ -28,11 +32,15 @@
     mod: number,
     title: string,
     description: string,
+    colorLeft: string,
+    colorRight: string,
     button: {
       label: string,
       url: string
     }
   }>();
+  
+  const backgroundGradientStyle = computed(() => `background: linear-gradient(to right, ${props.colorLeft}, ${props.colorRight})`);
 </script>
 
 <style src="~/assets/styles/components/card/category.scss" lang="scss" />

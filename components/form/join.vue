@@ -110,7 +110,14 @@
 
   const fieldsListByRegistrationType = computed(() => {
     if (['email', 'phone'].includes(props.registrationType)) {
-      const clearFields = props.registrationFields.filter(field => field.name !== props.registrationType);
+      const hideNickname = props.registrationType === 'phone'
+        && !props.registrationFields.some(field => field.name === 'email');
+
+      const clearFields = props.registrationFields.filter(field => {
+        if (field.name === 'nickname' && hideNickname) return false;
+        return field.name !== props.registrationType;
+      });
+
       return [
         {
           id: -1,
@@ -205,6 +212,7 @@
 
   const handleCommonRegistration = async (): Promise<void> => {
     try {
+      useEvent('analyticsEvent', { event: 'registrationSubmit' });
       const { registration } = useProfileStore();
       await registration(registrationFormData);
     } catch (error:any) {
@@ -214,7 +222,7 @@
     }
   }
 
-  const emit = defineEmits(['showVerification', 'registerSuccess']);
+  const emit = defineEmits(['showVerification']);
   const { getNicknameFromEmail } = useProjectMethods();
   const signUp = async ():Promise<void> => {
     if (v$.value.$invalid) return;

@@ -163,24 +163,12 @@
   const minAmountContent = `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`;
   const maxAmountContent = `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.maxSum') || ''} ${formatAmountMax.amount} ${formatAmountMax.currency}`;
   const fieldHint = { message: `${minAmountContent}, ${maxAmountContent}` };
-
-  const getStorageBonusAmount = (): number|undefined => {
-    const storageDepositDataString = sessionStorage.getItem('depositBonusData');
-    const storageDepositData = storageDepositDataString ? JSON.parse(storageDepositDataString) : undefined;
-
-    if (storageDepositData && storageDepositData.currency === activeAccount.value?.currency && storageDepositData.amount) {
-      return Number(storageDepositData.amount);
-    }
-
-    return undefined;
-  }
-
   const isSending = ref<boolean>(false);
   const filteredPresets = props.presets?.filter(preset => {
     return preset.amount >= formatAmountMin.amount && preset.amount <= formatAmountMax.amount;
   }) || [];
   const defaultPreset = filteredPresets.find(preset => preset.default);
-  const amountValue = ref<string>(String(getStorageBonusAmount() || defaultPreset?.amount || formatAmountMin.amount));
+  const amountValue = ref<string>(String(defaultPreset?.amount || formatAmountMin.amount));
   const buttonAmount = computed(() => {
     if (Number(amountValue.value) > formatAmountMax.amount) return formatAmountMax.amount;
     if (Number(amountValue.value) < formatAmountMin.amount) return formatAmountMin.amount;
@@ -259,7 +247,6 @@
 
     try {
       const depositResponse = await depositAccount(params);
-      sessionStorage.removeItem('depositBonusData');
       const paymentPageUrl = getPaymentPageUrl(depositResponse);
 
       if (windowReference.value && depositResponse.type === 'form') {
@@ -292,6 +279,10 @@
       return;
     }
 
+    useEvent('analyticsEvent', {
+      event: 'walletSubmitForm',
+      walletOperationType: 'deposit'
+    });
     await depositRequest();
   };
 
