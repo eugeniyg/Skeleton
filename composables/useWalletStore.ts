@@ -175,8 +175,19 @@ export const useWalletStore = defineStore('walletStore', {
         useEvent('analyticsEvent', {
           event: invoiceSuccess ? 'walletDepositSuccess' : 'walletDepositFail',
           depositAmount: eventAmount,
+          depositCurrency: eventCurrency,
+          successDepositNumber: webSocketResponse.data?.invoice?.number,
           walletType: eventCurrencyObject?.type
         });
+
+        if (invoiceSuccess && webSocketResponse.data?.invoice?.number === 1) {
+          useEvent('analyticsEvent', {
+            event: 'walletFirstDepositSuccess',
+            depositAmount: eventAmount,
+            depositCurrency: eventCurrency,
+            walletType: eventCurrencyObject?.type
+          });
+        }
       } else if (webSocketResponse.data?.event === 'invoice.withdrawal.updated') {
         const cmsMessage = invoiceSuccess
             ? getContent(alertsData, defaultLocaleAlertsData, 'wallet.withdrawSuccess.description')
@@ -193,6 +204,7 @@ export const useWalletStore = defineStore('walletStore', {
         useEvent('analyticsEvent', {
           event: invoiceSuccess ? 'walletWithdrawSuccess' : 'walletWithdrawFail',
           withdrawAmount: eventAmount,
+          withdrawCurrency: eventCurrency,
           walletType: eventCurrencyObject?.type
         });
       }
