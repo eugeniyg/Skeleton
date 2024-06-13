@@ -156,7 +156,7 @@
     selectedDepositBonus.value = !props.crypto
       ? bonusesList.value.find(bonus => !isBonusDisabled(bonus))
       : bonusesList.value[0];
-    bonusDeclined.value = false;
+    bonusDeclined.value = !selectedDepositBonus.value;
   }
 
   const declineBonuses = (): void => {
@@ -168,9 +168,8 @@
   }
 
   const onBonusChange = (bonus: IBonus): void => {
-    if (selectedDepositBonus.value?.id === bonus.id) {
-      selectedDepositBonus.value = undefined;
-    } else {
+    if (selectedDepositBonus.value?.id === bonus.id) return;
+    else {
       selectedDepositBonus.value = bonus;
       bonusDeclined.value = false;
       useEvent('analyticsEvent', { event: 'walletSelectBonus'});
@@ -179,7 +178,8 @@
 
   watch(() => props.amount, () => {
     if (selectedDepositBonus.value && isBonusDisabled(selectedDepositBonus.value)) {
-      selectedDepositBonus.value = undefined;
+      selectedDepositBonus.value = bonusesList.value.find(bonus => !isBonusDisabled(bonus));
+      bonusDeclined.value = !selectedDepositBonus.value;
     }
   })
 </script>
