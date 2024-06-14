@@ -128,4 +128,5 @@ export interface ISocketInvoice extends Record<string, any>{
   paymentMethod: string;
   status: number;
   createdAt: string;
+  number: number|null;
 }
