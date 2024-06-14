@@ -34,7 +34,8 @@ export const useGtmAnalytics = () => {
 
   const registrationSuccess = (eventData: IAnalyticsEvent): void => {
     gtm?.trackEvent({
-      ...baseRegFunnelObj,
+      event: 'Action',
+      eventCategory: 'registration',
       userId: profileStore.profile?.id,
       regType: eventData.regType || 'not set',
     })
@@ -133,6 +134,7 @@ export const useGtmAnalytics = () => {
       userId: profileStore.profile?.id,
       depositAmount: eventData.depositAmount || 0,
       depositCurrency: eventData.depositCurrency || 'not set',
+      invoiceId: eventData.invoiceId || 'not set',
       successDepositNumber: eventData.successDepositNumber || 0,
       walletType: eventData.walletType || 'not set'
     })
@@ -145,6 +147,7 @@ export const useGtmAnalytics = () => {
       userId: profileStore.profile?.id,
       depositAmount: eventData.depositAmount || 0,
       depositCurrency: eventData.depositCurrency || 'not set',
+      invoiceId: eventData.invoiceId || 'not set',
       walletType: eventData.walletType || 'not set'
     })
   }
@@ -156,6 +159,7 @@ export const useGtmAnalytics = () => {
       userId: profileStore.profile?.id,
       withdrawAmount: eventData.withdrawAmount || 0,
       withdrawCurrency: eventData.withdrawCurrency || 'not set',
+      invoiceId: eventData.invoiceId || 'not set',
       walletType: eventData.walletType || 'not set'
     })
   }
@@ -167,6 +171,7 @@ export const useGtmAnalytics = () => {
       userId: profileStore.profile?.id,
       depositAmount: eventData.depositAmount || 0,
       depositCurrency: eventData.depositCurrency || 'not set',
+      invoiceId: eventData.invoiceId || 'not set',
       walletType: eventData.walletType || 'not set'
     })
   }
@@ -178,6 +183,7 @@ export const useGtmAnalytics = () => {
       userId: profileStore.profile?.id,
       withdrawAmount: eventData.withdrawAmount || 0,
       withdrawCurrency: eventData.withdrawCurrency || 'not set',
+      invoiceId: eventData.invoiceId || 'not set',
       walletType: eventData.walletType || 'not set'
     })
   }

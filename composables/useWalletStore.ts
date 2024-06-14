@@ -177,6 +177,7 @@ export const useWalletStore = defineStore('walletStore', {
           depositAmount: eventAmount,
           depositCurrency: eventCurrency,
           successDepositNumber: webSocketResponse.data?.invoice?.number,
+          invoiceId: webSocketResponse.data?.invoice?.id,
           walletType: eventCurrencyObject?.type
         });
 
@@ -185,6 +186,7 @@ export const useWalletStore = defineStore('walletStore', {
             event: 'walletFirstDepositSuccess',
             depositAmount: eventAmount,
             depositCurrency: eventCurrency,
+            invoiceId: webSocketResponse.data?.invoice?.id,
             walletType: eventCurrencyObject?.type
           });
         }
@@ -205,6 +207,7 @@ export const useWalletStore = defineStore('walletStore', {
           event: invoiceSuccess ? 'walletWithdrawSuccess' : 'walletWithdrawFail',
           withdrawAmount: eventAmount,
           withdrawCurrency: eventCurrency,
+          invoiceId: webSocketResponse.data?.invoice?.id,
           walletType: eventCurrencyObject?.type
         });
       }

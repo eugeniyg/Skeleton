@@ -53,5 +53,6 @@ export interface IAnalyticsEvent {
   withdrawCurrency?: string;
   successDepositNumber?: number|null;
   walletType?: string;
+  invoiceId?: string;
 }
 
