@@ -53,8 +53,10 @@
     </template>
 
     <template v-else-if="props.selectedTab === 'withdraw'">
+      <wallet-turn-over-wager v-if="showTurnOverModal" />
+
       <form-withdraw
-        v-if="withdrawMethods?.length && props.currentWithdrawMethod"
+        v-else-if="withdrawMethods?.length && props.currentWithdrawMethod"
         :key="`${props.currentWithdrawMethod.method}-${showMobileFormKey}`"
         v-bind="props.currentWithdrawMethod"
       />
@@ -152,6 +154,14 @@
   const playerIdentity = computed(() => {
     if (!profile.value?.id) return '';
     return profile.value.id.split('-')[0].toUpperCase();
+  })
+
+  const riskStore = useRiskStore();
+  const runtimeConfig = useRuntimeConfig();
+  const enableTurnOverWagerModal = runtimeConfig.public.enableTurnOverWager;
+  const { turnOverWagerData } = storeToRefs(riskStore);
+  const showTurnOverModal = computed(() => {
+    return enableTurnOverWagerModal && turnOverWagerData.value?.turnOverWagerAmount > 0;
   })
 
   // << GET CONTENT FOR DEPOSIT LIMIT

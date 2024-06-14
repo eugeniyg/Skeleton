@@ -53,6 +53,7 @@
     <!--    <modal-wallet-choose-region />-->
     <modal-cancel-deposit />
     <modal-wallet-bonus-details />
+    <modal-turn-over-wager v-if="turnOverWagerModal" />
 
     <atomic-alert />
   </div>
@@ -119,6 +120,9 @@
       && !isGamePage.value
       && !isSportsbookPage.value;
   });
+
+  const runtimeConfig = useRuntimeConfig();
+  const turnOverWagerModal = runtimeConfig.public.enableTurnOverWager;
 
   onBeforeMount(() => {
     const storageReturnGame = sessionStorage.getItem('returnGame');
