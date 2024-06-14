@@ -30,6 +30,7 @@ const analyticsEventsArr = [
   'walletChangeMethod',
   'walletSubmitForm',
   'walletDepositSuccess',
+  'walletFirstDepositSuccess',
   'walletWithdrawSuccess',
   'walletDepositFail',
   'walletWithdrawFail',
@@ -48,6 +49,10 @@ export interface IAnalyticsEvent {
   walletOperationType?: 'deposit'| 'withdraw';
   depositAmount?: number;
   withdrawAmount?: number;
+  depositCurrency?: string;
+  withdrawCurrency?: string;
+  successDepositNumber?: number|null;
   walletType?: string;
+  invoiceId?: string;
 }
 

@@ -34,7 +34,8 @@ export const useGtmAnalytics = () => {
 
   const registrationSuccess = (eventData: IAnalyticsEvent): void => {
     gtm?.trackEvent({
-      ...baseRegFunnelObj,
+      event: 'Action',
+      eventCategory: 'registration',
       userId: profileStore.profile?.id,
       regType: eventData.regType || 'not set',
     })
@@ -132,6 +133,21 @@ export const useGtmAnalytics = () => {
       eventCategory: 'deposit',
       userId: profileStore.profile?.id,
       depositAmount: eventData.depositAmount || 0,
+      depositCurrency: eventData.depositCurrency || 'not set',
+      invoiceId: eventData.invoiceId || 'not set',
+      successDepositNumber: eventData.successDepositNumber || 0,
+      walletType: eventData.walletType || 'not set'
+    })
+  }
+
+  const walletFirstDepositSuccess = (eventData: IAnalyticsEvent): void => {
+    gtm?.trackEvent({
+      event: 'Action',
+      eventCategory: 'firstDeposit',
+      userId: profileStore.profile?.id,
+      depositAmount: eventData.depositAmount || 0,
+      depositCurrency: eventData.depositCurrency || 'not set',
+      invoiceId: eventData.invoiceId || 'not set',
       walletType: eventData.walletType || 'not set'
     })
   }
@@ -142,6 +158,8 @@ export const useGtmAnalytics = () => {
       eventCategory: 'withdraw',
       userId: profileStore.profile?.id,
       withdrawAmount: eventData.withdrawAmount || 0,
+      withdrawCurrency: eventData.withdrawCurrency || 'not set',
+      invoiceId: eventData.invoiceId || 'not set',
       walletType: eventData.walletType || 'not set'
     })
   }
@@ -152,6 +170,8 @@ export const useGtmAnalytics = () => {
       eventCategory: 'failDeposit',
       userId: profileStore.profile?.id,
       depositAmount: eventData.depositAmount || 0,
+      depositCurrency: eventData.depositCurrency || 'not set',
+      invoiceId: eventData.invoiceId || 'not set',
       walletType: eventData.walletType || 'not set'
     })
   }
@@ -162,6 +182,8 @@ export const useGtmAnalytics = () => {
       eventCategory: 'failWithdraw',
       userId: profileStore.profile?.id,
       withdrawAmount: eventData.withdrawAmount || 0,
+      withdrawCurrency: eventData.withdrawCurrency || 'not set',
+      invoiceId: eventData.invoiceId || 'not set',
       walletType: eventData.walletType || 'not set'
     })
   }
@@ -223,6 +245,7 @@ export const useGtmAnalytics = () => {
     walletChangeMethod,
     walletSubmitForm,
     walletDepositSuccess,
+    walletFirstDepositSuccess,
     walletWithdrawSuccess,
     walletDepositFail,
     walletWithdrawFail,
