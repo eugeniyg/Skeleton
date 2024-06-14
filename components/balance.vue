@@ -108,9 +108,11 @@
 
   const onChangeAccount = (): void => {
     const { getDepositBonuses } = useBonusStore();
+    const { getTurnOverWager } = useRiskStore();
     walletStore.getDepositMethods();
     walletStore.getWithdrawMethods();
-    getDepositBonuses(activeAccount.value?.currency as string)
+    getDepositBonuses(activeAccount.value?.currency as string);
+    getTurnOverWager();
   }
 </script>
 

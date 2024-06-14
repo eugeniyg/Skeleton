@@ -19,6 +19,7 @@ interface IModals extends Record<string, any> {
   resetPass: boolean;
   success: boolean;
   fiat: boolean;
+  turnOverWager: boolean;
 }
 
 interface IModalsUrls extends Record<string, any> {
@@ -66,6 +67,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         success: false,
         registerCancel: false,
         fiat: false,
+        turnOverWager: false
       },
       modalsUrl: {
         register: 'sign-up',
@@ -230,14 +232,27 @@ export const useLayoutStore = defineStore('layoutStore', {
       this.walletModalType = modalType;
       const { getDepositMethods, getWithdrawMethods, activeAccount } = useWalletStore();
       const { getDepositBonuses } = useBonusStore();
+      const riskStore = useRiskStore();
       await Promise.allSettled([
         getDepositMethods(),
         getWithdrawMethods(),
-        getDepositBonuses(activeAccount?.currency as string)
+        getDepositBonuses(activeAccount?.currency as string),
+        riskStore.getTurnOverWager()
       ]);
 
       const { isLoggedIn } = useProfileStore();
       if (!isLoggedIn) return;
+
+      const runtimeConfig = useRuntimeConfig();
+      const showTurnOverWagerModal = runtimeConfig.public.enableTurnOverWager
+        && modalType === 'withdraw'
+        && riskStore.turnOverWagerData?.turnOverWagerAmount > 0;
+
+      if (showTurnOverWagerModal) {
+        this.showModal('turnOverWager');
+        return;
+      }
+
       this.showModal('wallet', modalType);
       useEvent('analyticsEvent', {
         event: 'walletOpen',
