@@ -12,11 +12,9 @@
         :class="{'is-selected': item.method === props.activeMethod?.method }"
         @click="select(item)"
       >
-        <atomic-image v-if="item.method === cashAgentMethodKey" src="/img/methods-icons/cash-agent.svg" />
         <atomic-image
-          v-else
           class="mask"
-          :src="item.logo || logoUrl"
+          :src="paymentLogos[i]"
           :defaultImage="activeAccountType === 'fiat'
             ? '/img/methods-icons/cards.svg'
             : '/img/methods-icons/crypto-placeholder.svg'"
@@ -65,16 +63,11 @@
     if (isOpen.value) isOpen.value = false;
   };
 
-  const logoUrl = ref<string>('');
+  const paymentLogos = ref<string[]>([]);
   const methodsMinSum = ref<string[]>([]);
 
   const walletStore = useWalletStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
-
-  const checkLogoUrl = (): void => {
-    if (activeAccountType.value === 'fiat') logoUrl.value = '/img/methods-icons/cards.svg';
-    else if (activeAccount.value?.currency) logoUrl.value = `/img/methods-icons/${activeAccount.value?.currency}.svg`;
-  }
 
   const getMinMethodSum = (minAmount: number): string => {
     const { amount, currency } = formatBalance(activeAccount.value?.currency, minAmount);
@@ -90,13 +83,29 @@
     }
   }
 
+  const runtimeConfig = useRuntimeConfig();
+  const customerCdn = runtimeConfig.public.customerCdn;
+  const setPaymentLogos = (): void => {
+    if (!props.items) paymentLogos.value = [];
+    else paymentLogos.value = props.items.map(methodData => {
+      if (methodData.logo) {
+        if (methodData.logo.startsWith('http')) return methodData.logo;
+        if (customerCdn) return `${customerCdn}${methodData.logo}`;
+      }
+      if (methodData.method === cashAgentMethodKey) return '/img/methods-icons/cash-agent.svg';
+      if (activeAccountType.value === 'fiat') return '/img/methods-icons/cards.svg';
+      if (activeAccount.value?.currency) return `/img/methods-icons/${activeAccount.value?.currency}.svg`;
+      return '';
+    })
+  }
+
   // FOR STATIC LOGO URL AND MIN DEPOSIT SUM
   // WITH REACTIVITY, THIS PARAMS UPDATE ASYNC BECAUSE OF REACTIVE activeAccount
-  checkLogoUrl();
+  setPaymentLogos();
   setMethodsMinSum();
 
   watch(() => props.items, () => {
-    checkLogoUrl();
+    setPaymentLogos();
     setMethodsMinSum();
   })
 </script>

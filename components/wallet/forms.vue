@@ -120,17 +120,21 @@
     hasOffset.value = scrollBlock.value.scrollTop !== 0;
   }
 
+  const runtimeConfig = useRuntimeConfig();
+  const customerCdn = runtimeConfig.public.customerCdn;
   const methodLogoUrl = computed(() => {
     if (props.selectedTab === 'deposit' && props.currentDepositMethod?.logo) {
-      return props.currentDepositMethod.logo;
+      if (props.currentDepositMethod.logo.startsWith('http')) return props.currentDepositMethod.logo;
+      if (customerCdn) return `${customerCdn}${props.currentDepositMethod.logo}`;
+    }
+
+    if (props.selectedTab === 'withdraw' && props.currentWithdrawMethod?.logo) {
+      if (props.currentWithdrawMethod.logo.startsWith('http')) return props.currentWithdrawMethod.logo;
+      if (customerCdn) return `${customerCdn}${props.currentWithdrawMethod.logo}`;
     }
 
     if (props.selectedTab === 'withdraw' && props.currentWithdrawMethod?.method === '0x.withdrawal.cash_agent') {
       return '/img/methods-icons/cash-agent.svg'
-    }
-
-    if (props.selectedTab === 'withdraw' && props.currentWithdrawMethod?.logo) {
-      return props.currentWithdrawMethod.logo;
     }
 
     if (activeAccountType.value === 'fiat') return '/img/methods-icons/cards.svg';
