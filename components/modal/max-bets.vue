@@ -70,7 +70,10 @@
   const router = useRouter();
 
   const handleCancel = (): void => {
-    router.push(localizePath('/profile/bonuses'));
+    emit('closeModal');
+    setTimeout(() => {
+      router.push(localizePath('/profile/bonuses'));
+    }, 500);
   }
 </script>
 

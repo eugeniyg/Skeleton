@@ -127,7 +127,7 @@ export const useGamesStore = defineStore('gamesStore', {
 
     handleBetsEvent(socketData: IWebSocketResponse):void {
       const betsEvent = socketData.data.event;
-      if (betsEvent === '') useEvent('restrictedBets', socketData.data.gameIdentity as string);
+      if (betsEvent === 'game.bet.restricted') useEvent('restrictedBets', socketData.data.gameIdentity as string);
       else if (betsEvent === 'game.bet.max.exceed') {
         const bonusCurrency = socketData.data.playerBonus?.currency;
         const bonusMaxAmount = socketData.data.playerBonus?.maxBetAmount;

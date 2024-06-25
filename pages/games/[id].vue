@@ -74,7 +74,7 @@
   const defaultLocaleGameContent = ref<Maybe<IGamePage>>();
   const showRestrictedBetsModal = ref<boolean>(false);
   const maxBetsModal = reactive({
-    show: true,
+    show: false,
     maxBet: ''
   });
 
