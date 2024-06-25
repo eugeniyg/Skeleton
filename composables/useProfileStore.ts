@@ -15,6 +15,7 @@ interface IProfileStoreState {
   profile: Maybe<IProfile>;
   socialAuthEmailError: boolean;
   tokenCookieKey: string;
+  onlineSubscription: any;
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -25,7 +26,8 @@ export const useProfileStore = defineStore('profileStore', {
     resentVerifyEmail: false,
     profile: undefined,
     socialAuthEmailError: false,
-    tokenCookieKey: 'access_token'
+    tokenCookieKey: 'access_token',
+    onlineSubscription: undefined
   }),
 
   getters: {
@@ -142,6 +144,7 @@ export const useProfileStore = defineStore('profileStore', {
       subscribeBonusSocket();
       subscribeFreeSpinsSocket();
       subscribeRestrictedBetsSocket();
+      this.subscribeOnlineSocket();
 
       const { setEquivalentCurrency } = useGlobalStore();
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
@@ -161,6 +164,7 @@ export const useProfileStore = defineStore('profileStore', {
       unsubscribeBonusSocket();
       unsubscribeFreeSpinsSocket();
       unsubscribeRestrictedBetsSocket();
+      this.unsubscribeOnlineSocket();
     },
 
     async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {
@@ -278,6 +282,18 @@ export const useProfileStore = defineStore('profileStore', {
         showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
       } finally {
         this.resentVerifyEmail = true;
+      }
+    },
+
+    subscribeOnlineSocket():void {
+      const { createSubscription } = useWebSocket();
+      this.onlineSubscription = createSubscription('global:online');
+    },
+
+    unsubscribeOnlineSocket():void {
+      if (this.onlineSubscription) {
+        this.onlineSubscription.unsubscribe();
+        this.onlineSubscription.removeAllListeners();
       }
     },
   },
