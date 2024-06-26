@@ -161,7 +161,6 @@
   })
 
   const riskStore = useRiskStore();
-  const runtimeConfig = useRuntimeConfig();
   const enableTurnOverWagerModal = runtimeConfig.public.enableTurnOverWager;
   const { turnOverWagerData } = storeToRefs(riskStore);
   const showTurnOverModal = computed(() => {
