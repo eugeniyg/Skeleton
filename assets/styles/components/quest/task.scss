@@ -12,30 +12,15 @@
   @include media(md) {
     grid-template-columns: auto 1fr auto;
     grid-template-areas: "img header actions" "img body actions";
-
-    //&.is-active {
-    //  grid-template-areas: "img header actions" "img body body";
-    //}
   }
 
   .quest-info-wrapper {
-    display: grid;
-    grid-template-areas: "info" "games";
-    grid-template-columns: 1fr;
     grid-area: wrap;
+    display: flex;
     overflow: hidden;
     margin: 16px 0 0;
     grid-gap: 1px;
     border-radius: 4px;
-
-    &:has(.quest-info:nth-child(2)) {
-      grid-template-areas: "info info" "games games";
-      grid-template-columns: auto auto;
-    }
-
-    @include media(md) {
-      display: flex;
-    }
   }
 
   &:not(.is-active):has(.quest-info-wrapper) {
