@@ -62,7 +62,9 @@
           </div>
         </div>
       </div>
-
+      
+      <quest-hub/>
+      
       <table-profile/>
 
       <atomic-divider/>

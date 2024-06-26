@@ -1,3 +1,7 @@
+import { storeToRefs } from 'pinia';
+
+import dayjs from 'dayjs';
+
 export const useFakeStore = () => {
   const cards = [
     {
@@ -1698,7 +1702,321 @@ export const useFakeStore = () => {
     },
   ];
 
+  const questHubPopupTasks = [
+    {
+      title: 'Multiplayer Master',
+      image: '/img/quest/card-1.png',
+      rewards: [
+        {
+          amount: '169.26',
+          currency: 'EUR',
+          type: 'fiat'
+        },
+        {
+          amount: '404.76',
+          currency: 'USD',
+          type: 'fiat'
+        },
+        {
+          amount: '26.00775532',
+          currency: 'BTC',
+          type: 'crypto'
+        },
+        {
+          amount: '0.40000000',
+          currency: 'USDT',
+          type: 'crypto'
+        },
+        {
+          amount: '3000',
+          currency: 'GLD',
+          type: 'virtual'
+        },
+        {
+          amount: '100',
+          currency: 'GCOIN',
+          type: 'virtual'
+        },
+      ],
+      expiredAt: dayjs().add(7, 'hours'),
+      progress: {
+        columns: 1,
+        width: 0,
+        label: '0/5',
+      },
+      multiplier: {
+        title: 'Multiplier',
+        min: '12x',
+        max: '37x',
+      },
+      win: {
+        title: 'Win',
+        min: '0.000000001 mBTC',
+        max: '0.000000174 mBTC',
+      },
+      bet: {
+        title: 'Bet Amount',
+        min: '0.000000001 mBTC',
+        max: '0.000000174 mBTC',
+      },
+      status: 'active'
+    },
+    {
+      title: 'Unlock Slotsbet Loyalty',
+      image: '/img/quest/card-2.png',
+      rewards: [
+        {
+          amount: '169.26',
+          currency: 'EUR',
+          fiat: true
+        },
+        {
+          amount: '404.76',
+          currency: 'USD',
+          fiat: true
+        },
+        {
+          amount: '26.00775532',
+          currency: 'BTC',
+        },
+        {
+          amount: '0.40000000',
+          currency: 'USDT'
+        },
+      ],
+      expiredAt: dayjs().add(10, 'hours'),
+      progress: {
+        columns: 5,
+        width: 50
+      },
+      status: 'expired'
+    },
+    {
+      title: 'Summer Jam',
+      image: '/img/quest/card-3.png',
+      expiredAt: dayjs().add(10, 'hours'),
+      progress: {
+        columns: 19,
+        width: 55.5
+      },
+      bundled:  true,
+      status: 'expired'
+    }
+  ]
+
+  const questPopupCurrentTask = {
+    title: 'Unlock Slotsbet Loyalty',
+    image: '',
+    rewards: [
+      {
+        amount: '169.26',
+        currency: 'EUR',
+        type: 'fiat'
+      },
+      {
+        amount: '404.76',
+        currency: 'USD',
+        type: 'fiat'
+      },
+      {
+        amount: '26.00775532',
+        currency: 'BTC',
+        type: 'crypto'
+      },
+      {
+        amount: '0.40000000',
+        currency: 'USDT',
+        type: 'crypto'
+      },
+      {
+        amount: '3000',
+        currency: 'GLD',
+        type: 'virtual'
+      },
+      {
+        amount: '100',
+        currency: 'GCOIN',
+        type: 'virtual'
+      },
+    ],
+    expiredAt: dayjs().add(7, 'hours'),
+  }
+
+  const questHubCards = [
+    {
+      title: 'Multiplayer Master',
+      img: '/img/quest/1.png',
+      wins: [
+        {
+          isActive: true,
+          amount: '0.00000013',
+          currency: 'mBTC',
+        },
+        {
+          amount: '185.000',
+          currency: 'GLD',
+        },
+        {
+          amount: '300.000',
+          currency: 'GLD'
+        }
+      ]
+    },
+    {
+      title: 'Multiplayer Master',
+      img: '/img/quest/1.png',
+      wins: [
+        {
+          isActive: true,
+          amount: '0.00000013',
+          currency: 'mBTC',
+        },
+        {
+          amount: '185.000',
+          currency: 'GLD',
+        },
+        {
+          amount: '300.000',
+          currency: 'GLD'
+        }
+      ]
+    },
+    {
+      title: 'Multiplayer Master',
+      img: '/img/quest/1.png',
+      wins: [
+        {
+          isActive: true,
+          amount: '0.00000013',
+          currency: 'mBTC',
+        },
+        {
+          amount: '185.000',
+          currency: 'GLD',
+        },
+        {
+          amount: '300.000',
+          currency: 'GLD'
+        }
+      ]
+    },
+  ];
+
+  const questPopupTasks = [
+    {
+      title: 'Verify Phone Number',
+      image: '/img/quest/1.png',
+      status: 'completed'
+    },
+    {
+      title: 'Verify Phone Number',
+      image: '/img/quest/1.png',
+      status: 'active'
+    },
+    {
+      title: 'Verify Email',
+      numberTitle: 'Task #2',
+      image: '/img/quest/2.png',
+      progress: {
+        columns: 1,
+        width: 0,
+        label: '0/1',
+      },
+      status: 'active',
+    },
+    {
+      title: 'Win in games',
+      numberTitle: 'Task #2',
+      image: '/img/quest/3.png',
+      multiplier: {
+        title: 'Multiplier',
+        min: '12x',
+        max: '37x',
+      },
+      win: {
+        title: 'Win',
+        min: '0.000000001 mBTC',
+        max: '0.000000174 mBTC',
+      },
+      games: [
+        '/img/quest/game-sample.png',
+        '/img/quest/game-sample.png',
+        '/img/quest/game-sample.png',
+        '/img/quest/game-sample.png',
+      ],
+      status: 'active',
+    },
+    {
+      title: 'Make a bet',
+      numberTitle: 'Task #4',
+      image: '/img/quest/4.png',
+      bet: {
+        title: 'Bet Amount',
+        min: '0.000000001 mBTC',
+        max: '0.000000174 mBTC',
+      },
+      games: [
+          '/img/quest/game-sample.png',
+          '/img/quest/game-sample.png',
+          '/img/quest/game-sample.png',
+          '/img/quest/game-sample.png',
+      ],
+      status: 'active',
+    },
+    {
+      title: 'Filling out personal profile fields ',
+      numberTitle: 'Task #4',
+      image: '/img/quest/5.png',
+      progress: {
+        columns: 1,
+        width: 0,
+        label: '0/3'
+      },
+      fieldsToComplete: [
+          'Security Questions',
+          'Date of Birth',
+          'Date of Birth',
+          'Preferred'
+      ],
+      status: 'active',
+    },
+  ];
+
+  const questAccumulatedRewards = [
+    {
+      amount: '0.00000013',
+      currency: 'mBTC'
+    },
+    {
+      amount: '1.000.000',
+      currency: 'INR'
+    },
+    {
+      amount: '174',
+      currency: 'PLN'
+    },
+    {
+      amount: '25.000',
+      currency: 'GLD'
+    },
+  ]
+
+  const questTaskDetailsItems = {
+    wins: ['0.00000013 mBTC', '35 EUR', '17 USDT', '1.000.000 INR', '142 PLN', '25,000 GLD'],
+    minMultiplier: '12x',
+    maxMultiplier: '37x',
+    minWin: '0.000000001 mBTC',
+    maxWin: '0.000000001 mBTC',
+    games: ['Limbo Rider', 'Save The Princess', 'Fruit Towers', 'Double Roll', 'Magic Keno', 'Crash X', 'Ball & Ball', 'Stairs', 'Neko']
+  }
+
   return {
+    questHubCards,
+    questPopupCurrentTask,
+    questPopupTasks,
+    questHubPopupTasks,
+    questTaskDetailsItems,
+    questAccumulatedRewards,
     cashBonuses,
     catNavItems,
     items,

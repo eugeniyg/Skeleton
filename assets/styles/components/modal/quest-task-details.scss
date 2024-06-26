@@ -1,0 +1,95 @@
+.modal-quest-task-details {
+  .vfm__content {
+    max-width: 328px;
+    width: 100%;
+    margin: auto;
+  }
+
+  .scroll {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 100%;
+    background: var(--layer-01);
+    border-top: 12px solid var(--layer-01);
+    border-right: 8px solid var(--layer-01);
+    border-bottom: 12px solid var(--layer-01);
+    border-left: 8px solid var(--layer-01);
+    box-shadow: var(--shadow-modal);
+    position: relative;
+    padding: 24px 22px 22px 22px;
+    grid-row-gap: 24px;
+    width: 100%;
+    @extend %scrollbar;
+
+    border-radius: 16px;
+
+    @include media(xs) {
+      border-radius: 12px;
+    }
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .title {
+      @include font($heading-5);
+      color: var(--text-primary);
+      text-align: var(--text-align, center);
+      flex-grow: 1;
+    }
+  }
+
+  .btn-modal-close {
+    position: absolute;
+    --bg: transparent;
+    --right: #{rem(-16px)};
+    --top: #{rem(-8px)};
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border-01);
+    background-color: var(--layer-03-low-contrast);
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    &:nth-child(odd) {
+      background-color: var(--layer-01);
+    }
+
+    &:nth-child(even) {
+      background-color: var(--layer-03-low-contrast);
+    }
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    padding: 12px 0 12px 12px;
+    @include font($body-1);
+    color: var(--text-tertiary);
+    width: 50%;
+  }
+
+  &__value {
+    padding: 12px;
+    @include font($heading-1);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 50%;
+  }
+}

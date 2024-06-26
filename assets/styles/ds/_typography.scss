@@ -80,6 +80,13 @@ $heading-9: (
   letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
 );
 
+$heading-uppercase-1: (
+  font-size: map-get(font-sizes.$font-sizes, 50),
+  font-weight: 600,
+  line-height: 100%,
+  text-transform: uppercase
+);
+
 $heading-uppercase-5: (
   font-size: map-get(font-sizes.$font-sizes, 400),
   font-weight: map-get(font-weights.$font-weights, bold),
@@ -125,9 +132,16 @@ $subheading-1: (
 $subheading-2: (
   font-size: map-get(font-sizes.$font-sizes, 75),
   font-weight: map-get(font-weights.$font-weights, medium),
+  line-height: 130%,
+);
+
+$subheading-3: (
+  font-size: map-get(font-sizes.$font-sizes, 100),
+  font-weight: map-get(font-weights.$font-weights, medium),
   line-height: map-get(line-heights.$line-heights, 0),
   letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
 );
+
 
 $subheading-4: (
   font-size: map-get(font-sizes.$font-sizes, 300),

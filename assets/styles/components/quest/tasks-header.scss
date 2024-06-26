@@ -1,0 +1,27 @@
+.quest-tasks-header {
+  color: var(--text-primary);
+  @include font($subheading-1);
+  padding-top: 16px;
+  position: relative;
+
+  &:before {
+    position: absolute;
+    content: '';
+    width: 12px;
+    left: 0;
+    transform: translateX(-28px);
+    top: var(--before-top);
+    bottom: var(--before-bottom);
+    background-color: var(--before-bg);
+  }
+
+  //&:not(:only-of-type) {
+  //  --before-top: 0;
+  //  --before-bottom: 0;
+  //  --before-bg: var(--green-800);
+  //}
+
+  + .quest-tasks__next {
+
+  }
+}

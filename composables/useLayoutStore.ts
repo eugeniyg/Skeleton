@@ -19,6 +19,12 @@ interface IModals extends Record<string, any> {
   resetPass: boolean;
   success: boolean;
   fiat: boolean;
+  questAccumulatedRewards: boolean;
+  questTaskDetails: boolean;
+  questHub: boolean;
+  questTaskComplete: boolean;
+  questCompleteCongrat: boolean;
+  questTasks: boolean;
 }
 
 interface IModalsUrls extends Record<string, any> {
@@ -66,6 +72,12 @@ export const useLayoutStore = defineStore('layoutStore', {
         success: false,
         registerCancel: false,
         fiat: false,
+        questAccumulatedRewards: false,
+        questTaskDetails: false,
+        questHub: false,
+        questTaskComplete: false,
+        questCompleteCongrat: false,
+        questTasks: false,
       },
       modalsUrl: {
         register: 'sign-up',

@@ -1,0 +1,34 @@
+.quest-info {
+  display: flex;
+  padding: 8px 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  background: var(--layer-03-low-contrast);
+
+  &__title {
+    @include font($heading-0);
+    color: var(--text-secondary);
+
+    .is-bw-enabled & {
+      color: var(--text-helper);
+    }
+  }
+
+  &__label, &__value  {
+    @include font($body-0);
+    --line-height: auto;
+  }
+
+  &__label {
+    color: var(--text-tertiary);
+    margin-right: 2px;
+  }
+
+  &__value {
+    color: var(--text-primary);
+
+    .is-bw-enabled & {
+      color: var(--text-secondary);
+    }
+  }
+}

@@ -22,6 +22,7 @@
         'notification',
         'bonuses',
         'bets-history',
+        'quest'
       ].includes(val),
       required: false,
     },

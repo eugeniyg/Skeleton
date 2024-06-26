@@ -1,0 +1,48 @@
+.modal-quest-complete-congrat {
+  @extend %modal-info;
+
+  .scroll {
+    grid-row-gap: 0;
+
+    img {
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .header {
+    position: sticky;
+    top: 0;
+  }
+
+  &__img {
+    margin: rem(-22px) auto 12px;
+
+    @include media(md) {
+      width: 228px;
+      height: 180px;
+    }
+  }
+
+  &__title {
+    @include font($heading-6);
+    text-align: center;
+    color: var(--text-primary);
+    margin: 0 0 4px;
+  }
+
+  &__description {
+    @include font($body-2);
+    color: var(--text-tertiary);
+    text-align: center;
+    margin: 0 0 20px;
+  }
+
+  .btn-primary {
+    margin: 0 auto;
+    --padding: 12px 32px;
+    --width: fit-content;
+  }
+}

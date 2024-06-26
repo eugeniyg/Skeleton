@@ -53,7 +53,14 @@
     <!--    <modal-wallet-choose-region />-->
     <modal-cancel-deposit />
     <modal-wallet-bonus-details />
-
+    
+    <modal-quest-hub/>
+    <modal-quest-complete-congrat/>
+    <modal-quest-task-complete/>
+    <modal-quest-tasks/>
+    <modal-quest-accumulated-rewards/>
+    <modal-quest-task-details/>
+    
     <atomic-alert />
   </div>
 </template>
