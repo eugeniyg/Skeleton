@@ -18,6 +18,12 @@
       @closeModal="showRestrictedBetsModal = false"
     />
 
+    <modal-max-bets
+      :showModal="maxBetsModal.show"
+      :maxBet="maxBetsModal.maxBet"
+      @closeModal="maxBetsModal.show = false"
+    />
+
     <client-only>
       <modal-demo-game
         :content="gameContent?.demoModal || defaultLocaleGameContent?.demoModal"
@@ -67,6 +73,10 @@
   const gameContent = ref<Maybe<IGamePage>>();
   const defaultLocaleGameContent = ref<Maybe<IGamePage>>();
   const showRestrictedBetsModal = ref<boolean>(false);
+  const maxBetsModal = reactive({
+    show: false,
+    maxBet: ''
+  });
 
   interface IPageData {
     gameInfo: Maybe<IGame>;
@@ -219,6 +229,13 @@
     }
   };
 
+  const handleMaxBets = ({ gameIdentity, maxBet }:{ gameIdentity: string, maxBet: string }): void => {
+    if (gameIdentity && gameIdentity === route.params.id && !isDemo.value) {
+      maxBetsModal.maxBet = maxBet;
+      maxBetsModal.show = true;
+    }
+  };
+
   const pageMounted = ref<boolean>(false);
   onMounted(async () => {
     document.body.classList.add('is-mob-nav-vertical');
@@ -228,6 +245,7 @@
 
     if (gameInfo.value) await checkGame();
     useListen('restrictedBets', handleRestrictedBets);
+    useListen('maxBets', handleMaxBets);
     pageMounted.value = true;
   });
 
