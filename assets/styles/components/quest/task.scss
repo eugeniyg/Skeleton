@@ -17,6 +17,7 @@
   .quest-info-wrapper {
     grid-area: wrap;
     display: flex;
+    flex-wrap: wrap;
     overflow: hidden;
     margin: 16px 0 0;
     grid-gap: 1px;
