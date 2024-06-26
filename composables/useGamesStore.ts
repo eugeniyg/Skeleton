@@ -14,7 +14,7 @@ interface IGamesStoreState {
   gameCollectionsPromise: Promise<ICollection[]>|null;
   favoriteGames: IGame[];
   winnersSubscription: any;
-  restrictedBetsSubscription: any;
+  betsSubscription: any;
   latestWinners: IWinner[];
   showMobileGameModal: boolean;
   mobileGameModalType: Maybe<MobileModalType>;
@@ -29,7 +29,7 @@ export const useGamesStore = defineStore('gamesStore', {
     gameCollectionsPromise: null,
     favoriteGames: [],
     winnersSubscription: undefined,
-    restrictedBetsSubscription: undefined,
+    betsSubscription: undefined,
     latestWinners: [],
     showMobileGameModal: false,
     mobileGameModalType: undefined,
@@ -125,20 +125,32 @@ export const useGamesStore = defineStore('gamesStore', {
       this.minimumBonusWagerMultiplier = minimumBonusWagerMultiplier;
     },
 
-    handleRestrictedBets(socketData: IWebSocketResponse):void {
-      useEvent('restrictedBets', socketData.data.gameIdentity as string);
+    handleBetsEvent(socketData: IWebSocketResponse):void {
+      const betsEvent = socketData.data.event;
+      if (betsEvent === 'game.bet.restricted') useEvent('restrictedBets', socketData.data.gameIdentity as string);
+      else if (betsEvent === 'game.bet.max.exceed') {
+        const bonusCurrency = socketData.data.playerBonus?.currency;
+        const bonusMaxAmount = socketData.data.playerBonus?.maxBetAmount;
+        if (!bonusCurrency || !bonusMaxAmount) return;
+        const { formatBalance } = useProjectMethods();
+        const maxBetBalance = formatBalance(bonusCurrency, bonusMaxAmount);
+        useEvent('maxBets', {
+          gameIdentity: socketData.data.gameIdentity as string,
+          maxBet:`${maxBetBalance.amount} ${maxBetBalance.currency}`,
+        });
+      }
     },
 
-    subscribeRestrictedBetsSocket():void {
+    subscribeBetsSocket():void {
       const { createSubscription } = useWebSocket();
       const profileStore = useProfileStore();
-      this.restrictedBetsSubscription = createSubscription(`game:bets#${profileStore.profile?.id}`, this.handleRestrictedBets);
+      this.betsSubscription = createSubscription(`game:bets#${profileStore.profile?.id}`, this.handleBetsEvent);
     },
 
-    unsubscribeRestrictedBetsSocket():void {
-      if (this.restrictedBetsSubscription) {
-        this.restrictedBetsSubscription.unsubscribe();
-        this.restrictedBetsSubscription.removeAllListeners();
+    unsubscribeBetsSocket():void {
+      if (this.betsSubscription) {
+        this.betsSubscription.unsubscribe();
+        this.betsSubscription.removeAllListeners();
       }
     }
   },
