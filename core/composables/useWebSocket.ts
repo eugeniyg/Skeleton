@@ -27,9 +27,9 @@ export const useWebSocket = defineStore('useWebSocket', {
       await this.initWebSocket();
     },
 
-    createSubscription (channel:string, callback:Function) {
+    createSubscription (channel:string, callback?:Function) {
       const subscription = this.webSocket.newSubscription(channel);
-      subscription.on('publication', callback);
+      if (callback) subscription.on('publication', callback);
       subscription.subscribe();
 
       return subscription;
