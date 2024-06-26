@@ -63,9 +63,11 @@
         </div>
       </div>
 
-      <table-profile/>
+      <quest-hub />
 
-      <atomic-divider/>
+      <table-profile />
+
+      <atomic-divider />
     </template>
 
     <h4 class="heading">
