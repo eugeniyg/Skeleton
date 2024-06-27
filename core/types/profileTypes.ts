@@ -49,6 +49,7 @@ export interface IProfile extends Record<string, any>{
 export interface IAuthorizationRequest extends Record<any, any> {
   login: string;
   password: string;
+  fingerprint?: string;
 }
 
 export interface IAuthorizationResponse extends Record<string, any>{

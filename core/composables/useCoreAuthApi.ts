@@ -32,10 +32,10 @@ export const useCoreAuthApi = () => {
     return data;
   };
 
-  const submitAutologinData = async (token: string):Promise<IAuthorizationResponse> => {
+  const submitAutologinData = async (autoLoginData: { token: string, fingerprint?: string }):Promise<IAuthorizationResponse> => {
     const { data } = await useApiGuestInstance('/api/player/sessions/token', {
       method: 'POST',
-      body: { token }
+      body: autoLoginData
     });
 
     return data;
