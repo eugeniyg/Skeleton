@@ -234,9 +234,6 @@
       registrationFormData.nickname = getNicknameFromEmail(registrationFormData.email);
     }
 
-    const affiliateTag = localStorage.getItem('affiliateTag');
-    if (affiliateTag) registrationFormData.affiliateTag = affiliateTag;
-
     isLockedAsyncButton.value = true;
     if (props.registrationType === 'phone') {
       await handlePhoneRegistration();

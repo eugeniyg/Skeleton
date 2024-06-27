@@ -2,17 +2,17 @@ import FingerprintJS from "@fingerprintjs/fingerprintjs";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const checkAffiliateTag = ():void => {
-    const historyBack = window.history.state.back;
-    const { isLoggedIn } = useProfileStore();
     const route = useRoute();
+    const router = useRouter();
+    const runtimeConfig = useRuntimeConfig();
+    const cookieAffiliateTag = useCookie('affiliateTag');
 
-    if (isLoggedIn) {
-      localStorage.removeItem('affiliateTag');
-    } else if (route.query?.stag) {
-      localStorage.setItem('affiliateTag', route.query.stag as string);
-    } else if (!historyBack) {
-      localStorage.removeItem('affiliateTag');
+    if (route.query?.stag && !cookieAffiliateTag.value) {
+      const cookieAffiliateTag = useCookie('affiliateTag', { maxAge: 60 * 60 * 24 * (runtimeConfig.public.affiliateTagExpiration as number || 30) });
+      cookieAffiliateTag.value = route.query.stag as string;
     }
+
+    if (route.query?.stag) router.replace({query: { ...route.query, stag: undefined } });
   };
 
   const setWindowStaticHeight = ():void => {

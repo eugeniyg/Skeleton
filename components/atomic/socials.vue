@@ -68,12 +68,10 @@
       'sign-up': undefined,
       'stag': undefined
     });
-    const affiliateTag = localStorage.getItem('affiliateTag');
 
     $auth0.loginWithRedirect({
       appState: {
         type: props.type,
-        affiliateTag: affiliateTag,
         targetUrl: formedQuery ? `${path}?${formedQuery}` : path
       },
       authorizationParams: {

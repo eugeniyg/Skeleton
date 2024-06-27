@@ -202,7 +202,6 @@ export const useProfileStore = defineStore('profileStore', {
       const { showAlert, closeModal, openWalletModal } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
 
-      localStorage.removeItem('affiliateTag');
       showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
       closeModal('register');
       openWalletModal();
@@ -211,9 +210,11 @@ export const useProfileStore = defineStore('profileStore', {
     async loginSocial(socialData:any, authState?: IAuthState):Promise<void> {
       const { submitSocialLoginData } = useCoreAuthApi();
       const fingerprint = await this.fingerprintVisitor || undefined;
+      const affiliateTag = useCookie('affiliateTag');
       const submitResult = await submitSocialLoginData({
         ...socialData,
-        fingerprint
+        fingerprint,
+        affiliateTag: affiliateTag.value || undefined
       });
       await this.handleLogin(submitResult);
 
@@ -243,9 +244,11 @@ export const useProfileStore = defineStore('profileStore', {
     async registration(registrationData:any):Promise<void> {
       const { submitRegistrationData } = useCoreAuthApi();
       const fingerprint = await this.fingerprintVisitor || undefined;
+      const affiliateTag = useCookie('affiliateTag');
       const submitResult = await submitRegistrationData({
         ...registrationData,
-        fingerprint
+        fingerprint,
+        affiliateTag: affiliateTag.value || undefined
       });
       await this.handleLogin(submitResult);
       useEvent('analyticsEvent', {
@@ -258,9 +261,11 @@ export const useProfileStore = defineStore('profileStore', {
     async phoneRegistration(registrationData:any):Promise<void> {
       const { registerByPhone } = useCoreAuthApi();
       const fingerprint = await this.fingerprintVisitor || undefined;
+      const affiliateTag = useCookie('affiliateTag');
       const submitResult = await registerByPhone({
         ...registrationData,
-        fingerprint
+        fingerprint,
+        affiliateTag: affiliateTag.value || undefined
       });
       await this.handleLogin(submitResult);
       useEvent('analyticsEvent', {
