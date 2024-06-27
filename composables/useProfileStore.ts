@@ -6,6 +6,7 @@ import type {
   IAuthState
 } from '@skeleton/core/types';
 import { jwtDecode } from "jwt-decode";
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 interface IProfileStoreState {
   refreshPromise: Promise<string>|null;
@@ -167,6 +168,12 @@ export const useProfileStore = defineStore('profileStore', {
       this.unsubscribeOnlineSocket();
     },
 
+    async getFingerprintVisitor():Promise<string> {
+      const fp = await FingerprintJS.load();
+      const result = await fp.get();
+      return result.visitorId;
+    },
+
     async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {
       this.setSessionToken(authResponse.accessToken);
       this.startSession(authResponse);
@@ -188,7 +195,11 @@ export const useProfileStore = defineStore('profileStore', {
 
     async logIn(loginData:any):Promise<void> {
       const { submitLoginData } = useCoreAuthApi();
-      const submitResult = await submitLoginData(loginData);
+      const visitorId = await this.getFingerprintVisitor();
+      const submitResult = await submitLoginData({
+        ...loginData,
+        fingerprint: visitorId || undefined
+      });
       await this.handleLogin(submitResult);
     },
 
@@ -204,7 +215,11 @@ export const useProfileStore = defineStore('profileStore', {
 
     async loginSocial(socialData:any, authState?: IAuthState):Promise<void> {
       const { submitSocialLoginData } = useCoreAuthApi();
-      const submitResult = await submitSocialLoginData(socialData);
+      const visitorId = await this.getFingerprintVisitor();
+      const submitResult = await submitSocialLoginData({
+        ...socialData,
+        fingerprint: visitorId || undefined
+      });
       await this.handleLogin(submitResult);
 
       const router = useRouter();
@@ -222,13 +237,21 @@ export const useProfileStore = defineStore('profileStore', {
 
     async autoLogin(token: string):Promise<void> {
       const { submitAutologinData } = useCoreAuthApi();
-      const submitResult = await submitAutologinData(token);
+      const visitorId = await this.getFingerprintVisitor();
+      const submitResult = await submitAutologinData({
+        token,
+        fingerprint: visitorId || undefined
+      });
       await this.handleLogin(submitResult);
     },
 
     async registration(registrationData:any):Promise<void> {
       const { submitRegistrationData } = useCoreAuthApi();
-      const submitResult = await submitRegistrationData(registrationData);
+      const visitorId = await this.getFingerprintVisitor();
+      const submitResult = await submitRegistrationData({
+        ...registrationData,
+        fingerprint: visitorId || undefined
+      });
       await this.handleLogin(submitResult);
       useEvent('analyticsEvent', {
         event: 'registrationSuccess',
@@ -239,7 +262,11 @@ export const useProfileStore = defineStore('profileStore', {
 
     async phoneRegistration(registrationData:any):Promise<void> {
       const { registerByPhone } = useCoreAuthApi();
-      const submitResult = await registerByPhone(registrationData);
+      const visitorId = await this.getFingerprintVisitor();
+      const submitResult = await registerByPhone({
+        ...registrationData,
+        fingerprint: visitorId || undefined
+      });
       await this.handleLogin(submitResult);
       useEvent('analyticsEvent', {
         event: 'registrationSuccess',
