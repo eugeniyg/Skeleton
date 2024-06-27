@@ -80,17 +80,19 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
   }
 
-  const setFingerprintVisitor = async ():Promise<void> => {
+  const getFingerprintVisitor = async ():Promise<string> => {
     const fp = await FingerprintJS.load();
     const result = await fp.get();
-    const profileStore = useProfileStore();
-    profileStore.fingerprintVisitor = result.visitorId;
+    return result.visitorId;
   }
 
   nuxtApp.hook('app:created', async () => {
     const { getProviderList, getCollectionsList } = useGamesStore();
     getProviderList();
     getCollectionsList();
+
+    const profileStore = useProfileStore();
+    profileStore.fingerprintVisitor = getFingerprintVisitor();
   });
 
   nuxtApp.hook('app:mounted', async () => {
@@ -98,7 +100,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     const { userAgent } = window.navigator;
     parseUserAgent(userAgent);
     window.addEventListener('storage', listeningChangeSession);
-    await setFingerprintVisitor();
 
     await startWebSocket();
     startProfileLogic();
