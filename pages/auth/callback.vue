@@ -14,11 +14,9 @@ const { alertsData, defaultLocaleAlertsData, currentLocale } = storeToRefs(globa
 const sendSocialData = async (socialData: any, authState?: IAuthState): Promise<void> => {
   try {
     const { loginSocial } = useProfileStore();
-    const affiliateTag = useCookie('affiliateTag');
     await loginSocial({
       ...socialData,
       locale: currentLocale.value?.code,
-      affiliateTag: affiliateTag.value || undefined,
       socialDataKey: 'id_token',
     }, authState);
   } catch (err:any) {

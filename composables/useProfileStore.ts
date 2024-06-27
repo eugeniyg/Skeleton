@@ -203,7 +203,11 @@ export const useProfileStore = defineStore('profileStore', {
 
     async loginSocial(socialData:any, authState?: IAuthState):Promise<void> {
       const { submitSocialLoginData } = useCoreAuthApi();
-      const submitResult = await submitSocialLoginData(socialData);
+      const affiliateTag = useCookie('affiliateTag');
+      const submitResult = await submitSocialLoginData({
+        ...socialData,
+        affiliateTag: affiliateTag.value || undefined
+      });
       await this.handleLogin(submitResult);
 
       const router = useRouter();
@@ -227,7 +231,11 @@ export const useProfileStore = defineStore('profileStore', {
 
     async registration(registrationData:any):Promise<void> {
       const { submitRegistrationData } = useCoreAuthApi();
-      const submitResult = await submitRegistrationData(registrationData);
+      const affiliateTag = useCookie('affiliateTag');
+      const submitResult = await submitRegistrationData({
+        ...registrationData,
+        affiliateTag: affiliateTag.value || undefined
+      });
       await this.handleLogin(submitResult);
       useEvent('analyticsEvent', {
         event: 'registrationSuccess',
@@ -238,7 +246,11 @@ export const useProfileStore = defineStore('profileStore', {
 
     async phoneRegistration(registrationData:any):Promise<void> {
       const { registerByPhone } = useCoreAuthApi();
-      const submitResult = await registerByPhone(registrationData);
+      const affiliateTag = useCookie('affiliateTag');
+      const submitResult = await registerByPhone({
+        ...registrationData,
+        affiliateTag: affiliateTag.value || undefined
+      });
       await this.handleLogin(submitResult);
       useEvent('analyticsEvent', {
         event: 'registrationSuccess',
