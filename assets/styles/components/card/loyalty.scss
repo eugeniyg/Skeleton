@@ -1,0 +1,93 @@
+.card-loyalty {
+  display: flex;
+  position: relative;
+  padding: 48px 16px;
+  margin: -24px -16px 0;
+  flex-direction: column;
+  flex: 1 0 0;
+  align-self: stretch;
+  background: linear-gradient(180deg,
+          var(--banner-color-top, rgba(73, 15, 119, 0.7)) 0%,
+          var(--banner-color-bottom, rgba(0, 0, 0, 0)) 100%);
+
+  @include media(xs) {
+    padding: 48px 32px;
+    margin: -24px -32px 0;
+  }
+
+  @include media(md) {
+    padding: 96px 48px;
+    margin: -24px -48px 0;
+  }
+
+  &__content {
+    flex: 2 1 auto;
+    display: flex;
+    flex-direction: column;
+    grid-column-gap: 20px;
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+
+    .btn-primary {
+      margin-top: 20px;
+      --padding: 12px 32px;
+      --width: 100%;
+      max-width: 328px;
+
+      @include media(md) {
+        margin-top: 24px;
+        --padding: 12px 32px;
+        --width: fit-content;
+      }
+    }
+  }
+
+  &__picture {
+    img {
+      position: absolute;
+      max-width: 232px;
+      aspect-ratio: 1/1;
+      width: 100%;
+      object-fit: contain;
+      top: -30px;
+      right: -94px;
+
+      @include media(sm) {
+        right: 32px;
+      }
+
+      @include media(md) {
+        top: 38px;
+        max-width: 336px;
+        right: 48px;
+      }
+    }
+  }
+
+  &__title, &__sub-title, &__description {
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.25);
+    > * {
+      margin: 0;
+      font-size: inherit;
+    }
+  }
+
+  &__title {
+    @include font($heading-8);
+    color: var(--text-primary);
+
+  }
+
+  &__sub-title {
+    @include font($heading-uppercase-3);
+    margin-top: 8px;
+    color: var(--text-accent);
+  }
+
+  &__description {
+    @include font($body-3);
+    color: var(--text-tertiary);
+    margin-top: 20px;
+  }
+}

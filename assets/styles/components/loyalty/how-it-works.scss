@@ -1,0 +1,81 @@
+.loyalty-how-it-works {
+  &__title {
+    @include font($heading-6);
+    color: var(--text-primary);
+  }
+
+  &__description {
+    @include font($heading-6);
+    color: var(--text-tertiary)
+  }
+
+  &__image {
+    width: 270px;
+    height: 213px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    grid-row-gap: 32px;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: repeat(2, 1fr);
+      grid-template-areas: "number title" "number description";
+      padding: 16px 16px 16px 20px;
+      align-items: center;
+      grid-column-gap: 20px;
+      align-self: stretch;
+      border-radius: 12px;
+      border: 2px solid var(--border-02-low-contrast);
+      background: var(--layer-02);
+      counter-increment: item;
+
+      @include media(md) {
+        padding: 16px 24px;
+      }
+
+      .is-numeric & {
+        &:before {
+          grid-area: number;
+          content: counter(item);
+          @include font($heading-4);
+          color: var(--text-accent);
+          display: flex;
+          width: 32px;
+          height: 32px;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          border: 3px solid var(--gradient-gold-radial);
+          background: var(--layer-02);
+          box-shadow: 0 0 8px 0 rgba(255, 105, 64, 0.80), 0 0 16px 0 rgba(255, 193, 46, 0.80);
+        }
+      }
+
+      &-title {
+        align-self: stretch;
+        color: var(--text-primary);
+        @include font($subheading-3);
+        grid-area: title;
+      }
+
+      &-description {
+        color: var(--text-tertiary);
+        grid-area: description;
+        align-self: stretch;
+        @include font($body-0);
+      }
+    }
+  }
+}
