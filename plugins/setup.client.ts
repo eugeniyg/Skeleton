@@ -1,3 +1,5 @@
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
+
 export default defineNuxtPlugin((nuxtApp) => {
   const checkAffiliateTag = ():void => {
     const historyBack = window.history.state.back;
@@ -78,10 +80,19 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
   }
 
+  const getFingerprintVisitor = async ():Promise<string> => {
+    const fp = await FingerprintJS.load();
+    const result = await fp.get();
+    return result.visitorId;
+  }
+
   nuxtApp.hook('app:created', async () => {
     const { getProviderList, getCollectionsList } = useGamesStore();
     getProviderList();
     getCollectionsList();
+
+    const profileStore = useProfileStore();
+    profileStore.fingerprintVisitor = getFingerprintVisitor();
   });
 
   nuxtApp.hook('app:mounted', async () => {
