@@ -234,8 +234,8 @@
       registrationFormData.nickname = getNicknameFromEmail(registrationFormData.email);
     }
 
-    const affiliateTag = localStorage.getItem('affiliateTag');
-    if (affiliateTag) registrationFormData.affiliateTag = affiliateTag;
+    const affiliateTag = useCookie('affiliateTag');
+    if (affiliateTag.value) registrationFormData.affiliateTag = affiliateTag.value;
 
     isLockedAsyncButton.value = true;
     if (props.registrationType === 'phone') {

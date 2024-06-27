@@ -196,7 +196,6 @@ export const useProfileStore = defineStore('profileStore', {
       const { showAlert, closeModal, openWalletModal } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
 
-      localStorage.removeItem('affiliateTag');
       showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
       closeModal('register');
       openWalletModal();
