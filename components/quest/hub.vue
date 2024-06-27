@@ -1,7 +1,9 @@
 <template>
   <div class="quest-hub">
     <div class="quest-hub__header">
-      <h2 class="quest-hub__heading">Quest hub</h2>
+      <h2 class="quest-hub__heading">
+        {{ getContent(infoContent, defaultLocaleInfoContent, 'questHub.title') }}
+      </h2>
 
       <button-base
         class="quest-hub__desktop-history-btn"
@@ -9,7 +11,7 @@
         size="xs"
         @click="showModal('questHub')"
       >
-        Quests history
+        {{ getContent(infoContent, defaultLocaleInfoContent, 'questHub.historyLabel') }}
       </button-base>
     </div>
 
@@ -38,65 +40,72 @@
 </template>
 
 <script setup lang="ts">
-  const questHubCards = [
-    {
-      title: 'Multiplayer Master',
-      img: '/img/quest/1.png',
-      wins: [
-        {
-          isActive: true,
-          amount: '0.00000013',
-          currency: 'mBTC',
-        },
-        {
-          amount: '185.000',
-          currency: 'GLD',
-        },
-        {
-          amount: '300.000',
-          currency: 'GLD'
-        }
-      ]
-    },
-    {
-      title: 'Multiplayer Master',
-      img: '/img/quest/1.png',
-      wins: [
-        {
-          isActive: true,
-          amount: '0.00000013',
-          currency: 'mBTC',
-        },
-        {
-          amount: '185.000',
-          currency: 'GLD',
-        },
-        {
-          amount: '300.000',
-          currency: 'GLD'
-        }
-      ]
-    },
-    {
-      title: 'Multiplayer Master',
-      img: '/img/quest/1.png',
-      wins: [
-        {
-          isActive: true,
-          amount: '0.00000013',
-          currency: 'mBTC',
-        },
-        {
-          amount: '185.000',
-          currency: 'GLD',
-        },
-        {
-          amount: '300.000',
-          currency: 'GLD'
-        }
-      ]
-    },
-  ];
+  import type {IProfileInfo} from "~/types";
+
+  const { getContent } = useProjectMethods();
+  const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
+  const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
+  const questHubCards = [];
+
+  // const questHubCards = [
+  //   {
+  //     title: 'Multiplayer Master',
+  //     img: '/img/quest/1.png',
+  //     wins: [
+  //       {
+  //         isActive: true,
+  //         amount: '0.00000013',
+  //         currency: 'mBTC',
+  //       },
+  //       {
+  //         amount: '185.000',
+  //         currency: 'GLD',
+  //       },
+  //       {
+  //         amount: '300.000',
+  //         currency: 'GLD'
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     title: 'Multiplayer Master',
+  //     img: '/img/quest/1.png',
+  //     wins: [
+  //       {
+  //         isActive: true,
+  //         amount: '0.00000013',
+  //         currency: 'mBTC',
+  //       },
+  //       {
+  //         amount: '185.000',
+  //         currency: 'GLD',
+  //       },
+  //       {
+  //         amount: '300.000',
+  //         currency: 'GLD'
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     title: 'Multiplayer Master',
+  //     img: '/img/quest/1.png',
+  //     wins: [
+  //       {
+  //         isActive: true,
+  //         amount: '0.00000013',
+  //         currency: 'mBTC',
+  //       },
+  //       {
+  //         amount: '185.000',
+  //         currency: 'GLD',
+  //       },
+  //       {
+  //         amount: '300.000',
+  //         currency: 'GLD'
+  //       }
+  //     ]
+  //   },
+  // ];
   const { showModal } = useLayoutStore();
 </script>
 

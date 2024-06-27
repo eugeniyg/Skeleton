@@ -1,7 +1,9 @@
 <template>
   <div class="accumulated-rewards">
     <div class="accumulated-rewards__content">
-      <div class="accumulated-rewards__content-label">Accumulated rewards:</div>
+      <div class="accumulated-rewards__content-label">
+        {{ getContent(popupsData, defaultLocalePopupsData, 'questHub.accumulatedRewards.title') }}:
+      </div>
 
       <div class="accumulated-rewards__amount">
         <div class="accumulated-rewards__amount-current">
@@ -9,9 +11,18 @@
           <div class="accumulated-rewards__amount-currency">mBTC</div>
         </div>
 
-        <div v-if="currencies" class="accumulated-rewards__list">
-          <div class="accumulated-rewards__list-items">
-            <div v-for="item in currencies" class="accumulated-rewards__list-item">
+        <div
+          v-if="currencies"
+          class="accumulated-rewards__list"
+          ref="content"
+          @inview="checkRewardsWidth"
+        >
+          <div ref="list" class="accumulated-rewards__list-items">
+            <div
+              v-for="item in visibleItems"
+              class="accumulated-rewards__list-item"
+              ref="items"
+            >
               <span class="accumulated-rewards__list-item-value">{{ item.value }}</span>
               <span class="accumulated-rewards__list-item-currency">{{ item.currency }}</span>
             </div>
@@ -24,29 +35,77 @@
           >
             <span>+</span>
             <span>{{ hiddenItemsCount }}</span>
-            <span>more</span>
+            <span>{{ getContent(popupsData, defaultLocalePopupsData, 'questHub.moreLabel') }}</span>
           </div>
         </div>
       </div>
     </div>
 
-
     <div class="accumulated-rewards__img">
-      <atomic-image src="/img/quest/quest-accumulated-rewards.png"/>
+      <atomic-image :src="getContent(popupsData, defaultLocalePopupsData, 'questHub.accumulatedRewards.image')" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const { showModal } = useLayoutStore();
+  const globalStore = useGlobalStore();
+  const { getContent } = useProjectMethods();
+  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 
-const currencies = [
-  { value: '1.000.000', currency: 'INR' },
-  { value: '174', currency: 'PLN' },
-  { value: '1.000.000', currency: 'GLD' }
-];
+  const { showModal } = useLayoutStore();
+  const currencies = [
+    { value: '1.000.000', currency: 'INR' },
+    { value: '174', currency: 'PLN' },
+    { value: '1.000.000', currency: 'GLD' },
+    { value: '1.000.000', currency: 'HLP' },
+    { value: '1.000.000', currency: 'DRM' },
+    { value: '1.000.000', currency: 'DRM' },
+    { value: '1.000.000', currency: 'DRM' },
+    { value: '1.000.000', currency: 'DRM' },
+    { value: '1.000.000', currency: 'DRM' },
+    { value: '1.000.000', currency: 'DRM' },
+    { value: '1.000.000', currency: 'DRM' },
+    { value: '1.000.000', currency: 'DRM' },
+    { value: '1.000.000', currency: 'DRM' }
+  ];
 
-const hiddenItemsCount = 3;
+  const visibleItems = ref([]);
+  const content = ref();
+  const list = ref();
+  const items = ref<HTMLElement[]>([]);
+  const hiddenItemsCount = ref(0);
+  const checkRewardsWidth = async (): Promise<void> => {
+    visibleItems.value = currencies;
+    await nextTick();
+
+    const contentWidth = content.value.offsetWidth;
+    const listWidth = list.value.offsetWidth;
+
+    if (listWidth > contentWidth) {
+      let totalItemsWidth = 0;
+      let totalAvailableItems = 0;
+      for (const item of items.value) {
+        totalItemsWidth += item.offsetWidth;
+        if (totalItemsWidth >= contentWidth) {
+          totalAvailableItems = items.value.indexOf(item);
+          break;
+        }
+      }
+
+      visibleItems.value = currencies.slice(0, totalAvailableItems - 1);
+      hiddenItemsCount.value = currencies.length - visibleItems.value.length;
+    }
+  }
+
+  const observer = ref();
+  onMounted(() => {
+    observer.value = new ResizeObserver(checkRewardsWidth);
+    observer.value.observe(content.value);
+  });
+
+  onBeforeUnmount(() => {
+    observer.value?.unobserve(content.value);
+  });
 </script>
 
 <style src="~/assets/styles/components/quest/accumulated-rewards.scss" lang="scss"/>
