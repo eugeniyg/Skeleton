@@ -10,6 +10,11 @@
       :content="loyaltyContent?.howItWorks || defaultLocaleLoyaltyContent?.howItWorks"
     />
     
+    <loyalty-rewards
+      v-if="loyaltyContent?.howItWorks || defaultLocaleLoyaltyContent?.howItWorks"
+      :content="loyaltyContent?.howItWorks || defaultLocaleLoyaltyContent?.howItWorks"
+    />
+    
   </div>
 </template>
 
