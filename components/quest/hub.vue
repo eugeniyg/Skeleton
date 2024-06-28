@@ -2,111 +2,72 @@
   <div class="quest-hub">
     <div class="quest-hub__header">
       <h2 class="quest-hub__heading">
-        {{ getContent(infoContent, defaultLocaleInfoContent, 'questHub.title') }}
+        {{ getContent(infoContent, defaultLocaleInfoContent, 'questsHub.title') }}
       </h2>
 
       <button-base
         class="quest-hub__desktop-history-btn"
         type="ghost"
         size="xs"
-        @click="showModal('questHub')"
+        @click="showModal('questsHub')"
       >
-        {{ getContent(infoContent, defaultLocaleInfoContent, 'questHub.historyLabel') }}
+        {{ getContent(infoContent, defaultLocaleInfoContent, 'questsHub.historyLabel') }}
       </button-base>
     </div>
 
-    <quest-accumulated-rewards />
-
     <div
-      v-if="questHubCards?.length"
+      v-if="playerActiveQuests.length"
       class="quest-hub__cards"
     >
       <quest-hub-card
-        v-for="(card, index) in questHubCards"
-        v-bind="card"
-        :show-divider="index < questHubCards.length - 1"
+        v-for="(quest, index) in playerActiveQuests"
+        :questInfo="quest"
+        :cardIndex="index"
+        @openRewardsModal="openRewardsModal"
       />
     </div>
+
+    <quest-empty-active v-else />
+
+    <modal-quest-rewards
+      v-bind="rewardsState"
+      :title="getContent(infoContent, defaultLocaleInfoContent, 'questsHub.rewardsTitle')"
+      @closeModal="rewardsState.showModal = false"
+    />
 
     <button-base
       class="quest-hub__mobile-history-btn"
       type="ghost"
       size="xs"
-      @click="showModal('questHub')"
+      @click="showModal('questsHub')"
     >
-      See history
+      {{ getContent(infoContent, defaultLocaleInfoContent, 'questsHub.historyLabel') }}
     </button-base>
+
   </div>
 </template>
 
 <script setup lang="ts">
   import type {IProfileInfo} from "~/types";
 
+  const rewardsState = reactive<{
+    showModal: boolean;
+    rewardsList: { currency: string, amount: number }[];
+  }>({
+    showModal: false,
+    rewardsList: [],
+  });
   const { getContent } = useProjectMethods();
   const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
   const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
-  const questHubCards = [];
-
-  // const questHubCards = [
-  //   {
-  //     title: 'Multiplayer Master',
-  //     img: '/img/quest/1.png',
-  //     wins: [
-  //       {
-  //         isActive: true,
-  //         amount: '0.00000013',
-  //         currency: 'mBTC',
-  //       },
-  //       {
-  //         amount: '185.000',
-  //         currency: 'GLD',
-  //       },
-  //       {
-  //         amount: '300.000',
-  //         currency: 'GLD'
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     title: 'Multiplayer Master',
-  //     img: '/img/quest/1.png',
-  //     wins: [
-  //       {
-  //         isActive: true,
-  //         amount: '0.00000013',
-  //         currency: 'mBTC',
-  //       },
-  //       {
-  //         amount: '185.000',
-  //         currency: 'GLD',
-  //       },
-  //       {
-  //         amount: '300.000',
-  //         currency: 'GLD'
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     title: 'Multiplayer Master',
-  //     img: '/img/quest/1.png',
-  //     wins: [
-  //       {
-  //         isActive: true,
-  //         amount: '0.00000013',
-  //         currency: 'mBTC',
-  //       },
-  //       {
-  //         amount: '185.000',
-  //         currency: 'GLD',
-  //       },
-  //       {
-  //         amount: '300.000',
-  //         currency: 'GLD'
-  //       }
-  //     ]
-  //   },
-  // ];
+  const questsStore = useQuestsStore();
+  const { playerActiveQuests } = storeToRefs(questsStore);
   const { showModal } = useLayoutStore();
+
+  const openRewardsModal = (rewards: { currency: string, amount: number }[]) => {
+    rewardsState.rewardsList = rewards;
+    rewardsState.showModal = true;
+  }
 </script>
 
 <style src="~/assets/styles/components/quest/hub.scss" lang="scss"/>

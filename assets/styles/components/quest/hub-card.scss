@@ -8,6 +8,7 @@
             "img amount arrow";
     grid-template-columns: auto 1fr auto;
     align-items: center;
+    padding-bottom: 12px;
   }
 
   &__img {
@@ -40,6 +41,7 @@
     padding: 4px;
     --color: var(--icon-secondary);
     --icon-size: 16px;
+    cursor: pointer;
 
     &:hover {
       .icon {
@@ -99,6 +101,20 @@
   &__divider {
     width: 100%;
     --bg: var(--border-02-low-contrast);
-    --margin: 12px 0;
+    --margin: 0;
+  }
+
+  &:last-child {
+    .quest-hub-card__divider {
+      visibility: hidden;
+    }
+  }
+
+  @include media(md) {
+    &:nth-last-child(-n + 2) {
+      .quest-hub-card__divider {
+        visibility: hidden;
+      }
+    }
   }
 }

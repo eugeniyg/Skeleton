@@ -2,7 +2,7 @@
   <div class="accumulated-rewards">
     <div class="accumulated-rewards__content">
       <div class="accumulated-rewards__content-label">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'questHub.accumulatedRewards.title') }}:
+        {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.accumulatedRewards.title') }}:
       </div>
 
       <div class="accumulated-rewards__amount">
@@ -35,14 +35,14 @@
           >
             <span>+</span>
             <span>{{ hiddenItemsCount }}</span>
-            <span>{{ getContent(popupsData, defaultLocalePopupsData, 'questHub.moreLabel') }}</span>
+            <span>{{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.moreLabel') }}</span>
           </div>
         </div>
       </div>
     </div>
 
     <div class="accumulated-rewards__img">
-      <atomic-image :src="getContent(popupsData, defaultLocalePopupsData, 'questHub.accumulatedRewards.image')" />
+      <atomic-image :src="getContent(popupsData, defaultLocalePopupsData, 'questsHub.accumulatedRewards.image')" />
     </div>
   </div>
 </template>

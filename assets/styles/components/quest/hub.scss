@@ -22,7 +22,7 @@
 
   &__cards {
     display: flex;
-    padding: 16px 16px 20px 16px;
+    padding: 16px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -30,7 +30,6 @@
     align-self: stretch;
     border-radius: 8px;
     background: var(--layer-03-low-contrast);
-    margin-top: 16px;
 
     @include media(md) {
       display: grid;

@@ -122,8 +122,10 @@ export const useProfileStore = defineStore('profileStore', {
         getPlayerFreeSpins,
         getPlayerCashback
       } = useBonusStore();
+      const { getPlayerActiveQuests } = useQuestsStore();
       getFavoriteGames();
       getDepositBonusCode();
+      getPlayerActiveQuests();
 
       const { activeAccount } = useWalletStore();
       getPlayerCashback(activeAccount?.currency);
