@@ -12,6 +12,12 @@
       @closeModal="showRestrictedBetsModal = false"
     />
 
+    <modal-max-bets
+      :showModal="maxBetsModal.show"
+      :maxBet="maxBetsModal.maxBet"
+      @closeModal="maxBetsModal.show = false"
+    />
+
     <div class="betting">
       <div id="betting-container" class="container"/>
       
@@ -45,6 +51,10 @@
   const bettingContent = ref<Maybe<ISportsbookPage>>();
   const  defaultLocaleBettingContent = ref<Maybe<ISportsbookPage>>();
   const showRestrictedBetsModal = ref<boolean>(false);
+  const maxBetsModal = reactive({
+    show: false,
+    maxBet: ''
+  });
 
   interface IPageContent {
     currentLocaleData: Maybe<ISportsbookPage>;
@@ -216,6 +226,13 @@
     }
   };
 
+  const handleMaxBets = ({ gameIdentity, maxBet }:{ gameIdentity: string, maxBet: string }): void => {
+    if (gameIdentity && gameIdentity === 'betsy-sportsbook-betsy') {
+      maxBetsModal.maxBet = maxBet;
+      maxBetsModal.show = true;
+    }
+  };
+
   onMounted(async () => {
     window.addEventListener('message', resolveFrameEvent);
 
@@ -228,6 +245,7 @@
 
     await startGame();
     useListen('restrictedBets', handleRestrictedBets);
+    useListen('maxBets', handleMaxBets);
   });
 
   watch(() => isLoggedIn.value, async (newValue: boolean) => {

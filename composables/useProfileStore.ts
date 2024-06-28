@@ -15,6 +15,8 @@ interface IProfileStoreState {
   profile: Maybe<IProfile>;
   socialAuthEmailError: boolean;
   tokenCookieKey: string;
+  onlineSubscription: any;
+  fingerprintVisitor: Promise<string>|null;
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -25,7 +27,9 @@ export const useProfileStore = defineStore('profileStore', {
     resentVerifyEmail: false,
     profile: undefined,
     socialAuthEmailError: false,
-    tokenCookieKey: 'access_token'
+    tokenCookieKey: 'access_token',
+    onlineSubscription: undefined,
+    fingerprintVisitor: null
   }),
 
   getters: {
@@ -113,7 +117,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     startProfileDependencies():void {
-      const { getFavoriteGames, subscribeRestrictedBetsSocket } = useGamesStore();
+      const { getFavoriteGames, subscribeBetsSocket } = useGamesStore();
       const {
         getPlayerBonuses,
         getDepositBonusCode,
@@ -141,7 +145,8 @@ export const useProfileStore = defineStore('profileStore', {
       subscribeBonusCodeSocket();
       subscribeBonusSocket();
       subscribeFreeSpinsSocket();
-      subscribeRestrictedBetsSocket();
+      subscribeBetsSocket();
+      this.subscribeOnlineSocket();
 
       const { setEquivalentCurrency } = useGlobalStore();
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
@@ -154,13 +159,14 @@ export const useProfileStore = defineStore('profileStore', {
 
       const { unsubscribeAccountSocket, unsubscribeInvoiceSocket } = useWalletStore();
       const { unsubscribeBonusCodeSocket, unsubscribeBonusSocket, unsubscribeFreeSpinsSocket } = useBonusStore();
-      const { unsubscribeRestrictedBetsSocket } = useGamesStore();
+      const { unsubscribeBetsSocket } = useGamesStore();
       unsubscribeAccountSocket();
       unsubscribeInvoiceSocket();
       unsubscribeBonusCodeSocket();
       unsubscribeBonusSocket();
       unsubscribeFreeSpinsSocket();
-      unsubscribeRestrictedBetsSocket();
+      unsubscribeBetsSocket();
+      this.unsubscribeOnlineSocket();
     },
 
     async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {
@@ -184,7 +190,11 @@ export const useProfileStore = defineStore('profileStore', {
 
     async logIn(loginData:any):Promise<void> {
       const { submitLoginData } = useCoreAuthApi();
-      const submitResult = await submitLoginData(loginData);
+      const fingerprint = await this.fingerprintVisitor || undefined;
+      const submitResult = await submitLoginData({
+        ...loginData,
+        fingerprint
+      });
       await this.handleLogin(submitResult);
     },
 
@@ -192,7 +202,6 @@ export const useProfileStore = defineStore('profileStore', {
       const { showAlert, closeModal, openWalletModal } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
 
-      localStorage.removeItem('affiliateTag');
       showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
       closeModal('register');
       openWalletModal();
@@ -200,7 +209,13 @@ export const useProfileStore = defineStore('profileStore', {
 
     async loginSocial(socialData:any, authState?: IAuthState):Promise<void> {
       const { submitSocialLoginData } = useCoreAuthApi();
-      const submitResult = await submitSocialLoginData(socialData);
+      const fingerprint = await this.fingerprintVisitor || undefined;
+      const affiliateTag = useCookie('affiliateTag');
+      const submitResult = await submitSocialLoginData({
+        ...socialData,
+        fingerprint,
+        affiliateTag: affiliateTag.value || undefined
+      });
       await this.handleLogin(submitResult);
 
       const router = useRouter();
@@ -218,13 +233,23 @@ export const useProfileStore = defineStore('profileStore', {
 
     async autoLogin(token: string):Promise<void> {
       const { submitAutologinData } = useCoreAuthApi();
-      const submitResult = await submitAutologinData(token);
+      const fingerprint = await this.fingerprintVisitor || undefined;
+      const submitResult = await submitAutologinData({
+        token,
+        fingerprint
+      });
       await this.handleLogin(submitResult);
     },
 
     async registration(registrationData:any):Promise<void> {
       const { submitRegistrationData } = useCoreAuthApi();
-      const submitResult = await submitRegistrationData(registrationData);
+      const fingerprint = await this.fingerprintVisitor || undefined;
+      const affiliateTag = useCookie('affiliateTag');
+      const submitResult = await submitRegistrationData({
+        ...registrationData,
+        fingerprint,
+        affiliateTag: affiliateTag.value || undefined
+      });
       await this.handleLogin(submitResult);
       useEvent('analyticsEvent', {
         event: 'registrationSuccess',
@@ -235,7 +260,13 @@ export const useProfileStore = defineStore('profileStore', {
 
     async phoneRegistration(registrationData:any):Promise<void> {
       const { registerByPhone } = useCoreAuthApi();
-      const submitResult = await registerByPhone(registrationData);
+      const fingerprint = await this.fingerprintVisitor || undefined;
+      const affiliateTag = useCookie('affiliateTag');
+      const submitResult = await registerByPhone({
+        ...registrationData,
+        fingerprint,
+        affiliateTag: affiliateTag.value || undefined
+      });
       await this.handleLogin(submitResult);
       useEvent('analyticsEvent', {
         event: 'registrationSuccess',
@@ -278,6 +309,18 @@ export const useProfileStore = defineStore('profileStore', {
         showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
       } finally {
         this.resentVerifyEmail = true;
+      }
+    },
+
+    subscribeOnlineSocket():void {
+      const { createSubscription } = useWebSocket();
+      this.onlineSubscription = createSubscription('global:online');
+    },
+
+    unsubscribeOnlineSocket():void {
+      if (this.onlineSubscription) {
+        this.onlineSubscription.unsubscribe();
+        this.onlineSubscription.removeAllListeners();
       }
     },
   },

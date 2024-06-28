@@ -8,6 +8,10 @@ type ApplicationEvents = {
   'bonusesUpdated': undefined;
   'accountChanged': undefined;
   'restrictedBets': string;
+  'maxBets': {
+    gameIdentity: string;
+    maxBet: string;
+  };
   'analyticsEvent': IAnalyticsEvent;
 };
 
