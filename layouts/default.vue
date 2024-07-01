@@ -54,6 +54,7 @@
     <modal-cancel-deposit />
     <modal-wallet-bonus-details />
     <modal-turn-over-wager v-if="turnOverWagerModal" />
+    <modal-quests-hub />
 
     <atomic-alert />
   </div>

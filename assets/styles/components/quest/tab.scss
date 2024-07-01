@@ -1,0 +1,16 @@
+quest-tab {
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__load-more {
+    --width: 100%;
+    --color: var(--button-text-ghost-low-contrast);
+  }
+
+  .empty {
+    margin-top: 48px;
+  }
+}
