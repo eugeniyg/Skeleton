@@ -7,12 +7,12 @@
       >
         {{ props.label }}
       </div>
-
+      
       <div class="quest-progress__items">
         <div
-          v-for="column in props.columns"
+          v-for="width in props.columns"
           class="quest-progress__item"
-          :style="styleGradient(column)"
+          :style="`--column-width: ${width}%`"
         />
       </div>
     </div>
@@ -24,10 +24,6 @@
     columns: number[],
     label?: string,
   }>();
-  
-  const styleGradient = (percentage: number) => {
-    return `background-image: linear-gradient(113deg, var(--support-brand-default) ${percentage}%, transparent ${percentage}%)`
-  };
 </script>
 
 <style src="~/assets/styles/components/quest/progress.scss" lang="scss"/>

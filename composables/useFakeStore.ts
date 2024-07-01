@@ -1740,7 +1740,7 @@ export const useFakeStore = () => {
       ],
       expiredAt: dayjs().add(7, 'hours'),
       progress: {
-        columns: [100, 50, 25],
+        columns: [100, 100, 50],
         label: '0/5',
       },
       multiplier: {
