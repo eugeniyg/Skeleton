@@ -18,7 +18,7 @@
           v-for="item in props.content.list?.items"
           class="loyalty-how-it-works__list-item"
         >
-          <atomic-image v-if="!props.content.list.isNumeric && item?.image"/>
+          <atomic-image v-if="!props.content.list.isNumeric && item.image"/>
           
           <div class="loyalty-how-it-works__list-item-title">
             {{ item.title }}

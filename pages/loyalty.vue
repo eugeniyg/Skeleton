@@ -11,8 +11,8 @@
     />
     
     <loyalty-rewards
-      v-if="loyaltyContent?.howItWorks || defaultLocaleLoyaltyContent?.howItWorks"
-      :content="loyaltyContent?.howItWorks || defaultLocaleLoyaltyContent?.howItWorks"
+      v-if="loyaltyContent?.rewards || defaultLocaleLoyaltyContent?.rewards"
+      :content="loyaltyContent?.rewards || defaultLocaleLoyaltyContent?.rewards"
     />
     
   </div>

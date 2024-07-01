@@ -1698,7 +1698,166 @@ export const useFakeStore = () => {
     },
   ];
 
+  const loyaltyLevels = [
+    {
+      order: 'prev',
+      name: 'Previous',
+      number: 1,
+      image: '/img/uploads/loyality-sign-bg.png',
+      statusPointsLabel: 'Status points',
+      statusPointsValue: '139 - 178',
+      rankBonusLabel: 'Rank bonus',
+      rankBonusValue: '5',
+      rankBonusCurrency: 'USDT',
+      cashBackLabel: 'Cashback',
+      cashBackValue: '-',
+      options: [
+        {
+          label: 'Task rewards +50%',
+          checked: false
+        },
+        {
+          label: 'Bonus for reaching a new level',
+          checked: false
+        },
+        {
+          label: 'Monthly boost',
+          checked: false
+        },
+        {
+          label: 'Personal VIP manager',
+          checked: false
+        },
+      ]
+    },
+    {
+      order: 'prev',
+      name: 'Previous',
+      number: 1,
+      image: '/img/uploads/loyality-sign-bg.png',
+      statusPointsLabel: 'Status points',
+      statusPointsValue: '139 - 178',
+      rankBonusLabel: 'Rank bonus',
+      rankBonusValue: '5',
+      rankBonusCurrency: 'USDT',
+      cashBackLabel: 'Cashback',
+      cashBackValue: '-',
+      options: [
+        {
+          label: 'Task rewards +50%',
+          checked: false
+        },
+        {
+          label: 'Bonus for reaching a new level',
+          checked: false
+        },
+        {
+          label: 'Monthly boost',
+          checked: false
+        },
+        {
+          label: 'Personal VIP manager',
+          checked: false
+        },
+      ]
+    },
+    {
+      order: 'current',
+      name: 'Level Name',
+      number: 2,
+      image: '/img/uploads/loyality-sign-bg.png',
+      statusPointsLabel: 'Status points',
+      statusPointsValue: '-',
+      rankBonusLabel: 'Rank bonus',
+      rankBonusValue: '-',
+      rankBonusCurrency: 'USDT',
+      cashBackLabel: 'Cashback',
+      cashBackValue: '1%',
+      options: [
+        {
+          label: 'Task rewards +50%',
+          checked: false
+        },
+        {
+          label: 'Bonus for reaching a new level',
+          checked: false
+        },
+        {
+          label: 'Monthly boost',
+          checked: false
+        },
+        {
+          label: 'Personal VIP manager',
+          checked: false
+        },
+      ]
+    },
+    {
+      order: 'next',
+      name: 'Level Name',
+      number: 2,
+      image: '/img/uploads/loyality-sign-bg.png',
+      statusPointsLabel: 'Status points',
+      statusPointsValue: '-',
+      rankBonusLabel: 'Rank bonus',
+      rankBonusValue: '-',
+      rankBonusCurrency: 'USDT',
+      cashBackLabel: 'Cashback',
+      cashBackValue: '1%',
+      options: [
+        {
+          label: 'Task rewards +50%',
+          checked: false
+        },
+        {
+          label: 'Bonus for reaching a new level',
+          checked: false
+        },
+        {
+          label: 'Monthly boost',
+          checked: false
+        },
+        {
+          label: 'Personal VIP manager',
+          checked: false
+        },
+      ]
+    },
+    {
+      order: 'next',
+      name: 'Level Name',
+      number: 2,
+      image: '/img/uploads/loyality-sign-bg.png',
+      statusPointsLabel: 'Status points',
+      statusPointsValue: '-',
+      rankBonusLabel: 'Rank bonus',
+      rankBonusValue: '-',
+      rankBonusCurrency: 'USDT',
+      cashBackLabel: 'Cashback',
+      cashBackValue: '1%',
+      options: [
+        {
+          label: 'Task rewards +50%',
+          checked: false
+        },
+        {
+          label: 'Bonus for reaching a new level',
+          checked: false
+        },
+        {
+          label: 'Monthly boost',
+          checked: false
+        },
+        {
+          label: 'Personal VIP manager',
+          checked: false
+        },
+      ]
+    },
+  ];
+
   return {
+    loyaltyLevels,
     cashBonuses,
     catNavItems,
     items,

@@ -2,6 +2,10 @@
   <div class="loyalty-rewards">
     <div class="loyalty-rewards__title" v-html="marked.parse(props.content.title)"/>
     <div class="loyalty-rewards__description" v-html="marked.parse(props.content.description)"/>
+    
+    <client-only>
+      <loyalty-rewards-slider/>
+    </client-only>
   </div>
 </template>
 
@@ -13,3 +17,5 @@
     content: ILoyaltyPage['rewards'];
   }>();
 </script>
+
+<style src="~/assets/styles/components/loyalty/rewards.scss" lang="scss"/>

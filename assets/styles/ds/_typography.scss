@@ -80,6 +80,12 @@ $heading-9: (
   letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
 );
 
+$heading-uppercase-2: (
+    font-size: map-get(font-sizes.$font-sizes, 75),
+    font-weight: map-get(font-weights.$font-weights, bold),
+    text-transform: uppercase
+);
+
 $heading-uppercase-3: (
   font-size: map-get(font-sizes.$font-sizes, 100),
   font-weight: map-get(font-weights.$font-weights, bold),

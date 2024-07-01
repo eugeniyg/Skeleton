@@ -1,27 +1,23 @@
 <template>
-  
   <div>
-  <div class="loyalty-rewards-slider">
-    <div class="loyalty-rewards-slider__viewport" ref="sliderNode">
-      <div class="loyalty-rewards-slider__container">
-          <layalty-reward-slider-item
-            v-for="(item, itemIndex) in slideData"
-            :key="itemIndex"
-            v-bind="item"
-          />
-        </div>
+    <div class="loyalty-rewards-slider" ref="sliderNode">
+      <div class="loyalty-rewards-slider__viewport">
+        <loyalty-rewards-slider-item
+          v-for="level in loyaltyLevels"
+          v-bind="level"
+        />
       </div>
     </div>
     
     <div
-      v-show="props.items.length > 1"
+      v-show="levels.length > 1"
       class="loyalty-rewards-slider__nav"
       @mouseover="onMouseOver"
       @mouseleave="onMouseLeave"
     >
       <div class="loyalty-rewards-slider__bullets">
         <div
-          v-for="(item, index) in props.items.length"
+          v-for="(item, index) in levels.length"
           class="banners__bullet"
           :class="{'is-active': index === activeIndex}"
           @click="scrollTo(index)"
@@ -33,13 +29,14 @@
 
 <script setup lang="ts">
   import type { ILoyaltyPage } from '~/types';
+  const { loyaltyLevels } = useFakeStore();
   
   import emblaCarouselVue from 'embla-carousel-vue';
   import Autoplay from 'embla-carousel-autoplay';
   
-  const props = defineProps<{
-    content: ILoyaltyPage['rewards']['slider']
-  }>();
+  // const props = defineProps<{
+  //   content: ILoyaltyPage['rewards']['slider']
+  // }>();
   
   const activeIndex = ref<number>(0);
   
@@ -50,18 +47,51 @@
     stopOnMouseEnter: true
   };
   
-  const slideData = [
+  const levels = [
     {
-      level: 3,
-      statusPoints: '128 - 178',
-      rankBonus: 4,
+      type: 'previous',
+      name: 'Previous',
+      image: '',
+      icon: 'flash',
+      statusPoints: '139 - 178',
+      rankBonus: {
+        label: 'Rank bonus',
+        value: 0,
+        currency: 'USDT',
+      },
+      cashBack: {
+        label: 'Cashback',
+        value: 0,
+      },
+      isActive: true,
+      tasks: [
+        {
+          label: 'Task rewards +50%',
+          icon: ''
+        },
+        {
+          label: 'Bonus for reaching a new level',
+          icon: ''
+        },
+        {
+          label: 'Monthly boost',
+          icon: ''
+        },
+        {
+          label: 'Personal VIP manager',
+          icon: ''
+        },
+      ]
     },
+  
   ];
   
   const [sliderNode, emblaApi] = emblaCarouselVue({
     loop: false,
     align: 'start'
-  }, [Autoplay(autoplayOptions)]);
+  },
+    //[Autoplay(autoplayOptions)]
+  );
   
   const onSelectSlide = () => {
     activeIndex.value = emblaApi.value?.selectedScrollSnap() || 0;
@@ -107,4 +137,4 @@
   });
 </script>
 
-<!--<style src="~/assets/styles/components/banners.scss" lang="scss"/>-->
+<style src="~/assets/styles/components/loyalty/rewards-slider.scss" lang="scss"/>
