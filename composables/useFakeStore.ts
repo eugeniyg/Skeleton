@@ -1740,8 +1740,7 @@ export const useFakeStore = () => {
       ],
       expiredAt: dayjs().add(7, 'hours'),
       progress: {
-        columns: 1,
-        width: 0,
+        columns: [100, 50, 25],
         label: '0/5',
       },
       multiplier: {
@@ -1761,47 +1760,47 @@ export const useFakeStore = () => {
       },
       status: 'active'
     },
-    {
-      title: 'Unlock Slotsbet Loyalty',
-      image: '/img/quest/card-2.png',
-      rewards: [
-        {
-          amount: '169.26',
-          currency: 'EUR',
-          fiat: true
-        },
-        {
-          amount: '404.76',
-          currency: 'USD',
-          fiat: true
-        },
-        {
-          amount: '26.00775532',
-          currency: 'BTC',
-        },
-        {
-          amount: '0.40000000',
-          currency: 'USDT'
-        },
-      ],
-      expiredAt: dayjs().add(10, 'hours'),
-      progress: {
-        columns: 5,
-        width: 50
-      },
-      status: 'expired'
-    },
-    {
-      title: 'Summer Jam',
-      image: '/img/quest/card-3.png',
-      expiredAt: dayjs().add(10, 'hours'),
-      progress: {
-        columns: 19,
-        width: 55.5
-      },
-      bundled:  true,
-      status: 'expired'
-    }
+    // {
+    //   title: 'Unlock Slotsbet Loyalty',
+    //   image: '/img/quest/card-2.png',
+    //   rewards: [
+    //     {
+    //       amount: '169.26',
+    //       currency: 'EUR',
+    //       fiat: true
+    //     },
+    //     {
+    //       amount: '404.76',
+    //       currency: 'USD',
+    //       fiat: true
+    //     },
+    //     {
+    //       amount: '26.00775532',
+    //       currency: 'BTC',
+    //     },
+    //     {
+    //       amount: '0.40000000',
+    //       currency: 'USDT'
+    //     },
+    //   ],
+    //   expiredAt: dayjs().add(10, 'hours'),
+    //   progress: {
+    //     columns: 5,
+    //     width: 50
+    //   },
+    //   status: 'expired'
+    // },
+    // {
+    //   title: 'Summer Jam',
+    //   image: '/img/quest/card-3.png',
+    //   expiredAt: dayjs().add(10, 'hours'),
+    //   progress: {
+    //     columns: 19,
+    //     width: 55.5
+    //   },
+    //   bundled:  true,
+    //   status: 'expired'
+    // }
   ]
 
   const questPopupCurrentTask = {
@@ -1918,8 +1917,7 @@ export const useFakeStore = () => {
       numberTitle: 'Task #2',
       image: '/img/quest/2.png',
       progress: {
-        columns: 1,
-        width: 0,
+        columns: [100],
         label: '0/1',
       },
       status: 'active',
@@ -1968,8 +1966,7 @@ export const useFakeStore = () => {
       numberTitle: 'Task #4',
       image: '/img/quest/5.png',
       progress: {
-        columns: 1,
-        width: 0,
+        columns: [100],
         label: '0/3'
       },
       fieldsToComplete: [

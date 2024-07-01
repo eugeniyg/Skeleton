@@ -7,14 +7,13 @@
       >
         {{ props.label }}
       </div>
-      <div class="quest-progress__line" :style="{ width: styleProgress }"/>
+
       <div class="quest-progress__items">
         <div
-          v-for="(item, index) in props.columns"
+          v-for="column in props.columns"
           class="quest-progress__item"
-        >
-          <atomic-icon id="exclude-mask" v-if="index < columns - 1"/>
-        </div>
+          :style="styleGradient(column)"
+        />
       </div>
     </div>
   </div>
@@ -22,14 +21,13 @@
 
 <script setup lang="ts">
   const props = defineProps<{
-    width: number,
-    columns: number,
+    columns: number[],
     label?: string,
   }>();
   
-  const styleProgress = computed(() => {
-    return `${props.width || 0}%`;
-  });
+  const styleGradient = (percentage: number) => {
+    return `background-image: linear-gradient(113deg, var(--support-brand-default) ${percentage}%, transparent ${percentage}%)`
+  };
 </script>
 
 <style src="~/assets/styles/components/quest/progress.scss" lang="scss"/>
