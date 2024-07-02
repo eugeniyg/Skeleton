@@ -12,14 +12,42 @@
 
     <p class="turn-over-wager__description">{{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.description') }}</p>
 
-    <div class="turn-over-wager__wager">
-        <span class="turn-over-wager__wager-label">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.wagerLabel') }} (x{{ turnOverWagerData.turnOverWager }}):
+    <div class="turn-over-wager__info">
+      <div class="turn-over-wager__info-wager">
+        <span class="turn-over-wager__info-wager-label">
+          {{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.wagerLabel') }}:
         </span>
 
-      <span class="turn-over-wager__wager-value">
-          {{ turnOverWagerValue }}
+        <span class="turn-over-wager__info-wager-value">
+          {{ turnOverWagerData.turnOverWager }}
         </span>
+      </div>
+
+      <div class="turn-over-wager__info-progress">
+        <div
+          class="turn-over-wager__info-progress-filled"
+          :data-progress="`${progress || 0}%`"
+          :style="`--progress: ${progress || 0}%`"
+        />
+      </div>
+
+      <div class="turn-over-wager__info-amount">
+        <div>
+          <span class="turn-over-wager__info-amount-label">
+            {{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.placedLabel') }}:
+          </span>
+
+          <span class="turn-over-wager__info-amount-value">{{ placedAmount }}</span>
+        </div>
+
+        <div>
+          <span class="turn-over-wager__info-amount-label">
+            {{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.totalLabel') }}:
+          </span>
+
+          <span class="turn-over-wager__info-amount-value">{{ totalAmount }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -29,12 +57,26 @@ const { getContent, formatBalance } = useProjectMethods();
 const { popupsData, defaultLocalePopupsData } = useGlobalStore();
 const riskStore = useRiskStore();
 const { turnOverWagerData } = storeToRefs(riskStore);
-const turnOverWagerValue = computed(() => {
+
+const placedAmount = computed(() => {
   if (turnOverWagerData.value.turnOverWagerAmount > 0 && turnOverWagerData.value.currency) {
     const balanceData = formatBalance(turnOverWagerData.value.currency, turnOverWagerData.value.turnOverWagerAmount);
     return `${balanceData.amount} ${balanceData.currency}`;
   }
   return '';
+});
+
+const totalAmount = computed(() => {
+  if (turnOverWagerData.value.total > 0 && turnOverWagerData.value.currency) {
+    const balanceData = formatBalance(turnOverWagerData.value.currency, turnOverWagerData.value.total);
+    return `${balanceData.amount} ${balanceData.currency}`;
+  }
+  return '';
+});
+
+const progress = computed(() => {
+  const progressValue = (turnOverWagerData.value.turnOverWagerAmount / turnOverWagerData.value.total) * 100;
+  return Number(progressValue.toFixed(2));
 });
 </script>
 
