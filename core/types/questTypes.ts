@@ -31,7 +31,7 @@ export interface IPlayerQuest extends Record<string, any> {
   taskExecutionOrder: number;
   packageOrder: number|null,
   rewards: IPlayerQuestReward[];
-  endAt: string;
+  endAt: string|null;
 }
 
 export interface IPlayerQuestsRequest extends Record<string, any> {

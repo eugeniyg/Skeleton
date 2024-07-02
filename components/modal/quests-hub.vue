@@ -3,6 +3,7 @@
     v-model="modals.questsHub"
     class="modal-quest-hub"
     :clickToClose="false"
+    @clickOutside="closeModal('questsHub')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
   >
@@ -30,7 +31,11 @@
           </div>
         </div>
 
-        <component :is="loadTab(selectedTab)" />
+        <transition name="fade" mode="out-in">
+          <quest-active v-if="selectedTab === 'active'" />
+          <quest-expired v-else-if="selectedTab === 'expired'" />
+          <quest-completed v-else-if="selectedTab === 'completed'" />
+        </transition>
       </div>
     </div>
   </vue-final-modal>
@@ -39,11 +44,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { VueFinalModal } from 'vue-final-modal';
-import {
-  QuestActive,
-  QuestExpired,
-  QuestCompleted,
-} from '#components';
 
 const layoutStore = useLayoutStore();
 const { modals } = storeToRefs(layoutStore);
@@ -63,7 +63,6 @@ const modalTabs = computed(() => {
 const { getContent } = useProjectMethods();
 const hasOffset = ref<boolean>(false);
 const selectedTab = ref<string>('active');
-const loadTab = (name:string):string => `quest-${name}`;
 
 const scrollBlock = ref();
 const handleScroll = (): void => {

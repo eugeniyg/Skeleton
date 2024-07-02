@@ -1,15 +1,11 @@
 <template>
   <div class="quest-tab">
-    <div class="quest-tab__items" v-if="props.items.length">
-      <quest-task
-        v-if="props.items.length"
-        v-for="task in props.items"
-        :task="task"
-        show-actions
-        show-progress-bar
-        show-timer
+    <div v-if="playerActiveQuests.length" class="quest-tab__items">
+      <quest-card
+        v-for="(quest, questIndex) in playerActiveQuests"
+        :questInfo="quest"
+        :questIndex="questIndex"
       />
-      <button-base size="xs" type="ghost" class="quest-tab__load-more">Load</button-base>
     </div>
 
     <atomic-empty
@@ -22,9 +18,8 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-  items: string[]
-}>();
+  const questsStore = useQuestsStore();
+  const { playerActiveQuests } = storeToRefs(questsStore);
 </script>
 
 <style src="~/assets/styles/components/quest/tab.scss" lang="scss"/>
