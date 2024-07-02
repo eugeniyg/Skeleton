@@ -1,0 +1,187 @@
+.modal-quest-hub {
+  .container {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    flex-direction: column;
+    max-height: 100%;
+    background-color: var(--layer-01);
+    width: 100%;
+
+    @include media(xs) {
+      border-radius: 12px;
+    }
+
+    @include media(md) {
+      flex-direction: row;
+    }
+  }
+
+  .vfm__content {
+    width: 100%;
+    margin: auto;
+    max-width: rem(528px);
+  }
+
+  .scroll {
+    display: block;
+    max-height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    @extend %scrollbar;
+    padding: 8px 8px 8px 0;
+    border-top: 8px solid var(--layer-01);
+    border-right: 8px solid var(--layer-01);
+    border-bottom: 8px solid var(--layer-01);
+    border-left: 16px solid var(--layer-01);
+
+    @include media(md) {
+      width: rem(528px);
+      padding: 24px 24px 24px 16px;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    width: 100%;
+    position: relative;
+    padding-left: 48px;
+
+    @include media(md) {
+      padding-left: 0;
+    }
+  }
+
+  &__title {
+    @include font($heading-6);
+    color: var(--text-primary);
+  }
+
+  .btn-modal-close {
+    transform: none;
+    left: var(--left, 16px);
+    --right: auto;
+    --top: 16px;
+    --bg: var(--button-bg-secondary);
+
+    .icon {
+      --color: var(--button-icon-secondary);
+    }
+
+    &:hover {
+      .icon {
+        --color: var(--button-icn-ghost-hover);
+      }
+    }
+
+
+    &.close-secondary {
+      --bg: var(--button-bg-secondary);
+      box-shadow: var(--shadow-layer);
+    }
+
+    .icon {
+      &:first-of-type {
+        --visibility: visible;
+      }
+
+      &:last-of-type {
+        --visibility: hidden;
+      }
+
+      @include media(md) {
+        &:first-of-type {
+          --visibility: hidden;
+        }
+
+        &:last-of-type {
+          --visibility: visible;
+        }
+      }
+    }
+
+    @include media(md) {
+      --bg: transparent;
+      --top: 16px;
+      --right: 16px;
+      --left: auto;
+
+      .icon {
+        --color: var(--icon-primary);
+      }
+    }
+  }
+
+  &__tabs {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border-00);
+    @extend %scrollbar-hide;
+    overflow-x: auto;
+    margin-bottom: 16px;
+
+    &-item {
+      color: var(--color, var(--text-helper));
+      @include font($heading-2);
+      position: relative;
+      padding: 0 0 10px;
+      transition: color .2s ease-in-out;
+      user-select: none;
+      cursor: var(--cursor, pointer);
+      white-space: nowrap;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+
+      &:after {
+        content: '';
+        display: block;
+        height: 2px;
+        border-radius: 1px;
+        position: absolute;
+        background-color: var(--border-color, transparent);
+        left: var(--left, 50%);
+        right: var(--right, 50%);
+        bottom: 0;
+        transition: all .2s ease-in-out;
+      }
+
+      &.is-active {
+        --color: var(--text-primary);
+        --border-color: var(--border-accent);
+        --left: 0;
+        --right: 0;
+        --cursor: text;
+      }
+
+      @include use-hover {
+        &:not(.is-active):hover {
+          cursor: pointer;
+          --border-color: var(--text-primary);
+          --left: 0;
+          --right: 0;
+        }
+      }
+    }
+  }
+
+  &__tabs-divider {
+    flex-shrink: 0;
+    margin: 24px 0;
+    background-color: var(--border-00-low-contrast);
+  }
+
+  &__tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &:has(.accumulated-rewards) {
+    .accumulated-rewards {
+      margin-bottom: 24px;
+    }
+  }
+}

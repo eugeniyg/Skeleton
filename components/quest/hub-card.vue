@@ -27,7 +27,7 @@
         <span
           v-if="rewardsValue.length > 1"
           class="quest-hub-card__amount-more"
-          @click="emit('openRewardsModal', rewardsValue)"
+          @click="openModal"
         >
           +{{ rewardsValue.length - 1 }} {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.moreLabel') }}
         </span>
@@ -44,13 +44,15 @@
 
 <script setup lang="ts">
 import type { IPlayerQuest } from "@skeleton/core/types";
+import type {IProfileInfo} from "~/types";
 
 const props = defineProps<{
   questInfo: IPlayerQuest;
   cardIndex: number;
 }>();
 
-const emit = defineEmits(['openRewardsModal']);
+const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
+const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
 
 const { getContent, formatBalance } = useProjectMethods();
 const globalData = useGlobalStore();
@@ -72,6 +74,14 @@ const questImages = computed(() => {
   const imgObjArr: { src: string }[] = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.questsImages') || [];
   return imgObjArr.map(imgObj => imgObj.src);
 })
+
+const { openRewardsModal } = useQuestsStore();
+const rewardsModalTitle = computed(() => {
+  return getContent(infoContent.value, defaultLocaleInfoContent.value, 'questsHub.rewardsTitle') || '';
+})
+const openModal = (): void => {
+  openRewardsModal(rewardsValue.value, rewardsModalTitle.value);
+}
 </script>
 
 <style src="~/assets/styles/components/quest/hub-card.scss" lang="scss"/>

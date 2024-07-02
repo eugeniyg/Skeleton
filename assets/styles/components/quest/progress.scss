@@ -1,0 +1,44 @@
+.quest-progress {
+  position: relative;
+  margin-top: 8px;
+  height: 12px;
+
+  &__container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    height: inherit;
+  }
+
+  &__items {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    position: relative;
+    height: 12px;
+    margin: 0;
+    grid-column-gap: 2px;
+    overflow: hidden;
+
+    .icon {
+      height: 12px;
+      transform: translateX(8px);
+      position: absolute;
+      right: 1px;
+      z-index: 1;
+      --icon-size: 12px;
+      --color: var(--layer-02);
+    }
+  }
+
+  &__item {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    position: relative;
+    border-radius: 4px;
+    box-shadow: var(--dark-shadow-inner-s);
+    background: linear-gradient(113deg, var(--support-brand-default) var(--column-width), var(--support-system-low-contrast) var(--column-width))
+  }
+}
