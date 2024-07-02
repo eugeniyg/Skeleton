@@ -146,43 +146,6 @@
     }
   }
 
-  &__bundled {
-    display: inline-flex;
-    grid-column-gap: 2px;
-    align-items: center;
-    border-radius: 8px;
-    padding: 4px 8px;
-    justify-content: center;
-    border: 0.25px solid var(--border-color, var(--border-sportsbook));
-    background: var(--layer-03-low-contrast);
-
-    .is-bw-enabled & {
-      --border-color: var(--border-click);
-    }
-
-    .inline-svg {
-      color: var(--support-warning-high-contrast);
-      width: 16px;
-      height: 16px;
-      min-width: 16px;
-      min-height: 16px;
-      flex: 16px 0 0;
-
-      .is-bw-enabled & {
-        mix-blend-mode: luminosity;
-      }
-    }
-
-    &-text {
-      @include font($heading-uppercase-1);
-      color: var(--text-primary);
-
-      .is-bw-enabled & {
-        color: var(--text-helper);
-      }
-    }
-  }
-
   .quest-currencies {
     gap: 4px;
   }

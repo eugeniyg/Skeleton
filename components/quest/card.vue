@@ -27,16 +27,28 @@
         {{ props.questInfo.name }}
       </div>
 
-<!--      <quest-progress-->
-<!--        v-if="props.task?.progress && props.showProgressBar"-->
-<!--        v-bind="props.task.progress"-->
-<!--      />-->
+      <quest-progress :taskList="props.questInfo.tasks" />
     </div>
 
-<!--    <div v-if="props.showActions" class="quest-card__actions">-->
-<!--      <button-base v-if="isActive" size="xs" type="ghost">Cancel</button-base>-->
-<!--      <button-base v-else size="sm" type="primary" @click="isActive = true">Go</button-base>-->
-<!--    </div>-->
+    <div v-if="[1,2].includes(props.questInfo.state)" class="quest-card__actions">
+      <button-base
+        v-if="props.questInfo.state === 1"
+        size="sm"
+        type="primary"
+        @click="activateQuest"
+      >
+        {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.startQuestButton') }}
+      </button-base>
+
+      <button-base
+        v-else
+        size="xs"
+        type="ghost"
+        @click="cancelQuest"
+      >
+        {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.cancelQuestButton') }}
+      </button-base>
+    </div>
   </div>
 </template>
 
@@ -53,7 +65,9 @@
   const globalStore = useGlobalStore();
   const {
     popupsData,
-    defaultLocalePopupsData
+    defaultLocalePopupsData,
+    alertsData,
+    defaultLocaleAlertsData
   } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const questImages = computed(() => {
@@ -66,6 +80,33 @@
     'is-completed': props.questInfo?.state === 3 || props.questInfo?.state === 4,
     'is-expired': props.questInfo?.state === 5 || props.questInfo?.state === 6
   }));
+
+  const { showAlert } = useLayoutStore();
+  const actionInProcess = ref(false);
+  const { activatePlayerQuest, cancelPlayerQuest } = useCoreQuestApi();
+  const activateQuest = async (): Promise<void> => {
+    if (actionInProcess.value) return;
+    actionInProcess.value = true;
+
+    try {
+      await activatePlayerQuest(props.questInfo.id);
+    } catch {
+      showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
+      actionInProcess.value = false;
+    }
+  }
+
+  const cancelQuest = async (): Promise<void> => {
+    if (actionInProcess.value) return;
+    actionInProcess.value = true;
+
+    try {
+      await cancelPlayerQuest(props.questInfo.id);
+    } catch {
+      showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
+      actionInProcess.value = false;
+    }
+  }
 </script>
 
 <style src="~/assets/styles/components/quest/card.scss" lang="scss"/>

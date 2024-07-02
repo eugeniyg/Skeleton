@@ -1,71 +1,24 @@
 .quest-progress {
   position: relative;
   margin-top: 8px;
+  height: 12px;
 
   &__container {
     position: relative;
     overflow: hidden;
-    background: var(--support-system-low-contrast);
     border-radius: 4px;
-    box-shadow: var(--dark-shadow-inner-s);
+    height: inherit;
   }
 
-  &__label {
-    height: 12px;
-    position: absolute;
-    text-align: center;
-    @include font($body-0);
-    color: var(--text-primary);
-    top: 0;
-    right: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-
-    .is-bw-enabled & {
-      color: var(--text-tertiary);
-    }
-  }
-
-  &__line {
-    position: relative;
-    background: var(--support-brand-default, #ffc12e);
-    height: 12px;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-    overflow: hidden;
-
-    .is-bw-enabled & {
-      background-color: var(--layer-03-low-contrast);
-    }
-
-    &:after {
-      content: "";
-      position: absolute;
-      width: 4px;
-      height: auto;
-      top: -4px;
-      bottom: -4px;
-      right: -4px;
-      background: var(--support-system-low-contrast);
-      transform: rotate(14deg);
-      transform-origin: top;
-
-      .is-bw-enabled & {
-        background-color: var(--layer-03-low-contrast);
-      }
-    }
-  }
   &__items {
     padding: 0;
     list-style: none;
     display: flex;
     position: relative;
     height: 12px;
-    margin: -12px 0 0 0;
+    margin: 0;
     grid-column-gap: 2px;
+    overflow: hidden;
 
     .icon {
       height: 12px;
@@ -85,5 +38,7 @@
     width: 100%;
     position: relative;
     border-radius: 4px;
+    box-shadow: var(--dark-shadow-inner-s);
+    background: linear-gradient(113deg, var(--support-brand-default) var(--column-width), var(--support-system-low-contrast) var(--column-width))
   }
 }
