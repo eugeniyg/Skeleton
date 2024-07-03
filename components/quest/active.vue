@@ -8,18 +8,23 @@
       />
     </div>
 
-    <atomic-empty
-      v-else
-      title="0 Active quests"
-      subTitle="Hey, you didn’t have any active quests"
-      variant="quest"
-    />
+    <quest-empty v-else v-bind="emptyContentData" />
   </div>
 </template>
 
 <script setup lang="ts">
   const questsStore = useQuestsStore();
   const { playerActiveQuests } = storeToRefs(questsStore);
+  const globalStore = useGlobalStore();
+  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
+
+  const emptyContentData = computed(() => {
+    const image = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.image');
+    const title = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.activeTitle');
+    const description = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.activeDescription');
+    return { image, title, description };
+  })
 </script>
 
 <style src="~/assets/styles/components/quest/tab.scss" lang="scss"/>

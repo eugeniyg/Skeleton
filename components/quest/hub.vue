@@ -26,7 +26,10 @@
       />
     </div>
 
-    <quest-empty-active v-else />
+    <quest-empty
+      v-else
+      v-bind="infoContent?.questsHub.empty || defaultLocaleInfoContent?.questsHub.empty"
+    />
 
     <button-base
       class="quest-hub__mobile-history-btn"

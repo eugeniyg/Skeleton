@@ -21,7 +21,8 @@
 
   const columns = computed(() => {
     return props.taskList.map(task => {
-      return task.isCompleted ? 100 : task.progress;
+      const progressFloat = task.progress / task.quantity * 100;
+      return Math.round(progressFloat * 100) / 100;
     }).sort((prevProgress, nextProgress) => nextProgress - prevProgress);
   })
 </script>

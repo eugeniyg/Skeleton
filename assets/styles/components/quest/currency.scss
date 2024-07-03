@@ -38,7 +38,7 @@
     height: 14px;
 
     .is-bw-enabled & {
-      mix-blend-mode: luminosity;
+      filter: grayscale(100%);
     }
   }
 

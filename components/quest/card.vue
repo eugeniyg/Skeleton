@@ -19,7 +19,10 @@
         />
       </div>
 
-      <quest-timer v-if="props.questInfo.endAt" :expiredAt="props.questInfo.endAt" />
+      <quest-timer
+        v-if="[1,2].includes(props.questInfo.state) && props.questInfo.endAt"
+        :expiredAt="props.questInfo.endAt"
+      />
     </div>
 
     <div class="quest-card__body">
@@ -27,7 +30,10 @@
         {{ props.questInfo.name }}
       </div>
 
-      <quest-progress :taskList="props.questInfo.tasks" />
+      <quest-progress
+        v-if="![3,4].includes(props.questInfo.state)"
+        :taskList="props.questInfo.tasks"
+      />
     </div>
 
     <div v-if="[1,2].includes(props.questInfo.state)" class="quest-card__actions">
@@ -76,9 +82,9 @@
   })
 
   const taskStatusClasses = computed(() => ({
-    'is-active': props.questInfo?.state === 1 || props.questInfo?.state === 2,
-    'is-completed': props.questInfo?.state === 3 || props.questInfo?.state === 4,
-    'is-expired': props.questInfo?.state === 5 || props.questInfo?.state === 6
+    'is-active': [1,2].includes(props.questInfo?.state),
+    'is-completed': [3,4].includes(props.questInfo?.state),
+    'is-expired is-bw-enabled': [5,6].includes(props.questInfo?.state)
   }));
 
   const { showAlert } = useLayoutStore();

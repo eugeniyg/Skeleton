@@ -10,7 +10,17 @@
     --color: var(--button-text-ghost-low-contrast);
   }
 
-  .empty {
+  .quest-empty {
     margin-top: 48px;
+
+    &__image {
+      max-height: 192px;
+      max-width: 192px;
+
+      @include media(sm) {
+        max-height: 240px;
+        max-width: 240px;
+      }
+    }
   }
 }
