@@ -9,6 +9,10 @@
   grid-template-rows: minmax(min-content, 0);
   position: relative;
 
+  &.is-bw-enabled {
+    pointer-events: none !important;
+  }
+
   @include media(md) {
     grid-template-columns: auto 1fr auto;
     grid-template-areas: "img header actions" "img body actions";

@@ -79,9 +79,10 @@
   })
 
   const taskStatusClasses = computed(() => ({
-    'is-active': props.questInfo?.state === 1 || props.questInfo?.state === 2,
-    'is-completed': props.questInfo?.state === 3 || props.questInfo?.state === 4,
-    'is-expired': props.questInfo?.state === 5 || props.questInfo?.state === 6
+    'is-active': [1,2].includes(props.questInfo?.state),
+    'is-bw-enabled': ![1,2].includes(props.questInfo?.state),
+    'is-completed': [3,4].includes(props.questInfo?.state),
+    'is-expired': [5,6].includes(props.questInfo?.state)
   }));
 
   const { showAlert } = useLayoutStore();

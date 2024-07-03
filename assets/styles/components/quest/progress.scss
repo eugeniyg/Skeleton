@@ -39,6 +39,10 @@
     position: relative;
     border-radius: 4px;
     box-shadow: var(--dark-shadow-inner-s);
-    background: linear-gradient(113deg, var(--support-brand-default) var(--column-width), var(--support-system-low-contrast) var(--column-width))
+    background: linear-gradient(113deg, var(--support-brand-default) var(--column-width), var(--support-system-low-contrast) var(--column-width));
+
+    .is-bw-enabled & {
+      background: linear-gradient(113deg, var(--layer-03-low-contrast) var(--column-width), var(--support-system-low-contrast) var(--column-width));
+    }
   }
 }
