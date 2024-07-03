@@ -6,6 +6,7 @@
     @clickOutside="closeModal('questsHub')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @closed="selectedTab = 'active'"
   >
     <div class="container">
       <button-modal-close
@@ -31,11 +32,9 @@
           </div>
         </div>
 
-        <transition name="fade" mode="out-in">
-          <quest-active v-if="selectedTab === 'active'" />
-          <quest-expired v-else-if="selectedTab === 'expired'" />
-          <quest-completed v-else-if="selectedTab === 'completed'" />
-        </transition>
+        <quest-active v-show="selectedTab === 'active'" />
+        <quest-expired v-show="selectedTab === 'expired'" />
+        <!--          <quest-completed v-show="selectedTab === 'completed'" />-->
       </div>
     </div>
   </vue-final-modal>

@@ -19,7 +19,10 @@
         />
       </div>
 
-      <quest-timer v-if="props.questInfo.endAt" :expiredAt="props.questInfo.endAt" />
+      <quest-timer
+        v-if="[1,2].includes(props.questInfo.state) && props.questInfo.endAt"
+        :expiredAt="props.questInfo.endAt"
+      />
     </div>
 
     <div class="quest-card__body">
