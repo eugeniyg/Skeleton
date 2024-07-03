@@ -60,7 +60,7 @@ const { turnOverWagerData } = storeToRefs(riskStore);
 
 const placedAmount = computed(() => {
   if (turnOverWagerData.value.turnOverWagerAmount > 0 && turnOverWagerData.value.currency) {
-    const balanceData = formatBalance(turnOverWagerData.value.currency, turnOverWagerData.value.turnOverWagerAmount);
+    const balanceData = formatBalance(turnOverWagerData.value.currency, turnOverWagerData.value.total - turnOverWagerData.value.turnOverWagerAmount);
     return `${balanceData.amount} ${balanceData.currency}`;
   }
   return '';
@@ -75,7 +75,7 @@ const totalAmount = computed(() => {
 });
 
 const progress = computed(() => {
-  const progressValue = (turnOverWagerData.value.turnOverWagerAmount / turnOverWagerData.value.total) * 100;
+  const progressValue = (turnOverWagerData.value.total - turnOverWagerData.value.turnOverWagerAmount) / turnOverWagerData.value.total * 100;
   return Number(progressValue.toFixed(2));
 });
 </script>
