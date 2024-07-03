@@ -30,7 +30,10 @@
         {{ props.questInfo.name }}
       </div>
 
-      <quest-progress :taskList="props.questInfo.tasks" />
+      <quest-progress
+        v-if="![3,4].includes(props.questInfo.state)"
+        :taskList="props.questInfo.tasks"
+      />
     </div>
 
     <div v-if="[1,2].includes(props.questInfo.state)" class="quest-card__actions">
@@ -80,9 +83,8 @@
 
   const taskStatusClasses = computed(() => ({
     'is-active': [1,2].includes(props.questInfo?.state),
-    'is-bw-enabled': ![1,2].includes(props.questInfo?.state),
     'is-completed': [3,4].includes(props.questInfo?.state),
-    'is-expired': [5,6].includes(props.questInfo?.state)
+    'is-expired is-bw-enabled': [5,6].includes(props.questInfo?.state)
   }));
 
   const { showAlert } = useLayoutStore();

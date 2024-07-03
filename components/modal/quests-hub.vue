@@ -34,7 +34,7 @@
 
         <quest-active v-show="selectedTab === 'active'" />
         <quest-expired v-show="selectedTab === 'expired'" />
-        <!--          <quest-completed v-show="selectedTab === 'completed'" />-->
+        <quest-completed v-show="selectedTab === 'completed'" />
       </div>
     </div>
   </vue-final-modal>

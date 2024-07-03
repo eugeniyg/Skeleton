@@ -14,7 +14,7 @@
         class="quest-tab__load-more"
         @click="getData"
       >
-        Load
+        {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.loadLabel') }}
       </button-base>
     </div>
 
