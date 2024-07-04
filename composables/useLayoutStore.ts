@@ -20,6 +20,7 @@ interface IModals extends Record<string, any> {
   success: boolean;
   fiat: boolean;
   turnOverWager: boolean;
+  loyaltyLevel: boolean;
 }
 
 interface IModalsUrls extends Record<string, any> {
@@ -67,7 +68,9 @@ export const useLayoutStore = defineStore('layoutStore', {
         success: false,
         registerCancel: false,
         fiat: false,
-        turnOverWager: false
+        turnOverWager: false,
+        loyaltyLevel: true,
+        loyaltyEarn: true,
       },
       modalsUrl: {
         register: 'sign-up',
