@@ -118,6 +118,13 @@
 
     .btn-ghost {
       align-self: flex-start;
+      --color: var(--button-text-ghost-low-contrast);
+
+      @include use-hover {
+        &:hover {
+          --color: var(--button-text-ghost-hover);
+        }
+      }
     }
   }
 
