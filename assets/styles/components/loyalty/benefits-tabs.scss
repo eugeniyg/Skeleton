@@ -1,0 +1,128 @@
+.loyalty-benefits-tabs {
+  max-width: 944px;
+  margin: 40px auto 0;
+
+  &__nav {
+    display: flex;
+    position: relative;
+    height: 64px;
+
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 32px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity .3s ease-in-out;
+    }
+
+    &:before {
+      background: linear-gradient(-270deg, var(--black-primary) 0%, rgba(17, 20, 28, 0.00) 100%);
+      left: -16px;
+
+      @include media(xs) {
+        left: -32px;
+      }
+    }
+
+    &:after {
+      background: linear-gradient(270deg, var(--black-primary) 0%, rgba(17, 20, 28, 0.00) 100%);
+      right: -16px;
+
+      @include media(xs) {
+        right: -32px;
+      }
+    }
+
+    &.has-left-offset  {
+      &:before {
+        opacity: 1;
+      }
+    }
+
+    &.has-right-offset  {
+      &:after {
+        opacity: 1;
+      }
+    }
+
+    &-scroll {
+      display: flex;
+      overflow-x: auto;
+      position: relative;
+      @include scrollbar-hide;
+      margin: 0 -16px;
+      padding: 0 16px;
+      scroll-padding: 16px;
+
+      @include media(xs) {
+        margin: 0 -32px;
+        padding: 0 32px;
+        scroll-padding: 32px;
+      }
+    }
+
+    &-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+
+      &:not(.is-active) {
+        padding: 12px;
+        background: var(--layer-01);
+        color: var(--text-tertiary);
+        @include font($subheading-2);
+        flex-shrink: 0;
+        align-self: flex-end;
+      }
+
+      &.is-active {
+        padding: 20px 20px 20px 16px;
+        color: var(--text-inverse);
+        border-radius: 16px 16px 0 0;
+        background: var(--gradient-gold-radial);
+      }
+
+      &-image {
+        width: 24px;
+        height: 24px;
+        display: block;
+      }
+    }
+  }
+
+  &__items {
+    position: relative;
+    display: flex;
+    padding: 24px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 0 0 16px 16px;
+    background: var(--gradient-gold-radial);
+
+    @include media(md) {
+      gap: 16px;
+    }
+
+    &.is-numeric {
+      counter-reset: item;
+    }
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      left: 2px;
+      right: 2px;
+      background: var(--layer-01);
+      border-radius: 0 0 16px 16px;
+    }
+  }
+}

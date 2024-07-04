@@ -15,6 +15,16 @@
       :content="loyaltyContent?.rewards || defaultLocaleLoyaltyContent?.rewards"
     />
     
+    <loyalty-benefits
+      v-if="loyaltyContent?.benefits || defaultLocaleLoyaltyContent?.benefits"
+      :content="loyaltyContent?.benefits || defaultLocaleLoyaltyContent?.benefits"
+    />
+    
+    <loyalty-faq
+      v-if="loyaltyContent?.faq || defaultLocaleLoyaltyContent?.faq"
+      :content="loyaltyContent?.faq || defaultLocaleLoyaltyContent?.faq"
+    />
+    
   </div>
 </template>
 

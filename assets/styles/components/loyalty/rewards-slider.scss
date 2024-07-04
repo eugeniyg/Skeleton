@@ -77,30 +77,37 @@
       flex-direction: column;
       align-items: center;
       position: relative;
-
-      &:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: red;
-      }
-
-      &:after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: green;
-      }
+      background: var(--gradient-gray-dark-line);
 
       overflow: hidden;
       border-radius: 16px 16px 999px 999px;
-      background: var(--gradient-gray-dark-line);
+
+      .is-order-current & {
+        &:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          border-radius: 20px 20px 999px 999px;
+          z-index: 0;
+          background: var(--gradient-gold-radial);
+
+        }
+
+        &:after {
+          content: '';
+          position: absolute;
+          top: 2px;
+          bottom: 2px;
+          left: 2px;
+          right: 2px;
+          background: var(--gradient-gray-dark-line);
+          border-radius: 160px 160px 999px 999px;
+          z-index: 1;
+        }
+      }
     }
 
     &-images {
@@ -112,7 +119,11 @@
       gap: 16px;
       align-self: stretch;
       position: relative;
-      z-index: 1;
+      z-index: 3;
+
+      .is-order-prev & {
+        mix-blend-mode: luminosity;
+      }
     }
 
     &-icon {
@@ -142,7 +153,8 @@
       width: 120px;
       height: 120px;
       display: block;
-      mix-blend-mode: overlay;
+      position: relative;
+      opacity: .2;
     }
 
     &-face-bg {
@@ -151,7 +163,6 @@
       height: 88px;
       justify-content: center;
       align-items: center;
-      mix-blend-mode: luminosity;
       position: absolute;
       top: 50%;
       left: 50%;
@@ -163,7 +174,7 @@
       align-items: center;
       gap: 4px;
       position: relative;
-      z-index: 1;
+      z-index: 3;
 
       &-text {
         color: var(--text-primary);
@@ -192,7 +203,7 @@
       align-items: center;
       margin-top: 7px;
       position: relative;
-      z-index: 1;
+      z-index: 3;
 
       &-label {
         @include font($body-0);
@@ -227,21 +238,113 @@
     }
 
     &-rank-bonus {
-      &-label {
+      text-align: center;
+
+      &-value {
         color: var(--icon-secondary);
         @include font($subheading-4);
+
+        .is-order-current &, .is-order-next & {
+          color: var(--text-tertiary);
+        }
+
+        &.has-number {
+          .is-order-prev & {
+            color: var(--icon-secondary);
+          }
+        }
+
+        &.has-number {
+          .is-order-current & {
+            color: var(--text-tertiary);
+          }
+        }
+
+        &.has-number {
+          .is-order-next & {
+            color: var(--text-success);
+          }
+        }
       }
-      &-value {}
+
+      &-label {
+        @include font($body-0);
+        color: var(--text-tertiary);
+      }
     }
 
     &-cashback {
-      &-label {}
-      &-value {}
+      text-align: center;
+
+      &-value {
+        color: var(--text-helper);
+        @include font($subheading-2);
+
+        .is-order-current &, .is-order-next & {
+          &.has-number {
+            color: var(--text-primary)
+          }
+        }
+      }
+
+      &-label {
+        color: var(--text-tertiary);
+        @include font($body-0);
+      }
     }
 
-    &-cashback {
-      &-label {}
-      &-value {}
+    &-divider {
+      margin: 8px 0;
+      background: var(--border-02-low-contrast);
+      width: 100%;
+    }
+
+    &-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    &-option {
+      display: flex;
+      align-items: center;
+      grid-column-gap: 6px;
+
+      &-checkbox {
+        width: 14px;
+        height: 14px;
+        border: 1px solid var(--border-02-low-contrast);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .icon {
+          --icon-size: 12px;
+          --color: var(--icon-disabled);
+
+
+          .is-checked & {
+            --color: var(--icon-primary)
+          }
+
+          .is-order-current .is-checked &, .is-order-next .is-checked & {
+            color: var(--icon-accent);
+          }
+        }
+      }
+
+      &-label {
+        color: var(--text-helper);
+        @include font($body-0);
+
+        .is-checked & {
+          color: var(--text-secondary);
+        }
+
+        .is-order-current .is-checked &, .is-order-next .is-checked & {
+          color: var(--text-primary);
+        }
+      }
     }
   }
 }

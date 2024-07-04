@@ -1,0 +1,96 @@
+.loyalty-benefits-item {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "title image" "description image";
+  width: 100%;
+
+  border-radius: 8px;
+  border: 1px solid var(--border-01, #3D4451);
+  background: var(--layer-02, #282F3E);
+  flex: 1 1 440px;
+
+  padding: 12px 16px 16px 16px;
+  align-items: center;
+  grid-column-gap: 12px;
+  align-self: stretch;
+
+  &__title {
+    @include font($heading-3);
+    color: var(--text-primary);
+    grid-area: title;
+    display: flex;
+    align-items: center;
+    grid-column-gap: 4px;
+
+    @include media(md) {
+      @include upd-font($heading-4);
+    }
+
+    .is-numeric & {
+      &:before {
+        counter-increment: item;
+        content: counter(item);
+        min-width: 24px;
+        color: var(--text-primary);
+        opacity: 0.32;
+        @include font($heading-5);
+        align-self: center;
+
+        @include media(md) {
+          @include upd-font($heading-7);
+        }
+      }
+    }
+  }
+
+  &__description {
+    color: var(--text-secondary);
+    @include font($body-1);
+    grid-area: description;
+    align-self: flex-start;
+
+    @include media(md) {
+      @include upd-font($body-2);
+    }
+
+    > * {
+      margin: 0;
+    }
+  }
+
+  &__image {
+    position: relative;
+    grid-area: image;
+    width: var(--front-bg-size);
+    height: var(--front-bg-size);
+
+    --back-bg-size: 72px;
+    --front-bg-size: 48px;
+
+    @include media(md) {
+      --back-bg-size: 92px;
+      --front-bg-size: 64px;
+    }
+
+    &-back-bg {
+      width: var(--back-bg-size);
+      height: var(--back-bg-size);
+      display: block;
+      opacity: 0.2;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &-front-bg {
+      position: relative;
+      width: var(--front-bg-size);
+      height: var(--front-bg-size);
+      display: block;
+      object-fit: cover;
+    }
+  }
+}

@@ -1718,7 +1718,7 @@ export const useFakeStore = () => {
         },
         {
           label: 'Bonus for reaching a new level',
-          checked: false
+          checked: true
         },
         {
           label: 'Monthly boost',
@@ -1738,7 +1738,7 @@ export const useFakeStore = () => {
       statusPointsLabel: 'Status points',
       statusPointsValue: '139 - 178',
       rankBonusLabel: 'Rank bonus',
-      rankBonusValue: '5',
+      rankBonusValue: '-',
       rankBonusCurrency: 'USDT',
       cashBackLabel: 'Cashback',
       cashBackValue: '-',
@@ -1776,11 +1776,11 @@ export const useFakeStore = () => {
       options: [
         {
           label: 'Task rewards +50%',
-          checked: false
+          checked: true
         },
         {
           label: 'Bonus for reaching a new level',
-          checked: false
+          checked: true
         },
         {
           label: 'Monthly boost',
@@ -1800,7 +1800,7 @@ export const useFakeStore = () => {
       statusPointsLabel: 'Status points',
       statusPointsValue: '-',
       rankBonusLabel: 'Rank bonus',
-      rankBonusValue: '-',
+      rankBonusValue: '5',
       rankBonusCurrency: 'USDT',
       cashBackLabel: 'Cashback',
       cashBackValue: '1%',
@@ -1811,7 +1811,7 @@ export const useFakeStore = () => {
         },
         {
           label: 'Bonus for reaching a new level',
-          checked: false
+          checked: true
         },
         {
           label: 'Monthly boost',

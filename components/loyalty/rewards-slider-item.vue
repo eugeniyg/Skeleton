@@ -41,28 +41,40 @@
     <div class="loyalty-rewards-slider__item-content">
       
       <div class="loyalty-rewards-slider__item-rank-bonus">
-        <div class="loyalty-rewards-slider__item-rank-bonus-label">
-          {{ props.rankBonusLabel }}
-        </div>
-        <div class="loyalty-rewards-slider__item-rank-bonus-value">
+        <div
+          class="loyalty-rewards-slider__item-rank-bonus-value"
+          :class="{'has-number': Number(props.rankBonusValue)}"
+        >
           {{ props.rankBonusValue }}
+        </div>
+        <div class="loyalty-rewards-slider__item-rank-bonus-label">
+          {{ props.rankBonusLabel }} {{ props.rankBonusCurrency }}
         </div>
       </div>
       
       <div class="loyalty-rewards-slider__item-cashback">
+        <div
+          class="loyalty-rewards-slider__item-cashback-value"
+          :class="{'has-number': parseInt(props.cashBackValue)}"
+        >
+          {{ props.cashBackValue }}
+        </div>
         <div class="loyalty-rewards-slider__item-cashback-label">
           {{ props.cashBackLabel }}
         </div>
-        <div class="loyalty-rewards-slider__item-cashback-value">
-          {{ props.cashBackValue }}
-        </div>
       </div>
       
-      <atomic-divider/>
+      <atomic-divider v-id="props.options" class="loyalty-rewards-slider__item-divider"/>
       
-      <div class="loyalty-rewards-slider__item-options">
-        <div class="loyalty-rewards-slider__item-option" v-for="option in props.options">
-          <div class="loyalty-rewards-slider__item-option-value">{{ option.checked }}</div>
+      <div class="loyalty-rewards-slider__item-options" v-if="props.options">
+        <div
+          v-for="(option, index) in props.options"
+          class="loyalty-rewards-slider__item-option"
+          :class="{'is-checked': option.checked}"
+        >
+          <div class="loyalty-rewards-slider__item-option-checkbox">
+            <atomic-icon :id="option.checked ? 'check' : 'close'"/>
+          </div>
           <div class="loyalty-rewards-slider__item-option-label">{{ option.label }}</div>
         </div>
       </div>
@@ -72,8 +84,6 @@
 </template>
 
 <script setup lang="ts">
-  import type { ILoyaltyPage } from '~/types';
-  
   const props = defineProps<{
     order: 'prev' | 'current' | 'next',
     number: number;
