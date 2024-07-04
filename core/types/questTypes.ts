@@ -10,6 +10,19 @@ export interface IPlayerQuestTask extends Record<string, any> {
   executionOrder: number;
 }
 
+export interface IPlayerQuestEventTask extends Record<string, any> {
+  id: string;
+  isCompleted: boolean;
+  isActive: boolean;
+  playerId: string;
+  questId: string;
+  progress: number;
+  quantity: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface IPlayerQuestReward extends Record<string, any> {
   type: number;
   attributes: {

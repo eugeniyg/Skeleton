@@ -12,7 +12,7 @@
         size="xs"
         type="ghost"
         class="quest-tab__load-more"
-        @click="getData"
+        @click="getData(state.meta.page + 1)"
       >
         {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.loadLabel') }}
       </button-base>
@@ -24,6 +24,7 @@
 
 <script setup lang="ts">
 import type {IPaginationMeta, IPlayerQuest} from "@skeleton/core/types";
+import {useListen} from "@skeleton/composables/useEventBus";
 
 const globalStore = useGlobalStore();
 const {
@@ -48,17 +49,17 @@ const state = reactive<IState>({
 
 const { getPlayerQuests } = useCoreQuestApi();
 const { showAlert } = useLayoutStore();
-const getData = async (): Promise<void> => {
+const getData = async (page = 1): Promise<void> => {
   if (state.loading || (state.meta && state.meta.page >= state.meta.totalPages)) return;
   state.loading = true;
 
   try {
     const { data, meta } = await getPlayerQuests({
-      page: state.meta?.page ? state.meta.page + 1 : 1,
+      page: page,
       perPage: 3,
       state: [3,4]
     });
-    state.data = [...state.data, ...data];
+    state.data = page === 1 ? data : [...state.data, ...data];
     state.meta = meta;
   } catch {
     state.data = [];
@@ -78,7 +79,12 @@ const emptyContentData = computed(() => {
 
 onMounted(async () => {
   await getData();
+  useListen('questUpdated', getData);
 });
+
+onBeforeUnmount(() => {
+  useUnlisten('questUpdated', getData);
+})
 </script>
 
 <style src="~/assets/styles/components/quest/tab.scss" lang="scss"/>
