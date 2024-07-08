@@ -2,7 +2,6 @@
   display: grid;
   grid-auto-rows: min-content;
   background-color: var(--layer-02);
-  padding: rem(16px);
   width: var(--width, #{rem(288px)});
   z-index: 1;
   grid-gap: rem(8px);
@@ -18,6 +17,29 @@
   transform-origin: right;
   transition: all .4s  ease-in;
 
+  &__header {
+    display: flex;
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    align-self: stretch;
+    background: var(--layer-03-low-contrast);
+
+    hr {
+      width: 100%;
+      background: var(--border-02-low-contrast);
+    }
+
+    .btn-primary {
+      margin-bottom: 8px;
+      --width: 100%;
+      --padding: 9px 24px;
+
+      @include upd-font($heading-2);
+    }
+  }
+
   @include media(sm) {
     transition: none;
     height: auto;
@@ -31,6 +53,7 @@
   .items {
     display: grid;
     grid-row-gap: rem(8px);
+    padding: 0 8px;
 
     @include media(sm) {
       grid-row-gap: rem(2px);
@@ -78,5 +101,9 @@
 
   hr {
     --margin: 0;
+  }
+
+  .btn-logout {
+    margin: 0 8px 8px 8px;
   }
 }

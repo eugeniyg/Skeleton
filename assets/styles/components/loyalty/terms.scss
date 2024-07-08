@@ -1,0 +1,14 @@
+.loyalty-terms {
+  display: flex;
+  padding: 16px 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  border-radius: 16px;
+  background: var(--gray-900);
+
+  &__header {
+    display: flex;
+    align-items: center;
+  }
+}

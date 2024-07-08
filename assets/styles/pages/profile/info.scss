@@ -55,4 +55,46 @@
       --color: var(--green-500);
     }
   }
+
+  &__info {
+    display: grid;
+    padding: 16px;
+    border-radius: 12px;
+    background: var(--layer-01);
+    grid-column-gap: 12px;
+    grid-template-areas: "avatar nickname" "avatar progress";
+    grid-template-columns: 96px 1fr;
+    position: relative;
+
+    &-avatar {
+      grid-area: avatar;
+      --avatar-size: 96px;
+    }
+
+    &-nickname {
+      grid-area: nickname;
+      color: var(--text-primary);
+      @include font($heading-3);
+    }
+
+    &-progress {
+      grid-area: progress;
+    }
+
+    .loyalty-progress-display {
+      margin-top: 0;
+      padding: 0;
+    }
+
+    .loyalty-progress-display__images {
+      position: absolute;
+      left: 0;
+      --face-bg-size: 40px;
+      --back-bg-size: 40px;
+    }
+
+    .loyalty-progress-display__images-back-bg {
+      display: none;
+    }
+  }
 }

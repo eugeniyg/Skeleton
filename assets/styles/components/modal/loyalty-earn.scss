@@ -2,20 +2,75 @@
   @extend %modal-info;
 
   .scroll {
-    img {
-      margin: rem(-22px) auto 0;
+    gap: 0;
+  }
+
+  &__img {
+    width: 228px;
+    height: 180px;
+    flex-shrink: 0;
+    position: relative;
+    margin: -8px auto 0;
+  }
+
+  &__title {
+    color: var(--text-primary);
+    text-align: center;
+    @include font($heading-6);
+    margin-top: 12px;
+  }
+
+  &__description {
+    color: var(--text-tertiary);
+    text-align: center;
+    @include font($body-2);
+    margin-top: 4px;
+  }
+
+  &__steps {
+    display: flex;
+    flex-direction: column;
+    counter-reset: item;
+    margin-top: 20px;
+    gap: 8px;
+
+    &-item {
+      counter-increment: item;
+      display: flex;
+      padding: 12px 20px;
+      align-items: center;
+      gap: 12px;
+      border-radius: 16px;
+      border: 2px solid var(--border-02-low-contrast);
+      background: var(--layer-02);
+      color: var(--text-primary);
+      @include font($subheading-2);
+
+      &:before {
+        grid-area: number;
+        content: counter(item);
+        @include font($heading-3);
+        color: var(--text-accent);
+        display: flex;
+        width: 32px;
+        height: 32px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 3px solid var(--yellow-500);
+        background: var(--layer-02);
+        box-shadow: 0 0 8px 0 rgba(255, 105, 64, 0.80), 0 0 16px 0 rgba(255, 193, 46, 0.80);
+      }
     }
   }
 
-  .text {
-    @include font($heading-5);
-    text-align: center;
-    color: var(--text-primary);
-    margin: 0 0;
-  }
-
   .btn-primary {
-    margin: rem(8px) auto 0;
+    margin: 20px auto 0;
+    --padding: 12px 32px;
     --width: 100%;
+
+    @include media(md) {
+      --width: fit-content;
+    }
   }
 }

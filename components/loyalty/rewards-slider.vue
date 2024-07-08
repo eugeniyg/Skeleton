@@ -44,7 +44,7 @@
     delay: 4000,
     startDelay: 1000,
     stopOnInteraction: false,
-    stopOnMouseEnter: true
+    stopOnMouseEnter: false
   };
   
   const levels = [
@@ -88,7 +88,7 @@
   
   const [sliderNode, emblaApi] = emblaCarouselVue({
     loop: false,
-    align: 'start'
+    align: 'center'
   },
     //[Autoplay(autoplayOptions)]
   );

@@ -11,10 +11,19 @@
       <div class="header">
         <button-modal-close @close="closeModal('loyaltyEarn')"/>
       </div>
-
-      <atomic-image class="img" src="/img/confirm.svg" />
       
-      <p class="text">{{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyEarn.title') }}</p>
+      <atomic-image
+        class="modal-loyalty-earn__img"
+        :src="getContent(popupsData, defaultLocalePopupsData, 'loyaltyEarn.image')"
+      />
+      
+      <div class="modal-loyalty-earn__title">{{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyEarn.title') }}</div>
+      
+      <div class="modal-loyalty-earn__description">{{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyEarn.description') }}</div>
+      
+      <div class="modal-loyalty-earn__steps">
+        <div class="modal-loyalty-earn__steps-item" v-for="step in steps">{{ step }}</div>
+      </div>
       
       <button-base type="primary" size="md" @click="closeModal('loyaltyEarn')">
         {{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyEarn.buttonLabel') }}
@@ -26,13 +35,18 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-
+  
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const {
+    popupsData,
+    defaultLocalePopupsData
+  } = useGlobalStore();
   const { getContent } = useProjectMethods();
+  
+  const steps = computed(() => getContent(popupsData, defaultLocalePopupsData, 'loyaltyEarn.steps'))
 </script>
 
-<style src="~/assets/styles/components/modal/loyalty-level.scss" lang="scss" />
+<style src="~/assets/styles/components/modal/loyalty-earn.scss" lang="scss"/>
 

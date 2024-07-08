@@ -11,6 +11,8 @@
           v-bind="props.integratedElementSecond"
       />
       
+      <loyalty-progress-display v-if="isLoggedIn && index === 0" class="is-sidebar"/>
+      
       <atomic-link
         class="link"
         :href="listItem.url"
@@ -42,12 +44,16 @@
 
 <script setup lang="ts">
   import type { ISiteSidebar } from '~/types';
+  import { storeToRefs } from 'pinia';
   
   const props = defineProps<{
     items: ISiteSidebar['topMenu']['items'];
     integratedElement?: ISiteSidebar['topMenu']['integratedElement'];
     integratedElementSecond?: ISiteSidebar['topMenu']['integratedElementSecond'];
   }>();
+  
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
   
   const route = useRoute();
   

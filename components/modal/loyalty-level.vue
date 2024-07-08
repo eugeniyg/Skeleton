@@ -12,9 +12,32 @@
         <button-modal-close @close="closeModal('loyaltyLevel')"/>
       </div>
 
-      <atomic-image class="img" src="/img/confirm.svg" />
-      <p class="text">{{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.title') }}</p>
-      <button-base type="primary" size="md" @click="closeModal('loyaltyLevel')">
+      <div
+        class="modal-loyalty-level__title"
+        v-html="marked.parse(getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.title') || '')"
+      />
+      
+      <div class="modal-loyalty-level__images">
+        <atomic-image class="modal-loyalty-level__images-back-bg" src="/img/uploads/loyalty-univerce.png" />
+        
+        <div class="modal-loyalty-level__avatar-wrap">
+          <atomic-avatar-logo
+            user-img="/img/avatar-bg.png"
+            level-img="/img/uploads/achieve-1.png"
+          />
+        </div>
+      </div>
+      
+      <div class="modal-loyalty-level__points">
+        <div class="modal-loyalty-level__points-value">139 - 178</div>
+        
+        <div class="modal-loyalty-level__points-label">
+          {{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.statusLabel') }}
+        </div>
+      </div>
+      
+      
+      <button-base type="primary" size="lg" @click="closeModal('loyaltyLevel')">
         {{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.buttonLabel') }}
       </button-base>
     </div>
@@ -22,6 +45,7 @@
 </template>
 
 <script setup lang="ts">
+  import { marked } from 'marked';
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
 

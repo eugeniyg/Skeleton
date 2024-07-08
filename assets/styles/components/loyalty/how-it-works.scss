@@ -1,5 +1,5 @@
 .loyalty-how-it-works {
-  max-width: 944px;
+  max-width: 1280px;
   margin: 24px auto 0 auto;
 
   &__title {
@@ -32,6 +32,7 @@
     @include media(md) {
       width: 360px;
       height: 285px;
+      margin: -24px auto;
     }
   }
 
@@ -40,19 +41,20 @@
     flex-direction: column;
     grid-row-gap: 32px;
     border-radius: 16px;
-    padding: 0 24px;
+    padding: 0 16px 16px;
     background: var(--gradient-tint-dark-b2t-whole);
 
     @include media(md) {
       flex-direction: row;
+      padding: 40px 24px 24px 24px;
     }
   }
 
   &__list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-top: 40px;
+    margin: 0;
+    padding: 0;
 
     &-item {
       display: grid;
@@ -68,8 +70,16 @@
       background: var(--layer-02);
       counter-increment: item;
 
+      + .loyalty-how-it-works__list-item {
+        margin-top: 8px;
+      }
+
       @include media(md) {
         padding: 16px 24px;
+
+        + .loyalty-how-it-works__list-item {
+          margin-top: 16px;
+        }
       }
 
       .is-numeric & {
@@ -84,7 +94,7 @@
           align-items: center;
           justify-content: center;
           border-radius: 50%;
-          border: 3px solid var(--gradient-gold-radial);
+          border: 3px solid var(--yellow-500);
           background: var(--layer-02);
           box-shadow: 0 0 8px 0 rgba(255, 105, 64, 0.80), 0 0 16px 0 rgba(255, 193, 46, 0.80);
         }

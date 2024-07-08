@@ -32,6 +32,16 @@
     <template v-else>
       <div class="row-user">
         <atomic-avatar-profile :is-edit="false"/>
+        
+        <div class="row-user__info">
+          <atomic-avatar-logo
+            user-img="/img/avatar-bg.png"
+            class="row-user__info-avatar"
+          />
+          <div class="row-user__info-nickname" v-if="profile?.nickname">{{ profile.nickname }}</div>
+          <loyalty-progress-display class="row-user__info-progress"/>
+        </div>
+        
 
         <div class="items">
           <div class="nickname">{{ userNickname }}</div>
@@ -100,6 +110,7 @@
   import { storeToRefs } from 'pinia';
   import type { ICountry } from '@skeleton/core/types';
   import type { IProfileInfo } from '~/types';
+  import AvatarLogo from '@skeleton/components/atomic/avatar-logo.vue';
 
   const globalStore = useGlobalStore();
   const {

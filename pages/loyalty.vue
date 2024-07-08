@@ -25,6 +25,11 @@
       :content="loyaltyContent?.faq || defaultLocaleLoyaltyContent?.faq"
     />
     
+    <loyalty-terms
+      v-if="loyaltyContent?.terms || defaultLocaleLoyaltyContent?.terms"
+      :content="loyaltyContent?.terms || defaultLocaleLoyaltyContent?.terms"
+    />
+    
   </div>
 </template>
 
