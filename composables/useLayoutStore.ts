@@ -275,7 +275,13 @@ export const useLayoutStore = defineStore('layoutStore', {
     deleteReturnGame(): void {
       sessionStorage.removeItem('returnGame');
       this.returnGame = undefined
-    }
+    },
+
+    closeAllModals(): void {
+      Object.keys(this.modals).forEach(modalKey => {
+        if (this.modals[modalKey]) this.closeModal(modalKey);
+      })
+    },
   },
 
   getters: {

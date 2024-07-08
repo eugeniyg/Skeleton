@@ -1,13 +1,44 @@
 import type { IPaginationMeta } from './globalTypes'
 
+export interface IWinTaskConditions extends Record<string, any> {
+  games?: string[];
+  multiplier?: number;
+  maxMultiplier?: number;
+  minPayout?: number;
+  maxPayout?: number;
+  currencies: {
+    isoCode: string;
+    minPayout?: number;
+    maxPayout?: number;
+  }[];
+}
+
+export interface IBetTaskConditions extends Record<string, any> {
+  games?: string[];
+  spinAmount?: number;
+  maxSpinAmount?: number;
+  currencies: {
+    isoCode: string;
+    spinAmount?: number;
+    maxSpinAmount?: number;
+  }[];
+}
+
+export interface IFieldsTaskConditions extends Record<string, any> {
+  fields: string[];
+}
+
 export interface IPlayerQuestTask extends Record<string, any> {
   id: string;
   isCompleted: boolean;
+  isActive: boolean;
+  type: number;
   progress: number;
   quantity: number;
   name: string;
   description: string;
   executionOrder: number;
+  conditions: Record<string, any>;
 }
 
 export interface IPlayerQuestEventTask extends Record<string, any> {
@@ -21,6 +52,7 @@ export interface IPlayerQuestEventTask extends Record<string, any> {
   name: string;
   createdAt: string;
   updatedAt: string;
+  type: number;
 }
 
 export interface IPlayerQuestReward extends Record<string, any> {

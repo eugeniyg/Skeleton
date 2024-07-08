@@ -1,5 +1,14 @@
 .quest-hub-card {
   width: 100%;
+  cursor: pointer;
+
+  &:hover {
+    .quest-hub-card__arrow {
+      .icon {
+        --color: var(--icon-accent);
+      }
+    }
+  }
 
   &__body {
     display: grid;
@@ -87,14 +96,6 @@
 
     .icon {
       --color: var(--icon-primary);
-    }
-
-    &:hover {
-      cursor: pointer;
-
-      .icon {
-        --color: var(--icon-accent);
-      }
     }
   }
 

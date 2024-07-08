@@ -9,6 +9,9 @@ interface IQuestsStoreState {
   rewardsModalTitle: string;
   rewardsList: { currency: string, amount: number }[];
   questsSubscription: any;
+  showTasksModal: boolean;
+  tasksModalData: IPlayerQuest|undefined,
+  tasksModalImage: string
 }
 
 export const useQuestsStore = defineStore('questsStore', {
@@ -17,7 +20,10 @@ export const useQuestsStore = defineStore('questsStore', {
     showRewardsModal: false,
     rewardsModalTitle: '',
     rewardsList: [],
-    questsSubscription: undefined
+    questsSubscription: undefined,
+    showTasksModal: false,
+    tasksModalData: undefined,
+    tasksModalImage: ''
   }),
 
   actions: {
@@ -35,6 +41,16 @@ export const useQuestsStore = defineStore('questsStore', {
 
     closeRewardsModal ():void {
       this.showRewardsModal = false;
+    },
+
+    openTasksModal (questData: IPlayerQuest, questImage: string): void {
+      this.tasksModalData = questData;
+      this.tasksModalImage = questImage;
+      this.showTasksModal = true;
+    },
+
+    closeTasksModal ():void {
+      this.showTasksModal = false;
     },
 
     updateQuest (questData: IPlayerQuest|undefined):void {
@@ -80,11 +96,12 @@ export const useQuestsStore = defineStore('questsStore', {
       const { showAlert } = useLayoutStore();
       this.playerActiveQuests = this.playerActiveQuests.map(quest => {
         if (quest.id === taskData.questId) {
-          if (taskData.progress === taskData.quantity) {
+          if (taskData.isActive && (taskData.progress === taskData.quantity)) {
             const alertData = getContent(alertsData, defaultLocaleAlertsData, 'quests.taskCompleted');
+            const taskTypeName = getContent(alertsData, defaultLocaleAlertsData, `quest-tasks.taskTypes.${taskData.type}`);
             if (alertData.title) showAlert({
               ...alertData,
-              title: alertData.title.replace('{taskName}', taskData.name).replace('{questName}', quest.name)
+              title: alertData.title.replace('{taskName}', taskTypeName).replace('{questName}', quest.name)
             })
           }
 
@@ -112,7 +129,6 @@ export const useQuestsStore = defineStore('questsStore', {
       if (profileStore.profile?.id) {
         const { createSubscription } = useWebSocket();
         this.questsSubscription = createSubscription(`retention:quests#${profileStore.profile?.id}`, this.questsSocketTrigger);
-        console.log(this.questsSubscription);
       }
     },
 

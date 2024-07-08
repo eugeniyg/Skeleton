@@ -2,10 +2,11 @@
   <div
     class="quest-card"
     :class="taskStatusClasses"
+    @click="openTasksModal(props.questInfo, questImageSrc)"
   >
     <div class="quest-card__img">
       <atomic-image
-        :src="questImages[questImages.length - (props.questIndex % questImages.length)] || '/img/quests/default-quest-img.png'"
+        :src="questImageSrc"
       />
     </div>
 
@@ -41,7 +42,7 @@
         v-if="props.questInfo.state === 1"
         size="sm"
         type="primary"
-        @click="activateQuest"
+        @click.stop="activateQuest"
       >
         {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.startQuestButton') }}
       </button-base>
@@ -50,7 +51,7 @@
         v-else
         size="xs"
         type="ghost"
-        @click="cancelQuest"
+        @click.stop="cancelQuest"
       >
         {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.cancelQuestButton') }}
       </button-base>
@@ -68,6 +69,7 @@
 
   const emit = defineEmits(['openRewardsModal']);
 
+  const { openTasksModal } = useQuestsStore();
   const globalStore = useGlobalStore();
   const {
     popupsData,
@@ -76,6 +78,7 @@
     defaultLocaleAlertsData
   } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
+
   const questImages = computed(() => {
     const imgObjArr: { src: string }[] = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.questsImages') || [];
     return imgObjArr.map(imgObj => imgObj.src);
@@ -87,30 +90,36 @@
     'is-expired is-bw-enabled': [5,6].includes(props.questInfo?.state)
   }));
 
+  const questImageSrc = computed(() => {
+    return questImages.value[questImages.value.length - (props.questIndex % questImages.value.length)]
+      || '/img/quests/default-quest-img.png'
+  })
+
   const { showAlert } = useLayoutStore();
-  const actionInProcess = ref(false);
+  const activation = ref(false);
+  const canceling = ref(false);
   const { activatePlayerQuest, cancelPlayerQuest } = useCoreQuestApi();
   const activateQuest = async (): Promise<void> => {
-    if (actionInProcess.value) return;
-    actionInProcess.value = true;
+    if (activation.value) return;
+    activation.value = true;
 
     try {
       await activatePlayerQuest(props.questInfo.id);
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
-      actionInProcess.value = false;
+      activation.value = false;
     }
   }
 
   const cancelQuest = async (): Promise<void> => {
-    if (actionInProcess.value) return;
-    actionInProcess.value = true;
+    if (canceling.value) return;
+    canceling.value = true;
 
     try {
       await cancelPlayerQuest(props.questInfo.id);
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
-      actionInProcess.value = false;
+      canceling.value = false;
     }
   }
 </script>

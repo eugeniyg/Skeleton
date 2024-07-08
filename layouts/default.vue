@@ -56,6 +56,7 @@
     <modal-turn-over-wager v-if="turnOverWagerModal" />
     <modal-quests-hub />
     <modal-quest-rewards />
+    <modal-quest-tasks />
 
     <atomic-alert />
   </div>

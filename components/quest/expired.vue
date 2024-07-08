@@ -3,6 +3,7 @@
     <div v-if="state.data.length" class="quest-tab__items">
       <quest-card
         v-for="(quest, questIndex) in state.data"
+        :key="quest.id"
         :questInfo="quest"
         :questIndex="questIndex"
       />
