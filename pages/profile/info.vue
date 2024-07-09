@@ -31,8 +31,6 @@
 
     <template v-else>
       <div class="row-user">
-        <atomic-avatar-profile :is-edit="false"/>
-        
         <div class="row-user__info">
           <atomic-avatar-logo
             user-img="/img/avatar-bg.png"
@@ -42,7 +40,6 @@
           <loyalty-progress-display class="row-user__info-progress"/>
         </div>
         
-
         <div class="items">
           <div class="nickname">{{ userNickname }}</div>
 
@@ -111,6 +108,7 @@
   import type { ICountry } from '@skeleton/core/types';
   import type { IProfileInfo } from '~/types';
   import AvatarLogo from '@skeleton/components/atomic/avatar-logo.vue';
+  import Loyalty from '@skeleton/components/card/loyalty.vue';
 
   const globalStore = useGlobalStore();
   const {

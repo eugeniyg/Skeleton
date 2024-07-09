@@ -14,7 +14,7 @@
   }
 
   &__container {
-    max-width: 1280px;
+    max-width: 1376px;
     position: relative;
     margin: 0 auto;
     padding: 48px 16px;
@@ -37,19 +37,6 @@
     position: relative;
     z-index: 1;
     max-width: 480px;
-
-    .btn-primary {
-      margin-top: 20px;
-      --padding: 12px 32px;
-      --width: 100%;
-      max-width: 328px;
-
-      @include media(md) {
-        margin-top: 24px;
-        --padding: 12px 32px;
-        --width: fit-content;
-      }
-    }
   }
 
   &__picture {
@@ -63,11 +50,11 @@
       right: -94px;
 
       @include media(sm) {
+        top: 32px;
         right: 32px;
       }
 
       @include media(md) {
-        top: 38px;
         max-width: 336px;
         right: 48px;
       }
@@ -87,14 +74,14 @@
     @include font($heading-7);
     color: var(--text-primary);
     padding-right: 90px;
+    --line-height: auto;
 
     @include media(md) {
       padding-right: 0;
+      @include upd-font($heading-8);
     }
 
     .is-logged & {
-      @include upd-font($heading-4);
-
       @include media(md) {
         @include upd-font($heading-7);
       }
@@ -102,13 +89,23 @@
   }
 
   &__sub-title {
-    @include font($heading-uppercase-3);
+    @include font($heading-uppercase-4);
     margin-top: 8px;
     color: var(--text-accent);
     padding-right: 90px;
 
     @include media(md) {
+      margin-top: 4px;
       padding-right: 0;
+      @include upd-font($heading-uppercase-5);
+
+      .is-logged & {
+        @include upd-font($heading-uppercase-3);
+      }
+    }
+
+    .is-logged & {
+      @include upd-font($heading-uppercase-3);
     }
   }
 
@@ -116,5 +113,9 @@
     @include font($body-3);
     color: var(--text-tertiary);
     margin-top: 20px;
+
+    @include media(md) {
+      margin-top: 24px;
+    }
   }
 }

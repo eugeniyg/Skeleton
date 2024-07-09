@@ -1,7 +1,7 @@
 <template>
   <div class="loyalty-benefits-grid">
     <div class="loyalty-benefits-grid__items" :class="{'is-numeric': props.content.isNumeric}">
-      <loyalty-benefits-item v-for="item in props.content.items" v-bind="item"/>
+      <loyalty-benefits-item v-for="item in props.content.items" v-bind="item" :key="item"/>
     </div>
   </div>
 </template>

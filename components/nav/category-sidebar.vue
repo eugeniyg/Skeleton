@@ -11,7 +11,9 @@
           v-bind="props.integratedElementSecond"
       />
       
-      <loyalty-progress-display v-if="isLoggedIn && index === 0" class="is-sidebar"/>
+      <client-only>
+        <loyalty-progress-display v-if="isLoggedIn && index === 0" class="is-sidebar"/>
+      </client-only>
       
       <atomic-link
         class="link"

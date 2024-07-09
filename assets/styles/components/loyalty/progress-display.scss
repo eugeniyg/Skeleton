@@ -56,6 +56,10 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+
+      .is-sidebar & {
+        opacity: 0.7;
+      }
     }
 
     &-face-bg {
@@ -96,6 +100,7 @@
       &-value {
         color: var(--text-primary);
         @include font($subheading-0);
+        --line-height: auto;
       }
 
       &-icon {
@@ -118,6 +123,7 @@
         color: var(--text-secondary);
         @include font($body-0);
         margin-right: 2px;
+        --line-height: auto;
       }
 
       &-value {
@@ -143,6 +149,7 @@
         display: flex;
         align-items: center;
         gap: 2px;
+        --line-height: auto;
 
         .is-sidebar & {
           color: var(--text-accent);
@@ -160,6 +167,7 @@
       &-divider {
         @include font($heading-0);
         color: var(--text-tertiary);
+        --line-height: auto;
       }
 
       &-next {
@@ -168,6 +176,7 @@
         display: flex;
         align-items: center;
         gap: 2px;
+        --line-height: auto;
       }
     }
   }

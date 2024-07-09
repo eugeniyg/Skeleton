@@ -5,6 +5,7 @@
         <loyalty-rewards-slider-item
           v-for="level in loyaltyLevels"
           v-bind="level"
+          :key="level.name"
         />
       </div>
     </div>
@@ -15,28 +16,38 @@
       @mouseover="onMouseOver"
       @mouseleave="onMouseLeave"
     >
+      <div
+        class="loyalty-rewards-slider__btn is-prev"
+        @click="scrollPrev"
+      >
+        <atomic-icon id="arrow_expand-close"/>
+      </div>
+      
       <div class="loyalty-rewards-slider__bullets">
         <div
           v-for="(item, index) in levels.length"
-          class="banners__bullet"
+          :key="item"
+          class="loyalty-rewards-slider__bullet"
           :class="{'is-active': index === activeIndex}"
           @click="scrollTo(index)"
         />
+      </div>
+      
+      <div
+        class="loyalty-rewards-slider__btn is-next"
+        @click="scrollPrev"
+      >
+        <atomic-icon id="arrow_expand-close"/>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { ILoyaltyPage } from '~/types';
   const { loyaltyLevels } = useFakeStore();
   
   import emblaCarouselVue from 'embla-carousel-vue';
   import Autoplay from 'embla-carousel-autoplay';
-  
-  // const props = defineProps<{
-  //   content: ILoyaltyPage['rewards']['slider']
-  // }>();
   
   const activeIndex = ref<number>(0);
   
@@ -90,7 +101,7 @@
     loop: false,
     align: 'center'
   },
-    //[Autoplay(autoplayOptions)]
+    [Autoplay(autoplayOptions)]
   );
   
   const onSelectSlide = () => {

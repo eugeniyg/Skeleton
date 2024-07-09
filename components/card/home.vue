@@ -15,8 +15,14 @@
         <atomic-picture :src="props.images.faceImage" notLazy />
       </div>
     </div>
-
-    <div class="info">
+    
+    <div class="loyalty-home" v-if="isLoggedIn">
+      <div class="loyalty-home__title" v-if="loggedTitle" v-html="loggedTitle"/>
+      <div class="loyalty-home__sub-title" v-if="props.loggedSubTitle" v-html="marked.parse(props.loggedSubTitle)"/>
+      <loyalty-progress-display />
+    </div>
+    
+    <div class="info" v-else>
       <div class="title" v-if="props.title" v-html="marked.parse(props.title)"/>
       <div class="card-home__content" v-if="props.content" v-html="marked.parse(props.content)"/>
 
@@ -55,12 +61,28 @@
       type: Object,
       required: false,
     },
+    loggedTitle: {
+      type: String,
+      default: '',
+    },
+    loggedSubTitle: {
+      type: String,
+      default: '',
+    },
   });
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { showModal, openWalletModal } = useLayoutStore();
   const { handleExternalLink } = useProjectMethods();
+  const { profile } = storeToRefs(profileStore);
+  
+  const loggedTitle = computed(() => {
+    if (props.loggedTitle) {
+      return marked.parse(props.loggedTitle.replace('{nickname}', profile.value?.nickname));
+    }
+    return '';
+  });
 
   const clickButton = (url: string): void => {
     if (url) handleExternalLink(url)

@@ -15,8 +15,9 @@
         :class="{'is-numeric': props.content.list.isNumeric}"
       >
         <li
-          v-for="item in props.content.list?.items"
+          v-for="(item, index) in props.content.list?.items"
           class="loyalty-how-it-works__list-item"
+          :key="index"
         >
           <atomic-image v-if="!props.content.list.isNumeric && item.image"/>
           

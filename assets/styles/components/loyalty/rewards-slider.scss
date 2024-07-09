@@ -75,14 +75,6 @@
     min-width: 0;
     user-select: none;
 
-    //&:last-of-type {
-    //  margin-right: 16px;
-    //
-    //  @include media(sm) {
-    //    margin-right: 24px;
-    //  }
-    //};
-
     &-header {
       display: flex;
       width: 188px;
@@ -91,7 +83,6 @@
       align-items: center;
       position: relative;
       background: var(--gradient-gray-dark-line);
-
       overflow: hidden;
       border-radius: 16px 16px 999px 999px;
 
@@ -156,8 +147,12 @@
       .icon {
         --icon-size: 12px;
 
-        .is-order-prev & {
+        .is-order-prev &, .is-order-next & {
           --color: var(--icon-primary);
+        }
+
+        .is-order-current & {
+          --color: var(--icon-accent);
         }
       }
     }

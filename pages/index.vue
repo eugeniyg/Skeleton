@@ -1,9 +1,11 @@
 <template>
   <div class="home">
-    <banners
-      v-if="homeContent?.banners || defaultLocaleHomeContent?.banners"
-      :items="homeContent?.banners || defaultLocaleHomeContent?.banners"
-    />
+    <client-only>
+      <banners
+        v-if="homeContent?.banners || defaultLocaleHomeContent?.banners"
+        :items="homeContent?.banners || defaultLocaleHomeContent?.banners"
+      />
+    </client-only>
     
     <div
       v-if="homeContent?.categories || defaultLocaleHomeContent?.categories"

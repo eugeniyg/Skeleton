@@ -1,7 +1,7 @@
 <template>
   <div class="loyalty-progress">
     <span class="loyalty-progress__line" :style="{width: `${percentage}%`}"/>
-    <!--<span class="loyalty-progress__percentage">{{ `${percentage}%` }}</span>--->
+    <!--<span class="loyalty-progress__percentage">{{ `${percentage}%` }}</span>-->
   </div>
 </template>
 

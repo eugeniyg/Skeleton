@@ -1,13 +1,12 @@
 <template>
-  <div class="card-loyalty" :style="backgroundGradientVars">
+  <div class="card-loyalty" :style="backgroundGradientVars" :class="{'is-logged': isLoggedIn}">
     <div class="card-loyalty__container">
       <div class="card-loyalty__content">
-        <div class="card-loyalty__title" v-if="title" v-html="marked.parse(title)"/>
+        <div class="card-loyalty__title" v-if="props.content?.title" v-html="marked.parse(props.content?.title)"/>
         <div class="card-loyalty__sub-title" v-if="subTitle" v-html="marked.parse(subTitle)"/>
+        <div class="card-loyalty__description" v-if="props.content.description" v-html="marked.parse(props.content.description)"/>
         
         <template v-if="!isLoggedIn">
-          <div class="card-loyalty__description" v-html="marked.parse(props.content.description)"/>
-          
           <button-base
             type="primary"
             size="lg"
@@ -18,7 +17,7 @@
           </button-base>
         </template>
         
-        <loyalty-progress-display v-if="isLoggedIn"/>
+        <loyalty-info v-if="isLoggedIn"/>
       </div>
       
       <picture class="card-loyalty__picture">
@@ -40,7 +39,7 @@
   }>();
   
   const profileStore = useProfileStore();
-  const { isLoggedIn } = storeToRefs(profileStore);
+  const { isLoggedIn, profile } = storeToRefs(profileStore);
   const {
     showModal,
     openWalletModal
@@ -57,10 +56,6 @@
       isLoggedIn.value ? openWalletModal('deposit') : showModal('register');
     }
   };
-  
-  const title = computed(() => {
-    return isLoggedIn.value ? props.content.loggedTitle : props.content.title;
-  });
   
   const subTitle = computed(() => {
     return isLoggedIn.value ? props.content.loggedSubTitle : props.content.subTitle;

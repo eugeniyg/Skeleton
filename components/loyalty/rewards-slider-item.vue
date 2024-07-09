@@ -13,7 +13,7 @@
         />
         
         <div class="loyalty-rewards-slider__item-icon">
-          <atomic-icon id="flash"/>
+          <atomic-icon :id="orderIcon"/>
         </div>
       </div>
       
@@ -25,7 +25,7 @@
       <div class="loyalty-rewards-slider__item-status-points">
         <div class="loyalty-rewards-slider__item-status-points-label">
           <span>{{ props.statusPointsLabel }}</span>
-          <atomic-icon id="info"/>
+          <span><atomic-icon id="info"/></span>
         </div>
         <div class="loyalty-rewards-slider__item-status-points">
           <div class="loyalty-rewards-slider__item-status-points-label">
@@ -71,6 +71,7 @@
           v-for="(option, index) in props.options"
           class="loyalty-rewards-slider__item-option"
           :class="{'is-checked': option.checked}"
+          :key="index"
         >
           <div class="loyalty-rewards-slider__item-option-checkbox">
             <atomic-icon :id="option.checked ? 'check' : 'close'"/>
@@ -103,4 +104,6 @@
   }>();
   
   const orderClass = computed(() => `is-order-${props.order}`);
+  
+  const orderIcon = computed(() => props.order === 'next' ? 'locked' : 'flash');
 </script>

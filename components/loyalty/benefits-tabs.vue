@@ -17,6 +17,7 @@
           class="loyalty-benefits-tabs__nav-item"
           :class="{'is-active': index === selectedTabIndex}"
           @click="selectTab(index)"
+          :key="index"
         >
           <atomic-image class="loyalty-benefits-tabs__nav-item-image" :src="item.image"/>
           <div class="loyalty-benefits-tabs__nav-item-title">{{ item.title }}</div>
@@ -25,7 +26,7 @@
     </div>
     
     <div class="loyalty-benefits-tabs__items" :class="{'is-numeric': props.content.isNumeric}">
-      <loyalty-benefits-item v-for="item in activeTabContent" v-bind="item"/>
+      <loyalty-benefits-item v-for="(item, index) in activeTabContent" v-bind="item" :key="index"/>
     </div>
   </div>
 </template>
