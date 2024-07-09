@@ -34,8 +34,8 @@
           </div>
         </div>
 
-        <div class="quest-tasks" :class="{ 'inactive': ![1,2].includes(tasksModalData?.state || 0) }">
-          <div v-if="[1,2].includes(tasksModalData?.state || 0)" class="quest-tasks__count">{{ blockLabel }}</div>
+        <div class="quest-tasks" :class="{ 'inactive': inactiveState }">
+          <div v-if="inactiveState" class="quest-tasks__count">{{ blockLabel }}</div>
 
           <div class="quest-tasks__items">
             <div class="quest-tasks__completed" v-if="completedTasks.length">
@@ -117,6 +117,8 @@
     const contentMessage = getContent(popupsData.value, defaultLocalePopupsData.value, 'questTasks.blockLabel');
     return contentMessage ? contentMessage.replace('{tasksLeft}', activeTasks.value.length) : '';
   })
+
+  const inactiveState = computed(() => ![1,2].includes(tasksModalData.value?.state || 0));
 
   const { showAlert } = useLayoutStore();
   const activation = ref(false);

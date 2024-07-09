@@ -21,7 +21,7 @@
       <quest-progress :taskList="[props.taskInfo]" showLabel />
     </div>
 
-    <div v-if="[2, 3,4].includes(props.taskInfo.type)" class="quest-info-wrapper">
+    <div v-if="[2,3,4].includes(props.taskInfo.type)" class="quest-info-wrapper">
       <template v-if="props.taskInfo.type === 3 && winTaskConditions">
         <quest-games-info
           :title="winTaskConditions.multiplierLabel"
