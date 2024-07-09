@@ -3,6 +3,7 @@
     <div v-if="playerActiveQuests.length" class="quest-tab__items">
       <quest-card
         v-for="(quest, questIndex) in playerActiveQuests"
+        :key="quest.id"
         :questInfo="quest"
         :questIndex="questIndex"
       />

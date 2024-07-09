@@ -14,7 +14,7 @@
     <div
       v-if="rewardsValue.length > 1"
       class="quest-currency__more"
-      @click="showRewardsModal"
+      @click.stop="showRewardsModal"
     >
       <span>+</span>
       <span>{{ rewardsValue.length - 1 }}</span>
@@ -30,17 +30,17 @@ import type { IPlayerQuestReward } from "@skeleton/core/types";
 
 const props = defineProps<{
   rewards: IPlayerQuestReward[];
-  type: 'real'|'virtual';
+  type?: 'real'|'virtual';
 }>();
 
 const emit = defineEmits();
 const { currencies, defaultLocalePopupsData, popupsData } = useGlobalStore();
 
-const filteredRewards = props.rewards.filter(reward => {
+const filteredRewards = props.type ? props.rewards.filter(reward => {
   const rewardCurrencyType = currencies.find(currency => currency.code === reward.attributes.isoCode);
   if (props.type === 'virtual') return rewardCurrencyType?.type === 'virtual';
   return rewardCurrencyType?.type !== 'virtual';
-});
+}) : props.rewards;
 
 const { formatBalance, getContent } = useProjectMethods();
 const walletStore = useWalletStore();

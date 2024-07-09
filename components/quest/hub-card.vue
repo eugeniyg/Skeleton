@@ -1,17 +1,15 @@
 <template>
-  <div class="quest-hub-card">
+  <div class="quest-hub-card" @click="openTasksModal(props.questInfo, questImageSrc)">
     <div class="quest-hub-card__body">
       <div class="quest-hub-card__img">
-        <atomic-image
-          :src="questImages[questImages.length - (props.cardIndex % questImages.length)] || '/img/quests/default-quest-img.png'"
-        />
+        <atomic-image :src="questImageSrc" />
       </div>
 
       <div class="quest-hub-card__title">
         <span>{{ props.questInfo.name }}</span>
 
         <div class="quest-hub-card__tooltip">
-          <atomic-icon id="info"/>
+          <atomic-icon id="info" />
         </div>
       </div>
 
@@ -27,13 +25,13 @@
         <span
           v-if="rewardsValue.length > 1"
           class="quest-hub-card__amount-more"
-          @click="openModal"
+          @click.stop="openModal"
         >
           +{{ rewardsValue.length - 1 }} {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.moreLabel') }}
         </span>
       </div>
 
-      <span class="quest-hub-card__arrow" @click="showModal('questTasks')">
+      <span class="quest-hub-card__arrow">
         <atomic-icon id="arrow_expand-close"/>
       </span>
     </div>
@@ -75,7 +73,12 @@ const questImages = computed(() => {
   return imgObjArr.map(imgObj => imgObj.src);
 })
 
-const { openRewardsModal } = useQuestsStore();
+const questImageSrc = computed(() => {
+  return questImages.value[questImages.value.length - (props.cardIndex % questImages.value.length)]
+    || '/img/quests/default-quest-img.png'
+})
+
+const { openRewardsModal, openTasksModal } = useQuestsStore();
 const rewardsModalTitle = computed(() => {
   return getContent(infoContent.value, defaultLocaleInfoContent.value, 'questsHub.rewardsTitle') || '';
 })

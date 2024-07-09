@@ -10,6 +10,26 @@
     height: inherit;
   }
 
+  &__label {
+    height: 12px;
+    position: absolute;
+    text-align: center;
+    @include font($body-0);
+    color: var(--text-primary);
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    --line-height: auto;
+
+    .is-bw-enabled & {
+      color: var(--text-tertiary);
+    }
+  }
+
   &__items {
     padding: 0;
     list-style: none;

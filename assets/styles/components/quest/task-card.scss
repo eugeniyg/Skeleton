@@ -1,4 +1,4 @@
-.quest-card {
+.quest-task {
   display: grid;
   padding: 16px;
   background: var(--layer-02);
@@ -8,11 +8,10 @@
   grid-template-columns: auto 1fr;
   grid-template-rows: minmax(min-content, 0);
   position: relative;
-  cursor: pointer;
 
   @include media(md) {
     grid-template-columns: auto 1fr auto;
-    grid-template-areas: "img header actions" "img body body";
+    grid-template-areas: "img header actions" "img body actions";
   }
 
   .quest-info-wrapper {
@@ -82,6 +81,17 @@
     display: grid;
   }
 
+  &__number {
+    color: var(--quest-task-number-color, var(--text-tertiary));
+    @include font($subheading-0);
+    display: flex;
+    align-items: flex-end;
+
+    .is-bw-enabled & {
+      --quest-task-number-color: var(--text-helper);
+    }
+  }
+
   &__title {
     color: var(--quest-task-title-color, var(--text-primary));
     @include font($heading-3);
@@ -106,26 +116,33 @@
     @include media(md) {
       padding: 0;
       margin-left: 16px;
-    }
-
-    .btn-primary, .btn-ghost {
-      margin: 0 auto;
-      --width: 100%;
+      //align-items: flex-start;
     }
 
     .btn-primary {
-      transform: translateY(12px);
+      margin: 0 auto;
+      --width: 100%;
+    }
+  }
+
+  &__type-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) translateX(calc(-100% - 6px));
+    width: 32px;
+    height: 32px;
+    left: 0;
+    z-index: 1;
+
+    .is-bw-enabled & {
+      filter: grayscale(100%);
     }
 
-    .btn-ghost {
-      align-self: flex-start;
-      --color: var(--button-text-ghost-low-contrast);
-
-      @include use-hover {
-        &:hover {
-          --color: var(--button-text-ghost-hover);
-        }
-      }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
     }
   }
 
