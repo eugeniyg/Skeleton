@@ -15,10 +15,54 @@
   }
 
   .th {
+    display: flex;
+    align-items: center;
     color: var(--text-tertiary);
   }
 
   .td {
     color: var(--text-primary);
+  }
+
+  &__email {
+    display: flex;
+    align-items: center;
+    grid-column-gap: rem(4px);
+    flex-wrap: wrap;
+
+    &-value {
+      @extend %text-elipsis;
+      max-width: calc(100% - 24px);
+    }
+
+    .btn-primary {
+      margin-top: rem(8px);
+      width: 100%;
+
+      @include media(md) {
+        margin-left: auto;
+        width: auto;
+        margin-top: 0;
+      }
+
+      &.disabled {
+        pointer-events: none;
+        --bg: var(--yellow-900);
+        --color: var(--black-primary);
+      }
+    }
+
+    .icon {
+      --color: var(--gray-400);
+      --icon-size: #{rem(20px)};
+
+      &.is-warning {
+        --color: var(--orange-500);
+      }
+
+      &.is-success {
+        --color: var(--green-500);
+      }
+    }
   }
 }

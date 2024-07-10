@@ -161,3 +161,20 @@ export interface IPhoneVerification {
   code: string;
   reason: string;
 }
+
+export interface IPlayerLoyaltyLevel extends Record<string, any> {
+  id: string;
+  name: string;
+  order: number;
+  points: number;
+}
+
+export interface IPlayerLoyaltyAccount extends Record<string, any> {
+  id: string;
+  playerId: string;
+  points: number;
+  currentLevel: IPlayerLoyaltyLevel;
+  nextLevel: IPlayerLoyaltyLevel|null;
+  createdAt: string;
+  updatedAt: string|null;
+}

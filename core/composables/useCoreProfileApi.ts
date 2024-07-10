@@ -9,7 +9,7 @@ import type {
   ISession,
   ISessionsResponse,
   IUpdateLimit,
-  IUploadFile
+  IUploadFile, IPlayerLoyaltyAccount
 } from '../types';
 import { useApiAuthInstance } from "@skeleton/core/assets/apiAuthInstance";
 import { useApiGuestInstance } from "@skeleton/core/assets/apiGuestInstance";
@@ -114,6 +114,11 @@ export const useCoreProfileApi = () => {
     return data;
   };
 
+  const getPlayerLoyaltyAccount = async ():Promise<IPlayerLoyaltyAccount> => {
+    const { data } = await useApiAuthInstance('/api/retention/account');
+    return data;
+  };
+
   return {
     getProfile,
     getProfileFields,
@@ -132,5 +137,6 @@ export const useCoreProfileApi = () => {
     updatePlayerLimit,
     deletePlayerLimit,
     getSumsubToken,
+    getPlayerLoyaltyAccount
   };
 }
