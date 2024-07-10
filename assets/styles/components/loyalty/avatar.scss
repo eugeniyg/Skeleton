@@ -1,0 +1,40 @@
+.loyalty-avatar {
+  position: relative;
+  border-radius: 50%;
+  border: 7px solid var(--border-01);
+  background: linear-gradient(188deg, #140D2B 44.73%, #28263B 93.88%), #2F363D;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+
+  --avatar-img-size: 56px;
+  --level-img-size: 40px;
+
+  &__user-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    box-shadow: var(--avatar-img-box-shadow, none);
+  }
+
+  &__level {
+    display: block;
+    position: absolute;
+    margin: 0 auto;
+    top: var(--level-img-top, auto);
+    right: var(--level-img-right, -12px);
+    bottom: var(--level-img-bottom, -12px);
+    left: var(--level-img-left, auto);
+    width: var(--level-img-size);
+    height: var(--level-img-size);
+    z-index: 1;
+
+    &-front {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

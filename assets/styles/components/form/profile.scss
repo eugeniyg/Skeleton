@@ -9,6 +9,7 @@
 
     &:first-child {
       display: flex;
+      align-items: center;
     }
 
     @include media(l) {
@@ -21,5 +22,10 @@
   .actions {
     display: flex;
     grid-gap: rem(8px);
+  }
+
+  .loyalty-avatar {
+    flex-shrink: 0;
+    --avatar-size: 96px;
   }
 }

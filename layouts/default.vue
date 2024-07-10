@@ -57,6 +57,7 @@
     <modal-quests-hub />
     <modal-quest-rewards />
     <modal-quest-tasks />
+    <modal-loyalty-earn />
 
     <atomic-alert />
   </div>

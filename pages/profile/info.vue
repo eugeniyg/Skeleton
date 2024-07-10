@@ -12,14 +12,6 @@
         @click="toggleProfileEdit"
       >
         <atomic-icon id="edit"/>{{ infoContent?.editButton || defaultLocaleInfoContent?.editButton }}
-
-        <!--        <template v-if="isProfileEdit">-->
-        <!--          <atomic-icon id="done"/>Done editing-->
-        <!--        </template>-->
-
-        <!--        <template v-else>-->
-        <!--          <atomic-icon id="edit"/>Edit your profile-->
-        <!--        </template>-->
       </button-base>
     </div>
 
@@ -30,35 +22,14 @@
 
     <template v-else>
       <div class="row-user">
-        <atomic-avatar-profile :is-edit="false"/>
+        <div class="row-user__info">
+          <loyalty-avatar class="row-user__info-avatar" levelImg="/img/avatar-bg.png" />
 
-        <div class="items">
-          <div class="nickname">{{ userNickname }}</div>
-
-          <div class="item" v-show="profile?.firstName || profile?.lastName">
-            <atomic-icon id="user"/>
-            {{ profile?.firstName }} {{ profile?.lastName }}
+          <div class="row-user__info-nickname">
+            {{ userNickname }}
           </div>
 
-          <div class="item" v-show="profile?.country || profile?.city">
-            <atomic-icon id="location"/>
-            {{ userCountryName }}{{ profile?.city ? `, ${profile?.city}` : '' }}
-          </div>
-
-          <div class="item" v-show="profile?.email">
-            <atomic-icon v-if="profile?.confirmedAt" class="is-success" id="done"/>
-            <atomic-icon v-else class="is-warning" id="warning"/>
-            {{ profile?.email }}
-
-            <span
-              v-if="!profile?.confirmedAt"
-              class="btn-primary size-xs"
-              @click.once="profileStore.resendVerifyEmail"
-              :class="{ disabled: resentVerifyEmail }"
-            >
-              {{ infoContent?.sendButton || defaultLocaleInfoContent?.sendButton }}
-            </span>
-          </div>
+          <loyalty-progress-display class="row-user__info-progress"/>
         </div>
       </div>
 
