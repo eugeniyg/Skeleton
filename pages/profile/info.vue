@@ -23,13 +23,13 @@
     <template v-else>
       <div class="row-user">
         <div class="row-user__info">
-          <loyalty-avatar class="row-user__info-avatar" levelImg="/img/avatar-bg.png" />
+          <loyalty-avatar size="lg" class="row-user__info-avatar" />
 
           <div class="row-user__info-nickname">
             {{ userNickname }}
           </div>
 
-          <loyalty-progress-display class="row-user__info-progress"/>
+          <loyalty-progress class="row-user__info-progress" showInfo />
         </div>
       </div>
 
