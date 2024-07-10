@@ -106,11 +106,6 @@
 
     try {
       await activatePlayerQuest(props.questInfo.id);
-      await nextTick(() => {
-        const titleWidth = getComputedStyle(titleRef.value).width as any;
-        const headerWidth = getComputedStyle(headerRef.value).width as any;
-        titleRef.value.style.paddingRight = `${titleWidth - headerWidth}px`;
-      })
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
       activation.value = false;
