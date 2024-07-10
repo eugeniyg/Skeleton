@@ -50,7 +50,7 @@
   
   const [sliderNode, emblaApi] = emblaCarouselVue({
       loop: false,
-      //align: 'center'
+      align: 'center'
     },
     //[Autoplay(autoplayOptions)]
   );

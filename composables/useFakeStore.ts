@@ -1854,6 +1854,130 @@ export const useFakeStore = () => {
         },
       ]
     },
+    {
+      order: 'next',
+      name: 'Level Name',
+      number: 2,
+      image: '/img/uploads/achieve-6.png',
+      statusPointsLabel: 'Status points',
+      statusPointsValue: '-',
+      rankBonusLabel: 'Rank bonus',
+      rankBonusValue: '-',
+      rankBonusCurrency: 'USDT',
+      cashBackLabel: 'Cashback',
+      cashBackValue: '1%',
+      options: [
+        {
+          label: 'Task rewards +50%',
+          checked: false
+        },
+        {
+          label: 'Bonus for reaching a new level',
+          checked: false
+        },
+        {
+          label: 'Monthly boost',
+          checked: false
+        },
+        {
+          label: 'Personal VIP manager',
+          checked: false
+        },
+      ]
+    },
+    {
+      order: 'next',
+      name: 'Level Name',
+      number: 2,
+      image: '/img/uploads/achieve-6.png',
+      statusPointsLabel: 'Status points',
+      statusPointsValue: '-',
+      rankBonusLabel: 'Rank bonus',
+      rankBonusValue: '-',
+      rankBonusCurrency: 'USDT',
+      cashBackLabel: 'Cashback',
+      cashBackValue: '1%',
+      options: [
+        {
+          label: 'Task rewards +50%',
+          checked: false
+        },
+        {
+          label: 'Bonus for reaching a new level',
+          checked: false
+        },
+        {
+          label: 'Monthly boost',
+          checked: false
+        },
+        {
+          label: 'Personal VIP manager',
+          checked: false
+        },
+      ]
+    },
+    {
+      order: 'next',
+      name: 'Level Name',
+      number: 2,
+      image: '/img/uploads/achieve-6.png',
+      statusPointsLabel: 'Status points',
+      statusPointsValue: '-',
+      rankBonusLabel: 'Rank bonus',
+      rankBonusValue: '-',
+      rankBonusCurrency: 'USDT',
+      cashBackLabel: 'Cashback',
+      cashBackValue: '1%',
+      options: [
+        {
+          label: 'Task rewards +50%',
+          checked: false
+        },
+        {
+          label: 'Bonus for reaching a new level',
+          checked: false
+        },
+        {
+          label: 'Monthly boost',
+          checked: false
+        },
+        {
+          label: 'Personal VIP manager',
+          checked: false
+        },
+      ]
+    },
+    {
+      order: 'next',
+      name: 'Level Name',
+      number: 2,
+      image: '/img/uploads/achieve-6.png',
+      statusPointsLabel: 'Status points',
+      statusPointsValue: '-',
+      rankBonusLabel: 'Rank bonus',
+      rankBonusValue: '-',
+      rankBonusCurrency: 'USDT',
+      cashBackLabel: 'Cashback',
+      cashBackValue: '1%',
+      options: [
+        {
+          label: 'Task rewards +50%',
+          checked: false
+        },
+        {
+          label: 'Bonus for reaching a new level',
+          checked: false
+        },
+        {
+          label: 'Monthly boost',
+          checked: false
+        },
+        {
+          label: 'Personal VIP manager',
+          checked: false
+        },
+      ]
+    },
   ];
 
   return {
