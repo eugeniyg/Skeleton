@@ -37,6 +37,17 @@
     position: relative;
     z-index: 1;
     max-width: 480px;
+
+    > .btn-primary {
+      margin-top: 24px;
+      --padding: 12px 32px;
+      --width: 100%;
+
+      @include media(xs) {
+        --width: fit-content;
+        --padding: 12px 50px;
+      }
+    }
   }
 
   &__picture {
