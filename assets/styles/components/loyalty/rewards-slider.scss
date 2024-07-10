@@ -26,19 +26,6 @@
     }
   }
 
-  &__nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    z-index: 1;
-    grid-column-gap: 12px;
-    transform: translateY(-24px);
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-
   &__btn {
     width: 32px;
     height: 32px;
@@ -52,6 +39,7 @@
     border-radius: 8px;
     box-shadow: var(--shadow-group);
     visibility: hidden;
+    z-index: 1;
 
     @include media(md) {
       visibility: visible;
