@@ -6,6 +6,10 @@
     margin: 40px 0 0 0;
   }
 
+  @include media(xl) {
+    overflow: hidden;
+  }
+
   &__wrap {
     position: relative;
   }
@@ -61,14 +65,14 @@
           cursor: pointer;
 
           .icon {
-            --color: var(--button-icn-secondary);
+            --color: var(--icon-accent);
           }
         }
       }
     }
 
     &.is-prev {
-      transform: rotate(90deg);
+      transform: rotate(90deg) translateY(50%);
       left: 0;
 
       .is-prev-disabled & {
@@ -81,7 +85,7 @@
     }
 
     &.is-next {
-      transform: rotate(-90deg);
+      transform: rotate(-90deg) translateY(50%);
       right: 0;
 
       .is-next-disabled & {
@@ -107,17 +111,17 @@
     --shadow-inset: -48px;
   }
 
-  @include media(xxxl) {
+  @include media(xl) {
     --slides-gap: 16px;
     --shadow-width: 64px;
-    --shadow-inset: -66px;
+    --shadow-inset: -2px;
   }
 
   &:before, &:after {
     content: '';
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: -1px;
+    bottom: -1px;
     width: var(--shadow-width);
     z-index: 1;
 
@@ -129,10 +133,18 @@
   &:before {
     transform: rotate(180deg);
     left: var(--shadow-inset);
+
+    .is-prev-disabled & {
+      visibility: hidden;
+    }
   }
 
   &:after {
     right: var(--shadow-inset);
+
+    .is-next-disabled & {
+      visibility: hidden;
+    }
   }
 
   &__item {
