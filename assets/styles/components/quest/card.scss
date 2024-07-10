@@ -87,6 +87,7 @@
     @include font($heading-3);
     align-items: center;
     display: flex;
+    padding-right: var(--title-padding-right, 0);
 
     @include media(md) {
       @include upd-font($heading-4);
@@ -114,7 +115,7 @@
     }
 
     .btn-primary {
-      transform: translateY(12px);
+      transform: translateY(var(--btn-primary-offset, 0));
     }
 
     .btn-ghost {
