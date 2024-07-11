@@ -16,22 +16,36 @@
       </div>
     </div>
 
-    <div class="info">
-      <div class="title" v-if="props.title" v-html="marked.parse(props.title)"/>
-      <div class="card-home__content" v-if="props.content" v-html="marked.parse(props.content)"/>
+    <client-only>
+      <div class="loyalty-home" v-if="isLoggedIn && props.showLoyalty">
+        <div v-if="loyaltyWelcomeTitle" class="loyalty-home__title">{{ loyaltyWelcomeTitle }}</div>
 
-      <div class="actions" v-if="props.button">
-        <button-base
-          type="primary"
-          size="md"
-          @click="clickButton(props.button.url)"
-        >
-          <atomic-icon :id="props.button.icon" />
-          {{ props.button.label }}
-        </button-base>
+        <div v-if="props.bannerLoyalty?.subtitle" class="loyalty-home__sub-title">
+          {{ props.bannerLoyalty.subtitle }}
+        </div>
+
+        <div class="loyalty-home__level">
+          <loyalty-level-logo />
+          <loyalty-progress />
+        </div>
       </div>
-    </div>
 
+      <div class="info" v-else>
+        <div class="title" v-if="props.title" v-html="marked.parse(props.title)"/>
+        <div class="card-home__content" v-if="props.content" v-html="marked.parse(props.content)"/>
+
+        <div class="actions" v-if="props.button">
+          <button-base
+            type="primary"
+            size="md"
+            @click="clickButton(props.button.url)"
+          >
+            <atomic-icon :id="props.button.icon" />
+            {{ props.button.label }}
+          </button-base>
+        </div>
+      </div>
+    </client-only>
   </div>
 </template>
 
@@ -39,28 +53,34 @@
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
 
-  const props = defineProps({
+  const props = defineProps<{
     images: {
-      type: Object
-    },
-    title: {
-      type: String,
-      default: '',
-    },
-    content: {
-      type: String,
-      required: false,
-    },
+      backgroundImage: string;
+      faceImage: string;
+    };
+    title: string;
+    content: string;
     button: {
-      type: Object,
-      required: false,
-    },
-  });
+      label: string;
+      url: string;
+      icon: string;
+    };
+    bannerLoyalty?: {
+      welcomeTitle: string;
+      subtitle: string;
+    };
+    showLoyalty?: boolean;
+  }>();
 
   const profileStore = useProfileStore();
-  const { isLoggedIn } = storeToRefs(profileStore);
+  const { isLoggedIn, userNickname } = storeToRefs(profileStore);
   const { showModal, openWalletModal } = useLayoutStore();
   const { handleExternalLink } = useProjectMethods();
+
+  const loyaltyWelcomeTitle = computed(() => {
+    if (!props.bannerLoyalty?.welcomeTitle) return undefined;
+    return props.bannerLoyalty.welcomeTitle.replace('{nickname}', userNickname.value);
+  })
 
   const clickButton = (url: string): void => {
     if (url) handleExternalLink(url)
