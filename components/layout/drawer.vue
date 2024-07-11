@@ -15,6 +15,13 @@
         v-if="layoutData?.siteSidebar?.ctaMenu?.isShow"
         :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.ctaMenu.items')"
       />
+
+      <client-only>
+        <atomic-link href="/loyalty" v-if="isLoggedIn" class="drawer__loyalty">
+          <loyalty-level-logo />
+          <loyalty-progress shortVersion />
+        </atomic-link>
+      </client-only>
       
       <partners
         v-if="layoutData?.siteSidebar?.partners?.isShow"
