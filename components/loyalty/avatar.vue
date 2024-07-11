@@ -27,7 +27,7 @@
     return getContent(
       globalComponentsContent.value,
       defaultLocaleGlobalComponentsContent.value,
-      'loyalty.playerAvatar'
+      'playerMascot.image'
     ) || '/img/avatar-bg.png';
   })
 
