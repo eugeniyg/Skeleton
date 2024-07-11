@@ -35,9 +35,10 @@
 
         <atomic-icon id="info" />
       </div>
-
-      <form-input-checkbox
-        :name="`${props.bonusInfo.id}`"
+      
+      <form-input-bonus-radio
+        name="input-bonus-radio"
+        :id="props.bonusInfo.id"
         :value="props.selected"
         @change="emit('bonusChange', props.bonusInfo.id)"
       />
@@ -74,10 +75,10 @@
   }
 
   const classes = computed(() => {
-    const bonusColorType = mappingBonusColor[props.bonusInfo.packageItems?.length ? 0 : props.bonusInfo.type];
+    //const bonusColorType = mappingBonusColor[props.bonusInfo.packageItems?.length ? 0 : props.bonusInfo.type];
 
     return {
-      [`wallet-bonus--bg-${bonusColorType}`]: props.selected,
+      //[`wallet-bonus--bg-${bonusColorType}`]: props.selected,
       'is-selected': props.selected,
       'wallet-bonus--disabled': props.disabled
     }

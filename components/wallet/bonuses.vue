@@ -1,8 +1,21 @@
 <template>
   <div class="wallet-bonuses">
-    <div class="wallet-bonuses__title">
-      {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.title') }}
+    <div class="wallet-bonuses__header">
+      <div class="wallet-bonuses__title">
+        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.title') }}
+      </div>
+      
+      <form-input-toggle
+        class="wallet-bonuses__decline-toggle"
+        name="bonus-decline"
+        :value="bonusDeclined"
+        @change="declineBonuses"
+      >
+        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.declineLabel') }}
+      </form-input-toggle>
+      
     </div>
+    
 
     <template v-for="bonus in bonusesList" :key="bonus.id">
       <wallet-bonus
@@ -13,23 +26,23 @@
       />
     </template>
 
-    <div class="wallet-bonus wallet-bonuses__decline" :class="{ 'is-selected': bonusDeclined }">
-      <div class="wallet-bonus__content">
-        <div class="wallet-bonus__title">
-          <atomic-icon id="bonus-declined" />
+<!--    <div class="wallet-bonus wallet-bonuses__decline" :class="{ 'is-selected': bonusDeclined }">-->
+<!--      <div class="wallet-bonus__content">-->
+<!--        <div class="wallet-bonus__title">-->
+<!--          <atomic-icon id="bonus-declined" />-->
 
-          <span>
-            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.declineLabel') }}
-          </span>
-        </div>
+<!--          <span>-->
+<!--            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.declineLabel') }}-->
+<!--          </span>-->
+<!--        </div>-->
 
-        <form-input-checkbox
-          name="bonus-decline"
-          :value="bonusDeclined"
-          @change="declineBonuses"
-        />
-      </div>
-    </div>
+<!--        <form-input-checkbox-->
+<!--          name="bonus-decline"-->
+<!--          :value="bonusDeclined"-->
+<!--          @change="declineBonuses"-->
+<!--        />-->
+<!--      </div>-->
+<!--    </div>-->
 
     <div v-if="props.crypto" class="wallet-bonuses__info">
       <div class="wallet-bonuses__info-icon">
