@@ -6,22 +6,12 @@ export interface IWinTaskConditions extends Record<string, any> {
   maxMultiplier?: number;
   minPayout?: number;
   maxPayout?: number;
-  currencies: {
-    isoCode: string;
-    minPayout?: number;
-    maxPayout?: number;
-  }[];
 }
 
 export interface IBetTaskConditions extends Record<string, any> {
   games?: string[];
   spinAmount?: number;
   maxSpinAmount?: number;
-  currencies: {
-    isoCode: string;
-    spinAmount?: number;
-    maxSpinAmount?: number;
-  }[];
 }
 
 export interface IFieldsTaskConditions extends Record<string, any> {
@@ -83,6 +73,7 @@ export interface IPlayerQuestsRequest extends Record<string, any> {
   page?: number;
   perPage?: number;
   state?: number[];
+  currency?: string;
 }
 
 export interface IPlayerQuestsResponse extends Record<string, any> {

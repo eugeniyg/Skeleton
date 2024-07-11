@@ -29,7 +29,8 @@ export const useQuestsStore = defineStore('questsStore', {
   actions: {
     async getPlayerActiveQuests():Promise<void> {
       const { getPlayerQuests } = useCoreQuestApi();
-      const { data } = await getPlayerQuests({ state: [1, 2] });
+      const { activeAccount } = useWalletStore();
+      const { data } = await getPlayerQuests({ state: [1, 2], currency: activeAccount?.currency });
       this.playerActiveQuests = data;
     },
 
@@ -72,6 +73,8 @@ export const useQuestsStore = defineStore('questsStore', {
           ...alertData,
           title: alertData.title.replace('{name}', questData.name)
         })
+
+        this.getPlayerActiveQuests();
       } else {
         if (questData.state !== 3) {
           const newStateName = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.questsStatuses.${questData.state}`);
@@ -82,10 +85,10 @@ export const useQuestsStore = defineStore('questsStore', {
           })
         }
 
-        if (questData.state !== 2) useEvent('questUpdated');
+        if (findActiveQuest) this.getPlayerActiveQuests();
+        if (questData.state === 3) useEvent('completedQuestsUpdated');
+        if ([5,6].includes(questData.state)) useEvent('expiredQuestsUpdated');
       }
-
-      this.getPlayerActiveQuests();
     },
 
     updateTask (taskData: IPlayerQuestEventTask|undefined):void {

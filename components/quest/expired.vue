@@ -55,10 +55,12 @@
     state.loading = true;
 
     try {
+      const { activeAccount } = useWalletStore();
       const { data, meta } = await getPlayerQuests({
         page: page,
         perPage: 3,
-        state: [5,6]
+        state: [5,6],
+        currency: activeAccount?.currency
       });
       state.data = page === 1 ? data : [...state.data, ...data];
       state.meta = meta;
@@ -80,11 +82,11 @@
 
   onMounted(async () => {
     await getData();
-    useListen('questUpdated', getData);
+    useListen('expiredQuestsUpdated', getData);
   });
 
   onBeforeUnmount(() => {
-    useUnlisten('questUpdated', getData);
+    useUnlisten('expiredQuestsUpdated', getData);
   })
 </script>
 
