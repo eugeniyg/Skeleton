@@ -1,25 +1,19 @@
 <template>
-  <div class="loyalty-avatar">
-    <atomic-image v-if="!props.onlyLevel" :src="avatarImage" class="loyalty-avatar__user-img" />
-
-    <div class="loyalty-avatar__level">
-      <atomic-image
-        v-if="props.onlyLevel"
-        class="loyalty-avatar__level-bg"
-        src="/img/loyalty/default-level-bg.png"
-      />
-
-      <atomic-image
-        class="loyalty-avatar__level-front"
-        :src="levelImage || '/img/loyalty/default-level-img.png'"
-      />
-    </div>
+  <div
+    class="loyalty-avatar"
+    :class="`loyalty-avatar--${props.size}`"
+  >
+    <atomic-image :src="avatarImage" class="loyalty-avatar__user-img" />
+    <atomic-image
+      class="loyalty-avatar__level"
+      :src="levelImage || '/img/loyalty/default-level-img.png'"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
   const props = defineProps<{
-    onlyLevel?: boolean;
+    size: 'sm' | 'md' | 'lg';
   }>()
 
   const { getContent } = useProjectMethods();

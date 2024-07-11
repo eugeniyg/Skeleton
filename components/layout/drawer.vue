@@ -4,7 +4,9 @@
       <atomic-link class="drawer__logo" href="/">
         <atomic-image class="img" src="/img/logo-short.svg" />
       </atomic-link>
+
       <button-toggler :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler')"/>
+
       <div class="drawer__close">
         <atomic-icon id="close" />
       </div>
@@ -15,6 +17,13 @@
         v-if="layoutData?.siteSidebar?.ctaMenu?.isShow"
         :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.ctaMenu.items')"
       />
+
+      <client-only>
+        <atomic-link href="/loyalty" v-if="isLoggedIn" class="drawer__loyalty">
+          <loyalty-level-logo />
+          <loyalty-progress shortVersion />
+        </atomic-link>
+      </client-only>
       
       <partners
         v-if="layoutData?.siteSidebar?.partners?.isShow"

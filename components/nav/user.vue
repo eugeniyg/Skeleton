@@ -1,6 +1,30 @@
 <template>
   <nav class="nav-user">
-    <atomic-avatar-user/>
+    <div class="nav-user__loyalty">
+      <div class="nav-user__common">
+        <loyalty-avatar size="md" />
+
+        <div class="nav-user__common-info">
+          <div class="nickname">
+            {{ userNickname }}
+          </div>
+
+          <div v-if="activeAccount" class="amount">
+            {{ balanceFormat.amount }} {{ balanceFormat.currency }}
+          </div>
+        </div>
+      </div>
+
+      <atomic-divider/>
+
+      <loyalty-progress />
+
+      <button-base type="primary" size="md" @click="clickDeposit">
+        <atomic-icon id="plus"/>
+
+        <span>{{ getContent(popupsData, defaultLocalePopupsData, 'wallet.tabs.deposit') }}</span>
+      </button-base>
+    </div>
 
     <div class="items">
       <div
@@ -21,16 +45,35 @@
 </template>
 
 <script setup lang="ts">
+  import {storeToRefs} from "pinia";
+
   const emit = defineEmits(['logout']);
-  const { localizePath, handleExternalLink } = useProjectMethods();
-  const { closeUserNav } = useLayoutStore();
-  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
+  const { localizePath, handleExternalLink, getContent } = useProjectMethods();
+  const { closeUserNav, openWalletModal } = useLayoutStore();
+  const {
+    layoutData,
+    defaultLocaleLayoutData,
+    popupsData,
+    defaultLocalePopupsData
+  } = useGlobalStore();
   const profileLinks = layoutData?.profileSidebar?.profileLinks || defaultLocaleLayoutData?.profileSidebar?.profileLinks || [];
   const route = useRoute();
+
+  const profileStore = useProfileStore();
+  const { userNickname } = storeToRefs(profileStore);
+  const walletStore = useWalletStore();
+  const { activeAccount } = storeToRefs(walletStore);
+  const { formatBalance } = useProjectMethods();
+  const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
 
   const clickItem = (url: string):void => {
     closeUserNav();
     handleExternalLink(url)
+  }
+
+  const clickDeposit = (url: string):void => {
+    closeUserNav();
+    openWalletModal('deposit');
   }
 </script>
 

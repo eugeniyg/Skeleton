@@ -1,7 +1,7 @@
 <template>
   <form class="form-profile">
     <div class="row">
-      <loyalty-avatar />
+      <loyalty-avatar size="lg" />
 
       <form-input-email-verify
         type="email"

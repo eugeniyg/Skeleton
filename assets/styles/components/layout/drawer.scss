@@ -181,4 +181,40 @@
       --icon-color: var(--icon-contrast);
     }
   }
+
+  &__loyalty {
+    position: relative;
+    display: flex;
+    align-items: center;
+    grid-column-gap: 8px;
+    padding: 12px 16px;
+    background: var(--layer-03-low-contrast);
+    border-radius: 8px;
+    --logo-img-size: 48px;
+    --background-img-size: 56px;
+    --progress-height: 8px;
+    --progress-radius: 2px;
+    margin: 16px 0 8px;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+    text-decoration: none;
+
+    &:hover {
+      box-shadow: var(--shadow-group);
+    }
+
+    .loyalty-progress__prev {
+      margin-bottom: 2px;
+    }
+
+    .drawer-minimize & {
+      padding: 0;
+      --logo-img-size: 40px;
+      --background-img-size: 48px;
+
+      .loyalty-progress {
+        display: none;
+      }
+    }
+  }
 }
