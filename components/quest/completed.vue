@@ -55,10 +55,12 @@ const getData = async (page = 1): Promise<void> => {
   state.loading = true;
 
   try {
+    const { activeAccount } = useWalletStore();
     const { data, meta } = await getPlayerQuests({
       page: page,
       perPage: 3,
-      state: [3,4]
+      state: [3,4],
+      currency: activeAccount?.currency
     });
     state.data = page === 1 ? data : [...state.data, ...data];
     state.meta = meta;
@@ -80,11 +82,11 @@ const emptyContentData = computed(() => {
 
 onMounted(async () => {
   await getData();
-  useListen('questUpdated', getData);
+  useListen('completedQuestsUpdated', getData);
 });
 
 onBeforeUnmount(() => {
-  useUnlisten('questUpdated', getData);
+  useUnlisten('completedQuestsUpdated', getData);
 })
 </script>
 

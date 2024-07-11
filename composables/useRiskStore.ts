@@ -10,6 +10,7 @@ interface IRiskStoreState {
 export const useRiskStore = defineStore('riskStore', {
   state: ():IRiskStoreState => ({
     turnOverWagerData: {
+      total: 0,
       turnOverWager: 0,
       turnOverWagerAmount: 0,
       currency: ''

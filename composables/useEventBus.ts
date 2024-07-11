@@ -13,7 +13,8 @@ type ApplicationEvents = {
     maxBet: string;
   };
   'analyticsEvent': IAnalyticsEvent;
-  'questUpdated': undefined;
+  'completedQuestsUpdated': undefined;
+  'expiredQuestsUpdated': undefined;
 };
 
 const emitter = mitt<ApplicationEvents>();

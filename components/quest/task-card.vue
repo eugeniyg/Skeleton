@@ -69,12 +69,14 @@
     questState?: number;
   }>()
 
-  const { getContent } = useProjectMethods();
+  const { getContent, formatBalance } = useProjectMethods();
   const globalStore = useGlobalStore();
   const {
     popupsData,
     defaultLocalePopupsData
   } = storeToRefs(globalStore);
+  const walletStore = useWalletStore();
+  const { activeAccount } = storeToRefs(walletStore);
 
   interface IWinTaskInfo {
     multiplierLabel: string;
@@ -93,8 +95,10 @@
     const winLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'questTasks.winLabel');
     const multiplierMin = props.taskInfo.conditions.multiplier || '-';
     const multiplierMax = props.taskInfo.conditions.maxMultiplier || '-';
-    const winMin = '-';
-    const winMax = '-';
+    const winMinSumObj = formatBalance(activeAccount.value?.currency, props.taskInfo.conditions.minPayout || 0);
+    const winMaxSumObj = formatBalance(activeAccount.value?.currency, props.taskInfo.conditions.maxPayout || 0);
+    const winMin = winMinSumObj?.amount ? `${winMinSumObj.amount} ${winMinSumObj.currency}` : '-';
+    const winMax = winMaxSumObj?.amount ? `${winMaxSumObj.amount} ${winMaxSumObj.currency}` : '-';
     const games = props.taskInfo.conditions.games || [];
 
     return {
@@ -119,8 +123,10 @@
     if (props.taskInfo.type !== 4) return undefined;
 
     const betAmountLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'questTasks.betAmountLabel');
-    const betMin = '-';
-    const betMax = '-';
+    const betMinSumObj = formatBalance(activeAccount.value?.currency, props.taskInfo.conditions.spinAmount || 0);
+    const betMaxSumObj = formatBalance(activeAccount.value?.currency, props.taskInfo.conditions.maxSpinAmount || 0);
+    const betMin = betMinSumObj?.amount ? `${betMinSumObj.amount} ${betMinSumObj.currency}` : '-';
+    const betMax = betMaxSumObj?.amount ? `${betMaxSumObj.amount} ${betMaxSumObj.currency}` : '-';
     const games = props.taskInfo.conditions.games || [];
 
     return {

@@ -3,6 +3,7 @@
     class="quest-card"
     :class="taskStatusClasses"
     @click="openTasksModal(props.questInfo, questImageSrc)"
+    :style="cardStyleVars"
   >
     <div class="quest-card__img">
       <atomic-image
@@ -10,7 +11,7 @@
       />
     </div>
 
-    <div class="quest-card__header">
+    <div class="quest-card__header" ref="headerRef">
       <div class="quest-currencies">
         <quest-currency :rewards="props.questInfo.rewards" type="real" />
 
@@ -27,7 +28,7 @@
     </div>
 
     <div class="quest-card__body">
-      <div class="quest-card__title">
+      <div class="quest-card__title" ref="titleRef">
         {{ props.questInfo.name }}
       </div>
 
@@ -122,6 +123,16 @@
       canceling.value = false;
     }
   }
+  
+  const titleRef = ref();
+  const headerRef = ref();
+  const cardStyleVars = ref<string>('');
+  
+  onMounted(() => {
+    nextTick(() => {
+      cardStyleVars.value = `--title-padding-right: ${titleRef.value?.clientWidth - headerRef.value?.clientWidth}px;--btn-primary-offset: ${titleRef.value?.clientHeight / 2 }px`
+    })
+  })
 </script>
 
 <style src="~/assets/styles/components/quest/card.scss" lang="scss"/>

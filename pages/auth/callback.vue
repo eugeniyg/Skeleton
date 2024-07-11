@@ -17,7 +17,6 @@ const sendSocialData = async (socialData: any, authState?: IAuthState): Promise<
     await loginSocial({
       ...socialData,
       locale: currentLocale.value?.code,
-      affiliateTag: authState?.affiliateTag || undefined,
       socialDataKey: 'id_token',
     }, authState);
   } catch (err:any) {
