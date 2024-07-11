@@ -135,14 +135,14 @@
     const { public: { showWalletFilledFields } } = useRuntimeConfig();
 
     props.fields.forEach(field => {
-      if (field.value !== null && v$.value[field.key].$invalid) v$.value[field.key].$touch();
+      if (field.value !== null && v$.value[field.key]?.$invalid) v$.value[field.key].$touch();
     })
 
     if (showWalletFilledFields) {
       return props.fields;
     }
 
-    return props.fields.filter(field => field.value === null || v$.value[field.key].$invalid || field.key === 'agentNumber');
+    return props.fields.filter(field => field.value === null || v$.value[field.key]?.$invalid || field.key === 'agentNumber');
   }
   const visibleFields = getVisibleFields(); // remove reactivity
 
