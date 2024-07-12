@@ -1,6 +1,8 @@
 <template>
   <div class="loyalty">
     <loyalty-banner />
+
+    <loyalty-how-it-works />
   </div>
 </template>
 
