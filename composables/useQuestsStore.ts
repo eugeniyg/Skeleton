@@ -71,7 +71,7 @@ export const useQuestsStore = defineStore('questsStore', {
         const alertData = getContent(alertsData, defaultLocaleAlertsData, 'quests.questIssued');
         if (alertData.title) showAlert({
           ...alertData,
-          title: alertData.title.replace('{name}', questData.name)
+          title: alertData.title.replace('{name}', `"${questData.name}"`)
         })
 
         this.getPlayerActiveQuests();
@@ -81,7 +81,7 @@ export const useQuestsStore = defineStore('questsStore', {
           const alertData = getContent(alertsData, defaultLocaleAlertsData, 'quests.stateChanged');
           if (alertData.title) showAlert({
             ...alertData,
-            title: alertData.title.replace('{name}', questData.name).replace('{status}', newStateName)
+            title: alertData.title.replace('{name}', `"${questData.name}"`).replace('{status}', newStateName)
           })
         }
 
@@ -95,16 +95,21 @@ export const useQuestsStore = defineStore('questsStore', {
       if (!taskData) return;
 
       const { getContent } = useProjectMethods();
-      const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+      const {
+        alertsData,
+        defaultLocaleAlertsData,
+        popupsData,
+        defaultLocalePopupsData
+      } = useGlobalStore();
       const { showAlert } = useLayoutStore();
       this.playerActiveQuests = this.playerActiveQuests.map(quest => {
         if (quest.id === taskData.questId) {
           if (taskData.isActive && (taskData.progress === taskData.quantity)) {
             const alertData = getContent(alertsData, defaultLocaleAlertsData, 'quests.taskCompleted');
-            const taskTypeName = getContent(alertsData, defaultLocaleAlertsData, `quest-tasks.taskTypes.${taskData.type}`);
+            const taskTypeName = getContent(popupsData, defaultLocalePopupsData, `questTasks.taskTypes.${taskData.type}.label`);
             if (alertData.title) showAlert({
               ...alertData,
-              title: alertData.title.replace('{taskName}', taskTypeName).replace('{questName}', quest.name)
+              title: alertData.title.replace('{taskName}', `"${taskTypeName}"`).replace('{questName}', `"${quest.name}"`)
             })
           }
 
