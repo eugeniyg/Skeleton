@@ -106,11 +106,15 @@
   const { showTasksModal, tasksModalData, tasksModalImage } = storeToRefs(questsStore);
 
   const completedTasks = computed(() => {
-    return tasksModalData.value?.tasks.filter(task => task.progress === task.quantity) || [];
+    const filteredTasks = tasksModalData.value?.tasks.filter(task => task.progress === task.quantity) || [];
+    if (tasksModalData.value?.taskExecutionOrder === 1) return filteredTasks;
+    return filteredTasks.sort((prevTask, nextTask) => prevTask.executionOrder - nextTask.executionOrder);
   })
 
   const activeTasks = computed(() => {
-    return tasksModalData.value?.tasks.filter(task => task.progress < task.quantity) || [];
+    const filteredTasks = tasksModalData.value?.tasks.filter(task => task.progress < task.quantity) || [];
+    if (tasksModalData.value?.taskExecutionOrder === 1) return filteredTasks;
+    return filteredTasks.sort((prevTask, nextTask) => prevTask.executionOrder - nextTask.executionOrder);
   })
 
   const blockLabel = computed(() => {

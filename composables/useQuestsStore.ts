@@ -93,6 +93,7 @@ export const useQuestsStore = defineStore('questsStore', {
 
     updateTask (taskData: IPlayerQuestEventTask|undefined):void {
       if (!taskData) return;
+      console.log(taskData);
 
       const { getContent } = useProjectMethods();
       const {
@@ -116,6 +117,7 @@ export const useQuestsStore = defineStore('questsStore', {
           const questTasks = quest.tasks.map(task => {
             if (task.id === taskData.id) return {
               ...task,
+              isActive: taskData.isActive,
               isCompleted: taskData.isCompleted,
               progress: taskData.progress
             };
