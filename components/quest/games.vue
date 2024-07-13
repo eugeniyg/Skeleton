@@ -1,5 +1,5 @@
 <template>
-  <div v-if="gamesData.length" class="quest-games">
+  <div class="quest-games">
     <div class="quest-games__header">
       <div class="quest-games__header-title">
         {{ getContent(popupsData, defaultLocalePopupsData, 'questTasks.gamesLabel') }}
@@ -21,14 +21,20 @@
     </div>
 
     <div class="quest-games__items">
-      <div
-        v-for="game in filteredGamesData"
-        :key="game.id"
-        class="quest-games__item"
-        @click.once="goToGame(game)"
-      >
-        <atomic-image v-if="game.images['200x200']" :src="getImageUrl(game.images, 'square')" />
-        <atomic-image v-else src="/img/default-game-tumb.png" />
+      <template v-if="gamesData.length">
+        <div
+          v-for="game in filteredGamesData"
+          :key="game.id"
+          class="quest-games__item"
+          @click.once="goToGame(game)"
+        >
+          <atomic-image v-if="game.images['200x200']" :src="getImageUrl(game.images, 'square')" />
+          <atomic-image v-else src="/img/default-game-tumb.png" />
+        </div>
+      </template>
+
+      <div class="quest-games__all-games" v-else-if="!loadGames">
+        All games
       </div>
     </div>
   </div>
@@ -58,7 +64,9 @@
     return gamesData.value.slice(0, visibleItems.value);
   });
   const { getFilteredGames } = useCoreGamesApi();
+  const loadGames = ref(false);
   const getConditionGames = async (): Promise<void> => {
+    loadGames.value = true;
     try {
       const { data } = await getFilteredGames({
         identity: props.items,
@@ -71,6 +79,7 @@
     } catch {
       console.error('Something went wrong with games loading!')
     }
+    loadGames.value = false;
   }
 
   const router = useRouter();
@@ -89,6 +98,7 @@
   }
 
   onMounted(async () => {
+    if (!props.items.length) return;
     setVisibleItems();
     await getConditionGames();
   })
