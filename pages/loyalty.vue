@@ -3,6 +3,8 @@
     <loyalty-banner />
 
     <loyalty-how-it-works />
+
+    <loyalty-rewards />
   </div>
 </template>
 

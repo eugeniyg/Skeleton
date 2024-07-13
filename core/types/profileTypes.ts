@@ -179,3 +179,22 @@ export interface IPlayerLoyaltyAccount extends Record<string, any> {
   createdAt: string;
   updatedAt: string|null;
 }
+
+export interface ILoyaltyLevelsRequest extends Record<string, any> {
+  page?: number;
+  perPage?: number;
+  sortBy?: 'order'|'points';
+  sortOrder?: 'asc'|'desc';
+}
+
+export interface ILoyaltyLevel {
+  id: string;
+  name: string;
+  order: number;
+  points: number;
+}
+
+export interface ILoyaltyLevelsResponse extends Record<string, any> {
+  data: ILoyaltyLevel[];
+  meta: IPaginationMeta;
+}

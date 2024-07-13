@@ -9,7 +9,7 @@ import type {
   ISession,
   ISessionsResponse,
   IUpdateLimit,
-  IUploadFile, IPlayerLoyaltyAccount
+  IUploadFile, IPlayerLoyaltyAccount, ILoyaltyLevelsRequest, ILoyaltyLevelsResponse
 } from '../types';
 import { useApiAuthInstance } from "@skeleton/core/assets/apiAuthInstance";
 import { useApiGuestInstance } from "@skeleton/core/assets/apiGuestInstance";
@@ -119,6 +119,11 @@ export const useCoreProfileApi = () => {
     return data;
   };
 
+  const getLoyaltyLevels = async (params?: ILoyaltyLevelsRequest):Promise<ILoyaltyLevelsResponse> => {
+    const response = await useApiGuestInstance('/api/retention/levels', { params });
+    return response;
+  };
+
   return {
     getProfile,
     getProfileFields,
@@ -137,6 +142,7 @@ export const useCoreProfileApi = () => {
     updatePlayerLimit,
     deletePlayerLimit,
     getSumsubToken,
-    getPlayerLoyaltyAccount
+    getPlayerLoyaltyAccount,
+    getLoyaltyLevels
   };
 }
