@@ -66,4 +66,9 @@
       object-fit: cover;
     }
   }
+
+  &__all-games {
+    @include font($body-0);
+    color: var(--text-tertiary);
+  }
 }

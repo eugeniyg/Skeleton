@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <quest-hub />
+      <quest-hub v-if="showQuestHub" />
 
       <table-profile />
 
@@ -93,6 +93,9 @@
   const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>();
   provide('infoContent', infoContent);
   provide('defaultLocaleInfoContent', defaultLocaleInfoContent);
+
+  const runtimeConfig = useRuntimeConfig();
+  const showQuestHub = runtimeConfig.public?.questsEnabled;
 
   interface IPageContent {
     currentLocaleData: Maybe<IProfileInfo>;
