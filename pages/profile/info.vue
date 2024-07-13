@@ -12,14 +12,6 @@
         @click="toggleProfileEdit"
       >
         <atomic-icon id="edit"/>{{ infoContent?.editButton || defaultLocaleInfoContent?.editButton }}
-
-        <!--        <template v-if="isProfileEdit">-->
-        <!--          <atomic-icon id="done"/>Done editing-->
-        <!--        </template>-->
-
-        <!--        <template v-else>-->
-        <!--          <atomic-icon id="edit"/>Edit your profile-->
-        <!--        </template>-->
       </button-base>
     </div>
 
@@ -62,7 +54,7 @@
         </div>
       </div>
 
-      <quest-hub />
+      <quest-hub v-if="showQuestHub" />
 
       <table-profile />
 
@@ -122,6 +114,9 @@
   const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>();
   provide('infoContent', infoContent);
   provide('defaultLocaleInfoContent', defaultLocaleInfoContent);
+
+  const runtimeConfig = useRuntimeConfig();
+  const showQuestHub = runtimeConfig.public?.questsEnabled;
 
   interface IPageContent {
     currentLocaleData: Maybe<IProfileInfo>;

@@ -125,9 +125,10 @@ export const useProfileStore = defineStore('profileStore', {
         getPlayerCashback
       } = useBonusStore();
       const { getPlayerActiveQuests, subscribeQuestsSocket } = useQuestsStore();
+      const runtimeConfig = useRuntimeConfig();
       getFavoriteGames();
       getDepositBonusCode();
-      getPlayerActiveQuests();
+      if (runtimeConfig.public?.questsEnabled) getPlayerActiveQuests();
 
       const { activeAccount } = useWalletStore();
       getPlayerCashback(activeAccount?.currency);
@@ -149,7 +150,7 @@ export const useProfileStore = defineStore('profileStore', {
       subscribeFreeSpinsSocket();
       subscribeBetsSocket();
       this.subscribeOnlineSocket();
-      subscribeQuestsSocket();
+      if (runtimeConfig.public?.questsEnabled) subscribeQuestsSocket();
 
       const { setEquivalentCurrency } = useGlobalStore();
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');

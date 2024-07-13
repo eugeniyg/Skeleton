@@ -54,9 +54,12 @@
     <modal-cancel-deposit />
     <modal-wallet-bonus-details />
     <modal-turn-over-wager v-if="turnOverWagerModal" />
-    <modal-quests-hub />
-    <modal-quest-rewards />
-    <modal-quest-tasks />
+
+    <template v-if="questsEnabled">
+      <modal-quests-hub />
+      <modal-quest-rewards />
+      <modal-quest-tasks />
+    </template>
 
     <atomic-alert />
   </div>
@@ -125,7 +128,8 @@
   });
 
   const runtimeConfig = useRuntimeConfig();
-  const turnOverWagerModal = runtimeConfig.public.enableTurnOverWager;
+  const turnOverWagerModal = runtimeConfig.public?.enableTurnOverWager;
+  const questsEnabled = runtimeConfig.public?.questsEnabled;
 
   onBeforeMount(() => {
     const storageReturnGame = sessionStorage.getItem('returnGame');
