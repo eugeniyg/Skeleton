@@ -7,6 +7,13 @@
     <loyalty-rewards />
 
     <loyalty-benefits />
+
+    <loyalty-faq />
+
+    <loyalty-terms
+      v-if="termsData?.title && termsData?.content"
+      v-bind="termsData"
+    />
   </div>
 </template>
 
@@ -61,4 +68,10 @@
   watch(data, () => {
     setContentData(data.value);
   });
+
+  const termsData = computed<{title: string; content: string }|undefined>(() => {
+    const currentLocaleTerms = getContent(loyaltyContent.value, defaultLocaleLoyaltyContent.value, 'terms');
+    if (currentLocaleTerms?.title && currentLocaleTerms?.content) return currentLocaleTerms;
+    return undefined;
+  })
 </script>

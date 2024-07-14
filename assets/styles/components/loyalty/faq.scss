@@ -1,0 +1,58 @@
+.loyalty-faq {
+  margin: 60px auto;
+  max-width: 1280px;
+
+  &__title {
+    @include font($heading-6);
+    color: var(--text-primary);
+    text-align: center;
+
+    > * {
+      margin: 0;
+    }
+  }
+
+  &__description {
+    @include font($body-2);
+    color: var(--text-tertiary);
+    text-align: center;
+    max-width: 624px;
+    margin: 4px auto 0;
+
+    > * {
+      margin: 0;
+    }
+  }
+
+  &__items {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    grid-column-gap: 16px;
+  }
+
+  .expander {
+    padding: 16px 0;
+    flex: 1 1 452px;
+
+    &__content {
+      padding-top: 0;
+
+      p {
+        @include upd-font($body-2-paragraph);
+      }
+    }
+
+    .header .btn .icon {
+      --color: var(--icon-accent);
+    }
+
+    .title {
+      @include upd-font($subheading-3);
+    }
+  }
+
+  &__column {
+    flex: 1 1 440px;
+  }
+}
