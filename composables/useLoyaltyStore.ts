@@ -52,7 +52,15 @@ export const useLoyaltyStore = defineStore('loyaltyStore', {
     },
 
     loyaltySocketTrigger ({ data }:IWebSocketResponse): void {
+      const oldLevelValue = this.loyaltyAccount?.currentLevel?.order;
+      const newLevelValue = data.playerAccount?.currentLevel?.order;
+      const showNewLevelModal = oldLevelValue && newLevelValue && (oldLevelValue < newLevelValue);
+      console.log(showNewLevelModal);
       if (data?.playerAccount) this.loyaltyAccount = data.playerAccount;
+      if (showNewLevelModal) {
+        const { showModal } = useLayoutStore();
+        showModal('loyaltyLevel');
+      }
     },
 
     subscribeLoyaltySocket():void {
