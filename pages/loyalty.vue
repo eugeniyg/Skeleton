@@ -5,6 +5,8 @@
     <loyalty-how-it-works />
 
     <loyalty-rewards />
+
+    <loyalty-benefits />
   </div>
 </template>
 
