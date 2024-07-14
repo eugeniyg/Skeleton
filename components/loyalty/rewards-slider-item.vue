@@ -20,7 +20,7 @@
             {{ getContent(loyaltyContent, defaultLocaleLoyaltyContent, 'rewards.statusPointsLabel') }}
           </span>
 
-          <span @click="showModal('loyaltyEarn')"><atomic-icon id="info"/></span>
+          <atomic-icon id="info" @click="showModal('loyaltyEarn')"/>
         </div>
 
         <div class="loyalty-rewards-slider__item-status-points-value">
@@ -31,11 +31,14 @@
 
     <div class="loyalty-rewards-slider__item-content">
       <div v-for="reward in levelRewards" class="loyalty-rewards-slider__item-reward">
-        <div class="loyalty-rewards-slider__item-cashback-value">
+        <div
+          class="loyalty-rewards-slider__item-reward-value"
+          :class="{'--is-empty': !reward.value }"
+        >
           {{ reward.value || '-' }}
         </div>
 
-        <div class="loyalty-rewards-slider__item-cashback-label">
+        <div class="loyalty-rewards-slider__item-reward-label">
           {{ reward.label }}
         </div>
       </div>

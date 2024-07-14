@@ -8,10 +8,12 @@
       {{ getContent(loyaltyContent, defaultLocaleLoyaltyContent, 'rewards.description') }}
     </div>
 
-    <loyalty-rewards-slider
-      v-if="loyaltyLevels.length"
-      :levels="loyaltyLevels"
-    />
+    <client-only>
+      <loyalty-rewards-slider
+        v-if="loyaltyLevels.length"
+        :levels="loyaltyLevels"
+      />
+    </client-only>
   </div>
 </template>
 

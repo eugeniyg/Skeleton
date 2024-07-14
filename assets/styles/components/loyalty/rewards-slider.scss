@@ -276,7 +276,6 @@
       &-label {
         @include font($body-0);
         color: var(--text-tertiary);
-        text-align: center;
         display: flex;
         align-items: center;
         gap: 4px;
@@ -285,6 +284,11 @@
       .icon {
         --icon-size: 12px;
         --color: var(--icon-secondary);
+        cursor: pointer;
+
+        &:hover {
+          --color: var(--icon-primary);
+        }
       }
 
       &-value {
@@ -309,8 +313,16 @@
       text-align: center;
 
       &-value {
-        color: var(--text-helper);
-        @include font($subheading-2);
+        color: var(--text-primary);
+        @include font($subheading-4);
+
+        &.--is-empty {
+          color: var(--text-tertiary);
+        }
+
+        .is-order-completed & {
+          color: var(--text-helper);
+        }
       }
 
       &-label {

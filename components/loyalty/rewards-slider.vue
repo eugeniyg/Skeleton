@@ -38,8 +38,8 @@
     levels: ILoyaltyLevel[];
   }>();
 
-  const isPrevDisabled = ref<boolean>(true);
-  const isNextDisabled = ref<boolean>(true);
+  const isPrevDisabled = ref<boolean>(false);
+  const isNextDisabled = ref<boolean>(false);
 
   const [sliderNode, emblaApi] = emblaCarouselVue({
       loop: false,
@@ -68,8 +68,8 @@
 
   watchEffect(() => {
     if (emblaApi.value) {
-      emblaApi.value?.on('select', onSelectSlide);
-      emblaApi.value?.on('resize', togglePrevNextButtons);
+      emblaApi.value.on('select', onSelectSlide);
+      emblaApi.value.on('resize', togglePrevNextButtons);
       togglePrevNextButtons();
     }
   });
