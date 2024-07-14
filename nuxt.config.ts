@@ -107,6 +107,7 @@ export default defineNuxtConfig({
     sourceMap: false,
     inlineDynamicImports: true,
     rollupConfig: {
+      output: { sourcemap: false },
       maxParallelFileOps: 1,
     },
     devProxy: {
