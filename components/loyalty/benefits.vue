@@ -8,14 +8,14 @@
       {{ getContent(loyaltyContent, defaultLocaleLoyaltyContent, 'benefits.description') }}
     </div>
 
-<!--    <loyalty-benefits-tabs-->
-<!--      v-if="benefitsTabs.length > 1"-->
-<!--      :tabs="benefitsTabs"-->
-<!--      :numberedList="numberedList"-->
-<!--    />-->
+    <loyalty-benefits-tabs
+      v-if="benefitsTabs.length > 1"
+      :tabs="benefitsTabs"
+      :numberedList="numberedList"
+    />
 
     <loyalty-benefits-grid
-      v-if="benefitsTabs.length && benefitsTabs[0].benefits.length"
+      v-else-if="benefitsTabs.length && benefitsTabs[0].benefits.length"
       :items="benefitsTabs[0].benefits"
       :numberedList="numberedList"
     />

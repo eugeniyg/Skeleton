@@ -70,6 +70,20 @@
       align-items: center;
       gap: 4px;
       white-space: nowrap;
+      cursor: pointer;
+      position: relative;
+
+      &:first-child {
+        border-top-left-radius: 16px;
+
+        &:before {
+          content: none !important;
+        }
+      }
+
+      &:last-child {
+        border-top-right-radius: 16px;
+      }
 
       &:not(.is-active) {
         padding: 12px;
@@ -78,19 +92,55 @@
         @include font($subheading-2);
         flex-shrink: 0;
         align-self: flex-end;
+
+        @include media(xs) {
+          @include upd-font($subheading-3);
+        }
+
+        &:before {
+          content: "";
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 1px;
+          height: 100%;
+          background: var(--layer-02);
+        }
       }
 
       &.is-active {
-        padding: 20px 20px 20px 16px;
+        padding: 16px 16px 16px 12px;
         color: var(--text-inverse);
         border-radius: 16px 16px 0 0;
         background: var(--gradient-gold-radial);
+        @include font($subheading-3);
+
+        @include media(xs) {
+          @include upd-font($subheading-4);
+          padding: 20px 20px 20px 16px;
+        }
+
+        .loyalty-benefits-tabs__nav-item-image {
+          width: 24px;
+          height: 24px;
+
+          @include media(xs) {
+            width: 32px;
+            height: 32px;
+          }
+        }
       }
 
       &-image {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         display: block;
+
+        @include media(xs) {
+          width: 24px;
+          height: 24px;
+        }
       }
     }
   }
