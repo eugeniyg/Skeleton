@@ -103,6 +103,9 @@ export default defineNuxtConfig({
   ],
   vite: viteConfig,
   nitro: {
+    logLevel: 0,
+    sourceMap: false,
+    inlineDynamicImports: true,
     rollupConfig: {
       maxParallelFileOps: 1,
     },
