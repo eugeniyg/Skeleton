@@ -61,6 +61,7 @@
       <modal-quest-tasks />
     </template>
 
+    <modal-loyalty-level />
     <modal-loyalty-earn />
     <atomic-alert />
   </div>
