@@ -103,6 +103,9 @@ export default defineNuxtConfig({
   ],
   vite: viteConfig,
   nitro: {
+    rollupConfig: {
+      maxParallelFileOps: 1,
+    },
     devProxy: {
       '/api': {
         target: 'https://test.dev.getplatform.tech/api',
