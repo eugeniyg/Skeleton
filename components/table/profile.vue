@@ -34,14 +34,28 @@
 
   const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
   const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
-
-  const hideFields = [
+  const runtimeConfig = useRuntimeConfig();
+  const hiddenFieldsWithLoyalty = [
     'nickname',
     'password',
     'password_confirmation',
     'receiveSmsPromo',
-    'receiveEmailPromo',
+    'receiveEmailPromo'
   ];
+  const hiddenFieldsWithoutLoyalty = [
+    'firstName',
+    'lastName',
+    'nickname',
+    'city',
+    'country',
+    'email',
+    'password',
+    'password_confirmation',
+    'receiveSmsPromo',
+    'receiveEmailPromo'
+  ];
+  const hiddenFields = runtimeConfig.public?.loyaltyEnabled ? hiddenFieldsWithLoyalty : hiddenFieldsWithoutLoyalty;
+
   const profileStore = useProfileStore();
   const { profile, resentVerifyEmail } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
@@ -49,7 +63,7 @@
   const { getContent } = useProjectMethods();
   const fieldsStore = useFieldsStore();
   const { profileFields } = storeToRefs(fieldsStore);
-  const profileViewFields = computed(() => profileFields.value.filter((field) => !hideFields.includes(field.name)));
+  const profileViewFields = computed(() => profileFields.value.filter((field) => !hiddenFields.includes(field.name)));
 </script>
 
 <style src="~/assets/styles/components/table/profile.scss" lang="scss" />

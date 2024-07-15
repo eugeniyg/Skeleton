@@ -15,15 +15,17 @@
         </div>
       </div>
 
-      <atomic-divider/>
+      <template v-if="loyaltyEnabled">
+        <atomic-divider/>
 
-      <loyalty-progress />
+        <loyalty-progress />
 
-      <button-base type="primary" size="md" @click="clickDeposit">
-        <atomic-icon id="plus"/>
+        <button-base type="primary" size="md" @click="clickDeposit">
+          <atomic-icon id="plus"/>
 
-        <span>{{ getContent(popupsData, defaultLocalePopupsData, 'wallet.tabs.deposit') }}</span>
-      </button-base>
+          <span>{{ getContent(popupsData, defaultLocalePopupsData, 'wallet.tabs.deposit') }}</span>
+        </button-base>
+      </template>
     </div>
 
     <div class="items">
@@ -59,6 +61,8 @@
   const profileLinks = layoutData?.profileSidebar?.profileLinks || defaultLocaleLayoutData?.profileSidebar?.profileLinks || [];
   const route = useRoute();
 
+  const runtimeConfig = useRuntimeConfig();
+  const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;
   const profileStore = useProfileStore();
   const { userNickname } = storeToRefs(profileStore);
   const walletStore = useWalletStore();
