@@ -1,17 +1,29 @@
 <template>
   <div class="cta-menu">
-    <atomic-link
-        v-for="item in props.items"
+    <template v-for="(item, index) in props.items" :key="index">
+      <div
+        v-if="item.url.includes('quests-hub=true')"
+        class="cta-menu__item"
+        @click="openQuestsHub"
+      >
+        <span class="cta-menu__title">{{ item.title }}</span>
+        <span class="cta-menu__sub-title">{{ item.subTitle }}</span>
+        <atomic-image class="cta-menu__img" :src="item.image" />
+      </div>
+
+      <atomic-link
+        v-else
         :href="item.url"
         :key="item.title"
         :targetBlank="item.targetBlank"
         class="cta-menu__item"
         :class="{'is-active': route.path === localizePath(item.url)}"
-    >
-      <span class="cta-menu__title">{{ item.title }}</span>
-      <span class="cta-menu__sub-title">{{ item.subTitle }}</span>
-      <atomic-image class="cta-menu__img" :src="item.image" />
-    </atomic-link>
+      >
+        <span class="cta-menu__title">{{ item.title }}</span>
+        <span class="cta-menu__sub-title">{{ item.subTitle }}</span>
+        <atomic-image class="cta-menu__img" :src="item.image" />
+      </atomic-link>
+    </template>
   </div>
 </template>
 
@@ -23,8 +35,14 @@
   }>();
 
   const route = useRoute();
-
   const { localizePath } = useProjectMethods();
+  const { showModal } = useLayoutStore();
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+  const openQuestsHub = (): void => {
+    if (isLoggedIn.value) showModal('questsHub');
+    else showModal('signIn');
+  }
 </script>
 
 <style src="~/assets/styles/components/cta-menu.scss" lang="scss"/>

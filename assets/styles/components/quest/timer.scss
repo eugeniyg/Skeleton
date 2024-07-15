@@ -1,0 +1,42 @@
+.quest-timer {
+  display: flex;
+  width: 107px;
+  padding: 4px 8px;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  border-radius: 8px;
+  background: var(--layer-03-low-contrast);
+
+  &__item {
+    color: var(--item-color, var(--text-primary));
+    height: 16px;
+    width: 18px;
+    @include font($heading-1);
+    display: flex;
+    align-items: center;
+    line-height: initial;
+
+    &.has-null {
+      color: var(--text-tertiary, #8E949F);
+    }
+
+    .is-bw-enabled & {
+      color: var(--text-tertiary);
+    }
+  }
+
+  &__dots {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--text-tertiary);
+    padding: 1px;
+    @include font($heading-1);
+    line-height: initial;
+    transform: translateY(-1px);
+    width: 5px;
+  }
+}
