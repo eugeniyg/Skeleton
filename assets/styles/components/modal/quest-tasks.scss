@@ -1,0 +1,342 @@
+.modal-quest-tasks {
+  .vfm__content {
+    width: 100%;
+
+    @include media(md) {
+      width: auto;
+    }
+  }
+
+  .container {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    flex-direction: column;
+    max-height: 100%;
+    background-color: var(--layer-01);
+    width: 100%;
+    flex-shrink: 0;
+
+    @include media(xs) {
+      border-radius: 12px;
+    }
+
+    @include media(md) {
+      flex-direction: row;
+    }
+  }
+
+  .scroll {
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    overflow: hidden;
+    padding: 16px 16px 24px 44px;
+
+    @include media(md) {
+      width: rem(528px);
+      padding: 16px 16px 24px 60px;
+    }
+
+    .header {
+      margin-bottom: 16px;
+      width: 100%;
+      position: relative;
+      padding-right: 40px;
+      max-width: 364px;
+
+      .title {
+        @include font($heading-6);
+        color: var(--text-primary);
+        display: inline;
+      }
+
+      &__back-btn {
+        display: inline-flex;
+        cursor: pointer;
+        transition: color .1s, color .1s ease-in-out;
+        @include font($body-2);
+        width: 32px;
+        height: 32px;
+        background-color: var(--button-bg-secondary);
+        border-radius: 8px;
+        margin-right: 8px;
+
+        &-icon {
+          display: flex;
+          align-self: center;
+          margin: auto;
+          transition: background-color .1s, color .1s ease-in-out;
+
+          .icon {
+            color: var(--text-primary);
+            transition: inherit;
+            --icon-size: 20px;
+          }
+        }
+
+        &:hover {
+          .header__back-btn-icon {
+            background-color: var(--button-bg-secondary-hover);
+
+            .icon {
+              color: var(--button-text-ghost-hover);
+            }
+          }
+        }
+
+        &:active {
+          color: var(--button-text-ghost-click);
+
+          .icon {
+            color: var(--button-text-ghost-click);
+          }
+        }
+      }
+    }
+  }
+
+  &__body {
+    display: flex;
+    grid-gap: 8px;
+    position: relative;
+    z-index: 1;
+
+    .quest-currency__item {
+      @include upd-font($heading-1);
+
+      @include media(md) {
+        @include upd-font($heading-3);
+      }
+    }
+
+    .quest-currency__symbol {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__card {
+    background: var(--gradient-gray-lite-line);
+    margin: -16px -16px 0 -44px;
+    padding: 16px 16px 24px 16px;
+    position: relative;
+
+    @include media(md) {
+      margin: -24px -24px 0 -60px;
+      padding: 24px 24px 24px 24px;
+    }
+  }
+
+  &__activate-button {
+    grid-area: button;
+    width: calc(100% + 28px);
+    margin-top: 16px;
+    transform: translateX(-28px);
+  }
+
+  &__img {
+    position: absolute;
+    right: 0;
+    width: 128px;
+    top: 18px;
+    bottom: 18px;
+    transform: translateX(60px);
+
+    @media(min-width: 481px) {
+      width: 156px;
+      transform: translateX(0px);
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+  }
+
+  .quest-currency {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: fit-content;
+  }
+}
+
+.quest-tasks {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+        "count"
+        "tasks"
+        "button";
+  position: relative;
+  padding: 0 16px 16px 44px;
+  overflow-y: auto;
+  margin-top: 24px;
+  margin-left: -44px;
+  @extend %scrollbar;
+
+  &__count {
+    grid-area: count;
+    color: var(--text-secondary);
+    @include font($subheading-3);
+    margin-bottom: 16px;
+    margin-left: -28px;
+    padding-top: 2px;
+  }
+
+  &__items {
+    grid-area: tasks;
+    grid-row-gap: 8px;
+    display: grid;
+    position: relative;
+
+    &:before {
+      position: absolute;
+      content: '';
+      top: 0;
+      bottom: 0;
+      width: 12px;
+      background-color: var(--border-00-low-contrast);
+      left: -28px;
+      z-index: 0;
+    }
+  }
+
+  &__next {
+    .quest-task {
+      &:first-child {
+        --before-top: 0;
+        --before-bottom: 50%;
+        --before-bg: var(--layer-01);
+      }
+
+      &:last-child {
+        --after-top: 50%;
+        --after-bottom: 0;
+        --after-bg: var(--layer-01);
+      }
+    }
+
+    .quest-tasks-header:first-of-type {
+      --before-top: 0;
+      --before-bottom: 0;
+      --before-bg: var(--layer-01);
+
+      + .quest-task {
+        --before-top: -8px;
+        --before-bottom: 50%;
+        --before-bg: var(--layer-01);
+      }
+    }
+  }
+
+  &__completed {
+    .quest-task {
+      --before-top: -8px;
+      --before-bottom: 50%;
+      --before-bg: var(--green-800);
+      --after-top: 50%;
+      --after-bottom: 0;
+      --after-bg: var(--green-800);
+
+      &:first-child {
+        --before-top: 0;
+        --before-bottom: 50%;
+        --before-bg: var(--layer-01);
+      }
+
+      + .quest-tasks-header {
+        --before-top: -8px;
+        --before-bottom: 0;
+        --before-bg: var(--green-800);
+      }
+    }
+
+    + .quest-tasks__next {
+      .quest-task:first-child {
+        --before-top: -8px;
+        --before-bottom: 50%;
+        --before-bg: var(--green-800);
+      }
+
+      .quest-tasks-header:first-of-type {
+        --before-top: 0;
+        --before-bottom: 0;
+        --before-bg: var(--green-800);
+
+        + .quest-task {
+          --before-top: -8px;
+          --before-bottom: 50%;
+          --before-bg: var(--green-800);
+        }
+      }
+    }
+  }
+
+  &__completed, &__next, {
+    display: flex;
+    flex-direction: column;
+    grid-row-gap: 8px;
+  }
+
+  .quest-task {
+    &:before, &:after {
+      position: absolute;
+      content: '';
+      width: 12px;
+      left: 0;
+      transform: translateX(-28px);
+    }
+
+    &:before {
+      top: var(--before-top);
+      bottom: var(--before-bottom);
+      background-color: var(--before-bg);
+    }
+
+    &:after {
+      top: var(--after-top);
+      bottom: var(--after-bottom);
+      background-color: var(--after-bg);
+    }
+  }
+
+  .quest-tasks-header {
+    color: var(--text-primary);
+    @include font($subheading-1);
+    padding-top: 16px;
+    position: relative;
+
+    &:before {
+      position: absolute;
+      content: '';
+      width: 12px;
+      left: 0;
+      transform: translateX(-28px);
+      top: var(--before-top);
+      bottom: var(--before-bottom);
+      background-color: var(--before-bg);
+    }
+  }
+
+  &.inactive {
+    padding: 16px !important;
+
+    .quest-tasks__items:before {
+      content: none !important;
+    }
+
+    .quest-task {
+      &:before, &:after {
+        content: none !important;
+      }
+
+      &__type-icon {
+        display: none !important;
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@
   <div class="content">
     <div class="header">
       <h1 class="heading">
-        {{ content?.currentLocaleData?.title || content?.defaultLocaleData?.title }}
+        {{ infoContent?.title || defaultLocaleInfoContent?.title }}
       </h1>
 
       <button-base
@@ -11,22 +11,13 @@
         size="md"
         @click="toggleProfileEdit"
       >
-        <atomic-icon id="edit"/>{{ content?.currentLocaleData?.editButton || content?.defaultLocaleData?.editButton }}
-
-        <!--        <template v-if="isProfileEdit">-->
-        <!--          <atomic-icon id="done"/>Done editing-->
-        <!--        </template>-->
-
-        <!--        <template v-else>-->
-        <!--          <atomic-icon id="edit"/>Edit your profile-->
-        <!--        </template>-->
+        <atomic-icon id="edit"/>{{ infoContent?.editButton || defaultLocaleInfoContent?.editButton }}
       </button-base>
     </div>
 
     <form-profile
       v-if="isProfileEdit && profileFields?.length"
       @toggle-profile-edit="toggleProfileEdit"
-      v-bind="content?.currentLocaleData || content?.defaultLocaleData"
     />
 
     <template v-else>
@@ -57,19 +48,21 @@
               @click.once="profileStore.resendVerifyEmail"
               :class="{ disabled: resentVerifyEmail }"
             >
-              {{ content?.currentLocaleData?.sendButton || content?.defaultLocaleData?.sendButton }}
+              {{ infoContent?.sendButton || defaultLocaleInfoContent?.sendButton }}
             </span>
           </div>
         </div>
       </div>
 
-      <table-profile/>
+      <quest-hub v-if="showQuestHub" />
 
-      <atomic-divider/>
+      <table-profile />
+
+      <atomic-divider />
     </template>
 
     <h4 class="heading">
-      {{ content?.currentLocaleData?.subscriptionTitle || content?.defaultLocaleData?.subscriptionTitle }}
+      {{ infoContent?.subscriptionTitle || defaultLocaleInfoContent?.subscriptionTitle }}
     </h4>
 
     <div class="group">
@@ -87,7 +80,7 @@
     </div>
 
     <h4 class="heading">
-      {{ content?.currentLocaleData?.manageTitle || content?.defaultLocaleData?.manageTitle }}
+      {{ infoContent?.manageTitle || defaultLocaleInfoContent?.manageTitle }}
     </h4>
 
     <button-base type="ghost" size="md" @click="profileStore.logOutUser">
@@ -117,10 +110,23 @@
     getLocalesContentData,
     getContent,
   } = useProjectMethods();
+  const infoContent = ref<Maybe<IProfileInfo>>();
+  const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>();
+  provide('infoContent', infoContent);
+  provide('defaultLocaleInfoContent', defaultLocaleInfoContent);
+
+  const runtimeConfig = useRuntimeConfig();
+  const showQuestHub = runtimeConfig.public?.questsEnabled;
 
   interface IPageContent {
     currentLocaleData: Maybe<IProfileInfo>;
     defaultLocaleData: Maybe<IProfileInfo>;
+  }
+
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    infoContent.value = contentData?.currentLocaleData;
+    defaultLocaleInfoContent.value = contentData?.defaultLocaleData;
+    setPageMeta(infoContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
@@ -139,7 +145,7 @@
   const { data: content } = await useLazyAsyncData('profileInfoContent', () => getPageContent());
 
   watch(content, () => {
-    if (content.value) setPageMeta(content.value?.currentLocaleData?.pageMeta);
+    if (content.value) setContentData(content.value);
   }, { immediate: true });
 
   const { changeProfileData } = useCoreProfileApi();

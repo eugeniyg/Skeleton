@@ -1,0 +1,121 @@
+.quest-hub-card {
+  width: 100%;
+  cursor: pointer;
+
+  &:hover {
+    .quest-hub-card__arrow {
+      .icon {
+        --color: var(--icon-accent);
+      }
+    }
+  }
+
+  &__body {
+    display: grid;
+    grid-template-areas:
+            "img title arrow"
+            "img amount arrow";
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    padding-bottom: 12px;
+  }
+
+  &__img {
+    grid-area: img;
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+  }
+
+  &__title {
+    @include font($body-2);
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    grid-area: title;
+    flex-grow: 1;
+  }
+
+  &__tooltip {
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    --color: var(--icon-secondary);
+    --icon-size: 16px;
+    cursor: pointer;
+
+    &:hover {
+      .icon {
+        --color: var(--icon-accent);
+      }
+    }
+  }
+
+  &__amount {
+    display: flex;
+    align-items: center;
+    grid-area: amount;
+
+    &-value, &-currency {
+      @include font($heading-0);
+      color: var(--text-accent);
+    }
+
+    &-currency {
+      margin-left: 4px;
+    }
+
+    &-more {
+      @include font($body-0);
+      color: var(--text-tertiary);
+      margin-left: 4px;
+
+      &:hover {
+        cursor: pointer;
+        color: var(--text-primary);
+      }
+    }
+  }
+
+  &__arrow {
+    transform: rotate(-90deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    grid-area: arrow;
+
+    .icon {
+      --color: var(--icon-primary);
+    }
+  }
+
+  &__divider {
+    width: 100%;
+    --bg: var(--border-02-low-contrast);
+    --margin: 0;
+  }
+
+  &:last-child {
+    .quest-hub-card__divider {
+      visibility: hidden;
+    }
+  }
+
+  @include media(md) {
+    &:nth-last-child(-n + 2) {
+      .quest-hub-card__divider {
+        visibility: hidden;
+      }
+    }
+  }
+}
