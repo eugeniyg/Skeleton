@@ -17,7 +17,7 @@
     </div>
 
     <client-only>
-      <div class="loyalty-home" v-if="isLoggedIn && props.showLoyalty">
+      <div class="loyalty-home" v-if="isLoggedIn && props.showLoyalty && loyaltyEnabled">
         <div v-if="loyaltyWelcomeTitle" class="loyalty-home__title">{{ loyaltyWelcomeTitle }}</div>
 
         <div v-if="props.bannerLoyalty?.subtitle" class="loyalty-home__sub-title">
@@ -66,8 +66,8 @@
       icon: string;
     };
     bannerLoyalty?: {
-      welcomeTitle: string;
-      subtitle: string;
+      welcomeTitle?: string;
+      subtitle?: string;
     };
     showLoyalty?: boolean;
   }>();
@@ -76,6 +76,8 @@
   const { isLoggedIn, userNickname } = storeToRefs(profileStore);
   const { showModal, openWalletModal } = useLayoutStore();
   const { handleExternalLink } = useProjectMethods();
+  const runtimeConfig = useRuntimeConfig();
+  const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;
 
   const loyaltyWelcomeTitle = computed(() => {
     if (!props.bannerLoyalty?.welcomeTitle) return undefined;

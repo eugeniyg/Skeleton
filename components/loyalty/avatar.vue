@@ -5,6 +5,7 @@
   >
     <atomic-image :src="avatarImage" class="loyalty-avatar__user-img" />
     <atomic-image
+      v-if="loyaltyEnabled"
       class="loyalty-avatar__level"
       :src="levelImage || '/img/loyalty/default-level-img.png'"
     />
@@ -22,6 +23,9 @@
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent
   } = storeToRefs(globalStore);
+
+  const runtimeConfig = useRuntimeConfig();
+  const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;
 
   const avatarImage = computed(() => {
     return getContent(

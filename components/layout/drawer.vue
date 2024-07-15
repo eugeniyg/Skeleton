@@ -19,7 +19,7 @@
       />
 
       <client-only>
-        <atomic-link href="/loyalty" v-if="isLoggedIn" class="drawer__loyalty">
+        <atomic-link href="/loyalty" v-if="isLoggedIn && loyaltyEnabled" class="drawer__loyalty">
           <loyalty-level-logo />
           <loyalty-progress shortVersion />
         </atomic-link>
@@ -94,8 +94,8 @@
   const freshchatStore = useFreshchatStore();
   const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
 
+  const { public: { freshchatParams, loyaltyEnabled } } = useRuntimeConfig();
   const openChat = () => {
-    const { public: { freshchatParams } } = useRuntimeConfig();
     if (!freshchatParams?.guestAvailable && !isLoggedIn.value) showModal('register');
     else window.fcWidget?.open();
   }
