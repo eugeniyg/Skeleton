@@ -1,0 +1,54 @@
+.loyalty-avatar {
+  position: relative;
+  border-radius: 50%;
+  border: 4px solid var(--border-01);
+  width: var(--avatar-img-size);
+  height: var(--avatar-img-size);
+  flex-shrink: 0;
+
+  &__user-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    box-shadow: var(--avatar-img-box-shadow, none);
+  }
+
+  &__level {
+    display: block;
+    position: absolute;
+    margin: 0 auto;
+    top: var(--level-img-top, auto);
+    right: var(--level-img-right, -12px);
+    bottom: var(--level-img-bottom, -12px);
+    left: var(--level-img-left, auto);
+    width: var(--level-img-size);
+    height: var(--level-img-size);
+    z-index: 1;
+  }
+
+  &--lg {
+    --avatar-img-size: 96px;
+    --level-img-size: 40px;
+    --level-img-right: -6px;
+    --level-img-bottom: -10px;
+  }
+
+  &--md {
+    --avatar-img-size: 56px;
+    --level-img-size: 32px;
+    --level-img-right: -8px;
+    --level-img-bottom: -9px;
+  }
+
+  &--sm {
+    --avatar-img-size: 40px;
+    --level-img-size: 20px;
+    --level-img-right: -4px;
+    --level-img-bottom: -4px;
+    border: none !important;
+  }
+}

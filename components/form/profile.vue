@@ -1,7 +1,7 @@
 <template>
   <form class="form-profile">
     <div class="row">
-      <atomic-avatar-profile :is-edit="false"/>
+      <loyalty-avatar size="lg" />
 
       <form-input-email-verify
         type="email"

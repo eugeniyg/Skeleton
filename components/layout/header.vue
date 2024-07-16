@@ -87,10 +87,14 @@
             <form-input-deposit />
 
             <div v-click-outside="closeUserNav" class="nav-user__wrap">
-              <atomic-avatar
-                @toggle="toggleProfileNav"
-                :is-button="true"
-              />
+              <div class="nav-user__header-avatar">
+                <loyalty-avatar size="sm" @click="toggleProfileNav" />
+
+                <span v-show="isUserNavOpen" class="close-decor" @click="toggleProfileNav">
+                  <atomic-icon id="plus"/>
+                </span>
+              </div>
+
               <nav-user @logout="logout"/>
             </div>
           </template>

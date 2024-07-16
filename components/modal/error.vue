@@ -1,15 +1,15 @@
 <template>
   <vue-final-modal
-    v-model="modals.error"
+    v-model="modals.failing"
     class="modal-error-deposit"
     :clickToClose="false"
-    @clickOutside="closeModal('error')"
+    @clickOutside="closeModal('failing')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('error')"/>
+        <button-modal-close @close="closeModal('failing')"/>
         <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'error.title') }}</div>
       </div>
 
@@ -38,7 +38,7 @@
 
   const tryAgain = async ():Promise<void> => {
     await openWalletModal('deposit');
-    closeModal('error');
+    closeModal('failing');
   };
 </script>
 

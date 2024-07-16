@@ -22,36 +22,48 @@
 
     <template v-else>
       <div class="row-user">
-        <atomic-avatar-profile :is-edit="false"/>
+        <div v-if="loyaltyEnabled" class="row-user__info">
+          <loyalty-avatar size="lg" class="row-user__info-avatar" />
 
-        <div class="items">
-          <div class="nickname">{{ userNickname }}</div>
-
-          <div class="item" v-show="profile?.firstName || profile?.lastName">
-            <atomic-icon id="user"/>
-            {{ profile?.firstName }} {{ profile?.lastName }}
+          <div class="row-user__info-nickname">
+            {{ userNickname }}
           </div>
 
-          <div class="item" v-show="profile?.country || profile?.city">
-            <atomic-icon id="location"/>
-            {{ userCountryName }}{{ profile?.city ? `, ${profile?.city}` : '' }}
-          </div>
-
-          <div class="item" v-show="profile?.email">
-            <atomic-icon v-if="profile?.confirmedAt" class="is-success" id="done"/>
-            <atomic-icon v-else class="is-warning" id="warning"/>
-            {{ profile?.email }}
-
-            <span
-              v-if="!profile?.confirmedAt"
-              class="btn-primary size-xs"
-              @click.once="profileStore.resendVerifyEmail"
-              :class="{ disabled: resentVerifyEmail }"
-            >
-              {{ infoContent?.sendButton || defaultLocaleInfoContent?.sendButton }}
-            </span>
-          </div>
+          <loyalty-progress class="row-user__info-progress" showInfo />
         </div>
+
+        <template v-else>
+          <loyalty-avatar size="lg" />
+
+          <div class="items">
+            <div class="nickname">{{ userNickname }}</div>
+
+            <div class="item" v-show="profile?.firstName || profile?.lastName">
+              <atomic-icon id="user"/>
+              {{ profile?.firstName }} {{ profile?.lastName }}
+            </div>
+
+            <div class="item" v-show="profile?.country || profile?.city">
+              <atomic-icon id="location"/>
+              {{ userCountryName }}{{ profile?.city ? `, ${profile?.city}` : '' }}
+            </div>
+
+            <div class="item" v-show="profile?.email">
+              <atomic-icon v-if="profile?.confirmedAt" class="is-success" id="done"/>
+              <atomic-icon v-else class="is-warning" id="warning"/>
+              {{ profile?.email }}
+
+              <span
+                v-if="!profile?.confirmedAt"
+                class="btn-primary size-xs"
+                @click.once="profileStore.resendVerifyEmail"
+                :class="{ disabled: resentVerifyEmail }"
+              >
+              {{ content?.currentLocaleData?.sendButton || content?.defaultLocaleData?.sendButton }}
+            </span>
+            </div>
+          </div>
+        </template>
       </div>
 
       <quest-hub v-if="showQuestHub" />
@@ -117,6 +129,7 @@
 
   const runtimeConfig = useRuntimeConfig();
   const showQuestHub = runtimeConfig.public?.questsEnabled;
+  const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;
 
   interface IPageContent {
     currentLocaleData: Maybe<IProfileInfo>;

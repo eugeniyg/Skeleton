@@ -1,0 +1,168 @@
+.loyalty-progress {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  width: 100%;
+
+  &__container {
+    flex-grow: 1;
+  }
+
+  &__prev {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: flex-start;
+    align-items: center;
+
+    &-label {
+      color: var(--text-primary);
+      @include font($subheading-1);
+      margin-right: 2px;
+      display: none;
+    }
+
+    &-value {
+      color: var(--text-primary);
+      @include font($subheading-0);
+      --line-height: auto;
+    }
+
+    &-icon {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  &__next {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    align-items: center;
+
+
+    &-label {
+      color: var(--text-secondary);
+      @include font($body-0);
+      margin-right: 2px;
+      --line-height: auto;
+    }
+
+    &-value {
+      color: var(--text-tertiary);
+      @include font($subheading-0);
+      --line-height: auto;
+    }
+
+    &-icon {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  &__bar {
+    height: var(--progress-height, 12px);
+    border-radius: var(--progress-radius, 4px);
+    background: var(--support-system-low-contrast);
+    box-shadow: var(--dark-shadow-inner-s);
+    position: relative;
+    display: flex;
+    width: 100%;
+    margin-top: var(--progress-margin-top, 0);
+
+    &-line {
+      position: relative;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      background: var(--gradient-orange-line);
+      overflow: hidden;
+      border-radius: var(--progress-radius, 4px);
+      height: var(--progress-height, 12px);
+      display: inline-flex;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 12px 4px 0 0;
+        border-color: transparent var(--support-system-low-contrast) transparent transparent;
+        transform: rotate(0deg);
+      }
+    }
+  }
+
+  &__points {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+
+    &-prev {
+      color: var(--text-primary);
+      @include font($heading-0);
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      --line-height: auto;
+
+      .is-sidebar & {
+        color: var(--text-accent);
+      }
+
+      &-label {
+        .is-user-nav & {
+          display: none;
+        }
+      }
+    }
+
+    &-divider {
+      @include font($heading-0);
+      color: var(--text-tertiary);
+      --line-height: auto;
+    }
+
+    &-next {
+      color: var(--text-tertiary);
+      @include font($heading-0);
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      --line-height: auto;
+    }
+
+    &-info {
+      --color: var(--icon-secondary);
+      --icon-size: 14px;
+      cursor: pointer;
+
+      &:hover {
+        --color: var(--icon-accent);
+      }
+    }
+  }
+
+  &--short {
+    .loyalty-progress {
+      &__prev-label {
+        display: block;
+      }
+
+      &__next {
+        display: none;
+      }
+
+      &__points-prev-value {
+        color: var(--text-accent);
+      }
+
+      &__points-prev-label {
+        display: none;
+      }
+    }
+  }
+}
