@@ -57,7 +57,7 @@
     if (closeGame.value) {
       closeTasksModal();
       closeModal('questsHub');
-      router.push(localizePath(`/games/${closeGame.value}?real=true'}`));
+      router.push(localizePath(`/games/${closeGame.value}?real=true`));
     }
   }
 </script>

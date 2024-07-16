@@ -209,7 +209,7 @@
       const { query, path } = useRoute();
       const { origin } = window.location;
       const successQueryString = queryString.stringify({ ...query, success: 'deposit', wallet: undefined });
-      const errorQueryString = queryString.stringify({ ...query, error: 'deposit', wallet: undefined });
+      const errorQueryString = queryString.stringify({ ...query, failing: 'deposit', wallet: undefined });
       successRedirect = `${origin}${path}?${successQueryString}`;
       errorRedirect = `${origin}${path}?${errorQueryString}`;
     }
@@ -261,7 +261,7 @@
       }
     } catch {
       if (windowReference.value) windowReference.value.close();
-      showModal('error');
+      showModal('failing');
     } finally {
       isSending.value = false;
     }
