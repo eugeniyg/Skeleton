@@ -1,13 +1,13 @@
 <template>
   <form class="form-profile">
     <div class="row">
-      <atomic-avatar-profile :is-edit="false"/>
+      <loyalty-avatar size="lg" />
 
       <form-input-email-verify
         type="email"
         v-model:value="profileFormData.email"
         isDisabled
-        :verifyButton="props.verifyButton"
+        :verifyButton="infoContent?.verifyButton || defaultLocaleInfoContent?.verifyButton"
         :hint="emailHint"
         :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
         :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
@@ -42,10 +42,11 @@
         :isDisabled="sendDisabled"
         @click="changePersonalData"
       >
-        {{ props.saveButton || '' }}
+        {{ infoContent?.saveButton || defaultLocaleInfoContent?.saveButton || '' }}
       </button-base>
+
       <button-base type="ghost" size="md" @click.prevent="emit('toggle-profile-edit')">
-        {{ props.cancelButton || '' }}
+        {{ infoContent?.cancelButton || defaultLocaleInfoContent?.cancelButton || '' }}
       </button-base>
     </div>
 
@@ -56,16 +57,11 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
+  import type { IProfileInfo } from "~/types";
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
-
-  const props = defineProps<{
-    saveButton?: string,
-    cancelButton?: string,
-    verifyButton?: string,
-    verifiedLabel?: string,
-    unverifiedLabel?: string,
-  }>();
+  const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
+  const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
 
   const hideFields = [
     'password',
@@ -90,8 +86,8 @@
   const rowsFields = cleanFields.filter((field) => field.name !== 'email');
 
   const emailHint = profile.value?.confirmedAt
-    ? { variant: 'verified', message: props.verifiedLabel || 'Your email is verified' }
-    : { variant: 'unverified', message: props.unverifiedLabel || 'Your email is unverified' };
+    ? { variant: 'verified', message: infoContent.value?.verifiedLabel || defaultLocaleInfoContent.value?.verifiedLabel || 'Your email is verified' }
+    : { variant: 'unverified', message: infoContent.value?.unverifiedLabel || defaultLocaleInfoContent.value?.unverifiedLabel || 'Your email is unverified' };
 
   const emit = defineEmits(['toggle-profile-edit']);
   const profileFormData = reactive(setFormData(cleanFields));

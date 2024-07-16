@@ -2,7 +2,7 @@
   <div class="content">
     <div class="header">
       <h1 class="heading">
-        {{ content?.currentLocaleData?.title || content?.defaultLocaleData?.title }}
+        {{ infoContent?.title || defaultLocaleInfoContent?.title }}
       </h1>
 
       <button-base
@@ -11,65 +11,70 @@
         size="md"
         @click="toggleProfileEdit"
       >
-        <atomic-icon id="edit"/>{{ content?.currentLocaleData?.editButton || content?.defaultLocaleData?.editButton }}
-
-        <!--        <template v-if="isProfileEdit">-->
-        <!--          <atomic-icon id="done"/>Done editing-->
-        <!--        </template>-->
-
-        <!--        <template v-else>-->
-        <!--          <atomic-icon id="edit"/>Edit your profile-->
-        <!--        </template>-->
+        <atomic-icon id="edit"/>{{ infoContent?.editButton || defaultLocaleInfoContent?.editButton }}
       </button-base>
     </div>
 
     <form-profile
       v-if="isProfileEdit && profileFields?.length"
       @toggle-profile-edit="toggleProfileEdit"
-      v-bind="content?.currentLocaleData || content?.defaultLocaleData"
     />
 
     <template v-else>
       <div class="row-user">
-        <atomic-avatar-profile :is-edit="false"/>
+        <div v-if="loyaltyEnabled" class="row-user__info">
+          <loyalty-avatar size="lg" class="row-user__info-avatar" />
 
-        <div class="items">
-          <div class="nickname">{{ userNickname }}</div>
-
-          <div class="item" v-show="profile?.firstName || profile?.lastName">
-            <atomic-icon id="user"/>
-            {{ profile?.firstName }} {{ profile?.lastName }}
+          <div class="row-user__info-nickname">
+            {{ userNickname }}
           </div>
 
-          <div class="item" v-show="profile?.country || profile?.city">
-            <atomic-icon id="location"/>
-            {{ userCountryName }}{{ profile?.city ? `, ${profile?.city}` : '' }}
-          </div>
+          <loyalty-progress class="row-user__info-progress" showInfo />
+        </div>
 
-          <div class="item" v-show="profile?.email">
-            <atomic-icon v-if="profile?.confirmedAt" class="is-success" id="done"/>
-            <atomic-icon v-else class="is-warning" id="warning"/>
-            {{ profile?.email }}
+        <template v-else>
+          <loyalty-avatar size="lg" />
 
-            <span
-              v-if="!profile?.confirmedAt"
-              class="btn-primary size-xs"
-              @click.once="profileStore.resendVerifyEmail"
-              :class="{ disabled: resentVerifyEmail }"
-            >
+          <div class="items">
+            <div class="nickname">{{ userNickname }}</div>
+
+            <div class="item" v-show="profile?.firstName || profile?.lastName">
+              <atomic-icon id="user"/>
+              {{ profile?.firstName }} {{ profile?.lastName }}
+            </div>
+
+            <div class="item" v-show="profile?.country || profile?.city">
+              <atomic-icon id="location"/>
+              {{ userCountryName }}{{ profile?.city ? `, ${profile?.city}` : '' }}
+            </div>
+
+            <div class="item" v-show="profile?.email">
+              <atomic-icon v-if="profile?.confirmedAt" class="is-success" id="done"/>
+              <atomic-icon v-else class="is-warning" id="warning"/>
+              {{ profile?.email }}
+
+              <span
+                v-if="!profile?.confirmedAt"
+                class="btn-primary size-xs"
+                @click.once="profileStore.resendVerifyEmail"
+                :class="{ disabled: resentVerifyEmail }"
+              >
               {{ content?.currentLocaleData?.sendButton || content?.defaultLocaleData?.sendButton }}
             </span>
+            </div>
           </div>
-        </div>
+        </template>
       </div>
 
-      <table-profile/>
+      <quest-hub v-if="showQuestHub" />
 
-      <atomic-divider/>
+      <table-profile />
+
+      <atomic-divider />
     </template>
 
     <h4 class="heading">
-      {{ content?.currentLocaleData?.subscriptionTitle || content?.defaultLocaleData?.subscriptionTitle }}
+      {{ infoContent?.subscriptionTitle || defaultLocaleInfoContent?.subscriptionTitle }}
     </h4>
 
     <div class="group">
@@ -87,7 +92,7 @@
     </div>
 
     <h4 class="heading">
-      {{ content?.currentLocaleData?.manageTitle || content?.defaultLocaleData?.manageTitle }}
+      {{ infoContent?.manageTitle || defaultLocaleInfoContent?.manageTitle }}
     </h4>
 
     <button-base type="ghost" size="md" @click="profileStore.logOutUser">
@@ -117,10 +122,24 @@
     getLocalesContentData,
     getContent,
   } = useProjectMethods();
+  const infoContent = ref<Maybe<IProfileInfo>>();
+  const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>();
+  provide('infoContent', infoContent);
+  provide('defaultLocaleInfoContent', defaultLocaleInfoContent);
+
+  const runtimeConfig = useRuntimeConfig();
+  const showQuestHub = runtimeConfig.public?.questsEnabled;
+  const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;
 
   interface IPageContent {
     currentLocaleData: Maybe<IProfileInfo>;
     defaultLocaleData: Maybe<IProfileInfo>;
+  }
+
+  const setContentData = (contentData: Maybe<IPageContent>): void => {
+    infoContent.value = contentData?.currentLocaleData;
+    defaultLocaleInfoContent.value = contentData?.defaultLocaleData;
+    setPageMeta(infoContent.value?.pageMeta);
   }
 
   const getPageContent = async (): Promise<IPageContent> => {
@@ -139,7 +158,7 @@
   const { data: content } = await useLazyAsyncData('profileInfoContent', () => getPageContent());
 
   watch(content, () => {
-    if (content.value) setPageMeta(content.value?.currentLocaleData?.pageMeta);
+    if (content.value) setContentData(content.value);
   }, { immediate: true });
 
   const { changeProfileData } = useCoreProfileApi();

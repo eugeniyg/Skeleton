@@ -3,6 +3,7 @@
     <banners
       v-if="homeContent?.banners || defaultLocaleHomeContent?.banners"
       :items="homeContent?.banners || defaultLocaleHomeContent?.banners"
+      :bannerLoyalty="homeContent?.bannerLoyalty || defaultLocaleHomeContent?.bannerLoyalty"
     />
     
     <div

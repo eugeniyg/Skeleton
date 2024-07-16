@@ -12,6 +12,7 @@
           v-for="(item, itemIndex) in props.items"
           :key="itemIndex"
           v-bind="item"
+          :bannerLoyalty="props.bannerLoyalty"
         />
       </div>
     </div>
@@ -55,7 +56,8 @@
   import Autoplay from 'embla-carousel-autoplay';
   
   const props = defineProps<{
-    items: IHomePage['banners']
+    items: IHomePage['banners'];
+    bannerLoyalty?: IHomePage['bannerLoyalty'];
   }>();
   
   const activeIndex = ref<number>(0);

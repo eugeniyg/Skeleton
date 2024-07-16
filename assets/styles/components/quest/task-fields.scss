@@ -1,0 +1,44 @@
+.quest-task-fields {
+  display: flex;
+  padding: 6px 12px 8px 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  align-self: stretch;
+  border-radius: 4px;
+  background: var(--layer-03-low-contrast);
+  width: 100%;
+
+  &__title {
+    color: var(--text-primary);
+    @include font($heading-0);
+  }
+
+  &__items {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 4px 16px;
+  }
+
+  &__item {
+    display: inline-flex;
+    white-space: nowrap;
+    align-items: center;
+    grid-gap: 2px;
+
+    span {
+      color: var(--text-primary);
+      @include font($body-0);
+    }
+  }
+
+  img {
+    width: 16px;
+    height: 16px;
+    display: block;
+
+    .is-bw-enabled & {
+      filter: grayscale(100%);
+    }
+  }
+}

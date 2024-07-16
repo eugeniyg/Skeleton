@@ -77,6 +77,11 @@ export const useWalletStore = defineStore('walletStore', {
     async switchAccount(accountId: string):Promise<void> {
       const { switchActiveAccount } = useCoreWalletApi();
       this.accounts = await switchActiveAccount(accountId);
+      const runtimeConfig = useRuntimeConfig();
+      if (runtimeConfig.public?.questsEnabled) {
+        const { getPlayerActiveQuests } = useQuestsStore();
+        getPlayerActiveQuests();
+      }
       useEvent('accountChanged');
     },
 

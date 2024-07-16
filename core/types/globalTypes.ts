@@ -1,6 +1,8 @@
 import type { IAccount, ISocketInvoice } from './walletTypes'
 import type { IWinner } from './gameTypes'
 import type { IBonusCode, IPlayerBonus, IPlayerFreeSpin } from './bonusTypes'
+import type { IPlayerQuest, IPlayerQuestEventTask } from "@skeleton/core/types/questTypes";
+import type {IPlayerLoyaltyAccount} from "@skeleton/core/types/profileTypes";
 
 export interface IRate extends Record<string, any> {
   rate: number;
@@ -129,6 +131,9 @@ export interface IWebSocketResponse extends Record<string, any>{
     playerFreespin?: IPlayerFreeSpin;
     gameId?: string;
     gameIdentity?: string;
+    quest?: IPlayerQuest;
+    task?: IPlayerQuestEventTask;
+    playerAccount?: IPlayerLoyaltyAccount;
   };
   gen: undefined;
   offset: undefined;
