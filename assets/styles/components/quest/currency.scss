@@ -1,0 +1,63 @@
+.quest-currencies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quest-currency {
+  display: inline-flex;
+  padding: 4px 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 0.25px solid var(--border-color, var(--border-accent));
+  background: var(--layer-03-low-contrast);
+  width: fit-content;
+
+  .is-bw-enabled & {
+    --border-color: var(--border-click);
+  }
+
+  &__item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    @include font($heading-1);
+    color: var(--text-accent);
+
+    line-height: initial;
+
+    .is-bw-enabled & {
+      color: var(--text-helper);
+    }
+  }
+
+  &__symbol {
+    width: 14px;
+    height: 14px;
+
+    .is-bw-enabled & {
+      filter: grayscale(100%);
+    }
+  }
+
+  &__more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @include font($body-0);
+    color: var(--text-tertiary);
+    margin-left: 4px;
+    --line-height: auto;
+
+    &-label {
+      margin-left: 2px;
+    }
+
+    &:hover {
+      cursor: pointer;
+      color: var(--text-primary);
+    }
+  }
+}

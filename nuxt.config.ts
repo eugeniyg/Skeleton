@@ -103,6 +103,13 @@ export default defineNuxtConfig({
   ],
   vite: viteConfig,
   nitro: {
+    logLevel: 0,
+    sourceMap: false,
+    inlineDynamicImports: true,
+    rollupConfig: {
+      output: { sourcemap: false },
+      maxParallelFileOps: 1,
+    },
     devProxy: {
       '/api': {
         target: 'https://test.dev.getplatform.tech/api',

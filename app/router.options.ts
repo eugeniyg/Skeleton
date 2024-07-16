@@ -16,10 +16,11 @@ export default <RouterConfig> {
     const hideProfileDocumentsPage = runtimeConfig.public?.sumsub?.appToken && runtimeConfig.public?.sumsub?.hideDocumentsPage;
     // TEMPORARY SOLUTION
     const hideVerificationPage = !runtimeConfig.public?.sumsub?.appToken;
+    const hideLoyaltyPage = !runtimeConfig.public?.loyaltyEnabled;
 
     const defaultRoutes = [];
     for (const page of routes) {
-      if (page.name === 'betting' && hideBettingPage) continue;
+      if ((page.name === 'betting' && hideBettingPage) || (page.name === 'loyalty' && hideLoyaltyPage)) continue;
       else if (page.name === 'profile' && hideProfileDocumentsPage) {
         const filteredChildren = page.children?.filter(page => page.name !== 'profile-documents');
         defaultRoutes.push({ ...page, children: filteredChildren });

@@ -20,6 +20,9 @@ interface IModals extends Record<string, any> {
   success: boolean;
   fiat: boolean;
   turnOverWager: boolean;
+  questsHub: boolean;
+  loyaltyEarn: boolean;
+  loyaltyLevel: boolean;
 }
 
 interface IModalsUrls extends Record<string, any> {
@@ -31,6 +34,8 @@ interface IModalsUrls extends Record<string, any> {
   forgotPass: string;
   resetPass: string;
   wallet: string;
+  questsHub: string;
+
 }
 
 interface ILayoutStoreState extends Record<string, any>{
@@ -67,7 +72,10 @@ export const useLayoutStore = defineStore('layoutStore', {
         success: false,
         registerCancel: false,
         fiat: false,
-        turnOverWager: false
+        turnOverWager: false,
+        questsHub: false,
+        loyaltyEarn: false,
+        loyaltyLevel: false
       },
       modalsUrl: {
         register: 'sign-up',
@@ -77,7 +85,8 @@ export const useLayoutStore = defineStore('layoutStore', {
         confirm: 'confirm',
         forgotPass: 'forgot-pass',
         resetPass: 'reset-pass',
-        wallet: 'wallet'
+        wallet: 'wallet',
+        questsHub: 'quests-hub'
       },
     lastNotificationTime: 0,
     returnGame: undefined,
@@ -206,7 +215,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         if (!modalKey) return;
 
         const guestModals = ['register', 'signIn', 'forgotPass', 'resetPass'];
-        const authModals = ['wallet'];
+        const authModals = ['wallet', 'questsHub'];
         if (guestModals.includes(modalKey)) {
           isLoggedIn ? this.closeModal(modalKey) : this.showModal(modalKey);
         } else if (authModals.includes(modalKey)) {
@@ -270,7 +279,13 @@ export const useLayoutStore = defineStore('layoutStore', {
     deleteReturnGame(): void {
       sessionStorage.removeItem('returnGame');
       this.returnGame = undefined
-    }
+    },
+
+    closeAllModals(): void {
+      Object.keys(this.modals).forEach(modalKey => {
+        if (this.modals[modalKey]) this.closeModal(modalKey);
+      })
+    },
   },
 
   getters: {

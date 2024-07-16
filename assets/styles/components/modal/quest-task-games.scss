@@ -1,0 +1,89 @@
+.modal-quest-task-games {
+  .vfm__content {
+    max-width: 328px;
+    width: 100%;
+    margin: auto;
+  }
+
+  .scroll {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 100%;
+    background: var(--layer-01);
+    border-top: 12px solid var(--layer-01);
+    border-right: 8px solid var(--layer-01);
+    border-bottom: 12px solid var(--layer-01);
+    border-left: 8px solid var(--layer-01);
+    box-shadow: var(--shadow-modal);
+    position: relative;
+    padding: 24px 22px 22px 22px;
+    grid-row-gap: 24px;
+    width: 100%;
+    @extend %scrollbar;
+
+    border-radius: 16px;
+
+    @include media(xs) {
+      border-radius: 12px;
+    }
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .title {
+      @include font($heading-4);
+      color: var(--text-primary);
+      text-align: var(--text-align, center);
+      flex-grow: 1;
+    }
+  }
+
+  .btn-modal-close {
+    position: absolute;
+    --bg: transparent;
+    --right: #{rem(-16px)};
+    --top: #{rem(-8px)};
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border-01);
+    background-color: var(--layer-03-low-contrast);
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    width: 100%;
+    column-gap: 4px;
+
+    &:nth-child(odd) {
+      background-color: var(--layer-01);
+    }
+
+    &:nth-child(even) {
+      background-color: var(--layer-03-low-contrast);
+    }
+  }
+
+  &__link {
+    transition: color 0.3s;
+    color: var(--text-link);
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--text-link-hover);
+    }
+  }
+}
