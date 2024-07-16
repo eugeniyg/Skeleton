@@ -1,0 +1,26 @@
+.loyalty-rewards {
+  margin: 60px auto;
+  max-width: 1280px;
+
+  &__title {
+    @include font($heading-6);
+    color: var(--text-primary);
+    text-align: center;
+
+    > * {
+      margin: 0;
+    }
+  }
+
+  &__description {
+    @include font($body-2);
+    color: var(--text-tertiary);
+    text-align: center;
+    max-width: 624px;
+    margin: 0 auto;
+
+    > * {
+      margin: 0;
+    }
+  }
+}

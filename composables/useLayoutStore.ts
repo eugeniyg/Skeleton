@@ -21,6 +21,8 @@ interface IModals extends Record<string, any> {
   fiat: boolean;
   turnOverWager: boolean;
   questsHub: boolean;
+  loyaltyEarn: boolean;
+  loyaltyLevel: boolean;
 }
 
 interface IModalsUrls extends Record<string, any> {
@@ -71,7 +73,9 @@ export const useLayoutStore = defineStore('layoutStore', {
         registerCancel: false,
         fiat: false,
         turnOverWager: false,
-        questsHub: false
+        questsHub: false,
+        loyaltyEarn: false,
+        loyaltyLevel: false
       },
       modalsUrl: {
         register: 'sign-up',
