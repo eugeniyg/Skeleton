@@ -74,15 +74,10 @@
     3: 'freespin'
   }
 
-  const classes = computed(() => {
-    //const bonusColorType = mappingBonusColor[props.bonusInfo.packageItems?.length ? 0 : props.bonusInfo.type];
-
-    return {
-      //[`wallet-bonus--bg-${bonusColorType}`]: props.selected,
-      'is-selected': props.selected,
-      'wallet-bonus--disabled': props.disabled
-    }
-  })
+  const classes = computed(() => ({
+    'is-selected': props.selected,
+    'wallet-bonus--disabled': props.disabled
+  }))
 
   const bonusDepositContent = computed(() => {
     const minDepositData = props.bonusInfo.minDeposit;
