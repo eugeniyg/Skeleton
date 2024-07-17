@@ -6,14 +6,13 @@
       </div>
       
       <form-input-toggle
-        class="wallet-bonuses__decline-toggle"
+        class="wallet-bonuses__decline"
         name="bonus-decline"
         :value="bonusDeclined"
         @change="declineBonuses"
       >
         {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.declineLabel') }}
       </form-input-toggle>
-      
     </div>
     
 
@@ -26,23 +25,7 @@
       />
     </template>
 
-<!--    <div class="wallet-bonus wallet-bonuses__decline" :class="{ 'is-selected': bonusDeclined }">-->
-<!--      <div class="wallet-bonus__content">-->
-<!--        <div class="wallet-bonus__title">-->
-<!--          <atomic-icon id="bonus-declined" />-->
-
-<!--          <span>-->
-<!--            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.declineLabel') }}-->
-<!--          </span>-->
-<!--        </div>-->
-
-<!--        <form-input-checkbox-->
-<!--          name="bonus-decline"-->
-<!--          :value="bonusDeclined"-->
-<!--          @change="declineBonuses"-->
-<!--        />-->
-<!--      </div>-->
-<!--    </div>-->
+    <bonus-deposit-code ref="depositCode" @openBonusCode="bonusCodeTrigger" />
 
     <div v-if="props.crypto" class="wallet-bonuses__info">
       <div class="wallet-bonuses__info-icon">
@@ -70,7 +53,13 @@
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const bonusStore = useBonusStore();
-  const { depositBonuses, selectedDepositBonus, bonusDeclined } = storeToRefs(bonusStore);
+  const {
+    depositBonuses,
+    selectedDepositBonus,
+    bonusDeclined,
+    depositBonusCode,
+    showDepositBonusCode
+  } = storeToRefs(bonusStore);
 
   const sortBonuses = (prevBonus: IBonus, nextBonus: IBonus): number => {
     if (prevBonus.type === 2 || (prevBonus.type === 1 && nextBonus.type === 3)) return -1;
@@ -160,23 +149,42 @@
     return false;
   }
 
+  const depositCode = ref();
+  const bonusCodeTrigger = async (): Promise<void> => {
+    selectedDepositBonus.value = undefined;
+    bonusDeclined.value = false;
+    showDepositBonusCode.value = true;
+    useEvent('analyticsEvent', { event: 'walletPromoOpen' });
+    await nextTick();
+    depositCode.value.$el.scrollIntoView({ behavior: 'smooth' });
+  }
+
   const runtimeConfig = useRuntimeConfig();
   const configDeclineBonuses = runtimeConfig.public?.declineDepositBonuses;
-  if (configDeclineBonuses) {
+  if (depositBonusCode.value) {
+    selectedDepositBonus.value = undefined;
+    bonusDeclined.value = false;
+    showDepositBonusCode.value = true;
+  } else if (configDeclineBonuses) {
     selectedDepositBonus.value = undefined;
     bonusDeclined.value = true;
+    showDepositBonusCode.value = false;
   } else {
     selectedDepositBonus.value = !props.crypto
       ? bonusesList.value.find(bonus => !isBonusDisabled(bonus))
       : bonusesList.value[0];
     bonusDeclined.value = !selectedDepositBonus.value;
+    showDepositBonusCode.value = false;
   }
 
+  const bonusDeclinedManually = ref(false);
   const declineBonuses = (): void => {
     if (bonusDeclined.value) return;
 
     bonusDeclined.value = true;
+    bonusDeclinedManually.value = true;
     selectedDepositBonus.value = undefined;
+    showDepositBonusCode.value = false;
     useEvent('analyticsEvent', { event: 'walletDeclineBonuses' });
   }
 
@@ -186,11 +194,21 @@
       selectedDepositBonus.value = bonus;
       bonusDeclined.value = false;
       useEvent('analyticsEvent', { event: 'walletSelectBonus'});
+      showDepositBonusCode.value = false;
     }
   }
 
   watch(() => props.amount, () => {
     if (selectedDepositBonus.value && isBonusDisabled(selectedDepositBonus.value)) {
+      if (configDeclineBonuses) {
+        selectedDepositBonus.value = undefined;
+        bonusDeclined.value = true;
+      } else {
+        bonusDeclinedManually.value = false;
+        selectedDepositBonus.value = bonusesList.value.find(bonus => !isBonusDisabled(bonus));
+        bonusDeclined.value = !selectedDepositBonus.value;
+      }
+    } else if (!showDepositBonusCode.value && !selectedDepositBonus.value && !bonusDeclinedManually.value) {
       selectedDepositBonus.value = bonusesList.value.find(bonus => !isBonusDisabled(bonus));
       bonusDeclined.value = !selectedDepositBonus.value;
     }

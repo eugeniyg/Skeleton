@@ -118,15 +118,16 @@
     display: flex;
     grid-column-gap: rem(2px);
     align-items: center;
+    cursor: pointer;
 
     .icon {
-      --color: var(--red-500);
+      color: var(--color, var(--icon-primary));
       --icon-size: 14px;
     }
 
     &-title {
       @include font($body-0);
-      color: var(--color, var(--red-200));
+      color: var(--color, var(--text-secondary));
       --line-height: auto;
     }
 
@@ -139,11 +140,18 @@
     @include use-hover {
       &:hover {
         cursor: pointer;
+        --color: var(--text-accent);
+
+        .icon {
+          --color: var(--icon-accent);
+        }
       }
     }
   }
 
   &--disabled {
+    cursor: default;
+
     &:before,
     &:after {
       display: none !important;
@@ -155,6 +163,20 @@
 
     .input-bonus-radio {
       pointer-events: none;
+    }
+
+    .wallet-bonus__min {
+      .icon {
+        color: var(--red-500);
+      }
+
+      &-title {
+        color: var(--red-200);
+      }
+
+      &-value {
+        color: var(--text-primary);
+      }
     }
   }
 }

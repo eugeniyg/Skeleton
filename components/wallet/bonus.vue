@@ -11,7 +11,7 @@
       <div
         v-if="props.bonusInfo.minDeposit || props.bonusInfo.maxDeposit"
         class="wallet-bonus__min"
-        @click="openBonusDetails"
+        @click.stop="openBonusDetails"
       >
         <atomic-icon id="info" />
 
@@ -27,7 +27,7 @@
       <div
         v-else
         class="wallet-bonus__more"
-        @click="openBonusDetails"
+        @click.stop="openBonusDetails"
       >
         <div class="wallet-bonus__more-title">
           {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.moreInfo') }}

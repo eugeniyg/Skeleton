@@ -38,9 +38,6 @@
         <atomic-divider />
         <wallet-bonuses crypto />
       </template>
-
-      <atomic-divider />
-      <bonus-deposit-code/>
     </div>
   </form>
 </template>
@@ -64,7 +61,13 @@
   const { activeAccount } = storeToRefs(walletStore);
 
   const bonusStore = useBonusStore();
-  const { depositBonuses, selectedDepositBonus, bonusDeclined } = storeToRefs(bonusStore);
+  const {
+    depositBonuses,
+    selectedDepositBonus,
+    bonusDeclined,
+    showDepositBonusCode,
+    depositBonusCode
+  } = storeToRefs(bonusStore);
 
   const {
     popupsData,
@@ -154,11 +157,11 @@
     await sendDepositData();
   }, 1000, { leading: false });
 
-  watch(() => selectedDepositBonus.value, (newValue: IBonus|undefined) => {
+  watch(selectedDepositBonus, (newValue: IBonus|undefined) => {
     debounceDeposit(newValue);
   });
 
-  watch(() => bonusDeclined.value, (newValue: boolean) => {
+  watch(bonusDeclined, (newValue: boolean) => {
     if (newValue) debounceDeposit(undefined);
   });
 
