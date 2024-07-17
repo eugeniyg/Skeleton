@@ -50,6 +50,7 @@ interface ILayoutStoreState extends Record<string, any>{
   returnGame: Maybe<string|IGame>;
   walletModalType: WalletModalTypes;
   successModalType: 'deposit'|'deposit-pending';
+  walletOpening: boolean;
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -91,7 +92,8 @@ export const useLayoutStore = defineStore('layoutStore', {
     lastNotificationTime: 0,
     returnGame: undefined,
     walletModalType: undefined,
-    successModalType: 'deposit'
+    successModalType: 'deposit',
+    walletOpening: false
   }),
 
   actions: {
@@ -235,13 +237,17 @@ export const useLayoutStore = defineStore('layoutStore', {
     },
 
     async openWalletModal(modalType?: WalletModalTypes): Promise<void> {
+      if (this.walletOpening) return;
+
+      this.walletOpening = true;
       const dayjs = useDayjs();
       const startModalLoad: Dayjs = dayjs();
 
       this.walletModalType = modalType;
-      const { getDepositMethods, getWithdrawMethods, activeAccount } = useWalletStore();
+      const { getDepositMethods, getWithdrawMethods, activeAccount, accountSwitching } = useWalletStore();
       const { getDepositBonuses } = useBonusStore();
       const riskStore = useRiskStore();
+      await accountSwitching;
       await Promise.allSettled([
         getDepositMethods(),
         getWithdrawMethods(),
@@ -250,7 +256,10 @@ export const useLayoutStore = defineStore('layoutStore', {
       ]);
 
       const { isLoggedIn } = useProfileStore();
-      if (!isLoggedIn) return;
+      if (!isLoggedIn) {
+        this.walletOpening = false;
+        return;
+      }
 
       const runtimeConfig = useRuntimeConfig();
       const showTurnOverWagerModal = runtimeConfig.public.enableTurnOverWager
@@ -259,6 +268,7 @@ export const useLayoutStore = defineStore('layoutStore', {
 
       if (showTurnOverWagerModal) {
         this.showModal('turnOverWager');
+        this.walletOpening = false;
         return;
       }
 
@@ -267,6 +277,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         event: 'walletOpen',
         loadTime: dayjs().diff(startModalLoad)
       });
+      this.walletOpening = false;
     },
 
     setReturnGame(gameData: Maybe<IGame|string>): void {
