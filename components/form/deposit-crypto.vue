@@ -34,10 +34,8 @@
         :value="walletNumber"
       />
 
-      <template v-if="depositBonuses?.length">
-        <atomic-divider />
-        <wallet-bonuses crypto />
-      </template>
+      <atomic-divider />
+      <wallet-bonuses crypto />
     </div>
   </form>
 </template>
@@ -129,7 +127,7 @@
   const { depositAccount } = useCoreWalletApi();
   const sendDepositData = async ():Promise<void> => {
     state.params.bonusId = selectedDepositBonus.value?.id;
-    state.params.isBonusDecline = bonusDeclined.value;
+    state.params.isBonusDecline = showDepositBonusCode.value && !depositBonusCode.value ? true : bonusDeclined.value;
 
     try {
       const depositResponse = await depositAccount(state.params);
@@ -153,7 +151,11 @@
   }
 
   const debounceDeposit = debounce(async (newBonusValue: IBonus|undefined): Promise<void> => {
-    if ((newBonusValue?.id === state.params.bonusId) && (bonusDeclined.value === state.params.isBonusDecline)) return;
+    if (
+      (newBonusValue?.id === state.params.bonusId)
+      && (bonusDeclined.value === state.params.isBonusDecline)
+      && (!showDepositBonusCode.value)
+    ) return;
     await sendDepositData();
   }, 1000, { leading: false });
 
@@ -161,7 +163,15 @@
     debounceDeposit(newValue);
   });
 
-  watch(bonusDeclined, (newValue: boolean) => {
+  watch(bonusDeclined, (newValue) => {
+    if (newValue) debounceDeposit(undefined);
+  });
+
+  watch(showDepositBonusCode, (newValue) => {
+    if (newValue) debounceDeposit(undefined);
+  });
+
+  watch(depositBonusCode, (newValue) => {
     if (newValue) debounceDeposit(undefined);
   });
 

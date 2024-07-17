@@ -39,11 +39,8 @@
       :isDisabled="field.key === 'agentNumber'"
     />
 
-    <template v-if="depositBonuses?.length">
-      <atomic-divider />
-      <wallet-bonuses :amount="amountValue" />
-    </template>
-
+    <atomic-divider />
+    <wallet-bonuses :amount="amountValue" />
     <atomic-divider />
 
     <div class="form-deposit__button-holder">
