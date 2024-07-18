@@ -25,7 +25,7 @@
 
           <button-base
             type="primary"
-            size="lg"
+            size="md"
             :url="loyaltyContent?.banner?.loyaltyActionButton?.url"
             :targetBlank="loyaltyContent?.banner?.loyaltyActionButton?.targetBlank"
             @click="clickAction(loyaltyContent?.banner?.loyaltyActionButton?.url)"
@@ -37,7 +37,7 @@
         <button-base
           v-else
           type="primary"
-          size="lg"
+          size="md"
           @click="showModal('signIn')"
         >
           <atomic-icon v-if="loginButtonContent.icon" :id="loginButtonContent.icon" />
