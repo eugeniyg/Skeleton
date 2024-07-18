@@ -1,6 +1,6 @@
 .loyalty-how-it-works {
   max-width: 1280px;
-  margin: 24px auto 0 auto;
+  margin: 0 auto;
 
   &__title {
     @include font($heading-6);
@@ -54,6 +54,7 @@
     flex-direction: column;
     margin: 0;
     padding: 0;
+    width: 100%;
 
     &-item {
       display: flex;
