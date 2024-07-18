@@ -10,17 +10,19 @@
         <div class="tb-profile__email" v-else-if="field.name === 'email'">
           <span class="tb-profile__email-value">{{ profile?.[field.name] || '-' }}</span>
 
-          <atomic-icon v-if="profile?.confirmedAt" class="is-success" id="done"/>
-          <atomic-icon v-else class="is-warning" id="warning"/>
+          <template v-if="profile?.email">
+            <atomic-icon v-if="profile?.confirmedAt" class="is-success" id="done"/>
+            <atomic-icon v-else class="is-warning" id="warning"/>
 
-          <span
-            v-if="!profile?.confirmedAt"
-            class="btn-primary size-xs"
-            @click.once="profileStore.resendVerifyEmail"
-            :class="{ disabled: resentVerifyEmail }"
-          >
-            {{ infoContent?.sendButton || defaultLocaleInfoContent?.sendButton }}
-          </span>
+            <span
+              v-if="!profile?.confirmedAt"
+              class="btn-primary size-xs"
+              @click.once="profileStore.resendVerifyEmail"
+              :class="{ disabled: resentVerifyEmail }"
+            >
+              {{ infoContent?.sendButton || defaultLocaleInfoContent?.sendButton }}
+            </span>
+          </template>
         </div>
         <template v-else>{{ profile?.[field.name] || '-' }}</template>
       </div>

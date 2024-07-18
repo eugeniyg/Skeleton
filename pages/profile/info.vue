@@ -59,8 +59,8 @@
                 @click.once="profileStore.resendVerifyEmail"
                 :class="{ disabled: resentVerifyEmail }"
               >
-              {{ content?.currentLocaleData?.sendButton || content?.defaultLocaleData?.sendButton }}
-            </span>
+                {{ content?.currentLocaleData?.sendButton || content?.defaultLocaleData?.sendButton }}
+              </span>
             </div>
           </div>
         </template>
