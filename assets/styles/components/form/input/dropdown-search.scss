@@ -223,12 +223,12 @@
 
   &.is-open {
     z-index: 2;
+    --items-visibility: visible;
 
     .selected {
       --border-color: var(--border-click);
       --color: var(--text-primary);
       --bg: var(--field-00-click);
-      --items-visibility: visible;
 
       .mask {
         opacity: .5;
