@@ -50,10 +50,11 @@
   background: linear-gradient(90deg, #1C212B 0%, rgba(28, 33, 43, 0.00) 100%), #045618;
 
   @media (orientation: landscape) and (max-width: 1023px) {
+    margin-left: auto;
+
     .app-header-root:has([class*="is-game-page"]) & {
       width: calc(100% - 64px);
     }
-    margin-left: auto;
   }
 }
 

@@ -26,7 +26,8 @@ export default defineNuxtConfig({
     'dayjs-nuxt',
     'nuxt-lazy-load',
     '@skeleton/modules/optimize-images',
-    '@nuxtjs/fontaine'
+    '@nuxtjs/fontaine',
+    "@nuxt/eslint"
   ],
   dayjs: {
     locales: ['en-ca', 'de', 'fr', 'es', 'pt', 'pt-br', 'ru', 'tr', 'hi', 'fa', 'uz', 'kk', 'es-mx', 'it', 'et', 'fi',
@@ -112,7 +113,7 @@ export default defineNuxtConfig({
     },
     devProxy: {
       '/api': {
-        target: 'https://test.dev.getplatform.tech/api',
+        target: 'https://qa3.dev.getplatform.tech/api',
         changeOrigin: true,
       },
     },

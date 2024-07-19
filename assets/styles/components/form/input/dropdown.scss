@@ -115,7 +115,6 @@
     white-space: nowrap;
     min-height: 40px;
     border-radius: 8px;
-
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: auto 1fr;
@@ -158,6 +157,7 @@
 
   &.is-open {
     z-index: 2;
+    --items-visibility: visible;
 
     .selected {
       --border-color: var(--border-click);
@@ -165,8 +165,6 @@
       --bg: var(--field-00-click);
       --icon-transform: rotate(180deg);
     }
-
-    --items-visibility: visible;
   }
 
   &.has-error {
@@ -181,6 +179,7 @@
 
   &.is-disabled {
     pointer-events: none;
+    --icon-color: var(--icon-secondary);
 
     .selected {
       --border-color: var(--field-00);
@@ -192,8 +191,6 @@
     .placeholder {
       --color: var(--text-helper);
     }
-
-    --icon-color: var(--icon-secondary);
   }
 
   &.size-xs {

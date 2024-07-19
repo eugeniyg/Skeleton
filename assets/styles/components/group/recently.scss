@@ -16,14 +16,14 @@
   }
 
   @include media(sm) {
+    grid-template-areas:
+    "icon heading btn-show-all arrows"
+    "items items items items";
+
     > .icon, > .title {
       display: block;
       @include upd-font($heading-2);
     }
-
-    grid-template-areas:
-    "icon heading btn-show-all arrows"
-    "items items items items";
   }
 
   > [data-icon] {

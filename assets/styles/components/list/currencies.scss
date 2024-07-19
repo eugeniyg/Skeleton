@@ -52,9 +52,9 @@
     display: grid;
     max-height: calc(calc(calc(#{rem(32px)} + #{rem(4px)}) * 6) - #{rem(4px)});
     overflow-y: scroll;
-    @include scrollbar;
     margin-right: -6px;
     grid-row-gap: 4px;
+    @include scrollbar;
   }
 
   .item {

@@ -3,15 +3,15 @@
 }
 
 .nav-cat-scroll {
-  @extend %scrollbar-hide;
   overflow: auto;
   margin-right: var(--margin-right, #{rem(-16px)});
   margin-left: var(--margin-left, #{rem(-16px)});
   position: relative;
   z-index: 2;
-
   -ms-overflow-style: none;
   scrollbar-width: none;
+  @extend %scrollbar-hide;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -198,6 +198,14 @@
   }
 
   &.is-open {
+    --border-color: var(--border-click);
+    --bg: var(--field-00-click);
+    --color: var(--text-primary);
+
+    > .icon {
+      --color: var(--icon-primary);
+    }
+
     .icon-expand {
       --icon-transform: rotate(-180deg);
     }
@@ -205,14 +213,6 @@
     .nav-cat-select-items {
       display: grid;
     }
-
-    > .icon {
-      --color: var(--icon-primary);
-    }
-
-    --border-color: var(--border-click);
-    --bg: var(--field-00-click);
-    --color: var(--text-primary);
   }
 
   @include use-hover {
