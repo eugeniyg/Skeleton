@@ -1,6 +1,6 @@
 <template>
   <div :class="layoutClasses">
-    <atomic-preloader/>
+<!--    <atomic-preloader/>-->
 
     <!--    <layout-header-->
     <!--      @logout="logout"-->
