@@ -9,7 +9,8 @@
     <div
       v-if="homeContent?.categories || defaultLocaleHomeContent?.categories"
       class="card-category__container"
-      :class="cardsModifier">
+      :class="cardsModifier"
+    >
       <card-category
         v-for="(item, itemIndex) in (homeContent?.categories || defaultLocaleHomeContent?.categories)"
         :key="itemIndex"
@@ -18,7 +19,7 @@
       />
     </div>
 
-      <!--<group-benefits/>-->
+    <!--<group-benefits/>-->
     
     <group-aero
       v-if="homeContent?.aeroGroup?.display && aeroCategory"
@@ -100,12 +101,12 @@
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'pages', 'home').findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'home').findOne()
+      : queryContent(defaultLocale.value?.code as string, 'pages', 'home').findOne()
     ]);
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
 
-  const { pending, data } = await useLazyAsyncData('homePageContent', () => getPageContent());
+  const { data } = await useLazyAsyncData('homePageContent', () => getPageContent());
   if (data.value) setContentData(data.value);
 
   watch(data, () => {
