@@ -21,42 +21,42 @@
 
     <!--<group-benefits/>-->
     
-    <group-aero
-      v-if="homeContent?.aeroGroup?.display && aeroCategory"
-      showAllBtn
-      showArrows
-      :category="aeroCategory"
-      :currentLocaleContent="homeContent?.aeroGroup"
-      :defaultLocaleContent="defaultLocaleHomeContent?.aeroGroup"
-    />
+    <!--    <group-aero-->
+    <!--      v-if="homeContent?.aeroGroup?.display && aeroCategory"-->
+    <!--      showAllBtn-->
+    <!--      showArrows-->
+    <!--      :category="aeroCategory"-->
+    <!--      :currentLocaleContent="homeContent?.aeroGroup"-->
+    <!--      :defaultLocaleContent="defaultLocaleHomeContent?.aeroGroup"-->
+    <!--    />-->
 
-    <group-games
-      v-if="topSlotsCategory"
-      showAllBtn
-      showArrows
-      :category="topSlotsCategory"
-    />
+    <!--    <group-games-->
+    <!--      v-if="topSlotsCategory"-->
+    <!--      showAllBtn-->
+    <!--      showArrows-->
+    <!--      :category="topSlotsCategory"-->
+    <!--    />-->
 
-    <group-games
-      v-if="liveCasinoCategory"
-      showAllBtn
-      showArrows
-      :category="liveCasinoCategory"
-    />
+    <!--    <group-games-->
+    <!--      v-if="liveCasinoCategory"-->
+    <!--      showAllBtn-->
+    <!--      showArrows-->
+    <!--      :category="liveCasinoCategory"-->
+    <!--    />-->
 
-    <div
-      v-if="hasBetsyIntegration"
-      ref="sportsContainer"
-      class="sports-container"
-      @inview="startBetsyWidgets"
-    >
-      <div id="top-events-widget" />
-      <div id="live-events-widget" />
-    </div>
+    <!--    <div-->
+    <!--      v-if="hasBetsyIntegration"-->
+    <!--      ref="sportsContainer"-->
+    <!--      class="sports-container"-->
+    <!--      @inview="startBetsyWidgets"-->
+    <!--    >-->
+    <!--      <div id="top-events-widget" />-->
+    <!--      <div id="live-events-widget" />-->
+    <!--    </div>-->
 
-    <group-providers showArrows />
+    <!--    <group-providers showArrows />-->
 
-    <group-promotions />
+    <!--    <group-promotions />-->
 
     <atomic-seo-text v-if="homeContent?.pageMeta?.seoText" v-bind="homeContent.pageMeta.seoText"/>
   </div>
