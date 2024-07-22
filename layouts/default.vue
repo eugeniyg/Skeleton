@@ -2,13 +2,13 @@
   <div :class="layoutClasses">
     <atomic-preloader/>
 
-    <layout-header
-      @logout="logout"
-    />
+    <!--    <layout-header-->
+    <!--      @logout="logout"-->
+    <!--    />-->
 
-    <layout-drawer
-      @toggle-open="toggleOpen"
-    />
+    <!--    <layout-drawer-->
+    <!--      @toggle-open="toggleOpen"-->
+    <!--    />-->
 
     <main
       class="app-main"
@@ -39,33 +39,33 @@
       <layout-cookies v-if="showCookiesMessage" />
     </transition>
 
-    <modal-register />
-    <modal-register-cancel />
-    <modal-sign-in />
-    <modal-forgot-pass />
-    <modal-reset-pass />
-    <modal-success />
-    <modal-error />
-    <modal-confirm />
-    <modal-fiat />
-    <modal-mobile-game />
-    <modal-wallet />
-    <!--    <modal-wallet-choose-region />-->
-    <modal-cancel-deposit />
-    <modal-wallet-bonus-details />
-    <modal-turn-over-wager v-if="turnOverWagerModal" />
-    <atomic-alert />
+    <!--    <modal-register />-->
+    <!--    <modal-register-cancel />-->
+    <!--    <modal-sign-in />-->
+    <!--    <modal-forgot-pass />-->
+    <!--    <modal-reset-pass />-->
+    <!--    <modal-success />-->
+    <!--    <modal-error />-->
+    <!--    <modal-confirm />-->
+    <!--    <modal-fiat />-->
+    <!--    <modal-mobile-game />-->
+    <!--    <modal-wallet />-->
+    <!--    &lt;!&ndash;    <modal-wallet-choose-region />&ndash;&gt;-->
+    <!--    <modal-cancel-deposit />-->
+    <!--    <modal-wallet-bonus-details />-->
+    <!--    <modal-turn-over-wager v-if="turnOverWagerModal" />-->
+    <!--    <atomic-alert />-->
 
-    <template v-if="questsEnabled">
-      <modal-quests-hub />
-      <modal-quest-rewards />
-      <modal-quest-tasks />
-    </template>
+    <!--    <template v-if="questsEnabled">-->
+    <!--      <modal-quests-hub />-->
+    <!--      <modal-quest-rewards />-->
+    <!--      <modal-quest-tasks />-->
+    <!--    </template>-->
 
-    <template v-if="loyaltyEnabled">
-      <modal-loyalty-level />
-      <modal-loyalty-earn />
-    </template>
+    <!--    <template v-if="loyaltyEnabled">-->
+    <!--      <modal-loyalty-level />-->
+    <!--      <modal-loyalty-earn />-->
+    <!--    </template>-->
   </div>
 </template>
 

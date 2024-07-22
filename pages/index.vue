@@ -175,8 +175,8 @@
   }
 
   onMounted(async () => {
-    await getCollectionsList();
-    initBetsy();
+    // await getCollectionsList();
+    //initBetsy();
   })
 
   onBeforeUnmount(() => {

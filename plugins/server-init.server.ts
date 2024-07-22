@@ -24,5 +24,5 @@ export default defineNuxtPlugin(async ():Promise<any> => {
   ]);
 
   setCurrentLocale();
-  await getGlobalContent();
+  //await getGlobalContent();
 });
