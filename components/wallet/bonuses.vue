@@ -48,7 +48,7 @@
     amount?: string;
   }>();
 
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { popupsData, defaultLocalePopupsData, settingsConstants } = useGlobalStore();
   const { getContent, formatBalance, getEquivalentFromBase } = useProjectMethods();
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
@@ -159,8 +159,7 @@
     depositCode.value.$el.scrollIntoView({ behavior: 'smooth' });
   }
 
-  const runtimeConfig = useRuntimeConfig();
-  const configDeclineBonuses = runtimeConfig.public?.declineDepositBonuses;
+  const configDeclineBonuses = settingsConstants?.game?.bonus?.depositBonusDeclineDefault;
   if (depositBonusCode.value) {
     selectedDepositBonus.value = undefined;
     bonusDeclined.value = false;
