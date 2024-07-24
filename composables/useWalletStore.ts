@@ -188,16 +188,6 @@ export const useWalletStore = defineStore('walletStore', {
           invoiceId: webSocketResponse.data?.invoice?.id,
           walletType: eventCurrencyObject?.type
         });
-
-        if (invoiceSuccess && webSocketResponse.data?.invoice?.number === 1) {
-          useEvent('analyticsEvent', {
-            event: 'walletFirstDepositSuccess',
-            depositAmount: eventAmount,
-            depositCurrency: eventCurrency,
-            invoiceId: webSocketResponse.data?.invoice?.id,
-            walletType: eventCurrencyObject?.type
-          });
-        }
       } else if (webSocketResponse.data?.event === 'invoice.withdrawal.updated') {
         const cmsMessage = invoiceSuccess
             ? getContent(alertsData, defaultLocaleAlertsData, 'wallet.withdrawSuccess.description')
