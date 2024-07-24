@@ -33,16 +33,15 @@
     align-items: center;
     gap: rem(4px);
     flex-grow: 1;
-
-    &:last-of-type {
-      order: 2;
-    }
-
     --padding: #{rem(4px)} #{rem(12px)} #{rem(4px)} #{rem(8px)};
     --btn-border-radius: 8px;
     --bg: transparent;
     --color: var(--icon-primary);
     --text-color: var(--text-secondary);
+
+    &:last-of-type {
+      order: 2;
+    }
 
     @include use-hover {
       &:hover {
@@ -73,7 +72,6 @@
       border-radius: 8px;
       width: fit-content;
       align-items: center;
-
       --padding: #{rem(4px)};
       --margin: 0;
 

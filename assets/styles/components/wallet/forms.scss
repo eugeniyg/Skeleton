@@ -11,13 +11,13 @@
   flex-direction: column;
 
   @include media(sm) {
-    @include scrollbar;
     width: rem(400px);
     padding: rem(24px) rem(24px) rem(16px) rem(32px);
     border-top: rem(16px) solid var(--layer-01);
     border-right: rem(8px) solid var(--layer-01);
     border-bottom: rem(16px) solid var(--layer-01);
     overflow-y: scroll;
+    @include scrollbar;
 
     &::-webkit-scrollbar {
       display: block;

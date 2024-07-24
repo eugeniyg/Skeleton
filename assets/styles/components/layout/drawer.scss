@@ -1,7 +1,6 @@
 .drawer {
   background-color: var(--layer-02);
   grid-area: drawer;
-
   width: var(--drawer-width, 270px);
   position: var(--drawer-position, fixed);
   top: var(--drawer-top, 0);
@@ -41,7 +40,6 @@
   }
 
   .content {
-    @include scrollbar-hide;
     position: relative;
     z-index: 0;
     padding: var(--drawer-content-padding, (#{rem(16px)} #{rem(16px)} #{rem(40px)} #{rem(16px)}));
@@ -49,6 +47,7 @@
     overflow-x: hidden;
     overscroll-behavior: contain;
     height: calc(var(--vh, 1vh) * 100 - var(--header-total-height));
+    @include scrollbar-hide;
 
     @include media(l) {
       .drawer-minimize & {

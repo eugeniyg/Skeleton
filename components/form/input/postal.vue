@@ -5,8 +5,7 @@
     <client-only>
       <input
         inputmode="numeric"
-        v-maska
-        data-maska="#########"
+        v-maska="'#########'"
         class="field"
         type="text"
         name="postalCode"
@@ -23,8 +22,6 @@
 </template>
 
 <script setup lang="ts">
-  import { vMaska } from 'maska';
-
   const props = defineProps({
     label: {
       type: String,

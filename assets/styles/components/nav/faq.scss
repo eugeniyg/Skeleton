@@ -127,6 +127,7 @@
 
   &.is-open {
     z-index: 2;
+    --items-visibility: visible;
 
     .selected {
       --border-color: var(--border-click);
@@ -138,7 +139,5 @@
         --color: var(--icon-primary);
       }
     }
-
-    --items-visibility: visible;
   }
 }

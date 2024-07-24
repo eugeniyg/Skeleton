@@ -11,11 +11,11 @@
   }
 
   .img {
-    @include ratio(66px, 66px);
     border-radius: 8px;
     background-repeat: var(--bg-repeat, no-repeat);
     background-size: var(--bg-size, cover);
     background-position: var(--bg-position, top center);
+    @include ratio(66px, 66px);
   }
 
   .title {
