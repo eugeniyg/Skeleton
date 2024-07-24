@@ -17,8 +17,7 @@
     <client-only>
       <input
         inputmode="numeric"
-        v-maska
-        data-maska="############"
+        v-maska="'############'"
         class="field"
         type="text"
         name="phoneNumber"
@@ -37,7 +36,6 @@
 <script setup lang="ts">
   import parsePhoneNumber from 'libphonenumber-js';
   import { storeToRefs } from 'pinia';
-  import { vMaska } from 'maska';
   import type { IPhoneCode } from '@skeleton/types';
 
   const props = defineProps({

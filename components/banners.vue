@@ -33,6 +33,7 @@
       <div class="banners__bullets">
         <div
           v-for="(item, index) in props.items.length"
+          :key="index"
           class="banners__bullet"
           :class="{'is-active': index === activeIndex}"
           @click="scrollTo(index)"

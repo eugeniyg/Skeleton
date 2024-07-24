@@ -52,10 +52,10 @@
       display: flex;
       overflow-x: auto;
       position: relative;
-      @include scrollbar-hide;
       margin: 0 -16px;
       padding: 0 16px;
       scroll-padding: 16px;
+      @include scrollbar-hide;
 
       @include media(xs) {
         margin: 0 -32px;

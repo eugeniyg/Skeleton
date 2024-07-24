@@ -39,11 +39,11 @@
 
   .is-compact & {
     @include media(l) {
+      padding: 0;
+
       .item:not(:first-child) {
         display: none;
       }
-
-      padding: 0;
     }
   }
 }

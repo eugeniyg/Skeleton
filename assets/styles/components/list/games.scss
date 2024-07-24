@@ -25,14 +25,13 @@
 
   .is-compact & {
     @include media(l) {
+      --img-width: #{rem(40px)};
+      --img-height: #{rem(40px)};
+      padding: 0;
+
       .item:not(:first-child) {
         display: none;
       }
-
-      --img-width: #{rem(40px)};
-      --img-height: #{rem(40px)};
-
-      padding: 0;
     }
   }
 }

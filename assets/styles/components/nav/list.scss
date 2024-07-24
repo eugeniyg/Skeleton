@@ -94,6 +94,7 @@
       &:hover {
         cursor: pointer;
         --bg: var(--side-bar-link-hover);
+        --counter-color: var(--text-secondary);
 
         .icon {
           --color: var(--icon-contrast);
@@ -114,14 +115,12 @@
             --color: var(--button-icn-ghost-hover);
           }
         }
-
-        --counter-color: var(--text-secondary);
-
       }
     }
 
     &:active, &.is-active {
       --color: var(--text-accent);
+      --counter-color: var(--text-secondary);
 
       .icon {
         --color: var(--icon-accent);
@@ -134,8 +133,6 @@
       .text {
         --color: var(--text-accent);
       }
-
-      --counter-color: var(--text-secondary);
     }
 
     &:active {

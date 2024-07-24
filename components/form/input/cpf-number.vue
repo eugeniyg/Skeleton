@@ -8,21 +8,21 @@
       <div class="mask-group">
         <input
           inputmode="numeric"
-          v-maska="bindedObject"
+          v-maska:unmaskedValue.unmasked
           data-maska="###.###.###-##"
           data-maska-eager
           class="field"
           type="text"
           name="cpfNumber"
-          v-model="inputValue"
+          v-model="maskedValue"
           :placeholder="props.placeholder || ''"
           @focus="onFocus"
           @blur="onBlur"
           @input="onInput"
         />
 
-        <div v-show="bindedObject.masked || focused" class="mask-group__fake">
-          <span class="mask-group__fake-hidden">{{ bindedObject.masked }}</span>
+        <div v-show="maskedValue || focused" class="mask-group__fake">
+          <span class="mask-group__fake-hidden">{{ maskedValue }}</span>
           <span class="mask-group__fake-visible">{{ visibleValue }}</span>
         </div>
       </div>
@@ -33,9 +33,6 @@
 </template>
 
 <script setup lang="ts">
-  import { vMaska } from 'maska';
-  import type { MaskaDetail } from 'maska';
-
   const props = defineProps<{
     label?: string;
     value?: string;
@@ -45,18 +42,16 @@
     hint?: any;
   }>();
 
-  const bindedObject = reactive<MaskaDetail>({
-    masked: '',
-    unmasked: '',
-    completed: false
-  });
-  const inputValue = ref<string>('');
-  if (props.value) inputValue.value = props.value || '';
+  const maskedValue = ref('');
+  const unmaskedValue = ref('');
+  defineExpose({ unmaskedValue });
+
+  if (props.value) maskedValue.value = props.value || '';
   const maskPlaceholder = '___.___.___-__';
   const focused = ref<boolean>(false);
 
   const visibleValue = computed(() => {
-    return maskPlaceholder.slice(bindedObject.masked.length, maskPlaceholder.length);
+    return maskPlaceholder.slice(maskedValue.value.length, maskPlaceholder.length);
   })
 
   const classes = computed(() => [
@@ -67,19 +62,19 @@
 
   const emit = defineEmits(['focus', 'input', 'update:value', 'blur']);
   const onFocus = ():void => {
-    emit('focus', bindedObject.unmasked);
+    emit('focus', unmaskedValue.value);
     focused.value = true;
   };
 
   const onInput = (event: any):void => {
     if (event.isTrusted) return;
 
-    emit('update:value', bindedObject.unmasked);
-    emit('input', bindedObject.unmasked);
+    emit('update:value', unmaskedValue.value);
+    emit('input', unmaskedValue.value);
   };
 
   const onBlur = ():void => {
-    emit('blur', bindedObject.unmasked);
+    emit('blur', unmaskedValue.value);
     focused.value = false;
   };
 </script>

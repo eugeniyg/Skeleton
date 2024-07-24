@@ -48,15 +48,15 @@
   }
 
   &.is-open {
+    --items-visibility: visible;
+    --items-opacity: 1;
+    --items-display: block;
+
     .selected {
       --bg: var(--field-00-click);
       --rotate: rotate(180deg);
       --selected-border-color: var(--border-click);
     }
-
-    --items-visibility: visible;
-    --items-opacity: 1;
-    --items-display: block;
   }
 
   .item {
