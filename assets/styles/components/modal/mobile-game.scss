@@ -89,9 +89,9 @@
   &__thumb {
     flex-shrink: 0;
     position: relative;
-    @include ratio(104px, 156px);
     width: 38%;
     margin-right: rem(16px);
+    @include ratio(104px, 156px);
 
 
     img {

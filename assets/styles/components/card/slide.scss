@@ -81,12 +81,12 @@
   }
 
   &__content {
+    color: var(--text-primary);
+    @include font($body-0);
+
     .main-slider--low & {
       display: none;
     }
-
-    @include font($body-0);
-    color: var(--text-primary);
 
     @include media(xs) {
       @include upd-font($body-1);

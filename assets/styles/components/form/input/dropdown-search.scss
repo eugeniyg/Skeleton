@@ -223,6 +223,7 @@
 
   &.is-open {
     z-index: 2;
+    --items-visibility: visible;
 
     .selected {
       --border-color: var(--border-click);
@@ -233,8 +234,6 @@
         opacity: .5;
       }
     }
-
-    --items-visibility: visible;
   }
 
   &.is-visible {
@@ -253,6 +252,7 @@
 
   &.is-disabled {
     pointer-events: none;
+    --icon-color: var(--icon-secondary);
 
     .selected {
       --border-color: var(--field-00);
@@ -264,8 +264,6 @@
     .placeholder {
       --color: var(--text-helper);
     }
-
-    --icon-color: var(--icon-secondary);
   }
 
   &.size-xs {

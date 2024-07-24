@@ -9,6 +9,7 @@ interface IWalletState {
   accountSubscription: any;
   invoicesSubscription: any;
   depositLimitError: boolean;
+  accountSwitching: Promise<any>|undefined;
 }
 
 export const useWalletStore = defineStore('walletStore', {
@@ -19,7 +20,8 @@ export const useWalletStore = defineStore('walletStore', {
     requestTimer: '',
     accountSubscription: undefined,
     invoicesSubscription: undefined,
-    depositLimitError: false
+    depositLimitError: false,
+    accountSwitching: undefined
   }),
 
   getters: {
@@ -76,7 +78,8 @@ export const useWalletStore = defineStore('walletStore', {
 
     async switchAccount(accountId: string):Promise<void> {
       const { switchActiveAccount } = useCoreWalletApi();
-      this.accounts = await switchActiveAccount(accountId);
+      this.accountSwitching = switchActiveAccount(accountId);
+      this.accounts = await this.accountSwitching;
       const runtimeConfig = useRuntimeConfig();
       if (runtimeConfig.public?.questsEnabled) {
         const { getPlayerActiveQuests } = useQuestsStore();
@@ -185,16 +188,6 @@ export const useWalletStore = defineStore('walletStore', {
           invoiceId: webSocketResponse.data?.invoice?.id,
           walletType: eventCurrencyObject?.type
         });
-
-        if (invoiceSuccess && webSocketResponse.data?.invoice?.number === 1) {
-          useEvent('analyticsEvent', {
-            event: 'walletFirstDepositSuccess',
-            depositAmount: eventAmount,
-            depositCurrency: eventCurrency,
-            invoiceId: webSocketResponse.data?.invoice?.id,
-            walletType: eventCurrencyObject?.type
-          });
-        }
       } else if (webSocketResponse.data?.event === 'invoice.withdrawal.updated') {
         const cmsMessage = invoiceSuccess
             ? getContent(alertsData, defaultLocaleAlertsData, 'wallet.withdrawSuccess.description')

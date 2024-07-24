@@ -59,6 +59,8 @@
   &__expand-icon {
     transform: var(--icon-rotate, rotate(-180deg));
     transition: transform .2s ease-in-out;
+    --color: var(--icon-color, var(--gray-400));
+    --icon-size: 20px;
 
     .is-disabled & {
       --icon-color: var(--gary-600);
@@ -67,9 +69,6 @@
     .is-open & {
       --icon-rotate: rotate(0);
     }
-
-    --color: var(--icon-color, var(--gray-400));
-    --icon-size: 20px;
   }
 
   &__tabs {

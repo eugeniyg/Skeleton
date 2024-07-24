@@ -1,23 +1,25 @@
 <template>
   <label :class="classes">
-    <span v-if="props.label" class="label">{{ props.label }}<span class="required" v-if="props.isRequired">*</span></span>
+    <span v-if="props.label" class="label">
+      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
+    </span>
+
     <div class="row">
       <input
         class="field"
         :type="props.type"
         :name="props.name"
         :value="props.value"
-        :readonly="props.isDisabled"
+        :disabled="props.isDisabled"
         :required="props.isRequired"
         :placeholder="props.placeholder"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
-        @keyup.enter="emit('submit', $event)"
       />
 
       <button-verify
-        :is-shown="!profile?.confirmedAt"
+        :is-shown="!!profile?.email && !profile?.confirmedAt"
         :class="{ disabled: resentVerifyEmail }"
         @click.once="profileStore.resendVerifyEmail"
       >
@@ -70,7 +72,7 @@
       default: 'Verify',
     },
   });
-  const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);
+  const emit = defineEmits(['blur', 'focus', 'input', 'update:value']);
 
   const profileStore = useProfileStore();
   const { resentVerifyEmail, profile } = storeToRefs(profileStore);

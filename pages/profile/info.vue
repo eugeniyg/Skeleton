@@ -48,7 +48,7 @@
               {{ userCountryName }}{{ profile?.city ? `, ${profile?.city}` : '' }}
             </div>
 
-            <div class="item" v-show="profile?.email">
+            <div class="item" v-show="hasEmailField && profile?.email">
               <atomic-icon v-if="profile?.confirmedAt" class="is-success" id="done"/>
               <atomic-icon v-else class="is-warning" id="warning"/>
               {{ profile?.email }}
@@ -59,8 +59,8 @@
                 @click.once="profileStore.resendVerifyEmail"
                 :class="{ disabled: resentVerifyEmail }"
               >
-              {{ content?.currentLocaleData?.sendButton || content?.defaultLocaleData?.sendButton }}
-            </span>
+                {{ content?.currentLocaleData?.sendButton || content?.defaultLocaleData?.sendButton }}
+              </span>
             </div>
           </div>
         </template>
@@ -180,6 +180,10 @@
     const receiveFields = profileFields.value.filter((field) => field.name === 'receiveSmsPromo' || field.name === 'receiveEmailPromo');
     return [...receiveFields, receiveBonusField];
   });
+
+  const hasEmailField = computed(() => {
+    return profileFields.value.some(field => field.name === 'email');
+  })
 
   const toggleProfileEdit = ():void => {
     window.scroll(0, 0);

@@ -129,26 +129,31 @@ export const useGtmAnalytics = () => {
 
   const walletDepositSuccess = (eventData: IAnalyticsEvent): void => {
     gtm?.trackEvent({
-      event: 'Action',
+      event: 'purchase',
       eventCategory: 'deposit',
       userId: profileStore.profile?.id,
       depositAmount: eventData.depositAmount || 0,
       depositCurrency: eventData.depositCurrency || 'not set',
-      invoiceId: eventData.invoiceId || 'not set',
       successDepositNumber: eventData.successDepositNumber || 0,
-      walletType: eventData.walletType || 'not set'
-    })
-  }
-
-  const walletFirstDepositSuccess = (eventData: IAnalyticsEvent): void => {
-    gtm?.trackEvent({
-      event: 'Action',
-      eventCategory: 'firstDeposit',
-      userId: profileStore.profile?.id,
-      depositAmount: eventData.depositAmount || 0,
-      depositCurrency: eventData.depositCurrency || 'not set',
       invoiceId: eventData.invoiceId || 'not set',
-      walletType: eventData.walletType || 'not set'
+      walletType: eventData.walletType || 'not set',
+      ecommerce: {
+        transaction_id: eventData.invoiceId || 'not set',
+        value: eventData.depositAmount || 0,
+        currency: eventData.depositCurrency || 'not set',
+        items: [
+          {
+            item_id: eventData.invoiceId || 'not set',
+            item_name: 'deposit',
+            affiliation: eventData.walletType || 'not set',
+            item_brand: '',
+            item_category: 'Financial Services',
+            item_category2: 'Deposits',
+            price: eventData.depositAmount || 0,
+            quantity: 1
+          }
+        ]
+      }
     })
   }
 
@@ -245,7 +250,6 @@ export const useGtmAnalytics = () => {
     walletChangeMethod,
     walletSubmitForm,
     walletDepositSuccess,
-    walletFirstDepositSuccess,
     walletWithdrawSuccess,
     walletDepositFail,
     walletWithdrawFail,

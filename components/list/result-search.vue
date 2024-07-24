@@ -53,7 +53,9 @@
 
   const { localizePath } = useProjectMethods();
   const clickGame = (gameData: IGame):void => {
-    if (!isLoggedIn.value) {
+    if (gameData.identity === 'betsy-sportsbook-betsy') {
+      router.push(localizePath('/betting'));
+    } else if (!isLoggedIn.value) {
       router.push(localizePath(`/games/${gameData.identity}${gameData.isDemoMode ? '' : '?real=true'}`));
     } else router.push(localizePath(`/games/${gameData.identity}?real=true`));
     emit('hideSearch');

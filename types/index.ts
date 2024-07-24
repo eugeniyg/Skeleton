@@ -30,7 +30,6 @@ const analyticsEventsArr = [
   'walletChangeMethod',
   'walletSubmitForm',
   'walletDepositSuccess',
-  'walletFirstDepositSuccess',
   'walletWithdrawSuccess',
   'walletDepositFail',
   'walletWithdrawFail',

@@ -12,8 +12,7 @@
         type="text"
         inputmode="decimal"
         maxlength="10"
-        v-maska
-        data-maska="T.T"
+        v-maska="'T.T'"
         data-maska-tokens="T:[0-9]:multiple"
         :name="name"
         :value="props.value"
@@ -30,8 +29,6 @@
 </template>
 
 <script setup lang="ts">
-  import { vMaska } from 'maska';
-
   const props = defineProps({
     name: {
       type: String,
