@@ -71,7 +71,9 @@
   const gameBages = gameTagsContent?.filter((bage) => labelNames?.includes(bage.identity));
 
   const openGame = (isReal: boolean): void => {
-    if (!isReal) {
+    if (props.gameInfo?.identity === 'betsy-sportsbook-betsy') {
+      router.push(localizePath('/betting'));
+    } else if (!isReal) {
       router.push(localizePath(`/games/${props.gameInfo?.identity}`));
     } else if (!isLoggedIn.value) {
       showModal('register');
@@ -92,8 +94,13 @@
   const { isMobile } = storeToRefs(globalStore);
   const clickGame = (): void => {
     if (!props.gameInfo) return;
-    const { openGame } = useMobileGameLogic(props.gameInfo);
-    openGame();
+
+    if (props.gameInfo.identity === 'betsy-sportsbook-betsy') {
+      router.push(localizePath('/betting'));
+    } else {
+      const { openGame } = useMobileGameLogic(props.gameInfo);
+      openGame();
+    }
   };
 
   const cardBase = ref<HTMLElement>();

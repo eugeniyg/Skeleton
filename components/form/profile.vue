@@ -1,14 +1,17 @@
 <template>
-  <form class="form-profile">
+  <form ref="formRoot" class="form-profile">
     <div class="row">
       <loyalty-avatar size="lg" />
 
       <form-input-email-verify
+        v-if="hasEmailField"
         type="email"
         v-model:value="profileFormData.email"
-        isDisabled
+        @blur="v$.email?.$touch()"
+        @focus="focusField('email')"
+        :isDisabled="!!profile?.email"
         :verifyButton="infoContent?.verifyButton || defaultLocaleInfoContent?.verifyButton"
-        :hint="emailHint"
+        :hint="profile?.email ? emailHint : setError('email')"
         :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
         :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
         name="email"
@@ -78,6 +81,10 @@
   const { changeProfileData } = useCoreProfileApi();
   const globalStore = useGlobalStore();
 
+  const hasEmailField = computed(() => {
+    return profileFields.value.some((field) => field.name === 'email');
+  });
+
   const { selectOptions, profileFields } = storeToRefs(fieldsStore);
   const { fieldsSettings, defaultLocaleFieldsSettings } = storeToRefs(globalStore);
 
@@ -95,21 +102,25 @@
   const profileRules = createValidationRules(cleanFields, true);
   const profileFormRules = getFormRules(profileRules);
   const {
-    serverFormErrors, v$, onFocus, setError,
+    serverFormErrors, v$, onFocus, setError, scrollToValidationError
   } = useFormValidation(profileFormRules, profileFormData);
   const focused = ref<boolean>(false);
-  const sendDisabled = computed(() => v$.value.$invalid || !focused.value);
+  const sendDisabled = computed(() => v$.value.$invalid || Object.keys(serverFormErrors.value)?.length || !focused.value);
 
   const focusField = (fieldName:string):void => {
     focused.value = true;
     onFocus(fieldName);
   };
 
+  const formRoot = ref();
   const changePersonalData = async ():Promise<void> => {
     if (v$.value.$invalid) return;
     v$.value.$reset();
     const validFormData = await v$.value.$validate();
-    if (!validFormData) return;
+    if (!validFormData) {
+      scrollToValidationError(formRoot.value);
+      return;
+    }
 
     try {
       const submitResult = await changeProfileData(profileFormData);
@@ -119,6 +130,8 @@
     } catch (error:any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
+        await nextTick();
+        scrollToValidationError(formRoot.value);
       } else throw error;
     }
   };

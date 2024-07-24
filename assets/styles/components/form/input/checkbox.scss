@@ -76,12 +76,12 @@
 
   .checkbox[disabled] ~ .label {
     --shadow: 0 0 0 2px var(--field-00);
+    pointer-events: none;
 
     .icon {
       --bg: var(--field-00);
       --color: transparent;
     }
-    pointer-events: none;
   }
 
   .checkbox[disabled]:checked ~ .label {

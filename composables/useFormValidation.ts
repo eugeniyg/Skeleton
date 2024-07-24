@@ -6,7 +6,7 @@ export const useFormValidation = (formRules: any, formData: any) => {
 
   const onFocus = (fieldName:string):void => {
     if (serverFormErrors.value[fieldName]) {
-      serverFormErrors.value[fieldName] = undefined;
+      delete serverFormErrors.value[fieldName]
     }
   };
 
@@ -19,10 +19,18 @@ export const useFormValidation = (formRules: any, formData: any) => {
     return undefined;
   };
 
+  const scrollToValidationError = (container: HTMLElement): void => {
+    const errorElement = container.querySelector('.has-error');
+    if (errorElement) {
+      errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
   return {
     serverFormErrors,
     v$,
     onFocus,
     setError,
+    scrollToValidationError
   };
 };
