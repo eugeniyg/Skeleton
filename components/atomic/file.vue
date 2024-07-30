@@ -1,21 +1,28 @@
 <template>
   <div class="file">
-    <div class="file__progress">
+    <div class="file__progress" data-tooltip-parent>
       <div class="file__name">{{ props.fileName }}</div>
 
-      <atomic-icon v-if="fileStatus" :class="statusIconClasses" :id="statusIcon"/>
+      <atomic-tooltip
+        v-if="fileStatus"
+        :text="statusText[fileStatus]"
+        :icon="statusIcon"
+        :class="statusIconClasses"
+        :messageCustomClass="`status-${fileStatus}`"
+        size="small"
+      />
 
       <button v-if="fileStatus" class="file__rm-btn" @click.prevent="emit('remove')">
         <atomic-icon id="close"/>
       </button>
 
       <atomic-progress
-        @hide-progress="hideProgress"
         v-show="(!fileStatus || isShowProgress) && !props.error"
+        @hide-progress="hideProgress"
       />
 
       <transition name="fade" mode="out-in">
-        <div class="file__error" v-if="props.error || props.rejectReason">
+        <div v-if="props.error || props.rejectReason" class="file__error">
           {{ props.error || props.rejectReason}}
         </div>
       </transition>
@@ -38,9 +45,15 @@
 
   const statusIcons:{[index: string]: string} = {
     approve: 'done',
-    pending: 'eye-visibility',
+    pending: 'clock',
     canceled: 'warning',
   };
+
+  const statusText: Record<string, string> = {
+    approve: 'Approved',
+    pending: 'Pending',
+    canceled: 'Rejected',
+  }
 
   const emit = defineEmits(['remove']);
 

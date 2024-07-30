@@ -29,15 +29,15 @@
     align-items: center;
     justify-content: center;
 
-    &.status-pending {
+    &.status-pending .icon {
       --color: var(--icon-accent);
     }
 
-    &.status-approve {
+    &.status-approve .icon {
       --color: var(--icon-success);
     }
 
-    &.status-canceled {
+    &.status-canceled .icon {
       --color: var(--icon-alert);
     }
   }
@@ -47,7 +47,7 @@
     color: var(--name-color, var(--text-primary));
     transition: color .4s ease-in-out;
     flex-grow: 1;
-    max-width: calc(100% - 54px);
+    max-width: calc(100% - 65px);
     margin-right: auto;
     word-break: break-word;
 

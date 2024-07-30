@@ -23,10 +23,10 @@
 
       <form-input-file
         v-if="documentsContent || defaultLocaleDocumentsContent"
-        :placeholder="documentsContent?.documents?.uploadPlaceholder || defaultLocaleDocumentsContent?.documents?.uploadPlaceholder"
-        :hint="documentsContent?.documents?.uploadHint || defaultLocaleDocumentsContent?.documents?.uploadHint"
-        :uploadButton="documentsContent?.documents?.uploadButton || defaultLocaleDocumentsContent?.documents?.uploadButton"
-        :uploadMore="documentsContent?.documents?.uploadMore || defaultLocaleDocumentsContent?.documents?.uploadMore"
+        :placeholder="getContent(documentsContent, defaultLocaleDocumentsContent, 'uploadPlaceholder')"
+        :hint="getContent(documentsContent, defaultLocaleDocumentsContent, 'uploadHint')"
+        :uploadButton="getContent(documentsContent, defaultLocaleDocumentsContent, 'uploadButton')"
+        :uploadMore="getContent(documentsContent, defaultLocaleDocumentsContent, 'uploadMore')"
         :showMoreButton="!!props.fileList?.length"
         :loading="props.loading"
         @change="addFiles"
@@ -48,6 +48,7 @@
 
   const emit = defineEmits(['remove', 'change']);
 
+  const { getContent } = useProjectMethods();
   const isActive = ref(false);
   const documentsContent = ref<Maybe<IProfileDocuments>>(inject('documentsContent'));
   const defaultLocaleDocumentsContent = ref<Maybe<IProfileDocuments>>(inject('defaultLocaleDocumentsContent'));
@@ -57,6 +58,7 @@
     dropzone: true,
     'is-active': isActive.value,
     'is-error': errorFiles.value.length,
+    'has-docs': props.fileList.length
   }));
 
   const toggleActive = () => {
@@ -74,5 +76,5 @@
   };
 </script>
 
-<style src="~/assets/styles/components/dropzone.scss" lang="scss" />
+<style src="~/assets/styles/components/documents/dropzone.scss" lang="scss" />
 
