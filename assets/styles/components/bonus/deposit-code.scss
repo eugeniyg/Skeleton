@@ -44,9 +44,9 @@
 
   &__code {
     position: relative;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: center;
-    justify-content: space-between;
     z-index: 2;
     background: var(--field-02) !important;
     border-radius: 12px;
@@ -54,10 +54,10 @@
 
     .input-text {
       .field {
-        box-shadow: none !important;
         --bg: var(--field-02);
-        border: none !important;
         -webkit-text-fill-color: unset;
+        box-shadow: none !important;
+        border: none !important;
       }
 
       &.is-disabled {
@@ -68,11 +68,11 @@
     }
 
     .btn-secondary {
+      --padding: 7px 12px;
+      min-width: 79px;
       margin-right: 4px;
-      height: rem(32px) !important;
-      min-width: rem(96px);
       width: fit-content;
-      --padding: #{rem(10px)} #{rem(20px)};
+      border-radius: 8px;
       @include font($body-2);
     }
   }
