@@ -95,6 +95,16 @@ export interface ICoreConstants extends Record<string, any>{
     spin: {
       transactionType: IStatus[];
     };
+    bonus: {
+      triggerType: IStatus[];
+      type: IStatus[];
+      status: IStatus[];
+      wagerSportsbookTicketType: IStatus[];
+      wagerSportsbookStage: IStatus[];
+      payoutBalanceType: IStatus[];
+      wagerCategory: IStatus[];
+      depositBonusDeclineDefault: boolean;
+    },
     playerBonus: {
       status: IStatus[];
       result: IStatus[];
