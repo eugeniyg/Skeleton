@@ -60,6 +60,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { IHomePage } from '~/types';
+  import type { ICollection } from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();
   const {
@@ -116,7 +117,7 @@
   });
   
   const targetGameCollections = computed(() => {
-    return getContent(homeContent.value, defaultLocaleHomeContent.value, 'gameCollections')?.map((item:string) => item.identity) || []
+    return getContent(homeContent.value, defaultLocaleHomeContent.value, 'gameCollections')?.map((item:ICollection) => item.identity) || []
   });
   
   const gameCollectionsList = computed(() => gameCollections.value?.filter((collection) => targetGameCollections.value.includes(collection.identity)));
