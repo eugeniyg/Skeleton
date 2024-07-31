@@ -70,7 +70,7 @@
   };
 
   const addFileError = (field: string, fieldsErrors: any):void => {
-    const error = fieldsErrors[field]?.[0];
+    const error = fieldsErrors?.file?.[0];
     const lastElIndex = formData[field].length - 1;
     const lastEl = formData[field][lastElIndex];
     formData[field][lastElIndex] = { ...lastEl, error };
