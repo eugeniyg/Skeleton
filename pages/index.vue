@@ -116,7 +116,7 @@
   });
   
   const targetGameCollections = computed(() => {
-    return getContent(homeContent.value, defaultLocaleHomeContent.value, 'gameCollections.list')?.map((item:string) => item.identity) || []
+    return getContent(homeContent.value, defaultLocaleHomeContent.value, 'gameCollectionsList')?.map((item:string) => item.identity) || []
   });
   
   const gameCollectionsList = computed(() => gameCollections.value?.filter((collection) => targetGameCollections.value.includes(collection.identity)));
