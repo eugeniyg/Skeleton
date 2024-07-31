@@ -35,10 +35,6 @@
     transition: background-color .2s ease;
     flex-shrink: 0;
 
-    .spinner {
-      //margin-left: auto;
-    }
-
     .icon {
       --color: var(--icon-secondary);
 
@@ -69,10 +65,6 @@
 
     .icon {
       --color: var(--icon-contrast);
-    }
-
-    .spinner {
-      //margin-left: 0;
     }
   }
 }
