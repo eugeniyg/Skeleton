@@ -11,7 +11,7 @@
       <div
         v-if="props.bonusInfo.minDeposit || props.bonusInfo.maxDeposit"
         class="wallet-bonus__min"
-        @click="openBonusDetails"
+        @click.stop="openBonusDetails"
       >
         <atomic-icon id="info" />
 
@@ -27,7 +27,7 @@
       <div
         v-else
         class="wallet-bonus__more"
-        @click="openBonusDetails"
+        @click.stop="openBonusDetails"
       >
         <div class="wallet-bonus__more-title">
           {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.moreInfo') }}
@@ -35,9 +35,10 @@
 
         <atomic-icon id="info" />
       </div>
-
-      <form-input-checkbox
-        :name="`${props.bonusInfo.id}`"
+      
+      <form-input-bonus-radio
+        name="input-bonus-radio"
+        :id="props.bonusInfo.id"
         :value="props.selected"
         @change="emit('bonusChange', props.bonusInfo.id)"
       />
@@ -73,15 +74,10 @@
     3: 'freespin'
   }
 
-  const classes = computed(() => {
-    const bonusColorType = mappingBonusColor[props.bonusInfo.packageItems?.length ? 0 : props.bonusInfo.type];
-
-    return {
-      [`wallet-bonus--bg-${bonusColorType}`]: props.selected,
-      'is-selected': props.selected,
-      'wallet-bonus--disabled': props.disabled
-    }
-  })
+  const classes = computed(() => ({
+    'is-selected': props.selected,
+    'wallet-bonus--disabled': props.disabled
+  }))
 
   const bonusDepositContent = computed(() => {
     const minDepositData = props.bonusInfo.minDeposit;
