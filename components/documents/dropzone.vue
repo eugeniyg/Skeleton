@@ -17,7 +17,7 @@
           v-bind="file"
           :key="file.id"
           :error="file.error"
-          @remove="emit('remove', file.id)"
+          @remove="emit('remove', { id: file.id, status: file.status } )"
         />
       </div>
 

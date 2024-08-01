@@ -35,7 +35,7 @@
         :fileName="getContent(documentsContent, defaultLocaleDocumentsContent, `uploadDocumentName.${item}`) || item"
         :fileList="props.formData[item]"
         :loading="props.loadingFields.includes(item)"
-        @remove="emit('removeFile', { fieldName: item, fileId: $event })"
+        @remove="emit('removeFile', { name: item, ...$event })"
         @change="emit('addFiles', { fieldName: item, fileList: $event })"
       />
     </div>

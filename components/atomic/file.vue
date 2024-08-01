@@ -12,7 +12,7 @@
         size="small"
       />
 
-      <button v-if="fileStatus" class="file__rm-btn" @click.prevent="emit('remove')">
+      <button v-if="props.status" class="file__rm-btn" @click.prevent="emit('remove')">
         <atomic-icon id="close"/>
       </button>
 

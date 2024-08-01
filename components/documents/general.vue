@@ -60,10 +60,12 @@
     });
   }
 
-  const removeFile = async ({ fieldName, fileId }:{fieldName: string, fileId:string}):Promise<void> => {
+  const removeFile = async ({ name, id, status }:{ name: string, id: string, status: number }):Promise<void> => {
     try {
-      await deleteDocumentFile(fileId);
-      formData[fieldName] = formData[fieldName].filter((file) => file.id !== fileId);
+      if (status > 0) {
+        await deleteDocumentFile(id);
+      }
+      formData[name] = formData[name].filter((file) => file.id !== id);
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
@@ -73,7 +75,7 @@
     const error = fieldsErrors?.file?.[0];
     const lastElIndex = formData[field].length - 1;
     const lastEl = formData[field][lastElIndex];
-    formData[field][lastElIndex] = { ...lastEl, error };
+    formData[field][lastElIndex] = { ...lastEl, status: -1, error };
   };
 
   const addFiles = async (filesData: { fieldName: string, fileList: File[] }):Promise<void> => {
