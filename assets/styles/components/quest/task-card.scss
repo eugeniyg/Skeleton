@@ -102,10 +102,6 @@
     align-items: center;
     display: flex;
 
-    @include media(md) {
-      @include upd-font($heading-4);
-    }
-
     .is-bw-enabled & {
       --quest-task-title-color: var(--text-tertiary);
     }
