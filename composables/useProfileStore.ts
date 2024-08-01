@@ -89,7 +89,7 @@ export const useProfileStore = defineStore('profileStore', {
 
       const { deleteReturnGame } = useLayoutStore();
       deleteReturnGame();
-      },
+    },
 
     async getRefreshRequest (): Promise<string> {
       const { refreshToken } = useCoreAuthApi();
@@ -141,8 +141,8 @@ export const useProfileStore = defineStore('profileStore', {
       getPlayerCashback(activeAccount?.currency);
 
       const route = useRoute();
-      const routeName = route.name as string;
-      if (!routeName.includes('profile-bonuses')) {
+      const bonusesRoute = route.name === 'profile-bonuses' || route.name === 'locale-profile-bonuses';
+      if (!bonusesRoute) {
         getPlayerBonuses();
         getPlayerFreeSpins();
       }

@@ -12,7 +12,10 @@
 
     <main
       class="app-main"
-      :class="{'is-overflow': isHomePage, 'is-overflow-initial': isProfileLimitsPage }"
+      :class="{
+        'is-overflow': isHomePage,
+        'is-overflow-initial': isProfileLimitsPage
+      }"
       :data-route="route.name"
     >
       <slot />
@@ -105,8 +108,7 @@
     && route.path !== localizePath('/betting'));
 
   const isProfileLimitsPage = computed(() => {
-    const routeName = route.name as string;
-    return routeName.includes('profile-limits');
+    return route.name === 'profile-limits' || route.name === 'locale-profile-limits';
   });
 
   const timer = ref<any>();
