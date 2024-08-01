@@ -98,8 +98,8 @@
       if (err?.response?.status === 422) {
         addFileError(filesData.fieldName, err.data?.error?.fields);
       } else if (err?.response?.status === 413) {
-        addFileError(filesData.fieldName, { [filesData.fieldName]: ['File size to large!'] });
-      } else addFileError(filesData.fieldName, { [filesData.fieldName]: ['File upload error!'] });
+        addFileError(filesData.fieldName, { file: ['File size to large!'] });
+      } else addFileError(filesData.fieldName, { file: ['File upload error!'] });
     } finally {
       loadingFields.value = loadingFields.value.filter((field) => field !== filesData.fieldName);
     }
