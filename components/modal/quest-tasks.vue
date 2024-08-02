@@ -35,7 +35,13 @@
         </div>
 
         <div class="quest-tasks" :class="{ 'inactive': inactiveState }">
-          <div v-if="inactiveState" class="quest-tasks__count">{{ blockLabel }}</div>
+          <div
+            v-if="inactiveState"
+            class="quest-tasks__count"
+            :class="{ 'is-inactive': inactiveState }"
+          >
+            {{ blockLabel }}
+          </div>
 
           <div class="quest-tasks__items">
             <div class="quest-tasks__completed" v-if="completedTasks.length">
