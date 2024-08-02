@@ -125,7 +125,6 @@ export const useProfileStore = defineStore('profileStore', {
       const { getFavoriteGames, subscribeBetsSocket } = useGamesStore();
       const {
         getPlayerBonuses,
-        getDepositBonusCode,
         getPlayerFreeSpins,
         getPlayerCashback
       } = useBonusStore();
@@ -133,7 +132,6 @@ export const useProfileStore = defineStore('profileStore', {
       const { getPlayerLoyalty, subscribeLoyaltySocket } = useLoyaltyStore();
       const runtimeConfig = useRuntimeConfig();
       getFavoriteGames();
-      getDepositBonusCode();
       if (runtimeConfig.public?.questsEnabled) getPlayerActiveQuests();
       if (runtimeConfig.public?.loyaltyEnabled) getPlayerLoyalty();
 

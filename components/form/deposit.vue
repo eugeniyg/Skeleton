@@ -155,7 +155,7 @@
   const walletStore = useWalletStore();
   const layoutStore = useLayoutStore();
   const { successModalType } = storeToRefs(layoutStore);
-  const { showModal, showAlert } = layoutStore;
+  const { showModal, showAlert, closeModal } = layoutStore;
   const { activeAccount } = storeToRefs(walletStore);
 
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
@@ -252,6 +252,7 @@
 
       if (windowReference.value && depositResponse.type === 'form') {
         windowReference.value.location = paymentPageUrl;
+        closeModal('wallet');
       } else if (depositResponse.type === 'qr' && depositResponse.qr) {
         qrAddress.value = depositResponse.qr;
       } else if (depositResponse.type === 'iframe') {
