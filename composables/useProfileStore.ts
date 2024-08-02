@@ -92,18 +92,32 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async getRefreshRequest (): Promise<string> {
+      const storageRefreshStatus = localStorage.getItem('refreshSession');
+
+      if (storageRefreshStatus === 'loading') {
+        const { awaitRefreshParallel } = useProjectMethods();
+        const newToken = await awaitRefreshParallel();
+        if (newToken) {
+          this.setSessionToken(newToken);
+          return newToken;
+        } else {
+          this.removeSession();
+          return '';
+        }
+      }
+
+      localStorage.setItem('refreshSession', 'loading');
       const { refreshToken } = useCoreAuthApi();
 
       try {
         const data = await refreshToken();
         this.setSessionToken(data.accessToken);
+        localStorage.setItem('refreshSession', data.accessToken);
         return data.accessToken;
-      } catch (err:any) {
-        if ([403, 401].includes(err.response?.status)) {
-          this.removeSession();
-          return '';
-        }
-        throw err;
+      } catch {
+        this.removeSession();
+        localStorage.setItem('refreshSession', '');
+        return '';
       } finally {
         this.refreshPromise = null;
       }
