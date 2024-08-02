@@ -59,7 +59,11 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
+    }
 
+    @include media(md) {
+      width: 72px;
+      height: 72px;
     }
   }
 
@@ -97,10 +101,6 @@
     @include font($heading-3);
     align-items: center;
     display: flex;
-
-    @include media(md) {
-      @include upd-font($heading-4);
-    }
 
     .is-bw-enabled & {
       --quest-task-title-color: var(--text-tertiary);
