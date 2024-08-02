@@ -120,8 +120,10 @@
     return getContent(homeContent.value, defaultLocaleHomeContent.value, 'gameCollections')?.map((item:ICollection) => item.identity) || []
   });
   
-  const gameCollectionsList = computed(() => gameCollections.value?.filter((collection) => targetGameCollections.value.includes(collection.identity)));
-
+  const gameCollectionsList = computed(() => gameCollections.value?.filter((collection) => targetGameCollections.value.includes(collection.identity))?.sort((a, b) => {
+    return targetGameCollections.value?.indexOf(a.identity) - targetGameCollections.value?.indexOf(b.identity);
+  }));
+  
   const cardsModifier = computed(() => {
     const length = Object.keys(getContent(homeContent.value, defaultLocaleHomeContent.value, 'categories'))?.length || 0
     return length  ? `has-${length}-cards` : ''
