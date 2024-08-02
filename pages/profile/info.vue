@@ -83,6 +83,7 @@
         :key="field.name"
         :name="field.name"
         :value="profile?.[field.name]"
+        :loading="subscriptionLoading.includes(field.name)"
         @change="changeSubscription(field.name)"
       >
         {{ getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) }}
@@ -190,9 +191,18 @@
     router.push({ query: { ...route.query, edit: isProfileEdit.value ? undefined : 'true' } });
   };
 
+  const subscriptionLoading = ref<string[]>([]);
   const changeSubscription = async (fieldName:string):Promise<void> => {
-    const data = await changeProfileData({ [fieldName]: !profile.value?.[fieldName] });
-    profileStore.setProfileData(data);
+    if (subscriptionLoading.value.includes(fieldName)) return;
+
+    subscriptionLoading.value = [...subscriptionLoading.value, fieldName];
+    try {
+      const data = await changeProfileData({ [fieldName]: !profile.value?.[fieldName] });
+      profileStore.setProfileData(data);
+    } catch {
+      console.error('Subscription update error!')
+    }
+    subscriptionLoading.value = subscriptionLoading.value.filter(field => field !== fieldName);
   };
 </script>
 
