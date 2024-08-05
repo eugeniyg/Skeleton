@@ -6,7 +6,7 @@
     @dragover.prevent
     @drop.prevent="onDrop"
   >
-    <atomic-icon class="dropzone__icon" :id="!fileList?.length ? 'upload': 'file'"/>
+    <atomic-icon class="dropzone__icon" :id="!fileList?.length ? 'upload': 'file'" />
 
     <div class="dropzone__content">
       <h4 class="dropzone__title">{{ props.fileName }}</h4>

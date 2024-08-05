@@ -36,6 +36,7 @@
     identity_selfie_id: IDocumentFile[];
     address: IDocumentFile[];
     payment: IDocumentFile[];
+    payment_back: IDocumentFile[];
     other: IDocumentFile[];
   }
 
@@ -45,6 +46,7 @@
     identity_selfie_id: [],
     address: [],
     payment: [],
+    payment_back: [],
     other: []
   })
 

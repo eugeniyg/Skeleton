@@ -40,7 +40,10 @@
       />
     </div>
 
-    <div v-if="props.documentType === 'passport' && alertText" class="documents-uploads__alert">
+    <div
+      v-if="['passport', 'payment'].includes(props.documentType || '') && alertText"
+      class="documents-uploads__alert"
+    >
       <div class="documents-uploads__alert-icon">
         <atomic-icon id="info" />
       </div>
@@ -60,6 +63,7 @@
     identity_selfie_id: IDocumentFile[];
     address: IDocumentFile[];
     payment: IDocumentFile[];
+    payment_back: IDocumentFile[];
     other: IDocumentFile[];
   }
 
@@ -73,7 +77,7 @@
     passport: ['identity_front', 'identity_back'],
     identity_selfie_id: ['identity_selfie_id'],
     address: ['address'],
-    payment: ['payment'],
+    payment: ['payment', 'payment_back'],
     other: ['other']
   }
   const emit = defineEmits(['prevStep', 'removeFile', 'addFiles']);
@@ -92,7 +96,7 @@
     return ''
   })
 
-  const alertText = computed(() => getContent(documentsContent.value, defaultLocaleDocumentsContent.value, 'verification.passport.alert'));
+  const alertText = computed(() => getContent(documentsContent.value, defaultLocaleDocumentsContent.value, `verification.${props.documentType}.alert`));
 </script>
 
 <style src="~/assets/styles/components/documents/uploads.scss" lang="scss" />

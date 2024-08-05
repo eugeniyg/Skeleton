@@ -37,6 +37,7 @@
     identity_selfie_id: IDocumentFile[];
     address: IDocumentFile[];
     payment: IDocumentFile[];
+    payment_back: IDocumentFile[];
     other: IDocumentFile[];
   }
 
@@ -71,6 +72,10 @@
         } else if (props.formData.identity_front.length || props.formData.identity_back.length) {
           statuses.passport = 'canceled';
         }
+      } else if (type === 'payment') {
+        if (props.formData.payment.length && props.formData.payment_back.length) {
+          statuses.payment = getStatus([...props.formData.payment, ...props.formData.payment_back]);
+        } else statuses.payment = undefined;
       } else {
         statuses[type] = getStatus(props.formData[type]);
       }
