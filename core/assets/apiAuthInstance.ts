@@ -20,14 +20,16 @@ export const useApiAuthInstance = async (url:string, options?:any):Promise<any> 
     async onResponseError({ response }: any) {
       if (response.status === 401 || response.status === 403) {
         if (profileStore.getSessionToken()) profileStore.removeSession();
+        const layoutStore = useLayoutStore();
         const { localizePath } = useProjectMethods();
         const router = useRouter();
-        await router.push(localizePath('/'));
+        layoutStore.modals.signIn = true;
+        await router.push({ path: localizePath('/'), query: { 'sign-in': 'true' } });
       }
     },
   };
 
-  if (process.server) {
+  if (import.meta.server) {
     console.log('API INSTANCE TOKEN: ', token);
     console.log('API INSTANCE OPTIONS: ', newOptions);
     console.log('API INSTANCE REQUEST URL: ', newUrl);

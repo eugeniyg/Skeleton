@@ -10,21 +10,21 @@
       :isDemo="isDemo"
     />
 
-    <modal-restricted-bets
-      v-if="gameContent?.restrictedBets || defaultLocaleGameContent?.restrictedBets"
-      :content="gameContent?.restrictedBets || defaultLocaleGameContent?.restrictedBets"
-      currentPage="game"
-      :showModal="showRestrictedBetsModal"
-      @closeModal="showRestrictedBetsModal = false"
-    />
-
-    <modal-max-bets
-      :showModal="maxBetsModal.show"
-      :maxBet="maxBetsModal.maxBet"
-      @closeModal="maxBetsModal.show = false"
-    />
-
     <client-only>
+      <modal-restricted-bets
+        v-if="gameContent?.restrictedBets || defaultLocaleGameContent?.restrictedBets"
+        :content="gameContent?.restrictedBets || defaultLocaleGameContent?.restrictedBets"
+        currentPage="game"
+        :showModal="showRestrictedBetsModal"
+        @closeModal="showRestrictedBetsModal = false"
+      />
+
+      <modal-max-bets
+        :showModal="maxBetsModal.show"
+        :maxBet="maxBetsModal.maxBet"
+        @closeModal="maxBetsModal.show = false"
+      />
+
       <modal-demo-game
         :content="gameContent?.demoModal || defaultLocaleGameContent?.demoModal"
         :isDemo="isDemo"
