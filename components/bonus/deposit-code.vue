@@ -1,14 +1,18 @@
 <template>
-  <div ref="root" class="deposit-bonus-code">
-    <form-input-toggle
-      name="bonus-toggle"
-      v-model:value="hasBonusCode"
-      @change="toggleBonusField"
-    >
-      {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.togglerLabel') || '' }}
-    </form-input-toggle>
+  <div class="deposit-bonus-code" :class="{ 'is-selected': showDepositBonusCode }">
+    <form-input-bonus-radio
+      name="input-deposit-bonus-code"
+      id="deposit-bonus-code"
+      :value="showDepositBonusCode"
+      @change="emit('openBonusCode')"
+    />
 
-    <div v-if="hasBonusCode" class="deposit-bonus-code__code">
+    <div class="deposit-bonus-code__head">
+      <atomic-icon id="bonuses" />
+      {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.togglerLabel') || '' }}
+    </div>
+
+    <div v-if="showDepositBonusCode" class="deposit-bonus-code__code">
       <form-input-text
         v-model:value="bonusValue"
         ref="bonusField"
@@ -22,14 +26,14 @@
       />
 
       <button-base
-        type="primary"
+        type="secondary"
         size="md"
         @click="toggleBonusCode"
-        :isDisabled="bonusChecking"
+        :isDisabled="bonusChecking || !bonusValue"
       >
         <atomic-spinner :is-shown="bonusChecking"/>
         {{ depositBonusCode ? getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.cancelBonusCode')
-          : getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addBonusCode') }}
+        : getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addBonusCode') }}
       </button-base>
     </div>
   </div>
@@ -38,6 +42,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
+  const emit = defineEmits(['openBonusCode']);
   const globalStore = useGlobalStore();
   const {
     popupsData,
@@ -45,22 +50,19 @@
     fieldsSettings,
     defaultLocaleFieldsSettings
   } = globalStore;
-
   const { getContent } = useProjectMethods();
 
-  const hasBonusCode = ref<boolean>(false);
   const bonusValue = ref<string>('');
   const bonusChecking = ref<boolean>(false);
 
   const { addBonusCode, deleteBonusCode } = useCoreBonusApi();
   const bonusStore = useBonusStore();
-  const { depositBonusCode } = storeToRefs(bonusStore);
+  const { showDepositBonusCode, depositBonusCode } = storeToRefs(bonusStore);
 
   const sendManualBonus = async ():Promise<boolean> => {
     try {
       const response = await addBonusCode(bonusValue.value, 1);
-      if (response.status === 2) return true;
-      return false;
+      return response.status === 2;
     } catch (err: any) {
       return false;
     }
@@ -78,8 +80,10 @@
       useEvent('analyticsEvent', { event: 'walletPromoSubmit' });
 
       const bonusActivated = await sendManualBonus();
-
-      if (!bonusActivated) {
+      if (bonusActivated) {
+        bonusValue.value = '';
+        depositBonusCode.value = undefined;
+      } else {
         depositBonusCode.value = await addBonusCode(bonusValue.value, 3);
       }
     }
@@ -87,19 +91,10 @@
     bonusChecking.value = false;
   };
 
-  const root = ref();
-  const toggleBonusField = async ():Promise<void> => {
-    if (!hasBonusCode.value) {
-      hasBonusCode.value = true;
-      useEvent('analyticsEvent', { event: 'walletPromoOpen' });
-
-      await nextTick();
-      root.value.scrollIntoView({ behavior: 'smooth' });
-    } else if (depositBonusCode.value) {
-      hasBonusCode.value = false;
+  const closeBonusField = async ():Promise<void> => {
+    if (depositBonusCode.value) {
       toggleBonusCode();
     } else {
-      hasBonusCode.value = false;
       bonusValue.value = '';
     }
   };
@@ -118,16 +113,15 @@
     if (inputElement) inputElement.focus();
   };
 
-  watch(() => depositBonusCode.value, (newValue) => {
+  watch(() => showDepositBonusCode.value, (newValue) => {
     if (!newValue && bonusValue.value) {
-      toggleBonusField();
+      closeBonusField();
     }
   });
 
   onMounted(() => {
     if (depositBonusCode.value) {
       bonusValue.value = depositBonusCode.value?.bonusCode || '';
-      hasBonusCode.value = true;
     }
   });
 </script>

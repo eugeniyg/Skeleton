@@ -39,14 +39,9 @@
       :isDisabled="field.key === 'agentNumber'"
     />
 
-    <template v-if="depositBonuses?.length">
-      <atomic-divider />
-      <wallet-bonuses :amount="amountValue" />
-    </template>
-
     <atomic-divider />
-
-    <bonus-deposit-code />
+    <wallet-bonuses :amount="amountValue" />
+    <atomic-divider />
 
     <div class="form-deposit__button-holder">
       <button-base
@@ -105,7 +100,13 @@
   const profileStore = useProfileStore();
 
   const bonusStore = useBonusStore();
-  const { depositBonuses, selectedDepositBonus, bonusDeclined } = storeToRefs(bonusStore);
+  const {
+    depositBonuses,
+    selectedDepositBonus,
+    bonusDeclined,
+    showDepositBonusCode,
+    depositBonusCode
+  } = storeToRefs(bonusStore);
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
   props.fields.forEach((field) => {
@@ -154,7 +155,7 @@
   const walletStore = useWalletStore();
   const layoutStore = useLayoutStore();
   const { successModalType } = storeToRefs(layoutStore);
-  const { showModal, showAlert } = layoutStore;
+  const { showModal, showAlert, closeModal } = layoutStore;
   const { activeAccount } = storeToRefs(walletStore);
 
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
@@ -224,7 +225,7 @@
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
       bonusId: selectedDepositBonus.value?.id,
-      isBonusDecline: bonusDeclined.value,
+      isBonusDecline: showDepositBonusCode.value && !depositBonusCode.value ? true : bonusDeclined.value,
       fields: props.fields.length
         ? { ...depositFormData, phone: depositFormData.phone ? `+${depositFormData.phone}` : undefined }
         : undefined
@@ -251,6 +252,7 @@
 
       if (windowReference.value && depositResponse.type === 'form') {
         windowReference.value.location = paymentPageUrl;
+        closeModal('wallet');
       } else if (depositResponse.type === 'qr' && depositResponse.qr) {
         qrAddress.value = depositResponse.qr;
       } else if (depositResponse.type === 'iframe') {

@@ -13,7 +13,6 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const { localizePath } = useProjectMethods();
   const layoutStore = useLayoutStore();
   const { isGamePage } = storeToRefs(layoutStore);
 

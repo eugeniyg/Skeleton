@@ -12,7 +12,7 @@
 
     <main
       class="app-main"
-      :class="{'is-overflow': isHomePage, 'is-overflow-initial': isProfileLimitsPage }"
+      :class="mainClasses"
       :data-route="route.name"
     >
       <slot />
@@ -104,11 +104,6 @@
     && route.name !== 'locale-games-id'
     && route.path !== localizePath('/betting'));
 
-  const isProfileLimitsPage = computed(() => {
-    const routeName = route.name as string;
-    return routeName.includes('profile-limits');
-  });
-
   const timer = ref<any>();
   const disabledTransition = ref<boolean>(true);
   const layoutClasses = computed(() => [
@@ -142,6 +137,7 @@
   });
 
   const { checkModals } = useLayoutStore();
+  const mainClasses = ref();
   onMounted(async () => {
     checkModals();
     checkDrawer();
@@ -152,6 +148,13 @@
         showCookiePopup.value = true;
       }, 1500);
     }
+
+    watchEffect( () => {
+      mainClasses.value = {
+        'is-overflow': isHomePage.value,
+        'is-overflow-initial': route.name === 'profile-limits' || route.name === 'locale-profile-limits'
+      }
+    });
   });
 
   onBeforeUnmount(() => {

@@ -28,21 +28,17 @@
       :currentLocaleContent="homeContent?.aeroGroup"
       :defaultLocaleContent="defaultLocaleHomeContent?.aeroGroup"
     />
-
-    <group-games
-      v-if="topSlotsCategory"
-      showAllBtn
-      showArrows
-      :category="topSlotsCategory"
-    />
-
-    <group-games
-      v-if="liveCasinoCategory"
-      showAllBtn
-      showArrows
-      :category="liveCasinoCategory"
-    />
-
+    
+    <template v-for="collection in gameCollectionsList">
+      <group-games
+        v-if="collection"
+        :key="collection.id"
+        showAllBtn
+        showArrows
+        :category="collection"
+      />
+    </template>
+    
     <div
       v-if="hasBetsyIntegration"
       ref="sportsContainer"
@@ -64,6 +60,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { IHomePage } from '~/types';
+  import type { ICollection } from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();
   const {
@@ -114,16 +111,19 @@
 
   const { getCollectionsList } = useGamesStore();
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
-  const topSlotsCategory = computed(() => {
-    return gameCollections.value?.find((collection) => collection.identity === 'top-slots');
-  });
-  const liveCasinoCategory = computed(() => {
-    return gameCollections.value?.find((collection) => collection.identity === 'liveshow');
-  });
+  
   const aeroCategory = computed(() => {
     return gameCollections.value?.find((collection) => collection.identity === homeContent.value?.aeroGroup?.collectionIdentity);
   });
-
+  
+  const targetGameCollections = computed(() => {
+    return getContent(homeContent.value, defaultLocaleHomeContent.value, 'gameCollections')?.map((item:ICollection) => item.identity) || []
+  });
+  
+  const gameCollectionsList = computed(() => gameCollections.value?.filter((collection) => targetGameCollections.value.includes(collection.identity))?.sort((a, b) => {
+    return targetGameCollections.value?.indexOf(a.identity) - targetGameCollections.value?.indexOf(b.identity);
+  }));
+  
   const cardsModifier = computed(() => {
     const length = Object.keys(getContent(homeContent.value, defaultLocaleHomeContent.value, 'categories'))?.length || 0
     return length  ? `has-${length}-cards` : ''
