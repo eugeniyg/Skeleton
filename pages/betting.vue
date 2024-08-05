@@ -2,21 +2,21 @@
   <div>
     <client-only>
       <main-slider v-if="!isMobile && bettingContent?.sliderDisplay" sliderType="low" />
+
+      <modal-restricted-bets
+        v-if="bettingContent?.restrictedBets || defaultLocaleBettingContent?.restrictedBets"
+        :content="bettingContent?.restrictedBets || defaultLocaleBettingContent?.restrictedBets"
+        currentPage="betting"
+        :showModal="showRestrictedBetsModal"
+        @closeModal="showRestrictedBetsModal = false"
+      />
+
+      <modal-max-bets
+        :showModal="maxBetsModal.show"
+        :maxBet="maxBetsModal.maxBet"
+        @closeModal="maxBetsModal.show = false"
+      />
     </client-only>
-
-    <modal-restricted-bets
-      v-if="bettingContent?.restrictedBets || defaultLocaleBettingContent?.restrictedBets"
-      :content="bettingContent?.restrictedBets || defaultLocaleBettingContent?.restrictedBets"
-      currentPage="betting"
-      :showModal="showRestrictedBetsModal"
-      @closeModal="showRestrictedBetsModal = false"
-    />
-
-    <modal-max-bets
-      :showModal="maxBetsModal.show"
-      :maxBet="maxBetsModal.maxBet"
-      @closeModal="maxBetsModal.show = false"
-    />
 
     <div class="betting">
       <div id="betting-container" class="container"/>
