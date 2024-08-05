@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware((to) => {
-  if (process.client) return;
+  if (import.meta.client) return;
 
   const routeLocaleCode = to.params.locale;
   const globalStore = useGlobalStore();

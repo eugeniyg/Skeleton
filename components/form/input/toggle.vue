@@ -7,11 +7,13 @@
         :name="props.name"
         :checked="props.value"
         @change="emit('change')"
-      />
+      >
 
       <div class="slider">
-        <atomic-icon id="check"/>
-        <atomic-icon id="close"/>
+        <atomic-spinner v-if="props.loading && props.value" isShown />
+        <atomic-icon v-else id="check"/>
+        <atomic-spinner v-if="props.loading && !props.value" isShown />
+        <atomic-icon v-else id="close"/>
       </div>
       <slot/>
     </label>
@@ -19,16 +21,11 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    value: {
-      type: Boolean,
-      default: false,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-  });
+  const props = defineProps<{
+    value: boolean;
+    name: string;
+    loading?: boolean;
+  }>();
   const emit = defineEmits(['change']);
 </script>
 

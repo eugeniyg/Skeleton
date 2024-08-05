@@ -12,7 +12,7 @@ export const useWebSocket = defineStore('useWebSocket', {
 
   actions: {
     async initWebSocket ():Promise<void> {
-      const socketUrl = process.dev ? 'test.dev.getplatform.tech' : window.location.hostname;
+      const socketUrl = import.meta.dev ? 'test.dev.getplatform.tech' : window.location.hostname;
       const protocol = window.location.protocol.replace('http', 'ws');
       const { getSessionToken } = useProfileStore();
       const sessionToken = getSessionToken();

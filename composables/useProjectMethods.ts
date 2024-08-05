@@ -334,6 +334,24 @@ export const useProjectMethods = () => {
     url.includes('http') ? window.open(url, '_blank') : router.push(localizePath(url));
   }
 
+  const awaitRefreshParallel = async (): Promise<string|null> => {
+    return new Promise((resolve) => {
+      let iteration = 1;
+
+      const checkStorage = ():void => {
+        setTimeout(() => {
+          if (iteration > 20) resolve(null);
+          iteration += 1
+          const storageValue = localStorage.getItem('refreshSession');
+          if (storageValue === 'loading') checkStorage();
+          else resolve(storageValue);
+        }, 500);
+      }
+
+      checkStorage();
+    });
+  }
+
   return {
     createValidationRules,
     getFormRules,
@@ -358,6 +376,7 @@ export const useProjectMethods = () => {
     getEquivalentFromBase,
     getSumFromAmountItems,
     addBetsyScript,
-    handleExternalLink
+    handleExternalLink,
+    awaitRefreshParallel
   };
 };

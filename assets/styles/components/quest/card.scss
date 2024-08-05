@@ -13,6 +13,7 @@
   @include media(md) {
     grid-template-columns: auto 1fr auto;
     grid-template-areas: "img header actions" "img body body";
+    padding: 20px;
   }
 
   .quest-info-wrapper {
@@ -60,7 +61,11 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
+    }
 
+    @include media(md) {
+      width: 72px;
+      height: 72px;
     }
   }
 
@@ -112,10 +117,17 @@
     .btn-primary, .btn-ghost {
       margin: 0 auto;
       --width: 100%;
+      --line-height: auto;
     }
 
     .btn-primary {
+      --padding: 7px 16px;
+      height: 32px;
       transform: translateY(var(--btn-primary-offset, 0));
+
+      @include media(md) {
+        min-width: 72px;
+      }
     }
 
     .btn-ghost {

@@ -245,13 +245,14 @@ export const useLayoutStore = defineStore('layoutStore', {
 
       this.walletModalType = modalType;
       const { getDepositMethods, getWithdrawMethods, activeAccount, accountSwitching } = useWalletStore();
-      const { getDepositBonuses } = useBonusStore();
+      const { getDepositBonuses, getDepositBonusCode } = useBonusStore();
       const riskStore = useRiskStore();
       await accountSwitching;
       await Promise.allSettled([
         getDepositMethods(),
         getWithdrawMethods(),
         getDepositBonuses(activeAccount?.currency as string),
+        getDepositBonusCode(),
         riskStore.getTurnOverWager()
       ]);
 

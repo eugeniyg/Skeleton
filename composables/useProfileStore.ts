@@ -89,21 +89,35 @@ export const useProfileStore = defineStore('profileStore', {
 
       const { deleteReturnGame } = useLayoutStore();
       deleteReturnGame();
-      },
+    },
 
     async getRefreshRequest (): Promise<string> {
+      const storageRefreshStatus = localStorage.getItem('refreshSession');
+
+      if (storageRefreshStatus === 'loading') {
+        const { awaitRefreshParallel } = useProjectMethods();
+        const newToken = await awaitRefreshParallel();
+        if (newToken) {
+          this.setSessionToken(newToken);
+          return newToken;
+        } else {
+          this.removeSession();
+          return '';
+        }
+      }
+
+      localStorage.setItem('refreshSession', 'loading');
       const { refreshToken } = useCoreAuthApi();
 
       try {
         const data = await refreshToken();
         this.setSessionToken(data.accessToken);
+        localStorage.setItem('refreshSession', data.accessToken);
         return data.accessToken;
-      } catch (err:any) {
-        if ([403, 401].includes(err.response?.status)) {
-          this.removeSession();
-          return '';
-        }
-        throw err;
+      } catch {
+        this.removeSession();
+        localStorage.setItem('refreshSession', '');
+        return '';
       } finally {
         this.refreshPromise = null;
       }
@@ -125,7 +139,6 @@ export const useProfileStore = defineStore('profileStore', {
       const { getFavoriteGames, subscribeBetsSocket } = useGamesStore();
       const {
         getPlayerBonuses,
-        getDepositBonusCode,
         getPlayerFreeSpins,
         getPlayerCashback
       } = useBonusStore();
@@ -133,7 +146,6 @@ export const useProfileStore = defineStore('profileStore', {
       const { getPlayerLoyalty, subscribeLoyaltySocket } = useLoyaltyStore();
       const runtimeConfig = useRuntimeConfig();
       getFavoriteGames();
-      getDepositBonusCode();
       if (runtimeConfig.public?.questsEnabled) getPlayerActiveQuests();
       if (runtimeConfig.public?.loyaltyEnabled) getPlayerLoyalty();
 
@@ -141,8 +153,8 @@ export const useProfileStore = defineStore('profileStore', {
       getPlayerCashback(activeAccount?.currency);
 
       const route = useRoute();
-      const routeName = route.name as string;
-      if (!routeName.includes('profile-bonuses')) {
+      const bonusesRoute = route.name === 'profile-bonuses' || route.name === 'locale-profile-bonuses';
+      if (!bonusesRoute) {
         getPlayerBonuses();
         getPlayerFreeSpins();
       }

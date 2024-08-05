@@ -1,6 +1,6 @@
 export default defineNuxtRouteMiddleware(async () => {
   const nuxtApp = useNuxtApp();
-  if (process.server || !nuxtApp.isHydrating) return;
+  if (import.meta.server || !nuxtApp.isHydrating) return;
 
   const profileStore = useProfileStore();
   const token = profileStore.getSessionToken();
