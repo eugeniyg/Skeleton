@@ -95,11 +95,6 @@
     }
     saveEmailLoading.value = false;
   }
-
-  const verifyEmailLoading = ref(false);
-  const verifyEmail = async (): Promise<void> => {
-    //
-  }
 </script>
 
 <style src="~/assets/styles/components/verification/email.scss" lang="scss" />
