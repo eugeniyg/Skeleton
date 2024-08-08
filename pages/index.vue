@@ -9,7 +9,8 @@
     <div
       v-if="homeContent?.categories || defaultLocaleHomeContent?.categories"
       class="card-category__container"
-      :class="cardsModifier">
+      :class="cardsModifier"
+    >
       <card-category
         v-for="(item, itemIndex) in (homeContent?.categories || defaultLocaleHomeContent?.categories)"
         :key="itemIndex"
@@ -18,7 +19,7 @@
       />
     </div>
 
-      <!--<group-benefits/>-->
+    <!--<group-benefits/>-->
     
     <group-aero
       v-if="homeContent?.aeroGroup?.display && aeroCategory"
@@ -50,6 +51,11 @@
     </div>
 
     <group-providers showArrows />
+
+    <activity-board
+      v-if="activityBoardContent.showBlock && activityBoardContent.boards.length"
+      v-bind="activityBoardContent"
+    />
 
     <group-promotions />
 
@@ -97,7 +103,7 @@
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'pages', 'home').findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'home').findOne()
+      : queryContent(defaultLocale.value?.code as string, 'pages', 'home').findOne()
     ]);
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }
@@ -172,6 +178,17 @@
       widgetsObserver.value.observe(sportsContainer.value);
     }
   }
+
+  const activityBoardContent = computed(() => {
+    const currentLocaleContent = homeContent.value?.activityBoard;
+    const defaultLocaleContent = defaultLocaleHomeContent.value?.activityBoard;
+    return {
+      showBlock: currentLocaleContent?.showBlock,
+      title: currentLocaleContent?.title || defaultLocaleContent?.title,
+      icon: currentLocaleContent?.icon || defaultLocaleContent?.icon,
+      boards: currentLocaleContent?.boards.length ? currentLocaleContent.boards : defaultLocaleContent?.boards || []
+    }
+  });
 
   onMounted(async () => {
     await getCollectionsList();
