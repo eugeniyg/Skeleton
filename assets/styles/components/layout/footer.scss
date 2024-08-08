@@ -47,9 +47,10 @@
     }
 
     img {
+      margin: var(--img-margin, 0 auto 24px);
       display: block;
-      width: 132px;
-      height: auto;
+      max-width: 132px;
+      max-height: 80px;
     }
   }
 

@@ -50,8 +50,6 @@
         <atomic-link v-if="customLicenseImage && customLicenseLink" :href="customLicenseLink" targetBlank>
           <atomic-image
             :src="customLicenseImage"
-            width="132px"
-            height="62px"
             data-not-lazy
           />
         </atomic-link>
@@ -59,8 +57,6 @@
         <atomic-image
           v-else-if="customLicenseImage"
           :src="customLicenseImage"
-          width="132px"
-          height="62px"
           data-not-lazy
         />
 
