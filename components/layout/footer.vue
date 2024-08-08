@@ -47,18 +47,24 @@
 
     <template v-if="layoutData?.footer?.custom?.show || defaultLocaleLayoutData?.footer?.custom?.show">
       <div class="info">
-        <atomic-link v-if="customLicenseImage && customLicenseLink" :href="customLicenseLink" targetBlank>
+        <atomic-link
+          v-if="customLicenseImage && customLicenseLink"
+          class="info__image-link"
+          :href="customLicenseLink"
+          targetBlank
+        >
           <atomic-image
             :src="customLicenseImage"
             data-not-lazy
           />
         </atomic-link>
 
-        <atomic-image
-          v-else-if="customLicenseImage"
-          :src="customLicenseImage"
-          data-not-lazy
-        />
+        <div v-else-if="customLicenseImage" class="info__image">
+          <atomic-image
+            :src="customLicenseImage"
+            data-not-lazy
+          />
+        </div>
 
         <div
           v-if="layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description"
