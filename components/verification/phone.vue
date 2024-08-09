@@ -56,7 +56,7 @@
         :isDisabled="v$.$invalid || !verificationFormData.phone || serverFormErrors?.phone || savingPhone || removingPhone"
         @click="savePhoneNumber"
       >
-        <atomic-spinner :is-shown="savingPhone || removingPhone" />
+        <atomic-spinner :is-shown="savingPhone" />
         {{ getContent(verificationContent, defaultLocaleVerificationContent, 'phone.addButton') }}
       </button-base>
 
@@ -68,7 +68,7 @@
         :isDisabled="sendingCode || removingPhone"
         @click="sendVerifyCode"
       >
-        <atomic-spinner :is-shown="sendingCode || removingPhone" />
+        <atomic-spinner :is-shown="sendingCode" />
         {{ getContent(verificationContent, defaultLocaleVerificationContent, 'phone.verifyButton') }}
       </button-base>
     </template>
@@ -85,7 +85,7 @@
   const globalStore = useGlobalStore();
   const fieldsStore = useFieldsStore();
   const { profileFields } = storeToRefs(fieldsStore);
-  const phoneEditable = computed(() => profileFields.value.find((field) => field.name === 'phone'));
+  const phoneEditable = computed(() => profileFields.value.find((field) => field.name === 'phone')?.editable);
   const {
     fieldsSettings,
     defaultLocaleFieldsSettings,
