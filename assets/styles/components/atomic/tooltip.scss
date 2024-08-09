@@ -66,6 +66,22 @@
         --opacity: 1;
       }
     }
+
+    &.status-pending {
+      background-color: var(--icon-accent);
+    }
+
+    &.status-approve {
+      background-color: var(--icon-success);
+    }
+
+    &.status-canceled {
+      background-color: var(--icon-alert);
+    }
+
+    &.size-small {
+      padding: rem(2px) rem(8px);
+    }
   }
 
   .title {

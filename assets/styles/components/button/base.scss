@@ -16,3 +16,9 @@
   @extend %btn;
   @extend %btn-ghost;
 }
+
+.btn-ghost-gray {
+  @extend %btn;
+  @extend %btn-ghost;
+  --color: var(--button-icn-ghost-low-contrast);
+}

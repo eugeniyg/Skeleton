@@ -1,8 +1,7 @@
 <template>
   <div :class="['input-file', {'is-show-more-btn': props.showMoreButton}]">
-
     <input
-      accept=".png, .jpg, .jpeg, .pdf"
+      accept="image/png, image/jpg, image/jpeg, application/pdf"
       class="input-file__input"
       ref="input"
       type="file"
@@ -32,7 +31,7 @@
         v-else
         @click.prevent="clickAction"
         class="btn-select-file"
-        type="primary"
+        type="secondary"
         size="xs"
         :isDisabled="props.loading"
       >

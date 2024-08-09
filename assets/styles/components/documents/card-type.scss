@@ -1,0 +1,65 @@
+.documents-card-type {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 8px;
+  padding: 12px 16px;
+  background-color: var(--layer-01);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border 0.3s;
+
+  &.active {
+    border: 1px solid var(--border-click);
+
+    .documents-card-type__logo {
+      color: var(--support-brand-default);
+    }
+  }
+
+  &__logo {
+    width: 32px;
+    height: 32px;
+    color: var(--text-secondary);
+    transition: color 0.3s;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    grid-column-gap: 4px;
+    @include font($heading-2);
+    color: var(--text-primary);
+    margin-bottom: 2px;
+
+    .tooltip {
+      min-width: auto;
+      min-height: auto;
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .icon {
+      --icon-size: 16px;
+    }
+
+    .status-pending .icon {
+      --color: var(--icon-accent);
+    }
+
+    .status-approve .icon {
+      --color: var(--icon-success);
+    }
+
+    .status-canceled .icon {
+      --color: var(--icon-alert);
+    }
+  }
+
+  &__description {
+    @include font($body-1);
+    color: var(--text-secondary);
+  }
+}
