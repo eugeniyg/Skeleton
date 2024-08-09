@@ -4,7 +4,7 @@
     class="dropdown"
     :class="classes"
     :tabindex="props.tabIndex ?? 0"
-    @blur="onBlur"
+    v-click-outside="onBlur"
   >
     <span
       v-if="props.label"
