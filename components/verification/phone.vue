@@ -41,7 +41,7 @@
       :phone="profile?.phone as string"
       reason="phoneVerification"
       :errorHint="verificationError"
-      :loading="verifyLoading || removingPhone"
+      :loading="verifyLoading"
       :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.verifyButton')"
       @verify-phone="verifyPhone"
       @remove-error-hint="verificationError = undefined"
@@ -138,7 +138,7 @@
 
   const sendingCode = ref(false);
   const sendVerifyCode = async (): Promise<void> => {
-    if (sendingCode.value) return;
+    if (sendingCode.value || removingPhone.value) return;
     sendingCode.value = true;
 
     try {
@@ -159,7 +159,7 @@
 
   const verifyLoading = ref(false);
   const verifyPhone = async (verificationCode: string): Promise<void> => {
-    if (verifyLoading.value) return;
+    if (verifyLoading.value || removingPhone.value) return;
     verifyLoading.value = true;
 
     try {
