@@ -22,7 +22,7 @@
       <modal-max-bets
         :showModal="maxBetsModal.show"
         :maxBet="maxBetsModal.maxBet"
-        @closeModal="maxBetsModal.show = false"
+        @closeModal="closeMaxBetModal"
       />
 
       <modal-demo-game
@@ -235,6 +235,12 @@
       maxBetsModal.show = true;
     }
   };
+
+  const closeMaxBetModal = async (): Promise<void> => {
+    maxBetsModal.show = false;
+    const { error } = await startGame();
+    if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  }
 
   const pageMounted = ref<boolean>(false);
   onMounted(async () => {
