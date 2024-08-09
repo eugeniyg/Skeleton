@@ -78,11 +78,36 @@
 </template>
 
 <script setup lang="ts">
+  import type {IWebSocketResponse} from "@skeleton/core/types";
+
   const props = defineProps<{
     title?: string;
     icon?: string;
     boards: { title: string; id: string }[];
   }>();
+
+  const boardSubscription = ref<any>();
+  const boardData = reactive([]);
+
+  const handleBoardsEvent = (socketData: IWebSocketResponse): void => {
+    console.log(socketData);
+  }
+
+  const unsubscribeBoardSocket = ():void => {
+    if (boardSubscription.value) {
+      boardSubscription.value.unsubscribe();
+      boardSubscription.value.removeAllListeners();
+    }
+  }
+
+  const subscribeBoardSocket = async (boardId: string):Prmise<void> => {
+    unsubscribeBoardSocket();
+    const { createSubscription } = useWebSocket();
+    boardSubscription.value = createSubscription(`activity-board:boards#${boardId}`, handleBoardsEvent);
+    const resp = await boardSubscription.value.history({ limit: 10 });
+    console.log(resp);
+  }
+
 
   const tbColumns = [
     'Game',
@@ -172,7 +197,7 @@
   const isAnimate = ref<boolean>(false);
 
   const selectedNavTitle = computed(() => {
-    return navItems.find((item) => item.id === selectedNavItem.value)?.title;
+    return props.boards.find((board) => board.id === selectedNavItem.value)?.title;
   });
 
   const toggleMobileNav = () => {
@@ -201,6 +226,7 @@
   };
 
   onMounted(() => {
+    subscribeBoardSocket(selectedNavItem.value);
     //setInterval(tick, 1000);
   });
 </script>
