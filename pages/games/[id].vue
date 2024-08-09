@@ -22,7 +22,6 @@
       <modal-max-bets
         :showModal="maxBetsModal.show"
         :maxBet="maxBetsModal.maxBet"
-        :loading="gameLoading"
         @closeModal="closeMaxBetModal"
       />
 
