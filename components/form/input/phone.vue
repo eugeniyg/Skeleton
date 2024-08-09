@@ -101,7 +101,6 @@
   };
 
   const onInput = ():void => {
-    console.log('codeValue: ', codeValue.value);
     if (codeValue.value && numberValue.value) {
       emit('update:value', codeValue.value + numberValue.value);
       emit('input', codeValue.value + numberValue.value);
@@ -116,7 +115,6 @@
   };
 
   const onSelectInput = ():void => {
-    console.log('onSelectInput');
     onInput();
     onBlur();
   };

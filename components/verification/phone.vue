@@ -4,10 +4,6 @@
       {{ getContent(verificationContent, defaultLocaleVerificationContent, 'phone.title') }}
     </h2>
 
-    <pre style="color: white">
-      form data: {{ verificationFormData.phone }}
-    </pre>
-
     <template v-if="profile?.phone">
       <div class="phone-verification__status">
         <span class="phone-verification__status-target">+{{ profile.phone }}</span>
@@ -38,7 +34,6 @@
       :hint="setError('phone')"
       @blur="v$.phone.$touch()"
       @focus="focusField('phone')"
-      @update:value="(e) => console.log(`update event: `, e)"
     />
 
     <form-phone-verify

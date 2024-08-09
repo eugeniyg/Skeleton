@@ -93,7 +93,6 @@ export const useQuestsStore = defineStore('questsStore', {
 
     updateTask (taskData: IPlayerQuestEventTask|undefined):void {
       if (!taskData) return;
-      console.log(taskData);
 
       const { getContent } = useProjectMethods();
       const {
