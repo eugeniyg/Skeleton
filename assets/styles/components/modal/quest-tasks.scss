@@ -172,11 +172,15 @@
         "tasks"
         "button";
   position: relative;
-  padding: 0 16px 16px 44px;
+  padding: 0 0 16px 44px;
   overflow-y: auto;
   margin-top: 24px;
   margin-left: -44px;
   @extend %scrollbar;
+
+  @include media(md) {
+    padding: 0 16px 16px 44px;
+  }
 
   &__count {
     grid-area: count;
