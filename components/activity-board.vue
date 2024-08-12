@@ -35,41 +35,52 @@
     <div class="activity-board__tb">
       <div class="activity-board__tb-head">
         <span
-          v-for="(title, index) in tbColumns"
+          v-for="(column, index) in tbColumns"
+          :key="column.id"
           class="activity-board__tb-th"
           :class="`th-${index + 1}`"
         >
-          {{ title }}
+          {{ column.label }}
         </span>
       </div>
+
       <div
         class="activity-board__tb-body animate"
         :class="{'push': isAnimate}"
         @animationend="onAnimationEnd"
       >
         <div
-          v-for="row in tbRows"
+          v-for="row in boardData"
+          :key="row.id"
           class="activity-board__tb-row"
         >
           <div
-            v-for="(td, key, index) in row"
+            v-for="({ id }, index) in tbColumns"
             class="activity-board__tb-td"
+            :key="id"
             :class="`td-${index + 1}`"
           >
-            <template v-if="key === 'game'">
-              <atomic-image :src="td.src" class="activity-board__tb-td-img"/>
-              <span>{{ td.name }}</span>
+            <template v-if="id === 'game'">
+              <atomic-image :src="getGameImage(row.gameImages)" class="activity-board__tb-td-img" />
+              <span>{{ row.gameName }}</span>
             </template>
 
-            <template v-else-if="key === 'amount' || key === 'payout'">
-              <atomic-image class="activity-board__tb-td-icon" :src="`/img/currency/${td.currencyCode}.svg`"/>
-              <span :class="{'is-accented': td?.isAccented}">{{ td.amount }}</span>
+            <template v-else-if="id === 'nickname'">
+              <span>{{ row.nickname || 'Unknown' }}</span>
             </template>
 
-            <template v-else>
-              <span>{{ td }}</span>
+            <template v-else-if="id === 'createdAt'">
+              <span>{{ dayjs(row.createdAt).format('hh:mm:ss A') }}</span>
             </template>
 
+            <template v-else-if="['amount', 'baseCurrencyAmount', 'payout'].includes(id)">
+              <atomic-image
+                class="activity-board__tb-td-icon"
+                :src="`/img/currency/${id === 'baseCurrencyAmount' ? baseCurrency?.code : row.currency}.svg`"
+                defaultImage="/img/currency/placeholder.svg"
+              />
+              <span>{{ row[id] }}</span>
+            </template>
           </div>
         </div>
       </div>
@@ -78,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-  import type {IWebSocketResponse} from "@skeleton/core/types";
+  import type {IEventBet, IGameImages, IWebSocketResponse} from "@skeleton/core/types";
 
   const props = defineProps<{
     title?: string;
@@ -86,110 +97,67 @@
     boards: { title: string; id: string }[];
   }>();
 
+  const { getImageUrl } = useProjectMethods();
   const boardSubscription = ref<any>();
-  const boardData = reactive([]);
+  const boardData = reactive<IEventBet[]>([]);
+  const globalStore = useGlobalStore();
+  const { baseCurrency } = storeToRefs(globalStore);
+  const dayjs = useDayjs();
 
-  const handleBoardsEvent = (socketData: IWebSocketResponse): void => {
-    console.log(socketData);
+  const handleBoardsEvent = async (socketData: IWebSocketResponse): void => {
+    const betData = socketData.data.bet;
+    if (betData) {
+      boardData.unshift(betData);
+      if (boardData.length > 11) boardData.pop();
+      await nextTick();
+      isAnimate.value = true;
+    }
   }
 
   const unsubscribeBoardSocket = ():void => {
     if (boardSubscription.value) {
       boardSubscription.value.unsubscribe();
       boardSubscription.value.removeAllListeners();
+      console.log('unsubscribe')
     }
   }
 
-  const subscribeBoardSocket = async (boardId: string):Prmise<void> => {
+  const subscribeBoardSocket = async (boardId: string):Promise<void> => {
     unsubscribeBoardSocket();
     const { createSubscription } = useWebSocket();
     boardSubscription.value = createSubscription(`activity-board:boards#${boardId}`, handleBoardsEvent);
-    const resp = await boardSubscription.value.history({ limit: 10 });
+    const resp: { publications: IWebSocketResponse[] } = await boardSubscription.value.history({ limit: 11, since: null, reverse: true });
+    const betsArr = resp.publications.map(historyObj => historyObj.data.bet as IEventBet);
     console.log(resp);
+    boardData.splice(0, 12, ...betsArr);
   }
 
 
   const tbColumns = [
-    'Game',
-    'Time',
-    'User',
-    'Bet amount',
-    'Multiplier',
-    'Payout',
-  ];
-
-  let tbRows = [
     {
-      game: {
-        src: '/img/default-game-tumb.png',
-        name: 'Game name'
-      },
-      time: '10:55:25 AM',
-      user: 'Twiy_ni***6',
-      amount: {
-        amount: '0.00000000',
-        currencyCode: 'BTC'
-      },
-      multiplier: '1.40x',
-      payout: {
-        amount: '0.00000000',
-        currencyCode: 'BTC'
-      },
+      label: 'Game',
+      id: 'game'
     },
     {
-      game: {
-        src: '/img/default-game-tumb.png',
-        name: 'Game name'
-      },
-      time: '10:55:25 AM',
-      user: 'Twiy_ni***6',
-      amount: {
-        amount: '0.00000000',
-        currencyCode: 'USDT'
-      },
-      multiplier: '1.40x',
-      payout: {
-        amount: '0.00000000',
-        currencyCode: 'USDT',
-        isAccented: true,
-      },
+      label: 'Bet Time',
+      id: 'createdAt'
     },
     {
-      game: {
-        src: '/img/default-game-tumb.png',
-        name: 'Game name'
-      },
-      time: '10:55:25 AM',
-      user: 'Twiy_ni***6',
-      amount: {
-        amount: '0.00000000',
-        currencyCode: 'USD'
-      },
-      multiplier: '1.40x',
-      payout: {
-        amount: '0.00000000',
-        currencyCode: 'USD',
-        isAccented: true
-      },
+      label: 'Nickname',
+      id: 'nickname'
     },
     {
-      game: {
-        src: '/img/default-game-tumb.png',
-        name: 'Game name'
-      },
-      time: '10:55:25 AM',
-      user: 'Twiy_ni***6',
-      amount: {
-        amount: '0.00000000',
-        currencyCode: 'USD',
-        isAccented: true,
-      },
-      multiplier: '1.40x',
-      payout: {
-        amount: '0.00000000',
-        currencyCode: 'USD'
-      },
+      label: 'Bet amount',
+      id: 'amount'
     },
+    {
+      label: `Bet amount (${baseCurrency.value?.code})`,
+      id: 'baseCurrencyAmount'
+    },
+    {
+      label: 'Payout',
+      id: 'payout'
+    }
   ];
 
   const isOpen = ref<boolean>(false);
@@ -206,6 +174,7 @@
 
   const selectNavItem = (id: string) => {
     selectedNavItem.value = id;
+    subscribeBoardSocket(id);
   };
 
   const hideNav = () => {
@@ -215,19 +184,16 @@
   const onAnimationEnd = () => {
     isAnimate.value = false;
   };
-
-  const tick = () => {
-    const lastRow = tbRows.pop();
-    tbRows = [lastRow, ...tbRows];
-
-    nextTick(() => {
-      isAnimate.value = true;
-    });
+  
+  const getGameImage = (images: IGameImages): string => {
+    if (images?.hasOwnProperty('200x200')) {
+      return getImageUrl(images, 'square');
+    }
+    return '';
   };
 
   onMounted(() => {
     subscribeBoardSocket(selectedNavItem.value);
-    //setInterval(tick, 1000);
   });
 </script>
 

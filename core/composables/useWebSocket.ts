@@ -28,11 +28,8 @@ export const useWebSocket = defineStore('useWebSocket', {
     },
 
     createSubscription (channel:string, callback?:Function) {
-      const subscription = this.webSocket.newSubscription(channel);
+      const subscription = this.webSocket.getSubscription(channel) || this.webSocket.newSubscription(channel);
       if (callback) subscription.on('publication', callback);
-      subscription.on('unsubscribed', function(ctx) {
-        console.log(ctx);
-      });
       subscription.subscribe();
 
       return subscription;
