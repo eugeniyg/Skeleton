@@ -186,6 +186,7 @@
       showBlock: currentLocaleContent?.showBlock,
       title: currentLocaleContent?.title || defaultLocaleContent?.title,
       icon: currentLocaleContent?.icon || defaultLocaleContent?.icon,
+      columns: currentLocaleContent?.columns || defaultLocaleContent?.columns,
       boards: currentLocaleContent?.boards.length ? currentLocaleContent.boards : defaultLocaleContent?.boards || []
     }
   });

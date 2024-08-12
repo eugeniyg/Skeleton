@@ -19,14 +19,14 @@
 
         <div class="activity-board__nav-items">
           <div
-            v-for="{id, title} in boards"
-            :key="id"
+            v-for="board in boards"
+            :key="board.id"
             class="activity-board__nav-item"
-            :class="{'is-active': id === selectedNavItem}"
-            @click="selectNavItem(id)"
+            :class="{'is-active': board.id === selectedNavItem}"
+            @click="selectNavItem(board.id)"
           >
-            <span>{{ title }}</span>
-            <atomic-icon v-if="id === selectedNavItem" id="check"/>
+            <span>{{ board.title }}</span>
+            <atomic-icon v-if="board.id === selectedNavItem" id="check"/>
           </div>
         </div>
       </div>
@@ -56,8 +56,8 @@
         >
           <div
             v-for="({ id }, index) in tbColumns"
-            class="activity-board__tb-td"
             :key="id"
+            class="activity-board__tb-td"
             :class="`td-${index + 1}`"
           >
             <template v-if="id === 'game'">
@@ -90,10 +90,12 @@
 
 <script setup lang="ts">
   import type {IEventBet, IGameImages, IWebSocketResponse} from "@skeleton/core/types";
+  import type {IHomePage} from "~/types";
 
   const props = defineProps<{
     title?: string;
     icon?: string;
+    columns: IHomePage['activityBoard']['columns'];
     boards: { title: string; id: string }[];
   }>();
 
@@ -118,7 +120,6 @@
     if (boardSubscription.value) {
       boardSubscription.value.unsubscribe();
       boardSubscription.value.removeAllListeners();
-      console.log('unsubscribe')
     }
   }
 
@@ -128,37 +129,19 @@
     boardSubscription.value = createSubscription(`activity-board:boards#${boardId}`, handleBoardsEvent);
     const resp: { publications: IWebSocketResponse[] } = await boardSubscription.value.history({ limit: 11, since: null, reverse: true });
     const betsArr = resp.publications.map(historyObj => historyObj.data.bet as IEventBet);
-    console.log(resp);
-    boardData.splice(0, 12, ...betsArr);
+    boardData.splice(0, 20, ...betsArr);
   }
 
+  const tbColumns = computed(() => {
+    if (!props.columns) return [];
 
-  const tbColumns = [
-    {
-      label: 'Game',
-      id: 'game'
-    },
-    {
-      label: 'Bet Time',
-      id: 'createdAt'
-    },
-    {
-      label: 'Nickname',
-      id: 'nickname'
-    },
-    {
-      label: 'Bet amount',
-      id: 'amount'
-    },
-    {
-      label: `Bet amount (${baseCurrency.value?.code})`,
-      id: 'baseCurrencyAmount'
-    },
-    {
-      label: 'Payout',
-      id: 'payout'
-    }
-  ];
+    return Object.keys(props.columns).map(key => ({
+      label: key === 'baseCurrencyAmount'
+        ? props.columns[key].replace('{currency}', baseCurrency.value?.code || '') || key
+        : props.columns[key] || key,
+      id: key
+    }));
+  })
 
   const isOpen = ref<boolean>(false);
   const selectedNavItem = ref<string>(props.boards[0]?.id);
