@@ -31,7 +31,7 @@
     flex-direction: column;
     max-height: 100%;
     overflow: hidden;
-    padding: 16px 16px 24px 44px;
+    padding: 16px 16px 32px 44px;
 
     @include media(md) {
       width: rem(528px);
@@ -172,7 +172,7 @@
         "tasks"
         "button";
   position: relative;
-  padding: 0 0 16px 44px;
+  padding: 0 0 0 44px;
   overflow-y: auto;
   margin-top: 24px;
   margin-left: -44px;

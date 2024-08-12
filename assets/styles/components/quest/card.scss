@@ -1,6 +1,6 @@
 .quest-card {
   display: grid;
-  padding: 16px;
+  padding: 20px 16px;
   background: var(--layer-02);
   box-shadow: var(--shadow-group);
   border-radius: 8px;
@@ -48,8 +48,8 @@
 
   &__img {
     grid-area: img;
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     margin-right: 8px;
     align-self: center;
 
@@ -107,11 +107,27 @@
     grid-area: actions;
     display: flex;
     align-items: center;
-    padding: 12px 0 0 0;
+    margin: 32px 0 0 0;
+    position: relative;
+
+    &:after {
+      position: absolute;
+      content: '';
+      left: 0;
+      right: 0;
+      height: 0;
+      border-top: 1px solid var(--border-01);
+      top: -16px;
+    }
 
     @include media(md) {
       padding: 0;
       margin-left: 16px;
+      margin-top: 0;
+
+      &:after {
+        display: none;
+      }
     }
 
     .btn-primary, .btn-ghost {
@@ -123,10 +139,10 @@
     .btn-primary {
       --padding: 7px 16px;
       height: 32px;
-      transform: translateY(var(--btn-primary-offset, 0));
 
       @include media(md) {
         min-width: 72px;
+        transform: translateY(var(--btn-primary-offset, 0));
       }
     }
 
