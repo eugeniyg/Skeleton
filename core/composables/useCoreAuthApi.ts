@@ -72,7 +72,7 @@ export const useCoreAuthApi = () => {
   };
 
   const sendOtp = async (otpData: IOtpRequest):Promise<{message: string}> => {
-    const { data } = await useApiGuestInstance('/api/player/otp/send', {
+    const { data } = await useApiAuthInstance('/api/player/otp/send', {
       method: 'POST',
       body: otpData
     });
