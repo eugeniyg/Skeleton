@@ -188,7 +188,8 @@
     'BKASH',
     'NAGAD',
     'ROCKET',
-    'UPAY'
+    'UPAY',
+    'IX'
   ];
 
   const getPaymentPageUrl = (depositResponse: IResponseDeposit): string => {
