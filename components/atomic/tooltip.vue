@@ -9,13 +9,13 @@
     @focusout="hide"
   >
     <slot/>
-    <atomic-icon :id="props.icon"/>
+    <atomic-icon :id="props.icon" />
 
     <Teleport to="body">
       <div
         ref="tooltipMsg"
         class="tooltip__message"
-        :class="{'is-active': isShow}"
+        :class="[messageCustomClass, {'is-active': isShow}, `size-${props.size}`]"
         :style="`top: ${coords.top}px; left: ${coords.left}px`"
       >
         <div class="title" v-if="props.title">{{ props.title }}</div>
@@ -41,6 +41,13 @@
       validator: (val: string | null) => ['bottom', null].includes(val),
       default: null,
     },
+    messageCustomClass: {
+      type: String
+    },
+    size: {
+      validator: (val: string) => ['small', 'large'].includes(val),
+      default: 'large'
+    }
   });
 
   const coords = reactive({

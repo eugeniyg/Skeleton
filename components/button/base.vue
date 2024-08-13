@@ -23,7 +23,7 @@
     },
     type: {
       type: String,
-      validator: (val:string) => ['primary', 'secondary', 'ghost', ''].includes(val),
+      validator: (val:string) => ['primary', 'secondary', 'ghost', 'ghost-gray', ''].includes(val),
       default: '',
     },
     size: {

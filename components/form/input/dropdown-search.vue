@@ -1,17 +1,17 @@
 <template>
   <div
     ref="drop"
+    v-click-outside="onBlur"
     class="dropdown-search"
     :class="classes"
     :tabindex="props.tabIndex ?? 0"
-    v-click-outside="onBlur"
     @inview="setMaxWidth"
   >
     <span
       v-if="props.label"
       class="label"
     >
-      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
+      {{ props.label }}<span v-if="props.isRequired" class="required">*</span>
     </span>
 
 
@@ -19,14 +19,15 @@
       <atomic-image
         v-if="valueObject.mask"
         class="mask"
-        :src="valueObject.mask" :defaultImage="valueObject.defaultMask"
+        :src="valueObject.mask"
+        :defaultImage="valueObject.defaultMask"
         :class="{'has-search-query': searchQuery.length > 0}"
       />
 
       <input
+        v-model="searchQuery"
         class="dropdown-search__input"
         type="text"
-        v-model="searchQuery"
         :placeholder="valueObject.value || props.placeholder"
         @input="onInput"
         @keyup.up="onKeyUp"
@@ -38,23 +39,28 @@
 
     <div
       v-if="props.options.length"
-      class="items"
       ref="dropdownItems"
+      class="items"
     >
       <template v-if="filteredOptions?.length">
         <div
-          class="item"
           v-for="(option, i) in filteredOptions"
           :key="i"
+          class="item"
           :class="[
-          {'is-selected': option.code === valueObject.code },
-          { 'disabled-option': option.disabled },
-          {'is-active': selectedIndex === i}
+            {'is-selected': option.code === valueObject.code },
+            { 'disabled-option': option.disabled },
+            {'is-active': selectedIndex === i}
           ]"
           @click="select(option)"
         >
-          <atomic-image v-if="option.mask" class="mask" :src="option.mask" :defaultImage="option.defaultMask"/>
-          <span class="item-text" ref="itemText">{{ option.value }}</span>
+          <atomic-image
+            v-if="option.mask"
+            class="mask"
+            :src="option.mask"
+            :defaultImage="option.defaultMask"
+          />
+          <span ref="itemText" class="item-text">{{ option.value }}</span>
           <atomic-icon v-if="option.code === valueObject.code" id="check"/>
         </div>
       </template>
@@ -67,7 +73,7 @@
     </div>
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
-    <input type="hidden" :name="props.name" :value="props.value"/>
+    <input type="hidden" :name="props.name" :value="props.value">
   </div>
 </template>
 
@@ -142,7 +148,7 @@
   });
   
   const filteredOptions = computed(() => {
-    let options = props.options || [];
+    const options = props.options || [];
     const key = props.searchBy || 'name';
     
     if (props.enableSort) {

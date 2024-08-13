@@ -69,4 +69,17 @@
       display: none;
     }
   }
+
+  .verification {
+    &__profile {
+      display: grid;
+      grid-gap: rem(16px);
+      grid-template-columns: 1fr;
+      align-items: flex-start;
+
+      @include media(md) {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  }
 }

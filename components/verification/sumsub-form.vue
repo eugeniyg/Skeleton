@@ -46,4 +46,4 @@
   })
 </script>
 
-<style src="~/assets/styles/components/profile/sumsub-form.scss" lang="scss" />
+<style src="~/assets/styles/components/verification/sumsub-form.scss" lang="scss" />

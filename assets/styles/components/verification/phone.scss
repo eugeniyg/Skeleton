@@ -1,0 +1,49 @@
+.phone-verification {
+  background-color: var(--layer-01);
+  border-radius: 16px;
+  padding: 24px;
+
+  &__title {
+    text-align: center;
+    @include font($heading-4);
+    color: var(--text-primary);
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+
+  &__status {
+    display: flex;
+    align-items: center;
+    color: var(--text-primary);
+    grid-column-gap: 8px;
+
+    &-target {
+      margin-right: auto;
+    }
+
+    .is-warning {
+      --color: var(--orange-500);
+    }
+
+    .is-success {
+      --color: var(--green-500);
+    }
+
+    &-close {
+      cursor: pointer;
+    }
+  }
+
+  .btn-primary {
+    width: 100%;
+    margin-top: 24px;
+  }
+
+  .phone-verify {
+    margin-top: 16px;
+  }
+
+  &__error {
+    margin-top: 4px;
+  }
+}

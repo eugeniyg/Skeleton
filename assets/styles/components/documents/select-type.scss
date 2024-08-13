@@ -1,0 +1,27 @@
+.documents-select-type {
+  &__title {
+    margin-top: 0;
+    color: var(--text-primary);
+    @include font($heading-3);
+
+    @include media(md) {
+      @include upd-font($heading-4);
+    }
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 8px;
+    margin-bottom: 24px;
+
+    @include media(md) {
+      grid-template-columns: repeat(3, 1fr);
+      grid-column-gap: 10px;
+    }
+  }
+
+  .btn-primary {
+    min-width: 180px;
+  }
+}

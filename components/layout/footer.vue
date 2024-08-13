@@ -9,11 +9,11 @@
         :isOpen="true"
         mode="toggle"
       >
-        <template v-slot:header="{ heading }">
+        <template #header="{ heading }">
           <h4>{{ heading }}</h4>
         </template>
 
-        <template v-slot:content="{ item }: { item: ILink }">
+        <template #content="{ item }: { item: ILink }">
           <atomic-link :href="item.url" :targetBlank="item?.targetBlank">
             {{ item.label }}
           </atomic-link>
@@ -31,7 +31,7 @@
           <h4>{{ layoutData?.footer?.responsibilityLabel || defaultLocaleLayoutData?.footer?.responsibilityLabel }}</h4>
         </template>
 
-        <template v-slot:item="{ item }">
+        <template #item="{ item }">
           <atomic-image :src="`${item.image}`"/>
         </template>
       </list-base>
@@ -44,28 +44,39 @@
     </client-only>
 
     <atomic-divider/>
-    
+
     <template v-if="layoutData?.footer?.custom?.show || defaultLocaleLayoutData?.footer?.custom?.show">
       <div class="info">
-        <atomic-image
-            v-if="layoutData?.footer?.custom?.image || defaultLocaleLayoutData?.footer?.custom?.image"
-            :src="layoutData?.footer?.custom?.image || defaultLocaleLayoutData?.footer?.custom?.image"
-            width="132px"
-            height="62px"
+        <atomic-link
+          v-if="customLicenseImage && customLicenseLink"
+          class="info__image-link"
+          :href="customLicenseLink"
+          targetBlank
+        >
+          <atomic-image
+            :src="customLicenseImage"
             data-not-lazy
-        />
-        
+          />
+        </atomic-link>
+
+        <div v-else-if="customLicenseImage" class="info__image">
+          <atomic-image
+            :src="customLicenseImage"
+            data-not-lazy
+          />
+        </div>
+
         <div
-            v-if="layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description"
-            class="info__text"
-            v-html="marked.parse(layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description || '')"
+          v-if="layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description"
+          class="info__text"
+          v-html="marked.parse(layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description || '')"
         />
       </div>
-      
+
       <atomic-divider/>
     </template>
-    
-    <template v-if="layoutData?.footer?.curacao?.show || defaultLocaleLayoutData?.footer?.curacao?.show">
+
+    <template v-else-if="layoutData?.footer?.curacao?.show || defaultLocaleLayoutData?.footer?.curacao?.show">
       <div class="info">
         <iframe
           v-if="layoutData?.footer?.curacao?.frameLink || defaultLocaleLayoutData?.footer?.curacao?.frameLink"
@@ -97,10 +108,13 @@
   
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const accordeonItems = [
-      layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
-      layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
-      layoutData?.footer?.helpMenu || defaultLocaleLayoutData?.footer?.helpMenu,
-    ].filter(menu => menu?.title && menu?.items?.length);
+    layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
+    layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
+    layoutData?.footer?.helpMenu || defaultLocaleLayoutData?.footer?.helpMenu,
+  ].filter(menu => menu?.title && menu?.items?.length);
+
+  const customLicenseImage = computed(() => layoutData?.footer?.custom?.image || defaultLocaleLayoutData?.footer?.custom?.image);
+  const customLicenseLink = computed(() => layoutData?.footer?.custom?.link || defaultLocaleLayoutData?.footer?.custom?.link);
 </script>
 
 <style src="~/assets/styles/components/layout/footer.scss" lang="scss"/>
