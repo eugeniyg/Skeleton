@@ -50,7 +50,7 @@
 
       <button-base
         v-else
-        size="xs"
+        size="sm"
         type="ghost"
         @click.stop="cancelQuest"
       >

@@ -6,8 +6,9 @@
       </h1>
     </div>
 
-    <div v-if="hasEmailField" class="verification__profile">
-      <verification-email />
+    <div v-if="hasEmailField || hasPhoneRegistration" class="verification__profile">
+      <verification-email v-if="hasEmailField" />
+      <verification-phone v-if="hasPhoneRegistration" />
     </div>
 
     <verification-sumsub v-if="sumsubIntegrated" />
@@ -20,12 +21,17 @@
 
   const { setPageMeta, getLocalesContentData } = useProjectMethods();
   const globalStore = useGlobalStore();
-  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
+  const {
+    currentLocale,
+    defaultLocale,
+    settingsConstants
+  } = storeToRefs(globalStore);
   const fieldsStore = useFieldsStore();
   const { profileFields } = storeToRefs(fieldsStore);
   const hasEmailField = computed(() => {
     return !!profileFields.value.find(field => field.name === 'email');
   })
+  const hasPhoneRegistration = computed(() => settingsConstants.value?.player.registration.phone);
 
   const verificationContent = ref<Maybe<IProfileVerification>>();
   const defaultLocaleVerificationContent = ref<Maybe<IProfileVerification>>();
