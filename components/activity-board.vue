@@ -172,7 +172,7 @@
     if (images?.hasOwnProperty('200x200')) {
       return getImageUrl(images, 'square');
     }
-    return '';
+    return '/img/default-game-tumb.png';
   };
 
   onMounted(() => {
