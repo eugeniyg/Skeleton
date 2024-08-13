@@ -44,6 +44,7 @@ export interface IProfile extends Record<string, any>{
   freshchatRestoreId: string|null;
   segments: IPlayerSegment[];
   isNewlyRegistered: boolean;
+  phoneConfirmed: boolean;
 }
 
 export interface IAuthorizationRequest extends Record<any, any> {
