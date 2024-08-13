@@ -9,8 +9,9 @@
         :checked="!!props.value"
         @change="onChange"
       />
-
-      <atomic-icon id="check"/>
+      
+      <atomic-icon :id="props.icon || 'check'"/>
+      
       <p>
         <span v-html="label"/>
         <sup v-if="isRequired"> *</sup>
@@ -26,7 +27,8 @@
     isError?: any,
     label?: string,
     name: string,
-    value: any
+    value: any,
+    icon: string|undefined;
   }>();
 
   const emit = defineEmits(['change', 'update:value']);

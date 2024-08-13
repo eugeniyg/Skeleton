@@ -1,12 +1,12 @@
 .input-checkbox {
-  color: var(--text-primary);
   @include font($body-2);
 
   .label {
     display: grid;
     grid-column-gap: rem(8px);
     grid-template-columns: auto 1fr;
-    align-items: flex-start;
+    align-items: var(--label-align, flex-start);
+    color: var(--label-color, var(--text-primary));
 
     &:hover {
       cursor: pointer;
@@ -20,7 +20,8 @@
 
   span {
     margin: 0;
-    color: var(--text-primary);
+    color: var(--label-color, var(--text-primary));
+    transition: color 0.2s ease-in-out;
 
     @include font($body-2);
 
@@ -35,78 +36,81 @@
   }
 
   .icon {
-    background-color: var(--bg, var(--field-00));
+    --color: var(--icon-color, transparent);
+    --shadow: var(--icon-shadow, unset);
+    background-color: var(--icon-bg, var(--field-00));
     border-radius: 4px;
-    @include box(18px);
+    width: var(--icon-size, 18px);
+    height: var(--icon-size, 18px);
     box-shadow: var(--shadow, none);
-    --color: transparent;
   }
 
   .label {
-    --shadow: 0 0 0 2px var(--border-02);
-
+    --icon-shadow: 0 0 0 2px var(--border-02);
 
     @media (hover: hover) {
       &:hover {
-        --shadow: 0 0 0 2px var(--border-hover);
+        --icon-shadow: 0 0 0 2px var(--border-hover);
+
         .icon {
-          --bg: var(--field-00)
+          --icon-bg: var(--icon-bg-hover, var(--field-00));
         }
       }
     }
   }
 
   &.input-checkbox--checked .label {
-    --shadow: 0 0 0 2px var(--support-success-default);
+    --icon-shadow: 0 0 0 2px var(--support-success-default);
+    --label-color:  var(--labe-color-checked, var(--text-primary));
 
     .icon {
-      --bg: var(--support-success-default);
-      --color: var(--icon-contrast);
+      --icon-bg: var(--support-success-default);
+      --icon-color: var(--icon-color-checked, var(--icon-contrast));
     }
 
     @media (hover: hover) {
       &:hover {
         .icon {
-          --shadow: 0 0 0 2px var(support-success-default);
-          --bg: var(--support-success-low-contrast);
+          --icon-shadow: 0 0 0 2px var(support-success-default);
+          --icon-bg: var(--support-success-low-contrast);
         }
       }
     }
   }
 
   .checkbox[disabled] ~ .label {
-    --shadow: 0 0 0 2px var(--field-00);
+    --icon-shadow: 0 0 0 2px var(--field-00);
     pointer-events: none;
 
     .icon {
-      --bg: var(--field-00);
-      --color: transparent;
+      --icon-bg: var(--field-00);
+      --icon-color: var(--icon-color-disabled, transparent);
     }
   }
 
   .checkbox[disabled]:checked ~ .label {
-    --shadow: 0 0 0 2px var(--field-00);
+    --icon-shadow: 0 0 0 2px var(--field-00);
 
     .icon {
-      --bg: var(--field-00);
-      --color: var(--icon-secondary);
+      --icon-bg: var(--field-00);
+      --icon-color: var(--icon-color-checked-disabled, var(--icon-secondary));
     }
   }
 
   &.has-error {
     .label {
-      --shadow: 0 0 0 2px var(--support-alert-default);
+      --icon-shadow: 0 0 0 2px var(--support-alert-default);
 
       .icon {
-        --bg: transparent;
-        --color: transparent;
+        --icon-bg: transparent;
+        --icon-color: var(--icon-color-error, transparent);
       }
     }
 
     &.input-checkbox--checked .label {
       .icon {
-        --color: var(--icon-contrast);
-        --bg: var(--support-alert-default);
+        --icon-color: var(--icon-color-checked-disabled, var(--icon-contrast));
+        --icon-bg: var(--support-alert-default);
       }
     }
   }

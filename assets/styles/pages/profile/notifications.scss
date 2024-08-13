@@ -1,0 +1,53 @@
+.profile-notifications {
+  &__header {
+    display: grid;
+    grid-template-areas: "title checkbox" "toggle toggle";
+    grid-column-gap: 16px;
+    grid-row-gap: 8px;
+  }
+
+  &__title {
+    color: var(--text-primary);
+    @include font($heading-6);
+    grid-area: title;
+  }
+
+  &__toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    grid-area: toggle;
+
+    &-label {
+      color: var(--text-secondary);
+      @include font($body-2);
+    }
+  }
+
+  .input-checkbox {
+    --label-align: center;
+    --label-color: var(--button-text-ghost-disabled);
+
+    align-self: center;
+    justify-self: flex-end;
+    grid-area: checkbox;
+
+    & {
+      ::selection {
+        background-color: transparent;
+      }
+    }
+
+    .icon {
+      --icon-size: 20px;
+      --icon-color: var(--button-icn-ghost-disabled);
+      --icon-color-checked: var(--white);
+      --icon-bg: none !important;
+      --icon-shadow: none;
+    }
+
+    p {
+      order: -1;
+    }
+  }
+}
