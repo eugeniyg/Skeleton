@@ -139,7 +139,23 @@
   }
 
   &__tb {
-    margin-top: 16px;
+    min-width: calc(240px + 140px + 140px + 32px);
+
+    &-scroll {
+      overflow-x: auto;
+      margin-top: 16px;
+      margin-left: -16px;
+      margin-right: -16px;
+      padding: 0 16px;
+
+      @include scrollbar-hide;
+
+      @include media(xs) {
+        margin: 16px -32px 0 -32px;
+        scroll-padding: 32px;
+        padding: 0 32px;
+      }
+    }
 
     &-head {
       @include font($heading-2);
@@ -158,26 +174,18 @@
       width: var(--column-width, 100%);
       flex-grow: 0;
       white-space: nowrap;
-      padding: 0 8px;
-
-      min-width: 120px;
-      max-width: 300px;
-
+      padding: 0 16px;
 
       &.th-1 {
-        flex: 0 1 120px;
-        min-width: 39%;
+        flex: 1 1 240px;
       }
 
       &.th-3 {
-        flex: 0 1 60px;
-        min-width: 28%;
+        flex: 0 0 140px;
       }
 
       &.th-6 {
-        flex: 0 1 60px;
-        min-width: 28%;
-        padding-right: 0;
+        flex: 0 0 140px;
       }
 
       &.th-2, &.th-4, &.th-5 {
@@ -190,34 +198,33 @@
 
       @include media(md) {
         &.th-1 {
-          flex: 1 1 120px;
-          min-width: 20.6%;
-          padding-left: 16px;
+          flex: 1 1 240px;
+          min-width: 20%;
         }
 
         &.th-2 {
           flex: 0 1 120px;
-          min-width: 15.88%;
+          min-width: 16%;
         }
 
         &.th-3 {
           flex: 0 1 120px;
-          min-width: 15.88%;
+          min-width: 16%;
         }
 
         &.th-4 {
           flex: 0 1 120px;
-          min-width: 15.88%;
+          min-width: 16%;
         }
 
         &.th-5 {
           flex: 0 1 120px;
-          min-width: 15.88%;
+          min-width: 16%;
         }
 
         &.th-6 {
           flex: 0 1 120px;
-          min-width: 15.88%;
+          min-width: 16%;
         }
       }
     }
@@ -256,33 +263,27 @@
       height: 48px;
       align-items: center;
       grid-column-gap: 4px;
-      padding: 0 8px;
+      padding: 0 16px;
 
       &.td-1 {
-        flex: 0 1 120px;
-        min-width: 39%;
-
+        flex: 1 0 240px;
+        min-width: 240px;
 
         span {
           @extend %text-elipsis;
         }
-      ;
       }
 
       &.td-3 {
-        flex: 0 1 60px;
-        min-width: 28%;
+        flex: 0 0 140px;
 
         span {
           @extend %text-elipsis;
         }
-      ;
       }
 
       &.td-6 {
-        flex: 0 1 60px;
-        min-width: 28%;
-        padding-right: 0;
+        flex: 0 0 140px;
       }
 
       &.td-2, &.td-4, &.td-5 {
@@ -296,41 +297,41 @@
 
       @include media(md) {
         &.td-1 {
-          flex: 1 1 120px;
-          min-width: 20.6%;
-          padding-left: 16px;
+          flex: 1 1 240px;
+          min-width: 20%;
         }
 
         &.td-2 {
           flex: 0 1 120px;
-          min-width: 15.88%;
+          min-width: 16%;
         }
 
         &.td-3 {
           flex: 0 1 120px;
-          min-width: 15.88%;
+          min-width: 16%;
         }
 
         &.td-4 {
           flex: 0 1 120px;
-          min-width: 15.88%;
+          min-width: 16%;
         }
 
         &.td-5 {
           flex: 0 1 120px;
-          min-width: 15.88%;
+          min-width: 16%;
         }
 
         &.td-6 {
           flex: 0 1 120px;
-          min-width: 15.88%;
+          min-width: 16%;
         }
       }
 
       &-img {
-        width: 40px;
-        height: 40px;
+        width: 32px;
+        height: 32px;
         display: block;
+        border-radius: 4px;
       }
 
       &-icon {

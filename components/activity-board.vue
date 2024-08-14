@@ -31,8 +31,9 @@
         </div>
       </div>
     </div>
-
-    <div class="activity-board__tb">
+    
+    <div class="activity-board__tb-scroll">
+      <div class="activity-board__tb">
       <div class="activity-board__tb-head">
         <span
           v-for="(column, index) in tbColumns"
@@ -84,6 +85,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </template>
