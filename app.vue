@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NuxtLayout>
+    <NuxtLayout :name="layout">
       <NuxtPage />
     </NuxtLayout>
   </div>
@@ -8,6 +8,8 @@
 
 <script setup lang="ts">
   const { currentLocale } = useGlobalStore();
+
+  const layout = 'geo-restricted';
 
   useHead({
     htmlAttrs: {
