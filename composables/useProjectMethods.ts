@@ -340,7 +340,10 @@ export const useProjectMethods = () => {
 
       const checkStorage = ():void => {
         setTimeout(() => {
-          if (iteration > 20) resolve(null);
+          if (iteration > 10) {
+            localStorage.removeItem('refreshSession');
+            resolve(null);
+          }
           iteration += 1
           const storageValue = localStorage.getItem('refreshSession');
           if (storageValue === 'loading') checkStorage();
