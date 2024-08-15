@@ -308,6 +308,8 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     getRequestCountry():void {
+      const allHeaders = useRequestHeaders();
+      console.log(allHeaders);
       const headersCountry:Record<string, any> = useRequestHeaders([this.countryHeaderName]);
       const headerIp: Record<string, any> = useRequestHeaders([this.clientIpName]);
       if (headersCountry[this.countryHeaderName]) this.headerCountry = headersCountry[this.countryHeaderName]?.toUpperCase();
