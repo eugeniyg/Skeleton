@@ -10,11 +10,8 @@
   const { currentLocale, countries, headerCountry } = useGlobalStore();
 
   const isCurrentCountryRestrict = (): boolean|undefined => {
-    console.log('headerCountry: ', headerCountry);
     if (!headerCountry) return undefined;
     const currentCountryObj = countries.find(country => country.code === headerCountry.toUpperCase());
-    console.log('currentCountryObj: ', currentCountryObj);
-    console.log('restrict: ', currentCountryObj?.restrict);
 
     return currentCountryObj?.restrict;
   }
