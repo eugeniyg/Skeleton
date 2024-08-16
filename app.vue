@@ -1,13 +1,21 @@
 <template>
   <div>
-    <NuxtLayout>
+    <NuxtLayout :name="layout">
       <NuxtPage />
     </NuxtLayout>
   </div>
 </template>
 
 <script setup lang="ts">
-  const { currentLocale } = useGlobalStore();
+  const { currentLocale, countries, headerCountry } = useGlobalStore();
+
+  const isCurrentCountryRestrict = (): boolean|undefined => {
+    if (!headerCountry) return undefined;
+    const currentCountryObj = countries.find(country => country.code === headerCountry.toUpperCase());
+
+    return currentCountryObj?.restrict;
+  }
+  const layout = isCurrentCountryRestrict() ? 'geo-restricted' : 'default';
 
   useHead({
     htmlAttrs: {
