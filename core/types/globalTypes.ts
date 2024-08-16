@@ -40,6 +40,7 @@ export interface ICountry extends Record<string, any>{
   locale: string;
   additionalCurrency: string[];
   value?:string;
+  restrict: boolean;
 }
 
 export interface ITimeZone extends Record<string, any>{
