@@ -28,7 +28,7 @@
     label?: string,
     name: string,
     value: any,
-    icon: string|undefined;
+    icon?: string|undefined;
   }>();
 
   const emit = defineEmits(['change', 'update:value']);

@@ -1001,33 +1001,32 @@ export const useFakeStore = () => {
   ];
 
   const items = {
-    notifications: [],
-    // notifications: [
-    //   {
-    //     src: '/svg/colored/icn-notification.svg',
-    //     title: 'Please, verify your email due to security reasons',
-    //     date: 'May 14, 2019 • 19:00',
-    //     isUnread: true,
-    //   },
-    //   {
-    //     src: '/svg/colored/money.svg',
-    //     title: 'Please, verify your email due to security reasons',
-    //     date: 'May 14, 2019 • 19:00',
-    //     isUnread: true,
-    //   },
-    //   {
-    //     src: '/svg/colored/transaction-fail.svg',
-    //     title: 'Please, verify your email due to security reasons',
-    //     date: 'May 14, 2019 • 19:00',
-    //     isUnread: true,
-    //   },
-    //   {
-    //     src: '/svg/colored/transaction-fail.svg',
-    //     title: 'Please, verify your email due to security reasons',
-    //     date: 'May 14, 2019 • 19:00',
-    //     isUnread: false,
-    //   },
-    // ],
+    notifications: [
+      {
+        src: '/svg/colored/icn-notification.svg',
+        title: 'Please, verify your email due to security reasons',
+        date: 'May 14, 2019 • 19:00',
+        isUnread: true,
+      },
+      {
+        src: '/svg/colored/money.svg',
+        title: 'Please, verify your email due to security reasons',
+        date: 'May 14, 2019 • 19:00',
+        isUnread: true,
+      },
+      {
+        src: '/svg/colored/transaction-fail.svg',
+        title: 'Please, verify your email due to security reasons',
+        date: 'May 14, 2019 • 19:00',
+        isUnread: true,
+      },
+      {
+        src: '/svg/colored/transaction-fail.svg',
+        title: 'Please, verify your email due to security reasons',
+        date: 'May 14, 2019 • 19:00',
+        isUnread: false,
+      },
+    ],
   };
 
   const selects = {
@@ -1698,7 +1697,44 @@ export const useFakeStore = () => {
     },
   ];
 
+  const notifications = [
+    {
+      title: "Please, verify your email due to security reasons",
+      image: "/img/uploads/notifications-item-img.png",
+      description:"Please, verify your email due to securitasons Please, verify your email due to security reasonPlease, verify your email due to security reasons",
+      unread: 1,
+      date: 'May 14, 2019 • 19:00',
+      link: {
+        href: '',
+        label: 'Go to link',
+      }
+    },
+    {
+      title: "Please, verify your email due to security reasons",
+      image: "/img/uploads/notifications-item-img-2.png",
+      description:"Please, verify your email due to securitasons Please, verify your email due to security reasonPlease, verify your email due to security reasons",
+      date: 'May 14, 2019 • 19:00',
+      unread: 0,
+      link: {
+        href: '',
+        label: 'Go to link',
+      }
+    },
+    {
+      title: "Please, verify your email due to security reasons",
+      image: "/img/uploads/notifications-item-img-2.png",
+      description:"Please, verify your email due to securitasons Please, verify your email due to security reasonPlease, verify your email due to security reasons",
+      date: 'May 14, 2019 • 19:00',
+      unread: 0,
+      link: {
+        href: '',
+        label: 'Go to link',
+      }
+    }
+  ]
+
   return {
+    notifications,
     cashBonuses,
     catNavItems,
     items,

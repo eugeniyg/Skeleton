@@ -50,4 +50,10 @@
       order: -1;
     }
   }
+
+  &__empty {
+    margin: 0 auto;
+    max-width: 328px;
+    text-align: center;
+  }
 }
