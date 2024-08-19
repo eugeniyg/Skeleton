@@ -50,7 +50,9 @@ interface IGlobalStoreState {
   globalComponentsContent: Maybe<IGlobalComponentsContent>;
   defaultLocaleGlobalComponentsContent: Maybe<IGlobalComponentsContent>;
   countryHeaderName: string;
+  clientIpName: string;
   headerCountry: Maybe<string>;
+  headerIp: Maybe<string>;
   pagesWithoutLocale: string[];
 }
 
@@ -78,7 +80,9 @@ export const useGlobalStore = defineStore('globalStore', {
     globalComponentsContent: undefined,
     defaultLocaleGlobalComponentsContent: undefined,
     countryHeaderName: 'cf-ipcountry',
+    clientIpName: 'cf-connecting-ip',
     headerCountry: undefined,
+    headerIp: undefined,
     pagesWithoutLocale: [
       'verify-confirmCode',
       'locale-verify-confirmCode',
@@ -305,7 +309,9 @@ export const useGlobalStore = defineStore('globalStore', {
 
     getRequestCountry():void {
       const headersCountry:Record<string, any> = useRequestHeaders([this.countryHeaderName]);
+      const headerIp: Record<string, any> = useRequestHeaders([this.clientIpName]);
       if (headersCountry[this.countryHeaderName]) this.headerCountry = headersCountry[this.countryHeaderName]?.toUpperCase();
+      if (headerIp[this.clientIpName]) this.headerIp = headerIp[this.clientIpName];
     },
 
     setEquivalentCurrency(currencyCode: string):void {

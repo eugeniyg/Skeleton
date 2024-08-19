@@ -1,5 +1,5 @@
 import type { IAccount, ISocketInvoice } from './walletTypes'
-import type { IWinner } from './gameTypes'
+import type {IGameImages, IWinner} from './gameTypes'
 import type { IBonusCode, IPlayerBonus, IPlayerFreeSpin } from './bonusTypes'
 import type { IPlayerQuest, IPlayerQuestEventTask } from "@skeleton/core/types/questTypes";
 import type {IPlayerLoyaltyAccount} from "@skeleton/core/types/profileTypes";
@@ -40,6 +40,7 @@ export interface ICountry extends Record<string, any>{
   locale: string;
   additionalCurrency: string[];
   value?:string;
+  restrict: boolean;
 }
 
 export interface ITimeZone extends Record<string, any>{
@@ -130,6 +131,20 @@ export interface IPaginationMeta extends Record<string, any>{
   totalRows: number;
 }
 
+export interface IEventBet extends Record<string, any> {
+  id: string;
+  nickname: string|null;
+  amount: number;
+  baseCurrencyAmount: number;
+  currency: string;
+  payout: number;
+  baseCurrencyPayout: number;
+  gameId: string;
+  gameName: string;
+  gameImages: IGameImages;
+  createdAt: string;
+}
+
 export interface IWebSocketResponse extends Record<string, any>{
   data: {
     event: string;
@@ -144,6 +159,7 @@ export interface IWebSocketResponse extends Record<string, any>{
     quest?: IPlayerQuest;
     task?: IPlayerQuestEventTask;
     playerAccount?: IPlayerLoyaltyAccount;
+    bet?: IEventBet;
   };
   gen: undefined;
   offset: undefined;

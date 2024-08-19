@@ -116,7 +116,7 @@ export const useProfileStore = defineStore('profileStore', {
         return data.accessToken;
       } catch {
         this.removeSession();
-        localStorage.setItem('refreshSession', '');
+        localStorage.removeItem('refreshSession');
         return '';
       } finally {
         this.refreshPromise = null;
