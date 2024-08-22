@@ -1,14 +1,14 @@
 .notification-popover {
-  position: fixed;
+  position: absolute;
   display: grid;
   padding: 16px;
   background-color: var(--gray-800);
   box-shadow: var(--shadow-layer);
   border-radius: 8px;
-  top: calc(var(--header-height) - 4px);
+  top: calc(100% + 2px);
   width: 288px;
   left: 50%;
-  transform: translateY(-4px) translateX(-50%);
+  transform: translateX(-50%);
   transition: background-color .2s ease-in-out;
   max-height: calc(100vh - var(--header-height));
   overflow: hidden;

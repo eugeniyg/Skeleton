@@ -2,7 +2,7 @@
   <div
     ref="item"
     class="notification-popover-activator"
-    :class="{ 'is-active': props.popoverShow }"
+    :class="{ 'is-active': props.popoverShow, 'is-contrast': unreadCount }"
     @click.stop.prevent="emit('toggle')"
   >
     <atomic-icon id="notification"/>

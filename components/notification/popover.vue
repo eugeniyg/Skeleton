@@ -4,13 +4,13 @@
     class="notification-popover"
   >
     <div
-      class="notifications-popover__header"
+      class="notification-popover__header"
     >
-      <div class="notifications-popover__count">2 new notifications</div>
+      <div class="notification-popover__count">2 new notifications</div>
 
       <form-input-checkbox
         :value="true"
-        name="notifications-toggle"
+        name="notification-toggle"
         label="Mark all as read"
         icon="read-all"
       />
@@ -20,7 +20,7 @@
 
     <template v-if="popoverNotifications.length">
       <div
-        class="notifications-popover__items"
+        class="notification-popover__items"
       >
         Item
         <!--      <notifications-popover-item-->
@@ -32,7 +32,7 @@
       </div>
 
       <div
-        class="notifications-popover__footer"
+        class="notification-popover__footer"
       >
         <button-base type="ghost">See all</button-base>
       </div>

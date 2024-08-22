@@ -80,7 +80,7 @@
 
             <pwa display="desktop" />
 
-            <div class="header__notifications">
+            <div class="app-header__notifications">
               <notification-popover-activator
                 :popoverShow="isShowNotifications"
                 @toggle="isShowNotifications = !isShowNotifications"
