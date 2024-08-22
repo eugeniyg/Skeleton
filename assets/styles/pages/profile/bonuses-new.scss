@@ -1,0 +1,24 @@
+.profile-bonuses-new {
+  &__header {
+    display: grid;
+    grid-row-gap: 16px;
+    align-items: center;
+    grid-template-columns: 1fr minmax(0, auto);
+  }
+
+  .link-bonus {
+    @include font($body-2);
+    color: var(--text-link);
+    text-decoration: none;
+    display: flex;
+    width: fit-content;
+    margin-top: -16px;
+    grid-column-gap: rem(4px);
+    align-items: center;
+    min-height: rem(22px);
+
+    .icon {
+      color: var(--icon-accent);
+    }
+  }
+}

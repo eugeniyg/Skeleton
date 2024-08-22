@@ -1698,6 +1698,11 @@ export const useFakeStore = () => {
     },
   ];
 
+
+  const bonuses = {
+
+  };
+
   return {
     cashBonuses,
     catNavItems,

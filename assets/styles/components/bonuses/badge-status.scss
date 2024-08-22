@@ -1,0 +1,38 @@
+.badge-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+
+  &__label {
+    color: var(--label-color, var(--text-primary));
+    @include font($heading-uppercase-1);
+  }
+
+  &__text {
+    color: var(--text-tertiary);
+    position: absolute;
+    top: 17px;
+    right: 0;
+    white-space: nowrap;
+    @include font($body-0);
+  }
+
+  &__icon {
+    --color: var(--icon-color);
+    --icon-size: 16px;
+  }
+
+  &.is-active {
+    --icon-color: var(--icon-success);
+  }
+
+  &.is-available {
+    --icon-color: var(--icon-accent);
+  }
+
+  &.is-future {
+    --icon-color: var(--icon-secondary);
+    --label-color: var(--text-helper);
+  }
+}
