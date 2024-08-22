@@ -6,6 +6,7 @@ import type {
   IAuthState
 } from '@skeleton/core/types';
 import { jwtDecode } from "jwt-decode";
+import {useNotificationStore} from "@skeleton/composables/useNotificationStore";
 
 interface IProfileStoreState {
   refreshPromise: Promise<string>|null;
@@ -144,10 +145,12 @@ export const useProfileStore = defineStore('profileStore', {
       } = useBonusStore();
       const { getPlayerActiveQuests, subscribeQuestsSocket } = useQuestsStore();
       const { getPlayerLoyalty, subscribeLoyaltySocket } = useLoyaltyStore();
+      const { getPopoverNotifications } = useNotificationStore();
       const runtimeConfig = useRuntimeConfig();
       getFavoriteGames();
       if (runtimeConfig.public?.questsEnabled) getPlayerActiveQuests();
       if (runtimeConfig.public?.loyaltyEnabled) getPlayerLoyalty();
+      getPopoverNotifications();
 
       const { activeAccount } = useWalletStore();
       getPlayerCashback(activeAccount?.currency);
