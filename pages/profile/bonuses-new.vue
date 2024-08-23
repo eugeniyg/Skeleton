@@ -15,11 +15,10 @@
     
     
     <bonuses-bonus-package is-active/>
-<!--    <bonuses-bonus-package/>-->
     <bonuses-bonus-cash is-active/>
     <bonuses-bonus-percent is-active/>
-<!--    <bonuses-bonus-cashback is-active/>-->
-<!--    <bonuses-bonus-fs is-active/>-->
+    <bonuses-bonus-cashback is-active/>
+    <bonuses-bonus-fs is-active/>
     
     <bonus-code :content="content?.currentLocaleData?.bonusCode || content?.defaultLocaleData?.bonusCode" />
     

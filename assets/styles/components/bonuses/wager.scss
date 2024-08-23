@@ -1,0 +1,54 @@
+.bonuses-wager {
+  display: grid;
+  align-items: center;
+  grid-row-gap: 4px;
+  width: fit-content;
+
+
+  * {
+    line-height: unset !important;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    grid-column-gap: 2px;
+  }
+
+  &__icon {
+    --icon-size: 16px;
+    --color: var(--icon-primary);
+    margin-right: 2px;
+  }
+
+  &__label {
+    color: var(--text-tertiary);
+    @include font($body-1);
+  }
+
+  &__amount {
+    color: var(--text-primary);
+    @include font($subheading-1);
+  }
+
+  &__value {
+    color: var(--text-tertiary);
+    margin-right: 2px;
+    @include font($body-1);
+  }
+
+  &__divider {
+    color: var(--text-helper);
+    @include font($body-1);
+  }
+
+  &__currency {
+    color: var(--text-tertiary);
+    @include font($body-1);
+    text-transform: uppercase;
+  }
+
+  .bonuses-progress {
+    margin-top: 4px;
+  }
+}

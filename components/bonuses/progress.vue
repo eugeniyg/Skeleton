@@ -11,7 +11,9 @@
       <div
         class="bonuses-progress__bar"
         ref="barRef"
-        :style="`--translateX:  ${barTranslateX}`">{{ value }}</div>
+        :style="`--translateX:  ${barTranslateX}`"
+      >{{ value }}%
+      </div>
     </div>
   </div>
 </template>
@@ -30,20 +32,19 @@
   const progressRef = ref<HTMLElement>();
   const lineRef = ref<HTMLElement>();
   const barRef = ref<HTMLElement>();
-
   
   const setBarAlignment = () => {
-    if  (progressRef.value && lineRef.value && barRef.value) {
+    if (progressRef.value && lineRef.value && barRef.value) {
       const progressWidth = progressRef.value.getBoundingClientRect().width;
       const lineWidth = lineRef.value.getBoundingClientRect().width;
       const barWidth = barRef.value.getBoundingClientRect().width;
       
       if (lineWidth < barWidth) {
-        barTranslateX.value = '100%'
+        barTranslateX.value = '100%';
       } else if (lineWidth > progressWidth - barWidth) {
-        barTranslateX.value = '0%'
+        barTranslateX.value = '0%';
       } else {
-        barTranslateX.value = '50%'
+        barTranslateX.value = '50%';
       }
     }
   };

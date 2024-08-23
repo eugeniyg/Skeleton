@@ -24,6 +24,20 @@
     grid-gap: 16px;
   }
 
+  &__title {
+    color: var(--text-primary);
+    text-shadow: var(--shadow-layer);
+    @include font($subheading-6);
+
+    > * {
+      margin: 0;
+    }
+
+    span {
+      color: var(--text-accent);
+    }
+  }
+
   &__badge {
     --color: var(--icon-inverse);
     --icon-size: 16px;
@@ -41,5 +55,17 @@
     --propgress-line-bg: var(--support-info-default);
     --propgress-bar-bg: var(--support-info-default,);
     --propgress-bar-color: var(--blue-100);
+  }
+
+  &__tb {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    grid-gap: 8px;
+
+    &-th {
+      @include font($body-1);
+      color: var(--text-tertiary);
+    }
   }
 }

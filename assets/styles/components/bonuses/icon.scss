@@ -1,0 +1,25 @@
+.bonuses-icon {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &__icon {
+    --color: var(--icon-color);
+    --icon-size: 16px;
+  }
+
+  &__label {
+    color: var(--label-color);
+    @include font($subheading-1);
+  }
+
+  &.is-done {
+    --icon-color: var(--icon-success);
+    --label-color: var(--text-success);
+  }
+
+  &.is-missed {
+    --icon-color: var(--icon-primary);
+    --label-color: var(--text-tertiary);
+  }
+}

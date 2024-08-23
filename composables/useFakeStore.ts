@@ -1700,10 +1700,32 @@ export const useFakeStore = () => {
 
 
   const bonuses = {
-
+    package: {
+      image: '/img/uploads/bonus-img-sample.png',
+      title: '<p>30% bonus of up to <span>3.5 mBTC</span> on Monday</p>',
+      bonuses: [
+        {
+          name: 'Bonus 1',
+          status: 'done'
+        },
+        {
+          name: 'Bonus 2',
+          casinoWagerAmountFrom: '0.0018',
+          casinoWager: '30',
+          casinoWagerAmountTo: '0036',
+          casinoWagerCurrency: 'BTC',
+          sportsbookWager: '30',
+          sportsbookWagerAmountFrom: '0.0018',
+          sportsbookWagerAmountTo: '0.0036',
+          sportsbookWagerCurrency: 'BTC',
+          progress: 40,
+        }
+      ]
+    }
   };
 
   return {
+    bonuses,
     cashBonuses,
     catNavItems,
     items,
