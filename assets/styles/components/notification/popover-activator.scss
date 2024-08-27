@@ -34,17 +34,17 @@
     @include font($heading-0);
   }
 
+  &.is-contrast {
+    .icon {
+      --color: var(--button-icn-ghost-high-contrast);
+    }
+  }
+
   &.is-active {
     --bg: var(--gray-700);
 
     .icon {
       --color: var(--yellow-500);
-    }
-  }
-
-  &.is-contrast {
-    .icon {
-      --color: var(--button-icn-ghost-high-contrast);
     }
   }
 

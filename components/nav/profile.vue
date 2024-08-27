@@ -19,6 +19,10 @@
           <span v-if="item.id === 'bonuses' && activeBonusesAndFreeSpins" class="count">
             {{ activeBonusesAndFreeSpins }}
           </span>
+
+          <span v-if="item.id === 'notifications' && unreadCount" class="count">
+            {{ unreadCount }}
+          </span>
         </client-only>
 
         <template v-if="route.path === localizePath(item.url)">
@@ -41,6 +45,7 @@
     'info',
     'wallet',
     'bonuses',
+    'notifications',
     'documents',
     'verification',
     'security',
@@ -63,6 +68,9 @@
 
   const bonusStore = useBonusStore();
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
+
+  const notificationStore = useNotificationStore();
+  const { unreadCount } = storeToRefs(notificationStore);
 
   const toggle = ():void => {
     isOpen.value = !isOpen.value;

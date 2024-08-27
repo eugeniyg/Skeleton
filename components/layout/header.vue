@@ -95,7 +95,7 @@
             <form-input-deposit />
 
             <div v-click-outside="closeUserNav" class="nav-user__wrap">
-              <div class="nav-user__header-avatar">
+              <div class="nav-user__header-avatar" :class="{ '--show-ring': unreadCount }">
                 <loyalty-avatar size="sm" @click="toggleProfileNav" />
 
                 <span v-show="isUserNavOpen" class="close-decor" @click="toggleProfileNav">
@@ -146,6 +146,8 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
   const { isGamePage, isDrawerCompact } = storeToRefs(layoutStore);
+  const notificationStore = useNotificationStore();
+  const { unreadCount } = storeToRefs(notificationStore);
   
   const appHeader = ref<HTMLElement>();
   const bar = ref();

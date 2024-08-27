@@ -260,6 +260,24 @@
       }
     }
 
+    &.--show-ring .loyalty-avatar {
+      &:after {
+        display: block;
+        content: '';
+        @include box(12px);
+        position: absolute;
+        background-color: var(--support-success-default);
+        border: 2px solid var(--button-bg-secondary-hover);
+        right: -2px;
+        bottom: -2px;
+        border-radius: 50%;
+
+        @include media(l) {
+          display: none !important;
+        }
+      }
+    }
+
     .close-decor {
       position: absolute;
       top: 0;
