@@ -266,6 +266,7 @@
         content: '';
         @include box(12px);
         position: absolute;
+        z-index: 3;
         background-color: var(--support-success-default);
         border: 2px solid var(--button-bg-secondary-hover);
         right: -2px;
