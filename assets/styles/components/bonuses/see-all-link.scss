@@ -1,0 +1,30 @@
+.bonuses-see-all-link {
+  display: inline-flex;
+  width: fit-content;
+  position: relative;
+  color: var(--text-tertiary);
+  @include font($body-1);
+  text-decoration: none;
+  min-height: 16px;
+
+  &:after {
+    content: '';
+    position: absolute;
+    align-self: stretch;
+    border-bottom: 1px dashed var(--border-02);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transition: all .3s;
+  }
+
+  &:hover {
+    cursor: pointer;
+    color: var(--text-link-hover);
+
+    &:after {
+      border-color: var(--text-link-hover);
+    }
+
+  }
+}

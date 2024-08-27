@@ -1,0 +1,58 @@
+.bonuses-timer {
+  display: flex;
+  justify-content: center;
+  background: var(--layer-03-low-contrast);
+  padding: var(--timer-padding, 4px 14px);
+  align-items: flex-start;
+  gap: 2px;
+  flex: var(--timer-flex, 1 0 0);
+  align-self: stretch;
+  border-radius: 12px;
+  background: var(--gray-700);
+
+  &__item {
+    color: var(--item-color, var(--text-primary));
+    @include font($heading-1);
+    display: grid;
+    align-items: center;
+    line-height: initial;
+    justify-content: center;
+    position: relative;
+    min-height: var(--timer-item-height, 32px);
+    width: var(--timer-item-width, 32px);
+    min-width: var(--timer-item-min-width, auto);
+
+    &.has-null {
+      color: var(--text-tertiary, #8E949F);
+    }
+
+    &-digit {
+      display: grid;
+      justify-content: center;
+      @include font($heading-1);
+      color: var(--text-primary);
+      height: 16px;
+      align-self: flex-start;
+    }
+
+    &-label {
+      display: flex;
+      justify-content: center;
+      @include font($body-0);
+      color: var(--text-tertiary);
+    }
+  }
+
+  &__dots {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--text-tertiary);
+    line-height: initial;
+    transform: translateY(-1px);
+    width: 5px;
+    @include font($heading-1);
+  }
+}

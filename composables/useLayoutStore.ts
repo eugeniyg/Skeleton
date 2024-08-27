@@ -76,7 +76,8 @@ export const useLayoutStore = defineStore('layoutStore', {
         turnOverWager: false,
         questsHub: false,
         loyaltyEarn: false,
-        loyaltyLevel: false
+        loyaltyLevel: false,
+        bonusInfo: false,
       },
       modalsUrl: {
         register: 'sign-up',

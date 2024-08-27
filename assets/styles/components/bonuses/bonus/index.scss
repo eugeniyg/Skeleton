@@ -1,0 +1,114 @@
+.bonuses-bonus {
+  padding: 2px;
+  background: var(--bg, var(--layer-02));
+  border-radius: 16px;
+
+  &.is-active {
+    --bg: linear-gradient(89deg, #FFDC8A -2766.21%, #FFC12E 38.74%, #E6A409 2866.21%);
+  }
+
+  &__container {
+    background: var(--layer-02);
+    padding: 22px 22px 26px 22px;
+    border-radius: 16px;
+
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    height: 100%;
+    align-items: flex-start;
+  }
+
+  &__header {
+    display: grid;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 8px;
+    grid-auto-flow: column;
+  }
+
+  &__body {
+    display: grid;
+  }
+
+  .bonuses-progress {
+    --propgress-line-bg: var(--support-info-default);
+    --propgress-bar-bg: var(--support-info-default);
+    --propgress-bar-color: var(--blue-100);
+  }
+
+  &__name {
+    text-shadow: var(--shadow-layer);
+
+    &-text {
+      @include font($body-2);
+      color: var(--text-color, var(--text-primary));
+    }
+
+    &-value {
+      @include font($heading-7);
+      display: flex;
+      margin-top: -4px;
+      color: var(--value-color, var(--text-primary));
+    }
+
+    .is-locked & {
+      --text-color: var(--text-tertiary);
+      --value-color: var(--text-tertiary);
+    }
+  }
+
+  &__cashback-name {
+    color: var(--text-primary);
+    text-shadow: var(--shadow-layer);
+    @include font($subheading-4);
+
+    &-value {
+      color: var(--text-accent);
+    }
+  }
+
+  &__activator {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 8px;
+
+    .bonuses-timer {
+      flex: 1 1 136px;
+      min-width: calc(50% - 8px);
+    }
+
+    .btn-primary {
+      flex: 1 1 136px;
+      min-width: calc(50% - 8px);
+    }
+  }
+
+  &__actions {
+    display: grid;
+    gap: 8px;
+    margin-top: 16px;
+    align-self: flex-end;
+
+    @include media(md) {
+      margin-top: 24px;
+    }
+
+    .btn-ghost {
+      --width: 100%;
+      --color: var(--button-text-ghost-low-contrast);
+    }
+  }
+
+  &__locked-btn {
+    --width: 100%;
+  }
+
+  &__activate-btn, &__spin-btn {
+    --width: 100%;
+    @include upd-font($heading-2);
+  }
+
+  .bonuses-fs {
+    margin-top: 8px;
+  }
+}

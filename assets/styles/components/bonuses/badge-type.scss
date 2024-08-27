@@ -34,6 +34,18 @@
     --bg: var(--violet-500);
     --icon-color: var(--icon-contrast);
     --label-color: var(--violet-000);
+
+    .is-locked & {
+      --bg: var(--layer-03-low-contrast);
+      --label-color: var(--text-helper);
+      --icon-color: var(--icon-secondary);
+    }
+  }
+
+  &.is-percent-future {
+    --bg: var(--layer-03-low-contrast);
+    --icon-color: var(--icon-secondary);
+    --label-color: var(--text-helper);
   }
 
   &.is-cashback {

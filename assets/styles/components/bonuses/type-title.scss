@@ -1,0 +1,14 @@
+.bonuses-type-title  {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+  flex: 1 1 100%;
+  margin-bottom: 8px;
+  @include font($heading-5);
+
+  &__count {
+    color: var(--text-tertiary);
+    @include font($body-3);
+  }
+}

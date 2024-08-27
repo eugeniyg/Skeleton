@@ -1,0 +1,68 @@
+.modal-bonus-info {
+  @extend %modal-info;
+  align-items: flex-start;
+
+  .vfm__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .btn-modal-close {
+    --right: 16px;
+    --top: 16px;
+  }
+
+  .scroll {
+    overflow-y: auto !important;
+    padding: 0 8px 12px;
+  }
+
+  &__header {
+    display: grid;
+    position: relative;
+    padding-top: 8px;
+
+    &-title {
+      color: var(--text-primary);
+      @include font($body-2);
+    }
+
+    &-value {
+      color: var(--text-primary);
+      @include font($heading-7);
+      box-shadow: var(--shadow-layer);
+      margin-top: -2px;
+    }
+
+    &-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+    }
+
+    &-img {
+      display: block;
+      position: absolute;
+      width: 83px;
+      height: 83px;
+      object-fit: cover;
+      top: 0;
+      right: 5px;
+    }
+  }
+
+  .bonuses-timer {
+    --timer-padding: 4px 8px;
+    --timer-item-height: 16px;
+    --timer-item-width: auto;
+    --timer-item-min-width: 18px;
+    --timer-flex: 0 0 auto;
+    height: 24px;
+    border-radius: 8px;
+  }
+
+  .btn-modal-close {
+    --right: 0px;
+  }
+}

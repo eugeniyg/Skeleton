@@ -38,7 +38,7 @@
       type: String,
     },
     align: {
-      validator: (val: string | null) => ['bottom', null].includes(val),
+      validator: (val: any) => ['bottom', null].includes(val),
       default: null,
     },
     messageCustomClass: {

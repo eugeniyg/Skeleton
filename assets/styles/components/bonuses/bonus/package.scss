@@ -1,7 +1,9 @@
-.bonus-package {
+.bonuses-bonus-package {
   padding: 2px;
   background: var(--bg, var(--layer-02));
   border-radius: 16px;
+  width: 100%;
+  flex: 1 1 100%;
 
   &.is-active {
     --bg: linear-gradient(89deg, #FFDC8A -2766.21%, #FFC12E 38.74%, #E6A409 2866.21%);
@@ -11,23 +13,36 @@
     background: var(--layer-02);
     padding: 22px 22px 26px 22px;
     border-radius: 16px;
+    overflow: hidden;
+    position: relative;
   }
 
   &__header {
-    display: flex;
+    display: grid;
     justify-content: space-between;
     margin-bottom: 20px;
+    gap: 8px;
+    grid-auto-flow: column;
   }
 
   &__body {
     display: grid;
-    grid-gap: 16px;
+    grid-gap: 8px;
+
+    @include media(sm) {
+      padding-right: 42%;
+    }
   }
 
-  &__title {
+  &__name {
     color: var(--text-primary);
     text-shadow: var(--shadow-layer);
     @include font($subheading-6);
+    margin-top: -24px;
+
+    @include media(sm) {
+      margin-top: 0;
+    }
 
     > * {
       margin: 0;
@@ -66,6 +81,62 @@
     &-th {
       @include font($body-1);
       color: var(--text-tertiary);
+      align-self: flex-start;
     }
+
+    &-td {
+      display: grid;
+      gap: 8px;
+    }
+  }
+
+  &__not-received-label {
+    color: var(--text-primary);
+    @include font($subheading-1);
+  }
+
+  &__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &__img {
+    height: 186px;
+    position: relative;
+
+    @include media(sm) {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      height: auto;
+      width: 52%;
+      //transform: translateX(28%);
+    }
+
+    img {
+      position: absolute;
+      max-height: 100%;
+      max-width: 196px;
+      width: 100%;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+
+
+      @include media(sm) {
+        max-height: 100%;
+        max-width: 100%;
+        width: auto;
+        transform: translateX(28%);
+        right: 0;
+        top: 12px;
+        left: auto;
+        bottom: 12px;
+        margin: auto;
+      }
+    }
+
   }
 }

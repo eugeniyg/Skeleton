@@ -14,35 +14,46 @@
     </nuxt-link>
     
     
-    <bonuses-bonus-package is-active/>
-    <bonuses-bonus-cash is-active/>
-    <bonuses-bonus-percent is-active/>
-    <bonuses-bonus-cashback is-active/>
-    <bonuses-bonus-fs is-active/>
-    
-    <bonus-code :content="content?.currentLocaleData?.bonusCode || content?.defaultLocaleData?.bonusCode" />
-    
-    <transition name="fade" mode="out-in">
-      <bonus-active
-        v-if="activePlayerBonuses.length"
-        bonusType="bonus"
-        :content="content?.currentLocaleData?.cashBonuses || content?.defaultLocaleData?.cashBonuses"
+    <div class="profile-bonuses-new__grid">
+      <bonuses-type-title title="Active bonuses"/>
+      
+      <bonuses-bonus-package status="active"/>
+      
+      <bonuses-bonus type="cash" status="active"/>
+      
+      <bonuses-bonus type="percent" status="active"/>
+      
+      <atomic-divider/>
+      <bonuses-type-title title="Available bonuses" count="17"/>
+      
+      <bonuses-bonus
+        type="cash"
+        status="available"
       />
-    </transition>
-    
-    <transition name="fade" mode="out-in">
-      <bonus-active
-        v-if="activePlayerFreeSpins.length"
-        bonusType="free-spin"
-        :content="content?.currentLocaleData?.freeSpins || content?.defaultLocaleData?.freeSpins"
+      
+      <bonuses-bonus
+        type="fs"
+        status="available"
       />
-    </transition>
+      
+      <bonuses-bonus
+        type="percent"
+        status="future"
+      />
+    </div>
+    
+    <atomic-divider/>
+    <bonuses-promo-code :content="bonuses.promoCode"/>
+    
+    <modal-bonus-info/>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { IProfileBonuses } from '~/types';
+  
+  const { bonuses } = useFakeStore();
   
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();

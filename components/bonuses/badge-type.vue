@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
   const props = defineProps<{
-    variant: 'package'|'cash'|'percent'|'cashback'|'fs'
+    mode: 'package'|'cash'|'percent'|'cashback'|'fs'|'percentFuture'
   }>();
   
   const badgeVariants = {
@@ -26,6 +26,11 @@
       label: 'percent',
       icon: 'percent',
     },
+    percentFuture: {
+      class: 'is-percent-future',
+      label: 'percent',
+      icon: 'percent',
+    },
     cashback: {
       class: 'is-cashback',
       label: 'cashback',
@@ -38,7 +43,10 @@
     }
   };
   
-  const badge = computed(() => badgeVariants[props.variant]);
+  const badge = computed(() => badgeVariants[props.mode]);
+  
+  
+  
 </script>
 
-<style src="~/assets/styles/components/bonuses/badge.scss" lang="scss"/>
+<style src="~/assets/styles/components/bonuses/badge-type.scss" lang="scss"/>

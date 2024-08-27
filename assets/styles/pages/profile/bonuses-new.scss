@@ -21,4 +21,21 @@
       color: var(--icon-accent);
     }
   }
+
+  &__grid {
+    display: flex;
+    gap: 16px;
+    grid-template-columns: 1fr;
+    flex-wrap: wrap;
+
+    .bonuses-bonus {
+      flex: 1 1 340px;
+    }
+
+    hr {
+      flex: 1 1 100%;
+      --margin: 24px 0;
+    }
+
+  }
 }

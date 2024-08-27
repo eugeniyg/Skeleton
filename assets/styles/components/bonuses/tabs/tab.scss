@@ -1,0 +1,56 @@
+.bonuses-tabs-tab {
+  display: grid;
+  margin-top: 16px;
+
+  &__content {
+    border-radius: 8px;
+    border: 1px solid var(--border-01);
+    background: var(--layer-03-low-contrast);
+    display: grid;
+    overflow: hidden;
+
+    &-label, &-value {
+      display: flex;
+      padding: 12px;
+      align-items: center;
+      gap: 10px;
+      flex: 1 0 0;
+    }
+
+    &-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      &:nth-child(odd) {
+        background: var(--layer-01);
+      }
+
+      &:nth-of-type(even) {
+        background: var(--layer-03-low-contrast);
+      }
+    }
+
+    &-label {
+      color: var(--text-tertiary);
+      @include font($body-1);
+    }
+
+    &-value {
+      color: var(--text-primary);
+      @include font($heading-1);
+    }
+  }
+
+  &__footer {
+    color: var(--text-secondary);
+    text-align: center;
+    margin-top: 8px;
+    @include font($body-0);
+
+    & {
+      > * {
+        margin: 0;
+      }
+    }
+  }
+}

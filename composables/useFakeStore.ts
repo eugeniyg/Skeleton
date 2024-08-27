@@ -1710,17 +1710,56 @@ export const useFakeStore = () => {
         },
         {
           name: 'Bonus 2',
-          casinoWagerAmountFrom: '0.0018',
-          casinoWager: '30',
-          casinoWagerAmountTo: '0036',
-          casinoWagerCurrency: 'BTC',
-          sportsbookWager: '30',
-          sportsbookWagerAmountFrom: '0.0018',
-          sportsbookWagerAmountTo: '0.0036',
-          sportsbookWagerCurrency: 'BTC',
-          progress: 40,
+          wager: [
+            {
+              category: 'sportsbook',
+              wager: '30',
+              amountFrom: '0.0018',
+              amountTo: '0.0036',
+              currency: 'BTC',
+              progress: 50
+            },
+            {
+              category: 'casino',
+              wager: '30',
+              amountFrom: '0.0018',
+              amountTo: '0036',
+              currency: 'BTC',
+            }
+          ],
+        },
+        {
+          name: '50% up to 1000 mBTC + 50 FS',
+          isNotReceived: true,
+        },
+        {
+          name: '75% up to 1000 mBTC + 50 FS',
+          isNotReceived: true,
+        },
+        {
+          name: '75% up to 1000 mBTC + 50 FS',
+          isNotReceived: true,
+        },
+        {
+          name: 'bonus 6',
+          freeSpins: {
+            count: 10,
+            totalCount: 20,
+            progress: 10
+          }
         }
       ]
+    },
+    bonus: {
+      minDeposit: {amount: '0.0003', currency: 'BTC'},
+      wager: [{ category: 'sportsbook', value: '15'},{ category: 'casino', value: '20'}]
+    },
+    promoCode: {
+      title: "Do you have a promo code? ",
+      description: "Enter the promo code and get your bonus. Remember, the validity period of the codes is limited!",
+      timerText: "until the next try",
+      buttonLabel: "Activate",
+      tryError: "The bonus code is incorrect. Try again after 3 minutes"
     }
   };
 
