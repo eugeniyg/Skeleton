@@ -48,6 +48,8 @@
             <atomic-picture :src="card.image"/>
 
             <div class="actions">
+              <bonuses-collected/>
+              
               <button-base
                 type="primary"
                 size="md"
