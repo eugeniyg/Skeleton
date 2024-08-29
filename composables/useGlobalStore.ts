@@ -38,7 +38,6 @@ interface IGlobalStoreState {
   defaultLocale: Maybe<ILocale>;
   isMobile: boolean;
   browserLanguage: string;
-  baseApiUrl: string;
   fieldsSettings: Maybe<IFieldsSettingsContent>;
   defaultLocaleFieldsSettings: Maybe<IFieldsSettingsContent>;
   layoutData: Maybe<ILayoutContent>;
@@ -68,7 +67,6 @@ export const useGlobalStore = defineStore('globalStore', {
     defaultLocale: undefined,
     isMobile: false,
     browserLanguage: 'en',
-    baseApiUrl: '',
     fieldsSettings: undefined,
     defaultLocaleFieldsSettings: undefined,
     layoutData: undefined,
