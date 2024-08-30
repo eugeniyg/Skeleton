@@ -31,7 +31,6 @@
       @closeModal="showConfirmBonusUnsettledModal = false"
       @confirm="confirmAction"
     />
-  
   </div>
 </template>
 
@@ -137,11 +136,6 @@
 
   const emit = defineEmits(['showCancelLock']);
   const changeBonuses = (processBonus: IPlayerBonus | IPlayerFreeSpin, processMode: 'activate' | 'cancel'): void => {
-    // if (findCancelLockBonus()) {
-    //   emit('showCancelLock');
-    //   return;
-    // }
-
     modalState.bonusInfo = processBonus;
     modalState.mode = processMode;
     const hasCancelLockBonus = findCancelLockBonus();
@@ -226,4 +220,4 @@
   };
 </script>
 
-<style src="~/assets/styles/components/bonus/active.scss" lang="scss"/>
+<style src="~/assets/styles/components/bonus/active.scss" lang="scss" />
