@@ -130,19 +130,39 @@
       modalState.cancelButton = data.cancelButton;
     }
   };
-  
+
+  const findCancelLockBonus = (): boolean => {
+    return activePlayerBonuses.value.some(bonus => bonus.isBonusCancelLock && (bonus.currentWagerPercentage > 0));
+  }
+
+  const emit = defineEmits(['showCancelLock']);
   const changeBonuses = (processBonus: IPlayerBonus | IPlayerFreeSpin, processMode: 'activate' | 'cancel'): void => {
+    // if (findCancelLockBonus()) {
+    //   emit('showCancelLock');
+    //   return;
+    // }
+
     modalState.bonusInfo = processBonus;
     modalState.mode = processMode;
+    const hasCancelLockBonus = findCancelLockBonus();
     
     if (processBonus.status === 1) {
       if (processMode === 'activate') {
+        if (hasCancelLockBonus) {
+          emit('showCancelLock');
+          return;
+        }
         setModalStateForActiveBonus();
       } else {
         setModalStateForCancelBonus(processBonus);
       }
       showModalConfirmBonus.value = true;
     } else {
+      if (hasCancelLockBonus) {
+        emit('showCancelLock');
+        return;
+      }
+
       if (processBonus.openedTransactionsCount > 0) {
         setModalStateForUnsettledBonus();
         showConfirmBonusUnsettledModal.value = true;

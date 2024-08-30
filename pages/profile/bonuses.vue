@@ -20,6 +20,7 @@
         v-if="activePlayerBonuses.length"
         bonusType="bonus"
         :content="content?.currentLocaleData?.cashBonuses || content?.defaultLocaleData?.cashBonuses"
+        @showCancelLock="showBonusCancelLockModal = true"
       />
     </transition>
 
@@ -28,8 +29,15 @@
         v-if="activePlayerFreeSpins.length"
         bonusType="free-spin"
         :content="content?.currentLocaleData?.freeSpins || content?.defaultLocaleData?.freeSpins"
+        @showCancelLock="showBonusCancelLockModal = true"
       />
     </transition>
+
+    <modal-bonus-cancel-lock
+      :showModal="showBonusCancelLockModal"
+      :content="content?.currentLocaleData?.cancelLockModal || content?.defaultLocaleData?.cancelLockModal"
+      @close="showBonusCancelLockModal = false"
+    />
   </div>
 </template>
 
@@ -66,6 +74,8 @@
   watch(content, () => {
     if (content.value) setPageMeta(content.value?.currentLocaleData?.pageMeta);
   }, { immediate: true });
+
+  const showBonusCancelLockModal = ref(false);
 
   onMounted(() => {
     getPlayerBonuses();
