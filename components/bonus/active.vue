@@ -10,8 +10,9 @@
           :bonus="bonus"
           :mode="props.bonusType"
           :content="props.content"
-          @switchBonus="changeBonuses(bonus, 'activate')"
-          @removeBonus="changeBonuses(bonus, 'cancel')"
+          :loading="loadingBonuses.includes(bonus.id)"
+          @switchBonus="handleChange(bonus, 'activate')"
+          @removeBonus="handleChange(bonus, 'cancel')"
         />
       </transition-group>
     </div>
@@ -19,7 +20,7 @@
     <ModalConfirmBonus
       v-bind="modalState"
       :showModal="showModalConfirmBonus"
-      :bonusesUpdating="bonusesUpdating"
+      :bonusesUpdating="loadingBonuses.includes(modalState.bonusInfo?.id || 'unknown')"
       @closeModal="showModalConfirmBonus = false"
       @confirm="confirmAction"
     />
@@ -27,7 +28,7 @@
     <ModalConfirmBonusUnsettled
       v-bind="modalState"
       :showModal="showConfirmBonusUnsettledModal"
-      :bonusesUpdating="bonusesUpdating"
+      :bonusesUpdating="loadingBonuses.includes(modalState.bonusInfo?.id || 'unknown')"
       @closeModal="showConfirmBonusUnsettledModal = false"
       @confirm="confirmAction"
     />
@@ -130,54 +131,60 @@
     }
   };
 
-  const findCancelLockBonus = (): boolean => {
-    return activePlayerBonuses.value.some(bonus => bonus.isBonusCancelLock && (bonus.currentWagerPercentage > 0));
-  }
-
   const emit = defineEmits(['showCancelLock']);
-  const changeBonuses = (processBonus: IPlayerBonus | IPlayerFreeSpin, processMode: 'activate' | 'cancel'): void => {
-    modalState.bonusInfo = processBonus;
-    modalState.mode = processMode;
-    const hasCancelLockBonus = findCancelLockBonus();
-    
-    if (processBonus.status === 1) {
-      if (processMode === 'activate') {
-        if (hasCancelLockBonus) {
-          emit('showCancelLock');
-          return;
-        }
-        setModalStateForActiveBonus();
-      } else {
-        setModalStateForCancelBonus(processBonus);
-      }
-      showModalConfirmBonus.value = true;
-    } else {
-      if (hasCancelLockBonus) {
-        emit('showCancelLock');
-        return;
-      }
 
-      if (processBonus.openedTransactionsCount > 0) {
-        setModalStateForUnsettledBonus();
-        showConfirmBonusUnsettledModal.value = true;
-      } else {
-        setModalStateForCancelBonus(processBonus);
-        showModalConfirmBonus.value = true;
-      }
+  const hasCancelLockBonus = computed(() => {
+    const activeBonus = activePlayerBonuses.value.find(bonus => bonus.status === 2);
+    return !!activeBonus && activeBonus.isBonusCancelLock && (activeBonus.currentWagerPercentage > 0);
+  })
+
+  const changeBonus = (bonusInfo: IPlayerBonus, processMode: 'activate' | 'cancel'): void => {
+    const firstCancelLockCondition = hasCancelLockBonus.value && bonusInfo.status === 2;
+    const secondCancelLockCondition = hasCancelLockBonus.value && bonusInfo.status === 1 && processMode === 'activate';
+    if (firstCancelLockCondition || secondCancelLockCondition) {
+      emit('showCancelLock');
+      return;
+    }
+
+    if (bonusInfo.status === 1) {
+      processMode === 'activate' ? setModalStateForActiveBonus() : setModalStateForCancelBonus(bonusInfo);
+      showModalConfirmBonus.value = true;
+    } else if (bonusInfo.openedTransactionsCount > 0) {
+      setModalStateForUnsettledBonus();
+      showConfirmBonusUnsettledModal.value = true;
+    } else {
+      setModalStateForCancelBonus(bonusInfo);
+      showModalConfirmBonus.value = true;
     }
   };
-  
-  const bonusesUpdating = ref<boolean>(false);
+
+  const changeFreeSpin = (freeSpinInfo: IPlayerFreeSpin, processMode: 'activate' | 'cancel'): void => {
+    if (freeSpinInfo.status === 1 && processMode === 'activate') activateBonus();
+    else {
+      setModalStateForCancelBonus(freeSpinInfo);
+      showModalConfirmBonus.value = true;
+    }
+  };
+
+  const handleChange = (processBonus: IPlayerBonus | IPlayerFreeSpin, processMode: 'activate' | 'cancel'): void => {
+    modalState.bonusInfo = processBonus;
+    modalState.mode = processMode;
+
+    if (props.bonusType === 'bonus') changeBonus(processBonus as IPlayerBonus, processMode);
+    else changeFreeSpin(processBonus as IPlayerFreeSpin, processMode);
+  }
+
   const {
     activatePlayerBonus,
     cancelPlayerBonus,
     activatePlayerFreeSpin,
     cancelPlayerFreeSpin
   } = useCoreBonusApi();
-  
+
+  const loadingBonuses = ref<string[]>([]);
   const activateBonus = async (): Promise<void> => {
-    if (bonusesUpdating.value || !modalState.bonusInfo?.id) return;
-    bonusesUpdating.value = true;
+    if (!modalState.bonusInfo?.id || loadingBonuses.value.includes(modalState.bonusInfo.id)) return;
+    loadingBonuses.value.push(modalState.bonusInfo.id);
     
     try {
       props.bonusType === 'bonus'
@@ -189,26 +196,26 @@
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
-    
-    bonusesUpdating.value = false;
+
+    loadingBonuses.value = loadingBonuses.value.filter(id => id !== modalState.bonusInfo?.id);
   };
   
   const cancelBonus = async (): Promise<void> => {
-    if (bonusesUpdating.value || !modalState.bonusInfo?.id) return;
-    bonusesUpdating.value = true;
+    if (!modalState.bonusInfo?.id || loadingBonuses.value.includes(modalState.bonusInfo.id)) return;
+    loadingBonuses.value.push(modalState.bonusInfo.id);
     
     try {
       props.bonusType === 'bonus'
         ? await cancelPlayerBonus(modalState.bonusInfo.id)
         : await cancelPlayerFreeSpin(modalState.bonusInfo.id);
-      
+
       showModalConfirmBonus.value = false;
       showConfirmBonusUnsettledModal.value = false;
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
-    
-    bonusesUpdating.value = false;
+
+    loadingBonuses.value = loadingBonuses.value.filter(id => id !== modalState.bonusInfo?.id);
   };
   
   const confirmAction = (): void => {
