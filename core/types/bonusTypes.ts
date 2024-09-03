@@ -21,6 +21,7 @@ export interface IPlayerBonus extends Record<string, any>{
   result: number;
   createdAt: string;
   finishedAt: string|null;
+  isBonusCancelLock: boolean;
 }
 
 export interface IPlayerFreeSpin extends Record<string, any>{

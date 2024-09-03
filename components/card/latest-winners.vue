@@ -27,8 +27,6 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { localizePath, getImageUrl, formatBalance } = useProjectMethods();
-  const globalStore = useGlobalStore();
-  const { baseApiUrl } = storeToRefs(globalStore);
 
   const gameUrl = computed(() => {
     if (!isLoggedIn.value && props.isDemoMode) return localizePath(`/games/${props.gameId}`);

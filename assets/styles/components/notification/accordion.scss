@@ -1,0 +1,155 @@
+.notification-accordion {
+  background-color: var(--bg, var(--layer-01));
+  transition: background-color .3s;
+  box-shadow: var(--shadow-group);
+  position: relative;
+  border-top: 1px solid var(--border-02-low-contrast);
+
+  &.is-open {
+    --bg: var(--layer-03-low-contrast);
+  }
+
+  &__header {
+    display: flex;
+    padding: 15px 16px 16px 16px;
+    align-items: center;
+    grid-column-gap: 8px;
+    align-self: stretch;
+    border-radius: var(--corner-radius-base-value-sharp, 0px);
+    cursor: pointer;
+
+    &-title {
+      @include font($subheading-2);
+      color: var(--color, var(--text-tertiary));
+      flex: 1 0 0;
+
+      .is-unread & {
+        --color: var(--text-primary);
+      }
+    }
+
+    &-badge {
+      display: flex;
+      padding: 0 8px;
+      height: 16px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 999px;
+      background: var(--green-500);
+      color: var(--green-100);
+      @include font($subheading-1);
+    }
+  }
+
+  &__toggle {
+    --width: 24px;
+    --height: 24px;
+    --btn-border-radius: 8px;
+    --padding: 2px;
+    --color: var(--button-icn-ghost-low-contrast);
+
+    .is-open & {
+      & {
+        --bg: var(--button-bg-secondary-click);
+        --color: var(--button-icn-ghost-click);
+        transform-origin: center;
+
+        .icon {
+          transform: rotateX(180deg);
+        }
+      }
+    }
+  }
+
+  &__remove {
+    --width: 24px;
+    --height: 24px;
+    --btn-border-radius: 8px;
+    --padding: 2px;
+    --icon-size: 20px;
+    --color: var(--button-icn-ghost-low-contrast);
+  }
+
+  &__content {
+    transition: opacity 0.2s ease-in-out;
+    height: var(--items-height, 0);
+    display: flex;
+    flex-direction: column;
+    margin-top: -4px;
+    overflow: hidden;
+    opacity: 0;
+    gap: 8px;
+
+    @include media(md) {
+      display: grid;
+      grid-template-columns: 1fr minmax(0, auto);
+      grid-template-rows: minmax(0, auto) minmax(0, auto) minmax(0, 1fr);
+      grid-template-areas:
+              "date img"
+              "description img"
+              "link img";
+      align-items: flex-start;
+    }
+
+    .is-open & {
+      & {
+        --items-height: 100%;
+        opacity: 1;
+        padding: 0 16px 16px 16px;
+      }
+    }
+  }
+
+  &__date {
+    color: var(--gray-400);
+    @include font($body-0);
+    grid-area: date;
+
+    @include media(md) {
+      padding-left: 8px;
+    }
+  }
+
+  &__description {
+    color: var(--text-secondary);
+    @include font($body-1);
+    grid-area: description;
+
+    @include media(md) {
+      padding-left: 8px;
+    }
+
+    & {
+      > * {
+        margin: 0;
+      }
+    }
+  }
+
+  &__image {
+    background: var(--alpha-fade-layer-01);
+    grid-area: img;
+    min-width: 204px;
+
+    img {
+      max-width: 100%;
+      margin: 0 auto;
+      display: block;
+      max-height: 85px;
+    }
+  }
+
+  &__link {
+    --width: 100%;
+    --padding: 4px 8px;
+    --icon-size: 20px;
+
+    line-height: unset;
+    grid-area: link;
+    @include font($heading-1);
+
+    @include media(md) {
+      --width: fit-content;
+    }
+  }
+}

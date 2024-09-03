@@ -8,6 +8,7 @@
           v-if="props.mode === 'bonus' || !props.bonus.usedCount"
           name="toggle"
           :value="props.bonus.status === 2"
+          :loading="props.loading"
           @change="clickToggle"
         />
 
@@ -88,9 +89,10 @@
   import type { IProfileBonuses } from '~/types';
 
   const props = defineProps<{
-    bonus: IPlayerBonus|IPlayerFreeSpin,
-    content?: IProfileBonuses['cashBonuses'],
-    mode: 'bonus'|'free-spin'
+    bonus: IPlayerBonus|IPlayerFreeSpin;
+    content?: IProfileBonuses['cashBonuses'];
+    mode: 'bonus'|'free-spin';
+    loading?: boolean;
   }>();
 
   const dayjs = useDayjs();

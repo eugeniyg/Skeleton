@@ -72,15 +72,12 @@
 
   const router = useRouter();
   const profileStore = useProfileStore();
-  const { isLoggedIn, profile } = storeToRefs(profileStore);
+  const { isLoggedIn } = storeToRefs(profileStore);
   const {
-    baseApiUrl,
-    alertsData,
-    defaultLocaleAlertsData,
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent,
   } = useGlobalStore();
-  const { showModal, showAlert } = useLayoutStore();
+  const { showModal } = useLayoutStore();
   const { localizePath, getImageUrl, getContent } = useProjectMethods();
 
   const gameTagsContent: Maybe<IGameTag[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags.gameTagsList');

@@ -38,6 +38,14 @@
       >
         <atomic-icon :id="item.icon" />
         {{ item.label }}
+
+        <span v-if="item.url === '/profile/bonuses' && activeBonusesAndFreeSpins" class="count">
+          {{ activeBonusesAndFreeSpins > 99 ? '99+' : activeBonusesAndFreeSpins }}
+        </span>
+
+        <span v-if="item.url === '/profile/notifications' && unreadCount" class="count">
+          {{ unreadCount > 99 ? '99+' : unreadCount }}
+        </span>
       </div>
     </div>
 
@@ -75,10 +83,19 @@
     handleExternalLink(url)
   }
 
-  const clickDeposit = (url: string):void => {
+  const clickDeposit = ():void => {
     closeUserNav();
     openWalletModal('deposit');
   }
+
+  const notificationStore = useNotificationStore();
+  const { unreadCount } = storeToRefs(notificationStore);
+
+  const bonusStore = useBonusStore();
+  const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
+  const activeBonusesAndFreeSpins = computed(() => {
+    return (activePlayerBonuses.value?.length || 0) + (activePlayerFreeSpins.value?.length || 0)
+  })
 </script>
 
 <style src="~/assets/styles/components/nav/user.scss" lang="scss" />

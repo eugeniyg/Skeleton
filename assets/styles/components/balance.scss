@@ -40,7 +40,7 @@
     grid-template-areas: "label value" "label sub-value";
     align-items: center;
     grid-template-rows: 1fr;
-    min-height: rem(32px);
+    min-height: rem(34px);
 
     &:nth-of-type(even) {
       .label {

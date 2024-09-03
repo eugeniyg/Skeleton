@@ -1,5 +1,6 @@
 import mitt from 'mitt';
 import type { IAnalyticsEvent } from "@skeleton/types";
+import type {IMessage} from "@skeleton/core/types";
 
 type ApplicationEvents = {
   'changeMobileGameMode': undefined;
@@ -15,6 +16,9 @@ type ApplicationEvents = {
   'analyticsEvent': IAnalyticsEvent;
   'completedQuestsUpdated': undefined;
   'expiredQuestsUpdated': undefined;
+  'markAsReadMessage': IMessage;
+  'newPlayerMessage': undefined;
+  'markAllAsReadMessages': undefined;
 };
 
 const emitter = mitt<ApplicationEvents>();

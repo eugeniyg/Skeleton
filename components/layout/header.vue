@@ -6,9 +6,9 @@
       <pwa v-if="isLoggedIn" display="mobile" />
     </client-only>
 
-    <div class="app-header" :class="headerClassValue" ref="appHeader">
+    <div ref="appHeader" class="app-header" :class="headerClassValue">
       <client-only>
-        <button class="app-header__back-btn" @click="backToHomePage" v-if="isGamePage && isLoggedIn">
+        <button v-if="isGamePage && isLoggedIn" class="app-header__back-btn" @click="backToHomePage">
           <atomic-icon id="arrow_previous"/>
         </button>
       </client-only>
@@ -28,9 +28,9 @@
       <atomic-vertical-divider/>
 
       <button-search
-          data-show="mobile"
-          @show-search="toggle"
-          :is-active="isShowSearch"
+        data-show="mobile"
+        :is-active="isShowSearch"
+        @show-search="toggle"
       />
 
       <client-only>
@@ -59,14 +59,14 @@
         </template>
         
         <search
-            :isShow="isShowSearch"
-            @hideSearch="isShowSearch = false"
+          :isShow="isShowSearch"
+          @hide-search="isShowSearch = false"
         />
 
         <button-search
-            data-show="desktop"
-            @show-search="toggle"
-            :is-active="isShowSearch"
+          data-show="desktop"
+          :is-active="isShowSearch"
+          @show-search="toggle"
         />
         
         <atomic-divider v-if="isGamePage" />
@@ -80,14 +80,22 @@
 
             <pwa display="desktop" />
 
-            <!--
-            <atomic-notification :is-active="!!fakeStore.items.notifications.length"/>
-            <popover-notifications :items="fakeStore.items.notifications" :max="5"/>
-            -->
+            <div class="app-header__notifications">
+              <notification-popover-activator
+                :popoverShow="isShowNotifications"
+                @toggle="isShowNotifications = !isShowNotifications"
+              />
+
+              <notification-popover
+                v-if="isShowNotifications"
+                @hide="isShowNotifications = false"
+              />
+            </div>
+
             <form-input-deposit />
 
             <div v-click-outside="closeUserNav" class="nav-user__wrap">
-              <div class="nav-user__header-avatar">
+              <div class="nav-user__header-avatar" :class="{ '--show-ring': unreadCount }">
                 <loyalty-avatar size="sm" @click="toggleProfileNav" />
 
                 <span v-show="isUserNavOpen" class="close-decor" @click="toggleProfileNav">
@@ -138,6 +146,8 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
   const { isGamePage, isDrawerCompact } = storeToRefs(layoutStore);
+  const notificationStore = useNotificationStore();
+  const { unreadCount } = storeToRefs(notificationStore);
   
   const appHeader = ref<HTMLElement>();
   const bar = ref();
@@ -199,6 +209,8 @@
   const changeGameMode = () => {
     useEvent('changeMobileGameMode');
   }
+
+  const isShowNotifications = ref<boolean>(false);
 
   onMounted(() => {
     headerClassValue.value = headerClassModifiers.value;
