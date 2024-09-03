@@ -144,10 +144,12 @@ export const useProfileStore = defineStore('profileStore', {
       } = useBonusStore();
       const { getPlayerActiveQuests, subscribeQuestsSocket } = useQuestsStore();
       const { getPlayerLoyalty, subscribeLoyaltySocket } = useLoyaltyStore();
+      const { getPopoverNotifications, subscribeNotificationSocket } = useNotificationStore();
       const runtimeConfig = useRuntimeConfig();
       getFavoriteGames();
       if (runtimeConfig.public?.questsEnabled) getPlayerActiveQuests();
       if (runtimeConfig.public?.loyaltyEnabled) getPlayerLoyalty();
+      getPopoverNotifications();
 
       const { activeAccount } = useWalletStore();
       getPlayerCashback(activeAccount?.currency);
@@ -171,6 +173,7 @@ export const useProfileStore = defineStore('profileStore', {
       this.subscribeOnlineSocket();
       if (runtimeConfig.public?.questsEnabled) subscribeQuestsSocket();
       if (runtimeConfig.public?.loyaltyEnabled) subscribeLoyaltySocket();
+      subscribeNotificationSocket();
 
       const { setEquivalentCurrency } = useGlobalStore();
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
@@ -186,6 +189,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { unsubscribeBetsSocket } = useGamesStore();
       const { unsubscribeQuestsSocket } = useQuestsStore();
       const { unsubscribeLoyaltySocket } = useLoyaltyStore();
+      const { unsubscribeNotificationSocket } = useNotificationStore();
       unsubscribeAccountSocket();
       unsubscribeInvoiceSocket();
       unsubscribeBonusCodeSocket();
@@ -195,6 +199,7 @@ export const useProfileStore = defineStore('profileStore', {
       this.unsubscribeOnlineSocket();
       unsubscribeQuestsSocket();
       unsubscribeLoyaltySocket();
+      unsubscribeNotificationSocket();
     },
 
     async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {
