@@ -14,4 +14,26 @@
       color: var(--icon-accent);
     }
   }
+
+  .bonuses-grid {
+    &__title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+      flex: 1 1 100%;
+      margin-bottom: 8px;
+      @include font($heading-5);
+
+      &__count {
+        color: var(--text-tertiary);
+        @include font($body-3);
+      }
+    }
+
+    hr {
+      flex: 1 1 100%;
+      --margin: 24px 0;
+    }
+  }
 }

@@ -42,17 +42,19 @@ export const useBonusStore = defineStore('bonusStore', {
 
   getters: {
     activePlayerBonuses(state):IPlayerBonus[] {
-      const walletStore = useWalletStore();
-      return state.playerBonuses.filter((playerBonus) => walletStore.activeAccount?.currency === playerBonus.currency);
+      return state.playerBonuses.filter(playerBonus => playerBonus.status === 2);
+    },
+
+    issuedPlayerBonuses(state):IPlayerBonus[] {
+      return state.playerBonuses.filter(playerBonus => playerBonus.status === 1);
     },
 
     activePlayerFreeSpins(state):IPlayerFreeSpin[] {
-      const walletStore = useWalletStore();
-      return state.playerFreeSpins.filter((playerFreeSpin) => walletStore.activeAccount?.currency === playerFreeSpin.currency);
+      return state.playerFreeSpins.filter(playerFreeSpin => playerFreeSpin.status === 2);
     },
 
-    currentActiveBonus(): Maybe<IPlayerBonus> {
-      return this.activePlayerBonuses.find((bonus) => bonus.status === 2);
+    issuedPlayerFreeSpins(state):IPlayerFreeSpin[] {
+      return state.playerFreeSpins.filter(playerFreeSpin => playerFreeSpin.status === 1);
     }
   },
 
