@@ -1,6 +1,7 @@
 <template>
   <vue-final-modal
     v-model="modals.wallet"
+    :modalId="'wallet-skeleton'"
     class="wallet-modal"
     :clickToClose="false"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
