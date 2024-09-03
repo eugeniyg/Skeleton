@@ -8,7 +8,7 @@
     @closed="closedHandler"
   >
     <div class="wallet-modal__container" :class="{ 'show-form': showMobileForm }">
-      <button-modal-close @close="handleClose" :class="{ 'close-secondary': hasOffset }" />
+      <button-modal-close :class="{ 'close-secondary': hasOffset }" @close="handleClose" />
 
       <wallet-methods
         v-model:currentDepositMethod="currentDepositMethod"
@@ -16,8 +16,8 @@
         :showTabs="showTabs"
         :selectedTab="selectedTab"
         :modalTitle="modalTitle"
-        @changeTab="changeTab"
-        @methodClick="showMobileForm = true"
+        @change-tab="changeTab"
+        @method-click="showMobileForm = true"
       />
 
       <wallet-forms
@@ -27,7 +27,7 @@
         :showTabs="showTabs"
         :selectedTab="selectedTab"
         :modalTitle="modalTitle"
-        @changeTab="changeTab"
+        @change-tab="changeTab"
       />
     </div>
   </vue-final-modal>
@@ -59,13 +59,16 @@
 
   const currentDepositMethod = ref<IPaymentMethod|undefined>();
   const currentWithdrawMethod = ref<IPaymentMethod|undefined>();
-  const selectedTab = ref<'deposit'|'withdraw'>(walletModalType?.value || 'deposit');
+  const selectedTab = ref<'deposit'|'buyCrypto'|'withdraw'>(walletModalType?.value || 'deposit');
   const showMobileForm = ref<boolean>(false);
 
-  const changeTab = (tabId: 'deposit'|'withdraw'): void => {
+  const changeTab = (tabId: 'deposit'|'buyCrypto'|'withdraw'): void => {
     if (tabId === 'withdraw') {
       walletModalType.value = tabId;
       if (mobileWidth()) currentWithdrawMethod.value = undefined;
+    } else if (tabId === 'buyCrypto') {
+      walletModalType.value = tabId;
+      if (mobileWidth()) currentDepositMethod.value = undefined;
     } else {
       walletModalType.value = undefined;
       if (mobileWidth()) currentDepositMethod.value = undefined;
@@ -82,9 +85,9 @@
   });
 
   const modalTitle = computed(() => {
-    return selectedTab.value === 'deposit'
-      ? getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.title')
-      : getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.title')
+    if (selectedTab.value === 'deposit') return getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.title');
+    if (selectedTab.value === 'buyCrypto') return getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.buyCrypto.title');
+    return getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.title');
   })
 
   const mobileWidth = ():boolean => {
