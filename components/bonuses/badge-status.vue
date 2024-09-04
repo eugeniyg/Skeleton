@@ -14,10 +14,10 @@
 
 <script setup lang="ts">
   import type { IProfileBonuses } from "~/types";
-  import type { IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
+  import type {IBonus, IPlayerBonus, IPlayerFreeSpin} from "@skeleton/core/types";
 
   const props = defineProps<{
-    bonusInfo: IPlayerBonus|IPlayerFreeSpin;
+    bonusInfo: IPlayerBonus|IPlayerFreeSpin|IBonus;
     isDeposit?: boolean;
   }>();
 

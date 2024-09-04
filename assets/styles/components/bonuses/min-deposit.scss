@@ -1,18 +1,14 @@
 .bonuses-min-deposit {
-  display: grid;
-  align-items: center;
-  gap: 4px;
-  margin-top: 8px;
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
 
   &__label {
     margin-right: 2px;
     color: var(--text-tertiary);
     @include font($body-1);
-  }
-
-  &__icon {
-    --icon-size: 16px;
-    --color: var(--icon-primary);
   }
 
   &__amount {
@@ -23,22 +19,5 @@
   &__currency {
     color: var(--text-secondary);
     @include font($body-1);
-  }
-
-  &__value {
-    color: var(--text-secondary);
-    @include font($body-1);
-  }
-
-  &__row {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-  }
-
-  &__wager {
-    display: flex;
-    align-items: center;
-    gap: 2px;
   }
 }

@@ -1,0 +1,29 @@
+.bonuses-progress {
+  background:var(--support-system-low-contrast);
+  box-shadow: 0 2px 5px 0 var(--dark-shadow-inner-s) inset;
+  border-radius: 2px;
+  position: relative;
+  height: 4px;
+
+  &__line {
+    position: relative;
+    background: var(--propgress-line-bg);
+    height: 4px;
+    width: var(--width, 0);
+  }
+
+  &__bar {
+    position: absolute;
+    background: var(--propgress-bar-bg);
+    color: var(--propgress-bar-color);
+    display: flex;
+    height: 12px;
+    padding: 0 4px;
+    border-radius: 8px;
+    top: 50%;
+    right: 0;
+    transform: translateX(var(--translateX, 50%)) translateY(-50%);
+
+    @include font($subheading-0);
+  }
+}

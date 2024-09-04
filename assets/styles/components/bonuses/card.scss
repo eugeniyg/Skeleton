@@ -38,6 +38,7 @@
 
   &__name {
     text-shadow: var(--shadow-layer);
+    margin-bottom: 8px;
 
     &-text {
       @include font($body-2);

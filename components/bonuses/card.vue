@@ -24,10 +24,11 @@
           <span class="bonuses-card__name-value">{{ bonusValue }}</span>
         </div>
 
-        <bonuses-min-deposit
-          v-if="props.isDeposit"
-          v-bind="bonuses.bonus"
-        />
+        <bonuses-min-deposit v-if="props.isDeposit" :bonusInfo="props.bonusInfo as IBonus" />
+
+        <bonuses-wager v-if="!isFreeSpin" :bonusInfo="props.bonusInfo" />
+
+        <bonuses-info-button />
 
         <bonuses-fs
           v-if="props.type === 'fs'"
@@ -84,15 +85,21 @@
 </template>
 
 <script setup lang="ts">
-  import type {IPlayerBonus, IPlayerFreeSpin} from "@skeleton/core/types";
+  import type {IAmountRangeItem, IBonus, IPlayerBonus, IPlayerFreeSpin} from "@skeleton/core/types";
+  import type {IProfileBonuses} from "~/types";
 
   const props = defineProps<{
-    bonusInfo: IPlayerBonus|IPlayerFreeSpin;
+    bonusInfo: IPlayerBonus|IPlayerFreeSpin|IBonus;
     isFreeSpin?: boolean;
     isDeposit?: boolean;
   }>();
 
-  const { formatBalance } = useProjectMethods();
+  const { formatBalance, getEquivalentFromBase, getContent } = useProjectMethods();
+  const walletStore = useWalletStore();
+  const { activeAccount } = storeToRefs(walletStore);
+
+  const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
+  const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
 
   const bonusValue = computed<string|undefined>(() => {
     if (props.isFreeSpin) return `${props.bonusInfo.count} FS`;
@@ -103,6 +110,28 @@
     }
     return undefined;
   });
+
+  const minDeposit = computed<{amount: number, currency: string }|undefined>(() => {
+    if (!props.isDeposit) return undefined;
+
+    let minDeposit: { amount: number, currency: string }|undefined;
+
+    const invoiceItems: IAmountRangeItem[]|undefined = props.bonusInfo.triggerConditions?.invoiceAmountItems;
+    const baseCurrencyInvoiceFrom = props.bonusInfo.triggerConditions?.baseCurrencyInvoiceAmountFrom;
+
+    if (invoiceItems?.length) {
+      const currentCurrencyInvoiceItem = invoiceItems.find(invoiceItem => invoiceItem.currency === activeAccount.value?.currency);
+      if (currentCurrencyInvoiceItem && currentCurrencyInvoiceItem.amountFrom) {
+        minDeposit = formatBalance(currentCurrencyInvoiceItem.currency, currentCurrencyInvoiceItem.amountFrom);
+      }
+    }
+
+    if (!minDeposit && baseCurrencyInvoiceFrom) {
+      minDeposit = getEquivalentFromBase(baseCurrencyInvoiceFrom, activeAccount.value?.currency);
+    }
+
+    return minDeposit;
+  })
 </script>
 
 
