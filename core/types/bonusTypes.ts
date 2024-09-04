@@ -22,6 +22,8 @@ export interface IPlayerBonus extends Record<string, any>{
   createdAt: string;
   finishedAt: string|null;
   isBonusCancelLock: boolean;
+  requiredWagerCasinoAmount: number;
+  requiredWagerSportsbookAmount: number;
 }
 
 export interface IPlayerFreeSpin extends Record<string, any>{
@@ -108,6 +110,8 @@ export interface IBonusTriggerConditions {
   baseCurrencyInvoiceAmountFrom: number|null;
   baseCurrencyInvoiceAmountTo: number|null;
   invoiceAmountItems: IAmountRangeItem[];
+  availableFrom?: string;
+  availableTo?: string;
 }
 
 export interface IBonusWagerCasinoConditions {

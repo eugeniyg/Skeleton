@@ -1,10 +1,7 @@
 <template>
   <div v-if="minDeposit" class="bonuses-min-deposit">
     <div class="bonuses-min-deposit__row">
-      <span class="bonuses-min-deposit__label">
-        {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'minDeposit') }}:
-      </span>
-
+      <span v-if="props.label" class="bonuses-min-deposit__label">{{ props.label }}:</span>
       <span class="bonuses-min-deposit__amount">{{ minDeposit.amount }}</span>
       <span class="bonuses-min-deposit__currency">{{ minDeposit.currency }}</span>
     </div>
@@ -12,16 +9,14 @@
 </template>
 
 <script setup lang="ts">
-  import type { IProfileBonuses } from "~/types";
   import type { IAmountRangeItem, IBonus } from "@skeleton/core/types";
 
   const props = defineProps<{
     bonusInfo: IBonus;
+    label?: string;
   }>();
 
-  const { formatBalance, getEquivalentFromBase, getContent } = useProjectMethods();
-  const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
-  const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
+  const { formatBalance, getEquivalentFromBase } = useProjectMethods();
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
 

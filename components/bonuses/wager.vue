@@ -1,8 +1,6 @@
 <template>
   <div class="bonuses-wager">
-    <span class="bonuses-wager__label">
-      {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'wager') }}:
-    </span>
+    <span v-if="props.label" class="bonuses-wager__label">{{ props.label }}:</span>
 
     <template v-if="props.bonusInfo.wagerCasino">
       <atomic-icon id="cherry" class="bonuses-wager__icon" />
@@ -18,15 +16,11 @@
 
 <script setup lang="ts">
   import type { IPlayerBonus, IBonus } from "@skeleton/core/types";
-  import type {IProfileBonuses} from "~/types";
 
   const props = defineProps<{
     bonusInfo: IPlayerBonus|IBonus;
+    label?: string;
   }>();
-
-  const { getContent } = useProjectMethods();
-  const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
-  const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
 </script>
 
 <style src="~/assets/styles/components/bonuses/wager.scss" lang="scss"/>

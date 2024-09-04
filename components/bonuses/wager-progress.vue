@@ -3,30 +3,52 @@
     <div class="bonuses-wager-progress__row">
       <template v-if="props.bonusInfo.wagerCasino">
         <atomic-icon id="cherry" class="bonuses-wager-progress__icon"/>
-        <span class="bonuses-wager-progress__label">
-          {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'wager') }}
+
+        <span class="bonuses-wager-progress__label">{{ props.wagerLabel }}</span>
+
+        <span class="bonuses-wager-progress__value">
+          (x{{ props.bonusInfo.wagerCasino }}):
         </span>
-        <span class="bonuses-wager-progress__value">(x{{ props.bonusInfo.wagerCasino }}):</span>
-        <span class="bonuses-wager-progress__amount">{{ props.bonusInfo.currentWagerCasinoAmount }}</span>
+
+        <span class="bonuses-wager-progress__amount">
+          {{ currentCasinoAmount.amount }}
+        </span>
+
         <span class="bonuses-wager-progress__divider">/</span>
-        <span class="bonuses-wager-progress__amount">{{  }}</span>
 
-
+        <span class="bonuses-wager-progress__amount">{{ fullCasinoAmount.amount }}</span>
+        <span class="bonuses-wager-progress__currency">{{ fullCasinoAmount.currency }}</span>
       </template>
 
-      <atomic-icon :id="icon" class="bonuses-wager-progress__icon"/>
-      <span class="bonuses-wager-progress__label">Wager</span>
-      <span v-if="props.wager" class="bonuses-wager-progress__value">(x{{ props.wager }}):</span>
-      <span v-if="props.amountFrom" class="bonuses-wager-progress__amount">{{ props.amountFrom }}</span>
-      <template v-if="props.amountTo">
+      <template v-if="props.bonusInfo.wagerSportsbook">
+        <atomic-icon id="sportsbook-football" class="bonuses-wager-progress__icon" />
+
+        <span class="bonuses-wager-progress__label">{{ props.wagerLabel }}</span>
+
+        <span class="bonuses-wager-progress__value">
+          (x{{ props.bonusInfo.wagerSportsbook }}):
+        </span>
+
+        <span class="bonuses-wager-progress__amount">
+          {{ currentSportsbookAmount.amount }}
+        </span>
+
         <span class="bonuses-wager-progress__divider">/</span>
-        <span class="bonuses-wager-progress__amount">{{ props.amountTo }}</span>
+
+        <span class="bonuses-wager-progress__amount">
+          {{ fullSportsbookAmount.amount }}
+        </span>
+
+        <span class="bonuses-wager-progress__currency">{{ fullSportsbookAmount.currency }}</span>
       </template>
-      <span v-if="currency" class="bonuses-wager-progress__currency">{{ props.currency }}</span>
     </div>
 
-    <bonuses-progress v-if="props.progress" :value="props.progress"/>
-    <bonuses-waiting-results/>
+    <bonuses-progress :progress="props.bonusInfo.currentWagerPercentage" />
+
+    <bonuses-waiting-results
+      v-if="props.bonusInfo.currentWagerPercentage === 100 && props.bonusInfo.openedTransactionsCount > 0"
+      :text="props.waitingText"
+    />
   </div>
 </template>
 
@@ -36,18 +58,31 @@
 
   const props = defineProps<{
     bonusInfo: IPlayerBonus;
+    wagerLabel?: string;
+    waitingText?: string;
   }>();
 
-  const { getContent } = useProjectMethods();
+  const { getContent, formatBalance } = useProjectMethods();
   const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
 
-  const iconMap = {
-    sportsbook: 'sportsbook-football',
-    casino: 'cherry',
-  }
+  const currentCasinoAmount = computed<{ currency: string, amount: number }>(() => {
+    return formatBalance(props.bonusInfo.currency, props.bonusInfo.currentWagerCasinoAmount);
+  })
 
-  const icon = computed(() => iconMap[props.category]);
+  const fullCasinoAmount = computed<{ currency: string, amount: number }>(() => {
+    const fullAmount = props.bonusInfo.currentWagerCasinoAmount + props.bonusInfo.requiredWagerCasinoAmount;
+    return formatBalance(props.bonusInfo.currency, fullAmount);
+  })
+
+  const currentSportsbookAmount = computed<{ currency: string, amount: number }>(() => {
+    return formatBalance(props.bonusInfo.currency, props.bonusInfo.currentWagerSportsbookAmount);
+  })
+
+  const fullSportsbookAmount = computed<{ currency: string, amount: number }>(() => {
+    const fullAmount = props.bonusInfo.currentWagerSportsbookAmount + props.bonusInfo.requiredWagerSportsbookAmount;
+    return formatBalance(props.bonusInfo.currency, fullAmount);
+  })
 </script>
 
-<style src="~/assets/styles/components/bonuses/wager.scss" lang="scss"/>
+<style src="~/assets/styles/components/bonuses/wager-progress.scss" lang="scss"/>

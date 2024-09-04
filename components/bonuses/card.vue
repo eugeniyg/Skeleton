@@ -24,68 +24,65 @@
           <span class="bonuses-card__name-value">{{ bonusValue }}</span>
         </div>
 
-        <bonuses-min-deposit v-if="props.isDeposit" :bonusInfo="props.bonusInfo as IBonus" />
-
-        <bonuses-wager v-if="!isFreeSpin" :bonusInfo="props.bonusInfo" />
-
-        <bonuses-info-button />
-
-        <bonuses-fs
-          v-if="props.type === 'fs'"
-          :count="15"
-          :total-count="100"
-          :progress="15"
+        <bonuses-min-deposit
+          v-if="props.isDeposit"
+          :bonusInfo="props.bonusInfo as IBonus"
+          :label="getContent(bonusesContent, defaultLocaleBonusesContent, 'minDeposit')"
         />
+
+        <bonuses-wager
+          v-if="!isFreeSpin"
+          :bonusInfo="props.bonusInfo"
+          :label="getContent(bonusesContent, defaultLocaleBonusesContent, 'wager')"
+        />
+
+        <bonuses-info-button :label="getContent(bonusesContent, defaultLocaleBonusesContent, 'moreInfo')" />
+
+        <template v-if="!props.isDeposit || props.bonusInfo.status === 2">
+          <bonuses-freespin-progress
+            v-if="props.isFreeSpin"
+            :bonusInfo="props.bonusInfo as IPlayerFreeSpin"
+          />
+
+          <bonuses-wager-progress
+            v-else
+            :bonusInfo="props.bonusInfo as IPlayerBonus"
+            :wagerLabel="getContent(bonusesContent, defaultLocaleBonusesContent, 'wager')"
+            :waitingText="getContent(bonusesContent, defaultLocaleBonusesContent, 'waitingResults')"
+          />
+        </template>
       </div>
 
       <div class="bonuses-card__actions">
-        <button-base
-          v-if="props.type === 'fs'"
-          class="bonuses-card__spin-btn"
-          type="primary"
-          size="md"
-        >Spin</button-base>
+        <div v-if="props.isDeposit || props.bonusInfo.status === 1" class="bonuses-card__activator">
+          <button-base
+            class="bonuses-card__activate-btn"
+            type="primary"
+            size="md"
+          >
+            {{ activateLabel }}
+          </button-base>
 
-        <button-base
-          v-if="props.type === 'percent' && props.status === 'future'"
-          class="bonuses-card__locked-btn"
-          type="primary"
-          size="md"
-          disabled
-        >
-          <atomic-icon id="locked"/>
-          <span>Active after 4 deposit</span>
-        </button-base>
-
-        <button-base
-          v-if="props.type === 'cash'"
-          class="bonuses-card__locked-btn"
-          type="primary"
-          size="md"
-          disabled
-        >
-          Claim Bonus
-        </button-base>
-
-
-
-        <div v-if="props.type === 'fs' || props.type === 'cashback'" class="bonuses-card__activator">
-          <button-base class="bonuses-card__activate-btn" type="primary" size="md">Activate</button-base>
-          <bonuses-timer expired-at="2024-09-20T09:25:51.331Z" />
+          <bonuses-timer
+            v-if="activationExpired"
+            :expiredAt="activationExpired"
+          />
         </div>
 
         <button-base
-          v-if="props.type === 'fs' || props.type === 'cashback'"
+          v-if="!props.isDeposit"
           type="ghost"
           size="xs"
-        >Delete this bonus</button-base>
+        >
+          {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'cancelLabel') }}
+        </button-base>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import type {IAmountRangeItem, IBonus, IPlayerBonus, IPlayerFreeSpin} from "@skeleton/core/types";
+  import type { IBonus, IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
   import type {IProfileBonuses} from "~/types";
 
   const props = defineProps<{
@@ -94,9 +91,7 @@
     isDeposit?: boolean;
   }>();
 
-  const { formatBalance, getEquivalentFromBase, getContent } = useProjectMethods();
-  const walletStore = useWalletStore();
-  const { activeAccount } = storeToRefs(walletStore);
+  const { formatBalance, getContent } = useProjectMethods();
 
   const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
@@ -111,26 +106,20 @@
     return undefined;
   });
 
-  const minDeposit = computed<{amount: number, currency: string }|undefined>(() => {
-    if (!props.isDeposit) return undefined;
+  const activateLabel = computed<string>(() => {
+    if (props.isDeposit) return getContent(bonusesContent, defaultLocaleBonusesContent, 'activateDeposit');
+    if (props.isFreeSpin) return getContent(bonusesContent, defaultLocaleBonusesContent, 'activateFreeSpin');
+    return getContent(bonusesContent, defaultLocaleBonusesContent, 'activateCash');
+  })
 
-    let minDeposit: { amount: number, currency: string }|undefined;
+  const activationExpired = computed<string|undefined>(() => {
+    if (props.bonusInfo.status === 2) return undefined;
 
-    const invoiceItems: IAmountRangeItem[]|undefined = props.bonusInfo.triggerConditions?.invoiceAmountItems;
-    const baseCurrencyInvoiceFrom = props.bonusInfo.triggerConditions?.baseCurrencyInvoiceAmountFrom;
-
-    if (invoiceItems?.length) {
-      const currentCurrencyInvoiceItem = invoiceItems.find(invoiceItem => invoiceItem.currency === activeAccount.value?.currency);
-      if (currentCurrencyInvoiceItem && currentCurrencyInvoiceItem.amountFrom) {
-        minDeposit = formatBalance(currentCurrencyInvoiceItem.currency, currentCurrencyInvoiceItem.amountFrom);
-      }
+    if (props.isDeposit && props.bonusInfo.triggerConditions.availableTo) {
+      return props.bonusInfo.triggerConditions.availableTo;
     }
 
-    if (!minDeposit && baseCurrencyInvoiceFrom) {
-      minDeposit = getEquivalentFromBase(baseCurrencyInvoiceFrom, activeAccount.value?.currency);
-    }
-
-    return minDeposit;
+    return props.bonusInfo.activationExpiredAt;
   })
 </script>
 

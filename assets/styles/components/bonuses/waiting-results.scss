@@ -1,0 +1,16 @@
+.bonuses-waiting-results {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &__icon {
+    --icon-size: 16px;
+    --color: var(--icon-warning);
+  }
+
+  &__label {
+    color: var(--text-tertiary);
+    flex: 1 0 0;
+    @include font($body-1);
+  }
+}

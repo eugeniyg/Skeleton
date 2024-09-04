@@ -1,0 +1,30 @@
+.bonuses-freespin-progress {
+  display: grid;
+  gap: 8px;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+
+    * {
+      line-height: unset !important;
+    }
+  }
+
+  &__count, &__total-count {
+    color: var(--text-primary);
+    @include font($subheading-1);
+  }
+
+  &__divider {
+    color: var(--text-helper);
+    @include font($body-1);
+  }
+
+  &__label {
+    color: var(--text-tertiary);
+    @include font($body-1);
+    text-transform: uppercase;
+  }
+}
