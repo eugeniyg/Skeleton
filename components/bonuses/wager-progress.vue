@@ -1,46 +1,45 @@
 <template>
   <div class="bonuses-wager-progress">
-    <div class="bonuses-wager-progress__row">
-      <template v-if="props.bonusInfo.wagerCasino">
-        <atomic-icon id="cherry" class="bonuses-wager-progress__icon"/>
+    <div v-if="props.bonusInfo.wagerCasino" class="bonuses-wager-progress__row">
+      
+      <atomic-icon id="cherry" class="bonuses-wager-progress__icon"/>
 
-        <span class="bonuses-wager-progress__label">{{ props.wagerLabel }}</span>
+      <span class="bonuses-wager-progress__label">{{ props.wagerLabel }}</span>
 
-        <span class="bonuses-wager-progress__value">
-          (x{{ props.bonusInfo.wagerCasino }}):
-        </span>
+      <span class="bonuses-wager-progress__value">
+        (x{{ props.bonusInfo.wagerCasino }}):
+      </span>
 
-        <span class="bonuses-wager-progress__amount">
-          {{ currentCasinoAmount.amount }}
-        </span>
+      <span class="bonuses-wager-progress__amount">
+        {{ currentCasinoAmount.amount }}
+      </span>
 
-        <span class="bonuses-wager-progress__divider">/</span>
+      <span class="bonuses-wager-progress__divider">/</span>
 
-        <span class="bonuses-wager-progress__amount">{{ fullCasinoAmount.amount }}</span>
-        <span class="bonuses-wager-progress__currency">{{ fullCasinoAmount.currency }}</span>
-      </template>
+      <span class="bonuses-wager-progress__amount">{{ fullCasinoAmount.amount }}</span>
+      <span class="bonuses-wager-progress__currency">{{ fullCasinoAmount.currency }}</span>
+    </div>
 
-      <template v-if="props.bonusInfo.wagerSportsbook">
-        <atomic-icon id="sportsbook-football" class="bonuses-wager-progress__icon" />
+    <div v-if="props.bonusInfo.wagerSportsbook" class="bonuses-wager-progress__row">
+      <atomic-icon id="sportsbook-football" class="bonuses-wager-progress__icon" />
 
-        <span class="bonuses-wager-progress__label">{{ props.wagerLabel }}</span>
+      <span class="bonuses-wager-progress__label">{{ props.wagerLabel }}</span>
 
-        <span class="bonuses-wager-progress__value">
-          (x{{ props.bonusInfo.wagerSportsbook }}):
-        </span>
+      <span class="bonuses-wager-progress__value">
+        (x{{ props.bonusInfo.wagerSportsbook }}):
+      </span>
 
-        <span class="bonuses-wager-progress__amount">
-          {{ currentSportsbookAmount.amount }}
-        </span>
+      <span class="bonuses-wager-progress__amount">
+        {{ currentSportsbookAmount.amount }}
+      </span>
 
-        <span class="bonuses-wager-progress__divider">/</span>
+      <span class="bonuses-wager-progress__divider">/</span>
 
-        <span class="bonuses-wager-progress__amount">
-          {{ fullSportsbookAmount.amount }}
-        </span>
+      <span class="bonuses-wager-progress__amount">
+        {{ fullSportsbookAmount.amount }}
+      </span>
 
-        <span class="bonuses-wager-progress__currency">{{ fullSportsbookAmount.currency }}</span>
-      </template>
+      <span class="bonuses-wager-progress__currency">{{ fullSportsbookAmount.currency }}</span>
     </div>
 
     <bonuses-progress :progress="props.bonusInfo.currentWagerPercentage" />
@@ -54,7 +53,6 @@
 
 <script setup lang="ts">
   import type { IPlayerBonus } from "@skeleton/core/types";
-  import type {IProfileBonuses} from "~/types";
 
   const props = defineProps<{
     bonusInfo: IPlayerBonus;
@@ -62,9 +60,7 @@
     waitingText?: string;
   }>();
 
-  const { getContent, formatBalance } = useProjectMethods();
-  const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
-  const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
+  const { formatBalance } = useProjectMethods();
 
   const currentCasinoAmount = computed<{ currency: string, amount: number }>(() => {
     return formatBalance(props.bonusInfo.currency, props.bonusInfo.currentWagerCasinoAmount);

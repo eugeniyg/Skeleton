@@ -19,21 +19,15 @@
   }
 
   &__header {
-    display: grid;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
     gap: 8px;
-    grid-auto-flow: column;
   }
 
   &__body {
     display: grid;
-  }
-
-  .bonuses-progress {
-    --propgress-line-bg: var(--support-info-default);
-    --propgress-bar-bg: var(--support-info-default);
-    --propgress-bar-color: var(--blue-100);
   }
 
   &__name {
@@ -43,6 +37,10 @@
     &-text {
       @include font($body-2);
       color: var(--text-color, var(--text-primary));
+
+      &.bonuses-card__name--large {
+        @include font($subheading-4);
+      }
     }
 
     &-value {

@@ -16,7 +16,13 @@
   }
 
   .bonuses-grid {
-    &__title {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr 1fr;
+    flex-wrap: wrap;
+
+    &__title  {
+      grid-column: 1 / span 2;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -25,13 +31,14 @@
       margin-bottom: 8px;
       @include font($heading-5);
 
-      &__count {
+      &-count {
         color: var(--text-tertiary);
         @include font($body-3);
       }
     }
 
     hr {
+      grid-column: 1 / span 2;
       flex: 1 1 100%;
       --margin: 24px 0;
     }

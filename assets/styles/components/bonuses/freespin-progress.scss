@@ -1,6 +1,11 @@
 .bonuses-freespin-progress {
   display: grid;
   gap: 8px;
+  margin-top: 16px;
+
+  @include media(md) {
+    margin-top: 24px;
+  }
 
   &__row {
     display: flex;

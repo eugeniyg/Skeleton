@@ -7,7 +7,10 @@
       <span class="bonuses-freespin-progress__label">FS</span>
     </div>
     
-    <bonuses-progress :progress="props.bonusInfo.progress" />
+    <bonuses-progress
+      :progress="props.bonusInfo.progress"
+      isFreeSpin
+    />
   </div>
 </template>
 

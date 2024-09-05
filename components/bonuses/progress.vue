@@ -2,6 +2,7 @@
   <div
     ref="progressRef"
     class="bonuses-progress"
+    :class="props.isFreeSpin ? 'bonuses-progress--freespin' : 'bonuses-progress--cash'"
   >
     <div
       ref="lineRef"
@@ -22,6 +23,7 @@
 <script setup lang="ts">
   const props = defineProps<{
     progress: number;
+    isFreeSpin?: boolean;
   }>();
 
   const lineWidthStyle = computed(() => {

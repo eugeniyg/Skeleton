@@ -13,7 +13,9 @@
       {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'historyLink') }}
     </nuxt-link>
 
-    <bonuses-active />
+    <bonuses-active v-if="activePlayerBonuses.length || activePlayerFreeSpins.length" />
+
+    <bonuses-issued v-if="issuedPlayerBonuses.length || issuedPlayerFreeSpins.length || depositBonuses.length" />
 
     <!--    <bonus-code :content="content?.currentLocaleData?.bonusCode || content?.defaultLocaleData?.bonusCode" />-->
 
@@ -35,11 +37,10 @@
     <!--      />-->
     <!--    </transition>-->
 
-    <!--    <modal-bonus-cancel-lock-->
-    <!--      :showModal="showBonusCancelLockModal"-->
-    <!--      :content="content?.currentLocaleData?.cancelLockModal || content?.defaultLocaleData?.cancelLockModal"-->
-    <!--      @close="showBonusCancelLockModal = false"-->
-    <!--    />-->
+    <modal-bonus-cancel-lock
+      :showModal="showBonusCancelLockModal"
+      @close="showBonusCancelLockModal = false"
+    />
   </div>
 </template>
 
@@ -51,8 +52,14 @@
   const bonusStore = useBonusStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
   const { setPageMeta, getLocalesContentData, localizePath, getContent } = useProjectMethods();
-  const { getPlayerBonuses, getPlayerFreeSpins } = bonusStore;
-  const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
+  const { getPlayerBonuses, getPlayerFreeSpins, getDepositBonuses } = bonusStore;
+  const {
+    activePlayerBonuses,
+    activePlayerFreeSpins,
+    issuedPlayerBonuses,
+    issuedPlayerFreeSpins,
+    depositBonuses
+  } = storeToRefs(bonusStore);
 
   const bonusesContent = ref<Maybe<IProfileBonuses>>();
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>();
@@ -93,6 +100,7 @@
   onMounted(() => {
     getPlayerBonuses();
     getPlayerFreeSpins();
+    getDepositBonuses();
   })
 </script>
 

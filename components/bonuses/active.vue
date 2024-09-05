@@ -1,24 +1,22 @@
 <template>
   <div class="bonuses-active bonuses-grid">
     <div class="bonuses-grid__title">
-      {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'active.title') }}
+      {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'activeTitle') }}
     </div>
 
     <bonuses-card
       v-for="bonus in activePlayerBonuses"
       :key="bonus.id"
       :bonusInfo="bonus"
-      status="active"
+      isCash
     />
 
     <bonuses-card
       v-for="freeSpin in activePlayerFreeSpins"
       :key="freeSpin.id"
       :bonusInfo="freeSpin"
-      status="active"
       isFreeSpin
     />
-    <atomic-divider/>
   </div>
 </template>
 

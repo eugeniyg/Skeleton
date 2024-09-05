@@ -55,31 +55,42 @@ export const useBonusStore = defineStore('bonusStore', {
 
     issuedPlayerFreeSpins(state):IPlayerFreeSpin[] {
       return state.playerFreeSpins.filter(playerFreeSpin => playerFreeSpin.status === 1);
+    },
+    bonusesCount(state):number {
+      return state.playerBonuses.length + state.playerFreeSpins.length + state.depositBonuses.length;
     }
   },
 
   actions: {
     async getPlayerBonuses():Promise<void> {
+      const { activeAccount } = useWalletStore();
+      if (!activeAccount?.currency) return;
       const { getPlayerBonuses } = useCoreBonusApi();
-      const { data } = await getPlayerBonuses({ status: [1, 2] });
+      const { data } = await getPlayerBonuses({ status: [1, 2], currency: [activeAccount.currency] });
       this.playerBonuses = data;
     },
 
     async getPlayerFreeSpins():Promise<void> {
+      const { activeAccount } = useWalletStore();
+      if (!activeAccount?.currency) return;
       const { getPlayerFreeSpins } = useCoreBonusApi();
-      const { data } = await getPlayerFreeSpins({ status: [1, 2] });
+      const { data } = await getPlayerFreeSpins({ status: [1, 2], currency: [activeAccount.currency] });
       this.playerFreeSpins = data;
     },
 
-    async getPlayerCashback(currency?: string):Promise<void> {
+    async getPlayerCashback():Promise<void> {
+      const { activeAccount } = useWalletStore();
+      if (!activeAccount?.currency) return;
       const { getPlayerCashback } = useCoreBonusApi();
-      const { data } = await getPlayerCashback(currency);
+      const { data } = await getPlayerCashback(activeAccount.currency);
       this.playerCashback = data;
     },
 
-    async getDepositBonuses(currency: string, amount?: number):Promise<void> {
+    async getDepositBonuses():Promise<void> {
+      const { activeAccount } = useWalletStore();
+      if (!activeAccount?.currency) return;
       const { getDepositBonuses } = useCoreBonusApi();
-      this.depositBonuses = await getDepositBonuses(currency, amount);
+      this.depositBonuses = await getDepositBonuses(activeAccount.currency);
     },
 
     async getDepositBonusCode():Promise<void> {

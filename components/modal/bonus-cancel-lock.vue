@@ -10,22 +10,24 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="emit('close')" />
-        <div class="title">{{ props.content?.title }}</div>
+        <div class="title">
+          {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'cancelLockModal.title') }}
+        </div>
       </div>
 
       <div class="modal-bonus-cancel-lock__image">
-        <atomic-image :src="props.content?.image" />
+        <atomic-image :src="getContent(bonusesContent, defaultLocaleBonusesContent, 'cancelLockModal.image')" />
       </div>
 
-      <p class="text">{{ props.content?.description }}</p>
+      <p class="text">{{ getContent(bonusesContent, defaultLocaleBonusesContent, 'cancelLockModal.description') }}</p>
 
       <button-base
-        v-if="props.content?.confirmButton"
+        v-if="getContent(bonusesContent, defaultLocaleBonusesContent, 'cancelLockModal.confirmButton')"
         type="primary"
         size="md"
         @click="clickConfirm"
       >
-        {{ props.content.confirmButton }}
+        {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'cancelLockModal.confirmButton') }}
       </button-base>
     </div>
   </vue-final-modal>
@@ -37,18 +39,22 @@
 
   const props = defineProps<{
     showModal: boolean;
-    content?: IProfileBonuses['cancelLockModal'];
   }>()
+
+  const { getContent, localizePath } = useProjectMethods();
+  const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
+  const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
 
   const emit = defineEmits(['close']);
 
   const router = useRouter();
   const clickConfirm = (): void => {
-    if (props.content?.buttonLink) {
-      if (props.content.buttonLink.startsWith('http')) {
-        window.open(props.content.buttonLink, '_blank');
+    const buttonLink = getContent(bonusesContent.value, defaultLocaleBonusesContent.value, 'cancelLockModal.buttonLink');
+    if (buttonLink) {
+      if (buttonLink.startsWith('http')) {
+        window.open(buttonLink, '_blank');
       } else {
-        router.push(props.content.buttonLink);
+        router.push(localizePath(buttonLink));
       }
     } else emit('close');
   }

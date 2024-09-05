@@ -55,12 +55,14 @@ export interface IBonusCode extends Record<string, any>{
 export interface IPlayerBonusesRequest extends Record<string, any>{
   status?: number[];
   sortOrder?: 'asc'|'desc';
+  currency?: string[];
   page?: number;
   perPage?: number;
 }
 
 export interface IPlayerFreeSpinsRequest extends Record<string, any>{
   status?: number[];
+  currency?: string[];
   sortOrder?: 'asc'|'desc';
   page?: number;
   perPage?: number;

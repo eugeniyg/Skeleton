@@ -1,13 +1,13 @@
 .bonuses-badge-game {
   display: flex;
   padding: 4px 8px;
-  justify-content: flex-end;
   align-items: center;
   gap: 4px;
   border-radius: 8px;
   background: var(--layer-01);
   overflow: hidden;
   text-decoration: none;
+  margin-right: auto;
 
   &__icon {
     --icon-size: 16px;

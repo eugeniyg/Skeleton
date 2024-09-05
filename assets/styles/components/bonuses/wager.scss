@@ -1,11 +1,9 @@
 .bonuses-wager {
   display: flex;
   align-items: center;
-  gap: 2px;
-  margin-top: 4px;
+  margin-bottom: 4px;
 
   &__label {
-    margin-right: 2px;
     color: var(--text-tertiary);
     @include font($body-1);
   }
@@ -13,10 +11,12 @@
   &__icon {
     --icon-size: 16px;
     --color: var(--icon-primary);
+    margin-left: 4px;
   }
 
   &__value {
     color: var(--text-secondary);
     @include font($body-1);
+    margin-left: 2px;
   }
 }
