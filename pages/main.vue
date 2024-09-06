@@ -1,8 +1,17 @@
 <template>
   <div>
-    <main-slider />
+    <main-slider/>
     
-    <nav-cat @clickCategory="changeCategory"/>
+    <!--<nav-cat @clickCategory="changeCategory"/>-->
+    
+    <nav-category
+      @clickCategory="changeCategory"
+    />
+    
+    <client-only>
+      <modal-providers/>
+      <modal-categories/>
+    </client-only>
     
     <group-games
       v-for="category in mainCategoriesList.slice(0, 3)"
@@ -10,9 +19,9 @@
       showArrows
       :category="category"
     />
-
-    <group-providers showArrows />
-
+    
+    <group-providers showArrows/>
+    
     <group-games
       v-for="category in mainCategoriesList.slice(3, 4)"
       showAllBtn
@@ -28,11 +37,11 @@
       showArrows
       :category="category"
     />
-
+    
     <client-only>
       <favorite-recently v-if="isLoggedIn"/>
     </client-only>
-
+    
     <atomic-seo-text v-if="pageContent?.pageMeta?.seoText" v-bind="pageContent.pageMeta.seoText"/>
   </div>
 </template>
@@ -41,7 +50,7 @@
   import { storeToRefs } from 'pinia';
   import type { ICasinoPage } from '~/types';
   import type { ICollection } from '@skeleton/core/types';
-
+  
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();
   const {
@@ -55,50 +64,55 @@
   } = useProjectMethods();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { globalComponentsContent } = globalStore;
-
+  
   const pageContent = ref<Maybe<ICasinoPage>>();
   const defaultLocalePageContent = ref<Maybe<ICasinoPage>>();
-
+  
   interface IPageContent {
     currentLocaleData: Maybe<ICasinoPage>;
     defaultLocaleData: Maybe<ICasinoPage>;
   }
-
+  
   const setContentData = (contentData: Maybe<IPageContent>): void => {
     pageContent.value = contentData?.currentLocaleData;
     defaultLocalePageContent.value = contentData?.defaultLocaleData;
     setPageMeta(pageContent.value?.pageMeta);
-  }
-
+  };
+  
   const getPageContent = async (): Promise<IPageContent> => {
     const nuxtContentData = useNuxtData('casinoPageContent');
     if (nuxtContentData.data.value) return nuxtContentData.data.value;
-
+    
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'pages', 'casino').findOne(),
+      queryContent(currentLocale.value?.code as string, 'pages', 'casino')
+        .findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'casino').findOne()
+        : queryContent(defaultLocale.value?.code as string, 'pages', 'casino')
+          .findOne()
     ]);
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  }
-
+  };
+  
   const { data } = await useLazyAsyncData('casinoPageContent', () => getPageContent());
   if (data.value) setContentData(data.value);
-
+  
   watch(data, () => {
     setContentData(data.value);
-  })
-
+  });
+  
   const { getCollectionsList } = useGamesStore();
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
-  const mainCategoriesList =  computed(() => {
+  const mainCategoriesList = computed(() => {
     return gameCollections.value?.reduce((categoriesArr: ICollection[], currentCategory) => {
       return currentCategory.isHidden ? categoriesArr : [...categoriesArr, currentCategory];
     }, []) || [];
   });
-
+  
   const router = useRouter();
   const changeCategory = (categoryId: string) => {
-    router.push({ path: localizePath('/games'), query: { category: categoryId } });
+    router.push({
+      path: localizePath('/games'),
+      query: { category: categoryId }
+    });
   };
 </script>

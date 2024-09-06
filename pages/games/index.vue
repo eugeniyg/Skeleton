@@ -1,6 +1,7 @@
 <template>
   <div class="category">
-    <nav-cat @clickCategory="changeCategory"/>
+    
+    <!--<nav-cat @clickCategory="changeCategory"/>-->
 
     <atomic-cat-heading
       :icon="gameCategoriesObj[activeCollection?.identity || '']?.icon"
@@ -9,27 +10,34 @@
     </atomic-cat-heading>
 
     <div class="game-filter" v-click-outside="skipActionsState">
+      <nav-category @clickCategory="changeCategory" hide-items/>
+      
+      <form-input-search
+        class="game-filter__search"
+        v-model:value="searchValue"
+        :placeholder="getContent(layoutData, defaultLocaleLayoutData, 'header.search.placeholder')"
+        @input="searchInput"
+      />
+      
+      <button-toggle-filter
+        :is-active="isShowFilter"
+        @toggle="toggleFilter"
+      />
+      
+      
       <form-input-providers
         :currentLocaleContent="gamesContent"
         :defaultLocaleContent="defaultLocaleGamesContent"
         :selected="selectedProviders"
         @select="changeProvider"
       />
-
+      
+      <!--
       <div class="game-filter__actions">
         <button-toggle-search :is-active="isShowSearch" @toggle="toggleSearch"/>
-        <button-toggle-filter :is-active="isShowFilter" @toggle="toggleFilter"/>
       </div>
-
-      <form-input-search
-        class="game-filter__search"
-        v-show="isShowSearch"
-        v-model:value="searchValue"
-        :placeholder="getContent(layoutData, defaultLocaleLayoutData, 'header.search.placeholder')"
-        @input="searchInput"
-        @submit="isShowSearch = false"
-      />
-
+      -->
+      
       <atomic-game-sort
         class="game-filter__sort"
         v-show="isShowFilter"
@@ -39,6 +47,18 @@
         @change="changeSort"
         v-bind="gamesContent?.sortOptions?.length ? gamesContent : defaultLocaleGamesContent"
       />
+      
+      
+      <providers-tags  :selected="selectedProviders"/>
+      
+      <client-only>
+        <modal-providers
+          :selected="selectedProviders"
+          @select="changeProvider"
+        />
+        <modal-categories/>
+      </client-only>
+      
     </div>
 
     <list-grid
@@ -136,7 +156,6 @@
   const pageMeta = ref<IPaginationMeta>();
   const loadingGames = ref<boolean>(true);
   const isShowFilter = ref<boolean>(false);
-  const isShowSearch = ref<boolean>(false);
 
   const { getFilteredGames } = useCoreGamesApi();
 
@@ -250,16 +269,9 @@
 
   const toggleFilter = () => {
     isShowFilter.value = !isShowFilter.value;
-    isShowSearch.value = false;
   };
-
-  const toggleSearch = () => {
-    isShowSearch.value = !isShowSearch.value;
-    isShowFilter.value = false;
-  };
-
+  
   const skipActionsState = () => {
-    isShowSearch.value = false;
     isShowFilter.value = false;
   }
 </script>

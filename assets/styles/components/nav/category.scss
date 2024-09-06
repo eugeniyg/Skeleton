@@ -1,0 +1,139 @@
+.nav-category {
+  display: grid;
+  grid-column-gap: 8px;
+  flex-wrap: wrap;
+  grid-template-columns: 1fr;
+  align-items: center;
+  margin-bottom: 40px;
+
+  @include media(sm) {
+    grid-template-columns: auto auto;
+  }
+
+  &__items {
+    height: 48px;
+    overflow: hidden;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    grid-column-gap: 8px;
+
+    .main-layout & {
+      display: none;
+
+      @include media(sm) {
+        display: inline-flex;
+      }
+    }
+  }
+
+  &__item {
+    display: inline-flex;
+    height: 48px;
+    padding: 6px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    flex: 1 0 0;
+    border-radius: 12px;
+    background: var(--layer-01);
+    white-space: nowrap;
+
+    &-icon {
+      --color: var(--icon-color, var(--icon-primary));
+      --icon-size: 20px;
+    }
+
+    &-text {
+      color: var(--text-color, var(--text-secondary));
+      text-align: center;
+      @include font($subheading-2);
+    }
+  }
+
+  &__actions {
+    display: grid;
+    align-items: center;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 8px;
+    position: relative;
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    z-index: 1;
+    display: grid;
+    width: 200px;
+    align-items: flex-start;
+    border-radius: 8px;
+    background: var(--layer-02);
+    box-shadow: var(--dark-shadow-group);
+    padding: 8px;
+    gap: 9px;
+    flex: 1 0 0;
+    list-style: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 400px;
+    @include scrollbar();
+
+    &-item {
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      grid-template-areas: "icon text";
+      height: 40px;
+      padding: 6px 8px;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 4px;
+      border-radius: 12px;
+      background: var(--layer-02);
+      color: var(--text-color, var(--text-secondary));
+      white-space: nowrap;
+      line-height: unset;
+      position: relative;
+
+      &.is-active {
+        --text-color: var(--text-primary);
+        --icon-color: var(--icon-contrast);
+      }
+
+      &:not(:last-of-type) {
+        &:after {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: 1px;
+          bottom: -5px;
+          background: var(--border-02-low-contrast);
+        }
+      }
+
+      .icon {
+        --icon-size: 20px;
+        --color: var(--icon-color, var(--icon-primary));
+        grid-area: icon;
+      }
+
+      &-text {
+        text-align: left;
+        grid-area: text;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: color .2s ease-in-out;
+        @include font($subheading-2);
+        --line-height: auto;
+      }
+
+      &:hover:not(.is-active) {
+        cursor: pointer;
+        --text-color: var(--text-accent);
+        --icon-color: var(--icon-accent);
+      }
+    }
+  }
+}
