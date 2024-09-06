@@ -2,23 +2,24 @@
   <form class="form-deposit-crypto">
     <form-input-dropdown
       v-if="props.fields?.length"
+      v-model:value="state.selectedNetwork"
       :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.label')"
       :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.placeholder')"
-      v-model:value="state.selectedNetwork"
       :options="networkSelectOptions"
       class="dropdown-network"
       name="networkSelect"
       @input="onInputNetwork"
     />
 
-    <div class="dropdown-network__info"
-         v-if="props.fields?.length && !state.selectedNetwork"
-         v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
+    <div
+      v-if="props.fields?.length && !state.selectedNetwork"
+      class="dropdown-network__info"
+      v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
     />
     
     <wallet-warning
-        v-if="props.fields?.length && state.selectedNetwork"
-        :content="popupsData?.wallet?.deposit?.warning || defaultLocalePopupsData?.wallet?.deposit?.warning"
+      v-if="props.fields?.length && state.selectedNetwork"
+      :content="popupsData?.wallet?.deposit?.warning || defaultLocalePopupsData?.wallet?.deposit?.warning"
     />
     
     <div class="form-deposit-crypto__content" :class="{'is-blured': props.fields?.length && !state.selectedNetwork }">
@@ -60,7 +61,6 @@
 
   const bonusStore = useBonusStore();
   const {
-    depositBonuses,
     selectedDepositBonus,
     bonusDeclined,
     showDepositBonusCode,

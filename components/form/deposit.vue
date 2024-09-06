@@ -5,12 +5,12 @@
 
   <form v-else class="form-deposit">
     <form-input-number
+      v-model:value="amountValue"
       :hint="fieldHint"
       :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.sumLabel') || ''"
       name="depositSum"
       :min="formatAmountMin.amount"
       :max="formatAmountMax.amount"
-      v-model:value="amountValue"
       :currency="formatAmountMin.currency"
       :is-bigger="true"
     />
@@ -22,12 +22,9 @@
     />
 
     <component
+      :is="fieldsMap[field.key]?.component || 'form-input-text'"
       v-for="field in visibleFields"
       :key="field.key"
-      @input="v$[field.key]?.$touch()"
-      @blur="v$[field.key]?.$touch()"
-      @focus="onFocus(field.key)"
-      :is="fieldsMap[field.key]?.component || 'form-input-text'"
       v-model:value="depositFormData[field.key]"
       :type="fieldsMap[field.key]?.type || 'text'"
       :label="field.labels[currentLocale?.code || ''] || field.labels.en"
@@ -35,8 +32,11 @@
       :placeholder="field.hints[currentLocale?.code || ''] || field.hints.en"
       :options="getFieldOptions(field.key)"
       :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
+      @input="v$[field.key]?.$touch()"
       :hint="setError(field.key)"
+      @blur="v$[field.key]?.$touch()"
       :isDisabled="field.key === 'agentNumber'"
+      @focus="onFocus(field.key)"
     />
 
     <atomic-divider />
@@ -87,6 +87,7 @@
     method?: string;
     presets?: IPaymentPreset[];
     fields: IPaymentField[];
+    processingType: string;
   }>();
 
   const globalStore = useGlobalStore();
@@ -101,7 +102,6 @@
 
   const bonusStore = useBonusStore();
   const {
-    depositBonuses,
     selectedDepositBonus,
     bonusDeclined,
     showDepositBonusCode,
@@ -170,27 +170,17 @@
   }) || [];
   const defaultPreset = filteredPresets.find(preset => preset.default);
   const amountValue = ref<string>(String(defaultPreset?.amount || formatAmountMin.amount));
+
   const buttonAmount = computed(() => {
     if (Number(amountValue.value) > formatAmountMax.amount) return formatAmountMax.amount;
     if (Number(amountValue.value) < formatAmountMin.amount) return formatAmountMin.amount;
     return amountValue.value;
   });
+
   const buttonDisabled = computed(() => v$.value.$invalid
     || (Number(amountValue.value) < formatAmountMin.amount)
     || (Number(amountValue.value) > formatAmountMax.amount)
     || isSending.value);
-  const processedInModalMethods = [
-    'pix_qr_brl_invoice:pix_qr',
-    'boleto_bancario_brl_hpp:boleto_bancario',
-    'pix_brl_hpp:pix',
-    'bank_transfer_brl_hpp:bank_transfer',
-    'loteria_brl_hpp:loteria',
-    'BKASH',
-    'NAGAD',
-    'ROCKET',
-    'UPAY',
-    'IX'
-  ];
 
   const getPaymentPageUrl = (depositResponse: IResponseDeposit): string => {
     const responseHasParams = Object.keys(depositResponse.fields).length;
@@ -204,17 +194,12 @@
   }
 
   const getRequestParams = (): IRequestDeposit => {
-    let successRedirect;
-    let errorRedirect;
-
-    if (!processedInModalMethods.includes(props.method || '')) {
-      const { query, path } = useRoute();
-      const { origin } = window.location;
-      const successQueryString = queryString.stringify({ ...query, success: 'deposit', wallet: undefined });
-      const errorQueryString = queryString.stringify({ ...query, failing: 'deposit', wallet: undefined });
-      successRedirect = `${origin}${path}?${successQueryString}`;
-      errorRedirect = `${origin}${path}?${errorQueryString}`;
-    }
+    const { query, path } = useRoute();
+    const { origin } = window.location;
+    const successQueryString = queryString.stringify({ ...query, success: 'deposit', wallet: undefined });
+    const errorQueryString = queryString.stringify({ ...query, failing: 'deposit', wallet: undefined });
+    const successRedirect = `${origin}${path}?${successQueryString}`;
+    const errorRedirect = `${origin}${path}?${errorQueryString}`;
 
     const mainCurrencyAmount = getMainBalanceFormat(formatAmountMin.currency, Number(amountValue.value));
 
@@ -243,7 +228,7 @@
     const params = getRequestParams();
     windowReference.value = null;
 
-    if (!processedInModalMethods.includes(props.method || '')) {
+    if (props.processingType === 'form') {
       windowReference.value = window.open();
     }
 
@@ -251,14 +236,14 @@
       const depositResponse = await depositAccount(params);
       const paymentPageUrl = getPaymentPageUrl(depositResponse);
 
-      if (windowReference.value && depositResponse.type === 'form') {
+      if (props.processingType === 'form' && windowReference.value) {
         windowReference.value.location = paymentPageUrl;
         closeModal('wallet');
-      } else if (depositResponse.type === 'qr' && depositResponse.qr) {
+      } else if (props.processingType === 'qr' && depositResponse.qr) {
         qrAddress.value = depositResponse.qr;
-      } else if (depositResponse.type === 'iframe') {
+      } else if (props.processingType === 'iframe') {
         iframeUrl.value = paymentPageUrl;
-      } else if (depositResponse.type === 'message') {
+      } else if (props.processingType === 'message') {
         successModalType.value = 'deposit-pending';
         showModal('success');
       }
