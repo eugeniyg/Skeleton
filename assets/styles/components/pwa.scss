@@ -7,7 +7,7 @@
 }
 
 .desktop-container {
-  display: flex;
+  display: none;
   padding: 0 rem(12px);
   justify-content: flex-end;
   align-items: center;
@@ -17,6 +17,10 @@
   background: var(--layer-01, #1C212B);
   cursor: pointer;
   height: rem(40px);
+
+  @include media(md) {
+    display: flex;
+  }
 }
 
 .desktop-content {
