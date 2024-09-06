@@ -58,7 +58,8 @@
     selectedDepositBonus,
     bonusDeclined,
     depositBonusCode,
-    showDepositBonusCode
+    showDepositBonusCode,
+    walletDepositBonus
   } = storeToRefs(bonusStore);
 
   const sortBonuses = (prevBonus: IBonus, nextBonus: IBonus): number => {
@@ -160,7 +161,12 @@
   }
 
   const configDeclineBonuses = settingsConstants?.game?.bonus?.depositBonusDeclineDefault;
-  if (depositBonusCode.value) {
+  if (walletDepositBonus.value?.id) {
+    const findBonus = bonusesList.value.find(bonus => bonus.id === walletDepositBonus.value?.id);
+    selectedDepositBonus.value = findBonus;
+    bonusDeclined.value = !findBonus;
+    showDepositBonusCode.value = !findBonus && !!depositBonusCode.value;
+  } else if (depositBonusCode.value) {
     selectedDepositBonus.value = undefined;
     bonusDeclined.value = false;
     showDepositBonusCode.value = true;

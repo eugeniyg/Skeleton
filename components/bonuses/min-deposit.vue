@@ -9,36 +9,15 @@
 </template>
 
 <script setup lang="ts">
-  import type { IAmountRangeItem, IBonus } from "@skeleton/core/types";
+  import type { IBonus } from "@skeleton/core/types";
 
   const props = defineProps<{
     bonusInfo: IBonus;
     label?: string;
   }>();
 
-  const { formatBalance, getEquivalentFromBase } = useProjectMethods();
-  const walletStore = useWalletStore();
-  const { activeAccount } = storeToRefs(walletStore);
-
-  const minDeposit = computed<{amount: number, currency: string }|undefined>(() => {
-    let minDeposit: { amount: number, currency: string }|undefined;
-
-    const invoiceItems: IAmountRangeItem[]|undefined = props.bonusInfo.triggerConditions?.invoiceAmountItems;
-    const baseCurrencyInvoiceFrom = props.bonusInfo.triggerConditions?.baseCurrencyInvoiceAmountFrom;
-
-    if (invoiceItems?.length) {
-      const currentCurrencyInvoiceItem = invoiceItems.find(invoiceItem => invoiceItem.currency === activeAccount.value?.currency);
-      if (currentCurrencyInvoiceItem && currentCurrencyInvoiceItem.amountFrom) {
-        minDeposit = formatBalance(currentCurrencyInvoiceItem.currency, currentCurrencyInvoiceItem.amountFrom);
-      }
-    }
-
-    if (!minDeposit && baseCurrencyInvoiceFrom) {
-      minDeposit = getEquivalentFromBase(baseCurrencyInvoiceFrom, activeAccount.value?.currency);
-    }
-
-    return minDeposit;
-  })
+  const { getMinBonusDeposit } = useProjectMethods();
+  const minDeposit = getMinBonusDeposit(props.bonusInfo);
 </script>
 
 <style src="~/assets/styles/components/bonuses/min-deposit.scss" lang="scss"/>

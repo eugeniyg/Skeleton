@@ -1,7 +1,5 @@
 <template>
   <div class="bonuses-issued bonuses-grid">
-    <atomic-divider />
-
     <div class="bonuses-grid__title">
       {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'issuedTitle') }}
       <div v-if="issuedBonuses" class="bonuses-grid__title-count">({{ issuedBonuses }})</div>
@@ -11,21 +9,29 @@
       v-for="bonus in issuedPlayerBonuses"
       :key="bonus.id"
       :bonusInfo="bonus"
+      :loading="props.loadingBonuses.includes(bonus.id)"
       isCash
+      @remove="emit('removeBonus', bonus)"
+      @activate="emit('activateBonus', bonus)"
     />
 
     <bonuses-card
       v-for="freeSpin in issuedPlayerFreeSpins"
       :key="freeSpin.id"
       :bonusInfo="freeSpin"
+      :loading="props.loadingBonuses.includes(freeSpin.id)"
       isFreeSpin
+      @remove="emit('removeFreeSpin', freeSpin)"
+      @activate="emit('activateFreeSpin', freeSpin)"
     />
 
     <bonuses-card
       v-for="depositBonus in depositBonuses"
       :key="depositBonus.id"
       :bonusInfo="depositBonus"
+      :loading="props.loadingBonuses.includes(depositBonus.id)"
       isDeposit
+      @activate="emit('activateDeposit', depositBonus)"
     />
   </div>
 </template>
@@ -33,9 +39,20 @@
 <script setup lang="ts">
   import type { IProfileBonuses } from "~/types";
 
+  const props = defineProps<{
+    loadingBonuses: string[];
+  }>();
+
   const { getContent } = useProjectMethods();
   const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
+  const emit = defineEmits([
+    'activateBonus',
+    'activateFreeSpin',
+    'removeBonus',
+    'removeFreeSpin',
+    'activateDeposit'
+  ]);
 
   const bonusStore = useBonusStore();
   const {

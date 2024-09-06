@@ -1,4 +1,4 @@
-import type { IGameImages, IObserverOptions } from '@skeleton/core/types';
+import type {IAmountRangeItem, IBonus, IGameImages, IObserverOptions} from '@skeleton/core/types';
 import get from 'lodash/get';
 import * as projectRules from './validationRules';
 import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
@@ -355,6 +355,27 @@ export const useProjectMethods = () => {
     });
   }
 
+  const getMinBonusDeposit = (bonusInfo: IBonus): { amount: number, currency: string }|undefined => {
+    let minDeposit: { amount: number, currency: string }|undefined;
+
+    const invoiceItems: IAmountRangeItem[]|undefined = bonusInfo.triggerConditions?.invoiceAmountItems;
+    const baseCurrencyInvoiceFrom = bonusInfo.triggerConditions?.baseCurrencyInvoiceAmountFrom;
+    const { activeAccount } = useWalletStore();
+
+    if (invoiceItems?.length) {
+      const currentCurrencyInvoiceItem = invoiceItems.find(invoiceItem => invoiceItem.currency === activeAccount?.currency);
+      if (currentCurrencyInvoiceItem && currentCurrencyInvoiceItem.amountFrom) {
+        minDeposit = formatBalance(currentCurrencyInvoiceItem.currency, currentCurrencyInvoiceItem.amountFrom);
+      }
+    }
+
+    if (!minDeposit && baseCurrencyInvoiceFrom) {
+      minDeposit = getEquivalentFromBase(baseCurrencyInvoiceFrom, activeAccount?.currency);
+    }
+
+    return minDeposit;
+  }
+
   return {
     createValidationRules,
     getFormRules,
@@ -380,6 +401,7 @@ export const useProjectMethods = () => {
     getSumFromAmountItems,
     addBetsyScript,
     handleExternalLink,
-    awaitRefreshParallel
+    awaitRefreshParallel,
+    getMinBonusDeposit
   };
 };

@@ -63,8 +63,10 @@
             class="bonuses-card__activate-btn"
             type="primary"
             size="md"
+            :isDisabled="props.loading"
             @click="emit('activate')"
           >
+            <atomic-spinner :is-shown="props.loading"/>
             {{ activateLabel }}
           </button-base>
 

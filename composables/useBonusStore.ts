@@ -22,6 +22,10 @@ interface IBonusState {
   bonusDeclined: boolean;
   depositMoreInfoBonus: Maybe<IBonus>;
   showDepositBonusCode: boolean;
+  walletDepositBonus: {
+    id: string;
+    amount?: number;
+  }|undefined;
 }
 
 export const useBonusStore = defineStore('bonusStore', {
@@ -37,7 +41,8 @@ export const useBonusStore = defineStore('bonusStore', {
     selectedDepositBonus: undefined,
     bonusDeclined: false,
     depositMoreInfoBonus: undefined,
-    showDepositBonusCode: false
+    showDepositBonusCode: false,
+    walletDepositBonus: undefined
   }),
 
   getters: {
@@ -141,6 +146,7 @@ export const useBonusStore = defineStore('bonusStore', {
     },
 
     updatePlayerBonusList(bonusData: IPlayerBonus):void {
+      console.log(bonusData);
       if (bonusData.status === 1) this.playerBonuses = [...this.playerBonuses, bonusData];
       else if (bonusData.status === 2) {
         this.playerBonuses = this.playerBonuses.map((bonus) => {

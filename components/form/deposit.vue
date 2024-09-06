@@ -105,7 +105,8 @@
     selectedDepositBonus,
     bonusDeclined,
     showDepositBonusCode,
-    depositBonusCode
+    depositBonusCode,
+    walletDepositBonus
   } = storeToRefs(bonusStore);
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
@@ -169,7 +170,20 @@
     return preset.amount >= formatAmountMin.amount && preset.amount <= formatAmountMax.amount;
   }) || [];
   const defaultPreset = filteredPresets.find(preset => preset.default);
-  const amountValue = ref<string>(String(defaultPreset?.amount || formatAmountMin.amount));
+  const walletDepositAmount = computed(() => {
+    if (!walletDepositBonus.value || !walletDepositBonus.value.amount) return undefined;
+    const findBonus = depositBonuses.value.find(bonus => bonus.id === walletDepositBonus.value?.id);
+
+    if (findBonus) {
+      if (defaultPreset?.amount) {
+        return walletDepositBonus.value.amount > defaultPreset.amount ? walletDepositBonus.value.amount : undefined;
+      }
+      return walletDepositBonus.value.amount;
+    }
+
+    return undefined;
+  });
+  const amountValue = ref<string>(String(walletDepositAmount.value || defaultPreset?.amount || formatAmountMin.amount));
   const buttonAmount = computed(() => {
     if (Number(amountValue.value) > formatAmountMax.amount) return formatAmountMax.amount;
     if (Number(amountValue.value) < formatAmountMin.amount) return formatAmountMin.amount;

@@ -13,9 +13,23 @@
       {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'historyLink') }}
     </nuxt-link>
 
-    <bonuses-active v-if="activePlayerBonuses.length || activePlayerFreeSpins.length" />
+    <bonuses-active
+      v-if="hasActiveBlock"
+      @removeBonus="removeBonusHandle"
+      @removeFreeSpin="removeFreeSpinHandle"
+    />
 
-    <bonuses-issued v-if="issuedPlayerBonuses.length || issuedPlayerFreeSpins.length || depositBonuses.length" />
+    <atomic-divider v-if="hasActiveBlock && hasIssuedBlock" class="profile-bonuses__blocks-divider" />
+
+    <bonuses-issued
+      v-if="hasIssuedBlock"
+      :loadingBonuses="loadingBonuses"
+      @removeBonus="removeBonusHandle"
+      @removeFreeSpin="removeFreeSpinHandle"
+      @activateBonus="activateBonusHandle"
+      @activateFreeSpin="activateFreeSpinHandle"
+      @activateDeposit="activateDepositBonus"
+    />
 
     <!--    <bonus-code :content="content?.currentLocaleData?.bonusCode || content?.defaultLocaleData?.bonusCode" />-->
 
@@ -37,6 +51,22 @@
     <!--      />-->
     <!--    </transition>-->
 
+    <modal-confirm-bonus
+      v-bind="modalState"
+      :showModal="showModalConfirmBonus"
+      :bonusesUpdating="loadingBonuses.includes(modalState.bonusInfo?.id || 'unknown')"
+      @closeModal="showModalConfirmBonus = false"
+      @confirm="() => { modalState.action === 'remove' ? removeBonus() : activateBonus() }"
+    />
+
+    <modal-confirm-bonus-unsettled
+      v-bind="modalState"
+      :showModal="showConfirmBonusUnsettledModal"
+      :bonusesUpdating="loadingBonuses.includes(modalState.bonusInfo?.id || 'unknown')"
+      @closeModal="showConfirmBonusUnsettledModal = false"
+      @confirm="removeBonus"
+    />
+
     <modal-bonus-cancel-lock
       :showModal="showBonusCancelLockModal"
       @close="showBonusCancelLockModal = false"
@@ -47,19 +77,39 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { IProfileBonuses } from '~/types';
+  import type { IBonus, IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
 
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
-  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const { setPageMeta, getLocalesContentData, localizePath, getContent } = useProjectMethods();
+  const {
+    currentLocale,
+    defaultLocale,
+    popupsData,
+    defaultLocalePopupsData,
+    alertsData,
+    defaultLocaleAlertsData
+  } = storeToRefs(globalStore);
+  const {
+    setPageMeta,
+    getLocalesContentData,
+    localizePath,
+    getContent,
+    getMinBonusDeposit
+  } = useProjectMethods();
   const { getPlayerBonuses, getPlayerFreeSpins, getDepositBonuses } = bonusStore;
   const {
     activePlayerBonuses,
     activePlayerFreeSpins,
     issuedPlayerBonuses,
     issuedPlayerFreeSpins,
-    depositBonuses
+    depositBonuses,
+    walletDepositBonus
   } = storeToRefs(bonusStore);
+  const { showAlert, openWalletModal } = useLayoutStore();
+  const hasActiveBlock = computed(() => activePlayerBonuses.value.length || activePlayerFreeSpins.value.length);
+  const hasIssuedBlock = computed(() => issuedPlayerBonuses.value.length 
+    || issuedPlayerFreeSpins.value.length 
+    || depositBonuses.value.length);
 
   const bonusesContent = ref<Maybe<IProfileBonuses>>();
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>();
@@ -95,7 +145,168 @@
     if (content.value) setContentData(content.value);
   }, { immediate: true });
 
+  interface IModalState extends Record<string, any> {
+    image?: string;
+    title?: string;
+    description?: string;
+    wageringLabel?: string;
+    confirmButton?: string;
+    cancelButton?: string;
+    bonusInfo?: IPlayerBonus|IPlayerFreeSpin|undefined;
+    bonusType?: 'bonus'|'freeSpin'|undefined;
+    action?: 'remove'|'activate'|undefined;
+  }
+
+  const modalState = reactive<IModalState>({});
   const showBonusCancelLockModal = ref(false);
+  const showConfirmBonusUnsettledModal = ref(false);
+  const showModalConfirmBonus = ref(false);
+  const loadingBonuses = ref<string[]>([]);
+
+  const {
+    activatePlayerBonus,
+    cancelPlayerBonus,
+    activatePlayerFreeSpin,
+    cancelPlayerFreeSpin
+  } = useCoreBonusApi();
+
+  const hasCancelLockBonus = computed(() => {
+    const activeBonus = activePlayerBonuses.value[0];
+    return !!activeBonus && activeBonus.isBonusCancelLock && (activeBonus.currentWagerPercentage > 0);
+  })
+
+  const setModalStateForUnsettledBonus = (): void => {
+    const data = getContent(popupsData.value, defaultLocalePopupsData?.value, 'cancelBonusUnsettled');
+    if (data) {
+      modalState.image = data.image;
+      modalState.title = data.title;
+      modalState.description = data.description;
+      modalState.wageringLabel = data.wageringLabel;
+      modalState.confirmButton = data.confirmButton;
+      modalState.cancelButton = data.cancelButton;
+    }
+  };
+
+  const setModalStateForCancelBonus = (bonusInfo: IPlayerBonus | IPlayerFreeSpin): void => {
+    const data = getContent(popupsData.value, defaultLocalePopupsData.value, 'cancelBonus');
+    if (data) {
+      modalState.title = data.title;
+      modalState.description = (bonusInfo.currentWagerPercentage > 0 || bonusInfo.progress > 0)
+        ? data.activeBonusDescription
+        : data.issuedBonusDescription;
+      modalState.confirmButton = data.confirmButton;
+      modalState.cancelButton = data.cancelButton;
+    }
+  };
+
+  const setModalStateForActiveBonus = (): void => {
+    const data = popupsData.value?.changeActiveBonus || defaultLocalePopupsData?.value?.changeActiveBonus;
+    if (data) {
+      modalState.title = data.title;
+      modalState.description = data.description;
+      modalState.confirmButton = data.confirmButton;
+      modalState.cancelButton = data.cancelButton;
+    }
+  };
+
+  const removeBonus = async (): Promise<void> => {
+    if (!modalState.bonusInfo?.id || loadingBonuses.value.includes(modalState.bonusInfo.id)) return;
+    loadingBonuses.value.push(modalState.bonusInfo.id);
+
+    try {
+      modalState.bonusType === 'bonus'
+        ? await cancelPlayerBonus(modalState.bonusInfo.id)
+        : await cancelPlayerFreeSpin(modalState.bonusInfo.id);
+
+      showModalConfirmBonus.value = false;
+      showConfirmBonusUnsettledModal.value = false;
+    } catch {
+      showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
+    }
+
+    loadingBonuses.value = loadingBonuses.value.filter(id => id !== modalState.bonusInfo?.id);
+  };
+
+  const activateBonus = async (): Promise<void> => {
+    if (!modalState.bonusInfo?.id || loadingBonuses.value.includes(modalState.bonusInfo.id)) return;
+    loadingBonuses.value.push(modalState.bonusInfo.id);
+
+    try {
+      modalState.bonusType === 'bonus'
+        ? await activatePlayerBonus(modalState.bonusInfo.id)
+        : await activatePlayerFreeSpin(modalState.bonusInfo.id);
+
+      showModalConfirmBonus.value = false;
+      showConfirmBonusUnsettledModal.value = false;
+    } catch {
+      showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
+    }
+
+    loadingBonuses.value = loadingBonuses.value.filter(id => id !== modalState.bonusInfo?.id);
+  };
+
+  const activateBonusHandle = (bonus: IPlayerBonus): void => {
+    if (loadingBonuses.value.includes(bonus.id)) return;
+    modalState.bonusInfo = bonus;
+    modalState.bonusType = 'bonus';
+    modalState.action = 'activate';
+
+    if (hasCancelLockBonus.value) {
+      showBonusCancelLockModal.value = true;
+    } else {
+      setModalStateForActiveBonus();
+      showModalConfirmBonus.value = true;
+    }
+  }
+
+  const activateFreeSpinHandle = (freeSpin: IPlayerFreeSpin): void => {
+    if (loadingBonuses.value.includes(freeSpin.id)) return;
+    modalState.bonusInfo = freeSpin;
+    modalState.bonusType = 'freeSpin';
+    modalState.action = 'activate';
+
+    activateBonus();
+  }
+
+  const removeBonusHandle = (bonus: IPlayerBonus): void => {
+    if (loadingBonuses.value.includes(bonus.id)) return;
+    modalState.bonusInfo = bonus;
+    modalState.bonusType = 'bonus';
+    modalState.action = 'remove';
+
+    if (hasCancelLockBonus.value && bonus.status !== 1) {
+      showBonusCancelLockModal.value = true;
+    } else if (bonus.openedTransactionsCount > 0) {
+      setModalStateForUnsettledBonus();
+      showConfirmBonusUnsettledModal.value = true;
+    } else {
+      setModalStateForCancelBonus(bonus);
+      showModalConfirmBonus.value = true;
+    }
+  }
+
+  const removeFreeSpinHandle = (freeSpin: IPlayerFreeSpin): void => {
+    if (loadingBonuses.value.includes(freeSpin.id)) return;
+    modalState.bonusInfo = freeSpin;
+    modalState.bonusType = 'freeSpin';
+    modalState.action = 'remove';
+
+    setModalStateForCancelBonus(freeSpin);
+    showModalConfirmBonus.value = true;
+  }
+
+  const activateDepositBonus = async (depositBonus: IBonus): Promise<void> => {
+    if (loadingBonuses.value.includes(depositBonus.id)) return;
+    loadingBonuses.value.push(depositBonus.id);
+    const minDeposit = getMinBonusDeposit(depositBonus);
+    walletDepositBonus.value = { id: depositBonus.id, amount: minDeposit?.amount };
+
+    await openWalletModal();
+
+    setTimeout(() => {
+      loadingBonuses.value = loadingBonuses.value.filter(id => id !== depositBonus.id);
+    }, 500);
+  }
 
   onMounted(() => {
     getPlayerBonuses();

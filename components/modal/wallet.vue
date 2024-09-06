@@ -43,6 +43,8 @@
   const globalStore = useGlobalStore();
   const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
+  const bonusStore = useBonusStore();
+  const { walletDepositBonus } = storeToRefs(bonusStore);
 
   const { modals, walletModalType } = storeToRefs(layoutStore);
   const { showModal, closeModal } = layoutStore;
@@ -125,6 +127,7 @@
   }
 
   const closedHandler = (): void => {
+    if (walletDepositBonus.value) walletDepositBonus.value = undefined;
     useEvent('analyticsEvent', {
       event: 'walletClose',
       walletOperationType: selectedTab.value
