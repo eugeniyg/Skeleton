@@ -47,7 +47,21 @@
     &-text {
       color: var(--text-color, var(--text-secondary));
       text-align: center;
+      transition: color 0.2s ease-in-out;
       @include font($subheading-2);
+    }
+
+    &.is-active {
+      --text-color: var(--text-primary);
+      --icon-color: var(--icon-contrast);
+    }
+
+    @include use-hover {
+      cursor: pointer;
+      &:hover {
+        --text-color: var(--text-link-hover);
+        --icon-color: var(--icon-accent);
+      }
     }
   }
 
@@ -61,8 +75,9 @@
   }
 
   &__dropdown {
+    margin: 0;
     position: absolute;
-    top: 40px;
+    top: 56px;
     left: 0;
     z-index: 1;
     display: grid;
@@ -79,6 +94,10 @@
     overflow-y: auto;
     max-height: 400px;
     @include scrollbar();
+
+    .category & {
+      top: 48px;
+    }
 
     &-item {
       display: grid;

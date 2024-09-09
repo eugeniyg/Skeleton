@@ -2,11 +2,9 @@
   <vue-final-modal
     v-model="modals.providers"
     class="modal-providers"
-    
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
   >
-    
     <div class="modal-providers__container">
       <div class="modal-providers__header">
         <div class="modal-providers__header-top">
@@ -19,49 +17,55 @@
         <form-input-search
           v-model:value="searchValue"
           :placeholder="getContent(popupsData, defaultLocalePopupsData, 'providers.searchPlaceholder')"
-          @input="searchInput"
+          @input="onSearch"
         />
       
       </div>
       
       <div class="modal-providers__content">
-        <label
-          v-for="provider in providersList"
-          :key="provider.id"
-          class="modal-providers__item"
-          :for="provider.id"
-        >
-          <atomic-image
-            class="modal-providers__item-logo"
-            :default-image="getContent(popupsData, defaultLocalePopupsData, 'providers.defaultLogoPlaceholder')"
-            :src="`/img/providers/${provider.identity}.svg`"
-          />
-          
-          <span class="modal-providers__item-name">{{ provider.name }}</span>
-          
-          <span class="modal-providers__item-count">{{ provider.gameEnabledCount }}</span>
-          
-          <input
-            :id="provider.id"
-            type="checkbox"
-            name="providers"
-            :value="provider.id"
-            :checked="props.selected.includes(provider.id)"
-            class="modal-providers__item-input"
-            :class="{ checked: props.selected.includes(provider.id) }"
-            @change="change(provider.id)"
+        <template v-if="!isShowEmpty">
+          <label
+            v-for="provider in providersList"
+            :key="provider.id"
+            :for="provider.id"
+            class="modal-providers__item"
           >
-          
-          <atomic-icon id="check" class="modal-providers__item-checkbox"/>
-        </label>
+            <atomic-image
+              class="modal-providers__item-logo"
+              src="/img/uploads/777.png"
+            />
+            
+            <span class="modal-providers__item-name">{{ provider.name }}</span>
+            <span class="modal-providers__item-count">{{ provider.gameEnabledCount }}</span>
+            
+            <input
+              class="modal-providers__item-input"
+              ref="inputRef"
+              name="providers"
+              type="checkbox"
+              :class="{ checked: props.selected.includes(provider.id) }"
+              :id="provider.id"
+              :value="provider.id"
+              :checked="props.selected.includes(provider.id)"
+              @change="change(provider.id)"
+            >
+            
+            <atomic-icon id="check" class="modal-providers__item-checkbox"/>
+          </label>
+        </template>
+        
+        <atomic-empty
+          v-else
+          :title="getContent(popupsData, defaultLocalePopupsData, 'providers.empty.title')"
+          :subTitle="getContent(popupsData, defaultLocalePopupsData, 'providers.empty.description')"
+          :image="getContent(popupsData, defaultLocalePopupsData, 'providers.empty.image')"
+        />
       </div>
       
       <div class="modal-providers__footer">
         <atomic-divider/>
-        <button-base type="ghost" v-if="selectedCount">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'providers.selectAll') }}({{ selectedCount }})
-        </button-base>
-        <button-base type="ghost" v-else>{{ getContent(popupsData, defaultLocalePopupsData, 'providers.clearAll') }}
+        <button-base type="ghost" @click.prevent="selectAll" :is-disabled="isShowEmpty">
+          {{ getContent(popupsData, defaultLocalePopupsData, 'providers.selectAll') }}
         </button-base>
       </div>
     
@@ -72,111 +76,86 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
+  import debounce from 'lodash/debounce';
   import type { IGameProvider, IProvidersRequest } from '@skeleton/core/types';
-  import type { IGamesPage } from '~/types';
   
   const props = defineProps<{
     selected: string[];
   }>();
   
+  const {
+    popupsData,
+    defaultLocalePopupsData
+  } = useGlobalStore();
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { getProviderList } = useGamesStore();
   const { getContent } = useProjectMethods();
-  const { showAlert } = useLayoutStore();
-  
-  const globalStore = useGlobalStore();
-  const {
-    layoutData,
-    defaultLocaleLayoutData,
-    alertsData,
-    defaultLocaleAlertsData
-  } = storeToRefs(globalStore);
-  
-  const providersList = ref<IGameProvider[]>([]);
   
   const searchValue = ref<string>('');
-  const selectedCount = ref<number>(245);
-  const selectedProviders = ref<string[]>([]);
+  const searchProviders = ref<IGameProvider[]>([]);
+  const isShowEmpty = ref<boolean>(false);
+  const inputRef = ref();
+  
+  const { data: gameProviders } = await useLazyAsyncData(() => getProviderList(), { server: false });
+  
+  const emit = defineEmits(['select']);
+  
+  const providersList = computed(() => {
+    const providers = (!searchProviders.value.length ? gameProviders.value : searchProviders.value) || [];
+    return providers.filter(provider => !!provider.gameEnabledCount);
+  });
+  
+  const change = (providerId: string): void => {
+    const newProvidersArr = props.selected.includes(providerId)
+      ? props.selected.filter(selectedProviderId => selectedProviderId !== providerId)
+      : [...props.selected, providerId];
+    
+    emit('select', newProvidersArr);
+  };
+  
+  const selectAll = () => {
+    const all: string[] = [];
+    inputRef.value.forEach((item: HTMLInputElement) => {
+      if (item.value) all.push(item.value);
+    });
+    
+    emit('select', all);
+  };
+  
+  const {
+    alertsData,
+    defaultLocaleAlertsData
+  } = useGlobalStore();
   
   const requestParams = reactive<IProvidersRequest>({
     name: undefined,
     sortBy: undefined,
-    sortOrder: undefined
+    sortOrder: undefined,
+    category: getContent(popupsData, defaultLocalePopupsData, 'providers.collectionId')
   });
   
-  const filterProviders = (providers: IGameProvider[]): void => {
-    providersList.value = providers.filter(provider => !!provider.gameEnabledCount);
-    //staticProviderInfo.value = providers.find(provider => provider.identity === staticProviderIdentity.value && !!provider.gameEnabledCount);
-  };
+  const { showAlert } = useLayoutStore();
+  
   const { getGameProviders } = useCoreGamesApi();
-  const loadingProviders = ref<boolean>(true);
+  
   const getProviders = async (): Promise<void> => {
     try {
       const responseProviders = await getGameProviders(requestParams);
-      filterProviders(responseProviders);
+      searchProviders.value = responseProviders || [];
+      isShowEmpty.value = !(!!responseProviders.length);
     } catch {
-      showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
+      showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
     }
   };
   
-  const searchInput = () => {
-    console.log(searchValue.value);
-  };
-  
-  const selectedAll = ref<boolean>(false);
-  
-  const emit = defineEmits(['select']);
-  
-  const checkSelectedAll = (newProvidersArr: string[]): void => {
-    selectedAll.value = newProvidersArr.length === providersList.value.length;
-  };
-  
-  const change = (providerId: string): void => {
-    if (selectedAll.value) {
-      const newProvidersArr = providersList.value.reduce((finalArr: string[], currentProvider) => {
-        return providerId === currentProvider.id ? finalArr : [...finalArr, currentProvider.id];
-      }, []);
-
-      selectedAll.value = false;
-      emit('select', newProvidersArr);
-      return;
-    }
-
-    const newProvidersArr = props.selected.includes(providerId)
-      ? props.selected.filter(selectedProviderId => selectedProviderId !== providerId)
-      : [...props.selected, providerId];
-
-    checkSelectedAll(newProvidersArr);
-
-    if (selectedAll.value) emit('select', []);
-    else emit('select', newProvidersArr);
-  };
-  
-  const selectAll = () => {
-    selectedAll.value = !selectedAll.value;
-    
-    if (props.selected.length) emit('select', []);
-  };
-  
-  const clear = () => {
-    selectedAll.value = false;
-    
-    if (props.selected.length) emit('select', []);
-  };
-  
-  const tryAgain = async (): Promise<void> => {
-    closeModal('providers');
-  };
-  
-  onMounted(async () => {
+  const onSearch = debounce(async (searchValue: string | undefined): Promise<void> => {
+    requestParams.name = searchValue?.length && searchValue?.length >= 1 ? searchValue : undefined;
     await getProviders();
-    loadingProviders.value = false;
-  });
+  }, 500, { leading: false });
+  
 </script>
 
 <style src="~/assets/styles/components/modal/providers.scss" lang="scss"/>
-<!--<style src="~/assets/styles/components/modal/error.scss" lang="scss" />-->
-
 

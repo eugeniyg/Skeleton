@@ -1,92 +1,61 @@
 <template>
-  <div class="providers-tags">
-    <div class="providers-tags__clear">
+  <div class="providers-tags" v-if="tags.length">
+    <div class="providers-tags__clear" @click="clearTags">
       <atomic-icon id="trash" class="providers-tags__clear-icon"/>
-      <span class="providers-tags__clear-text">Clear All</span>
+      
+      <span class="providers-tags__clear-text">
+        {{ getContent(popupsData, defaultLocalePopupsData, 'providers.clearTags') }}
+      </span>
     </div>
+    
     <div class="providers-tags__content">
       <div class="providers-tags__items" ref="scrollContainer" @scroll="scrollHandler">
-        <div class="providers-tags__item" v-for="tag in tags" :key="tag.identity">
+        <div
+          class="providers-tags__item"
+          v-for="tag in props.tags"
+          :key="tag.id"
+        >
           <span class="providers-tags__item-text">{{ tag.name }}</span>
-          <atomic-icon id="close" class="providers-tags__item-icon"/>
+          <atomic-icon id="close" class="providers-tags__item-icon" @click="unselectTag(tag.id)"/>
         </div>
       </div>
       
       <div class="providers-tags__buttons">
-        <div class="providers-tags__prev" @click="clickAction('prev')" :class="{ 'is-disabled': prevDisabled }">
+        <div
+          class="providers-tags__prev"
+          :class="{ 'is-disabled': prevDisabled }"
+          @click="clickAction('prev')"
+        >
           <atomic-icon id="arrow_expand-close"/>
         </div>
-        <div class="providers-tags__next" @click="clickAction('next')" :class="{ 'is-disabled': nextDisabled }">
+        
+        <div
+          class="providers-tags__next"
+          :class="{ 'is-disabled': nextDisabled }"
+          @click="clickAction('next')"
+        >
           <atomic-icon id="arrow_expand-close"/>
         </div>
       </div>
     </div>
-    
-    
-    
-    
-    
-    
-    
-    
+  
   </div>
 </template>
 
 <script setup lang="ts">
+  import type { IGameProvider } from '@skeleton/core/types';
+  
   const props = defineProps<{
-    selected: string[]
+    selected: string[],
+    tags: IGameProvider[],
   }>();
   
-  const tags = ref([
-    {
-      identity: '1',
-      name: 'Betsoft Gaming',
-    },
-    {
-      identity: '2',
-      name: 'Turbo Games',
-    },
-    {
-      identity: '3',
-      name: '1spin4win',
-    },
-    {
-      identity: '1',
-      name: 'Betsoft Gaming',
-    },
-    {
-      identity: '2',
-      name: 'Turbo Games',
-    },
-    {
-      identity: '3',
-      name: '1spin4win',
-    },
-    {
-      identity: '1',
-      name: 'Betsoft Gaming',
-    },
-    {
-      identity: '2',
-      name: 'Turbo Games',
-    },
-    {
-      identity: '3',
-      name: '1spin4win',
-    },
-    {
-      identity: '1',
-      name: 'Betsoft Gaming',
-    },
-    {
-      identity: '2',
-      name: 'Turbo Games',
-    },
-    {
-      identity: '3',
-      name: '1spin4win',
-    },
-  ]);
+  const {
+    popupsData,
+    defaultLocalePopupsData
+  } = useGlobalStore();
+  
+  const { getContent } = useProjectMethods();
   
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
@@ -94,13 +63,21 @@
   
   const scrollHandler = (): void => {
     if (!scrollContainer.value) return;
-    const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
+    const {
+      scrollLeft,
+      offsetWidth,
+      scrollWidth
+    } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
     nextDisabled.value = scrollWidth < (scrollLeft + offsetWidth + 20) && scrollWidth > (scrollLeft + offsetWidth - 20);
   };
   
   const clickAction = (direction: string): void => {
-    const { offsetWidth, scrollWidth, scrollLeft } = scrollContainer.value;
+    const {
+      offsetWidth,
+      scrollWidth,
+      scrollLeft
+    } = scrollContainer.value;
     const widthToEnd = scrollWidth - (scrollLeft + offsetWidth);
     const scrollLeftValue = widthToEnd < offsetWidth ? widthToEnd : offsetWidth;
     const scrollRightValue = scrollLeft < offsetWidth ? scrollLeft : offsetWidth;
@@ -111,18 +88,30 @@
     });
   };
   
-  watch(tags, () => {
-    scrollHandler();
+  const emit = defineEmits(['unselect']);
+  
+  const unselectTag = (providerId: string) => {
+    emit('unselect', props.selected.filter(id => id !== providerId));
+  };
+  
+  const clearTags = () => {
+    emit('unselect', []);
+  };
+  
+  watch(() => props.tags, () => {
+    nextTick(() => {
+      scrollHandler();
+    });
   });
   
   onMounted(() => {
     window.addEventListener('resize', scrollHandler);
-    scrollHandler()
+    scrollHandler();
   });
   
   onUnmounted(() => {
     window.removeEventListener('resize', scrollHandler);
-  })
+  });
 </script>
 
 <style src="~/assets/styles/components/providers-tags.scss" lang="scss"/>

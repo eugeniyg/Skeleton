@@ -1,16 +1,19 @@
 <template>
   <div>
-    <main-slider/>
-    
-    <!--<nav-cat @clickCategory="changeCategory"/>-->
+    <main-slider :style="sliderVisibilityStyle"/>
     
     <nav-category
       @clickCategory="changeCategory"
     />
     
     <client-only>
-      <modal-providers/>
-      <modal-categories/>
+      <modal-providers
+        :selected="selectedProviders"
+        @select="changeProvider"
+      />
+      <modal-categories
+        @click-category="changeCategory"
+      />
     </client-only>
     
     <group-games
@@ -49,21 +52,27 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { ICasinoPage } from '~/types';
-  import type { ICollection } from '@skeleton/core/types';
+  import type { ICollection, IGame, IGamesResponse, IPaginationMeta } from '@skeleton/core/types';
   
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();
   const {
     currentLocale,
-    defaultLocale
+    defaultLocale,
+    popupsData,
+    defaultLocalePopupsData
   } = storeToRefs(globalStore);
   const {
     localizePath,
     setPageMeta,
-    getLocalesContentData
+    getLocalesContentData,
+    getContent,
   } = useProjectMethods();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { globalComponentsContent } = globalStore;
+  const layoutStore = useLayoutStore()
+  const { closeModal } = layoutStore;
+  const { modals } = storeToRefs(layoutStore);
   
   const pageContent = ref<Maybe<ICasinoPage>>();
   const defaultLocalePageContent = ref<Maybe<ICasinoPage>>();
@@ -110,9 +119,34 @@
   
   const router = useRouter();
   const changeCategory = (categoryId: string) => {
+    if (modals.value.categories) closeModal('categories');
+    
     router.push({
       path: localizePath('/games'),
       query: { category: categoryId }
     });
+  };
+  
+  const selectedProviders = ref<string[]>([]);
+  const sliderVisibilityHidden = ref<boolean>(false);
+  
+  const sliderVisibilityStyle = computed(() => {
+    return { visibility: !sliderVisibilityHidden.value ? 'visible' : 'hidden' };
+  });
+  
+  const changeProvider = async (newSelectedProviders: string[]) => {
+    selectedProviders.value = newSelectedProviders;
+    sliderVisibilityHidden.value = true;
+    
+    setTimeout(() => {
+      closeModal('providers');
+      router.push({
+        path: localizePath('/games'),
+        query: {
+          category: getContent(popupsData, defaultLocalePopupsData, 'providers.collectionId'),
+          provider: selectedProviders.value
+        }
+      });
+    }, 600);
   };
 </script>

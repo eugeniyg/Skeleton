@@ -1,7 +1,7 @@
 <template>
   <div
     class="nav-category"
-    v-click-outside="clickOutside"
+    v-click-outside="closeDropdown"
   >
     <div
       v-if="!props.hideItems"
@@ -43,7 +43,7 @@
             'is-active': route.query.category === identity,
             'is-no-icon': !gameCategoriesObj[identity]?.icon
           }"
-          @click="emit('clickCategory', identity)"
+          @click="clickCategory(identity)"
           :key="id"
         >
           <atomic-icon :id="gameCategoriesObj[identity]?.icon"/>
@@ -98,12 +98,17 @@
     }
   };
   
+  const clickCategory = (identity: string) => {
+    emit('clickCategory', identity);
+    closeDropdown();
+  };
+  
   const showDropdown = () => {
     setDropdownItems();
     isDropdownShown.value = true;
   };
   
-  const clickOutside = () => {
+  const closeDropdown = () => {
     isDropdownShown.value = false;
   };
   
@@ -111,11 +116,11 @@
     const { getCollectionsList } = useGamesStore();
     const gameCollections = await getCollectionsList();
     filteredCategories.value = gameCollections.filter((collection) => !collection.isHidden);
-    window.addEventListener('resize', clickOutside);
+    window.addEventListener('resize', closeDropdown);
   });
   
   onUnmounted(() => {
-    window.removeEventListener('resize', clickOutside);
+    window.removeEventListener('resize', closeDropdown);
   });
 </script>
 

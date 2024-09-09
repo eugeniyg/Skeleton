@@ -2,7 +2,6 @@
   <vue-final-modal
     v-model="modals.categories"
     class="modal-categories"
-    
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
   >
@@ -16,7 +15,7 @@
       
       <div class="modal-categories__content">
         <div
-          v-for="({ id, identity, name }, index) in filteredCategories"
+          v-for="({ id, identity, name }, index) in categories"
           class="modal-categories__item"
           :data-index="index"
           :class="{
@@ -25,7 +24,8 @@
           }"
           @click="emit('clickCategory', identity)"
           :key="id"
-          ref="navCatItemRef">
+          ref="navCatItemRef"
+        >
           <atomic-icon :id="gameCategoriesObj[identity]?.icon"/>
           <span>{{ gameCategoriesObj[identity]?.label || name }}</span>
         </div>
@@ -47,16 +47,16 @@
     defaultLocalePopupsData
   } = useGlobalStore();
   const { getContent } = useProjectMethods();
+  const { gameCategoriesObj } = useGlobalStore();
+  const categories = ref<ICollection[]>([]);
   const route = useRoute();
   
   const emit = defineEmits(['clickCategory']);
-  const { gameCategoriesObj } = useGlobalStore();
-  const filteredCategories = ref<ICollection[]>([]);
   
   onMounted(async () => {
     const { getCollectionsList } = useGamesStore();
     const gameCollections = await getCollectionsList();
-    filteredCategories.value = gameCollections.filter((collection) => !collection.isHidden);
+    categories.value = gameCollections.filter((collection) => !collection.isHidden);
   });
 </script>
 

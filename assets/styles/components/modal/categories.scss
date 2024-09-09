@@ -47,7 +47,7 @@
     padding: 6px 8px;
     grid-row-gap: 5px;
     align-self: stretch;
-    color: var(--text-secondary);
+    color: var(--text-color, var(--text-secondary));
     @include font($subheading-2);
     position: relative;
 
@@ -64,8 +64,13 @@
     }
 
     .icon {
-      --color: var(--icon-primary);
+      --color: var(--icon-color, var(--icon-primary));
       --icon-size: 20px;
+    }
+
+    &.is-active {
+      --text-color: var(--text-primary);
+      --icon-color: var(--icon-contrast);
     }
   }
 

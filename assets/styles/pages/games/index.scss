@@ -44,6 +44,10 @@
   &__search {
     grid-area: search;
 
+    .icon {
+      --color: var(--icon-primary);
+    }
+
     @include media(md) {
       max-width: 240px;
     }
