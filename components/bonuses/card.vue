@@ -5,7 +5,10 @@
   >
     <div class="bonuses-card__container">
       <div class="bonuses-card__header">
-        <bonuses-badge-type :mode="badgeType" />
+        <bonuses-badge-type
+          :mode="badgeType"
+          :contentTypes="getContent(bonusesContent, defaultLocaleBonusesContent, `types`)"
+        />
 
         <bonuses-badge-game
           v-if="props.isFreeSpin || (props.isDeposit && props.bonusInfo.type === 3)"
@@ -13,8 +16,9 @@
         />
 
         <bonuses-badge-status
-          :bonusInfo="props.bonusInfo"
-          :isDeposit="props.isDeposit"
+          :status="badgeStatus"
+          :title="badgeStatusLabel"
+          :subtitle="getContent(bonusesContent, defaultLocaleBonusesContent, `statuses.nextDeposit`)"
         />
       </div>
 
@@ -39,7 +43,10 @@
           :label="getContent(bonusesContent, defaultLocaleBonusesContent, 'wager')"
         />
 
-        <bonuses-info-button :label="getContent(bonusesContent, defaultLocaleBonusesContent, 'moreInfo')" />
+        <bonuses-info-button
+          :label="getContent(bonusesContent, defaultLocaleBonusesContent, 'moreInfo')"
+          @click="showBonusInfo"
+        />
 
         <template v-if="!props.isDeposit && props.bonusInfo.status === 2">
           <bonuses-freespin-progress
@@ -103,6 +110,9 @@
   }>();
 
   const emit = defineEmits(['activate', 'remove']);
+  const bonusStore = useBonusStore();
+  const { showModal } = useLayoutStore();
+  const { depositMoreInfoBonus } = storeToRefs(bonusStore);
 
   const { formatBalance, getContent } = useProjectMethods();
   const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
@@ -142,10 +152,33 @@
     return (props.bonusInfo as IPlayerBonus).bonusType;
   })
 
+  const badgeStatus = computed<'active'|'available'|'available-deposit'>(() => {
+    if (props.isDeposit) return 'available-deposit';
+    if (props.bonusInfo.status === 1) return 'available';
+    return 'active';
+  })
+
+  const badgeStatusLabel = computed<string|undefined>(() => {
+    const contentKey = badgeStatus.value.includes('available') ? 'available' : 'active';
+    return getContent(bonusesContent.value, defaultLocaleBonusesContent.value, `statuses.${contentKey}`);
+  })
+
   const showBonusWagers = computed<boolean>(() => {
     const depositFreeSpin = props.isDeposit && props.bonusInfo.type === 3;
     return !props.isFreeSpin && !depositFreeSpin && (props.bonusInfo.wagerCasino || props.bonusInfo.wagerSportsbook);
   })
+
+  const showBonusInfo = () => {
+    depositMoreInfoBonus.value = {
+      bonusType: props.isFreeSpin ? 3 : undefined,
+      ...props.bonusInfo,
+      bonusValue: bonusValue.value,
+      badgeType: badgeType.value,
+      badgeStatus: badgeStatus.value,
+      expiredDate: expiredDate.value,
+    };
+    showModal('walletBonusDetails');
+  }
 </script>
 
 

@@ -17,7 +17,7 @@
   }>();
 
   const { getMinBonusDeposit } = useProjectMethods();
-  const minDeposit = getMinBonusDeposit(props.bonusInfo);
+  const minDeposit = computed(() => getMinBonusDeposit(props.bonusInfo));
 </script>
 
 <style src="~/assets/styles/components/bonuses/min-deposit.scss" lang="scss"/>

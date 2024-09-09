@@ -27,7 +27,8 @@
     --icon-color: var(--icon-success);
   }
 
-  &.is-available {
+  &.is-available,
+  &.is-available-deposit {
     --icon-color: var(--icon-accent);
   }
 }

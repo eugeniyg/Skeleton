@@ -2,28 +2,28 @@
   <div class="bonuses-timer">
     <span class="bonuses-timer__item" :class="{'has-null': state.days === 0}">
       <span class="bonuses-timer__item-digit">{{ format(state.days)  }}</span>
-      <span class="bonuses-timer__item-label">{{ timerContent?.days }}</span>
+      <span v-if="!props.hideLabels" class="bonuses-timer__item-label">{{ timerContent?.days }}</span>
     </span>
 
     <span class="bonuses-timer__dots">:</span>
 
     <span class="bonuses-timer__item" :class="{'has-null': state.hours === 0}">
       <span class="bonuses-timer__item-digit">{{ format(state.hours) }}</span>
-      <span class="bonuses-timer__item-label">{{ timerContent?.hours }}</span>
+      <span v-if="!props.hideLabels" class="bonuses-timer__item-label">{{ timerContent?.hours }}</span>
     </span>
 
     <span class="bonuses-timer__dots">:</span>
 
     <span class="bonuses-timer__item" :class="{'has-null': state.minutes === 0}">
       <span class="bonuses-timer__item-digit">{{ format(state.minutes) }}</span>
-      <span class="bonuses-timer__item-label">{{ timerContent?.minutes }}</span>
+      <span v-if="!props.hideLabels" class="bonuses-timer__item-label">{{ timerContent?.minutes }}</span>
     </span>
 
     <span class="bonuses-timer__dots">:</span>
 
     <span class="bonuses-timer__item" :class="{'has-null': state.seconds === 0}">
       <span class="bonuses-timer__item-digit">{{ format(state.seconds) }}</span>
-      <span class="bonuses-timer__item-label">{{ timerContent?.seconds }}</span>
+      <span v-if="!props.hideLabels" class="bonuses-timer__item-label">{{ timerContent?.seconds }}</span>
     </span>
   </div>
 </template>
@@ -33,6 +33,7 @@
 
   const props = defineProps<{
     expiredAt: string;
+    hideLabels?: boolean;
     timerContent?: IProfileBonuses['timer'];
   }>();
 

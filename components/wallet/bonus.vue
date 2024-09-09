@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IBonus } from "@skeleton/core/types";
+import type {IBonus, IPlayerBonus, IPlayerFreeSpin} from "@skeleton/core/types";
   import { storeToRefs } from "pinia";
 
   const props = defineProps<{
@@ -99,8 +99,19 @@
     return { label, value };
   })
 
+  const bonusValue = computed<string|undefined>(() => {
+    if (props.bonusInfo.type === 3) return 'Count FS';
+    return undefined;
+  });
+
   const openBonusDetails = (): void => {
-    depositMoreInfoBonus.value = props.bonusInfo;
+    depositMoreInfoBonus.value = {
+      ...props.bonusInfo,
+      bonusValue: bonusValue.value,
+      badgeType: props.bonusInfo.type,
+      badgeStatus: 'available-deposit',
+      expiredDate: props.bonusInfo.triggerConditions.availableTo
+    };
     showModal('walletBonusDetails')
   }
 </script>

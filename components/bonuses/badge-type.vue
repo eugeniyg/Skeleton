@@ -10,6 +10,7 @@
 
   const props = defineProps<{
     mode: number;
+    contentTypes?: IProfileBonuses['types'];
   }>();
 
   const modeMap: Record<number, string> = {
@@ -20,10 +21,11 @@
     '4': 'cashback'
   }
 
-  const { getContent } = useProjectMethods();
-  const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
-  const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
-  const typeContent = computed(() => getContent(bonusesContent.value, defaultLocaleBonusesContent.value, `types.${modeMap[props.mode]}`));
+  const typeContent = computed(() => {
+    if (!props.contentTypes) return undefined;
+    const modeKey = modeMap[props.mode];
+    return props.contentTypes[modeKey];
+  });
 </script>
 
 <style src="~/assets/styles/components/bonuses/badge-type.scss" lang="scss"/>

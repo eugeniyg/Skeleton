@@ -20,7 +20,7 @@ interface IBonusState {
   depositBonuses: IBonus[];
   selectedDepositBonus: IBonus|undefined;
   bonusDeclined: boolean;
-  depositMoreInfoBonus: Maybe<IBonus>;
+  depositMoreInfoBonus: Maybe<Record<string, any>>;
   showDepositBonusCode: boolean;
   walletDepositBonus: {
     id: string;
