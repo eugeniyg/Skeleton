@@ -11,7 +11,7 @@
       <div class="header">
         <button-modal-close @close="closeModal('depositRedirect')"/>
         <client-only>
-          <div class="title">{{ title }}</div>
+          <div class="title">{{ label }}</div>
         </client-only>
       </div>
       
@@ -40,7 +40,7 @@
   } = useGlobalStore();
   const { getContent } = useProjectMethods();
   
-  const title = computed(() => {
+  const label = computed(() => {
     return getContent(popupsData, defaultLocalePopupsData, 'depositRedirect.label');
   });
   
