@@ -4,7 +4,9 @@
       
       <atomic-icon id="cherry" class="bonuses-wager-progress__icon"/>
 
-      <span class="bonuses-wager-progress__label">{{ props.wagerLabel }}</span>
+      <span class="bonuses-wager-progress__label">
+        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.wager') }}
+      </span>
 
       <span class="bonuses-wager-progress__value">
         (x{{ props.bonusInfo.wagerCasino }}):
@@ -23,7 +25,9 @@
     <div v-if="props.bonusInfo.wagerSportsbook" class="bonuses-wager-progress__row">
       <atomic-icon id="sportsbook-football" class="bonuses-wager-progress__icon" />
 
-      <span class="bonuses-wager-progress__label">{{ props.wagerLabel }}</span>
+      <span class="bonuses-wager-progress__label">
+        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.wager') }}
+      </span>
 
       <span class="bonuses-wager-progress__value">
         (x{{ props.bonusInfo.wagerSportsbook }}):
@@ -46,7 +50,7 @@
 
     <bonuses-waiting-results
       v-if="props.bonusInfo.currentWagerPercentage === 100 && props.bonusInfo.openedTransactionsCount > 0"
-      :text="props.waitingText"
+      :text="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.waitingResult')"
     />
   </div>
 </template>
@@ -56,9 +60,11 @@
 
   const props = defineProps<{
     bonusInfo: IPlayerBonus;
-    wagerLabel?: string;
-    waitingText?: string;
   }>();
+
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
 
   const { formatBalance } = useProjectMethods();
 

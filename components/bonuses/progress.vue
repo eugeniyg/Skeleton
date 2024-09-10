@@ -52,7 +52,10 @@
     }
   };
 
-  watch(() => props.progress, () => setBarAlignment());
+  watch(() => props.progress, async () => {
+    await nextTick();
+    setBarAlignment();
+  });
 
   onMounted(() => {
     setBarAlignment();

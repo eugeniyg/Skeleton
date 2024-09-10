@@ -1,7 +1,7 @@
 <template>
   <div class="bonuses-info-button">
     <span class="bonuses-info-button__title">
-      {{ props.label }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.moreInfo') }}
     </span>
 
     <atomic-icon id="question" class="bonuses-info-button__icon" />
@@ -9,9 +9,9 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps<{
-    label?: string;
-  }>();
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/bonuses/info-button.scss" lang="scss"/>

@@ -3,11 +3,11 @@
     <atomic-icon id="stars" class="bonuses-badge-status__icon" />
 
     <span class="bonuses-badge-status__label">
-      {{ props.title }}
+      {{ statusLabel }}
     </span>
 
     <span v-if="props.status === 'available-deposit'" class="bonuses-badge-status__text">
-      {{ props.subtitle }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.statuses.nextDeposit') }}
     </span>
   </div>
 </template>
@@ -15,9 +15,19 @@
 <script setup lang="ts">
   const props = defineProps<{
     status: 'active'|'available'|'available-deposit';
-    title?: string;
-    subtitle?: string;
   }>();
+
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
+
+  const statusLabel = computed<string|undefined>(() => {
+    const contentKey = props.status.includes('available') ? 'available' : 'active';
+    return getContent(
+      globalComponentsContent.value,
+      defaultLocaleGlobalComponentsContent.value,
+      `bonuses.statuses.${contentKey}`);
+  })
 </script>
 
 <style src="~/assets/styles/components/bonuses/badge-status.scss" lang="scss"/>

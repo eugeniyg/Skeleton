@@ -29,12 +29,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IProfileBonuses } from "~/types";
-
   const props = defineProps<{
     expiredAt: string;
     hideLabels?: boolean;
-    timerContent?: IProfileBonuses['timer'];
   }>();
 
   const state = reactive<{
@@ -52,6 +49,14 @@
     minutes: 0,
     seconds: 0,
   });
+
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
+
+  const timerContent = computed(() =>
+    getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'bonuses.timer')
+  );
 
   const format = (value: string|number): number|string => (Number(value) < 10 ? `0${value}` : value);
 

@@ -1,6 +1,8 @@
 <template>
   <div class="bonuses-wager">
-    <span v-if="props.label" class="bonuses-wager__label">{{ props.label }}:</span>
+    <span class="bonuses-wager__label">
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.wager') }}:
+    </span>
 
     <template v-if="props.bonusInfo.wagerCasino">
       <atomic-icon id="cherry" class="bonuses-wager__icon" />
@@ -19,8 +21,11 @@
 
   const props = defineProps<{
     bonusInfo: IPlayerBonus|IBonus;
-    label?: string;
   }>();
+
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/bonuses/wager.scss" lang="scss"/>

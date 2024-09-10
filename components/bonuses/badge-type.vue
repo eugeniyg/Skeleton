@@ -6,12 +6,13 @@
 </template>
 
 <script setup lang="ts">
-  import type {IProfileBonuses} from "~/types";
-
   const props = defineProps<{
     mode: number;
-    contentTypes?: IProfileBonuses['types'];
   }>();
+
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent} = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
 
   const modeMap: Record<number, string> = {
     '-1': 'package',
@@ -22,9 +23,14 @@
   }
 
   const typeContent = computed(() => {
-    if (!props.contentTypes) return undefined;
+    const typesContent = getContent(
+      globalComponentsContent.value,
+      defaultLocaleGlobalComponentsContent.value,
+      'bonuses.types'
+    );
+    if (!typesContent) return undefined;
     const modeKey = modeMap[props.mode];
-    return props.contentTypes[modeKey];
+    return typesContent[modeKey];
   });
 </script>
 
