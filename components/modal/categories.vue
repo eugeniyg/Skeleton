@@ -24,7 +24,6 @@
           }"
           @click="emit('clickCategory', identity)"
           :key="id"
-          ref="navCatItemRef"
         >
           <atomic-icon :id="gameCategoriesObj[identity]?.icon"/>
           <span>{{ gameCategoriesObj[identity]?.label || name }}</span>

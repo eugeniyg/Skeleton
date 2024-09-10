@@ -119,7 +119,7 @@
     window.addEventListener('resize', closeDropdown);
   });
   
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     window.removeEventListener('resize', closeDropdown);
   });
 </script>

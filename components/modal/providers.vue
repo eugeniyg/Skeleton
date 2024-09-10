@@ -117,10 +117,9 @@
   
   const selectAll = () => {
     const all: string[] = [];
-    inputRef.value.forEach((item: HTMLInputElement) => {
-      if (item.value) all.push(item.value);
+    providersList.value.forEach((provider) => {
+      all.push(provider.id);
     });
-    
     emit('select', all);
   };
   
@@ -144,7 +143,7 @@
     try {
       const responseProviders = await getGameProviders(requestParams);
       searchProviders.value = responseProviders || [];
-      isShowEmpty.value = !(!!responseProviders.length);
+      isShowEmpty.value = !responseProviders.length;
     } catch {
       showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
     }

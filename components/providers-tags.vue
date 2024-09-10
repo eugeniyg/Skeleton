@@ -109,7 +109,7 @@
     scrollHandler();
   });
   
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     window.removeEventListener('resize', scrollHandler);
   });
 </script>
