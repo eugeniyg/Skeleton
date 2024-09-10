@@ -23,7 +23,7 @@ interface IModals extends Record<string, any> {
   questsHub: boolean;
   loyaltyEarn: boolean;
   loyaltyLevel: boolean;
-  defaultDepositRedirect: boolean;
+  depositRedirect: boolean;
 }
 
 interface IModalsUrls extends Record<string, any> {
@@ -36,7 +36,7 @@ interface IModalsUrls extends Record<string, any> {
   resetPass: string;
   wallet: string;
   questsHub: string;
-  defaultDepositRedirect: string;
+  depositRedirect: string;
 }
 
 interface ILayoutStoreState extends Record<string, any>{
@@ -78,7 +78,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         questsHub: false,
         loyaltyEarn: false,
         loyaltyLevel: false,
-        defaultDepositRedirect: false,
+        depositRedirect: false,
       },
       modalsUrl: {
         register: 'sign-up',
@@ -90,7 +90,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         resetPass: 'reset-pass',
         wallet: 'wallet',
         questsHub: 'quests-hub',
-        defaultDepositRedirect: 'deposit-redirect',
+        depositRedirect: 'deposit-redirect',
       },
     lastNotificationTime: 0,
     returnGame: undefined,

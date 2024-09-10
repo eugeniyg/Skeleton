@@ -1,15 +1,15 @@
 <template>
   <vue-final-modal
-    v-model="modals.defaultDepositRedirect"
+    v-model="modals.depositRedirect"
     class="modal-success-deposit"
     :clickToClose="false"
-    @clickOutside="closeModal('defaultDepositRedirect')"
+    @clickOutside="closeModal('depositRedirect')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('defaultDepositRedirect')"/>
+        <button-modal-close @close="closeModal('depositRedirect')"/>
         <client-only>
           <div class="title">{{ title }}</div>
         </client-only>
@@ -41,15 +41,15 @@
   const { getContent } = useProjectMethods();
   
   const title = computed(() => {
-    return getContent(popupsData, defaultLocalePopupsData, 'defaultDepositRedirect.label');
+    return getContent(popupsData, defaultLocalePopupsData, 'depositRedirect.label');
   });
   
   const image = computed(() => {
-    return getContent(popupsData, defaultLocalePopupsData, 'defaultDepositRedirect.image');
+    return getContent(popupsData, defaultLocalePopupsData, 'depositRedirect.image');
   });
   
   const description = computed(() => {
-    return getContent(popupsData, defaultLocalePopupsData, 'defaultDepositRedirect.description');
+    return getContent(popupsData, defaultLocalePopupsData, 'depositRedirect.description');
   });
   
 </script>
