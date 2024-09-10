@@ -6,7 +6,6 @@
     @clickOutside="closeModal('defaultDepositRedirect')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
-    @closed="cleanUrl"
   >
     <div class="scroll">
       <div class="header">
@@ -51,16 +50,6 @@
     return getContent(popupsData, defaultLocalePopupsData, 'defaultDepositRedirect.description');
   });
   
-  const cleanUrl = () => {
-    const router = useRouter();
-    const route = useRoute();
-    
-    if (route.query?.status && route.query?.status === 'CANCELLED') {
-        const query = { ...route.query };
-        delete query.status;
-        router.replace({ query });
-    }
-  }
 </script>
 
 <style src="~/assets/styles/components/modal/success.scss" lang="scss"/>
