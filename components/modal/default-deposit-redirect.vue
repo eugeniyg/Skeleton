@@ -10,7 +10,9 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('defaultDepositRedirect')"/>
-        <div class="title">{{ title }}</div>
+        <client-only>
+          <div class="title">{{ title }}</div>
+        </client-only>
       </div>
       
       <atomic-image class="img" :src="image" width="104" height="104"/>
@@ -39,7 +41,7 @@
   const { getContent } = useProjectMethods();
   
   const title = computed(() => {
-    return getContent(popupsData, defaultLocalePopupsData, 'defaultDepositRedirect.title');
+    return getContent(popupsData, defaultLocalePopupsData, 'defaultDepositRedirect.label');
   });
   
   const image = computed(() => {
