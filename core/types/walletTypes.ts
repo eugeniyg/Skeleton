@@ -45,6 +45,8 @@ export interface IPaymentMethod extends Record<string, any>{
   icon: string;
   presets: IPaymentPreset[];
   fields: IPaymentField[];
+  type: string;
+  processingType: string;
 }
 
 export interface IRequestDeposit extends Record<string, any>{

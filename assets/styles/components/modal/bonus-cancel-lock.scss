@@ -1,0 +1,16 @@
+.modal-bonus-cancel-lock {
+  @extend %modal-info;
+
+  &__image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 104px;
+    width: 100%;
+
+    img {
+      max-height: 100%;
+      max-width: 100%;
+    }
+  }
+}

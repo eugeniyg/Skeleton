@@ -129,6 +129,19 @@
         color: var(--icon-accent);
       }
     }
+
+    .count {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 16px;
+      padding: 0 8px;
+      margin-left: 8px;
+      @include font($subheading-1);
+      color: var(--text-inverse);
+      background-color: var(--support-brand-default);
+      border-radius: 8px;
+    }
   }
 
   hr {

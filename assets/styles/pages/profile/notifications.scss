@@ -1,0 +1,48 @@
+.profile-notifications {
+  &__header {
+    display: grid;
+    grid-template-areas: "title checkbox" "toggle toggle";
+    grid-column-gap: 16px;
+    grid-row-gap: 8px;
+  }
+
+  &__title {
+    color: var(--text-primary);
+    @include font($heading-6);
+    grid-area: title;
+  }
+
+  &__read-all {
+    grid-area: checkbox;
+    display: flex;
+    align-items: center;
+    grid-column-gap: 4px;
+    margin-left: auto;
+    color: var(--button-text-ghost-disabled);
+    @include font($heading-1);
+    line-height: 1;
+    cursor: auto;
+    pointer-events: none;
+
+    .icon {
+      --color: var(--button-text-ghost-disabled);
+      --icon-size: 20px;
+    }
+
+    &.active {
+      cursor: pointer;
+      color: var(--text-primary);
+      pointer-events: auto;
+
+      .icon {
+        --color: var(--text-primary)
+      }
+    }
+  }
+
+  &__empty {
+    margin: 0 auto;
+    max-width: 328px;
+    text-align: center;
+  }
+}

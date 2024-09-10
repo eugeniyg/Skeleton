@@ -21,37 +21,38 @@
       <quest-progress :taskList="[props.taskInfo]" showLabel />
     </div>
 
-    <div v-if="[2,3,4].includes(props.taskInfo.type)" class="quest-info-wrapper">
-      <template v-if="props.taskInfo.type === 3 && winTaskConditions">
-        <quest-games-info
-          :title="winTaskConditions.multiplierLabel"
-          :min="winTaskConditions.multiplierMin"
-          :max="winTaskConditions.multiplierMax"
-        />
+    <div v-if="props.taskInfo.type === 2 && props.taskInfo.conditions.fields" class="quest-info-wrapper">
+      <quest-task-fields :items="props.taskInfo.conditions.fields" />
+    </div>
 
-        <quest-games-info
-          :title="winTaskConditions.winLabel"
-          :min="winTaskConditions.winMin"
-          :max="winTaskConditions.winMax"
-        />
-
-        <quest-games :taskType="props.taskInfo.type" :items="winTaskConditions.games" />
-      </template>
-
-      <template v-else-if="props.taskInfo.type === 4 && betTaskConditions">
-        <quest-games-info
-          :title="betTaskConditions.betAmountLabel"
-          :min="betTaskConditions.betMin"
-          :max="betTaskConditions.betMax"
-        />
-
-        <quest-games :taskType="props.taskInfo.type" :items="betTaskConditions.games" />
-      </template>
-
-      <quest-task-fields
-        v-else-if="props.taskInfo.type === 2 && props.taskInfo.conditions.fields"
-        :items="props.taskInfo.conditions.fields"
+    <div v-else-if="props.taskInfo.type === 3 && winTaskConditions" class="quest-info-wrapper">
+      <quest-games-info
+        :title="winTaskConditions.multiplierLabel"
+        :min="winTaskConditions.multiplierMin"
+        :max="winTaskConditions.multiplierMax"
       />
+
+      <quest-games-info
+        :title="winTaskConditions.winLabel"
+        :min="winTaskConditions.winMin"
+        :max="winTaskConditions.winMax"
+      />
+
+      <quest-games :taskType="props.taskInfo.type" :items="winTaskConditions.games" />
+    </div>
+
+    <div v-else-if="props.taskInfo.type === 4 && betTaskConditions" class="quest-info-wrapper">
+      <quest-games-info
+        :title="betTaskConditions.betAmountLabel"
+        :min="betTaskConditions.betMin"
+        :max="betTaskConditions.betMax"
+      />
+
+      <quest-games :taskType="props.taskInfo.type" :items="betTaskConditions.games" />
+    </div>
+
+    <div v-else-if="props.taskInfo.type === 6 && depositTaskConditions" class="quest-info-wrapper">
+      <quest-deposit-info v-bind="depositTaskConditions" />
     </div>
 
     <span class="quest-task__type-icon">
@@ -131,6 +132,20 @@
     const games = props.taskInfo.conditions.games || [];
 
     return { betAmountLabel, betMin, betMax, games };
+  })
+
+  interface IDepositTaskInfo {
+    depositMin: string;
+    depositMax: string;
+  }
+
+  const depositTaskConditions = computed<IDepositTaskInfo|undefined>(() => {
+    if (props.taskInfo.type !== 6) return undefined;
+
+    const depositMin = getSumValue(props.taskInfo.conditions, 'minAmount');
+    const depositMax = getSumValue(props.taskInfo.conditions, 'maxAmount');
+
+    return { depositMin, depositMax };
   })
 
   const statusImageSrc = computed(() => {

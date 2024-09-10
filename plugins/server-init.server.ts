@@ -11,11 +11,6 @@ export default defineNuxtPlugin(async ():Promise<any> => {
 
   getRequestCountry();
 
-  if (process.env.NODE_ENV === 'development') {
-    const globalStore = useGlobalStore();
-    globalStore.baseApiUrl = process.env.API_BASE_URL || '';
-  }
-
   await Promise.all([
     getLocales(),
     getCountries(),
