@@ -65,6 +65,8 @@
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
+  const walletStore = useWalletStore();
+  const { activeAccountType } = storeToRefs(walletStore);
 
   const { formatBalance } = useProjectMethods();
 
@@ -74,7 +76,8 @@
 
   const fullCasinoAmount = computed<{ currency: string, amount: number }>(() => {
     const fullAmount = props.bonusInfo.currentWagerCasinoAmount + props.bonusInfo.requiredWagerCasinoAmount;
-    return formatBalance(props.bonusInfo.currency, fullAmount);
+    const roundAmount = Number(fullAmount.toFixed(activeAccountType.value === 'fiat' ? 2 : 8));
+    return formatBalance(props.bonusInfo.currency, roundAmount);
   })
 
   const currentSportsbookAmount = computed<{ currency: string, amount: number }>(() => {
@@ -83,7 +86,8 @@
 
   const fullSportsbookAmount = computed<{ currency: string, amount: number }>(() => {
     const fullAmount = props.bonusInfo.currentWagerSportsbookAmount + props.bonusInfo.requiredWagerSportsbookAmount;
-    return formatBalance(props.bonusInfo.currency, fullAmount);
+    const roundAmount = Number(fullAmount.toFixed(activeAccountType.value === 'fiat' ? 2 : 8));
+    return formatBalance(props.bonusInfo.currency, roundAmount);
   })
 </script>
 
