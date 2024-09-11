@@ -1,0 +1,220 @@
+.modal-providers {
+  .vfm__content {
+    margin: auto 0 0;
+    max-width: 794px;
+    background: var(--layer-01);
+    width: 100%;
+    padding: 16px 16px 32px 16px;
+    gap: 16px;
+    flex: 1 0 0;
+    height: fit-content;
+    align-items: unset;
+    max-height: 80vh;
+    box-shadow: var(--dark-shadow-group);
+
+    @include media(md) {
+      max-height: 80vh;
+      margin: auto;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+  }
+
+  &__header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    display: grid;
+    color: var(--white);
+    text-align: center;
+    padding-right: 16px;
+    grid-column-gap: 8px;
+    @include font($heading-6);
+
+    &-top {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    &-title {
+      flex-grow: 1;
+    }
+
+    .game-filter__search {
+      grid-area: unset;
+    }
+  }
+
+  &__container {
+    display: grid;
+    width: calc(100% + 16px);
+    overflow-y: auto;
+    max-height: calc(100vh - 16px - 32px);
+    grid-template-rows: 1fr;
+    margin-right: -16px;
+  }
+
+  .btn-modal-close {
+    --bg: var(--button-bg-secondary);
+    top: 0;
+    right: 0;
+    margin-left: auto;
+    position: relative;
+    transform: translate(0);
+    width: 32px;
+    height: 32px;
+    min-width: auto;
+    min-height: auto;
+
+
+    .icon {
+      --visibility: hidden;
+      --icon-size: 20px;
+      --color: var(--button-icn-secondary);
+
+      &:first-child {
+        --visibility: visible;
+      }
+
+      &:last-child {
+        --visibility: hidden;
+      }
+
+      @include media(md) {
+        &:first-child {
+          --visibility: hidden;
+        }
+
+        &:last-child {
+          --visibility: visible;
+        }
+      }
+    }
+
+    @include media(md) {
+      --bg: transparent;
+      order: 1;
+
+      &:hover {
+        .icon {
+          --color: var(--icon-accent);
+        }
+      }
+    }
+  }
+
+  &__content {
+    display: grid;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    width: 100%;
+    overscroll-behavior: contain;
+    padding: 16px 16px 16px 0;
+    grid-row-gap: 8px;
+    grid-column-gap: 24px;
+    @include scrollbar;
+
+    @include media(xs) {
+      grid-template-columns: repeat(2, 1fr);
+      .empty {
+        grid-column: 1/3;
+
+        &__image {
+          width: 160px;
+        }
+      }
+    }
+
+    @include media(md) {
+      grid-template-columns: repeat(3, 1fr);
+      .empty {
+        grid-column: 1/4;
+      }
+    }
+  }
+
+  &__footer {
+    position: sticky;
+    bottom: 0;
+    display: grid;
+    justify-content: center;
+    z-index: 1;
+    grid-template-columns: 1fr;
+    padding-right: 16px;
+
+    .btn-ghost {
+      --width: 100%;
+      --color: var(--button-text-ghost-low-contrast);
+      @include font($heading-1);
+
+      &[disabled] {
+        --color: var(--button-text-ghost-disabled);
+      }
+    }
+
+    hr {
+      width: 100%;
+      --margin: 0 0 16px 0;
+    }
+  }
+
+  &__item {
+    display: flex;
+    padding: 10px 8px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 8px;
+    grid-auto-flow: row;
+    cursor: pointer;
+
+    &:has(.checked) {
+      background: var(--button-bg-secondary-click);
+    }
+
+    &-checkbox {
+      --color: transparent;
+      --icon-size: 20px;
+      order: -1;
+      border: 2px var(--border-02) solid;
+      background-color: var(--field-01);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    &-input {
+      visibility: hidden;
+      position: absolute;
+
+      &.checked ~ .modal-providers__item-checkbox {
+        --color: var(--icon-contrast);
+        border-color: var(--support-success-default);
+        background-color: var(--support-success-default);
+        box-shadow: none;
+      }
+    }
+
+    &-logo {
+      display: flex;
+      width: 32px;
+      height: 12px;
+      padding: 0;
+      justify-content: center;
+      align-items: center;
+      min-width: 32px;
+    }
+
+    &-name {
+      overflow: hidden;
+      color: var(--text-primary);
+      text-overflow: ellipsis;
+      width: 100%;
+      @include font($body-1);
+    }
+
+    &-count {
+      color: var(--text-accent);
+      @include font($body-1);
+    }
+  }
+}

@@ -198,8 +198,10 @@
     const { origin } = window.location;
     const successQueryString = queryString.stringify({ ...query, success: 'deposit', wallet: undefined });
     const errorQueryString = queryString.stringify({ ...query, failing: 'deposit', wallet: undefined });
+    const redirectQueryString = queryString.stringify({ ...query, 'deposit-redirect': true, wallet: undefined });
     const successRedirect = `${origin}${path}?${successQueryString}`;
     const errorRedirect = `${origin}${path}?${errorQueryString}`;
+    const defaultRedirect = `${origin}${path}?${redirectQueryString}`;
 
     const mainCurrencyAmount = getMainBalanceFormat(formatAmountMin.currency, Number(amountValue.value));
 
@@ -210,6 +212,7 @@
       accountId: activeAccount.value?.id || '',
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
+      redirectUrl: defaultRedirect,
       bonusId: selectedDepositBonus.value?.id,
       isBonusDecline: showDepositBonusCode.value && !depositBonusCode.value ? true : bonusDeclined.value,
       fields: props.fields.length
@@ -277,8 +280,8 @@
   const getPackageBonusesFreeSpins = (bonusInfo: IBonus): number => {
     if (bonusInfo.packageItems) {
       return bonusInfo.packageItems.reduce((fsCount, currentBonus) => {
-        if (currentBonus.type === 3 && currentBonus.assignConditions?.countFreespins) {
-          return fsCount + currentBonus.assignConditions?.countFreespins;
+        if (currentBonus.type === 3 && currentBonus.assignConditions?.presets?.length) {
+          return fsCount + currentBonus.assignConditions?.presets?.[0].quantity;
         }
         return fsCount;
       }, 0);
@@ -332,11 +335,14 @@
       return getPercentageBonusValue(selectedDepositBonus.value);
     } else if (selectedDepositBonus.value.type === 3) {
       const packageFreeSpins = getPackageBonusesFreeSpins(selectedDepositBonus.value);
+      const selectedFreeSpinCount = selectedDepositBonus.value.assignConditions?.presets?.[0].quantity;
       return packageFreeSpins
         ? `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${packageFreeSpins} FS`
-        : `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${selectedDepositBonus.value.assignConditions?.countFreespins} FS`;
+        : `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${selectedFreeSpinCount} FS`;
     }
 
     return undefined;
   })
+  
+  
 </script>

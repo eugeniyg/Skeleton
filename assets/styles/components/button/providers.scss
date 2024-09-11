@@ -1,0 +1,35 @@
+.btn-providers {
+  display: inline-flex;
+  height: 48px;
+  padding: 6px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  border-radius: var(--corner-radius-mapped-button-lg, 12px);
+  border: 1px solid var(--border-01);
+  background: var(--layer-02);
+
+  &__label {
+    --line-height: auto;
+    color: var(--label-color, var(--text-secondary));
+    @include font($subheading-2);
+    transition: color 0.2s ease-in-out;
+  }
+
+  &__icon {
+    --icon-size: 20px;
+    --color: var(--icon-color, var(--icon-primary));
+  }
+
+  &:hover {
+    --label-color: var(--text-link-hover);
+    --icon-color: var(--icon-accent);
+    cursor: pointer;
+  }
+
+  &.is-active {
+    --label-color: var(--text-primary);
+    --icon-color: var(--icon-contrast);
+  }
+}

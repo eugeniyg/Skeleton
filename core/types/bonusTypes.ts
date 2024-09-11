@@ -87,21 +87,31 @@ export interface IAmountRangeItem {
   currency: string;
 }
 
+export interface IFreeSpinPreset extends Record<string, any> {
+  id: string;
+  currency: string;
+  name: string;
+  originalCurrency: string;
+  price: number;
+  quantity: number;
+}
+
 export interface IBonusAssignConditions {
   amountItems?: {
     amount: number;
     currency: string;
   }[];
   baseCurrencyAmount?: number;
-  countFreespins?: number;
-  gameId?: string;
-  providerId?: string;
   depositPercentage?: number;
   baseCurrencyMaxAmount?: number;
   maxAmountItems?: {
     amount: number;
     currency: string;
   }[];
+  freespinDurationMinutes?: number;
+  gameId?: string;
+  providerId?: string;
+  presets?: IFreeSpinPreset[];
 }
 
 export interface IBonusTriggerConditions {
