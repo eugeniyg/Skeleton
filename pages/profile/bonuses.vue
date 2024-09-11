@@ -31,7 +31,9 @@
       @activateDeposit="activateDepositBonus"
     />
 
-    <!--    <bonus-code :content="content?.currentLocaleData?.bonusCode || content?.defaultLocaleData?.bonusCode" />-->
+    <atomic-divider v-if="hasActiveBlock || hasIssuedBlock" class="profile-bonuses__blocks-divider" />
+
+    <bonuses-promo-code />
 
     <!--    <transition name="fade" mode="out-in">-->
     <!--      <bonus-active-->

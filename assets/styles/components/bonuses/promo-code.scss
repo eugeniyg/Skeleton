@@ -1,0 +1,125 @@
+.bonuses-promo-code {
+  padding: 32px 24px;
+  background-color: var(--layer-02);
+  border-radius: 16px;
+  user-select: none;
+  position: relative;
+
+  &__title {
+    @include font($heading-4);
+    color: var(--text-primary);
+    margin: 0;
+    text-align: left;
+    max-width: 343px;
+  }
+
+  &__description {
+    @include font($body-2);
+    color: var(--text-tertiary);
+    margin: 4px 0 0 0;
+    text-align: left;
+    max-width: 343px;
+
+    & {
+      > * {
+        margin: 0;
+      }
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    grid-column-gap: 8px;
+    position: relative;
+    width: 100%;
+    margin-top: 16px;
+
+    @include media(sm) {
+      max-width: 340px;
+    }
+
+    &-wrap {
+      position: relative;
+      display: flex;
+      background: var(--field-02);
+      border-radius: 12px;
+
+      .icon {
+        --icon-size: 20px;
+        --color: var(--icon-primary);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 16px;
+        margin: auto 0;
+        z-index: 2;
+        pointer-events: none;
+      }
+    }
+
+    .btn-primary {
+      width: fit-content;
+      padding: 10px 24px;
+    }
+  }
+
+  &__error {
+    margin-top: 8px;
+    color: var(--text-alert);
+
+    @include font($body-0);
+  }
+
+  .input-text {
+    .field {
+      --bg: var(--field-02);
+      --border-color: var(--field-02);
+      padding-left: 44px;
+      box-shadow: inset 0 0 0 1000px var(--field-02);
+      border: none;
+      padding-right: 8px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 100%;
+
+      &::placeholder {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: block;
+      }
+    }
+  }
+
+  &__img {
+    position: relative;
+    height: 134px;
+    max-width: 300px;
+    margin: 8px auto -32px;
+    overflow: hidden;
+
+    @include media(sm) {
+      position: absolute;
+      top: -24px;
+      bottom: -24px;
+      width: 220px;
+      height: 220px;
+      right: 0;
+      margin: auto;
+    }
+
+    img {
+      width: 100%;
+      position: absolute;
+      height: auto;
+      display: block;
+
+      @include media(sm) {
+        object-fit: contain;
+        margin: 0;
+      }
+    }
+  }
+}
