@@ -198,8 +198,10 @@
     const { origin } = window.location;
     const successQueryString = queryString.stringify({ ...query, success: 'deposit', wallet: undefined });
     const errorQueryString = queryString.stringify({ ...query, failing: 'deposit', wallet: undefined });
+    const redirectQueryString = queryString.stringify({ ...query, 'deposit-redirect': true, wallet: undefined });
     const successRedirect = `${origin}${path}?${successQueryString}`;
     const errorRedirect = `${origin}${path}?${errorQueryString}`;
+    const defaultRedirect = `${origin}${path}?${redirectQueryString}`;
 
     const mainCurrencyAmount = getMainBalanceFormat(formatAmountMin.currency, Number(amountValue.value));
 
@@ -210,6 +212,7 @@
       accountId: activeAccount.value?.id || '',
       redirectSuccessUrl: successRedirect,
       redirectErrorUrl: errorRedirect,
+      redirectUrl: defaultRedirect,
       bonusId: selectedDepositBonus.value?.id,
       isBonusDecline: showDepositBonusCode.value && !depositBonusCode.value ? true : bonusDeclined.value,
       fields: props.fields.length
@@ -339,4 +342,6 @@
 
     return undefined;
   })
+  
+  
 </script>
