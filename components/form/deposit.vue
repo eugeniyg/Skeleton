@@ -280,8 +280,8 @@
   const getPackageBonusesFreeSpins = (bonusInfo: IBonus): number => {
     if (bonusInfo.packageItems) {
       return bonusInfo.packageItems.reduce((fsCount, currentBonus) => {
-        if (currentBonus.type === 3 && currentBonus.assignConditions?.countFreespins) {
-          return fsCount + currentBonus.assignConditions?.countFreespins;
+        if (currentBonus.type === 3 && currentBonus.assignConditions?.presets?.length) {
+          return fsCount + currentBonus.assignConditions?.presets?.[0].quantity;
         }
         return fsCount;
       }, 0);
@@ -335,9 +335,10 @@
       return getPercentageBonusValue(selectedDepositBonus.value);
     } else if (selectedDepositBonus.value.type === 3) {
       const packageFreeSpins = getPackageBonusesFreeSpins(selectedDepositBonus.value);
+      const selectedFreeSpinCount = selectedDepositBonus.value.assignConditions?.presets?.[0].quantity;
       return packageFreeSpins
         ? `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${packageFreeSpins} FS`
-        : `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${selectedDepositBonus.value.assignConditions?.countFreespins} FS`;
+        : `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${selectedFreeSpinCount} FS`;
     }
 
     return undefined;

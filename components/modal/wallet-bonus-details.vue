@@ -3,10 +3,10 @@
     v-model="modals.walletBonusDetails"
     class="modal-wallet-bonus-details"
     :clickToClose="false"
-    @clickOutside="closeModal('walletBonusDetails')"
-    @beforeOpen="setTableData"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="closeModal('walletBonusDetails')"
+    @beforeOpen="setTableData"
   >
     <div class="modal-wallet-bonus-details__scroll">
       <div class="modal-wallet-bonus-details__header">
@@ -238,7 +238,7 @@
     if (depositSum) params.deposit = { label: paramsLabels?.depositAmount, value: depositSum };
 
     if (bonusType === 3) {
-      const freeSpinsValue = `${bonusInfo.assignConditions?.countFreespins} FS`;
+      const freeSpinsValue = `${bonusInfo.assignConditions?.presets?.[0].quantity} FS`;
       params.freeSpins = { label: paramsLabels?.freeSpins, value: freeSpinsValue };
     }
 
