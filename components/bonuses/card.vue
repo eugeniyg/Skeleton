@@ -75,7 +75,6 @@
 
 <script setup lang="ts">
   import type { IBonus, IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
-  import type { IProfileBonuses } from "~/types";
 
   const props = defineProps<{
     bonusInfo: IPlayerBonus|IPlayerFreeSpin|IBonus;
@@ -93,12 +92,13 @@
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
 
   const { formatBalance, getContent } = useProjectMethods();
-  const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
-  const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
 
   const bonusValue = computed<string|undefined>(() => {
     if (props.isFreeSpin) return `${(props.bonusInfo as IPlayerFreeSpin).count} FS`;
-    if (props.isDeposit && props.bonusInfo.type === 3) return 'Count FS';
+    if (props.isDeposit && props.bonusInfo.type === 3) {
+      const freeSpinCount = props.bonusInfo.assignConditions?.presets?.[0].quantity;
+      return freeSpinCount ? `${freeSpinCount} FS` : undefined;
+    }
     if (props.isCash && props.bonusInfo.status === 2) {
       const { currency, amount } = formatBalance((props.bonusInfo as IPlayerBonus).currency, (props.bonusInfo as IPlayerBonus).amount);
       return `${amount} ${currency}`;
@@ -132,6 +132,8 @@
     }
 
     if (props.bonusInfo.status === 1 && props.bonusInfo.activationExpiredAt) return props.bonusInfo.activationExpiredAt;
+
+    if (props.isFreeSpin && props.bonusInfo.status === 2 && props.bonusInfo.expiredAt) return props.bonusInfo.expiredAt;
 
     if (props.bonusInfo.status === 2 && props.bonusInfo.wageringExpiredAt) return props.bonusInfo.wageringExpiredAt;
 
