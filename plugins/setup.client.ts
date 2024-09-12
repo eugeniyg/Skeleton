@@ -90,7 +90,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     const { isMobile } = useGlobalStore();
     const { isLoggedIn } = useProfileStore();
     if (isMobile && isLoggedIn && document.visibilityState === 'visible') {
-      console.log('inside method');
       const { getUserAccounts } = useWalletStore();
       getUserAccounts();
     }
