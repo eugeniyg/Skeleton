@@ -52,6 +52,7 @@
     <modal-wallet />
     <!--    <modal-wallet-choose-region />-->
     <modal-cancel-deposit />
+    <modal-deposit-redirect/>
     <modal-bonus-details />
     <modal-turn-over-wager v-if="turnOverWagerModal" />
     <atomic-alert />

@@ -3,26 +3,29 @@
 </template>
 
 <script setup lang="ts">
-onBeforeMount(async () => {
-  const { query } = useRoute();
-  if (!query.state) return;
+  onBeforeMount(async () => {
+    const { query } = useRoute();
+    if (!query.state) return;
 
-  const { isLoggedIn, autoLogin, logOutUser } = useProfileStore();
-  const { localizePath } = useProjectMethods();
-  const { openWalletModal, showModal} = useLayoutStore();
-  const router = useRouter();
+    const { isLoggedIn, autoLogin, removeSession } = useProfileStore();
+    const { localizePath } = useProjectMethods();
+    const { showModal, openWalletModal } = useLayoutStore();
+    const router = useRouter();
 
-  if (isLoggedIn) {
-    await logOutUser();
-  }
+    if (isLoggedIn) removeSession();
 
-  try {
-    await autoLogin(query.state as string);
-    await openWalletModal();
-    router.replace(localizePath('/?wallet=deposit'));
-  } catch {
-    showModal('signIn');
-    router.replace(localizePath('/?sign-in=true'));
-  }
-})
+    try {
+      await autoLogin(query.state as string);
+      const redirectUrlQuery = query.redirectUrl ?? '';
+      const redirectAbsoluteUrl = new URL(window.location.origin + redirectUrlQuery);
+      const queryParams = new URLSearchParams(redirectAbsoluteUrl.search);
+      queryParams.set('wallet', 'true');
+      await openWalletModal();
+      const redirectRelativeUrl = `${redirectAbsoluteUrl.pathname}?${queryParams.toString()}`;
+      router.replace(localizePath(redirectRelativeUrl));
+    } catch {
+      showModal('signIn');
+      router.replace(localizePath('/?sign-in=true'));
+    }
+  })
 </script>
