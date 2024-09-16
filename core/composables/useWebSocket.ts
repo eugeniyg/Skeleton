@@ -12,13 +12,19 @@ export const useWebSocket = defineStore('useWebSocket', {
   }),
 
   actions: {
+    async getCentrifugeToken ():Promise<string> {
+      const { getSessionToken, isTokenExpired, refreshToken } = useProfileStore();
+      let currentSessionToken = getSessionToken();
+      if (!currentSessionToken) return '';
+      if (isTokenExpired()) currentSessionToken = await refreshToken();
+      return currentSessionToken;
+    },
+
     async initWebSocket ():Promise<void> {
       const socketUrl = import.meta.dev ? 'test.dev.getplatform.tech' : window.location.hostname;
       const protocol = window.location.protocol.replace('http', 'ws');
-      const { getSessionToken } = useProfileStore();
-      const sessionToken = getSessionToken();
       this.webSocket = new Centrifuge(`${protocol}//${socketUrl}/api/connection/websocket`, {
-        token: sessionToken || ''
+        getToken: this.getCentrifugeToken
       });
       await this.webSocket.connect();
     },
