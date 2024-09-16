@@ -2,17 +2,17 @@
   <div class="page-providers">
     <div class="page-providers__header">
       <div class="page-providers__heading">
-        {{ getContent(providersContent, defaultLocaleProvidersContent, 'title') }}
+        {{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}
       </div>
 
       <div class="page-providers__count">
-        {{ providersGeneralCount }} {{ getContent(providersContent, defaultLocaleProvidersContent, 'providersLabel') }}
+        {{ providersGeneralCount }} {{ getContent(currentLocaleContent, defaultLocaleContent, 'providersLabel') }}
       </div>
 
-      <div v-if="providersContent || defaultLocaleProvidersContent" class="page-providers__filter">
+      <div v-if="currentLocaleContent || defaultLocaleContent" class="page-providers__filter">
         <providers-filter
-          :currentLocaleContent="providersContent"
-          :defaultLocaleContent="defaultLocaleProvidersContent"
+          :currentLocaleContent="currentLocaleContent"
+          :defaultLocaleContent="defaultLocaleContent"
           :filters="requestParams"
           @onSearch="onSearch"
           @changeSort="onSort"
@@ -24,18 +24,18 @@
       v-if="providersList.length || staticProviderInfo"
       :providersList="providersList"
       :staticProvider="staticProviderInfo"
-      :currentLocaleContent="providersContent"
-      :defaultLocaleContent="defaultLocaleProvidersContent"
+      :currentLocaleContent="currentLocaleContent"
+      :defaultLocaleContent="defaultLocaleContent"
     />
 
     <atomic-empty
       v-else-if="requestParams.name && !loadingProviders"
-      :title="getContent(providersContent, defaultLocaleProvidersContent, 'empty.title')"
-      :subTitle="getContent(providersContent, defaultLocaleProvidersContent, 'empty.description')"
-      :image="getContent(providersContent, defaultLocaleProvidersContent, 'empty.image')"
+      :title="getContent(currentLocaleContent, defaultLocaleContent, 'empty.title')"
+      :subTitle="getContent(currentLocaleContent, defaultLocaleContent, 'empty.description')"
+      :image="getContent(currentLocaleContent, defaultLocaleContent, 'empty.image')"
     />
 
-    <atomic-seo-text v-if="providersContent?.pageMeta?.seoText" v-bind="providersContent.pageMeta.seoText"/>
+    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent.pageMeta.seoText"/>
   </div>
 </template>
 
@@ -45,58 +45,23 @@
   import type { IGameProvider, IProvidersRequest } from "@skeleton/core/types";
 
   const globalStore = useGlobalStore();
-  const {
-    currentLocale,
-    defaultLocale,
-    alertsData,
-    defaultLocaleAlertsData
-  } = storeToRefs(globalStore);
-
+  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const { showAlert } = useLayoutStore();
+  const { getContent } = useProjectMethods();
 
-  const {
-    setPageMeta,
-    getContent,
-    getLocalesContentData,
-  } = useProjectMethods();
+  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProvidersPage>({
+    contentKey: 'providersPageContent',
+    contentRoute: ['pages', 'providers'],
+    isPage: true
+  });
 
-  const providersContent = ref<Maybe<IProvidersPage>>();
-  const defaultLocaleProvidersContent = ref<Maybe<IProvidersPage>>();
+  const providersList = ref<IGameProvider[]>([]);
+
   const providersGeneralCount = computed(() => {
     return providersList.value.length + (staticProviderInfo.value ? 1 : 0);
   })
 
-  interface IPageContent {
-    currentLocaleData: Maybe<IProvidersPage>;
-    defaultLocaleData: Maybe<IProvidersPage>;
-  }
-
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    providersContent.value = contentData?.currentLocaleData;
-    defaultLocaleProvidersContent.value = contentData?.defaultLocaleData;
-    setPageMeta(providersContent.value?.pageMeta);
-  }
-
-  const getPageContent = async (): Promise<IPageContent> => {
-    const nuxtContentData = useNuxtData('providersPageContent');
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
-
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'pages', 'providers').findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'providers').findOne()
-    ]);
-    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  }
-
-  const { pending, data } = await useLazyAsyncData('providersPageContent', () => getPageContent());
-  if (data.value) setContentData(data.value);
-
-  watch(data, () => {
-    setContentData(data.value);
-  })
-
-  const staticProviderIdentity = computed(() => getContent(providersContent.value, defaultLocaleProvidersContent.value, 'staticProvider.identity'));
+  const staticProviderIdentity = computed(() => getContent(currentLocaleContent.value, defaultLocaleContent.value, 'staticProvider.identity'));
   const staticProviderInfo = ref<IGameProvider|undefined>();
 
   const requestParams = reactive<IProvidersRequest>({
@@ -118,7 +83,6 @@
     providersList.value = providers.filter(provider => !!provider.gameEnabledCount && provider.identity !== staticProviderIdentity.value);
     staticProviderInfo.value = providers.find(provider => provider.identity === staticProviderIdentity.value && !!provider.gameEnabledCount);
   }
-  const providersList = ref<IGameProvider[]>([]);
 
   const { getGameProviders } = useCoreGamesApi();
   const loadingProviders = ref<boolean>(true);

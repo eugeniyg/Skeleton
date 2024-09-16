@@ -2,21 +2,21 @@
   <div>
     <div class="promotion">
       <h1 class="title">
-        {{ getContent(welcomeContent, defaultLocaleWelcomeContent, 'title') }}
+        {{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}
       </h1>
 
       <h4 class="sub-title">
-        {{ getContent(welcomeContent, defaultLocaleWelcomeContent, 'description') }}
+        {{ getContent(currentLocaleContent, defaultLocaleContent, 'description') }}
       </h4>
 
-      <div v-if="getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet')" class="steps">
-        <div class="title">{{ getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.label') }}</div>
+      <div v-if="getContent(currentLocaleContent, defaultLocaleContent, 'howGet')" class="steps">
+        <div class="title">{{ getContent(currentLocaleContent, defaultLocaleContent, 'howGet.label') }}</div>
 
         <div class="items">
           <div
-            class="item"
-            :key="index"
             v-for="(item, index) in howGetItems"
+            :key="index"
+            class="item"
           >
             <span class="number">{{ index + 1 }}</span>
             <p class="text">{{ item }}</p>
@@ -24,8 +24,8 @@
         </div>
 
         <atomic-picture
-          v-if="getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.image')"
-          :src="getContent(welcomeContent, defaultLocaleWelcomeContent, 'howGet.image')"
+          v-if="getContent(currentLocaleContent, defaultLocaleContent, 'howGet.image')"
+          :src="getContent(currentLocaleContent, defaultLocaleContent, 'howGet.image')"
         />
       </div>
 
@@ -33,14 +33,14 @@
 
       <div class="welcome">
         <h4 class="title">
-          {{ getContent(welcomeContent, defaultLocaleWelcomeContent, 'welcome.label') }}
+          {{ getContent(currentLocaleContent, defaultLocaleContent, 'welcome.label') }}
         </h4>
 
-        <div v-if="getContent(welcomeContent, defaultLocaleWelcomeContent, 'welcome.items')?.length" class="items">
+        <div v-if="getContent(currentLocaleContent, defaultLocaleContent, 'welcome.items')?.length" class="items">
           <div
-            class="item"
+            v-for="(card, itemIndex) in getContent(currentLocaleContent, defaultLocaleContent, 'welcome.items')"
             :key="itemIndex"
-            v-for="(card, itemIndex) in getContent(welcomeContent, defaultLocaleWelcomeContent, 'welcome.items')"
+            class="item"
           >
             <div class="title">{{ card.title }}</div>
             <div class="sub-title">{{ card.topLabel }}</div>
@@ -77,14 +77,14 @@
 
       <div class="bonuses">
         <h4 class="title">
-          {{ getContent(welcomeContent, defaultLocaleWelcomeContent, 'bonuses.label') }}
+          {{ getContent(currentLocaleContent, defaultLocaleContent, 'bonuses.label') }}
         </h4>
 
-        <div v-if="getContent(welcomeContent, defaultLocaleWelcomeContent, 'bonuses.items')?.length" class="items">
+        <div v-if="getContent(currentLocaleContent, defaultLocaleContent, 'bonuses.items')?.length" class="items">
           <div
-            class="item"
+            v-for="(card, itemIndex) in getContent(currentLocaleContent, defaultLocaleContent, 'bonuses.items')"
             :key="itemIndex"
-            v-for="(card, itemIndex) in getContent(welcomeContent, defaultLocaleWelcomeContent, 'bonuses.items')"
+            class="item"
           >
             <div class="title">{{ card.subtitle }}</div>
             <div class="sub-title">{{ card.title }}</div>
@@ -114,7 +114,7 @@
       </div>
     </div>
 
-    <atomic-seo-text v-if="welcomeContent?.pageMeta?.seoText" v-bind="welcomeContent?.pageMeta?.seoText" />
+    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent?.pageMeta?.seoText" />
   </div>
 </template>
 
@@ -122,54 +122,20 @@
   import { storeToRefs } from 'pinia';
   import type { IWelcomeBonusesPage } from '~/types';
 
-  const {
-    setPageMeta,
-    getLocalesContentData,
-    getContent
-  } = useProjectMethods();
-
-  const globalStore = useGlobalStore();
-  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-
-  const welcomeContent = ref<Maybe<IWelcomeBonusesPage>>();
-  const defaultLocaleWelcomeContent = ref<Maybe<IWelcomeBonusesPage>>();
-
-  interface IPageContent {
-    currentLocaleData: Maybe<IWelcomeBonusesPage>;
-    defaultLocaleData: Maybe<IWelcomeBonusesPage>;
-  }
-
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    welcomeContent.value = contentData?.currentLocaleData;
-    defaultLocaleWelcomeContent.value = contentData?.defaultLocaleData;
-    setPageMeta(welcomeContent.value?.pageMeta);
-  }
-
-  const getPageContent = async (): Promise<IPageContent> => {
-    const nuxtContentData = useNuxtData('welcomePageContent');
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
-
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'pages', 'welcome-bonuses').findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'welcome-bonuses').findOne()
-    ]);
-    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  }
-
-  const { pending, data } = await useLazyAsyncData('welcomePageContent', () => getPageContent());
-  if (data.value) setContentData(data.value);
-
-  watch(data, () => {
-    setContentData(data.value);
-  })
-
+  const { getContent } = useProjectMethods();
+  
+  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IWelcomeBonusesPage>({
+    contentKey: 'welcomePageContent',
+    contentRoute: ['pages', 'welcome-bonuses'],
+    isPage: true
+  });
+  
   const howGetItems = computed(() => {
-    if (welcomeContent.value?.howGet || defaultLocaleWelcomeContent.value?.howGet) {
+    if (currentLocaleContent.value?.howGet || defaultLocaleContent.value?.howGet) {
       return [
-        getContent(welcomeContent.value, defaultLocaleWelcomeContent.value, 'howGet.first'),
-        getContent(welcomeContent.value, defaultLocaleWelcomeContent.value, 'howGet.second'),
-        getContent(welcomeContent.value, defaultLocaleWelcomeContent.value, 'howGet.third'),
+        getContent(currentLocaleContent.value, defaultLocaleContent.value, 'howGet.first'),
+        getContent(currentLocaleContent.value, defaultLocaleContent.value, 'howGet.second'),
+        getContent(currentLocaleContent.value, defaultLocaleContent.value, 'howGet.third'),
       ];
     }
     return [];

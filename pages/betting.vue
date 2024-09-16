@@ -1,11 +1,11 @@
 <template>
   <div>
     <client-only>
-      <main-slider v-if="!isMobile && bettingContent?.sliderDisplay" sliderType="low" />
+      <main-slider v-if="!isMobile && currentLocaleContent?.sliderDisplay" sliderType="low" />
 
       <modal-restricted-bets
-        v-if="bettingContent?.restrictedBets || defaultLocaleBettingContent?.restrictedBets"
-        :content="bettingContent?.restrictedBets || defaultLocaleBettingContent?.restrictedBets"
+        v-if="currentLocaleContent?.restrictedBets || defaultLocaleContent?.restrictedBets"
+        :content="currentLocaleContent?.restrictedBets || defaultLocaleContent?.restrictedBets"
         currentPage="betting"
         :showModal="showRestrictedBetsModal"
         @closeModal="showRestrictedBetsModal = false"
@@ -21,7 +21,7 @@
     <div class="betting">
       <div id="betting-container" class="container"/>
       
-      <atomic-seo-text v-if="bettingContent?.pageMeta?.seoText" v-bind="bettingContent?.pageMeta?.seoText"/>
+      <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent?.pageMeta?.seoText"/>
     </div>
   </div>
 </template>
@@ -37,55 +37,23 @@
     alertsData,
     defaultLocaleAlertsData,
     currentLocale,
-    defaultLocale,
     headerCountry
   } = storeToRefs(globalStore);
 
-  const {
-    setPageMeta,
-    getLocalesContentData,
-    localizePath,
-    addBetsyScript
-  } = useProjectMethods();
+  const { localizePath, addBetsyScript } = useProjectMethods();
 
-  const bettingContent = ref<Maybe<ISportsbookPage>>();
-  const  defaultLocaleBettingContent = ref<Maybe<ISportsbookPage>>();
+  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<ISportsbookPage>({
+    contentKey: 'sportsbookPageContent',
+    contentRoute: ['pages', 'sportsbook'],
+    isPage: true
+  });
+
   const showRestrictedBetsModal = ref<boolean>(false);
   const maxBetsModal = reactive({
     show: false,
     maxBet: ''
   });
 
-  interface IPageContent {
-    currentLocaleData: Maybe<ISportsbookPage>;
-    defaultLocaleData: Maybe<ISportsbookPage>;
-  }
-
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    bettingContent.value = contentData?.currentLocaleData;
-    defaultLocaleBettingContent.value = contentData?.defaultLocaleData;
-    setPageMeta(bettingContent.value?.pageMeta);
-  }
-
-  const getPageContent = async (): Promise<IPageContent> => {
-    const nuxtContentData = useNuxtData('sportsbookPageContent');
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
-
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'pages', 'sportsbook').findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'sportsbook').findOne()
-    ]);
-    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  }
-
-  const { data } = await useLazyAsyncData('sportsbookPageContent', () => getPageContent());
-  if (data.value) setContentData(data.value);
-
-  watch(data, () => {
-    setContentData(data.value);
-  })
-  
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
 

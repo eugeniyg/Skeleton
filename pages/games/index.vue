@@ -6,12 +6,12 @@
       {{ gameCategoriesObj[activeCollection?.identity || '']?.label || activeCollection?.name }}
     </atomic-cat-heading>
     
-    <div class="game-filter" v-click-outside="skipActionsState">
-      <nav-category @clickCategory="changeCategory" hide-items/>
+    <div v-click-outside="skipActionsState" class="game-filter">
+      <nav-category hide-items @clickCategory="changeCategory"/>
       
       <form-input-search
-        class="game-filter__search"
         v-model:value="searchValue"
+        class="game-filter__search"
         :placeholder="getContent(layoutData, defaultLocaleLayoutData, 'header.search.placeholder')"
         @input="searchInput"
       />
@@ -22,13 +22,13 @@
       />
       
       <atomic-game-sort
-        class="game-filter__sort"
         v-show="isShowFilter"
-        v-if="getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions')?.length"
+        v-if="getContent(currentLocaleContent, defaultLocaleContent, 'sortOptions')?.length"
+        class="game-filter__sort"
         :sortOrderValue="sortOrder"
         :sortByValue="sortBy"
+        v-bind="currentLocaleContent?.sortOptions?.length ? currentLocaleContent : defaultLocaleContent"
         @change="changeSort"
-        v-bind="gamesContent?.sortOptions?.length ? gamesContent : defaultLocaleGamesContent"
       />
       
       <providers-tags
@@ -59,12 +59,12 @@
     
     <atomic-empty
       v-if="!gameItems.length && !loadingGames"
-      :title="getContent(gamesContent, defaultLocaleGamesContent, 'empty.title')"
-      :subTitle="getContent(gamesContent, defaultLocaleGamesContent, 'empty.description')"
-      :image="getContent(gamesContent, defaultLocaleGamesContent, 'empty.image')"
+      :title="getContent(currentLocaleContent, defaultLocaleContent, 'empty.title')"
+      :subTitle="getContent(currentLocaleContent, defaultLocaleContent, 'empty.description')"
+      :image="getContent(currentLocaleContent, defaultLocaleContent, 'empty.image')"
     />
     
-    <atomic-seo-text v-if="gamesContent?.pageMeta?.seoText" v-bind="gamesContent?.pageMeta?.seoText"/>
+    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent?.pageMeta?.seoText" />
   </div>
 </template>
 
@@ -83,18 +83,12 @@
   const {
     gameCategoriesObj,
     layoutData,
-    currentLocale,
-    defaultLocale,
     defaultLocaleLayoutData,
     headerCountry,
     isMobile
   } = storeToRefs(globalStore);
   
-  const {
-    setPageMeta,
-    getContent,
-    getLocalesContentData,
-  } = useProjectMethods();
+  const { getContent } = useProjectMethods();
   const layoutStore = useLayoutStore();
   const { closeModal } = layoutStore;
   const { modals } = storeToRefs(layoutStore);
@@ -105,42 +99,10 @@
   const sortBy = ref<string | undefined>(route.query.sortBy as string || 'default');
   const sortOrder = ref<string | undefined>(route.query.sortOrder as string || 'asc');
   
-  interface IPageContent {
-    currentLocaleData: Maybe<IGamesPage>;
-    defaultLocaleData: Maybe<IGamesPage>;
-  }
-  
-  const gamesContent = ref<Maybe<IGamesPage>>();
-  const defaultLocaleGamesContent = ref<Maybe<IGamesPage>>();
-  
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    gamesContent.value = contentData?.currentLocaleData;
-    defaultLocaleGamesContent.value = contentData?.defaultLocaleData;
-    setPageMeta(gamesContent.value?.pageMeta);
-  };
-  
-  const getPageContent = async (): Promise<IPageContent> => {
-    const nuxtContentData = useNuxtData('gamesPageContent');
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
-    
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'pages', 'games')
-        .findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'games')
-          .findOne()
-    ]);
-    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  };
-  
-  const {
-    pending,
-    data
-  } = await useLazyAsyncData('gamesPageContent', () => getPageContent());
-  if (data.value) setContentData(data.value);
-  
-  watch(data, () => {
-    setContentData(data.value);
+  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IGamesPage>({
+    contentKey: 'gamesPageContent',
+    contentRoute: ['pages', 'games'],
+    isPage: true
   });
   
   const selectedProviders = ref<string[]>([]);
