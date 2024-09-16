@@ -79,6 +79,15 @@
   }
 
   const getBetAmount = (category: 'casino'|'sportsbook', limit: 'From'|'To'): string|undefined => {
+    const playerBonusAmount = category === 'casino'
+      ? props.bonusInfo.wagerCasinoConditions?.[`amount${limit}`]
+      : props.bonusInfo.wagerSportsbookConditions?.[`amount${limit}`];
+
+    if (playerBonusAmount) {
+      const { amount, currency } = formatBalance(props.bonusInfo.currency, playerBonusAmount);
+      return `${amount} ${currency}`;
+    }
+
     const betItems = category === 'casino'
       ? props.bonusInfo.wagerCasinoConditions?.amountItems
       : props.bonusInfo.wagerSportsbookConditions?.amountItems;
@@ -103,6 +112,11 @@
   }
 
   const getMaxWinAmount = (): string|undefined => {
+    const maxWinPlayerBonusAmount = props.bonusInfo.maxWinAmount;
+    if (maxWinPlayerBonusAmount) {
+      const { amount, currency } = formatBalance(props.bonusInfo.currency, maxWinPlayerBonusAmount);
+      return `${amount} ${currency}`;
+    }
     const maxWinItems = props.bonusInfo.maxWinAmountItems;
     const maxWinAmountBase = props.bonusInfo.baseCurrencyMaxWinAmount;
     return getSumFromAmountItems(maxWinItems, maxWinAmountBase);
@@ -142,7 +156,7 @@
   const getPercentParams = (): IParam[] => {
     const params:IPercentParams = {
       depositPercentage: { label: getParamLabel('depositPercentage'), value: props.bonusInfo.assignConditions.depositPercentage },
-      maxBonusAmount: { label: getParamLabel('maxWin'), value: getMaxBonusAmount() }
+      maxBonusAmount: { label: getParamLabel('maxBonusAmount'), value: getMaxBonusAmount() }
     };
 
     return Object.keys(params).map(key => ({ ...params[key], id: key }));
@@ -175,7 +189,9 @@
 
     const params:IFreeSpinParams = {
       provider: { label: getParamLabel('provider'), value: ' ' },
-      game: { label: getParamLabel('game'), value: ' ' }
+      game: { label: getParamLabel('game'), value: ' ' },
+      minDeposit: { label: getParamLabel('minDeposit'), value: getDeposit('From') },
+      maxDeposit: { label: getParamLabel('maxDeposit'), value: getDeposit('To') },
     };
 
     setFreeSpinData(providerId, gameId);
@@ -191,9 +207,7 @@
       const percentParams = getPercentParams();
       tableParams.value = [...percentParams, ...cashPrams];
     } else if (props.bonusInfo.type === 3 || props.bonusInfo.bonusType === 3) {
-      const freeSpinParams = getFreeSpinParams();
-      const cashPrams = getCashParams();
-      tableParams.value = [...freeSpinParams, ...cashPrams];
+      tableParams.value = getFreeSpinParams();
     }
   }
 
