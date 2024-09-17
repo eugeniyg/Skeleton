@@ -54,13 +54,13 @@
 <script setup lang="ts">
   import { marked } from 'marked';
 
+  const props = defineProps<{
+    list: Record<string, any>[];
+  }>();
+
   interface IBonusProps {
     status: 'active'|'availableNextDeposit'|'available';
   }
-
-  const props = defineProps<IBonusProps>();
-
-  const { bonuses } = useFakeStore();
 
   const bonusPackage = computed(() => bonuses.package);
 
