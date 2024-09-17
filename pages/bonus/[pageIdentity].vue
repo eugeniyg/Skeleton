@@ -26,7 +26,7 @@
       </button-base>
 
       <atomic-detail
-        v-if="status !== 'pending' && detailLabel && detailContent"
+        v-if="status === 'success' && detailLabel && detailContent"
         :title="detailLabel"
         :content="detailContent"
       />

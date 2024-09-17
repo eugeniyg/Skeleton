@@ -29,7 +29,6 @@ export async function useContentLogic<T extends Record<string, any>>(params: ICo
   const getRequestArray = (): Promise<any>[] => {
     let currentLocaleQuery = queryContent(currentLocale.value?.code as string, ...params.contentRoute);
     let defaultLocaleQuery = queryContent(defaultLocale.value?.code as string, ...params.contentRoute);
-    const currentIsDefaultPromise = Promise.reject('Current locale is default locale!');
 
     if (params.only) {
       currentLocaleQuery = currentLocaleQuery.only(params.only);
@@ -44,13 +43,13 @@ export async function useContentLogic<T extends Record<string, any>>(params: ICo
     if (params.findAll) {
       return [
         currentLocaleQuery.find(),
-        currentLocale.value?.isDefault ? currentIsDefaultPromise : defaultLocaleQuery.find()
+        currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!') : defaultLocaleQuery.find()
       ]
     }
 
     return [
       currentLocaleQuery.findOne(),
-      currentLocale.value?.isDefault ? currentIsDefaultPromise : defaultLocaleQuery.findOne()
+      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!') : defaultLocaleQuery.findOne()
     ]
   }
 

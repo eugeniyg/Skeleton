@@ -1,26 +1,28 @@
 <template>
-  <div class="category">
+  <not-found v-if="showNotFound" />
+
+  <div v-else class="category">
     <atomic-cat-heading
       :icon="gameCategoriesObj[activeCollection?.identity || '']?.icon"
     >
       {{ gameCategoriesObj[activeCollection?.identity || '']?.label || activeCollection?.name }}
     </atomic-cat-heading>
-    
+
     <div v-click-outside="skipActionsState" class="game-filter">
       <nav-category hide-items @clickCategory="changeCategory"/>
-      
+
       <form-input-search
         v-model:value="searchValue"
         class="game-filter__search"
         :placeholder="getContent(layoutData, defaultLocaleLayoutData, 'header.search.placeholder')"
         @input="searchInput"
       />
-      
+
       <button-toggle-filter
         :is-active="isShowFilter"
         @toggle="toggleFilter"
       />
-      
+
       <atomic-game-sort
         v-show="isShowFilter"
         v-if="getContent(currentLocaleContent, defaultLocaleContent, 'sortOptions')?.length"
@@ -30,14 +32,14 @@
         v-bind="currentLocaleContent?.sortOptions?.length ? currentLocaleContent : defaultLocaleContent"
         @change="changeSort"
       />
-      
+
       <providers-tags
         v-if="tags.length"
         :selected="selectedProviders"
         :tags="tags"
         @unselect="changeProvider"
       />
-      
+
       <client-only>
         <modal-providers
           :selected="selectedProviders"
@@ -47,23 +49,22 @@
           @click-category="changeCategory"
         />
       </client-only>
-    
     </div>
-    
+
     <list-grid
       v-if="gameItems.length"
       :items="gameItems"
       :meta="pageMeta"
       @loadMore="loadMoreItems"
     />
-    
+
     <atomic-empty
       v-if="!gameItems.length && !loadingGames"
       :title="getContent(currentLocaleContent, defaultLocaleContent, 'empty.title')"
       :subTitle="getContent(currentLocaleContent, defaultLocaleContent, 'empty.description')"
       :image="getContent(currentLocaleContent, defaultLocaleContent, 'empty.image')"
     />
-    
+
     <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent?.pageMeta?.seoText" />
   </div>
 </template>
@@ -95,7 +96,8 @@
   
   const route = useRoute();
   const router = useRouter();
-  
+  const showNotFound = ref<boolean>(false);
+
   const sortBy = ref<string | undefined>(route.query.sortBy as string || 'default');
   const sortOrder = ref<string | undefined>(route.query.sortOrder as string || 'asc');
   
@@ -133,6 +135,7 @@
     
     const response = await getFilteredGames(params);
     loadingGames.value = false;
+    showNotFound.value = false;
     
     return response;
   };
@@ -165,7 +168,8 @@
     const gameCollections = await getCollectionsList();
     activeCollection.value = gameCollections.find(collection => collection.identity === categoryId);
     if (!activeCollection.value) {
-      throw createError({ fatal: true, statusCode: 404, statusMessage: 'Page Not Found' });
+      showNotFound.value = true;
+      return;
     }
     if (route.query.category !== categoryId) {
       await router.replace({
@@ -182,7 +186,6 @@
     if (modals.value.categories) {
       closeModal('categories');
     }
-    
   };
   
   const changeSort = async (...args: any): Promise<void> => {
@@ -263,7 +266,7 @@
       if (tag) tags.value.push(tag);
     });
   };
-  
+
   onMounted(async () => {
     if (routeProvider) await setSelectedProviders();
     const gameCollections = await getCollectionsList();
@@ -281,9 +284,7 @@
       (collection) => collection.identity === route.query.category,
     );
 
-    if (!activeCollection.value) {
-      throw createError({ fatal: true, statusCode: 404, statusMessage: 'Page Not Found' });
-    }
+    if (!activeCollection.value) return showNotFound.value = true;
     
     const itemsResponse = await getItems();
     setItems(itemsResponse);

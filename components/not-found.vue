@@ -1,6 +1,6 @@
 <template>
   <div class="not-found">
-    <atomic-image class="img" src="/img/404.png" />
+    <atomic-image class="img" src="/img/404.png" notLazy />
 
     <div class="title">
       {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.title') || pageStaticContent.title }}
