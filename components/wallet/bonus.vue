@@ -62,17 +62,8 @@
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
-  const walletStore = useWalletStore();
-  const { activeAccount } = storeToRefs(walletStore);
   const bonusStore = useBonusStore();
   const { depositMoreInfoBonus } = storeToRefs(bonusStore);
-
-  const mappingBonusColor: { [key: number]: string } = {
-    0: 'package',
-    1: 'cash',
-    2: 'percentage',
-    3: 'freespin'
-  }
 
   const classes = computed(() => ({
     'is-selected': props.selected,
