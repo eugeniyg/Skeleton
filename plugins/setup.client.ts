@@ -86,6 +86,15 @@ export default defineNuxtPlugin((nuxtApp) => {
     return result.visitorId;
   }
 
+  const checkTabVisibility = (): void => {
+    const { isMobile } = useGlobalStore();
+    const { isLoggedIn } = useProfileStore();
+    if (isMobile && isLoggedIn && document.visibilityState === 'visible') {
+      const { getUserAccounts } = useWalletStore();
+      getUserAccounts();
+    }
+  }
+
   nuxtApp.hook('app:created', async () => {
     const { getProviderList, getCollectionsList } = useGamesStore();
     getProviderList();
@@ -109,6 +118,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     setWindowHeight();
     window.addEventListener('resize', setWindowHeight);
     startFreshchatLogic();
+    window.addEventListener('visibilitychange', checkTabVisibility);
   });
 
   nuxtApp.hook('page:finish', () => {
