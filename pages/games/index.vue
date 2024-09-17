@@ -164,6 +164,9 @@
     loadPage.value = 1;
     const gameCollections = await getCollectionsList();
     activeCollection.value = gameCollections.find(collection => collection.identity === categoryId);
+    if (!activeCollection.value) {
+      throw createError({ fatal: true, statusCode: 404, statusMessage: 'Page Not Found' });
+    }
     if (route.query.category !== categoryId) {
       await router.replace({
         query: {
@@ -264,18 +267,22 @@
   onMounted(async () => {
     if (routeProvider) await setSelectedProviders();
     const gameCollections = await getCollectionsList();
+
+    if (!route.query.category && gameCollections.length) {
+      return router.replace({
+        query: {
+          ...route.query,
+          category: gameCollections[0].identity,
+        }
+      });
+    }
     
     activeCollection.value = gameCollections.find(
       (collection) => collection.identity === route.query.category,
     );
-    
-    if (!route.query.category || !activeCollection.value) {
-      return router.replace({
-        query: {
-          ...route.query,
-          category: getContent(popupsData, defaultLocalePopupsData, 'providers.collectionId'),
-        }
-      });
+
+    if (!activeCollection.value) {
+      throw createError({ fatal: true, statusCode: 404, statusMessage: 'Page Not Found' });
     }
     
     const itemsResponse = await getItems();
