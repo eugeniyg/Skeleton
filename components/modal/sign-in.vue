@@ -12,8 +12,8 @@
         <button-modal-close @close="closeModal('signIn')"/>
         <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'login.title') }}</div>
       </div>
-
-      <template v-if="tabsList.length">
+      
+      <template v-if="tabsList.length && !displayTabs">
         <div  class="modal-sign-in__tabs">
           <button-base
             v-for="tab in tabsList"
@@ -54,12 +54,19 @@
       return { id: 'phone', icon: 'mobile', label: tabsObj[key] };
     })
   });
-  const selectedTab = ref<'email'|'phone'>('email');
+  
+  const displayTabs = computed(() => {
+    const selected = getContent(popupsData, defaultLocalePopupsData, 'login.display') // email, phone, both
+    return selected !== 'both' ? selected: false;
+  });
+  
+  const selectedTab = ref<'email'|'phone'>(displayTabs.value || 'email');
 
   const changeTab = (newTabId: 'email'|'phone'): void => {
     if (selectedTab.value === newTabId) return;
     selectedTab.value = newTabId;
   }
+  
 </script>
 
 <style src="~/assets/styles/components/modal/sign-in.scss" lang="scss" />
