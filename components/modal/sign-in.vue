@@ -56,7 +56,7 @@
   });
   
   const displayTabs = computed(() => {
-    const selected = getContent(popupsData, defaultLocalePopupsData, 'login.display') // email, phone, both
+    const selected = getContent(popupsData, defaultLocalePopupsData, 'login.display');
     return selected !== 'both' ? selected: false;
   });
   
