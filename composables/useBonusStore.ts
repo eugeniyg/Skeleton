@@ -8,7 +8,7 @@ import type {
   IPlayerCashback,
   IBonus
 } from '@skeleton/core/types';
-import { debounce } from "lodash";
+import debounce from 'lodash/debounce.js';
 
 interface IBonusState {
   bonusCodeSubscription: any;

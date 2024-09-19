@@ -79,7 +79,6 @@
   import { storeToRefs } from 'pinia';
   import type { IProfileBonuses } from '~/types';
   import type { IBonus, IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
-  import { debounce } from "lodash";
 
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
