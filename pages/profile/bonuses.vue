@@ -15,8 +15,10 @@
 
     <bonuses-active
       v-if="hasActiveBlock"
+      :packageBonuses="activePackageBonuses"
       @removeBonus="removeBonusHandle"
       @removeFreeSpin="removeFreeSpinHandle"
+      @openPackageModal="openPackageModal"
     />
 
     <atomic-divider v-if="hasActiveBlock && hasIssuedBlock" class="profile-bonuses__blocks-divider" />
@@ -24,34 +26,19 @@
     <bonuses-issued
       v-if="hasIssuedBlock"
       :loadingBonuses="loadingBonuses"
+      :packageBonuses="issuedPackageBonuses"
+      :activePackageCount="activePackageBonuses.length"
       @removeBonus="removeBonusHandle"
       @removeFreeSpin="removeFreeSpinHandle"
       @activateBonus="activateBonusHandle"
       @activateFreeSpin="activateFreeSpinHandle"
       @activateDeposit="activateDepositBonus"
+      @openPackageModal="openPackageModal"
     />
 
     <atomic-divider v-if="hasActiveBlock || hasIssuedBlock" class="profile-bonuses__blocks-divider" />
 
     <bonuses-promo-code />
-
-    <!--    <transition name="fade" mode="out-in">-->
-    <!--      <bonus-active-->
-    <!--        v-if="activePlayerBonuses.length"-->
-    <!--        bonusType="bonus"-->
-    <!--        :content="content?.currentLocaleData?.cashBonuses || content?.defaultLocaleData?.cashBonuses"-->
-    <!--        @show-cancel-lock="showBonusCancelLockModal = true"-->
-    <!--      />-->
-    <!--    </transition>-->
-
-    <!--    <transition name="fade" mode="out-in">-->
-    <!--      <bonus-active-->
-    <!--        v-if="activePlayerFreeSpins.length"-->
-    <!--        bonusType="free-spin"-->
-    <!--        :content="content?.currentLocaleData?.freeSpins || content?.defaultLocaleData?.freeSpins"-->
-    <!--        @show-cancel-lock="showBonusCancelLockModal = true"-->
-    <!--      />-->
-    <!--    </transition>-->
 
     <modal-confirm-bonus
       v-bind="modalState"
@@ -73,6 +60,18 @@
       :showModal="showBonusCancelLockModal"
       @close="showBonusCancelLockModal = false"
     />
+
+    <modal-package-bonus
+      :showModal="showPackageModal"
+      :bonusesList="packageModalList"
+      :loadingBonuses="loadingBonuses"
+      @close="showPackageModal = false"
+      @removeBonus="removeBonusHandle"
+      @removeFreeSpin="removeFreeSpinHandle"
+      @activateBonus="activateBonusHandle"
+      @activateFreeSpin="activateFreeSpinHandle"
+      @activateDeposit="activateDepositBonus"
+    />
   </div>
 </template>
 
@@ -80,6 +79,7 @@
   import { storeToRefs } from 'pinia';
   import type { IProfileBonuses } from '~/types';
   import type { IBonus, IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
+  import { debounce } from "lodash";
 
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
@@ -91,6 +91,8 @@
     alertsData,
     defaultLocaleAlertsData
   } = storeToRefs(globalStore);
+  const walletStore = useWalletStore();
+  const { activeAccount } = storeToRefs(walletStore);
   const {
     setPageMeta,
     getLocalesContentData,
@@ -105,7 +107,9 @@
     issuedPlayerBonuses,
     issuedPlayerFreeSpins,
     depositBonuses,
-    walletDepositBonus
+    walletDepositBonus,
+    playerBonuses,
+    playerFreeSpins
   } = storeToRefs(bonusStore);
   const { showAlert, openWalletModal } = useLayoutStore();
   const hasActiveBlock = computed(() => activePlayerBonuses.value.length || activePlayerFreeSpins.value.length);
@@ -297,23 +301,103 @@
     showModalConfirmBonus.value = true;
   }
 
-  const activateDepositBonus = async (depositBonus: IBonus): Promise<void> => {
-    if (loadingBonuses.value.includes(depositBonus.id)) return;
-    loadingBonuses.value.push(depositBonus.id);
+  const activateDepositBonus = async ({ depositBonus, loadingId }: { depositBonus: IBonus, loadingId?: string }): Promise<void> => {
+    if (loadingBonuses.value.includes(loadingId || depositBonus.id)) return;
+    loadingBonuses.value.push(loadingId || depositBonus.id);
     const minDeposit = getMinBonusDeposit(depositBonus);
-    walletDepositBonus.value = { id: depositBonus.id, amount: minDeposit?.amount };
+    walletDepositBonus.value = { id: depositBonus.id, packageId: depositBonus.package?.id, amount: minDeposit?.amount };
 
     await openWalletModal();
 
     setTimeout(() => {
-      loadingBonuses.value = loadingBonuses.value.filter(id => id !== depositBonus.id);
+      loadingBonuses.value = loadingBonuses.value.filter(id => id !== (loadingId || depositBonus.id));
     }, 500);
   }
 
-  onMounted(() => {
-    getPlayerBonuses();
-    getPlayerFreeSpins();
-    getDepositBonuses();
+  const activePackageBonuses = ref<Record<string, any>[][]>([]);
+  const issuedPackageBonuses = ref<Record<string, any>[][]>([]);
+  const showPackageModal = ref(false);
+  const packageModalList = ref<Record<string, any>[]>([]);
+
+  const updatePackageModalList = (): void => {
+    if (!activePackageBonuses.value.length && issuedPackageBonuses.value.length) {
+      showPackageModal.value = false;
+    }
+
+    const packageId = packageModalList.value[0]?.packageId || packageModalList.value[0]?.package?.id;
+    const newBonusesList = [...activePackageBonuses.value, ...issuedPackageBonuses.value].find(bonusesList => {
+      return (bonusesList[0].package?.id === packageId) || (bonusesList[0].packageId === packageId)
+    });
+
+    if (newBonusesList) packageModalList.value = newBonusesList;
+    else showPackageModal.value = false;
+  }
+
+  const getPackageBonuses = async (): Promise<void> => {
+    const uniquePackageBonuses = [
+      ...activePlayerBonuses.value,
+      ...activePlayerFreeSpins.value,
+      ...issuedPlayerBonuses.value,
+      ...issuedPlayerFreeSpins.value
+    ]
+      .map(bonus => (bonus as IPlayerBonus|IPlayerFreeSpin).packageId)
+      .filter((id, index, array) => id && array.indexOf(id) === index);
+    const uniqueDepositPackageBonuses = depositBonuses.value
+      .map(bonus => bonus.package?.id)
+      .filter((id, index, array) => id && array.indexOf(id) === index);
+    if (!uniquePackageBonuses.length && !uniqueDepositPackageBonuses.length) return;
+
+    try {
+      const { getPlayerBonuses, getPlayerFreeSpins } = useCoreBonusApi();
+      const [{ data: packagePlayerBonuses }, { data: packagePlayerFreeSpins }] = await Promise.all([
+        getPlayerBonuses({ packageId: uniquePackageBonuses, currency: [activeAccount.value?.currency as string] }),
+        getPlayerFreeSpins({ packageId: uniquePackageBonuses, currency: [activeAccount.value?.currency as string] })
+      ]);
+
+      const transformPackagePlayerBonuses = packagePlayerBonuses.map(bonus => ({ ...bonus, isCash: true }));
+      const transformPackagePlayerFreeSpins = packagePlayerFreeSpins.map(freeSpin => ({ ...freeSpin, isFreeSpin: true }));
+      const transformDepositPackageBonuses = depositBonuses.value.map(bonus => ({ ...bonus, isDeposit: true }));
+
+      const playerPackageBonuses = uniquePackageBonuses.map(packageBonusId => {
+        return [...transformPackagePlayerBonuses, ...transformPackagePlayerFreeSpins]
+          .filter(bonus => bonus.packageId === packageBonusId)
+          .sort((prevBonus, nextBonus) => prevBonus.packagePriority - nextBonus.packagePriority);
+      });
+      const depositPackageBonuses = uniqueDepositPackageBonuses.map(packageBonusId => {
+        return transformDepositPackageBonuses
+          .filter(bonus => bonus.package?.id === packageBonusId)
+          .sort((prevBonus, nextBonus) => prevBonus.packagePriority - nextBonus.packagePriority);
+      });
+
+      activePackageBonuses.value = playerPackageBonuses.filter(bonusesList => bonusesList.some(bonus => bonus.status === 2));
+      issuedPackageBonuses.value = [
+        ...playerPackageBonuses.filter(bonusesList => !bonusesList.some(bonus => bonus.status === 2)),
+        ...depositPackageBonuses
+      ];
+      if (showPackageModal.value) updatePackageModalList();
+    } catch (e) {
+      console.error('Failed to get package bonuses');
+    }
+  };
+
+  const openPackageModal = (bonusesList: Record<string, any>[]): void => {
+    packageModalList.value = bonusesList;
+    showPackageModal.value = true;
+  }
+
+  // const mounting = ref(true);
+  // watch([playerBonuses, playerFreeSpins, depositBonuses], () => {
+  //   if (!mounting.value) getPackageBonuses();
+  // });
+
+  onMounted(async () => {
+    await Promise.allSettled([
+      getPlayerBonuses(),
+      getPlayerFreeSpins(),
+      getDepositBonuses()
+    ]);
+    await getPackageBonuses();
+    // mounting.value = false;
   })
 </script>
 

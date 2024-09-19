@@ -5,8 +5,11 @@
     </div>
 
     <bonuses-package
-      v-for="packageBonus in packageBonusesList"
-      :key="packageBonus[0].packageId"
+      v-for="(packageList, index) in props.packageBonuses"
+      :key="packageList[0].packageId"
+      :packageImage="packageImages[index % (packageImages.length || 1)]"
+      :list="packageList"
+      @openPackageModal="emit('openPackageModal', packageList)"
     />
 
     <bonuses-card
@@ -30,10 +33,26 @@
 <script setup lang="ts">
   import type { IProfileBonuses } from "~/types";
 
-  const emit = defineEmits(['removeBonus', 'removeFreeSpin']);
+  const props = defineProps<{
+    packageBonuses: Record<string, any>[][];
+  }>();
+
+  const emit = defineEmits(['removeBonus', 'removeFreeSpin', 'openPackageModal']);
   const { getContent } = useProjectMethods();
   const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+
+  const packageImages = computed(() => {
+    const contentImages: { image: string }[]|undefined = getContent(
+      globalComponentsContent.value,
+      defaultLocaleGlobalComponentsContent.value,
+      'bonuses.packageImages'
+    );
+    if (contentImages?.length) return contentImages.map(imageObject => imageObject.image);
+    return [];
+  })
 
   const bonusStore = useBonusStore();
   const {
@@ -43,32 +62,4 @@
 
   const simpleBonusesList = computed(() => activePlayerBonuses.value.filter(bonus => !bonus.packageId));
   const simpleFreeSpinsList = computed(() => activePlayerFreeSpins.value.filter(freeSpin => !freeSpin.packageId));
-  const packageBonusesList = ref<Record<string, any>[][]>([]);
-
-  const getPackageBonuses = async (): Promise<void> => {
-    const uniquePackageBonuses = [...activePlayerBonuses.value, ...activePlayerFreeSpins.value]
-      .map(bonus => bonus.packageId)
-      .filter((id, index, array) => array.indexOf(id) === index);
-    if (!uniquePackageBonuses.length) return;
-
-    try {
-      const { getPlayerBonuses, getPlayerFreeSpins } = useCoreBonusApi();
-      const [{ data: packagePlayerBonuses }, { data: packagePlayerFreeSpins }] = await Promise.all([
-        getPlayerBonuses({ packageId: uniquePackageBonuses }),
-        getPlayerFreeSpins({ packageId: uniquePackageBonuses })
-      ]);
-
-      packageBonusesList.value = uniquePackageBonuses.map(packageBonusId => {
-        return [...packagePlayerBonuses, ...packagePlayerFreeSpins]
-          .filter(bonus => bonus.packageId === packageBonusId)
-          .sort((prevBonus, nextBonus) => prevBonus.packagePriority - nextBonus.packagePriority);
-      });
-    } catch {
-      console.error('Failed to get package bonuses');
-    }
-  }
-
-  onMounted(async () => {
-    await getPackageBonuses();
-  });
 </script>

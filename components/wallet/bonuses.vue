@@ -19,13 +19,13 @@
     <template v-for="bonus in bonusesList" :key="bonus.id">
       <wallet-bonus
         :bonusInfo="bonus"
-        :selected="selectedDepositBonus?.id === bonus.id"
+        :selected="checkSelected(bonus)"
         :disabled="!props.crypto && isBonusDisabled(bonus)"
         @bonusChange="onBonusChange(bonus)"
       />
     </template>
 
-    <bonus-deposit-code ref="depositCode" @openBonusCode="bonusCodeTrigger" />
+    <bonuses-deposit-promo ref="depositCode" @openBonusCode="bonusCodeTrigger" />
 
     <div v-if="props.crypto" class="wallet-bonuses__info">
       <div class="wallet-bonuses__info-icon">
@@ -162,7 +162,9 @@
 
   const configDeclineBonuses = settingsConstants?.game?.bonus?.depositBonusDeclineDefault;
   if (walletDepositBonus.value?.id) {
-    const findBonus = bonusesList.value.find(bonus => bonus.id === walletDepositBonus.value?.id);
+    const findBonus = walletDepositBonus.value.packageId
+      ? bonusesList.value.find(bonus => bonus.package?.id === walletDepositBonus.value?.packageId)
+      : bonusesList.value.find(bonus => bonus.id === walletDepositBonus.value?.id);
     selectedDepositBonus.value = findBonus;
     bonusDeclined.value = !findBonus;
     showDepositBonusCode.value = !findBonus && !!depositBonusCode.value;
@@ -201,6 +203,11 @@
       useEvent('analyticsEvent', { event: 'walletSelectBonus'});
       showDepositBonusCode.value = false;
     }
+  }
+
+  const checkSelected = (bonus: IBonus): boolean => {
+    return (selectedDepositBonus.value?.id === bonus.id)
+      || (!!selectedDepositBonus.value?.package?.id && (selectedDepositBonus.value.package.id === bonus.package?.id));
   }
 
   watch(() => props.amount, () => {

@@ -5,8 +5,16 @@
       <div v-if="issuedBonuses" class="bonuses-grid__title-count">({{ issuedBonuses }})</div>
     </div>
 
+    <bonuses-package
+      v-for="(packageList, index) in props.packageBonuses"
+      :key="packageList[0].packageId || packageList[0].package?.id"
+      :packageImage="packageImages[(index + props.activePackageCount) % (packageImages.length || 1)]"
+      :list="packageList"
+      @openPackageModal="emit('openPackageModal', packageList)"
+    />
+
     <bonuses-card
-      v-for="bonus in issuedPlayerBonuses"
+      v-for="bonus in simpleBonusesList"
       :key="bonus.id"
       :bonusInfo="bonus"
       :loading="props.loadingBonuses.includes(bonus.id)"
@@ -16,7 +24,7 @@
     />
 
     <bonuses-card
-      v-for="freeSpin in issuedPlayerFreeSpins"
+      v-for="freeSpin in simpleFreeSpinsList"
       :key="freeSpin.id"
       :bonusInfo="freeSpin"
       :loading="props.loadingBonuses.includes(freeSpin.id)"
@@ -26,12 +34,12 @@
     />
 
     <bonuses-card
-      v-for="depositBonus in depositBonuses"
+      v-for="depositBonus in simpleDepositBonusesList"
       :key="depositBonus.id"
       :bonusInfo="depositBonus"
       :loading="props.loadingBonuses.includes(depositBonus.id)"
       isDeposit
-      @activate="emit('activateDeposit', depositBonus)"
+      @activate="emit('activateDeposit', { depositBonus })"
     />
   </div>
 </template>
@@ -41,6 +49,8 @@
 
   const props = defineProps<{
     loadingBonuses: string[];
+    packageBonuses: Record<string, any>[][];
+    activePackageCount: number;
   }>();
 
   const { getContent } = useProjectMethods();
@@ -51,7 +61,8 @@
     'activateFreeSpin',
     'removeBonus',
     'removeFreeSpin',
-    'activateDeposit'
+    'activateDeposit',
+    'openPackageModal'
   ]);
 
   const bonusStore = useBonusStore();
@@ -65,4 +76,21 @@
     + issuedPlayerFreeSpins.value.length 
     + depositBonuses.value.length
   );
+
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+
+  const packageImages = computed(() => {
+    const contentImages: { image: string }[]|undefined = getContent(
+      globalComponentsContent.value,
+      defaultLocaleGlobalComponentsContent.value,
+      'bonuses.packageImages'
+    );
+    if (contentImages?.length) return contentImages.map(imageObject => imageObject.image);
+    return [];
+  })
+
+  const simpleBonusesList = computed(() => issuedPlayerBonuses.value.filter(bonus => !bonus.packageId));
+  const simpleFreeSpinsList = computed(() => issuedPlayerFreeSpins.value.filter(freeSpin => !freeSpin.packageId));
+  const simpleDepositBonusesList = computed(() => depositBonuses.value.filter(bonus => !bonus.package?.id));
 </script>

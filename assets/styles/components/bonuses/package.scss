@@ -5,16 +5,24 @@
   width: 100%;
   flex: 1 1 100%;
 
+  @include media(sm) {
+    grid-column: 1 / span 2;
+  }
+
   &.is-active {
     --bg: linear-gradient(89deg, #FFDC8A -2766.21%, #FFC12E 38.74%, #E6A409 2866.21%);
   }
 
   &__container {
     background: var(--layer-02);
-    padding: 22px 22px 26px 22px;
+    padding: 16px 16px 20px;
     border-radius: 16px;
     overflow: hidden;
     position: relative;
+
+    @include media(sm) {
+      padding: 22px 22px 26px 22px;
+    }
   }
 
   &__header {
@@ -28,10 +36,7 @@
   &__body {
     display: grid;
     grid-gap: 8px;
-
-    @include media(sm) {
-      padding-right: 42%;
-    }
+    max-width: 410px;
   }
 
   &__name {
@@ -66,12 +71,6 @@
     border-radius: 8px;
   }
 
-  //.bonuses-progress {
-  //  --propgress-line-bg: var(--support-info-default);
-  //  --propgress-bar-bg: var(--support-info-default,);
-  //  --propgress-bar-color: var(--blue-100);
-  //}
-
   &__tb {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -90,6 +89,32 @@
     }
   }
 
+  &__item-status {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &-icon {
+      --color: var(--icon-color);
+      --icon-size: 16px;
+    }
+
+    &-label {
+      color: var(--label-color);
+      @include font($subheading-1);
+    }
+
+    &.is-done {
+      --icon-color: var(--icon-success);
+      --label-color: var(--text-success);
+    }
+
+    &.is-missed {
+      --icon-color: var(--icon-primary);
+      --label-color: var(--text-tertiary);
+    }
+  }
+
   &__not-received-label {
     color: var(--text-primary);
     @include font($subheading-1);
@@ -99,6 +124,36 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+
+    &-show-all {
+      display: inline-flex;
+      width: fit-content;
+      position: relative;
+      color: var(--text-tertiary);
+      @include font($body-1);
+      text-decoration: none;
+      min-height: 16px;
+
+      &:after {
+        content: '';
+        position: absolute;
+        align-self: stretch;
+        border-bottom: 1px dashed var(--border-02);
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transition: all .3s;
+      }
+
+      &:hover {
+        cursor: pointer;
+        color: var(--text-link-hover);
+
+        &:after {
+          border-color: var(--text-link-hover);
+        }
+      }
+    }
   }
 
   &__img {
@@ -123,7 +178,6 @@
       left: 50%;
       transform: translateX(-50%);
 
-
       @include media(sm) {
         max-height: 100%;
         max-width: 100%;
@@ -136,5 +190,10 @@
         margin: auto;
       }
     }
+  }
+
+  .bonuses-wager-progress,
+  .bonuses-freespin-progress{
+    margin-top: 0 !important;
   }
 }

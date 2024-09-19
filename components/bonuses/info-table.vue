@@ -57,7 +57,7 @@
   const { getProviderList } = useGamesStore();
 
   const getParamLabel = (paramName: string): string|undefined => {
-    return getContent(popupsData.value, defaultLocalePopupsData.value, `walletBonusDetails.paramLabels.${paramName}`);
+    return getContent(popupsData.value, defaultLocalePopupsData.value, `bonusDetails.paramLabels.${paramName}`);
   }
 
   const getDeposit = (limit: 'From'|'To'): string|undefined => {
@@ -123,8 +123,8 @@
   }
 
   const getBooleanValue = (paramName: string):string|undefined => {
-    const trueLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'walletBonusDetails.trueLabel');
-    const falseLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'walletBonusDetails.falseLabel');
+    const trueLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'bonusDetails.trueLabel');
+    const falseLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'bonusDetails.falseLabel');
     return props.bonusInfo[paramName] ? trueLabel : falseLabel;
   }
 

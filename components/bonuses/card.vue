@@ -69,6 +69,12 @@
           {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.cancelLabel') }}
         </button-base>
       </div>
+
+      <modal-bonus-details
+        :showModal="showBonusDetailsModal"
+        :bonusInfo="modalBonusInfo"
+        @close="showBonusDetailsModal = false"
+      />
     </div>
   </div>
 </template>
@@ -77,7 +83,7 @@
   import type { IBonus, IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
 
   const props = defineProps<{
-    bonusInfo: IPlayerBonus|IPlayerFreeSpin|IBonus;
+    bonusInfo: Record<string, any>;
     isFreeSpin?: boolean;
     isDeposit?: boolean;
     isCash?: boolean;
@@ -85,9 +91,6 @@
   }>();
 
   const emit = defineEmits(['activate', 'remove']);
-  const bonusStore = useBonusStore();
-  const { showModal } = useLayoutStore();
-  const { depositMoreInfoBonus } = storeToRefs(bonusStore);
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
 
@@ -157,16 +160,18 @@
     return !props.isFreeSpin && !depositFreeSpin && (props.bonusInfo.wagerCasino || props.bonusInfo.wagerSportsbook);
   })
 
+  const showBonusDetailsModal = ref(false);
+  const modalBonusInfo = ref<Record<string, any>|undefined>();
   const showBonusInfo = () => {
-    depositMoreInfoBonus.value = {
+    modalBonusInfo.value = {
       bonusType: props.isFreeSpin ? 3 : undefined,
       ...props.bonusInfo,
       bonusValue: bonusValue.value,
       badgeType: badgeType.value,
       badgeStatus: badgeStatus.value,
-      expiredDate: expiredDate.value,
+      expiredDate: expiredDate.value
     };
-    showModal('walletBonusDetails');
+    showBonusDetailsModal.value = true;
   }
 </script>
 

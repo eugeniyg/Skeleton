@@ -18,7 +18,7 @@
     @include font($subheading-1);
   }
 
-  &.is-package {
+  &.is-yellow {
     --bg: var(--support-brand-default);
     --icon-color: var(--icon-inverse);
     --label-color: var(--text-inverse);

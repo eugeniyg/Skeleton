@@ -9,13 +9,16 @@
 
   &__container {
     background: var(--layer-02);
-    padding: 22px 22px 26px 22px;
+    padding: 16px 16px 20px;
     border-radius: 16px;
-
     display: grid;
     grid-template-rows: auto auto 1fr;
     height: 100%;
     align-items: flex-start;
+
+    @include media(sm) {
+      padding: 22px 22px 26px 22px;
+    }
   }
 
   &__header {
@@ -74,6 +77,7 @@
     .btn-primary {
       flex: 1 1 136px;
       min-width: calc(50% - 8px);
+      margin: 0 !important;
     }
   }
 

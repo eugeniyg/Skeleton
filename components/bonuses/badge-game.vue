@@ -6,10 +6,10 @@
 </template>
 
 <script setup lang="ts">
-  import type { IBonus, IGame, IPlayerFreeSpin } from "@skeleton/core/types";
+  import type { IGame, IPlayerFreeSpin } from "@skeleton/core/types";
 
   const props = defineProps<{
-    bonusInfo: IPlayerFreeSpin|IBonus;
+    bonusInfo: Record<string, any>;
   }>()
   
   const gameInfo = ref<IGame|undefined>();

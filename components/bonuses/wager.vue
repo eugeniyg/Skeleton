@@ -17,10 +17,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerBonus, IBonus } from "@skeleton/core/types";
-
   const props = defineProps<{
-    bonusInfo: IPlayerBonus|IBonus;
+    bonusInfo: Record<string, any>;
   }>();
 
   const globalStore = useGlobalStore();

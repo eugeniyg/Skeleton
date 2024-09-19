@@ -8,6 +8,7 @@ import type {
   IPlayerCashback,
   IBonus
 } from '@skeleton/core/types';
+import { debounce } from "lodash";
 
 interface IBonusState {
   bonusCodeSubscription: any;
@@ -24,6 +25,7 @@ interface IBonusState {
   showDepositBonusCode: boolean;
   walletDepositBonus: {
     id: string;
+    packageId: string|undefined;
     amount?: number;
   }|undefined;
 }
@@ -42,7 +44,7 @@ export const useBonusStore = defineStore('bonusStore', {
     bonusDeclined: false,
     depositMoreInfoBonus: undefined,
     showDepositBonusCode: false,
-    walletDepositBonus: undefined
+    walletDepositBonus: undefined,
   }),
 
   getters: {
@@ -145,34 +147,23 @@ export const useBonusStore = defineStore('bonusStore', {
       this.showBonusCodeNotification(bonusCodeData?.status);
     },
 
-    updatePlayerBonusList(bonusData: IPlayerBonus):void {
-      console.log(bonusData);
-      if (bonusData.status === 1) this.playerBonuses = [...this.playerBonuses, bonusData];
-      else if (bonusData.status === 2) {
-        this.playerBonuses = this.playerBonuses.map((bonus) => {
-          if (bonus.id === bonusData.id) return bonusData;
-          return bonus;
-        });
-      } else {
-        this.playerBonuses = this.playerBonuses.filter((bonus) => bonus.id !== bonusData.id);
+    updatePlayerBonusList: debounce(async (bonusData: IPlayerBonus, thisStore: any) => {
+      if ([1,2].includes(bonusData.status)) await thisStore.getPlayerBonuses();
+      else {
+        thisStore.playerBonuses = thisStore.playerBonuses.filter((bonus: IPlayerBonus) => bonus.id !== bonusData.id);
       }
 
       useEvent('bonusesUpdated');
-    },
+    }, 500, { leading: false }),
 
-    updatePlayerFreeSpinsList(freeSpinData: IPlayerFreeSpin):void {
-      if (freeSpinData.status === 1) this.playerFreeSpins = [...this.playerFreeSpins, freeSpinData];
-      else if (freeSpinData.status === 2) {
-        this.playerFreeSpins = this.playerFreeSpins.map((freeSpin) => {
-          if (freeSpin.id === freeSpinData.id) return freeSpinData;
-          return freeSpin;
-        });
-      } else {
-        this.playerFreeSpins = this.playerFreeSpins.filter((freeSpin) => freeSpin.id !== freeSpinData.id);
+    updatePlayerFreeSpinsList: debounce(async (freeSpinData: IPlayerFreeSpin, thisStore: any) => {
+      if ([1, 2].includes(freeSpinData.status)) await thisStore.getPlayerFreeSpins();
+      else {
+        thisStore.playerFreeSpins = thisStore.playerFreeSpins.filter((freeSpin: IPlayerFreeSpin) => freeSpin.id !== freeSpinData.id);
       }
 
       useEvent('freeSpinsUpdated');
-    },
+    }, 500, { leading: false }),
 
     bonusesSocketTrigger(webSocketResponse:IWebSocketResponse):void {
       const bonusData: Maybe<IPlayerBonus> = webSocketResponse.data.playerBonus;
@@ -202,7 +193,7 @@ export const useBonusStore = defineStore('bonusStore', {
       const alertData = alertsData?.bonus?.[alertsKey[`${status}-${result}`]]
         || defaultLocaleAlertsData?.bonus?.[alertsKey[`${status}-${result}`]];
 
-      this.updatePlayerBonusList(bonusData);
+      this.updatePlayerBonusList(bonusData, this);
       if (alertData) showAlert({ ...alertData, description: transformMessage(alertData?.description) });
     },
 
@@ -251,7 +242,7 @@ export const useBonusStore = defineStore('bonusStore', {
       const alertData = alertsData?.freeSpin?.[alertsKey[`${status}-${result}`]]
         || defaultLocaleAlertsData?.freeSpin?.[alertsKey[`${status}-${result}`]];
 
-      this.updatePlayerFreeSpinsList(freeSpinData);
+      this.updatePlayerFreeSpinsList(freeSpinData, this);
       if (alertData) showAlert({ ...alertData, description: transformMessage(alertData?.description) });
     },
 

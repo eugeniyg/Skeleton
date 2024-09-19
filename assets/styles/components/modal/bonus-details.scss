@@ -34,7 +34,6 @@
     &__value {
       color: var(--text-primary);
       @include font($heading-7);
-      box-shadow: var(--shadow-layer);
       margin-top: -2px;
     }
 

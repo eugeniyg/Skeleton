@@ -32,10 +32,10 @@
       :placeholder="field.hints[currentLocale?.code || ''] || field.hints.en"
       :options="getFieldOptions(field.key)"
       :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
-      @input="v$[field.key]?.$touch()"
       :hint="setError(field.key)"
-      @blur="v$[field.key]?.$touch()"
       :isDisabled="field.key === 'agentNumber'"
+      @input="v$[field.key]?.$touch()"
+      @blur="v$[field.key]?.$touch()"
       @focus="onFocus(field.key)"
     />
 
@@ -58,8 +58,8 @@
             {{ formatAmountMin.currency }}
           </span>
 
-          <span v-if="selectedDepositBonus && bonusSummary">
-            {{ bonusSummary }}
+          <span v-if="selectedDepositBonus && bonusValue">
+            {{ bonusValue }}
           </span>
         </span>
       </button-base>
@@ -106,7 +106,8 @@
     bonusDeclined,
     showDepositBonusCode,
     depositBonusCode,
-    walletDepositBonus
+    walletDepositBonus,
+    depositBonuses
   } = storeToRefs(bonusStore);
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
@@ -114,7 +115,7 @@
     depositFormData[field.key] = field.value ?? undefined;
   })
 
-  const { getFormRules, getSumFromAmountItems } = useProjectMethods();
+  const { getFormRules, getEquivalentFromBase } = useProjectMethods();
   const depositRules = props.fields.reduce((finalRules, currentField) => {
     const rulesArr: { rule: string, arguments?: string }[] = [];
     if (currentField.isRequired) rulesArr.push({ rule: 'required' });
@@ -290,72 +291,76 @@
     await depositRequest();
   };
 
-  const getPackageBonusesFreeSpins = (bonusInfo: IBonus): number => {
-    if (bonusInfo.packageItems) {
-      return bonusInfo.packageItems.reduce((fsCount, currentBonus) => {
-        if (currentBonus.type === 3 && currentBonus.assignConditions?.presets?.length) {
-          return fsCount + currentBonus.assignConditions?.presets?.[0].quantity;
-        }
-        return fsCount;
-      }, 0);
-    }
-
-    return 0;
-  }
-
-  const getCahBonusValue = (bonusInfo: IBonus): string => {
+  const getCahBonusValue = (bonusInfo: IBonus): { amount: number, currency: string } => {
     const amountItems = bonusInfo.assignConditions?.amountItems;
-    const mountBase = bonusInfo.assignConditions?.baseCurrencyAmount;
-    const bonusSum = getSumFromAmountItems(amountItems, mountBase);
-    const packageFreeSpins = getPackageBonusesFreeSpins(bonusInfo);
-
-    return packageFreeSpins
-      ? `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${bonusSum} + ${packageFreeSpins} FS`
-      : `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${bonusSum}`;
+    const amountBase = bonusInfo.assignConditions?.baseCurrencyAmount;
+    const exclusionItem = amountItems?.find(item => item.currency === activeAccount.value?.currency);
+    if (exclusionItem) return formatBalance(exclusionItem.currency, exclusionItem.amount);
+    if (amountBase) return getEquivalentFromBase(amountBase, activeAccount.value?.currency);
+    return { amount: 0, currency: activeAccount.value?.currency || '' };
   }
 
-  const getPercentageBonusValue = (bonusInfo: IBonus): string => {
+  const getPercentageBonusValue = (bonusInfo: IBonus): { amount: number, currency: string } => {
     const maxAmountItems = bonusInfo.assignConditions?.maxAmountItems;
     const maxAmountBase = bonusInfo.assignConditions?.baseCurrencyMaxAmount;
-    const maxSum = getSumFromAmountItems(maxAmountItems, maxAmountBase);
-    const packageFreeSpins = getPackageBonusesFreeSpins(bonusInfo);
+    const exclusionItem = maxAmountItems?.find(item => item.currency === activeAccount.value?.currency);
+    let maxSum: { amount: number, currency: string } = { amount: 0, currency: activeAccount.value?.currency || '' };
 
-    const bonusPercentage = bonusInfo.assignConditions?.depositPercentage;
-    if (!bonusPercentage) return '';
-
-    const percentageSum = Number(amountValue.value) * bonusPercentage / 100;
-    let bonusSumString: string = '';
-
-    if (maxSum && parseFloat(maxSum) > percentageSum) {
-      bonusSumString = `${percentageSum} ${activeAccount.value?.currency}, ${getContent(popupsData, defaultLocalePopupsData, 'wallet.percentageMax')} ${maxSum}`;
-    } else if (maxSum && parseFloat(maxSum) <= percentageSum) {
-      bonusSumString = `${maxSum}, ${getContent(popupsData, defaultLocalePopupsData, 'wallet.percentageMax')} ${maxSum}`;
-    } else {
-      bonusSumString = `${percentageSum} ${activeAccount.value?.currency}`;
+    if (exclusionItem) {
+      maxSum = formatBalance(exclusionItem.currency, exclusionItem.amount);
+    } else if (maxAmountBase) {
+      maxSum = getEquivalentFromBase(maxAmountBase, activeAccount.value?.currency);
     }
 
-    return packageFreeSpins
-      ? `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${bonusSumString} + ${packageFreeSpins} FS`
-      : `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${bonusSumString}`;
+    const bonusPercentage = bonusInfo.assignConditions?.depositPercentage || 0;
+    const percentageSum = Number(amountValue.value) * bonusPercentage / 100;
+
+    if (maxSum.amount > percentageSum) return { amount: percentageSum, currency: activeAccount.value?.currency || '' };
+    if (maxSum.amount <= percentageSum) return maxSum;
+    return { amount: percentageSum, currency: activeAccount.value?.currency || '' };
   }
 
-  const bonusSummary = computed(() => {
-    if (!selectedDepositBonus.value) return undefined;
+  const getBonusValue = (bonusInfo: IBonus): { cashBonusAmount: number, freeSpinAmount: number } => {
+    let cashBonusAmount: number = 0;
+    let freeSpinAmount: number = 0;
 
-    if (selectedDepositBonus.value.type === 1) {
-      return getCahBonusValue(selectedDepositBonus.value);
-    } else if (selectedDepositBonus.value.type === 2) {
-      return getPercentageBonusValue(selectedDepositBonus.value);
-    } else if (selectedDepositBonus.value.type === 3) {
-      const packageFreeSpins = getPackageBonusesFreeSpins(selectedDepositBonus.value);
-      const selectedFreeSpinCount = selectedDepositBonus.value.assignConditions?.presets?.[0].quantity;
-      return packageFreeSpins
-        ? `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${packageFreeSpins} FS`
-        : `${getContent(popupsData, defaultLocalePopupsData, 'wallet.buttonBonusLabel')} ${selectedFreeSpinCount} FS`;
+    if (bonusInfo.type === 1) {
+      const { amount } = getCahBonusValue(bonusInfo);
+      if (amount) cashBonusAmount += amount;
+    } else if (bonusInfo.type === 2) {
+      const { amount } = getPercentageBonusValue(bonusInfo);
+      if (amount) cashBonusAmount += amount;
+    } else if (bonusInfo?.type === 3) {
+      freeSpinAmount += bonusInfo?.assignConditions?.presets?.[0].quantity || 0;
     }
 
-    return undefined;
-  })
-  
-  
+    return { cashBonusAmount, freeSpinAmount };
+  }
+
+  const bonusValue = computed(() => {
+    if (!selectedDepositBonus.value) return;
+    let totalCashBonusAmount = 0;
+    let totalFreeSpinAmount = 0;
+
+    if (selectedDepositBonus.value.package?.id) {
+      selectedDepositBonus.value.packageItems?.forEach((bonus) => {
+        const { cashBonusAmount, freeSpinAmount } = getBonusValue(bonus);
+        totalCashBonusAmount += cashBonusAmount;
+        totalFreeSpinAmount += freeSpinAmount;
+      });
+    } else {
+      const { cashBonusAmount, freeSpinAmount } = getBonusValue(selectedDepositBonus.value);
+      totalCashBonusAmount += cashBonusAmount;
+      totalFreeSpinAmount += freeSpinAmount;
+    }
+
+    let result:string = '';
+    if (totalCashBonusAmount) {
+      const amountValue = Number(totalCashBonusAmount.toFixed(2));
+      result = `${amountValue} ${activeAccount.value?.currency}`;
+    }
+
+    if (totalFreeSpinAmount) result += result ? ` + ${totalFreeSpinAmount} FS` : `${totalFreeSpinAmount} FS`;
+    return result;
+  });
 </script>
