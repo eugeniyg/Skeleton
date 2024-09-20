@@ -79,6 +79,7 @@
   import { storeToRefs } from 'pinia';
   import type { IProfileBonuses } from '~/types';
   import type { IBonus, IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
+  import debounce from "lodash/debounce.js";
 
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
@@ -333,28 +334,36 @@
   }
 
   const getPackageBonuses = async (): Promise<void> => {
-    const uniquePackageBonuses = [
-      ...activePlayerBonuses.value,
-      ...activePlayerFreeSpins.value,
-      ...issuedPlayerBonuses.value,
-      ...issuedPlayerFreeSpins.value
-    ]
+    const uniquePackageBonuses = [...playerBonuses.value, ...playerFreeSpins.value]
       .map(bonus => (bonus as IPlayerBonus|IPlayerFreeSpin).packageId)
       .filter((id, index, array) => id && array.indexOf(id) === index);
+
     const uniqueDepositPackageBonuses = depositBonuses.value
       .map(bonus => bonus.package?.id)
       .filter((id, index, array) => id && array.indexOf(id) === index);
-    if (!uniquePackageBonuses.length && !uniqueDepositPackageBonuses.length) return;
+
+    if (!uniquePackageBonuses.length && !uniqueDepositPackageBonuses.length) {
+      activePackageBonuses.value = [];
+      issuedPackageBonuses.value = [];
+      return;
+    }
 
     try {
-      const { getPlayerBonuses, getPlayerFreeSpins } = useCoreBonusApi();
-      const [{ data: packagePlayerBonuses }, { data: packagePlayerFreeSpins }] = await Promise.all([
-        getPlayerBonuses({ packageId: uniquePackageBonuses, currency: [activeAccount.value?.currency as string] }),
-        getPlayerFreeSpins({ packageId: uniquePackageBonuses, currency: [activeAccount.value?.currency as string] })
-      ]);
+      let packagePlayerBonuses: Record<string, any> = [];
+      let packagePlayerFreeSpins: Record<string, any> = [];
 
-      const transformPackagePlayerBonuses = packagePlayerBonuses.map(bonus => ({ ...bonus, isCash: true }));
-      const transformPackagePlayerFreeSpins = packagePlayerFreeSpins.map(freeSpin => ({ ...freeSpin, isFreeSpin: true }));
+      if (uniquePackageBonuses.length) {
+        const { getPlayerBonuses, getPlayerFreeSpins } = useCoreBonusApi();
+        const [{ data: packageBonuses }, { data: packageFreeSpins }] = await Promise.all([
+          getPlayerBonuses({ packageId: uniquePackageBonuses, currency: [activeAccount.value?.currency as string] }),
+          getPlayerFreeSpins({ packageId: uniquePackageBonuses, currency: [activeAccount.value?.currency as string] })
+        ]);
+        packagePlayerBonuses = packageBonuses;
+        packagePlayerFreeSpins = packageFreeSpins;
+      }
+
+      const transformPackagePlayerBonuses = packagePlayerBonuses.map((bonus: Record<string, any>)  => ({ ...bonus, isCash: true }));
+      const transformPackagePlayerFreeSpins = packagePlayerFreeSpins.map((freeSpin: Record<string, any>) => ({ ...freeSpin, isFreeSpin: true }));
       const transformDepositPackageBonuses = depositBonuses.value.map(bonus => ({ ...bonus, isDeposit: true }));
 
       const playerPackageBonuses = uniquePackageBonuses.map(packageBonusId => {
@@ -384,10 +393,12 @@
     showPackageModal.value = true;
   }
 
-  // const mounting = ref(true);
-  // watch([playerBonuses, playerFreeSpins, depositBonuses], () => {
-  //   if (!mounting.value) getPackageBonuses();
-  // });
+  const debouncePackageBonus = debounce(getPackageBonuses, 200, { leading: false })
+
+  const mounting = ref(true);
+  watch([playerBonuses, playerFreeSpins, depositBonuses], () => {
+    if (!mounting.value) debouncePackageBonus();
+  });
 
   onMounted(async () => {
     await Promise.allSettled([
@@ -396,7 +407,7 @@
       getDepositBonuses()
     ]);
     await getPackageBonuses();
-    // mounting.value = false;
+    mounting.value = false;
   })
 </script>
 
