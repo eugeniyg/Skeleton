@@ -15,7 +15,7 @@
       size="sm"
       url="/providers"
     >
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }} {{ providersIdentity.length }}
     </button-base>
 
     <button-arrows

@@ -50,7 +50,7 @@
       <div id="live-events-widget" />
     </div>
 
-    <group-providers showArrows />
+    <group-providers showArrows showAllBtn/>
 
     <activity-board
       v-if="activityBoardContent.showBlock && activityBoardContent.boards.length"
