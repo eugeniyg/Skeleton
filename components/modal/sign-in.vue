@@ -5,7 +5,6 @@
     :clickToClose="false"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
-    @closed="selectedTab = 'email'"
   >
     <div class="scroll">
       <div class="header">
@@ -13,8 +12,8 @@
         <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'login.title') }}</div>
       </div>
       
-      <template v-if="tabsList.length && !displayTabs">
-        <div  class="modal-sign-in__tabs">
+      <div v-if="tabsList.length && displayType === 'both'">
+        <div class="modal-sign-in__tabs">
           <button-base
             v-for="tab in tabsList"
             :key="tab.id"
@@ -22,15 +21,15 @@
             size="xs"
             @click="changeTab(tab.id as 'email'|'phone')"
           >
-            <atomic-icon :id="tab.icon" />
+            <atomic-icon :id="tab.icon"/>
             <span class="text">{{ tab.label }}</span>
           </button-base>
         </div>
-
-        <atomic-divider class="modal-sign-in__tabs-divider" />
-      </template>
-
-      <form-sign-in :key="selectedTab" :loginType="selectedTab" />
+        
+        <atomic-divider class="modal-sign-in__tabs-divider"/>
+      </div>
+      
+      <form-sign-in :key="selectedTab" :loginType="selectedTab" :count="selectedCount"/>
     </div>
   </vue-final-modal>
 </template>
@@ -38,36 +37,55 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-
+  
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const {
+    popupsData,
+    defaultLocalePopupsData
+  } = useGlobalStore();
   const { getContent } = useProjectMethods();
-
+  
   const tabsList = computed(() => {
     const tabsObj = getContent(popupsData, defaultLocalePopupsData, 'login.tabs');
     if (!tabsObj) return [];
-
-    return Object.keys(tabsObj).map(key => {
-      if (key === 'email') return { id: 'email', icon: 'mail', label: tabsObj[key] };
-      return { id: 'phone', icon: 'mobile', label: tabsObj[key] };
-    })
+    
+    return Object.keys(tabsObj)
+      .map(key => {
+        if (key === 'email') {
+          return {
+            id: 'email',
+            icon: 'mail',
+            label: tabsObj[key]
+          };
+        }
+        return {
+          id: 'phone',
+          icon: 'mobile',
+          label: tabsObj[key]
+        };
+      });
   });
   
-  const displayTabs = computed(() => {
-    const selected = getContent(popupsData, defaultLocalePopupsData, 'login.display');
-    return selected !== 'both' ? selected: false;
+  const displayType = computed(() => {
+    return getContent(popupsData, defaultLocalePopupsData, 'login.type');
   });
   
-  const selectedTab = ref<'email'|'phone'>(displayTabs.value || 'email');
-
-  const changeTab = (newTabId: 'email'|'phone'): void => {
+  const selectedTab = ref<'email'|'phone'>('email');
+  const selectedCount = ref(0);
+  
+  const changeTab = (newTabId: 'email' | 'phone'): void => {
     if (selectedTab.value === newTabId) return;
     selectedTab.value = newTabId;
-  }
+    selectedCount.value++;
+  };
   
+  onMounted(() => {
+    selectedTab.value = (displayType.value !== 'both') ? displayType.value : 'email'
+  });
+
 </script>
 
-<style src="~/assets/styles/components/modal/sign-in.scss" lang="scss" />
+<style src="~/assets/styles/components/modal/sign-in.scss" lang="scss"/>
 
