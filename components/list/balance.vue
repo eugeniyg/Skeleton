@@ -106,7 +106,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IAccount, ICurrency, IPlayerBonus} from '@skeleton/core/types';
+  import type { IAccount, ICurrency } from '@skeleton/core/types';
 
   const props = defineProps({
     isOpen: {
@@ -224,10 +224,6 @@
     const bundle = formatBalance(activeAccount.value?.currency, amount);
     return { balance: bundle.amount, currency: bundle.currency };
   }
-
-  const bonusWageringBalance = computed<IBalance>(() => {
-    return getBalanceFormat(currentActiveBonus.value?.currentWagerAmount || 0);
-  })
 
   const cashbackBalance = computed<IBalance[]>(() => {
     if (playerCashback.value.length) {
