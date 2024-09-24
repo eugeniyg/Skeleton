@@ -178,8 +178,9 @@ export const useWalletStore = defineStore('walletStore', {
       };
 
       if (webSocketResponse.data?.event === 'invoice.deposit.updated') {
-        const { getDepositBonusCode } = useBonusStore();
+        const { getDepositBonusCode, getDepositBonuses } = useBonusStore();
         getDepositBonusCode();
+        getDepositBonuses();
 
         const cmsMessage = invoiceSuccess
             ? getContent(alertsData, defaultLocaleAlertsData, 'wallet.depositSuccess.description')
