@@ -11,12 +11,6 @@
       </div>
 
       <div class="bonuses-package__body">
-        <!--
-        <div v-if="props.packageImage" class="bonuses-package__img">
-          <atomic-image :src="props.packageImage" />
-        </div>
-        -->
-
         <div class="bonuses-package__name">
           {{ packageName }}
         </div>
@@ -79,7 +73,6 @@
 
   const props = defineProps<{
     list: Record<string, any>[];
-    packageImage?: string;
   }>();
 
   const emit = defineEmits(['openPackageModal']);

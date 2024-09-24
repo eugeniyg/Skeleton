@@ -5,9 +5,8 @@
     </div>
 
     <bonuses-package
-      v-for="(packageList, index) in props.packageBonuses"
+      v-for="packageList in props.packageBonuses"
       :key="packageList[0].packageId"
-      :packageImage="packageImages[index % (packageImages.length || 1)]"
       :list="packageList"
       @openPackageModal="emit('openPackageModal', packageList)"
     />
@@ -41,19 +40,6 @@
   const { getContent } = useProjectMethods();
   const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
-  const globalStore = useGlobalStore();
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-
-  const packageImages = computed(() => {
-    const contentImages: { image: string }[]|undefined = getContent(
-      globalComponentsContent.value,
-      defaultLocaleGlobalComponentsContent.value,
-      'bonuses.packageImages'
-    );
-    if (contentImages?.length) return contentImages.map(imageObject => imageObject.image);
-    return [];
-  })
-
   const bonusStore = useBonusStore();
   const {
     activePlayerBonuses,

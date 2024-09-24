@@ -6,9 +6,8 @@
     </div>
 
     <bonuses-package
-      v-for="(packageList, index) in props.packageBonuses"
+      v-for="packageList in props.packageBonuses"
       :key="packageList[0].packageId || packageList[0].package?.id"
-      :packageImage="packageImages[(index + props.activePackageCount) % (packageImages.length || 1)]"
       :list="packageList"
       @openPackageModal="emit('openPackageModal', packageList)"
     />
@@ -76,19 +75,6 @@
     + issuedPlayerFreeSpins.value.length 
     + depositBonuses.value.length
   );
-
-  const globalStore = useGlobalStore();
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-
-  const packageImages = computed(() => {
-    const contentImages: { image: string }[]|undefined = getContent(
-      globalComponentsContent.value,
-      defaultLocaleGlobalComponentsContent.value,
-      'bonuses.packageImages'
-    );
-    if (contentImages?.length) return contentImages.map(imageObject => imageObject.image);
-    return [];
-  })
 
   const simpleBonusesList = computed(() => issuedPlayerBonuses.value.filter(bonus => !bonus.packageId));
   const simpleFreeSpinsList = computed(() => issuedPlayerFreeSpins.value.filter(freeSpin => !freeSpin.packageId));
