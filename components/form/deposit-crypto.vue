@@ -44,7 +44,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
-  import type { IPaymentField, IRequestDeposit, IBonus, IPaymentFieldOption } from '@skeleton/core/types';
+  import type { IPaymentField, IRequestDeposit, IBonus } from '@skeleton/core/types';
   import debounce from 'lodash/debounce';
 
   const props = defineProps<{
@@ -80,9 +80,10 @@
   } = useProjectMethods();
 
   const networkSelectOptions = computed(() => {
-    const select = props.fields && props.fields.find((item) => item.fieldType === 'select');
-    if (select?.options) {
-      return select?.options.map((option: IPaymentFieldOption) => ({
+    const networkField = props.fields && props.fields.find((field) => field.key === 'crypto_network');
+    const networkOptions = networkField?.options;
+    if (networkOptions) {
+      return networkOptions?.map((option) => ({
         value: option.name,
         minAmount: option.minAmount,
         maxAmount: option.maxAmount,

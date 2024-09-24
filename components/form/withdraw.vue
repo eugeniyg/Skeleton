@@ -2,52 +2,53 @@
   <form class="form-withdraw">
     <form-input-dropdown
       v-if="networkSelectOptions?.length"
+      v-model:value="state.selectedNetwork"
       :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.label')"
       :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.placeholder')"
-      v-model:value="state.selectedNetwork"
       :options="networkSelectOptions"
       class="dropdown-network"
       name="networkSelect"
       @input="onInputNetwork"
     />
 
-    <div class="dropdown-network__info"
-         v-if="networkSelectOptions?.length && !state.selectedNetwork"
-         v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
+    <div
+      v-if="networkSelectOptions?.length && !state.selectedNetwork"
+      class="dropdown-network__info"
+      v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
     />
     
     <wallet-warning
-        v-if="props.fields?.length && state.selectedNetwork"
-        :content="popupsData?.wallet?.withdraw?.warning || defaultLocalePopupsData?.wallet?.withdraw?.warning"
+      v-if="props.fields?.length && state.selectedNetwork"
+      :content="popupsData?.wallet?.withdraw?.warning || defaultLocalePopupsData?.wallet?.withdraw?.warning"
     />
 
     <div class="form-withdraw__content" :class="{'is-blured': networkSelectOptions?.length && !state.selectedNetwork }">
       <form-input-number
+        v-model:value="amountValue"
         :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.sumLabel') || ''"
         name="withdrawSum"
         :min="formatAmountMin.amount"
         :max="formatAmountMax.amount"
-        v-model:value="amountValue"
         :currency="formatAmountMin.currency"
         :hint="fieldHint"
       />
 
       <template v-for="field in visibleFields">
         <component
+          :is="getFieldComponent(field)"
           v-if="field.key !== 'crypto_network'"
           :key="field.key"
-          @input="v$[field.key]?.$touch()"
-          @blur="v$[field.key]?.$touch()"
-          @focus="onFocus(field.key)"
-          :is="fieldsType[field.key]?.component || 'form-input-text'"
           v-model:value="withdrawFormData[field.key]"
           :type="fieldsType[field.key]?.type || 'text'"
           :label="field.labels[currentLocale?.code || ''] || field.labels.en"
           :name="field.key"
           :placeholder="field.hints[currentLocale?.code || ''] || field.hints.en"
-          :options="getFieldOptions(field.key)"
+          :options="getFieldOptions(field)"
           :isRequired="withdrawFormRules[field.key]?.hasOwnProperty('required')"
           :hint="setError(field.key)"
+          @input="v$[field.key]?.$touch()"
+          @blur="v$[field.key]?.$touch()"
+          @focus="onFocus(field.key)"
         />
       </template>
 
@@ -103,9 +104,10 @@
   } = useProjectMethods();
 
   const networkSelectOptions = computed(() => {
-    const select = props.fields.find((field) => field.fieldType === 'select');
-    if (select?.options) {
-      return select?.options?.map((option) => ({
+    const networkField = props.fields.find((field) => field.key === 'crypto_network');
+    const networkOptions = networkField?.options;
+    if (networkOptions) {
+      return networkOptions?.map((option) => ({
         value: option.name,
         minAmount: option.minAmount,
         maxAmount: option.maxAmount,
@@ -172,6 +174,13 @@
     return currentRulesObj;
   }, {});
 
+  const getFieldComponent = (field: IPaymentField): string => {
+    const fieldComponent = fieldsType[field.key]?.component;
+    if (fieldComponent) return fieldComponent;
+
+    return field.fieldType === 'select' ? 'form-input-dropdown' : 'form-input-text';
+  };
+
   const withdrawRules = ref<any>(startRules);
   const { getFormRules } = useProjectMethods();
   const withdrawFormRules = computed(() => getFormRules(withdrawRules.value));
@@ -216,8 +225,12 @@
   };
 
   const fieldsStore = useFieldsStore();
-  const getFieldOptions = (fieldName: string): any => {
-    return fieldsStore.selectOptions[fieldName] || [];
+  const getFieldOptions = (field: IPaymentField): any => {
+    const platformOptions = fieldsStore.selectOptions[field.key];
+    if (platformOptions?.length) return platformOptions;
+    return field.options?.map(option => {
+      return { value: option.name, code: option.id };
+    }) || [];
   }
 
   const buttonAmount = computed(() => {
