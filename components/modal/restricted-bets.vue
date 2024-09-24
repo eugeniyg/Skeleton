@@ -1,11 +1,11 @@
 <template>
   <vue-final-modal
-    v-model="props.showModal"
+    :modelValue="props.showModal"
     class="modal-restricted-bets"
     :clickToClose="false"
-    @beforeOpen="getPlayerBonuses"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @beforeOpen="getPlayerBonuses"
   >
     <div class="scroll">
       <div class="header">
@@ -19,8 +19,9 @@
       <p class="text">{{ props.content.description }}</p>
 
       <atomic-bonus-progress
+        v-if="activePlayerBonuses[0]"
         :wageringLabel="props.content.wageringLabel"
-        :bonusInfo="currentActiveBonus"
+        :bonusInfo="activePlayerBonuses[0]"
       />
       
       <div class="actions">
@@ -46,7 +47,6 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import  { storeToRefs } from "pinia";
   import type { IRestrictedBetsModal } from "~/types";
 
   const props = defineProps<{
@@ -61,9 +61,9 @@
 
   const bonusStore = useBonusStore();
   const { getPlayerBonuses } = bonusStore;
-  const { currentActiveBonus } = storeToRefs(bonusStore);
+  const { activePlayerBonuses } = storeToRefs(bonusStore);
 
-  watch(currentActiveBonus, (newValue) => {
+  watch(activePlayerBonuses, (newValue) => {
     if (!newValue && props.showModal) emit('closeModal');
   })
 

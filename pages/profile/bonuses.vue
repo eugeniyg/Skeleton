@@ -168,6 +168,7 @@
   const showConfirmBonusUnsettledModal = ref(false);
   const showModalConfirmBonus = ref(false);
   const loadingBonuses = ref<string[]>([]);
+  const loadedBonuses = ref<string[]>([]);
 
   const {
     activatePlayerBonus,
@@ -216,39 +217,37 @@
   };
 
   const removeBonus = async (): Promise<void> => {
-    if (!modalState.bonusInfo?.id || loadingBonuses.value.includes(modalState.bonusInfo.id)) return;
-    loadingBonuses.value.push(modalState.bonusInfo.id);
+    const staticBonusId = modalState.bonusInfo?.id;
+    if (!staticBonusId || loadingBonuses.value.includes(staticBonusId)) return;
+    loadingBonuses.value.push(staticBonusId);
 
     try {
       modalState.bonusType === 'bonus'
-        ? await cancelPlayerBonus(modalState.bonusInfo.id)
-        : await cancelPlayerFreeSpin(modalState.bonusInfo.id);
-
-      showModalConfirmBonus.value = false;
-      showConfirmBonusUnsettledModal.value = false;
+        ? await cancelPlayerBonus(staticBonusId)
+        : await cancelPlayerFreeSpin(staticBonusId);
     } catch {
+      loadingBonuses.value = loadingBonuses.value.filter(id => id !== staticBonusId);
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
 
-    loadingBonuses.value = loadingBonuses.value.filter(id => id !== modalState.bonusInfo?.id);
+    loadedBonuses.value.push(staticBonusId);
   };
 
   const activateBonus = async (): Promise<void> => {
-    if (!modalState.bonusInfo?.id || loadingBonuses.value.includes(modalState.bonusInfo.id)) return;
-    loadingBonuses.value.push(modalState.bonusInfo.id);
+    const staticBonusId = modalState.bonusInfo?.id;
+    if (!staticBonusId || loadingBonuses.value.includes(staticBonusId)) return;
+    loadingBonuses.value.push(staticBonusId);
 
     try {
       modalState.bonusType === 'bonus'
-        ? await activatePlayerBonus(modalState.bonusInfo.id)
-        : await activatePlayerFreeSpin(modalState.bonusInfo.id);
-
-      showModalConfirmBonus.value = false;
-      showConfirmBonusUnsettledModal.value = false;
+        ? await activatePlayerBonus(staticBonusId)
+        : await activatePlayerFreeSpin(staticBonusId);
     } catch {
+      loadingBonuses.value = loadingBonuses.value.filter(id => id !== staticBonusId);
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
 
-    loadingBonuses.value = loadingBonuses.value.filter(id => id !== modalState.bonusInfo?.id);
+    loadedBonuses.value.push(staticBonusId);
   };
 
   const activateBonusHandle = (bonus: IPlayerBonus): void => {
@@ -320,7 +319,7 @@
   const packageModalList = ref<Record<string, any>[]>([]);
 
   const updatePackageModalList = (): void => {
-    if (!activePackageBonuses.value.length && issuedPackageBonuses.value.length) {
+    if (!activePackageBonuses.value.length && !issuedPackageBonuses.value.length) {
       showPackageModal.value = false;
     }
 
@@ -333,6 +332,15 @@
     else showPackageModal.value = false;
   }
 
+  const checkLoadingBonuses = ():void => {
+    loadingBonuses.value = loadingBonuses.value.filter(loadingId => !loadedBonuses.value.some(loadedId => loadingId === loadedId));
+    if (modalState.bonusInfo?.id && loadedBonuses.value.some(loadedId => loadedId === modalState.bonusInfo?.id)) {
+      showModalConfirmBonus.value = false;
+      showConfirmBonusUnsettledModal.value = false;
+    }
+    loadedBonuses.value = [];
+  }
+
   const getPackageBonuses = async (): Promise<void> => {
     const uniquePackageBonuses = [...playerBonuses.value, ...playerFreeSpins.value]
       .map(bonus => (bonus as IPlayerBonus|IPlayerFreeSpin).packageId)
@@ -343,6 +351,7 @@
       .filter((id, index, array) => id && array.indexOf(id) === index);
 
     if (!uniquePackageBonuses.length && !uniqueDepositPackageBonuses.length) {
+      checkLoadingBonuses();
       activePackageBonuses.value = [];
       issuedPackageBonuses.value = [];
       return;
@@ -386,6 +395,8 @@
     } catch (e) {
       console.error('Failed to get package bonuses');
     }
+
+    checkLoadingBonuses();
   };
 
   const openPackageModal = (bonusesList: Record<string, any>[]): void => {
