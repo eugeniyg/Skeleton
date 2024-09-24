@@ -11,9 +11,11 @@
       </div>
 
       <div class="bonuses-package__body">
+        <!--
         <div v-if="props.packageImage" class="bonuses-package__img">
           <atomic-image :src="props.packageImage" />
         </div>
+        -->
 
         <div class="bonuses-package__name">
           {{ packageName }}

@@ -3,10 +3,13 @@
   background: var(--bg, var(--layer-02));
   border-radius: 16px;
   width: 100%;
-  flex: 1 1 100%;
 
   @include media(sm) {
-    grid-column: 1 / span 2;
+    width: calc(50% - 8px);
+  }
+
+  @include media(xl) {
+    width: calc(33% - 8px);
   }
 
   &.is-active {
@@ -19,6 +22,8 @@
     border-radius: 16px;
     overflow: hidden;
     position: relative;
+    display: grid;
+    grid-row-gap: 20px;
 
     @include media(sm) {
       padding: 22px 22px 26px 22px;
@@ -28,7 +33,6 @@
   &__header {
     display: grid;
     justify-content: space-between;
-    margin-bottom: 20px;
     gap: 8px;
     grid-auto-flow: column;
   }
@@ -43,11 +47,6 @@
     color: var(--text-primary);
     text-shadow: var(--shadow-layer);
     @include font($subheading-6);
-    margin-top: -24px;
-
-    @include media(sm) {
-      margin-top: 0;
-    }
 
     > * {
       margin: 0;
@@ -152,42 +151,6 @@
         &:after {
           border-color: var(--text-link-hover);
         }
-      }
-    }
-  }
-
-  &__img {
-    height: 186px;
-    position: relative;
-
-    @include media(sm) {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      height: auto;
-      width: 52%;
-    }
-
-    img {
-      position: absolute;
-      max-height: 100%;
-      max-width: 196px;
-      width: 100%;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-
-      @include media(sm) {
-        max-height: 100%;
-        max-width: 100%;
-        width: auto;
-        transform: translateX(28%);
-        right: 0;
-        top: 12px;
-        left: auto;
-        bottom: 12px;
-        margin: auto;
       }
     }
   }

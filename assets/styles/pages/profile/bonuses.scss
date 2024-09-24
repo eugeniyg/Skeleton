@@ -10,20 +10,16 @@
     align-items: center;
     min-height: rem(22px);
 
+
     .icon {
       color: var(--icon-accent);
     }
   }
 
   .bonuses-grid {
-    display: grid;
-    gap: 16px;
-    grid-template-columns: 1fr;
+    display: flex;
+    grid-gap: 16px;
     flex-wrap: wrap;
-
-    @include media(sm) {
-      grid-template-columns: 1fr 1fr;
-    }
 
     &__title  {
       display: flex;

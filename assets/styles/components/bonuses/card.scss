@@ -2,6 +2,16 @@
   padding: 2px;
   background: var(--bg, var(--layer-02));
   border-radius: 16px;
+  width: 100%;
+
+  @include media(sm) {
+    width: calc(50% - 8px);
+  }
+
+  @include media(xl) {
+    width: calc(33% - 8px);
+  }
+
 
   &.is-active {
     --bg: linear-gradient(89deg, #FFDC8A -2766.21%, #FFC12E 38.74%, #E6A409 2866.21%);
@@ -75,8 +85,8 @@
     }
 
     .btn-primary {
-      flex: 1 1 136px;
-      min-width: calc(50% - 8px);
+      //flex: 1 1 136px;
+      width: calc(50% - 8px);
       margin: 0 !important;
     }
   }
