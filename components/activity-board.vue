@@ -34,58 +34,58 @@
     
     <div class="activity-board__tb-scroll">
       <div class="activity-board__tb">
-      <div class="activity-board__tb-head">
-        <span
-          v-for="(column, index) in tbColumns"
-          :key="column.id"
-          class="activity-board__tb-th"
-          :class="`th-${index + 1}`"
-        >
-          {{ column.label }}
-        </span>
-      </div>
+        <div class="activity-board__tb-head">
+          <span
+            v-for="(column, index) in tbColumns"
+            :key="column.id"
+            class="activity-board__tb-th"
+            :class="`th-${index + 1}`"
+          >
+            {{ column.label }}
+          </span>
+        </div>
 
-      <div
-        class="activity-board__tb-body animate"
-        :class="{'push': isAnimate}"
-        @animationend="onAnimationEnd"
-      >
         <div
-          v-for="row in boardData"
-          :key="row.id"
-          class="activity-board__tb-row"
+          class="activity-board__tb-body animate"
+          :class="{'push': isAnimate}"
+          @animationend="onAnimationEnd"
         >
           <div
-            v-for="({ id }, index) in tbColumns"
-            :key="id"
-            class="activity-board__tb-td"
-            :class="`td-${index + 1}`"
+            v-for="row in boardData"
+            :key="row.id"
+            class="activity-board__tb-row"
           >
-            <template v-if="id === 'game'">
-              <atomic-image :src="getGameImage(row.gameImages)" class="activity-board__tb-td-img" />
-              <span>{{ row.gameName }}</span>
-            </template>
+            <div
+              v-for="({ id }, index) in tbColumns"
+              :key="id"
+              class="activity-board__tb-td"
+              :class="`td-${index + 1}`"
+            >
+              <template v-if="id === 'game'">
+                <atomic-image :src="getGameImage(row.gameImages)" class="activity-board__tb-td-img" />
+                <span>{{ row.gameName }}</span>
+              </template>
 
-            <template v-else-if="id === 'nickname'">
-              <span>{{ row.nickname || 'Unknown' }}</span>
-            </template>
+              <template v-else-if="id === 'nickname'">
+                <span>{{ row.nickname || 'Unknown' }}</span>
+              </template>
 
-            <template v-else-if="id === 'createdAt'">
-              <span>{{ dayjs(row.createdAt).format('hh:mm:ss A') }}</span>
-            </template>
+              <template v-else-if="id === 'createdAt'">
+                <span>{{ dayjs(row.createdAt).format('hh:mm:ss A') }}</span>
+              </template>
 
-            <template v-else-if="['amount', 'baseCurrencyAmount', 'payout'].includes(id)">
-              <atomic-image
-                class="activity-board__tb-td-icon"
-                :src="`/img/currency/${id === 'baseCurrencyAmount' ? baseCurrency?.code : row.currency}.svg`"
-                defaultImage="/img/currency/placeholder.svg"
-              />
-              <span>{{ row[id] }}</span>
-            </template>
+              <template v-else-if="['amount', 'baseCurrencyAmount', 'payout'].includes(id)">
+                <atomic-image
+                  class="activity-board__tb-td-icon"
+                  :src="`/img/currency/${id === 'baseCurrencyAmount' ? baseCurrency?.code : row.currency}.svg`"
+                  defaultImage="/img/currency/placeholder.svg"
+                />
+                <span>{{ row[id] }}</span>
+              </template>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
 </template>

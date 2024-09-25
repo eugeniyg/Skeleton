@@ -68,7 +68,7 @@
     const [currentLocaleQuestionPageContent, defaultLocaleQuestionPageContent, questionsContent] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'pages', 'question').findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'question').findOne(),
+      : queryContent(defaultLocale.value?.code as string, 'pages', 'question').findOne(),
       queryContent(currentLocale.value?.code as string, 'question-pages').find(),
     ]);
     const contentResponseData = getLocalesContentData(currentLocaleQuestionPageContent, defaultLocaleQuestionPageContent);

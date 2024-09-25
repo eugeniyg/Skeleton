@@ -6,12 +6,12 @@
       {{ gameCategoriesObj[activeCollection?.identity || '']?.label || activeCollection?.name }}
     </atomic-cat-heading>
     
-    <div class="game-filter" v-click-outside="skipActionsState">
-      <nav-category @clickCategory="changeCategory" hide-items/>
+    <div v-click-outside="skipActionsState" class="game-filter">
+      <nav-category hide-items @clickCategory="changeCategory"/>
       
       <form-input-search
-        class="game-filter__search"
         v-model:value="searchValue"
+        class="game-filter__search"
         :placeholder="getContent(layoutData, defaultLocaleLayoutData, 'header.search.placeholder')"
         @input="searchInput"
       />
@@ -22,13 +22,13 @@
       />
       
       <atomic-game-sort
-        class="game-filter__sort"
         v-show="isShowFilter"
         v-if="getContent(gamesContent, defaultLocaleGamesContent, 'sortOptions')?.length"
+        class="game-filter__sort"
         :sortOrderValue="sortOrder"
         :sortByValue="sortBy"
-        @change="changeSort"
         v-bind="gamesContent?.sortOptions?.length ? gamesContent : defaultLocaleGamesContent"
+        @change="changeSort"
       />
       
       <providers-tags
@@ -127,8 +127,8 @@
       queryContent(currentLocale.value?.code as string, 'pages', 'games')
         .findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'games')
-          .findOne()
+      : queryContent(defaultLocale.value?.code as string, 'pages', 'games')
+        .findOne()
     ]);
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   };

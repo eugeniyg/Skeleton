@@ -31,8 +31,8 @@
 
       <template v-else-if="depositMethods?.length && props.currentDepositMethod">
         <form-deposit
-          :key="`${props.currentDepositMethod.method}-${depositMethodKey}-${showMobileFormKey}`"
           v-if="props.currentDepositMethod.type === 'form'"
+          :key="`${props.currentDepositMethod.method}-${depositMethodKey}-${showMobileFormKey}`"
           v-bind="props.currentDepositMethod"
         />
 
@@ -47,8 +47,8 @@
         <atomic-icon id="info" />
 
         <span>
-              {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
-            </span>
+          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+        </span>
       </div>
     </template>
 
@@ -175,7 +175,7 @@
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'profile', 'limits').only(['coolingOff']).findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').only(['coolingOff']).findOne()
+      : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').only(['coolingOff']).findOne()
     ]);
 
     if (currentLocaleContentResponse.status !== 'rejected') {

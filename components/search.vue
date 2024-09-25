@@ -19,11 +19,11 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import type { IGame, IGamesResponse, IPaginationMeta } from '@skeleton/core/types';
-import debounce from 'lodash/debounce';
+  import { storeToRefs } from 'pinia';
+  import type { IGame, IGamesResponse, IPaginationMeta } from '@skeleton/core/types';
+  import debounce from 'lodash/debounce';
 
-const props = defineProps({
+  const props = defineProps({
     isShow: {
       type: Boolean,
       default: false,

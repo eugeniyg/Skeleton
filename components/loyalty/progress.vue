@@ -53,7 +53,7 @@
             {{ nextLevelPoints }}
           </span>
 
-            <span class="loyalty-progress__points-next-label">
+          <span class="loyalty-progress__points-next-label">
             {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'loyalty.pointsLabel') }}
           </span>
         </div>
@@ -61,8 +61,8 @@
 
       <atomic-icon
         v-if="props.showInfo"
-        class="loyalty-progress__points-info"
         id="info"
+        class="loyalty-progress__points-info"
         @click="showModal('loyaltyEarn')"
       />
     </div>

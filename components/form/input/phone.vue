@@ -1,7 +1,7 @@
 <template>
   <div class="input-phone" :class="{ 'has-error': props.hint?.variant === 'error' }">
     <span v-if="props.label" class="label">
-      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
+      {{ props.label }}<span v-if="props.isRequired" class="required">*</span>
     </span>
 
     <form-input-dropdown
@@ -9,24 +9,24 @@
       :options="selectItems"
       placeholder="Select code"
       name="phoneCode"
+      :hint="props.hint ? { variant: 'error', message: '' } : undefined"
       @focus="onFocus"
       @input="onSelectInput"
-      :hint="props.hint ? { variant: 'error', message: '' } : undefined"
     />
 
     <client-only>
       <input
-        inputmode="numeric"
+        v-model="numberValue"
         v-maska="'############'"
+        inputmode="numeric"
         class="field"
         type="text"
         name="phoneNumber"
-        v-model="numberValue"
         :placeholder="props.placeholder"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
-      />
+      >
     </client-only>
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>

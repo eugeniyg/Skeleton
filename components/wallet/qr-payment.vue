@@ -19,7 +19,12 @@
       {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.instruction') }}
     </div>
 
-    <button-base :isDisabled="copied" type="primary" size="lg" @click="copyQr">
+    <button-base
+      :isDisabled="copied"
+      type="primary"
+      size="lg"
+      @click="copyQr"
+    >
       <template v-if="copied">
         <atomic-icon id="double-check"/>
         {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.copiedLabel') }}

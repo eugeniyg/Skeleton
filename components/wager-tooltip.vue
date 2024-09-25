@@ -1,25 +1,25 @@
 <template>
   <div
     v-if="tooltipContent?.text && tooltipContent?.iconColor"
-    class="wager-tooltip"
     ref="tooltip"
+    class="wager-tooltip"
     :class="tooltipClasses"
     @mouseover="showTooltip"
   >
-    <atomic-icon id="flash" class="wager-tooltip__icon" v-if="!props.isInline"/>
+    <atomic-icon v-if="!props.isInline" id="flash" class="wager-tooltip__icon"/>
     
     <div
-      class="wager-tooltip__content"
       ref="tooltipContentContainer"
+      class="wager-tooltip__content"
       :style="`left: ${coords.left}px; top: ${coords.top}px`"
     >
       <atomic-icon id="flash" class="wager-tooltip__icon"/>
       
-      <div class="wager-tooltip__msg" v-html="marked.parse(tooltipContent?.text)"/>
+      <div class="wager-tooltip__msg" v-html="DOMPurify.sanitize(marked.parse(tooltipContent?.text || '') as string, { FORBID_TAGS: ['style'] })" />
       
       <span
-        class="wager-tooltip__close"
         v-if="!props.isInline"
+        class="wager-tooltip__close"
         @click="hideTooltip"
       >
         <atomic-icon id="close" class="wager-tooltip__close-icon"/>
@@ -31,7 +31,8 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
-  
+  import DOMPurify from "isomorphic-dompurify";
+
   const props = defineProps<{
     isInline?: boolean,
     container?: HTMLElement,

@@ -1,11 +1,11 @@
 <template>
   <div class="pills">
     <button
-      class="item"
       v-for="(item, itemIndex) in props.items"
       :key="itemIndex"
-      @click.prevent="emit('select', item)"
+      class="item"
       :class="{'is-selected': selected === item}"
+      @click.prevent="emit('select', item)"
     >
       {{ item }}
     </button>

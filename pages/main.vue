@@ -32,7 +32,7 @@
       :category="category"
     />
     
-    <group-winners showArrows v-if="globalComponentsContent?.cardsGroup?.latestWinners?.display"/>
+    <group-winners v-if="globalComponentsContent?.cardsGroup?.latestWinners?.display" showArrows/>
     
     <group-games
       v-for="category in mainCategoriesList.slice(4)"
@@ -96,8 +96,8 @@
       queryContent(currentLocale.value?.code as string, 'pages', 'casino')
         .findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'casino')
-          .findOne()
+      : queryContent(defaultLocale.value?.code as string, 'pages', 'casino')
+        .findOne()
     ]);
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   };

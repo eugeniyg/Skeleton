@@ -48,15 +48,15 @@
         </button-base>
         
         <button-base
-            v-if="invoice.publicData?.agentNumber &&
+          v-if="invoice.publicData?.agentNumber &&
             invoice.publicData?.transactionId &&
             invoice.invoiceType === 1 &&
             dosafepayTargetMethods.includes(invoice.paymentMethod) &&
             !showDetails.includes(invoice.publicData.transactionId)"
-            class="btn-get-code"
-            type="primary"
-            size="sm"
-            @click="showDetails.push(invoice.publicData?.transactionId)"
+          class="btn-get-code"
+          type="primary"
+          size="sm"
+          @click="showDetails.push(invoice.publicData?.transactionId)"
         >
           <atomic-icon id="more-info"/>
           <span>{{ props.transactionsContent?.dosafepayData?.showDetailsButton }}</span>
@@ -81,22 +81,22 @@
       </div>
       
       <div
-          v-if="invoice.publicData?.agentNumber &&
+        v-if="invoice.publicData?.agentNumber &&
           invoice.publicData?.transactionId &&
           dosafepayTargetMethods.includes(invoice.paymentMethod) &&
           showDetails.includes(invoice.publicData?.transactionId)"
-          class="security-code"
+        class="security-code"
       >
         <atomic-copy-field
-            :label="props.transactionsContent?.dosafepayData?.numberLabel"
-            :value="invoice.publicData.agentNumber"
-            :tooltip="props.transactionsContent?.dosafepayData?.numberTooltip"
+          :label="props.transactionsContent?.dosafepayData?.numberLabel"
+          :value="invoice.publicData.agentNumber"
+          :tooltip="props.transactionsContent?.dosafepayData?.numberTooltip"
         />
         
         <atomic-copy-field
-            :label="props.transactionsContent?.dosafepayData?.clientLabel"
-            :value="invoice.publicData.transactionId"
-            :tooltip="props.transactionsContent?.dosafepayData?.clientTooltip"
+          :label="props.transactionsContent?.dosafepayData?.clientLabel"
+          :value="invoice.publicData.transactionId"
+          :tooltip="props.transactionsContent?.dosafepayData?.clientTooltip"
         />
       </div>
     </div>

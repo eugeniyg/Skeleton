@@ -7,7 +7,7 @@
         :class="{'is-active': selectedTabs.includes(id)}"
         @click="changeTab(id)"
       >
-        <atomic-icon :id="icon" v-if="icon"/>{{ title }}
+        <atomic-icon v-if="icon" :id="icon"/>{{ title }}
       </button-base>
     </div>
 
@@ -24,10 +24,10 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import type { IGame } from '@skeleton/core/types';
+  import { storeToRefs } from 'pinia';
+  import type { IGame } from '@skeleton/core/types';
 
-const globalStore = useGlobalStore();
+  const globalStore = useGlobalStore();
   const {
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent,

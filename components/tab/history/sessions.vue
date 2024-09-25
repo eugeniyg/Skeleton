@@ -10,8 +10,9 @@
           v-for="(column, columnIndex) in headTitles"
           :key="columnIndex"
           class="th"
-          v-html="column"
-        />
+        >
+          {{ column }}
+        </div>
       </div>
 
       <template v-if="sessions.length">
@@ -29,7 +30,7 @@
           </div>
 
           <div class="td td-date">
-            <span v-html="formatDateStr(dayjs(session.createdAt).format(dateFormat))"></span>
+            <span>{{ formatDateStr(dayjs(session.createdAt).format(dateFormat)) }}</span>
           </div>
 
           <div class="td">

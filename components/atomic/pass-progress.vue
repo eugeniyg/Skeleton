@@ -2,9 +2,9 @@
   <div class="pass-progress">
     <div class="items">
       <div
-        class="item"
         v-for="(item, index) in variants"
         :key="index"
+        class="item"
         :class="index <= getIndex ? `variant-${variants[getIndex]}` : null"
       />
     </div>

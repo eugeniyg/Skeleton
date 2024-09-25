@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import type { IGame, IPaginationMeta } from "@skeleton/core/types";
+  import type { IGame, IPaginationMeta } from "@skeleton/core/types";
 
   const props = defineProps<{
     items: IGame[],

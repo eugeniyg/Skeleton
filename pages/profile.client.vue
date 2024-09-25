@@ -79,7 +79,7 @@
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'profile').find(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'profile').find()
+      : queryContent(defaultLocale.value?.code as string, 'profile').find()
     ]);
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }

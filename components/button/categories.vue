@@ -4,7 +4,7 @@
     :class="{'is-active': props.isActive}"
     @click="emit('action')"
   >
-    <atomic-icon class="btn-categories__icon" id="more-menu"/>
+    <atomic-icon id="more-menu" class="btn-categories__icon"/>
     <span class="btn-categories__label">{{ getContent(layoutData, defaultLocaleLayoutData , 'categoryMenu.categoriesButton') }}</span>
     <atomic-icon id="dropdown-arrows" class="btn-categories__icon"/>
   </div>

@@ -14,7 +14,7 @@
     <div
       v-if="props.fields?.length && !state.selectedNetwork"
       class="dropdown-network__info"
-      v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
+      v-html="infoContent"
     />
     
     <wallet-warning
@@ -46,6 +46,7 @@
   import { marked } from 'marked';
   import type { IPaymentField, IRequestDeposit, IBonus, IPaymentFieldOption } from '@skeleton/core/types';
   import debounce from 'lodash/debounce';
+  import DOMPurify from "isomorphic-dompurify";
 
   const props = defineProps<{
     amountMax?: number,
@@ -158,6 +159,12 @@
     ) return;
     await sendDepositData();
   }, 1000, { leading: false });
+
+  const infoContent = computed(() => {
+    const contentText = getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info');
+    if (!contentText) return '';
+    return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
+  })
 
   watch(selectedDepositBonus, (newValue: IBonus|undefined) => {
     debounceDeposit(newValue);

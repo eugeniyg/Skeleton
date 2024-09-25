@@ -1,14 +1,14 @@
 <template>
   <div class="input-radio" :class="{ 'has-error': props.isError, 'is-disabled': props.isDisabled }">
     <input
+      :id="props.id"
       class="radio"
       type="radio"
       :name="props.name"
       :disabled="props.isDisabled"
-      :id="props.id"
       :checked="props.isChecked"
       @change="emit('change')"
-    />
+    >
 
     <label class="label" :for="props.id">
       <atomic-icon id="radio"/>

@@ -4,10 +4,10 @@
       v-if="gameInfo"
       :frameLink="gameStart"
       :gameInfo="gameInfo"
-      @changeMode="changeGameMode"
       :gameContent="gameContent || defaultLocaleGameContent"
       :showPlug="showPlug && !isLoggedIn && !gameInfo.isDemoMode"
       :isDemo="isDemo"
+      @changeMode="changeGameMode"
     />
 
     <client-only>
@@ -99,7 +99,7 @@
       getGamesInfo(route.params.id as string),
       queryContent(currentLocale.value?.code as string, 'pages', 'game').findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'game').findOne()
+      : queryContent(defaultLocale.value?.code as string, 'pages', 'game').findOne()
     ]);
     const contentResponseData = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
     const gameInfo = infoResponse.status !== 'rejected' ? infoResponse.value : undefined;

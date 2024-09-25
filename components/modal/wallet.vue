@@ -8,7 +8,7 @@
     @closed="closedHandler"
   >
     <div class="wallet-modal__container" :class="{ 'show-form': showMobileForm }">
-      <button-modal-close @close="handleClose" :class="{ 'close-secondary': hasOffset }" />
+      <button-modal-close :class="{ 'close-secondary': hasOffset }" @close="handleClose" />
 
       <wallet-methods
         v-model:currentDepositMethod="currentDepositMethod"

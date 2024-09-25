@@ -2,8 +2,8 @@
   <button
     ref="tooltip"
     class="tooltip"
-    @click="show"
     :class="{'is-show': isShow}"
+    @click="show"
     @mouseover="show"
     @mouseleave="hide"
     @focusout="hide"
@@ -18,14 +18,16 @@
         :class="[messageCustomClass, {'is-active': isShow}, `size-${props.size}`]"
         :style="`top: ${coords.top}px; left: ${coords.left}px`"
       >
-        <div class="title" v-if="props.title">{{ props.title }}</div>
-        <div class="text" v-if="props.text" v-html="props.text" />
+        <div v-if="props.title" class="title">{{ props.title }}</div>
+        <div v-if="props.text" class="text" v-html="DOMPurify.sanitize(props.text || '', { FORBID_TAGS: ['style'] })" />
       </div>
     </Teleport>
   </button>
 </template>
 
 <script setup lang="ts">
+  import DOMPurify from "isomorphic-dompurify";
+
   const props = defineProps({
     icon: {
       type: String,

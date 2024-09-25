@@ -2,10 +2,10 @@
   <vue-final-modal
     v-model="modals.registerCancel"
     :clickToClose="false"
-    @clickOutside="closeRegistration"
     class="modal-register-cancel"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="closeRegistration"
   >
     <div class="scroll">
       <div class="header">
@@ -15,7 +15,7 @@
 
       <div class="bonus">
         <atomic-image :src="getContent(popupsData, defaultLocalePopupsData, 'cancelRegistration.bonusImage')" />
-        <div class="bonus-text" v-html="bonusContent" />
+        <div class="bonus-text" v-html="DOMPurify.sanitize(marked.parse(bonusContent) as string, { FORBID_TAGS: ['style'] })" />
       </div>
 
       <div class="actions">
@@ -42,6 +42,8 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
+  import DOMPurify from "isomorphic-dompurify";
+  import {marked} from "marked";
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);

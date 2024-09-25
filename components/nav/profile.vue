@@ -1,5 +1,5 @@
 <template>
-  <nav class="nav-profile" :class="{'is-open': isOpen}" v-click-outside="close">
+  <nav v-click-outside="close" class="nav-profile" :class="{'is-open': isOpen}">
     <button class="selected" @click="toggle">
       {{ selected?.title }}<atomic-icon id="arrow_expand-close"/>
     </button>
@@ -7,11 +7,11 @@
     <div class="items">
       <atomic-link
         v-for="(item, index) in sortedMenu"
-        @click="close"
         :key="index"
         class="item"
         :class="{'is-active': route.path === localizePath(item.url)}"
         :href="item.url"
+        @click="close"
       >
         {{ item.title }}
 

@@ -3,9 +3,9 @@
     v-model="modals.depositRedirect"
     class="modal-success-deposit"
     :clickToClose="false"
-    @clickOutside="closeModal('depositRedirect')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="closeModal('depositRedirect')"
   >
     <div class="scroll">
       <div class="header">
@@ -15,10 +15,18 @@
         </client-only>
       </div>
       
-      <atomic-image class="img" :src="image" width="104" height="104"/>
+      <atomic-image
+        class="img"
+        :src="image"
+        width="104"
+        height="104"
+      />
       
       <client-only>
-        <p class="text" v-html="marked.parse(description || '')"/>
+        <p
+          class="text"
+          v-html="DOMPurify.sanitize(marked.parse(description || '') as string, { FORBID_TAGS: ['style'] })"
+        />
       </client-only>
     </div>
   </vue-final-modal>
@@ -28,7 +36,8 @@
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
   import { VueFinalModal } from 'vue-final-modal';
-  
+  import DOMPurify from "isomorphic-dompurify";
+
   const layoutStore = useLayoutStore();
   const {
     modals,

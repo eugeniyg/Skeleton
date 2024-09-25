@@ -15,7 +15,7 @@
       <div
         v-if="description"
         class="geo-restricted__description"
-        v-html="marked.parse(description)"
+        v-html="DOMPurify.sanitize(marked.parse(description || '') as string, { FORBID_TAGS: ['style'] })"
       />
 
       <div v-if="headerCountry" class="geo-restricted__geo">
@@ -29,6 +29,7 @@
 
 <script setup lang="ts">
   import { marked } from "marked";
+  import DOMPurify from "isomorphic-dompurify";
 
   const globalStore = useGlobalStore();
   const {

@@ -25,8 +25,8 @@
 
     <div class="group-aero__wrapper">
       <picture class="group-aero__bg">
-        <source :media="'(max-width: 768px)'" :srcset="createSrcSet(mobileLayoutBackground)" />
-        <source :media="'(min-width: 769px)'" :srcset="createSrcSet(desktopLayoutBackground)" />
+        <source :media="'(max-width: 768px)'" :srcset="createSrcSet(mobileLayoutBackground)" >
+        <source :media="'(min-width: 769px)'" :srcset="createSrcSet(desktopLayoutBackground)" >
         <atomic-image class="group-aero__bg-img" :src="mobileLayoutBackground" />
       </picture>
 
@@ -55,10 +55,10 @@
           </button-base>
           
           <button-base
+            v-if="gameInfo?.isDemoMode"
             type="secondary"
             size="sm"
             @click="openGame(false)"
-            v-if="gameInfo?.isDemoMode"
           >
             {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.demoButtonLabel') }}
           </button-base>
@@ -83,7 +83,7 @@
           <div v-for="n in 9" :key="n" class="card-base"/>
         </template>
 
-        <div class="load-more" ref="loadMore" @inview="moreGames" />
+        <div ref="loadMore" class="load-more" @inview="moreGames" />
       </div>
     </div>
   </div>

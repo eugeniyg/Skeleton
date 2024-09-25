@@ -1,5 +1,5 @@
 <template>
-  <div class="providers-tags" v-if="tags.length">
+  <div v-if="tags.length" class="providers-tags">
     <div class="providers-tags__clear" @click="clearTags">
       <atomic-icon id="trash" class="providers-tags__clear-icon"/>
       
@@ -9,11 +9,11 @@
     </div>
     
     <div class="providers-tags__content">
-      <div class="providers-tags__items" ref="scrollContainer" @scroll="scrollHandler">
+      <div ref="scrollContainer" class="providers-tags__items" @scroll="scrollHandler">
         <div
-          class="providers-tags__item"
           v-for="tag in props.tags"
           :key="tag.id"
+          class="providers-tags__item"
         >
           <span class="providers-tags__item-text">{{ tag.name }}</span>
           <atomic-icon id="close" class="providers-tags__item-icon" @click="unselectTag(tag.id)"/>

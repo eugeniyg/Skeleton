@@ -38,26 +38,26 @@
           <div class="items">
             <div class="nickname">{{ userNickname }}</div>
 
-            <div class="item" v-show="profile?.firstName || profile?.lastName">
+            <div v-show="profile?.firstName || profile?.lastName" class="item">
               <atomic-icon id="user"/>
               {{ profile?.firstName }} {{ profile?.lastName }}
             </div>
 
-            <div class="item" v-show="profile?.country || profile?.city">
+            <div v-show="profile?.country || profile?.city" class="item">
               <atomic-icon id="location"/>
               {{ userCountryName }}{{ profile?.city ? `, ${profile?.city}` : '' }}
             </div>
 
-            <div class="item" v-show="hasEmailField && profile?.email">
-              <atomic-icon v-if="profile?.confirmedAt" class="is-success" id="done"/>
-              <atomic-icon v-else class="is-warning" id="warning"/>
+            <div v-show="hasEmailField && profile?.email" class="item">
+              <atomic-icon v-if="profile?.confirmedAt" id="done" class="is-success"/>
+              <atomic-icon v-else id="warning" class="is-warning"/>
               {{ profile?.email }}
 
               <span
                 v-if="!profile?.confirmedAt"
                 class="btn-primary size-xs"
-                @click.once="profileStore.resendVerifyEmail"
                 :class="{ disabled: resentVerifyEmail }"
+                @click.once="profileStore.resendVerifyEmail"
               >
                 {{ content?.currentLocaleData?.sendButton || content?.defaultLocaleData?.sendButton }}
               </span>
@@ -150,7 +150,7 @@
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'profile', 'info').findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'profile', 'info').findOne()
+      : queryContent(defaultLocale.value?.code as string, 'profile', 'info').findOne()
     ]);
 
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);

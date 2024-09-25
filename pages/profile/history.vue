@@ -77,10 +77,10 @@
     ] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'profile', 'history').findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'profile', 'history').findOne(),
+      : queryContent(defaultLocale.value?.code as string, 'profile', 'history').findOne(),
       queryContent(currentLocale.value?.code as string, 'history').find(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'history').find()
+      : queryContent(defaultLocale.value?.code as string, 'history').find()
     ]);
 
     const responseHistoryContent =  getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);

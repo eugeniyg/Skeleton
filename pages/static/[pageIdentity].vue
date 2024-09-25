@@ -40,7 +40,7 @@
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'static').where({ pageIdentity }).findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'static').where({ pageIdentity }).findOne()
+      : queryContent(defaultLocale.value?.code as string, 'static').where({ pageIdentity }).findOne()
     ]);
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }

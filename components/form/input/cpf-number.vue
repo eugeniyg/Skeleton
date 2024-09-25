@@ -1,25 +1,25 @@
 <template>
   <label :class="classes">
     <span v-if="props.label" class="label">
-      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
+      {{ props.label }}<span v-if="props.isRequired" class="required">*</span>
     </span>
 
     <client-only>
       <div class="mask-group">
         <input
-          inputmode="numeric"
+          v-model="maskedValue"
           v-maska:unmaskedValue.unmasked
+          inputmode="numeric"
           data-maska="###.###.###-##"
           data-maska-eager
           class="field"
           type="text"
           name="cpfNumber"
-          v-model="maskedValue"
           :placeholder="props.placeholder || ''"
           @focus="onFocus"
           @blur="onBlur"
           @input="onInput"
-        />
+        >
 
         <div v-show="maskedValue || focused" class="mask-group__fake">
           <span class="mask-group__fake-hidden">{{ maskedValue }}</span>

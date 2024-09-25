@@ -9,7 +9,7 @@
       />
     </div>
 
-    <div class="content" v-show="currentLocaleBonusContent || defaultLocaleBonusContent">
+    <div v-show="currentLocaleBonusContent || defaultLocaleBonusContent" class="content">
       <h1 class="title">{{ getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'title') }}</h1>
       <h3 class="sub-title">{{ getContent(currentLocaleBonusContent, defaultLocaleBonusContent, 'subtitle') }}</h3>
       <atomic-text-editor
@@ -72,7 +72,7 @@
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'bonus').where({ pageIdentity }).findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'bonus').where({ pageIdentity }).findOne()
+      : queryContent(defaultLocale.value?.code as string, 'bonus').where({ pageIdentity }).findOne()
     ]);
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }

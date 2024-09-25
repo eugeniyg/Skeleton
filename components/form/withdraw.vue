@@ -2,44 +2,42 @@
   <form class="form-withdraw">
     <form-input-dropdown
       v-if="networkSelectOptions?.length"
+      v-model:value="state.selectedNetwork"
       :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.label')"
       :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.placeholder')"
-      v-model:value="state.selectedNetwork"
       :options="networkSelectOptions"
       class="dropdown-network"
       name="networkSelect"
       @input="onInputNetwork"
     />
 
-    <div class="dropdown-network__info"
-         v-if="networkSelectOptions?.length && !state.selectedNetwork"
-         v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
+    <div
+      v-if="networkSelectOptions?.length && !state.selectedNetwork"
+      class="dropdown-network__info"
+      v-html="infoContent"
     />
     
     <wallet-warning
-        v-if="props.fields?.length && state.selectedNetwork"
-        :content="popupsData?.wallet?.withdraw?.warning || defaultLocalePopupsData?.wallet?.withdraw?.warning"
+      v-if="props.fields?.length && state.selectedNetwork"
+      :content="popupsData?.wallet?.withdraw?.warning || defaultLocalePopupsData?.wallet?.withdraw?.warning"
     />
 
     <div class="form-withdraw__content" :class="{'is-blured': networkSelectOptions?.length && !state.selectedNetwork }">
       <form-input-number
+        v-model:value="amountValue"
         :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.sumLabel') || ''"
         name="withdrawSum"
         :min="formatAmountMin.amount"
         :max="formatAmountMax.amount"
-        v-model:value="amountValue"
         :currency="formatAmountMin.currency"
         :hint="fieldHint"
       />
 
       <template v-for="field in visibleFields">
         <component
+          :is="fieldsType[field.key]?.component || 'form-input-text'"
           v-if="field.key !== 'crypto_network'"
           :key="field.key"
-          @input="v$[field.key]?.$touch()"
-          @blur="v$[field.key]?.$touch()"
-          @focus="onFocus(field.key)"
-          :is="fieldsType[field.key]?.component || 'form-input-text'"
           v-model:value="withdrawFormData[field.key]"
           :type="fieldsType[field.key]?.type || 'text'"
           :label="field.labels[currentLocale?.code || ''] || field.labels.en"
@@ -47,7 +45,10 @@
           :placeholder="field.hints[currentLocale?.code || ''] || field.hints.en"
           :options="getFieldOptions(field.key)"
           :isRequired="withdrawFormRules[field.key]?.hasOwnProperty('required')"
+          @input="v$[field.key]?.$touch()"
           :hint="setError(field.key)"
+          @blur="v$[field.key]?.$touch()"
+          @focus="onFocus(field.key)"
         />
       </template>
 
@@ -70,6 +71,7 @@
   import type { IPaymentField } from '@skeleton/core/types';
   import { marked } from 'marked';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
+  import DOMPurify from "isomorphic-dompurify";
 
   const props = defineProps<{
     amountMax: number,
@@ -275,6 +277,12 @@
 
     amountValue.value = String(formatAmountMin.value.amount);
   };
+
+  const infoContent = computed(() => {
+    const contentText = getContent(fieldsSettings.value, defaultLocaleFieldsSettings.value, 'fieldsControls.networkSelect.info');
+    if (!contentText) return '';
+    return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
+  })
 
   const getWithdraw = async (): Promise<void> => {
     if (buttonDisabled.value) return;

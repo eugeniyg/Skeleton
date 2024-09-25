@@ -16,15 +16,15 @@
 </template>
 
 <script setup lang="ts">
-const layoutStore = useLayoutStore();
-const { showModal } = layoutStore;
+  const layoutStore = useLayoutStore();
+  const { showModal } = layoutStore;
 
-const props = defineProps<{
-  src: string,
-  label: string,
-  title: string,
-  linkText: string,
-}>();
+  const props = defineProps<{
+    src: string,
+    label: string,
+    title: string,
+    linkText: string,
+  }>();
 </script>
 
 <style src="~/assets/styles/components/wallet/region.scss" lang="scss" />

@@ -5,11 +5,13 @@
     size="xs"
     @click="showModal(props.openModal)"
   >
-    <div v-html="buttonHtml" />
+    <div v-html="DOMPurify.sanitize(buttonHtml || '', { FORBID_TAGS: ['style'] })" />
   </button-base>
 </template>
 
 <script setup lang="ts">
+  import DOMPurify from "isomorphic-dompurify";
+
   const props = defineProps({
     buttonLabel: {
       type: String,

@@ -14,9 +14,9 @@
 
         <div class="items">
           <div
-            class="item"
-            :key="index"
             v-for="(item, index) in howGetItems"
+            :key="index"
+            class="item"
           >
             <span class="number">{{ index + 1 }}</span>
             <p class="text">{{ item }}</p>
@@ -38,9 +38,9 @@
 
         <div v-if="getContent(welcomeContent, defaultLocaleWelcomeContent, 'welcome.items')?.length" class="items">
           <div
-            class="item"
-            :key="itemIndex"
             v-for="(card, itemIndex) in getContent(welcomeContent, defaultLocaleWelcomeContent, 'welcome.items')"
+            :key="itemIndex"
+            class="item"
           >
             <div class="title">{{ card.title }}</div>
             <div class="sub-title">{{ card.topLabel }}</div>
@@ -82,9 +82,9 @@
 
         <div v-if="getContent(welcomeContent, defaultLocaleWelcomeContent, 'bonuses.items')?.length" class="items">
           <div
-            class="item"
-            :key="itemIndex"
             v-for="(card, itemIndex) in getContent(welcomeContent, defaultLocaleWelcomeContent, 'bonuses.items')"
+            :key="itemIndex"
+            class="item"
           >
             <div class="title">{{ card.subtitle }}</div>
             <div class="sub-title">{{ card.title }}</div>
@@ -152,7 +152,7 @@
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'pages', 'welcome-bonuses').findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'welcome-bonuses').findOne()
+      : queryContent(defaultLocale.value?.code as string, 'pages', 'welcome-bonuses').findOne()
     ]);
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   }

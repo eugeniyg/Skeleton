@@ -26,8 +26,8 @@
     <div class="limits__card-actions">
       <button-base
         type="primary"
-        @click="emit('open-limit-modal', definition)"
         :is-disabled="isAllCurrenciesUsed || state.isShowEdit"
+        @click="emit('open-limit-modal', definition)"
       >
         {{ getContent(limitsContent, defaultLimitsContent, 'addButtonLabel') }}
       </button-base>
@@ -35,8 +35,8 @@
       <button-base
         v-if="!state.isShowEdit && !isEditLocked"
         type="secondary"
-        @click="state.isShowEdit = true"
         :is-disabled="isEditLocked"
+        @click="state.isShowEdit = true"
       >
         {{ getContent(limitsContent, defaultLimitsContent, 'editButtonLabel') }}
       </button-base>

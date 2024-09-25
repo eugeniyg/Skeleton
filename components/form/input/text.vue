@@ -1,6 +1,6 @@
 <template>
   <label :class="classes">
-    <span v-if="props.label" class="label">{{ props.label }}<span class="required" v-if="props.isRequired">*</span></span>
+    <span v-if="props.label" class="label">{{ props.label }}<span v-if="props.isRequired" class="required">*</span></span>
 
     <input
       class="field"
@@ -16,7 +16,7 @@
       @blur="onBlur"
       @input="onInput"
       @keyup.enter="emit('submit', $event)"
-    />
+    >
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
   </label>

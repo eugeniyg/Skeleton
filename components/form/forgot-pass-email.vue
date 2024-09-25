@@ -2,14 +2,14 @@
   <form class="form-forgot-pass">
     <form-input-text
       v-model:value="forgotFormData.email"
-      @blur="v$.email?.$touch()"
-      @focus="onFocus('email')"
       type="email"
       :is-required="true"
       :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
       name="email"
       :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
       :hint="setError('email')"
+      @blur="v$.email?.$touch()"
+      @focus="onFocus('email')"
       @submit="sendEmail"
     />
 

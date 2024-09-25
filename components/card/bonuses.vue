@@ -65,7 +65,7 @@
       </div>
 
       <div v-if="props.mode === 'bonus'" class="card-bonuses__progress" :class="{'is-riched': isRiched, 'is-greater-zero': greaterZero}">
-        <div class="card-bonuses__progress-line" :style="{'--progress': `${props.bonus.currentWagerPercentage}%`}"></div>
+        <div class="card-bonuses__progress-line" :style="{'--progress': `${props.bonus.currentWagerPercentage}%`}"/>
         <span class="card-bonuses__progress-value">{{ props.bonus.currentWagerPercentage }}%</span>
         <span class="card-bonuses__progress-value">100%</span>
       </div>

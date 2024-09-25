@@ -3,9 +3,9 @@
     v-model="props.showModal"
     class="modal-restricted-bets"
     :clickToClose="false"
-    @beforeOpen="getPlayerBonuses"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @beforeOpen="getPlayerBonuses"
   >
     <div class="scroll">
       <div class="header">

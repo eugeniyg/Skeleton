@@ -3,9 +3,9 @@
     v-model="modals.confirm"
     class="modal-confirm"
     :clickToClose="false"
-    @clickOutside="closeModal('confirm')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="closeModal('confirm')"
   >
     <div class="scroll">
       <div class="header">

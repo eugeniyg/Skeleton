@@ -2,9 +2,9 @@
   <div class="tabs-history">
     <div class="nav">
       <div
-        class="item"
         v-for="{ title, id } in tabsArray"
         :key="id"
+        class="item"
         :class="{'is-selected': id === selected}"
         @click="changeTab(id)"
       >
@@ -13,7 +13,7 @@
     </div>
 
     <div class="tab-history">
-      <component :content="props.content[selected]" :is="loadTab(selected)"/>
+      <component :is="loadTab(selected)" :content="props.content[selected]"/>
     </div>
   </div>
 </template>

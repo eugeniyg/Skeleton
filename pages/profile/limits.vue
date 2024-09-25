@@ -43,8 +43,8 @@
       />
 
       <modal-add-limit
-        :definition="state.definition"
         :key="addModalKey"
+        :definition="state.definition"
       />
 
       <modal-edit-limit
@@ -56,8 +56,8 @@
     <modal-game-limit-reached/>
 
     <modal-confirm-limit-update
-      :period="state.period"
       :key="confirmModalKey"
+      :period="state.period"
     />
   </div>
 </template>
@@ -92,7 +92,7 @@
     const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
       queryContent(currentLocale.value?.code as string, 'profile', 'limits').findOne(),
       currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').findOne(),
+      : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').findOne(),
     ]);
 
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);

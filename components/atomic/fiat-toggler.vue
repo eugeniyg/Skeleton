@@ -18,8 +18,8 @@
 
     <form-input-toggle
       :value="!!equivalentCurrency"
-      @change="toggle"
       name="fiat"
+      @change="toggle"
     />
   </div>
 </template>

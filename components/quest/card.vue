@@ -2,8 +2,8 @@
   <div
     class="quest-card"
     :class="taskStatusClasses"
-    @click="openTasksModal(props.questInfo, questImageSrc)"
     :style="cardStyleVars"
+    @click="openTasksModal(props.questInfo, questImageSrc)"
   >
     <div class="quest-card__img">
       <atomic-image
@@ -11,7 +11,7 @@
       />
     </div>
 
-    <div class="quest-card__header" ref="headerRef">
+    <div ref="headerRef" class="quest-card__header">
       <div class="quest-currencies">
         <quest-currency :rewards="props.questInfo.rewards" type="real" />
 
@@ -28,7 +28,7 @@
     </div>
 
     <div class="quest-card__body">
-      <div class="quest-card__title" ref="titleRef">
+      <div ref="titleRef" class="quest-card__title">
         {{ props.questInfo.name }}
       </div>
 

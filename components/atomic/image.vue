@@ -7,7 +7,7 @@
     alt=""
     data-not-lazy
     @error="checkDefaultImage"
-  />
+  >
 
   <img
     v-else
@@ -15,7 +15,7 @@
     :src="imageSrc"
     alt=""
     @error="checkDefaultImage"
-  />
+  >
 </template>
 
 <script setup lang="ts">

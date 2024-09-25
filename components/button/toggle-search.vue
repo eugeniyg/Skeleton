@@ -1,5 +1,5 @@
 <template>
-  <button class="btn-toggle-search" @click="emit('toggle')" :class="{'is-active': props.isActive}">
+  <button class="btn-toggle-search" :class="{'is-active': props.isActive}" @click="emit('toggle')">
     <atomic-icon id="search"/>
   </button>
 </template>

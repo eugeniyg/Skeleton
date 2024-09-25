@@ -19,8 +19,8 @@
       <button
         v-if="isLoggedIn"
         class="item"
-        @click="toggleFavorite"
         :class="{ 'is-active': isFavorite }"
+        @click="toggleFavorite"
       >
         <atomic-icon :id="isFavorite ? 'heart': 'heart-outline'"/>
       </button>

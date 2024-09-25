@@ -2,8 +2,8 @@
   <div class="documents-general">
     <documents-select-type
       v-show="step === 'select-type'"
-      @nextStep="nextStep"
       :formData="formData"
+      @nextStep="nextStep"
     />
 
     <documents-uploads

@@ -32,10 +32,10 @@
       :placeholder="field.hints[currentLocale?.code || ''] || field.hints.en"
       :options="getFieldOptions(field.key)"
       :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
-      @input="v$[field.key]?.$touch()"
       :hint="setError(field.key)"
-      @blur="v$[field.key]?.$touch()"
       :isDisabled="field.key === 'agentNumber'"
+      @input="v$[field.key]?.$touch()"
+      @blur="v$[field.key]?.$touch()"
       @focus="onFocus(field.key)"
     />
 

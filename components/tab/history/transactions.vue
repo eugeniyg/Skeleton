@@ -8,8 +8,8 @@
       />
 
       <form-input-dropdown
-        :label="props.content?.typeFilterLabel"
         v-model:value="filters.type"
+        :label="props.content?.typeFilterLabel"
         name="invoiceType"
         placeholder=""
         :options="typeOptions"
@@ -17,9 +17,9 @@
       />
 
       <form-input-dropdown-search
+        v-model:value="filters.currency"
         :label="props.content?.currencyLabel"
         :emptySearchTitle="props.content?.emptyCurrencySearchTitle"
-        v-model:value="filters.currency"
         name="invoiceCurrency"
         placeholder=""
         :options="currenciesOptions"
@@ -27,8 +27,8 @@
       />
 
       <form-input-dropdown
-        :label="props.content?.statusFilterLabel"
         v-model:value="filters.status"
+        :label="props.content?.statusFilterLabel"
         name="invoiceStatus"
         placeholder=""
         :options="statusOptions"
@@ -39,14 +39,14 @@
     <table-transactions-history
       v-if="invoices.length"
       :invoices="invoices"
-      @cancelPayment="cancelPayment"
       :transactionsContent="props.content"
+      @cancelPayment="cancelPayment"
     />
 
     <atomic-pagination
       v-if="pageMeta?.totalPages && pageMeta.totalPages > 1"
-      @selectPage="changePage"
       v-bind="pageMeta"
+      @selectPage="changePage"
     />
 
     <atomic-empty
