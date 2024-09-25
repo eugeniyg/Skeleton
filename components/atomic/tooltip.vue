@@ -19,7 +19,11 @@
         :style="`top: ${coords.top}px; left: ${coords.left}px`"
       >
         <div v-if="props.title" class="title">{{ props.title }}</div>
-        <div v-if="props.text" class="text" v-html="DOMPurify.sanitize(props.text || '', { FORBID_TAGS: ['style'] })" />
+        <div
+          v-if="props.text"
+          class="text"
+          v-html="DOMPurify.sanitize(marked.parse(props.text || '') as string, { FORBID_TAGS: ['style'] })"
+        />
       </div>
     </Teleport>
   </button>
@@ -27,6 +31,7 @@
 
 <script setup lang="ts">
   import DOMPurify from "isomorphic-dompurify";
+  import {marked} from "marked";
 
   const props = defineProps({
     icon: {

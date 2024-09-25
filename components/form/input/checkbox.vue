@@ -12,7 +12,7 @@
 
       <atomic-icon id="check"/>
       <p>
-        <span v-html="DOMPurify.sanitize(props.label || '', { FORBID_TAGS: ['style'] })" />
+        <span v-html="DOMPurify.sanitize(marked.parse(props.label || '') as string, { FORBID_TAGS: ['style'] })" />
         <sup v-if="isRequired"> *</sup>
       </p>
     </label>
@@ -21,6 +21,7 @@
 
 <script setup lang="ts">
   import DOMPurify from "isomorphic-dompurify";
+  import {marked} from "marked";
 
   const props = defineProps<{
     isDisabled?: boolean,

@@ -16,7 +16,7 @@
           <p
             v-if="item.text"
             class="text"
-            v-html="DOMPurify.sanitize(item.text || '', { FORBID_TAGS: ['style'] })"
+            v-html="DOMPurify.sanitize(marked.parse(item.text || '') as string, { FORBID_TAGS: ['style'] })"
           />
         </div>
 
@@ -31,6 +31,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import DOMPurify from "isomorphic-dompurify";
+  import {marked} from "marked";
 
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
