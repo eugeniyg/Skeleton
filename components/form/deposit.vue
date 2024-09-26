@@ -1,9 +1,9 @@
 <template>
   <iframe v-if="iframeUrl" :src="iframeUrl" />
 
-  <wallet-await-invoice v-else-if="showAsyncBlock" />
-
   <wallet-qr-payment v-else-if="qrAddress" :qrAddress="qrAddress" />
+
+  <wallet-await-invoice v-else-if="showAsyncBlock" />
 
   <form v-else class="form-deposit">
     <form-input-number
@@ -76,7 +76,8 @@
     IPaymentField,
     IRequestDeposit,
     IPaymentPreset,
-    IResponseDeposit, ISocketInvoice
+    IResponseDeposit,
+    ISocketInvoice
   } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import queryString from 'query-string';
