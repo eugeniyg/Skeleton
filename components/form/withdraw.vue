@@ -46,7 +46,7 @@
           :options="getFieldOptions(field)"
           :isRequired="withdrawFormRules[field.key]?.hasOwnProperty('required')"
           :hint="setError(field.key)"
-          @input="v$[field.key]?.$touch()"
+          @input="fieldInputHandle(field)"
           @blur="v$[field.key]?.$touch()"
           @focus="onFocus(field.key)"
         />
@@ -288,6 +288,28 @@
 
     amountValue.value = String(formatAmountMin.value.amount);
   };
+
+  const fieldInputHandle = (field: IPaymentField): void => {
+    if (field.key === 'currencyWithdraw') {
+      const currencyOption = field.options?.find((option) => {
+        return option.id === withdrawFormData.currencyWithdraw;
+      })
+      const currencyRegex = currencyOption?.regexp;
+
+      withdrawRules.value = {
+        ...withdrawRules.value,
+        'wallet_id': currencyRegex ? [
+          { rule: 'required' },
+          {
+            rule: 'regex',
+            arguments: currencyRegex,
+          }
+        ] : [{ rule: 'required' }]
+      };
+    }
+
+    v$.value[field.key]?.$touch();
+  }
 
   const getWithdraw = async (): Promise<void> => {
     if (buttonDisabled.value) return;
