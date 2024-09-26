@@ -22,7 +22,7 @@
       size="sm"
       @click="openGames"
     >
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }} {{ pageMeta?.totalRows }}
     </button-base>
 
     <button-arrows

@@ -1,11 +1,22 @@
 <template>
   <nuxt-link class="card-latest-winners" :to="gameUrl">
     <atomic-image class="card-latest-winners__img" :src="src" />
-    <div class="title">{{ props.nickname || 'Unknown' }}</div>
-    <div class="sub-title">{{ props.gameName }}</div>
-    <div class="items">
-      <span class="item">{{ formatedSum.amount }} {{ formatedSum.currency }}</span>
+    
+    <div class="card-latest-winners__info">
+      <div class="card-latest-winners__info-title">{{ props.nickname || 'Unknown' }}</div>
+      <div class="card-latest-winners__info-items">
+        <atomic-image
+          class="card-latest-winners__info-img"
+          width="12"
+          height="12"
+          :src="`/img/currency/${props.currency}.svg`"
+          defaultImage="/img/currency/placeholder.svg"
+        />
+        <span class="card-latest-winners__info-amount">{{ formatedSum.amount }}</span>
+        <span class="card-latest-winners__info-currency">{{ formatedSum.currency }}</span>
+      </div>
     </div>
+    
   </nuxt-link>
 </template>
 
@@ -36,10 +47,16 @@
   const formatedSum = computed(() => formatBalance(props.currency, props.payout));
 
   const src = computed(() => {
-    if (props.gameImages.hasOwnProperty('200x200')) {
-      return getImageUrl(props.gameImages, 'square');
-    } return '';
+    if (props.gameImages?.hasOwnProperty('200x300')) {
+      return getImageUrl(props.gameImages, 'vertical');
+    }
+    return '';
   });
+  
+  const formatString = (value: string) => {
+    //return value.replace('...', '***')
+    return value
+  }
 </script>
 
 <style src="~/assets/styles/components/card/latest-winners.scss" lang="scss" />

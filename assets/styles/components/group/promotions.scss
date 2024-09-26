@@ -22,13 +22,8 @@
 
   > .icon {
     grid-area: icon;
-    margin-left: rem(16px);
     --icon-size: #{rem(20px)};
     --color: var(--icon-primary);
-
-    @include media(sm) {
-      margin-left: rem(24px);
-    }
   }
 
   > .title {

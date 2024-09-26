@@ -23,7 +23,7 @@
       :category="category"
     />
     
-    <group-providers showArrows/>
+    <group-providers showArrows showAllBtn />
     
     <group-games
       v-for="category in mainCategoriesList.slice(3, 4)"
