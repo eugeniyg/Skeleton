@@ -1,10 +1,7 @@
 <template>
   <iframe v-if="iframeUrl" :src="iframeUrl" />
 
-  <div v-else-if="showAsyncBlock">
-    <h2>Deposit processing</h2>
-    <p>Do not close the deposit window. After a few seconds you will be able to make a deposit.</p>
-  </div>
+  <wallet-await-invoice v-else-if="showAsyncBlock" />
 
   <wallet-qr-payment v-else-if="qrAddress" :qrAddress="qrAddress" />
 
@@ -79,10 +76,11 @@
     IPaymentField,
     IRequestDeposit,
     IPaymentPreset,
-    IResponseDeposit
+    IResponseDeposit, ISocketInvoice
   } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import queryString from 'query-string';
+  import {useListen} from "@skeleton/composables/useEventBus";
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
 
@@ -161,7 +159,7 @@
   const layoutStore = useLayoutStore();
   const { successModalType } = storeToRefs(layoutStore);
   const { showModal, showAlert, closeModal } = layoutStore;
-  const { activeAccount, asyncInvoiceId } = storeToRefs(walletStore);
+  const { activeAccount } = storeToRefs(walletStore);
 
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
@@ -256,7 +254,7 @@
         successModalType.value = 'deposit-pending';
         showModal('success');
       } else if (props.processingType === 'asyncRedirect') {
-        asyncInvoiceId.value = depositResponse.invoiceId;
+        sessionStorage.setItem('redirectInvoiceId', depositResponse.invoiceId);
         showAsyncBlock.value = true;
       }
     } catch {
@@ -352,4 +350,19 @@
 
     return undefined;
   })
+
+  const checkAsyncInvoice = (invoiceData: ISocketInvoice) => {
+    if (showAsyncBlock.value && invoiceData.publicData?.qr) {
+      qrAddress.value = invoiceData.publicData.qr;
+      showAsyncBlock.value = false
+    }
+  }
+
+  onMounted(() => {
+    useListen('receivedAsyncInvoice', checkAsyncInvoice);
+  });
+
+  onBeforeUnmount(() => {
+    useUnlisten('receivedAsyncInvoice', checkAsyncInvoice);
+  });
 </script>

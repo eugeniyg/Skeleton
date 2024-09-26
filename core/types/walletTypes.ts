@@ -132,4 +132,8 @@ export interface ISocketInvoice extends Record<string, any>{
   status: number;
   createdAt: string;
   number: number|null;
+  publicData: {
+    qr: string;
+    url: string;
+  }|null;
 }

@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia';
-import type { IAccount,IWebSocketResponse } from '@skeleton/core/types';
+import type {IAccount, ISocketInvoice, IWebSocketResponse} from '@skeleton/core/types';
 
 interface IWalletState {
   accounts: IAccount[];
@@ -10,7 +10,6 @@ interface IWalletState {
   invoicesSubscription: any;
   depositLimitError: boolean;
   accountSwitching: Promise<any>|undefined;
-  asyncInvoiceId: Maybe<string>;
 }
 
 export const useWalletStore = defineStore('walletStore', {
@@ -22,8 +21,7 @@ export const useWalletStore = defineStore('walletStore', {
     accountSubscription: undefined,
     invoicesSubscription: undefined,
     depositLimitError: false,
-    accountSwitching: undefined,
-    asyncInvoiceId: undefined
+    accountSwitching: undefined
   }),
 
   getters: {
@@ -148,17 +146,34 @@ export const useWalletStore = defineStore('walletStore', {
       }
     },
 
+    asyncInvoiceProcessing(invoiceData: ISocketInvoice|undefined):void {
+      if (!invoiceData || invoiceData.status !== 1) return;
+
+      const sessionInvoice = sessionStorage.getItem('redirectInvoiceId');
+      if (sessionInvoice && sessionInvoice === invoiceData.id) {
+        const showAwaitInvoiceBlock = document.getElementById('wallet-await-invoice');
+        if (showAwaitInvoiceBlock && invoiceData.publicData?.qr) useEvent('receivedAsyncInvoice', invoiceData);
+        else if (invoiceData.publicData?.url) {
+          window.open(invoiceData.publicData?.url);
+        }
+        sessionStorage.removeItem('redirectInvoiceId');
+      }
+    },
+
     showInvoiceStatus(webSocketResponse:IWebSocketResponse):void {
-      console.log(webSocketResponse.data);
+      const socketInvoiceData = webSocketResponse.data?.invoice;
+      this.asyncInvoiceProcessing(socketInvoiceData);
+      if (![2,3].includes(socketInvoiceData?.status || -1)) return;
+
       const { formatBalance, getContent } = useProjectMethods();
       const { alertsData, defaultLocaleAlertsData, currencies } = useGlobalStore();
       const { showAlert } = useLayoutStore();
-      const invoiceUtcDate = new Date(webSocketResponse.data?.invoice?.createdAt || '');
+      const invoiceUtcDate = new Date(socketInvoiceData?.createdAt || '');
       const invoiceDate = invoiceUtcDate.toLocaleString().slice(0, 10);
-      const eventAmount = webSocketResponse.data?.invoice?.amount;
-      const eventCurrency = webSocketResponse.data?.invoice?.currency;
+      const eventAmount = socketInvoiceData?.amount;
+      const eventCurrency = socketInvoiceData?.currency;
       const formattedSum = formatBalance(eventCurrency, eventAmount);
-      const invoiceSuccess = webSocketResponse.data?.invoice?.status === 2;
+      const invoiceSuccess = socketInvoiceData?.status === 2;
       const eventCurrencyObject = currencies.find(currency => currency.code === eventCurrency);
 
       const formattedDescription = (cmsMessage: string|undefined):string => {
@@ -187,8 +202,8 @@ export const useWalletStore = defineStore('walletStore', {
           event: invoiceSuccess ? 'walletDepositSuccess' : 'walletDepositFail',
           depositAmount: eventAmount,
           depositCurrency: eventCurrency,
-          successDepositNumber: webSocketResponse.data?.invoice?.number,
-          invoiceId: webSocketResponse.data?.invoice?.id,
+          successDepositNumber: socketInvoiceData?.number,
+          invoiceId: socketInvoiceData?.id,
           walletType: eventCurrencyObject?.type
         });
       } else if (webSocketResponse.data?.event === 'invoice.withdrawal.updated') {
@@ -208,7 +223,7 @@ export const useWalletStore = defineStore('walletStore', {
           event: invoiceSuccess ? 'walletWithdrawSuccess' : 'walletWithdrawFail',
           withdrawAmount: eventAmount,
           withdrawCurrency: eventCurrency,
-          invoiceId: webSocketResponse.data?.invoice?.id,
+          invoiceId: socketInvoiceData?.id,
           walletType: eventCurrencyObject?.type
         });
       }
