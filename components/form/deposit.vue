@@ -22,7 +22,7 @@
     />
 
     <component
-      :is="fieldsMap[field.key]?.component || 'form-input-text'"
+      :is="getFieldComponent(field)"
       v-for="field in visibleFields"
       :key="field.key"
       v-model:value="depositFormData[field.key]"
@@ -30,12 +30,12 @@
       :label="field.labels[currentLocale?.code || ''] || field.labels.en"
       :name="field.key"
       :placeholder="field.hints[currentLocale?.code || ''] || field.hints.en"
-      :options="getFieldOptions(field.key)"
+      :options="getFieldOptions(field)"
       :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
-      @input="v$[field.key]?.$touch()"
       :hint="setError(field.key)"
-      @blur="v$[field.key]?.$touch()"
       :isDisabled="field.key === 'agentNumber'"
+      @input="v$[field.key]?.$touch()"
+      @blur="v$[field.key]?.$touch()"
       @focus="onFocus(field.key)"
     />
 
@@ -108,6 +108,13 @@
     depositBonusCode
   } = storeToRefs(bonusStore);
 
+  const getFieldComponent = (field: IPaymentField): string => {
+    const fieldComponent = fieldsMap[field.key]?.component;
+    if (fieldComponent) return fieldComponent;
+
+    return field.fieldType === 'select' ? 'form-input-dropdown' : 'form-input-text';
+  };
+
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
   props.fields.forEach((field) => {
     depositFormData[field.key] = field.value ?? undefined;
@@ -148,8 +155,12 @@
   const visibleFields = getVisibleFields(); // remove reactivity
 
   const fieldsStore = useFieldsStore();
-  const getFieldOptions = (fieldName: string): any => {
-    return fieldsStore.selectOptions[fieldName] || [];
+  const getFieldOptions = (field: IPaymentField): any => {
+    const platformOptions = fieldsStore.selectOptions[field.key];
+    if (platformOptions?.length) return platformOptions;
+    return field.options?.map(option => {
+      return { value: option.name, code: option.id };
+    }) || [];
   }
 
   const walletStore = useWalletStore();
