@@ -1,6 +1,11 @@
 <template>
   <iframe v-if="iframeUrl" :src="iframeUrl" />
 
+  <div v-else-if="showAsyncBlock">
+    <h2>Deposit processing</h2>
+    <p>Do not close the deposit window. After a few seconds you will be able to make a deposit.</p>
+  </div>
+
   <wallet-qr-payment v-else-if="qrAddress" :qrAddress="qrAddress" />
 
   <form v-else class="form-deposit">
@@ -156,7 +161,7 @@
   const layoutStore = useLayoutStore();
   const { successModalType } = storeToRefs(layoutStore);
   const { showModal, showAlert, closeModal } = layoutStore;
-  const { activeAccount } = storeToRefs(walletStore);
+  const { activeAccount, asyncInvoiceId } = storeToRefs(walletStore);
 
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
@@ -221,6 +226,7 @@
     };
   }
 
+  const showAsyncBlock = ref(false);
   const iframeUrl = ref<string | undefined>();
   const qrAddress = ref<string | undefined>();
   const windowReference = ref<Window | null>(null);
@@ -249,6 +255,9 @@
       } else if (props.processingType === 'message') {
         successModalType.value = 'deposit-pending';
         showModal('success');
+      } else if (props.processingType === 'asyncRedirect') {
+        asyncInvoiceId.value = depositResponse.invoiceId;
+        showAsyncBlock.value = true;
       }
     } catch {
       if (windowReference.value) windowReference.value.close();
@@ -343,6 +352,4 @@
 
     return undefined;
   })
-  
-  
 </script>

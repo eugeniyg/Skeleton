@@ -10,6 +10,7 @@ interface IWalletState {
   invoicesSubscription: any;
   depositLimitError: boolean;
   accountSwitching: Promise<any>|undefined;
+  asyncInvoiceId: Maybe<string>;
 }
 
 export const useWalletStore = defineStore('walletStore', {
@@ -21,7 +22,8 @@ export const useWalletStore = defineStore('walletStore', {
     accountSubscription: undefined,
     invoicesSubscription: undefined,
     depositLimitError: false,
-    accountSwitching: undefined
+    accountSwitching: undefined,
+    asyncInvoiceId: undefined
   }),
 
   getters: {
@@ -147,6 +149,7 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     showInvoiceStatus(webSocketResponse:IWebSocketResponse):void {
+      console.log(webSocketResponse.data);
       const { formatBalance, getContent } = useProjectMethods();
       const { alertsData, defaultLocaleAlertsData, currencies } = useGlobalStore();
       const { showAlert } = useLayoutStore();
