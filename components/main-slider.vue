@@ -81,8 +81,8 @@
       if (isLoggedIn.value && profile.value) {
         const showSegmentsArr = currentSlide.showSegments?.map(item => item.segmentName) || [];
         const hideSegmentsArr = currentSlide.hideSegments?.map(item => item.segmentName) || [];
-        includesSegmentsFilter = showSegmentsArr.length ? !profile.value.segments.some((segment) => showSegmentsArr.includes(segment.name)) : false;
-        excludeSegmentsFilter = hideSegmentsArr.length ? profile.value.segments.some((segment) => hideSegmentsArr.includes(segment.name)) : false;
+        includesSegmentsFilter = showSegmentsArr.length ? ![].some((segment) => showSegmentsArr.includes(segment)) : false; // TODO: add segments check
+        excludeSegmentsFilter = hideSegmentsArr.length ? [].some((segment) => hideSegmentsArr.includes(segment)) : false; // TODO: add segments check
       }
 
       if (currentSlide.showFrom && currentSlide.showTo) {
