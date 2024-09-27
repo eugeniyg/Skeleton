@@ -45,7 +45,7 @@
   }
 
   const walletStore = useWalletStore();
-  const { activeAccount } = storeToRefs(walletStore);
+  const { activeAccount, activeAccountType } = storeToRefs(walletStore);
   const {
     formatBalance,
     getEquivalentFromBase,
@@ -112,6 +112,36 @@
   }
 
   const getMaxWinAmount = (): string|undefined => {
+    if (props.bonusInfo.maxWinMultiplier) {
+      let winAmount = 0;
+      let winCurrency = activeAccount.value?.currency;
+
+      if (props.bonusInfo.amount) {
+        const { amount, currency } = formatBalance(props.bonusInfo.currency, props.bonusInfo.amount);
+        winAmount = amount;
+        winCurrency = currency;
+      } else {
+        const amountItems = props.bonusInfo.assignConditions?.amountItems;
+        const amountBase = props.bonusInfo.assignConditions?.baseCurrencyAmount;
+        const exclusionItem = amountItems?.find(item => item.currency === activeAccount.value?.currency);
+        if (exclusionItem) {
+          const { amount, currency } = formatBalance(props.bonusInfo.currency, exclusionItem.amount);
+          winAmount = amount;
+          winCurrency = currency;
+        }
+
+        if (amountBase) {
+          const { amount, currency } = getEquivalentFromBase(amountBase, activeAccount.value?.currency);
+          winAmount = amount;
+          winCurrency = currency;
+        }
+      }
+
+      const maxWinSum = winAmount * props.bonusInfo.maxWinMultiplier;
+      const roundMaxWin = Number(maxWinSum.toFixed(activeAccountType.value === 'fiat' ? 2 : 8));
+      return `${roundMaxWin} ${winCurrency}`;
+    }
+
     const maxWinPlayerBonusAmount = props.bonusInfo.maxWinAmount;
     if (maxWinPlayerBonusAmount) {
       const { amount, currency } = formatBalance(props.bonusInfo.currency, maxWinPlayerBonusAmount);
