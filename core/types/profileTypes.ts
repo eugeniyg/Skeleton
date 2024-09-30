@@ -1,17 +1,5 @@
 import type { IPaginationMeta } from './globalTypes'
 
-export interface IPlayerSegment extends Record<string, any> {
-  id: string;
-  name: string;
-  colorHex: string;
-  colorRgba: string;
-  visibilityFront: boolean;
-  visibilityBackoffice: boolean;
-  playerAmount: number;
-  definition: string;
-  createdAt: string;
-}
-
 export interface IProfile extends Record<string, any>{
   id: string;
   status: number;
@@ -42,7 +30,7 @@ export interface IProfile extends Record<string, any>{
   securityAnswer: string|null;
   locale: string|null;
   freshchatRestoreId: string|null;
-  segments: IPlayerSegment[];
+  segmentIds: string[];
   isNewlyRegistered: boolean;
   phoneConfirmed: boolean;
 }
