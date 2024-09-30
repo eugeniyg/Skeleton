@@ -147,7 +147,7 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     asyncInvoiceProcessing(invoiceData: ISocketInvoice|undefined):void {
-      if (!invoiceData || invoiceData.status !== 1) return;
+      if (!invoiceData || invoiceData.status !== 1 || !invoiceData.publicData) return;
 
       const sessionInvoice = sessionStorage.getItem('redirectInvoiceId');
       if (sessionInvoice && sessionInvoice === invoiceData.id) {
