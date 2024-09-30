@@ -39,15 +39,15 @@ export const useFreshchatStore = defineStore('freshchatStore', {
 
     getProfileData(isUpdate = false) {
       const { profile } = useProfileStore();
-      const segmentsArr = profile?.segments.map(segment => segment.name);
-      const profileSegments = segmentsArr?.length ? segmentsArr.join(', ') : '';
+      // const segmentsArr = profile?.segments.map(segment => segment.name); // segments deprecated from player profile
+      // const profileSegments = segmentsArr?.length ? segmentsArr.join(', ') : '';
       const { activePlayerBonuses, activePlayerFreeSpins } = useBonusStore();
 
       const { cf_segments, cf_active_bonuses, ...mainParams } = {
         firstName: profile?.firstName ?? '',
         lastName: profile?.lastName ?? '',
         email: profile?.email ?? '',
-        cf_segments: profileSegments,
+        cf_segments: '', // TODO: get player segments from API,
         cf_active_bonuses: `${!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)}`,
       }
 
