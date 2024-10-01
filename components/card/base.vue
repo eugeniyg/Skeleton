@@ -6,9 +6,8 @@
     :data-size="cardSize"
     @click="clickGame"
   >
-    <atomic-image class="card-base__poster" src="/img/thumb-preload.png" not-lazy />
-    <div class="card-base__poster-filter" />
     <atomic-image class="card-base__img" :src="src" />
+    <Skeletor class="card-base__poster" as="div" />
 
     <div v-if="gameBages?.length" class="bages">
       <atomic-bage
@@ -52,6 +51,7 @@
   import { storeToRefs } from 'pinia';
   import type { IGame } from '@skeleton/core/types';
   import type { IGameTag } from '~/types';
+  import {Skeletor} from "vue-skeletor";
 
   const props = defineProps<{
     gameInfo?: IGame;
@@ -65,7 +65,7 @@
     defaultLocaleGlobalComponentsContent,
   } = useGlobalStore();
   const { showModal, showAlert } = useLayoutStore();
-  const { localizePath, getImageUrl, getContent } = useProjectMethods();
+  const { localizePath, getImageUrl, getContent, getRandomInt } = useProjectMethods();
 
   const gameTagsContent: Maybe<IGameTag[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags.gameTagsList');
 
@@ -127,6 +127,10 @@
   const onResize = () => {
     clearTimeout(timeoutId.value);
     timeoutId.value = setTimeout(setCardSize, 200);
+  };
+
+  const posterSrc = (): string => {
+    return `/img/thumb-posters/thumb-poster-${getRandomInt(1, 12)}.png`;
   };
 
   onMounted(() => {

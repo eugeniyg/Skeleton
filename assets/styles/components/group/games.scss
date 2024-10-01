@@ -157,9 +157,4 @@
   .vue-skeletor--text {
     border-radius: 8px;
   }
-
-  .vue-skeletor:not(.vue-skeletor--shimmerless):after {
-    background-image: linear-gradient(90deg, rgba(#3d4451, 0), rgba(#3d4451, 0.6), rgba(#3d4451, 0));
-    animation-duration: 2s;
-  }
 }

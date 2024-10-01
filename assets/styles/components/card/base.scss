@@ -5,15 +5,9 @@
   overflow: hidden;
   display: flex;
   align-items: flex-start;
-  background-color: var(--bg, var(--layer-01));
-  background-repeat: var(--bg-repeat, no-repeat);
-  background-size: var(--bg-size, 100%);
-  background-position: var(--bg-position, center);
   border-radius: 8px;
   flex-basis: calc((100% - (var(--column-count) - 1) * var(--column-gap)) / var(--column-count));
   scroll-snap-align: start;
-
-
 
   &__info {
     padding: var(--card-info-padding, 8px);
@@ -128,24 +122,25 @@
     }
   }
 
-  &__poster-filter {
+  &__poster {
+    display: block;
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, .4);
-    backdrop-filter: blur(10px);
+    z-index: -1;
   }
 
-  &__img,
-  &__poster {
+  &__img {
     display: block;
     position: absolute;
     width: 100%;
     height: 100%;
     border: none;
 
-    &.isLoaded ~ .card-base__poster-filter {
-      display: none;
+    &.isLoaded ~ .card-base__poster {
+      display: none !important;
     }
   }
 
@@ -171,5 +166,9 @@
         --bgc: var(--game-tumb-btn-bg-hover);
       }
     }
+  }
+
+  .vue-skeletor--text {
+    border-radius: 8px;
   }
 }
