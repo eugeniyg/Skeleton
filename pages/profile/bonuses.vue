@@ -13,32 +13,53 @@
       {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'historyLink') }}
     </nuxt-link>
 
-    <bonuses-active
-      v-if="hasActiveBlock"
-      :packageBonuses="activePackageBonuses"
-      @removeBonus="removeBonusHandle"
-      @removeFreeSpin="removeFreeSpinHandle"
-      @openPackageModal="openPackageModal"
-    />
+    <transition name="fade" mode="out-in">
+      <div v-if="mounting" class="profile-bonuses__spinner">
+        <div class="profile-bonuses__spinner-border">
+          <div class="profile-bonuses__spinner-core"/>
+        </div>
+      </div>
 
-    <atomic-divider v-if="hasActiveBlock && hasIssuedBlock" class="profile-bonuses__blocks-divider" />
+      <div v-else class="profile-bonuses__container">
+        <template v-if="hasActiveBlock">
+          <bonuses-active
+            :packageBonuses="activePackageBonuses"
+            @removeBonus="removeBonusHandle"
+            @removeFreeSpin="removeFreeSpinHandle"
+            @openPackageModal="openPackageModal"
+          />
 
-    <bonuses-issued
-      v-if="hasIssuedBlock"
-      :loadingBonuses="loadingBonuses"
-      :packageBonuses="issuedPackageBonuses"
-      :activePackageCount="activePackageBonuses.length"
-      @removeBonus="removeBonusHandle"
-      @removeFreeSpin="removeFreeSpinHandle"
-      @activateBonus="activateBonusHandle"
-      @activateFreeSpin="activateFreeSpinHandle"
-      @activateDeposit="activateDepositBonus"
-      @openPackageModal="openPackageModal"
-    />
+          <atomic-divider class="profile-bonuses__blocks-divider" />
+        </template>
 
-    <atomic-divider v-if="hasActiveBlock || hasIssuedBlock" class="profile-bonuses__blocks-divider" />
+        <template v-if="hasIssuedBlock">
+          <bonuses-issued
+            :loadingBonuses="loadingBonuses"
+            :packageBonuses="issuedPackageBonuses"
+            @removeBonus="removeBonusHandle"
+            @removeFreeSpin="removeFreeSpinHandle"
+            @activateBonus="activateBonusHandle"
+            @activateFreeSpin="activateFreeSpinHandle"
+            @openPackageModal="openPackageModal"
+          />
 
-    <bonuses-promo-code />
+          <atomic-divider class="profile-bonuses__blocks-divider" />
+        </template>
+
+        <template v-if="depositBonuses.length">
+          <bonuses-deposit
+            :loadingBonuses="loadingBonuses"
+            :packageBonuses="depositPackageBonuses"
+            @activateDeposit="activateDepositBonus"
+            @openPackageModal="openPackageModal"
+          />
+
+          <atomic-divider class="profile-bonuses__blocks-divider" />
+        </template>
+
+        <bonuses-promo-code />
+      </div>
+    </transition>
 
     <modal-confirm-bonus
       v-bind="modalState"
@@ -113,9 +134,10 @@
   } = storeToRefs(bonusStore);
   const { showAlert, openWalletModal } = useLayoutStore();
   const hasActiveBlock = computed(() => activePlayerBonuses.value.length || activePlayerFreeSpins.value.length);
-  const hasIssuedBlock = computed(() => issuedPlayerBonuses.value.length 
-    || issuedPlayerFreeSpins.value.length 
-    || depositBonuses.value.length);
+  const hasIssuedBlock = computed(() => {
+    const hasSimpleBonus = [...issuedPlayerBonuses.value, ...issuedPlayerFreeSpins.value].some(bonus => !bonus.packageId);
+    return hasSimpleBonus || issuedPackageBonuses.value.length;
+  });
 
   const bonusesContent = ref<Maybe<IProfileBonuses>>();
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>();
@@ -315,16 +337,21 @@
 
   const activePackageBonuses = ref<Record<string, any>[][]>([]);
   const issuedPackageBonuses = ref<Record<string, any>[][]>([]);
+  const depositPackageBonuses = ref<Record<string, any>[][]>([]);
   const showPackageModal = ref(false);
   const packageModalList = ref<Record<string, any>[]>([]);
 
   const updatePackageModalList = (): void => {
-    if (!activePackageBonuses.value.length && !issuedPackageBonuses.value.length) {
+    if (!activePackageBonuses.value.length && !issuedPackageBonuses.value.length && !depositPackageBonuses.value.length) {
       showPackageModal.value = false;
     }
 
     const packageId = packageModalList.value[0]?.packageId || packageModalList.value[0]?.package?.id;
-    const newBonusesList = [...activePackageBonuses.value, ...issuedPackageBonuses.value].find(bonusesList => {
+    const newBonusesList = [
+      ...activePackageBonuses.value,
+      ...issuedPackageBonuses.value,
+      ...depositPackageBonuses.value
+    ].find(bonusesList => {
       return (bonusesList[0].package?.id === packageId) || (bonusesList[0].packageId === packageId)
     });
 
@@ -354,6 +381,7 @@
       checkLoadingBonuses();
       activePackageBonuses.value = [];
       issuedPackageBonuses.value = [];
+      depositPackageBonuses.value = [];
       return;
     }
 
@@ -380,17 +408,16 @@
           .filter(bonus => bonus.packageId === packageBonusId)
           .sort((prevBonus, nextBonus) => prevBonus.packagePriority - nextBonus.packagePriority);
       });
-      const depositPackageBonuses = uniqueDepositPackageBonuses.map(packageBonusId => {
+
+      depositPackageBonuses.value = uniqueDepositPackageBonuses.map(packageBonusId => {
         return transformDepositPackageBonuses
           .filter(bonus => bonus.package?.id === packageBonusId)
           .sort((prevBonus, nextBonus) => prevBonus.packagePriority - nextBonus.packagePriority);
       });
 
       activePackageBonuses.value = playerPackageBonuses.filter(bonusesList => bonusesList.some(bonus => bonus.status === 2));
-      issuedPackageBonuses.value = [
-        ...playerPackageBonuses.filter(bonusesList => !bonusesList.some(bonus => bonus.status === 2)),
-        ...depositPackageBonuses
-      ];
+      issuedPackageBonuses.value = playerPackageBonuses.filter(bonusesList => !bonusesList.some(bonus => bonus.status === 2));
+
       if (showPackageModal.value) updatePackageModalList();
     } catch (e) {
       console.error('Failed to get package bonuses');
