@@ -1,6 +1,6 @@
 import mitt from 'mitt';
 import type { IAnalyticsEvent } from "@skeleton/types";
-import type {IMessage} from "@skeleton/core/types";
+import type { IMessage, ISocketInvoice } from "@skeleton/core/types";
 
 type ApplicationEvents = {
   'changeMobileGameMode': undefined;
@@ -19,6 +19,7 @@ type ApplicationEvents = {
   'markAsReadMessage': IMessage;
   'newPlayerMessage': undefined;
   'markAllAsReadMessages': undefined;
+  'receivedAsyncInvoice': ISocketInvoice;
 };
 
 const emitter = mitt<ApplicationEvents>();
