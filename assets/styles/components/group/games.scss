@@ -8,11 +8,6 @@
   grid-row-gap: var(--row-gap, 16px);
   position: relative;
 
-  &--hidden {
-    visibility: hidden !important;
-    pointer-events: none !important;
-  }
-
   @include media(xs) {
     grid-template-areas:
     "icon heading btn-show-all arrows"
@@ -157,5 +152,14 @@
       color: var(--text-tertiary);
       margin: 0;
     }
+  }
+
+  .vue-skeletor--text {
+    border-radius: 8px;
+  }
+
+  .vue-skeletor:not(.vue-skeletor--shimmerless):after {
+    background-image: linear-gradient(90deg, rgba(#3d4451, 0), rgba(#3d4451, 0.6), rgba(#3d4451, 0));
+    animation-duration: 2s;
   }
 }

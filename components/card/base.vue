@@ -6,6 +6,8 @@
     :data-size="cardSize"
     @click="clickGame"
   >
+    <atomic-image class="card-base__poster" src="/img/thumb-preload.png" not-lazy />
+    <div class="card-base__poster-filter" />
     <atomic-image class="card-base__img" :src="src" />
 
     <div v-if="gameBages?.length" class="bages">
