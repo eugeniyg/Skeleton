@@ -149,14 +149,11 @@ export const useWalletStore = defineStore('walletStore', {
     asyncInvoiceProcessing(invoiceData: ISocketInvoice|undefined):void {
       if (!invoiceData || invoiceData.status !== 1 || !invoiceData.publicData) return;
 
-      const sessionInvoice = sessionStorage.getItem('redirectInvoiceId');
+      const sessionInvoice = sessionStorage.getItem('asyncInvoiceId');
       if (sessionInvoice && sessionInvoice === invoiceData.id) {
         const showAwaitInvoiceBlock = document.getElementById('wallet-await-invoice');
         if (showAwaitInvoiceBlock && invoiceData.publicData?.qr) useEvent('receivedAsyncInvoice', invoiceData);
-        else if (invoiceData.publicData?.url) {
-          window.open(invoiceData.publicData?.url);
-        }
-        sessionStorage.removeItem('redirectInvoiceId');
+        sessionStorage.removeItem('asyncInvoiceId');
       }
     },
 
