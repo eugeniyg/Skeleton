@@ -3,6 +3,8 @@
 
   <wallet-qr-payment v-else-if="qrAddress" :qrAddress="qrAddress" />
 
+  <wallet-await-invoice v-else-if="showAsyncBlock" />
+
   <form v-else class="form-deposit">
     <form-input-number
       v-model:value="amountValue"
@@ -74,10 +76,12 @@
     IPaymentField,
     IRequestDeposit,
     IPaymentPreset,
-    IResponseDeposit
+    IResponseDeposit,
+    ISocketInvoice
   } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import queryString from 'query-string';
+  import {useListen} from "@skeleton/composables/useEventBus";
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
 
@@ -232,6 +236,7 @@
     };
   }
 
+  const showAsyncBlock = ref(false);
   const iframeUrl = ref<string | undefined>();
   const qrAddress = ref<string | undefined>();
   const windowReference = ref<Window | null>(null);
@@ -260,6 +265,9 @@
       } else if (props.processingType === 'message') {
         successModalType.value = 'deposit-pending';
         showModal('success');
+      } else if (props.processingType === 'asyncRedirect') {
+        sessionStorage.setItem('redirectInvoiceId', depositResponse.invoiceId);
+        showAsyncBlock.value = true;
       }
     } catch {
       if (windowReference.value) windowReference.value.close();
@@ -354,6 +362,19 @@
 
     return undefined;
   })
-  
-  
+
+  const checkAsyncInvoice = (invoiceData: ISocketInvoice) => {
+    if (showAsyncBlock.value && invoiceData.publicData?.qr) {
+      qrAddress.value = invoiceData.publicData.qr;
+      showAsyncBlock.value = false
+    }
+  }
+
+  onMounted(() => {
+    useListen('receivedAsyncInvoice', checkAsyncInvoice);
+  });
+
+  onBeforeUnmount(() => {
+    useUnlisten('receivedAsyncInvoice', checkAsyncInvoice);
+  });
 </script>
