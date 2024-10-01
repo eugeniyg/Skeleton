@@ -10,11 +10,6 @@
   grid-row-gap: var(--row-gap, #{rem(16px)});
   position: relative;
 
-  &--hidden {
-    visibility: hidden !important;
-    pointer-events: none !important;
-  }
-
   @include media(xs) {
     grid-template-areas:
     "icon heading btn-show-all arrows"

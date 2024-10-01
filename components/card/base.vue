@@ -59,13 +59,13 @@
 
   const router = useRouter();
   const profileStore = useProfileStore();
-  const { isLoggedIn, profile } = storeToRefs(profileStore);
+  const { isLoggedIn } = storeToRefs(profileStore);
   const {
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent,
   } = useGlobalStore();
-  const { showModal, showAlert } = useLayoutStore();
-  const { localizePath, getImageUrl, getContent, getRandomInt } = useProjectMethods();
+  const { showModal } = useLayoutStore();
+  const { localizePath, getImageUrl, getContent } = useProjectMethods();
 
   const gameTagsContent: Maybe<IGameTag[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags.gameTagsList');
 
@@ -127,10 +127,6 @@
   const onResize = () => {
     clearTimeout(timeoutId.value);
     timeoutId.value = setTimeout(setCardSize, 200);
-  };
-
-  const posterSrc = (): string => {
-    return `/img/thumb-posters/thumb-poster-${getRandomInt(1, 12)}.png`;
   };
 
   onMounted(() => {
