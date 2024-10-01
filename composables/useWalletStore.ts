@@ -152,7 +152,7 @@ export const useWalletStore = defineStore('walletStore', {
       const sessionInvoice = sessionStorage.getItem('asyncInvoiceId');
       if (sessionInvoice && sessionInvoice === invoiceData.id) {
         const showAwaitInvoiceBlock = document.getElementById('wallet-await-invoice');
-        if (showAwaitInvoiceBlock && invoiceData.publicData?.qr) useEvent('receivedAsyncInvoice', invoiceData);
+        if (showAwaitInvoiceBlock && invoiceData.publicData.qr) useEvent('receivedAsyncInvoice', invoiceData);
         sessionStorage.removeItem('asyncInvoiceId');
       }
     },
