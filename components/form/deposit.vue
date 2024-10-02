@@ -266,7 +266,7 @@
         successModalType.value = 'deposit-pending';
         showModal('success');
       } else if (props.processingType === 'asyncRedirect') {
-        sessionStorage.setItem('redirectInvoiceId', depositResponse.invoiceId);
+        sessionStorage.setItem('asyncInvoiceId', depositResponse.invoiceId);
         showAsyncBlock.value = true;
       }
     } catch {

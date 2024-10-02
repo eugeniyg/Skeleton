@@ -80,7 +80,7 @@ export const useProfileStore = defineStore('profileStore', {
       const cookieToken = useCookie(this.tokenCookieKey);
       cookieToken.value = null;
       this.isLoggedIn = false;
-      sessionStorage.removeItem('redirectInvoiceId');
+      sessionStorage.removeItem('asyncInvoiceId');
       localStorage.setItem('changeSession', this.encodeSessionChange('logout'));
 
       const { updateChat } = useFreshchatStore();
