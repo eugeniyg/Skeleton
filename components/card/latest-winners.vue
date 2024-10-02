@@ -1,6 +1,7 @@
 <template>
   <nuxt-link class="card-latest-winners" :to="gameUrl">
     <atomic-image class="card-latest-winners__img" :src="src" />
+    <Skeletor class="card-latest-winners__poster" as="div" />
     
     <div class="card-latest-winners__info">
       <div class="card-latest-winners__info-title">{{ props.nickname || 'Unknown' }}</div>
@@ -16,13 +17,13 @@
         <span class="card-latest-winners__info-currency">{{ formatedSum.currency }}</span>
       </div>
     </div>
-    
   </nuxt-link>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { IGameImages } from '@skeleton/core/types';
+  import {Skeletor} from "vue-skeletor";
 
   const props = defineProps<{
     nickname: Maybe<string>,
