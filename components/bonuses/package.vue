@@ -64,6 +64,22 @@
         </div>
       </div>
 
+      <div v-if="!isPackageActive" class="bonuses-package__activator">
+        <button-base
+          class="bonuses-package__activate-btn"
+          type="primary"
+          size="md"
+          @click="emit('activate')"
+        >
+          <!--            <atomic-spinner :is-shown="props.loading"/>-->
+          {{ activateLabel }}
+        </button-base>
+
+        <bonuses-timer
+          v-if="expiredDate"
+          :expiredAt="expiredDate"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -75,7 +91,7 @@
     list: Record<string, any>[];
   }>();
 
-  const emit = defineEmits(['openPackageModal']);
+  const emit = defineEmits(['openPackageModal', 'activate']);
 
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
@@ -105,6 +121,30 @@
     );
     return showAllLabel.replace('{count}', props.list.length);
   });
+
+  const activateLabel = computed<string>(() => {
+    if (props.list[0].isDeposit) return getContent(
+      globalComponentsContent.value,
+      defaultLocaleGlobalComponentsContent.value,
+      'bonuses.activateDeposit'
+    );
+
+    return getContent(
+      globalComponentsContent.value,
+      defaultLocaleGlobalComponentsContent.value,
+      'bonuses.activateCash'
+    );
+  })
+
+  const expiredDate = computed<string|undefined>(() => {
+    if (props.list[0].isDeposit && props.list[0].triggerConditions.availableTo) {
+      return props.list[0].triggerConditions.availableTo;
+    }
+
+    if (props.list[0].status === 1 && props.list[0].activationExpiredAt) return props.list[0].activationExpiredAt;
+    
+    return undefined;
+  })
 </script>
 
 <style src="~/assets/styles/components/bonuses/package.scss" lang="scss"/>

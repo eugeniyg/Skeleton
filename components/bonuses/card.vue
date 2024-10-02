@@ -62,7 +62,7 @@
 
         <button-base
           v-if="!props.isDeposit"
-          type="ghost"
+          type="ghost-gray"
           size="xs"
           @click="emit('remove')"
         >

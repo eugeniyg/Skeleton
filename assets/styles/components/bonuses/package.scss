@@ -159,4 +159,31 @@
   .bonuses-freespin-progress{
     margin-top: 0 !important;
   }
+
+  &__activator {
+    display: flex;
+    align-self: flex-end;
+    flex-wrap: wrap;
+    grid-gap: 8px;
+    //margin-top: 16px;
+
+    @include media(md) {
+      //margin-top: 24px;
+    }
+
+    .bonuses-timer {
+      flex: 1 1 136px;
+      min-width: calc(50% - 8px);
+    }
+
+    .btn-primary {
+      width: calc(50% - 8px);
+      margin: 0 !important;
+    }
+  }
+
+  &__activate-btn {
+    --width: 100%;
+    @include upd-font($heading-2);
+  }
 }
