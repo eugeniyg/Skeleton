@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showBlock" class="group-aero" :class="{ 'group-aero--hidden': loadingBlock }">
+  <div v-if="showBlock" class="group-aero">
     <atomic-icon v-if="titleIcon" :id="titleIcon"/>
 
     <h2 class="group-aero__title">
@@ -30,8 +30,13 @@
         <atomic-image class="group-aero__bg-img" :src="mobileLayoutBackground" />
       </picture>
 
+      <Skeletor
+        v-if="gameInfoLoading"
+        class="group-aero__game"
+        as="div"
+      />
 
-      <div v-if="gameInfo" class="group-aero__game">
+      <div v-else-if="gameInfo" class="group-aero__game">
         <atomic-picture :src="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.image')"/>
 
         <div class="group-aero__game-title">
@@ -53,7 +58,7 @@
           >
             {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.playButtonLabel') }}
           </button-base>
-          
+
           <button-base
             type="secondary"
             size="sm"
@@ -80,7 +85,12 @@
         </template>
 
         <template v-else>
-          <div v-for="n in 9" :key="n" class="card-base"/>
+          <Skeletor
+            v-for="n in 9"
+            :key="n"
+            class="card-base"
+            as="div"
+          />
         </template>
 
         <div class="load-more" ref="loadMore" @inview="moreGames" />
@@ -92,6 +102,7 @@
 <script setup lang="ts">
   import type { IGame, IPaginationMeta } from '@skeleton/core/types';
   import { storeToRefs } from "pinia";
+  import { Skeletor } from "vue-skeletor";
 
   const props = defineProps({
     currentLocaleContent: {
@@ -148,14 +159,17 @@
 
   const gameIdentity = getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.identity');
 
+  const gameInfoLoading = ref(false);
   const getGameInfo = async ():Promise<void> => {
     if (!gameIdentity) return;
 
+    gameInfoLoading.value = true;
     try {
       gameInfo.value = await getGamesInfo(gameIdentity);
     } catch {
       console.error('Something went wrong with game info fetching!');
     }
+    gameInfoLoading.value = false;
   }
 
   const openGame = (isReal: boolean): void => {
@@ -212,7 +226,6 @@
 
   const emit = defineEmits(['initialLoad']);
   const showBlock = ref<boolean>(true);
-  const loadingBlock = ref<boolean>(true);
   onMounted(async () => {
     loadMoreObserver.value = initObserver({
       settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
@@ -226,7 +239,6 @@
     if (!gamesResponse.data.length || !gameInfo.value) return showBlock.value = false;
     games.value = gamesResponse.data;
     pageMeta.value = gamesResponse.meta;
-    loadingBlock.value = false;
 
     await nextTick();
     emit('initialLoad');

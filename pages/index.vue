@@ -1,18 +1,18 @@
 <template>
   <div class="home">
     <banners
-      v-if="homeContent?.banners || defaultLocaleHomeContent?.banners"
-      :items="homeContent?.banners || defaultLocaleHomeContent?.banners"
-      :bannerLoyalty="homeContent?.bannerLoyalty || defaultLocaleHomeContent?.bannerLoyalty"
+      v-if="currentLocaleContent?.banners || defaultLocaleContent?.banners"
+      :items="currentLocaleContent?.banners || defaultLocaleContent?.banners"
+      :bannerLoyalty="currentLocaleContent?.bannerLoyalty || defaultLocaleContent?.bannerLoyalty"
     />
     
     <div
-      v-if="homeContent?.categories || defaultLocaleHomeContent?.categories"
+      v-if="currentLocaleContent?.categories || defaultLocaleContent?.categories"
       class="card-category__container"
       :class="cardsModifier"
     >
       <card-category
-        v-for="(item, itemIndex) in (homeContent?.categories || defaultLocaleHomeContent?.categories)"
+        v-for="(item, itemIndex) in (currentLocaleContent?.categories || defaultLocaleContent?.categories)"
         :key="itemIndex"
         :mod="itemIndex + 1"
         v-bind="item"
@@ -22,12 +22,12 @@
     <!--<group-benefits/>-->
     
     <group-aero
-      v-if="homeContent?.aeroGroup?.display && aeroCategory"
+      v-if="currentLocaleContent?.aeroGroup?.display && aeroCategory"
       showAllBtn
       showArrows
       :category="aeroCategory"
-      :currentLocaleContent="homeContent?.aeroGroup"
-      :defaultLocaleContent="defaultLocaleHomeContent?.aeroGroup"
+      :currentLocaleContent="currentLocaleContent?.aeroGroup"
+      :defaultLocaleContent="defaultLocaleContent?.aeroGroup"
     />
     
     <template v-for="collection in gameCollectionsList">
@@ -50,7 +50,7 @@
       <div id="live-events-widget" />
     </div>
 
-    <group-providers showArrows />
+    <group-providers showArrows showAllBtn/>
 
     <activity-board
       v-if="activityBoardContent.showBlock && activityBoardContent.boards.length"
@@ -59,7 +59,7 @@
 
     <group-promotions />
 
-    <atomic-seo-text v-if="homeContent?.pageMeta?.seoText" v-bind="homeContent.pageMeta.seoText"/>
+    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent.pageMeta.seoText"/>
   </div>
 </template>
 
@@ -69,61 +69,29 @@
   import type { ICollection } from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();
-  const {
-    currentLocale,
-    defaultLocale
-  } = storeToRefs(globalStore);
+  const { currentLocale } = storeToRefs(globalStore);
 
   const {
-    setPageMeta,
     localizePath,
     getContent,
-    getLocalesContentData,
     addBetsyScript
   } = useProjectMethods();
 
-  const homeContent = ref<Maybe<IHomePage>>();
-  const defaultLocaleHomeContent = ref<Maybe<IHomePage>>();
-
-  interface IPageContent {
-    currentLocaleData: Maybe<IHomePage>;
-    defaultLocaleData: Maybe<IHomePage>;
-  }
-
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    homeContent.value = contentData?.currentLocaleData;
-    defaultLocaleHomeContent.value = contentData?.defaultLocaleData;
-    setPageMeta(homeContent.value?.pageMeta);
-  }
-
-  const getPageContent = async (): Promise<IPageContent> => {
-    const nuxtContentData = useNuxtData('homePageContent');
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
-
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'pages', 'home').findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : queryContent(defaultLocale.value?.code as string, 'pages', 'home').findOne()
-    ]);
-    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  }
-
-  const { pending, data } = await useLazyAsyncData('homePageContent', () => getPageContent());
-  if (data.value) setContentData(data.value);
-
-  watch(data, () => {
-    setContentData(data.value);
-  })
+  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IHomePage>({
+    contentKey: 'homePageContent',
+    contentRoute: ['pages', 'home'],
+    isPage: true
+  });
 
   const { getCollectionsList } = useGamesStore();
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
   
   const aeroCategory = computed(() => {
-    return gameCollections.value?.find((collection) => collection.identity === homeContent.value?.aeroGroup?.collectionIdentity);
+    return gameCollections.value?.find((collection) => collection.identity === currentLocaleContent.value?.aeroGroup?.collectionIdentity);
   });
   
   const targetGameCollections = computed(() => {
-    return getContent(homeContent.value, defaultLocaleHomeContent.value, 'gameCollections')?.map((item:ICollection) => item.identity) || []
+    return getContent(currentLocaleContent.value, defaultLocaleContent.value, 'gameCollections')?.map((item:ICollection) => item.identity) || []
   });
   
   const gameCollectionsList = computed(() => gameCollections.value?.filter((collection) => targetGameCollections.value.includes(collection.identity))?.sort((a, b) => {
@@ -131,7 +99,7 @@
   }));
   
   const cardsModifier = computed(() => {
-    const length = Object.keys(getContent(homeContent.value, defaultLocaleHomeContent.value, 'categories'))?.length || 0
+    const length = Object.keys(getContent(currentLocaleContent.value, defaultLocaleContent.value, 'categories'))?.length || 0
     return length  ? `has-${length}-cards` : ''
   });
 
@@ -180,14 +148,14 @@
   }
 
   const activityBoardContent = computed(() => {
-    const currentLocaleContent = homeContent.value?.activityBoard;
-    const defaultLocaleContent = defaultLocaleHomeContent.value?.activityBoard;
+    const currentLocaleBoardContent = currentLocaleContent.value?.activityBoard;
+    const defaultLocaleBoardContent = defaultLocaleContent.value?.activityBoard;
     return {
-      showBlock: currentLocaleContent?.showBlock,
-      title: currentLocaleContent?.title || defaultLocaleContent?.title,
-      icon: currentLocaleContent?.icon || defaultLocaleContent?.icon,
-      columns: currentLocaleContent?.columns || defaultLocaleContent?.columns,
-      boards: currentLocaleContent?.boards?.length ? currentLocaleContent.boards : defaultLocaleContent?.boards || []
+      showBlock: currentLocaleBoardContent?.showBlock,
+      title: currentLocaleBoardContent?.title || defaultLocaleBoardContent?.title,
+      icon: currentLocaleBoardContent?.icon || defaultLocaleBoardContent?.icon,
+      columns: currentLocaleBoardContent?.columns || defaultLocaleBoardContent?.columns,
+      boards: currentLocaleBoardContent?.boards?.length ? currentLocaleBoardContent.boards : defaultLocaleBoardContent?.boards || []
     }
   });
 

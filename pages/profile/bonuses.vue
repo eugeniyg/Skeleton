@@ -2,7 +2,7 @@
   <div class="content profile-bonuses">
     <div class="header">
       <h1 class="heading">
-        {{ content?.currentLocaleData?.title || content?.defaultLocaleData?.title }}
+        {{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}
       </h1>
     </div>
 
@@ -10,16 +10,18 @@
       class="link-bonus"
       :to="localizePath('/profile/history?tab=bonuses')"
     >
-      {{ content?.currentLocaleData?.historyLink || content?.defaultLocaleData?.historyLink }}
+      {{ getContent(currentLocaleContent, defaultLocaleContent, 'historyLink') }}
     </nuxt-link>
 
-    <bonus-code :content="content?.currentLocaleData?.bonusCode || content?.defaultLocaleData?.bonusCode" />
+    <bonus-code
+      :content="getContent(currentLocaleContent, defaultLocaleContent, 'bonusCode')"
+    />
 
     <transition name="fade" mode="out-in">
       <bonus-active
         v-if="activePlayerBonuses.length"
         bonusType="bonus"
-        :content="content?.currentLocaleData?.cashBonuses || content?.defaultLocaleData?.cashBonuses"
+        :content="getContent(currentLocaleContent, defaultLocaleContent, 'cashBonuses')"
         @showCancelLock="showBonusCancelLockModal = true"
       />
     </transition>
@@ -28,14 +30,14 @@
       <bonus-active
         v-if="activePlayerFreeSpins.length"
         bonusType="free-spin"
-        :content="content?.currentLocaleData?.freeSpins || content?.defaultLocaleData?.freeSpins"
+        :content="getContent(currentLocaleContent, defaultLocaleContent, 'freeSpins')"
         @showCancelLock="showBonusCancelLockModal = true"
       />
     </transition>
 
     <modal-bonus-cancel-lock
       :showModal="showBonusCancelLockModal"
-      :content="content?.currentLocaleData?.cancelLockModal || content?.defaultLocaleData?.cancelLockModal"
+      :content="getContent(currentLocaleContent, defaultLocaleContent, 'cancelLockModal')"
       @close="showBonusCancelLockModal = false"
     />
   </div>
@@ -45,35 +47,16 @@
   import { storeToRefs } from 'pinia';
   import type { IProfileBonuses } from '~/types';
 
-  const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
-  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const { setPageMeta, getLocalesContentData, localizePath } = useProjectMethods();
+  const { localizePath, getContent } = useProjectMethods();
   const { getPlayerBonuses, getPlayerFreeSpins } = bonusStore;
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
 
-  interface IPageContent {
-    currentLocaleData: Maybe<IProfileBonuses>;
-    defaultLocaleData: Maybe<IProfileBonuses>;
-  }
-
-  const getPageContent = async (): Promise<IPageContent> => {
-    const { data } = useNuxtData('profileBonusesContent');
-    if (data.value) return data.value;
-
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'profile', 'bonuses').findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'profile', 'bonuses').findOne()
-    ]);
-    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  }
-
-  const { data: content } = await useLazyAsyncData('profileBonusesContent', () => getPageContent());
-
-  watch(content, () => {
-    if (content.value) setPageMeta(content.value?.currentLocaleData?.pageMeta);
-  }, { immediate: true });
+  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProfileBonuses>({
+    contentKey: 'profileBonusesContent',
+    contentRoute: ['profile', 'bonuses'],
+    isPage: true
+  });
 
   const showBonusCancelLockModal = ref(false);
 

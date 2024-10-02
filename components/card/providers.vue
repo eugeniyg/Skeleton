@@ -3,10 +3,23 @@
     class="card-providers"
     :to="localizePath(`/games?provider=${props.providerData.id}`)"
   >
-    <atomic-image
-      class="img"
-      :src="`/img/providers/${props.providerData.identity}.svg`"
-    />
+    <div class="card-providers__header">
+      <atomic-image
+        class="card-providers__img"
+        :src="`/img/providers/${props.providerData.identity}.svg`"
+      />
+    </div>
+    
+    
+    <div class="card-providers__info">
+      <div class="card-providers__name">{{ props.providerData.name }}</div>
+      <div class="card-providers__count">
+        <span>{{ props.providerData.gameEnabledCount }}</span>
+        <span>games</span>
+      </div>
+    </div>
+    
+    
   </nuxt-link>
 </template>
 

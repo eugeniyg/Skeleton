@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showBlock" class="group-games" :class="{ 'group-games--hidden': loadingBlock }">
+  <div v-if="showBlock" class="group-games">
     <atomic-icon v-if="titleIcon && !props.subTitle" :id="titleIcon"/>
 
     <div v-if="props.subTitle" class="titles">
@@ -22,7 +22,7 @@
       size="sm"
       @click="openGames"
     >
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }} {{ pageMeta?.totalRows }}
     </button-base>
 
     <button-arrows
@@ -47,7 +47,12 @@
       </template>
 
       <template v-else>
-        <div v-for="n in 9" :key="n" class="card-base"/>
+        <Skeletor
+          v-for="n in 9"
+          :key="n"
+          class="card-base"
+          as="div"
+        />
       </template>
 
       <div class="load-more" ref="loadMore" @inview="moreGames"/>
@@ -58,6 +63,7 @@
 <script setup lang="ts">
   import type { IGame, IPaginationMeta } from '@skeleton/core/types';
   import { storeToRefs } from "pinia";
+  import { Skeletor } from 'vue-skeletor';
 
   const props = defineProps({
     category: {
@@ -136,7 +142,6 @@
 
   const emit = defineEmits(['initialLoad']);
   const showBlock = ref<boolean>(true);
-  const loadingBlock = ref<boolean>(true);
   onMounted(async () => {
     observerLoadMore.value = initObserver({
       settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
@@ -147,7 +152,6 @@
     if (!gamesResponse.data.length) return showBlock.value = false;
     games.value = gamesResponse.data;
     pageMeta.value = gamesResponse.meta;
-    loadingBlock.value = false;
     await nextTick();
 
     emit('initialLoad');

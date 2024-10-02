@@ -3,6 +3,8 @@
 
   <wallet-qr-payment v-else-if="qrAddress" :qrAddress="qrAddress" />
 
+  <wallet-await-invoice v-else-if="showAsyncBlock" />
+
   <form v-else class="form-deposit">
     <form-input-number
       v-model:value="amountValue"
@@ -22,7 +24,7 @@
     />
 
     <component
-      :is="fieldsMap[field.key]?.component || 'form-input-text'"
+      :is="getFieldComponent(field)"
       v-for="field in visibleFields"
       :key="field.key"
       v-model:value="depositFormData[field.key]"
@@ -30,12 +32,12 @@
       :label="field.labels[currentLocale?.code || ''] || field.labels.en"
       :name="field.key"
       :placeholder="field.hints[currentLocale?.code || ''] || field.hints.en"
-      :options="getFieldOptions(field.key)"
+      :options="getFieldOptions(field)"
       :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
-      @input="v$[field.key]?.$touch()"
       :hint="setError(field.key)"
-      @blur="v$[field.key]?.$touch()"
       :isDisabled="field.key === 'agentNumber'"
+      @input="v$[field.key]?.$touch()"
+      @blur="v$[field.key]?.$touch()"
       @focus="onFocus(field.key)"
     />
 
@@ -74,10 +76,12 @@
     IPaymentField,
     IRequestDeposit,
     IPaymentPreset,
-    IResponseDeposit
+    IResponseDeposit,
+    ISocketInvoice
   } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import queryString from 'query-string';
+  import {useListen} from "@skeleton/composables/useEventBus";
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
 
@@ -107,6 +111,13 @@
     showDepositBonusCode,
     depositBonusCode
   } = storeToRefs(bonusStore);
+
+  const getFieldComponent = (field: IPaymentField): string => {
+    const fieldComponent = fieldsMap[field.key]?.component;
+    if (fieldComponent) return fieldComponent;
+
+    return field.fieldType === 'select' ? 'form-input-dropdown' : 'form-input-text';
+  };
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
   props.fields.forEach((field) => {
@@ -148,8 +159,12 @@
   const visibleFields = getVisibleFields(); // remove reactivity
 
   const fieldsStore = useFieldsStore();
-  const getFieldOptions = (fieldName: string): any => {
-    return fieldsStore.selectOptions[fieldName] || [];
+  const getFieldOptions = (field: IPaymentField): any => {
+    const platformOptions = fieldsStore.selectOptions[field.key];
+    if (platformOptions?.length) return platformOptions;
+    return field.options?.map(option => {
+      return { value: option.name, code: option.id };
+    }) || [];
   }
 
   const walletStore = useWalletStore();
@@ -221,6 +236,7 @@
     };
   }
 
+  const showAsyncBlock = ref(false);
   const iframeUrl = ref<string | undefined>();
   const qrAddress = ref<string | undefined>();
   const windowReference = ref<Window | null>(null);
@@ -249,6 +265,9 @@
       } else if (props.processingType === 'message') {
         successModalType.value = 'deposit-pending';
         showModal('success');
+      } else if (props.processingType === 'asyncRedirect') {
+        sessionStorage.setItem('asyncInvoiceId', depositResponse.invoiceId);
+        showAsyncBlock.value = true;
       }
     } catch {
       if (windowReference.value) windowReference.value.close();
@@ -343,6 +362,19 @@
 
     return undefined;
   })
-  
-  
+
+  const checkAsyncInvoice = (invoiceData: ISocketInvoice) => {
+    if (showAsyncBlock.value && invoiceData.publicData?.qr) {
+      qrAddress.value = invoiceData.publicData.qr;
+      showAsyncBlock.value = false
+    }
+  }
+
+  onMounted(() => {
+    useListen('receivedAsyncInvoice', checkAsyncInvoice);
+  });
+
+  onBeforeUnmount(() => {
+    useUnlisten('receivedAsyncInvoice', checkAsyncInvoice);
+  });
 </script>
