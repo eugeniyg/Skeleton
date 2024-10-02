@@ -7,6 +7,7 @@
     @click="clickGame"
   >
     <atomic-image class="card-base__img" :src="src" />
+    <Skeletor class="card-base__poster" as="div" />
 
     <div v-if="gameBages?.length" class="bages">
       <atomic-bage
@@ -50,6 +51,7 @@
   import { storeToRefs } from 'pinia';
   import type { IGame } from '@skeleton/core/types';
   import type { IGameTag } from '~/types';
+  import {Skeletor} from "vue-skeletor";
 
   const props = defineProps<{
     gameInfo?: IGame;
@@ -57,12 +59,12 @@
 
   const router = useRouter();
   const profileStore = useProfileStore();
-  const { isLoggedIn, profile } = storeToRefs(profileStore);
+  const { isLoggedIn } = storeToRefs(profileStore);
   const {
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent,
   } = useGlobalStore();
-  const { showModal, showAlert } = useLayoutStore();
+  const { showModal } = useLayoutStore();
   const { localizePath, getImageUrl, getContent } = useProjectMethods();
 
   const gameTagsContent: Maybe<IGameTag[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags.gameTagsList');
