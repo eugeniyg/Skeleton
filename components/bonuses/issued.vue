@@ -9,6 +9,8 @@
       v-for="packageList in props.packageBonuses"
       :key="packageList[0].packageId"
       :list="packageList"
+      :loading="isPackageLoading(packageList)"
+      @activate="activatePackage(packageList)"
       @openPackageModal="emit('openPackageModal', packageList)"
     />
 
@@ -64,4 +66,18 @@
   const issuedBonuses = computed(() => {
     return simpleBonusesList.value.length + simpleFreeSpinsList.value.length + props.packageBonuses.length;
   });
+
+  const isPackageLoading = (packageList: Record<string, any>[]):boolean => {
+    const firstAvailableBonus = packageList.find(bonus => bonus.status === 1);
+    return props.loadingBonuses.includes(firstAvailableBonus?.id);
+  };
+
+  const activatePackage = (packageList: Record<string, any>[]):void => {
+    const firstAvailableBonus = packageList.find(bonus => bonus.status === 1);
+    if (firstAvailableBonus) {
+      firstAvailableBonus.isFreeSpin
+        ? emit('activateFreeSpin', firstAvailableBonus)
+        : emit('activateBonus', firstAvailableBonus);
+    }
+  }
 </script>

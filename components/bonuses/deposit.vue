@@ -9,6 +9,8 @@
       v-for="packageList in props.packageBonuses"
       :key="packageList[0].package?.id"
       :list="packageList"
+      :loading="props.loadingBonuses.includes(packageList[0].id)"
+      @activate="emit('activateDeposit', { depositBonus: packageList[0] })"
       @openPackageModal="emit('openPackageModal', packageList)"
     />
 

@@ -69,9 +69,10 @@
           class="bonuses-package__activate-btn"
           type="primary"
           size="md"
-          @click="emit('activate')"
+          :isDisabled="props.loading"
+          @click.stop="emit('activate')"
         >
-          <!--            <atomic-spinner :is-shown="props.loading"/>-->
+          <atomic-spinner :is-shown="props.loading"/>
           {{ activateLabel }}
         </button-base>
 
@@ -88,6 +89,7 @@
   import type {IPlayerBonus, IPlayerFreeSpin} from "@skeleton/core/types";
 
   const props = defineProps<{
+    loading?: boolean;
     list: Record<string, any>[];
   }>();
 
