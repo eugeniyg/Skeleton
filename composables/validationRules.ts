@@ -70,7 +70,7 @@ export const before = (param:string) => validationRules.helpers.withParams(
     },
   );
 
-// eslint-disable-next-line
+ 
 export const before_or_equal = (param:string) => validationRules.helpers.withParams(
     { param },
     (value:string) => {
@@ -111,7 +111,7 @@ export const after = (param:string) => validationRules.helpers.withParams(
     },
   );
 
-// eslint-disable-next-line
+ 
 export const after_or_equal = (param:string) => validationRules.helpers.withParams(
     { param },
     (value:string) => {
@@ -132,10 +132,10 @@ export const after_or_equal = (param:string) => validationRules.helpers.withPara
     },
   );
 
-// eslint-disable-next-line
+ 
 export const alpha_dash = (value:any):boolean => !validationRules.helpers.req(value) || /^[a-zA-Z0-9_-]+$/.test(value);
 
-// eslint-disable-next-line
+ 
 export const alpha_num = validationRules.alphaNum;
 
 export const array = (value:any):boolean => !validationRules.helpers.req(value) || (value instanceof Array);
@@ -155,7 +155,7 @@ export const confirmed = (param: string) => validationRules.helpers.withParams(
 
 export const date = (value:string):boolean => !validationRules.helpers.req(value) || isValidDate(value);
 
-// eslint-disable-next-line
+ 
 export const date_equals = (param:string) => validationRules.helpers.withParams(
     { param },
     (value:string) => {
@@ -212,7 +212,7 @@ export const digits = (param: string) => validationRules.helpers.withParams(
 
       const num = Number(value);
 
-      // eslint-disable-next-line no-restricted-globals
+       
       if (typeof num === 'number' && !isNaN(num) && typeof value !== 'boolean') {
         return String(value.trim()).length === parseInt(param, 10);
       }
@@ -220,7 +220,7 @@ export const digits = (param: string) => validationRules.helpers.withParams(
     },
   );
 
-// eslint-disable-next-line
+ 
 export const digits_between = (param: string) => {
   const params = getParameters(param);
   const min = parseFloat(params[0]);
@@ -234,7 +234,7 @@ export const digits_between = (param: string) => {
       const num = Number(value);
       const valueDigitsCount = String(value).length;
 
-      // eslint-disable-next-line no-restricted-globals
+       
       if (typeof num === 'number' && !isNaN(num) && typeof value !== 'boolean') {
         return valueDigitsCount >= min && valueDigitsCount <= max;
       }
@@ -249,7 +249,7 @@ export const numeric = validationRules.numeric;
 
 export const integer = validationRules.integer;
 
-// eslint-disable-next-line
+ 
 export const mac_address = validationRules.macAddress;
 
 function getSize(value:any) {
@@ -310,7 +310,7 @@ export const regex = (param:any) => validationRules.helpers.withParams(
     },
   );
 
-// eslint-disable-next-line
+ 
 export const not_regex = (param:any) => validationRules.helpers.withParams(
     { param },
     (value:any) => {
@@ -326,7 +326,7 @@ export const not_regex = (param:any) => validationRules.helpers.withParams(
     },
   );
 
-// eslint-disable-next-line
+ 
 export const required_if = (param: string) => validationRules.helpers.withParams(
     { param },
     (value) => {

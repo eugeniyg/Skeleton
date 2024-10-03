@@ -3,9 +3,9 @@
     v-model="modals.editLimit"
     class="modal-edit-limit"
     :clickToClose="false"
-    @clickOutside="closeModal('editLimit')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="closeModal('editLimit')"
   >
     <div class="scroll">
       <div class="header">
@@ -14,6 +14,7 @@
       </div>
 
       <form-input-number
+        v-model:value="state.amount"
         :is-required="false"
         :currency="state.currency"
         :min="0"
@@ -21,11 +22,10 @@
         :default-value="0"
         label=""
         name="edit-limit-currency"
-        v-model:value="state.amount"
         placeholder="0"
       />
 
-      <div class="modal-edit-limit__info" v-if="isLargeAmount">
+      <div v-if="isLargeAmount" class="modal-edit-limit__info">
         <div class="modal-edit-limit__info-title">
           <atomic-icon id="warning"/>
           <div>{{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.greaterAmountTitle') }}</div>
@@ -39,8 +39,8 @@
         <button-base
           type="primary"
           size="md"
-          @click="update"
           :is-disabled="isDisableUpdate"
+          @click="update"
         >
           {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.actions.updateButtonLabel') }}
         </button-base>

@@ -14,7 +14,7 @@
     <div
       v-if="props.fields?.length && !state.selectedNetwork"
       class="dropdown-network__info"
-      v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
+      v-html="infoContent"
     />
     
     <wallet-warning
@@ -44,8 +44,9 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
-  import type { IPaymentField, IRequestDeposit, IBonus, IPaymentFieldOption } from '@skeleton/core/types';
+  import type { IPaymentField, IRequestDeposit, IBonus } from '@skeleton/core/types';
   import debounce from 'lodash/debounce';
+  import DOMPurify from "isomorphic-dompurify";
 
   const props = defineProps<{
     amountMax?: number,
@@ -80,9 +81,10 @@
   } = useProjectMethods();
 
   const networkSelectOptions = computed(() => {
-    const select = props.fields && props.fields.find((item) => item.fieldType === 'select');
-    if (select?.options) {
-      return select?.options.map((option: IPaymentFieldOption) => ({
+    const networkField = props.fields && props.fields.find((field) => field.key === 'crypto_network');
+    const networkOptions = networkField?.options;
+    if (networkOptions) {
+      return networkOptions?.map((option) => ({
         value: option.name,
         minAmount: option.minAmount,
         maxAmount: option.maxAmount,
@@ -158,6 +160,12 @@
     ) return;
     await sendDepositData();
   }, 1000, { leading: false });
+
+  const infoContent = computed(() => {
+    const contentText = getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info');
+    if (!contentText) return '';
+    return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
+  })
 
   watch(selectedDepositBonus, (newValue: IBonus|undefined) => {
     debounceDeposit(newValue);

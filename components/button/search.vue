@@ -1,8 +1,8 @@
 <template>
   <button
     class="btn-search"
-    @click="emit('show-search')"
     :class="{'is-active': active}"
+    @click="emit('show-search')"
   >
     <atomic-icon id="search"/>
   </button>

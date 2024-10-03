@@ -13,15 +13,15 @@
 
         <div
           v-if="currencies"
-          class="accumulated-rewards__list"
           ref="content"
+          class="accumulated-rewards__list"
           @inview="checkRewardsWidth"
         >
           <div ref="list" class="accumulated-rewards__list-items">
             <div
               v-for="item in visibleItems"
-              class="accumulated-rewards__list-item"
               ref="items"
+              class="accumulated-rewards__list-item"
             >
               <span class="accumulated-rewards__list-item-value">{{ item.value }}</span>
               <span class="accumulated-rewards__list-item-currency">{{ item.currency }}</span>

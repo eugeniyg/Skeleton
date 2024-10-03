@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="header">
-      <h1 class="heading">{{ historyContent?.title || defaultLocaleHistoryContent?.title }}</h1>
+      <h1 class="heading">{{ currentLocalePageContent?.title || defaultLocalePageContent?.title }}</h1>
     </div>
 
     <tab-history
@@ -12,90 +12,49 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IHistory, IProfileHistory } from '~/types';
   import camelCase from "lodash/camelCase";
 
-  const globalStore = useGlobalStore();
-  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const { setPageMeta, getLocalesContentData } = useProjectMethods();
+  const {
+    currentLocaleContent: currentLocalePageContent,
+    defaultLocaleContent: defaultLocalePageContent
+  } = await useContentLogic<IProfileHistory>({
+    contentKey: 'profileHistoryContent',
+    contentRoute: ['profile', 'history'],
+    isPage: true
+  });
 
-  const historyContent = ref<Maybe<IProfileHistory>>();
-  const defaultLocaleHistoryContent = ref<Maybe<IProfileHistory>>();
-  const currentLocaleTabsContent = ref();
-  const defaultLocaleTabsContent = ref();
-  const historyTabContent = ref<Maybe<IHistory>>();
-  const defaultLocaleHistoryTabContent = ref<Maybe<IHistory>>();
+  const {
+    currentLocaleContent: currentLocaleMenuContent,
+    defaultLocaleContent: defaultLocaleMenuContent
+  } = await useContentLogic<any>({
+    contentKey: 'profileHistoryMenuContent',
+    contentRoute: ['history'],
+    findAll: true
+  });
 
-  interface IPageContent {
-    currentLocalePageData: Maybe<IProfileHistory>;
-    defaultLocalePageData: Maybe<IProfileHistory>;
-    currentLocaleTabData: any;
-    defaultLocaleTabData: any;
-  }
+  const historyTabContent = computed<IHistory|undefined>(() => {
+    if (!currentLocaleMenuContent.value?.length) return undefined;
 
-  const setPageContent = ():void => {
-    if (currentLocaleTabsContent.value?.length) {
-      historyTabContent.value  = currentLocaleTabsContent.value.reduce((finalContentObj:any, currentContent:any) => {
-        const splitPath = currentContent._path?.split('/');
-        if (!splitPath) return finalContentObj;
+    return currentLocaleMenuContent.value.reduce((finalContentObj:any, currentContent:any) => {
+      const splitPath = currentContent._path?.split('/');
+      if (!splitPath) return finalContentObj;
 
-        const contentName = camelCase(splitPath[3]);
-        return { ...finalContentObj, [contentName]: currentContent }
-      }, {})
-    }
+      const contentName = camelCase(splitPath[3]);
+      return { ...finalContentObj, [contentName]: currentContent }
+    }, {})
+  });
 
-    if (defaultLocaleTabsContent.value?.length) {
-      defaultLocaleHistoryTabContent.value  = defaultLocaleTabsContent.value.reduce((finalContentObj:any, currentContent:any) => {
-        const splitPath = currentContent._path?.split('/');
-        if (!splitPath) return finalContentObj;
+  const defaultLocaleHistoryTabContent = computed<IHistory|undefined>(() => {
+    if (!defaultLocaleMenuContent.value?.length) return undefined;
 
-        const contentName = camelCase(splitPath[3]);
-        return { ...finalContentObj, [contentName]: currentContent }
-      }, {})
-    }
-  }
+    return defaultLocaleMenuContent.value.reduce((finalContentObj:any, currentContent:any) => {
+      const splitPath = currentContent._path?.split('/');
+      if (!splitPath) return finalContentObj;
 
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    historyContent.value = contentData?.currentLocalePageData;
-    defaultLocaleHistoryContent.value = contentData?.defaultLocalePageData;
-    currentLocaleTabsContent.value = contentData?.currentLocaleTabData;
-    defaultLocaleTabsContent.value = contentData?.defaultLocaleTabData;
-    setPageContent();
-    setPageMeta(historyContent.value?.pageMeta);
-  }
+      const contentName = camelCase(splitPath[3]);
+      return { ...finalContentObj, [contentName]: currentContent }
+    }, {})
 
-  const getPageContent = async (): Promise<IPageContent> => {
-    const { data } = useNuxtData('profileHistoryContent');
-    if (data.value) return data.value;
-
-    const [
-      currentLocaleContentResponse,
-      defaultLocaleContentResponse,
-      currentLocaleTabsContentResponse,
-      defaultLocaleTabsContentResponse
-    ] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'profile', 'history').findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'profile', 'history').findOne(),
-      queryContent(currentLocale.value?.code as string, 'history').find(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'history').find()
-    ]);
-
-    const responseHistoryContent =  getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    const responseHistoryTabContent = getLocalesContentData(currentLocaleTabsContentResponse, defaultLocaleTabsContentResponse);
-    return reactive({
-      currentLocalePageData: responseHistoryContent.currentLocaleData,
-      defaultLocalePageData: responseHistoryContent.defaultLocaleData,
-      currentLocaleTabData: responseHistoryTabContent.currentLocaleData,
-      defaultLocaleTabData: responseHistoryTabContent.defaultLocaleData
-    });
-  }
-
-  const { data } = await useLazyAsyncData('profileHistoryContent', () => getPageContent());
-
-  watch(data, () => {
-    if (data.value) setContentData(data.value);
-  }, { immediate: true });
+  });
 </script>

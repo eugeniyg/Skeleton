@@ -2,13 +2,13 @@
   <div v-if="promotionsList.length" class="group-promotions">
     <atomic-icon :id="globalComponentsContent?.promotions?.icon"/>
     
-    <h2 class="title" v-html="marked.parse(globalComponentsContent?.promotions?.label || '')"/>
+    <h2 class="title">{{ globalComponentsContent?.promotions?.label || '' }}</h2>
 
     <div class="group-promotions__list">
       <div
-        class="group-promotions__item"
         v-for="(promotion, index) in promotionsList"
         :key="index"
+        class="group-promotions__item"
         :class="{ 'hovered': hoverCard === index }"
         @click="clickCard(index)"
       >

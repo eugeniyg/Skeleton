@@ -1,8 +1,8 @@
 <template>
   <button-base
+    v-show="show"
     class="btn-ref-promo"
     @click.prevent="onClick"
-    v-show="show"
   >
     Referral/Promo Code (Optional)<atomic-icon id="arrow_expand-close"/>
   </button-base>

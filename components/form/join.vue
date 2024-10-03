@@ -6,26 +6,24 @@
 
         <form-input-text
           v-show="showPromoInput"
-          v-model:value="registrationFormData[field.name]"
           :key="field.name"
+          v-model:value="registrationFormData[field.name]"
           type="text"
           :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
           :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
           :name="field.name"
           :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
-          @blur="v$[field.name]?.$touch()"
-          @focus="onFocus(field.name)"
           :hint="setError(field.name)"
           :class="field.name"
+          @blur="v$[field.name]?.$touch()"
+          @focus="onFocus(field.name)"
         />
       </template>
 
       <component
+        :is="fieldsMap[field.name]?.component || 'form-input-text'"
         v-else
         :key="field.name"
-        @blur="v$[field.name]?.$touch()"
-        @focus="onFocus(field.name)"
-        :is="fieldsMap[field.name]?.component || 'form-input-text'"
         v-model:value="registrationFormData[field.name]"
         :type="hiddenFields.includes(field.name) ? 'hidden' : fieldsMap[field.name]?.type || 'text'"
         :inputmode="fieldsMap[field.name]?.inputmode"
@@ -34,7 +32,9 @@
         :search-by="fieldsMap[field.name]?.searchBy"
         :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
         :name="field.name"
+        @blur="v$[field.name]?.$touch()"
         :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
+        @focus="onFocus(field.name)"
         :options="selectOptions[field.name]"
         :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
         :hint="setError(field.name)"
@@ -47,15 +47,14 @@
 
     <form-input-checkbox
       v-for="field in footerFields"
-      v-model:value="registrationFormData[field.name]"
       :key="field.name"
+      v-model:value="registrationFormData[field.name]"
       :name="field.name"
-      @change="v$[field.name]?.$touch()"
       :isError="setError(field.name)"
       :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
       :label="getCheckboxLabel(field.name)"
-    >
-    </form-input-checkbox>
+      @change="v$[field.name]?.$touch()"
+    />
 
     <button-base
       tagName="div"

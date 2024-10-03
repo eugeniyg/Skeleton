@@ -1,15 +1,15 @@
 <template>
   <div class="input-birth">
     <span v-if="props.label" class="label">
-      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
+      {{ props.label }}<span v-if="props.isRequired" class="required">*</span>
       <button-clear-input v-if="!props.isDisabled" @click="clearInput"/>
     </span>
 
     <form-input-dropdown
+      v-model:value="selected.day"
       name="birth-day"
       :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderDay') || ''"
       :is-disabled="props.isDisabled"
-      v-model:value="selected.day"
       :options="days"
       :hint="{ ...props.hint, message: '' }"
       @input="onInputDays"
@@ -17,22 +17,22 @@
     />
 
     <form-input-dropdown
+      v-model:value="selected.month"
       name="birth-month"
       :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderMonth') || ''"
       :is-disabled="props.isDisabled"
       :options="months"
-      v-model:value="selected.month"
       :hint="{ ...props.hint, message: '' }"
       @input="onInputMonth"
       @focus="emit('focus')"
     />
 
     <form-input-dropdown
+      v-model:value="selected.year"
       name="birth-year"
       :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderYear') || ''"
       :is-disabled="props.isDisabled"
       :options="years"
-      v-model:value="selected.year"
       :hint="{ ...props.hint, message: '' }"
       @input="onInputYear"
       @focus="emit('focus')"

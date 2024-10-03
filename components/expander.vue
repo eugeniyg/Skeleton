@@ -8,7 +8,7 @@
       </button-base>
     </div>
 
-    <div class="expander__content" ref="content" :style="styles">
+    <div ref="content" class="expander__content" :style="styles">
       <atomic-text-editor :content="props.content" />
     </div>
   </div>

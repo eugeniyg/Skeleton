@@ -2,51 +2,52 @@
   display: grid;
   align-items: center;
   grid-template-areas:
-    "icon heading heading arrows"
-    "items items items items"
-    "btn-show-all btn-show-all btn-show-all btn-show-all";
+    "icon heading heading btn-show-all"
+    "items items items items";
   grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto) minmax(0, auto);
-  grid-column-gap: var(--column-gap, #{rem(8px)});
-  grid-row-gap: var(--row-gap, #{rem(16px)});
-  background-color: var(--layer-01);
-  border-radius: 16px;
-  padding: rem(16px) rem(16px) rem(8px) rem(16px);
+  grid-row-gap: var(--row-gap, 16px);
   position: relative;
 
   @include media(xs) {
     grid-template-areas:
     "icon heading btn-show-all arrows"
     "items items items items";
-    padding: rem(16px) rem(16px) rem(24px) rem(16px);
-  }
-
-  @include media(sm) {
-    padding: rem(24px);
-  }
-
-  @include media(md) {
-    padding: rem(24px);
-
-    @include scroll-overlay;
   }
 
   > [data-icon] {
-    font-size: rem(20px);
+    font-size: 20px;
     grid-area: icon;
   }
 
   > .icon {
     grid-area: icon;
-    --icon-size: #{rem(20px)};
+    --icon-size: 20px;
     --color: var(--icon-primary);
+    margin-right: 8px;
+  }
+
+  .btn-show-all {
+    grid-area: btn-show-all;
+    @include font($heading-1);
+    height: 32px;
+    --width: auto;
+    --line-height: auto;
+    --padding: 6px 16px;
+
+    @include media(sm) {
+      @include upd-font($heading-2);
+    }
+
+    @extend %btn-ghost-low-contrast;
   }
 
   > .arrows {
-    display: var(--arrows-display, none);
-    grid-area: arrows;
+    display: none;
 
-    @include media(md) {
-      --arrows-display: flex
+    @include media(sm) {
+      grid-area: arrows;
+      display: flex;
+      margin-left: 8px;
     }
   }
 
@@ -55,7 +56,7 @@
     grid-area: heading;
     @include font($heading-4);
     color: var(--text-primary);
-    margin: 0;
+    margin: 0 0 0 0;
   }
 
   > .items {
@@ -63,28 +64,93 @@
     display: var(--display, flex);
     align-items: center;
     overflow-x: auto;
+    margin: var(--items-margin, (-16px -16px 0));
+    padding: var(--items-padding, (16px 16px 0));
+    scroll-padding: var(--scroll-padding, 16px);
+    grid-column-gap: var(--column-gap, 8px);
     scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    margin: 0 -32px 0;
-    padding: 0 32px;
-    scroll-padding: 32px;
-    grid-column-gap: 8px;
 
-    @include media(sm) {
-      grid-column-gap: 16px;
-      margin: 0 -56px 0;
-      padding: 0 56px;
-      scroll-padding: 56px;
+    --column-count: 3.25;
+    --column-gap: 8px;
+    --shadow-width: 16px;
+    --shadow-inset: -16px;
+
+    &:before, &:after {
+      content: '';
+      top: -1px;
+      bottom: -1px;
+      width: var(--shadow-width);
+      position: absolute;
+      background: linear-gradient(270deg, var(--layer-bg) 0%, rgba(17, 20, 28, 0) 100%);
+      z-index: 1;
     }
 
-    @include media(md) {
-      scroll-padding: 0;
-      padding: 0;
-      margin:  0;
+    &:before {
+      transform: rotate(180deg);
+      left: var(--shadow-inset);
+    }
+
+    &:after {
+      right: var(--shadow-inset);
+    }
+
+    @include media(xs) {
+      --items-margin: -16px -32px 0;
+      --items-padding: 16px 32px 0;
+      --scroll-padding: 32px;
+    }
+
+    @include media(xs) {
+      --shadow-width: 32px;
+      --shadow-inset: -32px;
+    }
+
+    @include media(sm) {
+      --column-count: 6;
+      --column-gap: 16px;
+      --items-margin: -16px -32px 0;
+      --items-padding: 16px 32px 0;
+    }
+
+    @include media(xl) {
+      --column-count: 8;
+    }
+
+    @include media(xxl) {
+      --column-count: 9;
     }
 
     &::-webkit-scrollbar {
       display: none;
+    }
+
+    &.disabled-scroll-block {
+      pointer-events: none !important;
+    }
+  }
+
+  .load-more {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+    margin-left: -8px;
+
+    @include media(sm) {
+      margin-left: -16px;
+    }
+  }
+
+  .titles {
+    .title {
+      @include font($heading-4);
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .sub-title {
+      @include font($body-2);
+      color: var(--text-tertiary);
+      margin: 0;
     }
   }
 }

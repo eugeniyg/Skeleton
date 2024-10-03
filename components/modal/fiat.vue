@@ -4,9 +4,9 @@
       v-model="modals.fiat"
       class="modal-fiat"
       :clickToClose="false"
-      @clickOutside="closeModal('fiat')"
       :overlayTransition="{ mode: 'in-out', duration: 200 }"
       :contentTransition="{ mode: 'in-out', duration: 200 }"
+      @clickOutside="closeModal('fiat')"
     >
       <div class="scroll">
         <div class="header">
@@ -21,9 +21,9 @@
         <div class="modal-fiat__list">
           <div
             v-for="item in fiatCurrencies"
+            :key="item.code"
             class="modal-fiat__item"
             :class="{ 'is-active': equivalentCurrency?.code === item.code }"
-            :key="item.code"
             @click="selectFiat(item.code)"
           >
             <atomic-image

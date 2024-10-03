@@ -24,70 +24,70 @@
 </template>
 
 <script setup lang="ts">
-import type {IPaginationMeta, IPlayerQuest} from "@skeleton/core/types";
-import {useListen} from "@skeleton/composables/useEventBus";
+  import type {IPaginationMeta, IPlayerQuest} from "@skeleton/core/types";
+  import {useListen} from "@skeleton/composables/useEventBus";
 
-const globalStore = useGlobalStore();
-const {
-  popupsData,
-  defaultLocalePopupsData,
-  alertsData,
-  defaultLocaleAlertsData
-} = storeToRefs(globalStore);
-const { getContent } = useProjectMethods();
+  const globalStore = useGlobalStore();
+  const {
+    popupsData,
+    defaultLocalePopupsData,
+    alertsData,
+    defaultLocaleAlertsData
+  } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
 
-interface IState {
-  loading: boolean;
-  data: IPlayerQuest[];
-  meta: Maybe<IPaginationMeta>;
-}
-
-const state = reactive<IState>({
-  loading: false,
-  data: [],
-  meta: undefined,
-});
-
-const { getPlayerQuests } = useCoreQuestApi();
-const { showAlert } = useLayoutStore();
-const getData = async (page = 1): Promise<void> => {
-  if (state.loading || (state.meta && state.meta.page >= state.meta.totalPages)) return;
-  state.loading = true;
-
-  try {
-    const { activeAccount } = useWalletStore();
-    const { data, meta } = await getPlayerQuests({
-      page: page,
-      perPage: 3,
-      state: [3,4],
-      currency: activeAccount?.currency
-    });
-    state.data = page === 1 ? data : [...state.data, ...data];
-    state.meta = meta;
-  } catch {
-    state.data = [];
-    state.meta = undefined;
-    showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
-  } finally {
-    state.loading = false;
+  interface IState {
+    loading: boolean;
+    data: IPlayerQuest[];
+    meta: Maybe<IPaginationMeta>;
   }
-}
 
-const emptyContentData = computed(() => {
-  const image = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.image');
-  const title = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.completedTitle');
-  const description = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.completedDescription');
-  return { image, title, description };
-})
+  const state = reactive<IState>({
+    loading: false,
+    data: [],
+    meta: undefined,
+  });
 
-onMounted(async () => {
-  await getData();
-  useListen('completedQuestsUpdated', getData);
-});
+  const { getPlayerQuests } = useCoreQuestApi();
+  const { showAlert } = useLayoutStore();
+  const getData = async (page = 1): Promise<void> => {
+    if (state.loading || (state.meta && state.meta.page >= state.meta.totalPages)) return;
+    state.loading = true;
 
-onBeforeUnmount(() => {
-  useUnlisten('completedQuestsUpdated', getData);
-})
+    try {
+      const { activeAccount } = useWalletStore();
+      const { data, meta } = await getPlayerQuests({
+        page: page,
+        perPage: 3,
+        state: [3,4],
+        currency: activeAccount?.currency
+      });
+      state.data = page === 1 ? data : [...state.data, ...data];
+      state.meta = meta;
+    } catch {
+      state.data = [];
+      state.meta = undefined;
+      showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
+    } finally {
+      state.loading = false;
+    }
+  }
+
+  const emptyContentData = computed(() => {
+    const image = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.image');
+    const title = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.completedTitle');
+    const description = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.completedDescription');
+    return { image, title, description };
+  })
+
+  onMounted(async () => {
+    await getData();
+    useListen('completedQuestsUpdated', getData);
+  });
+
+  onBeforeUnmount(() => {
+    useUnlisten('completedQuestsUpdated', getData);
+  })
 </script>
 
 <style src="~/assets/styles/components/quest/tab.scss" lang="scss"/>

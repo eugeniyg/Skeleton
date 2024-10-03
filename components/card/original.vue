@@ -1,6 +1,7 @@
 <template>
   <div
     ref="cardBase"
+    v-click-outside="hideHover"
     class="card-original"
     :class="{
       'hovered': gameHovered,
@@ -8,7 +9,6 @@
     }"
     :data-size="cardSize"
     @click="clickGame"
-    v-click-outside="hideHover"
   >
     <atomic-image class="card-original__img" :src="src" />
     <div v-if="gameBages?.length" class="bages">

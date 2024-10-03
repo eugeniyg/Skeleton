@@ -20,9 +20,9 @@
       >
         <li
           v-for="(item, index) in listItems"
+          :key="index"
           class="loyalty-how-it-works__list-item"
           :class="{'is-numeric': !item.image }"
-          :key="index"
         >
           <atomic-image
             v-if="item.image"

@@ -4,12 +4,12 @@
   >
     <h4 class="limits-periods-list__item-title">{{ status === 1 ? statusActiveTitle : statusPendingTitle }}</h4>
 
-    <p class="limits-periods-list__item-sub-title" v-if="isShowContDown">
+    <p v-if="isShowContDown" class="limits-periods-list__item-sub-title">
       <template v-if="state.isAlmostDone">
         {{ getContent(limitsContent, defaultLimitsContent, 'timerAlmostDone') }}
       </template>
       <template v-else>
-        <span class="time-span" v-if="state.days">{{ format(state.days) }}d</span>
+        <span v-if="state.days" class="time-span">{{ format(state.days) }}d</span>
         <span class="time-span">{{ format(state.hours) }}h</span>
         <span class="time-span">{{ format(state.minutes) }}m</span>
         <span class="time-span">{{ format(state.seconds) }}s</span>

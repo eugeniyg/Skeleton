@@ -25,14 +25,14 @@
     <template v-if="props.selectedTab === 'deposit'">
       <wallet-limit
         v-if="depositLimitError"
-        :currentLocaleLimitsContent="currentLocaleLimitsContent"
-        :defaultLocaleLimitsContent="defaultLocaleLimitsContent"
+        :currentLocaleLimitsContent="currentLocaleContent"
+        :defaultLocaleLimitsContent="defaultLocaleContent"
       />
 
       <template v-else-if="depositMethods?.length && props.currentDepositMethod">
         <form-deposit
-          :key="`${props.currentDepositMethod.method}-${depositMethodKey}-${showMobileFormKey}`"
           v-if="props.currentDepositMethod.type === 'form'"
+          :key="`${props.currentDepositMethod.method}-${depositMethodKey}-${showMobileFormKey}`"
           v-bind="props.currentDepositMethod"
         />
 
@@ -47,8 +47,8 @@
         <atomic-icon id="info" />
 
         <span>
-              {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
-            </span>
+          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+        </span>
       </div>
     </template>
 
@@ -108,12 +108,7 @@
   } = storeToRefs(walletStore);
 
   const globalStore = useGlobalStore();
-  const {
-    currentLocale,
-    defaultLocale,
-    popupsData,
-    defaultLocalePopupsData
-  } = storeToRefs(globalStore);
+  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
@@ -168,24 +163,12 @@
   })
 
   // << GET CONTENT FOR DEPOSIT LIMIT
-  const currentLocaleLimitsContent = ref<Maybe<IProfileLimits['coolingOff']>>();
-  const defaultLocaleLimitsContent = ref<Maybe<IProfileLimits['coolingOff']>>();
-
-  const getLimitContent = async ():Promise<void> => {
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'profile', 'limits').only(['coolingOff']).findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').only(['coolingOff']).findOne()
-    ]);
-
-    if (currentLocaleContentResponse.status !== 'rejected') {
-      currentLocaleLimitsContent.value = currentLocaleContentResponse.value as IProfileLimits['coolingOff'];
-    }
-
-    if (defaultLocaleContentResponse.status !== 'rejected') {
-      defaultLocaleLimitsContent.value = defaultLocaleContentResponse.value as IProfileLimits['coolingOff'];
-    }
-  }
+  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProfileLimits['coolingOff']>({
+    contentKey: 'coolingOffLimitsContent',
+    contentRoute: ['profile', 'limits'],
+    only: ['coolingOff']
+  });
+  // >>
 
   const showMobileFormKey = ref<number>(0);
   watch(() => props.showMobileForm, (newValue) => {
@@ -197,11 +180,6 @@
   watch(() => depositMethods.value, () => {
     depositMethodKey.value += 1;
   });
-
-  onMounted(() => {
-    getLimitContent();
-  })
-  // >>
 </script>
 
 <style src="~/assets/styles/components/wallet/forms.scss" lang="scss"/>

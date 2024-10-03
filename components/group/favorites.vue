@@ -18,7 +18,7 @@
       {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
-    <div class="items" ref="container">
+    <div ref="container" class="items">
       <card-simple
         v-for="(favorite, favoriteIndex) in favoriteList"
         :key="favoriteIndex"

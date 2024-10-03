@@ -2,10 +2,10 @@
   <vue-final-modal
     v-model="modals.addLimit"
     class="modal-deposit-limit"
-    @clickOutside="closeModal('addLimit')"
     clickToClose
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="closeModal('addLimit')"
   >
     <div class="scroll">
       <div class="header">
@@ -18,10 +18,10 @@
       <div class="modal-deposit-limit__tabs">
         <button
           v-for="period in periodOptions"
+          :key="period.id"
           class="modal-deposit-limit__tabs-item"
           :class="{'is-active': period.id === selectedTab.id}"
           :disabled="period.disabled"
-          :key="period.id"
           @click="changeTab(period)"
         >
           {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.limitPeriods.${period.id}`) }}
@@ -29,21 +29,21 @@
       </div>
 
       <form-input-currencies
-        @select="selectCurrency"
-        @blur="blurCurrencySelect"
+        :key="currencyKey"
         :show-error="formState.showCurrenciesError"
         :items="currenciesOptions"
-        :key="currencyKey"
+        @select="selectCurrency"
+        @blur="blurCurrencySelect"
       />
 
       <form-input-number
+        v-model:value="formState.amount"
         :is-required="false"
         :currency="formattedBalance.currency"
         :min="0"
         :max="1000000"
         label=""
         name="amount"
-        v-model:value="formState.amount"
         placeholder="0"
         :hint="amountError ? setError('amount'): undefined"
         @blur="amountError = false"
@@ -56,8 +56,8 @@
       <button-base
         type="primary"
         size="md"
-        @click="addLimit"
         :is-disabled="isAddButtonDisabled"
+        @click="addLimit"
       >
         {{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.addButton') }}
       </button-base>

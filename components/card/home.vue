@@ -17,7 +17,7 @@
     </div>
 
     <client-only>
-      <div class="loyalty-home" v-if="isLoggedIn && props.showLoyalty && loyaltyEnabled">
+      <div v-if="isLoggedIn && props.showLoyalty && loyaltyEnabled" class="loyalty-home">
         <div v-if="loyaltyWelcomeTitle" class="loyalty-home__title">{{ loyaltyWelcomeTitle }}</div>
 
         <div v-if="props.bannerLoyalty?.subtitle" class="loyalty-home__sub-title">
@@ -30,11 +30,20 @@
         </div>
       </div>
 
-      <div class="info" v-else>
-        <div class="title" v-if="props.title" v-html="marked.parse(props.title)"/>
-        <div class="card-home__content" v-if="props.content" v-html="marked.parse(props.content)"/>
+      <div v-else class="info">
+        <div
+          v-if="props.title"
+          class="title"
+          v-html="DOMPurify.sanitize(marked.parse(props.title || '') as string, { FORBID_TAGS: ['style'] })"
+        />
 
-        <div class="actions" v-if="props.button && props.button?.showButton">
+        <div
+          v-if="props.content"
+          class="card-home__content"
+          v-html="DOMPurify.sanitize(marked.parse(props.content || '') as string, { FORBID_TAGS: ['style'] })"
+        />
+
+        <div v-if="props.button && props.button?.showButton" class="actions">
           <button-base
             type="primary"
             size="md"
@@ -52,6 +61,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
+  import DOMPurify from "isomorphic-dompurify";
 
   const props = defineProps<{
     images: {

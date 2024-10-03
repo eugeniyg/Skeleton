@@ -5,33 +5,33 @@
       <atomic-icon id="arrow_expand-close" />
     </div>
 
-    <div class="info-accordeon__content" ref="contentContainer">
+    <div ref="contentContainer" class="info-accordeon__content">
       {{ props.description }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-  title: string;
-  description: string;
-}>();
+  const props = defineProps<{
+    title: string;
+    description: string;
+  }>();
 
-const isOpen = ref<boolean>(false);
-const scrollHeight = ref<number>(0);
-const contentContainer = ref();
+  const isOpen = ref<boolean>(false);
+  const scrollHeight = ref<number>(0);
+  const contentContainer = ref();
 
-const toggleOpen = (): void => {
-  isOpen.value = !isOpen.value;
-  const height = isOpen.value ? scrollHeight.value : 0;
-  contentContainer.value.style.setProperty('--items-height', `${height}px`);
-};
+  const toggleOpen = (): void => {
+    isOpen.value = !isOpen.value;
+    const height = isOpen.value ? scrollHeight.value : 0;
+    contentContainer.value.style.setProperty('--items-height', `${height}px`);
+  };
 
-const updateScrollHeight = (): void => {
-  scrollHeight.value = contentContainer.value.scrollHeight;
-};
+  const updateScrollHeight = (): void => {
+    scrollHeight.value = contentContainer.value.scrollHeight;
+  };
 
-onMounted(() => {
-  updateScrollHeight();
-});
+  onMounted(() => {
+    updateScrollHeight();
+  });
 </script>

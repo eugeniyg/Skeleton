@@ -3,13 +3,13 @@
     <form-input-phone
       key="phone"
       v-model:value="forgotFormData.phone"
-      @blur="v$.phone?.$touch()"
-      @focus="onFocus('phone')"
       :is-required="true"
       :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.phone.label') || ''"
       name="phone"
       :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.phone.placeholder') || ''"
       :hint="setError('phone')"
+      @blur="v$.phone?.$touch()"
+      @focus="onFocus('phone')"
       @submit="sendOtp"
     />
 

@@ -14,10 +14,10 @@
       >
         <div
           v-for="(tab, index) in props.tabs"
+          :key="index"
           class="loyalty-benefits-tabs__nav-item"
           :class="{'is-active': index === selectedTabIndex}"
           @click="selectTab(index)"
-          :key="index"
         >
           <atomic-image v-if="tab.tabImage" class="loyalty-benefits-tabs__nav-item-image" :src="tab.tabImage"/>
           <div class="loyalty-benefits-tabs__nav-item-title">{{ tab.tabLabel || (index + 1) }}</div>
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import type { IBenefitsTab } from '~/types';
+  import type { IBenefitsTab } from '~/types';
 
   const props = defineProps<{
     tabs: IBenefitsTab[];

@@ -1,18 +1,18 @@
 <template>
   <label :class="classes">
     <span v-if="label" class="label">
-      {{ label }}<span class="required" v-if="isRequired">*</span>
+      {{ label }}<span v-if="isRequired" class="required">*</span>
     </span>
 
     <slot name="pills"/>
 
     <div class="row">
       <input
+        v-maska="'T.T'"
         class="field"
         type="text"
         inputmode="decimal"
         maxlength="10"
-        v-maska="'T.T'"
         data-maska-tokens="T:[0-9]:multiple"
         :name="name"
         :value="props.value"
@@ -20,8 +20,8 @@
         :placeholder="props.placeholder"
         @blur="onBlur"
         @input="onInput"
-      />
-      <span class="mask" v-if="props.currency">{{ props.currency }}</span>
+      >
+      <span v-if="props.currency" class="mask">{{ props.currency }}</span>
     </div>
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
