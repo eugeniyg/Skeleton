@@ -1,8 +1,13 @@
 <template>
-  <div class="notification-bar" ref="bar" v-if="displayBar">
+  <div v-if="displayBar" ref="bar" class="notification-bar">
     <atomic-icon id="warning" class="notification-bar__icon"/>
-    <img v-if="barContentImg" :src="barContentImg" alt="" class="notification-bar__img">
-    <div class="notification-bar__content" v-html="marked.parse(barContent)"/>
+    <img
+      v-if="barContentImg"
+      :src="barContentImg"
+      alt=""
+      class="notification-bar__img"
+    >
+    <div class="notification-bar__content" v-html="DOMPurify.sanitize(marked.parse(barContent || '') as string, { FORBID_TAGS: ['style'] })" />
     
     <div class="notification-bar__close" @click="deactivateBar">
       <atomic-icon id="close"/>
@@ -13,7 +18,8 @@
 <script setup lang="ts">
   import debounce from 'lodash/debounce.js';
   import { marked } from 'marked';
-  
+  import DOMPurify from "isomorphic-dompurify";
+
   const {
     layoutData,
     defaultLocaleLayoutData

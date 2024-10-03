@@ -2,8 +2,8 @@
   <div>
     <div
       class="link"
-      @click="toggleOpen"
       :class="{'is-open': open }"
+      @click="toggleOpen"
     >
       <atomic-link
         v-if="isDrawerCompact"

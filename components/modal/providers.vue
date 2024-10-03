@@ -39,12 +39,12 @@
             <span class="modal-providers__item-count">{{ provider.gameEnabledCount }}</span>
             
             <input
-              class="modal-providers__item-input"
+              :id="provider.id"
               ref="inputRef"
+              class="modal-providers__item-input"
               name="providers"
               type="checkbox"
               :class="{ checked: props.selected.includes(provider.id) }"
-              :id="provider.id"
               :value="provider.id"
               :checked="props.selected.includes(provider.id)"
               @change="change(provider.id)"
@@ -64,7 +64,7 @@
       
       <div class="modal-providers__footer">
         <atomic-divider/>
-        <button-base type="ghost" @click.prevent="selectAll" :is-disabled="isShowEmpty">
+        <button-base type="ghost" :is-disabled="isShowEmpty" @click.prevent="selectAll">
           {{ getContent(popupsData, defaultLocalePopupsData, 'providers.selectAll') }}
         </button-base>
       </div>

@@ -16,6 +16,7 @@
       <div class="modal-categories__content">
         <div
           v-for="({ id, identity, name }, index) in categories"
+          :key="id"
           class="modal-categories__item"
           :data-index="index"
           :class="{
@@ -23,7 +24,6 @@
             'is-no-icon': !gameCategoriesObj[identity]?.icon
           }"
           @click="emit('clickCategory', identity)"
-          :key="id"
         >
           <atomic-icon :id="gameCategoriesObj[identity]?.icon"/>
           <span>{{ gameCategoriesObj[identity]?.label || name }}</span>

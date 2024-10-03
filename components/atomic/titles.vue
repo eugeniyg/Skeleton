@@ -1,8 +1,8 @@
 <template>
   <div class="titles">
     <slot>
-      <div class="title" v-if="props.title">{{ props.title }}</div>
-      <div class="sub-title" v-if="props.subTitle">{{ props.subTitle }}</div>
+      <div v-if="props.title" class="title">{{ props.title }}</div>
+      <div v-if="props.subTitle" class="sub-title">{{ props.subTitle }}</div>
     </slot>
   </div>
 </template>

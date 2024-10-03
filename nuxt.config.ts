@@ -40,6 +40,13 @@ export default defineNuxtConfig({
     ],
     defaultLocale: 'en',
   },
+  lazyLoad: {
+    observerConfig: {
+      root: null,
+      rootMargin: '400px',
+      threshold: 0
+    }
+  },
   components: {
     dirs: [
       {
@@ -101,6 +108,7 @@ export default defineNuxtConfig({
   css: [
     '@skeleton/assets/styles/style.scss',
     '@skeleton/node_modules/vue-final-modal/dist/style.css',
+    '@skeleton/node_modules/vue-skeletor/dist/vue-skeletor.css'
   ],
   vite: viteConfig,
   nitro: {

@@ -3,9 +3,9 @@
     v-model="showTasksModal"
     class="modal-quest-tasks"
     :clickToClose="false"
-    @clickOutside="closeTasksModal"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="closeTasksModal"
   >
     <div class="container">
       <div class="scroll">
@@ -44,7 +44,7 @@
           </div>
 
           <div class="quest-tasks__items">
-            <div class="quest-tasks__completed" v-if="completedTasks.length">
+            <div v-if="completedTasks.length" class="quest-tasks__completed">
               <template v-for="(task, index) in completedTasks" :key="task.id">
                 <quest-task-card
                   :taskInfo="task"

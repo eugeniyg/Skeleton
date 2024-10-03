@@ -1,7 +1,7 @@
 <template>
   <label :class="classes">
     <span v-if="props.label" class="label">
-      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
+      {{ props.label }}<span v-if="props.isRequired" class="required">*</span>
     </span>
 
     <div class="row">
@@ -17,7 +17,7 @@
         @blur="onBlur"
         @input="onInput"
         @keyup.enter="emit('submit', $event)"
-      />
+      >
       <button-toggle-type @change-type="changeType"/>
     </div>
 

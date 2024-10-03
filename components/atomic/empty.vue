@@ -1,18 +1,19 @@
 <template>
   <div class="empty" :class="currentClass">
     <atomic-image
-      class="empty__image"
       v-if="props.image"
+      class="empty__image"
       :src="props.image"
     />
     <atomic-icon-colored v-else-if="currentIcon" :id="currentIcon"/>
     <div class="title">{{ props.title }}</div>
-    <div class="sub-title" v-html="marked.parse(props.subTitle)"/>
+    <div class="sub-title" v-html="DOMPurify.sanitize(marked.parse(props.subTitle || '') as string, { FORBID_TAGS: ['style'] }) "/>
   </div>
 </template>
 
 <script setup lang="ts">
   import { marked } from 'marked';
+  import DOMPurify from "isomorphic-dompurify";
 
   const props = defineProps({
     variant: {

@@ -3,9 +3,9 @@
     v-model="modals.chooseRegion"
     class="modal-choose-region"
     :clickToClose="false"
-    @clickOutside="closeModal('chooseRegion')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="closeModal('chooseRegion')"
   >
     <div class="scroll">
       <div class="header">
@@ -15,23 +15,23 @@
 
       <div class="modal-choose-region__search">
         <input
-          class="modal-choose-region__search-input"
           v-model="searchInput"
+          class="modal-choose-region__search-input"
           placeholder="Search your region"
           type="text"
           @input="onInput"
         >
         <atomic-icon
-          class="modal-choose-region__search-icon"
           id="search"
+          class="modal-choose-region__search-icon"
         />
       </div>
 
       <div class="modal-choose-region__items">
         <div
+          v-for="item in items"
           class="modal-choose-region__item"
           :class="{'is-selected': selectedRegion === item}"
-          v-for="item in items"
           @click="selectRegion(item)"
         >
           <atomic-image src="/img/cash/logo.svg"/>
@@ -50,8 +50,8 @@
       <button-base
         type="primary"
         size="md"
-        @click="actionClick"
         :is-disabled="!selectedRegion"
+        @click="actionClick"
       >
         Apply
       </button-base>

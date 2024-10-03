@@ -18,7 +18,7 @@
       {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
-    <div class="items" ref="container">
+    <div ref="container" class="items">
       <card-simple
         v-for="(game, gameIndex) in currentGames"
         :key="gameIndex"

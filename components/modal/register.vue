@@ -3,10 +3,10 @@
     v-model="modals.register"
     class="modal-register"
     displayDirective="show"
-    @closed="closedEvent"
     :clickToClose="false"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @closed="closedEvent"
     @beforeOpen="beforeOpenHandle"
     @opened="openedHandle"
   >
@@ -19,7 +19,7 @@
 
       <div ref="scrollBlock" class="scroll" @scroll="handleScroll">
         <div class="header">
-          <div class="title" v-html="marked.parse(formTitle || '')"/>
+          <div class="title" v-html="DOMPurify.sanitize(marked.parse(formTitle || '') as string, { FORBID_TAGS: ['style'] })" />
 
           <div v-if="showPhoneVerification" class="header__back-btn" @click="showRegistrationForm">
             <span class="header__back-btn-icon">
@@ -64,8 +64,8 @@
           v-if="registrationFields.length"
           v-show="!showPhoneVerification"
           ref="registrationForm"
-          :registrationFields="registrationFields"
           :key="`${formKey}-${selectedTab}`"
+          :registrationFields="registrationFields"
           :registrationType="selectedTab"
           @showVerification="showVerification"
         />
@@ -80,6 +80,7 @@
   import { VueFinalModal } from 'vue-final-modal';
   import type {Dayjs} from "dayjs";
   import { marked } from 'marked';
+  import DOMPurify from "isomorphic-dompurify";
 
   const formKey = ref<number>(0);
   const layoutStore = useLayoutStore();

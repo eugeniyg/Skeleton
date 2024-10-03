@@ -3,9 +3,9 @@
     v-model="modals.success"
     class="modal-success-deposit"
     :clickToClose="false"
-    @clickOutside="closeModal('success')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="closeModal('success')"
   >
     <div class="scroll">
       <div class="header">
@@ -15,7 +15,7 @@
 
       <atomic-image class="img" src="/img/success.svg" />
       <client-only>
-        <p class="text" v-html="marked.parse(description || '')" />
+        <p class="text" v-html="DOMPurify.sanitize(marked.parse(description || '') as string, { FORBID_TAGS: ['style'] })" />
       </client-only>
 
       <button-base
@@ -33,6 +33,7 @@
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
   import { VueFinalModal } from 'vue-final-modal';
+  import DOMPurify from "isomorphic-dompurify";
 
   const layoutStore = useLayoutStore();
   const { modals, successModalType } = storeToRefs(layoutStore);
@@ -41,24 +42,21 @@
   const { getContent } = useProjectMethods();
 
   const title = computed(() => {
-    if (successModalType.value === 'deposit')
-      return getContent(popupsData, defaultLocalePopupsData, 'successDeposit.title');
-    else if (successModalType.value === 'deposit-pending')
-      return getContent(popupsData, defaultLocalePopupsData, 'successDepositPending.title');
+    if (successModalType.value === 'deposit') return getContent(popupsData, defaultLocalePopupsData, 'successDeposit.title');
+    if (successModalType.value === 'deposit-pending') return getContent(popupsData, defaultLocalePopupsData, 'successDepositPending.title');
+    return '';
   })
 
   const description = computed(() => {
-    if (successModalType.value === 'deposit')
-      return getContent(popupsData, defaultLocalePopupsData, 'successDeposit.description');
-    else if (successModalType.value === 'deposit-pending')
-      return getContent(popupsData, defaultLocalePopupsData, 'successDepositPending.description');
+    if (successModalType.value === 'deposit') return getContent(popupsData, defaultLocalePopupsData, 'successDeposit.description');
+    if (successModalType.value === 'deposit-pending') return getContent(popupsData, defaultLocalePopupsData, 'successDepositPending.description');
+    return '';
   })
 
   const button = computed(() => {
-    if (successModalType.value === 'deposit')
-      return getContent(popupsData, defaultLocalePopupsData, 'successDeposit.button');
-    else if (successModalType.value === 'deposit-pending')
-      return getContent(popupsData, defaultLocalePopupsData, 'successDepositPending.button');
+    if (successModalType.value === 'deposit') return getContent(popupsData, defaultLocalePopupsData, 'successDeposit.button');
+    if (successModalType.value === 'deposit-pending') return getContent(popupsData, defaultLocalePopupsData, 'successDepositPending.button');
+    return '';
   })
 </script>
 

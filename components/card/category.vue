@@ -1,8 +1,8 @@
 <template>
   <div
-      class="card-category"
-      :class="`card-category--${props.mod}`"
-      :style="backgroundGradientStyle"
+    class="card-category"
+    :class="`card-category--${props.mod}`"
+    :style="backgroundGradientStyle"
   >
     <div class="card-category__title">
       {{ props.title }}

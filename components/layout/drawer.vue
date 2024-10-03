@@ -21,7 +21,7 @@
       />
 
       <client-only>
-        <atomic-link href="/loyalty" v-if="isLoggedIn && loyaltyEnabled" class="drawer__loyalty">
+        <atomic-link v-if="isLoggedIn && loyaltyEnabled" href="/loyalty" class="drawer__loyalty">
           <loyalty-level-logo />
           <loyalty-progress shortVersion />
         </atomic-link>

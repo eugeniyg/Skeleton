@@ -3,9 +3,9 @@
     <div class="cards-bet-tab">
       <div class="nav-bets-history">
         <div
-          class="item"
           v-for="{ title, id } in betsTab"
           :key="id"
+          class="item"
           :class="{'is-active': id === selectedBetsTab}"
           @click="changeBetsTab(id)"
         >

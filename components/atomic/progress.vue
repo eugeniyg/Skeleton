@@ -1,6 +1,6 @@
 <template>
   <div class="progress">
-    <span class="progress__bar" :style="{'--progress-bar': percentage + '%'}"></span>
+    <span class="progress__bar" :style="{'--progress-bar': percentage + '%'}"/>
   </div>
 </template>
 

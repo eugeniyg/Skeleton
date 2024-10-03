@@ -3,7 +3,7 @@
     class="select-lang"
     :class="{ 'is-open': isOpen }"
   >
-    <div class="select-lang__wrap" v-click-outside="closeSelect">
+    <div v-click-outside="closeSelect" class="select-lang__wrap">
       <div class="selected" @click="toggleOpen">
         <atomic-image
           class="img"
@@ -18,9 +18,9 @@
         body-scroll-lock-ignore
       >
         <div
-          class="item"
           v-for="locale in locales"
           :key="locale.code"
+          class="item"
           :class="{ 'is-selected': currentLocale?.code.toLowerCase() === locale.code.toLowerCase() }"
           @click="changeLanguage(locale)"
         >

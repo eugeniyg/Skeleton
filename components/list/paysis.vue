@@ -1,12 +1,12 @@
 <template>
   <div
+    v-if="paymentsItems?.length"
+    ref="sliderNode"
     class="paysis"
     :class="{'is-logged': isLoggedIn}"
-    ref="sliderNode"
-    v-if="paymentsItems?.length"
   >
     <div class="paysis__container">
-      <div class="paysis__item" v-for="{ image } in paymentsItems">
+      <div v-for="{ image } in paymentsItems" class="paysis__item">
         <atomic-image
           class="logo"
           :src="image"

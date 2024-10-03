@@ -18,7 +18,7 @@
       <div
         v-if="modalContent"
         class="modal-cancel-deposit__content"
-        v-html="marked.parse(modalContent)"
+        v-html="DOMPurify.sanitize(marked.parse(modalContent) as string, { FORBID_TAGS: ['style'] })"
       />
 
       <div class="modal-cancel-deposit__actions">
@@ -42,6 +42,7 @@
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
   import { VueFinalModal } from 'vue-final-modal';
+  import DOMPurify from "isomorphic-dompurify";
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);

@@ -2,8 +2,8 @@
   <div class="input-providers">
     <button
       class="input-providers__toggle"
-      @click.stop="toggleOpen"
       :class="{'is-open': isOpen}"
+      @click.stop="toggleOpen"
     >
       <span class="input-providers__title">
         {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'providersLabel') }}
@@ -20,8 +20,8 @@
       <div class="input-providers__list">
         <div
           class="input-providers__item"
-          @click="selectAll"
           :class="{'is-checked': selectedAll}"
+          @click="selectAll"
         >
           <span class="input-providers__item-label">
             {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'allProvidersOption') }}
@@ -29,7 +29,7 @@
 
           <span class="input-providers__game-count">{{ allProviderGames }}</span>
 
-          <atomic-icon class="input-providers__checkbox" id="check"/>
+          <atomic-icon id="check" class="input-providers__checkbox"/>
         </div>
 
         <div
@@ -56,7 +56,7 @@
               @change="change(provider.id)"
             >
 
-            <atomic-icon class="input-providers__checkbox" id="check"/>
+            <atomic-icon id="check" class="input-providers__checkbox"/>
           </label>
         </div>
 
@@ -64,8 +64,8 @@
           <button-base
             type="ghost"
             size="xs"
-            @click.prevent="clear"
             :is-disabled="!selectedCount"
+            @click.prevent="clear"
           >
             {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'clearProviders') }}
           </button-base>

@@ -9,8 +9,8 @@
 
     <div class="limits__card-dropdown">
       <form-input-dropdown
-        name="selfExclusionDropdown"
         v-model:value="selectedPeriod"
+        name="selfExclusionDropdown"
         :placeholder="getContent(limitsContent, defaultLimitsContent, 'selfExclusion.selectLabel')"
         :options="selfExclusionPeriod"
       />
@@ -24,7 +24,7 @@
     </div>
 
     <div class="limits__card-info">
-      <p v-html="marked.parse(getContent(limitsContent, defaultLimitsContent, 'selfExclusion.hint'))"/>
+      <p v-html="hintContent" />
     </div>
   </div>
 </template>
@@ -32,6 +32,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
+  import DOMPurify from "isomorphic-dompurify";
 
   const limitsStore = useLimitsStore();
   const {
@@ -43,6 +44,12 @@
   const selectedPeriod = ref<string>('');
 
   const emit = defineEmits(['open-confirm-modal']);
+
+  const hintContent = computed(() => {
+    const contentText = getContent(limitsContent.value, defaultLimitsContent.value, 'selfExclusion.hint');
+    if (!contentText) return '';
+    return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
+  })
 
   const isFullWidth = computed(() => (
     (isAdvancedModeEnabled.value && (depositPeriods.value.length < 2 && lossPeriods.value.length < 2 && betPeriods.value.length < 2))

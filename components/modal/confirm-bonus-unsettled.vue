@@ -31,7 +31,12 @@
           {{ props.confirmButton }}
         </button-base>
         
-        <button-base type="ghost" size="xs" @click="emit('confirm')" :isDisabled="bonusesUpdating">
+        <button-base
+          type="ghost"
+          size="xs"
+          :isDisabled="bonusesUpdating"
+          @click="emit('confirm')"
+        >
           <atomic-spinner :is-shown="props.bonusesUpdating"/>
           {{ props.cancelButton }}
         </button-base>

@@ -1,20 +1,20 @@
 <template>
   <label :class="classes">
-    <span v-if="props.label" class="label">{{ props.label }}<span class="required" v-if="props.isRequired">*</span></span>
+    <span v-if="props.label" class="label">{{ props.label }}<span v-if="props.isRequired" class="required">*</span></span>
 
     <client-only>
       <input
-        inputmode="numeric"
+        v-model="postalValue"
         v-maska="'#########'"
+        inputmode="numeric"
         class="field"
         type="text"
         name="postalCode"
-        v-model="postalValue"
         :placeholder="props.placeholder"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
-      />
+      >
     </client-only>
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>

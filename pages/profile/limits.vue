@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <div v-show="!pending" class="limits__grid">
+    <div v-show="status !== 'pending'" class="limits__grid">
       <card-deposit-limits
         v-if="isAdvancedModeEnabled"
         @open-limit-modal="openLimitModal"
@@ -43,8 +43,8 @@
       />
 
       <modal-add-limit
-        :definition="state.definition"
         :key="addModalKey"
+        :definition="state.definition"
       />
 
       <modal-edit-limit
@@ -56,8 +56,8 @@
     <modal-game-limit-reached/>
 
     <modal-confirm-limit-update
-      :period="state.period"
       :key="confirmModalKey"
+      :period="state.period"
     />
   </div>
 </template>
@@ -67,7 +67,6 @@
   import type { IProfileLimits } from '~/types';
 
   const limitsStore = useLimitsStore();
-  const globalStore = useGlobalStore();
   const {
     getLimits,
     setLimitsContent,
@@ -75,35 +74,22 @@
     toogleAdvancedMode
   } = limitsStore;
   const {
-    limitsContent, defaultLimitsContent, isAdvancedModeEnabled,
+    limitsContent,
+    defaultLimitsContent,
+    isAdvancedModeEnabled
   } = storeToRefs(limitsStore);
-  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const { getLocalesContentData, getContent, setPageMeta } = useProjectMethods();
+  const { getContent } = useProjectMethods();
 
-  interface IPageContent {
-    currentLocaleData: Maybe<IProfileLimits>;
-    defaultLocaleData: Maybe<IProfileLimits>;
-  }
+  const { currentLocaleContent, defaultLocaleContent, status } = await useContentLogic<IProfileLimits>({
+    contentKey: 'profileLimitsContent',
+    contentRoute: ['profile', 'limits'],
+    isPage: true
+  });
 
-  const getPageContent = async (): Promise<IPageContent> => {
-    const { data } = useNuxtData('profileLimitsContent');
-    if (data.value) return data.value;
-
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'profile', 'limits').findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'profile', 'limits').findOne(),
-    ]);
-
-    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  }
-
-  const { pending, data: content } = await useLazyAsyncData('profileLimitsContent', () => getPageContent());
-
-  watch(content, () => {
-    if (content.value) {
-      setPageMeta(content.value?.currentLocaleData?.pageMeta);
-      setLimitsContent(content.value?.currentLocaleData, content.value?.defaultLocaleData);
+  watch(status, async (newValue) => {
+    if (newValue === 'success') {
+      await nextTick();
+      setLimitsContent(currentLocaleContent.value, defaultLocaleContent.value);
     }
   }, { immediate: true });
 

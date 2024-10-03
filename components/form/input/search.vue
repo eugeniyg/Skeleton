@@ -2,13 +2,13 @@
   <div class="input-search">
     <div class="row">
       <input
+        ref="search"
         class="field"
         type="text"
-        ref="search"
         :placeholder="props.placeholder"
         :value="props.value"
         @input="onInput"
-      />
+      >
       <atomic-icon id="search"/>
     </div>
   </div>

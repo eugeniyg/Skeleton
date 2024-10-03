@@ -1,4 +1,4 @@
-// eslint-disable-next-line consistent-return
+ 
 export default defineNuxtRouteMiddleware((to, from) => {
   const { getSessionToken } = useProfileStore();
   const sessionToken = getSessionToken();

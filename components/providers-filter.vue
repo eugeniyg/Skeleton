@@ -8,20 +8,20 @@
     />
 
     <div
-      @click="toggleSort"
       class="providers-filter__toggle-sort"
       :class="{'is-active': isShowSort }"
+      @click="toggleSort"
     >
       <atomic-icon id="filter"/>
     </div>
 
     <atomic-providers-sort
       :class="{ 'show-sort': isShowSort }"
-      @change="changeSort"
       :sortBy="props.filters.sortBy || 'order'"
       :sortOrder="props.filters.sortOrder || 'asc'"
       :sortOptions="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'sortOptions')"
       :label="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'sortLabel')"
+      @change="changeSort"
     />
   </div>
 </template>

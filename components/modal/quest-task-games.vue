@@ -3,9 +3,9 @@
     :modelValue="showModal"
     class="modal-quest-task-games"
     :clickToClose="false"
-    @clickOutside="emit('closeModal')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="emit('closeModal')"
     @closed="closedHandler"
   >
     <div class="scroll">
@@ -18,7 +18,7 @@
       </div>
 
       <div class="modal-quest-task-games__content">
-        <div class="modal-quest-task-games__item" v-for="game in props.games">
+        <div v-for="game in props.games" class="modal-quest-task-games__item">
           <span class="modal-quest-task-games__link" @click="goToGame(game)">{{ game.name }}</span>
         </div>
       </div>

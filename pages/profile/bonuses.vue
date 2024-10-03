@@ -2,7 +2,7 @@
   <div class="content profile-bonuses">
     <div class="header">
       <h1 class="heading">
-        {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'title') }}
+        {{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}
       </h1>
     </div>
 
@@ -10,7 +10,7 @@
       class="link-bonus"
       :to="localizePath('/profile/history?tab=bonuses')"
     >
-      {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'historyLink') }}
+      {{ getContent(currentLocaleContent, defaultLocaleContent, 'historyLink') }}
     </nuxt-link>
 
     <transition name="fade" mode="out-in">
@@ -105,8 +105,6 @@
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
   const {
-    currentLocale,
-    defaultLocale,
     popupsData,
     defaultLocalePopupsData,
     alertsData,
@@ -114,13 +112,7 @@
   } = storeToRefs(globalStore);
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
-  const {
-    setPageMeta,
-    getLocalesContentData,
-    localizePath,
-    getContent,
-    getMinBonusDeposit
-  } = useProjectMethods();
+  const { localizePath, getContent, getMinBonusDeposit } = useProjectMethods();
   const { getPlayerBonuses, getPlayerFreeSpins, getDepositBonuses } = bonusStore;
   const {
     activePlayerBonuses,
@@ -139,39 +131,14 @@
     return hasSimpleBonus || issuedPackageBonuses.value.length;
   });
 
-  const bonusesContent = ref<Maybe<IProfileBonuses>>();
-  const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>();
-  provide('bonusesContent', bonusesContent);
-  provide('defaultLocaleBonusesContent', defaultLocaleBonusesContent);
 
-  interface IPageContent {
-    currentLocaleData: Maybe<IProfileBonuses>;
-    defaultLocaleData: Maybe<IProfileBonuses>;
-  }
-
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    bonusesContent.value = contentData?.currentLocaleData;
-    defaultLocaleBonusesContent.value = contentData?.defaultLocaleData;
-    setPageMeta(bonusesContent.value?.pageMeta);
-  }
-
-  const getPageContent = async (): Promise<IPageContent> => {
-    const { data } = useNuxtData('profileBonusesContent');
-    if (data.value) return data.value;
-
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'profile', 'bonuses').findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : queryContent(defaultLocale.value?.code as string, 'profile', 'bonuses').findOne()
-    ]);
-    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  }
-
-  const { data: content } = await useLazyAsyncData('profileBonusesContent', () => getPageContent());
-
-  watch(content, () => {
-    if (content.value) setContentData(content.value);
-  }, { immediate: true });
+  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProfileBonuses>({
+    contentKey: 'profileBonusesContent',
+    contentRoute: ['profile', 'bonuses'],
+    isPage: true
+  });
+  provide('bonusesContent', currentLocaleContent);
+  provide('defaultLocaleBonusesContent', defaultLocaleContent);
 
   interface IModalState extends Record<string, any> {
     image?: string;

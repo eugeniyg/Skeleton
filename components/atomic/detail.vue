@@ -5,7 +5,7 @@
       <atomic-icon id="arrow_expand-close" />
     </div>
 
-    <div class="detail-content" ref="refItems">
+    <div ref="refItems" class="detail-content">
       <atomic-text-editor class="description" :content="props.content" />
     </div>
   </div>
@@ -37,7 +37,8 @@
     refItems.value.style.setProperty('--items-height', `${height}px`);
   };
 
-  const updateScrollHeight = (): void => {
+  const updateScrollHeight = async (): Promise<void> => {
+    await nextTick();
     scrollHeight.value = refItems.value.scrollHeight;
   };
 

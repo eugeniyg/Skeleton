@@ -1,6 +1,6 @@
 <template>
   <div class="toggle-drawer">
-    <button-base @click="emit('toggle-minimize')" data-action="minimize">
+    <button-base data-action="minimize" @click="emit('toggle-minimize')">
       <atomic-icon id="menu-open"/>
     </button-base>
   </div>

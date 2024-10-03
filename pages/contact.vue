@@ -1,17 +1,17 @@
 <template>
   <div>
-    <div v-show="contactContent || defaultLocaleContactContent" class="contact">
+    <div v-show="currentLocaleContent || defaultLocaleContent" class="contact">
       <atomic-picture
-        v-if="contactContent?.image || defaultLocaleContactContent?.image"
-        :src="contactContent?.image || defaultLocaleContactContent?.image"
+        v-if="currentLocaleContent?.image || defaultLocaleContent?.image"
+        :src="currentLocaleContent?.image || defaultLocaleContent?.image"
         width="348"
         height="301"
         alt=""
       />
 
       <div class="header">
-        <div class="heading">{{ contactContent?.title || defaultLocaleContactContent?.title }}</div>
-        <p class="info">{{ contactContent?.description || defaultLocaleContactContent?.description }}</p>
+        <div class="heading">{{ currentLocaleContent?.title || defaultLocaleContent?.title }}</div>
+        <p class="info">{{ currentLocaleContent?.description || defaultLocaleContent?.description }}</p>
       </div>
 
       <div class="form">
@@ -40,12 +40,12 @@
           :isDisabled="v$.$invalid || isLockedAsyncButton"
           @click="submitContactForm"
         >
-          {{ contactContent?.buttonLabel || defaultLocaleContactContent?.buttonLabel }} <atomic-icon id="arrow_next"/>
+          {{ currentLocaleContent?.buttonLabel || defaultLocaleContent?.buttonLabel }} <atomic-icon id="arrow_next"/>
         </button-base>
       </div>
     </div>
 
-    <atomic-seo-text v-if="contactContent?.pageMeta?.seoText" v-bind="contactContent?.pageMeta?.seoText" />
+    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent?.pageMeta?.seoText" />
   </div>
 </template>
 
@@ -55,53 +55,20 @@
 
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();
-  const {
-    setPageMeta,
-    getContent,
-    getLocalesContentData
-  } = useProjectMethods();
+  const { getContent } = useProjectMethods();
 
   const {
     fieldsSettings,
     defaultLocaleFieldsSettings,
     alertsData,
-    defaultLocaleAlertsData,
-    currentLocale,
-    defaultLocale
+    defaultLocaleAlertsData
   } = storeToRefs(globalStore);
 
-  const contactContent = ref<Maybe<IContactsPage>>();
-  const defaultLocaleContactContent = ref<Maybe<IContactsPage>>();
-
-  interface IPageContent {
-    currentLocaleData: Maybe<IContactsPage>;
-    defaultLocaleData: Maybe<IContactsPage>;
-  }
-
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    contactContent.value = contentData?.currentLocaleData;
-    defaultLocaleContactContent.value = contentData?.defaultLocaleData;
-    setPageMeta(contactContent.value?.pageMeta);
-  }
-
-  const getPageContent = async (): Promise<IPageContent> => {
-    const nuxtContentData = useNuxtData('contactPageContent');
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
-
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'pages', 'contacts').findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'contacts').findOne(),
-    ]);
-    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  }
-
-  const { pending, data } = await useLazyAsyncData('contactPageContent', () => getPageContent());
-  if (data.value) setContentData(data.value);
-
-  watch(data, () => {
-    setContentData(data.value);
-  })
+  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IContactsPage>({
+    contentKey: 'contactPageContent',
+    contentRoute: ['pages', 'contacts'],
+    isPage: true
+  });
 
   const contactFormData = reactive({
     email: '',

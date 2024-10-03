@@ -7,18 +7,18 @@
         <atomic-row-sex v-if="field.name === 'gender' && profile?.gender" :value="profile?.gender"/>
         <template v-else-if="field.name === 'birthdate'">{{ profile?.[field.name]?.split(' ')[0] || '-' }}</template>
         <template v-else-if="field.name === 'phone'">{{ profile?.[field.name] ? `+${profile?.[field.name]}`: '-' }}</template>
-        <div class="tb-profile__email" v-else-if="field.name === 'email'">
+        <div v-else-if="field.name === 'email'" class="tb-profile__email">
           <span class="tb-profile__email-value">{{ profile?.[field.name] || '-' }}</span>
 
           <template v-if="profile?.email">
-            <atomic-icon v-if="profile?.confirmedAt" class="is-success" id="done"/>
-            <atomic-icon v-else class="is-warning" id="warning"/>
+            <atomic-icon v-if="profile?.confirmedAt" id="done" class="is-success"/>
+            <atomic-icon v-else id="warning" class="is-warning"/>
 
             <span
               v-if="!profile?.confirmedAt"
               class="btn-primary size-xs"
-              @click.once="profileStore.resendVerifyEmail"
               :class="{ disabled: resentVerifyEmail }"
+              @click.once="profileStore.resendVerifyEmail"
             >
               {{ infoContent?.sendButton || defaultLocaleInfoContent?.sendButton }}
             </span>

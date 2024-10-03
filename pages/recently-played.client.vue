@@ -1,14 +1,14 @@
 <template>
   <div class="recently-played">
     <div class="recently-played__title">
-      {{ content?.currentLocaleData?.title || content?.defaultLocaleData?.title }}
+      {{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}
     </div>
 
     <atomic-empty
       v-if="!recentlyGames.length && !loadingData"
-      :title="getContent(content?.currentLocaleData, content?.defaultLocaleData, 'empty.title')"
-      :subTitle="getContent(content?.currentLocaleData, content?.defaultLocaleData, 'empty.description')"
-      :image="getContent(content?.currentLocaleData, content?.defaultLocaleData, 'empty.image')"
+      :title="getContent(currentLocaleContent, defaultLocaleContent, 'empty.title')"
+      :subTitle="getContent(currentLocaleContent, defaultLocaleContent, 'empty.description')"
+      :image="getContent(currentLocaleContent, defaultLocaleContent, 'empty.image')"
     />
 
     <list-grid
@@ -32,36 +32,14 @@
   import type { IRecentlyPage } from '~/types';
 
   const globalStore = useGlobalStore();
-  const { isMobile, headerCountry, currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const {
-    setPageMeta,
-    getLocalesContentData,
-    getContent,
-  } = useProjectMethods();
+  const { isMobile, headerCountry } = storeToRefs(globalStore);
+  const { getContent } = useProjectMethods();
 
-  interface IPageContent {
-    currentLocaleData: Maybe<IRecentlyPage>;
-    defaultLocaleData: Maybe<IRecentlyPage>;
-  }
-
-  const getPageContent = async (): Promise<IPageContent> => {
-    const { data } = useNuxtData('recentlyPageContent');
-    if (data.value) return data.value;
-
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'pages', 'recently').findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-        : queryContent(defaultLocale.value?.code as string, 'pages', 'recently').findOne()
-    ]);
-
-    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  }
-
-  const { data: content } = await useLazyAsyncData('recentlyPageContent', () => getPageContent());
-
-  watch(content, () => {
-    if (content.value) setPageMeta(content.value?.currentLocaleData?.pageMeta);
-  }, { immediate: true });
+  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IRecentlyPage>({
+    contentKey: 'recentlyPageContent',
+    contentRoute: ['pages', 'recently'],
+    isPage: true
+  });
 
   const { getCollectionsList } = useGamesStore();
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });

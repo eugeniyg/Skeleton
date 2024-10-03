@@ -1,6 +1,6 @@
 <template>
   <label :class="classes">
-    <span v-if="props.label" class="label">{{ props.label }}<span class="required" v-if="props.isRequired">*</span></span>
+    <span v-if="props.label" class="label">{{ props.label }}<span v-if="props.isRequired" class="required">*</span></span>
 
     <input
       class="field"
@@ -16,6 +16,7 @@
       @blur="onBlur"
       @input="onInput"
       @keyup.enter="emit('submit', $event)"
+      ref="inputRef"
     />
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
@@ -82,6 +83,16 @@
     emit('input', e.target.value);
     emit('update:value', e.target.value);
   };
+
+  const inputRef = ref();
+
+  const focusField = (e:any) => {
+    inputRef.value.focus();
+  }
+
+  defineExpose({
+    focusField,
+  })
 </script>
 
 <style src="~/assets/styles/components/form/input/text.scss" lang="scss" />
