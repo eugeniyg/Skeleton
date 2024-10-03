@@ -21,8 +21,8 @@
       <button-base
         type="primary"
         size="md"
-        @click="sendBonus"
         :isDisabled="!bonusValue || bonusBlocked"
+        @click="sendBonus"
       >
         {{ props.content?.buttonLabel }}
       </button-base>

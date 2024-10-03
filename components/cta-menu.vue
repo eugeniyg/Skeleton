@@ -13,8 +13,8 @@
 
       <atomic-link
         v-else
-        :href="item.url"
         :key="item.title"
+        :href="item.url"
         :targetBlank="item.targetBlank"
         class="cta-menu__item"
         :class="{'is-active': route.path === localizePath(item.url)}"

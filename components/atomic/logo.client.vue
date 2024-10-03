@@ -4,7 +4,7 @@
       <source
         srcset="/img/logo-light.svg"
         :media="`(min-width: ${media})`"
-      />
+      >
       <atomic-image class="img" src="/img/logo-short.svg" />
     </picture>
   </atomic-link>

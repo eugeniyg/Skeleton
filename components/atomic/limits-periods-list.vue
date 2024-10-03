@@ -1,9 +1,9 @@
 <template>
   <div class="limits-periods-list" :class="{'is-show-edit': props.isShowEdit}">
     <div
+      v-for="period in props.periods"
       :key="period.title"
       class="limits-periods-list__column"
-      v-for="period in props.periods"
     >
       <h4 class="limits-periods-list__title">
         {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.limitPeriods.${period.title}`) }}
@@ -13,8 +13,8 @@
         <atomic-period-item
           v-for="item in period.items"
           v-bind="item"
-          :is-show-edit="isShowEdit"
           :key="item.id + item.updatedAt"
+          :is-show-edit="isShowEdit"
           @edit-limit="emit('open-edit-modal', { ...item, limitId: item.id  })"
         />
       </div>
@@ -24,7 +24,6 @@
 
 <script setup lang="ts">
   import type { IPlayerLimit } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
     periods: {

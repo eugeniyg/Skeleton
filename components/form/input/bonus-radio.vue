@@ -8,7 +8,7 @@
         :disabled="props.isDisabled"
         :checked="!!props.value"
         @change="onChange"
-      />
+      >
     </label>
   </div>
 </template>

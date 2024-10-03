@@ -1,41 +1,51 @@
 <template>
   <div
     ref="drop"
+    v-click-outside="onBlur"
     class="dropdown"
     :class="classes"
     :tabindex="props.tabIndex ?? 0"
-    v-click-outside="onBlur"
   >
     <span
       v-if="props.label"
       class="label"
     >
-      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
+      {{ props.label }}<span v-if="props.isRequired" class="required">*</span>
     </span>
 
     <div class="selected" @click="open">
-      <atomic-image v-if="valueObject.mask" class="mask" :src="valueObject.mask" :defaultImage="valueObject.defaultMask" />
+      <atomic-image
+        v-if="valueObject.mask"
+        class="mask"
+        :src="valueObject.mask"
+        :defaultImage="valueObject.defaultMask"
+      />
       <span v-if="valueObject.value">{{ valueObject.value }}</span>
       <span v-else-if="props.placeholder" class="placeholder">{{ props.placeholder }}</span>
       <atomic-icon id="arrow_expand-close"/>
     </div>
 
-    <div ref="dropItems" class="items" v-if="props.options.length">
+    <div v-if="props.options.length" ref="dropItems" class="items">
       <div
-        class="item"
         v-for="(option, i) in props.options"
         :key="i"
+        class="item"
         :class="[{ 'is-selected': option.code === valueObject.code }, { 'disabled-option': option.disabled }]"
         @click="select(option)"
       >
-        <atomic-image v-if="option.mask" class="mask" :src="option.mask" :defaultImage="option.defaultMask" />
+        <atomic-image
+          v-if="option.mask"
+          class="mask"
+          :src="option.mask"
+          :defaultImage="option.defaultMask"
+        />
         <span>{{ option.value }}</span>
         <atomic-icon v-if="option.code === valueObject.code" id="check"/>
       </div>
     </div>
 
     <atomic-hint v-if="props.hint" v-bind="props.hint" />
-    <input type="hidden" :name="props.name" :value="props.value" />
+    <input type="hidden" :name="props.name" :value="props.value" >
   </div>
 </template>
 

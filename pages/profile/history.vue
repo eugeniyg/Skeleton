@@ -35,7 +35,7 @@
 
   const historyTabContent = computed<IHistory|undefined>(() => {
     if (!currentLocaleMenuContent.value?.length) return undefined;
-    
+
     return currentLocaleMenuContent.value.reduce((finalContentObj:any, currentContent:any) => {
       const splitPath = currentContent._path?.split('/');
       if (!splitPath) return finalContentObj;
@@ -44,10 +44,10 @@
       return { ...finalContentObj, [contentName]: currentContent }
     }, {})
   });
-  
+
   const defaultLocaleHistoryTabContent = computed<IHistory|undefined>(() => {
     if (!defaultLocaleMenuContent.value?.length) return undefined;
-    
+
     return defaultLocaleMenuContent.value.reduce((finalContentObj:any, currentContent:any) => {
       const splitPath = currentContent._path?.split('/');
       if (!splitPath) return finalContentObj;
@@ -55,6 +55,6 @@
       const contentName = camelCase(splitPath[3]);
       return { ...finalContentObj, [contentName]: currentContent }
     }, {})
-    
+
   });
 </script>

@@ -50,9 +50,9 @@
       </template>
 
       <transition name="fade" mode="out-in" :duration="100">
-        <form-forgot-pass-email key="email" v-if="selectedTab === 'email'" />
+        <form-forgot-pass-email v-if="selectedTab === 'email'" key="email" />
 
-        <div key="phone" v-else>
+        <div v-else key="phone">
           <form-forgot-pass-phone
             v-show="!showPhoneVerification"
             @sendOtp="sendOtp"

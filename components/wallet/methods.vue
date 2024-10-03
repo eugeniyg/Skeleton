@@ -22,16 +22,16 @@
     <balance :withdraw="props.selectedTab === 'withdraw'">
       <form-input-payments
         v-if="props.selectedTab === 'deposit'"
-        :items="depositMethods"
         v-model:activeMethod="currentDepositMethod"
+        :items="depositMethods"
         @update:activeMethod="handleMethodChanged('deposit')"
         @methodClick="emit('methodClick')"
       />
 
       <form-input-payments
         v-if="props.selectedTab === 'withdraw'"
-        :items="withdrawMethods"
         v-model:activeMethod="currentWithdrawMethod"
+        :items="withdrawMethods"
         @update:activeMethod="handleMethodChanged('withdraw')"
         @methodClick="emit('methodClick')"
       />

@@ -1,5 +1,5 @@
 <template>
-  <div class="group-winners" v-if="latestWinners.length">
+  <div v-if="latestWinners.length" class="group-winners">
     <atomic-icon
       v-if="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.latestWinners.icon')"
       :id="getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.latestWinners.icon')"

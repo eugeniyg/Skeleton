@@ -1,5 +1,5 @@
 <template>
-  <div class="wallet-warning" v-if="props.content?.description">
+  <div v-if="props.content?.description" class="wallet-warning">
     <div class="wallet-warning__icon">
       <atomic-svg
         :src="props.content?.icon"

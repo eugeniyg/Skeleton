@@ -3,9 +3,9 @@
     v-model="modals.questsHub"
     class="modal-quest-hub"
     :clickToClose="false"
-    @clickOutside="closeModal('questsHub')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="closeModal('questsHub')"
     @closed="selectedTab = 'active'"
   >
     <div class="container">
@@ -22,11 +22,12 @@
         </div>
 
         <div class="modal-quest-hub__tabs">
-          <div class="modal-quest-hub__tabs-item"
-               v-for="[tabId, tabLabel] in modalTabs"
-               :key="tabId"
-               :class="{'is-active': tabId === selectedTab}"
-               @click="changeTabHandle(tabId)"
+          <div
+            v-for="[tabId, tabLabel] in modalTabs"
+            :key="tabId"
+            class="modal-quest-hub__tabs-item"
+            :class="{'is-active': tabId === selectedTab}"
+            @click="changeTabHandle(tabId)"
           >
             {{ tabLabel }}
           </div>
@@ -41,38 +42,38 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { VueFinalModal } from 'vue-final-modal';
+  import { storeToRefs } from 'pinia';
+  import { VueFinalModal } from 'vue-final-modal';
 
-const layoutStore = useLayoutStore();
-const { modals } = storeToRefs(layoutStore);
-const { closeModal } = layoutStore;
-const globalStore = useGlobalStore();
-const {
-  popupsData,
-  defaultLocalePopupsData
-} = storeToRefs(globalStore);
+  const layoutStore = useLayoutStore();
+  const { modals } = storeToRefs(layoutStore);
+  const { closeModal } = layoutStore;
+  const globalStore = useGlobalStore();
+  const {
+    popupsData,
+    defaultLocalePopupsData
+  } = storeToRefs(globalStore);
 
-const modalTabs = computed(() => {
-  const contentTabs = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.tabs');
-  if (contentTabs) return Object.entries(contentTabs);
-  return [];
-})
+  const modalTabs = computed(() => {
+    const contentTabs = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.tabs');
+    if (contentTabs) return Object.entries(contentTabs);
+    return [];
+  })
 
-const { getContent } = useProjectMethods();
-const hasOffset = ref<boolean>(false);
-const selectedTab = ref<string>('active');
+  const { getContent } = useProjectMethods();
+  const hasOffset = ref<boolean>(false);
+  const selectedTab = ref<string>('active');
 
-const scrollBlock = ref();
-const handleScroll = (): void => {
-  hasOffset.value = scrollBlock.value.scrollTop !== 0;
-};
+  const scrollBlock = ref();
+  const handleScroll = (): void => {
+    hasOffset.value = scrollBlock.value.scrollTop !== 0;
+  };
 
-const changeTabHandle = (tabId: string) => {
-  if (selectedTab.value === tabId) return;
+  const changeTabHandle = (tabId: string) => {
+    if (selectedTab.value === tabId) return;
 
-  selectedTab.value = tabId;
-};
+    selectedTab.value = tabId;
+  };
 </script>
 
 <style src="~/assets/styles/components/modal/quest-hub.scss" lang="scss"/>

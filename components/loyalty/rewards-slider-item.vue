@@ -51,9 +51,9 @@
       <div v-if="levelBenefits.length" class="loyalty-rewards-slider__item-options">
         <div
           v-for="(benefit, index) in levelBenefits"
+          :key="index"
           class="loyalty-rewards-slider__item-option"
           :class="{'is-checked': benefit.checked}"
-          :key="index"
         >
           <div class="loyalty-rewards-slider__item-option-checkbox">
             <atomic-icon :id="benefit.checked ? 'check' : 'close'"/>

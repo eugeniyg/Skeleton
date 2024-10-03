@@ -1,15 +1,15 @@
 <template>
   <div class="input-gender">
     <span v-if="props.label" class="label">
-      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
+      {{ props.label }}<span v-if="props.isRequired" class="required">*</span>
     </span>
 
     <form-input-radio
+      id="male"
       type="radio"
       name="gender-select"
       :is-disabled="props.isDisabled"
       value="male"
-      id="male"
       :isChecked="props.value === 'male'"
       @change="changeValue('male')"
     >
@@ -17,11 +17,11 @@
     </form-input-radio>
 
     <form-input-radio
+      id="female"
       type="radio"
       name="gender-select"
       :is-disabled="props.isDisabled"
       value="female"
-      id="female"
       :isChecked="props.value === 'female'"
       @change="changeValue('female')"
     >
@@ -30,11 +30,11 @@
 
     <form-input-radio
       v-if="!props.isDisabled"
+      id="other"
       type="radio"
       name="gender-select"
       :is-disabled="props.isDisabled"
       :value="null"
-      id="other"
       :isChecked="!props.value"
       @change="changeValue(null)"
     >

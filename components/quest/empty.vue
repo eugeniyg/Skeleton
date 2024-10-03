@@ -16,11 +16,11 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-  image: string;
-  title: string;
-  description: string;
-}>();
+  const props = defineProps<{
+    image: string;
+    title: string;
+    description: string;
+  }>();
 </script>
 
 <style src="~/assets/styles/components/quest/empty.scss" lang="scss" />

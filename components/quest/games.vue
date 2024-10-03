@@ -33,7 +33,7 @@
         </div>
       </template>
 
-      <div class="quest-games__all-games" v-else-if="!loadGames">
+      <div v-else-if="!loadGames" class="quest-games__all-games">
         {{ getContent(popupsData, defaultLocalePopupsData, 'questTasks.allGamesLabel') }}
       </div>
     </div>

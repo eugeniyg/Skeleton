@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-mob" v-if="!isGamePage">
+  <div v-if="!isGamePage" class="nav-mob">
     <button-base class="nav-mob__item" @click.prevent="layoutStore.toggleDrawer()">
       <atomic-icon id="menu"/>
       <span class="nav-mob__text">
@@ -49,8 +49,8 @@
       >
         <atomic-icon id="live-support" />
         <span class="nav-mob__text">
-        {{ getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.chatLabel') }}
-      </span>
+          {{ getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.chatLabel') }}
+        </span>
       </button-base>
 
       <button-base

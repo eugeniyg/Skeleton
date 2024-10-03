@@ -3,9 +3,9 @@
     v-model="showRewardsModal"
     class="modal-quest-rewards"
     :clickToClose="false"
-    @clickOutside="closeRewardsModal"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="closeRewardsModal"
   >
     <div class="scroll">
       <div class="header">
@@ -16,7 +16,7 @@
       </div>
 
       <div class="modal-quest-rewards__content">
-        <div class="modal-quest-rewards__item" v-for="item in rewardsList">
+        <div v-for="item in rewardsList" class="modal-quest-rewards__item">
           <span class="modal-quest-rewards__amount">{{ item.amount }}</span>
           <span class="modal-quest-rewards__currency">{{ item.currency }}</span>
         </div>

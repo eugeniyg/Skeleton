@@ -5,7 +5,9 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps<{id?: string}>();
+  const props = defineProps<{
+    id: Maybe<string>
+  }>();
 </script>
 
 <style src="~/assets/styles/components/atomic/icon.scss" lang="scss" />

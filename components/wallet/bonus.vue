@@ -37,8 +37,8 @@
       </div>
       
       <form-input-bonus-radio
-        name="input-bonus-radio"
         :id="props.bonusInfo.id"
+        name="input-bonus-radio"
         :value="props.selected"
         @change="emit('bonusChange', props.bonusInfo.id)"
       />

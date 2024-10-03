@@ -3,8 +3,8 @@
     <div class="header">
       <button-base
         v-for="{id, title} in currencyTabs"
-        :is-active="id === selected"
         :key="id"
+        :is-active="id === selected"
         type="ghost"
         size="xs"
         @click.stop="switchTabNav(id)"

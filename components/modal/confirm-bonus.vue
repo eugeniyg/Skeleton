@@ -18,8 +18,8 @@
         <button-base
           type="primary"
           size="md"
-          @click="emit('confirm')"
           :isDisabled="bonusesUpdating"
+          @click="emit('confirm')"
         >
           <atomic-spinner :is-shown="props.bonusesUpdating"/>
           {{ props.confirmButton }}

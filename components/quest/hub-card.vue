@@ -41,50 +41,50 @@
 </template>
 
 <script setup lang="ts">
-import type { IPlayerQuest } from "@skeleton/core/types";
-import type {IProfileInfo} from "~/types";
+  import type { IPlayerQuest } from "@skeleton/core/types";
+  import type {IProfileInfo} from "~/types";
 
-const props = defineProps<{
-  questInfo: IPlayerQuest;
-  cardIndex: number;
-}>();
+  const props = defineProps<{
+    questInfo: IPlayerQuest;
+    cardIndex: number;
+  }>();
 
-const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
-const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
+  const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
+  const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
 
-const { getContent, formatBalance } = useProjectMethods();
-const globalData = useGlobalStore();
-const { popupsData, defaultLocalePopupsData } = storeToRefs(globalData);
-const { showModal } = useLayoutStore();
-const walletStore = useWalletStore();
-const { activeAccount } = storeToRefs(walletStore);
-const rewardsValue = computed(() => {
-  const rewardsArr: { currency: string, amount: number }[] = [];
-  for (const reward of props.questInfo.rewards) {
-    const formatSumObj = formatBalance(reward.attributes.isoCode, reward.amount);
-    if (reward.attributes.isoCode === activeAccount.value?.currency) rewardsArr.unshift(formatSumObj);
-    else rewardsArr.push(formatSumObj);
+  const { getContent, formatBalance } = useProjectMethods();
+  const globalData = useGlobalStore();
+  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalData);
+  const { showModal } = useLayoutStore();
+  const walletStore = useWalletStore();
+  const { activeAccount } = storeToRefs(walletStore);
+  const rewardsValue = computed(() => {
+    const rewardsArr: { currency: string, amount: number }[] = [];
+    for (const reward of props.questInfo.rewards) {
+      const formatSumObj = formatBalance(reward.attributes.isoCode, reward.amount);
+      if (reward.attributes.isoCode === activeAccount.value?.currency) rewardsArr.unshift(formatSumObj);
+      else rewardsArr.push(formatSumObj);
+    }
+    return rewardsArr;
+  });
+
+  const questImages = computed(() => {
+    const imgObjArr: { src: string }[] = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.questsImages') || [];
+    return imgObjArr.map(imgObj => imgObj.src);
+  })
+
+  const questImageSrc = computed(() => {
+    return questImages.value[questImages.value.length - (props.cardIndex % questImages.value.length)]
+      || '/img/quests/default-quest-img.png'
+  })
+
+  const { openRewardsModal, openTasksModal } = useQuestsStore();
+  const rewardsModalTitle = computed(() => {
+    return getContent(infoContent.value, defaultLocaleInfoContent.value, 'questsHub.rewardsTitle') || '';
+  })
+  const openModal = (): void => {
+    openRewardsModal(rewardsValue.value, rewardsModalTitle.value);
   }
-  return rewardsArr;
-});
-
-const questImages = computed(() => {
-  const imgObjArr: { src: string }[] = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.questsImages') || [];
-  return imgObjArr.map(imgObj => imgObj.src);
-})
-
-const questImageSrc = computed(() => {
-  return questImages.value[questImages.value.length - (props.cardIndex % questImages.value.length)]
-    || '/img/quests/default-quest-img.png'
-})
-
-const { openRewardsModal, openTasksModal } = useQuestsStore();
-const rewardsModalTitle = computed(() => {
-  return getContent(infoContent.value, defaultLocaleInfoContent.value, 'questsHub.rewardsTitle') || '';
-})
-const openModal = (): void => {
-  openRewardsModal(rewardsValue.value, rewardsModalTitle.value);
-}
 </script>
 
 <style src="~/assets/styles/components/quest/hub-card.scss" lang="scss"/>

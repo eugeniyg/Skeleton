@@ -2,20 +2,20 @@
   <div
     class="loyalty-rewards-slider__wrap"
     :class="{
-    'is-centered': isCentered,
-    'is-prev-disabled': isPrevDisabled,
-    'is-next-disabled': isNextDisabled,
+      'is-centered': isCentered,
+      'is-prev-disabled': isPrevDisabled,
+      'is-next-disabled': isNextDisabled,
     }"
   >
     <div
-      class="loyalty-rewards-slider"
       ref="sliderNode"
+      class="loyalty-rewards-slider"
     >
       <div class="loyalty-rewards-slider__viewport">
         <loyalty-rewards-slider-item
           v-for="level in props.levels"
-          :level="level"
           :key="level.id"
+          :level="level"
         />
       </div>
     </div>
@@ -42,9 +42,9 @@
   const isNextDisabled = ref<boolean>(false);
 
   const [sliderNode, emblaApi] = emblaCarouselVue({
-      loop: false,
-      align: 'center'
-    },
+    loop: false,
+    align: 'center'
+  },
   );
 
   const isCentered = computed(() => isPrevDisabled.value && isNextDisabled.value);

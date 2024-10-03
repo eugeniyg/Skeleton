@@ -1,8 +1,8 @@
 <template>
   <div class="deposit-bonus-code" :class="{ 'is-selected': showDepositBonusCode }">
     <form-input-bonus-radio
-      name="input-deposit-bonus-code"
       id="deposit-bonus-code"
+      name="input-deposit-bonus-code"
       :value="showDepositBonusCode"
       @change="emit('openBonusCode')"
     />
@@ -14,8 +14,8 @@
 
     <div v-if="showDepositBonusCode" class="deposit-bonus-code__code">
       <form-input-text
-        v-model:value="bonusValue"
         ref="bonusField"
+        v-model:value="bonusValue"
         label=""
         :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.bonusCode.placeholder') || ''"
         name="bonus-code"
@@ -28,12 +28,12 @@
       <button-base
         type="secondary"
         size="md"
-        @click="toggleBonusCode"
         :isDisabled="bonusChecking || !bonusValue"
+        @click="toggleBonusCode"
       >
         <atomic-spinner :is-shown="bonusChecking"/>
         {{ depositBonusCode ? getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.cancelBonusCode')
-        : getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addBonusCode') }}
+          : getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addBonusCode') }}
       </button-base>
     </div>
   </div>

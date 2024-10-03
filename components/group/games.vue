@@ -55,7 +55,7 @@
         />
       </template>
 
-      <div class="load-more" ref="loadMore" @inview="moreGames"/>
+      <div ref="loadMore" class="load-more" @inview="moreGames"/>
     </div>
   </div>
 </template>

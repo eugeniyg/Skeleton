@@ -1,7 +1,7 @@
 <template>
   <label :class="classes">
-    <span class="label" v-if="props.label">
-      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
+    <span v-if="props.label" class="label">
+      {{ props.label }}<span v-if="props.isRequired" class="required">*</span>
     </span>
 
     <textarea
@@ -10,11 +10,11 @@
       :name="props.name"
       :placeholder="props.placeholder"
       :required="props.isRequired"
+      rows="6"
+      cols="50"
       @focus="onFocus"
       @blur="onBlur"
       @input="onInput"
-      rows="6"
-      cols="50"
     />
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
