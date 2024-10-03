@@ -5,7 +5,7 @@
       <atomic-icon id="arrow_expand-close" />
     </div>
 
-    <div class="detail-content" ref="refItems">
+    <div ref="refItems" class="detail-content">
       <atomic-text-editor class="description" :content="props.content" />
     </div>
   </div>

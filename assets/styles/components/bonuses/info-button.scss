@@ -1,0 +1,45 @@
+.bonuses-info-button {
+  --bg: transparent;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  width: fit-content;
+  min-height: 16px;
+  gap: 2px;
+  text-decoration: none;
+
+  &:after {
+    content: '';
+    position: absolute;
+    align-self: stretch;
+    border-bottom: 1px dashed var(--border-02);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transition: all .3s ease-in-out;
+  }
+
+  &__icon {
+    --color: var(--icon-color, var(--icon-accent));
+    --icon-size: 12px;
+  }
+
+  &__title {
+    display: block;
+    @include font($body-1);
+    color: var(--text-color, var(--text-link));
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    cursor: pointer;
+    --text-color: var(--text-link-hover);
+    --icon-color: var(--text-link-hover);
+
+    &:after {
+      border-color: var(--text-link-hover);
+    }
+  }
+}

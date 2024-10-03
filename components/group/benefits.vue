@@ -2,9 +2,9 @@
   <div v-if="globalComponentsContent?.benefits || defaultLocaleGlobalComponentsContent?.benefits" class="group-benefits">
     <div class="group-benefits__list">
       <div
-        class="group-benefits__item"
         v-for="(benefit, index) in benefitsList"
         :key="index"
+        class="group-benefits__item"
       >
         <atomic-image class="icon" :src="benefit.image" />
         <h2 class="title">{{ benefit.title }}</h2>

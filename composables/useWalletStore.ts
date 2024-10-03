@@ -80,12 +80,25 @@ export const useWalletStore = defineStore('walletStore', {
       const { switchActiveAccount } = useCoreWalletApi();
       this.accountSwitching = switchActiveAccount(accountId);
       this.accounts = await this.accountSwitching;
+      useEvent('accountChanged');
+
       const runtimeConfig = useRuntimeConfig();
       if (runtimeConfig.public?.questsEnabled) {
         const { getPlayerActiveQuests } = useQuestsStore();
         getPlayerActiveQuests();
       }
-      useEvent('accountChanged');
+
+      const {
+        getPlayerBonuses,
+        getPlayerFreeSpins,
+        getPlayerCashback,
+        getDepositBonuses
+      } = useBonusStore();
+
+      getPlayerBonuses();
+      getPlayerFreeSpins();
+      getPlayerCashback();
+      getDepositBonuses();
     },
 
     async hideAccount(accountId: string):Promise<void> {
@@ -180,8 +193,9 @@ export const useWalletStore = defineStore('walletStore', {
       };
 
       if (webSocketResponse.data?.event === 'invoice.deposit.updated') {
-        const { getDepositBonusCode } = useBonusStore();
+        const { getDepositBonusCode, getDepositBonuses } = useBonusStore();
         getDepositBonusCode();
+        getDepositBonuses();
 
         const cmsMessage = invoiceSuccess
             ? getContent(alertsData, defaultLocaleAlertsData, 'wallet.depositSuccess.description')

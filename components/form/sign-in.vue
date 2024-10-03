@@ -4,14 +4,14 @@
       v-if="props.loginType === 'email'"
       key="email"
       v-model:value="authorizationFormData.login"
-      @blur="v$.login?.$touch()"
-      @focus="focusField('login')"
       type="email"
       :is-required="true"
       :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
       name="login"
       :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
       :hint="setError('login')"
+      @blur="v$.login?.$touch()"
+      @focus="focusField('login')"
       @submit="login"
       ref="inputEmailRef"
     />
@@ -20,27 +20,27 @@
       v-else
       key="phone"
       v-model:value="authorizationFormData.login"
-      @blur="v$.login?.$touch()"
-      @focus="focusField('login')"
       :is-required="true"
       :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.phone.label') || ''"
       name="login"
       :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.phone.placeholder') || ''"
       :hint="setError('login')"
+      @blur="v$.login?.$touch()"
+      @focus="focusField('login')"
       @submit="login"
       ref="inputPhoneRef"
     />
     
     <form-input-password
       v-model:value="authorizationFormData.password"
-      @blur="v$.password?.$touch()"
-      @focus="focusField('password')"
       type="password"
       :is-required="true"
       :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.password.label') || ''"
       name="password"
       :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.password.placeholder') || ''"
       :hint="setError('password')"
+      @blur="v$.password?.$touch()"
+      @focus="focusField('password')"
       @submit="login"
     />
     
@@ -54,8 +54,8 @@
       type="primary"
       size="md"
       tagName="div"
-      @click="login"
       :isDisabled="v$.$invalid || isLockedAsyncButton"
+      @click="login"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
       {{ getContent(popupsData, defaultLocalePopupsData, 'login.loginButton') }}

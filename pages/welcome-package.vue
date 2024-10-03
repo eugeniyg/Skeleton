@@ -123,13 +123,13 @@
   import type { IWelcomeBonusesPage } from '~/types';
 
   const { getContent } = useProjectMethods();
-  
+
   const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IWelcomeBonusesPage>({
     contentKey: 'welcomePageContent',
     contentRoute: ['pages', 'welcome-bonuses'],
     isPage: true
   });
-  
+
   const howGetItems = computed(() => {
     if (currentLocaleContent.value?.howGet || defaultLocaleContent.value?.howGet) {
       return [

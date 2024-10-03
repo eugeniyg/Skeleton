@@ -93,7 +93,7 @@
     </div>
 
     <h4 class="heading">
-      {{ getContent(currentLocaleContent, defaultLocaleContent, 'manageTitle') }} 
+      {{ getContent(currentLocaleContent, defaultLocaleContent, 'manageTitle') }}
     </h4>
 
     <button-base type="ghost" size="md" @click="profileStore.logOutUser">

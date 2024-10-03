@@ -7,7 +7,7 @@
     <div
       v-if="layoutData?.cookie?.text || defaultLocaleLayoutData?.cookie?.text"
       class="text"
-      v-html="marked.parse(layoutData?.cookie?.text || defaultLocaleLayoutData?.cookie?.text || '')"
+      v-html="descriptionContent"
     />
 
     <button-base type="primary" size="md" @click="acceptCookie">
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
   import { marked } from 'marked';
+  import DOMPurify from "isomorphic-dompurify";
 
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const layoutStore = useLayoutStore();
@@ -26,6 +27,11 @@
     userCookie.value = 'accepted';
     layoutStore.showCookiePopup = false;
   };
+  const descriptionContent = computed(() => {
+    const contentText = layoutData?.cookie?.text || defaultLocaleLayoutData?.cookie?.text;
+    if (!contentText) return '';
+    return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
+  })
 </script>
 
 <style src="~/assets/styles/components/layout/cookies.scss" lang="scss" />

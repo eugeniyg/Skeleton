@@ -11,7 +11,7 @@
       <div
         v-if="props.bonusInfo.minDeposit || props.bonusInfo.maxDeposit"
         class="wallet-bonus__min"
-        @click.stop="openBonusDetails"
+        @click.stop="openBonusInfoModal"
       >
         <atomic-icon id="info" />
 
@@ -27,7 +27,7 @@
       <div
         v-else
         class="wallet-bonus__more"
-        @click.stop="openBonusDetails"
+        @click.stop="openBonusInfoModal"
       >
         <div class="wallet-bonus__more-title">
           {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.moreInfo') }}
@@ -37,8 +37,8 @@
       </div>
       
       <form-input-bonus-radio
-        name="input-bonus-radio"
         :id="props.bonusInfo.id"
+        name="input-bonus-radio"
         :value="props.selected"
         @change="emit('bonusChange', props.bonusInfo.id)"
       />
@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IBonus } from "@skeleton/core/types";
+  import type {IBonus} from "@skeleton/core/types";
   import { storeToRefs } from "pinia";
 
   const props = defineProps<{
@@ -90,9 +90,9 @@
     return { label, value };
   })
 
-  const openBonusDetails = (): void => {
+  const openBonusInfoModal = (): void => {
     depositMoreInfoBonus.value = props.bonusInfo;
-    showModal('walletBonusDetails')
+    showModal('walletBonusInfo')
   }
 </script>
 

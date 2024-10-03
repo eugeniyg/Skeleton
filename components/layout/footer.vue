@@ -69,7 +69,7 @@
         <div
           v-if="layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description"
           class="info__text"
-          v-html="marked.parse(layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description || '')"
+          v-html="customLicenceDescription"
         />
       </div>
 
@@ -89,7 +89,7 @@
         <div
           v-if="layoutData?.footer?.curacao?.description || defaultLocaleLayoutData?.footer?.curacao?.description"
           class="info__text"
-          v-html="marked.parse(layoutData?.footer?.curacao?.description || defaultLocaleLayoutData?.footer?.curacao?.description || '')"
+          v-html="licenceDescription"
         />
       </div>
 
@@ -105,7 +105,8 @@
 <script setup lang="ts">
   import { marked } from 'marked';
   import type { ILink } from "~/types";
-  
+  import DOMPurify from "isomorphic-dompurify";
+
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const accordeonItems = [
     layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
@@ -115,6 +116,18 @@
 
   const customLicenseImage = computed(() => layoutData?.footer?.custom?.image || defaultLocaleLayoutData?.footer?.custom?.image);
   const customLicenseLink = computed(() => layoutData?.footer?.custom?.link || defaultLocaleLayoutData?.footer?.custom?.link);
+
+  const licenceDescription = computed(() => {
+    const descriptionContent = layoutData?.footer?.curacao?.description || defaultLocaleLayoutData?.footer?.curacao?.description;
+    if (!descriptionContent) return '';
+    return DOMPurify.sanitize(marked.parse(descriptionContent) as string, { FORBID_TAGS: ['style'] });
+  });
+
+  const customLicenceDescription = computed(() => {
+    const descriptionContent = layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description;
+    if (!descriptionContent) return '';
+    return DOMPurify.sanitize(marked.parse(descriptionContent) as string, { FORBID_TAGS: ['style'] });
+  });
 </script>
 
 <style src="~/assets/styles/components/layout/footer.scss" lang="scss"/>

@@ -78,10 +78,10 @@
 </template>
 
 <script setup lang="ts">
-import type { IBetItem } from '@skeleton/core/types';
-import type { IBetsHistory } from '~/types';
+  import type { IBetItem } from '@skeleton/core/types';
+  import type { IBetsHistory } from '~/types';
 
-const props = defineProps<{
+  const props = defineProps<{
     id: string,
     roundId: string,
     amount: number,

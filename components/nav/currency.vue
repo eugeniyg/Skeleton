@@ -4,8 +4,8 @@
       <div class="header">
         <button-base
           v-for="{id, title} in props.tabs"
-          :key="id"
           :id="id"
+          :key="id"
           type="ghost"
           size="sm"
           :is-active="selected === id"
@@ -34,7 +34,7 @@
           </div>
         </div>
 
-        <div class="nav-currency__plug" v-if="selected === 'crypto' && !cryptoCurrencies.length">
+        <div v-if="selected === 'crypto' && !cryptoCurrencies.length" class="nav-currency__plug">
           <atomic-image class="nav-currency__plug-img" src="/img/currency-plug.svg" />
           <h4 class="nav-currency__plug-title">
             {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'currencyPopup.empty.title') }}

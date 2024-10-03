@@ -3,12 +3,12 @@
     <div class="loyalty-terms__header" :class="{'is-open': isOpen}" @click="toggle">
       <div class="loyalty-terms__title">{{ props.title }}</div>
 
-      <button-base @click.stop="toggle" type="ghost" class="loyalty-terms__toggle">
+      <button-base type="ghost" class="loyalty-terms__toggle" @click.stop="toggle">
         <atomic-icon id="arrow_expand-open"/>
       </button-base>
     </div>
 
-    <div class="loyalty-terms__content" ref="content" :style="styles">
+    <div ref="content" class="loyalty-terms__content" :style="styles">
       <atomic-text-editor :content="props.content" />
     </div>
   </div>

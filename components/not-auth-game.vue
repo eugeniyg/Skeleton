@@ -1,6 +1,6 @@
 <template>
   <div class="not-auth-game" :class="modeClassName">
-    <div class="title" v-if="props.title">{{ props.title }}</div>
+    <div v-if="props.title" class="title">{{ props.title }}</div>
 
     <atomic-image
       class="img"

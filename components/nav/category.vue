@@ -1,23 +1,24 @@
 <template>
   <div
-    class="nav-category"
     v-click-outside="closeDropdown"
+    class="nav-category"
   >
     <div
       v-if="!props.hideItems"
-      class="nav-category__items" ref="itemsRef"
+      ref="itemsRef"
+      class="nav-category__items"
     >
       <div
         v-for="({ id, identity, name }) in filteredCategories"
+        :key="id"
+        ref="itemRef"
         class="nav-category__item"
         :class="{
           'is-active': route.query.category === identity,
           'is-no-icon': !gameCategoriesObj[identity]?.icon
         }"
-        @click="emit('clickCategory', identity)"
-        :key="id"
         :data-identity="identity"
-        ref="itemRef"
+        @click="emit('clickCategory', identity)"
       >
         <atomic-icon
           :id="gameCategoriesObj[identity]?.icon"
@@ -29,7 +30,7 @@
       </div>
     </div>
     <div class="nav-category__actions">
-      <button-categories @action="showCategories" :is-active="isDropdownShown"/>
+      <button-categories :is-active="isDropdownShown" @action="showCategories"/>
       <button-providers @action="showModal('providers')"/>
       
       <ul
@@ -37,14 +38,14 @@
         class="nav-category__dropdown"
       >
         <li
-          class="nav-category__dropdown-item"
           v-for="({ id, identity, name }) in dropdownItems"
+          :key="id"
+          class="nav-category__dropdown-item"
           :class="{
             'is-active': route.query.category === identity,
             'is-no-icon': !gameCategoriesObj[identity]?.icon
           }"
           @click="clickCategory(identity)"
-          :key="id"
         >
           <atomic-icon :id="gameCategoriesObj[identity]?.icon"/>
           <span class="nav-category__dropdown-item-text">

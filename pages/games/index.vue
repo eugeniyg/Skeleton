@@ -136,7 +136,7 @@
     const response = await getFilteredGames(params);
     loadingGames.value = false;
     showNotFound.value = false;
-    
+
     return response;
   };
   
@@ -279,13 +279,13 @@
         }
       });
     }
-    
+
     activeCollection.value = gameCollections.find(
       (collection) => collection.identity === route.query.category,
     );
 
     if (!activeCollection.value) return showNotFound.value = true;
-    
+
     const itemsResponse = await getItems();
     setItems(itemsResponse);
   });

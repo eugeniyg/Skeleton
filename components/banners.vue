@@ -4,8 +4,8 @@
     :class="{'is-single' : props.items.length === 1}"
   >
     <div
-      class="banners__viewport"
       ref="sliderNode"
+      class="banners__viewport"
     >
       <div class="banners__container">
         <card-home

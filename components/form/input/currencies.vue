@@ -1,10 +1,10 @@
 <template>
   <div
-    class="input-currencies"
     v-click-outside="close"
+    class="input-currencies"
     :class="{ 'is-open': isOpen, 'has-error': props.showError }"
   >
-    <div class="input-currencies__selected" @click.stop="toggleOpen" :class="{'is-disabled': !selectedItems.length}">
+    <div class="input-currencies__selected" :class="{'is-disabled': !selectedItems.length}" @click.stop="toggleOpen">
       <template v-if="!selectedCurrency?.name">
         <atomic-icon id="currency" class="input-currencies__selected-icon"/>
         <span class="input-currencies__selected-label">{{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.chooseCurrencyLabel') }}</span>
@@ -26,11 +26,11 @@
       <div class="input-currencies__tabs">
         <template v-if="cryptoCurrencies.length">
           <span
+            v-for="{id, title} in currencyTabs"
+            :id="id"
+            :key="id"
             class="input-currencies__tab"
             :class="{'is-active': selected === id}"
-            v-for="{id, title} in currencyTabs"
-            :key="id"
-            :id="id"
             @click="select(id)"
           >
             {{ title }}
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div class="input-currencies__error" v-if="props.showError">{{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.chooseCurrencyError') }}</div>
+    <div v-if="props.showError" class="input-currencies__error">{{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.chooseCurrencyError') }}</div>
   </div>
 </template>
 

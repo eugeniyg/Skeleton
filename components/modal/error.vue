@@ -3,9 +3,9 @@
     v-model="modals.failing"
     class="modal-error-deposit"
     :clickToClose="false"
-    @clickOutside="closeModal('failing')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="closeModal('failing')"
   >
     <div class="scroll">
       <div class="header">
@@ -15,7 +15,7 @@
 
       <atomic-image class="img" src="/img/error.svg" />
       <client-only>
-        <p class="text" v-html="marked.parse(getContent(popupsData, defaultLocalePopupsData, 'error.description') || '')" />
+        <p class="text" v-html="descriptionContent" />
       </client-only>
 
       <button-base type="primary" size="md" @click="tryAgain">
@@ -29,6 +29,7 @@
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
   import { VueFinalModal } from 'vue-final-modal';
+  import DOMPurify from "isomorphic-dompurify";
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
@@ -40,6 +41,12 @@
     await openWalletModal('deposit');
     closeModal('failing');
   };
+
+  const descriptionContent = computed(() => {
+    const contentText = getContent(popupsData, defaultLocalePopupsData, 'error.description');
+    if (!contentText) return '';
+    return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
+  })
 </script>
 
 <style src="~/assets/styles/components/modal/error.scss" lang="scss" />

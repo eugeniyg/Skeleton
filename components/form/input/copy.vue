@@ -1,22 +1,22 @@
 <template>
   <label :class="classes" :for="props.name">
     <span v-if="props.label" class="label">
-      {{ label }}<span class="required" v-if="props.isRequired">*</span>
+      {{ label }}<span v-if="props.isRequired" class="required">*</span>
     </span>
 
     <div class="row">
       <input
+        :id="props.name"
+        ref="copyInput"
         class="field"
         readonly
-        ref="copyInput"
         :value="props.value"
-        :id="props.name"
         :name="props.name"
         :required="props.isRequired"
         :placeholder="props.placeholder"
         @blur="emit('blur')"
         @input="emit('input')"
-      />
+      >
 
       <button class="btn-copy" @click.prevent="copyValue">
         <atomic-icon id="copy"/>

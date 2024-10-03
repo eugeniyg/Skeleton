@@ -3,14 +3,14 @@
     <div
       v-if="props.visible"
       class="text-wrap__visible"
-      v-html="marked.parse(props.visible)"
+      v-html="DOMPurify.sanitize(marked.parse(props.visible || '') as string, { FORBID_TAGS: ['style'] })"
     />
 
     <div
       v-if="props.hidden"
       v-show="showHidden"
       class="text-wrap__hidden"
-      v-html="marked.parse(props.hidden)"
+      v-html="DOMPurify.sanitize(marked.parse(props.hidden || '') as string, { FORBID_TAGS: ['style'] })"
     />
 
     <button-show-more v-if="showButton" @click="showHidden = true">
@@ -21,6 +21,7 @@
 
 <script setup lang="ts">
   import { marked } from 'marked';
+  import DOMPurify from "isomorphic-dompurify";
 
   const props = defineProps<{
     visible?: string,

@@ -22,7 +22,7 @@ export const useCoreProfileApi = () => {
 
   const getSumsubToken = async ():Promise<{ token: string }> => {
     const profileStore = useProfileStore();
-    let token = profileStore.getSessionToken();
+    const token = profileStore.getSessionToken();
 
     return await $fetch('/sumsub/token', {
       headers: {

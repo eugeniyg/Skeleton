@@ -9,9 +9,9 @@
     </button>
 
     <button
-      class="page"
       v-for="page in paginationItems"
       :key="page"
+      class="page"
       :class="[{'is-selected': page === props.page}, {dots: typeof page === 'string'}]"
       @click="changePage(page)"
     >

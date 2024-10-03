@@ -12,9 +12,9 @@
         />
       </client-only>
 
-      <atomic-icon class="mask-placeholder" id="calendar"/>
+      <atomic-icon id="calendar" class="mask-placeholder"/>
 
-      <atomic-icon class="mask-toggle" id="arrow_expand-close" />
+      <atomic-icon id="arrow_expand-close" class="mask-toggle" />
     </div>
   </div>
 </template>

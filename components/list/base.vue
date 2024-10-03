@@ -9,7 +9,7 @@
         v-for="(item, index) in props.items"
         :key="index"
         name="item"
-        v-bind:item="item"
+        :item="item"
       />
     </div>
   </div>

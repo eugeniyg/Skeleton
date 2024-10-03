@@ -14,7 +14,7 @@
     <div
       v-if="networkSelectOptions?.length && !state.selectedNetwork"
       class="dropdown-network__info"
-      v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
+      v-html="infoContent"
     />
     
     <wallet-warning
@@ -71,6 +71,7 @@
   import type { IPaymentField } from '@skeleton/core/types';
   import { marked } from 'marked';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
+  import DOMPurify from "isomorphic-dompurify";
 
   const props = defineProps<{
     amountMax: number,
@@ -288,6 +289,12 @@
 
     amountValue.value = String(formatAmountMin.value.amount);
   };
+
+  const infoContent = computed(() => {
+    const contentText = getContent(fieldsSettings.value, defaultLocaleFieldsSettings.value, 'fieldsControls.networkSelect.info');
+    if (!contentText) return '';
+    return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
+  })
 
   const fieldInputHandle = (field: IPaymentField): void => {
     if (field.key === 'currencyWithdraw') {

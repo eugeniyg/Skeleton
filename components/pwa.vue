@@ -17,12 +17,13 @@
       </div>
     </div>
 
-    <div v-else
-         class="desktop-container"
-         ref="desktopContainer"
-         @click="installPWA"
-         @mouseover="showTooltip"
-         @mouseleave="hideTooltip"
+    <div
+      v-else
+      ref="desktopContainer"
+      class="desktop-container"
+      @click="installPWA"
+      @mouseover="showTooltip"
+      @mouseleave="hideTooltip"
     >
       <atomic-icon :id="platformKey" />
 

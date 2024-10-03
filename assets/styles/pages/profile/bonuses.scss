@@ -10,8 +10,38 @@
     align-items: center;
     min-height: rem(22px);
 
+
     .icon {
       color: var(--icon-accent);
     }
+  }
+
+  .bonuses-grid {
+    display: flex;
+    grid-gap: 16px;
+    flex-wrap: wrap;
+
+    &__title  {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+      flex: 1 1 100%;
+      margin-bottom: 8px;
+      @include font($heading-5);
+
+      @include media(sm) {
+        grid-column: 1 / span 2;
+      }
+
+      &-count {
+        color: var(--text-tertiary);
+        @include font($body-3);
+      }
+    }
+  }
+
+  &__blocks-divider {
+    --margin: 16px 0;
   }
 }

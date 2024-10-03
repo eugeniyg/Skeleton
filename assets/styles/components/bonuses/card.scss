@@ -1,0 +1,122 @@
+.bonuses-card {
+  padding: 2px;
+  background: var(--bg, var(--layer-02));
+  border-radius: 16px;
+  width: 100%;
+
+  @include media(sm) {
+    width: calc(50% - 8px);
+  }
+
+  @include media(xl) {
+    width: calc(33% - 8px);
+  }
+
+
+  &.is-active {
+    --bg: linear-gradient(89deg, #FFDC8A -2766.21%, #FFC12E 38.74%, #E6A409 2866.21%);
+  }
+
+  &__container {
+    background: var(--layer-02);
+    padding: 16px 16px 20px;
+    border-radius: 16px;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    height: 100%;
+    align-items: flex-start;
+
+    @include media(sm) {
+      padding: 22px 22px 26px 22px;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 8px;
+  }
+
+  &__body {
+    display: grid;
+  }
+
+  &__name {
+    text-shadow: var(--shadow-layer);
+    margin-bottom: 8px;
+
+    &-text {
+      @include font($body-2);
+      color: var(--text-color, var(--text-primary));
+
+      &.bonuses-card__name--large {
+        @include font($subheading-4);
+      }
+    }
+
+    &-value {
+      @include font($heading-7);
+      display: flex;
+      margin-top: -4px;
+      color: var(--value-color, var(--text-primary));
+    }
+  }
+
+  &__cashback-name {
+    color: var(--text-primary);
+    text-shadow: var(--shadow-layer);
+    @include font($subheading-4);
+
+    &-value {
+      color: var(--text-accent);
+    }
+  }
+
+  &__activator {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 8px;
+
+    .bonuses-timer {
+      flex: 1 1 136px;
+      min-width: calc(50% - 8px);
+    }
+
+    .btn-primary {
+      //flex: 1 1 136px;
+      width: calc(50% - 8px);
+      margin: 0 !important;
+    }
+  }
+
+  &__actions {
+    display: grid;
+    gap: 8px;
+    margin-top: 16px;
+    align-self: flex-end;
+
+    @include media(md) {
+      margin-top: 24px;
+    }
+
+    .btn-ghost {
+      --width: 100%;
+      --color: var(--button-text-ghost-low-contrast);
+    }
+  }
+
+  &__locked-btn {
+    --width: 100%;
+  }
+
+  &__activate-btn, &__spin-btn {
+    --width: 100%;
+    @include upd-font($heading-2);
+  }
+
+  .bonuses-fs {
+    margin-top: 8px;
+  }
+}

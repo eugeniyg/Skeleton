@@ -141,7 +141,8 @@ export const useProfileStore = defineStore('profileStore', {
       const {
         getPlayerBonuses,
         getPlayerFreeSpins,
-        getPlayerCashback
+        getPlayerCashback,
+        getDepositBonuses
       } = useBonusStore();
       const { getPlayerActiveQuests, subscribeQuestsSocket } = useQuestsStore();
       const { getPlayerLoyalty, subscribeLoyaltySocket } = useLoyaltyStore();
@@ -151,15 +152,14 @@ export const useProfileStore = defineStore('profileStore', {
       if (runtimeConfig.public?.questsEnabled) getPlayerActiveQuests();
       if (runtimeConfig.public?.loyaltyEnabled) getPlayerLoyalty();
       getPopoverNotifications();
-
-      const { activeAccount } = useWalletStore();
-      getPlayerCashback(activeAccount?.currency);
+      getPlayerCashback();
 
       const route = useRoute();
       const bonusesRoute = route.name === 'profile-bonuses' || route.name === 'locale-profile-bonuses';
       if (!bonusesRoute) {
         getPlayerBonuses();
         getPlayerFreeSpins();
+        getDepositBonuses();
       }
 
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();

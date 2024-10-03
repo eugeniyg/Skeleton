@@ -34,7 +34,7 @@
             <span>{{ balanceFormat.currency }}</span>
           </span>
 
-          <atomic-icon class="icon-expand" id="arrow_expand-close"/>
+          <atomic-icon id="arrow_expand-close" class="icon-expand"/>
 
           <list-currencies
             :is-open="isSelectOpen"
@@ -46,12 +46,12 @@
         </div>
       </div>
 
-      <div class="row" v-if="props.withdraw">
+      <div v-if="props.withdraw" class="row">
         <div class="label">{{ getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.withdrawLabel') }}</div>
 
         <div
-          class="value"
           v-if="showEquivalentBalance"
+          class="value"
         >
           {{ withdrawalEquivalentBalanceFormat.balance }} {{ withdrawalEquivalentBalanceFormat.currency }}
         </div>
@@ -107,11 +107,9 @@
   };
 
   const onChangeAccount = (): void => {
-    const { getDepositBonuses } = useBonusStore();
     const { getTurnOverWager } = useRiskStore();
     walletStore.getDepositMethods();
     walletStore.getWithdrawMethods();
-    getDepositBonuses(activeAccount.value?.currency as string);
     getTurnOverWager();
   }
 </script>

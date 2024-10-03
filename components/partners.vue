@@ -1,12 +1,12 @@
 <template>
-  <div class="partners" v-if="props.items?.length">
+  <div v-if="props.items?.length" class="partners">
     <div class="partners__title">{{ props.label }}</div>
     <div class="partners__items">
       <atomic-link
-          class="partners__item"
-          v-for="item in props.items"
-          :href="item.url"
-          :targetBlank="item.targetBlank"
+        v-for="item in props.items"
+        class="partners__item"
+        :href="item.url"
+        :targetBlank="item.targetBlank"
       >
         <atomic-image class="partners__logo" :src="item.image"/>
       </atomic-link>

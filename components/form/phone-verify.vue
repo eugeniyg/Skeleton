@@ -34,9 +34,9 @@
         </div>
 
         <button-base
+          v-else
           type="ghost"
           size="xs"
-          v-else
           @click.once="resendCode"
         >
           {{ getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.resendButton') }}

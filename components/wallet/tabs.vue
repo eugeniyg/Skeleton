@@ -1,9 +1,9 @@
 <template>
   <div class="wallet-tabs">
     <div
+      v-for="{ id, label } in tabItems"
       class="wallet-tabs__item"
       :class="{ 'is-selected': props.selected === id }"
-      v-for="{ id, label } in tabItems"
       @click="changeTab(id)"
     >
       {{ label }}

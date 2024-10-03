@@ -1,10 +1,10 @@
 <template>
   <div class="input-payments">
-    <div class="items" v-if="props.items?.length">
+    <div v-if="props.items?.length" class="items">
       <div
-        class="item"
         v-for="(item, i) in props.items"
         :key="i"
+        class="item"
         :class="{'is-selected': item.method === props.activeMethod?.method }"
         @click="select(item)"
       >
@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <input type="hidden" name="payments" :value="props.activeMethod?.method" />
+    <input type="hidden" name="payments" :value="props.activeMethod?.method" >
   </div>
 </template>
 

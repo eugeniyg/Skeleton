@@ -1,9 +1,9 @@
 <template>
   <button
+    v-click-outside="makeInactive"
     class="btn-deposit"
     :class="{'is-active': isActive}"
     @click="makeActive"
-    v-click-outside="makeInactive"
   >
     <atomic-icon id="wallet"/>
     <span>

@@ -5,34 +5,34 @@
 
       <form-input-email-verify
         v-if="hasEmailField"
-        type="email"
         v-model:value="profileFormData.email"
-        @blur="v$.email?.$touch()"
-        @focus="focusField('email')"
+        type="email"
         :isDisabled="!!profile?.email"
         :verifyButton="infoContent?.verifyButton || defaultLocaleInfoContent?.verifyButton"
         :hint="profile?.email ? emailHint : setError('email')"
         :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
         :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
         name="email"
+        @blur="v$.email?.$touch()"
+        @focus="focusField('email')"
       />
     </div>
 
     <div v-for="n in Math.ceil(rowsFields.length / 2)" :key="`row-${n}`" class="row">
       <component
         :is="fieldsMap[field.name]?.component || 'form-input-text'"
-        @blur="v$[field.name]?.$touch()"
-        @focus="focusField(field.name)"
-        :isDisabled="!!profile?.[field.name] && !field.editable"
-        v-model:value="profileFormData[field.name]"
         v-for="field in rowsFields.slice(2 * (n - 1), 2 * (n - 1) + 2)"
         :key="field.name"
+        v-model:value="profileFormData[field.name]"
+        :isDisabled="!!profile?.[field.name] && !field.editable"
         :type="fieldsMap[field.name]?.type || 'text'"
         :inputmode="fieldsMap[field.name]?.inputmode"
         :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
         :name="field.name"
         :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
+        @blur="v$[field.name]?.$touch()"
         :isRequired="profileFormRules[field.name]?.hasOwnProperty('required')"
+        @focus="focusField(field.name)"
         :options="selectOptions[field.name]"
         :hint="setError(field.name)"
       />
