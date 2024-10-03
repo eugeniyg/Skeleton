@@ -2,7 +2,7 @@
   <div class="profile-notifications content">
     <div class="profile-notifications__header">
       <div class="profile-notifications__title">
-        {{ getContent(notificationsContent, defaultLocaleNotificationsContent, 'title') }}
+        {{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}
       </div>
 
       <div class="profile-notifications__read-all" :class="{ active: unreadCount }" @click="readAll">
@@ -29,8 +29,8 @@
       v-else-if="!state.loading"
       class="profile-notifications__empty"
       variant="notification"
-      :title="getContent(notificationsContent, defaultLocaleNotificationsContent, 'empty.title')"
-      :subTitle="getContent(notificationsContent, defaultLocaleNotificationsContent, 'empty.description')"
+      :title="getContent(currentLocaleContent, defaultLocaleContent, 'empty.title')"
+      :subTitle="getContent(currentLocaleContent, defaultLocaleContent, 'empty.description')"
     />
 
     <atomic-pagination
@@ -48,14 +48,12 @@
 
   const globalStore = useGlobalStore();
   const {
-    currentLocale,
-    defaultLocale,
     layoutData,
     defaultLocaleLayoutData,
     alertsData,
     defaultLocaleAlertsData
   } = storeToRefs(globalStore);
-  const { setPageMeta, getLocalesContentData, getContent } = useProjectMethods();
+  const { getContent } = useProjectMethods();
   const notificationStore = useNotificationStore();
   const { unreadCount, popoverNotifications } = storeToRefs(notificationStore);
   const { readAllMessages } = notificationStore;
@@ -101,37 +99,11 @@
     getNotifications();
   };
 
-  const notificationsContent = ref<Maybe<IProfileNotifications>>();
-  const defaultLocaleNotificationsContent = ref<Maybe<IProfileNotifications>>();
-  
-  interface IPageContent {
-    currentLocaleData: Maybe<IProfileNotifications>;
-    defaultLocaleData: Maybe<IProfileNotifications>;
-  }
-
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    notificationsContent.value = contentData?.currentLocaleData;
-    defaultLocaleNotificationsContent.value = contentData?.defaultLocaleData;
-    setPageMeta(notificationsContent.value?.pageMeta);
-  }
-
-  const getPageContent = async (): Promise<IPageContent> => {
-    const { data } = useNuxtData('profileNotificationsContent');
-    if (data.value) return data.value;
-
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'profile', 'notifications').findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : queryContent(defaultLocale.value?.code as string, 'profile', 'notifications').findOne()
-    ]);
-    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  }
-
-  const { data: content } = await useLazyAsyncData('profileNotificationsContent', () => getPageContent());
-
-  watch(content, () => {
-    if (content.value) setContentData(content.value);
-  }, { immediate: true });
+  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProfileNotifications>({
+    contentKey: 'profileNotificationsContent',
+    contentRoute: ['profile', 'notifications'],
+    isPage: true
+  });
 
   const readMessage = (messageInfo: IMessage): void => {
     state.notifications = state.notifications.map(message => {

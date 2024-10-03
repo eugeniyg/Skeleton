@@ -37,7 +37,8 @@
     refItems.value.style.setProperty('--items-height', `${height}px`);
   };
 
-  const updateScrollHeight = (): void => {
+  const updateScrollHeight = async (): Promise<void> => {
+    await nextTick();
     scrollHeight.value = refItems.value.scrollHeight;
   };
 

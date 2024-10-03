@@ -1,7 +1,7 @@
 <template>
   <div class="favorites">
     <div class="favorites__title">
-      {{ content?.currentLocaleData?.title || content?.defaultLocaleData?.title }}
+      {{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}
     </div>
 
     <list-grid
@@ -13,9 +13,9 @@
 
     <atomic-empty
       v-else
-      :title="getContent(content?.currentLocaleData, content?.defaultLocaleData, 'empty.title')"
-      :subTitle="getContent(content?.currentLocaleData, content?.defaultLocaleData, 'empty.description')"
-      :image="getContent(content?.currentLocaleData, content?.defaultLocaleData, 'empty.image')"
+      :title="getContent(currentLocaleContent, defaultLocaleContent, 'empty.title')"
+      :subTitle="getContent(currentLocaleContent, defaultLocaleContent, 'empty.description')"
+      :image="getContent(currentLocaleContent, defaultLocaleContent, 'empty.image')"
     />
 
     <group-games
@@ -31,37 +31,12 @@
   import { storeToRefs } from 'pinia';
   import type { IFavoritesPage } from '~/types';
 
-  const globalStore = useGlobalStore();
-  const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const {
-    setPageMeta,
-    getLocalesContentData,
-    getContent,
-  } = useProjectMethods();
-
-  interface IPageContent {
-    currentLocaleData: Maybe<IFavoritesPage>;
-    defaultLocaleData: Maybe<IFavoritesPage>;
-  }
-
-  const getPageContent = async (): Promise<IPageContent> => {
-    const { data } = useNuxtData('favoritesPageContent');
-    if (data.value) return data.value;
-
-    const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      queryContent(currentLocale.value?.code as string, 'pages', 'favorites').findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : queryContent(defaultLocale.value?.code as string, 'pages', 'favorites').findOne()
-    ]);
-
-    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-  }
-
-  const { data: content } = await useLazyAsyncData('favoritesPageContent', () => getPageContent());
-
-  watch(content, () => {
-    if (content.value) setPageMeta(content.value?.currentLocaleData?.pageMeta);
-  }, { immediate: true })
+  const { getContent } = useProjectMethods();
+  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IFavoritesPage>({
+    contentKey: 'favoritesPageContent',
+    contentRoute: ['pages', 'favorites'],
+    isPage: true
+  });
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);

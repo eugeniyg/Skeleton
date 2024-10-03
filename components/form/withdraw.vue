@@ -35,7 +35,7 @@
 
       <template v-for="field in visibleFields">
         <component
-          :is="fieldsType[field.key]?.component || 'form-input-text'"
+          :is="getFieldComponent(field)"
           v-if="field.key !== 'crypto_network'"
           :key="field.key"
           v-model:value="withdrawFormData[field.key]"
@@ -43,10 +43,10 @@
           :label="field.labels[currentLocale?.code || ''] || field.labels.en"
           :name="field.key"
           :placeholder="field.hints[currentLocale?.code || ''] || field.hints.en"
-          :options="getFieldOptions(field.key)"
+          :options="getFieldOptions(field)"
           :isRequired="withdrawFormRules[field.key]?.hasOwnProperty('required')"
-          @input="v$[field.key]?.$touch()"
           :hint="setError(field.key)"
+          @input="fieldInputHandle(field)"
           @blur="v$[field.key]?.$touch()"
           @focus="onFocus(field.key)"
         />
@@ -105,9 +105,10 @@
   } = useProjectMethods();
 
   const networkSelectOptions = computed(() => {
-    const select = props.fields.find((field) => field.fieldType === 'select');
-    if (select?.options) {
-      return select?.options?.map((option) => ({
+    const networkField = props.fields.find((field) => field.key === 'crypto_network');
+    const networkOptions = networkField?.options;
+    if (networkOptions) {
+      return networkOptions?.map((option) => ({
         value: option.name,
         minAmount: option.minAmount,
         maxAmount: option.maxAmount,
@@ -174,6 +175,13 @@
     return currentRulesObj;
   }, {});
 
+  const getFieldComponent = (field: IPaymentField): string => {
+    const fieldComponent = fieldsType[field.key]?.component;
+    if (fieldComponent) return fieldComponent;
+
+    return field.fieldType === 'select' ? 'form-input-dropdown' : 'form-input-text';
+  };
+
   const withdrawRules = ref<any>(startRules);
   const { getFormRules } = useProjectMethods();
   const withdrawFormRules = computed(() => getFormRules(withdrawRules.value));
@@ -218,8 +226,12 @@
   };
 
   const fieldsStore = useFieldsStore();
-  const getFieldOptions = (fieldName: string): any => {
-    return fieldsStore.selectOptions[fieldName] || [];
+  const getFieldOptions = (field: IPaymentField): any => {
+    const platformOptions = fieldsStore.selectOptions[field.key];
+    if (platformOptions?.length) return platformOptions;
+    return field.options?.map(option => {
+      return { value: option.name, code: option.id };
+    }) || [];
   }
 
   const buttonAmount = computed(() => {
@@ -283,6 +295,28 @@
     if (!contentText) return '';
     return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
   })
+
+  const fieldInputHandle = (field: IPaymentField): void => {
+    if (field.key === 'currencyWithdraw') {
+      const currencyOption = field.options?.find((option) => {
+        return option.id === withdrawFormData.currencyWithdraw;
+      })
+      const currencyRegex = currencyOption?.regexp;
+
+      withdrawRules.value = {
+        ...withdrawRules.value,
+        'wallet_id': currencyRegex ? [
+          { rule: 'required' },
+          {
+            rule: 'regex',
+            arguments: currencyRegex,
+          }
+        ] : [{ rule: 'required' }]
+      };
+    }
+
+    v$.value[field.key]?.$touch();
+  }
 
   const getWithdraw = async (): Promise<void> => {
     if (buttonDisabled.value) return;

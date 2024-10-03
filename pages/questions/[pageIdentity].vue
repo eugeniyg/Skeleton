@@ -1,8 +1,8 @@
 <template>
   <div class="content">
-    <h1 class="heading">{{ pageContent?.title }}</h1>
+    <h1 class="heading">{{ currentLocaleContent?.title }}</h1>
 
-    <div v-if="pageContent?.questionList?.length">
+    <div v-if="currentLocaleContent?.questionList?.length">
       <expander
         v-for="(item, itemIndex) in questionsList"
         :key="itemIndex"
@@ -14,43 +14,18 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IQuestionCategory } from '~/types';
 
   const route = useRoute();
   const { pageIdentity } = route.params;
 
-  const globalStore = useGlobalStore();
-  const { currentLocale } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
-
-  const pageContent = ref<Maybe<IQuestionCategory>>();
-
-  const setContentData = (contentData: Maybe<IQuestionCategory>): void => {
-    if (contentData) {
-      pageContent.value = contentData;
-    } else {
-      throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
-    }
-  }
-
-  const getPageContent = async (): Promise<IQuestionCategory> => {
-    const nuxtContentData = useNuxtData(`${pageIdentity}-question`);
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
-
-    const pageContent: object = await queryContent(currentLocale.value?.code as string, 'question-pages').where({ pageIdentity }).findOne();
-    return reactive({ ...pageContent } as IQuestionCategory);
-  }
-
-  const { pending, data, error } = await useLazyAsyncData(`${pageIdentity}-question`, () => getPageContent());
-  if (error.value) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
-  else if (data.value) setContentData(data.value);
-
-  watch(data, () => {
-    setContentData(data.value);
-  })
+  const { currentLocaleContent } = await useContentLogic<IQuestionCategory>({
+    contentKey: `${pageIdentity}-question`,
+    contentRoute: ['question-pages'],
+    where: { pageIdentity }
+  });
 
   const questionsList = computed(() => {
-    return pageContent.value?.questionList || [];
+    return currentLocaleContent.value?.questionList || [];
   });
 </script>

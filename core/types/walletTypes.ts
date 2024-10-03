@@ -72,6 +72,7 @@ export interface IRequestWithdraw extends Record<string, any>{
 export interface IResponseDeposit extends Record<string, any>{
   action: string;
   method: string;
+  invoiceId: string;
   fields: { [key: string]: string };
   type: string;
   qr?: string;
@@ -131,4 +132,8 @@ export interface ISocketInvoice extends Record<string, any>{
   status: number;
   createdAt: string;
   number: number|null;
+  publicData: {
+    qr: string;
+    url: string;
+  }|null;
 }

@@ -4,7 +4,7 @@
       v-if="gameInfo"
       :frameLink="gameStart"
       :gameInfo="gameInfo"
-      :gameContent="gameContent || defaultLocaleGameContent"
+      :gameContent="currentLocaleContent || defaultLocaleContent"
       :showPlug="showPlug && !isLoggedIn && !gameInfo.isDemoMode"
       :isDemo="isDemo"
       @changeMode="changeGameMode"
@@ -12,8 +12,8 @@
 
     <client-only>
       <modal-restricted-bets
-        v-if="gameContent?.restrictedBets || defaultLocaleGameContent?.restrictedBets"
-        :content="gameContent?.restrictedBets || defaultLocaleGameContent?.restrictedBets"
+        v-if="currentLocaleContent?.restrictedBets || defaultLocaleContent?.restrictedBets"
+        :content="currentLocaleContent?.restrictedBets || defaultLocaleContent?.restrictedBets"
         currentPage="game"
         :showModal="showRestrictedBetsModal"
         @closeModal="showRestrictedBetsModal = false"
@@ -26,19 +26,18 @@
       />
 
       <modal-demo-game
-        :content="gameContent?.demoModal || defaultLocaleGameContent?.demoModal"
+        :content="currentLocaleContent?.demoModal || defaultLocaleContent?.demoModal"
         :isDemo="isDemo"
         @playReal="changeGameMode"
       />
     </client-only>
 
-    <atomic-seo-text v-if="gameContent?.pageMeta?.seoText" v-bind="gameContent?.pageMeta?.seoText" />
+    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent?.pageMeta?.seoText" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IGame } from '@skeleton/core/types';
   import type { IGamePage } from '~/types';
 
   const route = useRoute();
@@ -63,54 +62,24 @@
     alertsData,
     defaultLocaleAlertsData,
     currentLocale,
-    defaultLocale,
     headerCountry
   } = storeToRefs(globalStore);
 
-  const { setPageMeta, getLocalesContentData } = useProjectMethods();
+  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IGamePage>({
+    contentKey: 'gamePageContent',
+    contentRoute: ['pages', 'game'],
+    isPage: true
+  });
 
-  const gameInfo = ref<Maybe<IGame>>();
-  const gameContent = ref<Maybe<IGamePage>>();
-  const defaultLocaleGameContent = ref<Maybe<IGamePage>>();
   const showRestrictedBetsModal = ref<boolean>(false);
   const maxBetsModal = reactive({
     show: false,
     maxBet: ''
   });
 
-  interface IPageData {
-    gameInfo: Maybe<IGame>;
-    currentLocaleData: Maybe<IGamePage>;
-    defaultLocaleData: Maybe<IGamePage>;
-  }
+  const { data: gameInfo } = await useLazyAsyncData(`game${route.params.id}Info`, () => getGamesInfo(route.params.id as string));
 
-  const setContentData = (contentData: Maybe<IPageData>): void => {
-    gameInfo.value = contentData?.gameInfo;
-    gameContent.value = contentData?.currentLocaleData;
-    defaultLocaleGameContent.value = contentData?.defaultLocaleData;
-    setPageMeta(gameContent.value?.pageMeta);
-  }
-
-  const getPageContent = async (): Promise<IPageData> => {
-    const nuxtPageData = useNuxtData(`game${route.params.id}Info`);
-    if (nuxtPageData.data.value) return nuxtPageData.data.value;
-
-    const [infoResponse, currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-      getGamesInfo(route.params.id as string),
-      queryContent(currentLocale.value?.code as string, 'pages', 'game').findOne(),
-      currentLocale.value?.isDefault ? Promise.reject('Current locale is default locale!')
-      : queryContent(defaultLocale.value?.code as string, 'pages', 'game').findOne()
-    ]);
-    const contentResponseData = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
-    const gameInfo = infoResponse.status !== 'rejected' ? infoResponse.value : undefined;
-    return reactive({ gameInfo, ...contentResponseData });
-  }
-
-  const { pending, data } = await useLazyAsyncData(`game${route.params.id}Info`, () => getPageContent());
-  if (data.value) setContentData(data.value);
-
-  watch(data, () => {
-    setContentData(data.value);
+  watch(gameInfo, () => {
     if (pageMounted.value) checkGame();
   })
 

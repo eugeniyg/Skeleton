@@ -16,7 +16,8 @@
       @blur="onBlur"
       @input="onInput"
       @keyup.enter="emit('submit', $event)"
-    >
+      ref="inputRef"
+    />
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
   </label>
@@ -82,6 +83,16 @@
     emit('input', e.target.value);
     emit('update:value', e.target.value);
   };
+
+  const inputRef = ref();
+
+  const focusField = (e:any) => {
+    inputRef.value.focus();
+  }
+
+  defineExpose({
+    focusField,
+  })
 </script>
 
 <style src="~/assets/styles/components/form/input/text.scss" lang="scss" />

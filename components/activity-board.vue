@@ -13,7 +13,7 @@
           class="activity-board__nav-selected"
           @click="toggleMobileNav"
         >
-          <span>{{ selectedNavTitle }}</span>
+          <span class="activity-board__nav-selected-title">{{ selectedNavTitle }}</span>
           <atomic-icon id="arrow_expand-close"/>
         </div>
 

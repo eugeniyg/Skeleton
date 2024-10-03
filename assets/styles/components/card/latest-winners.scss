@@ -1,78 +1,92 @@
 .card-latest-winners {
-  --col-count: 1.4;
-  --col-gap: 8px;
-
-  height: var(--height, auto);
-  width: calc(calc(100% / var(--col-count)) - calc(var(--col-gap) - calc(var(--col-gap)/var(--col-count))));
-  padding: rem(8px);
-  background-color: var(--bg, var(--layer-02));
-  display: grid;
-  align-content: center;
-  grid-template-areas:
-    "img title"
-    "img sub-title"
-    "img items";
-  grid-template-columns: rem(56px) 1fr;
+  aspect-ratio: 104/156;
   flex-shrink: 0;
-  align-self: stretch;
+  position: relative;
+  overflow: hidden;
+  display: flex;
   align-items: flex-start;
-  text-decoration: none;
   border-radius: 8px;
-  grid-column-gap: rem(8px);
-  scroll-snap-align: var(--scroll-snap-align, start);
-  min-width: var(--card-min-width, 224px);
 
-  @include media(xs) {
-    --col-count: 2.4;
+  flex-basis: calc((100% - (var(--column-count) - 1) * var(--column-gap)) / var(--column-count));
+  scroll-snap-align: start;
+
+  &__info {
+    padding: 4px;
+    display: var(--display, grid);
+    position: var(--position-info, absolute);
+    border: 1px solid var(--border-accent);
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    transition: var(--transition-info, (all .4s));
+    background: var(--layer-02);
+    border-radius: 8px;
+
+    @include media(sm) {
+      padding: 4px 8px;
+    }
+
+    &-title {
+      color: var(--text-secondary);
+      text-align: center;
+      @include font($body-0);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 16px;
+    }
+
+    &-items {
+      display: flex;
+      justify-content: center;
+      grid-column-gap: 2px;
+    }
+
+    &-currency, &-amount  {
+      color: var(--text-accent);
+      @include font($heading-0);
+
+      @include media(md) {
+        @include font($heading-1);
+      }
+    }
+
+    &-img {
+      flex-shrink: 0;
+      flex-basis: 12px;
+      margin-right: 2px;
+      display: none;
+
+      @include media(xs) {
+        display: flex;
+      }
+    }
   }
 
-  @include media(xs) {
-    --col-count: 2.89;
-  }
-
-  @include media(md) {
-    --col-gap: 16px;
-    --col-count: 4;
-    --card-min-width: auto;
-  }
-
-  @include media(xxl) {
-    --col-count: 6;
+  &__poster {
+    display: block;
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   &__img {
-    grid-area: img;
-    width: rem(56px);
-    height: rem(56px);
-    background-repeat: var(--bg-repeat, no-repeat);
-    background-size: var(--bg-size, cover);
-    background-position: var(--bg-position, top center);
-    border-radius: 8px;
-    overflow: hidden;
-    align-self: center;
     display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
     border: none;
+    object-fit: cover;
+
+    &.isLoaded ~ .card-latest-winners__poster {
+      display: none !important;
+    }
   }
 
-  .title {
-    grid-area: title;
-    @include font($body-1);
-    color: var(--text-secondary);
-    min-height: 16px;
-  }
-
-  .sub-title {
-    grid-area: sub-title;
-    @include font($heading-1);
-    color: var(--text-primary);
-  }
-
-  .items {
-    grid-area: items;
-    @include font($heading-2);
-    @extend %flex-items-center;
-    grid-column-gap: 8px;
-    color: var(--text-accent);
-    margin-top: rem(4px);
+  .vue-skeletor--text {
+    border-radius: 8px;
   }
 }
+
+

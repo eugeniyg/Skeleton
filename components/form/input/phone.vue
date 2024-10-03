@@ -26,7 +26,8 @@
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
-      >
+        ref="inputRef"
+      />
     </client-only>
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
@@ -118,6 +119,16 @@
     onInput();
     onBlur();
   };
+
+  const inputRef = ref();
+
+  const focusField = (e:any) => {
+    inputRef.value?.focus();
+  }
+
+  defineExpose({
+    focusField,
+  })
 </script>
 
 <style src="~/assets/styles/components/form/input/phone.scss" lang="scss" />
