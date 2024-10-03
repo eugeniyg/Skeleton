@@ -84,8 +84,6 @@
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
   const {
-    currentLocale,
-    defaultLocale,
     popupsData,
     defaultLocalePopupsData,
     alertsData,
