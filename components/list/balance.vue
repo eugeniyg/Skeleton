@@ -64,32 +64,9 @@
           defaultImage="/img/currency/placeholder.svg"
         />
 
-        <template v-if="currentActiveBonus">
-          <div class="list-balance__bonus-progress">
-            <div class="list-balance__bonus-progress-bar">
-              <div
-                class="list-balance__bonus-progress-filled"
-                :data-progress="`${currentActiveBonus.currentWagerPercentage}%`"
-                :style="{'--progress': `${currentActiveBonus.currentWagerPercentage}%`}"
-              />
-            </div>
-
-            <div class="list-balance__bonus-progress-info">
-              <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.wageringLabel') }}</span>
-              <span>{{ bonusWageringBalance.balance }} {{ bonusWageringBalance.currency }}</span>
-
-              <div class="list-balance__bonus-wager">
-                <span v-if="currentActiveBonus.wagerCasino">
-                  <atomic-icon id="cherry" /> x{{ currentActiveBonus.wagerCasino }}
-                </span>
-
-                <span v-if="currentActiveBonus.wagerSportsbook">
-                  <atomic-icon id="sport" /> x{{ currentActiveBonus.wagerSportsbook }}
-                </span>
-              </div>
-            </div>
-          </div>
-        </template>
+        <div v-if="props.isOpen && activePlayerBonuses.length" class="list-balance__bonus-progress">
+          <bonuses-wager-progress :bonusInfo="activePlayerBonuses[0]" />
+        </div>
       </div>
 
       <div class="list-balance__item">
@@ -165,7 +142,10 @@
   } = useProjectMethods();
 
   const bonusStore = useBonusStore();
-  const { currentActiveBonus, playerCashback } = storeToRefs(bonusStore);
+  const {
+    activePlayerBonuses,
+    playerCashback
+  } = storeToRefs(bonusStore);
 
   const emit = defineEmits(['close', 'changeActiveAccount']);
 
@@ -244,10 +224,6 @@
     const bundle = formatBalance(activeAccount.value?.currency, amount);
     return { balance: bundle.amount, currency: bundle.currency };
   }
-
-  const bonusWageringBalance = computed<IBalance>(() => {
-    return getBalanceFormat(currentActiveBonus.value?.currentWagerAmount || 0);
-  })
 
   const cashbackBalance = computed<IBalance[]>(() => {
     if (playerCashback.value.length) {

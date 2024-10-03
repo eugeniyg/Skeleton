@@ -1,41 +1,41 @@
 <template>
   <vue-final-modal
-    v-model="modals.walletBonusDetails"
-    class="modal-wallet-bonus-details"
+    v-model="modals.walletBonusInfo"
+    class="modal-wallet-bonus-info"
     :clickToClose="false"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
-    @clickOutside="closeModal('walletBonusDetails')"
+    @clickOutside="closeModal('walletBonusInfo')"
     @beforeOpen="setTableData"
   >
-    <div class="modal-wallet-bonus-details__scroll">
-      <div class="modal-wallet-bonus-details__header">
+    <div class="modal-wallet-bonus-info__scroll">
+      <div class="modal-wallet-bonus-info__header">
         <atomic-image
           v-if="titleImage"
           class="img"
           :src="titleImage"
         />
 
-        <div class="modal-wallet-bonus-details__title">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'walletBonusDetails.title') }}
+        <div class="modal-wallet-bonus-info__title">
+          {{ getContent(popupsData, defaultLocalePopupsData, 'walletBonusInfo.title') }}
         </div>
 
-        <button-modal-close @close="closeModal('walletBonusDetails')"/>
+        <button-modal-close @close="closeModal('walletBonusInfo')" />
       </div>
 
       <div
         v-for="table in bonusesTables"
         :key="table.id"
-        class="modal-wallet-bonus-details__table"
+        class="modal-wallet-bonus-info__table"
       >
         <div
           v-if="bonusesTables.length > 1"
-          class="modal-wallet-bonus-details__table-title"
+          class="modal-wallet-bonus-info__table-title"
         >
           {{ table.name }}
         </div>
 
-        <dl class="modal-wallet-bonus-details__dl">
+        <dl class="modal-wallet-bonus-info__dl">
           <template v-for="{ label, value } in table.params">
             <dt>{{ label }}</dt>
             <dd>{{ value === 'games' ? bonusGames[table.id] : value }}</dd>
@@ -45,7 +45,7 @@
 
       <button-base type="ghost" size="xs" @click="goToBonuses">
         <span>
-          {{ getContent(popupsData, defaultLocalePopupsData, 'walletBonusDetails.readMore') }}
+          {{ getContent(popupsData, defaultLocalePopupsData, 'walletBonusInfo.readMore') }}
         </span>
 
         <atomic-icon id="arrow_next"/>
@@ -85,7 +85,7 @@
   const { getProviderList } = useGamesStore();
 
   const titleImage = computed(() => {
-    return getContent(popupsData, defaultLocalePopupsData, 'walletBonusDetails.titleImage')
+    return getContent(popupsData, defaultLocalePopupsData, 'walletBonusInfo.titleImage')
   })
 
   interface IParam {
@@ -93,7 +93,7 @@
     value: string;
   }
 
-  const paramsLabels = getContent(popupsData, defaultLocalePopupsData, 'walletBonusDetails.infoLabels');
+  const paramsLabels = getContent(popupsData, defaultLocalePopupsData, 'walletBonusInfo.infoLabels');
   const bonusesTables = ref<{ id: string, name: string, params: IParam[] }[]>([]);
 
   const getCurrentCurrencySumRange = (
@@ -300,12 +300,11 @@
   }
 
   const goToBonuses = (): void => {
-    closeModal('walletBonusDetails');
+    closeModal('walletBonusInfo');
     closeModal('wallet');
     const router = useRouter();
     router.push(localizePath('/welcome-package'));
   }
 </script>
 
-<style src="~/assets/styles/components/modal/wallet-bonus-details.scss" lang="scss" />
-
+<style src="~/assets/styles/components/modal/wallet-bonus-info.scss" lang="scss" />

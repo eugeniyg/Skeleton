@@ -1,0 +1,95 @@
+.modal-bonus-details {
+  @extend %modal-info;
+  align-items: flex-start;
+
+  .vfm__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .btn-modal-close {
+    --right: 16px;
+    --top: 16px;
+  }
+
+  .scroll {
+    overflow-y: auto !important;
+    padding: 0 8px 12px;
+  }
+
+  .header {
+    display: grid;
+    position: relative;
+    padding-top: 8px;
+
+    &__title {
+      color: var(--text-primary);
+      @include font($body-2);
+
+      &--large {
+        @include font($subheading-4);
+      }
+    }
+
+    &__value {
+      color: var(--text-primary);
+      @include font($heading-7);
+      margin-top: -2px;
+    }
+
+    &__row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
+    }
+  }
+
+  &__dl {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid var(--border-01);
+    background: var(--layer-03-low-contrast);
+
+    dt, dd {
+      padding: rem(12px);
+      margin: 0;
+    }
+
+    dt {
+      @include font($body-1);
+      color: var(--text-tertiary);
+    }
+
+    dd {
+      @include font($heading-1);
+      color: var(--text-primary)
+    }
+
+    dt:nth-of-type(odd), dd:nth-of-type(odd) {
+      background-color: var(--layer-01);
+    }
+
+    dt:nth-of-type(even), dd:nth-of-type(even) {
+      background-color: var(--layer-03-low-contrast);
+    }
+  }
+
+  .bonuses-timer {
+    --timer-padding: 4px 8px;
+    --timer-item-height: 16px;
+    --timer-item-width: auto;
+    --timer-item-min-width: 18px;
+    --timer-flex: 0 0 auto;
+    height: 24px;
+    border-radius: 8px;
+  }
+
+  .btn-modal-close {
+    --right: 0px;
+  }
+}

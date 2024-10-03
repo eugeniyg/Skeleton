@@ -1,0 +1,25 @@
+.bonuses-min-deposit {
+  margin-bottom: 4px;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  &__label {
+    margin-right: 2px;
+    color: var(--text-tertiary);
+    @include font($body-1);
+  }
+
+  &__amount {
+    color: var(--text-secondary);
+    @include font($body-1);
+  }
+
+  &__currency {
+    color: var(--text-secondary);
+    @include font($body-1);
+  }
+}

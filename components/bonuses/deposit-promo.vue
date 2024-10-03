@@ -1,5 +1,5 @@
 <template>
-  <div class="deposit-bonus-code" :class="{ 'is-selected': showDepositBonusCode }">
+  <div class="bonuses-deposit-promo" :class="{ 'is-selected': showDepositBonusCode }">
     <form-input-bonus-radio
       id="deposit-bonus-code"
       name="input-deposit-bonus-code"
@@ -7,12 +7,12 @@
       @change="emit('openBonusCode')"
     />
 
-    <div class="deposit-bonus-code__head">
+    <div class="bonuses-deposit-promo__head">
       <atomic-icon id="bonuses" />
       {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.togglerLabel') || '' }}
     </div>
 
-    <div v-if="showDepositBonusCode" class="deposit-bonus-code__code">
+    <div v-if="showDepositBonusCode" class="bonuses-deposit-promo__code">
       <form-input-text
         ref="bonusField"
         v-model:value="bonusValue"
@@ -126,4 +126,4 @@
   });
 </script>
 
-<style src="~/assets/styles/components/bonus/deposit-code.scss" lang="scss" />
+<style src="~/assets/styles/components/bonuses/deposit-promo.scss" lang="scss" />

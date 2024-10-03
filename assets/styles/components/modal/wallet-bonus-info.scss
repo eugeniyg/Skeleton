@@ -1,4 +1,4 @@
-.modal-wallet-bonus-details {
+.modal-wallet-bonus-info {
   .vfm__content {
     max-width: rem(400px);
     margin: 0 rem(16px);
@@ -54,7 +54,7 @@
     --top: #{rem(-8px)};
   }
 
-  .modal-wallet-bonus-details__table {
+  .modal-wallet-bonus-info__table {
     margin-bottom: rem(16px);
 
     &-title {
@@ -64,7 +64,7 @@
     }
   }
 
-  .modal-wallet-bonus-details__dl {
+  .modal-wallet-bonus-info__dl {
     display: grid;
     grid-template-columns: 40% 60%;
     margin: 0;

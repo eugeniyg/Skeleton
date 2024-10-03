@@ -1,0 +1,31 @@
+.bonuses-badge-game {
+  display: flex;
+  padding: 4px 8px;
+  align-items: center;
+  gap: 4px;
+  border-radius: 8px;
+  background: var(--layer-01);
+  overflow: hidden;
+  text-decoration: none;
+  margin-right: auto;
+
+  &__icon {
+    --icon-size: 16px;
+    --color: var(--icon-color, var(--icon-primary));
+  }
+
+  &__text {
+    color: var(--text-color, var(--text-secondary));
+    @include font($body-1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    transition: color 0.2s ease-in-out;
+  }
+
+  &:hover {
+    --text-color: var(--text-accent);
+    --icon-color: var(--icon-accent);
+  }
+}

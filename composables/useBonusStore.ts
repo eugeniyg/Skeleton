@@ -8,6 +8,7 @@ import type {
   IPlayerCashback,
   IBonus
 } from '@skeleton/core/types';
+import debounce from 'lodash/debounce.js';
 
 interface IBonusState {
   bonusCodeSubscription: any;
@@ -20,8 +21,13 @@ interface IBonusState {
   depositBonuses: IBonus[];
   selectedDepositBonus: IBonus|undefined;
   bonusDeclined: boolean;
-  depositMoreInfoBonus: Maybe<IBonus>;
+  depositMoreInfoBonus: Maybe<Record<string, any>>;
   showDepositBonusCode: boolean;
+  walletDepositBonus: {
+    id: string;
+    packageId: string|undefined;
+    amount?: number;
+  }|undefined;
 }
 
 export const useBonusStore = defineStore('bonusStore', {
@@ -37,47 +43,61 @@ export const useBonusStore = defineStore('bonusStore', {
     selectedDepositBonus: undefined,
     bonusDeclined: false,
     depositMoreInfoBonus: undefined,
-    showDepositBonusCode: false
+    showDepositBonusCode: false,
+    walletDepositBonus: undefined,
   }),
 
   getters: {
     activePlayerBonuses(state):IPlayerBonus[] {
-      const walletStore = useWalletStore();
-      return state.playerBonuses.filter((playerBonus) => walletStore.activeAccount?.currency === playerBonus.currency);
+      return state.playerBonuses.filter(playerBonus => playerBonus.status === 2);
+    },
+
+    issuedPlayerBonuses(state):IPlayerBonus[] {
+      return state.playerBonuses.filter(playerBonus => playerBonus.status === 1);
     },
 
     activePlayerFreeSpins(state):IPlayerFreeSpin[] {
-      const walletStore = useWalletStore();
-      return state.playerFreeSpins.filter((playerFreeSpin) => walletStore.activeAccount?.currency === playerFreeSpin.currency);
+      return state.playerFreeSpins.filter(playerFreeSpin => playerFreeSpin.status === 2);
     },
 
-    currentActiveBonus(): Maybe<IPlayerBonus> {
-      return this.activePlayerBonuses.find((bonus) => bonus.status === 2);
+    issuedPlayerFreeSpins(state):IPlayerFreeSpin[] {
+      return state.playerFreeSpins.filter(playerFreeSpin => playerFreeSpin.status === 1);
+    },
+    bonusesCount(state):number {
+      return state.playerBonuses.length + state.playerFreeSpins.length + state.depositBonuses.length;
     }
   },
 
   actions: {
     async getPlayerBonuses():Promise<void> {
+      const { activeAccount } = useWalletStore();
+      if (!activeAccount?.currency) return;
       const { getPlayerBonuses } = useCoreBonusApi();
-      const { data } = await getPlayerBonuses({ status: [1, 2] });
+      const { data } = await getPlayerBonuses({ status: [1, 2], currency: [activeAccount.currency] });
       this.playerBonuses = data;
     },
 
     async getPlayerFreeSpins():Promise<void> {
+      const { activeAccount } = useWalletStore();
+      if (!activeAccount?.currency) return;
       const { getPlayerFreeSpins } = useCoreBonusApi();
-      const { data } = await getPlayerFreeSpins({ status: [1, 2] });
+      const { data } = await getPlayerFreeSpins({ status: [1, 2], currency: [activeAccount.currency] });
       this.playerFreeSpins = data;
     },
 
-    async getPlayerCashback(currency?: string):Promise<void> {
+    async getPlayerCashback():Promise<void> {
+      const { activeAccount } = useWalletStore();
+      if (!activeAccount?.currency) return;
       const { getPlayerCashback } = useCoreBonusApi();
-      const { data } = await getPlayerCashback(currency);
+      const { data } = await getPlayerCashback(activeAccount.currency);
       this.playerCashback = data;
     },
 
-    async getDepositBonuses(currency: string, amount?: number):Promise<void> {
+    async getDepositBonuses():Promise<void> {
+      const { activeAccount } = useWalletStore();
+      if (!activeAccount?.currency) return;
       const { getDepositBonuses } = useCoreBonusApi();
-      this.depositBonuses = await getDepositBonuses(currency, amount);
+      this.depositBonuses = await getDepositBonuses(activeAccount.currency);
     },
 
     async getDepositBonusCode():Promise<void> {
@@ -127,33 +147,23 @@ export const useBonusStore = defineStore('bonusStore', {
       this.showBonusCodeNotification(bonusCodeData?.status);
     },
 
-    updatePlayerBonusList(bonusData: IPlayerBonus):void {
-      if (bonusData.status === 1) this.playerBonuses = [...this.playerBonuses, bonusData];
-      else if (bonusData.status === 2) {
-        this.playerBonuses = this.playerBonuses.map((bonus) => {
-          if (bonus.id === bonusData.id) return bonusData;
-          return bonus;
-        });
-      } else {
-        this.playerBonuses = this.playerBonuses.filter((bonus) => bonus.id !== bonusData.id);
+    updatePlayerBonusList: debounce(async (bonusData: IPlayerBonus, thisStore: any) => {
+      if ([1,2].includes(bonusData.status)) await thisStore.getPlayerBonuses();
+      else {
+        thisStore.playerBonuses = thisStore.playerBonuses.filter((bonus: IPlayerBonus) => bonus.id !== bonusData.id);
       }
 
       useEvent('bonusesUpdated');
-    },
+    }, 500, { leading: false }),
 
-    updatePlayerFreeSpinsList(freeSpinData: IPlayerFreeSpin):void {
-      if (freeSpinData.status === 1) this.playerFreeSpins = [...this.playerFreeSpins, freeSpinData];
-      else if (freeSpinData.status === 2) {
-        this.playerFreeSpins = this.playerFreeSpins.map((freeSpin) => {
-          if (freeSpin.id === freeSpinData.id) return freeSpinData;
-          return freeSpin;
-        });
-      } else {
-        this.playerFreeSpins = this.playerFreeSpins.filter((freeSpin) => freeSpin.id !== freeSpinData.id);
+    updatePlayerFreeSpinsList: debounce(async (freeSpinData: IPlayerFreeSpin, thisStore: any) => {
+      if ([1, 2].includes(freeSpinData.status)) await thisStore.getPlayerFreeSpins();
+      else {
+        thisStore.playerFreeSpins = thisStore.playerFreeSpins.filter((freeSpin: IPlayerFreeSpin) => freeSpin.id !== freeSpinData.id);
       }
 
       useEvent('freeSpinsUpdated');
-    },
+    }, 500, { leading: false }),
 
     bonusesSocketTrigger(webSocketResponse:IWebSocketResponse):void {
       const bonusData: Maybe<IPlayerBonus> = webSocketResponse.data.playerBonus;
@@ -183,7 +193,7 @@ export const useBonusStore = defineStore('bonusStore', {
       const alertData = alertsData?.bonus?.[alertsKey[`${status}-${result}`]]
         || defaultLocaleAlertsData?.bonus?.[alertsKey[`${status}-${result}`]];
 
-      this.updatePlayerBonusList(bonusData);
+      this.updatePlayerBonusList(bonusData, this);
       if (alertData) showAlert({ ...alertData, description: transformMessage(alertData?.description) });
     },
 
@@ -232,7 +242,7 @@ export const useBonusStore = defineStore('bonusStore', {
       const alertData = alertsData?.freeSpin?.[alertsKey[`${status}-${result}`]]
         || defaultLocaleAlertsData?.freeSpin?.[alertsKey[`${status}-${result}`]];
 
-      this.updatePlayerFreeSpinsList(freeSpinData);
+      this.updatePlayerFreeSpinsList(freeSpinData, this);
       if (alertData) showAlert({ ...alertData, description: transformMessage(alertData?.description) });
     },
 

@@ -1,0 +1,52 @@
+.bonuses-badge-type {
+  display: inline-flex;
+  padding: 4px 8px;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg);
+  border-radius: 8px;
+  text-transform: var(---parent-uppercase, lowercase);
+
+  &__icon {
+    --icon-size: 16px;
+    --color: var(--icon-color, var(--icon-inverse));
+  }
+
+  &__label {
+    color: var(--label-color);
+    text-transform: var(---child-uppercase, capitalize);
+    @include font($subheading-1);
+  }
+
+  &.is-yellow {
+    --bg: var(--support-brand-default);
+    --icon-color: var(--icon-inverse);
+    --label-color: var(--text-inverse);
+  }
+
+  &.is-green {
+    --bg: var(--green-600);
+    --icon-color: var(--green-200);
+    --label-color: var(--green-100);
+  }
+
+  &.is-violet {
+    --bg: var(--violet-500);
+    --icon-color: var(--icon-contrast);
+    --label-color: var(--violet-000);
+  }
+
+  &.is-orange {
+    --bg: var(--support-warning-default);
+    --icon-color: var(--orange-100);
+    --label-color: var(--orange-100);
+  }
+
+  &.is-blue {
+    --bg: var(--support-info-default);
+    --icon-color: var(--blue-100);
+    --label-color: var(--blue-100);
+    ---parent-uppercase: uppercase;
+    ---child-uppercase: uppercase;
+  }
+}
