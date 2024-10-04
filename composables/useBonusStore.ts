@@ -64,12 +64,23 @@ export const useBonusStore = defineStore('bonusStore', {
       return state.playerFreeSpins.filter(playerFreeSpin => playerFreeSpin.status === 1);
     },
     bonusesCount(state):number {
-      const uniquePackageBonuses = [...state.playerBonuses, ...state.playerFreeSpins, ...state.depositBonuses]
-        .map(bonus => (bonus as IPlayerBonus|IPlayerFreeSpin).packageId || bonus.package?.id)
+      const playerPackageBonuses = [...state.playerBonuses, ...state.playerFreeSpins]
+        .map(bonus => (bonus as IPlayerBonus|IPlayerFreeSpin).packageId)
         .filter((id, index, array) => id && array.indexOf(id) === index);
-      const simpleBonuses = [...state.playerBonuses, ...state.playerFreeSpins, ...state.depositBonuses]
-        .filter(bonus => !(bonus as IPlayerBonus|IPlayerFreeSpin).packageId && !bonus.package?.id);
-      return uniquePackageBonuses.length + simpleBonuses.length;
+
+      const depositPackageBonuses = state.depositBonuses
+        .map(bonus => bonus.package?.id)
+        .filter((id, index, array) => id && array.indexOf(id) === index);
+
+      const simplePlayerBonuses = [...state.playerBonuses, ...state.playerFreeSpins]
+        .filter(bonus => !(bonus as IPlayerBonus|IPlayerFreeSpin).packageId);
+
+      const simpleDepositBonuses = state.depositBonuses.filter(bonus => !bonus.package?.id);
+
+      return playerPackageBonuses.length
+        + depositPackageBonuses.length
+        + simplePlayerBonuses.length
+        + simpleDepositBonuses.length;
     },
   },
 
