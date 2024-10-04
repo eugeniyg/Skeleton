@@ -9,6 +9,7 @@ const viteConfig: any = {
   css: {
     preprocessorOptions: {
       scss: {
+        api: 'modern-compiler',
         additionalData: '@use "@skeleton/assets/styles/ds/_shared.scss" as *;',
       },
     },
@@ -111,14 +112,13 @@ export default defineNuxtConfig({
     '@skeleton/node_modules/vue-skeletor/dist/vue-skeletor.css'
   ],
   vite: viteConfig,
+  sourcemap: {
+    server: false,
+    client: true,
+  },
   nitro: {
     logLevel: 0,
-    sourceMap: false,
     inlineDynamicImports: true,
-    rollupConfig: {
-      output: { sourcemap: false },
-      maxParallelFileOps: 1,
-    },
     devProxy: {
       '/api': {
         target: 'https://test.dev.getplatform.tech/api',
