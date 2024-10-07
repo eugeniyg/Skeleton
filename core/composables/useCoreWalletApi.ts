@@ -35,13 +35,19 @@ export const useCoreWalletApi = () => {
     return data;
   };
 
-  const getDepositMethods = async (currency: string):Promise<IPaymentMethod[]> => {
-    const { data } = await useApiAuthInstance('/api/payment/methods/deposit', { params: { currency } });
+  const getDepositMethods = async (currency: string, country: Maybe<string>):Promise<IPaymentMethod[]> => {
+    const { data } = await useApiAuthInstance('/api/payment/methods/deposit', {
+      params: { currency },
+      headers: { 'cf-ipcountry': country || 'XX' }
+    });
     return data;
   };
 
-  const getWithdrawMethods = async (currency: string):Promise<IPaymentMethod[]> => {
-    const { data } = await useApiAuthInstance('/api/payment/methods/withdrawal', { params: { currency } });
+  const getWithdrawMethods = async (currency: string, country: Maybe<string>):Promise<IPaymentMethod[]> => {
+    const { data } = await useApiAuthInstance('/api/payment/methods/withdrawal', {
+      params: { currency },
+      headers: { 'cf-ipcountry': country || 'XX' }
+    });
     return data;
   };
 

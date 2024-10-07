@@ -109,9 +109,10 @@ export const useWalletStore = defineStore('walletStore', {
     async getDepositMethods():Promise<void> {
       this.depositLimitError = false;
       const { getDepositMethods } = useCoreWalletApi();
+      const { getPaymentMethodsGeo } = useProjectMethods();
 
       try {
-        this.depositMethods = await getDepositMethods(this.activeAccount?.currency || '');
+        this.depositMethods = await getDepositMethods(this.activeAccount?.currency || '', getPaymentMethodsGeo());
       } catch (err: any) {
         this.depositMethods = [];
 
@@ -125,7 +126,8 @@ export const useWalletStore = defineStore('walletStore', {
 
     async getWithdrawMethods():Promise<void> {
       const { getWithdrawMethods } = useCoreWalletApi();
-      this.withdrawMethods = await getWithdrawMethods(this.activeAccount?.currency || '');
+      const { getPaymentMethodsGeo } = useProjectMethods();
+      this.withdrawMethods = await getWithdrawMethods(this.activeAccount?.currency || '', getPaymentMethodsGeo());
     },
 
     subscribeAccountSocket():void {

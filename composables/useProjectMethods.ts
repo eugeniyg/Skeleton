@@ -375,6 +375,12 @@ export const useProjectMethods = () => {
     return minDeposit;
   }
 
+  const getPaymentMethodsGeo = (): Maybe<string> => {
+    const storageGeo = localStorage.getItem('paymentGeo');
+    const globalStore = useGlobalStore();
+    return storageGeo || globalStore.headerCountry;
+  }
+
   return {
     createValidationRules,
     getFormRules,
@@ -401,6 +407,7 @@ export const useProjectMethods = () => {
     addBetsyScript,
     handleExternalLink,
     awaitRefreshParallel,
-    getMinBonusDeposit
+    getMinBonusDeposit,
+    getPaymentMethodsGeo
   };
 };

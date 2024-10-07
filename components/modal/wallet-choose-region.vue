@@ -1,23 +1,25 @@
 <template>
   <vue-final-modal
-    v-model="modals.chooseRegion"
+    v-model="modals.walletRegion"
     class="modal-choose-region"
     :clickToClose="false"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
-    @clickOutside="closeModal('chooseRegion')"
+    @clickOutside="closeModal('walletRegion')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('chooseRegion')"/>
-        <div class="modal-choose-region__title">Choose a region</div>
+        <button-modal-close @close="closeModal('walletRegion')"/>
+        <div class="modal-choose-region__title">
+          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.title') }}
+        </div>
       </div>
 
       <div class="modal-choose-region__search">
         <input
           v-model="searchInput"
           class="modal-choose-region__search-input"
-          placeholder="Search your region"
+          :placeholder="getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.searchPlaceholder')"
           type="text"
           @input="onInput"
         >
@@ -29,13 +31,14 @@
 
       <div class="modal-choose-region__items">
         <div
-          v-for="item in items"
+          v-for="country in countriesSelectOptions"
+          :key="country.code"
           class="modal-choose-region__item"
-          :class="{'is-selected': selectedRegion === item}"
-          @click="selectRegion(item)"
+          :class="{'is-selected': selectedRegion === country.code}"
+          @click="selectRegion(country.code)"
         >
-          <atomic-image src="/img/cash/logo.svg"/>
-          <div class="modal-choose-region__item-label">{{ item }}</div>
+          <atomic-image :src="`/img/flags/${country.code}.svg`" />
+          <div class="modal-choose-region__item-label">{{ country.name }}</div>
         </div>
       </div>
 
@@ -53,7 +56,7 @@
         :is-disabled="!selectedRegion"
         @click="actionClick"
       >
-        Apply
+        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.selectButton') }}
       </button-base>
     </div>
   </vue-final-modal>
@@ -66,7 +69,8 @@
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { popupsData, defaultLocalePopupsData, countriesSelectOptions } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   const searchInput = ref<string>('');
@@ -75,26 +79,13 @@
   const onInput = (e:any):void => {};
 
   const selectRegion = (item: any):void => {
+    console.log(item);
     selectedRegion.value = item;
   }
 
   const actionClick = ():void => {
-    closeModal('choose-region');
+    closeModal('walletRegion');
   }
-
-  const items = [
-    'Åland Islands',
-    'Réunion',
-    'New Zealand dollar',
-    'Pakistan',
-    'Saint Vincent and the Grenadines',
-    'Georgia',
-    'Åland Islands',
-    'Réunion',
-    'New Zealand dollar',
-    'Pakistan',
-    'Georgia',
-  ]
 </script>
 
 <style src="~/assets/styles/components/modal/wallet-choose-region.scss" lang="scss" />

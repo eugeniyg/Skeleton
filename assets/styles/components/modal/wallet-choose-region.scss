@@ -150,6 +150,7 @@
 
     &.is-selected {
       --bg: var(--button-bg-secondary-click);
+      cursor: default;
     }
 
     img {
