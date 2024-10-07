@@ -7,7 +7,7 @@
     </span>
 
     <span v-if="props.status === 'available-deposit'" class="bonuses-badge-status__text">
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.statuses.nextDeposit') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.availability.nextDeposit') }}
     </span>
   </div>
 </template>
@@ -26,7 +26,7 @@
     return getContent(
       globalComponentsContent.value,
       defaultLocaleGlobalComponentsContent.value,
-      `bonuses.statuses.${contentKey}`);
+      `bonuses.availability.${contentKey}`);
   })
 </script>
 

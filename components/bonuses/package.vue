@@ -23,23 +23,21 @@
 
             <div class="bonuses-package__tb-td">
               <div
-                v-if="![1,2].includes(bonus.status)"
+                v-if="bonus.status === 3"
                 class="bonuses-package__item-status"
-                :class="bonus.status === 3 && bonus.result === 2 ? 'is-done' : 'is-missed'"
+                :class="bonus.result === 2 ? 'is-done' : 'is-missed'"
               >
                 <atomic-icon
-                  :id="bonus.status === 3 && bonus.result === 2 ? 'done' : 'cross'"
+                  :id="bonus.result === 2 ? 'done' : 'cross'"
                   class="bonuses-package__item-status-icon"
                 />
 
                 <span class="bonuses-package__item-status-label">
-                  {{ bonus.status === 3 && bonus.result === 2
-                    ? getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.playedLabel')
-                    : getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.missedLabel') }}
+                  {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `bonuses.bonusStatuses.${statusResult[bonus.result]}`) }}
                 </span>
               </div>
 
-              <template v-if="!bonus.isDeposit && bonus.status === 2">
+              <template v-else-if="!bonus.isDeposit && bonus.status === 2">
                 <bonuses-freespin-progress
                   v-if="bonus.isFreeSpin"
                   :bonusInfo="bonus as IPlayerFreeSpin"
@@ -48,7 +46,7 @@
                 <bonuses-wager-progress v-else :bonusInfo="bonus as IPlayerBonus" />
               </template>
 
-              <div v-if="bonus.isDeposit || bonus.status === 1" class="bonuses-package__not-received-label">
+              <div v-else class="bonuses-package__not-received-label">
                 {{ bonus.name }}
               </div>
             </div>
@@ -94,6 +92,12 @@
   }>();
 
   const emit = defineEmits(['openPackageModal', 'activate']);
+  const statusResult: Record<number, string> = {
+    '2': 'played',
+    '3': 'canceled',
+    '4': 'expired',
+    '5': 'lost'
+  };
 
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
