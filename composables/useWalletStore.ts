@@ -10,6 +10,7 @@ interface IWalletState {
   invoicesSubscription: any;
   depositLimitError: boolean;
   accountSwitching: Promise<any>|undefined;
+  paymentMethodsGeo: Maybe<string>;
 }
 
 export const useWalletStore = defineStore('walletStore', {
@@ -21,7 +22,8 @@ export const useWalletStore = defineStore('walletStore', {
     accountSubscription: undefined,
     invoicesSubscription: undefined,
     depositLimitError: false,
-    accountSwitching: undefined
+    accountSwitching: undefined,
+    paymentMethodsGeo: undefined
   }),
 
   getters: {
@@ -106,13 +108,18 @@ export const useWalletStore = defineStore('walletStore', {
       this.accounts = await hideWalletAccount(accountId);
     },
 
+    setPaymentMethodsGeo(): void {
+      const storageGeo = localStorage.getItem('paymentGeo');
+      const globalStore = useGlobalStore();
+      this.paymentMethodsGeo = storageGeo || globalStore.headerCountry;
+    },
+
     async getDepositMethods():Promise<void> {
       this.depositLimitError = false;
       const { getDepositMethods } = useCoreWalletApi();
-      const { getPaymentMethodsGeo } = useProjectMethods();
 
       try {
-        this.depositMethods = await getDepositMethods(this.activeAccount?.currency || '', getPaymentMethodsGeo());
+        this.depositMethods = await getDepositMethods(this.activeAccount?.currency || '', this.paymentMethodsGeo);
       } catch (err: any) {
         this.depositMethods = [];
 
@@ -126,8 +133,7 @@ export const useWalletStore = defineStore('walletStore', {
 
     async getWithdrawMethods():Promise<void> {
       const { getWithdrawMethods } = useCoreWalletApi();
-      const { getPaymentMethodsGeo } = useProjectMethods();
-      this.withdrawMethods = await getWithdrawMethods(this.activeAccount?.currency || '', getPaymentMethodsGeo());
+      this.withdrawMethods = await getWithdrawMethods(this.activeAccount?.currency || '', this.paymentMethodsGeo);
     },
 
     subscribeAccountSocket():void {

@@ -255,9 +255,11 @@ export const useLayoutStore = defineStore('layoutStore', {
       const startModalLoad: Dayjs = dayjs();
 
       this.walletModalType = modalType;
-      const { getDepositMethods, getWithdrawMethods, accountSwitching } = useWalletStore();
+      const { setPaymentMethodsGeo, getDepositMethods,
+        getWithdrawMethods, accountSwitching } = useWalletStore();
       const { getDepositBonuses, getDepositBonusCode } = useBonusStore();
       const riskStore = useRiskStore();
+      setPaymentMethodsGeo();
       await accountSwitching;
       await Promise.allSettled([
         getDepositMethods(),

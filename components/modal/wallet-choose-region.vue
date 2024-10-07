@@ -34,7 +34,7 @@
           v-for="country in countriesSelectOptions"
           :key="country.code"
           class="modal-choose-region__item"
-          :class="{'is-selected': selectedRegion === country.code}"
+          :class="{'is-selected': paymentMethodsGeo === country.code}"
           @click="selectRegion(country.code)"
         >
           <atomic-image :src="`/img/flags/${country.code}.svg`" />
@@ -72,18 +72,30 @@
   const globalStore = useGlobalStore();
   const { popupsData, defaultLocalePopupsData, countriesSelectOptions } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
+  const walletStore = useWalletStore();
+  const { paymentMethodsGeo } = storeToRefs(walletStore);
 
   const searchInput = ref<string>('');
-  const selectedRegion = ref<string>('');
+  const selectedRegion = ref<Maybe<string>>('');
 
   const onInput = (e:any):void => {};
 
-  const selectRegion = (item: any):void => {
-    console.log(item);
-    selectedRegion.value = item;
+  const selectRegion = (countryCode: string):void => {
+    if (selectedRegion.value === countryCode) return;
+    selectedRegion.value = countryCode;
   }
 
-  const actionClick = ():void => {
+  const loading = ref(false);
+  const actionClick = async ():Promise<void> => {
+    if (!selectedRegion.value || paymentMethodsGeo.value === selectedRegion.value) return;
+    loading.value = true;
+    localStorage.setItem('paymentGeo', selectedRegion.value);
+    walletStore.setPaymentMethodsGeo();
+
+    await Promise.allSettled([
+      walletStore.getDepositMethods(),
+      walletStore.getWithdrawMethods()
+    ]);
     closeModal('walletRegion');
   }
 </script>

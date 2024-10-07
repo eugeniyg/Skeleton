@@ -1,12 +1,16 @@
 <template>
   <div class="wallet-region">
-    <atomic-image :src="'/img/flags/us.svg'"/>
+    <atomic-image
+      :src="paymentMethodsGeo ? `/img/flags/${paymentMethodsGeo}.svg` : '/img/flags/placeholder.png'"
+      defaultImage="/img/flags/placeholder.png"
+    />
+
     <div class="wallet-region__label">
       {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.regionBlock.label') }}
     </div>
 
     <span class="wallet-region__title">
-      Developer
+      {{ selectedRegionName || 'Other World' }}
     </span>
 
     <span
@@ -22,8 +26,15 @@
   const layoutStore = useLayoutStore();
   const { showModal } = layoutStore;
   const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
+  const { popupsData, defaultLocalePopupsData, countriesSelectOptions } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
+  const walletStore = useWalletStore();
+  const { paymentMethodsGeo } = storeToRefs(walletStore);
+
+  const selectedRegionName = computed(() => {
+    const countryOption = countriesSelectOptions.value.find(country => country.code === paymentMethodsGeo.value);
+    return countryOption?.name;
+  });
 </script>
 
 <style src="~/assets/styles/components/wallet/region.scss" lang="scss" />
