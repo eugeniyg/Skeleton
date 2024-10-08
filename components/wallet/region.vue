@@ -10,7 +10,7 @@
     </div>
 
     <span class="wallet-region__title">
-      {{ selectedRegionName || 'Other World' }}
+      {{ selectedRegionName }}
     </span>
 
     <span
@@ -33,7 +33,8 @@
 
   const selectedRegionName = computed(() => {
     const countryOption = countriesSelectOptions.value.find(country => country.code === paymentMethodsGeo.value);
-    return countryOption?.name;
+    const unknownLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.regionBlock.unknown');
+    return countryOption?.name || unknownLabel || 'Unknown Region';
   });
 </script>
 
