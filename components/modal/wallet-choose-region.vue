@@ -6,6 +6,7 @@
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
     @clickOutside="closeModal('walletRegion')"
+    @beforeOpen="beforeOpen"
   >
     <div class="scroll">
       <div class="header">
@@ -21,20 +22,24 @@
           class="modal-choose-region__search-input"
           :placeholder="getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.searchPlaceholder')"
           type="text"
-          @input="onInput"
+          @input="debounceSearch"
         >
+
         <atomic-icon
           id="search"
           class="modal-choose-region__search-icon"
         />
       </div>
 
-      <div class="modal-choose-region__items">
+      <div v-if="filteredList.length" class="modal-choose-region__items">
         <div
-          v-for="country in countriesSelectOptions"
+          v-for="country in filteredList"
           :key="country.code"
           class="modal-choose-region__item"
-          :class="{'is-selected': paymentMethodsGeo === country.code}"
+          :class="{
+            'is-selected': selectedRegion === country.code,
+            'is-active': paymentMethodsGeo === country.code
+          }"
           @click="selectRegion(country.code)"
         >
           <atomic-image :src="`/img/flags/${country.code}.svg`" />
@@ -42,20 +47,20 @@
         </div>
       </div>
 
-      <!-- IF EMPTY SEARCH RESULT
       <atomic-empty
+        v-else
         variant="bonuses"
-        title="Sorry"
-        subTitle="You have already added all</br> currencies"
+        :title="getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.empty.title')"
+        :subTitle="getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.empty.description')"
       />
-      -->
 
       <button-base
         type="primary"
         size="md"
-        :is-disabled="!selectedRegion"
+        :is-disabled="!selectedRegion || paymentMethodsGeo === selectedRegion || loading"
         @click="actionClick"
       >
+        <atomic-spinner :is-shown="loading"/>
         {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.selectButton') }}
       </button-base>
     </div>
@@ -65,6 +70,8 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
+  import type {IBonus, ICountry} from "@skeleton/core/types";
+  import debounce from "lodash/debounce";
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
@@ -77,12 +84,22 @@
 
   const searchInput = ref<string>('');
   const selectedRegion = ref<Maybe<string>>('');
+  const filteredList = ref<ICountry[]>(countriesSelectOptions.value);
 
-  const onInput = (e:any):void => {};
+  const debounceSearch = debounce((event: any): void => {
+    if (!event.target.value) filteredList.value = countriesSelectOptions.value;
+    else filteredList.value = countriesSelectOptions.value.filter(
+      country => country.name.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+  }, 500, { leading: false });
 
   const selectRegion = (countryCode: string):void => {
-    if (selectedRegion.value === countryCode) return;
+    if (selectedRegion.value === countryCode || paymentMethodsGeo.value === countryCode) return;
     selectedRegion.value = countryCode;
+  }
+
+  const beforeOpen = (): void => {
+    selectedRegion.value = paymentMethodsGeo.value || '';
   }
 
   const loading = ref(false);
@@ -96,6 +113,7 @@
       walletStore.getDepositMethods(),
       walletStore.getWithdrawMethods()
     ]);
+    loading.value = false;
     closeModal('walletRegion');
   }
 </script>
