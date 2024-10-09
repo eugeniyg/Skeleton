@@ -121,7 +121,7 @@ export default defineNuxtConfig({
     },
     devProxy: {
       '/api': {
-        target: 'https://test.dev.getplatform.tech/api',
+        target: 'https://qa2.dev.getplatform.tech/api',
         changeOrigin: true,
       },
     },
