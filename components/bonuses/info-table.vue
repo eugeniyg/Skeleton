@@ -30,6 +30,7 @@
     sportsBookMinBet: IParam;
     sportsBookMaxBet: IParam;
     maxWin: IParam;
+    sticky: IParam;
     cashable: IParam;
   }
 
