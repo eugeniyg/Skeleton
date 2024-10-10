@@ -63,24 +63,28 @@ export const useBonusStore = defineStore('bonusStore', {
     issuedPlayerFreeSpins(state):IPlayerFreeSpin[] {
       return state.playerFreeSpins.filter(playerFreeSpin => playerFreeSpin.status === 1);
     },
+
     bonusesCount(state):number {
-      const playerPackageBonuses = [...state.playerBonuses, ...state.playerFreeSpins]
-        .map(bonus => (bonus as IPlayerBonus|IPlayerFreeSpin).packageId)
-        .filter((id, index, array) => id && array.indexOf(id) === index);
+      const playerPackageIds: string[] = [];
+      const depositPackageIds: string[] = [];
+      const simplePlayerBonuses: string[] = [];
+      const simpleDepositBonuses: string[] = [];
 
-      const depositPackageBonuses = state.depositBonuses
-        .map(bonus => bonus.package?.id)
-        .filter((id, index, array) => id && array.indexOf(id) === index);
+      [...state.playerBonuses, ...state.playerFreeSpins].forEach(bonus => {
+        if (!bonus.packageId) simplePlayerBonuses.push(bonus.id);
+        else if (!playerPackageIds.includes(bonus.issueSessionId ?? bonus.packageId)) {
+          playerPackageIds.push(bonus.issueSessionId ?? bonus.packageId);
+        }
+      })
 
-      const simplePlayerBonuses = [...state.playerBonuses, ...state.playerFreeSpins]
-        .filter(bonus => !(bonus as IPlayerBonus|IPlayerFreeSpin).packageId);
+      state.depositBonuses.forEach(bonus => {
+        if (!bonus.package?.id) simpleDepositBonuses.push(bonus.id);
+        else if (!depositPackageIds.includes(bonus.package.id)) {
+          depositPackageIds.push(bonus.package.id);
+        }
+      })
 
-      const simpleDepositBonuses = state.depositBonuses.filter(bonus => !bonus.package?.id);
-
-      return playerPackageBonuses.length
-        + depositPackageBonuses.length
-        + simplePlayerBonuses.length
-        + simpleDepositBonuses.length;
+      return playerPackageIds.length + depositPackageIds.length + simplePlayerBonuses.length + simpleDepositBonuses.length;
     },
   },
 

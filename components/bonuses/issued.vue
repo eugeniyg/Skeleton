@@ -7,7 +7,7 @@
 
     <bonuses-package
       v-for="packageList in props.packageBonuses"
-      :key="packageList[0].packageId"
+      :key="packageList[0].issueSessionId ?? packageList[0].packageId"
       :list="packageList"
       :loading="isPackageLoading(packageList)"
       @activate="activatePackage(packageList)"

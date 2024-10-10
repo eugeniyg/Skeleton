@@ -101,6 +101,7 @@
   import type { IProfileBonuses } from '~/types';
   import type { IBonus, IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
   import debounce from "lodash/debounce.js";
+  import type {Dayjs} from "dayjs";
 
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
@@ -313,13 +314,18 @@
       showPackageModal.value = false;
     }
 
-    const packageId = packageModalList.value[0]?.packageId || packageModalList.value[0]?.package?.id;
+    const packageId = packageModalList.value[0]?.issueSessionId
+      || packageModalList.value[0]?.packageId
+      || packageModalList.value[0]?.package?.id;
+
     const newBonusesList = [
       ...activePackageBonuses.value,
       ...issuedPackageBonuses.value,
       ...depositPackageBonuses.value
     ].find(bonusesList => {
-      return (bonusesList[0].package?.id === packageId) || (bonusesList[0].packageId === packageId)
+      return (bonusesList[0].issueSessionId === packageId)
+        || (bonusesList[0].packageId === packageId)
+        || (bonusesList[0].package?.id === packageId)
     });
 
     if (newBonusesList) packageModalList.value = newBonusesList;
@@ -334,17 +340,51 @@
     }
     loadedBonuses.value = [];
   }
+  
+  const getPlayerPackages = async (packageIds: string[]): Promise<{
+    playerPackageBonuses: IPlayerBonus[],
+    playerPackageFreeSpins: IPlayerFreeSpin[]
+  }> => {
+    const { getPlayerBonuses, getPlayerFreeSpins } = useCoreBonusApi();
+    const [{ data: playerPackageBonuses }, { data: playerPackageFreeSpins }] = await Promise.all([
+      getPlayerBonuses({ packageId: packageIds, currency: [activeAccount.value?.currency as string] }),
+      getPlayerFreeSpins({ packageId: packageIds, currency: [activeAccount.value?.currency as string] })
+    ]);
+    
+    return { playerPackageBonuses, playerPackageFreeSpins };
+  }
+
+  const getUniquePackageIds = (): {
+    uniquePlayerPackageIds: string[],
+    uniquePlayerPackageIssueSessionIds: string[],
+    uniqueDepositPackageIds: string[]
+  } => {
+    const uniquePlayerPackageIds: string[] = [];
+    const uniquePlayerPackageIssueSessionIds: string[] = [];
+    const uniqueDepositPackageIds: string[] = [];
+
+    [...playerBonuses.value, ...playerFreeSpins.value].forEach(bonus => {
+      if (bonus.packageId && !uniquePlayerPackageIds.includes(bonus.packageId)) {
+        uniquePlayerPackageIds.push(bonus.packageId);
+      }
+      if (bonus.packageId && !uniquePlayerPackageIssueSessionIds.includes(bonus.issueSessionId ?? bonus.packageId)) {
+        uniquePlayerPackageIssueSessionIds.push(bonus.issueSessionId ?? bonus.packageId);
+      }
+    })
+
+    depositBonuses.value.forEach(bonus => {
+      if (bonus.package?.id && !uniqueDepositPackageIds.includes(bonus.package.id)) {
+        uniqueDepositPackageIds.push(bonus.package.id);
+      }
+    })
+
+    return { uniquePlayerPackageIds, uniquePlayerPackageIssueSessionIds, uniqueDepositPackageIds };
+  }
 
   const getPackageBonuses = async (): Promise<void> => {
-    const uniquePackageBonuses = [...playerBonuses.value, ...playerFreeSpins.value]
-      .map(bonus => (bonus as IPlayerBonus|IPlayerFreeSpin).packageId)
-      .filter((id, index, array) => id && array.indexOf(id) === index);
+    const { uniquePlayerPackageIds, uniquePlayerPackageIssueSessionIds, uniqueDepositPackageIds } = getUniquePackageIds();
 
-    const uniqueDepositPackageBonuses = depositBonuses.value
-      .map(bonus => bonus.package?.id)
-      .filter((id, index, array) => id && array.indexOf(id) === index);
-
-    if (!uniquePackageBonuses.length && !uniqueDepositPackageBonuses.length) {
+    if (!uniquePlayerPackageIds.length && !uniqueDepositPackageIds.length) {
       checkLoadingBonuses();
       activePackageBonuses.value = [];
       issuedPackageBonuses.value = [];
@@ -353,37 +393,25 @@
     }
 
     try {
-      let packagePlayerBonuses: Record<string, any> = [];
-      let packagePlayerFreeSpins: Record<string, any> = [];
-
-      if (uniquePackageBonuses.length) {
-        const { getPlayerBonuses, getPlayerFreeSpins } = useCoreBonusApi();
-        const [{ data: packageBonuses }, { data: packageFreeSpins }] = await Promise.all([
-          getPlayerBonuses({ packageId: uniquePackageBonuses, currency: [activeAccount.value?.currency as string] }),
-          getPlayerFreeSpins({ packageId: uniquePackageBonuses, currency: [activeAccount.value?.currency as string] })
-        ]);
-        packagePlayerBonuses = packageBonuses;
-        packagePlayerFreeSpins = packageFreeSpins;
-      }
-
-      const transformPackagePlayerBonuses = packagePlayerBonuses.map((bonus: Record<string, any>)  => ({ ...bonus, isCash: true }));
-      const transformPackagePlayerFreeSpins = packagePlayerFreeSpins.map((freeSpin: Record<string, any>) => ({ ...freeSpin, isFreeSpin: true }));
+      const { playerPackageBonuses, playerPackageFreeSpins } = await getPlayerPackages(uniquePlayerPackageIds);
+      const transformPlayerPackageBonuses = playerPackageBonuses.map(bonus  => ({ ...bonus, isCash: true }));
+      const transformPlayerPackageFreeSpins = playerPackageFreeSpins.map(freeSpin => ({ ...freeSpin, isFreeSpin: true }));
       const transformDepositPackageBonuses = depositBonuses.value.map(bonus => ({ ...bonus, isDeposit: true }));
 
-      const playerPackageBonuses = uniquePackageBonuses.map(packageBonusId => {
-        return [...transformPackagePlayerBonuses, ...transformPackagePlayerFreeSpins]
-          .filter(bonus => bonus.packageId === packageBonusId)
+      const playerPackageList = uniquePlayerPackageIssueSessionIds.map(packageIssueSessionId => {
+        return [...transformPlayerPackageBonuses, ...transformPlayerPackageFreeSpins]
+          .filter(bonus => (bonus.issueSessionId ?? bonus.packageId) === packageIssueSessionId)
           .sort((prevBonus, nextBonus) => prevBonus.packagePriority - nextBonus.packagePriority);
       });
 
-      depositPackageBonuses.value = uniqueDepositPackageBonuses.map(packageBonusId => {
+      depositPackageBonuses.value = uniqueDepositPackageIds.map(packageBonusId => {
         return transformDepositPackageBonuses
           .filter(bonus => bonus.package?.id === packageBonusId)
           .sort((prevBonus, nextBonus) => prevBonus.packagePriority - nextBonus.packagePriority);
       });
 
-      activePackageBonuses.value = playerPackageBonuses.filter(bonusesList => bonusesList.some(bonus => bonus.status === 2));
-      issuedPackageBonuses.value = playerPackageBonuses.filter(bonusesList => !bonusesList.some(bonus => bonus.status === 2));
+      activePackageBonuses.value = playerPackageList.filter(bonusesList => bonusesList.some(bonus => bonus.status === 2));
+      issuedPackageBonuses.value = playerPackageList.filter(bonusesList => !bonusesList.some(bonus => bonus.status === 2));
 
       if (showPackageModal.value) updatePackageModalList();
     } catch (e) {
