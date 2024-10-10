@@ -111,7 +111,12 @@ export const useWalletStore = defineStore('walletStore', {
     setPaymentMethodsGeo(): void {
       const storageGeo = localStorage.getItem('paymentGeo');
       const globalStore = useGlobalStore();
-      this.paymentMethodsGeo = storageGeo || globalStore.headerCountry;
+      const programmaticGeo = storageGeo || globalStore.headerCountry;
+      if (!programmaticGeo) this.paymentMethodsGeo = undefined;
+      else {
+        const globalStore = useGlobalStore();
+        this.paymentMethodsGeo = globalStore.countries?.find(country => country.code === programmaticGeo)?.code;
+      }
     },
 
     async getDepositMethods():Promise<void> {

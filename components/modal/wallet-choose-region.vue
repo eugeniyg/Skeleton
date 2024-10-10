@@ -73,7 +73,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import type {IBonus, ICountry} from "@skeleton/core/types";
+  import type {ICountry} from "@skeleton/core/types";
   import debounce from "lodash/debounce";
 
   const layoutStore = useLayoutStore();
