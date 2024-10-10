@@ -42,7 +42,10 @@
           }"
           @click="selectRegion(country.code)"
         >
-          <atomic-image :src="`/img/flags/${country.code}.svg`" />
+          <atomic-image
+            :src="`/img/flags/${country.code.toLowerCase()}.svg`"
+            defaultImage="/img/flags/placeholder.png"
+          />
           <div class="modal-choose-region__item-label">{{ country.name }}</div>
         </div>
       </div>

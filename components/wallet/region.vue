@@ -1,7 +1,7 @@
 <template>
   <div class="wallet-region">
     <atomic-image
-      :src="paymentMethodsGeo ? `/img/flags/${paymentMethodsGeo}.svg` : '/img/flags/placeholder.png'"
+      :src="regionImage"
       defaultImage="/img/flags/placeholder.png"
     />
 
@@ -36,6 +36,12 @@
     const unknownLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.regionBlock.unknown');
     return countryOption?.name || unknownLabel || 'Unknown Region';
   });
+
+  const regionImage = computed(() => {
+    return paymentMethodsGeo.value
+      ? `/img/flags/${paymentMethodsGeo.value.toLowerCase()}.svg`
+      : '/img/flags/placeholder.png';
+  })
 </script>
 
 <style src="~/assets/styles/components/wallet/region.scss" lang="scss" />
