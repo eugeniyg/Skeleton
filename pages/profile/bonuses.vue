@@ -101,7 +101,6 @@
   import type { IProfileBonuses } from '~/types';
   import type { IBonus, IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
   import debounce from "lodash/debounce.js";
-  import type {Dayjs} from "dayjs";
 
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
