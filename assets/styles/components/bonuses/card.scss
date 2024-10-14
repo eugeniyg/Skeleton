@@ -85,7 +85,6 @@
     }
 
     .btn-primary {
-      //flex: 1 1 136px;
       width: calc(50% - 8px);
       margin: 0 !important;
     }
@@ -101,9 +100,14 @@
       margin-top: 24px;
     }
 
-    .btn-ghost {
-      --width: 100%;
-      --color: var(--button-text-ghost-low-contrast);
+    .btn-ghost-gray {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+
+      @include media(md) {
+        width: auto;
+      }
     }
   }
 

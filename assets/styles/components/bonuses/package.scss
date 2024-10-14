@@ -22,8 +22,10 @@
     border-radius: 16px;
     overflow: hidden;
     position: relative;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     grid-row-gap: 20px;
+    height: 100%;
 
     @include media(sm) {
       padding: 22px 22px 26px 22px;
@@ -41,6 +43,7 @@
     display: grid;
     grid-gap: 8px;
     max-width: 410px;
+    margin-bottom: auto;
   }
 
   &__name {
@@ -158,5 +161,33 @@
   .bonuses-wager-progress,
   .bonuses-freespin-progress{
     margin-top: 0 !important;
+  }
+
+  &__activator {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 8px;
+
+    @include media(md) {
+      margin-top: 4px;
+    }
+
+    .bonuses-timer {
+      flex: 1 1 136px;
+      min-width: calc(50% - 8px);
+    }
+
+    .btn-primary {
+      width: calc(50% - 8px);
+      flex-shrink: 0;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      margin: 0 !important;
+    }
+  }
+
+  &__activate-btn {
+    --width: 100%;
+    @include upd-font($heading-2);
   }
 }

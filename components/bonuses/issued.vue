@@ -7,8 +7,10 @@
 
     <bonuses-package
       v-for="packageList in props.packageBonuses"
-      :key="packageList[0].packageId || packageList[0].package?.id"
+      :key="packageList[0].issueSessionId ?? packageList[0].packageId"
       :list="packageList"
+      :loading="isPackageLoading(packageList)"
+      @activate="activatePackage(packageList)"
       @openPackageModal="emit('openPackageModal', packageList)"
     />
 
@@ -31,15 +33,6 @@
       @remove="emit('removeFreeSpin', freeSpin)"
       @activate="emit('activateFreeSpin', freeSpin)"
     />
-
-    <bonuses-card
-      v-for="depositBonus in simpleDepositBonusesList"
-      :key="depositBonus.id"
-      :bonusInfo="depositBonus"
-      :loading="props.loadingBonuses.includes(depositBonus.id)"
-      isDeposit
-      @activate="emit('activateDeposit', { depositBonus })"
-    />
   </div>
 </template>
 
@@ -49,7 +42,6 @@
   const props = defineProps<{
     loadingBonuses: string[];
     packageBonuses: Record<string, any>[][];
-    activePackageCount: number;
   }>();
 
   const { getContent } = useProjectMethods();
@@ -60,23 +52,32 @@
     'activateFreeSpin',
     'removeBonus',
     'removeFreeSpin',
-    'activateDeposit',
     'openPackageModal'
   ]);
 
   const bonusStore = useBonusStore();
   const {
     issuedPlayerBonuses,
-    issuedPlayerFreeSpins,
-    depositBonuses
+    issuedPlayerFreeSpins
   } = storeToRefs(bonusStore);
-  
-  const issuedBonuses = computed(() => issuedPlayerBonuses.value.length 
-    + issuedPlayerFreeSpins.value.length 
-    + depositBonuses.value.length
-  );
 
   const simpleBonusesList = computed(() => issuedPlayerBonuses.value.filter(bonus => !bonus.packageId));
   const simpleFreeSpinsList = computed(() => issuedPlayerFreeSpins.value.filter(freeSpin => !freeSpin.packageId));
-  const simpleDepositBonusesList = computed(() => depositBonuses.value.filter(bonus => !bonus.package?.id));
+  const issuedBonuses = computed(() => {
+    return simpleBonusesList.value.length + simpleFreeSpinsList.value.length + props.packageBonuses.length;
+  });
+
+  const isPackageLoading = (packageList: Record<string, any>[]):boolean => {
+    const firstAvailableBonus = packageList.find(bonus => bonus.status === 1);
+    return props.loadingBonuses.includes(firstAvailableBonus?.id);
+  };
+
+  const activatePackage = (packageList: Record<string, any>[]):void => {
+    const firstAvailableBonus = packageList.find(bonus => bonus.status === 1);
+    if (firstAvailableBonus) {
+      firstAvailableBonus.isFreeSpin
+        ? emit('activateFreeSpin', firstAvailableBonus)
+        : emit('activateBonus', firstAvailableBonus);
+    }
+  }
 </script>

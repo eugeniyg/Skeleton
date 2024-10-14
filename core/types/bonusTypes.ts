@@ -26,6 +26,7 @@ export interface IPlayerBonus extends Record<string, any>{
   requiredWagerSportsbookAmount: number;
   packageId: string;
   packagePriority: number;
+  issueSessionId: string;
 }
 
 export interface IPlayerFreeSpin extends Record<string, any>{
@@ -44,6 +45,7 @@ export interface IPlayerFreeSpin extends Record<string, any>{
   createdAt: string;
   packageId: string;
   packagePriority: number;
+  issueSessionId: string;
 }
 
 export interface IBonusCode extends Record<string, any>{
