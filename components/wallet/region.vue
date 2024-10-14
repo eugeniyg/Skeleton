@@ -29,17 +29,17 @@
   const { popupsData, defaultLocalePopupsData, countriesSelectOptions } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const walletStore = useWalletStore();
-  const { paymentMethodsGeo } = storeToRefs(walletStore);
+  const { selectedPaymentMethodsRegion } = storeToRefs(walletStore);
 
   const selectedRegionName = computed(() => {
-    const countryOption = countriesSelectOptions.value.find(country => country.code === paymentMethodsGeo.value);
+    const countryOption = countriesSelectOptions.value.find(country => country.code === selectedPaymentMethodsRegion.value);
     const unknownLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.regionBlock.unknown');
     return countryOption?.name || unknownLabel || 'Unknown Region';
   });
 
   const regionImage = computed(() => {
-    return paymentMethodsGeo.value
-      ? `/img/flags/${paymentMethodsGeo.value.toLowerCase()}.svg`
+    return selectedPaymentMethodsRegion.value
+      ? `/img/flags/${selectedPaymentMethodsRegion.value.toLowerCase()}.svg`
       : '/img/flags/placeholder.png';
   })
 </script>

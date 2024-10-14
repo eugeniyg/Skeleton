@@ -10,7 +10,7 @@
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('walletRegion')"/>
+        <button-modal-close @close="closeModal('walletRegion')" />
         <div class="modal-choose-region__title">
           {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.title') }}
         </div>
@@ -38,7 +38,7 @@
           class="modal-choose-region__item"
           :class="{
             'is-selected': selectedRegion === country.code,
-            'is-active': paymentMethodsGeo === country.code
+            'is-active': selectedPaymentMethodsRegion === country.code
           }"
           @click="selectRegion(country.code)"
         >
@@ -52,7 +52,7 @@
 
       <atomic-empty
         v-else
-        variant="bonuses"
+        variant="search"
         :title="getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.empty.title')"
         :subTitle="getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.empty.description')"
       />
@@ -60,7 +60,7 @@
       <button-base
         type="primary"
         size="md"
-        :is-disabled="!selectedRegion || paymentMethodsGeo === selectedRegion || loading"
+        :is-disabled="!selectedRegion || selectedPaymentMethodsRegion === selectedRegion || loading"
         @click="actionClick"
       >
         <atomic-spinner :is-shown="loading"/>
@@ -83,7 +83,7 @@
   const { popupsData, defaultLocalePopupsData, countriesSelectOptions } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const walletStore = useWalletStore();
-  const { paymentMethodsGeo } = storeToRefs(walletStore);
+  const { selectedPaymentMethodsRegion } = storeToRefs(walletStore);
 
   const searchInput = ref<string>('');
   const selectedRegion = ref<Maybe<string>>('');
@@ -97,17 +97,17 @@
   }, 500, { leading: false });
 
   const selectRegion = (countryCode: string):void => {
-    if (selectedRegion.value === countryCode || paymentMethodsGeo.value === countryCode) return;
+    if (selectedRegion.value === countryCode || selectedPaymentMethodsRegion.value === countryCode) return;
     selectedRegion.value = countryCode;
   }
 
   const beforeOpen = (): void => {
-    selectedRegion.value = paymentMethodsGeo.value || '';
+    selectedRegion.value = selectedPaymentMethodsRegion.value || '';
   }
 
   const loading = ref(false);
   const actionClick = async ():Promise<void> => {
-    if (!selectedRegion.value || paymentMethodsGeo.value === selectedRegion.value) return;
+    if (!selectedRegion.value || selectedPaymentMethodsRegion.value === selectedRegion.value) return;
     loading.value = true;
     localStorage.setItem('paymentGeo', selectedRegion.value);
     walletStore.setPaymentMethodsGeo();

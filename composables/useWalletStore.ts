@@ -10,7 +10,8 @@ interface IWalletState {
   invoicesSubscription: any;
   depositLimitError: boolean;
   accountSwitching: Promise<any>|undefined;
-  paymentMethodsGeo: Maybe<string>;
+  requestPaymentMethodsRegion: Maybe<string>;
+  selectedPaymentMethodsRegion: Maybe<string>;
 }
 
 export const useWalletStore = defineStore('walletStore', {
@@ -23,7 +24,8 @@ export const useWalletStore = defineStore('walletStore', {
     invoicesSubscription: undefined,
     depositLimitError: false,
     accountSwitching: undefined,
-    paymentMethodsGeo: undefined
+    requestPaymentMethodsRegion: undefined,
+    selectedPaymentMethodsRegion: undefined
   }),
 
   getters: {
@@ -112,11 +114,14 @@ export const useWalletStore = defineStore('walletStore', {
       const storageGeo = localStorage.getItem('paymentGeo');
       const globalStore = useGlobalStore();
       const programmaticGeo = storageGeo || globalStore.headerCountry;
-      if (!programmaticGeo) this.paymentMethodsGeo = undefined;
+
+      if (!programmaticGeo) this.selectedPaymentMethodsRegion = undefined;
       else {
         const globalStore = useGlobalStore();
-        this.paymentMethodsGeo = globalStore.countries?.find(country => country.code === programmaticGeo)?.code;
+        this.selectedPaymentMethodsRegion = globalStore.countries?.find(country => country.code === programmaticGeo)?.code;
       }
+
+      this.requestPaymentMethodsRegion = this.selectedPaymentMethodsRegion !== globalStore.headerCountry ? this.selectedPaymentMethodsRegion : undefined;
     },
 
     async getDepositMethods():Promise<void> {
@@ -124,7 +129,7 @@ export const useWalletStore = defineStore('walletStore', {
       const { getDepositMethods } = useCoreWalletApi();
 
       try {
-        this.depositMethods = await getDepositMethods(this.activeAccount?.currency || '', this.paymentMethodsGeo);
+        this.depositMethods = await getDepositMethods(this.activeAccount?.currency || '', this.requestPaymentMethodsRegion);
       } catch (err: any) {
         this.depositMethods = [];
 
@@ -138,7 +143,7 @@ export const useWalletStore = defineStore('walletStore', {
 
     async getWithdrawMethods():Promise<void> {
       const { getWithdrawMethods } = useCoreWalletApi();
-      this.withdrawMethods = await getWithdrawMethods(this.activeAccount?.currency || '', this.paymentMethodsGeo);
+      this.withdrawMethods = await getWithdrawMethods(this.activeAccount?.currency || '', this.requestPaymentMethodsRegion);
     },
 
     subscribeAccountSocket():void {

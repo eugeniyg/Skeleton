@@ -96,7 +96,7 @@
     closeModal,
     showAlert
   } = useLayoutStore();
-  const { activeAccount } = storeToRefs(walletStore);
+  const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
 
   const {
     formatBalance,
@@ -334,6 +334,7 @@
     const params = {
       method: props.method,
       currency: activeAccount.value?.currency || '',
+      country: requestPaymentMethodsRegion.value,
       amount: mainCurrencyAmount.amount,
       accountId: activeAccount.value?.id || '',
       fields,
