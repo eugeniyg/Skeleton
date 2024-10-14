@@ -119,6 +119,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     window.addEventListener('resize', setWindowHeight);
     startFreshchatLogic();
     window.addEventListener('visibilitychange', checkTabVisibility);
+
+    const profileStore = useProfileStore();
+    const sw = await navigator.serviceWorker.getRegistration();
+    sw?.active?.postMessage({ key: 'identifier', payload: profileStore.getSessionToken() });
   });
 
   nuxtApp.hook('page:finish', () => {
