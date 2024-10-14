@@ -2,12 +2,16 @@
   .vfm__content {
     width: 100%;
     margin: 0 0;
-    padding-bottom: 0 !important;
+    padding-bottom: 0;
     align-items: flex-end;
 
     @include media(xs) {
       align-items: center;
       max-width: rem(400px);
+    }
+
+    @include media(md) {
+      padding-bottom: 0.5rem;
     }
   }
 
