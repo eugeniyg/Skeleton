@@ -21,14 +21,7 @@ export const useCoreProfileApi = () => {
   };
 
   const getSumsubToken = async ():Promise<{ token: string }> => {
-    const profileStore = useProfileStore();
-    const token = profileStore.getSessionToken();
-
-    return await $fetch('/sumsub/token', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    return await useApiAuthInstance('/api/player/services/sumsub/auth', { method: 'POST' });
   };
 
   const getProfileFields = async ():Promise<IField[]> => {

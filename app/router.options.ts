@@ -13,9 +13,7 @@ export default <RouterConfig> {
   routes: (routes) => {
     const runtimeConfig = useRuntimeConfig();
     const hideBettingPage = !runtimeConfig.public?.betsyParams?.clientHost || !runtimeConfig.public?.betsyParams?.clientId;
-    const hideProfileDocumentsPage = runtimeConfig.public?.sumsub?.appToken && runtimeConfig.public?.sumsub?.hideDocumentsPage;
-    // TEMPORARY SOLUTION
-    const hideVerificationPage = !runtimeConfig.public?.sumsub?.appToken;
+    const hideProfileDocumentsPage = runtimeConfig.public?.sumsub?.enabled && runtimeConfig.public?.sumsub?.hideDocumentsPage;
     const hideLoyaltyPage = !runtimeConfig.public?.loyaltyEnabled;
 
     const defaultRoutes = [];
@@ -23,9 +21,6 @@ export default <RouterConfig> {
       if ((page.name === 'betting' && hideBettingPage) || (page.name === 'loyalty' && hideLoyaltyPage)) continue;
       else if (page.name === 'profile' && hideProfileDocumentsPage) {
         const filteredChildren = page.children?.filter(page => page.name !== 'profile-documents');
-        defaultRoutes.push({ ...page, children: filteredChildren });
-      } else if (page.name === 'profile' && hideVerificationPage) {
-        const filteredChildren = page.children?.filter(page => page.name !== 'profile-verification');
         defaultRoutes.push({ ...page, children: filteredChildren });
       } else defaultRoutes.push(page);
     }
