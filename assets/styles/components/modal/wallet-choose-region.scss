@@ -2,6 +2,7 @@
   .vfm__content {
     width: 100%;
     margin: 0 0;
+    padding-bottom: 0 !important;
     align-items: flex-end;
 
     @include media(xs) {
@@ -125,9 +126,13 @@
   }
 
   &__items {
-    height: calc(32px * 9);
+    height: 50vh;
     overflow-y: auto;
     @include scrollbar;
+
+    @include media(md) {
+      height: calc(32px * 9);
+    }
   }
 
   &__item {
@@ -177,10 +182,13 @@
   }
 
   .empty {
-    height: calc(32px * 9);
+    height: 50vh;
     padding: rem(8px) rem(16px) rem(16px) rem(16px);
-
     --margin-bottom: 0;
+
+    @include media(md) {
+      height: calc(32px * 9);
+    }
 
     .title {
       margin-top: rem(16px);

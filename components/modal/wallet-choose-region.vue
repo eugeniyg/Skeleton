@@ -102,6 +102,10 @@
   }
 
   const beforeOpen = (): void => {
+    if (searchInput.value) {
+      searchInput.value = '';
+      filteredList.value = countriesSelectOptions.value;
+    }
     selectedRegion.value = selectedPaymentMethodsRegion.value || '';
   }
 
