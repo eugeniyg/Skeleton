@@ -8,8 +8,8 @@
         <bonuses-badge-type :mode="badgeType" />
 
         <bonuses-badge-game
-          v-if="props.isFreeSpin || (props.isDeposit && props.bonusInfo.type === 3)"
-          :bonusInfo="props.bonusInfo"
+          v-if="freeSpinGameInfo"
+          :gameInfo="freeSpinGameInfo"
         />
 
         <bonuses-badge-status :status="badgeStatus" />
@@ -28,7 +28,7 @@
 
         <bonuses-wager v-if="showBonusWagers" :bonusInfo="props.bonusInfo" />
 
-        <bonuses-info-button @click="showBonusInfo"/>
+        <bonuses-info-button @click="showBonusInfo" />
 
         <template v-if="!props.isDeposit && props.bonusInfo.status === 2">
           <bonuses-freespin-progress
@@ -62,7 +62,7 @@
 
         <button-base
           v-if="!props.isDeposit"
-          type="ghost"
+          type="ghost-gray"
           size="xs"
           @click="emit('remove')"
         >
@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IBonus, IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
+  import type {IBonus, IGame, IPlayerBonus, IPlayerFreeSpin} from "@skeleton/core/types";
 
   const props = defineProps<{
     bonusInfo: Record<string, any>;
@@ -160,6 +160,19 @@
     return !props.isFreeSpin && !depositFreeSpin && (props.bonusInfo.wagerCasino || props.bonusInfo.wagerSportsbook);
   })
 
+  const freeSpinGameInfo = ref<IGame|undefined>();
+  const getGameInfo = async ():Promise<void> => {
+    const gameId = (props.bonusInfo as IPlayerFreeSpin).gameId || props.bonusInfo.assignConditions?.gameId;
+    if (!gameId) return;
+
+    try {
+      const { getGamesInfo } = useCoreGamesApi();
+      freeSpinGameInfo.value = await getGamesInfo(gameId);
+    } catch {
+      freeSpinGameInfo.value = undefined;
+    }
+  }
+
   const showBonusDetailsModal = ref(false);
   const modalBonusInfo = ref<Record<string, any>|undefined>();
   const showBonusInfo = () => {
@@ -169,10 +182,17 @@
       bonusValue: bonusValue.value,
       badgeType: badgeType.value,
       badgeStatus: badgeStatus.value,
-      expiredDate: expiredDate.value
+      expiredDate: expiredDate.value,
+      freeSpinGameInfo: freeSpinGameInfo.value
     };
     showBonusDetailsModal.value = true;
   }
+
+  onMounted(() => {
+    if (props.isFreeSpin || (props.isDeposit && props.bonusInfo.type === 3)) {
+      getGameInfo();
+    }
+  })
 </script>
 
 

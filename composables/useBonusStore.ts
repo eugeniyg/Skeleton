@@ -63,9 +63,29 @@ export const useBonusStore = defineStore('bonusStore', {
     issuedPlayerFreeSpins(state):IPlayerFreeSpin[] {
       return state.playerFreeSpins.filter(playerFreeSpin => playerFreeSpin.status === 1);
     },
+
     bonusesCount(state):number {
-      return state.playerBonuses.length + state.playerFreeSpins.length + state.depositBonuses.length;
-    }
+      const playerPackageIds: string[] = [];
+      const depositPackageIds: string[] = [];
+      const simplePlayerBonuses: string[] = [];
+      const simpleDepositBonuses: string[] = [];
+
+      [...state.playerBonuses, ...state.playerFreeSpins].forEach(bonus => {
+        if (!bonus.packageId) simplePlayerBonuses.push(bonus.id);
+        else if (!playerPackageIds.includes(bonus.issueSessionId ?? bonus.packageId)) {
+          playerPackageIds.push(bonus.issueSessionId ?? bonus.packageId);
+        }
+      })
+
+      state.depositBonuses.forEach(bonus => {
+        if (!bonus.package?.id) simpleDepositBonuses.push(bonus.id);
+        else if (!depositPackageIds.includes(bonus.package.id)) {
+          depositPackageIds.push(bonus.package.id);
+        }
+      })
+
+      return playerPackageIds.length + depositPackageIds.length + simplePlayerBonuses.length + simpleDepositBonuses.length;
+    },
   },
 
   actions: {

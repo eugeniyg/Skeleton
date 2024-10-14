@@ -1,5 +1,9 @@
 <template>
-  <div class="bonuses-deposit-promo" :class="{ 'is-selected': showDepositBonusCode }">
+  <div
+    class="bonuses-deposit-promo"
+    :class="{ 'is-selected': showDepositBonusCode }"
+    @click="handleBonusClick"
+  >
     <form-input-bonus-radio
       id="deposit-bonus-code"
       name="input-deposit-bonus-code"
@@ -112,6 +116,11 @@
     const inputElement: HTMLInputElement = bonusField.value.$el.querySelector('input');
     if (inputElement) inputElement.focus();
   };
+
+  const handleBonusClick = (): void => {
+    if (showDepositBonusCode.value) return;
+    emit('openBonusCode')
+  }
 
   watch(() => showDepositBonusCode.value, (newValue) => {
     if (!newValue && bonusValue.value) {
