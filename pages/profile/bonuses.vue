@@ -13,32 +13,53 @@
       {{ getContent(currentLocaleContent, defaultLocaleContent, 'historyLink') }}
     </nuxt-link>
 
-    <bonuses-active
-      v-if="hasActiveBlock"
-      :packageBonuses="activePackageBonuses"
-      @removeBonus="removeBonusHandle"
-      @removeFreeSpin="removeFreeSpinHandle"
-      @openPackageModal="openPackageModal"
-    />
+    <transition name="fade" mode="out-in">
+      <div v-if="mounting" class="profile-bonuses__spinner">
+        <div class="profile-bonuses__spinner-border">
+          <div class="profile-bonuses__spinner-core"/>
+        </div>
+      </div>
 
-    <atomic-divider v-if="hasActiveBlock && hasIssuedBlock" class="profile-bonuses__blocks-divider" />
+      <div v-else class="profile-bonuses__container">
+        <template v-if="hasActiveBlock">
+          <bonuses-active
+            :packageBonuses="activePackageBonuses"
+            @removeBonus="removeBonusHandle"
+            @removeFreeSpin="removeFreeSpinHandle"
+            @openPackageModal="openPackageModal"
+          />
 
-    <bonuses-issued
-      v-if="hasIssuedBlock"
-      :loadingBonuses="loadingBonuses"
-      :packageBonuses="issuedPackageBonuses"
-      :activePackageCount="activePackageBonuses.length"
-      @removeBonus="removeBonusHandle"
-      @removeFreeSpin="removeFreeSpinHandle"
-      @activateBonus="activateBonusHandle"
-      @activateFreeSpin="activateFreeSpinHandle"
-      @activateDeposit="activateDepositBonus"
-      @openPackageModal="openPackageModal"
-    />
+          <atomic-divider class="profile-bonuses__blocks-divider" />
+        </template>
 
-    <atomic-divider v-if="hasActiveBlock || hasIssuedBlock" class="profile-bonuses__blocks-divider" />
+        <template v-if="hasIssuedBlock">
+          <bonuses-issued
+            :loadingBonuses="loadingBonuses"
+            :packageBonuses="issuedPackageBonuses"
+            @removeBonus="removeBonusHandle"
+            @removeFreeSpin="removeFreeSpinHandle"
+            @activateBonus="activateBonusHandle"
+            @activateFreeSpin="activateFreeSpinHandle"
+            @openPackageModal="openPackageModal"
+          />
 
-    <bonuses-promo-code />
+          <atomic-divider class="profile-bonuses__blocks-divider" />
+        </template>
+
+        <template v-if="depositBonuses.length">
+          <bonuses-deposit
+            :loadingBonuses="loadingBonuses"
+            :packageBonuses="depositPackageBonuses"
+            @activateDeposit="activateDepositBonus"
+            @openPackageModal="openPackageModal"
+          />
+
+          <atomic-divider class="profile-bonuses__blocks-divider" />
+        </template>
+
+        <bonuses-promo-code />
+      </div>
+    </transition>
 
     <modal-confirm-bonus
       v-bind="modalState"
@@ -105,9 +126,10 @@
   } = storeToRefs(bonusStore);
   const { showAlert, openWalletModal } = useLayoutStore();
   const hasActiveBlock = computed(() => activePlayerBonuses.value.length || activePlayerFreeSpins.value.length);
-  const hasIssuedBlock = computed(() => issuedPlayerBonuses.value.length
-    || issuedPlayerFreeSpins.value.length
-    || depositBonuses.value.length);
+  const hasIssuedBlock = computed(() => {
+    const hasSimpleBonus = [...issuedPlayerBonuses.value, ...issuedPlayerFreeSpins.value].some(bonus => !bonus.packageId);
+    return hasSimpleBonus || issuedPackageBonuses.value.length;
+  });
 
 
   const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProfileBonuses>({
@@ -282,17 +304,27 @@
 
   const activePackageBonuses = ref<Record<string, any>[][]>([]);
   const issuedPackageBonuses = ref<Record<string, any>[][]>([]);
+  const depositPackageBonuses = ref<Record<string, any>[][]>([]);
   const showPackageModal = ref(false);
   const packageModalList = ref<Record<string, any>[]>([]);
 
   const updatePackageModalList = (): void => {
-    if (!activePackageBonuses.value.length && !issuedPackageBonuses.value.length) {
+    if (!activePackageBonuses.value.length && !issuedPackageBonuses.value.length && !depositPackageBonuses.value.length) {
       showPackageModal.value = false;
     }
 
-    const packageId = packageModalList.value[0]?.packageId || packageModalList.value[0]?.package?.id;
-    const newBonusesList = [...activePackageBonuses.value, ...issuedPackageBonuses.value].find(bonusesList => {
-      return (bonusesList[0].package?.id === packageId) || (bonusesList[0].packageId === packageId)
+    const packageId = packageModalList.value[0]?.issueSessionId
+      || packageModalList.value[0]?.packageId
+      || packageModalList.value[0]?.package?.id;
+
+    const newBonusesList = [
+      ...activePackageBonuses.value,
+      ...issuedPackageBonuses.value,
+      ...depositPackageBonuses.value
+    ].find(bonusesList => {
+      return (bonusesList[0].issueSessionId === packageId)
+        || (bonusesList[0].packageId === packageId)
+        || (bonusesList[0].package?.id === packageId)
     });
 
     if (newBonusesList) packageModalList.value = newBonusesList;
@@ -307,57 +339,79 @@
     }
     loadedBonuses.value = [];
   }
+  
+  const getPlayerPackages = async (packageIds: string[]): Promise<{
+    playerPackageBonuses: IPlayerBonus[],
+    playerPackageFreeSpins: IPlayerFreeSpin[]
+  }> => {
+    const { getPlayerBonuses, getPlayerFreeSpins } = useCoreBonusApi();
+    const [{ data: playerPackageBonuses }, { data: playerPackageFreeSpins }] = await Promise.all([
+      getPlayerBonuses({ packageId: packageIds, currency: [activeAccount.value?.currency as string] }),
+      getPlayerFreeSpins({ packageId: packageIds, currency: [activeAccount.value?.currency as string] })
+    ]);
+    
+    return { playerPackageBonuses, playerPackageFreeSpins };
+  }
+
+  const getUniquePackageIds = (): {
+    uniquePlayerPackageIds: string[],
+    uniquePlayerPackageIssueSessionIds: string[],
+    uniqueDepositPackageIds: string[]
+  } => {
+    const uniquePlayerPackageIds: string[] = [];
+    const uniquePlayerPackageIssueSessionIds: string[] = [];
+    const uniqueDepositPackageIds: string[] = [];
+
+    [...playerBonuses.value, ...playerFreeSpins.value].forEach(bonus => {
+      if (bonus.packageId && !uniquePlayerPackageIds.includes(bonus.packageId)) {
+        uniquePlayerPackageIds.push(bonus.packageId);
+      }
+      if (bonus.packageId && !uniquePlayerPackageIssueSessionIds.includes(bonus.issueSessionId ?? bonus.packageId)) {
+        uniquePlayerPackageIssueSessionIds.push(bonus.issueSessionId ?? bonus.packageId);
+      }
+    })
+
+    depositBonuses.value.forEach(bonus => {
+      if (bonus.package?.id && !uniqueDepositPackageIds.includes(bonus.package.id)) {
+        uniqueDepositPackageIds.push(bonus.package.id);
+      }
+    })
+
+    return { uniquePlayerPackageIds, uniquePlayerPackageIssueSessionIds, uniqueDepositPackageIds };
+  }
 
   const getPackageBonuses = async (): Promise<void> => {
-    const uniquePackageBonuses = [...playerBonuses.value, ...playerFreeSpins.value]
-      .map(bonus => (bonus as IPlayerBonus|IPlayerFreeSpin).packageId)
-      .filter((id, index, array) => id && array.indexOf(id) === index);
+    const { uniquePlayerPackageIds, uniquePlayerPackageIssueSessionIds, uniqueDepositPackageIds } = getUniquePackageIds();
 
-    const uniqueDepositPackageBonuses = depositBonuses.value
-      .map(bonus => bonus.package?.id)
-      .filter((id, index, array) => id && array.indexOf(id) === index);
-
-    if (!uniquePackageBonuses.length && !uniqueDepositPackageBonuses.length) {
+    if (!uniquePlayerPackageIds.length && !uniqueDepositPackageIds.length) {
       checkLoadingBonuses();
       activePackageBonuses.value = [];
       issuedPackageBonuses.value = [];
+      depositPackageBonuses.value = [];
       return;
     }
 
     try {
-      let packagePlayerBonuses: Record<string, any> = [];
-      let packagePlayerFreeSpins: Record<string, any> = [];
-
-      if (uniquePackageBonuses.length) {
-        const { getPlayerBonuses, getPlayerFreeSpins } = useCoreBonusApi();
-        const [{ data: packageBonuses }, { data: packageFreeSpins }] = await Promise.all([
-          getPlayerBonuses({ packageId: uniquePackageBonuses, currency: [activeAccount.value?.currency as string] }),
-          getPlayerFreeSpins({ packageId: uniquePackageBonuses, currency: [activeAccount.value?.currency as string] })
-        ]);
-        packagePlayerBonuses = packageBonuses;
-        packagePlayerFreeSpins = packageFreeSpins;
-      }
-
-      const transformPackagePlayerBonuses = packagePlayerBonuses.map((bonus: Record<string, any>)  => ({ ...bonus, isCash: true }));
-      const transformPackagePlayerFreeSpins = packagePlayerFreeSpins.map((freeSpin: Record<string, any>) => ({ ...freeSpin, isFreeSpin: true }));
+      const { playerPackageBonuses, playerPackageFreeSpins } = await getPlayerPackages(uniquePlayerPackageIds);
+      const transformPlayerPackageBonuses = playerPackageBonuses.map(bonus  => ({ ...bonus, isCash: true }));
+      const transformPlayerPackageFreeSpins = playerPackageFreeSpins.map(freeSpin => ({ ...freeSpin, isFreeSpin: true }));
       const transformDepositPackageBonuses = depositBonuses.value.map(bonus => ({ ...bonus, isDeposit: true }));
 
-      const playerPackageBonuses = uniquePackageBonuses.map(packageBonusId => {
-        return [...transformPackagePlayerBonuses, ...transformPackagePlayerFreeSpins]
-          .filter(bonus => bonus.packageId === packageBonusId)
+      const playerPackageList = uniquePlayerPackageIssueSessionIds.map(packageIssueSessionId => {
+        return [...transformPlayerPackageBonuses, ...transformPlayerPackageFreeSpins]
+          .filter(bonus => (bonus.issueSessionId ?? bonus.packageId) === packageIssueSessionId)
           .sort((prevBonus, nextBonus) => prevBonus.packagePriority - nextBonus.packagePriority);
       });
-      const depositPackageBonuses = uniqueDepositPackageBonuses.map(packageBonusId => {
+
+      depositPackageBonuses.value = uniqueDepositPackageIds.map(packageBonusId => {
         return transformDepositPackageBonuses
           .filter(bonus => bonus.package?.id === packageBonusId)
           .sort((prevBonus, nextBonus) => prevBonus.packagePriority - nextBonus.packagePriority);
       });
 
-      activePackageBonuses.value = playerPackageBonuses.filter(bonusesList => bonusesList.some(bonus => bonus.status === 2));
-      issuedPackageBonuses.value = [
-        ...playerPackageBonuses.filter(bonusesList => !bonusesList.some(bonus => bonus.status === 2)),
-        ...depositPackageBonuses
-      ];
+      activePackageBonuses.value = playerPackageList.filter(bonusesList => bonusesList.some(bonus => bonus.status === 2));
+      issuedPackageBonuses.value = playerPackageList.filter(bonusesList => !bonusesList.some(bonus => bonus.status === 2));
+
       if (showPackageModal.value) updatePackageModalList();
     } catch (e) {
       console.error('Failed to get package bonuses');

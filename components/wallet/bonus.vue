@@ -2,6 +2,7 @@
   <div
     class="wallet-bonus"
     :class="classes"
+    @click="handleBonusClick"
   >
     <div class="wallet-bonus__content">
       <div class="wallet-bonus__title">
@@ -40,7 +41,6 @@
         :id="props.bonusInfo.id"
         name="input-bonus-radio"
         :value="props.selected"
-        @change="emit('bonusChange', props.bonusInfo.id)"
       />
     </div>
   </div>
@@ -93,6 +93,11 @@
   const openBonusInfoModal = (): void => {
     depositMoreInfoBonus.value = props.bonusInfo;
     showModal('walletBonusInfo')
+  }
+
+  const handleBonusClick = (): void => {
+    if (props.disabled || props.selected) return;
+    emit('bonusChange');
   }
 </script>
 

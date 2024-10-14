@@ -166,6 +166,7 @@
 
   const tableParams = ref<IParam[]>();
   const getCashParams = (): IParam[] => {
+    const stickyValue = props.bonusInfo.sticky !== null ? getBooleanValue('sticky') : undefined;
     const params:ICashParams = {
       minDeposit: { label: getParamLabel('minDeposit'), value: getDeposit('From') },
       maxDeposit: { label: getParamLabel('maxDeposit'), value: getDeposit('To') },
@@ -176,7 +177,7 @@
       sportsBookMinBet: { label: getParamLabel('sportsBookMinBet'), value: getBetAmount('sportsbook', 'From') },
       sportsBookMaxBet: { label: getParamLabel('sportsBookMaxBet'), value: getBetAmount('sportsbook', 'To') },
       maxWin: { label: getParamLabel('maxWin'), value: getMaxWinAmount() },
-      sticky: { label: getParamLabel('sticky'), value: getBooleanValue('sticky') },
+      sticky: { label: getParamLabel('sticky'), value: stickyValue },
       cashable: { label: getParamLabel('cashable'), value: getBooleanValue('cashable') }
     };
 
@@ -192,52 +193,30 @@
     return Object.keys(params).map(key => ({ ...params[key], id: key }));
   }
 
-  const setFreeSpinData = async (providerId: string, gameId: string): Promise<void> => {
-    if (!providerId || !gameId) return;
-    const { getFilteredGames } = useCoreGamesApi();
-
-    try {
-      const [gameInfo, gameProviders] = await Promise.all([
-        getFilteredGames({ gameId: [gameId] }),
-        getProviderList()
-      ]);
-      const gameName = gameInfo.data[0]?.name;
-      const providerName = gameProviders.find(provider => provider.id === providerId)?.name;
-      tableParams.value = tableParams.value?.map(param => {
-        if (param.id === 'game') return { ...param, value: gameName };
-        if (param.id === 'provider') return { ...param, value: providerName };
-        return param;
-      });
-    } catch {
-      console.error('Something went wrong with free spin info!')
-    }
-  }
-
-  const getFreeSpinParams = (): IParam[] => {
-    const providerId = props.bonusInfo.providerId || props.bonusInfo.assignConditions?.providerId;
-    const gameId = props.bonusInfo.gameId || props.bonusInfo.assignConditions?.gameId;
+  const getFreeSpinParams = async (): Promise<IParam[]> => {
+    const gameProviders = await getProviderList();
+    const gameProviderId = props.bonusInfo.providerId || props.bonusInfo.assignConditions?.providerId;
+    const providerName = gameProviders.find(provider => provider.id === gameProviderId)?.name;
 
     const params:IFreeSpinParams = {
-      provider: { label: getParamLabel('provider'), value: ' ' },
-      game: { label: getParamLabel('game'), value: ' ' },
+      provider: { label: getParamLabel('provider'), value: providerName },
+      game: { label: getParamLabel('game'), value: props.bonusInfo.freeSpinGameInfo?.name },
       minDeposit: { label: getParamLabel('minDeposit'), value: getDeposit('From') },
       maxDeposit: { label: getParamLabel('maxDeposit'), value: getDeposit('To') },
     };
 
-    setFreeSpinData(providerId, gameId);
-
     return Object.keys(params).map(key => ({ ...params[key], id: key }));
   }
 
-  const setTableParams = (): void => {
-    if (props.bonusInfo.type === 1 || props.bonusInfo.bonusType === 1) {
+  const setTableParams = async (): Promise<void> => {
+    if ([1, 4].includes(props.bonusInfo.type || -1) || [1, 4].includes(props.bonusInfo.bonusType || -1)) {
       tableParams.value = getCashParams();
     } else if (props.bonusInfo.type === 2) {
       const cashPrams = getCashParams();
       const percentParams = getPercentParams();
       tableParams.value = [...percentParams, ...cashPrams];
     } else if (props.bonusInfo.type === 3 || props.bonusInfo.bonusType === 3) {
-      tableParams.value = getFreeSpinParams();
+      tableParams.value = await getFreeSpinParams();
     }
   }
 

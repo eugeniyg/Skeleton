@@ -7,9 +7,11 @@
   border-radius: 8px;
   height: 88px;
   overflow: hidden;
+  cursor: pointer;
 
   &.is-selected {
     padding: 2px;
+    cursor: default;
   }
 
   .icon {

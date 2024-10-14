@@ -1,4 +1,11 @@
-import type {IAmountRangeItem, IBonus, IGameImages, IObserverOptions} from '@skeleton/core/types';
+import type {
+  IAmountRangeItem,
+  IBonus,
+  IGameImages,
+  IObserverOptions,
+  IPlayerBonus,
+  IPlayerFreeSpin
+} from '@skeleton/core/types';
 import get from 'lodash/get';
 import * as projectRules from './validationRules';
 import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';

@@ -12,8 +12,8 @@
 <script setup lang="ts">
   const { localizePath } = useProjectMethods();
   const router = useRouter();
-  const toBonuses = ():void => {
-    router.push(localizePath('/profile/bonuses'));
+  const toBonuses = async (): Promise<void> => {
+    await router.push(localizePath('/profile/bonuses'));
   };
 
   const props = defineProps({
