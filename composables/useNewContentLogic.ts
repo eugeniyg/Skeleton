@@ -7,7 +7,7 @@ interface IContentParams {
   findAll?: boolean;
 }
 
-export async function useContentLogic<T extends Record<string, any>>(params: IContentParams) {
+export function useNewContentLogic<T extends Record<string, any>>(params: IContentParams) {
   interface IPageContent {
     currentLocaleData: Maybe<T>;
     defaultLocaleData: Maybe<T>;
@@ -20,11 +20,11 @@ export async function useContentLogic<T extends Record<string, any>>(params: ICo
   const currentLocaleContent = ref<Maybe<T>>();
   const defaultLocaleContent = ref<Maybe<T>>();
 
-  const setContentData = (contentData: Maybe<IPageContent>): void => {
-    currentLocaleContent.value = contentData?.currentLocaleData;
-    defaultLocaleContent.value = contentData?.defaultLocaleData;
-    if (params.isPage) setPageMeta(currentLocaleContent.value?.pageMeta);
-  };
+  // const setContentData = (contentData: Maybe<IPageContent>): void => {
+  //   currentLocaleContent.value = contentData?.currentLocaleData;
+  //   defaultLocaleContent.value = contentData?.defaultLocaleData;
+  //   if (params.isPage) setPageMeta(currentLocaleContent.value?.pageMeta);
+  // };
 
   const getRequestArray = (): Promise<any>[] => {
     let currentLocaleQuery = queryContent(currentLocale.value?.code as string, ...params.contentRoute);
@@ -65,24 +65,25 @@ export async function useContentLogic<T extends Record<string, any>>(params: ICo
     return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
   };
 
-  const {
-    error,
-    status,
-    data
-  } = await useAsyncData(params.contentKey, () => getPageContent());
+  // const {
+  //   error,
+  //   status,
+  //   data
+  // } = useLazyAsyncData(params.contentKey, () => getPageContent());
 
-  watch(data, (newValue) => {
-    if (newValue) setContentData(newValue);
-  }, { immediate: true });
-
-  watch(error, (newValue) => {
-    if (newValue) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
-  }, { immediate: true });
+  // watch(data, (newValue) => {
+  //   if (newValue) setContentData(newValue);
+  // }, { immediate: true });
+  //
+  // watch(error, (newValue) => {
+  //   if (newValue) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  // }, { immediate: true });
 
   return {
-    currentLocaleContent,
-    defaultLocaleContent,
-    status,
-    error
+    // currentLocaleContent,
+    // defaultLocaleContent,
+    // status,
+    // error,
+    getPageContent
   }
 }
