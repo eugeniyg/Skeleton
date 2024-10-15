@@ -11,13 +11,17 @@
 </template>
 
 <script setup lang="ts">
-  import type { IProfileDocuments } from '~/types';
+  import type {IProfileDocuments} from '~/types';
 
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProfileDocuments>({
+  const contentParams = {
     contentKey: 'profileDocumentsContent',
     contentRoute: ['profile', 'documents'],
     isPage: true
-  });
+  };
+  const { getContentData } = useNewContentLogic<IProfileDocuments>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
+  const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 
   provide('documentsContent', currentLocaleContent);
   provide('defaultLocaleDocumentsContent', defaultLocaleContent);

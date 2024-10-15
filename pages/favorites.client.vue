@@ -1,7 +1,7 @@
 <template>
   <div class="favorites">
     <div class="favorites__title">
-      {{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}
+      {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'title') }}
     </div>
 
     <list-grid
@@ -13,9 +13,9 @@
 
     <atomic-empty
       v-else
-      :title="getContent(currentLocaleContent, defaultLocaleContent, 'empty.title')"
-      :subTitle="getContent(currentLocaleContent, defaultLocaleContent, 'empty.description')"
-      :image="getContent(currentLocaleContent, defaultLocaleContent, 'empty.image')"
+      :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"
+      :subTitle="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
+      :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"
     />
 
     <group-games
@@ -29,14 +29,17 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IFavoritesPage } from '~/types';
+  import type {IFavoritesPage} from '~/types';
 
   const { getContent } = useProjectMethods();
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IFavoritesPage>({
+
+  const contentParams = {
     contentKey: 'favoritesPageContent',
     contentRoute: ['pages', 'favorites'],
     isPage: true
-  });
+  };
+  const { getContentData } = useNewContentLogic<IFavoritesPage>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);

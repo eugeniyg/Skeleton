@@ -25,8 +25,8 @@
     <template v-if="props.selectedTab === 'deposit'">
       <wallet-limit
         v-if="depositLimitError"
-        :currentLocaleLimitsContent="currentLocaleContent"
-        :defaultLocaleLimitsContent="defaultLocaleContent"
+        :currentLocaleLimitsContent="pageContent?.currentLocaleData"
+        :defaultLocaleLimitsContent="pageContent?.defaultLocaleData"
       />
 
       <template v-else-if="depositMethods?.length && props.currentDepositMethod">
@@ -80,7 +80,7 @@
 <script setup lang="ts">
   import type { IPaymentMethod } from "@skeleton/core/types";
   import { storeToRefs } from "pinia";
-  import type { IProfileLimits } from "~/types";
+  import type {IProfileLimits} from "~/types";
 
   const props = defineProps<{
     showTabs: boolean;
@@ -163,11 +163,13 @@
   })
 
   // << GET CONTENT FOR DEPOSIT LIMIT
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProfileLimits['coolingOff']>({
+  const contentParams = {
     contentKey: 'coolingOffLimitsContent',
     contentRoute: ['profile', 'limits'],
     only: ['coolingOff']
-  });
+  };
+  const { getContentData } = useNewContentLogic<IProfileLimits>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
   // >>
 
   const showMobileFormKey = ref<number>(0);

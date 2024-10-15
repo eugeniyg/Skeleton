@@ -98,7 +98,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IProfileBonuses } from '~/types';
+  import type {IProfileBonuses} from '~/types';
   import type { IBonus, IPlayerBonus, IPlayerFreeSpin } from "@skeleton/core/types";
   import debounce from "lodash/debounce.js";
 
@@ -131,12 +131,16 @@
     return hasSimpleBonus || issuedPackageBonuses.value.length;
   });
 
-
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProfileBonuses>({
+  const contentParams = {
     contentKey: 'profileBonusesContent',
     contentRoute: ['profile', 'bonuses'],
     isPage: true
-  });
+  };
+  const { getContentData } = useNewContentLogic<IProfileBonuses>(contentParams);
+  const { data } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const currentLocaleContent = computed(() => data.value?.currentLocaleData);
+  const defaultLocaleContent = computed(() => data.value?.defaultLocaleData);
+
   provide('bonusesContent', currentLocaleContent);
   provide('defaultLocaleBonusesContent', defaultLocaleContent);
 

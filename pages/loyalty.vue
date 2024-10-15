@@ -18,14 +18,19 @@
 </template>
 
 <script setup lang="ts">
-  import type { ILoyaltyPage } from '~/types';
+  import type {ILoyaltyPage} from '~/types';
 
   const { getContent } = useProjectMethods();
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<ILoyaltyPage>({
+  
+  const contentParams = {
     contentKey: 'loyaltyPageContent',
     contentRoute: ['pages', 'loyalty'],
     isPage: true
-  });
+  };
+  const { getContentData } = useNewContentLogic<ILoyaltyPage>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
+  const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 
   provide('loyaltyContent', currentLocaleContent);
   provide('defaultLocaleLoyaltyContent', defaultLocaleContent);

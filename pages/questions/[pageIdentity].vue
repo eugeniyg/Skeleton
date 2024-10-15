@@ -1,8 +1,8 @@
 <template>
   <div class="content">
-    <h1 class="heading">{{ currentLocaleContent?.title }}</h1>
+    <h1 class="heading">{{ categoryContent?.currentLocaleData?.title }}</h1>
 
-    <div v-if="currentLocaleContent?.questionList?.length">
+    <div v-if="categoryContent?.currentLocaleData?.questionList?.length">
       <expander
         v-for="(item, itemIndex) in questionsList"
         :key="itemIndex"
@@ -14,18 +14,20 @@
 </template>
 
 <script setup lang="ts">
-  import type { IQuestionCategory } from '~/types';
+  import type {IQuestionCategory} from '~/types';
 
   const route = useRoute();
   const { pageIdentity } = route.params;
 
-  const { currentLocaleContent } = await useContentLogic<IQuestionCategory>({
+  const contentParams = {
     contentKey: `${pageIdentity}-question`,
     contentRoute: ['question-pages'],
     where: { pageIdentity }
-  });
+  };
+  const { getContentData } = useNewContentLogic<IQuestionCategory>(contentParams);
+  const { data: categoryContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const questionsList = computed(() => {
-    return currentLocaleContent.value?.questionList || [];
+    return categoryContent.value?.currentLocaleData?.questionList || [];
   });
 </script>

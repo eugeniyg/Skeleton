@@ -1,17 +1,17 @@
 <template>
   <div>
-    <div v-show="currentLocaleContent || defaultLocaleContent" class="contact">
+    <div v-show="pageContent?.currentLocaleData || pageContent?.defaultLocaleData" class="contact">
       <atomic-picture
-        v-if="currentLocaleContent?.image || defaultLocaleContent?.image"
-        :src="currentLocaleContent?.image || defaultLocaleContent?.image"
+        v-if="pageContent?.currentLocaleData?.image || pageContent?.defaultLocaleData?.image"
+        :src="pageContent?.currentLocaleData?.image || pageContent?.defaultLocaleData?.image"
         width="348"
         height="301"
         alt=""
       />
 
       <div class="header">
-        <div class="heading">{{ currentLocaleContent?.title || defaultLocaleContent?.title }}</div>
-        <p class="info">{{ currentLocaleContent?.description || defaultLocaleContent?.description }}</p>
+        <div class="heading">{{ pageContent?.currentLocaleData?.title || pageContent?.defaultLocaleData?.title }}</div>
+        <p class="info">{{ pageContent?.currentLocaleData?.description || pageContent?.defaultLocaleData?.description }}</p>
       </div>
 
       <div class="form">
@@ -40,18 +40,18 @@
           :isDisabled="v$.$invalid || isLockedAsyncButton"
           @click="submitContactForm"
         >
-          {{ currentLocaleContent?.buttonLabel || defaultLocaleContent?.buttonLabel }} <atomic-icon id="arrow_next"/>
+          {{ pageContent?.currentLocaleData?.buttonLabel || pageContent?.defaultLocaleData?.buttonLabel }} <atomic-icon id="arrow_next"/>
         </button-base>
       </div>
     </div>
 
-    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent?.pageMeta?.seoText" />
+    <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IContactsPage } from '~/types';
+  import type {IContactsPage} from '~/types';
 
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();
@@ -64,11 +64,13 @@
     defaultLocaleAlertsData
   } = storeToRefs(globalStore);
 
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IContactsPage>({
+  const contentParams = {
     contentKey: 'contactPageContent',
     contentRoute: ['pages', 'contacts'],
     isPage: true
-  });
+  }
+  const { getContentData } = useNewContentLogic<IContactsPage>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const contactFormData = reactive({
     email: '',

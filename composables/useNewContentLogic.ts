@@ -1,8 +1,8 @@
 interface IContentParams {
   contentKey: string;
   contentRoute: string[];
-  isPage?: boolean;
   where?: Record<string, any>;
+  isPage?: boolean;
   only?: string[];
   findAll?: boolean;
 }
@@ -17,14 +17,6 @@ export function useNewContentLogic<T extends Record<string, any>>(params: IConte
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
   const { setPageMeta, getLocalesContentData } = useProjectMethods();
 
-  const currentLocaleContent = ref<Maybe<T>>();
-  const defaultLocaleContent = ref<Maybe<T>>();
-
-  // const setContentData = (contentData: Maybe<IPageContent>): void => {
-  //   currentLocaleContent.value = contentData?.currentLocaleData;
-  //   defaultLocaleContent.value = contentData?.defaultLocaleData;
-  //   if (params.isPage) setPageMeta(currentLocaleContent.value?.pageMeta);
-  // };
 
   const getRequestArray = (): Promise<any>[] => {
     let currentLocaleQuery = queryContent(currentLocale.value?.code as string, ...params.contentRoute);
@@ -53,37 +45,22 @@ export function useNewContentLogic<T extends Record<string, any>>(params: IConte
     ]
   }
 
-  const getPageContent = async (): Promise<IPageContent> => {
+  const getContentData = async (): Promise<IPageContent> => {
+    let contentData: IPageContent = { currentLocaleData: undefined, defaultLocaleData: undefined };
     const nuxtContentData = useNuxtData(params.contentKey);
-    if (nuxtContentData.data.value) return nuxtContentData.data.value;
 
-    const [
-      currentLocaleContentResponse,
-      defaultLocaleContentResponse
-    ] = await Promise.allSettled(getRequestArray());
+    if (nuxtContentData.data.value) contentData = nuxtContentData.data.value;
+    else {
+      const [
+        currentLocaleContentResponse,
+        defaultLocaleContentResponse
+      ] = await Promise.allSettled(getRequestArray());
+      contentData = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    }
 
-    return getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+    if (params.isPage) setPageMeta(contentData.currentLocaleData?.pageMeta);
+    return contentData;
   };
 
-  // const {
-  //   error,
-  //   status,
-  //   data
-  // } = useLazyAsyncData(params.contentKey, () => getPageContent());
-
-  // watch(data, (newValue) => {
-  //   if (newValue) setContentData(newValue);
-  // }, { immediate: true });
-  //
-  // watch(error, (newValue) => {
-  //   if (newValue) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
-  // }, { immediate: true });
-
-  return {
-    // currentLocaleContent,
-    // defaultLocaleContent,
-    // status,
-    // error,
-    getPageContent
-  }
+  return { getContentData };
 }

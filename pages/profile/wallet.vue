@@ -2,7 +2,7 @@
   <div class="content">
     <div class="header">
       <h1 class="heading">
-        {{ currentLocaleContent?.title || defaultLocaleContent?.title }}
+        {{ pageContent?.currentLocaleData?.title || pageContent?.defaultLocaleData?.title }}
       </h1>
 
       <button-base
@@ -12,19 +12,19 @@
         :isDisabled="currencyNavEmpty"
         @click="openCurrNav"
       >
-        <atomic-icon id="plus"/>{{ currentLocaleContent?.addButton || defaultLocaleContent?.addButton }}
+        <atomic-icon id="plus"/>{{ pageContent?.currentLocaleData?.addButton || pageContent?.defaultLocaleData?.addButton }}
       </button-base>
     </div>
 
     <nav-currency :tabs="currencyTabs" @toggleNavEmpty="currencyNavEmpty = $event"/>
 
-    <div v-if="currentLocaleContent || defaultLocaleContent" class="cards-wallet">
+    <div v-if="pageContent?.currentLocaleData || pageContent?.defaultLocaleData" class="cards-wallet">
       <TransitionGroup name="card">
         <card-wallet
           v-for="account in orderedAccounts"
           :key="account.id"
           v-bind="account"
-          :content="currentLocaleContent || defaultLocaleContent"
+          :content="pageContent?.currentLocaleData || pageContent?.defaultLocaleData"
         />
       </TransitionGroup>
     </div>
@@ -34,13 +34,15 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { IAccount } from '@skeleton/core/types';
-  import type { IProfileWallet } from '~/types';
+  import type {IProfileWallet} from '~/types';
 
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProfileWallet>({
+  const contentParams = {
     contentKey: 'profileWalletContent',
     contentRoute: ['profile', 'wallet'],
     isPage: true
-  });
+  };
+  const { getContentData } = useNewContentLogic<IProfileWallet>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const walletStore = useWalletStore();
   const { accounts, currencyTabs } = storeToRefs(walletStore);

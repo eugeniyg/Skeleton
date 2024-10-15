@@ -2,15 +2,15 @@
   <div>
     <div class="promotion">
       <h1 class="title">
-        {{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}
+        {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'title') }}
       </h1>
 
       <h4 class="sub-title">
-        {{ getContent(currentLocaleContent, defaultLocaleContent, 'description') }}
+        {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'description') }}
       </h4>
 
-      <div v-if="getContent(currentLocaleContent, defaultLocaleContent, 'howGet')" class="steps">
-        <div class="title">{{ getContent(currentLocaleContent, defaultLocaleContent, 'howGet.label') }}</div>
+      <div v-if="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'howGet')" class="steps">
+        <div class="title">{{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'howGet.label') }}</div>
 
         <div class="items">
           <div
@@ -24,8 +24,8 @@
         </div>
 
         <atomic-picture
-          v-if="getContent(currentLocaleContent, defaultLocaleContent, 'howGet.image')"
-          :src="getContent(currentLocaleContent, defaultLocaleContent, 'howGet.image')"
+          v-if="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'howGet.image')"
+          :src="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'howGet.image')"
         />
       </div>
 
@@ -33,12 +33,12 @@
 
       <div class="welcome">
         <h4 class="title">
-          {{ getContent(currentLocaleContent, defaultLocaleContent, 'welcome.label') }}
+          {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'welcome.label') }}
         </h4>
 
-        <div v-if="getContent(currentLocaleContent, defaultLocaleContent, 'welcome.items')?.length" class="items">
+        <div v-if="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'welcome.items')?.length" class="items">
           <div
-            v-for="(card, itemIndex) in getContent(currentLocaleContent, defaultLocaleContent, 'welcome.items')"
+            v-for="(card, itemIndex) in getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'welcome.items')"
             :key="itemIndex"
             class="item"
           >
@@ -77,12 +77,12 @@
 
       <div class="bonuses">
         <h4 class="title">
-          {{ getContent(currentLocaleContent, defaultLocaleContent, 'bonuses.label') }}
+          {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'bonuses.label') }}
         </h4>
 
-        <div v-if="getContent(currentLocaleContent, defaultLocaleContent, 'bonuses.items')?.length" class="items">
+        <div v-if="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'bonuses.items')?.length" class="items">
           <div
-            v-for="(card, itemIndex) in getContent(currentLocaleContent, defaultLocaleContent, 'bonuses.items')"
+            v-for="(card, itemIndex) in getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'bonuses.items')"
             :key="itemIndex"
             class="item"
           >
@@ -114,28 +114,30 @@
       </div>
     </div>
 
-    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent?.pageMeta?.seoText" />
+    <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText" />
   </div>
 </template>
 
 <script setup lang='ts'>
   import { storeToRefs } from 'pinia';
-  import type { IWelcomeBonusesPage } from '~/types';
+  import type {IWelcomeBonusesPage} from '~/types';
 
   const { getContent } = useProjectMethods();
 
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IWelcomeBonusesPage>({
+  const contentParams = {
     contentKey: 'welcomePageContent',
     contentRoute: ['pages', 'welcome-bonuses'],
     isPage: true
-  });
+  };
+  const { getContentData } = useNewContentLogic<IWelcomeBonusesPage>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const howGetItems = computed(() => {
-    if (currentLocaleContent.value?.howGet || defaultLocaleContent.value?.howGet) {
+    if (pageContent.value?.currentLocaleData?.howGet || pageContent.value?.defaultLocaleData?.howGet) {
       return [
-        getContent(currentLocaleContent.value, defaultLocaleContent.value, 'howGet.first'),
-        getContent(currentLocaleContent.value, defaultLocaleContent.value, 'howGet.second'),
-        getContent(currentLocaleContent.value, defaultLocaleContent.value, 'howGet.third'),
+        getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'howGet.first'),
+        getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'howGet.second'),
+        getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'howGet.third'),
       ];
     }
     return [];

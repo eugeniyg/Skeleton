@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IProfileLimits } from '~/types';
+  import type {IProfileLimits} from '~/types';
 
   const limitsStore = useLimitsStore();
   const {
@@ -80,16 +80,18 @@
   } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();
 
-  const { currentLocaleContent, defaultLocaleContent, status } = await useContentLogic<IProfileLimits>({
+  const contentParams = {
     contentKey: 'profileLimitsContent',
     contentRoute: ['profile', 'limits'],
     isPage: true
-  });
+  };
+  const { getContentData } = useNewContentLogic<IProfileLimits>(contentParams);
+  const { status, data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   watch(status, async (newValue) => {
     if (newValue === 'success') {
       await nextTick();
-      setLimitsContent(currentLocaleContent.value, defaultLocaleContent.value);
+      setLimitsContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData);
     }
   }, { immediate: true });
 

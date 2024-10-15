@@ -1,14 +1,14 @@
 <template>
   <div class="recently-played">
     <div class="recently-played__title">
-      {{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}
+      {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'title') }}
     </div>
 
     <atomic-empty
       v-if="!recentlyGames.length && !loadingData"
-      :title="getContent(currentLocaleContent, defaultLocaleContent, 'empty.title')"
-      :subTitle="getContent(currentLocaleContent, defaultLocaleContent, 'empty.description')"
-      :image="getContent(currentLocaleContent, defaultLocaleContent, 'empty.image')"
+      :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"
+      :subTitle="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
+      :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"
     />
 
     <list-grid
@@ -29,17 +29,19 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { IGame } from '@skeleton/core/types';
-  import type { IRecentlyPage } from '~/types';
+  import type {IRecentlyPage} from '~/types';
 
   const globalStore = useGlobalStore();
   const { isMobile, headerCountry } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IRecentlyPage>({
+  const contentParams = {
     contentKey: 'recentlyPageContent',
     contentRoute: ['pages', 'recently'],
     isPage: true
-  });
+  };
+  const { getContentData } = useNewContentLogic<IRecentlyPage>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const { getCollectionsList } = useGamesStore();
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
