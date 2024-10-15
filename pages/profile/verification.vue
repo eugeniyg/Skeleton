@@ -38,5 +38,5 @@
   provide('defaultLocaleVerificationContent', defaultLocaleContent);
 
   const runtimeConfig = useRuntimeConfig();
-  const sumsubIntegrated = !!runtimeConfig.public.sumsub?.appToken;
+  const sumsubIntegrated = runtimeConfig.public.sumsub?.enabled;
 </script>

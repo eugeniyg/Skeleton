@@ -172,7 +172,7 @@
   const layoutStore = useLayoutStore();
   const { successModalType } = storeToRefs(layoutStore);
   const { showModal, showAlert, closeModal } = layoutStore;
-  const { activeAccount } = storeToRefs(walletStore);
+  const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
 
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
@@ -236,6 +236,7 @@
     return {
       method: props.method || '',
       currency: activeAccount.value?.currency || '',
+      country: requestPaymentMethodsRegion.value,
       amount: mainCurrencyAmount.amount,
       accountId: activeAccount.value?.id || '',
       redirectSuccessUrl: successRedirect,

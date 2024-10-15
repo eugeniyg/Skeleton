@@ -27,6 +27,7 @@ interface IModals extends Record<string, any> {
   providers: boolean;
   categories: boolean;
   packageBonus: boolean;
+  walletRegion: boolean;
 }
 
 interface IModalsUrls extends Record<string, any> {
@@ -84,7 +85,8 @@ export const useLayoutStore = defineStore('layoutStore', {
         depositRedirect: false,
         providers: false,
         categories: false,
-        packageBonus: false
+        packageBonus: false,
+        walletRegion: false
       },
       modalsUrl: {
         register: 'sign-up',
@@ -253,9 +255,11 @@ export const useLayoutStore = defineStore('layoutStore', {
       const startModalLoad: Dayjs = dayjs();
 
       this.walletModalType = modalType;
-      const { getDepositMethods, getWithdrawMethods, accountSwitching } = useWalletStore();
+      const { setPaymentMethodsGeo, getDepositMethods,
+        getWithdrawMethods, accountSwitching } = useWalletStore();
       const { getDepositBonuses, getDepositBonusCode } = useBonusStore();
       const riskStore = useRiskStore();
+      setPaymentMethodsGeo();
       await accountSwitching;
       await Promise.allSettled([
         getDepositMethods(),

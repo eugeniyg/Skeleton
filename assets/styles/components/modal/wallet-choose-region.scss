@@ -2,11 +2,16 @@
   .vfm__content {
     width: 100%;
     margin: 0 0;
+    padding-bottom: 0;
     align-items: flex-end;
 
     @include media(xs) {
       align-items: center;
       max-width: rem(400px);
+    }
+
+    @include media(md) {
+      padding-bottom: 0.5rem;
     }
   }
 
@@ -125,9 +130,13 @@
   }
 
   &__items {
-    max-height: calc(32px * 9);
+    height: 50vh;
     overflow-y: auto;
     @include scrollbar;
+
+    @include media(md) {
+      height: calc(32px * 9);
+    }
   }
 
   &__item {
@@ -141,15 +150,23 @@
     margin-right: rem(2px);
     border-radius: 8px;
 
-    @include use-hover {
-      &:hover:not(.is-selected) {
-        cursor: pointer;
-        --bg: var(--button-bg-secondary-click);
-      }
+    &:hover:not(.is-active, .is-selected) {
+      cursor: pointer;
+      --bg: var(--button-bg-secondary-click);
     }
 
     &.is-selected {
       --bg: var(--button-bg-secondary-click);
+      cursor: default;
+    }
+
+    &.is-active {
+      --bg: none !important;
+      cursor: default;
+
+      .modal-choose-region__item-label {
+        color: var(--text-link);
+      }
     }
 
     img {
@@ -169,16 +186,20 @@
   }
 
   .empty {
+    height: 50vh;
     padding: rem(8px) rem(16px) rem(16px) rem(16px);
-
     --margin-bottom: 0;
+
+    @include media(md) {
+      height: calc(32px * 9);
+    }
 
     .title {
       margin-top: rem(16px);
     }
 
     .sub-title {
-      margin-top: rem(16px);
+      margin-top: rem(8px);
       text-align: center;
     }
   }

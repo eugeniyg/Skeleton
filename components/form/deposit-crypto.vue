@@ -58,7 +58,7 @@
   const walletNumber = ref<string>('');
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
-  const { activeAccount } = storeToRefs(walletStore);
+  const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
 
   const bonusStore = useBonusStore();
   const {
@@ -116,6 +116,7 @@
     params: {
       method: props.method || '',
       currency: activeAccount.value?.currency || '',
+      country: requestPaymentMethodsRegion.value,
       amount: props.amountMin || 0,
       accountId: activeAccount.value?.id || '',
       redirectSuccessUrl: window.location.href,
@@ -130,6 +131,7 @@
   const sendDepositData = async ():Promise<void> => {
     state.params.bonusId = selectedDepositBonus.value?.id;
     state.params.isBonusDecline = showDepositBonusCode.value && !depositBonusCode.value ? true : bonusDeclined.value;
+    state.params.country = requestPaymentMethodsRegion.value;
 
     try {
       const depositResponse = await depositAccount(state.params);

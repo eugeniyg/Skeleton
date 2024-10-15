@@ -52,4 +52,9 @@
     --icon-width: #{rem(240px)};
     --icon-height: #{rem(260px)};
   }
+
+  &.variant-search {
+    --icon-width: #{rem(240px)};
+    --icon-height: #{rem(240px)};
+  }
 }
