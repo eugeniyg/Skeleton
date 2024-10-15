@@ -13,11 +13,7 @@
       </div>
     </div>
 
-    <!--        <wallet-region v-bind="chooseRegionProps">-->
-    <!--          <div class="identity">-->
-    <!--            ID {{ playerIdentity }}-->
-    <!--          </div>-->
-    <!--        </wallet-region>-->
+    <wallet-region />
 
     <balance :withdraw="props.selectedTab === 'withdraw'">
       <form-input-payments

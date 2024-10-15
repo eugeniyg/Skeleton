@@ -23,6 +23,7 @@
         'notification',
         'bonuses',
         'bets-history',
+        'search'
       ].includes(val),
       required: false,
     },
