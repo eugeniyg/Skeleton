@@ -27,7 +27,7 @@
     contentRoute: ['pages', 'loyalty'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<ILoyaltyPage>(contentParams);
+  const { getContentData } = useContentLogic<ILoyaltyPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);

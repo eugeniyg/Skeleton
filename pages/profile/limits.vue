@@ -85,7 +85,7 @@
     contentRoute: ['profile', 'limits'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IProfileLimits>(contentParams);
+  const { getContentData } = useContentLogic<IProfileLimits>(contentParams);
   const { status, data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   watch(status, async (newValue) => {

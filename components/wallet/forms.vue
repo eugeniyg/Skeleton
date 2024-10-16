@@ -168,7 +168,7 @@
     contentRoute: ['profile', 'limits'],
     only: ['coolingOff']
   };
-  const { getContentData } = useNewContentLogic<IProfileLimits>(contentParams);
+  const { getContentData } = useContentLogic<IProfileLimits>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
   // >>
 

@@ -46,7 +46,7 @@
     contentRoute: ['pages', 'sportsbook'],
     isPage: true
   }
-  const { getContentData } = useNewContentLogic<ISportsbookPage>(contentParams);
+  const { getContentData } = useContentLogic<ISportsbookPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const showRestrictedBetsModal = ref<boolean>(false);

@@ -70,7 +70,7 @@
     contentRoute: ['pages', 'game'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IGamePage>(contentParams);
+  const { getContentData } = useContentLogic<IGamePage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const showRestrictedBetsModal = ref<boolean>(false);

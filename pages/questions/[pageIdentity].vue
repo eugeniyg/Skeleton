@@ -24,7 +24,7 @@
     contentRoute: ['question-pages'],
     where: { pageIdentity }
   };
-  const { getContentData } = useNewContentLogic<IQuestionCategory>(contentParams);
+  const { getContentData } = useContentLogic<IQuestionCategory>(contentParams);
   const { data: categoryContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const questionsList = computed(() => {

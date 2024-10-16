@@ -50,7 +50,7 @@
     where: { pageIdentity },
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IBonusPage>(contentParams);
+  const { getContentData } = useContentLogic<IBonusPage>(contentParams);
   const { status, data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const detailLabel = computed(() => getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'termsLabel'));

@@ -41,7 +41,7 @@
     contentRoute: ['profile', 'wallet'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IProfileWallet>(contentParams);
+  const { getContentData } = useContentLogic<IProfileWallet>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const walletStore = useWalletStore();

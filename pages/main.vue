@@ -72,7 +72,7 @@
     contentRoute: ['pages', 'casino'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<ICasinoPage>(contentParams);
+  const { getContentData } = useContentLogic<ICasinoPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const { getCollectionsList } = useGamesStore();

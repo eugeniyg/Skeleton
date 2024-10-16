@@ -129,7 +129,7 @@
     contentRoute: ['pages', 'welcome-bonuses'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IWelcomeBonusesPage>(contentParams);
+  const { getContentData } = useContentLogic<IWelcomeBonusesPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const howGetItems = computed(() => {

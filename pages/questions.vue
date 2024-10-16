@@ -35,7 +35,7 @@
     contentRoute: ['pages', 'question'],
     isPage: true
   }
-  const { getContentData: getPageContentData } = useNewContentLogic<IQuestionPage>(pageContentParams);
+  const { getContentData: getPageContentData } = useContentLogic<IQuestionPage>(pageContentParams);
   const { data: pageContent } = await useLazyAsyncData(pageContentParams.contentKey, () => getPageContentData());
 
   const categoryContentParams = {
@@ -43,7 +43,7 @@
     contentRoute: ['question-pages'],
     findAll: true
   }
-  const { getContentData: getCategoryContentData } = useNewContentLogic<IQuestionCategory[]>(categoryContentParams);
+  const { getContentData: getCategoryContentData } = useContentLogic<IQuestionCategory[]>(categoryContentParams);
   const { data: categoryContent } = await useLazyAsyncData(categoryContentParams.contentKey, () => getCategoryContentData());
 
   const checkRedirect = ():void => {

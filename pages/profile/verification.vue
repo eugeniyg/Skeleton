@@ -33,7 +33,7 @@
     contentRoute: ['profile', 'verification'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IProfileVerification>(contentParams);
+  const { getContentData } = useContentLogic<IProfileVerification>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);

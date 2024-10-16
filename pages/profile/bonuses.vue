@@ -136,7 +136,7 @@
     contentRoute: ['profile', 'bonuses'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IProfileBonuses>(contentParams);
+  const { getContentData } = useContentLogic<IProfileBonuses>(contentParams);
   const { data } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
   const currentLocaleContent = computed(() => data.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => data.value?.defaultLocaleData);

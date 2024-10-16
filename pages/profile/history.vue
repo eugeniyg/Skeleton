@@ -20,7 +20,7 @@
     contentRoute: ['profile', 'history'],
     isPage: true
   };
-  const { getContentData: getPageContent } = useNewContentLogic<IProfileHistory>(pageContentParams);
+  const { getContentData: getPageContent } = useContentLogic<IProfileHistory>(pageContentParams);
   const { data: pageContent } = await useLazyAsyncData(pageContentParams.contentKey, () => getPageContent());
 
   const menuContentParams = {
@@ -28,7 +28,7 @@
     contentRoute: ['history'],
     findAll: true
   };
-  const { getContentData: getMenuContent } = useNewContentLogic<any>(menuContentParams);
+  const { getContentData: getMenuContent } = useContentLogic<any>(menuContentParams);
   const { data: menuContent } = await useLazyAsyncData(menuContentParams.contentKey, () => getMenuContent());
 
   const historyTabContent = computed<IHistory|undefined>(() => {

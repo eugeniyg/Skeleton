@@ -38,7 +38,7 @@
     contentRoute: ['pages', 'favorites'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IFavoritesPage>(contentParams);
+  const { getContentData } = useContentLogic<IFavoritesPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const gameStore = useGamesStore();

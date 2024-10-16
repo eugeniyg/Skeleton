@@ -123,7 +123,7 @@
     contentRoute: ['profile', 'info'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IProfileInfo>(contentParams);
+  const { getContentData } = useContentLogic<IProfileInfo>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);

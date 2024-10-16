@@ -40,7 +40,7 @@
     contentRoute: ['pages', 'recently'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IRecentlyPage>(contentParams);
+  const { getContentData } = useContentLogic<IRecentlyPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const { getCollectionsList } = useGamesStore();

@@ -106,7 +106,7 @@
     contentRoute: ['pages', 'games'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IGamesPage>(contentParams);
+  const { getContentData } = useContentLogic<IGamesPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const selectedProviders = ref<string[]>([]);

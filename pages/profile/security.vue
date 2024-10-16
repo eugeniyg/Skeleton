@@ -18,7 +18,7 @@
     contentRoute: ['profile', 'security'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IProfileSecurity>(contentParams);
+  const { getContentData } = useContentLogic<IProfileSecurity>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);

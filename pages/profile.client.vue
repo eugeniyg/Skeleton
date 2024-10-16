@@ -16,7 +16,7 @@
     contentRoute: ['profile'],
     findAll: true
   };
-  const { getContentData } = useNewContentLogic<IProfilePages>(contentParams);
+  const { getContentData } = useContentLogic<IProfilePages>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const profileContent = computed<IProfilePages|undefined>(() => {

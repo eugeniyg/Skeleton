@@ -69,7 +69,7 @@
     contentRoute: ['pages', 'contacts'],
     isPage: true
   }
-  const { getContentData } = useNewContentLogic<IContactsPage>(contentParams);
+  const { getContentData } = useContentLogic<IContactsPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const contactFormData = reactive({

@@ -18,7 +18,7 @@
     contentRoute: ['profile', 'documents'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IProfileDocuments>(contentParams);
+  const { getContentData } = useContentLogic<IProfileDocuments>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);

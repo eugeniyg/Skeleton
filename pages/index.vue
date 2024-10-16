@@ -82,7 +82,7 @@
     contentRoute: ['pages', 'home'],
     isPage: true
   };
-  const { getContentData } = useNewContentLogic<IHomePage>(contentParams);
+  const { getContentData } = useContentLogic<IHomePage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const { getCollectionsList } = useGamesStore();
