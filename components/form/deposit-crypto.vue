@@ -23,6 +23,11 @@
     />
     
     <div class="form-deposit-crypto__content" :class="{'is-blured': props.fields?.length && !state.selectedNetwork }">
+      <wallet-destination-tag
+        v-if="destinationTag"
+        :value="destinationTag"
+      />
+
       <wallet-crypto-qr
         :content="popupsData?.wallet?.deposit || defaultLocalePopupsData?.wallet?.deposit"
         :qrAddress="walletNumber"
@@ -33,6 +38,7 @@
         :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addressInputLabel') || ''"
         :hint="fieldHint"
         :value="walletNumber"
+        :copyTooltip="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.copiedLabel')"
       />
 
       <atomic-divider />
@@ -56,6 +62,7 @@
   }>();
 
   const walletNumber = ref<string>('');
+  const destinationTag = ref<string|undefined>();
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
   const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
@@ -136,6 +143,7 @@
     try {
       const depositResponse = await depositAccount(state.params);
       walletNumber.value = depositResponse.address;
+      destinationTag.value = depositResponse.tag;
     } catch {
       showModal('failing');
     }
