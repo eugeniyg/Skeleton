@@ -59,6 +59,7 @@ export interface IRequestDeposit extends Record<string, any>{
   redirectErrorUrl?: string;
   bonusId?: string;
   isBonusDecline: boolean;
+  country: Maybe<string>;
 }
 
 export interface IRequestWithdraw extends Record<string, any>{
@@ -67,6 +68,7 @@ export interface IRequestWithdraw extends Record<string, any>{
   currency: string;
   amount: number;
   accountId: string;
+  country: Maybe<string>;
 }
 
 export interface IResponseDeposit extends Record<string, any>{

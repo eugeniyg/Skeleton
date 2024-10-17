@@ -8,7 +8,7 @@
     @closed="closedHandler"
   >
     <div class="wallet-modal__container" :class="{ 'show-form': showMobileForm }">
-      <button-modal-close @close="handleClose" :class="{ 'close-secondary': hasOffset }" />
+      <button-modal-close :class="{ 'close-secondary': hasOffset }" @close="handleClose" />
 
       <wallet-methods
         v-model:currentDepositMethod="currentDepositMethod"
@@ -43,6 +43,8 @@
   const globalStore = useGlobalStore();
   const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
+  const bonusStore = useBonusStore();
+  const { walletDepositBonus } = storeToRefs(bonusStore);
 
   const { modals, walletModalType } = storeToRefs(layoutStore);
   const { showModal, closeModal } = layoutStore;
@@ -125,6 +127,7 @@
   }
 
   const closedHandler = (): void => {
+    if (walletDepositBonus.value) walletDepositBonus.value = undefined;
     useEvent('analyticsEvent', {
       event: 'walletClose',
       walletOperationType: selectedTab.value

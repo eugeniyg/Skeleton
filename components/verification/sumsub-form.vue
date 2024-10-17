@@ -17,9 +17,13 @@
   const { getContent } = useProjectMethods();
 
   const getAccessToken = async () => {
-    const { getSumsubToken } = useCoreProfileApi();
-    const { token } = await getSumsubToken();
-    return token;
+    try {
+      const { getSumsubToken } = useCoreProfileApi();
+      const { token } = await getSumsubToken();
+      return token;
+    } catch {
+      return '';
+    }
   }
 
   const launchWebSdk = async () => {

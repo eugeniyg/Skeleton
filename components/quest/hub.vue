@@ -28,7 +28,7 @@
 
     <quest-empty
       v-else
-      v-bind="infoContent?.questsHub.empty || defaultLocaleInfoContent?.questsHub.empty"
+      v-bind="infoContent?.questsHub?.empty || defaultLocaleInfoContent?.questsHub?.empty"
     />
 
     <button-base

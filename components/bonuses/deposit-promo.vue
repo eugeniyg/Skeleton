@@ -1,21 +1,25 @@
 <template>
-  <div class="deposit-bonus-code" :class="{ 'is-selected': showDepositBonusCode }">
+  <div
+    class="bonuses-deposit-promo"
+    :class="{ 'is-selected': showDepositBonusCode }"
+    @click="handleBonusClick"
+  >
     <form-input-bonus-radio
-      name="input-deposit-bonus-code"
       id="deposit-bonus-code"
+      name="input-deposit-bonus-code"
       :value="showDepositBonusCode"
       @change="emit('openBonusCode')"
     />
 
-    <div class="deposit-bonus-code__head">
+    <div class="bonuses-deposit-promo__head">
       <atomic-icon id="bonuses" />
       {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.togglerLabel') || '' }}
     </div>
 
-    <div v-if="showDepositBonusCode" class="deposit-bonus-code__code">
+    <div v-if="showDepositBonusCode" class="bonuses-deposit-promo__code">
       <form-input-text
-        v-model:value="bonusValue"
         ref="bonusField"
+        v-model:value="bonusValue"
         label=""
         :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.bonusCode.placeholder') || ''"
         name="bonus-code"
@@ -28,12 +32,12 @@
       <button-base
         type="secondary"
         size="md"
-        @click="toggleBonusCode"
         :isDisabled="bonusChecking || !bonusValue"
+        @click="toggleBonusCode"
       >
         <atomic-spinner :is-shown="bonusChecking"/>
         {{ depositBonusCode ? getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.cancelBonusCode')
-        : getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addBonusCode') }}
+          : getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addBonusCode') }}
       </button-base>
     </div>
   </div>
@@ -113,6 +117,11 @@
     if (inputElement) inputElement.focus();
   };
 
+  const handleBonusClick = (): void => {
+    if (showDepositBonusCode.value) return;
+    emit('openBonusCode')
+  }
+
   watch(() => showDepositBonusCode.value, (newValue) => {
     if (!newValue && bonusValue.value) {
       closeBonusField();
@@ -126,4 +135,4 @@
   });
 </script>
 
-<style src="~/assets/styles/components/bonus/deposit-code.scss" lang="scss" />
+<style src="~/assets/styles/components/bonuses/deposit-promo.scss" lang="scss" />

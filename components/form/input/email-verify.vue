@@ -1,7 +1,7 @@
 <template>
   <label :class="classes">
     <span v-if="props.label" class="label">
-      {{ props.label }}<span class="required" v-if="props.isRequired">*</span>
+      {{ props.label }}<span v-if="props.isRequired" class="required">*</span>
     </span>
 
     <div class="row">
@@ -16,7 +16,7 @@
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
-      />
+      >
 
       <button-verify
         :is-shown="!!profile?.email && !profile?.confirmedAt"

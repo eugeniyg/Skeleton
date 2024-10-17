@@ -10,12 +10,12 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-  title: string,
-  subTitle: string,
-  src: string,
-  defaultImage?: string
-}>()
+  const props = defineProps<{
+    title: string,
+    subTitle: string,
+    src: string,
+    defaultImage?: string
+  }>()
 </script>
 
 <style src="~/assets/styles/components/wallet/header.scss" lang="scss"/>

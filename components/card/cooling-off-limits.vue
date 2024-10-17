@@ -13,10 +13,10 @@
       @edit="edit"
     />
 
-    <div class="limits__card-dropdown" v-else>
+    <div v-else class="limits__card-dropdown">
       <form-input-dropdown
-        name="coolingOffDropdown"
         v-model:value="state.selectedPeriod"
+        name="coolingOffDropdown"
         :placeholder="getContent(limitsContent, defaultLimitsContent, 'coolingOff.selectLabel')"
         :options="periodsOptions"
       />

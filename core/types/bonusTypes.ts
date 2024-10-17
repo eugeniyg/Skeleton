@@ -22,6 +22,11 @@ export interface IPlayerBonus extends Record<string, any>{
   createdAt: string;
   finishedAt: string|null;
   isBonusCancelLock: boolean;
+  requiredWagerCasinoAmount: number;
+  requiredWagerSportsbookAmount: number;
+  packageId: string;
+  packagePriority: number;
+  issueSessionId: string;
 }
 
 export interface IPlayerFreeSpin extends Record<string, any>{
@@ -38,6 +43,9 @@ export interface IPlayerFreeSpin extends Record<string, any>{
   issuedAt: string;
   expiredAt: string|null;
   createdAt: string;
+  packageId: string;
+  packagePriority: number;
+  issueSessionId: string;
 }
 
 export interface IBonusCode extends Record<string, any>{
@@ -52,13 +60,17 @@ export interface IBonusCode extends Record<string, any>{
 
 export interface IPlayerBonusesRequest extends Record<string, any>{
   status?: number[];
+  packageId?: string[];
   sortOrder?: 'asc'|'desc';
+  currency?: string[];
   page?: number;
   perPage?: number;
 }
 
 export interface IPlayerFreeSpinsRequest extends Record<string, any>{
   status?: number[];
+  currency?: string[];
+  packageId?: string[];
   sortOrder?: 'asc'|'desc';
   page?: number;
   perPage?: number;
@@ -118,6 +130,8 @@ export interface IBonusTriggerConditions {
   baseCurrencyInvoiceAmountFrom: number|null;
   baseCurrencyInvoiceAmountTo: number|null;
   invoiceAmountItems: IAmountRangeItem[];
+  availableFrom?: string;
+  availableTo?: string;
 }
 
 export interface IBonusWagerCasinoConditions {
@@ -158,6 +172,7 @@ export interface IBonus {
   wagerCasinoConditions: IBonusWagerCasinoConditions;
   wagerSportsbookConditions: IBonusWagerSportsbookConditions;
   package: IBonusPackage|null;
+  packagePriority: number;
   packageItems?: IBonus[];
   minDeposit?: {
     amount: number;

@@ -50,10 +50,10 @@
     <modal-fiat />
     <modal-mobile-game />
     <modal-wallet />
-    <!--    <modal-wallet-choose-region />-->
+    <modal-wallet-choose-region />
     <modal-cancel-deposit />
     <modal-deposit-redirect/>
-    <modal-wallet-bonus-details />
+    <modal-wallet-bonus-info />
     <modal-turn-over-wager v-if="turnOverWagerModal" />
     <atomic-alert />
 

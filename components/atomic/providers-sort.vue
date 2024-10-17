@@ -5,8 +5,8 @@
     <div class="providers-sort__options">
       <div
         v-for="{ label, sortBy, sortOrder } in sortOptions"
-        class="providers-sort__option"
         :key="label"
+        class="providers-sort__option"
         :class="{ 'is-selected': props.sortBy === sortBy && props.sortOrder === sortOrder }"
         @click="changeSort(sortBy, sortOrder)"
       >
@@ -17,21 +17,21 @@
 </template>
 
 <script setup lang="ts">
-import type { IGamesPage } from '~/types';
+  import type { IGamesPage } from '~/types';
 
-const props = defineProps<{
-  label: string;
-  sortBy?: string;
-  sortOrder?: string;
-  sortOptions: IGamesPage['sortOptions'];
-}>();
+  const props = defineProps<{
+    label: string;
+    sortBy?: string;
+    sortOrder?: string;
+    sortOptions: IGamesPage['sortOptions'];
+  }>();
 
-const emit = defineEmits(['change']);
-const changeSort = (sortBy: string, sortOrder: string):void => {
-  if (props.sortBy !== sortBy || props.sortOrder !== sortOrder) {
-    emit('change', { sortBy, sortOrder });
-  }
-};
+  const emit = defineEmits(['change']);
+  const changeSort = (sortBy: string, sortOrder: string):void => {
+    if (props.sortBy !== sortBy || props.sortOrder !== sortOrder) {
+      emit('change', { sortBy, sortOrder });
+    }
+  };
 </script>
 
 <style src="~/assets/styles/components/atomic/providers-sort.scss" lang="scss" />

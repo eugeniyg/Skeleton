@@ -3,9 +3,9 @@
     v-model="modals.loyaltyEarn"
     class="modal-loyalty-earn"
     :clickToClose="false"
-    @clickOutside="closeModal('loyaltyEarn')"
     :overlayTransition="{ mode: 'in-out', duration: 200 }"
     :contentTransition="{ mode: 'in-out', duration: 200 }"
+    @clickOutside="closeModal('loyaltyEarn')"
   >
     <div class="scroll">
       <div class="header">
@@ -26,7 +26,7 @@
       </div>
 
       <div class="modal-loyalty-earn__steps">
-        <div class="modal-loyalty-earn__steps-item" v-for="step in steps">{{ step }}</div>
+        <div v-for="step in steps" class="modal-loyalty-earn__steps-item">{{ step }}</div>
       </div>
 
       <button-base type="primary" size="md" @click.once="handleConfirm">

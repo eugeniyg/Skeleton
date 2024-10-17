@@ -2,8 +2,8 @@
   <div class="list-balance" :class="{'is-show': props.isOpen}">
     <div class="header">
       <button-base
-        :is-active="selected === 'balance'"
         key="balance"
+        :is-active="selected === 'balance'"
         type="ghost"
         size="xs"
         @click.stop="switchTabNav('balance')"
@@ -12,8 +12,8 @@
       </button-base>
 
       <button-base
-        :is-active="selected === 'currency'"
         key="currency"
+        :is-active="selected === 'currency'"
         type="ghost"
         size="xs"
         @click.stop="switchTabNav('currency')"
@@ -22,7 +22,7 @@
       </button-base>
     </div>
 
-    <div class="items" v-if="selected === 'currency'">
+    <div v-if="selected === 'currency'" class="items">
       <div
         v-for="item in selectedItems"
         :key="item.nativeCurrency"
@@ -40,14 +40,14 @@
       </div>
     </div>
 
-    <div class="list-balance__items" v-else-if="selected === 'balance'">
+    <div v-else-if="selected === 'balance'" class="list-balance__items">
       <div class="list-balance__item">
         <atomic-icon id="wallet" class="list-balance__icon"/>
         <div class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.real') }}</div>
         <span class="list-balance__value">{{ activeAccountBalances.real.currencySymbol }} {{ activeAccountBalances.real.balance }}</span>
         <atomic-image
-          class="currency-icon"
           v-if="activeAccountBalances.real.currencyIcon"
+          class="currency-icon"
           :src="`/img/currency/${activeAccountBalances.real.currencyIcon}.svg`"
           defaultImage="/img/currency/placeholder.svg"
         />
@@ -58,38 +58,15 @@
         <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.bonus') }}</span>
         <span class="list-balance__value">{{ activeAccountBalances.bonus.currencySymbol }} {{ activeAccountBalances.bonus.balance }}</span>
         <atomic-image
-          class="currency-icon"
           v-if="activeAccountBalances.bonus.currencyIcon"
+          class="currency-icon"
           :src="`/img/currency/${activeAccountBalances.bonus.currencyIcon}.svg`"
           defaultImage="/img/currency/placeholder.svg"
         />
 
-        <template v-if="currentActiveBonus">
-          <div class="list-balance__bonus-progress">
-            <div class="list-balance__bonus-progress-bar">
-              <div
-                class="list-balance__bonus-progress-filled"
-                :data-progress="`${currentActiveBonus.currentWagerPercentage}%`"
-                :style="{'--progress': `${currentActiveBonus.currentWagerPercentage}%`}"
-              />
-            </div>
-
-            <div class="list-balance__bonus-progress-info">
-              <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.wageringLabel') }}</span>
-              <span>{{ bonusWageringBalance.balance }} {{ bonusWageringBalance.currency }}</span>
-
-              <div class="list-balance__bonus-wager">
-                <span v-if="currentActiveBonus.wagerCasino">
-                  <atomic-icon id="cherry" /> x{{ currentActiveBonus.wagerCasino }}
-                </span>
-
-                <span v-if="currentActiveBonus.wagerSportsbook">
-                  <atomic-icon id="sport" /> x{{ currentActiveBonus.wagerSportsbook }}
-                </span>
-              </div>
-            </div>
-          </div>
-        </template>
+        <div v-if="props.isOpen && activePlayerBonuses.length" class="list-balance__bonus-progress">
+          <bonuses-wager-progress :bonusInfo="activePlayerBonuses[0]" />
+        </div>
       </div>
 
       <div class="list-balance__item">
@@ -97,8 +74,8 @@
         <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.withdrawal') }}</span>
         <span class="list-balance__value">{{ activeAccountBalances.withdrawal.currencySymbol }} {{ activeAccountBalances.withdrawal.balance }}</span>
         <atomic-image
-          class="currency-icon"
           v-if="activeAccountBalances.withdrawal.currencyIcon"
+          class="currency-icon"
           :src="`/img/currency/${activeAccountBalances.withdrawal.currencyIcon}.svg`"
           defaultImage="/img/currency/placeholder.svg"
         />
@@ -109,9 +86,10 @@
         <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.cashback') }}</span>
         <span class="list-balance__value">{{ cashback.currencySymbol }} {{ cashback.balance }}</span>
         <atomic-image
-          class="currency-icon"
           v-if="cashback.currencyIcon"
-          :src="`/img/currency/${cashback.currencyIcon}.svg`" alt=""
+          class="currency-icon"
+          :src="`/img/currency/${cashback.currencyIcon}.svg`"
+          alt=""
           defaultImage="/img/currency/placeholder.svg"
         />
 
@@ -164,7 +142,10 @@
   } = useProjectMethods();
 
   const bonusStore = useBonusStore();
-  const { currentActiveBonus, playerCashback } = storeToRefs(bonusStore);
+  const {
+    activePlayerBonuses,
+    playerCashback
+  } = storeToRefs(bonusStore);
 
   const emit = defineEmits(['close', 'changeActiveAccount']);
 
@@ -243,10 +224,6 @@
     const bundle = formatBalance(activeAccount.value?.currency, amount);
     return { balance: bundle.amount, currency: bundle.currency };
   }
-
-  const bonusWageringBalance = computed<IBalance>(() => {
-    return getBalanceFormat(currentActiveBonus.value?.currentWagerAmount || 0);
-  })
 
   const cashbackBalance = computed<IBalance[]>(() => {
     if (playerCashback.value.length) {

@@ -19,13 +19,13 @@
     <template v-for="bonus in bonusesList" :key="bonus.id">
       <wallet-bonus
         :bonusInfo="bonus"
-        :selected="selectedDepositBonus?.id === bonus.id"
+        :selected="checkSelected(bonus)"
         :disabled="!props.crypto && isBonusDisabled(bonus)"
         @bonusChange="onBonusChange(bonus)"
       />
     </template>
 
-    <bonus-deposit-code ref="depositCode" @openBonusCode="bonusCodeTrigger" />
+    <bonuses-deposit-promo ref="depositCode" @openBonusCode="bonusCodeTrigger" />
 
     <div v-if="props.crypto" class="wallet-bonuses__info">
       <div class="wallet-bonuses__info-icon">
@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from "pinia";
-  import type { IBonus, IBonusPackage } from "@skeleton/core/types";
+  import type { IBonus } from "@skeleton/core/types";
 
   const props = defineProps<{
     crypto?: boolean;
@@ -58,14 +58,9 @@
     selectedDepositBonus,
     bonusDeclined,
     depositBonusCode,
-    showDepositBonusCode
+    showDepositBonusCode,
+    walletDepositBonus
   } = storeToRefs(bonusStore);
-
-  const sortBonuses = (prevBonus: IBonus, nextBonus: IBonus): number => {
-    if (prevBonus.type === 2 || (prevBonus.type === 1 && nextBonus.type === 3)) return -1;
-    if (nextBonus.type === 2 || (prevBonus.type === 3 && nextBonus.type === 1)) return 1;
-    else return 0;
-  }
 
   const setDepositLimit = (bonusData: IBonus): IBonus => {
     let minDeposit: { amount: number, currency: string }|undefined;
@@ -96,45 +91,23 @@
     return { ...bonusData, minDeposit, maxDeposit };
   }
 
-  interface IPackageBonus {
-    package: IBonusPackage;
-    items: IBonus[];
-  }
-
   const bonusesList = computed(() => {
-    const packages: IPackageBonus[] = [];
-    const simpleBonuses: IBonus[] = [];
+    const bonusesList: IBonus[] = [];
 
     depositBonuses.value.forEach(currentBonus => {
       const bonusWithLimits = setDepositLimit(currentBonus);
 
       if (bonusWithLimits.package?.id) {
-        const packageBonus = packages.find(bonus => bonus.package?.id === bonusWithLimits.package?.id);
+        const bonusInList = bonusesList.find(bonus => bonus.package?.id === bonusWithLimits.package?.id);
 
-        if (packageBonus) {
-          packageBonus.items = [...packageBonus.items, bonusWithLimits].sort((prevItem, nextItem) => sortBonuses(prevItem, nextItem));
-        } else {
-          packages.push({ package: bonusWithLimits.package, items: [bonusWithLimits] });
-        }
+        if (bonusInList) bonusInList.packageItems?.push(bonusWithLimits);
+        else bonusesList.push({ ...bonusWithLimits, packageItems: [bonusWithLimits] });
       } else {
-        simpleBonuses.push(bonusWithLimits);
+        bonusesList.push(bonusWithLimits);
       }
     })
 
-    packages.sort((prevPackage, nextPackage) => {
-      if (prevPackage.items[0].type === 2 || (prevPackage.items[0].type === 1 && nextPackage.items[0].type === 3)) return -1;
-      if (nextPackage.items[0].type === 2 || (prevPackage.items[0].type === 3 && nextPackage.items[0].type === 1)) return 1;
-      else return 0;
-    })
-
-    simpleBonuses.sort((prevBonus, nextBonus) => sortBonuses(prevBonus, nextBonus));
-
-    const packageBonuses = packages.map(currentPackage => ({
-      ...currentPackage.items[0],
-      packageItems: currentPackage.items
-    }))
-
-    return [...packageBonuses, ...simpleBonuses];
+    return bonusesList;
   })
 
   const isBonusDisabled = (bonusData: IBonus): boolean => {
@@ -160,7 +133,14 @@
   }
 
   const configDeclineBonuses = settingsConstants?.game?.bonus?.depositBonusDeclineDefault;
-  if (depositBonusCode.value) {
+  if (walletDepositBonus.value?.id) {
+    const findBonus = walletDepositBonus.value.packageId
+      ? bonusesList.value.find(bonus => bonus.package?.id === walletDepositBonus.value?.packageId)
+      : bonusesList.value.find(bonus => bonus.id === walletDepositBonus.value?.id);
+    selectedDepositBonus.value = findBonus;
+    bonusDeclined.value = !findBonus;
+    showDepositBonusCode.value = !findBonus && !!depositBonusCode.value;
+  } else if (depositBonusCode.value) {
     selectedDepositBonus.value = undefined;
     bonusDeclined.value = false;
     showDepositBonusCode.value = true;
@@ -195,6 +175,11 @@
       useEvent('analyticsEvent', { event: 'walletSelectBonus'});
       showDepositBonusCode.value = false;
     }
+  }
+
+  const checkSelected = (bonus: IBonus): boolean => {
+    return (selectedDepositBonus.value?.id === bonus.id)
+      || (!!selectedDepositBonus.value?.package?.id && (selectedDepositBonus.value.package.id === bonus.package?.id));
   }
 
   watch(() => props.amount, () => {

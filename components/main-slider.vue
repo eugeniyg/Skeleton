@@ -1,15 +1,15 @@
 <template>
   <div
     v-if="filteredSlides?.length"
+    ref="sliderNode"
     class="main-slider"
     :class="`main-slider--${props.sliderType || 'high'}`"
-    ref="sliderNode"
   >
     <div class="main-slider__viewport">
       <div
         v-for="(slide, index) in filteredSlides"
-        class="main-slider__slide"
         :key="index"
+        class="main-slider__slide"
       >
         <card-slide :slideData="slide" />
       </div>

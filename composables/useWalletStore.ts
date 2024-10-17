@@ -10,6 +10,8 @@ interface IWalletState {
   invoicesSubscription: any;
   depositLimitError: boolean;
   accountSwitching: Promise<any>|undefined;
+  requestPaymentMethodsRegion: Maybe<string>;
+  selectedPaymentMethodsRegion: Maybe<string>;
 }
 
 export const useWalletStore = defineStore('walletStore', {
@@ -21,7 +23,9 @@ export const useWalletStore = defineStore('walletStore', {
     accountSubscription: undefined,
     invoicesSubscription: undefined,
     depositLimitError: false,
-    accountSwitching: undefined
+    accountSwitching: undefined,
+    requestPaymentMethodsRegion: undefined,
+    selectedPaymentMethodsRegion: undefined
   }),
 
   getters: {
@@ -80,12 +84,25 @@ export const useWalletStore = defineStore('walletStore', {
       const { switchActiveAccount } = useCoreWalletApi();
       this.accountSwitching = switchActiveAccount(accountId);
       this.accounts = await this.accountSwitching;
+      useEvent('accountChanged');
+
       const runtimeConfig = useRuntimeConfig();
       if (runtimeConfig.public?.questsEnabled) {
         const { getPlayerActiveQuests } = useQuestsStore();
         getPlayerActiveQuests();
       }
-      useEvent('accountChanged');
+
+      const {
+        getPlayerBonuses,
+        getPlayerFreeSpins,
+        getPlayerCashback,
+        getDepositBonuses
+      } = useBonusStore();
+
+      getPlayerBonuses();
+      getPlayerFreeSpins();
+      getPlayerCashback();
+      getDepositBonuses();
     },
 
     async hideAccount(accountId: string):Promise<void> {
@@ -93,12 +110,26 @@ export const useWalletStore = defineStore('walletStore', {
       this.accounts = await hideWalletAccount(accountId);
     },
 
+    setPaymentMethodsGeo(): void {
+      const storageGeo = localStorage.getItem('paymentGeo');
+      const globalStore = useGlobalStore();
+      const programmaticGeo = storageGeo || globalStore.headerCountry;
+
+      if (!programmaticGeo) this.selectedPaymentMethodsRegion = undefined;
+      else {
+        const globalStore = useGlobalStore();
+        this.selectedPaymentMethodsRegion = globalStore.countries?.find(country => country.code === programmaticGeo)?.code;
+      }
+
+      this.requestPaymentMethodsRegion = this.selectedPaymentMethodsRegion !== globalStore.headerCountry ? this.selectedPaymentMethodsRegion : undefined;
+    },
+
     async getDepositMethods():Promise<void> {
       this.depositLimitError = false;
       const { getDepositMethods } = useCoreWalletApi();
 
       try {
-        this.depositMethods = await getDepositMethods(this.activeAccount?.currency || '');
+        this.depositMethods = await getDepositMethods(this.activeAccount?.currency || '', this.requestPaymentMethodsRegion);
       } catch (err: any) {
         this.depositMethods = [];
 
@@ -112,7 +143,7 @@ export const useWalletStore = defineStore('walletStore', {
 
     async getWithdrawMethods():Promise<void> {
       const { getWithdrawMethods } = useCoreWalletApi();
-      this.withdrawMethods = await getWithdrawMethods(this.activeAccount?.currency || '');
+      this.withdrawMethods = await getWithdrawMethods(this.activeAccount?.currency || '', this.requestPaymentMethodsRegion);
     },
 
     subscribeAccountSocket():void {
@@ -180,8 +211,9 @@ export const useWalletStore = defineStore('walletStore', {
       };
 
       if (webSocketResponse.data?.event === 'invoice.deposit.updated') {
-        const { getDepositBonusCode } = useBonusStore();
+        const { getDepositBonusCode, getDepositBonuses } = useBonusStore();
         getDepositBonusCode();
+        getDepositBonuses();
 
         const cmsMessage = invoiceSuccess
             ? getContent(alertsData, defaultLocaleAlertsData, 'wallet.depositSuccess.description')

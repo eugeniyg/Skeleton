@@ -1,28 +1,28 @@
 <template>
   <div class="limits-list">
     <div
-      class="limits-list__item"
       v-for="limit in props.limits"
       :key="limit.id"
+      class="limits-list__item"
     >
       <div class="limits-list__input">
         <span class="limits-list__value">
           {{ formatPeriod(limit.period) }}
         </span>
 
-        <div class="limits-list__actions" v-if="limit.status === 1">
+        <div v-if="limit.status === 1" class="limits-list__actions">
           <button-base
             type="primary"
-            @click="emit('edit', limit)"
             :is-disabled="limit.status === 1 && limit.cancelProcess && !limit.pendingExist"
+            @click="emit('edit', limit)"
           >
             <atomic-icon id="edit"/>
           </button-base>
 
           <button-base
             type="ghost"
-            @click="remove(limit.id)"
             :is-disabled="limit.status === 1 && (limit.cancelProcess || periodLessDay(limit)) && !limit.pendingExist"
+            @click="remove(limit.id)"
           >
             <atomic-icon id="trash"/>
           </button-base>
@@ -33,9 +33,9 @@
         class="limits-list__status"
         :class="`limits-list__status--${limit.status === 1 ? 'active': 'pending'}`"
       >
-        <span class="limits-list__status-dot"></span>
+        <span class="limits-list__status-dot"/>
         <span class="limits-list__status-msg">
-          <atomic-limit-countdown :status="limit.status" :expired-at="limit.expiredAt"/>
+          <atomic-limit-countdown :status="limit.status" :expiredAt="limit.expiredAt"/>
         </span>
       </div>
 
@@ -52,8 +52,6 @@
   }>();
 
   const dayjs = useDayjs();
-  const limitsStore = useLimitsStore();
-  const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();

@@ -6,7 +6,7 @@
           {{ getContent(loyaltyContent, defaultLocaleLoyaltyContent, 'banner.title') }}
         </div>
 
-        <div class="loyalty-banner__sub-title" v-if="bannerSubtitle">
+        <div v-if="bannerSubtitle" class="loyalty-banner__sub-title">
           {{ bannerSubtitle }}
         </div>
 
@@ -46,8 +46,8 @@
       </div>
 
       <picture class="loyalty-banner__picture">
-        <source :media="'(max-width: 1279px)'" :srcset="desktopImageSrcSet"/>
-        <source :media="'(max-width: 2264px)'" :srcset="mobileImageSrcSet"/>
+        <source :media="'(max-width: 1279px)'" :srcset="desktopImageSrcSet">
+        <source :media="'(max-width: 2264px)'" :srcset="mobileImageSrcSet">
         <atomic-image
           class="back"
           :src="getContent(loyaltyContent, defaultLocaleLoyaltyContent, 'banner.desktopImage')"

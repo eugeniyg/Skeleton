@@ -6,8 +6,8 @@
 
     <div v-if="profile?.email" class="email-verification__status">
       <span>{{ profile.email }}</span>
-      <atomic-icon v-if="profile?.confirmedAt" class="is-success" id="done"/>
-      <atomic-icon v-else class="is-warning" id="warning"/>
+      <atomic-icon v-if="profile?.confirmedAt" id="done" class="is-success"/>
+      <atomic-icon v-else id="warning" class="is-warning"/>
     </div>
 
     <form-input-text

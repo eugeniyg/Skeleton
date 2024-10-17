@@ -43,14 +43,14 @@
   const route = useRoute();
   const { pageIdentity } = route.params;
   const { getContent } = useProjectMethods();
-  
+
   const { currentLocaleContent, defaultLocaleContent, status } = await useContentLogic<IBonusPage>({
     contentKey: `${pageIdentity}-bonus-content`,
     contentRoute: ['bonus'],
     where: { pageIdentity },
     isPage: true
   });
-  
+
   const detailLabel = computed(() => getContent(currentLocaleContent.value, defaultLocaleContent.value, 'termsLabel'));
   const detailContent = computed(() => getContent(currentLocaleContent.value, defaultLocaleContent.value, 'termsContent'));
 

@@ -12,7 +12,7 @@ interface IModals extends Record<string, any> {
   signIn: boolean;
   wallet: boolean;
   cancelDeposit: boolean;
-  walletBonusDetails: boolean;
+  walletBonusInfo: boolean;
   confirm: boolean;
   failing: boolean;
   forgotPass: boolean;
@@ -26,6 +26,8 @@ interface IModals extends Record<string, any> {
   depositRedirect: boolean;
   providers: boolean;
   categories: boolean;
+  packageBonus: boolean;
+  walletRegion: boolean;
 }
 
 interface IModalsUrls extends Record<string, any> {
@@ -68,7 +70,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         signIn: false,
         wallet: false,
         cancelDeposit: false,
-        walletBonusDetails: false,
+        walletBonusInfo: false,
         confirm: false,
         failing: false,
         forgotPass: false,
@@ -83,6 +85,8 @@ export const useLayoutStore = defineStore('layoutStore', {
         depositRedirect: false,
         providers: false,
         categories: false,
+        packageBonus: false,
+        walletRegion: false
       },
       modalsUrl: {
         register: 'sign-up',
@@ -251,14 +255,16 @@ export const useLayoutStore = defineStore('layoutStore', {
       const startModalLoad: Dayjs = dayjs();
 
       this.walletModalType = modalType;
-      const { getDepositMethods, getWithdrawMethods, activeAccount, accountSwitching } = useWalletStore();
+      const { setPaymentMethodsGeo, getDepositMethods,
+        getWithdrawMethods, accountSwitching } = useWalletStore();
       const { getDepositBonuses, getDepositBonusCode } = useBonusStore();
       const riskStore = useRiskStore();
+      setPaymentMethodsGeo();
       await accountSwitching;
       await Promise.allSettled([
         getDepositMethods(),
         getWithdrawMethods(),
-        getDepositBonuses(activeAccount?.currency as string),
+        getDepositBonuses(),
         getDepositBonusCode(),
         riskStore.getTurnOverWager()
       ]);

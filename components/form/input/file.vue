@@ -1,9 +1,9 @@
 <template>
   <div :class="['input-file', {'is-show-more-btn': props.showMoreButton}]">
     <input
+      ref="input"
       accept="image/png, image/jpg, image/jpeg, application/pdf"
       class="input-file__input"
-      ref="input"
       type="file"
       @change="changeAction"
     >
@@ -14,14 +14,14 @@
     </div>
 
     <div class="input-file__actions">
-      <hr/>
-      <div class="input-file__load-more" v-if="props.showMoreButton">
+      <hr>
+      <div v-if="props.showMoreButton" class="input-file__load-more">
         <button-base
           :isDisabled="props.loading"
-          @click.prevent="clickAction"
           class="input-file__load-more-btn"
           type="secondary"
           size="xs"
+          @click.prevent="clickAction"
         >
           {{ props.uploadMore }}
         </button-base>
@@ -29,11 +29,11 @@
 
       <button-base
         v-else
-        @click.prevent="clickAction"
         class="btn-select-file"
         type="secondary"
         size="xs"
         :isDisabled="props.loading"
+        @click.prevent="clickAction"
       >
         {{ props.uploadButton }}
       </button-base>

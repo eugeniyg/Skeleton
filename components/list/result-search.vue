@@ -1,13 +1,13 @@
 <template>
   <div class="result-search" :class="{'is-show': props.isShow}">
     <div class="box">
-      <div class="header" v-if="!props.items.length">
+      <div v-if="!props.items.length" class="header">
         <div class="heading">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.search.emptyLabel') }}</div>
         <div class="text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.search.emptyText') }}</div>
       </div>
 
       <div class="items">
-        <div class="label" v-if="!props.items.length">
+        <div v-if="!props.items.length" class="label">
           {{ getContent(layoutData, defaultLocaleLayoutData, 'header.search.tryLabel') }}
         </div>
 
@@ -22,7 +22,7 @@
           <span>{{ game.name }}</span>
         </div>
 
-        <div class="footer" v-if="isShowLoadMore">
+        <div v-if="isShowLoadMore" class="footer">
           <button-base type="ghost" size="xs" @click="emit('loadMore')">
             {{ getContent(layoutData, defaultLocaleLayoutData, 'header.search.moreButton') }}
           </button-base>

@@ -25,8 +25,8 @@
         type="primary"
         size="md"
         tagName="div"
-        @click="onSubmit"
         :isDisabled="v$.$invalid || isLockedAsyncButton"
+        @click="onSubmit"
       >
         {{ securityContent?.password?.saveButton || defaultLocaleSecurityContent?.password?.saveButton }}
       </button-base>

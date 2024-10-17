@@ -14,7 +14,7 @@
     <div
       v-if="props.fields?.length && !state.selectedNetwork"
       class="dropdown-network__info"
-      v-html="marked.parse(getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info'))"
+      v-html="infoContent"
     />
     
     <wallet-warning
@@ -23,6 +23,11 @@
     />
     
     <div class="form-deposit-crypto__content" :class="{'is-blured': props.fields?.length && !state.selectedNetwork }">
+      <wallet-destination-tag
+        v-if="destinationTag"
+        :value="destinationTag"
+      />
+
       <wallet-crypto-qr
         :content="popupsData?.wallet?.deposit || defaultLocalePopupsData?.wallet?.deposit"
         :qrAddress="walletNumber"
@@ -33,6 +38,7 @@
         :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addressInputLabel') || ''"
         :hint="fieldHint"
         :value="walletNumber"
+        :copyTooltip="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.copiedLabel')"
       />
 
       <atomic-divider />
@@ -46,6 +52,7 @@
   import { marked } from 'marked';
   import type { IPaymentField, IRequestDeposit, IBonus } from '@skeleton/core/types';
   import debounce from 'lodash/debounce';
+  import DOMPurify from "isomorphic-dompurify";
 
   const props = defineProps<{
     amountMax?: number,
@@ -55,9 +62,10 @@
   }>();
 
   const walletNumber = ref<string>('');
+  const destinationTag = ref<string|undefined>();
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
-  const { activeAccount } = storeToRefs(walletStore);
+  const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
 
   const bonusStore = useBonusStore();
   const {
@@ -115,6 +123,7 @@
     params: {
       method: props.method || '',
       currency: activeAccount.value?.currency || '',
+      country: requestPaymentMethodsRegion.value,
       amount: props.amountMin || 0,
       accountId: activeAccount.value?.id || '',
       redirectSuccessUrl: window.location.href,
@@ -129,10 +138,12 @@
   const sendDepositData = async ():Promise<void> => {
     state.params.bonusId = selectedDepositBonus.value?.id;
     state.params.isBonusDecline = showDepositBonusCode.value && !depositBonusCode.value ? true : bonusDeclined.value;
+    state.params.country = requestPaymentMethodsRegion.value;
 
     try {
       const depositResponse = await depositAccount(state.params);
       walletNumber.value = depositResponse.address;
+      destinationTag.value = depositResponse.tag;
     } catch {
       showModal('failing');
     }
@@ -159,6 +170,12 @@
     ) return;
     await sendDepositData();
   }, 1000, { leading: false });
+
+  const infoContent = computed(() => {
+    const contentText = getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info');
+    if (!contentText) return '';
+    return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
+  })
 
   watch(selectedDepositBonus, (newValue: IBonus|undefined) => {
     debounceDeposit(newValue);

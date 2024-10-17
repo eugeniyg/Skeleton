@@ -1,5 +1,5 @@
 <template>
-  <span class="btn-verify" v-show="props.isShown">
+  <span v-show="props.isShown" class="btn-verify">
     <slot />
   </span>
 </template>
