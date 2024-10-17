@@ -4,6 +4,7 @@
       name="destinationTag"
       :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.destinationTag.label')"
       :value="props.value || ''"
+      :copyTooltip="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.copiedLabel')"
     />
 
     <wallet-warning :content="warningContent" />
