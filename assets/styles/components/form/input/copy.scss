@@ -52,4 +52,16 @@
 
     @extend %btn-primary;
   }
+
+  &__tooltip {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    right: 0;
+    padding: 2px 8px;
+    background-color: var(--green-700);
+    color: var(--text-primary);
+    white-space: nowrap;
+
+    @include font($body-1);
+  }
 }
