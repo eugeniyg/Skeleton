@@ -10,7 +10,7 @@
   grid-column-gap: rem(8px);
   box-shadow: var(--shadow-layer);
   border-radius: 8px;
-  align-items: center;
+  align-items: flex-start;
 
   .title {
     @include font($heading-2);
