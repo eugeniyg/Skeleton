@@ -105,7 +105,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { ICountry } from '@skeleton/core/types';
-  import type { IProfileInfo } from '~/types';
+  import type {IProfileInfo} from '~/types';
 
   const globalStore = useGlobalStore();
   const {
@@ -118,11 +118,15 @@
 
   const { getContent } = useProjectMethods();
 
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProfileInfo>({
+  const contentParams = {
     contentKey: 'profileInfoContent',
     contentRoute: ['profile', 'info'],
     isPage: true
-  });
+  };
+  const { getContentData } = useContentLogic<IProfileInfo>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
+  const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 
   provide('infoContent', currentLocaleContent);
   provide('defaultLocaleInfoContent', defaultLocaleContent);

@@ -25,11 +25,11 @@
 
       <atomic-game-sort
         v-show="isShowFilter"
-        v-if="getContent(currentLocaleContent, defaultLocaleContent, 'sortOptions')?.length"
+        v-if="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'sortOptions')?.length"
         class="game-filter__sort"
         :sortOrderValue="sortOrder"
         :sortByValue="sortBy"
-        v-bind="currentLocaleContent?.sortOptions?.length ? currentLocaleContent : defaultLocaleContent"
+        v-bind="pageContent?.currentLocaleData?.sortOptions?.length ? pageContent?.currentLocaleData : pageContent?.defaultLocaleData"
         @change="changeSort"
       />
 
@@ -60,12 +60,12 @@
 
     <atomic-empty
       v-if="!gameItems.length && !loadingGames"
-      :title="getContent(currentLocaleContent, defaultLocaleContent, 'empty.title')"
-      :subTitle="getContent(currentLocaleContent, defaultLocaleContent, 'empty.description')"
-      :image="getContent(currentLocaleContent, defaultLocaleContent, 'empty.image')"
+      :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"
+      :subTitle="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
+      :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"
     />
 
-    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent?.pageMeta?.seoText" />
+    <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText" />
   </div>
 </template>
 
@@ -78,7 +78,7 @@
   } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
   import debounce from 'lodash/debounce';
-  import type { IGamesPage } from '~/types';
+  import type {IGamesPage} from '~/types';
   
   const globalStore = useGlobalStore();
   const {
@@ -100,13 +100,15 @@
 
   const sortBy = ref<string | undefined>(route.query.sortBy as string || 'default');
   const sortOrder = ref<string | undefined>(route.query.sortOrder as string || 'asc');
-  
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IGamesPage>({
+
+  const contentParams = {
     contentKey: 'gamesPageContent',
     contentRoute: ['pages', 'games'],
     isPage: true
-  });
-  
+  };
+  const { getContentData } = useContentLogic<IGamesPage>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+
   const selectedProviders = ref<string[]>([]);
   const activeCollection = ref<ICollection | undefined>();
   const routeProvider = route.query.provider as string | string[];

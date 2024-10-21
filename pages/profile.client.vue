@@ -7,21 +7,22 @@
 </template>
 
 <script setup lang="ts">
-  import type { IProfilePages } from '~/types';
+  import type {IProfilePages} from '~/types';
   import camelCase from "lodash/camelCase";
 
   const { getProfileFields } = useFieldsStore();
-
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProfilePages>({
+  const contentParams = {
     contentKey: 'profilePages',
     contentRoute: ['profile'],
     findAll: true
-  });
+  };
+  const { getContentData } = useContentLogic<IProfilePages>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const profileContent = computed<IProfilePages|undefined>(() => {
-    if (!currentLocaleContent.value?.length) return undefined;
+    if (!pageContent.value?.currentLocaleData?.length) return undefined;
 
-    return currentLocaleContent.value.reduce((finalContentObj:any, currentContent:any) => {
+    return pageContent.value?.currentLocaleData.reduce((finalContentObj:any, currentContent:any) => {
       const splitPath = currentContent._path?.split('/');
       if (!splitPath) return finalContentObj;
 
@@ -31,9 +32,9 @@
   });
 
   const defaultLocaleProfileContent = computed<IProfilePages|undefined>(() => {
-    if (!defaultLocaleContent.value?.length) return undefined;
+    if (!pageContent.value?.defaultLocaleData?.length) return undefined;
 
-    return defaultLocaleContent.value.reduce((finalContentObj:any, currentContent:any) => {
+    return pageContent.value?.defaultLocaleData.reduce((finalContentObj:any, currentContent:any) => {
       const splitPath = currentContent._path?.split('/');
       if (!splitPath) return finalContentObj;
 

@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="header">
-      <h1 class="heading">{{ currentLocalePageContent?.title || defaultLocalePageContent?.title }}</h1>
+      <h1 class="heading">{{ pageContent?.currentLocaleData?.title || pageContent?.defaultLocaleData?.title }}</h1>
     </div>
 
     <tab-history
@@ -12,31 +12,29 @@
 </template>
 
 <script setup lang="ts">
-  import type { IHistory, IProfileHistory } from '~/types';
+  import type {IHistory, IProfileHistory} from '~/types';
   import camelCase from "lodash/camelCase";
-
-  const {
-    currentLocaleContent: currentLocalePageContent,
-    defaultLocaleContent: defaultLocalePageContent
-  } = await useContentLogic<IProfileHistory>({
+  
+  const pageContentParams = {
     contentKey: 'profileHistoryContent',
     contentRoute: ['profile', 'history'],
     isPage: true
-  });
+  };
+  const { getContentData: getPageContent } = useContentLogic<IProfileHistory>(pageContentParams);
+  const { data: pageContent } = await useLazyAsyncData(pageContentParams.contentKey, () => getPageContent());
 
-  const {
-    currentLocaleContent: currentLocaleMenuContent,
-    defaultLocaleContent: defaultLocaleMenuContent
-  } = await useContentLogic<any>({
+  const menuContentParams = {
     contentKey: 'profileHistoryMenuContent',
     contentRoute: ['history'],
     findAll: true
-  });
+  };
+  const { getContentData: getMenuContent } = useContentLogic<any>(menuContentParams);
+  const { data: menuContent } = await useLazyAsyncData(menuContentParams.contentKey, () => getMenuContent());
 
   const historyTabContent = computed<IHistory|undefined>(() => {
-    if (!currentLocaleMenuContent.value?.length) return undefined;
+    if (!menuContent.value?.currentLocaleData?.length) return undefined;
 
-    return currentLocaleMenuContent.value.reduce((finalContentObj:any, currentContent:any) => {
+    return menuContent.value?.currentLocaleData?.reduce((finalContentObj:any, currentContent:any) => {
       const splitPath = currentContent._path?.split('/');
       if (!splitPath) return finalContentObj;
 
@@ -46,9 +44,9 @@
   });
 
   const defaultLocaleHistoryTabContent = computed<IHistory|undefined>(() => {
-    if (!defaultLocaleMenuContent.value?.length) return undefined;
+    if (!menuContent.value?.defaultLocaleData?.length) return undefined;
 
-    return defaultLocaleMenuContent.value.reduce((finalContentObj:any, currentContent:any) => {
+    return menuContent.value?.defaultLocaleData?.reduce((finalContentObj:any, currentContent:any) => {
       const splitPath = currentContent._path?.split('/');
       if (!splitPath) return finalContentObj;
 
