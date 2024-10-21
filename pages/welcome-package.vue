@@ -202,7 +202,10 @@
   const walletLoading = ref<string|undefined>();
   const actionClick = async (cardInfo: IWelcomeBonus, cardIndex: number): Promise<void> => {
     if (walletLoading.value !== undefined) return;
-    if (!isLoggedIn.value) showModal('register');
+    if (!isLoggedIn.value) {
+      showModal('register');
+      return;
+    }
     walletLoading.value = cardIndex;
 
     if (cardInfo.bonusId) {
