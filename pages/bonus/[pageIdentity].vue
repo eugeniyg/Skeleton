@@ -1,28 +1,28 @@
 <template>
   <div class="bonus-page">
-    <div class="header" :data-bg="getContent(currentLocaleContent, defaultLocaleContent, 'backgroundColor')">
+    <div class="header" :data-bg="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'backgroundColor')">
       <atomic-picture
-        v-if="getContent(currentLocaleContent, defaultLocaleContent, 'image')"
+        v-if="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'image')"
         class="img"
-        :src="getContent(currentLocaleContent, defaultLocaleContent, 'image')"
+        :src="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'image')"
         alt=""
       />
     </div>
 
-    <div v-show="currentLocaleContent || defaultLocaleContent" class="content">
-      <h1 class="title">{{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}</h1>
-      <h3 class="sub-title">{{ getContent(currentLocaleContent, defaultLocaleContent, 'subtitle') }}</h3>
+    <div v-show="pageContent?.currentLocaleData || pageContent?.defaultLocaleData" class="content">
+      <h1 class="title">{{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'title') }}</h1>
+      <h3 class="sub-title">{{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'subtitle') }}</h3>
       <atomic-text-editor
         class="description"
-        :content="getContent(currentLocaleContent, defaultLocaleContent, 'description') || ''"
+        :content="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'description') || ''"
       />
 
       <button-base
         type="primary"
         size="lg"
-        @click="clickButton(getContent(currentLocaleContent, defaultLocaleContent, 'button.url'))"
+        @click="clickButton(getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'button.url'))"
       >
-        {{ getContent(currentLocaleContent, defaultLocaleContent, 'button.label') }}
+        {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'button.label') }}
       </button-base>
 
       <atomic-detail
@@ -32,27 +32,29 @@
       />
     </div>
 
-    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent?.pageMeta?.seoText" />
+    <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IBonusPage } from "~/types";
+  import type {IBonusPage} from "~/types";
 
   const route = useRoute();
   const { pageIdentity } = route.params;
   const { getContent } = useProjectMethods();
 
-  const { currentLocaleContent, defaultLocaleContent, status } = await useContentLogic<IBonusPage>({
+  const contentParams = {
     contentKey: `${pageIdentity}-bonus-content`,
     contentRoute: ['bonus'],
     where: { pageIdentity },
     isPage: true
-  });
+  };
+  const { getContentData } = useContentLogic<IBonusPage>(contentParams);
+  const { status, data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
-  const detailLabel = computed(() => getContent(currentLocaleContent.value, defaultLocaleContent.value, 'termsLabel'));
-  const detailContent = computed(() => getContent(currentLocaleContent.value, defaultLocaleContent.value, 'termsContent'));
+  const detailLabel = computed(() => getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'termsLabel'));
+  const detailContent = computed(() => getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'termsContent'));
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);

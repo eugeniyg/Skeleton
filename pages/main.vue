@@ -48,13 +48,13 @@
       <favorite-recently v-if="isLoggedIn"/>
     </client-only>
     
-    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent.pageMeta.seoText" />
+    <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { ICasinoPage } from '~/types';
+  import type {ICasinoPage} from '~/types';
   import type { ICollection } from '@skeleton/core/types';
   
   const globalStore = useGlobalStore();
@@ -66,13 +66,15 @@
   const layoutStore = useLayoutStore()
   const { closeModal } = layoutStore;
   const { modals } = storeToRefs(layoutStore);
-  
-  const { currentLocaleContent } = await useContentLogic<ICasinoPage>({
+
+  const contentParams = {
     contentKey: 'casinoPageContent',
     contentRoute: ['pages', 'casino'],
     isPage: true
-  });
-  
+  };
+  const { getContentData } = useContentLogic<ICasinoPage>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+
   const { getCollectionsList } = useGamesStore();
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
   const mainCategoriesList = computed(() => {

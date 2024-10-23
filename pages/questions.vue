@@ -2,20 +2,20 @@
   <div>
     <div class="faq">
       <div class="header">
-        <div class="title">{{ currentLocaleContent?.title || defaultLocaleContent?.title || '' }}</div>
+        <div class="title">{{ pageContent?.currentLocaleData?.title || pageContent?.defaultLocaleData?.title || '' }}</div>
       </div>
 
-      <nav-faq v-if="categoryContentData?.length" :items="categoryContentData" />
+      <nav-faq v-if="categoryContent?.currentLocaleData?.length" :items="categoryContent?.currentLocaleData" />
 
       <NuxtPage />
     </div>
 
-    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent.pageMeta.seoText" />
+    <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText" />
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { IQuestionCategory, IQuestionPage } from '~/types';
+  import type {IQuestionCategory, IQuestionPage} from '~/types';
 
   definePageMeta({
     middleware: [
@@ -30,30 +30,33 @@
 
   const route = useRoute();
   const { localizePath } = useProjectMethods();
-
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IQuestionPage>({
+  const pageContentParams = {
     contentKey: 'questionPageContent',
     contentRoute: ['pages', 'question'],
     isPage: true
-  })
+  }
+  const { getContentData: getPageContentData } = useContentLogic<IQuestionPage>(pageContentParams);
+  const { data: pageContent } = await useLazyAsyncData(pageContentParams.contentKey, () => getPageContentData());
 
-  const { currentLocaleContent: categoryContentData } = await useContentLogic<IQuestionCategory[]>({
+  const categoryContentParams = {
     contentKey: 'questionCategoryContent',
     contentRoute: ['question-pages'],
     findAll: true
-  })
+  }
+  const { getContentData: getCategoryContentData } = useContentLogic<IQuestionCategory[]>(categoryContentParams);
+  const { data: categoryContent } = await useLazyAsyncData(categoryContentParams.contentKey, () => getCategoryContentData());
 
   const checkRedirect = ():void => {
     const needRedirect = (route.name === 'questions' || route.name === 'locale-questions')
-      && categoryContentData.value?.length;
+      && categoryContent.value?.currentLocaleData?.length;
 
     const router = useRouter();
     if (needRedirect) {
-      router.replace(localizePath(`/questions/${categoryContentData.value?.[0]?.pageIdentity || 'most-popular'}`));
+      router.replace(localizePath(`/questions/${categoryContent.value?.currentLocaleData?.[0]?.pageIdentity || 'most-popular'}`));
     }
   }
 
-  watch(categoryContentData, (newValue) => {
+  watch(() => categoryContent.value?.currentLocaleData, (newValue) => {
     if (newValue) checkRedirect();
   }, { immediate: true });
 </script>

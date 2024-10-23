@@ -1,8 +1,8 @@
 <template>
   <div class="static-page">
-    <template v-if="currentLocaleContent || defaultLocaleContent">
-      <atomic-text-editor :content="currentLocaleContent?.content || defaultLocaleContent?.content" />
-      <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent?.pageMeta?.seoText" />
+    <template v-if="pageContent?.currentLocaleData || pageContent?.defaultLocaleData">
+      <atomic-text-editor :content="pageContent?.currentLocaleData?.content || pageContent?.defaultLocaleData?.content" />
+      <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData?.pageMeta?.seoText" />
     </template>
 
     <not-found v-else-if="status !== 'pending'" />
@@ -14,11 +14,12 @@
 
   const route = useRoute();
   const { pageIdentity } = route.params;
-
-  const { currentLocaleContent, defaultLocaleContent, status } = await useContentLogic<IStaticPage>({
+  const contentParams = {
     contentKey: `${pageIdentity}-static-content`,
     contentRoute: ['static'],
     isPage: true,
     where: { pageIdentity }
-  });
+  };
+  const { getContentData } = useContentLogic<IStaticPage>(contentParams);
+  const { status, data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 </script>

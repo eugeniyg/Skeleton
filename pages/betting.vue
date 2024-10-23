@@ -1,11 +1,11 @@
 <template>
   <div>
     <client-only>
-      <main-slider v-if="!isMobile && currentLocaleContent?.sliderDisplay" sliderType="low" />
+      <main-slider v-if="!isMobile && pageContent?.currentLocaleData?.sliderDisplay" sliderType="low" />
 
       <modal-restricted-bets
-        v-if="currentLocaleContent?.restrictedBets || defaultLocaleContent?.restrictedBets"
-        :content="currentLocaleContent?.restrictedBets || defaultLocaleContent?.restrictedBets"
+        v-if="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"
+        :content="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"
         currentPage="betting"
         :showModal="showRestrictedBetsModal"
         @closeModal="showRestrictedBetsModal = false"
@@ -21,14 +21,14 @@
     <div class="betting">
       <div id="betting-container" class="container"/>
       
-      <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent?.pageMeta?.seoText"/>
+      <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { ISportsbookPage } from '~/types';
+  import type {ISportsbookPage} from '~/types';
 
   const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();
@@ -41,12 +41,13 @@
   } = storeToRefs(globalStore);
 
   const { localizePath, addBetsyScript } = useProjectMethods();
-
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<ISportsbookPage>({
+  const contentParams = {
     contentKey: 'sportsbookPageContent',
     contentRoute: ['pages', 'sportsbook'],
     isPage: true
-  });
+  }
+  const { getContentData } = useContentLogic<ISportsbookPage>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const showRestrictedBetsModal = ref<boolean>(false);
   const maxBetsModal = reactive({

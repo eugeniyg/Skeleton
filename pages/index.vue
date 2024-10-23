@@ -1,18 +1,18 @@
 <template>
   <div class="home">
     <banners
-      v-if="currentLocaleContent?.banners || defaultLocaleContent?.banners"
-      :items="currentLocaleContent?.banners || defaultLocaleContent?.banners"
-      :bannerLoyalty="currentLocaleContent?.bannerLoyalty || defaultLocaleContent?.bannerLoyalty"
+      v-if="pageContent?.currentLocaleData?.banners || pageContent?.defaultLocaleData?.banners"
+      :items="pageContent?.currentLocaleData?.banners || pageContent?.defaultLocaleData?.banners"
+      :bannerLoyalty="pageContent?.currentLocaleData?.bannerLoyalty || pageContent?.defaultLocaleData?.bannerLoyalty"
     />
     
     <div
-      v-if="currentLocaleContent?.categories || defaultLocaleContent?.categories"
+      v-if="pageContent?.currentLocaleData?.categories || pageContent?.defaultLocaleData?.categories"
       class="card-category__container"
       :class="cardsModifier"
     >
       <card-category
-        v-for="(item, itemIndex) in (currentLocaleContent?.categories || defaultLocaleContent?.categories)"
+        v-for="(item, itemIndex) in (pageContent?.currentLocaleData?.categories || pageContent?.defaultLocaleData?.categories)"
         :key="itemIndex"
         :mod="itemIndex + 1"
         v-bind="item"
@@ -22,12 +22,12 @@
     <!--<group-benefits/>-->
     
     <group-aero
-      v-if="currentLocaleContent?.aeroGroup?.display && aeroCategory"
+      v-if="pageContent?.currentLocaleData?.aeroGroup?.display && aeroCategory"
       showAllBtn
       showArrows
       :category="aeroCategory"
-      :currentLocaleContent="currentLocaleContent?.aeroGroup"
-      :defaultLocaleContent="defaultLocaleContent?.aeroGroup"
+      :currentLocaleContent="pageContent?.currentLocaleData?.aeroGroup"
+      :defaultLocaleContent="pageContent?.defaultLocaleData?.aeroGroup"
     />
     
     <template v-for="collection in gameCollectionsList">
@@ -59,13 +59,13 @@
 
     <group-promotions />
 
-    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent.pageMeta.seoText"/>
+    <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText"/>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IHomePage } from '~/types';
+  import type {IHomePage, IStaticPage} from '~/types';
   import type { ICollection } from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();
@@ -77,21 +77,23 @@
     addBetsyScript
   } = useProjectMethods();
 
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IHomePage>({
+  const contentParams = {
     contentKey: 'homePageContent',
     contentRoute: ['pages', 'home'],
     isPage: true
-  });
+  };
+  const { getContentData } = useContentLogic<IHomePage>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const { getCollectionsList } = useGamesStore();
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
   
   const aeroCategory = computed(() => {
-    return gameCollections.value?.find((collection) => collection.identity === currentLocaleContent.value?.aeroGroup?.collectionIdentity);
+    return gameCollections.value?.find((collection) => collection.identity === pageContent.value?.currentLocaleData?.aeroGroup?.collectionIdentity);
   });
   
   const targetGameCollections = computed(() => {
-    return getContent(currentLocaleContent.value, defaultLocaleContent.value, 'gameCollections')?.map((item:ICollection) => item.identity) || []
+    return getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'gameCollections')?.map((item:ICollection) => item.identity) || []
   });
   
   const gameCollectionsList = computed(() => gameCollections.value?.filter((collection) => targetGameCollections.value.includes(collection.identity))?.sort((a, b) => {
@@ -99,7 +101,7 @@
   }));
   
   const cardsModifier = computed(() => {
-    const length = Object.keys(getContent(currentLocaleContent.value, defaultLocaleContent.value, 'categories'))?.length || 0
+    const length = Object.keys(getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'categories'))?.length || 0
     return length  ? `has-${length}-cards` : ''
   });
 
@@ -148,8 +150,8 @@
   }
 
   const activityBoardContent = computed(() => {
-    const currentLocaleBoardContent = currentLocaleContent.value?.activityBoard;
-    const defaultLocaleBoardContent = defaultLocaleContent.value?.activityBoard;
+    const currentLocaleBoardContent = pageContent.value?.currentLocaleData?.activityBoard;
+    const defaultLocaleBoardContent = pageContent.value?.defaultLocaleData?.activityBoard;
     return {
       showBlock: currentLocaleBoardContent?.showBlock,
       title: currentLocaleBoardContent?.title || defaultLocaleBoardContent?.title,
