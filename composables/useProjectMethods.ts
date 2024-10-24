@@ -183,15 +183,13 @@ export const useProjectMethods = () => {
 
   const setPageMeta = (metaData: Maybe<IPageMeta>):void => {
     const globalStore = useGlobalStore();
-    useHead({
+    useSeoMeta({
       title: metaData?.title || globalStore.globalSeo?.title,
-      meta: [
-        {
-          name: 'description',
-          content: metaData?.description || globalStore.globalSeo?.description,
-        },
-      ],
-    });
+      ogTitle: metaData?.title || globalStore.globalSeo?.title,
+      description: metaData?.description || globalStore.globalSeo?.description,
+      ogDescription: metaData?.description || globalStore.globalSeo?.description,
+      ogImage: metaData?.image || globalStore.globalSeo?.image
+    })
   };
 
   const sortByAlphabet = (a:string, b:string):number => {
