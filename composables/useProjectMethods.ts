@@ -183,12 +183,14 @@ export const useProjectMethods = () => {
 
   const setPageMeta = (metaData: Maybe<IPageMeta>):void => {
     const globalStore = useGlobalStore();
+    const pageUrl = useRequestURL().href;
     useSeoMeta({
       title: metaData?.title || globalStore.globalSeo?.title,
       ogTitle: metaData?.title || globalStore.globalSeo?.title,
       description: metaData?.description || globalStore.globalSeo?.description,
       ogDescription: metaData?.description || globalStore.globalSeo?.description,
-      ogImage: metaData?.image || globalStore.globalSeo?.image
+      ogImage: metaData?.image || globalStore.globalSeo?.image,
+      ogUrl: pageUrl
     })
   };
 
