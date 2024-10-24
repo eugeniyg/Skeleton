@@ -4,7 +4,7 @@
       v-if="gameInfo"
       :frameLink="gameStart"
       :gameInfo="gameInfo"
-      :gameContent="currentLocaleContent || defaultLocaleContent"
+      :gameContent="pageContent?.currentLocaleData || pageContent?.defaultLocaleData"
       :showPlug="showPlug && !isLoggedIn && !gameInfo.isDemoMode"
       :isDemo="isDemo"
       @changeMode="changeGameMode"
@@ -12,8 +12,8 @@
 
     <client-only>
       <modal-restricted-bets
-        v-if="currentLocaleContent?.restrictedBets || defaultLocaleContent?.restrictedBets"
-        :content="currentLocaleContent?.restrictedBets || defaultLocaleContent?.restrictedBets"
+        v-if="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"
+        :content="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"
         currentPage="game"
         :showModal="showRestrictedBetsModal"
         @closeModal="showRestrictedBetsModal = false"
@@ -26,19 +26,19 @@
       />
 
       <modal-demo-game
-        :content="currentLocaleContent?.demoModal || defaultLocaleContent?.demoModal"
+        :content="pageContent?.currentLocaleData?.demoModal || pageContent?.defaultLocaleData?.demoModal"
         :isDemo="isDemo"
         @playReal="changeGameMode"
       />
     </client-only>
 
-    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent?.pageMeta?.seoText" />
+    <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IGamePage } from '~/types';
+  import type {IGamePage} from '~/types';
 
   const route = useRoute();
   const showPlug = ref<boolean>(false);
@@ -65,11 +65,13 @@
     headerCountry
   } = storeToRefs(globalStore);
 
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IGamePage>({
+  const contentParams = {
     contentKey: 'gamePageContent',
     contentRoute: ['pages', 'game'],
     isPage: true
-  });
+  };
+  const { getContentData } = useContentLogic<IGamePage>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const showRestrictedBetsModal = ref<boolean>(false);
   const maxBetsModal = reactive({

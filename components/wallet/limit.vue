@@ -32,12 +32,10 @@
   }>();
 
   const { closeModal } = useLayoutStore();
-  const { getContent, getLocalesContentData, formatBalance, localizePath } = useProjectMethods();
+  const { getContent, formatBalance, localizePath } = useProjectMethods();
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
   const {
-    currentLocale,
-    defaultLocale,
     popupsData,
     defaultLocalePopupsData,
     globalComponentsContent,

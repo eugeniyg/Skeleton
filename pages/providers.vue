@@ -2,17 +2,17 @@
   <div class="page-providers">
     <div class="page-providers__header">
       <div class="page-providers__heading">
-        {{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}
+        {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'title') }}
       </div>
 
       <div class="page-providers__count">
-        {{ providersGeneralCount }} {{ getContent(currentLocaleContent, defaultLocaleContent, 'providersLabel') }}
+        {{ providersGeneralCount }} {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'providersLabel') }}
       </div>
 
-      <div v-if="currentLocaleContent || defaultLocaleContent" class="page-providers__filter">
+      <div v-if="pageContent?.currentLocaleData || pageContent?.defaultLocaleData" class="page-providers__filter">
         <providers-filter
-          :currentLocaleContent="currentLocaleContent"
-          :defaultLocaleContent="defaultLocaleContent"
+          :currentLocaleContent="pageContent?.currentLocaleData"
+          :defaultLocaleContent="pageContent?.defaultLocaleData"
           :filters="requestParams"
           @onSearch="onSearch"
           @changeSort="onSort"
@@ -24,23 +24,23 @@
       v-if="providersList.length || staticProviderInfo"
       :providersList="providersList"
       :staticProvider="staticProviderInfo"
-      :currentLocaleContent="currentLocaleContent"
-      :defaultLocaleContent="defaultLocaleContent"
+      :currentLocaleContent="pageContent?.currentLocaleData"
+      :defaultLocaleContent="pageContent?.defaultLocaleData"
     />
 
     <atomic-empty
       v-else-if="requestParams.name && !loadingProviders"
-      :title="getContent(currentLocaleContent, defaultLocaleContent, 'empty.title')"
-      :subTitle="getContent(currentLocaleContent, defaultLocaleContent, 'empty.description')"
-      :image="getContent(currentLocaleContent, defaultLocaleContent, 'empty.image')"
+      :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"
+      :subTitle="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
+      :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"
     />
 
-    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent.pageMeta.seoText"/>
+    <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText"/>
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { IProvidersPage } from "~/types";
+  import type {IProvidersPage} from "~/types";
   import { storeToRefs } from "pinia";
   import type { IGameProvider, IProvidersRequest } from "@skeleton/core/types";
 
@@ -49,11 +49,13 @@
   const { showAlert } = useLayoutStore();
   const { getContent } = useProjectMethods();
 
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProvidersPage>({
+  const contentParams = {
     contentKey: 'providersPageContent',
     contentRoute: ['pages', 'providers'],
     isPage: true
-  });
+  };
+  const { getContentData } = useContentLogic<IProvidersPage>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const providersList = ref<IGameProvider[]>([]);
 
@@ -61,7 +63,11 @@
     return providersList.value.length + (staticProviderInfo.value ? 1 : 0);
   })
 
-  const staticProviderIdentity = computed(() => getContent(currentLocaleContent.value, defaultLocaleContent.value, 'staticProvider.identity'));
+  const staticProviderIdentity = computed(() => getContent(
+    pageContent.value?.currentLocaleData,
+    pageContent.value?.defaultLocaleData,
+    'staticProvider.identity'
+  ));
   const staticProviderInfo = ref<IGameProvider|undefined>();
 
   const requestParams = reactive<IProvidersRequest>({

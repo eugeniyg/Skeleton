@@ -2,7 +2,7 @@
   <div class="profile-notifications content">
     <div class="profile-notifications__header">
       <div class="profile-notifications__title">
-        {{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}
+        {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'title') }}
       </div>
 
       <div class="profile-notifications__read-all" :class="{ active: unreadCount }" @click="readAll">
@@ -29,8 +29,8 @@
       v-else-if="!state.loading"
       class="profile-notifications__empty"
       variant="notification"
-      :title="getContent(currentLocaleContent, defaultLocaleContent, 'empty.title')"
-      :subTitle="getContent(currentLocaleContent, defaultLocaleContent, 'empty.description')"
+      :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"
+      :subTitle="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
     />
 
     <atomic-pagination
@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IProfileNotifications } from "~/types";
+import type {IProfileNotifications, IStaticPage} from "~/types";
   import {storeToRefs} from "pinia";
   import type {IMessage, INotificationsRequest, IPaginationMeta} from "@skeleton/core/types";
 
@@ -99,11 +99,13 @@
     getNotifications();
   };
 
-  const { currentLocaleContent, defaultLocaleContent } = await useContentLogic<IProfileNotifications>({
+  const contentParams = {
     contentKey: 'profileNotificationsContent',
     contentRoute: ['profile', 'notifications'],
     isPage: true
-  });
+  };
+  const { getContentData } = useContentLogic<IProfileNotifications>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
 
   const readMessage = (messageInfo: IMessage): void => {
     state.notifications = state.notifications.map(message => {

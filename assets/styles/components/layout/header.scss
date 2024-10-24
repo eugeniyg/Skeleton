@@ -151,7 +151,6 @@
   }
 
   @include media(l) {
-    margin-left: auto;
     --padding: 0 #{rem(48px)} 0 16px;
   }
 

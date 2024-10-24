@@ -116,8 +116,9 @@
   const getFieldComponent = (field: IPaymentField): string => {
     const fieldComponent = fieldsMap[field.key]?.component;
     if (fieldComponent) return fieldComponent;
-
-    return field.fieldType === 'select' ? 'form-input-dropdown' : 'form-input-text';
+    if (field.fieldType === 'select') return 'form-input-dropdown';
+    if (field.fieldType === 'textarea') return 'form-input-textarea';
+    return 'form-input-text';
   };
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
