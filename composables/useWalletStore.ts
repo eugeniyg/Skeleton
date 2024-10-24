@@ -84,6 +84,8 @@ export const useWalletStore = defineStore('walletStore', {
       const { switchActiveAccount } = useCoreWalletApi();
       this.accountSwitching = switchActiveAccount(accountId);
       this.accounts = await this.accountSwitching;
+      this.accountSwitching = undefined;
+      console.log(this.accounts);
       useEvent('accountChanged');
 
       const runtimeConfig = useRuntimeConfig();

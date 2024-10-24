@@ -57,7 +57,7 @@
                 <button-base
                   type="primary"
                   size="md"
-                  :isDisabled="loadStatuses || (card.bonusId && bonusesStatus[card.bonusId] && [2,4].includes(bonusesStatus[card.bonusId]))"
+                  :isDisabled="loadStatuses || accountSwitching || (card.bonusId && bonusesStatus[card.bonusId] && [2,4].includes(bonusesStatus[card.bonusId]))"
                   @click="actionClick(card, itemIndex)"
                 >
                   <atomic-spinner :is-shown="walletLoading === itemIndex" />
@@ -68,7 +68,7 @@
                   type="ghost"
                   size="md"
                   :url="card.link.url"
-                  :is-disabled="loadStatuses"
+                  :is-disabled="loadStatuses || accountSwitching"
                   :targetBlank="card.link.targetBlank"
                 >
                   {{ card.link.label }}
@@ -157,7 +157,7 @@
   const { openWalletModal, showModal } = useLayoutStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const walletStore = useWalletStore();
-  const { activeAccount } = storeToRefs(walletStore);
+  const { activeAccount, accountSwitching } = storeToRefs(walletStore);
   const bonusesStatus = ref<Record<string, string>>({});
   const loadStatuses = ref<boolean>(true);
   const bonusStore = useBonusStore();
@@ -201,7 +201,7 @@
 
   const walletLoading = ref<string|undefined>();
   const actionClick = async (cardInfo: IWelcomeBonus, cardIndex: number): Promise<void> => {
-    if (walletLoading.value !== undefined) return;
+    if (walletLoading.value !== undefined || accountSwitching.value) return;
     if (!isLoggedIn.value) {
       showModal('register');
       return;
@@ -224,12 +224,14 @@
 
   onMounted(async () => {
     useListen('depositInvoiceUpdated', getStatuses);
+    useListen('accountChanged', getStatuses);
     if (pageContent.value) await getStatuses();
     mountedCompleted.value = true;
   });
 
   onBeforeUnmount(() => {
     useUnlisten('depositInvoiceUpdated', getStatuses);
+    useUnlisten('accountChanged', getStatuses);
   });
 </script>
 
