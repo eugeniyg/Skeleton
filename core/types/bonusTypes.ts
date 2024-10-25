@@ -183,3 +183,8 @@ export interface IBonus {
     currency: string;
   };
 }
+
+export interface IBonusesStatus {
+  id: string;
+  status: number;
+}
