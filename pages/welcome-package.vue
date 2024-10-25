@@ -48,22 +48,32 @@
             <atomic-picture :src="card.image"/>
 
             <div class="actions">
-              <button-base
-                type="primary"
-                size="md"
-                @click="isLoggedIn ? openWalletModal('deposit') : showModal('register')"
-              >
-                {{ card.buttonLabel }}
-              </button-base>
+              <div v-if="card.bonusId && bonusesStatus[card.bonusId] === 1" class="actions__success">
+                <atomic-icon id="done" class="is-success" />
+                <span>{{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'welcome.issued') }}</span>
+              </div>
 
-              <button-base
-                type="ghost"
-                size="md"
-                :url="card.link.url"
-                :targetBlank="card.link.targetBlank"
-              >
-                {{ card.link.label }}
-              </button-base>
+              <template v-else>
+                <button-base
+                  type="primary"
+                  size="md"
+                  :isDisabled="loadStatuses || accountSwitching || (card.bonusId && bonusesStatus[card.bonusId] && [2,4].includes(bonusesStatus[card.bonusId]))"
+                  @click="actionClick(card, itemIndex)"
+                >
+                  <atomic-spinner :is-shown="walletLoading === itemIndex" />
+                  {{ card.buttonLabel }}
+                </button-base>
+
+                <button-base
+                  type="ghost"
+                  size="md"
+                  :url="card.link.url"
+                  :is-disabled="loadStatuses || accountSwitching"
+                  :targetBlank="card.link.targetBlank"
+                >
+                  {{ card.link.label }}
+                </button-base>
+              </template>
             </div>
 
             <div class="arrow">
@@ -122,7 +132,7 @@
   import { storeToRefs } from 'pinia';
   import type {IWelcomeBonusesPage} from '~/types';
 
-  const { getContent } = useProjectMethods();
+  const { getContent, getMinBonusDeposit } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'welcomePageContent',
@@ -146,6 +156,83 @@
   const profileStore = useProfileStore();
   const { openWalletModal, showModal } = useLayoutStore();
   const { isLoggedIn } = storeToRefs(profileStore);
+  const walletStore = useWalletStore();
+  const { activeAccount, accountSwitching } = storeToRefs(walletStore);
+  const bonusesStatus = ref<Record<string, string>>({});
+  const loadStatuses = ref<boolean>(true);
+  const bonusStore = useBonusStore();
+  const { depositBonuses, walletDepositBonus } = storeToRefs(bonusStore);
+
+  const getStatuses = async (): Promise<void> => {
+    const { getBonusesStatus } = useCoreBonusApi();
+    const bonusesItems = getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'welcome.items') || [];
+    const bonusIds = bonusesItems.map((item: any) => item.bonusId).filter(bonusId => !!bonusId);
+
+    if (!isLoggedIn.value || !bonusIds.length) {
+      bonusesStatus.value = [];
+      loadStatuses.value = false;
+      return;
+    }
+
+    loadStatuses.value = true;
+    try {
+      const statuses = await getBonusesStatus(bonusIds, activeAccount.value?.currency);
+      const statusesObj = {};
+      statuses.forEach(statusData => {
+        statusesObj[statusData.id] = statusData.issueStatus;
+      })
+      bonusesStatus.value = statusesObj;
+    } catch {
+      console.error('Failed to get bonuses statuses');
+      bonusesStatus.value = [];
+    }
+    loadStatuses.value = false;
+  }
+
+  watch(isLoggedIn, async () => {
+    await getStatuses();
+  });
+
+  const mountedCompleted = ref<boolean>(false);
+
+  watch(pageContent, async () => {
+    if (mountedCompleted.value) await getStatuses();
+  })
+
+  const walletLoading = ref<string|undefined>();
+  const actionClick = async (cardInfo: IWelcomeBonus, cardIndex: number): Promise<void> => {
+    if (walletLoading.value !== undefined || accountSwitching.value) return;
+    if (!isLoggedIn.value) {
+      showModal('register');
+      return;
+    }
+    walletLoading.value = cardIndex;
+
+    if (cardInfo.bonusId) {
+      const bonusData = depositBonuses.value.find(bonus => bonus.id === cardInfo.bonusId);
+      if (bonusData) {
+        const minDeposit = getMinBonusDeposit(bonusData);
+        walletDepositBonus.value = { id: bonusData.id, packageId: bonusData.package?.id, amount: minDeposit?.amount };
+      }
+    }
+
+    await openWalletModal('deposit');
+    setTimeout(() => {
+      walletLoading.value = undefined;
+    }, 500);
+  };
+
+  onMounted(async () => {
+    useListen('depositInvoiceUpdated', getStatuses);
+    useListen('accountChanged', getStatuses);
+    if (pageContent.value) await getStatuses();
+    mountedCompleted.value = true;
+  });
+
+  onBeforeUnmount(() => {
+    useUnlisten('depositInvoiceUpdated', getStatuses);
+    useUnlisten('accountChanged', getStatuses);
+  });
 </script>
 
 <style src="~/assets/styles/pages/welcome-package.scss" lang="scss" />

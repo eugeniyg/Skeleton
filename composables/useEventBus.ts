@@ -20,6 +20,7 @@ type ApplicationEvents = {
   'newPlayerMessage': undefined;
   'markAllAsReadMessages': undefined;
   'receivedAsyncInvoice': ISocketInvoice;
+  'depositInvoiceUpdated': undefined;
 };
 
 const emitter = mitt<ApplicationEvents>();
