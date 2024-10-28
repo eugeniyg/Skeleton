@@ -7,7 +7,7 @@
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('signIn')"/>
+        <button-modal-close @close="closeModal('sign-in')"/>
         <div class="title">{{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}</div>
       </div>
 
@@ -39,15 +39,15 @@
   import type {IModalsContent} from "~/types";
 
   const props = defineProps<{
-    currentLocaleData: Maybe<IModalsContent['login']>;
-    defaultLocaleData: Maybe<IModalsContent['login']>;
+    currentLocaleData: Maybe<IModalsContent['signIn']>;
+    defaultLocaleData: Maybe<IModalsContent['signIn']>;
   }>();
 
   const { closeModal } = useModalStore();
   const { getContent } = useProjectMethods();
   
   const tabsList = computed(() => {
-    const tabsObj = getContent(props.currentLocaleData, props.defaultLocaleData, 'login.tabs');
+    const tabsObj = getContent(props.currentLocaleData, props.defaultLocaleData, 'tabs');
     if (!tabsObj) return [];
     
     return Object.keys(tabsObj)

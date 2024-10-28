@@ -120,7 +120,7 @@
             <button-base
               type="secondary"
               size="md"
-              @click="openModal('signIn')"
+              @click="openModal('sign-in')"
             >
               <atomic-icon id="user" class="btn-secondary__icon"/>
               <span class="btn-secondary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.loginButton') }}</span>

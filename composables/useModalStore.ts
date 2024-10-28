@@ -36,6 +36,8 @@ export const useModalStore = defineStore('modalStore', {
         };
         const { getContentData } = useContentLogic(contentParams);
         const { currentLocaleData, defaultLocaleData } = await getContentData();
+        console.log(currentLocaleData);
+        console.log(defaultLocaleData);
 
         this.modals[modalName] = useModal({
           component: modalComponent,
