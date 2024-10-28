@@ -120,7 +120,7 @@
             <button-base
               type="secondary"
               size="md"
-              @click="showModal('signIn')"
+              @click="openModal('signIn')"
             >
               <atomic-icon id="user" class="btn-secondary__icon"/>
               <span class="btn-secondary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.loginButton') }}</span>
@@ -143,6 +143,7 @@
   const { getContent, localizePath } = useProjectMethods();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, showModal, compactDrawer } = layoutStore;
+  const { openModal } = useModalStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
   const { isGamePage, isDrawerCompact } = storeToRefs(layoutStore);

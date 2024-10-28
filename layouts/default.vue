@@ -39,9 +39,11 @@
       <layout-cookies v-if="showCookiesMessage" />
     </transition>
 
+    <ModalsContainer />
+
     <modal-register />
     <modal-register-cancel />
-    <modal-sign-in />
+    <!--    <modal-sign-in />-->
     <modal-forgot-pass />
     <modal-reset-pass />
     <modal-success />
@@ -72,6 +74,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { ModalsContainer } from 'vue-final-modal';
 
   const globalStore = useGlobalStore();
   const layoutStore = useLayoutStore();
