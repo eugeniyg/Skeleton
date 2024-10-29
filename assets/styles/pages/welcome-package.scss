@@ -302,13 +302,25 @@
 
     @include media(sm) {
       flex-direction: column;
+      justify-content: center;
       --margin-top: #{rem(24px)};
+      height: 78px;
 
       .btn-primary,
       .btn-ghost {
         --width: 100%;
         max-width: rem(320px);
       }
+    }
+
+    &__success {
+      display: flex;
+      align-items: center;
+      min-height: 34.2px;
+      gap: 4px;
+      color: var(--text-success);
+      --color: var(--text-success);
+      @include font($subheading-2);
     }
   }
 }
