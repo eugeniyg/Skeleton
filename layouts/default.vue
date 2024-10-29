@@ -43,7 +43,6 @@
 
     <modal-register />
     <modal-register-cancel />
-    <!--    <modal-sign-in />-->
     <modal-forgot-pass />
     <modal-reset-pass />
     <modal-success />
@@ -141,9 +140,11 @@
   });
 
   const { checkModals } = useLayoutStore();
+  const { checkOpenedModals } = useModalStore();
   const mainClasses = ref();
   onMounted(async () => {
     checkModals();
+    checkOpenedModals();
     checkDrawer();
     disabledTransition.value = false;
     const cookieValue = useCookie('accept-cookie');

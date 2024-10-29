@@ -130,6 +130,7 @@
   };
 
   const layoutStore = useLayoutStore();
+  const { openModal } = useModalStore();
   const {
     showAlert,
     compactDrawer,
@@ -185,7 +186,7 @@
 
       const { isLoggedIn } = useProfileStore();
       const showLoginModal =  eventData.type === 'click' && eventData.target === 'loginButton' && !isLoggedIn;
-      if (showLoginModal) layoutStore.showModal('signIn');
+      if (showLoginModal) openModal('sign-in');
     }
   }
 

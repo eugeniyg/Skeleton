@@ -3,7 +3,7 @@
     class="btn-popup"
     type="ghost"
     size="xs"
-    @click="showModal(props.openModal)"
+    @click="handleClick"
   >
     <div v-html="buttonHtml || ''" />
   </button-base>
@@ -15,7 +15,7 @@
       type: String,
       default: '',
     },
-    openModal: {
+    modal: {
       type: String,
       required: true,
     },
@@ -23,6 +23,11 @@
   const { replaceContent } = useProjectMethods();
   const buttonHtml = replaceContent(props.buttonLabel, '*');
   const { showModal } = useLayoutStore();
+  const { openModal } = useModalStore();
+  const handleClick = (): void => {
+    if (props.openModal === 'sign-in') openModal('sign-in');
+    else showModal(props.modal);
+  }
 </script>
 
 <style src="~/assets/styles/components/button/popup.scss" lang="scss" />

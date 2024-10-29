@@ -71,7 +71,7 @@
 
     <button-popup
       :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'registration.loginButton')"
-      openModal="signIn"
+      modal="sign-in"
     />
   </form>
 </template>

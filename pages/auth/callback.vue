@@ -28,7 +28,8 @@
       } else if (errorCode === 11001) {
         const profileStore = useProfileStore();
         profileStore.socialAuthEmailError = true;
-        showModal('signIn');
+        const { openModal } = useModalStore();
+        await openModal('sign-in', undefined, false);
         await router.replace(localizePath('/?sign-in=true'));
       } else {
         showModal('register');

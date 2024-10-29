@@ -74,7 +74,7 @@
       <button-popup
         v-if="!showPhoneVerification"
         :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'forgot.registrationButton') || ''"
-        openModal="register"
+        modal="register"
       />
     </div>
   </vue-final-modal>
@@ -86,7 +86,8 @@
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
-  const { closeModal, showModal } = layoutStore;
+  const { closeModal } = layoutStore;
+  const { openModal } = useModalStore();
 
   const { popupsData, defaultLocalePopupsData, settingsConstants } = useGlobalStore();
   const { getContent } = useProjectMethods();
@@ -96,7 +97,7 @@
     if (showPhoneVerification.value) {
       showPhoneVerification.value = false;
       verificationError.value = undefined;
-    } else showModal('signIn');
+    } else openModal('sign-in');
   };
 
   const hasPhoneRegistration = settingsConstants?.player?.registration?.phone;

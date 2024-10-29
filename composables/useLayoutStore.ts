@@ -9,7 +9,6 @@ type WalletModalTypes = 'deposit'|'withdraw'|undefined;
 interface IModals extends Record<string, any> {
   register: boolean;
   registerCancel: boolean;
-  signIn: boolean;
   wallet: boolean;
   cancelDeposit: boolean;
   walletBonusInfo: boolean;
@@ -32,7 +31,6 @@ interface IModals extends Record<string, any> {
 
 interface IModalsUrls extends Record<string, any> {
   register: string;
-  signIn: string;
   success: string;
   failing: string;
   confirm: string;
@@ -67,7 +65,6 @@ export const useLayoutStore = defineStore('layoutStore', {
       showCookiePopup: false,
       modals: {
         register: false,
-        signIn: false,
         wallet: false,
         cancelDeposit: false,
         walletBonusInfo: false,
@@ -90,7 +87,6 @@ export const useLayoutStore = defineStore('layoutStore', {
       },
       modalsUrl: {
         register: 'sign-up',
-        signIn: 'sign-in',
         success: 'success',
         failing: 'failing',
         confirm: 'confirm',
@@ -227,7 +223,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         const modalKey = Object.keys(this.modalsUrl).find((key) => this.modalsUrl[key] === query);
         if (!modalKey) return;
 
-        const guestModals = ['register', 'signIn', 'forgotPass', 'resetPass'];
+        const guestModals = ['register', 'forgotPass', 'resetPass'];
         const authModals = ['wallet', 'questsHub'];
         if (guestModals.includes(modalKey)) {
           isLoggedIn ? this.closeModal(modalKey) : this.showModal(modalKey);

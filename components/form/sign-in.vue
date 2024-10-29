@@ -64,14 +64,14 @@
     <button-popup
       class="btn-forgot"
       :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.forgotButton')"
-      openModal="forgotPass"
+      modal="forgotPass"
     />
     
     <atomic-socials type="login"/>
     
     <button-popup
       :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.registrationButton')"
-      openModal="register"
+      modal="register"
     />
   </form>
 </template>
@@ -93,7 +93,7 @@
     alertsData,
     defaultLocaleAlertsData
   } = storeToRefs(globalStore);
-  const { closeModal } = useLayoutStore();
+  const { closeModal } = useModalStore();
   
   const profileStore = useProfileStore();
   const { socialAuthEmailError } = storeToRefs(profileStore);
@@ -145,7 +145,7 @@
     try {
       isLockedAsyncButton.value = true;
       await logIn(authorizationFormData);
-      closeModal('signIn');
+      closeModal('sign-in');
     } catch (error: any) {
       if (error.response?.status === 401) {
         loginError.value = true;

@@ -73,6 +73,7 @@
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getImageUrl, getContent, localizePath } = useProjectMethods();
   const { openWalletModal, showModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const router = useRouter();
 
   const gameImage = computed(() => {
@@ -119,7 +120,7 @@
     if (['depositOrDemo', 'registerOrDemo'].includes(mobileGameModalType.value as string)) {
       router.push(localizePath(`/games/${mobileGameModalInfo.value?.identity}`));
     } else {
-      showModal('signIn');
+      openModal('sign-in');
     }
 
     showMobileGameModal.value = false;
