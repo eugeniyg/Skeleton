@@ -131,8 +131,7 @@
   const requestParams = reactive<IProvidersRequest>({
     name: undefined,
     sortBy: undefined,
-    sortOrder: undefined,
-    category: getContent(popupsData, defaultLocalePopupsData, 'providers.collectionId')
+    sortOrder: undefined
   });
   
   const { showAlert } = useLayoutStore();
