@@ -41,8 +41,6 @@
 
     <ModalsContainer />
 
-    <modal-register />
-    <modal-register-cancel />
     <modal-success />
     <modal-error />
     <modal-confirm />

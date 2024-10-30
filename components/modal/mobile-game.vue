@@ -72,7 +72,7 @@
   } = storeToRefs(gameStore);
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getImageUrl, getContent, localizePath } = useProjectMethods();
-  const { openWalletModal, showModal } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
   const { openModal } = useModalStore();
   const router = useRouter();
 
@@ -110,7 +110,7 @@
     if (['depositOrDemo', 'deposit'].includes(mobileGameModalType.value as string)) {
       await openWalletModal('deposit');
     } else {
-      showModal('register');
+      await openModal('sign-up');
     }
 
     showMobileGameModal.value = false;

@@ -111,7 +111,7 @@
             <button-base
               type="primary"
               size="md"
-              @click="showModal('register')"
+              @click="openModal('sign-up')"
             >
               <atomic-icon id="user-new" class="btn-primary__icon"/>
               <span class="btn-primary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton') }}</span>
@@ -135,14 +135,14 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   
-  const emit = defineEmits(['login', 'register', 'logout', 'toggle-open']);
+  const emit = defineEmits(['logout', 'toggle-open']);
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const bonusStore = useBonusStore();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const { getContent, localizePath } = useProjectMethods();
   const { isUserNavOpen } = storeToRefs(layoutStore);
-  const { closeUserNav, openUserNav, showModal, compactDrawer } = layoutStore;
+  const { closeUserNav, openUserNav, compactDrawer } = layoutStore;
   const { openModal } = useModalStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);

@@ -55,6 +55,7 @@
     setReturnGame,
     openWalletModal
   } = useLayoutStore();
+  const { openModal } = useModalStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
   const {
@@ -136,7 +137,7 @@
     if (gameLoading.value) return;
 
     if (isDemo.value && !isLoggedIn.value) {
-      showModal('register');
+      await openModal('sign-up');
       return;
     }
 

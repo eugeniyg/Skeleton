@@ -105,7 +105,7 @@
               <button-base
                 type="primary"
                 size="md"
-                @click="isLoggedIn ? openWalletModal('deposit') : showModal('register')"
+                @click="isLoggedIn ? openWalletModal('deposit') : openModal('sign-up')"
               >
                 {{ card.buttonLabel }}
               </button-base>
@@ -154,7 +154,8 @@
   })
 
   const profileStore = useProfileStore();
-  const { openWalletModal, showModal } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const walletStore = useWalletStore();
   const { activeAccount, accountSwitching } = storeToRefs(walletStore);
@@ -203,7 +204,7 @@
   const actionClick = async (cardInfo: IWelcomeBonus, cardIndex: number): Promise<void> => {
     if (walletLoading.value !== undefined || accountSwitching.value) return;
     if (!isLoggedIn.value) {
-      showModal('register');
+      await openModal('sign-up');
       return;
     }
     walletLoading.value = cardIndex;

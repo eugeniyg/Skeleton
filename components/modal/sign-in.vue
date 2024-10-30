@@ -29,7 +29,13 @@
         <atomic-divider class="modal-sign-in__tabs-divider"/>
       </div>
       
-      <form-sign-in :key="selectedTab" :loginType="selectedTab" :count="selectedCount"/>
+      <form-sign-in
+        :key="selectedTab"
+        :loginType="selectedTab"
+        :count="selectedCount"
+        :currentLocaleData="props.currentLocaleData"
+        :defaultLocaleData="props.defaultLocaleData"
+      />
     </div>
   </vue-final-modal>
 </template>

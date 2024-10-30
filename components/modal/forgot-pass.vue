@@ -49,11 +49,18 @@
       </template>
 
       <transition name="fade" mode="out-in" :duration="100">
-        <form-forgot-pass-email v-if="selectedTab === 'email'" key="email" />
+        <form-forgot-pass-email
+          v-if="selectedTab === 'email'"
+          key="email"
+          :currentLocaleData="props.currentLocaleData"
+          :defaultLocaleData="props.defaultLocaleData"
+        />
 
         <div v-else key="phone">
           <form-forgot-pass-phone
             v-show="!showPhoneVerification"
+            :currentLocaleData="props.currentLocaleData"
+            :defaultLocaleData="props.defaultLocaleData"
             @sendOtp="sendOtp"
           />
 
@@ -73,7 +80,7 @@
       <button-popup
         v-if="!showPhoneVerification"
         :buttonLabel="getContent(props.currentLocaleData, props.defaultLocaleData, 'registrationButton') || ''"
-        modal="register"
+        modal="sign-up"
       />
     </div>
   </vue-final-modal>

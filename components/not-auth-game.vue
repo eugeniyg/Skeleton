@@ -15,7 +15,7 @@
       <button-base
         type="primary"
         :size="modeBtnSize"
-        @click="showModal('register')"
+        @click="openModal('sign-up')"
       >
         {{ layoutData?.header?.registrationButton || defaultLocaleLayoutData?.header?.registrationButton }}
       </button-base>
@@ -57,7 +57,6 @@
 
   const modeClassName = computed(() => ({ 'is-single-mode': props.singleMode }));
   const modeBtnSize = computed(() => (props.singleMode ? 'md' : 'lg'));
-  const { showModal } = useLayoutStore();
   const { openModal } = useModalStore();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
 </script>

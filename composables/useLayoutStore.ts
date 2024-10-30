@@ -7,8 +7,6 @@ import type {Dayjs} from "dayjs";
 
 type WalletModalTypes = 'deposit'|'withdraw'|undefined;
 interface IModals extends Record<string, any> {
-  register: boolean;
-  registerCancel: boolean;
   wallet: boolean;
   cancelDeposit: boolean;
   walletBonusInfo: boolean;
@@ -28,7 +26,6 @@ interface IModals extends Record<string, any> {
 }
 
 interface IModalsUrls extends Record<string, any> {
-  register: string;
   success: string;
   failing: string;
   confirm: string;
@@ -60,14 +57,12 @@ export const useLayoutStore = defineStore('layoutStore', {
       isDrawerCompact: false,
       showCookiePopup: false,
       modals: {
-        register: false,
         wallet: false,
         cancelDeposit: false,
         walletBonusInfo: false,
         confirm: false,
         failing: false,
         success: false,
-        registerCancel: false,
         fiat: false,
         turnOverWager: false,
         questsHub: false,
@@ -80,7 +75,6 @@ export const useLayoutStore = defineStore('layoutStore', {
         walletRegion: false
       },
       modalsUrl: {
-        register: 'sign-up',
         success: 'success',
         failing: 'failing',
         confirm: 'confirm',
@@ -215,7 +209,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         const modalKey = Object.keys(this.modalsUrl).find((key) => this.modalsUrl[key] === query);
         if (!modalKey) return;
 
-        const guestModals = ['register'];
+        const guestModals = [];
         const authModals = ['wallet', 'questsHub'];
         if (guestModals.includes(modalKey)) {
           isLoggedIn ? this.closeModal(modalKey) : this.showModal(modalKey);

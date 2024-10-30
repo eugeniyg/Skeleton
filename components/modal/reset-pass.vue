@@ -11,7 +11,7 @@
         <div class="title">{{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}</div>
       </div>
 
-      <form-reset-pass />
+      <form-reset-pass :currentLocaleData="props.currentLocaleData" :defaultLocaleData="props.defaultLocaleData" />
     </div>
   </vue-final-modal>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <vue-final-modal
-    v-model="openModal"
+    v-model="modalVisible"
     class="modal-demo-game"
     :clickToClose="false"
     :overlayTransition="{ mode: 'in-out', duration: 250 }"
@@ -8,7 +8,7 @@
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="openModal = false"/>
+        <button-modal-close @close="modalVisible = false"/>
         <div class="title">{{ props.content?.label }}</div>
       </div>
 
@@ -26,7 +26,7 @@
         <button-base
           type="secondary"
           size="md"
-          @click="openModal = false"
+          @click="modalVisible = false"
         >
           {{ props.content?.demo }}
         </button-base>
@@ -47,7 +47,7 @@
 
   const emit = defineEmits(['playReal']);
 
-  const openModal = ref<boolean>(false);
+  const modalVisible = ref<boolean>(false);
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn } = storeToRefs(profileStore);
@@ -59,20 +59,21 @@
     return 'deposit';
   });
 
-  const { openWalletModal, showModal } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   let timer: any;
   const confirm = async (): Promise<void> => {
     if (modalType.value === 'real') emit('playReal');
     else if (modalType.value === 'deposit') await openWalletModal('deposit');
-    else if (modalType.value === 'registration') showModal('register');
+    else if (modalType.value === 'registration') openModal('sign-up');
 
-    openModal.value = false
+    modalVisible.value = false
     clearTimeout(timer);
   }
 
   const startTimer = (): void => {
     timer = setTimeout(() => {
-      openModal.value = true
+      modalVisible.value = true
     }, 60000);
   }
 
@@ -83,7 +84,7 @@
   onBeforeMount(() => {
     if (props.isDemo) {
       const { mobileGameModalInfo } = useGamesStore();
-      if (!isLoggedIn.value && !mobileGameModalInfo) openModal.value = true;
+      if (!isLoggedIn.value && !mobileGameModalInfo) modalVisible.value = true;
       startTimer();
     }
   })

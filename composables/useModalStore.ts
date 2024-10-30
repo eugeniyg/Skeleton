@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import { useModal } from 'vue-final-modal';
+import { useVfm, useModal } from 'vue-final-modal';
 import type { Vfm } from 'vue-final-modal';
 import { defineAsyncComponent } from "vue";
 
@@ -7,6 +7,8 @@ interface IModals extends Record<string, any> {
   'sign-in': Maybe<Vfm>;
   'forgot-pass': Maybe<Vfm>;
   'reset-pass': Maybe<Vfm>;
+  'sign-up': Maybe<Vfm>;
+  'sign-up-cancel': Maybe<Vfm>;
 }
 
 interface IModalStoreState {
@@ -21,10 +23,12 @@ export const useModalStore = defineStore('modalStore', {
     modals: {
       'sign-in': undefined,
       'forgot-pass': undefined,
-      'reset-pass': undefined
+      'reset-pass': undefined,
+      'sign-up': undefined,
+      'sign-up-cancel': undefined
     },
-    modalsUrl: ['sign-in', 'forgot-pass', 'reset-pass'],
-    onlyGuestModals: ['sign-in', 'forgot-pass', 'reset-pass'],
+    modalsUrl: ['sign-in', 'forgot-pass', 'reset-pass', 'sign-up'],
+    onlyGuestModals: ['sign-in', 'sign-up', 'forgot-pass', 'reset-pass'],
     onlyLoggedModals: []
   }),
 
@@ -85,6 +89,19 @@ export const useModalStore = defineStore('modalStore', {
     closeModal(modalName: string):void {
       this.modals[modalName].close();
       if (this.modalsUrl.includes(modalName)) this.removeModalQuery(modalName);
+    },
+
+    async closeAllModals(): Promise<void> {
+      const { query } = useRoute();
+      const newQuery = { ...query };
+      Object.keys(query).forEach(queryName => {
+        if (this.modalsUrl.includes(queryName)) delete newQuery[queryName];
+      });
+      const router = useRouter();
+      router.replace({ query: newQuery });
+
+      const vfm = useVfm();
+      await vfm.closeAll();
     },
 
     checkOpenedModals():void {

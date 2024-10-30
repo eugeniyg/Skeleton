@@ -33,20 +33,24 @@
       @click="resetPassword"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
-      {{ getContent(popupsData, defaultLocalePopupsData, 'reset.resetButton') }}
+      {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'resetButton') }}
     </button-base>
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import type {IModalsContent} from "~/types";
+
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['reset']>;
+    defaultLocaleData: Maybe<IModalsContent['reset']>;
+  }>();
 
   const globalStore = useGlobalStore();
   const {
     fieldsSettings,
     defaultLocaleFieldsSettings,
-    popupsData,
-    defaultLocalePopupsData,
     alertsData,
     defaultLocaleAlertsData,
   } = storeToRefs(globalStore);
