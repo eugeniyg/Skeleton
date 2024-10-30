@@ -3,8 +3,8 @@
     v-model="modals.confirm"
     class="modal-confirm"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
     @clickOutside="closeModal('confirm')"
   >
     <div class="scroll">

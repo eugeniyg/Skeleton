@@ -62,9 +62,10 @@
     try {
       isLockedAsyncButton.value = true;
       await forgotProfilePassword(forgotFormData);
-      const { closeModal, showAlert } = useLayoutStore();
+      const { showAlert } = useLayoutStore();
+      const { closeModal } = useModalStore();
       showAlert(alertsData.value?.profile?.sentResetLink || defaultLocaleAlertsData.value?.profile?.sentResetLink);
-      closeModal('forgotPass');
+      closeModal('forgot-pass');
     } catch (error:any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;

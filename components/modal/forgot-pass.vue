@@ -1,10 +1,9 @@
 <template>
   <vue-final-modal
-    v-model="modals.forgotPass"
     class="modal-forgot-pass"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
     @closed="modalClosed"
   >
     <div class="scroll">
@@ -15,25 +14,25 @@
 
         <div class="title">
           <template v-if="showPhoneVerification">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.title') }}
+            {{ getContent(phoneVerificationContent?.currentLocaleData, phoneVerificationContent?.defaultLocaleData, 'title') }}
           </template>
 
           <template v-else>
-            {{ getContent(popupsData, defaultLocalePopupsData, 'forgot.title') }}
+            {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}
           </template>
         </div>
 
-        <button class="modal-forgot-pass__close" @click.prevent="closeModal('forgotPass')">
+        <button class="modal-forgot-pass__close" @click.prevent="closeModal('forgot-pass')">
           <atomic-icon id="close"/>
         </button>
       </div>
 
       <p v-if="!showPhoneVerification" class="text">
-        {{ getContent(popupsData, defaultLocalePopupsData, `forgot.${selectedTab === 'email' ? 'emailDescription' : 'phoneDescription'}`) }}
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, `${selectedTab === 'email' ? 'emailDescription' : 'phoneDescription'}`) }}
       </p>
 
       <template v-if="tabsList.length && !showPhoneVerification">
-        <div  class="modal-sign-in__tabs">
+        <div  class="modal-forgot-pass__tabs">
           <button-base
             v-for="tab in tabsList"
             :key="tab.id"
@@ -46,7 +45,7 @@
           </button-base>
         </div>
 
-        <atomic-divider class="modal-sign-in__tabs-divider" />
+        <atomic-divider class="modal-forgot-pass__tabs-divider" />
       </template>
 
       <transition name="fade" mode="out-in" :duration="100">
@@ -64,7 +63,7 @@
             reason="changingPass"
             :errorHint="verificationError"
             :loading="sendingData"
-            :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'forgot.forgotButton')"
+            :buttonLabel="getContent(props.currentLocaleData, props.defaultLocaleData, 'forgotButton')"
             @verifyPhone="verifyPhone"
             @removeErrorHint="verificationError = undefined"
           />
@@ -73,7 +72,7 @@
 
       <button-popup
         v-if="!showPhoneVerification"
-        :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'forgot.registrationButton') || ''"
+        :buttonLabel="getContent(props.currentLocaleData, props.defaultLocaleData, 'registrationButton') || ''"
         modal="register"
       />
     </div>
@@ -81,15 +80,32 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
+  import type {IModalsContent} from "~/types";
 
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['forgot']>;
+    defaultLocaleData: Maybe<IModalsContent['forgot']>;
+  }>();
+
+  const signInContentParams = {
+    contentKey: 'modal-sign-in',
+    contentRoute: ['modals', 'sign-in']
+  };
+  const { getContentData: getSignInContentData } = useContentLogic(signInContentParams);
+  const { data: signInContent } = await useLazyAsyncData(getSignInContentData);
+
+  const phoneVerificationContentParams = {
+    contentKey: 'modal-phone-verification',
+    contentRoute: ['modals', 'phone-verification']
+  };
+  const { getContentData: getPhoneVerificationContentData } = useContentLogic(phoneVerificationContentParams);
+  const { data: phoneVerificationContent } = await useLazyAsyncData(getPhoneVerificationContentData);
+
+  const { closeModal } = useModalStore();
   const { openModal } = useModalStore();
 
-  const { popupsData, defaultLocalePopupsData, settingsConstants } = useGlobalStore();
+  const { settingsConstants } = useGlobalStore();
   const { getContent } = useProjectMethods();
   const showPhoneVerification = ref<boolean>(false);
 
@@ -102,7 +118,7 @@
 
   const hasPhoneRegistration = settingsConstants?.player?.registration?.phone;
   const tabsList = computed(() => {
-    const tabsObj = getContent(popupsData, defaultLocalePopupsData, 'login.tabs');
+    const tabsObj = getContent(signInContent.value?.currentLocaleData, signInContent.value?.defaultLocaleData, 'tabs');
     if (!tabsObj || !hasPhoneRegistration) return [];
 
     return Object.keys(tabsObj).map(key => {
@@ -129,12 +145,11 @@
   }
 
   const showResetModal = async (code: string):Promise<void> => {
-    const layoutStore = useLayoutStore();
     const router = useRouter();
     const route = useRoute();
-    layoutStore.closeModal('forgotPass');
-    await router.push({ query: { ...route.query, 'reset-pass': 'true', resetCode: code } });
-    layoutStore.modals.resetPass = true;
+    const { openModal } = useModalStore();
+    await openModal('reset-pass', undefined, false);
+    router.push({ query: { ...route.query, 'reset-pass': 'true', resetCode: code } });
   }
 
   const sendingData = ref<boolean>(false);
@@ -153,7 +168,7 @@
       if (error.data?.error?.code === 11003) {
         verificationError.value = {
           variant: 'error',
-          message: getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.invalidError')
+          message: getContent(phoneVerificationContent.value?.currentLocaleData, phoneVerificationContent.value?.defaultLocaleData, 'invalidError')
         };
       } else {
         verificationError.value = {

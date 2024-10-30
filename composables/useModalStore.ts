@@ -5,6 +5,8 @@ import { defineAsyncComponent } from "vue";
 
 interface IModals extends Record<string, any> {
   'sign-in': Maybe<Vfm>;
+  'forgot-pass': Maybe<Vfm>;
+  'reset-pass': Maybe<Vfm>;
 }
 
 interface IModalStoreState {
@@ -17,10 +19,12 @@ interface IModalStoreState {
 export const useModalStore = defineStore('modalStore', {
   state: ():IModalStoreState => ({
     modals: {
-      'sign-in': undefined
+      'sign-in': undefined,
+      'forgot-pass': undefined,
+      'reset-pass': undefined
     },
-    modalsUrl: ['sign-in'],
-    onlyGuestModals: ['sign-in'],
+    modalsUrl: ['sign-in', 'forgot-pass', 'reset-pass'],
+    onlyGuestModals: ['sign-in', 'forgot-pass', 'reset-pass'],
     onlyLoggedModals: []
   }),
 
@@ -35,13 +39,22 @@ export const useModalStore = defineStore('modalStore', {
     addModalQuery(modalName: string, modalQueryParam?: string): void {
       const router = useRouter();
       const { query } = useRoute();
-      router.replace({ query: { ...query, [modalName]: modalQueryParam || 'true' } });
+      const newQuery = { ...query };
+      Object.keys(query).forEach(queryName => {
+        if (this.modalsUrl.includes(queryName)) {
+          if (this.modals[queryName]) this.modals[queryName].close();
+          delete newQuery[queryName];
+        }
+      });
+      router.replace({ query: { ...newQuery, [modalName]: modalQueryParam || 'true' } });
     },
 
     removeModalQuery(modalName:string):void {
       const router = useRouter();
       const { query } = useRoute();
-      router.replace({ query: { ...query, [modalName]: undefined } });
+      const newQuery = { ...query, [modalName]: undefined };
+      if (modalName === 'reset-pass') newQuery.resetCode = undefined;
+      router.replace({ query: newQuery });
     },
 
     async openModal(modalName: string, modalQueryParam?: string, prohibitQueryChange = true): Promise<void> {
@@ -78,7 +91,7 @@ export const useModalStore = defineStore('modalStore', {
       const { query } = useRoute();
       const queryArr = Object.keys(query);
 
-      queryArr.forEach((queryName) => {
+      for (const queryName of queryArr) {
         if (!this.modalsUrl.includes(queryName)) return;
 
         if (!this.accessToOpen(queryName)) {
@@ -87,8 +100,9 @@ export const useModalStore = defineStore('modalStore', {
           //
         } else {
           this.openModal(queryName, query[queryName] as string);
+          break;
         }
-      });
+      }
     }
   },
 });

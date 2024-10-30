@@ -21,5 +21,5 @@
     where: { pageIdentity }
   };
   const { getContentData } = useContentLogic<IStaticPage>(contentParams);
-  const { status, data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { status, data: pageContent } = await useLazyAsyncData(getContentData);
 </script>

@@ -64,7 +64,7 @@
     <button-popup
       class="btn-forgot"
       :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.forgotButton')"
-      modal="forgotPass"
+      modal="forgot-pass"
     />
     
     <atomic-socials type="login"/>

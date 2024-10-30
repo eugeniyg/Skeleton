@@ -3,8 +3,8 @@
     v-model="modals.registerCancel"
     :clickToClose="false"
     class="modal-register-cancel"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
     @clickOutside="closeRegistration"
   >
     <div class="scroll">

@@ -14,8 +14,6 @@ interface IModals extends Record<string, any> {
   walletBonusInfo: boolean;
   confirm: boolean;
   failing: boolean;
-  forgotPass: boolean;
-  resetPass: boolean;
   success: boolean;
   fiat: boolean;
   turnOverWager: boolean;
@@ -34,8 +32,6 @@ interface IModalsUrls extends Record<string, any> {
   success: string;
   failing: string;
   confirm: string;
-  forgotPass: string;
-  resetPass: string;
   wallet: string;
   questsHub: string;
   depositRedirect: string;
@@ -70,8 +66,6 @@ export const useLayoutStore = defineStore('layoutStore', {
         walletBonusInfo: false,
         confirm: false,
         failing: false,
-        forgotPass: false,
-        resetPass: false,
         success: false,
         registerCancel: false,
         fiat: false,
@@ -90,8 +84,6 @@ export const useLayoutStore = defineStore('layoutStore', {
         success: 'success',
         failing: 'failing',
         confirm: 'confirm',
-        forgotPass: 'forgot-pass',
-        resetPass: 'reset-pass',
         wallet: 'wallet',
         questsHub: 'quests-hub',
         depositRedirect: 'deposit-redirect',
@@ -223,7 +215,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         const modalKey = Object.keys(this.modalsUrl).find((key) => this.modalsUrl[key] === query);
         if (!modalKey) return;
 
-        const guestModals = ['register', 'forgotPass', 'resetPass'];
+        const guestModals = ['register'];
         const authModals = ['wallet', 'questsHub'];
         if (guestModals.includes(modalKey)) {
           isLoggedIn ? this.closeModal(modalKey) : this.showModal(modalKey);

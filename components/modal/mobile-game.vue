@@ -3,8 +3,8 @@
     v-model="showMobileGameModal"
     class="modal-mobile-game"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
   >
     <div class="scroll">
       <button-modal-close @close="showMobileGameModal = false"/>

@@ -2,8 +2,8 @@
   <vue-final-modal
     class="modal-sign-in"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
   >
     <div class="scroll">
       <div class="header">
@@ -81,7 +81,7 @@
   };
   
   onMounted(() => {
-    selectedTab.value = (displayType.value !== 'both') ? displayType.value : 'email'
+    selectedTab.value = (displayType.value !== 'both') ? displayType.value : 'email';
   });
 
 </script>

@@ -4,8 +4,8 @@
       v-model="modals.fiat"
       class="modal-fiat"
       :clickToClose="false"
-      :overlayTransition="{ mode: 'in-out', duration: 200 }"
-      :contentTransition="{ mode: 'in-out', duration: 200 }"
+      :overlayTransition="{ mode: 'in-out', duration: 250 }"
+      :contentTransition="{ mode: 'in-out', duration: 250 }"
       @clickOutside="closeModal('fiat')"
     >
       <div class="scroll">

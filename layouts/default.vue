@@ -43,8 +43,6 @@
 
     <modal-register />
     <modal-register-cancel />
-    <modal-forgot-pass />
-    <modal-reset-pass />
     <modal-success />
     <modal-error />
     <modal-confirm />

@@ -71,7 +71,8 @@
     }
   };
 
-  const { closeModal, showAlert } = useLayoutStore();
+  const { showAlert } = useLayoutStore();
+  const { closeModal } = useModalStore();
   const showErrorAlert = ():void => {
     showAlert(alertsData.value?.profile?.invalidResetCode || defaultLocaleAlertsData.value?.profile?.invalidResetCode);
   };
@@ -89,7 +90,7 @@
       const route = useRoute();
       await resetProfilePassword({ ...resetFormData, code: route.query.resetCode as string });
       showAlert(alertsData.value?.profile?.passwordChanged || defaultLocaleAlertsData.value?.profile?.passwordChanged);
-      closeModal('resetPass');
+      closeModal('reset-pass');
     } catch (error:any) {
       if (error.response?.status === 422) {
         if (error.data?.error?.fields.code) showErrorAlert();

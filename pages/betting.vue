@@ -47,7 +47,7 @@
     isPage: true
   }
   const { getContentData } = useContentLogic<ISportsbookPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const showRestrictedBetsModal = ref<boolean>(false);
   const maxBetsModal = reactive({

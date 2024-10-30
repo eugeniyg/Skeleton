@@ -107,7 +107,7 @@
     isPage: true
   };
   const { getContentData } = useContentLogic<IGamesPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const selectedProviders = ref<string[]>([]);
   const activeCollection = ref<ICollection | undefined>();

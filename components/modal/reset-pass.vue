@@ -1,14 +1,13 @@
 <template>
   <vue-final-modal
-    v-model="modals.resetPass"
     class="modal-reset-pass"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('resetPass')"/>
+        <button-modal-close @close="closeModal('reset-pass')"/>
         <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'reset.title') }}</div>
       </div>
 
@@ -18,12 +17,9 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
 
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
+  const { closeModal } = useModalStore();
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
 </script>
