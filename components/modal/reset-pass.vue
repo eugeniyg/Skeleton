@@ -8,7 +8,7 @@
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="closeModal('reset-pass')"/>
-        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'reset.title') }}</div>
+        <div class="title">{{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}</div>
       </div>
 
       <form-reset-pass />
@@ -18,9 +18,14 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
+  import type { IModalsContent } from "~/types";
+
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['reset']>;
+    defaultLocaleData: Maybe<IModalsContent['reset']>;
+  }>();
 
   const { closeModal } = useModalStore();
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
 </script>
 
