@@ -1,14 +1,13 @@
 import {defineStore} from "pinia";
-import { useVfm, useModal } from 'vue-final-modal';
-import type { Vfm } from 'vue-final-modal';
+import {useVfm, useModal, type UseModalReturnType } from 'vue-final-modal';
 import { defineAsyncComponent } from "vue";
 
-interface IModals extends Record<string, any> {
-  'sign-in': Maybe<Vfm>;
-  'forgot-pass': Maybe<Vfm>;
-  'reset-pass': Maybe<Vfm>;
-  'sign-up': Maybe<Vfm>;
-  'sign-up-cancel': Maybe<Vfm>;
+interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
+  'sign-in': Maybe<UseModalReturnType<any>>;
+  'forgot-pass':Maybe<UseModalReturnType<any>>;
+  'reset-pass': Maybe<UseModalReturnType<any>>;
+  'sign-up': Maybe<UseModalReturnType<any>>;
+  'sign-up-cancel': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -87,7 +86,7 @@ export const useModalStore = defineStore('modalStore', {
     },
 
     closeModal(modalName: string):void {
-      this.modals[modalName].close();
+      this.modals[modalName]?.close();
       if (this.modalsUrl.includes(modalName)) this.removeModalQuery(modalName);
     },
 

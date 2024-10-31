@@ -108,9 +108,8 @@
   };
   const { getContentData: getPhoneVerificationContentData } = useContentLogic(phoneVerificationContentParams);
   const { data: phoneVerificationContent } = await useLazyAsyncData(getPhoneVerificationContentData);
-
-  const { closeModal } = useModalStore();
-  const { openModal } = useModalStore();
+  const modalStore = useModalStore();
+  const { openModal, closeModal } = modalStore;
 
   const { settingsConstants } = useGlobalStore();
   const { getContent } = useProjectMethods();
@@ -154,9 +153,9 @@
   const showResetModal = async (code: string):Promise<void> => {
     const router = useRouter();
     const route = useRoute();
-    const { openModal } = useModalStore();
     await openModal('reset-pass', undefined, false);
-    router.push({ query: { ...route.query, 'reset-pass': 'true', resetCode: code } });
+    router.push({ query: { ...route.query, 'forgot-pass': undefined, 'reset-pass': 'true', resetCode: code } });
+    modalStore.modals['forgot-pass']?.close();
   }
 
   const sendingData = ref<boolean>(false);
