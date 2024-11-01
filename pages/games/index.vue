@@ -129,7 +129,8 @@
       collectionId: activeCollection.value?.id,
       sortBy: sortBy.value,
       sortOrder: sortOrder.value,
-      countries: headerCountry.value ? [headerCountry.value] : undefined
+      countries: headerCountry.value ? [headerCountry.value] : undefined,
+      providerId: selectedProviders.value,
     };
     
     if (searchValue.value) params.name = searchValue.value;
@@ -153,11 +154,11 @@
     selectedProviders.value = newSelectedProviders;
     
     loadPage.value = 1;
-    
+
     await router.replace({
       query: {
         ...route.query,
-        provider: selectedProviders.value
+        providerId: selectedProviders.value
       },
     });
     
@@ -254,7 +255,7 @@
     closeModal('providers');
     selectedProviders.value = providersId;
     const category = getContent(popupsData, defaultLocalePopupsData, 'providers.collectionId');
-    await router.replace({ query: { ...route.query, category, provider: providersId }});
+    await router.replace({ query: { ...route.query, category, providerId: providersId }});
     await createTags();
     await changeProvider(selectedProviders.value)
   };
@@ -300,7 +301,7 @@
     isShowFilter.value = false;
   };
   
-  watch(() => route.query?.provider, async () => {
+  watch(() => selectedProviders.value, async () => {
     await createTags();
   });
 </script>

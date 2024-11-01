@@ -34,7 +34,7 @@
       <button-providers @action="showModal('providers')"/>
       
       <ul
-        v-if="isDropdownShown"
+        v-if="isDropdownShown && dropdownItems.length"
         class="nav-category__dropdown"
       >
         <li
