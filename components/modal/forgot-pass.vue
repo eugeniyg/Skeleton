@@ -31,7 +31,7 @@
         {{ getContent(props.currentLocaleData, props.defaultLocaleData, `${selectedTab === 'email' ? 'emailDescription' : 'phoneDescription'}`) }}
       </p>
 
-      <template v-if="tabsList.length && !showPhoneVerification">
+      <template v-if="tabsList.length && forgotType === 'both' && !showPhoneVerification">
         <div  class="modal-forgot-pass__tabs">
           <button-base
             v-for="tab in tabsList"
@@ -123,6 +123,7 @@
   };
 
   const hasPhoneRegistration = settingsConstants?.player?.registration?.phone;
+  const forgotType = getContent(props.currentLocaleData, props.defaultLocaleData, 'tabsDisplay') || 'both';
   const tabsList = computed(() => {
     const tabsObj = getContent(signInContent.value?.currentLocaleData, signInContent.value?.defaultLocaleData, 'tabs');
     if (!tabsObj || !hasPhoneRegistration) return [];
@@ -132,7 +133,7 @@
       return { id: 'phone', icon: 'mobile', label: tabsObj[key] };
     })
   });
-  const selectedTab = ref<'email'|'phone'>('email');
+  const selectedTab = ref<'email'|'phone'>(forgotType === 'both' ? 'email' : forgotType);
 
   const changeTab = (newTabId: 'email'|'phone'): void => {
     if (selectedTab.value === newTabId) return;

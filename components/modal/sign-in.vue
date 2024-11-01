@@ -12,7 +12,7 @@
       </div>
 
       
-      <div v-if="tabsList.length && displayType === 'both'">
+      <div v-if="tabsList.length && loginType === 'both'">
         <div class="modal-sign-in__tabs">
           <button-base
             v-for="tab in tabsList"
@@ -51,6 +51,7 @@
 
   const { closeModal } = useModalStore();
   const { getContent } = useProjectMethods();
+  const loginType = getContent(props.currentLocaleData, props.defaultLocaleData, 'tabsDisplay') || 'both';
   
   const tabsList = computed(() => {
     const tabsObj = getContent(props.currentLocaleData, props.defaultLocaleData, 'tabs');
@@ -72,12 +73,8 @@
         };
       });
   });
-  
-  const displayType = computed(() => {
-    return getContent(props.currentLocaleData, props.defaultLocaleData, 'type');
-  });
-  
-  const selectedTab = ref<'email'|'phone'>('email');
+
+  const selectedTab = ref<'email'|'phone'>(loginType === 'both' ? 'email' : loginType);
   const selectedCount = ref(0);
   
   const changeTab = (newTabId: 'email' | 'phone'): void => {
@@ -85,11 +82,6 @@
     selectedTab.value = newTabId;
     selectedCount.value++;
   };
-  
-  onMounted(() => {
-    selectedTab.value = (displayType.value !== 'both') ? displayType.value : 'email';
-  });
-
 </script>
 
 <style src="~/assets/styles/components/modal/sign-in.scss" lang="scss"/>
