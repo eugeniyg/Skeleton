@@ -17,17 +17,18 @@
         class="items"
         body-scroll-lock-ignore
       >
-        <div
+        <a
           v-for="locale in locales"
           :key="locale.code"
           class="item"
           :class="{ 'is-selected': currentLocale?.code.toLowerCase() === locale.code.toLowerCase() }"
+          :href="`/${locale.code.toLowerCase()}`"
           @click="changeLanguage(locale)"
         >
           <atomic-image class="img" :src="`${gamehubCdn}/locales/${locale.code.toLowerCase()}.svg`" />
           <span class="title">{{ locale.nativeName || locale.name }}</span>
           <atomic-icon id="check" />
-        </div>
+        </a>
       </div>
     </div>
   </div>
