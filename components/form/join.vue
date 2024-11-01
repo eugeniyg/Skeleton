@@ -119,7 +119,6 @@
       .map(field => field.name);
     return ['locale', ...hiddenFieldsName];
   });
-  console.log(hiddenFields.value);
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
   const fieldsListByRegistrationType = computed(() => {
