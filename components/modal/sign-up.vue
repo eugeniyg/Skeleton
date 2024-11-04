@@ -111,8 +111,15 @@
   })
   const registrationData = ref<Record<string, any>|undefined>();
   const registrationType = computed<RegistrationType>(() => {
-    if (settingsConstants.value?.player.registration.email && settingsConstants.value?.player.registration.phone) return 'emailOrPhone';
-    if (settingsConstants.value?.player.registration.phone) return 'phone';
+    const emailRegistrationEnabled = settingsConstants.value?.player.registration.email;
+    const phoneRegistrationEnabled = settingsConstants.value?.player.registration.phone;
+    const contentRegistration = getContent(props.currentLocaleData, props.defaultLocaleData, 'tabsDisplay') || 'both';
+
+    if (emailRegistrationEnabled && phoneRegistrationEnabled) {
+      return contentRegistration === 'both' ? 'emailOrPhone' : contentRegistration;
+    }
+
+    if (phoneRegistrationEnabled) return 'phone';
     return 'email';
   })
   const registrationTypeTabs = computed<{ id: RegistrationType, label: string, icon: string }[]>(() => {
