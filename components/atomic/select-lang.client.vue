@@ -53,14 +53,14 @@
     if (currentLocale.value?.code === locale.code || isProcess.value) return;
     isOpen.value = false;
     isProcess.value = true;
-
+    const href = event.currentTarget.attributes.href.value;
     cookieLanguage.value = locale.code.toLowerCase();
 
     if (isLoggedIn.value) {
-      await changeProfileData({ locale: locale.code })
+      await changeProfileData({ locale: locale.code });
     }
 
-    window.location.href = event.currentTarget.attributes.href.value || `/${locale.code.toLowerCase()}`;
+    window.location.href = href || `/${locale.code.toLowerCase()}`;
   };
 
   const linkToLocale = (locale: ILocale):string => {
