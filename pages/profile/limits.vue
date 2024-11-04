@@ -86,7 +86,7 @@
     isPage: true
   };
   const { getContentData } = useContentLogic<IProfileLimits>(contentParams);
-  const { status, data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { status, data: pageContent } = await useLazyAsyncData(getContentData);
 
   watch(status, async (newValue) => {
     if (newValue === 'success') {

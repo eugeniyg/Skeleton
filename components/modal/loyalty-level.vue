@@ -3,8 +3,8 @@
     v-model="modals.loyaltyLevel"
     class="modal-loyalty-level"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
     @clickOutside="closeModal('loyaltyLevel')"
   >
     <div class="scroll">

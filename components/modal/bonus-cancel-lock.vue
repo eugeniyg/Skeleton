@@ -3,8 +3,8 @@
     :modelValue="props.showModal"
     class="modal-bonus-cancel-lock"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
     @click-outside="emit('close')"
   >
     <div class="scroll">

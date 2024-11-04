@@ -5,14 +5,15 @@
     <h4 class="limits-periods-list__item-title">{{ status === 1 ? statusActiveTitle : statusPendingTitle }}</h4>
 
     <p v-if="isShowContDown" class="limits-periods-list__item-sub-title">
-      <template v-if="state.isAlmostDone">
+      <template v-if="isAlmostDone">
         {{ getContent(limitsContent, defaultLimitsContent, 'timerAlmostDone') }}
       </template>
+
       <template v-else>
-        <span v-if="state.days" class="time-span">{{ format(state.days) }}d</span>
-        <span class="time-span">{{ format(state.hours) }}h</span>
-        <span class="time-span">{{ format(state.minutes) }}m</span>
-        <span class="time-span">{{ format(state.seconds) }}s</span>
+        <span v-if="days" class="time-span">{{ format(days) }}d</span>
+        <span class="time-span">{{ format(hours) }}h</span>
+        <span class="time-span">{{ format(minutes) }}m</span>
+        <span class="time-span">{{ format(seconds) }}s</span>
         {{ timerLabel }}
       </template>
     </p>
@@ -66,21 +67,14 @@
 
   const emit = defineEmits(['edit-limit']);
 
-  const state = reactive<{
-    isAlmostDone: boolean,
-    diffInSeconds: number,
-    days: string|number,
-    hours: string|number,
-    minutes: string|number,
-    seconds: string|number,
-  }>({
-    isAlmostDone: false,
-    diffInSeconds: 0,
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+  const {
+    isAlmostDone,
+    days,
+    hours,
+    minutes,
+    seconds,
+    startTimer
+  } = useTimer();
 
   const dayjs = useDayjs();
   const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
@@ -133,38 +127,22 @@
     : getContent(limitsContent.value, defaultLimitsContent.value, 'statusPendingTimerLabel')
   ));
 
-  const countdown = () => {
-    const tick = async () => {
-      if (state.diffInSeconds <= 0) {
-        state.isAlmostDone = true;
-
-        setTimeout(getLimits, 60000);
-      } else {
-        state.diffInSeconds -= 1;
-        state.days = Math.floor(state.diffInSeconds / (24 * 3600));
-        state.hours = Math.floor(state.diffInSeconds / 3600) % 24;
-        state.minutes = Math.floor((state.diffInSeconds % 3600) / 60);
-        state.seconds = state.diffInSeconds % 60;
-
-        setTimeout(tick, 1000);
-      }
-    };
-
-    tick();
-  };
+  const getLimitsTimer = ref<NodeJS.Timeout | null>(null);
+  watch(isAlmostDone, (newValue) => {
+    if (newValue) getLimitsTimer.value = setTimeout(getLimits, 60000);
+  })
 
   const isShowContDown = computed(() => props.period === 'weekly' || props.period === 'monthly');
 
   onMounted(() => {
     if (props.expiredAt) {
-      const start = Date.now();
-      const end = new Date(props.expiredAt).getTime();
-
-      state.diffInSeconds = Math.ceil((end - start) / 1000);
-
-      countdown();
+      startTimer(props.expiredAt);
     }
   });
+
+  onBeforeUnmount(() => {
+    if (getLimitsTimer.value) clearTimeout(getLimitsTimer.value);
+  })
 </script>
 
 <style src="~/assets/styles/components/atomic/period-item.scss" lang="scss" />

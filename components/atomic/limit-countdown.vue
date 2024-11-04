@@ -30,39 +30,22 @@
     return msg ? msg.replace('{date}', dateValue) : '';
   });
 
-  const state = reactive<{
-    isAlmostDone: boolean,
-    diffInSeconds: number,
-  }>({
-    isAlmostDone: false,
-    diffInSeconds: 0,
-  });
+  const { isAlmostDone, startTimer } = useTimer();
 
-  const countdown = () => {
-    const tick = async () => {
-      if (state.diffInSeconds <= 0) {
-        state.isAlmostDone = true;
-
-        setTimeout(getLimits, 60000);
-      } else {
-        state.diffInSeconds -= 1;
-        setTimeout(tick, 1000);
-      }
-    };
-
-    tick();
-  };
+  const getLimitsTimer = ref<NodeJS.Timeout | null>(null);
+  watch(isAlmostDone, (newValue) => {
+    if (newValue) getLimitsTimer.value = setTimeout(getLimits, 60000);
+  })
 
   onMounted(() => {
     if (props.expiredAt) {
-      const start = Date.now();
-      const end = new Date(props.expiredAt).getTime();
-
-      state.diffInSeconds = Math.ceil((end - start) / 1000);
-
-      countdown();
+      startTimer(props.expiredAt);
     }
   });
+
+  onBeforeUnmount(() => {
+    if (getLimitsTimer.value) clearTimeout(getLimitsTimer.value);
+  })
 </script>
 
 <style src="~/assets/styles/components/atomic/limit-countdown.scss" lang="scss" />

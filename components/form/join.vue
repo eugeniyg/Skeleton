@@ -64,14 +64,14 @@
       @click="signUp"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton" />
-      {{ getContent(popupsData, defaultLocalePopupsData, 'registration.registrationButton') }}
+      {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'registrationButton') }}
     </button-base>
     
     <atomic-socials type="registration" />
 
     <button-popup
-      :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'registration.loginButton')"
-      openModal="signIn"
+      :buttonLabel="getContent(props.currentLocaleData, props.defaultLocaleData, 'loginButton')"
+      modal="sign-in"
     />
   </form>
 </template>
@@ -80,14 +80,19 @@
   import { storeToRefs } from 'pinia';
   import type {IField, RegistrationType} from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
+  import type {IModalsContent} from "~/types";
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
 
   const props = defineProps<{
     registrationFields: IField[];
     registrationType: RegistrationType;
+    currentLocaleData: Maybe<IModalsContent['registration']>;
+    defaultLocaleData: Maybe<IModalsContent['registration']>;
   }>();
 
+  const hiddenFields = ['nickname', 'locale'];
+  const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
   const {
     setFormData,
     getContent,
@@ -154,15 +159,15 @@
       else if (field.name === 'country' && !field.value && geoCountry) return { ...field, value: geoCountry.code };
       else if (field.name === 'receiveEmailPromo') return {
         ...field,
-        value: popupsData.value?.registration?.agreeEmailChecked ? 1 : 0
+        value: props.currentLocaleData?.agreeEmailChecked ? 1 : 0
       };
       else if (field.name === 'receiveSmsPromo') return {
         ...field,
-        value: popupsData.value?.registration?.agreeSmsChecked ? 1 : 0
+        value: props.currentLocaleData?.agreeSmsChecked ? 1 : 0
       };
       else if (field.name === 'agreements') return {
         ...field,
-        value: popupsData.value?.registration?.agreementsChecked ? 1 : 0
+        value: props.currentLocaleData?.agreementsChecked ? 1 : 0
       };
       else return field;
     });
@@ -170,8 +175,8 @@
   const registrationFormData = reactive(setFormData(getFields()));
 
   const getCheckboxLabel = (fieldName: string):string|undefined => {
-    if (fieldName === 'receiveEmailPromo') return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.agreeEmailLabel');
-    if (fieldName === 'receiveSmsPromo') return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.agreeSmsLabel');
+    if (fieldName === 'receiveEmailPromo') return getContent(props.currentLocaleData, props.defaultLocaleData, 'agreeEmailLabel');
+    if (fieldName === 'receiveSmsPromo') return getContent(props.currentLocaleData, props.defaultLocaleData, 'agreeSmsLabel');
     return getContent(fieldsSettings.value, defaultLocaleFieldsSettings.value, `fieldsControls.${fieldName}.label`) || '';
   };
 

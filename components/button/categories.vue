@@ -1,7 +1,7 @@
 <template>
   <div
     class="btn-categories"
-    :class="{'is-active': props.isActive}"
+    :class="{'is-active': props.isActive, 'is-disabled': props.disabled }"
     @click="emit('action')"
   >
     <atomic-icon id="more-menu" class="btn-categories__icon"/>
@@ -13,6 +13,7 @@
 <script setup lang="ts">
   const props = defineProps<{
     isActive?: boolean;
+    disabled?: boolean;
   }>();
   
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();

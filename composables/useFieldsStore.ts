@@ -7,7 +7,8 @@ import type {
 } from '@skeleton/core/types';
 
 interface IFieldsStoreState {
-  profileFields: IField[],
+  profileFields: IField[];
+  registrationFields: IField[];
 }
 
 interface ISelectOptions extends Record<string, any>{
@@ -19,6 +20,7 @@ interface ISelectOptions extends Record<string, any>{
 export const useFieldsStore = defineStore('fieldsStore', {
   state: ():IFieldsStoreState => ({
     profileFields: [],
+    registrationFields: []
   }),
 
   getters: {
@@ -36,6 +38,11 @@ export const useFieldsStore = defineStore('fieldsStore', {
     async getProfileFields():Promise<void> {
       const { getProfileFields } = useCoreProfileApi();
       this.profileFields = await getProfileFields();
+    },
+
+    async getRegistrationFields():Promise<void> {
+      const { getRegistrationFields } = useCoreAuthApi();
+      this.registrationFields = await getRegistrationFields();
     },
   },
 });

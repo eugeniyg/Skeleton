@@ -21,13 +21,19 @@
       @click="sendOtp"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
-      {{ getContent(popupsData, defaultLocalePopupsData, 'forgot.sendOtpButton') }}
+      {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'sendOtpButton') }}
     </button-base>
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import type {IModalsContent} from "~/types";
+
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['forgot']>;
+    defaultLocaleData: Maybe<IModalsContent['forgot']>;
+  }>();
 
   const globalStore = useGlobalStore();
   const {

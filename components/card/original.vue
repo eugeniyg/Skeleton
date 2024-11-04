@@ -77,7 +77,7 @@
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent,
   } = useGlobalStore();
-  const { showModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const { localizePath, getImageUrl, getContent } = useProjectMethods();
 
   const gameTagsContent: Maybe<IGameTag[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags.gameTagsList');
@@ -89,7 +89,7 @@
     if (!isReal) {
       router.push(localizePath(`/games/${props.identity}`));
     } else if (!isLoggedIn.value) {
-      showModal('register');
+      openModal('sign-up');
     } else {
       router.push(localizePath(`/games/${props.identity}?real=true`));
     }

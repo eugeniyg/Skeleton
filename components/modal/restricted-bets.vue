@@ -3,8 +3,8 @@
     :modelValue="props.showModal"
     class="modal-restricted-bets"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
     @beforeOpen="getPlayerBonuses"
   >
     <div class="scroll">
