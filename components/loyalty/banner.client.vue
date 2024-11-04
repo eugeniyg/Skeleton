@@ -38,7 +38,7 @@
           v-else
           type="primary"
           size="md"
-          @click="showModal('signIn')"
+          @click="openModal('sign-in')"
         >
           <atomic-icon v-if="loginButtonContent.icon" :id="loginButtonContent.icon" />
           <span>{{ loginButtonContent.label }}</span>
@@ -66,10 +66,8 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn, userNickname } = storeToRefs(profileStore);
-  const {
-    showModal,
-    openWalletModal
-  } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
+  const { openModal } = useModalStore();
 
   const {
     createSrcSet,

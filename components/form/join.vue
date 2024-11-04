@@ -21,7 +21,7 @@
       </template>
 
       <component
-        :is="fieldsMap[field.name]?.component || 'form-input-text'"
+        :is="getFieldComponent(field.name)"
         v-else
         :key="field.name"
         v-model:value="registrationFormData[field.name]"
@@ -64,14 +64,14 @@
       @click="signUp"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton" />
-      {{ getContent(popupsData, defaultLocalePopupsData, 'registration.registrationButton') }}
+      {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'registrationButton') }}
     </button-base>
     
     <atomic-socials type="registration" />
 
     <button-popup
-      :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'registration.loginButton')"
-      openModal="signIn"
+      :buttonLabel="getContent(props.currentLocaleData, props.defaultLocaleData, 'loginButton')"
+      modal="sign-in"
     />
   </form>
 </template>
@@ -80,19 +80,24 @@
   import { storeToRefs } from 'pinia';
   import type {IField, RegistrationType} from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
+  import type {IModalsContent} from "~/types";
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
 
   const props = defineProps<{
     registrationFields: IField[];
     registrationType: RegistrationType;
+    currentLocaleData: Maybe<IModalsContent['registration']>;
+    defaultLocaleData: Maybe<IModalsContent['registration']>;
   }>();
 
-  const hiddenFields = ['nickname', 'locale'];
-  const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
-
-  const { setFormData } = useProjectMethods();
-  const { closeModal, openWalletModal } = useLayoutStore();
+  const {
+    setFormData,
+    getContent,
+    getFormRules,
+    createValidationRules,
+    getNicknameFromEmail
+  } = useProjectMethods();
   const fieldsStore = useFieldsStore();
   const { selectOptions } = storeToRefs(fieldsStore);
   const globalStore = useGlobalStore();
@@ -105,15 +110,24 @@
     headerCountry,
     currentLocale
   } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
+
+  const geoCountry = countries.value.find(country => country.code === headerCountry.value);
+  const hiddenFields = computed(() => {
+    const checkFields = ['country', 'currency', 'nickname'];
+    const hiddenFieldsName = props.registrationFields
+      .filter(field => {
+        if (field.name === 'country' && !geoCountry) return false;
+        if (field.name === 'currency' && !geoCountry && field.isRequired) return false;
+        return checkFields.includes(field.name) && !field.isVisible;
+      })
+      .map(field => field.name);
+    return ['locale', ...hiddenFieldsName];
+  });
+  const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
   const fieldsListByRegistrationType = computed(() => {
     if (['email', 'phone'].includes(props.registrationType)) {
-      const hideNickname = props.registrationType === 'phone'
-        && !props.registrationFields.some(field => field.name === 'email');
-
       const clearFields = props.registrationFields.filter(field => {
-        if (field.name === 'nickname' && hideNickname) return false;
         return field.name !== props.registrationType;
       });
 
@@ -136,24 +150,22 @@
   const footerFields = fieldsListByRegistrationType.value.filter((field) => groupFooterFields.includes(field.name));
 
   const getFields = (): IField[] => {
-    const geoCountry = countries.value.find(country => country.code === headerCountry.value);
-
     return fieldsListByRegistrationType.value.map((field) => {
-      if (field.name === 'nickname') return { ...field, value: 'undefined' };
-      else if (field.name === 'currency') return { ...field, value: geoCountry?.currency || 'BTC' };
+      if (field.name === 'nickname' && hiddenFields.value.includes('nickname')) return { ...field, value: 'undefined' };
+      else if (field.name === 'currency') return { ...field, value: geoCountry?.currency };
       else if (field.name === 'locale') return { ...field, value: currentLocale.value?.code };
       else if (field.name === 'country' && !field.value && geoCountry) return { ...field, value: geoCountry.code };
       else if (field.name === 'receiveEmailPromo') return {
         ...field,
-        value: popupsData.value?.registration?.agreeEmailChecked ? 1 : 0
+        value: props.currentLocaleData?.agreeEmailChecked ? 1 : 0
       };
       else if (field.name === 'receiveSmsPromo') return {
         ...field,
-        value: popupsData.value?.registration?.agreeSmsChecked ? 1 : 0
+        value: props.currentLocaleData?.agreeSmsChecked ? 1 : 0
       };
       else if (field.name === 'agreements') return {
         ...field,
-        value: popupsData.value?.registration?.agreementsChecked ? 1 : 0
+        value: props.currentLocaleData?.agreementsChecked ? 1 : 0
       };
       else return field;
     });
@@ -161,12 +173,11 @@
   const registrationFormData = reactive(setFormData(getFields()));
 
   const getCheckboxLabel = (fieldName: string):string|undefined => {
-    if (fieldName === 'receiveEmailPromo') return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.agreeEmailLabel');
-    if (fieldName === 'receiveSmsPromo') return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.agreeSmsLabel');
+    if (fieldName === 'receiveEmailPromo') return getContent(props.currentLocaleData, props.defaultLocaleData, 'agreeEmailLabel');
+    if (fieldName === 'receiveSmsPromo') return getContent(props.currentLocaleData, props.defaultLocaleData, 'agreeSmsLabel');
     return getContent(fieldsSettings.value, defaultLocaleFieldsSettings.value, `fieldsControls.${fieldName}.label`) || '';
   };
 
-  const { getFormRules, createValidationRules } = useProjectMethods();
   const registrationRules = createValidationRules(fieldsListByRegistrationType.value, true);
   const registrationFormRules = getFormRules(registrationRules);
   const {
@@ -222,15 +233,16 @@
   }
 
   const emit = defineEmits(['showVerification']);
-  const { getNicknameFromEmail } = useProjectMethods();
   const signUp = async ():Promise<void> => {
     if (v$.value.$invalid) return;
     v$.value.$reset();
     const validFormData = await v$.value.$validate();
     if (!validFormData) return;
 
-    if (registrationFormData.hasOwnProperty('nickname')) {
-      registrationFormData.nickname = getNicknameFromEmail(registrationFormData.email);
+    if (registrationFormData.hasOwnProperty('nickname') && hiddenFields.value.includes('nickname')) {
+      registrationFormData.nickname = registrationFormData.email
+        ? getNicknameFromEmail(registrationFormData.email)
+        : undefined;
     }
 
     isLockedAsyncButton.value = true;
@@ -241,6 +253,11 @@
     }
     isLockedAsyncButton.value = false;
   };
+
+  const getFieldComponent = (fieldName: string): string => {
+    if (hiddenFields.value.includes(fieldName)) return 'form-input-text';
+    return fieldsMap[fieldName]?.component || 'form-input-text';
+  }
 </script>
 
 <style src="~/assets/styles/components/form/join.scss" lang="scss" />

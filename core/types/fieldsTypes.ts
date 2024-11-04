@@ -4,6 +4,7 @@ export interface IField extends Record<string, any>{
   description: string;
   editable: boolean;
   isRequired: boolean;
+  isVisible: boolean;
   position: number;
   value?: any;
 }

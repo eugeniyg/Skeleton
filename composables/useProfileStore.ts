@@ -233,11 +233,12 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     registrationSucceeded():void {
-      const { showAlert, closeModal, openWalletModal } = useLayoutStore();
+      const { showAlert, openWalletModal } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+      const { closeModal } = useModalStore();
 
       showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
-      closeModal('register');
+      closeModal('sign-up');
       openWalletModal();
     },
 

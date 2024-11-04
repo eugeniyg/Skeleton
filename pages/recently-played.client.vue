@@ -41,7 +41,7 @@
     isPage: true
   };
   const { getContentData } = useContentLogic<IRecentlyPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const { getCollectionsList } = useGamesStore();
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });

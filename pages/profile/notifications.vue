@@ -105,7 +105,7 @@ import type {IProfileNotifications, IStaticPage} from "~/types";
     isPage: true
   };
   const { getContentData } = useContentLogic<IProfileNotifications>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const readMessage = (messageInfo: IMessage): void => {
     state.notifications = state.notifications.map(message => {

@@ -42,7 +42,7 @@
     isPage: true
   };
   const { getContentData } = useContentLogic<IProfileWallet>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const walletStore = useWalletStore();
   const { accounts, currencyTabs } = storeToRefs(walletStore);

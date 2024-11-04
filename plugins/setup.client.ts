@@ -97,8 +97,10 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   nuxtApp.hook('app:created', async () => {
     const { getProviderList, getCollectionsList } = useGamesStore();
+    const { getRegistrationFields } = useFieldsStore();
     getProviderList();
     getCollectionsList();
+    getRegistrationFields();
 
     const profileStore = useProfileStore();
     profileStore.fingerprintVisitor = getFingerprintVisitor();

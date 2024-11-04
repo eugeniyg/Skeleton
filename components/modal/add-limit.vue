@@ -3,8 +3,8 @@
     v-model="modals.addLimit"
     class="modal-deposit-limit"
     clickToClose
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
     @clickOutside="closeModal('addLimit')"
   >
     <div class="scroll">

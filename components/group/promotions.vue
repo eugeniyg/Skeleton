@@ -22,7 +22,7 @@
             <button-base
               type="primary"
               size="md"
-              @click="isLoggedIn ? openWalletModal('deposit') : showModal('register')"
+              @click="isLoggedIn ? openWalletModal('deposit') : openModal('sign-up')"
             >
               {{ promotion.buttonLabel }}
             </button-base>
@@ -43,7 +43,6 @@
 
 <script  setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import { marked } from 'marked';
   import type {IPromotion} from "~/types";
 
   const globalStore = useGlobalStore();
@@ -51,7 +50,8 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal, openWalletModal } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
+  const { openModal } = useModalStore();
 
   const hoverCard = ref<number|undefined>(undefined);
   const { isMobile } = storeToRefs(globalStore);

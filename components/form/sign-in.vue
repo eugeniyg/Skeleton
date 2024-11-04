@@ -3,6 +3,7 @@
     <form-input-text
       v-if="props.loginType === 'email'"
       key="email"
+      ref="inputEmailRef"
       v-model:value="authorizationFormData.login"
       type="email"
       :is-required="true"
@@ -13,12 +14,12 @@
       @blur="v$.login?.$touch()"
       @focus="focusField('login')"
       @submit="login"
-      ref="inputEmailRef"
     />
     
     <form-input-phone
       v-else
       key="phone"
+      ref="inputPhoneRef"
       v-model:value="authorizationFormData.login"
       :is-required="true"
       :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.phone.label') || ''"
@@ -28,7 +29,6 @@
       @blur="v$.login?.$touch()"
       @focus="focusField('login')"
       @submit="login"
-      ref="inputPhoneRef"
     />
     
     <form-input-password
@@ -58,42 +58,43 @@
       @click="login"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
-      {{ getContent(popupsData, defaultLocalePopupsData, 'login.loginButton') }}
+      {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'loginButton') }}
     </button-base>
     
     <button-popup
       class="btn-forgot"
-      :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.forgotButton')"
-      openModal="forgotPass"
+      :buttonLabel="getContent(props.currentLocaleData, props.defaultLocaleData, 'forgotButton')"
+      modal="forgot-pass"
     />
     
     <atomic-socials type="login"/>
     
     <button-popup
-      :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'login.registrationButton')"
-      openModal="register"
+      :buttonLabel="getContent(props.currentLocaleData, props.defaultLocaleData, 'registrationButton')"
+      modal="sign-up"
     />
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import type {IModalsContent} from "~/types";
   
   const props = defineProps<{
     loginType: 'email' | 'phone';
     count: number;
+    currentLocaleData: Maybe<IModalsContent['signIn']>;
+    defaultLocaleData: Maybe<IModalsContent['signIn']>;
   }>();
   
   const globalStore = useGlobalStore();
   const {
     fieldsSettings,
     defaultLocaleFieldsSettings,
-    popupsData,
-    defaultLocalePopupsData,
     alertsData,
     defaultLocaleAlertsData
   } = storeToRefs(globalStore);
-  const { closeModal } = useLayoutStore();
+  const { closeModal } = useModalStore();
   
   const profileStore = useProfileStore();
   const { socialAuthEmailError } = storeToRefs(profileStore);
@@ -101,7 +102,7 @@
   const isLockedAsyncButton = ref<boolean>(false);
   
   const hintErrorMessage = computed(() => {
-    const emailVerificationError = getContent(popupsData.value, defaultLocalePopupsData.value, 'login.emailVerificationError');
+    const emailVerificationError = getContent(props.currentLocaleData, props.defaultLocaleData, 'emailVerificationError');
     const loginError = getContent(fieldsSettings.value, defaultLocaleFieldsSettings.value, 'validationMessages.login');
     
     if (!emailVerificationError && !loginError) return '';
@@ -145,7 +146,7 @@
     try {
       isLockedAsyncButton.value = true;
       await logIn(authorizationFormData);
-      closeModal('signIn');
+      closeModal('sign-in');
     } catch (error: any) {
       if (error.response?.status === 401) {
         loginError.value = true;

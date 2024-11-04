@@ -36,7 +36,7 @@
     isPage: true
   }
   const { getContentData: getPageContentData } = useContentLogic<IQuestionPage>(pageContentParams);
-  const { data: pageContent } = await useLazyAsyncData(pageContentParams.contentKey, () => getPageContentData());
+  const { data: pageContent } = await useLazyAsyncData(getPageContentData);
 
   const categoryContentParams = {
     contentKey: 'questionCategoryContent',
@@ -44,7 +44,7 @@
     findAll: true
   }
   const { getContentData: getCategoryContentData } = useContentLogic<IQuestionCategory[]>(categoryContentParams);
-  const { data: categoryContent } = await useLazyAsyncData(categoryContentParams.contentKey, () => getCategoryContentData());
+  const { data: categoryContent } = await useLazyAsyncData(getCategoryContentData);
 
   const checkRedirect = ():void => {
     const needRedirect = (route.name === 'questions' || route.name === 'locale-questions')

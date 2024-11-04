@@ -3,8 +3,8 @@
     v-model="modals.confirmLimitUpdate"
     class="modal-confirm-limit-update"
     :clickToClose="true"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
   >
     <div class="scroll">
       <div class="header">

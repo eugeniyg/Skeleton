@@ -30,11 +30,11 @@
       </div>
     </div>
     <div class="nav-category__actions">
-      <button-categories :is-active="isDropdownShown" @action="showCategories"/>
+      <button-categories :is-active="isDropdownShown" @action="showCategories" :disabled="isCategoriesButtonDisabled"/>
       <button-providers @action="showModal('providers')"/>
       
       <ul
-        v-if="isDropdownShown"
+        v-if="isDropdownShown && dropdownItems.length"
         class="nav-category__dropdown"
       >
         <li
@@ -75,6 +75,7 @@
   const { gameCategoriesObj } = useGlobalStore();
   const filteredCategories = ref<ICollection[]>([]);
   const dropdownItems = ref<ICollection[]>([]);
+  const isCategoriesButtonDisabled = ref<boolean>(false);
   
   const showCategories = () => {
     window.innerWidth <= 1280 ? showModal('categories') : showDropdown();
@@ -113,15 +114,24 @@
     isDropdownShown.value = false;
   };
   
+  const resizeHandler = () => {
+    if (isDropdownShown.value) closeDropdown();
+    setDropdownItems();
+    isCategoriesButtonDisabled.value = !dropdownItems.value.length;
+  };
+  
   onMounted(async () => {
     const { getCollectionsList } = useGamesStore();
     const gameCollections = await getCollectionsList();
     filteredCategories.value = gameCollections.filter((collection) => !collection.isHidden);
-    window.addEventListener('resize', closeDropdown);
+    window.addEventListener('resize', resizeHandler);
+    await nextTick(() => {
+      window.dispatchEvent(new Event('resize'));
+    });
   });
   
   onBeforeUnmount(() => {
-    window.removeEventListener('resize', closeDropdown);
+    window.removeEventListener('resize', resizeHandler);
   });
 </script>
 

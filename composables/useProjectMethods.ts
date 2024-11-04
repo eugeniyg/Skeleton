@@ -2,9 +2,7 @@ import type {
   IAmountRangeItem,
   IBonus,
   IGameImages,
-  IObserverOptions,
-  IPlayerBonus,
-  IPlayerFreeSpin
+  IObserverOptions
 } from '@skeleton/core/types';
 import get from 'lodash/get';
 import * as projectRules from './validationRules';
