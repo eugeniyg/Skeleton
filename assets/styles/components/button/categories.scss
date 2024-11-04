@@ -11,6 +11,19 @@
   border: 1px solid var(--border-01);
   background: var(--layer-02);
 
+  &.is-disabled {
+    background: var(--button-bg-secondary-disabled);
+    cursor: not-allowed;
+
+    .btn-categories__label {
+      --label-color: var(--button-text-secondary-disabled);
+    }
+
+    .btn-categories__icon {
+      --color: var(--button-icn-secondary-disabled);
+    }
+  }
+
   &__label {
     --line-height: auto;
     color: var(--label-color, var(--text-secondary));
