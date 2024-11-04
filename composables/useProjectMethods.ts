@@ -2,9 +2,7 @@ import type {
   IAmountRangeItem,
   IBonus,
   IGameImages,
-  IObserverOptions,
-  IPlayerBonus,
-  IPlayerFreeSpin
+  IObserverOptions
 } from '@skeleton/core/types';
 import get from 'lodash/get';
 import * as projectRules from './validationRules';
@@ -192,8 +190,7 @@ export const useProjectMethods = () => {
       ogTitle: metaData?.title || globalStore.globalSeo?.title,
       description: metaData?.description || globalStore.globalSeo?.description,
       ogDescription: metaData?.description || globalStore.globalSeo?.description,
-      ogImage: imageUrl,
-      ogUrl: requestUrl.href
+      ogImage: imageUrl
     })
   };
 

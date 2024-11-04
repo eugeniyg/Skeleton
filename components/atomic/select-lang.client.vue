@@ -22,8 +22,8 @@
           :key="locale.code"
           class="item"
           :class="{ 'is-selected': currentLocale?.code.toLowerCase() === locale.code.toLowerCase() }"
-          :href="`/${locale.code.toLowerCase()}`"
-          @click="changeLanguage(locale)"
+          :href="linkToLocale(locale)"
+          @click.prevent="changeLanguage(locale, $event)"
         >
           <atomic-image class="img" :src="`${gamehubCdn}/locales/${locale.code.toLowerCase()}.svg`" />
           <span class="title">{{ locale.nativeName || locale.name }}</span>
@@ -49,7 +49,7 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { public: { gamehubCdn } } = useRuntimeConfig();
 
-  const changeLanguage = async (locale: ILocale): Promise<void> => {
+  const changeLanguage = async (locale: ILocale, event: any): Promise<void> => {
     if (currentLocale.value?.code === locale.code || isProcess.value) return;
     isOpen.value = false;
     isProcess.value = true;
@@ -60,21 +60,16 @@
       await changeProfileData({ locale: locale.code })
     }
 
-    window.location.href = linkToLocale(locale);
+    window.location.href = event.currentTarget.attributes.href.value || `/${locale.code.toLowerCase()}`;
   };
 
   const linkToLocale = (locale: ILocale):string => {
     const routerLocale:any = route.params.locale;
+    const pathRegexp = new RegExp(`^/${routerLocale}/|^/${routerLocale}$`);
+    const pathWithoutLocale = routerLocale ? route.fullPath.replace(pathRegexp, '/') : route.fullPath;
 
-    if (locale.isDefault) {
-      const deleteLocale = route.fullPath.replace(`/${routerLocale}`, '');
-      return deleteLocale || '/';
-    }
-
-    if (routerLocale) {
-      return route.fullPath.replace(routerLocale, locale.code.toLowerCase());
-    }
-    return `/${locale.code.toLowerCase()}${route.fullPath === '/' ? '' : route.fullPath}`;
+    if (locale.isDefault) return pathWithoutLocale;
+    return `/${locale.code.toLowerCase()}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
   };
 
   const toggleOpen = (): void => {
