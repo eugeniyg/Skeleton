@@ -109,8 +109,8 @@
       router.push({
         path: localizePath('/games'),
         query: {
-          category: getContent(popupsData, defaultLocalePopupsData, 'providers.collectionId'),
-          provider: selectedProviders.value
+          category: getContent(popupsData.value, defaultLocalePopupsData.value, 'providers.collectionId'),
+          providerId: selectedProviders.value
         }
       });
     }, 600);
