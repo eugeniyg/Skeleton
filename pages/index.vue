@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IHomePage, IStaticPage} from '~/types';
+  import type {IHomePage} from '~/types';
   import type { ICollection } from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();

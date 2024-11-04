@@ -14,6 +14,8 @@
       v-if="termsData?.title && termsData?.content"
       v-bind="termsData"
     />
+
+    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent.pageMeta.seoText" />
   </div>
 </template>
 
