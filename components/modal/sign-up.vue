@@ -1,20 +1,20 @@
 <template>
   <vue-final-modal
-    v-model="modals.register"
     class="modal-register"
-    displayDirective="show"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
-    @closed="closedEvent"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
     @beforeOpen="beforeOpenHandle"
     @opened="openedHandle"
   >
     <div class="container">
-      <button-modal-close :class="{ 'close-secondary': hasOffset }" @close="showModal('registerCancel');"/>
+      <button-modal-close :class="{ 'close-secondary': hasOffset }" @close="openModal('sign-up-cancel');"/>
 
       <div class="slot">
-        <atomic-promo/>
+        <atomic-promo
+          :currentLocaleData="props.currentLocaleData"
+          :defaultLocaleData="props.defaultLocaleData"
+        />
       </div>
 
       <div ref="scrollBlock" class="scroll" @scroll="handleScroll">
@@ -27,7 +27,7 @@
             </span>
 
             <span class="header__back-btn-text">
-              {{ getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.backButton') }}
+              {{ getContent(phoneVerificationContent?.currentLocaleData, phoneVerificationContent?.defaultLocaleData, 'backButton') }}
             </span>
           </div>
         </div>
@@ -38,7 +38,7 @@
           reason="registration"
           :errorHint="verificationError"
           :loading="sendingData"
-          :buttonLabel="getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.verifyButton')"
+          :buttonLabel="getContent(phoneVerificationContent?.currentLocaleData, phoneVerificationContent?.defaultLocaleData, 'verifyButton')"
           @verifyPhone="phoneRegister"
           @removeErrorHint="verificationError = undefined"
         />
@@ -64,9 +64,11 @@
           v-if="registrationFields.length"
           v-show="!showPhoneVerification"
           ref="registrationForm"
-          :key="`${formKey}-${selectedTab}`"
+          :key="`${selectedTab}`"
           :registrationFields="registrationFields"
           :registrationType="selectedTab"
+          :currentLocaleData="props.currentLocaleData"
+          :defaultLocaleData="props.defaultLocaleData"
           @showVerification="showVerification"
         />
       </div>
@@ -76,28 +78,36 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IField, RegistrationType } from '@skeleton/core/types';
+  import type { RegistrationType } from '@skeleton/core/types';
   import { VueFinalModal } from 'vue-final-modal';
   import type {Dayjs} from "dayjs";
   import { marked } from 'marked';
   import DOMPurify from "isomorphic-dompurify";
+  import type {IModalsContent} from "~/types";
 
-  const formKey = ref<number>(0);
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { showModal } = layoutStore;
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['registration']>;
+    defaultLocaleData: Maybe<IModalsContent['registration']>;
+  }>();
+
+  const phoneVerificationContentParams = {
+    contentKey: 'modal-phone-verification',
+    contentRoute: ['modals', 'phone-verification']
+  };
+  const { getContentData: getPhoneVerificationContentData } = useContentLogic(phoneVerificationContentParams);
+  const { data: phoneVerificationContent } = await useLazyAsyncData(getPhoneVerificationContentData);
+
+  const fieldsStore = useFieldsStore();
+  const { registrationFields } = storeToRefs(fieldsStore);
+  const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
-  const {
-    settingsConstants,
-    popupsData,
-    defaultLocalePopupsData
-  } = storeToRefs(globalStore);
+  const { settingsConstants } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
   const showPhoneVerification = ref<boolean>(false);
   const formTitle = computed(() => {
-    if (showPhoneVerification.value) return getContent(popupsData.value, defaultLocalePopupsData.value, 'phoneVerification.title');
-    return getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.title');
+    if (showPhoneVerification.value) return getContent(phoneVerificationContent.value?.currentLocaleData, phoneVerificationContent.value?.defaultLocaleData, 'title');
+    return getContent(props.currentLocaleData, props.defaultLocaleData, 'title');
   })
   const registrationData = ref<Record<string, any>|undefined>();
   const registrationType = computed<RegistrationType>(() => {
@@ -109,25 +119,18 @@
     if (registrationType.value === 'emailOrPhone') return [
       {
         id: 'email',
-        label: getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.typeTabs.email'),
+        label: getContent(props.currentLocaleData, props.defaultLocaleData, 'typeTabs.email'),
         icon: 'mail'
       },
       {
         id: 'phone',
-        label: getContent(popupsData.value, defaultLocalePopupsData.value, 'registration.typeTabs.phone'),
+        label: getContent(props.currentLocaleData, props.defaultLocaleData, 'typeTabs.phone'),
         icon: 'mobile'
       }
     ];
     return [];
   })
   const selectedTab = ref<RegistrationType>(registrationType.value === 'emailOrPhone' ? 'email' : registrationType.value);
-
-  const closedEvent = ():void => {
-    showPhoneVerification.value = false;
-    if (!modals.value.registerCancel) formKey.value += 1;
-    selectedTab.value = registrationType.value === 'emailOrPhone' ? 'email' : registrationType.value;
-  };
-
   const scrollBlock = ref();
   const handleScroll = (): void => {
     hasOffset.value = scrollBlock.value.scrollTop !== 0;
@@ -159,7 +162,7 @@
       } else if (error.data?.error?.code === 11003) {
         verificationError.value = {
           variant: 'error',
-          message: getContent(popupsData.value, defaultLocalePopupsData.value, 'phoneVerification.invalidError')
+          message: getContent(phoneVerificationContent.value?.currentLocaleData, phoneVerificationContent.value?.defaultLocaleData, 'invalidError')
         };
       } else {
         verificationError.value = {
@@ -182,16 +185,6 @@
     });
   }
 
-  watch(() => modals.value.registerCancel, (newValue: boolean) => {
-    if (!newValue && !modals.value.register) formKey.value += 1;
-  });
-
-  const registrationFields = ref<IField[]>([]);
-  const { getRegistrationFields } = useCoreAuthApi();
-  onMounted(async () => {
-    registrationFields.value = await getRegistrationFields();
-  });
-
   let startModalLoad: Dayjs;
   const dayjs = useDayjs();
   const beforeOpenHandle = () => {
@@ -206,5 +199,5 @@
   }
 </script>
 
-<style src="~/assets/styles/components/modal/register.scss" lang="scss" />
+<style src="~/assets/styles/components/modal/sign-up.scss" lang="scss" />
 

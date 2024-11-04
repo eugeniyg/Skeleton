@@ -3,8 +3,8 @@
     v-model="modals.editLimit"
     class="modal-edit-limit"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
     @clickOutside="closeModal('editLimit')"
   >
     <div class="scroll">

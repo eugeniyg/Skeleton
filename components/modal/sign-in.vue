@@ -1,16 +1,16 @@
 <template>
   <vue-final-modal
-    v-model="modals.signIn"
     class="modal-sign-in"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('signIn')"/>
-        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'login.title') }}</div>
+        <button-modal-close @close="closeModal('sign-in')"/>
+        <div class="title">{{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}</div>
       </div>
+
       
       <div v-if="tabsList.length && displayType === 'both'">
         <div class="modal-sign-in__tabs">
@@ -29,26 +29,31 @@
         <atomic-divider class="modal-sign-in__tabs-divider"/>
       </div>
       
-      <form-sign-in :key="selectedTab" :loginType="selectedTab" :count="selectedCount"/>
+      <form-sign-in
+        :key="selectedTab"
+        :loginType="selectedTab"
+        :count="selectedCount"
+        :currentLocaleData="props.currentLocaleData"
+        :defaultLocaleData="props.defaultLocaleData"
+      />
     </div>
   </vue-final-modal>
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
-  const {
-    popupsData,
-    defaultLocalePopupsData
-  } = useGlobalStore();
+  import type {IModalsContent} from "~/types";
+
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['signIn']>;
+    defaultLocaleData: Maybe<IModalsContent['signIn']>;
+  }>();
+
+  const { closeModal } = useModalStore();
   const { getContent } = useProjectMethods();
   
   const tabsList = computed(() => {
-    const tabsObj = getContent(popupsData, defaultLocalePopupsData, 'login.tabs');
+    const tabsObj = getContent(props.currentLocaleData, props.defaultLocaleData, 'tabs');
     if (!tabsObj) return [];
     
     return Object.keys(tabsObj)
@@ -69,7 +74,7 @@
   });
   
   const displayType = computed(() => {
-    return getContent(popupsData, defaultLocalePopupsData, 'login.type');
+    return getContent(props.currentLocaleData, props.defaultLocaleData, 'type');
   });
   
   const selectedTab = ref<'email'|'phone'>('email');
@@ -82,7 +87,7 @@
   };
   
   onMounted(() => {
-    selectedTab.value = (displayType.value !== 'both') ? displayType.value : 'email'
+    selectedTab.value = (displayType.value !== 'both') ? displayType.value : 'email';
   });
 
 </script>

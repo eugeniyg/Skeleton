@@ -80,7 +80,7 @@
   const { getContent } = useProjectMethods();
 
   const layoutStore = useLayoutStore();
-  const { showModal } = layoutStore;
+  const { openModal } = useModalStore();
   const { isDrawerCompact } = storeToRefs(layoutStore);
 
   const profileStore = useProfileStore();
@@ -98,7 +98,7 @@
 
   const { public: { freshchatParams, loyaltyEnabled } } = useRuntimeConfig();
   const openChat = () => {
-    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) showModal('register');
+    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) openModal('sign-up');
     else window.fcWidget?.open();
   }
 </script>

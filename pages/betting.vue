@@ -47,7 +47,7 @@
     isPage: true
   }
   const { getContentData } = useContentLogic<ISportsbookPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const showRestrictedBetsModal = ref<boolean>(false);
   const maxBetsModal = reactive({
@@ -130,6 +130,7 @@
   };
 
   const layoutStore = useLayoutStore();
+  const { openModal } = useModalStore();
   const {
     showAlert,
     compactDrawer,
@@ -185,7 +186,7 @@
 
       const { isLoggedIn } = useProfileStore();
       const showLoginModal =  eventData.type === 'click' && eventData.target === 'loginButton' && !isLoggedIn;
-      if (showLoginModal) layoutStore.showModal('signIn');
+      if (showLoginModal) openModal('sign-in');
     }
   }
 

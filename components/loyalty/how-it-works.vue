@@ -69,10 +69,8 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const {
-    showModal,
-    openWalletModal
-  } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
+  const { openModal } = useModalStore();
 
   const { getContent } = useProjectMethods();
 
@@ -82,7 +80,7 @@
 
     loadingModal.value = true;
     if (isLoggedIn.value) await openWalletModal('deposit');
-    else showModal('signIn');
+    else await openModal('sign-in');
     loadingModal.value = false;
   };
 </script>

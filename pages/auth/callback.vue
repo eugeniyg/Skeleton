@@ -7,7 +7,8 @@
 
   const router = useRouter();
   const { localizePath } = useProjectMethods();
-  const { showModal, showAlert } = useLayoutStore();
+  const { showAlert } = useLayoutStore();
+  const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData, currentLocale } = storeToRefs(globalStore);
 
@@ -28,10 +29,11 @@
       } else if (errorCode === 11001) {
         const profileStore = useProfileStore();
         profileStore.socialAuthEmailError = true;
-        showModal('signIn');
+        const { openModal } = useModalStore();
+        await openModal('sign-in', undefined, false);
         await router.replace(localizePath('/?sign-in=true'));
       } else {
-        showModal('register');
+        await openModal('sign-up');
         await router.replace(localizePath('/?sign-up=true'));
       }
     }
@@ -49,7 +51,7 @@
 
       if (auth0TokenData) await sendSocialData(auth0TokenData, appState);
     } catch {
-      showModal('register');
+      await openModal('sign-up');
       await router.replace(localizePath('/?sign-up=true'));
     }
   })

@@ -3,8 +3,8 @@
     v-model="modals.walletRegion"
     class="modal-choose-region"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
     @clickOutside="closeModal('walletRegion')"
     @beforeOpen="beforeOpen"
   >

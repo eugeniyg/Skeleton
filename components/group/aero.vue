@@ -129,7 +129,7 @@
 
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();
-  const { showModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = globalStore;
   const { headerCountry } = storeToRefs(globalStore);
@@ -176,7 +176,7 @@
     if (!isReal) {
       router.push(localizePath(`/games/${gameIdentity}`));
     } else if (!isLoggedIn.value) {
-      showModal('register');
+      openModal('sign-up');
     } else {
       router.push(localizePath(`/games/${gameIdentity}?real=true`));
     }

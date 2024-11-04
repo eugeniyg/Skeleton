@@ -3,8 +3,8 @@
     v-model="showMobileGameModal"
     class="modal-mobile-game"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
   >
     <div class="scroll">
       <button-modal-close @close="showMobileGameModal = false"/>
@@ -72,7 +72,8 @@
   } = storeToRefs(gameStore);
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getImageUrl, getContent, localizePath } = useProjectMethods();
-  const { openWalletModal, showModal } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const router = useRouter();
 
   const gameImage = computed(() => {
@@ -109,7 +110,7 @@
     if (['depositOrDemo', 'deposit'].includes(mobileGameModalType.value as string)) {
       await openWalletModal('deposit');
     } else {
-      showModal('register');
+      await openModal('sign-up');
     }
 
     showMobileGameModal.value = false;
@@ -119,7 +120,7 @@
     if (['depositOrDemo', 'registerOrDemo'].includes(mobileGameModalType.value as string)) {
       router.push(localizePath(`/games/${mobileGameModalInfo.value?.identity}`));
     } else {
-      showModal('signIn');
+      openModal('sign-in');
     }
 
     showMobileGameModal.value = false;

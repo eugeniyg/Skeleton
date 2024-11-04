@@ -72,7 +72,8 @@
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal, openWalletModal } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const { isGamePage } = storeToRefs(layoutStore);
   const {
     layoutData,
@@ -82,7 +83,7 @@
   const route = useRoute();
 
   const clickMainButton = ():void => {
-    isLoggedIn.value ? openWalletModal() : showModal('register');
+    isLoggedIn.value ? openWalletModal() : openModal('sign-in');
   };
 
   const gamesButtons = computed(() => {
@@ -97,7 +98,7 @@
 
   const openChat = () => {
     const { public: { freshchatParams } } = useRuntimeConfig();
-    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) showModal('register');
+    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) openModal('sign-in');
     else window.fcWidget?.open();
   }
 </script>
