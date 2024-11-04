@@ -244,13 +244,17 @@
   
   const open = (): void => {
     if (props.isDisabled) return;
-    isOpen.value = !isOpen.value;
-    emit('focus');
+    if (!isOpen.value) {
+      isOpen.value = true;
+      emit('focus');
+    }
   };
   
   const onBlur = (): void => {
-    closeDropdown();
-    emit('blur');
+    if (isOpen.value) {
+      closeDropdown();
+      emit('blur');
+    }
   };
   
   const setMaxWidth = () => {
@@ -280,7 +284,7 @@
     });
     observer.value.observe(drop.value);
   });
-  
+
   onBeforeUnmount(() => {
     observer.value?.unobserve(drop.value);
   });

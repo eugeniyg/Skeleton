@@ -114,6 +114,7 @@
     const hiddenFieldsName = props.registrationFields
       .filter(field => {
         if (field.name === 'country' && !geoCountry) return false;
+        if (field.name === 'currency' && !geoCountry && field.isRequired) return false;
         return checkFields.includes(field.name) && !field.isVisible;
       })
       .map(field => field.name);
@@ -148,7 +149,7 @@
   const getFields = (): IField[] => {
     return fieldsListByRegistrationType.value.map((field) => {
       if (field.name === 'nickname' && hiddenFields.value.includes('nickname')) return { ...field, value: 'undefined' };
-      else if (field.name === 'currency') return { ...field, value: geoCountry?.currency || 'BTC' };
+      else if (field.name === 'currency') return { ...field, value: geoCountry?.currency };
       else if (field.name === 'locale') return { ...field, value: currentLocale.value?.code };
       else if (field.name === 'country' && !field.value && geoCountry) return { ...field, value: geoCountry.code };
       else if (field.name === 'receiveEmailPromo') return {
