@@ -91,8 +91,6 @@
     defaultLocaleData: Maybe<IModalsContent['registration']>;
   }>();
 
-  const hiddenFields = ['nickname', 'locale'];
-  const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
   const {
     setFormData,
     getContent,
