@@ -7,13 +7,17 @@
       />
     </div>
     
-    <div class="wallet-warning__description">
-      {{ props.content.description }}
-    </div>
+    <div
+      class="wallet-warning__description"
+      v-html="DOMPurify.sanitize(marked.parse(props.content.description || '') as string, { FORBID_TAGS: ['style'] })"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+  import { marked } from 'marked';
+  import DOMPurify from "isomorphic-dompurify";
+
   const props = defineProps<{
     content: {
       icon?: string;

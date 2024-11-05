@@ -11,7 +11,10 @@
 
       <div class="header">
         <div class="heading">{{ pageContent?.currentLocaleData?.title || pageContent?.defaultLocaleData?.title }}</div>
-        <p class="info">{{ pageContent?.currentLocaleData?.description || pageContent?.defaultLocaleData?.description }}</p>
+        <p
+          class="info"
+          v-html="DOMPurify.sanitize(marked.parse(descriptionContent || '') as string, { FORBID_TAGS: ['style'] })"
+        />
       </div>
 
       <div class="form">
@@ -52,6 +55,8 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type {IContactsPage} from '~/types';
+  import { marked } from 'marked';
+  import DOMPurify from "isomorphic-dompurify";
 
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();
@@ -86,6 +91,10 @@
   const { getFormRules } = useProjectMethods();
   const contactUsFormRules = getFormRules(contactUsRules);
   const { serverFormErrors, v$, setError } = useFormValidation(contactUsFormRules, contactFormData);
+
+  const descriptionContent = computed(() => {
+    return pageContent.value?.currentLocaleData?.description || pageContent.value?.defaultLocaleData?.description;
+  });
 
   const { sendContactMessage } = useCoreGlobalApi();
   const submitContactForm = async ():Promise<void> => {

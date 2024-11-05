@@ -32,9 +32,10 @@
         <atomic-icon id="info" />
       </div>
 
-      <div class="wallet-bonuses__info-description">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.infoDescription') }}
-      </div>
+      <div
+        class="wallet-bonuses__info-description"
+        v-html="DOMPurify.sanitize(marked.parse(cryptoInfoContent || '') as string, { FORBID_TAGS: ['style'] })"
+      />
     </div>
   </div>
 </template>
@@ -42,6 +43,8 @@
 <script setup lang="ts">
   import { storeToRefs } from "pinia";
   import type { IBonus } from "@skeleton/core/types";
+  import { marked } from 'marked';
+  import DOMPurify from "isomorphic-dompurify";
 
   const props = defineProps<{
     crypto?: boolean;
@@ -61,6 +64,8 @@
     showDepositBonusCode,
     walletDepositBonus
   } = storeToRefs(bonusStore);
+
+  const cryptoInfoContent = computed(() => getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.infoDescription'));
 
   const setDepositLimit = (bonusData: IBonus): IBonus => {
     let minDeposit: { amount: number, currency: string }|undefined;

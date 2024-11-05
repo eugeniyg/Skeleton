@@ -5,13 +5,18 @@
       <atomic-icon id="arrow_expand-close" />
     </div>
 
-    <div ref="contentContainer" class="info-accordeon__content">
-      {{ props.description }}
-    </div>
+    <div
+      ref="contentContainer"
+      class="info-accordeon__content"
+      v-html="DOMPurify.sanitize(marked.parse(props.description || '') as string, { FORBID_TAGS: ['style'] })"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+  import { marked } from 'marked';
+  import DOMPurify from "isomorphic-dompurify";
+
   const props = defineProps<{
     title: string;
     description: string;
