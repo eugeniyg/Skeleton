@@ -2,6 +2,7 @@
   <div class="wallet-dots">
     <div
       v-for="(item, index) in props.itemsCount"
+      :key="index"
       class="wallet-dots__item"
       :class="{ 'is-active': index === props.activeIndex }"
       :data-index="item"

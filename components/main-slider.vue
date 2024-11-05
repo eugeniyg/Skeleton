@@ -18,6 +18,7 @@
     <div class="main-slider__bullets">
       <div
         v-for="index in filteredSlides.length"
+        :key="index"
         class="main-slider__bullet"
         :class="{'is-selected': index === selectedIndex}"
         @click="scrollTo(index)"

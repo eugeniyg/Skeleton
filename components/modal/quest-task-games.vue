@@ -18,7 +18,7 @@
       </div>
 
       <div class="modal-quest-task-games__content">
-        <div v-for="game in props.games" class="modal-quest-task-games__item">
+        <div v-for="game in props.games" :key="game.id" class="modal-quest-task-games__item">
           <span class="modal-quest-task-games__link" @click="goToGame(game)">{{ game.name }}</span>
         </div>
       </div>

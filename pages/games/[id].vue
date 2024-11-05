@@ -49,7 +49,6 @@
   const walletStore = useWalletStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
   const {
-    showModal,
     showAlert,
     compactDrawer,
     setReturnGame,

@@ -44,8 +44,7 @@ export const useProjectMethods = () => {
         if (!projectRules[item.rule]) { return };
 
         if (item.arguments) {
-          // @ts-ignore
-          rules[item.rule] = projectRules.helpers.withMessage(({ $params }) =>
+          rules[item.rule] = projectRules.helpers.withMessage(({ $params }: { $params: any }) =>
             createCustomMessage($params, validationMessages[item.rule] || ''),
             projectRules[item.rule](item.arguments));
         } else {
@@ -338,7 +337,8 @@ export const useProjectMethods = () => {
   const handleExternalLink = (url: string):void => {
     const router = useRouter();
     const { localizePath } = useProjectMethods();
-    url.includes('http') ? window.open(url, '_blank') : router.push(localizePath(url));
+    if (url.includes('http')) window.open(url, '_blank');
+    else router.push(localizePath(url));
   }
 
   const awaitRefreshParallel = async (): Promise<string|null> => {

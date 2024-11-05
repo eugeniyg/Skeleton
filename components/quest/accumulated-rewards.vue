@@ -19,7 +19,8 @@
         >
           <div ref="list" class="accumulated-rewards__list-items">
             <div
-              v-for="item in visibleItems"
+              v-for="(item, index) in visibleItems"
+              :key="index"
               ref="items"
               class="accumulated-rewards__list-item"
             >

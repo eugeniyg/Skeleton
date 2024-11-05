@@ -164,7 +164,10 @@ export const useLayoutStore = defineStore('layoutStore', {
           return false;
         }
       }
-      if (drawerContentEl) this.isDrawerOpen ? disableBodyScroll(drawerContentEl, bodyScrollOptions) : enableBodyScroll(drawerContentEl);
+      if (drawerContentEl) {
+        if (this.isDrawerOpen) disableBodyScroll(drawerContentEl, bodyScrollOptions);
+        else enableBodyScroll(drawerContentEl);
+      }
       if (this.isDrawerCompact) this.isDrawerCompact = false;
     },
 
@@ -212,7 +215,8 @@ export const useLayoutStore = defineStore('layoutStore', {
         const guestModals = [];
         const authModals = ['wallet', 'questsHub'];
         if (guestModals.includes(modalKey)) {
-          isLoggedIn ? this.closeModal(modalKey) : this.showModal(modalKey);
+          if (isLoggedIn) this.closeModal(modalKey);
+          else this.showModal(modalKey);
         } else if (authModals.includes(modalKey)) {
           if (!isLoggedIn) {
             this.closeModal(modalKey);

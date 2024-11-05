@@ -70,7 +70,9 @@
   });
 
   const orderedAccounts = computed(() => accounts.value.reduce((acc, item) => {
-    item.status === 1 ? acc.unshift(item) : acc.push(item);
+    if (item.status === 1) acc.unshift(item);
+    else acc.push(item);
+
     return acc;
   }, [] as IAccount[]));
 </script>

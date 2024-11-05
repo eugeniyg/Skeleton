@@ -78,7 +78,8 @@
   const isCategoriesButtonDisabled = ref<boolean>(false);
   
   const showCategories = () => {
-    window.innerWidth <= 1280 ? showModal('categories') : showDropdown();
+    if (window.innerWidth <= 1280) showModal('categories');
+    else showDropdown();
   };
   
   const setDropdownItems = () => {

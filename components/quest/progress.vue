@@ -10,7 +10,8 @@
 
       <div class="quest-progress__items">
         <div
-          v-for="progress in columns"
+          v-for="(progress, index) in columns"
+          :key="index"
           class="quest-progress__item"
           :style="`--column-width: ${progress}%`"
         />

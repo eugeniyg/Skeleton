@@ -1,6 +1,6 @@
 import { Auth0Client } from '@auth0/auth0-spa-js';
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(() => {
   const { public: { auth0Domain, auth0ClientId } } = useRuntimeConfig();
   if (!auth0Domain || !auth0ClientId) return;
 

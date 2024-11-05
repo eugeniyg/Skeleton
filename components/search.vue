@@ -23,15 +23,9 @@
   import type { IGame, IGamesResponse, IPaginationMeta } from '@skeleton/core/types';
   import debounce from 'lodash/debounce';
 
-  const props = defineProps({
-    isShow: {
-      type: Boolean,
-      default: false,
-    },
-    query: {
-      type: String,
-    },
-  });
+  const props = defineProps<{
+    isShow?: boolean;
+  }>();
 
   const emit = defineEmits(['hideSearch']);
   const globalStore = useGlobalStore();

@@ -16,7 +16,6 @@ const viteConfig: any = {
   }
 };
 
-// @ts-ignore
 export default defineNuxtConfig({
   alias: {
     '@skeleton': resolve('./'),

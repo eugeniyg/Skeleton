@@ -83,7 +83,8 @@
   const route = useRoute();
 
   const clickMainButton = ():void => {
-    isLoggedIn.value ? openWalletModal() : openModal('sign-in');
+    if (isLoggedIn.value) openWalletModal();
+    else openModal('sign-in');
   };
 
   const gamesButtons = computed(() => {

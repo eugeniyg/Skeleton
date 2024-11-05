@@ -1,7 +1,8 @@
 <template>
   <div class="sumsub-info">
     <profile-info-accordeon
-      v-for="item in infoList"
+      v-for="(item, index) in infoList"
+      :key="index"
       :title="item.title"
       :description="item.description"
     />

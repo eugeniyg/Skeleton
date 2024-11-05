@@ -53,6 +53,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from "pinia";
+  import type {IPaymentMethod} from "@skeleton/core/types";
 
   const props = defineProps<{
     showTabs: boolean;
@@ -60,8 +61,8 @@
     modalTitle: string;
   }>()
 
-  const currentDepositMethod = defineModel('currentDepositMethod');
-  const currentWithdrawMethod = defineModel('currentWithdrawMethod');
+  const currentDepositMethod = defineModel<IPaymentMethod>('currentDepositMethod');
+  const currentWithdrawMethod = defineModel<IPaymentMethod>('currentWithdrawMethod');
 
   const emit = defineEmits(['changeTab', 'methodClick']);
   const { getContent } = useProjectMethods();

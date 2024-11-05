@@ -64,7 +64,8 @@
   const clickButton = (url: string|undefined):void => {
     const { handleExternalLink } = useProjectMethods();
     if (url) handleExternalLink(url)
-    else isLoggedIn.value ? openWalletModal('deposit') : openModal('sign-up');
+    else if (isLoggedIn.value) openWalletModal('deposit');
+    else openModal('sign-up');
   };
 </script>
 

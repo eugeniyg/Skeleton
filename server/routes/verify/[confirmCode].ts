@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
                 body: { code: event.context.params?.confirmCode }
             })
             return sendRedirect(event, '/?confirm=true', 302);
-        } catch (err) {
+        } catch {
             return sendRedirect(event, '/', 302);
         }
     } else return sendRedirect(event, '/', 302);

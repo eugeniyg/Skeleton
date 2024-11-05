@@ -2,6 +2,7 @@
   <div class="wallet-tabs">
     <div
       v-for="{ id, label } in tabItems"
+      :key="id"
       class="wallet-tabs__item"
       :class="{ 'is-selected': props.selected === id }"
       @click="changeTab(id)"

@@ -21,6 +21,7 @@
     >
       <quest-hub-card
         v-for="(quest, index) in playerActiveQuests"
+        :key="index"
         :questInfo="quest"
         :cardIndex="index"
       />

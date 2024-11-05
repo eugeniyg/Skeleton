@@ -8,7 +8,7 @@
       </button-base>
     </div>
 
-    <div ref="content" class="loyalty-terms__content" :style="styles">
+    <div ref="contentElement" class="loyalty-terms__content" :style="styles">
       <atomic-text-editor :content="props.content" />
     </div>
   </div>
@@ -24,15 +24,15 @@
   const maxHeight = ref<number>(0);
 
   const styles = computed(() => ({ '--max-height': isOpen.value ? `${maxHeight.value}px` : '0px' }));
-  const content = ref<HTMLElement>();
+  const contentElement = ref<HTMLElement>();
 
   const toggle = ():void => {
     isOpen.value = !isOpen.value;
-    maxHeight.value = isOpen.value ? content.value?.scrollHeight || 0 : 0;
+    maxHeight.value = isOpen.value ? contentElement.value?.scrollHeight || 0 : 0;
   };
 
   onMounted(() => {
-    maxHeight.value = content.value?.scrollHeight || 0;
+    maxHeight.value = contentElement.value?.scrollHeight || 0;
   });
 </script>
 

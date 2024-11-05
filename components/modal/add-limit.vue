@@ -75,9 +75,7 @@
 
   const limitsStore = useLimitsStore();
   const { getLimits, createLimit, closeModal } = limitsStore;
-  const {
-    limitCashPeriod, activeLimits, limitsContent, defaultLimitsContent, modals,
-  } = storeToRefs(limitsStore);
+  const { limitCashPeriod, activeLimits, modals } = storeToRefs(limitsStore);
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();
   const {

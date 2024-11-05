@@ -215,9 +215,8 @@
     loadingBonuses.value.push(staticBonusId);
 
     try {
-      modalState.bonusType === 'bonus'
-        ? await cancelPlayerBonus(staticBonusId)
-        : await cancelPlayerFreeSpin(staticBonusId);
+      if (modalState.bonusType === 'bonus') await cancelPlayerBonus(staticBonusId);
+      else await cancelPlayerFreeSpin(staticBonusId);
     } catch {
       loadingBonuses.value = loadingBonuses.value.filter(id => id !== staticBonusId);
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
@@ -232,9 +231,8 @@
     loadingBonuses.value.push(staticBonusId);
 
     try {
-      modalState.bonusType === 'bonus'
-        ? await activatePlayerBonus(staticBonusId)
-        : await activatePlayerFreeSpin(staticBonusId);
+      if (modalState.bonusType === 'bonus') await activatePlayerBonus(staticBonusId);
+      else await activatePlayerFreeSpin(staticBonusId);
     } catch {
       loadingBonuses.value = loadingBonuses.value.filter(id => id !== staticBonusId);
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
@@ -417,7 +415,7 @@
       issuedPackageBonuses.value = playerPackageList.filter(bonusesList => !bonusesList.some(bonus => bonus.status === 2));
 
       if (showPackageModal.value) updatePackageModalList();
-    } catch (e) {
+    } catch {
       console.error('Failed to get package bonuses');
     }
 

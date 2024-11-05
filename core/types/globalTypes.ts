@@ -120,8 +120,8 @@ export interface ICoreConstants extends Record<string, any>{
 
 export interface IObserverOptions extends Record<string, any>{
   once?: boolean;
-  onInView?: Function;
-  onOutView?: Function;
+  onInView?: () => void;
+  onOutView?: () => void;
   settings: { root: null|HTMLElement; rootMargin: string; threshold: number; };
 }
 

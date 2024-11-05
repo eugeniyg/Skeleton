@@ -33,7 +33,6 @@
     type?: 'real'|'virtual';
   }>();
 
-  const emit = defineEmits();
   const { currencies, defaultLocalePopupsData, popupsData } = useGlobalStore();
 
   const filteredRewards = props.type ? props.rewards.filter(reward => {

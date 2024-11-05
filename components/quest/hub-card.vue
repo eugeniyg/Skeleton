@@ -55,7 +55,6 @@
   const { getContent, formatBalance } = useProjectMethods();
   const globalData = useGlobalStore();
   const { popupsData, defaultLocalePopupsData } = storeToRefs(globalData);
-  const { showModal } = useLayoutStore();
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const rewardsValue = computed(() => {

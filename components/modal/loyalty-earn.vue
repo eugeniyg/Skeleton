@@ -26,7 +26,7 @@
       </div>
 
       <div class="modal-loyalty-earn__steps">
-        <div v-for="step in steps" class="modal-loyalty-earn__steps-item">{{ step }}</div>
+        <div v-for="(step, index) in steps" :key="index" class="modal-loyalty-earn__steps-item">{{ step }}</div>
       </div>
 
       <button-base type="primary" size="md" @click.once="handleConfirm">

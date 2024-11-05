@@ -1,6 +1,6 @@
 <template>
   <vue-final-modal
-    v-model="props.showModal"
+    :modelValue="props.showModal"
     class="modal-max-bets"
     :clickToClose="false"
     :overlayTransition="{ mode: 'in-out', duration: 250 }"

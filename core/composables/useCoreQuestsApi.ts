@@ -1,5 +1,4 @@
 import type {
-  IPlayerBonus,
   IPlayerQuest,
   IPlayerQuestsRequest,
   IPlayerQuestsResponse

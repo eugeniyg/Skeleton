@@ -351,7 +351,7 @@ export const minAge = (param:string) => validationRules.helpers.withParams(
       }
       const today:Date = new Date();
       const birthDay:Date = new Date(value);
-      // @ts-ignore
+      // @ts-expect-error - Date is number in milliseconds
       const ageInMilliseconds:number = today - birthDay;
       const ageInYear = Math.floor(ageInMilliseconds / 1000 / 60 / 60 / 24 / 365);
       return ageInYear >= Number(param);
@@ -368,7 +368,7 @@ export const maxAge = (param:string) => validationRules.helpers.withParams(
       }
       const today:Date = new Date();
       const birthDay:Date = new Date(value);
-      // @ts-ignore
+      // @ts-expect-error - Date is number in milliseconds
       const ageInMilliseconds:number = today - birthDay;
       const ageInYear = Math.floor(ageInMilliseconds / 1000 / 60 / 60 / 24 / 365);
       return ageInYear <= Number(param);

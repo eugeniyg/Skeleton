@@ -41,7 +41,7 @@ export const useGtmAnalytics = () => {
     })
   }
 
-  const registrationSubmit = (eventData: IAnalyticsEvent): void => {
+  const registrationSubmit = (): void => {
     gtm?.trackEvent({
       ...baseRegFunnelObj,
       userId: 'not set',
@@ -49,7 +49,7 @@ export const useGtmAnalytics = () => {
     })
   }
 
-  const registrationOtp = (eventData: IAnalyticsEvent): void => {
+  const registrationOtp = (): void => {
     gtm?.trackEvent({
       ...baseRegFunnelObj,
       userId: 'not set',
@@ -91,7 +91,7 @@ export const useGtmAnalytics = () => {
     })
   }
 
-  const walletSelectBonus = (eventData: IAnalyticsEvent): void => {
+  const walletSelectBonus = (): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
       userId: profileStore.profile?.id,
@@ -100,7 +100,7 @@ export const useGtmAnalytics = () => {
     })
   }
 
-  const walletDeclineBonuses = (eventData: IAnalyticsEvent): void => {
+  const walletDeclineBonuses = (): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
       userId: profileStore.profile?.id,
@@ -202,7 +202,7 @@ export const useGtmAnalytics = () => {
     })
   }
 
-  const walletPromoOpen = (eventData: IAnalyticsEvent): void => {
+  const walletPromoOpen = (): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
       userId: profileStore.profile?.id,
@@ -211,7 +211,7 @@ export const useGtmAnalytics = () => {
     })
   }
 
-  const walletPromoSubmit = (eventData: IAnalyticsEvent): void => {
+  const walletPromoSubmit = (): void => {
     gtm?.trackEvent({
       ...baseWalletFunnelObj,
       userId: profileStore.profile?.id,
@@ -228,7 +228,7 @@ export const useGtmAnalytics = () => {
     eventCategory: 'balanceFunnel'
   }
 
-  const openBalancePopup = (eventData: IAnalyticsEvent): void => {
+  const openBalancePopup = (): void => {
     gtm?.trackEvent({
       ...baseBalanceFunnelObj,
       userId: profileStore.profile?.id,

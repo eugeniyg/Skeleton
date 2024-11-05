@@ -16,7 +16,7 @@
       </div>
 
       <div class="modal-quest-rewards__content">
-        <div v-for="item in rewardsList" class="modal-quest-rewards__item">
+        <div v-for="(item, index) in rewardsList" :key="index" class="modal-quest-rewards__item">
           <span class="modal-quest-rewards__amount">{{ item.amount }}</span>
           <span class="modal-quest-rewards__currency">{{ item.currency }}</span>
         </div>

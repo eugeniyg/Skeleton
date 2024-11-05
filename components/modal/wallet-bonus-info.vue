@@ -36,7 +36,7 @@
         </div>
 
         <dl class="modal-wallet-bonus-info__dl">
-          <template v-for="{ label, value } in table.params">
+          <template v-for="({ label, value }, index) in table.params" :key="index">
             <dt>{{ label }}</dt>
             <dd>{{ value === 'games' ? bonusGames[table.id] : value }}</dd>
           </template>

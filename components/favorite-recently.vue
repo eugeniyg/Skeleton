@@ -56,9 +56,6 @@
     const arr = [];
     if (favoriteGames.value?.length) arr.push(favoritesItem);
     if (recentlyGames.value?.length) arr.push(recentlyItem);
-    const tabsId = arr.map((item) => item.id);
-    if (window.innerWidth > 767) selectedTabs.value = tabsId;
-    else if (!tabsId.includes(selectedTabs.value[0]) && arr.length) selectedTabs.value = [arr[0].id];
     return arr;
   });
 
@@ -78,6 +75,10 @@
       countryCode: profile.value?.country || headerCountry.value || 'UA',
     });
     loadingRecently.value = false;
+
+    const tabsId = tabsData.value.map((item) => item.id);
+    if (window.innerWidth > 767) selectedTabs.value = tabsId;
+    else if (tabsId.length) selectedTabs.value = [tabsId[0]];
   });
 
   const showBlock = computed(() => !loadingRecently.value && (recentlyGames.value.length || favoriteGames.value.length));

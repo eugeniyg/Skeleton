@@ -68,8 +68,6 @@
     questInfo: IPlayerQuest;
   }>()
 
-  const emit = defineEmits(['openRewardsModal']);
-
   const { openTasksModal } = useQuestsStore();
   const globalStore = useGlobalStore();
   const {

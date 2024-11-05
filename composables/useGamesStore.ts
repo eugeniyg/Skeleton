@@ -105,14 +105,11 @@ export const useGamesStore = defineStore('gamesStore', {
       this.latestWinners = winners.slice(0, 12);
     },
 
-    updateWinners(winnerData:IWebSocketResponse):void {
-      const that = this;
-      throttle(() => {
-        const { winner } = winnerData.data;
-        const filteredWinners = that.latestWinners.filter((item) => item.gameId !== winner?.gameId);
-        if (winner) that.latestWinners = [winner, ...filteredWinners].slice(0, 12);
-      }, 3000, { leading: false })();
-    },
+    updateWinners: throttle(function (winnerData:IWebSocketResponse): void {
+      const { winner } = winnerData.data;
+      const filteredWinners = this.latestWinners.filter((item) => item.gameId !== winner?.gameId);
+      if (winner) this.latestWinners = [winner, ...filteredWinners].slice(0, 12);
+    }, 3000, { leading: false }),
 
     openMobileGameModal(modalType: MobileModalType, gameInfo: IGame):void {
       this.mobileGameModalType = modalType;

@@ -3,7 +3,8 @@
     <div class="partners__title">{{ props.label }}</div>
     <div class="partners__items">
       <atomic-link
-        v-for="item in props.items"
+        v-for="(item, index) in props.items"
+        :key="index"
         class="partners__item"
         :href="item.url"
         :targetBlank="item.targetBlank"

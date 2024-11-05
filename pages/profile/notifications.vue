@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-  import type {IProfileNotifications, IStaticPage} from "~/types";
+  import type {IProfileNotifications} from "~/types";
   import {storeToRefs} from "pinia";
   import type {IMessage, INotificationsRequest, IPaginationMeta} from "@skeleton/core/types";
 
