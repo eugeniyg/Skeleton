@@ -53,11 +53,6 @@
     }
     return '';
   });
-  
-  const formatString = (value: string) => {
-    //return value.replace('...', '***')
-    return value
-  }
 </script>
 
 <style src="~/assets/styles/components/card/latest-winners.scss" lang="scss" />

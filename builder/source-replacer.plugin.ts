@@ -30,7 +30,7 @@ export const sourceReplacerPlugin = (sourcePath: string, replacePath: string) =>
         // original source file not exists, something virtual, not interested in, fallback to other plugins flow
         try {
           await access(source);
-        } catch (e) {
+        } catch {
           return null;
         }
 
@@ -39,11 +39,11 @@ export const sourceReplacerPlugin = (sourcePath: string, replacePath: string) =>
         // replaced source file not exists, fallback to other plugins flow
         try {
           await access(replacedSource);
-        } catch (e) {
+        } catch {
           return null;
         }
 
-        // @ts-ignore
+        // @ts-expect-error - Vite plugin
         return this.resolve(replacedSource, importer, { skipSelf: true, ...options });
       },
     },

@@ -6,7 +6,7 @@
     :class="{'is-logged': isLoggedIn}"
   >
     <div class="paysis__container">
-      <div v-for="{ image } in paymentsItems" class="paysis__item">
+      <div v-for="({ image }, index) in paymentsItems" :key="index" class="paysis__item">
         <atomic-image
           class="logo"
           :src="image"

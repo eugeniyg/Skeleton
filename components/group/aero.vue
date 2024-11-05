@@ -103,29 +103,15 @@
   import type { IGame, IPaginationMeta } from '@skeleton/core/types';
   import { storeToRefs } from "pinia";
   import { Skeletor } from "vue-skeletor";
+  import type {IAeroGroupComponent, ICategory} from "~/types";
 
-  const props = defineProps({
-    currentLocaleContent: {
-      type: Object,
-      required: false
-    },
-    defaultLocaleContent: {
-      type: Object,
-      required: false
-    },
-    category: {
-      type: Object,
-      required: true,
-    },
-    showAllBtn: {
-      type: Boolean,
-      default: false,
-    },
-    showArrows: {
-      type: Boolean,
-      default: true,
-    },
-  });
+  const props = defineProps<{
+    currentLocaleContent: Maybe<IAeroGroupComponent>;
+    defaultLocaleContent: Maybe<IAeroGroupComponent>;
+    category: ICategory;
+    showAllBtn?: boolean;
+    showArrows?: boolean;
+  }>();
 
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();

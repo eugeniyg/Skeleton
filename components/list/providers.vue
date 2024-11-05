@@ -25,6 +25,7 @@
 
     <nuxt-link
       v-for="provider in props.providersList"
+      :key="provider.id"
       :to="localizePath(`/games?provider=${provider.id}`)"
       class="list-providers__item"
     >

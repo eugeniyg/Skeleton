@@ -8,7 +8,7 @@
       class="field"
       :value="props.value"
       :name="props.name"
-      :placeholder="props.placeholder"
+      :placeholder="props.placeholder || ''"
       :required="props.isRequired"
       rows="6"
       cols="50"
@@ -22,29 +22,14 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    isRequired: {
-      type: Boolean,
-      default: false,
-    },
-    value: {
-      type: String
-    },
-    name: {
-      type: String,
-      required: true
-    },
-    label: {
-      type: String
-    },
-    placeholder: {
-      type: String
-    },
-    hint: {
-      type: Object,
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    isRequired?: boolean;
+    value?: string;
+    name: string;
+    label?: string;
+    placeholder?: string;
+    hint?: { variant: string; message: string };
+  }>();
 
   const emit = defineEmits(['input', 'blur', 'focus', 'update:value']);
 

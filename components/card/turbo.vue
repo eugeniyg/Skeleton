@@ -27,8 +27,6 @@
     title: string,
     categoryValue: string
   }>();
-
-  const { localizePath } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/card/turbo.scss" lang="scss" />

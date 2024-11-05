@@ -10,7 +10,7 @@
         class="field"
         type="text"
         name="postalCode"
-        :placeholder="props.placeholder"
+        :placeholder="props.placeholder || 'Enter number'"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
@@ -22,32 +22,14 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    label: {
-      type: String,
-      default: '',
-    },
-    value: {
-      type: String,
-      required: false,
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false,
-    },
-    isRequired: {
-      type: Boolean,
-      default: false,
-    },
-    placeholder: {
-      type: String,
-      default: 'Enter number',
-    },
-    hint: {
-      type: Object,
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    label?: string;
+    value?: string;
+    isDisabled?: boolean;
+    isRequired?: boolean;
+    placeholder?: string;
+    hint?: { variant: string; message: string };
+  }>();
 
   const classes = computed(() => [
     'input-text',

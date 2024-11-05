@@ -16,16 +16,10 @@
     await router.push(localizePath('/profile/bonuses'));
   };
 
-  const props = defineProps({
-    display: {
-      type: String,
-      validator: (val:string) => ['desktop', 'mobile'].includes(val),
-    },
-    isActive: {
-      type: Boolean,
-      default: false,
-    },
-  });
+  const props = defineProps<{
+    display: 'desktop'|'mobile';
+    isActive?: boolean;
+  }>();
 </script>
 
 <style src="~/assets/styles/components/atomic/gift-notification.scss" lang="scss" />

@@ -45,35 +45,18 @@
 <script setup lang="ts">
   import { storeToRefs } from "pinia";
 
-  const props = defineProps({
-    label: {
-      type: String,
-      default: 'label',
-    },
-    value: {
-      type: String,
-      default: '',
-    },
-    isRequired: {
-      type: Boolean,
-      default: false,
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false,
-    },
-    hint: {
-      type: Object,
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    label?: string;
+    value?: string;
+    isRequired?: boolean;
+    isDisabled?: boolean;
+    hint?: { variant: string; message: string };
+  }>();
 
   const globalStore = useGlobalStore();
   const {
     fieldsSettings,
-    defaultLocaleFieldsSettings,
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent
+    defaultLocaleFieldsSettings
   } = globalStore;
   const { currentLocale } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();

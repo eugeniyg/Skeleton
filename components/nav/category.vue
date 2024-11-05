@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="nav-category__actions">
-      <button-categories :is-active="isDropdownShown" @action="showCategories" :disabled="isCategoriesButtonDisabled"/>
+      <button-categories :is-active="isDropdownShown" :disabled="isCategoriesButtonDisabled" @action="showCategories"/>
       <button-providers @action="showModal('providers')"/>
       
       <ul

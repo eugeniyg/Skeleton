@@ -30,11 +30,11 @@
         :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
         :name="field.name"
         :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
-        @blur="v$[field.name]?.$touch()"
         :isRequired="profileFormRules[field.name]?.hasOwnProperty('required')"
-        @focus="focusField(field.name)"
         :options="selectOptions[field.name]"
         :hint="setError(field.name)"
+        @blur="v$[field.name]?.$touch()"
+        @focus="focusField(field.name)"
       />
     </div>
 

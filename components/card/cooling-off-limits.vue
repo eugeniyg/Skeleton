@@ -64,7 +64,9 @@
     definition: 5,
   });
 
-  const sortedLimits = computed(() => coolingOffLimits.value.sort((a, b) => a.status - b.status));
+  const sortedLimits = computed(() => {
+    return [...coolingOffLimits.value].sort((a, b) => a.status - b.status)
+  });
 
   const isFullWidth = computed(() => (!isAdvancedModeEnabled.value && betPeriods.value?.length > 1)
     || (!isAdvancedModeEnabled.value && lossPeriods.value?.length < 2));

@@ -14,16 +14,10 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    variant: {
-      type: String,
-      validator: (val:string) => ['weak', 'good', 'strong'].includes(val),
-    },
-    target: {
-      type: String,
-      default: '',
-    },
-  });
+  const props = defineProps<{
+    variant: 'weak'|'good'|'strong';
+    target?: string;
+  }>();
   const variants = ['weak', 'good', 'strong'];
   const getIndex = computed(() => variants.findIndex((item) => item === props.target));
 </script>

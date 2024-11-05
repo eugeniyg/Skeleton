@@ -3,66 +3,39 @@
     <span v-if="props.label" class="label">{{ props.label }}<span v-if="props.isRequired" class="required">*</span></span>
 
     <input
+      ref="inputRef"
       class="field"
-      :inputmode="props.inputmode"
-      :type="props.type"
+      :inputmode="props.inputmode || 'text'"
+      :type="props.type || 'text'"
       :name="props.name"
       :value="props.value"
       :readonly="props.isDisabled"
       :required="props.isRequired"
-      :placeholder="props.placeholder"
-      :autocomplete="props.autocomplete"
+      :placeholder="props.placeholder || ''"
+      :autocomplete="props.autocomplete || 'on'"
       @focus="onFocus"
       @blur="onBlur"
       @input="onInput"
       @keyup.enter="emit('submit', $event)"
-      ref="inputRef"
-    />
+    >
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
   </label>
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    type: {
-      type: String,
-      default: 'text',
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    value: {
-      type: String
-    },
-    label: {
-      type: String
-    },
-    placeholder: {
-      type: String
-    },
-    isRequired: {
-      type: Boolean,
-      default: false,
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false,
-    },
-    hint: {
-      type: Object,
-      required: false,
-    },
-    autocomplete: {
-      type: String,
-      default: 'on',
-    },
-    inputmode: {
-      type: String,
-      default: 'text'
-    }
-  });
+  const props = defineProps<{
+    type?: string;
+    name: string;
+    value?: string;
+    label?: string;
+    placeholder?: string;
+    isRequired?: boolean;
+    isDisabled?: boolean;
+    hint?: { variant: string; message: string };
+    autocomplete?: string;
+    inputmode?: 'text'|'none'|'tel'|'url'|'email'|'numeric'|'decimal'|'search';
+  }>();
   const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);
 
   const classes = computed(() => [
@@ -86,7 +59,7 @@
 
   const inputRef = ref();
 
-  const focusField = (e:any) => {
+  const focusField = ():void => {
     inputRef.value.focus();
   }
 

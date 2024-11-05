@@ -30,8 +30,6 @@
     providerData: IGameProvider;
   }>();
 
-  const router = useRouter();
-
   const { localizePath } = useProjectMethods();
 </script>
 

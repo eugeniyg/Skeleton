@@ -31,7 +31,6 @@
   import { storeToRefs } from 'pinia';
 
   const walletStore = useWalletStore();
-  const globalStore = useGlobalStore();
   const { formatBalance } = useProjectMethods();
   const { getPlayerBonuses } = useBonusStore();
   const { activeAccount, showEquivalentBalance } = storeToRefs(walletStore);

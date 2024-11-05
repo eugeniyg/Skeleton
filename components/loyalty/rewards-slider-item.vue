@@ -30,7 +30,7 @@
     </div>
 
     <div class="loyalty-rewards-slider__item-content">
-      <div v-for="reward in levelRewards" class="loyalty-rewards-slider__item-reward">
+      <div v-for="(reward, index) in levelRewards" :key="index" class="loyalty-rewards-slider__item-reward">
         <div
           class="loyalty-rewards-slider__item-reward-value"
           :class="{'--is-empty': !reward.value }"

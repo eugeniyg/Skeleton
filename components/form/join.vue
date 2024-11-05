@@ -32,13 +32,13 @@
         :search-by="fieldsMap[field.name]?.searchBy"
         :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) || ''"
         :name="field.name"
-        @blur="v$[field.name]?.$touch()"
         :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.placeholder`) || ''"
-        @focus="onFocus(field.name)"
         :options="selectOptions[field.name]"
         :isRequired="registrationFormRules[field.name]?.hasOwnProperty('required')"
         :hint="setError(field.name)"
         :class="field.name"
+        @blur="v$[field.name]?.$touch()"
+        @focus="onFocus(field.name)"
         @input="handleInput(field.name)"
       />
     </template>

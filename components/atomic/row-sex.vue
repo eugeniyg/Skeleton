@@ -5,13 +5,9 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    value: {
-      type: String,
-      validator: (val:string) => ['male', 'female'].includes(val),
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    value?: 'male'|'female';
+  }>();
 
   const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
   const { getContent } = useProjectMethods();

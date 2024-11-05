@@ -81,7 +81,7 @@
         />
       </div>
 
-      <div v-for="cashback in cashbackBalance" class="list-balance__item">
+      <div v-for="(cashback, index) in cashbackBalance" :key="index" class="list-balance__item">
         <atomic-icon id="cashback" class="list-balance__icon"/>
         <span class="list-balance__title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.balance.items.cashback') }}</span>
         <span class="list-balance__value">{{ cashback.currencySymbol }} {{ cashback.balance }}</span>

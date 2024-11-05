@@ -11,8 +11,8 @@
         :readonly="props.isDisabled"
         :name="props.name"
         :required="props.isRequired"
-        :placeholder="props.placeholder"
-        :value="props.value"
+        :placeholder="props.placeholder || ''"
+        :value="props.value || ' '"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
@@ -27,40 +27,16 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    name: {
-      type: String,
-      required: true,
-    },
-    value: {
-      type: String,
-      default: ' ',
-    },
-    label: {
-      type: String,
-      required: true,
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    isRequired: {
-      type: Boolean,
-      default: false,
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false,
-    },
-    hint: {
-      type: Object,
-      required: false,
-    },
-    showPassProgress: {
-      type: Boolean,
-      default: false,
-    },
-  });
+  const props = defineProps<{
+    name: string;
+    value?: string;
+    label: string;
+    placeholder?: string;
+    isRequired?: boolean;
+    isDisabled?: boolean;
+    hint?: { variant: string; message: string };
+    showPassProgress?: boolean;
+  }>();
 
   const classes = computed(() => [
     'input-password',

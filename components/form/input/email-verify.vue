@@ -7,12 +7,12 @@
     <div class="row">
       <input
         class="field"
-        :type="props.type"
+        :type="props.type || 'text'"
         :name="props.name"
-        :value="props.value"
+        :value="props.value || ' '"
         :disabled="props.isDisabled"
         :required="props.isRequired"
-        :placeholder="props.placeholder"
+        :placeholder="props.placeholder || ''"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
@@ -23,7 +23,7 @@
         :class="{ disabled: resentVerifyEmail }"
         @click.once="profileStore.resendVerifyEmail"
       >
-        {{ props.verifyButton }}
+        {{ props.verifyButton || 'Verify' }}
       </button-verify>
     </div>
 
@@ -34,44 +34,17 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const props = defineProps({
-    type: {
-      type: String,
-      default: 'text',
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    value: {
-      type: String,
-      default: ' ',
-    },
-    label: {
-      type: String,
-      default: '',
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    isRequired: {
-      type: Boolean,
-      default: false,
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false,
-    },
-    hint: {
-      type: Object,
-      required: false,
-    },
-    verifyButton: {
-      type: String,
-      default: 'Verify',
-    },
-  });
+  const props = defineProps<{
+    type?: string;
+    name: string;
+    value: string;
+    label?: string;
+    placeholder?: string;
+    isRequired?: boolean;
+    isDisabled?: boolean;
+    hint?: { variant: string; message: string };
+    verifyButton: string;
+  }>();
   const emit = defineEmits(['blur', 'focus', 'input', 'update:value']);
 
   const profileStore = useProfileStore();

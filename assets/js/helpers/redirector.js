@@ -13,7 +13,7 @@ function redirect(domains = []) {
     status: 302,
     statusText: 'Found',
     headers: {
-      // eslint-disable-next-line no-restricted-globals
+       
       Location: `${self.location.protocol}//${domain}/?domainredirect=true`,
     },
   };
@@ -53,7 +53,7 @@ function makeRedirect(mainFetchResult) {
     });
 }
 
-// eslint-disable-next-line no-restricted-globals
+ 
 self.addEventListener('fetch', (event) => {
   if (event.request.url && (event.request.url.includes('/api/') || checkIfFile(event))) {
     return;

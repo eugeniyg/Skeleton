@@ -5,12 +5,10 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    variant: {
-      type: String,
-      variant: (val:string) => ['mobile', 'desktop'].includes(val),
-    },
-  });
+  const props = defineProps<{
+    variant: 'mobile'|'desktop';
+  }>();
+
   const iconId = computed(() => {
     switch (props.variant) {
     case 'mobile':

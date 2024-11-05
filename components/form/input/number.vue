@@ -1,7 +1,7 @@
 <template>
   <label :class="classes">
     <span v-if="label" class="label">
-      {{ label }}<span v-if="isRequired" class="required">*</span>
+      {{ label }}<span v-if="props.isRequired" class="required">*</span>
     </span>
 
     <slot name="pills"/>
@@ -17,7 +17,7 @@
         :name="name"
         :value="props.value"
         :required="props.isRequired"
-        :placeholder="props.placeholder"
+        :placeholder="props.placeholder || ''"
         @blur="onBlur"
         @input="onInput"
       >
@@ -29,48 +29,18 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    name: {
-      type: String,
-      required: true,
-    },
-    currency: {
-      type: String,
-      required: false,
-    },
-    value: {
-      type: [Number, String],
-      required: true
-    },
-    min: {
-      type: Number,
-      required: true
-    },
-    max: {
-      type: Number,
-      required: true
-    },
-    label: {
-      type: String,
-      required: true,
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    isRequired: {
-      type: Boolean,
-      default: false,
-    },
-    hint: {
-      type: Object,
-      required: false,
-    },
-    isBigger: {
-      type: Boolean,
-      default: false,
-    }
-  });
+  const props = defineProps<{
+    name: string;
+    currency?: string;
+    value: string|number;
+    min: number;
+    max: number;
+    label: string;
+    placeholder?: string;
+    isRequired?: boolean;
+    hint: { variant: string; message: string };
+    isBigger?: boolean;
+  }>();
 
   const emit = defineEmits(['blur', 'update:value', 'input']);
   const onInput = (e:any):void => {

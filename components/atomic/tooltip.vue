@@ -9,13 +9,13 @@
     @focusout="hide"
   >
     <slot/>
-    <atomic-icon :id="props.icon" />
+    <atomic-icon :id="props.icon || 'info'" />
 
     <Teleport to="body">
       <div
         ref="tooltipMsg"
         class="tooltip__message"
-        :class="[messageCustomClass, {'is-active': isShow}, `size-${props.size}`]"
+        :class="[messageCustomClass, {'is-active': isShow}, `size-${props.size || 'large'}`]"
         :style="`top: ${coords.top}px; left: ${coords.left}px`"
       >
         <div v-if="props.title" class="title">{{ props.title }}</div>
@@ -33,29 +33,14 @@
   import DOMPurify from "isomorphic-dompurify";
   import {marked} from "marked";
 
-  const props = defineProps({
-    icon: {
-      type: String,
-      default: 'info',
-    },
-    title: {
-      type: String,
-    },
-    text: {
-      type: String,
-    },
-    align: {
-      validator: (val: string | null) => ['bottom', null].includes(val),
-      default: null,
-    },
-    messageCustomClass: {
-      type: String
-    },
-    size: {
-      validator: (val: string) => ['small', 'large'].includes(val),
-      default: 'large'
-    }
-  });
+  const props = defineProps<{
+    icon?: string;
+    title?: string;
+    text?: string;
+    align?: 'bottom';
+    messageCustomClass?: string;
+    size?: 'small'|'large';
+  }>();
 
   const coords = reactive({
     top: 0,

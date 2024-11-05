@@ -21,20 +21,14 @@
 
 <script setup lang="ts">
   import flatPickr from 'vue-flatpickr-component';
-  import { default as pickrLocales } from 'flatpickr/dist/l10n';
+  import pickrLocales from 'flatpickr/dist/l10n';
   import { storeToRefs } from "pinia";
   import type { key } from "flatpickr/dist/types/locale";
 
-  const props = defineProps({
-    label: {
-      type: String,
-      required: true,
-    },
-    settings: {
-      type: Object,
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    label: string;
+    settings?: Record<string, any>;
+  }>();
 
   const defaultSettings = {
     altInput: true,
@@ -48,9 +42,8 @@
 
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
-  let localeOption: any;
   const mainLocale = currentLocale.value?.code?.split('-')?.[0] || '';
-  localeOption = pickrLocales[mainLocale as key];
+  const localeOption: any = pickrLocales[mainLocale as key];
 
   if (localeOption) defaultSettings.locale = { ...localeOption, rangeSeparator: ' - ' };
   else defaultSettings.locale = { rangeSeparator: ' - ' };

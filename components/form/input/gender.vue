@@ -46,32 +46,13 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    label: {
-      type: String,
-      default: '',
-    },
-    value: {
-      type: String,
-      default: '',
-    },
-    isRequired: {
-      type: Boolean,
-      default: false,
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false,
-    },
-    items: {
-      type: Array,
-      default: () => [],
-    },
-    hint: {
-      type: Object,
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    label?: string;
+    value?: string;
+    isRequired?: boolean;
+    isDisabled?: boolean;
+    hint?: { variant: string; message: string };
+  }>();
 
   const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
   const { getContent } = useProjectMethods();

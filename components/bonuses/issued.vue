@@ -74,10 +74,8 @@
 
   const activatePackage = (packageList: Record<string, any>[]):void => {
     const firstAvailableBonus = packageList.find(bonus => bonus.status === 1);
-    if (firstAvailableBonus) {
-      firstAvailableBonus.isFreeSpin
-        ? emit('activateFreeSpin', firstAvailableBonus)
-        : emit('activateBonus', firstAvailableBonus);
-    }
+
+    if (firstAvailableBonus?.isFreeSpin) emit('activateFreeSpin', firstAvailableBonus);
+    else if (firstAvailableBonus) emit('activateBonus', firstAvailableBonus);
   }
 </script>

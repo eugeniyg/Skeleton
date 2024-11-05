@@ -16,18 +16,18 @@
 
     <client-only>
       <input
+        ref="inputRef"
         v-model="numberValue"
         v-maska="'############'"
         inputmode="numeric"
         class="field"
         type="text"
         name="phoneNumber"
-        :placeholder="props.placeholder"
+        :placeholder="props.placeholder || 'Enter number'"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
-        ref="inputRef"
-      />
+      >
     </client-only>
 
     <atomic-hint v-if="props.hint" v-bind="props.hint"/>
@@ -39,28 +39,13 @@
   import { storeToRefs } from 'pinia';
   import type { IPhoneCode } from '@skeleton/types';
 
-  const props = defineProps({
-    label: {
-      type: String,
-      default: '',
-    },
-    value: {
-      type: String,
-      required: false,
-    },
-    isRequired: {
-      type: Boolean,
-      default: false,
-    },
-    placeholder: {
-      type: String,
-      default: 'Enter number',
-    },
-    hint: {
-      type: Object,
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    label?: string;
+    value?: string;
+    isRequired?: boolean;
+    placeholder?: string;
+    hint?: { variant: string; message: string };
+  }>();
 
   const globalStore = useGlobalStore();
   const { countries, headerCountry } = storeToRefs(globalStore);
@@ -122,7 +107,7 @@
 
   const inputRef = ref();
 
-  const focusField = (e:any) => {
+  const focusField = ():void => {
     inputRef.value?.focus();
   }
 

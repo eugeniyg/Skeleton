@@ -9,13 +9,13 @@
     </button>
 
     <button
-      v-for="page in paginationItems"
-      :key="page"
+      v-for="pageItem in paginationItems"
+      :key="pageItem"
       class="page"
-      :class="[{'is-selected': page === props.page}, {dots: typeof page === 'string'}]"
-      @click="changePage(page)"
+      :class="[{'is-selected': pageItem === props.page}, { dots: typeof pageItem === 'string' }]"
+      @click="changePage(pageItem)"
     >
-      {{ page }}
+      {{ pageItem }}
     </button>
 
     <button

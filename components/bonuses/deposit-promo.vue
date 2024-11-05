@@ -67,7 +67,7 @@
     try {
       const response = await addBonusCode(bonusValue.value, 1);
       return response.status === 2;
-    } catch (err: any) {
+    } catch {
       return false;
     }
   };
