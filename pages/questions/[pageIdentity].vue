@@ -25,7 +25,7 @@
     where: { pageIdentity }
   };
   const { getContentData } = useContentLogic<IQuestionCategory>(contentParams);
-  const { data: categoryContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: categoryContent } = await useLazyAsyncData(getContentData);
 
   const questionsList = computed(() => {
     return categoryContent.value?.currentLocaleData?.questionList || [];

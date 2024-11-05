@@ -14,6 +14,8 @@
       v-if="termsData?.title && termsData?.content"
       v-bind="termsData"
     />
+
+    <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent.pageMeta.seoText" />
   </div>
 </template>
 
@@ -28,7 +30,7 @@
     isPage: true
   };
   const { getContentData } = useContentLogic<ILoyaltyPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 

@@ -3,8 +3,8 @@
     v-model="modals.questsHub"
     class="modal-quest-hub"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
     @clickOutside="closeModal('questsHub')"
     @closed="selectedTab = 'active'"
   >

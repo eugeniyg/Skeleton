@@ -55,7 +55,7 @@
     isPage: true
   };
   const { getContentData } = useContentLogic<IProvidersPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const providersList = ref<IGameProvider[]>([]);
 

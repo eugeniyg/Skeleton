@@ -21,20 +21,24 @@
       @click="sendEmail"
     >
       <atomic-spinner :is-shown="isLockedAsyncButton"/>
-      {{ getContent(popupsData, defaultLocalePopupsData, 'forgot.forgotButton') }}
+      {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'forgotButton') }}
     </button-base>
   </form>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import type {IModalsContent} from "~/types";
+
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['forgot']>;
+    defaultLocaleData: Maybe<IModalsContent['forgot']>;
+  }>();
 
   const globalStore = useGlobalStore();
   const {
     fieldsSettings,
     defaultLocaleFieldsSettings,
-    popupsData,
-    defaultLocalePopupsData,
     alertsData,
     defaultLocaleAlertsData,
   } = storeToRefs(globalStore);
@@ -62,9 +66,10 @@
     try {
       isLockedAsyncButton.value = true;
       await forgotProfilePassword(forgotFormData);
-      const { closeModal, showAlert } = useLayoutStore();
+      const { showAlert } = useLayoutStore();
+      const { closeModal } = useModalStore();
       showAlert(alertsData.value?.profile?.sentResetLink || defaultLocaleAlertsData.value?.profile?.sentResetLink);
-      closeModal('forgotPass');
+      closeModal('forgot-pass');
     } catch (error:any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;

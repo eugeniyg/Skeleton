@@ -85,7 +85,8 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn, userNickname } = storeToRefs(profileStore);
-  const { showModal, openWalletModal } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const { handleExternalLink } = useProjectMethods();
   const runtimeConfig = useRuntimeConfig();
   const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;
@@ -97,7 +98,7 @@
 
   const clickButton = (url: string): void => {
     if (url) handleExternalLink(url)
-    else isLoggedIn.value ? openWalletModal('deposit') : showModal('register');
+    else isLoggedIn.value ? openWalletModal('deposit') : openModal('sign-up');
   };
 </script>
 

@@ -51,19 +51,20 @@
     isPage: true
   };
   const { getContentData } = useContentLogic<IBonusPage>(contentParams);
-  const { status, data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { status, data: pageContent } = await useLazyAsyncData(getContentData);
 
   const detailLabel = computed(() => getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'termsLabel'));
   const detailContent = computed(() => getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'termsContent'));
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { openWalletModal, showModal } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   
   const clickButton = (url: string|undefined):void => {
     const { handleExternalLink } = useProjectMethods();
     if (url) handleExternalLink(url)
-    else isLoggedIn.value ? openWalletModal('deposit') : showModal('register');
+    else isLoggedIn.value ? openWalletModal('deposit') : openModal('sign-up');
   };
 </script>
 

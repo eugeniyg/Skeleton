@@ -39,11 +39,8 @@
       <layout-cookies v-if="showCookiesMessage" />
     </transition>
 
-    <modal-register />
-    <modal-register-cancel />
-    <modal-sign-in />
-    <modal-forgot-pass />
-    <modal-reset-pass />
+    <ModalsContainer />
+
     <modal-success />
     <modal-error />
     <modal-confirm />
@@ -72,6 +69,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import { ModalsContainer } from 'vue-final-modal';
 
   const globalStore = useGlobalStore();
   const layoutStore = useLayoutStore();
@@ -138,9 +136,11 @@
   });
 
   const { checkModals } = useLayoutStore();
+  const { checkOpenedModals } = useModalStore();
   const mainClasses = ref();
   onMounted(async () => {
     checkModals();
+    checkOpenedModals();
     checkDrawer();
     disabledTransition.value = false;
     const cookieValue = useCookie('accept-cookie');

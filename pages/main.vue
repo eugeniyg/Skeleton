@@ -73,7 +73,7 @@
     isPage: true
   };
   const { getContentData } = useContentLogic<ICasinoPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const { getCollectionsList } = useGamesStore();
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
@@ -109,8 +109,8 @@
       router.push({
         path: localizePath('/games'),
         query: {
-          category: getContent(popupsData, defaultLocalePopupsData, 'providers.collectionId'),
-          provider: selectedProviders.value
+          category: getContent(popupsData.value, defaultLocalePopupsData.value, 'providers.collectionId'),
+          providerId: selectedProviders.value
         }
       });
     }, 600);

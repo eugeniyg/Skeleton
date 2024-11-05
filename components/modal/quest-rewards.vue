@@ -3,8 +3,8 @@
     v-model="showRewardsModal"
     class="modal-quest-rewards"
     :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
     @clickOutside="closeRewardsModal"
   >
     <div class="scroll">

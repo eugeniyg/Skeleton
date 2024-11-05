@@ -47,15 +47,16 @@ export function useContentLogic<T extends Record<string, any>>(params: IContentP
 
   const getContentData = async (): Promise<IPageContent> => {
     let contentData: IPageContent = { currentLocaleData: undefined, defaultLocaleData: undefined };
-    const nuxtContentData = useNuxtData(params.contentKey);
+    const { data: nuxtDataContent} = useNuxtData(params.contentKey);
 
-    if (nuxtContentData.data.value) contentData = nuxtContentData.data.value;
+    if (nuxtDataContent.value) contentData = nuxtDataContent.value;
     else {
       const [
         currentLocaleContentResponse,
         defaultLocaleContentResponse
       ] = await Promise.allSettled(getRequestArray());
       contentData = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+      nuxtDataContent.value = contentData;
     }
 
     if (params.isPage) setPageMeta(contentData.currentLocaleData?.pageMeta);

@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IHomePage, IStaticPage} from '~/types';
+  import type {IHomePage} from '~/types';
   import type { ICollection } from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();
@@ -83,7 +83,7 @@
     isPage: true
   };
   const { getContentData } = useContentLogic<IHomePage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const { getCollectionsList } = useGamesStore();
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });

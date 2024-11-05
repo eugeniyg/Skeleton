@@ -2,8 +2,8 @@
   <vue-final-modal
     v-model="modals.categories"
     class="modal-categories"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :overlayTransition="{ mode: 'in-out', duration: 250 }"
+    :contentTransition="{ mode: 'in-out', duration: 250 }"
   >
     <div class="modal-categories__container">
       <div class="modal-categories__header">

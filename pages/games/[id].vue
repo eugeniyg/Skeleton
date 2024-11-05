@@ -55,6 +55,7 @@
     setReturnGame,
     openWalletModal
   } = useLayoutStore();
+  const { openModal } = useModalStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
   const {
@@ -71,7 +72,7 @@
     isPage: true
   };
   const { getContentData } = useContentLogic<IGamePage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const showRestrictedBetsModal = ref<boolean>(false);
   const maxBetsModal = reactive({
@@ -136,7 +137,7 @@
     if (gameLoading.value) return;
 
     if (isDemo.value && !isLoggedIn.value) {
-      showModal('register');
+      await openModal('sign-up');
       return;
     }
 
