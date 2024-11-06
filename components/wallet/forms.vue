@@ -1,16 +1,9 @@
 <template>
   <div ref="scrollBlock" class="wallet-forms" @scroll="handleScroll">
-    <div
-      class="wallet-forms__header"
-      :class="{ 'wallet-forms__header--without-tabs': !props.showTabs }"
-    >
-      <wallet-tabs
-        v-if="props.showTabs"
-        :selected="props.selectedTab"
-        @changeTab="emit('changeTab', $event)"
-      />
+    <div class="wallet-forms__header" :class="{ 'wallet-forms__header--without-tabs': !props.showTabs }">
+      <wallet-tabs v-if="props.showTabs" :selected="props.selectedTab" @change-tab="emit('changeTab', $event)" />
 
-      <wallet-header v-bind="walletHeaderProps"/>
+      <wallet-header v-bind="walletHeaderProps" />
       <div class="identity">ID {{ playerIdentity }}</div>
     </div>
 
@@ -25,8 +18,8 @@
     <template v-if="props.selectedTab === 'deposit'">
       <wallet-limit
         v-if="depositLimitError"
-        :currentLocaleLimitsContent="pageContent?.currentLocaleData"
-        :defaultLocaleLimitsContent="pageContent?.defaultLocaleData"
+        :current-locale-limits-content="pageContent?.currentLocaleData"
+        :default-locale-limits-content="pageContent?.defaultLocaleData"
       />
 
       <template v-else-if="depositMethods?.length && props.currentDepositMethod">
@@ -70,17 +63,14 @@
       </div>
     </template>
 
-    <wallet-dots
-      :itemsCount="2"
-      :activeIndex="1"
-    />
+    <wallet-dots :items-count="2" :active-index="1" />
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { IPaymentMethod } from "@skeleton/core/types";
-  import { storeToRefs } from "pinia";
-  import type {IProfileLimits} from "~/types";
+  import type { IPaymentMethod } from '@skeleton/core/types';
+  import { storeToRefs } from 'pinia';
+  import type { IProfileLimits } from '~/types';
 
   const props = defineProps<{
     showTabs: boolean;
@@ -89,7 +79,7 @@
     currentDepositMethod?: IPaymentMethod;
     currentWithdrawMethod?: IPaymentMethod;
     showMobileForm: boolean;
-  }>()
+  }>();
 
   const emit = defineEmits(['changeTab']);
 
@@ -99,13 +89,8 @@
   const depositMethodKey = ref<number>(0);
 
   const walletStore = useWalletStore();
-  const {
-    depositMethods,
-    withdrawMethods,
-    activeAccount,
-    activeAccountType,
-    depositLimitError
-  } = storeToRefs(walletStore);
+  const { depositMethods, withdrawMethods, activeAccount, activeAccountType, depositLimitError } =
+    storeToRefs(walletStore);
 
   const globalStore = useGlobalStore();
   const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
@@ -115,7 +100,7 @@
 
   const handleScroll = (): void => {
     hasOffset.value = scrollBlock.value.scrollTop !== 0;
-  }
+  };
 
   const runtimeConfig = useRuntimeConfig();
   const customerCdn = runtimeConfig.public.customerCdn;
@@ -131,7 +116,7 @@
     }
 
     if (props.selectedTab === 'withdraw' && props.currentWithdrawMethod?.method === '0x.withdrawal.cash_agent') {
-      return '/img/methods-icons/cash-agent.svg'
+      return '/img/methods-icons/cash-agent.svg';
     }
 
     if (activeAccountType.value === 'fiat') return '/img/methods-icons/cards.svg';
@@ -143,45 +128,52 @@
 
   const walletHeaderProps = computed(() => ({
     src: methodLogoUrl.value,
-    defaultImage: activeAccountType.value === 'fiat'
-      ? '/img/methods-icons/cards.svg'
-      : '/img/methods-icons/crypto-placeholder.svg',
+    defaultImage:
+      activeAccountType.value === 'fiat' ? '/img/methods-icons/cards.svg' : '/img/methods-icons/crypto-placeholder.svg',
     title: getContent(popupsData.value, defaultLocalePopupsData.value, `wallet.tabs.${props.selectedTab}`),
     subTitle: activeAccount.value?.currency,
-  }))
+  }));
 
   const playerIdentity = computed(() => {
     if (!profile.value?.id) return '';
     return profile.value.id.split('-')[0].toUpperCase();
-  })
+  });
 
   const riskStore = useRiskStore();
   const enableTurnOverWagerModal = runtimeConfig.public.enableTurnOverWager;
   const { turnOverWagerData } = storeToRefs(riskStore);
   const showTurnOverModal = computed(() => {
     return enableTurnOverWagerModal && turnOverWagerData.value?.turnOverWagerAmount > 0;
-  })
+  });
 
   // << GET CONTENT FOR DEPOSIT LIMIT
   const contentParams = {
     contentKey: 'coolingOffLimitsContent',
     contentRoute: ['profile', 'limits'],
-    only: ['coolingOff']
+    only: ['coolingOff'],
   };
   const { getContentData } = useContentLogic<IProfileLimits>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
   // >>
 
   const showMobileFormKey = ref<number>(0);
-  watch(() => props.showMobileForm, (newValue) => {
-    if (!newValue) {
-      setTimeout(() => { showMobileFormKey.value += 1 }, 400);
+  watch(
+    () => props.showMobileForm,
+    newValue => {
+      if (!newValue) {
+        setTimeout(() => {
+          showMobileFormKey.value += 1;
+        }, 400);
+      }
     }
-  })
+  );
 
-  watch(() => depositMethods.value, () => {
-    depositMethodKey.value += 1;
-  });
+  watch(
+    () => depositMethods.value,
+    () => {
+      depositMethodKey.value += 1;
+    }
+  );
 </script>
 
-<style src="~/assets/styles/components/wallet/forms.scss" lang="scss"/>
+<style src="~/assets/styles/components/wallet/forms.scss" lang="scss" />

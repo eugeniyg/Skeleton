@@ -5,11 +5,10 @@
       :key="index"
       class="list-socials__item"
       :href="item.url"
-      :targetBlank="item?.targetBlank"
+      :target-blank="item?.targetBlank"
     >
-      <atomic-icon :id="item.icon"/>
+      <atomic-icon :id="item.icon" />
     </atomic-link>
-    
   </div>
 </template>
 
@@ -17,8 +16,8 @@
   import type { ISiteSidebar } from '~/types';
 
   const props = defineProps<{
-    items: ISiteSidebar['socials']['items']
-  }>()
+    items: ISiteSidebar['socials']['items'];
+  }>();
 </script>
 
 <style src="@skeleton/assets/styles/components/list/socials.scss" lang="scss" />

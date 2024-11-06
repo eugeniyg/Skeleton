@@ -1,17 +1,17 @@
-import type { RegistrationType } from "@skeleton/core/types";
+import type { RegistrationType } from '@skeleton/core/types';
 
 export interface IBrowserLanguage {
-  code: string,
-  script: null|string,
-  region: undefined|string,
-  quality: number,
+  code: string;
+  script: null | string;
+  region: undefined | string;
+  quality: number;
 }
 
 export interface IPhoneCode {
-  countryCode: string,
-  code: string,
-  mask?: string,
-  value?: string,
+  countryCode: string;
+  code: string;
+  mask?: string;
+  value?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -38,21 +38,20 @@ const analyticsEventsArr = [
   'walletPromoOpen',
   'walletPromoSubmit',
   //-- BALANCE EVENTS --//
-  'openBalancePopup'
+  'openBalancePopup',
 ] as const;
-type AnalyticEvent = typeof analyticsEventsArr[number];
+type AnalyticEvent = (typeof analyticsEventsArr)[number];
 
 export interface IAnalyticsEvent {
   event: AnalyticEvent;
   loadTime?: number;
   regType?: RegistrationType;
-  walletOperationType?: 'deposit'| 'withdraw';
+  walletOperationType?: 'deposit' | 'withdraw';
   depositAmount?: number;
   withdrawAmount?: number;
   depositCurrency?: string;
   withdrawCurrency?: string;
-  successDepositNumber?: number|null;
+  successDepositNumber?: number | null;
   walletType?: string;
   invoiceId?: string;
 }
-

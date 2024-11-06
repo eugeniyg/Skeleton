@@ -1,21 +1,21 @@
 <template>
   <component
-    :is="props.url ? AtomicLink : props.tagName ?? 'div'"
+    :is="props.url ? AtomicLink : (props.tagName ?? 'div')"
     :class="componentClasses"
     :disabled="props.isDisabled || null"
     :href="props.url"
-    :targetBlank="props.targetBlank || null"
+    :target-blank="props.targetBlank || null"
   >
-    <slot/>
+    <slot />
   </component>
 </template>
 
 <script setup lang="ts">
   const props = defineProps<{
     targetBlank?: boolean;
-    tagName?: 'div'|'span'|'button';
-    type?: 'primary'|'secondary'|'ghost'|'ghost-gray';
-    size?: 'xs'|'sm'|'md'|'lg';
+    tagName?: 'div' | 'span' | 'button';
+    type?: 'primary' | 'secondary' | 'ghost' | 'ghost-gray';
+    size?: 'xs' | 'sm' | 'md' | 'lg';
     isDisabled?: boolean;
     isActive?: boolean;
     url?: string;
@@ -31,4 +31,3 @@
 </script>
 
 <style src="~/assets/styles/components/button/base.scss" lang="scss" />
-

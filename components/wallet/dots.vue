@@ -17,4 +17,4 @@
   }>();
 </script>
 
-<style src="~/assets/styles/components/wallet/dots.scss" lang="scss"/>
+<style src="~/assets/styles/components/wallet/dots.scss" lang="scss" />

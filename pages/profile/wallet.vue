@@ -9,14 +9,16 @@
         id="open-currency-nav"
         type="secondary"
         size="md"
-        :isDisabled="currencyNavEmpty"
+        :is-disabled="currencyNavEmpty"
         @click="openCurrNav"
       >
-        <atomic-icon id="plus"/>{{ pageContent?.currentLocaleData?.addButton || pageContent?.defaultLocaleData?.addButton }}
+        <atomic-icon id="plus" />{{
+          pageContent?.currentLocaleData?.addButton || pageContent?.defaultLocaleData?.addButton
+        }}
       </button-base>
     </div>
 
-    <nav-currency :tabs="currencyTabs" @toggleNavEmpty="currencyNavEmpty = $event"/>
+    <nav-currency :tabs="currencyTabs" @toggle-nav-empty="currencyNavEmpty = $event" />
 
     <div v-if="pageContent?.currentLocaleData || pageContent?.defaultLocaleData" class="cards-wallet">
       <TransitionGroup name="card">
@@ -34,12 +36,12 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { IAccount } from '@skeleton/core/types';
-  import type {IProfileWallet} from '~/types';
+  import type { IProfileWallet } from '~/types';
 
   const contentParams = {
     contentKey: 'profileWalletContent',
     contentRoute: ['profile', 'wallet'],
-    isPage: true
+    isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileWallet>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
@@ -51,11 +53,11 @@
   const { openCurrencyNav, closeCurrencyNav } = layoutStore;
   const currencyNavEmpty = ref<boolean>(false);
 
-  const openCurrNav = ():void => {
+  const openCurrNav = (): void => {
     openCurrencyNav();
   };
 
-  const clickOutside = (e:any) => {
+  const clickOutside = (e: any) => {
     if (!e.target.closest('.nav-currency') && !e.target.closest('#open-currency-nav') && isCurrencyNavOpen.value) {
       closeCurrencyNav();
     }
@@ -69,10 +71,12 @@
     document.body.removeEventListener('click', clickOutside);
   });
 
-  const orderedAccounts = computed(() => accounts.value.reduce((acc, item) => {
-    if (item.status === 1) acc.unshift(item);
-    else acc.push(item);
+  const orderedAccounts = computed(() =>
+    accounts.value.reduce((acc, item) => {
+      if (item.status === 1) acc.unshift(item);
+      else acc.push(item);
 
-    return acc;
-  }, [] as IAccount[]));
+      return acc;
+    }, [] as IAccount[])
+  );
 </script>

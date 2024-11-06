@@ -1,5 +1,5 @@
 <template>
-  <div class="drawer" :class="{ 'is-compact' : isDrawerCompact }">
+  <div class="drawer" :class="{ 'is-compact': isDrawerCompact }">
     <div class="header">
       <client-only>
         <atomic-link class="drawer__logo" href="/">
@@ -7,7 +7,7 @@
         </atomic-link>
       </client-only>
 
-      <button-toggler :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler')"/>
+      <button-toggler :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler')" />
 
       <div class="drawer__close">
         <atomic-icon id="close" />
@@ -23,27 +23,26 @@
       <client-only>
         <atomic-link v-if="isLoggedIn && loyaltyEnabled" href="/loyalty" class="drawer__loyalty">
           <loyalty-level-logo />
-          <loyalty-progress shortVersion />
+          <loyalty-progress short-version />
         </atomic-link>
       </client-only>
-      
+
       <partners
         v-if="layoutData?.siteSidebar?.partners?.isShow"
         :label="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.partners.label')"
         :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.partners.items')"
       />
-      
+
       <nav-category-sidebar v-bind="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.topMenu')" />
-      <atomic-divider/>
+      <atomic-divider />
 
-
-      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.bonusesMenu')"/>
-      <atomic-divider/>
+      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.bonusesMenu')" />
+      <atomic-divider />
 
       <client-only>
         <template v-if="isLoggedIn">
-          <nav-list :items="userMenuContent"/>
-          <atomic-divider/>
+          <nav-list :items="userMenuContent" />
+          <atomic-divider />
         </template>
       </client-only>
 
@@ -59,15 +58,15 @@
           </div>
         </div>
       </client-only>
-      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.bottomMenu')"/>
+      <nav-list :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.bottomMenu')" />
 
       <template v-if="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.socials.isShow')">
-        <list-socials :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.socials.items')"/>
+        <list-socials :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.socials.items')" />
       </template>
 
-      <atomic-divider/>
+      <atomic-divider />
 
-      <nav-static :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.sidebarFooterMenu')"/>
+      <nav-static :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.sidebarFooterMenu')" />
     </div>
   </div>
 </template>
@@ -88,19 +87,23 @@
 
   const gamesStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gamesStore);
-  const userMenuContent = computed(() => getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.userMenu')?.map((menuItem: IIconLink) => {
-    if (menuItem.url === '/favorites') return { ...menuItem, counter: favoriteGames.value.length };
-    return menuItem;
-  }));
+  const userMenuContent = computed(() =>
+    getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.userMenu')?.map((menuItem: IIconLink) => {
+      if (menuItem.url === '/favorites') return { ...menuItem, counter: favoriteGames.value.length };
+      return menuItem;
+    })
+  );
 
   const freshchatStore = useFreshchatStore();
   const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
 
-  const { public: { freshchatParams, loyaltyEnabled } } = useRuntimeConfig();
+  const {
+    public: { freshchatParams, loyaltyEnabled },
+  } = useRuntimeConfig();
   const openChat = () => {
     if (!freshchatParams?.guestAvailable && !isLoggedIn.value) openModal('sign-up');
     else window.fcWidget?.open();
-  }
+  };
 </script>
 
 <style src="~/assets/styles/components/layout/drawer.scss" lang="scss" />

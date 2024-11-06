@@ -8,16 +8,12 @@
       {{ getContent(loyaltyContent, defaultLocaleLoyaltyContent, 'benefits.description') }}
     </div>
 
-    <loyalty-benefits-tabs
-      v-if="benefitsTabs.length > 1"
-      :tabs="benefitsTabs"
-      :numberedList="numberedList"
-    />
+    <loyalty-benefits-tabs v-if="benefitsTabs.length > 1" :tabs="benefitsTabs" :numbered-list="numberedList" />
 
     <loyalty-benefits-grid
       v-else-if="benefitsTabs.length && benefitsTabs[0].benefits.length"
       :items="benefitsTabs[0].benefits"
-      :numberedList="numberedList"
+      :numbered-list="numberedList"
     />
   </div>
 </template>
@@ -31,11 +27,11 @@
 
   const benefitsTabs = computed(() => {
     return getContent(loyaltyContent.value, defaultLocaleLoyaltyContent.value, 'benefits.benefitsTabs') || [];
-  })
+  });
 
   const numberedList = computed(() => {
     return getContent(loyaltyContent.value, defaultLocaleLoyaltyContent.value, 'benefits.numberedList');
-  })
+  });
 </script>
 
-<style src="~/assets/styles/components/loyalty/benefits.scss" lang="scss"/>
+<style src="~/assets/styles/components/loyalty/benefits.scss" lang="scss" />

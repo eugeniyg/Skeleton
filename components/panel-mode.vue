@@ -4,11 +4,7 @@
       {{ props.gameContent?.demoLabel }}
     </span>
 
-    <button-base
-      type="primary"
-      size="sm"
-      @click="clickButton"
-    >
+    <button-base type="primary" size="sm" @click="clickButton">
       {{ props.gameContent?.demoButton }}
     </button-base>
   </div>
@@ -22,10 +18,9 @@
   }>();
 
   const emit = defineEmits(['changeMode']);
-  const clickButton = ():void => {
+  const clickButton = (): void => {
     emit('changeMode');
   };
 </script>
 
 <style src="~/assets/styles/components/panel-mode.scss" lang="scss" />
-

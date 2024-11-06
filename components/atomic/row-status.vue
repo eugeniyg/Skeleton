@@ -1,18 +1,29 @@
 <template>
   <div class="row-status" :class="classes">
     <slot>statusText</slot>
-    <atomic-tooltip v-if="variant === 'closed'" :text="props.tooltip"/>
-    <atomic-icon v-else :id="iconId"/>
+    <atomic-tooltip v-if="variant === 'closed'" :text="props.tooltip" />
+    <atomic-icon v-else :id="iconId" />
   </div>
 </template>
 
 <script setup lang="ts">
   const props = defineProps<{
-    variant?: 'current'|'active'|'closed'|'pending'|'success'|'failed'|'unfinished'|'canceled'|'rejected'|'review'|'processing';
+    variant?:
+      | 'current'
+      | 'active'
+      | 'closed'
+      | 'pending'
+      | 'success'
+      | 'failed'
+      | 'unfinished'
+      | 'canceled'
+      | 'rejected'
+      | 'review'
+      | 'processing';
     tooltip?: string;
   }>();
 
-  const items:{[index: string]:string} = {
+  const items: { [index: string]: string } = {
     active: 'dot',
     current: 'dot',
     closed: 'info',

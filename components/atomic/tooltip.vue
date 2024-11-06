@@ -2,20 +2,20 @@
   <button
     ref="tooltip"
     class="tooltip"
-    :class="{'is-show': isShow}"
+    :class="{ 'is-show': isShow }"
     @click="show"
     @mouseover="show"
     @mouseleave="hide"
     @focusout="hide"
   >
-    <slot/>
+    <slot />
     <atomic-icon :id="props.icon || 'info'" />
 
     <Teleport to="body">
       <div
         ref="tooltipMsg"
         class="tooltip__message"
-        :class="[messageCustomClass, {'is-active': isShow}, `size-${props.size || 'large'}`]"
+        :class="[messageCustomClass, { 'is-active': isShow }, `size-${props.size || 'large'}`]"
         :style="`top: ${coords.top}px; left: ${coords.left}px`"
       >
         <div v-if="props.title" class="title">{{ props.title }}</div>
@@ -30,8 +30,8 @@
 </template>
 
 <script setup lang="ts">
-  import DOMPurify from "isomorphic-dompurify";
-  import {marked} from "marked";
+  import DOMPurify from 'isomorphic-dompurify';
+  import { marked } from 'marked';
 
   const props = defineProps<{
     icon?: string;
@@ -39,7 +39,7 @@
     text?: string;
     align?: 'bottom';
     messageCustomClass?: string;
-    size?: 'small'|'large';
+    size?: 'small' | 'large';
   }>();
 
   const coords = reactive({
@@ -66,13 +66,13 @@
       if (lockLeft) {
         coords.left = pRect.x;
       } else if (lockRight) {
-        coords.left = (pRect.x + pRect.width) - (mRect.width);
+        coords.left = pRect.x + pRect.width - mRect.width;
       } else {
-        coords.left = (tRect.x + tRect.width) - mRect.width / 2;
+        coords.left = tRect.x + tRect.width - mRect.width / 2;
       }
 
       if (props.align === 'bottom') {
-        coords.top = tRect.top + tRect.height + (tRect.height / 2) + mRect.height;
+        coords.top = tRect.top + tRect.height + tRect.height / 2 + mRect.height;
       } else {
         coords.top = tRect.top;
       }

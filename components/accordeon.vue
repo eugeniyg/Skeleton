@@ -6,12 +6,7 @@
     </div>
 
     <div ref="content" class="content" :style="heightStyle">
-      <slot
-        v-for="(item, index) in props.items"
-        :key="index"
-        name="content"
-        :item="item"
-      />
+      <slot v-for="(item, index) in props.items" :key="index" name="content" :item="item" />
     </div>
   </div>
 </template>
@@ -24,7 +19,7 @@
     },
     mode: {
       type: String,
-      validator: (val:string) => ['toggle', 'expand'].includes(val),
+      validator: (val: string) => ['toggle', 'expand'].includes(val),
       default: 'toggle',
     },
     heading: {
@@ -47,7 +42,7 @@
   }));
   const heightStyle = computed(() => `--height: ${state.value ? openHeight.value : closedHeight.value}px`);
 
-  function toggle():void {
+  function toggle(): void {
     state.value = !state.value;
   }
 
@@ -58,4 +53,3 @@
 </script>
 
 <style src="~/assets/styles/components/accordeon.scss" lang="scss" />
-

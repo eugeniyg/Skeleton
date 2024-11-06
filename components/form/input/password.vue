@@ -17,12 +17,12 @@
         @blur="onBlur"
         @input="onInput"
         @keyup.enter="emit('submit', $event)"
-      >
-      <button-toggle-type @change-type="changeType"/>
+      />
+      <button-toggle-type @change-type="changeType" />
     </div>
 
-    <atomic-pass-progress v-if="props.showPassProgress" :target="progressTarget"/>
-    <atomic-hint v-if="props.hint" v-bind="props.hint"/>
+    <atomic-pass-progress v-if="props.showPassProgress" :target="progressTarget" />
+    <atomic-hint v-if="props.hint" v-bind="props.hint" />
   </label>
 </template>
 
@@ -45,15 +45,15 @@
   ]);
 
   const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);
-  const onBlur = (e: any):void => {
+  const onBlur = (e: any): void => {
     emit('blur', e.target.value);
   };
-  const onFocus = (e: any):void => {
+  const onFocus = (e: any): void => {
     emit('focus', e.target.value);
   };
 
   const progressTarget = ref<string>('');
-  const checkPassProgress = (e:any) => {
+  const checkPassProgress = (e: any) => {
     const { length } = e.target.value;
 
     if (length <= 2 && length > 0) {
@@ -67,17 +67,16 @@
     }
   };
 
-  const onInput = (e:any):void => {
+  const onInput = (e: any): void => {
     emit('input', e.target.value);
     emit('update:value', e.target.value);
     checkPassProgress(e);
   };
 
   const type = ref<string>('password');
-  const changeType = (data:string):void => {
+  const changeType = (data: string): void => {
     type.value = data;
   };
 </script>
 
 <style src="~/assets/styles/components/form/input/password.scss" lang="scss" />
-

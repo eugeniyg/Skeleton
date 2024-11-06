@@ -1,17 +1,11 @@
-import {defineStore} from 'pinia';
-import type {
-  ICollection,
-  IGame,
-  IGameProvider,
-  IWinner,
-  IWebSocketResponse
-} from '@skeleton/core/types';
+import { defineStore } from 'pinia';
+import type { ICollection, IGame, IGameProvider, IWinner, IWebSocketResponse } from '@skeleton/core/types';
 import throttle from 'lodash/throttle';
 
-type MobileModalType = 'depositOrDemo'|'deposit'|'registerOrDemo'|'registerOrLogin';
+type MobileModalType = 'depositOrDemo' | 'deposit' | 'registerOrDemo' | 'registerOrLogin';
 interface IGamesStoreState {
-  gameProvidersPromise: Promise<IGameProvider[]>|null;
-  gameCollectionsPromise: Promise<ICollection[]>|null;
+  gameProvidersPromise: Promise<IGameProvider[]> | null;
+  gameCollectionsPromise: Promise<ICollection[]> | null;
   favoriteGames: IGame[];
   winnersSubscription: any;
   betsSubscription: any;
@@ -24,7 +18,7 @@ interface IGamesStoreState {
 }
 
 export const useGamesStore = defineStore('gamesStore', {
-  state: ():IGamesStoreState => ({
+  state: (): IGamesStoreState => ({
     gameProvidersPromise: null,
     gameCollectionsPromise: null,
     favoriteGames: [],
@@ -35,7 +29,7 @@ export const useGamesStore = defineStore('gamesStore', {
     mobileGameModalType: undefined,
     mobileGameModalInfo: undefined,
     isBonusWagering: false,
-    minimumBonusWagerMultiplier: 1
+    minimumBonusWagerMultiplier: 1,
   }),
 
   actions: {
@@ -45,7 +39,7 @@ export const useGamesStore = defineStore('gamesStore', {
       try {
         return await getGameProviders();
       } catch {
-        return []
+        return [];
       }
     },
 
@@ -64,11 +58,11 @@ export const useGamesStore = defineStore('gamesStore', {
         const globalStore = useGlobalStore();
         if (!globalStore.headerCountry) return gameCollections;
 
-        return gameCollections.filter((collection) => {
+        return gameCollections.filter(collection => {
           return !collection.countries.length || collection.countries.includes(globalStore.headerCountry as string);
-        })
+        });
       } catch {
-        return []
+        return [];
       }
     },
 
@@ -84,45 +78,52 @@ export const useGamesStore = defineStore('gamesStore', {
       this.favoriteGames = await getFavorite();
     },
 
-    async setFavoriteGame(gameId:string): Promise<void> {
+    async setFavoriteGame(gameId: string): Promise<void> {
       const { setFavorite } = useCoreGamesApi();
       this.favoriteGames = await setFavorite(gameId);
     },
 
-    async deleteFavoriteGame(gameId:string): Promise<void> {
+    async deleteFavoriteGame(gameId: string): Promise<void> {
       const { deleteFavorite } = useCoreGamesApi();
       this.favoriteGames = await deleteFavorite(gameId);
     },
 
-    subscribeWinnersSocket():void {
+    subscribeWinnersSocket(): void {
       const { createSubscription } = useWebSocket();
       const globalStore = useGlobalStore();
       const profileStore = useProfileStore();
-      this.winnersSubscription = createSubscription(`game:winners:${globalStore.isMobile ? 'mobile' : 'desktop'}:${profileStore.profile?.country || globalStore.headerCountry || 'UA'}`, this.updateWinners);
+      this.winnersSubscription = createSubscription(
+        `game:winners:${globalStore.isMobile ? 'mobile' : 'desktop'}:${profileStore.profile?.country || globalStore.headerCountry || 'UA'}`,
+        this.updateWinners
+      );
     },
 
-    setWinners(winners: IWinner[]):void {
+    setWinners(winners: IWinner[]): void {
       this.latestWinners = winners.slice(0, 12);
     },
 
-    updateWinners: throttle(function (winnerData:IWebSocketResponse): void {
-      const { winner } = winnerData.data;
-      const filteredWinners = this.latestWinners.filter((item) => item.gameId !== winner?.gameId);
-      if (winner) this.latestWinners = [winner, ...filteredWinners].slice(0, 12);
-    }, 3000, { leading: false }),
+    updateWinners: throttle(
+      function (winnerData: IWebSocketResponse): void {
+        const { winner } = winnerData.data;
+        const filteredWinners = this.latestWinners.filter(item => item.gameId !== winner?.gameId);
+        if (winner) this.latestWinners = [winner, ...filteredWinners].slice(0, 12);
+      },
+      3000,
+      { leading: false }
+    ),
 
-    openMobileGameModal(modalType: MobileModalType, gameInfo: IGame):void {
+    openMobileGameModal(modalType: MobileModalType, gameInfo: IGame): void {
       this.mobileGameModalType = modalType;
       this.mobileGameModalInfo = gameInfo;
       this.showMobileGameModal = true;
     },
 
-    defineBonusWagerInfo(isBonusWagering:boolean, minimumBonusWagerMultiplier:number):void {
+    defineBonusWagerInfo(isBonusWagering: boolean, minimumBonusWagerMultiplier: number): void {
       this.isBonusWagering = isBonusWagering;
       this.minimumBonusWagerMultiplier = minimumBonusWagerMultiplier;
     },
 
-    handleBetsEvent(socketData: IWebSocketResponse):void {
+    handleBetsEvent(socketData: IWebSocketResponse): void {
       const betsEvent = socketData.data.event;
       if (betsEvent === 'game.bet.restricted') useEvent('restrictedBets', socketData.data.gameIdentity as string);
       else if (betsEvent === 'game.bet.max.exceed') {
@@ -133,22 +134,22 @@ export const useGamesStore = defineStore('gamesStore', {
         const maxBetBalance = formatBalance(bonusCurrency, bonusMaxAmount);
         useEvent('maxBets', {
           gameIdentity: socketData.data.gameIdentity as string,
-          maxBet:`${maxBetBalance.amount} ${maxBetBalance.currency}`,
+          maxBet: `${maxBetBalance.amount} ${maxBetBalance.currency}`,
         });
       }
     },
 
-    subscribeBetsSocket():void {
+    subscribeBetsSocket(): void {
       const { createSubscription } = useWebSocket();
       const profileStore = useProfileStore();
       this.betsSubscription = createSubscription(`game:bets#${profileStore.profile?.id}`, this.handleBetsEvent);
     },
 
-    unsubscribeBetsSocket():void {
+    unsubscribeBetsSocket(): void {
       if (this.betsSubscription) {
         this.betsSubscription.unsubscribe();
         this.betsSubscription.removeAllListeners();
       }
-    }
+    },
   },
 });

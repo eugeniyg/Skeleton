@@ -16,13 +16,16 @@
       class="dropdown-network__info"
       v-html="infoContent"
     />
-    
+
     <wallet-warning
       v-if="props.fields?.length && state.selectedNetwork"
       :content="popupsData?.wallet?.withdraw?.warning || defaultLocalePopupsData?.wallet?.withdraw?.warning"
     />
 
-    <div class="form-withdraw__content" :class="{'is-blured': networkSelectOptions?.length && !state.selectedNetwork }">
+    <div
+      class="form-withdraw__content"
+      :class="{ 'is-blured': networkSelectOptions?.length && !state.selectedNetwork }"
+    >
       <form-input-number
         v-model:value="amountValue"
         :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.sumLabel') || ''"
@@ -44,7 +47,7 @@
           :name="field.key"
           :placeholder="field.hints[currentLocale?.code || ''] || field.hints.en"
           :options="getFieldOptions(field)"
-          :isRequired="withdrawFormRules[field.key]?.hasOwnProperty('required')"
+          :is-required="withdrawFormRules[field.key]?.hasOwnProperty('required')"
           :hint="setError(field.key)"
           @input="fieldInputHandle(field)"
           @blur="v$[field.key]?.$touch()"
@@ -52,12 +55,7 @@
         />
       </template>
 
-      <button-base
-        type="primary"
-        size="md"
-        :isDisabled="buttonDisabled"
-        @click="getWithdraw"
-      >
+      <button-base type="primary" size="md" :is-disabled="buttonDisabled" @click="getWithdraw">
         {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.withdrawButton') }} {{ buttonAmount }}
         {{ formatAmountMin.currency }}
       </button-base>
@@ -71,13 +69,13 @@
   import type { IPaymentField } from '@skeleton/core/types';
   import { marked } from 'marked';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
-  import DOMPurify from "isomorphic-dompurify";
+  import DOMPurify from 'isomorphic-dompurify';
 
   const props = defineProps<{
-    amountMax: number,
-    amountMin: number,
-    fields: IPaymentField[],
-    method: string
+    amountMax: number;
+    amountMin: number;
+    fields: IPaymentField[];
+    method: string;
   }>();
 
   const globalStore = useGlobalStore();
@@ -88,27 +86,20 @@
     defaultLocaleAlertsData,
     fieldsSettings,
     defaultLocaleFieldsSettings,
-    currentLocale
+    currentLocale,
   } = storeToRefs(globalStore);
 
   const walletStore = useWalletStore();
-  const {
-    closeModal,
-    showAlert
-  } = useLayoutStore();
+  const { closeModal, showAlert } = useLayoutStore();
   const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
 
-  const {
-    formatBalance,
-    getMainBalanceFormat,
-    getContent
-  } = useProjectMethods();
+  const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
 
   const networkSelectOptions = computed(() => {
-    const networkField = props.fields.find((field) => field.key === 'crypto_network');
+    const networkField = props.fields.find(field => field.key === 'crypto_network');
     const networkOptions = networkField?.options;
     if (networkOptions) {
-      return networkOptions?.map((option) => ({
+      return networkOptions?.map(option => ({
         value: option.name,
         minAmount: option.minAmount,
         maxAmount: option.maxAmount,
@@ -118,21 +109,21 @@
     return [];
   });
 
-  const state = reactive<{ selectedNetwork: string|undefined }>({
+  const state = reactive<{ selectedNetwork: string | undefined }>({
     selectedNetwork: networkSelectOptions.value?.length === 1 ? networkSelectOptions.value[0].code : undefined,
   });
 
   const selectedNetworkData = computed(() => {
     return networkSelectOptions.value.find(option => option.code === state.selectedNetwork);
-  })
+  });
 
   const formatAmountMax = computed(() => {
     return formatBalance(activeAccount.value?.currency, selectedNetworkData.value?.maxAmount ?? props.amountMax);
-  })
+  });
 
   const formatAmountMin = computed(() => {
     return formatBalance(activeAccount.value?.currency, selectedNetworkData.value?.minAmount ?? props.amountMin);
-  })
+  });
 
   const isSending = ref<boolean>(false);
   const amountValue = ref<string>(String(formatAmountMin.value.amount));
@@ -143,11 +134,11 @@
       withdrawFormData[field.key] = field.value ?? undefined;
     }
   });
-  const fieldsType:any = fieldsTypeMap;
+  const fieldsType: any = fieldsTypeMap;
   const startRules = props.fields.reduce((currentRulesObj, currentField) => {
     if (currentField.key === 'crypto_network') return currentRulesObj;
 
-    const rulesArr: { rule: string, arguments?: string }[] = [];
+    const rulesArr: { rule: string; arguments?: string }[] = [];
     if (currentField.isRequired) rulesArr.push({ rule: 'required' });
 
     if (currentField.key === 'phone') {
@@ -157,16 +148,16 @@
     } else if (currentField.regexp) {
       rulesArr.push({
         rule: 'regex',
-        arguments: currentField.regexp
+        arguments: currentField.regexp,
       });
     } else if (currentField.key === 'wallet_id') {
-      const findNetworkField = props.fields.find((field) => field.key === 'crypto_network');
+      const findNetworkField = props.fields.find(field => field.key === 'crypto_network');
       const firstNetworkRegex = findNetworkField ? findNetworkField.options?.[0]?.regex : undefined;
 
       if (firstNetworkRegex) {
         rulesArr.push({
           rule: 'regex',
-          arguments: firstNetworkRegex
+          arguments: firstNetworkRegex,
         });
       }
     }
@@ -190,18 +181,20 @@
   const v$ = useVuelidate(withdrawFormRules, withdrawFormData);
 
   const getVisibleFields = (): IPaymentField[] => {
-    const { public: { showWalletFilledFields } } = useRuntimeConfig();
+    const {
+      public: { showWalletFilledFields },
+    } = useRuntimeConfig();
 
     props.fields.forEach(field => {
       if (field.value !== null && v$.value[field.key]?.$invalid) v$.value[field.key].$touch();
-    })
+    });
 
     if (showWalletFilledFields) {
       return props.fields;
     }
 
     return props.fields.filter(field => field.value === null || v$.value[field.key]?.$invalid);
-  }
+  };
   const visibleFields = getVisibleFields(); // remove reactivity
 
   const onFocus = (fieldName: string): void => {
@@ -210,17 +203,17 @@
     }
   };
 
-  const setError = (fieldName: string): undefined | { variant: string, message: any } => {
+  const setError = (fieldName: string): undefined | { variant: string; message: any } => {
     if (v$.value[fieldName]?.$error) {
       return {
         variant: 'error',
-        message: v$.value[fieldName].$errors[0].$message
+        message: v$.value[fieldName].$errors[0].$message,
       };
     }
     if (serverFormErrors.value[fieldName]) {
       return {
         variant: 'error',
-        message: serverFormErrors.value[fieldName]?.[0]
+        message: serverFormErrors.value[fieldName]?.[0],
       };
     }
     return undefined;
@@ -230,10 +223,12 @@
   const getFieldOptions = (field: IPaymentField): any => {
     const platformOptions = fieldsStore.selectOptions[field.key];
     if (platformOptions?.length) return platformOptions;
-    return field.options?.map(option => {
-      return { value: option.name, code: option.id };
-    }) || [];
-  }
+    return (
+      field.options?.map(option => {
+        return { value: option.name, code: option.id };
+      }) || []
+    );
+  };
 
   const buttonAmount = computed(() => {
     if (Number(amountValue.value) > formatAmountMax.value.amount) return formatAmountMax.value.amount;
@@ -241,7 +236,9 @@
     return amountValue.value;
   });
 
-  const activeAccountWithdrawalFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance));
+  const activeAccountWithdrawalFormat = computed(() =>
+    formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance)
+  );
   const fieldHint = computed(() => {
     const minContent = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.minSum') || '';
     const maxContent = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.maxSum') || '';
@@ -253,85 +250,99 @@
     };
   });
 
-  const buttonDisabled = computed(() => v$.value.$invalid
-    || Number(amountValue.value) > activeAccountWithdrawalFormat.value.amount
-    || Number(amountValue.value) < formatAmountMin.value.amount
-    || Number(amountValue.value) > formatAmountMax.value.amount
-    || isSending.value);
+  const buttonDisabled = computed(
+    () =>
+      v$.value.$invalid ||
+      Number(amountValue.value) > activeAccountWithdrawalFormat.value.amount ||
+      Number(amountValue.value) < formatAmountMin.value.amount ||
+      Number(amountValue.value) > formatAmountMax.value.amount ||
+      isSending.value
+  );
 
   const onInputNetwork = () => {
     useEvent('analyticsEvent', {
       event: 'walletChangeNetwork',
-      walletOperationType: 'withdraw'
+      walletOperationType: 'withdraw',
     });
 
     let networkRegex;
 
-    const findNetworkField = props.fields.find((field) => field.key === 'crypto_network');
+    const findNetworkField = props.fields.find(field => field.key === 'crypto_network');
     if (findNetworkField) {
-      const findNetworkOption = findNetworkField?.options?.find((option) => {
+      const findNetworkOption = findNetworkField?.options?.find(option => {
         if (option.id) return option.id === state.selectedNetwork;
         return state.selectedNetwork === `empty-network-${option.name}`;
-      })
+      });
 
       networkRegex = findNetworkOption?.regex;
     }
 
     withdrawRules.value = {
       ...withdrawRules.value,
-      'wallet_id': networkRegex ? [
-        { rule: 'required' },
-        {
-          rule: 'regex',
-          arguments: networkRegex,
-        }
-      ] : [{ rule: 'required' }]
+      wallet_id: networkRegex
+        ? [
+            { rule: 'required' },
+            {
+              rule: 'regex',
+              arguments: networkRegex,
+            },
+          ]
+        : [{ rule: 'required' }],
     };
 
     amountValue.value = String(formatAmountMin.value.amount);
   };
 
   const infoContent = computed(() => {
-    const contentText = getContent(fieldsSettings.value, defaultLocaleFieldsSettings.value, 'fieldsControls.networkSelect.info');
+    const contentText = getContent(
+      fieldsSettings.value,
+      defaultLocaleFieldsSettings.value,
+      'fieldsControls.networkSelect.info'
+    );
     if (!contentText) return '';
     return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
-  })
+  });
 
   const fieldInputHandle = (field: IPaymentField): void => {
     if (field.key === 'currencyWithdraw') {
-      const currencyOption = field.options?.find((option) => {
+      const currencyOption = field.options?.find(option => {
         return option.id === withdrawFormData.currencyWithdraw;
-      })
+      });
       const currencyRegex = currencyOption?.regexp;
 
       withdrawRules.value = {
         ...withdrawRules.value,
-        'wallet_id': currencyRegex ? [
-          { rule: 'required' },
-          {
-            rule: 'regex',
-            arguments: currencyRegex,
-          }
-        ] : [{ rule: 'required' }]
+        wallet_id: currencyRegex
+          ? [
+              { rule: 'required' },
+              {
+                rule: 'regex',
+                arguments: currencyRegex,
+              },
+            ]
+          : [{ rule: 'required' }],
       };
     }
 
     v$.value[field.key]?.$touch();
-  }
+  };
 
   const getWithdraw = async (): Promise<void> => {
     if (buttonDisabled.value) return;
 
     const requestFormData = {
       ...withdrawFormData,
-      phone: withdrawFormData.phone ? `+${withdrawFormData.phone}` : undefined
-    }
+      phone: withdrawFormData.phone ? `+${withdrawFormData.phone}` : undefined,
+    };
 
     const networkValue = state.selectedNetwork?.includes('empty-network') ? null : state.selectedNetwork;
-    const fields = { ...requestFormData, crypto_network: networkValue }
+    const fields = { ...requestFormData, crypto_network: networkValue };
 
     isSending.value = true;
-    const mainCurrencyAmount = getMainBalanceFormat(activeAccountWithdrawalFormat.value.currency, Number(amountValue.value));
+    const mainCurrencyAmount = getMainBalanceFormat(
+      activeAccountWithdrawalFormat.value.currency,
+      Number(amountValue.value)
+    );
     const params = {
       method: props.method,
       currency: activeAccount.value?.currency || '',
@@ -344,13 +355,15 @@
     const { withdrawAccount } = useCoreWalletApi();
     useEvent('analyticsEvent', {
       event: 'walletSubmitForm',
-      walletOperationType: 'withdraw'
+      walletOperationType: 'withdraw',
     });
 
     try {
       await withdrawAccount(params);
       closeModal('wallet');
-      showAlert(alertsData.value?.wallet?.withdrawalProcessed || defaultLocaleAlertsData.value?.wallet?.withdrawalProcessed);
+      showAlert(
+        alertsData.value?.wallet?.withdrawalProcessed || defaultLocaleAlertsData.value?.wallet?.withdrawalProcessed
+      );
     } catch (err: any) {
       if (err.response?.status === 422) {
         serverFormErrors.value = err.data?.error?.fields;
@@ -362,4 +375,4 @@
   };
 </script>
 
-<style src="~/assets/styles/components/form/withdraw.scss" lang="scss"/>
+<style src="~/assets/styles/components/form/withdraw.scss" lang="scss" />

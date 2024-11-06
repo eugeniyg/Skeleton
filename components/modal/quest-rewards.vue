@@ -2,14 +2,14 @@
   <vue-final-modal
     v-model="showRewardsModal"
     class="modal-quest-rewards"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 250 }"
-    :contentTransition="{ mode: 'in-out', duration: 250 }"
-    @clickOutside="closeRewardsModal"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
+    @click-outside="closeRewardsModal"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeRewardsModal"/>
+        <button-modal-close @close="closeRewardsModal" />
         <div class="title">
           {{ rewardsModalTitle }}
         </div>
@@ -21,7 +21,6 @@
           <span class="modal-quest-rewards__currency">{{ item.currency }}</span>
         </div>
       </div>
-
     </div>
   </vue-final-modal>
 </template>

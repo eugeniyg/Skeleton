@@ -2,12 +2,12 @@
   <vue-final-modal
     v-model="showMobileGameModal"
     class="modal-mobile-game"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 250 }"
-    :contentTransition="{ mode: 'in-out', duration: 250 }"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
   >
     <div class="scroll">
-      <button-modal-close @close="showMobileGameModal = false"/>
+      <button-modal-close @close="showMobileGameModal = false" />
 
       <atomic-image class="game-return__background" :src="gameImage" />
 
@@ -27,21 +27,14 @@
 
             <button-favorite
               v-if="['depositOrDemo', 'deposit'].includes(mobileGameModalType || '')"
-              :gameId="mobileGameModalInfo?.id"
+              :game-id="mobileGameModalInfo?.id"
             />
           </div>
         </div>
 
         <div class="modal-mobile-game__controls">
-          <button-base
-            type="primary"
-            size="lg"
-            @click.once="handlePrimaryClick"
-          >
-            <atomic-icon
-              v-if="['depositOrDemo', 'deposit'].includes(mobileGameModalType || '')"
-              id="play"
-            />
+          <button-base type="primary" size="lg" @click.once="handlePrimaryClick">
+            <atomic-icon v-if="['depositOrDemo', 'deposit'].includes(mobileGameModalType || '')" id="play" />
             <atomic-icon v-else id="user-new" />
             {{ modalContent[mobileGameModalType || '']?.primary }}
           </button-base>
@@ -62,14 +55,10 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import {storeToRefs} from "pinia";
+  import { storeToRefs } from 'pinia';
 
   const gameStore = useGamesStore();
-  const {
-    showMobileGameModal,
-    mobileGameModalType,
-    mobileGameModalInfo
-  } = storeToRefs(gameStore);
+  const { showMobileGameModal, mobileGameModalType, mobileGameModalInfo } = storeToRefs(gameStore);
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getImageUrl, getContent, localizePath } = useProjectMethods();
   const { openWalletModal } = useLayoutStore();
@@ -90,23 +79,23 @@
   const modalContent: Record<string, any> = {
     depositOrDemo: {
       primary: depositButtonLabel,
-      secondary: playDemoButtonLabel
+      secondary: playDemoButtonLabel,
     },
     deposit: {
-      primary: depositButtonLabel
+      primary: depositButtonLabel,
     },
     registerOrDemo: {
       primary: registrationButtonLabel,
-      secondary: playDemoButtonLabel
+      secondary: playDemoButtonLabel,
     },
     registerOrLogin: {
       primary: registrationButtonLabel,
       secondary: getContent(popupsData, defaultLocalePopupsData, 'mobileGame.login'),
-      description: getContent(popupsData, defaultLocalePopupsData, 'mobileGame.onlyReal')
-    }
-  }
+      description: getContent(popupsData, defaultLocalePopupsData, 'mobileGame.onlyReal'),
+    },
+  };
 
-  const handlePrimaryClick = async ():Promise<void> => {
+  const handlePrimaryClick = async (): Promise<void> => {
     if (['depositOrDemo', 'deposit'].includes(mobileGameModalType.value as string)) {
       await openWalletModal('deposit');
     } else {
@@ -114,9 +103,9 @@
     }
 
     showMobileGameModal.value = false;
-  }
+  };
 
-  const handleSecondaryClick = ():void => {
+  const handleSecondaryClick = (): void => {
     if (['depositOrDemo', 'registerOrDemo'].includes(mobileGameModalType.value as string)) {
       router.push(localizePath(`/games/${mobileGameModalInfo.value?.identity}`));
     } else {
@@ -124,7 +113,7 @@
     }
 
     showMobileGameModal.value = false;
-  }
+  };
 </script>
 
 <style src="~/assets/styles/components/modal/mobile-game.scss" lang="scss" />

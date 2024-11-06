@@ -16,7 +16,7 @@
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
-      >
+      />
 
       <button-verify
         :is-shown="!!profile?.email && !profile?.confirmedAt"
@@ -27,7 +27,7 @@
       </button-verify>
     </div>
 
-    <atomic-hint v-if="props.hint" v-bind="props.hint"/>
+    <atomic-hint v-if="props.hint" v-bind="props.hint" />
   </label>
 </template>
 
@@ -57,18 +57,17 @@
     { 'is-hidden': props.type === 'hidden' },
   ]);
 
-  const onBlur = (e:any) => {
+  const onBlur = (e: any) => {
     emit('blur', e.target.value);
   };
-  const onFocus = (e:any) => {
+  const onFocus = (e: any) => {
     emit('focus', e.target.value);
   };
 
-  const onInput = (e:any) => {
+  const onInput = (e: any) => {
     emit('input', e.target.value);
     emit('update:value', e.target.value);
   };
 </script>
 
 <style src="~/assets/styles/components/form/input/email-verify.scss" lang="scss" />
-

@@ -1,13 +1,6 @@
 import camelCase from 'lodash/camelCase';
-import {defineStore} from 'pinia';
-import type {
-  ICoreConstants,
-  ICountry,
-  ICurrency,
-  ILocale,
-  IStatus,
-  ITimeZone
-} from '@skeleton/core/types';
+import { defineStore } from 'pinia';
+import type { ICoreConstants, ICountry, ICurrency, ILocale, IStatus, ITimeZone } from '@skeleton/core/types';
 import type {
   IAlertsContent,
   ICategory,
@@ -15,9 +8,9 @@ import type {
   IGlobalComponentsContent,
   IGlobalSeo,
   ILayoutContent,
-  IModalsContent
-} from "~/types";
-import type { IBrowserLanguage } from "@skeleton/types";
+  IModalsContent,
+} from '~/types';
+import type { IBrowserLanguage } from '@skeleton/types';
 
 interface IGlobalContent {
   alerts: IAlertsContent;
@@ -56,7 +49,7 @@ interface IGlobalStoreState {
 }
 
 export const useGlobalStore = defineStore('globalStore', {
-  state: ():IGlobalStoreState => ({
+  state: (): IGlobalStoreState => ({
     currencies: [],
     baseCurrency: undefined,
     equivalentCurrency: undefined,
@@ -87,33 +80,33 @@ export const useGlobalStore = defineStore('globalStore', {
       'password-reset-resetCode',
       'locale-password-reset-resetCode',
       'questions',
-      'locale-questions'
-    ]
+      'locale-questions',
+    ],
   }),
 
   getters: {
-    fiatCurrencies(state):ICurrency[] {
-      return state.currencies.filter((currency) => currency.type === 'fiat');
+    fiatCurrencies(state): ICurrency[] {
+      return state.currencies.filter(currency => currency.type === 'fiat');
     },
 
     cryptoCurrencies(state): ICurrency[] {
-      return state.currencies.filter((currency) => currency.type === 'crypto');
+      return state.currencies.filter(currency => currency.type === 'crypto');
     },
 
-    currenciesSelectOptions(state):ICurrency[] {
-      return state.currencies.map((currency) => ({ ...currency, value: currency.code }));
+    currenciesSelectOptions(state): ICurrency[] {
+      return state.currencies.map(currency => ({ ...currency, value: currency.code }));
     },
 
-    countriesSelectOptions(state):ICountry[] {
-      return state.countries.map((country) => ({
+    countriesSelectOptions(state): ICountry[] {
+      return state.countries.map(country => ({
         ...country,
         value: country.name,
         mask: `/img/flags/${country.code.toLowerCase()}.svg`,
       }));
     },
 
-    timeZonesSelectOptions(state):ITimeZone[] {
-      const zonesArr = state.settingsConstants?.player.timeZone.map((zone) => ({
+    timeZonesSelectOptions(state): ITimeZone[] {
+      const zonesArr = state.settingsConstants?.player.timeZone.map(zone => ({
         ...zone,
         code: zone.id,
         value: zone.name,
@@ -121,14 +114,15 @@ export const useGlobalStore = defineStore('globalStore', {
       return zonesArr || [];
     },
 
-    gameCategoriesObj(state):{ [key: string]: ICategory } {
-      const categoriesObj:any = {};
+    gameCategoriesObj(state): { [key: string]: ICategory } {
+      const categoriesObj: any = {};
 
-      const categoriesContent = state.globalComponentsContent?.categories?.categoriesList
-          || state.defaultLocaleGlobalComponentsContent?.categories?.categoriesList;
+      const categoriesContent =
+        state.globalComponentsContent?.categories?.categoriesList ||
+        state.defaultLocaleGlobalComponentsContent?.categories?.categoriesList;
 
       if (categoriesContent) {
-        categoriesContent.forEach((category) => {
+        categoriesContent.forEach(category => {
           categoriesObj[category.identity] = category;
         });
       }
@@ -139,50 +133,49 @@ export const useGlobalStore = defineStore('globalStore', {
       return state.globalComponentsContent?.globalSeo || state.defaultLocaleGlobalComponentsContent?.globalSeo;
     },
 
-    playerStatuses(state):IStatus[] {
+    playerStatuses(state): IStatus[] {
       return state.settingsConstants?.player.playerStatuses || [];
     },
 
-    invoiceStatuses(state):IStatus[] {
+    invoiceStatuses(state): IStatus[] {
       return state.settingsConstants?.payment.invoiceStatuses || [];
     },
 
-    invoiceTypes(state):IStatus[] {
+    invoiceTypes(state): IStatus[] {
       return state.settingsConstants?.payment.invoiceTypes || [];
     },
 
-    betStatuses(state):IStatus[] {
+    betStatuses(state): IStatus[] {
       return state.settingsConstants?.game.bet.status || [];
     },
 
-    documentStatuses(state):IStatus[] {
+    documentStatuses(state): IStatus[] {
       return state.settingsConstants?.player.document.status || [];
     },
 
-    bonusesStatuses(state):IStatus[] {
+    bonusesStatuses(state): IStatus[] {
       return state.settingsConstants?.game.playerBonus.status || [];
     },
 
-    bonusesResults(state):IStatus[] {
+    bonusesResults(state): IStatus[] {
       return state.settingsConstants?.game.playerBonus.result || [];
     },
 
-    freeSpinsStatuses(state):IStatus[] {
+    freeSpinsStatuses(state): IStatus[] {
       return state.settingsConstants?.game.playerFreespin.status || [];
     },
 
-    freeSpinsResults(state):IStatus[] {
+    freeSpinsResults(state): IStatus[] {
       return state.settingsConstants?.game.playerFreespin.result || [];
     },
 
-    isIOSPlatform():boolean|null {
+    isIOSPlatform(): boolean | null {
       if (!window?.navigator?.platform && !window?.navigator?.userAgent) return null;
 
-      return /iPad|iPhone|iPod/.test(window.navigator.platform)
-        || /iPad|iPhone|iPod/.test(window.navigator.userAgent);
+      return /iPad|iPhone|iPod/.test(window.navigator.platform) || /iPad|iPhone|iPod/.test(window.navigator.userAgent);
     },
 
-    osPlatform():string|null {
+    osPlatform(): string | null {
       const userAgent = window.navigator.userAgent;
       // @ts-expect-error - Navigator type
       const platform = window.navigator?.userAgentData?.platform || window.navigator?.platform;
@@ -204,33 +197,33 @@ export const useGlobalStore = defineStore('globalStore', {
       }
 
       return os;
-    }
+    },
   },
 
   actions: {
-    async getCurrencies():Promise<void> {
+    async getCurrencies(): Promise<void> {
       const { getCurrencies } = useCoreGlobalApi();
       const data = await getCurrencies(1);
-      this.currencies = data.filter((currency) => currency.isEnabled);
-      this.baseCurrency = data.find((currency) => currency.isBase);
+      this.currencies = data.filter(currency => currency.isEnabled);
+      this.baseCurrency = data.find(currency => currency.isBase);
     },
 
-    parseUserAgent(agent: string):void {
+    parseUserAgent(agent: string): void {
       this.isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(agent.toLowerCase());
     },
 
-    setBrowserLanguage(languages: IBrowserLanguage[]):void {
+    setBrowserLanguage(languages: IBrowserLanguage[]): void {
       this.browserLanguage = languages[0].code;
     },
 
-    async getLocales():Promise<void> {
+    async getLocales(): Promise<void> {
       const { getLocales } = useCoreGlobalApi();
       const data = await getLocales();
       this.locales = data;
-      this.defaultLocale = data.find((locale) => locale.isDefault);
+      this.defaultLocale = data.find(locale => locale.isDefault);
     },
 
-    async getCountries():Promise<void> {
+    async getCountries(): Promise<void> {
       const { getCountries } = useCoreGlobalApi();
 
       // TEMPORARY SOLUTION
@@ -239,7 +232,7 @@ export const useGlobalStore = defineStore('globalStore', {
       this.countries = responseCountries.filter(country => !disabledCountries.includes(country.code));
     },
 
-    async getSettingsConstants():Promise<void> {
+    async getSettingsConstants(): Promise<void> {
       const { getCoreConstants } = useCoreGlobalApi();
       this.settingsConstants = await getCoreConstants();
     },
@@ -251,34 +244,49 @@ export const useGlobalStore = defineStore('globalStore', {
         const cookieLanguageData = this.locales.find(locale => locale.code === cookieLanguage.value);
         this.currentLocale = cookieLanguageData ?? this.defaultLocale;
       } else {
-        const geoCountry = this.countries.find(country => country.code.toUpperCase() === this.headerCountry?.toUpperCase());
+        const geoCountry = this.countries.find(
+          country => country.code.toUpperCase() === this.headerCountry?.toUpperCase()
+        );
         const geoLocaleData = this.locales.find(locale => locale.code === geoCountry?.locale);
         this.currentLocale = geoLocaleData ?? this.defaultLocale;
       }
     },
 
-    async getGlobalContent():Promise<void> {
+    async getGlobalContent(): Promise<void> {
       const globalContentFolders = ['alerts', 'fields-settings', 'global-components', 'layout', 'modals'];
 
       const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-        queryContent(this.currentLocale?.code as string).where({ _dir: { $in: globalContentFolders } }).find(),
+        queryContent(this.currentLocale?.code as string)
+          .where({ _dir: { $in: globalContentFolders } })
+          .find(),
         this.currentLocale?.isDefault
           ? Promise.reject('Current locale is default locale!')
-          : queryContent(this.defaultLocale?.code as string).where({ _dir: { $in: globalContentFolders } }).find()
+          : queryContent(this.defaultLocale?.code as string)
+              .where({ _dir: { $in: globalContentFolders } })
+              .find(),
       ]);
 
       const { getLocalesContentData } = useProjectMethods();
-      const { currentLocaleData, defaultLocaleData } = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+      const { currentLocaleData, defaultLocaleData } = getLocalesContentData(
+        currentLocaleContentResponse,
+        defaultLocaleContentResponse
+      );
 
       if (currentLocaleData) {
-        const formattedCurrentLocaleContent: IGlobalContent = currentLocaleData.reduce((finalContentObj:any, currentContent:any) => {
-          const splitPath = currentContent._path?.split('/');
-          if (!splitPath) return finalContentObj;
+        const formattedCurrentLocaleContent: IGlobalContent = currentLocaleData.reduce(
+          (finalContentObj: any, currentContent: any) => {
+            const splitPath = currentContent._path?.split('/');
+            if (!splitPath) return finalContentObj;
 
-          const collection = camelCase(splitPath[2]);
-          const contentName = camelCase(splitPath[3]);
-          return { ...finalContentObj, [collection]: { ...finalContentObj[collection], [contentName]: currentContent } }
-        }, {})
+            const collection = camelCase(splitPath[2]);
+            const contentName = camelCase(splitPath[3]);
+            return {
+              ...finalContentObj,
+              [collection]: { ...finalContentObj[collection], [contentName]: currentContent },
+            };
+          },
+          {}
+        );
 
         this.fieldsSettings = formattedCurrentLocaleContent.fieldsSettings;
         this.layoutData = formattedCurrentLocaleContent.layout;
@@ -288,14 +296,20 @@ export const useGlobalStore = defineStore('globalStore', {
       }
 
       if (defaultLocaleData) {
-        const formattedDefaultLocaleContent: IGlobalContent = defaultLocaleData.reduce((finalContentObj:any, currentContent:any) => {
-          const splitPath = currentContent._path?.split('/');
-          if (!splitPath) return finalContentObj;
+        const formattedDefaultLocaleContent: IGlobalContent = defaultLocaleData.reduce(
+          (finalContentObj: any, currentContent: any) => {
+            const splitPath = currentContent._path?.split('/');
+            if (!splitPath) return finalContentObj;
 
-          const collection = camelCase(splitPath[2]);
-          const contentName = camelCase(splitPath[3]);
-          return { ...finalContentObj, [collection]: { ...finalContentObj[collection], [contentName]: currentContent } }
-        }, {})
+            const collection = camelCase(splitPath[2]);
+            const contentName = camelCase(splitPath[3]);
+            return {
+              ...finalContentObj,
+              [collection]: { ...finalContentObj[collection], [contentName]: currentContent },
+            };
+          },
+          {}
+        );
 
         this.defaultLocaleFieldsSettings = formattedDefaultLocaleContent.fieldsSettings;
         this.defaultLocaleLayoutData = formattedDefaultLocaleContent.layout;
@@ -305,19 +319,20 @@ export const useGlobalStore = defineStore('globalStore', {
       }
     },
 
-    getRequestCountry():void {
-      const headersCountry:Record<string, any> = useRequestHeaders([this.countryHeaderName]);
+    getRequestCountry(): void {
+      const headersCountry: Record<string, any> = useRequestHeaders([this.countryHeaderName]);
       const headerIp: Record<string, any> = useRequestHeaders([this.clientIpName]);
-      if (headersCountry[this.countryHeaderName]) this.headerCountry = headersCountry[this.countryHeaderName]?.toUpperCase();
+      if (headersCountry[this.countryHeaderName])
+        this.headerCountry = headersCountry[this.countryHeaderName]?.toUpperCase();
       if (headerIp[this.clientIpName]) this.headerIp = headerIp[this.clientIpName];
     },
 
-    setEquivalentCurrency(currencyCode: string):void {
-      this.equivalentCurrency = this.currencies.find((currency) => currency.code === currencyCode);
+    setEquivalentCurrency(currencyCode: string): void {
+      this.equivalentCurrency = this.currencies.find(currency => currency.code === currencyCode);
       if (this.equivalentCurrency) localStorage.setItem('equivalentCurrency', this.equivalentCurrency.code);
     },
 
-    removeEquivalentCurrency():void {
+    removeEquivalentCurrency(): void {
       localStorage.removeItem('equivalentCurrency');
       this.equivalentCurrency = undefined;
     },

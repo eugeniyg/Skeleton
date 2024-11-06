@@ -1,6 +1,8 @@
 <template>
   <label :class="classes">
-    <span v-if="props.label" class="label">{{ props.label }}<span v-if="props.isRequired" class="required">*</span></span>
+    <span v-if="props.label" class="label"
+      >{{ props.label }}<span v-if="props.isRequired" class="required">*</span></span
+    >
 
     <client-only>
       <input
@@ -14,10 +16,10 @@
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
-      >
+      />
     </client-only>
 
-    <atomic-hint v-if="props.hint" v-bind="props.hint"/>
+    <atomic-hint v-if="props.hint" v-bind="props.hint" />
   </label>
 </template>
 
@@ -34,7 +36,7 @@
   const classes = computed(() => [
     'input-text',
     { 'has-error': props.hint?.variant === 'error' },
-    { 'is-disabled': props.isDisabled }
+    { 'is-disabled': props.isDisabled },
   ]);
 
   const postalValue = ref<string>('');
@@ -43,19 +45,18 @@
   }
 
   const emit = defineEmits(['focus', 'input', 'update:value', 'blur']);
-  const onFocus = ():void => {
+  const onFocus = (): void => {
     emit('focus', postalValue.value);
   };
 
-  const onInput = ():void => {
+  const onInput = (): void => {
     emit('update:value', postalValue.value);
     emit('input', postalValue.value);
   };
 
-  const onBlur = ():void => {
+  const onBlur = (): void => {
     emit('blur', postalValue.value);
   };
 </script>
 
 <style src="~/assets/styles/components/form/input/text.scss" lang="scss" />
-

@@ -3,11 +3,7 @@
     <div class="head">
       <span class="date">{{ dayjs(props.createdAt).format('DD.MM HH:mm') }}</span>
 
-      <button-copy
-        :copyButton="betCard.copyButton"
-        :copyTooltip="betCard.copyTooltip"
-        :text="props.roundId"
-      />
+      <button-copy :copy-button="betCard.copyButton" :copy-tooltip="betCard.copyTooltip" :text="props.roundId" />
     </div>
 
     <div class="content">
@@ -21,10 +17,14 @@
 
           <template v-if="props.status !== 1">
             <span class="sep" />
-            <atomic-bet-status
-              :variant="props.status"
-            >
-              {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.betStatuses.${props.status}`) }}
+            <atomic-bet-status :variant="props.status">
+              {{
+                getContent(
+                  globalComponentsContent,
+                  defaultLocaleGlobalComponentsContent,
+                  `constants.betStatuses.${props.status}`
+                )
+              }}
             </atomic-bet-status>
           </template>
         </div>
@@ -56,16 +56,16 @@
   import type { IBetsHistory } from '~/types';
 
   const props = defineProps<{
-    id: string,
-    roundId: string,
-    amount: number,
-    currency: string,
-    createdAt: string,
-    payout: number,
-    items: IBetItem[],
-    status: number,
-    coefficient: number,
-    betCard: IBetsHistory['betCard'],
+    id: string;
+    roundId: string;
+    amount: number;
+    currency: string;
+    createdAt: string;
+    payout: number;
+    items: IBetItem[];
+    status: number;
+    coefficient: number;
+    betCard: IBetsHistory['betCard'];
   }>();
 
   const betItem = props.items[0];
@@ -84,4 +84,3 @@
 </script>
 
 <style src="~/assets/styles/components/card/bet-ordinar.scss" lang="scss" />
-

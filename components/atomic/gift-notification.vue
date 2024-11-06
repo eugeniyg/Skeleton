@@ -1,11 +1,11 @@
 <template>
   <button
     class="gift-notification"
-    :class="{'is-active': props.isActive}"
+    :class="{ 'is-active': props.isActive }"
     :data-display="props.display"
     @click="toBonuses"
   >
-    <atomic-icon id="bonuses"/>
+    <atomic-icon id="bonuses" />
   </button>
 </template>
 
@@ -17,7 +17,7 @@
   };
 
   const props = defineProps<{
-    display: 'desktop'|'mobile';
+    display: 'desktop' | 'mobile';
     isActive?: boolean;
   }>();
 </script>

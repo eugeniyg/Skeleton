@@ -27,7 +27,7 @@
   }>();
 
   const emit = defineEmits(['change']);
-  const changeSort = (sortBy: string, sortOrder: string):void => {
+  const changeSort = (sortBy: string, sortOrder: string): void => {
     if (props.sortBy !== sortBy || props.sortOrder !== sortOrder) {
       emit('change', { sortBy, sortOrder });
     }

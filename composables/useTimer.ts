@@ -1,10 +1,10 @@
 export function useTimer() {
   const isAlmostDone = ref<boolean>(false);
   const diffInSeconds = ref<number>(0);
-  const days = ref<string|number>(0);
-  const hours= ref<string|number>(0);
-  const minutes= ref<string|number>(0);
-  const seconds= ref<string|number>(0);
+  const days = ref<string | number>(0);
+  const hours = ref<string | number>(0);
+  const minutes = ref<string | number>(0);
+  const seconds = ref<string | number>(0);
   const timer = ref<NodeJS.Timeout | null>(null);
 
   const countdown = () => {
@@ -30,7 +30,7 @@ export function useTimer() {
     const end = new Date(expiderDate).getTime();
     diffInSeconds.value = Math.ceil((end - start) / 1000);
     countdown();
-  }
+  };
 
   onBeforeUnmount(() => {
     if (timer.value) clearTimeout(timer.value);
@@ -42,6 +42,6 @@ export function useTimer() {
     hours,
     minutes,
     seconds,
-    startTimer
-  }
+    startTimer,
+  };
 }

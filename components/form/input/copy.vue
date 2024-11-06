@@ -1,8 +1,6 @@
 <template>
   <label :class="classes" :for="props.name">
-    <span v-if="props.label" class="label">
-      {{ label }}<span v-if="props.isRequired" class="required">*</span>
-    </span>
+    <span v-if="props.label" class="label"> {{ label }}<span v-if="props.isRequired" class="required">*</span> </span>
 
     <div class="row">
       <transition name="fade" mode="out-in">
@@ -22,19 +20,19 @@
         :placeholder="props.placeholder"
         @blur="emit('blur')"
         @input="emit('input')"
-      >
+      />
 
       <button class="btn-copy" @click.prevent="copyValue">
-        <atomic-icon id="copy"/>
+        <atomic-icon id="copy" />
       </button>
     </div>
 
-    <atomic-hint v-if="props.hint" v-bind="hint"/>
+    <atomic-hint v-if="props.hint" v-bind="hint" />
   </label>
 </template>
 
 <script setup lang="ts">
-  import copy from "copy-to-clipboard";
+  import copy from 'copy-to-clipboard';
 
   const props = defineProps<{
     name: string;
@@ -43,13 +41,10 @@
     placeholder?: string;
     isRequired?: boolean;
     copyTooltip?: string;
-    hint?: { variant?: string, message?: string };
+    hint?: { variant?: string; message?: string };
   }>();
 
-  const classes = computed(() => [
-    'input-copy',
-    { 'has-error': props.hint?.variant === 'error' },
-  ]);
+  const classes = computed(() => ['input-copy', { 'has-error': props.hint?.variant === 'error' }]);
 
   const emit = defineEmits(['blur', 'input']);
   const copyInput = ref();
@@ -57,7 +52,7 @@
   const tooltipVisible = ref<boolean>(false);
   const tooltipTimer = ref<any>(undefined);
 
-  const showTooltip = ():void => {
+  const showTooltip = (): void => {
     tooltipVisible.value = true;
     clearTimeout(tooltipTimer.value);
     tooltipTimer.value = setTimeout(() => {
@@ -73,4 +68,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/copy.scss" lang="scss" />
-

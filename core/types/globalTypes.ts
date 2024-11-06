@@ -1,38 +1,38 @@
-import type { IAccount, ISocketInvoice } from './walletTypes'
-import type { IGameImages, IWinner } from './gameTypes'
-import type { IBonusCode, IPlayerBonus, IPlayerFreeSpin } from './bonusTypes'
-import type { IPlayerQuest, IPlayerQuestEventTask } from "@skeleton/core/types/questTypes";
-import type { IPlayerLoyaltyAccount } from "@skeleton/core/types/profileTypes";
-import type { IMessage } from "@skeleton/core/types/notificationTypes";
+import type { IAccount, ISocketInvoice } from './walletTypes';
+import type { IGameImages, IWinner } from './gameTypes';
+import type { IBonusCode, IPlayerBonus, IPlayerFreeSpin } from './bonusTypes';
+import type { IPlayerQuest, IPlayerQuestEventTask } from '@skeleton/core/types/questTypes';
+import type { IPlayerLoyaltyAccount } from '@skeleton/core/types/profileTypes';
+import type { IMessage } from '@skeleton/core/types/notificationTypes';
 
 export interface IRate extends Record<string, any> {
   rate: number;
   rateTime: string;
 }
 
-export interface ICurrency extends Record<string, any>{
+export interface ICurrency extends Record<string, any> {
   name: string;
   isBase: boolean;
   isEnabled: boolean;
   code: string;
   symbol: string;
-  type: string
+  type: string;
   subunitToUnit: number;
   rate: IRate;
   subCurrencies?: ICurrency[];
   value?: string;
 }
 
-export interface ILocale extends Record<string, any>{
+export interface ILocale extends Record<string, any> {
   name: string;
   nativeName: string;
   code: string;
   languageCode: string;
   isDefault: boolean;
-  value?:string;
+  value?: string;
 }
 
-export interface ICountry extends Record<string, any>{
+export interface ICountry extends Record<string, any> {
   name: string;
   nativeName: string;
   code: string;
@@ -40,19 +40,19 @@ export interface ICountry extends Record<string, any>{
   currency: string;
   locale: string;
   additionalCurrency: string[];
-  value?:string;
+  value?: string;
   restrict: boolean;
 }
 
-export interface ITimeZone extends Record<string, any>{
+export interface ITimeZone extends Record<string, any> {
   id: string;
   name: string;
   code?: string;
   value?: string;
 }
 
-export interface IStatus extends Record<string, any>{
-  id: string|number;
+export interface IStatus extends Record<string, any> {
+  id: string | number;
   name: string;
 }
 
@@ -62,7 +62,7 @@ export interface IDocumentType extends Record<string, any> {
   section: string;
 }
 
-export interface ICoreConstants extends Record<string, any>{
+export interface ICoreConstants extends Record<string, any> {
   player: {
     scenarios: IStatus[];
     timeZone: ITimeZone[];
@@ -106,7 +106,7 @@ export interface ICoreConstants extends Record<string, any>{
       payoutBalanceType: IStatus[];
       wagerCategory: IStatus[];
       depositBonusDeclineDefault: boolean;
-    },
+    };
     playerBonus: {
       status: IStatus[];
       result: IStatus[];
@@ -115,17 +115,17 @@ export interface ICoreConstants extends Record<string, any>{
       status: IStatus[];
       result: IStatus[];
     };
-  }
+  };
 }
 
-export interface IObserverOptions extends Record<string, any>{
+export interface IObserverOptions extends Record<string, any> {
   once?: boolean;
   onInView?: () => void;
   onOutView?: () => void;
-  settings: { root: null|HTMLElement; rootMargin: string; threshold: number; };
+  settings: { root: null | HTMLElement; rootMargin: string; threshold: number };
 }
 
-export interface IPaginationMeta extends Record<string, any>{
+export interface IPaginationMeta extends Record<string, any> {
   page: number;
   perPage: number;
   totalPages: number;
@@ -134,7 +134,7 @@ export interface IPaginationMeta extends Record<string, any>{
 
 export interface IEventBet extends Record<string, any> {
   id: string;
-  nickname: string|null;
+  nickname: string | null;
   amount: number;
   baseCurrencyAmount: number;
   currency: string;
@@ -146,7 +146,7 @@ export interface IEventBet extends Record<string, any> {
   createdAt: string;
 }
 
-export interface IWebSocketResponse extends Record<string, any>{
+export interface IWebSocketResponse extends Record<string, any> {
   data: {
     event: string;
     winner?: IWinner;
@@ -168,7 +168,7 @@ export interface IWebSocketResponse extends Record<string, any>{
   seq: undefined;
 }
 
-export interface IInitUserInfo extends Record<string, any>{
+export interface IInitUserInfo extends Record<string, any> {
   country: string;
 }
 

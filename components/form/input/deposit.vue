@@ -1,25 +1,16 @@
 <template>
   <client-only>
     <div class="input-deposit">
-      <div
-        v-click-outside="closeDropdown"
-        class="select"
-        :class="{'is-open': isShow}"
-        @click="toggleSelect"
-      >
+      <div v-click-outside="closeDropdown" class="select" :class="{ 'is-open': isShow }" @click="toggleSelect">
         <atomic-fiat-display v-if="showEquivalentBalance" />
         <div v-else class="select__content">
           <div class="amount">{{ balanceFormat.amount }}</div>
           <div class="label">{{ balanceFormat.currency }}</div>
         </div>
 
-        <atomic-icon id="arrow_expand-close" class="icon-expand"/>
+        <atomic-icon id="arrow_expand-close" class="icon-expand" />
 
-        <list-balance
-          :is-open="isShow"
-          @close="isShow = false"
-          @click.stop
-        />
+        <list-balance :is-open="isShow" @close="isShow = false" @click.stop />
       </div>
 
       <button-deposit />
@@ -54,4 +45,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/deposit.scss" lang="scss" />
-

@@ -3,21 +3,23 @@ import { isValidPhoneNumber } from 'libphonenumber-js';
 
 export * from '@vuelidate/validators';
 
-export const countryCode = (value:any):boolean => !validationRules.helpers.req(value) || /^[A-Z]{2}$/.test(value);
+export const countryCode = (value: any): boolean => !validationRules.helpers.req(value) || /^[A-Z]{2}$/.test(value);
 
-export const languageCode = (value:any):boolean => !validationRules.helpers.req(value) || /^[a-z]{2}$/.test(value);
+export const languageCode = (value: any): boolean => !validationRules.helpers.req(value) || /^[a-z]{2}$/.test(value);
 
-export const phone = (value:any):boolean => !validationRules.helpers.req(value) || isValidPhoneNumber(`+${value}`);
+export const phone = (value: any): boolean => !validationRules.helpers.req(value) || isValidPhoneNumber(`+${value}`);
 
-export const lowercase = (value:any):boolean => !validationRules.helpers.req(value) || (value.toLowerCase() === value);
+export const lowercase = (value: any): boolean => !validationRules.helpers.req(value) || value.toLowerCase() === value;
 
-export const uppercase = (value:any):boolean => !validationRules.helpers.req(value) || (value.toUpperCase() === value);
+export const uppercase = (value: any): boolean => !validationRules.helpers.req(value) || value.toUpperCase() === value;
 
-export const accepted = (value:any):boolean => !validationRules.helpers.req(value) || ['yes', 'on', 1, true].includes(value);
+export const accepted = (value: any): boolean =>
+  !validationRules.helpers.req(value) || ['yes', 'on', 1, true].includes(value);
 
-export const declined = (value:any):boolean => !validationRules.helpers.req(value) || ['no', 'off', 0, false].includes(value);
+export const declined = (value: any): boolean =>
+  !validationRules.helpers.req(value) || ['no', 'off', 0, false].includes(value);
 
-function isValidDate(dateString:any) {
+function isValidDate(dateString: any) {
   let testDate;
   if (typeof dateString === 'number') {
     testDate = new Date(dateString);
@@ -50,144 +52,129 @@ function isValidDate(dateString:any) {
   return day > 0 && day <= monthLength[month - 1];
 }
 
-export const before = (param:string) => validationRules.helpers.withParams(
-    { param },
-    (value:string) => {
-      if (!validationRules.helpers.req(value)) return true;
+export const before = (param: string) =>
+  validationRules.helpers.withParams({ param }, (value: string) => {
+    if (!validationRules.helpers.req(value)) return true;
 
-      if (!isValidDate(param)) {
-        return false;
-      }
-      if (!isValidDate(value)) {
-        return false;
-      }
-
-      if (new Date(param).getTime() > new Date(value).getTime()) {
-        return true;
-      }
-
+    if (!isValidDate(param)) {
       return false;
-    },
-  );
-
- 
-export const before_or_equal = (param:string) => validationRules.helpers.withParams(
-    { param },
-    (value:string) => {
-      if (!validationRules.helpers.req(value)) return true;
-
-      if (!isValidDate(param)) {
-        return false;
-      }
-      if (!isValidDate(value)) {
-        return false;
-      }
-
-      if (new Date(param).getTime() >= new Date(value).getTime()) {
-        return true;
-      }
-
+    }
+    if (!isValidDate(value)) {
       return false;
-    },
-  );
+    }
 
-export const after = (param:string) => validationRules.helpers.withParams(
-    { param },
-    (value:string) => {
-      if (!validationRules.helpers.req(value)) return true;
+    if (new Date(param).getTime() > new Date(value).getTime()) {
+      return true;
+    }
 
-      if (!isValidDate(param)) {
-        return false;
-      }
-      if (!isValidDate(value)) {
-        return false;
-      }
+    return false;
+  });
 
-      if (new Date(param).getTime() < new Date(value).getTime()) {
-        return true;
-      }
+export const before_or_equal = (param: string) =>
+  validationRules.helpers.withParams({ param }, (value: string) => {
+    if (!validationRules.helpers.req(value)) return true;
 
+    if (!isValidDate(param)) {
       return false;
-    },
-  );
-
- 
-export const after_or_equal = (param:string) => validationRules.helpers.withParams(
-    { param },
-    (value:string) => {
-      if (!validationRules.helpers.req(value)) return true;
-
-      if (!isValidDate(param)) {
-        return false;
-      }
-      if (!isValidDate(value)) {
-        return false;
-      }
-
-      if (new Date(param).getTime() <= new Date(value).getTime()) {
-        return true;
-      }
-
+    }
+    if (!isValidDate(value)) {
       return false;
-    },
-  );
+    }
 
- 
-export const alpha_dash = (value:any):boolean => !validationRules.helpers.req(value) || /^[a-zA-Z0-9_-]+$/.test(value);
+    if (new Date(param).getTime() >= new Date(value).getTime()) {
+      return true;
+    }
 
- 
+    return false;
+  });
+
+export const after = (param: string) =>
+  validationRules.helpers.withParams({ param }, (value: string) => {
+    if (!validationRules.helpers.req(value)) return true;
+
+    if (!isValidDate(param)) {
+      return false;
+    }
+    if (!isValidDate(value)) {
+      return false;
+    }
+
+    if (new Date(param).getTime() < new Date(value).getTime()) {
+      return true;
+    }
+
+    return false;
+  });
+
+export const after_or_equal = (param: string) =>
+  validationRules.helpers.withParams({ param }, (value: string) => {
+    if (!validationRules.helpers.req(value)) return true;
+
+    if (!isValidDate(param)) {
+      return false;
+    }
+    if (!isValidDate(value)) {
+      return false;
+    }
+
+    if (new Date(param).getTime() <= new Date(value).getTime()) {
+      return true;
+    }
+
+    return false;
+  });
+
+export const alpha_dash = (value: any): boolean =>
+  !validationRules.helpers.req(value) || /^[a-zA-Z0-9_-]+$/.test(value);
+
 export const alpha_num = validationRules.alphaNum;
 
-export const array = (value:any):boolean => !validationRules.helpers.req(value) || (value instanceof Array);
+export const array = (value: any): boolean => !validationRules.helpers.req(value) || value instanceof Array;
 
-export const boolean = (value:any):boolean => !validationRules.helpers.req(value) || [true, false, 1, 0, '1', '0'].includes(value);
+export const boolean = (value: any): boolean =>
+  !validationRules.helpers.req(value) || [true, false, 1, 0, '1', '0'].includes(value);
 
-export const confirmed = (param: string) => validationRules.helpers.withParams(
-    { param },
-    (value) => {
-      if (!validationRules.helpers.req(value)) return true;
-      const getInput:any = document.querySelector(`input[name="${param}"]`);
-      if (getInput) {
-        return getInput.value === value;
-      } return false;
-    },
-  );
+export const confirmed = (param: string) =>
+  validationRules.helpers.withParams({ param }, value => {
+    if (!validationRules.helpers.req(value)) return true;
+    const getInput: any = document.querySelector(`input[name="${param}"]`);
+    if (getInput) {
+      return getInput.value === value;
+    }
+    return false;
+  });
 
-export const date = (value:string):boolean => !validationRules.helpers.req(value) || isValidDate(value);
+export const date = (value: string): boolean => !validationRules.helpers.req(value) || isValidDate(value);
 
- 
-export const date_equals = (param:string) => validationRules.helpers.withParams(
-    { param },
-    (value:string) => {
-      if (!validationRules.helpers.req(value)) return true;
+export const date_equals = (param: string) =>
+  validationRules.helpers.withParams({ param }, (value: string) => {
+    if (!validationRules.helpers.req(value)) return true;
 
-      if (!isValidDate(param)) {
-        return false;
-      }
-      if (!isValidDate(value)) {
-        return false;
-      }
-
-      if (new Date(param).getTime() === new Date(value).getTime()) {
-        return true;
-      }
-
+    if (!isValidDate(param)) {
       return false;
-    },
-  );
+    }
+    if (!isValidDate(value)) {
+      return false;
+    }
 
-export const different = (param: string) => validationRules.helpers.withParams(
-    { param },
-    (value) => {
-      if (!validationRules.helpers.req(value)) return true;
-      const getInput:any = document.querySelector(`input[name="${param}"]`);
-      if (getInput) {
-        return String(getInput.value) !== value;
-      } return false;
-    },
-  );
+    if (new Date(param).getTime() === new Date(value).getTime()) {
+      return true;
+    }
 
-function getParameters(ruleValue:any) {
+    return false;
+  });
+
+export const different = (param: string) =>
+  validationRules.helpers.withParams({ param }, value => {
+    if (!validationRules.helpers.req(value)) return true;
+    const getInput: any = document.querySelector(`input[name="${param}"]`);
+    if (getInput) {
+      return String(getInput.value) !== value;
+    }
+    return false;
+  });
+
+function getParameters(ruleValue: any) {
   let value = [];
 
   if (typeof ruleValue === 'string') {
@@ -205,42 +192,34 @@ function getParameters(ruleValue:any) {
   return value;
 }
 
-export const digits = (param: string) => validationRules.helpers.withParams(
-    { param },
-    (value:any) => {
-      if (!validationRules.helpers.req(value)) return true;
+export const digits = (param: string) =>
+  validationRules.helpers.withParams({ param }, (value: any) => {
+    if (!validationRules.helpers.req(value)) return true;
 
-      const num = Number(value);
+    const num = Number(value);
 
-       
-      if (typeof num === 'number' && !isNaN(num) && typeof value !== 'boolean') {
-        return String(value.trim()).length === parseInt(param, 10);
-      }
-      return false;
-    },
-  );
+    if (typeof num === 'number' && !isNaN(num) && typeof value !== 'boolean') {
+      return String(value.trim()).length === parseInt(param, 10);
+    }
+    return false;
+  });
 
- 
 export const digits_between = (param: string) => {
   const params = getParameters(param);
   const min = parseFloat(params[0]);
   const max = parseFloat(params[1]);
 
-  return validationRules.helpers.withParams(
-    { min, max },
-    (value) => {
-      if (!validationRules.helpers.req(value)) return true;
+  return validationRules.helpers.withParams({ min, max }, value => {
+    if (!validationRules.helpers.req(value)) return true;
 
-      const num = Number(value);
-      const valueDigitsCount = String(value).length;
+    const num = Number(value);
+    const valueDigitsCount = String(value).length;
 
-       
-      if (typeof num === 'number' && !isNaN(num) && typeof value !== 'boolean') {
-        return valueDigitsCount >= min && valueDigitsCount <= max;
-      }
-      return false;
-    },
-  );
+    if (typeof num === 'number' && !isNaN(num) && typeof value !== 'boolean') {
+      return valueDigitsCount >= min && valueDigitsCount <= max;
+    }
+    return false;
+  });
 };
 
 export const ip = validationRules.ipAddress;
@@ -249,10 +228,9 @@ export const numeric = validationRules.numeric;
 
 export const integer = validationRules.integer;
 
- 
 export const mac_address = validationRules.macAddress;
 
-function getSize(value:any) {
+function getSize(value: any) {
   if (value instanceof Array) {
     return value.length;
   }
@@ -264,119 +242,104 @@ function getSize(value:any) {
   return value.length;
 }
 
-export const max = (param: string) => validationRules.helpers.withParams(
-    { param },
-    (value) => {
-      if (!validationRules.helpers.req(value)) return true;
+export const max = (param: string) =>
+  validationRules.helpers.withParams({ param }, value => {
+    if (!validationRules.helpers.req(value)) return true;
 
-      const size = getSize(value);
+    const size = getSize(value);
 
-      return size <= param;
-    },
-  );
+    return size <= param;
+  });
 
-export const min = (param: string) => validationRules.helpers.withParams(
-    { param },
-    (value) => {
-      if (!validationRules.helpers.req(value)) return true;
+export const min = (param: string) =>
+  validationRules.helpers.withParams({ param }, value => {
+    if (!validationRules.helpers.req(value)) return true;
 
-      const size = getSize(value);
+    const size = getSize(value);
 
-      return size >= param;
-    },
-  );
+    return size >= param;
+  });
 
-export const regex = (param:any) => validationRules.helpers.withParams(
-    { param },
-    (value:any) => {
-      if (!validationRules.helpers.req(value)) return true;
+export const regex = (param: any) =>
+  validationRules.helpers.withParams({ param }, (value: any) => {
+    if (!validationRules.helpers.req(value)) return true;
 
-      const testRegexp = (reg: string) => {
-        let flags = reg.replace(/.*\/([gimuyvsd]{1,8})$/, '$1');
-        if (flags === reg) flags = '';
+    const testRegexp = (reg: string) => {
+      let flags = reg.replace(/.*\/([gimuyvsd]{1,8})$/, '$1');
+      if (flags === reg) flags = '';
 
-        let pattern;
-        if (flags) {
-          pattern = reg.replace(new RegExp('^/?(.*?)/' + flags + '$'), '$1');
-        } else {
-          pattern = reg.replace(new RegExp('^/?(.*?)/?$'), '$1');
-        }
-
-        const paramRegexp = new RegExp(pattern, flags);
-        return paramRegexp.test(value);
+      let pattern;
+      if (flags) {
+        pattern = reg.replace(new RegExp('^/?(.*?)/' + flags + '$'), '$1');
+      } else {
+        pattern = reg.replace(new RegExp('^/?(.*?)/?$'), '$1');
       }
 
-      return Array.isArray(param) ? param.some((item) => testRegexp(item)) : testRegexp(param);
-    },
-  );
+      const paramRegexp = new RegExp(pattern, flags);
+      return paramRegexp.test(value);
+    };
 
- 
-export const not_regex = (param:any) => validationRules.helpers.withParams(
-    { param },
-    (value:any) => {
-      if (!validationRules.helpers.req(value)) return true;
+    return Array.isArray(param) ? param.some(item => testRegexp(item)) : testRegexp(param);
+  });
 
-      const mod = /[g|i|m]{1,3}$/;
-      let flag = param.match(mod);
-      flag = flag ? flag[0] : '';
+export const not_regex = (param: any) =>
+  validationRules.helpers.withParams({ param }, (value: any) => {
+    if (!validationRules.helpers.req(value)) return true;
 
-      const regexMain = param.replace(mod, '').slice(1, -1);
-      const paramRegexp = new RegExp(regexMain, flag);
-      return !paramRegexp.test(value);
-    },
-  );
+    const mod = /[g|i|m]{1,3}$/;
+    let flag = param.match(mod);
+    flag = flag ? flag[0] : '';
 
- 
-export const required_if = (param: string) => validationRules.helpers.withParams(
-    { param },
-    (value) => {
-      if (!validationRules.helpers.req(value)) return true;
+    const regexMain = param.replace(mod, '').slice(1, -1);
+    const paramRegexp = new RegExp(regexMain, flag);
+    return !paramRegexp.test(value);
+  });
 
-      const getInput:any = document.querySelector(`input[name="${param}"]`);
-      if (getInput) {
-        return !!String(getInput.value).length;
-      } return false;
-    },
-  );
+export const required_if = (param: string) =>
+  validationRules.helpers.withParams({ param }, value => {
+    if (!validationRules.helpers.req(value)) return true;
 
-export const string = (value:any):boolean => !validationRules.helpers.req(value) || (typeof value === 'string');
+    const getInput: any = document.querySelector(`input[name="${param}"]`);
+    if (getInput) {
+      return !!String(getInput.value).length;
+    }
+    return false;
+  });
 
-export const minAge = (param:string) => validationRules.helpers.withParams(
-    { param },
-    (value:string) => {
-      if (!validationRules.helpers.req(value)) return true;
+export const string = (value: any): boolean => !validationRules.helpers.req(value) || typeof value === 'string';
 
-      if (!isValidDate(value)) {
-        return false;
-      }
-      const today:Date = new Date();
-      const birthDay:Date = new Date(value);
-      // @ts-expect-error - Date is number in milliseconds
-      const ageInMilliseconds:number = today - birthDay;
-      const ageInYear = Math.floor(ageInMilliseconds / 1000 / 60 / 60 / 24 / 365);
-      return ageInYear >= Number(param);
-    },
-  );
+export const minAge = (param: string) =>
+  validationRules.helpers.withParams({ param }, (value: string) => {
+    if (!validationRules.helpers.req(value)) return true;
 
-export const maxAge = (param:string) => validationRules.helpers.withParams(
-    { param },
-    (value:string) => {
-      if (!validationRules.helpers.req(value)) return true;
+    if (!isValidDate(value)) {
+      return false;
+    }
+    const today: Date = new Date();
+    const birthDay: Date = new Date(value);
+    // @ts-expect-error - Date is number in milliseconds
+    const ageInMilliseconds: number = today - birthDay;
+    const ageInYear = Math.floor(ageInMilliseconds / 1000 / 60 / 60 / 24 / 365);
+    return ageInYear >= Number(param);
+  });
 
-      if (!isValidDate(value)) {
-        return false;
-      }
-      const today:Date = new Date();
-      const birthDay:Date = new Date(value);
-      // @ts-expect-error - Date is number in milliseconds
-      const ageInMilliseconds:number = today - birthDay;
-      const ageInYear = Math.floor(ageInMilliseconds / 1000 / 60 / 60 / 24 / 365);
-      return ageInYear <= Number(param);
-    },
-  );
+export const maxAge = (param: string) =>
+  validationRules.helpers.withParams({ param }, (value: string) => {
+    if (!validationRules.helpers.req(value)) return true;
 
-const isValidCpf = (cpf:string):boolean => {
-  const cpfOnlyDigits = cpf.replace(/[^\d]+/g,'');
+    if (!isValidDate(value)) {
+      return false;
+    }
+    const today: Date = new Date();
+    const birthDay: Date = new Date(value);
+    // @ts-expect-error - Date is number in milliseconds
+    const ageInMilliseconds: number = today - birthDay;
+    const ageInYear = Math.floor(ageInMilliseconds / 1000 / 60 / 60 / 24 / 365);
+    return ageInYear <= Number(param);
+  });
+
+const isValidCpf = (cpf: string): boolean => {
+  const cpfOnlyDigits = cpf.replace(/[^\d]+/g, '');
   if (cpfOnlyDigits.length !== 11 || /^(\d)\1{10}$/.test(cpfOnlyDigits)) {
     return false;
   }
@@ -386,13 +349,13 @@ const isValidCpf = (cpf:string):boolean => {
     sum += parseInt(cpfOnlyDigits.charAt(i)) * (10 - i);
   }
   let rest = sum % 11;
-  const digit1 = (rest < 2) ? 0 : (11 - rest);
+  const digit1 = rest < 2 ? 0 : 11 - rest;
   sum = 0;
   for (let i = 0; i < 10; i++) {
     sum += parseInt(cpfOnlyDigits.charAt(i)) * (11 - i);
   }
   rest = sum % 11;
-  const digit2 = (rest < 2) ? 0 : (11 - rest);
-  return (digit1 === parseInt(cpfOnlyDigits.charAt(9)) && digit2 === parseInt(cpfOnlyDigits.charAt(10)));
-}
-export const cpf_number = (value:string):boolean => !validationRules.helpers.req(value) || isValidCpf(value);
+  const digit2 = rest < 2 ? 0 : 11 - rest;
+  return digit1 === parseInt(cpfOnlyDigits.charAt(9)) && digit2 === parseInt(cpfOnlyDigits.charAt(10));
+};
+export const cpf_number = (value: string): boolean => !validationRules.helpers.req(value) || isValidCpf(value);

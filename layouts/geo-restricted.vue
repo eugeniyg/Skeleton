@@ -28,22 +28,21 @@
 </template>
 
 <script setup lang="ts">
-  import { marked } from "marked";
-  import DOMPurify from "isomorphic-dompurify";
+  import { marked } from 'marked';
+  import DOMPurify from 'isomorphic-dompurify';
 
   const globalStore = useGlobalStore();
-  const {
-    headerCountry,
-    headerIp,
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent
-  } = storeToRefs(globalStore);
+  const { headerCountry, headerIp, globalComponentsContent, defaultLocaleGlobalComponentsContent } =
+    storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   const description = computed(() => {
-    return getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'geoRestricted.description');
-  })
+    return getContent(
+      globalComponentsContent.value,
+      defaultLocaleGlobalComponentsContent.value,
+      'geoRestricted.description'
+    );
+  });
 </script>
 
 <style src="~/assets/styles/layouts/geo-restricted.scss" lang="scss" />
-

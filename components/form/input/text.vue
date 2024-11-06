@@ -1,6 +1,8 @@
 <template>
   <label :class="classes">
-    <span v-if="props.label" class="label">{{ props.label }}<span v-if="props.isRequired" class="required">*</span></span>
+    <span v-if="props.label" class="label"
+      >{{ props.label }}<span v-if="props.isRequired" class="required">*</span></span
+    >
 
     <input
       ref="inputRef"
@@ -17,9 +19,9 @@
       @blur="onBlur"
       @input="onInput"
       @keyup.enter="emit('submit', $event)"
-    >
+    />
 
-    <atomic-hint v-if="props.hint" v-bind="props.hint"/>
+    <atomic-hint v-if="props.hint" v-bind="props.hint" />
   </label>
 </template>
 
@@ -34,7 +36,7 @@
     isDisabled?: boolean;
     hint?: { variant: string; message: string };
     autocomplete?: string;
-    inputmode?: 'text'|'none'|'tel'|'url'|'email'|'numeric'|'decimal'|'search';
+    inputmode?: 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
   }>();
   const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);
 
@@ -45,28 +47,27 @@
     { 'is-hidden': props.type === 'hidden' },
   ]);
 
-  const onBlur = (e:any) => {
+  const onBlur = (e: any) => {
     emit('blur', e.target.value);
   };
-  const onFocus = (e:any) => {
+  const onFocus = (e: any) => {
     emit('focus', e.target.value);
   };
 
-  const onInput = (e:any) => {
+  const onInput = (e: any) => {
     emit('input', e.target.value);
     emit('update:value', e.target.value);
   };
 
   const inputRef = ref();
 
-  const focusField = ():void => {
+  const focusField = (): void => {
     inputRef.value.focus();
-  }
+  };
 
   defineExpose({
     focusField,
-  })
+  });
 </script>
 
 <style src="~/assets/styles/components/form/input/text.scss" lang="scss" />
-

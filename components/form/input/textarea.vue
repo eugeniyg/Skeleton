@@ -17,7 +17,7 @@
       @input="onInput"
     />
 
-    <atomic-hint v-if="props.hint" v-bind="props.hint"/>
+    <atomic-hint v-if="props.hint" v-bind="props.hint" />
   </label>
 </template>
 
@@ -33,23 +33,19 @@
 
   const emit = defineEmits(['input', 'blur', 'focus', 'update:value']);
 
-  const classes = computed(() => [
-    'input-textarea',
-    { 'has-error': props.hint?.variant === 'error' },
-  ]);
+  const classes = computed(() => ['input-textarea', { 'has-error': props.hint?.variant === 'error' }]);
 
-  const onBlur = (e:any) => {
+  const onBlur = (e: any) => {
     emit('blur', e.target.value);
   };
-  const onFocus = (e:any) => {
+  const onFocus = (e: any) => {
     emit('focus', e.target.value);
   };
 
-  const onInput = (e:any) => {
+  const onInput = (e: any) => {
     emit('input', e.target.value);
     emit('update:value', e.target.value);
   };
 </script>
 
 <style src="~/assets/styles/components/form/input/textarea.scss" lang="scss" />
-

@@ -4,7 +4,7 @@
       name="destinationTag"
       :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.destinationTag.label')"
       :value="props.value || ''"
-      :copyTooltip="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.copiedLabel')"
+      :copy-tooltip="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.copiedLabel')"
     />
 
     <wallet-warning :content="warningContent" />
@@ -20,6 +20,6 @@
   const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const warningContent = computed(() => ({
-    description: getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.destinationTag.warning')
-  }))
+    description: getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.destinationTag.warning'),
+  }));
 </script>

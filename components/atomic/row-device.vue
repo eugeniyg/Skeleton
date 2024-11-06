@@ -1,22 +1,22 @@
 <template>
   <div class="row-device">
-    <atomic-icon :id="iconId"/>
+    <atomic-icon :id="iconId" />
   </div>
 </template>
 
 <script setup lang="ts">
   const props = defineProps<{
-    variant: 'mobile'|'desktop';
+    variant: 'mobile' | 'desktop';
   }>();
 
   const iconId = computed(() => {
     switch (props.variant) {
-    case 'mobile':
-      return 'mobile';
-    case 'desktop':
-      return 'device';
-    default:
-      return 'desktop';
+      case 'mobile':
+        return 'mobile';
+      case 'desktop':
+        return 'device';
+      default:
+        return 'desktop';
     }
   });
 </script>

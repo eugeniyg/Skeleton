@@ -10,7 +10,8 @@
         <div class="list-providers__item-label">{{ props.staticProvider?.name }}</div>
 
         <div class="list-providers__item-count">
-          {{ props.staticProvider?.gameEnabledCount || 0 }} {{ getContent(currentLocaleContent, defaultLocaleContent, 'gamesLabel') }}
+          {{ props.staticProvider?.gameEnabledCount || 0 }}
+          {{ getContent(currentLocaleContent, defaultLocaleContent, 'gamesLabel') }}
         </div>
 
         <button-base type="primary" :url="`/games?provider=${props.staticProvider.id}`">
@@ -45,20 +46,17 @@
 </template>
 
 <script setup lang="ts">
-  import type { IProvidersPage } from "~/types";
-  import type { IGameProvider } from "@skeleton/core/types";
+  import type { IProvidersPage } from '~/types';
+  import type { IGameProvider } from '@skeleton/core/types';
 
   const props = defineProps<{
-    staticProvider?: IGameProvider,
-    providersList: IGameProvider[],
-    currentLocaleContent: Maybe<IProvidersPage>,
-    defaultLocaleContent: Maybe<IProvidersPage>
+    staticProvider?: IGameProvider;
+    providersList: IGameProvider[];
+    currentLocaleContent: Maybe<IProvidersPage>;
+    defaultLocaleContent: Maybe<IProvidersPage>;
   }>();
 
-  const {
-    getContent,
-    localizePath
-  } = useProjectMethods();
+  const { getContent, localizePath } = useProjectMethods();
 </script>
 
-<style src="~/assets/styles/components/list/providers.scss" lang="scss"/>
+<style src="~/assets/styles/components/list/providers.scss" lang="scss" />

@@ -12,13 +12,13 @@
 </template>
 
 <script setup lang="ts">
-  import type {IHistory, IProfileHistory} from '~/types';
-  import camelCase from "lodash/camelCase";
-  
+  import type { IHistory, IProfileHistory } from '~/types';
+  import camelCase from 'lodash/camelCase';
+
   const pageContentParams = {
     contentKey: 'profileHistoryContent',
     contentRoute: ['profile', 'history'],
-    isPage: true
+    isPage: true,
   };
   const { getContentData: getPageContent } = useContentLogic<IProfileHistory>(pageContentParams);
   const { data: pageContent } = await useLazyAsyncData(getPageContent);
@@ -26,33 +26,32 @@
   const menuContentParams = {
     contentKey: 'profileHistoryMenuContent',
     contentRoute: ['history'],
-    findAll: true
+    findAll: true,
   };
   const { getContentData: getMenuContent } = useContentLogic<any>(menuContentParams);
   const { data: menuContent } = await useLazyAsyncData(getMenuContent);
 
-  const historyTabContent = computed<IHistory|undefined>(() => {
+  const historyTabContent = computed<IHistory | undefined>(() => {
     if (!menuContent.value?.currentLocaleData?.length) return undefined;
 
-    return menuContent.value?.currentLocaleData?.reduce((finalContentObj:any, currentContent:any) => {
+    return menuContent.value?.currentLocaleData?.reduce((finalContentObj: any, currentContent: any) => {
       const splitPath = currentContent._path?.split('/');
       if (!splitPath) return finalContentObj;
 
       const contentName = camelCase(splitPath[3]);
-      return { ...finalContentObj, [contentName]: currentContent }
-    }, {})
+      return { ...finalContentObj, [contentName]: currentContent };
+    }, {});
   });
 
-  const defaultLocaleHistoryTabContent = computed<IHistory|undefined>(() => {
+  const defaultLocaleHistoryTabContent = computed<IHistory | undefined>(() => {
     if (!menuContent.value?.defaultLocaleData?.length) return undefined;
 
-    return menuContent.value?.defaultLocaleData?.reduce((finalContentObj:any, currentContent:any) => {
+    return menuContent.value?.defaultLocaleData?.reduce((finalContentObj: any, currentContent: any) => {
       const splitPath = currentContent._path?.split('/');
       if (!splitPath) return finalContentObj;
 
       const contentName = camelCase(splitPath[3]);
-      return { ...finalContentObj, [contentName]: currentContent }
-    }, {})
-
+      return { ...finalContentObj, [contentName]: currentContent };
+    }, {});
   });
 </script>

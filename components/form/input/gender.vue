@@ -10,10 +10,11 @@
       name="gender-select"
       :is-disabled="props.isDisabled"
       value="male"
-      :isChecked="props.value === 'male'"
+      :is-checked="props.value === 'male'"
       @change="changeValue('male')"
     >
-      {{ getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.gender.maleLabel') }}<atomic-icon id="male"/>
+      {{ getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.gender.maleLabel')
+      }}<atomic-icon id="male" />
     </form-input-radio>
 
     <form-input-radio
@@ -22,10 +23,11 @@
       name="gender-select"
       :is-disabled="props.isDisabled"
       value="female"
-      :isChecked="props.value === 'female'"
+      :is-checked="props.value === 'female'"
       @change="changeValue('female')"
     >
-      {{ getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.gender.femaleLabel') }}<atomic-icon id="female"/>
+      {{ getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.gender.femaleLabel')
+      }}<atomic-icon id="female" />
     </form-input-radio>
 
     <form-input-radio
@@ -35,13 +37,14 @@
       name="gender-select"
       :is-disabled="props.isDisabled"
       :value="null"
-      :isChecked="!props.value"
+      :is-checked="!props.value"
       @change="changeValue(null)"
     >
-      {{ getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.gender.otherLabel') }}<atomic-icon id="other"/>
+      {{ getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.gender.otherLabel')
+      }}<atomic-icon id="other" />
     </form-input-radio>
 
-    <atomic-hint v-if="props.hint" v-bind="props.hint"/>
+    <atomic-hint v-if="props.hint" v-bind="props.hint" />
   </div>
 </template>
 
@@ -57,11 +60,10 @@
   const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
   const { getContent } = useProjectMethods();
   const emit = defineEmits(['update:value', 'focus']);
-  const changeValue = (value:string|null):void => {
+  const changeValue = (value: string | null): void => {
     emit('focus', value);
     emit('update:value', value);
   };
 </script>
 
 <style src="~/assets/styles/components/form/input/gender.scss" lang="scss" />
-

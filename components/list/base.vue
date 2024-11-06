@@ -1,16 +1,11 @@
 <template>
   <div class="list">
     <div class="header">
-      <slot name="header"/>
+      <slot name="header" />
     </div>
 
     <div class="items">
-      <slot
-        v-for="(item, index) in props.items"
-        :key="index"
-        name="item"
-        :item="item"
-      />
+      <slot v-for="(item, index) in props.items" :key="index" name="item" :item="item" />
     </div>
   </div>
 </template>
@@ -25,4 +20,3 @@
 </script>
 
 <style src="~/assets/styles/components/list/base.scss" lang="scss" />
-

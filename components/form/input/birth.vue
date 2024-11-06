@@ -2,13 +2,15 @@
   <div class="input-birth">
     <span v-if="props.label" class="label">
       {{ props.label }}<span v-if="props.isRequired" class="required">*</span>
-      <button-clear-input v-if="!props.isDisabled" @click="clearInput"/>
+      <button-clear-input v-if="!props.isDisabled" @click="clearInput" />
     </span>
 
     <form-input-dropdown
       v-model:value="selected.day"
       name="birth-day"
-      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderDay') || ''"
+      :placeholder="
+        getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderDay') || ''
+      "
       :is-disabled="props.isDisabled"
       :options="days"
       :hint="{ ...props.hint, message: '' }"
@@ -19,7 +21,9 @@
     <form-input-dropdown
       v-model:value="selected.month"
       name="birth-month"
-      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderMonth') || ''"
+      :placeholder="
+        getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderMonth') || ''
+      "
       :is-disabled="props.isDisabled"
       :options="months"
       :hint="{ ...props.hint, message: '' }"
@@ -30,7 +34,9 @@
     <form-input-dropdown
       v-model:value="selected.year"
       name="birth-year"
-      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderYear') || ''"
+      :placeholder="
+        getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.birthdate.placeholderYear') || ''
+      "
       :is-disabled="props.isDisabled"
       :options="years"
       :hint="{ ...props.hint, message: '' }"
@@ -43,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from "pinia";
+  import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
     label?: string;
@@ -54,24 +60,21 @@
   }>();
 
   const globalStore = useGlobalStore();
-  const {
-    fieldsSettings,
-    defaultLocaleFieldsSettings
-  } = globalStore;
+  const { fieldsSettings, defaultLocaleFieldsSettings } = globalStore;
   const { currentLocale } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
-  const selected = reactive<{ year: number, month: number, day: number }>({
+  const selected = reactive<{ year: number; month: number; day: number }>({
     year: 0,
     month: 0,
     day: 0,
   });
   const maxYear = computed(() => new Date().getFullYear() - 18);
 
-  const addZero = (val: number):string => (val < 10 ? `0${val}` : String(val));
-  const createItems = (min:number = 1920, max:number = maxYear.value, formatTitle:boolean = false):any => {
+  const addZero = (val: number): string => (val < 10 ? `0${val}` : String(val));
+  const createItems = (min: number = 1920, max: number = maxYear.value, formatTitle: boolean = false): any => {
     const items = [];
     while (min <= max) {
-      const item:number = min++;
+      const item: number = min++;
       items.push({
         title: formatTitle ? addZero(item) : item,
         value: item,
@@ -101,7 +104,7 @@
   }
 
   const emit = defineEmits(['update:value', 'blur', 'focus']);
-  const changeInputValue = ():void => {
+  const changeInputValue = (): void => {
     const { year, month, day } = selected;
     if (year && month && day) {
       const valueString = `${addZero(year)}-${addZero(month)}-${addZero(day)}`;
@@ -110,22 +113,22 @@
     }
   };
 
-  const onInputYear = (year:number):void => {
+  const onInputYear = (year: number): void => {
     selected.year = year;
     changeInputValue();
   };
 
-  const onInputMonth = (month:string):void => {
+  const onInputMonth = (month: string): void => {
     selected.month = Number(month);
     changeInputValue();
   };
 
-  const onInputDays = (day:number):void => {
+  const onInputDays = (day: number): void => {
     selected.day = day;
     changeInputValue();
   };
 
-  const clearInput = ():void => {
+  const clearInput = (): void => {
     selected.year = 0;
     selected.month = 0;
     selected.day = 0;
@@ -136,4 +139,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/birth.scss" lang="scss" />
-

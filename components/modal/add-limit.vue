@@ -2,14 +2,14 @@
   <vue-final-modal
     v-model="modals.addLimit"
     class="modal-deposit-limit"
-    clickToClose
-    :overlayTransition="{ mode: 'in-out', duration: 250 }"
-    :contentTransition="{ mode: 'in-out', duration: 250 }"
-    @clickOutside="closeModal('addLimit')"
+    click-to-close
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
+    @click-outside="closeModal('addLimit')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @click="closeModal('addLimit')"/>
+        <button-modal-close @click="closeModal('addLimit')" />
         <div class="title">
           {{ props.definition ? titleMapping[props.definition] : '' }}
         </div>
@@ -20,11 +20,17 @@
           v-for="period in periodOptions"
           :key="period.id"
           class="modal-deposit-limit__tabs-item"
-          :class="{'is-active': period.id === selectedTab.id}"
+          :class="{ 'is-active': period.id === selectedTab.id }"
           :disabled="period.disabled"
           @click="changeTab(period)"
         >
-          {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.limitPeriods.${period.id}`) }}
+          {{
+            getContent(
+              globalComponentsContent,
+              defaultLocaleGlobalComponentsContent,
+              `constants.limitPeriods.${period.id}`
+            )
+          }}
         </button>
       </div>
 
@@ -45,23 +51,19 @@
         label=""
         name="amount"
         placeholder="0"
-        :hint="amountError ? setError('amount'): undefined"
+        :hint="amountError ? setError('amount') : undefined"
         @blur="amountError = false"
         @focus="focusField('amount')"
         @input="focusField('amount')"
       />
 
-      <p class="modal-deposit-limit__description">{{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.hint') }}</p>
+      <p class="modal-deposit-limit__description">
+        {{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.hint') }}
+      </p>
 
-      <button-base
-        type="primary"
-        size="md"
-        :is-disabled="isAddButtonDisabled"
-        @click="addLimit"
-      >
+      <button-base type="primary" size="md" :is-disabled="isAddButtonDisabled" @click="addLimit">
         {{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.addButton') }}
       </button-base>
-
     </div>
   </vue-final-modal>
 </template>
@@ -85,11 +87,9 @@
     popupsData,
     defaultLocalePopupsData,
     globalComponentsContent,
-    defaultLocaleGlobalComponentsContent
+    defaultLocaleGlobalComponentsContent,
   } = storeToRefs(globalStore);
-  const {
-    formatBalance, getMainBalanceFormat, getContent,
-  } = useProjectMethods();
+  const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
 
   const currencyKey = ref(0);
 
@@ -101,10 +101,10 @@
 
   const formState = reactive<{
     definition?: number;
-    period: string|undefined;
+    period: string | undefined;
     currency: string;
     amount: string;
-    showCurrenciesError: boolean
+    showCurrenciesError: boolean;
   }>({
     definition: props.definition,
     currency: '',
@@ -116,70 +116,79 @@
   const { getFormRules } = useProjectMethods();
   const limitAmountRules = {};
   const limitAmountFormRules = getFormRules(limitAmountRules);
-  const {
-    serverFormErrors, v$, onFocus, setError,
-  } = useFormValidation(limitAmountFormRules, formState.amount);
+  const { serverFormErrors, v$, onFocus, setError } = useFormValidation(limitAmountFormRules, formState.amount);
 
   const amountError = ref<boolean>(false);
 
-  const focusField = (fieldName:string):void => {
+  const focusField = (fieldName: string): void => {
     amountError.value = false;
     onFocus(fieldName);
   };
 
-  const isPeriodDisabled = (period: { id: string|number, name: string }) => {
-    const limits = activeLimits?.value.filter((limit: IPlayerLimit) => limit.definition === formState.definition
-      && limit.period === period.id);
+  const isPeriodDisabled = (period: { id: string | number; name: string }) => {
+    const limits = activeLimits?.value.filter(
+      (limit: IPlayerLimit) => limit.definition === formState.definition && limit.period === period.id
+    );
     return (
-      limits?.length && currencies.value.every((currency) => limits?.find((limit: IPlayerLimit) => (
-        limit.definition === formState.definition
-        && limit.period === period.id
-        && limit.currency === currency.code
-      )))
+      limits?.length &&
+      currencies.value.every(currency =>
+        limits?.find(
+          (limit: IPlayerLimit) =>
+            limit.definition === formState.definition && limit.period === period.id && limit.currency === currency.code
+        )
+      )
     );
   };
 
-  const periodOptions = computed(() => Object.values(limitCashPeriod.value)?.map((period) => {
-    if (isPeriodDisabled(period)) {
-      return {
-        ...period,
-        disabled: true,
-      };
-    }
-    return period;
-  }));
+  const periodOptions = computed(() =>
+    Object.values(limitCashPeriod.value)?.map(period => {
+      if (isPeriodDisabled(period)) {
+        return {
+          ...period,
+          disabled: true,
+        };
+      }
+      return period;
+    })
+  );
 
-  const isCurrencySelectedInPeriod = (currency: {
-    code: string
-  }) => activeLimits?.value.some((limit: IPlayerLimit) => (
-    limit.definition === formState.definition
-    && limit.period === formState.period
-    && limit.currency === currency.code));
+  const isCurrencySelectedInPeriod = (currency: { code: string }) =>
+    activeLimits?.value.some(
+      (limit: IPlayerLimit) =>
+        limit.definition === formState.definition &&
+        limit.period === formState.period &&
+        limit.currency === currency.code
+    );
 
-  const isCurrencySelectedInAllPeriods = (currency: { code: string }) => limitCashPeriod.value?.every((period) => activeLimits?.value.some(
-    (limit: IPlayerLimit) => limit.definition === formState.definition
-      && limit.period === period.id
-      && limit.currency === currency.code,
-  ));
+  const isCurrencySelectedInAllPeriods = (currency: { code: string }) =>
+    limitCashPeriod.value?.every(period =>
+      activeLimits?.value.some(
+        (limit: IPlayerLimit) =>
+          limit.definition === formState.definition && limit.period === period.id && limit.currency === currency.code
+      )
+    );
 
-  const isCurrencyDisabled = (currency: ICurrency):boolean => isCurrencySelectedInPeriod(currency) || isCurrencySelectedInAllPeriods(currency);
+  const isCurrencyDisabled = (currency: ICurrency): boolean =>
+    isCurrencySelectedInPeriod(currency) || isCurrencySelectedInAllPeriods(currency);
 
-  const currenciesOptions = computed(() => currencies.value?.map((currency) => {
-    if (isCurrencyDisabled(currency)) {
-      return { ...currency, disabled: true };
-    }
-    return currency;
-  }));
+  const currenciesOptions = computed(() =>
+    currencies.value?.map(currency => {
+      if (isCurrencyDisabled(currency)) {
+        return { ...currency, disabled: true };
+      }
+      return currency;
+    })
+  );
 
-  const selectedPeriod = computed(() => periodOptions.value?.filter((period) => !period.disabled)[0]);
+  const selectedPeriod = computed(() => periodOptions.value?.filter(period => !period.disabled)[0]);
 
   const formattedBalance = computed(() => formatBalance(formState.currency, Number(formState.amount)));
 
-  const selectedTab = ref<{id:any, name:string}>(selectedPeriod?.value);
+  const selectedTab = ref<{ id: any; name: string }>(selectedPeriod?.value);
 
   const isAddButtonDisabled = computed(() => !formState.currency);
 
-  const changeTab = (period: { id: string|number; name: string }) => {
+  const changeTab = (period: { id: string | number; name: string }) => {
     selectedTab.value = period;
     formState.period = period.id as string;
     currencyKey.value += 1;

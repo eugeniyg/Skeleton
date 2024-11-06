@@ -2,11 +2,7 @@
   <div v-if="spins.length" class="tab-history__tb">
     <div class="tb-spins-history">
       <div class="row">
-        <div
-          v-for="(column, itemIndex) in headTitles"
-          :key="itemIndex"
-          class="th"
-        >
+        <div v-for="(column, itemIndex) in headTitles" :key="itemIndex" class="th">
           {{ column }}
         </div>
       </div>
@@ -28,7 +24,7 @@
     <atomic-pagination
       v-if="pageMeta?.totalPages && pageMeta.totalPages > 1"
       v-bind="pageMeta"
-      @selectPage="changePage"
+      @select-page="changePage"
     />
   </div>
 
@@ -36,7 +32,7 @@
     v-else-if="!loading"
     variant="bets-history"
     :title="props.content?.empty?.title"
-    :subTitle="props.content?.empty?.description"
+    :sub-title="props.content?.empty?.description"
   />
 </template>
 
@@ -45,7 +41,7 @@
   import type { ISpinsHistory } from '~/types';
 
   const props = defineProps<{
-    content: ISpinsHistory,
+    content: ISpinsHistory;
   }>();
 
   const dayjs = useDayjs();
@@ -55,7 +51,7 @@
   const pageMeta = ref<IPaginationMeta>();
 
   const { getSpinsHistory } = useCoreGamesApi();
-  const spinsRequest = async (page: number = 1):Promise<void> => {
+  const spinsRequest = async (page: number = 1): Promise<void> => {
     loading.value = true;
     const response = await getSpinsHistory(page, 10);
     spins.value = response.data;
@@ -63,20 +59,21 @@
     loading.value = false;
   };
 
-  const changePage = (page: number):void => {
+  const changePage = (page: number): void => {
     if (loading.value) return;
     window.scroll(0, 0);
     spinsRequest(page);
   };
 
   const { formatBalance } = useProjectMethods();
-  const formatSum = (currency: string, amount: number):string => {
+  const formatSum = (currency: string, amount: number): string => {
     const balanceFormat = formatBalance(currency, amount);
     return `${balanceFormat.amount} ${balanceFormat.currency}`;
   };
 
-  onMounted(() => { spinsRequest(); });
+  onMounted(() => {
+    spinsRequest();
+  });
 </script>
 
 <style src="~/assets/styles/components/tab/history/spins.scss" lang="scss" />
-

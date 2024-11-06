@@ -1258,14 +1258,7 @@ export const useFakeStore = () => {
   };
 
   const sessionHistoryTb = {
-    columns: [
-      '&nbsp;',
-      'Country',
-      'User Agent',
-      'Created At',
-      'Status',
-      '&nbsp;',
-    ],
+    columns: ['&nbsp;', 'Country', 'User Agent', 'Created At', 'Status', '&nbsp;'],
     rows: [
       {
         device: 'desktop',
@@ -1451,7 +1444,8 @@ export const useFakeStore = () => {
 
   const promotion = {
     title: 'Welcome package. Up to 5 BTC + 300 Free Spins',
-    subTitle: 'Welcome package is one of the most generous Slotsbet offers! It\'s a bonus bundle for your 4 initial deposits after the registration!',
+    subTitle:
+      "Welcome package is one of the most generous Slotsbet offers! It's a bonus bundle for your 4 initial deposits after the registration!",
     welcomePackage: {
       title: 'Welcome package',
       items: [
@@ -1561,18 +1555,15 @@ export const useFakeStore = () => {
     src: '/promo/drone-v2.png',
     title: 'Weekly Cashback',
     subTitle: 'Take your 10% cashback every Friday.',
-    description: 'Every Friday you can get a portion of your staked money back thanks to our Cashback Bonus. Receive yours!',
+    description:
+      'Every Friday you can get a portion of your staked money back thanks to our Cashback Bonus. Receive yours!',
     list: {
       title: 'How to receive this bonus?',
       items: [
         '1. Create an account;',
         '2. Make the minimum or larger deposit as stated in the promotion;',
         '3. Find your bonus in the profile;',
-        [
-          '20 free spins - 0.00057 BTC;',
-          '50 free spins - 0.00085 BTC;',
-          '100 free spins - 0.0011 BTC;',
-        ],
+        ['20 free spins - 0.00057 BTC;', '50 free spins - 0.00085 BTC;', '100 free spins - 0.0011 BTC;'],
         '4. Contact live chat if you have questions.',
       ],
     },
@@ -1582,11 +1573,7 @@ export const useFakeStore = () => {
       items: [
         '1. To get the bonus, enter the bonus code WEDNESDAY before the deposit.',
         '2. Minimum deposit to get a bonus:',
-        [
-          '20 free spins - 0.00057 BTC;',
-          '50 free spins - 0.00085 BTC;',
-          '100 free spins - 0.0011 BTC;',
-        ],
+        ['20 free spins - 0.00057 BTC;', '50 free spins - 0.00085 BTC;', '100 free spins - 0.0011 BTC;'],
         '3. Full wagering requires making bets for the amount 40 times the amount of the bonus received: (winnings from free spins) ×40.',
         '4. Free spins will be automatically credited to your account!',
         '5. Limitation of the maximum bet while wagering is 0.00003 BTC.',
@@ -1596,15 +1583,15 @@ export const useFakeStore = () => {
   };
 
   const filter = (cardsArray: any[], key: string): any[] => cardsArray.filter((item: any) => item.variant === key)[0];
-  const depositItems = () => payments.filter((item) => item.useForDeposit === true);
-  const withdrawItems = () => payments.filter((item) => item.useForWithDraw === true);
+  const depositItems = () => payments.filter(item => item.useForDeposit === true);
+  const withdrawItems = () => payments.filter(item => item.useForWithDraw === true);
   const betsHistoryTbBettingItems = () => ({
     columns: betsHistoryTb.columns,
-    rows: betsHistoryTb.rows.filter((item) => item.key === 'betting'),
+    rows: betsHistoryTb.rows.filter(item => item.key === 'betting'),
   });
   const betsHistoryTbCasinoItems = () => ({
     columns: betsHistoryTb.columns,
-    rows: betsHistoryTb.rows.filter((item) => item.key === 'casino'),
+    rows: betsHistoryTb.rows.filter(item => item.key === 'casino'),
   });
   const benefitsCards = () => filter(cards, 'benefits');
   const promotionCards = () => filter(cards, 'promotions');
@@ -1630,7 +1617,8 @@ export const useFakeStore = () => {
 
   const securityVerificationIdentity = {
     title: 'Identity',
-    description: '<p>Please upload your proof of identity. All documents must be laying on a flat surface with all 4 corners inside the frame. All information should be clear and identifiable. Also upload your selfie with passport/ID in your hands. It should</p>',
+    description:
+      '<p>Please upload your proof of identity. All documents must be laying on a flat surface with all 4 corners inside the frame. All information should be clear and identifiable. Also upload your selfie with passport/ID in your hands. It should</p>',
     dropzones: [
       {
         title: 'Proof of Identity (Front)',
@@ -1655,7 +1643,8 @@ export const useFakeStore = () => {
 
   const securityVerificationAddress = {
     title: 'Address',
-    description: '<p>Please upload the utility bill, phone bill, or bank statement, in which your name and... More info</p>',
+    description:
+      '<p>Please upload the utility bill, phone bill, or bank statement, in which your name and... More info</p>',
     dropzones: [
       {
         title: 'Proof of Identity (Front)',

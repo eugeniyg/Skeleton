@@ -1,20 +1,12 @@
 <template>
   <div :class="layoutClasses">
-    <atomic-preloader/>
+    <atomic-preloader />
 
-    <layout-header
-      @logout="logout"
-    />
+    <layout-header @logout="logout" />
 
-    <layout-drawer
-      @toggle-open="toggleOpen"
-    />
+    <layout-drawer @toggle-open="toggleOpen" />
 
-    <main
-      class="app-main"
-      :class="mainClasses"
-      :data-route="route.name"
-    >
+    <main class="app-main" :class="mainClasses" :data-route="route.name">
       <slot />
     </main>
 
@@ -24,10 +16,7 @@
 
     <client-only>
       <transition name="fade" mode="out-in">
-        <layout-game-return
-          v-if="showReturnGame"
-          :game="returnGame"
-        />
+        <layout-game-return v-if="showReturnGame" :game="returnGame" />
       </transition>
     </client-only>
 
@@ -49,7 +38,7 @@
     <modal-wallet />
     <modal-wallet-choose-region />
     <modal-cancel-deposit />
-    <modal-deposit-redirect/>
+    <modal-deposit-redirect />
     <modal-wallet-bonus-info />
     <modal-turn-over-wager v-if="turnOverWagerModal" />
     <atomic-alert />
@@ -78,30 +67,27 @@
 
   const { isMobile } = storeToRefs(globalStore);
 
-  const {
-    showCookiePopup,
-    isDrawerCompact,
-    returnGame,
-    isHomePage,
-    isGamePage,
-    isSportsbookPage
-  } = storeToRefs(layoutStore);
+  const { showCookiePopup, isDrawerCompact, returnGame, isHomePage, isGamePage, isSportsbookPage } =
+    storeToRefs(layoutStore);
 
   const { logOutUser } = profileStore;
 
-  function logout():void {
+  function logout(): void {
     logOutUser();
   }
 
-  function toggleOpen():void {
+  function toggleOpen(): void {
     layoutStore.toggleDrawer();
   }
 
   const route = useRoute();
-  const showCookiesMessage = computed(() => showCookiePopup.value
-    && route.name !== 'games-id'
-    && route.name !== 'locale-games-id'
-    && route.path !== localizePath('/betting'));
+  const showCookiesMessage = computed(
+    () =>
+      showCookiePopup.value &&
+      route.name !== 'games-id' &&
+      route.name !== 'locale-games-id' &&
+      route.path !== localizePath('/betting')
+  );
 
   const timer = ref<any>();
   const disabledTransition = ref<boolean>(true);
@@ -111,18 +97,20 @@
     { 'stop-transition': disabledTransition.value },
   ]);
 
-  const checkDrawer = ():void => {
+  const checkDrawer = (): void => {
     if (isGamePage.value) return;
     const clientCompactDrawer = localStorage.getItem('IS_DRAWER_COMPACT');
     isDrawerCompact.value = clientCompactDrawer === 'true';
   };
 
   const showReturnGame = computed(() => {
-    return returnGame.value
-      && returnGame.value !== 'disabled'
-      && isMobile.value
-      && !isGamePage.value
-      && !isSportsbookPage.value;
+    return (
+      returnGame.value &&
+      returnGame.value !== 'disabled' &&
+      isMobile.value &&
+      !isGamePage.value &&
+      !isSportsbookPage.value
+    );
   });
 
   const runtimeConfig = useRuntimeConfig();
@@ -150,11 +138,11 @@
       }, 1500);
     }
 
-    watchEffect( () => {
+    watchEffect(() => {
       mainClasses.value = {
         'is-overflow': isHomePage.value,
-        'is-overflow-initial': route.name === 'profile-limits' || route.name === 'locale-profile-limits'
-      }
+        'is-overflow-initial': route.name === 'profile-limits' || route.name === 'locale-profile-limits',
+      };
     });
   });
 

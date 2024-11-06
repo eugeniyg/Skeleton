@@ -1,63 +1,55 @@
 <template>
   <div class="pagination">
-    <button
-      class="prev"
-      :disabled="props.page === 1"
-      @click="changePage(props.page - 1)"
-    >
-      <atomic-icon id="arrow_previous"/>
+    <button class="prev" :disabled="props.page === 1" @click="changePage(props.page - 1)">
+      <atomic-icon id="arrow_previous" />
     </button>
 
     <button
       v-for="pageItem in paginationItems"
       :key="pageItem"
       class="page"
-      :class="[{'is-selected': pageItem === props.page}, { dots: typeof pageItem === 'string' }]"
+      :class="[{ 'is-selected': pageItem === props.page }, { dots: typeof pageItem === 'string' }]"
       @click="changePage(pageItem)"
     >
       {{ pageItem }}
     </button>
 
-    <button
-      class="next"
-      :disabled="props.page === props.totalPages"
-      @click="changePage(props.page + 1)"
-    >
-      <atomic-icon id="arrow_next"/>
+    <button class="next" :disabled="props.page === props.totalPages" @click="changePage(props.page + 1)">
+      <atomic-icon id="arrow_next" />
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
   const props = defineProps<{
-    page: number,
-    perPage: number,
-    totalPages: number,
-    totalRows: number
+    page: number;
+    perPage: number;
+    totalPages: number;
+    totalRows: number;
   }>();
 
   const emit = defineEmits(['selectPage']);
-  const changePage = (page: number|string):void => {
+  const changePage = (page: number | string): void => {
     if (typeof page === 'number' && page !== props.page) emit('selectPage', page);
   };
 
   const paginationItems = ref<any>([]);
 
-  const formPagination = (maxItems: number):void => {
-    let itemsArr:any = Array.from({ length: maxItems }, (_, i) => i + 1);
+  const formPagination = (maxItems: number): void => {
+    let itemsArr: any = Array.from({ length: maxItems }, (_, i) => i + 1);
 
     if (props.totalPages > maxItems) {
       if (props.page < maxItems - 3) {
         itemsArr[maxItems - 2] = '...';
         itemsArr[maxItems - 1] = props.totalPages;
       } else if (props.page > props.totalPages - (maxItems - 3)) {
-        itemsArr = itemsArr.map((item:number, index:number) => {
+        itemsArr = itemsArr.map((item: number, index: number) => {
           if (!index) return 1;
           if (index === 1) return '...';
           return props.totalPages - (maxItems - index - 1);
         });
       } else {
-        itemsArr = itemsArr.map((item:number, index:number) => {
+        itemsArr = itemsArr.map((item: number, index: number) => {
           if (!index) return 1;
           if (index === 1 || index === maxItems - 2) return '...';
           if (index === maxItems - 1) return props.totalPages;

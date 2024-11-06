@@ -1,10 +1,8 @@
 <template>
   <label :class="classes">
-    <span v-if="label" class="label">
-      {{ label }}<span v-if="props.isRequired" class="required">*</span>
-    </span>
+    <span v-if="label" class="label"> {{ label }}<span v-if="props.isRequired" class="required">*</span> </span>
 
-    <slot name="pills"/>
+    <slot name="pills" />
 
     <div class="row">
       <input
@@ -20,11 +18,11 @@
         :placeholder="props.placeholder || ''"
         @blur="onBlur"
         @input="onInput"
-      >
+      />
       <span v-if="props.currency" class="mask">{{ props.currency }}</span>
     </div>
 
-    <atomic-hint v-if="props.hint" v-bind="props.hint"/>
+    <atomic-hint v-if="props.hint" v-bind="props.hint" />
   </label>
 </template>
 
@@ -32,7 +30,7 @@
   const props = defineProps<{
     name: string;
     currency?: string;
-    value: string|number;
+    value: string | number;
     min: number;
     max: number;
     label: string;
@@ -43,13 +41,13 @@
   }>();
 
   const emit = defineEmits(['blur', 'update:value', 'input']);
-  const onInput = (e:any):void => {
-    e.target.value = e.target.value.replace(/^0[0-9]/, (match:string) => match.slice(1));
+  const onInput = (e: any): void => {
+    e.target.value = e.target.value.replace(/^0[0-9]/, (match: string) => match.slice(1));
     emit('input', e.target.value);
     emit('update:value', e.target.value);
   };
 
-  const onBlur = (e:any):void => {
+  const onBlur = (e: any): void => {
     if (!e.target.value || e.target.value < props.min) {
       e.target.value = props.min;
       emit('input', e.target.value);
@@ -71,4 +69,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/number.scss" lang="scss" />
-

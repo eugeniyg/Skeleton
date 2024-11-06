@@ -1,24 +1,24 @@
 <template>
   <vue-final-modal
     class="modal-reset-pass"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 250 }"
-    :contentTransition="{ mode: 'in-out', duration: 250 }"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('reset-pass')"/>
+        <button-modal-close @close="closeModal('reset-pass')" />
         <div class="title">{{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}</div>
       </div>
 
-      <form-reset-pass :currentLocaleData="props.currentLocaleData" :defaultLocaleData="props.defaultLocaleData" />
+      <form-reset-pass :current-locale-data="props.currentLocaleData" :default-locale-data="props.defaultLocaleData" />
     </div>
   </vue-final-modal>
 </template>
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import type { IModalsContent } from "~/types";
+  import type { IModalsContent } from '~/types';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['reset']>;
@@ -30,4 +30,3 @@
 </script>
 
 <style src="~/assets/styles/components/modal/reset-pass.scss" lang="scss" />
-

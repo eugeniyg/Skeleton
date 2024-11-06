@@ -1,36 +1,34 @@
 <template>
-  <div
-    v-click-outside="close"
-    class="input-currencies"
-    :class="{ 'is-open': isOpen, 'has-error': props.showError }"
-  >
-    <div class="input-currencies__selected" :class="{'is-disabled': !selectedItems.length}" @click.stop="toggleOpen">
+  <div v-click-outside="close" class="input-currencies" :class="{ 'is-open': isOpen, 'has-error': props.showError }">
+    <div class="input-currencies__selected" :class="{ 'is-disabled': !selectedItems.length }" @click.stop="toggleOpen">
       <template v-if="!selectedCurrency?.name">
-        <atomic-icon id="currency" class="input-currencies__selected-icon"/>
-        <span class="input-currencies__selected-label">{{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.chooseCurrencyLabel') }}</span>
+        <atomic-icon id="currency" class="input-currencies__selected-icon" />
+        <span class="input-currencies__selected-label">{{
+          getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.chooseCurrencyLabel')
+        }}</span>
       </template>
       <template v-else>
         <atomic-image
           class="input-currencies__selected-icon"
           :src="`/img/currency/${selectedCurrency?.code}.svg`"
-          defaultImage="/img/currency/placeholder.svg"
+          default-image="/img/currency/placeholder.svg"
           width="24"
           height="24"
         />
         <span class="input-currencies__selected-label">{{ selectedCurrency?.name }}</span>
       </template>
-      <atomic-icon id="arrow_expand-open" class="input-currencies__expand-icon"/>
+      <atomic-icon id="arrow_expand-open" class="input-currencies__expand-icon" />
     </div>
 
     <div class="input-currencies__content">
       <div class="input-currencies__tabs">
         <template v-if="cryptoCurrencies.length">
           <span
-            v-for="{id, title} in currencyTabs"
+            v-for="{ id, title } in currencyTabs"
             :id="id"
             :key="id"
             class="input-currencies__tab"
-            :class="{'is-active': selected === id}"
+            :class="{ 'is-active': selected === id }"
             @click="select(id)"
           >
             {{ title }}
@@ -42,13 +40,13 @@
           v-for="currency in selectedItems"
           :key="currency.code"
           class="input-currencies__item"
-          :class="{'is-active': selectedCurrency?.name === currency.name}"
+          :class="{ 'is-active': selectedCurrency?.name === currency.name }"
           @click="selectCurrency(currency)"
         >
           <atomic-image
             class="input-currencies__item-img"
             :src="`/img/currency/${currency.code}.svg`"
-            defaultImage="/img/currency/placeholder.svg"
+            default-image="/img/currency/placeholder.svg"
             width="24"
             height="24"
           />
@@ -58,7 +56,9 @@
       </div>
     </div>
 
-    <div v-if="props.showError" class="input-currencies__error">{{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.chooseCurrencyError') }}</div>
+    <div v-if="props.showError" class="input-currencies__error">
+      {{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.chooseCurrencyError') }}
+    </div>
   </div>
 </template>
 
@@ -67,8 +67,8 @@
   import type { ICurrency } from '@skeleton/core/types';
 
   interface IProps {
-    showError: boolean,
-    items: ICurrency[]
+    showError: boolean;
+    items: ICurrency[];
   }
 
   const props = defineProps<IProps>();
@@ -79,19 +79,18 @@
   const { currencyTabs } = storeToRefs(walletStore);
   const { formatBalance, getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
-  const {
-    popupsData, defaultLocalePopupsData,
-  } = storeToRefs(globalStore);
+  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 
   const selected = ref<string>('all');
-  const selectedCurrency = ref<ICurrency|undefined>();
+  const selectedCurrency = ref<ICurrency | undefined>();
   const isOpen = ref<boolean>(false);
 
-  const cryptoCurrencies = computed(() => props.items.filter((currency) => currency.type === 'crypto'));
+  const cryptoCurrencies = computed(() => props.items.filter(currency => currency.type === 'crypto'));
 
   const selectedItems = computed(() => {
-    const currencies = (selected.value === 'all' || !cryptoCurrencies.value.length) ? props.items : cryptoCurrencies.value;
-    return currencies.filter((currency) => !currency.disabled);
+    const currencies =
+      selected.value === 'all' || !cryptoCurrencies.value.length ? props.items : cryptoCurrencies.value;
+    return currencies.filter(currency => !currency.disabled);
   });
 
   const select = (id: string): void => {

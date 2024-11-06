@@ -4,10 +4,10 @@
       <button-base
         v-for="({ icon, title, id }, itemIndex) in tabsData"
         :key="itemIndex"
-        :class="{'is-active': selectedTabs.includes(id)}"
+        :class="{ 'is-active': selectedTabs.includes(id) }"
         @click="changeTab(id)"
       >
-        <atomic-icon v-if="icon" :id="icon"/>{{ title }}
+        <atomic-icon v-if="icon" :id="icon" />{{ title }}
       </button-base>
     </div>
 
@@ -17,7 +17,7 @@
       </div>
 
       <div v-if="recentlyGames.length && selectedTabs.includes('recently-played')" class="tab">
-        <group-recently :gamesList="recentlyGames" />
+        <group-recently :games-list="recentlyGames" />
       </div>
     </div>
   </div>
@@ -28,12 +28,8 @@
   import type { IGame } from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();
-  const {
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent,
-    isMobile,
-    headerCountry,
-  } = storeToRefs(globalStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, isMobile, headerCountry } =
+    storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   const gameStore = useGamesStore();
@@ -42,13 +38,29 @@
   const selectedTabs = ref<string[]>([]);
 
   const favoritesItem = {
-    title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'cardsGroup.favorites.label'),
-    icon: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'cardsGroup.favorites.icon'),
+    title: getContent(
+      globalComponentsContent.value,
+      defaultLocaleGlobalComponentsContent.value,
+      'cardsGroup.favorites.label'
+    ),
+    icon: getContent(
+      globalComponentsContent.value,
+      defaultLocaleGlobalComponentsContent.value,
+      'cardsGroup.favorites.icon'
+    ),
     id: 'favorites',
   };
   const recentlyItem = {
-    title: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'cardsGroup.recentlyPlayed.label'),
-    icon: getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'cardsGroup.recentlyPlayed.icon'),
+    title: getContent(
+      globalComponentsContent.value,
+      defaultLocaleGlobalComponentsContent.value,
+      'cardsGroup.recentlyPlayed.label'
+    ),
+    icon: getContent(
+      globalComponentsContent.value,
+      defaultLocaleGlobalComponentsContent.value,
+      'cardsGroup.recentlyPlayed.icon'
+    ),
     id: 'recently-played',
   };
 
@@ -59,7 +71,7 @@
     return arr;
   });
 
-  const changeTab = (id: string):void => {
+  const changeTab = (id: string): void => {
     if (selectedTabs.value[0] === id) return;
     selectedTabs.value = [id];
   };
@@ -76,13 +88,14 @@
     });
     loadingRecently.value = false;
 
-    const tabsId = tabsData.value.map((item) => item.id);
+    const tabsId = tabsData.value.map(item => item.id);
     if (window.innerWidth > 767) selectedTabs.value = tabsId;
     else if (tabsId.length) selectedTabs.value = [tabsId[0]];
   });
 
-  const showBlock = computed(() => !loadingRecently.value && (recentlyGames.value.length || favoriteGames.value.length));
+  const showBlock = computed(
+    () => !loadingRecently.value && (recentlyGames.value.length || favoriteGames.value.length)
+  );
 </script>
 
 <style src="~/assets/styles/components/favorite-recently.scss" lang="scss" />
-
