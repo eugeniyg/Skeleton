@@ -34,7 +34,7 @@
 
       <div
         class="wallet-bonuses__info-description"
-        v-html="DOMPurify.sanitize(marked.parse(cryptoInfoContent || '') as string, { FORBID_TAGS: ['style'] })"
+        v-html="DOMPurify.sanitize(marked.parseInline(cryptoInfoContent || '') as string, { FORBID_TAGS: ['style'] })"
       />
     </div>
   </div>

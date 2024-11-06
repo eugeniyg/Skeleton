@@ -8,7 +8,7 @@
     <div
       ref="contentContainer"
       class="info-accordeon__content"
-      v-html="DOMPurify.sanitize(marked.parse(props.description || '') as string, { FORBID_TAGS: ['style'] })"
+      v-html="DOMPurify.sanitize(marked.parseInline(props.description || '') as string, { FORBID_TAGS: ['style'] })"
     />
   </div>
 </template>

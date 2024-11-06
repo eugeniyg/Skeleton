@@ -26,7 +26,7 @@
     </div>
 
     <div class="limits__card-info">
-      <p v-html="DOMPurify.sanitize(marked.parse(limitHintContent || '') as string, { FORBID_TAGS: ['style'] })" />
+      <p v-html="DOMPurify.sanitize(marked.parseInline(limitHintContent || '') as string, { FORBID_TAGS: ['style'] })" />
     </div>
   </div>
 </template>

@@ -9,7 +9,7 @@
     
     <div
       class="wallet-warning__description"
-      v-html="DOMPurify.sanitize(marked.parse(props.content.description || '') as string, { FORBID_TAGS: ['style'] })"
+      v-html="DOMPurify.sanitize(marked.parseInline(props.content.description || '') as string, { FORBID_TAGS: ['style'] })"
     />
   </div>
 </template>
