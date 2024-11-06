@@ -9,7 +9,7 @@
         class="field"
         :type="props.type || 'text'"
         :name="props.name"
-        :value="props.value || ' '"
+        :value="props.value"
         :disabled="props.isDisabled"
         :required="props.isRequired"
         :placeholder="props.placeholder || ''"

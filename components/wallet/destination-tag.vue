@@ -3,7 +3,7 @@
     <form-input-copy
       name="destinationTag"
       :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.destinationTag.label')"
-      :value="props.value || ''"
+      :value="props.value"
       :copy-tooltip="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.copiedLabel')"
     />
 
@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   const props = defineProps<{
-    value: string;
+    value?: string;
   }>();
 
   const globalStore = useGlobalStore();

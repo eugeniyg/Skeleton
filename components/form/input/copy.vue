@@ -14,7 +14,7 @@
         ref="copyInput"
         class="field"
         readonly
-        :value="props.value || ''"
+        :value="props.value"
         :name="props.name"
         :required="props.isRequired"
         :placeholder="props.placeholder"
@@ -36,7 +36,7 @@
 
   const props = defineProps<{
     name: string;
-    value: string;
+    value?: string;
     label: string;
     placeholder?: string;
     isRequired?: boolean;

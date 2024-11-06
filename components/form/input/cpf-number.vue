@@ -46,7 +46,7 @@
   const unmaskedValue = ref('');
   defineExpose({ unmaskedValue });
 
-  if (props.value) maskedValue.value = props.value || '';
+  if (props.value) maskedValue.value = props.value;
   const maskPlaceholder = '___.___.___-__';
   const focused = ref<boolean>(false);
 

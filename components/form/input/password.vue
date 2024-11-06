@@ -12,7 +12,7 @@
         :name="props.name"
         :required="props.isRequired"
         :placeholder="props.placeholder || ''"
-        :value="props.value || ' '"
+        :value="props.value"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
