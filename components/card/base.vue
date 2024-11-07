@@ -1,20 +1,10 @@
 <template>
-  <div
-    ref="cardBase"
-    class="card-base"
-    :class="{ 'hovered': gameHovered }"
-    :data-size="cardSize"
-    @click="clickGame"
-  >
+  <div ref="cardBase" class="card-base" :class="{ hovered: gameHovered }" :data-size="cardSize" @click="clickGame">
     <atomic-image class="card-base__img" :src="src" />
     <Skeletor class="card-base__poster" as="div" />
 
     <div v-if="gameBages?.length" class="bages">
-      <atomic-bage
-        v-for="(bage, bageIndex) in gameBages"
-        :key="bageIndex"
-        v-bind="bage"
-      />
+      <atomic-bage v-for="(bage, bageIndex) in gameBages" :key="bageIndex" v-bind="bage" />
     </div>
 
     <div v-if="!isMobile" class="card-base__info" @click.stop>
@@ -24,23 +14,18 @@
       </div>
 
       <div class="card-base__info-actions">
-        <button-play @click="openGame(true)"/>
+        <button-play @click="openGame(true)" />
       </div>
 
       <div class="card-base__info-footer">
-        <button-base
-          v-if="props.gameInfo?.isDemoMode"
-          class="btn-try"
-          tag-name="span"
-          @click="openGame(false)"
-        >
+        <button-base v-if="props.gameInfo?.isDemoMode" class="btn-try" tag-name="span" @click="openGame(false)">
           Demo
         </button-base>
 
         <!--<button-info/>-->
 
         <client-only>
-          <button-favorite v-if="isLoggedIn" :gameId="props.gameInfo?.id"/>
+          <button-favorite v-if="isLoggedIn" :game-id="props.gameInfo?.id" />
         </client-only>
       </div>
     </div>
@@ -51,7 +36,7 @@
   import { storeToRefs } from 'pinia';
   import type { IGame } from '@skeleton/core/types';
   import type { IGameTag } from '~/types';
-  import {Skeletor} from "vue-skeletor";
+  import { Skeletor } from 'vue-skeletor';
 
   const props = defineProps<{
     gameInfo?: IGame;
@@ -60,17 +45,18 @@
   const router = useRouter();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const {
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent,
-  } = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const { openModal } = useModalStore();
   const { localizePath, getImageUrl, getContent } = useProjectMethods();
 
-  const gameTagsContent: Maybe<IGameTag[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags.gameTagsList');
+  const gameTagsContent: Maybe<IGameTag[]> = getContent(
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+    'gameTags.gameTagsList'
+  );
 
-  const labelNames = props.gameInfo?.labels?.map((label) => label.name)
-  const gameBages = gameTagsContent?.filter((bage) => labelNames?.includes(bage.identity));
+  const labelNames = props.gameInfo?.labels?.map(label => label.name);
+  const gameBages = gameTagsContent?.filter(bage => labelNames?.includes(bage.identity));
 
   const openGame = (isReal: boolean): void => {
     if (props.gameInfo?.identity === 'betsy-sportsbook-betsy') {

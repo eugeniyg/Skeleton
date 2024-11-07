@@ -3,7 +3,7 @@
     <div class="nav-currency" @mouseleave="close">
       <div class="header">
         <button-base
-          v-for="{id, title} in props.tabs"
+          v-for="{ id, title } in props.tabs"
           :id="id"
           :key="id"
           type="ghost"
@@ -17,16 +17,11 @@
 
       <div class="content">
         <div class="items">
-          <div
-            v-for="currency in selectedItems"
-            :key="currency.code"
-            class="item"
-            @click="addCurrency(currency)"
-          >
+          <div v-for="currency in selectedItems" :key="currency.code" class="item" @click="addCurrency(currency)">
             <atomic-image
               class="img"
               :src="`/img/currency/${currency.code}.svg`"
-              defaultImage="/img/currency/placeholder.svg"
+              default-image="/img/currency/placeholder.svg"
             />
 
             <span class="title">{{ currency.name }}</span>
@@ -40,7 +35,13 @@
             {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'currencyPopup.empty.title') }}
           </h4>
           <p class="nav-currency__plug-text">
-            {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'currencyPopup.empty.description') }}
+            {{
+              getContent(
+                globalComponentsContent,
+                defaultLocaleGlobalComponentsContent,
+                'currencyPopup.empty.description'
+              )
+            }}
           </p>
         </div>
       </div>
@@ -53,23 +54,21 @@
   import type { ICurrency } from '@skeleton/core/types';
 
   const props = defineProps<{
-    tabs: { id: string; title: string; }[];
+    tabs: { id: string; title: string }[];
   }>();
 
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
   const { accounts } = storeToRefs(walletStore);
-  const {
-    currencies,
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent,
-  } = storeToRefs(globalStore);
+  const { currencies, globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
-  const accountCurrencies = computed(() => accounts.value.map((account) => account.currency));
+  const accountCurrencies = computed(() => accounts.value.map(account => account.currency));
 
-  const filteredCurrencies = computed(() => currencies.value.filter((currency) => !accountCurrencies.value.includes(currency.code)));
-  const cryptoCurrencies = computed(() => filteredCurrencies.value.filter((currency) => currency.type === 'crypto'));
+  const filteredCurrencies = computed(() =>
+    currencies.value.filter(currency => !accountCurrencies.value.includes(currency.code))
+  );
+  const cryptoCurrencies = computed(() => filteredCurrencies.value.filter(currency => currency.type === 'crypto'));
 
   const selected = ref<string>('all');
 
@@ -83,21 +82,20 @@
     return cryptoCurrencies.value;
   });
 
-  const select = (id:string):void => {
+  const select = (id: string): void => {
     selected.value = id;
   };
 
   const { closeCurrencyNav } = useLayoutStore();
-  const close = ():void => {
+  const close = (): void => {
     closeCurrencyNav();
   };
 
   const { createAccount } = useWalletStore();
-  const addCurrency = async (currency:ICurrency):Promise<void> => {
+  const addCurrency = async (currency: ICurrency): Promise<void> => {
     await createAccount(currency.code);
     close();
   };
 </script>
 
 <style src="~/assets/styles/components/nav/currency.scss" lang="scss" />
-

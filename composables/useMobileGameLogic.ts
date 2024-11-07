@@ -1,5 +1,5 @@
-import { storeToRefs } from "pinia";
-import type { IGame } from "@skeleton/core/types";
+import { storeToRefs } from 'pinia';
+import type { IGame } from '@skeleton/core/types';
 
 export const useMobileGameLogic = (gameInfo: IGame) => {
   const profileStore = useProfileStore();
@@ -11,25 +11,25 @@ export const useMobileGameLogic = (gameInfo: IGame) => {
   const { isLoggedIn } = storeToRefs(profileStore);
   const { activeAccount } = storeToRefs(walletStore);
 
-  const resolveLoggedWithoutBalance = ():void => {
+  const resolveLoggedWithoutBalance = (): void => {
     if (gameInfo.isDemoMode) openMobileGameModal('depositOrDemo', gameInfo);
     else openMobileGameModal('deposit', gameInfo);
-  }
-  const resolveLogged = ():void => {
+  };
+  const resolveLogged = (): void => {
     if (activeAccount.value?.balance) {
       router.push(localizePath(`/games/${gameInfo.identity}?real=true`));
     } else {
       return resolveLoggedWithoutBalance();
     }
-  }
+  };
 
-  const resolveUnlogged = ():void => {
+  const resolveUnlogged = (): void => {
     if (gameInfo.isDemoMode) {
       openMobileGameModal('registerOrDemo', gameInfo);
     } else {
       openMobileGameModal('registerOrLogin', gameInfo);
     }
-  }
+  };
 
   const openGame = () => {
     if (isLoggedIn.value) {
@@ -37,9 +37,9 @@ export const useMobileGameLogic = (gameInfo: IGame) => {
     } else {
       resolveUnlogged();
     }
-  }
+  };
 
   return {
-    openGame
+    openGame,
   };
-}
+};

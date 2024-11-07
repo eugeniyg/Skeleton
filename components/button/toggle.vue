@@ -1,6 +1,6 @@
 <template>
   <button :class="classes" @click="onClick">
-    <atomic-icon id="arrow_expand-close"/>
+    <atomic-icon id="arrow_expand-close" />
   </button>
 </template>
 
@@ -18,10 +18,9 @@
   }));
 
   const emit = defineEmits(['toggle']);
-  function onClick():void {
+  function onClick(): void {
     emit('toggle');
   }
 </script>
 
 <style src="~/assets/styles/components/button/toggle.scss" lang="scss" />
-

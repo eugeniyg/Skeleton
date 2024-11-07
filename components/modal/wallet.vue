@@ -2,32 +2,32 @@
   <vue-final-modal
     v-model="modals.wallet"
     class="wallet-modal"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 250 }"
-    :contentTransition="{ mode: 'in-out', duration: 250 }"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
     @closed="closedHandler"
   >
     <div class="wallet-modal__container" :class="{ 'show-form': showMobileForm }">
       <button-modal-close :class="{ 'close-secondary': hasOffset }" @close="handleClose" />
 
       <wallet-methods
-        v-model:currentDepositMethod="currentDepositMethod"
-        v-model:currentWithdrawMethod="currentWithdrawMethod"
-        :showTabs="showTabs"
-        :selectedTab="selectedTab"
-        :modalTitle="modalTitle"
-        @changeTab="changeTab"
-        @methodClick="showMobileForm = true"
+        v-model:current-deposit-method="currentDepositMethod"
+        v-model:current-withdraw-method="currentWithdrawMethod"
+        :show-tabs="showTabs"
+        :selected-tab="selectedTab"
+        :modal-title="modalTitle"
+        @change-tab="changeTab"
+        @method-click="showMobileForm = true"
       />
 
       <wallet-forms
-        :showMobileForm="showMobileForm"
-        :currentDepositMethod="currentDepositMethod"
-        :currentWithdrawMethod="currentWithdrawMethod"
-        :showTabs="showTabs"
-        :selectedTab="selectedTab"
-        :modalTitle="modalTitle"
-        @changeTab="changeTab"
+        :show-mobile-form="showMobileForm"
+        :current-deposit-method="currentDepositMethod"
+        :current-withdraw-method="currentWithdrawMethod"
+        :show-tabs="showTabs"
+        :selected-tab="selectedTab"
+        :modal-title="modalTitle"
+        @change-tab="changeTab"
       />
     </div>
   </vue-final-modal>
@@ -49,22 +49,16 @@
   const { modals, walletModalType } = storeToRefs(layoutStore);
   const { showModal, closeModal } = layoutStore;
 
-  const {
-    depositMethods,
-    withdrawMethods
-  } = storeToRefs(walletStore);
+  const { depositMethods, withdrawMethods } = storeToRefs(walletStore);
 
-  const {
-    popupsData,
-    defaultLocalePopupsData
-  } = storeToRefs(globalStore);
+  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 
-  const currentDepositMethod = ref<IPaymentMethod|undefined>();
-  const currentWithdrawMethod = ref<IPaymentMethod|undefined>();
-  const selectedTab = ref<'deposit'|'withdraw'>(walletModalType?.value || 'deposit');
+  const currentDepositMethod = ref<IPaymentMethod | undefined>();
+  const currentWithdrawMethod = ref<IPaymentMethod | undefined>();
+  const selectedTab = ref<'deposit' | 'withdraw'>(walletModalType?.value || 'deposit');
   const showMobileForm = ref<boolean>(false);
 
-  const changeTab = (tabId: 'deposit'|'withdraw'): void => {
+  const changeTab = (tabId: 'deposit' | 'withdraw'): void => {
     if (tabId === 'withdraw') {
       walletModalType.value = tabId;
       if (mobileWidth()) currentWithdrawMethod.value = undefined;
@@ -75,7 +69,7 @@
 
     useEvent('analyticsEvent', {
       event: 'walletChangeType',
-      walletOperationType: tabId
+      walletOperationType: tabId,
     });
   };
 
@@ -86,32 +80,41 @@
   const modalTitle = computed(() => {
     return selectedTab.value === 'deposit'
       ? getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.title')
-      : getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.title')
-  })
+      : getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.title');
+  });
 
-  const mobileWidth = ():boolean => {
+  const mobileWidth = (): boolean => {
     return window.innerWidth < 768;
-  }
+  };
 
-  watch(() => depositMethods.value, () => {
-    if (mobileWidth()) {
-      currentDepositMethod.value = undefined;
-    } else {
-      currentDepositMethod.value = depositMethods.value[0];
+  watch(
+    () => depositMethods.value,
+    () => {
+      if (mobileWidth()) {
+        currentDepositMethod.value = undefined;
+      } else {
+        currentDepositMethod.value = depositMethods.value[0];
+      }
     }
-  });
+  );
 
-  watch(() => withdrawMethods.value, () => {
-    if (mobileWidth()) {
-      currentWithdrawMethod.value = undefined;
-    } else {
-      currentWithdrawMethod.value = withdrawMethods.value[0];
+  watch(
+    () => withdrawMethods.value,
+    () => {
+      if (mobileWidth()) {
+        currentWithdrawMethod.value = undefined;
+      } else {
+        currentWithdrawMethod.value = withdrawMethods.value[0];
+      }
     }
-  });
+  );
 
-  watch(() => walletModalType?.value, () => {
-    selectedTab.value = walletModalType?.value || 'deposit';
-  })
+  watch(
+    () => walletModalType?.value,
+    () => {
+      selectedTab.value = walletModalType?.value || 'deposit';
+    }
+  );
 
   const closeWallet = (): void => {
     if (walletModalType?.value === 'deposit') {
@@ -119,20 +122,20 @@
     } else {
       closeModal('wallet');
     }
-  }
+  };
 
-  const handleClose = ():void => {
+  const handleClose = (): void => {
     if (mobileWidth() && showMobileForm.value) showMobileForm.value = false;
     else closeWallet();
-  }
+  };
 
   const closedHandler = (): void => {
     if (walletDepositBonus.value) walletDepositBonus.value = undefined;
     useEvent('analyticsEvent', {
       event: 'walletClose',
-      walletOperationType: selectedTab.value
+      walletOperationType: selectedTab.value,
     });
-  }
+  };
 </script>
 
-<style src="~/assets/styles/components/modal/wallet.scss" lang="scss"/>
+<style src="~/assets/styles/components/modal/wallet.scss" lang="scss" />

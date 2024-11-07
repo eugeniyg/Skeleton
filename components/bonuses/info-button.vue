@@ -14,4 +14,4 @@
   const { getContent } = useProjectMethods();
 </script>
 
-<style src="~/assets/styles/components/bonuses/info-button.scss" lang="scss"/>
+<style src="~/assets/styles/components/bonuses/info-button.scss" lang="scss" />

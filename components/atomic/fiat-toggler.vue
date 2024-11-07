@@ -9,18 +9,14 @@
         <atomic-image
           class="fiat-toggler__selected-logo"
           :src="`/img/currency/${equivalentCurrency.code}.svg`"
-          defaultImage="/img/currency/placeholder.svg"
+          default-image="/img/currency/placeholder.svg"
         />
         <span class="fiat-toggler__selected-currency">{{ equivalentCurrency.code }}</span>
-        <atomic-icon id="arrow_expand-close"/>
+        <atomic-icon id="arrow_expand-close" />
       </div>
     </transition>
 
-    <form-input-toggle
-      :value="!!equivalentCurrency"
-      name="fiat"
-      @change="toggle"
-    />
+    <form-input-toggle :value="!!equivalentCurrency" name="fiat" @change="toggle" />
   </div>
 </template>
 

@@ -22,12 +22,7 @@
 
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
-  const {
-    popupsData,
-    defaultLocalePopupsData,
-    fieldsSettings,
-    defaultLocaleFieldsSettings
-  } = storeToRefs(globalStore);
+  const { popupsData, defaultLocalePopupsData, fieldsSettings, defaultLocaleFieldsSettings } = storeToRefs(globalStore);
 </script>
 
-<style src="~/assets/styles/components/quest/task-fields.scss" lang="scss"/>
+<style src="~/assets/styles/components/quest/task-fields.scss" lang="scss" />

@@ -9,7 +9,8 @@ const autocrop = require('svgo-autocrop');
 module.exports = {
   multipass: true, // Keep running optimisations until doesn't optimise anymore.
   plugins: [
-    { // Include default optimisations
+    {
+      // Include default optimisations
       name: 'preset-default',
       params: {
         overrides: {
@@ -34,7 +35,8 @@ module.exports = {
     // Remove <script> if present in svg
     'removeScriptElement', // https://github.com/svg/svgo/blob/master/plugins/removeScriptElement.js
 
-    { // Run autocrop last (you'll get less issues if autocrop runs after the svgo's default 'convertTransform' and 'convertShapeToPath' plugins)
+    {
+      // Run autocrop last (you'll get less issues if autocrop runs after the svgo's default 'convertTransform' and 'convertShapeToPath' plugins)
       ...autocrop,
       params: {
         autocrop: false,
@@ -46,8 +48,8 @@ module.exports = {
 
         setColor: 'currentColor', // Replace any colors encountered with 'currentColor'.
         setColorIssue: 'fail', // Fail if more than one color encountered.
-        disableTranslateWarning: true
-      }
+        disableTranslateWarning: true,
+      },
     },
-  ]
+  ],
 };

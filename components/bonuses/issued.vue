@@ -11,15 +11,15 @@
       :list="packageList"
       :loading="isPackageLoading(packageList)"
       @activate="activatePackage(packageList)"
-      @openPackageModal="emit('openPackageModal', packageList)"
+      @open-package-modal="emit('openPackageModal', packageList)"
     />
 
     <bonuses-card
       v-for="bonus in simpleBonusesList"
       :key="bonus.id"
-      :bonusInfo="bonus"
+      :bonus-info="bonus"
       :loading="props.loadingBonuses.includes(bonus.id)"
-      isCash
+      is-cash
       @remove="emit('removeBonus', bonus)"
       @activate="emit('activateBonus', bonus)"
     />
@@ -27,9 +27,9 @@
     <bonuses-card
       v-for="freeSpin in simpleFreeSpinsList"
       :key="freeSpin.id"
-      :bonusInfo="freeSpin"
+      :bonus-info="freeSpin"
       :loading="props.loadingBonuses.includes(freeSpin.id)"
-      isFreeSpin
+      is-free-spin
       @remove="emit('removeFreeSpin', freeSpin)"
       @activate="emit('activateFreeSpin', freeSpin)"
     />
@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IProfileBonuses } from "~/types";
+  import type { IProfileBonuses } from '~/types';
 
   const props = defineProps<{
     loadingBonuses: string[];
@@ -47,19 +47,10 @@
   const { getContent } = useProjectMethods();
   const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
-  const emit = defineEmits([
-    'activateBonus',
-    'activateFreeSpin',
-    'removeBonus',
-    'removeFreeSpin',
-    'openPackageModal'
-  ]);
+  const emit = defineEmits(['activateBonus', 'activateFreeSpin', 'removeBonus', 'removeFreeSpin', 'openPackageModal']);
 
   const bonusStore = useBonusStore();
-  const {
-    issuedPlayerBonuses,
-    issuedPlayerFreeSpins
-  } = storeToRefs(bonusStore);
+  const { issuedPlayerBonuses, issuedPlayerFreeSpins } = storeToRefs(bonusStore);
 
   const simpleBonusesList = computed(() => issuedPlayerBonuses.value.filter(bonus => !bonus.packageId));
   const simpleFreeSpinsList = computed(() => issuedPlayerFreeSpins.value.filter(freeSpin => !freeSpin.packageId));
@@ -67,17 +58,15 @@
     return simpleBonusesList.value.length + simpleFreeSpinsList.value.length + props.packageBonuses.length;
   });
 
-  const isPackageLoading = (packageList: Record<string, any>[]):boolean => {
+  const isPackageLoading = (packageList: Record<string, any>[]): boolean => {
     const firstAvailableBonus = packageList.find(bonus => bonus.status === 1);
     return props.loadingBonuses.includes(firstAvailableBonus?.id);
   };
 
-  const activatePackage = (packageList: Record<string, any>[]):void => {
+  const activatePackage = (packageList: Record<string, any>[]): void => {
     const firstAvailableBonus = packageList.find(bonus => bonus.status === 1);
-    if (firstAvailableBonus) {
-      firstAvailableBonus.isFreeSpin
-        ? emit('activateFreeSpin', firstAvailableBonus)
-        : emit('activateBonus', firstAvailableBonus);
-    }
-  }
+
+    if (firstAvailableBonus?.isFreeSpin) emit('activateFreeSpin', firstAvailableBonus);
+    else if (firstAvailableBonus) emit('activateBonus', firstAvailableBonus);
+  };
 </script>

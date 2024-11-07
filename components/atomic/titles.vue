@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps<{title?: string, subTitle?: string}>();
+  const props = defineProps<{ title?: string; subTitle?: string }>();
 </script>
 
 <style src="~/assets/styles/components/atomic/titles.scss" lang="scss" />

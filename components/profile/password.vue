@@ -11,7 +11,9 @@
           type="password"
           :name="field"
           :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field}.label`) || ''"
-          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field}.placeholder`) || ''"
+          :placeholder="
+            getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field}.placeholder`) || ''
+          "
           :is-required="true"
           :hint="setError(field)"
           @blur="v$[field]?.$touch()"
@@ -24,8 +26,8 @@
         v-if="securityContent || defaultLocaleSecurityContent"
         type="primary"
         size="md"
-        tagName="div"
-        :isDisabled="v$.$invalid || isLockedAsyncButton"
+        tag-name="div"
+        :is-disabled="v$.$invalid || isLockedAsyncButton"
         @click="onSubmit"
       >
         {{ securityContent?.password?.saveButton || defaultLocaleSecurityContent?.password?.saveButton }}
@@ -36,23 +38,18 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IProfileSecurity} from "~/types";
+  import type { IProfileSecurity } from '~/types';
 
   const globalStore = useGlobalStore();
-  const {
-    fieldsSettings,
-    defaultLocaleFieldsSettings,
-    alertsData,
-    defaultLocaleAlertsData,
-  } = storeToRefs(globalStore);
+  const { fieldsSettings, defaultLocaleFieldsSettings, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
   const securityContent = ref<Maybe<IProfileSecurity>>(inject('securityContent'));
   const defaultLocaleSecurityContent = ref<Maybe<IProfileSecurity>>(inject('defaultLocaleSecurityContent'));
 
-  interface IChangeFormData extends Record<string, any>{
-    currentPassword: string,
-    newPassword: string,
-    repeatNewPassword: string,
+  interface IChangeFormData extends Record<string, any> {
+    currentPassword: string;
+    newPassword: string;
+    repeatNewPassword: string;
   }
 
   const changeFormData = reactive<IChangeFormData>({
@@ -62,13 +59,11 @@
   });
 
   const { getFormRules, createValidationRules, getContent } = useProjectMethods();
-  const changeRules = createValidationRules(Object.keys(changeFormData).map((field) => ({ name: field })));
+  const changeRules = createValidationRules(Object.keys(changeFormData).map(field => ({ name: field })));
   const changeFormRules = getFormRules(changeRules);
-  const {
-    serverFormErrors, v$, onFocus, setError,
-  } = useFormValidation(changeFormRules, changeFormData);
+  const { serverFormErrors, v$, onFocus, setError } = useFormValidation(changeFormRules, changeFormData);
 
-  const inputNewPassword = (fieldName:string):void => {
+  const inputNewPassword = (fieldName: string): void => {
     if (fieldName === 'newPassword' && v$.value.repeatNewPassword.$dirty) {
       const oldValue = changeFormData.repeatNewPassword;
       changeFormData.repeatNewPassword = '';
@@ -76,15 +71,17 @@
     }
   };
 
-  const clearForm = ():void => {
-    Object.keys(changeFormData).forEach((field) => { changeFormData[field] = ''; });
+  const clearForm = (): void => {
+    Object.keys(changeFormData).forEach(field => {
+      changeFormData[field] = '';
+    });
     v$.value.$reset();
   };
 
   const { showAlert } = useLayoutStore();
   const isLockedAsyncButton = ref<boolean>(false);
   const { changeProfilePassword } = useCoreProfileApi();
-  const onSubmit = async ():Promise<void> => {
+  const onSubmit = async (): Promise<void> => {
     if (v$.value.$invalid) return;
     v$.value.$reset();
     const validFormData = await v$.value.$validate();
@@ -95,7 +92,7 @@
       await changeProfilePassword(changeFormData);
       showAlert(alertsData.value?.profile?.passwordChanged || defaultLocaleAlertsData.value?.profile?.passwordChanged);
       clearForm();
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
       } else throw error;
@@ -106,4 +103,3 @@
 </script>
 
 <style src="~/assets/styles/components/profile/password.scss" lang="scss" />
-

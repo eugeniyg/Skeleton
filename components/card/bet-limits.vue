@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="limits__card"
-    :class="{'is-full-width': isFullWidth}"
-  >
+  <div class="limits__card" :class="{ 'is-full-width': isFullWidth }">
     <h4 class="limits__card-title" data-tooltip-parent>
       {{ getContent(limitsContent, defaultLimitsContent, 'bet.label') }}
       <atomic-tooltip
@@ -24,7 +21,6 @@
     </p>
 
     <div class="limits__card-actions">
-
       <button-base
         type="primary"
         :is-disabled="isAllCurrenciesUsed || state.isShowEdit"
@@ -42,11 +38,7 @@
         {{ getContent(limitsContent, defaultLimitsContent, 'editButtonLabel') }}
       </button-base>
 
-      <button-base
-        v-if="state.isShowEdit"
-        type="secondary"
-        @click="state.isShowEdit = false"
-      >
+      <button-base v-if="state.isShowEdit" type="secondary" @click="state.isShowEdit = false">
         {{ getContent(limitsContent, defaultLimitsContent, 'doneButtonLabel') }}
       </button-base>
     </div>
@@ -57,17 +49,11 @@
   import type { IUpdateLimit } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
 
-  const emit = defineEmits([
-    'open-limit-modal',
-    'open-edit-modal',
-    'update-limits',
-  ]);
+  const emit = defineEmits(['open-limit-modal', 'open-edit-modal', 'update-limits']);
 
   const limitsStore = useLimitsStore();
   const { checkCurrencies } = limitsStore;
-  const {
-    betPeriods, limitsContent, defaultLimitsContent,
-  } = storeToRefs(limitsStore);
+  const { betPeriods, limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { currencies } = storeToRefs(globalStore);
@@ -83,13 +69,13 @@
   };
 
   const isEditLocked = computed(() => {
-    return betPeriods.value.every((period) => {
-      const filteredPeriods = period.items.filter((item) => item.status === 1)
-      return filteredPeriods.every((item) => item.cancelProcess && !item.pendingExist)
-    })
+    return betPeriods.value.every(period => {
+      const filteredPeriods = period.items.filter(item => item.status === 1);
+      return filteredPeriods.every(item => item.cancelProcess && !item.pendingExist);
+    });
   });
 
   const isAllCurrenciesUsed = computed(() => checkCurrencies(betPeriods.value, currencies.value));
 
-  const isFullWidth = computed(() => (betPeriods.value?.length > 1));
+  const isFullWidth = computed(() => betPeriods.value?.length > 1);
 </script>

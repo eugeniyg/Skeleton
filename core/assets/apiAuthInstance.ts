@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-export const useApiAuthInstance = async (url:string, options?:any):Promise<any> => {
+export const useApiAuthInstance = async (url: string, options?: any): Promise<any> => {
   const profileStore = useProfileStore();
   let token = profileStore.getSessionToken();
 
@@ -40,7 +40,9 @@ export const useApiAuthInstance = async (url:string, options?:any):Promise<any> 
     console.log('API INSTANCE REQUEST URL: ', newUrl);
   }
 
-  if (token) { newOptions.headers.Authorization = `Bearer ${token}` }
+  if (token) {
+    newOptions.headers.Authorization = `Bearer ${token}`;
+  }
 
   if (token && profileStore.isTokenExpired()) {
     token = await profileStore.refreshToken();
@@ -52,4 +54,4 @@ export const useApiAuthInstance = async (url:string, options?:any):Promise<any> 
   }
 
   return await $fetch(newUrl, newOptions);
-}
+};

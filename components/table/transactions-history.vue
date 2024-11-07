@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="tb-transactions-history"
-    :class="{ 'tb-transactions-history__short': props.invoices?.length < 3 }"
-  >
+  <div class="tb-transactions-history" :class="{ 'tb-transactions-history__short': props.invoices?.length < 3 }">
     <div class="row">
       <div v-for="(th, thIndex) in headTitles" :key="thIndex" class="th">{{ th }}</div>
     </div>
@@ -11,14 +8,26 @@
       <div class="td">{{ dayjs(invoice.createdAt).format('DD.MM.YYYY, HH:mm') }}</div>
 
       <div class="td">
-        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.invoiceTypes.${invoice.invoiceType}`) }}
+        {{
+          getContent(
+            globalComponentsContent,
+            defaultLocaleGlobalComponentsContent,
+            `constants.invoiceTypes.${invoice.invoiceType}`
+          )
+        }}
       </div>
 
       <div class="td">{{ invoice.paymentMethod }}</div>
 
       <div class="td">
         <atomic-invoice-status :variant="invoice.status">
-          {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.invoiceStatuses.${invoice.status}`) }}
+          {{
+            getContent(
+              globalComponentsContent,
+              defaultLocaleGlobalComponentsContent,
+              `constants.invoiceStatuses.${invoice.status}`
+            )
+          }}
         </atomic-invoice-status>
       </div>
 
@@ -32,7 +41,7 @@
           size="sm"
           @click="showCodes.push(invoice.publicData.securityCode)"
         >
-          <atomic-icon id="security-code"/>
+          <atomic-icon id="security-code" />
           <span>{{ props.transactionsContent?.securityCode?.getCodeButton }}</span>
         </button-base>
 
@@ -43,22 +52,24 @@
           size="sm"
           @click.once="emit('cancelPayment', invoice.id)"
         >
-          <atomic-icon id="trash"/>
+          <atomic-icon id="trash" />
           <span>{{ props.transactionsContent?.cancelPaymentButton }}</span>
         </button-base>
-        
+
         <button-base
-          v-if="invoice.publicData?.agentNumber &&
+          v-if="
+            invoice.publicData?.agentNumber &&
             invoice.publicData?.transactionId &&
             invoice.invoiceType === 1 &&
             dosafepayTargetMethods.includes(invoice.paymentMethod) &&
-            !showDetails.includes(invoice.publicData.transactionId)"
+            !showDetails.includes(invoice.publicData.transactionId)
+          "
           class="btn-get-code"
           type="primary"
           size="sm"
           @click="showDetails.push(invoice.publicData?.transactionId)"
         >
-          <atomic-icon id="more-info"/>
+          <atomic-icon id="more-info" />
           <span>{{ props.transactionsContent?.dosafepayData?.showDetailsButton }}</span>
         </button-base>
       </div>
@@ -79,12 +90,14 @@
           :tooltip="props.transactionsContent?.securityCode?.clientTooltip"
         />
       </div>
-      
+
       <div
-        v-if="invoice.publicData?.agentNumber &&
+        v-if="
+          invoice.publicData?.agentNumber &&
           invoice.publicData?.transactionId &&
           dosafepayTargetMethods.includes(invoice.paymentMethod) &&
-          showDetails.includes(invoice.publicData?.transactionId)"
+          showDetails.includes(invoice.publicData?.transactionId)
+        "
         class="security-code"
       >
         <atomic-copy-field
@@ -92,7 +105,7 @@
           :value="invoice.publicData.agentNumber"
           :tooltip="props.transactionsContent?.dosafepayData?.numberTooltip"
         />
-        
+
         <atomic-copy-field
           :label="props.transactionsContent?.dosafepayData?.clientLabel"
           :value="invoice.publicData.transactionId"
@@ -109,13 +122,13 @@
 
   const props = defineProps<{
     invoices: IInvoice[];
-    transactionsContent: ITransactionsHistory
+    transactionsContent: ITransactionsHistory;
   }>();
 
   const emit = defineEmits(['cancelPayment']);
   const headTitles = Object.values(props.transactionsContent.tableColumns);
   const globalStore = useGlobalStore();
-  const {globalComponentsContent, defaultLocaleGlobalComponentsContent} = globalStore;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
   const dayjs = useDayjs();
   const { getContent } = useProjectMethods();
   const showCodes = ref<string[]>([]);
@@ -124,4 +137,3 @@
 </script>
 
 <style src="~/assets/styles/components/table/transactions-history.scss" lang="scss" />
-

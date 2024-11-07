@@ -1,58 +1,55 @@
 <template>
   <div>
     <client-only>
-      <main-slider v-if="!isMobile && pageContent?.currentLocaleData?.sliderDisplay" sliderType="low" />
+      <main-slider v-if="!isMobile && pageContent?.currentLocaleData?.sliderDisplay" slider-type="low" />
 
       <modal-restricted-bets
         v-if="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"
         :content="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"
-        currentPage="betting"
-        :showModal="showRestrictedBetsModal"
-        @closeModal="showRestrictedBetsModal = false"
+        current-page="betting"
+        :show-modal="showRestrictedBetsModal"
+        @close-modal="showRestrictedBetsModal = false"
       />
 
       <modal-max-bets
-        :showModal="maxBetsModal.show"
-        :maxBet="maxBetsModal.maxBet"
-        @closeModal="maxBetsModal.show = false"
+        :show-modal="maxBetsModal.show"
+        :max-bet="maxBetsModal.maxBet"
+        @close-modal="maxBetsModal.show = false"
       />
     </client-only>
 
     <div class="betting">
-      <div id="betting-container" class="container"/>
-      
-      <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText"/>
+      <div id="betting-container" class="container" />
+
+      <atomic-seo-text
+        v-if="pageContent?.currentLocaleData?.pageMeta?.seoText"
+        v-bind="pageContent.currentLocaleData.pageMeta.seoText"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {ISportsbookPage} from '~/types';
+  import type { ISportsbookPage } from '~/types';
 
   const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();
-  const {
-    isMobile,
-    alertsData,
-    defaultLocaleAlertsData,
-    currentLocale,
-    headerCountry
-  } = storeToRefs(globalStore);
+  const { isMobile, alertsData, defaultLocaleAlertsData, currentLocale, headerCountry } = storeToRefs(globalStore);
 
   const { localizePath, addBetsyScript } = useProjectMethods();
   const contentParams = {
     contentKey: 'sportsbookPageContent',
     contentRoute: ['pages', 'sportsbook'],
-    isPage: true
-  }
+    isPage: true,
+  };
   const { getContentData } = useContentLogic<ISportsbookPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const showRestrictedBetsModal = ref<boolean>(false);
   const maxBetsModal = reactive({
     show: false,
-    maxBet: ''
+    maxBet: '',
   });
 
   const walletStore = useWalletStore();
@@ -60,17 +57,14 @@
 
   const { getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
-  const {
-    isLoggedIn,
-    profile
-  } = storeToRefs(profileStore);
+  const { isLoggedIn, profile } = storeToRefs(profileStore);
 
   const sdkDefaultParams = {
     containerId: 'betting-container',
     width: '100%',
     height: '100%',
     parent: false,
-    loginUrl: 'sendPostMessage'
+    loginUrl: 'sendPostMessage',
   };
 
   const frame = ref<Promise<any>>();
@@ -82,10 +76,12 @@
       host: runtimeConfig.public.betsyParams?.clientHost,
       cid: runtimeConfig.public.betsyParams?.clientId,
       theme: runtimeConfig.public.betsyParams?.sportsBookTheme,
-      customStyles: runtimeConfig.public.betsyParams?.sportsBookStyles ? `${host}${runtimeConfig.public.betsyParams.sportsBookStyles}` : undefined,
+      customStyles: runtimeConfig.public.betsyParams?.sportsBookStyles
+        ? `${host}${runtimeConfig.public.betsyParams.sportsBookStyles}`
+        : undefined,
       token: isLoggedIn.value ? token : null,
       lang: currentLocale.value?.code || 'en',
-      allowParentUrlUpdate: updateUrlParam ?? false
+      allowParentUrlUpdate: updateUrlParam ?? false,
     };
 
     if (window.BetSdk) {
@@ -96,7 +92,7 @@
         frame.value = window.BetSdk.init(params);
       };
     }
-  }
+  };
 
   const startGame = async (): Promise<void> => {
     const mainHost = window.location.origin;
@@ -116,7 +112,7 @@
       if ([14100, 14101, 14105].includes(error.data?.error?.code)) {
         await router.push({
           path: localizePath('/profile/limits'),
-          query: {}
+          query: {},
         });
         limitStore.showModal('gameLimitReached');
       } else if (error.data?.error?.code === 14103) {
@@ -131,10 +127,7 @@
 
   const layoutStore = useLayoutStore();
   const { openModal } = useModalStore();
-  const {
-    showAlert,
-    compactDrawer,
-  } = layoutStore;
+  const { showAlert, compactDrawer } = layoutStore;
 
   const router = useRouter();
   const limitStore = useLimitsStore();
@@ -144,17 +137,20 @@
     showAlert(alertsData.value?.limit?.limitedRealGame || defaultLocaleAlertsData.value?.limit?.limitedRealGame);
   };
 
-  watch(() => activeAccount.value?.id, async (oldValue, newValue) => {
-    if (oldValue && newValue && oldValue !== newValue) await startGame();
-  });
+  watch(
+    () => activeAccount.value?.id,
+    async (oldValue, newValue) => {
+      if (oldValue && newValue && oldValue !== newValue) await startGame();
+    }
+  );
 
   onBeforeMount(() => {
     compactDrawer(true, false);
   });
 
   const route = useRoute();
-  const routerIframePath = ref<string|undefined>(route.query.setIframePath as string|undefined);
-  const changeFramePath = async (setIframePath: string|undefined): Promise<void> => {
+  const routerIframePath = ref<string | undefined>(route.query.setIframePath as string | undefined);
+  const changeFramePath = async (setIframePath: string | undefined): Promise<void> => {
     const betsyFrame = await frame.value;
     betsyFrame.sendMessage({
       type: 'routeChange',
@@ -162,21 +158,24 @@
         route: setIframePath || '/',
       },
     });
-  }
+  };
 
-  watch(() => route.query.setIframePath, async (newValue) => {
-    if (!updateUrlParam || (routerIframePath.value === newValue)) return;
-    await changeFramePath(route.query.setIframePath as string|undefined);
-  })
+  watch(
+    () => route.query.setIframePath,
+    async newValue => {
+      if (!updateUrlParam || routerIframePath.value === newValue) return;
+      await changeFramePath(route.query.setIframePath as string | undefined);
+    }
+  );
 
-  const updateRouterIframePath = (eventData: { type: string, location: string }) => {
-    const currentIframePath = route.query.setIframePath as string|undefined;
+  const updateRouterIframePath = (eventData: { type: string; location: string }) => {
+    const currentIframePath = route.query.setIframePath as string | undefined;
     routerIframePath.value = eventData.location === '/' ? undefined : eventData.location;
 
     if (currentIframePath !== routerIframePath.value) {
       router.push({ query: { ...route.query, setIframePath: routerIframePath.value } });
     }
-  }
+  };
 
   const resolveFrameEvent = ({ data }: { data: any }) => {
     if (typeof data === 'string') {
@@ -185,10 +184,10 @@
       if (updateUrlParam && eventData.type === 'route') updateRouterIframePath(eventData);
 
       const { isLoggedIn } = useProfileStore();
-      const showLoginModal =  eventData.type === 'click' && eventData.target === 'loginButton' && !isLoggedIn;
+      const showLoginModal = eventData.type === 'click' && eventData.target === 'loginButton' && !isLoggedIn;
       if (showLoginModal) openModal('sign-in');
     }
-  }
+  };
 
   const handleRestrictedBets = (gameIdentity: string): void => {
     if (gameIdentity && gameIdentity === 'betsy-sportsbook-betsy') {
@@ -196,7 +195,7 @@
     }
   };
 
-  const handleMaxBets = ({ gameIdentity, maxBet }:{ gameIdentity: string, maxBet: string }): void => {
+  const handleMaxBets = ({ gameIdentity, maxBet }: { gameIdentity: string; maxBet: string }): void => {
     if (gameIdentity && gameIdentity === 'betsy-sportsbook-betsy') {
       maxBetsModal.maxBet = maxBet;
       maxBetsModal.show = true;
@@ -218,14 +217,17 @@
     useListen('maxBets', handleMaxBets);
   });
 
-  watch(() => isLoggedIn.value, async (newValue: boolean) => {
-    if (!newValue) {
-      return;
-    }
+  watch(
+    () => isLoggedIn.value,
+    async (newValue: boolean) => {
+      if (!newValue) {
+        return;
+      }
 
-    await startGame();
-    showPlug.value = false;
-  });
+      await startGame();
+      showPlug.value = false;
+    }
+  );
 
   onBeforeUnmount(() => {
     window.removeEventListener('message', resolveFrameEvent);
@@ -241,4 +243,4 @@
   });
 </script>
 
-<style src="~/assets/styles/pages/betting.scss" lang="scss"/>
+<style src="~/assets/styles/pages/betting.scss" lang="scss" />

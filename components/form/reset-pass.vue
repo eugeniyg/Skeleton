@@ -5,7 +5,9 @@
       type="password"
       name="newPassword"
       :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.newPassword.label') || ''"
-      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.newPassword.placeholder') || ''"
+      :placeholder="
+        getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.newPassword.placeholder') || ''
+      "
       :is-required="true"
       :hint="setError('newPassword')"
       @blur="v$.newPassword?.$touch()"
@@ -18,7 +20,9 @@
       type="password"
       name="repeatNewPassword"
       :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.repeatNewPassword.label') || ''"
-      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.repeatNewPassword.placeholder') || ''"
+      :placeholder="
+        getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.repeatNewPassword.placeholder') || ''
+      "
       :is-required="true"
       :hint="setError('repeatNewPassword')"
       @blur="v$.repeatNewPassword?.$touch()"
@@ -26,13 +30,13 @@
     />
 
     <button-base
-      tagName="div"
+      tag-name="div"
       type="primary"
       size="md"
-      :isDisabled="v$.$invalid || isLockedAsyncButton"
+      :is-disabled="v$.$invalid || isLockedAsyncButton"
       @click="resetPassword"
     >
-      <atomic-spinner :is-shown="isLockedAsyncButton"/>
+      <atomic-spinner :is-shown="isLockedAsyncButton" />
       {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'resetButton') }}
     </button-base>
   </form>
@@ -40,7 +44,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IModalsContent} from "~/types";
+  import type { IModalsContent } from '~/types';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['reset']>;
@@ -48,12 +52,7 @@
   }>();
 
   const globalStore = useGlobalStore();
-  const {
-    fieldsSettings,
-    defaultLocaleFieldsSettings,
-    alertsData,
-    defaultLocaleAlertsData,
-  } = storeToRefs(globalStore);
+  const { fieldsSettings, defaultLocaleFieldsSettings, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
   const resetFormData = reactive({
     newPassword: '',
@@ -61,13 +60,11 @@
   });
 
   const { getFormRules, createValidationRules, getContent } = useProjectMethods();
-  const resetRules = createValidationRules(Object.keys(resetFormData).map((field) => ({ name: field })));
+  const resetRules = createValidationRules(Object.keys(resetFormData).map(field => ({ name: field })));
   const resetFormRules = getFormRules(resetRules);
-  const {
-    serverFormErrors, v$, onFocus, setError,
-  } = useFormValidation(resetFormRules, resetFormData);
+  const { serverFormErrors, v$, onFocus, setError } = useFormValidation(resetFormRules, resetFormData);
 
-  const inputNewPassword = ():void => {
+  const inputNewPassword = (): void => {
     if (v$.value.repeatNewPassword.$dirty) {
       const oldValue = resetFormData.repeatNewPassword;
       resetFormData.repeatNewPassword = '';
@@ -77,13 +74,13 @@
 
   const { showAlert } = useLayoutStore();
   const { closeModal } = useModalStore();
-  const showErrorAlert = ():void => {
+  const showErrorAlert = (): void => {
     showAlert(alertsData.value?.profile?.invalidResetCode || defaultLocaleAlertsData.value?.profile?.invalidResetCode);
   };
 
   const isLockedAsyncButton = ref<boolean>(false);
   const { resetProfilePassword } = useCoreProfileApi();
-  const resetPassword = async ():Promise<void> => {
+  const resetPassword = async (): Promise<void> => {
     if (v$.value.$invalid) return;
     v$.value.$reset();
     const validFormData = await v$.value.$validate();
@@ -95,7 +92,7 @@
       await resetProfilePassword({ ...resetFormData, code: route.query.resetCode as string });
       showAlert(alertsData.value?.profile?.passwordChanged || defaultLocaleAlertsData.value?.profile?.passwordChanged);
       closeModal('reset-pass');
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response?.status === 422) {
         if (error.data?.error?.fields.code) showErrorAlert();
         else serverFormErrors.value = error.data?.error?.fields;
@@ -107,4 +104,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/reset-pass.scss" lang="scss" />
-

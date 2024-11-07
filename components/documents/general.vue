@@ -1,34 +1,30 @@
 <template>
   <div class="documents-general">
-    <documents-select-type
-      v-show="step === 'select-type'"
-      :formData="formData"
-      @nextStep="nextStep"
-    />
+    <documents-select-type v-show="step === 'select-type'" :form-data="formData" @next-step="nextStep" />
 
     <documents-uploads
       v-show="step === 'uploads'"
       :key="documentType"
-      :documentType="documentType"
-      :formData="formData"
-      :loadingFields="loadingFields"
-      @prevStep="step = 'select-type'"
-      @removeFile="removeFile"
-      @addFiles="addFiles"
+      :document-type="documentType"
+      :form-data="formData"
+      :loading-fields="loadingFields"
+      @prev-step="step = 'select-type'"
+      @remove-file="removeFile"
+      @add-files="addFiles"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-  import type {IDocumentFile} from "@skeleton/core/types";
+  import type { IDocumentFile } from '@skeleton/core/types';
 
-  const step = ref<'select-type'|'uploads'>('select-type');
-  const documentType = ref<string|undefined>();
+  const step = ref<'select-type' | 'uploads'>('select-type');
+  const documentType = ref<string | undefined>();
 
   const nextStep = (type: string) => {
     documentType.value = type;
     step.value = 'uploads';
-  }
+  };
 
   interface IFormData extends Record<string, IDocumentFile[]> {
     identity_front: IDocumentFile[];
@@ -47,8 +43,8 @@
     address: [],
     payment: [],
     payment_back: [],
-    other: []
-  })
+    other: [],
+  });
 
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
@@ -57,30 +53,30 @@
   const loadingFields = ref<string[]>([]);
 
   const setFormData = (documentFiles: IDocumentFile[]): void => {
-    Object.keys(formData).forEach((key) => {
-      formData[key] = documentFiles.filter((file) => file.type === key);
+    Object.keys(formData).forEach(key => {
+      formData[key] = documentFiles.filter(file => file.type === key);
     });
-  }
+  };
 
-  const removeFile = async ({ name, id, status }:{ name: string, id: string, status: number }):Promise<void> => {
+  const removeFile = async ({ name, id, status }: { name: string; id: string; status: number }): Promise<void> => {
     try {
       if (status > 0) {
         await deleteDocumentFile(id);
       }
-      formData[name] = formData[name].filter((file) => file.id !== id);
+      formData[name] = formData[name].filter(file => file.id !== id);
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
   };
 
-  const addFileError = (field: string, fieldsErrors: any):void => {
+  const addFileError = (field: string, fieldsErrors: any): void => {
     const error = fieldsErrors?.file?.[0];
     const lastElIndex = formData[field].length - 1;
     const lastEl = formData[field][lastElIndex];
     formData[field][lastElIndex] = { ...lastEl, status: -1, error };
   };
 
-  const addFiles = async (filesData: { fieldName: string, fileList: File[] }):Promise<void> => {
+  const addFiles = async (filesData: { fieldName: string; fileList: File[] }): Promise<void> => {
     loadingFields.value.push(filesData.fieldName);
 
     const fileObject = {
@@ -105,7 +101,7 @@
         addFileError(filesData.fieldName, { file: ['File size to large!'] });
       } else addFileError(filesData.fieldName, { file: ['File upload error!'] });
     } finally {
-      loadingFields.value = loadingFields.value.filter((field) => field !== filesData.fieldName);
+      loadingFields.value = loadingFields.value.filter(field => field !== filesData.fieldName);
     }
   };
 

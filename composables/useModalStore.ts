@@ -1,10 +1,10 @@
-import {defineStore} from "pinia";
-import {useVfm, useModal, type UseModalReturnType } from 'vue-final-modal';
-import { defineAsyncComponent } from "vue";
+import { defineStore } from 'pinia';
+import { useVfm, useModal, type UseModalReturnType } from 'vue-final-modal';
+import { defineAsyncComponent } from 'vue';
 
 interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'sign-in': Maybe<UseModalReturnType<any>>;
-  'forgot-pass':Maybe<UseModalReturnType<any>>;
+  'forgot-pass': Maybe<UseModalReturnType<any>>;
   'reset-pass': Maybe<UseModalReturnType<any>>;
   'sign-up': Maybe<UseModalReturnType<any>>;
   'sign-up-cancel': Maybe<UseModalReturnType<any>>;
@@ -18,17 +18,17 @@ interface IModalStoreState {
 }
 
 export const useModalStore = defineStore('modalStore', {
-  state: ():IModalStoreState => ({
+  state: (): IModalStoreState => ({
     modals: {
       'sign-in': undefined,
       'forgot-pass': undefined,
       'reset-pass': undefined,
       'sign-up': undefined,
-      'sign-up-cancel': undefined
+      'sign-up-cancel': undefined,
     },
     modalsUrl: ['sign-in', 'forgot-pass', 'reset-pass', 'sign-up'],
     onlyGuestModals: ['sign-in', 'sign-up', 'forgot-pass', 'reset-pass'],
-    onlyLoggedModals: []
+    onlyLoggedModals: [],
   }),
 
   actions: {
@@ -52,7 +52,7 @@ export const useModalStore = defineStore('modalStore', {
       router.replace({ query: { ...newQuery, [modalName]: modalQueryParam || 'true' } });
     },
 
-    removeModalQuery(modalName:string):void {
+    removeModalQuery(modalName: string): void {
       const router = useRouter();
       const { query } = useRoute();
       const newQuery = { ...query, [modalName]: undefined };
@@ -67,7 +67,7 @@ export const useModalStore = defineStore('modalStore', {
         const modalComponent = defineAsyncComponent(() => import(`../components/modal/${modalName}.vue`));
         const contentParams = {
           contentKey: `modal-${modalName}`,
-          contentRoute: ['modals', modalName]
+          contentRoute: ['modals', modalName],
         };
         const { getContentData } = useContentLogic(contentParams);
         const { currentLocaleData, defaultLocaleData } = await getContentData();
@@ -76,16 +76,16 @@ export const useModalStore = defineStore('modalStore', {
           component: modalComponent,
           attrs: {
             currentLocaleData,
-            defaultLocaleData
-          }
-        })
+            defaultLocaleData,
+          },
+        });
       }
 
       if (prohibitQueryChange && this.modalsUrl.includes(modalName)) this.addModalQuery(modalName, modalQueryParam);
       this.modals[modalName].open();
     },
 
-    closeModal(modalName: string):void {
+    closeModal(modalName: string): void {
       this.modals[modalName]?.close();
       if (this.modalsUrl.includes(modalName)) this.removeModalQuery(modalName);
     },
@@ -103,7 +103,7 @@ export const useModalStore = defineStore('modalStore', {
       await vfm.closeAll();
     },
 
-    checkOpenedModals():void {
+    checkOpenedModals(): void {
       const { query } = useRoute();
       const queryArr = Object.keys(query);
 
@@ -119,6 +119,6 @@ export const useModalStore = defineStore('modalStore', {
           break;
         }
       }
-    }
+    },
   },
 });

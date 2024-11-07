@@ -4,8 +4,8 @@
       <quest-card
         v-for="(quest, questIndex) in state.data"
         :key="quest.id"
-        :questInfo="quest"
-        :questIndex="questIndex"
+        :quest-info="quest"
+        :quest-index="questIndex"
       />
 
       <button-base
@@ -24,16 +24,11 @@
 </template>
 
 <script setup lang="ts">
-  import type {IPaginationMeta, IPlayerQuest} from "@skeleton/core/types";
-  import {useListen} from "@skeleton/composables/useEventBus";
+  import type { IPaginationMeta, IPlayerQuest } from '@skeleton/core/types';
+  import { useListen } from '@skeleton/composables/useEventBus';
 
   const globalStore = useGlobalStore();
-  const {
-    popupsData,
-    defaultLocalePopupsData,
-    alertsData,
-    defaultLocaleAlertsData
-  } = storeToRefs(globalStore);
+  const { popupsData, defaultLocalePopupsData, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   interface IState {
@@ -59,8 +54,8 @@
       const { data, meta } = await getPlayerQuests({
         page: page,
         perPage: 3,
-        state: [3,4],
-        currency: activeAccount?.currency
+        state: [3, 4],
+        currency: activeAccount?.currency,
       });
       state.data = page === 1 ? data : [...state.data, ...data];
       state.meta = meta;
@@ -71,14 +66,18 @@
     } finally {
       state.loading = false;
     }
-  }
+  };
 
   const emptyContentData = computed(() => {
     const image = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.image');
     const title = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.completedTitle');
-    const description = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.completedDescription');
+    const description = getContent(
+      popupsData.value,
+      defaultLocalePopupsData.value,
+      'questsHub.empty.completedDescription'
+    );
     return { image, title, description };
-  })
+  });
 
   onMounted(async () => {
     await getData();
@@ -87,7 +86,7 @@
 
   onBeforeUnmount(() => {
     useUnlisten('completedQuestsUpdated', getData);
-  })
+  });
 </script>
 
-<style src="~/assets/styles/components/quest/tab.scss" lang="scss"/>
+<style src="~/assets/styles/components/quest/tab.scss" lang="scss" />

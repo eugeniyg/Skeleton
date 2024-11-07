@@ -1,5 +1,5 @@
 <template>
-  <not-found/>
+  <not-found />
 </template>
 
 <script setup lang="ts">
@@ -28,5 +28,5 @@
       await openModal('sign-in', undefined, false);
       await router.replace(localizePath('/?sign-in=true'));
     }
-  })
+  });
 </script>
