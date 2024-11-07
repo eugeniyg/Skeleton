@@ -18,8 +18,8 @@ export function useContentLogic<T extends Record<string, any>>(params: IContentP
   const { setPageMeta, getLocalesContentData } = useProjectMethods();
 
   const getRequestArray = (): Promise<any>[] => {
-    let currentLocaleQuery = queryContent(currentLocale.value?.code as string, ...params.contentRoute);
-    let defaultLocaleQuery = queryContent(defaultLocale.value?.code as string, ...params.contentRoute);
+    let currentLocaleQuery: any = queryContent(currentLocale.value?.code as string, ...params.contentRoute);
+    let defaultLocaleQuery: any = queryContent(defaultLocale.value?.code as string, ...params.contentRoute);
 
     if (params.only) {
       currentLocaleQuery = currentLocaleQuery.only(params.only);
