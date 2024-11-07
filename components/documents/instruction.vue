@@ -1,15 +1,9 @@
 <template>
   <div class="documents-instruction">
     <div class="documents-instruction__img-container">
-      <atomic-image
-        class="documents-instruction__image"
-        :src="props.instructionData.image"
-      />
+      <atomic-image class="documents-instruction__image" :src="props.instructionData.image" />
 
-      <atomic-image
-        class="documents-instruction__icon"
-        :src="props.instructionData.icon"
-      />
+      <atomic-image class="documents-instruction__icon" :src="props.instructionData.icon" />
     </div>
 
     <div class="documents-instruction__description">
@@ -19,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPhotoInstruction } from "~/types";
+  import type { IPhotoInstruction } from '~/types';
 
   const props = defineProps<{
     instructionData: IPhotoInstruction;

@@ -1,4 +1,4 @@
-export default defineNuxtPlugin(async ():Promise<any> => {
+export default defineNuxtPlugin(async (): Promise<any> => {
   const {
     getCurrencies,
     getLocales,
@@ -6,17 +6,12 @@ export default defineNuxtPlugin(async ():Promise<any> => {
     getGlobalContent,
     getRequestCountry,
     getSettingsConstants,
-    setCurrentLocale
+    setCurrentLocale,
   } = useGlobalStore();
 
   getRequestCountry();
 
-  await Promise.all([
-    getLocales(),
-    getCountries(),
-    getCurrencies(),
-    getSettingsConstants()
-  ]);
+  await Promise.all([getLocales(), getCountries(), getCurrencies(), getSettingsConstants()]);
 
   setCurrentLocale();
   await getGlobalContent();

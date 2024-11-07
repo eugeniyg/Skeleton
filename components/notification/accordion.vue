@@ -1,11 +1,8 @@
 <template>
-  <div
-    class="notification-accordion"
-    :class="{ 'is-open': isOpen, 'is-unread': props.message.state === 1 }"
-  >
+  <div class="notification-accordion" :class="{ 'is-open': isOpen, 'is-unread': props.message.state === 1 }">
     <div class="notification-accordion__header" @click="toggleOpen">
       <button-base type="ghost" class="notification-accordion__toggle">
-        <atomic-icon id="arrow-down-compact"/>
+        <atomic-icon id="arrow-down-compact" />
       </button-base>
 
       <div class="notification-accordion__header-title">{{ props.message.content.title }}</div>
@@ -14,12 +11,8 @@
         {{ getContent(layoutData, defaultLocaleLayoutData, 'header.notificationBox.newTag') }}
       </span>
 
-      <button-base
-        type="ghost"
-        class="notification-accordion__remove"
-        @click.stop.prevent="emit('removeMessage')"
-      >
-        <atomic-icon id="trash"/>
+      <button-base type="ghost" class="notification-accordion__remove" @click.stop.prevent="emit('removeMessage')">
+        <atomic-icon id="trash" />
       </button-base>
     </div>
 
@@ -38,17 +31,17 @@
         v-if="props.message.content.link?.url && props.message.content.link?.label"
         :href="props.message.content.link.url"
         class="btn-ghost notification-accordion__link"
-        :targetBlank="props.message.content.link.url.startsWith('http')"
+        :target-blank="props.message.content.link.url.startsWith('http')"
       >
         <span>{{ props.message.content.link.label }}</span>
-        <atomic-icon id="arrow_next"/>
+        <atomic-icon id="arrow_next" />
       </atomic-link>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { IMessage } from "@skeleton/core/types";
+  import type { IMessage } from '@skeleton/core/types';
 
   const props = defineProps<{
     message: IMessage;
@@ -82,7 +75,7 @@
     } finally {
       requestSending.value = false;
     }
-  }
+  };
 </script>
 
 <style src="~/assets/styles/components/notification/accordion.scss" lang="scss" />

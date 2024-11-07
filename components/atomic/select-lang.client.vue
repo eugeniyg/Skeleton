@@ -1,22 +1,13 @@
 <template>
-  <div
-    class="select-lang"
-    :class="{ 'is-open': isOpen }"
-  >
+  <div class="select-lang" :class="{ 'is-open': isOpen }">
     <div v-click-outside="closeSelect" class="select-lang__wrap">
       <div class="selected" @click="toggleOpen">
-        <atomic-image
-          class="img"
-          :src="`${gamehubCdn}/locales/${currentLocale?.code.toLowerCase()}.svg`"
-        />
+        <atomic-image class="img" :src="`${gamehubCdn}/locales/${currentLocale?.code.toLowerCase()}.svg`" />
         <span class="title">{{ currentLocale?.nativeName || currentLocale?.name }}</span>
         <atomic-icon id="arrow_expand-close" />
       </div>
 
-      <div
-        class="items"
-        body-scroll-lock-ignore
-      >
+      <div class="items" body-scroll-lock-ignore>
         <div
           v-for="locale in locales"
           :key="locale.code"
@@ -46,7 +37,9 @@
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { public: { gamehubCdn } } = useRuntimeConfig();
+  const {
+    public: { gamehubCdn },
+  } = useRuntimeConfig();
 
   const changeLanguage = async (locale: ILocale): Promise<void> => {
     if (currentLocale.value?.code === locale.code || isProcess.value) return;
@@ -56,14 +49,14 @@
     cookieLanguage.value = locale.code.toLowerCase();
 
     if (isLoggedIn.value) {
-      await changeProfileData({ locale: locale.code })
+      await changeProfileData({ locale: locale.code });
     }
 
     window.location.href = linkToLocale(locale);
   };
 
-  const linkToLocale = (locale: ILocale):string => {
-    const routerLocale:any = route.params.locale;
+  const linkToLocale = (locale: ILocale): string => {
+    const routerLocale: any = route.params.locale;
 
     if (locale.isDefault) {
       const deleteLocale = route.fullPath.replace(`/${routerLocale}`, '');
@@ -81,7 +74,7 @@
     isOpen.value = !isOpen.value;
   };
 
-  const closeSelect = ():void => {
+  const closeSelect = (): void => {
     if (isOpen.value) isOpen.value = false;
   };
 </script>

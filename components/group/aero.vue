@@ -1,70 +1,48 @@
 <template>
   <div v-if="showBlock" class="group-aero">
-    <atomic-icon v-if="titleIcon" :id="titleIcon"/>
+    <atomic-icon v-if="titleIcon" :id="titleIcon" />
 
     <h2 class="group-aero__title">
       {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'label') }}
     </h2>
 
-    <button-base
-      v-if="props.showAllBtn"
-      class="btn-show-all"
-      type="ghost"
-      size="sm"
-      @click="openGames"
-    >
+    <button-base v-if="props.showAllBtn" class="btn-show-all" type="ghost" size="sm" @click="openGames">
       {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
     </button-base>
 
     <button-arrows
       v-if="showArrowButtons"
-      :prevDisabled="prevDisabled"
-      :nextDisabled="nextDisabled"
-      @clickAction="clickAction"
+      :prev-disabled="prevDisabled"
+      :next-disabled="nextDisabled"
+      @click-action="clickAction"
     />
 
     <div class="group-aero__wrapper">
       <picture class="group-aero__bg">
-        <source :media="'(max-width: 768px)'" :srcset="createSrcSet(mobileLayoutBackground)" >
-        <source :media="'(min-width: 769px)'" :srcset="createSrcSet(desktopLayoutBackground)" >
+        <source :media="'(max-width: 768px)'" :srcset="createSrcSet(mobileLayoutBackground)" />
+        <source :media="'(min-width: 769px)'" :srcset="createSrcSet(desktopLayoutBackground)" />
         <atomic-image class="group-aero__bg-img" :src="mobileLayoutBackground" />
       </picture>
 
-      <Skeletor
-        v-if="gameInfoLoading"
-        class="group-aero__game"
-        as="div"
-      />
+      <Skeletor v-if="gameInfoLoading" class="group-aero__game" as="div" />
 
       <div v-else-if="gameInfo" class="group-aero__game">
-        <atomic-picture :src="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.image')"/>
+        <atomic-picture :src="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.image')" />
 
         <div class="group-aero__game-title">
           <span>{{ gameInfo?.name }}</span>
           <client-only>
-            <button-favorite
-              v-if="isLoggedIn"
-              :gameId="gameInfo?.id"
-            />
+            <button-favorite v-if="isLoggedIn" :game-id="gameInfo?.id" />
           </client-only>
         </div>
         <div class="group-aero__game-provider">{{ gameInfo?.provider?.name }}</div>
 
-        <div class="group-aero__game-actions" :class="{'has-demo-mode' : gameInfo?.isDemoMode}">
-          <button-base
-            type="primary"
-            size="sm"
-            @click="openGame(true)"
-          >
+        <div class="group-aero__game-actions" :class="{ 'has-demo-mode': gameInfo?.isDemoMode }">
+          <button-base type="primary" size="sm" @click="openGame(true)">
             {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.playButtonLabel') }}
           </button-base>
 
-          <button-base
-            v-if="gameInfo?.isDemoMode"
-            type="secondary"
-            size="sm"
-            @click="openGame(false)"
-          >
+          <button-base v-if="gameInfo?.isDemoMode" type="secondary" size="sm" @click="openGame(false)">
             {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.demoButtonLabel') }}
           </button-base>
         </div>
@@ -77,20 +55,11 @@
         @scroll="scrollHandler"
       >
         <template v-if="games.length">
-          <card-base
-            v-for="(game, gameIndex) in games"
-            :key="gameIndex"
-            :gameInfo="game"
-          />
+          <card-base v-for="(game, gameIndex) in games" :key="gameIndex" :game-info="game" />
         </template>
 
         <template v-else>
-          <Skeletor
-            v-for="n in 9"
-            :key="n"
-            class="card-base"
-            as="div"
-          />
+          <Skeletor v-for="n in 9" :key="n" class="card-base" as="div" />
         </template>
 
         <div ref="loadMore" class="load-more" @inview="moreGames" />
@@ -101,31 +70,17 @@
 
 <script setup lang="ts">
   import type { IGame, IPaginationMeta } from '@skeleton/core/types';
-  import { storeToRefs } from "pinia";
-  import { Skeletor } from "vue-skeletor";
+  import { storeToRefs } from 'pinia';
+  import { Skeletor } from 'vue-skeletor';
+  import type { IAeroGroupComponent, ICategory } from '~/types';
 
-  const props = defineProps({
-    currentLocaleContent: {
-      type: Object,
-      required: false
-    },
-    defaultLocaleContent: {
-      type: Object,
-      required: false
-    },
-    category: {
-      type: Object,
-      required: true,
-    },
-    showAllBtn: {
-      type: Boolean,
-      default: false,
-    },
-    showArrows: {
-      type: Boolean,
-      default: true,
-    },
-  });
+  const props = defineProps<{
+    currentLocaleContent: Maybe<IAeroGroupComponent>;
+    defaultLocaleContent: Maybe<IAeroGroupComponent>;
+    category: ICategory;
+    showAllBtn?: boolean;
+    showArrows?: boolean;
+  }>();
 
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();
@@ -150,17 +105,17 @@
   const gameInfo = ref<IGame>();
 
   const mobileLayoutBackground = computed(() => {
-    return getContent(props.currentLocaleContent, props.defaultLocaleContent, 'images.mobile.backgroundImage')
+    return getContent(props.currentLocaleContent, props.defaultLocaleContent, 'images.mobile.backgroundImage');
   });
 
   const desktopLayoutBackground = computed(() => {
-    return getContent(props.currentLocaleContent, props.defaultLocaleContent, 'images.desktop.backgroundImage')
+    return getContent(props.currentLocaleContent, props.defaultLocaleContent, 'images.desktop.backgroundImage');
   });
 
   const gameIdentity = getContent(props.currentLocaleContent, props.defaultLocaleContent, 'game.identity');
 
   const gameInfoLoading = ref(false);
-  const getGameInfo = async ():Promise<void> => {
+  const getGameInfo = async (): Promise<void> => {
     if (!gameIdentity) return;
 
     gameInfoLoading.value = true;
@@ -170,7 +125,7 @@
       console.error('Something went wrong with game info fetching!');
     }
     gameInfoLoading.value = false;
-  }
+  };
 
   const openGame = (isReal: boolean): void => {
     if (!isReal) {
@@ -186,8 +141,10 @@
     if (!scrollContainer.value) return;
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
-    nextDisabled.value = scrollWidth < (scrollLeft + offsetWidth + 20) && scrollWidth > (scrollLeft + offsetWidth - 20)
-      && pageMeta.value?.page === pageMeta.value?.totalPages;
+    nextDisabled.value =
+      scrollWidth < scrollLeft + offsetWidth + 20 &&
+      scrollWidth > scrollLeft + offsetWidth - 20 &&
+      pageMeta.value?.page === pageMeta.value?.totalPages;
   };
 
   const clickAction = (direction: string): void => {
@@ -206,8 +163,8 @@
     perPage: 18,
     countries: headerCountry.value ? [headerCountry.value] : undefined,
     sortBy: 'default',
-    sortOrder: 'asc'
-  }
+    sortOrder: 'asc',
+  };
 
   const moreGames = async (): Promise<void> => {
     if (pageMeta.value?.page === pageMeta.value?.totalPages) return;
@@ -232,11 +189,8 @@
     });
     loadMoreObserver.value.observe(loadMore.value);
 
-    const [gamesResponse] = await Promise.all([
-      getFilteredGames(defaultRequestParams),
-      getGameInfo()
-    ]);
-    if (!gamesResponse.data.length || !gameInfo.value) return showBlock.value = false;
+    const [gamesResponse] = await Promise.all([getFilteredGames(defaultRequestParams), getGameInfo()]);
+    if (!gamesResponse.data.length || !gameInfo.value) return (showBlock.value = false);
     games.value = gamesResponse.data;
     pageMeta.value = gamesResponse.meta;
 
@@ -258,9 +212,7 @@
     if (loadMore.value && loadMoreObserver.value) {
       loadMoreObserver.value.unobserve(loadMore.value);
     }
-  })
+  });
 </script>
 
-
 <style src="~/assets/styles/components/group/aero.scss" lang="scss" />
-

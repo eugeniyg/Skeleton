@@ -6,20 +6,17 @@
       <span class="bonuses-freespin-progress__total-count">{{ props.bonusInfo.count }}</span>
       <span class="bonuses-freespin-progress__label">FS</span>
     </div>
-    
-    <bonuses-progress
-      :progress="props.bonusInfo.progress"
-      isFreeSpin
-    />
+
+    <bonuses-progress :progress="props.bonusInfo.progress" is-free-spin />
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerFreeSpin } from "@skeleton/core/types";
+  import type { IPlayerFreeSpin } from '@skeleton/core/types';
 
   const props = defineProps<{
     bonusInfo: IPlayerFreeSpin;
-  }>()
+  }>();
 </script>
 
-<style src="~/assets/styles/components/bonuses/freespin-progress.scss" lang="scss"/>
+<style src="~/assets/styles/components/bonuses/freespin-progress.scss" lang="scss" />

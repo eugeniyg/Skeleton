@@ -4,16 +4,8 @@
     class="bonuses-progress"
     :class="props.isFreeSpin ? 'bonuses-progress--freespin' : 'bonuses-progress--cash'"
   >
-    <div
-      ref="lineRef"
-      class="bonuses-progress__line"
-      :style="{ '--width': lineWidthStyle }"
-    >
-      <div
-        ref="barRef"
-        class="bonuses-progress__bar"
-        :style="`--translateX:  ${barTranslateX}`"
-      >
+    <div ref="lineRef" class="bonuses-progress__line" :style="{ '--width': lineWidthStyle }">
+      <div ref="barRef" class="bonuses-progress__bar" :style="`--translateX:  ${barTranslateX}`">
         {{ props.progress }}%
       </div>
     </div>
@@ -52,14 +44,17 @@
     }
   };
 
-  watch(() => props.progress, async () => {
-    await nextTick();
-    setBarAlignment();
-  });
+  watch(
+    () => props.progress,
+    async () => {
+      await nextTick();
+      setBarAlignment();
+    }
+  );
 
   onMounted(() => {
     setBarAlignment();
   });
 </script>
 
-<style src="~/assets/styles/components/bonuses/progress.scss" lang="scss"/>
+<style src="~/assets/styles/components/bonuses/progress.scss" lang="scss" />

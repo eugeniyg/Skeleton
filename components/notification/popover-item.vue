@@ -1,14 +1,11 @@
 <template>
-  <div ref="item" class="notification-popover-item" :class="{'is-unread': props.messageInfo.state === 1 }">
+  <div ref="item" class="notification-popover-item" :class="{ 'is-unread': props.messageInfo.state === 1 }">
     <div class="notification-popover-item__header">
       <div class="notification-popover-item__header-date">
         {{ dayjs(props.messageInfo.createdAt).format('DD.MM.YY, HH:mm') }}
       </div>
 
-      <span
-        v-if="props.messageInfo.state === 1"
-        class="notification-popover-item__header-badge"
-      >
+      <span v-if="props.messageInfo.state === 1" class="notification-popover-item__header-badge">
         {{ getContent(layoutData, defaultLocaleLayoutData, 'header.notificationBox.newTag') }}
       </span>
     </div>
@@ -22,41 +19,31 @@
       class="notification-popover-item__description"
       :class="{ 'is-text-collapsed': isTextCollapsed }"
     >
-      <div
-        ref="textRef"
-        class="notification-popover-item__description-text"
-      >
+      <div ref="textRef" class="notification-popover-item__description-text">
         {{ props.messageInfo.content.body }}
       </div>
 
-      <button-base
-        v-if="isTextCollapsed"
-        type="ghost"
-        @click.stop.prevent="showFullMessage"
-      >
+      <button-base v-if="isTextCollapsed" type="ghost" @click.stop.prevent="showFullMessage">
         <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.notificationBox.showFullMessage') }}</span>
-        <atomic-icon id="arrow_expand-close"/>
+        <atomic-icon id="arrow_expand-close" />
       </button-base>
     </div>
 
-    <div
-      v-if="props.messageInfo.content.image"
-      class="notification-popover-item__img"
-    >
+    <div v-if="props.messageInfo.content.image" class="notification-popover-item__img">
       <atomic-image :src="`${customerCdn}/${props.messageInfo.content.image}`" />
     </div>
 
     <div class="notification-popover-item__footer">
-      <atomic-divider/>
+      <atomic-divider />
 
       <atomic-link
         v-if="props.messageInfo.content.link?.url && props.messageInfo.content.link?.label"
         :href="props.messageInfo.content.link.url"
         class="btn-ghost"
-        :targetBlank="props.messageInfo.content.link?.url.startsWith('http')"
+        :target-blank="props.messageInfo.content.link?.url.startsWith('http')"
       >
         <span>{{ props.messageInfo.content.link?.label }}</span>
-        <atomic-icon id="arrow_next"/>
+        <atomic-icon id="arrow_next" />
       </atomic-link>
 
       <div
@@ -75,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IMessage } from "@skeleton/core/types";
+  import type { IMessage } from '@skeleton/core/types';
 
   const props = defineProps<{
     messageInfo: IMessage;
@@ -109,12 +96,12 @@
     } finally {
       requestSending.value = false;
     }
-  }
+  };
 
   const showFullMessage = (): void => {
     isTextCollapsed.value = false;
     markAsRead();
-  }
+  };
 
   onMounted(() => {
     if (descriptionHeight.value < 32) isTextCollapsed.value = false;

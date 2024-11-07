@@ -19,7 +19,7 @@
           @focus="onFocus"
           @blur="onBlur"
           @input="onInput"
-        >
+        />
 
         <div v-show="maskedValue || focused" class="mask-group__fake">
           <span class="mask-group__fake-hidden">{{ maskedValue }}</span>
@@ -28,7 +28,7 @@
       </div>
     </client-only>
 
-    <atomic-hint v-if="props.hint" v-bind="props.hint"/>
+    <atomic-hint v-if="props.hint" v-bind="props.hint" />
   </label>
 </template>
 
@@ -46,34 +46,34 @@
   const unmaskedValue = ref('');
   defineExpose({ unmaskedValue });
 
-  if (props.value) maskedValue.value = props.value || '';
+  if (props.value) maskedValue.value = props.value;
   const maskPlaceholder = '___.___.___-__';
   const focused = ref<boolean>(false);
 
   const visibleValue = computed(() => {
     return maskPlaceholder.slice(maskedValue.value.length, maskPlaceholder.length);
-  })
+  });
 
   const classes = computed(() => [
     'input-cpf-number',
     { 'has-error': props.hint?.variant === 'error' },
-    { 'is-disabled': props.isDisabled }
+    { 'is-disabled': props.isDisabled },
   ]);
 
   const emit = defineEmits(['focus', 'input', 'update:value', 'blur']);
-  const onFocus = ():void => {
+  const onFocus = (): void => {
     emit('focus', unmaskedValue.value);
     focused.value = true;
   };
 
-  const onInput = (event: any):void => {
+  const onInput = (event: any): void => {
     if (event.isTrusted) return;
 
     emit('update:value', unmaskedValue.value);
     emit('input', unmaskedValue.value);
   };
 
-  const onBlur = ():void => {
+  const onBlur = (): void => {
     emit('blur', unmaskedValue.value);
     focused.value = false;
   };

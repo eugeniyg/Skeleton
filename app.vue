@@ -9,17 +9,17 @@
 <script setup lang="ts">
   const { currentLocale, countries, headerCountry } = useGlobalStore();
 
-  const isCurrentCountryRestrict = (): boolean|undefined => {
+  const isCurrentCountryRestrict = (): boolean | undefined => {
     if (!headerCountry) return undefined;
     const currentCountryObj = countries.find(country => country.code === headerCountry.toUpperCase());
 
     return currentCountryObj?.restrict;
-  }
+  };
   const layout = isCurrentCountryRestrict() ? 'geo-restricted' : 'default';
 
   useHead({
     htmlAttrs: {
-      lang: currentLocale?.code
+      lang: currentLocale?.code,
     },
-  })
+  });
 </script>

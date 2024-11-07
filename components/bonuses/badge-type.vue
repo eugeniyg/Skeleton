@@ -11,7 +11,7 @@
   }>();
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent} = storeToRefs(globalStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   const modeMap: Record<number, string> = {
@@ -19,8 +19,8 @@
     '1': 'cash',
     '2': 'percentage',
     '3': 'freeSpin',
-    '4': 'cashback'
-  }
+    '4': 'cashback',
+  };
 
   const typeContent = computed(() => {
     const typesContent = getContent(
@@ -34,4 +34,4 @@
   });
 </script>
 
-<style src="~/assets/styles/components/bonuses/badge-type.scss" lang="scss"/>
+<style src="~/assets/styles/components/bonuses/badge-type.scss" lang="scss" />

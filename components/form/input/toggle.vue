@@ -1,21 +1,15 @@
 <template>
   <div class="input-toggle" :class="{ 'input-toggle--checked': props.value }">
     <label class="label">
-      <input
-        class="checkbox"
-        type="checkbox"
-        :name="props.name"
-        :checked="props.value"
-        @change="emit('change')"
-      >
+      <input class="checkbox" type="checkbox" :name="props.name" :checked="props.value" @change="emit('change')" />
 
       <div class="slider">
-        <atomic-spinner v-if="props.loading && props.value" isShown />
-        <atomic-icon v-else id="check"/>
-        <atomic-spinner v-if="props.loading && !props.value" isShown />
-        <atomic-icon v-else id="close"/>
+        <atomic-spinner v-if="props.loading && props.value" is-shown />
+        <atomic-icon v-else id="check" />
+        <atomic-spinner v-if="props.loading && !props.value" is-shown />
+        <atomic-icon v-else id="close" />
       </div>
-      <slot/>
+      <slot />
     </label>
   </div>
 </template>
@@ -30,4 +24,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/toggle.scss" lang="scss" />
-

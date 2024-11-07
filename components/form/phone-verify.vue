@@ -5,11 +5,7 @@
       <span>+{{ props.phone }}</span>
     </div>
 
-    <form-input-code
-      ref="codeInput"
-      v-model:completeCode="completeCode"
-      :hint="props.errorHint"
-    />
+    <form-input-code ref="codeInput" v-model:complete-code="completeCode" :hint="props.errorHint" />
 
     <div class="phone-verify__resend">
       <span class="phone-verify__resend-hint">
@@ -29,16 +25,12 @@
           </div>
 
           <div class="time">
-            <span>{{ Math.floor(currentTime / 60) }}</span>:<span>{{ String(currentTime % 60).padStart(2, '0') }}</span>
+            <span>{{ Math.floor(currentTime / 60) }}</span
+            >:<span>{{ String(currentTime % 60).padStart(2, '0') }}</span>
           </div>
         </div>
 
-        <button-base
-          v-else
-          type="ghost"
-          size="xs"
-          @click.once="resendCode"
-        >
+        <button-base v-else type="ghost" size="xs" @click.once="resendCode">
           {{ getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.resendButton') }}
         </button-base>
       </template>
@@ -46,13 +38,13 @@
 
     <button-base
       class="phone-verify__verify-button"
-      tagName="div"
+      tag-name="div"
       type="primary"
       size="md"
-      :isDisabled="!completeCode || props.errorHint || props.loading"
+      :is-disabled="!completeCode || props.errorHint || props.loading"
       @click="verifyPhone"
     >
-      <atomic-spinner :is-shown="props.loading"/>
+      <atomic-spinner :is-shown="props.loading" />
       {{ props.buttonLabel }}
     </button-base>
   </div>
@@ -61,8 +53,8 @@
 <script setup lang="ts">
   const props = defineProps<{
     phone: string;
-    reason: 'registration'|'phoneVerification'|'changingPass';
-    errorHint?: { variant: string, message: string };
+    reason: 'registration' | 'phoneVerification' | 'changingPass';
+    errorHint?: { variant: string; message: string };
     loading: boolean;
     buttonLabel: string;
   }>();
@@ -80,7 +72,7 @@
   const timer = ref<any>(undefined);
   const currentTime = ref<number>(TIMER_TIME);
 
-  const startTimer = ():void => {
+  const startTimer = (): void => {
     timer.value = setInterval(() => {
       if (currentTime.value === 0) {
         clearInterval(timer.value);
@@ -109,12 +101,12 @@
     }
 
     resendingCode.value = false;
-  }
+  };
 
-  const verifyPhone = async(): Promise<void> => {
+  const verifyPhone = async (): Promise<void> => {
     if (props.loading) return;
     emit('verifyPhone', completeCode.value);
-  }
+  };
 
   const codeInput = ref();
   onMounted(() => {

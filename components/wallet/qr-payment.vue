@@ -8,9 +8,8 @@
       {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.description') }}
     </div>
 
-
     <div class="qr-payment__qr-code">
-      <atomic-qr-code :width="176" :qrAddress="props.qrAddress" />
+      <atomic-qr-code :width="176" :qr-address="props.qrAddress" />
     </div>
 
     <atomic-divider class="qr-payment__divider" />
@@ -19,19 +18,14 @@
       {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.instruction') }}
     </div>
 
-    <button-base
-      :isDisabled="copied"
-      type="primary"
-      size="lg"
-      @click="copyQr"
-    >
+    <button-base :is-disabled="copied" type="primary" size="lg" @click="copyQr">
       <template v-if="copied">
-        <atomic-icon id="double-check"/>
+        <atomic-icon id="double-check" />
         {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.copiedLabel') }}
       </template>
 
       <template v-else>
-        <atomic-icon id="copy"/>
+        <atomic-icon id="copy" />
         {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.buttonLabel') }}
       </template>
     </button-base>
@@ -39,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-  import copy from "copy-to-clipboard";
+  import copy from 'copy-to-clipboard';
   const props = defineProps<{
     qrAddress: string;
   }>();
@@ -48,10 +42,10 @@
   const { getContent } = useProjectMethods();
   const copied = ref<boolean>(false);
 
-  const copyQr = ():void => {
+  const copyQr = (): void => {
     copy(props.qrAddress);
     copied.value = true;
-  }
+  };
 </script>
 
 <style src="~/assets/styles/components/wallet/qr-payment.scss" lang="scss" />
