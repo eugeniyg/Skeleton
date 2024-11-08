@@ -15,6 +15,7 @@ interface IModalStoreState {
   modalsUrl: string[];
   onlyGuestModals: string[];
   onlyLoggedModals: string[];
+  openingModals: string[];
 }
 
 export const useModalStore = defineStore('modalStore', {
@@ -28,7 +29,8 @@ export const useModalStore = defineStore('modalStore', {
     },
     modalsUrl: ['sign-in', 'forgot-pass', 'reset-pass', 'sign-up'],
     onlyGuestModals: ['sign-in', 'sign-up', 'forgot-pass', 'reset-pass'],
-    onlyLoggedModals: []
+    onlyLoggedModals: [],
+    openingModals: []
   }),
 
   actions: {
@@ -61,7 +63,8 @@ export const useModalStore = defineStore('modalStore', {
     },
 
     async openModal(modalName: string, modalQueryParam?: string, prohibitQueryChange = true): Promise<void> {
-      if (!this.accessToOpen(modalName)) return;
+      if (!this.accessToOpen(modalName) || this.openingModals.includes(modalName)) return;
+      this.openingModals.push(modalName);
 
       if (!this.modals[modalName]) {
         const modalComponent = defineAsyncComponent(() => import(`../components/modal/${modalName}.vue`));
@@ -83,6 +86,7 @@ export const useModalStore = defineStore('modalStore', {
 
       if (prohibitQueryChange && this.modalsUrl.includes(modalName)) this.addModalQuery(modalName, modalQueryParam);
       this.modals[modalName].open();
+      this.openingModals = this.openingModals.filter(item => item !== modalName);
     },
 
     closeModal(modalName: string):void {
