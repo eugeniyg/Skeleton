@@ -4,12 +4,16 @@ import type {IPlayerLoyaltyAccount, IWebSocketResponse} from "@skeleton/core/typ
 interface ILoyaltyStoreState {
   loyaltyAccount: Maybe<IPlayerLoyaltyAccount>;
   loyaltySubscription: any;
+  levelNotificationEnabled: boolean;
+  levelNotificationTimer: any;
 }
 
 export const useLoyaltyStore = defineStore('loyaltyStore', {
   state: ():ILoyaltyStoreState => ({
     loyaltyAccount: null,
-    loyaltySubscription: null
+    loyaltySubscription: null,
+    levelNotificationEnabled: false,
+    levelNotificationTimer: undefined
   }),
 
   getters: {
@@ -57,6 +61,12 @@ export const useLoyaltyStore = defineStore('loyaltyStore', {
       const showNewLevelModal = oldLevelValue && newLevelValue && (oldLevelValue < newLevelValue);
       if (data?.playerAccount) this.loyaltyAccount = data.playerAccount;
       if (showNewLevelModal) {
+        const route = useRoute();
+        if (route.name === 'games-id' || route.name === 'locale-games-id') {
+          this.showLevelNotification();
+          return;
+        }
+
         const { showModal } = useLayoutStore();
         showModal('loyaltyLevel');
       }
@@ -76,5 +86,19 @@ export const useLoyaltyStore = defineStore('loyaltyStore', {
         this.loyaltySubscription.removeAllListeners();
       }
     },
+
+    showLevelNotification(): void {
+      this.levelNotificationEnabled = true;
+      this.levelNotificationTimer = setTimeout(() => {
+        this.levelNotificationEnabled = false;
+      }, 3000);
+    },
+
+    closeLevelNotification(): void {
+      if (this.levelNotificationTimer) {
+        clearTimeout(this.levelNotificationTimer);
+      }
+      this.levelNotificationEnabled = false;
+    }
   },
 });

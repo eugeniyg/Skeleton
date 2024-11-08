@@ -10,6 +10,8 @@
       @changeMode="changeGameMode"
     />
 
+    <button @click="loyaltyStore.showLevelNotification">TEST</button>
+
     <client-only>
       <modal-restricted-bets
         v-if="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"
@@ -31,6 +33,10 @@
         @playReal="changeGameMode"
       />
     </client-only>
+
+    <transition name="fade-up" mode="out-in">
+      <loyalty-new-level-notif v-if="levelNotificationEnabled" />
+    </transition>
 
     <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText" />
   </div>
@@ -65,6 +71,8 @@
     currentLocale,
     headerCountry
   } = storeToRefs(globalStore);
+  const loyaltyStore = useLoyaltyStore();
+  const { levelNotificationEnabled } = storeToRefs(loyaltyStore);
 
   const contentParams = {
     contentKey: 'gamePageContent',

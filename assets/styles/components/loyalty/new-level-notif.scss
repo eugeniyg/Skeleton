@@ -1,0 +1,34 @@
+.new-level-notif {
+  position: fixed;
+  top: 200px;
+  display: flex;
+  align-items: center;
+  width: 50%;
+  padding: 4px 8px;
+  background-color: var(--layer-03-low-contrast);
+  border: 1px solid var(--border-accent);
+  border-radius: 8px;
+  z-index: 2;
+
+  &__level-img {
+    width: 24px;
+    height: 24px;
+    margin-right: 4px;
+  }
+
+  &__title {
+    @include font($body-1);
+    color: var(--text-primary);
+  }
+
+  .btn-modal-close {
+    position: static !important;
+    transform: none !important;
+    margin-left: auto;
+
+    .icon:last-child {
+      position: static;
+      transform: none !important;
+    }
+  }
+}
