@@ -10,8 +10,6 @@
       @changeMode="changeGameMode"
     />
 
-    <button @click="loyaltyStore.showLevelNotification">TEST</button>
-
     <client-only>
       <modal-restricted-bets
         v-if="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"

@@ -67,7 +67,7 @@ export const useLayoutStore = defineStore('layoutStore', {
         turnOverWager: false,
         questsHub: false,
         loyaltyEarn: false,
-        loyaltyLevel: true,
+        loyaltyLevel: false,
         depositRedirect: false,
         providers: false,
         categories: false,

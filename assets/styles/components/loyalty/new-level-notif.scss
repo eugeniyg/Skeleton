@@ -1,24 +1,37 @@
 .new-level-notif {
   position: fixed;
-  top: 200px;
+  top: 100px;
+  left: 50%;
   display: flex;
   align-items: center;
-  width: 50%;
+  width: 240px;
   padding: 4px 8px;
   background-color: var(--layer-03-low-contrast);
   border: 1px solid var(--border-accent);
   border-radius: 8px;
-  z-index: 2;
+  z-index: 3;
+  transform: translateX(-50%);
+
+  @include media(md) {
+    top: 140px;
+    width: auto;
+    max-width: 600px;
+  }
+
+  @media (orientation: landscape) and (max-width: 1023px) {
+    top: 16px;
+  }
 
   &__level-img {
     width: 24px;
     height: 24px;
-    margin-right: 4px;
+    margin-right: 8px;
   }
 
   &__title {
     @include font($body-1);
     color: var(--text-primary);
+    margin-right: 4px;
   }
 
   .btn-modal-close {
@@ -29,6 +42,26 @@
     .icon:last-child {
       position: static;
       transform: none !important;
+    }
+  }
+
+  &.fade-up {
+    &-enter-from,
+    &-leave-to {
+      transform: translate(-50%, -100%);
+    }
+
+    &-enter-to,
+    &-leave-from {
+      transform: translate(-50%, 0);
+    }
+  }
+
+  &.pwa-notif-opened {
+    top: 165px;
+
+    @media (orientation: landscape) and (max-width: 1023px) {
+      top: 85px;
     }
   }
 }

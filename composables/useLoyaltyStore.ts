@@ -89,6 +89,7 @@ export const useLoyaltyStore = defineStore('loyaltyStore', {
 
     showLevelNotification(): void {
       this.levelNotificationEnabled = true;
+      if (this.levelNotificationTimer) clearTimeout(this.levelNotificationTimer);
       this.levelNotificationTimer = setTimeout(() => {
         this.levelNotificationEnabled = false;
       }, 3000);

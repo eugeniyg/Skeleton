@@ -1,5 +1,5 @@
 <template>
-  <div class="new-level-notif">
+  <div class="new-level-notif" :class="{ 'pwa-notif-opened': pwaVisible }">
     <atomic-image
       :key="levelImage"
       class="new-level-notif__level-img"
@@ -50,6 +50,12 @@
     }
 
     return undefined;
+  })
+
+  const pwaVisible = ref(false);
+  onMounted(() => {
+    const pwaNotif = document.querySelector('header .pwa');
+    pwaVisible.value = !!pwaNotif;
   })
 </script>
 
