@@ -1,16 +1,13 @@
 <template>
   <div class="bonuses-wager-progress">
     <div v-if="props.bonusInfo.wagerCasino" class="bonuses-wager-progress__row">
-      
-      <atomic-icon id="cherry" class="bonuses-wager-progress__icon"/>
+      <atomic-icon id="cherry" class="bonuses-wager-progress__icon" />
 
       <span class="bonuses-wager-progress__label">
         {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.wager') }}
       </span>
 
-      <span class="bonuses-wager-progress__value">
-        (x{{ props.bonusInfo.wagerCasino }}):
-      </span>
+      <span class="bonuses-wager-progress__value"> (x{{ props.bonusInfo.wagerCasino }}): </span>
 
       <span class="bonuses-wager-progress__amount">
         {{ currentCasinoAmount.amount }}
@@ -29,9 +26,7 @@
         {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.wager') }}
       </span>
 
-      <span class="bonuses-wager-progress__value">
-        (x{{ props.bonusInfo.wagerSportsbook }}):
-      </span>
+      <span class="bonuses-wager-progress__value"> (x{{ props.bonusInfo.wagerSportsbook }}): </span>
 
       <span class="bonuses-wager-progress__amount">
         {{ currentSportsbookAmount.amount }}
@@ -56,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerBonus } from "@skeleton/core/types";
+  import type { IPlayerBonus } from '@skeleton/core/types';
 
   const props = defineProps<{
     bonusInfo: IPlayerBonus;
@@ -70,25 +65,25 @@
 
   const { formatBalance } = useProjectMethods();
 
-  const currentCasinoAmount = computed<{ currency: string, amount: number }>(() => {
+  const currentCasinoAmount = computed<{ currency: string; amount: number }>(() => {
     return formatBalance(props.bonusInfo.currency, props.bonusInfo.currentWagerCasinoAmount);
-  })
+  });
 
-  const fullCasinoAmount = computed<{ currency: string, amount: number }>(() => {
+  const fullCasinoAmount = computed<{ currency: string; amount: number }>(() => {
     const fullAmount = props.bonusInfo.currentWagerCasinoAmount + props.bonusInfo.requiredWagerCasinoAmount;
     const roundAmount = Number(fullAmount.toFixed(activeAccountType.value === 'fiat' ? 2 : 8));
     return formatBalance(props.bonusInfo.currency, roundAmount);
-  })
+  });
 
-  const currentSportsbookAmount = computed<{ currency: string, amount: number }>(() => {
+  const currentSportsbookAmount = computed<{ currency: string; amount: number }>(() => {
     return formatBalance(props.bonusInfo.currency, props.bonusInfo.currentWagerSportsbookAmount);
-  })
+  });
 
-  const fullSportsbookAmount = computed<{ currency: string, amount: number }>(() => {
+  const fullSportsbookAmount = computed<{ currency: string; amount: number }>(() => {
     const fullAmount = props.bonusInfo.currentWagerSportsbookAmount + props.bonusInfo.requiredWagerSportsbookAmount;
     const roundAmount = Number(fullAmount.toFixed(activeAccountType.value === 'fiat' ? 2 : 8));
     return formatBalance(props.bonusInfo.currency, roundAmount);
-  })
+  });
 </script>
 
-<style src="~/assets/styles/components/bonuses/wager-progress.scss" lang="scss"/>
+<style src="~/assets/styles/components/bonuses/wager-progress.scss" lang="scss" />

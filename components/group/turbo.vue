@@ -12,32 +12,23 @@
       {{ globalComponentsContent?.turbogames?.label }}
     </h2>
 
-    <button-base
-      class="btn-show-all"
-      type="ghost"
-      size="sm"
-      :url="globalComponentsContent?.turbogames?.showAll?.url"
-    >
+    <button-base class="btn-show-all" type="ghost" size="sm" :url="globalComponentsContent?.turbogames?.showAll?.url">
       {{ globalComponentsContent?.turbogames?.showAll?.label }}
     </button-base>
 
     <button-arrows
       v-if="showArrowButtons"
-      :prevDisabled="prevDisabled"
-      :nextDisabled="nextDisabled"
-      @clickAction="clickAction"
+      :prev-disabled="prevDisabled"
+      :next-disabled="nextDisabled"
+      @click-action="clickAction"
     />
 
-    <div
-      ref="scrollContainer"
-      class="items"
-      @scroll="scrollHandler"
-    >
+    <div ref="scrollContainer" class="items" @scroll="scrollHandler">
       <card-turbo
         v-for="(item, itemIndex) in gamesList"
         :key="itemIndex"
         v-bind="item"
-        :buttonLabel="globalComponentsContent?.turbogames?.buttonLabel || ''"
+        :button-label="globalComponentsContent?.turbogames?.buttonLabel || ''"
       />
     </div>
   </div>
@@ -55,14 +46,14 @@
     if (!scrollContainer.value) return;
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
-    nextDisabled.value = scrollWidth < (scrollLeft + offsetWidth + 20) && scrollWidth > (scrollLeft + offsetWidth - 20);
+    nextDisabled.value = scrollWidth < scrollLeft + offsetWidth + 20 && scrollWidth > scrollLeft + offsetWidth - 20;
   };
 
   const clickAction = (direction: string): void => {
     const { offsetWidth, scrollWidth, scrollLeft } = scrollContainer.value;
     const widthToEnd = scrollWidth - (scrollLeft + offsetWidth);
-    const scrollLeftValue = widthToEnd < (offsetWidth / 1.4) ? widthToEnd : (offsetWidth / 1.4);
-    const scrollRightValue = scrollLeft < (offsetWidth / 1.4) ? scrollLeft : (offsetWidth / 1.4);
+    const scrollLeftValue = widthToEnd < offsetWidth / 1.4 ? widthToEnd : offsetWidth / 1.4;
+    const scrollRightValue = scrollLeft < offsetWidth / 1.4 ? scrollLeft : offsetWidth / 1.4;
     scrollContainer.value.scrollBy({
       left: direction === 'next' ? scrollLeftValue : -scrollRightValue,
       behavior: 'smooth',
@@ -80,4 +71,3 @@
 </script>
 
 <style src="~/assets/styles/components/group/turbo.scss" lang="scss" />
-

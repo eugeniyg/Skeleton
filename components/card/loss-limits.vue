@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="limits__card"
-    :class="{'is-full-width': isFullWidth}"
-  >
+  <div class="limits__card" :class="{ 'is-full-width': isFullWidth }">
     <h4 class="limits__card-title" data-tooltip-parent>
       {{ getContent(limitsContent, defaultLimitsContent, 'loss.label') }}
       <atomic-tooltip
@@ -24,7 +21,6 @@
     </p>
 
     <div class="limits__card-actions">
-
       <button-base
         type="primary"
         :is-disabled="isAllCurrenciesUsed || state.isShowEdit"
@@ -42,11 +38,7 @@
         {{ getContent(limitsContent, defaultLimitsContent, 'editButtonLabel') }}
       </button-base>
 
-      <button-base
-        v-if="state.isShowEdit"
-        type="secondary"
-        @click="state.isShowEdit = false"
-      >
+      <button-base v-if="state.isShowEdit" type="secondary" @click="state.isShowEdit = false">
         {{ getContent(limitsContent, defaultLimitsContent, 'doneButtonLabel') }}
       </button-base>
     </div>
@@ -57,22 +49,12 @@
   import type { IUpdateLimit } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
 
-  const emit = defineEmits([
-    'open-limit-modal',
-    'open-edit-modal',
-    'update-limits',
-  ]);
+  const emit = defineEmits(['open-limit-modal', 'open-edit-modal', 'update-limits']);
 
   const limitsStore = useLimitsStore();
   const { checkCurrencies } = limitsStore;
-  const {
-    lossPeriods,
-    betPeriods,
-    depositPeriods,
-    limitsContent,
-    defaultLimitsContent,
-    isAdvancedModeEnabled
-  } = storeToRefs(limitsStore);
+  const { lossPeriods, betPeriods, depositPeriods, limitsContent, defaultLimitsContent, isAdvancedModeEnabled } =
+    storeToRefs(limitsStore);
 
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
@@ -89,15 +71,18 @@
   };
 
   const isEditLocked = computed(() => {
-    return lossPeriods.value.every((period) => {
-      const filteredPeriods = period.items.filter((item) => item.status === 1)
-      return filteredPeriods.every((item) => item.cancelProcess && !item.pendingExist)
-    })
+    return lossPeriods.value.every(period => {
+      const filteredPeriods = period.items.filter(item => item.status === 1);
+      return filteredPeriods.every(item => item.cancelProcess && !item.pendingExist);
+    });
   });
 
   const isAllCurrenciesUsed = computed(() => checkCurrencies(lossPeriods.value, currencies.value));
 
-  const isFullWidth = computed(() => lossPeriods.value?.length > 1
-    || (!isAdvancedModeEnabled.value && betPeriods.value?.length > 1)
-    || (isAdvancedModeEnabled.value && depositPeriods.value?.length > 1 && betPeriods.value?.length > 1));
+  const isFullWidth = computed(
+    () =>
+      lossPeriods.value?.length > 1 ||
+      (!isAdvancedModeEnabled.value && betPeriods.value?.length > 1) ||
+      (isAdvancedModeEnabled.value && depositPeriods.value?.length > 1 && betPeriods.value?.length > 1)
+  );
 </script>

@@ -9,17 +9,14 @@
     </div>
 
     <client-only>
-      <loyalty-rewards-slider
-        v-if="loyaltyLevels.length"
-        :levels="loyaltyLevels"
-      />
+      <loyalty-rewards-slider v-if="loyaltyLevels.length" :levels="loyaltyLevels" />
     </client-only>
   </div>
 </template>
 
 <script setup lang="ts">
   import type { ILoyaltyPage } from '~/types';
-  import type {ILoyaltyLevel} from "@skeleton/core/types";
+  import type { ILoyaltyLevel } from '@skeleton/core/types';
 
   const loyaltyContent = ref<Maybe<ILoyaltyPage>>(inject('loyaltyContent'));
   const defaultLocaleLoyaltyContent = ref<Maybe<ILoyaltyPage>>(inject('defaultLocaleLoyaltyContent'));
@@ -33,13 +30,13 @@
       const { data } = await getLoyaltyLevels({ sortBy: 'order', sortOrder: 'asc' });
       loyaltyLevels.value = data;
     } catch {
-      console.error('Failed to load loyalty levels')
+      console.error('Failed to load loyalty levels');
     }
-  }
+  };
 
   onMounted(async () => {
     await getLevels();
-  })
+  });
 </script>
 
-<style src="~/assets/styles/components/loyalty/rewards.scss" lang="scss"/>
+<style src="~/assets/styles/components/loyalty/rewards.scss" lang="scss" />

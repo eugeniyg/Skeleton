@@ -6,7 +6,7 @@
           v-for="{ title, id } in betsTab"
           :key="id"
           class="item"
-          :class="{'is-active': id === selectedBetsTab}"
+          :class="{ 'is-active': id === selectedBetsTab }"
           @click="changeBetsTab(id)"
         >
           {{ title }}
@@ -17,26 +17,20 @@
         v-if="!loading && !bets.length"
         variant="bets-history"
         :title="props.content?.empty?.title"
-        :subTitle="props.content?.empty?.description"
+        :sub-title="props.content?.empty?.description"
       />
 
       <template v-for="betItem in bets" :key="betItem.id">
-        <card-bet-combo
-          v-if="betItem.items?.length > 1"
-          v-bind="{ ...betItem, ...props.content }"
-        />
+        <card-bet-combo v-if="betItem.items?.length > 1" v-bind="{ ...betItem, ...props.content }" />
 
-        <card-bet-ordinar
-          v-else
-          v-bind="{ ...betItem, ...props.content }"
-        />
+        <card-bet-ordinar v-else v-bind="{ ...betItem, ...props.content }" />
       </template>
     </div>
 
     <atomic-pagination
       v-if="pageMeta?.totalPages && pageMeta.totalPages > 1"
       v-bind="pageMeta"
-      @selectPage="changePage"
+      @select-page="changePage"
     />
   </div>
 </template>
@@ -46,7 +40,7 @@
   import type { IBetsHistory } from '~/types';
 
   const props = defineProps<{
-    content: IBetsHistory,
+    content: IBetsHistory;
   }>();
 
   const loading = ref<boolean>(true);
@@ -66,7 +60,7 @@
   const selectedBetsTab = ref<string>(betsTab[0].id);
 
   const { getBetsHistory } = useCoreGamesApi();
-  const betsRequest = async (page: number = 1):Promise<void> => {
+  const betsRequest = async (page: number = 1): Promise<void> => {
     loading.value = true;
     const response = await getBetsHistory(page, 10, selectedBetsTab.value === 'settled');
     bets.value = response.data;
@@ -74,20 +68,21 @@
     loading.value = false;
   };
 
-  const changeBetsTab = (tabId: string):void => {
+  const changeBetsTab = (tabId: string): void => {
     if (selectedBetsTab.value === tabId) return;
     selectedBetsTab.value = tabId;
     betsRequest();
   };
 
-  const changePage = (page: number):void => {
+  const changePage = (page: number): void => {
     if (loading.value) return;
     window.scroll(0, 0);
     betsRequest(page);
   };
 
-  onMounted(() => { betsRequest(); });
+  onMounted(() => {
+    betsRequest();
+  });
 </script>
 
 <style src="~/assets/styles/components/tab/history/bets.scss" lang="scss" />
-

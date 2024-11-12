@@ -16,21 +16,21 @@
 
     <client-only>
       <input
+        ref="inputRef"
         v-model="numberValue"
         v-maska="'############'"
         inputmode="numeric"
         class="field"
         type="text"
         name="phoneNumber"
-        :placeholder="props.placeholder"
+        :placeholder="props.placeholder || 'Enter number'"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
-        ref="inputRef"
       />
     </client-only>
 
-    <atomic-hint v-if="props.hint" v-bind="props.hint"/>
+    <atomic-hint v-if="props.hint" v-bind="props.hint" />
   </div>
 </template>
 
@@ -39,55 +39,42 @@
   import { storeToRefs } from 'pinia';
   import type { IPhoneCode } from '@skeleton/types';
 
-  const props = defineProps({
-    label: {
-      type: String,
-      default: '',
-    },
-    value: {
-      type: String,
-      required: false,
-    },
-    isRequired: {
-      type: Boolean,
-      default: false,
-    },
-    placeholder: {
-      type: String,
-      default: 'Enter number',
-    },
-    hint: {
-      type: Object,
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    label?: string;
+    value?: string;
+    isRequired?: boolean;
+    placeholder?: string;
+    hint?: { variant: string; message: string };
+  }>();
 
   const globalStore = useGlobalStore();
   const { countries, headerCountry } = storeToRefs(globalStore);
-  const selectItems:IPhoneCode[] = countries.value.map((country) => ({
-    countryCode: country.code,
-    code: country.phonePrefix,
-    mask: `/img/flags/${country.code.toLowerCase()}.svg`,
-    value: `+${country.phonePrefix}`,
-  })).sort((prevItem, nextItem) => {
-    if (prevItem.code > nextItem.code) return 1;
-    if (prevItem.code < nextItem.code) return -1;
-    return 0;
-  });
+  const selectItems: IPhoneCode[] = countries.value
+    .map(country => ({
+      countryCode: country.code,
+      code: country.phonePrefix,
+      mask: `/img/flags/${country.code.toLowerCase()}.svg`,
+      value: `+${country.phonePrefix}`,
+    }))
+    .sort((prevItem, nextItem) => {
+      if (prevItem.code > nextItem.code) return 1;
+      if (prevItem.code < nextItem.code) return -1;
+      return 0;
+    });
   const codeValue = ref<string>('');
   const numberValue = ref<string>('');
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
 
-  const setMobileCode = (countryCode: string):void => {
-    const searchPhone = selectItems.find((phoneObj) => phoneObj.countryCode === countryCode);
+  const setMobileCode = (countryCode: string): void => {
+    const searchPhone = selectItems.find(phoneObj => phoneObj.countryCode === countryCode);
     codeValue.value = searchPhone?.code || '';
   };
 
   if (props.value) {
     const parsePhone = parsePhoneNumber(`+${profile.value?.phone}`);
     if (parsePhone) {
-      const searchPhone = selectItems.find((phoneObj) => phoneObj.countryCode === parsePhone.country);
+      const searchPhone = selectItems.find(phoneObj => phoneObj.countryCode === parsePhone.country);
       if (searchPhone?.code) {
         codeValue.value = searchPhone.code || '';
         numberValue.value = parsePhone.number.replace(searchPhone.code, '');
@@ -97,11 +84,11 @@
   else if (headerCountry.value) setMobileCode(headerCountry.value);
 
   const emit = defineEmits(['focus', 'input', 'update:value', 'blur']);
-  const onFocus = ():void => {
+  const onFocus = (): void => {
     emit('focus');
   };
 
-  const onInput = ():void => {
+  const onInput = (): void => {
     if (codeValue.value && numberValue.value) {
       emit('update:value', codeValue.value + numberValue.value);
       emit('input', codeValue.value + numberValue.value);
@@ -111,24 +98,24 @@
     }
   };
 
-  const onBlur = ():void => {
+  const onBlur = (): void => {
     emit('blur');
   };
 
-  const onSelectInput = ():void => {
+  const onSelectInput = (): void => {
     onInput();
     onBlur();
   };
 
   const inputRef = ref();
 
-  const focusField = (e:any) => {
+  const focusField = (): void => {
     inputRef.value?.focus();
-  }
+  };
 
   defineExpose({
     focusField,
-  })
+  });
 </script>
 
 <style src="~/assets/styles/components/form/input/phone.scss" lang="scss" />

@@ -1,7 +1,7 @@
 <template>
   <div class="wallet-header">
     <div class="wallet-header__logo">
-      <atomic-image :src="props.src" :defaultImage="props.defaultImage" />
+      <atomic-image :src="props.src" :default-image="props.defaultImage" />
     </div>
 
     <div class="wallet-header__title">{{ props.title }}</div>
@@ -11,11 +11,11 @@
 
 <script setup lang="ts">
   const props = defineProps<{
-    title: string,
-    subTitle: string,
-    src: string,
-    defaultImage?: string
-  }>()
+    title: string;
+    subTitle: string;
+    src: string;
+    defaultImage?: string;
+  }>();
 </script>
 
-<style src="~/assets/styles/components/wallet/header.scss" lang="scss"/>
+<style src="~/assets/styles/components/wallet/header.scss" lang="scss" />

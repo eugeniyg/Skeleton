@@ -3,7 +3,7 @@
     <atomic-svg
       :key="cardContent?.icon"
       :src="cardContent?.icon"
-      defaultIcon="file"
+      default-icon="file"
       class="documents-card-type__logo"
     />
 
@@ -16,7 +16,7 @@
           :text="statusText[props.typeStatus]"
           :icon="statusIcons[props.typeStatus]"
           :class="`status-${props.typeStatus}`"
-          :messageCustomClass="`status-${props.typeStatus}`"
+          :message-custom-class="`status-${props.typeStatus}`"
           size="small"
         />
       </div>
@@ -29,15 +29,15 @@
 </template>
 
 <script setup lang="ts">
-  import type { IProfileDocuments } from "~/types";
-  import { ref } from "vue";
+  import type { IProfileDocuments } from '~/types';
+  import { ref } from 'vue';
 
   const props = defineProps<{
     type: string;
-    typeStatus?: 'pending'|'approve'|'canceled';
+    typeStatus?: 'pending' | 'approve' | 'canceled';
   }>();
 
-  const statusIcons:{[index: string]: string} = {
+  const statusIcons: { [index: string]: string } = {
     approve: 'done',
     pending: 'clock',
     canceled: 'warning',
@@ -47,14 +47,14 @@
     approve: 'Approved',
     pending: 'Pending',
     canceled: 'Rejected',
-  }
+  };
 
   const { getContent } = useProjectMethods();
   const documentsContent = ref<Maybe<IProfileDocuments>>(inject('documentsContent'));
   const defaultLocaleDocumentsContent = ref<Maybe<IProfileDocuments>>(inject('defaultLocaleDocumentsContent'));
   const cardContent = computed(() => {
     return getContent(documentsContent.value, defaultLocaleDocumentsContent.value, `documentTypeCards.${props.type}`);
-  })
+  });
 </script>
 
-<style src="~/assets/styles/components/documents/card-type.scss" lang="scss"/>
+<style src="~/assets/styles/components/documents/card-type.scss" lang="scss" />

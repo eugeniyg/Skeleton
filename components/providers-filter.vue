@@ -7,19 +7,15 @@
       @input="searchInput"
     />
 
-    <div
-      class="providers-filter__toggle-sort"
-      :class="{'is-active': isShowSort }"
-      @click="toggleSort"
-    >
-      <atomic-icon id="filter"/>
+    <div class="providers-filter__toggle-sort" :class="{ 'is-active': isShowSort }" @click="toggleSort">
+      <atomic-icon id="filter" />
     </div>
 
     <atomic-providers-sort
       :class="{ 'show-sort': isShowSort }"
-      :sortBy="props.filters.sortBy || 'order'"
-      :sortOrder="props.filters.sortOrder || 'asc'"
-      :sortOptions="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'sortOptions')"
+      :sort-by="props.filters.sortBy || 'order'"
+      :sort-order="props.filters.sortOrder || 'asc'"
+      :sort-options="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'sortOptions')"
       :label="getContent(props.currentLocaleContent, props.defaultLocaleContent, 'sortLabel')"
       @change="changeSort"
     />
@@ -28,8 +24,8 @@
 
 <script setup lang="ts">
   import debounce from 'lodash/debounce';
-  import type { IProvidersRequest } from "@skeleton/core/types";
-  import type { IProvidersPage } from "~/types";
+  import type { IProvidersRequest } from '@skeleton/core/types';
+  import type { IProvidersPage } from '~/types';
 
   const props = defineProps<{
     currentLocaleContent: Maybe<IProvidersPage>;
@@ -44,19 +40,23 @@
 
   const emit = defineEmits(['onSearch', 'changeSort']);
 
-  const searchInput = debounce((): void => {
-    if (searchValue.value.length > 1 || !searchValue.value) {
-      emit("onSearch", searchValue.value || undefined);
-    }
-  }, 500, { leading: false });
+  const searchInput = debounce(
+    (): void => {
+      if (searchValue.value.length > 1 || !searchValue.value) {
+        emit('onSearch', searchValue.value || undefined);
+      }
+    },
+    500,
+    { leading: false }
+  );
 
   const toggleSort = () => {
     isShowSort.value = !isShowSort.value;
   };
 
-  const changeSort = (newSortData: { sortBy: string, sortOrder: string }) => {
+  const changeSort = (newSortData: { sortBy: string; sortOrder: string }) => {
     emit('changeSort', newSortData);
   };
 </script>
 
-<style src="~/assets/styles/components/providers-filter.scss" lang="scss"/>
+<style src="~/assets/styles/components/providers-filter.scss" lang="scss" />

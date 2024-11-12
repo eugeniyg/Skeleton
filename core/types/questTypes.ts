@@ -1,4 +1,4 @@
-import type { IPaginationMeta } from './globalTypes'
+import type { IPaginationMeta } from './globalTypes';
 
 export interface IWinTaskConditions extends Record<string, any> {
   games?: string[];
@@ -64,9 +64,9 @@ export interface IPlayerQuest extends Record<string, any> {
   order: number;
   tasks: IPlayerQuestTask[];
   taskExecutionOrder: number;
-  packageOrder: number|null,
+  packageOrder: number | null;
   rewards: IPlayerQuestReward[];
-  endAt: string|null;
+  endAt: string | null;
 }
 
 export interface IPlayerQuestsRequest extends Record<string, any> {

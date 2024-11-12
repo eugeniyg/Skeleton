@@ -2,14 +2,14 @@
   <vue-final-modal
     v-model="modals.failing"
     class="modal-error-deposit"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 250 }"
-    :contentTransition="{ mode: 'in-out', duration: 250 }"
-    @clickOutside="closeModal('failing')"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
+    @click-outside="closeModal('failing')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('failing')"/>
+        <button-modal-close @close="closeModal('failing')" />
         <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'error.title') }}</div>
       </div>
 
@@ -29,7 +29,7 @@
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
   import { VueFinalModal } from 'vue-final-modal';
-  import DOMPurify from "isomorphic-dompurify";
+  import DOMPurify from 'isomorphic-dompurify';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
@@ -37,7 +37,7 @@
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
 
-  const tryAgain = async ():Promise<void> => {
+  const tryAgain = async (): Promise<void> => {
     await openWalletModal('deposit');
     closeModal('failing');
   };
@@ -46,8 +46,7 @@
     const contentText = getContent(popupsData, defaultLocalePopupsData, 'error.description');
     if (!contentText) return '';
     return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
-  })
+  });
 </script>
 
 <style src="~/assets/styles/components/modal/error.scss" lang="scss" />
-

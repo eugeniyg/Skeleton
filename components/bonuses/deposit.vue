@@ -11,22 +11,22 @@
       :list="packageList"
       :loading="props.loadingBonuses.includes(packageList[0].id)"
       @activate="emit('activateDeposit', { depositBonus: packageList[0] })"
-      @openPackageModal="emit('openPackageModal', packageList)"
+      @open-package-modal="emit('openPackageModal', packageList)"
     />
 
     <bonuses-card
       v-for="depositBonus in simpleDepositBonusesList"
       :key="depositBonus.id"
-      :bonusInfo="depositBonus"
+      :bonus-info="depositBonus"
       :loading="props.loadingBonuses.includes(depositBonus.id)"
-      isDeposit
+      is-deposit
       @activate="emit('activateDeposit', { depositBonus })"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { IProfileBonuses } from "~/types";
+  import type { IProfileBonuses } from '~/types';
 
   const props = defineProps<{
     loadingBonuses: string[];

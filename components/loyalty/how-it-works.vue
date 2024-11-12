@@ -14,21 +14,14 @@
         class="loyalty-how-it-works__image"
       />
 
-      <ul
-        v-if="listItems.length"
-        class="loyalty-how-it-works__list"
-      >
+      <ul v-if="listItems.length" class="loyalty-how-it-works__list">
         <li
           v-for="(item, index) in listItems"
           :key="index"
           class="loyalty-how-it-works__list-item"
-          :class="{'is-numeric': !item.image }"
+          :class="{ 'is-numeric': !item.image }"
         >
-          <atomic-image
-            v-if="item.image"
-            class="loyalty-how-it-works__list-item-icon"
-            :src="item.image"
-          />
+          <atomic-image v-if="item.image" class="loyalty-how-it-works__list-item-icon" :src="item.image" />
 
           <div v-else class="loyalty-how-it-works__list-item-icon">
             {{ index + 1 }}
@@ -47,11 +40,7 @@
       </ul>
     </div>
 
-    <button-base
-      type="primary"
-      size="lg"
-      @click="clickButton"
-    >
+    <button-base type="primary" size="lg" @click="clickButton">
       {{ getContent(loyaltyContent, defaultLocaleLoyaltyContent, 'howItWorks.button') }}
     </button-base>
   </div>
@@ -65,7 +54,7 @@
   const defaultLocaleLoyaltyContent = ref<Maybe<ILoyaltyPage>>(inject('defaultLocaleLoyaltyContent'));
   const listItems = computed(() => {
     return getContent(loyaltyContent.value, defaultLocaleLoyaltyContent.value, 'howItWorks.items') || [];
-  })
+  });
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
@@ -85,4 +74,4 @@
   };
 </script>
 
-<style src="~/assets/styles/components/loyalty/how-it-works.scss" lang="scss"/>
+<style src="~/assets/styles/components/loyalty/how-it-works.scss" lang="scss" />

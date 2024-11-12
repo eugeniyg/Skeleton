@@ -10,10 +10,7 @@ export default defineNuxtRouteMiddleware(async () => {
     const { getUserAccounts } = useWalletStore();
 
     try {
-      await Promise.all([
-        getProfileData(),
-        getUserAccounts()
-      ])
+      await Promise.all([getProfileData(), getUserAccounts()]);
     } catch {
       console.log('User logged out!');
     }

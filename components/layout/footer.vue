@@ -6,7 +6,7 @@
         :key="index"
         :heading="menu?.title"
         :items="menu?.items"
-        :isOpen="true"
+        :is-open="true"
         mode="toggle"
       >
         <template #header="{ heading }">
@@ -14,7 +14,7 @@
         </template>
 
         <template #content="{ item }: { item: ILink }">
-          <atomic-link :href="item.url" :targetBlank="item?.targetBlank">
+          <atomic-link :href="item.url" :target-blank="item?.targetBlank">
             {{ item.label }}
           </atomic-link>
         </template>
@@ -26,24 +26,26 @@
         :items="layoutData?.footer?.partners?.items || defaultLocaleLayoutData?.footer?.partners?.items"
       />
 
-      <list-base :items="layoutData?.footer?.responsibilityIcons || defaultLocaleLayoutData?.footer?.responsibilityIcons">
+      <list-base
+        :items="layoutData?.footer?.responsibilityIcons || defaultLocaleLayoutData?.footer?.responsibilityIcons"
+      >
         <template #header>
           <h4>{{ layoutData?.footer?.responsibilityLabel || defaultLocaleLayoutData?.footer?.responsibilityLabel }}</h4>
         </template>
 
         <template #item="{ item }">
-          <atomic-image :src="`${item.image}`"/>
+          <atomic-image :src="`${item.image}`" />
         </template>
       </list-base>
     </div>
 
-    <atomic-divider/>
+    <atomic-divider />
 
     <client-only>
       <list-paysis />
     </client-only>
 
-    <atomic-divider/>
+    <atomic-divider />
 
     <template v-if="layoutData?.footer?.custom?.show || defaultLocaleLayoutData?.footer?.custom?.show">
       <div class="info">
@@ -51,19 +53,13 @@
           v-if="customLicenseImage && customLicenseLink"
           class="info__image-link"
           :href="customLicenseLink"
-          targetBlank
+          target-blank
         >
-          <atomic-image
-            :src="customLicenseImage"
-            data-not-lazy
-          />
+          <atomic-image :src="customLicenseImage" data-not-lazy />
         </atomic-link>
 
         <div v-else-if="customLicenseImage" class="info__image">
-          <atomic-image
-            :src="customLicenseImage"
-            data-not-lazy
-          />
+          <atomic-image :src="customLicenseImage" data-not-lazy />
         </div>
 
         <div
@@ -73,7 +69,7 @@
         />
       </div>
 
-      <atomic-divider/>
+      <atomic-divider />
     </template>
 
     <template v-else-if="layoutData?.footer?.curacao?.show || defaultLocaleLayoutData?.footer?.curacao?.show">
@@ -93,9 +89,9 @@
         />
       </div>
 
-      <atomic-divider/>
+      <atomic-divider />
     </template>
-    
+
     <div class="copy-info">
       <p>{{ layoutData?.footer?.copyright || defaultLocaleLayoutData?.footer?.copyright }}</p>
     </div>
@@ -104,8 +100,8 @@
 
 <script setup lang="ts">
   import { marked } from 'marked';
-  import type { ILink } from "~/types";
-  import DOMPurify from "isomorphic-dompurify";
+  import type { ILink } from '~/types';
+  import DOMPurify from 'isomorphic-dompurify';
 
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const accordeonItems = [
@@ -114,20 +110,26 @@
     layoutData?.footer?.helpMenu || defaultLocaleLayoutData?.footer?.helpMenu,
   ].filter(menu => menu?.title && menu?.items?.length);
 
-  const customLicenseImage = computed(() => layoutData?.footer?.custom?.image || defaultLocaleLayoutData?.footer?.custom?.image);
-  const customLicenseLink = computed(() => layoutData?.footer?.custom?.link || defaultLocaleLayoutData?.footer?.custom?.link);
+  const customLicenseImage = computed(
+    () => layoutData?.footer?.custom?.image || defaultLocaleLayoutData?.footer?.custom?.image
+  );
+  const customLicenseLink = computed(
+    () => layoutData?.footer?.custom?.link || defaultLocaleLayoutData?.footer?.custom?.link
+  );
 
   const licenceDescription = computed(() => {
-    const descriptionContent = layoutData?.footer?.curacao?.description || defaultLocaleLayoutData?.footer?.curacao?.description;
+    const descriptionContent =
+      layoutData?.footer?.curacao?.description || defaultLocaleLayoutData?.footer?.curacao?.description;
     if (!descriptionContent) return '';
     return DOMPurify.sanitize(marked.parse(descriptionContent) as string, { FORBID_TAGS: ['style'] });
   });
 
   const customLicenceDescription = computed(() => {
-    const descriptionContent = layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description;
+    const descriptionContent =
+      layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description;
     if (!descriptionContent) return '';
     return DOMPurify.sanitize(marked.parse(descriptionContent) as string, { FORBID_TAGS: ['style'] });
   });
 </script>
 
-<style src="~/assets/styles/components/layout/footer.scss" lang="scss"/>
+<style src="~/assets/styles/components/layout/footer.scss" lang="scss" />

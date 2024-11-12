@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="wallet-bonus"
-    :class="classes"
-    @click="handleBonusClick"
-  >
+  <div class="wallet-bonus" :class="classes" @click="handleBonusClick">
     <div class="wallet-bonus__content">
       <div class="wallet-bonus__title">
         {{ props.bonusInfo.package?.name || props.bonusInfo.name }}
@@ -25,30 +21,22 @@
         </div>
       </div>
 
-      <div
-        v-else
-        class="wallet-bonus__more"
-        @click.stop="openBonusInfoModal"
-      >
+      <div v-else class="wallet-bonus__more" @click.stop="openBonusInfoModal">
         <div class="wallet-bonus__more-title">
           {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.moreInfo') }}
         </div>
 
         <atomic-icon id="info" />
       </div>
-      
-      <form-input-bonus-radio
-        :id="props.bonusInfo.id"
-        name="input-bonus-radio"
-        :value="props.selected"
-      />
+
+      <form-input-bonus-radio :id="props.bonusInfo.id" name="input-bonus-radio" :value="props.selected" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import type {IBonus} from "@skeleton/core/types";
-  import { storeToRefs } from "pinia";
+  import type { IBonus } from '@skeleton/core/types';
+  import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
     bonusInfo: IBonus;
@@ -67,8 +55,8 @@
 
   const classes = computed(() => ({
     'is-selected': props.selected,
-    'wallet-bonus--disabled': props.disabled
-  }))
+    'wallet-bonus--disabled': props.disabled,
+  }));
 
   const bonusDepositContent = computed(() => {
     const minDepositData = props.bonusInfo.minDeposit;
@@ -88,17 +76,17 @@
     }
 
     return { label, value };
-  })
+  });
 
   const openBonusInfoModal = (): void => {
     depositMoreInfoBonus.value = props.bonusInfo;
-    showModal('walletBonusInfo')
-  }
+    showModal('walletBonusInfo');
+  };
 
   const handleBonusClick = (): void => {
     if (props.disabled || props.selected) return;
     emit('bonusChange');
-  }
+  };
 </script>
 
-<style src="~/assets/styles/components/wallet/bonus.scss" lang="scss"/>
+<style src="~/assets/styles/components/wallet/bonus.scss" lang="scss" />

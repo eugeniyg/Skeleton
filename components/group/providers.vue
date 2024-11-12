@@ -8,40 +8,26 @@
       {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.label') }}
     </h2>
 
-    <button-base
-      v-if="props.showAllBtn"
-      class="btn-show-all"
-      type="ghost"
-      size="sm"
-      url="/providers"
-    >
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }} {{ providersIdentity.length }}
+    <button-base v-if="props.showAllBtn" class="btn-show-all" type="ghost" size="sm" url="/providers">
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
+      {{ providersIdentity.length }}
     </button-base>
 
     <button-arrows
       v-if="showArrowButtons"
-      :prevDisabled="prevDisabled"
-      :nextDisabled="nextDisabled"
-      @clickAction="clickAction"
+      :prev-disabled="prevDisabled"
+      :next-disabled="nextDisabled"
+      @click-action="clickAction"
     />
 
-    <div
-      v-if="providersList.length"
-      ref="scrollContainer"
-      class="items"
-      @scroll="scrollHandler"
-    >
-      <card-providers
-        v-for="provider in providersList"
-        :key="provider.id"
-        :providerData="provider"
-      />
+    <div v-if="providersList.length" ref="scrollContainer" class="items" @scroll="scrollHandler">
+      <card-providers v-for="provider in providersList" :key="provider.id" :provider-data="provider" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { IGameProvider } from "@skeleton/core/types";
+  import type { IGameProvider } from '@skeleton/core/types';
 
   const props = defineProps<{
     showAllBtn?: boolean;
@@ -66,7 +52,7 @@
     'pg-soft',
     'spadegaming',
     'spribe',
-    'evolution-gaming'
+    'evolution-gaming',
   ];
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const { getContent } = useProjectMethods();
@@ -79,7 +65,7 @@
       if (providerData) return [...providersArr, providerData];
       return providersArr;
     }, []);
-  })
+  });
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
@@ -90,7 +76,7 @@
     if (!scrollContainer.value) return;
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
-    nextDisabled.value = scrollWidth < (scrollLeft + offsetWidth + 20) && scrollWidth > (scrollLeft + offsetWidth - 20);
+    nextDisabled.value = scrollWidth < scrollLeft + offsetWidth + 20 && scrollWidth > scrollLeft + offsetWidth - 20;
   };
 
   watch(gameProviders, () => {

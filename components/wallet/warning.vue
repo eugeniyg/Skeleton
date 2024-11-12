@@ -1,10 +1,7 @@
 <template>
   <div v-if="props.content?.description" class="wallet-warning">
     <div class="wallet-warning__icon">
-      <atomic-svg
-        :src="props.content?.icon"
-        defaultIcon="info"
-      />
+      <atomic-svg :src="props.content?.icon" default-icon="info" />
     </div>
     
     <div
@@ -26,4 +23,4 @@
   }>();
 </script>
 
-<style src="~/assets/styles/components/wallet/warning.scss" lang="scss"/>
+<style src="~/assets/styles/components/wallet/warning.scss" lang="scss" />

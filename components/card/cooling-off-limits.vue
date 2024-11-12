@@ -1,17 +1,10 @@
 <template>
-  <div
-    class="limits__card"
-    :class="{'is-full-width': isFullWidth}"
-  >
+  <div class="limits__card" :class="{ 'is-full-width': isFullWidth }">
     <h4 class="limits__card-title">
       {{ getContent(limitsContent, defaultLimitsContent, 'coolingOff.label') }}
     </h4>
 
-    <atomic-limits-list
-      v-if="coolingOffLimits.length && !state.isEditProcess"
-      :limits="sortedLimits"
-      @edit="edit"
-    />
+    <atomic-limits-list v-if="coolingOffLimits.length && !state.isEditProcess" :limits="sortedLimits" @edit="edit" />
 
     <div v-else class="limits__card-dropdown">
       <form-input-dropdown
@@ -52,12 +45,12 @@
   const limitHintContent = computed(() => getContent(limitsContent.value, defaultLimitsContent.value, 'coolingOff.hint'));
 
   const state = reactive<{
-    limitData?: IPlayerLimit,
-    limitId: string | undefined,
-    isEditProcess: boolean,
-    selectedPeriod: string,
-    definition: number,
-    prevPeriod: string|undefined,
+    limitData?: IPlayerLimit;
+    limitId: string | undefined;
+    isEditProcess: boolean;
+    selectedPeriod: string;
+    definition: number;
+    prevPeriod: string | undefined;
   }>({
     limitData: undefined,
     limitId: undefined,
@@ -67,16 +60,21 @@
     definition: 5,
   });
 
-  const sortedLimits = computed(() => coolingOffLimits.value.sort((a, b) => a.status - b.status));
+  const sortedLimits = computed(() => {
+    return [...coolingOffLimits.value].sort((a, b) => a.status - b.status);
+  });
 
-  const isFullWidth = computed(() => (!isAdvancedModeEnabled.value && betPeriods.value?.length > 1)
-    || (!isAdvancedModeEnabled.value && lossPeriods.value?.length < 2));
+  const isFullWidth = computed(
+    () =>
+      (!isAdvancedModeEnabled.value && betPeriods.value?.length > 1) ||
+      (!isAdvancedModeEnabled.value && lossPeriods.value?.length < 2)
+  );
 
   const edit = (limit: IPlayerLimit) => {
     state.isEditProcess = true;
     state.limitData = limit;
     state.limitId = limit.id;
-    state.selectedPeriod = periodLessDay.value && !limit.pendingExist ? '' : limit.period as string;
+    state.selectedPeriod = periodLessDay.value && !limit.pendingExist ? '' : (limit.period as string);
     state.prevPeriod = limit.period as string;
   };
 
@@ -101,12 +99,12 @@
   const periodLessDay = computed(() => {
     const diffDays = dayjs(state.limitData?.expiredAt).diff(dayjs(), 'day');
     return diffDays < 1;
-  })
+  });
 
   const periodsOptions = computed(() => {
-    if (!state.isEditProcess || state.limitData?.pendingExist || !periodLessDay.value) return coolingOffPeriod.value
+    if (!state.isEditProcess || state.limitData?.pendingExist || !periodLessDay.value) return coolingOffPeriod.value;
 
-    const toPeriodIndex = coolingOffPeriod.value.findIndex((period) => period.code === state.limitData?.period)
-    return coolingOffPeriod.value.map((period, index) => ({ ...period, disabled: index <= toPeriodIndex }))
-  })
+    const toPeriodIndex = coolingOffPeriod.value.findIndex(period => period.code === state.limitData?.period);
+    return coolingOffPeriod.value.map((period, index) => ({ ...period, disabled: index <= toPeriodIndex }));
+  });
 </script>

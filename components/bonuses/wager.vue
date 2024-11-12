@@ -26,4 +26,4 @@
   const { getContent } = useProjectMethods();
 </script>
 
-<style src="~/assets/styles/components/bonuses/wager.scss" lang="scss"/>
+<style src="~/assets/styles/components/bonuses/wager.scss" lang="scss" />

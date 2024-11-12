@@ -20,7 +20,7 @@
             {{ getContent(loyaltyContent, defaultLocaleLoyaltyContent, 'rewards.statusPointsLabel') }}
           </span>
 
-          <atomic-icon id="info" @click="showModal('loyaltyEarn')"/>
+          <atomic-icon id="info" @click="showModal('loyaltyEarn')" />
         </div>
 
         <div class="loyalty-rewards-slider__item-status-points-value">
@@ -30,11 +30,8 @@
     </div>
 
     <div class="loyalty-rewards-slider__item-content">
-      <div v-for="reward in levelRewards" class="loyalty-rewards-slider__item-reward">
-        <div
-          class="loyalty-rewards-slider__item-reward-value"
-          :class="{'--is-empty': !reward.value }"
-        >
+      <div v-for="(reward, index) in levelRewards" :key="index" class="loyalty-rewards-slider__item-reward">
+        <div class="loyalty-rewards-slider__item-reward-value" :class="{ '--is-empty': !reward.value }">
           {{ reward.value || '-' }}
         </div>
 
@@ -43,20 +40,17 @@
         </div>
       </div>
 
-      <atomic-divider
-        v-if="levelRewards.length && levelBenefits.length"
-        class="loyalty-rewards-slider__item-divider"
-      />
+      <atomic-divider v-if="levelRewards.length && levelBenefits.length" class="loyalty-rewards-slider__item-divider" />
 
       <div v-if="levelBenefits.length" class="loyalty-rewards-slider__item-options">
         <div
           v-for="(benefit, index) in levelBenefits"
           :key="index"
           class="loyalty-rewards-slider__item-option"
-          :class="{'is-checked': benefit.checked}"
+          :class="{ 'is-checked': benefit.checked }"
         >
           <div class="loyalty-rewards-slider__item-option-checkbox">
-            <atomic-icon :id="benefit.checked ? 'check' : 'close'"/>
+            <atomic-icon :id="benefit.checked ? 'check' : 'close'" />
           </div>
 
           <div class="loyalty-rewards-slider__item-option-label">{{ benefit.label }}</div>
@@ -67,8 +61,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { ILoyaltyLevel } from "@skeleton/core/types";
-  import type { ILoyaltyPage } from "~/types";
+  import type { ILoyaltyLevel } from '@skeleton/core/types';
+  import type { ILoyaltyPage } from '~/types';
 
   const props = defineProps<{
     level: ILoyaltyLevel;
@@ -86,17 +80,17 @@
 
   const completedLevelIcon = computed(() => {
     return getContent(loyaltyContent.value, defaultLocaleLoyaltyContent.value, 'rewards.completedIcon');
-  })
+  });
 
   const activeLevelIcon = computed(() => {
     return getContent(loyaltyContent.value, defaultLocaleLoyaltyContent.value, 'rewards.activeIcon');
-  })
+  });
 
   const lockedLevelIcon = computed(() => {
     return getContent(loyaltyContent.value, defaultLocaleLoyaltyContent.value, 'rewards.lockedIcon');
-  })
+  });
 
-  const cardStatus = computed<'completed'|'active'|'locked'>(() => {
+  const cardStatus = computed<'completed' | 'active' | 'locked'>(() => {
     if (!isLoggedIn.value) return props.level.order === 1 ? 'active' : 'locked';
 
     const currenLevel = loyaltyAccount.value?.currentLevel?.order;
@@ -105,7 +99,7 @@
       if (currenLevel < props.level.order) return 'locked';
       return 'active';
     } else return 'locked';
-  })
+  });
 
   const levelIcon = computed(() => {
     if (cardStatus.value === 'completed') return completedLevelIcon.value;
@@ -116,16 +110,16 @@
   const levelRewards = computed(() => {
     const contentRewards = getContent(loyaltyContent.value, defaultLocaleLoyaltyContent.value, 'rewards.levelsRewards');
     return contentRewards?.[props.level.order - 1]?.rewards || [];
-  })
+  });
 
   const levelBenefits = computed(() => {
     const contentBenefits = getContent(loyaltyContent.value, defaultLocaleLoyaltyContent.value, 'rewards.benefits');
     if (!contentBenefits?.length) return [];
     return contentBenefits.map((benefit: { label: string; levels?: string[] }) => ({
       label: benefit.label,
-      checked: benefit.levels?.includes(String(props.level.order))
-    }))
-  })
+      checked: benefit.levels?.includes(String(props.level.order)),
+    }));
+  });
 
   const orderClass = computed(() => `is-order-${cardStatus.value}`);
 </script>

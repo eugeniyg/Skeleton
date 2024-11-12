@@ -23,7 +23,9 @@
           type="email"
           name="email"
           :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.label') || ''"
-          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''"
+          :placeholder="
+            getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.email.placeholder') || ''
+          "
           :hint="setError('email')"
           @blur="v$.email?.$touch()"
         />
@@ -32,7 +34,9 @@
           v-model:value="contactFormData.message"
           name="message"
           :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.message.label') || ''"
-          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.message.placeholder') || ''"
+          :placeholder="
+            getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.message.placeholder') || ''
+          "
           :hint="setError('message')"
           @blur="v$.message?.$touch()"
         />
@@ -40,15 +44,19 @@
         <button-base
           type="primary"
           size="lg"
-          :isDisabled="v$.$invalid || isLockedAsyncButton"
+          :is-disabled="v$.$invalid || isLockedAsyncButton"
           @click="submitContactForm"
         >
-          {{ pageContent?.currentLocaleData?.buttonLabel || pageContent?.defaultLocaleData?.buttonLabel }} <atomic-icon id="arrow_next"/>
+          {{ pageContent?.currentLocaleData?.buttonLabel || pageContent?.defaultLocaleData?.buttonLabel }}
+          <atomic-icon id="arrow_next" />
         </button-base>
       </div>
     </div>
 
-    <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText" />
+    <atomic-seo-text
+      v-if="pageContent?.currentLocaleData?.pageMeta?.seoText"
+      v-bind="pageContent.currentLocaleData.pageMeta.seoText"
+    />
   </div>
 </template>
 
@@ -62,18 +70,13 @@
   const globalStore = useGlobalStore();
   const { getContent } = useProjectMethods();
 
-  const {
-    fieldsSettings,
-    defaultLocaleFieldsSettings,
-    alertsData,
-    defaultLocaleAlertsData
-  } = storeToRefs(globalStore);
+  const { fieldsSettings, defaultLocaleFieldsSettings, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
   const contentParams = {
     contentKey: 'contactPageContent',
     contentRoute: ['pages', 'contacts'],
-    isPage: true
-  }
+    isPage: true,
+  };
   const { getContentData } = useContentLogic<IContactsPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
 
@@ -97,7 +100,7 @@
   });
 
   const { sendContactMessage } = useCoreGlobalApi();
-  const submitContactForm = async ():Promise<void> => {
+  const submitContactForm = async (): Promise<void> => {
     if (v$.value.$invalid) return;
 
     v$.value.$reset();
@@ -107,11 +110,13 @@
     try {
       isLockedAsyncButton.value = true;
       await sendContactMessage(contactFormData);
-      layoutStore.showAlert(alertsData.value?.global?.sentMessage || defaultLocaleAlertsData.value?.global?.sentMessage);
+      layoutStore.showAlert(
+        alertsData.value?.global?.sentMessage || defaultLocaleAlertsData.value?.global?.sentMessage
+      );
       contactFormData.email = '';
       contactFormData.message = '';
       v$.value.$reset();
-    } catch (err:any) {
+    } catch (err: any) {
       if (err.response?.status === 422) {
         serverFormErrors.value = err.data?.error?.fields;
       } else throw err;
@@ -122,4 +127,3 @@
 </script>
 
 <style src="~/assets/styles/pages/contact.scss" lang="scss" />
-

@@ -1,19 +1,15 @@
 <template>
-  <div class="card-bet-combo" :class="{'is-open': isOpen}">
+  <div class="card-bet-combo" :class="{ 'is-open': isOpen }">
     <div class="head">
       <span class="date">{{ dayjs(props.createdAt).format('DD.MM HH:mm') }}</span>
 
-      <button-copy
-        :copyButton="betCard.copyButton"
-        :copyTooltip="betCard.copyTooltip"
-        :text="props.roundId"
-      />
+      <button-copy :copy-button="betCard.copyButton" :copy-tooltip="betCard.copyTooltip" :text="props.roundId" />
     </div>
 
     <div class="content">
       <div class="row">
         <button class="btn-toggle-expand" @click="isOpen = !isOpen">
-          <atomic-icon id="arrow_expand-close"/>
+          <atomic-icon id="arrow_expand-close" />
         </button>
 
         <div class="row-title">{{ betCard.comboLabel }}</div>
@@ -23,7 +19,7 @@
 
           <div v-if="comboDisciplines.length" class="tooltip" data-tooltip-parent>
             <span class="more">{{ `+${comboDisciplines.length} ${betCard.comboDisciplinesTooltip}` }}</span>
-            <atomic-tooltip :text="comboDisciplines.join(', ')"/>
+            <atomic-tooltip :text="comboDisciplines.join(', ')" />
           </div>
         </div>
       </div>
@@ -38,11 +34,14 @@
         <span class="value">{{ betSum }}</span>
       </div>
 
-      <atomic-bet-status
-        v-if="props.status !== 1"
-        :variant="props.status"
-      >
-        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.betStatuses.${props.status}`) }}
+      <atomic-bet-status v-if="props.status !== 1" :variant="props.status">
+        {{
+          getContent(
+            globalComponentsContent,
+            defaultLocaleGlobalComponentsContent,
+            `constants.betStatuses.${props.status}`
+          )
+        }}
       </atomic-bet-status>
 
       <div v-if="props.status !== 1" class="amount">
@@ -82,16 +81,16 @@
   import type { IBetsHistory } from '~/types';
 
   const props = defineProps<{
-    id: string,
-    roundId: string,
-    amount: number,
-    currency: string,
-    createdAt: string,
-    payout: number,
-    items: IBetItem[],
-    status: number,
-    coefficient: number,
-    betCard: IBetsHistory['betCard'],
+    id: string;
+    roundId: string;
+    amount: number;
+    currency: string;
+    createdAt: string;
+    payout: number;
+    items: IBetItem[];
+    status: number;
+    coefficient: number;
+    betCard: IBetsHistory['betCard'];
   }>();
 
   const isOpen = ref<boolean>(false);
@@ -99,7 +98,9 @@
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
 
   const comboDisciplines = computed(() => {
-    return props.items.map((betItem) => betItem.discipline).filter((discipline) => discipline !== props.items[0].discipline);
+    return props.items
+      .map(betItem => betItem.discipline)
+      .filter(discipline => discipline !== props.items[0].discipline);
   });
 
   const { formatBalance, getContent } = useProjectMethods();

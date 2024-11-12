@@ -4,20 +4,20 @@
       ref="otpInput"
       v-model:value="otpValue"
       input-classes="otp-input"
-      inputType="number"
+      input-type="number"
       separator=""
       :num-inputs="6"
       :should-focus-order="true"
-      @onComplete="handleOnComplete"
-      @onChange="handleChange"
+      @on-complete="handleOnComplete"
+      @on-change="handleChange"
     />
 
-    <atomic-hint v-if="props.hint" v-bind="props.hint"/>
+    <atomic-hint v-if="props.hint" v-bind="props.hint" />
   </div>
 </template>
 
 <script setup lang="ts">
-  import VOtpInput from "vue3-otp-input";
+  import VOtpInput from 'vue3-otp-input';
 
   const props = defineProps<{
     hint?: Record<string, any>;
@@ -33,14 +33,14 @@
 
   const handleChange = (inputValue: string) => {
     if (inputValue.length !== 6) emit('update:completeCode', '');
-  }
+  };
 
-  const focusInput = ():void => {
+  const focusInput = (): void => {
     const firstInput = otpInput.value?.$el.querySelector('input');
     if (firstInput) firstInput.focus();
-  }
+  };
 
-  defineExpose({focusInput});
+  defineExpose({ focusInput });
 </script>
 
 <style src="~/assets/styles/components/form/input/code.scss" lang="scss" />
