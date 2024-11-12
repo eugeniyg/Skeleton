@@ -18,7 +18,7 @@
         class="card-slide__content"
         v-html="DOMPurify.sanitize(marked.parse(props.slideData.content) as string, { FORBID_TAGS: ['style'] })"
       />
-      
+
       <div v-if="showButton" class="card-slide__actions" @click.stop>
         <atomic-link
           class="btn-primary"
@@ -44,18 +44,19 @@
   const router = useRouter();
   const { createSrcSet, localizePath } = useProjectMethods();
   const showButton = computed(() => !!props.slideData.button?.label && !!props.slideData.button?.url);
-  const backgroundGradientStyle = computed(() => `background: linear-gradient(to right, ${props.slideData.colorLeft}, ${props.slideData.colorRight})`);
+  const backgroundGradientStyle = computed(
+    () => `background: linear-gradient(to right, ${props.slideData.colorLeft}, ${props.slideData.colorRight})`
+  );
 
-  const slideHandleClick = ():void => {
+  const slideHandleClick = (): void => {
     const url = props.slideData.slideLink?.url;
     const targetBlankParam = props.slideData.slideLink?.targetBlank;
     if (!url) return;
 
     if (url.startsWith('http')) window.open(url, targetBlankParam ? '_blank' : '_self');
-    else if (targetBlankParam) window.open(localizePath(url),  '_blank');
+    else if (targetBlankParam) window.open(localizePath(url), '_blank');
     else router.push(localizePath(url));
-  }
-
+  };
 </script>
 
 <style src="~/assets/styles/components/card/slide.scss" lang="scss" />
