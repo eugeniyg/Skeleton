@@ -1,12 +1,14 @@
 <template>
-  <div class="limits-periods-list" :class="{'is-show-edit': props.isShowEdit}">
-    <div
-      v-for="period in props.periods"
-      :key="period.title"
-      class="limits-periods-list__column"
-    >
+  <div class="limits-periods-list" :class="{ 'is-show-edit': props.isShowEdit }">
+    <div v-for="period in props.periods" :key="period.title" class="limits-periods-list__column">
       <h4 class="limits-periods-list__title">
-        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, `constants.limitPeriods.${period.title}`) }}
+        {{
+          getContent(
+            globalComponentsContent,
+            defaultLocaleGlobalComponentsContent,
+            `constants.limitPeriods.${period.title}`
+          )
+        }}
       </h4>
 
       <div class="limits-periods-list__items">
@@ -15,7 +17,7 @@
           v-bind="item"
           :key="item.id + item.updatedAt"
           :is-show-edit="isShowEdit"
-          @edit-limit="emit('open-edit-modal', { ...item, limitId: item.id  })"
+          @edit-limit="emit('open-edit-modal', { ...item, limitId: item.id })"
         />
       </div>
     </div>
@@ -27,10 +29,10 @@
 
   const props = defineProps<{
     periods: {
-      title: string,
-      items: IPlayerLimit[]
-    }[],
-    isShowEdit: boolean,
+      title: string;
+      items: IPlayerLimit[];
+    }[];
+    isShowEdit: boolean;
   }>();
 
   const emit = defineEmits(['open-edit-modal']);

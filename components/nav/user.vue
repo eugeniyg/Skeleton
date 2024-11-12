@@ -9,19 +9,17 @@
             {{ userNickname }}
           </div>
 
-          <div v-if="activeAccount" class="amount">
-            {{ balanceFormat.amount }} {{ balanceFormat.currency }}
-          </div>
+          <div v-if="activeAccount" class="amount">{{ balanceFormat.amount }} {{ balanceFormat.currency }}</div>
         </div>
       </div>
 
       <template v-if="loyaltyEnabled">
-        <atomic-divider/>
+        <atomic-divider />
 
         <loyalty-progress />
 
         <button-base type="primary" size="md" @click="clickDeposit">
-          <atomic-icon id="plus"/>
+          <atomic-icon id="plus" />
 
           <span>{{ getContent(popupsData, defaultLocalePopupsData, 'wallet.tabs.deposit') }}</span>
         </button-base>
@@ -49,24 +47,20 @@
       </div>
     </div>
 
-    <atomic-divider/>
-    <button-logout @logout="emit('logout')"/>
+    <atomic-divider />
+    <button-logout @logout="emit('logout')" />
   </nav>
 </template>
 
 <script setup lang="ts">
-  import {storeToRefs} from "pinia";
+  import { storeToRefs } from 'pinia';
 
   const emit = defineEmits(['logout']);
   const { localizePath, handleExternalLink, getContent } = useProjectMethods();
   const { closeUserNav, openWalletModal } = useLayoutStore();
-  const {
-    layoutData,
-    defaultLocaleLayoutData,
-    popupsData,
-    defaultLocalePopupsData
-  } = useGlobalStore();
-  const profileLinks = layoutData?.profileSidebar?.profileLinks || defaultLocaleLayoutData?.profileSidebar?.profileLinks || [];
+  const { layoutData, defaultLocaleLayoutData, popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const profileLinks =
+    layoutData?.profileSidebar?.profileLinks || defaultLocaleLayoutData?.profileSidebar?.profileLinks || [];
   const route = useRoute();
 
   const runtimeConfig = useRuntimeConfig();
@@ -78,15 +72,15 @@
   const { formatBalance } = useProjectMethods();
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
 
-  const clickItem = (url: string):void => {
+  const clickItem = (url: string): void => {
     closeUserNav();
-    handleExternalLink(url)
-  }
+    handleExternalLink(url);
+  };
 
-  const clickDeposit = ():void => {
+  const clickDeposit = (): void => {
     closeUserNav();
     openWalletModal('deposit');
-  }
+  };
 
   const notificationStore = useNotificationStore();
   const { unreadCount } = storeToRefs(notificationStore);
@@ -96,4 +90,3 @@
 </script>
 
 <style src="~/assets/styles/components/nav/user.scss" lang="scss" />
-

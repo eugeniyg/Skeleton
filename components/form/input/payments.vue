@@ -5,15 +5,15 @@
         v-for="(item, i) in props.items"
         :key="i"
         class="item"
-        :class="{'is-selected': item.method === props.activeMethod?.method }"
+        :class="{ 'is-selected': item.method === props.activeMethod?.method }"
         @click="select(item)"
       >
         <atomic-image
           class="mask"
           :src="paymentLogos[i]"
-          :defaultImage="activeAccountType === 'fiat'
-            ? '/img/methods-icons/cards.svg'
-            : '/img/methods-icons/crypto-placeholder.svg'"
+          :default-image="
+            activeAccountType === 'fiat' ? '/img/methods-icons/cards.svg' : '/img/methods-icons/crypto-placeholder.svg'
+          "
         />
 
         <div class="input-payments__min">
@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <input type="hidden" name="payments" :value="props.activeMethod?.method" >
+    <input type="hidden" name="payments" :value="props.activeMethod?.method" />
   </div>
 </template>
 
@@ -31,17 +31,17 @@
   import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
-    items?: IPaymentMethod[],
-    activeMethod?: IPaymentMethod
+    items?: IPaymentMethod[];
+    activeMethod?: IPaymentMethod;
   }>();
 
   const { getContent, formatBalance } = useProjectMethods();
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
 
   const emit = defineEmits(['update:activeMethod', 'methodClick']);
-  const cashAgentMethodKey:string = '0x.withdrawal.cash_agent';
+  const cashAgentMethodKey: string = '0x.withdrawal.cash_agent';
 
-  const select = (method: IPaymentMethod):void => {
+  const select = (method: IPaymentMethod): void => {
     emit('methodClick');
 
     if (props.activeMethod?.method === method.method) return;
@@ -57,43 +57,46 @@
   const getMinMethodSum = (minAmount: number): string => {
     const { amount, currency } = formatBalance(activeAccount.value?.currency, minAmount);
     return `${amount} ${currency}`;
-  }
+  };
 
   const setMethodsMinSum = (): void => {
     if (!props.items) methodsMinSum.value = [];
     else {
       methodsMinSum.value = props.items?.map((method: any) => {
         return getMinMethodSum(method.amountMin);
-      })
+      });
     }
-  }
+  };
 
   const runtimeConfig = useRuntimeConfig();
   const customerCdn = runtimeConfig.public.customerCdn;
   const setPaymentLogos = (): void => {
     if (!props.items) paymentLogos.value = [];
-    else paymentLogos.value = props.items.map(methodData => {
-      if (methodData.logo) {
-        if (methodData.logo.startsWith('http')) return methodData.logo;
-        if (customerCdn) return `${customerCdn}${methodData.logo}`;
-      }
-      if (methodData.method === cashAgentMethodKey) return '/img/methods-icons/cash-agent.svg';
-      if (activeAccountType.value === 'fiat') return '/img/methods-icons/cards.svg';
-      if (activeAccount.value?.currency) return `/img/methods-icons/${activeAccount.value?.currency}.svg`;
-      return '';
-    })
-  }
+    else
+      paymentLogos.value = props.items.map(methodData => {
+        if (methodData.logo) {
+          if (methodData.logo.startsWith('http')) return methodData.logo;
+          if (customerCdn) return `${customerCdn}${methodData.logo}`;
+        }
+        if (methodData.method === cashAgentMethodKey) return '/img/methods-icons/cash-agent.svg';
+        if (activeAccountType.value === 'fiat') return '/img/methods-icons/cards.svg';
+        if (activeAccount.value?.currency) return `/img/methods-icons/${activeAccount.value?.currency}.svg`;
+        return '';
+      });
+  };
 
   // FOR STATIC LOGO URL AND MIN DEPOSIT SUM
   // WITH REACTIVITY, THIS PARAMS UPDATE ASYNC BECAUSE OF REACTIVE activeAccount
   setPaymentLogos();
   setMethodsMinSum();
 
-  watch(() => props.items, () => {
-    setPaymentLogos();
-    setMethodsMinSum();
-  })
+  watch(
+    () => props.items,
+    () => {
+      setPaymentLogos();
+      setMethodsMinSum();
+    }
+  );
 </script>
 
 <style src="~/assets/styles/components/form/input/payments.scss" lang="scss" />
-

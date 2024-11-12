@@ -1,7 +1,7 @@
 <template>
   <iframe v-if="iframeUrl" :src="iframeUrl" />
 
-  <wallet-qr-payment v-else-if="qrAddress" :qrAddress="qrAddress" />
+  <wallet-qr-payment v-else-if="qrAddress" :qr-address="qrAddress" />
 
   <wallet-await-invoice v-else-if="showAsyncBlock" />
 
@@ -17,11 +17,7 @@
       :is-bigger="true"
     />
 
-    <wallet-pills
-      v-if="filteredPresets.length"
-      v-model:value="amountValue"
-      :items="filteredPresets"
-    />
+    <wallet-pills v-if="filteredPresets.length" v-model:value="amountValue" :items="filteredPresets" />
 
     <component
       :is="getFieldComponent(field)"
@@ -33,9 +29,9 @@
       :name="field.key"
       :placeholder="field.hints[currentLocale?.code || ''] || field.hints.en"
       :options="getFieldOptions(field)"
-      :isRequired="depositFormRules[field.key]?.hasOwnProperty('required')"
+      :is-required="depositFormRules[field.key]?.hasOwnProperty('required')"
       :hint="setError(field.key)"
-      :isDisabled="field.key === 'agentNumber'"
+      :is-disabled="field.key === 'agentNumber'"
       @input="v$[field.key]?.$touch()"
       @blur="v$[field.key]?.$touch()"
       @focus="onFocus(field.key)"
@@ -46,13 +42,8 @@
     <atomic-divider />
 
     <div class="form-deposit__button-holder">
-      <button-base
-        type="primary"
-        size="md"
-        :isDisabled="buttonDisabled"
-        @click="getDeposit"
-      >
-        <atomic-spinner :is-shown="isSending"/>
+      <button-base type="primary" size="md" :is-disabled="buttonDisabled" @click="getDeposit">
+        <atomic-spinner :is-shown="isSending" />
         <span class="btn-primary__content">
           <span>
             {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.depositButton') }}
@@ -77,7 +68,7 @@
     IRequestDeposit,
     IPaymentPreset,
     IResponseDeposit,
-    ISocketInvoice
+    ISocketInvoice,
   } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import queryString from 'query-string';
@@ -94,12 +85,7 @@
   }>();
 
   const globalStore = useGlobalStore();
-  const {
-    popupsData,
-    defaultLocalePopupsData,
-    alertsData,
-    defaultLocaleAlertsData
-  } = globalStore;
+  const { popupsData, defaultLocalePopupsData, alertsData, defaultLocaleAlertsData } = globalStore;
   const { currentLocale } = storeToRefs(globalStore);
   const profileStore = useProfileStore();
 
@@ -110,7 +96,7 @@
     showDepositBonusCode,
     depositBonusCode,
     walletDepositBonus,
-    depositBonuses
+    depositBonuses,
   } = storeToRefs(bonusStore);
 
   const getFieldComponent = (field: IPaymentField): string => {
@@ -122,13 +108,13 @@
   };
 
   const depositFormData = reactive<{ [key: string]: Maybe<string> }>({});
-  props.fields.forEach((field) => {
+  props.fields.forEach(field => {
     depositFormData[field.key] = field.value ?? undefined;
-  })
+  });
 
   const { getFormRules, getEquivalentFromBase } = useProjectMethods();
   const depositRules = props.fields.reduce((finalRules, currentField) => {
-    const rulesArr: { rule: string, arguments?: string }[] = [];
+    const rulesArr: { rule: string; arguments?: string }[] = [];
     if (currentField.isRequired) rulesArr.push({ rule: 'required' });
 
     if (currentField.key === 'phone') {
@@ -146,28 +132,34 @@
   const { v$, onFocus, setError } = useFormValidation(depositFormRules, depositFormData);
 
   const getVisibleFields = (): IPaymentField[] => {
-    const { public: { showWalletFilledFields } } = useRuntimeConfig();
+    const {
+      public: { showWalletFilledFields },
+    } = useRuntimeConfig();
 
     props.fields.forEach(field => {
       if (field.value !== null && v$.value[field.key]?.$invalid) v$.value[field.key].$touch();
-    })
+    });
 
     if (showWalletFilledFields) {
       return props.fields;
     }
 
-    return props.fields.filter(field => field.value === null || v$.value[field.key]?.$invalid || field.key === 'agentNumber');
-  }
+    return props.fields.filter(
+      field => field.value === null || v$.value[field.key]?.$invalid || field.key === 'agentNumber'
+    );
+  };
   const visibleFields = getVisibleFields(); // remove reactivity
 
   const fieldsStore = useFieldsStore();
   const getFieldOptions = (field: IPaymentField): any => {
     const platformOptions = fieldsStore.selectOptions[field.key];
     if (platformOptions?.length) return platformOptions;
-    return field.options?.map(option => {
-      return { value: option.name, code: option.id };
-    }) || [];
-  }
+    return (
+      field.options?.map(option => {
+        return { value: option.name, code: option.id };
+      }) || []
+    );
+  };
 
   const walletStore = useWalletStore();
   const layoutStore = useLayoutStore();
@@ -182,9 +174,10 @@
   const maxAmountContent = `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.maxSum') || ''} ${formatAmountMax.amount} ${formatAmountMax.currency}`;
   const fieldHint = { message: `${minAmountContent}, ${maxAmountContent}` };
   const isSending = ref<boolean>(false);
-  const filteredPresets = props.presets?.filter(preset => {
-    return preset.amount >= formatAmountMin.amount && preset.amount <= formatAmountMax.amount;
-  }) || [];
+  const filteredPresets =
+    props.presets?.filter(preset => {
+      return preset.amount >= formatAmountMin.amount && preset.amount <= formatAmountMax.amount;
+    }) || [];
   const defaultPreset = filteredPresets.find(preset => preset.default);
   const walletDepositAmount = computed(() => {
     if (!walletDepositBonus.value || !walletDepositBonus.value.amount) return undefined;
@@ -206,21 +199,26 @@
     return amountValue.value;
   });
 
-  const buttonDisabled = computed(() => v$.value.$invalid
-    || (Number(amountValue.value) < formatAmountMin.amount)
-    || (Number(amountValue.value) > formatAmountMax.amount)
-    || isSending.value);
+  const buttonDisabled = computed(
+    () =>
+      v$.value.$invalid ||
+      Number(amountValue.value) < formatAmountMin.amount ||
+      Number(amountValue.value) > formatAmountMax.amount ||
+      isSending.value
+  );
 
   const getPaymentPageUrl = (depositResponse: IResponseDeposit): string => {
     const responseHasParams = Object.keys(depositResponse.fields).length;
     if (!responseHasParams) return depositResponse.action;
 
-    const paramsArr = Object.keys(depositResponse.fields).map(fieldKey => `${fieldKey}=${depositResponse.fields[fieldKey]}`);
+    const paramsArr = Object.keys(depositResponse.fields).map(
+      fieldKey => `${fieldKey}=${depositResponse.fields[fieldKey]}`
+    );
     const urlHasParams = depositResponse.action.includes('?');
     const paramsString = `${urlHasParams ? '&' : '?'}${paramsArr.join('&')}`;
 
     return `${depositResponse.action}${paramsString}`;
-  }
+  };
 
   const getRequestParams = (): IRequestDeposit => {
     const { query, path } = useRoute();
@@ -247,9 +245,9 @@
       isBonusDecline: showDepositBonusCode.value && !depositBonusCode.value ? true : bonusDeclined.value,
       fields: props.fields.length
         ? { ...depositFormData, phone: depositFormData.phone ? `+${depositFormData.phone}` : undefined }
-        : undefined
+        : undefined,
     };
-  }
+  };
 
   const showAsyncBlock = ref(false);
   const iframeUrl = ref<string | undefined>();
@@ -290,9 +288,9 @@
     } finally {
       isSending.value = false;
     }
-  }
+  };
 
-  const getDeposit = async ():Promise<void> => {
+  const getDeposit = async (): Promise<void> => {
     if (buttonDisabled.value) return;
 
     v$.value.$reset();
@@ -306,25 +304,25 @@
 
     useEvent('analyticsEvent', {
       event: 'walletSubmitForm',
-      walletOperationType: 'deposit'
+      walletOperationType: 'deposit',
     });
     await depositRequest();
   };
 
-  const getCahBonusValue = (bonusInfo: IBonus): { amount: number, currency: string } => {
+  const getCahBonusValue = (bonusInfo: IBonus): { amount: number; currency: string } => {
     const amountItems = bonusInfo.assignConditions?.amountItems;
     const amountBase = bonusInfo.assignConditions?.baseCurrencyAmount;
     const exclusionItem = amountItems?.find(item => item.currency === activeAccount.value?.currency);
     if (exclusionItem) return formatBalance(exclusionItem.currency, exclusionItem.amount);
     if (amountBase) return getEquivalentFromBase(amountBase, activeAccount.value?.currency);
     return { amount: 0, currency: activeAccount.value?.currency || '' };
-  }
+  };
 
-  const getPercentageBonusValue = (bonusInfo: IBonus): { amount: number, currency: string } => {
+  const getPercentageBonusValue = (bonusInfo: IBonus): { amount: number; currency: string } => {
     const maxAmountItems = bonusInfo.assignConditions?.maxAmountItems;
     const maxAmountBase = bonusInfo.assignConditions?.baseCurrencyMaxAmount;
     const exclusionItem = maxAmountItems?.find(item => item.currency === activeAccount.value?.currency);
-    let maxSum: { amount: number, currency: string } = { amount: 0, currency: activeAccount.value?.currency || '' };
+    let maxSum: { amount: number; currency: string } = { amount: 0, currency: activeAccount.value?.currency || '' };
 
     if (exclusionItem) {
       maxSum = formatBalance(exclusionItem.currency, exclusionItem.amount);
@@ -333,14 +331,14 @@
     }
 
     const bonusPercentage = bonusInfo.assignConditions?.depositPercentage || 0;
-    const percentageSum = Number(amountValue.value) * bonusPercentage / 100;
+    const percentageSum = (Number(amountValue.value) * bonusPercentage) / 100;
 
     if (maxSum.amount > percentageSum) return { amount: percentageSum, currency: activeAccount.value?.currency || '' };
     if (maxSum.amount <= percentageSum) return maxSum;
     return { amount: percentageSum, currency: activeAccount.value?.currency || '' };
-  }
+  };
 
-  const getBonusValue = (bonusInfo: IBonus): { cashBonusAmount: number, freeSpinAmount: number } => {
+  const getBonusValue = (bonusInfo: IBonus): { cashBonusAmount: number; freeSpinAmount: number } => {
     let cashBonusAmount: number = 0;
     let freeSpinAmount: number = 0;
 
@@ -355,7 +353,7 @@
     }
 
     return { cashBonusAmount, freeSpinAmount };
-  }
+  };
 
   const bonusValue = computed(() => {
     if (!selectedDepositBonus.value) return;
@@ -363,7 +361,7 @@
     let totalFreeSpinAmount = 0;
 
     if (selectedDepositBonus.value.package?.id) {
-      selectedDepositBonus.value.packageItems?.forEach((bonus) => {
+      selectedDepositBonus.value.packageItems?.forEach(bonus => {
         const { cashBonusAmount, freeSpinAmount } = getBonusValue(bonus);
         totalCashBonusAmount += cashBonusAmount;
         totalFreeSpinAmount += freeSpinAmount;
@@ -374,7 +372,7 @@
       totalFreeSpinAmount += freeSpinAmount;
     }
 
-    let result:string = '';
+    let result: string = '';
     if (totalCashBonusAmount) {
       const amountValue = Number(totalCashBonusAmount.toFixed(2));
       result = `${amountValue} ${activeAccount.value?.currency}`;
@@ -387,9 +385,9 @@
   const checkAsyncInvoice = (invoiceData: ISocketInvoice) => {
     if (showAsyncBlock.value && invoiceData.publicData?.qr) {
       qrAddress.value = invoiceData.publicData.qr;
-      showAsyncBlock.value = false
+      showAsyncBlock.value = false;
     }
-  }
+  };
 
   onMounted(() => {
     useListen('receivedAsyncInvoice', checkAsyncInvoice);

@@ -35,4 +35,4 @@
   const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 </script>
 
-<style src="~/assets/styles/components/quest/deposit-info.scss" lang="scss"/>
+<style src="~/assets/styles/components/quest/deposit-info.scss" lang="scss" />

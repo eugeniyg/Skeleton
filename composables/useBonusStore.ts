@@ -6,7 +6,7 @@ import type {
   IGame,
   IPlayerFreeSpin,
   IPlayerCashback,
-  IBonus
+  IBonus,
 } from '@skeleton/core/types';
 import debounce from 'lodash/debounce.js';
 
@@ -19,15 +19,17 @@ interface IBonusState {
   playerCashback: IPlayerCashback[];
   depositBonusCode: Maybe<IBonusCode>;
   depositBonuses: IBonus[];
-  selectedDepositBonus: IBonus|undefined;
+  selectedDepositBonus: IBonus | undefined;
   bonusDeclined: boolean;
   depositMoreInfoBonus: Maybe<Record<string, any>>;
   showDepositBonusCode: boolean;
-  walletDepositBonus: {
-    id: string;
-    packageId: string|undefined;
-    amount?: number;
-  }|undefined;
+  walletDepositBonus:
+    | {
+        id: string;
+        packageId: string | undefined;
+        amount?: number;
+      }
+    | undefined;
 }
 
 export const useBonusStore = defineStore('bonusStore', {
@@ -48,23 +50,23 @@ export const useBonusStore = defineStore('bonusStore', {
   }),
 
   getters: {
-    activePlayerBonuses(state):IPlayerBonus[] {
+    activePlayerBonuses(state): IPlayerBonus[] {
       return state.playerBonuses.filter(playerBonus => playerBonus.status === 2);
     },
 
-    issuedPlayerBonuses(state):IPlayerBonus[] {
+    issuedPlayerBonuses(state): IPlayerBonus[] {
       return state.playerBonuses.filter(playerBonus => playerBonus.status === 1);
     },
 
-    activePlayerFreeSpins(state):IPlayerFreeSpin[] {
+    activePlayerFreeSpins(state): IPlayerFreeSpin[] {
       return state.playerFreeSpins.filter(playerFreeSpin => playerFreeSpin.status === 2);
     },
 
-    issuedPlayerFreeSpins(state):IPlayerFreeSpin[] {
+    issuedPlayerFreeSpins(state): IPlayerFreeSpin[] {
       return state.playerFreeSpins.filter(playerFreeSpin => playerFreeSpin.status === 1);
     },
 
-    bonusesCount(state):number {
+    bonusesCount(state): number {
       const playerPackageIds: string[] = [];
       const depositPackageIds: string[] = [];
       const simplePlayerBonuses: string[] = [];
@@ -75,21 +77,23 @@ export const useBonusStore = defineStore('bonusStore', {
         else if (!playerPackageIds.includes(bonus.issueSessionId ?? bonus.packageId)) {
           playerPackageIds.push(bonus.issueSessionId ?? bonus.packageId);
         }
-      })
+      });
 
       state.depositBonuses.forEach(bonus => {
         if (!bonus.package?.id) simpleDepositBonuses.push(bonus.id);
         else if (!depositPackageIds.includes(bonus.package.id)) {
           depositPackageIds.push(bonus.package.id);
         }
-      })
+      });
 
-      return playerPackageIds.length + depositPackageIds.length + simplePlayerBonuses.length + simpleDepositBonuses.length;
+      return (
+        playerPackageIds.length + depositPackageIds.length + simplePlayerBonuses.length + simpleDepositBonuses.length
+      );
     },
   },
 
   actions: {
-    async getPlayerBonuses():Promise<void> {
+    async getPlayerBonuses(): Promise<void> {
       const { activeAccount } = useWalletStore();
       if (!activeAccount?.currency) return;
       const { getPlayerBonuses } = useCoreBonusApi();
@@ -97,7 +101,7 @@ export const useBonusStore = defineStore('bonusStore', {
       this.playerBonuses = data;
     },
 
-    async getPlayerFreeSpins():Promise<void> {
+    async getPlayerFreeSpins(): Promise<void> {
       const { activeAccount } = useWalletStore();
       if (!activeAccount?.currency) return;
       const { getPlayerFreeSpins } = useCoreBonusApi();
@@ -105,7 +109,7 @@ export const useBonusStore = defineStore('bonusStore', {
       this.playerFreeSpins = data;
     },
 
-    async getPlayerCashback():Promise<void> {
+    async getPlayerCashback(): Promise<void> {
       const { activeAccount } = useWalletStore();
       if (!activeAccount?.currency) return;
       const { getPlayerCashback } = useCoreBonusApi();
@@ -113,21 +117,21 @@ export const useBonusStore = defineStore('bonusStore', {
       this.playerCashback = data;
     },
 
-    async getDepositBonuses():Promise<void> {
+    async getDepositBonuses(): Promise<void> {
       const { activeAccount } = useWalletStore();
       if (!activeAccount?.currency) return;
       const { getDepositBonuses } = useCoreBonusApi();
       this.depositBonuses = await getDepositBonuses(activeAccount.currency);
     },
 
-    async getDepositBonusCode():Promise<void> {
+    async getDepositBonusCode(): Promise<void> {
       const { getBonusCodes } = useCoreBonusApi();
 
       const bonusCodeResponse = await getBonusCodes(3);
       this.depositBonusCode = bonusCodeResponse[0] || undefined;
     },
 
-    showBonusCodeNotification(status?: number):void {
+    showBonusCodeNotification(status?: number): void {
       const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
 
@@ -138,54 +142,73 @@ export const useBonusStore = defineStore('bonusStore', {
       }
     },
 
-    subscribeBonusCodeSocket():void {
+    subscribeBonusCodeSocket(): void {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
         const { createSubscription } = useWebSocket();
-        this.bonusCodeSubscription = createSubscription(`bonus:player-bonus-codes#${profileStore.profile?.id}`, this.bonusCodeSocketTrigger);
+        this.bonusCodeSubscription = createSubscription(
+          `bonus:player-bonus-codes#${profileStore.profile?.id}`,
+          this.bonusCodeSocketTrigger
+        );
       }
     },
 
-    subscribeBonusSocket():void {
+    subscribeBonusSocket(): void {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
         const { createSubscription } = useWebSocket();
-        this.bonusSubscription = createSubscription(`bonus:player-bonuses#${profileStore.profile?.id}`, this.bonusesSocketTrigger);
+        this.bonusSubscription = createSubscription(
+          `bonus:player-bonuses#${profileStore.profile?.id}`,
+          this.bonusesSocketTrigger
+        );
       }
     },
 
-    subscribeFreeSpinsSocket():void {
+    subscribeFreeSpinsSocket(): void {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
         const { createSubscription } = useWebSocket();
-        this.freeSpinsSubscription = createSubscription(`bonus:player-freespins#${profileStore.profile?.id}`, this.freeSpinsSocketTrigger);
+        this.freeSpinsSubscription = createSubscription(
+          `bonus:player-freespins#${profileStore.profile?.id}`,
+          this.freeSpinsSocketTrigger
+        );
       }
     },
 
-    bonusCodeSocketTrigger(webSocketResponse:IWebSocketResponse):void {
+    bonusCodeSocketTrigger(webSocketResponse: IWebSocketResponse): void {
       const bonusCodeData: Maybe<IBonusCode> = webSocketResponse.data.playerBonusCode;
       this.showBonusCodeNotification(bonusCodeData?.status);
     },
 
-    updatePlayerBonusList: debounce(async (bonusData: IPlayerBonus, thisStore: any) => {
-      if ([1,2].includes(bonusData.status)) await thisStore.getPlayerBonuses();
-      else {
-        thisStore.playerBonuses = thisStore.playerBonuses.filter((bonus: IPlayerBonus) => bonus.id !== bonusData.id);
-      }
+    updatePlayerBonusList: debounce(
+      async (bonusData: IPlayerBonus, thisStore: any) => {
+        if ([1, 2].includes(bonusData.status)) await thisStore.getPlayerBonuses();
+        else {
+          thisStore.playerBonuses = thisStore.playerBonuses.filter((bonus: IPlayerBonus) => bonus.id !== bonusData.id);
+        }
 
-      useEvent('bonusesUpdated');
-    }, 500, { leading: false }),
+        useEvent('bonusesUpdated');
+      },
+      500,
+      { leading: false }
+    ),
 
-    updatePlayerFreeSpinsList: debounce(async (freeSpinData: IPlayerFreeSpin, thisStore: any) => {
-      if ([1, 2].includes(freeSpinData.status)) await thisStore.getPlayerFreeSpins();
-      else {
-        thisStore.playerFreeSpins = thisStore.playerFreeSpins.filter((freeSpin: IPlayerFreeSpin) => freeSpin.id !== freeSpinData.id);
-      }
+    updatePlayerFreeSpinsList: debounce(
+      async (freeSpinData: IPlayerFreeSpin, thisStore: any) => {
+        if ([1, 2].includes(freeSpinData.status)) await thisStore.getPlayerFreeSpins();
+        else {
+          thisStore.playerFreeSpins = thisStore.playerFreeSpins.filter(
+            (freeSpin: IPlayerFreeSpin) => freeSpin.id !== freeSpinData.id
+          );
+        }
 
-      useEvent('freeSpinsUpdated');
-    }, 500, { leading: false }),
+        useEvent('freeSpinsUpdated');
+      },
+      500,
+      { leading: false }
+    ),
 
-    bonusesSocketTrigger(webSocketResponse:IWebSocketResponse):void {
+    bonusesSocketTrigger(webSocketResponse: IWebSocketResponse): void {
       const bonusData: Maybe<IPlayerBonus> = webSocketResponse.data.playerBonus;
       if (!bonusData) return;
 
@@ -205,31 +228,26 @@ export const useBonusStore = defineStore('bonusStore', {
         '3-5': 'bonusLost',
       };
 
-      const transformMessage = (message?: string):string => {
+      const transformMessage = (message?: string): string => {
         if (!message) return '';
         return message.replace('{amount}', `<b>${formattedAmount.amount} ${formattedAmount.currency}</b>`);
       };
 
-      const alertData = alertsData?.bonus?.[alertsKey[`${status}-${result}`]]
-        || defaultLocaleAlertsData?.bonus?.[alertsKey[`${status}-${result}`]];
+      const alertData =
+        alertsData?.bonus?.[alertsKey[`${status}-${result}`]] ||
+        defaultLocaleAlertsData?.bonus?.[alertsKey[`${status}-${result}`]];
 
       this.updatePlayerBonusList(bonusData, this);
       if (alertData) showAlert({ ...alertData, description: transformMessage(alertData?.description) });
     },
 
-    async freeSpinsSocketTrigger(webSocketResponse: IWebSocketResponse):Promise<void> {
+    async freeSpinsSocketTrigger(webSocketResponse: IWebSocketResponse): Promise<void> {
       const freeSpinData: Maybe<IPlayerFreeSpin> = webSocketResponse.data.playerFreespin;
       if (!freeSpinData) return;
 
       const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
-      const {
-        count,
-        currency,
-        gameId,
-        status,
-        result
-      } = freeSpinData;
+      const { count, currency, gameId, status, result } = freeSpinData;
 
       const alertsKey: { [key: string]: string } = {
         // key - '{status}-{result}'
@@ -237,50 +255,56 @@ export const useBonusStore = defineStore('bonusStore', {
         '2-1': 'freeSpinActivated',
         '3-2': 'freeSpinPlayed',
         '3-3': 'freeSpinCanceled',
-        '3-4': 'freeSpinExpired'
+        '3-4': 'freeSpinExpired',
       };
 
       const { getGamesInfo } = useCoreGamesApi();
       const { localizePath } = useProjectMethods();
-      let gameInfo: IGame
+      let gameInfo: IGame;
       try {
         gameInfo = await getGamesInfo(gameId);
       } catch {
         console.error('Something went wrong with game info fetching!');
       }
 
-      const transformMessage = (message?: string):string => {
+      const transformMessage = (message?: string, gameLinkParam?: 'game' | 'bonuses'): string => {
         if (!message) return '';
 
         let editedMessage = message.replace('{count}', `<b>${count} free spins</b>`);
         editedMessage = editedMessage.replace('{currency}', `<b>${currency}</b>`);
-        const gameLink = gameInfo ? localizePath(`/games/${gameInfo.identity}`) : undefined;
+
+        let gameLink: string | undefined;
+        if (gameLinkParam === 'bonuses') gameLink = localizePath('/profile/bonuses');
+        else if (gameInfo) gameLink = localizePath(`/games/${gameInfo.identity}?real=true`);
+
         editedMessage = editedMessage.replace('{game}', gameLink ? `<a href="${gameLink}">${gameInfo.name}</a>` : '');
         return editedMessage;
       };
 
-      const alertData = alertsData?.freeSpin?.[alertsKey[`${status}-${result}`]]
-        || defaultLocaleAlertsData?.freeSpin?.[alertsKey[`${status}-${result}`]];
+      const alertData =
+        alertsData?.freeSpin?.[alertsKey[`${status}-${result}`]] ||
+        defaultLocaleAlertsData?.freeSpin?.[alertsKey[`${status}-${result}`]];
 
       this.updatePlayerFreeSpinsList(freeSpinData, this);
-      if (alertData) showAlert({ ...alertData, description: transformMessage(alertData?.description) });
+      if (alertData)
+        showAlert({ ...alertData, description: transformMessage(alertData?.description, alertData?.gameLink) });
     },
 
-    unsubscribeBonusCodeSocket():void {
+    unsubscribeBonusCodeSocket(): void {
       if (this.bonusCodeSubscription) {
         this.bonusCodeSubscription.unsubscribe();
         this.bonusCodeSubscription.removeAllListeners();
       }
     },
 
-    unsubscribeBonusSocket():void {
+    unsubscribeBonusSocket(): void {
       if (this.bonusSubscription) {
         this.bonusSubscription.unsubscribe();
         this.bonusSubscription.removeAllListeners();
       }
     },
 
-    unsubscribeFreeSpinsSocket():void {
+    unsubscribeFreeSpinsSocket(): void {
       if (this.freeSpinsSubscription) {
         this.freeSpinsSubscription.unsubscribe();
         this.freeSpinsSubscription.removeAllListeners();

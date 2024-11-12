@@ -14,14 +14,13 @@
       </div>
     </div>
 
-
     <div v-if="state.notifications.length" class="profile-notifications__content">
       <notification-accordion
         v-for="message in state.notifications"
         :key="message.id"
         :message="message"
         @read="readMessage(message)"
-        @removeMessage="removeMessage(message)"
+        @remove-message="removeMessage(message)"
       />
     </div>
 
@@ -30,29 +29,24 @@
       class="profile-notifications__empty"
       variant="notification"
       :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"
-      :subTitle="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
+      :sub-title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
     />
 
     <atomic-pagination
       v-if="state.meta?.totalPages && state.meta.totalPages > 1"
       v-bind="state.meta"
-      @selectPage="changePage"
+      @select-page="changePage"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import type {IProfileNotifications, IStaticPage} from "~/types";
-  import {storeToRefs} from "pinia";
-  import type {IMessage, INotificationsRequest, IPaginationMeta} from "@skeleton/core/types";
+  import type { IProfileNotifications } from '~/types';
+  import { storeToRefs } from 'pinia';
+  import type { IMessage, INotificationsRequest, IPaginationMeta } from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();
-  const {
-    layoutData,
-    defaultLocaleLayoutData,
-    alertsData,
-    defaultLocaleAlertsData
-  } = storeToRefs(globalStore);
+  const { layoutData, defaultLocaleLayoutData, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const notificationStore = useNotificationStore();
   const { unreadCount, popoverNotifications } = storeToRefs(notificationStore);
@@ -68,12 +62,12 @@ import type {IProfileNotifications, IStaticPage} from "~/types";
   const state = reactive<IState>({
     loading: false,
     notifications: [],
-    meta: undefined
+    meta: undefined,
   });
 
   const requestParams = reactive<INotificationsRequest>({
     page: 1,
-    perPage: 5
+    perPage: 5,
   });
 
   const { getPlayerNotifications, removePlayerMessage } = useCoreNotificationApi();
@@ -90,9 +84,9 @@ import type {IProfileNotifications, IStaticPage} from "~/types";
     }
 
     state.loading = false;
-  }
+  };
 
-  const changePage = (page: number):void => {
+  const changePage = (page: number): void => {
     if (state.loading) return;
     requestParams.page = page;
     window.scroll(0, 0);
@@ -102,7 +96,7 @@ import type {IProfileNotifications, IStaticPage} from "~/types";
   const contentParams = {
     contentKey: 'profileNotificationsContent',
     contentRoute: ['profile', 'notifications'],
-    isPage: true
+    isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileNotifications>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
@@ -112,13 +106,13 @@ import type {IProfileNotifications, IStaticPage} from "~/types";
       if (messageInfo.id === message.id) return { ...message, readAt: new Date().toISOString(), state: 2 };
       return message;
     });
-  }
+  };
 
   const markAllAsRead = (): void => {
     state.notifications = state.notifications.map(message => {
       return { ...message, readAt: new Date().toISOString(), state: 2 };
     });
-  }
+  };
 
   const readAllSending = ref(false);
   const readAll = async (): Promise<void> => {
@@ -131,7 +125,7 @@ import type {IProfileNotifications, IStaticPage} from "~/types";
     } finally {
       readAllSending.value = false;
     }
-  }
+  };
 
   const removingMessage = ref(false);
   const removeMessage = async (message: IMessage): Promise<void> => {
@@ -152,27 +146,27 @@ import type {IProfileNotifications, IStaticPage} from "~/types";
       }
 
       if (popoverNotifications.value.some(popoverMessage => popoverMessage.id === message.id)) {
-        popoverNotifications.value = state.notifications.slice(0,3);
+        popoverNotifications.value = state.notifications.slice(0, 3);
       }
 
       unreadCount.value = response.totalUnread;
     } finally {
       removingMessage.value = false;
     }
-  }
-  
+  };
+
   onMounted(async () => {
     await getNotifications();
     useListen('markAsReadMessage', readMessage);
     useListen('newPlayerMessage', getNotifications);
     useListen('markAllAsReadMessages', markAllAsRead);
-  })
+  });
 
   onBeforeUnmount(() => {
     useUnlisten('markAsReadMessage', readMessage);
     useUnlisten('newPlayerMessage', getNotifications);
     useUnlisten('markAllAsReadMessages', markAllAsRead);
-  })
+  });
 </script>
 
-<style src="~/assets/styles/pages/profile/notifications.scss" lang="scss"/>
+<style src="~/assets/styles/pages/profile/notifications.scss" lang="scss" />

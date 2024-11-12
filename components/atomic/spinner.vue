@@ -16,15 +16,17 @@
     <path
       fill="currentColor"
       d="m26.013 10.047 1.654-2.866a14.855 14.855 0 0 0-7.466-2.012v3.312c2.119 0 4.1.576 5.812 1.566z"
-    ><animateTransform
-      attributeType="xml"
-      attributeName="transform"
-      type="rotate"
-      from="0 20 20"
-      to="360 20 20"
-      dur="0.5s"
-      repeatCount="indefinite"
-    /></path>
+    >
+      <animateTransform
+        attributeType="xml"
+        attributeName="transform"
+        type="rotate"
+        from="0 20 20"
+        to="360 20 20"
+        dur="0.5s"
+        repeatCount="indefinite"
+      />
+    </path>
   </svg>
 </template>
 

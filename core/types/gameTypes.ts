@@ -1,6 +1,6 @@
-import type { IPaginationMeta } from './globalTypes'
+import type { IPaginationMeta } from './globalTypes';
 
-export interface IGameImages extends Record<string, any>{
+export interface IGameImages extends Record<string, any> {
   '200x200': {
     '1x': string;
     '2x'?: string;
@@ -13,7 +13,7 @@ export interface IGameImages extends Record<string, any>{
   };
 }
 
-export interface IGameProvider extends Record<string, any>{
+export interface IGameProvider extends Record<string, any> {
   id: string;
   identity: string;
   name: string;
@@ -22,7 +22,7 @@ export interface IGameProvider extends Record<string, any>{
   value?: string;
 }
 
-export interface ICollection extends Record<string, any>{
+export interface ICollection extends Record<string, any> {
   id: string;
   identity: string;
   name: string;
@@ -34,10 +34,10 @@ export interface IGameLabel extends Record<string, any> {
   id: string;
   name: string;
   createdAt: string;
-  updatedAt: string|null;
+  updatedAt: string | null;
 }
 
-export interface IGame extends Record<string, any>{
+export interface IGame extends Record<string, any> {
   id: string;
   identity: string;
   name: string;
@@ -46,8 +46,8 @@ export interface IGame extends Record<string, any>{
   volatility: string;
   type: string;
   platforms: number[];
-  screenHeightRatio: number|null;
-  screenWidthRatio: number|null;
+  screenHeightRatio: number | null;
+  screenWidthRatio: number | null;
   images: IGameImages;
   provider: IGameProvider;
   collections: ICollection[];
@@ -56,7 +56,7 @@ export interface IGame extends Record<string, any>{
   minimumBonusWagerMultiplier: number;
 }
 
-export interface IGamesResponse extends Record<string, any>{
+export interface IGamesResponse extends Record<string, any> {
   data: IGame[];
   meta: IPaginationMeta;
 }
@@ -69,8 +69,8 @@ export interface IProvidersRequest extends Record<string, any> {
   perPage?: number;
 }
 
-export interface IGameStart extends Record<string, any>{
-  accountId: string|undefined;
+export interface IGameStart extends Record<string, any> {
+  accountId: string | undefined;
   lobbyUrl: string;
   locale: string;
   countryCode: string;
@@ -78,7 +78,7 @@ export interface IGameStart extends Record<string, any>{
   demoMode: boolean;
 }
 
-export interface ISpinHistory extends Record<string, any>{
+export interface ISpinHistory extends Record<string, any> {
   amount: number;
   createdAt: string;
   currency: string;
@@ -88,7 +88,7 @@ export interface ISpinHistory extends Record<string, any>{
   payout: number;
 }
 
-export interface IBetItem extends Record<string, any>{
+export interface IBetItem extends Record<string, any> {
   event: string;
   stage: number;
   discipline: string;
@@ -99,7 +99,7 @@ export interface IBetItem extends Record<string, any>{
   coefficient: number;
 }
 
-export interface IBetHistory extends Record<string, any>{
+export interface IBetHistory extends Record<string, any> {
   id: string;
   game: string;
   amount: number;
@@ -114,29 +114,29 @@ export interface IBetHistory extends Record<string, any>{
   roundId: string;
 }
 
-export interface IBetsResponse extends Record<string, any>{
+export interface IBetsResponse extends Record<string, any> {
   data: IBetHistory[];
   meta: IPaginationMeta;
 }
 
-export interface ISpinsResponse extends Record<string, any>{
+export interface ISpinsResponse extends Record<string, any> {
   data: ISpinHistory[];
   meta: IPaginationMeta;
 }
 
-export interface IWinnersRequest extends Record<string, any>{
+export interface IWinnersRequest extends Record<string, any> {
   perPage: number;
   platform: number;
   countryCode: string;
 }
 
-export interface IRecentlyRequest extends Record<string, any>{
+export interface IRecentlyRequest extends Record<string, any> {
   perPage: number;
   platform: number;
   countryCode: string;
 }
 
-export interface IWinner extends Record<string, any>{
+export interface IWinner extends Record<string, any> {
   nickname: string;
   amount: number;
   currency: string;

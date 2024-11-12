@@ -6,8 +6,8 @@
 
     <div v-if="profile?.email" class="email-verification__status">
       <span>{{ profile.email }}</span>
-      <atomic-icon v-if="profile?.confirmedAt" id="done" class="is-success"/>
-      <atomic-icon v-else id="warning" class="is-warning"/>
+      <atomic-icon v-if="profile?.confirmedAt" id="done" class="is-success" />
+      <atomic-icon v-else id="warning" class="is-warning" />
     </div>
 
     <form-input-text
@@ -27,7 +27,7 @@
       key="add"
       type="primary"
       size="md"
-      :isDisabled="v$.$invalid || !verificationFormData.email || serverFormErrors?.email"
+      :is-disabled="v$.$invalid || !verificationFormData.email || serverFormErrors?.email"
       @click="addEmail"
     >
       {{ getContent(verificationContent, defaultLocaleVerificationContent, 'email.addButton') }}
@@ -38,7 +38,7 @@
       key="verify"
       type="primary"
       size="md"
-      :isDisabled="resentVerifyEmail"
+      :is-disabled="resentVerifyEmail"
       @click.once="profileStore.resendVerifyEmail"
     >
       {{ getContent(verificationContent, defaultLocaleVerificationContent, 'email.verifyButton') }}
@@ -47,8 +47,8 @@
 </template>
 
 <script setup lang="ts">
-  import {storeToRefs} from "pinia";
-  import type { IProfileVerification } from "~/types";
+  import { storeToRefs } from 'pinia';
+  import type { IProfileVerification } from '~/types';
 
   const profileStore = useProfileStore();
   const { profile, resentVerifyEmail } = storeToRefs(profileStore);
@@ -60,16 +60,16 @@
 
   const { getFormRules, getContent } = useProjectMethods();
   const verificationRules = {
-    email: [{ rule: 'email' }]
-  }
+    email: [{ rule: 'email' }],
+  };
   const verificationFormRules = getFormRules(verificationRules);
   const verificationFormData = reactive({
-    email: ''
+    email: '',
   });
   const { serverFormErrors, v$, onFocus, setError } = useFormValidation(verificationFormRules, verificationFormData);
 
   const focused = ref<boolean>(false);
-  const focusField = (fieldName:string):void => {
+  const focusField = (fieldName: string): void => {
     focused.value = true;
     onFocus(fieldName);
   };
@@ -87,14 +87,14 @@
       const submitResult = await changeProfileData(verificationFormData);
       setProfileData(submitResult);
       useEvent('profileUpdated');
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
         await nextTick();
       } else throw error;
     }
     saveEmailLoading.value = false;
-  }
+  };
 </script>
 
 <style src="~/assets/styles/components/verification/email.scss" lang="scss" />

@@ -4,7 +4,7 @@
       <div class="wallet-bonuses__title">
         {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.title') }}
       </div>
-      
+
       <form-input-toggle
         class="wallet-bonuses__decline"
         name="bonus-decline"
@@ -14,34 +14,36 @@
         {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.declineLabel') }}
       </form-input-toggle>
     </div>
-    
 
     <template v-for="bonus in bonusesList" :key="bonus.id">
       <wallet-bonus
-        :bonusInfo="bonus"
+        :bonus-info="bonus"
         :selected="checkSelected(bonus)"
         :disabled="!props.crypto && isBonusDisabled(bonus)"
-        @bonusChange="onBonusChange(bonus)"
+        @bonus-change="onBonusChange(bonus)"
       />
     </template>
 
-    <bonuses-deposit-promo ref="depositCode" @openBonusCode="bonusCodeTrigger" />
+    <bonuses-deposit-promo ref="depositCode" @open-bonus-code="bonusCodeTrigger" />
 
     <div v-if="props.crypto" class="wallet-bonuses__info">
       <div class="wallet-bonuses__info-icon">
         <atomic-icon id="info" />
       </div>
 
-      <div class="wallet-bonuses__info-description">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.infoDescription') }}
-      </div>
+      <div
+        class="wallet-bonuses__info-description"
+        v-html="DOMPurify.sanitize(marked.parseInline(cryptoInfoContent || '') as string, { FORBID_TAGS: ['style'] })"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from "pinia";
-  import type { IBonus } from "@skeleton/core/types";
+  import { storeToRefs } from 'pinia';
+  import type { IBonus } from '@skeleton/core/types';
+  import { marked } from 'marked';
+  import DOMPurify from 'isomorphic-dompurify';
 
   const props = defineProps<{
     crypto?: boolean;
@@ -59,19 +61,25 @@
     bonusDeclined,
     depositBonusCode,
     showDepositBonusCode,
-    walletDepositBonus
+    walletDepositBonus,
   } = storeToRefs(bonusStore);
 
+  const cryptoInfoContent = computed(() =>
+    getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.infoDescription')
+  );
+
   const setDepositLimit = (bonusData: IBonus): IBonus => {
-    let minDeposit: { amount: number, currency: string }|undefined;
-    let maxDeposit: { amount: number, currency: string }|undefined;
+    let minDeposit: { amount: number; currency: string } | undefined;
+    let maxDeposit: { amount: number; currency: string } | undefined;
 
     const invoiceItems = bonusData.triggerConditions?.invoiceAmountItems;
     const baseCurrencyInvoiceFrom = bonusData.triggerConditions?.baseCurrencyInvoiceAmountFrom;
     const baseCurrencyInvoiceTo = bonusData.triggerConditions?.baseCurrencyInvoiceAmountTo;
 
     if (invoiceItems?.length) {
-      const currentCurrencyInvoiceItem = invoiceItems.find(invoiceItem => invoiceItem.currency === activeAccount.value?.currency);
+      const currentCurrencyInvoiceItem = invoiceItems.find(
+        invoiceItem => invoiceItem.currency === activeAccount.value?.currency
+      );
       if (currentCurrencyInvoiceItem && currentCurrencyInvoiceItem.amountFrom) {
         minDeposit = formatBalance(currentCurrencyInvoiceItem.currency, currentCurrencyInvoiceItem.amountFrom);
       }
@@ -89,7 +97,7 @@
     }
 
     return { ...bonusData, minDeposit, maxDeposit };
-  }
+  };
 
   const bonusesList = computed(() => {
     const bonusesList: IBonus[] = [];
@@ -105,10 +113,10 @@
       } else {
         bonusesList.push(bonusWithLimits);
       }
-    })
+    });
 
     return bonusesList;
-  })
+  });
 
   const isBonusDisabled = (bonusData: IBonus): boolean => {
     if (bonusData.minDeposit && bonusData.maxDeposit) {
@@ -120,7 +128,7 @@
     }
 
     return false;
-  }
+  };
 
   const depositCode = ref();
   const bonusCodeTrigger = async (): Promise<void> => {
@@ -130,7 +138,7 @@
     useEvent('analyticsEvent', { event: 'walletPromoOpen' });
     await nextTick();
     depositCode.value.$el.scrollIntoView({ behavior: 'smooth' });
-  }
+  };
 
   const configDeclineBonuses = settingsConstants?.game?.bonus?.depositBonusDeclineDefault;
   if (walletDepositBonus.value?.id) {
@@ -165,38 +173,43 @@
     selectedDepositBonus.value = undefined;
     showDepositBonusCode.value = false;
     useEvent('analyticsEvent', { event: 'walletDeclineBonuses' });
-  }
+  };
 
   const onBonusChange = (bonus: IBonus): void => {
     if (selectedDepositBonus.value?.id === bonus.id) return;
     else {
       selectedDepositBonus.value = bonus;
       bonusDeclined.value = false;
-      useEvent('analyticsEvent', { event: 'walletSelectBonus'});
+      useEvent('analyticsEvent', { event: 'walletSelectBonus' });
       showDepositBonusCode.value = false;
     }
-  }
+  };
 
   const checkSelected = (bonus: IBonus): boolean => {
-    return (selectedDepositBonus.value?.id === bonus.id)
-      || (!!selectedDepositBonus.value?.package?.id && (selectedDepositBonus.value.package.id === bonus.package?.id));
-  }
+    return (
+      selectedDepositBonus.value?.id === bonus.id ||
+      (!!selectedDepositBonus.value?.package?.id && selectedDepositBonus.value.package.id === bonus.package?.id)
+    );
+  };
 
-  watch(() => props.amount, () => {
-    if (selectedDepositBonus.value && isBonusDisabled(selectedDepositBonus.value)) {
-      if (configDeclineBonuses) {
-        selectedDepositBonus.value = undefined;
-        bonusDeclined.value = true;
-      } else {
-        bonusDeclinedManually.value = false;
+  watch(
+    () => props.amount,
+    () => {
+      if (selectedDepositBonus.value && isBonusDisabled(selectedDepositBonus.value)) {
+        if (configDeclineBonuses) {
+          selectedDepositBonus.value = undefined;
+          bonusDeclined.value = true;
+        } else {
+          bonusDeclinedManually.value = false;
+          selectedDepositBonus.value = bonusesList.value.find(bonus => !isBonusDisabled(bonus));
+          bonusDeclined.value = !selectedDepositBonus.value;
+        }
+      } else if (!showDepositBonusCode.value && !selectedDepositBonus.value && !bonusDeclinedManually.value) {
         selectedDepositBonus.value = bonusesList.value.find(bonus => !isBonusDisabled(bonus));
         bonusDeclined.value = !selectedDepositBonus.value;
       }
-    } else if (!showDepositBonusCode.value && !selectedDepositBonus.value && !bonusDeclinedManually.value) {
-      selectedDepositBonus.value = bonusesList.value.find(bonus => !isBonusDisabled(bonus));
-      bonusDeclined.value = !selectedDepositBonus.value;
     }
-  })
+  );
 </script>
 
-<style src="~/assets/styles/components/wallet/bonuses.scss" lang="scss"/>
+<style src="~/assets/styles/components/wallet/bonuses.scss" lang="scss" />

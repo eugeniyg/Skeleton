@@ -6,8 +6,8 @@
     @click="slideHandleClick"
   >
     <picture class="card-slide__picture card-slide__picture">
-      <source :media="'(max-width: 1279px)'" :srcset="createSrcSet(props.slideData.mobileImage)" >
-      <source :media="'(max-width: 2264px)'" :srcset="createSrcSet(props.slideData.desktopImage)" >
+      <source :media="'(max-width: 1279px)'" :srcset="createSrcSet(props.slideData.mobileImage)" />
+      <source :media="'(max-width: 2264px)'" :srcset="createSrcSet(props.slideData.desktopImage)" />
       <atomic-image class="card-slide__img card-slide__img" :src="props.slideData.mobileImage" />
     </picture>
 
@@ -22,7 +22,7 @@
       <div v-if="showButton" class="card-slide__actions" @click.stop>
         <atomic-link
           class="btn-primary"
-          :targetBlank="props.slideData?.button?.targetBlank"
+          :target-blank="props.slideData?.button?.targetBlank"
           :href="props.slideData.button?.url"
         >
           {{ props.slideData.button?.label }}
@@ -34,8 +34,8 @@
 
 <script setup lang="ts">
   import { marked } from 'marked';
-  import type { ISliderItem } from "~/types";
-  import DOMPurify from "isomorphic-dompurify";
+  import type { ISliderItem } from '~/types';
+  import DOMPurify from 'isomorphic-dompurify';
 
   const props = defineProps<{
     slideData: ISliderItem;
@@ -55,8 +55,7 @@
     else if (targetBlankParam) window.open(localizePath(url),  '_blank');
     else router.push(localizePath(url));
   }
-  
+
 </script>
 
 <style src="~/assets/styles/components/card/slide.scss" lang="scss" />
-

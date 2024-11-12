@@ -1,6 +1,6 @@
-import type { IPaginationMeta } from './globalTypes'
+import type { IPaginationMeta } from './globalTypes';
 
-export interface IAccount extends Record<string, any>{
+export interface IAccount extends Record<string, any> {
   id: string;
   balance: number;
   realBalance: number;
@@ -22,12 +22,12 @@ export interface IPaymentField extends Record<string, any> {
   key: string;
   fieldType: string;
   type: string;
-  regexp: string
+  regexp: string;
   labels: any;
   hints: any;
   isRequired: boolean;
   position: number;
-  value: string|null;
+  value: string | null;
   options?: IPaymentFieldOption[];
 }
 
@@ -36,7 +36,7 @@ export interface IPaymentPreset extends Record<string, any> {
   default: boolean;
 }
 
-export interface IPaymentMethod extends Record<string, any>{
+export interface IPaymentMethod extends Record<string, any> {
   method: string;
   amountMin: number;
   amountMax: number;
@@ -49,9 +49,9 @@ export interface IPaymentMethod extends Record<string, any>{
   processingType: string;
 }
 
-export interface IRequestDeposit extends Record<string, any>{
+export interface IRequestDeposit extends Record<string, any> {
   method: string;
-  fields?: { [key:string]: string|undefined|null };
+  fields?: { [key: string]: string | undefined | null };
   currency: string;
   amount: number;
   accountId: string;
@@ -62,16 +62,16 @@ export interface IRequestDeposit extends Record<string, any>{
   country: Maybe<string>;
 }
 
-export interface IRequestWithdraw extends Record<string, any>{
+export interface IRequestWithdraw extends Record<string, any> {
   method: string;
-  fields?: { [key:string]: string|null|undefined; };
+  fields?: { [key: string]: string | null | undefined };
   currency: string;
   amount: number;
   accountId: string;
   country: Maybe<string>;
 }
 
-export interface IResponseDeposit extends Record<string, any>{
+export interface IResponseDeposit extends Record<string, any> {
   action: string;
   method: string;
   invoiceId: string;
@@ -80,7 +80,7 @@ export interface IResponseDeposit extends Record<string, any>{
   qr?: string;
 }
 
-export interface IResponseWithdraw extends Record<string, any>{
+export interface IResponseWithdraw extends Record<string, any> {
   method: string;
   fields: any[];
   currency: string;
@@ -95,7 +95,7 @@ export interface IInvoicePublicData extends Record<string, any> {
   transactionId: string;
 }
 
-export interface IInvoice extends Record<string, any>{
+export interface IInvoice extends Record<string, any> {
   id: string;
   amount: number;
   transactionAmount: number;
@@ -106,16 +106,16 @@ export interface IInvoice extends Record<string, any>{
   paymentMethod: string;
   invoiceType: number;
   createdAt: string;
-  updatedAt: string|null;
-  publicData: IInvoicePublicData|null;
+  updatedAt: string | null;
+  publicData: IInvoicePublicData | null;
 }
 
-export interface IResponseInvoices extends Record<string, any>{
+export interface IResponseInvoices extends Record<string, any> {
   data: IInvoice[];
   meta: IPaginationMeta;
 }
 
-export interface IInvoicesRequestOptions extends Record<string, any>{
+export interface IInvoicesRequestOptions extends Record<string, any> {
   page: number;
   perPage: number;
   dateFrom?: string;
@@ -125,7 +125,7 @@ export interface IInvoicesRequestOptions extends Record<string, any>{
   status?: string;
 }
 
-export interface ISocketInvoice extends Record<string, any>{
+export interface ISocketInvoice extends Record<string, any> {
   id: string;
   playerId: string;
   amount: number;
@@ -133,9 +133,9 @@ export interface ISocketInvoice extends Record<string, any>{
   paymentMethod: string;
   status: number;
   createdAt: string;
-  number: number|null;
+  number: number | null;
   publicData: {
     qr: string;
     url: string;
-  }|null;
+  } | null;
 }

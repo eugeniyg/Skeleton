@@ -1,9 +1,9 @@
 <template>
-  <not-found/>
+  <not-found />
 </template>
 
 <script setup lang="ts">
-  import type { IAuthState } from "@skeleton/core/types";
+  import type { IAuthState } from '@skeleton/core/types';
 
   const router = useRouter();
   const { localizePath } = useProjectMethods();
@@ -15,12 +15,15 @@
   const sendSocialData = async (socialData: any, authState?: IAuthState): Promise<void> => {
     try {
       const { loginSocial } = useProfileStore();
-      await loginSocial({
-        ...socialData,
-        locale: currentLocale.value?.code,
-        socialDataKey: 'id_token',
-      }, authState);
-    } catch (err:any) {
+      await loginSocial(
+        {
+          ...socialData,
+          locale: currentLocale.value?.code,
+          socialDataKey: 'id_token',
+        },
+        authState
+      );
+    } catch (err: any) {
       const errorCode = err.data?.error?.code;
 
       if (errorCode === 11002) {
@@ -37,7 +40,7 @@
         await router.replace(localizePath('/?sign-up=true'));
       }
     }
-  }
+  };
 
   onBeforeMount(async () => {
     const { query } = useRoute();
@@ -54,5 +57,5 @@
       await openModal('sign-up');
       await router.replace(localizePath('/?sign-up=true'));
     }
-  })
+  });
 </script>

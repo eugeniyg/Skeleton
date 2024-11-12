@@ -3,7 +3,7 @@
     :target="props.targetBlank ? '_blank' : null"
     :to="props.href?.startsWith('http') ? props.href : localizePath(props.href)"
   >
-    <slot/>
+    <slot />
   </nuxt-link>
 </template>
 
@@ -12,6 +12,6 @@
     href?: string;
     targetBlank?: boolean;
   }>();
-  
+
   const { localizePath } = useProjectMethods();
 </script>

@@ -16,11 +16,11 @@
     <button-base
       type="primary"
       size="md"
-      tagName="div"
-      :isDisabled="v$.$invalid || isLockedAsyncButton"
+      tag-name="div"
+      :is-disabled="v$.$invalid || isLockedAsyncButton"
       @click="sendOtp"
     >
-      <atomic-spinner :is-shown="isLockedAsyncButton"/>
+      <atomic-spinner :is-shown="isLockedAsyncButton" />
       {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'sendOtpButton') }}
     </button-base>
   </form>
@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IModalsContent} from "~/types";
+  import type { IModalsContent } from '~/types';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['forgot']>;
@@ -36,12 +36,7 @@
   }>();
 
   const globalStore = useGlobalStore();
-  const {
-    fieldsSettings,
-    defaultLocaleFieldsSettings,
-    popupsData,
-    defaultLocalePopupsData,
-  } = storeToRefs(globalStore);
+  const { fieldsSettings, defaultLocaleFieldsSettings, popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 
   const emit = defineEmits(['sendOtp']);
   const forgotFormData = reactive({ phone: '' });
@@ -50,13 +45,11 @@
     phone: [{ rule: 'required' }, { rule: 'phone' }],
   };
   const forgotFormRules = getFormRules(forgotRules);
-  const {
-    serverFormErrors, v$, onFocus, setError,
-  } = useFormValidation(forgotFormRules, forgotFormData);
+  const { serverFormErrors, v$, onFocus, setError } = useFormValidation(forgotFormRules, forgotFormData);
 
   const isLockedAsyncButton = ref<boolean>(false);
 
-  const sendOtp = async ():Promise<void> => {
+  const sendOtp = async (): Promise<void> => {
     if (v$.value.$invalid) return;
 
     v$.value.$reset();
@@ -68,7 +61,7 @@
       const { sendOtp } = useCoreAuthApi();
       await sendOtp({ phone: forgotFormData.phone, reason: 'changingPass' });
       emit('sendOtp', forgotFormData);
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.data?.error?.code === 11005) {
         const limitError = getContent(popupsData.value, defaultLocalePopupsData.value, 'phoneVerification.limitError');
         serverFormErrors.value = { phone: [limitError] };
@@ -78,5 +71,5 @@
     } finally {
       isLockedAsyncButton.value = false;
     }
-  }
+  };
 </script>

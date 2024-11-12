@@ -1,6 +1,6 @@
 <template>
   <button class="btn-favorite" :class="{ active: isActive }" @click="toggleFavorite">
-    <atomic-icon :id="isActive ? 'heart' : 'heart-outline'"/>
+    <atomic-icon :id="isActive ? 'heart' : 'heart-outline'" />
   </button>
 </template>
 
@@ -12,10 +12,10 @@
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
 
-  const isActive = computed(() => favoriteGames.value.map((game) => game.id).includes(props.gameId));
+  const isActive = computed(() => favoriteGames.value.map(game => game.id).includes(props.gameId));
 
   const toggleFavorite = async (): Promise<void> => {
-    if (favoriteGames.value.find((game) => game.id === props.gameId)) {
+    if (favoriteGames.value.find(game => game.id === props.gameId)) {
       await gameStore.deleteFavoriteGame(props.gameId);
     } else await gameStore.setFavoriteGame(props.gameId);
   };

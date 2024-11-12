@@ -15,7 +15,7 @@
       @focus="focusField('login')"
       @submit="login"
     />
-    
+
     <form-input-phone
       v-else
       key="phone"
@@ -30,47 +30,45 @@
       @focus="focusField('login')"
       @submit="login"
     />
-    
+
     <form-input-password
       v-model:value="authorizationFormData.password"
       type="password"
       :is-required="true"
       :label="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.password.label') || ''"
       name="password"
-      :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.password.placeholder') || ''"
+      :placeholder="
+        getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.password.placeholder') || ''
+      "
       :hint="setError('password')"
       @blur="v$.password?.$touch()"
       @focus="focusField('password')"
       @submit="login"
     />
-    
-    <atomic-hint
-      v-if="loginError || socialAuthEmailError"
-      variant="error"
-      :message="hintErrorMessage"
-    />
-    
+
+    <atomic-hint v-if="loginError || socialAuthEmailError" variant="error" :message="hintErrorMessage" />
+
     <button-base
       type="primary"
       size="md"
-      tagName="div"
-      :isDisabled="v$.$invalid || isLockedAsyncButton"
+      tag-name="div"
+      :is-disabled="v$.$invalid || isLockedAsyncButton"
       @click="login"
     >
-      <atomic-spinner :is-shown="isLockedAsyncButton"/>
+      <atomic-spinner :is-shown="isLockedAsyncButton" />
       {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'loginButton') }}
     </button-base>
-    
+
     <button-popup
       class="btn-forgot"
-      :buttonLabel="getContent(props.currentLocaleData, props.defaultLocaleData, 'forgotButton')"
+      :button-label="getContent(props.currentLocaleData, props.defaultLocaleData, 'forgotButton')"
       modal="forgot-pass"
     />
-    
-    <atomic-socials type="login"/>
-    
+
+    <atomic-socials type="login" />
+
     <button-popup
-      :buttonLabel="getContent(props.currentLocaleData, props.defaultLocaleData, 'registrationButton')"
+      :button-label="getContent(props.currentLocaleData, props.defaultLocaleData, 'registrationButton')"
       modal="sign-up"
     />
   </form>
@@ -78,71 +76,62 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IModalsContent} from "~/types";
-  
+  import type { IModalsContent } from '~/types';
+
   const props = defineProps<{
     loginType: 'email' | 'phone';
     count: number;
     currentLocaleData: Maybe<IModalsContent['signIn']>;
     defaultLocaleData: Maybe<IModalsContent['signIn']>;
   }>();
-  
+
   const globalStore = useGlobalStore();
-  const {
-    fieldsSettings,
-    defaultLocaleFieldsSettings,
-    alertsData,
-    defaultLocaleAlertsData
-  } = storeToRefs(globalStore);
+  const { fieldsSettings, defaultLocaleFieldsSettings, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const { closeModal } = useModalStore();
-  
+
   const profileStore = useProfileStore();
   const { socialAuthEmailError } = storeToRefs(profileStore);
   const { logIn } = profileStore;
   const isLockedAsyncButton = ref<boolean>(false);
-  
+
   const hintErrorMessage = computed(() => {
-    const emailVerificationError = getContent(props.currentLocaleData, props.defaultLocaleData, 'emailVerificationError');
+    const emailVerificationError = getContent(
+      props.currentLocaleData,
+      props.defaultLocaleData,
+      'emailVerificationError'
+    );
     const loginError = getContent(fieldsSettings.value, defaultLocaleFieldsSettings.value, 'validationMessages.login');
-    
+
     if (!emailVerificationError && !loginError) return '';
     if (socialAuthEmailError.value) return emailVerificationError;
     return loginError;
   });
-  
+
   const authorizationFormData = reactive({
     login: '',
-    password: ''
+    password: '',
   });
-  const {
-    getFormRules,
-    getContent
-  } = useProjectMethods();
+  const { getFormRules, getContent } = useProjectMethods();
   const authorizationRules = {
     password: [{ rule: 'required' }],
-    login: [{ rule: 'required' }, { rule: props.loginType || 'email' }]
+    login: [{ rule: 'required' }, { rule: props.loginType || 'email' }],
   };
   const authorizationFormRules = getFormRules(authorizationRules);
-  const {
-    serverFormErrors,
-    v$,
-    onFocus,
-    setError,
-  } = useFormValidation(authorizationFormRules, authorizationFormData);
+  const { serverFormErrors, v$, onFocus, setError } = useFormValidation(authorizationFormRules, authorizationFormData);
   const loginError = ref<boolean>(false);
-  
+
   const focusField = (fieldName: string): void => {
     loginError.value = false;
     onFocus(fieldName);
   };
-  
+
   const login = async (): Promise<void> => {
     if (v$.value.$invalid) return;
-    
+
     v$.value.$reset();
     const validFormData = await v$.value.$validate();
     if (!validFormData) return;
-    
+
     try {
       isLockedAsyncButton.value = true;
       await logIn(authorizationFormData);
@@ -162,10 +151,10 @@
       isLockedAsyncButton.value = false;
     }
   };
-  
+
   const inputEmailRef = ref();
   const inputPhoneRef = ref();
-  
+
   onMounted(() => {
     nextTick(() => {
       if (props.loginType === 'email' && props.count < 1) {
@@ -173,11 +162,10 @@
       }
     });
   });
-  
+
   onBeforeUnmount(() => {
     socialAuthEmailError.value = false;
   });
 </script>
 
-<style src="~/assets/styles/components/form/sign-in.scss" lang="scss"/>
-
+<style src="~/assets/styles/components/form/sign-in.scss" lang="scss" />

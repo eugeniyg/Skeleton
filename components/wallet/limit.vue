@@ -23,8 +23,8 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from "pinia";
-  import type { IProfileLimits } from "~/types";
+  import { storeToRefs } from 'pinia';
+  import type { IProfileLimits } from '~/types';
 
   const props = defineProps<{
     currentLocaleLimitsContent: Maybe<IProfileLimits['coolingOff']>;
@@ -35,12 +35,8 @@
   const { getContent, formatBalance, localizePath } = useProjectMethods();
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
-  const {
-    popupsData,
-    defaultLocalePopupsData,
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent
-  } = storeToRefs(globalStore);
+  const { popupsData, defaultLocalePopupsData, globalComponentsContent, defaultLocaleGlobalComponentsContent } =
+    storeToRefs(globalStore);
   const { activeAccount } = storeToRefs(walletStore);
 
   const limitsStore = useLimitsStore();
@@ -48,37 +44,50 @@
 
   const currentDepositLimit = computed(() => {
     return activeLimits.value.find(limit => {
-      return limit.definition === 3
-        && limit.currency === activeAccount.value?.currency
-        && (limit.currentAmount ?? 0) >= (limit.amount ?? 0)
-    })
-  })
+      return (
+        limit.definition === 3 &&
+        limit.currency === activeAccount.value?.currency &&
+        (limit.currentAmount ?? 0) >= (limit.amount ?? 0)
+      );
+    });
+  });
 
   const limitValueText = computed(() => {
-    const periodOptions = getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent, 'constants.limitPeriods');
+    const periodOptions = getContent(
+      globalComponentsContent.value,
+      defaultLocaleGlobalComponentsContent,
+      'constants.limitPeriods'
+    );
     if (!periodOptions) return undefined;
 
     if (coolingOffLimits.value?.length) {
-      const limitValue = getContent(props.currentLocaleLimitsContent, props.defaultLocaleLimitsContent, 'coolingOff.label');
+      const limitValue = getContent(
+        props.currentLocaleLimitsContent,
+        props.defaultLocaleLimitsContent,
+        'coolingOff.label'
+      );
       const limitPeriod = periodOptions[coolingOffLimits.value[0].period as string];
       return `${limitValue} - ${limitPeriod}`;
     }
 
     if (currentDepositLimit.value) {
-      const { amount, currency } = formatBalance(currentDepositLimit.value.currency as string, currentDepositLimit.value.amount as number);
+      const { amount, currency } = formatBalance(
+        currentDepositLimit.value.currency as string,
+        currentDepositLimit.value.amount as number
+      );
       const limitValue = `${amount} ${currency}`;
       const limitPeriod = periodOptions[currentDepositLimit.value.period as string];
       return `${limitValue} - ${limitPeriod}`;
     }
 
     return undefined;
-  })
+  });
 
   const goToLimits = (): void => {
     const router = useRouter();
     closeModal('wallet');
     router.push(localizePath('/profile/limits'));
-  }
+  };
 </script>
 
-<style src="~/assets/styles/components/wallet/limit.scss" lang="scss"/>
+<style src="~/assets/styles/components/wallet/limit.scss" lang="scss" />

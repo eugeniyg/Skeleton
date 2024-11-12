@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="bonuses-deposit-promo"
-    :class="{ 'is-selected': showDepositBonusCode }"
-    @click="handleBonusClick"
-  >
+  <div class="bonuses-deposit-promo" :class="{ 'is-selected': showDepositBonusCode }" @click="handleBonusClick">
     <form-input-bonus-radio
       id="deposit-bonus-code"
       name="input-deposit-bonus-code"
@@ -21,23 +17,23 @@
         ref="bonusField"
         v-model:value="bonusValue"
         label=""
-        :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.bonusCode.placeholder') || ''"
+        :placeholder="
+          getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.bonusCode.placeholder') || ''
+        "
         name="bonus-code"
         autocomplete="off"
-        :isDisabled="!!depositBonusCode"
+        :is-disabled="!!depositBonusCode"
         @touchend="focusInput"
         @touchmove="touchMove = true"
       />
 
-      <button-base
-        type="secondary"
-        size="md"
-        :isDisabled="bonusChecking || !bonusValue"
-        @click="toggleBonusCode"
-      >
-        <atomic-spinner :is-shown="bonusChecking"/>
-        {{ depositBonusCode ? getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.cancelBonusCode')
-          : getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addBonusCode') }}
+      <button-base type="secondary" size="md" :is-disabled="bonusChecking || !bonusValue" @click="toggleBonusCode">
+        <atomic-spinner :is-shown="bonusChecking" />
+        {{
+          depositBonusCode
+            ? getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.cancelBonusCode')
+            : getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addBonusCode')
+        }}
       </button-base>
     </div>
   </div>
@@ -48,12 +44,7 @@
 
   const emit = defineEmits(['openBonusCode']);
   const globalStore = useGlobalStore();
-  const {
-    popupsData,
-    defaultLocalePopupsData,
-    fieldsSettings,
-    defaultLocaleFieldsSettings
-  } = globalStore;
+  const { popupsData, defaultLocalePopupsData, fieldsSettings, defaultLocaleFieldsSettings } = globalStore;
   const { getContent } = useProjectMethods();
 
   const bonusValue = ref<string>('');
@@ -63,16 +54,16 @@
   const bonusStore = useBonusStore();
   const { showDepositBonusCode, depositBonusCode } = storeToRefs(bonusStore);
 
-  const sendManualBonus = async ():Promise<boolean> => {
+  const sendManualBonus = async (): Promise<boolean> => {
     try {
       const response = await addBonusCode(bonusValue.value, 1);
       return response.status === 2;
-    } catch (err: any) {
+    } catch {
       return false;
     }
   };
 
-  const toggleBonusCode = async ():Promise<void> => {
+  const toggleBonusCode = async (): Promise<void> => {
     if (bonusChecking.value) return;
     bonusChecking.value = true;
 
@@ -95,7 +86,7 @@
     bonusChecking.value = false;
   };
 
-  const closeBonusField = async ():Promise<void> => {
+  const closeBonusField = async (): Promise<void> => {
     if (depositBonusCode.value) {
       toggleBonusCode();
     } else {
@@ -105,7 +96,7 @@
 
   const bonusField = ref();
   const touchMove = ref<boolean>(false);
-  const focusInput = ():void => {
+  const focusInput = (): void => {
     if (!globalStore.isIOSPlatform) return;
 
     if (touchMove.value) {
@@ -119,14 +110,17 @@
 
   const handleBonusClick = (): void => {
     if (showDepositBonusCode.value) return;
-    emit('openBonusCode')
-  }
+    emit('openBonusCode');
+  };
 
-  watch(() => showDepositBonusCode.value, (newValue) => {
-    if (!newValue && bonusValue.value) {
-      closeBonusField();
+  watch(
+    () => showDepositBonusCode.value,
+    newValue => {
+      if (!newValue && bonusValue.value) {
+        closeBonusField();
+      }
     }
-  });
+  );
 
   onMounted(() => {
     if (depositBonusCode.value) {

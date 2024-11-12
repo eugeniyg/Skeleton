@@ -1,6 +1,6 @@
 <template>
   <div v-show="props.message" class="hint" :class="classes">
-    <atomic-icon :id="emailIcon"/>
+    <atomic-icon :id="emailIcon" />
     {{ props.message }}
   </div>
 </template>
@@ -9,7 +9,7 @@
   const props = defineProps({
     variant: {
       type: String,
-      validator: (val:string) => ['error', 'success', 'unverified', 'verified', ''].includes(val),
+      validator: (val: string) => ['error', 'success', 'unverified', 'verified', ''].includes(val),
       default: '',
     },
     message: {
@@ -20,18 +20,16 @@
 
   const emailIcon = computed(() => {
     switch (props.variant) {
-    case 'unverified':
-      return 'warning';
-    case 'verified':
-      return 'done';
-    default:
-      return null;
+      case 'unverified':
+        return 'warning';
+      case 'verified':
+        return 'done';
+      default:
+        return null;
     }
   });
 
-  const classes = computed(() => [
-    props.variant ? `variant-${props.variant}` : '',
-  ]);
+  const classes = computed(() => [props.variant ? `variant-${props.variant}` : '']);
 </script>
 
 <style src="~/assets/styles/components/atomic/hint.scss" lang="scss" />

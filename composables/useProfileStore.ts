@@ -1,14 +1,9 @@
 import { defineStore } from 'pinia';
-import type {
-  IProfile,
-  IAuthorizationResponse,
-  IParsedToken,
-  IAuthState
-} from '@skeleton/core/types';
-import { jwtDecode } from "jwt-decode";
+import type { IProfile, IAuthorizationResponse, IParsedToken, IAuthState } from '@skeleton/core/types';
+import { jwtDecode } from 'jwt-decode';
 
 interface IProfileStoreState {
-  refreshPromise: Promise<string>|null;
+  refreshPromise: Promise<string> | null;
   isLoggedIn: boolean;
   sessionId: string;
   resentVerifyEmail: boolean;
@@ -16,7 +11,7 @@ interface IProfileStoreState {
   socialAuthEmailError: boolean;
   tokenCookieKey: string;
   onlineSubscription: any;
-  fingerprintVisitor: Promise<string>|null;
+  fingerprintVisitor: Promise<string> | null;
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -29,11 +24,11 @@ export const useProfileStore = defineStore('profileStore', {
     socialAuthEmailError: false,
     tokenCookieKey: 'access_token',
     onlineSubscription: undefined,
-    fingerprintVisitor: null
+    fingerprintVisitor: null,
   }),
 
   getters: {
-    userNickname(state):string {
+    userNickname(state): string {
       if (state.profile?.nickname) return state.profile.nickname;
       if (state.profile?.email) {
         const { getNicknameFromEmail } = useProjectMethods();
@@ -44,25 +39,25 @@ export const useProfileStore = defineStore('profileStore', {
   },
 
   actions: {
-    setSessionToken (tokenValue:string):void {
+    setSessionToken(tokenValue: string): void {
       const cookieToken = useCookie(this.tokenCookieKey, { maxAge: 60 * 60 * 24 * 365 });
       cookieToken.value = tokenValue;
     },
 
-    getSessionToken ():Maybe<string> {
+    getSessionToken(): Maybe<string> {
       const cookieToken = useCookie(this.tokenCookieKey);
       return cookieToken.value;
     },
 
-    isTokenExpired ():boolean {
+    isTokenExpired(): boolean {
       const token = this.getSessionToken();
       if (!token) return false;
 
-      const currentSession:IParsedToken = jwtDecode(token);
-      return currentSession.exp ? (currentSession.exp - 10) < (Date.now() / 1000) : false;
+      const currentSession: IParsedToken = jwtDecode(token);
+      return currentSession.exp ? currentSession.exp - 10 < Date.now() / 1000 : false;
     },
 
-    getCurrentSession ():IParsedToken|null {
+    getCurrentSession(): IParsedToken | null {
       const token = this.getSessionToken();
       if (token) {
         return jwtDecode(token);
@@ -70,12 +65,12 @@ export const useProfileStore = defineStore('profileStore', {
       return null;
     },
 
-    encodeSessionChange (key: 'login'|'logout'): string {
+    encodeSessionChange(key: 'login' | 'logout'): string {
       const time = Date.now();
       return window.btoa(`${time}-${key}`);
     },
 
-    removeSession ():void {
+    removeSession(): void {
       this.profile = undefined;
       const cookieToken = useCookie(this.tokenCookieKey);
       cookieToken.value = null;
@@ -92,7 +87,7 @@ export const useProfileStore = defineStore('profileStore', {
       deleteReturnGame();
     },
 
-    async getRefreshRequest (): Promise<string> {
+    async getRefreshRequest(): Promise<string> {
       const storageRefreshStatus = localStorage.getItem('refreshSession');
 
       if (storageRefreshStatus === 'loading') {
@@ -124,26 +119,21 @@ export const useProfileStore = defineStore('profileStore', {
       }
     },
 
-    refreshToken(): string|Promise<string> {
+    refreshToken(): string | Promise<string> {
       if (this.refreshPromise) return this.refreshPromise;
       this.refreshPromise = this.getRefreshRequest();
       return this.refreshPromise;
     },
 
-    startSession(authData: IAuthorizationResponse):void {
+    startSession(authData: IAuthorizationResponse): void {
       this.profile = authData.profile;
       const { reconnectSocket } = useWebSocket();
       reconnectSocket();
     },
 
-    startProfileDependencies():void {
+    startProfileDependencies(): void {
       const { getFavoriteGames, subscribeBetsSocket } = useGamesStore();
-      const {
-        getPlayerBonuses,
-        getPlayerFreeSpins,
-        getPlayerCashback,
-        getDepositBonuses
-      } = useBonusStore();
+      const { getPlayerBonuses, getPlayerFreeSpins, getPlayerCashback, getDepositBonuses } = useBonusStore();
       const { getPlayerActiveQuests, subscribeQuestsSocket } = useQuestsStore();
       const { getPlayerLoyalty, subscribeLoyaltySocket } = useLoyaltyStore();
       const { getPopoverNotifications, subscribeNotificationSocket } = useNotificationStore();
@@ -181,7 +171,7 @@ export const useProfileStore = defineStore('profileStore', {
       if (storageEquivalentCurrency) setEquivalentCurrency(storageEquivalentCurrency);
     },
 
-    finishProfileDependencies():void {
+    finishProfileDependencies(): void {
       const bonusStore = useBonusStore();
       bonusStore.$reset();
 
@@ -203,7 +193,7 @@ export const useProfileStore = defineStore('profileStore', {
       unsubscribeNotificationSocket();
     },
 
-    async handleLogin(authResponse: IAuthorizationResponse):Promise<void> {
+    async handleLogin(authResponse: IAuthorizationResponse): Promise<void> {
       this.setSessionToken(authResponse.accessToken);
       this.startSession(authResponse);
       await nextTick();
@@ -214,7 +204,9 @@ export const useProfileStore = defineStore('profileStore', {
       this.isLoggedIn = true;
       localStorage.setItem('changeSession', this.encodeSessionChange('login'));
 
-      const { public: { freshchatParams }} = useRuntimeConfig();
+      const {
+        public: { freshchatParams },
+      } = useRuntimeConfig();
       const { updateChat, addFreshChatScript } = useFreshchatStore();
       if (freshchatParams?.guestAvailable) updateChat();
       else addFreshChatScript();
@@ -222,17 +214,17 @@ export const useProfileStore = defineStore('profileStore', {
       this.startProfileDependencies();
     },
 
-    async logIn(loginData:any):Promise<void> {
+    async logIn(loginData: any): Promise<void> {
       const { submitLoginData } = useCoreAuthApi();
-      const fingerprint = await this.fingerprintVisitor || undefined;
+      const fingerprint = (await this.fingerprintVisitor) || undefined;
       const submitResult = await submitLoginData({
         ...loginData,
-        fingerprint
+        fingerprint,
       });
       await this.handleLogin(submitResult);
     },
 
-    registrationSucceeded():void {
+    registrationSucceeded(): void {
       const { showAlert, openWalletModal } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
       const { closeModal } = useModalStore();
@@ -242,14 +234,14 @@ export const useProfileStore = defineStore('profileStore', {
       openWalletModal();
     },
 
-    async loginSocial(socialData:any, authState?: IAuthState):Promise<void> {
+    async loginSocial(socialData: any, authState?: IAuthState): Promise<void> {
       const { submitSocialLoginData } = useCoreAuthApi();
-      const fingerprint = await this.fingerprintVisitor || undefined;
+      const fingerprint = (await this.fingerprintVisitor) || undefined;
       const affiliateTag = useCookie('affiliateTag');
       const submitResult = await submitSocialLoginData({
         ...socialData,
         fingerprint,
-        affiliateTag: affiliateTag.value || undefined
+        affiliateTag: affiliateTag.value || undefined,
       });
       await this.handleLogin(submitResult);
 
@@ -260,67 +252,67 @@ export const useProfileStore = defineStore('profileStore', {
       if (submitResult.profile?.isNewlyRegistered) {
         useEvent('analyticsEvent', {
           event: 'registrationSuccess',
-          regType: 'social'
+          regType: 'social',
         });
         this.registrationSucceeded();
       }
     },
 
-    async autoLogin(token: string):Promise<void> {
+    async autoLogin(token: string): Promise<void> {
       const { submitAutologinData } = useCoreAuthApi();
-      const fingerprint = await this.fingerprintVisitor || undefined;
+      const fingerprint = (await this.fingerprintVisitor) || undefined;
       const submitResult = await submitAutologinData({
         token,
-        fingerprint
+        fingerprint,
       });
       await this.handleLogin(submitResult);
     },
 
-    async registration(registrationData:any):Promise<void> {
+    async registration(registrationData: any): Promise<void> {
       const { submitRegistrationData } = useCoreAuthApi();
-      const fingerprint = await this.fingerprintVisitor || undefined;
+      const fingerprint = (await this.fingerprintVisitor) || undefined;
       const affiliateTag = useCookie('affiliateTag');
       const submitResult = await submitRegistrationData({
         ...registrationData,
         fingerprint,
-        affiliateTag: affiliateTag.value || undefined
+        affiliateTag: affiliateTag.value || undefined,
       });
       await this.handleLogin(submitResult);
       useEvent('analyticsEvent', {
         event: 'registrationSuccess',
-        regType: 'email'
+        regType: 'email',
       });
       this.registrationSucceeded();
     },
 
-    async phoneRegistration(registrationData:any):Promise<void> {
+    async phoneRegistration(registrationData: any): Promise<void> {
       const { registerByPhone } = useCoreAuthApi();
-      const fingerprint = await this.fingerprintVisitor || undefined;
+      const fingerprint = (await this.fingerprintVisitor) || undefined;
       const affiliateTag = useCookie('affiliateTag');
       const submitResult = await registerByPhone({
         ...registrationData,
         fingerprint,
-        affiliateTag: affiliateTag.value || undefined
+        affiliateTag: affiliateTag.value || undefined,
       });
       await this.handleLogin(submitResult);
       useEvent('analyticsEvent', {
         event: 'registrationSuccess',
-        regType: 'phone'
+        regType: 'phone',
       });
       this.registrationSucceeded();
     },
 
-    async getProfileData():Promise<void> {
+    async getProfileData(): Promise<void> {
       const { getProfile } = useCoreProfileApi();
       this.profile = await getProfile();
       this.isLoggedIn = true;
     },
 
-    setProfileData(data: IProfile):void {
+    setProfileData(data: IProfile): void {
       this.profile = data;
     },
 
-    async logOutUser():Promise<void> {
+    async logOutUser(): Promise<void> {
       const { logOut } = useCoreAuthApi();
       try {
         await logOut();
@@ -333,7 +325,7 @@ export const useProfileStore = defineStore('profileStore', {
       }
     },
 
-    async resendVerifyEmail():Promise<void> {
+    async resendVerifyEmail(): Promise<void> {
       const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
       const { resendVerifyEmail } = useCoreProfileApi();
@@ -347,12 +339,12 @@ export const useProfileStore = defineStore('profileStore', {
       }
     },
 
-    subscribeOnlineSocket():void {
+    subscribeOnlineSocket(): void {
       const { createSubscription } = useWebSocket();
       this.onlineSubscription = createSubscription('global:online');
     },
 
-    unsubscribeOnlineSocket():void {
+    unsubscribeOnlineSocket(): void {
       if (this.onlineSubscription) {
         this.onlineSubscription.unsubscribe();
         this.onlineSubscription.removeAllListeners();

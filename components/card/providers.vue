@@ -1,16 +1,9 @@
 <template>
-  <nuxt-link
-    class="card-providers"
-    :to="localizePath(`/games?provider=${props.providerData.id}`)"
-  >
+  <nuxt-link class="card-providers" :to="localizePath(`/games?provider=${props.providerData.id}`)">
     <div class="card-providers__header">
-      <atomic-image
-        class="card-providers__img"
-        :src="`/img/providers/${props.providerData.identity}.svg`"
-      />
+      <atomic-image class="card-providers__img" :src="`/img/providers/${props.providerData.identity}.svg`" />
     </div>
-    
-    
+
     <div class="card-providers__info">
       <div class="card-providers__name">{{ props.providerData.name }}</div>
       <div class="card-providers__count">
@@ -18,22 +11,17 @@
         <span>games</span>
       </div>
     </div>
-    
-    
   </nuxt-link>
 </template>
 
 <script setup lang="ts">
-  import type { IGameProvider } from "@skeleton/core/types";
+  import type { IGameProvider } from '@skeleton/core/types';
 
   const props = defineProps<{
     providerData: IGameProvider;
   }>();
 
-  const router = useRouter();
-
   const { localizePath } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/card/providers.scss" lang="scss" />
-
