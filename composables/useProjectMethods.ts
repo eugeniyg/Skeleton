@@ -1,9 +1,4 @@
-import type {
-  IAmountRangeItem,
-  IBonus,
-  IGameImages,
-  IObserverOptions
-} from '@skeleton/core/types';
+import type { IAmountRangeItem, IBonus, IGameImages, IObserverOptions } from '@skeleton/core/types';
 import get from 'lodash/get';
 import * as projectRules from './validationRules';
 import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
@@ -203,7 +198,7 @@ export const useProjectMethods = () => {
       description: metaData?.description || globalStore.globalSeo?.description,
       ogDescription: metaData?.description || globalStore.globalSeo?.description,
       ogImage: imageUrl,
-    })
+    });
   };
 
   const sortByAlphabet = (a: string, b: string): number => {

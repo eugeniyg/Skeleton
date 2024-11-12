@@ -7,10 +7,7 @@
         <atomic-icon id="arrow_expand-close" />
       </div>
 
-      <div
-        class="items"
-        body-scroll-lock-ignore
-      >
+      <div class="items" body-scroll-lock-ignore>
         <a
           v-for="locale in locales"
           :key="locale.code"
@@ -59,8 +56,8 @@
     window.location.href = href || `/${locale.code.toLowerCase()}`;
   };
 
-  const linkToLocale = (locale: ILocale):string => {
-    const routerLocale:any = route.params.locale;
+  const linkToLocale = (locale: ILocale): string => {
+    const routerLocale: any = route.params.locale;
     const pathRegexp = new RegExp(`^/${routerLocale}/|^/${routerLocale}$`);
     const pathWithoutLocale = routerLocale ? route.fullPath.replace(pathRegexp, '/') : route.fullPath;
 
