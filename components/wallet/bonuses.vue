@@ -40,10 +40,10 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from "pinia";
-  import type { IBonus } from "@skeleton/core/types";
+  import { storeToRefs } from 'pinia';
+  import type { IBonus } from '@skeleton/core/types';
   import { marked } from 'marked';
-  import DOMPurify from "isomorphic-dompurify";
+  import DOMPurify from 'isomorphic-dompurify';
 
   const props = defineProps<{
     crypto?: boolean;
@@ -64,7 +64,9 @@
     walletDepositBonus,
   } = storeToRefs(bonusStore);
 
-  const cryptoInfoContent = computed(() => getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.infoDescription'));
+  const cryptoInfoContent = computed(() =>
+    getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.infoDescription')
+  );
 
   const setDepositLimit = (bonusData: IBonus): IBonus => {
     let minDeposit: { amount: number; currency: string } | undefined;

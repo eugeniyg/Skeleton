@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
   import { marked } from 'marked';
-  import DOMPurify from "isomorphic-dompurify";
+  import DOMPurify from 'isomorphic-dompurify';
 
   const props = defineProps<{
     title: string;
