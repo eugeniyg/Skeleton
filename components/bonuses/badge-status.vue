@@ -7,27 +7,30 @@
     </span>
 
     <span v-if="props.status === 'available-deposit'" class="bonuses-badge-status__text">
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.availability.nextDeposit') }}
+      {{
+        getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.availability.nextDeposit')
+      }}
     </span>
   </div>
 </template>
 
 <script setup lang="ts">
   const props = defineProps<{
-    status: 'active'|'available'|'available-deposit';
+    status: 'active' | 'available' | 'available-deposit';
   }>();
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
-  const statusLabel = computed<string|undefined>(() => {
+  const statusLabel = computed<string | undefined>(() => {
     const contentKey = props.status.includes('available') ? 'available' : 'active';
     return getContent(
       globalComponentsContent.value,
       defaultLocaleGlobalComponentsContent.value,
-      `bonuses.availability.${contentKey}`);
-  })
+      `bonuses.availability.${contentKey}`
+    );
+  });
 </script>
 
-<style src="~/assets/styles/components/bonuses/badge-status.scss" lang="scss"/>
+<style src="~/assets/styles/components/bonuses/badge-status.scss" lang="scss" />

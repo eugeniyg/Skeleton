@@ -1,11 +1,6 @@
 <template>
-  <button
-    v-click-outside="makeInactive"
-    class="btn-deposit"
-    :class="{'is-active': isActive}"
-    @click="makeActive"
-  >
-    <atomic-icon id="wallet"/>
+  <button v-click-outside="makeInactive" class="btn-deposit" :class="{ 'is-active': isActive }" @click="makeActive">
+    <atomic-icon id="wallet" />
     <span>
       {{ getContent(layoutData, defaultLocaleLayoutData, 'header.depositButton') }}
     </span>
@@ -29,4 +24,3 @@
 </script>
 
 <style src="~/assets/styles/components/button/deposit.scss" lang="scss" />
-

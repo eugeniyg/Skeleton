@@ -1,18 +1,12 @@
 <template>
   <div class="card-home">
     <div class="content">
-      <div
-        v-if="props.images?.backgroundImage"
-        class="back-bg"
-      >
-        <atomic-picture :src="props.images.backgroundImage" notLazy/>
+      <div v-if="props.images?.backgroundImage" class="back-bg">
+        <atomic-picture :src="props.images.backgroundImage" not-lazy />
       </div>
 
-      <div
-        v-if="props.images?.faceImage"
-        class="front-bg"
-      >
-        <atomic-picture :src="props.images.faceImage" notLazy />
+      <div v-if="props.images?.faceImage" class="front-bg">
+        <atomic-picture :src="props.images.faceImage" not-lazy />
       </div>
     </div>
 
@@ -44,11 +38,7 @@
         />
 
         <div v-if="props.button && props.button?.showButton" class="actions">
-          <button-base
-            type="primary"
-            size="md"
-            @click="clickButton(props.button.url)"
-          >
+          <button-base type="primary" size="md" @click="clickButton(props.button.url)">
             <atomic-icon :id="props.button.icon" />
             {{ props.button.label }}
           </button-base>
@@ -61,7 +51,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
-  import DOMPurify from "isomorphic-dompurify";
+  import DOMPurify from 'isomorphic-dompurify';
 
   const props = defineProps<{
     images: {
@@ -94,11 +84,12 @@
   const loyaltyWelcomeTitle = computed(() => {
     if (!props.bannerLoyalty?.welcomeTitle) return undefined;
     return props.bannerLoyalty.welcomeTitle.replace('{nickname}', userNickname.value);
-  })
+  });
 
   const clickButton = (url: string): void => {
-    if (url) handleExternalLink(url)
-    else isLoggedIn.value ? openWalletModal('deposit') : openModal('sign-up');
+    if (url) handleExternalLink(url);
+    else if (isLoggedIn.value) openWalletModal('deposit');
+    else openModal('sign-up');
   };
 </script>
 

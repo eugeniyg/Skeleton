@@ -24,12 +24,12 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGame } from "@skeleton/core/types";
-  import { storeToRefs } from "pinia";
+  import type { IGame } from '@skeleton/core/types';
+  import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
     game: IGame;
-  }>()
+  }>();
 
   const globalStore = useGlobalStore();
   const { setReturnGame } = useLayoutStore();
@@ -37,11 +37,8 @@
   const { layoutData, defaultLocaleLayoutData } = storeToRefs(globalStore);
 
   const gameImage = computed(() => {
-    return props.game.images['200x200']
-      ? getImageUrl(props.game.images, 'square')
-      : '/img/default-game-tumb.png'
-  })
+    return props.game.images['200x200'] ? getImageUrl(props.game.images, 'square') : '/img/default-game-tumb.png';
+  });
 </script>
 
 <style src="~/assets/styles/components/layout/game-return.scss" lang="scss" />
-

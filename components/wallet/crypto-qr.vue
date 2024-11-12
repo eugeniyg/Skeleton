@@ -4,7 +4,7 @@
     <div class="description">{{ props.content?.addressDescription }}</div>
 
     <div class="box">
-      <atomic-qr-code :width="116" :qrAddress="props.qrAddress" />
+      <atomic-qr-code :width="116" :qr-address="props.qrAddress" />
     </div>
   </div>
 </template>
@@ -13,8 +13,8 @@
   import type { IWalletDeposit } from '~/types';
 
   const props = defineProps<{
-    content: Maybe<IWalletDeposit>,
-    qrAddress: string
+    content: Maybe<IWalletDeposit>;
+    qrAddress: string;
   }>();
 </script>
 

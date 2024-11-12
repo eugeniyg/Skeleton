@@ -25,8 +25,8 @@
 <script setup lang="ts">
   const props = defineProps<{
     title: string;
-    min: string|number;
-    max: string|number;
+    min: string | number;
+    max: string | number;
   }>();
 
   const { getContent } = useProjectMethods();
@@ -34,4 +34,4 @@
   const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 </script>
 
-<style src="~/assets/styles/components/quest/games-info.scss" lang="scss"/>
+<style src="~/assets/styles/components/quest/games-info.scss" lang="scss" />

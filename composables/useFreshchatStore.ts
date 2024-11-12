@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
 interface IFreshchatState {
   newMessages: number;
@@ -10,15 +10,17 @@ export const useFreshchatStore = defineStore('freshchatStore', {
   state: (): IFreshchatState => ({
     newMessages: 0,
     initialize: true,
-    scriptAdded: false
+    scriptAdded: false,
   }),
 
   getters: {
     projectHasFreshchat() {
       if (!window) return undefined;
-      const { public: { freshchatParams } } = useRuntimeConfig();
+      const {
+        public: { freshchatParams },
+      } = useRuntimeConfig();
       return !!(freshchatParams?.host && freshchatParams?.token);
-    }
+    },
   },
 
   actions: {
@@ -30,7 +32,9 @@ export const useFreshchatStore = defineStore('freshchatStore', {
       }
 
       this.scriptAdded = true;
-      const { public: { freshchatParams }} = useRuntimeConfig();
+      const {
+        public: { freshchatParams },
+      } = useRuntimeConfig();
       const scriptElement = document.createElement('script');
       scriptElement.setAttribute('src', `${freshchatParams?.host}/js/widget.js`);
       document.body.appendChild(scriptElement);
@@ -49,7 +53,7 @@ export const useFreshchatStore = defineStore('freshchatStore', {
         email: profile?.email ?? '',
         cf_segments: '', // TODO: get player segments from API,
         cf_active_bonuses: `${!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)}`,
-      }
+      };
 
       return isUpdate
         ? { ...mainParams, meta: { cf_segments, cf_active_bonuses } }
@@ -93,7 +97,7 @@ export const useFreshchatStore = defineStore('freshchatStore', {
       return {
         externalId: profile?.id,
         restoreId: profile?.freshchatRestoreId || null,
-      }
+      };
     },
 
     setUserChatData(): void {
@@ -110,7 +114,9 @@ export const useFreshchatStore = defineStore('freshchatStore', {
     },
 
     initChat() {
-      const { public: { freshchatParams } } = useRuntimeConfig();
+      const {
+        public: { freshchatParams },
+      } = useRuntimeConfig();
 
       if (!this.initialize || !freshchatParams?.host) return;
       this.initialize = false;
@@ -118,8 +124,8 @@ export const useFreshchatStore = defineStore('freshchatStore', {
       window.fcWidget.init({
         config: {
           headerProperty: {
-            hideChatButton: true
-          }
+            hideChatButton: true,
+          },
         },
         token: freshchatParams?.token,
         host: freshchatParams?.host,
@@ -133,7 +139,7 @@ export const useFreshchatStore = defineStore('freshchatStore', {
       window.fcWidget.on('user:created', ({ data }: any) => {
         const { isLoggedIn } = useProfileStore();
 
-        if(isLoggedIn && data?.restoreId) {
+        if (isLoggedIn && data?.restoreId) {
           this.setChatRestoreId(data.restoreId);
         }
       });
@@ -143,15 +149,17 @@ export const useFreshchatStore = defineStore('freshchatStore', {
       });
     },
 
-    async updateChat():Promise<void> {
-      const { public: { freshchatParams }} = useRuntimeConfig();
+    async updateChat(): Promise<void> {
+      const {
+        public: { freshchatParams },
+      } = useRuntimeConfig();
       if (!freshchatParams?.host || !window.fcWidget) return;
 
       this.initialize = true;
 
       try {
-        await window.fcWidget.user.clear()
-      } catch  {
+        await window.fcWidget.user.clear();
+      } catch {
         console.log('Chat not cleared, chat empty!');
       }
 
@@ -161,5 +169,5 @@ export const useFreshchatStore = defineStore('freshchatStore', {
       useUnlisten('accountChanged');
       window.fcWidget.destroy();
     },
-  }
+  },
 });

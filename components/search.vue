@@ -1,5 +1,5 @@
 <template>
-  <div class="search" :class="{'is-show': props.isShow}">
+  <div class="search" :class="{ 'is-show': props.isShow }">
     <form-input-search
       ref="inputElement"
       v-model:value="searchValue"
@@ -9,11 +9,11 @@
 
     <list-result-search
       :items="gameItems"
-      :defaultItems="defaultGames"
-      :isShowLoadMore="showLoadMore"
-      :isShow="isShowSearchResult"
-      @loadMore="loadMoreItems"
-      @hideSearch="emit('hideSearch')"
+      :default-items="defaultGames"
+      :is-show-load-more="showLoadMore"
+      :is-show="isShowSearchResult"
+      @load-more="loadMoreItems"
+      @hide-search="emit('hideSearch')"
     />
   </div>
 </template>
@@ -23,15 +23,9 @@
   import type { IGame, IGamesResponse, IPaginationMeta } from '@skeleton/core/types';
   import debounce from 'lodash/debounce';
 
-  const props = defineProps({
-    isShow: {
-      type: Boolean,
-      default: false,
-    },
-    query: {
-      type: String,
-    },
-  });
+  const props = defineProps<{
+    isShow?: boolean;
+  }>();
 
   const emit = defineEmits(['hideSearch']);
   const globalStore = useGlobalStore();
@@ -44,7 +38,9 @@
   const pageMeta = ref<IPaginationMeta>();
   const gameItems = ref<IGame[]>([]);
   const isShowSearchResult = computed(() => searchValue.value.length > 1 && !pendingGames.value);
-  const showLoadMore = computed(() => !!gameItems.value.length && ((pageMeta.value?.totalPages || 1) > (pageMeta.value?.page || 1)));
+  const showLoadMore = computed(
+    () => !!gameItems.value.length && (pageMeta.value?.totalPages || 1) > (pageMeta.value?.page || 1)
+  );
 
   const { getFilteredGames } = useCoreGamesApi();
   const getItems = async (): Promise<IGamesResponse> => {
@@ -54,16 +50,14 @@
       name: searchValue.value,
       countries: headerCountry.value ? [headerCountry.value] : undefined,
       sortBy: 'name',
-      sortOrder: 'asc'
+      sortOrder: 'asc',
     };
 
     return await getFilteredGames(params);
   };
 
   const setItems = (response: IGamesResponse, more?: boolean): void => {
-    gameItems.value = more
-      ? gameItems.value.concat(response.data)
-      : response.data;
+    gameItems.value = more ? gameItems.value.concat(response.data) : response.data;
     pageMeta.value = response.meta;
   };
 
@@ -73,39 +67,46 @@
     setItems(response, true);
   };
 
-  const searchInput = debounce(async (): Promise<void> => {
-    if (searchValue.value.length > 1) {
-      loadPage.value = 1;
-      const response = await getItems();
-      setItems(response);
-      pendingGames.value = false;
-    } else pendingGames.value = true;
-  }, 500, { leading: false });
+  const searchInput = debounce(
+    async (): Promise<void> => {
+      if (searchValue.value.length > 1) {
+        loadPage.value = 1;
+        const response = await getItems();
+        setItems(response);
+        pendingGames.value = false;
+      } else pendingGames.value = true;
+    },
+    500,
+    { leading: false }
+  );
 
   const inputElement = ref();
-  watch(() => props.isShow, (newValue:boolean) => {
-    if (newValue) searchValue.value = '';
-    setTimeout(() => {
-      inputElement.value.$el.querySelector('input').focus();
-    }, 50);
-  });
+  watch(
+    () => props.isShow,
+    (newValue: boolean) => {
+      if (newValue) searchValue.value = '';
+      setTimeout(() => {
+        inputElement.value.$el.querySelector('input').focus();
+      }, 50);
+    }
+  );
 
   const defaultGames = ref<IGame[]>([]);
-  const getDefaultGames = async ():Promise<IGamesResponse> => {
+  const getDefaultGames = async (): Promise<IGamesResponse> => {
     const { getCollectionsList } = useGamesStore();
     const gameCollections = await getCollectionsList();
-    const getTurbogamesId = gameCollections.find((collection) => collection.identity === 'turbogames')?.id;
+    const getTurbogamesId = gameCollections.find(collection => collection.identity === 'turbogames')?.id;
     const requestParams = {
       page: 1,
       perPage: 4,
       collectionId: getTurbogamesId ? [getTurbogamesId] : [gameCollections[0]?.id],
       countries: headerCountry.value ? [headerCountry.value] : undefined,
       sortBy: 'default',
-      sortOrder: 'asc'
-    }
+      sortOrder: 'asc',
+    };
 
     return await getFilteredGames(requestParams);
-  }
+  };
 
   onMounted(async () => {
     const { data } = await getDefaultGames();

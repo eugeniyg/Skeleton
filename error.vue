@@ -3,24 +3,29 @@
     <atomic-image class="img" src="/img/404.png" />
 
     <div class="title">
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.title') || pageStaticContent.title }}
+      {{
+        getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.title') ||
+        pageStaticContent.title
+      }}
     </div>
 
     <p class="text">
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.description') || pageStaticContent.description }}
+      {{
+        getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.description') ||
+        pageStaticContent.description
+      }}
     </p>
 
-    <button-base
-      type="primary"
-      size="md"
-      @click="goHome"
-    >
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.buttonLabel') || pageStaticContent.buttonLabel }}
+    <button-base type="primary" size="md" @click="goHome">
+      {{
+        getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'error.buttonLabel') ||
+        pageStaticContent.buttonLabel
+      }}
     </button-base>
 
     <dev-only>
       <client-only>
-        <div style="font-size: 18px; color: red;">
+        <div style="font-size: 18px; color: red">
           <p>Error code: {{ props.error.statusCode }}</p>
           <p>{{ props.error.statusMessage || props.error.message }}</p>
           <p v-if="props.error.stack" v-html="props.error.stack" />
@@ -43,14 +48,11 @@
   const pageStaticContent = {
     title: 'Something went wrong',
     description: 'The page you are trying to access does not exist or has been moved. Try going back to our homepage.',
-    buttonLabel: 'Homepage'
+    buttonLabel: 'Homepage',
   };
 
   const globalStore = useGlobalStore();
-  const {
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent
-  } = storeToRefs(globalStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   const route = useRoute();

@@ -11,18 +11,9 @@
           <div class="accumulated-rewards__amount-currency">mBTC</div>
         </div>
 
-        <div
-          v-if="currencies"
-          ref="content"
-          class="accumulated-rewards__list"
-          @inview="checkRewardsWidth"
-        >
+        <div v-if="currencies" ref="content" class="accumulated-rewards__list" @inview="checkRewardsWidth">
           <div ref="list" class="accumulated-rewards__list-items">
-            <div
-              v-for="item in visibleItems"
-              ref="items"
-              class="accumulated-rewards__list-item"
-            >
+            <div v-for="(item, index) in visibleItems" :key="index" ref="items" class="accumulated-rewards__list-item">
               <span class="accumulated-rewards__list-item-value">{{ item.value }}</span>
               <span class="accumulated-rewards__list-item-currency">{{ item.currency }}</span>
             </div>
@@ -66,7 +57,7 @@
     { value: '1.000.000', currency: 'DRM' },
     { value: '1.000.000', currency: 'DRM' },
     { value: '1.000.000', currency: 'DRM' },
-    { value: '1.000.000', currency: 'DRM' }
+    { value: '1.000.000', currency: 'DRM' },
   ];
 
   const visibleItems = ref([]);
@@ -95,7 +86,7 @@
       visibleItems.value = currencies.slice(0, totalAvailableItems - 1);
       hiddenItemsCount.value = currencies.length - visibleItems.value.length;
     }
-  }
+  };
 
   const observer = ref();
   onMounted(() => {
@@ -108,4 +99,4 @@
   });
 </script>
 
-<style src="~/assets/styles/components/quest/accumulated-rewards.scss" lang="scss"/>
+<style src="~/assets/styles/components/quest/accumulated-rewards.scss" lang="scss" />

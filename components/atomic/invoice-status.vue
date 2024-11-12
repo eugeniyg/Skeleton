@@ -1,6 +1,6 @@
 <template>
   <div class="invoice-status" :class="classes">
-    <atomic-icon :id="iconId"/>
+    <atomic-icon :id="iconId" />
     <slot />
   </div>
 </template>
@@ -10,7 +10,7 @@
     variant: number;
   }>();
 
-  const items:{[index: string]:string} = {
+  const items: { [index: string]: string } = {
     '1': 'clock',
     '2': 'done',
     '3': 'warning',

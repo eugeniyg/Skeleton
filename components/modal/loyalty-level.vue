@@ -2,14 +2,14 @@
   <vue-final-modal
     v-model="modals.loyaltyLevel"
     class="modal-loyalty-level"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 250 }"
-    :contentTransition="{ mode: 'in-out', duration: 250 }"
-    @clickOutside="closeModal('loyaltyLevel')"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
+    @click-outside="closeModal('loyaltyLevel')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('loyaltyLevel')"/>
+        <button-modal-close @close="closeModal('loyaltyLevel')" />
       </div>
 
       <div class="modal-loyalty-level__images">

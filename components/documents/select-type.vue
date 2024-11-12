@@ -9,18 +9,13 @@
         v-for="type in documentTypes"
         :key="type"
         :type="type"
-        :typeStatus="documentTypeStatus[type]"
+        :type-status="documentTypeStatus[type]"
         :class="{ active: selectedType === type }"
         @click="selectedType = type"
       />
     </div>
 
-    <button-base
-      type="primary"
-      :is-disabled="!selectedType"
-      size="md"
-      @click="emit('nextStep', selectedType)"
-    >
+    <button-base type="primary" :is-disabled="!selectedType" size="md" @click="emit('nextStep', selectedType)">
       {{ getContent(documentsContent, defaultLocaleDocumentsContent, 'continueButton') }}
     </button-base>
   </div>
@@ -28,8 +23,8 @@
 
 <script setup lang="ts">
   import { ref } from 'vue';
-  import type {IProfileDocuments} from "~/types";
-  import type { IDocumentFile } from "@skeleton/core/types";
+  import type { IProfileDocuments } from '~/types';
+  import type { IDocumentFile } from '@skeleton/core/types';
 
   interface IFormData extends Record<string, IDocumentFile[]> {
     identity_front: IDocumentFile[];
@@ -45,25 +40,19 @@
     formData: IFormData;
   }>();
 
-  const documentTypes = [
-    'passport',
-    'identity_selfie_id',
-    'address',
-    'payment',
-    'other'
-  ]
+  const documentTypes = ['passport', 'identity_selfie_id', 'address', 'payment', 'other'];
 
-  const getStatus = (filesArr: IDocumentFile[]): 'pending'|'approve'|'canceled'|undefined => {
+  const getStatus = (filesArr: IDocumentFile[]): 'pending' | 'approve' | 'canceled' | undefined => {
     if (!filesArr.length) return undefined;
     const hasCanceledFile = filesArr.some(file => file.status === 3);
     const hasPendingFile = filesArr.some(file => file.status === 2);
     if (hasCanceledFile) return 'canceled';
     if (hasPendingFile) return 'pending';
     return 'approve';
-  }
+  };
 
   const documentTypeStatus = computed(() => {
-    const statuses: Record<string, 'pending'|'approve'|'canceled'|undefined> = {};
+    const statuses: Record<string, 'pending' | 'approve' | 'canceled' | undefined> = {};
 
     documentTypes.forEach(type => {
       if (type === 'passport') {
@@ -79,18 +68,18 @@
       } else {
         statuses[type] = getStatus(props.formData[type]);
       }
-    })
+    });
 
     return statuses;
-  })
+  });
 
   const { getContent } = useProjectMethods();
   const documentsContent = ref<Maybe<IProfileDocuments>>(inject('documentsContent'));
   const defaultLocaleDocumentsContent = ref<Maybe<IProfileDocuments>>(inject('defaultLocaleDocumentsContent'));
 
-  const selectedType = ref<typeof documentTypes[number]|undefined>();
+  const selectedType = ref<(typeof documentTypes)[number] | undefined>();
 
   const emit = defineEmits(['nextStep']);
 </script>
 
-<style src="~/assets/styles/components/documents/select-type.scss" lang="scss"/>
+<style src="~/assets/styles/components/documents/select-type.scss" lang="scss" />

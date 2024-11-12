@@ -1,33 +1,25 @@
 <template>
-  <div
-    class="select-lang"
-    :class="{ 'is-open': isOpen }"
-  >
+  <div class="select-lang" :class="{ 'is-open': isOpen }">
     <div v-click-outside="closeSelect" class="select-lang__wrap">
       <div class="selected" @click="toggleOpen">
-        <atomic-image
-          class="img"
-          :src="`${gamehubCdn}/locales/${currentLocale?.code.toLowerCase()}.svg`"
-        />
+        <atomic-image class="img" :src="`${gamehubCdn}/locales/${currentLocale?.code.toLowerCase()}.svg`" />
         <span class="title">{{ currentLocale?.nativeName || currentLocale?.name }}</span>
         <atomic-icon id="arrow_expand-close" />
       </div>
 
-      <div
-        class="items"
-        body-scroll-lock-ignore
-      >
-        <div
+      <div class="items" body-scroll-lock-ignore>
+        <a
           v-for="locale in locales"
           :key="locale.code"
           class="item"
           :class="{ 'is-selected': currentLocale?.code.toLowerCase() === locale.code.toLowerCase() }"
-          @click="changeLanguage(locale)"
+          :href="linkToLocale(locale)"
+          @click.prevent="changeLanguage(locale, $event)"
         >
           <atomic-image class="img" :src="`${gamehubCdn}/locales/${locale.code.toLowerCase()}.svg`" />
           <span class="title">{{ locale.nativeName || locale.name }}</span>
           <atomic-icon id="check" />
-        </div>
+        </a>
       </div>
     </div>
   </div>
@@ -46,34 +38,31 @@
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { public: { gamehubCdn } } = useRuntimeConfig();
+  const {
+    public: { gamehubCdn },
+  } = useRuntimeConfig();
 
-  const changeLanguage = async (locale: ILocale): Promise<void> => {
+  const changeLanguage = async (locale: ILocale, event: any): Promise<void> => {
     if (currentLocale.value?.code === locale.code || isProcess.value) return;
     isOpen.value = false;
     isProcess.value = true;
-
+    const href = event.currentTarget.attributes.href.value;
     cookieLanguage.value = locale.code.toLowerCase();
 
     if (isLoggedIn.value) {
-      await changeProfileData({ locale: locale.code })
+      await changeProfileData({ locale: locale.code });
     }
 
-    window.location.href = linkToLocale(locale);
+    window.location.href = href || `/${locale.code.toLowerCase()}`;
   };
 
-  const linkToLocale = (locale: ILocale):string => {
-    const routerLocale:any = route.params.locale;
+  const linkToLocale = (locale: ILocale): string => {
+    const routerLocale: any = route.params.locale;
+    const pathRegexp = new RegExp(`^/${routerLocale}/|^/${routerLocale}$`);
+    const pathWithoutLocale = routerLocale ? route.fullPath.replace(pathRegexp, '/') : route.fullPath;
 
-    if (locale.isDefault) {
-      const deleteLocale = route.fullPath.replace(`/${routerLocale}`, '');
-      return deleteLocale || '/';
-    }
-
-    if (routerLocale) {
-      return route.fullPath.replace(routerLocale, locale.code.toLowerCase());
-    }
-    return `/${locale.code.toLowerCase()}${route.fullPath === '/' ? '' : route.fullPath}`;
+    if (locale.isDefault) return pathWithoutLocale;
+    return `/${locale.code.toLowerCase()}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
   };
 
   const toggleOpen = (): void => {
@@ -81,7 +70,7 @@
     isOpen.value = !isOpen.value;
   };
 
-  const closeSelect = ():void => {
+  const closeSelect = (): void => {
     if (isOpen.value) isOpen.value = false;
   };
 </script>

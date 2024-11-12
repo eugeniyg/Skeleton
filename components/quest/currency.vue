@@ -7,15 +7,11 @@
       <atomic-image
         class="quest-currency__symbol"
         :src="`/img/currency/${rewardsValue[0].isoCode}.svg`"
-        defaultImage="/img/currency/placeholder.svg"
+        default-image="/img/currency/placeholder.svg"
       />
     </div>
 
-    <div
-      v-if="rewardsValue.length > 1"
-      class="quest-currency__more"
-      @click.stop="showRewardsModal"
-    >
+    <div v-if="rewardsValue.length > 1" class="quest-currency__more" @click.stop="showRewardsModal">
       <span>+</span>
       <span>{{ rewardsValue.length - 1 }}</span>
       <span class="quest-currency__more-label">
@@ -26,27 +22,28 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerQuestReward } from "@skeleton/core/types";
+  import type { IPlayerQuestReward } from '@skeleton/core/types';
 
   const props = defineProps<{
     rewards: IPlayerQuestReward[];
-    type?: 'real'|'virtual';
+    type?: 'real' | 'virtual';
   }>();
 
-  const emit = defineEmits();
   const { currencies, defaultLocalePopupsData, popupsData } = useGlobalStore();
 
-  const filteredRewards = props.type ? props.rewards.filter(reward => {
-    const rewardCurrencyType = currencies.find(currency => currency.code === reward.attributes.isoCode);
-    if (props.type === 'virtual') return rewardCurrencyType?.type === 'virtual';
-    return rewardCurrencyType?.type !== 'virtual';
-  }) : props.rewards;
+  const filteredRewards = props.type
+    ? props.rewards.filter(reward => {
+        const rewardCurrencyType = currencies.find(currency => currency.code === reward.attributes.isoCode);
+        if (props.type === 'virtual') return rewardCurrencyType?.type === 'virtual';
+        return rewardCurrencyType?.type !== 'virtual';
+      })
+    : props.rewards;
 
   const { formatBalance, getContent } = useProjectMethods();
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const rewardsValue = computed(() => {
-    const rewardsArr: { currency: string, amount: number, isoCode: string }[] = [];
+    const rewardsArr: { currency: string; amount: number; isoCode: string }[] = [];
     for (const reward of filteredRewards) {
       const formatSumObj = formatBalance(reward.attributes.isoCode, reward.amount);
       const combineAwardsValue = { ...formatSumObj, isoCode: reward.attributes.isoCode };
@@ -59,10 +56,10 @@
   const { openRewardsModal } = useQuestsStore();
   const rewardsModalTitle = computed(() => {
     return getContent(popupsData, defaultLocalePopupsData, 'questsHub.rewardsTitle');
-  })
-  const showRewardsModal = ():void => {
+  });
+  const showRewardsModal = (): void => {
     openRewardsModal(rewardsValue.value, rewardsModalTitle.value);
-  }
+  };
 </script>
 
-<style src="~/assets/styles/components/quest/currency.scss" lang="scss"/>
+<style src="~/assets/styles/components/quest/currency.scss" lang="scss" />

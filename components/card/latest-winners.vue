@@ -2,7 +2,7 @@
   <nuxt-link class="card-latest-winners" :to="gameUrl">
     <atomic-image class="card-latest-winners__img" :src="src" />
     <Skeletor class="card-latest-winners__poster" as="div" />
-    
+
     <div class="card-latest-winners__info">
       <div class="card-latest-winners__info-title">{{ props.nickname || 'Unknown' }}</div>
       <div class="card-latest-winners__info-items">
@@ -11,7 +11,7 @@
           width="12"
           height="12"
           :src="`/img/currency/${props.currency}.svg`"
-          defaultImage="/img/currency/placeholder.svg"
+          default-image="/img/currency/placeholder.svg"
         />
         <span class="card-latest-winners__info-amount">{{ formatedSum.amount }}</span>
         <span class="card-latest-winners__info-currency">{{ formatedSum.currency }}</span>
@@ -23,17 +23,17 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { IGameImages } from '@skeleton/core/types';
-  import {Skeletor} from "vue-skeletor";
+  import { Skeletor } from 'vue-skeletor';
 
   const props = defineProps<{
-    nickname: Maybe<string>,
-    amount: number,
-    currency: string,
-    payout: number,
-    gameId: string,
-    gameName: string,
-    isDemoMode: boolean,
-    gameImages: IGameImages
+    nickname: Maybe<string>;
+    amount: number;
+    currency: string;
+    payout: number;
+    gameId: string;
+    gameName: string;
+    isDemoMode: boolean;
+    gameImages: IGameImages;
   }>();
 
   const profileStore = useProfileStore();
@@ -53,12 +53,6 @@
     }
     return '';
   });
-  
-  const formatString = (value: string) => {
-    //return value.replace('...', '***')
-    return value
-  }
 </script>
 
 <style src="~/assets/styles/components/card/latest-winners.scss" lang="scss" />
-

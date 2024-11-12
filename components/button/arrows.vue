@@ -7,7 +7,7 @@
       data-action="prev"
       @click="clickNavigation('prev')"
     >
-      <atomic-icon id="arrow_expand-close"/>
+      <atomic-icon id="arrow_expand-close" />
     </button>
 
     <button
@@ -17,7 +17,7 @@
       data-action="next"
       @click="clickNavigation('next')"
     >
-      <atomic-icon id="arrow_expand-close"/>
+      <atomic-icon id="arrow_expand-close" />
     </button>
   </div>
 </template>
@@ -41,4 +41,3 @@
 </script>
 
 <style src="~/assets/styles/components/button/arrows.scss" lang="scss" />
-

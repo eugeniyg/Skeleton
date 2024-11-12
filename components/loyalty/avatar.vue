@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="loyalty-avatar"
-    :class="`loyalty-avatar--${props.size}`"
-  >
+  <div class="loyalty-avatar" :class="`loyalty-avatar--${props.size}`">
     <atomic-image :src="avatarImage" class="loyalty-avatar__user-img" />
     <atomic-image
       v-if="loyaltyEnabled"
@@ -15,25 +12,21 @@
 <script setup lang="ts">
   const props = defineProps<{
     size: 'sm' | 'md' | 'lg';
-  }>()
+  }>();
 
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
-  const {
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent
-  } = storeToRefs(globalStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
 
   const runtimeConfig = useRuntimeConfig();
   const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;
 
   const avatarImage = computed(() => {
-    return getContent(
-      globalComponentsContent.value,
-      defaultLocaleGlobalComponentsContent.value,
-      'playerMascot.image'
-    ) || '/img/avatar-bg.png';
-  })
+    return (
+      getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'playerMascot.image') ||
+      '/img/avatar-bg.png'
+    );
+  });
 
   const loyaltyStore = useLoyaltyStore();
   const { loyaltyAccount } = storeToRefs(loyaltyStore);
@@ -48,7 +41,7 @@
     }
 
     return undefined;
-  })
+  });
 </script>
 
-<style src="~/assets/styles/components/loyalty/avatar.scss" lang="scss"/>
+<style src="~/assets/styles/components/loyalty/avatar.scss" lang="scss" />

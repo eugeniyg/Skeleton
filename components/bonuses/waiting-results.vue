@@ -12,4 +12,4 @@
   }>();
 </script>
 
-<style src="~/assets/styles/components/bonuses/waiting-results.scss" lang="scss"/>
+<style src="~/assets/styles/components/bonuses/waiting-results.scss" lang="scss" />

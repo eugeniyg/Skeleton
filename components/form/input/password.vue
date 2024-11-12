@@ -11,56 +11,32 @@
         :readonly="props.isDisabled"
         :name="props.name"
         :required="props.isRequired"
-        :placeholder="props.placeholder"
+        :placeholder="props.placeholder || ''"
         :value="props.value"
         @focus="onFocus"
         @blur="onBlur"
         @input="onInput"
         @keyup.enter="emit('submit', $event)"
-      >
-      <button-toggle-type @change-type="changeType"/>
+      />
+      <button-toggle-type @change-type="changeType" />
     </div>
 
-    <atomic-pass-progress v-if="props.showPassProgress" :target="progressTarget"/>
-    <atomic-hint v-if="props.hint" v-bind="props.hint"/>
+    <atomic-pass-progress v-if="props.showPassProgress" :target="progressTarget" />
+    <atomic-hint v-if="props.hint" v-bind="props.hint" />
   </label>
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    name: {
-      type: String,
-      required: true,
-    },
-    value: {
-      type: String,
-      default: ' ',
-    },
-    label: {
-      type: String,
-      required: true,
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    isRequired: {
-      type: Boolean,
-      default: false,
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false,
-    },
-    hint: {
-      type: Object,
-      required: false,
-    },
-    showPassProgress: {
-      type: Boolean,
-      default: false,
-    },
-  });
+  const props = defineProps<{
+    name: string;
+    value?: string;
+    label: string;
+    placeholder?: string;
+    isRequired?: boolean;
+    isDisabled?: boolean;
+    hint?: { variant: string; message: string };
+    showPassProgress?: boolean;
+  }>();
 
   const classes = computed(() => [
     'input-password',
@@ -69,15 +45,15 @@
   ]);
 
   const emit = defineEmits(['blur', 'focus', 'input', 'update:value', 'submit']);
-  const onBlur = (e: any):void => {
+  const onBlur = (e: any): void => {
     emit('blur', e.target.value);
   };
-  const onFocus = (e: any):void => {
+  const onFocus = (e: any): void => {
     emit('focus', e.target.value);
   };
 
   const progressTarget = ref<string>('');
-  const checkPassProgress = (e:any) => {
+  const checkPassProgress = (e: any) => {
     const { length } = e.target.value;
 
     if (length <= 2 && length > 0) {
@@ -91,17 +67,16 @@
     }
   };
 
-  const onInput = (e:any):void => {
+  const onInput = (e: any): void => {
     emit('input', e.target.value);
     emit('update:value', e.target.value);
     checkPassProgress(e);
   };
 
   const type = ref<string>('password');
-  const changeType = (data:string):void => {
+  const changeType = (data: string): void => {
     type.value = data;
   };
 </script>
 
 <style src="~/assets/styles/components/form/input/password.scss" lang="scss" />
-

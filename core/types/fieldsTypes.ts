@@ -1,4 +1,4 @@
-export interface IField extends Record<string, any>{
+export interface IField extends Record<string, any> {
   id: number;
   name: string;
   description: string;

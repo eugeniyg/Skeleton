@@ -8,29 +8,29 @@
       v-for="packageList in props.packageBonuses"
       :key="packageList[0].issueSessionId ?? packageList[0].packageId"
       :list="packageList"
-      @openPackageModal="emit('openPackageModal', packageList)"
+      @open-package-modal="emit('openPackageModal', packageList)"
     />
 
     <bonuses-card
       v-for="bonus in simpleBonusesList"
       :key="bonus.id"
-      :bonusInfo="bonus"
-      isCash
+      :bonus-info="bonus"
+      is-cash
       @remove="emit('removeBonus', bonus)"
     />
 
     <bonuses-card
       v-for="freeSpin in simpleFreeSpinsList"
       :key="freeSpin.id"
-      :bonusInfo="freeSpin"
-      isFreeSpin
+      :bonus-info="freeSpin"
+      is-free-spin
       @remove="emit('removeFreeSpin', freeSpin)"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { IProfileBonuses } from "~/types";
+  import type { IProfileBonuses } from '~/types';
 
   const props = defineProps<{
     packageBonuses: Record<string, any>[][];
@@ -41,10 +41,7 @@
   const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
   const bonusStore = useBonusStore();
-  const {
-    activePlayerBonuses,
-    activePlayerFreeSpins
-  } = storeToRefs(bonusStore);
+  const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
 
   const simpleBonusesList = computed(() => activePlayerBonuses.value.filter(bonus => !bonus.packageId));
   const simpleFreeSpinsList = computed(() => activePlayerFreeSpins.value.filter(freeSpin => !freeSpin.packageId));

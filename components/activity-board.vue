@@ -1,20 +1,13 @@
 <template>
   <div class="activity-board">
     <div class="activity-board__header">
-      <atomic-icon v-if="props.icon" :id="props.icon" class="activity-board__header-icon"/>
+      <atomic-icon v-if="props.icon" :id="props.icon" class="activity-board__header-icon" />
       <div class="activity-board__header-title">{{ props.title }}</div>
 
-      <div
-        v-click-outside="hideNav"
-        class="activity-board__nav"
-        :class="{'is-open': isOpen}"
-      >
-        <div
-          class="activity-board__nav-selected"
-          @click="toggleMobileNav"
-        >
+      <div v-click-outside="hideNav" class="activity-board__nav" :class="{ 'is-open': isOpen }">
+        <div class="activity-board__nav-selected" @click="toggleMobileNav">
           <span class="activity-board__nav-selected-title">{{ selectedNavTitle }}</span>
-          <atomic-icon id="arrow_expand-close"/>
+          <atomic-icon id="arrow_expand-close" />
         </div>
 
         <div class="activity-board__nav-items">
@@ -22,16 +15,16 @@
             v-for="board in boards"
             :key="board.id"
             class="activity-board__nav-item"
-            :class="{'is-active': board.id === selectedNavItem}"
+            :class="{ 'is-active': board.id === selectedNavItem }"
             @click="selectNavItem(board.id)"
           >
             <span>{{ board.title }}</span>
-            <atomic-icon v-if="board.id === selectedNavItem" id="check"/>
+            <atomic-icon v-if="board.id === selectedNavItem" id="check" />
           </div>
         </div>
       </div>
     </div>
-    
+
     <div class="activity-board__tb-scroll">
       <div class="activity-board__tb">
         <div class="activity-board__tb-head">
@@ -45,16 +38,8 @@
           </span>
         </div>
 
-        <div
-          class="activity-board__tb-body animate"
-          :class="{'push': isAnimate}"
-          @animationend="onAnimationEnd"
-        >
-          <div
-            v-for="row in boardData"
-            :key="row.id"
-            class="activity-board__tb-row"
-          >
+        <div class="activity-board__tb-body animate" :class="{ push: isAnimate }" @animationend="onAnimationEnd">
+          <div v-for="row in boardData" :key="row.id" class="activity-board__tb-row">
             <div
               v-for="({ id }, index) in tbColumns"
               :key="id"
@@ -78,7 +63,7 @@
                 <atomic-image
                   class="activity-board__tb-td-icon"
                   :src="`/img/currency/${id === 'baseCurrencyAmount' ? baseCurrency?.code : row.currency}.svg`"
-                  defaultImage="/img/currency/placeholder.svg"
+                  default-image="/img/currency/placeholder.svg"
                 />
                 <span>{{ row[id] }}</span>
               </template>
@@ -91,8 +76,8 @@
 </template>
 
 <script setup lang="ts">
-  import type {IEventBet, IGameImages, IWebSocketResponse} from "@skeleton/core/types";
-  import type {IHomePage} from "~/types";
+  import type { IEventBet, IGameImages, IWebSocketResponse } from '@skeleton/core/types';
+  import type { IHomePage } from '~/types';
 
   const props = defineProps<{
     title?: string;
@@ -116,41 +101,46 @@
       await nextTick();
       isAnimate.value = true;
     }
-  }
+  };
 
-  const unsubscribeBoardSocket = ():void => {
+  const unsubscribeBoardSocket = (): void => {
     if (boardSubscription.value) {
       boardSubscription.value.unsubscribe();
       boardSubscription.value.removeAllListeners();
     }
-  }
+  };
 
-  const subscribeBoardSocket = async (boardId: string):Promise<void> => {
+  const subscribeBoardSocket = async (boardId: string): Promise<void> => {
     unsubscribeBoardSocket();
     const { createSubscription } = useWebSocket();
     boardSubscription.value = createSubscription(`activity-board:boards#${boardId}`, handleBoardsEvent);
-    const resp: { publications: IWebSocketResponse[] } = await boardSubscription.value.history({ limit: 11, since: null, reverse: true });
+    const resp: { publications: IWebSocketResponse[] } = await boardSubscription.value.history({
+      limit: 11,
+      since: null,
+      reverse: true,
+    });
     const betsArr = resp.publications.map(historyObj => historyObj.data.bet as IEventBet);
     boardData.splice(0, 20, ...betsArr);
-  }
+  };
 
   const tbColumns = computed(() => {
     if (!props.columns) return [];
 
     return Object.keys(props.columns).map(key => ({
-      label: key === 'baseCurrencyAmount'
-        ? props.columns[key].replace('{currency}', baseCurrency.value?.code || '') || key
-        : props.columns[key] || key,
-      id: key
+      label:
+        key === 'baseCurrencyAmount'
+          ? props.columns[key].replace('{currency}', baseCurrency.value?.code || '') || key
+          : props.columns[key] || key,
+      id: key,
     }));
-  })
+  });
 
   const isOpen = ref<boolean>(false);
   const selectedNavItem = ref<string>(props.boards[0]?.id);
   const isAnimate = ref<boolean>(false);
 
   const selectedNavTitle = computed(() => {
-    return props.boards.find((board) => board.id === selectedNavItem.value)?.title;
+    return props.boards.find(board => board.id === selectedNavItem.value)?.title;
   });
 
   const toggleMobileNav = () => {
@@ -169,7 +159,7 @@
   const onAnimationEnd = () => {
     isAnimate.value = false;
   };
-  
+
   const getGameImage = (images: IGameImages): string => {
     if (images?.hasOwnProperty('200x200')) {
       return getImageUrl(images, 'square');
@@ -182,4 +172,4 @@
   });
 </script>
 
-<style src="~/assets/styles/components/activity-board.scss" lang="scss"/>
+<style src="~/assets/styles/components/activity-board.scss" lang="scss" />
