@@ -19,7 +19,9 @@
     </div>
 
     <div class="limits__card-info">
-      <p>{{ getContent(limitsContent, defaultLimitsContent, 'coolingOff.hint') }}</p>
+      <p
+        v-html="DOMPurify.sanitize(marked.parseInline(limitHintContent || '') as string, { FORBID_TAGS: ['style'] })"
+      />
     </div>
   </div>
 </template>
@@ -27,6 +29,8 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { IPlayerLimit } from '@skeleton/core/types';
+  import { marked } from 'marked';
+  import DOMPurify from 'isomorphic-dompurify';
 
   const dayjs = useDayjs();
   const limitsStore = useLimitsStore();
@@ -38,6 +42,9 @@
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const { limitsContent, defaultLimitsContent, coolingOffPeriod, coolingOffLimits } = storeToRefs(limitsStore);
+  const limitHintContent = computed(() =>
+    getContent(limitsContent.value, defaultLimitsContent.value, 'coolingOff.hint')
+  );
 
   const state = reactive<{
     limitData?: IPlayerLimit;
