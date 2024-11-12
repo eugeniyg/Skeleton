@@ -15,9 +15,9 @@
 
   &__item {
     border-radius: 12px;
-    background-color: var(--bgc);
+    background-color: var(--);
     overflow: hidden;
-    position: relative;
+    position: relative;bgc
     height: var(--item-height, rem(48px));
     display: grid;
     align-items: center;
