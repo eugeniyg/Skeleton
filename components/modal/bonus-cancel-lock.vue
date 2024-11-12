@@ -1,10 +1,10 @@
 <template>
   <vue-final-modal
-    :modelValue="props.showModal"
+    :model-value="props.showModal"
     class="modal-bonus-cancel-lock"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
     @click-outside="emit('close')"
   >
     <div class="scroll">
@@ -35,11 +35,11 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import type {IProfileBonuses} from "~/types";
+  import type { IProfileBonuses } from '~/types';
 
   const props = defineProps<{
     showModal: boolean;
-  }>()
+  }>();
 
   const { getContent, localizePath } = useProjectMethods();
   const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
@@ -49,7 +49,11 @@
 
   const router = useRouter();
   const clickConfirm = (): void => {
-    const buttonLink = getContent(bonusesContent.value, defaultLocaleBonusesContent.value, 'cancelLockModal.buttonLink');
+    const buttonLink = getContent(
+      bonusesContent.value,
+      defaultLocaleBonusesContent.value,
+      'cancelLockModal.buttonLink'
+    );
     if (buttonLink) {
       if (buttonLink.startsWith('http')) {
         window.open(buttonLink, '_blank');
@@ -57,8 +61,7 @@
         router.push(localizePath(buttonLink));
       }
     } else emit('close');
-  }
+  };
 </script>
 
 <style src="~/assets/styles/components/modal/bonus-cancel-lock.scss" lang="scss" />
-

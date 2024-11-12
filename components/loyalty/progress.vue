@@ -5,10 +5,7 @@
         {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'loyalty.levelLabel') }}:
       </span>
 
-      <atomic-image
-        class="loyalty-progress__prev-icon"
-        :src="currentLevelIcon"
-      />
+      <atomic-image class="loyalty-progress__prev-icon" :src="currentLevelIcon" />
 
       <span class="loyalty-progress__prev-value">
         {{ currentLevelName }}
@@ -20,10 +17,7 @@
         {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'loyalty.nextLabel') }}:
       </span>
 
-      <atomic-image
-        class="loyalty-progress__next-icon"
-        :src="nextLevelIcon"
-      />
+      <atomic-image class="loyalty-progress__next-icon" :src="nextLevelIcon" />
 
       <span class="loyalty-progress__next-value">
         {{ nextLevelName }}
@@ -31,7 +25,7 @@
     </div>
 
     <div class="loyalty-progress__bar">
-      <span class="loyalty-progress__bar-line" :style="{width: `${currentLevelProgress}%`}"/>
+      <span class="loyalty-progress__bar-line" :style="{ width: `${currentLevelProgress}%` }" />
     </div>
 
     <div class="loyalty-progress__points">
@@ -77,30 +71,28 @@
 
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
-  const {
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent
-  } = storeToRefs(globalStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
 
   const { showModal } = useLayoutStore();
   const loyaltyStore = useLoyaltyStore();
-  const {
-    loyaltyAccount,
-    currentLevelName,
-    nextLevelName,
-    currentPoints,
-    nextLevelPoints,
-    currentLevelProgress
-  } = storeToRefs(loyaltyStore);
+  const { loyaltyAccount, currentLevelName, nextLevelName, currentPoints, nextLevelPoints, currentLevelProgress } =
+    storeToRefs(loyaltyStore);
 
   const currentLevelIcon = computed(() => {
-    return getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'loyalty.currentLevelIcon')
-      || '/img/loyalty/default-current-level-icon.png';
+    return (
+      getContent(
+        globalComponentsContent.value,
+        defaultLocaleGlobalComponentsContent.value,
+        'loyalty.currentLevelIcon'
+      ) || '/img/loyalty/default-current-level-icon.png'
+    );
   });
 
   const nextLevelIcon = computed(() => {
-    return getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'loyalty.nextLevelIcon')
-      || '/img/loyalty/default-next-level-icon.png';
+    return (
+      getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'loyalty.nextLevelIcon') ||
+      '/img/loyalty/default-next-level-icon.png'
+    );
   });
 </script>
 

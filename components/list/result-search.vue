@@ -1,5 +1,5 @@
 <template>
-  <div class="result-search" :class="{'is-show': props.isShow}">
+  <div class="result-search" :class="{ 'is-show': props.isShow }">
     <div class="box">
       <div v-if="!props.items.length" class="header">
         <div class="heading">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.search.emptyLabel') }}</div>
@@ -11,12 +11,7 @@
           {{ getContent(layoutData, defaultLocaleLayoutData, 'header.search.tryLabel') }}
         </div>
 
-        <div
-          v-for="game in activeItems"
-          :key="game.id"
-          class="item"
-          @click="clickGame(game)"
-        >
+        <div v-for="game in activeItems" :key="game.id" class="item" @click="clickGame(game)">
           <atomic-image v-if="game.images['200x200']" :src="getImageUrl(game.images, 'square')" />
           <atomic-image v-else src="/img/default-game-tumb.png" />
           <span>{{ game.name }}</span>
@@ -37,10 +32,10 @@
   import type { IGame } from '@skeleton/core/types';
 
   const props = defineProps<{
-    isShow?: boolean,
-    items: IGame[],
-    defaultItems: IGame[],
-    isShowLoadMore?: boolean
+    isShow?: boolean;
+    items: IGame[];
+    defaultItems: IGame[];
+    isShowLoadMore?: boolean;
   }>();
 
   const emit = defineEmits(['loadMore', 'hideSearch']);
@@ -52,7 +47,7 @@
   const router = useRouter();
 
   const { localizePath } = useProjectMethods();
-  const clickGame = (gameData: IGame):void => {
+  const clickGame = (gameData: IGame): void => {
     if (gameData.identity === 'betsy-sportsbook-betsy') {
       router.push(localizePath('/betting'));
     } else if (!isLoggedIn.value) {
@@ -66,4 +61,3 @@
 </script>
 
 <style src="~/assets/styles/components/list/result-search.scss" lang="scss" />
-

@@ -10,11 +10,7 @@
           {{ getContent(limitsContent, defaultLimitsContent, 'modeToggle') }}
         </span>
 
-        <form-input-toggle
-          v-model:value="isAdvancedModeEnabled"
-          name="toggle"
-          @change="toogleAdvancedMode"
-        />
+        <form-input-toggle v-model:value="isAdvancedModeEnabled" name="toggle" @change="toogleAdvancedMode" />
       </div>
     </div>
 
@@ -25,88 +21,65 @@
         @open-edit-modal="openEditModal"
       />
 
-      <card-loss-limits
-        @open-limit-modal="openLimitModal"
-        @open-edit-modal="openEditModal"
-      />
+      <card-loss-limits @open-limit-modal="openLimitModal" @open-edit-modal="openEditModal" />
 
-      <card-bet-limits
-        @open-limit-modal="openLimitModal"
-        @open-edit-modal="openEditModal"
-      />
+      <card-bet-limits @open-limit-modal="openLimitModal" @open-edit-modal="openEditModal" />
 
-      <card-cooling-off-limits/>
+      <card-cooling-off-limits />
 
-      <card-self-exclusion-limits
-        v-if="isAdvancedModeEnabled"
-        @open-confirm-modal="openConfirmModal"
-      />
+      <card-self-exclusion-limits v-if="isAdvancedModeEnabled" @open-confirm-modal="openConfirmModal" />
 
-      <modal-add-limit
-        :key="addModalKey"
-        :definition="state.definition"
-      />
+      <modal-add-limit :key="addModalKey" :definition="state.definition" />
 
-      <modal-edit-limit
-        v-bind="state.editProps"
-        :key="editModalKey"
-      />
+      <modal-edit-limit v-bind="state.editProps" :key="editModalKey" />
     </div>
 
-    <modal-game-limit-reached/>
+    <modal-game-limit-reached />
 
-    <modal-confirm-limit-update
-      :key="confirmModalKey"
-      :period="state.period"
-    />
+    <modal-confirm-limit-update :key="confirmModalKey" :period="state.period" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IProfileLimits} from '~/types';
+  import type { IProfileLimits } from '~/types';
 
   const limitsStore = useLimitsStore();
-  const {
-    getLimits,
-    setLimitsContent,
-    showModal,
-    toogleAdvancedMode
-  } = limitsStore;
-  const {
-    limitsContent,
-    defaultLimitsContent,
-    isAdvancedModeEnabled
-  } = storeToRefs(limitsStore);
+  const { getLimits, setLimitsContent, showModal, toogleAdvancedMode } = limitsStore;
+  const { limitsContent, defaultLimitsContent, isAdvancedModeEnabled } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'profileLimitsContent',
     contentRoute: ['profile', 'limits'],
-    isPage: true
+    isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileLimits>(contentParams);
-  const { status, data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { status, data: pageContent } = await useLazyAsyncData(getContentData);
 
-  watch(status, async (newValue) => {
-    if (newValue === 'success') {
-      await nextTick();
-      setLimitsContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData);
-    }
-  }, { immediate: true });
+  watch(
+    status,
+    async newValue => {
+      if (newValue === 'success') {
+        await nextTick();
+        setLimitsContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData);
+      }
+    },
+    { immediate: true }
+  );
 
   interface IEditProps {
-    limitId: string | undefined,
-    definition: number | undefined,
-    amount: number | undefined,
-    currency: string | undefined,
-    period: string | undefined,
+    limitId: string | undefined;
+    definition: number | undefined;
+    amount: number | undefined;
+    currency: string | undefined;
+    period: string | undefined;
   }
 
   const state = reactive<{
-    definition: number | undefined,
-    editProps: IEditProps,
-    period: undefined | string,
+    definition: number | undefined;
+    editProps: IEditProps;
+    period: undefined | string;
   }>({
     definition: undefined,
     period: undefined,
@@ -143,7 +116,7 @@
 
   onMounted(() => {
     getLimits();
-  })
+  });
 </script>
 
 <style src="~/assets/styles/pages/profile/limits.scss" lang="scss" />

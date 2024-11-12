@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-  import type {IQuestionCategory} from '~/types';
+  import type { IQuestionCategory } from '~/types';
 
   const route = useRoute();
   const { pageIdentity } = route.params;
@@ -22,10 +22,10 @@
   const contentParams = {
     contentKey: `${pageIdentity}-question`,
     contentRoute: ['question-pages'],
-    where: { pageIdentity }
+    where: { pageIdentity },
   };
   const { getContentData } = useContentLogic<IQuestionCategory>(contentParams);
-  const { data: categoryContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: categoryContent } = await useLazyAsyncData(getContentData);
 
   const questionsList = computed(() => {
     return categoryContent.value?.currentLocaleData?.questionList || [];

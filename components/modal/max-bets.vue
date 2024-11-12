@@ -1,18 +1,18 @@
 <template>
   <vue-final-modal
-    v-model="props.showModal"
+    :model-value="props.showModal"
     class="modal-max-bets"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
   >
     <div class="scroll">
       <div class="header">
         <button-modal-close @close="emit('closeModal')" />
       </div>
-      
+
       <atomic-image class="img" :src="getContent(popupsData, defaultLocalePopupsData, 'maxBets.image')" />
-      
+
       <div class="title">
         {{ getContent(popupsData, defaultLocalePopupsData, 'maxBets.title') }}
       </div>
@@ -32,21 +32,13 @@
           {{ props.maxBet }}
         </span>
       </div>
-      
+
       <div class="actions">
-        <button-base
-          type="primary"
-          size="md"
-          @click="emit('closeModal')"
-        >
+        <button-base type="primary" size="md" @click="emit('closeModal')">
           {{ getContent(popupsData, defaultLocalePopupsData, 'maxBets.confirmButton') }}
         </button-base>
-        
-        <button-base
-          type="ghost"
-          size="xs"
-          @click="handleCancel"
-        >
+
+        <button-base type="ghost" size="xs" @click="handleCancel">
           {{ getContent(popupsData, defaultLocalePopupsData, 'maxBets.cancelButton') }}
         </button-base>
       </div>
@@ -56,7 +48,7 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import  { storeToRefs } from "pinia";
+  import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
     showModal: boolean;
@@ -74,8 +66,7 @@
     setTimeout(() => {
       router.push(localizePath('/profile/bonuses'));
     }, 500);
-  }
+  };
 </script>
 
 <style src="~/assets/styles/components/modal/max-bets.scss" lang="scss" />
-

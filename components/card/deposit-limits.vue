@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="limits__card"
-    :class="{'is-full-width': isFullWidth}"
-  >
+  <div class="limits__card" :class="{ 'is-full-width': isFullWidth }">
     <h4 class="limits__card-title" data-tooltip-parent>
       {{ getContent(limitsContent, defaultLimitsContent, 'deposit.label') }}
       <atomic-tooltip
@@ -41,11 +38,7 @@
         {{ getContent(limitsContent, defaultLimitsContent, 'editButtonLabel') }}
       </button-base>
 
-      <button-base
-        v-if="state.isShowEdit"
-        type="secondary"
-        @click="state.isShowEdit = false"
-      >
+      <button-base v-if="state.isShowEdit" type="secondary" @click="state.isShowEdit = false">
         {{ getContent(limitsContent, defaultLimitsContent, 'doneButtonLabel') }}
       </button-base>
     </div>
@@ -56,17 +49,13 @@
   import type { IUpdateLimit } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
 
-  const emit = defineEmits([
-    'open-limit-modal',
-    'open-edit-modal',
-  ]);
+  const emit = defineEmits(['open-limit-modal', 'open-edit-modal']);
 
   const limitsStore = useLimitsStore();
   const { getContent } = useProjectMethods();
   const { checkCurrencies } = limitsStore;
-  const {
-    depositPeriods, limitsContent, defaultLimitsContent, isAdvancedModeEnabled, lossPeriods,
-  } = storeToRefs(limitsStore);
+  const { depositPeriods, limitsContent, defaultLimitsContent, isAdvancedModeEnabled, lossPeriods } =
+    storeToRefs(limitsStore);
   const globalStore = useGlobalStore();
   const { currencies } = storeToRefs(globalStore);
 
@@ -80,12 +69,18 @@
     emit('open-edit-modal', payload);
   };
 
-  const isEditLocked = computed(() => depositPeriods.value.every((period) => {
-    const filteredPeriods = period.items.filter((item) => item.status === 1)
-    return filteredPeriods.every((item) => item.cancelProcess && !item.pendingExist)
-  }));
+  const isEditLocked = computed(() =>
+    depositPeriods.value.every(period => {
+      const filteredPeriods = period.items.filter(item => item.status === 1);
+      return filteredPeriods.every(item => item.cancelProcess && !item.pendingExist);
+    })
+  );
 
   const isAllCurrenciesUsed = computed(() => checkCurrencies(depositPeriods.value, currencies.value));
 
-  const isFullWidth = computed(() => (isAdvancedModeEnabled.value && lossPeriods.value?.length > 1) || (isAdvancedModeEnabled.value && depositPeriods.value.length > 1));
+  const isFullWidth = computed(
+    () =>
+      (isAdvancedModeEnabled.value && lossPeriods.value?.length > 1) ||
+      (isAdvancedModeEnabled.value && depositPeriods.value.length > 1)
+  );
 </script>

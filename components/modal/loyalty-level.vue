@@ -2,14 +2,14 @@
   <vue-final-modal
     v-model="modals.loyaltyLevel"
     class="modal-loyalty-level"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
-    @clickOutside="closeModal('loyaltyLevel')"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
+    @click-outside="closeModal('loyaltyLevel')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('loyaltyLevel')"/>
+        <button-modal-close @close="closeModal('loyaltyLevel')" />
       </div>
 
       <div v-if="modalTitle" class="modal-loyalty-level__title">{{ modalTitle }}</div>
@@ -26,14 +26,14 @@
 
       <div class="modal-loyalty-level__points">
         <div class="modal-loyalty-level__points-value">
-          {{ loyaltyAccount?.currentLevel?.points }}<template v-if="loyaltyAccount?.nextLevel?.points"> - {{ loyaltyAccount.nextLevel.points }}</template>
+          {{ loyaltyAccount?.currentLevel?.points
+          }}<template v-if="loyaltyAccount?.nextLevel?.points"> - {{ loyaltyAccount.nextLevel.points }}</template>
         </div>
 
         <div class="modal-loyalty-level__points-label">
           {{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.pointsLabel') }}
         </div>
       </div>
-
 
       <button-base type="primary" size="lg" @click="closeModal('loyaltyLevel')">
         {{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.buttonLabel') }}
@@ -58,7 +58,7 @@
     const contentTitle = getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.title');
     if (contentTitle) return contentTitle.replace('{levelName}', currentLevelName.value);
     return undefined;
-  })
+  });
 </script>
 
 <style src="~/assets/styles/components/modal/loyalty-level.scss" lang="scss" />

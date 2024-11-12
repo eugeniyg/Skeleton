@@ -11,15 +11,15 @@
 </template>
 
 <script setup lang="ts">
-  import type {IProfileSecurity} from '~/types';
+  import type { IProfileSecurity } from '~/types';
 
   const contentParams = {
     contentKey: 'profileSecurityContent',
     contentRoute: ['profile', 'security'],
-    isPage: true
+    isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileSecurity>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 

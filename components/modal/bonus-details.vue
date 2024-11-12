@@ -1,18 +1,15 @@
 <template>
   <vue-final-modal
-    :modelValue="props.showModal"
+    :model-value="props.showModal"
     class="modal-bonus-details"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
-    @clickOutside="emit('close')"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
+    @click-outside="emit('close')"
   >
     <div class="scroll">
       <div class="header">
-        <div
-          class="header__title"
-          :class="{ 'header__title--large': !props.bonusInfo?.bonusValue }"
-        >
+        <div class="header__title" :class="{ 'header__title--large': !props.bonusInfo?.bonusValue }">
           {{ props.bonusInfo?.name }}
         </div>
 
@@ -23,11 +20,7 @@
         <div class="header__row">
           <bonuses-badge-type :mode="props.bonusInfo?.badgeType" />
 
-          <bonuses-timer
-            v-if="props.bonusInfo?.expiredDate"
-            :expiredAt="props.bonusInfo.expiredDate"
-            hideLabels
-          />
+          <bonuses-timer v-if="props.bonusInfo?.expiredDate" :expired-at="props.bonusInfo.expiredDate" hide-labels />
 
           <bonuses-badge-status :status="props.bonusInfo?.badgeStatus" />
         </div>
@@ -36,11 +29,7 @@
       </div>
 
       <div v-if="props.bonusInfo" class="modal-bonus-details__table">
-        <bonuses-info-table
-          :key="props.bonusInfo.id"
-          class="modal-bonus-details__dl"
-          :bonusInfo="props.bonusInfo"
-        />
+        <bonuses-info-table :key="props.bonusInfo.id" class="modal-bonus-details__dl" :bonus-info="props.bonusInfo" />
       </div>
     </div>
   </vue-final-modal>
@@ -58,4 +47,3 @@
 </script>
 
 <style src="~/assets/styles/components/modal/bonus-details.scss" lang="scss" />
-

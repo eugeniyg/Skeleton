@@ -1,12 +1,12 @@
 <template>
-  <div :class="['input-file', {'is-show-more-btn': props.showMoreButton}]">
+  <div :class="['input-file', { 'is-show-more-btn': props.showMoreButton }]">
     <input
       ref="input"
       accept="image/png, image/jpg, image/jpeg, application/pdf"
       class="input-file__input"
       type="file"
       @change="changeAction"
-    >
+    />
 
     <div class="input-file__text">
       <h5 class="input-file__sub-title">{{ props.placeholder }}</h5>
@@ -14,10 +14,10 @@
     </div>
 
     <div class="input-file__actions">
-      <hr>
+      <hr />
       <div v-if="props.showMoreButton" class="input-file__load-more">
         <button-base
-          :isDisabled="props.loading"
+          :is-disabled="props.loading"
           class="input-file__load-more-btn"
           type="secondary"
           size="xs"
@@ -32,7 +32,7 @@
         class="btn-select-file"
         type="secondary"
         size="xs"
-        :isDisabled="props.loading"
+        :is-disabled="props.loading"
         @click.prevent="clickAction"
       >
         {{ props.uploadButton }}
@@ -43,12 +43,12 @@
 
 <script setup lang="ts">
   const props = defineProps<{
-    placeholder?: string,
-    hint?: string,
-    uploadButton?: string,
-    uploadMore?: string,
-    showMoreButton?: boolean,
-    loading: boolean
+    placeholder?: string;
+    hint?: string;
+    uploadButton?: string;
+    uploadMore?: string;
+    showMoreButton?: boolean;
+    loading: boolean;
   }>();
 
   const emit = defineEmits(['change']);
@@ -66,4 +66,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/file.scss" lang="scss" />
-

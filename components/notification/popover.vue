@@ -1,11 +1,6 @@
 <template>
-  <div
-    v-click-outside="hideTrigger"
-    class="notification-popover"
-  >
-    <div
-      class="notification-popover__header"
-    >
+  <div v-click-outside="hideTrigger" class="notification-popover">
+    <div class="notification-popover__header">
       <div class="notification-popover__count">
         {{ notificationsCountLabel }}
       </div>
@@ -17,23 +12,15 @@
         <atomic-icon id="read-all" />
       </div>
 
-      <atomic-divider/>
+      <atomic-divider />
     </div>
 
     <template v-if="popoverNotifications.length">
-      <div
-        class="notification-popover__items"
-      >
-        <notification-popover-item
-          v-for="message in popoverNotifications"
-          :key="message.id"
-          :messageInfo="message"
-        />
+      <div class="notification-popover__items">
+        <notification-popover-item v-for="message in popoverNotifications" :key="message.id" :message-info="message" />
       </div>
 
-      <div
-        class="notification-popover__footer"
-      >
+      <div class="notification-popover__footer">
         <atomic-link href="/profile/notifications" @click="emit('hide')">
           <button-base type="ghost">
             {{ getContent(layoutData, defaultLocaleLayoutData, 'header.notificationBox.seeAll') }}
@@ -63,7 +50,7 @@
   const { layoutData, defaultLocaleLayoutData } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const { readAllMessages } = notificationStore;
-  
+
   const emit = defineEmits(['hide']);
 
   const hideTrigger = (): void => {
@@ -71,9 +58,13 @@
   };
 
   const notificationsCountLabel = computed(() => {
-    const label = getContent(layoutData.value, defaultLocaleLayoutData.value, 'header.notificationBox.unreadNotifications');
+    const label = getContent(
+      layoutData.value,
+      defaultLocaleLayoutData.value,
+      'header.notificationBox.unreadNotifications'
+    );
     return label ? label.replace('{count}', unreadCount.value) : '';
-  })
+  });
 
   const readAllSending = ref(false);
   const readAll = async (): Promise<void> => {
@@ -86,7 +77,7 @@
     } finally {
       readAllSending.value = false;
     }
-  }
+  };
 </script>
 
-<style src="~/assets/styles/components/notification/popover.scss" lang="scss"/>
+<style src="~/assets/styles/components/notification/popover.scss" lang="scss" />

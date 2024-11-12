@@ -1,14 +1,8 @@
 <template>
-  <div
-    class="select-lang"
-    :class="{ 'is-open': isOpen }"
-  >
+  <div class="select-lang" :class="{ 'is-open': isOpen }">
     <div v-click-outside="closeSelect" class="select-lang__wrap">
       <div class="selected" @click="toggleOpen">
-        <atomic-image
-          class="img"
-          :src="`${gamehubCdn}/locales/${currentLocale?.code.toLowerCase()}.svg`"
-        />
+        <atomic-image class="img" :src="`${gamehubCdn}/locales/${currentLocale?.code.toLowerCase()}.svg`" />
         <span class="title">{{ currentLocale?.nativeName || currentLocale?.name }}</span>
         <atomic-icon id="arrow_expand-close" />
       </div>
@@ -47,7 +41,9 @@
   const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { public: { gamehubCdn } } = useRuntimeConfig();
+  const {
+    public: { gamehubCdn },
+  } = useRuntimeConfig();
 
   const changeLanguage = async (locale: ILocale, event: any): Promise<void> => {
     if (currentLocale.value?.code === locale.code || isProcess.value) return;
@@ -77,7 +73,7 @@
     isOpen.value = !isOpen.value;
   };
 
-  const closeSelect = ():void => {
+  const closeSelect = (): void => {
     if (isOpen.value) isOpen.value = false;
   };
 </script>

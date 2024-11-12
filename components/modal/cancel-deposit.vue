@@ -2,9 +2,9 @@
   <vue-final-modal
     v-model="modals.cancelDeposit"
     class="modal-cancel-deposit"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
   >
     <div class="scroll">
       <div class="header">
@@ -42,7 +42,7 @@
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
   import { VueFinalModal } from 'vue-final-modal';
-  import DOMPurify from "isomorphic-dompurify";
+  import DOMPurify from 'isomorphic-dompurify';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
@@ -53,10 +53,9 @@
   const closeDeposit = (): void => {
     closeModal('wallet');
     closeModal('cancelDeposit');
-  }
+  };
 
   const modalContent = getContent(popupsData, defaultLocalePopupsData, 'cancelDeposit.content');
 </script>
 
 <style src="~/assets/styles/components/modal/cancel-deposit.scss" lang="scss" />
-

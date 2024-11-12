@@ -1,12 +1,7 @@
 <template>
   <div class="wallet-methods">
     <div class="wallet-methods__header">
-
-      <wallet-tabs
-        v-if="props.showTabs"
-        :selected="props.selectedTab"
-        @changeTab="emit('changeTab', $event)"
-      />
+      <wallet-tabs v-if="props.showTabs" :selected="props.selectedTab" @change-tab="emit('changeTab', $event)" />
 
       <div v-else class="wallet-methods__header-title">
         {{ props.modalTitle }}
@@ -18,24 +13,21 @@
     <balance :withdraw="props.selectedTab === 'withdraw'">
       <form-input-payments
         v-if="props.selectedTab === 'deposit'"
-        v-model:activeMethod="currentDepositMethod"
+        v-model:active-method="currentDepositMethod"
         :items="depositMethods"
-        @update:activeMethod="handleMethodChanged('deposit')"
-        @methodClick="emit('methodClick')"
+        @update:active-method="handleMethodChanged('deposit')"
+        @method-click="emit('methodClick')"
       />
 
       <form-input-payments
         v-if="props.selectedTab === 'withdraw'"
-        v-model:activeMethod="currentWithdrawMethod"
+        v-model:active-method="currentWithdrawMethod"
         :items="withdrawMethods"
-        @update:activeMethod="handleMethodChanged('withdraw')"
-        @methodClick="emit('methodClick')"
+        @update:active-method="handleMethodChanged('withdraw')"
+        @method-click="emit('methodClick')"
       />
 
-      <div
-        v-if="showNotAvailableText"
-        class="wallet-modal__empty-methods"
-      >
+      <div v-if="showNotAvailableText" class="wallet-modal__empty-methods">
         <atomic-icon id="info" />
 
         <span>
@@ -44,50 +36,44 @@
       </div>
     </balance>
 
-    <wallet-dots
-      :itemsCount="2"
-      :activeIndex="0"
-    />
+    <wallet-dots :items-count="2" :active-index="0" />
   </div>
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from "pinia";
+  import { storeToRefs } from 'pinia';
+  import type { IPaymentMethod } from '@skeleton/core/types';
 
   const props = defineProps<{
     showTabs: boolean;
     selectedTab: string;
     modalTitle: string;
-  }>()
+  }>();
 
-  const currentDepositMethod = defineModel('currentDepositMethod');
-  const currentWithdrawMethod = defineModel('currentWithdrawMethod');
+  const currentDepositMethod = defineModel<IPaymentMethod>('currentDepositMethod');
+  const currentWithdrawMethod = defineModel<IPaymentMethod>('currentWithdrawMethod');
 
   const emit = defineEmits(['changeTab', 'methodClick']);
   const { getContent } = useProjectMethods();
   const walletStore = useWalletStore();
-  const {
-    depositMethods,
-    withdrawMethods
-  } = storeToRefs(walletStore);
+  const { depositMethods, withdrawMethods } = storeToRefs(walletStore);
 
   const globalStore = useGlobalStore();
-  const {
-    popupsData,
-    defaultLocalePopupsData
-  } = storeToRefs(globalStore);
+  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 
   const showNotAvailableText = computed(() => {
-    return (!depositMethods.value?.length && props.selectedTab === 'deposit')
-      || (!withdrawMethods.value?.length && props.selectedTab === 'withdraw');
-  })
+    return (
+      (!depositMethods.value?.length && props.selectedTab === 'deposit') ||
+      (!withdrawMethods.value?.length && props.selectedTab === 'withdraw')
+    );
+  });
 
-  const handleMethodChanged = (walletOperationType: 'deposit'|'withdraw'): void => {
+  const handleMethodChanged = (walletOperationType: 'deposit' | 'withdraw'): void => {
     useEvent('analyticsEvent', {
       event: 'walletChangeMethod',
-      walletOperationType
+      walletOperationType,
     });
-  }
+  };
 </script>
 
-<style src="~/assets/styles/components/wallet/methods.scss" lang="scss"/>
+<style src="~/assets/styles/components/wallet/methods.scss" lang="scss" />

@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPaymentPreset } from "@skeleton/core/types";
+  import type { IPaymentPreset } from '@skeleton/core/types';
 
   const props = defineProps<{
     value: string;
@@ -22,10 +22,10 @@
 
   const emit = defineEmits(['update:value']);
 
-  const selectItem = (amount: string):void => {
+  const selectItem = (amount: string): void => {
     if (amount === props.value) return;
     emit('update:value', amount);
   };
 </script>
 
-<style src="~/assets/styles/components/wallet/pills.scss" lang="scss"/>
+<style src="~/assets/styles/components/wallet/pills.scss" lang="scss" />

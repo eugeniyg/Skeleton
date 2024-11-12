@@ -2,20 +2,17 @@
   <div class="nav-list">
     <div v-for="(listItem, index) in props.items" :key="index" class="item">
       <atomic-menu-category v-if="listItem?.items?.length" v-bind="listItem" />
-      
+
       <atomic-link
         v-else
         class="link"
         :href="listItem.url"
-        :targetBlank="listItem?.targetBlank"
-        :class="{'is-active': route.fullPath === localizePath(listItem.url)}"
+        :target-blank="listItem?.targetBlank"
+        :class="{ 'is-active': route.fullPath === localizePath(listItem.url) }"
       >
-        <atomic-svg
-          v-if="listItem?.displayCustomIcon && listItem?.customIcon"
-          :src="listItem?.customIcon"
-        />
-        <atomic-icon v-else :id="listItem?.icon ? listItem?.icon : 'dot-md'"/>
-        
+        <atomic-svg v-if="listItem?.displayCustomIcon && listItem?.customIcon" :src="listItem?.customIcon" />
+        <atomic-icon v-else :id="listItem?.icon ? listItem?.icon : 'dot-md'" />
+
         <div class="text">{{ listItem.label }}</div>
 
         <client-only>
@@ -30,10 +27,10 @@
   const props = defineProps<{
     items: any;
   }>();
-  
+
   const route = useRoute();
 
   const { localizePath } = useProjectMethods();
 </script>
 
-<style src="~/assets/styles/components/nav/list.scss" lang="scss"/>
+<style src="~/assets/styles/components/nav/list.scss" lang="scss" />

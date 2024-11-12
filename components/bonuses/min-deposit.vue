@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IBonus } from "@skeleton/core/types";
+  import type { IBonus } from '@skeleton/core/types';
 
   const props = defineProps<{
     bonusInfo: IBonus;
@@ -25,4 +25,4 @@
   const minDeposit = computed(() => getMinBonusDeposit(props.bonusInfo));
 </script>
 
-<style src="~/assets/styles/components/bonuses/min-deposit.scss" lang="scss"/>
+<style src="~/assets/styles/components/bonuses/min-deposit.scss" lang="scss" />

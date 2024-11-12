@@ -2,14 +2,14 @@
   <vue-final-modal
     v-model="modals.loyaltyEarn"
     class="modal-loyalty-earn"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
-    @clickOutside="closeModal('loyaltyEarn')"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
+    @click-outside="closeModal('loyaltyEarn')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('loyaltyEarn')"/>
+        <button-modal-close @close="closeModal('loyaltyEarn')" />
       </div>
 
       <atomic-image
@@ -26,7 +26,7 @@
       </div>
 
       <div class="modal-loyalty-earn__steps">
-        <div v-for="step in steps" class="modal-loyalty-earn__steps-item">{{ step }}</div>
+        <div v-for="(step, index) in steps" :key="index" class="modal-loyalty-earn__steps-item">{{ step }}</div>
       </div>
 
       <button-base type="primary" size="md" @click.once="handleConfirm">
@@ -43,22 +43,23 @@
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal, openWalletModal } = layoutStore;
-  const {
-    popupsData,
-    defaultLocalePopupsData
-  } = useGlobalStore();
+  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
 
   const steps = computed(() => {
-    const contentSteps: { stepText: string }[]|undefined = getContent(popupsData, defaultLocalePopupsData, 'loyaltyEarn.steps');
+    const contentSteps: { stepText: string }[] | undefined = getContent(
+      popupsData,
+      defaultLocalePopupsData,
+      'loyaltyEarn.steps'
+    );
     if (contentSteps) return contentSteps.map(step => step.stepText);
     return [];
-  })
+  });
 
-  const handleConfirm = async ():Promise<void> => {
+  const handleConfirm = async (): Promise<void> => {
     await openWalletModal('deposit');
     closeModal('loyaltyEarn');
-  }
+  };
 </script>
 
-<style src="~/assets/styles/components/modal/loyalty-earn.scss" lang="scss"/>
+<style src="~/assets/styles/components/modal/loyalty-earn.scss" lang="scss" />

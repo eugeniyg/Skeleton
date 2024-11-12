@@ -3,16 +3,17 @@
     <banners
       v-if="pageContent?.currentLocaleData?.banners || pageContent?.defaultLocaleData?.banners"
       :items="pageContent?.currentLocaleData?.banners || pageContent?.defaultLocaleData?.banners"
-      :bannerLoyalty="pageContent?.currentLocaleData?.bannerLoyalty || pageContent?.defaultLocaleData?.bannerLoyalty"
+      :banner-loyalty="pageContent?.currentLocaleData?.bannerLoyalty || pageContent?.defaultLocaleData?.bannerLoyalty"
     />
-    
+
     <div
       v-if="pageContent?.currentLocaleData?.categories || pageContent?.defaultLocaleData?.categories"
       class="card-category__container"
       :class="cardsModifier"
     >
       <card-category
-        v-for="(item, itemIndex) in (pageContent?.currentLocaleData?.categories || pageContent?.defaultLocaleData?.categories)"
+        v-for="(item, itemIndex) in pageContent?.currentLocaleData?.categories ||
+        pageContent?.defaultLocaleData?.categories"
         :key="itemIndex"
         :mod="itemIndex + 1"
         v-bind="item"
@@ -20,37 +21,26 @@
     </div>
 
     <!--<group-benefits/>-->
-    
+
     <group-aero
       v-if="pageContent?.currentLocaleData?.aeroGroup?.display && aeroCategory"
-      showAllBtn
-      showArrows
+      show-all-btn
+      show-arrows
       :category="aeroCategory"
-      :currentLocaleContent="pageContent?.currentLocaleData?.aeroGroup"
-      :defaultLocaleContent="pageContent?.defaultLocaleData?.aeroGroup"
+      :current-locale-content="pageContent?.currentLocaleData?.aeroGroup"
+      :default-locale-content="pageContent?.defaultLocaleData?.aeroGroup"
     />
-    
+
     <template v-for="collection in gameCollectionsList">
-      <group-games
-        v-if="collection"
-        :key="collection.id"
-        showAllBtn
-        showArrows
-        :category="collection"
-      />
+      <group-games v-if="collection" :key="collection.id" show-all-btn show-arrows :category="collection" />
     </template>
-    
-    <div
-      v-if="hasBetsyIntegration"
-      ref="sportsContainer"
-      class="sports-container"
-      @inview="startBetsyWidgets"
-    >
+
+    <div v-if="hasBetsyIntegration" ref="sportsContainer" class="sports-container" @inview="startBetsyWidgets">
       <div id="top-events-widget" />
       <div id="live-events-widget" />
     </div>
 
-    <group-providers showArrows showAllBtn/>
+    <group-providers show-arrows show-all-btn />
 
     <activity-board
       v-if="activityBoardContent.showBlock && activityBoardContent.boards.length"
@@ -59,64 +49,77 @@
 
     <group-promotions />
 
-    <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText"/>
+    <atomic-seo-text
+      v-if="pageContent?.currentLocaleData?.pageMeta?.seoText"
+      v-bind="pageContent.currentLocaleData.pageMeta.seoText"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IHomePage, IStaticPage} from '~/types';
+  import type { IHomePage } from '~/types';
   import type { ICollection } from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
 
-  const {
-    localizePath,
-    getContent,
-    addBetsyScript
-  } = useProjectMethods();
+  const { localizePath, getContent, addBetsyScript } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'homePageContent',
     contentRoute: ['pages', 'home'],
-    isPage: true
+    isPage: true,
   };
   const { getContentData } = useContentLogic<IHomePage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const { getCollectionsList } = useGamesStore();
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
-  
+
   const aeroCategory = computed(() => {
-    return gameCollections.value?.find((collection) => collection.identity === pageContent.value?.currentLocaleData?.aeroGroup?.collectionIdentity);
-  });
-  
-  const targetGameCollections = computed(() => {
-    return getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'gameCollections')?.map((item:ICollection) => item.identity) || []
-  });
-  
-  const gameCollectionsList = computed(() => gameCollections.value?.filter((collection) => targetGameCollections.value.includes(collection.identity))?.sort((a, b) => {
-    return targetGameCollections.value?.indexOf(a.identity) - targetGameCollections.value?.indexOf(b.identity);
-  }));
-  
-  const cardsModifier = computed(() => {
-    const length = Object.keys(getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'categories'))?.length || 0
-    return length  ? `has-${length}-cards` : ''
+    return gameCollections.value?.find(
+      collection => collection.identity === pageContent.value?.currentLocaleData?.aeroGroup?.collectionIdentity
+    );
   });
 
-  const startBetsyWidgets = ():void => {
+  const targetGameCollections = computed(() => {
+    return (
+      getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'gameCollections')?.map(
+        (item: ICollection) => item.identity
+      ) || []
+    );
+  });
+
+  const gameCollectionsList = computed(() =>
+    gameCollections.value
+      ?.filter(collection => targetGameCollections.value.includes(collection.identity))
+      ?.sort((a, b) => {
+        return targetGameCollections.value?.indexOf(a.identity) - targetGameCollections.value?.indexOf(b.identity);
+      })
+  );
+
+  const cardsModifier = computed(() => {
+    const length =
+      Object.keys(getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'categories'))
+        ?.length || 0;
+    return length ? `has-${length}-cards` : '';
+  });
+
+  const startBetsyWidgets = (): void => {
     const runtimeConfig = useRuntimeConfig();
     const mainHost = window.location.origin;
     const widgetsParams = {
       host: runtimeConfig.public.betsyParams?.clientHost,
       cid: runtimeConfig.public.betsyParams?.clientId,
       theme: runtimeConfig.public.betsyParams?.widgetTheme,
-      customStyles: runtimeConfig.public.betsyParams?.widgetStyles ? `${mainHost}${runtimeConfig.public.betsyParams.widgetStyles}` : undefined,
+      customStyles: runtimeConfig.public.betsyParams?.widgetStyles
+        ? `${mainHost}${runtimeConfig.public.betsyParams.widgetStyles}`
+        : undefined,
       mainFrameUrl: mainHost + localizePath('/betting'),
       lang: currentLocale.value?.code || 'en',
       height: '372px',
-    }
+    };
 
     if (window.BetSdk) {
       window.BetSdk.initTopEventsWidget({ ...widgetsParams, containerId: 'top-events-widget' });
@@ -131,7 +134,8 @@
   };
 
   const runtimeConfig = useRuntimeConfig();
-  const hasBetsyIntegration = runtimeConfig.public.betsyParams?.clientHost && runtimeConfig.public.betsyParams?.clientId;
+  const hasBetsyIntegration =
+    runtimeConfig.public.betsyParams?.clientHost && runtimeConfig.public.betsyParams?.clientId;
   const sportsContainer = ref();
   const { initObserver } = useProjectMethods();
   const widgetsObserver = ref();
@@ -147,7 +151,7 @@
       });
       widgetsObserver.value.observe(sportsContainer.value);
     }
-  }
+  };
 
   const activityBoardContent = computed(() => {
     const currentLocaleBoardContent = pageContent.value?.currentLocaleData?.activityBoard;
@@ -157,21 +161,22 @@
       title: currentLocaleBoardContent?.title || defaultLocaleBoardContent?.title,
       icon: currentLocaleBoardContent?.icon || defaultLocaleBoardContent?.icon,
       columns: currentLocaleBoardContent?.columns || defaultLocaleBoardContent?.columns,
-      boards: currentLocaleBoardContent?.boards?.length ? currentLocaleBoardContent.boards : defaultLocaleBoardContent?.boards || []
-    }
+      boards: currentLocaleBoardContent?.boards?.length
+        ? currentLocaleBoardContent.boards
+        : defaultLocaleBoardContent?.boards || [],
+    };
   });
 
   onMounted(async () => {
     await getCollectionsList();
     initBetsy();
-  })
+  });
 
   onBeforeUnmount(() => {
     if (sportsContainer.value && widgetsObserver.value) {
       widgetsObserver.value.unobserve(sportsContainer.value);
     }
-  })
+  });
 </script>
 
 <style src="~/assets/styles/pages/index.scss" lang="scss" />
-

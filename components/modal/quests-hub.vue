@@ -2,17 +2,14 @@
   <vue-final-modal
     v-model="modals.questsHub"
     class="modal-quest-hub"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
-    @clickOutside="closeModal('questsHub')"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
+    @click-outside="closeModal('questsHub')"
     @closed="selectedTab = 'active'"
   >
     <div class="container">
-      <button-modal-close
-        :class="{ 'close-secondary': hasOffset }"
-        @click="closeModal('questsHub')"
-      />
+      <button-modal-close :class="{ 'close-secondary': hasOffset }" @click="closeModal('questsHub')" />
 
       <div ref="scrollBlock" class="scroll" @scroll="handleScroll">
         <div class="modal-quest-hub__header">
@@ -26,7 +23,7 @@
             v-for="[tabId, tabLabel] in modalTabs"
             :key="tabId"
             class="modal-quest-hub__tabs-item"
-            :class="{'is-active': tabId === selectedTab}"
+            :class="{ 'is-active': tabId === selectedTab }"
             @click="changeTabHandle(tabId)"
           >
             {{ tabLabel }}
@@ -49,16 +46,13 @@
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
   const globalStore = useGlobalStore();
-  const {
-    popupsData,
-    defaultLocalePopupsData
-  } = storeToRefs(globalStore);
+  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 
   const modalTabs = computed(() => {
     const contentTabs = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.tabs');
     if (contentTabs) return Object.entries(contentTabs);
     return [];
-  })
+  });
 
   const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
@@ -76,4 +70,4 @@
   };
 </script>
 
-<style src="~/assets/styles/components/modal/quest-hub.scss" lang="scss"/>
+<style src="~/assets/styles/components/modal/quest-hub.scss" lang="scss" />

@@ -5,20 +5,12 @@
         {{ getContent(currentLocaleContent, defaultLocaleContent, 'title') }}
       </h1>
 
-      <button-base
-        v-if="!isProfileEdit"
-        type="secondary"
-        size="md"
-        @click="toggleProfileEdit"
-      >
-        <atomic-icon id="edit"/>{{ getContent(currentLocaleContent, defaultLocaleContent, 'editButton') }}
+      <button-base v-if="!isProfileEdit" type="secondary" size="md" @click="toggleProfileEdit">
+        <atomic-icon id="edit" />{{ getContent(currentLocaleContent, defaultLocaleContent, 'editButton') }}
       </button-base>
     </div>
 
-    <form-profile
-      v-if="isProfileEdit && profileFields?.length"
-      @toggle-profile-edit="toggleProfileEdit"
-    />
+    <form-profile v-if="isProfileEdit && profileFields?.length" @toggle-profile-edit="toggleProfileEdit" />
 
     <template v-else>
       <div class="row-user">
@@ -29,7 +21,7 @@
             {{ userNickname }}
           </div>
 
-          <loyalty-progress class="row-user__info-progress" showInfo />
+          <loyalty-progress class="row-user__info-progress" show-info />
         </div>
 
         <template v-else>
@@ -39,18 +31,18 @@
             <div class="nickname">{{ userNickname }}</div>
 
             <div v-show="profile?.firstName || profile?.lastName" class="item">
-              <atomic-icon id="user"/>
+              <atomic-icon id="user" />
               {{ profile?.firstName }} {{ profile?.lastName }}
             </div>
 
             <div v-show="profile?.country || profile?.city" class="item">
-              <atomic-icon id="location"/>
+              <atomic-icon id="location" />
               {{ userCountryName }}{{ profile?.city ? `, ${profile?.city}` : '' }}
             </div>
 
             <div v-show="hasEmailField && profile?.email" class="item">
-              <atomic-icon v-if="profile?.confirmedAt" id="done" class="is-success"/>
-              <atomic-icon v-else id="warning" class="is-warning"/>
+              <atomic-icon v-if="profile?.confirmedAt" id="done" class="is-success" />
+              <atomic-icon v-else id="warning" class="is-warning" />
               {{ profile?.email }}
 
               <span
@@ -89,7 +81,7 @@
         {{ getContent(fieldsSettings, defaultLocaleFieldsSettings, `fieldsControls.${field.name}.label`) }}
       </form-input-toggle>
 
-      <atomic-divider/>
+      <atomic-divider />
     </div>
 
     <h4 class="heading">
@@ -97,7 +89,9 @@
     </h4>
 
     <button-base type="ghost" size="md" @click="profileStore.logOutUser">
-      <atomic-icon id="log-out"/>{{ layoutData?.profileSidebar?.logoutButton || defaultLocaleLayoutData?.profileSidebar?.logoutButton }}
+      <atomic-icon id="log-out" />{{
+        layoutData?.profileSidebar?.logoutButton || defaultLocaleLayoutData?.profileSidebar?.logoutButton
+      }}
     </button-base>
   </div>
 </template>
@@ -105,26 +99,21 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { ICountry } from '@skeleton/core/types';
-  import type {IProfileInfo} from '~/types';
+  import type { IProfileInfo } from '~/types';
 
   const globalStore = useGlobalStore();
-  const {
-    countries,
-    fieldsSettings,
-    defaultLocaleFieldsSettings,
-    layoutData,
-    defaultLocaleLayoutData,
-  } = storeToRefs(globalStore);
+  const { countries, fieldsSettings, defaultLocaleFieldsSettings, layoutData, defaultLocaleLayoutData } =
+    storeToRefs(globalStore);
 
   const { getContent } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'profileInfoContent',
     contentRoute: ['profile', 'info'],
-    isPage: true
+    isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileInfo>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 
@@ -144,27 +133,29 @@
 
   const isProfileEdit = computed(() => route.query.edit === 'true');
   const userCountryName = computed(() => {
-    const countryObject: Maybe<ICountry> = countries.value.find((country) => country.code === profile.value?.country);
+    const countryObject: Maybe<ICountry> = countries.value.find(country => country.code === profile.value?.country);
     return countryObject?.nativeName || '';
   });
 
   const receiveBonusField = { isRequired: false, name: 'receiveBonus' };
   const subscriptionFields = computed(() => {
-    const receiveFields = profileFields.value.filter((field) => field.name === 'receiveSmsPromo' || field.name === 'receiveEmailPromo');
+    const receiveFields = profileFields.value.filter(
+      field => field.name === 'receiveSmsPromo' || field.name === 'receiveEmailPromo'
+    );
     return [...receiveFields, receiveBonusField];
   });
 
   const hasEmailField = computed(() => {
     return profileFields.value.some(field => field.name === 'email');
-  })
+  });
 
-  const toggleProfileEdit = ():void => {
+  const toggleProfileEdit = (): void => {
     window.scroll(0, 0);
     router.push({ query: { ...route.query, edit: isProfileEdit.value ? undefined : 'true' } });
   };
 
   const subscriptionLoading = ref<string[]>([]);
-  const changeSubscription = async (fieldName:string):Promise<void> => {
+  const changeSubscription = async (fieldName: string): Promise<void> => {
     if (subscriptionLoading.value.includes(fieldName)) return;
 
     subscriptionLoading.value = [...subscriptionLoading.value, fieldName];
@@ -172,11 +163,10 @@
       const data = await changeProfileData({ [fieldName]: !profile.value?.[fieldName] });
       profileStore.setProfileData(data);
     } catch {
-      console.error('Subscription update error!')
+      console.error('Subscription update error!');
     }
     subscriptionLoading.value = subscriptionLoading.value.filter(field => field !== fieldName);
   };
 </script>
 
 <style src="~/assets/styles/pages/profile/info.scss" lang="scss" />
-

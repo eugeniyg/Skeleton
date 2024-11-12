@@ -1,26 +1,28 @@
-import FingerprintJS from "@fingerprintjs/fingerprintjs";
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
-export default defineNuxtPlugin((nuxtApp) => {
-  const checkAffiliateTag = ():void => {
+export default defineNuxtPlugin(nuxtApp => {
+  const checkAffiliateTag = (): void => {
     const route = useRoute();
     const router = useRouter();
     const runtimeConfig = useRuntimeConfig();
     const cookieAffiliateTag = useCookie('affiliateTag');
 
     if (route.query?.stag && !cookieAffiliateTag.value) {
-      const cookieAffiliateTag = useCookie('affiliateTag', { maxAge: 60 * 60 * 24 * (runtimeConfig.public.affiliateTagExpiration as number || 30) });
+      const cookieAffiliateTag = useCookie('affiliateTag', {
+        maxAge: 60 * 60 * 24 * ((runtimeConfig.public.affiliateTagExpiration as number) || 30),
+      });
       cookieAffiliateTag.value = route.query.stag as string;
     }
 
-    if (route.query?.stag) router.replace({query: { ...route.query, stag: undefined } });
+    if (route.query?.stag) router.replace({ query: { ...route.query, stag: undefined } });
   };
 
-  const setWindowStaticHeight = ():void => {
+  const setWindowStaticHeight = (): void => {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh-static', `${vh}px`);
   };
 
-  const setWindowHeight = ():void => {
+  const setWindowHeight = (): void => {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
   };
@@ -30,7 +32,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     await initWebSocket();
     const { subscribeWinnersSocket } = useGamesStore();
     subscribeWinnersSocket();
-  }
+  };
 
   const startProfileLogic = (): void => {
     const { getSessionToken } = useProfileStore();
@@ -40,25 +42,27 @@ export default defineNuxtPlugin((nuxtApp) => {
       const { startProfileDependencies } = useProfileStore();
       startProfileDependencies();
     }
-  }
+  };
 
   const startFreshchatLogic = (): void => {
-    const { public: { freshchatParams } } = useRuntimeConfig();
+    const {
+      public: { freshchatParams },
+    } = useRuntimeConfig();
     const { addFreshChatScript, initChat } = useFreshchatStore();
     const { getSessionToken } = useProfileStore();
     const sessionToken = getSessionToken();
 
     if (freshchatParams?.guestAvailable) initChat();
     else if (sessionToken) addFreshChatScript();
-  }
+  };
 
-  const decodeBase64 = (value: string): string|undefined => {
+  const decodeBase64 = (value: string): string | undefined => {
     try {
       return window.atob(value);
     } catch {
-      return undefined
+      return undefined;
     }
-  }
+  };
 
   const listeningChangeSession = async (event: StorageEvent): Promise<void> => {
     if (event.key !== 'changeSession' || !event.newValue) return;
@@ -78,13 +82,13 @@ export default defineNuxtPlugin((nuxtApp) => {
       const { localizePath } = useProjectMethods();
       window.location.href = window.location.origin + localizePath('/');
     }
-  }
+  };
 
-  const getFingerprintVisitor = async ():Promise<string> => {
+  const getFingerprintVisitor = async (): Promise<string> => {
     const fp = await FingerprintJS.load();
     const result = await fp.get();
     return result.visitorId;
-  }
+  };
 
   const checkTabVisibility = (): void => {
     const { isMobile } = useGlobalStore();
@@ -93,12 +97,14 @@ export default defineNuxtPlugin((nuxtApp) => {
       const { getUserAccounts } = useWalletStore();
       getUserAccounts();
     }
-  }
+  };
 
   nuxtApp.hook('app:created', async () => {
     const { getProviderList, getCollectionsList } = useGamesStore();
+    const { getRegistrationFields } = useFieldsStore();
     getProviderList();
     getCollectionsList();
+    getRegistrationFields();
 
     const profileStore = useProfileStore();
     profileStore.fingerprintVisitor = getFingerprintVisitor();

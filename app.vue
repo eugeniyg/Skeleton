@@ -11,12 +11,12 @@
 
   const { currentLocale, countries, headerCountry, locales } = useGlobalStore();
 
-  const isCurrentCountryRestrict = (): boolean|undefined => {
+  const isCurrentCountryRestrict = (): boolean | undefined => {
     if (!headerCountry) return undefined;
     const currentCountryObj = countries.find(country => country.code === headerCountry.toUpperCase());
 
     return currentCountryObj?.restrict;
-  }
+  };
   const layout = isCurrentCountryRestrict() ? 'geo-restricted' : 'default';
   const { origin } = useRequestURL();
   const route = useRoute();
@@ -45,7 +45,7 @@
 
   useHead({
     htmlAttrs: {
-      lang: currentLocale?.code
+      lang: currentLocale?.code,
     },
     link: alternateLinks,
     meta: [

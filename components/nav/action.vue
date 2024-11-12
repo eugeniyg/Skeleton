@@ -1,28 +1,16 @@
 <template>
   <div class="nav-action">
-    <button
-      class="item"
-      @click="closeGame"
-    >
-      <atomic-icon id="close"/>
+    <button class="item" @click="closeGame">
+      <atomic-icon id="close" />
     </button>
 
-    <button
-      v-if="!props.showPlug"
-      class="item"
-      @click="toggleFullScreen"
-    >
-      <atomic-icon id="video-expand"/>
+    <button v-if="!props.showPlug" class="item" @click="toggleFullScreen">
+      <atomic-icon id="video-expand" />
     </button>
 
     <client-only>
-      <button
-        v-if="isLoggedIn"
-        class="item"
-        :class="{ 'is-active': isFavorite }"
-        @click="toggleFavorite"
-      >
-        <atomic-icon :id="isFavorite ? 'heart': 'heart-outline'"/>
+      <button v-if="isLoggedIn" class="item" :class="{ 'is-active': isFavorite }" @click="toggleFavorite">
+        <atomic-icon :id="isFavorite ? 'heart' : 'heart-outline'" />
       </button>
     </client-only>
   </div>
@@ -33,8 +21,8 @@
   import type { IGame } from '@skeleton/core/types';
 
   const props = defineProps<{
-    gameInfo: IGame,
-    showPlug: boolean,
+    gameInfo: IGame;
+    showPlug: boolean;
   }>();
 
   const profileStore = useProfileStore();
@@ -42,7 +30,7 @@
   const router = useRouter();
   const { localizePath } = useProjectMethods();
 
-  const closeGame = ():void => {
+  const closeGame = (): void => {
     if (window.history.state.back) {
       router.back();
     } else {
@@ -50,8 +38,8 @@
     }
   };
 
-  const toggleFullScreen = ():void => {
-    const elem:any = document.querySelector('.box-game .container');
+  const toggleFullScreen = (): void => {
+    const elem: any = document.querySelector('.box-game .container');
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
     } else if (elem.webkitRequestFullscreen) {
@@ -63,13 +51,12 @@
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
-  const isFavorite = computed(() => favoriteGames.value.map((game) => game.id).includes(props.gameInfo.id));
-  const toggleFavorite = async ():Promise<void> => {
-    if (favoriteGames.value.find((game) => game.id === props.gameInfo.id)) {
+  const isFavorite = computed(() => favoriteGames.value.map(game => game.id).includes(props.gameInfo.id));
+  const toggleFavorite = async (): Promise<void> => {
+    if (favoriteGames.value.find(game => game.id === props.gameInfo.id)) {
       await gameStore.deleteFavoriteGame(props.gameInfo.id);
     } else await gameStore.setFavoriteGame(props.gameInfo.id);
   };
 </script>
 
 <style src="~/assets/styles/components/nav/action.scss" lang="scss" />
-

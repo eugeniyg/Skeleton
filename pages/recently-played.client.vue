@@ -7,21 +7,17 @@
     <atomic-empty
       v-if="!recentlyGames.length && !loadingData"
       :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"
-      :subTitle="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
+      :sub-title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
       :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"
     />
 
-    <list-grid
-      v-else
-      :items="recentlyGames"
-      :meta="pageMeta"
-    />
+    <list-grid v-else :items="recentlyGames" :meta="pageMeta" />
 
     <group-games
       v-if="!recentlyGames.length && !loadingData && recommendedCategory"
       :category="recommendedCategory"
-      showArrows
-      subTitle
+      show-arrows
+      sub-title
     />
   </div>
 </template>
@@ -29,7 +25,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { IGame } from '@skeleton/core/types';
-  import type {IRecentlyPage} from '~/types';
+  import type { IRecentlyPage } from '~/types';
 
   const globalStore = useGlobalStore();
   const { isMobile, headerCountry } = storeToRefs(globalStore);
@@ -38,14 +34,16 @@
   const contentParams = {
     contentKey: 'recentlyPageContent',
     contentRoute: ['pages', 'recently'],
-    isPage: true
+    isPage: true,
   };
   const { getContentData } = useContentLogic<IRecentlyPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const { getCollectionsList } = useGamesStore();
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
-  const recommendedCategory = computed(() => gameCollections.value?.find((collection) => collection.identity === 'recommended'));
+  const recommendedCategory = computed(() =>
+    gameCollections.value?.find(collection => collection.identity === 'recommended')
+  );
 
   const pageMeta = computed(() => ({
     page: 1,
@@ -73,4 +71,3 @@
 </script>
 
 <style src="~/assets/styles/pages/recently-played.scss" lang="scss" />
-

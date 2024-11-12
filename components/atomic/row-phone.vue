@@ -1,11 +1,6 @@
 <template>
   <div class="row-phone">
-    <atomic-image
-      class="img"
-      :src="`/img${props.src}`"
-      width="24"
-      height="20"
-    />
+    <atomic-image class="img" :src="`/img${props.src}`" width="24" height="20" />
     {{ props.number }}
   </div>
 </template>

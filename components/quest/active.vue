@@ -4,8 +4,8 @@
       <quest-card
         v-for="(quest, questIndex) in playerActiveQuests"
         :key="quest.id"
-        :questInfo="quest"
-        :questIndex="questIndex"
+        :quest-info="quest"
+        :quest-index="questIndex"
       />
     </div>
 
@@ -23,9 +23,13 @@
   const emptyContentData = computed(() => {
     const image = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.image');
     const title = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.activeTitle');
-    const description = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.activeDescription');
+    const description = getContent(
+      popupsData.value,
+      defaultLocalePopupsData.value,
+      'questsHub.empty.activeDescription'
+    );
     return { image, title, description };
-  })
+  });
 </script>
 
-<style src="~/assets/styles/components/quest/tab.scss" lang="scss"/>
+<style src="~/assets/styles/components/quest/tab.scss" lang="scss" />

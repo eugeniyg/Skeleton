@@ -1,42 +1,30 @@
 <template>
   <div class="input-providers">
-    <button
-      class="input-providers__toggle"
-      :class="{'is-open': isOpen}"
-      @click.stop="toggleOpen"
-    >
+    <button class="input-providers__toggle" :class="{ 'is-open': isOpen }" @click.stop="toggleOpen">
       <span class="input-providers__title">
         {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'providersLabel') }}
       </span>
 
-      <span class="input-providers__count" :class="{'is-visible': selectedCount}">
+      <span class="input-providers__count" :class="{ 'is-visible': selectedCount }">
         {{ selectedCount }}
       </span>
 
-      <atomic-icon id="arrow_expand-open"/>
+      <atomic-icon id="arrow_expand-open" />
     </button>
 
     <div v-click-outside="closePopup" class="input-providers__content">
       <div class="input-providers__list">
-        <div
-          class="input-providers__item"
-          :class="{'is-checked': selectedAll}"
-          @click="selectAll"
-        >
+        <div class="input-providers__item" :class="{ 'is-checked': selectedAll }" @click="selectAll">
           <span class="input-providers__item-label">
             {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'allProvidersOption') }}
           </span>
 
           <span class="input-providers__game-count">{{ allProviderGames }}</span>
 
-          <atomic-icon id="check" class="input-providers__checkbox"/>
+          <atomic-icon id="check" class="input-providers__checkbox" />
         </div>
 
-        <div
-          v-for="provider in providersList"
-          :key="provider.id"
-          class="input-providers__item"
-        >
+        <div v-for="provider in providersList" :key="provider.id" class="input-providers__item">
           <label class="input-providers__label">
             <atomic-picture
               class="input-providers__logo"
@@ -54,19 +42,14 @@
               class="input-providers__input"
               :class="{ checked: props.selected.includes(provider.id) }"
               @change="change(provider.id)"
-            >
+            />
 
-            <atomic-icon id="check" class="input-providers__checkbox"/>
+            <atomic-icon id="check" class="input-providers__checkbox" />
           </label>
         </div>
 
         <div class="input-providers__clear">
-          <button-base
-            type="ghost"
-            size="xs"
-            :is-disabled="!selectedCount"
-            @click.prevent="clear"
-          >
+          <button-base type="ghost" size="xs" :is-disabled="!selectedCount" @click.prevent="clear">
             {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'clearProviders') }}
           </button-base>
         </div>
@@ -76,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGamesPage } from "~/types";
+  import type { IGamesPage } from '~/types';
 
   const props = defineProps<{
     currentLocaleContent: Maybe<IGamesPage>;
@@ -93,7 +76,7 @@
 
   const allProviderGames = providersList.value.reduce((gamesCount, currentProvider) => {
     return gamesCount + currentProvider.gameEnabledCount;
-  }, 0)
+  }, 0);
 
   const selectedAll = ref<boolean>(false);
   const isOpen = ref<boolean>(false);
@@ -110,14 +93,14 @@
   };
 
   const closePopup = (): void => {
-    isOpen.value = false
-  }
+    isOpen.value = false;
+  };
 
   const checkSelectedAll = (newProvidersArr: string[]): void => {
     selectedAll.value = newProvidersArr.length === providersList.value.length;
-  }
+  };
 
-  const change = (providerId: string):void => {
+  const change = (providerId: string): void => {
     if (selectedAll.value) {
       const newProvidersArr = providersList.value.reduce((finalArr: string[], currentProvider) => {
         return providerId === currentProvider.id ? finalArr : [...finalArr, currentProvider.id];
@@ -152,4 +135,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/providers.scss" lang="scss" />
-

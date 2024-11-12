@@ -2,14 +2,16 @@
   <vue-final-modal
     v-model="modals.confirmLimitUpdate"
     class="modal-confirm-limit-update"
-    :clickToClose="true"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
+    :click-to-close="true"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('confirmLimitUpdate')"/>
-        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'selfExclusionConfirm.updateTitle') }}</div>
+        <button-modal-close @close="closeModal('confirmLimitUpdate')" />
+        <div class="title">
+          {{ getContent(popupsData, defaultLocalePopupsData, 'selfExclusionConfirm.updateTitle') }}
+        </div>
       </div>
 
       <div class="modal-confirm-limit-update__text">
@@ -33,7 +35,7 @@
   import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
-    period?: string,
+    period?: string;
   }>();
 
   const limitsStore = useLimitsStore();

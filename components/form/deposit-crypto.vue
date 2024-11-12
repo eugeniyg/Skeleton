@@ -11,26 +11,19 @@
       @input="onInputNetwork"
     />
 
-    <div
-      v-if="props.fields?.length && !state.selectedNetwork"
-      class="dropdown-network__info"
-      v-html="infoContent"
-    />
-    
+    <div v-if="props.fields?.length && !state.selectedNetwork" class="dropdown-network__info" v-html="infoContent" />
+
     <wallet-warning
       v-if="props.fields?.length && state.selectedNetwork"
       :content="popupsData?.wallet?.deposit?.warning || defaultLocalePopupsData?.wallet?.deposit?.warning"
     />
-    
-    <div class="form-deposit-crypto__content" :class="{'is-blured': props.fields?.length && !state.selectedNetwork }">
-      <wallet-destination-tag
-        v-if="destinationTag"
-        :value="destinationTag"
-      />
+
+    <div class="form-deposit-crypto__content" :class="{ 'is-blured': props.fields?.length && !state.selectedNetwork }">
+      <wallet-destination-tag v-if="destinationTag" :value="destinationTag" />
 
       <wallet-crypto-qr
         :content="popupsData?.wallet?.deposit || defaultLocalePopupsData?.wallet?.deposit"
-        :qrAddress="walletNumber"
+        :qr-address="walletNumber"
       />
 
       <form-input-copy
@@ -38,7 +31,7 @@
         :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addressInputLabel') || ''"
         :hint="fieldHint"
         :value="walletNumber"
-        :copyTooltip="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.copiedLabel')"
+        :copy-tooltip="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.copiedLabel')"
       />
 
       <atomic-divider />
@@ -52,46 +45,33 @@
   import { marked } from 'marked';
   import type { IPaymentField, IRequestDeposit, IBonus } from '@skeleton/core/types';
   import debounce from 'lodash/debounce';
-  import DOMPurify from "isomorphic-dompurify";
+  import DOMPurify from 'isomorphic-dompurify';
 
   const props = defineProps<{
-    amountMax?: number,
-    amountMin?: number,
-    method?: string,
-    fields?: IPaymentField[],
+    amountMax?: number;
+    amountMin?: number;
+    method?: string;
+    fields?: IPaymentField[];
   }>();
 
   const walletNumber = ref<string>('');
-  const destinationTag = ref<string|undefined>();
+  const destinationTag = ref<string | undefined>();
   const walletStore = useWalletStore();
   const { showModal } = useLayoutStore();
   const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
 
   const bonusStore = useBonusStore();
-  const {
-    selectedDepositBonus,
-    bonusDeclined,
-    showDepositBonusCode,
-    depositBonusCode
-  } = storeToRefs(bonusStore);
+  const { selectedDepositBonus, bonusDeclined, showDepositBonusCode, depositBonusCode } = storeToRefs(bonusStore);
 
-  const {
-    popupsData,
-    defaultLocalePopupsData,
-    fieldsSettings,
-    defaultLocaleFieldsSettings,
-  } = useGlobalStore();
+  const { popupsData, defaultLocalePopupsData, fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
 
-  const {
-    formatBalance,
-    getContent
-  } = useProjectMethods();
+  const { formatBalance, getContent } = useProjectMethods();
 
   const networkSelectOptions = computed(() => {
-    const networkField = props.fields && props.fields.find((field) => field.key === 'crypto_network');
+    const networkField = props.fields && props.fields.find(field => field.key === 'crypto_network');
     const networkOptions = networkField?.options;
     if (networkOptions) {
-      return networkOptions?.map((option) => ({
+      return networkOptions?.map(option => ({
         value: option.name,
         minAmount: option.minAmount,
         maxAmount: option.maxAmount,
@@ -104,8 +84,14 @@
   const fieldHint = computed(() => {
     const selectedNetworkData = networkSelectOptions.value.find(option => option.code === state.selectedNetwork);
 
-    const minSumFormat = formatBalance(activeAccount.value?.currency, selectedNetworkData?.minAmount ?? props.amountMin);
-    const maxSumFormat = formatBalance(activeAccount.value?.currency, selectedNetworkData?.maxAmount ?? props.amountMax);
+    const minSumFormat = formatBalance(
+      activeAccount.value?.currency,
+      selectedNetworkData?.minAmount ?? props.amountMin
+    );
+    const maxSumFormat = formatBalance(
+      activeAccount.value?.currency,
+      selectedNetworkData?.maxAmount ?? props.amountMax
+    );
 
     const minContent = `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.minSum') || ''} ${minSumFormat.amount} ${minSumFormat.currency}`;
     const maxContent = `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.maxSum') || ''} ${maxSumFormat.amount} ${maxSumFormat.currency}`;
@@ -116,8 +102,8 @@
   });
 
   const state = reactive<{
-    selectedNetwork: string|undefined,
-    params: IRequestDeposit
+    selectedNetwork: string | undefined;
+    params: IRequestDeposit;
   }>({
     selectedNetwork: networkSelectOptions.value?.length === 1 ? networkSelectOptions.value[0].code : undefined,
     params: {
@@ -130,12 +116,12 @@
       redirectErrorUrl: window.location.href,
       fields: undefined,
       bonusId: selectedDepositBonus.value?.id,
-      isBonusDecline: bonusDeclined.value
+      isBonusDecline: bonusDeclined.value,
     },
   });
 
   const { depositAccount } = useCoreWalletApi();
-  const sendDepositData = async ():Promise<void> => {
+  const sendDepositData = async (): Promise<void> => {
     state.params.bonusId = selectedDepositBonus.value?.id;
     state.params.isBonusDecline = showDepositBonusCode.value && !depositBonusCode.value ? true : bonusDeclined.value;
     state.params.country = requestPaymentMethodsRegion.value;
@@ -147,59 +133,66 @@
     } catch {
       showModal('failing');
     }
-  }
+  };
 
-  const onInputNetwork = async ():Promise<void> => {
+  const onInputNetwork = async (): Promise<void> => {
     useEvent('analyticsEvent', {
       event: 'walletChangeNetwork',
-      walletOperationType: 'deposit'
+      walletOperationType: 'deposit',
     });
 
     const networkValue = state.selectedNetwork?.includes('empty-network') ? null : state.selectedNetwork;
     if (state.params.fields?.crypto_network === networkValue) return;
 
-    state.params.fields = { crypto_network: networkValue }
+    state.params.fields = { crypto_network: networkValue };
     await sendDepositData();
-  }
+  };
 
-  const debounceDeposit = debounce(async (newBonusValue: IBonus|undefined): Promise<void> => {
-    if (
-      (newBonusValue?.id === state.params.bonusId)
-      && (bonusDeclined.value === state.params.isBonusDecline)
-      && (!showDepositBonusCode.value)
-    ) return;
-    await sendDepositData();
-  }, 1000, { leading: false });
+  const debounceDeposit = debounce(
+    async (newBonusValue: IBonus | undefined): Promise<void> => {
+      if (
+        newBonusValue?.id === state.params.bonusId &&
+        bonusDeclined.value === state.params.isBonusDecline &&
+        !showDepositBonusCode.value
+      )
+        return;
+      await sendDepositData();
+    },
+    1000,
+    { leading: false }
+  );
 
   const infoContent = computed(() => {
     const contentText = getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.networkSelect.info');
     if (!contentText) return '';
     return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
-  })
+  });
 
-  watch(selectedDepositBonus, (newValue: IBonus|undefined) => {
+  watch(selectedDepositBonus, (newValue: IBonus | undefined) => {
     debounceDeposit(newValue);
   });
 
-  watch(bonusDeclined, (newValue) => {
+  watch(bonusDeclined, newValue => {
     if (newValue) debounceDeposit(undefined);
   });
 
-  watch(showDepositBonusCode, (newValue) => {
+  watch(showDepositBonusCode, newValue => {
     if (newValue) debounceDeposit(undefined);
   });
 
-  watch(depositBonusCode, (newValue) => {
+  watch(depositBonusCode, newValue => {
     if (newValue) debounceDeposit(undefined);
   });
 
   onMounted(async () => {
     if (networkSelectOptions.value?.length) {
-      const networkValue = networkSelectOptions.value[0].code.includes('empty-network') ? null : networkSelectOptions.value[0].code;
+      const networkValue = networkSelectOptions.value[0].code.includes('empty-network')
+        ? null
+        : networkSelectOptions.value[0].code;
       state.params.fields = { crypto_network: networkValue };
       await sendDepositData();
     }
-  })
+  });
 </script>
 
-<style src="~/assets/styles/components/form/deposit-crypto.scss" lang="scss"/>
+<style src="~/assets/styles/components/form/deposit-crypto.scss" lang="scss" />

@@ -1,50 +1,40 @@
 <template>
   <div class="expander">
-    <div class="header" :class="{'is-open': open}" @click="toggle">
+    <div class="header" :class="{ 'is-open': open }" @click="toggle">
       <div class="title">{{ props.title }}</div>
 
       <button-base>
-        <atomic-icon id="arrow_expand-open"/>
+        <atomic-icon id="arrow_expand-open" />
       </button-base>
     </div>
 
-    <div ref="content" class="expander__content" :style="styles">
+    <div ref="contentElement" class="expander__content" :style="styles">
       <atomic-text-editor :content="props.content" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    title: {
-      type: String,
-      default: '',
-    },
-    content: {
-      type: String,
-      default: '',
-    },
-    isOpen: {
-      type: Boolean,
-      required: false,
-    },
-  });
+  const props = defineProps<{
+    title?: string;
+    content?: string;
+    isOpen?: boolean;
+  }>();
 
   const open = ref<boolean>(props.isOpen);
   const maxHeight = ref<number>(0);
 
   const styles = computed(() => ({ '--max-height': open.value ? `${maxHeight.value}px` : '0px' }));
-  const content = ref<HTMLElement>();
+  const contentElement = ref<HTMLElement>();
 
-  const toggle = ():void => {
+  const toggle = (): void => {
     open.value = !open.value;
-    maxHeight.value = open.value ? content.value?.scrollHeight || 0 : 0;
+    maxHeight.value = open.value ? contentElement.value?.scrollHeight || 0 : 0;
   };
 
   onMounted(() => {
-    maxHeight.value = content.value?.scrollHeight || 0;
+    maxHeight.value = contentElement.value?.scrollHeight || 0;
   });
 </script>
 
 <style src="~/assets/styles/components/expander.scss" lang="scss" />
-

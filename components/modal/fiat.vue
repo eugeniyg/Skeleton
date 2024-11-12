@@ -3,15 +3,15 @@
     <vue-final-modal
       v-model="modals.fiat"
       class="modal-fiat"
-      :clickToClose="false"
-      :overlayTransition="{ mode: 'in-out', duration: 200 }"
-      :contentTransition="{ mode: 'in-out', duration: 200 }"
-      @clickOutside="closeModal('fiat')"
+      :click-to-close="false"
+      :overlay-transition="{ mode: 'in-out', duration: 250 }"
+      :content-transition="{ mode: 'in-out', duration: 250 }"
+      @click-outside="closeModal('fiat')"
     >
       <div class="scroll">
         <div class="header">
           <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'balanceInFiat.title') }}</div>
-          <button-modal-close @close="closeModal('fiat')"/>
+          <button-modal-close @close="closeModal('fiat')" />
         </div>
 
         <p class="modal-fiat__text">
@@ -29,7 +29,7 @@
             <atomic-image
               class="modal-fiat__item-logo"
               :src="`/img/currency/${item.code}.svg`"
-              defaultImage="/img/currency/placeholder.svg"
+              default-image="/img/currency/placeholder.svg"
             />
             <span class="modal-fiat__item-currency">{{ item.code }}</span>
           </div>
@@ -48,12 +48,7 @@
   const { closeModal } = layoutStore;
 
   const globalStore = useGlobalStore();
-  const {
-    popupsData,
-    defaultLocalePopupsData,
-    equivalentCurrency,
-    fiatCurrencies,
-  } = storeToRefs(globalStore);
+  const { popupsData, defaultLocalePopupsData, equivalentCurrency, fiatCurrencies } = storeToRefs(globalStore);
   const { setEquivalentCurrency } = globalStore;
   const { getContent } = useProjectMethods();
 
@@ -64,4 +59,3 @@
 </script>
 
 <style src="~/assets/styles/components/modal/fiat.scss" lang="scss" />
-

@@ -2,14 +2,14 @@
   <vue-final-modal
     v-model="modals.confirm"
     class="modal-confirm"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 200 }"
-    :contentTransition="{ mode: 'in-out', duration: 200 }"
-    @clickOutside="closeModal('confirm')"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
+    @click-outside="closeModal('confirm')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('confirm')"/>
+        <button-modal-close @close="closeModal('confirm')" />
       </div>
 
       <atomic-image class="img" src="/img/confirm.svg" />
@@ -33,4 +33,3 @@
 </script>
 
 <style src="~/assets/styles/components/modal/confirm.scss" lang="scss" />
-

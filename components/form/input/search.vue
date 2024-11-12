@@ -8,8 +8,8 @@
         :placeholder="props.placeholder"
         :value="props.value"
         @input="onInput"
-      >
-      <atomic-icon id="search"/>
+      />
+      <atomic-icon id="search" />
     </div>
   </div>
 </template>
@@ -27,11 +27,10 @@
   });
 
   const emit = defineEmits(['update:value', 'input']);
-  const onInput = (e:any):void => {
+  const onInput = (e: any): void => {
     emit('update:value', e.target.value);
     emit('input', e.target.value);
   };
 </script>
 
 <style src="~/assets/styles/components/form/input/search.scss" lang="scss" />
-

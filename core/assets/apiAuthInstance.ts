@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-export const useApiAuthInstance = async (url:string, options?:any):Promise<any> => {
+export const useApiAuthInstance = async (url: string, options?: any): Promise<any> => {
   const profileStore = useProfileStore();
   let token = profileStore.getSessionToken();
 
@@ -20,11 +20,16 @@ export const useApiAuthInstance = async (url:string, options?:any):Promise<any> 
     async onResponseError({ response }: any) {
       if (response.status === 401 || response.status === 403) {
         if (profileStore.getSessionToken()) profileStore.removeSession();
-        const layoutStore = useLayoutStore();
         const { localizePath } = useProjectMethods();
         const router = useRouter();
-        layoutStore.modals.signIn = true;
-        await router.push({ path: localizePath('/'), query: { 'sign-in': 'true' } });
+        const nuxtApp = useNuxtApp();
+        if (import.meta.client && nuxtApp.isHydrating) {
+          await router.push(localizePath('/?sign-in=true'));
+        } else {
+          const { openModal } = useModalStore();
+          await openModal('sign-in', undefined, false);
+          await router.push(localizePath('/?sign-in=true'));
+        }
       }
     },
   };
@@ -35,7 +40,9 @@ export const useApiAuthInstance = async (url:string, options?:any):Promise<any> 
     console.log('API INSTANCE REQUEST URL: ', newUrl);
   }
 
-  if (token) { newOptions.headers.Authorization = `Bearer ${token}` }
+  if (token) {
+    newOptions.headers.Authorization = `Bearer ${token}`;
+  }
 
   if (token && profileStore.isTokenExpired()) {
     token = await profileStore.refreshToken();
@@ -47,4 +54,4 @@ export const useApiAuthInstance = async (url:string, options?:any):Promise<any> 
   }
 
   return await $fetch(newUrl, newOptions);
-}
+};

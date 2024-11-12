@@ -11,29 +11,26 @@
     <div class="bonuses-promo-code__form">
       <atomic-bonus-code-timer
         v-if="bonusBlocked"
-        :timerText="getContent(bonusesContent, defaultLocaleBonusesContent, 'bonusCode.timerText')"
-        :timerValue="timerValue"
-        @timeOut="openBonus"
+        :timer-text="getContent(bonusesContent, defaultLocaleBonusesContent, 'bonusCode.timerText')"
+        :timer-value="timerValue"
+        @time-out="openBonus"
       />
 
       <div class="bonuses-promo-code__form-wrap">
-        <atomic-icon id="lottery"/>
+        <atomic-icon id="lottery" />
 
         <form-input-text
           v-model:value="bonusValue"
           label=""
-          :placeholder="getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.bonusCode.placeholder') || ''"
+          :placeholder="
+            getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.bonusCode.placeholder') || ''
+          "
           name="bonus-code"
           autocomplete="off"
-          :isDisabled="bonusBlocked"
+          :is-disabled="bonusBlocked"
         />
 
-        <button-base
-          type="primary"
-          size="md"
-          :isDisabled="bonusBlocked || bonusSending"
-          @click="sendBonus"
-        >
+        <button-base type="primary" size="md" :is-disabled="bonusBlocked || bonusSending" @click="sendBonus">
           {{ getContent(bonusesContent, defaultLocaleBonusesContent, 'bonusCode.buttonLabel') }}
         </button-base>
       </div>
@@ -56,7 +53,6 @@
   const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
 
-
   const bonusValue = ref<string>('');
   const defaultTimerSeconds = 180;
   const timerValue = ref<number>(defaultTimerSeconds);
@@ -64,7 +60,7 @@
 
   const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
 
-  const checkStorageTimer = ():void => {
+  const checkStorageTimer = (): void => {
     const storageValue = localStorage.getItem('bonusTimer');
     if (!storageValue) return;
 
@@ -80,13 +76,13 @@
     bonusBlocked.value = true;
   };
 
-  const blockBonus = ():void => {
+  const blockBonus = (): void => {
     localStorage.setItem('bonusTimer', new Date().toISOString());
     timerValue.value = defaultTimerSeconds;
     bonusBlocked.value = true;
   };
 
-  const openBonus = ():void => {
+  const openBonus = (): void => {
     localStorage.removeItem('bonusTimer');
     bonusBlocked.value = false;
   };
@@ -94,7 +90,7 @@
   const { addBonusCode } = useCoreBonusApi();
   const { showBonusCodeNotification } = useBonusStore();
   const bonusSending = ref<boolean>(false);
-  const sendBonus = async ():Promise<void> => {
+  const sendBonus = async (): Promise<void> => {
     if (!bonusValue.value || bonusSending.value || bonusBlocked.value) return;
     bonusSending.value = true;
 

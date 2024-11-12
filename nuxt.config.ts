@@ -1,6 +1,6 @@
-import { createResolver } from '@nuxt/kit'
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
+import { createResolver } from '@nuxt/kit';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const { resolve } = createResolver(dirname(fileURLToPath(import.meta.url)));
 const buildDate = Date.now();
@@ -13,10 +13,9 @@ const viteConfig: any = {
         additionalData: '@use "@skeleton/assets/styles/ds/_shared.scss" as *;',
       },
     },
-  }
+  },
 };
 
-// @ts-ignore
 export default defineNuxtConfig({
   alias: {
     '@skeleton': resolve('./'),
@@ -28,25 +27,45 @@ export default defineNuxtConfig({
     'nuxt-lazy-load',
     '@skeleton/modules/optimize-images',
     '@nuxtjs/fontaine',
-    "@nuxt/eslint"
+    '@nuxt/eslint',
   ],
   dayjs: {
-    locales: ['en-ca', 'de', 'fr', 'es', 'pt', 'pt-br', 'ru', 'tr', 'hi', 'fa', 'uz', 'kk', 'es-mx', 'it', 'et', 'fi',
-      'el', 'id', 'nb', 'pl', 'ro', 'se', 'cs', 'da', 'nl'],
-    plugins: [
-      'localeData',
-      'isBetween',
-      'isSameOrAfter',
-      'isSameOrBefore'
+    locales: [
+      'en-ca',
+      'de',
+      'fr',
+      'es',
+      'pt',
+      'pt-br',
+      'ru',
+      'tr',
+      'hi',
+      'fa',
+      'uz',
+      'kk',
+      'es-mx',
+      'it',
+      'et',
+      'fi',
+      'el',
+      'id',
+      'nb',
+      'pl',
+      'ro',
+      'se',
+      'cs',
+      'da',
+      'nl',
     ],
+    plugins: ['localeData', 'isBetween', 'isSameOrAfter', 'isSameOrBefore'],
     defaultLocale: 'en',
   },
   lazyLoad: {
     observerConfig: {
       root: null,
       rootMargin: '400px',
-      threshold: 0
-    }
+      threshold: 0,
+    },
   },
   components: {
     dirs: [
@@ -64,44 +83,40 @@ export default defineNuxtConfig({
     ],
   },
   imports: {
-    dirs: [
-      'core/composables'
-    ]
+    dirs: ['core/composables'],
   },
   routeRules: {
     '/profile/**': {
-      appMiddleware: ['auth']
+      appMiddleware: ['auth'],
     },
     '/*/profile/**': {
-      appMiddleware: ['auth']
+      appMiddleware: ['auth'],
     },
     '/favorites': {
-      appMiddleware: ['auth']
+      appMiddleware: ['auth'],
     },
     '/*/favorites': {
-      appMiddleware: ['auth']
+      appMiddleware: ['auth'],
     },
     '/recently-played': {
-      appMiddleware: ['auth']
+      appMiddleware: ['auth'],
     },
     '/*/recently-played': {
-      appMiddleware: ['auth']
-    }
+      appMiddleware: ['auth'],
+    },
   },
   experimental: {
     asyncContext: true,
     defaults: {
       useAsyncData: {
-        deep: false
-      }
+        deep: false,
+      },
     },
-    cookieStore: true
+    cookieStore: true,
   },
   app: {
     head: {
-      script: [
-        { src: `/pwa/init.js?v=${buildDate}`, defer: true }
-      ],
+      script: [{ src: `/pwa/init.js?v=${buildDate}`, defer: true }],
     },
     pageTransition: true,
     layoutTransition: true,
@@ -109,7 +124,7 @@ export default defineNuxtConfig({
   css: [
     '@skeleton/assets/styles/style.scss',
     '@skeleton/node_modules/vue-final-modal/dist/style.css',
-    '@skeleton/node_modules/vue-skeletor/dist/vue-skeletor.css'
+    '@skeleton/node_modules/vue-skeletor/dist/vue-skeletor.css',
   ],
   vite: viteConfig,
   sourcemap: {
@@ -128,7 +143,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      gamehubCdn: 'https://dev.gcdn.tech'
-    }
-  }
+      gamehubCdn: 'https://dev.gcdn.tech',
+    },
+  },
 });

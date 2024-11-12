@@ -4,7 +4,7 @@
       v-for="(item, itemIndex) in props.items"
       :key="itemIndex"
       class="item"
-      :class="{'is-selected': selected === item}"
+      :class="{ 'is-selected': selected === item }"
       @click.prevent="emit('select', item)"
     >
       {{ item }}
@@ -27,4 +27,3 @@
 </script>
 
 <style src="~/assets/styles/components/list/pills.scss" lang="scss" />
-

@@ -4,42 +4,37 @@
       {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'title') }}
     </div>
 
-    <list-grid
-      v-if="favoriteGames?.length"
-      :items="currentFavoriteList"
-      :meta="pageMeta"
-      @loadMore="currentPage++"
-    />
+    <list-grid v-if="favoriteGames?.length" :items="currentFavoriteList" :meta="pageMeta" @load-more="currentPage++" />
 
     <atomic-empty
       v-else
       :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"
-      :subTitle="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
+      :sub-title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
       :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"
     />
 
     <group-games
       v-if="!favoriteGames?.length && recommendedCategory"
       :category="recommendedCategory"
-      showArrows
-      subTitle
+      show-arrows
+      sub-title
     />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IFavoritesPage} from '~/types';
+  import type { IFavoritesPage } from '~/types';
 
   const { getContent } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'favoritesPageContent',
     contentRoute: ['pages', 'favorites'],
-    isPage: true
+    isPage: true,
   };
   const { getContentData } = useContentLogic<IFavoritesPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
@@ -54,8 +49,9 @@
 
   const { getCollectionsList } = gameStore;
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
-  const recommendedCategory = computed(() => gameCollections.value?.find((collection) => collection.identity === 'recommended'));
+  const recommendedCategory = computed(() =>
+    gameCollections.value?.find(collection => collection.identity === 'recommended')
+  );
 </script>
 
 <style src="~/assets/styles/pages/favorites.scss" lang="scss" />
-

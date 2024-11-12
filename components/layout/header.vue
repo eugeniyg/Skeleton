@@ -1,7 +1,7 @@
 <template>
   <header class="app-header-root" @animationend="bar.updateCssVars">
-    <atomic-notification-bar ref="bar"/>
-    
+    <atomic-notification-bar ref="bar" />
+
     <client-only>
       <pwa v-if="isLoggedIn" display="mobile" />
     </client-only>
@@ -9,29 +9,20 @@
     <div ref="appHeader" class="app-header" :class="headerClassValue">
       <client-only>
         <button v-if="isGamePage && isLoggedIn" class="app-header__back-btn" @click="backToHomePage">
-          <atomic-icon id="arrow_previous"/>
+          <atomic-icon id="arrow_previous" />
         </button>
       </client-only>
 
-      <button-toggle-drawer
-        @toggle-minimize="compactDrawer(!isDrawerCompact)"
-        @toggle-open="emit('toggle-open')"
-      />
+      <button-toggle-drawer @toggle-minimize="compactDrawer(!isDrawerCompact)" @toggle-open="emit('toggle-open')" />
 
       <atomic-logo />
-      
-      <button-toggler
-        :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler')"
-      />
+
+      <button-toggler :items="getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler')" />
 
       <!--<template v-if="!isGamePage">-->
-      <atomic-vertical-divider/>
+      <atomic-vertical-divider />
 
-      <button-search
-        data-show="mobile"
-        :is-active="isShowSearch"
-        @show-search="toggle"
-      />
+      <button-search data-show="mobile" :is-active="isShowSearch" @show-search="toggle" />
 
       <client-only>
         <atomic-gift-notification
@@ -41,34 +32,21 @@
         />
       </client-only>
       <!--</template>-->
-      
+
       <div class="items">
-        <button-base
-          v-if="isGameDemo"
-          type="secondary"
-          size="sm"
-          class="app-header__play-real"
-          @click="changeGameMode"
-        >
+        <button-base v-if="isGameDemo" type="secondary" size="sm" class="app-header__play-real" @click="changeGameMode">
           <atomic-icon id="casino-real-money" />
           <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.playRealButton') }}</span>
         </button-base>
-        
-        <template v-if="isGamePage && !isGameDemo">
-          <wager-tooltip :container="appHeader"/>
-        </template>
-        
-        <search
-          :isShow="isShowSearch"
-          @hide-search="isShowSearch = false"
-        />
 
-        <button-search
-          data-show="desktop"
-          :is-active="isShowSearch"
-          @show-search="toggle"
-        />
-        
+        <template v-if="isGamePage && !isGameDemo">
+          <wager-tooltip :container="appHeader" />
+        </template>
+
+        <search :is-show="isShowSearch" @hide-search="isShowSearch = false" />
+
+        <button-search data-show="desktop" :is-active="isShowSearch" @show-search="toggle" />
+
         <atomic-divider v-if="isGamePage" />
 
         <client-only>
@@ -82,14 +60,11 @@
 
             <div class="app-header__notifications">
               <notification-popover-activator
-                :popoverShow="isShowNotifications"
+                :popover-show="isShowNotifications"
                 @toggle="isShowNotifications = !isShowNotifications"
               />
 
-              <notification-popover
-                v-if="isShowNotifications"
-                @hide="isShowNotifications = false"
-              />
+              <notification-popover v-if="isShowNotifications" @hide="isShowNotifications = false" />
             </div>
 
             <form-input-deposit />
@@ -99,31 +74,27 @@
                 <loyalty-avatar size="sm" @click="toggleProfileNav" />
 
                 <span v-show="isUserNavOpen" class="close-decor" @click="toggleProfileNav">
-                  <atomic-icon id="plus"/>
+                  <atomic-icon id="plus" />
                 </span>
               </div>
 
-              <nav-user @logout="logout"/>
+              <nav-user @logout="logout" />
             </div>
           </template>
 
           <template v-else>
-            <button-base
-              type="primary"
-              size="md"
-              @click="showModal('register')"
-            >
-              <atomic-icon id="user-new" class="btn-primary__icon"/>
-              <span class="btn-primary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton') }}</span>
+            <button-base type="primary" size="md" @click="openModal('sign-up')">
+              <atomic-icon id="user-new" class="btn-primary__icon" />
+              <span class="btn-primary__text">{{
+                getContent(layoutData, defaultLocaleLayoutData, 'header.registrationButton')
+              }}</span>
             </button-base>
 
-            <button-base
-              type="secondary"
-              size="md"
-              @click="showModal('signIn')"
-            >
-              <atomic-icon id="user" class="btn-secondary__icon"/>
-              <span class="btn-secondary__text">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.loginButton') }}</span>
+            <button-base type="secondary" size="md" @click="openModal('sign-in')">
+              <atomic-icon id="user" class="btn-secondary__icon" />
+              <span class="btn-secondary__text">{{
+                getContent(layoutData, defaultLocaleLayoutData, 'header.loginButton')
+              }}</span>
             </button-base>
           </template>
         </client-only>
@@ -134,47 +105,51 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  
-  const emit = defineEmits(['login', 'register', 'logout', 'toggle-open']);
+
+  const emit = defineEmits(['logout', 'toggle-open']);
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const bonusStore = useBonusStore();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const { getContent, localizePath } = useProjectMethods();
   const { isUserNavOpen } = storeToRefs(layoutStore);
-  const { closeUserNav, openUserNav, showModal, compactDrawer } = layoutStore;
+  const { closeUserNav, openUserNav, compactDrawer } = layoutStore;
+  const { openModal } = useModalStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { activePlayerBonuses, activePlayerFreeSpins } = storeToRefs(bonusStore);
   const { isGamePage, isDrawerCompact } = storeToRefs(layoutStore);
   const notificationStore = useNotificationStore();
   const { unreadCount } = storeToRefs(notificationStore);
-  
+
   const appHeader = ref<HTMLElement>();
   const bar = ref();
 
   const headerClassModifiers = computed(() => {
     if (isGamePage.value && isLoggedIn.value) {
-      return 'app-header--is-game-page-login'
+      return 'app-header--is-game-page-login';
     } else if (isGamePage.value && !isLoggedIn.value) {
-      return 'app-header--is-game-page-logout'
-    } else return ''
-  })
+      return 'app-header--is-game-page-logout';
+    } else return '';
+  });
 
   const headerClassValue = ref<string>('');
-  watch(() => headerClassModifiers.value, (newValue) => {
-    headerClassValue.value = newValue;
-  })
+  watch(
+    () => headerClassModifiers.value,
+    newValue => {
+      headerClassValue.value = newValue;
+    }
+  );
 
-  function toggleProfileNav():void {
+  function toggleProfileNav(): void {
     if (isUserNavOpen.value) closeUserNav();
     else openUserNav();
   }
 
-  function close():void {
+  function close(): void {
     closeUserNav();
   }
 
-  function logout():void {
+  function logout(): void {
     close();
     emit('logout');
   }
@@ -185,7 +160,7 @@
     isShowSearch.value = !isShowSearch.value;
   };
 
-  const checkSearch = (e:any):void => {
+  const checkSearch = (e: any): void => {
     if (isShowSearch.value && !e.target.closest('.search') && !e.target.closest('.btn-search')) {
       isShowSearch.value = false;
     }
@@ -198,17 +173,16 @@
     } else {
       router.push(localizePath('/'));
     }
-  }
+  };
 
   const route = useRoute();
   const isGameDemo = computed(() => {
     return isGamePage.value && route.query?.real !== 'true';
-  })
-
+  });
 
   const changeGameMode = () => {
     useEvent('changeMobileGameMode');
-  }
+  };
 
   const isShowNotifications = ref<boolean>(false);
 
@@ -223,4 +197,3 @@
 </script>
 
 <style src="~/assets/styles/components/layout/header.scss" lang="scss" />
-

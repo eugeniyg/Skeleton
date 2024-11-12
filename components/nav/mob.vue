@@ -1,7 +1,7 @@
 <template>
   <div v-if="!isGamePage" class="nav-mob">
     <button-base class="nav-mob__item" @click.prevent="layoutStore.toggleDrawer()">
-      <atomic-icon id="menu"/>
+      <atomic-icon id="menu" />
       <span class="nav-mob__text">
         {{ getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.menuLabel') }}
       </span>
@@ -20,7 +20,7 @@
 
     <client-only>
       <button-base class="nav-mob__item is-accent" @click.prevent="clickMainButton">
-        <atomic-icon :id="isLoggedIn ? 'wallet' : 'user-new'"/>
+        <atomic-icon :id="isLoggedIn ? 'wallet' : 'user-new'" />
         <span class="nav-mob__text">
           {{
             isLoggedIn
@@ -72,35 +72,35 @@
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { showModal, openWalletModal } = useLayoutStore();
+  const { openWalletModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const { isGamePage } = storeToRefs(layoutStore);
-  const {
-    layoutData,
-    defaultLocaleLayoutData
-  } = useGlobalStore();
+  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const { localizePath, getContent } = useProjectMethods();
   const route = useRoute();
 
-  const clickMainButton = ():void => {
-    isLoggedIn.value ? openWalletModal() : showModal('register');
+  const clickMainButton = (): void => {
+    if (isLoggedIn.value) openWalletModal();
+    else openModal('sign-in');
   };
 
   const gamesButtons = computed(() => {
     return getContent(layoutData, defaultLocaleLayoutData, 'siteSidebar.gamesToggler');
-  })
+  });
   const contactButton = computed(() => {
     return getContent(layoutData, defaultLocaleLayoutData, 'mobileMenu.contactButton');
-  })
+  });
 
   const freshchatStore = useFreshchatStore();
   const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
 
   const openChat = () => {
-    const { public: { freshchatParams } } = useRuntimeConfig();
-    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) showModal('register');
+    const {
+      public: { freshchatParams },
+    } = useRuntimeConfig();
+    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) openModal('sign-in');
     else window.fcWidget?.open();
-  }
+  };
 </script>
 
 <style src="~/assets/styles/components/nav/mob.scss" lang="scss" />
-

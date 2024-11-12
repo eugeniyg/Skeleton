@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IProfileVerification} from '~/types';
+  import type { IProfileVerification } from '~/types';
 
   const globalStore = useGlobalStore();
   const { settingsConstants } = storeToRefs(globalStore);
@@ -25,16 +25,16 @@
   const { profileFields } = storeToRefs(fieldsStore);
   const hasEmailField = computed(() => {
     return !!profileFields.value.find(field => field.name === 'email');
-  })
+  });
   const hasPhoneRegistration = computed(() => settingsConstants.value?.player.registration.phone);
 
   const contentParams = {
     contentKey: 'profileVerificationContent',
     contentRoute: ['profile', 'verification'],
-    isPage: true
+    isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileVerification>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
   const currentLocaleContent = computed(() => pageContent.value?.currentLocaleData);
   const defaultLocaleContent = computed(() => pageContent.value?.defaultLocaleData);
 

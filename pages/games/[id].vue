@@ -2,43 +2,42 @@
   <div>
     <box-game
       v-if="gameInfo"
-      :frameLink="gameStart"
-      :gameInfo="gameInfo"
-      :gameContent="pageContent?.currentLocaleData || pageContent?.defaultLocaleData"
-      :showPlug="showPlug && !isLoggedIn && !gameInfo.isDemoMode"
-      :isDemo="isDemo"
-      @changeMode="changeGameMode"
+      :frame-link="gameStart"
+      :game-info="gameInfo"
+      :game-content="pageContent?.currentLocaleData || pageContent?.defaultLocaleData"
+      :show-plug="showPlug && !isLoggedIn && !gameInfo.isDemoMode"
+      :is-demo="isDemo"
+      @change-mode="changeGameMode"
     />
 
     <client-only>
       <modal-restricted-bets
         v-if="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"
         :content="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"
-        currentPage="game"
-        :showModal="showRestrictedBetsModal"
-        @closeModal="showRestrictedBetsModal = false"
+        current-page="game"
+        :show-modal="showRestrictedBetsModal"
+        @close-modal="showRestrictedBetsModal = false"
       />
 
-      <modal-max-bets
-        :showModal="maxBetsModal.show"
-        :maxBet="maxBetsModal.maxBet"
-        @closeModal="closeMaxBetModal"
-      />
+      <modal-max-bets :show-modal="maxBetsModal.show" :max-bet="maxBetsModal.maxBet" @close-modal="closeMaxBetModal" />
 
       <modal-demo-game
         :content="pageContent?.currentLocaleData?.demoModal || pageContent?.defaultLocaleData?.demoModal"
-        :isDemo="isDemo"
-        @playReal="changeGameMode"
+        :is-demo="isDemo"
+        @play-real="changeGameMode"
       />
     </client-only>
 
-    <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText" />
+    <atomic-seo-text
+      v-if="pageContent?.currentLocaleData?.pageMeta?.seoText"
+      v-bind="pageContent.currentLocaleData.pageMeta.seoText"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IGamePage} from '~/types';
+  import type { IGamePage } from '~/types';
 
   const route = useRoute();
   const showPlug = ref<boolean>(false);
@@ -48,49 +47,40 @@
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
-  const {
-    showModal,
-    showAlert,
-    compactDrawer,
-    setReturnGame,
-    openWalletModal
-  } = useLayoutStore();
+  const { showAlert, compactDrawer, setReturnGame, openWalletModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
-  const {
-    isMobile,
-    alertsData,
-    defaultLocaleAlertsData,
-    currentLocale,
-    headerCountry
-  } = storeToRefs(globalStore);
+  const { isMobile, alertsData, defaultLocaleAlertsData, currentLocale, headerCountry } = storeToRefs(globalStore);
 
   const contentParams = {
     contentKey: 'gamePageContent',
     contentRoute: ['pages', 'game'],
-    isPage: true
+    isPage: true,
   };
   const { getContentData } = useContentLogic<IGamePage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(contentParams.contentKey, () => getContentData());
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const showRestrictedBetsModal = ref<boolean>(false);
   const maxBetsModal = reactive({
     show: false,
-    maxBet: ''
+    maxBet: '',
   });
 
-  const { data: gameInfo } = await useLazyAsyncData(`game${route.params.id}Info`, () => getGamesInfo(route.params.id as string));
+  const { data: gameInfo } = await useLazyAsyncData(`game${route.params.id}Info`, () =>
+    getGamesInfo(route.params.id as string)
+  );
 
   watch(gameInfo, () => {
     if (pageMounted.value) checkGame();
-  })
+  });
 
   const router = useRouter();
 
   const gameLoading = ref<boolean>(false);
-  const startGame = async ():Promise<{
-    data?: { gameUrl: string; token: string; },
-    error?: any
+  const startGame = async (): Promise<{
+    data?: { gameUrl: string; token: string };
+    error?: any;
   }> => {
     gameLoading.value = true;
     const limitsStore = useLimitsStore();
@@ -107,36 +97,36 @@
     try {
       const startResponse = await getStartGame(route.params.id as string, startParams);
       gameStart.value = startResponse.gameUrl;
-      return { data: startResponse }
+      return { data: startResponse };
     } catch (err: any) {
       if ([14100, 14101, 14105].includes(err.data?.error?.code)) {
         const { localizePath } = useProjectMethods();
         await router.push({ path: localizePath('/profile/limits'), query: {} });
         limitsStore.showModal('gameLimitReached');
-        return { error: { ...err, fatal: false }}
+        return { error: { ...err, fatal: false } };
       }
 
       if (err.data?.error?.code === 14103) {
         redirectLimitedPlayer();
-        return { error: { ...err, fatal: false }}
+        return { error: { ...err, fatal: false } };
       }
 
       if (err.data?.error?.code === 14306) {
         showRestrictedBetsModal.value = true;
-        return { error: { ...err, fatal: false }}
+        return { error: { ...err, fatal: false } };
       }
 
-      return { error: { ...err, fatal: true } }
+      return { error: { ...err, fatal: true } };
     } finally {
       gameLoading.value = false;
     }
   };
 
-  const changeGameMode = async ():Promise<void> => {
+  const changeGameMode = async (): Promise<void> => {
     if (gameLoading.value) return;
 
     if (isDemo.value && !isLoggedIn.value) {
-      showModal('register');
+      await openModal('sign-up');
       return;
     }
 
@@ -150,7 +140,7 @@
     }
   };
 
-  const redirectLimitedPlayer = () :void => {
+  const redirectLimitedPlayer = (): void => {
     const { localizePath } = useProjectMethods();
     router.push(localizePath('/'));
     showAlert(alertsData.value?.limit?.limitedRealGame || defaultLocaleAlertsData.value?.limit?.limitedRealGame);
@@ -161,26 +151,32 @@
     if (isLoggedIn.value && !isDemo.value && !activeAccount.value?.balance && !mobileGameModalInfo) {
       openWalletModal('deposit');
     }
-  }
+  };
 
-  watch(() => isLoggedIn.value, async (newValue:boolean) => {
-    if (!newValue) return;
+  watch(
+    () => isLoggedIn.value,
+    async (newValue: boolean) => {
+      if (!newValue) return;
 
-    showPlug.value = false;
-    if (isDemo.value) {
-      await changeGameMode();
-    } else {
-      const { error } = await startGame();
-      if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+      showPlug.value = false;
+      if (isDemo.value) {
+        await changeGameMode();
+      } else {
+        const { error } = await startGame();
+        if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+      }
     }
-  });
+  );
 
-  watch(() => activeAccount.value?.id, async (oldValue, newValue) => {
-    if (oldValue && newValue && oldValue !== newValue) {
-      const { error } = await startGame();
-      if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  watch(
+    () => activeAccount.value?.id,
+    async (oldValue, newValue) => {
+      if (oldValue && newValue && oldValue !== newValue) {
+        const { error } = await startGame();
+        if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+      }
     }
-  });
+  );
 
   const checkGame = async (): Promise<void> => {
     if (!isDemo.value && !isLoggedIn.value) {
@@ -190,9 +186,9 @@
       const { error } = await startGame();
       if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
 
-      checkDepositModal()
+      checkDepositModal();
     }
-  }
+  };
 
   const handleRestrictedBets = (gameIdentity: string): void => {
     if (gameIdentity && gameIdentity === route.params.id && !isDemo.value) {
@@ -200,7 +196,7 @@
     }
   };
 
-  const handleMaxBets = ({ gameIdentity, maxBet }:{ gameIdentity: string, maxBet: string }): void => {
+  const handleMaxBets = ({ gameIdentity, maxBet }: { gameIdentity: string; maxBet: string }): void => {
     if (gameIdentity && gameIdentity === route.params.id && !isDemo.value) {
       maxBetsModal.maxBet = maxBet;
       maxBetsModal.show = true;
@@ -211,7 +207,7 @@
     maxBetsModal.show = false;
     const { error } = await startGame();
     if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
-  }
+  };
 
   const pageMounted = ref<boolean>(false);
   onMounted(async () => {

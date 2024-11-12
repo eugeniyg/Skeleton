@@ -1,6 +1,6 @@
 <template>
   <div class="bonus-code-timer">
-    <atomic-icon id="history"/>
+    <atomic-icon id="history" />
 
     <div class="time">
       <span class="value">{{ Math.floor(currentTime / 60) }}</span>
@@ -16,15 +16,15 @@
 
 <script setup lang="ts">
   const props = defineProps<{
-    timerValue: number,
-    timerText?: string,
+    timerValue: number;
+    timerText?: string;
   }>();
 
   const timer = ref<any>(undefined);
   const currentTime = ref<number>(props.timerValue);
   const emit = defineEmits(['timeOut']);
 
-  const startTimer = ():void => {
+  const startTimer = (): void => {
     timer.value = setInterval(() => {
       if (currentTime.value === 0) {
         clearInterval(timer.value);

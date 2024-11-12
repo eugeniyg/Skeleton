@@ -1,26 +1,26 @@
 import mitt from 'mitt';
-import type { IAnalyticsEvent } from "@skeleton/types";
-import type { IMessage, ISocketInvoice } from "@skeleton/core/types";
+import type { IAnalyticsEvent } from '@skeleton/types';
+import type { IMessage, ISocketInvoice } from '@skeleton/core/types';
 
 type ApplicationEvents = {
-  'changeMobileGameMode': undefined;
-  'profileUpdated': undefined;
-  'freeSpinsUpdated': undefined;
-  'bonusesUpdated': undefined;
-  'accountChanged': undefined;
-  'restrictedBets': string;
-  'maxBets': {
+  changeMobileGameMode: undefined;
+  profileUpdated: undefined;
+  freeSpinsUpdated: undefined;
+  bonusesUpdated: undefined;
+  accountChanged: undefined;
+  restrictedBets: string;
+  maxBets: {
     gameIdentity: string;
     maxBet: string;
   };
-  'analyticsEvent': IAnalyticsEvent;
-  'completedQuestsUpdated': undefined;
-  'expiredQuestsUpdated': undefined;
-  'markAsReadMessage': IMessage;
-  'newPlayerMessage': undefined;
-  'markAllAsReadMessages': undefined;
-  'receivedAsyncInvoice': ISocketInvoice;
-  'depositInvoiceUpdated': undefined;
+  analyticsEvent: IAnalyticsEvent;
+  completedQuestsUpdated: undefined;
+  expiredQuestsUpdated: undefined;
+  markAsReadMessage: IMessage;
+  newPlayerMessage: undefined;
+  markAllAsReadMessages: undefined;
+  receivedAsyncInvoice: ISocketInvoice;
+  depositInvoiceUpdated: undefined;
 };
 
 const emitter = mitt<ApplicationEvents>();
