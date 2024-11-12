@@ -1,16 +1,16 @@
 <template>
   <div class="turn-over-wager">
     <div class="turn-over-wager__img">
-      <atomic-image
-        :src="getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.image')"
-      />
+      <atomic-image :src="getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.image')" />
     </div>
 
     <div class="turn-over-wager__title">
       {{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.title') }}
     </div>
 
-    <p class="turn-over-wager__description">{{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.description') }}</p>
+    <p class="turn-over-wager__description">
+      {{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.description') }}
+    </p>
 
     <div class="turn-over-wager__info">
       <div class="turn-over-wager__info-wager">
@@ -63,7 +63,7 @@
       const findCurrency = currencies.find(currency => currency.code === turnOverWagerData.value.currency);
       if (!findCurrency) return '';
       const wageredAmount = turnOverWagerData.value.total - turnOverWagerData.value.turnOverWagerAmount;
-      const roundWageredAmount = Math.round(wageredAmount * findCurrency.subunitToUnit) /  findCurrency.subunitToUnit;
+      const roundWageredAmount = Math.round(wageredAmount * findCurrency.subunitToUnit) / findCurrency.subunitToUnit;
       const balanceData = formatBalance(turnOverWagerData.value.currency, roundWageredAmount);
       return `${balanceData.amount} ${balanceData.currency}`;
     }
@@ -79,7 +79,9 @@
   });
 
   const progress = computed(() => {
-    const progressValue = (turnOverWagerData.value.total - turnOverWagerData.value.turnOverWagerAmount) / turnOverWagerData.value.total * 100;
+    const progressValue =
+      ((turnOverWagerData.value.total - turnOverWagerData.value.turnOverWagerAmount) / turnOverWagerData.value.total) *
+      100;
     return Math.round(progressValue * 100) / 100;
   });
 </script>

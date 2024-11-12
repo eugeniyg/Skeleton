@@ -1,7 +1,7 @@
 import { access } from 'node:fs/promises';
 
 // copypasted const from vite
-const FS_PREFIX = `/@fs/`
+const FS_PREFIX = `/@fs/`;
 
 export const sourceReplacerPlugin = (sourcePath: string, replacePath: string) => {
   return {
@@ -11,18 +11,18 @@ export const sourceReplacerPlugin = (sourcePath: string, replacePath: string) =>
       first: true,
       order: 'pre',
       sequential: true,
-      async handler(source: string, importer: string, options: object): Promise<string|null> {
+      async handler(source: string, importer: string, options: object): Promise<string | null> {
         if (!source.includes(sourcePath)) {
           return null;
         }
 
         // looks like its some virtual path
-        if(!source.includes(process.cwd())) {
+        if (!source.includes(process.cwd())) {
           return null;
         }
 
-        if(source.startsWith(FS_PREFIX)) {
-          source = source.slice(FS_PREFIX.length)
+        if (source.startsWith(FS_PREFIX)) {
+          source = source.slice(FS_PREFIX.length);
         }
 
         [source] = source.split('?', 2);
@@ -30,7 +30,7 @@ export const sourceReplacerPlugin = (sourcePath: string, replacePath: string) =>
         // original source file not exists, something virtual, not interested in, fallback to other plugins flow
         try {
           await access(source);
-        } catch (e) {
+        } catch {
           return null;
         }
 
@@ -39,13 +39,13 @@ export const sourceReplacerPlugin = (sourcePath: string, replacePath: string) =>
         // replaced source file not exists, fallback to other plugins flow
         try {
           await access(replacedSource);
-        } catch (e) {
+        } catch {
           return null;
         }
 
-        // @ts-ignore
+        // @ts-expect-error - Vite plugin
         return this.resolve(replacedSource, importer, { skipSelf: true, ...options });
       },
     },
-  }
-}
+  };
+};

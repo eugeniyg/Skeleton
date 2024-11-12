@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-export const useApiGuestInstance = async (url:string, options?:any):Promise<any> => {
+export const useApiGuestInstance = async (url: string, options?: any): Promise<any> => {
   const baseURL = import.meta.server && process.env.API_BASE_URL ? process.env.API_BASE_URL : '';
   let newUrl = url;
 
@@ -14,8 +14,8 @@ export const useApiGuestInstance = async (url:string, options?:any):Promise<any>
     baseURL,
     params: undefined,
     credentials: 'omit',
-    retry: 0
+    retry: 0,
   };
 
   return await $fetch(newUrl, newOptions);
-}
+};

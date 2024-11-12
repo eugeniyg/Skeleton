@@ -1,98 +1,97 @@
-import type {
-  IAuthorizationRequest,
-  IAuthorizationResponse,
-  IField, IOtpRequest, IPhoneVerification
-} from '../types';
-import { useApiGuestInstance } from "@skeleton/core/assets/apiGuestInstance";
-import { useApiAuthInstance } from "@skeleton/core/assets/apiAuthInstance";
+import type { IAuthorizationRequest, IAuthorizationResponse, IField, IOtpRequest, IPhoneVerification } from '../types';
+import { useApiGuestInstance } from '@skeleton/core/assets/apiGuestInstance';
+import { useApiAuthInstance } from '@skeleton/core/assets/apiAuthInstance';
 
 export const useCoreAuthApi = () => {
-  const getRegistrationFields = async ():Promise<IField[]> => {
+  const getRegistrationFields = async (): Promise<IField[]> => {
     const { data } = await useApiGuestInstance('/api/player/fields/validations', {
-      params: { scenario: 'registration' }
+      params: { scenario: 'registration' },
     });
     return data;
   };
 
-  const submitRegistrationData = async (registrationFormData:any):Promise<IAuthorizationResponse> => {
+  const submitRegistrationData = async (registrationFormData: any): Promise<IAuthorizationResponse> => {
     const { data } = await useApiGuestInstance('/api/player/register', {
       method: 'POST',
-      body: registrationFormData
+      body: registrationFormData,
     });
 
     return data;
   };
 
-  const submitLoginData = async (authorizationFormData: IAuthorizationRequest):Promise<IAuthorizationResponse> => {
+  const submitLoginData = async (authorizationFormData: IAuthorizationRequest): Promise<IAuthorizationResponse> => {
     const { data } = await useApiGuestInstance('/api/player/sessions', {
       method: 'POST',
-      body: authorizationFormData
+      body: authorizationFormData,
     });
 
     return data;
   };
 
-  const submitAutologinData = async (autoLoginData: { token: string, fingerprint?: string }):Promise<IAuthorizationResponse> => {
+  const submitAutologinData = async (autoLoginData: {
+    token: string;
+    fingerprint?: string;
+  }): Promise<IAuthorizationResponse> => {
     const { data } = await useApiGuestInstance('/api/player/sessions/token', {
       method: 'POST',
-      body: autoLoginData
+      body: autoLoginData,
     });
 
     return data;
   };
 
-  const refreshToken = async ():Promise<IAuthorizationResponse> => {
+  const refreshToken = async (): Promise<IAuthorizationResponse> => {
     const { getSessionToken } = useProfileStore();
     const token = getSessionToken();
     const { data }: { data: IAuthorizationResponse } = await $fetch('/api/player/sessions/refresh', {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      method: 'POST'
+      method: 'POST',
     });
 
     return data;
   };
 
-  const logOut = async ():Promise<{message: string}> => {
+  const logOut = async (): Promise<{ message: string }> => {
     const { data } = await useApiAuthInstance('/api/player/sessions/logout', {
-      method: 'POST'
+      method: 'POST',
     });
 
     return data;
   };
 
-  const submitSocialLoginData = async (socialAuthData: any):Promise<IAuthorizationResponse> => {
+  const submitSocialLoginData = async (socialAuthData: any): Promise<IAuthorizationResponse> => {
     const { data } = await useApiGuestInstance('/api/player/sessions/social', {
       method: 'POST',
-      body: socialAuthData
+      body: socialAuthData,
     });
 
     return data;
   };
 
-  const sendOtp = async (otpData: IOtpRequest):Promise<{message: string}> => {
+  const sendOtp = async (otpData: IOtpRequest): Promise<{ message: string }> => {
     const { data } = await useApiAuthInstance('/api/player/otp/send', {
       method: 'POST',
-      body: otpData
+      body: otpData,
     });
 
     return data;
   };
 
-  const registerByPhone = async (registrationFormData:any):Promise<IAuthorizationResponse> => {
+  const registerByPhone = async (registrationFormData: any): Promise<IAuthorizationResponse> => {
     const { data } = await useApiGuestInstance('/api/player/register/phone', {
       method: 'POST',
-      body: registrationFormData
+      body: registrationFormData,
     });
 
     return data;
   };
 
-  const phoneVerification = async (verificationData: IPhoneVerification):Promise<{ code: string }> => {
+  const phoneVerification = async (verificationData: IPhoneVerification): Promise<{ code: string }> => {
     const { data } = await useApiAuthInstance('/api/player/otp/verify', {
       method: 'POST',
-      body: verificationData
+      body: verificationData,
     });
 
     return data;
@@ -108,6 +107,6 @@ export const useCoreAuthApi = () => {
     submitSocialLoginData,
     sendOtp,
     registerByPhone,
-    phoneVerification
+    phoneVerification,
   };
-}
+};

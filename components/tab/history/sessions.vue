@@ -1,16 +1,8 @@
 <template>
   <div class="tab-history__tb">
-    <div
-      class="tb-sessions-history"
-      tabindex="0"
-      data-tooltip-parent
-    >
+    <div class="tb-sessions-history" tabindex="0" data-tooltip-parent>
       <div class="row">
-        <div
-          v-for="(column, columnIndex) in headTitles"
-          :key="columnIndex"
-          class="th"
-        >
+        <div v-for="(column, columnIndex) in headTitles" :key="columnIndex" class="th">
           {{ column }}
         </div>
       </div>
@@ -18,7 +10,7 @@
       <template v-if="sessions.length">
         <div v-for="session in sessions" :key="session.sessionId" class="row">
           <div class="td">
-            <atomic-row-device :variant="session.deviceType === 'desktop' ? 'desktop' : 'mobile'"/>
+            <atomic-row-device :variant="session.deviceType === 'desktop' ? 'desktop' : 'mobile'" />
           </div>
 
           <div class="td">{{ session.country }}</div>
@@ -36,9 +28,11 @@
           <div class="td">
             <atomic-row-status
               :variant="sessionStatus(session)"
-              :tooltip="session.closedAt ? `${dayjs(session.closedAt).format(dateFormat)}`: ''"
+              :tooltip="session.closedAt ? `${dayjs(session.closedAt).format(dateFormat)}` : ''"
             >
-              {{ props.content?.sessionsStatuses[sessionStatus(session) as keyof ISessionsHistory['sessionsStatuses']] }}
+              {{
+                props.content?.sessionsStatuses[sessionStatus(session) as keyof ISessionsHistory['sessionsStatuses']]
+              }}
             </atomic-row-status>
           </div>
 
@@ -55,7 +49,7 @@
     <atomic-pagination
       v-if="pageMeta?.totalPages && pageMeta.totalPages > 1"
       v-bind="pageMeta"
-      @selectPage="changePage"
+      @select-page="changePage"
     />
   </div>
 </template>
@@ -66,7 +60,7 @@
   import type { ISessionsHistory } from '~/types';
 
   const props = defineProps<{
-    content: ISessionsHistory,
+    content: ISessionsHistory;
   }>();
 
   const dayjs = useDayjs();
@@ -78,7 +72,7 @@
   const pageMeta = ref<IPaginationMeta>();
 
   const loading = ref<boolean>(true);
-  const resolveSessionsRequest = async (page: number = 1):Promise<void> => {
+  const resolveSessionsRequest = async (page: number = 1): Promise<void> => {
     loading.value = true;
     const response = await getUserSessions(page, 10);
     sessions.value = response.data;
@@ -95,18 +89,18 @@
     return 'active';
   };
 
-  const shortUserAgent = (userAgent: string):string => {
+  const shortUserAgent = (userAgent: string): string => {
     const parsedUserAgent = parser(userAgent);
     return `${parsedUserAgent.browser?.name}, ${parsedUserAgent.os?.name} ${parsedUserAgent.os?.version}`;
   };
 
-  const closeSession = async (sessionId: string):Promise<void> => {
+  const closeSession = async (sessionId: string): Promise<void> => {
     const response = await closeActiveSession(sessionId);
-    const closedIndex = sessions.value.findIndex((session) => session.sessionId === sessionId);
+    const closedIndex = sessions.value.findIndex(session => session.sessionId === sessionId);
     sessions.value[closedIndex] = response;
   };
 
-  const changePage = (page: number):void => {
+  const changePage = (page: number): void => {
     if (loading.value) return;
     window.scroll(0, 0);
     resolveSessionsRequest(page);
@@ -116,8 +110,7 @@
     resolveSessionsRequest();
   });
 
-  const formatDateStr = (str:string) => str.split(',').join('<br>');
+  const formatDateStr = (str: string) => str.split(',').join('<br>');
 </script>
 
 <style src="~/assets/styles/components/tab/history/sessions.scss" lang="scss" />
-

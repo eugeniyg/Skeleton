@@ -8,11 +8,11 @@
       :disabled="props.isDisabled"
       :checked="props.isChecked"
       @change="emit('change')"
-    >
+    />
 
     <label class="label" :for="props.id">
-      <atomic-icon id="radio"/>
-      <slot/>
+      <atomic-icon id="radio" />
+      <slot />
     </label>
   </div>
 </template>
@@ -44,4 +44,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/radio.scss" lang="scss" />
-

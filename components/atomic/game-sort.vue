@@ -17,14 +17,14 @@
   import type { IGamesPage } from '@/types';
 
   const props = defineProps<{
-    sortByValue: string,
-    sortOrderValue: string,
-    sortLabel: string,
-    sortOptions: IGamesPage['sortOptions']
+    sortByValue: string;
+    sortOrderValue: string;
+    sortLabel: string;
+    sortOptions: IGamesPage['sortOptions'];
   }>();
 
   const emit = defineEmits(['change']);
-  const changeSort = (sortBy: string, sortOrder: string):void => {
+  const changeSort = (sortBy: string, sortOrder: string): void => {
     if (props.sortByValue !== sortBy || props.sortOrderValue !== sortOrder) {
       emit('change', sortBy, sortOrder);
     }

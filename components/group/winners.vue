@@ -11,16 +11,12 @@
 
     <button-arrows
       v-if="showArrowButtons"
-      :prevDisabled="prevDisabled"
-      :nextDisabled="nextDisabled"
-      @clickAction="clickAction"
+      :prev-disabled="prevDisabled"
+      :next-disabled="nextDisabled"
+      @click-action="clickAction"
     />
 
-    <div
-      ref="scrollContainer"
-      class="items"
-      @scroll="scrollHandler"
-    >
+    <div ref="scrollContainer" class="items" @scroll="scrollHandler">
       <card-latest-winners
         v-for="(winner, index) in latestWinners"
         :key="`${index}-${winner.gameId}`"
@@ -40,12 +36,8 @@
     },
   });
   const globalStore = useGlobalStore();
-  const {
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent,
-    isMobile,
-    headerCountry,
-  } = storeToRefs(globalStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, isMobile, headerCountry } =
+    storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
@@ -62,7 +54,7 @@
     if (!scrollContainer.value) return;
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
-    nextDisabled.value = scrollWidth < (scrollLeft + offsetWidth + 20) && scrollWidth > (scrollLeft + offsetWidth - 20);
+    nextDisabled.value = scrollWidth < scrollLeft + offsetWidth + 20 && scrollWidth > scrollLeft + offsetWidth - 20;
     showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
   };
 
@@ -92,8 +84,10 @@
     }
   });
 
-  watch(() => latestWinners.value, () => scrollHandler());
+  watch(
+    () => latestWinners.value,
+    () => scrollHandler()
+  );
 </script>
 
 <style src="~/assets/styles/components/group/winners.scss" lang="scss" />
-

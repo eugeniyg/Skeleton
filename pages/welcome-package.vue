@@ -10,14 +10,12 @@
       </h4>
 
       <div v-if="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'howGet')" class="steps">
-        <div class="title">{{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'howGet.label') }}</div>
+        <div class="title">
+          {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'howGet.label') }}
+        </div>
 
         <div class="items">
-          <div
-            v-for="(item, index) in howGetItems"
-            :key="index"
-            class="item"
-          >
+          <div v-for="(item, index) in howGetItems" :key="index" class="item">
             <span class="number">{{ index + 1 }}</span>
             <p class="text">{{ item }}</p>
           </div>
@@ -36,28 +34,41 @@
           {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'welcome.label') }}
         </h4>
 
-        <div v-if="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'welcome.items')?.length" class="items">
+        <div
+          v-if="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'welcome.items')?.length"
+          class="items"
+        >
           <div
-            v-for="(card, itemIndex) in getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'welcome.items')"
+            v-for="(card, itemIndex) in getContent(
+              pageContent?.currentLocaleData,
+              pageContent?.defaultLocaleData,
+              'welcome.items'
+            )"
             :key="itemIndex"
             class="item"
           >
             <div class="title">{{ card.title }}</div>
             <div class="sub-title">{{ card.topLabel }}</div>
 
-            <atomic-picture :src="card.image"/>
+            <atomic-picture :src="card.image" />
 
             <div class="actions">
               <div v-if="card.bonusId && bonusesStatus[card.bonusId] === 1" class="actions__success">
                 <atomic-icon id="done" class="is-success" />
-                <span>{{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'welcome.issued') }}</span>
+                <span>{{
+                  getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'welcome.issued')
+                }}</span>
               </div>
 
               <template v-else>
                 <button-base
                   type="primary"
                   size="md"
-                  :isDisabled="loadStatuses || accountSwitching || (card.bonusId && bonusesStatus[card.bonusId] && [2,4].includes(bonusesStatus[card.bonusId]))"
+                  :is-disabled="
+                    loadStatuses ||
+                    accountSwitching ||
+                    (card.bonusId && bonusesStatus[card.bonusId] && [2, 4].includes(bonusesStatus[card.bonusId]))
+                  "
                   @click="actionClick(card, itemIndex)"
                 >
                   <atomic-spinner :is-shown="walletLoading === itemIndex" />
@@ -69,7 +80,7 @@
                   size="md"
                   :url="card.link.url"
                   :is-disabled="loadStatuses || accountSwitching"
-                  :targetBlank="card.link.targetBlank"
+                  :target-blank="card.link.targetBlank"
                 >
                   {{ card.link.label }}
                 </button-base>
@@ -90,16 +101,23 @@
           {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'bonuses.label') }}
         </h4>
 
-        <div v-if="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'bonuses.items')?.length" class="items">
+        <div
+          v-if="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'bonuses.items')?.length"
+          class="items"
+        >
           <div
-            v-for="(card, itemIndex) in getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'bonuses.items')"
+            v-for="(card, itemIndex) in getContent(
+              pageContent?.currentLocaleData,
+              pageContent?.defaultLocaleData,
+              'bonuses.items'
+            )"
             :key="itemIndex"
             class="item"
           >
             <div class="title">{{ card.subtitle }}</div>
             <div class="sub-title">{{ card.title }}</div>
 
-            <atomic-picture :src="card.image" alt=""/>
+            <atomic-picture :src="card.image" alt="" />
 
             <div class="actions">
               <button-base
@@ -110,12 +128,7 @@
                 {{ card.buttonLabel }}
               </button-base>
 
-              <button-base
-                type="ghost"
-                size="md"
-                :url="card.link.url"
-                :targetBlank="card.link.targetBlank"
-              >
+              <button-base type="ghost" size="md" :url="card.link.url" :target-blank="card.link.targetBlank">
                 {{ card.link.label }}
               </button-base>
             </div>
@@ -124,20 +137,23 @@
       </div>
     </div>
 
-    <atomic-seo-text v-if="pageContent?.currentLocaleData?.pageMeta?.seoText" v-bind="pageContent.currentLocaleData.pageMeta.seoText" />
+    <atomic-seo-text
+      v-if="pageContent?.currentLocaleData?.pageMeta?.seoText"
+      v-bind="pageContent.currentLocaleData.pageMeta.seoText"
+    />
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IWelcomeBonusesPage} from '~/types';
+  import type { IWelcomeBonusesPage } from '~/types';
 
   const { getContent, getMinBonusDeposit } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'welcomePageContent',
     contentRoute: ['pages', 'welcome-bonuses'],
-    isPage: true
+    isPage: true,
   };
   const { getContentData } = useContentLogic<IWelcomeBonusesPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
@@ -151,7 +167,7 @@
       ];
     }
     return [];
-  })
+  });
 
   const profileStore = useProfileStore();
   const { openWalletModal } = useLayoutStore();
@@ -166,7 +182,8 @@
 
   const getStatuses = async (): Promise<void> => {
     const { getBonusesStatus } = useCoreBonusApi();
-    const bonusesItems = getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'welcome.items') || [];
+    const bonusesItems =
+      getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'welcome.items') || [];
     const bonusIds = bonusesItems.map((item: any) => item.bonusId).filter(bonusId => !!bonusId);
 
     if (!isLoggedIn.value || !bonusIds.length) {
@@ -181,14 +198,14 @@
       const statusesObj = {};
       statuses.forEach(statusData => {
         statusesObj[statusData.id] = statusData.issueStatus;
-      })
+      });
       bonusesStatus.value = statusesObj;
     } catch {
       console.error('Failed to get bonuses statuses');
       bonusesStatus.value = [];
     }
     loadStatuses.value = false;
-  }
+  };
 
   watch(isLoggedIn, async () => {
     await getStatuses();
@@ -198,9 +215,9 @@
 
   watch(pageContent, async () => {
     if (mountedCompleted.value) await getStatuses();
-  })
+  });
 
-  const walletLoading = ref<string|undefined>();
+  const walletLoading = ref<string | undefined>();
   const actionClick = async (cardInfo: IWelcomeBonus, cardIndex: number): Promise<void> => {
     if (walletLoading.value !== undefined || accountSwitching.value) return;
     if (!isLoggedIn.value) {
@@ -237,4 +254,3 @@
 </script>
 
 <style src="~/assets/styles/pages/welcome-package.scss" lang="scss" />
-

@@ -4,7 +4,7 @@ export interface IMessageContent extends Record<string, any> {
   link?: {
     url: string;
     label: string;
-  }
+  };
   image?: string;
 }
 
@@ -13,9 +13,9 @@ export interface IMessage extends Record<string, any> {
   playerId: string;
   state: number;
   content: IMessageContent;
-  readAt: string|null;
+  readAt: string | null;
   createdAt: string;
-  updatedAt: string|null;
+  updatedAt: string | null;
 }
 
 export interface INotificationsRequest extends Record<string, any> {
@@ -31,5 +31,5 @@ export interface INotificationsResponse extends Record<string, any> {
     totalPages: number;
     totalRows: number;
     totalUnread: number;
-  }
+  };
 }

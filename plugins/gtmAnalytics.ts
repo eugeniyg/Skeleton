@@ -1,5 +1,4 @@
-// @ts-nocheck
-import type { IAnalyticsEvent } from "@skeleton/types/analytics";
+import type { IAnalyticsEvent } from '@skeleton/types';
 
 export default defineNuxtPlugin(nuxtApp => {
   const gtm = useGtm();
@@ -13,7 +12,7 @@ export default defineNuxtPlugin(nuxtApp => {
     }
   };
 
-  nuxtApp.hook('app:mounted',  () => {
+  nuxtApp.hook('app:mounted', () => {
     useListen('analyticsEvent', sendAnalyticsEvent);
   });
-})
+});

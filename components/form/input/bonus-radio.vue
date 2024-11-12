@@ -8,7 +8,7 @@
         :disabled="props.isDisabled"
         :checked="!!props.value"
         @change="onChange"
-      >
+      />
     </label>
   </div>
 </template>
@@ -16,17 +16,16 @@
 <script setup lang="ts">
   const props = defineProps<{
     id: string;
-    isDisabled?: boolean,
-    name: string,
-    value: any
+    isDisabled?: boolean;
+    name: string;
+    value: any;
   }>();
-  
+
   const emit = defineEmits(['change', 'update:value']);
-  const onChange = (e:any):void => {
+  const onChange = (e: any): void => {
     emit('change', e.target.checked);
     emit('update:value', e.target.checked ? 1 : '');
   };
 </script>
 
 <style src="~/assets/styles/components/form/input/bonus-radio.scss" lang="scss" />
-

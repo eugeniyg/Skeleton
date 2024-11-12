@@ -1,6 +1,6 @@
 <template>
   <button class="btn-logout" @click="emit('logout')">
-    <atomic-icon id="log-out"/>
+    <atomic-icon id="log-out" />
     {{ getContent(layoutData, defaultLocaleLayoutData, 'profileSidebar.logoutButton') }}
   </button>
 </template>
@@ -12,4 +12,3 @@
 </script>
 
 <style src="~/assets/styles/components/button/logout.scss" lang="scss" />
-

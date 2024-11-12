@@ -7,13 +7,13 @@
       :value="0"
       :max="9999999999999999"
       :mask="isProcessSimulate ? cardNumberMaskCheck : cardNumberMaskDefault"
-      :hint="isProcessSimulate ? {variant: 'error', message: 'The card number entered is Invalid'} : null"
+      :hint="isProcessSimulate ? { variant: 'error', message: 'The card number entered is Invalid' } : null"
     />
 
-    <form-input-text name="name4" label="Name of card" placeholder="Enter name"/>
+    <form-input-text name="name4" label="Name of card" placeholder="Enter name" />
 
     <div class="row">
-      <form-input-text name="name5" label="Expire Date" placeholder="MM / YY"/>
+      <form-input-text name="name5" label="Expire Date" placeholder="MM / YY" />
       <form-input-number
         name="name6"
         placeholder="CVV"
@@ -21,7 +21,7 @@
         :value="0"
         :max="9999"
         :mask="securityCodeMask"
-        :hint="isProcessSimulate ? {variant: 'error', message: 'Please enter a 3 digit security code'} : null"
+        :hint="isProcessSimulate ? { variant: 'error', message: 'Please enter a 3 digit security code' } : null"
       />
     </div>
   </div>
@@ -39,4 +39,3 @@
 </script>
 
 <style src="~/assets/styles/components/form/input/card.scss" lang="scss" />
-

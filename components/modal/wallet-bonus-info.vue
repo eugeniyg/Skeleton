@@ -2,19 +2,15 @@
   <vue-final-modal
     v-model="modals.walletBonusInfo"
     class="modal-wallet-bonus-info"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 250 }"
-    :contentTransition="{ mode: 'in-out', duration: 250 }"
-    @clickOutside="closeModal('walletBonusInfo')"
-    @beforeOpen="setTableData"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
+    @click-outside="closeModal('walletBonusInfo')"
+    @before-open="setTableData"
   >
     <div class="modal-wallet-bonus-info__scroll">
       <div class="modal-wallet-bonus-info__header">
-        <atomic-image
-          v-if="titleImage"
-          class="img"
-          :src="titleImage"
-        />
+        <atomic-image v-if="titleImage" class="img" :src="titleImage" />
 
         <div class="modal-wallet-bonus-info__title">
           {{ getContent(popupsData, defaultLocalePopupsData, 'walletBonusInfo.title') }}
@@ -23,20 +19,13 @@
         <button-modal-close @close="closeModal('walletBonusInfo')" />
       </div>
 
-      <div
-        v-for="table in bonusesTables"
-        :key="table.id"
-        class="modal-wallet-bonus-info__table"
-      >
-        <div
-          v-if="bonusesTables.length > 1"
-          class="modal-wallet-bonus-info__table-title"
-        >
+      <div v-for="table in bonusesTables" :key="table.id" class="modal-wallet-bonus-info__table">
+        <div v-if="bonusesTables.length > 1" class="modal-wallet-bonus-info__table-title">
           {{ table.name }}
         </div>
 
         <dl class="modal-wallet-bonus-info__dl">
-          <template v-for="{ label, value } in table.params">
+          <template v-for="({ label, value }, index) in table.params" :key="index">
             <dt>{{ label }}</dt>
             <dd>{{ value === 'games' ? bonusGames[table.id] : value }}</dd>
           </template>
@@ -48,7 +37,7 @@
           {{ getContent(popupsData, defaultLocalePopupsData, 'walletBonusInfo.readMore') }}
         </span>
 
-        <atomic-icon id="arrow_next"/>
+        <atomic-icon id="arrow_next" />
       </button-base>
     </div>
   </vue-final-modal>
@@ -57,21 +46,11 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import type {IAmountRangeItem, IBonus, IGameProvider} from "@skeleton/core/types";
+  import type { IAmountRangeItem, IBonus, IGameProvider } from '@skeleton/core/types';
 
-  const {
-    getContent,
-    formatBalance,
-    getEquivalentFromBase,
-    localizePath,
-    getSumFromAmountItems
-  } = useProjectMethods();
-  const {
-    popupsData,
-    defaultLocalePopupsData,
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent
-  } = useGlobalStore();
+  const { getContent, formatBalance, getEquivalentFromBase, localizePath, getSumFromAmountItems } = useProjectMethods();
+  const { popupsData, defaultLocalePopupsData, globalComponentsContent, defaultLocaleGlobalComponentsContent } =
+    useGlobalStore();
 
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
@@ -85,8 +64,8 @@
   const { getProviderList } = useGamesStore();
 
   const titleImage = computed(() => {
-    return getContent(popupsData, defaultLocalePopupsData, 'walletBonusInfo.titleImage')
-  })
+    return getContent(popupsData, defaultLocalePopupsData, 'walletBonusInfo.titleImage');
+  });
 
   interface IParam {
     label: string;
@@ -94,15 +73,15 @@
   }
 
   const paramsLabels = getContent(popupsData, defaultLocalePopupsData, 'walletBonusInfo.infoLabels');
-  const bonusesTables = ref<{ id: string, name: string, params: IParam[] }[]>([]);
+  const bonusesTables = ref<{ id: string; name: string; params: IParam[] }[]>([]);
 
   const getCurrentCurrencySumRange = (
     exclusionItems?: IAmountRangeItem[],
-    baseAmountFrom?: number|null,
-    baseAmountTo?: number|null
-  ): string|undefined => {
-    let from: string|undefined;
-    let to: string|undefined;
+    baseAmountFrom?: number | null,
+    baseAmountTo?: number | null
+  ): string | undefined => {
+    let from: string | undefined;
+    let to: string | undefined;
 
     const fromLabel = paramsLabels?.from;
     const toLabel = paramsLabels?.to;
@@ -131,40 +110,40 @@
     }
 
     if (from || to) {
-      return `${from || ''} ${to || ''}`
+      return `${from || ''} ${to || ''}`;
     }
 
     return undefined;
-  }
+  };
 
-  const getDepositAmount = (bonusInfo: IBonus): string|undefined => {
+  const getDepositAmount = (bonusInfo: IBonus): string | undefined => {
     const invoicesItems = bonusInfo.triggerConditions?.invoiceAmountItems;
     const invoiceFromBase = bonusInfo.triggerConditions?.baseCurrencyInvoiceAmountFrom;
     const invoiceToBase = bonusInfo.triggerConditions?.baseCurrencyInvoiceAmountTo;
     return getCurrentCurrencySumRange(invoicesItems, invoiceFromBase, invoiceToBase);
-  }
+  };
 
-  const getMaxWinAmount = (bonusInfo: IBonus): string|undefined => {
+  const getMaxWinAmount = (bonusInfo: IBonus): string | undefined => {
     const maxWinItems = bonusInfo.maxWinAmountItems;
     const maxWinAmountBase = bonusInfo.baseCurrencyMaxWinAmount;
     return getSumFromAmountItems(maxWinItems, maxWinAmountBase);
-  }
+  };
 
-  const getCasinoBetAmount = (bonusInfo: IBonus): string|undefined => {
+  const getCasinoBetAmount = (bonusInfo: IBonus): string | undefined => {
     const casinoBetItems = bonusInfo.wagerCasinoConditions?.amountItems;
     const casinoFromBase = bonusInfo.wagerCasinoConditions?.baseCurrencyAmountFrom;
     const casinoToBase = bonusInfo.wagerCasinoConditions?.baseCurrencyAmountTo;
     return getCurrentCurrencySumRange(casinoBetItems, casinoFromBase, casinoToBase);
-  }
+  };
 
-  const getSportsbookBetAmount = (bonusInfo: IBonus): string|undefined => {
+  const getSportsbookBetAmount = (bonusInfo: IBonus): string | undefined => {
     const sportsbookBetItems = bonusInfo.wagerSportsbookConditions?.amountItems;
     const sportsbookFromBase = bonusInfo.wagerSportsbookConditions?.baseCurrencyAmountFrom;
     const sportsbookToBase = bonusInfo.wagerSportsbookConditions?.baseCurrencyAmountTo;
     return getCurrentCurrencySumRange(sportsbookBetItems, sportsbookFromBase, sportsbookToBase);
-  }
+  };
 
-  const getBonusProvider = (gameProviders: IGameProvider[], bonusInfo: IBonus): string|undefined => {
+  const getBonusProvider = (gameProviders: IGameProvider[], bonusInfo: IBonus): string | undefined => {
     const bonusProviderList = bonusInfo.wagerCasinoConditions?.providerIds;
     const providersExcluded = bonusInfo.wagerCasinoConditions?.providerIdsExcluded;
 
@@ -173,13 +152,13 @@
         .filter(provider => bonusProviderList.includes(provider.id))
         .map(provider => provider.name);
 
-      return `${providersExcluded ? paramsLabels?.excluded : ''} ${providersNames.join(', ')}`
+      return `${providersExcluded ? paramsLabels?.excluded : ''} ${providersNames.join(', ')}`;
     }
 
     return undefined;
-  }
+  };
 
-  const getFreeSpinProvider = (gameProviders: IGameProvider[], bonusInfo: IBonus): string|undefined => {
+  const getFreeSpinProvider = (gameProviders: IGameProvider[], bonusInfo: IBonus): string | undefined => {
     const freeSpinProviderId = bonusInfo.assignConditions?.providerId;
 
     if (freeSpinProviderId) {
@@ -187,8 +166,7 @@
     }
 
     return undefined;
-  }
-
+  };
 
   const bonusGames = reactive<{ [key: string]: string }>({});
   const getBonusGames = async (gamesList: string[], bonusInfo: IBonus): Promise<void> => {
@@ -205,16 +183,18 @@
         bonusGames[bonusInfo.id] = `${gamesExcluded ? paramsLabels?.excluded : ''} ${gamesNames.join(', ')}`;
       }
     } catch {
-      console.error('Something went wrong with games loading!')
+      console.error('Something went wrong with games loading!');
     }
-  }
+  };
 
-  interface IParams { [key: string]: IParam|undefined }
+  interface IParams {
+    [key: string]: IParam | undefined;
+  }
 
   const getBonusParams = (gameProviders: IGameProvider[], bonusInfo: IBonus): IParam[] => {
     const bonusType = bonusInfo.type;
 
-    const params:IParams = {
+    const params: IParams = {
       deposit: undefined,
       type: {
         label: paramsLabels?.bonusType,
@@ -222,7 +202,7 @@
           globalComponentsContent,
           defaultLocaleGlobalComponentsContent,
           `constants.bonusTypes.${bonusType}`
-        )
+        ),
       },
       freeSpins: undefined,
       casinoWager: undefined,
@@ -231,8 +211,8 @@
       casinoBet: undefined,
       sportsbookBet: undefined,
       providers: undefined,
-      games: undefined
-    }
+      games: undefined,
+    };
 
     const depositSum = getDepositAmount(bonusInfo);
     if (depositSum) params.deposit = { label: paramsLabels?.depositAmount, value: depositSum };
@@ -257,7 +237,8 @@
     if (casinoBetSum && bonusType !== 3) params.casinoBet = { label: paramsLabels?.casinoBetSum, value: casinoBetSum };
 
     const sportsbookBetSum = getSportsbookBetAmount(bonusInfo);
-    if (sportsbookBetSum && bonusType !== 3) params.sportsbookBet = { label: paramsLabels?.sportsbookBetSum, value: sportsbookBetSum };
+    if (sportsbookBetSum && bonusType !== 3)
+      params.sportsbookBet = { label: paramsLabels?.sportsbookBetSum, value: sportsbookBetSum };
 
     if (bonusType === 3) {
       const freeSpinProvider = getFreeSpinProvider(gameProviders, bonusInfo);
@@ -275,7 +256,7 @@
     }
 
     return Object.values(params).filter(value => value) as IParam[];
-  }
+  };
 
   const setTableData = async (): Promise<void> => {
     Object.keys(bonusGames).forEach(key => {
@@ -288,23 +269,25 @@
       bonusesTables.value = depositMoreInfoBonus.value.packageItems.map(bonusInfo => ({
         id: bonusInfo.id,
         name: bonusInfo.name,
-        params: getBonusParams(gameProviders, bonusInfo)
-      }))
+        params: getBonusParams(gameProviders, bonusInfo),
+      }));
     } else if (depositMoreInfoBonus.value) {
-      bonusesTables.value = [{
-        id: depositMoreInfoBonus.value.id,
-        name: depositMoreInfoBonus.value.name,
-        params: getBonusParams(gameProviders, depositMoreInfoBonus.value)
-      }]
+      bonusesTables.value = [
+        {
+          id: depositMoreInfoBonus.value.id,
+          name: depositMoreInfoBonus.value.name,
+          params: getBonusParams(gameProviders, depositMoreInfoBonus.value),
+        },
+      ];
     }
-  }
+  };
 
   const goToBonuses = (): void => {
     closeModal('walletBonusInfo');
     closeModal('wallet');
     const router = useRouter();
     router.push(localizePath('/welcome-package'));
-  }
+  };
 </script>
 
 <style src="~/assets/styles/components/modal/wallet-bonus-info.scss" lang="scss" />

@@ -2,20 +2,19 @@
   <vue-final-modal
     v-model="modals.gameLimitReached"
     class="game-limit-reached"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 250 }"
-    :contentTransition="{ mode: 'in-out', duration: 250 }"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('gameLimitReached')"/>
+        <button-modal-close @close="closeModal('gameLimitReached')" />
         <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'gameLimitReached.label') }}</div>
       </div>
 
       <div class="game-limit-reached__text">
         {{ getContent(popupsData, defaultLocalePopupsData, 'gameLimitReached.description') }}
       </div>
-
     </div>
   </vue-final-modal>
 </template>

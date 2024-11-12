@@ -1,10 +1,10 @@
 <template>
-  <div class="promo" :class="{'promo--without-advantages': !isShowAdvantages}">
+  <div class="promo" :class="{ 'promo--without-advantages': !isShowAdvantages }">
     <picture class="promo__picture">
       <source
         :srcset="getContent(props.currentLocaleData, props.defaultLocaleData, 'promo.images.desktop.backgroundImage')"
         media="(min-width: 64rem)"
-      >
+      />
       <atomic-image
         :src="getContent(props.currentLocaleData, props.defaultLocaleData, 'promo.images.mobile.backgroundImage')"
         class="promo__picture-img"
@@ -26,12 +26,8 @@
     </div>
 
     <div v-if="advantagesList?.length && isShowAdvantages" class="items">
-      <div
-        v-for="(advantage, index) in advantagesList"
-        :key="index"
-        class="item"
-      >
-        <atomic-icon :id="advantage.icon"/>
+      <div v-for="(advantage, index) in advantagesList" :key="index" class="item">
+        <atomic-icon :id="advantage.icon" />
         {{ advantage.label }}
       </div>
     </div>
@@ -39,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-  import type {IModalsContent} from "~/types";
+  import type { IModalsContent } from '~/types';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['registration']>;
@@ -55,4 +51,4 @@
   const isShowAdvantages = computed(() => props.currentLocaleData?.promo?.displayAdvantages);
 </script>
 
-<style src="~/assets/styles/components/atomic/promo.scss" lang="scss"/>
+<style src="~/assets/styles/components/atomic/promo.scss" lang="scss" />

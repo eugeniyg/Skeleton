@@ -1,19 +1,16 @@
 <template>
   <vue-final-modal
-    :modelValue="props.showModal"
+    :model-value="props.showModal"
     class="modal-package-bonus"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 250 }"
-    :contentTransition="{ mode: 'in-out', duration: 250 }"
-    @clickOutside="emit('close')"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
+    @click-outside="emit('close')"
   >
     <div class="scroll">
       <div class="header">
         <div>
-          <div
-            v-if="bonusValue"
-            class="header__title"
-          >
+          <div v-if="bonusValue" class="header__title">
             {{ bonusesList[0].packageName || bonusesList[0].package.name }}
           </div>
 
@@ -22,17 +19,17 @@
           </div>
         </div>
 
-        <button-modal-close @close="emit('close')"/>
+        <button-modal-close @close="emit('close')" />
       </div>
 
       <div class="modal-package-bonus__list">
         <bonuses-card
           v-for="bonus in filteredList"
           :key="bonus.id + bonus.status"
-          :bonusInfo="bonus"
-          :isCash="bonus.isCash"
-          :isFreeSpin="bonus.isFreeSpin"
-          :isDeposit="bonus.isDeposit"
+          :bonus-info="bonus"
+          :is-cash="bonus.isCash"
+          :is-free-spin="bonus.isFreeSpin"
+          :is-deposit="bonus.isDeposit"
           :loading="props.loadingBonuses.includes(bonus.id)"
           @remove="removeHandle(bonus)"
           @activate="activateHandle(bonus)"
@@ -58,7 +55,7 @@
     'activateFreeSpin',
     'removeBonus',
     'removeFreeSpin',
-    'activateDeposit'
+    'activateDeposit',
   ]);
 
   const walletStore = useWalletStore();
@@ -74,7 +71,7 @@
     } else if (bonus.isCash) {
       emit('removeBonus', bonus);
     }
-  }
+  };
 
   const activateHandle = (bonus: Record<string, any>): void => {
     if (bonus.isFreeSpin) {
@@ -84,21 +81,21 @@
     } else if (bonus.isDeposit) {
       emit('activateDeposit', { depositBonus: props.bonusesList[0], loadingId: bonus.id });
     }
-  }
+  };
 
-  const getCahBonusValue = (bonusInfo: Record<string, any>): { amount: number, currency: string } => {
+  const getCahBonusValue = (bonusInfo: Record<string, any>): { amount: number; currency: string } => {
     const amountItems = bonusInfo.assignConditions?.amountItems;
     const amountBase = bonusInfo.assignConditions?.baseCurrencyAmount;
     const exclusionItem = amountItems?.find(item => item.currency === activeAccount.value?.currency);
     if (exclusionItem) return formatBalance(exclusionItem.currency, exclusionItem.amount);
     if (amountBase) return getEquivalentFromBase(amountBase, activeAccount.value?.currency);
     return { amount: 0, currency: activeAccount.value?.currency || '' };
-  }
+  };
 
   const bonusValue = computed(() => {
     let cashBonusAmount: number = 0;
     let freeSpinAmount: number = 0;
-    let formatCurrency: string|undefined;
+    let formatCurrency: string | undefined;
 
     filteredList.value.forEach(bonus => {
       if (bonus.isFreeSpin) freeSpinAmount += bonus.count;
@@ -115,7 +112,7 @@
       }
     });
 
-    let result:string = '';
+    let result: string = '';
 
     if (cashBonusAmount && formatCurrency) {
       const amountValue = Number(cashBonusAmount.toFixed(activeAccountType.value === 'fiat' ? 2 : 8));
@@ -124,7 +121,7 @@
 
     if (freeSpinAmount) result += result ? ` + ${freeSpinAmount} FS` : `${freeSpinAmount} FS`;
     return result;
-  })
+  });
 </script>
 
 <style src="~/assets/styles/components/modal/package-bonus.scss" lang="scss" />

@@ -1,10 +1,5 @@
 <template>
-  <button-base
-    class="btn-popup"
-    type="ghost"
-    size="xs"
-    @click="openModal(props.modal)"
-  >
+  <button-base class="btn-popup" type="ghost" size="xs" @click="openModal(props.modal)">
     <div v-html="buttonHtml || ''" />
   </button-base>
 </template>
@@ -26,4 +21,3 @@
 </script>
 
 <style src="~/assets/styles/components/button/popup.scss" lang="scss" />
-

@@ -1,8 +1,8 @@
 <template>
-  <div class="list-currencies" :class="{'is-show': props.isOpen}">
+  <div class="list-currencies" :class="{ 'is-show': props.isOpen }">
     <div class="header">
       <button-base
-        v-for="{id, title} in currencyTabs"
+        v-for="{ id, title } in currencyTabs"
         :key="id"
         :is-active="id === selected"
         type="ghost"
@@ -18,13 +18,13 @@
         v-for="item in selectedItems"
         :key="item.nativeCurrency"
         class="item"
-        :class="{'is-active': activeAccount?.currency === item.nativeCurrency}"
+        :class="{ 'is-active': activeAccount?.currency === item.nativeCurrency }"
         @click="selectCurrency(item.nativeCurrency)"
       >
         <atomic-image
           class="img"
           :src="`/img/currency/${item.nativeCurrency}.svg`"
-          defaultImage="/img/currency/placeholder.svg"
+          default-image="/img/currency/placeholder.svg"
         />
         <span class="code-title">{{ item.currency }}</span>
         <span v-if="!props.hideBalance" class="amount">{{ item.currencySymbol }} {{ item.amount }}</span>
@@ -56,12 +56,7 @@
 
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
-  const {
-    accounts,
-    currencyTabs,
-    activeAccount,
-    showEquivalentBalance
-  } = storeToRefs(walletStore);
+  const { accounts, currencyTabs, activeAccount, showEquivalentBalance } = storeToRefs(walletStore);
   const { currencies, cryptoCurrencies } = storeToRefs(globalStore);
   const { switchAccount } = useWalletStore();
   const { createAccount } = useWalletStore();
@@ -71,30 +66,35 @@
 
   const selected = ref<string>('all');
 
-  const getAccountByCurrency = (currency: string): Maybe<IAccount> => accounts.value.find((account) => (account.currency === currency));
+  const getAccountByCurrency = (currency: string): Maybe<IAccount> =>
+    accounts.value.find(account => account.currency === currency);
 
   interface IDisplayAccount {
-    nativeCurrency: string,
-    currency: string,
-    amount: number,
-    currencySymbol?: string
+    nativeCurrency: string;
+    currency: string;
+    amount: number;
+    currencySymbol?: string;
   }
 
-  const formatCurrenciesList = (list:IDisplayAccount[]) => {
-    return list.filter((item) => accounts.value.find((account) => account.currency === item.nativeCurrency))
-      .sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()))
-  }
+  const formatCurrenciesList = (list: IDisplayAccount[]) => {
+    return list
+      .filter(item => accounts.value.find(account => account.currency === item.nativeCurrency))
+      .sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
+  };
 
   const selectedItems = computed(() => {
-    let currenciesList:ICurrency[];
+    let currenciesList: ICurrency[];
     if (selected.value === 'all' || !cryptoCurrencies.value.length) currenciesList = currencies.value;
     else currenciesList = cryptoCurrencies.value;
 
-    const formatList:IDisplayAccount[] = currenciesList.map((currency) => {
+    const formatList: IDisplayAccount[] = currenciesList.map(currency => {
       const findAccount = getAccountByCurrency(currency.code);
 
       if (showEquivalentBalance.value) {
-        const equivalentAccount = getEquivalentAccount(findAccount?.balance || 0, findAccount?.currency || currency.code);
+        const equivalentAccount = getEquivalentAccount(
+          findAccount?.balance || 0,
+          findAccount?.currency || currency.code
+        );
         return {
           nativeCurrency: currency.code,
           amount: equivalentAccount.balance,
@@ -107,10 +107,10 @@
       return { nativeCurrency: currency.code, ...formattedAcc };
     });
 
-    const withBalanceList:IDisplayAccount[] = [];
-    const withoutBalanceList:IDisplayAccount[] = [];
+    const withBalanceList: IDisplayAccount[] = [];
+    const withoutBalanceList: IDisplayAccount[] = [];
 
-    formatList.forEach((formatItem) => {
+    formatList.forEach(formatItem => {
       if (formatItem.amount) withBalanceList.push(formatItem);
       else withoutBalanceList.push(formatItem);
     });
@@ -141,7 +141,7 @@
     emit('changeActiveAccount');
   };
 
-  const switchTabNav = (id:string) => {
+  const switchTabNav = (id: string) => {
     selected.value = id;
   };
 </script>

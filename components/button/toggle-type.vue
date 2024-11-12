@@ -1,6 +1,6 @@
 <template>
   <span class="btn-toggle-type" @click.prevent="toggle">
-    <atomic-icon :id="icon"/>
+    <atomic-icon :id="icon" />
   </span>
 </template>
 
@@ -14,11 +14,10 @@
   const icon = computed(() => Object.values(items)[Number(hide.value)]);
 
   const emit = defineEmits(['change-type']);
-  const toggle = ():void => {
+  const toggle = (): void => {
     hide.value = !hide.value;
     emit('change-type', type.value);
   };
 </script>
 
 <style src="~/assets/styles/components/button/toggle-type.scss" lang="scss" />
-

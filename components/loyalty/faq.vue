@@ -44,11 +44,15 @@
     return getContent(loyaltyContent.value, defaultLocaleLoyaltyContent.value, 'faq.items') || [];
   });
 
-  watch(faqItems, (newValue) => {
-    const middleIndex = Math.ceil(faqItems.value.length / 2);
-    firstHalf.value = newValue.slice(0, middleIndex);
-    secondHalf.value = newValue.slice(middleIndex);
-  }, { immediate: true });
+  watch(
+    faqItems,
+    newValue => {
+      const middleIndex = Math.ceil(faqItems.value.length / 2);
+      firstHalf.value = newValue.slice(0, middleIndex);
+      secondHalf.value = newValue.slice(middleIndex);
+    },
+    { immediate: true }
+  );
 </script>
 
-<style src="~/assets/styles/components/loyalty/faq.scss" lang="scss"/>
+<style src="~/assets/styles/components/loyalty/faq.scss" lang="scss" />
