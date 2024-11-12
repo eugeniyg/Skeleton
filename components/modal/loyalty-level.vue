@@ -28,11 +28,7 @@
         {{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.description') }}
       </div>
 
-      <loyalty-level-benefits
-        v-if="levelBenefits.length"
-        class="is-order-active"
-        :levelBenefits="levelBenefits"
-      />
+      <loyalty-level-benefits v-if="levelBenefits.length" class="is-order-active" :levelBenefits="levelBenefits" />
 
       <button-base type="primary" size="md" @click="clickButton">
         {{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.button.label') }}
@@ -61,12 +57,12 @@
         .replace('{levelOrder}', loyaltyAccount.value?.currentLevel?.order || '');
     }
     return undefined;
-  })
+  });
 
   const levelsBenefitsContentParams = {
     contentKey: 'levels-benefits',
     contentRoute: ['pages', 'loyalty'],
-    only: ['rewards']
+    only: ['rewards'],
   };
   const { getContentData: getLevelsBenefitsContentData } = useContentLogic(levelsBenefitsContentParams);
   const { data: levelsBenefitsContent } = await useLazyAsyncData(getLevelsBenefitsContentData);
@@ -81,9 +77,9 @@
     if (!contentBenefits?.length) return [];
     return contentBenefits.map((benefit: { label: string; levels?: string[] }) => ({
       label: benefit.label,
-      checked: benefit.levels?.includes(String(loyaltyAccount.value?.currentLevel?.order))
-    }))
-  })
+      checked: benefit.levels?.includes(String(loyaltyAccount.value?.currentLevel?.order)),
+    }));
+  });
 
   const clickButton = (): void => {
     const url = getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.button.link');
@@ -92,7 +88,7 @@
       const router = useRouter();
       router.push(localizePath(url));
     }
-  }
+  };
 </script>
 
 <style src="~/assets/styles/components/modal/loyalty-level.scss" lang="scss" />

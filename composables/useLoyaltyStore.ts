@@ -13,7 +13,7 @@ export const useLoyaltyStore = defineStore('loyaltyStore', {
     loyaltyAccount: null,
     loyaltySubscription: null,
     levelNotificationEnabled: false,
-    levelNotificationTimer: undefined
+    levelNotificationTimer: undefined,
   }),
 
   getters: {
@@ -103,6 +103,6 @@ export const useLoyaltyStore = defineStore('loyaltyStore', {
         clearTimeout(this.levelNotificationTimer);
       }
       this.levelNotificationEnabled = false;
-    }
+    },
   },
 });

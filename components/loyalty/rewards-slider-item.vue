@@ -40,15 +40,9 @@
         </div>
       </div>
 
-      <atomic-divider
-        v-if="levelRewards.length && levelBenefits.length"
-        class="loyalty-rewards-slider__item-divider"
-      />
+      <atomic-divider v-if="levelRewards.length && levelBenefits.length" class="loyalty-rewards-slider__item-divider" />
 
-      <loyalty-level-benefits
-        v-if="levelBenefits.length"
-        :levelBenefits="levelBenefits"
-      />
+      <loyalty-level-benefits v-if="levelBenefits.length" :levelBenefits="levelBenefits" />
     </div>
   </div>
 </template>

@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-  import {storeToRefs} from "pinia";
+  import { storeToRefs } from 'pinia';
 
   const loyaltyStore = useLoyaltyStore();
   const { getContent } = useProjectMethods();
@@ -21,7 +21,7 @@
 
   const signInContentParams = {
     contentKey: 'modal-loyalty-level',
-    contentRoute: ['modals', 'loyalty-level']
+    contentRoute: ['modals', 'loyalty-level'],
   };
   const { getContentData } = useContentLogic(signInContentParams);
   const { data: loyaltyLevelContent } = await useLazyAsyncData(getContentData);
@@ -34,10 +34,8 @@
     );
     if (!titleContent) return undefined;
     const levelOrder = String(loyaltyAccount.value?.currentLevel?.order || '');
-    return titleContent
-      .replace('{levelName}', currentLevelName.value)
-      .replace('{levelOrder}', levelOrder);
-  })
+    return titleContent.replace('{levelName}', currentLevelName.value).replace('{levelOrder}', levelOrder);
+  });
 
   const levelImage = computed(() => {
     const currentLevel = loyaltyAccount.value?.currentLevel?.order;
@@ -50,13 +48,13 @@
     }
 
     return undefined;
-  })
+  });
 
   const pwaVisible = ref(false);
   onMounted(() => {
     const pwaNotif = document.querySelector('header .pwa');
     pwaVisible.value = !!pwaNotif;
-  })
+  });
 </script>
 
 <style src="~/assets/styles/components/loyalty/new-level-notif.scss" lang="scss" />
