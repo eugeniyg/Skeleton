@@ -198,7 +198,6 @@ export const useProjectMethods = () => {
       description: metaData?.description || globalStore.globalSeo?.description,
       ogDescription: metaData?.description || globalStore.globalSeo?.description,
       ogImage: imageUrl,
-      ogUrl: requestUrl.href,
     });
   };
 

@@ -42,20 +42,7 @@
 
       <atomic-divider v-if="levelRewards.length && levelBenefits.length" class="loyalty-rewards-slider__item-divider" />
 
-      <div v-if="levelBenefits.length" class="loyalty-rewards-slider__item-options">
-        <div
-          v-for="(benefit, index) in levelBenefits"
-          :key="index"
-          class="loyalty-rewards-slider__item-option"
-          :class="{ 'is-checked': benefit.checked }"
-        >
-          <div class="loyalty-rewards-slider__item-option-checkbox">
-            <atomic-icon :id="benefit.checked ? 'check' : 'close'" />
-          </div>
-
-          <div class="loyalty-rewards-slider__item-option-label">{{ benefit.label }}</div>
-        </div>
-      </div>
+      <loyalty-level-benefits v-if="levelBenefits.length" :levelBenefits="levelBenefits" />
     </div>
   </div>
 </template>
