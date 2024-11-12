@@ -1,11 +1,6 @@
 <template>
-  <notifications
-    :position="isMobile ? 'bottom center' : 'top right'"
-    :duration="8000"
-    :speed="200"
-    :width="328"
-  >
-    <template #body="{ item, close}">
+  <notifications :position="isMobile ? 'bottom center' : 'top right'" :duration="8000" :speed="200" :width="328">
+    <template #body="{ item, close }">
       <div class="alert" :class="`variant-${item.type}`">
         <atomic-icon :id="types[item.type]" />
 
@@ -13,11 +8,7 @@
           <div v-if="item.title" class="title">
             {{ item.title }}
           </div>
-          <p
-            v-if="item.text"
-            class="text"
-            v-html="item.text || ''"
-          />
+          <p v-if="item.text" class="text" v-html="item.text || ''" />
         </div>
 
         <button class="btn-alert-close">
@@ -33,7 +24,7 @@
 
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
-  const types: {[index: string]: string} = {
+  const types: { [index: string]: string } = {
     info: 'info',
     error: 'warning',
     warning: 'info',

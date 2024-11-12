@@ -1,6 +1,6 @@
 <template>
   <div class="nav-game">
-    <nav-action :showPlug="showPlug" :gameInfo="props.gameInfo" />
+    <nav-action :show-plug="showPlug" :game-info="props.gameInfo" />
   </div>
 </template>
 
@@ -8,10 +8,9 @@
   import type { IGame } from '@skeleton/core/types';
 
   const props = defineProps<{
-    gameInfo: IGame,
-    showPlug: boolean,
+    gameInfo: IGame;
+    showPlug: boolean;
   }>();
 </script>
 
 <style src="~/assets/styles/components/nav/game.scss" lang="scss" />
-

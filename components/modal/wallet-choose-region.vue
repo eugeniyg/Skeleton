@@ -2,11 +2,11 @@
   <vue-final-modal
     v-model="modals.walletRegion"
     class="modal-choose-region"
-    :clickToClose="false"
-    :overlayTransition="{ mode: 'in-out', duration: 250 }"
-    :contentTransition="{ mode: 'in-out', duration: 250 }"
-    @clickOutside="closeModal('walletRegion')"
-    @beforeOpen="beforeOpen"
+    :click-to-close="false"
+    :overlay-transition="{ mode: 'in-out', duration: 250 }"
+    :content-transition="{ mode: 'in-out', duration: 250 }"
+    @click-outside="closeModal('walletRegion')"
+    @before-open="beforeOpen"
   >
     <div class="scroll">
       <div class="header">
@@ -23,12 +23,9 @@
           :placeholder="getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.searchPlaceholder')"
           type="text"
           @input="debounceSearch"
-        >
-
-        <atomic-icon
-          id="search"
-          class="modal-choose-region__search-icon"
         />
+
+        <atomic-icon id="search" class="modal-choose-region__search-icon" />
       </div>
 
       <div v-if="filteredList.length" class="modal-choose-region__items">
@@ -38,13 +35,13 @@
           class="modal-choose-region__item"
           :class="{
             'is-selected': selectedRegion === country.code,
-            'is-active': selectedPaymentMethodsRegion === country.code
+            'is-active': selectedPaymentMethodsRegion === country.code,
           }"
           @click="selectRegion(country.code)"
         >
           <atomic-image
             :src="`/img/flags/${country.code.toLowerCase()}.svg`"
-            defaultImage="/img/flags/placeholder.png"
+            default-image="/img/flags/placeholder.png"
           />
           <div class="modal-choose-region__item-label">{{ country.name }}</div>
         </div>
@@ -54,7 +51,7 @@
         v-else
         variant="search"
         :title="getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.empty.title')"
-        :subTitle="getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.empty.description')"
+        :sub-title="getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.empty.description')"
       />
 
       <button-base
@@ -63,7 +60,7 @@
         :is-disabled="!selectedRegion || selectedPaymentMethodsRegion === selectedRegion || loading"
         @click="actionClick"
       >
-        <atomic-spinner :is-shown="loading"/>
+        <atomic-spinner :is-shown="loading" />
         {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.selectButton') }}
       </button-base>
     </div>
@@ -73,8 +70,8 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import type {ICountry} from "@skeleton/core/types";
-  import debounce from "lodash/debounce";
+  import type { ICountry } from '@skeleton/core/types';
+  import debounce from 'lodash/debounce';
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
@@ -89,17 +86,22 @@
   const selectedRegion = ref<Maybe<string>>('');
   const filteredList = ref<ICountry[]>(countriesSelectOptions.value);
 
-  const debounceSearch = debounce((event: any): void => {
-    if (!event.target.value) filteredList.value = countriesSelectOptions.value;
-    else filteredList.value = countriesSelectOptions.value.filter(
-      country => country.name.toLowerCase().includes(event.target.value.toLowerCase())
-    );
-  }, 500, { leading: false });
+  const debounceSearch = debounce(
+    (event: any): void => {
+      if (!event.target.value) filteredList.value = countriesSelectOptions.value;
+      else
+        filteredList.value = countriesSelectOptions.value.filter(country =>
+          country.name.toLowerCase().includes(event.target.value.toLowerCase())
+        );
+    },
+    500,
+    { leading: false }
+  );
 
-  const selectRegion = (countryCode: string):void => {
+  const selectRegion = (countryCode: string): void => {
     if (selectedRegion.value === countryCode || selectedPaymentMethodsRegion.value === countryCode) return;
     selectedRegion.value = countryCode;
-  }
+  };
 
   const beforeOpen = (): void => {
     if (searchInput.value) {
@@ -107,23 +109,19 @@
       filteredList.value = countriesSelectOptions.value;
     }
     selectedRegion.value = selectedPaymentMethodsRegion.value || '';
-  }
+  };
 
   const loading = ref(false);
-  const actionClick = async ():Promise<void> => {
+  const actionClick = async (): Promise<void> => {
     if (!selectedRegion.value || selectedPaymentMethodsRegion.value === selectedRegion.value) return;
     loading.value = true;
     localStorage.setItem('paymentGeo', selectedRegion.value);
     walletStore.setPaymentMethodsGeo();
 
-    await Promise.allSettled([
-      walletStore.getDepositMethods(),
-      walletStore.getWithdrawMethods()
-    ]);
+    await Promise.allSettled([walletStore.getDepositMethods(), walletStore.getWithdrawMethods()]);
     loading.value = false;
     closeModal('walletRegion');
-  }
+  };
 </script>
 
 <style src="~/assets/styles/components/modal/wallet-choose-region.scss" lang="scss" />
-

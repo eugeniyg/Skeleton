@@ -1,7 +1,7 @@
 <template>
   <div class="toggle-drawer">
     <button-base data-action="minimize" @click="emit('toggle-minimize')">
-      <atomic-icon id="menu-open"/>
+      <atomic-icon id="menu-open" />
     </button-base>
   </div>
 </template>
@@ -11,4 +11,3 @@
 </script>
 
 <style src="~/assets/styles/components/button/toggle-drawer.scss" lang="scss" />
-

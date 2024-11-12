@@ -5,11 +5,8 @@
     :class="{ 'is-active': props.popoverShow, 'is-contrast': unreadCount }"
     @click.stop.prevent="emit('toggle')"
   >
-    <atomic-icon id="notification"/>
-    <span
-      v-if="unreadCount"
-      class="notification-popover-activator__count"
-    >
+    <atomic-icon id="notification" />
+    <span v-if="unreadCount" class="notification-popover-activator__count">
       {{ unreadCount > 99 ? `${unreadCount}+` : unreadCount }}
     </span>
   </div>
@@ -28,4 +25,4 @@
   const emit = defineEmits(['toggle']);
 </script>
 
-<style src="~/assets/styles/components/notification/popover-activator.scss" lang="scss"/>
+<style src="~/assets/styles/components/notification/popover-activator.scss" lang="scss" />

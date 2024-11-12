@@ -1,13 +1,15 @@
 <template>
   <div v-if="showBlock" class="group-games">
-    <atomic-icon v-if="titleIcon && !props.subTitle" :id="titleIcon"/>
+    <atomic-icon v-if="titleIcon && !props.subTitle" :id="titleIcon" />
 
     <div v-if="props.subTitle" class="titles">
       <h2 class="title">
         {{ gameCategoriesObj[props.category.identity]?.label || props.category.name || props.category.identity }}
       </h2>
       <h4 class="sub-title">
-        {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.recommendedSubtitle') }}
+        {{
+          getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.recommendedSubtitle')
+        }}
       </h4>
     </div>
 
@@ -15,21 +17,16 @@
       {{ gameCategoriesObj[props.category.identity]?.label || props.category.name || props.category.identity }}
     </h2>
 
-    <button-base
-      v-if="props.showAllBtn"
-      class="btn-show-all"
-      type="ghost"
-      size="sm"
-      @click="openGames"
-    >
-      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }} {{ pageMeta?.totalRows }}
+    <button-base v-if="props.showAllBtn" class="btn-show-all" type="ghost" size="sm" @click="openGames">
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
+      {{ pageMeta?.totalRows }}
     </button-base>
 
     <button-arrows
       v-if="showArrowButtons"
-      :prevDisabled="prevDisabled"
-      :nextDisabled="nextDisabled"
-      @clickAction="clickAction"
+      :prev-disabled="prevDisabled"
+      :next-disabled="nextDisabled"
+      @click-action="clickAction"
     />
 
     <div
@@ -39,30 +36,21 @@
       @scroll="scrollHandler"
     >
       <template v-if="games.length">
-        <card-base
-          v-for="(game, gameIndex) in games"
-          :key="gameIndex"
-          :gameInfo="game"
-        />
+        <card-base v-for="(game, gameIndex) in games" :key="gameIndex" :game-info="game" />
       </template>
 
       <template v-else>
-        <Skeletor
-          v-for="n in 9"
-          :key="n"
-          class="card-base"
-          as="div"
-        />
+        <Skeletor v-for="n in 9" :key="n" class="card-base" as="div" />
       </template>
 
-      <div ref="loadMore" class="load-more" @inview="moreGames"/>
+      <div ref="loadMore" class="load-more" @inview="moreGames" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import type { IGame, IPaginationMeta } from '@skeleton/core/types';
-  import { storeToRefs } from "pinia";
+  import { storeToRefs } from 'pinia';
   import { Skeletor } from 'vue-skeletor';
 
   const props = defineProps({
@@ -102,8 +90,10 @@
     if (!scrollContainer.value) return;
     const { scrollLeft, offsetWidth, scrollWidth } = scrollContainer.value;
     prevDisabled.value = scrollLeft === 0;
-    nextDisabled.value = scrollWidth < (scrollLeft + offsetWidth + 20) && scrollWidth > (scrollLeft + offsetWidth - 20)
-      && pageMeta.value?.page === pageMeta.value?.totalPages;
+    nextDisabled.value =
+      scrollWidth < scrollLeft + offsetWidth + 20 &&
+      scrollWidth > scrollLeft + offsetWidth - 20 &&
+      pageMeta.value?.page === pageMeta.value?.totalPages;
   };
 
   const clickAction = (direction: string): void => {
@@ -122,8 +112,8 @@
     perPage: 18,
     countries: headerCountry.value ? [headerCountry.value] : undefined,
     sortBy: 'default',
-    sortOrder: 'asc'
-  }
+    sortOrder: 'asc',
+  };
 
   const moreGames = async (): Promise<void> => {
     if (pageMeta.value?.page === pageMeta.value?.totalPages) return;
@@ -149,7 +139,7 @@
     observerLoadMore.value.observe(loadMore.value);
 
     const gamesResponse = await getFilteredGames(defaultRequestParams);
-    if (!gamesResponse.data.length) return showBlock.value = false;
+    if (!gamesResponse.data.length) return (showBlock.value = false);
     games.value = gamesResponse.data;
     pageMeta.value = gamesResponse.meta;
     await nextTick();
@@ -166,7 +156,7 @@
     if (loadMore.value && observerLoadMore.value) {
       observerLoadMore.value.unobserve(loadMore.value);
     }
-  })
+  });
 
   const { localizePath } = useProjectMethods();
   const openGames = (): void => {
@@ -176,4 +166,3 @@
 </script>
 
 <style src="~/assets/styles/components/group/games.scss" lang="scss" />
-

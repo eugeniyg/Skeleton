@@ -1,15 +1,19 @@
 import { defineStore } from 'pinia';
-import type {IPlayerLoyaltyAccount, IWebSocketResponse} from "@skeleton/core/types";
+import type { IPlayerLoyaltyAccount, IWebSocketResponse } from '@skeleton/core/types';
 
 interface ILoyaltyStoreState {
   loyaltyAccount: Maybe<IPlayerLoyaltyAccount>;
   loyaltySubscription: any;
+  levelNotificationEnabled: boolean;
+  levelNotificationTimer: any;
 }
 
 export const useLoyaltyStore = defineStore('loyaltyStore', {
-  state: ():ILoyaltyStoreState => ({
+  state: (): ILoyaltyStoreState => ({
     loyaltyAccount: null,
-    loyaltySubscription: null
+    loyaltySubscription: null,
+    levelNotificationEnabled: false,
+    levelNotificationTimer: undefined,
   }),
 
   getters: {
@@ -40,41 +44,65 @@ export const useLoyaltyStore = defineStore('loyaltyStore', {
       const currentLevelPoints = Math.round(this.currentPoints - prevLevelPoints);
       const pointsToNextLevel = Math.round(this.nextLevelPoints - prevLevelPoints);
 
-      const progressFloat = currentLevelPoints / pointsToNextLevel * 100;
+      const progressFloat = (currentLevelPoints / pointsToNextLevel) * 100;
       return Math.round(progressFloat * 100) / 100;
-    }
+    },
   },
 
   actions: {
-    async getPlayerLoyalty():Promise<void> {
+    async getPlayerLoyalty(): Promise<void> {
       const { getPlayerLoyaltyAccount } = useCoreProfileApi();
       this.loyaltyAccount = await getPlayerLoyaltyAccount();
     },
 
-    loyaltySocketTrigger ({ data }:IWebSocketResponse): void {
+    loyaltySocketTrigger({ data }: IWebSocketResponse): void {
       const oldLevelValue = this.loyaltyAccount?.currentLevel?.order;
       const newLevelValue = data.playerAccount?.currentLevel?.order;
-      const showNewLevelModal = oldLevelValue && newLevelValue && (oldLevelValue < newLevelValue);
+      const showNewLevelModal = oldLevelValue && newLevelValue && oldLevelValue < newLevelValue;
       if (data?.playerAccount) this.loyaltyAccount = data.playerAccount;
       if (showNewLevelModal) {
+        const route = useRoute();
+        if (route.name === 'games-id' || route.name === 'locale-games-id') {
+          this.showLevelNotification();
+          return;
+        }
+
         const { showModal } = useLayoutStore();
         showModal('loyaltyLevel');
       }
     },
 
-    subscribeLoyaltySocket():void {
+    subscribeLoyaltySocket(): void {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
         const { createSubscription } = useWebSocket();
-        this.loyaltySubscription = createSubscription(`retention:accounts#${profileStore.profile?.id}`, this.loyaltySocketTrigger);
+        this.loyaltySubscription = createSubscription(
+          `retention:accounts#${profileStore.profile?.id}`,
+          this.loyaltySocketTrigger
+        );
       }
     },
 
-    unsubscribeLoyaltySocket():void {
+    unsubscribeLoyaltySocket(): void {
       if (this.loyaltySubscription) {
         this.loyaltySubscription.unsubscribe();
         this.loyaltySubscription.removeAllListeners();
       }
+    },
+
+    showLevelNotification(): void {
+      this.levelNotificationEnabled = true;
+      if (this.levelNotificationTimer) clearTimeout(this.levelNotificationTimer);
+      this.levelNotificationTimer = setTimeout(() => {
+        this.levelNotificationEnabled = false;
+      }, 3000);
+    },
+
+    closeLevelNotification(): void {
+      if (this.levelNotificationTimer) {
+        clearTimeout(this.levelNotificationTimer);
+      }
+      this.levelNotificationEnabled = false;
     },
   },
 });

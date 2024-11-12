@@ -4,13 +4,13 @@
 
     <div class="providers-sort__options">
       <div
-        v-for="{ label, sortBy, sortOrder } in sortOptions"
-        :key="label"
+        v-for="option in sortOptions"
+        :key="option.label"
         class="providers-sort__option"
-        :class="{ 'is-selected': props.sortBy === sortBy && props.sortOrder === sortOrder }"
-        @click="changeSort(sortBy, sortOrder)"
+        :class="{ 'is-selected': props.sortBy === option.sortBy && props.sortOrder === option.sortOrder }"
+        @click="changeSort(option.sortBy, option.sortOrder)"
       >
-        {{ label }}
+        {{ option.label }}
       </div>
     </div>
   </div>
@@ -27,7 +27,7 @@
   }>();
 
   const emit = defineEmits(['change']);
-  const changeSort = (sortBy: string, sortOrder: string):void => {
+  const changeSort = (sortBy: string, sortOrder: string): void => {
     if (props.sortBy !== sortBy || props.sortOrder !== sortOrder) {
       emit('change', { sortBy, sortOrder });
     }

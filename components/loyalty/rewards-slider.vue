@@ -7,31 +7,24 @@
       'is-next-disabled': isNextDisabled,
     }"
   >
-    <div
-      ref="sliderNode"
-      class="loyalty-rewards-slider"
-    >
+    <div ref="sliderNode" class="loyalty-rewards-slider">
       <div class="loyalty-rewards-slider__viewport">
-        <loyalty-rewards-slider-item
-          v-for="level in props.levels"
-          :key="level.id"
-          :level="level"
-        />
+        <loyalty-rewards-slider-item v-for="level in props.levels" :key="level.id" :level="level" />
       </div>
     </div>
 
     <div class="loyalty-rewards-slider__btn is-prev" @click="scrollPrev">
-      <atomic-icon id="arrow_expand-close"/>
+      <atomic-icon id="arrow_expand-close" />
     </div>
 
     <div class="loyalty-rewards-slider__btn is-next" @click="scrollNext">
-      <atomic-icon id="arrow_expand-close"/>
+      <atomic-icon id="arrow_expand-close" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { ILoyaltyLevel } from "@skeleton/core/types";
+  import type { ILoyaltyLevel } from '@skeleton/core/types';
   import emblaCarouselVue from 'embla-carousel-vue';
 
   const props = defineProps<{
@@ -43,9 +36,8 @@
 
   const [sliderNode, emblaApi] = emblaCarouselVue({
     loop: false,
-    align: 'center'
-  },
-  );
+    align: 'center',
+  });
 
   const isCentered = computed(() => isPrevDisabled.value && isNextDisabled.value);
 
@@ -75,4 +67,4 @@
   });
 </script>
 
-<style src="~/assets/styles/components/loyalty/rewards-slider.scss" lang="scss"/>
+<style src="~/assets/styles/components/loyalty/rewards-slider.scss" lang="scss" />

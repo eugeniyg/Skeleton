@@ -1,11 +1,6 @@
 <template>
   <div id="wallet-await-invoice" class="await-invoice">
-    <atomic-image
-      v-if="image"
-      :src="image"
-      width="72"
-      height="72"
-    />
+    <atomic-image v-if="image" :src="image" width="72" height="72" />
 
     <div class="await-invoice__title">
       {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.awaitInvoice.title') }}
@@ -25,7 +20,6 @@
   const image = computed(() => {
     return getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.awaitInvoice.image');
   });
-
 </script>
 
-<style src="~/assets/styles/components/wallet/await-invoice.scss" lang="scss"/>
+<style src="~/assets/styles/components/wallet/await-invoice.scss" lang="scss" />

@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="limits__card"
-    :class="{'is-full-width': isFullWidth}"
-  >
+  <div class="limits__card" :class="{ 'is-full-width': isFullWidth }">
     <h4 class="limits__card-title">
       {{ getContent(limitsContent, defaultLimitsContent, 'selfExclusion.label') }}
     </h4>
@@ -14,11 +11,7 @@
         :placeholder="getContent(limitsContent, defaultLimitsContent, 'selfExclusion.selectLabel')"
         :options="selfExclusionPeriod"
       />
-      <button-base
-        type="primary"
-        :is-disabled="!selectedPeriod"
-        @click="emit('open-confirm-modal', selectedPeriod)"
-      >
+      <button-base type="primary" :is-disabled="!selectedPeriod" @click="emit('open-confirm-modal', selectedPeriod)">
         {{ getContent(limitsContent, defaultLimitsContent, 'setButtonLabel') }}
       </button-base>
     </div>
@@ -32,12 +25,17 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
-  import DOMPurify from "isomorphic-dompurify";
+  import DOMPurify from 'isomorphic-dompurify';
 
   const limitsStore = useLimitsStore();
   const {
-    limitsContent, defaultLimitsContent, selfExclusionPeriod,
-    depositPeriods, betPeriods, lossPeriods, isAdvancedModeEnabled,
+    limitsContent,
+    defaultLimitsContent,
+    selfExclusionPeriod,
+    depositPeriods,
+    betPeriods,
+    lossPeriods,
+    isAdvancedModeEnabled,
   } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();
 
@@ -49,13 +47,29 @@
     const contentText = getContent(limitsContent.value, defaultLimitsContent.value, 'selfExclusion.hint');
     if (!contentText) return '';
     return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
-  })
+  });
 
-  const isFullWidth = computed(() => (
-    (isAdvancedModeEnabled.value && (depositPeriods.value.length < 2 && lossPeriods.value.length < 2 && betPeriods.value.length < 2))
-    || (isAdvancedModeEnabled.value && (depositPeriods.value.length > 1 && lossPeriods.value.length > 1 && betPeriods.value.length < 2))
-    || (isAdvancedModeEnabled.value && (depositPeriods.value.length > 2 && lossPeriods.value.length > 2 && betPeriods.value.length < 1)))
-    || (isAdvancedModeEnabled.value && (depositPeriods.value.length > 2 && lossPeriods.value.length > 1 && betPeriods.value.length < 2))
-    || (isAdvancedModeEnabled.value && (depositPeriods.value.length < 1 && lossPeriods.value.length > 1 && betPeriods.value.length < 2)));
-
+  const isFullWidth = computed(
+    () =>
+      (isAdvancedModeEnabled.value &&
+        depositPeriods.value.length < 2 &&
+        lossPeriods.value.length < 2 &&
+        betPeriods.value.length < 2) ||
+      (isAdvancedModeEnabled.value &&
+        depositPeriods.value.length > 1 &&
+        lossPeriods.value.length > 1 &&
+        betPeriods.value.length < 2) ||
+      (isAdvancedModeEnabled.value &&
+        depositPeriods.value.length > 2 &&
+        lossPeriods.value.length > 2 &&
+        betPeriods.value.length < 1) ||
+      (isAdvancedModeEnabled.value &&
+        depositPeriods.value.length > 2 &&
+        lossPeriods.value.length > 1 &&
+        betPeriods.value.length < 2) ||
+      (isAdvancedModeEnabled.value &&
+        depositPeriods.value.length < 1 &&
+        lossPeriods.value.length > 1 &&
+        betPeriods.value.length < 2)
+  );
 </script>

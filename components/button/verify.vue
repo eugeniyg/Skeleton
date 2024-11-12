@@ -14,4 +14,3 @@
 </script>
 
 <style src="~/assets/styles/components/button/verify.scss" lang="scss" />
-

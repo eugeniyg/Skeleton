@@ -1,7 +1,7 @@
 <template>
   <button class="btn-play" @click="onClick">
     <span class="icon-box">
-      <atomic-icon id="play"/>
+      <atomic-icon id="play" />
     </span>
   </button>
 </template>
@@ -15,4 +15,3 @@
 </script>
 
 <style src="~/assets/styles/components/button/play.scss" lang="scss" />
-

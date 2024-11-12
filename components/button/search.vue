@@ -1,10 +1,6 @@
 <template>
-  <button
-    class="btn-search"
-    :class="{'is-active': active}"
-    @click="emit('show-search')"
-  >
-    <atomic-icon id="search"/>
+  <button class="btn-search" :class="{ 'is-active': active }" @click="emit('show-search')">
+    <atomic-icon id="search" />
   </button>
 </template>
 
@@ -22,4 +18,3 @@
 </script>
 
 <style src="~/assets/styles/components/button/search.scss" lang="scss" />
-

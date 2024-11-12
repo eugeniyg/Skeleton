@@ -1,5 +1,5 @@
 <template>
-  <div class="msg" :class="{'is-unread': props.isUnread}">
+  <div class="msg" :class="{ 'is-unread': props.isUnread }">
     <div class="content">
       <atomic-image class="img" :src="props.src" />
       <div class="title">{{ props.title }}</div>

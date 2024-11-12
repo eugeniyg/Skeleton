@@ -4,19 +4,15 @@
     v-click-outside="hideHover"
     class="card-original"
     :class="{
-      'hovered': gameHovered,
-      'card-original--wide': props.isWide
+      hovered: gameHovered,
+      'card-original--wide': props.isWide,
     }"
     :data-size="cardSize"
     @click="clickGame"
   >
     <atomic-image class="card-original__img" :src="src" />
     <div v-if="gameBages?.length" class="bages">
-      <atomic-bage
-        v-for="(bage, bageIndex) in gameBages"
-        :key="bageIndex"
-        v-bind="bage"
-      />
+      <atomic-bage v-for="(bage, bageIndex) in gameBages" :key="bageIndex" v-bind="bage" />
     </div>
 
     <div class="card-original__info">
@@ -28,16 +24,11 @@
       <div v-if="props.subTitle" class="sub-title">{{ props.subTitle }}</div>
 
       <div class="card-original__info-actions">
-        <button-play @click="openGame(true)"/>
+        <button-play @click="openGame(true)" />
       </div>
 
       <div class="card-original__info-footer">
-        <button-base
-          v-if="props.isDemoMode"
-          class="btn-try"
-          tag-name="span"
-          @click="openGame(false)"
-        >
+        <button-base v-if="props.isDemoMode" class="btn-try" tag-name="span" @click="openGame(false)">
           <!--{{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.demoButton') }}-->
           Demo
         </button-base>
@@ -45,10 +36,9 @@
         <!--<button-info/>-->
 
         <client-only>
-          <button-favorite v-if="isLoggedIn" :gameId="id"/>
+          <button-favorite v-if="isLoggedIn" :game-id="id" />
         </client-only>
       </div>
-
     </div>
   </div>
 </template>
@@ -73,17 +63,18 @@
   const router = useRouter();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const {
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent,
-  } = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const { openModal } = useModalStore();
   const { localizePath, getImageUrl, getContent } = useProjectMethods();
 
-  const gameTagsContent: Maybe<IGameTag[]> = getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'gameTags.gameTagsList');
+  const gameTagsContent: Maybe<IGameTag[]> = getContent(
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
+    'gameTags.gameTagsList'
+  );
 
-  const labelNames = props.labels?.map((label) => label.name)
-  const gameBages = gameTagsContent?.filter((bage) => labelNames.includes(bage.identity));
+  const labelNames = props.labels?.map(label => label.name);
+  const gameBages = gameTagsContent?.filter(bage => labelNames.includes(bage.identity));
 
   const openGame = (isReal: boolean): void => {
     if (!isReal) {

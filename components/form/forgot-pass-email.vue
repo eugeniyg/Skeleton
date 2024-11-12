@@ -16,11 +16,11 @@
     <button-base
       type="primary"
       size="md"
-      tagName="div"
-      :isDisabled="v$.$invalid || isLockedAsyncButton"
+      tag-name="div"
+      :is-disabled="v$.$invalid || isLockedAsyncButton"
       @click="sendEmail"
     >
-      <atomic-spinner :is-shown="isLockedAsyncButton"/>
+      <atomic-spinner :is-shown="isLockedAsyncButton" />
       {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'forgotButton') }}
     </button-base>
   </form>
@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type {IModalsContent} from "~/types";
+  import type { IModalsContent } from '~/types';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['forgot']>;
@@ -36,12 +36,7 @@
   }>();
 
   const globalStore = useGlobalStore();
-  const {
-    fieldsSettings,
-    defaultLocaleFieldsSettings,
-    alertsData,
-    defaultLocaleAlertsData,
-  } = storeToRefs(globalStore);
+  const { fieldsSettings, defaultLocaleFieldsSettings, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
   const forgotFormData = reactive({ email: '' });
   const { getFormRules, getContent } = useProjectMethods();
@@ -49,14 +44,12 @@
     email: [{ rule: 'required' }, { rule: 'email' }],
   };
   const forgotFormRules = getFormRules(forgotRules);
-  const {
-    serverFormErrors, v$, onFocus, setError,
-  } = useFormValidation(forgotFormRules, forgotFormData);
+  const { serverFormErrors, v$, onFocus, setError } = useFormValidation(forgotFormRules, forgotFormData);
 
   const { forgotProfilePassword } = useCoreProfileApi();
   const isLockedAsyncButton = ref<boolean>(false);
 
-  const sendEmail = async ():Promise<void> => {
+  const sendEmail = async (): Promise<void> => {
     if (v$.value.$invalid) return;
 
     v$.value.$reset();
@@ -70,7 +63,7 @@
       const { closeModal } = useModalStore();
       showAlert(alertsData.value?.profile?.sentResetLink || defaultLocaleAlertsData.value?.profile?.sentResetLink);
       closeModal('forgot-pass');
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response?.status === 422) {
         serverFormErrors.value = error.data?.error?.fields;
       } else throw error;

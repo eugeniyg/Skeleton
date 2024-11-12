@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerBonus } from "@skeleton/core/types";
+  import type { IPlayerBonus } from '@skeleton/core/types';
 
   const props = defineProps<{
     wageringLabel: string;
@@ -36,7 +36,7 @@
 
   const wageredFormatSum = computed(() => {
     return formatBalance(props.bonusInfo?.currency, props.bonusInfo?.currentWagerAmount);
-  })
+  });
 </script>
 
 <style src="~/assets/styles/components/atomic/bonus-progress.scss" lang="scss" />

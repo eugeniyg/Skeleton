@@ -5,7 +5,7 @@
         v-for="{ title, id } in tabsArray"
         :key="id"
         class="item"
-        :class="{'is-selected': id === selected}"
+        :class="{ 'is-selected': id === selected }"
         @click="changeTab(id)"
       >
         {{ title }}
@@ -13,7 +13,7 @@
     </div>
 
     <div class="tab-history">
-      <component :is="loadTab(selected)" :content="props.content[selected]"/>
+      <component :is="loadTab(selected)" :content="props.content[selected]" />
     </div>
   </div>
 </template>
@@ -22,12 +22,13 @@
   import type { IHistory } from '~/types';
 
   const props = defineProps<{
-    content: IHistory
+    content: IHistory;
   }>();
 
   const runtimeConfig = useRuntimeConfig();
-  const hasBetsyIntegration = runtimeConfig.public.betsyParams?.clientHost && runtimeConfig.public.betsyParams?.clientId;
-  const filterContent = Object.keys(props.content).filter((key) => {
+  const hasBetsyIntegration =
+    runtimeConfig.public.betsyParams?.clientHost && runtimeConfig.public.betsyParams?.clientId;
+  const filterContent = Object.keys(props.content).filter(key => {
     if (key === 'bets' && !hasBetsyIntegration) return false;
     if (props.content[key]?.tabLabel) return key;
     return false;
@@ -38,7 +39,7 @@
     return -1;
   });
 
-  const tabsArray = sortContent.map((key) => ({
+  const tabsArray = sortContent.map(key => ({
     id: key,
     title: props.content[key].tabLabel,
   }));
@@ -54,13 +55,12 @@
     router.replace({ query: { tab: tabsArray[0].id } });
   }
 
-  const loadTab = (name:string):string => `tab-history-${name}`;
+  const loadTab = (name: string): string => `tab-history-${name}`;
 
-  const changeTab = (tabId: string):void => {
+  const changeTab = (tabId: string): void => {
     router.push({ query: { tab: tabId } });
     selected.value = tabId;
   };
 </script>
 
 <style src="~/assets/styles/components/tab/history/index.scss" lang="scss" />
-

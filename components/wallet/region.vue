@@ -1,9 +1,6 @@
 <template>
   <div class="wallet-region">
-    <atomic-image
-      :src="regionImage"
-      defaultImage="/img/flags/placeholder.png"
-    />
+    <atomic-image :src="regionImage" default-image="/img/flags/placeholder.png" />
 
     <div class="wallet-region__label">
       {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.regionBlock.label') }}
@@ -13,10 +10,7 @@
       {{ selectedRegionName }}
     </span>
 
-    <span
-      class="wallet-region__change"
-      @click="showModal('walletRegion')"
-    >
+    <span class="wallet-region__change" @click="showModal('walletRegion')">
       {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.regionBlock.change') }}
     </span>
   </div>
@@ -32,7 +26,9 @@
   const { selectedPaymentMethodsRegion } = storeToRefs(walletStore);
 
   const selectedRegionName = computed(() => {
-    const countryOption = countriesSelectOptions.value.find(country => country.code === selectedPaymentMethodsRegion.value);
+    const countryOption = countriesSelectOptions.value.find(
+      country => country.code === selectedPaymentMethodsRegion.value
+    );
     const unknownLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.regionBlock.unknown');
     return countryOption?.name || unknownLabel || 'Unknown Region';
   });
@@ -41,7 +37,7 @@
     return selectedPaymentMethodsRegion.value
       ? `/img/flags/${selectedPaymentMethodsRegion.value.toLowerCase()}.svg`
       : '/img/flags/placeholder.png';
-  })
+  });
 </script>
 
 <style src="~/assets/styles/components/wallet/region.scss" lang="scss" />

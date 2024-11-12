@@ -5,7 +5,9 @@
 
       <div class="mobile-content">
         <div class="mobile-title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.mobile.title') }}</div>
-        <div class="mobile-description">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.mobile.description') }}</div>
+        <div class="mobile-description">
+          {{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.mobile.description') }}
+        </div>
       </div>
 
       <button class="mobile-btn-install" @click="installPWA">
@@ -28,20 +30,32 @@
       <atomic-icon :id="platformKey" />
 
       <div class="desktop-content">
-        <div class="desktop-title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.desktop.application') }}</div>
+        <div class="desktop-title">
+          {{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.desktop.application') }}
+        </div>
         <div class="desktop-description">
           {{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.desktop.forOs')?.replace('{os}', osPlatform) }}
         </div>
       </div>
 
       <Teleport v-if="isTooltipVisible" to="body">
-        <div ref="tooltipContainer" class="desktop-tooltip-container" :style="`top: ${coords.top}px; left: ${coords.left}px`">
+        <div
+          ref="tooltipContainer"
+          class="desktop-tooltip-container"
+          :style="`top: ${coords.top}px; left: ${coords.left}px`"
+        >
           <div class="desktop-tooltip-bg">
-            <atomic-picture :src="getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.tooltip.backgroundImage')" />
+            <atomic-picture
+              :src="getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.tooltip.backgroundImage')"
+            />
           </div>
           <div class="desktop-tooltip-content">
-            <div class="desktop-tooltip-title">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.tooltip.title') }}</div>
-            <div class="desktop-tooltip-description">{{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.tooltip.description') }}</div>
+            <div class="desktop-tooltip-title">
+              {{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.tooltip.title') }}
+            </div>
+            <div class="desktop-tooltip-description">
+              {{ getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.tooltip.description') }}
+            </div>
           </div>
           <div class="desktop-tooltip-image">
             <atomic-picture :src="getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.tooltip.image')" />
@@ -57,7 +71,7 @@
   import parser from 'ua-parser-js';
 
   const props = defineProps<{
-    display: 'desktop'|'mobile';
+    display: 'desktop' | 'mobile';
   }>();
   const PWA_HIDDEN_KEY = 'PWA_HIDDEN';
 
@@ -76,15 +90,16 @@
     left: 0,
   });
 
-
   const userAgent = window.navigator.userAgent;
   const parsedUserAgent = userAgent ? parser(userAgent) : undefined;
   const appleNotCompatible = parsedUserAgent?.browser?.name === 'Safari' || parsedUserAgent?.os?.name === 'iOS';
   const allowInstall = ref<boolean>(!!window.pwa?.allowInstall || appleNotCompatible);
   const isVisible = computed(() => {
-    return allowInstall.value
-      && !isHidden.value
-      && ((props.display === 'desktop' && !isMobile.value) || (props.display === 'mobile' && isMobile.value));
+    return (
+      allowInstall.value &&
+      !isHidden.value &&
+      ((props.display === 'desktop' && !isMobile.value) || (props.display === 'mobile' && isMobile.value))
+    );
   });
 
   const platformKey = computed(() => {
@@ -106,7 +121,7 @@
       const pageLink = getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.instructionLink');
       handleExternalLink(pageLink);
     } else {
-      window.pwa?.install().then((res) => {
+      window.pwa?.install().then(res => {
         if (res.outcome === 'accepted') {
           allowInstall.value = false;
         }

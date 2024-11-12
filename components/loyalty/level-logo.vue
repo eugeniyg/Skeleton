@@ -1,14 +1,8 @@
 <template>
   <div class="loyalty-level-logo">
-    <atomic-image
-      :src="levelImage || '/img/loyalty/default-level-img.png'"
-      class="loyalty-level-logo__logo"
-    />
+    <atomic-image :src="levelImage || '/img/loyalty/default-level-img.png'" class="loyalty-level-logo__logo" />
 
-    <atomic-image
-      class="loyalty-level-logo__background"
-      src="/img/loyalty/default-level-bg.png"
-    />
+    <atomic-image class="loyalty-level-logo__background" src="/img/loyalty/default-level-bg.png" />
   </div>
 </template>
 
@@ -19,10 +13,7 @@
 
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
-  const {
-    globalComponentsContent,
-    defaultLocaleGlobalComponentsContent
-  } = storeToRefs(globalStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
 
   const loyaltyStore = useLoyaltyStore();
   const { loyaltyAccount } = storeToRefs(loyaltyStore);
@@ -36,7 +27,7 @@
       defaultLocaleGlobalComponentsContent.value,
       `loyalty.levelsImages.${level - 1}.imageUrl`
     );
-  })
+  });
 </script>
 
-<style src="~/assets/styles/components/loyalty/level-logo.scss" lang="scss"/>
+<style src="~/assets/styles/components/loyalty/level-logo.scss" lang="scss" />

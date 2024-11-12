@@ -21,12 +21,12 @@
 
 <script setup lang="ts">
   import { marked } from 'marked';
-  import DOMPurify from "isomorphic-dompurify";
+  import DOMPurify from 'isomorphic-dompurify';
 
   const props = defineProps<{
-    visible?: string,
-    hidden?: string,
-    button?: string
+    visible?: string;
+    hidden?: string;
+    button?: string;
   }>();
 
   const showHidden = ref<boolean>(false);

@@ -1,11 +1,7 @@
 <template>
   <div class="documents-uploads">
     <div class="documents-uploads__head">
-      <button-base
-        type="ghost-gray"
-        size="sm"
-        @click="emit('prevStep')"
-      >
+      <button-base type="ghost-gray" size="sm" @click="emit('prevStep')">
         <atomic-icon id="arrow_previous" />
       </button-base>
 
@@ -18,7 +14,7 @@
       <documents-instruction
         v-for="(instruction, index) in instructionContent.photoInstruction"
         :key="index"
-        :instructionData="instruction"
+        :instruction-data="instruction"
       />
     </div>
 
@@ -32,8 +28,8 @@
       <documents-dropzone
         v-for="item in formFields[props.documentType]"
         :key="item"
-        :fileName="getContent(documentsContent, defaultLocaleDocumentsContent, `uploadDocumentName.${item}`) || item"
-        :fileList="props.formData[item]"
+        :file-name="getContent(documentsContent, defaultLocaleDocumentsContent, `uploadDocumentName.${item}`) || item"
+        :file-list="props.formData[item]"
         :loading="props.loadingFields.includes(item)"
         @remove="emit('removeFile', { name: item, ...$event })"
         @change="emit('addFiles', { fieldName: item, fileList: $event })"
@@ -54,8 +50,8 @@
 </template>
 
 <script setup lang="ts">
-  import type {IProfileDocuments} from "~/types";
-  import type {IDocumentFile} from "@skeleton/core/types";
+  import type { IProfileDocuments } from '~/types';
+  import type { IDocumentFile } from '@skeleton/core/types';
 
   interface IFormData extends Record<string, IDocumentFile[]> {
     identity_front: IDocumentFile[];
@@ -78,25 +74,33 @@
     identity_selfie_id: ['identity_selfie_id'],
     address: ['address'],
     payment: ['payment', 'payment_back'],
-    other: ['other']
-  }
+    other: ['other'],
+  };
   const emit = defineEmits(['prevStep', 'removeFile', 'addFiles']);
 
   const { getContent } = useProjectMethods();
   const documentsContent = ref<Maybe<IProfileDocuments>>(inject('documentsContent'));
   const defaultLocaleDocumentsContent = ref<Maybe<IProfileDocuments>>(inject('defaultLocaleDocumentsContent'));
-  const titleTemplate = computed(() => getContent(documentsContent.value, defaultLocaleDocumentsContent.value, 'verificationTitle'));
-  const typeContent = computed(() => getContent(documentsContent.value, defaultLocaleDocumentsContent.value, `documentTypeCards.${props.documentType}`));
-  const instructionContent = computed(() => getContent(documentsContent.value, defaultLocaleDocumentsContent.value, `verification.${props.documentType}`));
+  const titleTemplate = computed(() =>
+    getContent(documentsContent.value, defaultLocaleDocumentsContent.value, 'verificationTitle')
+  );
+  const typeContent = computed(() =>
+    getContent(documentsContent.value, defaultLocaleDocumentsContent.value, `documentTypeCards.${props.documentType}`)
+  );
+  const instructionContent = computed(() =>
+    getContent(documentsContent.value, defaultLocaleDocumentsContent.value, `verification.${props.documentType}`)
+  );
 
   const verifyTitle = computed(() => {
     if (titleTemplate.value) {
       return titleTemplate.value.replace('{type}', typeContent.value?.title || props.documentType);
     }
-    return ''
-  })
+    return '';
+  });
 
-  const alertText = computed(() => getContent(documentsContent.value, defaultLocaleDocumentsContent.value, `verification.${props.documentType}.alert`));
+  const alertText = computed(() =>
+    getContent(documentsContent.value, defaultLocaleDocumentsContent.value, `verification.${props.documentType}.alert`)
+  );
 </script>
 
 <style src="~/assets/styles/components/documents/uploads.scss" lang="scss" />

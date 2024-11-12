@@ -10,13 +10,13 @@
     </transition>
 
     <button-base type="primary" size="sm" @click="actionClick">
-      <atomic-icon id="copy"/>
+      <atomic-icon id="copy" />
     </button-base>
   </div>
 </template>
 
 <script setup lang="ts">
-  import copy from "copy-to-clipboard";
+  import copy from 'copy-to-clipboard';
 
   const props = defineProps<{
     label?: string;
@@ -27,7 +27,7 @@
   const tooltipVisible = ref<boolean>(false);
   const tooltipTimer = ref<any>(undefined);
 
-  const showTooltip = ():void => {
+  const showTooltip = (): void => {
     tooltipVisible.value = true;
 
     clearTimeout(tooltipTimer.value);

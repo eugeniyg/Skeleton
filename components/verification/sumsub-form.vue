@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
   import snsWebSdk from '@sumsub/websdk';
-  import type {IProfileVerification} from "~/types";
+  import type { IProfileVerification } from '~/types';
 
   const verificationContent = ref<Maybe<IProfileVerification>>(inject('verificationContent'));
   const defaultLocaleVerificationContent = ref<Maybe<IProfileVerification>>(inject('defaultLocaleVerificationContent'));
@@ -24,30 +24,29 @@
     } catch {
       return '';
     }
-  }
+  };
 
   const launchWebSdk = async () => {
     const accessToken = await getAccessToken();
 
     const globalStore = useGlobalStore();
-    const { public: { sumsub } } = useRuntimeConfig();
+    const {
+      public: { sumsub },
+    } = useRuntimeConfig();
     const snsWebSdkInstance = snsWebSdk
-      .init(
-        accessToken,
-        () => getAccessToken()
-      )
+      .init(accessToken, () => getAccessToken())
       .withConf({
         lang: globalStore.currentLocale?.code || 'en',
-        theme: sumsub?.theme || 'dark'
+        theme: sumsub?.theme || 'dark',
       })
       .build();
 
-    snsWebSdkInstance.launch("#sumsub-websdk-container");
+    snsWebSdkInstance.launch('#sumsub-websdk-container');
   };
 
   onMounted(async () => {
     await launchWebSdk();
-  })
+  });
 </script>
 
 <style src="~/assets/styles/components/verification/sumsub-form.scss" lang="scss" />
