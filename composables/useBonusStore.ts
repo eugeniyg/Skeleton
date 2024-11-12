@@ -267,13 +267,13 @@ export const useBonusStore = defineStore('bonusStore', {
         console.error('Something went wrong with game info fetching!');
       }
 
-      const transformMessage = (message?: string, gameLinkParam?: 'game'|'bonuses'):string => {
+      const transformMessage = (message?: string, gameLinkParam?: 'game' | 'bonuses'): string => {
         if (!message) return '';
 
         let editedMessage = message.replace('{count}', `<b>${count} free spins</b>`);
         editedMessage = editedMessage.replace('{currency}', `<b>${currency}</b>`);
 
-        let gameLink: string|undefined;
+        let gameLink: string | undefined;
         if (gameLinkParam === 'bonuses') gameLink = localizePath('/profile/bonuses');
         else if (gameInfo) gameLink = localizePath(`/games/${gameInfo.identity}?real=true`);
 
@@ -286,7 +286,8 @@ export const useBonusStore = defineStore('bonusStore', {
         defaultLocaleAlertsData?.freeSpin?.[alertsKey[`${status}-${result}`]];
 
       this.updatePlayerFreeSpinsList(freeSpinData, this);
-      if (alertData) showAlert({ ...alertData, description: transformMessage(alertData?.description, alertData?.gameLink) });
+      if (alertData)
+        showAlert({ ...alertData, description: transformMessage(alertData?.description, alertData?.gameLink) });
     },
 
     unsubscribeBonusCodeSocket(): void {
