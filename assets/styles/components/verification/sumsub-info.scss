@@ -39,9 +39,11 @@
     }
 
     .icon {
+      --color: var(--button-icn-ghost-low-contrast);
+      --icon-size: 24px;
       transform: var(--transform, rotate(0deg));
       transition: all 0.2s ease-in-out;
-      --color: var(--button-icn-ghost-low-contrast);
+      align-self: flex-start;
     }
 
     &.is-open {

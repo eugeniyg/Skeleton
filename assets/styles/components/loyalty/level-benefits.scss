@@ -1,0 +1,51 @@
+.level-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    grid-column-gap: 6px;
+  }
+
+  &__checkbox {
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--border-02-low-contrast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      --icon-size: 12px;
+      --color: var(--icon-disabled);
+
+
+      .is-checked & {
+        --color: var(--icon-primary)
+      }
+
+      .is-order-active .is-checked &, .is-order-locked .is-checked & {
+        color: var(--icon-accent);
+      }
+    }
+  }
+
+  &__label {
+    color: var(--text-helper);
+    @include font($body-0);
+
+    .is-checked & {
+      color: var(--text-secondary);
+
+      span {
+        color: var(--text-accent);
+      }
+    }
+
+    .is-order-active .is-checked &, .is-order-locked .is-checked & {
+      color: var(--text-primary);
+    }
+  }
+}

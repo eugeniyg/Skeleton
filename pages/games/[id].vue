@@ -28,6 +28,10 @@
       />
     </client-only>
 
+    <transition name="fade-up" mode="out-in">
+      <loyalty-new-level-notif v-if="levelNotificationEnabled" />
+    </transition>
+
     <atomic-seo-text
       v-if="pageContent?.currentLocaleData?.pageMeta?.seoText"
       v-bind="pageContent.currentLocaleData.pageMeta.seoText"
@@ -52,6 +56,8 @@
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
   const { isMobile, alertsData, defaultLocaleAlertsData, currentLocale, headerCountry } = storeToRefs(globalStore);
+  const loyaltyStore = useLoyaltyStore();
+  const { levelNotificationEnabled } = storeToRefs(loyaltyStore);
 
   const contentParams = {
     contentKey: 'gamePageContent',
