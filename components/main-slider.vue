@@ -51,7 +51,7 @@
       loop: false,
       align: 'start',
     },
-    [Autoplay(autoplayOptions)]
+    //[Autoplay(autoplayOptions)]
   );
 
   const onSelectSlide = (emblaApi: any) => {
