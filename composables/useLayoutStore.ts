@@ -11,8 +11,6 @@ interface IModals extends Record<string, any> {
   cancelDeposit: boolean;
   walletBonusInfo: boolean;
   confirm: boolean;
-  failing: boolean;
-  success: boolean;
   fiat: boolean;
   turnOverWager: boolean;
   questsHub: boolean;
@@ -26,8 +24,6 @@ interface IModals extends Record<string, any> {
 }
 
 interface IModalsUrls extends Record<string, any> {
-  success: string;
-  failing: string;
   confirm: string;
   wallet: string;
   questsHub: string;
@@ -45,7 +41,6 @@ interface ILayoutStoreState extends Record<string, any> {
   lastNotificationTime: number;
   returnGame: Maybe<string | IGame>;
   walletModalType: WalletModalTypes;
-  successModalType: 'deposit' | 'deposit-pending';
   walletOpening: boolean;
 }
 
@@ -61,8 +56,6 @@ export const useLayoutStore = defineStore('layoutStore', {
       cancelDeposit: false,
       walletBonusInfo: false,
       confirm: false,
-      failing: false,
-      success: false,
       fiat: false,
       turnOverWager: false,
       questsHub: false,
@@ -75,8 +68,6 @@ export const useLayoutStore = defineStore('layoutStore', {
       walletRegion: false,
     },
     modalsUrl: {
-      success: 'success',
-      failing: 'failing',
       confirm: 'confirm',
       wallet: 'wallet',
       questsHub: 'quests-hub',
@@ -85,7 +76,6 @@ export const useLayoutStore = defineStore('layoutStore', {
     lastNotificationTime: 0,
     returnGame: undefined,
     walletModalType: undefined,
-    successModalType: 'deposit',
     walletOpening: false,
   }),
 
@@ -186,11 +176,11 @@ export const useLayoutStore = defineStore('layoutStore', {
       router.replace({ query: newQuery });
     },
 
-    removeModalQuery(modalName: string): void {
+    async removeModalQuery(modalName: string): Promise<void> {
       const router = useRouter();
       const { query } = useRoute();
 
-      router.replace({ query: { ...query, [this.modalsUrl[modalName]]: undefined, resetCode: undefined } });
+      await router.replace({ query: { ...query, [this.modalsUrl[modalName]]: undefined, resetCode: undefined } });
     },
 
     showModal(modalName: string, queryValue?: string): void {
@@ -198,9 +188,9 @@ export const useLayoutStore = defineStore('layoutStore', {
       this.modals[modalName] = true;
     },
 
-    closeModal(modalName: string): void {
+    async closeModal(modalName: string): Promise<void> {
       this.modals[modalName] = false;
-      if (this.modalsUrl[modalName]) this.removeModalQuery(modalName);
+      if (this.modalsUrl[modalName]) await this.removeModalQuery(modalName);
     },
 
     checkModals(): void {

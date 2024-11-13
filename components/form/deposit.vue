@@ -163,8 +163,8 @@
 
   const walletStore = useWalletStore();
   const layoutStore = useLayoutStore();
-  const { successModalType } = storeToRefs(layoutStore);
-  const { showModal, showAlert, closeModal } = layoutStore;
+  const { showAlert, closeModal } = layoutStore;
+  const { openModal } = useModalStore();
   const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
 
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
@@ -223,7 +223,7 @@
   const getRequestParams = (): IRequestDeposit => {
     const { query, path } = useRoute();
     const { origin } = window.location;
-    const successQueryString = queryString.stringify({ ...query, success: 'deposit', wallet: undefined });
+    const successQueryString = queryString.stringify({ ...query, 'success-deposit': 'true', wallet: undefined });
     const errorQueryString = queryString.stringify({ ...query, failing: 'deposit', wallet: undefined });
     const redirectQueryString = queryString.stringify({ ...query, 'deposit-redirect': true, wallet: undefined });
     const successRedirect = `${origin}${path}?${successQueryString}`;
@@ -276,15 +276,14 @@
       } else if (props.processingType === 'iframe') {
         iframeUrl.value = paymentPageUrl;
       } else if (props.processingType === 'message') {
-        successModalType.value = 'deposit-pending';
-        showModal('success');
+        await openModal('deposit-pending');
       } else if (props.processingType === 'asyncRedirect') {
         sessionStorage.setItem('asyncInvoiceId', depositResponse.invoiceId);
         showAsyncBlock.value = true;
       }
     } catch {
       if (windowReference.value) windowReference.value.close();
-      showModal('failing');
+      await openModal('failing');
     } finally {
       isSending.value = false;
     }

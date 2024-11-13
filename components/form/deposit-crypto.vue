@@ -57,8 +57,9 @@
   const walletNumber = ref<string>('');
   const destinationTag = ref<string | undefined>();
   const walletStore = useWalletStore();
-  const { showModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
+  const { closeModal } = useLayoutStore();
 
   const bonusStore = useBonusStore();
   const { selectedDepositBonus, bonusDeclined, showDepositBonusCode, depositBonusCode } = storeToRefs(bonusStore);
@@ -131,7 +132,8 @@
       walletNumber.value = depositResponse.address;
       destinationTag.value = depositResponse.tag;
     } catch {
-      showModal('failing');
+      closeModal('wallet');
+      await openModal('failing');
     }
   };
 

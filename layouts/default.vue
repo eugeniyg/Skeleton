@@ -30,8 +30,6 @@
 
     <ModalsContainer />
 
-    <modal-success />
-    <modal-error />
     <modal-confirm />
     <modal-fiat />
     <modal-mobile-game />

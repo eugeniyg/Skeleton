@@ -8,6 +8,9 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'reset-pass': Maybe<UseModalReturnType<any>>;
   'sign-up': Maybe<UseModalReturnType<any>>;
   'sign-up-cancel': Maybe<UseModalReturnType<any>>;
+  failing: Maybe<UseModalReturnType<any>>;
+  'success-deposit': Maybe<UseModalReturnType<any>>;
+  'deposit-pending': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -16,6 +19,7 @@ interface IModalStoreState {
   onlyGuestModals: string[];
   onlyLoggedModals: string[];
   openingModals: string[];
+  sameComponent: Record<string, string>;
 }
 
 export const useModalStore = defineStore('modalStore', {
@@ -26,11 +30,18 @@ export const useModalStore = defineStore('modalStore', {
       'reset-pass': undefined,
       'sign-up': undefined,
       'sign-up-cancel': undefined,
+      failing: undefined,
+      'success-deposit': undefined,
+      'deposit-pending': undefined,
     },
-    modalsUrl: ['sign-in', 'forgot-pass', 'reset-pass', 'sign-up'],
+    modalsUrl: ['sign-in', 'forgot-pass', 'reset-pass', 'sign-up', 'failing', 'success-deposit', 'deposit-pending'],
     onlyGuestModals: ['sign-in', 'sign-up', 'forgot-pass', 'reset-pass'],
     onlyLoggedModals: [],
     openingModals: [],
+    sameComponent: {
+      'deposit-pending': 'success',
+      'success-deposit': 'success',
+    },
   }),
 
   actions: {
@@ -41,7 +52,7 @@ export const useModalStore = defineStore('modalStore', {
       return true;
     },
 
-    addModalQuery(modalName: string, modalQueryParam?: string): void {
+    async addModalQuery(modalName: string, modalQueryParam?: string): Promise<void> {
       const router = useRouter();
       const { query } = useRoute();
       const newQuery = { ...query };
@@ -51,15 +62,15 @@ export const useModalStore = defineStore('modalStore', {
           delete newQuery[queryName];
         }
       });
-      router.replace({ query: { ...newQuery, [modalName]: modalQueryParam || 'true' } });
+      await router.replace({ query: { ...newQuery, [modalName]: modalQueryParam || 'true' } });
     },
 
-    removeModalQuery(modalName: string): void {
+    async removeModalQuery(modalName: string): Promise<void> {
       const router = useRouter();
       const { query } = useRoute();
       const newQuery = { ...query, [modalName]: undefined };
       if (modalName === 'reset-pass') newQuery.resetCode = undefined;
-      router.replace({ query: newQuery });
+      await router.replace({ query: newQuery });
     },
 
     async openModal(modalName: string, modalQueryParam?: string, prohibitQueryChange = true): Promise<void> {
@@ -67,7 +78,9 @@ export const useModalStore = defineStore('modalStore', {
       this.openingModals.push(modalName);
 
       if (!this.modals[modalName]) {
-        const modalComponent = defineAsyncComponent(() => import(`../components/modal/${modalName}.vue`));
+        const modalComponent = defineAsyncComponent(
+          () => import(`../components/modal/${this.sameComponent[modalName] || modalName}.vue`)
+        );
         const contentParams = {
           contentKey: `modal-${modalName}`,
           contentRoute: ['modals', modalName],
@@ -89,9 +102,9 @@ export const useModalStore = defineStore('modalStore', {
       this.openingModals = this.openingModals.filter(item => item !== modalName);
     },
 
-    closeModal(modalName: string): void {
+    async closeModal(modalName: string): Promise<void> {
       this.modals[modalName]?.close();
-      if (this.modalsUrl.includes(modalName)) this.removeModalQuery(modalName);
+      if (this.modalsUrl.includes(modalName)) await this.removeModalQuery(modalName);
     },
 
     async closeAllModals(): Promise<void> {
@@ -100,14 +113,13 @@ export const useModalStore = defineStore('modalStore', {
       Object.keys(query).forEach(queryName => {
         if (this.modalsUrl.includes(queryName)) delete newQuery[queryName];
       });
-      const router = useRouter();
-      router.replace({ query: newQuery });
 
       const vfm = useVfm();
-      await vfm.closeAll();
+      const router = useRouter();
+      await Promise.all([router.replace({ query: newQuery }), vfm.closeAll()]);
     },
 
-    checkOpenedModals(): void {
+    async checkOpenedModals(): Promise<void> {
       const { query } = useRoute();
       const queryArr = Object.keys(query);
 
@@ -115,11 +127,11 @@ export const useModalStore = defineStore('modalStore', {
         if (!this.modalsUrl.includes(queryName)) return;
 
         if (!this.accessToOpen(queryName)) {
-          this.removeModalQuery(queryName);
+          await this.removeModalQuery(queryName);
         } else if (queryName === 'wallet') {
           //
         } else {
-          this.openModal(queryName, query[queryName] as string);
+          await this.openModal(queryName, query[queryName] as string);
           break;
         }
       }
