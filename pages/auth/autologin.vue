@@ -9,8 +9,7 @@
 
     const { isLoggedIn, autoLogin, removeSession } = useProfileStore();
     const { localizePath } = useProjectMethods();
-    const { openWalletModal } = useLayoutStore();
-    const { openModal } = useModalStore();
+    const { openModal, openWalletModal } = useModalStore();
     const router = useRouter();
 
     if (isLoggedIn) removeSession();

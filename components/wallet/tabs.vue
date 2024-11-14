@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
+  import type { IWalletModal } from '~/types';
 
   const props = defineProps<{
     selected: string;
@@ -21,12 +21,12 @@
 
   const emit = defineEmits(['changeTab']);
 
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const { getContent } = useProjectMethods();
-  const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 
   const tabItems = computed(() => {
-    const contentTabs = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.tabs') || {};
+    const contentTabs = getContent(walletContent, defaultLocaleWalletContent, 'tabs') || {};
     return Object.keys(contentTabs).map(key => ({ id: key, label: contentTabs[key] }));
   });
 

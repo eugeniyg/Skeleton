@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
 import { useVfm, useModal, type UseModalReturnType } from 'vue-final-modal';
 import { defineAsyncComponent } from 'vue';
+import type { Dayjs } from 'dayjs';
+
+type WalletModalTypes = 'deposit' | 'withdraw' | undefined;
 
 interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'sign-in': Maybe<UseModalReturnType<any>>;
@@ -11,6 +14,8 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   failing: Maybe<UseModalReturnType<any>>;
   'success-deposit': Maybe<UseModalReturnType<any>>;
   'deposit-pending': Maybe<UseModalReturnType<any>>;
+  wallet: Maybe<UseModalReturnType<any>>;
+  'cancel-deposit': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -20,6 +25,8 @@ interface IModalStoreState {
   onlyLoggedModals: string[];
   openingModals: string[];
   sameComponent: Record<string, string>;
+  walletModalType: WalletModalTypes;
+  walletOpening: boolean;
 }
 
 export const useModalStore = defineStore('modalStore', {
@@ -33,15 +40,28 @@ export const useModalStore = defineStore('modalStore', {
       failing: undefined,
       'success-deposit': undefined,
       'deposit-pending': undefined,
+      wallet: undefined,
+      'cancel-deposit': undefined,
     },
-    modalsUrl: ['sign-in', 'forgot-pass', 'reset-pass', 'sign-up', 'failing', 'success-deposit', 'deposit-pending'],
+    modalsUrl: [
+      'sign-in',
+      'forgot-pass',
+      'reset-pass',
+      'sign-up',
+      'failing',
+      'success-deposit',
+      'deposit-pending',
+      'wallet',
+    ],
     onlyGuestModals: ['sign-in', 'sign-up', 'forgot-pass', 'reset-pass'],
-    onlyLoggedModals: [],
+    onlyLoggedModals: ['wallet'],
     openingModals: [],
     sameComponent: {
       'deposit-pending': 'success',
       'success-deposit': 'success',
     },
+    walletModalType: undefined,
+    walletOpening: false,
   }),
 
   actions: {
@@ -97,7 +117,8 @@ export const useModalStore = defineStore('modalStore', {
         });
       }
 
-      if (prohibitQueryChange && this.modalsUrl.includes(modalName)) this.addModalQuery(modalName, modalQueryParam);
+      if (prohibitQueryChange && this.modalsUrl.includes(modalName))
+        await this.addModalQuery(modalName, modalQueryParam);
       this.modals[modalName].open();
       this.openingModals = this.openingModals.filter(item => item !== modalName);
     },
@@ -120,8 +141,8 @@ export const useModalStore = defineStore('modalStore', {
     },
 
     async checkOpenedModals(): Promise<void> {
-      const { query } = useRoute();
-      const queryArr = Object.keys(query);
+      const route = useRoute();
+      const queryArr = Object.keys(route.query);
 
       for (const queryName of queryArr) {
         if (!this.modalsUrl.includes(queryName)) return;
@@ -129,12 +150,64 @@ export const useModalStore = defineStore('modalStore', {
         if (!this.accessToOpen(queryName)) {
           await this.removeModalQuery(queryName);
         } else if (queryName === 'wallet') {
-          //
+          const queryParam = route.query[queryName] as string;
+          const modalType = ['deposit', 'withdraw'].includes(queryParam) ? (queryParam as WalletModalTypes) : undefined;
+          await this.openWalletModal(modalType);
+          break;
         } else {
-          await this.openModal(queryName, query[queryName] as string);
+          await this.openModal(queryName, route.query[queryName] as string);
           break;
         }
       }
+    },
+
+    async openWalletModal(modalType?: WalletModalTypes): Promise<void> {
+      if (!this.accessToOpen('wallet') || this.walletOpening) return;
+      this.walletOpening = true;
+
+      const dayjs = useDayjs();
+      const startModalLoad: Dayjs = dayjs();
+
+      this.walletModalType = modalType;
+      const { setPaymentMethodsGeo, getDepositMethods, getWithdrawMethods, accountSwitching } = useWalletStore();
+      const { getDepositBonuses, getDepositBonusCode } = useBonusStore();
+      const riskStore = useRiskStore();
+      setPaymentMethodsGeo();
+      await accountSwitching;
+      await Promise.allSettled([
+        getDepositMethods(),
+        getWithdrawMethods(),
+        getDepositBonuses(),
+        getDepositBonusCode(),
+        riskStore.getTurnOverWager(),
+      ]);
+
+      const { isLoggedIn } = useProfileStore();
+      if (!isLoggedIn) {
+        this.walletOpening = false;
+        return;
+      }
+
+      const runtimeConfig = useRuntimeConfig();
+      const showTurnOverWagerModal =
+        runtimeConfig.public.enableTurnOverWager &&
+        modalType === 'withdraw' &&
+        riskStore.turnOverWagerData?.turnOverWagerAmount > 0;
+
+      if (showTurnOverWagerModal) {
+        const { showModal } = useLayoutStore();
+        showModal('turnOverWager');
+        this.walletOpening = false;
+        return;
+      }
+
+      await this.openModal('wallet', modalType);
+      useEvent('analyticsEvent', {
+        event: 'walletOpen',
+        loadTime: dayjs().diff(startModalLoad),
+      });
+
+      this.walletOpening = false;
     },
   },
 });

@@ -225,9 +225,9 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     registrationSucceeded(): void {
-      const { showAlert, openWalletModal } = useLayoutStore();
+      const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
-      const { closeModal } = useModalStore();
+      const { closeModal, openWalletModal } = useModalStore();
 
       showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
       closeModal('sign-up');

@@ -3,7 +3,7 @@
     <div class="balance__rows">
       <div class="row" :class="{ 'row--compact': showEquivalentBalance }">
         <div class="label">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.balanceLabel') }}
+          {{ getContent(walletContent, defaultLocaleWalletContent, 'balanceLabel') }}
         </div>
 
         <template v-if="props.withdraw">
@@ -41,7 +41,9 @@
       </div>
 
       <div v-if="props.withdraw" class="row">
-        <div class="label">{{ getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.withdrawLabel') }}</div>
+        <div class="label">
+          {{ getContent(walletContent, defaultLocaleWalletContent, 'withdraw.withdrawLabel') }}
+        </div>
 
         <div v-if="showEquivalentBalance" class="value">
           {{ withdrawalEquivalentBalanceFormat.balance }} {{ withdrawalEquivalentBalanceFormat.currency }}
@@ -59,6 +61,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import type { IWalletModal } from '~/types';
 
   const props = defineProps({
     withdraw: {
@@ -67,10 +70,10 @@
     },
   });
 
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const walletStore = useWalletStore();
-  const globalStore = useGlobalStore();
   const { activeAccount, activeEquivalentAccount, showEquivalentBalance } = storeToRefs(walletStore);
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
   const { formatBalance, getContent, getEquivalentAccount } = useProjectMethods();
   const isSelectOpen = ref<boolean>(false);
 

@@ -35,14 +35,11 @@
     defaultLocaleData: Maybe<IModalsContent['failing']>;
   }>();
 
-  const layoutStore = useLayoutStore();
-  const { openWalletModal } = layoutStore;
   const { getContent } = useProjectMethods();
-  const { closeModal } = useModalStore();
+  const { closeModal, openWalletModal } = useModalStore();
 
   const tryAgain = async (): Promise<void> => {
     await openWalletModal('deposit');
-    closeModal('failing');
   };
 
   const descriptionContent = computed(() => {

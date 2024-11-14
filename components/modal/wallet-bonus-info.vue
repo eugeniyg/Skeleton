@@ -61,6 +61,7 @@
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
   const { closeModal } = layoutStore;
+  const { closeModal: closeWalletModal } = useModalStore();
   const { getProviderList } = useGamesStore();
 
   const titleImage = computed(() => {
@@ -284,7 +285,7 @@
 
   const goToBonuses = (): void => {
     closeModal('walletBonusInfo');
-    closeModal('wallet');
+    closeWalletModal('wallet');
     const router = useRouter();
     router.push(localizePath('/welcome-package'));
   };

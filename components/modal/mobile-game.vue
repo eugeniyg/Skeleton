@@ -61,8 +61,7 @@
   const { showMobileGameModal, mobileGameModalType, mobileGameModalInfo } = storeToRefs(gameStore);
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getImageUrl, getContent, localizePath } = useProjectMethods();
-  const { openWalletModal } = useLayoutStore();
-  const { openModal } = useModalStore();
+  const { openModal, openWalletModal } = useModalStore();
   const router = useRouter();
 
   const gameImage = computed(() => {
