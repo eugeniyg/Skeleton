@@ -1,0 +1,65 @@
+.tournament-card-active {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 120px 24px 24px;
+  align-items: flex-start;
+  border-radius: var(--corner-radius-mapped-card-md, 16px);
+  background: var(--layer-03-main);
+  position: relative;
+
+  @include media(l) {
+    padding: 32px 180px 32px 24px;
+  }
+
+  &__header {
+
+  }
+
+  &__title {
+    color: var(--text-primary);
+    margin-top: 16px;
+    @include font($body-2);
+
+    @include media(l) {
+      margin-top: 24px;
+      @include font($body-4);
+    }
+  }
+
+  &__sub-title {
+    color: var(--text-accent);
+    text-shadow: var(--shadow-layer);
+    margin-top: 4px;
+    @include font($heading-5);
+
+    @include media(l) {
+      @include font($heading-8);
+    }
+  }
+
+  &__img {
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    right: 0;
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    margin-right: -100px;
+
+    @include media(l) {
+      margin-top: 24px;
+    }
+
+    .btn-primary, .btn-ghost, .btn-secondary {
+      white-space: nowrap;
+    }
+  }
+}
