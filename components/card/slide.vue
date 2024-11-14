@@ -18,10 +18,7 @@
       <div
         v-if="props.slideData?.badge?.text"
         class="card-slide__badge"
-        :style="{
-          '--card-badge-color': props.slideData?.badge?.textColor,
-          '--card-badge-background': props.slideData?.badge?.backgroundColor
-        }"
+        :style="badgeStyleVars"
       >
         {{ props.slideData?.badge?.text }}
       </div>
@@ -64,6 +61,11 @@
   const backgroundGradientStyle = computed(
     () => `background: linear-gradient(to right, ${props.slideData.colorLeft}, ${props.slideData.colorRight})`
   );
+  
+  const badgeStyleVars = computed(() => [
+    props.slideData?.badge?.textColor ? `--card-badge-color: ${props.slideData?.badge?.textColor}` : null,
+    props.slideData?.badge?.backgroundColor ?`--card-badge-background: ${props.slideData?.badge?.backgroundColor}` : null
+  ]);
 
   const slideHandleClick = (): void => {
     const url = props.slideData.slideLink?.url;

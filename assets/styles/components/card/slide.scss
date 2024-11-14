@@ -81,6 +81,10 @@
     @include font($heading-4);
     align-self: flex-end;
 
+    @include media(md) {
+      @include upd-font($heading-5);
+    }
+
     + .card-slide__content {
       margin-top: 4px;
     }
