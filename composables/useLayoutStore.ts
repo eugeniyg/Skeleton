@@ -126,6 +126,7 @@ export const useLayoutStore = defineStore('layoutStore', {
     },
 
     closeUserNav(): void {
+      if (!this.isUserNavOpen) return;
       this.isUserNavOpen = false;
       document.body.classList.remove('nav-user-open');
       const userNavEl: HTMLElement | null = document.querySelector('.nav-user');
