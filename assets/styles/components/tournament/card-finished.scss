@@ -58,6 +58,7 @@
     height: calc(100% - 32px);
     width: auto;
     transform: translateY(-50%);
+    opacity: .5;
 
     @include media(l) {
       height: 100%;
@@ -72,7 +73,7 @@
     margin-right: -100px;
 
     @include media(l) {
-      margin-top: 24px;
+      margin-top: 32px;
     }
 
     .btn-primary, .btn-ghost, .btn-secondary {

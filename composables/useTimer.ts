@@ -25,9 +25,9 @@ export function useTimer() {
     tick();
   };
 
-  const startTimer = (expiderDate: string) => {
+  const startTimer = (expiredDate: string) => {
     const start = Date.now();
-    const end = new Date(expiderDate).getTime();
+    const end = new Date(expiredDate).getTime();
     diffInSeconds.value = Math.ceil((end - start) / 1000);
     countdown();
   };

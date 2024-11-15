@@ -39,12 +39,17 @@
 
   &__img {
     position: absolute;
-    top: 12px;
-    bottom: 12px;
+    top: 50%;
     right: 0;
     max-width: 100%;
-    max-height: 100%;
-    display: flex;
+    display: block;
+    height: calc(100% - 32px);
+    width: auto;
+    transform: translateY(-50%);
+
+    @include media(l) {
+      height: 100%;
+    }
   }
 
   &__actions {
@@ -55,7 +60,7 @@
     margin-right: -100px;
 
     @include media(l) {
-      margin-top: 24px;
+      margin-top: 32px;
     }
 
     .btn-primary, .btn-ghost, .btn-secondary {
