@@ -120,6 +120,11 @@ export const useCoreProfileApi = () => {
     return response;
   };
 
+  const getKycaidUrl = async (): Promise<{ formUrl: string }> => {
+    const { data } = await useApiAuthInstance('/api/player/services/kycaid/form');
+    return data;
+  };
+
   return {
     getProfile,
     getProfileFields,
@@ -140,5 +145,6 @@ export const useCoreProfileApi = () => {
     getSumsubToken,
     getPlayerLoyaltyAccount,
     getLoyaltyLevels,
+    getKycaidUrl,
   };
 };
