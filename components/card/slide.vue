@@ -33,11 +33,12 @@
       </div>
       
 
-      <div v-if="showButton" class="card-slide__actions" @click.stop>
+      <div v-if="showButton" class="card-slide__actions">
         <atomic-link
           class="btn-primary"
           :target-blank="props.slideData?.button?.targetBlank"
           :href="props.slideData.button?.url"
+          @click.stop
         >
           {{ props.slideData.button?.label }}
         </atomic-link>
