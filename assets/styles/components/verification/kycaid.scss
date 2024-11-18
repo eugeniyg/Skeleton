@@ -1,0 +1,14 @@
+.kycaid-verify {
+  display: flex;
+  flex-direction: column;
+  gap: rem(8px);
+  padding: rem(16px);
+  background: var(--layer-01);
+  border-radius: 12px;
+
+  @include media(sm) {
+    flex-direction: row;
+    gap: rem(16px);
+    padding: rem(24px);
+  }
+}

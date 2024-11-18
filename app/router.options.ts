@@ -15,7 +15,8 @@ export default <RouterConfig>{
     const hideBettingPage =
       !runtimeConfig.public?.betsyParams?.clientHost || !runtimeConfig.public?.betsyParams?.clientId;
     const hideProfileDocumentsPage =
-      runtimeConfig.public?.sumsub?.enabled && runtimeConfig.public?.sumsub?.hideDocumentsPage;
+      (runtimeConfig.public?.sumsub?.enabled && runtimeConfig.public?.sumsub?.hideDocumentsPage) ||
+      (runtimeConfig.public?.kycaid?.enabled && runtimeConfig.public?.kycaid?.hideDocumentsPage);
     const hideLoyaltyPage = !runtimeConfig.public?.loyaltyEnabled;
 
     const defaultRoutes = [];

@@ -1,0 +1,60 @@
+.kycaid-info {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  width: 100%;
+  border-radius: 12px;
+
+  .info-accordeon {
+    background-color: var(--layer-03-low-contrast);
+    border-radius: 12px;
+    padding: rem(16px);
+
+    &__head {
+      display: flex;
+      align-items: center;
+      grid-gap: rem(8px);
+      cursor: pointer;
+    }
+
+    &__title {
+      flex-grow: 1;
+      color: var(--color, var(--text-primary));
+      @include font($subheading-2);
+    }
+
+    &__content {
+      @include font($body-1);
+      height: var(--items-height, 0);
+      overflow: hidden;
+      transition: height 0.2s ease-in-out;
+      color: var(--text-tertiary);
+
+      &:before {
+        content: '';
+        display: block;
+        width: 100%;
+        height: rem(8px);
+      }
+    }
+
+    .icon {
+      --color: var(--button-icn-ghost-low-contrast);
+      --icon-size: 24px;
+      transform: var(--transform, rotate(0deg));
+      transition: all 0.2s ease-in-out;
+      align-self: flex-start;
+    }
+
+    &.is-open {
+      .icon {
+        --color: var(--button-icn-ghost-click);
+        --transform: rotate(-180deg);
+      }
+
+      .info-accordeon__content {
+        max-height: 100%;
+      }
+    }
+  }
+}

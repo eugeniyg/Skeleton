@@ -12,6 +12,7 @@
     </div>
 
     <verification-sumsub v-if="sumsubIntegrated" />
+    <verification-kycaid v-if="kycaidIntegrated" />
   </div>
 </template>
 
@@ -43,4 +44,5 @@
 
   const runtimeConfig = useRuntimeConfig();
   const sumsubIntegrated = runtimeConfig.public.sumsub?.enabled;
+  const kycaidIntegrated = runtimeConfig.public.kycaid?.enabled;
 </script>

@@ -1,0 +1,32 @@
+.kycaid-form {
+  width: 100%;
+  border-radius: 12px;
+
+  &__frame-container {
+    min-height: rem(275px);
+
+    iframe {
+      width: 100%;
+      min-height: rem(275px);
+      height: calc(70vh);
+      border-radius: 12px;
+      border: none;
+
+      @include media(md) {
+        height: 600px;
+      }
+    }
+  }
+
+  &__title {
+    text-align: center;
+    @include font($heading-4);
+    color: var(--white);
+    margin: 0 0 rem(12px);
+  }
+
+  @include media(sm) {
+    background: var(--layer-03-low-contrast);
+    padding: 16px 16px 20px;
+  }
+}
