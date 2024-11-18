@@ -47,7 +47,7 @@
     return getContent(props.currentLocaleData, props.defaultLocaleData, 'description') || '';
   });
 
-  const successComponentModals = ['success-deposit', 'deposit-pending'];
+  const successComponentModals = ['deposit-success', 'deposit-pending'];
   const closeHandle = (): void => {
     successComponentModals.forEach(modalName => {
       if (modalStore.modals[modalName]?.options?.modelValue) modalStore.closeModal(modalName);

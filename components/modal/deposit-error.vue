@@ -4,11 +4,11 @@
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
     :content-transition="{ mode: 'in-out', duration: 250 }"
-    @click-outside="closeModal('failing')"
+    @click-outside="closeModal('deposit-error')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('failing')" />
+        <button-modal-close @close="closeModal('deposit-error')" />
         <div class="title">{{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}</div>
       </div>
 
@@ -31,8 +31,8 @@
   import type { IModalsContent } from '~/types';
 
   const props = defineProps<{
-    currentLocaleData: Maybe<IModalsContent['failing']>;
-    defaultLocaleData: Maybe<IModalsContent['failing']>;
+    currentLocaleData: Maybe<IModalsContent['depositError']>;
+    defaultLocaleData: Maybe<IModalsContent['depositError']>;
   }>();
 
   const { getContent } = useProjectMethods();
@@ -49,4 +49,4 @@
   });
 </script>
 
-<style src="~/assets/styles/components/modal/failing.scss" lang="scss" />
+<style src="~/assets/styles/components/modal/deposit-error.scss" lang="scss" />

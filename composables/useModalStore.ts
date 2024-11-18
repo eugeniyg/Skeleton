@@ -11,8 +11,8 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'reset-pass': Maybe<UseModalReturnType<any>>;
   'sign-up': Maybe<UseModalReturnType<any>>;
   'sign-up-cancel': Maybe<UseModalReturnType<any>>;
-  failing: Maybe<UseModalReturnType<any>>;
-  'success-deposit': Maybe<UseModalReturnType<any>>;
+  'deposit-error': Maybe<UseModalReturnType<any>>;
+  'deposit-success': Maybe<UseModalReturnType<any>>;
   'deposit-pending': Maybe<UseModalReturnType<any>>;
   wallet: Maybe<UseModalReturnType<any>>;
   'cancel-deposit': Maybe<UseModalReturnType<any>>;
@@ -37,8 +37,8 @@ export const useModalStore = defineStore('modalStore', {
       'reset-pass': undefined,
       'sign-up': undefined,
       'sign-up-cancel': undefined,
-      failing: undefined,
-      'success-deposit': undefined,
+      'deposit-error': undefined,
+      'deposit-success': undefined,
       'deposit-pending': undefined,
       wallet: undefined,
       'cancel-deposit': undefined,
@@ -48,17 +48,17 @@ export const useModalStore = defineStore('modalStore', {
       'forgot-pass',
       'reset-pass',
       'sign-up',
-      'failing',
-      'success-deposit',
+      'deposit-error',
+      'deposit-success',
       'deposit-pending',
       'wallet',
     ],
     onlyGuestModals: ['sign-in', 'sign-up', 'forgot-pass', 'reset-pass'],
-    onlyLoggedModals: ['wallet'],
+    onlyLoggedModals: ['wallet', 'deposit-success', 'deposit-error', 'deposit-pending'],
     openingModals: [],
     sameComponent: {
       'deposit-pending': 'success',
-      'success-deposit': 'success',
+      'deposit-success': 'success',
     },
     walletModalType: undefined,
     walletOpening: false,

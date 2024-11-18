@@ -226,8 +226,8 @@
   const getRequestParams = (): IRequestDeposit => {
     const { query, path } = useRoute();
     const { origin } = window.location;
-    const successQueryString = queryString.stringify({ ...query, 'success-deposit': 'true', wallet: undefined });
-    const errorQueryString = queryString.stringify({ ...query, failing: 'deposit', wallet: undefined });
+    const successQueryString = queryString.stringify({ ...query, 'deposit-success': 'true', wallet: undefined });
+    const errorQueryString = queryString.stringify({ ...query, 'deposit-error': 'true', wallet: undefined });
     const redirectQueryString = queryString.stringify({ ...query, 'deposit-redirect': true, wallet: undefined });
     const successRedirect = `${origin}${path}?${successQueryString}`;
     const errorRedirect = `${origin}${path}?${errorQueryString}`;
@@ -286,7 +286,7 @@
       }
     } catch {
       if (windowReference.value) windowReference.value.close();
-      await openModal('failing');
+      await openModal('deposit-error');
     } finally {
       isSending.value = false;
     }

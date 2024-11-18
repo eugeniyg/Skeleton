@@ -134,7 +134,7 @@
       walletNumber.value = depositResponse.address;
       destinationTag.value = depositResponse.tag;
     } catch {
-      await openModal('failing');
+      await openModal('deposit-error');
     }
   };
 
