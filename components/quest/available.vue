@@ -1,8 +1,8 @@
 <template>
   <div class="quest-tab">
-    <div v-if="activeQuests.length" class="quest-tab__items">
+    <div v-if="issuedQuests.length" class="quest-tab__items">
       <quest-card
-        v-for="(quest, questIndex) in activeQuests"
+        v-for="(quest, questIndex) in issuedQuests"
         :key="quest.id"
         :quest-info="quest"
         :quest-index="questIndex"
@@ -15,18 +15,18 @@
 
 <script setup lang="ts">
   const questsStore = useQuestsStore();
-  const { activeQuests } = storeToRefs(questsStore);
+  const { issuedQuests } = storeToRefs(questsStore);
   const globalStore = useGlobalStore();
   const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   const emptyContentData = computed(() => {
     const image = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.image');
-    const title = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.activeTitle');
+    const title = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.availableTitle');
     const description = getContent(
       popupsData.value,
       defaultLocalePopupsData.value,
-      'questsHub.empty.activeDescription'
+      'questsHub.empty.availableDescription'
     );
     return { image, title, description };
   });

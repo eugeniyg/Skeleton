@@ -32,7 +32,7 @@
 
     <div v-if="[1, 2].includes(props.questInfo.state)" class="quest-card__actions">
       <button-base v-if="props.questInfo.state === 1" size="sm" type="primary" @click.stop="activateQuest">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.startQuestButton') }}
+        {{ activateQuestButton }}
       </button-base>
 
       <button-base v-else size="sm" type="ghost" @click.stop="cancelQuest">
@@ -72,6 +72,13 @@
       questImages.value[questImages.value.length - (props.questIndex % questImages.value.length)] ||
       '/img/quests/default-quest-img.png'
     );
+  });
+
+  const activateQuestButton = computed(() => {
+    const isQuestCompleted = props.questInfo.tasks.every(task => task.isCompleted);
+    return isQuestCompleted
+      ? getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.claimReward')
+      : getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.startQuestButton');
   });
 
   const { showAlert } = useLayoutStore();

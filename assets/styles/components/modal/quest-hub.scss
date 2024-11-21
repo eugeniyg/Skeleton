@@ -122,11 +122,81 @@
     overflow-x: auto;
     margin-bottom: 16px;
 
+    &-container {
+      position: relative;
+
+      &:before, &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 32px;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0;
+        transition: opacity .3s ease-in-out;
+      }
+
+      &:before {
+        background: linear-gradient(-270deg, var(--layer-01) 30%, rgba(17, 20, 28, 0.00) 100%);
+        left: 0;
+
+        @include media(md) {
+          background: linear-gradient(-270deg, var(--layer-01) 20%, rgba(17, 20, 28, 0.00) 100%);
+        }
+      }
+
+      &:after {
+        background: linear-gradient(270deg, var(--layer-01) 30%, rgba(17, 20, 28, 0.00) 100%);
+        right: 0;
+
+        @include media(md) {
+          background: linear-gradient(270deg, var(--layer-01) 20%, rgba(17, 20, 28, 0.00) 100%);
+        }
+      }
+
+      &.has-left-offset  {
+        &:before {
+          opacity: 1;
+        }
+      }
+
+      &.has-right-offset  {
+        &:after {
+          opacity: 1;
+        }
+      }
+    }
+
+    &-next {
+      position: absolute;
+      z-index: 2;
+      top: -2px;
+      right: -7px;
+      --color: var(--button-icn-ghost-low-contrast);
+
+      @include media(md) {
+        right: -12px;
+      }
+    }
+
+    &-previous {
+      position: absolute;
+      z-index: 2;
+      top: -2px;
+      left: -7px;
+      --color: var(--button-icn-ghost-low-contrast);
+
+      @include media(md) {
+        left: -12px;
+      }
+    }
+
     &-item {
       color: var(--color, var(--text-helper));
       @include font($heading-2);
       position: relative;
-      padding: 0 0 10px;
+      padding: 0 8px 10px;
       transition: color .2s ease-in-out;
       user-select: none;
       cursor: var(--cursor, pointer);

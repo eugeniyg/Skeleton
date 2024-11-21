@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import type { IPlayerQuest, IPlayerQuestEventTask, IWebSocketResponse } from '@skeleton/core/types';
 
 interface IQuestsStoreState {
-  playerActiveQuests: IPlayerQuest[];
+  playerQuests: IPlayerQuest[];
   showRewardsModal: boolean;
   rewardsModalTitle: string;
   rewardsList: { currency: string; amount: number }[];
@@ -14,7 +14,7 @@ interface IQuestsStoreState {
 
 export const useQuestsStore = defineStore('questsStore', {
   state: (): IQuestsStoreState => ({
-    playerActiveQuests: [],
+    playerQuests: [],
     showRewardsModal: false,
     rewardsModalTitle: '',
     rewardsList: [],
@@ -24,12 +24,22 @@ export const useQuestsStore = defineStore('questsStore', {
     tasksModalImage: '',
   }),
 
+  getters: {
+    activeQuests(state): IPlayerQuest[] {
+      return state.playerQuests.filter(quest => quest.state === 2);
+    },
+
+    issuedQuests(state): IPlayerQuest[] {
+      return state.playerQuests.filter(quest => quest.state === 1);
+    },
+  },
+
   actions: {
-    async getPlayerActiveQuests(): Promise<void> {
+    async getPlayerQuests(): Promise<void> {
       const { getPlayerQuests } = useCoreQuestApi();
       const { activeAccount } = useWalletStore();
       const { data } = await getPlayerQuests({ state: [1, 2], currency: activeAccount?.currency });
-      this.playerActiveQuests = data;
+      this.playerQuests = data;
     },
 
     openRewardsModal(rewards: { currency: string; amount: number }[], modalTitle: string): void {
@@ -59,7 +69,7 @@ export const useQuestsStore = defineStore('questsStore', {
       const { showAlert } = useLayoutStore();
       const { globalComponentsContent, defaultLocaleGlobalComponentsContent, alertsData, defaultLocaleAlertsData } =
         useGlobalStore();
-      const findActiveQuest = this.playerActiveQuests.find(quest => quest.id === questData.id);
+      const findActiveQuest = this.playerQuests.find(quest => quest.id === questData.id);
 
       if ([1, 2].includes(questData.state) && !findActiveQuest) {
         const alertData = getContent(alertsData, defaultLocaleAlertsData, 'quests.questIssued');
@@ -69,7 +79,7 @@ export const useQuestsStore = defineStore('questsStore', {
             title: alertData.title.replace('{name}', `"${questData.name}"`),
           });
 
-        this.getPlayerActiveQuests();
+        this.getPlayerQuests();
       } else {
         if (questData.state !== 3) {
           const newStateName = getContent(
@@ -85,7 +95,7 @@ export const useQuestsStore = defineStore('questsStore', {
             });
         }
 
-        if (findActiveQuest) this.getPlayerActiveQuests();
+        if (findActiveQuest) this.getPlayerQuests();
         if (questData.state === 3) useEvent('completedQuestsUpdated');
         if ([5, 6].includes(questData.state)) useEvent('expiredQuestsUpdated');
       }
@@ -97,7 +107,7 @@ export const useQuestsStore = defineStore('questsStore', {
       const { getContent } = useProjectMethods();
       const { alertsData, defaultLocaleAlertsData, popupsData, defaultLocalePopupsData } = useGlobalStore();
       const { showAlert } = useLayoutStore();
-      this.playerActiveQuests = this.playerActiveQuests.map(quest => {
+      this.playerQuests = this.playerQuests.map(quest => {
         if (quest.id === taskData.questId) {
           if (taskData.isActive && taskData.progress === taskData.quantity) {
             const alertData = getContent(alertsData, defaultLocaleAlertsData, 'quests.taskCompleted');

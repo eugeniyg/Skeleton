@@ -78,7 +78,7 @@
             type="primary"
             @click="activateQuest"
           >
-            {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.startQuestButton') }}
+            {{ activateQuestButton }}
           </button-base>
         </div>
       </div>
@@ -112,6 +112,13 @@
   const blockLabel = computed(() => {
     const contentMessage = getContent(popupsData.value, defaultLocalePopupsData.value, 'questTasks.blockLabel');
     return contentMessage ? contentMessage.replace('{tasksLeft}', activeTasks.value.length) : '';
+  });
+
+  const activateQuestButton = computed(() => {
+    const isQuestCompleted = tasksModalData.value?.tasks.every(task => task.isCompleted);
+    return isQuestCompleted
+      ? getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.claimReward')
+      : getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.startQuestButton');
   });
 
   const inactiveState = computed(() => ![1, 2].includes(tasksModalData.value?.state || 0));
