@@ -1,14 +1,24 @@
 .tournament-card-finished {
-  display: flex;
-  flex-direction: column;
-  padding: 24px 120px 24px 24px;
-  align-items: flex-start;
-  border-radius: var(--corner-radius-mapped-card-md, 16px);
+  border-radius: var(--card-radius, 16px);
   background: var(--layer-03-main);
-  position: relative;
+  padding: var(--card-padding, 0);
+  overflow: hidden;
 
-  @include media(l) {
-    padding: 32px 180px 32px 24px;
+  &__container {
+    display: flex;
+    flex-direction: column;
+    padding: var(--card-container-padding, 24px 120px 24px 24px);
+    align-items: flex-start;
+    position: relative;
+
+    @include media(l) {
+      --card-container-padding: 32px 180px 32px 24px;
+    }
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
   }
 
   &__header {
@@ -21,10 +31,25 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: var(--cornerRadius-mapped-system-default, 8px);
-    background: var(--layer-02, #282F3E);
-    @include font($subheading-2);
+    border-radius: var(--corner-radius-mapped-system-default, 8px);
+    background: var(--layer-02);
     color: var(--gray-300);
+    width: max-content;
+    @include font($subheading-2);
+  }
+
+  &__date {
+    color: var(--text-secondary);
+    margin-top: 8px;
+    display: flex;
+    --line-height: auto;
+    @include font($subheading-2);
+
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
   }
 
   &__title {
@@ -42,6 +67,7 @@
     color: var(--text-helper);
     text-shadow: var(--shadow-layer);
     margin-top: 4px;
+    margin-right: -100px;
     @include font($heading-5);
 
     @include media(l) {
@@ -53,16 +79,12 @@
     position: absolute;
     top: 50%;
     right: 0;
-    max-width: 100%;
     display: block;
-    height: calc(100% - 32px);
-    width: auto;
-    transform: translateY(-50%);
-    opacity: .5;
-
-    @include media(l) {
-      height: 100%;
-    }
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    height: 100%;
+    transform: translateY(-50%) translateX(20%);
+    opacity: 0.5;
   }
 
   &__actions {
@@ -71,6 +93,8 @@
     gap: 8px;
     margin-top: 20px;
     margin-right: -100px;
+    position: relative;
+    z-index: 1;
 
     @include media(l) {
       margin-top: 32px;

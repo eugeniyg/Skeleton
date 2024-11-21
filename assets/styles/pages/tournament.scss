@@ -1,0 +1,12 @@
+.tournament {
+  &__container {
+    @include media(md) {
+      max-width: 1024px;
+      margin: 0 auto;
+    }
+
+    .pagination {
+      margin-top: 16px;
+    }
+  }
+}
