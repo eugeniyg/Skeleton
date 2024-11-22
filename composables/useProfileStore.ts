@@ -134,12 +134,12 @@ export const useProfileStore = defineStore('profileStore', {
     startProfileDependencies(): void {
       const { getFavoriteGames, subscribeBetsSocket } = useGamesStore();
       const { getPlayerBonuses, getPlayerFreeSpins, getPlayerCashback, getDepositBonuses } = useBonusStore();
-      const { getPlayerQuests, subscribeQuestsSocket } = useQuestsStore();
+      const { getActiveQuests, subscribeQuestsSocket } = useQuestsStore();
       const { getPlayerLoyalty, subscribeLoyaltySocket } = useLoyaltyStore();
       const { getPopoverNotifications, subscribeNotificationSocket } = useNotificationStore();
       const runtimeConfig = useRuntimeConfig();
       getFavoriteGames();
-      if (runtimeConfig.public?.questsEnabled) getPlayerQuests();
+      if (runtimeConfig.public?.questsEnabled) getActiveQuests();
       if (runtimeConfig.public?.loyaltyEnabled) getPlayerLoyalty();
       getPopoverNotifications();
       getPlayerCashback();

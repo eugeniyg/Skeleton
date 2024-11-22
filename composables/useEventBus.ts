@@ -21,6 +21,7 @@ type ApplicationEvents = {
   markAllAsReadMessages: undefined;
   receivedAsyncInvoice: ISocketInvoice;
   depositInvoiceUpdated: undefined;
+  questActivated: undefined;
 };
 
 const emitter = mitt<ApplicationEvents>();

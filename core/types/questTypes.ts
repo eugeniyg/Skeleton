@@ -69,6 +69,12 @@ export interface IPlayerQuest extends Record<string, any> {
   endAt: string | null;
 }
 
+export interface IAvailableQuestsRequest extends Record<string, any> {
+  page?: number;
+  perPage?: number;
+  currency?: string;
+}
+
 export interface IPlayerQuestsRequest extends Record<string, any> {
   page?: number;
   perPage?: number;

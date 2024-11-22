@@ -1,12 +1,22 @@
 <template>
   <div class="quest-tab">
-    <div v-if="issuedQuests.length" class="quest-tab__items">
+    <div v-if="state.data.length" class="quest-tab__items">
       <quest-card
-        v-for="(quest, questIndex) in issuedQuests"
+        v-for="(quest, questIndex) in state.data"
         :key="quest.id"
         :quest-info="quest"
         :quest-index="questIndex"
       />
+
+      <button-base
+        v-if="state.meta && state.meta.page < state.meta.totalPages"
+        size="xs"
+        type="ghost"
+        class="quest-tab__load-more"
+        @click="getData(state.meta.page + 1)"
+      >
+        {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.loadLabel') }}
+      </button-base>
     </div>
 
     <quest-empty v-else v-bind="emptyContentData" />
@@ -14,11 +24,47 @@
 </template>
 
 <script setup lang="ts">
-  const questsStore = useQuestsStore();
-  const { issuedQuests } = storeToRefs(questsStore);
+  import type { IPaginationMeta, IPlayerQuest } from '@skeleton/core/types';
+
   const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
+  const { popupsData, defaultLocalePopupsData, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
+
+  interface IState {
+    loading: boolean;
+    data: IPlayerQuest[];
+    meta: Maybe<IPaginationMeta>;
+  }
+
+  const state = reactive<IState>({
+    loading: false,
+    data: [],
+    meta: undefined,
+  });
+
+  const { getAvailableQuests } = useCoreQuestApi();
+  const { showAlert } = useLayoutStore();
+  const getData = async (page = 1): Promise<void> => {
+    if (state.loading) return;
+    state.loading = true;
+
+    try {
+      const { activeAccount } = useWalletStore();
+      const { data, meta } = await getAvailableQuests({
+        page: page,
+        perPage: 5,
+        currency: activeAccount?.currency,
+      });
+      state.data = page === 1 ? data : [...state.data, ...data];
+      state.meta = meta;
+    } catch {
+      state.data = [];
+      state.meta = undefined;
+      showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
+    } finally {
+      state.loading = false;
+    }
+  };
 
   const emptyContentData = computed(() => {
     const image = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.image');
@@ -29,6 +75,15 @@
       'questsHub.empty.availableDescription'
     );
     return { image, title, description };
+  });
+
+  onMounted(() => {
+    useListen('questActivated', getData);
+    getData();
+  });
+
+  onBeforeUnmount(() => {
+    useUnlisten('questActivated', getData);
   });
 </script>
 

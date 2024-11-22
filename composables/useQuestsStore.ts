@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import type { IPlayerQuest, IPlayerQuestEventTask, IWebSocketResponse } from '@skeleton/core/types';
 
 interface IQuestsStoreState {
-  playerQuests: IPlayerQuest[];
+  activeQuests: IPlayerQuest[];
   showRewardsModal: boolean;
   rewardsModalTitle: string;
   rewardsList: { currency: string; amount: number }[];
@@ -14,7 +14,7 @@ interface IQuestsStoreState {
 
 export const useQuestsStore = defineStore('questsStore', {
   state: (): IQuestsStoreState => ({
-    playerQuests: [],
+    activeQuests: [],
     showRewardsModal: false,
     rewardsModalTitle: '',
     rewardsList: [],
@@ -24,22 +24,12 @@ export const useQuestsStore = defineStore('questsStore', {
     tasksModalImage: '',
   }),
 
-  getters: {
-    activeQuests(state): IPlayerQuest[] {
-      return state.playerQuests.filter(quest => quest.state === 2);
-    },
-
-    issuedQuests(state): IPlayerQuest[] {
-      return state.playerQuests.filter(quest => quest.state === 1);
-    },
-  },
-
   actions: {
-    async getPlayerQuests(): Promise<void> {
+    async getActiveQuests(): Promise<void> {
       const { getPlayerQuests } = useCoreQuestApi();
       const { activeAccount } = useWalletStore();
-      const { data } = await getPlayerQuests({ state: [1, 2], currency: activeAccount?.currency });
-      this.playerQuests = data;
+      const { data } = await getPlayerQuests({ state: [2], currency: activeAccount?.currency });
+      this.activeQuests = data;
     },
 
     openRewardsModal(rewards: { currency: string; amount: number }[], modalTitle: string): void {
@@ -69,36 +59,27 @@ export const useQuestsStore = defineStore('questsStore', {
       const { showAlert } = useLayoutStore();
       const { globalComponentsContent, defaultLocaleGlobalComponentsContent, alertsData, defaultLocaleAlertsData } =
         useGlobalStore();
-      const findActiveQuest = this.playerQuests.find(quest => quest.id === questData.id);
 
-      if ([1, 2].includes(questData.state) && !findActiveQuest) {
-        const alertData = getContent(alertsData, defaultLocaleAlertsData, 'quests.questIssued');
-        if (alertData.title)
+      if (questData.state !== 3) {
+        const newStateName = getContent(
+          globalComponentsContent,
+          defaultLocaleGlobalComponentsContent,
+          `constants.questsStatuses.${questData.state}`
+        );
+        const alertData = getContent(alertsData, defaultLocaleAlertsData, 'quests.stateChanged');
+        if (alertData.title) {
           showAlert({
             ...alertData,
-            title: alertData.title.replace('{name}', `"${questData.name}"`),
+            title: alertData.title.replace('{name}', `"${questData.name}"`).replace('{status}', newStateName),
           });
-
-        this.getPlayerQuests();
-      } else {
-        if (questData.state !== 3) {
-          const newStateName = getContent(
-            globalComponentsContent,
-            defaultLocaleGlobalComponentsContent,
-            `constants.questsStatuses.${questData.state}`
-          );
-          const alertData = getContent(alertsData, defaultLocaleAlertsData, 'quests.stateChanged');
-          if (alertData.title)
-            showAlert({
-              ...alertData,
-              title: alertData.title.replace('{name}', `"${questData.name}"`).replace('{status}', newStateName),
-            });
         }
-
-        if (findActiveQuest) this.getPlayerQuests();
-        if (questData.state === 3) useEvent('completedQuestsUpdated');
-        if ([5, 6].includes(questData.state)) useEvent('expiredQuestsUpdated');
       }
+
+      const findActiveQuest = this.activeQuests.find(quest => quest.id === questData.id);
+      if (findActiveQuest || questData.state === 2) this.getActiveQuests();
+
+      if (questData.state === 3) useEvent('completedQuestsUpdated');
+      if ([5, 6].includes(questData.state)) useEvent('expiredQuestsUpdated');
     },
 
     updateTask(taskData: IPlayerQuestEventTask | undefined): void {
@@ -107,7 +88,7 @@ export const useQuestsStore = defineStore('questsStore', {
       const { getContent } = useProjectMethods();
       const { alertsData, defaultLocaleAlertsData, popupsData, defaultLocalePopupsData } = useGlobalStore();
       const { showAlert } = useLayoutStore();
-      this.playerQuests = this.playerQuests.map(quest => {
+      this.activeQuests = this.activeQuests.map(quest => {
         if (quest.id === taskData.questId) {
           if (taskData.isActive && taskData.progress === taskData.quantity) {
             const alertData = getContent(alertsData, defaultLocaleAlertsData, 'quests.taskCompleted');

@@ -132,6 +132,7 @@
 
     try {
       const questData = await activatePlayerQuest(tasksModalData.value?.id as string);
+      useEvent('questActivated');
       openTasksModal(questData, tasksModalImage.value);
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);

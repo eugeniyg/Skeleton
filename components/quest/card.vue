@@ -91,6 +91,7 @@
 
     try {
       await activatePlayerQuest(props.questInfo.id);
+      useEvent('questActivated');
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
       activation.value = false;
