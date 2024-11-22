@@ -10,7 +10,7 @@
     
     <div class="tournaments__grid">
       <tournament-card-active
-        v-for="(card, index) in cards.slice(0, 2)"
+        v-for="(card, index) in cards?.slice(0, 2)"
         :key="index"
         v-bind="card"
       />
@@ -20,7 +20,7 @@
     
     <div class="tournaments__grid">
       <tournament-card-finished
-        v-for="(card, index) in cards.slice(0, 2)"
+        v-for="(card, index) in cards?.slice(0, 2)"
         :key="index"
         v-bind="card"
       />

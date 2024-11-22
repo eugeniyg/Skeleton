@@ -27,7 +27,7 @@
       
       <div class="tournament-card-active__actions">
         <button-base type="primary" size="md">Take part</button-base>
-        <button-base type="ghost" size="md">More info</button-base>
+        <button-base type="ghost" size="md" @click="router.push('/tournament')">More info</button-base>
       </div>
     </div>
   </div>
@@ -50,6 +50,8 @@
     seconds,
     startTimer
   } = useTimer();
+  
+  const router = useRouter();
   
   const format = (value: string | number): number | string => (Number(value) < 10 ? `0${value}` : value);
   

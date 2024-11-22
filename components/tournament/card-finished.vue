@@ -12,10 +12,6 @@
       </div>
       
       <atomic-image class="tournament-card-finished__img" :src="props.image"/>
-      
-<!--      <div class="tournament-card-finished__actions">-->
-<!--        <button-base type="secondary" size="md">Results</button-base>-->
-<!--      </div>-->
     </div>
   </div>
 </template>
