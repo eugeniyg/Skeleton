@@ -2,27 +2,9 @@
   position: relative;
   z-index: 0;
   margin: -24px -32px 16px -32px;
-  --shadow-inset: -16px;
-
-  @include media(xs) {
-    --shadow-width: 32px;
-    --shadow-inset: -32px;
-  }
-
-  @include media(sm) {
-    --shadow-width: 48px;
-    --shadow-inset: -48px;
-  }
 
   @include media(md) {
     margin: -24px -48px 56px -48px;
-  }
-
-  @include media(xxxl) {
-    --slides-gap: 16px;
-    --shadow-width: 64px;
-    --shadow-inset: 24px;
-    margin: -24px -64px 56px -64px;
   }
 
   .tournament-card-active,
@@ -58,9 +40,6 @@
       }
     }
 
-
-
-
     &__container {
       --card-container-padding:  40px 136px 40px 0;
 
@@ -94,7 +73,6 @@
     width: 100%;
     max-width: 1164px;
     margin: 0 auto;
-
     opacity: 0;
     pointer-events: none;
 
@@ -137,25 +115,5 @@
     &--next {
       transform: rotate(-90deg);
     }
-  }
-
-  &:before, &:after {
-    content: '';
-    top: -2px;
-    bottom: -2px;
-    width: var(--shadow-width);
-    position: absolute;
-    background: linear-gradient(270deg, var(--layer-bg) 0%, rgba(17, 20, 28, 0) 100%);
-    z-index: 1;
-    box-shadow: 16px 0 0 var(--layer-bg);
-  }
-
-  &:before {
-    transform: rotate(180deg);
-    left: var(--shadow-inset);
-  }
-
-  &:after {
-    right: var(--shadow-inset);
   }
 }
