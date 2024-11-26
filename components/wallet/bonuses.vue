@@ -2,7 +2,7 @@
   <div class="wallet-bonuses">
     <div class="wallet-bonuses__header">
       <div class="wallet-bonuses__title">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.title') }}
+        {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.bonuses.title') }}
       </div>
 
       <form-input-toggle
@@ -11,7 +11,7 @@
         :value="bonusDeclined"
         @change="declineBonuses"
       >
-        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.declineLabel') }}
+        {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.bonuses.declineLabel') }}
       </form-input-toggle>
     </div>
 
@@ -44,13 +44,16 @@
   import type { IBonus } from '@skeleton/core/types';
   import { marked } from 'marked';
   import DOMPurify from 'isomorphic-dompurify';
+  import type { IWalletModal } from '~/types';
 
   const props = defineProps<{
     crypto?: boolean;
     amount?: string;
   }>();
 
-  const { popupsData, defaultLocalePopupsData, settingsConstants } = useGlobalStore();
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
+  const { settingsConstants } = useGlobalStore();
   const { getContent, formatBalance, getEquivalentFromBase } = useProjectMethods();
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
@@ -64,9 +67,7 @@
     walletDepositBonus,
   } = storeToRefs(bonusStore);
 
-  const cryptoInfoContent = computed(() =>
-    getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.infoDescription')
-  );
+  const cryptoInfoContent = getContent(walletContent, defaultLocaleWalletContent, 'deposit.bonuses.infoDescription');
 
   const setDepositLimit = (bonusData: IBonus): IBonus => {
     let minDeposit: { amount: number; currency: string } | undefined;

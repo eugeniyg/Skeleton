@@ -15,23 +15,23 @@
 
     <wallet-warning
       v-if="props.fields?.length && state.selectedNetwork"
-      :content="popupsData?.wallet?.deposit?.warning || defaultLocalePopupsData?.wallet?.deposit?.warning"
+      :content="getContent(walletContent, defaultLocaleWalletContent, 'deposit.warning')"
     />
 
     <div class="form-deposit-crypto__content" :class="{ 'is-blured': props.fields?.length && !state.selectedNetwork }">
       <wallet-destination-tag v-if="destinationTag" :value="destinationTag" />
 
       <wallet-crypto-qr
-        :content="popupsData?.wallet?.deposit || defaultLocalePopupsData?.wallet?.deposit"
+        :content="getContent(walletContent, defaultLocaleWalletContent, 'deposit')"
         :qr-address="walletNumber"
       />
 
       <form-input-copy
         name="walletNumber"
-        :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addressInputLabel') || ''"
+        :label="getContent(walletContent, defaultLocaleWalletContent, 'deposit.addressInputLabel') || ''"
         :hint="fieldHint"
         :value="walletNumber"
-        :copy-tooltip="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.copiedLabel')"
+        :copy-tooltip="getContent(walletContent, defaultLocaleWalletContent, 'deposit.copiedLabel')"
       />
 
       <atomic-divider />
@@ -46,6 +46,7 @@
   import type { IPaymentField, IRequestDeposit, IBonus } from '@skeleton/core/types';
   import debounce from 'lodash/debounce';
   import DOMPurify from 'isomorphic-dompurify';
+  import type { IWalletModal } from '~/types';
 
   const props = defineProps<{
     amountMax?: number;
@@ -54,16 +55,18 @@
     fields?: IPaymentField[];
   }>();
 
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const walletNumber = ref<string>('');
   const destinationTag = ref<string | undefined>();
   const walletStore = useWalletStore();
-  const { showModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
 
   const bonusStore = useBonusStore();
   const { selectedDepositBonus, bonusDeclined, showDepositBonusCode, depositBonusCode } = storeToRefs(bonusStore);
 
-  const { popupsData, defaultLocalePopupsData, fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
+  const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
 
   const { formatBalance, getContent } = useProjectMethods();
 
@@ -93,8 +96,8 @@
       selectedNetworkData?.maxAmount ?? props.amountMax
     );
 
-    const minContent = `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.minSum') || ''} ${minSumFormat.amount} ${minSumFormat.currency}`;
-    const maxContent = `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.maxSum') || ''} ${maxSumFormat.amount} ${maxSumFormat.currency}`;
+    const minContent = `${getContent(walletContent, defaultLocaleWalletContent, 'deposit.minSum') || ''} ${minSumFormat.amount} ${minSumFormat.currency}`;
+    const maxContent = `${getContent(walletContent, defaultLocaleWalletContent, 'deposit.maxSum') || ''} ${maxSumFormat.amount} ${maxSumFormat.currency}`;
 
     return {
       message: `${minContent}, ${maxContent}`,
@@ -131,7 +134,7 @@
       walletNumber.value = depositResponse.address;
       destinationTag.value = depositResponse.tag;
     } catch {
-      showModal('failing');
+      await openModal('deposit-error');
     }
   };
 
