@@ -11,7 +11,7 @@
 
   const props = defineProps<{
     items: IGame[];
-    meta: IPaginationMeta|undefined;
+    meta: IPaginationMeta | undefined;
   }>();
   const emit = defineEmits(['loadMore']);
   const { initObserver } = useProjectMethods();
