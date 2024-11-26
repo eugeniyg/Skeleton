@@ -1,164 +1,144 @@
 <template>
-  <not-found v-if="showNotFound" />
+  <not-found v-if="state.showNotFound" />
 
   <div v-else class="categories">
-    <atomic-cat-heading :icon="gameCategoriesObj[activeCollection?.identity || '']?.icon">
-      {{ gameCategoriesObj[activeCollection?.identity || '']?.label || activeCollection?.name }}
+    <atomic-cat-heading v-if="state.currentCategory" :icon="gameCategoriesObj[state.currentCategory.identity]?.icon">
+      {{ gameCategoriesObj[state.currentCategory.identity]?.label || state.currentCategory?.name }}
     </atomic-cat-heading>
 
     <div v-click-outside="skipActionsState" class="game-filter">
       <nav-category hide-items @click-category="changeCategory" />
 
       <form-input-search
-        v-model:value="searchValue"
+        v-model:value="state.searchValue"
         class="game-filter__search"
         :placeholder="getContent(layoutData, defaultLocaleLayoutData, 'header.search.placeholder')"
         @input="searchInput"
       />
 
-      <button-toggle-filter :is-active="isShowFilter" @toggle="toggleFilter" />
+      <button-toggle-filter :is-active="state.isShowFilter" @toggle="toggleFilter" />
 
       <atomic-game-sort
-        v-show="isShowFilter"
+        v-show="state.isShowFilter"
         v-if="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'sortOptions')?.length"
         class="game-filter__sort"
-        :sort-order-value="sortOrder"
-        :sort-by-value="sortBy"
-        v-bind="
-          pageContent?.currentLocaleData?.sortOptions?.length
-            ? pageContent?.currentLocaleData
-            : pageContent?.defaultLocaleData
-        "
+        :sortOrderValue="state.sortOrder"
+        :sortByValue="state.sortBy"
+        :sortLabel="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'sortLabel')"
+        :sortOptions="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'sortOptions')"
         @change="changeSort"
       />
 
-      <providers-tags v-if="tags.length" :selected="selectedProviders" :tags="tags" @unselect="changeProvider" />
+      <providers-tags v-if="tags.length" :tags="tags" @unselect="selectProviders" />
 
       <client-only>
-        <modal-providers :selected="selectedProviders" @select="selectProviders" />
+        <modal-providers :selected="state.providerIds" @select="selectProviders" />
         <modal-categories @click-category="changeCategory" />
       </client-only>
     </div>
 
-    <list-grid v-if="gameItems.length" :items="gameItems" :meta="pageMeta" @load-more="loadMoreItems" />
+    <list-grid v-if="state.pageData.length" :items="state.pageData" :meta="state.pageMeta" @load-more="getData(true)" />
 
     <atomic-empty
-      v-if="!gameItems.length && !loadingGames"
+      v-else-if="!state.loadingGames"
       :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"
       :sub-title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
       :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"
     />
 
-    <atomic-seo-text
-      v-if="pageContent?.currentLocaleData?.pageMeta?.seoText"
-      v-bind="pageContent.currentLocaleData.pageMeta.seoText"
-    />
+    <!--    <NuxtPage-->
+    <!--      :pageData="state.pageData"-->
+    <!--      :pageMeta="state.pageMeta"-->
+    <!--      :loadingGames="state.loadingGames"-->
+    <!--      @loadMore="getData(true)"-->
+    <!--      @pageMounted="childMounted"-->
+    <!--    />-->
   </div>
 </template>
 
 <script setup lang="ts">
-  import type { ICollection, IGame, IGameProvider, IGamesResponse, IPaginationMeta } from '@skeleton/core/types';
+  import type { ICollection, IGame, IGameProvider, IPaginationMeta } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
-  import debounce from 'lodash/debounce';
   import type { IGamesPage } from '~/types';
+  import debounce from 'lodash/debounce';
 
   const globalStore = useGlobalStore();
   const { gameCategoriesObj, layoutData, defaultLocaleLayoutData, headerCountry, isMobile } = storeToRefs(globalStore);
-
-  const { getContent } = useProjectMethods();
+  const { getContent, localizePath } = useProjectMethods();
   const layoutStore = useLayoutStore();
   const { closeModal } = layoutStore;
   const { modals } = storeToRefs(layoutStore);
-
   const route = useRoute();
   const router = useRouter();
-  const showNotFound = ref<boolean>(false);
-
-  const sortBy = ref<string | undefined>((route.query.sortBy as string) || 'default');
-  const sortOrder = ref<string | undefined>((route.query.sortOrder as string) || 'asc');
 
   const contentParams = {
     contentKey: 'gamesPageContent',
     contentRoute: ['pages', 'games'],
-    isPage: true,
   };
   const { getContentData } = useContentLogic<IGamesPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
 
-  const selectedProviders = ref<string[]>([]);
-  const activeCollection = ref<ICollection | undefined>();
-  const routeProvider = route.query.provider as string | string[];
+  interface IState {
+    showNotFound: boolean;
+    sortBy: string;
+    sortOrder: string;
+    providerIds: string[];
+    currentCategory: ICollection | undefined;
+    searchValue: string;
+    isShowFilter: boolean;
+    loadingGames: boolean;
+    pageData: IGame[];
+    pageMeta: IPaginationMeta | undefined;
+    pageKey: number;
+  }
 
-  const searchValue = ref<string>('');
-  const loadPage = ref<number>(1);
-  const gameItems = ref<IGame[]>([]);
-  const pageMeta = ref<IPaginationMeta>();
-  const loadingGames = ref<boolean>(true);
-  const isShowFilter = ref<boolean>(false);
+  const state = reactive<IState>({
+    showNotFound: false,
+    sortBy: (route.query.sortBy as string) || 'default',
+    sortOrder: (route.query.sortOrder as string) || 'asc',
+    providerIds: [],
+    currentCategory: undefined,
+    searchValue: '',
+    isShowFilter: false,
+    loadingGames: false,
+    pageData: [],
+    pageMeta: undefined,
+    pageKey: 0,
+  });
 
   const { getFilteredGames } = useCoreGamesApi();
+  const getData = async (nextPage: boolean): Promise<void> => {
+    if (state.loadingGames || (nextPage && state.pageMeta && state.pageMeta.page >= state.pageMeta.totalPages)) return;
+    state.loadingGames = true;
 
-  const getItems = async (): Promise<IGamesResponse> => {
     const params: any = {
-      page: loadPage.value,
+      page: nextPage ? (state.pageMeta?.page || 0) + 1 : 1,
       perPage: isMobile.value && window.innerHeight < 1000 ? 24 : 72,
-      collectionId: activeCollection.value?.id,
-      sortBy: sortBy.value,
-      sortOrder: sortOrder.value,
+      name: state.searchValue || undefined,
+      collectionId: state.currentCategory?.id,
+      sortBy: state.sortBy,
+      sortOrder: state.sortOrder,
       countries: headerCountry.value ? [headerCountry.value] : undefined,
-      providerId: selectedProviders.value,
+      providerId: state.providerIds,
     };
 
-    if (searchValue.value) params.name = searchValue.value;
-    if (selectedProviders.value.length) params.providerId = selectedProviders.value;
-
-    const response = await getFilteredGames(params);
-    loadingGames.value = false;
-    showNotFound.value = false;
-
-    return response;
-  };
-
-  const setItems = (response: IGamesResponse, more?: boolean): void => {
-    gameItems.value = more ? gameItems.value.concat(response.data) : response.data;
-    pageMeta.value = response.meta;
-  };
-
-  const changeProvider = async (newSelectedProviders: string[]): Promise<void> => {
-    selectedProviders.value = newSelectedProviders;
-
-    loadPage.value = 1;
-
-    await router.replace({
-      query: {
-        ...route.query,
-        providerId: selectedProviders.value,
-      },
-    });
-
-    const response = await getItems();
-    setItems(response);
-  };
-
-  const changeCategory = async (categoryId: string): Promise<void> => {
-    loadPage.value = 1;
-    const gameCollections = await getCollectionsList();
-    activeCollection.value = gameCollections.find(collection => collection.identity === categoryId);
-    if (!activeCollection.value) {
-      showNotFound.value = true;
-      return;
+    try {
+      const { data, meta } = await getFilteredGames(params);
+      state.pageData = nextPage ? state.pageData.concat(data) : data;
+      state.pageMeta = meta;
+    } catch {
+      state.pageData = [];
+      state.pageMeta = undefined;
     }
-    if (route.query.category !== categoryId) {
-      await router.replace({
-        query: {
-          ...route.query,
-          category: categoryId,
-        },
-      });
-    }
-    window.scroll(0, 0);
-    const response = await getItems();
-    setItems(response);
+
+    state.loadingGames = false;
+  };
+
+  const changeCategory = async (categoryIdentity: string): Promise<void> => {
+    if (route.params.categoryIdentity === categoryIdentity) return;
+    const gameCategories = await getCollectionsList();
+    state.currentCategory = gameCategories.find(category => category.identity === categoryIdentity);
+    await router.push(localizePath(`/categories/${categoryIdentity}`));
 
     if (modals.value.categories) {
       closeModal('categories');
@@ -167,122 +147,85 @@
 
   const changeSort = async (...args: any): Promise<void> => {
     const [by, order] = args;
-    loadPage.value = 1;
-    sortBy.value = by;
-    sortOrder.value = order;
-    await router.replace({
-      query: {
-        ...route.query,
-        sortBy: by,
-        sortOrder: order,
-      },
-    });
-    const response = await getItems();
-    setItems(response);
+    state.sortBy = by;
+    state.sortOrder = order;
+    await router.push({ query: { ...route.query, sortBy: by, sortOrder: order } });
+    await getData(false);
+  };
+
+  const tags = ref<IGameProvider[]>([]);
+  const { getProviderList, getCollectionsList } = useGamesStore();
+  const selectProviders = async (providersIds: string[]) => {
+    closeModal('providers');
+    const gameProviders = await getProviderList();
+    const selectedProvidersData = gameProviders.filter(
+      provider => providersIds.includes(provider.id) && !!provider.gameEnabledCount
+    );
+    tags.value = selectedProvidersData;
+    state.providerIds = selectedProvidersData.map(provider => provider.id);
+    const providerIdentities = selectedProvidersData.map(provider => provider.identity);
+    await router.push({ query: { ...route.query, provider: providerIdentities } });
+    await getData(false);
+  };
+
+  const toggleFilter = () => {
+    state.isShowFilter = !state.isShowFilter;
+  };
+
+  const skipActionsState = () => {
+    state.isShowFilter = false;
   };
 
   const searchInput = debounce(
     async (): Promise<void> => {
-      if (searchValue.value.length > 1 || !searchValue.value) {
-        loadPage.value = 1;
-        const response = await getItems();
-        setItems(response);
+      console.log('search event!!!');
+      if (state.searchValue.length > 1 || !state.searchValue) {
+        await getData(false);
       }
     },
     500,
     { leading: false }
   );
 
-  const loadMoreItems = async (): Promise<void> => {
-    loadPage.value = (pageMeta.value?.page || 0) + 1;
-    const response = await getItems();
-    setItems(response, true);
+  const resetRequestParams = (): void => {
+    state.searchValue = '';
+    state.sortBy = 'default';
+    state.sortOrder = 'asc';
+    state.providerIds = [];
   };
 
-  watch(
-    () => route.query.category as string,
-    async (newValue: string) => {
-      if (
-        (route.name === 'games' || route.name === 'locale-games') &&
-        route.query.category !== activeCollection.value?.identity
-      ) {
-        await changeCategory(newValue);
-      }
+  const setProviders = async (): Promise<void> => {
+    const routerProviders = route.query.provider;
+    const gameProviders = await getProviderList();
+    const providersIdentities = Array.isArray(routerProviders) ? routerProviders : [routerProviders];
+
+    const selectedProvidersData = gameProviders.filter(
+      provider => providersIdentities.includes(provider.identity) && !!provider.gameEnabledCount
+    );
+    tags.value = selectedProvidersData;
+    state.providerIds = selectedProvidersData.map(provider => provider.id);
+  };
+
+  const childMounted = async () => {
+    resetRequestParams();
+    await setProviders();
+
+    const gameCollections = await getCollectionsList();
+    state.currentCategory = gameCollections.find(category => category.identity === route.params.categoryIdentity);
+    if (!state.currentCategory) {
+      state.showNotFound = true;
+      return;
     }
-  );
 
-  const tags = ref<IGameProvider[]>([]);
-
-  const { getProviderList, getCollectionsList } = useGamesStore();
-
-  const setSelectedProviders = async (): Promise<void> => {
-    const gameProviders = await getProviderList();
-    const providersArr = Array.isArray(routeProvider) ? routeProvider : [routeProvider];
-
-    selectedProviders.value = providersArr.filter(providerId => {
-      const providerData = gameProviders.find(provider => provider.id === providerId);
-      return providerData && !!providerData.gameEnabledCount;
-    });
-
-    await createTags();
-  };
-
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
-
-  const selectProviders = async (providersId: string[]) => {
-    closeModal('providers');
-    selectedProviders.value = providersId;
-    const category = getContent(popupsData, defaultLocalePopupsData, 'providers.collectionId');
-    await router.replace({ query: { ...route.query, category, providerId: providersId } });
-    await createTags();
-    await changeProvider(selectedProviders.value);
-  };
-
-  const createTags = async () => {
-    const gameProviders = await getProviderList();
-    const providersList = gameProviders.filter(provider => !!provider.gameEnabledCount);
-    tags.value = [];
-    selectedProviders.value?.forEach(id => {
-      const tag = providersList.find(provider => provider.id === id);
-      if (tag) tags.value.push(tag);
-    });
+    await getData(false);
   };
 
   onMounted(async () => {
-    if (routeProvider) await setSelectedProviders();
-    const gameCollections = await getCollectionsList();
-
-    if (!route.query.category && gameCollections.length) {
-      return router.replace({
-        query: {
-          ...route.query,
-          category: gameCollections[0].identity,
-        },
-      });
+    const gameCategories = await getCollectionsList();
+    if (!route.params.categoryIdentity || gameCategories.length) {
+      await router.push(localizePath(`/categories/${gameCategories[0].identity}`));
     }
-
-    activeCollection.value = gameCollections.find(collection => collection.identity === route.query.category);
-
-    if (!activeCollection.value) return (showNotFound.value = true);
-
-    const itemsResponse = await getItems();
-    setItems(itemsResponse);
   });
-
-  const toggleFilter = () => {
-    isShowFilter.value = !isShowFilter.value;
-  };
-
-  const skipActionsState = () => {
-    isShowFilter.value = false;
-  };
-
-  watch(
-    () => selectedProviders.value,
-    async () => {
-      await createTags();
-    }
-  );
 </script>
 
 <style src="~/assets/styles/pages/categories.scss" lang="scss" />
