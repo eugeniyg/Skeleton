@@ -70,8 +70,7 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { openWalletModal } = useLayoutStore();
-  const { openModal } = useModalStore();
+  const { openModal, openWalletModal } = useModalStore();
 
   const clickButton = (url: string | undefined): void => {
     const { handleExternalLink } = useProjectMethods();

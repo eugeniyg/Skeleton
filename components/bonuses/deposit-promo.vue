@@ -9,7 +9,7 @@
 
     <div class="bonuses-deposit-promo__head">
       <atomic-icon id="bonuses" />
-      {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.togglerLabel') || '' }}
+      {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.togglerLabel') || '' }}
     </div>
 
     <div v-if="showDepositBonusCode" class="bonuses-deposit-promo__code">
@@ -31,8 +31,8 @@
         <atomic-spinner :is-shown="bonusChecking" />
         {{
           depositBonusCode
-            ? getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.cancelBonusCode')
-            : getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.addBonusCode')
+            ? getContent(walletContent, defaultLocaleWalletContent, 'deposit.cancelBonusCode')
+            : getContent(walletContent, defaultLocaleWalletContent, 'deposit.addBonusCode')
         }}
       </button-base>
     </div>
@@ -41,10 +41,13 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import type { IWalletModal } from '~/types';
 
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const emit = defineEmits(['openBonusCode']);
   const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData, fieldsSettings, defaultLocaleFieldsSettings } = globalStore;
+  const { fieldsSettings, defaultLocaleFieldsSettings } = globalStore;
   const { getContent } = useProjectMethods();
 
   const bonusValue = ref<string>('');

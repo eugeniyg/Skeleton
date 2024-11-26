@@ -19,7 +19,7 @@
 
     <wallet-warning
       v-if="props.fields?.length && state.selectedNetwork"
-      :content="popupsData?.wallet?.withdraw?.warning || defaultLocalePopupsData?.wallet?.withdraw?.warning"
+      :content="getContent(walletContent, defaultLocaleWalletContent, 'withdraw.warning')"
     />
 
     <div
@@ -28,7 +28,7 @@
     >
       <form-input-number
         v-model:value="amountValue"
-        :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.sumLabel') || ''"
+        :label="getContent(walletContent, defaultLocaleWalletContent, 'withdraw.sumLabel') || ''"
         name="withdrawSum"
         :min="formatAmountMin.amount"
         :max="formatAmountMax.amount"
@@ -56,7 +56,7 @@
       </template>
 
       <button-base type="primary" size="md" :is-disabled="buttonDisabled" @click="getWithdraw">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.withdraw.withdrawButton') }} {{ buttonAmount }}
+        {{ getContent(walletContent, defaultLocaleWalletContent, 'withdraw.withdrawButton') }} {{ buttonAmount }}
         {{ formatAmountMin.currency }}
       </button-base>
     </div>
@@ -70,6 +70,7 @@
   import { marked } from 'marked';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import DOMPurify from 'isomorphic-dompurify';
+  import type { IWalletModal } from '~/types';
 
   const props = defineProps<{
     amountMax: number;
@@ -78,19 +79,15 @@
     method: string;
   }>();
 
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const globalStore = useGlobalStore();
-  const {
-    popupsData,
-    defaultLocalePopupsData,
-    alertsData,
-    defaultLocaleAlertsData,
-    fieldsSettings,
-    defaultLocaleFieldsSettings,
-    currentLocale,
-  } = storeToRefs(globalStore);
+  const { alertsData, defaultLocaleAlertsData, fieldsSettings, defaultLocaleFieldsSettings, currentLocale } =
+    storeToRefs(globalStore);
 
   const walletStore = useWalletStore();
-  const { closeModal, showAlert } = useLayoutStore();
+  const { showAlert } = useLayoutStore();
+  const { closeModal } = useModalStore();
   const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
 
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
@@ -240,8 +237,8 @@
     formatBalance(activeAccount.value?.currency, activeAccount.value?.withdrawalBalance)
   );
   const fieldHint = computed(() => {
-    const minContent = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.minSum') || '';
-    const maxContent = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.maxSum') || '';
+    const minContent = getContent(walletContent, defaultLocaleWalletContent, 'withdraw.minSum') || '';
+    const maxContent = getContent(walletContent, defaultLocaleWalletContent, 'withdraw.maxSum') || '';
     const minAmountContent = `${minContent} ${formatAmountMin.value.amount} ${formatAmountMin.value.currency}`;
     const maxAmountContent = `${maxContent} ${formatAmountMax.value.amount} ${formatAmountMax.value.currency}`;
 
@@ -360,7 +357,7 @@
 
     try {
       await withdrawAccount(params);
-      closeModal('wallet');
+      await closeModal('wallet');
       showAlert(
         alertsData.value?.wallet?.withdrawalProcessed || defaultLocaleAlertsData.value?.wallet?.withdrawalProcessed
       );

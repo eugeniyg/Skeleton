@@ -61,8 +61,7 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn, userNickname } = storeToRefs(profileStore);
-  const { openWalletModal } = useLayoutStore();
-  const { openModal } = useModalStore();
+  const { openModal, openWalletModal } = useModalStore();
 
   const { createSrcSet, getContent } = useProjectMethods();
 

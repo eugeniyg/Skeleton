@@ -51,8 +51,8 @@
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
-  const { showAlert, compactDrawer, setReturnGame, openWalletModal } = useLayoutStore();
-  const { openModal } = useModalStore();
+  const { showAlert, compactDrawer, setReturnGame } = useLayoutStore();
+  const { openModal, openWalletModal } = useModalStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
   const { isMobile, alertsData, defaultLocaleAlertsData, currentLocale, headerCountry } = storeToRefs(globalStore);

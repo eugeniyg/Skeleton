@@ -61,7 +61,8 @@
     position: relative;
     z-index: 0;
     grid-column-gap: var(--slides-gap);
-    height: var(--viewport-height, 168px);
+    min-height: var(--viewport-height, 168px);
+    max-height: 200px;
   }
 
   &__slide {

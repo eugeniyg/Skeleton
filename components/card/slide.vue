@@ -2,7 +2,10 @@
   <div
     class="card-slide"
     :style="backgroundGradientStyle"
-    :class="{ 'card-slide--clickable': props.slideData.slideLink?.url }"
+    :class="{
+      'card-slide--clickable': props.slideData.slideLink?.url,
+      'card-has-badge': props.slideData?.badge?.text,
+    }"
     @click="slideHandleClick"
   >
     <picture class="card-slide__picture card-slide__picture">
@@ -12,12 +15,18 @@
     </picture>
 
     <div class="card-slide__info">
-      <div class="card-slide__title">{{ props.slideData.title }}</div>
-      <div
-        v-if="props.slideData.content"
-        class="card-slide__content"
-        v-html="DOMPurify.sanitize(marked.parse(props.slideData.content) as string, { FORBID_TAGS: ['style'] })"
-      />
+      <div v-if="props.slideData?.badge?.text" class="card-slide__badge" :style="badgeStyleVars">
+        {{ props.slideData?.badge?.text }}
+      </div>
+
+      <div class="card-slide__content-container">
+        <div class="card-slide__title">{{ props.slideData.title }}</div>
+        <div
+          v-if="props.slideData.content"
+          class="card-slide__content"
+          v-html="DOMPurify.sanitize(marked.parse(props.slideData.content) as string, { FORBID_TAGS: ['style'] })"
+        />
+      </div>
 
       <div v-if="showButton" class="card-slide__actions">
         <atomic-link
@@ -48,6 +57,13 @@
   const backgroundGradientStyle = computed(
     () => `background: linear-gradient(to right, ${props.slideData.colorLeft}, ${props.slideData.colorRight})`
   );
+
+  const badgeStyleVars = computed(() => [
+    props.slideData?.badge?.textColor ? `--card-badge-color: ${props.slideData?.badge?.textColor}` : null,
+    props.slideData?.badge?.backgroundColor
+      ? `--card-badge-background: ${props.slideData?.badge?.backgroundColor}`
+      : null,
+  ]);
 
   const slideHandleClick = (): void => {
     const url = props.slideData.slideLink?.url;

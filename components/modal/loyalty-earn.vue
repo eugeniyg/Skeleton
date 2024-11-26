@@ -42,7 +42,8 @@
 
   const layoutStore = useLayoutStore();
   const { modals } = storeToRefs(layoutStore);
-  const { closeModal, openWalletModal } = layoutStore;
+  const { closeModal } = layoutStore;
+  const { openWalletModal } = useModalStore();
   const { popupsData, defaultLocalePopupsData } = useGlobalStore();
   const { getContent } = useProjectMethods();
 
