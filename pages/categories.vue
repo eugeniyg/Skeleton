@@ -46,13 +46,7 @@
       :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"
     />
 
-    <!--    <NuxtPage-->
-    <!--      :pageData="state.pageData"-->
-    <!--      :pageMeta="state.pageMeta"-->
-    <!--      :loadingGames="state.loadingGames"-->
-    <!--      @loadMore="getData(true)"-->
-    <!--      @pageMounted="childMounted"-->
-    <!--    />-->
+    <NuxtPage @pageMounted="childMounted" />
   </div>
 </template>
 
@@ -61,6 +55,17 @@
   import { storeToRefs } from 'pinia';
   import type { IGamesPage } from '~/types';
   import debounce from 'lodash/debounce';
+
+  definePageMeta({
+    middleware: [
+      async function (to) {
+        if (to.params.categoryIdentity) {
+          const response = await $fetch('/api/game/collections');
+          console.log(response);
+        }
+      },
+    ],
+  });
 
   const globalStore = useGlobalStore();
   const { gameCategoriesObj, layoutData, defaultLocaleLayoutData, headerCountry, isMobile } = storeToRefs(globalStore);
@@ -100,7 +105,7 @@
     currentCategory: undefined,
     searchValue: '',
     isShowFilter: false,
-    loadingGames: false,
+    loadingGames: true,
     pageData: [],
     pageMeta: undefined,
     pageKey: 0,
@@ -222,7 +227,7 @@
 
   onMounted(async () => {
     const gameCategories = await getCollectionsList();
-    if (!route.params.categoryIdentity || gameCategories.length) {
+    if (!route.params.categoryIdentity && gameCategories.length) {
       await router.push(localizePath(`/categories/${gameCategories[0].identity}`));
     }
   });

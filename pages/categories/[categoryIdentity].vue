@@ -1,18 +1,18 @@
 <template>
   <div class="game-category" style="color: white">
-    <list-grid
-      v-if="props.pageData.length"
-      :items="props.pageData"
-      :meta="props.pageMeta"
-      @load-more="emit('loadMore')"
-    />
+    <!--    <list-grid-->
+    <!--      v-if="props.pageData.length"-->
+    <!--      :items="props.pageData"-->
+    <!--      :meta="props.pageMeta"-->
+    <!--      @load-more="emit('loadMore')"-->
+    <!--    />-->
 
-    <atomic-empty
-      v-else-if="!props.loadingGames"
-      :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"
-      :sub-title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
-      :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"
-    />
+    <!--    <atomic-empty-->
+    <!--      v-else-if="!props.loadingGames"-->
+    <!--      :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"-->
+    <!--      :sub-title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"-->
+    <!--      :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"-->
+    <!--    />-->
 
     <atomic-seo-text
       v-if="pageContent?.currentLocaleData?.pageMeta?.seoText"
@@ -26,11 +26,11 @@
   import type { IGame, IPaginationMeta } from '@skeleton/core/types';
   import type { IGamesPage } from '~/types';
 
-  const props = defineProps<{
-    pageData: IGame[];
-    pageMeta: IPaginationMeta | undefined;
-    loadingGames: boolean;
-  }>();
+  // const props = defineProps<{
+  //   pageData: IGame[];
+  //   pageMeta: IPaginationMeta | undefined;
+  //   loadingGames: boolean;
+  // }>();
 
   const emit = defineEmits(['loadMore', 'pageMounted']);
   // const route = useRoute();
@@ -38,7 +38,7 @@
   // const globalStore = useGlobalStore();
   // const { headerCountry, isMobile } = storeToRefs(globalStore);
   // const { getProviderList, getCollectionsList } = useGamesStore();
-  const { getContent } = useProjectMethods();
+  // const { getContent } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'gamesPageContent',
