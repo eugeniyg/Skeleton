@@ -9,7 +9,7 @@
 
     <button-base
       class="nav-mob__item"
-      :class="{ active: route.path === localizePath(gamesButtons?.buttonFirst.url) || route.query.category }"
+      :class="{ active: route.path === localizePath(gamesButtons?.buttonFirst.url) || route.params.categoryIdentity }"
       :url="gamesButtons?.buttonFirst.url"
     >
       <atomic-icon :id="gamesButtons?.buttonFirst.icon" />

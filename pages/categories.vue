@@ -56,17 +56,6 @@
   import type { IGamesPage } from '~/types';
   import debounce from 'lodash/debounce';
 
-  definePageMeta({
-    middleware: [
-      async function (to) {
-        if (to.params.categoryIdentity) {
-          const response = await $fetch('/api/game/collections');
-          console.log(response);
-        }
-      },
-    ],
-  });
-
   const globalStore = useGlobalStore();
   const { gameCategoriesObj, layoutData, defaultLocaleLayoutData, headerCountry, isMobile } = storeToRefs(globalStore);
   const { getContent, localizePath } = useProjectMethods();
@@ -94,13 +83,12 @@
     loadingGames: boolean;
     pageData: IGame[];
     pageMeta: IPaginationMeta | undefined;
-    pageKey: number;
   }
 
   const state = reactive<IState>({
     showNotFound: false,
-    sortBy: (route.query.sortBy as string) || 'default',
-    sortOrder: (route.query.sortOrder as string) || 'asc',
+    sortBy: 'default',
+    sortOrder: 'asc',
     providerIds: [],
     currentCategory: undefined,
     searchValue: '',
@@ -108,12 +96,10 @@
     loadingGames: true,
     pageData: [],
     pageMeta: undefined,
-    pageKey: 0,
   });
 
   const { getFilteredGames } = useCoreGamesApi();
   const getData = async (nextPage: boolean): Promise<void> => {
-    if (state.loadingGames || (nextPage && state.pageMeta && state.pageMeta.page >= state.pageMeta.totalPages)) return;
     state.loadingGames = true;
 
     const params: any = {
@@ -192,11 +178,10 @@
     { leading: false }
   );
 
-  const resetRequestParams = (): void => {
+  const resetFilters = (): void => {
     state.searchValue = '';
-    state.sortBy = 'default';
-    state.sortOrder = 'asc';
-    state.providerIds = [];
+    state.sortBy = (route.query.sortBy as string) || 'default';
+    state.sortOrder = (route.query.sortOrder as string) || 'asc';
   };
 
   const setProviders = async (): Promise<void> => {
@@ -212,7 +197,7 @@
   };
 
   const childMounted = async () => {
-    resetRequestParams();
+    resetFilters();
     await setProviders();
 
     const gameCollections = await getCollectionsList();
@@ -228,7 +213,10 @@
   onMounted(async () => {
     const gameCategories = await getCollectionsList();
     if (!route.params.categoryIdentity && gameCategories.length) {
-      await router.push(localizePath(`/categories/${gameCategories[0].identity}`));
+      await router.replace({
+        path: localizePath(`/categories/${gameCategories[0].identity}`),
+        query: { ...route.query },
+      });
     }
   });
 </script>
