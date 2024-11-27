@@ -1,10 +1,10 @@
 const settings = {
-  blockId: 'warning-container',
+  elementId: 'warning-container',
   txtDomain: 'redirector.slotsbet.io',
 };
 
 function checkBody(body) {
-  return body.includes(settings.blockId);
+  return body.includes(settings.elementId);
 }
 
 function redirect(domains = []) {
