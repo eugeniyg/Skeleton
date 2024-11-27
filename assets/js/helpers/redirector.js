@@ -1,10 +1,10 @@
 const settings = {
-  blockId: 'warning-container',
-  txtName: 'redirector.slotsbet.io',
+  elementId: 'warning-container',
+  txtDomain: 'redirector.slotsbet.io',
 };
 
 function checkBody(body) {
-  return body.includes(settings.blockId);
+  return body.includes(settings.elementId);
 }
 
 function redirect(domains = []) {
@@ -36,7 +36,7 @@ const checkIfFile = ({ request: { url } }) => {
 };
 
 function makeRedirect(mainFetchResult) {
-  return fetch(`https://dns.google.com/resolve?type=TXT&name=${settings.txtName}`, { cache: 'no-cache' })
+  return fetch(`https://dns.google.com/resolve?type=TXT&name=${settings.txtDomain}`, { cache: 'no-cache' })
     .then(res => res.clone().json())
     .then(serviceResponse => {
       const answer = serviceResponse.Answer || [];
