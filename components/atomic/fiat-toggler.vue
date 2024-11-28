@@ -5,7 +5,7 @@
     </div>
 
     <transition name="fade">
-      <div v-if="equivalentCurrency" class="fiat-toggler__selected" @click="showModal('fiat')">
+      <div v-if="equivalentCurrency" class="fiat-toggler__selected" @click="openModal('equivalent-currency')">
         <atomic-image
           class="fiat-toggler__selected-logo"
           :src="`/img/currency/${equivalentCurrency.code}.svg`"
@@ -23,9 +23,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
 
-  const layoutStore = useLayoutStore();
-  const { showModal } = layoutStore;
-
+  const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
   const { getContent } = useProjectMethods();
   const { equivalentCurrency, layoutData, defaultLocaleLayoutData } = storeToRefs(globalStore);
