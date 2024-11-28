@@ -10,7 +10,7 @@
       {{ selectedRegionName }}
     </span>
 
-    <span class="wallet-region__change" @click="showModal('walletRegion')">
+    <span class="wallet-region__change" @click="openModal('wallet-region')">
       {{ getContent(walletContent, defaultLocaleWalletContent, 'regionBlock.change') }}
     </span>
   </div>
@@ -21,8 +21,7 @@
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
-  const layoutStore = useLayoutStore();
-  const { showModal } = layoutStore;
+  const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
   const { countriesSelectOptions } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();

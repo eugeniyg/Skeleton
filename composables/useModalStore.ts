@@ -16,6 +16,7 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'deposit-pending': Maybe<UseModalReturnType<any>>;
   wallet: Maybe<UseModalReturnType<any>>;
   'cancel-deposit': Maybe<UseModalReturnType<any>>;
+  'wallet-region': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -42,6 +43,7 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-pending': undefined,
       wallet: undefined,
       'cancel-deposit': undefined,
+      'wallet-region': undefined,
     },
     modalsUrl: [
       'sign-in',
@@ -54,7 +56,7 @@ export const useModalStore = defineStore('modalStore', {
       'wallet',
     ],
     onlyGuestModals: ['sign-in', 'sign-up', 'forgot-pass', 'reset-pass'],
-    onlyLoggedModals: ['wallet', 'deposit-success', 'deposit-error', 'deposit-pending'],
+    onlyLoggedModals: ['wallet', 'deposit-success', 'deposit-error', 'deposit-pending', 'wallet-region'],
     openingModals: [],
     sameComponent: {
       'deposit-pending': 'success',
