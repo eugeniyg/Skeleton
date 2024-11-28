@@ -32,7 +32,6 @@
 
     <modal-confirm />
     <modal-fiat />
-    <modal-mobile-game />
     <modal-wallet-choose-region />
     <modal-deposit-redirect />
     <modal-wallet-bonus-info />
