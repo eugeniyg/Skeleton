@@ -105,14 +105,6 @@
     selectedRegion.value = countryCode;
   };
 
-  // const beforeOpen = (): void => {
-  //   if (searchInput.value) {
-  //     searchInput.value = '';
-  //     filteredList.value = countriesSelectOptions.value;
-  //   }
-  //   selectedRegion.value = selectedPaymentMethodsRegion.value || '';
-  // };
-
   const loading = ref(false);
   const actionClick = async (): Promise<void> => {
     if (!selectedRegion.value || selectedPaymentMethodsRegion.value === selectedRegion.value) return;
@@ -126,4 +118,4 @@
   };
 </script>
 
-<style src="~/assets/styles/components/modal/wallet-choose-region.scss" lang="scss" />
+<style src="~/assets/styles/components/modal/wallet-region.scss" lang="scss" />
