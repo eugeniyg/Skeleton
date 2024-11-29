@@ -1,13 +1,14 @@
 import type {
   IAccount,
   IInvoice,
-  IInvoicesRequestOptions, IInvoiceStatistics,
+  IInvoicesRequestOptions,
   IPaymentMethod,
   IRequestDeposit,
   IRequestWithdraw,
   IResponseDeposit,
   IResponseInvoices,
   IResponseWithdraw,
+  IInvoiceStatistics,
 } from '../types';
 import { useApiAuthInstance } from '@skeleton/core/assets/apiAuthInstance';
 
