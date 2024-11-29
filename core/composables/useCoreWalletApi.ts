@@ -1,7 +1,7 @@
 import type {
   IAccount,
   IInvoice,
-  IInvoicesRequestOptions,
+  IInvoicesRequestOptions, IInvoiceStatistics,
   IPaymentMethod,
   IRequestDeposit,
   IRequestWithdraw,
@@ -70,6 +70,11 @@ export const useCoreWalletApi = () => {
     return data;
   };
 
+  const getInvoicesStatistics = async (): Promise<IInvoiceStatistics[]> => {
+    const { data } = await useApiAuthInstance('/api/payment/invoices/statistics');
+    return data;
+  };
+
   return {
     getAccounts,
     addAccount,
@@ -81,5 +86,6 @@ export const useCoreWalletApi = () => {
     withdrawAccount,
     getPlayerInvoices,
     cancelInvoice,
+    getInvoicesStatistics,
   };
 };
