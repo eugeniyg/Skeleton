@@ -63,11 +63,14 @@ export const useModalStore = defineStore('modalStore', {
     },
 
     async openModal(modalName: string, modalQueryParam?: string, prohibitQueryChange = true): Promise<void> {
+      console.log('inside open modal');
       if (!this.accessToOpen(modalName) || this.openingModals.includes(modalName)) return;
       this.openingModals.push(modalName);
 
       if (!this.modals[modalName]) {
+        console.log('inside modal name');
         const modalComponent = defineAsyncComponent(() => import(`../components/modal/${modalName}.vue`));
+        console.log('modalComponent: ', modalComponent);
         const contentParams = {
           contentKey: `modal-${modalName}`,
           contentRoute: ['modals', modalName],
@@ -82,11 +85,13 @@ export const useModalStore = defineStore('modalStore', {
             defaultLocaleData,
           },
         });
+        console.log(this.modals[modalName]);
       }
 
       if (prohibitQueryChange && this.modalsUrl.includes(modalName)) this.addModalQuery(modalName, modalQueryParam);
       this.modals[modalName].open();
       this.openingModals = this.openingModals.filter(item => item !== modalName);
+      console.log('finish open method');
     },
 
     closeModal(modalName: string): void {
