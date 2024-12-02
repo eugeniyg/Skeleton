@@ -57,7 +57,8 @@
 
   const emit = defineEmits(['logout']);
   const { localizePath, handleExternalLink, getContent } = useProjectMethods();
-  const { closeUserNav, openWalletModal } = useLayoutStore();
+  const { closeUserNav } = useLayoutStore();
+  const { openWalletModal } = useModalStore();
   const { layoutData, defaultLocaleLayoutData, popupsData, defaultLocalePopupsData } = useGlobalStore();
   const profileLinks =
     layoutData?.profileSidebar?.profileLinks || defaultLocaleLayoutData?.profileSidebar?.profileLinks || [];

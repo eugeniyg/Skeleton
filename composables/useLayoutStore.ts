@@ -3,16 +3,10 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useNotification } from '@kyvg/vue3-notification';
 import type { IAlert } from '~/types';
 import type { IGame } from '@skeleton/core/types';
-import type { Dayjs } from 'dayjs';
 
-type WalletModalTypes = 'deposit' | 'withdraw' | undefined;
 interface IModals extends Record<string, any> {
-  wallet: boolean;
-  cancelDeposit: boolean;
   walletBonusInfo: boolean;
   confirm: boolean;
-  failing: boolean;
-  success: boolean;
   fiat: boolean;
   turnOverWager: boolean;
   questsHub: boolean;
@@ -26,10 +20,7 @@ interface IModals extends Record<string, any> {
 }
 
 interface IModalsUrls extends Record<string, any> {
-  success: string;
-  failing: string;
   confirm: string;
-  wallet: string;
   questsHub: string;
   depositRedirect: string;
 }
@@ -44,9 +35,6 @@ interface ILayoutStoreState extends Record<string, any> {
   modalsUrl: IModalsUrls;
   lastNotificationTime: number;
   returnGame: Maybe<string | IGame>;
-  walletModalType: WalletModalTypes;
-  successModalType: 'deposit' | 'deposit-pending';
-  walletOpening: boolean;
 }
 
 export const useLayoutStore = defineStore('layoutStore', {
@@ -57,12 +45,8 @@ export const useLayoutStore = defineStore('layoutStore', {
     isDrawerCompact: false,
     showCookiePopup: false,
     modals: {
-      wallet: false,
-      cancelDeposit: false,
       walletBonusInfo: false,
       confirm: false,
-      failing: false,
-      success: false,
       fiat: false,
       turnOverWager: false,
       questsHub: false,
@@ -75,18 +59,12 @@ export const useLayoutStore = defineStore('layoutStore', {
       walletRegion: false,
     },
     modalsUrl: {
-      success: 'success',
-      failing: 'failing',
       confirm: 'confirm',
-      wallet: 'wallet',
       questsHub: 'quests-hub',
       depositRedirect: 'deposit-redirect',
     },
     lastNotificationTime: 0,
     returnGame: undefined,
-    walletModalType: undefined,
-    successModalType: 'deposit',
-    walletOpening: false,
   }),
 
   actions: {
@@ -126,6 +104,7 @@ export const useLayoutStore = defineStore('layoutStore', {
     },
 
     closeUserNav(): void {
+      if (!this.isUserNavOpen) return;
       this.isUserNavOpen = false;
       document.body.classList.remove('nav-user-open');
       const userNavEl: HTMLElement | null = document.querySelector('.nav-user');
@@ -186,11 +165,11 @@ export const useLayoutStore = defineStore('layoutStore', {
       router.replace({ query: newQuery });
     },
 
-    removeModalQuery(modalName: string): void {
+    async removeModalQuery(modalName: string): Promise<void> {
       const router = useRouter();
       const { query } = useRoute();
 
-      router.replace({ query: { ...query, [this.modalsUrl[modalName]]: undefined, resetCode: undefined } });
+      await router.replace({ query: { ...query, [this.modalsUrl[modalName]]: undefined, resetCode: undefined } });
     },
 
     showModal(modalName: string, queryValue?: string): void {
@@ -198,9 +177,9 @@ export const useLayoutStore = defineStore('layoutStore', {
       this.modals[modalName] = true;
     },
 
-    closeModal(modalName: string): void {
+    async closeModal(modalName: string): Promise<void> {
       this.modals[modalName] = false;
-      if (this.modalsUrl[modalName]) this.removeModalQuery(modalName);
+      if (this.modalsUrl[modalName]) await this.removeModalQuery(modalName);
     },
 
     checkModals(): void {
@@ -212,20 +191,10 @@ export const useLayoutStore = defineStore('layoutStore', {
         const modalKey = Object.keys(this.modalsUrl).find(key => this.modalsUrl[key] === query);
         if (!modalKey) return;
 
-        const guestModals = [];
-        const authModals = ['wallet', 'questsHub'];
-        if (guestModals.includes(modalKey)) {
-          if (isLoggedIn) this.closeModal(modalKey);
-          else this.showModal(modalKey);
-        } else if (authModals.includes(modalKey)) {
+        const authModals = ['questsHub'];
+        if (authModals.includes(modalKey)) {
           if (!isLoggedIn) {
             this.closeModal(modalKey);
-          } else if (modalKey === 'wallet') {
-            const queryValue = route.query[query] as string;
-            const modalType = ['deposit', 'withdraw'].includes(queryValue)
-              ? (queryValue as WalletModalTypes)
-              : undefined;
-            this.openWalletModal(modalType);
           } else {
             this.showModal(modalKey);
           }
@@ -233,53 +202,6 @@ export const useLayoutStore = defineStore('layoutStore', {
           this.showModal(modalKey, route.query?.[query] as string);
         }
       });
-    },
-
-    async openWalletModal(modalType?: WalletModalTypes): Promise<void> {
-      if (this.walletOpening) return;
-
-      this.walletOpening = true;
-      const dayjs = useDayjs();
-      const startModalLoad: Dayjs = dayjs();
-
-      this.walletModalType = modalType;
-      const { setPaymentMethodsGeo, getDepositMethods, getWithdrawMethods, accountSwitching } = useWalletStore();
-      const { getDepositBonuses, getDepositBonusCode } = useBonusStore();
-      const riskStore = useRiskStore();
-      setPaymentMethodsGeo();
-      await accountSwitching;
-      await Promise.allSettled([
-        getDepositMethods(),
-        getWithdrawMethods(),
-        getDepositBonuses(),
-        getDepositBonusCode(),
-        riskStore.getTurnOverWager(),
-      ]);
-
-      const { isLoggedIn } = useProfileStore();
-      if (!isLoggedIn) {
-        this.walletOpening = false;
-        return;
-      }
-
-      const runtimeConfig = useRuntimeConfig();
-      const showTurnOverWagerModal =
-        runtimeConfig.public.enableTurnOverWager &&
-        modalType === 'withdraw' &&
-        riskStore.turnOverWagerData?.turnOverWagerAmount > 0;
-
-      if (showTurnOverWagerModal) {
-        this.showModal('turnOverWager');
-        this.walletOpening = false;
-        return;
-      }
-
-      this.showModal('wallet', modalType);
-      useEvent('analyticsEvent', {
-        event: 'walletOpen',
-        loadTime: dayjs().diff(startModalLoad),
-      });
-      this.walletOpening = false;
     },
 
     setReturnGame(gameData: Maybe<IGame | string>): void {

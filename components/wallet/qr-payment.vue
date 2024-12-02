@@ -1,11 +1,11 @@
 <template>
   <div class="qr-payment">
     <div class="qr-payment__title">
-      {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.title') }}
+      {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.qrPayment.title') }}
     </div>
 
     <div class="qr-payment__description">
-      {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.description') }}
+      {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.qrPayment.description') }}
     </div>
 
     <div class="qr-payment__qr-code">
@@ -15,18 +15,18 @@
     <atomic-divider class="qr-payment__divider" />
 
     <div class="qr-payment__instruction">
-      {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.instruction') }}
+      {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.qrPayment.instruction') }}
     </div>
 
     <button-base :is-disabled="copied" type="primary" size="lg" @click="copyQr">
       <template v-if="copied">
         <atomic-icon id="double-check" />
-        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.copiedLabel') }}
+        {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.qrPayment.copiedLabel') }}
       </template>
 
       <template v-else>
         <atomic-icon id="copy" />
-        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.qrPayment.buttonLabel') }}
+        {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.qrPayment.buttonLabel') }}
       </template>
     </button-base>
   </div>
@@ -34,11 +34,13 @@
 
 <script setup lang="ts">
   import copy from 'copy-to-clipboard';
+  import type { IWalletModal } from '~/types';
   const props = defineProps<{
     qrAddress: string;
   }>();
 
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const { getContent } = useProjectMethods();
   const copied = ref<boolean>(false);
 
