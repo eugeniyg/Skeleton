@@ -1,0 +1,49 @@
+.tournaments {
+  @include media(md) {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+
+  &__title {
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    @include font($heading-7);
+  }
+
+  &__description {
+    color: var(--text-tertiary);
+    margin-bottom: 24px;
+    @include font($body-2-paragraph);
+  }
+
+  &__grid {
+    display: grid;
+    grid-gap: 16px;
+
+    &-title {
+      color: var(--text-primary);
+      margin-bottom: 24px;
+      @include font($heading-5);
+    }
+
+    @include media(sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  hr {
+    --margin: 40px 0;
+  }
+
+  &__finished-title {
+    color: var(--text-primary);
+    margin: 40px 0 24px;
+    @include font($heading-5);
+  }
+
+  .empty {
+    margin-top: 40px;
+    margin-bottom: 80px;
+    text-align: center;
+  }
+}
