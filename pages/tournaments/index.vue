@@ -48,6 +48,7 @@
 
 <script setup lang="ts">
   import type { ITournamentsPage } from '~/types';
+  import { useCoreTournamentsApi } from '@skeleton/core/composables/useCoreTournamentApi';
 
   const { getContent } = useProjectMethods();
 
@@ -65,6 +66,12 @@
   // const cards = computed(() => {
   //   return getContent(pageContent?.value?.currentLocaleData, pageContent?.value?.defaultLocaleData, 'cards');
   // });
+
+  onMounted(async () => {
+    const { getTournaments } = useCoreTournamentsApi();
+    const response = await getTournaments();
+    console.log(response);
+  });
 </script>
 
 <style src="~/assets/styles/pages/tournaments.scss" lang="scss" />
