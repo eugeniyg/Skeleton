@@ -30,7 +30,7 @@
       :subTitle="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
     />
 
-    <template v-if="showHowTakeBlock">
+    <template v-if="pageContent?.currentLocaleData?.howTake?.showBlock">
       <atomic-divider />
 
       <tournament-how-take
@@ -38,6 +38,11 @@
         :defaultLocaleData="pageContent?.defaultLocaleData?.howTake"
       />
     </template>
+
+    <atomic-seo-text
+      v-if="pageContent?.currentLocaleData?.pageMeta?.seoText"
+      v-bind="pageContent.currentLocaleData.pageMeta.seoText"
+    />
   </div>
 </template>
 
@@ -60,9 +65,6 @@
   // const cards = computed(() => {
   //   return getContent(pageContent?.value?.currentLocaleData, pageContent?.value?.defaultLocaleData, 'cards');
   // });
-  const showHowTakeBlock = computed(() => {
-    return getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'howTake.showBlock');
-  });
 </script>
 
 <style src="~/assets/styles/pages/tournaments.scss" lang="scss" />
