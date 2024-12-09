@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { useVfm, useModal, type UseModalReturnType } from 'vue-final-modal';
+import { useModal, type UseModalReturnType } from 'vue-final-modal';
 import { defineAsyncComponent } from 'vue';
 import type { Dayjs } from 'dayjs';
 
@@ -140,9 +140,10 @@ export const useModalStore = defineStore('modalStore', {
         if (this.modalsUrl.includes(queryName)) delete newQuery[queryName];
       });
 
-      const vfm = useVfm();
+      // CAN'T USE "vfm.closeAll()" BECAUSE OF SKELETON AND PROJECTS MODALS
+      Object.keys(this.modals).forEach(modalName => this.modals[modalName]?.close());
       const router = useRouter();
-      await Promise.all([router.replace({ query: newQuery }), vfm.closeAll()]);
+      await router.replace({ query: newQuery });
     },
 
     async checkOpenedModals(): Promise<void> {
