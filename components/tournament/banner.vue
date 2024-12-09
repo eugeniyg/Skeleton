@@ -1,27 +1,31 @@
 <template>
-  <div class="tournament-card" :class="{ 'tournament-card--finished': props.isFinished }">
-    <div class="tournament-card__container">
+  <div class="tournament-banner" :class="{ 'tournament-banner--finished': isFinished }">
+    <div class="tournament-banner__container">
       <tournament-timer
         :key="`${props.tournamentData.startAt || 'start'}-${props.tournamentData.endAt || 'finish'}`"
         :tournamentData="props.tournamentData"
         :currentLocaleCommonContent="props.currentLocaleCommonContent"
         :defaultLocaleCommonContent="props.defaultLocaleCommonContent"
-        @tournamentStarted="emit('tournamentStarted')"
-        @tournamentFinished="emit('tournamentFinished')"
+        @tournamentStarted="timerHandler"
+        @tournamentFinished="timerHandler"
       />
 
-      <div class="tournament-card__content">
-        <div class="tournament-card__title">{{ props.tournamentContent?.name }}</div>
-        <div class="tournament-card__sub-title">{{ props.tournamentContent?.reward }}</div>
+      <div class="tournament-banner__content">
+        <div v-if="isFinished" class="tournament-banner__finished-date">
+          {{ getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'main.finishedDateLabel') }}
+          - {{ dayjs(props.tournamentData?.endAt || '').format('DD.MM.YYYY') }}
+        </div>
+        <div class="tournament-banner__title">{{ props.tournamentContent?.name }}</div>
+        <div class="tournament-banner__sub-title">{{ props.tournamentContent?.reward }}</div>
       </div>
 
       <atomic-image
         v-if="props.tournamentContent?.image"
-        class="tournament-card__img"
+        class="tournament-banner__img"
         :src="props.tournamentContent.image"
       />
 
-      <div v-if="[2, 3].includes(props.tournamentData.state)" class="tournament-card__actions">
+      <div v-if="isActive" class="tournament-banner__actions">
         <button-base v-if="isLoggedIn" type="primary" size="md" :url="`/tournaments/${props.tournamentData.identity}`">
           {{ getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'main.buttonLabels.play') }}
         </button-base>
@@ -45,8 +49,8 @@
         </template>
       </div>
 
-      <div v-else-if="[4, 5].includes(props.tournamentData.state)" class="tournament-card__actions">
-        <button-base type="secondary" size="md" :url="`/tournaments/${props.tournamentData.identity}?finished=true`">
+      <div v-else-if="isFinished" class="tournament-banner__actions">
+        <button-base type="secondary" size="md" :url="`/tournaments/${props.tournamentData.identity}`">
           {{
             getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'main.buttonLabels.results')
           }}
@@ -62,17 +66,23 @@
 
   const props = defineProps<{
     tournamentData: ITournamentGeneral;
+    tournamentContent: Maybe<ITournamentPage>;
     currentLocaleCommonContent: Maybe<ITournamentCommon>;
     defaultLocaleCommonContent: Maybe<ITournamentCommon>;
-    tournamentContent: Maybe<ITournamentPage>;
-    isFinished?: boolean;
   }>();
 
-  const emit = defineEmits(['tournamentStarted', 'tournamentFinished']);
-  const { openModal } = useModalStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { getContent } = useProjectMethods();
+  const { openModal } = useModalStore();
+  const dayjs = useDayjs();
+
+  const isActive = [2, 3].includes(props.tournamentData.state);
+  const isFinished = [4, 5].includes(props.tournamentData.state);
+
+  const timerHandler = () => {
+    console.log('timerHandler');
+  };
 </script>
 
-<style src="~/assets/styles/components/tournament/card.scss" lang="scss" />
+<style src="~/assets/styles/components/tournament/banner.scss" lang="scss" />

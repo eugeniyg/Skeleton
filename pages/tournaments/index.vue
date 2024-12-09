@@ -73,11 +73,12 @@
   import type { ITournamentCommon, ITournamentPage, ITournamentsPage } from '~/types';
   import { useCoreTournamentsApi } from '@skeleton/core/composables/useCoreTournamentApi';
   import type { IPaginationMeta } from '@skeleton/core/types';
-  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournamentGeneral } from '@skeleton/core/types/tournamentsTypes';
 
   const globalStore = useGlobalStore();
   const { currentLocale, isMobile } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
+
   const contentParams = {
     contentKey: 'tournamentsPageContent',
     contentRoute: ['pages', 'tournaments'],
@@ -92,6 +93,7 @@
   const { data: content } = await useLazyAsyncData(async () => {
     return await Promise.all([getContentData(), getTournamentsCommonData()]);
   });
+
   const pageContent = computed<
     | {
         currentLocaleData: Maybe<ITournamentsPage>;
@@ -99,6 +101,7 @@
       }
     | undefined
   >(() => content.value?.[0]);
+
   const commonContent = computed<
     | {
         currentLocaleData: Maybe<ITournamentCommon>;
@@ -111,8 +114,8 @@
     globalLoading: boolean;
     activeLoading: boolean;
     finishedLoading: boolean;
-    activeTournaments: ITournament[];
-    finishedTournaments: ITournament[];
+    activeTournaments: ITournamentGeneral[];
+    finishedTournaments: ITournamentGeneral[];
     finishedTournamentsMeta: IPaginationMeta | undefined;
     tournamentsContent: { [key: string]: ITournamentPage };
     tournamentIdentities: string[];

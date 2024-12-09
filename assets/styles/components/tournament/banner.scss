@@ -1,24 +1,29 @@
-.tournament-card {
-  border-radius: var(--card-radius, 16px);
-  background: var(--layer-03-main);
-  padding: var(--card-padding, 0);
+.tournament-banner {
+  position: relative;
   overflow: hidden;
+  margin: -24px -32px 16px;
+  padding: 0 32px;
+  background: linear-gradient(180deg, rgba(73, 15, 119, 0.70) 0%, rgba(0, 0, 0, 0.00) 100%), var(--layer-bg);
+
+  @include media(md) {
+    margin: -24px -48px 56px -48px;
+    padding: 0 48px;
+  }
 
   &__container {
+    position: relative;
     display: flex;
     flex-direction: column;
-    padding: var(--card-container-padding, 24px 120px 24px 24px);
+    padding: var(--card-container-padding, 40px 136px 40px 0);
     align-items: flex-start;
-    position: relative;
-    height: 100%;
 
-    @include media(l) {
-      --card-container-padding: 32px 180px 32px 24px;
+    @include media(md) {
+      margin: 0 auto;
+      max-width: 1024px;
     }
   }
 
   &__content {
-    position: relative;
     z-index: 1;
   }
 
@@ -30,6 +35,17 @@
     @include media(l) {
       margin-top: 24px;
       @include font($body-4);
+    }
+  }
+
+  &__finished-date {
+    color: var(--text-secondary);
+    margin-top: 8px;
+    @include font($subheading-2);
+
+    @include media(l) {
+      @include font($subheading-4);
+      margin-top: 16px;
     }
   }
 
@@ -53,6 +69,11 @@
     object-fit: cover;
     height: 100%;
     transform: translateY(-50%) translateX(20%);
+    opacity: 1;
+
+    @include media(md) {
+      transform: translateY(-50%) translateX(0%);
+    }
   }
 
   &__actions {
@@ -74,16 +95,14 @@
   }
 
   &--finished {
-    .tournament-card__title {
+    background: linear-gradient(180deg, rgba(17, 20, 28, 0.70) 0%, rgba(40, 47, 62, 0.70) 100%), var(--layer-bg);
+
+    .tournament-banner__title {
       color: var(--text-helper) !important;
     }
 
-    .tournament-card__sub-title {
+    .tournament-banner__sub-title {
       color: var(--text-helper) !important;
-    }
-
-    .tournament-card__img {
-      opacity: 0.5;
     }
   }
 }

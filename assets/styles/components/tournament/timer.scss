@@ -1,0 +1,71 @@
+.tournament-timer {
+  &__container {
+    display: flex;
+    align-items: center;
+    background-color: var(--gray-700);
+    border-radius: var(--corner-radius-mapped-system-default, 8px);
+    margin-right: -100px;
+  }
+
+  &__label {
+    display: flex;
+    padding: 4px 8px 4px 12px;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--corner-radius-mapped-system-default, 8px) var(--corner-radius-base-value-sharp, 0px) var(--corner-radius-base-value-sharp, 0px) var(--corner-radius-mapped-system-default, 8px);
+    background-color: var(--support-success-default);
+    color: var(--text-inverse);
+    white-space: nowrap;
+    @include font($subheading-1);
+
+    &.wait-start {
+      background-color: var(--field-02-click);
+      color: var(--gray-100);
+    }
+  }
+
+  &__countdown {
+    display: flex;
+    height: 24px;
+    padding: 4px 12px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2px;
+
+    .time-span-days {
+      color: var(--text-tertiary);
+      @include font($heading-1);
+    }
+
+    .time-span {
+      color: var(--text-primary);
+      min-width: 18px;
+      text-align: center;
+      @include font($heading-1);
+    }
+
+    .time-span-dots {
+      display: flex;
+      width: 5px;
+      height: 16px;
+      padding: 0 1px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-tertiary);
+      @include font($heading-1);
+    }
+  }
+
+  &__finished {
+    display: flex;
+    padding: 4px 12px;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--corner-radius-mapped-system-default, 8px);
+    background-color: var(--layer-02);
+    color: var(--gray-300);
+    white-space: nowrap;
+    @include font($subheading-1);
+  }
+}
