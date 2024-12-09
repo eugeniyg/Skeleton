@@ -18,6 +18,7 @@
   @include font($heading-1);
   border-radius: 16px;
   grid-column-gap: rem(2px);
+  --line-height: auto;
 
   .icon {
     min-width: rem(16px);

@@ -36,10 +36,12 @@
     --color: var(--icon-color, var(--icon-primary));
   }
 
-  &:hover {
-    --label-color: var(--text-link-hover);
-    --icon-color: var(--icon-accent);
-    cursor: pointer;
+  @include use-hover {
+    &:hover {
+      --label-color: var(--text-link-hover);
+      --icon-color: var(--icon-accent);
+      cursor: pointer;
+    }
   }
 
   &.is-active {

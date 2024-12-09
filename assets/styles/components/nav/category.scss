@@ -19,10 +19,12 @@
     grid-column-gap: 8px;
 
     .main-layout & {
-      display: none;
+      visibility: hidden;
+      position: absolute;
 
       @include media(sm) {
-        display: inline-flex;
+        visibility: visible;
+        position: relative;
       }
     }
   }

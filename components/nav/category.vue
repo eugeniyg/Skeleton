@@ -20,10 +20,10 @@
       </div>
     </div>
     <div class="nav-category__actions">
-      <button-categories :is-active="isDropdownShown" :disabled="isCategoriesButtonDisabled" @action="showCategories" />
+      <button-categories :is-active="isDropdownShown" :disabled="isCategoriesButtonDisabled" @action="showCategories" ref="refCategoriesBtn"/>
       <button-providers @action="showModal('providers')" />
 
-      <ul v-if="isDropdownShown && dropdownItems.length" class="nav-category__dropdown">
+      <ul v-if="isDropdownShown && dropdownItems.length" class="nav-category__dropdown" :style="dropdownOffsetLeft">
         <li
           v-for="{ id, identity, name } in dropdownItems"
           :key="id"
@@ -56,6 +56,7 @@
   const itemRef = ref([]);
   const itemsRef = ref();
   const isDropdownShown = ref<boolean>(false);
+  const refCategoriesBtn = ref();
 
   const emit = defineEmits(['clickCategory']);
   const { gameCategoriesObj } = useGlobalStore();
@@ -91,10 +92,13 @@
     emit('clickCategory', identity);
     closeDropdown();
   };
+  
+  const dropdownOffsetLeft = ref();
 
   const showDropdown = () => {
     setDropdownItems();
     isDropdownShown.value = true;
+    dropdownOffsetLeft.value = `transform: translateX(${refCategoriesBtn.value.getOffsetLeft() || 0}px`;
   };
 
   const closeDropdown = () => {

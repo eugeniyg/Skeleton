@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="refCategoriesBtn"
     class="btn-categories"
     :class="{ 'is-active': props.isActive, 'is-disabled': props.disabled }"
     @click="emit('action')"
@@ -22,6 +23,14 @@
   const { getContent } = useProjectMethods();
 
   const emit = defineEmits(['action']);
+  
+  const refCategoriesBtn = ref();
+  
+  const getOffsetLeft = () => {
+    return refCategoriesBtn.value.offsetLeft;
+  };
+  
+  defineExpose({ getOffsetLeft });
 </script>
 
 <style src="~/assets/styles/components/button/categories.scss" lang="scss" />
