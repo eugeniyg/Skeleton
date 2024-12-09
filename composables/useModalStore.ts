@@ -98,9 +98,14 @@ export const useModalStore = defineStore('modalStore', {
       this.openingModals.push(modalName);
 
       if (!this.modals[modalName]) {
-        const modalComponent = defineAsyncComponent(
-          () => import(`../components/modal/${this.sameComponent[modalName] || modalName}.vue`)
-        );
+        const modalComponentName = this.sameComponent[modalName] || modalName;
+        const modalComponent = defineAsyncComponent(async () => {
+          try {
+            return await import(`../../components/modal/${modalComponentName}.vue`);
+          } catch {
+            return import(`../components/modal/${modalComponentName}.vue`);
+          }
+        });
         const contentParams = {
           contentKey: `modal-${modalName}`,
           contentRoute: ['modals', modalName],
