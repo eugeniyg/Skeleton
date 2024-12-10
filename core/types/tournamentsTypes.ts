@@ -29,11 +29,6 @@ export interface ITournamentGeneral {
   };
   startAt: string;
   endAt: string;
-  isRecurring: boolean;
-  recurringSettings: {
-    duration: number;
-    delay: number;
-  } | null;
   id: string;
   state: number;
   isAvailable: boolean;

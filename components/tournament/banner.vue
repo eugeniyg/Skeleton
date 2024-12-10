@@ -30,29 +30,9 @@
           {{ getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'main.buttonLabels.play') }}
         </button-base>
 
-        <template v-else>
-          <button-base type="primary" size="md" @click="openModal('sign-up')">
-            {{
-              getContent(
-                props.currentLocaleCommonContent,
-                props.defaultLocaleCommonContent,
-                'main.buttonLabels.register'
-              )
-            }}
-          </button-base>
-
-          <button-base type="ghost" size="md" :url="`/tournaments/${props.tournamentData.identity}`">
-            {{
-              getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'main.buttonLabels.more')
-            }}
-          </button-base>
-        </template>
-      </div>
-
-      <div v-else-if="isFinished" class="tournament-banner__actions">
-        <button-base type="secondary" size="md" :url="`/tournaments/${props.tournamentData.identity}`">
+        <button-base v-else type="primary" size="md" @click="openModal('sign-up')">
           {{
-            getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'main.buttonLabels.results')
+            getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'main.buttonLabels.register')
           }}
         </button-base>
       </div>
