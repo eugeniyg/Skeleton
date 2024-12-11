@@ -1,0 +1,83 @@
+.tournament-results {
+  margin-top: 40px;
+
+  &__header {
+    color: var(--text-primary);
+    @include font($heading-5);
+  }
+
+  &__places {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    grid-column-gap: 8px;
+    margin: 24px 0;
+
+    &-item {
+      text-align: center;
+      max-width: 186px;
+      width: 100%;
+
+      &-flex {
+        @include media(md) {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+        }
+      }
+
+      @include media(md) {
+        min-width: auto;
+      }
+
+      &:nth-of-type(1), &:nth-of-type(3) {
+        .tournament-results__places-item-img {
+          height: 56px;
+
+          @include media(md) {
+            height: 88px;
+          }
+        }
+      }
+
+      &:nth-of-type(2) {
+        .tournament-results__places-item-img {
+          height: 88px;
+
+          @include media(md) {
+            height: 120px;
+          }
+        }
+      }
+
+      &-img {
+        display: block;
+        max-width: 100%;
+        width: auto;
+        margin: 0 auto 12px;
+      }
+
+      &-title {
+        color: var(--text-primary);
+        display: flex;
+        justify-content: center;
+        @include font($body-2-paragraph);
+      }
+
+      &-points {
+        color: var(--text-tertiary);
+        display: flex;
+        justify-content: center;
+        @include font($body-0);
+      }
+
+      &-prize {
+        color: var(--text-accent);
+        display: flex;
+        justify-content: center;
+        @include font($heading-2);
+      }
+    }
+  }
+}

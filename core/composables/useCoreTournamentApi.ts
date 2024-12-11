@@ -5,6 +5,7 @@ import type {
 } from '@skeleton/core/types/tournamentsTypes';
 import { useApiGuestInstance } from '@skeleton/core/assets/apiGuestInstance';
 import { useApiAuthInstance } from '@skeleton/core/assets/apiAuthInstance';
+import type { IPlayerQuest } from '@skeleton/core/types';
 
 export const useCoreTournamentsApi = () => {
   const getTournaments = async (params?: ITournamentsRequest): Promise<ITournamentsResponse> => {
@@ -18,8 +19,16 @@ export const useCoreTournamentsApi = () => {
     return data;
   };
 
+  const participateTournament = async (tournamentId: string): Promise<IPlayerQuest> => {
+    const { data } = await useApiAuthInstance(`/api/retention/tournaments/${tournamentId}/participate`, {
+      method: 'POST',
+    });
+    return data;
+  };
+
   return {
     getTournaments,
     getTournament,
+    participateTournament,
   };
 };

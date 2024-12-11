@@ -23,7 +23,7 @@
 
       <div v-if="[2, 3].includes(props.tournamentData.state)" class="tournament-card__actions">
         <button-base v-if="isLoggedIn" type="primary" size="md" :url="`/tournaments/${props.tournamentData.identity}`">
-          {{ getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'main.buttonLabels.play') }}
+          {{ getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'main.buttonLabels.takePart') }}
         </button-base>
 
         <template v-else>

@@ -84,6 +84,7 @@
     margin-right: -100px;
     position: relative;
     z-index: 1;
+    min-height: 42px;
 
     @include media(l) {
       margin-top: 32px;

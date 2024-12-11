@@ -8,50 +8,60 @@
       {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'description') }}
     </div>
 
-    <div v-if="state.activeTournaments.length" class="tournaments__grid">
-      <tournament-card
-        v-for="tournament in state.activeTournaments"
-        :key="`${tournament.id}-${tournament.state}`"
-        :tournamentData="tournament"
-        :currentLocaleCommonContent="commonContent?.currentLocaleData"
-        :defaultLocaleCommonContent="commonContent?.defaultLocaleData"
-        :tournamentContent="state.tournamentsContent[tournament.identity]"
-        @tournamentStarted="getActiveTournaments"
-        @tournamentFinished="getTournamentsData"
-      />
-    </div>
-
-    <template v-if="state.finishedTournaments.length">
-      <div ref="finishedElement" class="tournaments__finished-title">
-        {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'finishedLabel') }}
+    <transition name="fade" mode="out-in">
+      <div v-if="state.globalLoading" class="tournaments__spinner">
+        <div class="tournaments__spinner-border">
+          <div class="tournaments__spinner-core" />
+        </div>
       </div>
 
-      <div class="tournaments__grid">
-        <tournament-card
-          v-for="tournament in state.finishedTournaments"
-          :key="tournament.id"
-          :tournamentData="tournament"
-          :currentLocaleCommonContent="commonContent?.currentLocaleData"
-          :defaultLocaleCommonContent="commonContent?.defaultLocaleData"
-          :tournamentContent="state.tournamentsContent[tournament.identity]"
-          isFinished
+      <div v-else>
+        <div v-if="state.activeTournaments.length" class="tournaments__grid">
+          <tournament-card
+            v-for="tournament in state.activeTournaments"
+            :key="`${tournament.id}-${tournament.state}`"
+            :tournamentData="tournament"
+            :currentLocaleCommonContent="commonContent?.currentLocaleData"
+            :defaultLocaleCommonContent="commonContent?.defaultLocaleData"
+            :tournamentContent="state.tournamentsContent[tournament.identity]"
+            @tournamentStarted="getActiveTournaments"
+            @tournamentFinished="getTournamentsData"
+          />
+        </div>
+
+        <template v-if="state.finishedTournaments.length">
+          <div ref="finishedElement" class="tournaments__finished-title">
+            {{ getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'finishedLabel') }}
+          </div>
+
+          <div class="tournaments__grid">
+            <tournament-card
+              v-for="tournament in state.finishedTournaments"
+              :key="tournament.id"
+              :tournamentData="tournament"
+              :currentLocaleCommonContent="commonContent?.currentLocaleData"
+              :defaultLocaleCommonContent="commonContent?.defaultLocaleData"
+              :tournamentContent="state.tournamentsContent[tournament.identity]"
+              isFinished
+            />
+          </div>
+
+          <atomic-pagination
+            v-if="state.finishedTournamentsMeta?.totalPages && state.finishedTournamentsMeta.totalPages > 1"
+            v-bind="state.finishedTournamentsMeta"
+            @select-page="changeFinishedPage"
+          />
+        </template>
+
+        <atomic-empty
+          v-if="!state.activeTournaments.length && !state.finishedTournaments.length && !state.globalLoading"
+          variant="search"
+          :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"
+          :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"
+          :subTitle="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
         />
       </div>
-
-      <atomic-pagination
-        v-if="state.finishedTournamentsMeta?.totalPages && state.finishedTournamentsMeta.totalPages > 1"
-        v-bind="state.finishedTournamentsMeta"
-        @select-page="changeFinishedPage"
-      />
-    </template>
-
-    <atomic-empty
-      v-if="!state.activeTournaments.length && !state.finishedTournaments.length && !state.globalLoading"
-      variant="search"
-      :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"
-      :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"
-      :subTitle="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
-    />
+    </transition>
 
     <template v-if="pageContent?.currentLocaleData?.howTake?.showBlock">
       <atomic-divider />

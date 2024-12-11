@@ -41,8 +41,22 @@ export interface ITournamentParticipant {
   points: number | null;
 }
 
+export interface ITournamentPrize {
+  place: number;
+  type: number;
+  title: string;
+  bonusId?: string;
+  entry?: {
+    playerId: string;
+    nickname: string;
+    points: number;
+    createdAt: string;
+    updatedAt: string | null;
+  };
+}
+
 export interface ITournamentDefinite extends ITournamentGeneral {
-  prizes: [];
+  prizes: ITournamentPrize[];
   playerPlace: number | null;
   leaderboard: ITournamentParticipant[];
 }

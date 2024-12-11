@@ -1,11 +1,14 @@
 <template>
   <div class="tournament">
-    <template v-if="pageData?.tournamentGeneralData">
+    <template v-if="tournamentData">
       <tournament-banner
-        :tournamentData="pageData?.tournamentGeneralData"
+        :tournamentData="tournamentData as ITournamentDefinite"
         :tournamentContent="pageData?.pageContent"
         :currentLocaleCommonContent="pageData?.currentLocaleCommonContent"
         :defaultLocaleCommonContent="pageData?.defaultLocaleCommonContent"
+        :gamesCount="tournamentGamesState.gamesMeta?.totalRows"
+        @statusChanged="getTournamentDefiniteData"
+        @goToGames="scrollToGames"
       />
 
       <div class="tournament__container">
@@ -17,10 +20,11 @@
           :tournamentDefiniteData="tournamentDefiniteData"
         />
 
-        <!--        <tournament-results-->
-        <!--          v-if="getContent(pageContent?.currentLocaleData,  pageContent?.defaultLocaleData, 'results')"-->
-        <!--          :content="getContent(pageContent?.currentLocaleData,  pageContent?.defaultLocaleData, 'results')"-->
-        <!--        />-->
+        <tournament-results
+          :currentLocaleCommonContent="pageData?.currentLocaleCommonContent"
+          :defaultLocaleCommonContent="pageData?.defaultLocaleCommonContent"
+          :tournamentDefiniteData="tournamentDefiniteData"
+        />
 
         <transition name="fade" mode="out-in">
           <tournament-advertising
@@ -109,6 +113,8 @@
     }
   );
 
+  const tournamentDefiniteData = ref<ITournamentDefinite | undefined>();
+  const tournamentData = computed(() => tournamentDefiniteData.value || pageData.value?.tournamentGeneralData);
   const requestCollections = ref<string[]>([]);
   const setCollections = async (tournamentCollections: string[], collectionsExcluded: boolean): Promise<void> => {
     const gameCollections = await getCollectionsList();
@@ -133,10 +139,10 @@
   const { getFilteredGames } = useCoreGamesApi();
   const getTournamentGames = async (page = 1): Promise<void> => {
     const nonExistentCollections =
-      pageData.value?.tournamentGeneralData?.conditions?.gameCollectionsExcluded === false &&
-      pageData.value?.tournamentGeneralData?.conditions?.gameCollections?.length &&
+      tournamentData.value?.conditions?.gameCollectionsExcluded === false &&
+      tournamentData.value?.conditions?.gameCollections?.length &&
       !requestCollections.value.length;
-    if (tournamentGamesState.gamesLoading || !pageData.value?.tournamentGeneralData || nonExistentCollections) return;
+    if (tournamentGamesState.gamesLoading || !tournamentData.value || nonExistentCollections) return;
     tournamentGamesState.gamesLoading = true;
 
     try {
@@ -153,12 +159,11 @@
     tournamentGamesState.gamesLoading = false;
   };
 
-  const tournamentDefiniteData = ref<ITournamentDefinite | undefined>();
   const getTournamentDefiniteData = async (): Promise<void> => {
-    if (!pageData.value?.tournamentGeneralData) return;
+    if (!tournamentData.value) return;
     try {
       tournamentDefiniteData.value = await getTournament({
-        tournamentId: pageData.value.tournamentGeneralData.id,
+        tournamentId: tournamentData.value.id,
         authorized: isLoggedIn.value,
       });
     } catch {
@@ -167,11 +172,11 @@
   };
 
   const getInitialData = async (): Promise<void> => {
-    if (!pageData.value?.tournamentGeneralData) return;
+    if (!tournamentData.value) return;
 
     await setCollections(
-      pageData.value.tournamentGeneralData.conditions?.gameCollections || [],
-      pageData.value.tournamentGeneralData.conditions?.gameCollectionsExcluded || false
+      tournamentData.value.conditions?.gameCollections || [],
+      tournamentData.value.conditions?.gameCollectionsExcluded || false
     );
     getTournamentGames();
     getTournamentDefiniteData();
@@ -182,9 +187,20 @@
     if (componentMounted.value) getInitialData();
   });
 
+  watch(isLoggedIn, () => {
+    getTournamentDefiniteData();
+  });
+
+  const tournamentGamesComponent = ref();
+  const scrollToGames = () => {
+    if (!tournamentGamesComponent.value) return;
+    const topOffset = tournamentGamesComponent.value.$el.offsetTop;
+    window.scrollTo({ top: topOffset - 20, behavior: 'smooth' });
+  };
+
   onMounted(() => {
     componentMounted.value = true;
-    if (pageDataStatus.value === 'success' && pageData.value?.tournamentGeneralData) getInitialData();
+    if (pageDataStatus.value === 'success' && tournamentData.value) getInitialData();
   });
 </script>
 
