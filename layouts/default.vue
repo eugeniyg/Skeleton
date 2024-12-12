@@ -35,7 +35,6 @@
     <modal-mobile-game />
     <modal-wallet-choose-region />
     <modal-deposit-redirect />
-    <modal-wallet-bonus-info />
     <modal-turn-over-wager v-if="turnOverWagerModal" />
     <atomic-alert />
 

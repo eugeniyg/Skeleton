@@ -49,7 +49,7 @@
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
-  const { showModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const { getContent } = useProjectMethods();
   const bonusStore = useBonusStore();
   const { depositMoreInfoBonus } = storeToRefs(bonusStore);
@@ -81,7 +81,7 @@
 
   const openBonusInfoModal = (): void => {
     depositMoreInfoBonus.value = props.bonusInfo;
-    showModal('walletBonusInfo');
+    openModal('wallet-bonus-info');
   };
 
   const handleBonusClick = (): void => {
