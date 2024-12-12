@@ -8,6 +8,7 @@ import type {
   IResponseDeposit,
   IResponseInvoices,
   IResponseWithdraw,
+  IInvoiceStatistics,
 } from '../types';
 import { useApiAuthInstance } from '@skeleton/core/assets/apiAuthInstance';
 
@@ -70,6 +71,11 @@ export const useCoreWalletApi = () => {
     return data;
   };
 
+  const getInvoicesStatistics = async (): Promise<IInvoiceStatistics[]> => {
+    const { data } = await useApiAuthInstance('/api/payment/invoices/statistics');
+    return data;
+  };
+
   return {
     getAccounts,
     addAccount,
@@ -81,5 +87,6 @@ export const useCoreWalletApi = () => {
     withdrawAccount,
     getPlayerInvoices,
     cancelInvoice,
+    getInvoicesStatistics,
   };
 };

@@ -30,7 +30,6 @@
 
     <ModalsContainer />
 
-    <modal-confirm />
     <modal-fiat />
     <modal-wallet-choose-region />
     <modal-deposit-redirect />
