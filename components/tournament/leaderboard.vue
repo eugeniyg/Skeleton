@@ -1,5 +1,5 @@
 <template>
-  <div class="tournament-leaderboard">
+  <div ref="rootComponent" class="tournament-leaderboard">
     <div class="tournament-leaderboard__tb-container">
       <div class="tournament-leaderboard__tb">
         <div class="tournament-leaderboard__tb-head">
@@ -93,8 +93,13 @@
     return pageList;
   });
 
+  const rootComponent = ref();
   const changePage = (page: number) => {
-    console.log(page);
+    pageMeta.page = page;
+    if (rootComponent.value) {
+      const topOffset = rootComponent.value.offsetTop;
+      window.scrollTo({ top: topOffset - 260, behavior: 'smooth' });
+    }
   };
 </script>
 

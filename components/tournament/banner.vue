@@ -91,9 +91,11 @@
 
     try {
       await participateTournament(props.tournamentData.id);
+      console.log('hello try');
       emit('statusChanged');
       emit('goToGames');
     } catch {
+      console.log('hello catch');
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
 

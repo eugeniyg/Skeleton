@@ -34,6 +34,7 @@
         </transition>
 
         <tournament-games
+          v-if="tournamentGamesState.gamesMeta?.totalRows"
           ref="tournamentGamesComponent"
           :gamesData="tournamentGamesState.gamesData"
           :gamesMeta="tournamentGamesState.gamesMeta"

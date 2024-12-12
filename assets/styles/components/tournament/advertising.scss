@@ -7,7 +7,7 @@
   align-items: center;
   gap: 16px;
   width: max-content;
-  margin: 56px auto;
+  margin: 56px auto 0;
 
   @include media(md) {
     gap: 40px;

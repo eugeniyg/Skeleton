@@ -19,11 +19,10 @@ export const useCoreTournamentsApi = () => {
     return data;
   };
 
-  const participateTournament = async (tournamentId: string): Promise<IPlayerQuest> => {
-    const { data } = await useApiAuthInstance(`/api/retention/tournaments/${tournamentId}/participate`, {
+  const participateTournament = async (tournamentId: string): Promise<void> => {
+    await useApiAuthInstance(`/api/retention/tournaments/${tournamentId}/participate`, {
       method: 'POST',
     });
-    return data;
   };
 
   return {

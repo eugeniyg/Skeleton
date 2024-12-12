@@ -102,6 +102,7 @@
     tournamentDefiniteData: Maybe<ITournamentDefinite>;
   }>();
 
+  const emit = defineEmits(['changeGamePage']);
   const { getContent } = useProjectMethods();
   const winnersDefaultNickname = computed(() =>
     getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'leaderboard.defaultNickname')

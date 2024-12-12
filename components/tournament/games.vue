@@ -9,17 +9,11 @@
     </div>
 
     <div class="tournament-games__items">
-      <template v-if="props.gamesData.length">
-        <card-base v-for="game in props.gamesData" :key="game.id" :game-info="game" />
-      </template>
-
-      <template v-else>
-        <Skeletor v-for="n in 18" :key="n" class="card-base" as="div" />
-      </template>
+      <card-base v-for="game in props.gamesData" :key="game.id" :game-info="game" />
     </div>
 
     <button-base
-      v-if="props.gamesMeta && props.gamesMeta.page < props.gamesMeta.totalPages"
+      v-if="props.gamesMeta.page < props.gamesMeta.totalPages"
       class="tournament-games__more"
       :class="{ loading: props.gamesLoading }"
       type="ghost"
@@ -35,11 +29,10 @@
 <script setup lang="ts">
   import type { IGame, IPaginationMeta } from '@skeleton/core/types';
   import type { ITournamentCommon } from '~/types';
-  import { Skeletor } from 'vue-skeletor';
 
   const props = defineProps<{
     gamesData: IGame[];
-    gamesMeta: IPaginationMeta | undefined;
+    gamesMeta: IPaginationMeta;
     currentLocaleCommonContent: Maybe<ITournamentCommon>;
     defaultLocaleCommonContent: Maybe<ITournamentCommon>;
     gamesLoading: boolean;
@@ -53,7 +46,7 @@
   const gamesCount = computed(() => {
     const labelContent =
       getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'games.count') || '';
-    return labelContent.replace('{count}', props.gamesMeta?.totalRows || '0');
+    return labelContent.replace('{count}', props.gamesMeta.totalRows);
   });
 </script>
 
