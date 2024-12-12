@@ -10,7 +10,6 @@ interface IGamesStoreState {
   winnersSubscription: any;
   betsSubscription: any;
   latestWinners: IWinner[];
-  showMobileGameModal: boolean;
   mobileGameModalType: Maybe<MobileModalType>;
   mobileGameModalInfo: Maybe<IGame>;
   isBonusWagering: boolean;
@@ -25,7 +24,6 @@ export const useGamesStore = defineStore('gamesStore', {
     winnersSubscription: undefined,
     betsSubscription: undefined,
     latestWinners: [],
-    showMobileGameModal: false,
     mobileGameModalType: undefined,
     mobileGameModalInfo: undefined,
     isBonusWagering: false,
@@ -112,10 +110,11 @@ export const useGamesStore = defineStore('gamesStore', {
       { leading: false }
     ),
 
-    openMobileGameModal(modalType: MobileModalType, gameInfo: IGame): void {
+    async openMobileGameModal(modalType: MobileModalType, gameInfo: IGame): Promise<void> {
       this.mobileGameModalType = modalType;
       this.mobileGameModalInfo = gameInfo;
-      this.showMobileGameModal = true;
+      const { openModal } = useModalStore();
+      await openModal('mobile-game');
     },
 
     defineBonusWagerInfo(isBonusWagering: boolean, minimumBonusWagerMultiplier: number): void {

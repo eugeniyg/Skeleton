@@ -30,8 +30,6 @@
 
     <ModalsContainer />
 
-    <modal-confirm />
-    <modal-mobile-game />
     <modal-wallet-choose-region />
     <modal-deposit-redirect />
     <modal-wallet-bonus-info />
