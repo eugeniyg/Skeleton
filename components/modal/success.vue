@@ -14,13 +14,12 @@
         </div>
       </div>
 
-      <atomic-image class="img" src="/img/success.svg" />
-      <client-only>
-        <p
-          class="text"
-          v-html="DOMPurify.sanitize(marked.parse(description || '') as string, { FORBID_TAGS: ['style'] })"
-        />
-      </client-only>
+      <atomic-image class="img" :src="image" />
+
+      <p
+        class="text"
+        v-html="DOMPurify.sanitize(marked.parse(description || '') as string, { FORBID_TAGS: ['style'] })"
+      />
 
       <button-base type="primary" size="md" @click="closeHandle">
         {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'button') }}
@@ -47,7 +46,11 @@
     return getContent(props.currentLocaleData, props.defaultLocaleData, 'description') || '';
   });
 
-  const successComponentModals = ['deposit-success', 'deposit-pending'];
+  const image = computed(() => {
+    return getContent(props.currentLocaleData, props.defaultLocaleData, 'image') || '/img/success.svg';
+  });
+
+  const successComponentModals = ['deposit-success', 'deposit-pending', 'deposit-redirect'];
   const closeHandle = (): void => {
     successComponentModals.forEach(modalName => {
       if (modalStore.modals[modalName]?.options?.modelValue) modalStore.closeModal(modalName);
