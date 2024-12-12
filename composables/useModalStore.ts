@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { useVfm, useModal, type UseModalReturnType } from 'vue-final-modal';
+import { useModal, type UseModalReturnType } from 'vue-final-modal';
 import { defineAsyncComponent } from 'vue';
 import type { Dayjs } from 'dayjs';
 
@@ -16,6 +16,9 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'deposit-pending': Maybe<UseModalReturnType<any>>;
   wallet: Maybe<UseModalReturnType<any>>;
   'cancel-deposit': Maybe<UseModalReturnType<any>>;
+  'profile-confirmed': Maybe<UseModalReturnType<any>>;
+  'mobile-game': Maybe<UseModalReturnType<any>>;
+  'equivalent-currency': Maybe<UseModalReturnType<any>>;
   'wallet-region': Maybe<UseModalReturnType<any>>;
 }
 
@@ -43,6 +46,9 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-pending': undefined,
       wallet: undefined,
       'cancel-deposit': undefined,
+      'profile-confirmed': undefined,
+      'mobile-game': undefined,
+      'equivalent-currency': undefined,
       'wallet-region': undefined,
     },
     modalsUrl: [
@@ -54,9 +60,17 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-success',
       'deposit-pending',
       'wallet',
+      'profile-confirmed',
     ],
     onlyGuestModals: ['sign-in', 'sign-up', 'forgot-pass', 'reset-pass'],
-    onlyLoggedModals: ['wallet', 'deposit-success', 'deposit-error', 'deposit-pending', 'wallet-region'],
+    onlyLoggedModals: [
+      'wallet',
+      'deposit-success',
+      'deposit-error',
+      'deposit-pending',
+      'equivalent-currency',
+      'wallet-region',
+    ],
     openingModals: [],
     sameComponent: {
       'deposit-pending': 'success',
@@ -100,9 +114,14 @@ export const useModalStore = defineStore('modalStore', {
       this.openingModals.push(modalName);
 
       if (!this.modals[modalName]) {
-        const modalComponent = defineAsyncComponent(
-          () => import(`../components/modal/${this.sameComponent[modalName] || modalName}.vue`)
-        );
+        const modalComponentName = this.sameComponent[modalName] || modalName;
+        const modalComponent = defineAsyncComponent(async () => {
+          try {
+            return await import(`../../components/modal/${modalComponentName}.vue`);
+          } catch {
+            return import(`../components/modal/${modalComponentName}.vue`);
+          }
+        });
         const contentParams = {
           contentKey: `modal-${modalName}`,
           contentRoute: ['modals', modalName],
@@ -137,9 +156,10 @@ export const useModalStore = defineStore('modalStore', {
         if (this.modalsUrl.includes(queryName)) delete newQuery[queryName];
       });
 
-      const vfm = useVfm();
+      // CAN'T USE "vfm.closeAll()" BECAUSE OF SKELETON AND PROJECTS MODALS
+      Object.keys(this.modals).forEach(modalName => this.modals[modalName]?.close());
       const router = useRouter();
-      await Promise.all([router.replace({ query: newQuery }), vfm.closeAll()]);
+      await router.replace({ query: newQuery });
     },
 
     async checkOpenedModals(): Promise<void> {

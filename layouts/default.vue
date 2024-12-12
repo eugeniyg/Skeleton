@@ -30,9 +30,6 @@
 
     <ModalsContainer />
 
-    <modal-confirm />
-    <modal-fiat />
-    <modal-mobile-game />
     <modal-deposit-redirect />
     <modal-wallet-bonus-info />
     <modal-turn-over-wager v-if="turnOverWagerModal" />
