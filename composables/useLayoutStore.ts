@@ -6,7 +6,6 @@ import type { IGame } from '@skeleton/core/types';
 
 interface IModals extends Record<string, any> {
   walletBonusInfo: boolean;
-  turnOverWager: boolean;
   questsHub: boolean;
   loyaltyEarn: boolean;
   loyaltyLevel: boolean;
@@ -42,7 +41,6 @@ export const useLayoutStore = defineStore('layoutStore', {
     showCookiePopup: false,
     modals: {
       walletBonusInfo: false,
-      turnOverWager: false,
       questsHub: false,
       loyaltyEarn: false,
       loyaltyLevel: false,

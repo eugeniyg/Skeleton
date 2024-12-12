@@ -32,7 +32,6 @@
 
     <modal-deposit-redirect />
     <modal-wallet-bonus-info />
-    <modal-turn-over-wager v-if="turnOverWagerModal" />
     <atomic-alert />
 
     <template v-if="questsEnabled">
@@ -106,7 +105,6 @@
   });
 
   const runtimeConfig = useRuntimeConfig();
-  const turnOverWagerModal = runtimeConfig.public?.enableTurnOverWager;
   const questsEnabled = runtimeConfig.public?.questsEnabled;
   const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;
 

@@ -20,6 +20,7 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'mobile-game': Maybe<UseModalReturnType<any>>;
   'equivalent-currency': Maybe<UseModalReturnType<any>>;
   'wallet-region': Maybe<UseModalReturnType<any>>;
+  'turn-over-wager': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -50,6 +51,7 @@ export const useModalStore = defineStore('modalStore', {
       'mobile-game': undefined,
       'equivalent-currency': undefined,
       'wallet-region': undefined,
+      'turn-over-wager': undefined,
     },
     modalsUrl: [
       'sign-in',
@@ -70,6 +72,7 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-pending',
       'equivalent-currency',
       'wallet-region',
+      'turn-over-wager',
     ],
     openingModals: [],
     sameComponent: {
@@ -217,8 +220,7 @@ export const useModalStore = defineStore('modalStore', {
         riskStore.turnOverWagerData?.turnOverWagerAmount > 0;
 
       if (showTurnOverWagerModal) {
-        const { showModal } = useLayoutStore();
-        showModal('turnOverWager');
+        await this.openModal('turn-over-wager');
         this.walletOpening = false;
         return;
       }
