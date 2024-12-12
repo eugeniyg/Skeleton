@@ -29,16 +29,20 @@
   const { getImageUrl } = useProjectMethods();
 
   onMounted(async () => {
-    const { getFilteredGames } = useCoreGamesApi();
-    const { data } = await getFilteredGames({
-      identity: props.items,
-      countries: headerCountry.value ? [headerCountry.value] : undefined,
-    });
-    gamesArray.value = data.sort((prevGame, nextGame) => {
-      const prevIndex = props.items?.indexOf(prevGame.identity) || -1;
-      const nextIndex = props.items?.indexOf(nextGame.identity) || -1;
-      return prevIndex - nextIndex;
-    });
+    try {
+      const { getFilteredGames } = useCoreGamesApi();
+      const { data } = await getFilteredGames({
+        identity: props.items,
+        countries: headerCountry.value ? [headerCountry.value] : undefined,
+      });
+      gamesArray.value = data.sort((prevGame, nextGame) => {
+        const prevIndex = props.items?.indexOf(prevGame.identity) || -1;
+        const nextIndex = props.items?.indexOf(nextGame.identity) || -1;
+        return prevIndex - nextIndex;
+      });
+    } catch (error: any) {
+      console.error(error);
+    }
   });
 </script>
 
