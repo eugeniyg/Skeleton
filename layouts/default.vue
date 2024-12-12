@@ -30,7 +30,6 @@
 
     <ModalsContainer />
 
-    <modal-confirm />
     <modal-fiat />
     <modal-mobile-game />
     <modal-wallet-choose-region />
