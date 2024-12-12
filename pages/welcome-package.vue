@@ -170,8 +170,7 @@
   });
 
   const profileStore = useProfileStore();
-  const { openWalletModal } = useLayoutStore();
-  const { openModal } = useModalStore();
+  const { openModal, openWalletModal } = useModalStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const walletStore = useWalletStore();
   const { activeAccount, accountSwitching } = storeToRefs(walletStore);

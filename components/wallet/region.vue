@@ -3,24 +3,27 @@
     <atomic-image :src="regionImage" default-image="/img/flags/placeholder.png" />
 
     <div class="wallet-region__label">
-      {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.regionBlock.label') }}
+      {{ getContent(walletContent, defaultLocaleWalletContent, 'regionBlock.label') }}
     </div>
 
     <span class="wallet-region__title">
       {{ selectedRegionName }}
     </span>
 
-    <span class="wallet-region__change" @click="showModal('walletRegion')">
-      {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.regionBlock.change') }}
+    <span class="wallet-region__change" @click="openModal('wallet-region')">
+      {{ getContent(walletContent, defaultLocaleWalletContent, 'regionBlock.change') }}
     </span>
   </div>
 </template>
 
 <script setup lang="ts">
-  const layoutStore = useLayoutStore();
-  const { showModal } = layoutStore;
+  import type { IWalletModal } from '~/types';
+
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
+  const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData, countriesSelectOptions } = storeToRefs(globalStore);
+  const { countriesSelectOptions } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const walletStore = useWalletStore();
   const { selectedPaymentMethodsRegion } = storeToRefs(walletStore);
@@ -29,7 +32,7 @@
     const countryOption = countriesSelectOptions.value.find(
       country => country.code === selectedPaymentMethodsRegion.value
     );
-    const unknownLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.regionBlock.unknown');
+    const unknownLabel = getContent(walletContent, defaultLocaleWalletContent, 'regionBlock.unknown');
     return countryOption?.name || unknownLabel || 'Unknown Region';
   });
 

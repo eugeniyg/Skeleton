@@ -72,8 +72,7 @@
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { openWalletModal } = useLayoutStore();
-  const { openModal } = useModalStore();
+  const { openModal, openWalletModal } = useModalStore();
   const { isGamePage } = storeToRefs(layoutStore);
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const { localizePath, getContent } = useProjectMethods();
