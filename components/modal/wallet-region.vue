@@ -1,18 +1,16 @@
 <template>
   <vue-final-modal
-    v-model="modals.walletRegion"
     class="modal-choose-region"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
     :content-transition="{ mode: 'in-out', duration: 250 }"
-    @click-outside="closeModal('walletRegion')"
-    @before-open="beforeOpen"
+    @click-outside="closeModal('wallet-region')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('walletRegion')" />
+        <button-modal-close @close="closeModal('wallet-region')" />
         <div class="modal-choose-region__title">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.title') }}
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}
         </div>
       </div>
 
@@ -20,7 +18,7 @@
         <input
           v-model="searchInput"
           class="modal-choose-region__search-input"
-          :placeholder="getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.searchPlaceholder')"
+          :placeholder="getContent(props.currentLocaleData, props.defaultLocaleData, 'searchPlaceholder')"
           type="text"
           @input="debounceSearch"
         />
@@ -50,8 +48,8 @@
       <atomic-empty
         v-else
         variant="search"
-        :title="getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.empty.title')"
-        :sub-title="getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.empty.description')"
+        :title="getContent(props.currentLocaleData, props.defaultLocaleData, 'empty.title')"
+        :sub-title="getContent(props.currentLocaleData, props.defaultLocaleData, 'empty.description')"
       />
 
       <button-base
@@ -61,7 +59,7 @@
         @click="actionClick"
       >
         <atomic-spinner :is-shown="loading" />
-        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.regionModal.selectButton') }}
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'selectButton') }}
       </button-base>
     </div>
   </vue-final-modal>
@@ -72,12 +70,16 @@
   import { VueFinalModal } from 'vue-final-modal';
   import type { ICountry } from '@skeleton/core/types';
   import debounce from 'lodash/debounce';
+  import type { IModalsContent } from '~/types';
 
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['walletRegion']>;
+    defaultLocaleData: Maybe<IModalsContent['walletRegion']>;
+  }>();
+
+  const { closeModal } = useModalStore();
   const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData, countriesSelectOptions } = storeToRefs(globalStore);
+  const { countriesSelectOptions } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const walletStore = useWalletStore();
   const { selectedPaymentMethodsRegion } = storeToRefs(walletStore);
@@ -103,14 +105,6 @@
     selectedRegion.value = countryCode;
   };
 
-  const beforeOpen = (): void => {
-    if (searchInput.value) {
-      searchInput.value = '';
-      filteredList.value = countriesSelectOptions.value;
-    }
-    selectedRegion.value = selectedPaymentMethodsRegion.value || '';
-  };
-
   const loading = ref(false);
   const actionClick = async (): Promise<void> => {
     if (!selectedRegion.value || selectedPaymentMethodsRegion.value === selectedRegion.value) return;
@@ -120,8 +114,8 @@
 
     await Promise.allSettled([walletStore.getDepositMethods(), walletStore.getWithdrawMethods()]);
     loading.value = false;
-    closeModal('walletRegion');
+    await closeModal('wallet-region');
   };
 </script>
 
-<style src="~/assets/styles/components/modal/wallet-choose-region.scss" lang="scss" />
+<style src="~/assets/styles/components/modal/wallet-region.scss" lang="scss" />

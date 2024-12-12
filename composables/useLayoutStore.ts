@@ -14,7 +14,6 @@ interface IModals extends Record<string, any> {
   providers: boolean;
   categories: boolean;
   packageBonus: boolean;
-  walletRegion: boolean;
 }
 
 interface IModalsUrls extends Record<string, any> {
@@ -51,7 +50,6 @@ export const useLayoutStore = defineStore('layoutStore', {
       providers: false,
       categories: false,
       packageBonus: false,
-      walletRegion: false,
     },
     modalsUrl: {
       questsHub: 'quests-hub',
