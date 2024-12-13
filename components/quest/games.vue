@@ -69,12 +69,12 @@
   };
 
   const router = useRouter();
-  const { closeModal } = useLayoutStore();
+  const { closeModal } = useModalStore();
   const { closeTasksModal } = useQuestsStore();
-  const goToGame = (game: IGame): void => {
+  const goToGame = async (game: IGame): Promise<void> => {
     closeTasksModal();
-    closeModal('questsHub');
-    router.push(localizePath(`/games/${game.identity}?real=true`));
+    await closeModal('quests-hub');
+    await router.push(localizePath(`/games/${game.identity}?real=true`));
   };
 
   const setVisibleItems = (): void => {

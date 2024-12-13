@@ -36,7 +36,6 @@
     <atomic-alert />
 
     <template v-if="questsEnabled">
-      <modal-quests-hub />
       <modal-quest-rewards />
       <modal-quest-tasks />
     </template>

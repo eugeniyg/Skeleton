@@ -42,7 +42,7 @@
   const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 
   const router = useRouter();
-  const { closeModal } = useLayoutStore();
+  const { closeModal } = useModalStore();
   const { closeTasksModal } = useQuestsStore();
   const closeGame = ref('');
   const goToGame = (game: IGame): void => {
@@ -50,11 +50,11 @@
     emit('closeModal');
   };
 
-  const closedHandler = (): void => {
+  const closedHandler = async (): Promise<void> => {
     if (closeGame.value) {
       closeTasksModal();
-      closeModal('questsHub');
-      router.push(localizePath(`/games/${closeGame.value}?real=true`));
+      await closeModal('quests-hub');
+      await router.push(localizePath(`/games/${closeGame.value}?real=true`));
     }
   };
 </script>

@@ -25,7 +25,11 @@
           </div>
 
           <div class="modal-quest-tasks__body">
-            <quest-currency :rewards="tasksModalData?.rewards" />
+            <quest-currency
+              :currentLocaleContent="questsHubContent?.currentLocaleData"
+              :defaultLocaleContent="questsHubContent?.defaultLocaleData"
+              :rewards="tasksModalData?.rewards"
+            />
 
             <quest-tasks-card-timer
               v-if="tasksModalData?.state === 2 && tasksModalData?.endAt"
@@ -78,7 +82,9 @@
             type="primary"
             @click="activateQuest"
           >
-            {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.startQuestButton') }}
+            {{
+              getContent(questsHubContent?.currentLocaleData, questsHubContent?.defaultLocaleData, 'startQuestButton')
+            }}
           </button-base>
         </div>
       </div>
@@ -89,6 +95,14 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
+  import type { IQuestsHubModal } from '~/types';
+
+  const questsHubContentParams = {
+    contentKey: 'modal-quests-hub',
+    contentRoute: ['modals', 'quests-hub'],
+  };
+  const { getContentData: getQuestsHubContentData } = useContentLogic<IQuestsHubModal>(questsHubContentParams);
+  const { data: questsHubContent } = await useLazyAsyncData(getQuestsHubContentData);
 
   const globalStore = useGlobalStore();
   const { popupsData, defaultLocalePopupsData, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);

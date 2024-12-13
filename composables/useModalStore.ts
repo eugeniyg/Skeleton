@@ -20,6 +20,7 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'mobile-game': Maybe<UseModalReturnType<any>>;
   'equivalent-currency': Maybe<UseModalReturnType<any>>;
   'wallet-region': Maybe<UseModalReturnType<any>>;
+  'quests-hub': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -50,6 +51,7 @@ export const useModalStore = defineStore('modalStore', {
       'mobile-game': undefined,
       'equivalent-currency': undefined,
       'wallet-region': undefined,
+      'quests-hub': undefined,
     },
     modalsUrl: [
       'sign-in',
@@ -61,6 +63,7 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-pending',
       'wallet',
       'profile-confirmed',
+      'quests-hub',
     ],
     onlyGuestModals: ['sign-in', 'sign-up', 'forgot-pass', 'reset-pass'],
     onlyLoggedModals: [
@@ -70,6 +73,7 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-pending',
       'equivalent-currency',
       'wallet-region',
+      'quests-hub',
     ],
     openingModals: [],
     sameComponent: {
