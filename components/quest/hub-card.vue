@@ -90,8 +90,8 @@
   const rewardsModalTitle = computed(() => {
     return getContent(infoContent.value, defaultLocaleInfoContent.value, 'questsHub.rewardsTitle') || '';
   });
-  const openModal = (): void => {
-    openRewardsModal(rewardsValue.value, rewardsModalTitle.value);
+  const openModal = async (): Promise<void> => {
+    await openRewardsModal(rewardsValue.value, rewardsModalTitle.value);
   };
 </script>
 

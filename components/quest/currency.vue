@@ -60,8 +60,8 @@
   const rewardsModalTitle = computed(() => {
     return getContent(props.currentLocaleContent, props.defaultLocaleContent, 'rewardsTitle');
   });
-  const showRewardsModal = (): void => {
-    openRewardsModal(rewardsValue.value, rewardsModalTitle.value);
+  const showRewardsModal = async (): Promise<void> => {
+    await openRewardsModal(rewardsValue.value, rewardsModalTitle.value);
   };
 </script>
 

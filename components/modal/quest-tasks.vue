@@ -1,17 +1,16 @@
 <template>
   <vue-final-modal
-    v-model="showTasksModal"
     class="modal-quest-tasks"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
     :content-transition="{ mode: 'in-out', duration: 250 }"
-    @click-outside="closeTasksModal"
+    @click-outside="closeModal('quest-tasks')"
   >
     <div class="container">
       <div class="scroll">
         <div class="modal-quest-tasks__card">
           <div class="header">
-            <span class="header__back-btn" @click="closeTasksModal">
+            <span class="header__back-btn" @click="closeModal('quest-tasks')">
               <span class="header__back-btn-icon">
                 <atomic-icon id="arrow_previous" />
               </span>
@@ -52,14 +51,14 @@
                   v-if="tasksModalData?.state === 2 && index === completedTasks.length - 1"
                   class="quest-tasks-header"
                 >
-                  {{ getContent(popupsData, defaultLocalePopupsData, 'questTasks.inProgressLabel') }}
+                  {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'inProgressLabel') }}
                 </div>
               </template>
             </div>
 
             <div v-if="activeTasks.length" class="quest-tasks__next">
               <div v-if="tasksModalData?.state === 2 && !completedTasks.length" class="quest-tasks-header">
-                {{ getContent(popupsData, defaultLocalePopupsData, 'questTasks.inProgressLabel') }}
+                {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'inProgressLabel') }}
               </div>
 
               <template v-for="(task, index) in activeTasks" :key="task.id">
@@ -67,7 +66,7 @@
                   v-if="tasksModalData?.state === 2 && tasksModalData?.taskExecutionOrder === 2 && index === 1"
                   class="quest-tasks-header"
                 >
-                  {{ getContent(popupsData, defaultLocalePopupsData, 'questTasks.nextLabel') }}
+                  {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'nextLabel') }}
                 </div>
 
                 <quest-task-card :task-info="task" :task-index="index" :quest-state="tasksModalData?.state" />
@@ -95,7 +94,15 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import type { IQuestsHubModal } from '~/types';
+  import type { IModalsContent, IQuestsHubModal } from '~/types';
+
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['questTasks']>;
+    defaultLocaleData: Maybe<IModalsContent['questTasks']>;
+  }>();
+
+  provide('questTasksContent', props.currentLocaleData);
+  provide('defaultLocaleQuestTasksContent', props.defaultLocaleData);
 
   const questsHubContentParams = {
     contentKey: 'modal-quests-hub',
@@ -105,11 +112,12 @@
   const { data: questsHubContent } = await useLazyAsyncData(getQuestsHubContentData);
 
   const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
+  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const questsStore = useQuestsStore();
-  const { closeTasksModal, openTasksModal } = questsStore;
-  const { showTasksModal, tasksModalData, tasksModalImage } = storeToRefs(questsStore);
+  const { closeModal } = useModalStore();
+  const { openTasksModal } = questsStore;
+  const { tasksModalData, tasksModalImage } = storeToRefs(questsStore);
 
   const completedTasks = computed(() => {
     const filteredTasks = tasksModalData.value?.tasks.filter(task => task.progress === task.quantity) || [];
@@ -124,7 +132,7 @@
   });
 
   const blockLabel = computed(() => {
-    const contentMessage = getContent(popupsData.value, defaultLocalePopupsData.value, 'questTasks.blockLabel');
+    const contentMessage = getContent(props.currentLocaleData, props.defaultLocaleData, 'blockLabel');
     return contentMessage ? contentMessage.replace('{tasksLeft}', activeTasks.value.length) : '';
   });
 
@@ -139,7 +147,7 @@
 
     try {
       const questData = await activatePlayerQuest(tasksModalData.value?.id as string);
-      openTasksModal(questData, tasksModalImage.value);
+      await openTasksModal(questData, tasksModalImage.value);
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
