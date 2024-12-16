@@ -83,7 +83,7 @@
   import type { ITournamentCommon, ITournamentPage, ITournamentsPage } from '~/types';
   import { useCoreTournamentsApi } from '@skeleton/core/composables/useCoreTournamentApi';
   import type { IPaginationMeta } from '@skeleton/core/types';
-  import type { ITournamentGeneral } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
 
   const globalStore = useGlobalStore();
   const { currentLocale, isMobile } = storeToRefs(globalStore);
@@ -124,8 +124,8 @@
     globalLoading: boolean;
     activeLoading: boolean;
     finishedLoading: boolean;
-    activeTournaments: ITournamentGeneral[];
-    finishedTournaments: ITournamentGeneral[];
+    activeTournaments: ITournament[];
+    finishedTournaments: ITournament[];
     finishedTournamentsMeta: IPaginationMeta | undefined;
     tournamentsContent: { [key: string]: ITournamentPage };
     tournamentIdentities: string[];

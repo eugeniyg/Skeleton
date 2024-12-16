@@ -29,11 +29,11 @@
 </template>
 
 <script setup lang="ts">
-  import type { ITournamentDefinite, ITournamentGeneral } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
   import type { ITournamentCommon } from '~/types';
 
   const props = defineProps<{
-    tournamentData: ITournamentGeneral | ITournamentDefinite;
+    tournamentData: ITournament;
     currentLocaleCommonContent: Maybe<ITournamentCommon>;
     defaultLocaleCommonContent: Maybe<ITournamentCommon>;
   }>();

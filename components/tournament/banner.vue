@@ -25,7 +25,10 @@
         :src="props.tournamentContent.image"
       />
 
-      <div v-if="props.tournamentData.state === 3" class="tournament-banner__actions">
+      <div
+        v-if="props.tournamentData.state === 3 && props.tournamentData.isAvailable"
+        class="tournament-banner__actions"
+      >
         <client-only>
           <transition name="fade" mode="out-in">
             <button-base v-if="actionState && props.gamesCount" type="primary" size="md" @click="handleAction">
@@ -39,11 +42,11 @@
 </template>
 
 <script setup lang="ts">
-  import type { ITournamentDefinite } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
   import type { ITournamentCommon, ITournamentPage } from '~/types';
 
   const props = defineProps<{
-    tournamentData: ITournamentDefinite;
+    tournamentData: ITournament;
     tournamentContent: Maybe<ITournamentPage>;
     currentLocaleCommonContent: Maybe<ITournamentCommon>;
     defaultLocaleCommonContent: Maybe<ITournamentCommon>;
@@ -63,8 +66,8 @@
 
   const actionState = computed(() => {
     if (!isLoggedIn.value) return 'register';
-    if (!props.tournamentData.hasOwnProperty('playerPlace')) return undefined;
-    if (props.tournamentData.playerPlace || !props.tournamentData.confirmationRequired) return 'play';
+    if (!props.tournamentData.hasOwnProperty('playerEntry')) return undefined;
+    if (props.tournamentData.playerEntry || !props.tournamentData.confirmationRequired) return 'play';
     return 'takePart';
   });
 
@@ -91,11 +94,9 @@
 
     try {
       await participateTournament(props.tournamentData.id);
-      console.log('hello try');
       emit('statusChanged');
       emit('goToGames');
     } catch {
-      console.log('hello catch');
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
     }
 

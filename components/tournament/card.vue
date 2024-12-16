@@ -57,11 +57,11 @@
 </template>
 
 <script setup lang="ts">
-  import type { ITournamentGeneral } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
   import type { ITournamentCommon, ITournamentPage } from '~/types';
 
   const props = defineProps<{
-    tournamentData: ITournamentGeneral;
+    tournamentData: ITournament;
     currentLocaleCommonContent: Maybe<ITournamentCommon>;
     defaultLocaleCommonContent: Maybe<ITournamentCommon>;
     tournamentContent: Maybe<ITournamentPage>;

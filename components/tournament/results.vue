@@ -28,7 +28,7 @@
           </div>
         </div>
 
-        <div class="tournament-results__places-item-prize">{{ props.tournamentDefiniteData?.prizes[1]?.title }}</div>
+        <div class="tournament-results__places-item-prize">{{ props.tournamentDefiniteData?.prizes?.[1]?.title }}</div>
       </div>
 
       <div class="tournament-results__places-item">
@@ -54,7 +54,7 @@
           </div>
         </div>
 
-        <div class="tournament-results__places-item-prize">{{ props.tournamentDefiniteData?.prizes[0]?.title }}</div>
+        <div class="tournament-results__places-item-prize">{{ props.tournamentDefiniteData?.prizes?.[0]?.title }}</div>
       </div>
 
       <div class="tournament-results__places-item">
@@ -79,12 +79,12 @@
           </div>
         </div>
 
-        <div class="tournament-results__places-item-prize">{{ props.tournamentDefiniteData?.prizes[2]?.title }}</div>
+        <div class="tournament-results__places-item-prize">{{ props.tournamentDefiniteData?.prizes?.[2]?.title }}</div>
       </div>
     </div>
 
     <tournament-leaderboard
-      v-if="props.tournamentDefiniteData && props.tournamentDefiniteData.leaderboard.length > 3"
+      v-if="props.tournamentDefiniteData && (props.tournamentDefiniteData.leaderboard?.length ?? 0) > 3"
       :currentLocaleCommonContent="props.currentLocaleCommonContent"
       :defaultLocaleCommonContent="props.defaultLocaleCommonContent"
       :tournamentDefiniteData="props.tournamentDefiniteData"
@@ -94,15 +94,14 @@
 
 <script setup lang="ts">
   import type { ITournamentCommon } from '~/types';
-  import type { ITournamentDefinite } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
 
   const props = defineProps<{
     currentLocaleCommonContent: Maybe<ITournamentCommon>;
     defaultLocaleCommonContent: Maybe<ITournamentCommon>;
-    tournamentDefiniteData: Maybe<ITournamentDefinite>;
+    tournamentDefiniteData: Maybe<ITournament>;
   }>();
 
-  const emit = defineEmits(['changeGamePage']);
   const { getContent } = useProjectMethods();
   const winnersDefaultNickname = computed(() =>
     getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'leaderboard.defaultNickname')
@@ -114,9 +113,9 @@
   const winnersList = computed(() => {
     if (!props.tournamentDefiniteData) return [];
     if (props.tournamentDefiniteData.state === 3) {
-      return props.tournamentDefiniteData.leaderboard.slice(0, 3);
+      return props.tournamentDefiniteData.leaderboard?.slice(0, 3) || [];
     } else if ([4, 5].includes(props.tournamentDefiniteData.state)) {
-      const winnersPrizes = props.tournamentDefiniteData.prizes.slice(0, 3);
+      const winnersPrizes = props.tournamentDefiniteData.prizes?.slice(0, 3) || [];
       return winnersPrizes.map(prize => ({
         ...prize.entry,
         place: prize.place,

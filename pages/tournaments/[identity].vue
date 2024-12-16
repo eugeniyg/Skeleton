@@ -2,7 +2,7 @@
   <div class="tournament">
     <template v-if="tournamentData">
       <tournament-banner
-        :tournamentData="tournamentData as ITournamentDefinite"
+        :tournamentData="tournamentData"
         :tournamentContent="pageData?.pageContent"
         :currentLocaleCommonContent="pageData?.currentLocaleCommonContent"
         :defaultLocaleCommonContent="pageData?.defaultLocaleCommonContent"
@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
   import type { ITournamentCommon, ITournamentPage } from '~/types';
-  import type { ITournamentDefinite, ITournamentGeneral } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
   import type { IGame, IPaginationMeta } from '@skeleton/core/types';
 
   const profileStore = useProfileStore();
@@ -71,7 +71,7 @@
   const routeFinished = route.query.finished as string;
 
   const { getTournaments, getTournament } = useCoreTournamentsApi();
-  const getTournamentGeneralData = async (): Promise<ITournamentGeneral> => {
+  const getTournamentGeneralData = async (): Promise<ITournament> => {
     const { data: tournamentsList } = await getTournaments({
       identity: [routeIdentity],
       state: routeFinished ? [4, 5] : [2, 3],
@@ -114,7 +114,7 @@
     }
   );
 
-  const tournamentDefiniteData = ref<ITournamentDefinite | undefined>();
+  const tournamentDefiniteData = ref<ITournament | undefined>();
   const tournamentData = computed(() => tournamentDefiniteData.value || pageData.value?.tournamentGeneralData);
   const requestCollections = ref<string[]>([]);
   const setCollections = async (tournamentCollections: string[], collectionsExcluded: boolean): Promise<void> => {

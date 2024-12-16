@@ -51,14 +51,14 @@
   import DOMPurify from 'isomorphic-dompurify';
   import { marked } from 'marked';
   import type { IPaginationMeta } from '@skeleton/core/types';
-  import type { ITournamentDefinite } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
 
   const props = defineProps<{
     gamesMeta: IPaginationMeta | undefined;
     currentLocaleCommonContent: Maybe<ITournamentCommon>;
     defaultLocaleCommonContent: Maybe<ITournamentCommon>;
     tournamentContent: Maybe<ITournamentPage>;
-    tournamentDefiniteData: Maybe<ITournamentDefinite>;
+    tournamentDefiniteData: Maybe<ITournament>;
   }>();
 
   const { getContent } = useProjectMethods();

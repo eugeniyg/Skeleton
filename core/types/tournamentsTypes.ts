@@ -1,6 +1,27 @@
 import type { IPaginationMeta } from './globalTypes';
 
-export interface ITournamentGeneral {
+export interface ITournamentPrize {
+  place: number;
+  type: number;
+  title: string;
+  bonusId?: string;
+  entry?: {
+    playerId: string;
+    nickname: string;
+    points: number;
+    createdAt: string;
+    updatedAt: string | null;
+  };
+}
+
+export interface ITournamentParticipant {
+  playerId: string;
+  nickname: string | null;
+  place: number;
+  points: number;
+}
+
+export interface ITournament {
   title: string;
   type: number;
   identity: string;
@@ -32,33 +53,12 @@ export interface ITournamentGeneral {
   id: string;
   state: number;
   isAvailable: boolean;
-}
-
-export interface ITournamentParticipant {
-  playerId: string;
-  nickname: string | null;
-  place: number | null;
-  points: number | null;
-}
-
-export interface ITournamentPrize {
-  place: number;
-  type: number;
-  title: string;
-  bonusId?: string;
-  entry?: {
-    playerId: string;
-    nickname: string;
+  playerEntry?: {
     points: number;
-    createdAt: string;
-    updatedAt: string | null;
-  };
-}
-
-export interface ITournamentDefinite extends ITournamentGeneral {
-  prizes: ITournamentPrize[];
-  playerPlace: number | null;
-  leaderboard: ITournamentParticipant[];
+    place: number;
+  } | null;
+  prizes?: ITournamentPrize[];
+  leaderboard?: ITournamentParticipant[];
 }
 
 export interface ITournamentsRequest {
@@ -69,6 +69,6 @@ export interface ITournamentsRequest {
 }
 
 export interface ITournamentsResponse {
-  data: ITournamentGeneral[];
+  data: ITournament[];
   meta: IPaginationMeta;
 }
