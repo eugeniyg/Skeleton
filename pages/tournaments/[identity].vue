@@ -58,10 +58,10 @@
 <script setup lang="ts">
   import type { ITournamentCommon, ITournamentPage } from '~/types';
   import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
-  import type { IGame, IPaginationMeta } from '@skeleton/core/types';
+  import type { IGame, IPaginationMeta, IWebSocketResponse } from '@skeleton/core/types';
 
   const profileStore = useProfileStore();
-  const { isLoggedIn } = storeToRefs(profileStore);
+  const { isLoggedIn, profile } = storeToRefs(profileStore);
   const { getContent } = useProjectMethods();
   const { getCollectionsList } = useGamesStore();
   const globalStore = useGlobalStore();
@@ -172,6 +172,58 @@
     }
   };
 
+  const leaderboardSubscription = ref<any>(undefined);
+  const playerEntrySubscription = ref<any>(undefined);
+  const { createSubscription } = useWebSocket();
+
+  const updateLeaderboard = (webSocketResponse: IWebSocketResponse) => {
+    if (tournamentDefiniteData.value) {
+      tournamentDefiniteData.value = {
+        ...tournamentDefiniteData.value,
+        leaderboard: webSocketResponse.data.leaderboard || [],
+      };
+    }
+  };
+
+  const updatePlayerEntry = (webSocketResponse: IWebSocketResponse) => {
+    if (tournamentDefiniteData.value) {
+      tournamentDefiniteData.value = {
+        ...tournamentDefiniteData.value,
+        playerEntry: webSocketResponse.data.entry || null,
+      };
+    }
+  };
+
+  const subscribeLeaderboardChannel = () => {
+    if (!tournamentDefiniteData.value) return;
+    leaderboardSubscription.value = createSubscription(
+      `tournaments:${tournamentDefiniteData.value.id}`,
+      updateLeaderboard
+    );
+  };
+
+  const unsubscribeLeaderboardChannel = () => {
+    if (leaderboardSubscription.value) {
+      leaderboardSubscription.value.unsubscribe();
+      leaderboardSubscription.value.removeAllListeners();
+    }
+  };
+
+  const subscribePlayerEntryChannel = () => {
+    if (!isLoggedIn.value || !tournamentDefiniteData.value) return;
+    playerEntrySubscription.value = createSubscription(
+      `tournaments:${tournamentDefiniteData.value.id}#${profile.value?.id}`,
+      updatePlayerEntry
+    );
+  };
+
+  const unsubscribePlayerEntryChannel = () => {
+    if (playerEntrySubscription.value) {
+      playerEntrySubscription.value.unsubscribe();
+      playerEntrySubscription.value.removeAllListeners();
+    }
+  };
+
   const getInitialData = async (): Promise<void> => {
     if (!tournamentData.value) return;
 
@@ -179,8 +231,9 @@
       tournamentData.value.conditions?.gameCollections || [],
       tournamentData.value.conditions?.gameCollectionsExcluded || false
     );
-    getTournamentGames();
-    getTournamentDefiniteData();
+    await Promise.all([getTournamentGames(), getTournamentDefiniteData()]);
+    subscribeLeaderboardChannel();
+    subscribePlayerEntryChannel();
   };
 
   const componentMounted = ref(false);
@@ -188,8 +241,10 @@
     if (componentMounted.value) getInitialData();
   });
 
-  watch(isLoggedIn, () => {
-    getTournamentDefiniteData();
+  watch(isLoggedIn, async newValue => {
+    await getTournamentDefiniteData();
+    if (newValue) subscribePlayerEntryChannel();
+    else unsubscribePlayerEntryChannel();
   });
 
   const tournamentGamesComponent = ref();
@@ -202,6 +257,11 @@
   onMounted(() => {
     componentMounted.value = true;
     if (pageDataStatus.value === 'success' && tournamentData.value) getInitialData();
+  });
+
+  onBeforeUnmount(() => {
+    unsubscribeLeaderboardChannel();
+    unsubscribePlayerEntryChannel();
   });
 </script>
 
