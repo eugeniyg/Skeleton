@@ -43,7 +43,6 @@
 
     <template v-if="loyaltyEnabled">
       <modal-loyalty-level />
-      <modal-loyalty-earn />
     </template>
   </div>
 </template>

@@ -8,7 +8,6 @@ interface IModals extends Record<string, any> {
   walletBonusInfo: boolean;
   turnOverWager: boolean;
   questsHub: boolean;
-  loyaltyEarn: boolean;
   loyaltyLevel: boolean;
   depositRedirect: boolean;
   providers: boolean;
@@ -44,7 +43,6 @@ export const useLayoutStore = defineStore('layoutStore', {
       walletBonusInfo: false,
       turnOverWager: false,
       questsHub: false,
-      loyaltyEarn: false,
       loyaltyLevel: false,
       depositRedirect: false,
       providers: false,
