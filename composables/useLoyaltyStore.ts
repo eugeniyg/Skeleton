@@ -67,8 +67,8 @@ export const useLoyaltyStore = defineStore('loyaltyStore', {
           return;
         }
 
-        const { showModal } = useLayoutStore();
-        showModal('loyaltyLevel');
+        const { openModal } = useModalStore();
+        openModal('loyalty-level');
       }
     },
 

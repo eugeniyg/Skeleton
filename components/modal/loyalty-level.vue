@@ -1,15 +1,14 @@
 <template>
   <vue-final-modal
-    v-model="modals.loyaltyLevel"
     class="modal-loyalty-level"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
     :content-transition="{ mode: 'in-out', duration: 250 }"
-    @click-outside="closeModal('loyaltyLevel')"
+    @click-outside="closeModal('loyalty-level')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('loyaltyLevel')" />
+        <button-modal-close @close="closeModal('loyalty-level')" />
       </div>
 
       <div class="modal-loyalty-level__images">
@@ -25,13 +24,13 @@
       <div v-if="modalTitle" class="modal-loyalty-level__title">{{ modalTitle }}</div>
 
       <div class="modal-loyalty-level__description">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.description') }}
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'description') }}
       </div>
 
       <loyalty-level-benefits v-if="levelBenefits.length" class="is-order-active" :levelBenefits="levelBenefits" />
 
       <button-base type="primary" size="md" @click="clickButton">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.button.label') }}
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'button.label') }}
       </button-base>
     </div>
   </vue-final-modal>
@@ -40,17 +39,20 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
+  import type { IModalsContent } from '~/types';
 
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['loyaltyLevel']>;
+    defaultLocaleData: Maybe<IModalsContent['loyaltyLevel']>;
+  }>();
+
+  const { closeModal } = useModalStore();
   const { getContent, localizePath } = useProjectMethods();
   const loyaltyStore = useLoyaltyStore();
   const { currentLevelName, loyaltyAccount } = storeToRefs(loyaltyStore);
 
   const modalTitle = computed(() => {
-    const contentTitle = getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.title');
+    const contentTitle = getContent(props.currentLocaleData, props.defaultLocaleData, 'title');
     if (contentTitle) {
       return contentTitle
         .replace('{levelName}', currentLevelName.value)
@@ -82,8 +84,8 @@
   });
 
   const clickButton = (): void => {
-    const url = getContent(popupsData, defaultLocalePopupsData, 'loyaltyLevel.button.link');
-    closeModal('loyaltyLevel');
+    const url = getContent(props.currentLocaleData, props.defaultLocaleData, 'button.link');
+    closeModal('loyalty-level');
     if (url) {
       const router = useRouter();
       router.push(localizePath(url));
