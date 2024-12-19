@@ -4,9 +4,10 @@
       <template v-if="!selectedCurrency?.name">
         <atomic-icon id="currency" class="input-currencies__selected-icon" />
         <span class="input-currencies__selected-label">{{
-          getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.chooseCurrencyLabel')
+          getContent(props.currentLocaleData, props.defaultLocaleData, 'chooseCurrencyLabel')
         }}</span>
       </template>
+
       <template v-else>
         <atomic-image
           class="input-currencies__selected-icon"
@@ -17,6 +18,7 @@
         />
         <span class="input-currencies__selected-label">{{ selectedCurrency?.name }}</span>
       </template>
+
       <atomic-icon id="arrow_expand-open" class="input-currencies__expand-icon" />
     </div>
 
@@ -35,6 +37,7 @@
           </span>
         </template>
       </div>
+
       <div class="input-currencies__list">
         <div
           v-for="currency in selectedItems"
@@ -57,7 +60,7 @@
     </div>
 
     <div v-if="props.showError" class="input-currencies__error">
-      {{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.chooseCurrencyError') }}
+      {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'chooseCurrencyError') }}
     </div>
   </div>
 </template>
@@ -65,10 +68,13 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { ICurrency } from '@skeleton/core/types';
+  import type { IModalsContent } from '~/types';
 
   interface IProps {
     showError: boolean;
     items: ICurrency[];
+    currentLocaleData: Maybe<IModalsContent['addCashLimit']>;
+    defaultLocaleData: Maybe<IModalsContent['addCashLimit']>;
   }
 
   const props = defineProps<IProps>();
@@ -78,9 +84,6 @@
   const walletStore = useWalletStore();
   const { currencyTabs } = storeToRefs(walletStore);
   const { formatBalance, getContent } = useProjectMethods();
-  const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
-
   const selected = ref<string>('all');
   const selectedCurrency = ref<ICurrency | undefined>();
   const isOpen = ref<boolean>(false);

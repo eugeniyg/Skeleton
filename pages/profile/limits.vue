@@ -15,21 +15,15 @@
     </div>
 
     <div v-show="status !== 'pending'" class="limits__grid">
-      <card-deposit-limits
-        v-if="isAdvancedModeEnabled"
-        @open-limit-modal="openLimitModal"
-        @open-edit-modal="openEditModal"
-      />
+      <card-deposit-limits v-if="isAdvancedModeEnabled" @open-edit-modal="openEditModal" />
 
-      <card-loss-limits @open-limit-modal="openLimitModal" @open-edit-modal="openEditModal" />
+      <card-loss-limits @open-edit-modal="openEditModal" />
 
-      <card-bet-limits @open-limit-modal="openLimitModal" @open-edit-modal="openEditModal" />
+      <card-bet-limits @open-edit-modal="openEditModal" />
 
       <card-cooling-off-limits />
 
       <card-self-exclusion-limits v-if="isAdvancedModeEnabled" @open-confirm-modal="openConfirmModal" />
-
-      <modal-add-limit :key="addModalKey" :definition="state.definition" />
 
       <modal-edit-limit v-bind="state.editProps" :key="editModalKey" />
     </div>
@@ -77,11 +71,9 @@
   }
 
   const state = reactive<{
-    definition: number | undefined;
     editProps: IEditProps;
     period: undefined | string;
   }>({
-    definition: undefined,
     period: undefined,
     editProps: {
       limitId: undefined,
@@ -92,15 +84,8 @@
     },
   });
 
-  const addModalKey = ref(0);
   const editModalKey = ref(0);
   const confirmModalKey = ref(0);
-
-  const openLimitModal = (definition: number) => {
-    state.definition = definition;
-    addModalKey.value += 1;
-    showModal('addLimit');
-  };
 
   const openEditModal = (limitData: IEditProps) => {
     state.editProps = limitData;

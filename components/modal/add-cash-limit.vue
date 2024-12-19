@@ -39,6 +39,8 @@
         :items="currenciesOptions"
         @select="selectCurrency"
         @blur="blurCurrencySelect"
+        :currentLocaleData="props.currentLocaleData"
+        :defaultLocaleData="props.defaultLocaleData"
       />
 
       <form-input-number
@@ -239,4 +241,4 @@
   });
 </script>
 
-<style src="~/assets/styles/components/modal/add-limit.scss" lang="scss" />
+<style src="~/assets/styles/components/modal/add-cash-limit.scss" lang="scss" />

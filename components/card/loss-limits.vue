@@ -24,7 +24,7 @@
       <button-base
         type="primary"
         :is-disabled="isAllCurrenciesUsed || state.isShowEdit"
-        @click="emit('open-limit-modal', definition)"
+        @click="openModal('add-cash-limit', { props: { definition: 2 } })"
       >
         {{ getContent(limitsContent, defaultLimitsContent, 'addButtonLabel') }}
       </button-base>
@@ -49,7 +49,7 @@
   import type { IUpdateLimit } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
 
-  const emit = defineEmits(['open-limit-modal', 'open-edit-modal', 'update-limits']);
+  const emit = defineEmits(['open-edit-modal', 'update-limits']);
 
   const limitsStore = useLimitsStore();
   const { checkCurrencies } = limitsStore;
@@ -59,12 +59,11 @@
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { currencies } = storeToRefs(globalStore);
+  const { openModal } = useModalStore();
 
   const state = reactive<{ isShowEdit: boolean }>({
     isShowEdit: false,
   });
-
-  const definition = 2;
 
   const openEditModal = (payload: IUpdateLimit) => {
     emit('open-edit-modal', payload);
