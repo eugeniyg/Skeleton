@@ -33,7 +33,7 @@
         const profileStore = useProfileStore();
         profileStore.socialAuthEmailError = true;
         const { openModal } = useModalStore();
-        await openModal('sign-in', undefined, false);
+        await openModal('sign-in', { prohibitQueryChange: false });
         await router.replace(localizePath('/?sign-in=true'));
       } else {
         await openModal('sign-up');

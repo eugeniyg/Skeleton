@@ -15,13 +15,13 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       const profileStore = useProfileStore();
       if (profileStore.isLoggedIn) profileStore.removeSession();
       const { openModal } = useModalStore();
-      await openModal('sign-in', undefined, false);
+      await openModal('sign-in', { prohibitQueryChange: false });
       return navigateTo(localizePath('/?sign-in=true'));
     } else {
       const profileStore = useProfileStore();
       if (profileStore.isLoggedIn) profileStore.removeSession();
       const { openModal } = useModalStore();
-      await openModal('sign-in', undefined, false);
+      await openModal('sign-in', { prohibitQueryChange: false });
       return navigateTo({ query: { ...from.query, 'sign-in': 'true' } });
     }
   }
