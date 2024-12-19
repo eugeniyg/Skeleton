@@ -1,0 +1,224 @@
+<template>
+  <not-found v-if="state.showNotFound" />
+
+  <div v-else class="categories">
+    <atomic-cat-heading v-if="state.currentCategory" :icon="gameCategoriesObj[state.currentCategory.identity]?.icon">
+      {{ gameCategoriesObj[state.currentCategory.identity]?.label || state.currentCategory?.name }}
+    </atomic-cat-heading>
+
+    <div v-click-outside="skipActionsState" class="game-filter">
+      <nav-category hide-items @click-category="changeCategory" />
+
+      <form-input-search
+        v-model:value="state.searchValue"
+        class="game-filter__search"
+        :placeholder="getContent(layoutData, defaultLocaleLayoutData, 'header.search.placeholder')"
+        @input="searchInput"
+      />
+
+      <button-toggle-filter :is-active="state.isShowFilter" @toggle="toggleFilter" />
+
+      <atomic-game-sort
+        v-show="state.isShowFilter"
+        v-if="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'sortOptions')?.length"
+        class="game-filter__sort"
+        :sortOrderValue="state.sortOrder"
+        :sortByValue="state.sortBy"
+        :sortLabel="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'sortLabel')"
+        :sortOptions="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'sortOptions')"
+        @change="changeSort"
+      />
+
+      <providers-tags v-if="tags.length" :tags="tags" @unselect="selectProviders" />
+
+      <client-only>
+        <modal-providers :selected="state.providerIds" @select="selectProviders" />
+        <modal-categories @click-category="changeCategory" />
+      </client-only>
+    </div>
+
+    <list-grid v-if="state.pageData.length" :items="state.pageData" :meta="state.pageMeta" @load-more="getData(true)" />
+
+    <atomic-empty
+      v-else-if="!state.loadingGames"
+      :title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.title')"
+      :sub-title="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.description')"
+      :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"
+    />
+
+    <NuxtPage @pageMounted="childMounted" />
+  </div>
+</template>
+
+<script setup lang="ts">
+  import type { ICollection, IGame, IGameProvider, IPaginationMeta } from '@skeleton/core/types';
+  import { storeToRefs } from 'pinia';
+  import type { IGamesPage } from '~/types';
+  import debounce from 'lodash/debounce';
+
+  const globalStore = useGlobalStore();
+  const { gameCategoriesObj, layoutData, defaultLocaleLayoutData, headerCountry, isMobile } = storeToRefs(globalStore);
+  const { getContent, localizePath } = useProjectMethods();
+  const layoutStore = useLayoutStore();
+  const { closeModal } = layoutStore;
+  const { modals } = storeToRefs(layoutStore);
+  const route = useRoute();
+  const router = useRouter();
+
+  const contentParams = {
+    contentKey: 'gamesPageContent',
+    contentRoute: ['pages', 'games'],
+  };
+  const { getContentData } = useContentLogic<IGamesPage>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
+
+  interface IState {
+    showNotFound: boolean;
+    sortBy: string;
+    sortOrder: string;
+    providerIds: string[];
+    currentCategory: ICollection | undefined;
+    searchValue: string;
+    isShowFilter: boolean;
+    loadingGames: boolean;
+    pageData: IGame[];
+    pageMeta: IPaginationMeta | undefined;
+  }
+
+  const state = reactive<IState>({
+    showNotFound: false,
+    sortBy: 'default',
+    sortOrder: 'asc',
+    providerIds: [],
+    currentCategory: undefined,
+    searchValue: '',
+    isShowFilter: false,
+    loadingGames: true,
+    pageData: [],
+    pageMeta: undefined,
+  });
+
+  const { getFilteredGames } = useCoreGamesApi();
+  const getData = async (nextPage: boolean): Promise<void> => {
+    state.loadingGames = true;
+
+    const params: any = {
+      page: nextPage ? (state.pageMeta?.page || 0) + 1 : 1,
+      perPage: isMobile.value && window.innerHeight < 1000 ? 24 : 72,
+      name: state.searchValue || undefined,
+      collectionId: state.currentCategory?.id,
+      sortBy: state.sortBy,
+      sortOrder: state.sortOrder,
+      countries: headerCountry.value ? [headerCountry.value] : undefined,
+      providerId: state.providerIds,
+    };
+
+    try {
+      const { data, meta } = await getFilteredGames(params);
+      state.pageData = nextPage ? state.pageData.concat(data) : data;
+      state.pageMeta = meta;
+    } catch {
+      state.pageData = [];
+      state.pageMeta = undefined;
+    }
+
+    state.loadingGames = false;
+  };
+
+  const changeCategory = async (categoryIdentity: string): Promise<void> => {
+    if (route.params.categoryIdentity === categoryIdentity) return;
+    const gameCategories = await getCollectionsList();
+    state.currentCategory = gameCategories.find(category => category.identity === categoryIdentity);
+    await router.push(localizePath(`/categories/${categoryIdentity}`));
+
+    if (modals.value.categories) {
+      closeModal('categories');
+    }
+  };
+
+  const changeSort = async (...args: any): Promise<void> => {
+    const [by, order] = args;
+    state.sortBy = by;
+    state.sortOrder = order;
+    await router.push({ query: { ...route.query, sortBy: by, sortOrder: order } });
+    await getData(false);
+  };
+
+  const tags = ref<IGameProvider[]>([]);
+  const { getProviderList, getCollectionsList } = useGamesStore();
+  const selectProviders = async (providersIds: string[]) => {
+    closeModal('providers');
+    const gameProviders = await getProviderList();
+    const selectedProvidersData = gameProviders.filter(
+      provider => providersIds.includes(provider.id) && !!provider.gameEnabledCount
+    );
+    tags.value = selectedProvidersData;
+    state.providerIds = selectedProvidersData.map(provider => provider.id);
+    const providerIdentities = selectedProvidersData.map(provider => provider.identity);
+    await router.push({ query: { ...route.query, provider: providerIdentities } });
+    await getData(false);
+  };
+
+  const toggleFilter = () => {
+    state.isShowFilter = !state.isShowFilter;
+  };
+
+  const skipActionsState = () => {
+    state.isShowFilter = false;
+  };
+
+  const searchInput = debounce(
+    async (): Promise<void> => {
+      console.log('search event!!!');
+      if (state.searchValue.length > 1 || !state.searchValue) {
+        await getData(false);
+      }
+    },
+    500,
+    { leading: false }
+  );
+
+  const resetFilters = (): void => {
+    state.searchValue = '';
+    state.sortBy = (route.query.sortBy as string) || 'default';
+    state.sortOrder = (route.query.sortOrder as string) || 'asc';
+  };
+
+  const setProviders = async (): Promise<void> => {
+    const routerProviders = route.query.provider;
+    const gameProviders = await getProviderList();
+    const providersIdentities = Array.isArray(routerProviders) ? routerProviders : [routerProviders];
+
+    const selectedProvidersData = gameProviders.filter(
+      provider => providersIdentities.includes(provider.identity) && !!provider.gameEnabledCount
+    );
+    tags.value = selectedProvidersData;
+    state.providerIds = selectedProvidersData.map(provider => provider.id);
+  };
+
+  const childMounted = async () => {
+    resetFilters();
+    await setProviders();
+
+    const gameCollections = await getCollectionsList();
+    state.currentCategory = gameCollections.find(category => category.identity === route.params.categoryIdentity);
+    if (!state.currentCategory) {
+      state.showNotFound = true;
+      return;
+    }
+
+    await getData(false);
+  };
+
+  onMounted(async () => {
+    const gameCategories = await getCollectionsList();
+    if (!route.params.categoryIdentity && gameCategories.length) {
+      await router.replace({
+        path: localizePath(`/categories/${gameCategories[0].identity}`),
+        query: { ...route.query },
+      });
+    }
+  });
+</script>
+
+<style src="~/assets/styles/pages/categories.scss" lang="scss" />

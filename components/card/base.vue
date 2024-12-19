@@ -80,14 +80,14 @@
   const gameHovered = ref<boolean>(false);
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
-  const clickGame = (): void => {
+  const clickGame = async (): Promise<void> => {
     if (!props.gameInfo) return;
 
     if (props.gameInfo.identity === 'betsy-sportsbook-betsy') {
-      router.push(localizePath('/betting'));
+      await router.push(localizePath('/betting'));
     } else {
       const { openGame } = useMobileGameLogic(props.gameInfo);
-      openGame();
+      await openGame();
     }
   };
 
