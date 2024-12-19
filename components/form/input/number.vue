@@ -36,7 +36,7 @@
     label: string;
     placeholder?: string;
     isRequired?: boolean;
-    hint: { variant: string; message: string };
+    hint?: { variant: string; message: string };
     isBigger?: boolean;
   }>();
 

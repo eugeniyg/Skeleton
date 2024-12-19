@@ -1,15 +1,14 @@
 <template>
   <vue-final-modal
-    v-model="modals.editLimit"
     class="modal-edit-limit"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
     :content-transition="{ mode: 'in-out', duration: 250 }"
-    @click-outside="closeModal('editLimit')"
+    @click-outside="closeModal('edit-cash-limit')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('editLimit')" />
+        <button-modal-close @close="closeModal('edit-cash-limit')" />
         <div class="title">{{ label }}</div>
       </div>
 
@@ -28,19 +27,19 @@
       <div v-if="isLargeAmount" class="modal-edit-limit__info">
         <div class="modal-edit-limit__info-title">
           <atomic-icon id="warning" />
-          <div>{{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.greaterAmountTitle') }}</div>
+          <div>{{ getContent(props.currentLocaleData, props.defaultLocaleData, 'greaterAmountTitle') }}</div>
         </div>
         <div class="modal-edit-limit__info-text">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.hint') }}
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'hint') }}
         </div>
       </div>
 
       <div class="modal-edit-limit__actions">
         <button-base type="primary" size="md" :is-disabled="isDisableUpdate" @click="update">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.actions.updateButtonLabel') }}
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'actions.updateButtonLabel') }}
         </button-base>
         <button-base type="secondary" size="md" @click="remove">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'editCashLimit.actions.deleteButtonLabel') }}
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'actions.deleteButtonLabel') }}
         </button-base>
       </div>
     </div>
@@ -50,6 +49,7 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import { storeToRefs } from 'pinia';
+  import type { IModalsContent } from '~/types';
 
   const props = defineProps<{
     limitId?: string;
@@ -57,16 +57,17 @@
     definition?: number;
     amount?: number;
     currency?: string;
+    currentLocaleData: Maybe<IModalsContent['editCashLimit']>;
+    defaultLocaleData: Maybe<IModalsContent['editCashLimit']>;
   }>();
 
-  const limitsStore = useLimitsStore();
-  const { closeModal, getLimits } = useLimitsStore();
-  const { modals } = storeToRefs(limitsStore);
+  const { getLimits } = useLimitsStore();
   const { showAlert } = useLayoutStore();
   const { deletePlayerLimit, updatePlayerLimit } = useCoreProfileApi();
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
-  const { alertsData, defaultLocaleAlertsData, popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
+  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
+  const { closeModal } = useModalStore();
 
   const formattedBalance = formatBalance(props.currency, props.amount);
 
@@ -81,7 +82,7 @@
   });
 
   const label = computed(() => {
-    const labels = getContent(popupsData.value, defaultLocalePopupsData.value, 'editCashLimit.popupLabel');
+    const labels = getContent(props.currentLocaleData, props.defaultLocaleData, 'popupLabel');
     if (!labels) return '';
     return labels[`edit_${props.period}_${props.definition}`];
   });
@@ -91,7 +92,7 @@
   const isLargeAmount = computed(() => Number(state.amount) > Number(state.prevAmount));
 
   const update = async () => {
-    closeModal('editLimit');
+    await closeModal('edit-cash-limit');
 
     const formattedMainBalance = getMainBalanceFormat(state.currency, Number(state.amount));
 
@@ -115,7 +116,7 @@
   };
 
   const remove = async () => {
-    closeModal('editLimit');
+    await closeModal('edit-cash-limit');
     await deletePlayerLimit(props.limitId as string);
     await getLimits();
 
@@ -123,4 +124,4 @@
   };
 </script>
 
-<style src="~/assets/styles/components/modal/edit-limit.scss" lang="scss" />
+<style src="~/assets/styles/components/modal/edit-cash-limit.scss" lang="scss" />

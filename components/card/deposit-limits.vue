@@ -13,7 +13,6 @@
       v-if="depositPeriods.length"
       :periods="depositPeriods"
       :is-show-edit="state.isShowEdit"
-      @open-edit-modal="openEditModal"
     />
 
     <p v-else class="limits__card-sub-title">
@@ -46,10 +45,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IUpdateLimit } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
-
-  const emit = defineEmits(['open-edit-modal']);
 
   const limitsStore = useLimitsStore();
   const { getContent } = useProjectMethods();
@@ -63,10 +59,6 @@
   const state = reactive<{ isShowEdit: boolean }>({
     isShowEdit: false,
   });
-
-  const openEditModal = (payload: IUpdateLimit) => {
-    emit('open-edit-modal', payload);
-  };
 
   const isEditLocked = computed(() =>
     depositPeriods.value.every(period => {

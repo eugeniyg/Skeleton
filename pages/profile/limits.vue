@@ -15,21 +15,14 @@
     </div>
 
     <div v-show="status !== 'pending'" class="limits__grid">
-      <card-deposit-limits v-if="isAdvancedModeEnabled" @open-edit-modal="openEditModal" />
-
-      <card-loss-limits @open-edit-modal="openEditModal" />
-
-      <card-bet-limits @open-edit-modal="openEditModal" />
-
+      <card-deposit-limits v-if="isAdvancedModeEnabled" />
+      <card-loss-limits />
+      <card-bet-limits />
       <card-cooling-off-limits />
-
       <card-self-exclusion-limits v-if="isAdvancedModeEnabled" @open-confirm-modal="openConfirmModal" />
-
-      <modal-edit-limit v-bind="state.editProps" :key="editModalKey" />
     </div>
 
     <modal-game-limit-reached />
-
     <modal-confirm-limit-update :key="confirmModalKey" :period="state.period" />
   </div>
 </template>
@@ -62,37 +55,13 @@
     { immediate: true }
   );
 
-  interface IEditProps {
-    limitId: string | undefined;
-    definition: number | undefined;
-    amount: number | undefined;
-    currency: string | undefined;
-    period: string | undefined;
-  }
-
   const state = reactive<{
-    editProps: IEditProps;
     period: undefined | string;
   }>({
     period: undefined,
-    editProps: {
-      limitId: undefined,
-      definition: undefined,
-      amount: undefined,
-      currency: undefined,
-      period: undefined,
-    },
   });
 
-  const editModalKey = ref(0);
   const confirmModalKey = ref(0);
-
-  const openEditModal = (limitData: IEditProps) => {
-    state.editProps = limitData;
-    editModalKey.value += 1;
-    showModal('editLimit');
-  };
-
   const openConfirmModal = (period: string) => {
     state.period = period;
     confirmModalKey.value += 1;

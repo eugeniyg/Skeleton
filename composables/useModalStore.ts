@@ -24,6 +24,7 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'quest-rewards': Maybe<UseModalReturnType<any>>;
   'quest-tasks': Maybe<UseModalReturnType<any>>;
   'add-cash-limit': Maybe<UseModalReturnType<any>>;
+  'edit-cash-limit': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -64,6 +65,7 @@ export const useModalStore = defineStore('modalStore', {
       'quest-rewards': undefined,
       'quest-tasks': undefined,
       'add-cash-limit': undefined,
+      'edit-cash-limit': undefined,
     },
     modalsUrl: [
       'sign-in',
@@ -89,6 +91,7 @@ export const useModalStore = defineStore('modalStore', {
       'quest-rewards',
       'quest-tasks',
       'add-cash-limit',
+      'edit-cash-limit',
     ],
     openingModals: [],
     sameComponent: {
@@ -153,6 +156,7 @@ export const useModalStore = defineStore('modalStore', {
           attrs: {
             currentLocaleData,
             defaultLocaleData,
+            ...params?.props,
           },
         });
       } else if (params?.props) {

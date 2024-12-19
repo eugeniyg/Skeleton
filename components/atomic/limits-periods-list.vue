@@ -17,7 +17,7 @@
           v-bind="item"
           :key="item.id + item.updatedAt"
           :is-show-edit="isShowEdit"
-          @edit-limit="emit('open-edit-modal', { ...item, limitId: item.id })"
+          @edit-limit="openModal('edit-cash-limit', { props: { ...item, limitId: item.id } })"
         />
       </div>
     </div>
@@ -35,9 +35,9 @@
     isShowEdit: boolean;
   }>();
 
-  const emit = defineEmits(['open-edit-modal']);
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const { getContent } = useProjectMethods();
+  const { openModal } = useModalStore();
 </script>
 
 <style src="~/assets/styles/components/atomic/limits-periods-list.scss" lang="scss" />

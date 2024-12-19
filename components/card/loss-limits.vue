@@ -9,12 +9,7 @@
       />
     </h4>
 
-    <atomic-limits-periods-list
-      v-if="lossPeriods.length"
-      :periods="lossPeriods"
-      :is-show-edit="state.isShowEdit"
-      @open-edit-modal="openEditModal"
-    />
+    <atomic-limits-periods-list v-if="lossPeriods.length" :periods="lossPeriods" :is-show-edit="state.isShowEdit" />
 
     <p v-else class="limits__card-sub-title">
       {{ getContent(limitsContent, defaultLimitsContent, 'loss.hint') }}
@@ -46,10 +41,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IUpdateLimit } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
-
-  const emit = defineEmits(['open-edit-modal', 'update-limits']);
 
   const limitsStore = useLimitsStore();
   const { checkCurrencies } = limitsStore;
@@ -64,10 +56,6 @@
   const state = reactive<{ isShowEdit: boolean }>({
     isShowEdit: false,
   });
-
-  const openEditModal = (payload: IUpdateLimit) => {
-    emit('open-edit-modal', payload);
-  };
 
   const isEditLocked = computed(() => {
     return lossPeriods.value.every(period => {
