@@ -3,7 +3,6 @@ import type { ICreateLimit, ICurrency, IPlayerLimit } from '@skeleton/core/types
 import type { IProfileLimits } from '~/types';
 
 interface ILimitsModal {
-  addLimit: boolean;
   editLimit: boolean;
   gameLimitReached: boolean;
   confirmLimitUpdate: boolean;
@@ -37,7 +36,6 @@ export const useLimitsStore = defineStore('limitsStore', {
     defaultLimitsContent: undefined,
     isAdvancedModeEnabled: false,
     modals: {
-      addLimit: false,
       editLimit: false,
       gameLimitReached: false,
       confirmLimitUpdate: false,
