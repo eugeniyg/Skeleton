@@ -106,8 +106,8 @@
     } catch (err: any) {
       if ([14100, 14101, 14105].includes(err.data?.error?.code)) {
         const { localizePath } = useProjectMethods();
-        await router.push({ path: localizePath('/profile/limits'), query: {} });
         await openModal('game-limit-reached');
+        await router.push({ path: localizePath('/profile/limits'), query: {} });
         return { error: { ...err, fatal: false } };
       }
 
