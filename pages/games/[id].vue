@@ -89,7 +89,6 @@
     error?: any;
   }> => {
     gameLoading.value = true;
-    const limitsStore = useLimitsStore();
     const redirectUrl = window.location.origin + (window.history.state.back || '');
     const startParams = {
       accountId: isDemo.value ? undefined : activeAccount.value?.id,
@@ -108,7 +107,7 @@
       if ([14100, 14101, 14105].includes(err.data?.error?.code)) {
         const { localizePath } = useProjectMethods();
         await router.push({ path: localizePath('/profile/limits'), query: {} });
-        limitsStore.showModal('gameLimitReached');
+        await openModal('game-limit-reached');
         return { error: { ...err, fatal: false } };
       }
 

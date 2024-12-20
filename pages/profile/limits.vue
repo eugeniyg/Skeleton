@@ -22,7 +22,6 @@
       <card-self-exclusion-limits v-if="isAdvancedModeEnabled" @open-confirm-modal="openConfirmModal" />
     </div>
 
-    <modal-game-limit-reached />
     <modal-confirm-limit-update :key="confirmModalKey" :period="state.period" />
   </div>
 </template>
