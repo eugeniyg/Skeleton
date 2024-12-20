@@ -11,7 +11,11 @@
         :placeholder="getContent(limitsContent, defaultLimitsContent, 'selfExclusion.selectLabel')"
         :options="selfExclusionPeriod"
       />
-      <button-base type="primary" :is-disabled="!selectedPeriod" @click="emit('open-confirm-modal', selectedPeriod)">
+      <button-base
+        type="primary"
+        :is-disabled="!selectedPeriod"
+        @click="openModal('self-exclusion-limit', { props: { period: selectedPeriod } })"
+      >
         {{ getContent(limitsContent, defaultLimitsContent, 'setButtonLabel') }}
       </button-base>
     </div>
@@ -38,11 +42,9 @@
     isAdvancedModeEnabled,
   } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();
+  const { openModal } = useModalStore();
 
   const selectedPeriod = ref<string>('');
-
-  const emit = defineEmits(['open-confirm-modal']);
-
   const hintContent = computed(() => {
     const contentText = getContent(limitsContent.value, defaultLimitsContent.value, 'selfExclusion.hint');
     if (!contentText) return '';

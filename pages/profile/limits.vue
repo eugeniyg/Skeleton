@@ -19,10 +19,8 @@
       <card-loss-limits />
       <card-bet-limits />
       <card-cooling-off-limits />
-      <card-self-exclusion-limits v-if="isAdvancedModeEnabled" @open-confirm-modal="openConfirmModal" />
+      <card-self-exclusion-limits v-if="isAdvancedModeEnabled" />
     </div>
-
-    <modal-confirm-limit-update :key="confirmModalKey" :period="state.period" />
   </div>
 </template>
 
@@ -31,7 +29,7 @@
   import type { IProfileLimits } from '~/types';
 
   const limitsStore = useLimitsStore();
-  const { getLimits, setLimitsContent, showModal, toogleAdvancedMode } = limitsStore;
+  const { getLimits, setLimitsContent, toogleAdvancedMode } = limitsStore;
   const { limitsContent, defaultLimitsContent, isAdvancedModeEnabled } = storeToRefs(limitsStore);
   const { getContent } = useProjectMethods();
 
@@ -53,19 +51,6 @@
     },
     { immediate: true }
   );
-
-  const state = reactive<{
-    period: undefined | string;
-  }>({
-    period: undefined,
-  });
-
-  const confirmModalKey = ref(0);
-  const openConfirmModal = (period: string) => {
-    state.period = period;
-    confirmModalKey.value += 1;
-    showModal('confirmLimitUpdate');
-  };
 
   onMounted(() => {
     getLimits();
