@@ -28,6 +28,10 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'loyalty-earn': Maybe<UseModalReturnType<any>>;
   'loyalty-level': Maybe<UseModalReturnType<any>>;
   'turn-over-wager': Maybe<UseModalReturnType<any>>;
+  'add-cash-limit': Maybe<UseModalReturnType<any>>;
+  'edit-cash-limit': Maybe<UseModalReturnType<any>>;
+  'game-limit-reached': Maybe<UseModalReturnType<any>>;
+  'self-exclusion-limit': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -72,6 +76,10 @@ export const useModalStore = defineStore('modalStore', {
       'loyalty-earn': undefined,
       'loyalty-level': undefined,
       'turn-over-wager': undefined,
+      'add-cash-limit': undefined,
+      'edit-cash-limit': undefined,
+      'game-limit-reached': undefined,
+      'self-exclusion-limit': undefined,
     },
     modalsUrl: [
       'sign-in',
@@ -101,6 +109,10 @@ export const useModalStore = defineStore('modalStore', {
       'wallet-bonus-info',
       'loyalty-level',
       'turn-over-wager',
+      'add-cash-limit',
+      'edit-cash-limit',
+      'game-limit-reached',
+      'self-exclusion-limit',
     ],
     openingModals: [],
     sameComponent: {
@@ -166,6 +178,7 @@ export const useModalStore = defineStore('modalStore', {
           attrs: {
             currentLocaleData,
             defaultLocaleData,
+            ...params?.props,
           },
         });
       } else if (params?.props) {

@@ -110,11 +110,11 @@
       startBetsyFrame(mainHost, startResponse.token);
     } catch (error: any) {
       if ([14100, 14101, 14105].includes(error.data?.error?.code)) {
+        await openModal('game-limit-reached');
         await router.push({
           path: localizePath('/profile/limits'),
           query: {},
         });
-        limitStore.showModal('gameLimitReached');
       } else if (error.data?.error?.code === 14103) {
         redirectLimitedPlayer();
       } else if (error.data?.error?.code === 14306) {
@@ -130,8 +130,6 @@
   const { showAlert, compactDrawer } = layoutStore;
 
   const router = useRouter();
-  const limitStore = useLimitsStore();
-
   const redirectLimitedPlayer = (): void => {
     router.replace(localizePath('/'));
     showAlert(alertsData.value?.limit?.limitedRealGame || defaultLocaleAlertsData.value?.limit?.limitedRealGame);

@@ -2,20 +2,12 @@ import { defineStore } from 'pinia';
 import type { ICreateLimit, ICurrency, IPlayerLimit } from '@skeleton/core/types';
 import type { IProfileLimits } from '~/types';
 
-interface ILimitsModal {
-  addLimit: boolean;
-  editLimit: boolean;
-  gameLimitReached: boolean;
-  confirmLimitUpdate: boolean;
-}
-
 interface ILimitsState {
   activeLimits: IPlayerLimit[];
   isLoaded: boolean;
   limitsContent: Maybe<IProfileLimits>;
   defaultLimitsContent: Maybe<IProfileLimits>;
   isAdvancedModeEnabled: boolean;
-  modals: ILimitsModal;
 }
 
 const transformToPeriods = (limits: IPlayerLimit[]) => {
@@ -36,12 +28,6 @@ export const useLimitsStore = defineStore('limitsStore', {
     limitsContent: undefined,
     defaultLimitsContent: undefined,
     isAdvancedModeEnabled: false,
-    modals: {
-      addLimit: false,
-      editLimit: false,
-      gameLimitReached: false,
-      confirmLimitUpdate: false,
-    },
   }),
 
   actions: {
@@ -58,14 +44,6 @@ export const useLimitsStore = defineStore('limitsStore', {
     setLimitsContent(content: Maybe<IProfileLimits>, defaultContent: Maybe<IProfileLimits>) {
       this.limitsContent = content;
       this.defaultLimitsContent = defaultContent;
-    },
-
-    showModal(modalName: keyof ILimitsModal) {
-      this.modals[modalName] = true;
-    },
-
-    closeModal(modalName: keyof ILimitsModal) {
-      this.modals[modalName] = false;
     },
 
     checkCurrencies(periods: { title: string; items: IPlayerLimit[] }[], currencies: ICurrency[]) {
