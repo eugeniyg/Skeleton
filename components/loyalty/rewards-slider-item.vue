@@ -20,7 +20,7 @@
             {{ getContent(loyaltyContent, defaultLocaleLoyaltyContent, 'rewards.statusPointsLabel') }}
           </span>
 
-          <atomic-icon id="info" @click="showModal('loyaltyEarn')" />
+          <atomic-icon id="info" @click="openModal('loyalty-earn')" />
         </div>
 
         <div class="loyalty-rewards-slider__item-status-points-value">
@@ -63,7 +63,7 @@
   const loyaltyStore = useLoyaltyStore();
   const { loyaltyAccount } = storeToRefs(loyaltyStore);
   const { getContent } = useProjectMethods();
-  const { showModal } = useLayoutStore();
+  const { openModal } = useModalStore();
 
   const completedLevelIcon = computed(() => {
     return getContent(loyaltyContent.value, defaultLocaleLoyaltyContent.value, 'rewards.completedIcon');

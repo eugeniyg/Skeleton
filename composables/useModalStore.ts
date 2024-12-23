@@ -20,9 +20,14 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'mobile-game': Maybe<UseModalReturnType<any>>;
   'equivalent-currency': Maybe<UseModalReturnType<any>>;
   'wallet-region': Maybe<UseModalReturnType<any>>;
+  'deposit-redirect': Maybe<UseModalReturnType<any>>;
   'quests-hub': Maybe<UseModalReturnType<any>>;
   'quest-rewards': Maybe<UseModalReturnType<any>>;
   'quest-tasks': Maybe<UseModalReturnType<any>>;
+  'wallet-bonus-info': Maybe<UseModalReturnType<any>>;
+  'loyalty-earn': Maybe<UseModalReturnType<any>>;
+  'loyalty-level': Maybe<UseModalReturnType<any>>;
+  'turn-over-wager': Maybe<UseModalReturnType<any>>;
   'add-cash-limit': Maybe<UseModalReturnType<any>>;
   'edit-cash-limit': Maybe<UseModalReturnType<any>>;
   'game-limit-reached': Maybe<UseModalReturnType<any>>;
@@ -63,9 +68,14 @@ export const useModalStore = defineStore('modalStore', {
       'mobile-game': undefined,
       'equivalent-currency': undefined,
       'wallet-region': undefined,
+      'deposit-redirect': undefined,
       'quests-hub': undefined,
       'quest-rewards': undefined,
       'quest-tasks': undefined,
+      'wallet-bonus-info': undefined,
+      'loyalty-earn': undefined,
+      'loyalty-level': undefined,
+      'turn-over-wager': undefined,
       'add-cash-limit': undefined,
       'edit-cash-limit': undefined,
       'game-limit-reached': undefined,
@@ -81,6 +91,7 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-pending',
       'wallet',
       'profile-confirmed',
+      'deposit-redirect',
       'quests-hub',
     ],
     onlyGuestModals: ['sign-in', 'sign-up', 'forgot-pass', 'reset-pass'],
@@ -91,9 +102,13 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-pending',
       'equivalent-currency',
       'wallet-region',
+      'deposit-redirect',
       'quests-hub',
       'quest-rewards',
       'quest-tasks',
+      'wallet-bonus-info',
+      'loyalty-level',
+      'turn-over-wager',
       'add-cash-limit',
       'edit-cash-limit',
       'game-limit-reached',
@@ -103,6 +118,7 @@ export const useModalStore = defineStore('modalStore', {
     sameComponent: {
       'deposit-pending': 'success',
       'deposit-success': 'success',
+      'deposit-redirect': 'success',
     },
     walletModalType: undefined,
     walletOpening: false,
@@ -253,8 +269,7 @@ export const useModalStore = defineStore('modalStore', {
         riskStore.turnOverWagerData?.turnOverWagerAmount > 0;
 
       if (showTurnOverWagerModal) {
-        const { showModal } = useLayoutStore();
-        showModal('turnOverWager');
+        await this.openModal('turn-over-wager');
         this.walletOpening = false;
         return;
       }

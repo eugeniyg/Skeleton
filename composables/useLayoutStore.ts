@@ -5,18 +5,9 @@ import type { IAlert } from '~/types';
 import type { IGame } from '@skeleton/core/types';
 
 interface IModals extends Record<string, any> {
-  walletBonusInfo: boolean;
-  turnOverWager: boolean;
-  loyaltyEarn: boolean;
-  loyaltyLevel: boolean;
-  depositRedirect: boolean;
   providers: boolean;
   categories: boolean;
   packageBonus: boolean;
-}
-
-interface IModalsUrls extends Record<string, any> {
-  depositRedirect: string;
 }
 
 interface ILayoutStoreState extends Record<string, any> {
@@ -39,17 +30,9 @@ export const useLayoutStore = defineStore('layoutStore', {
     isDrawerCompact: false,
     showCookiePopup: false,
     modals: {
-      walletBonusInfo: false,
-      turnOverWager: false,
-      loyaltyEarn: false,
-      loyaltyLevel: false,
-      depositRedirect: false,
       providers: false,
       categories: false,
       packageBonus: false,
-    },
-    modalsUrl: {
-      depositRedirect: 'deposit-redirect',
     },
     lastNotificationTime: 0,
     returnGame: undefined,
