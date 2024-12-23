@@ -1,28 +1,27 @@
 <template>
   <vue-final-modal
-    v-model="modals.loyaltyEarn"
     class="modal-loyalty-earn"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
     :content-transition="{ mode: 'in-out', duration: 250 }"
-    @click-outside="closeModal('loyaltyEarn')"
+    @click-outside="closeModal('loyalty-earn')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('loyaltyEarn')" />
+        <button-modal-close @close="closeModal('loyalty-earn')" />
       </div>
 
       <atomic-image
         class="modal-loyalty-earn__img"
-        :src="getContent(popupsData, defaultLocalePopupsData, 'loyaltyEarn.image')"
+        :src="getContent(props.currentLocaleData, props.defaultLocaleData, 'image')"
       />
 
       <div class="modal-loyalty-earn__title">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyEarn.title') }}
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}
       </div>
 
       <div class="modal-loyalty-earn__description">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyEarn.description') }}
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'description') }}
       </div>
 
       <div class="modal-loyalty-earn__steps">
@@ -30,36 +29,40 @@
       </div>
 
       <button-base type="primary" size="md" @click.once="handleConfirm">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'loyaltyEarn.buttonLabel') }}
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'buttonLabel') }}
       </button-base>
     </div>
   </vue-final-modal>
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
+  import type { IModalsContent } from '~/types';
 
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
-  const { openWalletModal } = useModalStore();
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['loyaltyEarn']>;
+    defaultLocaleData: Maybe<IModalsContent['loyaltyEarn']>;
+  }>();
+
+  const { openWalletModal, closeModal, openModal } = useModalStore();
   const { getContent } = useProjectMethods();
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
 
   const steps = computed(() => {
     const contentSteps: { stepText: string }[] | undefined = getContent(
-      popupsData,
-      defaultLocalePopupsData,
-      'loyaltyEarn.steps'
+      props.currentLocaleData,
+      props.defaultLocaleData,
+      'steps'
     );
     if (contentSteps) return contentSteps.map(step => step.stepText);
     return [];
   });
 
   const handleConfirm = async (): Promise<void> => {
-    await openWalletModal('deposit');
-    closeModal('loyaltyEarn');
+    if (isLoggedIn.value) await openWalletModal('deposit');
+    else await openModal('sign-up');
+    await closeModal('loyalty-earn');
   };
 </script>
 
