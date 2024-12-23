@@ -30,7 +30,6 @@
 
     <ModalsContainer />
 
-    <modal-deposit-redirect />
     <modal-turn-over-wager v-if="turnOverWagerModal" />
     <atomic-alert />
 

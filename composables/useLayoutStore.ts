@@ -8,14 +8,9 @@ interface IModals extends Record<string, any> {
   turnOverWager: boolean;
   loyaltyEarn: boolean;
   loyaltyLevel: boolean;
-  depositRedirect: boolean;
   providers: boolean;
   categories: boolean;
   packageBonus: boolean;
-}
-
-interface IModalsUrls extends Record<string, any> {
-  depositRedirect: string;
 }
 
 interface ILayoutStoreState extends Record<string, any> {
@@ -41,13 +36,9 @@ export const useLayoutStore = defineStore('layoutStore', {
       turnOverWager: false,
       loyaltyEarn: false,
       loyaltyLevel: false,
-      depositRedirect: false,
       providers: false,
       categories: false,
       packageBonus: false,
-    },
-    modalsUrl: {
-      depositRedirect: 'deposit-redirect',
     },
     lastNotificationTime: 0,
     returnGame: undefined,

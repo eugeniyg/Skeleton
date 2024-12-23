@@ -20,6 +20,7 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'mobile-game': Maybe<UseModalReturnType<any>>;
   'equivalent-currency': Maybe<UseModalReturnType<any>>;
   'wallet-region': Maybe<UseModalReturnType<any>>;
+  'deposit-redirect': Maybe<UseModalReturnType<any>>;
   'quests-hub': Maybe<UseModalReturnType<any>>;
   'quest-rewards': Maybe<UseModalReturnType<any>>;
   'quest-tasks': Maybe<UseModalReturnType<any>>;
@@ -60,6 +61,7 @@ export const useModalStore = defineStore('modalStore', {
       'mobile-game': undefined,
       'equivalent-currency': undefined,
       'wallet-region': undefined,
+      'deposit-redirect': undefined,
       'quests-hub': undefined,
       'quest-rewards': undefined,
       'quest-tasks': undefined,
@@ -75,6 +77,7 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-pending',
       'wallet',
       'profile-confirmed',
+      'deposit-redirect',
       'quests-hub',
     ],
     onlyGuestModals: ['sign-in', 'sign-up', 'forgot-pass', 'reset-pass'],
@@ -85,6 +88,7 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-pending',
       'equivalent-currency',
       'wallet-region',
+      'deposit-redirect',
       'quests-hub',
       'quest-rewards',
       'quest-tasks',
@@ -94,6 +98,7 @@ export const useModalStore = defineStore('modalStore', {
     sameComponent: {
       'deposit-pending': 'success',
       'deposit-success': 'success',
+      'deposit-redirect': 'success',
     },
     walletModalType: undefined,
     walletOpening: false,
