@@ -32,10 +32,6 @@
 
     <modal-turn-over-wager v-if="turnOverWagerModal" />
     <atomic-alert />
-
-    <template v-if="loyaltyEnabled">
-      <modal-loyalty-level />
-    </template>
   </div>
 </template>
 
@@ -98,7 +94,6 @@
 
   const runtimeConfig = useRuntimeConfig();
   const turnOverWagerModal = runtimeConfig.public?.enableTurnOverWager;
-  const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;
 
   onBeforeMount(() => {
     const storageReturnGame = sessionStorage.getItem('returnGame');
