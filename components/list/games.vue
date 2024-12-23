@@ -7,7 +7,7 @@
       :to="localizePath(`/games/${game.identity}${!isLoggedIn ? '' : '?real=true'}`)"
     >
       <atomic-image
-        v-if="game.customImages['200x200'] || game.images['200x200']"
+        v-if="game.customImages?.['200x200'] || game.images?.['200x200']"
         class="img"
         :src="getImageUrl(game.customImages, game.images, 'square')"
       />

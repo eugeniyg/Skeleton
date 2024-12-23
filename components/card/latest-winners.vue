@@ -34,7 +34,7 @@
     gameName: string;
     isDemoMode: boolean;
     gameImages: IGameImages;
-    customImages: IGameImages;
+    customImages?: IGameImages;
   }>();
 
   const profileStore = useProfileStore();

@@ -128,16 +128,16 @@ export const useProjectMethods = () => {
     if (customImages) {
       const imagePath =
         orientation === 'vertical'
-          ? customImages['200x300']['3x'] || customImages['200x300']['2x'] || customImages['200x300']['1x']
-          : customImages['200x200']['3x'] || customImages['200x200']['2x'] || customImages['200x200']['1x'];
+          ? customImages['200x300']?.['3x'] || customImages['200x300']?.['2x'] || customImages['200x300']?.['1x']
+          : customImages['200x200']?.['3x'] || customImages['200x200']?.['2x'] || customImages['200x200']?.['1x'];
       if (imagePath && config.customerCdn) imageUrl = `${config.customerCdn}${imagePath}`;
     }
 
     if (!imageUrl && images) {
       const imagePath =
         orientation === 'vertical'
-          ? images['200x300']['3x'] || images['200x300']['2x'] || images['200x300']['1x']
-          : images['200x200']['3x'] || images['200x200']['2x'] || images['200x200']['1x'];
+          ? images['200x300']?.['3x'] || images['200x300']?.['2x'] || images['200x300']?.['1x']
+          : images['200x200']?.['3x'] || images['200x200']?.['2x'] || images['200x200']?.['1x'];
       if (imagePath && config.gamehubCdn) imageUrl = `${config.gamehubCdn}${imagePath}`;
     }
 
