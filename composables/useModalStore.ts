@@ -25,6 +25,7 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'quest-rewards': Maybe<UseModalReturnType<any>>;
   'quest-tasks': Maybe<UseModalReturnType<any>>;
   'wallet-bonus-info': Maybe<UseModalReturnType<any>>;
+  'loyalty-earn': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -66,6 +67,7 @@ export const useModalStore = defineStore('modalStore', {
       'quest-rewards': undefined,
       'quest-tasks': undefined,
       'wallet-bonus-info': undefined,
+      'loyalty-earn': undefined,
     },
     modalsUrl: [
       'sign-in',
