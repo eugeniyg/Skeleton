@@ -32,9 +32,9 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { openModal } = useModalStore();
+  const { openModal, openWalletModal } = useModalStore();
   const handleClick = (): void => {
-    if (isLoggedIn.value) openModal('wallet');
+    if (isLoggedIn.value) openWalletModal('deposit');
     else openModal('sign-up');
   };
 </script>
