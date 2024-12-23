@@ -68,7 +68,9 @@
   const { openModal, closeModal, openWalletModal } = useModalStore();
   const router = useRouter();
 
-  const gameImage = computed(() => getImageUrl(mobileGameModalInfo.value.images, 'vertical'));
+  const gameImage = computed(() =>
+    getImageUrl(mobileGameModalInfo.value?.customImages, mobileGameModalInfo.value?.images, 'vertical')
+  );
 
   const depositButtonLabel = getContent(props.currentLocaleData, props.defaultLocaleData, 'deposit');
   const playDemoButtonLabel = getContent(props.currentLocaleData, props.defaultLocaleData, 'demo');
