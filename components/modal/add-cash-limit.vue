@@ -37,10 +37,10 @@
         :key="currencyKey"
         :show-error="formState.showCurrenciesError"
         :items="currenciesOptions"
-        @select="selectCurrency"
-        @blur="blurCurrencySelect"
         :currentLocaleData="props.currentLocaleData"
         :defaultLocaleData="props.defaultLocaleData"
+        @select="selectCurrency"
+        @blur="blurCurrencySelect"
       />
 
       <form-input-number

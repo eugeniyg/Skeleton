@@ -81,9 +81,7 @@
             type="primary"
             @click="activateQuest"
           >
-            {{
-              getContent(questsHubContent?.currentLocaleData, questsHubContent?.defaultLocaleData, 'startQuestButton')
-            }}
+            {{ activateQuestButton }}
           </button-base>
         </div>
       </div>
@@ -136,6 +134,17 @@
     return contentMessage ? contentMessage.replace('{tasksLeft}', activeTasks.value.length) : '';
   });
 
+  const activateQuestButton = computed(() => {
+    const isQuestCompleted = tasksModalData.value?.tasks.every(task => task.isCompleted);
+    return isQuestCompleted
+      ? getContent(questsHubContent.value?.currentLocaleData, questsHubContent.value?.defaultLocaleData, 'claimReward')
+      : getContent(
+          questsHubContent.value?.currentLocaleData,
+          questsHubContent.value?.defaultLocaleData,
+          'startQuestButton'
+        );
+  });
+
   const inactiveState = computed(() => ![1, 2].includes(tasksModalData.value?.state || 0));
 
   const { showAlert } = useLayoutStore();
@@ -147,6 +156,7 @@
 
     try {
       const questData = await activatePlayerQuest(tasksModalData.value?.id as string);
+      useEvent('questActivated');
       await openTasksModal(questData, tasksModalImage.value);
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);

@@ -42,7 +42,7 @@
 
     <div v-if="[1, 2].includes(props.questInfo.state)" class="quest-card__actions">
       <button-base v-if="props.questInfo.state === 1" size="sm" type="primary" @click.stop="activateQuest">
-        {{ getContent(questsHubContent, defaultLocaleQuestsHubContent, 'startQuestButton') }}
+        {{ activateQuestButton }}
       </button-base>
 
       <button-base v-else size="sm" type="ghost" @click.stop="cancelQuest">
@@ -88,6 +88,13 @@
     );
   });
 
+  const activateQuestButton = computed(() => {
+    const isQuestCompleted = props.questInfo.tasks.every(task => task.isCompleted);
+    return isQuestCompleted
+      ? getContent(questsHubContent, defaultLocaleQuestsHubContent, 'claimReward')
+      : getContent(questsHubContent, defaultLocaleQuestsHubContent, 'startQuestButton');
+  });
+
   const { showAlert } = useLayoutStore();
   const activation = ref(false);
   const canceling = ref(false);
@@ -98,6 +105,7 @@
 
     try {
       await activatePlayerQuest(props.questInfo.id);
+      useEvent('questActivated');
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
       activation.value = false;
