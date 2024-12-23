@@ -232,8 +232,10 @@
       tournamentData.value.conditions?.gameCollectionsExcluded || false
     );
     await Promise.all([getTournamentGames(), getTournamentDefiniteData()]);
-    subscribeLeaderboardChannel();
-    subscribePlayerEntryChannel();
+    if (tournamentData.value?.state < 4) {
+      subscribeLeaderboardChannel();
+      subscribePlayerEntryChannel();
+    }
   };
 
   const componentMounted = ref(false);

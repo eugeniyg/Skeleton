@@ -71,7 +71,7 @@
 
 <script setup lang="ts">
   import type { ITournamentCommon } from '~/types';
-  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
+  import type { ITournament, ITournamentParticipant } from '@skeleton/core/types/tournamentsTypes';
 
   const props = defineProps<{
     currentLocaleCommonContent: Maybe<ITournamentCommon>;
@@ -87,17 +87,31 @@
   const { profile } = storeToRefs(profileStore);
   const currentPage = ref(1);
   const perPage = 14;
-  const totalPages = computed(() =>
-    props.tournamentDefiniteData.leaderboard
-      ? Math.ceil(props.tournamentDefiniteData.leaderboard.slice(3).length / 15)
-      : 0
-  );
-  const totalRows = computed(() => props.tournamentDefiniteData.leaderboard?.slice(3).length || 0);
+  const totalPages = computed(() => {
+    if (props.tournamentDefiniteData.state > 3 && props.tournamentDefiniteData.prizes) {
+      return Math.ceil(props.tournamentDefiniteData.prizes.slice(3).length / 15);
+    } else if (props.tournamentDefiniteData.leaderboard) {
+      return Math.ceil(props.tournamentDefiniteData.leaderboard.slice(3).length / 15);
+    } else return 0;
+  });
+  const totalRows = computed(() => {
+    if (props.tournamentDefiniteData.state > 3) return props.tournamentDefiniteData.prizes?.slice(3).length || 0;
+    return props.tournamentDefiniteData.leaderboard?.slice(3).length || 0;
+  });
 
   const currentList = computed(() => {
-    if (!props.tournamentDefiniteData.leaderboard?.length) return [];
     const firstListElement = 3 + (currentPage.value - 1) * perPage;
-    const pageList = props.tournamentDefiniteData.leaderboard.slice(firstListElement, firstListElement + perPage) || [];
+    let pageList: ITournamentParticipant[] = [];
+    if (props.tournamentDefiniteData.state > 3 && props.tournamentDefiniteData.prizes) {
+      pageList = props.tournamentDefiniteData.prizes.slice(firstListElement, firstListElement + perPage).map(prize => ({
+        playerId: prize.entry?.playerId as string,
+        nickname: prize.entry?.nickname || null,
+        points: prize.entry?.points as number,
+        place: prize.place as number,
+      }));
+    } else if (props.tournamentDefiniteData.state === 3 && props.tournamentDefiniteData.leaderboard) {
+      pageList = props.tournamentDefiniteData.leaderboard.slice(firstListElement, firstListElement + perPage);
+    }
 
     if (props.tournamentDefiniteData.playerEntry?.points) {
       if (props.tournamentDefiniteData.playerEntry?.place > pageList[pageList.length - 1].place) {
