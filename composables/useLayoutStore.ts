@@ -5,18 +5,12 @@ import type { IAlert } from '~/types';
 import type { IGame } from '@skeleton/core/types';
 
 interface IModals extends Record<string, any> {
-  walletBonusInfo: boolean;
   turnOverWager: boolean;
-  questsHub: boolean;
   loyaltyEarn: boolean;
   loyaltyLevel: boolean;
   providers: boolean;
   categories: boolean;
   packageBonus: boolean;
-}
-
-interface IModalsUrls extends Record<string, any> {
-  questsHub: string;
 }
 
 interface ILayoutStoreState extends Record<string, any> {
@@ -39,17 +33,12 @@ export const useLayoutStore = defineStore('layoutStore', {
     isDrawerCompact: false,
     showCookiePopup: false,
     modals: {
-      walletBonusInfo: false,
       turnOverWager: false,
-      questsHub: false,
       loyaltyEarn: false,
       loyaltyLevel: false,
       providers: false,
       categories: false,
       packageBonus: false,
-    },
-    modalsUrl: {
-      questsHub: 'quests-hub',
     },
     lastNotificationTime: 0,
     returnGame: undefined,
@@ -172,23 +161,12 @@ export const useLayoutStore = defineStore('layoutStore', {
 
     checkModals(): void {
       const route = useRoute();
-      const { isLoggedIn } = useProfileStore();
       const queryArr = Object.keys(route.query);
 
       queryArr.forEach(query => {
         const modalKey = Object.keys(this.modalsUrl).find(key => this.modalsUrl[key] === query);
         if (!modalKey) return;
-
-        const authModals = ['questsHub'];
-        if (authModals.includes(modalKey)) {
-          if (!isLoggedIn) {
-            this.closeModal(modalKey);
-          } else {
-            this.showModal(modalKey);
-          }
-        } else {
-          this.showModal(modalKey, route.query?.[query] as string);
-        }
+        this.showModal(modalKey, route.query?.[query] as string);
       });
     },
 

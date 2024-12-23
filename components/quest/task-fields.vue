@@ -1,7 +1,7 @@
 <template>
   <div class="quest-task-fields">
     <div class="quest-task-fields__title">
-      {{ getContent(popupsData, defaultLocalePopupsData, 'questTasks.fieldsLabel') }}
+      {{ getContent(questTasksContent, defaultLocaleQuestTasksContent, 'fieldsLabel') }}
     </div>
 
     <div class="quest-task-fields__items">
@@ -16,13 +16,18 @@
 </template>
 
 <script setup lang="ts">
+  import type { IQuestTasksModal } from '~/types';
+
   const props = defineProps<{
     items: string[];
   }>();
 
+  const questTasksContent: Maybe<IQuestTasksModal> = inject('questTasksContent');
+  const defaultLocaleQuestTasksContent: Maybe<IQuestTasksModal> = inject('defaultLocaleQuestTasksContent');
+
   const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData, fieldsSettings, defaultLocaleFieldsSettings } = storeToRefs(globalStore);
+  const { fieldsSettings, defaultLocaleFieldsSettings } = storeToRefs(globalStore);
 </script>
 
 <style src="~/assets/styles/components/quest/task-fields.scss" lang="scss" />
