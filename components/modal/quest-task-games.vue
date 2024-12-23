@@ -13,7 +13,7 @@
         <button-modal-close @close="emit('closeModal')" />
 
         <div class="title">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'questTasks.gamesLabel') }}
+          {{ getContent(questTasksContent?.currentLocaleData, questTasksContent?.defaultLocaleData, 'gamesLabel') }}
         </div>
       </div>
 
@@ -29,32 +29,35 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import type { IGame } from '@skeleton/core/types';
+  import type { IQuestTasksModal } from '~/types';
 
   const props = defineProps<{
     showModal: boolean;
     games: IGame[];
   }>();
 
+  const questTasksContentParams = {
+    contentKey: 'modal-quest-tasks',
+    contentRoute: ['modals', 'quest-tasks'],
+  };
+  const { getContentData: getQuestTasksContentData } = useContentLogic<IQuestTasksModal>(questTasksContentParams);
+  const { data: questTasksContent } = await useLazyAsyncData(getQuestTasksContentData);
+
   const emit = defineEmits(['closeModal']);
 
   const { getContent, localizePath } = useProjectMethods();
-  const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
-
   const router = useRouter();
-  const { closeModal } = useLayoutStore();
-  const { closeTasksModal } = useQuestsStore();
+  const { closeAllModals } = useModalStore();
   const closeGame = ref('');
   const goToGame = (game: IGame): void => {
     closeGame.value = game.identity;
     emit('closeModal');
   };
 
-  const closedHandler = (): void => {
+  const closedHandler = async (): Promise<void> => {
     if (closeGame.value) {
-      closeTasksModal();
-      closeModal('questsHub');
-      router.push(localizePath(`/games/${closeGame.value}?real=true`));
+      await closeAllModals();
+      await router.push(localizePath(`/games/${closeGame.value}?real=true`));
     }
   };
 </script>

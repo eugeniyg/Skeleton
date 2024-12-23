@@ -20,6 +20,18 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'mobile-game': Maybe<UseModalReturnType<any>>;
   'equivalent-currency': Maybe<UseModalReturnType<any>>;
   'wallet-region': Maybe<UseModalReturnType<any>>;
+  'deposit-redirect': Maybe<UseModalReturnType<any>>;
+  'quests-hub': Maybe<UseModalReturnType<any>>;
+  'quest-rewards': Maybe<UseModalReturnType<any>>;
+  'quest-tasks': Maybe<UseModalReturnType<any>>;
+  'wallet-bonus-info': Maybe<UseModalReturnType<any>>;
+  'loyalty-earn': Maybe<UseModalReturnType<any>>;
+  'loyalty-level': Maybe<UseModalReturnType<any>>;
+  'turn-over-wager': Maybe<UseModalReturnType<any>>;
+  'add-cash-limit': Maybe<UseModalReturnType<any>>;
+  'edit-cash-limit': Maybe<UseModalReturnType<any>>;
+  'game-limit-reached': Maybe<UseModalReturnType<any>>;
+  'self-exclusion-limit': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -31,6 +43,12 @@ interface IModalStoreState {
   sameComponent: Record<string, string>;
   walletModalType: WalletModalTypes;
   walletOpening: boolean;
+}
+
+interface IOpenModalParams {
+  prohibitQueryChange?: boolean;
+  modalQueryValue?: string;
+  props?: Record<string, any>;
 }
 
 export const useModalStore = defineStore('modalStore', {
@@ -50,6 +68,18 @@ export const useModalStore = defineStore('modalStore', {
       'mobile-game': undefined,
       'equivalent-currency': undefined,
       'wallet-region': undefined,
+      'deposit-redirect': undefined,
+      'quests-hub': undefined,
+      'quest-rewards': undefined,
+      'quest-tasks': undefined,
+      'wallet-bonus-info': undefined,
+      'loyalty-earn': undefined,
+      'loyalty-level': undefined,
+      'turn-over-wager': undefined,
+      'add-cash-limit': undefined,
+      'edit-cash-limit': undefined,
+      'game-limit-reached': undefined,
+      'self-exclusion-limit': undefined,
     },
     modalsUrl: [
       'sign-in',
@@ -61,6 +91,8 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-pending',
       'wallet',
       'profile-confirmed',
+      'deposit-redirect',
+      'quests-hub',
     ],
     onlyGuestModals: ['sign-in', 'sign-up', 'forgot-pass', 'reset-pass'],
     onlyLoggedModals: [
@@ -70,11 +102,23 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-pending',
       'equivalent-currency',
       'wallet-region',
+      'deposit-redirect',
+      'quests-hub',
+      'quest-rewards',
+      'quest-tasks',
+      'wallet-bonus-info',
+      'loyalty-level',
+      'turn-over-wager',
+      'add-cash-limit',
+      'edit-cash-limit',
+      'game-limit-reached',
+      'self-exclusion-limit',
     ],
     openingModals: [],
     sameComponent: {
       'deposit-pending': 'success',
       'deposit-success': 'success',
+      'deposit-redirect': 'success',
     },
     walletModalType: undefined,
     walletOpening: false,
@@ -109,7 +153,7 @@ export const useModalStore = defineStore('modalStore', {
       await router.replace({ query: newQuery });
     },
 
-    async openModal(modalName: string, modalQueryParam?: string, prohibitQueryChange = true): Promise<void> {
+    async openModal(modalName: string, params?: IOpenModalParams): Promise<void> {
       if (!this.accessToOpen(modalName) || this.openingModals.includes(modalName)) return;
       this.openingModals.push(modalName);
 
@@ -134,12 +178,20 @@ export const useModalStore = defineStore('modalStore', {
           attrs: {
             currentLocaleData,
             defaultLocaleData,
+            ...params?.props,
           },
         });
+      } else if (params?.props) {
+        const currentModalOptions = this.modals[modalName].options;
+        const newOptions = {
+          ...currentModalOptions,
+          attrs: { ...(currentModalOptions.attrs as object), ...params.props },
+        };
+        this.modals[modalName].patchOptions(newOptions);
       }
 
-      if (prohibitQueryChange && this.modalsUrl.includes(modalName))
-        await this.addModalQuery(modalName, modalQueryParam);
+      if ((params?.prohibitQueryChange ?? true) && this.modalsUrl.includes(modalName))
+        await this.addModalQuery(modalName, params?.modalQueryValue);
       this.modals[modalName].open();
       this.openingModals = this.openingModals.filter(item => item !== modalName);
     },
@@ -177,7 +229,7 @@ export const useModalStore = defineStore('modalStore', {
           await this.openWalletModal(modalType);
           break;
         } else {
-          await this.openModal(queryName, route.query[queryName] as string);
+          await this.openModal(queryName, { modalQueryValue: route.query[queryName] as string });
           break;
         }
       }
@@ -217,13 +269,12 @@ export const useModalStore = defineStore('modalStore', {
         riskStore.turnOverWagerData?.turnOverWagerAmount > 0;
 
       if (showTurnOverWagerModal) {
-        const { showModal } = useLayoutStore();
-        showModal('turnOverWager');
+        await this.openModal('turn-over-wager');
         this.walletOpening = false;
         return;
       }
 
-      await this.openModal('wallet', modalType);
+      await this.openModal('wallet', { modalQueryValue: modalType });
       useEvent('analyticsEvent', {
         event: 'walletOpen',
         loadTime: dayjs().diff(startModalLoad),

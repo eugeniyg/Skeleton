@@ -58,7 +58,7 @@
 
 %scrollbar-hide {
   @supports (scrollbar-width: auto) {
-    scrollbar-width: unset;
+    scrollbar-width: none;
   }
 
   @supports selector(::-webkit-scrollbar) {

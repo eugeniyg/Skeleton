@@ -5,7 +5,7 @@
     <div class="quest-games-info__items">
       <div class="quest-games-info__item">
         <span class="quest-games-info__label">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'questTasks.minLabel') }}:
+          {{ getContent(questTasksContent, defaultLocaleQuestTasksContent, 'minLabel') }}:
         </span>
 
         <span class="quest-games-info__value">{{ props.min }}</span>
@@ -13,7 +13,7 @@
 
       <div class="quest-games-info__item">
         <span class="quest-games-info__label">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'questTasks.maxLabel') }}:
+          {{ getContent(questTasksContent, defaultLocaleQuestTasksContent, 'maxLabel') }}:
         </span>
 
         <span class="quest-games-info__value">{{ props.max }}</span>
@@ -23,15 +23,18 @@
 </template>
 
 <script setup lang="ts">
+  import type { IQuestTasksModal } from '~/types';
+
   const props = defineProps<{
     title: string;
     min: string | number;
     max: string | number;
   }>();
 
+  const questTasksContent: Maybe<IQuestTasksModal> = inject('questTasksContent');
+  const defaultLocaleQuestTasksContent: Maybe<IQuestTasksModal> = inject('defaultLocaleQuestTasksContent');
+
   const { getContent } = useProjectMethods();
-  const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 </script>
 
 <style src="~/assets/styles/components/quest/games-info.scss" lang="scss" />

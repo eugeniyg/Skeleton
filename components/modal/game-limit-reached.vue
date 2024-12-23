@@ -1,6 +1,5 @@
 <template>
   <vue-final-modal
-    v-model="modals.gameLimitReached"
     class="game-limit-reached"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
@@ -8,12 +7,12 @@
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('gameLimitReached')" />
-        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'gameLimitReached.label') }}</div>
+        <button-modal-close @close="closeModal('game-limit-reached')" />
+        <div class="title">{{ getContent(props.currentLocaleData, props.defaultLocaleData, 'label') }}</div>
       </div>
 
       <div class="game-limit-reached__text">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'gameLimitReached.description') }}
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'description') }}
       </div>
     </div>
   </vue-final-modal>
@@ -21,13 +20,14 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import { storeToRefs } from 'pinia';
+  import type { IModalsContent } from '~/types';
 
-  const limitsStore = useLimitsStore();
-  const { closeModal } = limitsStore;
-  const { modals } = storeToRefs(limitsStore);
-  const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['gameLimitReached']>;
+    defaultLocaleData: Maybe<IModalsContent['gameLimitReached']>;
+  }>();
+
+  const { closeModal } = useModalStore();
   const { getContent } = useProjectMethods();
 </script>
 

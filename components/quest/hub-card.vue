@@ -23,7 +23,8 @@
         </span>
 
         <span v-if="rewardsValue.length > 1" class="quest-hub-card__amount-more" @click.stop="openModal">
-          +{{ rewardsValue.length - 1 }} {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.moreLabel') }}
+          +{{ rewardsValue.length - 1 }}
+          {{ getContent(questsHubContent?.currentLocaleData, questsHubContent?.defaultLocaleData, 'moreLabel') }}
         </span>
       </div>
 
@@ -38,19 +39,24 @@
 
 <script setup lang="ts">
   import type { IPlayerQuest } from '@skeleton/core/types';
-  import type { IProfileInfo } from '~/types';
+  import type { IProfileInfo, IQuestsHubModal } from '~/types';
 
   const props = defineProps<{
     questInfo: IPlayerQuest;
     cardIndex: number;
   }>();
 
+  const questsHubContentParams = {
+    contentKey: 'modal-quests-hub',
+    contentRoute: ['modals', 'quests-hub'],
+  };
+  const { getContentData: getQuestsHubContentData } = useContentLogic<IQuestsHubModal>(questsHubContentParams);
+  const { data: questsHubContent } = await useLazyAsyncData(getQuestsHubContentData);
+
   const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
   const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
 
   const { getContent, formatBalance } = useProjectMethods();
-  const globalData = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalData);
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const rewardsValue = computed(() => {
@@ -65,7 +71,11 @@
 
   const questImages = computed(() => {
     const imgObjArr: { src: string }[] =
-      getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.questsImages') || [];
+      getContent(
+        questsHubContent.value?.currentLocaleData,
+        questsHubContent.value?.defaultLocaleData,
+        'questsImages'
+      ) || [];
     return imgObjArr.map(imgObj => imgObj.src);
   });
 
@@ -80,8 +90,8 @@
   const rewardsModalTitle = computed(() => {
     return getContent(infoContent.value, defaultLocaleInfoContent.value, 'questsHub.rewardsTitle') || '';
   });
-  const openModal = (): void => {
-    openRewardsModal(rewardsValue.value, rewardsModalTitle.value);
+  const openModal = async (): Promise<void> => {
+    await openRewardsModal(rewardsValue.value, rewardsModalTitle.value);
   };
 </script>
 
