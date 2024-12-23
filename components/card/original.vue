@@ -50,6 +50,7 @@
 
   const props = defineProps<{
     images?: IGameImages;
+    customImages?: IGameImages;
     name?: string;
     id: string;
     identity: string;
@@ -86,13 +87,7 @@
     }
   };
 
-  const src = computed(() => {
-    if (props.images?.hasOwnProperty('200x300')) {
-      return getImageUrl(props.images, 'vertical');
-    }
-    return '';
-  });
-
+  const src = computed(() => getImageUrl(props.customImages, props.images, 'vertical'));
   const gameHovered = ref<boolean>(false);
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);

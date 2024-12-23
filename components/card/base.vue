@@ -70,13 +70,7 @@
     }
   };
 
-  const src = computed(() => {
-    if (props.gameInfo?.images?.hasOwnProperty('200x300')) {
-      return getImageUrl(props.gameInfo.images, 'vertical');
-    }
-    return '';
-  });
-
+  const src = computed(() => getImageUrl(props.gameInfo?.customImages, props.gameInfo?.images, 'vertical'));
   const gameHovered = ref<boolean>(false);
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
