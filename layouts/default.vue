@@ -1,9 +1,7 @@
 <template>
   <div :class="layoutClasses">
     <atomic-preloader />
-
     <layout-header @logout="logout" />
-
     <layout-drawer @toggle-open="toggleOpen" />
 
     <main class="app-main" :class="mainClasses" :data-route="route.name">
@@ -11,7 +9,6 @@
     </main>
 
     <layout-footer />
-
     <atomic-opacity-layer />
 
     <client-only>
@@ -29,7 +26,6 @@
     </transition>
 
     <ModalsContainer />
-
     <atomic-alert />
   </div>
 </template>
@@ -96,11 +92,9 @@
     if (storageReturnGame) returnGame.value = JSON.parse(storageReturnGame);
   });
 
-  const { checkModals } = useLayoutStore();
   const { checkOpenedModals } = useModalStore();
   const mainClasses = ref();
   onMounted(async () => {
-    checkModals();
     checkOpenedModals();
     checkDrawer();
     disabledTransition.value = false;
