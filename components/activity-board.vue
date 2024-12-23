@@ -48,7 +48,7 @@
             >
               <template v-if="id === 'game'">
                 <atomic-image
-                  :src="getImageUrl(row.customImages, row.gameImages, 'square') || '/img/default-game-tumb.png'"
+                  :src="getImageUrl(row.customImages, row.gameImages, 'square')"
                   class="activity-board__tb-td-img"
                 />
                 <span>{{ row.gameName }}</span>

@@ -18,7 +18,7 @@
 
   const { getImageUrl, localizePath } = useProjectMethods();
   const backgroundImage = computed(() => {
-    return `background-image: url(${getImageUrl(props.customImages, props.images, 'square') || '/img/default-game-tumb.png'})`;
+    return `background-image: url(${getImageUrl(props.customImages, props.images, 'square')})`;
   });
 
   const router = useRouter();

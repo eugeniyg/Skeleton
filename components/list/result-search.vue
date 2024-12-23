@@ -12,7 +12,7 @@
         </div>
 
         <div v-for="game in activeItems" :key="game.id" class="item" @click="clickGame(game)">
-          <atomic-image :src="getImageUrl(game.customImages, game.images, 'square') || '/img/default-game-tumb.png'" />
+          <atomic-image :src="getImageUrl(game.customImages, game.images, 'square')" />
           <span>{{ game.name }}</span>
         </div>
 

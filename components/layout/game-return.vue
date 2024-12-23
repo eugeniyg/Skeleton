@@ -36,9 +36,7 @@
   const { getImageUrl, getContent, localizePath } = useProjectMethods();
   const { layoutData, defaultLocaleLayoutData } = storeToRefs(globalStore);
 
-  const gameImage = computed(
-    () => getImageUrl(props.game.customImages, props.game.images, 'square') || '/img/default-game-tumb.png'
-  );
+  const gameImage = computed(() => getImageUrl(props.game.customImages, props.game.images, 'square'));
 </script>
 
 <style src="~/assets/styles/components/layout/game-return.scss" lang="scss" />
