@@ -1,6 +1,5 @@
 <template>
   <vue-final-modal
-    v-model="modals.turnOverWager"
     class="modal-turn-over-wager"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
@@ -8,13 +7,13 @@
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('turnOverWager')" />
+        <button-modal-close @close="closeModal('turn-over-wager')" />
       </div>
 
       <wallet-turn-over-wager />
 
-      <button-base type="primary" size="md" @click="closeModal('turnOverWager')">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.buttonLabel') }}
+      <button-base type="primary" size="md" @click="closeModal('turn-over-wager')">
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'buttonLabel') }}
       </button-base>
     </div>
   </vue-final-modal>
@@ -22,13 +21,15 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import { storeToRefs } from 'pinia';
+  import type { IModalsContent } from '~/types';
 
-  const layoutStore = useLayoutStore();
-  const { closeModal } = layoutStore;
-  const { modals } = storeToRefs(layoutStore);
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['turnOverWager']>;
+    defaultLocaleData: Maybe<IModalsContent['turnOverWager']>;
+  }>();
+
+  const { closeModal } = useModalStore();
   const { getContent } = useProjectMethods();
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
 </script>
 
 <style src="~/assets/styles/components/modal/turn-over-wager.scss" lang="scss" />

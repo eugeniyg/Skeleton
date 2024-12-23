@@ -27,6 +27,7 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'wallet-bonus-info': Maybe<UseModalReturnType<any>>;
   'loyalty-earn': Maybe<UseModalReturnType<any>>;
   'loyalty-level': Maybe<UseModalReturnType<any>>;
+  'turn-over-wager': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -70,6 +71,7 @@ export const useModalStore = defineStore('modalStore', {
       'wallet-bonus-info': undefined,
       'loyalty-earn': undefined,
       'loyalty-level': undefined,
+      'turn-over-wager': undefined,
     },
     modalsUrl: [
       'sign-in',
@@ -98,6 +100,7 @@ export const useModalStore = defineStore('modalStore', {
       'quest-tasks',
       'wallet-bonus-info',
       'loyalty-level',
+      'turn-over-wager',
     ],
     openingModals: [],
     sameComponent: {
@@ -253,8 +256,7 @@ export const useModalStore = defineStore('modalStore', {
         riskStore.turnOverWagerData?.turnOverWagerAmount > 0;
 
       if (showTurnOverWagerModal) {
-        const { showModal } = useLayoutStore();
-        showModal('turnOverWager');
+        await this.openModal('turn-over-wager');
         this.walletOpening = false;
         return;
       }

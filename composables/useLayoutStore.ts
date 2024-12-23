@@ -5,7 +5,6 @@ import type { IAlert } from '~/types';
 import type { IGame } from '@skeleton/core/types';
 
 interface IModals extends Record<string, any> {
-  turnOverWager: boolean;
   providers: boolean;
   categories: boolean;
   packageBonus: boolean;
@@ -31,7 +30,6 @@ export const useLayoutStore = defineStore('layoutStore', {
     isDrawerCompact: false,
     showCookiePopup: false,
     modals: {
-      turnOverWager: false,
       providers: false,
       categories: false,
       packageBonus: false,

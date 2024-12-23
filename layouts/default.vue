@@ -30,7 +30,6 @@
 
     <ModalsContainer />
 
-    <modal-turn-over-wager v-if="turnOverWagerModal" />
     <atomic-alert />
   </div>
 </template>
@@ -91,9 +90,6 @@
       !isSportsbookPage.value
     );
   });
-
-  const runtimeConfig = useRuntimeConfig();
-  const turnOverWagerModal = runtimeConfig.public?.enableTurnOverWager;
 
   onBeforeMount(() => {
     const storageReturnGame = sessionStorage.getItem('returnGame');
