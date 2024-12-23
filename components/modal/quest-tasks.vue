@@ -138,7 +138,11 @@
     const isQuestCompleted = tasksModalData.value?.tasks.every(task => task.isCompleted);
     return isQuestCompleted
       ? getContent(questsHubContent.value?.currentLocaleData, questsHubContent.value?.defaultLocaleData, 'claimReward')
-      : getContent(questsHubContent.value?.currentLocaleData, questsHubContent.value?.defaultLocaleData, 'startQuestButton');
+      : getContent(
+          questsHubContent.value?.currentLocaleData,
+          questsHubContent.value?.defaultLocaleData,
+          'startQuestButton'
+        );
   });
 
   const inactiveState = computed(() => ![1, 2].includes(tasksModalData.value?.state || 0));
