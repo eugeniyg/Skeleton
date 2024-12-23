@@ -30,19 +30,9 @@
 
     <ModalsContainer />
 
-    <modal-confirm />
-    <modal-fiat />
-    <modal-mobile-game />
-    <modal-wallet-choose-region />
     <modal-deposit-redirect />
     <modal-turn-over-wager v-if="turnOverWagerModal" />
     <atomic-alert />
-
-    <template v-if="questsEnabled">
-      <modal-quests-hub />
-      <modal-quest-rewards />
-      <modal-quest-tasks />
-    </template>
 
     <template v-if="loyaltyEnabled">
       <modal-loyalty-level />
@@ -110,7 +100,6 @@
 
   const runtimeConfig = useRuntimeConfig();
   const turnOverWagerModal = runtimeConfig.public?.enableTurnOverWager;
-  const questsEnabled = runtimeConfig.public?.questsEnabled;
   const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;
 
   onBeforeMount(() => {

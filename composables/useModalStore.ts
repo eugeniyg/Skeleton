@@ -16,6 +16,13 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'deposit-pending': Maybe<UseModalReturnType<any>>;
   wallet: Maybe<UseModalReturnType<any>>;
   'cancel-deposit': Maybe<UseModalReturnType<any>>;
+  'profile-confirmed': Maybe<UseModalReturnType<any>>;
+  'mobile-game': Maybe<UseModalReturnType<any>>;
+  'equivalent-currency': Maybe<UseModalReturnType<any>>;
+  'wallet-region': Maybe<UseModalReturnType<any>>;
+  'quests-hub': Maybe<UseModalReturnType<any>>;
+  'quest-rewards': Maybe<UseModalReturnType<any>>;
+  'quest-tasks': Maybe<UseModalReturnType<any>>;
   'wallet-bonus-info': Maybe<UseModalReturnType<any>>;
 }
 
@@ -28,6 +35,12 @@ interface IModalStoreState {
   sameComponent: Record<string, string>;
   walletModalType: WalletModalTypes;
   walletOpening: boolean;
+}
+
+interface IOpenModalParams {
+  prohibitQueryChange?: boolean;
+  modalQueryValue?: string;
+  props?: Record<string, any>;
 }
 
 export const useModalStore = defineStore('modalStore', {
@@ -43,6 +56,13 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-pending': undefined,
       wallet: undefined,
       'cancel-deposit': undefined,
+      'profile-confirmed': undefined,
+      'mobile-game': undefined,
+      'equivalent-currency': undefined,
+      'wallet-region': undefined,
+      'quests-hub': undefined,
+      'quest-rewards': undefined,
+      'quest-tasks': undefined,
       'wallet-bonus-info': undefined,
     },
     modalsUrl: [
@@ -54,9 +74,22 @@ export const useModalStore = defineStore('modalStore', {
       'deposit-success',
       'deposit-pending',
       'wallet',
+      'profile-confirmed',
+      'quests-hub',
     ],
     onlyGuestModals: ['sign-in', 'sign-up', 'forgot-pass', 'reset-pass'],
-    onlyLoggedModals: ['wallet', 'deposit-success', 'deposit-error', 'deposit-pending', 'wallet-bonus-info'],
+    onlyLoggedModals: [
+      'wallet',
+      'deposit-success',
+      'deposit-error',
+      'deposit-pending',
+      'equivalent-currency',
+      'wallet-region',
+      'quests-hub',
+      'quest-rewards',
+      'quest-tasks',
+      'wallet-bonus-info',
+    ],
     openingModals: [],
     sameComponent: {
       'deposit-pending': 'success',
@@ -95,7 +128,7 @@ export const useModalStore = defineStore('modalStore', {
       await router.replace({ query: newQuery });
     },
 
-    async openModal(modalName: string, modalQueryParam?: string, prohibitQueryChange = true): Promise<void> {
+    async openModal(modalName: string, params?: IOpenModalParams): Promise<void> {
       if (!this.accessToOpen(modalName) || this.openingModals.includes(modalName)) return;
       this.openingModals.push(modalName);
 
@@ -122,10 +155,17 @@ export const useModalStore = defineStore('modalStore', {
             defaultLocaleData,
           },
         });
+      } else if (params?.props) {
+        const currentModalOptions = this.modals[modalName].options;
+        const newOptions = {
+          ...currentModalOptions,
+          attrs: { ...(currentModalOptions.attrs as object), ...params.props },
+        };
+        this.modals[modalName].patchOptions(newOptions);
       }
 
-      if (prohibitQueryChange && this.modalsUrl.includes(modalName))
-        await this.addModalQuery(modalName, modalQueryParam);
+      if ((params?.prohibitQueryChange ?? true) && this.modalsUrl.includes(modalName))
+        await this.addModalQuery(modalName, params?.modalQueryValue);
       this.modals[modalName].open();
       this.openingModals = this.openingModals.filter(item => item !== modalName);
     },
@@ -163,7 +203,7 @@ export const useModalStore = defineStore('modalStore', {
           await this.openWalletModal(modalType);
           break;
         } else {
-          await this.openModal(queryName, route.query[queryName] as string);
+          await this.openModal(queryName, { modalQueryValue: route.query[queryName] as string });
           break;
         }
       }
@@ -209,7 +249,7 @@ export const useModalStore = defineStore('modalStore', {
         return;
       }
 
-      await this.openModal('wallet', modalType);
+      await this.openModal('wallet', { modalQueryValue: modalType });
       useEvent('analyticsEvent', {
         event: 'walletOpen',
         loadTime: dayjs().diff(startModalLoad),

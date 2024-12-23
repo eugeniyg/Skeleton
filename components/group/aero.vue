@@ -205,7 +205,7 @@
 
   const openGames = (): void => {
     const router = useRouter();
-    router.push(localizePath(`/games?category=${props.category.identity}`));
+    router.push(localizePath(`/categories/${props.category.identity}`));
   };
 
   onBeforeUnmount(() => {
