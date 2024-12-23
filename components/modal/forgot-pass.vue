@@ -134,18 +134,24 @@
     } else openModal('sign-in');
   };
 
-  const hasPhoneRegistration = settingsConstants?.player?.registration?.phone;
-  const forgotType = getContent(props.currentLocaleData, props.defaultLocaleData, 'tabsDisplay') || 'both';
+  const forgotType = computed(() => {
+    const otpEnabled = settingsConstants?.player.otp.enabled;
+    const forgotTypeContent = getContent(props.currentLocaleData, props.defaultLocaleData, 'tabsDisplay') || 'both';
+
+    if (otpEnabled) return forgotTypeContent;
+    return 'email';
+  });
+
   const tabsList = computed(() => {
     const tabsObj = getContent(signInContent.value?.currentLocaleData, signInContent.value?.defaultLocaleData, 'tabs');
-    if (!tabsObj || !hasPhoneRegistration) return [];
+    if (!tabsObj) return [];
 
     return Object.keys(tabsObj).map(key => {
       if (key === 'email') return { id: 'email', icon: 'mail', label: tabsObj[key] };
       return { id: 'phone', icon: 'mobile', label: tabsObj[key] };
     });
   });
-  const selectedTab = ref<'email' | 'phone'>(forgotType === 'both' ? 'email' : forgotType);
+  const selectedTab = ref<'email' | 'phone'>(forgotType.value === 'both' ? 'email' : forgotType.value);
 
   const changeTab = (newTabId: 'email' | 'phone'): void => {
     if (selectedTab.value === newTabId) return;
@@ -166,7 +172,7 @@
   const showResetModal = async (code: string): Promise<void> => {
     const router = useRouter();
     const route = useRoute();
-    await openModal('reset-pass', undefined, false);
+    await openModal('reset-pass', { prohibitQueryChange: false });
     router.push({ query: { ...route.query, 'forgot-pass': undefined, 'reset-pass': 'true', resetCode: code } });
     modalStore.modals['forgot-pass']?.close();
   };

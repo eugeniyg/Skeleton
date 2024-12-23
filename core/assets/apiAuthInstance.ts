@@ -27,7 +27,7 @@ export const useApiAuthInstance = async (url: string, options?: any): Promise<an
           await router.push(localizePath('/?sign-in=true'));
         } else {
           const { openModal } = useModalStore();
-          await openModal('sign-in', undefined, false);
+          await openModal('sign-in', { prohibitQueryChange: false });
           await router.push(localizePath('/?sign-in=true'));
         }
       }

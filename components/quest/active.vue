@@ -14,20 +14,18 @@
 </template>
 
 <script setup lang="ts">
+  import type { IQuestsHubModal } from '~/types';
+
+  const questsHubContent: Maybe<IQuestsHubModal> = inject('questsHubContent');
+  const defaultLocaleQuestsHubContent: Maybe<IQuestsHubModal> = inject('defaultLocaleQuestsHubContent');
   const questsStore = useQuestsStore();
   const { activeQuests } = storeToRefs(questsStore);
-  const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   const emptyContentData = computed(() => {
-    const image = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.image');
-    const title = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.activeTitle');
-    const description = getContent(
-      popupsData.value,
-      defaultLocalePopupsData.value,
-      'questsHub.empty.activeDescription'
-    );
+    const image = getContent(questsHubContent, defaultLocaleQuestsHubContent, 'empty.image');
+    const title = getContent(questsHubContent, defaultLocaleQuestsHubContent, 'empty.activeTitle');
+    const description = getContent(questsHubContent, defaultLocaleQuestsHubContent, 'empty.activeDescription');
     return { image, title, description };
   });
 </script>

@@ -23,7 +23,7 @@
 
       <div v-else class="wallet-bonus__more" @click.stop="openBonusInfoModal">
         <div class="wallet-bonus__more-title">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.bonuses.moreInfo') }}
+          {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.bonuses.moreInfo') }}
         </div>
 
         <atomic-icon id="info" />
@@ -37,6 +37,7 @@
 <script setup lang="ts">
   import type { IBonus } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
+  import type { IWalletModal } from '~/types';
 
   const props = defineProps<{
     bonusInfo: IBonus;
@@ -46,10 +47,10 @@
 
   const emit = defineEmits(['bonusChange']);
 
-  const { showModal } = useLayoutStore();
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
+  const { openModal } = useModalStore();
   const { getContent } = useProjectMethods();
-  const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
   const bonusStore = useBonusStore();
   const { depositMoreInfoBonus } = storeToRefs(bonusStore);
 
@@ -65,13 +66,13 @@
     let value;
 
     if (minDepositData && maxDepositData) {
-      label = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.bonuses.deposit');
+      label = getContent(walletContent, defaultLocaleWalletContent, 'deposit.bonuses.deposit');
       value = `${minDepositData.amount} ${minDepositData.currency} - ${maxDepositData.amount} ${maxDepositData.currency}`;
     } else if (minDepositData) {
-      label = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.bonuses.minDeposit');
+      label = getContent(walletContent, defaultLocaleWalletContent, 'deposit.bonuses.minDeposit');
       value = `${minDepositData.amount} ${minDepositData.currency}`;
     } else if (maxDepositData) {
-      label = getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.bonuses.maxDeposit');
+      label = getContent(walletContent, defaultLocaleWalletContent, 'deposit.bonuses.maxDeposit');
       value = `${maxDepositData.amount} ${maxDepositData.currency}`;
     }
 
@@ -80,7 +81,7 @@
 
   const openBonusInfoModal = (): void => {
     depositMoreInfoBonus.value = props.bonusInfo;
-    showModal('walletBonusInfo');
+    openModal('wallet-bonus-info');
   };
 
   const handleBonusClick = (): void => {

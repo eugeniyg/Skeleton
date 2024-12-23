@@ -20,7 +20,7 @@
           class="modal-categories__item"
           :data-index="index"
           :class="{
-            'is-active': route.query.category === identity,
+            'is-active': route.params.categoryIdentity === identity,
             'is-no-icon': !gameCategoriesObj[identity]?.icon,
           }"
           @click="emit('clickCategory', identity)"

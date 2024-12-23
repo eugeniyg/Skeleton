@@ -5,7 +5,7 @@
         {{ getContent(infoContent, defaultLocaleInfoContent, 'questsHub.title') }}
       </h2>
 
-      <button-base class="quest-hub__desktop-history-btn" type="ghost" size="xs" @click="showModal('questsHub')">
+      <button-base class="quest-hub__desktop-history-btn" type="ghost" size="xs" @click="openModal('quests-hub')">
         {{ getContent(infoContent, defaultLocaleInfoContent, 'questsHub.historyLabel') }}
       </button-base>
     </div>
@@ -16,7 +16,7 @@
 
     <quest-empty v-else v-bind="infoContent?.questsHub?.empty || defaultLocaleInfoContent?.questsHub?.empty" />
 
-    <button-base class="quest-hub__mobile-history-btn" type="ghost" size="xs" @click="showModal('questsHub')">
+    <button-base class="quest-hub__mobile-history-btn" type="ghost" size="xs" @click="openModal('quests-hub')">
       {{ getContent(infoContent, defaultLocaleInfoContent, 'questsHub.historyLabel') }}
     </button-base>
   </div>
@@ -30,7 +30,7 @@
   const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
   const questsStore = useQuestsStore();
   const { activeQuests } = storeToRefs(questsStore);
-  const { showModal } = useLayoutStore();
+  const { openModal } = useModalStore();
 </script>
 
 <style src="~/assets/styles/components/quest/hub.scss" lang="scss" />

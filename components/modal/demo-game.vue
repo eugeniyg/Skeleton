@@ -51,13 +51,12 @@
     return 'deposit';
   });
 
-  const { openWalletModal } = useLayoutStore();
-  const { openModal } = useModalStore();
+  const { openModal, openWalletModal } = useModalStore();
   let timer: any;
   const confirm = async (): Promise<void> => {
     if (modalType.value === 'real') emit('playReal');
     else if (modalType.value === 'deposit') await openWalletModal('deposit');
-    else if (modalType.value === 'registration') openModal('sign-up');
+    else if (modalType.value === 'registration') await openModal('sign-up');
 
     modalVisible.value = false;
     clearTimeout(timer);

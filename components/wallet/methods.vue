@@ -31,7 +31,7 @@
         <atomic-icon id="info" />
 
         <span>
-          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+          {{ getContent(walletContent, defaultLocaleWalletContent, 'notAvailableText') }}
         </span>
       </div>
     </balance>
@@ -43,6 +43,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { IPaymentMethod } from '@skeleton/core/types';
+  import type { IWalletModal } from '~/types';
 
   const props = defineProps<{
     showTabs: boolean;
@@ -52,14 +53,13 @@
 
   const currentDepositMethod = defineModel<IPaymentMethod>('currentDepositMethod');
   const currentWithdrawMethod = defineModel<IPaymentMethod>('currentWithdrawMethod');
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
 
   const emit = defineEmits(['changeTab', 'methodClick']);
   const { getContent } = useProjectMethods();
   const walletStore = useWalletStore();
   const { depositMethods, withdrawMethods } = storeToRefs(walletStore);
-
-  const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 
   const showNotAvailableText = computed(() => {
     return (

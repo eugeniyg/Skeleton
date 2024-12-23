@@ -1,6 +1,5 @@
 <template>
   <vue-final-modal
-    v-model="modals.cancelDeposit"
     class="modal-cancel-deposit"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
@@ -8,10 +7,10 @@
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('cancelDeposit')" />
+        <button-modal-close @close="closeModal('cancel-deposit')" />
 
         <div class="title">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'cancelDeposit.title') }}
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}
         </div>
       </div>
 
@@ -22,16 +21,16 @@
       />
 
       <div class="modal-cancel-deposit__actions">
-        <button-base type="primary" size="md" @click="closeModal('cancelDeposit')">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'cancelDeposit.primaryButton') }}
+        <button-base type="primary" size="md" @click="closeModal('cancel-deposit')">
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'primaryButton') }}
         </button-base>
 
-        <button-base type="secondary" size="md" @click="closeModal('cancelDeposit')">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'cancelDeposit.secondaryButton') }}
+        <button-base type="secondary" size="md" @click="closeModal('cancel-deposit')">
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'secondaryButton') }}
         </button-base>
 
-        <button-base size="xs" type="ghost" @click="closeDeposit">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'cancelDeposit.confirm') }}
+        <button-base size="xs" type="ghost" @click="closeAllModals">
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'confirm') }}
         </button-base>
       </div>
     </div>
@@ -39,23 +38,19 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
   import { VueFinalModal } from 'vue-final-modal';
   import DOMPurify from 'isomorphic-dompurify';
+  import type { IModalsContent } from '~/types';
 
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['cancelDeposit']>;
+    defaultLocaleData: Maybe<IModalsContent['cancelDeposit']>;
+  }>();
+
+  const { closeModal, closeAllModals } = useModalStore();
   const { getContent } = useProjectMethods();
-
-  const closeDeposit = (): void => {
-    closeModal('wallet');
-    closeModal('cancelDeposit');
-  };
-
-  const modalContent = getContent(popupsData, defaultLocalePopupsData, 'cancelDeposit.content');
+  const modalContent = getContent(props.currentLocaleData, props.defaultLocaleData, 'content');
 </script>
 
 <style src="~/assets/styles/components/modal/cancel-deposit.scss" lang="scss" />

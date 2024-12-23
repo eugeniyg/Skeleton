@@ -139,3 +139,31 @@ export interface ISocketInvoice extends Record<string, any> {
     url: string;
   } | null;
 }
+
+export interface IInvoiceStatistics extends Record<string, any> {
+  depositsCount: number;
+  withdrawalsCount: string;
+  purchasesCount: number;
+  virtualPayoutsCount: number;
+  withdrawalsSum: number | null;
+  depositsSum: number | null;
+  purchasesSum: number | null;
+  virtualPayoutsSum: number | null;
+  lastDepositAmount: number | null;
+  lastWithdrawalAmount: number | null;
+  lastPurchaseAmount: number | null;
+  lastVirtualPayoutAmount: number | null;
+  lastDepositProcessedAt: string | null;
+  lastWithdrawalProcessedAt: string | null;
+  lastPurchaseProcessedAt: string | null;
+  lastVirtualPayoutProcessedAt: string | null;
+  depositsSumBaseCurrency: number | null;
+  withdrawalsSumBaseCurrency: number | null;
+  purchasesSumBaseCurrency: number | null;
+  virtualPayoutsSumBaseCurrency: number | null;
+  lastDepositAmountBaseCurrency: number | null;
+  lastWithdrawalAmountBaseCurrency: number | null;
+  lastPurchaseAmountBaseCurrency: number | null;
+  lastVirtualPayoutAmountBaseCurrency: number | null;
+  currency: string;
+}

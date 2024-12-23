@@ -75,8 +75,7 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn, userNickname } = storeToRefs(profileStore);
-  const { openWalletModal } = useLayoutStore();
-  const { openModal } = useModalStore();
+  const { openModal, openWalletModal } = useModalStore();
   const { handleExternalLink } = useProjectMethods();
   const runtimeConfig = useRuntimeConfig();
   const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;

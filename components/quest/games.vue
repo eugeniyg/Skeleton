@@ -2,7 +2,7 @@
   <div class="quest-games">
     <div class="quest-games__header">
       <div class="quest-games__header-title">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'questTasks.gamesLabel') }}
+        {{ getContent(questTasksContent, defaultLocaleQuestTasksContent, 'gamesLabel') }}
       </div>
 
       <div
@@ -10,7 +10,7 @@
         class="quest-games__header-all-btn"
         @click="showGamesModal = true"
       >
-        {{ getContent(popupsData, defaultLocalePopupsData, 'questTasks.seeAllLabel') }}
+        {{ getContent(questTasksContent, defaultLocaleQuestTasksContent, 'seeAllLabel') }}
       </div>
 
       <modal-quest-task-games :show-modal="showGamesModal" :games="gamesData" @close-modal="showGamesModal = false" />
@@ -25,7 +25,7 @@
       </template>
 
       <div v-else-if="!loadGames" class="quest-games__all-games">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'questTasks.allGamesLabel') }}
+        {{ getContent(questTasksContent, defaultLocaleQuestTasksContent, 'allGamesLabel') }}
       </div>
     </div>
   </div>
@@ -33,15 +33,19 @@
 
 <script setup lang="ts">
   import type { IGame } from '@skeleton/core/types';
+  import type { IQuestTasksModal } from '~/types';
 
   const props = defineProps<{
     items: string[];
     taskType: number;
   }>();
 
+  const questTasksContent: Maybe<IQuestTasksModal> = inject('questTasksContent');
+  const defaultLocaleQuestTasksContent: Maybe<IQuestTasksModal> = inject('defaultLocaleQuestTasksContent');
+
   const { getContent, getImageUrl, localizePath } = useProjectMethods();
   const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData, headerCountry, isMobile } = storeToRefs(globalStore);
+  const { headerCountry, isMobile } = storeToRefs(globalStore);
 
   const showGamesModal = ref(false);
   const visibleItems = ref(0);
@@ -69,12 +73,10 @@
   };
 
   const router = useRouter();
-  const { closeModal } = useLayoutStore();
-  const { closeTasksModal } = useQuestsStore();
-  const goToGame = (game: IGame): void => {
-    closeTasksModal();
-    closeModal('questsHub');
-    router.push(localizePath(`/games/${game.identity}?real=true`));
+  const { closeAllModals } = useModalStore();
+  const goToGame = async (game: IGame): Promise<void> => {
+    await closeAllModals();
+    await router.push(localizePath(`/games/${game.identity}?real=true`));
   };
 
   const setVisibleItems = (): void => {

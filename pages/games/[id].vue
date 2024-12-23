@@ -51,8 +51,8 @@
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
-  const { showAlert, compactDrawer, setReturnGame, openWalletModal } = useLayoutStore();
-  const { openModal } = useModalStore();
+  const { showAlert, compactDrawer, setReturnGame } = useLayoutStore();
+  const { openModal, openWalletModal } = useModalStore();
   const { activeAccount } = storeToRefs(walletStore);
   const globalStore = useGlobalStore();
   const { isMobile, alertsData, defaultLocaleAlertsData, currentLocale, headerCountry } = storeToRefs(globalStore);
@@ -89,7 +89,6 @@
     error?: any;
   }> => {
     gameLoading.value = true;
-    const limitsStore = useLimitsStore();
     const redirectUrl = window.location.origin + (window.history.state.back || '');
     const startParams = {
       accountId: isDemo.value ? undefined : activeAccount.value?.id,
@@ -107,8 +106,8 @@
     } catch (err: any) {
       if ([14100, 14101, 14105].includes(err.data?.error?.code)) {
         const { localizePath } = useProjectMethods();
+        await openModal('game-limit-reached');
         await router.push({ path: localizePath('/profile/limits'), query: {} });
-        limitsStore.showModal('gameLimitReached');
         return { error: { ...err, fatal: false } };
       }
 

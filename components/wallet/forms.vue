@@ -40,7 +40,7 @@
         <atomic-icon id="info" />
 
         <span>
-          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+          {{ getContent(walletContent, defaultLocaleWalletContent, 'notAvailableText') }}
         </span>
       </div>
     </template>
@@ -58,7 +58,7 @@
         <atomic-icon id="info" />
 
         <span>
-          {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.notAvailableText') }}
+          {{ getContent(walletContent, defaultLocaleWalletContent, 'notAvailableText') }}
         </span>
       </div>
     </template>
@@ -70,7 +70,7 @@
 <script setup lang="ts">
   import type { IPaymentMethod } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
-  import type { IProfileLimits } from '~/types';
+  import type { IProfileLimits, IWalletModal } from '~/types';
 
   const props = defineProps<{
     showTabs: boolean;
@@ -83,6 +83,8 @@
 
   const emit = defineEmits(['changeTab']);
 
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const hasOffset = ref<boolean>(false);
   const scrollBlock = ref();
   const { getContent } = useProjectMethods();
@@ -91,9 +93,6 @@
   const walletStore = useWalletStore();
   const { depositMethods, withdrawMethods, activeAccount, activeAccountType, depositLimitError } =
     storeToRefs(walletStore);
-
-  const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
 
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
@@ -130,7 +129,7 @@
     src: methodLogoUrl.value,
     defaultImage:
       activeAccountType.value === 'fiat' ? '/img/methods-icons/cards.svg' : '/img/methods-icons/crypto-placeholder.svg',
-    title: getContent(popupsData.value, defaultLocalePopupsData.value, `wallet.tabs.${props.selectedTab}`),
+    title: getContent(walletContent, defaultLocaleWalletContent, `tabs.${props.selectedTab}`),
     subTitle: activeAccount.value?.currency,
   }));
 

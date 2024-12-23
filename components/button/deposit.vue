@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-  const { openWalletModal } = useLayoutStore();
+  const { openWalletModal } = useModalStore();
   const { getContent } = useProjectMethods();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const isActive = ref<boolean>(false);

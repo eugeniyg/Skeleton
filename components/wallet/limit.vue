@@ -2,11 +2,11 @@
   <div class="wallet-limit">
     <div class="wallet-limit__card">
       <div class="wallet-limit__card-title">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.limit.title') }}
+        {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.limit.title') }}
       </div>
 
       <div class="wallet-limit__card-sub-title">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.limit.description') }}
+        {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.limit.description') }}
       </div>
 
       <div v-if="limitValueText" class="wallet-limit__card-limit">
@@ -16,7 +16,7 @@
 
     <div class="wallet-limit__actions">
       <button-base type="primary" @click="goToLimits">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.limit.moreInfo') }}
+        {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.limit.moreInfo') }}
       </button-base>
     </div>
   </div>
@@ -24,19 +24,20 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IProfileLimits } from '~/types';
+  import type { IProfileLimits, IWalletModal } from '~/types';
 
   const props = defineProps<{
     currentLocaleLimitsContent: Maybe<IProfileLimits['coolingOff']>;
     defaultLocaleLimitsContent: Maybe<IProfileLimits['coolingOff']>;
   }>();
 
-  const { closeModal } = useLayoutStore();
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
+  const { closeModal } = useModalStore();
   const { getContent, formatBalance, localizePath } = useProjectMethods();
   const walletStore = useWalletStore();
   const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData, globalComponentsContent, defaultLocaleGlobalComponentsContent } =
-    storeToRefs(globalStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
   const { activeAccount } = storeToRefs(walletStore);
 
   const limitsStore = useLimitsStore();

@@ -1,16 +1,15 @@
 <template>
   <vue-final-modal
-    v-model="modals.failing"
     class="modal-error-deposit"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
     :content-transition="{ mode: 'in-out', duration: 250 }"
-    @click-outside="closeModal('failing')"
+    @click-outside="closeModal('deposit-error')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('failing')" />
-        <div class="title">{{ getContent(popupsData, defaultLocalePopupsData, 'error.title') }}</div>
+        <button-modal-close @close="closeModal('deposit-error')" />
+        <div class="title">{{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}</div>
       </div>
 
       <atomic-image class="img" src="/img/error.svg" />
@@ -19,34 +18,35 @@
       </client-only>
 
       <button-base type="primary" size="md" @click="tryAgain">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'error.button') }}
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'button') }}
       </button-base>
     </div>
   </vue-final-modal>
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
   import { VueFinalModal } from 'vue-final-modal';
   import DOMPurify from 'isomorphic-dompurify';
+  import type { IModalsContent } from '~/types';
 
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { closeModal, openWalletModal } = layoutStore;
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['depositError']>;
+    defaultLocaleData: Maybe<IModalsContent['depositError']>;
+  }>();
+
   const { getContent } = useProjectMethods();
+  const { closeModal, openWalletModal } = useModalStore();
 
   const tryAgain = async (): Promise<void> => {
     await openWalletModal('deposit');
-    closeModal('failing');
   };
 
   const descriptionContent = computed(() => {
-    const contentText = getContent(popupsData, defaultLocalePopupsData, 'error.description');
+    const contentText = getContent(props.currentLocaleData, props.defaultLocaleData, 'description');
     if (!contentText) return '';
     return DOMPurify.sanitize(marked.parse(contentText) as string, { FORBID_TAGS: ['style'] });
   });
 </script>
 
-<style src="~/assets/styles/components/modal/error.scss" lang="scss" />
+<style src="~/assets/styles/components/modal/deposit-error.scss" lang="scss" />

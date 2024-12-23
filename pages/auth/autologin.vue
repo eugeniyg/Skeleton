@@ -9,8 +9,7 @@
 
     const { isLoggedIn, autoLogin, removeSession } = useProfileStore();
     const { localizePath } = useProjectMethods();
-    const { openWalletModal } = useLayoutStore();
-    const { openModal } = useModalStore();
+    const { openModal, openWalletModal } = useModalStore();
     const router = useRouter();
 
     if (isLoggedIn) removeSession();
@@ -25,7 +24,7 @@
       const redirectRelativeUrl = `${redirectAbsoluteUrl.pathname}?${queryParams.toString()}`;
       router.replace(localizePath(redirectRelativeUrl));
     } catch {
-      await openModal('sign-in', undefined, false);
+      await openModal('sign-in', { prohibitQueryChange: false });
       await router.replace(localizePath('/?sign-in=true'));
     }
   });

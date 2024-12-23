@@ -12,7 +12,9 @@
 
       <atomic-icon id="check" />
       <p>
-        <span v-html="DOMPurify.sanitize(marked.parse(props.label || '') as string, { FORBID_TAGS: ['style'] })" />
+        <span
+          v-html="DOMPurify.sanitize(marked.parseInline(props.label || '') as string, { FORBID_TAGS: ['style'] })"
+        />
         <sup v-if="isRequired"> *</sup>
       </p>
     </label>

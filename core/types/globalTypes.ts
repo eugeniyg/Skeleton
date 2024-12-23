@@ -83,6 +83,10 @@ export interface ICoreConstants extends Record<string, any> {
       phone: boolean;
       email: boolean;
     };
+    otp: {
+      enabled: boolean;
+      reason: string[];
+    };
   };
   payment: {
     invoiceStatuses: IStatus[];

@@ -1,6 +1,5 @@
 <template>
   <vue-final-modal
-    v-model="modals.wallet"
     class="wallet-modal"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
@@ -37,24 +36,30 @@
   import { storeToRefs } from 'pinia';
   import type { IPaymentMethod } from '@skeleton/core/types';
   import { VueFinalModal } from 'vue-final-modal';
+  import type { IModalsContent } from '~/types';
 
-  const layoutStore = useLayoutStore();
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['wallet']>;
+    defaultLocaleData: Maybe<IModalsContent['wallet']>;
+  }>();
+
+  provide('walletContent', props.currentLocaleData);
+  provide('defaultLocaleWalletContent', props.defaultLocaleData);
+
   const walletStore = useWalletStore();
-  const globalStore = useGlobalStore();
   const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
   const bonusStore = useBonusStore();
   const { walletDepositBonus } = storeToRefs(bonusStore);
-
-  const { modals, walletModalType } = storeToRefs(layoutStore);
-  const { showModal, closeModal } = layoutStore;
-
+  const modalStore = useModalStore();
+  const { openModal, closeModal } = modalStore;
+  const { walletModalType } = storeToRefs(modalStore);
   const { depositMethods, withdrawMethods } = storeToRefs(walletStore);
-
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
-
-  const currentDepositMethod = ref<IPaymentMethod | undefined>();
-  const currentWithdrawMethod = ref<IPaymentMethod | undefined>();
+  const mobileWidth = (): boolean => {
+    return window.innerWidth < 768;
+  };
+  const currentDepositMethod = ref<IPaymentMethod | undefined>(mobileWidth() ? undefined : depositMethods.value[0]);
+  const currentWithdrawMethod = ref<IPaymentMethod | undefined>(mobileWidth() ? undefined : withdrawMethods.value[0]);
   const selectedTab = ref<'deposit' | 'withdraw'>(walletModalType?.value || 'deposit');
   const showMobileForm = ref<boolean>(false);
 
@@ -79,35 +84,25 @@
 
   const modalTitle = computed(() => {
     return selectedTab.value === 'deposit'
-      ? getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.deposit.title')
-      : getContent(popupsData.value, defaultLocalePopupsData.value, 'wallet.withdraw.title');
+      ? getContent(props.currentLocaleData, props.defaultLocaleData, 'deposit.title')
+      : getContent(props.currentLocaleData, props.defaultLocaleData, 'withdraw.title');
   });
 
-  const mobileWidth = (): boolean => {
-    return window.innerWidth < 768;
-  };
-
-  watch(
-    () => depositMethods.value,
-    () => {
-      if (mobileWidth()) {
-        currentDepositMethod.value = undefined;
-      } else {
-        currentDepositMethod.value = depositMethods.value[0];
-      }
+  watch(depositMethods, () => {
+    if (mobileWidth()) {
+      currentDepositMethod.value = undefined;
+    } else {
+      currentDepositMethod.value = depositMethods.value[0];
     }
-  );
+  });
 
-  watch(
-    () => withdrawMethods.value,
-    () => {
-      if (mobileWidth()) {
-        currentWithdrawMethod.value = undefined;
-      } else {
-        currentWithdrawMethod.value = withdrawMethods.value[0];
-      }
+  watch(withdrawMethods, () => {
+    if (mobileWidth()) {
+      currentWithdrawMethod.value = undefined;
+    } else {
+      currentWithdrawMethod.value = withdrawMethods.value[0];
     }
-  );
+  });
 
   watch(
     () => walletModalType?.value,
@@ -118,7 +113,7 @@
 
   const closeWallet = (): void => {
     if (walletModalType?.value === 'deposit') {
-      showModal('cancelDeposit');
+      openModal('cancel-deposit');
     } else {
       closeModal('wallet');
     }

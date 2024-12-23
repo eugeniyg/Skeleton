@@ -46,8 +46,7 @@
 
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { openWalletModal } = useLayoutStore();
-  const { openModal } = useModalStore();
+  const { openModal, openWalletModal } = useModalStore();
 
   const hoverCard = ref<number | undefined>(undefined);
   const { isMobile } = storeToRefs(globalStore);

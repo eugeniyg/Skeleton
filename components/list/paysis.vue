@@ -16,7 +16,7 @@
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { openWalletModal } = useLayoutStore();
+  const { openWalletModal } = useModalStore();
 
   const autoplayOptions = {
     delay: 3500,

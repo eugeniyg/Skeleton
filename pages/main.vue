@@ -55,10 +55,9 @@
 
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
   const { localizePath, getContent } = useProjectMethods();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { globalComponentsContent } = globalStore;
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
   const layoutStore = useLayoutStore();
   const { closeModal } = layoutStore;
   const { modals } = storeToRefs(layoutStore);
@@ -71,7 +70,7 @@
   const { getContentData } = useContentLogic<ICasinoPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
 
-  const { getCollectionsList } = useGamesStore();
+  const { getCollectionsList, getProviderList } = useGamesStore();
   const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
   const mainCategoriesList = computed(() => {
     return (
@@ -82,13 +81,10 @@
   });
 
   const router = useRouter();
-  const changeCategory = (categoryId: string) => {
+  const changeCategory = (categoryIdentity: string) => {
     if (modals.value.categories) closeModal('categories');
 
-    router.push({
-      path: localizePath('/games'),
-      query: { category: categoryId },
-    });
+    router.push(localizePath(`/categories/${categoryIdentity}`));
   };
 
   const selectedProviders = ref<string[]>([]);
@@ -102,13 +98,23 @@
     selectedProviders.value = newSelectedProviders;
     sliderVisibilityHidden.value = true;
 
+    const gameProviders = await getProviderList();
+    const providersIdentity = gameProviders
+      .filter(provider => newSelectedProviders.includes(provider.id))
+      .map(provider => provider.identity);
+
+    const defaultCategory = getContent(
+      globalComponentsContent,
+      defaultLocaleGlobalComponentsContent,
+      'providersSettings.defaultCategory'
+    );
+
     setTimeout(() => {
       closeModal('providers');
       router.push({
-        path: localizePath('/games'),
+        path: localizePath(defaultCategory ? `/categories/${defaultCategory}` : '/categories'),
         query: {
-          category: getContent(popupsData.value, defaultLocalePopupsData.value, 'providers.collectionId'),
-          providerId: selectedProviders.value,
+          provider: providersIdentity,
         },
       });
     }, 600);

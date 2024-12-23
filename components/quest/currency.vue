@@ -15,7 +15,7 @@
       <span>+</span>
       <span>{{ rewardsValue.length - 1 }}</span>
       <span class="quest-currency__more-label">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.moreLabel') }}
+        {{ getContent(props.currentLocaleContent, props.defaultLocaleContent, 'moreLabel') }}
       </span>
     </div>
   </div>
@@ -23,13 +23,16 @@
 
 <script setup lang="ts">
   import type { IPlayerQuestReward } from '@skeleton/core/types';
+  import type { IQuestsHubModal } from '~/types';
 
   const props = defineProps<{
     rewards: IPlayerQuestReward[];
     type?: 'real' | 'virtual';
+    currentLocaleContent: Maybe<IQuestsHubModal>;
+    defaultLocaleContent: Maybe<IQuestsHubModal>;
   }>();
 
-  const { currencies, defaultLocalePopupsData, popupsData } = useGlobalStore();
+  const { currencies } = useGlobalStore();
 
   const filteredRewards = props.type
     ? props.rewards.filter(reward => {
@@ -55,10 +58,10 @@
 
   const { openRewardsModal } = useQuestsStore();
   const rewardsModalTitle = computed(() => {
-    return getContent(popupsData, defaultLocalePopupsData, 'questsHub.rewardsTitle');
+    return getContent(props.currentLocaleContent, props.defaultLocaleContent, 'rewardsTitle');
   });
-  const showRewardsModal = (): void => {
-    openRewardsModal(rewardsValue.value, rewardsModalTitle.value);
+  const showRewardsModal = async (): Promise<void> => {
+    await openRewardsModal(rewardsValue.value, rewardsModalTitle.value);
   };
 </script>
 

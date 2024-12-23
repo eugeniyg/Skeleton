@@ -6,8 +6,12 @@
     "panel nav";
   align-items: var(--align-items, flex-end);
   grid-template-columns: 1fr auto;
-  height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  height: calc(60vh);
   width: 100%;
+
+  @supports (height: 100dvh) {
+    height: calc(100dvh - var(--header-total-height) - 48px);
+  }
 
   @media (orientation: landscape) and (max-width: 1023px) {
     height: calc(100vh + 1px);

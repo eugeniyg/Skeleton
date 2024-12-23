@@ -11,13 +11,13 @@
 
   const props = defineProps<{
     items: IGame[];
-    meta: IPaginationMeta;
+    meta: IPaginationMeta | undefined;
   }>();
   const emit = defineEmits(['loadMore']);
   const { initObserver } = useProjectMethods();
 
   const observerLoadMore = (): void => {
-    if (props.meta.totalPages > props.meta.page) emit('loadMore');
+    if (props.meta && props.meta.totalPages > props.meta.page) emit('loadMore');
   };
 
   const loadMoreObserver = ref();

@@ -2,17 +2,17 @@
   <div class="quest-task" :class="taskStatusClasses">
     <div class="quest-task__img">
       <atomic-image
-        :src="getContent(popupsData, defaultLocalePopupsData, `questTasks.taskTypes.${props.taskInfo.type}.image`)"
+        :src="getContent(questTasksContent, defaultLocaleQuestTasksContent, `taskTypes.${props.taskInfo.type}.image`)"
       />
     </div>
 
     <div class="quest-task__body">
       <div class="quest-task__number">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'questTasks.taskLabel') }} #{{ props.taskIndex + 1 }}
+        {{ getContent(questTasksContent, defaultLocaleQuestTasksContent, 'taskLabel') }} #{{ props.taskIndex + 1 }}
       </div>
 
       <div class="quest-task__title">
-        {{ getContent(popupsData, defaultLocalePopupsData, `questTasks.taskTypes.${props.taskInfo.type}.label`) }}
+        {{ getContent(questTasksContent, defaultLocaleQuestTasksContent, `taskTypes.${props.taskInfo.type}.label`) }}
       </div>
 
       <quest-progress :task-list="[props.taskInfo]" show-label />
@@ -60,6 +60,7 @@
 
 <script setup lang="ts">
   import type { IPlayerQuestTask } from '@skeleton/core/types';
+  import type { IQuestTasksModal } from '~/types';
 
   const props = defineProps<{
     taskInfo: IPlayerQuestTask;
@@ -67,9 +68,10 @@
     questState?: number;
   }>();
 
+  const questTasksContent: Maybe<IQuestTasksModal> = inject('questTasksContent');
+  const defaultLocaleQuestTasksContent: Maybe<IQuestTasksModal> = inject('defaultLocaleQuestTasksContent');
+
   const { getContent, formatBalance } = useProjectMethods();
-  const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
 
@@ -99,8 +101,8 @@
   const winTaskConditions = computed<IWinTaskInfo | undefined>(() => {
     if (props.taskInfo.type !== 3) return undefined;
 
-    const multiplierLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'questTasks.multiplierLabel');
-    const winLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'questTasks.winLabel');
+    const multiplierLabel = getContent(questTasksContent, defaultLocaleQuestTasksContent, 'multiplierLabel');
+    const winLabel = getContent(questTasksContent, defaultLocaleQuestTasksContent, 'winLabel');
     const multiplierMin = props.taskInfo.conditions.multiplier || '-';
     const multiplierMax = props.taskInfo.conditions.maxMultiplier || '-';
     const winMin = getSumValue(props.taskInfo.conditions, 'minPayout');
@@ -120,7 +122,7 @@
   const betTaskConditions = computed<IBetTaskInfo | undefined>(() => {
     if (props.taskInfo.type !== 4) return undefined;
 
-    const betAmountLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'questTasks.betAmountLabel');
+    const betAmountLabel = getContent(questTasksContent, defaultLocaleQuestTasksContent, 'betAmountLabel');
     const betMin = getSumValue(props.taskInfo.conditions, 'spinAmount');
     const betMax = getSumValue(props.taskInfo.conditions, 'maxSpinAmount');
     const games = props.taskInfo.conditions.games || [];

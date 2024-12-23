@@ -117,7 +117,8 @@
     playerBonuses,
     playerFreeSpins,
   } = storeToRefs(bonusStore);
-  const { showAlert, openWalletModal } = useLayoutStore();
+  const { showAlert } = useLayoutStore();
+  const { openWalletModal } = useModalStore();
   const hasActiveBlock = computed(() => activePlayerBonuses.value.length || activePlayerFreeSpins.value.length);
   const hasIssuedBlock = computed(() => {
     const hasSimpleBonus = [...issuedPlayerBonuses.value, ...issuedPlayerFreeSpins.value].some(

@@ -8,7 +8,7 @@ export default defineEventHandler(async event => {
         method: 'POST',
         body: { code: event.context.params?.confirmCode },
       });
-      return sendRedirect(event, '/?confirm=true', 302);
+      return sendRedirect(event, '/?profile-confirmed=true', 302);
     } catch {
       return sendRedirect(event, '/', 302);
     }

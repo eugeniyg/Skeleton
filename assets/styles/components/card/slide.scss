@@ -5,6 +5,7 @@
   height: 100%;
   width: 100%;
   border-radius: 16px;
+  align-items: center;
 
   &--clickable {
     cursor: pointer;
@@ -16,34 +17,34 @@
   }
 
   .main-slider--high & {
-    --info-padding: 24px 116px 17px 32px;
+    --info-padding: 18px 116px 18px 24px;
 
     @include media(xs) {
-      --info-padding: 24px 140px 24px 32px;
+      --info-padding: 24px 140px 24px 24px;
     }
 
     @include media(md) {
-      --info-padding: 32px 180px 32px 40px;
+      --info-padding: 32px 180px 32px 32px;
     }
 
     @include media(md) {
-      --info-padding: 32px 180px 32px 40px;
+      --info-padding: 32px 180px 32px 32px;
     }
 
     @include media(xl) {
-      --info-padding: 32px 140px 32px 40px;
+      --info-padding: 32px 140px 32px 32px;
     }
 
     @include media(xl) {
-      --info-padding: 32px 188px 32px 40px;
+      --info-padding: 32px 188px 32px 32px;
     }
   }
 
   .main-slider--low & {
-    --info-padding: 16px 116px 16px 32px;
+    --info-padding: 16px 116px 16px 24px;
 
     @include media(xxl) {
-      --info-padding: 16px 120px 16px 40px;
+      --info-padding: 16px 120px 16px 32px;
     }
   }
 
@@ -51,14 +52,14 @@
     position: absolute;
     height: 100%;
     max-width: 100%;
-    right: 0;
+    right: -20px;
   }
 
   &__img {
     aspect-ratio: 214/168;
     object-fit: cover;
     height: 100%;
-    right: 0;
+    object-position: top left;
   }
 
   &__info {
@@ -70,6 +71,7 @@
     justify-content: center;
     flex-shrink: 0;
     padding: var(--info-padding, 0);
+    height: 100%;
   }
 
   &__title {
@@ -77,15 +79,24 @@
     color: var(--text-primary);
     text-shadow: var(--shadow-layer);
     @include font($heading-4);
+    align-self: flex-end;
+
+    @include media(md) {
+      @include upd-font($heading-5);
+    }
 
     + .card-slide__content {
       margin-top: 4px;
     }
+  }
 
-    .main-slider--high & {
-      @include media(md) {
-        @include font($heading-6);
-      }
+  &__content-container {
+    display: grid;
+    align-content: center;
+    height: 100%;
+
+    .card-has-badge & {
+      padding-top: 8px;
     }
   }
 
@@ -146,6 +157,20 @@
         margin-top: 12px;
       }
     }
+  }
+
+  &__badge {
+    color: var(--card-badge-color, var(--text-secondary));
+    background: var(--card-badge-background, var(--alpha-game-tumb));
+    border-radius: var(--corner-radius-mapped-system-default, 8px);
+    display: flex;
+    padding: 4px 8px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    align-self: flex-start;
+    @include font($subheading-1);
   }
 }
 

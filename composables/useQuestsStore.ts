@@ -3,11 +3,9 @@ import type { IPlayerQuest, IPlayerQuestEventTask, IWebSocketResponse } from '@s
 
 interface IQuestsStoreState {
   activeQuests: IPlayerQuest[];
-  showRewardsModal: boolean;
   rewardsModalTitle: string;
   rewardsList: { currency: string; amount: number }[];
   questsSubscription: any;
-  showTasksModal: boolean;
   tasksModalData: IPlayerQuest | undefined;
   tasksModalImage: string;
 }
@@ -15,11 +13,9 @@ interface IQuestsStoreState {
 export const useQuestsStore = defineStore('questsStore', {
   state: (): IQuestsStoreState => ({
     activeQuests: [],
-    showRewardsModal: false,
     rewardsModalTitle: '',
     rewardsList: [],
     questsSubscription: undefined,
-    showTasksModal: false,
     tasksModalData: undefined,
     tasksModalImage: '',
   }),
@@ -32,24 +28,18 @@ export const useQuestsStore = defineStore('questsStore', {
       this.activeQuests = data;
     },
 
-    openRewardsModal(rewards: { currency: string; amount: number }[], modalTitle: string): void {
+    async openRewardsModal(rewards: { currency: string; amount: number }[], modalTitle: string): Promise<void> {
       this.rewardsModalTitle = modalTitle;
       this.rewardsList = rewards;
-      this.showRewardsModal = true;
+      const { openModal } = useModalStore();
+      await openModal('quest-rewards');
     },
 
-    closeRewardsModal(): void {
-      this.showRewardsModal = false;
-    },
-
-    openTasksModal(questData: IPlayerQuest, questImage: string): void {
+    async openTasksModal(questData: IPlayerQuest, questImage: string): Promise<void> {
       this.tasksModalData = questData;
       this.tasksModalImage = questImage;
-      this.showTasksModal = true;
-    },
-
-    closeTasksModal(): void {
-      this.showTasksModal = false;
+      const { openModal } = useModalStore();
+      await openModal('quest-tasks');
     },
 
     updateQuest(questData: IPlayerQuest | undefined): void {

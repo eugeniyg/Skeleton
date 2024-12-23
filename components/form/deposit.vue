@@ -9,7 +9,7 @@
     <form-input-number
       v-model:value="amountValue"
       :hint="fieldHint"
-      :label="getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.sumLabel') || ''"
+      :label="getContent(walletContent, defaultLocaleWalletContent, 'deposit.sumLabel') || ''"
       name="depositSum"
       :min="formatAmountMin.amount"
       :max="formatAmountMax.amount"
@@ -46,7 +46,7 @@
         <atomic-spinner :is-shown="isSending" />
         <span class="btn-primary__content">
           <span>
-            {{ getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.depositButton') }}
+            {{ getContent(walletContent, defaultLocaleWalletContent, 'deposit.depositButton') }}
             {{ buttonAmount }}
             {{ formatAmountMin.currency }}
           </span>
@@ -72,6 +72,7 @@
   } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import queryString from 'query-string';
+  import type { IWalletModal } from '~/types';
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
 
@@ -84,8 +85,10 @@
     processingType: string;
   }>();
 
+  const walletContent: Maybe<IWalletModal> = inject('walletContent');
+  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData, alertsData, defaultLocaleAlertsData } = globalStore;
+  const { alertsData, defaultLocaleAlertsData } = globalStore;
   const { currentLocale } = storeToRefs(globalStore);
   const profileStore = useProfileStore();
 
@@ -163,15 +166,15 @@
 
   const walletStore = useWalletStore();
   const layoutStore = useLayoutStore();
-  const { successModalType } = storeToRefs(layoutStore);
-  const { showModal, showAlert, closeModal } = layoutStore;
+  const { showAlert } = layoutStore;
+  const { openModal, closeModal } = useModalStore();
   const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
 
   const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const formatAmountMax = formatBalance(activeAccount.value?.currency, props.amountMax);
   const formatAmountMin = formatBalance(activeAccount.value?.currency, props.amountMin);
-  const minAmountContent = `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`;
-  const maxAmountContent = `${getContent(popupsData, defaultLocalePopupsData, 'wallet.deposit.maxSum') || ''} ${formatAmountMax.amount} ${formatAmountMax.currency}`;
+  const minAmountContent = `${getContent(walletContent, defaultLocaleWalletContent, 'deposit.minSum') || ''} ${formatAmountMin.amount} ${formatAmountMin.currency}`;
+  const maxAmountContent = `${getContent(walletContent, defaultLocaleWalletContent, 'deposit.maxSum') || ''} ${formatAmountMax.amount} ${formatAmountMax.currency}`;
   const fieldHint = { message: `${minAmountContent}, ${maxAmountContent}` };
   const isSending = ref<boolean>(false);
   const filteredPresets =
@@ -223,9 +226,9 @@
   const getRequestParams = (): IRequestDeposit => {
     const { query, path } = useRoute();
     const { origin } = window.location;
-    const successQueryString = queryString.stringify({ ...query, success: 'deposit', wallet: undefined });
-    const errorQueryString = queryString.stringify({ ...query, failing: 'deposit', wallet: undefined });
-    const redirectQueryString = queryString.stringify({ ...query, 'deposit-redirect': true, wallet: undefined });
+    const successQueryString = queryString.stringify({ ...query, 'deposit-success': 'true', wallet: undefined });
+    const errorQueryString = queryString.stringify({ ...query, 'deposit-error': 'true', wallet: undefined });
+    const redirectQueryString = queryString.stringify({ ...query, 'deposit-redirect': 'true', wallet: undefined });
     const successRedirect = `${origin}${path}?${successQueryString}`;
     const errorRedirect = `${origin}${path}?${errorQueryString}`;
     const defaultRedirect = `${origin}${path}?${redirectQueryString}`;
@@ -270,21 +273,20 @@
 
       if (props.processingType === 'form' && windowReference.value) {
         windowReference.value.location = paymentPageUrl;
-        closeModal('wallet');
+        await closeModal('wallet');
       } else if (props.processingType === 'qr' && depositResponse.qr) {
         qrAddress.value = depositResponse.qr;
       } else if (props.processingType === 'iframe') {
         iframeUrl.value = paymentPageUrl;
       } else if (props.processingType === 'message') {
-        successModalType.value = 'deposit-pending';
-        showModal('success');
+        await openModal('deposit-pending');
       } else if (props.processingType === 'asyncRedirect') {
         sessionStorage.setItem('asyncInvoiceId', depositResponse.invoiceId);
         showAsyncBlock.value = true;
       }
     } catch {
       if (windowReference.value) windowReference.value.close();
-      showModal('failing');
+      await openModal('deposit-error');
     } finally {
       isSending.value = false;
     }

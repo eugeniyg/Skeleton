@@ -1,68 +1,61 @@
 <template>
   <vue-final-modal
-    v-model="modals.success"
     class="modal-success-deposit"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
     :content-transition="{ mode: 'in-out', duration: 250 }"
-    @click-outside="closeModal('success')"
+    @click-outside="closeHandle"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('success')" />
-        <div class="title">{{ title }}</div>
+        <button-modal-close @close="closeHandle" />
+        <div class="title">
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}
+        </div>
       </div>
 
-      <atomic-image class="img" src="/img/success.svg" />
-      <client-only>
-        <p
-          class="text"
-          v-html="DOMPurify.sanitize(marked.parse(description || '') as string, { FORBID_TAGS: ['style'] })"
-        />
-      </client-only>
+      <atomic-image class="img" :src="image" />
 
-      <button-base type="primary" size="md" @click="closeModal('success')">
-        {{ button }}
+      <p
+        class="text"
+        v-html="DOMPurify.sanitize(marked.parse(description || '') as string, { FORBID_TAGS: ['style'] })"
+      />
+
+      <button-base type="primary" size="md" @click="closeHandle">
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'button') }}
       </button-base>
     </div>
   </vue-final-modal>
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { marked } from 'marked';
   import { VueFinalModal } from 'vue-final-modal';
   import DOMPurify from 'isomorphic-dompurify';
+  import type { ISuccessModal } from '~/types';
 
-  const layoutStore = useLayoutStore();
-  const { modals, successModalType } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const props = defineProps<{
+    currentLocaleData: Maybe<ISuccessModal>;
+    defaultLocaleData: Maybe<ISuccessModal>;
+  }>();
+
+  const modalStore = useModalStore();
   const { getContent } = useProjectMethods();
 
-  const title = computed(() => {
-    if (successModalType.value === 'deposit')
-      return getContent(popupsData, defaultLocalePopupsData, 'successDeposit.title');
-    if (successModalType.value === 'deposit-pending')
-      return getContent(popupsData, defaultLocalePopupsData, 'successDepositPending.title');
-    return '';
-  });
-
   const description = computed(() => {
-    if (successModalType.value === 'deposit')
-      return getContent(popupsData, defaultLocalePopupsData, 'successDeposit.description');
-    if (successModalType.value === 'deposit-pending')
-      return getContent(popupsData, defaultLocalePopupsData, 'successDepositPending.description');
-    return '';
+    return getContent(props.currentLocaleData, props.defaultLocaleData, 'description') || '';
   });
 
-  const button = computed(() => {
-    if (successModalType.value === 'deposit')
-      return getContent(popupsData, defaultLocalePopupsData, 'successDeposit.button');
-    if (successModalType.value === 'deposit-pending')
-      return getContent(popupsData, defaultLocalePopupsData, 'successDepositPending.button');
-    return '';
+  const image = computed(() => {
+    return getContent(props.currentLocaleData, props.defaultLocaleData, 'image') || '/img/success.svg';
   });
+
+  const successComponentModals = ['deposit-success', 'deposit-pending', 'deposit-redirect'];
+  const closeHandle = (): void => {
+    successComponentModals.forEach(modalName => {
+      if (modalStore.modals[modalName]?.options?.modelValue) modalStore.closeModal(modalName);
+    });
+  };
 </script>
 
 <style src="~/assets/styles/components/modal/success.scss" lang="scss" />

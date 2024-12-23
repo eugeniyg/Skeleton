@@ -9,7 +9,7 @@
 
     <button-base
       class="nav-mob__item"
-      :class="{ active: route.path === localizePath(gamesButtons?.buttonFirst.url) || route.query.category }"
+      :class="{ active: route.path === localizePath(gamesButtons?.buttonFirst.url) || route.params.categoryIdentity }"
       :url="gamesButtons?.buttonFirst.url"
     >
       <atomic-icon :id="gamesButtons?.buttonFirst.icon" />
@@ -72,8 +72,7 @@
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
-  const { openWalletModal } = useLayoutStore();
-  const { openModal } = useModalStore();
+  const { openModal, openWalletModal } = useModalStore();
   const { isGamePage } = storeToRefs(layoutStore);
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
   const { localizePath, getContent } = useProjectMethods();

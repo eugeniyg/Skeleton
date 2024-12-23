@@ -26,7 +26,6 @@
 <script setup lang="ts">
   import type { ISliderItem } from '~/types';
   import emblaCarouselVue from 'embla-carousel-vue';
-  import Autoplay from 'embla-carousel-autoplay';
   import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
@@ -35,24 +34,14 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent } = storeToRefs(globalStore);
-
   const profileStore = useProfileStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
-
   const selectedIndex = ref<number>(0);
 
-  const autoplayOptions = {
-    delay: 4000,
-    stopOnInteraction: false,
-  };
-
-  const [sliderNode, emblaApi] = emblaCarouselVue(
-    {
-      loop: false,
-      align: 'start',
-    },
-    [Autoplay(autoplayOptions)]
-  );
+  const [sliderNode, emblaApi] = emblaCarouselVue({
+    loop: false,
+    align: 'start',
+  });
 
   const onSelectSlide = (emblaApi: any) => {
     selectedIndex.value = emblaApi.selectedScrollSnap();

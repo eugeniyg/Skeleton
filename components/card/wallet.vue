@@ -42,7 +42,7 @@
 
   const isChecked = ref<boolean>(false);
   const { currencies } = useGlobalStore();
-  const { openWalletModal } = useLayoutStore();
+  const { openWalletModal } = useModalStore();
   const { formatBalance } = useProjectMethods();
   const balanceFormat = computed(() => formatBalance(props.currency, props.balance));
 
