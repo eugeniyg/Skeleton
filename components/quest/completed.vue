@@ -15,7 +15,7 @@
         class="quest-tab__load-more"
         @click="getData(state.meta.page + 1)"
       >
-        {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.loadLabel') }}
+        {{ getContent(questsHubContent, defaultLocaleQuestsHubContent, 'loadLabel') }}
       </button-base>
     </div>
 
@@ -26,9 +26,13 @@
 <script setup lang="ts">
   import type { IPaginationMeta, IPlayerQuest } from '@skeleton/core/types';
   import { useListen } from '@skeleton/composables/useEventBus';
+  import type { IQuestsHubModal } from '~/types';
+
+  const questsHubContent: Maybe<IQuestsHubModal> = inject('questsHubContent');
+  const defaultLocaleQuestsHubContent: Maybe<IQuestsHubModal> = inject('defaultLocaleQuestsHubContent');
 
   const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
+  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   interface IState {
@@ -69,13 +73,9 @@
   };
 
   const emptyContentData = computed(() => {
-    const image = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.image');
-    const title = getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.empty.completedTitle');
-    const description = getContent(
-      popupsData.value,
-      defaultLocalePopupsData.value,
-      'questsHub.empty.completedDescription'
-    );
+    const image = getContent(questsHubContent, defaultLocaleQuestsHubContent, 'empty.image');
+    const title = getContent(questsHubContent, defaultLocaleQuestsHubContent, 'empty.completedTitle');
+    const description = getContent(questsHubContent, defaultLocaleQuestsHubContent, 'empty.completedDescription');
     return { image, title, description };
   });
 
