@@ -134,12 +134,12 @@ export const useProfileStore = defineStore('profileStore', {
     startProfileDependencies(): void {
       const { getFavoriteGames, subscribeBetsSocket } = useGamesStore();
       const { getPlayerBonuses, getPlayerFreeSpins, getPlayerCashback, getDepositBonuses } = useBonusStore();
-      const { getPlayerActiveQuests, subscribeQuestsSocket } = useQuestsStore();
+      const { getActiveQuests, subscribeQuestsSocket } = useQuestsStore();
       const { getPlayerLoyalty, subscribeLoyaltySocket } = useLoyaltyStore();
       const { getPopoverNotifications, subscribeNotificationSocket } = useNotificationStore();
       const runtimeConfig = useRuntimeConfig();
       getFavoriteGames();
-      if (runtimeConfig.public?.questsEnabled) getPlayerActiveQuests();
+      if (runtimeConfig.public?.questsEnabled) getActiveQuests();
       if (runtimeConfig.public?.loyaltyEnabled) getPlayerLoyalty();
       getPopoverNotifications();
       getPlayerCashback();
@@ -154,6 +154,7 @@ export const useProfileStore = defineStore('profileStore', {
 
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       const { subscribeBonusCodeSocket, subscribeBonusSocket, subscribeFreeSpinsSocket } = useBonusStore();
+      const { subscribeTournamentSocket } = useTournamentsStore();
 
       subscribeAccountSocket();
       subscribeInvoicesSocket();
@@ -165,6 +166,7 @@ export const useProfileStore = defineStore('profileStore', {
       if (runtimeConfig.public?.questsEnabled) subscribeQuestsSocket();
       if (runtimeConfig.public?.loyaltyEnabled) subscribeLoyaltySocket();
       subscribeNotificationSocket();
+      subscribeTournamentSocket();
 
       const { setEquivalentCurrency } = useGlobalStore();
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
@@ -181,6 +183,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { unsubscribeQuestsSocket } = useQuestsStore();
       const { unsubscribeLoyaltySocket } = useLoyaltyStore();
       const { unsubscribeNotificationSocket } = useNotificationStore();
+      const { unsubscribeTournamentSocket } = useTournamentsStore();
       unsubscribeAccountSocket();
       unsubscribeInvoiceSocket();
       unsubscribeBonusCodeSocket();
@@ -191,6 +194,7 @@ export const useProfileStore = defineStore('profileStore', {
       unsubscribeQuestsSocket();
       unsubscribeLoyaltySocket();
       unsubscribeNotificationSocket();
+      unsubscribeTournamentSocket();
     },
 
     async handleLogin(authResponse: IAuthorizationResponse): Promise<void> {

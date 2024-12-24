@@ -1,0 +1,70 @@
+.tournament-terms {
+  margin-top: 40px;
+  padding: 16px 24px;
+  border-radius: var(--corner-radius-mapped-system-graund-layer, 16px);
+  background: var(--layer-01);
+
+  &__header {
+    display: flex;
+    grid-gap: 8px;
+    padding: 0;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    width: 100%;
+
+    &.is-open {
+      --title-color: var(--text-accent);
+      --btn-rotate: rotate(0);
+
+      .icon {
+        --color: var(--button-icn-ghost-click);
+      }
+    }
+
+    > .title {
+      color: var(--title-color, var(--text-primary));
+      flex-grow: 1;
+      transition: color .2s ease-in-out;
+      @include font($heading-4);
+    }
+
+    .btn {
+      --padding: 0;
+      --width: 32px;
+      --height: 32px;
+      transform: var(--btn-rotate, rotate(180deg));
+      transition: transform .2s ease-in-out;
+      @extend %btn-ghost
+    }
+  }
+
+  .icon {
+    --color: var(--text-tertiary);
+  }
+
+  &__content {
+    overflow: hidden;
+    max-height: var(--max-height, 0);
+    transition: max-height .2s ease-in-out;
+    color: var(--text-tertiary);
+    @include font($body-3-paragraph);
+
+    p {
+      @include font($body-3-paragraph);
+      color: var(--text-tertiary);
+      margin: 8px 0;
+    }
+
+    a {
+      @include font($body-3-paragraph);
+      color: var(--text-link);
+    }
+  }
+
+  .text-editor {
+    max-width: none;
+    margin: 0;
+    padding: 8px 0 0 0;
+  }
+}

@@ -1,11 +1,10 @@
 <template>
   <vue-final-modal
-    v-model="modals.walletBonusInfo"
     class="modal-wallet-bonus-info"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
     :content-transition="{ mode: 'in-out', duration: 250 }"
-    @click-outside="closeModal('walletBonusInfo')"
+    @click-outside="closeModal('wallet-bonus-info')"
     @before-open="setTableData"
   >
     <div class="modal-wallet-bonus-info__scroll">
@@ -13,10 +12,10 @@
         <atomic-image v-if="titleImage" class="img" :src="titleImage" />
 
         <div class="modal-wallet-bonus-info__title">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'walletBonusInfo.title') }}
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}
         </div>
 
-        <button-modal-close @close="closeModal('walletBonusInfo')" />
+        <button-modal-close @close="closeModal('wallet-bonus-info')" />
       </div>
 
       <div v-for="table in bonusesTables" :key="table.id" class="modal-wallet-bonus-info__table">
@@ -34,7 +33,7 @@
 
       <button-base type="ghost" size="xs" @click="goToBonuses">
         <span>
-          {{ getContent(popupsData, defaultLocalePopupsData, 'walletBonusInfo.readMore') }}
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'readMore') }}
         </span>
 
         <atomic-icon id="arrow_next" />
@@ -47,10 +46,15 @@
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
   import type { IAmountRangeItem, IBonus, IGameProvider } from '@skeleton/core/types';
+  import type { IModalsContent } from '~/types';
+
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['walletBonusInfo']>;
+    defaultLocaleData: Maybe<IModalsContent['walletBonusInfo']>;
+  }>();
 
   const { getContent, formatBalance, getEquivalentFromBase, localizePath, getSumFromAmountItems } = useProjectMethods();
-  const { popupsData, defaultLocalePopupsData, globalComponentsContent, defaultLocaleGlobalComponentsContent } =
-    useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
 
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
@@ -58,14 +62,11 @@
   const bonusStore = useBonusStore();
   const { depositMoreInfoBonus } = storeToRefs(bonusStore);
 
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
-  const { closeModal: closeWalletModal } = useModalStore();
+  const { closeModal, closeAllModals } = useModalStore();
   const { getProviderList } = useGamesStore();
 
   const titleImage = computed(() => {
-    return getContent(popupsData, defaultLocalePopupsData, 'walletBonusInfo.titleImage');
+    return getContent(props.currentLocaleData, props.defaultLocaleData, 'titleImage');
   });
 
   interface IParam {
@@ -73,7 +74,7 @@
     value: string;
   }
 
-  const paramsLabels = getContent(popupsData, defaultLocalePopupsData, 'walletBonusInfo.infoLabels');
+  const paramsLabels = getContent(props.currentLocaleData, props.defaultLocaleData, 'infoLabels');
   const bonusesTables = ref<{ id: string; name: string; params: IParam[] }[]>([]);
 
   const getCurrentCurrencySumRange = (
@@ -283,11 +284,10 @@
     }
   };
 
-  const goToBonuses = (): void => {
-    closeModal('walletBonusInfo');
-    closeWalletModal('wallet');
-    const router = useRouter();
-    router.push(localizePath('/welcome-package'));
+  const router = useRouter();
+  const goToBonuses = async (): Promise<void> => {
+    await closeAllModals();
+    await router.push(localizePath('/welcome-package'));
   };
 </script>
 

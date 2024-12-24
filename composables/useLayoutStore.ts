@@ -5,20 +5,9 @@ import type { IAlert } from '~/types';
 import type { IGame } from '@skeleton/core/types';
 
 interface IModals extends Record<string, any> {
-  walletBonusInfo: boolean;
-  turnOverWager: boolean;
-  questsHub: boolean;
-  loyaltyEarn: boolean;
-  loyaltyLevel: boolean;
-  depositRedirect: boolean;
   providers: boolean;
   categories: boolean;
   packageBonus: boolean;
-}
-
-interface IModalsUrls extends Record<string, any> {
-  questsHub: string;
-  depositRedirect: string;
 }
 
 interface ILayoutStoreState extends Record<string, any> {
@@ -28,7 +17,6 @@ interface ILayoutStoreState extends Record<string, any> {
   isDrawerCompact: boolean;
   showCookiePopup: boolean;
   modals: IModals;
-  modalsUrl: IModalsUrls;
   lastNotificationTime: number;
   returnGame: Maybe<string | IGame>;
 }
@@ -41,19 +29,9 @@ export const useLayoutStore = defineStore('layoutStore', {
     isDrawerCompact: false,
     showCookiePopup: false,
     modals: {
-      walletBonusInfo: false,
-      turnOverWager: false,
-      questsHub: false,
-      loyaltyEarn: false,
-      loyaltyLevel: false,
-      depositRedirect: false,
       providers: false,
       categories: false,
       packageBonus: false,
-    },
-    modalsUrl: {
-      questsHub: 'quests-hub',
-      depositRedirect: 'deposit-redirect',
     },
     lastNotificationTime: 0,
     returnGame: undefined,
@@ -142,58 +120,12 @@ export const useLayoutStore = defineStore('layoutStore', {
       if (this.isDrawerCompact) this.isDrawerCompact = false;
     },
 
-    addModalQuery(modalName: string, queryValue: Maybe<string>): void {
-      const router = useRouter();
-      const { query } = useRoute();
-      const modalsArr = Object.keys(this.modals);
-      const newQuery: any = { ...query };
-
-      modalsArr.forEach(modalKey => {
-        if (modalKey !== modalName) {
-          this.modals[modalKey] = false;
-          newQuery[this.modalsUrl[modalKey]] = undefined;
-        } else newQuery[this.modalsUrl[modalKey]] = queryValue || 'true';
-      });
-      router.replace({ query: newQuery });
-    },
-
-    async removeModalQuery(modalName: string): Promise<void> {
-      const router = useRouter();
-      const { query } = useRoute();
-
-      await router.replace({ query: { ...query, [this.modalsUrl[modalName]]: undefined, resetCode: undefined } });
-    },
-
-    showModal(modalName: string, queryValue?: string): void {
-      if (this.modalsUrl[modalName]) this.addModalQuery(modalName, queryValue);
+    showModal(modalName: string): void {
       this.modals[modalName] = true;
     },
 
     async closeModal(modalName: string): Promise<void> {
       this.modals[modalName] = false;
-      if (this.modalsUrl[modalName]) await this.removeModalQuery(modalName);
-    },
-
-    checkModals(): void {
-      const route = useRoute();
-      const { isLoggedIn } = useProfileStore();
-      const queryArr = Object.keys(route.query);
-
-      queryArr.forEach(query => {
-        const modalKey = Object.keys(this.modalsUrl).find(key => this.modalsUrl[key] === query);
-        if (!modalKey) return;
-
-        const authModals = ['questsHub'];
-        if (authModals.includes(modalKey)) {
-          if (!isLoggedIn) {
-            this.closeModal(modalKey);
-          } else {
-            this.showModal(modalKey);
-          }
-        } else {
-          this.showModal(modalKey, route.query?.[query] as string);
-        }
-      });
     },
 
     setReturnGame(gameData: Maybe<IGame | string>): void {
@@ -206,12 +138,6 @@ export const useLayoutStore = defineStore('layoutStore', {
     deleteReturnGame(): void {
       sessionStorage.removeItem('returnGame');
       this.returnGame = undefined;
-    },
-
-    closeAllModals(): void {
-      Object.keys(this.modals).forEach(modalKey => {
-        if (this.modals[modalKey]) this.closeModal(modalKey);
-      });
     },
   },
 

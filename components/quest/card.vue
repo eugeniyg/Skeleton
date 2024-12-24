@@ -11,9 +11,19 @@
 
     <div ref="headerRef" class="quest-card__header">
       <div class="quest-currencies">
-        <quest-currency :rewards="props.questInfo.rewards" type="real" />
+        <quest-currency
+          :currentLocaleContent="questsHubContent"
+          :defaultLocaleContent="defaultLocaleQuestsHubContent"
+          :rewards="props.questInfo.rewards"
+          type="real"
+        />
 
-        <quest-currency :rewards="props.questInfo.rewards" type="virtual" />
+        <quest-currency
+          :currentLocaleContent="questsHubContent"
+          :defaultLocaleContent="defaultLocaleQuestsHubContent"
+          :rewards="props.questInfo.rewards"
+          type="virtual"
+        />
       </div>
 
       <quest-timer
@@ -32,11 +42,11 @@
 
     <div v-if="[1, 2].includes(props.questInfo.state)" class="quest-card__actions">
       <button-base v-if="props.questInfo.state === 1" size="sm" type="primary" @click.stop="activateQuest">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.startQuestButton') }}
+        {{ activateQuestButton }}
       </button-base>
 
       <button-base v-else size="sm" type="ghost" @click.stop="cancelQuest">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'questsHub.cancelQuestButton') }}
+        {{ getContent(questsHubContent, defaultLocaleQuestsHubContent, 'cancelQuestButton') }}
       </button-base>
     </div>
   </div>
@@ -44,20 +54,24 @@
 
 <script setup lang="ts">
   import type { IPlayerQuest } from '@skeleton/core/types';
+  import type { IQuestsHubModal } from '~/types';
 
   const props = defineProps<{
     questIndex: number;
     questInfo: IPlayerQuest;
   }>();
 
+  const questsHubContent: Maybe<IQuestsHubModal> = inject('questsHubContent');
+  const defaultLocaleQuestsHubContent: Maybe<IQuestsHubModal> = inject('defaultLocaleQuestsHubContent');
+
   const { openTasksModal } = useQuestsStore();
   const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
+  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   const questImages = computed(() => {
     const imgObjArr: { src: string }[] =
-      getContent(popupsData.value, defaultLocalePopupsData.value, 'questsHub.questsImages') || [];
+      getContent(questsHubContent, defaultLocaleQuestsHubContent, 'questsImages') || [];
     return imgObjArr.map(imgObj => imgObj.src);
   });
 
@@ -74,6 +88,13 @@
     );
   });
 
+  const activateQuestButton = computed(() => {
+    const isQuestCompleted = props.questInfo.tasks.every(task => task.isCompleted);
+    return isQuestCompleted
+      ? getContent(questsHubContent, defaultLocaleQuestsHubContent, 'claimReward')
+      : getContent(questsHubContent, defaultLocaleQuestsHubContent, 'startQuestButton');
+  });
+
   const { showAlert } = useLayoutStore();
   const activation = ref(false);
   const canceling = ref(false);
@@ -84,6 +105,7 @@
 
     try {
       await activatePlayerQuest(props.questInfo.id);
+      useEvent('questActivated');
     } catch {
       showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
       activation.value = false;

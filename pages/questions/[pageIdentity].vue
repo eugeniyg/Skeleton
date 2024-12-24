@@ -2,7 +2,7 @@
   <div class="content">
     <h1 class="heading">{{ categoryContent?.currentLocaleData?.title }}</h1>
 
-    <div v-if="categoryContent?.currentLocaleData?.questionList?.length">
+    <div v-if="questionsList.length">
       <expander
         v-for="(item, itemIndex) in questionsList"
         :key="itemIndex"
@@ -23,6 +23,7 @@
     contentKey: `${pageIdentity}-question`,
     contentRoute: ['question-pages'],
     where: { pageIdentity },
+    currentOnly: true,
   };
   const { getContentData } = useContentLogic<IQuestionCategory>(contentParams);
   const { data: categoryContent } = await useLazyAsyncData(getContentData);

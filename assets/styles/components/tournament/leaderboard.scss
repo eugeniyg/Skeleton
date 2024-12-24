@@ -1,0 +1,138 @@
+.tournament-leaderboard {
+  &__tb {
+    display: flex;
+    flex-direction: column;
+    grid-row-gap: 4px;
+
+    &-container {
+      display: grid;
+      overflow-x: auto;
+      margin: 0 -16px;
+      padding: 0 16px;
+      scroll-padding: 16px;
+      overflow-scrolling: touch;
+      @include scrollbar-hide();
+    }
+
+    &-head {
+      display: flex;
+      align-items: center;
+      border-radius: var(--corner-radius-mapped-tumb-default, 8px);
+      background: var(--layer-01);
+      flex-shrink: 0;
+    }
+
+    &-th {
+      color: var(--text-tertiary);
+      padding: 7px 16px;
+      flex-shrink: 0;
+      @include font($heading-2);
+    }
+
+    &-body {
+      display: grid;
+      grid-row-gap: 4px;
+    }
+
+    &-row {
+      display: flex;
+      align-items: center;
+      border-radius: var(--corner-radius-mapped-tumb-default, 8px);
+      position: relative;
+      background: var(--layer-01);
+
+      &:after {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+
+      &.is-accented {
+        background: var(--layer-02);
+
+        .is-empty {
+          color: var(--gray-300);
+          @include font($body-2);
+        }
+      }
+
+      &:not(.is-accented) {
+        .is-empty {
+          color: var(--text-accent);
+          @include font($body-2);
+        }
+      }
+    }
+
+    &-td {
+      padding: 16px;
+      display: flex;
+      grid-column-gap: 4px;
+      //align-items: center;
+      white-space: nowrap;
+      flex-shrink: 0;
+      @include font($body-2);
+
+      .icon {
+        --icon-size: 20px;
+        --color: var(--icon-success);
+        transform: rotate(180deg);
+      }
+
+      img {
+        width: 20px;
+        height: 20px;
+        display: block;
+      }
+
+      &:not(:last-child) {
+        color: var(--text-primary);
+      }
+
+      &:last-child {
+        color: var(--text-accent);
+      }
+    }
+
+    &-th, &-td {
+      &:nth-child(1) {
+        min-width: 40px;
+      }
+
+      &:nth-child(2) {
+        min-width: 140px;
+      }
+
+      &:nth-child(3) {
+        min-width: 100px;
+      }
+
+      &:nth-child(4) {
+        min-width: 140px;
+      }
+
+
+      @include media(xs) {
+        min-width: 0;
+
+        &:nth-child(1) {
+          width: 40px;
+        }
+
+        &:nth-child(2) {
+          width: 40%;
+        }
+
+        &:nth-child(3) {
+          width: 20%;
+        }
+
+        &:nth-child(4) {
+          width: 50%;
+        }
+      }
+    }
+  }
+}
