@@ -4,6 +4,7 @@ import type { IBonusCode, IPlayerBonus, IPlayerFreeSpin } from './bonusTypes';
 import type { IPlayerQuest, IPlayerQuestEventTask } from '@skeleton/core/types/questTypes';
 import type { IPlayerLoyaltyAccount } from '@skeleton/core/types/profileTypes';
 import type { IMessage } from '@skeleton/core/types/notificationTypes';
+import type {ITournamentParticipant, ITournamentPrize} from "@skeleton/core/types/tournamentsTypes";
 
 export interface IRate extends Record<string, any> {
   rate: number;
@@ -151,6 +152,22 @@ export interface IEventBet extends Record<string, any> {
   createdAt: string;
 }
 
+export interface IEventTournament extends Record<string, any> {
+  id: string;
+  title: string;
+  identity: string;
+  state: number;
+  prizes: ITournamentPrize[];
+  endAt: string;
+}
+
+export interface IEventTournamentEntry extends Record<string, any> {
+  tournamentId: string;
+  playerId: string;
+  points: number;
+  place: number;
+}
+
 export interface IWebSocketResponse extends Record<string, any> {
   data: {
     event: string;
@@ -167,6 +184,9 @@ export interface IWebSocketResponse extends Record<string, any> {
     playerAccount?: IPlayerLoyaltyAccount;
     bet?: IEventBet;
     message?: IMessage;
+    tournament?: IEventTournament;
+    leaderboard?: ITournamentParticipant[];
+    entry?: IEventTournamentEntry;
   };
   gen: undefined;
   offset: undefined;

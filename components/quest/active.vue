@@ -1,8 +1,8 @@
 <template>
   <div class="quest-tab">
-    <div v-if="playerActiveQuests.length" class="quest-tab__items">
+    <div v-if="activeQuests.length" class="quest-tab__items">
       <quest-card
-        v-for="(quest, questIndex) in playerActiveQuests"
+        v-for="(quest, questIndex) in activeQuests"
         :key="quest.id"
         :quest-info="quest"
         :quest-index="questIndex"
@@ -19,7 +19,7 @@
   const questsHubContent: Maybe<IQuestsHubModal> = inject('questsHubContent');
   const defaultLocaleQuestsHubContent: Maybe<IQuestsHubModal> = inject('defaultLocaleQuestsHubContent');
   const questsStore = useQuestsStore();
-  const { playerActiveQuests } = storeToRefs(questsStore);
+  const { activeQuests } = storeToRefs(questsStore);
   const { getContent } = useProjectMethods();
 
   const emptyContentData = computed(() => {

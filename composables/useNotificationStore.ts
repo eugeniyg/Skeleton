@@ -44,7 +44,6 @@ export const useNotificationStore = defineStore('notificationStore', {
     },
 
     showNotificationAlert(title: string | undefined): void {
-      console.log(title);
       if (!title) return;
       const { alertsData, defaultLocaleLayoutData } = useGlobalStore();
       const { getContent } = useProjectMethods();

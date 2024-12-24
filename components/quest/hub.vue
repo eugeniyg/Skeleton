@@ -10,13 +10,8 @@
       </button-base>
     </div>
 
-    <div v-if="playerActiveQuests.length" class="quest-hub__cards">
-      <quest-hub-card
-        v-for="(quest, index) in playerActiveQuests"
-        :key="index"
-        :quest-info="quest"
-        :card-index="index"
-      />
+    <div v-if="activeQuests.length" class="quest-hub__cards">
+      <quest-hub-card v-for="(quest, index) in activeQuests" :key="index" :quest-info="quest" :card-index="index" />
     </div>
 
     <quest-empty v-else v-bind="infoContent?.questsHub?.empty || defaultLocaleInfoContent?.questsHub?.empty" />
@@ -34,7 +29,7 @@
   const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
   const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
   const questsStore = useQuestsStore();
-  const { playerActiveQuests } = storeToRefs(questsStore);
+  const { activeQuests } = storeToRefs(questsStore);
   const { openModal } = useModalStore();
 </script>
 

@@ -57,7 +57,7 @@
         v-if="props.showInfo"
         id="info"
         class="loyalty-progress__points-info"
-        @click="showModal('loyaltyEarn')"
+        @click="openModal('loyalty-earn')"
       />
     </div>
   </div>
@@ -73,7 +73,7 @@
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
 
-  const { showModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const loyaltyStore = useLoyaltyStore();
   const { loyaltyAccount, currentLevelName, nextLevelName, currentPoints, nextLevelPoints, currentLevelProgress } =
     storeToRefs(loyaltyStore);

@@ -1,9 +1,7 @@
 <template>
   <div :class="layoutClasses">
     <atomic-preloader />
-
     <layout-header @logout="logout" />
-
     <layout-drawer @toggle-open="toggleOpen" />
 
     <main class="app-main" :class="mainClasses" :data-route="route.name">
@@ -11,7 +9,6 @@
     </main>
 
     <layout-footer />
-
     <atomic-opacity-layer />
 
     <client-only>
@@ -29,16 +26,7 @@
     </transition>
 
     <ModalsContainer />
-
-    <modal-deposit-redirect />
-    <modal-wallet-bonus-info />
-    <modal-turn-over-wager v-if="turnOverWagerModal" />
     <atomic-alert />
-
-    <template v-if="loyaltyEnabled">
-      <modal-loyalty-level />
-      <modal-loyalty-earn />
-    </template>
   </div>
 </template>
 
@@ -99,20 +87,14 @@
     );
   });
 
-  const runtimeConfig = useRuntimeConfig();
-  const turnOverWagerModal = runtimeConfig.public?.enableTurnOverWager;
-  const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;
-
   onBeforeMount(() => {
     const storageReturnGame = sessionStorage.getItem('returnGame');
     if (storageReturnGame) returnGame.value = JSON.parse(storageReturnGame);
   });
 
-  const { checkModals } = useLayoutStore();
   const { checkOpenedModals } = useModalStore();
   const mainClasses = ref();
   onMounted(async () => {
-    checkModals();
     checkOpenedModals();
     checkDrawer();
     disabledTransition.value = false;

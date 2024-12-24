@@ -99,8 +99,8 @@ export const useWalletStore = defineStore('walletStore', {
 
       const runtimeConfig = useRuntimeConfig();
       if (runtimeConfig.public?.questsEnabled) {
-        const { getPlayerActiveQuests } = useQuestsStore();
-        getPlayerActiveQuests();
+        const { getActiveQuests } = useQuestsStore();
+        getActiveQuests();
       }
 
       const { getPlayerBonuses, getPlayerFreeSpins, getPlayerCashback, getDepositBonuses } = useBonusStore();
