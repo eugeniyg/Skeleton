@@ -136,7 +136,7 @@ export default defineNuxtConfig({
     inlineDynamicImports: true,
     devProxy: {
       '/api': {
-        target: 'https://test.dev.getplatform.tech/api',
+        target: 'https://qa1.dev.getplatform.tech/api',
         changeOrigin: true,
       },
     },

@@ -1,0 +1,42 @@
+.tournament-advertising {
+  border-radius: var(--corner-radius-mapped-system-graund-layer, 16px);
+  background: var(--gradient-gray-dark-line, linear-gradient(182deg, #161A22 44.46%, #272D3A 98.37%));
+  display: flex;
+  padding: 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  width: max-content;
+  margin: 56px auto 0;
+
+  @include media(md) {
+    gap: 40px;
+    padding: 16px 24px;
+  }
+
+
+  &__title {
+    color: var(--text-primary);
+    @include font($body-1);
+
+    @include media(md) {
+      @include font($body-3);
+    }
+  }
+
+  &__prize {
+    color: var(--text-accent);
+    text-shadow: var(--shadow-layer);
+    @include font($heading-5);
+
+    @include media(md) {
+      @include font($heading-7);
+    }
+  }
+
+  &__actions {
+    .btn-primary {
+      @include upd-font($heading-2);
+    }
+  }
+}

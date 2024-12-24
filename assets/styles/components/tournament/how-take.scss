@@ -1,0 +1,84 @@
+.tournament-how-take {
+  background: var(--gradient-gray-dark-line);
+  border-radius: 16px;
+  display: flex;
+  position: relative;
+  flex-direction: var(--direction, column);
+  padding: var(--padding, 24px);
+  grid-gap: var(--gap, 16px);
+
+  @include media(md) {
+    --direction: row;
+    --padding: 16px 106px 16px 16px;
+    --gap: 8px;
+  }
+
+  @include media(md) {
+    --padding: 24px 106px 24px 24px;
+  }
+
+  &__title {
+    color: var(--text-primary);
+    @include font($heading-3);
+
+    @include media(md) {
+      align-self: center;
+      padding-right: 8px;
+      min-width: 120px;
+    }
+  }
+
+  &__items {
+    display: var(--display, grid);
+    grid-gap: 8px;
+
+    @include media(md) {
+      --display: flex;
+    }
+  }
+
+  &__text {
+    @include font($body-1);
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  &__item {
+    position: relative;
+    background-color: var(--layer-02);
+    display: flex;
+    align-items: center;
+    grid-gap: 12px;
+    padding: 4px 16px;
+    border-radius: 8px;
+    width: 100%;
+  }
+
+  &__number {
+    display: block;
+    background: var(--button-bg-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    @include font($heading-7);
+  }
+
+  img {
+    display: block;
+    position: var(--position, absolute);
+    width: var(--width, 88px);
+    height: 100%;
+    top: var(--top, 0);
+    right: 0;
+    transform: var(--transform, translateY(-4px));
+    object-fit: contain;
+    object-position: var(--object-position, top);
+
+    @include media(md) {
+      --top: 50%;
+      --transform: translateY(-50%) translateX(-10px);
+      --object-position: right;
+    }
+  }
+}

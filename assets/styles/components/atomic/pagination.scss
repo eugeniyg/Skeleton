@@ -13,10 +13,12 @@
     align-items: center;
     justify-content: center;
 
-    &:hover {
-      cursor: pointer;
-      --bg: var(--button-bg-secondary-hover);
-      --color: var(--text-accent);
+    @include use-hover {
+      &:hover {
+        cursor: pointer;
+        --bg: var(--button-bg-secondary-hover);
+        --color: var(--text-accent);
+      }
     }
   }
 
