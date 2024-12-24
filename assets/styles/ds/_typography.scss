@@ -215,6 +215,13 @@ $body-3: (
   letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
 );
 
+$body-4: (
+  font-size: map-get(font-sizes.$font-sizes, 300),
+  font-weight: map-get(font-weights.$font-weights, regular),
+  line-height: 130%,
+  letter-spacing: map-get(letter-spacings.$letter-spacings, 1),
+);
+
 $body-3-paragraph: (
   font-size: map-get(font-sizes.$font-sizes, 100),
   font-weight: map-get(font-weights.$font-weights, regular),
