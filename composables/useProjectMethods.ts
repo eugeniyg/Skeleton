@@ -122,26 +122,26 @@ export const useProjectMethods = () => {
   };
 
   const getImageUrl = (customImages: Maybe<IGameImages>, images: Maybe<IGameImages>, orientation: string): string => {
-    // let imageUrl: string | undefined;
-    // const { public: config } = useRuntimeConfig();
-    //
-    // if (customImages) {
-    //   const imagePath =
-    //     orientation === 'vertical'
-    //       ? customImages['200x300']?.['3x'] || customImages['200x300']?.['2x'] || customImages['200x300']?.['1x']
-    //       : customImages['200x200']?.['3x'] || customImages['200x200']?.['2x'] || customImages['200x200']?.['1x'];
-    //   if (imagePath && config.customerCdn) imageUrl = `${config.customerCdn}${imagePath}`;
-    // }
-    //
-    // if (!imageUrl && images) {
-    //   const imagePath =
-    //     orientation === 'vertical'
-    //       ? images['200x300']?.['3x'] || images['200x300']?.['2x'] || images['200x300']?.['1x']
-    //       : images['200x200']?.['3x'] || images['200x200']?.['2x'] || images['200x200']?.['1x'];
-    //   if (imagePath && config.gamehubCdn) imageUrl = `${config.gamehubCdn}${imagePath}`;
-    // }
-    //
-    // if (imageUrl) return imageUrl;
+    let imageUrl: string | undefined;
+    const { public: config } = useRuntimeConfig();
+
+    if (customImages) {
+      const imagePath =
+        orientation === 'vertical'
+          ? customImages['200x300']?.['3x'] || customImages['200x300']?.['2x'] || customImages['200x300']?.['1x']
+          : customImages['200x200']?.['3x'] || customImages['200x200']?.['2x'] || customImages['200x200']?.['1x'];
+      if (imagePath && config.customerCdn) imageUrl = `${config.customerCdn}${imagePath}`;
+    }
+
+    if (!imageUrl && images) {
+      const imagePath =
+        orientation === 'vertical'
+          ? images['200x300']?.['3x'] || images['200x300']?.['2x'] || images['200x300']?.['1x']
+          : images['200x200']?.['3x'] || images['200x200']?.['2x'] || images['200x200']?.['1x'];
+      if (imagePath && config.gamehubCdn) imageUrl = `${config.gamehubCdn}${imagePath}`;
+    }
+
+    if (imageUrl) return imageUrl;
 
     const { getContent } = useProjectMethods();
     const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
