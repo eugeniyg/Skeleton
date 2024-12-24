@@ -84,7 +84,7 @@
     </div>
 
     <tournament-leaderboard
-      v-if="props.tournamentDefiniteData && hasLeaderboardLength"
+      v-if="props.tournamentDefiniteData && hasLeaderboard"
       :currentLocaleCommonContent="props.currentLocaleCommonContent"
       :defaultLocaleCommonContent="props.defaultLocaleCommonContent"
       :tournamentDefiniteData="props.tournamentDefiniteData"
@@ -110,9 +110,11 @@
     getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'leaderboard.pointsLabel')
   );
 
-  const hasLeaderboardLength = computed(() => {
-    const leaderboardLength = (props.tournamentDefiniteData?.leaderboard?.length ?? 0) > 3;
-    const prizesLength = (props.tournamentDefiniteData?.prizes?.length ?? 0) > 3;
+  const hasLeaderboard = computed(() => {
+    const leaderboardLength =
+      props.tournamentDefiniteData?.state === 3 && (props.tournamentDefiniteData?.leaderboard?.length ?? 0) > 3;
+    const prizesLength =
+      (props.tournamentDefiniteData?.state || 0) > 3 && (props.tournamentDefiniteData?.prizes?.length ?? 0) > 3;
     return leaderboardLength || prizesLength;
   });
 

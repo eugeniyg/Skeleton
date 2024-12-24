@@ -113,15 +113,16 @@
       pageList = props.tournamentDefiniteData.leaderboard.slice(firstListElement, firstListElement + perPage);
     }
 
-    if (props.tournamentDefiniteData.playerEntry?.points) {
-      if (props.tournamentDefiniteData.playerEntry?.place > pageList[pageList.length - 1].place) {
-        pageList.push({
-          playerId: profile.value?.id as string,
-          nickname: profile.value?.nickname || '',
-          points: props.tournamentDefiniteData.playerEntry.points,
-          place: props.tournamentDefiniteData.playerEntry.place,
-        });
-      }
+    if (
+      props.tournamentDefiniteData.playerEntry?.points &&
+      props.tournamentDefiniteData.playerEntry?.place > pageList[pageList.length - 1]?.place
+    ) {
+      pageList.push({
+        playerId: profile.value?.id as string,
+        nickname: profile.value?.nickname || '',
+        points: props.tournamentDefiniteData.playerEntry.points,
+        place: props.tournamentDefiniteData.playerEntry.place,
+      });
     }
 
     return pageList;
