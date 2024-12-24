@@ -11,31 +11,31 @@ export const useMobileGameLogic = (gameInfo: IGame) => {
   const { isLoggedIn } = storeToRefs(profileStore);
   const { activeAccount } = storeToRefs(walletStore);
 
-  const resolveLoggedWithoutBalance = (): void => {
-    if (gameInfo.isDemoMode) openMobileGameModal('depositOrDemo', gameInfo);
-    else openMobileGameModal('deposit', gameInfo);
+  const resolveLoggedWithoutBalance = async (): Promise<void> => {
+    if (gameInfo.isDemoMode) await openMobileGameModal('depositOrDemo', gameInfo);
+    else await openMobileGameModal('deposit', gameInfo);
   };
-  const resolveLogged = (): void => {
+  const resolveLogged = async (): Promise<void> => {
     if (activeAccount.value?.balance) {
-      router.push(localizePath(`/games/${gameInfo.identity}?real=true`));
+      await router.push(localizePath(`/games/${gameInfo.identity}?real=true`));
     } else {
-      return resolveLoggedWithoutBalance();
+      return await resolveLoggedWithoutBalance();
     }
   };
 
-  const resolveUnlogged = (): void => {
+  const resolveUnlogged = async (): Promise<void> => {
     if (gameInfo.isDemoMode) {
-      openMobileGameModal('registerOrDemo', gameInfo);
+      await openMobileGameModal('registerOrDemo', gameInfo);
     } else {
-      openMobileGameModal('registerOrLogin', gameInfo);
+      await openMobileGameModal('registerOrLogin', gameInfo);
     }
   };
 
-  const openGame = () => {
+  const openGame = async (): Promise<void> => {
     if (isLoggedIn.value) {
-      resolveLogged();
+      await resolveLogged();
     } else {
-      resolveUnlogged();
+      await resolveUnlogged();
     }
   };
 

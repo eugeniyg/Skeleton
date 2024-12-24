@@ -1,21 +1,25 @@
 <template>
   <div class="turn-over-wager">
     <div class="turn-over-wager__img">
-      <atomic-image :src="getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.image')" />
+      <atomic-image
+        :src="getContent(turnOverWagerContent?.currentLocaleData, turnOverWagerContent?.defaultLocaleData, 'image')"
+      />
     </div>
 
     <div class="turn-over-wager__title">
-      {{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.title') }}
+      {{ getContent(turnOverWagerContent?.currentLocaleData, turnOverWagerContent?.defaultLocaleData, 'title') }}
     </div>
 
     <p class="turn-over-wager__description">
-      {{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.description') }}
+      {{ getContent(turnOverWagerContent?.currentLocaleData, turnOverWagerContent?.defaultLocaleData, 'description') }}
     </p>
 
     <div class="turn-over-wager__info">
       <div class="turn-over-wager__info-wager">
         <span class="turn-over-wager__info-wager-label">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.wagerLabel') }}:
+          {{
+            getContent(turnOverWagerContent?.currentLocaleData, turnOverWagerContent?.defaultLocaleData, 'wagerLabel')
+          }}:
         </span>
 
         <span class="turn-over-wager__info-wager-value">
@@ -34,7 +38,13 @@
       <div class="turn-over-wager__info-amount">
         <div>
           <span class="turn-over-wager__info-amount-label">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.placedLabel') }}:
+            {{
+              getContent(
+                turnOverWagerContent?.currentLocaleData,
+                turnOverWagerContent?.defaultLocaleData,
+                'placedLabel'
+              )
+            }}:
           </span>
 
           <span class="turn-over-wager__info-amount-value">{{ placedAmount }}</span>
@@ -42,7 +52,13 @@
 
         <div>
           <span class="turn-over-wager__info-amount-label">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'turnOverWager.totalLabel') }}:
+            {{
+              getContent(
+                turnOverWagerContent?.currentLocaleData,
+                turnOverWagerContent?.defaultLocaleData,
+                'totalLabel'
+              )
+            }}:
           </span>
 
           <span class="turn-over-wager__info-amount-value">{{ totalAmount }}</span>
@@ -53,8 +69,18 @@
 </template>
 
 <script setup lang="ts">
+  import type { ITurnOverWagerModal } from '~/types';
+
+  const turnOverWagerContentParams = {
+    contentKey: 'modal-turn-over-wager',
+    contentRoute: ['modals', 'turn-over-wager'],
+  };
+  const { getContentData: getTurnOverWagerContentData } =
+    useContentLogic<ITurnOverWagerModal>(turnOverWagerContentParams);
+  const { data: turnOverWagerContent } = await useLazyAsyncData(getTurnOverWagerContentData);
+
   const { getContent, formatBalance } = useProjectMethods();
-  const { popupsData, defaultLocalePopupsData, currencies } = useGlobalStore();
+  const { currencies } = useGlobalStore();
   const riskStore = useRiskStore();
   const { turnOverWagerData } = storeToRefs(riskStore);
 

@@ -172,7 +172,7 @@
   const showResetModal = async (code: string): Promise<void> => {
     const router = useRouter();
     const route = useRoute();
-    await openModal('reset-pass', undefined, false);
+    await openModal('reset-pass', { prohibitQueryChange: false });
     router.push({ query: { ...route.query, 'forgot-pass': undefined, 'reset-pass': 'true', resetCode: code } });
     modalStore.modals['forgot-pass']?.close();
   };

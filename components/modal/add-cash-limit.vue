@@ -1,15 +1,14 @@
 <template>
   <vue-final-modal
-    v-model="modals.addLimit"
     class="modal-deposit-limit"
     click-to-close
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
     :content-transition="{ mode: 'in-out', duration: 250 }"
-    @click-outside="closeModal('addLimit')"
+    @click-outside="closeModal('add-cash-limit')"
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @click="closeModal('addLimit')" />
+        <button-modal-close @click="closeModal('add-cash-limit')" />
         <div class="title">
           {{ props.definition ? titleMapping[props.definition] : '' }}
         </div>
@@ -38,6 +37,8 @@
         :key="currencyKey"
         :show-error="formState.showCurrenciesError"
         :items="currenciesOptions"
+        :currentLocaleData="props.currentLocaleData"
+        :defaultLocaleData="props.defaultLocaleData"
         @select="selectCurrency"
         @blur="blurCurrencySelect"
       />
@@ -58,11 +59,11 @@
       />
 
       <p class="modal-deposit-limit__description">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.hint') }}
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'hint') }}
       </p>
 
       <button-base type="primary" size="md" :is-disabled="isAddButtonDisabled" @click="addLimit">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'addCashLimit.addButton') }}
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'addButton') }}
       </button-base>
     </div>
   </vue-final-modal>
@@ -72,20 +73,24 @@
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
   import type { ICurrency, IPlayerLimit } from '@skeleton/core/types';
+  import type { IModalsContent } from '~/types';
 
-  const props = defineProps<{ definition?: number }>();
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['addCashLimit']>;
+    defaultLocaleData: Maybe<IModalsContent['addCashLimit']>;
+    definition?: number;
+  }>();
 
+  const { closeModal } = useModalStore();
   const limitsStore = useLimitsStore();
-  const { getLimits, createLimit, closeModal } = limitsStore;
-  const { limitCashPeriod, activeLimits, modals } = storeToRefs(limitsStore);
+  const { getLimits, createLimit } = limitsStore;
+  const { limitCashPeriod, activeLimits } = storeToRefs(limitsStore);
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();
   const {
     currencies,
     alertsData,
     defaultLocaleAlertsData,
-    popupsData,
-    defaultLocalePopupsData,
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent,
   } = storeToRefs(globalStore);
@@ -94,9 +99,9 @@
   const currencyKey = ref(0);
 
   const titleMapping = computed<Record<number, string>>(() => ({
-    1: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addBetLabel'),
-    2: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addLossLabel'),
-    3: getContent(popupsData.value, defaultLocalePopupsData.value, 'addCashLimit.addDepositLabel'),
+    1: getContent(props.currentLocaleData, props.defaultLocaleData, 'addBetLabel'),
+    2: getContent(props.currentLocaleData, props.defaultLocaleData, 'addLossLabel'),
+    3: getContent(props.currentLocaleData, props.defaultLocaleData, 'addDepositLabel'),
   }));
 
   const formState = reactive<{
@@ -221,7 +226,7 @@
       });
 
       await getLimits();
-      closeModal('addLimit');
+      await closeModal('add-cash-limit');
       showAlert(alertsData.value?.limit?.cashLimitAdd || defaultLocaleAlertsData.value?.limit?.cashLimitAdd);
     } catch (error: any) {
       if (error.response?.status === 422) {
@@ -236,4 +241,4 @@
   });
 </script>
 
-<style src="~/assets/styles/components/modal/add-limit.scss" lang="scss" />
+<style src="~/assets/styles/components/modal/add-cash-limit.scss" lang="scss" />

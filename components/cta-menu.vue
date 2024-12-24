@@ -32,12 +32,11 @@
 
   const route = useRoute();
   const { localizePath } = useProjectMethods();
-  const { showModal } = useLayoutStore();
   const { openModal } = useModalStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const openQuestsHub = (): void => {
-    if (isLoggedIn.value) showModal('questsHub');
+    if (isLoggedIn.value) openModal('quests-hub');
     else openModal('sign-in');
   };
 </script>

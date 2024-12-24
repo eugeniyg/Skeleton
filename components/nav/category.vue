@@ -7,7 +7,7 @@
         ref="itemRef"
         class="nav-category__item"
         :class="{
-          'is-active': route.query.category === identity,
+          'is-active': route.params.categoryIdentity === identity,
           'is-no-icon': !gameCategoriesObj[identity]?.icon,
         }"
         :data-identity="identity"
@@ -29,7 +29,7 @@
           :key="id"
           class="nav-category__dropdown-item"
           :class="{
-            'is-active': route.query.category === identity,
+            'is-active': route.params.categoryIdentity === identity,
             'is-no-icon': !gameCategoriesObj[identity]?.icon,
           }"
           @click="clickCategory(identity)"

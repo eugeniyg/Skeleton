@@ -19,18 +19,16 @@
       </button-base>
     </div>
 
-    <quest-empty v-else-if="!state.loading" v-bind="emptyContentData" />
+    <quest-empty v-else v-bind="emptyContentData" />
   </div>
 </template>
 
 <script setup lang="ts">
   import type { IPaginationMeta, IPlayerQuest } from '@skeleton/core/types';
-  import { useListen } from '@skeleton/composables/useEventBus';
   import type { IQuestsHubModal } from '~/types';
 
   const questsHubContent: Maybe<IQuestsHubModal> = inject('questsHubContent');
   const defaultLocaleQuestsHubContent: Maybe<IQuestsHubModal> = inject('defaultLocaleQuestsHubContent');
-
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
@@ -47,18 +45,17 @@
     meta: undefined,
   });
 
-  const { getPlayerQuests } = useCoreQuestApi();
+  const { getAvailableQuests } = useCoreQuestApi();
   const { showAlert } = useLayoutStore();
   const getData = async (page = 1): Promise<void> => {
-    if (state.loading || (state.meta && state.meta.page >= state.meta.totalPages)) return;
+    if (state.loading) return;
     state.loading = true;
 
     try {
       const { activeAccount } = useWalletStore();
-      const { data, meta } = await getPlayerQuests({
+      const { data, meta } = await getAvailableQuests({
         page: page,
-        perPage: 3,
-        state: [5, 6],
+        perPage: 5,
         currency: activeAccount?.currency,
       });
       state.data = page === 1 ? data : [...state.data, ...data];
@@ -74,18 +71,18 @@
 
   const emptyContentData = computed(() => {
     const image = getContent(questsHubContent, defaultLocaleQuestsHubContent, 'empty.image');
-    const title = getContent(questsHubContent, defaultLocaleQuestsHubContent, 'empty.expiredTitle');
-    const description = getContent(questsHubContent, defaultLocaleQuestsHubContent, 'empty.expiredDescription');
+    const title = getContent(questsHubContent, defaultLocaleQuestsHubContent, 'empty.availableTitle');
+    const description = getContent(questsHubContent, defaultLocaleQuestsHubContent, 'empty.availableDescription');
     return { image, title, description };
   });
 
-  onMounted(async () => {
-    await getData();
-    useListen('expiredQuestsUpdated', getData);
+  onMounted(() => {
+    useListen('questActivated', getData);
+    getData();
   });
 
   onBeforeUnmount(() => {
-    useUnlisten('expiredQuestsUpdated', getData);
+    useUnlisten('questActivated', getData);
   });
 </script>
 

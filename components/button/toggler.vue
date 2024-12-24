@@ -34,7 +34,7 @@
   const route = useRoute();
   const additionalCasinoActive = computed(() => {
     const gamesRoute = route.name === 'games-id' || route.name === 'locale-games-id';
-    return !!route.query.category || gamesRoute;
+    return !!route.params.categoryIdentity || gamesRoute;
   });
 </script>
 

@@ -33,7 +33,6 @@
   import type { IGameProvider } from '@skeleton/core/types';
 
   const props = defineProps<{
-    selected: string[];
     tags: IGameProvider[];
   }>();
 
@@ -65,12 +64,9 @@
   };
 
   const emit = defineEmits(['unselect']);
-
   const unselectTag = (providerId: string) => {
-    emit(
-      'unselect',
-      props.selected.filter(id => id !== providerId)
-    );
+    const idsArr = props.tags.filter(tag => tag.id !== providerId).map(provider => provider.id);
+    emit('unselect', idsArr);
   };
 
   const clearTags = () => {

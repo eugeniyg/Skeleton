@@ -14,7 +14,14 @@
           {{ getContent(currentLocaleContent, defaultLocaleContent, 'gamesLabel') }}
         </div>
 
-        <button-base type="primary" :url="`/games?provider=${props.staticProvider.id}`">
+        <button-base
+          type="primary"
+          :url="
+            defaultCategory
+              ? `/categories/${defaultCategory}?provider=${props.staticProvider.identity}`
+              : `/categories?provider=${props.staticProvider.identity}`
+          "
+        >
           {{ getContent(currentLocaleContent, defaultLocaleContent, 'staticProvider.button') }}
         </button-base>
       </div>
@@ -27,7 +34,13 @@
     <nuxt-link
       v-for="provider in props.providersList"
       :key="provider.id"
-      :to="localizePath(`/games?provider=${provider.id}`)"
+      :to="
+        localizePath(
+          defaultCategory
+            ? `/categories/${defaultCategory}?provider=${provider.identity}`
+            : `/categories?provider=${provider.identity}`
+        )
+      "
       class="list-providers__item"
     >
       <atomic-picture
@@ -48,6 +61,7 @@
 <script setup lang="ts">
   import type { IProvidersPage } from '~/types';
   import type { IGameProvider } from '@skeleton/core/types';
+  import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
     staticProvider?: IGameProvider;
@@ -56,7 +70,16 @@
     defaultLocaleContent: Maybe<IProvidersPage>;
   }>();
 
+  const globalStore = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
   const { getContent, localizePath } = useProjectMethods();
+  const defaultCategory = computed(() =>
+    getContent(
+      globalComponentsContent.value,
+      defaultLocaleGlobalComponentsContent.value,
+      'providersSettings.defaultCategory'
+    )
+  );
 </script>
 
 <style src="~/assets/styles/components/list/providers.scss" lang="scss" />
