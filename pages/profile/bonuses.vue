@@ -78,8 +78,6 @@
       @confirm="removeBonus"
     />
 
-    <modal-bonus-cancel-lock :show-modal="showBonusCancelLockModal" @close="showBonusCancelLockModal = false" />
-
     <modal-package-bonus
       :show-modal="showPackageModal"
       :bonuses-list="packageModalList"
@@ -118,7 +116,7 @@
     playerFreeSpins,
   } = storeToRefs(bonusStore);
   const { showAlert } = useLayoutStore();
-  const { openWalletModal } = useModalStore();
+  const { openModal, openWalletModal } = useModalStore();
   const hasActiveBlock = computed(() => activePlayerBonuses.value.length || activePlayerFreeSpins.value.length);
   const hasIssuedBlock = computed(() => {
     const hasSimpleBonus = [...issuedPlayerBonuses.value, ...issuedPlayerFreeSpins.value].some(
@@ -153,7 +151,6 @@
   }
 
   const modalState = reactive<IModalState>({});
-  const showBonusCancelLockModal = ref(false);
   const showConfirmBonusUnsettledModal = ref(false);
   const showModalConfirmBonus = ref(false);
   const loadingBonuses = ref<string[]>([]);
@@ -240,7 +237,7 @@
     modalState.action = 'activate';
 
     if (hasCancelLockBonus.value) {
-      showBonusCancelLockModal.value = true;
+      openModal('bonus-cancel-lock');
     } else {
       setModalStateForActiveBonus();
       showModalConfirmBonus.value = true;
@@ -263,7 +260,7 @@
     modalState.action = 'remove';
 
     if (hasCancelLockBonus.value && bonus.status !== 1) {
-      showBonusCancelLockModal.value = true;
+      openModal('bonus-cancel-lock');
     } else if (bonus.openedTransactionsCount > 0) {
       setModalStateForUnsettledBonus();
       showConfirmBonusUnsettledModal.value = true;
