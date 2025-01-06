@@ -243,7 +243,8 @@ export const useModalStore = defineStore('modalStore', {
       const startModalLoad: Dayjs = dayjs();
 
       this.walletModalType = modalType;
-      const { setPaymentMethodsGeo, getDepositMethods, getWithdrawMethods, accountSwitching } = useWalletStore();
+      const walletStore = useWalletStore();
+      const { setPaymentMethodsGeo, getDepositMethods, getWithdrawMethods, accountSwitching } = walletStore;
       const { getDepositBonuses, getDepositBonusCode } = useBonusStore();
       const riskStore = useRiskStore();
       setPaymentMethodsGeo();
@@ -266,6 +267,7 @@ export const useModalStore = defineStore('modalStore', {
       const showTurnOverWagerModal =
         runtimeConfig.public.enableTurnOverWager &&
         modalType === 'withdraw' &&
+        walletStore.activeAccount?.withdrawalBalance &&
         riskStore.turnOverWagerData?.turnOverWagerAmount > 0;
 
       if (showTurnOverWagerModal) {
