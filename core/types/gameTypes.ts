@@ -146,7 +146,7 @@ export interface IWinner extends Record<string, any> {
   gameName: string;
   isDemoMode: boolean;
   gameImages: IGameImages;
-  customImages: IGameImages;
+  gameCustomImages: IGameImages;
 }
 
 export interface IGamesRequest extends Record<string, any> {

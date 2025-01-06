@@ -48,7 +48,7 @@
             >
               <template v-if="id === 'game'">
                 <atomic-image
-                  :src="getImageUrl(row.customImages, row.gameImages, 'square')"
+                  :src="getImageUrl(row.gameCustomImages, row.gameImages, 'square')"
                   class="activity-board__tb-td-img"
                 />
                 <span>{{ row.gameName }}</span>
@@ -96,7 +96,7 @@
   const { baseCurrency } = storeToRefs(globalStore);
   const dayjs = useDayjs();
 
-  const handleBoardsEvent = async (socketData: IWebSocketResponse): void => {
+  const handleBoardsEvent = async (socketData: IWebSocketResponse): Promise<void> => {
     const betData = socketData.data.bet;
     if (betData) {
       boardData.unshift(betData);

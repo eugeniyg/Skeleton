@@ -148,7 +148,7 @@ export interface IEventBet extends Record<string, any> {
   gameId: string;
   gameName: string;
   gameImages: IGameImages;
-  customImages: IGameImages;
+  gameCustomImages: IGameImages;
   createdAt: string;
 }
 
