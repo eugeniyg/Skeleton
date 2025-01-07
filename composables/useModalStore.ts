@@ -33,6 +33,9 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'game-limit-reached': Maybe<UseModalReturnType<any>>;
   'self-exclusion-limit': Maybe<UseModalReturnType<any>>;
   'bonus-cancel-lock': Maybe<UseModalReturnType<any>>;
+  'change-active-bonus': Maybe<UseModalReturnType<any>>;
+  'cancel-active-bonus': Maybe<UseModalReturnType<any>>;
+  'cancel-issued-bonus': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -82,6 +85,9 @@ export const useModalStore = defineStore('modalStore', {
       'game-limit-reached': undefined,
       'self-exclusion-limit': undefined,
       'bonus-cancel-lock': undefined,
+      'change-active-bonus': undefined,
+      'cancel-active-bonus': undefined,
+      'cancel-issued-bonus': undefined,
     },
     modalsUrl: [
       'sign-in',
@@ -116,12 +122,18 @@ export const useModalStore = defineStore('modalStore', {
       'game-limit-reached',
       'self-exclusion-limit',
       'bonus-cancel-lock',
+      'change-active-bonus',
+      'cancel-active-bonus',
+      'cancel-issued-bonus',
     ],
     openingModals: [],
     sameComponent: {
       'deposit-pending': 'success',
       'deposit-success': 'success',
       'deposit-redirect': 'success',
+      'change-active-bonus': 'bonus-confirm-action',
+      'cancel-active-bonus': 'bonus-confirm-action',
+      'cancel-issued-bonus': 'bonus-confirm-action',
     },
     walletModalType: undefined,
     walletOpening: false,

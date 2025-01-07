@@ -58,17 +58,17 @@
       </div>
     </transition>
 
-    <modal-confirm-bonus
-      v-bind="modalState"
-      :show-modal="showModalConfirmBonus"
-      :bonuses-updating="loadingBonuses.includes(modalState.bonusInfo?.id || 'unknown')"
-      @close-modal="showModalConfirmBonus = false"
-      @confirm="
-        () => {
-          modalState.action === 'remove' ? removeBonus() : activateBonus();
-        }
-      "
-    />
+    <!--    <modal-confirm-bonus-->
+    <!--      v-bind="modalState"-->
+    <!--      :show-modal="showModalConfirmBonus"-->
+    <!--      :bonuses-updating="loadingBonuses.includes(modalState.bonusInfo?.id || 'unknown')"-->
+    <!--      @close-modal="showModalConfirmBonus = false"-->
+    <!--      @confirm="-->
+    <!--        () => {-->
+    <!--          modalState.action === 'remove' ? removeBonus() : activateBonus();-->
+    <!--        }-->
+    <!--      "-->
+    <!--    />-->
 
     <modal-confirm-bonus-unsettled
       v-bind="modalState"
@@ -155,6 +155,7 @@
   const showModalConfirmBonus = ref(false);
   const loadingBonuses = ref<string[]>([]);
   const loadedBonuses = ref<string[]>([]);
+  const bonusesUpdating = computed(() => loadingBonuses.value.includes(modalState.bonusInfo?.id || 'unknown'));
 
   const { activatePlayerBonus, cancelPlayerBonus, activatePlayerFreeSpin, cancelPlayerFreeSpin } = useCoreBonusApi();
 
@@ -188,15 +189,15 @@
     }
   };
 
-  const setModalStateForActiveBonus = (): void => {
-    const data = popupsData.value?.changeActiveBonus || defaultLocalePopupsData?.value?.changeActiveBonus;
-    if (data) {
-      modalState.title = data.title;
-      modalState.description = data.description;
-      modalState.confirmButton = data.confirmButton;
-      modalState.cancelButton = data.cancelButton;
-    }
-  };
+  // const setModalStateForActiveBonus = (): void => {
+  //   const data = popupsData.value?.changeActiveBonus || defaultLocalePopupsData?.value?.changeActiveBonus;
+  //   if (data) {
+  //     modalState.title = data.title;
+  //     modalState.description = data.description;
+  //     modalState.confirmButton = data.confirmButton;
+  //     modalState.cancelButton = data.cancelButton;
+  //   }
+  // };
 
   const removeBonus = async (): Promise<void> => {
     const staticBonusId = modalState.bonusInfo?.id;
@@ -239,8 +240,9 @@
     if (hasCancelLockBonus.value) {
       openModal('bonus-cancel-lock');
     } else {
-      setModalStateForActiveBonus();
-      showModalConfirmBonus.value = true;
+      openModal('change-active-bonus', { props: { onConfirm: activateBonus, bonusesUpdating: bonusesUpdating } });
+      // setModalStateForActiveBonus();
+      // showModalConfirmBonus.value = true;
     }
   };
 
@@ -389,6 +391,7 @@
   };
 
   const getPackageBonuses = async (): Promise<void> => {
+    console.log('getPackageBonuses');
     const { uniquePlayerPackageIds, uniquePlayerPackageIssueSessionIds, uniqueDepositPackageIds } =
       getUniquePackageIds();
 
