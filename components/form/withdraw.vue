@@ -54,11 +54,6 @@
           @focus="onFocus(field.key)"
         />
       </template>
-      
-      <wallet-destination-tag-warning
-        v-if="showDestinationTagWarning"
-        :content="getContent(walletContent, defaultLocaleWalletContent, 'withdraw.destinationTag')"
-      />
 
       <button-base type="primary" size="md" :is-disabled="buttonDisabled" @click="getWithdraw">
         {{ getContent(walletContent, defaultLocaleWalletContent, 'withdraw.withdrawButton') }} {{ buttonAmount }}
@@ -126,10 +121,6 @@
   const formatAmountMin = computed(() => {
     return formatBalance(activeAccount.value?.currency, selectedNetworkData.value?.minAmount ?? props.amountMin);
   });
-  
-  const showDestinationTagWarning = computed(() => {
-    return props.fields?.length && state.selectedNetwork && props.fields?.some(field => field.key === 'tag');
-  });
 
   const isSending = ref<boolean>(false);
   const amountValue = ref<string>(String(formatAmountMin.value.amount));
@@ -177,6 +168,7 @@
     if (fieldComponent) return fieldComponent;
     if (field.fieldType === 'select') return 'form-input-dropdown';
     if (field.fieldType === 'textarea') return 'form-input-textarea';
+    if (field.key === 'tag') return 'form-input-withdraw-destination-tag';
     return 'form-input-text';
   };
 
