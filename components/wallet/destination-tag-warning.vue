@@ -1,13 +1,13 @@
 <template>
-  <div v-if="props.content?.description" class="wallet-destination-tag-warning">
+  <div v-if="props.content?.warning" class="wallet-destination-tag-warning">
     <div class="wallet-destination-tag-warning__icon">
-      <atomic-svg :src="props.content?.icon" default-icon="info" />
+      <atomic-svg default-icon="info" />
     </div>
 
     <div
       class="wallet-destination-tag-warning__description"
       v-html="
-        DOMPurify.sanitize(marked.parseInline(props.content.description || '') as string, { FORBID_TAGS: ['style'] })
+        DOMPurify.sanitize(marked.parseInline(props.content?.warning || '') as string, { FORBID_TAGS: ['style'] })
       "
     />
   </div>
@@ -19,8 +19,7 @@
 
   const props = defineProps<{
     content: {
-      icon?: string;
-      description: string;
+      warning: string;
     };
   }>();
 </script>
