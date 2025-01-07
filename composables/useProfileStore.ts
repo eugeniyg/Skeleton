@@ -70,7 +70,7 @@ export const useProfileStore = defineStore('profileStore', {
       return window.btoa(`${time}-${key}`);
     },
 
-    removeSession(): void {
+    async removeSession(): Promise<void> {
       this.profile = undefined;
       const cookieToken = useCookie(this.tokenCookieKey);
       cookieToken.value = null;
@@ -81,10 +81,12 @@ export const useProfileStore = defineStore('profileStore', {
       const { updateChat } = useFreshchatStore();
       updateChat();
 
-      this.finishProfileDependencies();
-
       const { deleteReturnGame } = useLayoutStore();
       deleteReturnGame();
+
+      this.finishProfileDependencies();
+      const { reconnectSocket } = useWebSocket();
+      await reconnectSocket();
     },
 
     async getRefreshRequest(): Promise<string> {
@@ -97,7 +99,7 @@ export const useProfileStore = defineStore('profileStore', {
           this.setSessionToken(newToken);
           return newToken;
         } else {
-          this.removeSession();
+          await this.removeSession();
           return '';
         }
       }
@@ -111,7 +113,7 @@ export const useProfileStore = defineStore('profileStore', {
         localStorage.setItem('refreshSession', data.accessToken);
         return data.accessToken;
       } catch {
-        this.removeSession();
+        await this.removeSession();
         localStorage.removeItem('refreshSession');
         return '';
       } finally {
@@ -123,12 +125,6 @@ export const useProfileStore = defineStore('profileStore', {
       if (this.refreshPromise) return this.refreshPromise;
       this.refreshPromise = this.getRefreshRequest();
       return this.refreshPromise;
-    },
-
-    startSession(authData: IAuthorizationResponse): void {
-      this.profile = authData.profile;
-      const { reconnectSocket } = useWebSocket();
-      reconnectSocket();
     },
 
     startProfileDependencies(): void {
@@ -199,9 +195,9 @@ export const useProfileStore = defineStore('profileStore', {
 
     async handleLogin(authResponse: IAuthorizationResponse): Promise<void> {
       this.setSessionToken(authResponse.accessToken);
-      this.startSession(authResponse);
-      await nextTick();
+      this.profile = authResponse.profile;
 
+      await nextTick();
       const { getUserAccounts } = useWalletStore();
       await getUserAccounts();
 
@@ -215,6 +211,8 @@ export const useProfileStore = defineStore('profileStore', {
       if (freshchatParams?.guestAvailable) updateChat();
       else addFreshChatScript();
 
+      const { reconnectSocket } = useWebSocket();
+      await reconnectSocket();
       this.startProfileDependencies();
     },
 
@@ -321,7 +319,7 @@ export const useProfileStore = defineStore('profileStore', {
       try {
         await logOut();
       } finally {
-        this.removeSession();
+        await this.removeSession();
 
         const router = useRouter();
         const { localizePath } = useProjectMethods();

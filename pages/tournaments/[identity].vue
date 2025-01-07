@@ -238,15 +238,17 @@
     }
   };
 
+  const updateData = async (): Promise<void> => {
+    await getTournamentDefiniteData();
+    if (tournamentData.value && tournamentData.value?.state < 4) {
+      subscribeLeaderboardChannel();
+      subscribePlayerEntryChannel();
+    }
+  };
+
   const componentMounted = ref(false);
   watch(pageData, () => {
     if (componentMounted.value) getInitialData();
-  });
-
-  watch(isLoggedIn, async newValue => {
-    await getTournamentDefiniteData();
-    if (newValue) subscribePlayerEntryChannel();
-    else unsubscribePlayerEntryChannel();
   });
 
   const tournamentGamesComponent = ref();
@@ -256,12 +258,14 @@
     window.scrollTo({ top: topOffset - 20, behavior: 'smooth' });
   };
 
-  onMounted(() => {
+  onMounted(async () => {
     componentMounted.value = true;
-    if (pageDataStatus.value === 'success' && tournamentData.value) getInitialData();
+    if (pageDataStatus.value === 'success' && tournamentData.value) await getInitialData();
+    useListen('webSocketReconnected', updateData);
   });
 
   onBeforeUnmount(() => {
+    useUnlisten('webSocketReconnected', updateData);
     unsubscribeLeaderboardChannel();
     unsubscribePlayerEntryChannel();
   });

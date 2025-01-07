@@ -27,13 +27,6 @@ export default defineNuxtPlugin(nuxtApp => {
     document.documentElement.style.setProperty('--vh', `${vh}px`);
   };
 
-  const startWebSocket = async (): Promise<void> => {
-    const { initWebSocket } = useWebSocket();
-    await initWebSocket();
-    const { subscribeWinnersSocket } = useGamesStore();
-    subscribeWinnersSocket();
-  };
-
   const startProfileLogic = (): void => {
     const { getSessionToken } = useProfileStore();
     const sessionToken = getSessionToken();
@@ -115,8 +108,8 @@ export default defineNuxtPlugin(nuxtApp => {
     const { userAgent } = window.navigator;
     parseUserAgent(userAgent);
     window.addEventListener('storage', listeningChangeSession);
-
-    await startWebSocket();
+    const { initWebSocket } = useWebSocket();
+    await initWebSocket();
     startProfileLogic();
 
     checkAffiliateTag();

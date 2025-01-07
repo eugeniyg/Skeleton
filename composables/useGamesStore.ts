@@ -1,15 +1,12 @@
 import { defineStore } from 'pinia';
-import type { ICollection, IGame, IGameProvider, IWinner, IWebSocketResponse } from '@skeleton/core/types';
-import throttle from 'lodash/throttle';
+import type { ICollection, IGame, IGameProvider, IWebSocketResponse } from '@skeleton/core/types';
 
 type MobileModalType = 'depositOrDemo' | 'deposit' | 'registerOrDemo' | 'registerOrLogin';
 interface IGamesStoreState {
   gameProvidersPromise: Promise<IGameProvider[]> | null;
   gameCollectionsPromise: Promise<ICollection[]> | null;
   favoriteGames: IGame[];
-  winnersSubscription: any;
   betsSubscription: any;
-  latestWinners: IWinner[];
   mobileGameModalType: Maybe<MobileModalType>;
   mobileGameModalInfo: Maybe<IGame>;
   isBonusWagering: boolean;
@@ -21,9 +18,7 @@ export const useGamesStore = defineStore('gamesStore', {
     gameProvidersPromise: null,
     gameCollectionsPromise: null,
     favoriteGames: [],
-    winnersSubscription: undefined,
     betsSubscription: undefined,
-    latestWinners: [],
     mobileGameModalType: undefined,
     mobileGameModalInfo: undefined,
     isBonusWagering: false,
@@ -85,30 +80,6 @@ export const useGamesStore = defineStore('gamesStore', {
       const { deleteFavorite } = useCoreGamesApi();
       this.favoriteGames = await deleteFavorite(gameId);
     },
-
-    subscribeWinnersSocket(): void {
-      const { createSubscription } = useWebSocket();
-      const globalStore = useGlobalStore();
-      const profileStore = useProfileStore();
-      this.winnersSubscription = createSubscription(
-        `game:winners:${globalStore.isMobile ? 'mobile' : 'desktop'}:${profileStore.profile?.country || globalStore.headerCountry || 'UA'}`,
-        this.updateWinners
-      );
-    },
-
-    setWinners(winners: IWinner[]): void {
-      this.latestWinners = winners.slice(0, 12);
-    },
-
-    updateWinners: throttle(
-      function (winnerData: IWebSocketResponse): void {
-        const { winner } = winnerData.data;
-        const filteredWinners = this.latestWinners.filter(item => item.gameId !== winner?.gameId);
-        if (winner) this.latestWinners = [winner, ...filteredWinners].slice(0, 12);
-      },
-      3000,
-      { leading: false }
-    ),
 
     async openMobileGameModal(modalType: MobileModalType, gameInfo: IGame): Promise<void> {
       this.mobileGameModalType = modalType;
