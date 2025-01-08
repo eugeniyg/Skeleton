@@ -8,12 +8,10 @@
       <div
         v-if="gamesData.length > filteredGamesData.length"
         class="quest-games__header-all-btn"
-        @click="showGamesModal = true"
+        @click="openGamesModal"
       >
         {{ getContent(questTasksContent, defaultLocaleQuestTasksContent, 'seeAllLabel') }}
       </div>
-
-      <modal-quest-task-games :show-modal="showGamesModal" :games="gamesData" @close-modal="showGamesModal = false" />
     </div>
 
     <div class="quest-games__items">
@@ -47,7 +45,6 @@
   const globalStore = useGlobalStore();
   const { headerCountry, isMobile } = storeToRefs(globalStore);
 
-  const showGamesModal = ref(false);
   const visibleItems = ref(0);
   const gamesData = ref<IGame[]>([]);
   const filteredGamesData = computed(() => {
@@ -73,7 +70,7 @@
   };
 
   const router = useRouter();
-  const { closeAllModals } = useModalStore();
+  const { closeAllModals, openModal } = useModalStore();
   const goToGame = async (game: IGame): Promise<void> => {
     await closeAllModals();
     await router.push(localizePath(`/games/${game.identity}?real=true`));
@@ -83,6 +80,10 @@
     if (props.taskType === 3) visibleItems.value = isMobile.value ? 6 : 4;
     else if (props.taskType === 4) visibleItems.value = isMobile.value ? 3 : 6;
     else visibleItems.value = 3;
+  };
+
+  const openGamesModal = (): void => {
+    openModal('quest-task-games', { props: { games: gamesData } });
   };
 
   onMounted(async () => {

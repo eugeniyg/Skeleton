@@ -32,6 +32,7 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'edit-cash-limit': Maybe<UseModalReturnType<any>>;
   'game-limit-reached': Maybe<UseModalReturnType<any>>;
   'self-exclusion-limit': Maybe<UseModalReturnType<any>>;
+  'quest-task-games': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -80,6 +81,7 @@ export const useModalStore = defineStore('modalStore', {
       'edit-cash-limit': undefined,
       'game-limit-reached': undefined,
       'self-exclusion-limit': undefined,
+      'quest-task-games': undefined,
     },
     modalsUrl: [
       'sign-in',
@@ -113,6 +115,7 @@ export const useModalStore = defineStore('modalStore', {
       'edit-cash-limit',
       'game-limit-reached',
       'self-exclusion-limit',
+      'quest-task-games',
     ],
     openingModals: [],
     sameComponent: {
