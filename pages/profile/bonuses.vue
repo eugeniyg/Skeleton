@@ -58,18 +58,6 @@
       </div>
     </transition>
 
-    <!--    <modal-confirm-bonus-->
-    <!--      v-bind="modalState"-->
-    <!--      :show-modal="showModalConfirmBonus"-->
-    <!--      :bonuses-updating="loadingBonuses.includes(modalState.bonusInfo?.id || 'unknown')"-->
-    <!--      @close-modal="showModalConfirmBonus = false"-->
-    <!--      @confirm="-->
-    <!--        () => {-->
-    <!--          modalState.action === 'remove' ? removeBonus() : activateBonus();-->
-    <!--        }-->
-    <!--      "-->
-    <!--    />-->
-
     <modal-confirm-bonus-unsettled
       v-bind="modalState"
       :show-modal="showConfirmBonusUnsettledModal"
@@ -116,7 +104,7 @@
     playerFreeSpins,
   } = storeToRefs(bonusStore);
   const { showAlert } = useLayoutStore();
-  const { openModal, openWalletModal } = useModalStore();
+  const { openModal, openWalletModal, closeModal } = useModalStore();
   const hasActiveBlock = computed(() => activePlayerBonuses.value.length || activePlayerFreeSpins.value.length);
   const hasIssuedBlock = computed(() => {
     const hasSimpleBonus = [...issuedPlayerBonuses.value, ...issuedPlayerFreeSpins.value].some(
@@ -147,12 +135,11 @@
     cancelButton?: string;
     bonusInfo?: IPlayerBonus | IPlayerFreeSpin | undefined;
     bonusType?: 'bonus' | 'freeSpin' | undefined;
-    action?: 'remove' | 'activate' | undefined;
+    action?: 'cancel-active' | 'cancel-issued' | 'activate' | undefined;
   }
 
   const modalState = reactive<IModalState>({});
   const showConfirmBonusUnsettledModal = ref(false);
-  const showModalConfirmBonus = ref(false);
   const loadingBonuses = ref<string[]>([]);
   const loadedBonuses = ref<string[]>([]);
   const bonusesUpdating = computed(() => loadingBonuses.value.includes(modalState.bonusInfo?.id || 'unknown'));
@@ -175,29 +162,6 @@
       modalState.cancelButton = data.cancelButton;
     }
   };
-
-  const setModalStateForCancelBonus = (bonusInfo: IPlayerBonus | IPlayerFreeSpin): void => {
-    const data = getContent(popupsData.value, defaultLocalePopupsData.value, 'cancelBonus');
-    if (data) {
-      modalState.title = data.title;
-      modalState.description =
-        bonusInfo.currentWagerPercentage > 0 || bonusInfo.progress > 0
-          ? data.activeBonusDescription
-          : data.issuedBonusDescription;
-      modalState.confirmButton = data.confirmButton;
-      modalState.cancelButton = data.cancelButton;
-    }
-  };
-
-  // const setModalStateForActiveBonus = (): void => {
-  //   const data = popupsData.value?.changeActiveBonus || defaultLocalePopupsData?.value?.changeActiveBonus;
-  //   if (data) {
-  //     modalState.title = data.title;
-  //     modalState.description = data.description;
-  //     modalState.confirmButton = data.confirmButton;
-  //     modalState.cancelButton = data.cancelButton;
-  //   }
-  // };
 
   const removeBonus = async (): Promise<void> => {
     const staticBonusId = modalState.bonusInfo?.id;
@@ -240,9 +204,9 @@
     if (hasCancelLockBonus.value) {
       openModal('bonus-cancel-lock');
     } else {
-      openModal('change-active-bonus', { props: { onConfirm: activateBonus, bonusesUpdating: bonusesUpdating } });
-      // setModalStateForActiveBonus();
-      // showModalConfirmBonus.value = true;
+      openModal('change-active-bonus', {
+        props: { onConfirm: activateBonus, bonusesUpdating: bonusesUpdating },
+      });
     }
   };
 
@@ -259,7 +223,7 @@
     if (loadingBonuses.value.includes(bonus.id)) return;
     modalState.bonusInfo = bonus;
     modalState.bonusType = 'bonus';
-    modalState.action = 'remove';
+    modalState.action = bonus.currentWagerPercentage > 0 ? 'cancel-active' : 'cancel-issued';
 
     if (hasCancelLockBonus.value && bonus.status !== 1) {
       openModal('bonus-cancel-lock');
@@ -267,8 +231,9 @@
       setModalStateForUnsettledBonus();
       showConfirmBonusUnsettledModal.value = true;
     } else {
-      setModalStateForCancelBonus(bonus);
-      showModalConfirmBonus.value = true;
+      openModal(modalState.action === 'cancel-active' ? 'cancel-active-bonus' : 'cancel-issued-bonus', {
+        props: { onConfirm: removeBonus, bonusesUpdating: bonusesUpdating },
+      });
     }
   };
 
@@ -276,10 +241,11 @@
     if (loadingBonuses.value.includes(freeSpin.id)) return;
     modalState.bonusInfo = freeSpin;
     modalState.bonusType = 'freeSpin';
-    modalState.action = 'remove';
+    modalState.action = freeSpin.progress > 0 ? 'cancel-active' : 'cancel-issued';
 
-    setModalStateForCancelBonus(freeSpin);
-    showModalConfirmBonus.value = true;
+    openModal(modalState.action === 'cancel-active' ? 'cancel-active-bonus' : 'cancel-issued-bonus', {
+      props: { onConfirm: removeBonus, bonusesUpdating: bonusesUpdating },
+    });
   };
 
   const activateDepositBonus = async ({
@@ -342,7 +308,9 @@
       loadingId => !loadedBonuses.value.some(loadedId => loadingId === loadedId)
     );
     if (modalState.bonusInfo?.id && loadedBonuses.value.some(loadedId => loadedId === modalState.bonusInfo?.id)) {
-      showModalConfirmBonus.value = false;
+      if (modalState.action === 'activate') closeModal('change-active-bonus');
+      else if (modalState.action === 'cancel-active') closeModal('cancel-active-bonus');
+      else if (modalState.action === 'cancel-issued') closeModal('cancel-issued-bonus');
       showConfirmBonusUnsettledModal.value = false;
     }
     loadedBonuses.value = [];
@@ -391,7 +359,6 @@
   };
 
   const getPackageBonuses = async (): Promise<void> => {
-    console.log('getPackageBonuses');
     const { uniquePlayerPackageIds, uniquePlayerPackageIssueSessionIds, uniqueDepositPackageIds } =
       getUniquePackageIds();
 
