@@ -10,12 +10,6 @@
         :show-modal="showRestrictedBetsModal"
         @close-modal="showRestrictedBetsModal = false"
       />
-
-      <modal-max-bets
-        :show-modal="maxBetsModal.show"
-        :max-bet="maxBetsModal.maxBet"
-        @close-modal="maxBetsModal.show = false"
-      />
     </client-only>
 
     <div class="betting">
@@ -47,11 +41,6 @@
   const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const showRestrictedBetsModal = ref<boolean>(false);
-  const maxBetsModal = reactive({
-    show: false,
-    maxBet: '',
-  });
-
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
 
@@ -195,8 +184,7 @@
 
   const handleMaxBets = ({ gameIdentity, maxBet }: { gameIdentity: string; maxBet: string }): void => {
     if (gameIdentity && gameIdentity === 'betsy-sportsbook-betsy') {
-      maxBetsModal.maxBet = maxBet;
-      maxBetsModal.show = true;
+      openModal('max-bets', { props: { maxBet } });
     }
   };
 

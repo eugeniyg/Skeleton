@@ -19,8 +19,6 @@
         @close-modal="showRestrictedBetsModal = false"
       />
 
-      <modal-max-bets :show-modal="maxBetsModal.show" :max-bet="maxBetsModal.maxBet" @close-modal="closeMaxBetModal" />
-
       <modal-demo-game
         :content="pageContent?.currentLocaleData?.demoModal || pageContent?.defaultLocaleData?.demoModal"
         :is-demo="isDemo"
@@ -68,10 +66,6 @@
   const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   const showRestrictedBetsModal = ref<boolean>(false);
-  const maxBetsModal = reactive({
-    show: false,
-    maxBet: '',
-  });
 
   const { data: gameInfo } = await useLazyAsyncData(`game${route.params.id}Info`, () =>
     getGamesInfo(route.params.id as string)
@@ -203,13 +197,13 @@
 
   const handleMaxBets = ({ gameIdentity, maxBet }: { gameIdentity: string; maxBet: string }): void => {
     if (gameIdentity && gameIdentity === route.params.id && !isDemo.value) {
-      maxBetsModal.maxBet = maxBet;
-      maxBetsModal.show = true;
+      openModal('max-bets', { props: { maxBet, onClosed: closeMaxBetModal } });
     }
   };
 
   const closeMaxBetModal = async (): Promise<void> => {
-    maxBetsModal.show = false;
+    const { name: closeContextRouteName } = useRoute();
+    if (closeContextRouteName !== 'games-id' && closeContextRouteName !== 'locale-games-id') return;
     const { error } = await startGame();
     if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
   };
