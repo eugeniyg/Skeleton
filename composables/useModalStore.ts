@@ -38,6 +38,7 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'cancel-issued-bonus': Maybe<UseModalReturnType<any>>;
   'cancel-unsettled-bonus': Maybe<UseModalReturnType<any>>;
   'package-bonus': Maybe<UseModalReturnType<any>>;
+  'bonus-details': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -92,6 +93,7 @@ export const useModalStore = defineStore('modalStore', {
       'cancel-issued-bonus': undefined,
       'cancel-unsettled-bonus': undefined,
       'package-bonus': undefined,
+      'bonus-details': undefined,
     },
     modalsUrl: [
       'sign-in',
@@ -131,6 +133,7 @@ export const useModalStore = defineStore('modalStore', {
       'cancel-issued-bonus',
       'cancel-unsettled-bonus',
       'package-bonus',
+      'bonus-details',
     ],
     openingModals: [],
     sameComponent: {
