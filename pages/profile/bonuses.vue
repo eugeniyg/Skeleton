@@ -57,18 +57,6 @@
         <bonuses-promo-code />
       </div>
     </transition>
-
-    <modal-package-bonus
-      :show-modal="showPackageModal"
-      :bonuses-list="packageModalList"
-      :loading-bonuses="loadingBonuses"
-      @close="showPackageModal = false"
-      @remove-bonus="removeBonusHandle"
-      @remove-free-spin="removeFreeSpinHandle"
-      @activate-bonus="activateBonusHandle"
-      @activate-free-spin="activateFreeSpinHandle"
-      @activate-deposit="activateDepositBonus"
-    />
   </div>
 </template>
 
@@ -96,7 +84,8 @@
     playerFreeSpins,
   } = storeToRefs(bonusStore);
   const { showAlert } = useLayoutStore();
-  const { openModal, openWalletModal, closeModal } = useModalStore();
+  const modalStore = useModalStore();
+  const { openModal, openWalletModal, closeModal } = modalStore;
   const hasActiveBlock = computed(() => activePlayerBonuses.value.length || activePlayerFreeSpins.value.length);
   const hasIssuedBlock = computed(() => {
     const hasSimpleBonus = [...issuedPlayerBonuses.value, ...issuedPlayerFreeSpins.value].some(
@@ -244,7 +233,6 @@
   const activePackageBonuses = ref<Record<string, any>[][]>([]);
   const issuedPackageBonuses = ref<Record<string, any>[][]>([]);
   const depositPackageBonuses = ref<Record<string, any>[][]>([]);
-  const showPackageModal = ref(false);
   const packageModalList = ref<Record<string, any>[]>([]);
 
   const updatePackageModalList = (): void => {
@@ -253,7 +241,7 @@
       !issuedPackageBonuses.value.length &&
       !depositPackageBonuses.value.length
     ) {
-      showPackageModal.value = false;
+      closeModal('package-bonus');
     }
 
     const packageId =
@@ -274,7 +262,7 @@
     });
 
     if (newBonusesList) packageModalList.value = newBonusesList;
-    else showPackageModal.value = false;
+    else closeModal('package-bonus');
   };
 
   const checkLoadingBonuses = (): void => {
@@ -376,7 +364,7 @@
         bonusesList => !bonusesList.some(bonus => bonus.status === 2)
       );
 
-      if (showPackageModal.value) updatePackageModalList();
+      if (modalStore.modals['package-bonus']?.options?.modelValue) updatePackageModalList();
     } catch {
       console.error('Failed to get package bonuses');
     }
@@ -386,7 +374,17 @@
 
   const openPackageModal = (bonusesList: Record<string, any>[]): void => {
     packageModalList.value = bonusesList;
-    showPackageModal.value = true;
+    openModal('package-bonus', {
+      props: {
+        bonusesList: packageModalList,
+        loadingBonuses: loadingBonuses,
+        onRemoveBonus: removeBonusHandle,
+        onRemoveFreeSpin: removeFreeSpinHandle,
+        onActivateBonus: activateBonusHandle,
+        onActivateFreeSpin: activateFreeSpinHandle,
+        onActivateDeposit: activateDepositBonus,
+      },
+    });
   };
 
   const debouncePackageBonus = debounce(getPackageBonuses, 200, { leading: false });
