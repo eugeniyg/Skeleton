@@ -11,14 +11,6 @@
     />
 
     <client-only>
-      <modal-restricted-bets
-        v-if="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"
-        :content="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"
-        current-page="game"
-        :show-modal="showRestrictedBetsModal"
-        @close-modal="showRestrictedBetsModal = false"
-      />
-
       <modal-demo-game
         :content="pageContent?.currentLocaleData?.demoModal || pageContent?.defaultLocaleData?.demoModal"
         :is-demo="isDemo"
@@ -64,9 +56,6 @@
   };
   const { getContentData } = useContentLogic<IGamePage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
-
-  const showRestrictedBetsModal = ref<boolean>(false);
-
   const { data: gameInfo } = await useLazyAsyncData(`game${route.params.id}Info`, () =>
     getGamesInfo(route.params.id as string)
   );
@@ -111,7 +100,7 @@
       }
 
       if (err.data?.error?.code === 14306) {
-        showRestrictedBetsModal.value = true;
+        await openModal('restricted-bets');
         return { error: { ...err, fatal: false } };
       }
 
@@ -191,7 +180,7 @@
 
   const handleRestrictedBets = (gameIdentity: string): void => {
     if (gameIdentity && gameIdentity === route.params.id && !isDemo.value) {
-      showRestrictedBetsModal.value = true;
+      openModal('restricted-bets');
     }
   };
 
