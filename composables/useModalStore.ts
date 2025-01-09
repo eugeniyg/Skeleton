@@ -34,6 +34,7 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'self-exclusion-limit': Maybe<UseModalReturnType<any>>;
   'max-bets': Maybe<UseModalReturnType<any>>;
   'restricted-bets': Maybe<UseModalReturnType<any>>;
+  'demo-game': Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -84,6 +85,7 @@ export const useModalStore = defineStore('modalStore', {
       'self-exclusion-limit': undefined,
       'max-bets': undefined,
       'restricted-bets': undefined,
+      'demo-game': undefined,
     },
     modalsUrl: [
       'sign-in',

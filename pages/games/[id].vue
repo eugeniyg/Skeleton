@@ -10,14 +10,6 @@
       @change-mode="changeGameMode"
     />
 
-    <client-only>
-      <modal-demo-game
-        :content="pageContent?.currentLocaleData?.demoModal || pageContent?.defaultLocaleData?.demoModal"
-        :is-demo="isDemo"
-        @play-real="changeGameMode"
-      />
-    </client-only>
-
     <transition name="fade-up" mode="out-in">
       <loyalty-new-level-notif v-if="levelNotificationEnabled" />
     </transition>
@@ -134,9 +126,10 @@
     showAlert(alertsData.value?.limit?.limitedRealGame || defaultLocaleAlertsData.value?.limit?.limitedRealGame);
   };
 
+  const gamesStore = useGamesStore();
+  const { mobileGameModalInfo } = storeToRefs(gamesStore);
   const checkDepositModal = (): void => {
-    const { mobileGameModalInfo } = useGamesStore();
-    if (isLoggedIn.value && !isDemo.value && !activeAccount.value?.balance && !mobileGameModalInfo) {
+    if (isLoggedIn.value && !isDemo.value && !activeAccount.value?.balance && !mobileGameModalInfo.value) {
       openWalletModal('deposit');
     }
   };
@@ -197,6 +190,26 @@
     if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
   };
 
+  const timer = ref<any>();
+  const startTimer = (): void => {
+    timer.value = setTimeout(() => {
+      openModal('demo-game', { props: { onPlayReal: changeGameMode } });
+    }, 60000);
+  };
+
+  onBeforeMount(() => {
+    if (isDemo.value) {
+      if (!isLoggedIn.value && !mobileGameModalInfo.value) {
+        openModal('demo-game', { props: { onPlayReal: changeGameMode } });
+      }
+      startTimer();
+    }
+  });
+
+  watch(isDemo, (newValue: boolean) => {
+    if (!newValue) clearTimeout(timer.value);
+  });
+
   const pageMounted = ref<boolean>(false);
   onMounted(async () => {
     document.body.classList.add('is-mob-nav-vertical');
@@ -219,6 +232,7 @@
     compactDrawer(storageDrawerCompact, false);
     useUnlisten('changeMobileGameMode', changeGameMode);
     useUnlisten('restrictedBets', handleRestrictedBets);
+    clearTimeout(timer.value);
   });
 </script>
 
