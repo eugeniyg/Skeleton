@@ -51,6 +51,7 @@
     hideItems?: boolean;
   }>();
 
+  const { openModal } = useModalStore();
   const { showModal } = useLayoutStore();
   const route = useRoute();
   const itemRef = ref([]);
@@ -64,7 +65,7 @@
   const isCategoriesButtonDisabled = ref<boolean>(false);
 
   const showCategories = () => {
-    if (window.innerWidth <= 1280) showModal('categories');
+    if (window.innerWidth <= 1280) openModal('categories');
     else showDropdown();
   };
 

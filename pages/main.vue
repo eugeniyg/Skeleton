@@ -6,7 +6,6 @@
 
     <client-only>
       <modal-providers :selected="selectedProviders" @select="changeProvider" />
-      <modal-categories @click-category="changeCategory" />
     </client-only>
 
     <group-games
@@ -60,7 +59,6 @@
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
   const layoutStore = useLayoutStore();
   const { closeModal } = layoutStore;
-  const { modals } = storeToRefs(layoutStore);
 
   const contentParams = {
     contentKey: 'casinoPageContent',
@@ -81,10 +79,8 @@
   });
 
   const router = useRouter();
-  const changeCategory = (categoryIdentity: string) => {
-    if (modals.value.categories) closeModal('categories');
-
-    router.push(localizePath(`/categories/${categoryIdentity}`));
+  const changeCategory = async (categoryIdentity: string): Promise<void> => {
+    await router.push(localizePath(`/categories/${categoryIdentity}`));
   };
 
   const selectedProviders = ref<string[]>([]);

@@ -33,7 +33,6 @@
 
       <client-only>
         <modal-providers :selected="state.providerIds" @select="selectProviders" />
-        <modal-categories @click-category="changeCategory" />
       </client-only>
     </div>
 
@@ -61,7 +60,6 @@
   const { getContent, localizePath } = useProjectMethods();
   const layoutStore = useLayoutStore();
   const { closeModal } = layoutStore;
-  const { modals } = storeToRefs(layoutStore);
   const route = useRoute();
   const router = useRouter();
 
@@ -127,13 +125,7 @@
 
   const changeCategory = async (categoryIdentity: string): Promise<void> => {
     if (route.params.categoryIdentity === categoryIdentity) return;
-    const gameCategories = await getCollectionsList();
-    state.currentCategory = gameCategories.find(category => category.identity === categoryIdentity);
     await router.push(localizePath(`/categories/${categoryIdentity}`));
-
-    if (modals.value.categories) {
-      closeModal('categories');
-    }
   };
 
   const changeSort = async (...args: any): Promise<void> => {
@@ -197,6 +189,7 @@
   };
 
   const childMounted = async () => {
+    console.log('hello');
     resetFilters();
     await setProviders();
 

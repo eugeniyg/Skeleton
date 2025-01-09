@@ -6,8 +6,6 @@ import type { IGame } from '@skeleton/core/types';
 
 interface IModals extends Record<string, any> {
   providers: boolean;
-  categories: boolean;
-  packageBonus: boolean;
 }
 
 interface ILayoutStoreState extends Record<string, any> {
@@ -30,8 +28,6 @@ export const useLayoutStore = defineStore('layoutStore', {
     showCookiePopup: false,
     modals: {
       providers: false,
-      categories: false,
-      packageBonus: false,
     },
     lastNotificationTime: 0,
     returnGame: undefined,
