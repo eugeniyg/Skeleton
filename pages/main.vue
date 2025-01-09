@@ -1,12 +1,7 @@
 <template>
   <div>
     <main-slider :style="sliderVisibilityStyle" />
-
-    <nav-category @click-category="changeCategory" />
-
-    <client-only>
-      <modal-providers :selected="selectedProviders" @select="changeProvider" />
-    </client-only>
+    <nav-category @click-category="changeCategory" @openProviders="openProviders" />
 
     <group-games
       v-for="category in mainCategoriesList.slice(0, 3)"
@@ -57,8 +52,7 @@
   const { localizePath, getContent } = useProjectMethods();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
-  const layoutStore = useLayoutStore();
-  const { closeModal } = layoutStore;
+  const { openModal, closeModal } = useModalStore();
 
   const contentParams = {
     contentKey: 'casinoPageContent',
@@ -105,14 +99,16 @@
       'providersSettings.defaultCategory'
     );
 
-    setTimeout(() => {
-      closeModal('providers');
-      router.push({
-        path: localizePath(defaultCategory ? `/categories/${defaultCategory}` : '/categories'),
-        query: {
-          provider: providersIdentity,
-        },
-      });
-    }, 600);
+    await closeModal('providers');
+    await router.push({
+      path: localizePath(defaultCategory ? `/categories/${defaultCategory}` : '/categories'),
+      query: {
+        provider: providersIdentity,
+      },
+    });
+  };
+
+  const openProviders = () => {
+    openModal('providers', { props: { selected: selectedProviders, onSelect: changeProvider } });
   };
 </script>

@@ -7,7 +7,7 @@
     </atomic-cat-heading>
 
     <div v-click-outside="skipActionsState" class="game-filter">
-      <nav-category hide-items @click-category="changeCategory" />
+      <nav-category hide-items @click-category="changeCategory" @openProviders="openProviders" />
 
       <form-input-search
         v-model:value="state.searchValue"
@@ -30,10 +30,6 @@
       />
 
       <providers-tags v-if="tags.length" :tags="tags" @unselect="selectProviders" />
-
-      <client-only>
-        <modal-providers :selected="state.providerIds" @select="selectProviders" />
-      </client-only>
     </div>
 
     <list-grid v-if="state.pageData.length" :items="state.pageData" :meta="state.pageMeta" @load-more="getData(true)" />
@@ -58,10 +54,9 @@
   const globalStore = useGlobalStore();
   const { gameCategoriesObj, layoutData, defaultLocaleLayoutData, headerCountry, isMobile } = storeToRefs(globalStore);
   const { getContent, localizePath } = useProjectMethods();
-  const layoutStore = useLayoutStore();
-  const { closeModal } = layoutStore;
   const route = useRoute();
   const router = useRouter();
+  const { openModal, closeModal } = useModalStore();
 
   const contentParams = {
     contentKey: 'gamesPageContent',
@@ -139,7 +134,7 @@
   const tags = ref<IGameProvider[]>([]);
   const { getProviderList, getCollectionsList } = useGamesStore();
   const selectProviders = async (providersIds: string[]) => {
-    closeModal('providers');
+    await closeModal('providers');
     const gameProviders = await getProviderList();
     const selectedProvidersData = gameProviders.filter(
       provider => providersIds.includes(provider.id) && !!provider.gameEnabledCount
@@ -189,7 +184,6 @@
   };
 
   const childMounted = async () => {
-    console.log('hello');
     resetFilters();
     await setProviders();
 
@@ -201,6 +195,10 @@
     }
 
     await getData(false);
+  };
+
+  const openProviders = () => {
+    openModal('providers', { props: { selected: state.providerIds, onSelect: selectProviders } });
   };
 
   onMounted(async () => {

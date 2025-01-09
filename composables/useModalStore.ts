@@ -33,6 +33,7 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'game-limit-reached': Maybe<UseModalReturnType<any>>;
   'self-exclusion-limit': Maybe<UseModalReturnType<any>>;
   categories: Maybe<UseModalReturnType<any>>;
+  providers: Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -82,6 +83,7 @@ export const useModalStore = defineStore('modalStore', {
       'game-limit-reached': undefined,
       'self-exclusion-limit': undefined,
       categories: undefined,
+      providers: undefined,
     },
     modalsUrl: [
       'sign-in',
