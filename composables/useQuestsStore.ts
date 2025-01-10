@@ -76,12 +76,8 @@ export const useQuestsStore = defineStore('questsStore', {
       if (!taskData) return;
 
       const { getContent } = useProjectMethods();
-      const {
-        alertsData,
-        defaultLocaleAlertsData,
-        globalComponentsContent,
-        defaultLocaleGlobalComponentsContent
-      } = useGlobalStore();
+      const { alertsData, defaultLocaleAlertsData, globalComponentsContent, defaultLocaleGlobalComponentsContent } =
+        useGlobalStore();
       const { showAlert } = useLayoutStore();
       this.activeQuests = this.activeQuests.map(quest => {
         if (quest.id === taskData.questId) {
