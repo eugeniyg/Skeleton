@@ -43,6 +43,8 @@ interface IModals extends Record<string, Maybe<UseModalReturnType<any>>> {
   'max-bets': Maybe<UseModalReturnType<any>>;
   'restricted-bets': Maybe<UseModalReturnType<any>>;
   'demo-game': Maybe<UseModalReturnType<any>>;
+  categories: Maybe<UseModalReturnType<any>>;
+  providers: Maybe<UseModalReturnType<any>>;
 }
 
 interface IModalStoreState {
@@ -102,6 +104,8 @@ export const useModalStore = defineStore('modalStore', {
       'max-bets': undefined,
       'restricted-bets': undefined,
       'demo-game': undefined,
+      categories: undefined,
+      providers: undefined,
     },
     modalsUrl: [
       'sign-in',
