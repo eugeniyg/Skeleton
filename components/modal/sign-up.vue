@@ -29,9 +29,9 @@
             <span class="header__back-btn-text">
               {{
                 getContent(
-                  phoneVerificationContent?.currentLocaleData,
-                  phoneVerificationContent?.defaultLocaleData,
-                  'backButton'
+                  globalComponentsContent,
+                  defaultLocaleGlobalComponentsContent,
+                  'phoneVerification.backButton'
                 )
               }}
             </span>
@@ -45,11 +45,7 @@
           :error-hint="verificationError"
           :loading="sendingData"
           :button-label="
-            getContent(
-              phoneVerificationContent?.currentLocaleData,
-              phoneVerificationContent?.defaultLocaleData,
-              'verifyButton'
-            )
+            getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'phoneVerification.verifyButton')
           "
           @verify-phone="phoneRegister"
           @remove-error-hint="verificationError = undefined"
@@ -102,27 +98,20 @@
     defaultLocaleData: Maybe<IModalsContent['registration']>;
   }>();
 
-  const phoneVerificationContentParams = {
-    contentKey: 'modal-phone-verification',
-    contentRoute: ['modals', 'phone-verification'],
-  };
-  const { getContentData: getPhoneVerificationContentData } = useContentLogic(phoneVerificationContentParams);
-  const { data: phoneVerificationContent } = await useLazyAsyncData(getPhoneVerificationContentData);
-
   const fieldsStore = useFieldsStore();
   const { registrationFields } = storeToRefs(fieldsStore);
   const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
-  const { settingsConstants } = storeToRefs(globalStore);
+  const { settingsConstants, globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
   const showPhoneVerification = ref<boolean>(false);
   const formTitle = computed(() => {
     if (showPhoneVerification.value)
       return getContent(
-        phoneVerificationContent.value?.currentLocaleData,
-        phoneVerificationContent.value?.defaultLocaleData,
-        'title'
+        globalComponentsContent.value,
+        defaultLocaleGlobalComponentsContent.value,
+        'phoneVerification.title'
       );
     return getContent(props.currentLocaleData, props.defaultLocaleData, 'title');
   });
@@ -190,9 +179,9 @@
         verificationError.value = {
           variant: 'error',
           message: getContent(
-            phoneVerificationContent.value?.currentLocaleData,
-            phoneVerificationContent.value?.defaultLocaleData,
-            'invalidError'
+            globalComponentsContent.value,
+            defaultLocaleGlobalComponentsContent.value,
+            'phoneVerification.invalidError'
           ),
         };
       } else {
