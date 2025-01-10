@@ -1,11 +1,10 @@
 <template>
   <vue-final-modal
-    :model-value="props.showModal"
     class="modal-package-bonus"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
     :content-transition="{ mode: 'in-out', duration: 250 }"
-    @click-outside="emit('close')"
+    @click-outside="closeModal('package-bonus')"
   >
     <div class="scroll">
       <div class="header">
@@ -19,7 +18,7 @@
           </div>
         </div>
 
-        <button-modal-close @close="emit('close')" />
+        <button-modal-close @close="closeModal('package-bonus')" />
       </div>
 
       <div class="modal-package-bonus__list">
@@ -43,20 +42,12 @@
   import { VueFinalModal } from 'vue-final-modal';
 
   const props = defineProps<{
-    showModal: boolean;
     loadingBonuses: string[];
     bonusesList: Record<string, any>[];
-    packageImage?: string;
   }>();
 
-  const emit = defineEmits([
-    'close',
-    'activateBonus',
-    'activateFreeSpin',
-    'removeBonus',
-    'removeFreeSpin',
-    'activateDeposit',
-  ]);
+  const { closeModal } = useModalStore();
+  const emit = defineEmits(['activateBonus', 'activateFreeSpin', 'removeBonus', 'removeFreeSpin', 'activateDeposit']);
 
   const walletStore = useWalletStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
