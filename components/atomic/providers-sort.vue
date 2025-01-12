@@ -17,13 +17,13 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGamesPage } from '~/types';
+  import type { ICategoryPage } from '~/types';
 
   const props = defineProps<{
     label: string;
     sortBy?: string;
     sortOrder?: string;
-    sortOptions: IGamesPage['sortOptions'];
+    sortOptions: ICategoryPage['sortOptions'];
   }>();
 
   const emit = defineEmits(['change']);

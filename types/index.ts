@@ -55,3 +55,11 @@ export interface IAnalyticsEvent {
   walletType?: string;
   invoiceId?: string;
 }
+
+export interface IModalSettings {
+  component: string;
+  content?: string;
+  queryName?: string;
+  onlyGuest?: boolean;
+  onlyLogged?: boolean;
+}

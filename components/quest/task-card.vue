@@ -2,7 +2,13 @@
   <div class="quest-task" :class="taskStatusClasses">
     <div class="quest-task__img">
       <atomic-image
-        :src="getContent(questTasksContent, defaultLocaleQuestTasksContent, `taskTypes.${props.taskInfo.type}.image`)"
+        :src="
+          getContent(
+            globalComponentsContent,
+            defaultLocaleGlobalComponentsContent,
+            `constants.taskTypes.${props.taskInfo.type}.image`
+          )
+        "
       />
     </div>
 
@@ -12,7 +18,13 @@
       </div>
 
       <div class="quest-task__title">
-        {{ getContent(questTasksContent, defaultLocaleQuestTasksContent, `taskTypes.${props.taskInfo.type}.label`) }}
+        {{
+          getContent(
+            globalComponentsContent,
+            defaultLocaleGlobalComponentsContent,
+            `constants.taskTypes.${props.taskInfo.type}.label`
+          )
+        }}
       </div>
 
       <quest-progress :task-list="[props.taskInfo]" show-label />
@@ -71,6 +83,7 @@
   const questTasksContent: Maybe<IQuestTasksModal> = inject('questTasksContent');
   const defaultLocaleQuestTasksContent: Maybe<IQuestTasksModal> = inject('defaultLocaleQuestTasksContent');
 
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const { getContent, formatBalance } = useProjectMethods();
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);

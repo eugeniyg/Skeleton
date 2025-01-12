@@ -8,15 +8,15 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGamesPage } from '~/types';
+  import type { ICategoryPage } from '~/types';
   const emit = defineEmits(['pageMounted']);
 
   const contentParams = {
-    contentKey: 'gamesPageContent',
-    contentRoute: ['pages', 'games'],
+    contentKey: 'categoryPageContent',
+    contentRoute: ['pages', 'category'],
     isPage: true,
   };
-  const { getContentData } = useContentLogic<IGamesPage>(contentParams);
+  const { getContentData } = useContentLogic<ICategoryPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   onMounted(() => {

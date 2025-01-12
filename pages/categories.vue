@@ -29,7 +29,12 @@
         @change="changeSort"
       />
 
-      <providers-tags v-if="tags.length" :tags="tags" @unselect="selectProviders" />
+      <providers-tags
+        v-if="tags.length"
+        :tags="tags"
+        :clearLabel="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'clearProviders')"
+        @unselect="selectProviders"
+      />
     </div>
 
     <list-grid v-if="state.pageData.length" :items="state.pageData" :meta="state.pageMeta" @load-more="getData(true)" />
@@ -48,7 +53,7 @@
 <script setup lang="ts">
   import type { ICollection, IGame, IGameProvider, IPaginationMeta } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
-  import type { IGamesPage } from '~/types';
+  import type { ICategoryPage } from '~/types';
   import debounce from 'lodash/debounce';
 
   const globalStore = useGlobalStore();
@@ -59,10 +64,10 @@
   const { openModal, closeModal } = useModalStore();
 
   const contentParams = {
-    contentKey: 'gamesPageContent',
-    contentRoute: ['pages', 'games'],
+    contentKey: 'categoryPageContent',
+    contentRoute: ['pages', 'category'],
   };
-  const { getContentData } = useContentLogic<IGamesPage>(contentParams);
+  const { getContentData } = useContentLogic<ICategoryPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
 
   interface IState {

@@ -1,7 +1,7 @@
 <template>
   <div class="phone-verify">
     <div class="phone-verify__description">
-      {{ getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.description') }}
+      {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'phoneVerification.description') }}
       <span>+{{ props.phone }}</span>
     </div>
 
@@ -10,18 +10,24 @@
     <div class="phone-verify__resend">
       <span class="phone-verify__resend-hint">
         <template v-if="limitError">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.limitError') }}
+          {{
+            getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'phoneVerification.limitError')
+          }}
         </template>
 
         <template v-else>
-          {{ getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.receiveHint') }}
+          {{
+            getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'phoneVerification.receiveHint')
+          }}
         </template>
       </span>
 
       <template v-if="!limitError">
         <div v-if="timer" class="phone-verify__resend-timer">
           <div class="label">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.timerLabel') }}
+            {{
+              getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'phoneVerification.timerLabel')
+            }}
           </div>
 
           <div class="time">
@@ -31,7 +37,9 @@
         </div>
 
         <button-base v-else type="ghost" size="xs" @click.once="resendCode">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.resendButton') }}
+          {{
+            getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'phoneVerification.resendButton')
+          }}
         </button-base>
       </template>
     </div>
@@ -60,7 +68,7 @@
   }>();
 
   const emit = defineEmits(['verifyPhone', 'removeErrorHint']);
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const { getContent } = useProjectMethods();
   const completeCode = ref<string>('');
 
