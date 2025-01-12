@@ -95,6 +95,9 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent } from '~/types';
+  import modalsMap from '@skeleton/maps/modalsMap.json';
+  import type { IModalSettings } from '@skeleton/types';
+  const modalsList: Record<string, IModalSettings> = modalsMap;
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['forgot']>;
@@ -103,7 +106,7 @@
 
   const signInContentParams = {
     contentKey: 'modal-sign-in',
-    contentRoute: ['modals', 'sign-in'],
+    contentRoute: ['modals', modalsList['sign-in'].content as string],
   };
   const { getContentData: getSignInContentData } = useContentLogic(signInContentParams);
   const { data: signInContent } = await useLazyAsyncData(getSignInContentData);

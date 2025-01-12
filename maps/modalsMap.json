@@ -1,0 +1,198 @@
+{
+  "sign-in": {
+    "component": "sign-in",
+    "content": "sign-in",
+    "queryName": "sign-in",
+    "onlyGuest": true
+  },
+  "forgot-pass": {
+    "component": "forgot-pass",
+    "content": "forgot-pass",
+    "queryName": "forgot-pass",
+    "onlyGuest": true
+  },
+  "reset-pass": {
+    "component": "reset-pass",
+    "content": "reset-pass",
+    "queryName": "reset-pass",
+    "onlyGuest": true
+  },
+  "sign-up": {
+    "component": "sign-up",
+    "content": "sign-up",
+    "queryName": "sign-up",
+    "onlyGuest": true
+  },
+  "sign-up-cancel": {
+    "component": "sign-up-cancel",
+    "content": "sign-up-cancel"
+  },
+  "deposit-error": {
+    "component": "deposit-error",
+    "content": "deposit-error",
+    "queryName": "deposit-error",
+    "onlyLogged": true
+  },
+  "deposit-success": {
+    "component": "success",
+    "content": "deposit-success",
+    "queryName": "deposit-success",
+    "onlyLogged": true
+  },
+  "deposit-pending": {
+    "component": "success",
+    "content": "deposit-pending",
+    "queryName": "deposit-pending",
+    "onlyLogged": true
+  },
+  "wallet": {
+    "component": "wallet",
+    "content": "wallet",
+    "queryName": "wallet",
+    "onlyLogged": true
+  },
+  "cancel-deposit": {
+    "component": "cancel-deposit",
+    "content": "cancel-deposit"
+  },
+  "profile-confirmed": {
+    "component": "profile-confirmed",
+    "content": "profile-confirmed",
+    "queryName": "profile-confirmed"
+  },
+  "mobile-game": {
+    "component": "mobile-game",
+    "content": "mobile-game"
+  },
+  "equivalent-currency": {
+    "component": "equivalent-currency",
+    "content": "equivalent-currency",
+    "onlyLogged": true
+  },
+  "wallet-region": {
+    "component": "wallet-region",
+    "content": "wallet-region",
+    "onlyLogged": true
+  },
+  "deposit-redirect": {
+    "component": "success",
+    "content": "deposit-redirect",
+    "queryName": "deposit-redirect",
+    "onlyLogged": true
+  },
+  "quests-hub": {
+    "component": "quests-hub",
+    "content": "quests-hub",
+    "queryName": "quests-hub",
+    "onlyLogged": true
+  },
+  "quest-rewards": {
+    "component": "quest-rewards",
+    "onlyLogged": true
+  },
+  "quest-tasks": {
+    "component": "quest-tasks",
+    "content": "quest-tasks",
+    "onlyLogged": true
+  },
+  "wallet-bonus-info": {
+    "component": "wallet-bonus-info",
+    "content": "wallet-bonus-info",
+    "onlyLogged": true
+  },
+  "loyalty-earn": {
+    "component": "loyalty-earn",
+    "content": "loyalty-earn"
+  },
+  "loyalty-level": {
+    "component": "loyalty-level",
+    "content": "loyalty-level",
+    "onlyLogged": true
+  },
+  "turn-over-wager": {
+    "component": "turn-over-wager",
+    "content": "turn-over-wager",
+    "onlyLogged": true
+  },
+  "add-cash-limit": {
+    "component": "add-cash-limit",
+    "content": "add-cash-limit",
+    "onlyLogged": true
+  },
+  "edit-cash-limit": {
+    "component": "edit-cash-limit",
+    "content": "edit-cash-limit",
+    "onlyLogged": true
+  },
+  "game-limit-reached": {
+    "component": "game-limit-reached",
+    "content": "game-limit-reached",
+    "onlyLogged": true
+  },
+  "self-exclusion-limit": {
+    "component": "self-exclusion-limit",
+    "content": "self-exclusion-limit",
+    "onlyLogged": true
+  },
+  "bonus-cancel-lock": {
+    "component": "bonus-cancel-lock",
+    "content": "bonus-cancel-lock",
+    "onlyLogged": true
+  },
+  "change-active-bonus": {
+    "component": "bonus-confirm-action",
+    "content": "change-active-bonus",
+    "onlyLogged": true
+  },
+  "cancel-active-bonus": {
+    "component": "bonus-confirm-action",
+    "content": "cancel-active-bonus",
+    "onlyLogged": true
+  },
+  "cancel-issued-bonus": {
+    "component": "bonus-confirm-action",
+    "content": "cancel-issued-bonus",
+    "onlyLogged": true
+  },
+  "cancel-unsettled-bonus": {
+    "component": "cancel-unsettled-bonus",
+    "content": "cancel-unsettled-bonus",
+    "onlyLogged": true
+  },
+  "package-bonus": {
+    "component": "package-bonus",
+    "onlyLogged": true
+  },
+  "bonus-details": {
+    "component": "bonus-details",
+    "content": "bonus-details",
+    "onlyLogged": true
+  },
+  "quest-task-games": {
+    "component": "quest-task-games",
+    "content": "quest-tasks",
+    "onlyLogged": true
+  },
+  "max-bets": {
+    "component": "max-bets",
+    "content": "max-bets",
+    "onlyLogged": true
+  },
+  "restricted-bets": {
+    "component": "restricted-bets",
+    "content": "restricted-bets",
+    "onlyLogged": true
+  },
+  "demo-game": {
+    "component": "demo-game",
+    "content": "demo-game"
+  },
+  "categories": {
+    "component": "categories",
+    "content": "categories"
+  },
+  "providers": {
+    "component": "providers",
+    "content": "providers"
+  }
+}

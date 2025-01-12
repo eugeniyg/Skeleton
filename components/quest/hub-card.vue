@@ -40,6 +40,9 @@
 <script setup lang="ts">
   import type { IPlayerQuest } from '@skeleton/core/types';
   import type { IProfileInfo, IQuestsHubModal } from '~/types';
+  import modalsMap from '@skeleton/maps/modalsMap.json';
+  import type { IModalSettings } from '@skeleton/types';
+  const modalsList: Record<string, IModalSettings> = modalsMap;
 
   const props = defineProps<{
     questInfo: IPlayerQuest;
@@ -48,7 +51,7 @@
 
   const questsHubContentParams = {
     contentKey: 'modal-quests-hub',
-    contentRoute: ['modals', 'quests-hub'],
+    contentRoute: ['modals', modalsList['quests-hub'].content as string],
   };
   const { getContentData: getQuestsHubContentData } = useContentLogic<IQuestsHubModal>(questsHubContentParams);
   const { data: questsHubContent } = await useLazyAsyncData(getQuestsHubContentData);

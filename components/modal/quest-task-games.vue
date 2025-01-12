@@ -11,7 +11,7 @@
         <button-modal-close @close="closeModal('quest-task-games')" />
 
         <div class="title">
-          {{ getContent(questTasksContent?.currentLocaleData, questTasksContent?.defaultLocaleData, 'gamesLabel') }}
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'gamesLabel') }}
         </div>
       </div>
 
@@ -27,18 +27,13 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import type { IGame } from '@skeleton/core/types';
-  import type { IQuestTasksModal } from '~/types';
+  import type { IModalsContent } from '~/types';
 
   const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['questTasks']>;
+    defaultLocaleData: Maybe<IModalsContent['questTasks']>;
     games: IGame[];
   }>();
-
-  const questTasksContentParams = {
-    contentKey: 'modal-quest-tasks',
-    contentRoute: ['modals', 'quest-tasks'],
-  };
-  const { getContentData: getQuestTasksContentData } = useContentLogic<IQuestTasksModal>(questTasksContentParams);
-  const { data: questTasksContent } = await useLazyAsyncData(getQuestTasksContentData);
 
   const { getContent, localizePath } = useProjectMethods();
   const router = useRouter();
