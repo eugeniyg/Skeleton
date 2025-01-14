@@ -212,7 +212,7 @@
   };
 
   const setTableParams = async (): Promise<void> => {
-    if ([1, 4].includes(props.bonusInfo.type || -1) || [1, 4].includes(props.bonusInfo.bonusType || -1)) {
+    if ([1, 4].includes(props.bonusInfo.type || -1) || [1, 2, 4].includes(props.bonusInfo.bonusType || -1)) {
       tableParams.value = getCashParams();
     } else if (props.bonusInfo.type === 2) {
       const cashPrams = getCashParams();
