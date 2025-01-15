@@ -35,8 +35,6 @@ interface IGlobalStoreState {
   defaultLocaleFieldsSettings: Maybe<IFieldsSettingsContent>;
   layoutData: Maybe<ILayoutContent>;
   defaultLocaleLayoutData: Maybe<ILayoutContent>;
-  popupsData: Maybe<IModalsContent>;
-  defaultLocalePopupsData: Maybe<IModalsContent>;
   alertsData: Maybe<IAlertsContent>;
   defaultLocaleAlertsData: Maybe<IAlertsContent>;
   globalComponentsContent: Maybe<IGlobalComponentsContent>;
@@ -64,8 +62,6 @@ export const useGlobalStore = defineStore('globalStore', {
     defaultLocaleFieldsSettings: undefined,
     layoutData: undefined,
     defaultLocaleLayoutData: undefined,
-    popupsData: undefined,
-    defaultLocalePopupsData: undefined,
     alertsData: undefined,
     defaultLocaleAlertsData: undefined,
     globalComponentsContent: undefined,
@@ -253,7 +249,7 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getGlobalContent(): Promise<void> {
-      const globalContentFolders = ['alerts', 'fields-settings', 'global-components', 'layout', 'modals'];
+      const globalContentFolders = ['alerts', 'fields-settings', 'global-components', 'layout'];
 
       const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
         queryContent(this.currentLocale?.code as string)
@@ -290,7 +286,6 @@ export const useGlobalStore = defineStore('globalStore', {
 
         this.fieldsSettings = formattedCurrentLocaleContent.fieldsSettings;
         this.layoutData = formattedCurrentLocaleContent.layout;
-        this.popupsData = formattedCurrentLocaleContent.modals;
         this.alertsData = formattedCurrentLocaleContent.alerts;
         this.globalComponentsContent = formattedCurrentLocaleContent.globalComponents;
       }
@@ -313,7 +308,6 @@ export const useGlobalStore = defineStore('globalStore', {
 
         this.defaultLocaleFieldsSettings = formattedDefaultLocaleContent.fieldsSettings;
         this.defaultLocaleLayoutData = formattedDefaultLocaleContent.layout;
-        this.defaultLocalePopupsData = formattedDefaultLocaleContent.modals;
         this.defaultLocaleAlertsData = formattedDefaultLocaleContent.alerts;
         this.defaultLocaleGlobalComponentsContent = formattedDefaultLocaleContent.globalComponents;
       }

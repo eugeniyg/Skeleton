@@ -12,6 +12,9 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import modalsMap from '@skeleton/maps/modalsMap.json';
+  import type { IModalSettings } from '@skeleton/types';
+  const modalsList: Record<string, IModalSettings> = modalsMap;
 
   const loyaltyStore = useLoyaltyStore();
   const { getContent } = useProjectMethods();
@@ -21,7 +24,7 @@
 
   const signInContentParams = {
     contentKey: 'modal-loyalty-level',
-    contentRoute: ['modals', 'loyalty-level'],
+    contentRoute: ['modals', modalsList['loyalty-level'].content as string],
   };
   const { getContentData } = useContentLogic(signInContentParams);
   const { data: loyaltyLevelContent } = await useLazyAsyncData(getContentData);

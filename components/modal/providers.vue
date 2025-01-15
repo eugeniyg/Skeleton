@@ -1,6 +1,5 @@
 <template>
   <vue-final-modal
-    v-model="modals.providers"
     class="modal-providers"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
     :content-transition="{ mode: 'in-out', duration: 250 }"
@@ -10,13 +9,13 @@
         <div class="modal-providers__header-top">
           <button-modal-close @close="closeModal('providers')" />
           <div class="modal-providers__header-title">
-            {{ getContent(popupsData, defaultLocalePopupsData, 'providers.title') }}
+            {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}
           </div>
         </div>
 
         <form-input-search
           v-model:value="searchValue"
-          :placeholder="getContent(popupsData, defaultLocalePopupsData, 'providers.searchPlaceholder')"
+          :placeholder="getContent(props.currentLocaleData, props.defaultLocaleData, 'searchPlaceholder')"
           @input="onSearch"
         />
       </div>
@@ -47,16 +46,16 @@
 
         <atomic-empty
           v-else
-          :title="getContent(popupsData, defaultLocalePopupsData, 'providers.empty.title')"
-          :sub-title="getContent(popupsData, defaultLocalePopupsData, 'providers.empty.description')"
-          :image="getContent(popupsData, defaultLocalePopupsData, 'providers.empty.image')"
+          :title="getContent(props.currentLocaleData, props.defaultLocaleData, 'empty.title')"
+          :sub-title="getContent(props.currentLocaleData, props.defaultLocaleData, 'empty.description')"
+          :image="getContent(props.currentLocaleData, props.defaultLocaleData, 'empty.image')"
         />
       </div>
 
       <div class="modal-providers__footer">
         <atomic-divider />
         <button-base type="ghost" :is-disabled="isShowEmpty" @click.prevent="selectAll">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'providers.selectAll') }}
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'selectAll') }}
         </button-base>
       </div>
     </div>
@@ -64,19 +63,18 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
   import debounce from 'lodash/debounce';
   import type { IGameProvider, IProvidersRequest } from '@skeleton/core/types';
+  import type { IModalsContent } from '~/types';
 
   const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['providers']>;
+    defaultLocaleData: Maybe<IModalsContent['providers']>;
     selected: string[];
   }>();
 
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
+  const { closeModal } = useModalStore();
   const { getProviderList } = useGamesStore();
   const { getContent } = useProjectMethods();
 
@@ -103,10 +101,7 @@
   };
 
   const selectAll = () => {
-    const all: string[] = [];
-    providersList.value.forEach(provider => {
-      all.push(provider.id);
-    });
+    const all: string[] = providersList.value.map(provider => provider.id);
     emit('select', all);
   };
 

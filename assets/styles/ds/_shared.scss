@@ -1,3 +1,8 @@
-@import "typography";
-@import "placeholders";
-@import "mixins";
+@use "variables";
+@use "typography";
+@use "mixins";
+@use "placeholders";
+
+@forward "variables";
+@forward "typography";
+@forward "mixins";

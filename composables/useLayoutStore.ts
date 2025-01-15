@@ -4,19 +4,12 @@ import { useNotification } from '@kyvg/vue3-notification';
 import type { IAlert } from '~/types';
 import type { IGame } from '@skeleton/core/types';
 
-interface IModals extends Record<string, any> {
-  providers: boolean;
-  categories: boolean;
-  packageBonus: boolean;
-}
-
 interface ILayoutStoreState extends Record<string, any> {
   isUserNavOpen: boolean;
   isDrawerOpen: boolean;
   isCurrencyNavOpen: boolean;
   isDrawerCompact: boolean;
   showCookiePopup: boolean;
-  modals: IModals;
   lastNotificationTime: number;
   returnGame: Maybe<string | IGame>;
 }
@@ -28,11 +21,6 @@ export const useLayoutStore = defineStore('layoutStore', {
     isCurrencyNavOpen: false,
     isDrawerCompact: false,
     showCookiePopup: false,
-    modals: {
-      providers: false,
-      categories: false,
-      packageBonus: false,
-    },
     lastNotificationTime: 0,
     returnGame: undefined,
   }),
@@ -118,14 +106,6 @@ export const useLayoutStore = defineStore('layoutStore', {
         else enableBodyScroll(drawerContentEl);
       }
       if (this.isDrawerCompact) this.isDrawerCompact = false;
-    },
-
-    showModal(modalName: string): void {
-      this.modals[modalName] = true;
-    },
-
-    async closeModal(modalName: string): Promise<void> {
-      this.modals[modalName] = false;
     },
 
     setReturnGame(gameData: Maybe<IGame | string>): void {
