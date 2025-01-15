@@ -22,6 +22,7 @@ type ApplicationEvents = {
   receivedAsyncInvoice: ISocketInvoice;
   depositInvoiceUpdated: undefined;
   questActivated: undefined;
+  webSocketReconnected: undefined;
 };
 
 const emitter = mitt<ApplicationEvents>();
