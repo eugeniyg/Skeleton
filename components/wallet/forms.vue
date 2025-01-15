@@ -142,7 +142,11 @@
   const enableTurnOverWagerModal = runtimeConfig.public.enableTurnOverWager;
   const { turnOverWagerData } = storeToRefs(riskStore);
   const showTurnOverModal = computed(() => {
-    return enableTurnOverWagerModal && turnOverWagerData.value?.turnOverWagerAmount > 0;
+    return (
+      enableTurnOverWagerModal &&
+      activeAccount.value?.withdrawalBalance &&
+      turnOverWagerData.value?.turnOverWagerAmount > 0
+    );
   });
 
   // << GET CONTENT FOR DEPOSIT LIMIT
