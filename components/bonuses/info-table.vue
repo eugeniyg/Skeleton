@@ -10,7 +10,11 @@
 </template>
 
 <script setup lang="ts">
+  import type { IModalsContent } from '~/types';
+
   const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['bonusDetails']>;
+    defaultLocaleData: Maybe<IModalsContent['bonusDetails']>;
     bonusInfo: Record<string, any>;
   }>();
 
@@ -47,12 +51,10 @@
   const walletStore = useWalletStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
   const { formatBalance, getEquivalentFromBase, getContent, getSumFromAmountItems } = useProjectMethods();
-  const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
   const { getProviderList } = useGamesStore();
 
   const getParamLabel = (paramName: string): string | undefined => {
-    return getContent(popupsData.value, defaultLocalePopupsData.value, `bonusDetails.paramLabels.${paramName}`);
+    return getContent(props.currentLocaleData, props.defaultLocaleData, `paramLabels.${paramName}`);
   };
 
   const getDeposit = (limit: 'From' | 'To'): string | undefined => {
@@ -151,8 +153,8 @@
   };
 
   const getBooleanValue = (paramName: string): string | undefined => {
-    const trueLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'bonusDetails.trueLabel');
-    const falseLabel = getContent(popupsData.value, defaultLocalePopupsData.value, 'bonusDetails.falseLabel');
+    const trueLabel = getContent(props.currentLocaleData, props.defaultLocaleData, 'trueLabel');
+    const falseLabel = getContent(props.currentLocaleData, props.defaultLocaleData, 'falseLabel');
     return props.bonusInfo[paramName] ? trueLabel : falseLabel;
   };
 

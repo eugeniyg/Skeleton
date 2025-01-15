@@ -97,8 +97,8 @@
     countries,
     fieldsSettings,
     defaultLocaleFieldsSettings,
-    popupsData,
-    defaultLocalePopupsData,
+    globalComponentsContent,
+    defaultLocaleGlobalComponentsContent,
     headerCountry,
     currentLocale,
   } = storeToRefs(globalStore);
@@ -209,7 +209,11 @@
       emit('showVerification', registrationFormData);
     } catch (error: any) {
       if (error.data?.error?.code === 11005) {
-        const limitError = getContent(popupsData.value, defaultLocalePopupsData.value, 'phoneVerification.limitError');
+        const limitError = getContent(
+          globalComponentsContent.value,
+          defaultLocaleGlobalComponentsContent.value,
+          'phoneVerification.limitError'
+        );
         serverFormErrors.value = { phone: [limitError] };
       } else {
         serverFormErrors.value = { phone: [error.data?.error?.message] };

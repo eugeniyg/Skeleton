@@ -34,7 +34,9 @@
       reason="phoneVerification"
       :error-hint="verificationError"
       :loading="verifyLoading"
-      :button-label="getContent(popupsData, defaultLocalePopupsData, 'phoneVerification.verifyButton')"
+      :button-label="
+        getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'phoneVerification.verifyButton')
+      "
       @verify-phone="verifyPhone"
       @remove-error-hint="verificationError = undefined"
     />
@@ -80,7 +82,8 @@
   const fieldsStore = useFieldsStore();
   const { profileFields } = storeToRefs(fieldsStore);
   const phoneEditable = computed(() => profileFields.value.find(field => field.name === 'phone')?.editable);
-  const { fieldsSettings, defaultLocaleFieldsSettings, popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
+  const { fieldsSettings, defaultLocaleFieldsSettings, globalComponentsContent, defaultLocaleGlobalComponentsContent } =
+    storeToRefs(globalStore);
   const verificationContent = ref<Maybe<IProfileVerification>>(inject('verificationContent'));
   const defaultLocaleVerificationContent = ref<Maybe<IProfileVerification>>(inject('defaultLocaleVerificationContent'));
 
@@ -136,7 +139,11 @@
       showPhoneVerification.value = true;
     } catch (error: any) {
       if (error.data?.error?.code === 11005) {
-        const limitError = getContent(popupsData.value, defaultLocalePopupsData.value, 'phoneVerification.limitError');
+        const limitError = getContent(
+          globalComponentsContent.value,
+          defaultLocaleGlobalComponentsContent.value,
+          'phoneVerification.limitError'
+        );
         serverFormErrors.value = { phone: [limitError] };
       } else {
         serverFormErrors.value = { phone: [error.data?.error?.message] };
@@ -164,7 +171,11 @@
       if (error.data?.error?.code === 11003) {
         verificationError.value = {
           variant: 'error',
-          message: getContent(popupsData.value, defaultLocalePopupsData.value, 'phoneVerification.invalidError'),
+          message: getContent(
+            globalComponentsContent.value,
+            defaultLocaleGlobalComponentsContent.value,
+            'phoneVerification.invalidError'
+          ),
         };
       } else {
         verificationError.value = {

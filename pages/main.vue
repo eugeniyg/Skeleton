@@ -1,13 +1,7 @@
 <template>
   <div>
     <main-slider :style="sliderVisibilityStyle" />
-
-    <nav-category @click-category="changeCategory" />
-
-    <client-only>
-      <modal-providers :selected="selectedProviders" @select="changeProvider" />
-      <modal-categories @click-category="changeCategory" />
-    </client-only>
+    <nav-category @click-category="changeCategory" @openProviders="openProviders" />
 
     <group-games
       v-for="category in mainCategoriesList.slice(0, 3)"
@@ -58,9 +52,7 @@
   const { localizePath, getContent } = useProjectMethods();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
-  const layoutStore = useLayoutStore();
-  const { closeModal } = layoutStore;
-  const { modals } = storeToRefs(layoutStore);
+  const { openModal, closeModal } = useModalStore();
 
   const contentParams = {
     contentKey: 'casinoPageContent',
@@ -81,10 +73,8 @@
   });
 
   const router = useRouter();
-  const changeCategory = (categoryIdentity: string) => {
-    if (modals.value.categories) closeModal('categories');
-
-    router.push(localizePath(`/categories/${categoryIdentity}`));
+  const changeCategory = async (categoryIdentity: string): Promise<void> => {
+    await router.push(localizePath(`/categories/${categoryIdentity}`));
   };
 
   const selectedProviders = ref<string[]>([]);
@@ -109,14 +99,16 @@
       'providersSettings.defaultCategory'
     );
 
-    setTimeout(() => {
-      closeModal('providers');
-      router.push({
-        path: localizePath(defaultCategory ? `/categories/${defaultCategory}` : '/categories'),
-        query: {
-          provider: providersIdentity,
-        },
-      });
-    }, 600);
+    await closeModal('providers');
+    await router.push({
+      path: localizePath(defaultCategory ? `/categories/${defaultCategory}` : '/categories'),
+      query: {
+        provider: providersIdentity,
+      },
+    });
+  };
+
+  const openProviders = () => {
+    openModal('providers', { props: { selected: selectedProviders, onSelect: changeProvider } });
   };
 </script>
