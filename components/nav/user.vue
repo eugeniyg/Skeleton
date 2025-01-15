@@ -21,7 +21,7 @@
         <button-base type="primary" size="md" @click="clickDeposit">
           <atomic-icon id="plus" />
 
-          <span>{{ getContent(popupsData, defaultLocalePopupsData, 'wallet.tabs.deposit') }}</span>
+          <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'profileSidebar.depositButton') }}</span>
         </button-base>
       </template>
     </div>
@@ -59,9 +59,8 @@
   const { localizePath, handleExternalLink, getContent } = useProjectMethods();
   const { closeUserNav } = useLayoutStore();
   const { openWalletModal } = useModalStore();
-  const { layoutData, defaultLocaleLayoutData, popupsData, defaultLocalePopupsData } = useGlobalStore();
-  const profileLinks =
-    layoutData?.profileSidebar?.profileLinks || defaultLocaleLayoutData?.profileSidebar?.profileLinks || [];
+  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
+  const profileLinks = getContent(layoutData, defaultLocaleLayoutData, 'profileSidebar.profileLinks') || [];
   const route = useRoute();
 
   const runtimeConfig = useRuntimeConfig();

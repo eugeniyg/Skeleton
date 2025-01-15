@@ -36,7 +36,8 @@
   }>();
 
   const globalStore = useGlobalStore();
-  const { fieldsSettings, defaultLocaleFieldsSettings, popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
+  const { fieldsSettings, defaultLocaleFieldsSettings, globalComponentsContent, defaultLocaleGlobalComponentsContent } =
+    storeToRefs(globalStore);
 
   const emit = defineEmits(['sendOtp']);
   const forgotFormData = reactive({ phone: '' });
@@ -63,7 +64,11 @@
       emit('sendOtp', forgotFormData);
     } catch (error: any) {
       if (error.data?.error?.code === 11005) {
-        const limitError = getContent(popupsData.value, defaultLocalePopupsData.value, 'phoneVerification.limitError');
+        const limitError = getContent(
+          globalComponentsContent.value,
+          defaultLocaleGlobalComponentsContent.value,
+          'phoneVerification.limitError'
+        );
         serverFormErrors.value = { phone: [limitError] };
       } else {
         serverFormErrors.value = { phone: [error.data?.error?.message] };

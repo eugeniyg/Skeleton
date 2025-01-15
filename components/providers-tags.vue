@@ -3,9 +3,7 @@
     <div class="providers-tags__clear" @click="clearTags">
       <atomic-icon id="trash" class="providers-tags__clear-icon" />
 
-      <span class="providers-tags__clear-text">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'providers.clearTags') }}
-      </span>
+      <span class="providers-tags__clear-text">{{ props.clearLabel }}</span>
     </div>
 
     <div class="providers-tags__content">
@@ -33,12 +31,9 @@
   import type { IGameProvider } from '@skeleton/core/types';
 
   const props = defineProps<{
+    clearLabel?: string;
     tags: IGameProvider[];
   }>();
-
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
-
-  const { getContent } = useProjectMethods();
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);

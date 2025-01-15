@@ -57,40 +57,6 @@
         <bonuses-promo-code />
       </div>
     </transition>
-
-    <modal-confirm-bonus
-      v-bind="modalState"
-      :show-modal="showModalConfirmBonus"
-      :bonuses-updating="loadingBonuses.includes(modalState.bonusInfo?.id || 'unknown')"
-      @close-modal="showModalConfirmBonus = false"
-      @confirm="
-        () => {
-          modalState.action === 'remove' ? removeBonus() : activateBonus();
-        }
-      "
-    />
-
-    <modal-confirm-bonus-unsettled
-      v-bind="modalState"
-      :show-modal="showConfirmBonusUnsettledModal"
-      :bonuses-updating="loadingBonuses.includes(modalState.bonusInfo?.id || 'unknown')"
-      @close-modal="showConfirmBonusUnsettledModal = false"
-      @confirm="removeBonus"
-    />
-
-    <modal-bonus-cancel-lock :show-modal="showBonusCancelLockModal" @close="showBonusCancelLockModal = false" />
-
-    <modal-package-bonus
-      :show-modal="showPackageModal"
-      :bonuses-list="packageModalList"
-      :loading-bonuses="loadingBonuses"
-      @close="showPackageModal = false"
-      @remove-bonus="removeBonusHandle"
-      @remove-free-spin="removeFreeSpinHandle"
-      @activate-bonus="activateBonusHandle"
-      @activate-free-spin="activateFreeSpinHandle"
-      @activate-deposit="activateDepositBonus"
-    />
   </div>
 </template>
 
@@ -102,7 +68,7 @@
 
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
-  const { popupsData, defaultLocalePopupsData, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
+  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const { localizePath, getContent, getMinBonusDeposit } = useProjectMethods();
@@ -118,7 +84,8 @@
     playerFreeSpins,
   } = storeToRefs(bonusStore);
   const { showAlert } = useLayoutStore();
-  const { openWalletModal } = useModalStore();
+  const modalStore = useModalStore();
+  const { openModal, openWalletModal, closeModal } = modalStore;
   const hasActiveBlock = computed(() => activePlayerBonuses.value.length || activePlayerFreeSpins.value.length);
   const hasIssuedBlock = computed(() => {
     const hasSimpleBonus = [...issuedPlayerBonuses.value, ...issuedPlayerFreeSpins.value].some(
@@ -141,23 +108,15 @@
   provide('defaultLocaleBonusesContent', defaultLocaleContent);
 
   interface IModalState extends Record<string, any> {
-    image?: string;
-    title?: string;
-    description?: string;
-    wageringLabel?: string;
-    confirmButton?: string;
-    cancelButton?: string;
     bonusInfo?: IPlayerBonus | IPlayerFreeSpin | undefined;
     bonusType?: 'bonus' | 'freeSpin' | undefined;
-    action?: 'remove' | 'activate' | undefined;
+    action?: 'cancel-active' | 'cancel-issued' | 'activate' | undefined;
   }
 
   const modalState = reactive<IModalState>({});
-  const showBonusCancelLockModal = ref(false);
-  const showConfirmBonusUnsettledModal = ref(false);
-  const showModalConfirmBonus = ref(false);
   const loadingBonuses = ref<string[]>([]);
   const loadedBonuses = ref<string[]>([]);
+  const bonusesUpdating = computed(() => loadingBonuses.value.includes(modalState.bonusInfo?.id || 'unknown'));
 
   const { activatePlayerBonus, cancelPlayerBonus, activatePlayerFreeSpin, cancelPlayerFreeSpin } = useCoreBonusApi();
 
@@ -165,41 +124,6 @@
     const activeBonus = activePlayerBonuses.value[0];
     return !!activeBonus && activeBonus.isBonusCancelLock && activeBonus.currentWagerPercentage > 0;
   });
-
-  const setModalStateForUnsettledBonus = (): void => {
-    const data = getContent(popupsData.value, defaultLocalePopupsData?.value, 'cancelBonusUnsettled');
-    if (data) {
-      modalState.image = data.image;
-      modalState.title = data.title;
-      modalState.description = data.description;
-      modalState.wageringLabel = data.wageringLabel;
-      modalState.confirmButton = data.confirmButton;
-      modalState.cancelButton = data.cancelButton;
-    }
-  };
-
-  const setModalStateForCancelBonus = (bonusInfo: IPlayerBonus | IPlayerFreeSpin): void => {
-    const data = getContent(popupsData.value, defaultLocalePopupsData.value, 'cancelBonus');
-    if (data) {
-      modalState.title = data.title;
-      modalState.description =
-        bonusInfo.currentWagerPercentage > 0 || bonusInfo.progress > 0
-          ? data.activeBonusDescription
-          : data.issuedBonusDescription;
-      modalState.confirmButton = data.confirmButton;
-      modalState.cancelButton = data.cancelButton;
-    }
-  };
-
-  const setModalStateForActiveBonus = (): void => {
-    const data = popupsData.value?.changeActiveBonus || defaultLocalePopupsData?.value?.changeActiveBonus;
-    if (data) {
-      modalState.title = data.title;
-      modalState.description = data.description;
-      modalState.confirmButton = data.confirmButton;
-      modalState.cancelButton = data.cancelButton;
-    }
-  };
 
   const removeBonus = async (): Promise<void> => {
     const staticBonusId = modalState.bonusInfo?.id;
@@ -240,10 +164,11 @@
     modalState.action = 'activate';
 
     if (hasCancelLockBonus.value) {
-      showBonusCancelLockModal.value = true;
+      openModal('bonus-cancel-lock');
     } else {
-      setModalStateForActiveBonus();
-      showModalConfirmBonus.value = true;
+      openModal('change-active-bonus', {
+        props: { onConfirm: activateBonus, bonusesUpdating: bonusesUpdating },
+      });
     }
   };
 
@@ -260,16 +185,18 @@
     if (loadingBonuses.value.includes(bonus.id)) return;
     modalState.bonusInfo = bonus;
     modalState.bonusType = 'bonus';
-    modalState.action = 'remove';
+    modalState.action = bonus.currentWagerPercentage > 0 ? 'cancel-active' : 'cancel-issued';
 
     if (hasCancelLockBonus.value && bonus.status !== 1) {
-      showBonusCancelLockModal.value = true;
+      openModal('bonus-cancel-lock');
     } else if (bonus.openedTransactionsCount > 0) {
-      setModalStateForUnsettledBonus();
-      showConfirmBonusUnsettledModal.value = true;
+      openModal('cancel-unsettled-bonus', {
+        props: { onConfirm: removeBonus, bonusesUpdating: bonusesUpdating, bonusInfo: modalState.bonusInfo },
+      });
     } else {
-      setModalStateForCancelBonus(bonus);
-      showModalConfirmBonus.value = true;
+      openModal(modalState.action === 'cancel-active' ? 'cancel-active-bonus' : 'cancel-issued-bonus', {
+        props: { onConfirm: removeBonus, bonusesUpdating: bonusesUpdating },
+      });
     }
   };
 
@@ -277,10 +204,11 @@
     if (loadingBonuses.value.includes(freeSpin.id)) return;
     modalState.bonusInfo = freeSpin;
     modalState.bonusType = 'freeSpin';
-    modalState.action = 'remove';
+    modalState.action = freeSpin.progress > 0 ? 'cancel-active' : 'cancel-issued';
 
-    setModalStateForCancelBonus(freeSpin);
-    showModalConfirmBonus.value = true;
+    openModal(modalState.action === 'cancel-active' ? 'cancel-active-bonus' : 'cancel-issued-bonus', {
+      props: { onConfirm: removeBonus, bonusesUpdating: bonusesUpdating },
+    });
   };
 
   const activateDepositBonus = async ({
@@ -305,7 +233,6 @@
   const activePackageBonuses = ref<Record<string, any>[][]>([]);
   const issuedPackageBonuses = ref<Record<string, any>[][]>([]);
   const depositPackageBonuses = ref<Record<string, any>[][]>([]);
-  const showPackageModal = ref(false);
   const packageModalList = ref<Record<string, any>[]>([]);
 
   const updatePackageModalList = (): void => {
@@ -314,7 +241,7 @@
       !issuedPackageBonuses.value.length &&
       !depositPackageBonuses.value.length
     ) {
-      showPackageModal.value = false;
+      closeModal('package-bonus');
     }
 
     const packageId =
@@ -335,7 +262,7 @@
     });
 
     if (newBonusesList) packageModalList.value = newBonusesList;
-    else showPackageModal.value = false;
+    else closeModal('package-bonus');
   };
 
   const checkLoadingBonuses = (): void => {
@@ -343,8 +270,14 @@
       loadingId => !loadedBonuses.value.some(loadedId => loadingId === loadedId)
     );
     if (modalState.bonusInfo?.id && loadedBonuses.value.some(loadedId => loadedId === modalState.bonusInfo?.id)) {
-      showModalConfirmBonus.value = false;
-      showConfirmBonusUnsettledModal.value = false;
+      if (modalState.action === 'activate') closeModal('change-active-bonus');
+      else if (modalState.action === 'cancel-active') {
+        closeModal('cancel-active-bonus');
+        closeModal('cancel-unsettled-bonus');
+      } else if (modalState.action === 'cancel-issued') {
+        closeModal('cancel-issued-bonus');
+        closeModal('cancel-unsettled-bonus');
+      }
     }
     loadedBonuses.value = [];
   };
@@ -431,7 +364,7 @@
         bonusesList => !bonusesList.some(bonus => bonus.status === 2)
       );
 
-      if (showPackageModal.value) updatePackageModalList();
+      if (modalStore.modals['package-bonus']?.options?.modelValue) updatePackageModalList();
     } catch {
       console.error('Failed to get package bonuses');
     }
@@ -441,7 +374,17 @@
 
   const openPackageModal = (bonusesList: Record<string, any>[]): void => {
     packageModalList.value = bonusesList;
-    showPackageModal.value = true;
+    openModal('package-bonus', {
+      props: {
+        bonusesList: packageModalList,
+        loadingBonuses: loadingBonuses,
+        onRemoveBonus: removeBonusHandle,
+        onRemoveFreeSpin: removeFreeSpinHandle,
+        onActivateBonus: activateBonusHandle,
+        onActivateFreeSpin: activateFreeSpinHandle,
+        onActivateDeposit: activateDepositBonus,
+      },
+    });
   };
 
   const debouncePackageBonus = debounce(getPackageBonuses, 200, { leading: false });

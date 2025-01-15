@@ -21,7 +21,7 @@
     </div>
     <div class="nav-category__actions">
       <button-categories :is-active="isDropdownShown" :disabled="isCategoriesButtonDisabled" @action="showCategories" />
-      <button-providers @action="showModal('providers')" />
+      <button-providers @click="emit('openProviders')" />
 
       <ul v-if="isDropdownShown && dropdownItems.length" class="nav-category__dropdown">
         <li
@@ -51,20 +51,20 @@
     hideItems?: boolean;
   }>();
 
-  const { showModal } = useLayoutStore();
+  const { openModal } = useModalStore();
   const route = useRoute();
   const itemRef = ref([]);
   const itemsRef = ref();
   const isDropdownShown = ref<boolean>(false);
 
-  const emit = defineEmits(['clickCategory']);
+  const emit = defineEmits(['clickCategory', 'openProviders']);
   const { gameCategoriesObj } = useGlobalStore();
   const filteredCategories = ref<ICollection[]>([]);
   const dropdownItems = ref<ICollection[]>([]);
   const isCategoriesButtonDisabled = ref<boolean>(false);
 
   const showCategories = () => {
-    if (window.innerWidth <= 1280) showModal('categories');
+    if (window.innerWidth <= 1280) openModal('categories');
     else showDropdown();
   };
 
