@@ -12,6 +12,7 @@ interface IWalletState {
   accountSwitching: Promise<any> | undefined;
   requestPaymentMethodsRegion: Maybe<string>;
   selectedPaymentMethodsRegion: Maybe<string>;
+  successDepositAudio: HTMLAudioElement | undefined;
 }
 
 export const useWalletStore = defineStore('walletStore', {
@@ -26,6 +27,7 @@ export const useWalletStore = defineStore('walletStore', {
     accountSwitching: undefined,
     requestPaymentMethodsRegion: undefined,
     selectedPaymentMethodsRegion: undefined,
+    successDepositAudio: undefined,
   }),
 
   getters: {
@@ -209,6 +211,20 @@ export const useWalletStore = defineStore('walletStore', {
       }
     },
 
+    async setSuccessAudio(): Promise<void> {
+      const contentParams = {
+        contentKey: 'modal-deposit-success',
+        contentRoute: ['modals', modalsList[modalName].content],
+      };
+      const { getContentData } = useContentLogic(contentParams);
+      const { currentLocaleData, defaultLocaleData } = await getContentData();
+    },
+
+    playSuccessAudio(): void {
+      if (!this.successDepositAudio) this.successDepositAudio = new Audio('/img/uploads/cash-sound.mp3');
+      this.successDepositAudio.play();
+    },
+
     showInvoiceStatus(webSocketResponse: IWebSocketResponse): void {
       const socketInvoiceData = webSocketResponse.data?.invoice;
       this.asyncInvoiceProcessing(socketInvoiceData);
@@ -247,6 +263,7 @@ export const useWalletStore = defineStore('walletStore', {
 
         const depositSuccessAlertData = depositSuccessObj ? { ...depositSuccessObj, description } : undefined;
         const depositErrorAlertData = depositErrorObj ? { ...depositErrorObj, description } : undefined;
+        if (!invoiceSuccess) this.playSuccessAudio();
         showAlert(invoiceSuccess ? depositSuccessAlertData : depositErrorAlertData);
 
         useEvent('analyticsEvent', {
