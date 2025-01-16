@@ -148,7 +148,7 @@ export const useProfileStore = defineStore('profileStore', {
         getDepositBonuses();
       }
 
-      const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
+      const { subscribeAccountSocket, subscribeInvoicesSocket, setSuccessAudio } = useWalletStore();
       const { subscribeBonusCodeSocket, subscribeBonusSocket, subscribeFreeSpinsSocket } = useBonusStore();
       const { subscribeTournamentSocket } = useTournamentsStore();
 
@@ -167,6 +167,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { setEquivalentCurrency } = useGlobalStore();
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
       if (storageEquivalentCurrency) setEquivalentCurrency(storageEquivalentCurrency);
+      setSuccessAudio();
     },
 
     finishProfileDependencies(): void {
