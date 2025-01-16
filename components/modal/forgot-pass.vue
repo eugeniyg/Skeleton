@@ -95,14 +95,14 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent } from '~/types';
-  import modalsMap from '@skeleton/maps/modalsMap.json';
-  import type { IModalSettings } from '@skeleton/types';
-  const modalsList: Record<string, IModalSettings> = modalsMap;
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['forgot']>;
     defaultLocaleData: Maybe<IModalsContent['forgot']>;
   }>();
+
+  const modalStore = useModalStore();
+  const { modalsList, openModal, closeModal } = modalStore;
 
   const signInContentParams = {
     contentKey: 'modal-sign-in',
@@ -110,9 +110,6 @@
   };
   const { getContentData: getSignInContentData } = useContentLogic(signInContentParams);
   const { data: signInContent } = await useLazyAsyncData(getSignInContentData);
-
-  const modalStore = useModalStore();
-  const { openModal, closeModal } = modalStore;
 
   const { settingsConstants, globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const { getContent } = useProjectMethods();

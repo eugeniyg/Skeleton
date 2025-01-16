@@ -12,15 +12,13 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import modalsMap from '@skeleton/maps/modalsMap.json';
-  import type { IModalSettings } from '@skeleton/types';
-  const modalsList: Record<string, IModalSettings> = modalsMap;
 
   const loyaltyStore = useLoyaltyStore();
   const { getContent } = useProjectMethods();
   const { currentLevelName, loyaltyAccount } = storeToRefs(loyaltyStore);
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+  const { modalsList } = useModalStore();
 
   const signInContentParams = {
     contentKey: 'modal-loyalty-level',

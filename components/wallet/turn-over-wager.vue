@@ -70,10 +70,8 @@
 
 <script setup lang="ts">
   import type { ITurnOverWagerModal } from '~/types';
-  import modalsMap from '@skeleton/maps/modalsMap.json';
-  import type { IModalSettings } from '@skeleton/types';
-  const modalsList: Record<string, IModalSettings> = modalsMap;
 
+  const { modalsList } = useModalStore();
   const turnOverWagerContentParams = {
     contentKey: 'modal-turn-over-wager',
     contentRoute: ['modals', modalsList['turn-over-wager'].content as string],
