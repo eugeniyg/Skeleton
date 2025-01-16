@@ -5,10 +5,10 @@ import type { Dayjs } from 'dayjs';
 import modalsMap from '@skeleton/maps/modalsMap.json';
 import type { IModalSettings } from '@skeleton/types';
 
-const modalsList: Record<string, IModalSettings> = modalsMap;
 type WalletModalTypes = 'deposit' | 'withdraw' | undefined;
 
 interface IModalStoreState {
+  modalsList: Record<string, IModalSettings>;
   modals: { [key: string]: Maybe<UseModalReturnType<any>> };
   openingModals: string[];
   walletModalType: WalletModalTypes;
@@ -23,6 +23,7 @@ interface IOpenModalParams {
 
 export const useModalStore = defineStore('modalStore', {
   state: (): IModalStoreState => ({
+    modalsList: modalsMap,
     modals: {},
     openingModals: [],
     walletModalType: undefined,
@@ -32,8 +33,8 @@ export const useModalStore = defineStore('modalStore', {
   actions: {
     accessToOpen(modalName: string): boolean {
       const { isLoggedIn } = useProfileStore();
-      if (modalsList[modalName]?.onlyGuest) return !isLoggedIn;
-      if (modalsList[modalName]?.onlyLogged) return isLoggedIn;
+      if (this.modalsList[modalName]?.onlyGuest) return !isLoggedIn;
+      if (this.modalsList[modalName]?.onlyLogged) return isLoggedIn;
       return true;
     },
 
@@ -43,7 +44,7 @@ export const useModalStore = defineStore('modalStore', {
       const newQuery = { ...query };
 
       Object.keys(this.modals).forEach(modalName => {
-        const modalListQueryName: string | undefined = modalsList[modalName]?.queryName;
+        const modalListQueryName: string | undefined = this.modalsList[modalName]?.queryName;
         if (
           modalListQueryName &&
           this.modals[modalName]?.options?.modelValue &&
@@ -55,12 +56,12 @@ export const useModalStore = defineStore('modalStore', {
       });
 
       await router.replace({
-        query: { ...newQuery, [modalsList[modalName]?.queryName as string]: modalQueryParam || 'true' },
+        query: { ...newQuery, [this.modalsList[modalName]?.queryName as string]: modalQueryParam || 'true' },
       });
     },
 
     async removeModalQuery(modalName: string): Promise<void> {
-      const modalListQueryName: string | undefined = modalsList[modalName]?.queryName;
+      const modalListQueryName: string | undefined = this.modalsList[modalName]?.queryName;
       if (!modalListQueryName) return;
 
       const router = useRouter();
@@ -71,11 +72,12 @@ export const useModalStore = defineStore('modalStore', {
     },
 
     async openModal(modalName: string, params?: IOpenModalParams): Promise<void> {
-      if (!modalsList[modalName] || !this.accessToOpen(modalName) || this.openingModals.includes(modalName)) return;
+      if (!this.modalsList[modalName] || !this.accessToOpen(modalName) || this.openingModals.includes(modalName))
+        return;
       this.openingModals.push(modalName);
 
       if (!this.modals[modalName]) {
-        const modalComponentName = modalsList[modalName].component;
+        const modalComponentName = this.modalsList[modalName].component;
         const modalComponent = defineAsyncComponent(async () => {
           try {
             return await import(`../../components/modal/${modalComponentName}.vue`);
@@ -84,10 +86,10 @@ export const useModalStore = defineStore('modalStore', {
           }
         });
 
-        if (modalsList[modalName].content) {
+        if (this.modalsList[modalName].content) {
           const contentParams = {
             contentKey: `modal-${modalName}`,
-            contentRoute: ['modals', modalsList[modalName].content],
+            contentRoute: ['modals', this.modalsList[modalName].content],
           };
           const { getContentData } = useContentLogic(contentParams);
           const { currentLocaleData, defaultLocaleData } = await getContentData();
@@ -115,7 +117,7 @@ export const useModalStore = defineStore('modalStore', {
         this.modals[modalName].patchOptions(newOptions);
       }
 
-      if ((params?.prohibitQueryChange ?? true) && modalsList[modalName].queryName)
+      if ((params?.prohibitQueryChange ?? true) && this.modalsList[modalName].queryName)
         await this.addModalQuery(modalName, params?.modalQueryValue);
       this.modals[modalName].open();
       this.openingModals = this.openingModals.filter(item => item !== modalName);
@@ -123,7 +125,7 @@ export const useModalStore = defineStore('modalStore', {
 
     async closeModal(modalName: string): Promise<void> {
       this.modals[modalName]?.close();
-      if (modalsList[modalName].queryName) await this.removeModalQuery(modalName);
+      if (this.modalsList[modalName].queryName) await this.removeModalQuery(modalName);
     },
 
     async closeAllModals(): Promise<void> {
@@ -133,7 +135,7 @@ export const useModalStore = defineStore('modalStore', {
       Object.keys(this.modals).forEach(modalName => {
         if (this.modals[modalName]?.options?.modelValue) {
           this.modals[modalName].close();
-          const modalListQueryName: string | undefined = modalsList[modalName]?.queryName;
+          const modalListQueryName: string | undefined = this.modalsList[modalName]?.queryName;
           if (modalListQueryName && query.hasOwnProperty(modalListQueryName)) delete newQuery[modalListQueryName];
         }
       });
@@ -198,8 +200,8 @@ export const useModalStore = defineStore('modalStore', {
       if (!queryArr.length) return;
 
       const modalsByQuery: { [key: string]: string } = {};
-      Object.keys(modalsList).forEach(modalName => {
-        const modalQueryName = modalsList[modalName].queryName;
+      Object.keys(this.modalsList).forEach(modalName => {
+        const modalQueryName = this.modalsList[modalName].queryName;
         if (modalQueryName) modalsByQuery[modalQueryName] = modalName;
       });
 
