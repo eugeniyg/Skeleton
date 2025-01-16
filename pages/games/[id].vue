@@ -10,24 +10,6 @@
       @change-mode="changeGameMode"
     />
 
-    <client-only>
-      <modal-restricted-bets
-        v-if="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"
-        :content="pageContent?.currentLocaleData?.restrictedBets || pageContent?.defaultLocaleData?.restrictedBets"
-        current-page="game"
-        :show-modal="showRestrictedBetsModal"
-        @close-modal="showRestrictedBetsModal = false"
-      />
-
-      <modal-max-bets :show-modal="maxBetsModal.show" :max-bet="maxBetsModal.maxBet" @close-modal="closeMaxBetModal" />
-
-      <modal-demo-game
-        :content="pageContent?.currentLocaleData?.demoModal || pageContent?.defaultLocaleData?.demoModal"
-        :is-demo="isDemo"
-        @play-real="changeGameMode"
-      />
-    </client-only>
-
     <transition name="fade-up" mode="out-in">
       <loyalty-new-level-notif v-if="levelNotificationEnabled" />
     </transition>
@@ -66,13 +48,6 @@
   };
   const { getContentData } = useContentLogic<IGamePage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
-
-  const showRestrictedBetsModal = ref<boolean>(false);
-  const maxBetsModal = reactive({
-    show: false,
-    maxBet: '',
-  });
-
   const { data: gameInfo } = await useLazyAsyncData(`game${route.params.id}Info`, () =>
     getGamesInfo(route.params.id as string)
   );
@@ -117,7 +92,7 @@
       }
 
       if (err.data?.error?.code === 14306) {
-        showRestrictedBetsModal.value = true;
+        await openModal('restricted-bets');
         return { error: { ...err, fatal: false } };
       }
 
@@ -151,9 +126,10 @@
     showAlert(alertsData.value?.limit?.limitedRealGame || defaultLocaleAlertsData.value?.limit?.limitedRealGame);
   };
 
+  const gamesStore = useGamesStore();
+  const { mobileGameModalInfo } = storeToRefs(gamesStore);
   const checkDepositModal = (): void => {
-    const { mobileGameModalInfo } = useGamesStore();
-    if (isLoggedIn.value && !isDemo.value && !activeAccount.value?.balance && !mobileGameModalInfo) {
+    if (isLoggedIn.value && !isDemo.value && !activeAccount.value?.balance && !mobileGameModalInfo.value) {
       openWalletModal('deposit');
     }
   };
@@ -197,22 +173,42 @@
 
   const handleRestrictedBets = (gameIdentity: string): void => {
     if (gameIdentity && gameIdentity === route.params.id && !isDemo.value) {
-      showRestrictedBetsModal.value = true;
+      openModal('restricted-bets');
     }
   };
 
   const handleMaxBets = ({ gameIdentity, maxBet }: { gameIdentity: string; maxBet: string }): void => {
     if (gameIdentity && gameIdentity === route.params.id && !isDemo.value) {
-      maxBetsModal.maxBet = maxBet;
-      maxBetsModal.show = true;
+      openModal('max-bets', { props: { maxBet, onClosed: closeMaxBetModal } });
     }
   };
 
   const closeMaxBetModal = async (): Promise<void> => {
-    maxBetsModal.show = false;
+    const { name: closeContextRouteName } = useRoute();
+    if (closeContextRouteName !== 'games-id' && closeContextRouteName !== 'locale-games-id') return;
     const { error } = await startGame();
     if (error?.fatal) throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
   };
+
+  const timer = ref<any>();
+  const startTimer = (): void => {
+    timer.value = setTimeout(() => {
+      openModal('demo-game', { props: { onPlayReal: changeGameMode } });
+    }, 60000);
+  };
+
+  onBeforeMount(() => {
+    if (isDemo.value) {
+      if (!isLoggedIn.value && !mobileGameModalInfo.value) {
+        openModal('demo-game', { props: { onPlayReal: changeGameMode } });
+      }
+      startTimer();
+    }
+  });
+
+  watch(isDemo, (newValue: boolean) => {
+    if (!newValue) clearTimeout(timer.value);
+  });
 
   const pageMounted = ref<boolean>(false);
   onMounted(async () => {
@@ -236,6 +232,7 @@
     compactDrawer(storageDrawerCompact, false);
     useUnlisten('changeMobileGameMode', changeGameMode);
     useUnlisten('restrictedBets', handleRestrictedBets);
+    clearTimeout(timer.value);
   });
 </script>
 

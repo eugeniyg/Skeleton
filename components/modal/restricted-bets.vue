@@ -1,6 +1,5 @@
 <template>
   <vue-final-modal
-    :model-value="props.showModal"
     class="modal-restricted-bets"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
@@ -9,28 +8,42 @@
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="emit('closeModal')" />
+        <button-modal-close @close="closeModal('restricted-bets')" />
       </div>
 
-      <atomic-image class="img" :src="props.content.image" />
+      <atomic-image class="img" :src="getContent(props.currentLocaleData, props.defaultLocaleData, 'image')" />
 
-      <div class="title">{{ props.content.title }}</div>
+      <div class="title">
+        <template v-if="currentPage === 'betting'">
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'sportsbookTitle') }}
+        </template>
 
-      <p class="text">{{ props.content.description }}</p>
+        <template v-else>{{ getContent(props.currentLocaleData, props.defaultLocaleData, 'casinoTitle') }}</template>
+      </div>
+
+      <p class="text">
+        <template v-if="currentPage === 'betting'">
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'sportsbookDescription') }}
+        </template>
+
+        <template v-else>
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'casinoDescription') }}
+        </template>
+      </p>
 
       <atomic-bonus-progress
         v-if="activePlayerBonuses[0]"
-        :wagering-label="props.content.wageringLabel"
+        :wagering-label="getContent(props.currentLocaleData, props.defaultLocaleData, 'wageringLabel')"
         :bonus-info="activePlayerBonuses[0]"
       />
 
       <div class="actions">
         <button-base type="primary" size="md" @click="handleConfirm">
-          {{ props.content.confirmButton }}
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'confirmButton') }}
         </button-base>
 
         <button-base type="ghost" size="xs" @click="handleCancel">
-          {{ props.content.cancelButton }}
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'cancelButton') }}
         </button-base>
       </div>
     </div>
@@ -39,32 +52,35 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import type { IRestrictedBetsModal } from '~/types';
+  import type { IModalsContent } from '~/types';
 
   const props = defineProps<{
-    showModal: boolean;
-    currentPage: 'betting' | 'game';
-    content: IRestrictedBetsModal;
+    currentLocaleData: Maybe<IModalsContent['restrictedBets']>;
+    defaultLocaleData: Maybe<IModalsContent['restrictedBets']>;
   }>();
 
-  const emit = defineEmits(['closeModal']);
-  const { localizePath } = useProjectMethods();
+  const { localizePath, getContent } = useProjectMethods();
   const router = useRouter();
+  const route = useRoute();
+  const currentPage = route.name === 'betting' || route.name === 'locale-betting' ? 'betting' : 'casino';
+  const { closeModal } = useModalStore();
 
   const bonusStore = useBonusStore();
   const { getPlayerBonuses } = bonusStore;
   const { activePlayerBonuses } = storeToRefs(bonusStore);
 
   watch(activePlayerBonuses, newValue => {
-    if (!newValue && props.showModal) emit('closeModal');
+    if (!newValue) closeModal('restricted-bets');
   });
 
-  const handleConfirm = (): void => {
-    router.push(localizePath(props.currentPage === 'betting' ? '/main' : '/betting'));
+  const handleConfirm = async (): Promise<void> => {
+    await router.push(localizePath(currentPage === 'betting' ? '/main' : '/betting'));
+    await closeModal('restricted-bets');
   };
 
-  const handleCancel = (): void => {
-    router.push(localizePath('/profile/bonuses'));
+  const handleCancel = async (): Promise<void> => {
+    await router.push(localizePath('/profile/bonuses'));
+    await closeModal('restricted-bets');
   };
 </script>
 

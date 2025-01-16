@@ -68,7 +68,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import parser from 'ua-parser-js';
+  import { UAParser } from 'ua-parser-js';
 
   const props = defineProps<{
     display: 'desktop' | 'mobile';
@@ -91,7 +91,7 @@
   });
 
   const userAgent = window.navigator.userAgent;
-  const parsedUserAgent = userAgent ? parser(userAgent) : undefined;
+  const parsedUserAgent = userAgent ? UAParser(userAgent) : undefined;
   const appleNotCompatible = parsedUserAgent?.browser?.name === 'Safari' || parsedUserAgent?.os?.name === 'iOS';
   const allowInstall = ref<boolean>(!!window.pwa?.allowInstall || appleNotCompatible);
   const isVisible = computed(() => {

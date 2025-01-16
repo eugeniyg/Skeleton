@@ -18,10 +18,11 @@
   const { currentLevelName, loyaltyAccount } = storeToRefs(loyaltyStore);
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+  const { modalsList } = useModalStore();
 
   const signInContentParams = {
     contentKey: 'modal-loyalty-level',
-    contentRoute: ['modals', 'loyalty-level'],
+    contentRoute: ['modals', modalsList['loyalty-level'].content as string],
   };
   const { getContentData } = useContentLogic(signInContentParams);
   const { data: loyaltyLevelContent } = await useLazyAsyncData(getContentData);

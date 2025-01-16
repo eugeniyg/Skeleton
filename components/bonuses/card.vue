@@ -52,12 +52,6 @@
           {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'bonuses.cancelLabel') }}
         </button-base>
       </div>
-
-      <modal-bonus-details
-        :show-modal="showBonusDetailsModal"
-        :bonus-info="modalBonusInfo"
-        @close="showBonusDetailsModal = false"
-      />
     </div>
   </div>
 </template>
@@ -76,8 +70,8 @@
   const emit = defineEmits(['activate', 'remove']);
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-
   const { formatBalance, getContent } = useProjectMethods();
+  const { openModal } = useModalStore();
 
   const bonusValue = computed<string | undefined>(() => {
     if (props.isFreeSpin) return `${(props.bonusInfo as IPlayerFreeSpin).count} FS`;
@@ -161,7 +155,6 @@
     }
   };
 
-  const showBonusDetailsModal = ref(false);
   const modalBonusInfo = ref<Record<string, any> | undefined>();
   const showBonusInfo = () => {
     modalBonusInfo.value = {
@@ -173,7 +166,7 @@
       expiredDate: expiredDate.value,
       freeSpinGameInfo: freeSpinGameInfo.value,
     };
-    showBonusDetailsModal.value = true;
+    openModal('bonus-details', { props: { bonusInfo: modalBonusInfo } });
   };
 
   onMounted(() => {

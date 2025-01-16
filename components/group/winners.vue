@@ -28,6 +28,8 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import type { IWebSocketResponse, IWinner } from '@skeleton/core/types';
+  import throttle from 'lodash/throttle';
 
   const props = defineProps({
     showArrows: {
@@ -35,14 +37,16 @@
       default: true,
     },
   });
+
+  const winnersSubscription = ref<any>();
+  const latestWinners = ref<IWinner[]>([]);
+
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, isMobile, headerCountry } =
     storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
-  const gameStore = useGamesStore();
-  const { latestWinners } = storeToRefs(gameStore);
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
@@ -69,25 +73,52 @@
     });
   };
 
-  const { setWinners } = gameStore;
+  const updateWinners = throttle(
+    (winnerData: IWebSocketResponse): void => {
+      const { winner } = winnerData.data;
+      const filteredWinners = latestWinners.value.filter(item => item.gameId !== winner?.gameId);
+      if (winner) latestWinners.value = [winner, ...filteredWinners].slice(0, 12);
+    },
+    3000,
+    { leading: false }
+  );
+
+  const subscribeWinnersSocket = (): void => {
+    const { createSubscription } = useWebSocket();
+    winnersSubscription.value = createSubscription(
+      `game:winners:${isMobile.value ? 'mobile' : 'desktop'}:${profile.value?.country || headerCountry.value || 'UA'}`,
+      updateWinners
+    );
+  };
+
+  const unsubscribeWinnersSocket = (): void => {
+    if (winnersSubscription.value) {
+      winnersSubscription.value.unsubscribe();
+      winnersSubscription.value.removeAllListeners();
+    }
+  };
+
+  watch(latestWinners, () => scrollHandler());
+
   onMounted(async () => {
-    const winnersResponse = await getLatestWinners({
+    latestWinners.value = await getLatestWinners({
       platform: isMobile.value ? 1 : 2,
       perPage: 12,
       countryCode: profile.value?.country || headerCountry.value || 'UA',
     });
-    setWinners(winnersResponse);
     await nextTick();
+    subscribeWinnersSocket();
+    useListen('webSocketReconnected', subscribeWinnersSocket);
 
     if (props.showArrows) {
       scrollHandler();
     }
   });
 
-  watch(
-    () => latestWinners.value,
-    () => scrollHandler()
-  );
+  onBeforeUnmount(() => {
+    unsubscribeWinnersSocket();
+    useUnlisten('webSocketReconnected', subscribeWinnersSocket);
+  });
 </script>
 
 <style src="~/assets/styles/components/group/winners.scss" lang="scss" />

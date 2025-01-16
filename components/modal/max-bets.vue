@@ -1,6 +1,5 @@
 <template>
   <vue-final-modal
-    :model-value="props.showModal"
     class="modal-max-bets"
     :click-to-close="false"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
@@ -8,24 +7,24 @@
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="emit('closeModal')" />
+        <button-modal-close @close="closeModal('max-bets')" />
       </div>
 
-      <atomic-image class="img" :src="getContent(popupsData, defaultLocalePopupsData, 'maxBets.image')" />
+      <atomic-image class="img" :src="getContent(props.currentLocaleData, props.defaultLocaleData, 'image')" />
 
       <div class="title">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'maxBets.title') }}
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}
       </div>
 
       <p class="text">
-        {{ getContent(popupsData, defaultLocalePopupsData, 'maxBets.description') }}
+        {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'description') }}
       </p>
 
       <div class="modal-max-bets__info">
         <atomic-icon id="warning" />
 
         <span class="modal-max-bets__info-label">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'maxBets.maxBetLabel') }}:
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'maxBetLabel') }}:
         </span>
 
         <span class="modal-max-bets__info-value">
@@ -34,12 +33,12 @@
       </div>
 
       <div class="actions">
-        <button-base type="primary" size="md" @click="emit('closeModal')">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'maxBets.confirmButton') }}
+        <button-base type="primary" size="md" @click="closeModal('max-bets')">
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'confirmButton') }}
         </button-base>
 
         <button-base type="ghost" size="xs" @click="handleCancel">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'maxBets.cancelButton') }}
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'cancelButton') }}
         </button-base>
       </div>
     </div>
@@ -48,24 +47,21 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import { storeToRefs } from 'pinia';
+  import type { IModalsContent } from '~/types';
 
   const props = defineProps<{
-    showModal: boolean;
+    currentLocaleData: Maybe<IModalsContent['maxBet']>;
+    defaultLocaleData: Maybe<IModalsContent['maxBet']>;
     maxBet: string;
   }>();
 
-  const globalStore = useGlobalStore();
-  const { popupsData, defaultLocalePopupsData } = storeToRefs(globalStore);
-  const emit = defineEmits(['closeModal']);
+  const { closeModal } = useModalStore();
   const { localizePath, getContent } = useProjectMethods();
   const router = useRouter();
 
-  const handleCancel = (): void => {
-    emit('closeModal');
-    setTimeout(() => {
-      router.push(localizePath('/profile/bonuses'));
-    }, 500);
+  const handleCancel = async (): Promise<void> => {
+    await router.push(localizePath('/profile/bonuses'));
+    await closeModal('max-bets');
   };
 </script>
 

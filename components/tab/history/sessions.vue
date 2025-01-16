@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-  import parser from 'ua-parser-js';
+  import { UAParser } from 'ua-parser-js';
   import type { IPaginationMeta, ISession } from '@skeleton/core/types';
   import type { ISessionsHistory } from '~/types';
 
@@ -90,8 +90,8 @@
   };
 
   const shortUserAgent = (userAgent: string): string => {
-    const parsedUserAgent = parser(userAgent);
-    return `${parsedUserAgent.browser?.name}, ${parsedUserAgent.os?.name} ${parsedUserAgent.os?.version}`;
+    const parsedUserAgent = UAParser(userAgent);
+    return `${parsedUserAgent?.browser?.name}, ${parsedUserAgent?.os?.name} ${parsedUserAgent?.os?.version}`;
   };
 
   const closeSession = async (sessionId: string): Promise<void> => {

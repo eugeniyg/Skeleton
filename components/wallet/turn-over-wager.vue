@@ -71,9 +71,10 @@
 <script setup lang="ts">
   import type { ITurnOverWagerModal } from '~/types';
 
+  const { modalsList } = useModalStore();
   const turnOverWagerContentParams = {
     contentKey: 'modal-turn-over-wager',
-    contentRoute: ['modals', 'turn-over-wager'],
+    contentRoute: ['modals', modalsList['turn-over-wager'].content as string],
   };
   const { getContentData: getTurnOverWagerContentData } =
     useContentLogic<ITurnOverWagerModal>(turnOverWagerContentParams);

@@ -46,9 +46,10 @@
     cardIndex: number;
   }>();
 
+  const { modalsList } = useModalStore();
   const questsHubContentParams = {
     contentKey: 'modal-quests-hub',
-    contentRoute: ['modals', 'quests-hub'],
+    contentRoute: ['modals', modalsList['quests-hub'].content as string],
   };
   const { getContentData: getQuestsHubContentData } = useContentLogic<IQuestsHubModal>(questsHubContentParams);
   const { data: questsHubContent } = await useLazyAsyncData(getQuestsHubContentData);
