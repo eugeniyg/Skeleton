@@ -2,6 +2,7 @@
   <div class="limits__card" :class="{ 'is-full-width': isFullWidth }">
     <h4 class="limits__card-title" data-tooltip-parent>
       {{ getContent(limitsContent, defaultLimitsContent, 'deposit.label') }}
+
       <atomic-tooltip
         v-if="depositPeriods.length"
         :text="getContent(limitsContent, defaultLimitsContent, 'deposit.hint')"
