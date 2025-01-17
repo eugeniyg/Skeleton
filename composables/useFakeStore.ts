@@ -892,7 +892,7 @@ export const useFakeStore = () => {
     },
     {
       variant: 'promotions',
-      identity: 'Slotsbet promotions',
+      identity: 'Turbo Stars promotions',
       titleIcon: 'bonuses',
       id: 'promotions',
       showAllBtn: false,
@@ -926,7 +926,7 @@ export const useFakeStore = () => {
     },
     {
       variant: 'benefits',
-      identity: 'Slotsbet benefits',
+      identity: 'Turbo Stars benefits',
       titleIcon: 'bonuses',
       showAllBtn: false,
       showArrows: false,
@@ -1445,7 +1445,7 @@ export const useFakeStore = () => {
   const promotion = {
     title: 'Welcome package. Up to 5 BTC + 300 Free Spins',
     subTitle:
-      "Welcome package is one of the most generous Slotsbet offers! It's a bonus bundle for your 4 initial deposits after the registration!",
+      "Welcome package is one of the most generous Turbo Stars offers! It's a bonus bundle for your 4 initial deposits after the registration!",
     welcomePackage: {
       title: 'Welcome package',
       items: [
@@ -1599,7 +1599,7 @@ export const useFakeStore = () => {
   const providerCards = () => filter(cards, 'providers');
 
   const promoCard = {
-    title: '#### Play and win every day at Slotsbet',
+    title: '#### Play and win every day at Turbo Stars',
     button: {
       label: 'Play now',
     },

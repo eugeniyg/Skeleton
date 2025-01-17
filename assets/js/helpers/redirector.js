@@ -1,6 +1,6 @@
 const settings = {
   elementId: 'warning-container',
-  txtDomain: 'redirector.slotsbet.io',
+  txtDomain: 'redirector.turbostars.io',
 };
 
 function checkBody(body) {

@@ -1,6 +1,6 @@
 const AUTH_USERNAME = 'demo';
 const AUTH_PASSWORD = 'perunplay';
-const HOST_PATH = 'slotsbet.io';
+const HOST_PATH = 'platform.turbostars.io';
 
 export default defineEventHandler(event => {
   const host = event.req.headers?.host;

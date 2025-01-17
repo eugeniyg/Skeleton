@@ -40,6 +40,7 @@
   const { openModal } = useModalStore();
 
   const sdkDefaultParams = {
+    mainFrameUrl: 'https://platform.turbostars.io/betting',
     containerId: 'betting-container',
     width: '100%',
     height: '100%',
