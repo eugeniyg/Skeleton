@@ -168,6 +168,7 @@
     if (fieldComponent) return fieldComponent;
     if (field.fieldType === 'select') return 'form-input-dropdown';
     if (field.fieldType === 'textarea') return 'form-input-textarea';
+    if (field.key === 'tag') return 'form-input-withdraw-destination-tag';
     return 'form-input-text';
   };
 

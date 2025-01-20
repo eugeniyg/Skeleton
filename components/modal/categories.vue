@@ -1,6 +1,5 @@
 <template>
   <vue-final-modal
-    v-model="modals.categories"
     class="modal-categories"
     :overlay-transition="{ mode: 'in-out', duration: 250 }"
     :content-transition="{ mode: 'in-out', duration: 250 }"
@@ -9,7 +8,7 @@
       <div class="modal-categories__header">
         <button-modal-close @close="closeModal('categories')" />
         <div class="modal-categories__header-title">
-          {{ getContent(popupsData, defaultLocalePopupsData, 'categories.title') }}
+          {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}
         </div>
       </div>
 
@@ -20,10 +19,10 @@
           class="modal-categories__item"
           :data-index="index"
           :class="{
-            'is-active': route.params.categoryIdentity === identity,
+            'is-active': route.params?.categoryIdentity === identity,
             'is-no-icon': !gameCategoriesObj[identity]?.icon,
           }"
-          @click="emit('clickCategory', identity)"
+          @click="navigateCategory(identity)"
         >
           <atomic-icon :id="gameCategoriesObj[identity]?.icon" />
           <span>{{ gameCategoriesObj[identity]?.label || name }}</span>
@@ -34,20 +33,27 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
   import type { ICollection } from '@skeleton/core/types';
+  import type { IModalsContent } from '~/types';
 
-  const layoutStore = useLayoutStore();
-  const { modals } = storeToRefs(layoutStore);
-  const { closeModal } = layoutStore;
-  const { popupsData, defaultLocalePopupsData } = useGlobalStore();
-  const { getContent } = useProjectMethods();
+  const props = defineProps<{
+    currentLocaleData: Maybe<IModalsContent['categories']>;
+    defaultLocaleData: Maybe<IModalsContent['categories']>;
+  }>();
+
+  const { closeModal } = useModalStore();
+  const { getContent, localizePath } = useProjectMethods();
   const { gameCategoriesObj } = useGlobalStore();
   const categories = ref<ICollection[]>([]);
   const route = useRoute();
+  const router = useRouter();
 
-  const emit = defineEmits(['clickCategory']);
+  const navigateCategory = async (categoryIdentity: string): Promise<void> => {
+    if (route.params?.categoryIdentity === categoryIdentity) return;
+    await router.push(localizePath(`/categories/${categoryIdentity}`));
+    await closeModal('categories');
+  };
 
   onMounted(async () => {
     const { getCollectionsList } = useGamesStore();

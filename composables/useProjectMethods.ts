@@ -236,7 +236,7 @@ export const useProjectMethods = () => {
   };
 
   const getContent = (contentData: any, defaultLocaleContentData: any, path: string): any =>
-    get(contentData, path) || get(defaultLocaleContentData, path);
+    get(contentData, path) ?? get(defaultLocaleContentData, path);
 
   const getEquivalentAccount = (
     targetBalance: number | undefined,

@@ -12,7 +12,7 @@
     const { openModal, openWalletModal } = useModalStore();
     const router = useRouter();
 
-    if (isLoggedIn) removeSession();
+    if (isLoggedIn) await removeSession();
 
     try {
       await autoLogin(query.state as string);

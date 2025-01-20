@@ -113,17 +113,21 @@
     }
   };
 
-  const subscribeBoardSocket = async (boardId: string): Promise<void> => {
+  const subscribeBoardSocket = async (): Promise<void> => {
     unsubscribeBoardSocket();
     const { createSubscription } = useWebSocket();
-    boardSubscription.value = createSubscription(`activity-board:boards#${boardId}`, handleBoardsEvent);
-    const resp: { publications: IWebSocketResponse[] } = await boardSubscription.value.history({
-      limit: 11,
-      since: null,
-      reverse: true,
-    });
-    const betsArr = resp.publications.map(historyObj => historyObj.data.bet as IEventBet);
-    boardData.splice(0, 20, ...betsArr);
+    boardSubscription.value = createSubscription(`activity-board:boards#${selectedNavItem.value}`, handleBoardsEvent);
+    try {
+      const resp: { publications: IWebSocketResponse[] } = await boardSubscription.value.history({
+        limit: 11,
+        since: null,
+        reverse: true,
+      });
+      const betsArr = resp.publications.map(historyObj => historyObj.data.bet as IEventBet);
+      boardData.splice(0, 20, ...betsArr);
+    } catch (err: any) {
+      console.error('Activity board history error:', err);
+    }
   };
 
   const tbColumns = computed(() => {
@@ -152,7 +156,7 @@
 
   const selectNavItem = (id: string) => {
     selectedNavItem.value = id;
-    subscribeBoardSocket(id);
+    subscribeBoardSocket();
   };
 
   const hideNav = () => {
@@ -163,8 +167,14 @@
     isAnimate.value = false;
   };
 
-  onMounted(() => {
-    subscribeBoardSocket(selectedNavItem.value);
+  onMounted(async () => {
+    await subscribeBoardSocket();
+    useListen('webSocketReconnected', subscribeBoardSocket);
+  });
+
+  onBeforeUnmount(() => {
+    unsubscribeBoardSocket();
+    useUnlisten('webSocketReconnected', subscribeBoardSocket);
   });
 </script>
 

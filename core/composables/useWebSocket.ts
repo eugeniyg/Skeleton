@@ -23,15 +23,22 @@ export const useWebSocket = defineStore('useWebSocket', {
     async initWebSocket(): Promise<void> {
       const socketUrl = import.meta.dev ? 'qa3.dev.getplatform.tech' : window.location.hostname;
       const protocol = window.location.protocol.replace('http', 'ws');
-      this.webSocket = new Centrifuge(`${protocol}//${socketUrl}/api/connection/websocket`, {
-        getToken: this.getCentrifugeToken,
-      });
+      const profileStore = useProfileStore();
+      if (profileStore?.isLoggedIn) {
+        this.webSocket = new Centrifuge(`${protocol}//${socketUrl}/api/connection/websocket`, {
+          getToken: this.getCentrifugeToken,
+        });
+      } else {
+        this.webSocket = new Centrifuge(`${protocol}//${socketUrl}/api/connection/websocket`);
+      }
       await this.webSocket.connect();
     },
 
     async reconnectSocket(): Promise<void> {
       await this.webSocket.disconnect();
       await this.initWebSocket();
+      await nextTick();
+      useEvent('webSocketReconnected');
     },
 
     createSubscription(channel: string, callback?: (data: IWebSocketResponse) => void) {

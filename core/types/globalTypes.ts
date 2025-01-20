@@ -4,7 +4,7 @@ import type { IBonusCode, IPlayerBonus, IPlayerFreeSpin } from './bonusTypes';
 import type { IPlayerQuest, IPlayerQuestEventTask } from '@skeleton/core/types/questTypes';
 import type { IPlayerLoyaltyAccount } from '@skeleton/core/types/profileTypes';
 import type { IMessage } from '@skeleton/core/types/notificationTypes';
-import type {ITournamentParticipant, ITournamentPrize} from "@skeleton/core/types/tournamentsTypes";
+import type { ITournamentParticipant, ITournamentPrize } from '@skeleton/core/types/tournamentsTypes';
 
 export interface IRate extends Record<string, any> {
   rate: number;

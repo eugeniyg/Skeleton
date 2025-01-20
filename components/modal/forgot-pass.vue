@@ -14,13 +14,7 @@
 
         <div class="title">
           <template v-if="showPhoneVerification">
-            {{
-              getContent(
-                phoneVerificationContent?.currentLocaleData,
-                phoneVerificationContent?.defaultLocaleData,
-                'title'
-              )
-            }}
+            {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'phoneVerification.title') }}
           </template>
 
           <template v-else>
@@ -107,23 +101,17 @@
     defaultLocaleData: Maybe<IModalsContent['forgot']>;
   }>();
 
+  const modalStore = useModalStore();
+  const { modalsList, openModal, closeModal } = modalStore;
+
   const signInContentParams = {
     contentKey: 'modal-sign-in',
-    contentRoute: ['modals', 'sign-in'],
+    contentRoute: ['modals', modalsList['sign-in'].content as string],
   };
   const { getContentData: getSignInContentData } = useContentLogic(signInContentParams);
   const { data: signInContent } = await useLazyAsyncData(getSignInContentData);
 
-  const phoneVerificationContentParams = {
-    contentKey: 'modal-phone-verification',
-    contentRoute: ['modals', 'phone-verification'],
-  };
-  const { getContentData: getPhoneVerificationContentData } = useContentLogic(phoneVerificationContentParams);
-  const { data: phoneVerificationContent } = await useLazyAsyncData(getPhoneVerificationContentData);
-  const modalStore = useModalStore();
-  const { openModal, closeModal } = modalStore;
-
-  const { settingsConstants } = useGlobalStore();
+  const { settingsConstants, globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const { getContent } = useProjectMethods();
   const showPhoneVerification = ref<boolean>(false);
 
@@ -194,9 +182,9 @@
         verificationError.value = {
           variant: 'error',
           message: getContent(
-            phoneVerificationContent.value?.currentLocaleData,
-            phoneVerificationContent.value?.defaultLocaleData,
-            'invalidError'
+            globalComponentsContent,
+            defaultLocaleGlobalComponentsContent,
+            'phoneVerification.invalidError'
           ),
         };
       } else {

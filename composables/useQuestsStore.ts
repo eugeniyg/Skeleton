@@ -76,16 +76,17 @@ export const useQuestsStore = defineStore('questsStore', {
       if (!taskData) return;
 
       const { getContent } = useProjectMethods();
-      const { alertsData, defaultLocaleAlertsData, popupsData, defaultLocalePopupsData } = useGlobalStore();
+      const { alertsData, defaultLocaleAlertsData, globalComponentsContent, defaultLocaleGlobalComponentsContent } =
+        useGlobalStore();
       const { showAlert } = useLayoutStore();
       this.activeQuests = this.activeQuests.map(quest => {
         if (quest.id === taskData.questId) {
           if (taskData.isActive && taskData.progress === taskData.quantity) {
             const alertData = getContent(alertsData, defaultLocaleAlertsData, 'quests.taskCompleted');
             const taskTypeName = getContent(
-              popupsData,
-              defaultLocalePopupsData,
-              `questTasks.taskTypes.${taskData.type}.label`
+              globalComponentsContent,
+              defaultLocaleGlobalComponentsContent,
+              `constants.taskTypes.${taskData.type}.label`
             );
             if (alertData.title)
               showAlert({
