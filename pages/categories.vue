@@ -127,10 +127,11 @@
       const { data, meta } = await getFilteredGames(params);
       state.pageData = nextPage ? state.pageData.concat(data) : data;
       state.pageMeta = meta;
-      state.showNotFound = false;
     } catch {
       state.pageData = [];
       state.pageMeta = undefined;
+    } finally {
+      state.showNotFound = false;
     }
 
     state.loadingGames = false;
