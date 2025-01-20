@@ -1,6 +1,6 @@
 const settings = {
   elementId: 'warning-container',
-  txtDomain: 'redirector.slotsbet.io',
+  txtDomain: 'redirector.cosmos.casino',
 };
 
 function checkBody(body) {
