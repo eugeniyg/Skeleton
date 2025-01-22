@@ -9,6 +9,7 @@ import type {
   IBonus,
 } from '@skeleton/core/types';
 import debounce from 'lodash/debounce.js';
+import type { IProfileBonuses } from '~/types';
 
 interface IBonusState {
   bonusCodeSubscription: any;
@@ -267,17 +268,23 @@ export const useBonusStore = defineStore('bonusStore', {
         console.error('Something went wrong with game info fetching!');
       }
 
-      const transformMessage = (message?: string, gameLinkParam?: 'game' | 'bonuses'): string => {
+      const transformMessage = async (message?: string): Promise<string> => {
         if (!message) return '';
 
         let editedMessage = message.replace('{count}', `<b>${count} free spins</b>`);
         editedMessage = editedMessage.replace('{currency}', `<b>${currency}</b>`);
+        editedMessage = editedMessage.replace('{game}', `<b>${gameInfo.name}</b>`);
 
-        let gameLink: string | undefined;
-        if (gameLinkParam === 'bonuses') gameLink = localizePath('/profile/bonuses');
-        else if (gameInfo) gameLink = localizePath(`/games/${gameInfo.identity}?real=true`);
+        const contentParams = {
+          contentKey: 'profileBonusesContent',
+          contentRoute: ['profile', 'bonuses'],
+        };
+        const { getContentData } = useContentLogic<IProfileBonuses>(contentParams);
+        const { currentLocaleData, defaultLocaleData } = await getContentData();
+        const bonusesTitle = currentLocaleData?.title || defaultLocaleData?.title;
+        const bonusesLink = localizePath('/profile/bonuses');
+        editedMessage = editedMessage.replace('{bonuses}', `<a href="${bonusesLink}">${bonusesTitle}</a>`);
 
-        editedMessage = editedMessage.replace('{game}', gameLink ? `<a href="${gameLink}">${gameInfo.name}</a>` : '');
         return editedMessage;
       };
 
@@ -286,8 +293,10 @@ export const useBonusStore = defineStore('bonusStore', {
         defaultLocaleAlertsData?.freeSpin?.[alertsKey[`${status}-${result}`]];
 
       this.updatePlayerFreeSpinsList(freeSpinData, this);
-      if (alertData)
-        showAlert({ ...alertData, description: transformMessage(alertData?.description, alertData?.gameLink) });
+      if (alertData) {
+        const description = await transformMessage(alertData?.description);
+        showAlert({ ...alertData, description });
+      }
     },
 
     unsubscribeBonusCodeSocket(): void {

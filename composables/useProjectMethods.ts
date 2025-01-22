@@ -121,15 +121,37 @@ export const useProjectMethods = () => {
     if (preloaderEl) preloaderEl.classList.value = 'preloader';
   };
 
-  const getImageUrl = (imageData: IGameImages, orientation: string): string => {
-    const imagePath =
-      orientation === 'vertical'
-        ? imageData['200x300']['3x'] || imageData['200x300']['2x'] || imageData['200x300']['1x']
-        : imageData['200x200']['3x'] || imageData['200x200']['2x'] || imageData['200x200']['1x'];
-
+  const getImageUrl = (customImages: Maybe<IGameImages>, images: Maybe<IGameImages>, orientation: string): string => {
+    let imageUrl: string | undefined;
     const { public: config } = useRuntimeConfig();
 
-    return `${config.gamehubCdn}${imagePath}`;
+    if (customImages) {
+      const imagePath =
+        orientation === 'vertical'
+          ? customImages['200x300']?.['3x'] || customImages['200x300']?.['2x'] || customImages['200x300']?.['1x']
+          : customImages['200x200']?.['3x'] || customImages['200x200']?.['2x'] || customImages['200x200']?.['1x'];
+      if (imagePath && config.customerCdn) imageUrl = `${config.customerCdn}${imagePath}`;
+    }
+
+    if (!imageUrl && images) {
+      const imagePath =
+        orientation === 'vertical'
+          ? images['200x300']?.['3x'] || images['200x300']?.['2x'] || images['200x300']?.['1x']
+          : images['200x200']?.['3x'] || images['200x200']?.['2x'] || images['200x200']?.['1x'];
+      if (imagePath && config.gamehubCdn) imageUrl = `${config.gamehubCdn}${imagePath}`;
+    }
+
+    if (imageUrl) return imageUrl;
+
+    const { getContent } = useProjectMethods();
+    const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
+    const verticalDefaultThumb =
+      getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'defaultGameThumbs.vertical') ||
+      '/img/vertical-game-thumb.png';
+    const squareDefaultThumb =
+      getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'defaultGameThumbs.square') ||
+      '/img/square-game-thumb.png';
+    return orientation === 'vertical' ? verticalDefaultThumb : squareDefaultThumb;
   };
 
   const getNicknameFromEmail = (email?: string): string => {

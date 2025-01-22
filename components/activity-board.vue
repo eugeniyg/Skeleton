@@ -47,7 +47,10 @@
               :class="`td-${index + 1}`"
             >
               <template v-if="id === 'game'">
-                <atomic-image :src="getGameImage(row.gameImages)" class="activity-board__tb-td-img" />
+                <atomic-image
+                  :src="getImageUrl(row.gameCustomImages, row.gameImages, 'square')"
+                  class="activity-board__tb-td-img"
+                />
                 <span>{{ row.gameName }}</span>
               </template>
 
@@ -76,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IEventBet, IGameImages, IWebSocketResponse } from '@skeleton/core/types';
+  import type { IEventBet, IWebSocketResponse } from '@skeleton/core/types';
   import type { IHomePage } from '~/types';
 
   const props = defineProps<{
@@ -162,13 +165,6 @@
 
   const onAnimationEnd = () => {
     isAnimate.value = false;
-  };
-
-  const getGameImage = (images: IGameImages): string => {
-    if (images?.hasOwnProperty('200x200')) {
-      return getImageUrl(images, 'square');
-    }
-    return '/img/default-game-tumb.png';
   };
 
   onMounted(async () => {
