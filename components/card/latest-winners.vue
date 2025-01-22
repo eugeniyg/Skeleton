@@ -34,6 +34,7 @@
     gameName: string;
     isDemoMode: boolean;
     gameImages: IGameImages;
+    gameCustomImages?: IGameImages;
   }>();
 
   const profileStore = useProfileStore();
@@ -47,12 +48,7 @@
 
   const formatedSum = computed(() => formatBalance(props.currency, props.payout));
 
-  const src = computed(() => {
-    if (props.gameImages?.hasOwnProperty('200x300')) {
-      return getImageUrl(props.gameImages, 'vertical');
-    }
-    return '';
-  });
+  const src = computed(() => getImageUrl(props.gameCustomImages, props.gameImages, 'vertical'));
 </script>
 
 <style src="~/assets/styles/components/card/latest-winners.scss" lang="scss" />

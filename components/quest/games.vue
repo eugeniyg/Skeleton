@@ -17,8 +17,7 @@
     <div class="quest-games__items">
       <template v-if="gamesData.length">
         <div v-for="game in filteredGamesData" :key="game.id" class="quest-games__item" @click.once="goToGame(game)">
-          <atomic-image v-if="game.images['200x200']" :src="getImageUrl(game.images, 'square')" />
-          <atomic-image v-else src="/img/default-game-tumb.png" />
+          <atomic-image :src="getImageUrl(game.customImages, game.images, 'square')" />
         </div>
       </template>
 
