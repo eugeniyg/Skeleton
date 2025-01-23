@@ -10,6 +10,7 @@
 
   const props = defineProps<{
     images?: IGameImages;
+    customImages?: IGameImages;
     name?: string;
     id: string;
     identity: string;
@@ -17,10 +18,7 @@
 
   const { getImageUrl, localizePath } = useProjectMethods();
   const backgroundImage = computed(() => {
-    if (props.images?.hasOwnProperty('200x200')) {
-      return `background-image: url(${getImageUrl(props.images, 'square')})`;
-    }
-    return 'background-image: url(/img/default-game-tumb.png)';
+    return `background-image: url(${getImageUrl(props.customImages, props.images, 'square')})`;
   });
 
   const router = useRouter();

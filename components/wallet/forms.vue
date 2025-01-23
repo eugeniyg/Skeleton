@@ -25,14 +25,14 @@
       <template v-else-if="depositMethods?.length && props.currentDepositMethod">
         <form-deposit
           v-if="props.currentDepositMethod.type === 'form'"
-          :key="`${props.currentDepositMethod.method}-${depositMethodKey}-${showMobileFormKey}`"
+          :key="`fiat-${props.currentDepositMethod.method}-${depositMethodKey}-${showMobileFormKey}`"
           v-bind="props.currentDepositMethod"
         />
 
         <form-deposit-crypto
-          v-if="props.currentDepositMethod.type === 'address'"
+          v-else-if="props.currentDepositMethod.type === 'address'"
           v-bind="props.currentDepositMethod"
-          :key="`${props.currentDepositMethod.method}-${depositMethodKey}-${showMobileFormKey}`"
+          :key="`crypto-${props.currentDepositMethod.method}-${depositMethodKey}-${showMobileFormKey}`"
         />
       </template>
 

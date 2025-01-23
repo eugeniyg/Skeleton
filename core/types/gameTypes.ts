@@ -49,6 +49,7 @@ export interface IGame extends Record<string, any> {
   screenHeightRatio: number | null;
   screenWidthRatio: number | null;
   images: IGameImages;
+  customImages: IGameImages;
   provider: IGameProvider;
   collections: ICollection[];
   labels: IGameLabel[];
@@ -145,6 +146,7 @@ export interface IWinner extends Record<string, any> {
   gameName: string;
   isDemoMode: boolean;
   gameImages: IGameImages;
+  gameCustomImages: IGameImages;
 }
 
 export interface IGamesRequest extends Record<string, any> {
