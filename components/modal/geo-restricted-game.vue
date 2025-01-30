@@ -7,7 +7,7 @@
   >
     <div class="scroll">
       <div class="header">
-        <button-modal-close @close="closeModal('geo-restricted-game')" />
+        <button-modal-close @close="close" />
         <div class="title">{{ getContent(props.currentLocaleData, props.defaultLocaleData, 'title') }}</div>
       </div>
       
@@ -34,10 +34,21 @@
     defaultLocaleData: Maybe<IModalsContent['geoRestrictedGame']>;
   }>();
   
-  const { getContent } = useProjectMethods();
+  const { getContent, localizePath } = useProjectMethods();
   const { closeModal } = useModalStore();
+  const router = useRouter();
+  
+  const url = computed(() => {
+    return localizePath(getContent(props.currentLocaleData, props.defaultLocaleData, 'button.url') || '/main')
+  });
+  
+  const close = async () => {
+    await router.push(localizePath('/main'));
+    await closeModal('geo-restricted-game');
+  };
+  
   const confirm = async (): Promise<void> => {
-    
+    await router.push(url.value);
     await closeModal('geo-restricted-game');
   };
 </script>
