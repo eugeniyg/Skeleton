@@ -14,11 +14,13 @@
 
   .btn-primary {
     --width: fit-content;
+    --padding: 12px 32px;
+    @include upd-font($heading-3);
   }
 
   .text {
-    color: var(--gray-300);
-    @include upd-font($body-2);
+    color: var(--text-primary);
+    @include upd-font($body-3);
   }
 
   .actions {
