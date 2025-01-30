@@ -194,5 +194,9 @@
   "providers": {
     "component": "providers",
     "content": "providers"
+  },
+  "geo-restricted-game": {
+    "component": "geo-restricted-game",
+    "content": "geo-restricted-game"
   }
 }
