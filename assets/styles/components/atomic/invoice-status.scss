@@ -36,4 +36,12 @@
       --color: var(--icon-alert);
     }
   }
+
+  &--variant-5 {
+    --color: var(--text-primary);
+
+    > .icon {
+      --color: var(--support-info-default);
+    }
+  }
 }

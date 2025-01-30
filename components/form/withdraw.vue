@@ -77,6 +77,7 @@
     amountMin: number;
     fields: IPaymentField[];
     method: string;
+    processingType: string;
   }>();
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
@@ -325,6 +326,7 @@
     v$.value[field.key]?.$touch();
   };
 
+  const windowReference = ref<Window | null>(null);
   const getWithdraw = async (): Promise<void> => {
     if (buttonDisabled.value) return;
 
@@ -356,18 +358,30 @@
       walletOperationType: 'withdraw',
     });
 
+    if (props.processingType === 'form') {
+      windowReference.value = window.open();
+    }
+
     try {
-      await withdrawAccount(params);
-      await closeModal('wallet');
-      showAlert(
-        alertsData.value?.wallet?.withdrawalProcessed || defaultLocaleAlertsData.value?.wallet?.withdrawalProcessed
-      );
+      const response = await withdrawAccount(params);
+      if (props.processingType === 'form' && response.action && windowReference.value) {
+        windowReference.value.location = response.action;
+        await closeModal('wallet');
+      } else {
+        await closeModal('wallet');
+        showAlert(
+          alertsData.value?.wallet?.withdrawalProcessed || defaultLocaleAlertsData.value?.wallet?.withdrawalProcessed
+        );
+      }
     } catch (err: any) {
+      if (windowReference.value) windowReference.value.close();
+
       if (err.response?.status === 422) {
         serverFormErrors.value = err.data?.error?.fields;
       } else {
         showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
       }
+
       isSending.value = false;
     }
   };

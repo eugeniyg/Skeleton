@@ -15,6 +15,7 @@
     '2': 'done',
     '3': 'warning',
     '4': 'clock',
+    '5': 'preparing',
   };
   const iconId = computed(() => items[props.variant]);
   const classes = computed(() => `invoice-status--variant-${props.variant}`);
