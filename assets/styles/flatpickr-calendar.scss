@@ -1,3 +1,6 @@
+@use "ds/mixins";
+@use "ds/typography";
+
 .flatpickr-calendar {
   opacity: 0;
   display: none;
@@ -93,8 +96,8 @@
 
 .flatpickr-months {
   display: flex;
-  padding: rem(8px) rem(16px);
-  @include font($heading-2);
+  padding: mixins.rem(8px) mixins.rem(16px);
+  @include mixins.font(typography.$heading-2);
   color: var(--text-primary);
 }
 
@@ -114,8 +117,8 @@
   text-decoration: none;
   cursor: pointer;
   position: relative;
-  width: rem(32px);
-  height: rem(32px);
+  width: mixins.rem(32px);
+  height: mixins.rem(32px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -262,11 +265,11 @@
   width: 100%;
   align-items: center;
   justify-content: center;
-  grid-gap: rem(4px);
+  grid-gap: mixins.rem(4px);
 }
 
 .flatpickr-current-month span.cur-month {
-  @include font($heading-2);
+  @include mixins.font(typography.$heading-2);
 }
 
 .flatpickr-current-month span.cur-month:hover {
@@ -295,7 +298,7 @@
   padding: 0;
   margin: 0;
   display: block;
-  @include font($heading-2);
+  @include mixins.font(typography.$heading-2);
   height: auto;
   border: 0;
   border-radius: 0;
@@ -360,12 +363,12 @@
 .flatpickr-weekdays .flatpickr-weekdaycontainer {
   display: flex;
   width: 100%;
-  padding: rem(8px) rem(16px) 0;
+  padding: mixins.rem(8px) mixins.rem(16px) 0;
   border-top: 1px solid var(--border-02);
 }
 
 span.flatpickr-weekday {
-  @include font($body-0);
+  @include mixins.font(typography.$body-0);
   color: var(--text-tertiary);
   width: 100%;
 }
@@ -388,7 +391,7 @@ span.flatpickr-weekday {
 }
 
 .dayContainer {
-  padding: rem(8px) rem(16px) rem(16px);
+  padding: mixins.rem(8px) mixins.rem(16px) mixins.rem(16px);
   outline: 0;
   text-align: left;
   width: 307.875px;
@@ -417,7 +420,7 @@ span.flatpickr-weekday {
   position: relative;
   justify-content: center;
   align-items: center;
-  @include font($body-2);
+  @include mixins.font(typography.$body-2);
 }
 
 .flatpickr-day.inRange,
@@ -481,7 +484,6 @@ span.flatpickr-weekday {
 .flatpickr-day.startRange.endRange,
 .flatpickr-day.endRange.endRange {
   border-radius: 50%;
-
   position: relative;
 
   &:before {

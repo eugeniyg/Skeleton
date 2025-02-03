@@ -9,7 +9,6 @@
 
 <script setup lang="ts">
   import type { ICategoryPage } from '~/types';
-  const emit = defineEmits(['pageMounted']);
 
   const contentParams = {
     contentKey: 'categoryPageContent',
@@ -18,8 +17,4 @@
   };
   const { getContentData } = useContentLogic<ICategoryPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
-
-  onMounted(() => {
-    emit('pageMounted');
-  });
 </script>
