@@ -7,8 +7,8 @@ import type {
   IRequestWithdraw,
   IResponseDeposit,
   IResponseInvoices,
-  IResponseWithdraw,
   IInvoiceStatistics,
+  IWithdrawResponse,
 } from '../types';
 import { useApiAuthInstance } from '@skeleton/core/assets/apiAuthInstance';
 
@@ -54,7 +54,7 @@ export const useCoreWalletApi = () => {
     return data;
   };
 
-  const withdrawAccount = async (withdrawData: IRequestWithdraw): Promise<IResponseWithdraw> => {
+  const withdrawAccount = async (withdrawData: IRequestWithdraw): Promise<IWithdrawResponse> => {
     const { data } = await useApiAuthInstance('/api/payment/invoices/withdrawal', {
       method: 'POST',
       body: withdrawData,
