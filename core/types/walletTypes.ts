@@ -80,12 +80,14 @@ export interface IResponseDeposit extends Record<string, any> {
   qr?: string;
 }
 
-export interface IResponseWithdraw extends Record<string, any> {
-  method: string;
-  fields: any[];
-  currency: string;
-  amount: number;
-  accountId: string;
+export interface IWithdrawResponse {
+  invoiceId: string;
+  message?: string;
+  action?: string;
+  fields?: { [key: string]: string };
+  method?: string;
+  qr?: string | null;
+  type?: string;
 }
 
 export interface IInvoicePublicData extends Record<string, any> {

@@ -46,7 +46,7 @@
       :image="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'empty.image')"
     />
 
-    <NuxtPage @pageMounted="childMounted" />
+    <NuxtPage />
   </div>
 </template>
 
@@ -55,6 +55,18 @@
   import { storeToRefs } from 'pinia';
   import type { ICategoryPage } from '~/types';
   import debounce from 'lodash/debounce';
+
+  definePageMeta({
+    middleware: async function (to) {
+      if (to.params.categoryIdentity) return;
+
+      const { getCollectionsList } = useGamesStore();
+      const gameCategories = await getCollectionsList();
+      if (!gameCategories.length) return;
+      const { localizePath } = useProjectMethods();
+      return navigateTo({ path: localizePath(`/categories/${gameCategories[0].identity}`), query: { ...to.query } });
+    },
+  });
 
   const globalStore = useGlobalStore();
   const { gameCategoriesObj, layoutData, defaultLocaleLayoutData, headerCountry, isMobile } = storeToRefs(globalStore);
@@ -118,6 +130,8 @@
     } catch {
       state.pageData = [];
       state.pageMeta = undefined;
+    } finally {
+      state.showNotFound = false;
     }
 
     state.loadingGames = false;
@@ -161,7 +175,6 @@
 
   const searchInput = debounce(
     async (): Promise<void> => {
-      console.log('search event!!!');
       if (state.searchValue.length > 1 || !state.searchValue) {
         await getData(false);
       }
@@ -188,7 +201,7 @@
     state.providerIds = selectedProvidersData.map(provider => provider.id);
   };
 
-  const childMounted = async () => {
+  const loadCategoryData = async () => {
     resetFilters();
     await setProviders();
 
@@ -206,14 +219,15 @@
     openModal('providers', { props: { selected: state.providerIds, onSelect: selectProviders } });
   };
 
-  onMounted(async () => {
-    const gameCategories = await getCollectionsList();
-    if (!route.params.categoryIdentity && gameCategories.length) {
-      await router.replace({
-        path: localizePath(`/categories/${gameCategories[0].identity}`),
-        query: { ...route.query },
-      });
+  watch(
+    () => route.params.categoryIdentity,
+    async () => {
+      await loadCategoryData();
     }
+  );
+
+  onMounted(async () => {
+    await loadCategoryData();
   });
 </script>
 

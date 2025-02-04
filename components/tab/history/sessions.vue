@@ -21,9 +21,7 @@
             </atomic-row-user-agent>
           </div>
 
-          <div class="td td-date">
-            <span>{{ formatDateStr(dayjs(session.createdAt).format(dateFormat)) }}</span>
-          </div>
+          <div class="td td-date" v-html="formatDateStr(dayjs(session.createdAt).format(dateFormat))" />
 
           <div class="td">
             <atomic-row-status
@@ -110,7 +108,7 @@
     resolveSessionsRequest();
   });
 
-  const formatDateStr = (str: string) => str.split(',').join('<br>');
+  const formatDateStr = (str: string) => str.split(',').join(',<br>');
 </script>
 
 <style src="~/assets/styles/components/tab/history/sessions.scss" lang="scss" />
