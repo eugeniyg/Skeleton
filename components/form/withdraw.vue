@@ -68,7 +68,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
-  import type {IPaymentField, IResponseDeposit, IWithdrawResponse} from '@skeleton/core/types';
+  import type { IPaymentField, IWithdrawResponse } from '@skeleton/core/types';
   import { marked } from 'marked';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import DOMPurify from 'isomorphic-dompurify';
