@@ -1,5 +1,7 @@
 <template>
-  <form class="form-withdraw">
+  <iframe v-if="iframeUrl" :src="iframeUrl" />
+
+  <form v-else class="form-withdraw">
     <form-input-dropdown
       v-if="networkSelectOptions?.length"
       v-model:value="state.selectedNetwork"
@@ -326,6 +328,7 @@
     v$.value[field.key]?.$touch();
   };
 
+  const iframeUrl = ref<string | undefined>();
   const windowReference = ref<Window | null>(null);
   const getWithdraw = async (): Promise<void> => {
     if (buttonDisabled.value) return;
