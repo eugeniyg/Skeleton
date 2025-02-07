@@ -68,7 +68,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
-  import type { IPaymentField } from '@skeleton/core/types';
+  import type {IPaymentField, IResponseDeposit, IWithdrawResponse} from '@skeleton/core/types';
   import { marked } from 'marked';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import DOMPurify from 'isomorphic-dompurify';
@@ -328,6 +328,19 @@
     v$.value[field.key]?.$touch();
   };
 
+  const getPaymentPageUrl = (withdrawResponse: IWithdrawResponse): string => {
+    const responseHasParams = Object.keys(withdrawResponse.fields).length;
+    if (!responseHasParams) return withdrawResponse.action;
+
+    const paramsArr = Object.keys(withdrawResponse.fields).map(
+      fieldKey => `${fieldKey}=${withdrawResponse.fields[fieldKey]}`
+    );
+    const urlHasParams = withdrawResponse.action.includes('?');
+    const paramsString = `${urlHasParams ? '&' : '?'}${paramsArr.join('&')}`;
+
+    return `${withdrawResponse.action}${paramsString}`;
+  };
+
   const iframeUrl = ref<string | undefined>();
   const windowReference = ref<Window | null>(null);
   const getWithdraw = async (): Promise<void> => {
@@ -367,9 +380,12 @@
 
     try {
       const response = await withdrawAccount(params);
-      if (props.processingType === 'form' && response.action && windowReference.value) {
-        windowReference.value.location = response.action;
+      const paymentPageUrl = getPaymentPageUrl(response);
+      if (props.processingType === 'form' && paymentPageUrl && windowReference.value) {
+        windowReference.value.location = paymentPageUrl;
         await closeModal('wallet');
+      } else if (props.processingType === 'iframe') {
+        iframeUrl.value = paymentPageUrl;
       } else {
         await closeModal('wallet');
         showAlert(
