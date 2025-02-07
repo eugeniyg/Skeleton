@@ -13,14 +13,17 @@ export const useWebSocket = defineStore('useWebSocket', {
 
   actions: {
     async getCentrifugeToken(): Promise<string> {
+      console.log('-- Get Cetrifuge Token --');
       const { getSessionToken, isTokenExpired, refreshToken } = useProfileStore();
       let currentSessionToken = getSessionToken();
       if (!currentSessionToken) return '';
       if (isTokenExpired()) currentSessionToken = await refreshToken();
+      console.log(`-- Centrifuge Current Session Token: ${currentSessionToken} --`);
       return currentSessionToken;
     },
 
     async initWebSocket(): Promise<void> {
+      console.log('-- Init WebSocket --');
       const socketUrl = import.meta.dev ? 'qa3.dev.getplatform.tech' : window.location.hostname;
       const protocol = window.location.protocol.replace('http', 'ws');
       const profileStore = useProfileStore();

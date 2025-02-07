@@ -9,6 +9,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const fromAuthPage = fromProfilePath || fromFavoritesPath || fromRecentlyPlayedPath;
 
   if (!sessionToken) {
+    console.log('-- Inside Auth Middleware --');
     if (import.meta.server) {
       return navigateTo(localizePath('/?sign-in=true'));
     } else if (fromAuthPage) {

@@ -18,8 +18,12 @@ export const useApiAuthInstance = async (url: string, options?: any): Promise<an
     credentials: 'omit',
     retry: 0,
     async onResponseError({ response }: any) {
+      console.log(`-- Request Error: ${response.status} --`);
       if (response.status === 401 || response.status === 403) {
-        if (profileStore.getSessionToken()) await profileStore.removeSession();
+        if (profileStore.getSessionToken()) {
+          console.log('-- Remove Session After Request Error 401/403 --');
+          await profileStore.removeSession();
+        }
         const { localizePath } = useProjectMethods();
         const router = useRouter();
         const nuxtApp = useNuxtApp();

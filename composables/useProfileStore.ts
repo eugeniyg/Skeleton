@@ -71,6 +71,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async removeSession(): Promise<void> {
+      console.log('-- Remove Session Method --');
       this.profile = undefined;
       const cookieToken = useCookie(this.tokenCookieKey);
       cookieToken.value = null;
@@ -90,6 +91,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async getRefreshRequest(): Promise<string> {
+      console.log('-- Start Refresh Token --');
       const storageRefreshStatus = localStorage.getItem('refreshSession');
 
       if (storageRefreshStatus === 'loading') {
@@ -99,6 +101,7 @@ export const useProfileStore = defineStore('profileStore', {
           this.setSessionToken(newToken);
           return newToken;
         } else {
+          console.log('-- Remove Session After Parallel Refresh Error --');
           await this.removeSession();
           return '';
         }
@@ -109,10 +112,12 @@ export const useProfileStore = defineStore('profileStore', {
 
       try {
         const data = await refreshToken();
+        console.log(`-- Refresh Token Success: ${data.accessToken} --`);
         this.setSessionToken(data.accessToken);
         localStorage.setItem('refreshSession', data.accessToken);
         return data.accessToken;
       } catch {
+        console.log('-- Remove Session After Refresh Token Failed --');
         await this.removeSession();
         localStorage.removeItem('refreshSession');
         return '';
@@ -319,6 +324,7 @@ export const useProfileStore = defineStore('profileStore', {
       try {
         await logOut();
       } finally {
+        console.log('-- Remove Session After User Logout --');
         await this.removeSession();
 
         const router = useRouter();

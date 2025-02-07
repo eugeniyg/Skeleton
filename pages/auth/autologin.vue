@@ -12,7 +12,10 @@
     const { openModal, openWalletModal } = useModalStore();
     const router = useRouter();
 
-    if (isLoggedIn) await removeSession();
+    if (isLoggedIn) {
+      console.log('-- Remove Session Before Autologin --');
+      await removeSession();
+    }
 
     try {
       await autoLogin(query.state as string);
