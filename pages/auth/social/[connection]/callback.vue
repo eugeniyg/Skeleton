@@ -44,18 +44,14 @@
 
   onBeforeMount(async () => {
     const { query } = useRoute();
-    const { $auth0 } = useNuxtApp();
+    if (!query.code) return;
+    console.log(query);
 
-    if (!query.code || !query.state || !$auth0) return;
-
-    try {
-      const { appState } = await $auth0.handleRedirectCallback();
-      const auth0TokenData = await $auth0.getTokenSilently({ detailedResponse: true });
-
-      if (auth0TokenData) await sendSocialData(auth0TokenData, appState);
-    } catch {
-      await openModal('sign-up');
-      await router.replace(localizePath('/?sign-up=true'));
-    }
+    // try {
+    //   await sendSocialData();
+    // } catch {
+    //   await openModal('sign-up');
+    //   await router.replace(localizePath('/?sign-up=true'));
+    // }
   });
 </script>
