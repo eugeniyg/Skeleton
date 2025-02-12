@@ -23,11 +23,10 @@
       } else if (errorCode === 11001) {
         const profileStore = useProfileStore();
         profileStore.socialAuthEmailError = true;
-        const { openModal } = useModalStore();
         await openModal('sign-in', { prohibitQueryChange: false });
         await router.replace(localizePath('/?sign-in=true'));
       } else {
-        await openModal('sign-up');
+        await openModal('sign-up', { prohibitQueryChange: false });
         await router.replace(localizePath('/?sign-up=true'));
       }
     }
