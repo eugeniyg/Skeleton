@@ -86,24 +86,6 @@
         ? `/api/player/sessions/social/auth0/redirect?connection=${connection}`
         : `/api/player/sessions/social/${connection}/redirect`;
     window.location.href = `${locationOrigin}${redirectUrl}`;
-
-    // const { query, path } = useRoute();
-    // const formedQuery = queryString.stringify({
-    //   ...query,
-    //   'sign-in': undefined,
-    //   'sign-up': undefined,
-    //   stag: undefined,
-    // });
-    //
-    // $auth0.loginWithRedirect({
-    //   appState: {
-    //     type: props.type,
-    //     targetUrl: formedQuery ? `${path}?${formedQuery}` : path,
-    //   },
-    //   authorizationParams: {
-    //     connection,
-    //   },
-    // });
   };
 </script>
 

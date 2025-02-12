@@ -36,12 +36,6 @@
   onBeforeMount(async () => {
     const { query, params } = useRoute();
     if (!query.code || !params.connection) return;
-
-    try {
-      await sendSocialData(query.code as string, params.connection as string);
-    } catch {
-      await openModal('sign-up');
-      await router.replace(localizePath('/?sign-up=true'));
-    }
+    await sendSocialData(query.code as string, params.connection as string);
   });
 </script>
