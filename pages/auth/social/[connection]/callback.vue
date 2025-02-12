@@ -3,26 +3,17 @@
 </template>
 
 <script setup lang="ts">
-  import type { IAuthState } from '@skeleton/core/types';
-
   const router = useRouter();
   const { localizePath } = useProjectMethods();
   const { showAlert } = useLayoutStore();
   const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
-  const { alertsData, defaultLocaleAlertsData, currentLocale } = storeToRefs(globalStore);
+  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
-  const sendSocialData = async (socialData: any, authState?: IAuthState): Promise<void> => {
+  const sendSocialData = async (code: string, connection: string): Promise<void> => {
     try {
       const { loginSocial } = useProfileStore();
-      await loginSocial(
-        {
-          ...socialData,
-          locale: currentLocale.value?.code,
-          socialDataKey: 'id_token',
-        },
-        authState
-      );
+      await loginSocial(code, connection);
     } catch (err: any) {
       const errorCode = err.data?.error?.code;
 
@@ -43,15 +34,14 @@
   };
 
   onBeforeMount(async () => {
-    const { query } = useRoute();
-    if (!query.code) return;
-    console.log(query);
+    const { query, params } = useRoute();
+    if (!query.code || !params.connection) return;
 
-    // try {
-    //   await sendSocialData();
-    // } catch {
-    //   await openModal('sign-up');
-    //   await router.replace(localizePath('/?sign-up=true'));
-    // }
+    try {
+      await sendSocialData(query.code as string, params.connection as string);
+    } catch {
+      await openModal('sign-up');
+      await router.replace(localizePath('/?sign-up=true'));
+    }
   });
 </script>

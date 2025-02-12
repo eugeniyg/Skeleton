@@ -41,18 +41,19 @@ export interface IAuthorizationRequest extends Record<any, any> {
   fingerprint?: string;
 }
 
+export interface ISocialAuthorizationRequest extends Record<string, any> {
+  provider: string;
+  locale?: string;
+  affiliateTag?: string;
+  fingerprint?: string;
+}
+
 export interface IAuthorizationResponse extends Record<string, any> {
   accessToken: string;
   tokenType: string;
   expiresAfter: string;
   sessionId: string;
   profile: IProfile;
-}
-
-export interface IAuthState {
-  type: 'login' | 'registration';
-  affiliateTag?: string;
-  targetUrl: string;
 }
 
 export interface IChangePasswordRequest extends Record<string, any> {
