@@ -241,7 +241,7 @@ export const useProfileStore = defineStore('profileStore', {
       const fingerprint = (await this.fingerprintVisitor) || undefined;
       const affiliateTag = useCookie('affiliateTag');
       const submitResult = await submitSocialLoginData({
-        ...c,
+        ...socialData,
         fingerprint,
         affiliateTag: affiliateTag.value || undefined,
       });

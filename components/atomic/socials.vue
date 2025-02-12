@@ -67,7 +67,9 @@
         defaultLocaleGlobalComponentsContent.value,
         'socialAuth.socialDirectConnections'
       ) || [];
-    return connectionList.map(connection => connection.id);
+    return connectionList
+      .map(connection => connection.id)
+      .filter(connection => settingsSocialAuthList.includes(connection));
   });
 
   const showComponent = computed(() => socialAuth0Connections.value.length || socialDirectConnections.value.length);
