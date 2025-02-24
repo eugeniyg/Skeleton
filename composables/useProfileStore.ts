@@ -252,7 +252,7 @@ export const useProfileStore = defineStore('profileStore', {
       const appStateData: { backRoute: string } | undefined = appState ? JSON.parse(appState) : undefined;
       const router = useRouter();
       const { localizePath } = useProjectMethods();
-      await router.replace(localizePath(appStateData?.backRoute || '/'));
+      await router.replace(appStateData?.backRoute || localizePath('/'));
 
       if (submitResult.profile?.isNewlyRegistered) {
         useEvent('analyticsEvent', {
