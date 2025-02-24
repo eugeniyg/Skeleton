@@ -30,6 +30,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import queryString from 'query-string';
 
   const props = defineProps<{
     type: 'login' | 'registration';
@@ -80,12 +81,22 @@
       regType: 'social',
     });
 
+    const { query, path } = useRoute();
+    const backQuery = queryString.stringify({
+      ...query,
+      'sign-in': undefined,
+      'sign-up': undefined,
+      stag: undefined,
+    });
+
+    const backRoute = backQuery ? `${path}?${backQuery}` : path;
+    const authState = { backRoute };
     const locationOrigin = window.location.origin;
-    const redirectUrl =
+    const authUrl =
       type === 'auth0'
-        ? `/api/player/sessions/social/auth0/redirect?connection=${connection}`
-        : `/api/player/sessions/social/${connection}/redirect`;
-    window.location.href = `${locationOrigin}${redirectUrl}`;
+        ? `/api/player/sessions/social/auth0/redirect?state=${JSON.stringify(authState)}&connection=${connection}`
+        : `/api/player/sessions/social/${connection}/redirect?state=${JSON.stringify(authState)}`;
+    window.location.href = `${locationOrigin}${authUrl}`;
   };
 </script>
 

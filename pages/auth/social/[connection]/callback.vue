@@ -35,6 +35,7 @@
   onBeforeMount(async () => {
     const { query, params } = useRoute();
     if (!query.code || !params.connection) return;
+    console.log(query);
     await sendSocialData(query.code as string, params.connection as string);
   });
 </script>
