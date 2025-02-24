@@ -236,7 +236,7 @@ export const useProfileStore = defineStore('profileStore', {
       openWalletModal();
     },
 
-    async loginSocial(code: string, connection: string): Promise<void> {
+    async loginSocial(code: string, connection: string, appState?: string): Promise<void> {
       const { submitSocialLoginData } = useCoreAuthApi();
       const fingerprint = (await this.fingerprintVisitor) || undefined;
       const affiliateTag = useCookie('affiliateTag');
@@ -249,9 +249,10 @@ export const useProfileStore = defineStore('profileStore', {
       });
       await this.handleLogin(submitResult);
 
+      const appStateData: { backRoute: string } | undefined = appState ? JSON.parse(appState) : undefined;
       const router = useRouter();
       const { localizePath } = useProjectMethods();
-      await router.replace(localizePath('/'));
+      await router.replace(localizePath(appStateData?.backRoute || '/'));
 
       if (submitResult.profile?.isNewlyRegistered) {
         useEvent('analyticsEvent', {

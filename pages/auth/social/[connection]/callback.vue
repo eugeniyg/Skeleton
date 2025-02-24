@@ -10,10 +10,10 @@
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
-  const sendSocialData = async (code: string, connection: string): Promise<void> => {
+  const sendSocialData = async (code: string, connection: string, appState: string): Promise<void> => {
     try {
       const { loginSocial } = useProfileStore();
-      await loginSocial(code, connection);
+      await loginSocial(code, connection, appState);
     } catch (err: any) {
       const errorCode = err.data?.error?.code;
 
@@ -35,7 +35,6 @@
   onBeforeMount(async () => {
     const { query, params } = useRoute();
     if (!query.code || !params.connection) return;
-    console.log(query);
-    await sendSocialData(query.code as string, params.connection as string);
+    await sendSocialData(query.code as string, params.connection as string, query.state as string);
   });
 </script>
