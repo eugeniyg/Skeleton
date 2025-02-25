@@ -9,14 +9,14 @@
     </h2>
 
     <button-base
-      v-if="props.showAllBtn && providersList.length"
+      v-if="props.showAllBtn && activeProvidersCount"
       class="btn-show-all"
       type="ghost"
       size="sm"
       url="/providers"
     >
       {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
-      {{ providersList.length }}
+      {{ activeProvidersCount }}
     </button-base>
 
     <button-arrows
@@ -33,6 +33,8 @@
 </template>
 
 <script setup lang="ts">
+  import type { IGameProvider } from '@skeleton/core/types';
+
   const props = defineProps<{
     showAllBtn?: boolean;
     showArrows?: boolean;
@@ -42,7 +44,22 @@
   const { getContent } = useProjectMethods();
   const { getProviderList } = useGamesStore();
   const { data: gameProviders } = await useLazyAsyncData(() => getProviderList(), { server: false });
-  const providersList = computed(() => gameProviders.value?.filter(provider => !!provider.gameEnabledCount) || []);
+  const contentList: { identity: string }[] =
+    getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.items') || [];
+
+  const providersList = computed(() => {
+    const providersArr: IGameProvider[] = [];
+    contentList.forEach(contentProvider => {
+      const providerData = gameProviders.value?.find(provider => provider.identity === contentProvider.identity);
+      if (providerData) providersArr.push(providerData);
+    });
+    return providersArr;
+  });
+
+  const activeProvidersCount = computed(() => {
+    const filteredArr = gameProviders.value?.filter(provider => !!provider.gameEnabledCount) || [];
+    return filteredArr.length;
+  });
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
