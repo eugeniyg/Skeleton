@@ -64,9 +64,18 @@
     });
   };
 
+  const initialScroll = (): void => {
+    if (!scrollContainer.value) return;
+    const defaultPill = scrollContainer.value.querySelector('.wallet-pills__item.is-selected');
+    if (defaultPill) {
+      defaultPill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'end' });
+    }
+    scrollHandler();
+  };
+
   onMounted(async () => {
     await nextTick();
-    scrollHandler();
+    initialScroll();
   });
 </script>
 
