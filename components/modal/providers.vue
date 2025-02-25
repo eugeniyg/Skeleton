@@ -23,7 +23,7 @@
       <div class="modal-providers__content">
         <template v-if="!isShowEmpty">
           <label v-for="provider in providersList" :key="provider.id" :for="provider.id" class="modal-providers__item">
-            <atomic-image class="modal-providers__item-logo" src="/img/uploads/777.png" />
+            <atomic-provider-logo class="modal-providers__item-logo" :providerData="provider" />
 
             <span class="modal-providers__item-name">{{ provider.name }}</span>
             <span class="modal-providers__item-count">{{ provider.gameEnabledCount }}</span>

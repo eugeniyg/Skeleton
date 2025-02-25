@@ -8,9 +8,15 @@
       {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.label') }}
     </h2>
 
-    <button-base v-if="props.showAllBtn" class="btn-show-all" type="ghost" size="sm" url="/providers">
+    <button-base
+      v-if="props.showAllBtn && providersList.length"
+      class="btn-show-all"
+      type="ghost"
+      size="sm"
+      url="/providers"
+    >
       {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
-      {{ providersIdentity.length }}
+      {{ providersList.length }}
     </button-base>
 
     <button-arrows
@@ -27,45 +33,16 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGameProvider } from '@skeleton/core/types';
-
   const props = defineProps<{
     showAllBtn?: boolean;
     showArrows?: boolean;
   }>();
 
-  const providersIdentity = [
-    'turbo-games',
-    'one-touch',
-    'blueprint-gaming',
-    'betsoft',
-    'wazdan',
-    'microgaming',
-    'habanero',
-    'hacksaw-gaming',
-    'swintt',
-    'nolimit-city',
-    'push-gaming',
-    'play-n-go',
-    'game-art',
-    'pragmatic-play',
-    'pg-soft',
-    'spadegaming',
-    'spribe',
-    'evolution-gaming',
-  ];
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const { getContent } = useProjectMethods();
   const { getProviderList } = useGamesStore();
   const { data: gameProviders } = await useLazyAsyncData(() => getProviderList(), { server: false });
-
-  const providersList = computed(() => {
-    return providersIdentity.reduce((providersArr: IGameProvider[], currentProviderIdentity) => {
-      const providerData = gameProviders.value?.find(provider => provider.identity === currentProviderIdentity);
-      if (providerData) return [...providersArr, providerData];
-      return providersArr;
-    }, []);
-  });
+  const providersList = computed(() => gameProviders.value?.filter(provider => !!provider.gameEnabledCount) || []);
 
   const scrollContainer = ref();
   const prevDisabled = ref<boolean>(true);
