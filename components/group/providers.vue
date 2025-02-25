@@ -50,7 +50,9 @@
   const providersList = computed(() => {
     const providersArr: IGameProvider[] = [];
     contentList.forEach(contentProvider => {
-      const providerData = gameProviders.value?.find(provider => provider.identity === contentProvider.identity);
+      const providerData = gameProviders.value?.find(
+        provider => provider.identity === contentProvider.identity && provider.gameEnabledCount
+      );
       if (providerData) providersArr.push(providerData);
     });
     return providersArr;
