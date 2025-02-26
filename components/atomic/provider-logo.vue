@@ -1,5 +1,5 @@
 <template>
-  <atomic-picture class="provider-logo" :src="logoSrc" defaultImage="/img/provider-empty-placeholder.svg" />
+  <atomic-image class="provider-logo" :src="logoSrc" defaultImage="/img/provider-empty-placeholder.svg" />
 </template>
 
 <script setup lang="ts">
