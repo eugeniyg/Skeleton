@@ -1,10 +1,9 @@
 <template>
   <div class="list-providers">
     <div v-if="props.staticProvider" class="list-providers__item is-accented">
-      <atomic-picture
-        class="list-providers__item-logo"
-        :src="getContent(currentLocaleContent, defaultLocaleContent, 'defaultProviderLogo')"
-      />
+      <div class="list-providers__item-logo">
+        <atomic-provider-logo :providerData="props.staticProvider" />
+      </div>
 
       <div class="list-providers__item-info">
         <div class="list-providers__item-label">{{ props.staticProvider?.name }}</div>
@@ -43,10 +42,9 @@
       "
       class="list-providers__item"
     >
-      <atomic-picture
-        class="list-providers__item-logo"
-        :src="getContent(currentLocaleContent, defaultLocaleContent, 'defaultProviderLogo')"
-      />
+      <div class="list-providers__item-logo">
+        <atomic-provider-logo :providerData="provider" />
+      </div>
 
       <div class="list-providers__item-info">
         <div class="list-providers__item-label">{{ provider.name }}</div>
