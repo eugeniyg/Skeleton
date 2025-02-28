@@ -82,12 +82,11 @@ export interface IResponseDeposit extends Record<string, any> {
 
 export interface IWithdrawResponse {
   invoiceId: string;
-  message?: string;
-  action?: string;
-  fields?: { [key: string]: string };
-  method?: string;
+  action: string;
+  fields: { [key: string]: string };
+  method: string;
   qr?: string | null;
-  type?: string;
+  type: string;
 }
 
 export interface IInvoicePublicData extends Record<string, any> {
