@@ -1,8 +1,92 @@
 .wallet-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: rem(4px);
-  align-items: center;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+
+  &:before, &:after {
+    content: '';
+    top: -1px;
+    bottom: -1px;
+    width: 24px;
+    position: absolute;
+    opacity: 0;
+    background: var(--layer-01-fade-gradient-r2l);
+    pointer-events: none;
+    transition: all 0.2s;
+  }
+
+  &:before {
+    transform: rotate(180deg);
+    left: 24px;
+  }
+
+  &:after {
+    right: 24px;
+  }
+
+  .wallet-pills__control {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    width: 24px;
+    height: 100%;
+    background: var(--layer-01);
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.2s;
+
+    .btn-ghost-gray {
+      width: 24px !important;
+      height: 24px !important;
+      padding: 0;
+    }
+
+    &-prev {
+      left: 0;
+    }
+
+    &-next {
+      right: 0;
+    }
+  }
+
+  &.show-prev-overlay {
+    &:before {
+      opacity: 1;
+    }
+
+    .wallet-pills__control-prev {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  &.show-next-overlay {
+    &:after {
+      opacity: 1;
+    }
+
+    .wallet-pills__control-next {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  &__container {
+    width: 100%;
+    display: flex;
+    gap: rem(4px);
+    align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+
+    &::-webkit-scrollbar {
+      display: none !important;
+    }
+  }
 
   &__item {
     @include font($heading-2);
@@ -10,12 +94,14 @@
     align-items: center;
     justify-content: center;
     color: var(--color, var(--text-tertiary));
-    padding: rem(7px) rem(16px);
-    height: rem(32px);
-    width: calc(25% - #{rem(3px)});
+    min-width: calc((100% - 16px) / 5);
+    height: 32px;
+    padding: 0 8px;
+    flex-shrink: 0;
     background-color: var(--bgc, var(--layer-03-low-contrast));
     border-radius: 8px;
     cursor: pointer;
+    scroll-snap-align: start;
 
     &.is-selected {
       --bgc: var(--support-brand-default);
