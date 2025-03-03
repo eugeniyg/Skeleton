@@ -329,12 +329,12 @@
   };
 
   const getPaymentPageUrl = (withdrawResponse: IWithdrawResponse): string => {
-    const responseHasParams = Object.keys(withdrawResponse.fields).length;
-    if (!responseHasParams) return withdrawResponse.action;
+    if (!withdrawResponse.action) return '';
 
-    const paramsArr = Object.keys(withdrawResponse.fields).map(
-      fieldKey => `${fieldKey}=${withdrawResponse.fields[fieldKey]}`
-    );
+    const fieldsKeys = Object.keys(withdrawResponse.fields || {});
+    if (!fieldsKeys.length) return withdrawResponse.action;
+
+    const paramsArr = fieldsKeys.map(fieldKey => `${fieldKey}=${withdrawResponse.fields?.[fieldKey]}`);
     const urlHasParams = withdrawResponse.action.includes('?');
     const paramsString = `${urlHasParams ? '&' : '?'}${paramsArr.join('&')}`;
 
@@ -384,7 +384,7 @@
       if (props.processingType === 'form' && paymentPageUrl && windowReference.value) {
         windowReference.value.location = paymentPageUrl;
         await closeModal('wallet');
-      } else if (props.processingType === 'iframe') {
+      } else if (props.processingType === 'iframe' && paymentPageUrl) {
         iframeUrl.value = paymentPageUrl;
       } else {
         await closeModal('wallet');
