@@ -211,12 +211,12 @@
   );
 
   const getPaymentPageUrl = (depositResponse: IResponseDeposit): string => {
-    const responseHasParams = Object.keys(depositResponse.fields).length;
-    if (!responseHasParams) return depositResponse.action;
+    if (!depositResponse.action) return '';
 
-    const paramsArr = Object.keys(depositResponse.fields).map(
-      fieldKey => `${fieldKey}=${depositResponse.fields[fieldKey]}`
-    );
+    const fieldsKeys = Object.keys(depositResponse.fields || {});
+    if (!fieldsKeys.length) return depositResponse.action;
+
+    const paramsArr = fieldsKeys.map(fieldKey => `${fieldKey}=${depositResponse.fields?.[fieldKey]}`);
     const urlHasParams = depositResponse.action.includes('?');
     const paramsString = `${urlHasParams ? '&' : '?'}${paramsArr.join('&')}`;
 
@@ -271,12 +271,12 @@
       const depositResponse = await depositAccount(params);
       const paymentPageUrl = getPaymentPageUrl(depositResponse);
 
-      if (props.processingType === 'form' && windowReference.value) {
+      if (props.processingType === 'form' && paymentPageUrl && windowReference.value) {
         windowReference.value.location = paymentPageUrl;
         await closeModal('wallet');
       } else if (props.processingType === 'qr' && depositResponse.qr) {
         qrAddress.value = depositResponse.qr;
-      } else if (props.processingType === 'iframe') {
+      } else if (props.processingType === 'iframe' && paymentPageUrl) {
         iframeUrl.value = paymentPageUrl;
       } else if (props.processingType === 'message') {
         await openModal('deposit-pending');
