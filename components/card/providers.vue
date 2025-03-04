@@ -1,7 +1,7 @@
 <template>
   <nuxt-link class="card-providers" :to="routerLink">
     <div class="card-providers__header">
-      <atomic-image class="card-providers__img" :src="`/img/providers/${props.providerData.identity}.svg`" />
+      <atomic-provider-logo class="card-providers__img" :providerData="props.providerData" />
     </div>
 
     <div class="card-providers__info">

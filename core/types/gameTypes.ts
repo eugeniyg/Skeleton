@@ -13,9 +13,19 @@ export interface IGameImages extends Record<string, any> {
   };
 }
 
+export interface IProviderImages extends Record<string, any> {
+  '116x40'?: {
+    '1x': string;
+    '2x'?: string;
+    '3x'?: string;
+  };
+}
+
 export interface IGameProvider extends Record<string, any> {
   id: string;
   identity: string;
+  images: IProviderImages;
+  customImages: IProviderImages;
   name: string;
   gameEnabledCount: number;
   code?: string;
