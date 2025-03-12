@@ -28,12 +28,13 @@ export default defineNuxtPlugin(nuxtApp => {
   };
 
   const startProfileLogic = (): void => {
-    const { getSessionToken } = useProfileStore();
+    const { getSessionToken, checkPwaDetect } = useProfileStore();
     const sessionToken = getSessionToken();
 
     if (sessionToken) {
       const { startProfileDependencies } = useProfileStore();
       startProfileDependencies();
+      checkPwaDetect();
     }
   };
 

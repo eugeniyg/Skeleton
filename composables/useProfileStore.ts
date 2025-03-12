@@ -214,6 +214,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { reconnectSocket } = useWebSocket();
       await reconnectSocket();
       this.startProfileDependencies();
+      await this.checkPwaDetect();
     },
 
     async logIn(loginData: any): Promise<void> {
@@ -350,6 +351,20 @@ export const useProfileStore = defineStore('profileStore', {
       if (this.onlineSubscription) {
         this.onlineSubscription.unsubscribe();
         this.onlineSubscription.removeAllListeners();
+      }
+    },
+
+    async checkPwaDetect(): Promise<void> {
+      // @ts-expect-error: Non-standard properties
+      const isPwa = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+      if (isPwa && this.profile && !this.profile.pwaInstalled) {
+        const { changeProfileData } = useCoreProfileApi();
+        try {
+          this.profile = await changeProfileData({ pwaInstalled: true });
+        } catch {
+          console.error('Personal data not changed!');
+        }
       }
     },
   },
