@@ -357,6 +357,9 @@ export const useProfileStore = defineStore('profileStore', {
     async checkPwaDetect(): Promise<void> {
       // @ts-expect-error: Non-standard properties
       const isPwa = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+      console.log('isPwa: ', isPwa);
+      console.log('profile: ', this.profile);
+      console.log('profile.pwaInstalled: ', this.profile?.pwaInstalled);
 
       if (isPwa && this.profile && !this.profile.pwaInstalled) {
         const { changeProfileData } = useCoreProfileApi();
