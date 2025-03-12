@@ -17,6 +17,23 @@ export default defineNuxtPlugin(nuxtApp => {
     if (route.query?.stag) router.replace({ query: { ...route.query, stag: undefined } });
   };
 
+  const checkPwaStandalone = (): void => {
+    const profileStore = useProfileStore();
+
+    const setPwaStandalone = (): void => {
+      if (!profileStore.isPwaStandalone) {
+        profileStore.isPwaStandalone =
+          // @ts-expect-error: Non-standard properties
+          window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+      }
+    };
+    setPwaStandalone();
+
+    if (!profileStore.isPwaStandalone) {
+      window.matchMedia('(display-mode: standalone)').addEventListener('change', setPwaStandalone);
+    }
+  };
+
   const setWindowStaticHeight = (): void => {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh-static', `${vh}px`);
@@ -111,6 +128,7 @@ export default defineNuxtPlugin(nuxtApp => {
     window.addEventListener('storage', listeningChangeSession);
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
+    checkPwaStandalone();
     startProfileLogic();
 
     checkAffiliateTag();

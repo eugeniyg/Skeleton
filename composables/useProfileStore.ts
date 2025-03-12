@@ -12,6 +12,7 @@ interface IProfileStoreState {
   tokenCookieKey: string;
   onlineSubscription: any;
   fingerprintVisitor: Promise<string> | null;
+  isPwaStandalone: boolean;
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -25,6 +26,7 @@ export const useProfileStore = defineStore('profileStore', {
     tokenCookieKey: 'access_token',
     onlineSubscription: undefined,
     fingerprintVisitor: null,
+    isPwaStandalone: false,
   }),
 
   getters: {
@@ -355,13 +357,9 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async checkPwaDetect(): Promise<void> {
-      // @ts-expect-error: Non-standard properties
-      const isPwa = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-      console.log('isPwa: ', isPwa);
-      console.log('profile: ', this.profile);
-      console.log('profile.pwaInstalled: ', this.profile?.pwaInstalled);
+      if (!this.profile || this.profile.pwaInstalled) return;
 
-      if (isPwa && this.profile && !this.profile.pwaInstalled) {
+      if (this.isPwaStandalone) {
         const { changeProfileData } = useCoreProfileApi();
         try {
           this.profile = await changeProfileData({ pwaInstalled: true });
