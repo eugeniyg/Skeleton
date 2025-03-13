@@ -357,7 +357,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async checkPwaDetect(): Promise<void> {
-      if (!this.profile || this.profile.pwaInstalled) return;
+      if (!this.isLoggedIn || !this.profile || this.profile.pwaInstalled) return;
 
       if (this.isPwaStandalone) {
         const { changeProfileData } = useCoreProfileApi();

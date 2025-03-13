@@ -20,17 +20,17 @@ export default defineNuxtPlugin(nuxtApp => {
   const checkPwaStandalone = (): void => {
     const profileStore = useProfileStore();
 
-    const setPwaStandalone = (): void => {
-      if (!profileStore.isPwaStandalone) {
-        profileStore.isPwaStandalone =
-          // @ts-expect-error: Non-standard properties
-          window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-      }
-    };
-    setPwaStandalone();
+    profileStore.isPwaStandalone =
+      // @ts-expect-error: Non-standard properties
+      window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
 
     if (!profileStore.isPwaStandalone) {
-      window.matchMedia('(display-mode: standalone)').addEventListener('change', setPwaStandalone);
+      window.matchMedia('(display-mode: standalone)').addEventListener('change', (event: any) => {
+        if (event.target.matches && !profileStore.isPwaStandalone) {
+          profileStore.isPwaStandalone = true;
+          profileStore.checkPwaDetect();
+        }
+      });
     }
   };
 
