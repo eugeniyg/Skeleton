@@ -18,10 +18,14 @@ export default defineNuxtPlugin(nuxtApp => {
   };
 
   const checkPwaStandalone = (): void => {
-    console.log('standalone: ', window.matchMedia('(display-mode: standalone)').matches);
-    console.log('fullscreen: ', window.matchMedia('(display-mode: fullscreen)').matches);
-    console.log('minimal-ui: ', window.matchMedia('(display-mode: minimal-ui)').matches);
-    console.log('browser: ', window.matchMedia('(display-mode: browser)').matches);
+    const standalone = window.matchMedia('(display-mode: standalone)').matches;
+    const fullscreen = window.matchMedia('(display-mode: fullscreen)').matches;
+    const minimalUi = window.matchMedia('(display-mode: minimal-ui)').matches;
+    const browser = window.matchMedia('(display-mode: browser)').matches;
+    alert(`standalone: ${standalone}`);
+    alert(`fullscreen: ${fullscreen}`);
+    alert(`minimal-ui: ${minimalUi}`);
+    alert(`browser: ${browser}`);
     const profileStore = useProfileStore();
 
     profileStore.isPwaStandalone =
