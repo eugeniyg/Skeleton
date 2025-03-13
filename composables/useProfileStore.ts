@@ -12,6 +12,7 @@ interface IProfileStoreState {
   tokenCookieKey: string;
   onlineSubscription: any;
   fingerprintVisitor: Promise<string> | null;
+  isPwaRoute: boolean;
   isPwaStandalone: boolean;
 }
 
@@ -26,6 +27,7 @@ export const useProfileStore = defineStore('profileStore', {
     tokenCookieKey: 'access_token',
     onlineSubscription: undefined,
     fingerprintVisitor: null,
+    isPwaRoute: false,
     isPwaStandalone: false,
   }),
 
@@ -359,7 +361,7 @@ export const useProfileStore = defineStore('profileStore', {
     async checkPwaDetect(): Promise<void> {
       if (!this.isLoggedIn || !this.profile || this.profile.pwaInstalled) return;
 
-      if (this.isPwaStandalone) {
+      if (this.isPwaStandalone || this.isPwaRoute) {
         const { changeProfileData } = useCoreProfileApi();
         try {
           this.profile = await changeProfileData({ pwaInstalled: true });

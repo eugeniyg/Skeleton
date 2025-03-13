@@ -17,17 +17,11 @@ export default defineNuxtPlugin(nuxtApp => {
     if (route.query?.stag) router.replace({ query: { ...route.query, stag: undefined } });
   };
 
-  const checkPwaStandalone = (): void => {
-    const standalone = window.matchMedia('(display-mode: standalone)').matches;
-    const fullscreen = window.matchMedia('(display-mode: fullscreen)').matches;
-    const minimalUi = window.matchMedia('(display-mode: minimal-ui)').matches;
-    const browser = window.matchMedia('(display-mode: browser)').matches;
-    alert(`standalone: ${standalone}`);
-    alert(`fullscreen: ${fullscreen}`);
-    alert(`minimal-ui: ${minimalUi}`);
-    alert(`browser: ${browser}`);
+  const checkPwaApp = (): void => {
     const profileStore = useProfileStore();
+    const route = useRoute();
 
+    if (route.query.source === 'pwa') profileStore.isPwaRoute = true;
     profileStore.isPwaStandalone =
       // @ts-expect-error: Non-standard properties
       window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
@@ -136,7 +130,7 @@ export default defineNuxtPlugin(nuxtApp => {
     window.addEventListener('storage', listeningChangeSession);
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
-    checkPwaStandalone();
+    checkPwaApp();
     startProfileLogic();
 
     checkAffiliateTag();
