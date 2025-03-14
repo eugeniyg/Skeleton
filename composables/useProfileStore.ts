@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { IProfile, IAuthorizationResponse, IParsedToken, IAuthState } from '@skeleton/core/types';
 import { jwtDecode } from 'jwt-decode';
+import { isStandalonePWA } from 'ua-parser-js/helpers';
 
 interface IProfileStoreState {
   refreshPromise: Promise<string> | null;
@@ -360,8 +361,9 @@ export const useProfileStore = defineStore('profileStore', {
 
     async checkPwaDetect(): Promise<void> {
       if (!this.isLoggedIn || !this.profile || this.profile.pwaInstalled) return;
+      const isStandalone = isStandalonePWA();
 
-      if (this.isPwaStandalone || this.isPwaRoute) {
+      if (isStandalone) {
         const { changeProfileData } = useCoreProfileApi();
         try {
           this.profile = await changeProfileData({ pwaInstalled: true });
@@ -370,5 +372,18 @@ export const useProfileStore = defineStore('profileStore', {
         }
       }
     },
+
+    // async checkPwaDetect(): Promise<void> {
+    //   if (!this.isLoggedIn || !this.profile || this.profile.pwaInstalled) return;
+    //
+    //   if (this.isPwaStandalone || this.isPwaRoute) {
+    //     const { changeProfileData } = useCoreProfileApi();
+    //     try {
+    //       this.profile = await changeProfileData({ pwaInstalled: true });
+    //     } catch {
+    //       console.error('Personal data not changed!');
+    //     }
+    //   }
+    // },
   },
 });

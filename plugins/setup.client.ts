@@ -1,4 +1,5 @@
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import { isStandalonePWA } from 'ua-parser-js/helpers';
 
 export default defineNuxtPlugin(nuxtApp => {
   const checkAffiliateTag = (): void => {
@@ -19,20 +20,33 @@ export default defineNuxtPlugin(nuxtApp => {
 
   const checkPwaApp = (): void => {
     const profileStore = useProfileStore();
+    const isStandalone = isStandalonePWA();
 
-    profileStore.isPwaStandalone =
-      // @ts-expect-error: Non-standard properties
-      window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
-    if (!profileStore.isPwaStandalone) {
+    if (!isStandalone) {
       window.matchMedia('(display-mode: standalone)').addEventListener('change', (event: any) => {
         if (event.target.matches && !profileStore.isPwaStandalone) {
-          profileStore.isPwaStandalone = true;
           profileStore.checkPwaDetect();
         }
       });
     }
   };
+
+  // const checkPwaApp = (): void => {
+  //   const profileStore = useProfileStore();
+  //
+  //   profileStore.isPwaStandalone =
+  //     // @ts-expect-error: Non-standard properties
+  //     window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  //
+  //   if (!profileStore.isPwaStandalone) {
+  //     window.matchMedia('(display-mode: standalone)').addEventListener('change', (event: any) => {
+  //       if (event.target.matches && !profileStore.isPwaStandalone) {
+  //         profileStore.isPwaStandalone = true;
+  //         profileStore.checkPwaDetect();
+  //       }
+  //     });
+  //   }
+  // };
 
   const setWindowStaticHeight = (): void => {
     const vh = window.innerHeight * 0.01;
