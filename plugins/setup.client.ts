@@ -24,29 +24,12 @@ export default defineNuxtPlugin(nuxtApp => {
 
     if (!isStandalone) {
       window.matchMedia('(display-mode: standalone)').addEventListener('change', (event: any) => {
-        if (event.target.matches && !profileStore.isPwaStandalone) {
+        if (event.target.matches) {
           profileStore.checkPwaDetect();
         }
       });
     }
   };
-
-  // const checkPwaApp = (): void => {
-  //   const profileStore = useProfileStore();
-  //
-  //   profileStore.isPwaStandalone =
-  //     // @ts-expect-error: Non-standard properties
-  //     window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-  //
-  //   if (!profileStore.isPwaStandalone) {
-  //     window.matchMedia('(display-mode: standalone)').addEventListener('change', (event: any) => {
-  //       if (event.target.matches && !profileStore.isPwaStandalone) {
-  //         profileStore.isPwaStandalone = true;
-  //         profileStore.checkPwaDetect();
-  //       }
-  //     });
-  //   }
-  // };
 
   const setWindowStaticHeight = (): void => {
     const vh = window.innerHeight * 0.01;

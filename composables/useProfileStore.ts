@@ -14,7 +14,6 @@ interface IProfileStoreState {
   onlineSubscription: any;
   fingerprintVisitor: Promise<string> | null;
   isPwaRoute: boolean;
-  isPwaStandalone: boolean;
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -29,7 +28,6 @@ export const useProfileStore = defineStore('profileStore', {
     onlineSubscription: undefined,
     fingerprintVisitor: null,
     isPwaRoute: false,
-    isPwaStandalone: false,
   }),
 
   getters: {
@@ -363,7 +361,7 @@ export const useProfileStore = defineStore('profileStore', {
       if (!this.isLoggedIn || !this.profile || this.profile.pwaInstalled) return;
       const isStandalone = isStandalonePWA();
 
-      if (isStandalone) {
+      if (isStandalone || this.isPwaRoute) {
         const { changeProfileData } = useCoreProfileApi();
         try {
           this.profile = await changeProfileData({ pwaInstalled: true });
@@ -372,18 +370,5 @@ export const useProfileStore = defineStore('profileStore', {
         }
       }
     },
-
-    // async checkPwaDetect(): Promise<void> {
-    //   if (!this.isLoggedIn || !this.profile || this.profile.pwaInstalled) return;
-    //
-    //   if (this.isPwaStandalone || this.isPwaRoute) {
-    //     const { changeProfileData } = useCoreProfileApi();
-    //     try {
-    //       this.profile = await changeProfileData({ pwaInstalled: true });
-    //     } catch {
-    //       console.error('Personal data not changed!');
-    //     }
-    //   }
-    // },
   },
 });
