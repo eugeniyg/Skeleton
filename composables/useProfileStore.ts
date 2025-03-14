@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { IProfile, IAuthorizationResponse, IParsedToken, IAuthState } from '@skeleton/core/types';
 import { jwtDecode } from 'jwt-decode';
+import { isStandalonePWA } from 'ua-parser-js/helpers';
 
 interface IProfileStoreState {
   refreshPromise: Promise<string> | null;
@@ -12,6 +13,7 @@ interface IProfileStoreState {
   tokenCookieKey: string;
   onlineSubscription: any;
   fingerprintVisitor: Promise<string> | null;
+  isPwaRoute: boolean;
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -25,6 +27,7 @@ export const useProfileStore = defineStore('profileStore', {
     tokenCookieKey: 'access_token',
     onlineSubscription: undefined,
     fingerprintVisitor: null,
+    isPwaRoute: false,
   }),
 
   getters: {
@@ -214,6 +217,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { reconnectSocket } = useWebSocket();
       await reconnectSocket();
       this.startProfileDependencies();
+      await this.checkPwaDetect();
     },
 
     async logIn(loginData: any): Promise<void> {
@@ -350,6 +354,20 @@ export const useProfileStore = defineStore('profileStore', {
       if (this.onlineSubscription) {
         this.onlineSubscription.unsubscribe();
         this.onlineSubscription.removeAllListeners();
+      }
+    },
+
+    async checkPwaDetect(): Promise<void> {
+      if (!this.isLoggedIn || !this.profile || this.profile.pwaInstalled) return;
+      const isStandalone = isStandalonePWA();
+
+      if (isStandalone || this.isPwaRoute) {
+        const { changeProfileData } = useCoreProfileApi();
+        try {
+          this.profile = await changeProfileData({ pwaInstalled: true });
+        } catch {
+          console.error('Personal data not changed!');
+        }
       }
     },
   },
