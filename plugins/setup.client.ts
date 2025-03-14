@@ -19,9 +19,7 @@ export default defineNuxtPlugin(nuxtApp => {
 
   const checkPwaApp = (): void => {
     const profileStore = useProfileStore();
-    const route = useRoute();
 
-    if (route.query.source === 'pwa') profileStore.isPwaRoute = true;
     profileStore.isPwaStandalone =
       // @ts-expect-error: Non-standard properties
       window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
