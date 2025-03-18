@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { IProfile, IAuthorizationResponse, IParsedToken, IAuthState } from '@skeleton/core/types';
+import type { IProfile, IAuthorizationResponse, IParsedToken } from '@skeleton/core/types';
 import { jwtDecode } from 'jwt-decode';
 import { isStandalonePWA } from 'ua-parser-js/helpers';
 
@@ -240,20 +240,23 @@ export const useProfileStore = defineStore('profileStore', {
       openWalletModal();
     },
 
-    async loginSocial(socialData: any, authState?: IAuthState): Promise<void> {
+    async loginSocial(code: string, connection: string, appState?: string): Promise<void> {
       const { submitSocialLoginData } = useCoreAuthApi();
       const fingerprint = (await this.fingerprintVisitor) || undefined;
       const affiliateTag = useCookie('affiliateTag');
-      const submitResult = await submitSocialLoginData({
-        ...socialData,
+      const globalData = useGlobalStore();
+      const submitResult = await submitSocialLoginData(code,{
+        provider: connection,
+        locale: globalData.currentLocale?.code,
         fingerprint,
         affiliateTag: affiliateTag.value || undefined,
       });
       await this.handleLogin(submitResult);
 
+      const appStateData: { backRoute: string } | undefined = appState ? JSON.parse(appState) : undefined;
       const router = useRouter();
       const { localizePath } = useProjectMethods();
-      await router.replace(authState?.targetUrl || localizePath('/'));
+      await router.replace(appStateData?.backRoute || localizePath('/'));
 
       if (submitResult.profile?.isNewlyRegistered) {
         useEvent('analyticsEvent', {

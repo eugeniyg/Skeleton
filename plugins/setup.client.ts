@@ -139,9 +139,10 @@ export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.hook('page:finish', () => {
     const route = useRoute();
     const autologinRoute = route.name === 'auth-autologin' || route.name === 'locale-auth-autologin';
-    const callbackRoute = route.name === 'auth-callback' || route.name === 'locale-auth-callback';
+    const callbackRoute =
+      route.name === 'auth-social-connection-callback' || route.name === 'locale-auth-social-connection-callback';
     const isAuthAutologin = autologinRoute && !!route.query.state;
-    const isAuthCallback = callbackRoute && !!route.query.code && !!route.query.state;
+    const isAuthCallback = callbackRoute && !!route.query.code && !!route.params.connection;
 
     if (isAuthAutologin || isAuthCallback) return;
 
