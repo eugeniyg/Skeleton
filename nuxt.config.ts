@@ -136,7 +136,7 @@ export default defineNuxtConfig({
     inlineDynamicImports: true,
     devProxy: {
       '/api': {
-        target: 'https://pubdev.slotsbet.io/api',
+        target: 'https://qa3.dev.getplatform.tech/api',
         changeOrigin: true,
       },
     },
