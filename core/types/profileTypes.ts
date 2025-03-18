@@ -33,6 +33,7 @@ export interface IProfile extends Record<string, any> {
   segmentIds: string[];
   isNewlyRegistered: boolean;
   phoneConfirmed: boolean;
+  pwaInstalled: boolean;
 }
 
 export interface IAuthorizationRequest extends Record<any, any> {

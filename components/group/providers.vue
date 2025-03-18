@@ -8,9 +8,15 @@
       {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.label') }}
     </h2>
 
-    <button-base v-if="props.showAllBtn" class="btn-show-all" type="ghost" size="sm" url="/providers">
+    <button-base
+      v-if="props.showAllBtn && activeProvidersCount"
+      class="btn-show-all"
+      type="ghost"
+      size="sm"
+      url="/providers"
+    >
       {{ getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.moreButton') }}
-      {{ providersIdentity.length }}
+      {{ activeProvidersCount }}
     </button-base>
 
     <button-arrows
@@ -34,37 +40,27 @@
     showArrows?: boolean;
   }>();
 
-  const providersIdentity = [
-    'turbo-games',
-    'one-touch',
-    'blueprint-gaming',
-    'betsoft',
-    'wazdan',
-    'microgaming',
-    'habanero',
-    'hacksaw-gaming',
-    'swintt',
-    'nolimit-city',
-    'push-gaming',
-    'play-n-go',
-    'game-art',
-    'pragmatic-play',
-    'pg-soft',
-    'spadegaming',
-    'spribe',
-    'evolution-gaming',
-  ];
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const { getContent } = useProjectMethods();
   const { getProviderList } = useGamesStore();
   const { data: gameProviders } = await useLazyAsyncData(() => getProviderList(), { server: false });
+  const contentList: { identity: string }[] =
+    getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'cardsGroup.providers.items') || [];
 
   const providersList = computed(() => {
-    return providersIdentity.reduce((providersArr: IGameProvider[], currentProviderIdentity) => {
-      const providerData = gameProviders.value?.find(provider => provider.identity === currentProviderIdentity);
-      if (providerData) return [...providersArr, providerData];
-      return providersArr;
-    }, []);
+    const providersArr: IGameProvider[] = [];
+    contentList.forEach(contentProvider => {
+      const providerData = gameProviders.value?.find(
+        provider => provider.identity === contentProvider.identity && provider.gameEnabledCount
+      );
+      if (providerData) providersArr.push(providerData);
+    });
+    return providersArr;
+  });
+
+  const activeProvidersCount = computed(() => {
+    const filteredArr = gameProviders.value?.filter(provider => !!provider.gameEnabledCount) || [];
+    return filteredArr.length;
   });
 
   const scrollContainer = ref();

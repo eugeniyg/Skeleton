@@ -85,7 +85,7 @@
         await router.push({ path: localizePath('/profile/limits'), query: {} });
         return { error: { ...err, fatal: false } };
       }
-      
+
       if (err.data?.error.code === 14308) {
         await openModal('geo-restricted-game');
         return { error: { ...err, fatal: false } };

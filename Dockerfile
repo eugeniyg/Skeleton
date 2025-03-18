@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/node:16-alpine as builder
+FROM 038978826977.dkr.ecr.eu-central-1.amazonaws.com/dockerhub/library/node:16-alpine as builder
 
 ARG NPM_TOKEN
 
