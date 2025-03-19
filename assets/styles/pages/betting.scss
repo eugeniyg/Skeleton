@@ -24,10 +24,10 @@
     grid-area: container;
     position: relative;
     width: 100%;
-    height: calc(var(--vh-static, 1vh) * 100 - calc(var(--header-height)*2) - env(safe-area-inset-bottom) - env(safe-area-inset-top));
+    //height: calc(var(--vh-static, 1vh) * 100 - calc(var(--header-height)*2) - env(safe-area-inset-bottom) - env(safe-area-inset-top));
 
     @include media(l) {
-      height: calc(100vh - 88px);
+      //height: calc(100vh - 88px);
     }
 
     iframe {
