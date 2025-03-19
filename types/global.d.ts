@@ -4,6 +4,7 @@ declare global {
   type Maybe<T> = T | null | undefined;
   interface Window {
     BetSdk?: any;
+    Sportsbook?: any;
     fcWidgetMessengerConfig?: any;
     fcWidget?: any;
     fcSettings?: any;

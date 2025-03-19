@@ -114,12 +114,12 @@
     showAlert(alertsData.value?.limit?.limitedRealGame || defaultLocaleAlertsData.value?.limit?.limitedRealGame);
   };
 
-  watch(
-    () => activeAccount.value?.id,
-    async (oldValue, newValue) => {
-      if (oldValue && newValue && oldValue !== newValue) await startGame();
-    }
-  );
+  // watch(
+  //   () => activeAccount.value?.id,
+  //   async (oldValue, newValue) => {
+  //     if (oldValue && newValue && oldValue !== newValue) await startGame();
+  //   }
+  // );
 
   onBeforeMount(() => {
     compactDrawer(true, false);
@@ -137,13 +137,13 @@
     });
   };
 
-  watch(
-    () => route.query.setIframePath,
-    async newValue => {
-      if (!updateUrlParam || routerIframePath.value === newValue) return;
-      await changeFramePath(route.query.setIframePath as string | undefined);
-    }
-  );
+  // watch(
+  //   () => route.query.setIframePath,
+  //   async newValue => {
+  //     if (!updateUrlParam || routerIframePath.value === newValue) return;
+  //     await changeFramePath(route.query.setIframePath as string | undefined);
+  //   }
+  // );
 
   const updateRouterIframePath = (eventData: { type: string; location: string }) => {
     const currentIframePath = route.query.setIframePath as string | undefined;
@@ -179,43 +179,50 @@
   };
 
   onMounted(async () => {
-    window.addEventListener('message', resolveFrameEvent);
-
-    if (isMobile.value) {
-      const footerEl: HTMLElement | null = document.querySelector('footer');
-      if (footerEl) footerEl.style.display = 'none';
-      const seoTextBlock: HTMLElement | null = document.querySelector('.text-wrap');
-      if (seoTextBlock) seoTextBlock.style.display = 'none';
+    // window.addEventListener('message', resolveFrameEvent);
+    //
+    // if (isMobile.value) {
+    //   const footerEl: HTMLElement | null = document.querySelector('footer');
+    //   if (footerEl) footerEl.style.display = 'none';
+    //   const seoTextBlock: HTMLElement | null = document.querySelector('.text-wrap');
+    //   if (seoTextBlock) seoTextBlock.style.display = 'none';
+    // }
+    //
+    // await startGame();
+    // useListen('restrictedBets', handleRestrictedBets);
+    // useListen('maxBets', handleMaxBets);
+    if (window.Sportsbook) {
+      window.Sportsbook.init({
+        host: 'https://video-test-stage.betsy.software',
+        containerId: 'betting-container',
+        cid: 'black_demo',
+      });
     }
-
-    await startGame();
-    useListen('restrictedBets', handleRestrictedBets);
-    useListen('maxBets', handleMaxBets);
   });
 
-  watch(
-    () => isLoggedIn.value,
-    async (newValue: boolean) => {
-      if (!newValue) {
-        return;
-      }
-
-      await startGame();
-      showPlug.value = false;
-    }
-  );
+  // watch(
+  //   () => isLoggedIn.value,
+  //   async (newValue: boolean) => {
+  //     if (!newValue) {
+  //       return;
+  //     }
+  //
+  //     await startGame();
+  //     showPlug.value = false;
+  //   }
+  // );
 
   onBeforeUnmount(() => {
-    window.removeEventListener('message', resolveFrameEvent);
-
-    const footerEl: any = document.querySelector('footer');
-    if (footerEl) footerEl.style.display = null;
-    const seoTextBlock: any = document.querySelector('.text-wrap');
-    if (seoTextBlock) seoTextBlock.style.display = null;
+    // window.removeEventListener('message', resolveFrameEvent);
+    //
+    // const footerEl: any = document.querySelector('footer');
+    // if (footerEl) footerEl.style.display = null;
+    // const seoTextBlock: any = document.querySelector('.text-wrap');
+    // if (seoTextBlock) seoTextBlock.style.display = null;
 
     const storageDrawerCompact = localStorage.getItem('IS_DRAWER_COMPACT') === 'true';
     compactDrawer(storageDrawerCompact, false);
-    useUnlisten('restrictedBets', handleRestrictedBets);
+    // useUnlisten('restrictedBets', handleRestrictedBets);
   });
 </script>
 
