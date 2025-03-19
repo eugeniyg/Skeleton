@@ -1,4 +1,5 @@
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import { isStandalonePWA } from 'ua-parser-js/helpers';
 
 export default defineNuxtPlugin(nuxtApp => {
   const checkAffiliateTag = (): void => {
@@ -17,6 +18,19 @@ export default defineNuxtPlugin(nuxtApp => {
     if (route.query?.stag) router.replace({ query: { ...route.query, stag: undefined } });
   };
 
+  const checkPwaApp = (): void => {
+    const profileStore = useProfileStore();
+    const isStandalone = isStandalonePWA();
+
+    if (!isStandalone) {
+      window.matchMedia('(display-mode: standalone)').addEventListener('change', (event: any) => {
+        if (event.target.matches) {
+          profileStore.checkPwaDetect();
+        }
+      });
+    }
+  };
+
   const setWindowStaticHeight = (): void => {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh-static', `${vh}px`);
@@ -28,12 +42,13 @@ export default defineNuxtPlugin(nuxtApp => {
   };
 
   const startProfileLogic = (): void => {
-    const { getSessionToken } = useProfileStore();
+    const { getSessionToken, checkPwaDetect } = useProfileStore();
     const sessionToken = getSessionToken();
 
     if (sessionToken) {
       const { startProfileDependencies } = useProfileStore();
       startProfileDependencies();
+      checkPwaDetect();
     }
   };
 
@@ -110,6 +125,7 @@ export default defineNuxtPlugin(nuxtApp => {
     window.addEventListener('storage', listeningChangeSession);
     const { initWebSocket } = useWebSocket();
     await initWebSocket();
+    checkPwaApp();
     startProfileLogic();
 
     checkAffiliateTag();
@@ -123,9 +139,10 @@ export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.hook('page:finish', () => {
     const route = useRoute();
     const autologinRoute = route.name === 'auth-autologin' || route.name === 'locale-auth-autologin';
-    const callbackRoute = route.name === 'auth-callback' || route.name === 'locale-auth-callback';
+    const callbackRoute =
+      route.name === 'auth-social-connection-callback' || route.name === 'locale-auth-social-connection-callback';
     const isAuthAutologin = autologinRoute && !!route.query.state;
-    const isAuthCallback = callbackRoute && !!route.query.code && !!route.query.state;
+    const isAuthCallback = callbackRoute && !!route.query.code && !!route.params.connection;
 
     if (isAuthAutologin || isAuthCallback) return;
 

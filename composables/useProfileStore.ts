@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
-import type { IProfile, IAuthorizationResponse, IParsedToken, IAuthState } from '@skeleton/core/types';
+import type { IProfile, IAuthorizationResponse, IParsedToken } from '@skeleton/core/types';
 import { jwtDecode } from 'jwt-decode';
+import { isStandalonePWA } from 'ua-parser-js/helpers';
 
 interface IProfileStoreState {
   refreshPromise: Promise<string> | null;
@@ -12,6 +13,7 @@ interface IProfileStoreState {
   tokenCookieKey: string;
   onlineSubscription: any;
   fingerprintVisitor: Promise<string> | null;
+  isPwaRoute: boolean;
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -25,6 +27,7 @@ export const useProfileStore = defineStore('profileStore', {
     tokenCookieKey: 'access_token',
     onlineSubscription: undefined,
     fingerprintVisitor: null,
+    isPwaRoute: false,
   }),
 
   getters: {
@@ -214,6 +217,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { reconnectSocket } = useWebSocket();
       await reconnectSocket();
       this.startProfileDependencies();
+      await this.checkPwaDetect();
     },
 
     async logIn(loginData: any): Promise<void> {
@@ -236,20 +240,23 @@ export const useProfileStore = defineStore('profileStore', {
       openWalletModal();
     },
 
-    async loginSocial(socialData: any, authState?: IAuthState): Promise<void> {
+    async loginSocial(code: string, connection: string, appState?: string): Promise<void> {
       const { submitSocialLoginData } = useCoreAuthApi();
       const fingerprint = (await this.fingerprintVisitor) || undefined;
       const affiliateTag = useCookie('affiliateTag');
-      const submitResult = await submitSocialLoginData({
-        ...socialData,
+      const globalData = useGlobalStore();
+      const submitResult = await submitSocialLoginData(code,{
+        provider: connection,
+        locale: globalData.currentLocale?.code,
         fingerprint,
         affiliateTag: affiliateTag.value || undefined,
       });
       await this.handleLogin(submitResult);
 
+      const appStateData: { backRoute: string } | undefined = appState ? JSON.parse(appState) : undefined;
       const router = useRouter();
       const { localizePath } = useProjectMethods();
-      await router.replace(authState?.targetUrl || localizePath('/'));
+      await router.replace(appStateData?.backRoute || localizePath('/'));
 
       if (submitResult.profile?.isNewlyRegistered) {
         useEvent('analyticsEvent', {
@@ -350,6 +357,20 @@ export const useProfileStore = defineStore('profileStore', {
       if (this.onlineSubscription) {
         this.onlineSubscription.unsubscribe();
         this.onlineSubscription.removeAllListeners();
+      }
+    },
+
+    async checkPwaDetect(): Promise<void> {
+      if (!this.isLoggedIn || !this.profile || this.profile.pwaInstalled) return;
+      const isStandalone = isStandalonePWA();
+
+      if (isStandalone || this.isPwaRoute) {
+        const { changeProfileData } = useCoreProfileApi();
+        try {
+          this.profile = await changeProfileData({ pwaInstalled: true });
+        } catch {
+          console.error('Personal data not changed!');
+        }
       }
     },
   },

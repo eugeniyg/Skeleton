@@ -88,6 +88,7 @@ export interface ICoreConstants extends Record<string, any> {
       enabled: boolean;
       reason: string[];
     };
+    socialAuth: string[];
   };
   payment: {
     invoiceStatuses: IStatus[];

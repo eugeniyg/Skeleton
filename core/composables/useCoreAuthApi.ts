@@ -1,4 +1,11 @@
-import type { IAuthorizationRequest, IAuthorizationResponse, IField, IOtpRequest, IPhoneVerification } from '../types';
+import type {
+  IAuthorizationRequest,
+  IAuthorizationResponse,
+  IField,
+  IOtpRequest,
+  IPhoneVerification,
+  ISocialAuthorizationRequest,
+} from '../types';
 import { useApiGuestInstance } from '@skeleton/core/assets/apiGuestInstance';
 import { useApiAuthInstance } from '@skeleton/core/assets/apiAuthInstance';
 
@@ -61,8 +68,11 @@ export const useCoreAuthApi = () => {
     return data;
   };
 
-  const submitSocialLoginData = async (socialAuthData: any): Promise<IAuthorizationResponse> => {
-    const { data } = await useApiGuestInstance('/api/player/sessions/social', {
+  const submitSocialLoginData = async (
+    code: string,
+    socialAuthData: ISocialAuthorizationRequest
+  ): Promise<IAuthorizationResponse> => {
+    const { data } = await useApiGuestInstance(`/api/player/sessions/social?code=${code}`, {
       method: 'POST',
       body: socialAuthData,
     });

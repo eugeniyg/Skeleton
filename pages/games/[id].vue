@@ -86,6 +86,11 @@
         return { error: { ...err, fatal: false } };
       }
 
+      if (err.data?.error.code === 14308) {
+        await openModal('geo-restricted-game');
+        return { error: { ...err, fatal: false } };
+      }
+
       if (err.data?.error?.code === 14103) {
         redirectLimitedPlayer();
         return { error: { ...err, fatal: false } };
