@@ -6,28 +6,38 @@
 
     <div class="socials__items">
       <span
-        v-for="connection in socialConnections"
-        :key="connection"
+        v-for="connection in socialDirectConnections"
+        :key="`direct-${connection}`"
         class="socials__item"
         :class="`socials__item--${connection}`"
-        @click="authSocial(connection)"
+        @click="authSocial('direct', connection)"
       >
-        <atomic-icon :id="connection === 'google-oauth2' ? 'google' : connection" />
+        <atomic-icon :id="connection" />
+      </span>
+
+      <span
+        v-for="connection in socialAuth0Connections"
+        :key="`auth0-${connection}`"
+        class="socials__item"
+        :class="`socials__item--${connection}`"
+        @click="authSocial('auth0', connection)"
+      >
+        <atomic-icon :id="connection" />
       </span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import queryString from 'query-string';
   import { storeToRefs } from 'pinia';
+  import queryString from 'query-string';
 
   const props = defineProps<{
     type: 'login' | 'registration';
   }>();
 
   const globalStore = useGlobalStore();
-  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent, settingsConstants } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   const componentTitle = computed(() => {
@@ -38,41 +48,59 @@
     );
   });
 
-  const { $auth0 } = useNuxtApp();
-  const socialConnections = computed(() => {
-    const connectionList: { id: string }[] =
-      getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'socialAuth.connections') ||
-      [];
+  const settingsSocialAuthList = settingsConstants.value?.player?.socialAuth || [];
+  const socialAuth0Connections = computed(() => {
+    if (!settingsSocialAuthList.includes('auth0')) return [];
+
+    const currentLocaleAuth0Connections = globalComponentsContent.value?.socialAuth?.socialAuth0Connections || [];
+    const defaultLocaleAuth0Connections =
+      defaultLocaleGlobalComponentsContent.value?.socialAuth?.socialAuth0Connections || [];
+
+    const connectionList = currentLocaleAuth0Connections.length
+      ? currentLocaleAuth0Connections
+      : defaultLocaleAuth0Connections;
+
     return connectionList.map(connection => connection.id);
   });
 
-  const showComponent = computed(() => !!$auth0 && !!socialConnections.value.length);
+  const socialDirectConnections = computed(() => {
+    const currentLocaleDirectConnections = globalComponentsContent.value?.socialAuth?.socialDirectConnections || [];
+    const defaultLocaleDirectConnections =
+      defaultLocaleGlobalComponentsContent.value?.socialAuth?.socialDirectConnections || [];
 
-  const authSocial = (connection: string) => {
-    if (!$auth0) return;
+    const connectionList = currentLocaleDirectConnections.length
+      ? currentLocaleDirectConnections
+      : defaultLocaleDirectConnections;
 
+    return connectionList
+      .map(connection => connection.id)
+      .filter(connection => settingsSocialAuthList.includes(connection));
+  });
+
+  const showComponent = computed(() => socialAuth0Connections.value.length || socialDirectConnections.value.length);
+
+  const authSocial = (type: 'direct' | 'auth0', connection: string) => {
     useEvent('analyticsEvent', {
       event: 'registrationChangeType',
       regType: 'social',
     });
 
     const { query, path } = useRoute();
-    const formedQuery = queryString.stringify({
+    const backQuery = queryString.stringify({
       ...query,
       'sign-in': undefined,
       'sign-up': undefined,
       stag: undefined,
     });
 
-    $auth0.loginWithRedirect({
-      appState: {
-        type: props.type,
-        targetUrl: formedQuery ? `${path}?${formedQuery}` : path,
-      },
-      authorizationParams: {
-        connection,
-      },
-    });
+    const backRoute = backQuery ? `${path}?${backQuery}` : path;
+    const authState = { backRoute };
+    const locationOrigin = window.location.origin;
+    const authUrl =
+      type === 'auth0'
+        ? `/api/player/sessions/social/auth0/redirect?state=${JSON.stringify(authState)}&connection=${connection}`
+        : `/api/player/sessions/social/${connection}/redirect?state=${JSON.stringify(authState)}`;
+    window.location.href = `${locationOrigin}${authUrl}`;
   };
 </script>
 
