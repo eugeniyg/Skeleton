@@ -74,7 +74,7 @@ export const useCoreAuthApi = () => {
     const { code, ...otherParams } = socialAuthData;
     const { data } = await useApiGuestInstance(`/api/player/sessions/social`, {
       method: 'POST',
-      params: { code },
+      params: code ? { code } : undefined,
       body: otherParams,
     });
 
