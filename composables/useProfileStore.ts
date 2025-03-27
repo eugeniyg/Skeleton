@@ -255,6 +255,8 @@ export const useProfileStore = defineStore('profileStore', {
       });
       await this.handleLogin(submitResult);
 
+      console.log('appStateData: ', data.query.state);
+      console.log('JSON.parse(data.query.state): ', JSON.parse(data.query.state));
       const appStateData: { backRoute: string } | undefined = data.query.state
         ? JSON.parse(data.query.state)
         : undefined;
