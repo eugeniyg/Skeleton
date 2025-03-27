@@ -255,16 +255,13 @@ export const useProfileStore = defineStore('profileStore', {
       });
       await this.handleLogin(submitResult);
 
-      console.log('appStateData: ', data.query.state);
-      console.log('JSON.parse(data.query.state): ', JSON.parse(data.query.state));
       const appStateData: { backRoute: string } | undefined = data.query.state
         ? JSON.parse(data.query.state)
         : undefined;
-      console.log('appStateData: ', appStateData);
-      console.log('JSON.parse(data.query.state): ', JSON.parse(data.query.state));
       const router = useRouter();
       const { localizePath } = useProjectMethods();
-      await router.replace(appStateData?.backRoute || localizePath('/'));
+      const backUrl = appStateData?.backRoute ? decodeURIComponent(appStateData.backRoute) : undefined;
+      await router.replace(backUrl || localizePath('/'));
 
       if (submitResult.profile?.isNewlyRegistered) {
         useEvent('analyticsEvent', {

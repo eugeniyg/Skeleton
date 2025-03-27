@@ -93,14 +93,14 @@
       stag: undefined,
     });
 
-    const backRoute = backQuery ? `${path}?${backQuery}` : path;
-    const authState = { backRoute };
-    const stateParam = new URLSearchParams(`state=${JSON.stringify(authState)}`);
     const locationOrigin = window.location.origin;
+    const backRoute = backQuery ? `${path}?${backQuery}` : path;
+    const authState = { backRoute: encodeURIComponent(backRoute) };
+    const stateParam = new URLSearchParams(`state=${JSON.stringify(authState)}`);
     const authUrl =
       type === 'auth0'
-        ? `/api/player/sessions/social/auth0/redirect?${stateParam.toString()}&connection=${connection}`
-        : `/api/player/sessions/social/${connection}/redirect?${stateParam.toString()}`;
+        ? `/api/player/sessions/social/auth0/redirect?${stateParam}&connection=${connection}`
+        : `/api/player/sessions/social/${connection}/redirect?${stateParam}`;
     window.location.href = `${locationOrigin}${authUrl}`;
   };
 </script>
