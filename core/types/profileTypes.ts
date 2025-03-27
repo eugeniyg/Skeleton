@@ -44,13 +44,12 @@ export interface IAuthorizationRequest extends Record<any, any> {
 
 export interface ISocialCallbackData {
   connection: string;
-  appState: string;
-  code?: string;
+  query: { [key: string]: any };
 }
 
 export interface ISocialAuthorizationRequest extends Record<string, any> {
-  code: string | undefined;
   provider: string;
+  query: { [key: string]: any };
   locale?: string;
   affiliateTag?: string;
   fingerprint?: string;

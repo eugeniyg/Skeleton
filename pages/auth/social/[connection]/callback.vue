@@ -38,8 +38,7 @@
     const { query, params } = useRoute();
     await sendSocialData({
       connection: params.connection as string,
-      appState: query.state as string,
-      code: (query.code as string) || undefined,
+      query,
     });
   });
 </script>
