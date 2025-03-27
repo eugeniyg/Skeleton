@@ -42,7 +42,14 @@ export interface IAuthorizationRequest extends Record<any, any> {
   fingerprint?: string;
 }
 
+export interface ISocialCallbackData {
+  connection: string;
+  appState: string;
+  code?: string;
+}
+
 export interface ISocialAuthorizationRequest extends Record<string, any> {
+  code: string | undefined;
   provider: string;
   locale?: string;
   affiliateTag?: string;
