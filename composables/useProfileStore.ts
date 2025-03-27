@@ -246,6 +246,7 @@ export const useProfileStore = defineStore('profileStore', {
       const affiliateTag = useCookie('affiliateTag');
       const globalData = useGlobalStore();
       const submitResult = await submitSocialLoginData({
+        ...data,
         query: data.query,
         provider: data.connection,
         locale: globalData.currentLocale?.code,
@@ -257,6 +258,8 @@ export const useProfileStore = defineStore('profileStore', {
       const appStateData: { backRoute: string } | undefined = data.query.state
         ? JSON.parse(data.query.state)
         : undefined;
+      console.log('appStateData: ', appStateData);
+      console.log('JSON.parse(data.query.state): ', JSON.parse(data.query.state));
       const router = useRouter();
       const { localizePath } = useProjectMethods();
       await router.replace(appStateData?.backRoute || localizePath('/'));
