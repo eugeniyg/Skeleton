@@ -95,11 +95,12 @@
 
     const backRoute = backQuery ? `${path}?${backQuery}` : path;
     const authState = { backRoute };
+    const stateParam = new URLSearchParams(`state=${JSON.stringify(authState)}`);
     const locationOrigin = window.location.origin;
     const authUrl =
       type === 'auth0'
-        ? `/api/player/sessions/social/auth0/redirect?state=${JSON.stringify(authState)}&connection=${connection}`
-        : `/api/player/sessions/social/${connection}/redirect?state=${JSON.stringify(authState)}`;
+        ? `/api/player/sessions/social/auth0/redirect?${stateParam.toString()}&connection=${connection}`
+        : `/api/player/sessions/social/${connection}/redirect?${stateParam.toString()}`;
     window.location.href = `${locationOrigin}${authUrl}`;
   };
 </script>
