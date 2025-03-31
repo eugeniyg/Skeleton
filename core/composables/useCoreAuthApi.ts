@@ -69,12 +69,13 @@ export const useCoreAuthApi = () => {
   };
 
   const submitSocialLoginData = async (
-    code: string,
     socialAuthData: ISocialAuthorizationRequest
   ): Promise<IAuthorizationResponse> => {
-    const { data } = await useApiGuestInstance(`/api/player/sessions/social?code=${code}`, {
+    const { query, ...otherParams } = socialAuthData;
+    const { data } = await useApiGuestInstance(`/api/player/sessions/social`, {
       method: 'POST',
-      body: socialAuthData,
+      params: query,
+      body: otherParams,
     });
 
     return data;
