@@ -52,22 +52,26 @@
   const socialAuth0Connections = computed(() => {
     if (!settingsSocialAuthList.includes('auth0')) return [];
 
-    const connectionList: { id: string }[] =
-      getContent(
-        globalComponentsContent.value,
-        defaultLocaleGlobalComponentsContent.value,
-        'socialAuth.socialAuth0Connections'
-      ) || [];
+    const currentLocaleAuth0Connections = globalComponentsContent.value?.socialAuth?.socialAuth0Connections || [];
+    const defaultLocaleAuth0Connections =
+      defaultLocaleGlobalComponentsContent.value?.socialAuth?.socialAuth0Connections || [];
+
+    const connectionList = currentLocaleAuth0Connections.length
+      ? currentLocaleAuth0Connections
+      : defaultLocaleAuth0Connections;
+
     return connectionList.map(connection => connection.id);
   });
 
   const socialDirectConnections = computed(() => {
-    const connectionList: { id: string }[] =
-      getContent(
-        globalComponentsContent.value,
-        defaultLocaleGlobalComponentsContent.value,
-        'socialAuth.socialDirectConnections'
-      ) || [];
+    const currentLocaleDirectConnections = globalComponentsContent.value?.socialAuth?.socialDirectConnections || [];
+    const defaultLocaleDirectConnections =
+      defaultLocaleGlobalComponentsContent.value?.socialAuth?.socialDirectConnections || [];
+
+    const connectionList = currentLocaleDirectConnections.length
+      ? currentLocaleDirectConnections
+      : defaultLocaleDirectConnections;
+
     return connectionList
       .map(connection => connection.id)
       .filter(connection => settingsSocialAuthList.includes(connection));
@@ -89,13 +93,14 @@
       stag: undefined,
     });
 
-    const backRoute = backQuery ? `${path}?${backQuery}` : path;
-    const authState = { backRoute };
     const locationOrigin = window.location.origin;
+    const backRoute = backQuery ? `${path}?${backQuery}` : path;
+    const authState = { backRoute: encodeURIComponent(backRoute) };
+    const stateParam = new URLSearchParams(`state=${JSON.stringify(authState)}`);
     const authUrl =
       type === 'auth0'
-        ? `/api/player/sessions/social/auth0/redirect?state=${JSON.stringify(authState)}&connection=${connection}`
-        : `/api/player/sessions/social/${connection}/redirect?state=${JSON.stringify(authState)}`;
+        ? `/api/player/sessions/social/auth0/redirect?${stateParam}&connection=${connection}`
+        : `/api/player/sessions/social/${connection}/redirect?${stateParam}`;
     window.location.href = `${locationOrigin}${authUrl}`;
   };
 </script>
