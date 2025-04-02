@@ -6,13 +6,16 @@
 
     <div class="socials__items">
       <span
-        v-for="connection in socialDirectConnections"
+        v-for="(connection, index) in socialDirectConnections"
         :key="`direct-${connection}`"
         class="socials__item"
         :class="`socials__item--${connection}`"
-        @click="authSocial('direct', connection)"
       >
-        <atomic-icon :id="connection" />
+        <template v-if="index === 0">
+          <atomic-socials-telegram />
+          <atomic-icon id="telegram" />
+        </template>
+        <atomic-icon v-else :id="connection" />
       </span>
 
       <span
