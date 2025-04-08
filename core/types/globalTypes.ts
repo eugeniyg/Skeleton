@@ -89,6 +89,10 @@ export interface ICoreConstants extends Record<string, any> {
       reason: string[];
     };
     socialAuth: string[];
+    telegram?: {
+      bot: string;
+      auth_url: string;
+    };
   };
   payment: {
     invoiceStatuses: IStatus[];

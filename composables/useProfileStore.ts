@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { IProfile, IAuthorizationResponse, IParsedToken } from '@skeleton/core/types';
+import type { IProfile, IAuthorizationResponse, IParsedToken, ISocialCallbackData } from '@skeleton/core/types';
 import { jwtDecode } from 'jwt-decode';
 import { isStandalonePWA } from 'ua-parser-js/helpers';
 
@@ -240,23 +240,28 @@ export const useProfileStore = defineStore('profileStore', {
       openWalletModal();
     },
 
-    async loginSocial(code: string, connection: string, appState?: string): Promise<void> {
+    async loginSocial(data: ISocialCallbackData): Promise<void> {
       const { submitSocialLoginData } = useCoreAuthApi();
       const fingerprint = (await this.fingerprintVisitor) || undefined;
       const affiliateTag = useCookie('affiliateTag');
       const globalData = useGlobalStore();
-      const submitResult = await submitSocialLoginData(code,{
-        provider: connection,
+      const submitResult = await submitSocialLoginData({
+        ...data,
+        query: data.query,
+        provider: data.connection,
         locale: globalData.currentLocale?.code,
         fingerprint,
         affiliateTag: affiliateTag.value || undefined,
       });
       await this.handleLogin(submitResult);
 
-      const appStateData: { backRoute: string } | undefined = appState ? JSON.parse(appState) : undefined;
+      const appStateData: { backRoute: string } | undefined = data.query.state
+        ? JSON.parse(data.query.state)
+        : undefined;
       const router = useRouter();
       const { localizePath } = useProjectMethods();
-      await router.replace(appStateData?.backRoute || localizePath('/'));
+      const backUrl = appStateData?.backRoute ? decodeURIComponent(appStateData.backRoute) : undefined;
+      await router.replace(backUrl || localizePath('/'));
 
       if (submitResult.profile?.isNewlyRegistered) {
         useEvent('analyticsEvent', {
