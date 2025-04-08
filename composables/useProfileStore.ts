@@ -132,12 +132,31 @@ export const useProfileStore = defineStore('profileStore', {
 
     startProfileDependencies(): void {
       const { getFavoriteGames, subscribeBetsSocket } = useGamesStore();
-      const { getPlayerBonuses, getPlayerFreeSpins, getPlayerCashback, getDepositBonuses } = useBonusStore();
+      const {
+        getPlayerBonuses,
+        getPlayerFreeSpins,
+        getPlayerCashback,
+        getDepositBonuses,
+        getDepositBonusCode,
+        subscribeBonusCodeSocket,
+        subscribeBonusSocket,
+        subscribeFreeSpinsSocket,
+      } = useBonusStore();
       const { getActiveQuests, subscribeQuestsSocket } = useQuestsStore();
       const { getPlayerLoyalty, subscribeLoyaltySocket } = useLoyaltyStore();
       const { getPopoverNotifications, subscribeNotificationSocket } = useNotificationStore();
+      const { subscribeAccountSocket, subscribeInvoicesSocket, getDepositMethods, getWithdrawMethods } =
+        useWalletStore();
+      const { subscribeTournamentSocket } = useTournamentsStore();
+      const { setEquivalentCurrency } = useGlobalStore();
+      const { getTurnOverWager } = useRiskStore();
       const runtimeConfig = useRuntimeConfig();
+
+      getDepositMethods();
+      getWithdrawMethods();
       getFavoriteGames();
+      getDepositBonusCode();
+      getTurnOverWager();
       if (runtimeConfig.public?.questsEnabled) getActiveQuests();
       if (runtimeConfig.public?.loyaltyEnabled) getPlayerLoyalty();
       getPopoverNotifications();
@@ -151,10 +170,6 @@ export const useProfileStore = defineStore('profileStore', {
         getDepositBonuses();
       }
 
-      const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
-      const { subscribeBonusCodeSocket, subscribeBonusSocket, subscribeFreeSpinsSocket } = useBonusStore();
-      const { subscribeTournamentSocket } = useTournamentsStore();
-
       subscribeAccountSocket();
       subscribeInvoicesSocket();
       subscribeBonusCodeSocket();
@@ -167,7 +182,6 @@ export const useProfileStore = defineStore('profileStore', {
       subscribeNotificationSocket();
       subscribeTournamentSocket();
 
-      const { setEquivalentCurrency } = useGlobalStore();
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
       if (storageEquivalentCurrency) setEquivalentCurrency(storageEquivalentCurrency);
     },

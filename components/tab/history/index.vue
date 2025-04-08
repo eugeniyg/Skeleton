@@ -13,13 +13,20 @@
     </div>
 
     <div class="tab-history">
-      <component :is="loadTab(selected)" :content="props.content[selected]" />
+      <component :is="tabComponent" :content="props.content[selected]" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import type { IHistory } from '~/types';
+  import {
+    TabHistoryBets,
+    TabHistoryBonuses,
+    TabHistorySessions,
+    TabHistorySpins,
+    TabHistoryTransactions,
+  } from '#components';
 
   const props = defineProps<{
     content: IHistory;
@@ -55,7 +62,14 @@
     router.replace({ query: { tab: tabsArray[0].id } });
   }
 
-  const loadTab = (name: string): string => `tab-history-${name}`;
+  const tabComponent = computed(() => {
+    if (selected.value === 'bets') return TabHistoryBets;
+    if (selected.value === 'bonuses') return TabHistoryBonuses;
+    if (selected.value === 'sessions') return TabHistorySessions;
+    if (selected.value === 'spins') return TabHistorySpins;
+    if (selected.value === 'transactions') return TabHistoryTransactions;
+    return null;
+  });
 
   const changeTab = (tabId: string): void => {
     router.push({ query: { tab: tabId } });
