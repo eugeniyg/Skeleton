@@ -25,6 +25,7 @@
 
           <div class="modal-quest-tasks__body">
             <quest-currency
+              v-if="tasksModalData?.rewards?.length"
               :currentLocaleContent="questsHubContent?.currentLocaleData"
               :defaultLocaleContent="questsHubContent?.defaultLocaleData"
               :rewards="tasksModalData?.rewards"
