@@ -137,7 +137,6 @@ export const useProfileStore = defineStore('profileStore', {
         getPlayerFreeSpins,
         getPlayerCashback,
         getDepositBonuses,
-        getDepositBonusCode,
         subscribeBonusCodeSocket,
         subscribeBonusSocket,
         subscribeFreeSpinsSocket,
@@ -145,18 +144,12 @@ export const useProfileStore = defineStore('profileStore', {
       const { getActiveQuests, subscribeQuestsSocket } = useQuestsStore();
       const { getPlayerLoyalty, subscribeLoyaltySocket } = useLoyaltyStore();
       const { getPopoverNotifications, subscribeNotificationSocket } = useNotificationStore();
-      const { subscribeAccountSocket, subscribeInvoicesSocket, getDepositMethods, getWithdrawMethods } =
-        useWalletStore();
+      const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       const { subscribeTournamentSocket } = useTournamentsStore();
       const { setEquivalentCurrency } = useGlobalStore();
-      const { getTurnOverWager } = useRiskStore();
       const runtimeConfig = useRuntimeConfig();
 
-      getDepositMethods();
-      getWithdrawMethods();
       getFavoriteGames();
-      getDepositBonusCode();
-      getTurnOverWager();
       if (runtimeConfig.public?.questsEnabled) getActiveQuests();
       if (runtimeConfig.public?.loyaltyEnabled) getPlayerLoyalty();
       getPopoverNotifications();
