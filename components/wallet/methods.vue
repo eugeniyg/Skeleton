@@ -10,7 +10,7 @@
 
     <wallet-region />
 
-    <balance :withdraw="props.selectedTab === 'withdraw'">
+    <balance :withdraw="props.selectedTab === 'withdraw'" @changingAccount="emit('changingAccount', $event)">
       <div v-if="props.loading" class="input-payments">
         <div class="items">
           <Skeletor v-for="item in 2" :key="item" class="item" as="div" />
@@ -64,7 +64,7 @@
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
 
-  const emit = defineEmits(['changeTab', 'methodClick']);
+  const emit = defineEmits(['changeTab', 'methodClick', 'changingAccount']);
   const { getContent } = useProjectMethods();
   const walletStore = useWalletStore();
   const { depositMethods, withdrawMethods } = storeToRefs(walletStore);

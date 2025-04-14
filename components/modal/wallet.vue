@@ -15,9 +15,10 @@
         :show-tabs="showTabs"
         :selected-tab="selectedTab"
         :modal-title="modalTitle"
-        :loading="status === 'pending'"
+        :loading="status === 'pending' || changingAccount"
         @change-tab="changeTab"
         @method-click="showMobileForm = true"
+        @changingAccount="changingAccount = $event"
       />
 
       <wallet-forms
@@ -27,7 +28,7 @@
         :show-tabs="showTabs"
         :selected-tab="selectedTab"
         :modal-title="modalTitle"
-        :loading="status === 'pending'"
+        :loading="status === 'pending' || changingAccount"
         @change-tab="changeTab"
       />
     </div>
@@ -137,6 +138,7 @@
   const { getDepositMethods, getWithdrawMethods } = walletStore;
   const { getTurnOverWager } = useRiskStore();
   const { getDepositBonuses, getDepositBonusCode } = bonusStore;
+  const changingAccount = ref(false);
   const { status } = await useLazyAsyncData(() => {
     return Promise.allSettled([
       getDepositMethods(),
