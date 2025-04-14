@@ -11,8 +11,14 @@
     <wallet-region />
 
     <balance :withdraw="props.selectedTab === 'withdraw'">
+      <div v-if="props.loading" class="input-payments">
+        <div class="items">
+          <Skeletor v-for="item in 2" :key="item" class="item" as="div" />
+        </div>
+      </div>
+
       <form-input-payments
-        v-if="props.selectedTab === 'deposit'"
+        v-else-if="props.selectedTab === 'deposit'"
         v-model:active-method="currentDepositMethod"
         :items="depositMethods"
         @update:active-method="handleMethodChanged('deposit')"
@@ -20,14 +26,14 @@
       />
 
       <form-input-payments
-        v-if="props.selectedTab === 'withdraw'"
+        v-else-if="props.selectedTab === 'withdraw'"
         v-model:active-method="currentWithdrawMethod"
         :items="withdrawMethods"
         @update:active-method="handleMethodChanged('withdraw')"
         @method-click="emit('methodClick')"
       />
 
-      <div v-if="showNotAvailableText" class="wallet-modal__empty-methods">
+      <div v-else-if="showNotAvailableText" class="wallet-modal__empty-methods">
         <atomic-icon id="info" />
 
         <span>
@@ -44,11 +50,13 @@
   import { storeToRefs } from 'pinia';
   import type { IPaymentMethod } from '@skeleton/core/types';
   import type { IWalletModal } from '~/types';
+  import { Skeletor } from 'vue-skeletor';
 
   const props = defineProps<{
     showTabs: boolean;
     selectedTab: string;
     modalTitle: string;
+    loading: boolean;
   }>();
 
   const currentDepositMethod = defineModel<IPaymentMethod>('currentDepositMethod');

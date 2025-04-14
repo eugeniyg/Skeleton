@@ -15,6 +15,7 @@
         :show-tabs="showTabs"
         :selected-tab="selectedTab"
         :modal-title="modalTitle"
+        :loading="status === 'pending'"
         @change-tab="changeTab"
         @method-click="showMobileForm = true"
       />
@@ -26,6 +27,7 @@
         :show-tabs="showTabs"
         :selected-tab="selectedTab"
         :modal-title="modalTitle"
+        :loading="status === 'pending'"
         @change-tab="changeTab"
       />
     </div>
@@ -131,6 +133,19 @@
       walletOperationType: selectedTab.value,
     });
   };
+
+  const { getDepositMethods, getWithdrawMethods } = walletStore;
+  const { getTurnOverWager } = useRiskStore();
+  const { getDepositBonuses, getDepositBonusCode } = bonusStore;
+  const { status } = await useLazyAsyncData(() => {
+    return Promise.allSettled([
+      getDepositMethods(),
+      getWithdrawMethods(),
+      getDepositBonuses(),
+      getDepositBonusCode(),
+      getTurnOverWager(),
+    ]);
+  });
 </script>
 
 <style src="~/assets/styles/components/modal/wallet.scss" lang="scss" />
