@@ -74,11 +74,6 @@ export default defineNuxtConfig({
         path: '@skeleton/components/form/input',
         prefix: 'FormInput',
       },
-      {
-        global: true,
-        path: '@skeleton/components/tab/history',
-        prefix: 'TabHistory',
-      },
       '@skeleton/components',
     ],
   },

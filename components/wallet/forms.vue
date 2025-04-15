@@ -15,7 +15,13 @@
       <div class="identity">ID {{ playerIdentity }}</div>
     </div>
 
-    <template v-if="props.selectedTab === 'deposit'">
+    <div v-if="props.loading" class="wallet-forms__spinner">
+      <div class="wallet-forms__spinner-border">
+        <div class="wallet-forms__spinner-core" />
+      </div>
+    </div>
+
+    <template v-else-if="props.selectedTab === 'deposit'">
       <wallet-limit
         v-if="depositLimitError"
         :current-locale-limits-content="pageContent?.currentLocaleData"
@@ -79,6 +85,7 @@
     currentDepositMethod?: IPaymentMethod;
     currentWithdrawMethod?: IPaymentMethod;
     showMobileForm: boolean;
+    loading: boolean;
   }>();
 
   const emit = defineEmits(['changeTab']);
