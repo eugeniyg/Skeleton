@@ -275,8 +275,7 @@ export const useProfileStore = defineStore('profileStore', {
           event: 'registrationSuccess',
           regType: 'social',
         });
-        await router.isReady();
-        this.registrationSucceeded();
+        setTimeout(this.registrationSucceeded, 2000);
       }
     },
 
