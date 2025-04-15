@@ -10,7 +10,7 @@
     </div>
 
     <div ref="headerRef" class="quest-card__header">
-      <div class="quest-currencies">
+      <div v-if="props.questInfo.rewards?.length" class="quest-currencies">
         <quest-currency
           :currentLocaleContent="questsHubContent"
           :defaultLocaleContent="defaultLocaleQuestsHubContent"

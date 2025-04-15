@@ -6,6 +6,7 @@
     <div class="group-benefits__list">
       <div v-for="(benefit, index) in benefitsList" :key="index" class="group-benefits__item">
         <atomic-image class="icon" :src="benefit.image" />
+
         <h2 class="title">{{ benefit.title }}</h2>
         <div class="text">{{ benefit.text }}</div>
       </div>
