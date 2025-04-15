@@ -13,7 +13,7 @@
         </div>
       </div>
 
-      <div class="quest-hub-card__amount">
+      <div v-if="rewardsValue.length" class="quest-hub-card__amount">
         <span class="quest-hub-card__amount-value">
           {{ rewardsValue[0].amount }}
         </span>
