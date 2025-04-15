@@ -237,14 +237,14 @@ export const useProfileStore = defineStore('profileStore', {
       await this.handleLogin(submitResult);
     },
 
-    async registrationSucceeded(): Promise<void> {
+    registrationSucceeded(): void {
       const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
       const { closeModal, openWalletModal } = useModalStore();
 
       showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
-      await closeModal('sign-up');
-      await openWalletModal();
+      closeModal('sign-up');
+      openWalletModal();
     },
 
     async loginSocial(data: ISocialCallbackData): Promise<void> {
@@ -270,14 +270,14 @@ export const useProfileStore = defineStore('profileStore', {
       const backUrl = appStateData?.backRoute ? decodeURIComponent(appStateData.backRoute) : undefined;
       await router.replace(backUrl || localizePath('/'));
 
-      // if (submitResult.profile?.isNewlyRegistered) {
-      //   useEvent('analyticsEvent', {
-      //     event: 'registrationSuccess',
-      //     regType: 'social',
-      //   });
-      //   await nextTick();
-      //   await this.registrationSucceeded();
-      // }
+      if (submitResult.profile?.isNewlyRegistered) {
+        useEvent('analyticsEvent', {
+          event: 'registrationSuccess',
+          regType: 'social',
+        });
+        await router.isReady();
+        this.registrationSucceeded();
+      }
     },
 
     async autoLogin(token: string): Promise<void> {
