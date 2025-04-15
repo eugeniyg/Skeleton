@@ -65,7 +65,7 @@
     justify-content: center;
     grid-column-gap: rem(8px);
     border-radius: 12px;
-    min-height: rem(63px);
+    min-height: 70px;
     border: 1px solid var(--border-color, transparent);
 
     &.is-selected {

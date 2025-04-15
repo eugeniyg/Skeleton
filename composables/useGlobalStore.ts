@@ -39,6 +39,8 @@ interface IGlobalStoreState {
   defaultLocaleAlertsData: Maybe<IAlertsContent>;
   globalComponentsContent: Maybe<IGlobalComponentsContent>;
   defaultLocaleGlobalComponentsContent: Maybe<IGlobalComponentsContent>;
+  currentLocaleModalsContent: Maybe<IModalsContent>;
+  defaultLocaleModalsContent: Maybe<IModalsContent>;
   countryHeaderName: string;
   clientIpName: string;
   headerCountry: Maybe<string>;
@@ -66,6 +68,8 @@ export const useGlobalStore = defineStore('globalStore', {
     defaultLocaleAlertsData: undefined,
     globalComponentsContent: undefined,
     defaultLocaleGlobalComponentsContent: undefined,
+    currentLocaleModalsContent: undefined,
+    defaultLocaleModalsContent: undefined,
     countryHeaderName: 'cf-ipcountry',
     clientIpName: 'cf-connecting-ip',
     headerCountry: undefined,
@@ -249,7 +253,7 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getGlobalContent(): Promise<void> {
-      const globalContentFolders = ['alerts', 'fields-settings', 'global-components', 'layout'];
+      const globalContentFolders = ['alerts', 'fields-settings', 'global-components', 'layout', 'modals'];
 
       const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
         queryContent(this.currentLocale?.code as string)
@@ -288,6 +292,7 @@ export const useGlobalStore = defineStore('globalStore', {
         this.layoutData = formattedCurrentLocaleContent.layout;
         this.alertsData = formattedCurrentLocaleContent.alerts;
         this.globalComponentsContent = formattedCurrentLocaleContent.globalComponents;
+        this.currentLocaleModalsContent = formattedCurrentLocaleContent.modals;
       }
 
       if (defaultLocaleData) {
@@ -310,6 +315,7 @@ export const useGlobalStore = defineStore('globalStore', {
         this.defaultLocaleLayoutData = formattedDefaultLocaleContent.layout;
         this.defaultLocaleAlertsData = formattedDefaultLocaleContent.alerts;
         this.defaultLocaleGlobalComponentsContent = formattedDefaultLocaleContent.globalComponents;
+        this.defaultLocaleModalsContent = formattedDefaultLocaleContent.modals;
       }
     },
 

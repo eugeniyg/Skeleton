@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
+import camelCase from 'lodash/camelCase';
 import { useModal, type UseModalReturnType } from 'vue-final-modal';
 import { defineAsyncComponent } from 'vue';
 import type { Dayjs } from 'dayjs';
 import modalsMap from '@skeleton/maps/modalsMap.json';
 import type { IModalSettings } from '@skeleton/types';
+import { ModalSignIn, ModalSignUp, ModalWallet } from '#components';
 
 type WalletModalTypes = 'deposit' | 'withdraw' | undefined;
 
@@ -77,28 +79,28 @@ export const useModalStore = defineStore('modalStore', {
       this.openingModals.push(modalName);
 
       if (!this.modals[modalName]) {
-        const modalComponentName = this.modalsList[modalName].component;
-        const modalComponent = defineAsyncComponent(async () => {
-          try {
-            return await import(`../../components/modal/${modalComponentName}.vue`);
-          } catch {
-            return import(`../components/modal/${modalComponentName}.vue`);
-          }
-        });
+        let modalComponent: any;
+        if (modalName === 'sign-in') modalComponent = ModalSignIn;
+        else if (modalName === 'sign-up') modalComponent = ModalSignUp;
+        else if (modalName === 'wallet') modalComponent = ModalWallet;
+        else {
+          const modalComponentName = this.modalsList[modalName].component;
+          const customModals = import.meta.glob(`../../components/modal/*.vue`);
+          const hasCustomModal = !!customModals[`../../components/modal/${modalComponentName}.vue`];
+          modalComponent = hasCustomModal
+            ? defineAsyncComponent(() => import(`../../components/modal/${modalComponentName}.vue`))
+            : defineAsyncComponent(() => import(`../components/modal/${modalComponentName}.vue`));
+        }
 
         if (this.modalsList[modalName].content) {
-          const contentParams = {
-            contentKey: `modal-${modalName}`,
-            contentRoute: ['modals', this.modalsList[modalName].content],
-          };
-          const { getContentData } = useContentLogic(contentParams);
-          const { currentLocaleData, defaultLocaleData } = await getContentData();
+          const { currentLocaleModalsContent, defaultLocaleModalsContent } = useGlobalStore();
+          const camelCaseContentName = camelCase(this.modalsList[modalName].content);
 
           this.modals[modalName] = useModal({
             component: modalComponent,
             attrs: {
-              currentLocaleData,
-              defaultLocaleData,
+              currentLocaleData: currentLocaleModalsContent?.[camelCaseContentName],
+              defaultLocaleData: defaultLocaleModalsContent?.[camelCaseContentName],
               ...params?.props,
             },
           });
@@ -153,38 +155,9 @@ export const useModalStore = defineStore('modalStore', {
 
       this.walletModalType = modalType;
       const walletStore = useWalletStore();
-      const { setPaymentMethodsGeo, getDepositMethods, getWithdrawMethods, accountSwitching } = walletStore;
-      const { getDepositBonuses, getDepositBonusCode } = useBonusStore();
-      const riskStore = useRiskStore();
+      const { setPaymentMethodsGeo, accountSwitching } = walletStore;
       setPaymentMethodsGeo();
       await accountSwitching;
-      await Promise.allSettled([
-        getDepositMethods(),
-        getWithdrawMethods(),
-        getDepositBonuses(),
-        getDepositBonusCode(),
-        riskStore.getTurnOverWager(),
-      ]);
-
-      const { isLoggedIn } = useProfileStore();
-      if (!isLoggedIn) {
-        this.walletOpening = false;
-        return;
-      }
-
-      const runtimeConfig = useRuntimeConfig();
-      const showTurnOverWagerModal =
-        runtimeConfig.public.enableTurnOverWager &&
-        modalType === 'withdraw' &&
-        walletStore.activeAccount?.withdrawalBalance &&
-        riskStore.turnOverWagerData?.turnOverWagerAmount > 0;
-
-      if (showTurnOverWagerModal) {
-        await this.openModal('turn-over-wager');
-        this.walletOpening = false;
-        return;
-      }
-
       await this.openModal('wallet', { modalQueryValue: modalType });
       useEvent('analyticsEvent', {
         event: 'walletOpen',
