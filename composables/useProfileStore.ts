@@ -270,14 +270,14 @@ export const useProfileStore = defineStore('profileStore', {
       const backUrl = appStateData?.backRoute ? decodeURIComponent(appStateData.backRoute) : undefined;
       await router.replace(backUrl || localizePath('/'));
 
-      if (submitResult.profile?.isNewlyRegistered) {
-        useEvent('analyticsEvent', {
-          event: 'registrationSuccess',
-          regType: 'social',
-        });
-        await nextTick();
-        await this.registrationSucceeded();
-      }
+      // if (submitResult.profile?.isNewlyRegistered) {
+      //   useEvent('analyticsEvent', {
+      //     event: 'registrationSuccess',
+      //     regType: 'social',
+      //   });
+      //   await nextTick();
+      //   await this.registrationSucceeded();
+      // }
     },
 
     async autoLogin(token: string): Promise<void> {
