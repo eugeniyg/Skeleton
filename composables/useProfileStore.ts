@@ -275,7 +275,7 @@ export const useProfileStore = defineStore('profileStore', {
           event: 'registrationSuccess',
           regType: 'social',
         });
-        this.registrationSucceeded();
+        setTimeout(this.registrationSucceeded, 1000);
       }
     },
 
