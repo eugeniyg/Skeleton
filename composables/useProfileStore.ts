@@ -237,14 +237,14 @@ export const useProfileStore = defineStore('profileStore', {
       await this.handleLogin(submitResult);
     },
 
-    registrationSucceeded(): void {
+    async registrationSucceeded(): Promise<void> {
       const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
       const { closeModal, openWalletModal } = useModalStore();
 
       showAlert(alertsData?.profile?.successRegistration || defaultLocaleAlertsData?.profile?.successRegistration);
-      closeModal('sign-up');
-      openWalletModal();
+      await closeModal('sign-up');
+      await openWalletModal();
     },
 
     async loginSocial(data: ISocialCallbackData): Promise<void> {
@@ -275,7 +275,8 @@ export const useProfileStore = defineStore('profileStore', {
           event: 'registrationSuccess',
           regType: 'social',
         });
-        this.registrationSucceeded();
+        await nextTick();
+        await this.registrationSucceeded();
       }
     },
 
