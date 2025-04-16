@@ -12,7 +12,11 @@
         :class="`socials__item--${connection}`"
         @click="authSocial('direct', connection)"
       >
-        <atomic-icon :id="connection" />
+        <template v-if="connection === 'telegram'">
+          <atomic-socials-telegram :params="settingsTelegramParams" />
+          <atomic-icon id="telegram" />
+        </template>
+        <atomic-icon v-else :id="connection" />
       </span>
 
       <span
@@ -49,6 +53,7 @@
   });
 
   const settingsSocialAuthList = settingsConstants.value?.player?.socialAuth || [];
+  const settingsTelegramParams = settingsConstants.value?.player?.telegram;
   const socialAuth0Connections = computed(() => {
     if (!settingsSocialAuthList.includes('auth0')) return [];
 
@@ -74,7 +79,13 @@
 
     return connectionList
       .map(connection => connection.id)
-      .filter(connection => settingsSocialAuthList.includes(connection));
+      .filter(connection => {
+        const connectionEnabled = settingsSocialAuthList.includes(connection);
+        if (connection === 'telegram') {
+          return connectionEnabled && settingsTelegramParams?.bot && settingsTelegramParams?.auth_url;
+        }
+        return connectionEnabled;
+      });
   });
 
   const showComponent = computed(() => socialAuth0Connections.value.length || socialDirectConnections.value.length);
