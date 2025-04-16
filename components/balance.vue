@@ -33,7 +33,7 @@
           <list-currencies
             :is-open="isSelectOpen"
             hide-balance
-            @hide-currencies-list="isSelectOpen = false"
+            @hide-currencies-list="changingActiveAccount"
             @click.stop.prevent
             @change-active-account="onChangeAccount"
           />
@@ -70,6 +70,7 @@
     },
   });
 
+  const emit = defineEmits(['changingAccount']);
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const walletStore = useWalletStore();
@@ -93,11 +94,15 @@
     if (isSelectOpen.value) isSelectOpen.value = false;
   };
 
-  const onChangeAccount = (): void => {
+  const changingActiveAccount = (): void => {
+    isSelectOpen.value = false;
+    emit('changingAccount', true);
+  };
+
+  const onChangeAccount = async (): Promise<void> => {
     const { getTurnOverWager } = useRiskStore();
-    walletStore.getDepositMethods();
-    walletStore.getWithdrawMethods();
-    getTurnOverWager();
+    await Promise.allSettled([walletStore.getDepositMethods(), walletStore.getWithdrawMethods(), getTurnOverWager()]);
+    emit('changingAccount', false);
   };
 </script>
 
