@@ -15,7 +15,7 @@
     if (!headerCountry) return undefined;
     const currentCountryObj = countries.find(country => country.code === headerCountry.toUpperCase());
 
-    return currentCountryObj?.restrict;
+    return currentCountryObj?.restrict && currentCountryObj?.restrictType === 1;
   };
   const layout = isCurrentCountryRestrict() ? 'geo-restricted' : 'default';
   const { origin } = useRequestURL();
