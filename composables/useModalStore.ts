@@ -79,8 +79,6 @@ export const useModalStore = defineStore('modalStore', {
       if (!headerCountry) return undefined;
       const currentCountryObj = countries.find(country => country.code === headerCountry.toUpperCase());
 
-      console.log(currentCountryObj?.restrict,  currentCountryObj?.restrictType);
-
       return currentCountryObj?.restrict &&  currentCountryObj?.restrictType === 2;
     },
 
@@ -128,17 +126,17 @@ export const useModalStore = defineStore('modalStore', {
           });
         }
       } else if (params?.props) {
-        const currentModalOptions = this.modals[modalName].options;
+        const currentModalOptions = this.modals?.[modalName]?.options;
         const newOptions = {
           ...currentModalOptions,
-          attrs: { ...(currentModalOptions.attrs as object), ...params.props },
+          attrs: { ...(currentModalOptions?.attrs as object), ...params.props },
         };
-        this.modals[modalName].patchOptions(newOptions);
+        this.modals?.[modalName]?.patchOptions(newOptions);
       }
 
       if ((params?.prohibitQueryChange ?? true) && this.modalsList[modalName].queryName)
         await this.addModalQuery(modalName, params?.modalQueryValue);
-      this.modals[modalName].open();
+      this.modals?.[modalName]?.open();
       this.openingModals = this.openingModals.filter(item => item !== modalName);
     },
 
