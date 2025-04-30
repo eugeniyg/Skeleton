@@ -87,6 +87,7 @@
     registrationType: RegistrationType;
     currentLocaleData: Maybe<IModalsContent['registration']>;
     defaultLocaleData: Maybe<IModalsContent['registration']>;
+    selectedTab: string;
   }>();
 
   const { setFormData, getContent, getFormRules, createValidationRules, getNicknameFromEmail } = useProjectMethods();
@@ -117,10 +118,17 @@
   });
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
+  const excludeFieldsBySelectedTab = (fieldName: string): boolean => {
+    return !(
+      (props.selectedTab === 'email' && fieldName === 'receiveSmsPromo') ||
+      (props.selectedTab === 'phone' && fieldName === 'receiveEmailPromo')
+    );
+  };
+
   const fieldsListByRegistrationType = computed(() => {
     if (['email', 'phone'].includes(props.registrationType)) {
       const clearFields = props.registrationFields.filter(field => {
-        return field.name !== props.registrationType;
+        return field.name !== props.registrationType && excludeFieldsBySelectedTab(field.name);
       });
 
       return [

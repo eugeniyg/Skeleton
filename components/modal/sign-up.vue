@@ -73,6 +73,7 @@
           v-show="!showPhoneVerification"
           ref="registrationForm"
           :key="`${selectedTab}`"
+          :selected-tab="selectedTab"
           :registration-fields="registrationFields"
           :registration-type="selectedTab"
           :current-locale-data="props.currentLocaleData"
