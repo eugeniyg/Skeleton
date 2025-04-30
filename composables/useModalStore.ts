@@ -5,7 +5,7 @@ import { defineAsyncComponent } from 'vue';
 import type { Dayjs } from 'dayjs';
 import modalsMap from '@skeleton/maps/modalsMap.json';
 import type { IModalSettings } from '@skeleton/types';
-import { ModalSignIn, ModalSignUp, ModalWallet } from '#components';
+import { ModalSignIn, ModalSignUp, ModalWallet, ModalGeoRestrictedType } from '#components';
 
 type WalletModalTypes = 'deposit' | 'withdraw' | undefined;
 
@@ -73,9 +73,27 @@ export const useModalStore = defineStore('modalStore', {
       await router.replace({ query: newQuery });
     },
 
+    isRestricted() {
+      const { countries, headerCountry } = useGlobalStore();
+
+      if (!headerCountry) return undefined;
+      const currentCountryObj = countries.find(country => country.code === headerCountry.toUpperCase());
+
+      console.log(currentCountryObj?.restrict,  currentCountryObj?.restrictType);
+
+      return currentCountryObj?.restrict &&  currentCountryObj?.restrictType === 2;
+    },
+
     async openModal(modalName: string, params?: IOpenModalParams): Promise<void> {
       if (!this.modalsList[modalName] || !this.accessToOpen(modalName) || this.openingModals.includes(modalName))
         return;
+
+      console.log(this.isRestricted())
+
+      if (['sign-in', 'sign-up'].includes(modalName) && this.isRestricted()) {
+        modalName = 'geo-restricted-type';
+      }
+
       this.openingModals.push(modalName);
 
       if (!this.modals[modalName]) {
@@ -83,6 +101,7 @@ export const useModalStore = defineStore('modalStore', {
         if (modalName === 'sign-in') modalComponent = ModalSignIn;
         else if (modalName === 'sign-up') modalComponent = ModalSignUp;
         else if (modalName === 'wallet') modalComponent = ModalWallet;
+        else if (modalName === 'geo-restricted-type') modalComponent = ModalGeoRestrictedType;
         else {
           const modalComponentName = this.modalsList[modalName].component;
           const customModals = import.meta.glob(`../../components/modal/*.vue`);
