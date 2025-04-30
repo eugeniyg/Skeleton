@@ -88,8 +88,6 @@ export const useModalStore = defineStore('modalStore', {
       if (!this.modalsList[modalName] || !this.accessToOpen(modalName) || this.openingModals.includes(modalName))
         return;
 
-      console.log(this.isRestricted())
-
       if (['sign-in', 'sign-up'].includes(modalName) && this.isRestricted()) {
         modalName = 'geo-restricted-type';
       }
