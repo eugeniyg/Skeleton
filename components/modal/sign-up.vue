@@ -73,8 +73,8 @@
           v-show="!showPhoneVerification"
           ref="registrationForm"
           :key="`${selectedTab}`"
+          :selected-tab="selectedTab"
           :registration-fields="registrationFields"
-          :registration-type="selectedTab"
           :current-locale-data="props.currentLocaleData"
           :default-locale-data="props.defaultLocaleData"
           @show-verification="showVerification"
@@ -144,7 +144,7 @@
       ];
     return [];
   });
-  const selectedTab = ref<RegistrationType>(
+  const selectedTab = ref<'email' | 'phone'>(
     registrationType.value === 'emailOrPhone' ? 'email' : registrationType.value
   );
   const scrollBlock = ref();
@@ -195,7 +195,7 @@
     }
   };
 
-  const changeTabHandle = (tabId: RegistrationType) => {
+  const changeTabHandle = (tabId: 'email' | 'phone') => {
     if (selectedTab.value === tabId) return;
 
     selectedTab.value = tabId;

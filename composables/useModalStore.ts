@@ -73,9 +73,25 @@ export const useModalStore = defineStore('modalStore', {
       await router.replace({ query: newQuery });
     },
 
+    isRestricted() {
+      const { countries, headerCountry } = useGlobalStore();
+
+      if (!headerCountry) return undefined;
+      const currentCountryObj = countries.find(country => country.code === headerCountry.toUpperCase());
+
+      return currentCountryObj?.restrict && currentCountryObj?.restrictType === 2;
+    },
+
     async openModal(modalName: string, params?: IOpenModalParams): Promise<void> {
       if (!this.modalsList[modalName] || !this.accessToOpen(modalName) || this.openingModals.includes(modalName))
         return;
+
+      if (['sign-in', 'sign-up'].includes(modalName) && this.isRestricted()) {
+        await this.removeModalQuery(modalName);
+        await this.openModal('geo-restricted-type');
+        return;
+      }
+
       this.openingModals.push(modalName);
 
       if (!this.modals[modalName]) {
