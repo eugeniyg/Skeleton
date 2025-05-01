@@ -120,13 +120,13 @@
   const hideCheckboxes = (fieldName: string): boolean => {
     const hideReceiveSmsPromo = props.selectedTab === 'email' && fieldName === 'receiveSmsPromo';
     const hideReceiveEmailPromo = props.selectedTab === 'phone' && fieldName === 'receiveEmailPromo';
-    return !(hideReceiveSmsPromo || hideReceiveEmailPromo);
+    return hideReceiveSmsPromo || hideReceiveEmailPromo;
   };
 
   const fieldsListByRegistrationType = computed(() => {
     if (['email', 'phone'].includes(props.selectedTab)) {
       const clearFields = props.registrationFields.filter(field => {
-        return field.name !== props.selectedTab && hideCheckboxes(field.name);
+        return field.name !== props.selectedTab && !hideCheckboxes(field.name);
       });
 
       return [
