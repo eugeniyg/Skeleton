@@ -87,11 +87,8 @@ export const useModalStore = defineStore('modalStore', {
         return;
 
       if (['sign-in', 'sign-up'].includes(modalName) && this.isRestricted()) {
-        const router = useRouter();
-        const { localizePath } = useProjectMethods();
         await this.removeModalQuery(modalName);
         await this.openModal('geo-restricted-type');
-        await router.push(localizePath('/'));
         return;
       }
 
