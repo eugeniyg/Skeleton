@@ -86,7 +86,7 @@
     registrationFields: IField[];
     currentLocaleData: Maybe<IModalsContent['registration']>;
     defaultLocaleData: Maybe<IModalsContent['registration']>;
-    selectedTab: 'email'| 'phone';
+    selectedTab: 'email' | 'phone';
   }>();
 
   const { setFormData, getContent, getFormRules, createValidationRules, getNicknameFromEmail } = useProjectMethods();

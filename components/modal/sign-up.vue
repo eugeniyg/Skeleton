@@ -144,7 +144,7 @@
       ];
     return [];
   });
-  const selectedTab = ref<'email'|'phone'>(
+  const selectedTab = ref<'email' | 'phone'>(
     registrationType.value === 'emailOrPhone' ? 'email' : registrationType.value
   );
   const scrollBlock = ref();
