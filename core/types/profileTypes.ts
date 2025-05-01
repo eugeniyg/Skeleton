@@ -147,7 +147,7 @@ export interface IUpdateLimit extends Record<string, any> {
   amount?: number;
 }
 
-export type RegistrationType = 'email' | 'phone' | 'social' | 'emailOrPhone';
+export type RegistrationType = 'email' | 'phone' | 'emailOrPhone';
 
 export interface IOtpRequest {
   phone: string;
