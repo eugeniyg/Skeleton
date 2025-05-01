@@ -5,7 +5,7 @@ import { defineAsyncComponent } from 'vue';
 import type { Dayjs } from 'dayjs';
 import modalsMap from '@skeleton/maps/modalsMap.json';
 import type { IModalSettings } from '@skeleton/types';
-import { ModalSignIn, ModalSignUp, ModalWallet, ModalGeoRestrictedType } from '#components';
+import { ModalSignIn, ModalSignUp, ModalWallet } from '#components';
 
 type WalletModalTypes = 'deposit' | 'withdraw' | undefined;
 
@@ -79,7 +79,7 @@ export const useModalStore = defineStore('modalStore', {
       if (!headerCountry) return undefined;
       const currentCountryObj = countries.find(country => country.code === headerCountry.toUpperCase());
 
-      return currentCountryObj?.restrict &&  currentCountryObj?.restrictType === 2;
+      return currentCountryObj?.restrict && currentCountryObj?.restrictType === 2;
     },
 
     async openModal(modalName: string, params?: IOpenModalParams): Promise<void> {
@@ -89,8 +89,10 @@ export const useModalStore = defineStore('modalStore', {
       if (['sign-in', 'sign-up'].includes(modalName) && this.isRestricted()) {
         const router = useRouter();
         const { localizePath } = useProjectMethods();
-        modalName = 'geo-restricted-type';
+        await this.removeModalQuery(modalName);
+        await this.openModal('geo-restricted-type');
         await router.push(localizePath('/'));
+        return;
       }
 
       this.openingModals.push(modalName);
@@ -100,7 +102,6 @@ export const useModalStore = defineStore('modalStore', {
         if (modalName === 'sign-in') modalComponent = ModalSignIn;
         else if (modalName === 'sign-up') modalComponent = ModalSignUp;
         else if (modalName === 'wallet') modalComponent = ModalWallet;
-        else if (modalName === 'geo-restricted-type') modalComponent = ModalGeoRestrictedType;
         else {
           const modalComponentName = this.modalsList[modalName].component;
           const customModals = import.meta.glob(`../../components/modal/*.vue`);
@@ -129,17 +130,17 @@ export const useModalStore = defineStore('modalStore', {
           });
         }
       } else if (params?.props) {
-        const currentModalOptions = this.modals?.[modalName]?.options;
+        const currentModalOptions = this.modals[modalName].options;
         const newOptions = {
           ...currentModalOptions,
-          attrs: { ...(currentModalOptions?.attrs as object), ...params.props },
+          attrs: { ...(currentModalOptions.attrs as object), ...params.props },
         };
-        this.modals?.[modalName]?.patchOptions(newOptions);
+        this.modals[modalName].patchOptions(newOptions);
       }
 
       if ((params?.prohibitQueryChange ?? true) && this.modalsList[modalName].queryName)
         await this.addModalQuery(modalName, params?.modalQueryValue);
-      this.modals?.[modalName]?.open();
+      this.modals[modalName].open();
       this.openingModals = this.openingModals.filter(item => item !== modalName);
     },
 

@@ -201,7 +201,6 @@
   },
   "geo-restricted-type": {
     "component": "geo-restricted-type",
-    "content": "geo-restricted-type",
-    "queryName": "geo-restricted"
+    "content": "geo-restricted-type"
   }
 }
