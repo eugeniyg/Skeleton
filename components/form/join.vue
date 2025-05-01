@@ -76,7 +76,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IField, RegistrationType } from '@skeleton/core/types';
+  import type { IField } from '@skeleton/core/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import type { IModalsContent } from '~/types';
 
@@ -84,9 +84,9 @@
 
   const props = defineProps<{
     registrationFields: IField[];
-    registrationType: RegistrationType;
     currentLocaleData: Maybe<IModalsContent['registration']>;
     defaultLocaleData: Maybe<IModalsContent['registration']>;
+    selectedTab: 'email' | 'phone';
   }>();
 
   const { setFormData, getContent, getFormRules, createValidationRules, getNicknameFromEmail } = useProjectMethods();
@@ -117,17 +117,23 @@
   });
   const groupFooterFields = ['agreements', 'receiveEmailPromo', 'receiveSmsPromo'];
 
+  const hideCheckboxes = (fieldName: string): boolean => {
+    const hideReceiveSmsPromo = props.selectedTab === 'email' && fieldName === 'receiveSmsPromo';
+    const hideReceiveEmailPromo = props.selectedTab === 'phone' && fieldName === 'receiveEmailPromo';
+    return hideReceiveSmsPromo || hideReceiveEmailPromo;
+  };
+
   const fieldsListByRegistrationType = computed(() => {
-    if (['email', 'phone'].includes(props.registrationType)) {
+    if (['email', 'phone'].includes(props.selectedTab)) {
       const clearFields = props.registrationFields.filter(field => {
-        return field.name !== props.registrationType;
+        return field.name !== props.selectedTab && !hideCheckboxes(field.name);
       });
 
       return [
         {
           id: -1,
-          name: props.registrationType,
-          description: props.registrationType,
+          name: props.selectedTab,
+          description: props.selectedTab,
           editable: true,
           isRequired: true,
           position: 0,
@@ -247,7 +253,7 @@
     }
 
     isLockedAsyncButton.value = true;
-    if (props.registrationType === 'phone') {
+    if (props.selectedTab === 'phone') {
       await handlePhoneRegistration();
     } else {
       await handleCommonRegistration();
