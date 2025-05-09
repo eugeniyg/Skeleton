@@ -197,6 +197,7 @@
         host: 'https://video-test-stage.betsy.software',
         containerId: 'betting-container',
         cid: 'black_demo',
+        allowToChangeParentStyles: true,
       });
     }
   });
