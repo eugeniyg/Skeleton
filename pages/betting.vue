@@ -45,6 +45,7 @@
     height: '100%',
     parent: false,
     loginUrl: 'sendPostMessage',
+    allowToChangeParentStyles: true,
   };
 
   const frame = ref<Promise<any>>();
