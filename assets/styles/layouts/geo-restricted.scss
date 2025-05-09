@@ -49,10 +49,7 @@
     color: var(--text-primary);
     @include font($heading-5);
     margin: 0;
-
-    @include media(md) {
-      @include upd-font($heading-7);
-    }
+    text-align: center;
   }
 
   &__description {
