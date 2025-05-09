@@ -1,24 +1,26 @@
 <template>
-  <div
-    v-if="filteredSlides?.length"
-    ref="sliderNode"
-    class="main-slider"
-    :class="`main-slider--${props.sliderType || 'high'}`"
-  >
-    <div class="main-slider__viewport">
-      <div v-for="(slide, index) in filteredSlides" :key="index" class="main-slider__slide">
-        <card-slide :slide-data="slide" />
+  <div class="main-slider__container">
+    <div
+      v-if="filteredSlides?.length"
+      ref="sliderNode"
+      class="main-slider"
+      :class="`main-slider--${props.sliderType || 'high'}`"
+    >
+      <div class="main-slider__viewport">
+        <div v-for="(slide, index) in filteredSlides" :key="index" class="main-slider__slide">
+          <card-slide :slide-data="slide" />
+        </div>
       </div>
-    </div>
 
-    <div class="main-slider__bullets">
-      <div
-        v-for="index in filteredSlides.length"
-        :key="index"
-        class="main-slider__bullet"
-        :class="{ 'is-selected': index === selectedIndex }"
-        @click="scrollTo(index)"
-      />
+      <div class="main-slider__bullets">
+        <div
+          v-for="index in filteredSlides.length"
+          :key="index"
+          class="main-slider__bullet"
+          :class="{ 'is-selected': index === selectedIndex }"
+          @click="scrollTo(index)"
+        />
+      </div>
     </div>
   </div>
 </template>
