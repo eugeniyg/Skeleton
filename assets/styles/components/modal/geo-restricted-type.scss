@@ -1,4 +1,12 @@
 .modal-geo-restricted-type {
+  .vfm__content {
+    margin: 0 16px;
+
+    @include media(md) {
+      margin: 0;
+    }
+  }
+
   &__header {
     display: flex;
     align-items: center;

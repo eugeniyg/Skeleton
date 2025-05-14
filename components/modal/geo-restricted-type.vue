@@ -24,6 +24,8 @@
         v-html="DOMPurify.sanitize(marked.parseInline(description || '') as string, { FORBID_TAGS: ['style'] })"
       />
 
+      <atomic-geo-info />
+
       <button-base
         size="md"
         type="primary"
