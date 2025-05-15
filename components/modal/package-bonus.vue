@@ -32,6 +32,7 @@
           :loading="props.loadingBonuses.includes(bonus.id)"
           @remove="removeHandle(bonus)"
           @activate="activateHandle(bonus)"
+          @gameOpened="closeModal('package-bonus')"
         />
       </div>
     </div>
