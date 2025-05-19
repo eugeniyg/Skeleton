@@ -4,7 +4,7 @@
       <div class="bonuses-card__header">
         <bonuses-badge-type :mode="badgeType" />
 
-        <bonuses-badge-game v-if="freeSpinGameInfo" :game-info="freeSpinGameInfo" />
+        <bonuses-badge-game v-if="freeSpinGameInfo" :game-info="freeSpinGameInfo" @click="emit('game-opened')" />
 
         <bonuses-badge-status :status="badgeStatus" />
       </div>
@@ -67,7 +67,7 @@
     loading?: boolean;
   }>();
 
-  const emit = defineEmits(['activate', 'remove']);
+  const emit = defineEmits(['activate', 'remove', 'game-opened']);
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
   const { formatBalance, getContent } = useProjectMethods();
