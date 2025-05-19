@@ -77,9 +77,7 @@
   }
 
   const formatCurrenciesList = (list: IDisplayAccount[]) => {
-    return list
-      .filter(item => accounts.value.find(account => account.currency === item.nativeCurrency))
-      .sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
+    return list.sort((prev, next) => sortByAlphabet(prev.currency.toLowerCase(), next.currency.toLowerCase()));
   };
 
   const selectedItems = computed(() => {
