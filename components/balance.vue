@@ -2,9 +2,7 @@
   <div class="balance">
     <div class="balance__rows">
       <div class="row" :class="{ 'row--compact': showEquivalentBalance }">
-        <div class="label">
-          {{ getContent(walletContent, defaultLocaleWalletContent, 'balanceLabel') }}
-        </div>
+        <div class="label">{{ balanceLabel }}</div>
 
         <template v-if="props.withdraw">
           <div v-if="showEquivalentBalance" class="value">
@@ -104,6 +102,12 @@
     await Promise.allSettled([walletStore.getDepositMethods(), walletStore.getWithdrawMethods(), getTurnOverWager()]);
     emit('changingAccount', false);
   };
+
+  const balanceLabel = computed(() => {
+    return props.withdraw
+      ? getContent(walletContent, defaultLocaleWalletContent, 'withdraw.balanceLabel')
+      : getContent(walletContent, defaultLocaleWalletContent, 'deposit.balanceLabel');
+  });
 </script>
 
 <style src="~/assets/styles/components/balance.scss" lang="scss" />
