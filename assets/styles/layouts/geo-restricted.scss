@@ -71,29 +71,4 @@
       color: var(--text-link);
     }
   }
-
-  &__geo {
-    display: flex;
-    align-items: center;
-    grid-column-gap: 4px;
-    padding: 8px 16px;
-    background-color: var(--layer-02);
-    border-radius: 8px;
-    margin-top: 20px;
-
-    &-flag {
-      height: 16px;
-      border-radius: 4px;
-    }
-
-    &-country {
-      @include font($subheading-1);
-      color: var(--text-primary);
-    }
-
-    &-ip {
-      @include font($body-1);
-      color: var(--text-secondary);
-    }
-  }
 }
