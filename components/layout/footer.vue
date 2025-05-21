@@ -107,6 +107,7 @@
   const accordeonItems = [
     layoutData?.footer?.promoMenu || defaultLocaleLayoutData?.footer?.promoMenu,
     layoutData?.footer?.infoMenu || defaultLocaleLayoutData?.footer?.infoMenu,
+    layoutData?.footer?.newsMenu || defaultLocaleLayoutData?.footer?.newsMenu,
     layoutData?.footer?.helpMenu || defaultLocaleLayoutData?.footer?.helpMenu,
   ].filter(menu => menu?.title && menu?.items?.length);
 

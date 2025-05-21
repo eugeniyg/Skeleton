@@ -18,11 +18,7 @@
         v-html="DOMPurify.sanitize(marked.parse(description || '') as string, { FORBID_TAGS: ['style'] })"
       />
 
-      <div v-if="headerCountry" class="geo-restricted__geo">
-        <atomic-image class="geo-restricted__geo-flag" :src="`/img/flags/${headerCountry.toLowerCase()}.svg`" />
-        <span class="geo-restricted__geo-country">{{ headerCountry }}</span>
-        <span class="geo-restricted__geo-ip">{{ headerIp }}</span>
-      </div>
+      <atomic-geo-info />
     </div>
   </div>
 </template>
@@ -32,8 +28,7 @@
   import DOMPurify from 'isomorphic-dompurify';
 
   const globalStore = useGlobalStore();
-  const { headerCountry, headerIp, globalComponentsContent, defaultLocaleGlobalComponentsContent } =
-    storeToRefs(globalStore);
+  const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
   const { getContent } = useProjectMethods();
 
   const description = computed(() => {

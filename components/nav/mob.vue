@@ -80,7 +80,7 @@
 
   const clickMainButton = (): void => {
     if (isLoggedIn.value) openWalletModal();
-    else openModal('sign-in');
+    else openModal('sign-up');
   };
 
   const gamesButtons = computed(() => {
