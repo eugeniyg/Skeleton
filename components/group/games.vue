@@ -169,7 +169,7 @@
     observerLoadMore.value = initObserver({
       settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
     });
-    observerLoadMore.value.observe(loadMore.value);
+    if (loadMore.value) observerLoadMore.value.observe(loadMore.value);
   });
 
   onBeforeUnmount(() => {

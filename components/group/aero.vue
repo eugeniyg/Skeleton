@@ -226,7 +226,7 @@
     loadMoreObserver.value = initObserver({
       settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
     });
-    loadMoreObserver.value.observe(loadMore.value);
+    if (loadMore.value) loadMoreObserver.value.observe(loadMore.value);
   });
 
   const openGames = (): void => {
