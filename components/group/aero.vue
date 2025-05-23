@@ -69,15 +69,15 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGame, IPaginationMeta } from '@skeleton/core/types';
+  import type { ICollection, IGame, IPaginationMeta } from '@skeleton/core/types';
   import { storeToRefs } from 'pinia';
   import { Skeletor } from 'vue-skeletor';
-  import type { IAeroGroupComponent, ICategory } from '~/types';
+  import type { IAeroGroupComponent } from '~/types';
 
   const props = defineProps<{
     currentLocaleContent: Maybe<IAeroGroupComponent>;
     defaultLocaleContent: Maybe<IAeroGroupComponent>;
-    category: ICategory;
+    category: ICollection;
     showAllBtn?: boolean;
     showArrows?: boolean;
   }>();
@@ -159,48 +159,74 @@
   };
 
   const defaultRequestParams = {
-    collectionId: props.category.id,
+    collectionId: [props.category.id],
     perPage: 18,
     countries: headerCountry.value ? [headerCountry.value] : undefined,
-    sortBy: 'default',
+    sortBy: 'score',
     sortOrder: 'asc',
   };
 
   const moreGames = async (): Promise<void> => {
     if (pageMeta.value?.page === pageMeta.value?.totalPages) return;
 
-    const gamesResponse = await getFilteredGames({
-      ...defaultRequestParams,
-      page: pageMeta.value ? pageMeta.value.page + 1 : 1,
-    });
-    games.value = games.value.concat(gamesResponse.data);
-    pageMeta.value = gamesResponse.meta;
+    try {
+      const gamesResponse = await getFilteredGames({
+        ...defaultRequestParams,
+        page: pageMeta.value ? pageMeta.value.page + 1 : 1,
+      });
+      games.value = games.value.concat(gamesResponse.data);
+      pageMeta.value = gamesResponse.meta;
+    } catch {
+      console.error('Games loading failed!');
+    }
   };
 
-  const loadMore = ref(null);
+  const loadMore = ref();
   const { initObserver } = useProjectMethods();
   const loadMoreObserver = ref();
 
-  const emit = defineEmits(['initialLoad']);
+  const initGroupGames = async (): Promise<void> => {
+    try {
+      const gamesResponse = await getFilteredGames(defaultRequestParams);
+      if (!gamesResponse.data.length) {
+        showBlock.value = false;
+        return;
+      }
+
+      if (scrollContainer.value) {
+        scrollContainer.value.scrollTo({ left: 0 });
+      }
+
+      games.value = gamesResponse.data;
+      pageMeta.value = gamesResponse.meta;
+    } catch {
+      showBlock.value = false;
+      games.value = [];
+      pageMeta.value = undefined;
+    }
+  };
+
+  watch(isLoggedIn, async newValue => {
+    if (newValue) await initGroupGames();
+  });
+
   const showBlock = ref<boolean>(true);
   onMounted(async () => {
-    loadMoreObserver.value = initObserver({
-      settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
-    });
-    loadMoreObserver.value.observe(loadMore.value);
-
-    const [gamesResponse] = await Promise.all([getFilteredGames(defaultRequestParams), getGameInfo()]);
-    if (!gamesResponse.data.length || !gameInfo.value) return (showBlock.value = false);
-    games.value = gamesResponse.data;
-    pageMeta.value = gamesResponse.meta;
-
+    await Promise.all([initGroupGames(), getGameInfo()]);
+    if (!games.value.length || !gameInfo.value) {
+      showBlock.value = false;
+      return;
+    }
     await nextTick();
-    emit('initialLoad');
-
     if (props.showArrows) {
       scrollHandler();
       showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
     }
+
+    loadMoreObserver.value = initObserver({
+      settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
+    });
+    loadMoreObserver.value.observe(loadMore.value);
   });
 
   const openGames = (): void => {

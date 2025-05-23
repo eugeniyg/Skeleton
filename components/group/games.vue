@@ -49,28 +49,22 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGame, IPaginationMeta } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
+  import type { ICollection, IGame, IPaginationMeta } from '@skeleton/core/types';
   import { Skeletor } from 'vue-skeletor';
 
-  const props = defineProps({
-    category: {
-      type: Object,
-      required: true,
-    },
-    subTitle: {
-      type: Boolean,
-      required: false,
-    },
-    showAllBtn: {
-      type: Boolean,
-      default: false,
-    },
-    showArrows: {
-      type: Boolean,
-      default: true,
-    },
-  });
+  const props = withDefaults(
+    defineProps<{
+      category: ICollection;
+      subTitle?: boolean;
+      showAllBtn?: boolean;
+      showArrows?: boolean;
+    }>(),
+    {
+      subTitle: false,
+      showAllBtn: false,
+      showArrows: true,
+    }
+  );
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = globalStore;
@@ -108,48 +102,74 @@
   };
 
   const defaultRequestParams = {
-    collectionId: props.category.id,
+    collectionId: [props.category.id],
     perPage: 18,
     countries: headerCountry.value ? [headerCountry.value] : undefined,
-    sortBy: 'default',
+    sortBy: 'score',
     sortOrder: 'asc',
   };
 
   const moreGames = async (): Promise<void> => {
     if (pageMeta.value?.page === pageMeta.value?.totalPages) return;
 
-    const gamesResponse = await getFilteredGames({
-      ...defaultRequestParams,
-      page: pageMeta.value ? pageMeta.value.page + 1 : 1,
-    });
-    games.value = games.value.concat(gamesResponse.data);
-    pageMeta.value = gamesResponse.meta;
+    try {
+      const gamesResponse = await getFilteredGames({
+        ...defaultRequestParams,
+        page: pageMeta.value ? pageMeta.value.page + 1 : 1,
+      });
+      games.value = games.value.concat(gamesResponse.data);
+      pageMeta.value = gamesResponse.meta;
+    } catch {
+      console.error('Games loading failed.');
+    }
   };
 
   const loadMore = ref();
   const { initObserver } = useProjectMethods();
   const observerLoadMore = ref();
 
-  const emit = defineEmits(['initialLoad']);
+  const initGroupGames = async (): Promise<void> => {
+    try {
+      const gamesResponse = await getFilteredGames(defaultRequestParams);
+      if (!gamesResponse.data.length) {
+        showBlock.value = false;
+        return;
+      }
+
+      if (scrollContainer.value) {
+        scrollContainer.value.scrollTo({ left: 0 });
+      }
+
+      games.value = gamesResponse.data;
+      pageMeta.value = gamesResponse.meta;
+    } catch {
+      showBlock.value = false;
+      games.value = [];
+      pageMeta.value = undefined;
+    }
+  };
+
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+  watch(isLoggedIn, async newValue => {
+    if (newValue) await initGroupGames();
+  });
+
   const showBlock = ref<boolean>(true);
   onMounted(async () => {
-    observerLoadMore.value = initObserver({
-      settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
-    });
-    observerLoadMore.value.observe(loadMore.value);
-
-    const gamesResponse = await getFilteredGames(defaultRequestParams);
-    if (!gamesResponse.data.length) return (showBlock.value = false);
-    games.value = gamesResponse.data;
-    pageMeta.value = gamesResponse.meta;
+    await initGroupGames();
+    if (!games.value.length) return;
     await nextTick();
-
-    emit('initialLoad');
 
     if (props.showArrows) {
       scrollHandler();
       showArrowButtons.value = props.showArrows && (!prevDisabled.value || !nextDisabled.value);
     }
+
+    observerLoadMore.value = initObserver({
+      settings: { root: scrollContainer.value, rootMargin: '90%', threshold: 0 },
+    });
+    observerLoadMore.value.observe(loadMore.value);
   });
 
   onBeforeUnmount(() => {
