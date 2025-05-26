@@ -1,6 +1,6 @@
 <template>
   <label :class="classes" :for="props.name">
-    <span v-if="props.label" class="label"> {{ label }}<span v-if="props.isRequired" class="required">*</span> </span>
+    <span v-if="props.label" class="label">{{ label }}</span>
 
     <div class="row">
       <transition name="fade" mode="out-in">
@@ -9,18 +9,10 @@
         </div>
       </transition>
 
-      <input
-        :id="props.name"
-        ref="copyInput"
-        class="field"
-        readonly
-        :value="props.value"
-        :name="props.name"
-        :required="props.isRequired"
-        :placeholder="props.placeholder"
-        @blur="emit('blur')"
-        @input="emit('input')"
-      />
+      <input :id="props.name" ref="copyInput" :value="displayValue" class="field" readonly :name="props.name" />
+      <div ref="cloneElement" class="input-copy__clone">
+        <span v-for="(char, index) in props.value || ''" :key="index">{{ char }}</span>
+      </div>
 
       <button class="btn-copy" @click.prevent="copyValue">
         <atomic-icon id="copy" />
@@ -38,15 +30,11 @@
     name: string;
     value?: string;
     label: string;
-    placeholder?: string;
-    isRequired?: boolean;
     copyTooltip?: string;
     hint?: { variant?: string; message?: string };
   }>();
 
   const classes = computed(() => ['input-copy', { 'has-error': props.hint?.variant === 'error' }]);
-
-  const emit = defineEmits(['blur', 'input']);
   const copyInput = ref();
 
   const tooltipVisible = ref<boolean>(false);
@@ -65,6 +53,45 @@
     copy(props.value || '');
     showTooltip();
   };
+
+  const displayValue = ref<string>('');
+  const cloneElement = useTemplateRef('cloneElement');
+  const getDisplayWidth = (): string => {
+    if (!props.value || !copyInput.value || !cloneElement.value) return '';
+
+    const inputWidth = copyInput.value.clientWidth - 32;
+    const contentWidth = cloneElement.value.scrollWidth;
+    if (contentWidth <= inputWidth) return props.value || '';
+
+    const childElements = cloneElement.value.children;
+    const childElementsArr = [...childElements] as HTMLElement[];
+    let commonWidth = 0;
+    let visibleChars = 0;
+    for (let i = 0; i < childElementsArr.length; i++) {
+      const startElementWidth = childElementsArr[i].offsetWidth;
+      if (commonWidth + startElementWidth > inputWidth) break;
+      commonWidth += startElementWidth;
+      visibleChars += 1;
+      const stringLength = childElementsArr.length;
+      const endElementWidth = childElementsArr[stringLength - 1 - i].offsetWidth;
+      if (commonWidth + endElementWidth > inputWidth) break;
+      commonWidth += endElementWidth;
+      visibleChars += 1;
+    }
+    const partChars = Math.floor((visibleChars - 5) / 2);
+    const firstPart = props.value.slice(0, partChars);
+    const lastPart = props.value.slice(-partChars);
+    return `${firstPart} . . . ${lastPart}`;
+  };
+
+  watch(
+    () => props.value,
+    async () => {
+      await nextTick();
+      displayValue.value = getDisplayWidth();
+    },
+    { immediate: true }
+  );
 </script>
 
 <style src="~/assets/styles/components/form/input/copy.scss" lang="scss" />
