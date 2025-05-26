@@ -43,7 +43,6 @@
     pointer-events: none;
     text-wrap: nowrap;
     overflow: auto;
-    flex-shrink: 0;
 
     span {
       @include font($body-2);
