@@ -4,6 +4,12 @@
   outline: none;
   @include font($body-2);
 
+  &.is-open  {
+    .placeholder {
+      color: var(--text-tertiary);
+    }
+  }
+
   &.is-fit-content {
     .items {
       max-width: none;
