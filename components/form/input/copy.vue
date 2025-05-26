@@ -56,7 +56,7 @@
 
   const displayValue = ref<string>('');
   const cloneElement = useTemplateRef('cloneElement');
-  const getDisplayWidth = (): string => {
+  const getDisplayValue = (): string => {
     if (!props.value || !copyInput.value || !cloneElement.value) return '';
 
     const inputWidth = copyInput.value.clientWidth - 32;
@@ -88,7 +88,7 @@
     () => props.value,
     async () => {
       await nextTick();
-      displayValue.value = getDisplayWidth();
+      displayValue.value = getDisplayValue();
     },
     { immediate: true }
   );
