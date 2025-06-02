@@ -1,0 +1,14 @@
+.wheel-general {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 48px;
+
+  &__spin-button {
+    width: 100%;
+    margin-bottom: 44px;
+
+    @include media(md) {
+      display: none;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-.loyalty-how-it-works {
+.how-it-works {
   max-width: 1280px;
   margin: 0 auto;
 
@@ -24,6 +24,7 @@
   }
 
   &__image {
+    flex-shrink: 0;
     width: 270px;
     height: 213px;
     display: block;
@@ -65,7 +66,7 @@
       border: 2px solid var(--border-02-low-contrast);
       background: var(--layer-02);
 
-      + .loyalty-how-it-works__list-item {
+      + .how-it-works__list-item {
         margin-top: 8px;
       }
 
@@ -78,8 +79,8 @@
         height: 34px;
 
         .is-numeric & {
-          @include font($heading-4);
-          color: var(--text-accent);
+          @include font($heading-5);
+          color: var(--text-primary);
           border-radius: 50%;
           border: 3px solid var(--yellow-500);
           background: var(--layer-02);
@@ -95,7 +96,7 @@
       @include media(md) {
         padding: 16px 24px;
 
-        + .loyalty-how-it-works__list-item {
+        + .how-it-works__list-item {
           margin-top: 16px;
         }
       }

@@ -1,0 +1,13 @@
+.wheel-page {
+  &__title {
+    @include font($heading-7);
+    color: var(--text-primary);
+    margin: 0 0 8px;
+  }
+
+  &__subtitle {
+    @include font($heading-uppercase-4);
+    color: var(--text-accent);
+    margin: 0 0 24px;
+  }
+}
