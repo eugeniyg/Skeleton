@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
-    <div class="items">
-      <card-base v-for="item in props.items" :key="item.id" ref="cards" :game-info="item" />
+    <div ref="itemsContainer" class="items">
+      <card-base v-for="item in props.items" :key="item.id" :game-info="item" />
     </div>
   </div>
 </template>
@@ -20,24 +20,25 @@
     if (props.meta && props.meta.totalPages > props.meta.page) emit('loadMore');
   };
 
+  const itemsContainer = useTemplateRef('itemsContainer');
   const loadMoreObserver = ref();
-  const cards = ref([]);
   const lastItem = ref();
 
   const unobserveLastItem = (): void => {
     if (lastItem.value) {
-      loadMoreObserver.value.unobserve(lastItem.value.$el);
-      lastItem.value.$el.removeEventListener('inview', observerLoadMore);
+      loadMoreObserver.value.unobserve(lastItem.value);
+      lastItem.value.removeEventListener('inview', observerLoadMore);
     }
   };
 
   const observeLastItem = (): void => {
     unobserveLastItem();
 
-    lastItem.value = cards.value[cards.value?.length - 1];
+    const listItems = itemsContainer.value?.children;
+    lastItem.value = listItems ? [...listItems].at(-1) : undefined;
     if (lastItem.value) {
-      loadMoreObserver.value.observe(lastItem.value.$el);
-      lastItem.value.$el.addEventListener('inview', observerLoadMore);
+      loadMoreObserver.value.observe(lastItem.value);
+      lastItem.value.addEventListener('inview', observerLoadMore);
     }
   };
 
