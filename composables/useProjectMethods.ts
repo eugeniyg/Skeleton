@@ -213,6 +213,11 @@ export const useProjectMethods = () => {
     const requestUrl = useRequestURL();
     const imageContent = metaData?.image || globalStore.globalSeo?.image;
     const imageUrl = imageContent ? `${requestUrl.origin}${imageContent}` : undefined;
+    const canonicalUrl = metaData?.canonicalUrl || `${requestUrl.origin}${requestUrl.pathname}`;
+
+    useHead({
+      link: [{ rel: 'canonical', href: canonicalUrl }],
+    });
 
     useSeoMeta({
       title: metaData?.title || globalStore.globalSeo?.title,
