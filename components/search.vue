@@ -105,7 +105,12 @@
       sortOrder: 'asc',
     };
 
-    return await getFilteredGames(requestParams);
+    try {
+      return await getFilteredGames(requestParams);
+    } catch {
+      console.error('Search default games loading failed!');
+      return { data: [], meta: { page: 1, perPage: 4, totalPages: 0, totalRows: 0 } };
+    }
   };
 
   onMounted(async () => {

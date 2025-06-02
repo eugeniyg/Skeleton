@@ -57,7 +57,7 @@
       const { data } = await getFilteredGames({
         identity: props.items,
         countries: headerCountry.value ? [headerCountry.value] : undefined,
-        sortBy: 'default',
+        sortBy: 'score',
         sortOrder: 'asc',
       });
 
