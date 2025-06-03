@@ -1,12 +1,12 @@
-import type {IPaginationMeta} from "@skeleton/core/types/globalTypes";
+import type { IPaginationMeta } from '@skeleton/core/types/globalTypes';
 
-export interface WheelSector {
+export interface IWheelSector {
   id: string;
   title: string;
   dropRate?: number;
 }
 
-export interface PlayerWheelSpin {
+export interface IPlayerWheelSpin {
   id: string;
   expireAt: string;
 }
@@ -16,9 +16,9 @@ export interface IWheel {
   state: number;
   title: string;
   identity: string;
-  items: WheelSector[];
+  items: IWheelSector[];
   endAt: string | null;
-  playerSpins: PlayerWheelSpin[];
+  playerSpins: IPlayerWheelSpin[];
 }
 
 export interface IWheelsRequest {

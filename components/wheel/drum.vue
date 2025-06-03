@@ -14,7 +14,7 @@
     <div
       ref="segmentsElement"
       class="wheel-drum__segments"
-      :style="{ transform: `rotate(${currentRotationAngle}deg)`, transition: rotateTransition }"
+      :style="{ transform: `rotate(${currentRotationAngle}deg)` }"
     >
       <template v-for="(item, index) in items" :key="item.id">
         <div class="wheel-drum__segments-divider" :style="{ transform: `rotate(${index * -segmentGradAngle}deg)` }" />
@@ -35,6 +35,8 @@
 
 <script setup lang="ts">
   import type { IWheelCommon, IWheelPage } from '~/types';
+  import type { IWheelSector } from '@skeleton/core/types/wheelsTypes';
+  import BezierEasing from 'bezier-easing';
 
   const props = defineProps<{
     currentLocalePageContent: Maybe<IWheelPage>;
@@ -66,39 +68,39 @@
     'segmentRateColor'
   );
 
-  const items: { id: number; title: string; rate?: number }[] = [
+  const items: { id: string; title: string; rate?: number }[] = [
     {
-      id: 1,
+      id: '1',
       title: '100 FS',
       rate: 10,
     },
     {
-      id: 2,
+      id: '2',
       title: 'Iphone 10 Pro',
       rate: 15,
     },
     {
-      id: 3,
+      id: '3',
       title: '0.001 mBTC',
       rate: 60,
     },
     {
-      id: 4,
+      id: '4',
       title: '50 FS',
       rate: 25,
     },
     {
-      id: 5,
+      id: '5',
       title: 'iPhone 16',
       rate: 12,
     },
     {
-      id: 6,
+      id: '6',
       title: '0.010 mBTC',
       rate: 47,
     },
     {
-      id: 7,
+      id: '7',
       title: '10 FS',
       rate: 99,
     },
@@ -143,103 +145,115 @@
     segmentsElement.value?.append(canvasElement);
   };
 
-  const ROTATION_DEGREE_PER_SECOND = 360;
   const activeWheel = ref(false);
-  const prevRotationAngle = ref(0);
   const currentRotationAngle = ref(0);
-  const rotateTransition = ref('none');
-  const wheelTimer = ref();
-  const wheelDuration = ref(0);
-  const lastTargetRelativeAngle = ref(0);
 
-  const getCurrentRotationAngle = (): number => {
-    if (!segmentsElement.value) return 0;
-    const style = window.getComputedStyle(segmentsElement.value);
-    const transform = style.transform;
-
-    if (!transform || transform === 'none') return 0;
-
-    const matrixValue = transform.match(/matrix\((.+)\)/);
-    if (!matrixValue) return 0;
-    const values = matrixValue[1].split(', ');
-    const matrixFirstCord = parseFloat(values[0]);
-    const matrixSecondCord = parseFloat(values[1]);
-    const angle = Math.round(Math.atan2(matrixFirstCord, matrixSecondCord) * (180 / Math.PI));
-    return angle < 0 ? angle + 360 : angle;
-  };
-
-  const resetTimer = ref();
   const resetRotationData = (targetRelativeAngle: number): void => {
     currentRotationAngle.value = targetRelativeAngle;
-    prevRotationAngle.value = targetRelativeAngle;
-    lastTargetRelativeAngle.value = targetRelativeAngle;
-    wheelDuration.value = 0;
-    clearTimeout(wheelTimer.value);
-    rotateTransition.value = 'none';
+    winningSector.value = undefined;
     activeWheel.value = false;
   };
 
-  const setWheelValue = async (index: number): Promise<void> => {
-    console.log(index);
-    clearTimeout(wheelTimer.value);
-    const sectorStartAngle = Math.ceil(index * segmentGradAngle);
-    const sectorEndAngle = Math.floor(sectorStartAngle + segmentGradAngle);
-    const targetRelativeAngle = getRandomInt(sectorStartAngle + 3, sectorEndAngle - 3);
-    const currentRelativeAngle = getCurrentRotationAngle();
-    const diffCurrentLastTarget =
-      currentRelativeAngle > lastTargetRelativeAngle.value
-        ? currentRelativeAngle - lastTargetRelativeAngle.value
-        : 360 - (lastTargetRelativeAngle.value - currentRelativeAngle);
-    const diffCurrentTarget =
+  const winningSector = ref<IWheelSector | undefined>();
+  const getWinningSectorIndex = (): number => {
+    return items.findIndex(sector => sector.id === winningSector.value?.id);
+  };
+
+  const animateFinish = (): void => {
+    if (!winningSector.value) return;
+    const winningSectorIndex = getWinningSectorIndex();
+    const targetRelativeAngle = getTargetAngle(winningSectorIndex);
+    const fixedCurrentRotationAngle = currentRotationAngle.value;
+    const currentRelativeAngle = currentRotationAngle.value % 360;
+    const diff =
       targetRelativeAngle > currentRelativeAngle
         ? targetRelativeAngle - currentRelativeAngle
         : 360 - (currentRelativeAngle - targetRelativeAngle);
+    const additionalRotation = diff + 360;
+    const animationDuration = (additionalRotation / 360) * 2000; // Convert to milliseconds
+    const startTime = performance.now();
+    const linearToEase = BezierEasing(0.44, 0.7, 0.4, 0.95);
 
-    const additionalRotation = 2 * ROTATION_DEGREE_PER_SECOND + diffCurrentTarget;
-    const animationTime = (additionalRotation / ROTATION_DEGREE_PER_SECOND) * 1.25;
-    currentRotationAngle.value =
-      prevRotationAngle.value +
-      wheelDuration.value * ROTATION_DEGREE_PER_SECOND +
-      diffCurrentLastTarget +
-      additionalRotation;
-    rotateTransition.value = `transform ${animationTime}s ease-out`;
-    resetTimer.value = setTimeout(() => {
-      resetRotationData(targetRelativeAngle);
-    }, animationTime * 1000);
+    const animate = (time: number) => {
+      const elapsed = time - startTime;
+      const rawProgress = Math.min(elapsed / animationDuration, 1); // Ensure progress doesn't exceed 1
+      const easedProgress = linearToEase(rawProgress); // Linear for the rest
+      currentRotationAngle.value = fixedCurrentRotationAngle + easedProgress * additionalRotation;
+
+      if (easedProgress < 1) {
+        window.requestAnimationFrame(animate);
+      } else {
+        resetRotationData(targetRelativeAngle);
+      }
+    };
+
+    window.requestAnimationFrame(animate);
   };
 
-  const setDurationTimer = (): void => {
-    wheelTimer.value = setTimeout(() => {
-      wheelDuration.value += 1;
+  const animateRegular = (): void => {
+    const animationDuration = 300000; // Animation duration 5 minutes in ms
+    const animationRotation = 260 * 360;
+    const fixedCurrentRotationAngle = currentRotationAngle.value;
+    const startTime = performance.now();
 
-      if (wheelDuration.value === 2) {
-        currentRotationAngle.value = currentRotationAngle.value + 300 * ROTATION_DEGREE_PER_SECOND;
-        rotateTransition.value = 'transform 300s linear';
+    const animate = (time: number) => {
+      const elapsed = time - startTime;
+      const progress = Math.min(elapsed / animationDuration, 1); // Ensure progress doesn't exceed 1
+      currentRotationAngle.value = fixedCurrentRotationAngle + progress * animationRotation;
+
+      if (winningSector.value) {
+        animateFinish();
+      } else if (progress < 1) {
+        window.requestAnimationFrame(animate);
+      } else {
+        resetRotationData(0);
+        const { showAlert } = useLayoutStore();
+        const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+        showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
       }
+    };
 
-      setDurationTimer();
-    }, 1000);
+    window.requestAnimationFrame(animate);
+  };
+
+  const animateStart = (): void => {
+    const animationDuration = 2000;
+    const animationRotation = 360;
+    const fixedCurrentRotationAngle = currentRotationAngle.value;
+    const startTime = performance.now();
+    const easeToLinear = BezierEasing(0.62, 0.01, 0.54, 0.24);
+
+    const animate = (time: number) => {
+      const elapsed = time - startTime;
+      const rawProgress = Math.min(elapsed / animationDuration, 1);
+      const easedProgress = easeToLinear(rawProgress);
+      currentRotationAngle.value = fixedCurrentRotationAngle + easedProgress * animationRotation;
+
+      if (rawProgress < 1) {
+        window.requestAnimationFrame(animate);
+      } else animateRegular();
+    };
+
+    window.requestAnimationFrame(animate);
+  };
+
+  const getTargetAngle = (index: number): number => {
+    const sectorStartAngle = Math.ceil(index * segmentGradAngle);
+    const sectorEndAngle = Math.floor(sectorStartAngle + segmentGradAngle);
+    return getRandomInt(sectorStartAngle + 3, sectorEndAngle - 3);
   };
 
   const spinWheel = (): void => {
     if (activeWheel.value) return;
     activeWheel.value = true;
-    currentRotationAngle.value = currentRotationAngle.value + 2 * ROTATION_DEGREE_PER_SECOND;
-    rotateTransition.value = 'transform 2s cubic-bezier( 0.32, 0, 0.38, 0.47 )';
-    setDurationTimer();
-
     setTimeout(() => {
-      setWheelValue(getRandomInt(0, 7));
+      winningSector.value = items[getRandomInt(0, 7)];
     }, 3000);
+    animateStart();
   };
 
   onMounted(() => {
     initializeWheel();
-  });
-
-  onBeforeUnmount(() => {
-    clearTimeout(wheelTimer.value);
-    clearTimeout(resetTimer.value);
   });
 </script>
 

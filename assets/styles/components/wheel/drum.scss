@@ -33,7 +33,7 @@
     aspect-ratio: 72/72;
     transform: translate(-50%, -50%);
     cursor: pointer;
-    animation: pulse 3s 3s infinite;
+    animation: pulse 3s 1s infinite;
     box-shadow: 0 0 0 0 rgba(var(--pulse-wheel-rgb), .5);
     border-radius: 50%;
 
