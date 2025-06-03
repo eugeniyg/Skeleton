@@ -33,9 +33,14 @@
     aspect-ratio: 72/72;
     transform: translate(-50%, -50%);
     cursor: pointer;
-    animation: pulse 3s infinite;
+    animation: pulse 3s 3s infinite;
     box-shadow: 0 0 0 0 rgba(var(--pulse-wheel-rgb), .5);
     border-radius: 50%;
+
+    .wheel-drum--active & {
+      animation: none;
+      box-shadow: none;
+    }
 
     img {
       position: absolute;
@@ -82,8 +87,8 @@
 
     &-divider {
       position: absolute;
-      height: 50%;
-      top: 0;
+      height: calc(50% - 2px);
+      top: 2px;
       left: calc(50% - 1px);
       z-index: 1;
       width: 2px;
@@ -97,11 +102,32 @@
       top: 50%;
       left: 50%;
       z-index: 1;
-      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 25px;
       transform: translateY(-50%) rotate(-90deg);
       transform-origin: 0 50%;
-      text-align: center;
+
+      picture, img {
+        width: 20px;
+        height: 20px;
+
+        @include media(md) {
+          width: 32px;
+          height: 32px;
+        }
+      }
+    }
+
+    &-label {
       @include font($heading-3);
+      margin-right: 4px;
+    }
+
+    &-rate {
+      @include font($subheading-1);
+      transform: rotate(90deg);
     }
   }
 }
