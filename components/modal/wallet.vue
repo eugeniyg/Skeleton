@@ -65,21 +65,20 @@
   const currentWithdrawMethod = ref<IPaymentMethod | undefined>(mobileWidth() ? undefined : withdrawMethods.value[0]);
   const selectedTab = ref<'deposit' | 'withdraw'>(walletModalType?.value || 'deposit');
   const showMobileForm = ref<boolean>(false);
-  
+
   const cancelDepositContentParams = {
     contentKey: 'modal-cancel-deposit',
     contentRoute: ['modals', modalsList['cancel-deposit'].content as string],
   };
-  const { getContentData: cancelDepositContentData } = useContentLogic<IModalsContent['cancelDeposit']>(cancelDepositContentParams);
+  const { getContentData: cancelDepositContentData } =
+    useContentLogic<IModalsContent['cancelDeposit']>(cancelDepositContentParams);
   const { data: cancelDepositContent } = await useLazyAsyncData(cancelDepositContentData);
-  
+
   const displayCancelDepositModal = computed(() => {
     const { currentLocaleData, defaultLocaleData } = cancelDepositContent.value || {};
-    return currentLocaleData?.displayModal
-      ?? defaultLocaleData?.displayModal
-      ?? true;
+    return currentLocaleData?.displayModal ?? defaultLocaleData?.displayModal ?? true;
   });
-  
+
   const changeTab = (tabId: 'deposit' | 'withdraw'): void => {
     if (tabId === 'withdraw') {
       walletModalType.value = tabId;

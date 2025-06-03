@@ -68,17 +68,17 @@
   const numberValue = ref<string>('');
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
-  
+
   const countryCodePlaceholder = computed(() => {
     if (props.placeholder?.countryCode) return props.placeholder.countryCode;
     return '';
   });
-  
+
   const phoneNumberPlaceholder = computed(() => {
     if (props.placeholder?.phoneNumber) return props.placeholder.phoneNumber;
     return '';
   });
-  
+
   const setMobileCode = (countryCode: string): void => {
     const searchPhone = selectItems.find(phoneObj => phoneObj.countryCode === countryCode);
     codeValue.value = searchPhone?.code || '';
