@@ -16,7 +16,7 @@
       class="wheel-drum__segments"
       :style="{ transform: `rotate(${currentRotationAngle}deg)` }"
     >
-      <template v-for="(item, index) in items" :key="item.id">
+      <template v-for="(item, index) in segmentsList" :key="item.id">
         <div class="wheel-drum__segments-divider" :style="{ transform: `rotate(${index * -segmentGradAngle}deg)` }" />
         <div
           class="wheel-drum__segments-value"
@@ -24,8 +24,8 @@
         >
           <span class="wheel-drum__segments-label" :style="{ color: segmentLabelColor }">{{ item.title }}</span>
           <atomic-picture v-if="segmentImage" :src="segmentImage" not-lazy />
-          <span v-if="item.rate" class="wheel-drum__segments-rate" :style="{ color: segmentRateColor }">
-            {{ item.rate }}%
+          <span v-if="item.dropRate" class="wheel-drum__segments-rate" :style="{ color: segmentRateColor }">
+            {{ item.dropRate }}%
           </span>
         </div>
       </template>
@@ -35,10 +35,11 @@
 
 <script setup lang="ts">
   import type { IWheelCommon, IWheelPage } from '~/types';
-  import type { IWheelSector } from '@skeleton/core/types/wheelsTypes';
+  import type { IWheel, IWheelSector } from '@skeleton/core/types/wheelsTypes';
   import BezierEasing from 'bezier-easing';
 
   const props = defineProps<{
+    wheelData: IWheel;
     currentLocalePageContent: Maybe<IWheelPage>;
     defaultLocalePageContent: Maybe<IWheelPage>;
     currentLocaleCommonContent: Maybe<IWheelCommon>;
@@ -68,51 +69,14 @@
     'segmentRateColor'
   );
 
-  const items: { id: string; title: string; rate?: number }[] = [
-    {
-      id: '1',
-      title: '100 FS',
-      rate: 10,
-    },
-    {
-      id: '2',
-      title: 'Iphone 10 Pro',
-      rate: 15,
-    },
-    {
-      id: '3',
-      title: '0.001 mBTC',
-      rate: 60,
-    },
-    {
-      id: '4',
-      title: '50 FS',
-      rate: 25,
-    },
-    {
-      id: '5',
-      title: 'iPhone 16',
-      rate: 12,
-    },
-    {
-      id: '6',
-      title: '0.010 mBTC',
-      rate: 47,
-    },
-    {
-      id: '7',
-      title: '10 FS',
-      rate: 99,
-    },
-  ];
-
+  const segmentsList = props.wheelData.items || [];
   const getSegmentColor = (index: number): string => {
-    if (items.length % 2 !== 0 && index === items.length - 1) return additionalBg;
+    if (segmentsList.length % 2 !== 0 && index === segmentsList.length - 1) return additionalBg;
     return index % 2 === 0 ? evenBg : oddBg;
   };
 
   const segmentsElement = useTemplateRef('segmentsElement');
-  const segmentCount = items.length;
+  const segmentCount = segmentsList.length;
   const segmentGradAngle = 360 / segmentCount;
 
   const initializeWheel = (): void => {
@@ -137,7 +101,7 @@
       canvasContext.fill();
     };
 
-    items.forEach((segment, index) => {
+    segmentsList.forEach((segment, index) => {
       createSegment(index);
       canvasContext.rotate(segmentRadAngle);
     });
@@ -154,9 +118,25 @@
     activeWheel.value = false;
   };
 
+  const createSpinError = (): void => {
+    resetRotationData(0);
+    const { showAlert } = useLayoutStore();
+    const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+    showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
+  };
+
   const winningSector = ref<IWheelSector | undefined>();
+  const spinRequest = async (): Promise<void> => {
+    const { spinWheel } = useCoreWheelsApi();
+    try {
+      winningSector.value = await spinWheel(props.wheelData.id);
+    } catch {
+      activeWheel.value = false;
+    }
+  };
+
   const getWinningSectorIndex = (): number => {
-    return items.findIndex(sector => sector.id === winningSector.value?.id);
+    return segmentsList.findIndex(sector => sector.id === winningSector.value?.id);
   };
 
   const animateFinish = (): void => {
@@ -180,7 +160,9 @@
       const easedProgress = linearToEase(rawProgress); // Linear for the rest
       currentRotationAngle.value = fixedCurrentRotationAngle + easedProgress * additionalRotation;
 
-      if (easedProgress < 1) {
+      if (!activeWheel.value) {
+        return;
+      } else if (easedProgress < 1) {
         window.requestAnimationFrame(animate);
       } else {
         resetRotationData(targetRelativeAngle);
@@ -200,17 +182,16 @@
       const elapsed = time - startTime;
       const progress = Math.min(elapsed / animationDuration, 1); // Ensure progress doesn't exceed 1
       currentRotationAngle.value = fixedCurrentRotationAngle + progress * animationRotation;
+      console.log('hello');
 
-      if (winningSector.value) {
+      if (!activeWheel.value) {
+        createSpinError();
+        return;
+      } else if (winningSector.value) {
         animateFinish();
       } else if (progress < 1) {
         window.requestAnimationFrame(animate);
-      } else {
-        resetRotationData(0);
-        const { showAlert } = useLayoutStore();
-        const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
-        showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
-      }
+      } else createSpinError();
     };
 
     window.requestAnimationFrame(animate);
@@ -229,9 +210,14 @@
       const easedProgress = easeToLinear(rawProgress);
       currentRotationAngle.value = fixedCurrentRotationAngle + easedProgress * animationRotation;
 
-      if (rawProgress < 1) {
+      if (!activeWheel.value) {
+        return;
+      } else if (rawProgress < 1) {
         window.requestAnimationFrame(animate);
-      } else animateRegular();
+      } else {
+        spinRequest();
+        animateRegular();
+      }
     };
 
     window.requestAnimationFrame(animate);
@@ -246,14 +232,15 @@
   const spinWheel = (): void => {
     if (activeWheel.value) return;
     activeWheel.value = true;
-    setTimeout(() => {
-      winningSector.value = items[getRandomInt(0, 7)];
-    }, 3000);
     animateStart();
   };
 
   onMounted(() => {
     initializeWheel();
+  });
+
+  onBeforeUnmount(() => {
+    activeWheel.value = false;
   });
 </script>
 
