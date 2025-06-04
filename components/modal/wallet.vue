@@ -55,7 +55,8 @@
   const bonusStore = useBonusStore();
   const { walletDepositBonus } = storeToRefs(bonusStore);
   const modalStore = useModalStore();
-  const { openModal, closeModal, modalsList } = modalStore;
+  const { currentLocaleModalsContent, defaultLocaleModalsContent } = useGlobalStore();
+  const { openModal, closeModal } = modalStore;
   const { walletModalType } = storeToRefs(modalStore);
   const { depositMethods, withdrawMethods } = storeToRefs(walletStore);
   const mobileWidth = (): boolean => {
@@ -65,19 +66,10 @@
   const currentWithdrawMethod = ref<IPaymentMethod | undefined>(mobileWidth() ? undefined : withdrawMethods.value[0]);
   const selectedTab = ref<'deposit' | 'withdraw'>(walletModalType?.value || 'deposit');
   const showMobileForm = ref<boolean>(false);
-
-  const cancelDepositContentParams = {
-    contentKey: 'modal-cancel-deposit',
-    contentRoute: ['modals', modalsList['cancel-deposit'].content as string],
-  };
-  const { getContentData: cancelDepositContentData } =
-    useContentLogic<IModalsContent['cancelDeposit']>(cancelDepositContentParams);
-  const { data: cancelDepositContent } = await useLazyAsyncData(cancelDepositContentData);
-
-  const displayCancelDepositModal = computed(() => {
-    const { currentLocaleData, defaultLocaleData } = cancelDepositContent.value || {};
-    return currentLocaleData?.displayModal ?? defaultLocaleData?.displayModal ?? true;
-  });
+  const displayCancelDepositModal =
+    defaultLocaleModalsContent?.cancelDeposit?.displayModal ??
+    currentLocaleModalsContent?.cancelDeposit?.displayModal ??
+    true;
 
   const changeTab = (tabId: 'deposit' | 'withdraw'): void => {
     if (tabId === 'withdraw') {
@@ -128,7 +120,7 @@
   );
 
   const closeWallet = (): void => {
-    if (walletModalType?.value === 'deposit' && displayCancelDepositModal.value) {
+    if (walletModalType?.value === 'deposit' && displayCancelDepositModal) {
       openModal('cancel-deposit');
     } else {
       closeModal('wallet');
