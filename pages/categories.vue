@@ -25,7 +25,7 @@
         :sortOrderValue="state.sortOrder"
         :sortByValue="state.sortBy"
         :sortLabel="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'sortLabel')"
-        :sortOptions="getContent(pageContent?.currentLocaleData, pageContent?.defaultLocaleData, 'sortOptions')"
+        :sortOptions="sortOptions"
         @change="changeSort"
       />
 
@@ -74,13 +74,15 @@
   const route = useRoute();
   const router = useRouter();
   const { openModal, closeModal } = useModalStore();
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
 
   const contentParams = {
     contentKey: 'categoryPageContent',
     contentRoute: ['pages', 'category'],
   };
   const { getContentData } = useContentLogic<ICategoryPage>(contentParams);
-  const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { data: pageContent, status: contentStatus } = await useLazyAsyncData(getContentData);
 
   interface IState {
     showNotFound: boolean;
@@ -97,8 +99,8 @@
 
   const state = reactive<IState>({
     showNotFound: false,
-    sortBy: 'default',
-    sortOrder: 'asc',
+    sortBy: '',
+    sortOrder: '',
     providerIds: [],
     currentCategory: undefined,
     searchValue: '',
@@ -183,10 +185,27 @@
     { leading: false }
   );
 
+  const sortOptions = computed(() => {
+    const optionsContent: ICategoryPage['sortOptions'] =
+      getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'sortOptions') || [];
+
+    const filteredOptions: ICategoryPage['sortOptions'] = [];
+    optionsContent.forEach(option => {
+      if (option.sortBy !== 'score' || isLoggedIn.value) filteredOptions.push(option);
+    });
+    return filteredOptions;
+  });
+
+  const setDefaultSort = (): void => {
+    const routeSortBy = route.query.sortBy as string;
+    const findSortOption = sortOptions.value.find(option => option.sortBy === routeSortBy);
+    state.sortBy = findSortOption?.sortBy || sortOptions.value[0].sortBy || 'score';
+    state.sortOrder = findSortOption?.sortOrder || sortOptions.value[0].sortOrder || 'asc';
+  };
+
   const resetFilters = (): void => {
     state.searchValue = '';
-    state.sortBy = (route.query.sortBy as string) || 'default';
-    state.sortOrder = (route.query.sortOrder as string) || 'asc';
+    setDefaultSort();
   };
 
   const setProviders = async (): Promise<void> => {
@@ -226,8 +245,18 @@
     }
   );
 
-  onMounted(async () => {
-    await loadCategoryData();
+  watch(isLoggedIn, async newValue => {
+    if (newValue) await loadCategoryData();
+  });
+
+  onMounted(() => {
+    watch(
+      contentStatus,
+      async newValue => {
+        if (newValue && ['success', 'error'].includes(newValue)) await loadCategoryData();
+      },
+      { immediate: true }
+    );
   });
 </script>
 

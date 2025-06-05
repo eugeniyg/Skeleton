@@ -151,6 +151,8 @@
         page,
         perPage: isMobile.value ? 9 : 18,
         collectionId: requestCollections.value,
+        sortBy: 'score',
+        sortOrder: 'asc',
       });
       tournamentGamesState.gamesData = page === 1 ? data : tournamentGamesState.gamesData.concat(data);
       tournamentGamesState.gamesMeta = meta;
@@ -240,6 +242,7 @@
 
   const updateData = async (): Promise<void> => {
     await getTournamentDefiniteData();
+    if (isLoggedIn.value) getTournamentGames();
     if (tournamentData.value && tournamentData.value?.state < 4) {
       subscribeLeaderboardChannel();
       subscribePlayerEntryChannel();
