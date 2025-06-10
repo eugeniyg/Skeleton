@@ -4,10 +4,7 @@
     <atomic-picture v-if="wheelArrowImage" class="wheel-drum__arrow" :src="wheelArrowImage" not-lazy />
 
     <div class="wheel-drum__button" @click="spinWheel">
-      <span>
-        {{ getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'spinButtonLabel') }}
-      </span>
-
+      <span>{{ spinButton?.label || 'spin' }}</span>
       <atomic-picture v-if="wheelButtonImage" :src="wheelButtonImage" not-lazy />
     </div>
 
@@ -34,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IWheelCommon, IWheelPage } from '~/types';
+  import type { IAlert, IWheelCommon, IWheelPage } from '~/types';
   import type { IWheel, IWheelSector } from '@skeleton/core/types/wheelsTypes';
   import BezierEasing from 'bezier-easing';
 
@@ -47,32 +44,42 @@
   }>();
 
   const { getContent, getRandomInt } = useProjectMethods();
-  const wheelImage = getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'wheelImage');
-  const wheelArrowImage = getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'arrowImage');
-  const wheelButtonImage = getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'buttonImage');
-  const oddBg = getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'oddSectorColor');
-  const evenBg = getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'evenSectorColor');
-  const additionalBg = getContent(
-    props.currentLocalePageContent,
-    props.defaultLocalePageContent,
-    'additionalSectorColor'
+  const wheelImage = computed(() =>
+    getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'wheelImage')
   );
-  const segmentLabelColor = getContent(
-    props.currentLocalePageContent,
-    props.defaultLocalePageContent,
-    'segmentLabelColor'
+  const wheelArrowImage = computed(() =>
+    getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'arrowImage')
   );
-  const segmentImage = getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'segmentImage');
-  const segmentRateColor = getContent(
-    props.currentLocalePageContent,
-    props.defaultLocalePageContent,
-    'segmentRateColor'
+  const wheelButtonImage = computed(() =>
+    getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'buttonImage')
+  );
+  const oddBg = computed(() =>
+    getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'oddSectorColor')
+  );
+  const evenBg = computed(() =>
+    getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'evenSectorColor')
+  );
+  const additionalBg = computed(() =>
+    getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'additionalSectorColor')
+  );
+  const segmentLabelColor = computed(() =>
+    getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'segmentLabelColor')
+  );
+  const segmentImage = computed(() =>
+    getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'segmentImage')
+  );
+  const segmentRateColor = computed(() =>
+    getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'segmentRateColor')
+  );
+
+  const spinButton = computed(() =>
+    getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'makeSpinButton')
   );
 
   const segmentsList = props.wheelData.items || [];
   const getSegmentColor = (index: number): string => {
-    if (segmentsList.length % 2 !== 0 && index === segmentsList.length - 1) return additionalBg;
-    return index % 2 === 0 ? evenBg : oddBg;
+    if (segmentsList.length % 2 !== 0 && index === segmentsList.length - 1) return additionalBg.value;
+    return index % 2 === 0 ? evenBg.value : oddBg.value;
   };
 
   const segmentsElement = useTemplateRef('segmentsElement');
@@ -115,14 +122,14 @@
   const resetRotationData = (targetRelativeAngle: number): void => {
     currentRotationAngle.value = targetRelativeAngle;
     winningSector.value = undefined;
-    activeWheel.value = false;
   };
 
+  const { showAlert } = useLayoutStore();
   const createSpinError = (): void => {
-    resetRotationData(0);
-    const { showAlert } = useLayoutStore();
+    activeWheel.value = false;
     const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
     showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
+    showDelayedNotification();
   };
 
   const winningSector = ref<IWheelSector | undefined>();
@@ -131,12 +138,33 @@
     try {
       winningSector.value = await spinWheel(props.wheelData.id);
     } catch {
-      activeWheel.value = false;
+      createSpinError();
     }
   };
 
   const getWinningSectorIndex = (): number => {
     return segmentsList.findIndex(sector => sector.id === winningSector.value?.id);
+  };
+
+  const showDelayedNotification = (): void => {
+    if (!delayedNotification.value.length) return;
+    delayedNotification.value.forEach(notification => showAlert(notification));
+    delayedNotification.value = [];
+  };
+
+  const { openModal } = useModalStore();
+  const showSpinResult = (): void => {
+    activeWheel.value = false;
+    const fixedWinningSector = winningSector.value;
+    setTimeout(async () => {
+      await openModal('wheel-reward', {
+        props: { rewardInfo: fixedWinningSector, sectorImg: segmentImage.value },
+      });
+    }, 500);
+
+    setTimeout(async () => {
+      showDelayedNotification();
+    }, 1000);
   };
 
   const animateFinish = (): void => {
@@ -161,10 +189,12 @@
       currentRotationAngle.value = fixedCurrentRotationAngle + easedProgress * additionalRotation;
 
       if (!activeWheel.value) {
+        resetRotationData(0);
         return;
       } else if (easedProgress < 1) {
         window.requestAnimationFrame(animate);
       } else {
+        showSpinResult();
         resetRotationData(targetRelativeAngle);
       }
     };
@@ -177,21 +207,24 @@
     const animationRotation = 260 * 360;
     const fixedCurrentRotationAngle = currentRotationAngle.value;
     const startTime = performance.now();
+    const randomDuration = getRandomInt(500, 1000);
 
     const animate = (time: number) => {
       const elapsed = time - startTime;
       const progress = Math.min(elapsed / animationDuration, 1); // Ensure progress doesn't exceed 1
       currentRotationAngle.value = fixedCurrentRotationAngle + progress * animationRotation;
-      console.log('hello');
 
       if (!activeWheel.value) {
-        createSpinError();
+        resetRotationData(0);
         return;
-      } else if (winningSector.value) {
+      } else if (winningSector.value && elapsed > randomDuration) {
         animateFinish();
       } else if (progress < 1) {
         window.requestAnimationFrame(animate);
-      } else createSpinError();
+      } else {
+        createSpinError();
+        resetRotationData(0);
+      }
     };
 
     window.requestAnimationFrame(animate);
@@ -211,11 +244,11 @@
       currentRotationAngle.value = fixedCurrentRotationAngle + easedProgress * animationRotation;
 
       if (!activeWheel.value) {
+        resetRotationData(0);
         return;
       } else if (rawProgress < 1) {
         window.requestAnimationFrame(animate);
       } else {
-        spinRequest();
         animateRegular();
       }
     };
@@ -232,15 +265,27 @@
   const spinWheel = (): void => {
     if (activeWheel.value) return;
     activeWheel.value = true;
+    spinRequest();
     animateStart();
   };
 
+  const delayedNotification = ref<IAlert[]>([]);
+  const handleDelayedNotification = (data: IAlert): void => {
+    if (!activeWheel.value) showAlert(data);
+    else delayedNotification.value.push(data);
+  };
+
+  defineExpose({ spinWheel });
+
   onMounted(() => {
     initializeWheel();
+    useListen('delayedNotification', handleDelayedNotification);
   });
 
   onBeforeUnmount(() => {
     activeWheel.value = false;
+    useUnlisten('delayedNotification', handleDelayedNotification);
+    showDelayedNotification();
   });
 </script>
 

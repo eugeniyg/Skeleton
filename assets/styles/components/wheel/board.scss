@@ -1,0 +1,44 @@
+.wheel-board {
+  position: relative;
+  z-index: 3;
+  background: var(--violet-300);
+  border-radius: 16px 16px 24px 24px;
+  padding: 2px;
+  margin-top: -32px;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 24px 32px;
+    background: var(--layer-01);
+    border-radius: 16px 16px 24px 24px;
+  }
+
+  &__spin {
+    &-label {
+      @include font($subheading-1);
+      color: var(--text-accent);
+      margin-bottom: 4px;
+      text-align: center;
+    }
+
+    &-count {
+      @include font($heading-uppercase-7);
+      color: var(--text-accent);
+      text-align: center;
+    }
+  }
+
+  .btn-primary {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  &__hint {
+    @include font($heading-1);
+    color: var(--text-inverse);
+    margin: 6px 0;
+    text-align: center;
+  }
+}

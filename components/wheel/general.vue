@@ -1,12 +1,14 @@
 <template>
   <div class="wheel-general">
-    <button-base class="wheel-general__spin-button" type="primary" size="lg">
+    <button-base class="wheel-general__spin-button" type="primary" size="lg" @click="handleSpin">
       <atomic-icon id="play" />
-      <span>{{ spinLabel }}</span>
+      <span>{{ buttonContent?.label || 'Spin' }}</span>
     </button-base>
 
-    <wheel-drum v-bind="props" />
-    <wheel-board />
+    <wheel-drum ref="wheelDrumComponent" v-bind="props" />
+    <client-only>
+      <wheel-board v-bind="props" />
+    </client-only>
   </div>
 </template>
 
@@ -22,8 +24,16 @@
     defaultLocaleCommonContent: Maybe<IWheelCommon>;
   }>();
 
+  const wheelDrumComponent = useTemplateRef('wheelDrumComponent');
   const { getContent } = useProjectMethods();
-  const spinLabel = getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'spinButtonLabel');
+  const buttonContent = computed(() =>
+    getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'makeSpinButton')
+  );
+
+  const handleSpin = () => {
+    if (!wheelDrumComponent.value) return;
+    wheelDrumComponent.value.spinWheel();
+  };
 </script>
 
 <style src="~/assets/styles/components/wheel/general.scss" lang="scss" />
