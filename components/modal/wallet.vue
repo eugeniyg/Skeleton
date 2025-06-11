@@ -55,6 +55,7 @@
   const bonusStore = useBonusStore();
   const { walletDepositBonus } = storeToRefs(bonusStore);
   const modalStore = useModalStore();
+  const { currentLocaleModalsContent, defaultLocaleModalsContent } = useGlobalStore();
   const { openModal, closeModal } = modalStore;
   const { walletModalType } = storeToRefs(modalStore);
   const { depositMethods, withdrawMethods } = storeToRefs(walletStore);
@@ -65,6 +66,10 @@
   const currentWithdrawMethod = ref<IPaymentMethod | undefined>(mobileWidth() ? undefined : withdrawMethods.value[0]);
   const selectedTab = ref<'deposit' | 'withdraw'>(walletModalType?.value || 'deposit');
   const showMobileForm = ref<boolean>(false);
+  const displayCancelDepositModal =
+    defaultLocaleModalsContent?.cancelDeposit?.displayModal ??
+    currentLocaleModalsContent?.cancelDeposit?.displayModal ??
+    true;
 
   const changeTab = (tabId: 'deposit' | 'withdraw'): void => {
     if (tabId === 'withdraw') {
@@ -115,7 +120,7 @@
   );
 
   const closeWallet = (): void => {
-    if (walletModalType?.value === 'deposit') {
+    if (walletModalType?.value === 'deposit' && displayCancelDepositModal) {
       openModal('cancel-deposit');
     } else {
       closeModal('wallet');
