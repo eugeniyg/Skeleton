@@ -1,13 +1,15 @@
 <template>
   <nav class="nav-user">
     <div class="nav-user__loyalty">
-      <div class="nav-user__common">
+      <div class="nav-user__common" @click="clickCommonInfo">
         <loyalty-avatar size="md" />
 
         <div class="nav-user__common-info">
           <div class="nickname">
             {{ userNickname }}
           </div>
+
+          <atomic-external-id ref="refExternalIdComponent" />
 
           <div v-if="activeAccount" class="amount">{{ balanceFormat.amount }} {{ balanceFormat.currency }}</div>
         </div>
@@ -59,7 +61,9 @@
   const { localizePath, handleExternalLink, getContent } = useProjectMethods();
   const { closeUserNav } = useLayoutStore();
   const { openWalletModal } = useModalStore();
-  const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
+  const globalStore = useGlobalStore();
+  const { layoutData, defaultLocaleLayoutData } = globalStore;
+  const { isMobile } = storeToRefs(globalStore);
   const profileLinks = getContent(layoutData, defaultLocaleLayoutData, 'profileSidebar.profileLinks') || [];
   const route = useRoute();
 
@@ -71,6 +75,7 @@
   const { activeAccount } = storeToRefs(walletStore);
   const { formatBalance } = useProjectMethods();
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
+  const refExternalIdComponent = ref();
 
   const clickItem = (url: string): void => {
     closeUserNav();
@@ -80,6 +85,12 @@
   const clickDeposit = (): void => {
     closeUserNav();
     openWalletModal('deposit');
+  };
+
+  const clickCommonInfo = (): void => {
+    if (isMobile.value && refExternalIdComponent.value) {
+      refExternalIdComponent.value?.copyExternalId();
+    }
   };
 
   const notificationStore = useNotificationStore();
