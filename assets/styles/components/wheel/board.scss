@@ -6,16 +6,35 @@
   padding: 2px;
   margin-top: -32px;
 
+  @include media(md) {
+    min-width: 288px;
+    margin-top: 0;
+  }
+
+  @include media(xl) {
+    min-width: 300px;
+  }
+
+  &--unavailable {
+    background: var(--violet-600);
+
+    .wheel-board__hint {
+      color: var(--violet-200);
+    }
+  }
+
   &__container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 24px 24px 32px;
     background: var(--layer-01);
     border-radius: 16px 16px 24px 24px;
   }
 
   &__spin {
+    width: 100%;
+    padding: 24px 24px 20px;
+
     &-label {
       @include font($subheading-1);
       color: var(--text-accent);
@@ -28,11 +47,18 @@
       color: var(--text-accent);
       text-align: center;
     }
+
+    &-source {
+      @include font($body-1);
+      color: var(--text-tertiary);
+      text-align: center;
+      margin-top: 4px;
+    }
   }
 
   .btn-primary {
-    width: 100%;
-    margin-top: 20px;
+    width: calc(100% - 48px);
+    margin: 0 auto 32px;
   }
 
   &__hint {

@@ -1,7 +1,14 @@
 <template>
-  <div class="wheel-board">
+  <div class="wheel-board" :class="{ 'wheel-board--unavailable': props.disabledWheel }">
     <div class="wheel-board__container">
-      <!--      <wheel-timer />-->
+      <wheel-timer
+        v-if="timerValue"
+        :expiredAt="timerValue"
+        :wheelData="props.wheelData"
+        :currentLocaleContent="props.currentLocaleCommonContent"
+        :defaultLocaleContent="props.defaultLocaleCommonContent"
+        @timesUp="emit('updateWheel')"
+      />
 
       <div class="wheel-board__spin">
         <div class="wheel-board__spin-label">{{ spinLabel }}</div>
@@ -26,15 +33,16 @@
 
   const props = defineProps<{
     wheelData: IWheel;
+    disabledWheel: boolean;
     currentLocalePageContent: Maybe<IWheelPage>;
     defaultLocalePageContent: Maybe<IWheelPage>;
     currentLocaleCommonContent: Maybe<IWheelCommon>;
     defaultLocaleCommonContent: Maybe<IWheelCommon>;
   }>();
 
-  const emit = defineEmits(['spinWheel']);
-  const { openModal, openWalletModal } = useModalStore();
-  const { getContent, localizePath } = useProjectMethods();
+  const emit = defineEmits(['spinWheel', 'updateWheel']);
+  const { getContent } = useProjectMethods();
+  const currentPlayerSpins = defineModel<IWheel['playerSpins']>('currentPlayerSpins', { required: true });
   const spinsScheduledLabel = computed(() =>
     getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'spins.spinsScheduledLabel')
   );
@@ -59,7 +67,7 @@
   });
   const spinCountLabel = computed(() => {
     if (!isLoggedIn.value || props.wheelData.state === 2) return scheduledSpinsCount.value;
-    const spinsCount = props.wheelData?.playerSpins?.length ?? 0;
+    const spinsCount = currentPlayerSpins.value.length;
     return `${spinsCount} ${spinsLabel.value}`;
   });
 
@@ -74,7 +82,7 @@
   );
   const button = computed(() => {
     if (!isLoggedIn.value || props.wheelData?.state === 2) return unavailableSpinButton.value;
-    if (props.wheelData?.playerSpins?.length) return makeSpinButton.value;
+    if (currentPlayerSpins.value.length) return makeSpinButton.value;
     return getSpinsButton.value;
   });
 
@@ -89,17 +97,20 @@
   );
   const hintLabel = computed(() => {
     if (!isLoggedIn.value) return unauthorizedHintLabel.value;
-    if (props.wheelData?.playerSpins?.length) return getSpinsHintLabel.value;
+    // TODO: ADD LIMIT LOGIC
+    if (currentPlayerSpins.value.length) return getSpinsHintLabel.value;
     return unavailableHintLabel.value;
   });
 
-  const router = useRouter();
   const handleClick = () => {
-    if (!isLoggedIn.value) openModal('signIn');
-    else if (props.wheelData.playerSpins?.length) emit('spinWheel');
-    else if (button.value?.url) router.push(localizePath(button.value.url));
-    else openWalletModal();
+    emit('spinWheel');
   };
+
+  const timerValue = computed(() => {
+    // TODO: ADD LIMIT LOGIC
+    if (props.wheelData.state === 2) return '2025-06-12';
+    return null;
+  });
 </script>
 
 <style src="~/assets/styles/components/wheel/board.scss" lang="scss" />

@@ -1,5 +1,5 @@
 <template>
-  <div class="wheel-drum" :class="{ 'wheel-drum--active': activeWheel }">
+  <div class="wheel-drum" :class="{ 'wheel-drum--active': activeWheel, 'wheel-drum--disabled': props.disabledWheel }">
     <atomic-picture v-if="wheelImage" class="wheel-drum__wheel" :src="wheelImage" not-lazy />
     <atomic-picture v-if="wheelArrowImage" class="wheel-drum__arrow" :src="wheelArrowImage" not-lazy />
 
@@ -37,13 +37,20 @@
 
   const props = defineProps<{
     wheelData: IWheel;
+    disabledWheel: boolean;
     currentLocalePageContent: Maybe<IWheelPage>;
     defaultLocalePageContent: Maybe<IWheelPage>;
     currentLocaleCommonContent: Maybe<IWheelCommon>;
     defaultLocaleCommonContent: Maybe<IWheelCommon>;
   }>();
 
-  const { getContent, getRandomInt } = useProjectMethods();
+  const emit = defineEmits(['updateWheel']);
+  const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
+  const profileStore = useProfileStore();
+  const { isLoggedIn } = storeToRefs(profileStore);
+  const { getContent, getRandomInt, localizePath } = useProjectMethods();
+  const currentPlayerSpins = defineModel<IWheel['playerSpins']>('currentPlayerSpins', { required: true });
+
   const wheelImage = computed(() =>
     getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'wheelImage')
   );
@@ -74,6 +81,10 @@
 
   const spinButton = computed(() =>
     getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'makeSpinButton')
+  );
+
+  const getSpinsButton = computed(() =>
+    getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'getSpinsButton')
   );
 
   const segmentsList = props.wheelData.items || [];
@@ -113,7 +124,9 @@
       canvasContext.rotate(segmentRadAngle);
     });
 
-    segmentsElement.value?.append(canvasElement);
+    const oldCanvasElement = segmentsElement.value.querySelector('canvas');
+    if (oldCanvasElement) oldCanvasElement.replaceWith(canvasElement);
+    else segmentsElement.value?.append(canvasElement);
   };
 
   const activeWheel = ref(false);
@@ -125,10 +138,14 @@
   };
 
   const { showAlert } = useLayoutStore();
-  const createSpinError = (): void => {
+  const createSpinError = (errorCode?: number | undefined): void => {
     activeWheel.value = false;
-    const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
-    showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
+    if (errorCode && errorCode === 10003) {
+      showAlert(alertsData?.wheel?.spinsExpired || defaultLocaleAlertsData?.wheel?.spinsExpired);
+      emit('updateWheel');
+    } else {
+      showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
+    }
     showDelayedNotification();
   };
 
@@ -137,8 +154,9 @@
     const { spinWheel } = useCoreWheelsApi();
     try {
       winningSector.value = await spinWheel(props.wheelData.id);
-    } catch {
-      createSpinError();
+      currentPlayerSpins.value.shift();
+    } catch (err: any) {
+      createSpinError(err.data?.error?.code);
     }
   };
 
@@ -152,8 +170,9 @@
     delayedNotification.value = [];
   };
 
-  const { openModal } = useModalStore();
+  const { openModal, openWalletModal } = useModalStore();
   const showSpinResult = (): void => {
+    if (currentPlayerSpins.value.length === 0) emit('updateWheel');
     activeWheel.value = false;
     const fixedWinningSector = winningSector.value;
     setTimeout(async () => {
@@ -262,11 +281,28 @@
     return getRandomInt(sectorStartAngle + 3, sectorEndAngle - 3);
   };
 
+  const dayjs = useDayjs();
+  const hasActiveSpin = (): boolean => {
+    return currentPlayerSpins.value.some(
+      spin => spin.expireAt === null || dayjs().utc().isSameOrBefore(dayjs(spin.expireAt).utc())
+    );
+  };
+
+  const router = useRouter();
   const spinWheel = (): void => {
     if (activeWheel.value) return;
-    activeWheel.value = true;
-    spinRequest();
-    animateStart();
+    if (!isLoggedIn.value) openModal('sign-in');
+    else if (currentPlayerSpins.value.length) {
+      if (!hasActiveSpin()) {
+        emit('updateWheel');
+        showAlert(alertsData?.wheel?.spinsExpired || defaultLocaleAlertsData?.wheel?.spinsExpired);
+        return;
+      }
+      activeWheel.value = true;
+      spinRequest();
+      animateStart();
+    } else if (getSpinsButton.value?.url) router.push(localizePath(getSpinsButton.value.url));
+    else openWalletModal();
   };
 
   const delayedNotification = ref<IAlert[]>([]);
@@ -280,11 +316,13 @@
   onMounted(() => {
     initializeWheel();
     useListen('delayedNotification', handleDelayedNotification);
+    window.addEventListener('resize', initializeWheel);
   });
 
   onBeforeUnmount(() => {
     activeWheel.value = false;
     useUnlisten('delayedNotification', handleDelayedNotification);
+    window.removeEventListener('resize', initializeWheel);
     showDelayedNotification();
   });
 </script>

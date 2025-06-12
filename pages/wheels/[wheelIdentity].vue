@@ -3,17 +3,13 @@
     <not-found v-if="pageNotFound" />
 
     <div v-else-if="wheelData" class="wheel-page">
-      <div class="wheel-page__head">
-        <h1 class="wheel-page__title">{{ wheelData?.title }}</h1>
-        <h2 class="wheel-page__subtitle">{{ pageSubtitle }}</h2>
-      </div>
-
       <wheel-general
         :wheelData="wheelData as IWheel"
         :currentLocalePageContent="wheelPageContent?.currentLocaleData"
         :defaultLocalePageContent="wheelPageContent?.defaultLocaleData"
         :currentLocaleCommonContent="wheelCommonContent?.currentLocaleData"
         :defaultLocaleCommonContent="wheelCommonContent?.defaultLocaleData"
+        @updateWheel="updateWheelData"
       />
 
       <how-it-works
@@ -83,9 +79,6 @@
   });
 
   const { getContent } = useProjectMethods();
-  const pageSubtitle = computed(() =>
-    getContent(wheelPageContent.value?.currentLocaleData, wheelPageContent.value?.defaultLocaleData, 'pageSubtitle')
-  );
   const termsTitle = computed(() =>
     getContent(wheelCommonContent.value?.currentLocaleData, wheelCommonContent.value?.defaultLocaleData, 'terms.title')
   );
@@ -105,8 +98,17 @@
 
   watch(isLoggedIn, updateWheelData);
 
+  const checkSpinsIssued = async (eventWheelIdentity: string): Promise<void> => {
+    if (eventWheelIdentity === wheelIdentity) await updateWheelData();
+  };
+
   onMounted(() => {
     updateWheelData();
+    useListen('wheelSpinsIssued', checkSpinsIssued);
+  });
+
+  onBeforeUnmount(() => {
+    useUnlisten('wheelSpinsIssued', checkSpinsIssued);
   });
 </script>
 

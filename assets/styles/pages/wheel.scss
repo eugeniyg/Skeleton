@@ -1,13 +1,17 @@
 .wheel-page {
-  &__title {
-    @include font($heading-7);
-    color: var(--text-primary);
-    margin: 0 0 8px;
+  .wheel-general {
+    margin-bottom: 48px;
+
+    @include media(md) {
+      margin-bottom: 72px;
+    }
   }
 
-  &__subtitle {
-    @include font($heading-uppercase-4);
-    color: var(--text-accent);
-    margin: 0 0 24px;
+  .terms-expander {
+    margin-top: 32px;
+
+    @include media(md) {
+      margin-top: 56px;
+    }
   }
 }

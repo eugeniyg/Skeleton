@@ -25,6 +25,7 @@ type ApplicationEvents = {
   questActivated: undefined;
   webSocketReconnected: undefined;
   delayedNotification: IAlert;
+  wheelSpinsIssued: string;
 };
 
 const emitter = mitt<ApplicationEvents>();
