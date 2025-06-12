@@ -56,6 +56,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
+  import type { AtomicExternalId } from '#components';
 
   const emit = defineEmits(['logout']);
   const { localizePath, handleExternalLink, getContent } = useProjectMethods();
@@ -75,7 +76,7 @@
   const { activeAccount } = storeToRefs(walletStore);
   const { formatBalance } = useProjectMethods();
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
-  const refExternalIdComponent = ref();
+  const refExternalIdComponent = useTemplateRef<typeof AtomicExternalId>('refExternalIdComponent');
 
   const clickItem = (url: string): void => {
     closeUserNav();

@@ -15,21 +15,11 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import copy from 'copy-to-clipboard';
-  
+  import type { IProfileInfo } from '~/types';
+
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
-  const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
   const { getContent } = useProjectMethods();
-
-  const tooltipVisible = ref<boolean>(false);
-  const tooltipTimer = ref<any>(undefined);
-
-  const labelText = computed(() =>
-    getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.externalId.label')
-  );
-  const messageAfterCopyText = computed(() =>
-    getContent(fieldsSettings, defaultLocaleFieldsSettings, 'fieldsControls.externalId.copyMsg')
-  );
 
   const showTooltip = (): void => {
     tooltipVisible.value = true;
@@ -38,7 +28,7 @@
       tooltipVisible.value = false;
     }, 2000);
   };
-  
+
   const copyExternalId = (): void => {
     const externalId = profile.value?.externalId || '';
     copy(String(externalId));
@@ -48,6 +38,24 @@
   defineExpose({
     copyExternalId,
   });
+
+  const contentParams = {
+    contentKey: 'profileInfoContent',
+    contentRoute: ['profile', 'info'],
+    isPage: false,
+  };
+  const { getContentData } = useContentLogic<IProfileInfo>(contentParams);
+  const { data: pageContent } = await useLazyAsyncData(getContentData);
+
+  const tooltipVisible = ref<boolean>(false);
+  const tooltipTimer = ref<any>(undefined);
+
+  const labelText = computed(() =>
+    getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'externalId.label')
+  );
+  const messageAfterCopyText = computed(() =>
+    getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'externalId.copyMsg')
+  );
 </script>
 
 <style src="~/assets/styles/components/atomic/external-id.scss" lang="scss" />
