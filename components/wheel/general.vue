@@ -19,7 +19,7 @@
       <client-only>
         <wheel-board
           v-bind="props"
-          v-model:currentPlayerSpins="currentPlayerSpins"
+          :currentPlayerSpins="currentPlayerSpins"
           :disabledWheel="disabledWheel"
           @spinWheel="handleSpin"
           @updateWheel="emit('updateWheel')"

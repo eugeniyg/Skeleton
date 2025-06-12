@@ -13,8 +13,8 @@
       />
 
       <how-it-works
-        :currentLocaleContent="wheelCommonContent?.currentLocaleData?.howItWorks"
-        :defaultLocaleContent="wheelCommonContent?.defaultLocaleData?.howItWorks"
+        :currentLocaleContent="wheelPageContent?.currentLocaleData?.howItWorks"
+        :defaultLocaleContent="wheelPageContent?.defaultLocaleData?.howItWorks"
       />
 
       <terms-expander :title="termsTitle" :content="termsContent" />
@@ -80,14 +80,10 @@
 
   const { getContent } = useProjectMethods();
   const termsTitle = computed(() =>
-    getContent(wheelCommonContent.value?.currentLocaleData, wheelCommonContent.value?.defaultLocaleData, 'terms.title')
+    getContent(wheelPageContent.value?.currentLocaleData, wheelPageContent.value?.defaultLocaleData, 'terms.title')
   );
   const termsContent = computed(() =>
-    getContent(
-      wheelCommonContent.value?.currentLocaleData,
-      wheelCommonContent.value?.defaultLocaleData,
-      'terms.content'
-    )
+    getContent(wheelPageContent.value?.currentLocaleData, wheelPageContent.value?.defaultLocaleData, 'terms.content')
   );
 
   const updateWheelData = async (): Promise<void> => {

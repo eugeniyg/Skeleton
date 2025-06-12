@@ -33,6 +33,7 @@
 
   const props = defineProps<{
     wheelData: IWheel;
+    currentPlayerSpins: IWheel['playerSpins'];
     disabledWheel: boolean;
     currentLocalePageContent: Maybe<IWheelPage>;
     defaultLocalePageContent: Maybe<IWheelPage>;
@@ -42,7 +43,6 @@
 
   const emit = defineEmits(['spinWheel', 'updateWheel']);
   const { getContent } = useProjectMethods();
-  const currentPlayerSpins = defineModel<IWheel['playerSpins']>('currentPlayerSpins', { required: true });
   const spinsScheduledLabel = computed(() =>
     getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'spins.spinsScheduledLabel')
   );
@@ -67,7 +67,7 @@
   });
   const spinCountLabel = computed(() => {
     if (!isLoggedIn.value || props.wheelData.state === 2) return scheduledSpinsCount.value;
-    const spinsCount = currentPlayerSpins.value.length;
+    const spinsCount = props.currentPlayerSpins.length;
     return `${spinsCount} ${spinsLabel.value}`;
   });
 
@@ -82,7 +82,7 @@
   );
   const button = computed(() => {
     if (!isLoggedIn.value || props.wheelData?.state === 2) return unavailableSpinButton.value;
-    if (currentPlayerSpins.value.length) return makeSpinButton.value;
+    if (props.currentPlayerSpins.length) return makeSpinButton.value;
     return getSpinsButton.value;
   });
 
@@ -98,7 +98,7 @@
   const hintLabel = computed(() => {
     if (!isLoggedIn.value) return unauthorizedHintLabel.value;
     // TODO: ADD LIMIT LOGIC
-    if (currentPlayerSpins.value.length) return getSpinsHintLabel.value;
+    if (props.currentPlayerSpins.length) return getSpinsHintLabel.value;
     return unavailableHintLabel.value;
   });
 
