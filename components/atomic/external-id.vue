@@ -38,9 +38,10 @@
       tooltipVisible.value = false;
     }, 2000);
   };
-
-  const copyExternalId = () => {
-    copy(profile.value?.externalId || '');
+  
+  const copyExternalId = (): void => {
+    const externalId = profile.value?.externalId || '';
+    copy(String(externalId));
     showTooltip();
   };
 
