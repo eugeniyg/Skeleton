@@ -3,10 +3,7 @@
     <transition name="fade" mode="out-in">
       <div v-if="tooltipVisible" class="btn-copy__tooltip">{{ messageAfterCopyText }}</div>
     </transition>
-    <div class="external-id__label">
-      {{ labelText }}
-      <span class="external-id__dots">:</span>
-    </div>
+    <div class="external-id__label">{{ labelText }}</div>
     <div class="external-id__value">{{ profile?.externalId }}</div>
     <atomic-icon id="copy" class="external-id__icon" />
   </div>
