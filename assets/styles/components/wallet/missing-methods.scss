@@ -1,0 +1,61 @@
+.missing-methods {
+  display: grid;
+  margin-top: 16px;
+  animation: fadeInMethods 0.5s ease-in-out;
+
+  .wallet-methods & {
+    margin-top: 72px;
+    margin-bottom: 16px;
+
+    @include media(sm) {
+      display: none;
+    }
+  }
+
+  &__picture {
+    img {
+      display: block;
+      margin: 0 auto;
+      width: auto;
+      max-width: 100%;
+      height: 180px;
+
+      .wallet-methods & {
+        max-height: 120px;
+      }
+    }
+  }
+
+  &__title {
+    @include font($heading-4);
+    color: var(--text-primary);
+    margin-top: rem(16px);
+    text-align: center;
+
+    @include media(md) {
+      @include upd-font($heading-5);
+    }
+  }
+
+  &__description {
+    @include font($body-1);
+    color: var(--text-secondary);
+    margin-top: rem(4px);
+    text-align: center;
+
+    @include media(md) {
+      @include upd-font($body-2);
+    }
+  }
+}
+
+@keyframes fadeInMethods {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
