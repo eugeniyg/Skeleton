@@ -33,7 +33,10 @@
         @method-click="emit('methodClick')"
       />
 
-      <wallet-missing-methods v-if="showNotAvailableText" :selected-tab="props.selectedTab" :loading="props.loading" />
+      <template v-if="showNotAvailableText">
+        <wallet-missing-methods-msg :display="!props.loading" />
+        <wallet-missing-methods :selected-tab="props.selectedTab" :display="!props.loading" />
+      </template>
     </balance>
 
     <wallet-dots :items-count="2" :active-index="0" />

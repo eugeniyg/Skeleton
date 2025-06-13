@@ -42,7 +42,7 @@
         />
       </template>
 
-      <wallet-missing-methods v-else :selected-tab="props.selectedTab" :loading="props.loading" />
+      <wallet-missing-methods v-else :selected-tab="props.selectedTab" :display="!props.loading" />
     </template>
 
     <template v-else-if="props.selectedTab === 'withdraw'">
@@ -54,7 +54,7 @@
         v-bind="props.currentWithdrawMethod"
       />
 
-      <wallet-missing-methods v-else :selected-tab="props.selectedTab" :loading="props.loading" />
+      <wallet-missing-methods v-else :selected-tab="props.selectedTab" :display="!props.loading" />
     </template>
 
     <wallet-dots :items-count="2" :active-index="1" />

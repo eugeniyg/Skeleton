@@ -1,7 +1,7 @@
 .missing-methods {
   display: grid;
   margin-top: 16px;
-  animation: fadeInMethods 0.5s ease-in-out;
+  animation: fadeIn 0.4s ease-in-out;
 
   .wallet-methods & {
     margin-top: 72px;
@@ -49,13 +49,11 @@
   }
 }
 
-@keyframes fadeInMethods {
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-16px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
