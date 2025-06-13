@@ -35,7 +35,7 @@
 
       <template v-if="showNotAvailableText">
         <wallet-missing-methods-msg :display="!props.loading" />
-        <wallet-missing-methods :selected-tab="props.selectedTab" :display="!props.loading" />
+        <wallet-missing-methods :display="!props.loading" :selected-tab="props.selectedTab" />
       </template>
     </balance>
 
