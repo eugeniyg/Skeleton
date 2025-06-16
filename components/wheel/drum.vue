@@ -172,13 +172,13 @@
 
   const { openModal, openWalletModal } = useModalStore();
   const showSpinResult = (): void => {
-    if (currentPlayerSpins.value.length === 0) emit('updateWheel');
-    activeWheel.value = false;
     const fixedWinningSector = winningSector.value;
     setTimeout(async () => {
       await openModal('wheel-reward', {
         props: { rewardInfo: fixedWinningSector, sectorImg: segmentImage.value },
       });
+      if (currentPlayerSpins.value.length === 0) emit('updateWheel');
+      activeWheel.value = false;
     }, 500);
 
     setTimeout(async () => {

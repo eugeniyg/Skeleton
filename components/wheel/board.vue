@@ -1,5 +1,9 @@
 <template>
-  <div class="wheel-board" :class="{ 'wheel-board--unavailable': props.disabledWheel }">
+  <div
+    class="wheel-board"
+    :class="{ 'wheel-board--unavailable': props.disabledWheel }"
+    :style="{ backgroundColor: props.disabledWheel ? unavailableWheelBoardColor : activeWheelBoardColor }"
+  >
     <div class="wheel-board__container">
       <wheel-timer
         v-if="timerValue"
@@ -80,8 +84,10 @@
   const getSpinsButton = computed(() =>
     getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'getSpinsButton')
   );
+
+  const hasPeriodLimit = computed(() => !!props.wheelData.limitRefreshAt && !props.wheelData.playerSpins.length);
   const button = computed(() => {
-    if (!isLoggedIn.value || props.wheelData?.state === 2) return unavailableSpinButton.value;
+    if (!isLoggedIn.value || props.wheelData?.state === 2 || hasPeriodLimit.value) return unavailableSpinButton.value;
     if (props.currentPlayerSpins.length) return makeSpinButton.value;
     return getSpinsButton.value;
   });
@@ -97,9 +103,8 @@
   );
   const hintLabel = computed(() => {
     if (!isLoggedIn.value) return unauthorizedHintLabel.value;
-    // TODO: ADD LIMIT LOGIC
-    if (props.currentPlayerSpins.length) return getSpinsHintLabel.value;
-    return unavailableHintLabel.value;
+    if (props.wheelData.state === 2 || hasPeriodLimit.value) return unavailableHintLabel.value;
+    return getSpinsHintLabel.value;
   });
 
   const handleClick = () => {
@@ -107,10 +112,17 @@
   };
 
   const timerValue = computed(() => {
-    // TODO: ADD LIMIT LOGIC
-    if (props.wheelData.state === 2) return '2025-06-12';
+    if (props.wheelData.state === 2) return props.wheelData.startAt;
+    if (hasPeriodLimit.value) return props.wheelData.limitRefreshAt;
     return null;
   });
+
+  const activeWheelBoardColor = computed(() =>
+    getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'activeWheelBoardColor')
+  );
+  const unavailableWheelBoardColor = computed(() =>
+    getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'unavailableWheelBoardColor')
+  );
 </script>
 
 <style src="~/assets/styles/components/wheel/board.scss" lang="scss" />

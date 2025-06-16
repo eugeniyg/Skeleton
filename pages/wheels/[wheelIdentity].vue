@@ -1,24 +1,33 @@
 <template>
   <div class="wheel-page__container">
-    <not-found v-if="pageNotFound" />
+    <transition name="fade" mode="out-in">
+      <div v-if="status === 'pending' || getPlayerSpins" class="wheel-page__spinner">
+        <div class="wheel-page__spinner-border">
+          <div class="wheel-page__spinner-core" />
+        </div>
+      </div>
 
-    <div v-else-if="wheelData" class="wheel-page">
-      <wheel-general
-        :wheelData="wheelData as IWheel"
-        :currentLocalePageContent="wheelPageContent?.currentLocaleData"
-        :defaultLocalePageContent="wheelPageContent?.defaultLocaleData"
-        :currentLocaleCommonContent="wheelCommonContent?.currentLocaleData"
-        :defaultLocaleCommonContent="wheelCommonContent?.defaultLocaleData"
-        @updateWheel="updateWheelData"
-      />
+      <not-found v-else-if="pageNotFound" />
 
-      <how-it-works
-        :currentLocaleContent="wheelPageContent?.currentLocaleData?.howItWorks"
-        :defaultLocaleContent="wheelPageContent?.defaultLocaleData?.howItWorks"
-      />
+      <div v-else-if="wheelData" class="wheel-page">
+        <wheel-general
+          :wheelData="wheelData as IWheel"
+          :currentLocalePageContent="wheelPageContent?.currentLocaleData"
+          :defaultLocalePageContent="wheelPageContent?.defaultLocaleData"
+          :currentLocaleCommonContent="wheelCommonContent?.currentLocaleData"
+          :defaultLocaleCommonContent="wheelCommonContent?.defaultLocaleData"
+          @updateWheel="updateWheelData"
+        />
 
-      <terms-expander :title="termsTitle" :content="termsContent" />
-    </div>
+        <how-it-works
+          v-if="showHowItWorks"
+          :currentLocaleContent="wheelPageContent?.currentLocaleData?.howItWorks"
+          :defaultLocaleContent="wheelPageContent?.defaultLocaleData?.howItWorks"
+        />
+
+        <terms-expander v-if="showTerms" :title="termsTitle" :content="termsContent" />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -52,10 +61,9 @@
   };
   const { getContentData: getWheelPageContent } = useContentLogic<IWheelPage>(wheelPageContentParams);
   const { getContentData: getWheelCommonContent } = useContentLogic<IWheelCommon>(wheelCommonContentParams);
-  const nuxtApp = useNuxtApp();
-  if (!nuxtApp.isHydrating) clearNuxtData('wheel-page');
+  const requestId = useId();
   const { data, status } = await useLazyAsyncData(
-    `wheel-page`,
+    requestId,
     async () => {
       const [wheelPageContent, wheelCommonContent, wheelData] = await Promise.all([
         getWheelPageContent(),
@@ -79,6 +87,16 @@
   });
 
   const { getContent } = useProjectMethods();
+  const showHowItWorks = computed(() =>
+    getContent(
+      wheelPageContent.value?.currentLocaleData,
+      wheelPageContent.value?.defaultLocaleData,
+      'howItWorks.enabled'
+    )
+  );
+  const showTerms = computed(() =>
+    getContent(wheelPageContent.value?.currentLocaleData, wheelPageContent.value?.defaultLocaleData, 'terms.enabled')
+  );
   const termsTitle = computed(() =>
     getContent(wheelPageContent.value?.currentLocaleData, wheelPageContent.value?.defaultLocaleData, 'terms.title')
   );
@@ -98,8 +116,14 @@
     if (eventWheelIdentity === wheelIdentity) await updateWheelData();
   };
 
-  onMounted(() => {
-    updateWheelData();
+  const getPlayerSpins = ref(false);
+  onMounted(async () => {
+    if (data.value && isLoggedIn.value) {
+      getPlayerSpins.value = true;
+      data.value.wheelData = await getWheelData();
+      getPlayerSpins.value = false;
+    }
+
     useListen('wheelSpinsIssued', checkSpinsIssued);
   });
 

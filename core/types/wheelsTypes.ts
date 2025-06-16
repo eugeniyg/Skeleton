@@ -17,8 +17,10 @@ export interface IWheel {
   title: string;
   identity: string;
   items: IWheelSector[];
+  startAt: string;
   endAt: string | null;
   playerSpins: IPlayerWheelSpin[];
+  limitRefreshAt: string | null;
 }
 
 export interface IWheelsRequest {

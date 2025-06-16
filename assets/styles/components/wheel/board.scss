@@ -1,7 +1,6 @@
 .wheel-board {
   position: relative;
   z-index: 3;
-  background: var(--violet-300);
   border-radius: 16px 16px 24px 24px;
   padding: 2px;
   margin-top: -32px;
@@ -16,10 +15,8 @@
   }
 
   &--unavailable {
-    background: var(--violet-600);
-
     .wheel-board__hint {
-      color: var(--violet-200);
+      color: rgba(white, 0.8);
     }
   }
 

@@ -1,4 +1,8 @@
 .wheel-page {
+  @include media(md) {
+    padding-top: 40px;
+  }
+
   .wheel-general {
     margin-bottom: 48px;
 
@@ -12,6 +16,42 @@
 
     @include media(md) {
       margin-top: 56px;
+    }
+  }
+
+  &__spinner {
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @keyframes spin {
+      from {
+        transform: rotate(0);
+      }
+      to{
+        transform: rotate(359deg);
+      }
+    }
+
+    &-border {
+      width: 100px;
+      height: 100px;
+      padding: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background: linear-gradient(0deg, transparent 20%, var(--gray-700) 100%);
+      animation: spin .8s linear 0s infinite;
+    }
+
+    &-core {
+      width: 100%;
+      height: 100%;
+      background-color: var(--layer-bg);
+      border-radius: 50%;
     }
   }
 }

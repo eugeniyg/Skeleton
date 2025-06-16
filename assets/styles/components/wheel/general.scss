@@ -15,7 +15,10 @@
     right: -100%;
     bottom: 0;
     z-index: -1;
-    background: linear-gradient(#490F77, #00000000);
+
+    @include media(md) {
+      top: -64px;
+    }
   }
 
   &__body {
