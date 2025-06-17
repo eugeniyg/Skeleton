@@ -1,5 +1,5 @@
 <template>
-  <div v-if="props.display" class="missing-methods">
+  <div class="missing-methods">
     <atomic-picture v-if="image" class="missing-methods__picture" :src="image" />
 
     <div class="missing-methods__title">
@@ -14,7 +14,6 @@
 
   const props = defineProps<{
     selectedTab: 'deposit' | 'withdraw';
-    display: boolean;
   }>();
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');

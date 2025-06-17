@@ -33,9 +33,9 @@
         @method-click="emit('methodClick')"
       />
 
-      <template v-if="showNotAvailableText">
-        <wallet-missing-methods-msg :display="!props.loading" />
-        <wallet-missing-methods :display="!props.loading" :selected-tab="props.selectedTab" />
+      <template v-if="showNotAvailableText && !props.loading">
+        <wallet-missing-methods-msg />
+        <wallet-missing-methods :selected-tab="props.selectedTab" />
       </template>
     </balance>
 

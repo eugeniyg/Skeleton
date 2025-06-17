@@ -1,5 +1,5 @@
 <template>
-  <div v-if="props.display" class="missing-methods-msg">
+  <div class="missing-methods-msg">
     <atomic-icon id="info" class="missing-methods-msg__icon" />
 
     <span class="missing-methods-msg__text">
@@ -10,9 +10,6 @@
 
 <script setup lang="ts">
   import type { IWalletModal } from '~/types';
-  const props = defineProps<{
-    display: boolean;
-  }>();
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
