@@ -62,7 +62,7 @@
   const { getContentData: getWheelPageContent } = useContentLogic<IWheelPage>(wheelPageContentParams);
   const { getContentData: getWheelCommonContent } = useContentLogic<IWheelCommon>(wheelCommonContentParams);
   const requestId = useId();
-  const { data, status } = await useLazyAsyncData(
+  const { data, status, error } = await useLazyAsyncData(
     requestId,
     async () => {
       const [wheelPageContent, wheelCommonContent, wheelData] = await Promise.all([
@@ -70,12 +70,16 @@
         getWheelCommonContent(),
         getWheelData(),
       ]);
+      const emptyContent = !wheelPageContent.currentLocaleData && !wheelPageContent?.defaultLocaleData;
+      if (emptyContent || !wheelData) throw createError({ statusCode: 404, statusMessage: 'Wheel Not Found' });
       return { wheelPageContent, wheelCommonContent, wheelData };
     },
     {
       deep: true,
     }
   );
+
+  if (error.value) throw createError(error.value);
 
   const wheelPageContent = computed(() => data.value?.wheelPageContent);
   const wheelCommonContent = computed(() => data.value?.wheelCommonContent);
