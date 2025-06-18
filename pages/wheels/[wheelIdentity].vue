@@ -52,7 +52,8 @@
 
   const wheelPageContentParams = {
     contentKey: `wheel-${wheelIdentity}`,
-    contentRoute: ['wheels', wheelIdentity],
+    contentRoute: ['wheels'],
+    where: { identity: wheelIdentity },
     isPage: true,
   };
   const wheelCommonContentParams = {
