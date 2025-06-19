@@ -7,6 +7,7 @@
     <div
       v-if="layoutData?.cookie?.text || defaultLocaleLayoutData?.cookie?.text"
       class="text"
+      v-router-links
       v-html="descriptionContent"
     />
 
