@@ -3,6 +3,7 @@
 
   .scroll {
     grid-row-gap: 0;
+    padding-bottom: 28px;
   }
 
   &__img img {
@@ -50,7 +51,6 @@
     width: 100%;
     background: var(--layer-02);
     border-radius: 16px;
-    margin-bottom: 24px;
 
     &-title {
       @include font($heading-3);
@@ -73,6 +73,6 @@
   .btn-primary {
     width: auto;
     height: 40px;
-    margin-top: 0;
+    margin-top: 24px;
   }
 }

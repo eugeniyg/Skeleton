@@ -175,7 +175,11 @@
     const fixedWinningSector = winningSector.value;
     setTimeout(async () => {
       await openModal('wheel-reward', {
-        props: { rewardInfo: fixedWinningSector, sectorImg: segmentImage.value },
+        props: {
+          rewardInfo: fixedWinningSector,
+          sectorImg: segmentImage.value,
+          hideButton: !!props.wheelData.limitRefreshAt,
+        },
       });
       if (currentPlayerSpins.value.length === 0) emit('updateWheel');
       activeWheel.value = false;

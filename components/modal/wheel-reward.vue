@@ -29,7 +29,7 @@
         <span v-if="rewardInfo.dropRate" class="modal-wheel-reward__reward-rate">{{ rewardInfo.dropRate }}%</span>
       </div>
 
-      <button-base type="primary" size="md" @click="handleClick">
+      <button-base v-if="!props.hideButton" type="primary" size="md" @click="handleClick">
         {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'button.label') }}
       </button-base>
     </div>
@@ -46,6 +46,7 @@
     defaultLocaleData: Maybe<IWheelRewardModal>;
     rewardInfo: IWheelSector;
     sectorImg: string | undefined;
+    hideButton: boolean;
   }>();
 
   const { getContent, localizePath } = useProjectMethods();
