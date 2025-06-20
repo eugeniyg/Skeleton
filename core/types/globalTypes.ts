@@ -173,6 +173,12 @@ export interface IEventTournamentEntry extends Record<string, any> {
   place: number;
 }
 
+export interface IEventWheel extends Record<string, any> {
+  id: string;
+  identity: string;
+  title: string;
+}
+
 export interface IWebSocketResponse extends Record<string, any> {
   data: {
     event: string;
@@ -192,6 +198,9 @@ export interface IWebSocketResponse extends Record<string, any> {
     tournament?: IEventTournament;
     leaderboard?: ITournamentParticipant[];
     entry?: IEventTournamentEntry;
+    playerId?: string;
+    wheel?: IEventWheel;
+    amount?: number; // Wheel spins count
   };
   gen: undefined;
   offset: undefined;

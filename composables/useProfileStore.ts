@@ -146,6 +146,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { getPopoverNotifications, subscribeNotificationSocket } = useNotificationStore();
       const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
       const { subscribeTournamentSocket } = useTournamentsStore();
+      const { subscribeWheelsSocket } = useWheelsStore();
       const { setEquivalentCurrency } = useGlobalStore();
       const runtimeConfig = useRuntimeConfig();
 
@@ -174,6 +175,7 @@ export const useProfileStore = defineStore('profileStore', {
       if (runtimeConfig.public?.loyaltyEnabled) subscribeLoyaltySocket();
       subscribeNotificationSocket();
       subscribeTournamentSocket();
+      subscribeWheelsSocket();
 
       const storageEquivalentCurrency = localStorage.getItem('equivalentCurrency');
       if (storageEquivalentCurrency) setEquivalentCurrency(storageEquivalentCurrency);
@@ -190,6 +192,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { unsubscribeLoyaltySocket } = useLoyaltyStore();
       const { unsubscribeNotificationSocket } = useNotificationStore();
       const { unsubscribeTournamentSocket } = useTournamentsStore();
+      const { unsubscribeWheelsSocket } = useWheelsStore();
       unsubscribeAccountSocket();
       unsubscribeInvoiceSocket();
       unsubscribeBonusCodeSocket();
@@ -201,6 +204,7 @@ export const useProfileStore = defineStore('profileStore', {
       unsubscribeLoyaltySocket();
       unsubscribeNotificationSocket();
       unsubscribeTournamentSocket();
+      unsubscribeWheelsSocket();
     },
 
     async handleLogin(authResponse: IAuthorizationResponse): Promise<void> {

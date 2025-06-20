@@ -239,7 +239,14 @@ export const useBonusStore = defineStore('bonusStore', {
         defaultLocaleAlertsData?.bonus?.[alertsKey[`${status}-${result}`]];
 
       this.updatePlayerBonusList(bonusData, this);
-      if (alertData) showAlert({ ...alertData, description: transformMessage(alertData?.description) });
+
+      const route = useRoute();
+      const isWheelPage = route.params.wheelIdentity;
+      if (alertData) {
+        const notifyData = { ...alertData, description: transformMessage(alertData?.description) };
+        if (isWheelPage) useEvent('delayedNotification', notifyData);
+        else showAlert(notifyData);
+      }
     },
 
     async freeSpinsSocketTrigger(webSocketResponse: IWebSocketResponse): Promise<void> {
@@ -293,9 +300,14 @@ export const useBonusStore = defineStore('bonusStore', {
         defaultLocaleAlertsData?.freeSpin?.[alertsKey[`${status}-${result}`]];
 
       this.updatePlayerFreeSpinsList(freeSpinData, this);
+
+      const route = useRoute();
+      const isWheelPage = route.params.wheelIdentity;
       if (alertData) {
         const description = await transformMessage(alertData?.description);
-        showAlert({ ...alertData, description });
+        const notifyData = { ...alertData, description };
+        if (isWheelPage) useEvent('delayedNotification', notifyData);
+        else showAlert(notifyData);
       }
     },
 

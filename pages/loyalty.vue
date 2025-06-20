@@ -2,7 +2,10 @@
   <div class="loyalty">
     <loyalty-banner />
 
-    <loyalty-how-it-works />
+    <how-it-works
+      :currentLocaleContent="currentLocaleContent?.howItWorks"
+      :defaultLocaleContent="defaultLocaleContent?.howItWorks"
+    />
 
     <loyalty-rewards />
 
@@ -10,7 +13,7 @@
 
     <loyalty-faq />
 
-    <loyalty-terms v-if="termsData?.title && termsData?.content" v-bind="termsData" />
+    <terms-expander v-if="termsData?.title && termsData?.content" v-bind="termsData" />
 
     <atomic-seo-text v-if="currentLocaleContent?.pageMeta?.seoText" v-bind="currentLocaleContent.pageMeta.seoText" />
   </div>

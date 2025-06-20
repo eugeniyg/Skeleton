@@ -8,7 +8,7 @@
           <div v-if="item.title" class="title">
             {{ item.title }}
           </div>
-          <p v-if="item.text" class="text" v-html="item.text || ''" />
+          <p v-if="item.text" v-router-links class="text" v-html="item.text || ''" />
         </div>
 
         <button class="btn-alert-close">
