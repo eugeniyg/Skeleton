@@ -34,6 +34,7 @@ export interface IProfile extends Record<string, any> {
   isNewlyRegistered: boolean;
   phoneConfirmed: boolean;
   pwaInstalled: boolean;
+  externalId: number;
 }
 
 export interface IAuthorizationRequest extends Record<any, any> {

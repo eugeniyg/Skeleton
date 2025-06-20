@@ -57,7 +57,7 @@ export default defineNuxtConfig({
       'da',
       'nl',
     ],
-    plugins: ['localeData', 'isBetween', 'isSameOrAfter', 'isSameOrBefore'],
+    plugins: ['utc', 'localeData', 'isBetween', 'isSameOrAfter', 'isSameOrBefore'],
     defaultLocale: 'en',
   },
   lazyLoad: {
@@ -131,7 +131,7 @@ export default defineNuxtConfig({
     inlineDynamicImports: true,
     devProxy: {
       '/api': {
-        target: 'https://qa3.dev.getplatform.tech/api',
+        target: 'https://qa2.dev.getplatform.tech/api',
         changeOrigin: true,
       },
     },

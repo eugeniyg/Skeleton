@@ -40,13 +40,4 @@
   &__hr {
     --margin: 16px 0;
   }
-
-  .wallet-modal__empty-methods {
-    align-items: center;
-    margin-top: rem(16px);
-
-    @include media(sm) {
-      display: none !important;
-    }
-  }
 }

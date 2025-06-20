@@ -1,5 +1,3 @@
-import type { RegistrationType } from '@skeleton/core/types';
-
 export interface IBrowserLanguage {
   code: string;
   script: null | string;
@@ -45,7 +43,7 @@ type AnalyticEvent = (typeof analyticsEventsArr)[number];
 export interface IAnalyticsEvent {
   event: AnalyticEvent;
   loadTime?: number;
-  regType?: RegistrationType;
+  regType?: 'email' | 'phone' | 'social';
   walletOperationType?: 'deposit' | 'withdraw';
   depositAmount?: number;
   withdrawAmount?: number;

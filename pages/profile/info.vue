@@ -21,6 +21,8 @@
             {{ userNickname }}
           </div>
 
+          <atomic-external-id />
+
           <loyalty-progress class="row-user__info-progress" show-info />
         </div>
 

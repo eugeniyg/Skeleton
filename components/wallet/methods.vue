@@ -33,13 +33,10 @@
         @method-click="emit('methodClick')"
       />
 
-      <div v-else-if="showNotAvailableText" class="wallet-modal__empty-methods">
-        <atomic-icon id="info" />
-
-        <span>
-          {{ getContent(walletContent, defaultLocaleWalletContent, 'notAvailableText') }}
-        </span>
-      </div>
+      <template v-if="showNotAvailableText && !props.loading">
+        <wallet-missing-methods-msg />
+        <wallet-missing-methods :selected-tab="props.selectedTab" />
+      </template>
     </balance>
 
     <wallet-dots :items-count="2" :active-index="0" />
@@ -49,23 +46,18 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import type { IPaymentMethod } from '@skeleton/core/types';
-  import type { IWalletModal } from '~/types';
   import { Skeletor } from 'vue-skeletor';
 
   const props = defineProps<{
     showTabs: boolean;
-    selectedTab: string;
+    selectedTab: 'deposit' | 'withdraw';
     modalTitle: string;
     loading: boolean;
   }>();
 
   const currentDepositMethod = defineModel<IPaymentMethod>('currentDepositMethod');
   const currentWithdrawMethod = defineModel<IPaymentMethod>('currentWithdrawMethod');
-  const walletContent: Maybe<IWalletModal> = inject('walletContent');
-  const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
-
   const emit = defineEmits(['changeTab', 'methodClick', 'changingAccount']);
-  const { getContent } = useProjectMethods();
   const walletStore = useWalletStore();
   const { depositMethods, withdrawMethods } = storeToRefs(walletStore);
 
