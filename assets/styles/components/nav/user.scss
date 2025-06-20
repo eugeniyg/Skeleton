@@ -60,11 +60,27 @@
     grid-template-columns: auto 1fr;
     align-items: center;
     grid-column-gap: rem(8px);
+    width: 100%;
 
     .nickname {
       @include font($body-1);
       color: var(--color, var(--text-secondary));
       word-break: break-word;
+    }
+
+    .external-id {
+      --label-color: var(--text-secondary);
+      --value-color: var(--text-secondary);
+      --icon-color: var(--icon-secondary);
+      margin-bottom: 2px;
+
+      @include upd-font($body-0);
+
+      &.is-active {
+        --label-color: var(--text-accent);
+        --value-color: var(--text-accent);
+        --icon-color: var(--text-accent);
+      }
     }
 
     .amount {

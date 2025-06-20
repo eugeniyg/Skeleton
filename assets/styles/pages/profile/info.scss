@@ -62,7 +62,7 @@
     border-radius: 16px;
     background: var(--layer-01);
     grid-column-gap: 12px;
-    grid-template-areas: "avatar nickname" "avatar progress";
+    grid-template-areas: "avatar nickname" "avatar ." "avatar progress";
     grid-template-columns: 96px 1fr;
     position: relative;
     grid-column: 1/3;
