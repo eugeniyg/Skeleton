@@ -57,8 +57,13 @@
 
 <script setup lang="ts">
   import type { ITournamentCommon, ITournamentPage } from '~/types';
-  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
-  import type { IGame, IPaginationMeta, IWebSocketResponse } from '@skeleton/core/types';
+  import type {
+    IGame,
+    IPaginationMeta,
+    ITournament,
+    ITournamentEntryUpdatedEvent,
+    ITournamentLeaderboardUpdatedEvent,
+  } from '@skeleton/core/types';
 
   const profileStore = useProfileStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
@@ -178,7 +183,7 @@
   const playerEntrySubscription = ref<any>(undefined);
   const { createSubscription } = useWebSocket();
 
-  const updateLeaderboard = (webSocketResponse: IWebSocketResponse) => {
+  const updateLeaderboard = (webSocketResponse: ITournamentLeaderboardUpdatedEvent) => {
     if (tournamentDefiniteData.value) {
       tournamentDefiniteData.value = {
         ...tournamentDefiniteData.value,
@@ -187,7 +192,7 @@
     }
   };
 
-  const updatePlayerEntry = (webSocketResponse: IWebSocketResponse) => {
+  const updatePlayerEntry = (webSocketResponse: ITournamentEntryUpdatedEvent) => {
     if (tournamentDefiniteData.value) {
       tournamentDefiniteData.value = {
         ...tournamentDefiniteData.value,

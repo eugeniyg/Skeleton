@@ -1,5 +1,10 @@
 import { defineStore } from 'pinia';
-import type { IPlayerQuest, IPlayerQuestEventTask, IWebSocketResponse } from '@skeleton/core/types';
+import type {
+  IPlayerQuest,
+  IPlayerQuestEventTask,
+  IQuestTaskUpdatedEvent,
+  IQuestUpdatedEvent,
+} from '@skeleton/core/types';
 
 interface IQuestsStoreState {
   activeQuests: IPlayerQuest[];
@@ -113,7 +118,7 @@ export const useQuestsStore = defineStore('questsStore', {
       });
     },
 
-    questsSocketTrigger(webSocketResponse: IWebSocketResponse): void {
+    questsSocketTrigger(webSocketResponse: IQuestUpdatedEvent | IQuestTaskUpdatedEvent): void {
       if (webSocketResponse.data.event === 'quest.updated') this.updateQuest(webSocketResponse.data.quest);
       else if (webSocketResponse.data.event === 'quest.task.updated') this.updateTask(webSocketResponse.data.task);
     },

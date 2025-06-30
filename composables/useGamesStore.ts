@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { ICollection, IGame, IGameProvider, IWebSocketResponse } from '@skeleton/core/types';
+import type { IBetExceptionEvent, ICollection, IGame, IGameProvider } from '@skeleton/core/types';
 
 type MobileModalType = 'depositOrDemo' | 'deposit' | 'registerOrDemo' | 'registerOrLogin';
 interface IGamesStoreState {
@@ -93,7 +93,7 @@ export const useGamesStore = defineStore('gamesStore', {
       this.minimumBonusWagerMultiplier = minimumBonusWagerMultiplier;
     },
 
-    handleBetsEvent(socketData: IWebSocketResponse): void {
+    handleBetsEvent(socketData: IBetExceptionEvent): void {
       const betsEvent = socketData.data.event;
       if (betsEvent === 'game.bet.restricted') useEvent('restrictedBets', socketData.data.gameIdentity as string);
       else if (betsEvent === 'game.bet.max.exceed') {

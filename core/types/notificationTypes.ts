@@ -33,3 +33,10 @@ export interface INotificationsResponse extends Record<string, any> {
     totalUnread: number;
   };
 }
+
+export interface IMessengerReceivedEvent {
+  data: {
+    event: 'message.received';
+    message: IMessage;
+  };
+}

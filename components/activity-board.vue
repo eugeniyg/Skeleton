@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IEventBet, IWebSocketResponse } from '@skeleton/core/types';
+  import type { IActivityBoardUpdatedEvent, IEventBet } from '@skeleton/core/types';
   import type { IHomePage } from '~/types';
 
   const props = defineProps<{
@@ -96,13 +96,14 @@
   const { baseCurrency } = storeToRefs(globalStore);
   const dayjs = useDayjs();
 
-  const handleBoardsEvent = async (socketData: IWebSocketResponse): Promise<void> => {
+  const handleBoardsEvent = (socketData: IActivityBoardUpdatedEvent): void => {
     const betData = socketData.data.bet;
     if (betData) {
       boardData.unshift(betData);
       if (boardData.length > 11) boardData.pop();
-      await nextTick();
-      isAnimate.value = true;
+      nextTick(() => {
+        isAnimate.value = true;
+      });
     }
   };
 
@@ -118,7 +119,7 @@
     const { createSubscription } = useWebSocket();
     boardSubscription.value = createSubscription(`activity-board:boards#${selectedNavItem.value}`, handleBoardsEvent);
     try {
-      const resp: { publications: IWebSocketResponse[] } = await boardSubscription.value.history({
+      const resp: { publications: IActivityBoardUpdatedEvent[] } = await boardSubscription.value.history({
         limit: 11,
         since: null,
         reverse: true,

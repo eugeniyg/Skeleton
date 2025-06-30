@@ -2,11 +2,13 @@ import { defineStore } from 'pinia';
 import type {
   IPlayerBonus,
   IBonusCode,
-  IWebSocketResponse,
   IGame,
   IPlayerFreeSpin,
   IPlayerCashback,
   IBonus,
+  IPlayerBonusCodeUpdatedEvent,
+  IPlayerBonusUpdatedEvent,
+  IPlayerFreeSpinUpdatedEvent,
 } from '@skeleton/core/types';
 import debounce from 'lodash/debounce.js';
 import type { IProfileBonuses } from '~/types';
@@ -176,7 +178,7 @@ export const useBonusStore = defineStore('bonusStore', {
       }
     },
 
-    bonusCodeSocketTrigger(webSocketResponse: IWebSocketResponse): void {
+    bonusCodeSocketTrigger(webSocketResponse: IPlayerBonusCodeUpdatedEvent): void {
       const bonusCodeData: Maybe<IBonusCode> = webSocketResponse.data.playerBonusCode;
       this.showBonusCodeNotification(bonusCodeData?.status);
     },
@@ -209,7 +211,7 @@ export const useBonusStore = defineStore('bonusStore', {
       { leading: false }
     ),
 
-    bonusesSocketTrigger(webSocketResponse: IWebSocketResponse): void {
+    bonusesSocketTrigger(webSocketResponse: IPlayerBonusUpdatedEvent): void {
       const bonusData: Maybe<IPlayerBonus> = webSocketResponse.data.playerBonus;
       if (!bonusData) return;
 
@@ -249,7 +251,7 @@ export const useBonusStore = defineStore('bonusStore', {
       }
     },
 
-    async freeSpinsSocketTrigger(webSocketResponse: IWebSocketResponse): Promise<void> {
+    async freeSpinsSocketTrigger(webSocketResponse: IPlayerFreeSpinUpdatedEvent): Promise<void> {
       const freeSpinData: Maybe<IPlayerFreeSpin> = webSocketResponse.data.playerFreespin;
       if (!freeSpinData) return;
 
