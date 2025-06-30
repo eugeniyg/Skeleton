@@ -202,5 +202,10 @@
   "geo-restricted-type": {
     "component": "geo-restricted-type",
     "content": "geo-restricted-type"
+  },
+  "wheel-reward": {
+    "component": "wheel-reward",
+    "content": "wheel-reward",
+    "onlyLogged": true
   }
 }

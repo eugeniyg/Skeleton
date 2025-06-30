@@ -21,7 +21,7 @@ export const useWebSocket = defineStore('useWebSocket', {
     },
 
     async initWebSocket(): Promise<void> {
-      const socketUrl = import.meta.dev ? 'qa3.dev.getplatform.tech' : window.location.hostname;
+      const socketUrl = import.meta.dev ? 'qa2.dev.getplatform.tech' : window.location.hostname;
       const protocol = window.location.protocol.replace('http', 'ws');
       const profileStore = useProfileStore();
       if (profileStore?.isLoggedIn) {

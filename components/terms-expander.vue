@@ -1,14 +1,14 @@
 <template>
-  <div class="loyalty-terms">
-    <div class="loyalty-terms__header" :class="{ 'is-open': isOpen }" @click="toggle">
-      <div class="loyalty-terms__title">{{ props.title }}</div>
+  <div class="terms-expander">
+    <div class="terms-expander__header" :class="{ 'is-open': isOpen }" @click="toggle">
+      <div class="terms-expander__title">{{ props.title }}</div>
 
-      <button-base type="ghost" class="loyalty-terms__toggle" @click.stop="toggle">
+      <button-base type="ghost" class="terms-expander__toggle" @click.stop="toggle">
         <atomic-icon id="arrow_expand-open" />
       </button-base>
     </div>
 
-    <div ref="contentElement" class="loyalty-terms__content" :style="styles">
+    <div ref="contentElement" class="terms-expander__content" :style="styles">
       <atomic-text-editor :content="props.content" />
     </div>
   </div>
@@ -36,4 +36,4 @@
   });
 </script>
 
-<style src="~/assets/styles/components/loyalty/terms.scss" lang="scss" />
+<style src="~/assets/styles/components/terms-expander.scss" lang="scss" />
