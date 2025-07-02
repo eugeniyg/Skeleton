@@ -1,4 +1,4 @@
-import type { IAmountRangeItem, IBonus, IGameImages, IObserverOptions } from '@skeleton/core/types';
+import type { IAmountRangeItem, IBonus, IGameImages, IGameProvider, IObserverOptions } from '@skeleton/core/types';
 import get from 'lodash/get';
 import * as projectRules from './validationRules';
 import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
@@ -143,7 +143,6 @@ export const useProjectMethods = () => {
 
     if (imageUrl) return imageUrl;
 
-    const { getContent } = useProjectMethods();
     const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
     const verticalDefaultThumb =
       getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'defaultGameThumbs.vertical') ||
@@ -152,6 +151,32 @@ export const useProjectMethods = () => {
       getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'defaultGameThumbs.square') ||
       '/img/square-game-thumb.png';
     return orientation === 'vertical' ? verticalDefaultThumb : squareDefaultThumb;
+  };
+
+  const getProviderImageUrl = (providerData: IGameProvider | undefined): string => {
+    const { public: config } = useRuntimeConfig();
+
+    if (providerData?.customImages?.['116x40'] && config.customerCdn) {
+      const mainPath =
+        providerData?.customImages['116x40']?.['3x'] ||
+        providerData?.customImages['116x40']?.['2x'] ||
+        providerData?.customImages['116x40']['1x'];
+      return `${config.customerCdn}${mainPath}`;
+    }
+
+    if (providerData?.images?.['116x40'] && config.gamehubCdn) {
+      const mainPath =
+        providerData?.images['116x40']?.['3x'] ||
+        providerData?.images['116x40']?.['2x'] ||
+        providerData?.images['116x40']['1x'];
+      return `${config.gamehubCdn}${mainPath}`;
+    }
+
+    const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
+    return (
+      getContent(globalComponentsContent, defaultLocaleGlobalComponentsContent, 'providersSettings.defaultLogo') ||
+      '/img/provider-empty-placeholder.svg'
+    );
   };
 
   const getNicknameFromEmail = (email?: string): string => {
@@ -212,7 +237,10 @@ export const useProjectMethods = () => {
     const globalStore = useGlobalStore();
     const requestUrl = useRequestURL();
     const imageContent = metaData?.image || globalStore.globalSeo?.image;
-    const imageUrl = imageContent ? `${requestUrl.origin}${imageContent}` : undefined;
+    let imageUrl: string | undefined;
+    if (imageContent) {
+      imageUrl = imageContent.startsWith('http') ? imageContent : `${requestUrl.origin}${imageContent}`;
+    }
     const canonicalUrl = metaData?.canonicalUrl || `${requestUrl.origin}${requestUrl.pathname}`;
 
     useHead({
@@ -452,5 +480,6 @@ export const useProjectMethods = () => {
     handleExternalLink,
     awaitRefreshParallel,
     getMinBonusDeposit,
+    getProviderImageUrl,
   };
 };

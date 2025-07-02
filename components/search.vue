@@ -93,13 +93,12 @@
 
   const defaultGames = ref<IGame[]>([]);
   const getDefaultGames = async (): Promise<IGamesResponse> => {
-    const { getCollectionsList } = useGamesStore();
-    const gameCollections = await getCollectionsList();
-    const getTurbogamesId = gameCollections.find(collection => collection.identity === 'turbogames')?.id;
+    const { collectionsByCountry } = useGamesStore();
+    const getTurbogamesId = collectionsByCountry.find(collection => collection.identity === 'turbogames')?.id;
     const requestParams = {
       page: 1,
       perPage: 4,
-      collectionId: getTurbogamesId ? [getTurbogamesId] : [gameCollections[0]?.id],
+      collectionId: getTurbogamesId ? [getTurbogamesId] : [collectionsByCountry[0]?.id],
       countries: headerCountry.value ? [headerCountry.value] : undefined,
       sortBy: 'default',
       sortOrder: 'asc',

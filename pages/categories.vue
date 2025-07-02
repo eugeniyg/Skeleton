@@ -60,11 +60,13 @@
     middleware: async function (to) {
       if (to.params.categoryIdentity) return;
 
-      const { getCollectionsList } = useGamesStore();
-      const gameCategories = await getCollectionsList();
-      if (!gameCategories.length) return;
+      const { collectionsByCountry } = useGamesStore();
+      if (!collectionsByCountry.length) return;
       const { localizePath } = useProjectMethods();
-      return navigateTo({ path: localizePath(`/categories/${gameCategories[0].identity}`), query: { ...to.query } });
+      return navigateTo({
+        path: localizePath(`/categories/${collectionsByCountry[0].identity}`),
+        query: { ...to.query },
+      });
     },
   });
 
@@ -76,6 +78,7 @@
   const { openModal, closeModal } = useModalStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
+  const { gameProviders, collectionsByCountry } = useGamesStore();
 
   const contentParams = {
     contentKey: 'categoryPageContent',
@@ -153,10 +156,8 @@
   };
 
   const tags = ref<IGameProvider[]>([]);
-  const { getProviderList, getCollectionsList } = useGamesStore();
   const selectProviders = async (providersIds: string[]) => {
     await closeModal('providers');
-    const gameProviders = await getProviderList();
     const selectedProvidersData = gameProviders.filter(
       provider => providersIds.includes(provider.id) && !!provider.gameEnabledCount
     );
@@ -208,9 +209,8 @@
     setDefaultSort();
   };
 
-  const setProviders = async (): Promise<void> => {
+  const setProviders = (): void => {
     const routerProviders = route.query.provider;
-    const gameProviders = await getProviderList();
     const providersIdentities = Array.isArray(routerProviders) ? routerProviders : [routerProviders];
 
     const selectedProvidersData = gameProviders.filter(
@@ -222,10 +222,9 @@
 
   const loadCategoryData = async () => {
     resetFilters();
-    await setProviders();
+    setProviders();
 
-    const gameCollections = await getCollectionsList();
-    state.currentCategory = gameCollections.find(category => category.identity === route.params.categoryIdentity);
+    state.currentCategory = collectionsByCountry.find(category => category.identity === route.params.categoryIdentity);
     if (!state.currentCategory) {
       state.showNotFound = true;
       return;

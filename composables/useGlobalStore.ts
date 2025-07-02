@@ -201,11 +201,12 @@ export const useGlobalStore = defineStore('globalStore', {
   },
 
   actions: {
-    async getCurrencies(): Promise<void> {
+    async getCurrencies(cache?: ICurrency[]): Promise<ICurrency[]> {
       const { getCurrencies } = useCoreGlobalApi();
-      const data = await getCurrencies(1);
+      const data = cache ?? (await getCurrencies(1));
       this.currencies = data.filter(currency => currency.isEnabled);
       this.baseCurrency = data.find(currency => currency.isBase);
+      return this.currencies;
     },
 
     parseUserAgent(agent: string): void {
@@ -216,25 +217,28 @@ export const useGlobalStore = defineStore('globalStore', {
       this.browserLanguage = languages[0].code;
     },
 
-    async getLocales(): Promise<void> {
+    async getLocales(cache?: ILocale[]): Promise<ILocale[]> {
       const { getLocales } = useCoreGlobalApi();
-      const data = await getLocales();
+      const data = cache ?? (await getLocales());
       this.locales = data;
       this.defaultLocale = data.find(locale => locale.isDefault);
+      return data;
     },
 
-    async getCountries(): Promise<void> {
+    async getCountries(cache?: ICountry[]): Promise<ICountry[]> {
       const { getCountries } = useCoreGlobalApi();
 
       // TEMPORARY SOLUTION
       const disabledCountries = ['US', 'UM', 'GB', 'FR', 'NL', 'AW', 'CW', 'MF'];
-      const responseCountries = await getCountries();
+      const responseCountries = cache ?? (await getCountries());
       this.countries = responseCountries.filter(country => !disabledCountries.includes(country.code));
+      return this.countries;
     },
 
-    async getSettingsConstants(): Promise<void> {
+    async getSettingsConstants(cache?: ICoreConstants): Promise<ICoreConstants> {
       const { getCoreConstants } = useCoreGlobalApi();
-      this.settingsConstants = await getCoreConstants();
+      this.settingsConstants = cache ?? (await getCoreConstants());
+      return this.settingsConstants;
     },
 
     setCurrentLocale() {
