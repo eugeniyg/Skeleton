@@ -144,7 +144,7 @@ export const useProfileStore = defineStore('profileStore', {
       const { getActiveQuests, subscribeQuestsSocket } = useQuestsStore();
       const { getPlayerLoyalty, subscribeLoyaltySocket } = useLoyaltyStore();
       const { getPopoverNotifications, subscribeNotificationSocket } = useNotificationStore();
-      const { subscribeAccountSocket, subscribeInvoicesSocket } = useWalletStore();
+      const { subscribeAccountSocket, subscribeInvoicesSocket, getPaymentStatistics } = useWalletStore();
       const { subscribeTournamentSocket } = useTournamentsStore();
       const { subscribeWheelsSocket } = useWheelsStore();
       const { setEquivalentCurrency } = useGlobalStore();
@@ -155,6 +155,7 @@ export const useProfileStore = defineStore('profileStore', {
       if (runtimeConfig.public?.loyaltyEnabled) getPlayerLoyalty();
       getPopoverNotifications();
       getPlayerCashback();
+      getPaymentStatistics();
 
       const route = useRoute();
       const bonusesRoute = route.name === 'profile-bonuses' || route.name === 'locale-profile-bonuses';

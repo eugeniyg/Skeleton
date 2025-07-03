@@ -26,6 +26,8 @@ type ApplicationEvents = {
   webSocketReconnected: undefined;
   delayedNotification: IAlert;
   wheelSpinsIssued: string;
+  invoicesStatisticsUpdated: undefined;
+  loyaltyLevelUpdated: undefined;
 };
 
 const emitter = mitt<ApplicationEvents>();
