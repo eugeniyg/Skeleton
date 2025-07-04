@@ -44,7 +44,7 @@
       <button-base
         v-if="projectHasFreshchat"
         class="nav-mob__item"
-        :class="{ 'chat-indicator': newMessages }"
+        :class="{ 'chat-indicator': !!freshChatNewMessages }"
         @click="openChat"
       >
         <atomic-icon id="live-support" />
@@ -91,7 +91,7 @@
   });
 
   const freshchatStore = useFreshchatStore();
-  const { newMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
+  const { freshChatNewMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
 
   const openChat = () => {
     const {

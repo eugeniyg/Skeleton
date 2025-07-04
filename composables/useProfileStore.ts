@@ -81,8 +81,10 @@ export const useProfileStore = defineStore('profileStore', {
       sessionStorage.removeItem('asyncInvoiceId');
       localStorage.setItem('changeSession', this.encodeSessionChange('logout'));
 
-      const { updateChat } = useFreshchatStore();
-      updateChat();
+      const { projectHasFreshchat, updateFreshChat } = useFreshchatStore();
+      const { projectHasLiveChat } = useLiveChatStore();
+      if (projectHasLiveChat) console.log('Update live chat');
+      else if (projectHasFreshchat) updateFreshChat();
 
       const { deleteReturnGame } = useLayoutStore();
       deleteReturnGame();
@@ -220,11 +222,18 @@ export const useProfileStore = defineStore('profileStore', {
       localStorage.setItem('changeSession', this.encodeSessionChange('login'));
 
       const {
-        public: { freshchatParams },
+        public: { liveChat, freshchatParams },
       } = useRuntimeConfig();
-      const { updateChat, addFreshChatScript } = useFreshchatStore();
-      if (freshchatParams?.guestAvailable) updateChat();
-      else addFreshChatScript();
+      const { projectHasLiveChat, initializeLiveChat } = useLiveChatStore();
+      const { projectHasFreshchat, updateFreshChat, addFreshChatScript } = useFreshchatStore();
+
+      if (projectHasLiveChat) {
+        if (liveChat.guestAvailable) console.log('Update live chat');
+        else initializeLiveChat();
+      } else if (projectHasFreshchat) {
+        if (freshchatParams?.guestAvailable) updateFreshChat();
+        else addFreshChatScript();
+      }
 
       const { reconnectSocket } = useWebSocket();
       await reconnectSocket();
