@@ -82,8 +82,8 @@ export const useProfileStore = defineStore('profileStore', {
       localStorage.setItem('changeSession', this.encodeSessionChange('logout'));
 
       const { projectHasFreshchat, updateFreshChat } = useFreshchatStore();
-      const { projectHasLiveChat } = useLiveChatStore();
-      if (projectHasLiveChat) console.log('Update live chat');
+      const { projectHasLiveChat, updateLiveChat } = useLiveChatStore();
+      if (projectHasLiveChat) updateLiveChat();
       else if (projectHasFreshchat) updateFreshChat();
 
       const { deleteReturnGame } = useLayoutStore();
@@ -224,11 +224,11 @@ export const useProfileStore = defineStore('profileStore', {
       const {
         public: { liveChat, freshchatParams },
       } = useRuntimeConfig();
-      const { projectHasLiveChat, initializeLiveChat } = useLiveChatStore();
+      const { projectHasLiveChat, initializeLiveChat, updateLiveChat } = useLiveChatStore();
       const { projectHasFreshchat, updateFreshChat, addFreshChatScript } = useFreshchatStore();
 
       if (projectHasLiveChat) {
-        if (liveChat.guestAvailable) console.log('Update live chat');
+        if (liveChat.guestAvailable) updateLiveChat();
         else initializeLiveChat();
       } else if (projectHasFreshchat) {
         if (freshchatParams?.guestAvailable) updateFreshChat();
