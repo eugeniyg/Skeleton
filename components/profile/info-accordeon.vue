@@ -8,6 +8,7 @@
     <div
       ref="contentContainer"
       class="info-accordeon__content"
+      v-router-links
       v-html="DOMPurify.sanitize(marked.parseInline(props.description || '') as string, { FORBID_TAGS: ['style'] })"
     />
   </div>

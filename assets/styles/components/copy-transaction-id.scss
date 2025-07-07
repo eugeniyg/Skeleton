@@ -1,0 +1,62 @@
+.copy-transaction-id {
+  display: flex;
+  align-items: center;
+  gap: rem(4px);
+  position: relative;
+
+  &__value {
+    @include font($body-1);
+    transition: color .2s ease-in-out;
+
+    .is-active & {
+      color: var(--text-accent);
+    }
+  }
+
+  &__btn {
+    @extend %skip-btn;
+    border-radius: 0 8px 8px 0;
+    padding: rem(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: none;
+    width: 20px;
+    height: 20px;
+
+    .icon {
+      --icon-size: 20px;
+      --color: var(--icon-secondary);
+
+      .is-active & {
+        --color: var(--icon-accent);
+      }
+    }
+
+    @include use-hover {
+      cursor: pointer;
+
+      &:not(.is-active &) {
+        &:hover {
+          .icon {
+            --color: var(--text-accent);
+          }
+        }
+      }
+    }
+  }
+
+  &__tooltip {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    padding: 2px 8px;
+    background-color: var(--support-system-low-contrast);
+    color: var(--text-primary);
+    white-space: nowrap;
+
+    @include font($body-1);
+  }
+}

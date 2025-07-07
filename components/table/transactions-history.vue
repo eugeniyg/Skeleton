@@ -17,6 +17,10 @@
         }}
       </div>
 
+      <div class="td">
+        <copy-transaction-id :value="invoice.id" />
+      </div>
+
       <div class="td">{{ invoice.paymentMethod }}</div>
 
       <div class="td">

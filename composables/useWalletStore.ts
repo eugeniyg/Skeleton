@@ -1,5 +1,11 @@
 import { defineStore, storeToRefs } from 'pinia';
-import type { IAccount, IAccountBalanceUpdateEvent, IInvoiceUpdatedEvent, ISocketInvoice } from '@skeleton/core/types';
+import type {
+  IAccount,
+  IAccountBalanceUpdateEvent,
+  IInvoiceUpdatedEvent,
+  IInvoiceStatistics,
+  ISocketInvoice,
+} from '@skeleton/core/types';
 
 interface IWalletState {
   accounts: IAccount[];
@@ -12,6 +18,8 @@ interface IWalletState {
   accountSwitching: Promise<any> | undefined;
   requestPaymentMethodsRegion: Maybe<string>;
   selectedPaymentMethodsRegion: Maybe<string>;
+  invoicesStatistics: IInvoiceStatistics[] | undefined;
+  paymentStatisticsLoading: Promise<any> | undefined;
 }
 
 export const useWalletStore = defineStore('walletStore', {
@@ -26,6 +34,8 @@ export const useWalletStore = defineStore('walletStore', {
     accountSwitching: undefined,
     requestPaymentMethodsRegion: undefined,
     selectedPaymentMethodsRegion: undefined,
+    invoicesStatistics: undefined,
+    paymentStatisticsLoading: undefined,
   }),
 
   getters: {
@@ -77,9 +87,30 @@ export const useWalletStore = defineStore('walletStore', {
       const globalStore = useGlobalStore();
       return !!globalStore.equivalentCurrency && this.activeAccountType === 'crypto';
     },
+
+    totalBaseCurrencyDepositAmount(): string | undefined {
+      if (!this.invoicesStatistics) return undefined;
+      const totalAmount = this.invoicesStatistics.reduce((totalAmount, currentCurrencyItemStatistic) => {
+        return totalAmount + (currentCurrencyItemStatistic.depositsSumBaseCurrency ?? 0);
+      }, 0);
+
+      const { baseCurrency } = useGlobalStore();
+      return `${totalAmount} ${baseCurrency?.code}`;
+    },
   },
 
   actions: {
+    async getPaymentStatistics(): Promise<void> {
+      const { getInvoicesStatistics } = useCoreWalletApi();
+      try {
+        this.paymentStatisticsLoading = getInvoicesStatistics();
+        this.invoicesStatistics = await this.paymentStatisticsLoading;
+        this.paymentStatisticsLoading = undefined;
+      } catch {
+        this.invoicesStatistics = undefined;
+      }
+    },
+
     async getUserAccounts(): Promise<void> {
       const { getAccounts } = useCoreWalletApi();
       this.accounts = await getAccounts();
@@ -235,6 +266,7 @@ export const useWalletStore = defineStore('walletStore', {
         const { getDepositBonusCode, getDepositBonuses } = useBonusStore();
         getDepositBonusCode();
         getDepositBonuses();
+        this.getPaymentStatistics();
         useEvent('depositInvoiceUpdated');
 
         const cmsMessage = invoiceSuccess
