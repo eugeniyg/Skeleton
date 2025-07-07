@@ -1,11 +1,3 @@
-import type { IAccount, ISocketInvoice } from './walletTypes';
-import type { IGameImages, IWinner } from './gameTypes';
-import type { IBonusCode, IPlayerBonus, IPlayerFreeSpin } from './bonusTypes';
-import type { IPlayerQuest, IPlayerQuestEventTask } from '@skeleton/core/types/questTypes';
-import type { IPlayerLoyaltyAccount } from '@skeleton/core/types/profileTypes';
-import type { IMessage } from '@skeleton/core/types/notificationTypes';
-import type { ITournamentParticipant, ITournamentPrize } from '@skeleton/core/types/tournamentsTypes';
-
 export interface IRate extends Record<string, any> {
   rate: number;
   rateTime: string;
@@ -140,71 +132,6 @@ export interface IPaginationMeta extends Record<string, any> {
   perPage: number;
   totalPages: number;
   totalRows: number;
-}
-
-export interface IEventBet extends Record<string, any> {
-  id: string;
-  nickname: string | null;
-  amount: number;
-  baseCurrencyAmount: number;
-  currency: string;
-  payout: number;
-  baseCurrencyPayout: number;
-  gameId: string;
-  gameName: string;
-  gameImages: IGameImages;
-  gameCustomImages: IGameImages;
-  createdAt: string;
-}
-
-export interface IEventTournament extends Record<string, any> {
-  id: string;
-  title: string;
-  identity: string;
-  state: number;
-  prizes: ITournamentPrize[];
-  endAt: string;
-}
-
-export interface IEventTournamentEntry extends Record<string, any> {
-  tournamentId: string;
-  playerId: string;
-  points: number;
-  place: number;
-}
-
-export interface IEventWheel extends Record<string, any> {
-  id: string;
-  identity: string;
-  title: string;
-}
-
-export interface IWebSocketResponse extends Record<string, any> {
-  data: {
-    event: string;
-    winner?: IWinner;
-    account?: IAccount;
-    invoice?: ISocketInvoice;
-    playerBonusCode?: IBonusCode;
-    playerBonus?: IPlayerBonus;
-    playerFreespin?: IPlayerFreeSpin;
-    gameId?: string;
-    gameIdentity?: string;
-    quest?: IPlayerQuest;
-    task?: IPlayerQuestEventTask;
-    playerAccount?: IPlayerLoyaltyAccount;
-    bet?: IEventBet;
-    message?: IMessage;
-    tournament?: IEventTournament;
-    leaderboard?: ITournamentParticipant[];
-    entry?: IEventTournamentEntry;
-    playerId?: string;
-    wheel?: IEventWheel;
-    amount?: number; // Wheel spins count
-  };
-  gen: undefined;
-  offset: undefined;
-  seq: undefined;
 }
 
 export interface IInitUserInfo extends Record<string, any> {

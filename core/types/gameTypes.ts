@@ -1,4 +1,5 @@
 import type { IPaginationMeta } from './globalTypes';
+import type { IPlayerBonus } from './bonusTypes';
 
 export interface IGameImages extends Record<string, any> {
   '200x200': {
@@ -170,4 +171,51 @@ export interface IGamesRequest extends Record<string, any> {
   sortOrder?: string;
   page?: number;
   perPage?: number;
+}
+
+export interface IGameWinnerEvent {
+  data: {
+    event: 'game.winner';
+    winner: IWinner;
+  };
+}
+
+export interface IBetExceptionEvent {
+  data: {
+    event: 'game.bet.restricted' | 'game.bet.max.exceed';
+    playerBonus: IPlayerBonus;
+    gameId: string;
+    gameIdentity: string;
+  };
+}
+
+export interface IBetBalanceInsufficientEvent {
+  data: {
+    event: 'game.bet.balance-insufficient';
+    gameId: string;
+    gameIdentity: string;
+    token: string;
+  };
+}
+
+export interface IEventBet extends Record<string, any> {
+  id: string;
+  nickname: string | null;
+  amount: number;
+  baseCurrencyAmount: number;
+  currency: string;
+  payout: number;
+  baseCurrencyPayout: number;
+  gameId: string;
+  gameName: string;
+  gameImages: IGameImages;
+  gameCustomImages: IGameImages;
+  createdAt: string;
+}
+
+export interface IActivityBoardUpdatedEvent {
+  data: {
+    event: 'activity-board.updated';
+    bet: IEventBet;
+  };
 }

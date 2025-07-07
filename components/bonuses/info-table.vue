@@ -51,7 +51,7 @@
   const walletStore = useWalletStore();
   const { activeAccount, activeAccountType } = storeToRefs(walletStore);
   const { formatBalance, getEquivalentFromBase, getContent, getSumFromAmountItems } = useProjectMethods();
-  const { getProviderList } = useGamesStore();
+  const { gameProviders } = useGamesStore();
 
   const getParamLabel = (paramName: string): string | undefined => {
     return getContent(props.currentLocaleData, props.defaultLocaleData, `paramLabels.${paramName}`);
@@ -197,7 +197,6 @@
   };
 
   const getFreeSpinParams = async (): Promise<IParam[]> => {
-    const gameProviders = await getProviderList();
     const gameProviderId = props.bonusInfo.providerId || props.bonusInfo.assignConditions?.providerId;
     const providerName = gameProviders.find(provider => provider.id === gameProviderId)?.name;
 
