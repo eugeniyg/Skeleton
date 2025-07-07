@@ -68,12 +68,12 @@
   const profileStore = useProfileStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
   const { getContent } = useProjectMethods();
-  const { getCollectionsList } = useGamesStore();
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
   const route = useRoute();
   const routeIdentity = route.params.identity as string;
   const routeFinished = route.query.finished as string;
+  const { collectionsByCountry } = useGamesStore();
 
   const { getTournaments, getTournament } = useCoreTournamentsApi();
   const getTournamentGeneralData = async (): Promise<ITournament> => {
@@ -122,9 +122,8 @@
   const tournamentDefiniteData = ref<ITournament | undefined>();
   const tournamentData = computed(() => tournamentDefiniteData.value || pageData.value?.tournamentGeneralData);
   const requestCollections = ref<string[]>([]);
-  const setCollections = async (tournamentCollections: string[], collectionsExcluded: boolean): Promise<void> => {
-    const gameCollections = await getCollectionsList();
-    requestCollections.value = gameCollections
+  const setCollections = (tournamentCollections: string[], collectionsExcluded: boolean): void => {
+    requestCollections.value = collectionsByCountry
       .filter(collection => {
         if (collectionsExcluded) return !tournamentCollections.includes(collection.identity);
         else return tournamentCollections.includes(collection.identity);
@@ -234,7 +233,7 @@
   const getInitialData = async (): Promise<void> => {
     if (!tournamentData.value) return;
 
-    await setCollections(
+    setCollections(
       tournamentData.value.conditions?.gameCollections || [],
       tournamentData.value.conditions?.gameCollectionsExcluded || false
     );

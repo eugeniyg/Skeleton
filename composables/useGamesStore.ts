@@ -3,8 +3,8 @@ import type { IBetExceptionEvent, ICollection, IGame, IGameProvider } from '@ske
 
 type MobileModalType = 'depositOrDemo' | 'deposit' | 'registerOrDemo' | 'registerOrLogin';
 interface IGamesStoreState {
-  gameProvidersPromise: Promise<IGameProvider[]> | null;
-  gameCollectionsPromise: Promise<ICollection[]> | null;
+  gameProviders: IGameProvider[];
+  collectionsList: ICollection[];
   favoriteGames: IGame[];
   betsSubscription: any;
   mobileGameModalType: Maybe<MobileModalType>;
@@ -15,8 +15,8 @@ interface IGamesStoreState {
 
 export const useGamesStore = defineStore('gamesStore', {
   state: (): IGamesStoreState => ({
-    gameProvidersPromise: null,
-    gameCollectionsPromise: null,
+    gameProviders: [],
+    collectionsList: [],
     favoriteGames: [],
     betsSubscription: undefined,
     mobileGameModalType: undefined,
@@ -25,45 +25,42 @@ export const useGamesStore = defineStore('gamesStore', {
     minimumBonusWagerMultiplier: 1,
   }),
 
+  getters: {
+    collectionsByCountry(state): ICollection[] {
+      const globalStore = useGlobalStore();
+      if (!globalStore.headerCountry) return state.collectionsList;
+
+      const filteredCollections: ICollection[] = [];
+      state.collectionsList.forEach(collection => {
+        const correctCondition =
+          !collection.countries.length || collection.countries.includes(globalStore.headerCountry as string);
+        if (correctCondition) filteredCollections.push(collection);
+      });
+      return filteredCollections;
+    },
+  },
+
   actions: {
-    async getProvidersRequest(): Promise<IGameProvider[]> {
+    async getProviders(cache?: IGameProvider[]): Promise<IGameProvider[]> {
       const { getGameProviders } = useCoreGamesApi();
-
       try {
-        return await getGameProviders();
+        this.gameProviders = cache ?? (await getGameProviders());
       } catch {
-        return [];
+        this.gameProviders = [];
       }
+
+      return this.gameProviders;
     },
 
-    async getProviderList(): Promise<IGameProvider[]> {
-      if (!this.gameProvidersPromise) {
-        this.gameProvidersPromise = this.getProvidersRequest();
-      }
-      return this.gameProvidersPromise;
-    },
-
-    async getCollectionsRequest(): Promise<ICollection[]> {
+    async getCollections(cache?: ICollection[]): Promise<ICollection[]> {
       const { getGameCollections } = useCoreGamesApi();
-
       try {
-        const gameCollections = await getGameCollections();
-        const globalStore = useGlobalStore();
-        if (!globalStore.headerCountry) return gameCollections;
-
-        return gameCollections.filter(collection => {
-          return !collection.countries.length || collection.countries.includes(globalStore.headerCountry as string);
-        });
+        this.collectionsList = cache ?? (await getGameCollections());
       } catch {
-        return [];
+        this.collectionsList = [];
       }
-    },
 
-    async getCollectionsList(): Promise<ICollection[]> {
-      if (!this.gameCollectionsPromise) {
-        this.gameCollectionsPromise = this.getCollectionsRequest();
-      }
-      return this.gameCollectionsPromise;
+      return this.collectionsList;
     },
 
     async getFavoriteGames(): Promise<void> {
