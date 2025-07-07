@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { IPlayerLoyaltyAccount, IWebSocketResponse } from '@skeleton/core/types';
+import type { ILoyaltyUpdatedEvent, IPlayerLoyaltyAccount } from '@skeleton/core/types';
 
 interface ILoyaltyStoreState {
   loyaltyAccount: Maybe<IPlayerLoyaltyAccount>;
@@ -55,7 +55,7 @@ export const useLoyaltyStore = defineStore('loyaltyStore', {
       this.loyaltyAccount = await getPlayerLoyaltyAccount();
     },
 
-    loyaltySocketTrigger({ data }: IWebSocketResponse): void {
+    loyaltySocketTrigger({ data }: ILoyaltyUpdatedEvent): void {
       const oldLevelValue = this.loyaltyAccount?.currentLevel?.order;
       const newLevelValue = data.playerAccount?.currentLevel?.order;
       const showNewLevelModal = oldLevelValue && newLevelValue && oldLevelValue < newLevelValue;

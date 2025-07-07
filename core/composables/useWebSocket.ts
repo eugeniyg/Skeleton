@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { Centrifuge } from 'centrifuge';
-import type { IWebSocketResponse } from '@skeleton/core/types';
 
 export type ISocketState = {
   webSocket: any;
@@ -41,7 +40,7 @@ export const useWebSocket = defineStore('useWebSocket', {
       useEvent('webSocketReconnected');
     },
 
-    createSubscription(channel: string, callback?: (data: IWebSocketResponse) => void) {
+    createSubscription<T>(channel: string, callback?: (data: T) => void) {
       const subscription = this.webSocket.getSubscription(channel) || this.webSocket.newSubscription(channel);
       if (callback) subscription.on('publication', callback);
       subscription.subscribe();

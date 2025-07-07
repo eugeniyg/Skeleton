@@ -7,3 +7,5 @@ export * from './bonusTypes';
 export * from './questTypes';
 export * from './riskTypes';
 export * from './notificationTypes';
+export * from './tournamentsTypes';
+export * from './wheelsTypes';

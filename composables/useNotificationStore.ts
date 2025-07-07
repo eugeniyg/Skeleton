@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { IMessage, IWebSocketResponse } from '@skeleton/core/types';
+import type { IMessage, IMessengerReceivedEvent } from '@skeleton/core/types';
 
 interface INotificationStoreState {
   unreadCount: number;
@@ -57,7 +57,7 @@ export const useNotificationStore = defineStore('notificationStore', {
       }
     },
 
-    newNotificationTrigger(webSocketResponse: IWebSocketResponse): void {
+    newNotificationTrigger(webSocketResponse: IMessengerReceivedEvent): void {
       const notificationTitle = webSocketResponse.data?.message?.content?.title;
       this.showNotificationAlert(notificationTitle);
       this.unreadCount += 1;
