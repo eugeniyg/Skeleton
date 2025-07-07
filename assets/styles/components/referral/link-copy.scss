@@ -1,0 +1,130 @@
+.referral-link-copy {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin-top: 16px;
+
+  @include media(md) {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr auto;
+    grid-column-gap: 12px;
+  }
+
+  &.is-focused {
+    .referral-link-copy__row {
+      border-color: var(--border-click);
+      --bg: var(--field-00);
+    }
+  }
+
+  @extend %input-label;
+
+  &__row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: var(--bg, var(--field-00));
+    padding-right: 4px;
+    border-radius: var(--cornerRadius-mapped-input-md, 16px);
+    border: 1px solid var(--field-00);
+
+    @include media(md) {
+      position: static;
+    }
+  }
+
+  &__field {
+    background-color: transparent;
+    padding: 11px 16px;
+    border: 1px solid var(--field-00);
+    color: var(--text-primary);
+    transition: border-color .2s ease-in-out;
+    flex-grow: 1;
+    @include font($body-2);
+
+    &::placeholder {
+      color: var(--text-tertiary);
+    }
+  }
+
+  &__clone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 0;
+    max-width: 100%;
+    display: inline-block;
+    pointer-events: none;
+    text-wrap: nowrap;
+    overflow: auto;
+
+    span {
+      @include font($body-2);
+      padding: 0 !important;
+    }
+  }
+
+
+  &__desktop-btn {
+    --bg: var(--layer-03-main);
+    border-radius: var(--cornerRadius-mapped-button-sm, 12px);
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: none;
+    width: 32px;
+    height: 32px;
+    @extend %skip-btn;
+
+    @include media(md) {
+      display: none;
+    }
+
+    .icon {
+      --icon-size: 20px;
+      color: var(--text-primary);
+    }
+  }
+
+  &__tooltip {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    right: 4px;
+    margin: 0 auto;
+    padding: 2px 8px;
+    background-color: var(--green-700);
+    color: var(--text-primary);
+    white-space: nowrap;
+    @include font($body-1);
+  }
+
+  &__mobile-btn {
+    --width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 10px 24px;
+    justify-content: center;
+    gap: 4px;
+    align-self: stretch;
+    border-radius: var(--cornerRadius-mapped-button-md, 16px);
+    margin-top: 8px;
+    color: var(--text-primary);
+    @include font($heading-2);
+
+    @extend %btn-primary;
+
+    @include media(md) {
+      height: 100%;
+      margin-top: 0;
+    }
+
+    .icon {
+      --icon-size: 20px;
+    }
+  }
+}

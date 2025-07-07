@@ -1,0 +1,21 @@
+.referral-unavailable-msg {
+  display: flex;
+  padding: 12px;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: var(--cornerRadius-mapped-input-md, 16px);
+  border: 1px solid var(--support-warning-default);
+  flex-grow: 1;
+  background: var(--layer-02);
+  box-shadow: var(--shadow-layer);
+  margin-top: 12px;
+
+  &__icon {
+  }
+
+  &__text {
+    color: var(--text-primary);
+    @include font($body-0);
+  }
+}

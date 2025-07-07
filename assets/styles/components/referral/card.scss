@@ -1,0 +1,116 @@
+.referral-card {
+  margin-top: 40px;
+  display: grid;
+  padding: 20px;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+      "title title"
+      "media content"
+      "footer footer";
+  border-radius: var(--cornerRadius-mapped-system-graund-layer, 24px);
+  background: var(--layer-01);
+
+  @include media(md) {
+    margin-top: 24px;
+    grid-template-areas:
+      "media title"
+      "media content"
+      "media footer";
+  }
+
+  &__media {
+    width: 104px;
+    height: 82px;
+    flex-shrink: 0;
+    align-self: center;
+    grid-area: media;
+
+    @include media(md) {
+      width: 152px;
+      height: 120px;
+      margin-right: 16px;
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+    }
+  }
+
+  &__content {
+    display: flex;
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    border-radius: 8px;
+    background: var(--layer-03-low-contrast);
+    grid-area: content;
+    margin-top: 16px;
+
+    @include media(md) {
+      flex-direction: row;
+    }
+  }
+
+  &__title {
+    color: var(--text-primary);
+    @include font($subheading-4);
+    text-align: center;
+    grid-area: title;
+
+    @include media(md) {
+      text-align: left;
+    }
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    flex-grow: 1;
+    align-items: flex-start;
+    width: 100%;
+    color: var(--text-tertiary);
+
+    &-count {
+      @include font($subheading-2);
+      margin-bottom: 4px;
+
+      &:first-of-type {
+        color: var(--text-primary);
+      }
+    }
+
+
+    &-divider {
+      height: 1px;
+      background: var(--border-02-low-contrast);
+      margin: 8px 0;
+      width: 100%;
+
+      @include media(md) {
+        margin: 0 16px;
+        width: 1px;
+        height: 100%;
+      }
+    }
+
+    &-header {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      position: relative;
+    }
+
+    &-title {
+      color: var(--text-tertiary);
+      @include font($subheading-0);
+    }
+  }
+
+  &__footer {
+    grid-area: footer;
+  }
+}
