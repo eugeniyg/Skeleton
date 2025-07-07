@@ -31,6 +31,8 @@
 
           <div class="items">
             <div class="nickname">{{ userNickname }}</div>
+            
+            <atomic-external-id />
 
             <div v-show="profile?.firstName || profile?.lastName" class="item">
               <atomic-icon id="user" />
