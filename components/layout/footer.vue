@@ -65,6 +65,7 @@
         <div
           v-if="layoutData?.footer?.custom?.description || defaultLocaleLayoutData?.footer?.custom?.description"
           class="info__text"
+          v-router-links
           v-html="customLicenceDescription"
         />
       </div>
