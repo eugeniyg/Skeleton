@@ -12,8 +12,8 @@ interface IProfileStoreState {
   socialAuthEmailError: boolean;
   tokenCookieKey: string;
   onlineSubscription: any;
-  fingerprintVisitor: Promise<string> | null;
   isPwaRoute: boolean;
+  fingerprintPromise: Promise<string> | null;
 }
 
 export const useProfileStore = defineStore('profileStore', {
@@ -26,8 +26,8 @@ export const useProfileStore = defineStore('profileStore', {
     socialAuthEmailError: false,
     tokenCookieKey: 'access_token',
     onlineSubscription: undefined,
-    fingerprintVisitor: null,
     isPwaRoute: false,
+    fingerprintPromise: null,
   }),
 
   getters: {
@@ -42,6 +42,38 @@ export const useProfileStore = defineStore('profileStore', {
   },
 
   actions: {
+    async getFingerprintRequest(): Promise<string> {
+      const {
+        public: { fingerprintApiKey, fingerprintEndpoint },
+      } = useRuntimeConfig();
+
+      if (fingerprintApiKey) {
+        const { default: FingerprintJS } = await import('@fingerprintjs/fingerprintjs-pro');
+
+        const fp = await FingerprintJS.load({
+          apiKey: fingerprintApiKey,
+          endpoint: [fingerprintEndpoint as string, FingerprintJS.defaultEndpoint],
+          scriptUrlPattern: [
+            `${fingerprintEndpoint}/web/v<version>/<apiKey>/loader_v<loaderVersion>.js`,
+            FingerprintJS.defaultScriptUrlPattern,
+          ],
+        });
+        const result = await fp.get();
+        return result.visitorId;
+      } else {
+        const { default: FingerprintJS } = await import('@fingerprintjs/fingerprintjs');
+
+        const fp = await FingerprintJS.load();
+        const result = await fp.get();
+        return result.visitorId;
+      }
+    },
+
+    getFingerprintVisitor(): Promise<string> {
+      if (!this.fingerprintPromise) this.fingerprintPromise = this.getFingerprintRequest();
+      return this.fingerprintPromise;
+    },
+
     setSessionToken(tokenValue: string): void {
       const cookieToken = useCookie(this.tokenCookieKey, { maxAge: 60 * 60 * 24 * 365 });
       cookieToken.value = tokenValue;
@@ -234,7 +266,7 @@ export const useProfileStore = defineStore('profileStore', {
 
     async logIn(loginData: any): Promise<void> {
       const { submitLoginData } = useCoreAuthApi();
-      const fingerprint = (await this.fingerprintVisitor) || undefined;
+      const fingerprint = await this.getFingerprintVisitor();
       const submitResult = await submitLoginData({
         ...loginData,
         fingerprint,
@@ -254,7 +286,7 @@ export const useProfileStore = defineStore('profileStore', {
 
     async loginSocial(data: ISocialCallbackData): Promise<void> {
       const { submitSocialLoginData } = useCoreAuthApi();
-      const fingerprint = (await this.fingerprintVisitor) || undefined;
+      const fingerprint = await this.getFingerprintVisitor();
       const affiliateTag = useCookie('affiliateTag');
       const globalData = useGlobalStore();
       const submitResult = await submitSocialLoginData({
@@ -286,7 +318,7 @@ export const useProfileStore = defineStore('profileStore', {
 
     async autoLogin(token: string): Promise<void> {
       const { submitAutologinData } = useCoreAuthApi();
-      const fingerprint = (await this.fingerprintVisitor) || undefined;
+      const fingerprint = await this.getFingerprintVisitor();
       const submitResult = await submitAutologinData({
         token,
         fingerprint,
@@ -296,7 +328,7 @@ export const useProfileStore = defineStore('profileStore', {
 
     async registration(registrationData: any): Promise<void> {
       const { submitRegistrationData } = useCoreAuthApi();
-      const fingerprint = (await this.fingerprintVisitor) || undefined;
+      const fingerprint = await this.getFingerprintVisitor();
       const affiliateTag = useCookie('affiliateTag');
       const submitResult = await submitRegistrationData({
         ...registrationData,
@@ -313,7 +345,7 @@ export const useProfileStore = defineStore('profileStore', {
 
     async phoneRegistration(registrationData: any): Promise<void> {
       const { registerByPhone } = useCoreAuthApi();
-      const fingerprint = (await this.fingerprintVisitor) || undefined;
+      const fingerprint = await this.getFingerprintVisitor();
       const affiliateTag = useCookie('affiliateTag');
       const submitResult = await registerByPhone({
         ...registrationData,
