@@ -2,6 +2,8 @@ import { defineStore } from 'pinia';
 import type { IProfile, IAuthorizationResponse, IParsedToken, ISocialCallbackData } from '@skeleton/core/types';
 import { jwtDecode } from 'jwt-decode';
 import { isStandalonePWA } from 'ua-parser-js/helpers';
+import ProFingerprintJS from '@fingerprintjs/fingerprintjs-pro';
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 interface IProfileStoreState {
   refreshPromise: Promise<string> | null;
@@ -48,21 +50,17 @@ export const useProfileStore = defineStore('profileStore', {
       } = useRuntimeConfig();
 
       if (fingerprintApiKey) {
-        const { default: FingerprintJS } = await import('@fingerprintjs/fingerprintjs-pro');
-
-        const fp = await FingerprintJS.load({
+        const fp = await ProFingerprintJS.load({
           apiKey: fingerprintApiKey,
-          endpoint: [fingerprintEndpoint as string, FingerprintJS.defaultEndpoint],
+          endpoint: [fingerprintEndpoint as string, ProFingerprintJS.defaultEndpoint],
           scriptUrlPattern: [
             `${fingerprintEndpoint}/web/v<version>/<apiKey>/loader_v<loaderVersion>.js`,
-            FingerprintJS.defaultScriptUrlPattern,
+            ProFingerprintJS.defaultScriptUrlPattern,
           ],
         });
         const result = await fp.get();
         return result.visitorId;
       } else {
-        const { default: FingerprintJS } = await import('@fingerprintjs/fingerprintjs');
-
         const fp = await FingerprintJS.load();
         const result = await fp.get();
         return result.visitorId;
