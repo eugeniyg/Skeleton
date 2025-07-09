@@ -15,6 +15,7 @@ import type {
   ILoyaltyLevelsResponse,
   IReferralsResponse,
   IReferralsRequest,
+  IReferralsSettings,
 } from '../types';
 import { useApiAuthInstance } from '@skeleton/core/assets/apiAuthInstance';
 import { useApiGuestInstance } from '@skeleton/core/assets/apiGuestInstance';
@@ -127,6 +128,11 @@ export const useCoreProfileApi = () => {
     return response;
   };
 
+  const getReferralsSettings = async (): Promise<IReferralsSettings> => {
+    const { data } = await useApiAuthInstance('/api/player/referrals-settings');
+    return data;
+  };
+
   return {
     getProfile,
     getProfileFields,
@@ -147,6 +153,7 @@ export const useCoreProfileApi = () => {
     getSumsubToken,
     getPlayerLoyaltyAccount,
     getLoyaltyLevels,
+    getReferralsSettings,
     getPlayerReferrals,
   };
 };

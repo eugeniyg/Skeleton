@@ -10,7 +10,19 @@
   import type { IProfilePages } from '~/types';
   import camelCase from 'lodash/camelCase';
 
+  definePageMeta({
+    middleware: async function (to) {
+      const { localizePath } = useProjectMethods();
+      const { settingsConstants } = useGlobalStore();
+      if (!settingsConstants?.player?.referral?.enabled && to.path === localizePath('/profile/referral')) {
+        return navigateTo({ path: localizePath(`/profile/info`), query: { ...to.query } });
+      }
+    },
+  });
+
   const { getProfileFields } = useFieldsStore();
+  const { settingsConstants } = useGlobalStore();
+
   const contentParams = {
     contentKey: 'profilePages',
     contentRoute: ['profile'],
@@ -50,7 +62,11 @@
   const profileMenu = computed<{ id: string; title: string; url: string }[]>(() => {
     if (!profilePages?.children?.length) return [];
 
-    return profilePages.children.map(page => {
+    const filteredChildren = !settingsConstants?.player?.referral?.enabled
+      ? profilePages.children.filter(page => page.path !== 'referral')
+      : profilePages.children;
+
+    return filteredChildren.map(page => {
       const pageId = page.path;
       return {
         id: pageId,

@@ -195,7 +195,7 @@ export interface ILoyaltyLevel {
 }
 
 export interface ILoyaltyLevelsResponse extends Record<string, any> {
-  data: { referrals: IReferrals[] };
+  data: { referrals: IReferralItem[] };
   meta: IPaginationMeta;
 }
 
@@ -206,7 +206,13 @@ export interface IReferralsRequest extends Record<string, any> {
   totalRows?: number;
 }
 
-export interface IReferrals {
+export interface IReferralsSettings {
+  enabled: boolean;
+  maxReferralCount: number | null;
+  ownerBonusId: string | null;
+}
+
+export interface IReferralItem {
   qualified: number;
   registrationDate: string;
   qualificationDate: string | null;
@@ -214,6 +220,6 @@ export interface IReferrals {
 }
 
 export interface IReferralsResponse extends Record<string, any> {
-  data: IReferrals[];
+  data: IReferralItem[];
   meta: IPaginationMeta;
 }

@@ -4,16 +4,11 @@
 
     <referral-info />
 
-    <referral-card :qualifiedCount />
+    <referral-card :total-count="referralsList.length" />
 
     <referral-how-it-works v-if="isHowItWorksExist" />
 
-    <referral-rewards
-      v-if="referralsList.length && !isLoading"
-      :referralsList
-      :pageMeta
-      @change-Page="changePage"
-    />
+    <referral-rewards v-if="referralsList.length && !isLoading" :referralsList :pageMeta @change-Page="changePage" />
 
     <referral-faq v-if="isFaqExist" />
   </div>
@@ -21,12 +16,12 @@
 
 <script setup lang="ts">
   import type { IProfileReferral } from '~/types';
-  import type { IPaginationMeta, IReferrals, IReferralsRequest } from '@skeleton/core/types';
+  import type { IPaginationMeta, IReferralItem, IReferralsRequest } from '@skeleton/core/types';
 
   const { getContent } = useProjectMethods();
   const { getPlayerReferrals } = useCoreProfileApi();
 
-  const referralsList = ref<IReferrals[]>([]);
+  const referralsList = ref<IReferralItem[]>([]);
   const pageMeta = ref<Maybe<IPaginationMeta>>(undefined);
   const isLoading = ref(false);
 
@@ -75,12 +70,12 @@
     await getReferralsData(page);
   };
 
-  const qualifiedCount = computed(() => {
-    return referralsList.value.filter(referral => referral.qualified === 1).length;
-  });
-
   onMounted(async () => {
-    await getReferralsData();
+    try {
+      await getReferralsData();
+    } catch (error) {
+      console.error('Error fetching referrals data:', error);
+    }
   });
 </script>
 

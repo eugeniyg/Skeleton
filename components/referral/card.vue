@@ -11,18 +11,22 @@
         <div class="referral-card__item-header" data-tooltip-parent>
           <span class="referral-card__item-title">
             {{ getContent(referralContent, defaultLocaleReferralContent, 'card.totalReferrals.title') }}
+
+            <span>{{ referralId }}</span>
           </span>
           <atomic-tooltip :text="totalReferralsTooltip" />
         </div>
 
         <div class="referral-card__item-counter">
-          <span class="referral-card__item-count">4</span>
-          <span class="referral-card__item-count-divider">/</span>
-          <span class="referral-card__item-count">10</span>
+          <span class="referral-card__item-count">{{ props.totalCount }}</span>
+          <template v-if="profile?.referralMaxCount">
+            <span class="referral-card__item-count-divider">/</span>
+            <span class="referral-card__item-count">{{ profile?.referralMaxCount }}</span>
+          </template>
         </div>
       </div>
 
-      <template v-if="props.qualifiedCount">
+      <template v-if="profile?.qualifiedReferralsCount">
         <div class="referral-card__item-divider" />
 
         <div class="referral-card__item">
@@ -34,7 +38,7 @@
           </div>
 
           <div class="referral-card__item-counter">
-            <span class="referral-card__item-count">{{ props.qualifiedCount }}</span>
+            <span class="referral-card__item-count">{{ profile?.qualifiedReferralsCount }}</span>
           </div>
         </div>
       </template>
@@ -50,8 +54,10 @@
 <script setup lang="ts">
   import type { IProfileReferral } from '~/types';
 
+  const { getReferralsSettings } = useCoreProfileApi();
+
   const props = defineProps<{
-    qualifiedCount: number;
+    totalCount: number;
   }>();
 
   const profileStore = useProfileStore();
@@ -75,6 +81,15 @@
   const createLink = (): string => {
     return `${window.location.host}/?ref=${profile.value?.referralCode}`;
   };
+
+  onMounted(async () => {
+    try {
+      const { maxReferralCount, ownerBonusId } = await getReferralsSettings();
+      console.log({ maxReferralCount, ownerBonusId });
+    } catch (error) {
+      console.error('Error fetching referral settings:', error);
+    }
+  });
 </script>
 
 <style src="~/assets/styles/components/referral/card.scss" lang="scss" />
