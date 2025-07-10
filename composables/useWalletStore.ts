@@ -106,6 +106,7 @@ export const useWalletStore = defineStore('walletStore', {
         this.paymentStatisticsLoading = getInvoicesStatistics();
         this.invoicesStatistics = await this.paymentStatisticsLoading;
         this.paymentStatisticsLoading = undefined;
+        useEvent('invoicesStatisticsUpdated');
       } catch {
         this.invoicesStatistics = undefined;
       }
