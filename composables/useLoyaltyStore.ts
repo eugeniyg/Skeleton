@@ -70,6 +70,7 @@ export const useLoyaltyStore = defineStore('loyaltyStore', {
         const { openModal } = useModalStore();
         openModal('loyalty-level');
       }
+      useEvent('loyaltyLevelUpdated');
     },
 
     subscribeLoyaltySocket(): void {
