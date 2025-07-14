@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import copy from 'copy-to-clipboard';
   import type { IProfileInfo } from '~/types';
 

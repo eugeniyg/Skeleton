@@ -72,8 +72,8 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IProfileVerification } from '~/types';
+  import { sendOtp, phoneVerification } from '@skeleton/api/auth';
 
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
@@ -134,7 +134,6 @@
     sendingCode.value = true;
 
     try {
-      const { sendOtp } = useCoreAuthApi();
       await sendOtp({ phone: profile.value?.phone as string, reason: 'phoneVerification' });
       showPhoneVerification.value = true;
     } catch (error: any) {
@@ -159,7 +158,6 @@
     verifyLoading.value = true;
 
     try {
-      const { phoneVerification } = useCoreAuthApi();
       await phoneVerification({
         phone: profile.value?.phone as string,
         reason: 'phoneVerification',

@@ -51,10 +51,10 @@
 </template>
 
 <script setup lang="ts">
-  import type { ICollection, IGame, IGameProvider, IPaginationMeta } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
+  import type { ICollection, IGame, IGameProvider, IPaginationMeta } from '@skeleton/api/types';
   import type { ICategoryPage } from '~/types';
   import debounce from 'lodash/debounce';
+  import { getFilteredGames } from '@skeleton/api/games';
 
   definePageMeta({
     middleware: async function (to) {
@@ -113,7 +113,6 @@
     pageMeta: undefined,
   });
 
-  const { getFilteredGames } = useCoreGamesApi();
   const getData = async (nextPage: boolean): Promise<void> => {
     state.loadingGames = true;
 

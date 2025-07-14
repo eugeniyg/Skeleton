@@ -1,7 +1,15 @@
-import { defineStore } from 'pinia';
-import type { IProfile, IAuthorizationResponse, IParsedToken, ISocialCallbackData } from '@skeleton/core/types';
+import type { IProfile, IAuthorizationResponse, IParsedToken, ISocialCallbackData } from '@skeleton/api/types';
 import { jwtDecode } from 'jwt-decode';
 import { isStandalonePWA } from 'ua-parser-js/helpers';
+import {
+  submitRegistrationData,
+  submitLoginData,
+  submitAutologinData,
+  refreshToken,
+  submitSocialLoginData,
+  registerByPhone,
+  logOut,
+} from '@skeleton/api/auth';
 
 interface IProfileStoreState {
   refreshPromise: Promise<string> | null;
@@ -119,8 +127,6 @@ export const useProfileStore = defineStore('profileStore', {
       }
 
       localStorage.setItem('refreshSession', 'loading');
-      const { refreshToken } = useCoreAuthApi();
-
       try {
         const data = await refreshToken();
         this.setSessionToken(data.accessToken);
@@ -244,7 +250,6 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async logIn(loginData: any): Promise<void> {
-      const { submitLoginData } = useCoreAuthApi();
       const fingerprint = await this.getFingerprintVisitor();
       const submitResult = await submitLoginData({
         ...loginData,
@@ -264,7 +269,6 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async loginSocial(data: ISocialCallbackData): Promise<void> {
-      const { submitSocialLoginData } = useCoreAuthApi();
       const fingerprint = await this.getFingerprintVisitor();
       const affiliateTag = useCookie('affiliateTag');
       const globalData = useGlobalStore();
@@ -296,7 +300,6 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async autoLogin(token: string): Promise<void> {
-      const { submitAutologinData } = useCoreAuthApi();
       const fingerprint = await this.getFingerprintVisitor();
       const submitResult = await submitAutologinData({
         token,
@@ -306,7 +309,6 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async registration(registrationData: any): Promise<void> {
-      const { submitRegistrationData } = useCoreAuthApi();
       const fingerprint = await this.getFingerprintVisitor();
       const affiliateTag = useCookie('affiliateTag');
       const submitResult = await submitRegistrationData({
@@ -323,7 +325,6 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async phoneRegistration(registrationData: any): Promise<void> {
-      const { registerByPhone } = useCoreAuthApi();
       const fingerprint = await this.getFingerprintVisitor();
       const affiliateTag = useCookie('affiliateTag');
       const submitResult = await registerByPhone({
@@ -350,7 +351,6 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async logOutUser(): Promise<void> {
-      const { logOut } = useCoreAuthApi();
       try {
         await logOut();
       } finally {

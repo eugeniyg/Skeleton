@@ -19,15 +19,14 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IGamePage } from '~/types';
-  import type { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/api/types';
+  import { getGamesInfo, getStartGame } from '@skeleton/api/games';
 
   const route = useRoute();
   const showPlug = ref<boolean>(false);
   const isDemo = ref<boolean>(route.query.real !== 'true');
   const gameStart = ref<string>();
-  const { getGamesInfo, getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);

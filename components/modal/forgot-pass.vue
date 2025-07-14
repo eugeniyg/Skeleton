@@ -95,6 +95,7 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent } from '~/types';
+  import { phoneVerification } from '@skeleton/api/auth';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['forgot']>;
@@ -170,7 +171,6 @@
   const verifyPhone = async (verificationCode: string): Promise<void> => {
     try {
       sendingData.value = true;
-      const { phoneVerification } = useCoreAuthApi();
       const { code } = await phoneVerification({
         phone: verificationPhone.value,
         code: verificationCode,

@@ -72,7 +72,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IIconLink } from '~/types';
 
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();

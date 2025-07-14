@@ -55,7 +55,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IInvoice, IInvoicesRequestOptions, IPaginationMeta } from '@skeleton/core/types';
   import type { ITransactionsHistory } from '~/types';
 

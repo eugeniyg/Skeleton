@@ -45,8 +45,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const limitsStore = useLimitsStore();
   const { getContent } = useProjectMethods();
   const { checkCurrencies } = limitsStore;

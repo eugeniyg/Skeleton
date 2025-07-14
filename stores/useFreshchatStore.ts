@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import debounce from 'lodash/debounce.js';
 
 interface IFreshchatState {

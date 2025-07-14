@@ -42,7 +42,6 @@
 
 <script setup lang="ts">
   import type { IProfileNotifications } from '~/types';
-  import { storeToRefs } from 'pinia';
   import type { IMessage, INotificationsRequest, IPaginationMeta } from '@skeleton/core/types';
 
   const globalStore = useGlobalStore();

@@ -69,10 +69,10 @@
 </template>
 
 <script setup lang="ts">
-  import type { ICollection, IGame, IPaginationMeta } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
+  import type { ICollection, IGame, IPaginationMeta } from '@skeleton/api/types';
   import { Skeletor } from 'vue-skeletor';
   import type { IAeroGroupComponent } from '~/types';
+  import { getFilteredGames, getGamesInfo } from '@skeleton/api/games';
 
   const props = defineProps<{
     currentLocaleContent: Maybe<IAeroGroupComponent>;
@@ -98,9 +98,7 @@
   const showArrowButtons = ref<boolean>(props.showArrows);
   const games = ref<IGame[]>([]);
   const pageMeta = ref<IPaginationMeta>();
-  const { getFilteredGames } = useCoreGamesApi();
   const { localizePath } = useProjectMethods();
-  const { getGamesInfo } = useCoreGamesApi();
 
   const gameInfo = ref<IGame>();
 

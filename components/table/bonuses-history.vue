@@ -53,7 +53,6 @@
 
 <script setup lang="ts">
   import type { IPaginationMeta, IPlayerBonus, IPlayerFreeSpin } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
   import type { IBonusesHistory } from '~/types';
 
   const props = defineProps<{

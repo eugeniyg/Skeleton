@@ -59,6 +59,8 @@
 </template>
 
 <script setup lang="ts">
+  import { sendOtp } from '@skeleton/api/auth';
+
   const props = defineProps<{
     phone: string;
     reason: 'registration' | 'phoneVerification' | 'changingPass';
@@ -99,7 +101,6 @@
     resendingCode.value = true;
 
     try {
-      const { sendOtp } = useCoreAuthApi();
       await sendOtp({ phone: props.phone, reason: props.reason });
       currentTime.value = TIMER_TIME;
       startTimer();

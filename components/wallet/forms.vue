@@ -63,7 +63,6 @@
 
 <script setup lang="ts">
   import type { IPaymentMethod } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
   import type { IProfileLimits, IWalletModal } from '~/types';
 
   const props = defineProps<{

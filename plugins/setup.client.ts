@@ -101,8 +101,8 @@ export default defineNuxtPlugin(nuxtApp => {
   };
 
   nuxtApp.hook('app:created', async () => {
-    const { getRegistrationFields } = useFieldsStore();
-    getRegistrationFields();
+    const { requestRegistrationFields } = useFieldsStore();
+    requestRegistrationFields();
   });
 
   nuxtApp.hook('app:mounted', async () => {

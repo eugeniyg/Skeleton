@@ -45,8 +45,8 @@
 
 <script setup lang="ts">
   import type { IProvidersPage } from '~/types';
-  import { storeToRefs } from 'pinia';
-  import type { IGameProvider, IProvidersRequest } from '@skeleton/core/types';
+  import type { IGameProvider, IProvidersRequest } from '@skeleton/api/types';
+  import { getGameProviders } from '@skeleton/api/games';
 
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
@@ -96,7 +96,6 @@
     );
   };
 
-  const { getGameProviders } = useCoreGamesApi();
   const loadingProviders = ref<boolean>(true);
   const getProviders = async (): Promise<void> => {
     try {

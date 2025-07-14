@@ -1,6 +1,6 @@
 import type { IAmountRangeItem, IBonus, IGameImages, IGameProvider, IObserverOptions } from '@skeleton/core/types';
 import get from 'lodash/get';
-import * as projectRules from './validationRules';
+import * as projectRules from '@skeleton/helpers/validationRules';
 import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
 import type { IPageMeta } from '~/types';
 

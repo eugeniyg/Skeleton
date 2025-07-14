@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
   import type { IGameProvider } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
     providerData: IGameProvider;

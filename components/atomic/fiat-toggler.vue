@@ -21,8 +21,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
   const { getContent } = useProjectMethods();

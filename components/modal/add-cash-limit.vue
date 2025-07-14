@@ -70,7 +70,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
   import type { ICurrency, IPlayerLimit } from '@skeleton/core/types';
   import type { IModalsContent } from '~/types';

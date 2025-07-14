@@ -1,4 +1,3 @@
-import { storeToRefs } from 'pinia';
 import type { IGame } from '@skeleton/core/types';
 
 export const useMobileGameLogic = (gameInfo: IGame) => {

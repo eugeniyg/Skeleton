@@ -35,8 +35,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const props = defineProps<{
     label: string;
     icon: string;

@@ -64,10 +64,10 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IContactsPage } from '~/types';
   import { marked } from 'marked';
   import DOMPurify from 'isomorphic-dompurify';
+  import { sendContactMessage } from '@skeleton/api/global';
 
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();
@@ -102,7 +102,6 @@
     return pageContent.value?.currentLocaleData?.description || pageContent.value?.defaultLocaleData?.description;
   });
 
-  const { sendContactMessage } = useCoreGlobalApi();
   const submitContactForm = async (): Promise<void> => {
     if (v$.value.$invalid) return;
 

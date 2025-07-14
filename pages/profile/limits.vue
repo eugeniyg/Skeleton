@@ -25,7 +25,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IProfileLimits } from '~/types';
 
   const limitsStore = useLimitsStore();

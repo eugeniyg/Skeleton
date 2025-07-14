@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import type { ILoyaltyUpdatedEvent, IPlayerLoyaltyAccount } from '@skeleton/core/types';
 
 interface ILoyaltyStoreState {

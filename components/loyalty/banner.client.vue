@@ -54,7 +54,6 @@
 
 <script setup lang="ts">
   import type { ILoyaltyPage } from '~/types';
-  import { storeToRefs } from 'pinia';
 
   const loyaltyContent = ref<Maybe<ILoyaltyPage>>(inject('loyaltyContent'));
   const defaultLocaleLoyaltyContent = ref<Maybe<ILoyaltyPage>>(inject('defaultLocaleLoyaltyContent'));

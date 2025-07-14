@@ -16,8 +16,8 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { ISportsbookPage } from '~/types';
+  import { getStartGame } from '@skeleton/api/games';
 
   const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();
@@ -34,7 +34,6 @@
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
 
-  const { getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
   const { openModal } = useModalStore();

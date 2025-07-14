@@ -12,8 +12,8 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/api/types';
+  import { getFilteredGames } from '@skeleton/api/games';
 
   const props = defineProps<{
     items: string[];
@@ -30,7 +30,6 @@
 
   onMounted(async () => {
     try {
-      const { getFilteredGames } = useCoreGamesApi();
       const { data } = await getFilteredGames({
         identity: props.items,
         countries: headerCountry.value ? [headerCountry.value] : undefined,

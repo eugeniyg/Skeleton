@@ -44,7 +44,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IPaymentMethod } from '@skeleton/core/types';
   import { Skeletor } from 'vue-skeletor';
 

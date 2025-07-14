@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import { Centrifuge } from 'centrifuge';
 
 export type ISocketState = {

@@ -37,7 +37,6 @@
 
 <script setup lang="ts">
   import type { IPlayerLimit } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
     limits: IPlayerLimit[];

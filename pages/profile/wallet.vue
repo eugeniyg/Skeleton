@@ -34,7 +34,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IAccount } from '@skeleton/core/types';
   import type { IProfileWallet } from '~/types';
 

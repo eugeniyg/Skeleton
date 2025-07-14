@@ -63,7 +63,8 @@
     ITournament,
     ITournamentEntryUpdatedEvent,
     ITournamentLeaderboardUpdatedEvent,
-  } from '@skeleton/core/types';
+  } from '@skeleton/api/types';
+  import { getFilteredGames } from '@skeleton/api/games';
 
   const profileStore = useProfileStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
@@ -141,7 +142,6 @@
     gamesData: [],
     gamesMeta: undefined,
   });
-  const { getFilteredGames } = useCoreGamesApi();
   const getTournamentGames = async (page = 1): Promise<void> => {
     const nonExistentCollections =
       tournamentData.value?.conditions?.gameCollectionsExcluded === false &&

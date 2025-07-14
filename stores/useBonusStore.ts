@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import type {
   IPlayerBonus,
   IBonusCode,
@@ -9,9 +8,17 @@ import type {
   IPlayerBonusCodeUpdatedEvent,
   IPlayerBonusUpdatedEvent,
   IPlayerFreeSpinUpdatedEvent,
-} from '@skeleton/core/types';
+} from '@skeleton/api/types';
 import debounce from 'lodash/debounce.js';
 import type { IProfileBonuses } from '~/types';
+import {
+  getPlayerBonuses as requestPlayerBonuses,
+  getPlayerFreeSpins as requestPlayerFreeSpins,
+  getPlayerCashback as requestPlayerCashback,
+  getDepositBonuses as requestDepositBonuses,
+  getBonusCodes,
+} from '@skeleton/api/bonuses';
+import { getGamesInfo } from '@skeleton/api/games';
 
 interface IBonusState {
   bonusCodeSubscription: any;
@@ -99,37 +106,31 @@ export const useBonusStore = defineStore('bonusStore', {
     async getPlayerBonuses(): Promise<void> {
       const { activeAccount } = useWalletStore();
       if (!activeAccount?.currency) return;
-      const { getPlayerBonuses } = useCoreBonusApi();
-      const { data } = await getPlayerBonuses({ status: [1, 2], currency: [activeAccount.currency] });
+      const { data } = await requestPlayerBonuses({ status: [1, 2], currency: [activeAccount.currency] });
       this.playerBonuses = data;
     },
 
     async getPlayerFreeSpins(): Promise<void> {
       const { activeAccount } = useWalletStore();
       if (!activeAccount?.currency) return;
-      const { getPlayerFreeSpins } = useCoreBonusApi();
-      const { data } = await getPlayerFreeSpins({ status: [1, 2], currency: [activeAccount.currency] });
+      const { data } = await requestPlayerFreeSpins({ status: [1, 2], currency: [activeAccount.currency] });
       this.playerFreeSpins = data;
     },
 
     async getPlayerCashback(): Promise<void> {
       const { activeAccount } = useWalletStore();
       if (!activeAccount?.currency) return;
-      const { getPlayerCashback } = useCoreBonusApi();
-      const { data } = await getPlayerCashback(activeAccount.currency);
+      const { data } = await requestPlayerCashback(activeAccount.currency);
       this.playerCashback = data;
     },
 
     async getDepositBonuses(): Promise<void> {
       const { activeAccount } = useWalletStore();
       if (!activeAccount?.currency) return;
-      const { getDepositBonuses } = useCoreBonusApi();
-      this.depositBonuses = await getDepositBonuses(activeAccount.currency);
+      this.depositBonuses = await requestDepositBonuses(activeAccount.currency);
     },
 
     async getDepositBonusCode(): Promise<void> {
-      const { getBonusCodes } = useCoreBonusApi();
-
       const bonusCodeResponse = await getBonusCodes(3);
       this.depositBonusCode = bonusCodeResponse[0] || undefined;
     },
@@ -268,7 +269,6 @@ export const useBonusStore = defineStore('bonusStore', {
         '3-4': 'freeSpinExpired',
       };
 
-      const { getGamesInfo } = useCoreGamesApi();
       const { localizePath } = useProjectMethods();
       let gameInfo: IGame;
       try {

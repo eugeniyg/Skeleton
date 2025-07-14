@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
-import type { IBetExceptionEvent, ICollection, IGame, IGameProvider } from '@skeleton/core/types';
+import type { IBetExceptionEvent, ICollection, IGame, IGameProvider } from '@skeleton/api/types';
+import { getGameProviders, getGameCollections, getFavorite, setFavorite, deleteFavorite } from '@skeleton/api/games';
 
 type MobileModalType = 'depositOrDemo' | 'deposit' | 'registerOrDemo' | 'registerOrLogin';
 interface IGamesStoreState {
@@ -42,7 +42,6 @@ export const useGamesStore = defineStore('gamesStore', {
 
   actions: {
     async getProviders(cache?: IGameProvider[]): Promise<IGameProvider[]> {
-      const { getGameProviders } = useCoreGamesApi();
       try {
         this.gameProviders = cache ?? (await getGameProviders());
       } catch {
@@ -53,7 +52,6 @@ export const useGamesStore = defineStore('gamesStore', {
     },
 
     async getCollections(cache?: ICollection[]): Promise<ICollection[]> {
-      const { getGameCollections } = useCoreGamesApi();
       try {
         this.collectionsList = cache ?? (await getGameCollections());
       } catch {
@@ -64,17 +62,14 @@ export const useGamesStore = defineStore('gamesStore', {
     },
 
     async getFavoriteGames(): Promise<void> {
-      const { getFavorite } = useCoreGamesApi();
       this.favoriteGames = await getFavorite();
     },
 
     async setFavoriteGame(gameId: string): Promise<void> {
-      const { setFavorite } = useCoreGamesApi();
       this.favoriteGames = await setFavorite(gameId);
     },
 
     async deleteFavoriteGame(gameId: string): Promise<void> {
-      const { deleteFavorite } = useCoreGamesApi();
       this.favoriteGames = await deleteFavorite(gameId);
     },
 

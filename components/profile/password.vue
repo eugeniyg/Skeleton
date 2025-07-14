@@ -37,7 +37,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IProfileSecurity } from '~/types';
 
   const globalStore = useGlobalStore();

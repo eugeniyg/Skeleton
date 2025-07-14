@@ -50,7 +50,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { ICurrency } from '@skeleton/core/types';
 
   const props = defineProps<{

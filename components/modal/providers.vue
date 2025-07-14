@@ -67,8 +67,9 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import debounce from 'lodash/debounce';
-  import type { IGameProvider, IProvidersRequest } from '@skeleton/core/types';
+  import type { IGameProvider, IProvidersRequest } from '@skeleton/api/types';
   import type { IModalsContent } from '~/types';
+  import { getGameProviders } from '@skeleton/api/games';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['providers']>;
@@ -114,7 +115,6 @@
 
   const { showAlert } = useLayoutStore();
 
-  const { getGameProviders } = useCoreGamesApi();
   const getProviders = async (): Promise<void> => {
     try {
       const responseProviders = await getGameProviders(requestParams);

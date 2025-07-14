@@ -85,7 +85,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { RegistrationType } from '@skeleton/core/types';
   import { VueFinalModal } from 'vue-final-modal';
   import type { Dayjs } from 'dayjs';

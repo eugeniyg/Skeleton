@@ -29,8 +29,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/api/types';
   import type { IQuestTasksModal } from '~/types';
+  import { getFilteredGames } from '@skeleton/api/games';
 
   const props = defineProps<{
     items: string[];
@@ -49,7 +50,6 @@
   const filteredGamesData = computed(() => {
     return gamesData.value.slice(0, visibleItems.value);
   });
-  const { getFilteredGames } = useCoreGamesApi();
   const loadGames = ref(false);
   const getConditionGames = async (): Promise<void> => {
     loadGames.value = true;

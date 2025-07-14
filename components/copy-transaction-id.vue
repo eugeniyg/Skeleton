@@ -13,8 +13,6 @@
 
 <script setup lang="ts">
   import copy from 'copy-to-clipboard';
-  import { storeToRefs } from 'pinia';
-
   import type { ITransactionsHistory } from '~/types';
 
   const props = defineProps<{

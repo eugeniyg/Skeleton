@@ -76,10 +76,10 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IField } from '@skeleton/core/types';
+  import type { IField } from '@skeleton/api/types';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import type { IModalsContent } from '~/types';
+  import { sendOtp } from '@skeleton/api/auth';
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
 
@@ -211,7 +211,6 @@
 
   const handlePhoneRegistration = async (): Promise<void> => {
     try {
-      const { sendOtp } = useCoreAuthApi();
       await sendOtp({ phone: registrationFormData.phone, reason: 'registration' });
       emit('showVerification', registrationFormData);
     } catch (error: any) {

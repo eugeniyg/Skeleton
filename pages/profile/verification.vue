@@ -16,7 +16,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IProfileVerification } from '~/types';
 
   const globalStore = useGlobalStore();

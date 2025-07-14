@@ -54,7 +54,6 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import { storeToRefs } from 'pinia';
   import type { IModalsContent } from '~/types';
 
   const props = defineProps<{

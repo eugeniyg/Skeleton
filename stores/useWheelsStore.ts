@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import type { IWheelSpinIssuedEvent } from '@skeleton/core/types';
 
 interface IWheelsStoreState {

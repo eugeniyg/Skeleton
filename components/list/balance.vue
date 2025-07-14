@@ -119,7 +119,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IAccount, ICurrency } from '@skeleton/core/types';
 
   const props = defineProps({

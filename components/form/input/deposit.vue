@@ -19,8 +19,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const walletStore = useWalletStore();
   const { formatBalance } = useProjectMethods();
   const { getPlayerBonuses } = useBonusStore();

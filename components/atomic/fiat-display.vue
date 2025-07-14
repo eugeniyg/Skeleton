@@ -11,8 +11,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const walletStore = useWalletStore();
   const { activeAccount, activeEquivalentAccount } = storeToRefs(walletStore);
   const { formatBalance } = useProjectMethods();

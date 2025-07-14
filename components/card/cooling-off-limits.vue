@@ -27,7 +27,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IPlayerLimit } from '@skeleton/core/types';
   import { marked } from 'marked';
   import DOMPurify from 'isomorphic-dompurify';

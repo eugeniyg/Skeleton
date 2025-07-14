@@ -19,9 +19,9 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IGame, IGamesResponse, IPaginationMeta } from '@skeleton/core/types';
+  import type { IGame, IGamesResponse, IPaginationMeta } from '@skeleton/api/types';
   import debounce from 'lodash/debounce';
+  import { getFilteredGames } from '@skeleton/api/games';
 
   const props = defineProps<{
     isShow?: boolean;
@@ -42,7 +42,6 @@
     () => !!gameItems.value.length && (pageMeta.value?.totalPages || 1) > (pageMeta.value?.page || 1)
   );
 
-  const { getFilteredGames } = useCoreGamesApi();
   const getItems = async (): Promise<IGamesResponse> => {
     const params: any = {
       page: loadPage.value,

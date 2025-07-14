@@ -37,8 +37,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPaginationMeta, ISpinHistory } from '@skeleton/core/types';
+  import type { IPaginationMeta, ISpinHistory } from '@skeleton/api/types';
   import type { ISpinsHistory } from '~/types';
+  import { getSpinsHistory } from '@skeleton/api/games';
 
   const props = defineProps<{
     content: ISpinsHistory;
@@ -50,7 +51,6 @@
   const spins = ref<ISpinHistory[]>([]);
   const pageMeta = ref<IPaginationMeta>();
 
-  const { getSpinsHistory } = useCoreGamesApi();
   const spinsRequest = async (page: number = 1): Promise<void> => {
     loading.value = true;
     const response = await getSpinsHistory(page, 10);

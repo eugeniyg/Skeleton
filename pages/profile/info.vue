@@ -101,7 +101,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { ICountry } from '@skeleton/core/types';
   import type { IProfileInfo } from '~/types';
 

@@ -44,7 +44,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IGameImages, IGameProvider, IGameLabel } from '@skeleton/core/types';
   import type { IGameTag } from '~/types';
 

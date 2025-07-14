@@ -45,7 +45,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IBonusPage } from '~/types';
 
   const route = useRoute();

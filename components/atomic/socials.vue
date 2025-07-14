@@ -33,7 +33,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import queryString from 'query-string';
 
   const props = defineProps<{

@@ -40,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IBonus } from '@skeleton/core/types';
   import { marked } from 'marked';
   import DOMPurify from 'isomorphic-dompurify';

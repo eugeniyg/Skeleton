@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IFavoritesPage } from '~/types';
 
   const { getContent } = useProjectMethods();

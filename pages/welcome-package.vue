@@ -145,8 +145,8 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IWelcomeBonusesPage } from '~/types';
+  import { getBonusesStatus } from '@skeleton/api/bonuses';
 
   const { getContent, getMinBonusDeposit } = useProjectMethods();
 
@@ -180,7 +180,6 @@
   const { depositBonuses, walletDepositBonus } = storeToRefs(bonusStore);
 
   const getStatuses = async (): Promise<void> => {
-    const { getBonusesStatus } = useCoreBonusApi();
     const bonusesItems =
       getContent(pageContent.value?.currentLocaleData, pageContent.value?.defaultLocaleData, 'welcome.items') || [];
     const bonusIds = bonusesItems.map((item: any) => item.bonusId).filter(bonusId => !!bonusId);

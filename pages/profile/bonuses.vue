@@ -61,10 +61,17 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IProfileBonuses } from '~/types';
-  import type { IBonus, IPlayerBonus, IPlayerFreeSpin } from '@skeleton/core/types';
+  import type { IBonus, IPlayerBonus, IPlayerFreeSpin } from '@skeleton/api/types';
   import debounce from 'lodash/debounce.js';
+  import {
+    activatePlayerBonus,
+    cancelPlayerBonus,
+    activatePlayerFreeSpin,
+    cancelPlayerFreeSpin,
+    getPlayerBonuses as requestPlayerBonuses,
+    getPlayerFreeSpins as requestPlayerFreeSpins,
+  } from '@skeleton/api/bonuses';
 
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
@@ -117,8 +124,6 @@
   const loadingBonuses = ref<string[]>([]);
   const loadedBonuses = ref<string[]>([]);
   const bonusesUpdating = computed(() => loadingBonuses.value.includes(modalState.bonusInfo?.id || 'unknown'));
-
-  const { activatePlayerBonus, cancelPlayerBonus, activatePlayerFreeSpin, cancelPlayerFreeSpin } = useCoreBonusApi();
 
   const hasCancelLockBonus = computed(() => {
     const activeBonus = activePlayerBonuses.value[0];
@@ -288,10 +293,9 @@
     playerPackageBonuses: IPlayerBonus[];
     playerPackageFreeSpins: IPlayerFreeSpin[];
   }> => {
-    const { getPlayerBonuses, getPlayerFreeSpins } = useCoreBonusApi();
     const [{ data: playerPackageBonuses }, { data: playerPackageFreeSpins }] = await Promise.all([
-      getPlayerBonuses({ packageId: packageIds, currency: [activeAccount.value?.currency as string] }),
-      getPlayerFreeSpins({ packageId: packageIds, currency: [activeAccount.value?.currency as string] }),
+      requestPlayerBonuses({ packageId: packageIds, currency: [activeAccount.value?.currency as string] }),
+      requestPlayerFreeSpins({ packageId: packageIds, currency: [activeAccount.value?.currency as string] }),
     ]);
 
     return { playerPackageBonuses, playerPackageFreeSpins };

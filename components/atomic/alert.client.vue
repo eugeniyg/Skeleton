@@ -20,8 +20,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
   const types: { [index: string]: string } = {

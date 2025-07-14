@@ -57,7 +57,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { IBonus, IGame, IPlayerBonus, IPlayerFreeSpin } from '@skeleton/core/types';
+  import type { IBonus, IGame, IPlayerBonus, IPlayerFreeSpin } from '@skeleton/api/types';
+  import { getGamesInfo } from '@skeleton/api/games';
 
   const props = defineProps<{
     bonusInfo: Record<string, any>;
@@ -148,7 +149,6 @@
     if (!gameId) return;
 
     try {
-      const { getGamesInfo } = useCoreGamesApi();
       freeSpinGameInfo.value = await getGamesInfo(gameId);
     } catch {
       freeSpinGameInfo.value = undefined;

@@ -27,7 +27,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IModalsContent } from '~/types';
 
   const props = defineProps<{

@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useNotification } from '@kyvg/vue3-notification';
 import type { IAlert } from '~/types';

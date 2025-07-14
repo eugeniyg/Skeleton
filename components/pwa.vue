@@ -67,7 +67,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { UAParser } from 'ua-parser-js';
 
   const props = defineProps<{

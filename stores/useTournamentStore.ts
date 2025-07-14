@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import type { ITournamentCompletedEvent } from '@skeleton/core/types';
 
 interface ITournamentStoreState {

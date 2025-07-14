@@ -49,8 +49,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { ICollection, IGame, IPaginationMeta } from '@skeleton/core/types';
+  import type { ICollection, IGame, IPaginationMeta } from '@skeleton/api/types';
   import { Skeletor } from 'vue-skeletor';
+  import { getFilteredGames } from '@skeleton/api/games';
 
   const props = withDefaults(
     defineProps<{
@@ -78,7 +79,6 @@
   const showArrowButtons = ref<boolean>(props.showArrows);
   const games = ref<IGame[]>([]);
   const pageMeta = ref<IPaginationMeta>();
-  const { getFilteredGames } = useCoreGamesApi();
 
   const scrollHandler = (): void => {
     if (!scrollContainer.value) return;

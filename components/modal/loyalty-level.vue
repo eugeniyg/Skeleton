@@ -37,7 +37,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent } from '~/types';
 

@@ -66,7 +66,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import useVuelidate from '@vuelidate/core';
   import type { IPaymentField, IWithdrawResponse } from '@skeleton/core/types';
   import { marked } from 'marked';

@@ -35,7 +35,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IProfileInfo } from '~/types';
 
   const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));

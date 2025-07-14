@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IProfileLimits, IWalletModal } from '~/types';
 
   const props = defineProps<{

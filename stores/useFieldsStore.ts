@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
-import type { ICountry, ICurrency, IField, ITimeZone } from '@skeleton/core/types';
+import type { ICountry, ICurrency, IField, ITimeZone } from '@skeleton/api/types';
+import { getRegistrationFields } from '@skeleton/api/auth';
 
 interface IFieldsStoreState {
   profileFields: IField[];
@@ -35,8 +35,7 @@ export const useFieldsStore = defineStore('fieldsStore', {
       this.profileFields = await getProfileFields();
     },
 
-    async getRegistrationFields(): Promise<void> {
-      const { getRegistrationFields } = useCoreAuthApi();
+    async requestRegistrationFields(): Promise<void> {
       this.registrationFields = await getRegistrationFields();
     },
   },

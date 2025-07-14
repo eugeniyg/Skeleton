@@ -66,7 +66,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
   import type { ICountry } from '@skeleton/core/types';
   import debounce from 'lodash/debounce';

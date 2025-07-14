@@ -27,9 +27,9 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IGameWinnerEvent, IWinner } from '@skeleton/core/types';
+  import type { IGameWinnerEvent, IWinner } from '@skeleton/api/types';
   import throttle from 'lodash/throttle';
+  import { getLatestWinners } from '@skeleton/api/games';
 
   const props = defineProps({
     showArrows: {
@@ -52,7 +52,6 @@
   const prevDisabled = ref<boolean>(true);
   const nextDisabled = ref<boolean>(false);
   const showArrowButtons = ref<boolean>(props.showArrows);
-  const { getLatestWinners } = useCoreGamesApi();
 
   const scrollHandler = (): void => {
     if (!scrollContainer.value) return;

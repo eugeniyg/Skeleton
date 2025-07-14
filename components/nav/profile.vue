@@ -32,7 +32,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IPageMeta } from '~/types';
 
   const props = defineProps<{

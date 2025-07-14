@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import type { IMessage, IMessengerReceivedEvent } from '@skeleton/core/types';
 
 interface INotificationStoreState {

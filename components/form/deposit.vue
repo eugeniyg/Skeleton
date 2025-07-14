@@ -61,7 +61,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type {
     IBonus,
     IPaymentField,

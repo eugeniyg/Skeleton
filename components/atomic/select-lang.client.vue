@@ -26,7 +26,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { ILocale } from '@skeleton/core/types';
 
   const route = useRoute();

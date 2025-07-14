@@ -21,7 +21,6 @@
 
 <script setup lang="ts">
   import type { IGame } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
     gamesList: IGame[];

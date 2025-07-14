@@ -58,7 +58,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IWalletModal } from '~/types';
 
   const props = defineProps({

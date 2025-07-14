@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import type { ICreateLimit, ICurrency, IPlayerLimit } from '@skeleton/core/types';
 import type { IProfileLimits } from '~/types';
 
