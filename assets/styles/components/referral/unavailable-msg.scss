@@ -12,6 +12,8 @@
   margin-top: 12px;
 
   &__icon {
+    --icon-size: 20px;
+    --color: var(--support-warning-default);
   }
 
   &__text {
