@@ -195,7 +195,7 @@ export interface ILoyaltyLevel {
 }
 
 export interface ILoyaltyLevelsResponse extends Record<string, any> {
-  data: { referrals: IReferralItem[] };
+  data: ILoyaltyLevel[];
   meta: IPaginationMeta;
 }
 
@@ -220,6 +220,6 @@ export interface IReferralItem {
 }
 
 export interface IReferralsResponse extends Record<string, any> {
-  data: IReferralItem[];
+  referrals: IReferralItem[];
   meta: IPaginationMeta;
 }
