@@ -12,6 +12,12 @@
   margin-bottom: 12px;
   @include font($body-1);
 
+  .row-user & {
+    margin-top: -8px;
+    margin-bottom: 8px;
+    line-height: normal;
+  }
+
   @include use-hover {
     &:hover:not(.is-active) {
       --label-color: var(--text-primary);

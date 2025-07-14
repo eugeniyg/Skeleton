@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
-  import type { IWebSocketResponse, IWinner } from '@skeleton/core/types';
+  import type { IGameWinnerEvent, IWinner } from '@skeleton/core/types';
   import throttle from 'lodash/throttle';
 
   const props = defineProps({
@@ -74,7 +74,7 @@
   };
 
   const updateWinners = throttle(
-    (winnerData: IWebSocketResponse): void => {
+    (winnerData: IGameWinnerEvent): void => {
       const { winner } = winnerData.data;
       const filteredWinners = latestWinners.value.filter(item => item.gameId !== winner?.gameId);
       if (winner) latestWinners.value = [winner, ...filteredWinners].slice(0, 12);

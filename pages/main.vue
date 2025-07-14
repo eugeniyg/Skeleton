@@ -62,15 +62,11 @@
   const { getContentData } = useContentLogic<ICasinoPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
 
-  const { getCollectionsList, getProviderList } = useGamesStore();
-  const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
-  const mainCategoriesList = computed(() => {
-    return (
-      gameCollections.value?.reduce((categoriesArr: ICollection[], currentCategory) => {
-        return currentCategory.isHidden ? categoriesArr : [...categoriesArr, currentCategory];
-      }, []) || []
-    );
-  });
+  const { gameProviders, collectionsByCountry } = useGamesStore();
+  const mainCategoriesList =
+    collectionsByCountry.reduce((categoriesArr: ICollection[], currentCategory) => {
+      return currentCategory.isHidden ? categoriesArr : [...categoriesArr, currentCategory];
+    }, []) || [];
 
   const router = useRouter();
   const changeCategory = async (categoryIdentity: string): Promise<void> => {
@@ -88,7 +84,6 @@
     selectedProviders.value = newSelectedProviders;
     sliderVisibilityHidden.value = true;
 
-    const gameProviders = await getProviderList();
     const providersIdentity = gameProviders
       .filter(provider => newSelectedProviders.includes(provider.id))
       .map(provider => provider.identity);

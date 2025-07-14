@@ -58,6 +58,7 @@
       :is-required="registrationFormRules[field.name]?.hasOwnProperty('required')"
       :label="getCheckboxLabel(field.name)"
       @change="v$[field.name]?.$touch()"
+      @clickLink="modalStore.modals['sign-up']?.close()"
     />
 
     <button-base tag-name="div" type="primary" size="md" :is-disabled="sendButtonDisabled" @click="signUp">
@@ -265,6 +266,8 @@
     if (hiddenFields.value.includes(fieldName)) return 'form-input-text';
     return fieldsMap[fieldName]?.component || 'form-input-text';
   };
+
+  const modalStore = useModalStore();
 </script>
 
 <style src="~/assets/styles/components/form/join.scss" lang="scss" />

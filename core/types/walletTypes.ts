@@ -169,3 +169,17 @@ export interface IInvoiceStatistics extends Record<string, any> {
   lastVirtualPayoutAmountBaseCurrency: number | null;
   currency: string;
 }
+
+export interface IAccountBalanceUpdateEvent {
+  data: {
+    event: 'account.balance.updated';
+    account: IAccount;
+  };
+}
+
+export interface IInvoiceUpdatedEvent {
+  data: {
+    event: 'invoice.deposit.updated' | 'invoice.withdrawal.updated' | 'invoice.withdrawal.created';
+    invoice: ISocketInvoice;
+  };
+}
