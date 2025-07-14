@@ -1,6 +1,9 @@
 <template>
   <div class="referral-card">
-    <div class="referral-card__title">{{ title }}</div>
+    <div
+      class="referral-card__title"
+      v-html="DOMPurify.sanitize(marked.parseInline(bonusTitle) as string, { FORBID_TAGS: ['style'] })"
+    />
 
     <div class="referral-card__media">
       <atomic-picture class="referral-card__picture" :src="image" />
@@ -11,17 +14,15 @@
         <div class="referral-card__item-header" data-tooltip-parent>
           <span class="referral-card__item-title">
             {{ getContent(referralContent, defaultLocaleReferralContent, 'card.totalReferrals.title') }}
-
-            <span>{{ referralId }}</span>
           </span>
           <atomic-tooltip :text="totalReferralsTooltip" />
         </div>
 
         <div class="referral-card__item-counter">
           <span class="referral-card__item-count">{{ props.totalCount }}</span>
-          <template v-if="profile?.referralMaxCount">
+          <template v-if="referralMaxCount">
             <span class="referral-card__item-count-divider">/</span>
-            <span class="referral-card__item-count">{{ profile?.referralMaxCount }}</span>
+            <span class="referral-card__item-count">{{ referralMaxCount }}</span>
           </template>
         </div>
       </div>
@@ -53,22 +54,29 @@
 
 <script setup lang="ts">
   import type { IProfileReferral } from '~/types';
+  import { storeToRefs } from 'pinia';
+  import DOMPurify from 'isomorphic-dompurify';
+  import { marked } from 'marked';
 
   const { getReferralsSettings } = useCoreProfileApi();
+  const { getBonuses } = useCoreBonusApi();
 
   const props = defineProps<{
     totalCount: number;
   }>();
 
   const profileStore = useProfileStore();
+  const globalStore = useGlobalStore();
+  const walletStore = useWalletStore();
+  const { settingsConstants } = storeToRefs(globalStore);
   const { profile } = storeToRefs(profileStore);
+  const { activeAccount } = storeToRefs(walletStore);
 
   const referralContent = ref<Maybe<IProfileReferral>>(inject('referralContent'));
   const defaultLocaleReferralContent = ref<Maybe<IProfileReferral>>(inject('defaultLocaleReferralContent'));
   const { getContent } = useProjectMethods();
 
   const image = computed(() => getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.image'));
-  const title = computed(() => getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.title'));
 
   const totalReferralsTooltip = computed(() => {
     return getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.totalReferrals.tooltip');
@@ -82,12 +90,43 @@
     return `${window.location.host}/?ref=${profile.value?.referralCode}`;
   };
 
+  const triggerType = computed(() => {
+    return settingsConstants.value?.game.bonus.triggerType.find(item => item.name === 'Referral Award')?.id;
+  });
+
+  const bonusTitle = ref<string>('');
+  const referralMaxCount = ref<number | null>(null);
+
+  const setBonusTitle = (bonus: Maybe<any>): void => {
+    let formattedTitle: string = '';
+    if (bonus.type === 1) {
+      formattedTitle = getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.cashBonusLabel');
+    } else if (bonus.type === 3 && bonus.assignConditions?.presets?.length) {
+      const label = getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.freeSpinsBonusLabel');
+      formattedTitle = `${bonus.assignConditions.presets[0]?.quantity} ${label}`;
+    }
+
+    bonusTitle.value = getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.bonusTitle').replace(
+      '{bonus}',
+      `<span>${formattedTitle}</span>`
+    );
+  };
+
   onMounted(async () => {
     try {
       const { maxReferralCount, ownerBonusId } = await getReferralsSettings();
-      console.log({ maxReferralCount, ownerBonusId });
+
+      const bonusParams = {
+        bonusIds: [ownerBonusId],
+        currency: activeAccount.value?.currency,
+        triggerType: triggerType.value,
+      };
+
+      const [bonus] = await getBonuses(bonusParams);
+      setBonusTitle(bonus);
+      referralMaxCount.value = maxReferralCount || null;
     } catch (error) {
-      console.error('Error fetching referral settings:', error);
+      console.error('Error fetching bonuses:', error);
     }
   });
 </script>

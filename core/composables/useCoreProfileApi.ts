@@ -129,7 +129,7 @@ export const useCoreProfileApi = () => {
   };
 
   const getReferralsSettings = async (): Promise<IReferralsSettings> => {
-    const { data } = await useApiAuthInstance('/api/player/referrals-settings');
+    const { data } = await useApiAuthInstance('/api/player/referral-settings');
     return data;
   };
 

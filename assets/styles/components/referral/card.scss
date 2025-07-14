@@ -63,6 +63,10 @@
     @include media(md) {
       text-align: left;
     }
+
+    span {
+      color: var(--text-accent);
+    }
   }
 
   &__item {

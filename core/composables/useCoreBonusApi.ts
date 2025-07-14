@@ -80,7 +80,13 @@ export const useCoreBonusApi = () => {
     return data;
   };
 
+  const getBonuses = async (params?: any): Promise<IBonus[]> => {
+    const { data } = await useApiAuthInstance('/api/game/bonuses', { params });
+    return data;
+  };
+
   return {
+    getBonuses,
     getPlayerBonuses,
     getPlayerFreeSpins,
     activatePlayerBonus,
