@@ -11,7 +11,6 @@
 <script setup lang="ts">
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/bonuses/info-button.scss" lang="scss" />

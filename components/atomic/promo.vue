@@ -42,8 +42,6 @@
     defaultLocaleData: Maybe<IModalsContent['registration']>;
   }>();
 
-  const { getContent } = useProjectMethods();
-
   const advantagesList = computed(() => {
     return props.currentLocaleData?.promo?.advantages || [];
   });

@@ -22,8 +22,6 @@
 <script setup lang="ts">
   import type { ILoyaltyPage } from '~/types';
 
-  const { getContent } = useProjectMethods();
-
   const contentParams = {
     contentKey: 'loyaltyPageContent',
     contentRoute: ['pages', 'loyalty'],

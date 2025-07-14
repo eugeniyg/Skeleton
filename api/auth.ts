@@ -7,6 +7,7 @@ import type {
   ISocialAuthorizationRequest,
 } from './types';
 import { apiGuestInstance } from './apiGuestInstance';
+import { apiAuthInstance } from './apiAuthInstance';
 
 export const getRegistrationFields = async (): Promise<IField[]> => {
   const { data } = await apiGuestInstance('/api/player/fields/validations', {
@@ -61,7 +62,7 @@ export const refreshToken = async (): Promise<IAuthorizationResponse> => {
 };
 
 export const logOut = async (): Promise<{ message: string }> => {
-  const { data } = await useApiAuthInstance('/api/player/sessions/logout', {
+  const { data } = await apiAuthInstance('/api/player/sessions/logout', {
     method: 'POST',
   });
 
@@ -82,7 +83,7 @@ export const submitSocialLoginData = async (
 };
 
 export const sendOtp = async (otpData: IOtpRequest): Promise<{ message: string }> => {
-  const { data } = await useApiAuthInstance('/api/player/otp/send', {
+  const { data } = await apiAuthInstance('/api/player/otp/send', {
     method: 'POST',
     body: otpData,
   });
@@ -100,7 +101,7 @@ export const registerByPhone = async (registrationFormData: any): Promise<IAutho
 };
 
 export const phoneVerification = async (verificationData: IPhoneVerification): Promise<{ code: string }> => {
-  const { data } = await useApiAuthInstance('/api/player/otp/verify', {
+  const { data } = await apiAuthInstance('/api/player/otp/verify', {
     method: 'POST',
     body: verificationData,
   });

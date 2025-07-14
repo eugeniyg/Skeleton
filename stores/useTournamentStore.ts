@@ -1,4 +1,4 @@
-import type { ITournamentCompletedEvent } from '@skeleton/core/types';
+import type { ITournamentCompletedEvent } from '@skeleton/api/types';
 
 interface ITournamentStoreState {
   tournamentSubscription: any;
@@ -31,7 +31,7 @@ export const useTournamentsStore = defineStore('tournamentsStore', {
     },
 
     subscribeTournamentSocket(): void {
-      const { createSubscription } = useWebSocket();
+      const { createSubscription } = useWebSocketStore();
       this.tournamentSubscription = createSubscription('tournaments', this.handleTournamentsEvent);
     },
 

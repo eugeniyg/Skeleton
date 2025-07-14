@@ -40,7 +40,6 @@
     lossPeriods,
     isAdvancedModeEnabled,
   } = storeToRefs(limitsStore);
-  const { getContent } = useProjectMethods();
   const { openModal } = useModalStore();
 
   const selectedPeriod = ref<string>('');

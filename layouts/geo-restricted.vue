@@ -29,7 +29,6 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const description = computed(() => {
     return getContent(

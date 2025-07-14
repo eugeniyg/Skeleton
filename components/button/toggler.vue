@@ -29,8 +29,6 @@
     };
   }>();
 
-  const { localizePath } = useProjectMethods();
-
   const route = useRoute();
   const additionalCasinoActive = computed(() => {
     const gamesRoute = route.name === 'games-id' || route.name === 'locale-games-id';

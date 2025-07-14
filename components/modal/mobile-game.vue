@@ -55,6 +55,7 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent } from '~/types';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['mobileGame']>;
@@ -63,12 +64,11 @@
 
   const gameStore = useGamesStore();
   const { mobileGameModalType, mobileGameModalInfo } = storeToRefs(gameStore);
-  const { getImageUrl, getContent, localizePath } = useProjectMethods();
   const { openModal, closeModal, openWalletModal } = useModalStore();
   const router = useRouter();
 
   const gameImage = computed(() =>
-    getImageUrl(mobileGameModalInfo.value?.customImages, mobileGameModalInfo.value?.images, 'vertical')
+    getGameImageUrl(mobileGameModalInfo.value?.customImages, mobileGameModalInfo.value?.images, 'vertical')
   );
 
   const depositButtonLabel = getContent(props.currentLocaleData, props.defaultLocaleData, 'deposit');

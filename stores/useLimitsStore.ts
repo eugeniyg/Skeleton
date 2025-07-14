@@ -1,5 +1,6 @@
-import type { ICreateLimit, ICurrency, IPlayerLimit } from '@skeleton/core/types';
+import type { ICreateLimit, ICurrency, IPlayerLimit } from '@skeleton/api/types';
 import type { IProfileLimits } from '~/types';
+import { getPlayerLimits, createPlayerLimit } from '@skeleton/api/profile';
 
 interface ILimitsState {
   activeLimits: IPlayerLimit[];
@@ -31,12 +32,10 @@ export const useLimitsStore = defineStore('limitsStore', {
 
   actions: {
     async getLimits(): Promise<void> {
-      const { getPlayerLimits } = useCoreProfileApi();
       this.activeLimits = await getPlayerLimits();
     },
 
     async createLimit(payload: ICreateLimit): Promise<void> {
-      const { createPlayerLimit } = useCoreProfileApi();
       await createPlayerLimit(payload);
     },
 
@@ -93,7 +92,6 @@ export const useLimitsStore = defineStore('limitsStore', {
 
     coolingOffPeriod() {
       const { settingsConstants, globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-      const { getContent } = useProjectMethods();
       const content = getContent(
         globalComponentsContent,
         defaultLocaleGlobalComponentsContent,
@@ -110,7 +108,6 @@ export const useLimitsStore = defineStore('limitsStore', {
 
     selfExclusionPeriod() {
       const { settingsConstants, globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-      const { getContent } = useProjectMethods();
       const content = getContent(
         globalComponentsContent,
         defaultLocaleGlobalComponentsContent,

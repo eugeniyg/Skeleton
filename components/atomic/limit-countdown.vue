@@ -12,7 +12,6 @@
 
   const dayjs = useDayjs();
   const limitsStore = useLimitsStore();
-  const { getContent } = useProjectMethods();
   const { getLimits } = limitsStore;
   const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
 

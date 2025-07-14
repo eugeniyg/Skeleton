@@ -109,7 +109,6 @@
   const profileStore = useProfileStore();
   const bonusStore = useBonusStore();
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { getContent, localizePath } = useProjectMethods();
   const { isUserNavOpen } = storeToRefs(layoutStore);
   const { closeUserNav, openUserNav, compactDrawer } = layoutStore;
   const { openModal } = useModalStore();

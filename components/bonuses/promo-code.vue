@@ -50,7 +50,6 @@
   import type { IProfileBonuses } from '~/types';
   import { addBonusCode } from '@skeleton/api/bonuses';
 
-  const { getContent } = useProjectMethods();
   const bonusesContent = ref<Maybe<IProfileBonuses>>(inject('bonusesContent'));
   const defaultLocaleBonusesContent = ref<Maybe<IProfileBonuses>>(inject('defaultLocaleBonusesContent'));
 

@@ -62,7 +62,6 @@
 
       const { collectionsByCountry } = useGamesStore();
       if (!collectionsByCountry.length) return;
-      const { localizePath } = useProjectMethods();
       return navigateTo({
         path: localizePath(`/categories/${collectionsByCountry[0].identity}`),
         query: { ...to.query },
@@ -72,7 +71,6 @@
 
   const globalStore = useGlobalStore();
   const { gameCategoriesObj, layoutData, defaultLocaleLayoutData, headerCountry, isMobile } = storeToRefs(globalStore);
-  const { getContent, localizePath } = useProjectMethods();
   const route = useRoute();
   const router = useRouter();
   const { openModal, closeModal } = useModalStore();

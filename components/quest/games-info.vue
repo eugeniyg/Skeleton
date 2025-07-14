@@ -33,8 +33,6 @@
 
   const questTasksContent: Maybe<IQuestTasksModal> = inject('questTasksContent');
   const defaultLocaleQuestTasksContent: Maybe<IQuestTasksModal> = inject('defaultLocaleQuestTasksContent');
-
-  const { getContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/quest/games-info.scss" lang="scss" />

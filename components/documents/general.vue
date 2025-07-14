@@ -16,7 +16,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { IDocumentFile } from '@skeleton/core/types';
+  import type { IDocumentFile } from '@skeleton/api/types';
+  import { getDocumentFiles, deleteDocumentFile, uploadDocumentFile } from '@skeleton/api/profile';
 
   const step = ref<'select-type' | 'uploads'>('select-type');
   const documentType = ref<string | undefined>();
@@ -48,7 +49,6 @@
 
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
-  const { getDocumentFiles, deleteDocumentFile, uploadDocumentFile } = useCoreProfileApi();
   const { showAlert } = useLayoutStore();
   const loadingFields = ref<string[]>([]);
 

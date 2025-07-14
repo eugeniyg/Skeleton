@@ -46,7 +46,6 @@
   const { lossPeriods, betPeriods, depositPeriods, limitsContent, defaultLimitsContent, isAdvancedModeEnabled } =
     storeToRefs(limitsStore);
 
-  const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { currencies } = storeToRefs(globalStore);
   const { openModal } = useModalStore();

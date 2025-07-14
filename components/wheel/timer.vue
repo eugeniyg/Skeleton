@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
   import type { IWheelCommon } from '~/types';
-  import type { IWheel } from '@skeleton/core/types/wheelsTypes';
+  import type { IWheel } from '@skeleton/api/types';
 
   const props = defineProps<{
     expiredAt: string;
@@ -48,7 +48,6 @@
   }>();
 
   const emit = defineEmits(['timesUp']);
-  const { getContent } = useProjectMethods();
   const timerBgImage = computed(() =>
     getContent(props.currentLocaleContent, props.defaultLocaleContent, 'timer.backgroundImage')
   );

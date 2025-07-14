@@ -1,4 +1,5 @@
-import type { ILoyaltyUpdatedEvent, IPlayerLoyaltyAccount } from '@skeleton/core/types';
+import type { ILoyaltyUpdatedEvent, IPlayerLoyaltyAccount } from '@skeleton/api/types';
+import { getPlayerLoyaltyAccount } from '@skeleton/api/retention';
 
 interface ILoyaltyStoreState {
   loyaltyAccount: Maybe<IPlayerLoyaltyAccount>;
@@ -50,7 +51,6 @@ export const useLoyaltyStore = defineStore('loyaltyStore', {
 
   actions: {
     async getPlayerLoyalty(): Promise<void> {
-      const { getPlayerLoyaltyAccount } = useCoreProfileApi();
       this.loyaltyAccount = await getPlayerLoyaltyAccount();
     },
 
@@ -75,7 +75,7 @@ export const useLoyaltyStore = defineStore('loyaltyStore', {
     subscribeLoyaltySocket(): void {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
-        const { createSubscription } = useWebSocket();
+        const { createSubscription } = useWebSocketStore();
         this.loyaltySubscription = createSubscription(
           `retention:accounts#${profileStore.profile?.id}`,
           this.loyaltySocketTrigger

@@ -23,7 +23,6 @@
 
   const loyaltyContent = ref<Maybe<ILoyaltyPage>>(inject('loyaltyContent'));
   const defaultLocaleLoyaltyContent = ref<Maybe<ILoyaltyPage>>(inject('defaultLocaleLoyaltyContent'));
-  const { getContent } = useProjectMethods();
 
   const benefitsTabs = computed(() => {
     return getContent(loyaltyContent.value, defaultLocaleLoyaltyContent.value, 'benefits.benefitsTabs') || [];

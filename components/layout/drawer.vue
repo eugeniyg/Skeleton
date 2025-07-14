@@ -75,7 +75,6 @@
   import type { IIconLink } from '~/types';
 
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { getContent } = useProjectMethods();
 
   const layoutStore = useLayoutStore();
   const { openModal } = useModalStore();

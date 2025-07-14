@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IWheel } from '@skeleton/core/types/wheelsTypes';
+  import type { IWheel } from '@skeleton/api/types';
   import type { IWheelCommon, IWheelPage } from '~/types';
 
   const props = defineProps<{
@@ -46,7 +46,6 @@
   }>();
 
   const emit = defineEmits(['spinWheel', 'updateWheel']);
-  const { getContent } = useProjectMethods();
   const spinsScheduledLabel = computed(() =>
     getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'spins.spinsScheduledLabel')
   );

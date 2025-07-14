@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-export const useApiAuthInstance = async (url: string, options?: any): Promise<any> => {
+export const apiAuthInstance = async (url: string, options?: any): Promise<any> => {
   const profileStore = useProfileStore();
   let token = profileStore.getSessionToken();
 
@@ -20,7 +20,6 @@ export const useApiAuthInstance = async (url: string, options?: any): Promise<an
     async onResponseError({ response }: any) {
       if (response.status === 401 || response.status === 403) {
         if (profileStore.getSessionToken()) await profileStore.removeSession();
-        const { localizePath } = useProjectMethods();
         const router = useRouter();
         const nuxtApp = useNuxtApp();
         if (import.meta.client && nuxtApp.isHydrating) {

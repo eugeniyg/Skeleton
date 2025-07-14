@@ -18,12 +18,12 @@
 <script setup lang="ts">
   import type { ISportsbookPage } from '~/types';
   import { getStartGame } from '@skeleton/api/games';
+  import { addBetsyScript } from '@skeleton/helpers/transformDomMethods';
 
   const showPlug = ref<boolean>(false);
   const globalStore = useGlobalStore();
   const { isMobile, alertsData, defaultLocaleAlertsData, currentLocale, headerCountry } = storeToRefs(globalStore);
 
-  const { localizePath, addBetsyScript } = useProjectMethods();
   const contentParams = {
     contentKey: 'sportsbookPageContent',
     contentRoute: ['pages', 'sportsbook'],

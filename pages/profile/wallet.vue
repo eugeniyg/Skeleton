@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IAccount } from '@skeleton/core/types';
+  import type { IAccount } from '@skeleton/api/types';
   import type { IProfileWallet } from '~/types';
 
   const contentParams = {

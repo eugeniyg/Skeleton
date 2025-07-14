@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { ICurrency } from '@skeleton/core/types';
+  import type { ICurrency } from '@skeleton/api/types';
 
   const props = defineProps<{
     tabs: { id: string; title: string }[];
@@ -60,7 +60,6 @@
   const globalStore = useGlobalStore();
   const { accounts } = storeToRefs(walletStore);
   const { currencies, globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const accountCurrencies = computed(() => accounts.value.map(account => account.currency));
 

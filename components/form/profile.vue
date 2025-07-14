@@ -57,6 +57,8 @@
 <script setup lang="ts">
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import type { IProfileInfo } from '~/types';
+  import { changeProfileData } from '@skeleton/api/profile';
+  import { setFormData, createValidationRules, getFormRules } from '@skeleton/helpers/formMethods';
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
   const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
@@ -68,8 +70,6 @@
   const { profile } = storeToRefs(profileStore);
   const { setProfileData } = profileStore;
   const fieldsStore = useFieldsStore();
-  const { setFormData } = useProjectMethods();
-  const { changeProfileData } = useCoreProfileApi();
   const globalStore = useGlobalStore();
 
   const hasEmailField = computed(() => {
@@ -99,7 +99,6 @@
 
   const emit = defineEmits(['toggle-profile-edit']);
   const profileFormData = reactive(setFormData(cleanFields));
-  const { getFormRules, createValidationRules, getContent } = useProjectMethods();
   const profileRules = createValidationRules(cleanFields, true);
   const profileFormRules = getFormRules(profileRules);
   const { serverFormErrors, v$, onFocus, setError, scrollToValidationError } = useFormValidation(

@@ -80,6 +80,8 @@
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import type { IModalsContent } from '~/types';
   import { sendOtp } from '@skeleton/api/auth';
+  import { setFormData, createValidationRules, getFormRules } from '@skeleton/helpers/formMethods';
+  import { getNicknameFromEmail } from '@skeleton/helpers/simpleMethods';
 
   const fieldsMap: Record<string, any> = fieldsTypeMap;
 
@@ -90,7 +92,6 @@
     selectedTab: 'email' | 'phone';
   }>();
 
-  const { setFormData, getContent, getFormRules, createValidationRules, getNicknameFromEmail } = useProjectMethods();
   const fieldsStore = useFieldsStore();
   const { selectOptions } = storeToRefs(fieldsStore);
   const globalStore = useGlobalStore();

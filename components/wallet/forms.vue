@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPaymentMethod } from '@skeleton/core/types';
+  import type { IPaymentMethod } from '@skeleton/api/types';
   import type { IProfileLimits, IWalletModal } from '~/types';
 
   const props = defineProps<{
@@ -81,7 +81,6 @@
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const hasOffset = ref<boolean>(false);
   const scrollBlock = ref();
-  const { getContent } = useProjectMethods();
   const depositMethodKey = ref<number>(0);
 
   const walletStore = useWalletStore();

@@ -38,8 +38,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerQuest } from '@skeleton/core/types';
+  import type { IPlayerQuest } from '@skeleton/api/types';
   import type { IProfileInfo, IQuestsHubModal } from '~/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     questInfo: IPlayerQuest;
@@ -57,7 +58,6 @@
   const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
   const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
 
-  const { getContent, formatBalance } = useProjectMethods();
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
   const rewardsValue = computed(() => {

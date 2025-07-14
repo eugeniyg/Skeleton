@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { ILoyaltyLevel } from '@skeleton/core/types';
+  import type { ILoyaltyLevel } from '@skeleton/api/types';
   import type { ILoyaltyPage } from '~/types';
 
   const props = defineProps<{
@@ -62,7 +62,6 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const loyaltyStore = useLoyaltyStore();
   const { loyaltyAccount } = storeToRefs(loyaltyStore);
-  const { getContent } = useProjectMethods();
   const { openModal } = useModalStore();
 
   const completedLevelIcon = computed(() => {

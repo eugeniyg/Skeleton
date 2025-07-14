@@ -60,7 +60,6 @@
   const globalStore = useGlobalStore();
   const { fieldsSettings, defaultLocaleFieldsSettings } = globalStore;
   const { currentLocale } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const selected = reactive<{ year: number; month: number; day: number }>({
     year: 0,
     month: 0,

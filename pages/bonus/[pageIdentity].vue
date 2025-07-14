@@ -46,10 +46,10 @@
 
 <script setup lang="ts">
   import type { IBonusPage } from '~/types';
+  import { handleExternalLink } from '@skeleton/helpers/simpleMethods';
 
   const route = useRoute();
   const { pageIdentity } = route.params;
-  const { getContent } = useProjectMethods();
 
   const contentParams = {
     contentKey: `${pageIdentity}-bonus-content`,
@@ -72,7 +72,6 @@
   const { openModal, openWalletModal } = useModalStore();
 
   const clickButton = (url: string | undefined): void => {
-    const { handleExternalLink } = useProjectMethods();
     if (url) handleExternalLink(url);
     else if (isLoggedIn.value) openWalletModal('deposit');
     else openModal('sign-up');

@@ -3,7 +3,8 @@ import type {
   IPlayerQuestEventTask,
   IQuestTaskUpdatedEvent,
   IQuestUpdatedEvent,
-} from '@skeleton/core/types';
+} from '@skeleton/api/types';
+import { getPlayerQuests } from '@skeleton/api/retention';
 
 interface IQuestsStoreState {
   activeQuests: IPlayerQuest[];
@@ -26,7 +27,6 @@ export const useQuestsStore = defineStore('questsStore', {
 
   actions: {
     async getActiveQuests(): Promise<void> {
-      const { getPlayerQuests } = useCoreQuestApi();
       const { activeAccount } = useWalletStore();
       const { data } = await getPlayerQuests({ state: [2], currency: activeAccount?.currency });
       this.activeQuests = data;
@@ -49,7 +49,6 @@ export const useQuestsStore = defineStore('questsStore', {
     updateQuest(questData: IPlayerQuest | undefined): void {
       if (!questData) return;
 
-      const { getContent } = useProjectMethods();
       const { showAlert } = useLayoutStore();
       const { globalComponentsContent, defaultLocaleGlobalComponentsContent, alertsData, defaultLocaleAlertsData } =
         useGlobalStore();
@@ -79,7 +78,6 @@ export const useQuestsStore = defineStore('questsStore', {
     updateTask(taskData: IPlayerQuestEventTask | undefined): void {
       if (!taskData) return;
 
-      const { getContent } = useProjectMethods();
       const { alertsData, defaultLocaleAlertsData, globalComponentsContent, defaultLocaleGlobalComponentsContent } =
         useGlobalStore();
       const { showAlert } = useLayoutStore();
@@ -125,7 +123,7 @@ export const useQuestsStore = defineStore('questsStore', {
     subscribeQuestsSocket(): void {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
-        const { createSubscription } = useWebSocket();
+        const { createSubscription } = useWebSocketStore();
         this.questsSubscription = createSubscription(
           `retention:quests#${profileStore.profile?.id}`,
           this.questsSocketTrigger

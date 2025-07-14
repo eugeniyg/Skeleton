@@ -44,7 +44,6 @@
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, isMobile, headerCountry } =
     storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
 
@@ -83,7 +82,7 @@
   );
 
   const subscribeWinnersSocket = (): void => {
-    const { createSubscription } = useWebSocket();
+    const { createSubscription } = useWebSocketStore();
     winnersSubscription.value = createSubscription(
       `game:winners:${isMobile.value ? 'mobile' : 'desktop'}:${profile.value?.country || headerCountry.value || 'UA'}`,
       updateWinners

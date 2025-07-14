@@ -67,11 +67,14 @@
 
 <script setup lang="ts">
   import useVuelidate from '@vuelidate/core';
-  import type { IPaymentField, IWithdrawResponse } from '@skeleton/core/types';
+  import type { IPaymentField, IWithdrawResponse } from '@skeleton/api/types';
   import { marked } from 'marked';
   import fieldsTypeMap from '@skeleton/maps/fieldsTypeMap.json';
   import DOMPurify from 'isomorphic-dompurify';
   import type { IWalletModal } from '~/types';
+  import { withdrawAccount } from '@skeleton/api/wallet';
+  import { getFormRules } from '@skeleton/helpers/formMethods';
+  import { formatBalance, getMainBalanceFormat } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     amountMax: number;
@@ -91,8 +94,6 @@
   const { showAlert } = useLayoutStore();
   const { closeModal } = useModalStore();
   const { activeAccount, requestPaymentMethodsRegion } = storeToRefs(walletStore);
-
-  const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
 
   const networkSelectOptions = computed(() => {
     const networkField = props.fields.find(field => field.key === 'crypto_network');
@@ -175,7 +176,6 @@
   };
 
   const withdrawRules = ref<any>(startRules);
-  const { getFormRules } = useProjectMethods();
   const withdrawFormRules = computed(() => getFormRules(withdrawRules.value));
   const serverFormErrors = ref<{ [key: string]: Maybe<string> }>({});
   const v$ = useVuelidate(withdrawFormRules, withdrawFormData);
@@ -367,7 +367,6 @@
       fields,
     };
 
-    const { withdrawAccount } = useCoreWalletApi();
     useEvent('analyticsEvent', {
       event: 'walletSubmitForm',
       walletOperationType: 'withdraw',

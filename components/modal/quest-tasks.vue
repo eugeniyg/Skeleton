@@ -93,6 +93,7 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent, IQuestsHubModal } from '~/types';
+  import { activatePlayerQuest } from '@skeleton/api/retention';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['questTasks']>;
@@ -112,7 +113,6 @@
 
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const questsStore = useQuestsStore();
   const { openTasksModal } = questsStore;
   const { tasksModalData, tasksModalImage } = storeToRefs(questsStore);
@@ -149,7 +149,6 @@
 
   const { showAlert } = useLayoutStore();
   const activation = ref(false);
-  const { activatePlayerQuest } = useCoreQuestApi();
   const activateQuest = async (): Promise<void> => {
     if (activation.value) return;
     activation.value = true;

@@ -42,10 +42,12 @@
 
 <script setup lang="ts">
   import { marked } from 'marked';
-  import type { IPaymentField, IRequestDeposit, IBonus } from '@skeleton/core/types';
+  import type { IPaymentField, IRequestDeposit, IBonus } from '@skeleton/api/types';
   import debounce from 'lodash/debounce';
   import DOMPurify from 'isomorphic-dompurify';
   import type { IWalletModal } from '~/types';
+  import { depositAccount } from '@skeleton/api/wallet';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     amountMax?: number;
@@ -66,8 +68,6 @@
   const { selectedDepositBonus, bonusDeclined, showDepositBonusCode, depositBonusCode } = storeToRefs(bonusStore);
 
   const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
-
-  const { formatBalance, getContent } = useProjectMethods();
 
   const networkSelectOptions = computed(() => {
     const networkField = props.fields && props.fields.find(field => field.key === 'crypto_network');
@@ -122,7 +122,6 @@
     },
   });
 
-  const { depositAccount } = useCoreWalletApi();
   const sendDepositData = async (): Promise<void> => {
     state.params.bonusId = selectedDepositBonus.value?.id;
     state.params.isBonusDecline = showDepositBonusCode.value && !depositBonusCode.value ? true : bonusDeclined.value;

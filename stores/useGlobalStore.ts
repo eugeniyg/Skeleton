@@ -1,5 +1,5 @@
 import camelCase from 'lodash/camelCase';
-import type { ICoreConstants, ICountry, ICurrency, ILocale, IStatus, ITimeZone } from '@skeleton/core/types';
+import type { ICoreConstants, ICountry, ICurrency, ILocale, IStatus, ITimeZone } from '@skeleton/api/types';
 import type {
   IAlertsContent,
   ICategory,
@@ -16,6 +16,7 @@ import {
   getCountries as requestCountries,
   getConstants,
 } from '@skeleton/api/global';
+import { getLocalesContentData } from '@skeleton/helpers/contentMethods';
 
 interface IGlobalContent {
   alerts: IAlertsContent;
@@ -270,7 +271,6 @@ export const useGlobalStore = defineStore('globalStore', {
               .find(),
       ]);
 
-      const { getLocalesContentData } = useProjectMethods();
       const { currentLocaleData, defaultLocaleData } = getLocalesContentData(
         currentLocaleContentResponse,
         defaultLocaleContentResponse

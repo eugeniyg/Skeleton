@@ -56,9 +56,10 @@
 
 <script setup lang="ts">
   import type { AtomicExternalId } from '#components';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
+  import { handleExternalLink } from '@skeleton/helpers/simpleMethods';
 
   const emit = defineEmits(['logout']);
-  const { localizePath, handleExternalLink, getContent } = useProjectMethods();
   const { closeUserNav } = useLayoutStore();
   const { openWalletModal } = useModalStore();
   const globalStore = useGlobalStore();
@@ -73,7 +74,6 @@
   const { userNickname } = storeToRefs(profileStore);
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
-  const { formatBalance } = useProjectMethods();
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));
   const refExternalIdComponent = useTemplateRef<typeof AtomicExternalId>('refExternalIdComponent');
 

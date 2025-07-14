@@ -24,16 +24,16 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPaginationMeta, IPlayerQuest } from '@skeleton/core/types';
+  import type { IPaginationMeta, IPlayerQuest } from '@skeleton/api/types';
   import { useListen } from '@skeleton/composables/useEventBus';
   import type { IQuestsHubModal } from '~/types';
+  import { getPlayerQuests } from '@skeleton/api/retention';
 
   const questsHubContent: Maybe<IQuestsHubModal> = inject('questsHubContent');
   const defaultLocaleQuestsHubContent: Maybe<IQuestsHubModal> = inject('defaultLocaleQuestsHubContent');
 
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   interface IState {
     loading: boolean;
@@ -47,7 +47,6 @@
     meta: undefined,
   });
 
-  const { getPlayerQuests } = useCoreQuestApi();
   const { showAlert } = useLayoutStore();
   const getData = async (page = 1): Promise<void> => {
     if (state.loading || (state.meta && state.meta.page >= state.meta.totalPages)) return;

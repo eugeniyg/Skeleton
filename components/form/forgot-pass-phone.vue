@@ -29,6 +29,7 @@
 <script setup lang="ts">
   import type { IModalsContent } from '~/types';
   import { sendOtp } from '@skeleton/api/auth';
+  import { getFormRules } from '@skeleton/helpers/formMethods';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['forgot']>;
@@ -41,7 +42,6 @@
 
   const emit = defineEmits(['sendOtp']);
   const forgotFormData = reactive({ phone: '' });
-  const { getFormRules, getContent } = useProjectMethods();
   const forgotRules = {
     phone: [{ rule: 'required' }, { rule: 'phone' }],
   };

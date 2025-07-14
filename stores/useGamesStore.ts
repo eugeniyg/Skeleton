@@ -1,5 +1,6 @@
 import type { IBetExceptionEvent, ICollection, IGame, IGameProvider } from '@skeleton/api/types';
 import { getGameProviders, getGameCollections, getFavorite, setFavorite, deleteFavorite } from '@skeleton/api/games';
+import { formatBalance } from '@skeleton/helpers/amountMethods';
 
 type MobileModalType = 'depositOrDemo' | 'deposit' | 'registerOrDemo' | 'registerOrLogin';
 interface IGamesStoreState {
@@ -92,7 +93,6 @@ export const useGamesStore = defineStore('gamesStore', {
         const bonusCurrency = socketData.data.playerBonus?.currency;
         const bonusMaxAmount = socketData.data.playerBonus?.maxBetAmount;
         if (!bonusCurrency || !bonusMaxAmount) return;
-        const { formatBalance } = useProjectMethods();
         const maxBetBalance = formatBalance(bonusCurrency, bonusMaxAmount);
         useEvent('maxBets', {
           gameIdentity: socketData.data.gameIdentity as string,
@@ -102,7 +102,7 @@ export const useGamesStore = defineStore('gamesStore', {
     },
 
     subscribeBetsSocket(): void {
-      const { createSubscription } = useWebSocket();
+      const { createSubscription } = useWebSocketStore();
       const profileStore = useProfileStore();
       this.betsSubscription = createSubscription(`game:bets#${profileStore.profile?.id}`, this.handleBetsEvent);
     },

@@ -10,6 +10,8 @@ import {
   registerByPhone,
   logOut,
 } from '@skeleton/api/auth';
+import { getProfile, resendVerificationEmail, changeProfileData } from '@skeleton/api/profile';
+import { getNicknameFromEmail } from '@skeleton/helpers/simpleMethods';
 
 interface IProfileStoreState {
   refreshPromise: Promise<string> | null;
@@ -42,7 +44,6 @@ export const useProfileStore = defineStore('profileStore', {
     userNickname(state): string {
       if (state.profile?.nickname) return state.profile.nickname;
       if (state.profile?.email) {
-        const { getNicknameFromEmail } = useProjectMethods();
         return getNicknameFromEmail(state.profile.email);
       }
       return 'Unknown';
@@ -107,16 +108,36 @@ export const useProfileStore = defineStore('profileStore', {
       deleteReturnGame();
 
       this.finishProfileDependencies();
-      const { reconnectSocket } = useWebSocket();
+      const { reconnectSocket } = useWebSocketStore();
       await reconnectSocket();
+    },
+
+    async awaitRefreshParallel(): Promise<string | null> {
+      return new Promise(resolve => {
+        let iteration = 1;
+
+        const checkStorage = (): void => {
+          setTimeout(() => {
+            if (iteration > 10) {
+              localStorage.removeItem('refreshSession');
+              resolve(null);
+            }
+            iteration += 1;
+            const storageValue = localStorage.getItem('refreshSession');
+            if (storageValue === 'loading') checkStorage();
+            else resolve(storageValue);
+          }, 500);
+        };
+
+        checkStorage();
+      });
     },
 
     async getRefreshRequest(): Promise<string> {
       const storageRefreshStatus = localStorage.getItem('refreshSession');
 
       if (storageRefreshStatus === 'loading') {
-        const { awaitRefreshParallel } = useProjectMethods();
-        const newToken = await awaitRefreshParallel();
+        const newToken = await this.awaitRefreshParallel();
         if (newToken) {
           this.setSessionToken(newToken);
           return newToken;
@@ -243,7 +264,7 @@ export const useProfileStore = defineStore('profileStore', {
       if (freshchatParams?.guestAvailable) updateChat();
       else addFreshChatScript();
 
-      const { reconnectSocket } = useWebSocket();
+      const { reconnectSocket } = useWebSocketStore();
       await reconnectSocket();
       this.startProfileDependencies();
       await this.checkPwaDetect();
@@ -286,7 +307,6 @@ export const useProfileStore = defineStore('profileStore', {
         ? JSON.parse(data.query.state)
         : undefined;
       const router = useRouter();
-      const { localizePath } = useProjectMethods();
       const backUrl = appStateData?.backRoute ? decodeURIComponent(appStateData.backRoute) : undefined;
       await router.replace(backUrl || localizePath('/'));
 
@@ -341,7 +361,6 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     async getProfileData(): Promise<void> {
-      const { getProfile } = useCoreProfileApi();
       this.profile = await getProfile();
       this.isLoggedIn = true;
     },
@@ -357,7 +376,6 @@ export const useProfileStore = defineStore('profileStore', {
         await this.removeSession();
 
         const router = useRouter();
-        const { localizePath } = useProjectMethods();
         await router.push(localizePath('/'));
       }
     },
@@ -365,9 +383,8 @@ export const useProfileStore = defineStore('profileStore', {
     async resendVerifyEmail(): Promise<void> {
       const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
-      const { resendVerifyEmail } = useCoreProfileApi();
       try {
-        await resendVerifyEmail();
+        await resendVerificationEmail();
         showAlert(alertsData?.profile?.resentVerification || defaultLocaleAlertsData?.profile?.resentVerification);
       } catch {
         showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
@@ -377,7 +394,7 @@ export const useProfileStore = defineStore('profileStore', {
     },
 
     subscribeOnlineSocket(): void {
-      const { createSubscription } = useWebSocket();
+      const { createSubscription } = useWebSocketStore();
       this.onlineSubscription = createSubscription('global:online');
     },
 
@@ -393,7 +410,6 @@ export const useProfileStore = defineStore('profileStore', {
       const isStandalone = isStandalonePWA();
 
       if (isStandalone || this.isPwaRoute) {
-        const { changeProfileData } = useCoreProfileApi();
         try {
           this.profile = await changeProfileData({ pwaInstalled: true });
         } catch {

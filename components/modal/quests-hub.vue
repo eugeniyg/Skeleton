@@ -67,7 +67,6 @@
     return [];
   });
 
-  const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
   const selectedTab = ref<string>('active');
   const tabsScrollBlock = ref();

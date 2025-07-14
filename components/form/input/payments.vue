@@ -27,8 +27,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPaymentMethod } from '@skeleton/core/types';
+  import type { IPaymentMethod } from '@skeleton/api/types';
   import type { IWalletModal } from '~/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     items?: IPaymentMethod[];
@@ -37,7 +38,6 @@
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
-  const { getContent, formatBalance } = useProjectMethods();
 
   const emit = defineEmits(['update:activeMethod', 'methodClick']);
   const cashAgentMethodKey: string = '0x.withdrawal.cash_agent';

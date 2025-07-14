@@ -71,8 +71,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerQuestTask } from '@skeleton/core/types';
+  import type { IPlayerQuestTask } from '@skeleton/api/types';
   import type { IQuestTasksModal } from '~/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     taskInfo: IPlayerQuestTask;
@@ -84,7 +85,6 @@
   const defaultLocaleQuestTasksContent: Maybe<IQuestTasksModal> = inject('defaultLocaleQuestTasksContent');
 
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const { getContent, formatBalance } = useProjectMethods();
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
 

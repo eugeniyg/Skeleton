@@ -76,6 +76,7 @@
 
 <script setup lang="ts">
   import type { IModalsContent } from '~/types';
+  import { getFormRules } from '@skeleton/helpers/formMethods';
 
   const props = defineProps<{
     loginType: 'email' | 'phone';
@@ -110,7 +111,6 @@
     login: '',
     password: '',
   });
-  const { getFormRules, getContent } = useProjectMethods();
   const authorizationRules = {
     password: [{ rule: 'required' }],
     login: [{ rule: 'required' }, { rule: props.loginType || 'email' }],

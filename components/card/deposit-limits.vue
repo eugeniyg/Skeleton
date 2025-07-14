@@ -46,7 +46,6 @@
 
 <script setup lang="ts">
   const limitsStore = useLimitsStore();
-  const { getContent } = useProjectMethods();
   const { checkCurrencies } = limitsStore;
   const { depositPeriods, limitsContent, defaultLimitsContent, isAdvancedModeEnabled, lossPeriods } =
     storeToRefs(limitsStore);

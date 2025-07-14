@@ -58,12 +58,12 @@
 
 <script setup lang="ts">
   import type { IHomePage } from '~/types';
-  import type { ICollection } from '@skeleton/core/types';
+  import type { ICollection } from '@skeleton/api/types';
+  import { addBetsyScript } from '@skeleton/helpers/transformDomMethods';
+  import { initObserver } from '@skeleton/helpers/observer';
 
   const globalStore = useGlobalStore();
   const { currentLocale } = storeToRefs(globalStore);
-
-  const { localizePath, getContent, addBetsyScript } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'homePageContent',
@@ -132,7 +132,6 @@
   const hasBetsyIntegration =
     runtimeConfig.public.betsyParams?.clientHost && runtimeConfig.public.betsyParams?.clientId;
   const sportsContainer = ref();
-  const { initObserver } = useProjectMethods();
   const widgetsObserver = ref();
 
   const initBetsy = (): void => {

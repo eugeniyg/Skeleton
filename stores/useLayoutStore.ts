@@ -1,7 +1,7 @@
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useNotification } from '@kyvg/vue3-notification';
 import type { IAlert } from '~/types';
-import type { IGame } from '@skeleton/core/types';
+import type { IGame } from '@skeleton/api/types';
 
 interface ILayoutStoreState extends Record<string, any> {
   isUserNavOpen: boolean;

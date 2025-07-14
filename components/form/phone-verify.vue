@@ -71,7 +71,6 @@
 
   const emit = defineEmits(['verifyPhone', 'removeErrorHint']);
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const { getContent } = useProjectMethods();
   const completeCode = ref<string>('');
 
   watch(completeCode, () => {

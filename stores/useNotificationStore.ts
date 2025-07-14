@@ -1,4 +1,5 @@
-import type { IMessage, IMessengerReceivedEvent } from '@skeleton/core/types';
+import type { IMessage, IMessengerReceivedEvent } from '@skeleton/api/types';
+import { getPlayerNotifications, markMessagesAsRead, markAllMessagesAsRead } from '@skeleton/api/notification';
 
 interface INotificationStoreState {
   unreadCount: number;
@@ -15,14 +16,12 @@ export const useNotificationStore = defineStore('notificationStore', {
 
   actions: {
     async getPopoverNotifications(): Promise<void> {
-      const { getPlayerNotifications } = useCoreNotificationApi();
       const { data, meta } = await getPlayerNotifications({ page: 1, perPage: 3 });
       this.popoverNotifications = data;
       this.unreadCount = meta.totalUnread;
     },
 
     async readMessages(messageIds: string[]): Promise<void> {
-      const { markMessagesAsRead } = useCoreNotificationApi();
       const response = await markMessagesAsRead(messageIds);
       this.unreadCount = response.totalUnread;
       this.popoverNotifications = this.popoverNotifications.map(message => {
@@ -32,7 +31,6 @@ export const useNotificationStore = defineStore('notificationStore', {
     },
 
     async readAllMessages(): Promise<void> {
-      const { markAllMessagesAsRead } = useCoreNotificationApi();
       const response = await markAllMessagesAsRead();
       this.unreadCount = response.totalUnread;
       this.popoverNotifications = this.popoverNotifications.map(message => ({
@@ -45,7 +43,6 @@ export const useNotificationStore = defineStore('notificationStore', {
     showNotificationAlert(title: string | undefined): void {
       if (!title) return;
       const { alertsData, defaultLocaleLayoutData } = useGlobalStore();
-      const { getContent } = useProjectMethods();
       const { showAlert } = useLayoutStore();
       const alertContent = getContent(alertsData, defaultLocaleLayoutData, 'global.newNotification');
       if (alertContent.description) {
@@ -70,7 +67,7 @@ export const useNotificationStore = defineStore('notificationStore', {
     subscribeNotificationSocket(): void {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
-        const { createSubscription } = useWebSocket();
+        const { createSubscription } = useWebSocketStore();
         this.notificationSubscription = createSubscription(
           `messenger:notifications#${profileStore.profile?.id}`,
           this.newNotificationTrigger

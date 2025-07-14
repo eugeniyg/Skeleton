@@ -17,7 +17,7 @@
     <div class="quest-games__items">
       <template v-if="gamesData.length">
         <div v-for="game in filteredGamesData" :key="game.id" class="quest-games__item" @click.once="goToGame(game)">
-          <atomic-image :src="getImageUrl(game.customImages, game.images, 'square')" />
+          <atomic-image :src="getGameImageUrl(game.customImages, game.images, 'square')" />
         </div>
       </template>
 
@@ -32,6 +32,7 @@
   import type { IGame } from '@skeleton/api/types';
   import type { IQuestTasksModal } from '~/types';
   import { getFilteredGames } from '@skeleton/api/games';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
 
   const props = defineProps<{
     items: string[];
@@ -41,7 +42,6 @@
   const questTasksContent: Maybe<IQuestTasksModal> = inject('questTasksContent');
   const defaultLocaleQuestTasksContent: Maybe<IQuestTasksModal> = inject('defaultLocaleQuestTasksContent');
 
-  const { getContent, getImageUrl, localizePath } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { headerCountry, isMobile } = storeToRefs(globalStore);
 

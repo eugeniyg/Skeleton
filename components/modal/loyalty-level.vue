@@ -46,7 +46,6 @@
   }>();
 
   const { closeModal } = useModalStore();
-  const { getContent, localizePath } = useProjectMethods();
   const loyaltyStore = useLoyaltyStore();
   const { currentLevelName, loyaltyAccount } = storeToRefs(loyaltyStore);
 

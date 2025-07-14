@@ -33,6 +33,7 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent } from '~/types';
+  import { replaceContent } from '@skeleton/helpers/contentMethods';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['cancelRegistration']>;
@@ -40,9 +41,7 @@
   }>();
 
   const { closeModal, closeAllModals } = useModalStore();
-  const { getContent } = useProjectMethods();
 
-  const { replaceContent } = useProjectMethods();
   const bonusContent = getContent(props.currentLocaleData, props.defaultLocaleData, 'bonusText')
     ? replaceContent(getContent(props.currentLocaleData, props.defaultLocaleData, 'bonusText'), '*')
     : '';

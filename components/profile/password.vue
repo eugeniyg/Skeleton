@@ -38,6 +38,8 @@
 
 <script setup lang="ts">
   import type { IProfileSecurity } from '~/types';
+  import { changeProfilePassword } from '@skeleton/api/profile';
+  import { createValidationRules, getFormRules } from '@skeleton/helpers/formMethods';
 
   const globalStore = useGlobalStore();
   const { fieldsSettings, defaultLocaleFieldsSettings, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
@@ -57,7 +59,6 @@
     repeatNewPassword: '',
   });
 
-  const { getFormRules, createValidationRules, getContent } = useProjectMethods();
   const changeRules = createValidationRules(Object.keys(changeFormData).map(field => ({ name: field })));
   const changeFormRules = getFormRules(changeRules);
   const { serverFormErrors, v$, onFocus, setError } = useFormValidation(changeFormRules, changeFormData);
@@ -79,7 +80,6 @@
 
   const { showAlert } = useLayoutStore();
   const isLockedAsyncButton = ref<boolean>(false);
-  const { changeProfilePassword } = useCoreProfileApi();
   const onSubmit = async (): Promise<void> => {
     if (v$.value.$invalid) return;
     v$.value.$reset();

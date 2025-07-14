@@ -73,7 +73,6 @@
   const { openModal, openWalletModal } = useModalStore();
   const { isGamePage } = storeToRefs(layoutStore);
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { localizePath, getContent } = useProjectMethods();
   const route = useRoute();
 
   const clickMainButton = (): void => {

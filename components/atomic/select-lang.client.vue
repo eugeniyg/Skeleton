@@ -26,7 +26,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { ILocale } from '@skeleton/core/types';
+  import type { ILocale } from '@skeleton/api/types';
+  import { changeProfileData } from '@skeleton/api/profile';
 
   const route = useRoute();
   const globalStore = useGlobalStore();
@@ -34,7 +35,6 @@
   const isOpen = ref<boolean>(false);
   const isProcess = ref<boolean>(false);
   const cookieLanguage = useCookie('user-language', { maxAge: 60 * 60 * 24 * 365 * 10 });
-  const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const {

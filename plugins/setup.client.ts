@@ -1,4 +1,5 @@
 import { isStandalonePWA } from 'ua-parser-js/helpers';
+import { preloaderDone } from '@skeleton/helpers/preloaderMethods';
 
 export default defineNuxtPlugin(nuxtApp => {
   const checkAffiliateTag = (): void => {
@@ -86,7 +87,6 @@ export default defineNuxtPlugin(nuxtApp => {
       const router = useRouter();
       router.go(0);
     } else if (logoutParallel) {
-      const { localizePath } = useProjectMethods();
       window.location.href = window.location.origin + localizePath('/');
     }
   };
@@ -110,7 +110,7 @@ export default defineNuxtPlugin(nuxtApp => {
     const { userAgent } = window.navigator;
     parseUserAgent(userAgent);
     window.addEventListener('storage', listeningChangeSession);
-    const { initWebSocket } = useWebSocket();
+    const { initWebSocket } = useWebSocketStore();
     await initWebSocket();
     checkPwaApp();
     startProfileLogic();
@@ -131,8 +131,6 @@ export default defineNuxtPlugin(nuxtApp => {
     const isAuthAutologin = autologinRoute && !!route.query.state;
 
     if (isAuthAutologin || callbackRoute) return;
-
-    const { preloaderDone } = useProjectMethods();
     preloaderDone();
   });
 });

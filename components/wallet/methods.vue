@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPaymentMethod } from '@skeleton/core/types';
+  import type { IPaymentMethod } from '@skeleton/api/types';
   import { Skeletor } from 'vue-skeletor';
 
   const props = defineProps<{

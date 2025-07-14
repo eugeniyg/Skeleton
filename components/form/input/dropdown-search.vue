@@ -65,6 +65,9 @@
 </template>
 
 <script setup lang="ts">
+  import { sortByAlphabet } from '@skeleton/helpers/simpleMethods';
+  import { initObserver } from '@skeleton/helpers/observer';
+
   const props = defineProps<{
     options: any[];
     value: any;
@@ -84,11 +87,7 @@
 
   const globalStore = useGlobalStore();
 
-  const { initObserver } = useProjectMethods();
-
   const { fieldsSettings, defaultLocaleFieldsSettings } = storeToRefs(globalStore);
-
-  const { sortByAlphabet, getContent } = useProjectMethods();
 
   const valueObject = ref<any>('');
   const searchQuery = ref<string>('');

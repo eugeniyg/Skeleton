@@ -113,7 +113,6 @@
   const { data: signInContent } = await useLazyAsyncData(getSignInContentData);
 
   const { settingsConstants, globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const { getContent } = useProjectMethods();
   const showPhoneVerification = ref<boolean>(false);
 
   const returnLoginModal = () => {

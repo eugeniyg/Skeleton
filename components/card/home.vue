@@ -51,6 +51,7 @@
 <script setup lang="ts">
   import { marked } from 'marked';
   import DOMPurify from 'isomorphic-dompurify';
+  import { handleExternalLink } from '@skeleton/helpers/simpleMethods';
 
   const props = defineProps<{
     images: {
@@ -75,7 +76,6 @@
   const profileStore = useProfileStore();
   const { isLoggedIn, userNickname } = storeToRefs(profileStore);
   const { openModal, openWalletModal } = useModalStore();
-  const { handleExternalLink } = useProjectMethods();
   const runtimeConfig = useRuntimeConfig();
   const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;
 

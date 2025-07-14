@@ -44,11 +44,10 @@
 
 <script setup lang="ts">
   import type { ICasinoPage } from '~/types';
-  import type { ICollection } from '@skeleton/core/types';
+  import type { ICollection } from '@skeleton/api/types';
 
   const globalStore = useGlobalStore();
   const profileStore = useProfileStore();
-  const { localizePath, getContent } = useProjectMethods();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = globalStore;
   const { openModal, closeModal } = useModalStore();

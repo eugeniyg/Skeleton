@@ -59,6 +59,7 @@
 
 <script setup lang="ts">
   import type { IWalletModal } from '~/types';
+  import { formatBalance, getEquivalentAccount } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps({
     withdraw: {
@@ -72,7 +73,6 @@
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const walletStore = useWalletStore();
   const { activeAccount, activeEquivalentAccount, showEquivalentBalance } = storeToRefs(walletStore);
-  const { formatBalance, getContent, getEquivalentAccount } = useProjectMethods();
   const isSelectOpen = ref<boolean>(false);
 
   const balanceFormat = computed(() => formatBalance(activeAccount.value?.currency, activeAccount.value?.balance));

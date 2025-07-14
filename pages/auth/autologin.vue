@@ -8,7 +8,6 @@
     if (!query.state) return;
 
     const { isLoggedIn, autoLogin, removeSession } = useProfileStore();
-    const { localizePath } = useProjectMethods();
     const { openModal, openWalletModal } = useModalStore();
     const router = useRouter();
 

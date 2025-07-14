@@ -36,7 +36,6 @@
   }>();
 
   const emit = defineEmits(['playReal']);
-  const { getContent } = useProjectMethods();
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn } = storeToRefs(profileStore);

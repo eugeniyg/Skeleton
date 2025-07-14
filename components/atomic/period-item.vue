@@ -44,6 +44,8 @@
 </template>
 
 <script setup lang="ts">
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
+
   const props = defineProps<{
     id: string;
     status: number;
@@ -67,7 +69,6 @@
   const dayjs = useDayjs();
   const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
   const limitsStore = useLimitsStore();
-  const { formatBalance, getContent } = useProjectMethods();
   const { getLimits } = limitsStore;
   const { limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
   const formatStatus = computed(() => {

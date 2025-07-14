@@ -79,7 +79,6 @@
 
   const { closeModal } = useModalStore();
   const { gameProviders } = useGamesStore();
-  const { getContent } = useProjectMethods();
 
   const searchValue = ref<string>('');
   const searchProviders = ref<IGameProvider[]>([]);

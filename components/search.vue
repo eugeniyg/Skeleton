@@ -31,7 +31,6 @@
   const globalStore = useGlobalStore();
   const { layoutData, defaultLocaleLayoutData } = globalStore;
   const { headerCountry } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const searchValue = ref<string>('');
   const pendingGames = ref<boolean>(true);
   const loadPage = ref<number>(1);

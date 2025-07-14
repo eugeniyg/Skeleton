@@ -12,7 +12,7 @@
         </div>
 
         <div v-for="game in activeItems" :key="game.id" class="item" @click="clickGame(game)">
-          <atomic-image :src="getImageUrl(game.customImages, game.images, 'square')" />
+          <atomic-image :src="getGameImageUrl(game.customImages, game.images, 'square')" />
           <span>{{ game.name }}</span>
         </div>
 
@@ -27,7 +27,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/api/types';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
 
   const props = defineProps<{
     isShow?: boolean;
@@ -44,7 +45,6 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const router = useRouter();
 
-  const { localizePath } = useProjectMethods();
   const clickGame = (gameData: IGame): void => {
     if (gameData.identity === 'betsy-sportsbook-betsy') {
       router.push(localizePath('/betting'));
@@ -55,7 +55,6 @@
   };
 
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { getImageUrl, getContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/list/result-search.scss" lang="scss" />

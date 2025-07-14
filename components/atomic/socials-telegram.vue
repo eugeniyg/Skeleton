@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { ICoreConstants } from '@skeleton/core/types';
+  import type { ICoreConstants } from '@skeleton/api/types';
 
   const props = defineProps<{
     params: ICoreConstants['player']['telegram'];

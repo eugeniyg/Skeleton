@@ -49,7 +49,6 @@
     canceled: 'Rejected',
   };
 
-  const { getContent } = useProjectMethods();
   const documentsContent = ref<Maybe<IProfileDocuments>>(inject('documentsContent'));
   const defaultLocaleDocumentsContent = ref<Maybe<IProfileDocuments>>(inject('defaultLocaleDocumentsContent'));
   const cardContent = computed(() => {

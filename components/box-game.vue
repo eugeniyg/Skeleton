@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/api/types';
   import type { IGamePage } from '~/types';
 
   const props = defineProps<{

@@ -18,7 +18,6 @@
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
-  const { getContent } = useProjectMethods();
 
   const missingMethodsDescription = computed(() => {
     if (props.selectedTab === 'deposit') {

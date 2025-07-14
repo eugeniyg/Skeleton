@@ -6,7 +6,7 @@
       class="item"
       :to="localizePath(`/games/${game.identity}${!isLoggedIn ? '' : '?real=true'}`)"
     >
-      <atomic-image class="img" :src="getImageUrl(game.customImages, game.images, 'square')" />
+      <atomic-image class="img" :src="getGameImageUrl(game.customImages, game.images, 'square')" />
     </nuxt-link>
   </div>
 </template>
@@ -14,19 +14,18 @@
 <script setup lang="ts">
   import type { IGame } from '@skeleton/api/types';
   import { getFilteredGames } from '@skeleton/api/games';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
 
   const props = defineProps<{
     items: string[];
     isCompact?: boolean;
   }>();
 
-  const { localizePath } = useProjectMethods();
   const profileStore = useProfileStore();
   const globalStore = useGlobalStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { headerCountry } = storeToRefs(globalStore);
   const gamesArray = ref<IGame[]>([]);
-  const { getImageUrl } = useProjectMethods();
 
   onMounted(async () => {
     try {

@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/api/types';
 
   const props = defineProps<{
     gameInfo: IGame;
@@ -27,7 +27,6 @@
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const router = useRouter();
-  const { localizePath } = useProjectMethods();
 
   const closeGame = (): void => {
     if (window.history.state.back) {

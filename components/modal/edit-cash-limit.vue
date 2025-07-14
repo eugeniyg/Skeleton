@@ -49,6 +49,8 @@
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent } from '~/types';
+  import { deletePlayerLimit, updatePlayerLimit } from '@skeleton/api/profile';
+  import { formatBalance, getMainBalanceFormat } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     limitId?: string;
@@ -62,8 +64,6 @@
 
   const { getLimits } = useLimitsStore();
   const { showAlert } = useLayoutStore();
-  const { deletePlayerLimit, updatePlayerLimit } = useCoreProfileApi();
-  const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const { closeModal } = useModalStore();

@@ -1,11 +1,21 @@
-import { defineStore, storeToRefs } from 'pinia';
 import type {
   IAccount,
   IAccountBalanceUpdateEvent,
   IInvoiceUpdatedEvent,
   IInvoiceStatistics,
   ISocketInvoice,
-} from '@skeleton/core/types';
+} from '@skeleton/api/types';
+
+import {
+  getInvoicesStatistics,
+  getAccounts,
+  addAccount,
+  switchActiveAccount,
+  hideWalletAccount,
+  getDepositMethods as requestDepositMethods,
+  getWithdrawMethods as requestWithdrawMethods,
+} from '@skeleton/api/wallet';
+import { formatBalance, getEquivalentAccount } from '@skeleton/helpers/amountMethods';
 
 interface IWalletState {
   accounts: IAccount[];
@@ -44,7 +54,6 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     activeEquivalentAccount(): { balance: number; currency: string; currencySymbol: string } {
-      const { getEquivalentAccount } = useProjectMethods();
       return getEquivalentAccount(this.activeAccount?.balance, this.activeAccount?.currency);
     },
 
@@ -59,7 +68,6 @@ export const useWalletStore = defineStore('walletStore', {
     currencyTabs(): { id: string; title: string }[] {
       const globalStore = useGlobalStore();
       const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-      const { getContent } = useProjectMethods();
 
       return [
         {
@@ -101,7 +109,6 @@ export const useWalletStore = defineStore('walletStore', {
 
   actions: {
     async getPaymentStatistics(): Promise<void> {
-      const { getInvoicesStatistics } = useCoreWalletApi();
       try {
         this.paymentStatisticsLoading = getInvoicesStatistics();
         this.invoicesStatistics = await this.paymentStatisticsLoading;
@@ -113,17 +120,14 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     async getUserAccounts(): Promise<void> {
-      const { getAccounts } = useCoreWalletApi();
       this.accounts = await getAccounts();
     },
 
     async createAccount(currency: string): Promise<void> {
-      const { addAccount } = useCoreWalletApi();
       this.accounts = await addAccount(currency);
     },
 
     async switchAccount(accountId: string): Promise<void> {
-      const { switchActiveAccount } = useCoreWalletApi();
       this.accountSwitching = switchActiveAccount(accountId);
       this.accounts = await this.accountSwitching;
       this.accountSwitching = undefined;
@@ -144,7 +148,6 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     async hideAccount(accountId: string): Promise<void> {
-      const { hideWalletAccount } = useCoreWalletApi();
       this.accounts = await hideWalletAccount(accountId);
     },
 
@@ -167,10 +170,9 @@ export const useWalletStore = defineStore('walletStore', {
 
     async getDepositMethods(): Promise<void> {
       this.depositLimitError = false;
-      const { getDepositMethods } = useCoreWalletApi();
 
       try {
-        this.depositMethods = await getDepositMethods(
+        this.depositMethods = await requestDepositMethods(
           this.activeAccount?.currency || '',
           this.requestPaymentMethodsRegion
         );
@@ -186,8 +188,7 @@ export const useWalletStore = defineStore('walletStore', {
     },
 
     async getWithdrawMethods(): Promise<void> {
-      const { getWithdrawMethods } = useCoreWalletApi();
-      this.withdrawMethods = await getWithdrawMethods(
+      this.withdrawMethods = await requestWithdrawMethods(
         this.activeAccount?.currency || '',
         this.requestPaymentMethodsRegion
       );
@@ -196,7 +197,7 @@ export const useWalletStore = defineStore('walletStore', {
     subscribeAccountSocket(): void {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
-        const { createSubscription } = useWebSocket();
+        const { createSubscription } = useWebSocketStore();
         this.accountSubscription = createSubscription(
           `wallet:accounts#${profileStore.profile?.id}`,
           this.updateAccount
@@ -222,7 +223,7 @@ export const useWalletStore = defineStore('walletStore', {
     subscribeInvoicesSocket(): void {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
-        const { createSubscription } = useWebSocket();
+        const { createSubscription } = useWebSocketStore();
         this.invoicesSubscription = createSubscription(
           `payment:invoices#${profileStore.profile?.id}`,
           this.showInvoiceStatus
@@ -246,7 +247,6 @@ export const useWalletStore = defineStore('walletStore', {
       this.asyncInvoiceProcessing(socketInvoiceData);
       if (![2, 3].includes(socketInvoiceData?.status || -1)) return;
 
-      const { formatBalance, getContent } = useProjectMethods();
       const { alertsData, defaultLocaleAlertsData, currencies } = useGlobalStore();
       const { showAlert } = useLayoutStore();
       const invoiceUtcDate = new Date(socketInvoiceData?.createdAt || '');

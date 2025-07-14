@@ -65,7 +65,6 @@
   const { profile, resentVerifyEmail } = storeToRefs(profileStore);
   const globalStore = useGlobalStore();
   const { fieldsSettings, defaultLocaleFieldsSettings } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const fieldsStore = useFieldsStore();
   const { profileFields } = storeToRefs(fieldsStore);
   const profileViewFields = computed(() => profileFields.value.filter(field => !hiddenFields.includes(field.name)));

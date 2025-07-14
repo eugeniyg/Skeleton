@@ -19,6 +19,7 @@ import {
   getBonusCodes,
 } from '@skeleton/api/bonuses';
 import { getGamesInfo } from '@skeleton/api/games';
+import { formatBalance } from '@skeleton/helpers/amountMethods';
 
 interface IBonusState {
   bonusCodeSubscription: any;
@@ -149,7 +150,7 @@ export const useBonusStore = defineStore('bonusStore', {
     subscribeBonusCodeSocket(): void {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
-        const { createSubscription } = useWebSocket();
+        const { createSubscription } = useWebSocketStore();
         this.bonusCodeSubscription = createSubscription(
           `bonus:player-bonus-codes#${profileStore.profile?.id}`,
           this.bonusCodeSocketTrigger
@@ -160,7 +161,7 @@ export const useBonusStore = defineStore('bonusStore', {
     subscribeBonusSocket(): void {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
-        const { createSubscription } = useWebSocket();
+        const { createSubscription } = useWebSocketStore();
         this.bonusSubscription = createSubscription(
           `bonus:player-bonuses#${profileStore.profile?.id}`,
           this.bonusesSocketTrigger
@@ -171,7 +172,7 @@ export const useBonusStore = defineStore('bonusStore', {
     subscribeFreeSpinsSocket(): void {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
-        const { createSubscription } = useWebSocket();
+        const { createSubscription } = useWebSocketStore();
         this.freeSpinsSubscription = createSubscription(
           `bonus:player-freespins#${profileStore.profile?.id}`,
           this.freeSpinsSocketTrigger
@@ -218,7 +219,6 @@ export const useBonusStore = defineStore('bonusStore', {
 
       const { showAlert } = useLayoutStore();
       const { alertsData, defaultLocaleAlertsData } = useGlobalStore();
-      const { formatBalance } = useProjectMethods();
       const { status, result } = bonusData;
       const formattedAmount = formatBalance(bonusData.currency, bonusData.amount);
 
@@ -269,7 +269,6 @@ export const useBonusStore = defineStore('bonusStore', {
         '3-4': 'freeSpinExpired',
       };
 
-      const { localizePath } = useProjectMethods();
       let gameInfo: IGame;
       try {
         gameInfo = await getGamesInfo(gameId);

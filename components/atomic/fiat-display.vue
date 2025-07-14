@@ -11,9 +11,10 @@
 </template>
 
 <script setup lang="ts">
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
+
   const walletStore = useWalletStore();
   const { activeAccount, activeEquivalentAccount } = storeToRefs(walletStore);
-  const { formatBalance } = useProjectMethods();
 
   const equivalentBalanceFormat = computed(() =>
     formatBalance(activeEquivalentAccount.value?.currency, activeEquivalentAccount.value?.balance)

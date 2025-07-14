@@ -147,8 +147,7 @@
 <script setup lang="ts">
   import type { IWelcomeBonusesPage } from '~/types';
   import { getBonusesStatus } from '@skeleton/api/bonuses';
-
-  const { getContent, getMinBonusDeposit } = useProjectMethods();
+  import { getMinBonusDeposit } from '@skeleton/helpers/amountMethods';
 
   const contentParams = {
     contentKey: 'welcomePageContent',

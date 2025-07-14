@@ -1,4 +1,5 @@
-import type { ITurnOverWager } from '@skeleton/core/types';
+import type { ITurnOverWager } from '@skeleton/api/types';
+import { getTurnOverWager as requestTurnOverWager } from '@skeleton/api/risk';
 
 interface IRiskStoreState {
   turnOverWagerData: ITurnOverWager;
@@ -16,9 +17,8 @@ export const useRiskStore = defineStore('riskStore', {
 
   actions: {
     async getTurnOverWager(): Promise<void> {
-      const { getTurnOverWager } = useCoreRiskApi();
       const { activeAccount } = useWalletStore();
-      this.turnOverWagerData = await getTurnOverWager(activeAccount?.currency as string);
+      this.turnOverWagerData = await requestTurnOverWager(activeAccount?.currency as string);
     },
   },
 });

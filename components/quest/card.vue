@@ -53,8 +53,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerQuest } from '@skeleton/core/types';
+  import type { IPlayerQuest } from '@skeleton/api/types';
   import type { IQuestsHubModal } from '~/types';
+  import { activatePlayerQuest, cancelPlayerQuest } from '@skeleton/api/retention';
 
   const props = defineProps<{
     questIndex: number;
@@ -67,7 +68,6 @@
   const { openTasksModal } = useQuestsStore();
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const questImages = computed(() => {
     const imgObjArr: { src: string }[] =
@@ -98,7 +98,6 @@
   const { showAlert } = useLayoutStore();
   const activation = ref(false);
   const canceling = ref(false);
-  const { activatePlayerQuest, cancelPlayerQuest } = useCoreQuestApi();
   const activateQuest = async (): Promise<void> => {
     if (activation.value) return;
     activation.value = true;

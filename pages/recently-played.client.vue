@@ -29,7 +29,6 @@
 
   const globalStore = useGlobalStore();
   const { isMobile, headerCountry } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'recentlyPageContent',

@@ -21,7 +21,6 @@
     defaultLocaleData: Maybe<ITournamentsPage['howTake']>;
   }>();
 
-  const { getContent } = useProjectMethods();
   const title = computed(() => {
     return getContent(props.currentLocaleData, props.defaultLocaleData, 'title');
   });

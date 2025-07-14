@@ -69,7 +69,6 @@
     shortVersion?: boolean;
   }>();
 
-  const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
 

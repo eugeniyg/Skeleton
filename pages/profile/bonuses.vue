@@ -72,13 +72,13 @@
     getPlayerBonuses as requestPlayerBonuses,
     getPlayerFreeSpins as requestPlayerFreeSpins,
   } from '@skeleton/api/bonuses';
+  import { getMinBonusDeposit } from '@skeleton/helpers/amountMethods';
 
   const globalStore = useGlobalStore();
   const bonusStore = useBonusStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const walletStore = useWalletStore();
   const { activeAccount } = storeToRefs(walletStore);
-  const { localizePath, getContent, getMinBonusDeposit } = useProjectMethods();
   const { getPlayerBonuses, getPlayerFreeSpins, getDepositBonuses } = bonusStore;
   const {
     activePlayerBonuses,

@@ -31,7 +31,7 @@
 
           <div class="items">
             <div class="nickname">{{ userNickname }}</div>
-            
+
             <atomic-external-id />
 
             <div v-show="profile?.firstName || profile?.lastName" class="item">
@@ -101,14 +101,13 @@
 </template>
 
 <script setup lang="ts">
-  import type { ICountry } from '@skeleton/core/types';
+  import type { ICountry } from '@skeleton/api/types';
   import type { IProfileInfo } from '~/types';
+  import { changeProfileData } from '@skeleton/api/profile';
 
   const globalStore = useGlobalStore();
   const { countries, fieldsSettings, defaultLocaleFieldsSettings, layoutData, defaultLocaleLayoutData } =
     storeToRefs(globalStore);
-
-  const { getContent } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'profileInfoContent',
@@ -126,7 +125,6 @@
   const runtimeConfig = useRuntimeConfig();
   const showQuestHub = runtimeConfig.public?.questsEnabled;
   const loyaltyEnabled = runtimeConfig.public?.loyaltyEnabled;
-  const { changeProfileData } = useCoreProfileApi();
   const profileStore = useProfileStore();
   const { profile, userNickname, resentVerifyEmail } = storeToRefs(profileStore);
   const fieldsStore = useFieldsStore();

@@ -42,11 +42,11 @@
 
 <script setup lang="ts">
   import type { IProfileNotifications } from '~/types';
-  import type { IMessage, INotificationsRequest, IPaginationMeta } from '@skeleton/core/types';
+  import type { IMessage, INotificationsRequest, IPaginationMeta } from '@skeleton/api/types';
+  import { getPlayerNotifications, removePlayerMessage } from '@skeleton/api/notification';
 
   const globalStore = useGlobalStore();
   const { layoutData, defaultLocaleLayoutData, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const notificationStore = useNotificationStore();
   const { unreadCount, popoverNotifications } = storeToRefs(notificationStore);
   const { readAllMessages } = notificationStore;
@@ -69,7 +69,6 @@
     perPage: 5,
   });
 
-  const { getPlayerNotifications, removePlayerMessage } = useCoreNotificationApi();
   const getNotifications = async (): Promise<void> => {
     if (state.loading) return;
     state.loading = true;

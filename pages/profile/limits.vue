@@ -30,7 +30,6 @@
   const limitsStore = useLimitsStore();
   const { getLimits, setLimitsContent, toogleAdvancedMode } = limitsStore;
   const { limitsContent, defaultLimitsContent, isAdvancedModeEnabled } = storeToRefs(limitsStore);
-  const { getContent } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'profileLimitsContent',

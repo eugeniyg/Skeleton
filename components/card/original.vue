@@ -44,8 +44,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGameImages, IGameProvider, IGameLabel } from '@skeleton/core/types';
+  import type { IGameImages, IGameProvider, IGameLabel } from '@skeleton/api/types';
   import type { IGameTag } from '~/types';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
 
   const props = defineProps<{
     images?: IGameImages;
@@ -65,7 +66,6 @@
   const { isLoggedIn } = storeToRefs(profileStore);
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
   const { openModal } = useModalStore();
-  const { localizePath, getImageUrl, getContent } = useProjectMethods();
 
   const gameTagsContent: Maybe<IGameTag[]> = getContent(
     globalComponentsContent,
@@ -86,7 +86,7 @@
     }
   };
 
-  const src = computed(() => getImageUrl(props.customImages, props.images, 'vertical'));
+  const src = computed(() => getGameImageUrl(props.customImages, props.images, 'vertical'));
   const gameHovered = ref<boolean>(false);
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);

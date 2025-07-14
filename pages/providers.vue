@@ -51,7 +51,6 @@
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const { showAlert } = useLayoutStore();
-  const { getContent } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'providersPageContent',

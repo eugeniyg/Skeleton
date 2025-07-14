@@ -46,8 +46,6 @@
   }>();
 
   const route = useRoute();
-
-  const { localizePath } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/components/nav/category-sidebar.scss" lang="scss" />

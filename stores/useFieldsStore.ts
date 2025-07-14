@@ -1,5 +1,6 @@
 import type { ICountry, ICurrency, IField, ITimeZone } from '@skeleton/api/types';
 import { getRegistrationFields } from '@skeleton/api/auth';
+import { getProfileFields as requestProfileFields } from '@skeleton/api/profile';
 
 interface IFieldsStoreState {
   profileFields: IField[];
@@ -31,8 +32,7 @@ export const useFieldsStore = defineStore('fieldsStore', {
 
   actions: {
     async getProfileFields(): Promise<void> {
-      const { getProfileFields } = useCoreProfileApi();
-      this.profileFields = await getProfileFields();
+      this.profileFields = await requestProfileFields();
     },
 
     async requestRegistrationFields(): Promise<void> {

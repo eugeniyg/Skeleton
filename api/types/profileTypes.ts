@@ -161,49 +161,6 @@ export interface IPhoneVerification {
   reason: string;
 }
 
-export interface IPlayerLoyaltyLevel extends Record<string, any> {
-  id: string;
-  name: string;
-  order: number;
-  points: number;
-}
-
-export interface IPlayerLoyaltyAccount extends Record<string, any> {
-  id: string;
-  playerId: string;
-  points: number;
-  currentLevel: IPlayerLoyaltyLevel;
-  nextLevel: IPlayerLoyaltyLevel | null;
-  createdAt: string;
-  updatedAt: string | null;
-}
-
-export interface ILoyaltyLevelsRequest extends Record<string, any> {
-  page?: number;
-  perPage?: number;
-  sortBy?: 'order' | 'points';
-  sortOrder?: 'asc' | 'desc';
-}
-
-export interface ILoyaltyLevel {
-  id: string;
-  name: string;
-  order: number;
-  points: number;
-}
-
-export interface ILoyaltyLevelsResponse extends Record<string, any> {
-  data: ILoyaltyLevel[];
-  meta: IPaginationMeta;
-}
-
-export interface ILoyaltyUpdatedEvent {
-  data: {
-    event: 'account.level.updated' | 'account.balance.updated';
-    playerAccount: IPlayerLoyaltyAccount;
-  };
-}
-
 export interface IKycUpdatedEvent {
   data: {
     event: 'player.kyc.updated';

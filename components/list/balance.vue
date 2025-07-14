@@ -119,7 +119,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IAccount, ICurrency } from '@skeleton/core/types';
+  import type { IAccount, ICurrency } from '@skeleton/api/types';
+  import { formatBalance, getEquivalentAccount } from '@skeleton/helpers/amountMethods';
+  import { sortByAlphabet } from '@skeleton/helpers/simpleMethods';
 
   const props = defineProps({
     isOpen: {
@@ -137,7 +139,6 @@
 
   const { switchAccount } = useWalletStore();
   const { createAccount } = useWalletStore();
-  const { formatBalance, sortByAlphabet, getEquivalentAccount, getContent } = useProjectMethods();
 
   const bonusStore = useBonusStore();
   const { activePlayerBonuses, playerCashback } = storeToRefs(bonusStore);

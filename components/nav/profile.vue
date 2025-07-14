@@ -58,7 +58,6 @@
     });
   });
 
-  const { localizePath } = useProjectMethods();
   const route = useRoute();
   const isOpen = ref<boolean>(false);
   const selected = computed(() => props.items.find((item: any) => localizePath(item.url) === route.path));

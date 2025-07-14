@@ -4,7 +4,7 @@ export type ISocketState = {
   webSocket: any;
 };
 
-export const useWebSocket = defineStore('useWebSocket', {
+export const useWebSocketStore = defineStore('webSocketStore', {
   state: (): ISocketState => ({
     webSocket: undefined,
   }),

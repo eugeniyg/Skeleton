@@ -12,7 +12,6 @@
 
 <script setup lang="ts">
   const loyaltyStore = useLoyaltyStore();
-  const { getContent } = useProjectMethods();
   const { currentLevelName, loyaltyAccount } = storeToRefs(loyaltyStore);
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);

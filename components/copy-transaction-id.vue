@@ -26,10 +26,9 @@
   };
   const { getContentData: getPageContent } = useContentLogic<ITransactionsHistory>(pageContentParams);
   const { data: pageContent } = await useLazyAsyncData(getPageContent);
-  
+
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const tooltipVisible = ref<boolean>(false);
   const tooltipTimer = ref<any>(undefined);

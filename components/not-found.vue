@@ -34,7 +34,6 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 </script>
 
 <style src="~/assets/styles/error.scss" lang="scss" />

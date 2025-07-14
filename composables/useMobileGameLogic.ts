@@ -1,9 +1,8 @@
-import type { IGame } from '@skeleton/core/types';
+import type { IGame } from '@skeleton/api/types';
 
 export const useMobileGameLogic = (gameInfo: IGame) => {
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
-  const { localizePath } = useProjectMethods();
   const { openMobileGameModal } = useGamesStore();
   const router = useRouter();
 

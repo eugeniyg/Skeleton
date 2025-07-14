@@ -15,7 +15,6 @@
 
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
-  const { getContent } = useProjectMethods();
 
   const showTooltip = (): void => {
     tooltipVisible.value = true;

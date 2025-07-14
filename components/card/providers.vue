@@ -15,13 +15,12 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGameProvider } from '@skeleton/core/types';
+  import type { IGameProvider } from '@skeleton/api/types';
 
   const props = defineProps<{
     providerData: IGameProvider;
   }>();
 
-  const { getContent, localizePath } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
   const defaultCategory = computed(() =>

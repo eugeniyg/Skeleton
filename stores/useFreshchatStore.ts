@@ -1,4 +1,5 @@
 import debounce from 'lodash/debounce.js';
+import { changeProfileData } from '@skeleton/api/profile';
 
 interface IFreshchatState {
   newMessages: number;
@@ -95,7 +96,6 @@ export const useFreshchatStore = defineStore('freshchatStore', {
       const { profile, setProfileData } = useProfileStore();
       if (profile?.freshchatRestoreId) return;
 
-      const { changeProfileData } = useCoreProfileApi();
       try {
         const submitResult = await changeProfileData({ freshchatRestoreId: restoreId });
         setProfileData(submitResult);

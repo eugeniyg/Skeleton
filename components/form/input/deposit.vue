@@ -19,8 +19,9 @@
 </template>
 
 <script setup lang="ts">
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
+
   const walletStore = useWalletStore();
-  const { formatBalance } = useProjectMethods();
   const { getPlayerBonuses } = useBonusStore();
   const { activeAccount, showEquivalentBalance } = storeToRefs(walletStore);
 

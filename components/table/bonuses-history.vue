@@ -52,8 +52,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPaginationMeta, IPlayerBonus, IPlayerFreeSpin } from '@skeleton/core/types';
+  import type { IPaginationMeta, IPlayerBonus, IPlayerFreeSpin } from '@skeleton/api/types';
   import type { IBonusesHistory } from '~/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     content: IBonusesHistory;
@@ -110,7 +111,6 @@
     return freeSpinsResultsObj.value[freeSpinInfo.result];
   };
 
-  const { formatBalance } = useProjectMethods();
   const dateFormat = 'DD.MM.YYYY, HH:mm';
   const formatDateStr = (str: string) => str.replace(',', ',</br>');
 

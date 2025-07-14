@@ -54,6 +54,7 @@
 
 <script setup lang="ts">
   import type { ILoyaltyPage } from '~/types';
+  import { createSrcSet } from '@skeleton/helpers/urlBuildMethods';
 
   const loyaltyContent = ref<Maybe<ILoyaltyPage>>(inject('loyaltyContent'));
   const defaultLocaleLoyaltyContent = ref<Maybe<ILoyaltyPage>>(inject('defaultLocaleLoyaltyContent'));
@@ -61,8 +62,6 @@
   const profileStore = useProfileStore();
   const { isLoggedIn, userNickname } = storeToRefs(profileStore);
   const { openModal, openWalletModal } = useModalStore();
-
-  const { createSrcSet, getContent } = useProjectMethods();
 
   const bannerSubtitle = computed(() => {
     return getContent(loyaltyContent.value, defaultLocaleLoyaltyContent.value, 'banner.subtitle');

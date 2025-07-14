@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import type { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/api/types';
   import type { IModalsContent } from '~/types';
 
   const props = defineProps<{
@@ -35,7 +35,6 @@
     games: IGame[];
   }>();
 
-  const { getContent, localizePath } = useProjectMethods();
   const router = useRouter();
   const { closeAllModals, closeModal } = useModalStore();
   const goToGame = async (game: IGame): Promise<void> => {

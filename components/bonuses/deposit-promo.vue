@@ -48,7 +48,6 @@
   const emit = defineEmits(['openBonusCode']);
   const globalStore = useGlobalStore();
   const { fieldsSettings, defaultLocaleFieldsSettings } = globalStore;
-  const { getContent } = useProjectMethods();
 
   const bonusValue = ref<string>('');
   const bonusChecking = ref<boolean>(false);

@@ -49,7 +49,6 @@
   const globalStore = useGlobalStore();
   const { equivalentCurrency, fiatCurrencies } = storeToRefs(globalStore);
   const { setEquivalentCurrency } = globalStore;
-  const { getContent } = useProjectMethods();
 
   const selectFiat = (code: string) => {
     setEquivalentCurrency(code);

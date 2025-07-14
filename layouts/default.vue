@@ -36,7 +36,6 @@
   const globalStore = useGlobalStore();
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
-  const { localizePath } = useProjectMethods();
 
   const { isMobile } = storeToRefs(globalStore);
 

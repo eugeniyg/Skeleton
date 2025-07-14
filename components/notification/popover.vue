@@ -48,7 +48,6 @@
   const { unreadCount, popoverNotifications } = storeToRefs(notificationStore);
   const globalStore = useGlobalStore();
   const { layoutData, defaultLocaleLayoutData } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const { readAllMessages } = notificationStore;
 
   const emit = defineEmits(['hide']);

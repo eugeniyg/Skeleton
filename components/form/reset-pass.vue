@@ -44,6 +44,8 @@
 
 <script setup lang="ts">
   import type { IModalsContent } from '~/types';
+  import { resetProfilePassword } from '@skeleton/api/profile';
+  import { createValidationRules, getFormRules } from '@skeleton/helpers/formMethods';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['reset']>;
@@ -58,7 +60,6 @@
     repeatNewPassword: '',
   });
 
-  const { getFormRules, createValidationRules, getContent } = useProjectMethods();
   const resetRules = createValidationRules(Object.keys(resetFormData).map(field => ({ name: field })));
   const resetFormRules = getFormRules(resetRules);
   const { serverFormErrors, v$, onFocus, setError } = useFormValidation(resetFormRules, resetFormData);
@@ -78,7 +79,6 @@
   };
 
   const isLockedAsyncButton = ref<boolean>(false);
-  const { resetProfilePassword } = useCoreProfileApi();
   const resetPassword = async (): Promise<void> => {
     if (v$.value.$invalid) return;
     v$.value.$reset();

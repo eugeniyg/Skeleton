@@ -36,21 +36,20 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerLimit } from '@skeleton/core/types';
+  import type { IPlayerLimit } from '@skeleton/api/types';
+  import { deletePlayerLimit } from '@skeleton/api/profile';
 
   const props = defineProps<{
     limits: IPlayerLimit[];
   }>();
 
   const dayjs = useDayjs();
-  const { getContent } = useProjectMethods();
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
   const emit = defineEmits(['edit']);
 
-  const { deletePlayerLimit } = useCoreProfileApi();
   const { getLimits } = useLimitsStore();
 
   const formatPeriod = (periodKey: string | null) => {

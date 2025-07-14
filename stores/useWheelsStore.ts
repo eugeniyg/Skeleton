@@ -1,4 +1,4 @@
-import type { IWheelSpinIssuedEvent } from '@skeleton/core/types';
+import type { IWheelSpinIssuedEvent } from '@skeleton/api/types';
 
 interface IWheelsStoreState {
   wheelsSubscription: any;
@@ -33,7 +33,7 @@ export const useWheelsStore = defineStore('wheelsStore', {
     subscribeWheelsSocket(): void {
       const profileStore = useProfileStore();
       if (profileStore.profile?.id) {
-        const { createSubscription } = useWebSocket();
+        const { createSubscription } = useWebSocketStore();
         this.wheelsSubscription = createSubscription(
           `retention:wheels#${profileStore.profile.id}`,
           this.handleWheelsEvent

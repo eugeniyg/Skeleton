@@ -68,6 +68,7 @@
 
 <script setup lang="ts">
   import { UAParser } from 'ua-parser-js';
+  import { handleExternalLink } from '@skeleton/helpers/simpleMethods';
 
   const props = defineProps<{
     display: 'desktop' | 'mobile';
@@ -80,7 +81,6 @@
   const globalStore = useGlobalStore();
   const { isMobile, osPlatform } = storeToRefs(globalStore);
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { getContent } = useProjectMethods();
 
   const isHidden = ref<boolean>(localStorage.getItem(PWA_HIDDEN_KEY) === 'true');
   const isTooltipVisible = ref<boolean>(false);
@@ -115,7 +115,6 @@
 
   const installPWA = () => {
     if (appleNotCompatible) {
-      const { handleExternalLink } = useProjectMethods();
       hideBanner();
       const pageLink = getContent(layoutData, defaultLocaleLayoutData, 'header.pwa.instructionLink');
       handleExternalLink(pageLink);

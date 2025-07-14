@@ -22,6 +22,8 @@
   import type { IGamePage } from '~/types';
   import type { IGame } from '@skeleton/api/types';
   import { getGamesInfo, getStartGame } from '@skeleton/api/games';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
+  import { setPageMeta } from '@skeleton/helpers/transformDomMethods';
 
   const route = useRoute();
   const showPlug = ref<boolean>(false);
@@ -37,7 +39,6 @@
   const { isMobile, alertsData, defaultLocaleAlertsData, currentLocale, headerCountry } = storeToRefs(globalStore);
   const loyaltyStore = useLoyaltyStore();
   const { levelNotificationEnabled } = storeToRefs(loyaltyStore);
-  const { localizePath, getImageUrl, setPageMeta } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'gamePageContent',
@@ -59,7 +60,7 @@
     const metaTitle = replaceVariables(metaTitleContent, gameInfo);
     const metaDescriptionContent = pageMetaContent?.description;
     const metaDescription = replaceVariables(metaDescriptionContent, gameInfo);
-    const gameThumb = getImageUrl(gameInfo?.customImages, gameInfo?.images, 'square');
+    const gameThumb = getGameImageUrl(gameInfo?.customImages, gameInfo?.images, 'square');
     setPageMeta({ ...pageMetaContent, title: metaTitle, description: metaDescription, image: gameThumb });
     return { pageContent, gameInfo };
   });

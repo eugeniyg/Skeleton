@@ -48,6 +48,8 @@
 
 <script setup lang="ts">
   import type { IProfileVerification } from '~/types';
+  import { changeProfileData } from '@skeleton/api/profile';
+  import { getFormRules } from '@skeleton/helpers/formMethods';
 
   const profileStore = useProfileStore();
   const { profile, resentVerifyEmail } = storeToRefs(profileStore);
@@ -57,7 +59,6 @@
   const verificationContent = ref<Maybe<IProfileVerification>>(inject('verificationContent'));
   const defaultLocaleVerificationContent = ref<Maybe<IProfileVerification>>(inject('defaultLocaleVerificationContent'));
 
-  const { getFormRules, getContent } = useProjectMethods();
   const verificationRules = {
     email: [{ rule: 'email' }],
   };
@@ -73,7 +74,6 @@
     onFocus(fieldName);
   };
 
-  const { changeProfileData } = useCoreProfileApi();
   const saveEmailLoading = ref(false);
   const addEmail = async (): Promise<void> => {
     if (v$.value.$invalid || saveEmailLoading.value) return;

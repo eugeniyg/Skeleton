@@ -25,7 +25,6 @@
   const questTasksContent: Maybe<IQuestTasksModal> = inject('questTasksContent');
   const defaultLocaleQuestTasksContent: Maybe<IQuestTasksModal> = inject('defaultLocaleQuestTasksContent');
 
-  const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { fieldsSettings, defaultLocaleFieldsSettings } = storeToRefs(globalStore);
 </script>

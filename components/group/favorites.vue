@@ -21,8 +21,6 @@
 
 <script setup lang="ts">
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
-  const { getContent } = useProjectMethods();
-
   const gameStore = useGamesStore();
   const { favoriteGames } = storeToRefs(gameStore);
   const container = ref();

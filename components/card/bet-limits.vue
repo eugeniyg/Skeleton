@@ -44,7 +44,6 @@
   const limitsStore = useLimitsStore();
   const { checkCurrencies } = limitsStore;
   const { betPeriods, limitsContent, defaultLimitsContent } = storeToRefs(limitsStore);
-  const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { currencies } = storeToRefs(globalStore);
   const { openModal } = useModalStore();

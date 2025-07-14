@@ -25,8 +25,6 @@
 <script setup lang="ts">
   import type { IFavoritesPage } from '~/types';
 
-  const { getContent } = useProjectMethods();
-
   const contentParams = {
     contentKey: 'favoritesPageContent',
     contentRoute: ['pages', 'favorites'],

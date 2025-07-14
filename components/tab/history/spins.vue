@@ -40,6 +40,7 @@
   import type { IPaginationMeta, ISpinHistory } from '@skeleton/api/types';
   import type { ISpinsHistory } from '~/types';
   import { getSpinsHistory } from '@skeleton/api/games';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     content: ISpinsHistory;
@@ -65,7 +66,6 @@
     spinsRequest(page);
   };
 
-  const { formatBalance } = useProjectMethods();
   const formatSum = (currency: string, amount: number): string => {
     const balanceFormat = formatBalance(currency, amount);
     return `${balanceFormat.amount} ${balanceFormat.currency}`;
