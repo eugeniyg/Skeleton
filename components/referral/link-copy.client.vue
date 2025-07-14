@@ -3,7 +3,7 @@
     class="referral-link-copy"
     :for="props.name"
     data-tooltip-parent
-    :class="{ 'is-focused': tooltipVisible.value }"
+    :class="{ 'is-focused': tooltipVisible }"
   >
     <div class="referral-link-copy__row">
       <transition name="fade" mode="out-in">
@@ -51,9 +51,7 @@
 
   const tooltipVisible = ref<boolean>(false);
   const tooltipTimer = ref<any>(undefined);
-
-  //const classes = computed(() => ['referral-link-copy', { 'is-focused': tooltipVisible.value }]); // Adjust as needed
-
+  
   const showTooltip = (): void => {
     tooltipVisible.value = true;
     clearTimeout(tooltipTimer.value);
@@ -63,7 +61,7 @@
   };
 
   const copyValue = (): void => {
-    copyInput.value.select();
+    copyInput.value?.select();
     copy(props.value || '');
     showTooltip();
   };
@@ -73,17 +71,14 @@
   const getDisplayValue = (): string => {
     if (!props.value || !copyInput.value || !cloneElement.value) return '';
 
-    const inputWidth = copyInput.value.clientWidth - 32;
-    const contentWidth = cloneElement.value.scrollWidth;
+    const inputWidth = copyInput.value?.clientWidth - 32;
+    const contentWidth = cloneElement.value?.scrollWidth;
     if (contentWidth <= inputWidth) return props.value || '';
-
-    // Show start, then ... and last 5 chars
+    
     const lastCount = 5;
     const value = props.value;
-    if (value.length <= lastCount + 3) return value; // not enough to shorten
+    if (value.length <= lastCount + 3) return value;
 
-    // Find how many chars can fit before the ellipsis
-    // For simplicity, show first (value.length - lastCount) chars if short, or first 10
     const firstCount = Math.max(10, value.length - 10);
     const firstPart = value.slice(0, firstCount);
     const lastPart = value.slice(-lastCount);

@@ -36,7 +36,7 @@ export interface IProfile extends Record<string, any> {
   pwaInstalled: boolean;
   externalId: number;
   referralCode: string | null;
-  referralMaxCount: number | null;
+  qualifiedReferralsCount: number | null;
 }
 
 export interface IAuthorizationRequest extends Record<any, any> {
