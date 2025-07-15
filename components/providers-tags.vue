@@ -16,11 +16,11 @@
 
       <div class="providers-tags__buttons">
         <div class="providers-tags__prev" :class="{ 'is-disabled': prevDisabled }" @click="clickAction('prev')">
-          <atomic-icon id="arrow_expand-close" />
+          <atomic-icon id="arrow-expand-close" />
         </div>
 
         <div class="providers-tags__next" :class="{ 'is-disabled': nextDisabled }" @click="clickAction('next')">
-          <atomic-icon id="arrow_expand-close" />
+          <atomic-icon id="arrow-expand-close" />
         </div>
       </div>
     </div>

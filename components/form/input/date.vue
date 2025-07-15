@@ -14,7 +14,7 @@
 
       <atomic-icon id="calendar" class="mask-placeholder" />
 
-      <atomic-icon id="arrow_expand-close" class="mask-toggle" />
+      <atomic-icon id="arrow-expand-close" class="mask-toggle" />
     </div>
   </div>
 </template>

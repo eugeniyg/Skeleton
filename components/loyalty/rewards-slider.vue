@@ -14,11 +14,11 @@
     </div>
 
     <div class="loyalty-rewards-slider__btn is-prev" @click="scrollPrev">
-      <atomic-icon id="arrow_expand-close" />
+      <atomic-icon id="arrow-expand-close" />
     </div>
 
     <div class="loyalty-rewards-slider__btn is-next" @click="scrollNext">
-      <atomic-icon id="arrow_expand-close" />
+      <atomic-icon id="arrow-expand-close" />
     </div>
   </div>
 </template>

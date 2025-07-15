@@ -26,7 +26,7 @@
             <span>{{ balanceFormat.currency }}</span>
           </span>
 
-          <atomic-icon id="arrow_expand-close" class="icon-expand" />
+          <atomic-icon id="arrow-expand-close" class="icon-expand" />
 
           <list-currencies
             :is-open="isSelectOpen"

@@ -36,7 +36,7 @@
           {{ getContent(props.currentLocaleData, props.defaultLocaleData, 'readMore') }}
         </span>
 
-        <atomic-icon id="arrow_next" />
+        <atomic-icon id="arrow-next" />
       </button-base>
     </div>
   </vue-final-modal>

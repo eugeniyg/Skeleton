@@ -38,7 +38,7 @@
         {{ getContent(layoutData, defaultLocaleLayoutData, 'header.notificationBox.empty.description') }}
       </div>
 
-      <atomic-icon-colored id="empty-notification" />
+      <atomic-icon id="empty-notification" filled />
     </div>
   </div>
 </template>

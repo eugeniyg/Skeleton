@@ -2,7 +2,7 @@
   <div class="documents-uploads">
     <div class="documents-uploads__head">
       <button-base type="ghost-gray" size="sm" @click="emit('prevStep')">
-        <atomic-icon id="arrow_previous" />
+        <atomic-icon id="arrow-previous" />
       </button-base>
 
       <div class="documents-uploads__title">

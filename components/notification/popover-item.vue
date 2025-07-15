@@ -25,7 +25,7 @@
 
       <button-base v-if="isTextCollapsed" type="ghost" @click.stop.prevent="showFullMessage">
         <span>{{ getContent(layoutData, defaultLocaleLayoutData, 'header.notificationBox.showFullMessage') }}</span>
-        <atomic-icon id="arrow_expand-close" />
+        <atomic-icon id="arrow-expand-close" />
       </button-base>
     </div>
 
@@ -43,7 +43,7 @@
         :target-blank="props.messageInfo.content.link?.url.startsWith('http')"
       >
         <span>{{ props.messageInfo.content.link?.label }}</span>
-        <atomic-icon id="arrow_next" />
+        <atomic-icon id="arrow-next" />
       </atomic-link>
 
       <div

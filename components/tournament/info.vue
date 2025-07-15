@@ -41,7 +41,7 @@
 
     <button-base v-if="displayMoreBtn" class="tournament-info__more-btn" type="ghost" @click="expandDescription">
       <span>{{ getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'info.more') }}</span>
-      <atomic-icon id="arrow_expand-close" />
+      <atomic-icon id="arrow-expand-close" />
     </button-base>
   </div>
 </template>

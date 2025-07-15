@@ -12,7 +12,7 @@
           <div class="header">
             <span class="header__back-btn" @click="closeModal('quest-tasks')">
               <span class="header__back-btn-icon">
-                <atomic-icon id="arrow_previous" />
+                <atomic-icon id="arrow-previous" />
               </span>
             </span>
 

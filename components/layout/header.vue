@@ -9,7 +9,7 @@
     <div ref="appHeader" class="app-header" :class="headerClassValue">
       <client-only>
         <button v-if="isGamePage && isLoggedIn" class="app-header__back-btn" @click="backToHomePage">
-          <atomic-icon id="arrow_previous" />
+          <atomic-icon id="arrow-previous" />
         </button>
       </client-only>
 

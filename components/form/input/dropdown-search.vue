@@ -145,7 +145,7 @@
   });
 
   const iconType = computed(() => {
-    return isOpen.value ? 'search' : 'arrow_expand-close';
+    return isOpen.value ? 'search' : 'arrow-expand-close';
   });
 
   const select = (option: any) => {
