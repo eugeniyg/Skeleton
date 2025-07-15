@@ -88,7 +88,7 @@
             </div>
 
             <div class="arrow">
-              <atomic-icon id="arrow_expand-close" />
+              <atomic-icon id="arrow-expand-close" />
             </div>
           </div>
         </div>

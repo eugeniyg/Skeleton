@@ -13,7 +13,7 @@
       />
       <span v-if="valueObject.value">{{ valueObject.value }}</span>
       <span v-else-if="props.placeholder" class="placeholder">{{ props.placeholder }}</span>
-      <atomic-icon id="arrow_expand-close" />
+      <atomic-icon id="arrow-expand-close" />
     </div>
 
     <div v-if="props.options.length" ref="dropItems" class="items">

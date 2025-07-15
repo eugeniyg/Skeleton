@@ -51,7 +51,7 @@
           @click="submitContactForm"
         >
           {{ pageContent?.currentLocaleData?.buttonLabel || pageContent?.defaultLocaleData?.buttonLabel }}
-          <atomic-icon id="arrow_next" />
+          <atomic-icon id="arrow-next" />
         </button-base>
       </div>
     </div>

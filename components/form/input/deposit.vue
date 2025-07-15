@@ -8,7 +8,7 @@
           <div class="label">{{ balanceFormat.currency }}</div>
         </div>
 
-        <atomic-icon id="arrow_expand-close" class="icon-expand" />
+        <atomic-icon id="arrow-expand-close" class="icon-expand" />
 
         <list-balance :is-open="isShow" @close="isShow = false" @click.stop />
       </div>

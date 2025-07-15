@@ -19,7 +19,7 @@
         <span class="input-currencies__selected-label">{{ selectedCurrency?.name }}</span>
       </template>
 
-      <atomic-icon id="arrow_expand-open" class="input-currencies__expand-icon" />
+      <atomic-icon id="arrow-expand-open" class="input-currencies__expand-icon" />
     </div>
 
     <div class="input-currencies__content">

@@ -29,7 +29,7 @@
       </div>
 
       <span class="quest-hub-card__arrow">
-        <atomic-icon id="arrow_expand-close" />
+        <atomic-icon id="arrow-expand-close" />
       </span>
     </div>
 

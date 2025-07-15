@@ -7,7 +7,7 @@
       <div v-click-outside="hideNav" class="activity-board__nav" :class="{ 'is-open': isOpen }">
         <div class="activity-board__nav-selected" @click="toggleMobileNav">
           <span class="activity-board__nav-selected-title">{{ selectedNavTitle }}</span>
-          <atomic-icon id="arrow_expand-close" />
+          <atomic-icon id="arrow-expand-close" />
         </div>
 
         <div class="activity-board__nav-items">

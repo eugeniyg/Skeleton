@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     '@skeleton/modules/optimize-images',
     '@nuxtjs/fontaine',
     '@nuxt/eslint',
+    'nuxt-svgo',
   ],
   dayjs: {
     locales: [
@@ -59,6 +60,9 @@ export default defineNuxtConfig({
     ],
     plugins: ['utc', 'localeData', 'isBetween', 'isSameOrAfter', 'isSameOrBefore'],
     defaultLocale: 'en',
+  },
+  svgo: {
+    defaultImport: 'component',
   },
   lazyLoad: {
     observerConfig: {

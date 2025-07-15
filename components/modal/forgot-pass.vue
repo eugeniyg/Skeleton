@@ -9,7 +9,7 @@
     <div class="scroll">
       <div class="header">
         <button class="modal-forgot-pass__previous" @click.prevent="returnLoginModal">
-          <atomic-icon id="arrow_previous" />
+          <atomic-icon id="arrow-previous" />
         </button>
 
         <div class="title">

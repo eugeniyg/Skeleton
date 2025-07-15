@@ -4,7 +4,7 @@
       <div class="selected" @click="toggleOpen">
         <atomic-image class="img" :src="`${gamehubCdn}/locales/${currentLocale?.code.toLowerCase()}.svg`" />
         <span class="title">{{ currentLocale?.nativeName || currentLocale?.name }}</span>
-        <atomic-icon id="arrow_expand-close" />
+        <atomic-icon id="arrow-expand-close" />
       </div>
 
       <div class="items" body-scroll-lock-ignore>

@@ -1,6 +1,6 @@
 <template>
   <nav v-click-outside="close" class="nav-profile" :class="{ 'is-open': isOpen }">
-    <button class="selected" @click="toggle">{{ selected?.title }}<atomic-icon id="arrow_expand-close" /></button>
+    <button class="selected" @click="toggle">{{ selected?.title }}<atomic-icon id="arrow-expand-close" /></button>
 
     <div class="items">
       <atomic-link

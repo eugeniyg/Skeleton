@@ -34,7 +34,7 @@
         :target-blank="props.message.content.link.url.startsWith('http')"
       >
         <span>{{ props.message.content.link.label }}</span>
-        <atomic-icon id="arrow_next" />
+        <atomic-icon id="arrow-next" />
       </atomic-link>
     </div>
   </div>

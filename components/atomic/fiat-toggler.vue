@@ -12,7 +12,7 @@
           default-image="/img/currency/placeholder.svg"
         />
         <span class="fiat-toggler__selected-currency">{{ equivalentCurrency.code }}</span>
-        <atomic-icon id="arrow_expand-close" />
+        <atomic-icon id="arrow-expand-close" />
       </div>
     </transition>
 
