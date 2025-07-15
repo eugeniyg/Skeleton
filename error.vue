@@ -36,6 +36,9 @@
 </template>
 
 <script setup lang="ts">
+  import { preloaderDone } from '@skeleton/helpers/preloaderMethods';
+  import { getContent } from '#imports';
+
   const props = defineProps({
     error: {
       type: Object,
@@ -58,6 +61,8 @@
     const siteOrigin = window.location.origin;
     window.location.href = urlLocale ? `${siteOrigin}/${urlLocale}` : siteOrigin;
   };
+
+  onMounted(preloaderDone);
 </script>
 
 <style src="~/assets/styles/error.scss" lang="scss" />

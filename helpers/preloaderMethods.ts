@@ -7,11 +7,9 @@ export const preloaderDone = (): void => {
   const preloaderEl = document.querySelector('.preloader');
   if (preloaderEl?.classList.contains('is-none')) return;
 
-  setTimeout(() => {
-    preloaderEl?.classList.add('is-hide');
-  }, 500);
+  preloaderEl?.classList.add('is-hide');
 
   setTimeout(() => {
     preloaderEl?.classList.add('is-none');
-  }, 1000);
+  }, 300);
 };
