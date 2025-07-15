@@ -46,7 +46,7 @@
     </div>
 
     <div class="referral-card__footer">
-      <referral-link-copy v-if="profile?.referralCode" :value="createLink()" name="copyRefLink" />
+      <referral-link-copy v-if="profile?.referralCode" :value="createLink" name="copyRefLink" />
       <referral-unavailable-msg v-else />
     </div>
   </div>
@@ -86,22 +86,19 @@
     return getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.qualifiedPlayers.tooltip');
   });
 
-  const createLink = (): string => {
+  const createLink = computed(() => {
+    if (!window) return '';
     return `${window.location.host}/?ref=${profile.value?.referralCode}`;
-  };
-
-  const triggerType = computed(() => {
-    return settingsConstants.value?.game.bonus.triggerType.find(item => item.name === 'Referral Award')?.id;
   });
-
+  
   const bonusTitle = ref<string>('');
   const referralMaxCount = ref<number | null>(null);
 
   const setBonusTitle = (bonus: Maybe<any>): void => {
     let formattedTitle: string = '';
-    if (bonus.type === 1) {
+    if (!bonus?.type || bonus?.type === 1) {
       formattedTitle = getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.cashBonusLabel');
-    } else if (bonus.type === 3 && bonus.assignConditions?.presets?.length) {
+    } else if (bonus?.type === 3 && bonus.assignConditions?.presets?.length) {
       const label = getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.freeSpinsBonusLabel');
       formattedTitle = `${bonus.assignConditions.presets[0]?.quantity} ${label}`;
     }
@@ -111,24 +108,28 @@
       `<span>${formattedTitle}</span>`
     );
   };
-
-  onMounted(async () => {
+  
+  const getBonusesData = async () => {
     try {
       const { maxReferralCount, ownerBonusId } = await getReferralsSettings();
-
+      
       const bonusParams = {
         bonusIds: [ownerBonusId],
         currency: activeAccount.value?.currency,
-        triggerType: triggerType.value,
+        triggerType: 11,
       };
-
+      
       const [bonus] = await getBonuses(bonusParams);
       setBonusTitle(bonus);
       referralMaxCount.value = maxReferralCount || null;
     } catch (error) {
       console.error('Error fetching bonuses:', error);
     }
-  });
+  }
+  
+  watch(() => activeAccount.value?.currency, () => {
+    getBonusesData();
+  }, { immediate: true });
 </script>
 
 <style src="~/assets/styles/components/referral/card.scss" lang="scss" />

@@ -35,7 +35,7 @@
     getContent(referralContent.value, defaultLocaleReferralContent.value, 'info.showMoreLabel')
   );
 
-  const descriptionRef = ref();
+  const descriptionRef = useTemplateRef('descriptionRef');
   const displayMoreBtn = ref(false);
   const isExpanded = ref(false);
 
@@ -60,7 +60,6 @@
 
   onMounted(() => {
     window.addEventListener('resize', checkDisplayMoreBtn);
-    nextTick(() => checkDisplayMoreBtn());
   });
 
   onBeforeUnmount(() => {

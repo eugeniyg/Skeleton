@@ -17,13 +17,23 @@
 <script setup lang="ts">
   import type { IProfileReferral } from '~/types';
   import type { IPaginationMeta, IReferralItem, IReferralsRequest } from '@skeleton/core/types';
-
+  
   const { getContent } = useProjectMethods();
   const { getPlayerReferrals } = useCoreProfileApi();
-
+  
   const referralsList = ref<IReferralItem[]>([]);
   const pageMeta = ref<Maybe<IPaginationMeta>>(undefined);
   const isLoading = ref(false);
+  
+  definePageMeta({
+    middleware: async function (to) {
+      const { localizePath } = useProjectMethods();
+      const { settingsConstants } = useGlobalStore();
+      if (!settingsConstants?.player?.referral?.enabled) {
+        return navigateTo({ path: localizePath(`/profile/info`), query: { ...to.query } });
+      }
+    },
+  });
 
   const contentParams = {
     contentKey: 'profileReferralContent',
@@ -41,12 +51,12 @@
 
   const isHowItWorksExist = computed(() => {
     const content = getContent(currentLocaleContent.value, defaultLocaleContent.value, 'howItWorks');
-    return content && content.title && content.description && content.items && content.items.length;
+    return content?.items?.length;
   });
 
   const isFaqExist = computed(() => {
     const content = getContent(currentLocaleContent.value, defaultLocaleContent.value, 'faq');
-    return content && content.items && content.items.length;
+    return content?.items?.length;
   });
 
   const getReferralsData = async (page = 1): Promise<void> => {
@@ -70,13 +80,7 @@
     await getReferralsData(page);
   };
 
-  onMounted(async () => {
-    try {
-      await getReferralsData();
-    } catch (error) {
-      console.error('Error fetching referrals data:', error);
-    }
-  });
+  onMounted(getReferralsData);
 </script>
 
 <style src="~/assets/styles/pages/profile/referral.scss" lang="scss" />

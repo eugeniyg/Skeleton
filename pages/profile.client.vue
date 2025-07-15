@@ -10,15 +10,7 @@
   import type { IProfilePages } from '~/types';
   import camelCase from 'lodash/camelCase';
 
-  definePageMeta({
-    middleware: async function (to) {
-      const { localizePath } = useProjectMethods();
-      const { settingsConstants } = useGlobalStore();
-      if (!settingsConstants?.player?.referral?.enabled && to.path === localizePath('/profile/referral')) {
-        return navigateTo({ path: localizePath(`/profile/info`), query: { ...to.query } });
-      }
-    },
-  });
+  
 
   const { getProfileFields } = useFieldsStore();
   const { settingsConstants } = useGlobalStore();

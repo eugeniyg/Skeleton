@@ -9,6 +9,7 @@ import type {
   IPlayerCashback,
   IBonus,
   IBonusesStatus,
+  IBonusesRequest
 } from '../types';
 import { useApiAuthInstance } from '@skeleton/core/assets/apiAuthInstance';
 
@@ -70,17 +71,12 @@ export const useCoreBonusApi = () => {
     return await useApiAuthInstance('/api/game/bonuses/cashback', { params: { currency } });
   };
 
-  const getDepositBonuses = async (currency: string, amount?: number): Promise<IBonus[]> => {
-    const { data } = await useApiAuthInstance('/api/game/bonuses', { params: { currency, amount } });
-    return data;
-  };
-
   const getBonusesStatus = async (bonusIds: string[], currency: string): Promise<IBonusesStatus[]> => {
     const { data } = await useApiAuthInstance('/api/game/bonuses/status', { params: { bonusIds, currency } });
     return data;
   };
 
-  const getBonuses = async (params?: any): Promise<IBonus[]> => {
+  const getBonuses = async (params?: IBonusesRequest): Promise<IBonus[]> => {
     const { data } = await useApiAuthInstance('/api/game/bonuses', { params });
     return data;
   };
@@ -97,7 +93,6 @@ export const useCoreBonusApi = () => {
     addBonusCode,
     deleteBonusCode,
     getPlayerCashback,
-    getDepositBonuses,
     getBonusesStatus,
   };
 };

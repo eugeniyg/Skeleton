@@ -188,3 +188,12 @@ export interface IBonusesStatus {
   id: string;
   status: number;
 }
+
+export interface IBonusesRequest extends Record<string, any> {
+  currency: string;
+  amount?: number;
+  bonusIds?: string[];
+  questId?: string;
+  triggerType?: number;
+  skipCondition?: number[];
+}

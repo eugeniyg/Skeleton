@@ -11,18 +11,19 @@
           {{ props.copyTooltip || 'Copied' }}
         </div>
       </transition>
-
-      <input
-        :id="props.name"
-        ref="copyInput"
-        :value="displayValue"
-        class="referral-link-copy__field"
-        readonly
-        :name="props.name"
-      />
-      <div ref="cloneElement" class="input-copy__clone">
-        <span v-for="(char, index) in props.value || ''" :key="index">{{ char }}</span>
+      
+      <div class="referral-link-copy__field-wrap">
+        <input
+          :id="props.name"
+          ref="copyInput"
+          :value="displayValue"
+          class="referral-link-copy__field"
+          readonly
+          :name="props.name"
+        />
+        <div ref="cloneElement" class="referral-link-copy__clone">{{ props.value }}</div>
       </div>
+      
 
       <button class="referral-link-copy__desktop-btn" @click.prevent="copyValue">
         <atomic-icon id="copy" />
@@ -68,25 +69,23 @@
 
   const displayValue = ref<string>('');
   const cloneElement = useTemplateRef('cloneElement');
+  
   const getDisplayValue = (): string => {
     if (!props.value || !copyInput.value || !cloneElement.value) return '';
+    const inputWidth = copyInput.value.scrollWidth + 2;
+    if (cloneElement.value?.clientWidth < inputWidth) {
+      const lastCount = 5;
+      const value = props.value;
 
-    const inputWidth = copyInput.value?.clientWidth - 32;
-    const contentWidth = cloneElement.value?.scrollWidth;
-    if (contentWidth <= inputWidth) return props.value || '';
-    
-    const lastCount = 5;
-    const value = props.value;
-    if (value.length <= lastCount + 3) return value;
-
-    const firstCount = Math.max(10, value.length - 10);
-    const firstPart = value.slice(0, firstCount);
-    const lastPart = value.slice(-lastCount);
-    return `${firstPart}...${lastPart}`;
-  };
-
+      const firstCount = Math.max(10, value.length - 10);
+      const firstPart = value.slice(0, firstCount);
+      const lastPart = value.slice(-lastCount);
+      return `${firstPart}...${lastPart}`;
+    }
+    return props.value || '';
+  }
+  
   const updateDisplayValue = async () => {
-    await nextTick();
     displayValue.value = getDisplayValue();
   };
 
