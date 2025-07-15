@@ -129,7 +129,9 @@
   
   watch(() => activeAccount.value?.currency, () => {
     getBonusesData();
-  }, { immediate: true });
+  });
+  
+  onMounted(getBonusesData);
 </script>
 
 <style src="~/assets/styles/components/referral/card.scss" lang="scss" />

@@ -59,6 +59,7 @@
   );
 
   onMounted(() => {
+    checkDisplayMoreBtn();
     window.addEventListener('resize', checkDisplayMoreBtn);
   });
 
