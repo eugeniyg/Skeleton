@@ -39,11 +39,8 @@
   const { getContentData } = useContentLogic<IRecentlyPage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
 
-  const { getCollectionsList } = useGamesStore();
-  const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
-  const recommendedCategory = computed(() =>
-    gameCollections.value?.find(collection => collection.identity === 'recommended')
-  );
+  const { collectionsByCountry } = useGamesStore();
+  const recommendedCategory = collectionsByCountry.find(collection => collection.identity === 'recommended');
 
   const pageMeta = computed(() => ({
     page: 1,

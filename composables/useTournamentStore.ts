@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { IWebSocketResponse } from '@skeleton/core/types';
+import type { ITournamentCompletedEvent } from '@skeleton/core/types';
 
 interface ITournamentStoreState {
   tournamentSubscription: any;
@@ -11,7 +11,7 @@ export const useTournamentsStore = defineStore('tournamentsStore', {
   }),
 
   actions: {
-    handleTournamentsEvent(webSocketResponse: IWebSocketResponse): void {
+    handleTournamentsEvent(webSocketResponse: ITournamentCompletedEvent): void {
       const tournamentData = webSocketResponse.data.tournament;
       if (webSocketResponse.data.event === 'tournament.completed' && tournamentData) {
         const profileStore = useProfileStore();

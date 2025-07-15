@@ -73,15 +73,11 @@
   };
   const { getContentData } = useContentLogic<IHomePage>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);
+  const { collectionsByCountry } = useGamesStore();
 
-  const { getCollectionsList } = useGamesStore();
-  const { data: gameCollections } = await useLazyAsyncData(() => getCollectionsList(), { server: false });
-
-  const aeroCategory = computed(() => {
-    return gameCollections.value?.find(
-      collection => collection.identity === pageContent.value?.currentLocaleData?.aeroGroup?.collectionIdentity
-    );
-  });
+  const aeroCategory = collectionsByCountry.find(
+    collection => collection.identity === pageContent.value?.currentLocaleData?.aeroGroup?.collectionIdentity
+  );
 
   const targetGameCollections = computed(() => {
     return (
@@ -92,9 +88,9 @@
   });
 
   const gameCollectionsList = computed(() =>
-    gameCollections.value
-      ?.filter(collection => targetGameCollections.value.includes(collection.identity))
-      ?.sort((a, b) => {
+    collectionsByCountry
+      .filter(collection => targetGameCollections.value.includes(collection.identity))
+      .sort((a, b) => {
         return targetGameCollections.value?.indexOf(a.identity) - targetGameCollections.value?.indexOf(b.identity);
       })
   );
@@ -168,7 +164,6 @@
   });
 
   onMounted(async () => {
-    await getCollectionsList();
     initBetsy();
   });
 

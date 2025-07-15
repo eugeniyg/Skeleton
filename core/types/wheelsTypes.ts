@@ -1,4 +1,4 @@
-import type { IPaginationMeta } from '@skeleton/core/types/globalTypes';
+import type { IPaginationMeta } from './globalTypes';
 
 export interface IWheelSector {
   id: string;
@@ -33,4 +33,18 @@ export interface IWheelsRequest {
 export interface IWheelsResponse {
   data: IWheel[];
   meta: IPaginationMeta;
+}
+export interface IEventWheel extends Record<string, any> {
+  id: string;
+  identity: string;
+  title: string;
+}
+
+export interface IWheelSpinIssuedEvent {
+  data: {
+    event: 'wheel.spin.issued';
+    playerId: string;
+    wheel: IEventWheel;
+    amount: number;
+  };
 }

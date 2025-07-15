@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { IWebSocketResponse } from '@skeleton/core/types';
+import type { IWheelSpinIssuedEvent } from '@skeleton/core/types';
 
 interface IWheelsStoreState {
   wheelsSubscription: any;
@@ -11,7 +11,7 @@ export const useWheelsStore = defineStore('wheelsStore', {
   }),
 
   actions: {
-    handleWheelsEvent(webSocketResponse: IWebSocketResponse): void {
+    handleWheelsEvent(webSocketResponse: IWheelSpinIssuedEvent): void {
       const wheelData = webSocketResponse.data.wheel;
       const spinsCount = webSocketResponse.data.amount;
       if (webSocketResponse.data.event === 'wheel.spin.issued' && wheelData && spinsCount) {

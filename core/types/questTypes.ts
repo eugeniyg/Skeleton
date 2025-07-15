@@ -86,3 +86,17 @@ export interface IPlayerQuestsResponse extends Record<string, any> {
   data: IPlayerQuest[];
   meta: IPaginationMeta;
 }
+
+export interface IQuestUpdatedEvent {
+  data: {
+    event: 'quest.updated';
+    quest: IPlayerQuest;
+  };
+}
+
+export interface IQuestTaskUpdatedEvent {
+  data: {
+    event: 'quest.task.updated';
+    task: IPlayerQuestEventTask;
+  };
+}

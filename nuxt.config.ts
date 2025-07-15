@@ -137,6 +137,7 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
+    internalApiSecret: '14f9515a9965bff047f4a9a59ed3f0da8571db576798307f271e2d5ec37348a4',
     public: {
       gamehubCdn: 'https://dev.gcdn.tech',
     },

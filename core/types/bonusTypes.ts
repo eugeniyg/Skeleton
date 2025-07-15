@@ -197,3 +197,24 @@ export interface IBonusesRequest extends Record<string, any> {
   triggerType?: number;
   skipCondition?: number[];
 }
+
+export interface IPlayerBonusUpdatedEvent {
+  data: {
+    event: 'player.bonus.created' | 'player.bonus.updated';
+    playerBonus: IPlayerBonus;
+  };
+}
+
+export interface IPlayerBonusCodeUpdatedEvent {
+  data: {
+    event: 'player.bonus.code.updated';
+    playerBonusCode: IBonusCode;
+  };
+}
+
+export interface IPlayerFreeSpinUpdatedEvent {
+  data: {
+    event: 'player.freespin.created' | 'player.freespin.updated';
+    playerFreespin: IPlayerFreeSpin;
+  };
+}

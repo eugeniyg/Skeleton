@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import debounce from 'lodash/debounce.js';
 
 interface IFreshchatState {
   newMessages: number;
@@ -43,24 +44,38 @@ export const useFreshchatStore = defineStore('freshchatStore', {
 
     getProfileData(isUpdate = false) {
       const { profile } = useProfileStore();
-      // const segmentsArr = profile?.segments.map(segment => segment.name); // segments deprecated from player profile
-      // const profileSegments = segmentsArr?.length ? segmentsArr.join(', ') : '';
       const { activePlayerBonuses, activePlayerFreeSpins } = useBonusStore();
+      const { currentLocale, globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
+      let isVip: string | boolean = 'unknown';
+      const contentVipSegment = defaultLocaleGlobalComponentsContent
+        ? defaultLocaleGlobalComponentsContent.commonContent.vipSegmentId
+        : globalComponentsContent?.commonContent.vipSegmentId;
+      if (contentVipSegment && profile) {
+        isVip = String(profile.segmentIds.some(segmentId => segmentId === contentVipSegment));
+      }
+      const { loyaltyAccount } = useLoyaltyStore();
+      const { totalBaseCurrencyDepositAmount } = useWalletStore();
 
-      const { cf_segments, cf_active_bonuses, ...mainParams } = {
+      const { firstName, lastName, email, ...additionalData } = {
         firstName: profile?.firstName ?? '',
         lastName: profile?.lastName ?? '',
         email: profile?.email ?? '',
-        cf_segments: '', // TODO: get player segments from API,
+        cf_site_locale: `${currentLocale?.code} - ${currentLocale?.name}`,
+        cf_vip_segment: isVip,
+        cf_loyalty_level:
+          profile && loyaltyAccount
+            ? `Level ${loyaltyAccount.currentLevel.order}, ${loyaltyAccount.currentLevel.name}`
+            : 'unknown',
         cf_active_bonuses: `${!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)}`,
+        cf_deposit_sum: totalBaseCurrencyDepositAmount ?? 'unknown',
       };
 
       return isUpdate
-        ? { ...mainParams, meta: { cf_segments, cf_active_bonuses } }
-        : { ...mainParams, cf_segments, cf_active_bonuses };
+        ? { firstName, lastName, email, meta: additionalData }
+        : { firstName, lastName, email, ...additionalData };
     },
 
-    async updateFreshchatUser(): Promise<void> {
+    updateFreshchatUser: debounce(async function (this: any): Promise<void> {
       if (!window.fcWidget) return;
       const { profile } = useProfileStore();
 
@@ -75,7 +90,7 @@ export const useFreshchatStore = defineStore('freshchatStore', {
         const profileData = this.getProfileData();
         window.fcWidget.user.setProperties(profileData);
       }
-    },
+    }, 2000),
 
     async setChatRestoreId(restoreId: string): Promise<void> {
       const { profile, setProfileData } = useProfileStore();
@@ -110,6 +125,8 @@ export const useFreshchatStore = defineStore('freshchatStore', {
         useListen('freeSpinsUpdated', this.updateFreshchatUser);
         useListen('bonusesUpdated', this.updateFreshchatUser);
         useListen('accountChanged', this.updateFreshchatUser);
+        useListen('invoicesStatisticsUpdated', this.updateFreshchatUser);
+        useListen('loyaltyLevelUpdated', this.updateFreshchatUser);
       }
     },
 
@@ -163,10 +180,12 @@ export const useFreshchatStore = defineStore('freshchatStore', {
         console.log('Chat not cleared, chat empty!');
       }
 
-      useUnlisten('profileUpdated');
-      useUnlisten('freeSpinsUpdated');
-      useUnlisten('bonusesUpdated');
-      useUnlisten('accountChanged');
+      useUnlisten('profileUpdated', this.updateFreshchatUser);
+      useUnlisten('freeSpinsUpdated', this.updateFreshchatUser);
+      useUnlisten('bonusesUpdated', this.updateFreshchatUser);
+      useUnlisten('accountChanged', this.updateFreshchatUser);
+      useUnlisten('invoicesStatisticsUpdated', this.updateFreshchatUser);
+      useUnlisten('loyaltyLevelUpdated', this.updateFreshchatUser);
       window.fcWidget.destroy();
     },
   },

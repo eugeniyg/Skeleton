@@ -72,3 +72,41 @@ export interface ITournamentsResponse {
   data: ITournament[];
   meta: IPaginationMeta;
 }
+
+export interface IEventTournament extends Record<string, any> {
+  id: string;
+  title: string;
+  identity: string;
+  state: number;
+  prizes: ITournamentPrize[];
+  endAt: string;
+}
+
+export interface IEventTournamentEntry extends Record<string, any> {
+  tournamentId: string;
+  playerId: string;
+  points: number;
+  place: number;
+}
+
+export interface ITournamentCompletedEvent {
+  data: {
+    event: 'tournament.completed';
+    tournament: IEventTournament;
+  };
+}
+
+export interface ITournamentLeaderboardUpdatedEvent {
+  data: {
+    event: 'tournament.leaderboard.updated';
+    tournamentId: string;
+    leaderboard: ITournamentParticipant[];
+  };
+}
+
+export interface ITournamentEntryUpdatedEvent {
+  data: {
+    event: 'tournament.player-entry.updated';
+    entry: IEventTournamentEntry;
+  };
+}
