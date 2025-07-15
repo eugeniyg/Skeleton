@@ -19,49 +19,14 @@ input:-webkit-autofill-and-obscured {
   background-color: var(--field-01) !important;
 }
 
-input, button, ::placeholder, textarea {
-  font-family: Rubik, sans-serif;
-}
-
 @mixin radius($size) {
   border-radius: $size;
 }
 
-$font-path: '@skeleton/assets/fonts/';
-
-@font-face {
-  font-family: 'Rubik';
-  src: url('#{$font-path}Rubik-Regular.woff2') format('woff2'),
-  url('#{$font-path}Rubik-Regular.woff') format('woff'),
-  url('#{$font-path}Rubik-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Rubik';
-  src: url('#{$font-path}Rubik-Medium.woff2') format('woff2'),
-  url('#{$font-path}Rubik-Medium.woff') format('woff'),
-  url('#{$font-path}Rubik-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Rubik';
-  src: url('#{$font-path}Rubik-Bold.woff2') format('woff2'),
-  url('#{$font-path}Rubik-Bold.woff') format('woff'),
-  url('#{$font-path}Rubik-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 *, *:before, *:after {
   box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent
+  font-family: 'Rubik', sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 :focus-visible,
@@ -85,7 +50,6 @@ html, body {
 img:not([src]){ visibility:hidden; }
 
 body {
-  font-family: 'Rubik', sans-serif;
   margin: 0;
   background-color: var(--layer-bg);
   @extend %scrollbar-hide;
