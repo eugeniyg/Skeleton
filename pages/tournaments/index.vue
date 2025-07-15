@@ -81,13 +81,11 @@
 
 <script setup lang="ts">
   import type { ITournamentCommon, ITournamentPage, ITournamentsPage } from '~/types';
-  import { useCoreTournamentsApi } from '@skeleton/core/composables/useCoreTournamentApi';
-  import type { IPaginationMeta } from '@skeleton/core/types';
-  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
+  import type { IPaginationMeta, ITournament } from '@skeleton/api/types';
+  import { getTournaments } from '@skeleton/api/retention';
 
   const globalStore = useGlobalStore();
   const { currentLocale, isMobile } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'tournamentsPageContent',
@@ -142,7 +140,6 @@
     tournamentIdentities: [],
   });
 
-  const { getTournaments } = useCoreTournamentsApi();
   const getFinishedTournaments = async (page = 1): Promise<void> => {
     if (state.finishedLoading) return;
     state.finishedLoading = true;

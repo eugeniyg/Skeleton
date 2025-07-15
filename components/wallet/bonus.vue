@@ -35,8 +35,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IBonus } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
+  import type { IBonus } from '@skeleton/api/types';
   import type { IWalletModal } from '~/types';
 
   const props = defineProps<{
@@ -50,7 +49,6 @@
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
   const { openModal } = useModalStore();
-  const { getContent } = useProjectMethods();
   const bonusStore = useBonusStore();
   const { depositMoreInfoBonus } = storeToRefs(bonusStore);
 

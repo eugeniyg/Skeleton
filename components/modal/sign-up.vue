@@ -85,8 +85,7 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { RegistrationType } from '@skeleton/core/types';
+  import type { RegistrationType } from '@skeleton/api/types';
   import { VueFinalModal } from 'vue-final-modal';
   import type { Dayjs } from 'dayjs';
   import { marked } from 'marked';
@@ -103,7 +102,6 @@
   const { openModal } = useModalStore();
   const globalStore = useGlobalStore();
   const { settingsConstants, globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
   const showPhoneVerification = ref<boolean>(false);
   const formTitle = computed(() => {

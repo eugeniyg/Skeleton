@@ -12,7 +12,6 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const modeMap: Record<number, string> = {
     '-1': 'package',

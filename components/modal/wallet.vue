@@ -36,8 +36,7 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IPaymentMethod } from '@skeleton/core/types';
+  import type { IPaymentMethod } from '@skeleton/api/types';
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent } from '~/types';
 
@@ -50,7 +49,6 @@
   provide('defaultLocaleWalletContent', props.defaultLocaleData);
 
   const walletStore = useWalletStore();
-  const { getContent } = useProjectMethods();
   const hasOffset = ref<boolean>(false);
   const bonusStore = useBonusStore();
   const { walletDepositBonus } = storeToRefs(bonusStore);

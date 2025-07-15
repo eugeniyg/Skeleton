@@ -51,10 +51,10 @@
 </template>
 
 <script setup lang="ts">
-  import type { ICollection, IGame, IGameProvider, IPaginationMeta } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
+  import type { ICollection, IGame, IGameProvider, IPaginationMeta } from '@skeleton/api/types';
   import type { ICategoryPage } from '~/types';
   import debounce from 'lodash/debounce';
+  import { getFilteredGames } from '@skeleton/api/games';
 
   definePageMeta({
     middleware: async function (to) {
@@ -62,7 +62,6 @@
 
       const { collectionsByCountry } = useGamesStore();
       if (!collectionsByCountry.length) return;
-      const { localizePath } = useProjectMethods();
       return navigateTo({
         path: localizePath(`/categories/${collectionsByCountry[0].identity}`),
         query: { ...to.query },
@@ -72,7 +71,6 @@
 
   const globalStore = useGlobalStore();
   const { gameCategoriesObj, layoutData, defaultLocaleLayoutData, headerCountry, isMobile } = storeToRefs(globalStore);
-  const { getContent, localizePath } = useProjectMethods();
   const route = useRoute();
   const router = useRouter();
   const { openModal, closeModal } = useModalStore();
@@ -113,7 +111,6 @@
     pageMeta: undefined,
   });
 
-  const { getFilteredGames } = useCoreGamesApi();
   const getData = async (nextPage: boolean): Promise<void> => {
     state.loadingGames = true;
 

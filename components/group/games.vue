@@ -49,8 +49,10 @@
 </template>
 
 <script setup lang="ts">
-  import type { ICollection, IGame, IPaginationMeta } from '@skeleton/core/types';
+  import type { ICollection, IGame, IPaginationMeta } from '@skeleton/api/types';
   import { Skeletor } from 'vue-skeletor';
+  import { getFilteredGames } from '@skeleton/api/games';
+  import { initObserver } from '@skeleton/helpers/observer';
 
   const props = withDefaults(
     defineProps<{
@@ -69,7 +71,6 @@
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, gameCategoriesObj } = globalStore;
   const { headerCountry } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const titleIcon = gameCategoriesObj[props.category.identity]?.icon;
 
   const scrollContainer = ref();
@@ -78,7 +79,6 @@
   const showArrowButtons = ref<boolean>(props.showArrows);
   const games = ref<IGame[]>([]);
   const pageMeta = ref<IPaginationMeta>();
-  const { getFilteredGames } = useCoreGamesApi();
 
   const scrollHandler = (): void => {
     if (!scrollContainer.value) return;
@@ -125,7 +125,6 @@
   };
 
   const loadMore = ref();
-  const { initObserver } = useProjectMethods();
   const observerLoadMore = ref();
 
   const initGroupGames = async (): Promise<void> => {
@@ -178,7 +177,6 @@
     }
   });
 
-  const { localizePath } = useProjectMethods();
   const openGames = (): void => {
     const router = useRouter();
     router.push(localizePath(`/categories/${props.category.identity}`));

@@ -41,7 +41,6 @@
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
-  const { getContent } = useProjectMethods();
   const copied = ref<boolean>(false);
 
   const copyQr = (): void => {

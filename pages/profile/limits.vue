@@ -25,13 +25,11 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IProfileLimits } from '~/types';
 
   const limitsStore = useLimitsStore();
   const { getLimits, setLimitsContent, toogleAdvancedMode } = limitsStore;
   const { limitsContent, defaultLimitsContent, isAdvancedModeEnabled } = storeToRefs(limitsStore);
-  const { getContent } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'profileLimitsContent',

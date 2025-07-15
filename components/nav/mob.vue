@@ -67,15 +67,12 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const layoutStore = useLayoutStore();
   const profileStore = useProfileStore();
   const { isLoggedIn } = storeToRefs(profileStore);
   const { openModal, openWalletModal } = useModalStore();
   const { isGamePage } = storeToRefs(layoutStore);
   const { layoutData, defaultLocaleLayoutData } = useGlobalStore();
-  const { localizePath, getContent } = useProjectMethods();
   const route = useRoute();
 
   const clickMainButton = (): void => {

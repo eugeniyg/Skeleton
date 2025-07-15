@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { ILoyaltyLevel } from '@skeleton/core/types';
+  import type { ILoyaltyLevel } from '@skeleton/api/types';
   import emblaCarouselVue from 'embla-carousel-vue';
 
   const props = defineProps<{

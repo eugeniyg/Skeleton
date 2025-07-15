@@ -41,14 +41,11 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-
   const limitsStore = useLimitsStore();
   const { checkCurrencies } = limitsStore;
   const { lossPeriods, betPeriods, depositPeriods, limitsContent, defaultLimitsContent, isAdvancedModeEnabled } =
     storeToRefs(limitsStore);
 
-  const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { currencies } = storeToRefs(globalStore);
   const { openModal } = useModalStore();

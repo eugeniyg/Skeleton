@@ -42,7 +42,6 @@
   const limitsStore = useLimitsStore();
   const { createLimit } = limitsStore;
   const { closeModal } = useModalStore();
-  const { getContent } = useProjectMethods();
   const { logOutUser } = useProfileStore();
 
   const save = async () => {

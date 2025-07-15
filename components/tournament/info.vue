@@ -50,8 +50,7 @@
   import type { ITournamentCommon, ITournamentPage } from '~/types';
   import DOMPurify from 'isomorphic-dompurify';
   import { marked } from 'marked';
-  import type { IPaginationMeta } from '@skeleton/core/types';
-  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
+  import type { IPaginationMeta, ITournament } from '@skeleton/api/types';
 
   const props = defineProps<{
     gamesMeta: IPaginationMeta | undefined;
@@ -61,7 +60,6 @@
     tournamentDefiniteData: Maybe<ITournament>;
   }>();
 
-  const { getContent } = useProjectMethods();
   const prizeImage = computed(() =>
     getContent(props.currentLocaleCommonContent, props.defaultLocaleCommonContent, 'info.prizesCount.image')
   );

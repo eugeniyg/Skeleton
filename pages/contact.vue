@@ -12,8 +12,8 @@
       <div class="header">
         <div class="heading">{{ pageContent?.currentLocaleData?.title || pageContent?.defaultLocaleData?.title }}</div>
         <p
-          class="info"
           v-router-links
+          class="info"
           v-html="
             DOMPurify.sanitize(marked.parseInline(descriptionContent || '') as string, { FORBID_TAGS: ['style'] })
           "
@@ -64,14 +64,14 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IContactsPage } from '~/types';
   import { marked } from 'marked';
   import DOMPurify from 'isomorphic-dompurify';
+  import { sendContactMessage } from '@skeleton/api/global';
+  import { getFormRules } from '@skeleton/helpers/formMethods';
 
   const layoutStore = useLayoutStore();
   const globalStore = useGlobalStore();
-  const { getContent } = useProjectMethods();
 
   const { fieldsSettings, defaultLocaleFieldsSettings, alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
 
@@ -94,7 +94,6 @@
   };
 
   const isLockedAsyncButton = ref<boolean>(false);
-  const { getFormRules } = useProjectMethods();
   const contactUsFormRules = getFormRules(contactUsRules);
   const { serverFormErrors, v$, setError } = useFormValidation(contactUsFormRules, contactFormData);
 
@@ -102,7 +101,6 @@
     return pageContent.value?.currentLocaleData?.description || pageContent.value?.defaultLocaleData?.description;
   });
 
-  const { sendContactMessage } = useCoreGlobalApi();
   const submitContactForm = async (): Promise<void> => {
     if (v$.value.$invalid) return;
 

@@ -25,7 +25,6 @@
 <script setup lang="ts">
   import type { IProfileInfo } from '~/types';
 
-  const { getContent } = useProjectMethods();
   const infoContent = ref<Maybe<IProfileInfo>>(inject('infoContent'));
   const defaultLocaleInfoContent = ref<Maybe<IProfileInfo>>(inject('defaultLocaleInfoContent'));
   const questsStore = useQuestsStore();

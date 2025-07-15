@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { ILocale } from '@skeleton/core/types';
+  import type { ILocale } from '@skeleton/api/types';
 
   const { currentLocale, countries, headerCountry, locales } = useGlobalStore();
 

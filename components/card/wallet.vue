@@ -31,6 +31,7 @@
 
 <script setup lang="ts">
   import type { IProfileWallet } from '~/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     id: string;
@@ -43,7 +44,6 @@
   const isChecked = ref<boolean>(false);
   const { currencies } = useGlobalStore();
   const { openWalletModal } = useModalStore();
-  const { formatBalance } = useProjectMethods();
   const balanceFormat = computed(() => formatBalance(props.currency, props.balance));
 
   const isActive = computed(() => props.status === 1);

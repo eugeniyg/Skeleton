@@ -6,7 +6,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGameImages } from '@skeleton/core/types';
+  import type { IGameImages } from '@skeleton/api/types';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
 
   const props = defineProps<{
     images?: IGameImages;
@@ -16,9 +17,8 @@
     identity: string;
   }>();
 
-  const { getImageUrl, localizePath } = useProjectMethods();
   const backgroundImage = computed(() => {
-    return `background-image: url(${getImageUrl(props.customImages, props.images, 'square')})`;
+    return `background-image: url(${getGameImageUrl(props.customImages, props.images, 'square')})`;
   });
 
   const router = useRouter();

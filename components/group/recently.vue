@@ -20,8 +20,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGame } from '@skeleton/core/types';
-  import { storeToRefs } from 'pinia';
+  import type { IGame } from '@skeleton/api/types';
 
   const props = defineProps<{
     gamesList: IGame[];
@@ -29,8 +28,6 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
-
   const showAllBtn = ref<boolean>(true);
   const cardInBlock = ref<number>(20);
   const currentGames = computed(() => props.gamesList.slice(0, cardInBlock.value));

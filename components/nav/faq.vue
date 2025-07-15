@@ -26,7 +26,6 @@
   const props = defineProps<{
     items: IQuestionCategory[];
   }>();
-  const { localizePath } = useProjectMethods();
   const isOpen = ref<boolean>(false);
   const route = useRoute();
   const selected = computed(() =>

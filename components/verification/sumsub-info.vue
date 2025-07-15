@@ -14,7 +14,6 @@
 
   const verificationContent = ref<Maybe<IProfileVerification>>(inject('verificationContent'));
   const defaultLocaleVerificationContent = ref<Maybe<IProfileVerification>>(inject('defaultLocaleVerificationContent'));
-  const { getContent } = useProjectMethods();
 
   const infoList = computed(() => {
     return getContent(verificationContent.value, defaultLocaleVerificationContent.value, 'sumsub.infoList') || [];

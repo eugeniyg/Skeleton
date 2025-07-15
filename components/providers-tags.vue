@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGameProvider } from '@skeleton/core/types';
+  import type { IGameProvider } from '@skeleton/api/types';
 
   const props = defineProps<{
     clearLabel?: string;

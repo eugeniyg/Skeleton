@@ -32,7 +32,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IPageMeta } from '~/types';
 
   const props = defineProps<{
@@ -59,7 +58,6 @@
     });
   });
 
-  const { localizePath } = useProjectMethods();
   const route = useRoute();
   const isOpen = ref<boolean>(false);
   const selected = computed(() => props.items.find((item: any) => localizePath(item.url) === route.path));

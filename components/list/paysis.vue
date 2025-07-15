@@ -9,7 +9,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import emblaCarouselVue from 'embla-carousel-vue';
   import Autoplay from 'embla-carousel-autoplay';
 

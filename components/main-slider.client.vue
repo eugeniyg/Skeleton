@@ -26,7 +26,6 @@
 <script setup lang="ts">
   import type { ISliderItem } from '~/types';
   import emblaCarouselVue from 'embla-carousel-vue';
-  import { storeToRefs } from 'pinia';
 
   const props = defineProps<{
     sliderType?: 'high' | 'low';

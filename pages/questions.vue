@@ -36,7 +36,6 @@
   });
 
   const route = useRoute();
-  const { localizePath } = useProjectMethods();
   const pageContentParams = {
     contentKey: 'questionPageContent',
     contentRoute: ['pages', 'question'],

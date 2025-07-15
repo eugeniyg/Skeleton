@@ -66,9 +66,9 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { ICurrency } from '@skeleton/core/types';
+  import type { ICurrency } from '@skeleton/api/types';
   import type { IModalsContent } from '~/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   interface IProps {
     showError: boolean;
@@ -83,7 +83,6 @@
 
   const walletStore = useWalletStore();
   const { currencyTabs } = storeToRefs(walletStore);
-  const { formatBalance, getContent } = useProjectMethods();
   const selected = ref<string>('all');
   const selectedCurrency = ref<ICurrency | undefined>();
   const isOpen = ref<boolean>(false);

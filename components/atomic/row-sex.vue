@@ -8,7 +8,6 @@
   }>();
 
   const { fieldsSettings, defaultLocaleFieldsSettings } = useGlobalStore();
-  const { getContent } = useProjectMethods();
   const valueName = computed(() => {
     switch (props.value) {
       case 'male':

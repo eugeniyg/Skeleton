@@ -37,7 +37,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent } from '~/types';
 
@@ -50,7 +49,6 @@
   const globalStore = useGlobalStore();
   const { equivalentCurrency, fiatCurrencies } = storeToRefs(globalStore);
   const { setEquivalentCurrency } = globalStore;
-  const { getContent } = useProjectMethods();
 
   const selectFiat = (code: string) => {
     setEquivalentCurrency(code);

@@ -1,3 +1,6 @@
+import { getLocalesContentData } from '@skeleton/helpers/contentMethods';
+import { setPageMeta } from '@skeleton/helpers/transformDomMethods';
+
 interface IContentParams {
   contentKey: string;
   contentRoute: string[];
@@ -16,7 +19,6 @@ export function useContentLogic<T extends Record<string, any>>(params: IContentP
 
   const globalStore = useGlobalStore();
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
-  const { setPageMeta, getLocalesContentData } = useProjectMethods();
 
   const getRequestArray = (): Promise<any>[] => {
     let currentLocaleQuery: any = queryContent(currentLocale.value?.code as string, ...params.contentRoute);

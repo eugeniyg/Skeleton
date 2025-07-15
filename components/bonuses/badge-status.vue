@@ -21,7 +21,6 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const statusLabel = computed<string | undefined>(() => {
     const contentKey = props.status.includes('available') ? 'available' : 'active';

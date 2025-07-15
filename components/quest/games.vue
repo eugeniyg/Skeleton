@@ -17,7 +17,7 @@
     <div class="quest-games__items">
       <template v-if="gamesData.length">
         <div v-for="game in filteredGamesData" :key="game.id" class="quest-games__item" @click.once="goToGame(game)">
-          <atomic-image :src="getImageUrl(game.customImages, game.images, 'square')" />
+          <atomic-image :src="getGameImageUrl(game.customImages, game.images, 'square')" />
         </div>
       </template>
 
@@ -29,8 +29,10 @@
 </template>
 
 <script setup lang="ts">
-  import type { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/api/types';
   import type { IQuestTasksModal } from '~/types';
+  import { getFilteredGames } from '@skeleton/api/games';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
 
   const props = defineProps<{
     items: string[];
@@ -40,7 +42,6 @@
   const questTasksContent: Maybe<IQuestTasksModal> = inject('questTasksContent');
   const defaultLocaleQuestTasksContent: Maybe<IQuestTasksModal> = inject('defaultLocaleQuestTasksContent');
 
-  const { getContent, getImageUrl, localizePath } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { headerCountry, isMobile } = storeToRefs(globalStore);
 
@@ -49,7 +50,6 @@
   const filteredGamesData = computed(() => {
     return gamesData.value.slice(0, visibleItems.value);
   });
-  const { getFilteredGames } = useCoreGamesApi();
   const loadGames = ref(false);
   const getConditionGames = async (): Promise<void> => {
     loadGames.value = true;

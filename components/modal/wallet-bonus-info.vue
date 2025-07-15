@@ -43,17 +43,17 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import type { IAmountRangeItem, IBonus, IGameProvider } from '@skeleton/core/types';
+  import type { IAmountRangeItem, IBonus } from '@skeleton/api/types';
   import type { IModalsContent } from '~/types';
+  import { getFilteredGames } from '@skeleton/api/games';
+  import { formatBalance, getEquivalentFromBase, getSumFromAmountItems } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['walletBonusInfo']>;
     defaultLocaleData: Maybe<IModalsContent['walletBonusInfo']>;
   }>();
 
-  const { getContent, formatBalance, getEquivalentFromBase, localizePath, getSumFromAmountItems } = useProjectMethods();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = useGlobalStore();
 
   const walletStore = useWalletStore();
@@ -174,7 +174,6 @@
   const getBonusGames = async (gamesList: string[], bonusInfo: IBonus): Promise<void> => {
     const gamesExcluded = bonusInfo.wagerCasinoConditions?.gameIdsExcluded;
 
-    const { getFilteredGames } = useCoreGamesApi();
     try {
       const { data } = await getFilteredGames({ gameId: gamesList });
       const gamesNames = data.map(game => game.name);

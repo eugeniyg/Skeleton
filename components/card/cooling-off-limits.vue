@@ -27,17 +27,15 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
-  import type { IPlayerLimit } from '@skeleton/core/types';
+  import type { IPlayerLimit } from '@skeleton/api/types';
   import { marked } from 'marked';
   import DOMPurify from 'isomorphic-dompurify';
+  import { updatePlayerLimit } from '@skeleton/api/profile';
 
   const dayjs = useDayjs();
   const limitsStore = useLimitsStore();
   const { createLimit, getLimits } = limitsStore;
   const { betPeriods, lossPeriods, isAdvancedModeEnabled } = storeToRefs(limitsStore);
-  const { updatePlayerLimit } = useCoreProfileApi();
-  const { getContent } = useProjectMethods();
   const { showAlert } = useLayoutStore();
   const globalStore = useGlobalStore();
   const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);

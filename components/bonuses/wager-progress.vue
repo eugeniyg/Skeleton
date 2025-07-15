@@ -51,7 +51,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { IPlayerBonus } from '@skeleton/core/types';
+  import type { IPlayerBonus } from '@skeleton/api/types';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     bonusInfo: IPlayerBonus;
@@ -59,11 +60,8 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
   const walletStore = useWalletStore();
   const { activeAccountType } = storeToRefs(walletStore);
-
-  const { formatBalance } = useProjectMethods();
 
   const currentCasinoAmount = computed<{ currency: string; amount: number }>(() => {
     return formatBalance(props.bonusInfo.currency, props.bonusInfo.currentWagerCasinoAmount);

@@ -1,7 +1,6 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const { getSessionToken } = useProfileStore();
   const sessionToken = getSessionToken();
-  const { localizePath } = useProjectMethods();
   const fromRouteName = from.name as string;
   const fromProfilePath = from.path?.includes('/profile');
   const fromFavoritesPath = fromRouteName === 'favorites' || fromRouteName === 'locale-favorites';

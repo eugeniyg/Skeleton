@@ -23,7 +23,6 @@
 
   const walletContent: Maybe<IWalletModal> = inject('walletContent');
   const defaultLocaleWalletContent: Maybe<IWalletModal> = inject('defaultLocaleWalletContent');
-  const { getContent } = useProjectMethods();
 
   const tabItems = computed(() => {
     const contentTabs = getContent(walletContent, defaultLocaleWalletContent, 'tabs') || {};

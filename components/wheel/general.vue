@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
   import type { IWheelCommon, IWheelPage } from '~/types';
-  import type { IWheel } from '@skeleton/core/types/wheelsTypes';
+  import type { IWheel } from '@skeleton/api/types';
 
   const props = defineProps<{
     wheelData: IWheel;
@@ -57,7 +57,6 @@
     wheelDrumComponent.value.spinWheel();
   };
 
-  const { getContent } = useProjectMethods();
   const pageSubtitle = computed(() =>
     getContent(props.currentLocalePageContent, props.defaultLocalePageContent, 'pageSubtitle')
   );

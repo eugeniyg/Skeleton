@@ -38,7 +38,6 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const timerContent = computed(() =>
     getContent(globalComponentsContent.value, defaultLocaleGlobalComponentsContent.value, 'bonuses.timer')

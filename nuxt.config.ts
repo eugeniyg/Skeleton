@@ -77,9 +77,6 @@ export default defineNuxtConfig({
       '@skeleton/components',
     ],
   },
-  imports: {
-    dirs: ['core/composables'],
-  },
   routeRules: {
     '/profile/**': {
       appMiddleware: ['auth'],

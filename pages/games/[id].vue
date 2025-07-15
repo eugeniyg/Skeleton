@@ -19,15 +19,16 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import type { IGamePage } from '~/types';
-  import type { IGame } from '@skeleton/core/types';
+  import type { IGame } from '@skeleton/api/types';
+  import { getGamesInfo, getStartGame } from '@skeleton/api/games';
+  import { getGameImageUrl } from '@skeleton/helpers/urlBuildMethods';
+  import { setPageMeta } from '@skeleton/helpers/transformDomMethods';
 
   const route = useRoute();
   const showPlug = ref<boolean>(false);
   const isDemo = ref<boolean>(route.query.real !== 'true');
   const gameStart = ref<string>();
-  const { getGamesInfo, getStartGame } = useCoreGamesApi();
   const profileStore = useProfileStore();
   const walletStore = useWalletStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
@@ -38,7 +39,6 @@
   const { isMobile, alertsData, defaultLocaleAlertsData, currentLocale, headerCountry } = storeToRefs(globalStore);
   const loyaltyStore = useLoyaltyStore();
   const { levelNotificationEnabled } = storeToRefs(loyaltyStore);
-  const { localizePath, getImageUrl, setPageMeta } = useProjectMethods();
 
   const contentParams = {
     contentKey: 'gamePageContent',
@@ -60,7 +60,7 @@
     const metaTitle = replaceVariables(metaTitleContent, gameInfo);
     const metaDescriptionContent = pageMetaContent?.description;
     const metaDescription = replaceVariables(metaDescriptionContent, gameInfo);
-    const gameThumb = getImageUrl(gameInfo?.customImages, gameInfo?.images, 'square');
+    const gameThumb = getGameImageUrl(gameInfo?.customImages, gameInfo?.images, 'square');
     setPageMeta({ ...pageMetaContent, title: metaTitle, description: metaDescription, image: gameThumb });
     return { pageContent, gameInfo };
   });

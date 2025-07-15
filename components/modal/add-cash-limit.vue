@@ -70,10 +70,11 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import type { ICurrency, IPlayerLimit } from '@skeleton/core/types';
+  import type { ICurrency, IPlayerLimit } from '@skeleton/api/types';
   import type { IModalsContent } from '~/types';
+  import { getFormRules } from '@skeleton/helpers/formMethods';
+  import { formatBalance, getMainBalanceFormat } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['addCashLimit']>;
@@ -94,7 +95,6 @@
     globalComponentsContent,
     defaultLocaleGlobalComponentsContent,
   } = storeToRefs(globalStore);
-  const { formatBalance, getMainBalanceFormat, getContent } = useProjectMethods();
 
   const currencyKey = ref(0);
 
@@ -118,7 +118,6 @@
     showCurrenciesError: false,
   });
 
-  const { getFormRules } = useProjectMethods();
   const limitAmountRules = {};
   const limitAmountFormRules = getFormRules(limitAmountRules);
   const { serverFormErrors, v$, onFocus, setError } = useFormValidation(limitAmountFormRules, formState.amount);

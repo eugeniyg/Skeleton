@@ -10,13 +10,11 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import copy from 'copy-to-clipboard';
   import type { IProfileInfo } from '~/types';
 
   const profileStore = useProfileStore();
   const { profile } = storeToRefs(profileStore);
-  const { getContent } = useProjectMethods();
 
   const showTooltip = (): void => {
     tooltipVisible.value = true;

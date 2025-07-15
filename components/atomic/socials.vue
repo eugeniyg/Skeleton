@@ -33,7 +33,6 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs } from 'pinia';
   import queryString from 'query-string';
 
   const props = defineProps<{
@@ -42,7 +41,6 @@
 
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent, settingsConstants } = storeToRefs(globalStore);
-  const { getContent } = useProjectMethods();
 
   const componentTitle = computed(() => {
     return getContent(

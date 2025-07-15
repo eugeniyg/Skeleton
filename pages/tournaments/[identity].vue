@@ -63,11 +63,12 @@
     ITournament,
     ITournamentEntryUpdatedEvent,
     ITournamentLeaderboardUpdatedEvent,
-  } from '@skeleton/core/types';
+  } from '@skeleton/api/types';
+  import { getFilteredGames } from '@skeleton/api/games';
+  import { getTournaments, getTournament } from '@skeleton/api/retention';
 
   const profileStore = useProfileStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
-  const { getContent } = useProjectMethods();
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
   const route = useRoute();
@@ -75,7 +76,6 @@
   const routeFinished = route.query.finished as string;
   const { collectionsByCountry } = useGamesStore();
 
-  const { getTournaments, getTournament } = useCoreTournamentsApi();
   const getTournamentGeneralData = async (): Promise<ITournament> => {
     const { data: tournamentsList } = await getTournaments({
       identity: [routeIdentity],
@@ -141,7 +141,6 @@
     gamesData: [],
     gamesMeta: undefined,
   });
-  const { getFilteredGames } = useCoreGamesApi();
   const getTournamentGames = async (page = 1): Promise<void> => {
     const nonExistentCollections =
       tournamentData.value?.conditions?.gameCollectionsExcluded === false &&
@@ -180,7 +179,7 @@
 
   const leaderboardSubscription = ref<any>(undefined);
   const playerEntrySubscription = ref<any>(undefined);
-  const { createSubscription } = useWebSocket();
+  const { createSubscription } = useWebSocketStore();
 
   const updateLeaderboard = (webSocketResponse: ITournamentLeaderboardUpdatedEvent) => {
     if (tournamentDefiniteData.value) {

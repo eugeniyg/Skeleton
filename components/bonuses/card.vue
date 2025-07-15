@@ -57,7 +57,9 @@
 </template>
 
 <script setup lang="ts">
-  import type { IBonus, IGame, IPlayerBonus, IPlayerFreeSpin } from '@skeleton/core/types';
+  import type { IBonus, IGame, IPlayerBonus, IPlayerFreeSpin } from '@skeleton/api/types';
+  import { getGamesInfo } from '@skeleton/api/games';
+  import { formatBalance } from '@skeleton/helpers/amountMethods';
 
   const props = defineProps<{
     bonusInfo: Record<string, any>;
@@ -70,7 +72,6 @@
   const emit = defineEmits(['activate', 'remove', 'game-opened']);
   const globalStore = useGlobalStore();
   const { globalComponentsContent, defaultLocaleGlobalComponentsContent } = storeToRefs(globalStore);
-  const { formatBalance, getContent } = useProjectMethods();
   const { openModal } = useModalStore();
 
   const bonusValue = computed<string | undefined>(() => {
@@ -148,7 +149,6 @@
     if (!gameId) return;
 
     try {
-      const { getGamesInfo } = useCoreGamesApi();
       freeSpinGameInfo.value = await getGamesInfo(gameId);
     } catch {
       freeSpinGameInfo.value = undefined;

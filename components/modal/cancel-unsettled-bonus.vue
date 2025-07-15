@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
   import { VueFinalModal } from 'vue-final-modal';
-  import type { IPlayerBonus } from '~/skeleton/core/types';
+  import type { IPlayerBonus } from '~/skeleton/api/types';
   import type { IConfirmBonusActionModal } from '~/types';
 
   const props = defineProps<{
@@ -48,7 +48,6 @@
   }>();
 
   const emit = defineEmits(['confirm']);
-  const { getContent } = useProjectMethods();
   const { closeModal } = useModalStore();
 </script>
 
