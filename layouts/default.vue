@@ -1,6 +1,5 @@
 <template>
   <div :class="layoutClasses">
-    <atomic-preloader />
     <layout-header @logout="logout" />
     <layout-drawer @toggle-open="toggleOpen" />
 
