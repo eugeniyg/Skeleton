@@ -45,7 +45,7 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { VueFinalModal } from 'vue-final-modal';
-  import type { IAmountRangeItem, IBonus, IGameProvider } from '@skeleton/core/types';
+  import type { IAmountRangeItem, IBonus } from '@skeleton/core/types';
   import type { IModalsContent } from '~/types';
 
   const props = defineProps<{

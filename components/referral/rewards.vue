@@ -30,7 +30,7 @@
                   {{ getQualifiedLabel(column.qualified) }}
                 </span>
                 <atomic-tooltip
-                  v-if="column.qualified === 2"
+                  v-if="column.qualified === 3"
                   :text="getContent(referralContent, defaultLocaleReferralContent, 'rewards.unqualifiedTooltip')"
                   icon="question"
                 />
@@ -51,7 +51,7 @@
             <td class="referral-rewards__td">
               <span v-if="!column.qualified">-</span>
               <span
-                v-else-if="column.qualified !== 3"
+                v-else-if="[2, 3].includes(column.qualified)"
                 class="referral-rewards__td-bg"
                 v-html="formatDateStr(dayjs(column.qualificationEndDate).format(dateFormat))"
               />
@@ -74,10 +74,10 @@
 
 <script setup lang="ts">
   import type { IProfileReferral } from '~/types';
-  import type { IReferrals, IPaginationMeta } from '@skeleton/core/types';
+  import type { IReferralItem, IPaginationMeta } from '@skeleton/core/types';
 
   const props = defineProps<{
-    referralsList: IReferrals[];
+    referralsList: IReferralItem[];
     pageMeta: Maybe<IPaginationMeta>;
   }>();
 
@@ -98,9 +98,9 @@
   );
 
   const statusMap: Record<number, { id: string; color: string; labelKey: string }> = {
-    1: { id: 'done', color: 'success', labelKey: 'qualified' },
-    2: { id: 'cross', color: 'error', labelKey: 'unQualified' },
-    3: { id: 'clock', color: 'active', labelKey: 'inProgress' },
+    1: { id: 'clock', color: 'active', labelKey: 'inProgress' },
+    2: { id: 'done', color: 'success', labelKey: 'qualified' },
+    3: { id: 'cross', color: 'error', labelKey: 'unQualified' },
   };
 
   const getStatusIcon = (status: number): string => {
