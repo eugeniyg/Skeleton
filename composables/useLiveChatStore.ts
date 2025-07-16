@@ -74,7 +74,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
 
       return {
         userId: profile.id,
-        phone: profile.phone ? `+${profile.phone}` : 'unknown',
+        phone: profile.phone ?? 'unknown',
         fingerprint: fingerprint ?? 'unknown',
         locale: `${currentLocale?.code} - ${currentLocale?.name}`,
         activeBonus: `${!!(activePlayerBonuses?.length || activePlayerFreeSpins?.length)}`,
@@ -146,6 +146,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
 
         const { isLoggedIn } = useProfileStore();
         if (!isLoggedIn && cachedToken && !isTokenExpired(cachedToken)) return Promise.resolve(cachedToken);
+        console.log('Requesting new token');
         return getFreshToken();
       };
 
@@ -231,17 +232,16 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       useUnlisten('accountChanged', this.setProfileData);
       useUnlisten('invoicesStatisticsUpdated', this.setProfileData);
       useUnlisten('loyaltyLevelUpdated', this.setProfileData);
-      //window.__lc?.custom_identity_provider.getToken();
-      // window.LiveChatWidget.call('destroy');
-      // const liveChatScript = document.querySelector('script[href="https://cdn.livechatinc.com/tracking.js"]');
-      // if (liveChatScript) liveChatScript.remove();
-      //
-      // const {
-      //   public: { liveChat },
-      // } = useRuntimeConfig();
-      // const { isLoggedIn } = useProfileStore();
-      //
-      // if (liveChat.guestAvailable || isLoggedIn) this.initializeLiveChat();
+      window.LiveChatWidget.call('destroy');
+      const liveChatScript = document.querySelector('script[href="https://cdn.livechatinc.com/tracking.js"]');
+      if (liveChatScript) liveChatScript.remove();
+
+      const {
+        public: { liveChat },
+      } = useRuntimeConfig();
+      const { isLoggedIn } = useProfileStore();
+
+      if (liveChat.guestAvailable || isLoggedIn) this.initializeLiveChat();
     },
   },
 });
