@@ -32,9 +32,19 @@ export const useLiveChatStore = defineStore('liveChatStore', {
   },
 
   actions: {
-    hideChatAfterClose(): void {
+    handleVisibilityChange(): void {
       window.LiveChatWidget.on('visibility_changed', ({ visibility }: { visibility: string }) => {
         if (visibility === 'minimized') window.LiveChatWidget.call('hide');
+        if (visibility === 'maximized') this.liveChatNewMessages = 0;
+      });
+    },
+
+    handleEvents(): void {
+      window.LiveChatWidget.on('new_event', (data: { type: string; author: { type: string } }) => {
+        const chatState = window.LiveChatWidget.get('state');
+        if (data.type === 'message' && data.author.type === 'agent' && chatState.visibility === 'hidden') {
+          this.liveChatNewMessages += 1;
+        }
       });
     },
 
@@ -51,12 +61,10 @@ export const useLiveChatStore = defineStore('liveChatStore', {
           useListen('loyaltyLevelUpdated', this.setProfileData);
           this.setProfileData();
         }
-        this.hideChatAfterClose();
-        const customerData = window.LiveChatWidget.get('customer_data');
-        console.log(customerData);
-        window.LiveChatWidget.on('new_event', (data: any) => {
-          console.log(data);
-        });
+        this.handleVisibilityChange();
+
+        const chatData = window.LiveChatWidget.get('chat_data');
+        console.log(chatData);
       });
     },
 
