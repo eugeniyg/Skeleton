@@ -44,9 +44,11 @@
             </td>
             <td class="referral-rewards__td">
               <span
+                v-if="column.qualificationDate"
                 class="referral-rewards__td-bg"
-                v-html="formatDateStr(dayjs(column.registrationDate).format(dateFormat))"
+                v-html="formatDateStr(dayjs(column.qualificationDate).format(dateFormat))"
               />
+              <span v-else class="referral-rewards__td-bg">-</span>
             </td>
             <td class="referral-rewards__td">
               <span v-if="!column.qualified">-</span>
