@@ -17,14 +17,14 @@
 <script setup lang="ts">
   import type { IProfileReferral } from '~/types';
   import type { IPaginationMeta, IReferralItem, IReferralsRequest } from '@skeleton/core/types';
-  
+
   const { getContent } = useProjectMethods();
   const { getPlayerReferrals } = useCoreProfileApi();
-  
+
   const referralsList = ref<IReferralItem[]>([]);
   const pageMeta = ref<Maybe<IPaginationMeta>>(undefined);
   const isLoading = ref(false);
-  
+
   definePageMeta({
     middleware: async function (to) {
       const { localizePath } = useProjectMethods();

@@ -9,7 +9,7 @@ import type {
   IPlayerCashback,
   IBonus,
   IBonusesStatus,
-  IBonusesRequest
+  IBonusesRequest,
 } from '../types';
 import { useApiAuthInstance } from '@skeleton/core/assets/apiAuthInstance';
 

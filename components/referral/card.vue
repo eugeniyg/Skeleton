@@ -66,9 +66,7 @@
   }>();
 
   const profileStore = useProfileStore();
-  const globalStore = useGlobalStore();
   const walletStore = useWalletStore();
-  const { settingsConstants } = storeToRefs(globalStore);
   const { profile } = storeToRefs(profileStore);
   const { activeAccount } = storeToRefs(walletStore);
 
@@ -90,7 +88,7 @@
     if (!window) return '';
     return `${window.location.host}/?ref=${profile.value?.referralCode}`;
   });
-  
+
   const bonusTitle = ref<string>('');
   const referralMaxCount = ref<number | null>(null);
 
@@ -108,29 +106,32 @@
       `<span>${formattedTitle}</span>`
     );
   };
-  
+
   const getBonusesData = async () => {
     try {
       const { maxReferralCount, ownerBonusId } = await getReferralsSettings();
-      
+
       const bonusParams = {
         bonusIds: [ownerBonusId],
         currency: activeAccount.value?.currency,
         triggerType: 11,
       };
-      
+
       const [bonus] = await getBonuses(bonusParams);
       setBonusTitle(bonus);
       referralMaxCount.value = maxReferralCount || null;
     } catch (error) {
       console.error('Error fetching bonuses:', error);
     }
-  }
-  
-  watch(() => activeAccount.value?.currency, () => {
-    getBonusesData();
-  });
-  
+  };
+
+  watch(
+    () => activeAccount.value?.currency,
+    () => {
+      getBonusesData();
+    }
+  );
+
   onMounted(getBonusesData);
 </script>
 

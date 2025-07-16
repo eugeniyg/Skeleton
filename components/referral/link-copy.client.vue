@@ -1,17 +1,12 @@
 <template>
-  <label
-    class="referral-link-copy"
-    :for="props.name"
-    data-tooltip-parent
-    :class="{ 'is-focused': tooltipVisible }"
-  >
+  <label class="referral-link-copy" :for="props.name" data-tooltip-parent :class="{ 'is-focused': tooltipVisible }">
     <div class="referral-link-copy__row">
       <transition name="fade" mode="out-in">
         <div v-if="tooltipVisible" class="referral-link-copy__tooltip">
           {{ props.copyTooltip || 'Copied' }}
         </div>
       </transition>
-      
+
       <div class="referral-link-copy__field-wrap">
         <input
           :id="props.name"
@@ -23,7 +18,6 @@
         />
         <div ref="cloneElement" class="referral-link-copy__clone">{{ props.value }}</div>
       </div>
-      
 
       <button class="referral-link-copy__desktop-btn" @click.prevent="copyValue">
         <atomic-icon id="copy" />
@@ -52,7 +46,7 @@
 
   const tooltipVisible = ref<boolean>(false);
   const tooltipTimer = ref<any>(undefined);
-  
+
   const showTooltip = (): void => {
     tooltipVisible.value = true;
     clearTimeout(tooltipTimer.value);
@@ -69,7 +63,7 @@
 
   const displayValue = ref<string>('');
   const cloneElement = useTemplateRef('cloneElement');
-  
+
   const getDisplayValue = (): string => {
     if (!props.value || !copyInput.value || !cloneElement.value) return '';
     const inputWidth = copyInput.value.scrollWidth + 2;
@@ -83,12 +77,12 @@
       return `${firstPart}...${lastPart}`;
     }
     return props.value || '';
-  }
-  
+  };
+
   const updateDisplayValue = async () => {
     displayValue.value = getDisplayValue();
   };
-  
+
   watch(() => props.value, updateDisplayValue);
 
   const debouncedUpdateDisplayValue = debounce(updateDisplayValue, 200);

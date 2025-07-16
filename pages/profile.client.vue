@@ -10,8 +10,6 @@
   import type { IProfilePages } from '~/types';
   import camelCase from 'lodash/camelCase';
 
-  
-
   const { getProfileFields } = useFieldsStore();
   const { settingsConstants } = useGlobalStore();
 
