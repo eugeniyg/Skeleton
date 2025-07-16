@@ -103,18 +103,19 @@ export const useLiveChatStore = defineStore('liveChatStore', {
 
     getCustomIdentityProvider() {
       const cacheKey = '__lc_cache_data';
+      let tokenPromise: Promise<ILiveChatToken> | null = null;
       const storageToken = window.localStorage.getItem(cacheKey);
       let cachedToken: ILiveChatToken | null = storageToken ? JSON.parse(storageToken) : null;
 
-      const { getLiveChatToken, getFreshLiveChatToken, checkLiveChatToken } = useCoreProfileApi();
+      const { getFreshLiveChatToken } = useCoreProfileApi();
 
       const isTokenExpired = ({ creationDate, expiresIn }: ILiveChatToken): boolean => {
         return Date.now() >= creationDate + expiresIn;
       };
 
-      const getFreshToken = async (): Promise<ILiveChatToken> => {
-        console.log('getFreshToken');
+      const requestLiveChatToken = async (): Promise<ILiveChatToken> => {
         const liveChatToken = await getFreshLiveChatToken();
+        tokenPromise = null;
         const { isLoggedIn } = useProfileStore();
         if (!isLoggedIn) {
           window.localStorage.setItem(cacheKey, JSON.stringify(liveChatToken));
@@ -123,24 +124,28 @@ export const useLiveChatStore = defineStore('liveChatStore', {
         return liveChatToken;
       };
 
-      const getToken = async (): Promise<ILiveChatToken | boolean> => {
-        console.log('getToken');
-        const { isLoggedIn } = useProfileStore();
-        console.log('getToken - getLiveChatToken');
-        if (isLoggedIn) return await getLiveChatToken();
-        console.log('getToken - cachedToken');
-        if (cachedToken && !isTokenExpired(cachedToken)) return cachedToken;
-        console.log('getToken - getFreshToken');
-        return false;
+      const getFreshToken = (): Promise<ILiveChatToken> => {
+        tokenPromise = requestLiveChatToken();
+        return tokenPromise;
       };
 
-      const hasToken = async (): Promise<boolean> => {
+      const getToken = (): Promise<ILiveChatToken | boolean> => {
+        if (tokenPromise) return tokenPromise;
+
         const { isLoggedIn } = useProfileStore();
-        if (isLoggedIn) return await checkLiveChatToken();
-        return Promise.resolve(!!cachedToken);
+        if (!isLoggedIn && cachedToken && !isTokenExpired(cachedToken)) return Promise.resolve(cachedToken);
+        return getFreshToken();
       };
 
-      const invalidate = (): Promise<void> => Promise.resolve();
+      const hasToken = (): Promise<boolean> => {
+        const { isLoggedIn } = useProfileStore();
+        return Promise.resolve(!isLoggedIn && !!cachedToken);
+      };
+
+      const invalidate = () => {
+        cachedToken = null;
+        window.localStorage.removeItem(cacheKey);
+      };
 
       return {
         getToken,
