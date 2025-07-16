@@ -243,7 +243,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     },
 
     updateLiveChat(): void {
-      window.__lc.custom_identity_provider.invalidate();
+      window.__lc.custom_identity_provider().invalidate();
       // useUnlisten('profileUpdated', this.setProfileData);
       // useUnlisten('freeSpinsUpdated', this.setProfileData);
       // useUnlisten('bonusesUpdated', this.setProfileData);
