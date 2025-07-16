@@ -123,15 +123,15 @@ export const useLiveChatStore = defineStore('liveChatStore', {
         return liveChatToken;
       };
 
-      const getToken = async (): Promise<ILiveChatToken> => {
+      const getToken = async (): Promise<ILiveChatToken | boolean> => {
         console.log('getToken');
         const { isLoggedIn } = useProfileStore();
         console.log('getToken - getLiveChatToken');
         if (isLoggedIn) return await getLiveChatToken();
         console.log('getToken - cachedToken');
-        if (cachedToken && !isTokenExpired(cachedToken)) return Promise.resolve(cachedToken);
+        if (cachedToken && !isTokenExpired(cachedToken)) return cachedToken;
         console.log('getToken - getFreshToken');
-        return await getFreshToken();
+        return false;
       };
 
       const hasToken = async (): Promise<boolean> => {
