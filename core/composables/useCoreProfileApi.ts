@@ -12,7 +12,7 @@ import type {
   IUploadFile,
   IPlayerLoyaltyAccount,
   ILoyaltyLevelsRequest,
-  ILoyaltyLevelsResponse,
+  ILoyaltyLevelsResponse, ILiveChatToken,
 } from '../types';
 import { useApiAuthInstance } from '@skeleton/core/assets/apiAuthInstance';
 import { useApiGuestInstance } from '@skeleton/core/assets/apiGuestInstance';
@@ -120,6 +120,26 @@ export const useCoreProfileApi = () => {
     return response;
   };
 
+  const getLiveChatToken = async (): Promise<ILiveChatToken> => {
+    const { data } = await useApiAuthInstance('/api/player/integrations/livechat/token');
+    return data;
+  };
+
+  const getFreshLiveChatToken = async (): Promise<ILiveChatToken> => {
+    const { data } = await useApiAuthInstance('/api/player/integrations/livechat/fresh-token');
+    return data;
+  };
+
+  const checkLiveChatToken = async (): Promise<boolean> => {
+    const { data } = await useApiAuthInstance('/api/player/integrations/livechat/has-token');
+    return data;
+  };
+
+  const invalidateLiveChatToken = async (): Promise<string> => {
+    const { data } = await useApiAuthInstance('/api/player/integrations/livechat/token', { method: 'DELETE' });
+    return data;
+  };
+
   return {
     getProfile,
     getProfileFields,
@@ -140,5 +160,9 @@ export const useCoreProfileApi = () => {
     getSumsubToken,
     getPlayerLoyaltyAccount,
     getLoyaltyLevels,
+    getLiveChatToken,
+    getFreshLiveChatToken,
+    checkLiveChatToken,
+    invalidateLiveChatToken
   };
 };

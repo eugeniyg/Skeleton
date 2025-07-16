@@ -196,3 +196,12 @@ export interface ILoyaltyLevelsResponse extends Record<string, any> {
   data: ILoyaltyLevel[];
   meta: IPaginationMeta;
 }
+
+export interface ILiveChatToken {
+  expiresIn: number;
+  entityId: string;
+  accessToken: string;
+  tokenType: string;
+  creationDate: number;
+  licenseId: string;
+}

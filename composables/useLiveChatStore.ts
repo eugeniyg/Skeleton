@@ -1,18 +1,9 @@
 import { defineStore } from 'pinia';
 import debounce from 'lodash/debounce';
+import type { ILiveChatToken } from '../core/types';
 
 interface ILiveChatState {
   liveChatNewMessages: number;
-}
-
-interface ITokenResponse {
-  expiresIn: number;
-  entityId: string;
-  accessToken: string;
-  tokenType: string;
-  creationDate: number;
-  licenseId: string;
-  organizationId: string;
 }
 
 interface IChatProfileData {
@@ -111,80 +102,45 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     }, 2000),
 
     getCustomIdentityProvider() {
-      let tokenPromise: Promise<ITokenResponse> | null = null;
-      const { isLoggedIn, profile } = useProfileStore();
-      const cacheKey = isLoggedIn ? `livechat_cache_${profile?.id as string}` : 'livechat_cache_default';
-      let cachedToken: ITokenResponse | null = null;
+      const cacheKey = '__lc_cache_data';
+      const storageToken = window.localStorage.getItem(cacheKey);
+      let cachedToken: ILiveChatToken | null = storageToken ? JSON.parse(storageToken) : null;
 
-      const {
-        public: { liveChat },
-      } = useRuntimeConfig();
+      const { getLiveChatToken, getFreshLiveChatToken, checkLiveChatToken } = useCoreProfileApi();
 
-      const fetchLiveChatToken = async (): Promise<ITokenResponse> => {
-        const licenseId = liveChat.license;
-        const clientId = liveChat.clientId;
-        const organizationId = liveChat.organizationId;
-
-        const response: any = await $fetch.raw('https://accounts.livechat.com/customer/token', {
-          method: 'POST',
-          body: {
-            grant_type: 'cookie',
-            response_type: 'token',
-            client_id: clientId,
-            redirect_uri: 'http://localhost',
-            organization_id: organizationId,
-            license_id: Number(licenseId),
-          },
-        });
-
-        console.log('getToken');
-
-        const responseData: {
-          access_token: string;
-          expires_in: number; // in seconds
-          entity_id: string;
-          token_type: string;
-        } = response._data;
-
-        const tokenResponse: ITokenResponse = {
-          expiresIn: responseData.expires_in * 1000,
-          entityId: responseData.entity_id,
-          accessToken: responseData.access_token,
-          tokenType: responseData.token_type,
-          creationDate: Date.now(),
-          licenseId: licenseId,
-          organizationId: organizationId,
-        };
-
-        tokenPromise = null;
-        window.localStorage.setItem(cacheKey, JSON.stringify(tokenResponse));
-        cachedToken = tokenResponse;
-        return tokenResponse;
-      };
-
-      const isTokenExpired = ({ creationDate, expiresIn }: ITokenResponse): boolean => {
+      const isTokenExpired = ({ creationDate, expiresIn }: ILiveChatToken): boolean => {
         return Date.now() >= creationDate + expiresIn;
       };
 
-      const storageToken = window.localStorage.getItem(cacheKey);
-      if (storageToken) cachedToken = JSON.parse(storageToken);
-
-      const getFreshToken = () => {
-        tokenPromise = fetchLiveChatToken();
-        return tokenPromise;
+      const getFreshToken = async (): Promise<ILiveChatToken> => {
+        console.log('getFreshToken');
+        const liveChatToken = await getFreshLiveChatToken();
+        const { isLoggedIn } = useProfileStore();
+        if (!isLoggedIn) {
+          window.localStorage.setItem(cacheKey, JSON.stringify(liveChatToken));
+          cachedToken = liveChatToken;
+        }
+        return liveChatToken;
       };
 
-      const getToken = () => {
-        if (tokenPromise) return tokenPromise;
+      const getToken = async (): Promise<ILiveChatToken> => {
+        console.log('getToken');
+        const { isLoggedIn } = useProfileStore();
+        console.log('getToken - getLiveChatToken');
+        if (isLoggedIn) return await getLiveChatToken();
+        console.log('getToken - cachedToken');
         if (cachedToken && !isTokenExpired(cachedToken)) return Promise.resolve(cachedToken);
-        return getFreshToken();
+        console.log('getToken - getFreshToken');
+        return await getFreshToken();
       };
 
-      const hasToken = () => Promise.resolve(!!cachedToken);
-      const invalidate = () => {
-        cachedToken = null;
-        window.localStorage.removeItem(cacheKey);
+      const hasToken = async (): Promise<boolean> => {
+        const { isLoggedIn } = useProfileStore();
+        if (isLoggedIn) return await checkLiveChatToken();
+        return Promise.resolve(!!cachedToken);
       };
+
+      const invalidate = (): Promise<void> => Promise.resolve();
 
       return {
         getToken,
@@ -258,16 +214,17 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       useUnlisten('accountChanged', this.setProfileData);
       useUnlisten('invoicesStatisticsUpdated', this.setProfileData);
       useUnlisten('loyaltyLevelUpdated', this.setProfileData);
-      window.LiveChatWidget.call('destroy');
-      const liveChatScript = document.querySelector('script[href="https://cdn.livechatinc.com/tracking.js"]');
-      if (liveChatScript) liveChatScript.remove();
-
-      const {
-        public: { liveChat },
-      } = useRuntimeConfig();
-      const { isLoggedIn } = useProfileStore();
-
-      if (liveChat.guestAvailable || isLoggedIn) this.initializeLiveChat();
+      //window.__lc?.custom_identity_provider.getToken();
+      // window.LiveChatWidget.call('destroy');
+      // const liveChatScript = document.querySelector('script[href="https://cdn.livechatinc.com/tracking.js"]');
+      // if (liveChatScript) liveChatScript.remove();
+      //
+      // const {
+      //   public: { liveChat },
+      // } = useRuntimeConfig();
+      // const { isLoggedIn } = useProfileStore();
+      //
+      // if (liveChat.guestAvailable || isLoggedIn) this.initializeLiveChat();
     },
   },
 });
