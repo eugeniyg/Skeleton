@@ -135,11 +135,13 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       };
 
       const getFreshToken = (): Promise<ILiveChatToken> => {
+        console.log('getFreshToken');
         tokenPromise = requestLiveChatToken();
         return tokenPromise;
       };
 
       const getToken = (): Promise<ILiveChatToken | boolean> => {
+        console.log('getToken');
         if (tokenPromise) return tokenPromise;
 
         const { isLoggedIn } = useProfileStore();
