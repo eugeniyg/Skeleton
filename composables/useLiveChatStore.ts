@@ -135,9 +135,12 @@ export const useLiveChatStore = defineStore('liveChatStore', {
         const { isLoggedIn } = useProfileStore();
         if (isLoggedIn) {
           const currentToken = await getLiveChatToken();
+          console.log('currentToken: ', currentToken);
+          console.log('isTokenExpired: ', isTokenExpired(currentToken));
           if (currentToken && !isTokenExpired(currentToken)) {
             liveChatToken = currentToken;
           } else {
+            console.log('else');
             liveChatToken = await getFreshLiveChatToken();
           }
         } else {
@@ -246,23 +249,22 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     },
 
     updateLiveChat(): void {
-      window.LiveChatWidget.call('customer', 'logout');
-      // useUnlisten('profileUpdated', this.setProfileData);
-      // useUnlisten('freeSpinsUpdated', this.setProfileData);
-      // useUnlisten('bonusesUpdated', this.setProfileData);
-      // useUnlisten('accountChanged', this.setProfileData);
-      // useUnlisten('invoicesStatisticsUpdated', this.setProfileData);
-      // useUnlisten('loyaltyLevelUpdated', this.setProfileData);
-      // window.LiveChatWidget.call('destroy');
-      // const liveChatScript = document.querySelector('script[href="https://cdn.livechatinc.com/tracking.js"]');
-      // if (liveChatScript) liveChatScript.remove();
-      //
-      // const {
-      //   public: { liveChat },
-      // } = useRuntimeConfig();
-      // const { isLoggedIn } = useProfileStore();
-      //
-      // if (liveChat.guestAvailable || isLoggedIn) this.initializeLiveChat();
+      useUnlisten('profileUpdated', this.setProfileData);
+      useUnlisten('freeSpinsUpdated', this.setProfileData);
+      useUnlisten('bonusesUpdated', this.setProfileData);
+      useUnlisten('accountChanged', this.setProfileData);
+      useUnlisten('invoicesStatisticsUpdated', this.setProfileData);
+      useUnlisten('loyaltyLevelUpdated', this.setProfileData);
+      window.LiveChatWidget.call('destroy');
+      const liveChatScript = document.querySelector('script[href="https://cdn.livechatinc.com/tracking.js"]');
+      if (liveChatScript) liveChatScript.remove();
+
+      const {
+        public: { liveChat },
+      } = useRuntimeConfig();
+      const { isLoggedIn } = useProfileStore();
+
+      if (liveChat.guestAvailable || isLoggedIn) this.initializeLiveChat();
     },
   },
 });
