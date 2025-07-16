@@ -121,8 +121,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     getCustomIdentityProvider() {
       const cacheKey = '__lc_cache_data';
       let tokenPromise: Promise<ILiveChatToken> | null = null;
-      const storageToken = window.localStorage.getItem(cacheKey);
-      let cachedToken: ILiveChatToken | null = storageToken ? JSON.parse(storageToken) : null;
+      let cachedToken: ILiveChatToken | null = null;
 
       const { getLiveChatToken, getFreshLiveChatToken } = useCoreProfileApi();
 
@@ -131,7 +130,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       };
 
       const requestLiveChatToken = async (): Promise<ILiveChatToken> => {
-        let liveChatToken: ILiveChatToken | undefined;
+        let liveChatToken;
 
         const { isLoggedIn } = useProfileStore();
         if (isLoggedIn) {
@@ -142,11 +141,17 @@ export const useLiveChatStore = defineStore('liveChatStore', {
             liveChatToken = await getFreshLiveChatToken();
           }
         } else {
-          liveChatToken = await getFreshLiveChatToken();
-          window.localStorage.setItem(cacheKey, JSON.stringify(liveChatToken));
-          cachedToken = liveChatToken;
+          const storageTokenJson = window.localStorage.getItem(cacheKey);
+          const storageToken = storageTokenJson ? JSON.parse(storageTokenJson) : null;
+          if (storageToken && !isTokenExpired(storageToken)) {
+            liveChatToken = storageToken;
+          } else {
+            liveChatToken = await getFreshLiveChatToken();
+            window.localStorage.setItem(cacheKey, JSON.stringify(liveChatToken));
+          }
         }
 
+        cachedToken = liveChatToken;
         tokenPromise = null;
         return liveChatToken;
       };
@@ -161,15 +166,13 @@ export const useLiveChatStore = defineStore('liveChatStore', {
         console.log('getToken');
         if (tokenPromise) return tokenPromise;
 
-        const { isLoggedIn } = useProfileStore();
-        if (!isLoggedIn && cachedToken && !isTokenExpired(cachedToken)) return Promise.resolve(cachedToken);
+        if (cachedToken && !isTokenExpired(cachedToken)) return Promise.resolve(cachedToken);
         console.log('Requesting new token');
         return getFreshToken();
       };
 
       const hasToken = (): Promise<boolean> => {
-        const { isLoggedIn } = useProfileStore();
-        return Promise.resolve(!isLoggedIn && !!cachedToken);
+        return Promise.resolve(!!cachedToken);
       };
 
       const invalidate = () => {
@@ -243,7 +246,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     },
 
     updateLiveChat(): void {
-      window.__lc.custom_identity_provider().invalidate();
+      window.LiveChatWidget.call('customer', 'logout');
       // useUnlisten('profileUpdated', this.setProfileData);
       // useUnlisten('freeSpinsUpdated', this.setProfileData);
       // useUnlisten('bonusesUpdated', this.setProfileData);
