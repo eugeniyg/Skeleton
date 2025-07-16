@@ -107,20 +107,30 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       const storageToken = window.localStorage.getItem(cacheKey);
       let cachedToken: ILiveChatToken | null = storageToken ? JSON.parse(storageToken) : null;
 
-      const { getFreshLiveChatToken } = useCoreProfileApi();
+      const { getLiveChatToken, getFreshLiveChatToken } = useCoreProfileApi();
 
       const isTokenExpired = ({ creationDate, expiresIn }: ILiveChatToken): boolean => {
         return Date.now() >= creationDate + expiresIn;
       };
 
       const requestLiveChatToken = async (): Promise<ILiveChatToken> => {
-        const liveChatToken = await getFreshLiveChatToken();
-        tokenPromise = null;
+        let liveChatToken: ILiveChatToken | undefined;
+
         const { isLoggedIn } = useProfileStore();
-        if (!isLoggedIn) {
+        if (isLoggedIn) {
+          const currentToken = await getLiveChatToken();
+          if (currentToken && !isTokenExpired(currentToken)) {
+            liveChatToken = currentToken;
+          } else {
+            liveChatToken = await getFreshLiveChatToken();
+          }
+        } else {
+          liveChatToken = await getFreshLiveChatToken();
           window.localStorage.setItem(cacheKey, JSON.stringify(liveChatToken));
           cachedToken = liveChatToken;
         }
+
+        tokenPromise = null;
         return liveChatToken;
       };
 
