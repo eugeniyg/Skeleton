@@ -45,6 +45,7 @@
     'bonuses',
     'notifications',
     'documents',
+    'referral',
     'verification',
     'security',
     'history',
