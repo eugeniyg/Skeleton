@@ -52,6 +52,11 @@ export const useLiveChatStore = defineStore('liveChatStore', {
           this.setProfileData();
         }
         this.hideChatAfterClose();
+        const customerData = window.LiveChatWidget.get('customer_data');
+        console.log(customerData);
+        window.LiveChatWidget.on('new_event', (data: any) => {
+          console.log(data);
+        });
       });
     },
 
@@ -136,7 +141,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
 
       const getFreshToken = (): Promise<ILiveChatToken> => {
         console.log('getFreshToken');
-        tokenPromise = requestLiveChatToken();
+        if (!tokenPromise) tokenPromise = requestLiveChatToken();
         return tokenPromise;
       };
 
