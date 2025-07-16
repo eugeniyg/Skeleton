@@ -39,10 +39,15 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       });
     },
 
+    checkActiveChat(): void {
+      const customerData = window.LiveChatWidget.get('customer_data');
+      if (customerData.status === 'chatting') window.LiveChatWidget.call('maximize');
+    },
+
     handleEvents(): void {
       window.LiveChatWidget.on('new_event', (data: { type: string; author: { type: string } }) => {
         const chatState = window.LiveChatWidget.get('state');
-        if (data.type === 'message' && data.author.type === 'agent' && chatState.visibility === 'hidden') {
+        if (chatState.visibility === 'hidden' && data.type === 'message' && data.author.type === 'agent') {
           this.liveChatNewMessages += 1;
         }
       });
@@ -62,9 +67,8 @@ export const useLiveChatStore = defineStore('liveChatStore', {
           this.setProfileData();
         }
         this.handleVisibilityChange();
-
-        const chatData = window.LiveChatWidget.get('chat_data');
-        console.log(chatData);
+        this.handleEvents();
+        this.checkActiveChat();
       });
     },
 
@@ -239,22 +243,23 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     },
 
     updateLiveChat(): void {
-      useUnlisten('profileUpdated', this.setProfileData);
-      useUnlisten('freeSpinsUpdated', this.setProfileData);
-      useUnlisten('bonusesUpdated', this.setProfileData);
-      useUnlisten('accountChanged', this.setProfileData);
-      useUnlisten('invoicesStatisticsUpdated', this.setProfileData);
-      useUnlisten('loyaltyLevelUpdated', this.setProfileData);
-      window.LiveChatWidget.call('destroy');
-      const liveChatScript = document.querySelector('script[href="https://cdn.livechatinc.com/tracking.js"]');
-      if (liveChatScript) liveChatScript.remove();
-
-      const {
-        public: { liveChat },
-      } = useRuntimeConfig();
-      const { isLoggedIn } = useProfileStore();
-
-      if (liveChat.guestAvailable || isLoggedIn) this.initializeLiveChat();
+      window.__lc.custom_identity_provider.invalidate();
+      // useUnlisten('profileUpdated', this.setProfileData);
+      // useUnlisten('freeSpinsUpdated', this.setProfileData);
+      // useUnlisten('bonusesUpdated', this.setProfileData);
+      // useUnlisten('accountChanged', this.setProfileData);
+      // useUnlisten('invoicesStatisticsUpdated', this.setProfileData);
+      // useUnlisten('loyaltyLevelUpdated', this.setProfileData);
+      // window.LiveChatWidget.call('destroy');
+      // const liveChatScript = document.querySelector('script[href="https://cdn.livechatinc.com/tracking.js"]');
+      // if (liveChatScript) liveChatScript.remove();
+      //
+      // const {
+      //   public: { liveChat },
+      // } = useRuntimeConfig();
+      // const { isLoggedIn } = useProfileStore();
+      //
+      // if (liveChat.guestAvailable || isLoggedIn) this.initializeLiveChat();
     },
   },
 });
