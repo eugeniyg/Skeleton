@@ -83,7 +83,19 @@
   const qualifiedPlayersTooltip = computed(() => {
     return getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.qualifiedPlayers.tooltip');
   });
-
+  
+  const cashBonusLabel = computed(() => {
+    return getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.cashBonusLabel');
+  });
+  
+  const freeSpinsBonusLabel = computed(() => {
+    return getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.freeSpinsBonusLabel');
+  });
+  
+  const cardBonusTitle = computed(() => {
+    return getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.bonusTitle');
+  });
+  
   const createLink = computed(() => {
     if (!window) return '';
     return `${window.location.host}/?ref=${profile.value?.referralCode}`;
@@ -91,21 +103,17 @@
 
   const bonusTitle = ref<string>('');
   const referralMaxCount = ref<number | null>(null);
+  
+  let formattedTitle = ref('');
 
   const setBonusTitle = (bonus: Maybe<any>): void => {
-    let formattedTitle: string = '';
-    if (!bonus?.type || bonus?.type === 1) {
-      formattedTitle = getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.cashBonusLabel');
+    if (!bonus || bonus?.type === 1) {
+      formattedTitle.value = cashBonusLabel.value;
     } else if (bonus?.type === 3 && bonus.assignConditions?.presets?.length) {
-      const label = getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.freeSpinsBonusLabel');
-      formattedTitle = `${bonus.assignConditions.presets[0]?.quantity} ${label}`;
+      formattedTitle.value = `${bonus.assignConditions?.presets[0]?.quantity} ${freeSpinsBonusLabel.value}`;
     }
 
-    bonusTitle.value = getContent(
-      referralContent.value,
-      defaultLocaleReferralContent.value,
-      'card.bonusTitle'
-    )?.replace('{bonus}', `<span>${formattedTitle}</span>`);
+    bonusTitle.value = cardBonusTitle.value?.replace('{bonus}', `<span>${formattedTitle}</span>`);
   };
 
   const getBonusesData = async () => {
