@@ -2,7 +2,7 @@
   <div class="referral-card">
     <div
       class="referral-card__title"
-      v-html="DOMPurify.sanitize(marked.parseInline(bonusTitle) as string, { FORBID_TAGS: ['style'] })"
+      v-html="DOMPurify.sanitize(marked.parseInline(bonusTitle || '') as string, { FORBID_TAGS: ['style'] })"
     />
 
     <div class="referral-card__media">
@@ -103,8 +103,7 @@
 
   const bonusTitle = ref<string>('');
   const referralMaxCount = ref<number | null>(null);
-  
-  let formattedTitle = ref('');
+  const formattedTitle = ref<string>('');
 
   const setBonusTitle = (bonus: Maybe<any>): void => {
     if (!bonus || bonus?.type === 1) {
@@ -113,7 +112,7 @@
       formattedTitle.value = `${bonus.assignConditions?.presets[0]?.quantity} ${freeSpinsBonusLabel.value}`;
     }
 
-    bonusTitle.value = cardBonusTitle.value?.replace('{bonus}', `<span>${formattedTitle}</span>`);
+    bonusTitle.value = cardBonusTitle.value?.replace('{bonus}', `<span>${formattedTitle.value}</span>`);
   };
 
   const getBonusesData = async () => {
