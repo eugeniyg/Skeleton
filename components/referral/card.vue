@@ -1,6 +1,7 @@
 <template>
   <div class="referral-card">
     <div
+      v-if="bonusTitle"
       class="referral-card__title"
       v-html="DOMPurify.sanitize(marked.parseInline(bonusTitle || '') as string, { FORBID_TAGS: ['style'] })"
     />
