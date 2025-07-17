@@ -12,7 +12,8 @@ import type {
   IUploadFile,
   IPlayerLoyaltyAccount,
   ILoyaltyLevelsRequest,
-  ILoyaltyLevelsResponse, ILiveChatToken,
+  ILoyaltyLevelsResponse,
+  ILiveChatToken,
 } from '../types';
 import { useApiAuthInstance } from '@skeleton/core/assets/apiAuthInstance';
 import { useApiGuestInstance } from '@skeleton/core/assets/apiGuestInstance';
@@ -126,7 +127,9 @@ export const useCoreProfileApi = () => {
   };
 
   const getFreshLiveChatToken = async (): Promise<ILiveChatToken> => {
-    const { data } = await useApiAuthInstance('/api/player/integrations/livechat/fresh-token');
+    const { data } = await useApiAuthInstance('/api/player/integrations/livechat/fresh-token', {
+      params: { returnUrl: window.location.origin },
+    });
     return data;
   };
 
@@ -163,6 +166,6 @@ export const useCoreProfileApi = () => {
     getLiveChatToken,
     getFreshLiveChatToken,
     checkLiveChatToken,
-    invalidateLiveChatToken
+    invalidateLiveChatToken,
   };
 };
