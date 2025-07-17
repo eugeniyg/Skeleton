@@ -63,7 +63,7 @@
     isLoading.value = true;
     const requestParams: IReferralsRequest = {
       page,
-      perPage: 20,
+      perPage: 10,
     };
     try {
       const { referrals, meta } = await getPlayerReferrals(requestParams);
