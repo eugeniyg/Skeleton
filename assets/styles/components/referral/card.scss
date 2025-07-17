@@ -82,8 +82,14 @@
       @include font($subheading-2);
       margin-bottom: 4px;
 
-      &:first-of-type {
-        color: var(--text-primary);
+      &:not(.is-accent) {
+        &:first-of-type {
+          color: var(--text-primary);
+        }
+      }
+
+      &.is-accent {
+        color: var(--text-success);
       }
     }
 

@@ -20,7 +20,7 @@
         </div>
 
         <div class="referral-card__item-counter">
-          <span class="referral-card__item-count">{{ props.totalCount }}</span>
+          <span class="referral-card__item-count" :class="accentClass">{{ props.totalCount }}</span>
           <template v-if="referralMaxCount">
             <span class="referral-card__item-count-divider">/</span>
             <span class="referral-card__item-count">{{ referralMaxCount }}</span>
@@ -47,7 +47,7 @@
     </div>
 
     <div class="referral-card__footer">
-      <referral-link-copy v-if="profile?.referralCode" :value="createLink" name="copyRefLink" />
+      <referral-link-copy v-if="showCreateLink" :value="createLink" name="copyRefLink" />
       <referral-unavailable-msg v-else />
     </div>
   </div>
@@ -97,15 +97,28 @@
     return getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.bonusTitle');
   });
 
+  const accentClass = computed(() => {
+    const total = props.totalCount ?? 0;
+    const max = referralMaxCount.value ?? 0;
+    return total && max && total >= max ? 'is-accent' : null;
+  });
+
+  const showCreateLink = computed(() => {
+    const hasCode = Boolean(profile.value?.referralCode);
+    const total = props.totalCount ?? 0;
+    const max = referralMaxCount.value ?? 0;
+    return hasCode && total < max;
+  });
+
   const createLink = computed(() => {
     if (!window) return '';
     return `${window.location.host}/?ref=${profile.value?.referralCode}`;
   });
 
   const bonusTitle = ref<string>('');
-  const referralMaxCount = ref<number | null>(null);
+  const referralMaxCount = ref<number | null>();
   const formattedTitle = ref<string>('');
-  const bonusValue = ref<Maybe<any>>(null);
+  const bonusValue = ref<Maybe<any>>();
 
   const setBonusTitle = (bonus: Maybe<any>): string => {
     if (!bonus || bonus?.type === 1) {
@@ -143,7 +156,7 @@
   );
 
   watch(
-    () => bonusValue.value && cardBonusTitle.value && formattedTitle.value,
+    [() => bonusValue.value, () => cardBonusTitle.value, () => formattedTitle.value, () => cashBonusLabel.value],
     () => {
       bonusTitle.value = setBonusTitle(bonusValue.value);
     }

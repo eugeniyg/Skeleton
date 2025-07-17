@@ -1,6 +1,6 @@
 <template>
   <div class="referral-unavailable-msg">
-    <atomic-icon id="warning" class="referral-unavailable-msg__icon" size="24" />
+    <atomic-picture v-if="image" class="referral-unavailable-msg__icon" :src="image" />
     <div class="referral-unavailable-msg__text">{{ message }}</div>
   </div>
 </template>
@@ -12,8 +12,12 @@
   const defaultLocaleReferralContent = ref<Maybe<IProfileReferral>>(inject('defaultLocaleReferralContent'));
   const { getContent } = useProjectMethods();
 
+  const image = computed(() =>
+    getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.unavailable.image')
+  );
+
   const message = computed(() =>
-    getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.unavailableMsg')
+    getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.unavailable.text')
   );
 </script>
 
