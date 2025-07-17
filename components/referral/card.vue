@@ -103,7 +103,7 @@
 
   const bonusTitle = ref<string>('');
   const referralMaxCount = ref<number | null>(null);
-  const formattedTitle = ref<string>('');
+  const formattedTitle = ref<string>(cashBonusLabel.value);
 
   const setBonusTitle = (bonus: Maybe<any>): void => {
     if (!bonus || bonus?.type === 1) {
