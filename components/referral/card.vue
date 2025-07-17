@@ -84,19 +84,19 @@
   const qualifiedPlayersTooltip = computed(() => {
     return getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.qualifiedPlayers.tooltip');
   });
-  
+
   const cashBonusLabel = computed(() => {
     return getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.cashBonusLabel');
   });
-  
+
   const freeSpinsBonusLabel = computed(() => {
     return getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.freeSpinsBonusLabel');
   });
-  
+
   const cardBonusTitle = computed(() => {
     return getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.bonusTitle');
   });
-  
+
   const createLink = computed(() => {
     if (!window) return '';
     return `${window.location.host}/?ref=${profile.value?.referralCode}`;
@@ -104,16 +104,17 @@
 
   const bonusTitle = ref<string>('');
   const referralMaxCount = ref<number | null>(null);
-  const formattedTitle = ref<string>(cashBonusLabel.value);
+  const formattedTitle = ref<string>('');
+  const bonusValue = ref<Maybe<any>>(null);
 
-  const setBonusTitle = (bonus: Maybe<any>): void => {
+  const setBonusTitle = (bonus: Maybe<any>): string => {
     if (!bonus || bonus?.type === 1) {
       formattedTitle.value = cashBonusLabel.value;
     } else if (bonus?.type === 3 && bonus.assignConditions?.presets?.length) {
       formattedTitle.value = `${bonus.assignConditions?.presets[0]?.quantity} ${freeSpinsBonusLabel.value}`;
     }
 
-    bonusTitle.value = cardBonusTitle.value?.replace('{bonus}', `<span>${formattedTitle.value}</span>`);
+    return cardBonusTitle.value?.replace('{bonus}', `<span>${formattedTitle.value}</span>`);
   };
 
   const getBonusesData = async () => {
@@ -127,7 +128,7 @@
       };
 
       const [bonus] = await getBonuses(bonusParams);
-      setBonusTitle(bonus);
+      bonusValue.value = bonus;
       referralMaxCount.value = maxReferralCount || null;
     } catch (error) {
       console.error('Error fetching bonuses:', error);
@@ -138,6 +139,13 @@
     () => activeAccount.value?.currency,
     () => {
       getBonusesData();
+    }
+  );
+
+  watch(
+    () => bonusValue.value && cardBonusTitle.value && formattedTitle.value,
+    () => {
+      bonusTitle.value = setBonusTitle(bonusValue.value);
     }
   );
 
