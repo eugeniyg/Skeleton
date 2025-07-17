@@ -4,7 +4,7 @@
 
     <referral-info />
 
-    <referral-card :total-count="referralsList.length" />
+    <referral-card :total-count="pageMeta?.totalRows || 0" />
 
     <referral-how-it-works v-if="isHowItWorksExist" />
 
@@ -63,7 +63,7 @@
     isLoading.value = true;
     const requestParams: IReferralsRequest = {
       page,
-      perPage: 100,
+      perPage: 20,
     };
     try {
       const { referrals, meta } = await getPlayerReferrals(requestParams);

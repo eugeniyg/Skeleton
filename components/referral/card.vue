@@ -62,7 +62,7 @@
   const { getBonuses } = useCoreBonusApi();
 
   const props = defineProps<{
-    totalCount: number;
+    totalCount: number | null;
   }>();
 
   const profileStore = useProfileStore();
@@ -101,10 +101,11 @@
       formattedTitle = `${bonus.assignConditions.presets[0]?.quantity} ${label}`;
     }
 
-    bonusTitle.value = getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.bonusTitle').replace(
-      '{bonus}',
-      `<span>${formattedTitle}</span>`
-    );
+    bonusTitle.value = getContent(
+      referralContent.value,
+      defaultLocaleReferralContent.value,
+      'card.bonusTitle'
+    )?.replace('{bonus}', `<span>${formattedTitle}</span>`);
   };
 
   const getBonusesData = async () => {

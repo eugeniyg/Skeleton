@@ -3,7 +3,7 @@
     <div class="referral-link-copy__row">
       <transition name="fade" mode="out-in">
         <div v-if="tooltipVisible" class="referral-link-copy__tooltip">
-          {{ props.copyTooltip || 'Copied' }}
+          {{ copyMsg }}
         </div>
       </transition>
 
@@ -25,7 +25,7 @@
     </div>
 
     <button-base class="referral-link-copy__mobile-btn" @click.prevent="copyValue">
-      <span class="referral-link-copy__mobile-btn-label">Copy</span>
+      <span class="referral-link-copy__mobile-btn-label">{{ btnLabel }}</span>
       <atomic-icon id="copy" />
     </button-base>
   </label>
@@ -34,13 +34,23 @@
 <script setup lang="ts">
   import copy from 'copy-to-clipboard';
   import debounce from 'lodash/debounce';
+  import type { IProfileReferral } from '~/types';
 
   const props = defineProps<{
     name: string;
     value?: string;
-    label?: string;
-    copyTooltip?: string;
   }>();
+
+  const referralContent = ref<Maybe<IProfileReferral>>(inject('referralContent'));
+  const defaultLocaleReferralContent = ref<Maybe<IProfileReferral>>(inject('defaultLocaleReferralContent'));
+  const { getContent } = useProjectMethods();
+
+  const btnLabel = computed(() =>
+    getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.copyLink.btnLabel')
+  );
+  const copyMsg = computed(() =>
+    getContent(referralContent.value, defaultLocaleReferralContent.value, 'card.copyLink.msg')
+  );
 
   const copyInput = useTemplateRef('copyInput');
 
