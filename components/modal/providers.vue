@@ -77,7 +77,7 @@
   }>();
 
   const { closeModal } = useModalStore();
-  const { getProviderList } = useGamesStore();
+  const { gameProviders } = useGamesStore();
   const { getContent } = useProjectMethods();
 
   const searchValue = ref<string>('');
@@ -85,12 +85,9 @@
   const isShowEmpty = ref<boolean>(false);
   const inputRef = ref();
 
-  const { data: gameProviders } = await useLazyAsyncData(() => getProviderList(), { server: false });
-
   const emit = defineEmits(['select']);
-
   const providersList = computed(() => {
-    const providers = (!searchProviders.value.length ? gameProviders.value : searchProviders.value) || [];
+    const providers = (!searchProviders.value.length ? [...gameProviders] : searchProviders.value) || [];
     return providers.filter(provider => !!provider.gameEnabledCount);
   });
 
@@ -118,7 +115,6 @@
   const { showAlert } = useLayoutStore();
 
   const { getGameProviders } = useCoreGamesApi();
-
   const getProviders = async (): Promise<void> => {
     try {
       const responseProviders = await getGameProviders(requestParams);

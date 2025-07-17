@@ -197,6 +197,27 @@ export interface ILoyaltyLevelsResponse extends Record<string, any> {
   meta: IPaginationMeta;
 }
 
+export interface ILoyaltyUpdatedEvent {
+  data: {
+    event: 'account.level.updated' | 'account.balance.updated';
+    playerAccount: IPlayerLoyaltyAccount;
+  };
+}
+
+export interface IKycUpdatedEvent {
+  data: {
+    event: 'player.kyc.updated';
+    type: number;
+    value: boolean;
+  };
+}
+
+export interface IPlayerProfileUpdatedEvent {
+  data: {
+    event: 'player.updated';
+  };
+}
+
 export interface ILiveChatToken {
   expiresIn: number;
   entityId: string;

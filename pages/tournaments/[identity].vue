@@ -57,18 +57,23 @@
 
 <script setup lang="ts">
   import type { ITournamentCommon, ITournamentPage } from '~/types';
-  import type { ITournament } from '@skeleton/core/types/tournamentsTypes';
-  import type { IGame, IPaginationMeta, IWebSocketResponse } from '@skeleton/core/types';
+  import type {
+    IGame,
+    IPaginationMeta,
+    ITournament,
+    ITournamentEntryUpdatedEvent,
+    ITournamentLeaderboardUpdatedEvent,
+  } from '@skeleton/core/types';
 
   const profileStore = useProfileStore();
   const { isLoggedIn, profile } = storeToRefs(profileStore);
   const { getContent } = useProjectMethods();
-  const { getCollectionsList } = useGamesStore();
   const globalStore = useGlobalStore();
   const { isMobile } = storeToRefs(globalStore);
   const route = useRoute();
   const routeIdentity = route.params.identity as string;
   const routeFinished = route.query.finished as string;
+  const { collectionsByCountry } = useGamesStore();
 
   const { getTournaments, getTournament } = useCoreTournamentsApi();
   const getTournamentGeneralData = async (): Promise<ITournament> => {
@@ -117,9 +122,8 @@
   const tournamentDefiniteData = ref<ITournament | undefined>();
   const tournamentData = computed(() => tournamentDefiniteData.value || pageData.value?.tournamentGeneralData);
   const requestCollections = ref<string[]>([]);
-  const setCollections = async (tournamentCollections: string[], collectionsExcluded: boolean): Promise<void> => {
-    const gameCollections = await getCollectionsList();
-    requestCollections.value = gameCollections
+  const setCollections = (tournamentCollections: string[], collectionsExcluded: boolean): void => {
+    requestCollections.value = collectionsByCountry
       .filter(collection => {
         if (collectionsExcluded) return !tournamentCollections.includes(collection.identity);
         else return tournamentCollections.includes(collection.identity);
@@ -178,7 +182,7 @@
   const playerEntrySubscription = ref<any>(undefined);
   const { createSubscription } = useWebSocket();
 
-  const updateLeaderboard = (webSocketResponse: IWebSocketResponse) => {
+  const updateLeaderboard = (webSocketResponse: ITournamentLeaderboardUpdatedEvent) => {
     if (tournamentDefiniteData.value) {
       tournamentDefiniteData.value = {
         ...tournamentDefiniteData.value,
@@ -187,7 +191,7 @@
     }
   };
 
-  const updatePlayerEntry = (webSocketResponse: IWebSocketResponse) => {
+  const updatePlayerEntry = (webSocketResponse: ITournamentEntryUpdatedEvent) => {
     if (tournamentDefiniteData.value) {
       tournamentDefiniteData.value = {
         ...tournamentDefiniteData.value,
@@ -229,7 +233,7 @@
   const getInitialData = async (): Promise<void> => {
     if (!tournamentData.value) return;
 
-    await setCollections(
+    setCollections(
       tournamentData.value.conditions?.gameCollections || [],
       tournamentData.value.conditions?.gameCollectionsExcluded || false
     );

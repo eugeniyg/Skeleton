@@ -1,5 +1,11 @@
 import { defineStore, storeToRefs } from 'pinia';
-import type { IAccount, IInvoiceStatistics, ISocketInvoice, IWebSocketResponse } from '@skeleton/core/types';
+import type {
+  IAccount,
+  IAccountBalanceUpdateEvent,
+  IInvoiceUpdatedEvent,
+  IInvoiceStatistics,
+  ISocketInvoice,
+} from '@skeleton/core/types';
 
 interface IWalletState {
   accounts: IAccount[];
@@ -205,7 +211,7 @@ export const useWalletStore = defineStore('walletStore', {
       }
     },
 
-    updateAccount(webSocketResponse: IWebSocketResponse): void {
+    updateAccount(webSocketResponse: IAccountBalanceUpdateEvent): void {
       const accountData: Maybe<IAccount> = webSocketResponse.data.account;
       this.accounts = this.accounts.map(account => {
         if (account.id === accountData?.id) return accountData;
@@ -235,7 +241,7 @@ export const useWalletStore = defineStore('walletStore', {
       }
     },
 
-    showInvoiceStatus(webSocketResponse: IWebSocketResponse): void {
+    showInvoiceStatus(webSocketResponse: IInvoiceUpdatedEvent): void {
       const socketInvoiceData = webSocketResponse.data?.invoice;
       this.asyncInvoiceProcessing(socketInvoiceData);
       if (![2, 3].includes(socketInvoiceData?.status || -1)) return;

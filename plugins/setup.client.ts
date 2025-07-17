@@ -1,4 +1,3 @@
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { isStandalonePWA } from 'ua-parser-js/helpers';
 
 export default defineNuxtPlugin(nuxtApp => {
@@ -96,12 +95,6 @@ export default defineNuxtPlugin(nuxtApp => {
     }
   };
 
-  const getFingerprintVisitor = async (): Promise<string> => {
-    const fp = await FingerprintJS.load();
-    const result = await fp.get();
-    return result.visitorId;
-  };
-
   const checkTabVisibility = (): void => {
     const { isMobile } = useGlobalStore();
     const { isLoggedIn } = useProfileStore();
@@ -112,14 +105,8 @@ export default defineNuxtPlugin(nuxtApp => {
   };
 
   nuxtApp.hook('app:created', async () => {
-    const { getProviderList, getCollectionsList } = useGamesStore();
     const { getRegistrationFields } = useFieldsStore();
-    getProviderList();
-    getCollectionsList();
     getRegistrationFields();
-
-    const profileStore = useProfileStore();
-    profileStore.fingerprintVisitor = getFingerprintVisitor();
   });
 
   nuxtApp.hook('app:mounted', async () => {

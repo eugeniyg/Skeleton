@@ -13,6 +13,8 @@
       <atomic-icon id="check" />
       <p>
         <span
+          v-router-links
+          @click="clickLabelElement"
           v-html="DOMPurify.sanitize(marked.parseInline(props.label || '') as string, { FORBID_TAGS: ['style'] })"
         />
         <sup v-if="isRequired"> *</sup>
@@ -34,10 +36,18 @@
     value: any;
   }>();
 
-  const emit = defineEmits(['change', 'update:value']);
+  const emit = defineEmits(['change', 'update:value', 'clickLink']);
   const onChange = (e: any): void => {
     emit('change', e.target.checked);
     emit('update:value', e.target.checked ? 1 : '');
+  };
+
+  const clickLabelElement = (event: any): void => {
+    const targetElement = event.target as HTMLElement;
+    if (targetElement.tagName === 'A') {
+      const href = targetElement.getAttribute('href');
+      if (href && !href.startsWith('http')) emit('clickLink');
+    }
   };
 </script>
 
