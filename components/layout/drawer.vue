@@ -107,10 +107,10 @@
 
   const openChat = () => {
     if (projectHasLiveChat.value) {
-      if (!liveChat?.guestAvailable && !isLoggedIn.value) openModal('sign-up');
+      if (!liveChat?.guestAvailable && !isLoggedIn.value) openModal('sign-in');
       else if (window.LiveChatWidget) window.LiveChatWidget.call('maximize');
     } else if (projectHasFreshchat.value) {
-      if (!freshchatParams?.guestAvailable && !isLoggedIn.value) openModal('sign-up');
+      if (!freshchatParams?.guestAvailable && !isLoggedIn.value) openModal('sign-in');
       else window.fcWidget?.open();
     }
   };

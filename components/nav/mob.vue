@@ -42,9 +42,9 @@
 
     <client-only>
       <button-base
-        v-if="projectHasFreshchat"
+        v-if="projectHasLiveChat || projectHasFreshchat"
         class="nav-mob__item"
-        :class="{ 'chat-indicator': !!freshChatNewMessages }"
+        :class="{ 'chat-indicator': projectHasLiveChat ? !!liveChatNewMessages : !!freshChatNewMessages }"
         @click="openChat"
       >
         <atomic-icon id="live-support" />
@@ -92,13 +92,21 @@
 
   const freshchatStore = useFreshchatStore();
   const { freshChatNewMessages, projectHasFreshchat } = storeToRefs(freshchatStore);
+  const liveChatStore = useLiveChatStore();
+  const { liveChatNewMessages, projectHasLiveChat } = storeToRefs(liveChatStore);
+
+  const {
+    public: { freshchatParams, liveChat },
+  } = useRuntimeConfig();
 
   const openChat = () => {
-    const {
-      public: { freshchatParams },
-    } = useRuntimeConfig();
-    if (!freshchatParams?.guestAvailable && !isLoggedIn.value) openModal('sign-in');
-    else window.fcWidget?.open();
+    if (projectHasLiveChat.value) {
+      if (!liveChat?.guestAvailable && !isLoggedIn.value) openModal('sign-in');
+      else if (window.LiveChatWidget) window.LiveChatWidget.call('maximize');
+    } else if (projectHasFreshchat.value) {
+      if (!freshchatParams?.guestAvailable && !isLoggedIn.value) openModal('sign-in');
+      else window.fcWidget?.open();
+    }
   };
 </script>
 
