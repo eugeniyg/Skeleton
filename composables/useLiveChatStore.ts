@@ -57,7 +57,6 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       window.LiveChatWidget.on('ready', () => {
         const { isLoggedIn } = useProfileStore();
         if (isLoggedIn) {
-          console.log('setChatReadyState');
           useListen('profileUpdated', this.setProfileData);
           useListen('freeSpinsUpdated', this.setProfileData);
           useListen('bonusesUpdated', this.setProfileData);
@@ -104,7 +103,6 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     },
 
     setProfileData: debounce(async function (this: any): Promise<void> {
-      console.log('setProfileData');
       const { profile } = useProfileStore();
 
       if (profile) {
@@ -135,12 +133,9 @@ export const useLiveChatStore = defineStore('liveChatStore', {
         const { isLoggedIn } = useProfileStore();
         if (isLoggedIn) {
           const currentToken = await getLiveChatToken();
-          console.log('currentToken: ', currentToken);
-          console.log('isTokenExpired: ', isTokenExpired(currentToken));
           if (currentToken && !isTokenExpired(currentToken)) {
             liveChatToken = currentToken;
           } else {
-            console.log('else');
             liveChatToken = await getFreshLiveChatToken();
           }
         } else {
@@ -160,17 +155,14 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       };
 
       const getFreshToken = (): Promise<ILiveChatToken> => {
-        console.log('getFreshToken');
         if (!tokenPromise) tokenPromise = requestLiveChatToken();
         return tokenPromise;
       };
 
       const getToken = (): Promise<ILiveChatToken | boolean> => {
-        console.log('getToken');
         if (tokenPromise) return tokenPromise;
 
         if (cachedToken && !isTokenExpired(cachedToken)) return Promise.resolve(cachedToken);
-        console.log('Requesting new token');
         return getFreshToken();
       };
 

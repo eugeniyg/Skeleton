@@ -31,8 +31,6 @@
       :default-locale-content="pageContent?.defaultLocaleData?.aeroGroup"
     />
 
-    <button @click="updateLiveChat">Update LiveChat</button>
-
     <template v-for="collection in gameCollectionsList">
       <group-games v-if="collection" :key="collection.id" show-all-btn show-arrows :category="collection" />
     </template>
@@ -174,12 +172,6 @@
       widgetsObserver.value.unobserve(sportsContainer.value);
     }
   });
-
-  const updateLiveChat = () => {
-    console.log('updateLiveChat');
-    const { updateLiveChat } = useLiveChatStore();
-    updateLiveChat();
-  };
 </script>
 
 <style src="~/assets/styles/pages/index.scss" lang="scss" />
