@@ -13,7 +13,7 @@
   const { getProfileFields } = useFieldsStore();
   const contentParams = {
     contentKey: 'profilePages',
-    contentRoute: ['profile'],
+    contentCollection: 'profile',
     findAll: true,
   };
   const { getContentData } = useContentLogic<IProfilePages>(contentParams);

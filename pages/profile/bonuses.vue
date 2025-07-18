@@ -103,7 +103,8 @@
 
   const contentParams = {
     contentKey: 'profileBonusesContent',
-    contentRoute: ['profile', 'bonuses'],
+    contentCollection: 'profile',
+    contentSource: 'bonuses',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileBonuses>(contentParams);

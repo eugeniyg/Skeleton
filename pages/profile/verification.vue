@@ -29,7 +29,8 @@
 
   const contentParams = {
     contentKey: 'profileVerificationContent',
-    contentRoute: ['profile', 'verification'],
+    contentCollection: 'profile',
+    contentSource: 'verification',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileVerification>(contentParams);

@@ -42,7 +42,8 @@
 
   const contentParams = {
     contentKey: 'gamePageContent',
-    contentRoute: ['pages', 'game'],
+    contentCollection: 'pages',
+    contentSource: 'game',
   };
   const { getContentData } = useContentLogic<IGamePage>(contentParams);
   const replaceVariables = (content: string | undefined, gameInfo: Maybe<IGame>): string | undefined => {

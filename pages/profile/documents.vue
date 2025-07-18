@@ -15,7 +15,8 @@
 
   const contentParams = {
     contentKey: 'profileDocumentsContent',
-    contentRoute: ['profile', 'documents'],
+    contentCollection: 'profile',
+    contentSource: 'documents',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileDocuments>(contentParams);

@@ -52,13 +52,14 @@
 
   const wheelPageContentParams = {
     contentKey: `wheel-${wheelIdentity}`,
-    contentRoute: ['wheels'],
-    where: ['identity', '=', wheelIdentity],
+    contentCollection: 'wheels',
+    where: ['pageIdentity', '=', wheelIdentity],
     isPage: true,
   };
   const wheelCommonContentParams = {
     contentKey: `wheels-common`,
-    contentRoute: ['pages', 'wheel'],
+    contentCollection: 'pages',
+    contentSource: 'wheel',
   };
   const { getContentData: getWheelPageContent } = useContentLogic<IWheelPage>(wheelPageContentParams);
   const { getContentData: getWheelCommonContent } = useContentLogic<IWheelCommon>(wheelCommonContentParams);

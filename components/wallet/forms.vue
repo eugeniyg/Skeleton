@@ -145,8 +145,8 @@
   // << GET CONTENT FOR DEPOSIT LIMIT
   const contentParams = {
     contentKey: 'coolingOffLimitsContent',
-    contentRoute: ['profile', 'limits'],
-    only: ['coolingOff'],
+    contentCollection: 'profile',
+    contentSource: 'limits',
   };
   const { getContentData } = useContentLogic<IProfileLimits>(contentParams);
   const { data: pageContent } = await useLazyAsyncData(getContentData);

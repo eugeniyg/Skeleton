@@ -77,7 +77,8 @@
 
   const contentParams = {
     contentKey: 'contactPageContent',
-    contentRoute: ['pages', 'contacts'],
+    contentCollection: 'pages',
+    contentSource: 'contacts',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IContactsPage>(contentParams);

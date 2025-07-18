@@ -39,7 +39,8 @@
 
   const contentParams = {
     contentKey: 'profileWalletContent',
-    contentRoute: ['profile', 'wallet'],
+    contentCollection: 'profile',
+    contentSource: 'wallet',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileWallet>(contentParams);

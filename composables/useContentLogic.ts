@@ -1,17 +1,20 @@
 import { getLocalesContentData } from '@skeleton/helpers/contentMethods';
 import { setPageMeta } from '@skeleton/helpers/transformDomMethods';
+import camelCase from 'lodash/camelCase';
+import type { CollectionItemBase, Collections } from '@nuxt/content';
+type CollectionKey = keyof Collections;
 
 interface IContentParams {
   contentKey: string;
-  contentRoute: string[];
-  where?: unknown[];
+  contentCollection: string;
+  contentSource?: string;
+  where?: unknown[]; // field should be in content.config.ts schema!!!!
   isPage?: boolean;
-  only?: string[];
   findAll?: boolean;
   currentOnly?: boolean;
 }
 
-export function useContentLogic<T extends Record<string, any>>(params: IContentParams) {
+export function useContentLogic<T>(params: IContentParams) {
   interface IPageContent {
     currentLocaleData: Maybe<T>;
     defaultLocaleData: Maybe<T>;
@@ -21,14 +24,28 @@ export function useContentLogic<T extends Record<string, any>>(params: IContentP
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
   const getRequestArray = (): Promise<any>[] => {
-    let currentLocaleQuery: any = queryCollection('content').path(`${currentLocale.value?.code as string}/${params.contentRoute.join('/')}`);
+    const currentLocaleCode = currentLocale.value?.code as string;
+    const defaultLocaleCode = defaultLocale.value?.code as string;
+    const currentLocaleCollectionName = camelCase(`${currentLocaleCode}-${params.contentCollection}`);
+    const defaultLocaleCollectionName = camelCase(`${defaultLocaleCode}-${params.contentCollection}`);
+    let currentLocaleQuery: any = queryCollection(currentLocaleCollectionName as CollectionKey);
     let defaultLocaleQuery: any = params.currentOnly
       ? undefined
-      : queryCollection('content').path(`${defaultLocale.value?.code as string}/${params.contentRoute.join('/')}`);
+      : queryCollection(defaultLocaleCollectionName as CollectionKey);
 
-    if (params.only) {
-      currentLocaleQuery = currentLocaleQuery.select(...params.only);
-      if (!params.currentOnly) defaultLocaleQuery = defaultLocaleQuery.select(...params.only);
+    if (params.contentSource) {
+      currentLocaleQuery = currentLocaleQuery.where(
+        'stem',
+        '=',
+        `${currentLocaleCode}/${params.contentCollection}/${params.contentSource}`
+      );
+
+      if (!params.currentOnly)
+        defaultLocaleQuery = defaultLocaleQuery.where(
+          'stem',
+          '=',
+          `${defaultLocaleCode}/${params.contentCollection}/${params.contentSource}`
+        );
     }
 
     if (params.where) {
@@ -64,11 +81,38 @@ export function useContentLogic<T extends Record<string, any>>(params: IContentP
     if (nuxtDataContent.value) contentData = nuxtDataContent.value;
     else {
       const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled(getRequestArray());
-      contentData = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+      const rawContentData = getLocalesContentData(currentLocaleContentResponse, defaultLocaleContentResponse);
+      if (Array.isArray(rawContentData.currentLocaleData)) {
+        contentData.currentLocaleData = rawContentData.currentLocaleData.map((item: CollectionItemBase) => ({
+          ...(item.meta.body as object),
+          stem: item.stem,
+        })) as T;
+      } else if (rawContentData.currentLocaleData) {
+        contentData.currentLocaleData = {
+          ...rawContentData.currentLocaleData.meta.body,
+          stem: rawContentData.currentLocaleData.stem,
+        };
+      }
+
+      if (Array.isArray(rawContentData.defaultLocaleData)) {
+        contentData.defaultLocaleData = rawContentData.defaultLocaleData.map((item: CollectionItemBase) => ({
+          ...(item.meta.body as object),
+          stem: item.stem,
+        })) as T;
+      } else if (rawContentData.defaultLocaleData) {
+        contentData.defaultLocaleData = {
+          ...rawContentData.defaultLocaleData.meta.body,
+          stem: rawContentData.defaultLocaleData.stem,
+        };
+      }
+
       nuxtDataContent.value = contentData;
     }
 
-    if (params.isPage) setPageMeta(contentData.currentLocaleData?.pageMeta);
+    if (params.isPage && !Array.isArray(contentData.currentLocaleData))
+      // @ts-expect-error - Page Meta
+      setPageMeta(contentData.currentLocaleData?.pageMeta);
+
     return contentData;
   };
 

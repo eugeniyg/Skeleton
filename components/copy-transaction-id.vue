@@ -21,7 +21,8 @@
 
   const pageContentParams = {
     contentKey: 'profileTransactionsContent',
-    contentRoute: ['history', 'transactions'],
+    contentCollection: 'history',
+    contentSource: 'transactions',
     isPage: false,
   };
   const { getContentData: getPageContent } = useContentLogic<ITransactionsHistory>(pageContentParams);

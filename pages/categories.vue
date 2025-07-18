@@ -80,7 +80,8 @@
 
   const contentParams = {
     contentKey: 'categoryPageContent',
-    contentRoute: ['pages', 'category'],
+    contentCollection: 'pages',
+    contentSource: 'category',
   };
   const { getContentData } = useContentLogic<ICategoryPage>(contentParams);
   const { data: pageContent, status: contentStatus } = await useLazyAsyncData(getContentData);

@@ -26,8 +26,8 @@
           <div class="modal-quest-tasks__body">
             <quest-currency
               v-if="tasksModalData?.rewards?.length"
-              :currentLocaleContent="questsHubContent?.currentLocaleData"
-              :defaultLocaleContent="questsHubContent?.defaultLocaleData"
+              :currentLocaleContent="currentLocaleQuestsHubContent"
+              :defaultLocaleContent="defaultLocaleQuestsHubContent"
               :rewards="tasksModalData?.rewards"
             />
 
@@ -94,6 +94,7 @@
   import { VueFinalModal } from 'vue-final-modal';
   import type { IModalsContent, IQuestsHubModal } from '~/types';
   import { activatePlayerQuest } from '@skeleton/api/retention';
+  import camelCase from 'lodash/camelCase';
 
   const props = defineProps<{
     currentLocaleData: Maybe<IModalsContent['questTasks']>;
@@ -104,15 +105,11 @@
   provide('defaultLocaleQuestTasksContent', props.defaultLocaleData);
 
   const { modalsList, closeModal } = useModalStore();
-  const questsHubContentParams = {
-    contentKey: 'modal-quests-hub',
-    contentRoute: ['modals', modalsList['quests-hub'].content as string],
-  };
-  const { getContentData: getQuestsHubContentData } = useContentLogic<IQuestsHubModal>(questsHubContentParams);
-  const { data: questsHubContent } = await useLazyAsyncData(getQuestsHubContentData);
+  const { currentLocaleModalsContent, defaultLocaleModalsContent, alertsData, defaultLocaleAlertsData } =
+    useGlobalStore();
+  const currentLocaleQuestsHubContent = currentLocaleModalsContent?.[camelCase(modalsList['quests-hub'].content)];
+  const defaultLocaleQuestsHubContent = defaultLocaleModalsContent?.[camelCase(modalsList['quests-hub'].content)];
 
-  const globalStore = useGlobalStore();
-  const { alertsData, defaultLocaleAlertsData } = storeToRefs(globalStore);
   const questsStore = useQuestsStore();
   const { openTasksModal } = questsStore;
   const { tasksModalData, tasksModalImage } = storeToRefs(questsStore);
@@ -137,12 +134,8 @@
   const activateQuestButton = computed(() => {
     const isQuestCompleted = tasksModalData.value?.tasks.every(task => task.isCompleted);
     return isQuestCompleted
-      ? getContent(questsHubContent.value?.currentLocaleData, questsHubContent.value?.defaultLocaleData, 'claimReward')
-      : getContent(
-          questsHubContent.value?.currentLocaleData,
-          questsHubContent.value?.defaultLocaleData,
-          'startQuestButton'
-        );
+      ? getContent(currentLocaleQuestsHubContent, defaultLocaleQuestsHubContent, 'claimReward')
+      : getContent(currentLocaleQuestsHubContent, defaultLocaleQuestsHubContent, 'startQuestButton');
   });
 
   const inactiveState = computed(() => ![1, 2].includes(tasksModalData.value?.state || 0));
@@ -158,7 +151,7 @@
       useEvent('questActivated');
       await openTasksModal(questData, tasksModalImage.value);
     } catch {
-      showAlert(alertsData.value?.global?.somethingWrong || defaultLocaleAlertsData.value?.global?.somethingWrong);
+      showAlert(alertsData?.global?.somethingWrong || defaultLocaleAlertsData?.global?.somethingWrong);
     }
 
     activation.value = false;

@@ -38,7 +38,8 @@
   const route = useRoute();
   const pageContentParams = {
     contentKey: 'questionPageContent',
-    contentRoute: ['pages', 'question'],
+    contentCollection: 'pages',
+    contentSource: 'question',
     isPage: true,
   };
   const { getContentData: getPageContentData } = useContentLogic<IQuestionPage>(pageContentParams);
@@ -46,7 +47,7 @@
 
   const categoryContentParams = {
     contentKey: 'questionCategoryContent',
-    contentRoute: ['question-pages'],
+    contentCollection: 'question-pages',
     findAll: true,
   };
   const { getContentData: getCategoryContentData } = useContentLogic<IQuestionCategory[]>(categoryContentParams);

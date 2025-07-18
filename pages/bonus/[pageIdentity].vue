@@ -53,7 +53,7 @@
 
   const contentParams = {
     contentKey: `${pageIdentity}-bonus-content`,
-    contentRoute: ['bonus'],
+    contentCollection: 'bonus',
     where: ['pageIdentity', '=', pageIdentity],
     isPage: true,
   };

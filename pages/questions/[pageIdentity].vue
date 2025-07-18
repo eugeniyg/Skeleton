@@ -21,7 +21,7 @@
 
   const contentParams = {
     contentKey: `${pageIdentity}-question`,
-    contentRoute: ['question-pages'],
+    contentCollection: 'question-pages',
     where: ['pageIdentity', '=', pageIdentity],
     currentOnly: true,
   };

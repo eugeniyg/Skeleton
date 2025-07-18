@@ -21,7 +21,7 @@
   const { pageIdentity } = route.params;
   const contentParams = {
     contentKey: `${pageIdentity}-static-content`,
-    contentRoute: ['static'],
+    contentCollection: 'static',
     isPage: true,
     where: ['pageIdentity', '=', pageIdentity],
   };

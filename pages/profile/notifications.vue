@@ -93,7 +93,8 @@
 
   const contentParams = {
     contentKey: 'profileNotificationsContent',
-    contentRoute: ['profile', 'notifications'],
+    contentCollection: 'profile',
+    contentSource: 'notifications',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileNotifications>(contentParams);

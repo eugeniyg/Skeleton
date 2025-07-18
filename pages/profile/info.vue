@@ -111,7 +111,8 @@
 
   const contentParams = {
     contentKey: 'profileInfoContent',
-    contentRoute: ['profile', 'info'],
+    contentCollection: 'profile',
+    contentSource: 'info',
     isPage: true,
   };
   const { getContentData } = useContentLogic<IProfileInfo>(contentParams);
