@@ -54,7 +54,7 @@
   const contentParams = {
     contentKey: `${pageIdentity}-bonus-content`,
     contentRoute: ['bonus'],
-    where: { pageIdentity },
+    where: ['pageIdentity', '=', pageIdentity],
     isPage: true,
   };
   const { getContentData } = useContentLogic<IBonusPage>(contentParams);

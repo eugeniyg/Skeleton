@@ -258,22 +258,53 @@ export const useGlobalStore = defineStore('globalStore', {
     },
 
     async getGlobalContent(): Promise<void> {
-      const globalContentFolders = ['alerts', 'fields-settings', 'global-components', 'layout', 'modals'];
+      const globalContentCollections = ['alerts', 'fields-settings', 'global-components', 'layout', 'modals'];
+      const currentLocaleContentPromises = globalContentCollections.map(collection => {
+        const collectionName = camelCase(`${this.currentLocale?.code}-${collection}`);
+        return queryCollection(collectionName).all();
+      });
 
-      const [currentLocaleContentResponse, defaultLocaleContentResponse] = await Promise.allSettled([
-        queryContent(this.currentLocale?.code as string)
-          .where({ _dir: { $in: globalContentFolders } })
-          .find(),
-        this.currentLocale?.isDefault
-          ? Promise.reject('Current locale is default locale!')
-          : queryContent(this.defaultLocale?.code as string)
-              .where({ _dir: { $in: globalContentFolders } })
-              .find(),
-      ]);
+      let defaultLocaleContentPromises: Promise<{ status: 'fulfilled' | 'rejected'; value?: any }>[] = [];
+      if (this.currentLocale?.isDefault) {
+        defaultLocaleContentPromises = globalContentCollections.map(collection => {
+          const collectionName = camelCase(`${this.defaultLocale?.code}-${collection}`);
+          return queryCollection(collectionName).all();
+        });
+      }
 
-      const { currentLocaleData, defaultLocaleData } = getLocalesContentData(
-        currentLocaleContentResponse,
-        defaultLocaleContentResponse
+      const [
+        currentLocaleAlertsResponse,
+        currentLocaleFieldsSettingsResponse,
+        currentLocaleGlobalComponentsResponse,
+        currentLocaleLayoutResponse,
+        currentLocaleModalsResponse,
+        defaultLocaleAlertsResponse,
+        defaultLocaleFieldsSettingsResponse,
+        defaultLocaleGlobalComponentsResponse,
+        defaultLocaleLayoutResponse,
+        defaultLocaleModalsResponse,
+      ] = await Promise.allSettled([...currentLocaleContentPromises, ...defaultLocaleContentPromises]);
+
+      const { currentLocaleData: currentLocaleAlerts, defaultLocaleData: defaultLocaleAlerts } = getLocalesContentData(
+        currentLocaleAlertsResponse,
+        defaultLocaleAlertsResponse
+      );
+      console.log(currentLocaleAlerts);
+
+      const { currentLocaleData: currentLocaleFieldsSettings, defaultLocaleData: defaultLocaleFieldsSettings } =
+        getLocalesContentData(currentLocaleFieldsSettingsResponse, defaultLocaleFieldsSettingsResponse);
+
+      const { currentLocaleData: currentLocaleGlobalComponents, defaultLocaleData: defaultLocaleGlobalComponents } =
+        getLocalesContentData(currentLocaleGlobalComponentsResponse, defaultLocaleGlobalComponentsResponse);
+
+      const { currentLocaleData: currentLocaleLayout, defaultLocaleData: defaultLocaleLayout } = getLocalesContentData(
+        currentLocaleLayoutResponse,
+        defaultLocaleLayoutResponse
+      );
+
+      const { currentLocaleData: currentLocaleModals, defaultLocaleData: defaultLocaleModals } = getLocalesContentData(
+        currentLocaleModalsResponse,
+        defaultLocaleModalsResponse
       );
 
       if (currentLocaleData) {

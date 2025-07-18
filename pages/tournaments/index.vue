@@ -184,10 +184,9 @@
   };
 
   const getTournamentsData = async (): Promise<void> => {
-    const contentPagesResponse = await queryContent<ITournamentPage>(
-      currentLocale.value?.code as string,
-      'tournaments'
-    ).find();
+    const contentPagesResponse = await queryCollection<ITournamentPage>('content').path(
+      `${currentLocale.value?.code as string}/tournaments`
+    ).all();
 
     if (contentPagesResponse?.length) {
       state.tournamentsContent = completeTournamentsObject(contentPagesResponse);

@@ -4,7 +4,7 @@ import { setPageMeta } from '@skeleton/helpers/transformDomMethods';
 interface IContentParams {
   contentKey: string;
   contentRoute: string[];
-  where?: Record<string, any>;
+  where?: unknown[];
   isPage?: boolean;
   only?: string[];
   findAll?: boolean;
@@ -21,39 +21,39 @@ export function useContentLogic<T extends Record<string, any>>(params: IContentP
   const { currentLocale, defaultLocale } = storeToRefs(globalStore);
 
   const getRequestArray = (): Promise<any>[] => {
-    let currentLocaleQuery: any = queryContent(currentLocale.value?.code as string, ...params.contentRoute);
+    let currentLocaleQuery: any = queryCollection('content').path(`${currentLocale.value?.code as string}/${params.contentRoute.join('/')}`);
     let defaultLocaleQuery: any = params.currentOnly
       ? undefined
-      : queryContent(defaultLocale.value?.code as string, ...params.contentRoute);
+      : queryCollection('content').path(`${defaultLocale.value?.code as string}/${params.contentRoute.join('/')}`);
 
     if (params.only) {
-      currentLocaleQuery = currentLocaleQuery.only(params.only);
-      if (!params.currentOnly) defaultLocaleQuery = defaultLocaleQuery.only(params.only);
+      currentLocaleQuery = currentLocaleQuery.select(...params.only);
+      if (!params.currentOnly) defaultLocaleQuery = defaultLocaleQuery.select(...params.only);
     }
 
     if (params.where) {
-      currentLocaleQuery = currentLocaleQuery.where(params.where);
-      if (!params.currentOnly) defaultLocaleQuery = defaultLocaleQuery.where(params.where);
+      currentLocaleQuery = currentLocaleQuery.where(...params.where);
+      if (!params.currentOnly) defaultLocaleQuery = defaultLocaleQuery.where(...params.where);
     }
 
     if (params.findAll) {
       return params.currentOnly
-        ? [currentLocaleQuery.find(), undefined]
+        ? [currentLocaleQuery.all(), undefined]
         : [
-            currentLocaleQuery.find(),
+            currentLocaleQuery.all(),
             currentLocale.value?.isDefault
               ? Promise.reject('Current locale is default locale!')
-              : defaultLocaleQuery.find(),
+              : defaultLocaleQuery.all(),
           ];
     }
 
     return params.currentOnly
-      ? [currentLocaleQuery.findOne(), undefined]
+      ? [currentLocaleQuery.first(), undefined]
       : [
-          currentLocaleQuery.findOne(),
+          currentLocaleQuery.first(),
           currentLocale.value?.isDefault
             ? Promise.reject('Current locale is default locale!')
-            : defaultLocaleQuery.findOne(),
+            : defaultLocaleQuery.first(),
         ];
   };
 

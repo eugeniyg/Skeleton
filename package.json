@@ -8,7 +8,7 @@
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
-    "@nuxt/content": "^2.13.4",
+    "@nuxt/content": "^3.6.3",
     "@nuxt/eslint": "^0.7.5",
     "@nuxtjs/fontaine": "^0.4.4",
     "@types/body-scroll-lock": "^3.1.2",
@@ -38,6 +38,7 @@
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "accept-language-parser": "^1.5.0",
+    "better-sqlite3": "^12.2.0",
     "body-scroll-lock": "^4.0.0-beta.0",
     "centrifuge": "^3.1.2",
     "copy-to-clipboard": "^3.3.3",

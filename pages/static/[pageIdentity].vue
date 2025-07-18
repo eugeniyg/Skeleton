@@ -23,7 +23,7 @@
     contentKey: `${pageIdentity}-static-content`,
     contentRoute: ['static'],
     isPage: true,
-    where: { pageIdentity },
+    where: ['pageIdentity', '=', pageIdentity],
   };
   const { getContentData } = useContentLogic<IStaticPage>(contentParams);
   const { status, data: pageContent } = await useLazyAsyncData(getContentData);

@@ -88,7 +88,7 @@
   const pageContentParams = {
     contentKey: `tournamentPage-${routeIdentity}`,
     contentRoute: ['tournaments'],
-    where: { identity: routeIdentity },
+    where: ['identity', '=', routeIdentity],
     currentOnly: true,
     isPage: true,
   };
