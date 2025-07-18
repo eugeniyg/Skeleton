@@ -72,7 +72,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     },
 
     async getProfileData(): Promise<IChatProfileData | undefined> {
-      const { profile, fingerprintVisitor } = useProfileStore();
+      const { profile, getFingerprintVisitor } = useProfileStore();
       if (!profile) return undefined;
 
       const { activePlayerBonuses, activePlayerFreeSpins } = useBonusStore();
@@ -86,7 +86,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       }
       const { loyaltyAccount } = useLoyaltyStore();
       const { totalBaseCurrencyDepositAmount } = useWalletStore();
-      const fingerprint = await fingerprintVisitor;
+      const fingerprint = await getFingerprintVisitor();
 
       return {
         userId: profile.id,
